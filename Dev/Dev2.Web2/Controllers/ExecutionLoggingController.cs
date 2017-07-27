@@ -1,7 +1,6 @@
 ﻿using Dev2.Common;
 using Dev2.Web2.Models.ExecutionLogging;
-using RestSharp;
-using RestSharp.Authenticators;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
@@ -10,38 +9,22 @@ namespace Dev2.Web2.Controllers
 {
     public class ExecutionLoggingController : Controller
     {
-        // GET: ExecutionLogging
-        public ActionResult Index(ExecutionLoggingRequestViewModel Request)
+       // GET: ExecutionLogging
+        public ActionResult Index()
         {
-            var request = CheckRequest(Request);
-            
-            var serverUrl = String.Format("{0}://{1}:{2}", request.Protocol, request.Server, request.Port);
-            var client = new RestClient(serverUrl);
-            client.Authenticator = new NtlmAuthenticator();
-            var serverRequest = BuildRequest(request);
-            var response = client.Execute<List<LogEntry>>(serverRequest);
-
-            var data = response.Data ?? new List<LogEntry>();
-
-            var model = new Tuple<List<LogEntry>, ExecutionLoggingRequestViewModel>(data, request);
-            
-
+            var request = CheckRequest(null);
+            var model = new Tuple<List<LogEntry>, ExecutionLoggingRequestViewModel>(new List<LogEntry>(), request);
             return View(model);
         }
 
-        private RestRequest BuildRequest(ExecutionLoggingRequestViewModel Request)
+        [HttpPost]
+        public ActionResult ExecutionList(string jsonData)
         {
-            var serverRequest = new RestRequest("services/GetLogDataService", Method.GET);
-            serverRequest.UseDefaultCredentials = true;
-            serverRequest.AddQueryParameter("StartDateTime", Request.StartDateTime.ToString("yyyy-MM-dd HH:mm:ss,fff"));
-            serverRequest.AddQueryParameter("CompletedDateTime", Request.CompletedDateTime.ToString("yyyy-MM-dd HH:mm:ss,fff"));
-            serverRequest.AddQueryParameter("Status", Request.Status);
-            serverRequest.AddQueryParameter("User", Request.User);
-            serverRequest.AddQueryParameter("Url", Request.Url);
-            serverRequest.AddQueryParameter("ExecutionId", Request.ExecutionId);
-            serverRequest.AddQueryParameter("ExecutionTime", Request.ExecutionTime);
+            var logEntries = JsonConvert.DeserializeObject<List<LogEntry>>(jsonData.ToString());
+            var request = CheckRequest(null);
+            var model = new Tuple<List<LogEntry>, ExecutionLoggingRequestViewModel>(logEntries, request);
 
-            return serverRequest;
+            return View("Index", model);
         }
 
         private ExecutionLoggingRequestViewModel CheckRequest(ExecutionLoggingRequestViewModel Request)
@@ -51,37 +34,14 @@ namespace Dev2.Web2.Controllers
             {
                 toReturn = Request;
                 toReturn.Server = toReturn.Server ?? "localhost";
-                toReturn.Protocol = toReturn.Protocol ?? "https";
-                toReturn.Port = toReturn.Port ?? "3143";
+                toReturn.Protocol = toReturn.Protocol ?? "http";
+                toReturn.Port = toReturn.Port ?? "3142";
             }
             else
             {
-                toReturn = new ExecutionLoggingRequestViewModel { Protocol = "https", Server = "localhost", Port = "3143" };
+                toReturn = new ExecutionLoggingRequestViewModel { Protocol = "http", Server = "localhost", Port = "3142" };
             }
             return toReturn;
-        }
-
-        [HttpPost]
-        public ActionResult Details(string executionId)
-        {
-            var serverUrl = String.Format("{0}://{1}:{2}", "https", "localhost", "3143");
-            var client = new RestClient(serverUrl);
-            client.Authenticator = new NtlmAuthenticator();
-            executionId = executionId.Replace("\n", "").Trim();
-            var serverRequest = GetResult(executionId);
-
-            var response = client.Execute<LogEntry>(serverRequest);
-            var data = response.Data ?? new LogEntry();
-            return PartialView("Details", data);
-        }
-
-        private RestRequest GetResult(string executionId)
-        {
-            var serverRequest = new RestRequest("services/GetServiceExecutionResult", Method.GET);
-            serverRequest.UseDefaultCredentials = true;
-            serverRequest.AddQueryParameter("ExecutionId", executionId);
-
-            return serverRequest;
         }
 
         // GET: ExecutionLogging/Create

@@ -202,7 +202,7 @@ namespace Dev2.Common
 
         public static string WebServerUri { get; set; }
         public static string PublicWebServerUri => DnsName + ":" + Port+"/";
-        public static string DnsName { private get; set; }
-        public static int Port { private get; set; }
+        public static string DnsName { get; set; }
+        public static int Port { get; set; }
     }
 }

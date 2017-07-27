@@ -20,13 +20,18 @@ namespace Dev2.Runtime.ESB.Management.Services
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             var executionId = values["ExecutionId"];
+            var trimExecutionId = executionId.ToString().Trim();
             var serializer = new Dev2JsonSerializer();
             var buildTempObjects = BuildTempObjects();
-            var tmpObjects = buildTempObjects.FirstOrDefault(r => r.ExecutionId == executionId.ToString() && r.Message.StartsWith("Execution Result"));
-            dynamic replace = "";
+            var tmpObjects = buildTempObjects.FirstOrDefault(r => r.ExecutionId == trimExecutionId && r.Message.StartsWith("Execution Result"));
+            string replace = "";
             if (tmpObjects != null)
             {
-                replace = tmpObjects.Message.Replace("Execution Result :", "").Replace(" ]", "");
+                string message = tmpObjects.Message;
+                var startIdx = GlobalConstants.ExecutionLoggingResultStartTag.Length;
+                var endIdx = GlobalConstants.ExecutionLoggingResultEndTag.Length;
+                var lengthToSelect = message.Length - startIdx - endIdx;
+                replace = message.Substring(startIdx, lengthToSelect);
             }
             var logEntry = new LogEntry { Result = replace };
             return serializer.SerializeToBuilder(logEntry);
