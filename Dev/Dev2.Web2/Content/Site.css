@@ -357,11 +357,32 @@ td {
     color: #FFFFFF;
     font-size: medium;
 }
+
+.no-close .ui-dialog-titlebar-close {
+    display: inline-block;
+}
+
+.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
+    border: 1px solid #c5c5c5;
+    background: #f6f6f6;
+    font-weight: normal;
+    color: #454545;
+}
+
+.ui-dialog .ui-dialog-titlebar-close span {
+    display: block;
+    margin: 1px;
+    margin-left: -8px;
+    margin-top: -8px;
+}
+
+.ui-button-icon-only .ui-button-text, .ui-button-icons-only .ui-button-text {
+    padding: .4em;
+    text-indent: -9999999px;
+    width: 21px;
+    height: 20px;
+}
 /*Dialog*/
-
-
-
-
 /*Link*/
 .details {
     font-size: 14px;
