@@ -38,6 +38,7 @@ using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Storage.Interfaces;
 using Warewolf.Studio.Core.Infragistics_Prism_Region_Adapter;
+using System.Reflection;
 
 namespace Dev2.Activities.Specs.BaseTypes
 {
@@ -1031,9 +1032,17 @@ namespace Dev2.Activities.Specs.BaseTypes
             {
                 Directory.CreateDirectory(@"C:\Temp");
             }
-            if (!File.Exists(@"C:\Temp\key.opk"))
+            var keyPath = @"C:\Temp\key.opk";
+            if (!File.Exists(keyPath))
             {
-                File.Copy(Environment.CurrentDirectory + @"\key.opk", @"C:\Temp\key.opk", true);
+                var ToolsSpecsAssembly = Assembly.GetExecutingAssembly();
+                using (Stream stream = ToolsSpecsAssembly.GetManifestResourceStream("Warewolf.Tools.Specs.key.opk"))
+                {
+                    using (var fileStream = File.Create(keyPath))
+                    {
+                        stream.CopyTo(fileStream);
+                    }
+                }
             }
         }
     }
