@@ -134,7 +134,7 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Toolbox\ControlFlow\Switch\SwitchSteps.cs" />
-    <Compile Include="Toolbox\Database\InitDatabaseToolsDataList.cs" />
+    <Compile Include="Toolbox\Database\DatabaseToolsSteps.cs" />
     <Compile Include="Toolbox\Data\AssignObject\AssignObject.feature.cs">
       <DependentUpon>AssignObject.feature</DependentUpon>
       <AutoGen>True</AutoGen>
