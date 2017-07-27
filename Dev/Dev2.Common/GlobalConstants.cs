@@ -50,6 +50,9 @@ namespace Dev2.Common
             };
         }
 
+        public const string ExecutionLoggingResultStartTag = "Execution Result [ ";
+        public const string ExecutionLoggingResultEndTag = " ]";
+
         public const string ArmResultText = "Flow Arm";
         // ReSharper disable InconsistentNaming
         //Default TimeoutValue

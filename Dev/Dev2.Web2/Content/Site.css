@@ -170,9 +170,38 @@ td {
 }
 
     #filterTable td {
-        padding: 0;
+        padding: 0px;
         background-color: transparent
     }
+
+    #filterTable .serverName {
+        width: 5px;
+        padding-left: 5px;
+        padding-top: 5px;
+        padding-right: 5px;
+        font-size: 17px;
+    }
+
+    #filterTable .protocol {
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+
+    #filterTable .serverDesc {
+        padding: 0px;
+        width: auto;
+        font-size: 18px;
+        text-align: center;
+    }
+
+    #filterTable .serverText {
+        width: 100%;
+        padding-left: 5px;
+        padding-right: 5px;
+        font-size: 17px;
+    }
+
+    
 
 #filterTableRow {
     padding: 3px;
@@ -443,7 +472,13 @@ td {
 /*Filter*/
 
 
-
+#port {
+    width: 50px;
+    padding-left: 6px;
+    padding-right: 2px;
+    margin-left: 5px;
+    margin-right: 5px;
+}
 
 /*Dropdown*/
 #protocolDropdown {
@@ -456,6 +491,7 @@ td {
     cursor: pointer;
     outline: none;
     transition: all 0.3s ease-out;
+    width: 80px;
 }
 
     #protocolDropdown:focus {
@@ -582,3 +618,13 @@ td {
     .ui-timepicker-div.ui-timepicker-oneLine .ui_tpicker_unit_hide:before {
         display: none;
     }
+
+
+/* Up and Down Arrows */
+.sortable th.descend:after {
+    content: "\25B2";
+}
+
+.sortable th.ascend:after {
+    content: "\25BC";
+}

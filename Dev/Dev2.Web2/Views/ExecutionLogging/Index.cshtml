@@ -1,15 +1,262 @@
-﻿@model Tuple<List<Dev2.Common.LogEntry>,ExecutionLoggingRequestViewModel>
+﻿@model Tuple<List<Dev2.Common.LogEntry>, ExecutionLoggingRequestViewModel>
 @using Dev2.Web2.Models.ExecutionLogging;
-
 
 @{
     ViewBag.Title = "Index";
 }
 
+<head>
+    <meta charset='utf-8' />
+    <meta content='en' name='language' />
+    <meta content='width=device-width, initial-scale=1' name='viewport' />
+    <link rel='stylesheet' type='text/css' href='http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css' />
+    <link rel='stylesheet' type='text/css' href='~/Content/Site.css' />
+    <link rel="stylesheet" type="text/css" href="~/Content/jquery.datetimepicker.css" />
+    <link rel="stylesheet" href="~/Content/DetailsModal.css" type="text/css" />
+
+    <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
+    <script type='text/javascript' src='~/Scripts/multifilter.js'></script>
+    <script type='text/javascript' src="~/Scripts/jquery.datetimepicker.full.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/tsorter.min.js" ></script>
+</head>
+
 <div id="ExecutionFilters" class="well">
-    @{Html.RenderPartial("ExecutionFilters", Model.Item2);}
+
+    <table id="filterTable">
+        <tr>
+            <td class="serverName">
+                @Html.LabelFor(model => model.Item2.Server)
+            </td>
+            <td class="protocol">
+                @Html.DropDownListFor(m => m.Item2.Protocol, Model.Item2.Protocols, new { id = "protocolDropdown", @class = "form-control" })
+            </td>
+            <td class="serverDesc">://</td>
+            <td class="serverText">@Html.EditorFor(model => model.Item2.Server, new { htmlAttributes = new { id = "serverName", @class = "form-control" } })</td>
+            <td class="serverDesc">:</td>
+            <td>@Html.EditorFor(model => model.Item2.Port, new { htmlAttributes = new { id = "port", @class = "form-control" } })</td>
+            <td><button id="updateServer" class="btn btn-default">Update</button></td>
+        </tr>
+    </table>
+
+    <div>
+        <table id="executionFilters" class="table">
+            <tr>
+                <td class='filter-container filterContainId'>
+                    <input id="filterId" autocomplete='off' class='filter' name='Execution Id' placeholder='Execution Id' data-col='Execution Id' />
+                </td>
+                <td class='filter-container filterContainTime'>
+                    <input id="filterTime" autocomplete='off' class='filter' name='Execution Time' placeholder='Time (ms)' data-col='Execution Time' />
+                </td>
+                <td class='filter-container filterContainStatus'>
+                    <input id="filterStatus" autocomplete='off' class='filter' name='Status' placeholder='Status' data-col='Status' />
+                </td>
+                <td class='filter-container filterContainStart'>
+                    <input id="filterStart" autocomplete='off' class='filter' name='Start Time' placeholder='Start Time' onchange="filterStart()" data-col='Start Time' />
+                </td>
+                <td class='filter-container filterContainComplete'>
+                    <input id="filterComplete" autocomplete='off' class='filter' name='Completed Time' placeholder='Completed Time' onchange="filterComplete()" data-col='Completed Time' />
+                </td>
+                <td class='filter-container filterContainUrl' style="width:100%">
+                    <input id="filterUrl" autocomplete='off' class='filter' name='Url' placeholder='Url' data-col='Url' />
+                </td>
+                <td class='filter-container filterContainUser'>
+                    <input id="filterUser" autocomplete='off' class='filter' name='User' placeholder='User' data-col='User' />
+                </td>
+                <td class='filter-container filterContainReset'>
+                    <button type="button" class="btn btn-default" id="ResetButton">Clear</button>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div>
+        <table id="executionList" class="tablesorter">
+            <thead>
+                <tr>
+                    <th>Execution Id</th>
+                    <th>Time (ms)</th>
+                    <th>Status</th>
+                    <th>Start Time</th>
+                    <th>Completed Time</th>
+                    <th>Url</th>
+                    <th>User</th>
+                    <th>Result</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Item1)
+            {
+                    <tr>
+                        <td class="exRow">
+                            @Html.DisplayFor(modelItem => item.ExecutionId)
+                        </td>
+                        <td class="exRow">
+                            @Html.DisplayFor(modelItem => item.ExecutionTime)
+                        </td>
+                        <td class="exRow">
+                            @Html.DisplayFor(modelItem => item.Status)
+                        </td>
+                        <td class="exRow">
+                            @Html.DisplayFor(modelItem => item.StartDateTime)
+                        </td>
+                        <td class="exRow">
+                            @Html.DisplayFor(modelItem => item.CompletedDateTime)
+                        </td>
+                        <td class="exRow">
+                            @{
+                                if (item.Url == null)
+                                {
+                                    @Html.DisplayFor(modelItem => item.Url)
+                                }
+                                else
+                                {
+                                    <a class="executionUrl" title="@item.Url" href="@item.Url" target="_blank">@item.Url</a>
+                                }
+                            }
+                        </td>
+                        <td class="exRow">
+                            @Html.DisplayFor(modelItem => item.User)
+                        </td>
+                        <td>
+                            <a class="details" href="javascript:;">[...]</a>
+                        </td>
+                    </tr>
+                                }
+            </tbody>
+        </table>
+    </div>
 </div>
 
-<div id="ExecutionList">
-    @{Html.RenderPartial("ExecutionList", Model.Item1);}
+<div id="dialog" style="display: none">
+    <p id="exResult"></p>
 </div>
+
+<script type="text/javascript">
+    jQuery(document).ready(function ($) {
+
+        $("#executionList").tablesorter(); 
+
+        $('.filter').multifilter();
+
+        $("#filterStart").datetimepicker({
+            format: 'd/m/Y H:i:s',
+            lang: 'ru'
+        });
+
+        $("#filterComplete").datetimepicker({
+            format: 'd/m/Y H:i:s',
+            lang: 'ru'
+        });
+    });
+</script>
+
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        
+
+        $('#updateServer').on('click', function (e) {
+            e.preventDefault();
+            getLogData();
+        });
+
+        $("#executionList .details").click(function (e) {
+            e.preventDefault();
+            var protocol = document.getElementById("protocolDropdown").value;
+            var serverName = document.getElementById("serverName").value;
+            var port = document.getElementById("port").value;
+            var serverUrl = protocol + "://" + serverName + ":" + port;
+
+            var executionId = $(this).closest("tr").find("td").eq(0).html();
+
+            var wareWolfUrl = serverUrl + "/services/GetServiceExecutionResult";
+
+            $.ajax({
+                type: "GET",
+                url: wareWolfUrl,
+                data: { ExecutionId: executionId },
+                cache: false,
+                xhrFields: {
+                    withCredentials: true
+                },
+                success: function (response) {
+                    var opt = {
+                        autoOpen: false,
+                        modal: true,
+                        title: "Result",
+                        maxWidth: 600,
+                        maxHeight: 500,
+                        minWidth: 400,
+                        minHeight: 300,
+                        width: 400,
+                        height: 300
+                    };
+                    $('#exResult').text(response.Result);
+                    $('#dialog').dialog(opt).dialog("open");
+                },
+                failure: function (response) {
+                    alert(response.responseText);
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+        });
+
+        $("#protocolDropdown").change(function () {
+            var value = document.getElementById("protocolDropdown").value;
+            if (value == "https") {
+                $("#port").val("3143");
+            }
+            else {
+                $("#port").val("3142");
+            }
+        });
+
+        $('.executionUrl').on('click', function () {
+            return confirm('Are you sure you want to execute the process again?');
+        });
+
+        $('#ResetButton').on('click', function (e) {
+            $('#executionFilters input').val(null).trigger('change');
+            $('#filterContainStart input').val(null).trigger('change');
+            $('#filterContainComplete input').val(null).trigger('change');
+        });
+
+        //window.onload = getLogData();
+
+        function getLogData() {
+            var protocol = document.getElementById("protocolDropdown").value;
+            var serverName = document.getElementById("serverName").value;
+            var port = document.getElementById("port").value;
+            var serverUrl = protocol + "://" + serverName + ":" + port;
+
+            var wareWolfUrl = serverUrl + "/services/GetLogDataService"
+
+            $.ajax({
+                type: "GET",
+                url: wareWolfUrl,
+                cache: false,
+                xhrFields: {
+                    withCredentials: true
+                },
+                success: function (response) {
+                    var jsonData = JSON.stringify(response);
+                    $.post('@Url.Action("ExecutionList", "ExecutionLogging")', { jsonData: jsonData },
+                        function (data, textStatus, jqXHR) {
+                            $('body').html(data);
+                        });
+                },
+                error: function (errorThrown) {
+                    console.log(errorThrown);
+                }
+            });
+        }
+    })
+</script>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
