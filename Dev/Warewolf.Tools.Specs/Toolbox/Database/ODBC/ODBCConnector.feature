@@ -4,9 +4,8 @@ Feature: ODBCConnector
 	As a math idiot
 	I want to be told the sum of two numbers
 
-Scenario: Creating ODBC Connector
-	Given I open a new Workflow 
-	And I drag a ODBC Server database connector
+Scenario: Running ODBC Tool Test
+	Given I open workflow with ODBC connector
 	And ODBC Source is Enabled
 	When I Select GreenPoint as ODBC Source
 	Then ODBC Action is Enabled
@@ -28,7 +27,7 @@ Scenario: Creating ODBC Connector
 	And ODBC Recordset Name equals "dbo_Pr_CitiesGetCountries"	
 
 Scenario: Opening Saved workflow with ODBC tool
-   Given I open workflow with ODBC connector
+	Given I open workflow with ODBC connector
 	And ODBC Source is Enabled
 	And ODBC Source is localODBCTest
 	And ODBC Action is Enabled
@@ -44,7 +43,7 @@ Scenario: Opening Saved workflow with ODBC tool
 	| Description | [[dbo_Pr_CitiesGetCountries().Description]] |
 	And ODBC Recordset Name equals "dbo_Pr_CitiesGetCountries"
 
-Scenario: Change Source on Existing ODBC tool
+Scenario: Change ODBC tool Source
 	Given I open workflow with ODBC connector
 	And ODBC Source is Enabled
 	And ODBC Source is localODBCTest
@@ -66,7 +65,7 @@ Scenario: Change Source on Existing ODBC tool
 	And ODBC Outputs are Disabled
 	And Validate ODBC is Enabled
 
-Scenario: Changing ODBC Actions
+Scenario: Changing ODBC Tool Actions
 	Given I open workflow with ODBC connector
 	And ODBC Source is Enabled
 	And ODBC Source is localODBCTest
@@ -90,7 +89,7 @@ Scenario: Changing ODBC Actions
 	And Validate ODBC is Enabled	
 
 
-Scenario: Change ODBC Recordset Name
+Scenario: Change ODBC Tool Recordset Name
 	Given I open workflow with ODBC connector
 	And ODBC Source is Enabled
 	And ODBC Source is localODBCTest

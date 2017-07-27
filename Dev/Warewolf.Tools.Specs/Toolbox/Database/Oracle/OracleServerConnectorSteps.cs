@@ -211,8 +211,9 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
 
         [When(@"I click Oracle Tests")]
         public void WhenIClickTest()
-        {            
-            var testCommand = GetViewModel().ManageServiceInputViewModel.TestAction;
+        {
+            var vm = GetViewModel();
+            var testCommand = vm.ManageServiceInputViewModel.TestAction;
             testCommand();
         }
 
