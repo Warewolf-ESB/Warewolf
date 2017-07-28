@@ -13,20 +13,41 @@ using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Net;
+using Dev2.Common.Interfaces;
+using Dev2.Runtime.Hosting;
+using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.WebServer.Responses;
+using Dev2.Services.Security;
 
 namespace Dev2.Runtime.WebServer.Handlers
 {
     public class WebsiteResourceHandler : AbstractWebRequestHandler
     {
+        private readonly IResourceCatalog _catalog;
+        private readonly ITestCatalog _testCatalog;
+
+        public WebsiteResourceHandler()
+        {
+
+        }
+
+        public WebsiteResourceHandler(IResourceCatalog catalog, ITestCatalog testCatalog, IAuthorizationService authorizationService)
+            : base(catalog, testCatalog, authorizationService)
+        {
+            _catalog = catalog;
+            _testCatalog = testCatalog;
+        }
+
         public override void ProcessRequest(ICommunicationContext ctx)
         {
             var uriString = ctx.Request.Uri.OriginalString;
 
-            if(uriString.IndexOf("wwwroot", StringComparison.InvariantCultureIgnoreCase) < 0)
+            if (uriString.IndexOf("wwwroot", StringComparison.InvariantCultureIgnoreCase) < 0)
             {
+                var cat = _catalog ?? ResourceCatalog.Instance;
+                var testCat = _testCatalog ?? TestCatalog.Instance;
                 // http://127.0.0.1:1234/services/"/themes/system/js/json2.js"
-                new WebGetRequestHandler().ProcessRequest(ctx);
+                new WebGetRequestHandler(cat, testCat).ProcessRequest(ctx);
                 return;
             }
 
@@ -34,7 +55,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             var path = GetPath(ctx);
             var extension = Path.GetExtension(uriString);
 
-            if(string.IsNullOrEmpty(extension))
+            if (string.IsNullOrEmpty(extension))
             {
                 //
                 // REST request e.g. http://localhost:1234/wwwroot/sources/server
@@ -62,7 +83,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             // If path is a string with a backslash then we are processing the following request
             //       http://localhost:1234/wwwroot/sources/Views/Dialogs/SaveDialog.htm
             //
-            if(!string.IsNullOrEmpty(path) && path.IndexOf('/') == -1)
+            if (!string.IsNullOrEmpty(path) && path.IndexOf('/') == -1)
             {
                 uriString = uriString.Replace(path, "");
             }
@@ -89,15 +110,15 @@ namespace Dev2.Runtime.WebServer.Handlers
                 .ToList()
                 .Where(supportedExtension => supportedExtension.Trim().Equals(ext, StringComparison.InvariantCultureIgnoreCase));
 
-            if(string.IsNullOrEmpty(supportedFileExtensions) || !isSupportedExtensionList.Any())
+            if (string.IsNullOrEmpty(supportedFileExtensions) || !isSupportedExtensionList.Any())
             {
                 return new StatusResponseWriter(HttpStatusCode.NotFound);
             }
 
-            if(File.Exists(filePath))
+            if (File.Exists(filePath))
             {
                 string contentType;
-                switch(ext.ToLower())
+                switch (ext.ToLower())
                 {
                     case ".js":
                         contentType = "text/javascript";

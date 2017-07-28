@@ -93,7 +93,6 @@ namespace Warewolf.UIBindingTests.Odbc
         {
             var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
             Assert.IsNotNull(manageDatabaseSourceControl);
-            Assert.IsNotNull(manageDatabaseSourceControl.DataContext);
         }
 
         [Given(@"I open ""(.*)""")]
