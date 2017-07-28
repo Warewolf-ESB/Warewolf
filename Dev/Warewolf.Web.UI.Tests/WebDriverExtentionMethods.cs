@@ -11,7 +11,7 @@ namespace Warewolf.Web.Tests
 {
     public static class WebDriverExtentionMethods
     {
-        public static void ScrollIntoView(this IWebElement Element, IWebDriver driver, bool scrollDown = true)
+        public static void JavascriptScrollIntoView(this IWebElement Element, IWebDriver driver, bool scrollDown = true)
         {
             ((IJavaScriptExecutor)driver).ExecuteScript("arguments[0].scrollIntoView(" + (scrollDown ? "true" : "false") + ");", Element);
             Assert.IsTrue(Element.Displayed, "Failed to scroll " + Element.TagName + " into view.");

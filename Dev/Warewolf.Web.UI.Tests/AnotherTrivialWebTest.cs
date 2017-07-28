@@ -53,7 +53,7 @@ namespace SeleniumTests
             driver.FindElement(By.Id("Field3")).Clear();
             driver.FindElement(By.Id("Field3")).SendKeys("I love Warewolf :D:D:D");
             driver.FindElement(By.ClassName("fake-checkbox-label")).Click();
-            driver.FindElement(By.LinkText("More info")).ScrollIntoView(driver);
+            driver.FindElement(By.LinkText("More info")).JavascriptScrollIntoView(driver);
             driver.FindElement(By.LinkText("More info")).Click();
         }
 
