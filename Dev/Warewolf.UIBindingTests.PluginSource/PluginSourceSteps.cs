@@ -167,7 +167,6 @@ namespace Warewolf.UIBindingTests.PluginSource
         {
             var sourceControl = ScenarioContext.Current.Get<ManagePluginSourceControl>(Utils.ViewNameKey);
             Assert.IsNotNull(sourceControl);
-            Assert.IsNotNull(sourceControl.DataContext);
         }
 
         [Then(@"""(.*)"" tab is opened")]

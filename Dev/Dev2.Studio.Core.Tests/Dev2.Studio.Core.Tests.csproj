@@ -329,6 +329,7 @@
     <Compile Include="Utils\TestModelItemFactory.cs" />
     <Compile Include="Utils\UIElementExtensionMethods.cs" />
     <Compile Include="Utils\WorkflowDesignerUtilsTest.cs" />
+    <Compile Include="ViewFactoryTests.cs" />
     <Compile Include="Workflows\DesignerDataListUtilsTest.cs" />
     <Compile Include="Workflows\TestActivity.cs" />
     <Compile Include="Workflows\WorkflowDesignerViewModelMock.cs" />

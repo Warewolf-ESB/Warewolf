@@ -10,6 +10,7 @@
 
 using Caliburn.Micro;
 using Dev2.Common.Interfaces.Threading;
+using Dev2.Studio.Core;
 using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.ViewModels;
@@ -21,12 +22,12 @@ namespace Dev2.Core.Tests
     public sealed class ShellViewModelPersistenceMock : ShellViewModel
     {
         public ShellViewModelPersistenceMock(IServerRepository serverRepository, bool createDesigners = true)
-            : base(new Mock<IEventAggregator>().Object, new Mock<IAsyncWorker>().Object, serverRepository, new VersionChecker(), createDesigners)
+            : base(new Mock<IEventAggregator>().Object, new Mock<IAsyncWorker>().Object, serverRepository, new VersionChecker(), new Mock<IViewFactory>().Object, createDesigners)
         {
         }  
         
         public ShellViewModelPersistenceMock(IServerRepository serverRepository,IAsyncWorker asyncWorker, bool createDesigners = true)
-            : base(new Mock<IEventAggregator>().Object, asyncWorker, serverRepository, new VersionChecker(), createDesigners)
+            : base(new Mock<IEventAggregator>().Object, asyncWorker, serverRepository, new VersionChecker(), new Mock<IViewFactory>().Object, createDesigners)
         {
           
         }

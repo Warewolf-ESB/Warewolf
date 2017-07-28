@@ -76,20 +76,24 @@ namespace Dev2.Runtime.ESB.Management.Services
                 };
 
                 ServiceModel.Services services = new ServiceModel.Services();
-                var output = services.DbTest(res, GlobalConstants.ServerWorkspaceID, Guid.Empty);
-                if(output.HasErrors)
+                Recordset output = null;
+                Common.Utilities.PerformActionInsideImpersonatedContext(Common.Utilities.OrginalExecutingUser, () =>
                 {
-                    msg.HasError = true;
-                    var errorMessage = output.ErrorMessage;
-                    msg.Message = new StringBuilder(errorMessage);
-                    Dev2Logger.Error(errorMessage);
-                }
-                else
-                {
-                    var result = ToDataTable(output);
-                    msg.HasError = false;
-                    msg.Message = serializer.SerializeToBuilder(result);
-                }
+                    output = services.DbTest(res, GlobalConstants.ServerWorkspaceID, Guid.Empty);
+                    if (output.HasErrors)
+                    {
+                        msg.HasError = true;
+                        var errorMessage = output.ErrorMessage;
+                        msg.Message = new StringBuilder(errorMessage);
+                        Dev2Logger.Error(errorMessage);
+                    }
+                    else
+                    {
+                        var result = ToDataTable(output);
+                        msg.HasError = false;
+                        msg.Message = serializer.SerializeToBuilder(result);
+                    }
+                });
             }
             catch (Exception err)
             {

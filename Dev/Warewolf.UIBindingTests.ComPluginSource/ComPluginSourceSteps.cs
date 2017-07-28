@@ -104,7 +104,6 @@ public class COMPluginSourceSteps
     {
         var sourceControl = ScenarioContext.Current.Get<ManageComPluginSourceControl>(Utils.ViewNameKey);
         Assert.IsNotNull(sourceControl);
-        Assert.IsNotNull(sourceControl.DataContext);
     }
 
     [Then(@"""(.*)"" tab is opened")]
