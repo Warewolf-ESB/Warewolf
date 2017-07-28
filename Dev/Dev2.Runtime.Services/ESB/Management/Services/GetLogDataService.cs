@@ -66,7 +66,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                         logEntries.Add(logEntry);
                     }
                 }
-
+                LogDataCache.CurrentResults = tmpObjects;
                 return FilterResults(values, logEntries, serializer);
             }
             catch (Exception e)
@@ -136,5 +136,10 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             return findServices;
         }
+    }
+
+    public static class LogDataCache
+    {
+        public static IEnumerable<dynamic> CurrentResults { get; set; }
     }
 }

@@ -541,4 +541,7 @@ Please contact your Warewolf System Administrator.</value>
   <data name="SqlServerSourceServerNewHeaderLabel" xml:space="preserve">
     <value>New SQL Server Source</value>
   </data>
+  <data name="MyWarewolfUrl" xml:space="preserve">
+    <value>http://my.warewolf.io/ExecutionLogging</value>
+  </data>
 </root>

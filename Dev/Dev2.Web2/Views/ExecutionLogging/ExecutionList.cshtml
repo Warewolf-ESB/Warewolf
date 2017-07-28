@@ -11,8 +11,7 @@
     <script type="text/javascript" src="~/Scripts/tsorter.min.js"></script>
 </head>
 
-
-<div>
+<div style="padding-top: 3px;">
     <table id="executionFilters" class="table">
         <tr>
             <td class='filter-container filterContainId'>
@@ -77,14 +76,14 @@
                     </td>
                     <td class="exRow">
                         @{
-                                if (item.Url == null)
-                                {
-                            @Html.DisplayFor(modelItem => item.Url)
-                                }
-                                else
-                                {
-                            <a class="executionUrl" title="@item.Url" href="@item.Url" target="_blank">@item.Url</a>
-                                }
+                            if (item.Url == null)
+                            {
+                                @Html.DisplayFor(modelItem => item.Url)
+                            }
+                            else
+                            {
+                                <a class="executionUrl" title="@item.Url" href="@item.Url" target="_blank">@item.Url</a>
+                            }
                         }
                     </td>
                     <td class="exRow">
@@ -94,7 +93,7 @@
                         <a class="details" href="javascript:;">[...]</a>
                     </td>
                 </tr>
-                                }
+                            }
         </tbody>
     </table>
 </div>
@@ -111,13 +110,13 @@
         $('.filter').multifilter();
 
         $("#filterStart").datetimepicker({
-            format: 'd/m/Y H:i:s',
-            lang: 'ru'
+            format: 'Y-m-d H:i:s',
+            lang: 'en'
         });
 
         $("#filterComplete").datetimepicker({
-            format: 'd/m/Y H:i:s',
-            lang: 'ru'
+            format: 'Y-m-d H:i:s',
+            lang: 'en'
         });
     });
 </script>

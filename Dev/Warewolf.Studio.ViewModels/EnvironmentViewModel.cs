@@ -194,7 +194,7 @@ namespace Warewolf.Studio.ViewModels
 
             ViewExecutionLoggingCommand = new DelegateCommand(() =>
             {
-                Process.Start("http://127.0.0.1:8080/edsa-Warewolf/dev2_execution_logging_test.php");
+                Process.Start(Resources.Languages.Core.MyWarewolfUrl);
             });
 
             DeployCommand = new DelegateCommand(() =>

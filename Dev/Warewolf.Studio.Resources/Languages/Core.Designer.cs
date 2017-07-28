@@ -656,6 +656,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to http://my.warewolf.io/ExecutionLogging.
+        /// </summary>
+        public static string MyWarewolfUrl {
+            get {
+                return ResourceManager.GetString("MyWarewolfUrl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to New.
         /// </summary>
         public static string New {
