@@ -29,7 +29,7 @@ Scenario: Running Oracle Tool Test
 	Then Oracle Outputs appear as
 	| Mapped From | Mapped To                  | 
 	| Column1     | [[HR_TESTPROC9().Column1]] | 
-	Then Oracle Recordset Name equals "HR_TESTPROC9"	
+	Then Oracle Recordset Name equals "HR_TESTPROC9"
 
 Scenario: Opening Saved workflow with Oracle tool
 	Given I open workflow with Oracle connector
