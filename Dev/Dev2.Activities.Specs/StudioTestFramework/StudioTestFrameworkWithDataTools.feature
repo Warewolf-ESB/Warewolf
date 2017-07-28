@@ -312,3 +312,113 @@ Scenario: Test Wf With AssignObject And ObjectOutput
 	When I delete "Test 1"
 	Then The "DeleteConfirmation" popup is shown I click Ok
 	And test folder is cleaned
+
+Scenario: Test WF Workflow with Assign and Sequence(Assign, Datamerge, Data Split, Find Index and Replace) mock 
+	Given I have a workflow "sequenceMockTestWF"		
+	 And "sequenceMockTestWF" contains an Assign "Assign for sequence" as
+      | variable    | value    |
+      | [[rec().a]] | test     |
+      | [[rec().b]] | nothing  |
+      | [[rec().a]] | warewolf |
+      | [[rec().b]] | nothing  |
+	 And "sequenceMockTestWF" contains a Sequence "Sequence1" as
+	 And "Sequence1" contains Data Merge "Data Merge" into "[[result]]" as	
+	  | Variable     | Type  | Using | Padding | Alignment |
+	  | [[rec(1).a]] | Index | 4     |         | Left      |
+	  | [[rec(2).a]] | Index | 8     |         | Left      |
+	 And "Sequence1" contains Data Split "Data Split" as
+	  | String       | Variable     | Type  | At | Include    | Escape |
+	  | testwarewolf | [[rec(1).b]] | Index | 4  | Unselected |        |
+	  |              | [[rec(2).b]] | Index | 8  | Unselected |        |
+	 And "Sequence1" contains Find Index "Index" into "[[indexResult]]" as
+	  | In Fields    | Index           | Character | Direction     |
+	  | [[rec().a]] | First Occurence | e         | Left to Right |
+	 And "Sequence1" contains Replace "Replacing" into "[[replaceResult]]" as	
+	  | In Fields  | Find | Replace With |
+	  | [[rec(*)]] | e    | REPLACED     |
+	 And I save workflow "sequenceMockTestWF"
+	 Then the test builder is open with "sequenceMockTestWF"
+	 And I click New Test
+	 And I Add "Sequence1" as TestStep	
+	 When I save
+	 And I run the test
+	 Then test result is Passed
+	 When I delete "Test 1"
+	 
+Scenario: Test WF Workflow with Assign and Sequence(Assign, Datamerge, Data Split, Find Index and Replace) Assign
+	Given I have a workflow "sequenceAssertTestWF"		
+	 And "sequenceAssertTestWF" contains an Assign "Assign for sequence" as
+      | variable    | value    |
+      | [[rec().a]] | test     |
+      | [[rec().b]] | nothing  |
+      | [[rec().a]] | warewolf |
+      | [[rec().b]] | nothing  |
+	 And "sequenceAssertTestWF" contains a Sequence "Sequence1" as
+	 And "Sequence1" contains Data Merge "Data Merge" into "[[result]]" as	
+	  | Variable     | Type  | Using | Padding | Alignment |
+	  | [[rec(1).a]] | Index | 4     |         | Left      |
+	  | [[rec(2).a]] | Index | 8     |         | Left      |
+	 And "Sequence1" contains Data Split "Data Split" as
+	  | String       | Variable     | Type  | At | Include    | Escape |
+	  | testwarewolf | [[rec(1).b]] | Index | 4  | Unselected |        |
+	  |              | [[rec(2).b]] | Index | 8  | Unselected |        |
+	 And "Sequence1" contains Find Index "Index" into "[[indexResult]]" as
+	  | In Fields    | Index           | Character | Direction     |
+	  | [[rec().a]] | First Occurence | e         | Left to Right |
+	 And "Sequence1" contains Replace "Replacing" into "[[replaceResult]]" as	
+	  | In Fields  | Find | Replace With |
+	  | [[rec(*)]] | e    | REPLACED     |
+	 And I save workflow "sequenceAssertTestWF"
+	 Then the test builder is open with "sequenceAssertTestWF"
+	 And I click New Test
+	 And I Add "Sequence1" as TestStep All Assert
+	 When I save
+	 And I run the test
+	 Then test result is Passed
+	 When I delete "Test 1"
+	 
+Scenario: Test Workflow with ForEach which contains assign Mock
+      Given I have a workflow "TestWFForEachMock"
+	  And "TestWFForEachMock" contains an Assign "Rec To Convert" as
+	    | variable    | value |
+	    | [[Warewolf]] | bob   |
+	  And "TestWFForEachMock" contains a Foreach "ForEachTest" as "NumOfExecution" executions "2"
+	  And "ForEachTest" contains an Assign "MyAssign" as
+	    | variable    | value |
+	    | [[rec().a]] | Test  |
+      And I save workflow "TestWFForEachMock"
+	  Then the test builder is open with "TestWFForEachMock"
+	  And I click New Test
+	  And I Add "ForEachTest" as TestStep	
+	  When I save
+	  And I run the test
+	  Then test result is Passed
+	  When I delete "Test 1"
+	  
+Scenario: Test Workflow with ForEach which contains assign Assert
+	Given I have a workflow "TestWFForEachAssert"
+	And "TestWFForEachAssert" contains an Assign "Rec To Convert" as
+	  | variable    | value |
+	  | [[Warewolf]] | bob   |
+	And "TestWFForEachAssert" contains a Foreach "ForEachTest" as "NumOfExecution" executions "2"
+	And "ForEachTest" contains an Assign "MyAssign" as
+	  | variable    | value |
+	  | [[rec().a]] | Test  |
+	   And I save workflow "TestWFForEachAssert"
+	Then the test builder is open with "TestWFForEachAssert"
+	And I click New Test
+	And I Add "ForEachTest" as TestStep All Assert
+	When I save
+	And I run the test
+	Then test result is Passed
+	When I delete "Test 1"
+
+Scenario: Test Workflow with Loop Constructs - Select and Apply example workflow
+	Given the test builder is open with "Select and Apply"
+	And I click New Test
+	And I Add all TestSteps
+	When I save
+	And I run the test
+	Then test result is Failed
+	And the service debug assert Json message contains "Message: Failed: Assert Equal. Expected Equal To '' for '@Pet' but got"
+	When I delete "Test 1"
