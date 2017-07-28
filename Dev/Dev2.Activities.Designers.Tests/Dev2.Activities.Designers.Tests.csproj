@@ -137,6 +137,7 @@
     <Compile Include="Core\WebOutputsRegionTests.cs" />
     <Compile Include="Core\WebPutInputRegionTest.cs" />
     <Compile Include="Core\WebPostInputRegionTest.cs" />
+    <Compile Include="Core\WebServiceHeaderBuilderTests.cs" />
     <Compile Include="Core\WebSourceRegionTest.cs" />
     <Compile Include="CountRecords\CountRecordsDesignerViewModelTests.cs" />
     <Compile Include="CountRecords\TestCountRecordsDesignerViewModel.cs" />

@@ -89,6 +89,28 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
         }
 
         [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("Webget_MethodName")]
+        public void GetHeaderRegion_GivenIsNew_ShouldReturnInputArea()
+        {
+            //------------Setup for test--------------------------
+            var id = Guid.NewGuid();
+            var mod = new MyWebModel();
+            var act = new DsfWebGetActivity();
+
+            var webget = new WebServiceGetViewModel(ModelItemUtils.CreateModelItem(act), mod);
+
+            //------------Execute Test---------------------------
+            Assert.IsTrue(webget.SourceRegion.IsEnabled);
+            Assert.IsFalse(webget.OutputsRegion.IsEnabled);
+            Assert.IsFalse(webget.InputArea.IsEnabled);
+            Assert.IsTrue(webget.ErrorRegion.IsEnabled);
+
+            //------------Assert Results-------------------------
+            Assert.AreSame(webget.InputArea, webget.GetHeaderRegion());
+        }
+
+        [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory("WebGetDesignerViewModel_Handle")]
         public void WebGetDesignerViewModel_UpdateHelp_ShouldCallToHelpViewMode()
@@ -194,7 +216,7 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
             //------------Execute Test---------------------------
 
             Assert.IsTrue(webget.ErrorRegion.IsEnabled);
-            
+
             //------------Assert Results-------------------------
         }
         [TestMethod]
@@ -220,7 +242,7 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
             //------------Execute Test---------------------------
 
             Assert.AreEqual(webget.OutputsRegion.Outputs.First().MappedFrom, "Result");
-            
+
             //------------Assert Results-------------------------
         }
 
@@ -325,6 +347,26 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
 
     }
 
+    public class MyModel : MyWebModel
+    {
+        public string Response { get; set; }
+        public override string TestService(IWebService inputValues)
+        {
+            if (IsTextResponse)
+                return new Dev2JsonSerializer().Serialize("dora");
+            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var svc = new WebService();
+            if (!HasRecError)
+                svc.Recordsets = new RecordsetList() { new Recordset() { HasErrors = false, Fields = new List<RecordsetField> { new RecordsetField() { Alias = "bob", Name = "the", RecordsetAlias = "dd", Path = new XmlPath() } } } };
+            else
+            {
+                svc.Recordsets = new RecordsetList() { new Recordset() { HasErrors = true, ErrorMessage = "bobthebuilder", Fields = new List<RecordsetField> { new RecordsetField() { Alias = "bob", Name = "the", RecordsetAlias = "dd", Path = new XmlPath() } } } };
+
+            }
+            svc.RequestResponse = Response;
+            return serializer.Serialize(svc);
+        }
+    }
     public class MyWebModel : IWebServiceModel
     {
 #pragma warning disable 649
@@ -355,7 +397,7 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
         {
         }
 
-        public string TestService(IWebService inputValues)
+        public virtual string TestService(IWebService inputValues)
         {
             if (IsTextResponse)
                 return new Dev2JsonSerializer().Serialize("dora");
