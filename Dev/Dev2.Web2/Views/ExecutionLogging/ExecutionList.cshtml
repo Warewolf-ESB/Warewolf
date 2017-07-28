@@ -167,6 +167,15 @@
 
         $('#ResetButton').on('click', function (e) {
             $('#executionFilters input').val(null).trigger('change');
+
+            var table = document.getElementById("executionList");
+            var tr = table.getElementsByTagName("tr");
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[0];
+                if (td) {
+                    tr[i].style.display = "";
+                }
+            }
         });
     })
 </script>
