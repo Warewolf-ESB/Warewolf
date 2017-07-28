@@ -42,7 +42,7 @@ namespace SeleniumTests
         }
 
         [TestMethod]
-        public void TheAnotherTrivialWebTest()
+        public void TheFailingTrivialWebTest()
         {
             driver.Navigate().GoToUrl(baseURL + "/");
             driver.FindElement(By.LinkText("Contact Us")).Click();
@@ -55,6 +55,7 @@ namespace SeleniumTests
             driver.FindElement(By.ClassName("fake-checkbox-label")).Click();
             driver.FindElement(By.LinkText("More info")).JavascriptScrollIntoView(driver);
             driver.FindElement(By.LinkText("More info")).Click();
+            Assert.Fail("This test is failing but in the expected way.");
         }
 
         private bool IsElementPresent(By by)

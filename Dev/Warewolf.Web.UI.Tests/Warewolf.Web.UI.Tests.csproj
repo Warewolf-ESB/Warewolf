@@ -48,8 +48,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AnotherTrivialWebTest.cs" />
-    <Compile Include="TrivialWebTests.cs" />
+    <Compile Include="FailingTrivialWebTest.cs" />
+    <Compile Include="TrivialWebTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WebDriverExtentionMethods.cs" />
   </ItemGroup>
