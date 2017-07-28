@@ -80,7 +80,6 @@ $JobSpecs["Studio Test Framework With HTTP Web Tools Specs"]		= "Dev2.Activities
 $JobSpecs["Studio Test Framework With Scripting Tools Specs"]		= "Dev2.Activities.Specs", "(TestCategory=StudioTestFrameworkWithScriptingTools)"
 $JobSpecs["Studio Test Framework With Subworkflow Specs"]		 	= "Dev2.Activities.Specs", "(TestCategory=StudioTestFrameworkWithSubworkflow)"
 $JobSpecs["Studio Test Framework With Utility Tools Specs"]		 	= "Dev2.Activities.Specs", "(TestCategory=StudioTestFrameworkWithUtilityTools)"
-$JobSpecs["Web UI Tests"]		 									= "Warewolf.Web.UI.Tests"
 #Coded UI
 $JobSpecs["Other UI Tests"]					    = "Warewolf.UITests", "(TestCategory!=Tools)&(TestCategory!=Data Tools)&(TestCategory!=Database Tools)&(TestCategory!=Dropbox Tools)&(TestCategory!=File Tools)&(TestCategory!=HTTP Tools)&(TestCategory!=Recordset Tools)&(TestCategory!=Sharepoint Tools)&(TestCategory!=Utility Tools)&(TestCategory!=Explorer)&(TestCategory!=Tabs and Panes)&(TestCategory!=Deploy)&(TestCategory!=Debug Input)&(TestCategory!=Workflow Testing)&(TestCategory!=Default Layout)&(TestCategory!=Resource Tools)&(TestCategory!=Save Dialog)&(TestCategory!=Shortcut Keys)&(TestCategory!=Settings)&(TestCategory!=Dependency Graph)&(TestCategory!=Variables)&(TestCategory!=Email Tools)&(TestCategory!=Plugin Sources)&(TestCategory!=Web Sources)&(TestCategory!=Database Sources)&(TestCategory!=Workflow Mocking Tests)&(TestCategory!=Assign Tool)&(TestCategory!=Control Flow Tools)&(TestCategory!=DotNet Connector Mocking Tests)&(TestCategory!=DotNet Connector Tool)&(TestCategory!=Hello World Mocking Tests)&(TestCategory!=Server Sources)&(TestCategory!=Source Wizards)"
 $JobSpecs["Other UI Specs"]					    = "Warewolf.UISpecs", "(TestCategory!=DBConnector)&(TestCategory!=PluginConnector)&(TestCategory!=WebConnector)&(TestCategory!=Explorer)&(TestCategory!=Deploy)&(TestCategory!=SaveDialog)"
@@ -122,6 +121,7 @@ $JobSpecs["Web Connector UI Specs"]			    = "Warewolf.UISpecs", "(TestCategory=W
 $JobSpecs["Web Sources UI Tests"]				= "Warewolf.UITests", "(TestCategory=Web Sources)"
 $JobSpecs["Workflow Mocking Tests UI Tests"]	= "Warewolf.UITests", "(TestCategory=Workflow Mocking Tests)"
 $JobSpecs["Workflow Testing UI Tests"]			= "Warewolf.UITests", "(TestCategory=Workflow Testing)"
+$JobSpecs["Web UI Tests"]		 				= "Warewolf.Web.UI.Tests"
 #Security
 $JobSpecs["Conflicting Contribute View And Execute Permissions Security Specs"] = "Warewolf.SecuritySpecs", "(TestCategory=ConflictingContributeViewExecutePermissionsSecurity)"
 $JobSpecs["Conflicting Execute Permissions Security Specs"]					    = "Warewolf.SecuritySpecs", "(TestCategory=ConflictingExecutePermissionsSecurity)"
