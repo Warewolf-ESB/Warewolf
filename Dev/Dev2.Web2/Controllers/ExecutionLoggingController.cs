@@ -24,7 +24,7 @@ namespace Dev2.Web2.Controllers
             var request = CheckRequest(null);
             var model = new Tuple<List<LogEntry>, ExecutionLoggingRequestViewModel>(logEntries, request);
 
-            return View("Index", model);
+            return PartialView("ExecutionList", model.Item1);
         }
 
         private ExecutionLoggingRequestViewModel CheckRequest(ExecutionLoggingRequestViewModel Request)
