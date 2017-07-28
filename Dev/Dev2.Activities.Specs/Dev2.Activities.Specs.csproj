@@ -73,12 +73,62 @@
     <Compile Include="Dev2LocalSecurityWrapper.cs" />
     <Compile Include="ISpecExternalProcessExecutor.cs" />
     <Compile Include="SpecExternalProcessExecutor.cs" />
-    <Compile Include="TestFramework\StudioTestFramework.feature.cs">
+    <Compile Include="StudioTestFramework\StudioTestFrameworkWithDeletedResources.feature.cs">
+      <DependentUpon>StudioTestFrameworkWithDeletedResources.feature</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="StudioTestFramework\StudioTestFrameworkWithHelloWorldWorkflow.feature.cs">
+      <DependentUpon>StudioTestFrameworkWithHelloWorldWorkflow.feature</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="StudioTestFramework\StudioTestFrameworkWithSubworkflow.feature.cs">
+      <DependentUpon>StudioTestFrameworkWithSubworkflow.feature</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="StudioTestFramework\StudioTestFrameworkWithDatabaseTools.feature.cs">
+      <DependentUpon>StudioTestFrameworkWithDatabaseTools.feature</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="StudioTestFramework\StudioTestFrameworkWithDataTools.feature.cs">
+      <DependentUpon>StudioTestFrameworkWithDataTools.feature</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="StudioTestFramework\StudioTestFrameworkWithDropboxTools.feature.cs">
+      <DependentUpon>StudioTestFrameworkWithDropboxTools.feature</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="StudioTestFramework\StudioTestFrameworkWithHTTPWebTools.feature.cs">
+      <DependentUpon>StudioTestFrameworkWithHTTPWebTools.feature</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="StudioTestFramework\StudioTestFrameworkWithScriptingTools.feature.cs">
+      <DependentUpon>StudioTestFrameworkWithScriptingTools.feature</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="StudioTestFramework\StudioTestFrameworkWithUtilityTools.feature.cs">
+      <DependentUpon>StudioTestFrameworkWithUtilityTools.feature</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="StudioTestFramework\StudioTestFrameworkWithFileAndFolderTools.feature.cs">
+      <DependentUpon>StudioTestFrameworkWithFileAndFolderTools.feature</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="StudioTestFramework\StudioTestFramework.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>StudioTestFramework.feature</DependentUpon>
     </Compile>
-    <Compile Include="TestFramework\TestFrameworkSteps.cs" />
+    <Compile Include="StudioTestFramework\StudioTestFrameworkSteps.cs" />
     <Reference Include="AeroWizard, Version=2.1.7.0, Culture=neutral, PublicKeyToken=915e74f5d64b8f37, processorArchitecture=MSIL">
       <HintPath>..\packages\AeroWizard.2.1.7\lib\net40\AeroWizard.dll</HintPath>
       <Private>True</Private>
@@ -287,7 +337,47 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Scheduler.feature.cs</LastGenOutput>
     </None>
-    <None Include="TestFramework\StudioTestFramework.feature">
+    <None Include="StudioTestFramework\StudioTestFrameworkWithDeletedResources.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>StudioTestFrameworkWithDeletedResources.feature.cs</LastGenOutput>
+    </None>
+    <None Include="StudioTestFramework\StudioTestFrameworkWithHelloWorldWorkflow.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>StudioTestFrameworkWithHelloWorldWorkflow.feature.cs</LastGenOutput>
+    </None>
+    <None Include="StudioTestFramework\StudioTestFrameworkWithSubworkflow.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>StudioTestFrameworkWithSubworkflow.feature.cs</LastGenOutput>
+    </None>
+    <None Include="StudioTestFramework\StudioTestFrameworkWithDatabaseTools.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>StudioTestFrameworkWithDatabaseTools.feature.cs</LastGenOutput>
+    </None>
+    <None Include="StudioTestFramework\StudioTestFrameworkWithDataTools.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>StudioTestFrameworkWithDataTools.feature.cs</LastGenOutput>
+    </None>
+    <None Include="StudioTestFramework\StudioTestFrameworkWithDropboxTools.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>StudioTestFrameworkWithDropboxTools.feature.cs</LastGenOutput>
+    </None>
+    <None Include="StudioTestFramework\StudioTestFrameworkWithHTTPWebTools.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>StudioTestFrameworkWithHTTPWebTools.feature.cs</LastGenOutput>
+    </None>
+    <None Include="StudioTestFramework\StudioTestFrameworkWithScriptingTools.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>StudioTestFrameworkWithScriptingTools.feature.cs</LastGenOutput>
+    </None>
+    <None Include="StudioTestFramework\StudioTestFrameworkWithUtilityTools.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>StudioTestFrameworkWithUtilityTools.feature.cs</LastGenOutput>
+    </None>
+    <None Include="StudioTestFramework\StudioTestFrameworkWithFileAndFolderTools.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>StudioTestFrameworkWithFileAndFolderTools.feature.cs</LastGenOutput>
+    </None>
+    <None Include="StudioTestFramework\StudioTestFramework.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>StudioTestFramework.feature.cs</LastGenOutput>
     </None>
@@ -429,9 +519,9 @@
       <Project>{1AD4F06F-BC1C-4C9E-8184-67EAE81C2279}</Project>
       <Name>Warewolf.Testing</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Warewolf.ToolsSpecs\Warewolf.ToolsSpecs.csproj">
-      <Project>{CAD4D820-C619-4099-AA9C-DCACD23ADB89}</Project>
-      <Name>Warewolf.ToolsSpecs</Name>
+    <ProjectReference Include="..\Warewolf.Tools.Specs\Warewolf.Tools.Specs.csproj">
+      <Project>{cad4d820-c619-4099-aa9c-dcacd23adb89}</Project>
+      <Name>Warewolf.Tools.Specs</Name>
     </ProjectReference>
     <ProjectReference Include="..\WarewolfParserInterop\WarewolfParserInterop.csproj">
       <Project>{6EB59EEE-4E16-4F29-B1B0-715E56E9139D}</Project>
