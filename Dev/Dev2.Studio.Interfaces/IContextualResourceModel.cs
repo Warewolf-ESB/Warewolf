@@ -10,6 +10,7 @@
 
 using System;
 using System.ComponentModel;
+using Microsoft.Practices.Prism.Mvvm;
 
 // ReSharper disable InconsistentNaming
 
@@ -23,6 +24,7 @@ namespace Dev2.Studio.Interfaces
         bool IsNewWorkflow { get; set; }
         event Action<IContextualResourceModel> OnResourceSaved;
         event Action OnDataListChanged;
+        IView GetView(Func<IView> view);
 
         void ClearErrors();        
     }

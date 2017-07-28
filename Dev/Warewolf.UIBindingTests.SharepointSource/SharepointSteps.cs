@@ -61,7 +61,6 @@ namespace Warewolf.UIBindingTests.SharepointSource
         {
             var manageSharepointServerSource = ScenarioContext.Current.Get<SharepointServerSource>(Utils.ViewNameKey);
             Assert.IsNotNull(manageSharepointServerSource);
-            Assert.IsNotNull(manageSharepointServerSource.DataContext);
         }
 
         [Then(@"""(.*)"" tab is opened")]

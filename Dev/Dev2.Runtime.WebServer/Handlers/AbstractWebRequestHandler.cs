@@ -62,6 +62,11 @@ namespace Dev2.Runtime.WebServer.Handlers
         {
         }
 
+        protected AbstractWebRequestHandler(IResourceCatalog catalog, ITestCatalog testCatalog,IAuthorizationService authorizationService)
+            :this(catalog,testCatalog)
+        {
+            _authorizationService = authorizationService;
+        }
         protected AbstractWebRequestHandler(IResourceCatalog catalog
                                             , ITestCatalog testCatalog
                                             , IDSFDataObject dataObject
