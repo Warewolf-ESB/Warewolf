@@ -18,7 +18,7 @@ namespace Dev2.Activities.Specs.StudioTestFramework
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "2.1.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [Microsoft.VisualStudio.TestTools.UnitTesting.TestClassAttribute()]
-    public partial class TestFrameworkWithFileAndFolderToolsFeature
+    public partial class StudioTestFrameworkWithFileAndFolderToolsFeature
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
@@ -30,9 +30,9 @@ namespace Dev2.Activities.Specs.StudioTestFramework
         public static void FeatureSetup(Microsoft.VisualStudio.TestTools.UnitTesting.TestContext testContext)
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner(null, 0);
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "TestFrameworkWithFileAndFolderTools", "\tIn order to test workflows that contain file ops tools in warewolf \r\n\tAs a user\r" +
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "StudioTestFrameworkWithFileAndFolderTools", "\tIn order to test workflows that contain file ops tools in warewolf \r\n\tAs a user\r" +
                     "\n\tI want to create, edit, delete and update tests in a test window", ProgrammingLanguage.CSharp, new string[] {
-                        "TestFrameworkWithFileAndFolderTools"});
+                        "StudioTestFrameworkWithFileAndFolderTools"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -47,9 +47,9 @@ namespace Dev2.Activities.Specs.StudioTestFramework
         public virtual void TestInitialize()
         {
             if (((testRunner.FeatureContext != null) 
-                        && (testRunner.FeatureContext.FeatureInfo.Title != "TestFrameworkWithFileAndFolderTools")))
+                        && (testRunner.FeatureContext.FeatureInfo.Title != "StudioTestFrameworkWithFileAndFolderTools")))
             {
-                Dev2.Activities.Specs.StudioTestFramework.TestFrameworkWithFileAndFolderToolsFeature.FeatureSetup(null);
+                Dev2.Activities.Specs.StudioTestFramework.StudioTestFrameworkWithFileAndFolderToolsFeature.FeatureSetup(null);
             }
         }
         
@@ -184,8 +184,8 @@ namespace Dev2.Activities.Specs.StudioTestFramework
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Test WF with Create")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "TestFrameworkWithFileAndFolderTools")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("TestFrameworkWithFileAndFolderTools")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "StudioTestFrameworkWithFileAndFolderTools")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("StudioTestFrameworkWithFileAndFolderTools")]
         public virtual void TestWFWithCreate()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Test WF with Create", ((string[])(null)));
@@ -260,8 +260,8 @@ this.FeatureBackground();
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Test WF with Create and Delete folder")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "TestFrameworkWithFileAndFolderTools")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("TestFrameworkWithFileAndFolderTools")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "StudioTestFrameworkWithFileAndFolderTools")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("StudioTestFrameworkWithFileAndFolderTools")]
         public virtual void TestWFWithCreateAndDeleteFolder()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Test WF with Create and Delete folder", ((string[])(null)));
@@ -345,8 +345,8 @@ this.FeatureBackground();
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Test WF with Move")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "TestFrameworkWithFileAndFolderTools")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("TestFrameworkWithFileAndFolderTools")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "StudioTestFrameworkWithFileAndFolderTools")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("StudioTestFrameworkWithFileAndFolderTools")]
         public virtual void TestWFWithMove()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Test WF with Move", ((string[])(null)));
@@ -428,8 +428,8 @@ this.FeatureBackground();
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Test WF with Read File")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "TestFrameworkWithFileAndFolderTools")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("TestFrameworkWithFileAndFolderTools")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "StudioTestFrameworkWithFileAndFolderTools")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("StudioTestFrameworkWithFileAndFolderTools")]
         public virtual void TestWFWithReadFile()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Test WF with Read File", ((string[])(null)));
@@ -495,8 +495,8 @@ this.FeatureBackground();
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Test WF with Rename File")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "TestFrameworkWithFileAndFolderTools")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("TestFrameworkWithFileAndFolderTools")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "StudioTestFrameworkWithFileAndFolderTools")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("StudioTestFrameworkWithFileAndFolderTools")]
         public virtual void TestWFWithRenameFile()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Test WF with Rename File", ((string[])(null)));
@@ -581,8 +581,8 @@ this.FeatureBackground();
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Test WF with Unzip File")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "TestFrameworkWithFileAndFolderTools")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("TestFrameworkWithFileAndFolderTools")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "StudioTestFrameworkWithFileAndFolderTools")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("StudioTestFrameworkWithFileAndFolderTools")]
         public virtual void TestWFWithUnzipFile()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Test WF with Unzip File", ((string[])(null)));
@@ -686,8 +686,8 @@ this.FeatureBackground();
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Test WF with Zip File")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "TestFrameworkWithFileAndFolderTools")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("TestFrameworkWithFileAndFolderTools")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "StudioTestFrameworkWithFileAndFolderTools")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("StudioTestFrameworkWithFileAndFolderTools")]
         public virtual void TestWFWithZipFile()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Test WF with Zip File", ((string[])(null)));

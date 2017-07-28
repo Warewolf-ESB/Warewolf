@@ -210,3 +210,81 @@ Scenario: Run Selected Test passed with assign teststep Passes
 	When I save
 	And I run the test
 	Then test result is Failed
+	Scenario: Test WF with Web Delete
+	Given I have a workflow "WebDeleteTestWF"		
+	And "WebDeleteTestWF" contains a Web Delete "testWebDelete" result as "[[Response]]"		
+	And I save workflow "WebDeleteTestWF"
+	Then the test builder is open with "WebDeleteTestWF"
+	And I click New Test
+	And a new test is added	
+    And test name starts with "Test 1"
+	And I Add "testWebDelete" as TestStep
+	And I add StepOutputs as  
+	  	 | Variable Name | Condition | Value                                            |
+	  	 | [[Response]]  | =         | The task completed due to an unhandled exception |
+	When I save
+	And I run the test
+	Then test result is Passed
+	When I delete "Test 1"
+	Then The "DeleteConfirmation" popup is shown I click Ok
+	Then workflow "WebDeleteTestWF" is deleted as cleanup
+
+Scenario: Test WF with Web Post
+	Given I have a workflow "WebPostTestWF"		
+	And "WebPostTestWF" contains a Web Post "testWebPost" result as "[[Response]]"		
+	And I save workflow "WebPostTestWF"
+	Then the test builder is open with "WebPostTestWF"
+	And I click New Test
+	And a new test is added	
+    And test name starts with "Test 1"
+	And I Add "testWebPost" as TestStep
+	And I add StepOutputs as  
+	  	 | Variable Name   | Condition | Value |
+	  	 | [[Response]] | =         |       |
+	When I save
+	And I run the test
+	Then test result is Passed
+	When I delete "Test 1"
+	Then The "DeleteConfirmation" popup is shown I click Ok
+	Then workflow "WebPostTestWF" is deleted as cleanup
+
+Scenario: Test WF with Web Get
+	Given I have a workflow "WebGetTestWF"		 
+	And "WebGetTestWF" contains a Web Get "testWebGet" result as "[[Response]]"		
+	And I save workflow "WebGetTestWF"
+	Then the test builder is open with "WebGetTestWF"
+	And I click New Test
+	And a new test is added	
+    And test name starts with "Test 1"
+	And I Add "testWebGet" as TestStep
+	And I add StepOutputs as  
+	  	 | Variable Name                    | Condition | Value      |
+	  	 | [[UnnamedArrayData(6).Id]]       | =         | 6          |
+	  	 | [[UnnamedArrayData(6).Name]]     | =         | Toys       |
+	  	 | [[UnnamedArrayData(6).Category]] | =         | Gift Items |
+	  	 | [[UnnamedArrayData(6).Price]]    | =         | 15000      |
+	When I save
+	And I run the test
+	Then test result is Passed
+	When I delete "Test 1"
+	Then The "DeleteConfirmation" popup is shown I click Ok
+	Then workflow "WebGetTestWF" is deleted as cleanup
+
+Scenario: Test WF with Web Put
+	Given I have a workflow "WebPutTestWF"		
+	And "WebPutTestWF" contains a Web Put "testWebPut" result as "[[Response]]"		
+	And I save workflow "WebPutTestWF"
+	Then the test builder is open with "WebPutTestWF"
+	And I click New Test
+	And a new test is added	
+    And test name starts with "Test 1"
+	And I Add "testWebPut" as TestStep
+	And I add StepOutputs as  
+	  	 | Variable Name   | Condition | Value |
+	  	 | [[Response]] | =         |       |     
+	When I save
+	And I run the test
+	Then test result is Passed
+	When I delete "Test 1"
+	Then The "DeleteConfirmation" popup is shown I click Ok
+	Then workflow "WebPutTestWF" is deleted as cleanup
