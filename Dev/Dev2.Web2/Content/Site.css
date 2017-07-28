@@ -132,8 +132,8 @@ td {
     }
 
     #executionList .exTime {
-        min-width: 74px;
-        max-width: 74px;
+        min-width: 110px;
+        max-width: 110px;
     }
 
     #executionList .exStatus {
@@ -142,13 +142,13 @@ td {
     }
 
     #executionList .exStart {
-        min-width: 130px;
-        max-width: 130px;
+        min-width: 150px;
+        max-width: 150px;
     }
 
     #executionList .exComplete {
-        min-width: 130px;
-        max-width: 130px;
+        min-width: 150px;
+        max-width: 150px;
     }
 
     #executionList .exUrl {
@@ -457,8 +457,8 @@ td {
     }
 
     #executionFilters .filterContainTime {
-        min-width: 74px;
-        max-width: 74px;
+        min-width: 110px;
+        max-width: 110px;
     }
 
     #executionFilters .filterContainStatus {
@@ -467,13 +467,13 @@ td {
     }
 
     #executionFilters .filterContainStart {
-        min-width: 130px;
-        max-width: 130px;
+        min-width: 150px;
+        max-width: 150px;
     }
 
     #executionFilters .filterContainComplete {
-        min-width: 130px;
-        max-width: 130px;
+        min-width: 150px;
+        max-width: 150px;
     }
 
     #executionFilters .filterContainUrl {
