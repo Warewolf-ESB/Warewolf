@@ -62,8 +62,24 @@ namespace Warewolf.Studio.ViewModels
                 _rabbitMQServiceSource = source;
                 _rabbitMQServiceSource.ResourcePath = rabbitMQServiceSource.ResourcePath;
                 SetupHeaderTextFromExisting();
+                ToItem();
                 FromModel(source);
             });
+        }
+
+        void ToItem()
+        {
+            Item = new RabbitMQServiceSourceDefinition()
+            {
+                HostName = _rabbitMQServiceSource.HostName,
+                Password = _rabbitMQServiceSource.Password,
+                UserName = _rabbitMQServiceSource.UserName,
+                Port = _rabbitMQServiceSource.Port,
+                ResourceName = _rabbitMQServiceSource.ResourceName,
+                ResourceID = _rabbitMQServiceSource.ResourceID,
+                VirtualHost = _rabbitMQServiceSource.VirtualHost,
+                ResourcePath = _rabbitMQServiceSource.ResourcePath,
+            };
         }
 
         private ManageRabbitMQSourceViewModel(IRabbitMQSourceModel rabbitMQSourceModel)

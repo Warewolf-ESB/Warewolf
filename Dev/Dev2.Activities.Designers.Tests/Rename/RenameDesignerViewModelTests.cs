@@ -8,9 +8,13 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System.Windows;
 using Dev2.Common.Interfaces.Help;
+using Dev2.Studio.Core;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Interfaces;
+using Dev2.Studio.Interfaces.DataList;
+using Dev2.Studio.ViewModels.DataList;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -65,7 +69,11 @@ namespace Dev2.Activities.Designers.Tests.Rename
         {
             //------------Setup for test-------------------------
             var viewModel = RenameViewModel();
-
+            var dataListVm = new Mock<IDataListViewModel>();
+            var mock = new Mock<IResourceModel>();
+            mock.Setup(model => model.DataList).Returns("<Datalist/>");
+            dataListVm.Setup(model => model.Resource).Returns(mock.Object);
+            DataListSingleton.SetDataList(dataListVm.Object);
             //------------Execute Test---------------------------
             viewModel.Validate();
 

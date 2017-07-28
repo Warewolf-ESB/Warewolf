@@ -13,8 +13,10 @@ using System.Collections.Specialized;
 using System.Security.Claims;
 using System.Security.Principal;
 using Dev2.Common;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Monitoring;
 using Dev2.PerformanceCounters.Counters;
+using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.WebServer;
 using Dev2.Runtime.WebServer.Handlers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -41,12 +43,21 @@ namespace Dev2.Tests.Runtime.WebServer
         public void WebGetRequestHandler_ProcessRequest_WhenValidUserContext_ExpectExecution()
         {
             //------------Setup for test--------------------------
+
             Mock<IPrincipal> principle = new Mock<IPrincipal>();
             Mock<IIdentity> mockIdentity = new Mock<IIdentity>();
+            var resourceCatalog = new Mock<IResourceCatalog>();
+            var testCatalog = new Mock<ITestCatalog>();
             mockIdentity.Setup(identity => identity.Name).Returns("FakeUser");
             principle.Setup(p => p.Identity.Name).Returns("FakeUser");
             principle.Setup(p => p.Identity).Returns(mockIdentity.Object);
             principle.Setup(p => p.Identity.Name).Verifiable();
+            principle.Setup(p => p.Identity).Returns(mockIdentity.Object).Verifiable();
+            var old = Common.Utilities.OrginalExecutingUser;
+            if (Common.Utilities.OrginalExecutingUser != null)
+            {
+                Common.Utilities.OrginalExecutingUser = principle.Object;
+            }
             ClaimsPrincipal.ClaimsPrincipalSelector = () => new ClaimsPrincipal(principle.Object);
             ClaimsPrincipal.PrimaryIdentitySelector = identities => new ClaimsIdentity(mockIdentity.Object);
 
@@ -58,13 +69,14 @@ namespace Dev2.Tests.Runtime.WebServer
             ctx.Setup(c => c.Request.Uri).Returns(new Uri("http://localhost"));
             ctx.Setup(c => c.Request.User).Returns(principle.Object);
 
-            var webGetRequestHandler = new WebGetRequestHandler();
+            var webGetRequestHandler = new WebGetRequestHandler(resourceCatalog.Object, testCatalog.Object);
 
             //------------Execute Test---------------------------
             webGetRequestHandler.ProcessRequest(ctx.Object);
 
             //------------Assert Results-------------------------
-            principle.Verify(p => p.Identity.Name, Times.AtLeast(1));
+            mockIdentity.VerifyGet(identity => identity.Name, Times.AtLeast(1));
+            Common.Utilities.OrginalExecutingUser = old;
         }
 
 
