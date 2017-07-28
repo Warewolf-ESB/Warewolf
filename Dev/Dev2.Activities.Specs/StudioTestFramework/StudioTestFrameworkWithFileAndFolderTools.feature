@@ -1,5 +1,5 @@
-﻿@TestFrameworkWithFileAndFolderTools
-Feature: TestFrameworkWithFileAndFolderTools
+﻿@StudioTestFrameworkWithFileAndFolderTools
+Feature: StudioTestFrameworkWithFileAndFolderTools
 	In order to test workflows that contain file ops tools in warewolf 
 	As a user
 	I want to create, edit, delete and update tests in a test window
