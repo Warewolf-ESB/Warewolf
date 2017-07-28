@@ -39,6 +39,7 @@ body {
 
 /* Set padding to keep content from hitting the edges */
 .body-content {
+    padding-top: 29px;
     padding-left: 15px;
     padding-right: 15px;
 }
@@ -440,7 +441,7 @@ td {
 #executionFilters {
     border-collapse: collapse;
     width: 100%;
-    margin-bottom: 5px;
+    margin-bottom: 3px;
 }
 
     #executionFilters td {
@@ -648,4 +649,30 @@ td {
 
 .sortable th.ascend:after {
     content: "\25BC";
+}
+
+.navbar {
+    min-height: 80px;
+    padding-top: 10px;
+    padding-left: 100px;
+    padding-right: 100px;
+}
+
+.navbar-inverse .navbar-nav > li > a {
+    color: #fff;
+}
+    .navbar-inverse .navbar-nav > li > a:hover {
+        color: #f3700d;
+    }
+
+.navbar-inverse .navbar-nav > li > p {
+    color: #fff;
+}
+    /*.navbar-inverse .navbar-nav > li > p:hover {
+        color: #f3700d;
+    }*/
+
+#brandLogo {
+    border: 0;
+    margin-top: -17px;
 }

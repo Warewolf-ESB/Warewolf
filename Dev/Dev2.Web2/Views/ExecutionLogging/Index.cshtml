@@ -9,8 +9,7 @@
     <meta charset='utf-8' />
     <meta content='en' name='language' />
     <meta content='width=device-width, initial-scale=1' name='viewport' />
-    <link rel='stylesheet' type='text/css' href='http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css' />
-    <link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+
     <link rel='stylesheet' type='text/css' href='~/Content/Site.css' />
 
 
@@ -18,7 +17,7 @@
     <script src="https://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
 </head>
 <body>
-    <div id="ExecutionFilters" class="well">
+    <div id="ExecutionFilters" style="padding-top: 6px;">
 
         <table id="filterTable">
             <tr>
@@ -33,6 +32,7 @@
                 <td class="serverDesc">:</td>
                 <td>@Html.EditorFor(model => model.Item2.Port, new { htmlAttributes = new { id = "port", @class = "form-control" } })</td>
                 <td><button id="updateServer" class="btn btn-default">Update</button></td>
+
             </tr>
         </table>
     </div>
