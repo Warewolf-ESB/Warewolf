@@ -39,20 +39,20 @@
               cell.attr('data-filtered', 'positive');
             } else {
               cell.attr('data-filtered', 'negative');
-            }
-            if (row.find(item_tag + "[data-filtered=negative]").size() > 0) {
+              }
+              if (row.find(item_tag + "[data-filtered=negative]").length > 0) {
                row.hide();
             } else {
-              if (row.find(item_tag + "[data-filtered=positive]").size() > 0) {
+                  if (row.find(item_tag + "[data-filtered=positive]").length > 0) {
                 row.show();
               }
             }
           } else {
             cell.attr('data-filtered', 'positive');
-            if (row.find(item_tag + "[data-filtered=negative]").size() > 0) {
+            if (row.find(item_tag + "[data-filtered=negative]").length > 0) {
               row.hide();
             } else {
-              if (row.find(item_tag + "[data-filtered=positive]").size() > 0) {
+                if (row.find(item_tag + "[data-filtered=positive]").length > 0) {
                 row.show();
               }
             }
