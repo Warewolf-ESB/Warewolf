@@ -85,7 +85,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                         msg.HasError = true;
                         var errorMessage = output.ErrorMessage;
                         msg.Message = new StringBuilder(errorMessage);
-                        Dev2Logger.Error(errorMessage);
+                        Dev2Logger.Error(errorMessage, "Warewolf Error");
                     }
                     else
                     {
