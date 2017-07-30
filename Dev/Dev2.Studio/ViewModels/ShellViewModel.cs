@@ -468,23 +468,14 @@ namespace Dev2.Studio.ViewModels
             IPopupController popupController = null, IExplorerViewModel explorer = null)
             : base(eventPublisher)
         {
-            if (serverRepository == null)
-            {
-                throw new ArgumentNullException(nameof(serverRepository));
-            }
-            if (versionChecker == null)
-            {
-                throw new ArgumentNullException(nameof(versionChecker));
-            }
-
-            Version = versionChecker;
+            Version = versionChecker ?? throw new ArgumentNullException(nameof(versionChecker));
             VerifyArgument.IsNotNull(@"asyncWorker", asyncWorker);
             _asyncWorker = asyncWorker;
             _factory = factory;
             _worksurfaceContextManager = new WorksurfaceContextManager(createDesigners, this);
             BrowserPopupController = browserPopupController ?? new ExternalBrowserPopupController();
             PopupProvider = popupController ?? new PopupController();
-            ServerRepository = serverRepository;
+            ServerRepository = serverRepository ?? throw new ArgumentNullException(nameof(serverRepository));
             _activeServer = LocalhostServer;
             ServerRepository.ActiveServer = _activeServer;
             ShouldUpdateActiveState = true;
