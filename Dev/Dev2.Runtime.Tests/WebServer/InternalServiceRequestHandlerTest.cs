@@ -253,7 +253,9 @@ namespace Dev2.Tests.Runtime.WebServer
             var internalServiceRequestHandler = new InternalServiceRequestHandler(resourceCatalog.Object, authorizationService.Object) { ExecutingUser = executingUser.Object };
             //------------Execute Test---------------------------
             var processRequest = internalServiceRequestHandler.ProcessRequest(eer, Guid.Empty, Guid.Empty, Guid.NewGuid().ToString());
+            authorizationService.Verify(service => service.IsAuthorized(AuthorizationContext.Contribute, Guid.Empty.ToString()), Times.Once);
             Assert.IsNotNull(processRequest);
+
         }
     }
 }

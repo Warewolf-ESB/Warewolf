@@ -101,18 +101,6 @@ namespace Dev2.Studio
             }
         }
 
-        public static bool IsAutomationMode
-        {
-            get
-            {
-#if DEBUG
-                return true;
-#else
-                return false;
-#endif
-            }
-        }
-
         [PrincipalPermission(SecurityAction.Demand)]  // Principal must be authenticated
         protected override void OnStartup(StartupEventArgs e)
         {

@@ -190,12 +190,12 @@ Scenario: ForEach with NestedStarTest and Inner WF
 	  | [[Result]] = Pass |
 
 Scenario: Workflow with Performance counters
-	  Given I have a workflow "PerfCounterTest"
-	  And I have reset local perfromance Counters
-	  And "PerfCounterTest" contains "PerfCounter" from server "localhost" with mapping as
-	  | Input to Service | From Variable | Output from Service | To Variable |
-	  |                  |               | Result              | [[Result]]  |
-	  When "PerfCounterTest" is executed
+	Given I have a workflow "PerfCounterTest"
+	And I have reset local perfromance Counters
+	And "PerfCounterTest" contains "PerfCounter" from server "localhost" with mapping as
+	| Input to Service | From Variable | Output from Service | To Variable |
+	|                  |               | Result              | [[Result]]  |
+	When "PerfCounterTest" is executed
 	Then the perfcounter raw values are
 	| Name                                              | Value |
 	| Average workflow execution time                   | x     |
