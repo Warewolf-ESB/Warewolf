@@ -171,17 +171,9 @@ namespace Dev2.Studio.ViewModels.WorkSurface
         public WorkSurfaceContextViewModel(IEventAggregator eventPublisher, WorkSurfaceKey workSurfaceKey, IWorkSurfaceViewModel workSurfaceViewModel, IPopupController popupController, Action<IContextualResourceModel, bool, System.Action> saveDialogAction)
             : base(eventPublisher)
         {
-            if (workSurfaceKey == null)
-            {
-                throw new ArgumentNullException(nameof(workSurfaceKey));
-            }
-            if (workSurfaceViewModel == null)
-            {
-                throw new ArgumentNullException(nameof(workSurfaceViewModel));
-            }
             VerifyArgument.IsNotNull("popupController", popupController);
-            WorkSurfaceKey = workSurfaceKey;
-            WorkSurfaceViewModel = workSurfaceViewModel;
+            WorkSurfaceKey = workSurfaceKey ?? throw new ArgumentNullException(nameof(workSurfaceKey));
+            WorkSurfaceViewModel = workSurfaceViewModel ?? throw new ArgumentNullException(nameof(workSurfaceViewModel));
 
             _windowManager = CustomContainer.Get<IWindowManager>();
 
