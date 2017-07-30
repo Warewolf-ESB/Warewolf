@@ -365,16 +365,16 @@ td {
 
 .ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
     border: 1px solid #c5c5c5;
-    background: #f6f6f6;
+    background: transparent;
     font-weight: normal;
     color: #454545;
 }
 
 .ui-dialog .ui-dialog-titlebar-close span {
     display: block;
-    margin: 1px;
-    margin-left: -8px;
-    margin-top: -8px;
+    border: 0px;
+    margin-left: -2px;
+    margin-top: -2px;
 }
 
 .ui-button-icon-only .ui-button-text, .ui-button-icons-only .ui-button-text {
@@ -382,6 +382,10 @@ td {
     text-indent: -9999999px;
     width: 21px;
     height: 20px;
+}
+
+.ui-button-icon-primary ui-icon ui-icon-closethick{
+    color:black;
 }
 /*Dialog*/
 /*Link*/
