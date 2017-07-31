@@ -401,8 +401,6 @@ namespace Dev2.Activities.Specs.TestFramework
             }
         }
 
-
-
         [Given(@"the test builder is open with ""(.*)""")]
         [When(@"the test builder is open with ""(.*)""")]
         [Then(@"the test builder is open with ""(.*)""")]
