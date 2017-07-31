@@ -312,6 +312,11 @@ namespace Dev2.Activities.Designers2.Web_Service_Post
             }
         }
 
+        public IHeaderRegion GetHeaderRegion()
+        {
+            return InputArea;
+        }
+
         public Runtime.Configuration.ViewModels.Base.DelegateCommand FixErrorsCommand { get; set; }
 
         public ObservableCollection<IErrorInfo> DesignValidationErrors { get; set; }
