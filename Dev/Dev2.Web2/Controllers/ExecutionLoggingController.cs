@@ -17,6 +17,20 @@ namespace Dev2.Web2.Controllers
             return View(model);
         }
 
+        [HttpGet]
+        public ActionResult Index(string server)
+        {
+            var request = CheckRequest(null);
+            if (string.IsNullOrEmpty(server))
+            {
+                server = "localhost";
+            }
+            request.Server = server;
+            var model = new Tuple<List<LogEntry>, ExecutionLoggingRequestViewModel>(new List<LogEntry>(), request);
+            return View(model);
+        }
+
+
         [HttpPost]
         public ActionResult ExecutionList(string jsonData)
         {
