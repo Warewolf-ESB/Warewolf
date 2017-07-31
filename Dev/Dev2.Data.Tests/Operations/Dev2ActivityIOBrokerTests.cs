@@ -359,7 +359,7 @@ namespace Dev2.Data.Tests.Operations
             catch (Exception ex)
             {
                 //---------------Test Result -----------------------
-                Assert.AreEqual(ErrorResource.InvalidPath, ex.Message);
+                Assert.AreEqual(ErrorResource.InvalidPath, ex.InnerException.Message);
                 var tempFileName = Path.GetTempFileName();
                 dst.Setup(point => point.IOPath.Path).Returns(tempFileName);
 
@@ -475,7 +475,7 @@ namespace Dev2.Data.Tests.Operations
             }
             catch(Exception ex)
             {
-                Assert.AreEqual(ErrorResource.SourceCannotBeAnEmptyString, ex.Message);
+                Assert.AreEqual(ErrorResource.SourceCannotBeAnEmptyString, ex.InnerException.Message);
                 src.Setup(point => point.IOPath.Path).Returns(srcPath);
                 dst.Setup(point => point.IOPath.Path).Returns("");
                 try
@@ -484,7 +484,7 @@ namespace Dev2.Data.Tests.Operations
                 }
                 catch(Exception ex1)
                 {
-                    Assert.AreEqual(ErrorResource.DestinationMustBeADirectory, ex1.Message);
+                    Assert.AreEqual(ErrorResource.DestinationMustBeADirectory, ex1.InnerException.Message);
                     dst.Setup(point => point.PathIs(It.IsAny<IActivityIOPath>())).Returns(enPathType.Directory);
                     src.Setup(point => point.PathIs(It.IsAny<IActivityIOPath>())).Returns(enPathType.Directory);
 
@@ -494,7 +494,7 @@ namespace Dev2.Data.Tests.Operations
                     }
                     catch(Exception ex2)
                     {
-                        Assert.AreEqual(ErrorResource.SourceMustBeAFile, ex2.Message);
+                        Assert.AreEqual(ErrorResource.SourceMustBeAFile, ex2.InnerException.Message);
                         src.Setup(point => point.PathIs(It.IsAny<IActivityIOPath>())).Returns(enPathType.File);
                         dst.Setup(point => point.PathExist(It.IsAny<IActivityIOPath>())).Returns(true);
                        
@@ -504,7 +504,7 @@ namespace Dev2.Data.Tests.Operations
                         }
                         catch(Exception ex3)
                         {
-                            Assert.AreEqual(ErrorResource.DestinationDirectoryExist, ex3.Message);
+                            Assert.AreEqual(ErrorResource.DestinationDirectoryExist, ex3.InnerException.Message);
                             args = new Dev2UnZipOperationTO("pa", true);
                             
                                 var invoke = privateObject.Invoke("ValidateUnzipSourceDestinationFileOperation", src.Object, dst.Object, args, performAfterValidation);
@@ -549,7 +549,7 @@ namespace Dev2.Data.Tests.Operations
             catch (Exception e)
             {
                 //---------------Test Result -----------------------
-                Assert.IsTrue(e.Message == "Invalid Path. Please ensure that the path provided is an absolute path, if you intended to access the local file system.");
+                Assert.IsTrue(e.InnerException.Message == "Invalid Path. Please ensure that the path provided is an absolute path, if you intended to access the local file system.");
                 try
                 {
                     path = Path.GetTempFileName();
@@ -561,7 +561,7 @@ namespace Dev2.Data.Tests.Operations
                 catch (Exception e1)
                 {
                     var error = $"Failed to authenticate with user [ userName ] for resource [ {path} ] ";
-                    var actualError = e1.Message;
+                    var actualError = e1.InnerException.Message;
                     //---------------Test Result -----------------------
                     Assert.AreEqual(actualError, error);
 
@@ -753,7 +753,7 @@ namespace Dev2.Data.Tests.Operations
             catch(Exception e)
             {
                 //---------------Test Result -----------------------
-                Assert.AreEqual(ErrorResource.FileWithSameNameExist, e.Message);
+                Assert.AreEqual(ErrorResource.FileWithSameNameExist, e.InnerException.Message);
                 dst.Setup(point => point.PathIs(It.IsAny<IActivityIOPath>())).Returns(enPathType.Directory);
                 dst.Setup(point => point.ListDirectory(It.IsAny<IActivityIOPath>())).Returns(new List<IActivityIOPath>());
                 try
@@ -762,7 +762,7 @@ namespace Dev2.Data.Tests.Operations
                 }
                 catch(Exception ex)
                 {
-                   Assert.Fail(ex.Message);
+                   Assert.Fail(ex.InnerException.Message);
                 }
                
 
