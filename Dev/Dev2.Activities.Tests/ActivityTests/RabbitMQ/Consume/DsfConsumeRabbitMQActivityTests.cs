@@ -15,6 +15,7 @@ using Dev2.Runtime.Interfaces;
 using RabbitMQ.Client.Framing;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
+using System.Reflection;
 
 // ReSharper disable InconsistentNaming
 
@@ -442,7 +443,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
         [TestMethod]
         [Owner("Mthembu Sanele")]
         [TestCategory("DsfConsumeRabbitMQActivity_Execute")]
-        [ExpectedException(typeof(Exception))]
+        [ExpectedException(typeof(TargetInvocationException))]
         public void PerformExecution_Given_No_Source_Should_Return_NullException()
         {
             //------------Setup for test--------------------------
@@ -709,7 +710,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
             }
             catch (Exception ex)
             {
-                Assert.AreEqual(ex.Message, string.Format("Queue {0} not found", queueName));
+                Assert.AreEqual(ex.InnerException.Message, string.Format("Queue {0} not found", queueName));
             }
             //------------Assert Results-------------------------            
         }
@@ -751,7 +752,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
             }
             catch (Exception ex)
             {
-                Assert.AreEqual(ex.Message, string.Format("Queue {0} not found", queueName));
+                Assert.AreEqual(ex.InnerException.Message, string.Format("Queue {0} not found", queueName));
             }
             //------------Assert Results-------------------------            
         }
@@ -795,7 +796,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
             }
             catch (Exception ex)
             {
-                Assert.AreEqual(ex.Message, string.Format("Queue {0} not found", queueName));
+                Assert.AreEqual(ex.InnerException.Message, string.Format("Queue {0} not found", queueName));
             }
             //------------Assert Results-------------------------            
         }
