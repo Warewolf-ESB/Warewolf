@@ -328,7 +328,10 @@ namespace Warewolf.Studio.ViewModels
         {
             localhostEnvironment.Connect();
             await localhostEnvironment.Load(true, true);
-            AfterLoad(localhostEnvironment.Server.EnvironmentID);
+            if (SelectedEnvironment.DisplayName == localhostEnvironment.DisplayName)
+            {
+                AfterLoad(localhostEnvironment.Server.EnvironmentID);
+            }            
         }
 
         IEnvironmentViewModel CreateEnvironmentFromServer(IServer server, IShellViewModel shellViewModel)
