@@ -21,6 +21,11 @@ Feature: VariableList
 #Ensure unused variables do not appear in Debug Input window
 #Ensure shorcut keys work
 
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:Warewolf_Studio.exe
+@MSTest:DeploymentItem:Newtonsoft.Json.dll
+@MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll
+@MSTest:DeploymentItem:System.Windows.Interactivity.dll
 Scenario: Variables adding in variable list and removing unused
 	Given I have variables as
     | Variable    | Note              | Input | Output | IsUsed |
@@ -56,8 +61,12 @@ Scenario: Variables adding in variable list and removing unused
 	| mr()           |                  |                  |       |        |
 	| rec()          |                  |                  |       |        |
 	| rec().a        |                  | YES              |       | YES    |
-								
-
+						
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:Warewolf_Studio.exe
+@MSTest:DeploymentItem:Newtonsoft.Json.dll
+@MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll
+@MSTest:DeploymentItem:System.Windows.Interactivity.dll
 Scenario: Sorting Variables in Variable list
 	Given I have variables as
 	 | Variable    | Note              | Input | Output | IsUsed |
@@ -93,7 +102,12 @@ Scenario: Sorting Variables in Variable list
 	| mr()           |                  |                  |       |        |
 	| lr()           | YES              |                  |       |        |
 	| lr().a         | YES              |                  |       |        |
-
+	
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:Warewolf_Studio.exe
+@MSTest:DeploymentItem:Newtonsoft.Json.dll
+@MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll
+@MSTest:DeploymentItem:System.Windows.Interactivity.dll
 Scenario: Variable Errors
 	Given the Variable Names are
 	 | Variable | Error State | Delete IsEnabled | Error Tooltip                                     |
@@ -111,6 +125,11 @@ Scenario: Variable Errors
 	 | rec().b        | YES         |                  | Duplicate Variable                                       |
 	 | rec().b        | YES         |                  | Duplicate Variable                                       |
 	
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:Warewolf_Studio.exe
+@MSTest:DeploymentItem:Newtonsoft.Json.dll
+@MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll
+@MSTest:DeploymentItem:System.Windows.Interactivity.dll
 Scenario: Variables removed from design surface and list
 	Given I have variables as
     | Variable    | Note              | Input | Output | IsUsed |

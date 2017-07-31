@@ -88,7 +88,6 @@ namespace Warewolf.UIBindingTests.PostGreSource
         {
             var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
             Assert.IsNotNull(manageDatabaseSourceControl);
-            Assert.IsNotNull(manageDatabaseSourceControl.DataContext);
         }
 
         [Given(@"I open ""(.*)""")]

@@ -30,11 +30,7 @@ namespace Dev2.Settings.Scheduler
        
         public ClientScheduledResourceModel([Annotations.NotNull] IServer model, Action createNewTask)
         {
-            if(model == null)
-            {
-                throw new ArgumentNullException("model");
-            }
-            _model = model;
+            _model = model ?? throw new ArgumentNullException("model");
             _createNewTask = createNewTask;
         }
 

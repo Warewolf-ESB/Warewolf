@@ -93,7 +93,6 @@ namespace Warewolf.UIBindingTests.Odbc
         {
             var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
             Assert.IsNotNull(manageDatabaseSourceControl);
-            Assert.IsNotNull(manageDatabaseSourceControl.DataContext);
         }
 
         [Given(@"I open ""(.*)""")]
@@ -265,15 +264,21 @@ namespace Warewolf.UIBindingTests.Odbc
             var mockUpdateManager = ScenarioContext.Current.Get<Mock<IManageDatabaseSourceModel>>("updateManager");
             var mockRequestServiceNameViewModel = ScenarioContext.Current.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel");
             var mockEventAggregator = new Mock<IEventAggregator>();
-            var task = new Task<IRequestServiceNameViewModel>(() => mockRequestServiceNameViewModel.Object);
-            task.Start();
-            var viewModel = new ManageOdbcSourceViewModel(mockUpdateManager.Object, task, mockEventAggregator.Object, new SynchronousAsyncWorker());
-            var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
-            var manageDatabaseSourceViewModel = manageDatabaseSourceControl.DataContext as ManageOdbcSourceViewModel;
-            if (manageDatabaseSourceViewModel != null)
+            if (mockRequestServiceNameViewModel != null && mockUpdateManager != null)
             {
-                Utils.ResetViewModel<ManageOdbcSourceViewModel, IDbSource>(viewModel, manageDatabaseSourceViewModel);
-                manageDatabaseSourceViewModel.DatabaseName = null;
+                var task = new Task<IRequestServiceNameViewModel>(() => mockRequestServiceNameViewModel.Object);
+                task.Start();
+                var viewModel = new ManageOdbcSourceViewModel(mockUpdateManager.Object, task, mockEventAggregator.Object, new SynchronousAsyncWorker());
+                var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
+                if (manageDatabaseSourceControl != null)
+                {
+                    var manageDatabaseSourceViewModel = manageDatabaseSourceControl.DataContext as ManageOdbcSourceViewModel;
+                    if (manageDatabaseSourceViewModel != null)
+                    {
+                        Utils.ResetViewModel<ManageOdbcSourceViewModel, IDbSource>(viewModel, manageDatabaseSourceViewModel);
+                        manageDatabaseSourceViewModel.DatabaseName = null;
+                    }
+                }
             }
         }
 

@@ -85,9 +85,9 @@ namespace Warewolf.UIBindingTests.MySqlDatabaseSource
         [Given(@"I open New Database Source")]
         public void GivenIOpenNewDatabaseSource()
         {
+            Assert.IsTrue(ScenarioContext.Current.ContainsKey(Utils.ViewNameKey), "This test attempted to open a database source that has not been initialized yet. You must execute \"SetupForSystem\" test step before this test step can be used.");
             var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
             Assert.IsNotNull(manageDatabaseSourceControl);
-            Assert.IsNotNull(manageDatabaseSourceControl.DataContext);
         }
 
         [Given(@"I open ""(.*)""")]
@@ -433,17 +433,23 @@ namespace Warewolf.UIBindingTests.MySqlDatabaseSource
             var mockRequestServiceNameViewModel =
                 ScenarioContext.Current.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel");
             var mockEventAggregator = new Mock<IEventAggregator>();
-            var task = new Task<IRequestServiceNameViewModel>(() => mockRequestServiceNameViewModel.Object);
-            task.Start();
-            var viewModel = new ManageMySqlSourceViewModel(mockUpdateManager.Object, task, mockEventAggregator.Object,
-                new SynchronousAsyncWorker());
-            var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
-            var manageDatabaseSourceViewModel = manageDatabaseSourceControl.DataContext as ManageMySqlSourceViewModel;
-            if (manageDatabaseSourceViewModel != null)
+            if (mockRequestServiceNameViewModel != null && mockUpdateManager != null)
             {
-                Utils.ResetViewModel<ManageMySqlSourceViewModel, IDbSource>(viewModel, manageDatabaseSourceViewModel);
-                manageDatabaseSourceViewModel.AuthenticationType = AuthenticationType.Windows;
-                manageDatabaseSourceViewModel.DatabaseName = null;
+                var task = new Task<IRequestServiceNameViewModel>(() => mockRequestServiceNameViewModel.Object);
+                task.Start();
+                var viewModel = new ManageMySqlSourceViewModel(mockUpdateManager.Object, task, mockEventAggregator.Object,
+                    new SynchronousAsyncWorker());
+                var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
+                if (manageDatabaseSourceControl != null)
+                {
+                    var manageDatabaseSourceViewModel = manageDatabaseSourceControl.DataContext as ManageMySqlSourceViewModel;
+                    if (manageDatabaseSourceViewModel != null)
+                    {
+                        Utils.ResetViewModel<ManageMySqlSourceViewModel, IDbSource>(viewModel, manageDatabaseSourceViewModel);
+                        manageDatabaseSourceViewModel.AuthenticationType = AuthenticationType.Windows;
+                        manageDatabaseSourceViewModel.DatabaseName = null;
+                    }
+                }
             }
         }
 
@@ -461,16 +467,13 @@ namespace Warewolf.UIBindingTests.MySqlDatabaseSource
         {
             var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
             manageDatabaseSourceControl.Test();
-        }
-
-       
+        }       
 
         [Then(@"Authentication type ""(.*)"" is ""(.*)""")]
         public void ThenAuthenticationTypeIs(string p0, string p1)
         {
             Utils.CheckControlEnabled(p0, p1, ScenarioContext.Current.Get<ICheckControlEnabledView>(Utils.ViewNameKey), Utils.ViewNameKey);
         }
-
 
         [Then(@"database dropdown is ""(.*)""")]
         public void ThenDatabaseDropdownIs(string p0)
