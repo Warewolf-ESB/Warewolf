@@ -3,13 +3,14 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UITesting;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.Support.UI;
 
 namespace SeleniumTests
 {
-    [TestClass]
+    [CodedUITest]
     public class TrivialWebTests
     {
         private IWebDriver driver;

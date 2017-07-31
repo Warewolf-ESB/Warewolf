@@ -2,6 +2,7 @@ using System;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
+using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Firefox;
@@ -11,7 +12,7 @@ using Warewolf.Web.Tests;
 
 namespace SeleniumTests
 {
-    [TestClass]
+    [CodedUITest]
     public class AnotherTrivialWebTest
     {
         private IWebDriver driver;
