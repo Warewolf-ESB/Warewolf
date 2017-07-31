@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Dev2.Runtime.Interfaces;
+using System.Reflection;
 
 // ReSharper disable InconsistentNaming
 
@@ -150,7 +151,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Publish
         [TestMethod]
         [Owner("Clint Stedman")]
         [TestCategory("DsfPublishRabbitMQActivity_Execute")]
-        [ExpectedException(typeof(Exception))]
+        [ExpectedException(typeof(TargetInvocationException))]
         public void DsfPublishRabbitMQActivity_Execute_Failure_NullException()
         {
             //------------Setup for test--------------------------
