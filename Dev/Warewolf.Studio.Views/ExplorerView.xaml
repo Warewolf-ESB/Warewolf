@@ -212,6 +212,7 @@
                                               Command="{Binding ViewExecutionLoggingCommand}"
                                               Header="Execution Logging"
                                               Style="{StaticResource MenuItemStyle}"
+                                              InputGestureText="[http://my.warewolf.io]"
                                               IsEnabled="{Binding CanViewExecutionLogging}" 
                                               ToolTip="{Binding ViewExecutionLoggingTooltip}"
                                               Visibility="{Binding IsSaveDialog, Converter={StaticResource BoolToVisibilityConverterNegative}}">
