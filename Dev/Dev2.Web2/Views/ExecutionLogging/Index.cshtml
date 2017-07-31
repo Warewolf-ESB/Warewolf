@@ -2,7 +2,7 @@
 @using Dev2.Web2.Models.ExecutionLogging;
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Warewolf";
 }
 
 <head>
@@ -36,13 +36,28 @@
             </tr>
         </table>
     </div>
-    <div class="divclass">
+    <div id="loader">
+        <div id="loader_1" class="loader"></div>
+        <div id="loader_2" class="loader"></div>
+        <div id="loader_3" class="loader"></div>
+        <div id="loader_4" class="loader"></div>
+        <div id="loader_5" class="loader"></div>
+        <div id="loader_6" class="loader"></div>
+        <div id="loader_7" class="loader"></div>
+        <div id="loader_8" class="loader"></div>
+    </div>
+    <div style="display:none;" id="divExecutionList" class="animate-bottom">
         @{Html.RenderPartial("ExecutionList", Model.Item1);}
     </div>
 </body>
 
 
 <script type="text/javascript">
+    
+    function showExecutionList() {
+        document.getElementById("loader").style.display = "none";
+        document.getElementById("divExecutionList").style.display = "block";
+    }
 
     function getServerUrl() {
         var protocol = document.getElementById("protocolDropdown").value;
@@ -55,7 +70,7 @@
 
     function getLogData() {
         var serverUrl = getServerUrl();
-        var wareWolfUrl = serverUrl + "/services/GetLogDataService"
+        var wareWolfUrl = serverUrl + "/services/GetLogDataService";
 
         $.ajax({
             type: "GET",
@@ -68,7 +83,8 @@
                 var jsonData = JSON.stringify(response);
                 $.post('@Url.Action("ExecutionList", "ExecutionLogging")', { jsonData: jsonData },
                     function (data, textStatus, jqXHR) {
-                        $('.divclass').html(data);
+                        $('#divExecutionList').html(data);
+                        showExecutionList();
                     });
             },
             error: function (errorThrown) {

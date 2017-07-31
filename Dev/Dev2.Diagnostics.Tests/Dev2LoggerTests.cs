@@ -1,6 +1,4 @@
-﻿using System;
-using Dev2.Common;
-using log4net;
+﻿using Dev2.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Diagnostics.Test
