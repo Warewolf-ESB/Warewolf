@@ -2,18 +2,17 @@ using System;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
-using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UITesting;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Firefox;
+using OpenQA.Selenium.IE;
 using OpenQA.Selenium.Support.UI;
-using OpenQA.Selenium.Interactions;
-using Warewolf.Web.Tests;
+using System.Net;
 
 namespace SeleniumTests
 {
     [CodedUITest]
-    public class AnotherTrivialWebTest
+    public class ExecutionLoggingTests
     {
         private IWebDriver driver;
         private StringBuilder verificationErrors;
@@ -23,8 +22,9 @@ namespace SeleniumTests
         [TestInitialize]
         public void SetupTest()
         {
-            driver = new FirefoxDriver();
-            baseURL = "https://warewolf.io";
+            WebRequest.Create("http://localhost:3142/secure/Hello%20World.json?Name=Tester");
+            driver = new InternetExplorerDriver();
+            baseURL = "http://my.warewolf.io";
             verificationErrors = new StringBuilder();
         }
         
@@ -41,24 +41,13 @@ namespace SeleniumTests
             }
             Assert.AreEqual("", verificationErrors.ToString());
         }
-
+        
         [TestMethod]
-        public void TheFailingTrivialWebTest()
+        public void TheExecutionLoggingTestsTest()
         {
-            driver.Navigate().GoToUrl(baseURL + "/");
-            driver.FindElement(By.LinkText("Contact Us")).Click();
-            driver.FindElement(By.Id("Field105")).Clear();
-            driver.FindElement(By.Id("Field105")).SendKeys("Ashley Lewis");
-            driver.FindElement(By.Id("Field2")).Clear();
-            driver.FindElement(By.Id("Field2")).SendKeys("ashley.lewis@dev2.co.za");
-            driver.FindElement(By.Id("Field3")).Clear();
-            driver.FindElement(By.Id("Field3")).SendKeys("I love Warewolf :D:D:D");
-            driver.FindElement(By.ClassName("fake-checkbox-label")).Click();
-            driver.FindElement(By.LinkText("More info")).JavascriptScrollIntoView(driver);
-            driver.FindElement(By.LinkText("More info")).Click();
-            Assert.Fail("This test is failing but in the expected way.");
+            driver.Navigate().GoToUrl(baseURL + "/ExecutionLogging");
+            driver.FindElement(By.Id("updateServer")).Click();
         }
-
         private bool IsElementPresent(By by)
         {
             try
