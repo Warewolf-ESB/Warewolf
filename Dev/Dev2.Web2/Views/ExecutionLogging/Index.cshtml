@@ -59,6 +59,11 @@
         document.getElementById("divExecutionList").style.display = "block";
     }
 
+    function hideExecutionList() {
+        document.getElementById("loader").style.display = "block";
+        document.getElementById("divExecutionList").style.display = "none";
+    }
+
     function getServerUrl() {
         var protocol = document.getElementById("protocolDropdown").value;
         var serverName = document.getElementById("serverName").value;
@@ -100,6 +105,7 @@
     $(document).ready(function () {
         $('#updateServer').on('click', function (e) {
             e.preventDefault();
+            hideExecutionList();
             getLogData();
         });
 
