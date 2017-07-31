@@ -47,6 +47,8 @@ using Moq;
 using Moq.Language.Flow;
 using Moq.Protected;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Dev2.Common.Interfaces;
+using Dev2.Studio.Core.Views;
 
 // ReSharper disable InconsistentNaming
 namespace Dev2.Activities.Designers.Tests.Service
@@ -666,15 +668,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             //---------------Precondition------------------------
             Assert.IsNotNull(viewModel);
             //------------Execute Test---------------------------
-            try
-            {
-                privateType.InvokeStatic("ViewJsonObjects", mock.Object);
-            }
-            catch (System.Windows.Markup.XamlParseException)
-            {
-                //---------------Test Result -----------------------
-             
-            }
+            privateType.InvokeStatic("ViewJsonObjects", mock.Object, null);
         }
 
         [TestMethod]

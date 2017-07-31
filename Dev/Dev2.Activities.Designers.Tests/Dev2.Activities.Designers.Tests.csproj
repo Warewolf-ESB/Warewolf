@@ -341,6 +341,10 @@
       <Project>{B3D070E0-11C1-4C1C-81A5-E680C1494945}</Project>
       <Name>Warewolf.Storage</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Studio.Core\Warewolf.Studio.Core.csproj">
+      <Project>{F9FE2CE9-625E-4E7F-8F4C-FCE28BB59510}</Project>
+      <Name>Warewolf.Studio.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Warewolf.Studio.ViewModels\Warewolf.Studio.ViewModels.csproj">
       <Project>{C52B12C2-6A1D-4C4F-A878-CF283662A226}</Project>
       <Name>Warewolf.Studio.ViewModels</Name>
