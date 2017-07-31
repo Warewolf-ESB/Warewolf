@@ -16,6 +16,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Dev2.Common.Common
 {
@@ -462,6 +464,49 @@ namespace Dev2.Common.Common
             var col = new ObservableCollection<T>(enumerable);
             return col;
         }
+
+        public static bool IsValidXml(this string content)
+        {
+            if (string.IsNullOrEmpty(content) || !content.TrimStart().StartsWith("<")) return false;
+            try
+            {
+                // ReSharper disable once ReturnValueOfPureMethodIsNotUsed
+                XDocument.Parse(content);
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+
+        public static bool IsValidJson(this string strInput)
+        {
+
+            strInput = strInput.Trim();
+            if (strInput.StartsWith("{") && strInput.EndsWith("}") || strInput.StartsWith("[") && strInput.EndsWith("]"))
+            {
+                try
+                {
+                    JToken.Parse(strInput);
+                    return true;
+                }
+                catch (JsonReaderException jex)
+                {
+                    Console.WriteLine(jex.Message);
+                    return false;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.ToString());
+                    return false;
+                }
+            }
+            return false;
+        }
+
+
 
         public static byte[] ToByteArray(this Stream stream)
         {

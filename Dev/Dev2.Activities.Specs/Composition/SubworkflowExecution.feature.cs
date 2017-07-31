@@ -902,9 +902,9 @@ this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
 #line 193
-   testRunner.Given("I have a workflow \"PerfCounterTest\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I have a workflow \"PerfCounterTest\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 194
-   testRunner.And("I have reset local perfromance Counters", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I have reset local perfromance Counters", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table33 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input to Service",
@@ -917,9 +917,9 @@ this.FeatureBackground();
                         "Result",
                         "[[Result]]"});
 #line 195
-   testRunner.And("\"PerfCounterTest\" contains \"PerfCounter\" from server \"localhost\" with mapping as", ((string)(null)), table33, "And ");
+ testRunner.And("\"PerfCounterTest\" contains \"PerfCounter\" from server \"localhost\" with mapping as", ((string)(null)), table33, "And ");
 #line 198
-   testRunner.When("\"PerfCounterTest\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("\"PerfCounterTest\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table34 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name",

@@ -96,9 +96,26 @@ namespace Warewolf.Studio.ViewModels
                 _sharePointServiceSource = source;
                 _sharePointServiceSource.Path = sharePointServiceSource.Path;
                 SetupHeaderTextFromExisting();
+                ToItem();
                 FromModel(source);
             });
 
+        }
+
+        void ToItem()
+        {
+            Item = new SharePointServiceSourceDefinition()
+            {
+                Path = _sharePointServiceSource.Path,
+                Password = _sharePointServiceSource.Password,
+                UserName = _sharePointServiceSource.UserName,
+                AuthenticationType = _sharePointServiceSource.AuthenticationType,
+                Name = _sharePointServiceSource.Name,
+                IsSharepointOnline = _sharePointServiceSource.IsSharepointOnline,
+                Server = _sharePointServiceSource.Server,
+                Id = _sharePointServiceSource.Id,
+                
+            };
         }
 
         void SetupHeaderTextFromExisting()
@@ -489,12 +506,11 @@ namespace Warewolf.Studio.ViewModels
                 ViewModelUtils.RaiseCanExecuteChanged(SaveCommand);
             }
         }
+
         public string TestMessage
         {
             get { return _testMessage; }
-            // ReSharper disable UnusedMember.Local
-            private set
-            // ReSharper restore UnusedMember.Local
+            set
             {
                 _testMessage = value;
                 OnPropertyChanged(() => TestMessage);
