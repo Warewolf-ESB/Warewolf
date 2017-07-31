@@ -7,6 +7,7 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
+using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Common.Interfaces.DB;
@@ -46,8 +47,15 @@ namespace Dev2.Activities.Designers2.Core
         private bool _inputCountExpandAllowed;
         private bool _testPassed;
         private bool _testFailed;
+        private IWebServiceHeaderBuilder _serviceHeaderBuilder;
+
+        public ManageWebServiceInputViewModel(IWebServiceHeaderBuilder serviceHeaderBuilder)
+        {
+            _serviceHeaderBuilder = serviceHeaderBuilder;
+        }
 
         public ManageWebServiceInputViewModel(IWebServiceBaseViewModel model, IWebServiceModel serviceModel)
+            : this(new WebServiceHeaderBuilder())
         {
             PasteResponseAvailable = true;
             IsTesting = false;
@@ -101,7 +109,16 @@ namespace Dev2.Activities.Designers2.Core
                 var serializer = new Dev2JsonSerializer();
                 using (var responseService = serializer.Deserialize<WebService>(testResult))
                 {
-                   TestResults = responseService.RequestResponse;
+                    TestResults = responseService.RequestResponse;
+                    try
+                    {
+                        _serviceHeaderBuilder.BuildHeader(_viewmodel.GetHeaderRegion(), TestResults);
+                    }
+                    catch (Exception)
+                    {
+                        // 
+                    }
+
                     _recordsetList = responseService.Recordsets;
                     if (_recordsetList.Any(recordset => recordset.HasErrors))
                     {
@@ -120,8 +137,8 @@ namespace Dev2.Activities.Designers2.Core
                 // ReSharper restore MaximumChainedReferences
                 _generateOutputArea.IsEnabled = true;
                 _generateOutputArea.Outputs = outputMapping;
-                
-                
+
+
                 if (TestResults != null)
                 {
                     TestResultsAvailable = TestResults != null;
@@ -400,7 +417,7 @@ namespace Dev2.Activities.Designers2.Core
         }
         public IOutputDescription Description { get; set; }
 
-        
+
 
         #region Implementation of IToolRegion
 

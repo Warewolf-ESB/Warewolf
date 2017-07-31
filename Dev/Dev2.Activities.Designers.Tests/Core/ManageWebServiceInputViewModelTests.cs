@@ -4,8 +4,11 @@ using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.Web_Service_Get;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.DB;
+using Dev2.Common.Interfaces.WebService;
+using Dev2.Common.Interfaces.WebServices;
 using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using Warewolf.Core;
 // ReSharper disable InconsistentNaming
 // ReSharper disable UseObjectOrCollectionInitializer
@@ -95,6 +98,40 @@ namespace Dev2.Activities.Designers.Tests.Core
             Assert.IsTrue(inputview.OutputArea.IsEnabled);
             Assert.IsNotNull(inputview.OutputArea.Outputs);
             Assert.IsTrue(inputview.OutputArea.Outputs.Count>0);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("Webget_MethodName")]
+        public void ManageWebServiceInputViewModel_TestActionSetSourceAndTest_ExistingContent()
+        {
+            //------------Setup for test--------------------------
+            var mod = new MyModel()
+            {
+                Response = "{\"NormalText\":\"\"}"
+            };
+
+            var act = new DsfWebGetActivity()
+            {
+                Headers = new List<INameValue>()
+                {
+                    new NameValue("Content-Type","Application/xml")
+                }
+            };
+           
+            var webget = new WebServiceGetViewModel(ModelItemUtils.CreateModelItem(act), mod);
+            
+            var inputview = new ManageWebServiceInputViewModel(webget, mod);
+            inputview.Model = new WebServiceDefinition();
+            Assert.AreEqual(2, webget.InputArea.Headers.Count);
+            //------------Execute Test---------------------------
+            inputview.ExecuteTest();
+            //------------Assert Results-------------------------
+            Assert.IsTrue(inputview.InputArea.IsEnabled);
+            Assert.IsTrue(inputview.OutputArea.IsEnabled);
+            Assert.IsNotNull(inputview.OutputArea.Outputs);
+            Assert.IsTrue(inputview.OutputArea.Outputs.Count>0);
+            Assert.AreEqual(3, webget.InputArea.Headers.Count);
         }
 
         [TestMethod]

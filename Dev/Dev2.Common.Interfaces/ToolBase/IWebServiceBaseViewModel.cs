@@ -15,5 +15,6 @@ namespace Dev2.Common.Interfaces.ToolBase
         void ErrorMessage(Exception exception, bool hasError);
 
         void SetDisplayName(string displayName);
+        IHeaderRegion GetHeaderRegion();
     }
 }

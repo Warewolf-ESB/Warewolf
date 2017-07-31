@@ -5,6 +5,11 @@ Feature: Wcf Source
 	So that I can reuse them
 
 @WcfSource
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:Warewolf_Studio.exe
+@MSTest:DeploymentItem:Newtonsoft.Json.dll
+@MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll
+@MSTest:DeploymentItem:System.Windows.Interactivity.dll
 Scenario: Create New Wcf source
 	Given I open New Wcf Source
 	Then "New WCF Service Source" tab is opened
@@ -14,6 +19,11 @@ Scenario: Create New Wcf source
 	And "Save" is "Disabled"
 
 @WcfSource
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:Warewolf_Studio.exe
+@MSTest:DeploymentItem:Newtonsoft.Json.dll
+@MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll
+@MSTest:DeploymentItem:System.Windows.Interactivity.dll
 Scenario: Fail Send Shows correct error message
 	Given I open New Wcf Source
 	Then "New WCF Service Source" tab is opened
