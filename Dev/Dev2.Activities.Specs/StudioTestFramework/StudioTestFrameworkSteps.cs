@@ -433,8 +433,6 @@ namespace Dev2.Activities.Specs.TestFramework
             Assert.IsNotNull(testFramework);
             Assert.IsNotNull(testFramework.ResourceModel);
             MyContext.Add("testFramework", testFramework);
-
-
         }
 
         [Given(@"I update inputs as")]
