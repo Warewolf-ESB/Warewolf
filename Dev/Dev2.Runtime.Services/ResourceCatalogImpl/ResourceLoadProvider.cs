@@ -209,7 +209,6 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             {
                 throw new ArgumentNullException(nameof(resourceName));
             }
-            Dev2Logger.Debug("Getting Dynamic Objects", "Warewolf Debug");
             List<DynamicServiceObjectBase> results;
 
             if (useContains)
