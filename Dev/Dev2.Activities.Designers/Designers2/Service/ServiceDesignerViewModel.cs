@@ -136,7 +136,7 @@ namespace Dev2.Activities.Designers2.Service
 
             ViewComplexObjectsCommand = new RelayCommand(item =>
             {
-                ViewJsonObjects(item as IComplexObjectItemModel);
+                ViewJsonObjects(item as IComplexObjectItemModel, new JsonObjectsView());
             }, CanViewComplexObjects);
         }
 
@@ -194,11 +194,11 @@ namespace Dev2.Activities.Designers2.Service
             return item != null && !item.IsComplexObject;
         }
 
-        private static void ViewJsonObjects(IComplexObjectItemModel item)
+        private static void ViewJsonObjects(IComplexObjectItemModel item, JsonObjectsView window)
         {
-            if (item != null)
+            if (item != null && window != null)
             {
-                var window = new JsonObjectsView { Height = 280 };
+                window.Height = 280;
                 var contentPresenter = window.FindChild<TextBox>();
                 if (contentPresenter != null)
                 {
