@@ -840,7 +840,10 @@ if ($TotalNumberOfJobsToRun -gt 0) {
             }
             if($RecordScreen.IsPresent) {
                 $TestSettings =  " /Settings:`"" + $TestSettingsFile + "`""
+            } else {
+                $TestSettings = ""
             }
+
             if ($Parallelize.IsPresent) {
                 $ParallelSwitch = " /Parallel"
             } else {
@@ -859,6 +862,8 @@ if ($TotalNumberOfJobsToRun -gt 0) {
 
             if($RecordScreen.IsPresent) {
                 $TestSettings =  " /Settings:`"" + $TestSettingsFile + "`""
+            } else {
+                $TestSettings = ""
             }
 
             # Create full MSTest argument string.
