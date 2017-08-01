@@ -402,7 +402,6 @@
     <Compile Include="WebServer\WebServerRequestTests.cs" />
     <Compile Include="WebServer\WebServerContextTests.cs" />
     <Compile Include="WebServer\GetLogFileServiceHandlerTest.cs" />
-    <Compile Include="WebServer\WebsiteResourceHandlerTest.cs" />
     <Compile Include="WF\WfApplicationUtilsTests.cs" />
     <Compile Include="WorkspaceItemTests.cs" />
     <Compile Include="WorkspaceTest.cs" />
