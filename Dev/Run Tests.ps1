@@ -410,7 +410,7 @@ function Move-Artifacts-To-TestResults([bool]$DotCover, [bool]$Server, [bool]$St
     if ($RecordScreen.IsPresent) {
         Move-ScreenRecordings-To-TestResults
     }
-    if (Test-Path "$TestResultsPath\..\*.bat") {
+    if (Test-Path "$PSScriptRoot\*.bat") {
         foreach ($testRunner in (Get-ChildItem "$TestResultsPath\..\*.bat")) {
 	        Move-File-To-TestResults $testRunner.FullName $testRunner.Name
         }
@@ -873,7 +873,7 @@ if ($TotalNumberOfJobsToRun -gt 0) {
                 Out-File -LiteralPath $DotCoverRunnerXMLPath -Encoding default -InputObject $DotCoverArgs
                 
                 # Create full DotCover argument string.
-                $DotCoverLogFile = "$TestsResultsPath\DotCoverRunner.xml.log"
+                $DotCoverLogFile = "$TestsResultsPath\$JobName DotCover Runner.xml.log"
                 Copy-On-Write $DotCoverLogFile
                 $FullArgsList = " cover `"$DotCoverRunnerXMLPath`" /LogFile=`"$DotCoverLogFile`""
 
