@@ -15,6 +15,7 @@ using System.Security.Permissions;
 using System.Windows;
 using Castle.DynamicProxy.Generators;
 using Dev2.Activities.Utils;
+using Dev2.Common.Interfaces.PopupController;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -310,6 +311,9 @@ namespace Dev2.Core.Tests.Activities
         {
             //------------Setup for test--------------------------
             var activityDesignerUtils = new DropEnabledActivityDesignerUtils();
+            var mock = new Mock<IShellViewModel>();
+            mock.Setup(model => model.ShowPopup(It.IsAny<IPopupMessage>()));
+            CustomContainer.Register(mock.Object);
             var dataObject = new Mock<IDataObject>();
             dataObject.Setup(o => o.GetFormats()).Returns(new[] { "WorkflowItemTypeNameFormat" });
             var modelItem = ModelItemUtils.CreateModelItem(new FlowSwitch<string>());
@@ -318,6 +322,7 @@ namespace Dev2.Core.Tests.Activities
             var dropEnabled = activityDesignerUtils.LimitDragDropOptions(dataObject.Object);
             //------------Assert Results-------------------------
             Assert.IsFalse(dropEnabled);
+            mock.VerifyAll();
         }
 
         [TestMethod]

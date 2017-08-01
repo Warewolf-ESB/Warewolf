@@ -229,14 +229,14 @@ namespace Dev2.Data.Tests.Parsers
             }
             catch (Exception ex)
             {
-                Assert.AreEqual("Recordset index (a) contains invalid character(s)", ex.Message);
+                Assert.AreEqual("Recordset index (a) contains invalid character(s)", ex.InnerException.Message);
                 try
                 {
                     privateObject.Invoke("CheckValidIndex", parseTO, "-1", 1, 2);
                 }
                 catch (Exception ex1)
                 {
-                    Assert.AreEqual("Recordset index [ -1 ] is not greater than zero", ex1.Message);
+                    Assert.AreEqual("Recordset index [ -1 ] is not greater than zero", ex1.InnerException.Message);
                     try
                     {
                         //---------------Test Result -----------------------
@@ -272,24 +272,16 @@ namespace Dev2.Data.Tests.Parsers
             catch (Exception ex)
             {
                 //---------------Test Result -----------------------
-                Assert.AreEqual("Recordset index (ec(a).nam) contains invalid character(s)", ex.Message);
+                Assert.AreEqual("Recordset index (ec(a).nam) contains invalid character(s)", ex.InnerException.Message);
                 try
                 {
                     privateObject.Invoke("CheckCurrentIndex", parseTO, 3, "rec(-1)", "rec(-1)".Length);
                 }
                 catch (Exception ex1)
                 {
-                    Assert.AreEqual("Recordset index -1 is not greater than zero", ex1.Message);
-                    try
-                    {
-                        var invoke = privateObject.Invoke("CheckCurrentIndex", parseTO, 3, "rec(1)", "rec(1)".Length);
-                        Assert.IsTrue(bool.Parse(invoke.ToString()));
-                    }
-                    catch (Exception)
-                    {
-
-                        throw;
-                    }
+                    Assert.AreEqual("Recordset index -1 is not greater than zero", ex1.InnerException.Message);
+                    var invoke = privateObject.Invoke("CheckCurrentIndex", parseTO, 3, "rec(1)", "rec(1)".Length);
+                    Assert.IsTrue(bool.Parse(invoke.ToString()));
                 }
             }
         }
@@ -313,7 +305,7 @@ namespace Dev2.Data.Tests.Parsers
             }
             catch (Exception ex)
             {
-                Assert.AreEqual("Recordset index -1 is not greater than zero", ex.Message);
+                Assert.AreEqual("Recordset index -1 is not greater than zero", ex.InnerException.Message);
                 try
                 {
                     parseTO = new ParseTO() { Payload = "rec(-1", EndIndex = "rec(-1".Length, StartIndex = 3 };
@@ -322,7 +314,7 @@ namespace Dev2.Data.Tests.Parsers
                 }
                 catch (Exception ex1)
                 {
-                    Assert.AreEqual("Recordset index [ -1 ] is not greater than zero", ex1.Message);
+                    Assert.AreEqual("Recordset index [ -1 ] is not greater than zero", ex1.InnerException.Message);
                     try
                     {
                         parseTO = new ParseTO() { Payload = "rec(1", EndIndex = "rec(1".Length, StartIndex = 3 };
@@ -331,7 +323,7 @@ namespace Dev2.Data.Tests.Parsers
                     }
                     catch (Exception ex2)
                     {
-                        Assert.AreEqual("Recordset [ rec(1 ] does not contain a matching ')'", ex2.Message);
+                        Assert.AreEqual("Recordset [ rec(1 ] does not contain a matching ')'", ex2.InnerException.Message);
                     }
                 }
             }
