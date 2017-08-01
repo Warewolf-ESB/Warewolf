@@ -19,7 +19,6 @@ Param(
   [switch]$RunAllJobs,
   [switch]$Cleanup,
   [switch]$AssemblyFileVersionsTest,
-  [switch]$DisableTimeouts,
   [switch]$RecordScreen,
   [switch]$Parallelize,
   [string]$Category,
@@ -411,8 +410,8 @@ function Move-Artifacts-To-TestResults([bool]$DotCover, [bool]$Server, [bool]$St
     if ($RecordScreen.IsPresent) {
         Move-ScreenRecordings-To-TestResults
     }
-    if (Test-Path "$TestResultsPath\..\*.bat") {
-        foreach ($testRunner in (Get-ChildItem "$TestResultsPath\..\*.bat")) {
+    if (Test-Path "$PSScriptRoot\Run *.bat") {
+        foreach ($testRunner in (Get-ChildItem "$PSScriptRoot\Run *.bat")) {
 	        Move-File-To-TestResults $testRunner.FullName $testRunner.Name
         }
     }
@@ -799,29 +798,22 @@ if ($TotalNumberOfJobsToRun -gt 0) {
 	        exit 1
         }
 
-        # Setup for remote execution
-		$TestSettingsId = [guid]::NewGuid()
-        $ControllerNameTag = ""
-        $RemoteExecutionAttribute = ""
-        $AgentRoleTags = ""
-        $AgentRuleNameValue = "LocalMachineDefaultRole"
-        $TestTypeSpecificTags = ""
-        $DeploymentTags = "`n  <Deployment enabled=`"false`" />"
-        $ScriptsTag = ""
-        $DataCollectorTags = ""
-        $NamingSchemeTag = ""
-        $TestRunName = "Run $JobName With Timeout"
-		$DeploymentTimeoutAttribute = ""
-		$BucketsTag = ""
-        if ($StartStudio.IsPresent) {
-            $TestsTimeout = "360000"
-        } else {
-            $TestsTimeout = "180000"
-        }
-        $HardcodedTestController = "rsaklfsvrdev.dev2.local:6901"
+        # Setup for screen recording
         if ($RecordScreen.IsPresent) {
-            $DataCollectorTags = @"
+		    $TestSettingsId = [guid]::NewGuid()
+            $NamingSchemeTag = "`n"
 
+            # Create test settings.
+            $TestSettingsFile = "$TestsResultsPath\$JobName.testsettings"
+            Copy-On-Write $TestSettingsFile
+            [system.io.file]::WriteAllText($TestSettingsFile,  @"
+<?xml version=`"1.0`" encoding="UTF-8"?>
+<TestSettings id="$TestSettingsId" name="$JobName" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Description>Run $JobName With Screen Recording.</Description>
+  <NamingScheme baseName="ScreenRecordings" appendTimeStamp="false" useDefault="false" />
+  <Execution>
+    <Timeouts testTimeout="360000"/>
+    <AgentRule name="LocalMachineDefaultRole">
       <DataCollectors>
         <DataCollector uri="datacollector://microsoft/VideoRecorder/1.0" assemblyQualifiedName="Microsoft.VisualStudio.TestTools.DataCollection.VideoRecorder.VideoRecorderDataCollector, Microsoft.VisualStudio.TestTools.DataCollection.VideoRecorder, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" friendlyName="Screen and Voice Recorder">
           <Configuration>
@@ -829,111 +821,12 @@ if ($TotalNumberOfJobsToRun -gt 0) {
           </Configuration>
         </DataCollector>
       </DataCollectors>
-"@
-            $NamingSchemeTag = "`n  <NamingScheme baseName=`"ScreenRecordings`" appendTimeStamp=`"false`" useDefault=`"false`" />"
-            $TestRunName += " and Screen Recording"
-        }
-        if ($Parallelize.IsPresent) {
-            $CleanupScriptPath = "$TestsResultsPath\cleanup.bat"
-            $ThisComputerHostname = Hostname            $ResultsPathAsAdminShare = $TestsResultsPath.Replace(":","$")
-            $ThoroughCleanupScript = "rmdir /S /Q `"%TestRunDirectory%\..\..`""
-            $ScriptsTag = "`n  <Scripts cleanupScript=`"$CleanupScriptPath`" />"
-            $ControllerNameTag = "`n  <RemoteController name=`"$HardcodedTestController`" />"
-            $RemoteExecutionAttribute = " location=`"Remote`""
-            $AgentRuleNameValue = "Remote"
-            $TestTypeSpecificTags = @"
-
-    <TestTypeSpecific>
-      <UnitTestRunConfig testTypeId="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b">
-        <AssemblyResolution>
-          <TestDirectory useLoadContext="true" />
-        </AssemblyResolution>
-      </UnitTestRunConfig>
-    </TestTypeSpecific>
-"@
-            $DeploymentTags = "`n  <Deployment enabled=`"true`" />"
-			$DeploymentTimeoutAttribute = " deploymentTimeout=`"600000`" agentNotRespondingTimeout=`"600000`""
-            if ($StartStudio.IsPresent -or $StartServer.IsPresent) {
-                $ReverseDeployScript = "copy `"%DeploymentDirectory%\TestResults\Manual Tests Server.log`" `"\\$ThisComputerHostname\$ResultsPathAsAdminShare\%AgentName% Server.log`"`n" + $ThoroughCleanupScript
-                if ($ServerUsername -ne "") {
-                    $ServerUsernameParam = " -ServerUsername '" + $ServerUsername + "'"
-                } else {
-                    $ServerUsernameParam = ""
-                }
-                if ($ServerPassword -ne "") {
-                    $ServerPasswordParam = " -ServerPassword '" + $ServerPassword + "'"
-                } else {
-                    $ServerPasswordParam = ""
-                }
-                $StartupScriptPath = "$TestsResultsPath\startup.bat"
-                $ScriptsTag = "`n  <Scripts setupScript=`"$StartupScriptPath`" cleanupScript=`"$CleanupScriptPath`" />"
-                if ($StartStudio.IsPresent) {
-                    $ReverseDeployScript = "copy `"%DeploymentDirectory%\TestResults\Manual Tests Studio.log`" `"\\$ThisComputerHostname\$ResultsPathAsAdminShare\%AgentName% Studio.log`"`n" + $ThoroughCleanupScript
-                    $AgentRoleTags = @"
-
-      <SelectionCriteria>
-        <AgentProperty name="UI" value="" />
-      </SelectionCriteria>
-"@
-                    $DeploymentTags = @"
-
-  <Deployment>
-    <DeploymentItem filename="..\DebugServer.zip" />
-    <DeploymentItem filename="..\DebugStudio.zip" />
-    <DeploymentItem filename="DebugServer.zip" />
-    <DeploymentItem filename="DebugStudio.zip" />
-    <DeploymentItem filename="..\Server.zip" />
-    <DeploymentItem filename="..\Studio.zip" />
-    <DeploymentItem filename="Server.zip" />
-    <DeploymentItem filename="Studio.zip" />
-    <DeploymentItem filename="Run Tests.ps1" />
-  </Deployment>
-"@
-					$BucketsTag = @"
-
-    <Buckets size="1" threshold="1"/>
-"@
-                    $StartCommand = "StartStudio"
-                } else {
-                    $DeploymentTags = @"
-
-  <Deployment>
-    <DeploymentItem filename="..\DebugServer.zip" />
-    <DeploymentItem filename="DebugServer.zip" />
-    <DeploymentItem filename="..\Server.zip" />
-    <DeploymentItem filename="Server.zip" />
-    <DeploymentItem filename="Run Tests.ps1" />
-  </Deployment>
-"@
-                    $StartCommand = "StartServer"
-                }
-                Copy-On-Write $StartupScriptPath
-                New-Item -Force -Path "$StartupScriptPath" -ItemType File -Value "powershell -Command `"&'%DeploymentDirectory%\Run Tests.ps1' -$StartCommand -ResourcesType $ResourcesType$ServerUsernameParam$ServerPasswordParam`""
-			    Copy-On-Write $CleanupScriptPath
-			    New-Item -Force -Path "$CleanupScriptPath" -ItemType File -Value "powershell -Command `"&'%DeploymentDirectory%\Run Tests.ps1' -Cleanup`"`n$ReverseDeployScript`nexit 0"
-            } else {
-			    Copy-On-Write $CleanupScriptPath
-			    New-Item -Force -Path "$CleanupScriptPath" -ItemType File -Value "$ReverseDeployScript`nexit 0"
-            }
-        }
-
-        # Create test settings.
-        $TestSettingsFile = ""
-        if (!$DisableTimeouts.IsPresent) {
-            $TestSettingsFile = "$TestsResultsPath\$JobName.testsettings"
-            Copy-On-Write $TestSettingsFile
-            [system.io.file]::WriteAllText($TestSettingsFile,  @"
-<?xml version=`"1.0`" encoding="UTF-8"?>
-<TestSettings id="$TestSettingsId" name="$JobName" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010" abortRunOnError="false">
-  <Description>$TestRunName.</Description>$DeploymentTags$NamingSchemeTag$ScriptsTag$ControllerNameTag
-  <Execution$RemoteExecutionAttribute>$BucketsTag
-    <Timeouts testTimeout="$TestsTimeout"$DeploymentTimeoutAttribute/>$TestTypeSpecificTags
-    <AgentRule name="$AgentRuleNameValue">$AgentRoleTags$DataCollectorTags
     </AgentRule>
   </Execution>
 </TestSettings>
 "@)
         }
+
         if (!$MSTest.IsPresent) {
             #Resolve test results file name
             Set-Location -Path "$TestsResultsPath\.."
@@ -945,10 +838,13 @@ if ($TotalNumberOfJobsToRun -gt 0) {
 				}
                 $TestCategories = " /TestCaseFilter:`"$TestCategories`""
             }
-            if($TestSettingsFile -ne "") {
+            if($RecordScreen.IsPresent) {
                 $TestSettings =  " /Settings:`"" + $TestSettingsFile + "`""
+            } else {
+                $TestSettings = ""
             }
-            if ($Parallelize.IsPresent -and !$StartStudio.IsPresent -and $DisableTimeouts.IsPresent) {
+
+            if ($Parallelize.IsPresent) {
                 $ParallelSwitch = " /Parallel"
             } else {
                 $ParallelSwitch = ""
@@ -964,15 +860,18 @@ if ($TotalNumberOfJobsToRun -gt 0) {
             $TestResultsFile = $TestsResultsPath + "\" + $JobName + " Results.trx"
             Copy-On-Write $TestResultsFile
 
+            if($RecordScreen.IsPresent) {
+                $TestSettings =  " /Settings:`"" + $TestSettingsFile + "`""
+            } else {
+                $TestSettings = ""
+            }
+
             # Create full MSTest argument string.
             if ($TestCategories -ne "") {
 				if ($TestCategories.StartsWith("(TestCategory")) {
 					$TestCategories = $TestCategories.Replace("(TestCategory", "").Replace("=", "").Replace(")", "")
 				}
                 $TestCategories = " /category:`"$TestCategories`""
-            }
-            if($TestSettingsFile -ne "") {
-                $TestSettings =  " /testsettings:`"" + $TestSettingsFile + "`""
             }
             $FullArgsList = $TestAssembliesList + " /resultsfile:`"" + $TestResultsFile + "`"" + $TestList + $TestSettings + $TestCategories
 
@@ -990,10 +889,12 @@ if ($TotalNumberOfJobsToRun -gt 0) {
             }
             if ($ApplyDotCover -and !$StartServer.IsPresent -and !$StartStudio.IsPresent) {
                 # Write DotCover Runner XML 
+                $DotCoverSnapshotFile = "$TestsResultsPath\$JobName DotCover Output.dcvr"
+                Copy-On-Write $DotCoverSnapshotFile
                 $DotCoverArgs = @"
 <AnalyseParams>
 	<TargetExecutable>$TestsResultsPath\..\Run $JobName.bat</TargetExecutable>
-	<Output>$TestsResultsPath\$JobName DotCover Output.dcvr</Output>
+	<Output>$DotCoverSnapshotFile</Output>
 	<Scope>
 "@
                 foreach ($TestAssembliesDirectory in $TestAssembliesDirectories) {
@@ -1013,9 +914,9 @@ if ($TotalNumberOfJobsToRun -gt 0) {
                 Out-File -LiteralPath $DotCoverRunnerXMLPath -Encoding default -InputObject $DotCoverArgs
                 
                 # Create full DotCover argument string.
-                $DotCoverLogFile = "$TestsResultsPath\DotCoverRunner.xml.log"
+                $DotCoverLogFile = "$TestsResultsPath\DotCover.xml.log"
                 Copy-On-Write $DotCoverLogFile
-                $FullArgsList = " cover `"$DotCoverRunnerXMLPath`" /LogFile=`"$DotCoverLogFile`""
+                $FullArgsList = " cover `"$DotCoverRunnerXMLPath`" /LogFile=`"$DotCoverLogFile'`""
 
                 #Write DotCover Runner Batch File
                 $DotCoverRunnerPath = "$TestsResultsPath\Run $JobName DotCover.bat"
@@ -1087,11 +988,7 @@ if ($RunWarewolfServiceTests.IsPresent) {
     }
     Write-Warning "Connecting to $WarewolfServerURL"
     $TestStartDateTime = Get-Date -Format o
-    if (!$DisableTimeouts.IsPresent) {
-        $ConnectTimeout = 180
-    } else {
-        $ConnectTimeout = 0
-    }
+    $ConnectTimeout = 180
     try {
         $ConnectToWarewolfServer = wget $WarewolfServerURL -Headers $Headers -TimeoutSec $ConnectTimeout -UseBasicParsing
     } catch {
@@ -1113,11 +1010,7 @@ if ($RunWarewolfServiceTests.IsPresent) {
         $WarewolfServiceTestURL = "http://" + $WarewolfService.BaseUrl.Replace(".json", ".tests")
         Write-Warning "Connecting to $WarewolfServiceTestURL"
         try {
-            if (!$DisableTimeouts.IsPresent) {
-                $TestTimeout = 180
-            } else {
-                $TestTimeout = 0
-            }
+            $TestTimeout = 180
             $TestStart = Get-Date
             $ServiceTestResults = ConvertFrom-Json (wget $WarewolfServiceTestURL -Headers $Headers -TimeoutSec $TestTimeout -UseBasicParsing)
             $ServiceTestDuration = New-TimeSpan -start $TestStart -end (Get-Date)
@@ -1281,7 +1174,7 @@ if ($Cleanup.IsPresent) {
 }
 
 if ($RunAllJobs.IsPresent) {
-    Invoke-Expression -Command ("&'$PSCommandPath' -JobName '$UnitTestJobNames' -DisableTimeouts")
+    Invoke-Expression -Command ("&'$PSCommandPath' -JobName '$UnitTestJobNames'")
     Invoke-Expression -Command ("&'$PSCommandPath' -JobName '$ServerTestJobNames' -StartServer -ResourcesType ServerTests")
     Invoke-Expression -Command ("&'$PSCommandPath' -JobName '$ReleaseResourcesJobNames' -StartServer -ResourcesType Release")
     Invoke-Expression -Command ("&'$PSCommandPath' -JobName '$RunAllCodedUITests' -StartStudio -ResourcesType UITests")
