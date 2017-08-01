@@ -14,8 +14,8 @@
 <div style="padding-top: 3px;">
     <table id="executionFilters" class="table">
         <tr>
-            <td class='filter-container filterContainId'>
-                <input id="filterId" autocomplete='off' class='filter' name='Execution Id' placeholder='Execution Id' data-col='Execution Id' />
+            <td class='filter-container filterContainUrl' style="width:100%">
+                <input id="filterUrl" autocomplete='off' class='filter' name='Url' placeholder='Url' data-col='Url' />
             </td>
             <td class='filter-container filterContainTime'>
                 <input id="filterTime" autocomplete='off' class='filter' name='Execution Time' placeholder='Time (ms)' data-col='Execution Time' />
@@ -28,9 +28,6 @@
             </td>
             <td class='filter-container filterContainComplete'>
                 <input id="filterComplete" autocomplete='off' class='filter' name='Completed Time' placeholder='Completed Time' data-col='Completed Time' />
-            </td>
-            <td class='filter-container filterContainUrl' style="width:100%">
-                <input id="filterUrl" autocomplete='off' class='filter' name='Url' placeholder='Url' data-col='Url' />
             </td>
             <td class='filter-container filterContainUser'>
                 <input id="filterUser" autocomplete='off' class='filter' name='User' placeholder='User' data-col='User' />
@@ -45,12 +42,11 @@
     <table id="executionList" class="tablesorter">
         <thead>
             <tr>
-                <th class="exId" title="Execution Id">Execution Id</th>
+                <th class="exUrl" title="Url">Url</th>
                 <th class="exTime" title="Execution Time">Execution Time</th>
                 <th class="exStatus" title="Status">Status</th>
                 <th class="exStart" title="Start Time">Start Time</th>
                 <th class="exComplete" title="Completed Time">Completed Time</th>
-                <th class="exUrl" title="Url">Url</th>
                 <th class="exUser" title="User">User</th>
                 <th>Result</th>
             </tr>
@@ -60,7 +56,16 @@
             {
                 <tr>
                     <td class="exRow">
-                        @Html.DisplayFor(modelItem => item.ExecutionId)
+                        @{
+                            if (item.Url == null)
+                            {
+                                @Html.DisplayFor(modelItem => item.Url)
+                            }
+                            else
+                            {
+                                <a class="executionUrl" title="@item.Url" href="@item.Url" target="_blank">@item.Url</a>
+                            }
+                        }
                     </td>
                     <td class="exRow">
                         @Html.DisplayFor(modelItem => item.ExecutionTime)
@@ -74,18 +79,7 @@
                     <td class="exRow">
                         @Html.DisplayFor(modelItem => item.CompletedDateTime)
                     </td>
-                    <td class="exRow">
-                        @{
-                            if (item.Url == null)
-                            {
-                                @Html.DisplayFor(modelItem => item.Url)
-                            }
-                            else
-                            {
-                                <a class="executionUrl" title="@item.Url" href="@item.Url" target="_blank">@item.Url</a>
-                            }
-                        }
-                    </td>
+                    
                     <td class="exRow">
                         @Html.DisplayFor(modelItem => item.User)
                     </td>
@@ -126,7 +120,7 @@
         $("#executionList .details").click(function (e) {
             e.preventDefault();
             var serverUrl = getServerUrl();
-            var executionId = $(this).closest("tr").find("td").eq(0).html();
+            var executionId = $(this).closest("tr").find("td").eq(0).html().trim();
             var wareWolfUrl = serverUrl + "/services/GetServiceExecutionResult";
 
             $.ajax({
@@ -155,9 +149,7 @@
                 failure: function (response) {
                     alert(response.responseText);
                 },
-                error: function (response) {
-                    alert(response.responseText);
-                }
+                error: OnErrorCall
             });
         });
 
