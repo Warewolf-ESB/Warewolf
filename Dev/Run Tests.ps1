@@ -411,7 +411,7 @@ function Move-Artifacts-To-TestResults([bool]$DotCover, [bool]$Server, [bool]$St
         Move-ScreenRecordings-To-TestResults
     }
     if (Test-Path "$PSScriptRoot\*.bat") {
-        foreach ($testRunner in (Get-ChildItem "$TestResultsPath\..\*.bat")) {
+        foreach ($testRunner in (Get-ChildItem "$PSScriptRoot\*.bat")) {
 	        Move-File-To-TestResults $testRunner.FullName $testRunner.Name
         }
     }
