@@ -33,6 +33,7 @@ using Dev2.Services.Security;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.Enums;
+using Microsoft.Practices.Prism.Mvvm;
 using Warewolf.Resource.Errors;
 
 // ReSharper disable CheckNamespace
@@ -430,6 +431,11 @@ namespace Dev2.Studio.Core.Models
                 }
             }
             OnDesignValidationReceived?.Invoke(this, memo);
+        }
+
+        public IView GetView(Func<IView> view)
+        {
+            return view.Invoke();
         }
 
         public void ClearErrors()
