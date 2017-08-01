@@ -5,7 +5,6 @@ using System.Text;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Enums;
-using Dev2.Runtime;
 using Dev2.Runtime.ESB.Management.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
@@ -113,7 +112,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.IsNotNull(logEntriesJson);
             var logEntriesObject = JsonConvert.DeserializeObject<List<LogEntry>>(logEntriesJson.ToString());
             Assert.IsNotNull(logEntriesObject);
-            var value = logEntriesObject[10].Url;
+            var value = logEntriesObject[0].Url;
             Assert.IsFalse(string.IsNullOrEmpty(value));
             Assert.AreEqual("http://RSAKLFPETERB:3142/Examples\\Loop Constructs - Select and Apply.XML", value);
 
@@ -131,7 +130,7 @@ namespace Dev2.Tests.Runtime.Services
             var logEntriesJson = getLogDataService.Execute(new Dictionary<string, StringBuilder>(), null);
             Assert.IsNotNull(logEntriesJson);
             var logEntriesObject = JsonConvert.DeserializeObject<List<LogEntry>>(logEntriesJson.ToString());
-            Assert.AreEqual(11, logEntriesObject.Count);
+            Assert.AreEqual(1, logEntriesObject.Count);
             //------------Execute Test---------------------------
 
             var stringBuilders = new Dictionary<string, StringBuilder>();
@@ -156,7 +155,7 @@ namespace Dev2.Tests.Runtime.Services
             var logEntriesJson = getLogDataService.Execute(new Dictionary<string, StringBuilder>(), null);
             Assert.IsNotNull(logEntriesJson);
             var logEntriesObject = JsonConvert.DeserializeObject<List<LogEntry>>(logEntriesJson.ToString());
-            Assert.AreEqual(11, logEntriesObject.Count);
+            Assert.AreEqual(1, logEntriesObject.Count);
             //------------Execute Test---------------------------
 
             var stringBuilders = new Dictionary<string, StringBuilder>();
@@ -165,7 +164,7 @@ namespace Dev2.Tests.Runtime.Services
             logEntriesJson = getLogDataService.Execute(stringBuilders, null);
             //------------Assert Results-------------------------
             logEntriesObject = JsonConvert.DeserializeObject<List<LogEntry>>(logEntriesJson.ToString());
-            Assert.AreEqual(10, logEntriesObject.Count);
+            Assert.AreEqual(0, logEntriesObject.Count);
 
         }
 
@@ -181,7 +180,7 @@ namespace Dev2.Tests.Runtime.Services
             var logEntriesJson = getLogDataService.Execute(new Dictionary<string, StringBuilder>(), null);
             Assert.IsNotNull(logEntriesJson);
             var logEntriesObject = JsonConvert.DeserializeObject<List<LogEntry>>(logEntriesJson.ToString());
-            Assert.AreEqual(11, logEntriesObject.Count);
+            Assert.AreEqual(1, logEntriesObject.Count);
             //------------Execute Test---------------------------
 
             var stringBuilders = new Dictionary<string, StringBuilder> {{"Status", "Failed".ToStringBuilder()}};
@@ -204,7 +203,7 @@ namespace Dev2.Tests.Runtime.Services
             var logEntriesJson = getLogDataService.Execute(new Dictionary<string, StringBuilder>(), null);
             Assert.IsNotNull(logEntriesJson);
             var logEntriesObject = JsonConvert.DeserializeObject<List<LogEntry>>(logEntriesJson.ToString());
-            Assert.AreEqual(11, logEntriesObject.Count);
+            Assert.AreEqual(1, logEntriesObject.Count);
             //------------Execute Test---------------------------
 
             var stringBuilders = new Dictionary<string, StringBuilder> {{ "User", "DEV2\\nkosinathi.sangweni".ToStringBuilder()}};
@@ -226,7 +225,7 @@ namespace Dev2.Tests.Runtime.Services
             var logEntriesJson = getLogDataService.Execute(new Dictionary<string, StringBuilder>(), null);
             Assert.IsNotNull(logEntriesJson);
             var logEntriesObject = JsonConvert.DeserializeObject<List<LogEntry>>(logEntriesJson.ToString());
-            Assert.AreEqual(11, logEntriesObject.Count);
+            Assert.AreEqual(1, logEntriesObject.Count);
             //------------Execute Test---------------------------
 
             var stringBuilders = new Dictionary<string, StringBuilder> {{ "ExecutionId", "674b2bf6-225d-446b-a645-aee95ed731af".ToStringBuilder()}};
@@ -248,7 +247,7 @@ namespace Dev2.Tests.Runtime.Services
             var logEntriesJson = getLogDataService.Execute(new Dictionary<string, StringBuilder>(), null);
             Assert.IsNotNull(logEntriesJson);
             var logEntriesObject = JsonConvert.DeserializeObject<List<LogEntry>>(logEntriesJson.ToString());
-            Assert.AreEqual(11, logEntriesObject.Count);
+            Assert.AreEqual(1, logEntriesObject.Count);
             //------------Execute Test---------------------------
 
             var stringBuilders = new Dictionary<string, StringBuilder> {{ "ExecutionTime", "601".ToStringBuilder()}};
@@ -270,7 +269,7 @@ namespace Dev2.Tests.Runtime.Services
             var logEntriesJson = getLogDataService.Execute(new Dictionary<string, StringBuilder>(), null);
             Assert.IsNotNull(logEntriesJson);
             var logEntriesObject = JsonConvert.DeserializeObject<List<LogEntry>>(logEntriesJson.ToString());
-            Assert.AreEqual(11, logEntriesObject.Count);
+            Assert.AreEqual(1, logEntriesObject.Count);
             //------------Execute Test---------------------------
 
             var stringBuilders = new Dictionary<string, StringBuilder> {{ "User", "BadUser".ToStringBuilder()}};
