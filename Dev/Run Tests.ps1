@@ -410,8 +410,8 @@ function Move-Artifacts-To-TestResults([bool]$DotCover, [bool]$Server, [bool]$St
     if ($RecordScreen.IsPresent) {
         Move-ScreenRecordings-To-TestResults
     }
-    if (Test-Path "$PSScriptRoot\*.bat") {
-        foreach ($testRunner in (Get-ChildItem "$PSScriptRoot\*.bat")) {
+    if (Test-Path "$PSScriptRoot\Run *.bat") {
+        foreach ($testRunner in (Get-ChildItem "$PSScriptRoot\Run *.bat")) {
 	        Move-File-To-TestResults $testRunner.FullName $testRunner.Name
         }
     }
@@ -798,6 +798,35 @@ if ($TotalNumberOfJobsToRun -gt 0) {
 	        exit 1
         }
 
+        # Setup for screen recording
+        if ($RecordScreen.IsPresent) {
+		    $TestSettingsId = [guid]::NewGuid()
+            $NamingSchemeTag = "`n"
+
+            # Create test settings.
+            $TestSettingsFile = "$TestsResultsPath\$JobName.testsettings"
+            Copy-On-Write $TestSettingsFile
+            [system.io.file]::WriteAllText($TestSettingsFile,  @"
+<?xml version=`"1.0`" encoding="UTF-8"?>
+<TestSettings id="$TestSettingsId" name="$JobName" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Description>Run $JobName With Screen Recording.</Description>
+  <NamingScheme baseName="ScreenRecordings" appendTimeStamp="false" useDefault="false" />
+  <Execution>
+    <Timeouts testTimeout="360000"/>
+    <AgentRule name="LocalMachineDefaultRole">
+      <DataCollectors>
+        <DataCollector uri="datacollector://microsoft/VideoRecorder/1.0" assemblyQualifiedName="Microsoft.VisualStudio.TestTools.DataCollection.VideoRecorder.VideoRecorderDataCollector, Microsoft.VisualStudio.TestTools.DataCollection.VideoRecorder, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" friendlyName="Screen and Voice Recorder">
+          <Configuration>
+            <MediaRecorder sendRecordedMediaForPassedTestCase="false" xmlns="" />
+          </Configuration>
+        </DataCollector>
+      </DataCollectors>
+    </AgentRule>
+  </Execution>
+</TestSettings>
+"@)
+        }
+
         if (!$MSTest.IsPresent) {
             #Resolve test results file name
             Set-Location -Path "$TestsResultsPath\.."
@@ -808,6 +837,9 @@ if ($TotalNumberOfJobsToRun -gt 0) {
 					$TestCategories = "(TestCategory=" + $TestCategories  + ")"
 				}
                 $TestCategories = " /TestCaseFilter:`"$TestCategories`""
+            }
+            if($RecordScreen.IsPresent) {
+                $TestSettings =  " /Settings:`"" + $TestSettingsFile + "`""
             }
             if ($Parallelize.IsPresent) {
                 $ParallelSwitch = " /Parallel"
@@ -824,6 +856,10 @@ if ($TotalNumberOfJobsToRun -gt 0) {
             #Resolve test results file name
             $TestResultsFile = $TestsResultsPath + "\" + $JobName + " Results.trx"
             Copy-On-Write $TestResultsFile
+
+            if($RecordScreen.IsPresent) {
+                $TestSettings =  " /Settings:`"" + $TestSettingsFile + "`""
+            }
 
             # Create full MSTest argument string.
             if ($TestCategories -ne "") {
