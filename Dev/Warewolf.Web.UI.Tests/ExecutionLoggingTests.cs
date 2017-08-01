@@ -3,14 +3,16 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UITesting;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Firefox;
+using OpenQA.Selenium.IE;
 using OpenQA.Selenium.Support.UI;
+using System.Net;
 
 namespace SeleniumTests
 {
-    [TestClass]
-    public class TrivialWebTests
+    [CodedUITest]
+    public class ExecutionLoggingTests
     {
         private IWebDriver driver;
         private StringBuilder verificationErrors;
@@ -20,8 +22,9 @@ namespace SeleniumTests
         [TestInitialize]
         public void SetupTest()
         {
-            driver = new FirefoxDriver();
-            baseURL = "https://warewolf.io/";
+            WebRequest.Create("http://localhost:3142/secure/Hello%20World.json?Name=Tester");
+            driver = new InternetExplorerDriver();
+            baseURL = "http://my.warewolf.io";
             verificationErrors = new StringBuilder();
         }
         
@@ -40,19 +43,10 @@ namespace SeleniumTests
         }
         
         [TestMethod]
-        public void TheTrivialWebTestsTest()
+        public void TheExecutionLoggingTestsTest()
         {
-            driver.Navigate().GoToUrl(baseURL + "/");
-            driver.FindElement(By.LinkText("Download Now")).Click();
-            driver.FindElement(By.LinkText("Free Download")).Click();
-            driver.FindElement(By.Id("FNAME")).Clear();
-            driver.FindElement(By.Id("FNAME")).SendKeys("Ashley");
-            driver.FindElement(By.Id("LNAME")).Clear();
-            driver.FindElement(By.Id("LNAME")).SendKeys("Lewis");
-            driver.FindElement(By.Id("EMAIL")).Clear();
-            driver.FindElement(By.Id("EMAIL")).SendKeys("ashley.lewis@dev2.co.za");
-            new SelectElement(driver.FindElement(By.Id("WUSAGE"))).SelectByText("API development");
-            driver.FindElement(By.CssSelector("button.close")).Click();
+            driver.Navigate().GoToUrl(baseURL + "/ExecutionLogging");
+            driver.FindElement(By.Id("updateServer")).Click();
         }
         private bool IsElementPresent(By by)
         {

@@ -342,15 +342,15 @@
                                                                       </AndCondition>
                                                                       <SupportLevel>0</SupportLevel>
                                                                       <Descendants>
-                                                                        <UIObject ControlType="ListItem" Id="COMPluginNamespaceItem" FriendlyName="{&quot;AssemblyLocation&quot;:&quot;{00000514-0000-0010-8000-00AA..." SpecialControlType="None">
+                                                                        <UIObject ControlType="ListItem" Id="COMPluginNamespaceItem1" FriendlyName="{&quot;AssemblyLocation&quot;:&quot;{00000514-0000-0010-8000-00AA..." SpecialControlType="None">
                                                                           <TechnologyName>UIA</TechnologyName>
                                                                           <WindowTitles>
                                                                             <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
                                                                           </WindowTitles>
                                                                           <AndCondition>
-                                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                                             <PropertyCondition Name="ControlType">ListItem</PropertyCondition>
-                                                                            <PropertyCondition Name="Name">{"AssemblyLocation":"{00000514-0000-0010-8000-00AA006D2EA4}","AssemblyName":"ADODB.CursorTypeEnum","FullName":"ADODB.CursorTypeEnum","MethodName":null,"JsonObject":null}</PropertyCondition>
+                                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                            <PropertyCondition Name="Instance">1</PropertyCondition>
                                                                           </AndCondition>
                                                                           <SupportLevel>0</SupportLevel>
                                                                           <Descendants />

@@ -401,8 +401,6 @@ namespace Dev2.Activities.Specs.TestFramework
             }
         }
 
-
-
         [Given(@"the test builder is open with ""(.*)""")]
         [When(@"the test builder is open with ""(.*)""")]
         [Then(@"the test builder is open with ""(.*)""")]
@@ -433,8 +431,6 @@ namespace Dev2.Activities.Specs.TestFramework
             Assert.IsNotNull(testFramework);
             Assert.IsNotNull(testFramework.ResourceModel);
             MyContext.Add("testFramework", testFramework);
-
-
         }
 
         [Given(@"I update inputs as")]
