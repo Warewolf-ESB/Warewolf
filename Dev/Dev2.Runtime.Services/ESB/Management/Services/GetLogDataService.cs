@@ -45,7 +45,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                         }
                         if (s.LogType == "ERROR")
                         {
-                            logEntry.Result = "ERROR";
+                            logEntry.Status = "ERROR";
                         }
                         if (s.Message.StartsWith("Completed Execution"))
                         {

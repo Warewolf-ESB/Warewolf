@@ -129,7 +129,15 @@ namespace Dev2.Runtime.ESB.WF
                     {
                         var resource = _lazyCat.GetResource(GlobalConstants.ServerWorkspaceID, dataObject.ResourceID);
                         var executePayload = ExecutionEnvironmentUtils.GetJsonOutputFromEnvironment(dataObject, resource.DataList.ToString(), 0);
-                        Dev2Logger.Debug("Execution Result :" + Environment.NewLine + executePayload.RemoveNewLines(), dataObject.ExecutionID.ToString());
+                        if (dataObject.Environment.HasErrors())
+                        {
+                            Dev2Logger.Error(GlobalConstants.ExecutionLoggingResultStartTag + (executePayload ?? "").RemoveNewLines() + GlobalConstants.ExecutionLoggingResultEndTag, dataObject.ExecutionID.ToString());
+                        }
+                        else
+                        {
+                            Dev2Logger.Debug(GlobalConstants.ExecutionLoggingResultStartTag + (executePayload ?? "").RemoveNewLines() + GlobalConstants.ExecutionLoggingResultEndTag, dataObject.ExecutionID.ToString());
+                        }
+
                     }
                     catch (Exception)
                     {

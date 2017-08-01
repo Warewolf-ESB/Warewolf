@@ -103,8 +103,14 @@ namespace Dev2.Runtime.WebServer
                 executePayload = SetupErrors(dataObject, allErrors);
             }
 
-            Dev2Logger.Debug(GlobalConstants.ExecutionLoggingResultStartTag+ (executePayload ?? "").RemoveNewLines() + GlobalConstants.ExecutionLoggingResultEndTag, dataObject.ExecutionID.ToString());
-
+            if (dataObject.Environment.HasErrors())
+            {
+                Dev2Logger.Error(GlobalConstants.ExecutionLoggingResultStartTag + (executePayload ?? "").RemoveNewLines() + GlobalConstants.ExecutionLoggingResultEndTag, dataObject.ExecutionID.ToString());
+            }
+            else
+            {
+                Dev2Logger.Debug(GlobalConstants.ExecutionLoggingResultStartTag + (executePayload ?? "").RemoveNewLines() + GlobalConstants.ExecutionLoggingResultEndTag, dataObject.ExecutionID.ToString());
+            }
             if (!dataObject.Environment.HasErrors() && esbExecuteRequest.WasInternalService)
             {
                 if (executePayload.IsJSON())

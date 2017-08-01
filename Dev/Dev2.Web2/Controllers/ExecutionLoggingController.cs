@@ -32,13 +32,25 @@ namespace Dev2.Web2.Controllers
 
 
         [HttpPost]
-        public ActionResult ExecutionList(string jsonData)
+        [ValidateInput(false)]
+        public ActionResult ExecutionList(LogEntry[] logEntries)
         {
-            var logEntries = JsonConvert.DeserializeObject<List<LogEntry>>(jsonData.ToString());
-            var request = CheckRequest(null);
-            var model = new Tuple<List<LogEntry>, ExecutionLoggingRequestViewModel>(logEntries, request);
+            var emptyModel = new List<LogEntry>();
+            if (logEntries != null)
+            {
+                try
+                {
+                    var request = CheckRequest(null);
+                    var model = new Tuple<LogEntry[], ExecutionLoggingRequestViewModel>(logEntries, request);
 
-            return PartialView("ExecutionList", model.Item1);
+                    return PartialView("ExecutionList", model.Item1);
+                }
+                catch
+                {
+                    return PartialView("ExecutionList", emptyModel);
+                }
+            }
+            return PartialView("ExecutionList", emptyModel);
         }
 
         private ExecutionLoggingRequestViewModel CheckRequest(ExecutionLoggingRequestViewModel Request)

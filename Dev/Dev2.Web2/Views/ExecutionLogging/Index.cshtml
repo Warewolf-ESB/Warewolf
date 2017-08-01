@@ -12,7 +12,6 @@
 
     <link rel='stylesheet' type='text/css' href='~/Content/Site.css' />
 
-
     <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
     <script src="https://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
 </head>
@@ -53,7 +52,7 @@
 
 
 <script type="text/javascript">
-    
+
     function showExecutionList() {
         document.getElementById("loader").style.display = "none";
         document.getElementById("divExecutionList").style.display = "block";
@@ -84,18 +83,26 @@
             xhrFields: {
                 withCredentials: true
             },
-            success: function (response) {
-                var jsonData = JSON.stringify(response);
-                $.post('@Url.Action("ExecutionList", "ExecutionLogging")', { jsonData: jsonData },
-                    function (data, textStatus, jqXHR) {
-                        $('#divExecutionList').html(data);
-                        showExecutionList();
-                    });
-            },
-            error: function (errorThrown) {
-                console.log(errorThrown);
-            }
+            success: OnSuccessCall,
+            error: OnErrorCall
         });
+    }
+
+    var OnSuccessCall = function (response,textStatus,jqXHR) {        
+        $.ajax({
+            type: "POST",
+            url: "ExecutionLogging/ExecutionList",
+            data: { 'logEntries': response},
+            success: function (executionListHTML) {
+                $("#divExecutionList").html(executionListHTML);
+                showExecutionList();
+            },
+            error: OnErrorCall
+        });
+    };
+
+    var OnErrorCall = function (xhr, status, errorThrown) {
+        alert(status + " " + errorThrown);
     }
 
     $(document).one('ready', function () {
