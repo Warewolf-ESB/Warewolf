@@ -3,7 +3,6 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Microsoft.VisualStudio.TestTools.UITesting;
 using OpenQA.Selenium;
 using OpenQA.Selenium.IE;
 using OpenQA.Selenium.Support.UI;
@@ -11,7 +10,7 @@ using System.Net;
 
 namespace SeleniumTests
 {
-    [CodedUITest]
+    [TestClass]
     public class ExecutionLoggingTests
     {
         private IWebDriver driver;
