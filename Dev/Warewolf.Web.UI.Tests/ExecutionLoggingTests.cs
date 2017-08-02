@@ -31,7 +31,7 @@ namespace SeleniumTests
             WebRequest.Create("http://localhost:3142/secure/Hello%20World.json?Name=Tester");
             driver = new InternetExplorerDriver();
             baseURL = "http://my.warewolf.io";
-            screenRecorder.StartRecord(TestContext);
+            screenRecorder.StartRecording(TestContext);
             verificationErrors = new StringBuilder();
         }
 
@@ -46,7 +46,7 @@ namespace SeleniumTests
             {
                 // Ignore errors if unable to close the browser
             }
-            screenRecorder.StopRecord(TestContext);
+            screenRecorder.StopRecording(TestContext);
             Assert.AreEqual("", verificationErrors.ToString());
         }
         

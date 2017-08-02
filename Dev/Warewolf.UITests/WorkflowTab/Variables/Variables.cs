@@ -185,7 +185,7 @@ namespace Warewolf.UITests
         [TestInitialize]
         public void MyTestInitialize()
         {
-            screenRecorder.StartRecord(TestContext);
+            screenRecorder.StartRecording(TestContext);
             UIMap.SetPlaybackSettings();
             UIMap.AssertStudioIsRunning();
             UIMap.Click_NewWorkflow_RibbonButton();
@@ -195,7 +195,7 @@ namespace Warewolf.UITests
         [TestCleanup]
         public void StopScreenRecording()
         {
-            screenRecorder.StopRecord(TestContext);
+            screenRecorder.StopRecording(TestContext);
         }
 
         UIMap UIMap

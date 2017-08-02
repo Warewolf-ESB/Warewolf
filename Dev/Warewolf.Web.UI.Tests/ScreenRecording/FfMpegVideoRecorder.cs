@@ -24,11 +24,11 @@ namespace AutoTestSharedTools.VideoRecorder
         {
             if (!this.stopped)
             {
-                this.StopRecord();
+                this.StopRecording();
             }
         }
 
-        public bool StartRecord(TestContext TestContext)
+        public bool StartRecording(TestContext TestContext)
         {
             if (this.isRunning)
             {
@@ -49,7 +49,7 @@ namespace AutoTestSharedTools.VideoRecorder
             return true;
         }
 
-        public void StopRecord(TestContext TestContext=null)
+        public void StopRecording(TestContext TestContext=null)
         {
             this.stopped = true;
             this.recordingTask.Wait();
