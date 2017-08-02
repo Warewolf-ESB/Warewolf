@@ -19,7 +19,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         #region Fields
 
         private DeploySourceExplorerViewModel _target;
-
+        private Mock<IEnvironmentViewModel> _selectedEnvironment;
         private Mock<IShellViewModel> _shellViewModelMock;
         private Mock<IServer> _serverMock;
         private Mock<IEventAggregator> _eventAggregatorMock;
@@ -34,6 +34,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         [TestInitialize]
         public void TestInitialize()
         {
+            _selectedEnvironment = new Mock<IEnvironmentViewModel>();
+            _selectedEnvironment.Setup(p => p.DisplayName).Returns("someResName");
             _shellViewModelMock = new Mock<IShellViewModel>();
             var mockExplorerViewModel = new Mock<IExplorerViewModel>();
             _shellViewModelMock.Setup(model => model.ExplorerViewModel).Returns(mockExplorerViewModel.Object);
@@ -49,7 +51,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _shellViewModelMock.SetupGet(it => it.LocalhostServer).Returns(_serverMock.Object);
             _eventAggregatorMock = new Mock<IEventAggregator>();
             _deployStatsViewerViewModel = new Mock<IDeployStatsViewerViewModel>();
-            _target = new DeploySourceExplorerViewModel(_shellViewModelMock.Object, _eventAggregatorMock.Object, _deployStatsViewerViewModel.Object);
+            _target = new DeploySourceExplorerViewModel(_shellViewModelMock.Object, _eventAggregatorMock.Object, _deployStatsViewerViewModel.Object, _selectedEnvironment.Object);
         }
 
         #endregion Test initialize
