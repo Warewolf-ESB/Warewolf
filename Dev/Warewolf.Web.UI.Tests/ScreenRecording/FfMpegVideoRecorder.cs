@@ -8,6 +8,7 @@ namespace AutoTestSharedTools.VideoRecorder
     using System.Threading.Tasks;
     using System.Windows.Forms;
     using Accord.Video.FFMPEG;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     public class FfMpegVideoRecorder : IVideoRecorder, IDisposable
     {
@@ -27,23 +28,17 @@ namespace AutoTestSharedTools.VideoRecorder
             }
         }
 
-        public bool StartRecord(string outputFilePath)
+        public bool StartRecord(TestContext TestContext)
         {
-            int wait = 0;
-            while (this.isRunning)
+            if (this.isRunning)
             {
-                Thread.Sleep(100);
-                if (wait++ > 10)
-                {
-                    return false;
-                }
+                return false;
             }
 
             this.stopped = false;
             this.startDateTime = DateTime.Now;
-
-            outputFilePath = Path.ChangeExtension(outputFilePath, VideoExtention);
-            this.filename = outputFilePath;
+            
+            this.filename = Path.Combine(TestContext.DeploymentDirectory, TestContext.TestName + "_on_" + Environment.MachineName) + "." + VideoExtention;
 
             if (File.Exists(this.filename))
             {
@@ -54,10 +49,18 @@ namespace AutoTestSharedTools.VideoRecorder
             return true;
         }
 
-        public void StopRecord()
+        public void StopRecord(TestContext TestContext=null)
         {
             this.stopped = true;
             this.recordingTask.Wait();
+            if (TestContext == null || TestContext.CurrentTestOutcome == UnitTestOutcome.Passed)
+            {
+                File.Delete(this.filename);
+            }
+            else
+            {
+                TestContext.AddResultFile(this.filename);
+            }
         }
 
         private void Record()
@@ -81,12 +84,17 @@ namespace AutoTestSharedTools.VideoRecorder
 
                 var graphics = Graphics.FromImage(bitmap);
 
+                var sw = new StreamWriter(Console.OpenStandardError());
+                Console.SetOut(sw);
                 while (!this.stopped || (DateTime.Now - this.startDateTime < TimeSpan.FromMilliseconds(100)))
                 {
                     graphics.CopyFromScreen(0, 0, 0, 0, Screen.PrimaryScreen.Bounds.Size);
                     writer.WriteVideoFrame(bitmap);
                     Thread.Sleep(10);
                 }
+                sw = new StreamWriter(Console.OpenStandardOutput());
+                sw.AutoFlush = true;
+                Console.SetOut(sw);
 
                 writer.Close();
                 writer.Dispose();
