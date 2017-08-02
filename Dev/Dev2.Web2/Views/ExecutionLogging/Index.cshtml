@@ -78,6 +78,11 @@
         document.getElementById("port").value = "3142";
     }
 
+    $('#serverName').keypress(function (e) {
+        if (e.keyCode == 13)
+            $('#updateServer').click();
+    });
+
     function getLogData() {
         var serverUrl = getServerUrl();
         var wareWolfUrl = serverUrl + "/services/GetLogDataService";
