@@ -140,9 +140,7 @@
                     withCredentials: true
                 },
                 success: OnSuccessGet,
-                failure: function (request, status, error) {
-                    alert(request.responseText + " " + status + " " + error);
-                },
+                fail: OnFailCall,
                 error: OnErrorCall
             });
         });

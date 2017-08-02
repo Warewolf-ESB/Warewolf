@@ -72,6 +72,12 @@
         return serverUrl;
     }
 
+    function reset() {
+        document.getElementById("protocolDropdown").value = "http";
+        document.getElementById("serverName").value = "localhost";
+        document.getElementById("port").value = "3142";
+    }
+
     function getLogData() {
         var serverUrl = getServerUrl();
         var wareWolfUrl = serverUrl + "/services/GetLogDataService";
@@ -84,6 +90,7 @@
                 withCredentials: true
             },
             success: OnSuccessCall,
+            fail: OnFailCall,
             error: OnErrorCall
         });
     }
@@ -101,8 +108,16 @@
         });
     };
 
+    var OnFailCall = function (request, status, error) {
+        alert(request.responseText + " " + status + " " + error);
+        reset();
+        getLogData();
+    }
+
     var OnErrorCall = function (request, status, error) {
         alert(request.responseText + " " + status + " " + error);
+        reset();
+        getLogData();
     }
 
     $(document).one('ready', function () {
