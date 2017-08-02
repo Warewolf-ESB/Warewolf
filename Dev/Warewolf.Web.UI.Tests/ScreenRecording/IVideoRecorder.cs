@@ -1,6 +1,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace AutoTestSharedTools.VideoRecorder
+namespace Warewolf.Web.UI.Tests.ScreenRecording
 {
     public interface IVideoRecorder
     {

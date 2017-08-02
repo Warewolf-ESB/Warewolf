@@ -3,7 +3,7 @@ using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.UITests.WorkflowTab.Tools.Data.DataToolsUIMapClasses;
 using Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses;
-using AutoTestSharedTools.VideoRecorder;
+using Warewolf.Web.UI.Tests.ScreenRecording;
 
 namespace Warewolf.UITests
 {

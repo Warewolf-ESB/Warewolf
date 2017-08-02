@@ -22,9 +22,9 @@ foreach ($Class in (Get-ChildItem "$PSScriptRoot\*.cs" -Recurse)) {
                 {
 					"            screenRecorder.StopRecording(TestContext);"
                 }
-                if ($_ -eq "using OpenQA.Selenium.Support.UI;" -and $PreviousLine -ne "using AutoTestSharedTools.VideoRecorder;") 
+                if ($_ -eq "using OpenQA.Selenium.Support.UI;" -and $PreviousLine -ne "using Warewolf.Web.UI.Tests.ScreenRecording;") 
                 {
-					"using AutoTestSharedTools.VideoRecorder;"
+					"using Warewolf.Web.UI.Tests.ScreenRecording;"
                 }
                 $_
                 $PreviousLine = $_
