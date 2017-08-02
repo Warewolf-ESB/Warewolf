@@ -1,4 +1,4 @@
-namespace AutoTestSharedTools.VideoRecorder
+namespace Warewolf.Web.UI.Tests.ScreenRecording
 {
     using System;
     using System.Drawing;

@@ -5,7 +5,7 @@ using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 using OpenQA.Selenium.IE;
-using AutoTestSharedTools.VideoRecorder;
+using Warewolf.Web.UI.Tests.ScreenRecording;
 using OpenQA.Selenium.Support.UI;
 using System.Net;
 using System.Windows.Forms;
