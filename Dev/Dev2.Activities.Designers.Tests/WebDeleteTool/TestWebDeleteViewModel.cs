@@ -79,6 +79,28 @@ namespace Dev2.Activities.Designers.Tests.WebDeleteTool
         }
 
         [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("Webget_MethodName")]
+        public void GetHeaderRegion_GivenIsNew_ShouldReturnInputArea()
+        {
+            //---------------Set up test pack-------------------
+            var id = Guid.NewGuid();
+            var mod = GetMockModel();
+            var act = GetPostActivityWithOutPuts(mod);
+            var deleteViewModel = new WebServiceDeleteViewModel(ModelItemUtils.CreateModelItem(act), mod);
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            //---------------Test Result -----------------------
+            Assert.IsTrue(deleteViewModel.SourceRegion.IsEnabled);
+            Assert.IsTrue(deleteViewModel.OutputsRegion.IsEnabled);
+            Assert.IsTrue(deleteViewModel.InputArea.IsEnabled);
+            Assert.IsTrue(deleteViewModel.ErrorRegion.IsEnabled);
+            deleteViewModel.ValidateTestComplete();
+            Assert.IsTrue(deleteViewModel.OutputsRegion.IsEnabled);
+            Assert.AreSame(deleteViewModel.InputArea, deleteViewModel.GetHeaderRegion());
+        }
+
+        [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory("WebDeleteDesignerViewModel_Handle")]
         public void WebDeleteDesignerViewModel_UpdateHelp_ShouldCallToHelpViewMode()

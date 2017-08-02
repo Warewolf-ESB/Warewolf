@@ -25,16 +25,8 @@ namespace Dev2.Studio.Diagnostics
 
         public AppExceptionHandler(IApp current, IShellViewModel mainViewModel)
         {
-            if(current == null)
-            {
-                throw new ArgumentNullException("current");
-            }
-            if(mainViewModel == null)
-            {
-                throw new ArgumentNullException("mainViewModel");
-            }
-            _current = current;
-            _mainViewModel = mainViewModel;
+            _current = current ?? throw new ArgumentNullException("current");
+            _mainViewModel = mainViewModel ?? throw new ArgumentNullException("mainViewModel");
         }
 
         #endregion

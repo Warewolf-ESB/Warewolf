@@ -120,7 +120,10 @@ namespace Warewolf.Studio.ViewModels.Tests
                 _aggregatorMock.Object,
                 _asyncWorkerMock.Object,
                 _executorMock.Object);
-            _target.PropertyChanged += (sender, args) => { _changedProperties.Add(args.PropertyName); };
+            _target.PropertyChanged += (sender, args) =>
+            {
+                _changedProperties.Add(args.PropertyName);
+            };
 
             _changedPropertiesSource = new List<string>();
             _targetSource = new ManageNewServerViewModel(
@@ -129,7 +132,10 @@ namespace Warewolf.Studio.ViewModels.Tests
                 _serverSourceMock.Object,
                 _asyncWorkerMock.Object,
                 _executorMock.Object);
-            _targetSource.PropertyChanged += (sender, args) => { _changedPropertiesSource.Add(args.PropertyName); };
+            _targetSource.PropertyChanged += (sender, args) =>
+            {
+                _changedPropertiesSource.Add(args.PropertyName);
+            };
 
             _changedPropertiesRequestServiceViewModel = new List<string>();
             _targetRequestServiceViewModel = new ManageNewServerViewModel(
@@ -723,64 +729,91 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestProtocol()
         {
             //arrange
-            var expectedValue = "someValue";
-            _changedProperties.Clear();
-
+          var   target = new ManageNewServerViewModel(
+                _updateManagerMock.Object,
+                _aggregatorMock.Object,
+                _asyncWorkerMock.Object,
+                _executorMock.Object);
+            var changed = false;
+            target.PropertyChanged += (sender, args) =>
+            {
+                if (args.PropertyName == "Protocol")
+                {
+                    changed = true;
+                }
+            };
             //act
-            _target.Protocol = expectedValue;
-            var actualValue = _target.Protocol;
+            target.Protocol = "expectedValue";
+            var actualValue = target.Protocol;
 
             //assert
-            Assert.AreEqual(expectedValue, actualValue);
-            Assert.IsTrue(_changedProperties.Contains(_target.Protocol));
-            Assert.IsFalse(_target.TestPassed);
-            Assert.IsTrue(string.IsNullOrEmpty(_target.TestMessage));
-            Assert.IsFalse(_target.TestPassed);
-            Assert.IsFalse(_target.Testing);
+            Assert.AreEqual("expectedValue", actualValue);
+            Assert.IsTrue(changed);
+            Assert.IsFalse(target.TestPassed);
+            Assert.IsTrue(string.IsNullOrEmpty(target.TestMessage));
+            Assert.IsFalse(target.TestPassed);
+            Assert.IsFalse(target.Testing);
         }
 
         [TestMethod]
         public void TestProtocolCorrect3143()
         {
             //arrange
+            var target = new ManageNewServerViewModel(_updateManagerMock.Object, _aggregatorMock.Object, _asyncWorkerMock.Object, _executorMock.Object);
+            var changed = false;
+            target.PropertyChanged += (sender, args) =>
+            {
+                if (args.PropertyName == "Protocol")
+                {
+                    changed = true;
+                }
+            };
             var expectedValue = "https";
-            _target.SelectedPort = "3142";
-            _target.Protocol = "";
-            _changedProperties.Clear();
+            target.SelectedPort = "3142";
+            target.Protocol = "";
 
             //act
-            _target.Protocol = expectedValue;
-            var actualValue = _target.Protocol;
+            target.Protocol = expectedValue;
+            var actualValue = target.Protocol;
 
             //assert
             Assert.AreEqual(expectedValue, actualValue);
-            Assert.IsTrue(_changedProperties.Contains(_target.Protocol));
-            Assert.IsFalse(_target.TestPassed);
-            Assert.IsTrue(string.IsNullOrEmpty(_target.TestMessage));
-            Assert.IsFalse(_target.Testing);
-            Assert.AreEqual("3143", _target.SelectedPort);
+            Assert.IsTrue(changed);
+            Assert.IsFalse(target.TestPassed);
+            Assert.IsTrue(string.IsNullOrEmpty(target.TestMessage));
+            Assert.IsFalse(target.Testing);
+            Assert.AreEqual("3143", target.SelectedPort);
         }
 
         [TestMethod]
         public void TestProtocolCorrect3142()
         {
             //arrange
+           
+            var target = new ManageNewServerViewModel(_updateManagerMock.Object,_aggregatorMock.Object,_asyncWorkerMock.Object,_executorMock.Object);
+            var changed = false;
+            target.PropertyChanged += (sender, args) =>
+            {
+                if (args.PropertyName == "Protocol")
+                {
+                    changed = true;
+                }
+            };
             var expectedValue = "http";
-            _target.SelectedPort = "3143";
-            _changedProperties.Clear();
+            target.SelectedPort = "3143";
 
             //act
-            _target.Protocol = expectedValue;
-            var actualValue = _target.Protocol;
+            target.Protocol = expectedValue;
+            var actualValue = target.Protocol;
 
             //assert
             Assert.AreEqual(expectedValue, actualValue);
-            Assert.IsTrue(_changedProperties.Contains(_target.Protocol));
-            Assert.IsFalse(_target.TestPassed);
-            Assert.IsTrue(string.IsNullOrEmpty(_target.TestMessage));
-            Assert.IsFalse(_target.TestPassed);
-            Assert.IsFalse(_target.Testing);
-            Assert.AreEqual("3142", _target.SelectedPort);
+            Assert.IsTrue(changed);
+            Assert.IsFalse(target.TestPassed);
+            Assert.IsTrue(string.IsNullOrEmpty(target.TestMessage));
+            Assert.IsFalse(target.TestPassed);
+            Assert.IsFalse(target.Testing);
+            Assert.AreEqual("3142", target.SelectedPort);
         }
 
         [TestMethod]

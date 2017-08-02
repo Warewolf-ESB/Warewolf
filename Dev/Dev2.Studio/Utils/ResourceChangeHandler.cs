@@ -45,11 +45,7 @@ namespace Dev2.Utils
         readonly IEventAggregator _eventPublisher;
         public ResourceChangeHandler(IEventAggregator eventPublisher)
         {
-            if(eventPublisher == null)
-            {
-                throw new ArgumentNullException("eventPublisher");
-            }
-            _eventPublisher = eventPublisher;
+            _eventPublisher = eventPublisher ?? throw new ArgumentNullException("eventPublisher");
         }
 
         public void ShowResourceChanged(IContextualResourceModel resource, IList<string> numberOfDependants, IResourceChangedDialog resourceChangedDialog = null)

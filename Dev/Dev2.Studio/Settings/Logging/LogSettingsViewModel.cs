@@ -69,8 +69,7 @@ namespace Dev2.Settings.Logging
         public LogSettingsViewModel(LoggingSettingsTo logging, IServer currentEnvironment)
         {
             if (logging == null) throw new ArgumentNullException(nameof(logging));
-            if (currentEnvironment == null) throw new ArgumentNullException(nameof(currentEnvironment));
-            CurrentEnvironment = currentEnvironment;
+            CurrentEnvironment = currentEnvironment ?? throw new ArgumentNullException(nameof(currentEnvironment));
             GetServerLogFileCommand = new DelegateCommand(OpenServerLogFile);
             GetStudioLogFileCommand = new DelegateCommand(OpenStudioLogFile);
             LogLevel serverFileLogLevel;

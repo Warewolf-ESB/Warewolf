@@ -9,18 +9,37 @@
 */
 
 using System.Threading;
+using Dev2.Common.Interfaces;
+using Dev2.Runtime.Hosting;
+using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.WebServer.TransferObjects;
 
 namespace Dev2.Runtime.WebServer.Handlers
 {
     public class WebGetRequestHandler : AbstractWebRequestHandler
     {
+        private IResourceCatalog _catalog;
+        private ITestCatalog _testCatalog;
+
+        public WebGetRequestHandler(IResourceCatalog catalog, ITestCatalog testCatalog)
+        {
+            _catalog = catalog;
+            _testCatalog = testCatalog;
+        }
+
+        public WebGetRequestHandler()
+        {
+
+        }
+
         public override void ProcessRequest(ICommunicationContext ctx)
         {
             var postDataListID = GetDataListID(ctx);
-            if(postDataListID != null)
+            if (postDataListID != null)
             {
-                new WebPostRequestHandler().ProcessRequest(ctx);
+                _catalog = _catalog ?? ResourceCatalog.Instance;
+                _testCatalog = _testCatalog ?? TestCatalog.Instance;
+                new WebPostRequestHandler(_catalog, _testCatalog).ProcessRequest(ctx);
                 return;
             }
 
@@ -30,14 +49,14 @@ namespace Dev2.Runtime.WebServer.Handlers
             var requestTO = new WebRequestTO { ServiceName = serviceName, WebServerUrl = ctx.Request.Uri.ToString(), Dev2WebServer = $"{ctx.Request.Uri.Scheme}://{ctx.Request.Uri.Authority}" };
             var data = GetPostData(ctx);
 
-            if(!string.IsNullOrEmpty(data))
+            if (!string.IsNullOrEmpty(data))
             {
                 requestTO.RawRequestPayload = data;
             }
             var variables = ctx.Request.BoundVariables;
-            if(variables != null)
+            if (variables != null)
             {
-                foreach(string key in variables)
+                foreach (string key in variables)
                 {
                     requestTO.Variables.Add(key, variables[key]);
                 }
@@ -45,7 +64,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             // Execute in its own thread to give proper context ;)
             Thread.CurrentPrincipal = ctx.Request.User;
 
-            var responseWriter = CreateForm(requestTO, serviceName, workspaceID, ctx.FetchHeaders(),ctx.Request.User);
+            var responseWriter = CreateForm(requestTO, serviceName, workspaceID, ctx.FetchHeaders(), ctx.Request.User);
             ctx.Send(responseWriter);
         }
     }

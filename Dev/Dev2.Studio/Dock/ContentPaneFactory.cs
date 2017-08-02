@@ -660,12 +660,7 @@ namespace Dev2.Studio.Dock
         /// <param name="pane">The pane being initialized</param>
         public InitializeContentPaneEventArgs(ContentPane pane)
         {
-            if (pane == null)
-            {
-                throw new ArgumentNullException(nameof(pane));
-            }
-
-            _pane = pane;
+            _pane = pane ?? throw new ArgumentNullException(nameof(pane));
         }
 
         /// <summary>
