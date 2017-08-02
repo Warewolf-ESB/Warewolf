@@ -298,6 +298,13 @@ function Move-File-To-TestResults([string]$SourceFilePath, [string]$DestinationF
     }
 }
 
+function Merge-DotCover-Snapshots($DotCoverSnapshots) {
+    $MergedSnapshot = "$TestsResultsPath\$JobName Merged Server and Studio DotCover.dcvr"
+	Copy-On-Write "$MergedSnapshot"
+    $DotCoverSnapshotsString = $DotCoverSnapshots -join "`";`""
+    &"$DotCoverPath" "merge" "/Source=`"$DotCoverSnapshotsString`"" "/Output=`"$MergedSnapshot`"" "/LogFile=`"$TestsResultsPath\ServerAndStudioDotCoverSnapshotMerge.log`""
+}
+
 function Move-Artifacts-To-TestResults([bool]$DotCover, [bool]$Server, [bool]$Studio) {
     if (Test-Path "C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\Common7\IDE\CommonExtensions\Microsoft\TestWindow\TestResults\*.trx") {
         Move-Item "C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\Common7\IDE\CommonExtensions\Microsoft\TestWindow\TestResults\*.trx" "$TestsResultsPath"
@@ -403,9 +410,7 @@ function Move-Artifacts-To-TestResults([bool]$DotCover, [bool]$Server, [bool]$St
         }
     }
     if ($Server -and $Studio -and $DotCover) {
-		$MergedSnapshot = "$TestsResultsPath\$JobName Merged Server and Studio DotCover.dcvr"
-		Copy-On-Write "$MergedSnapshot"
-        &"$DotCoverPath" "merge" "/Source=`"$TestsResultsPath\$JobName Server DotCover.dcvr`";`"$TestsResultsPath\$JobName Studio DotCover.dcvr`"" "/Output=`"$MergedSnapshot`"" "/LogFile=`"$TestsResultsPath\ServerAndStudioDotCoverSnapshotMerge.log`""
+        Merge-DotCover-Snapshots @("$TestsResultsPath\$JobName Server DotCover.dcvr", "$TestsResultsPath\$JobName Studio DotCover.dcvr")
     }
     if ($RecordScreen.IsPresent) {
         Move-ScreenRecordings-To-TestResults
