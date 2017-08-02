@@ -100,8 +100,8 @@
     </table>
 </div>
 
-<div id="dialog">
-    <p id="exResult"></p>
+<div id="dialogResult" class="dialogResult">
+    <p class="exResult"></p>
 </div>
 
 <script type="text/javascript">
@@ -125,6 +125,7 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
+
         $("#executionList .details").click(function (e) {
             e.preventDefault();
             var serverUrl = getServerUrl();
@@ -139,13 +140,17 @@
                 xhrFields: {
                     withCredentials: true
                 },
-                success: OnSuccessGet,
+                success: function (response) {
+                    var dg = createDialog();
+                    $('.exResult').text(response.Result);
+                    dg.dialog("open");
+                },
                 fail: OnFailCall,
                 error: OnErrorCall
             });
         });
 
-        var OnSuccessGet = function (response) {
+        var createDialog = function () {
             var opt = {
                 autoOpen: false,
                 modal: true,
@@ -155,10 +160,16 @@
                 minWidth: 400,
                 minHeight: 300,
                 width: 400,
-                height: 300
+                height: 300,
+                hide: {
+                    effect: "fade",
+                    duration: 500
+                },
+                close: function (event, ui) {
+                    $(this).dialog('close');
+                }
             };
-            $('#exResult').text(response.Result);
-            $('#dialog').dialog(opt).dialog("open");
+            return $('#dialogResult').dialog(opt);
         };
 
         $('.executionUrl').on('click', function () {
