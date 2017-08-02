@@ -721,6 +721,19 @@
                                                           <SupportLevel>0</SupportLevel>
                                                           <Descendants />
                                                         </UIObject>
+                                                        <UIObject ControlType="Custom" Id="Spinner" FriendlyName="" SpecialControlType="None">
+                                                          <TechnologyName>UIA</TechnologyName>
+                                                          <WindowTitles>
+                                                            <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                                                          </WindowTitles>
+                                                          <AndCondition>
+                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                            <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                                                            <PropertyCondition Name="ClassName">Uia.CircularProgressBar</PropertyCondition>
+                                                          </AndCondition>
+                                                          <SupportLevel>0</SupportLevel>
+                                                          <Descendants />
+                                                        </UIObject>
                                                       </Descendants>
                                                     </UIObject>
                                                     <UIObject ControlType="TreeItem" Id="RemoteServer" FriendlyName="Warewolf.Studio.ViewModels.EnvironmentViewModel" SpecialControlType="None">

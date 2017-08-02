@@ -158,6 +158,25 @@ namespace Dev2.Activities.Designers.Tests.WebPostTool
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        public void GetHeaderRegion_GivenIsNew_ShouldReturnInputArea()
+        {
+            //---------------Set up test pack-------------------
+            var id = Guid.NewGuid();
+            var mod = GetMockModel();
+            var act = GetEmptyPostActivity();
+            var postViewModel = new WebServicePostViewModel(ModelItemUtils.CreateModelItem(act), mod);
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            Assert.IsTrue(postViewModel.SourceRegion.IsEnabled);
+            Assert.IsFalse(postViewModel.OutputsRegion.IsEnabled);
+            Assert.IsFalse(postViewModel.InputArea.IsEnabled);
+            Assert.IsTrue(postViewModel.ErrorRegion.IsEnabled);
+            //---------------Test Result -----------------------
+            Assert.AreSame(postViewModel.InputArea, postViewModel.GetHeaderRegion());
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
         public void ActionSetSource_GivenSelectedSource_ShouldHaveDefaultValues()
         {
             //---------------Set up test pack-------------------

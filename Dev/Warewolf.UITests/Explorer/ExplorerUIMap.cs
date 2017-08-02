@@ -410,7 +410,7 @@ namespace Warewolf.UITests.Explorer.ExplorerUIMapClasses
         [Then(@"I Click Explorer Filter Clear Button")]
         public void Click_Explorer_Filter_Clear_Button()
         {
-            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.ClearFilterButton, new Point(6, 8));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.ClearFilterButton);
         }
 
         [When(@"I Click Explorer Localhost First Item")]

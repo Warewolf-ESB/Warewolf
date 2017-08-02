@@ -13,10 +13,14 @@ using System.Collections.Specialized;
 using System.Security.Claims;
 using System.Security.Principal;
 using Dev2.Common;
+using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.Interfaces.Monitoring;
 using Dev2.PerformanceCounters.Counters;
+using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.WebServer;
 using Dev2.Runtime.WebServer.Handlers;
+using Dev2.Services.Security;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -57,6 +61,7 @@ namespace Dev2.Tests.Runtime.WebServer
             principle.Setup(p => p.Identity.Name).Verifiable();
             ClaimsPrincipal.ClaimsPrincipalSelector = () => new ClaimsPrincipal(principle.Object);
             ClaimsPrincipal.PrimaryIdentitySelector = identities => new ClaimsIdentity(mockIdentity.Object);
+            Common.Utilities.OrginalExecutingUser = new GenericPrincipal(new GenericIdentity("MyName"), new []{"Admin"});
             Mock<ICommunicationContext> ctx = new Mock<ICommunicationContext>();
             NameValueCollection boundVariables = new NameValueCollection { { "servicename", "ping" }, { "instanceid", "" }, { "bookmark", "" } };
             NameValueCollection queryString = new NameValueCollection { { GlobalConstants.DLID, Guid.Empty.ToString() }, { "wid", Guid.Empty.ToString() } };
@@ -64,8 +69,10 @@ namespace Dev2.Tests.Runtime.WebServer
             ctx.Setup(c => c.Request.QueryString).Returns(queryString);
             ctx.Setup(c => c.Request.Uri).Returns(new Uri("http://localhost:3142/www/foo.html"));
             ctx.Setup(c => c.Request.User).Returns(principle.Object);
-
-            var websiteResourceHandler = new WebsiteResourceHandler();
+            var mock = new Mock<IResourceCatalog>();
+            var testCat = new Mock<ITestCatalog>();
+            var authoServcie = new Mock<IAuthorizationService>();
+            var websiteResourceHandler = new WebsiteResourceHandler(mock.Object, testCat.Object,authoServcie.Object);
 
             //------------Execute Test---------------------------
             websiteResourceHandler.ProcessRequest(ctx.Object);
@@ -146,7 +153,7 @@ namespace Dev2.Tests.Runtime.WebServer
             principle.Setup(p => p.Identity.Name).Verifiable();
             ClaimsPrincipal.ClaimsPrincipalSelector = () => new ClaimsPrincipal(principle.Object);
             ClaimsPrincipal.PrimaryIdentitySelector = identities => new ClaimsIdentity(mockIdentity.Object);
-
+            Common.Utilities.OrginalExecutingUser = principle.Object;
             Mock<ICommunicationContext> ctx = new Mock<ICommunicationContext>();
             NameValueCollection boundVariables = new NameValueCollection { { "servicename", "ping" }, { "website", "foo" }, { "path", "bar" } };
             NameValueCollection queryString = new NameValueCollection { { GlobalConstants.DLID, Guid.Empty.ToString() }, { "wid", Guid.Empty.ToString() } };
@@ -154,8 +161,12 @@ namespace Dev2.Tests.Runtime.WebServer
             ctx.Setup(c => c.Request.QueryString).Returns(queryString);
             ctx.Setup(c => c.Request.Uri).Returns(new Uri("http://localhost:3142/www/foo.html"));
             ctx.Setup(c => c.Request.User).Returns(principle.Object);
-
-            var websiteResourceHandler = new WebsiteResourceHandler();
+            var mock = new Mock<IResourceCatalog>();
+            var testCat = new Mock<ITestCatalog>();
+            var authoServcie = new Mock<IAuthorizationService>();
+            authoServcie.Setup(service => service.IsAuthorized(It.IsAny<AuthorizationContext>(), It.IsAny<string>()))
+                .Returns(true);
+            var websiteResourceHandler = new WebsiteResourceHandler(mock.Object,testCat.Object, authoServcie.Object);
 
             //------------Execute Test---------------------------
             websiteResourceHandler.ProcessRequest(ctx.Object);
