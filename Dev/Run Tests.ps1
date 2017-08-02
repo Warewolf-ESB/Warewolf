@@ -28,7 +28,8 @@ Param(
   [switch]$RunAllServerTests,
   [switch]$RunAllReleaseResourcesTests,
   [switch]$RunAllCodedUITests,
-  [switch]$RunWarewolfServiceTests
+  [switch]$RunWarewolfServiceTests,
+  [string]$MergeDotCoverSnapshotsInDirectory
 )
 $JobSpecs = @{}
 #Unit Tests
@@ -298,11 +299,24 @@ function Move-File-To-TestResults([string]$SourceFilePath, [string]$DestinationF
     }
 }
 
-function Merge-DotCover-Snapshots($DotCoverSnapshots) {
-    $MergedSnapshot = "$TestsResultsPath\$JobName Merged Server and Studio DotCover.dcvr"
-	Copy-On-Write "$MergedSnapshot"
-    $DotCoverSnapshotsString = $DotCoverSnapshots -join "`";`""
-    &"$DotCoverPath" "merge" "/Source=`"$DotCoverSnapshotsString`"" "/Output=`"$MergedSnapshot`"" "/LogFile=`"$TestsResultsPath\ServerAndStudioDotCoverSnapshotMerge.log`""
+function Merge-DotCover-Snapshots($DotCoverSnapshots, [string]$DestinationFilePath, [string]$LogFilePath) {
+	Copy-On-Write "$DestinationFilePath"
+    Copy-On-Write "$LogFilePath"
+    if ($DotCoverSnapshots -ne $null -and $DotCoverSnapshots.Count -gt 1) {
+        if ($DotCoverSnapshots -ne $null -and $DotCoverSnapshots.Count -gt 5) {
+            $DotCoverSnapshotsString = $DotCoverSnapshots[0] + "`";`"" + $DotCoverSnapshots[1]
+            &"$DotCoverPath" "merge" "/Source=`"$DotCoverSnapshotsString`"" "/Output=`"$DestinationFilePath`"" "/LogFile=`"$LogFilePath`""
+            foreach ($DotCoverSnapshot in $DotCoverSnapshots[2..($DotCoverSnapshots.Count-2)]) {
+                $DotCoverSnapshotsString = $DestinationFilePath + "`";`"" + $DotCoverSnapshot
+                &"$DotCoverPath" "merge" "/Source=`"$DotCoverSnapshotsString`"" "/Output=`"$DestinationFilePath`"" "/LogFile=`"$LogFilePath`""
+            }
+        } else {
+            $DotCoverSnapshotsString = $DotCoverSnapshots -join "`";`""
+            &"$DotCoverPath" "merge" "/Source=`"$DotCoverSnapshotsString`"" "/Output=`"$DestinationFilePath`"" "/LogFile=`"$LogFilePath`""
+        }
+    } else {
+        Write-Warning Cannot merge $DotCoverSnapshots
+    }
 }
 
 function Move-Artifacts-To-TestResults([bool]$DotCover, [bool]$Server, [bool]$Studio) {
@@ -410,7 +424,7 @@ function Move-Artifacts-To-TestResults([bool]$DotCover, [bool]$Server, [bool]$St
         }
     }
     if ($Server -and $Studio -and $DotCover) {
-        Merge-DotCover-Snapshots @("$TestsResultsPath\$JobName Server DotCover.dcvr", "$TestsResultsPath\$JobName Studio DotCover.dcvr")
+        Merge-DotCover-Snapshots @("$TestsResultsPath\$JobName Server DotCover.dcvr", "$TestsResultsPath\$JobName Studio DotCover.dcvr") "$TestsResultsPath\$JobName Merged Server and Studio DotCover.dcvr" "$TestsResultsPath\ServerAndStudioDotCoverSnapshotMerge.log"
     }
     if ($RecordScreen.IsPresent) {
         Move-ScreenRecordings-To-TestResults
@@ -1178,6 +1192,11 @@ if ($RunWarewolfServiceTests.IsPresent) {
     New-Item -Force -Path "$TestsResultsPath\TestResults.trx" -ItemType File -Value $TRXFileContents
 }
 
+if ($MergeDotCoverSnapshotsInDirectory -ne "") {
+    $DotCoverSnapshots = Get-ChildItem $MergeDotCoverSnapshotsInDirectory\*.dcvr -Recurse
+    Merge-DotCover-Snapshots $DotCoverSnapshots "$TestsPath\Merged DotCover Snapshots.dcvr" "$TestsPath\DotCover Snapshot Merge.log"
+}
+
 if ($Cleanup.IsPresent) {
     if ($ApplyDotCover) {
         Cleanup-ServerStudio $false
@@ -1201,7 +1220,7 @@ if ($RunAllJobs.IsPresent) {
     Invoke-Expression -Command ("&'$PSCommandPath' -JobName '$RunAllCodedUITests' -StartStudio -ResourcesType UITests")
 }
 
-if (!$RunAllJobs.IsPresent -and !$Cleanup.IsPresent -and !$AssemblyFileVersionsTest.IsPresent -and !$RunAllUnitTests.IsPresent -and !$RunAllServerTests.IsPresent -and !$RunAllCodedUITests.IsPresent -and $JobName -eq "" -and !$RunWarewolfServiceTests.IsPresent) {
+if (!$RunAllJobs.IsPresent -and !$Cleanup.IsPresent -and !$AssemblyFileVersionsTest.IsPresent -and !$RunAllUnitTests.IsPresent -and !$RunAllServerTests.IsPresent -and !$RunAllCodedUITests.IsPresent -and $JobName -eq "" -and !$RunWarewolfServiceTests.IsPresent -and !$MergeDotCoverSnapshotsInDirectory -eq "") {
     $ServerPath,$ResourcesType = Install-Server $ServerPath $ResourcesType
     Start-Server $ServerPath $ResourcesType
     if (!$StartServer.IsPresent) {
