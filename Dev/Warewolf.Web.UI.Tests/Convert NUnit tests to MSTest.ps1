@@ -14,13 +14,13 @@ foreach ($Class in (Get-ChildItem "$PSScriptRoot\*.cs" -Recurse)) {
 					"        public TestContext TestContext { get; set; }"
 					"        private FfMpegVideoRecorder screenRecorder = new FfMpegVideoRecorder();"
                 }
-                if ($_ -eq "            verificationErrors = new StringBuilder();" -and $PreviousLine -ne "            screenRecorder.StartRecord(TestContext);") 
+                if ($_ -eq "            verificationErrors = new StringBuilder();" -and $PreviousLine -ne "            screenRecorder.StartRecording(TestContext);") 
                 {
-					"            screenRecorder.StartRecord(TestContext);"
+					"            screenRecorder.StartRecording(TestContext);"
                 }
-                if ($_ -eq "            Assert.AreEqual(`"`", verificationErrors.ToString());" -and $PreviousLine -ne "            screenRecorder.StopRecord(TestContext);") 
+                if ($_ -eq "            Assert.AreEqual(`"`", verificationErrors.ToString());" -and $PreviousLine -ne "            screenRecorder.StopRecording(TestContext);") 
                 {
-					"            screenRecorder.StopRecord(TestContext);"
+					"            screenRecorder.StopRecording(TestContext);"
                 }
                 if ($_ -eq "using OpenQA.Selenium.Support.UI;" -and $PreviousLine -ne "using AutoTestSharedTools.VideoRecorder;") 
                 {
