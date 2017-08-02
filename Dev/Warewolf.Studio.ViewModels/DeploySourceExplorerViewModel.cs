@@ -16,14 +16,15 @@ namespace Warewolf.Studio.ViewModels
     public class DeploySourceExplorerViewModel : ExplorerViewModelBase, IDeploySourceExplorerViewModel
     {
         readonly IDeployStatsViewerViewModel _statsArea;
-
         readonly IShellViewModel _shellViewModel;
         readonly Action<IExplorerItemViewModel> _selectAction;
         bool _loaded;
         IEnumerable<IExplorerTreeItem> _preselected;
         private Version _serverVersion;
         private object _serverInformation;
-        public DeploySourceExplorerViewModel(IShellViewModel shellViewModel, Microsoft.Practices.Prism.PubSubEvents.IEventAggregator aggregator, IDeployStatsViewerViewModel statsArea)
+        private IEnvironmentViewModel _selectedEnv;
+
+        public DeploySourceExplorerViewModel(IShellViewModel shellViewModel, Microsoft.Practices.Prism.PubSubEvents.IEventAggregator aggregator, IDeployStatsViewerViewModel statsArea, IEnvironmentViewModel selectedEnvironment = null)
         {
             if (shellViewModel == null)
             {
@@ -32,6 +33,7 @@ namespace Warewolf.Studio.ViewModels
             var localhostEnvironment = CreateEnvironmentFromServer(shellViewModel.LocalhostServer, shellViewModel);
             _shellViewModel = shellViewModel;
             _selectAction = SelectAction;
+            _selectedEnv = selectedEnvironment;
             // ReSharper disable once VirtualMemberCallInContructor
             Environments = new ObservableCollection<IEnvironmentViewModel> { localhostEnvironment };
             // ReSharper disable once VirtualMemberCallInContructor
@@ -71,7 +73,7 @@ namespace Warewolf.Studio.ViewModels
                 task.Wait();
             }
             if (_environments.Count == _shellViewModel?.ExplorerViewModel?.Environments?.Count)
-            {                
+            {
                 UpdateItemForDeploy(environmentId);
             }
             else
@@ -328,10 +330,11 @@ namespace Warewolf.Studio.ViewModels
         {
             localhostEnvironment.Connect();
             await localhostEnvironment.Load(true, true);
-            if (SelectedEnvironment.DisplayName == localhostEnvironment.DisplayName)
+            var selectedEnvironment = SelectedEnvironment == null ? _selectedEnv : SelectedEnvironment;
+            if (selectedEnvironment?.DisplayName == localhostEnvironment.DisplayName)
             {
                 AfterLoad(localhostEnvironment.Server.EnvironmentID);
-            }            
+            }
         }
 
         IEnvironmentViewModel CreateEnvironmentFromServer(IServer server, IShellViewModel shellViewModel)
