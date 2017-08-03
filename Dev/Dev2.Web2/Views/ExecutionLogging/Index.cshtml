@@ -13,9 +13,10 @@
     <script src="https://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
     <script src="@Url.Content("~/Scripts/jquery-1.8.3.js")" type="text/javascript"></script>
     <script src="@Url.Content("~/Scripts/jquery-ui-1.9.2.custom.min.js")" type="text/javascript"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js" type="text/javascript"></script>
     <link rel='stylesheet' type='text/css' href='~/Content/Site.css' />
 </head>
-<body>
+
     <div id="ExecutionFilters" style="padding-top: 6px;">
 
         <table id="filterTable">
@@ -45,10 +46,13 @@
         <div id="loader_7" class="loader"></div>
         <div id="loader_8" class="loader"></div>
     </div>
-    <div style="display:none;" id="divExecutionList" class="animate-bottom">
-        @{Html.RenderPartial("ExecutionList", Model.Item1);}
+    <div style="display:none;" id="divExecutionList" class="animate-bottom">        
     </div>
-</body>
+
+
+<div class="dialogResult">
+    <p class="exResult"></p>
+</div>
 
 
 <script type="text/javascript">
@@ -60,6 +64,11 @@
 
     function hideExecutionList() {
         document.getElementById("loader").style.display = "block";
+        document.getElementById("divExecutionList").style.display = "none";
+    }
+
+    function hideExecutionAndLoader() {
+        document.getElementById("loader").style.display = "none";
         document.getElementById("divExecutionList").style.display = "none";
     }
 
@@ -88,9 +97,10 @@
         var wareWolfUrl = serverUrl + "/services/GetLogDataService";
 
         $.ajax({
-            type: "GET",
+            type: "POST",
             url: wareWolfUrl,
             cache: false,
+            crossDomain: true,
             xhrFields: {
                 withCredentials: true
             },
@@ -103,11 +113,12 @@
     var OnSuccessCall = function (response,textStatus,jqXHR) {        
         $.ajax({
             type: "POST",
-            url: "ExecutionLogging/ExecutionList",
+            url: "/ExecutionLogging/ExecutionList",
+            crossDomain: true,
             data: { 'logEntries': response},
             success: function (executionListHTML) {
-                $("#divExecutionList").html(executionListHTML);
                 showExecutionList();
+                $("#divExecutionList").html(executionListHTML);
             },
             error: OnErrorCall
         });
@@ -122,17 +133,45 @@
     var OnErrorCall = function (request, status, error) {
         alert(request.responseText + " " + status + " " + error);
         reset();
-        getLogData();
+        hideExecutionAndLoader();
     }
 
-    $(document).one('ready', function () {
+    var createDialog = function () {
+        var opt = {
+            autoOpen: false,
+            modal: true,
+            title: "Result",
+            maxWidth: 600,
+            maxHeight: 500,
+            minWidth: 400,
+            minHeight: 300,
+            width: 400,
+            height: 300,
+            hide: {
+                effect: "fade",
+                duration: 500
+            }
+        };
+        if (window.resultDialog == null) {
+            window.resultDialog = $('.dialogResult').dialog(opt);
+        }
+    };
+
+    function reloadJs(src) {
+        src = $('script[src$="' + src + '"]').attr("src");
+        $('script[src$="' + src + '"]').remove();
+        $('<script/>').attr('src', src).appendTo('body');
+    }
+
+    $(document).one('ready', function () {        
         getLogData();
     });
 
-    $(document).ready(function () {
+    $(document).ready(function () {        
         $('#updateServer').on('click', function (e) {
             e.preventDefault();
-            hideExecutionList();
+            e.stopPropagation();
+            hideExecutionList();            
             getLogData();
         });
 
@@ -144,7 +183,7 @@
             else {
                 $("#port").val("3142");
             }
-        });
+        });        
     })
 </script>
 
