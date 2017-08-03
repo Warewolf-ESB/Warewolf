@@ -47,11 +47,19 @@
     <div id="loader_7" class="loader"></div>
     <div id="loader_8" class="loader"></div>
 </div>
-<div style="display:none;" id="divExecutionList" class="animate-bottom">
+<div id="divExecutionList" class="animate-bottom">
 </div>
 
 <div class="dialogResult">
     <p class="exResult"></p>
+</div>
+
+<div id="generalMessageDiv" class="generalMessageWrap">
+    <div class="generalMessage">
+        <div class="generalMessageContent">
+            <p class="generalMessageText"></p>
+        </div>
+    </div>
 </div>
 
 <script type="text/javascript">
@@ -61,11 +69,13 @@
     function showExecutionList() {
         document.getElementById("loader").style.display = "none";
         document.getElementById("divExecutionList").style.display = "block";
+        document.getElementById("generalMessageDiv").style.display = "none";
     }
 
     function hideExecutionList() {
         document.getElementById("loader").style.display = "block";
         document.getElementById("divExecutionList").style.display = "none";
+        document.getElementById("generalMessageDiv").style.display = "none";
     }
 
     function hideExecutionAndLoader() {
@@ -77,6 +87,7 @@
         var protocol = document.getElementById("protocolDropdown").value;
         var serverName = document.getElementById("serverName").value;
         var port = document.getElementById("port").value;
+
         var serverUrl = protocol + "://" + serverName + ":" + port;
 
         return serverUrl;
@@ -95,33 +106,37 @@
 
     function getLogData() {
         $.support.cors = true;
-        var serverUrl = getServerUrl();
+        var serverUrl = getServerUrl().toLowerCase();
         var wareWolfUrl = serverUrl + "/services/GetLogDataService";
         var pingUrl = serverUrl + "/secure/ping";
         if (browserType == "Edge") {
-
-            var oReq = new XMLHttpRequest();
-            oReq.open('GET', pingUrl, true);
-            oReq.withCredentials = true;
-            oReq.onreadystatechange = function () {
-                if (oReq.readyState == oReq.DONE) {
-                    if (oReq.status == 200) {
-                        var xhr = new XMLHttpRequest();
-                        xhr.open('POST', wareWolfUrl, true); 
-                        xhr.withCredentials = true;
-                        xhr.onreadystatechange = function () {
-                            if (xhr.readyState == xhr.DONE) {
-                                if (xhr.status == 200) {
-                                    var returnData = JSON.parse(xhr.response);
-                                    OnSuccessCall(returnData, xhr.statusText, xhr);
+                var oReq = new XMLHttpRequest();
+                oReq.open('GET', pingUrl, true);
+                oReq.withCredentials = true;
+                oReq.onreadystatechange = function () {
+                    if (oReq.readyState == oReq.DONE) {
+                        if (oReq.status == 200) {
+                            var xhr = new XMLHttpRequest();
+                            xhr.open('POST', wareWolfUrl, true);
+                            xhr.withCredentials = true;
+                            xhr.onreadystatechange = function () {
+                                if (xhr.readyState == xhr.DONE) {
+                                    if (xhr.status == 200) {
+                                        var returnData = JSON.parse(xhr.response);
+                                        OnSuccessCall(returnData, xhr.statusText, xhr);
+                                    }
                                 }
-                            }
-                        };
-                        xhr.send();
+                            };
+                            xhr.send();
+                        }
+                        else {
+                            $('.generalMessageText').text("This feature is not currently available in Microsoft Edge");
+                            hideExecutionAndLoader();
+                            document.getElementById("generalMessageDiv").style.display = "block";
+                        }
                     }
-                }
-            };
-            oReq.send();
+                };
+                oReq.send();
         }
         else {
             $.ajax({
@@ -139,15 +154,9 @@
         }
     }
 
-    function jsonpCallback(data) {
-        alert(data);
-        alert("jsonpCallback");
-    }
-
     var OnSuccessCall = function (response, textStatus, jqXHR) {
 
         var url = "ExecutionLogging/ExecutionList";
-
         if (browserType == "Firefox") {
             url = "/ExecutionLogging/ExecutionList";
         }
@@ -207,6 +216,7 @@
         $('#updateServer').on('click', function (e) {
             e.preventDefault();
             e.stopPropagation();
+            browserType = browser();
             hideExecutionList();
             getLogData();
         });
