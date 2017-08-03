@@ -3,14 +3,22 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.UITests.DialogsUIMapClasses;
 using Warewolf.UITests.WorkflowTab.Tools.LoopConstructs.LoopConstructToolsUIMapClasses;
 using Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses;
+using Warewolf.Web.UI.Tests.ScreenRecording;
 
 namespace Warewolf.UITests.Tools
 {
     [CodedUITest]
     public class ForEach
     {
+        public TestContext TestContext { get; set; }
+        private FfMpegVideoRecorder screenRecorder = new FfMpegVideoRecorder();
 
         [TestMethod]
+        [DeploymentItem(@"avformat-57.dll")]
+        [DeploymentItem(@"avutil-55.dll")]
+        [DeploymentItem(@"swresample-2.dll")]
+        [DeploymentItem(@"swscale-4.dll")]
+        [DeploymentItem(@"avcodec-57.dll")]
         [TestCategory("Tools")]
         public void ForEachTool_Small_And_LargeView_UITest()
         {
@@ -31,6 +39,11 @@ namespace Warewolf.UITests.Tools
         }
 
         [TestMethod]
+        [DeploymentItem(@"avformat-57.dll")]
+        [DeploymentItem(@"avutil-55.dll")]
+        [DeploymentItem(@"swresample-2.dll")]
+        [DeploymentItem(@"swscale-4.dll")]
+        [DeploymentItem(@"avcodec-57.dll")]
 		[TestCategory("Tools")]
         public void Drag_Decision_And_SwitchTools_Into_ForEachActivityDrop_ExpectError_UITest()
         {
@@ -43,6 +56,11 @@ namespace Warewolf.UITests.Tools
         }
 
         [TestMethod]
+        [DeploymentItem(@"avformat-57.dll")]
+        [DeploymentItem(@"avutil-55.dll")]
+        [DeploymentItem(@"swresample-2.dll")]
+        [DeploymentItem(@"swscale-4.dll")]
+        [DeploymentItem(@"avcodec-57.dll")]
 		[TestCategory("Tools")]
         public void Drag_Assigntool_Into_ForEachActivityDrop_ExpectSuccess_UITest()
         {
@@ -54,10 +72,17 @@ namespace Warewolf.UITests.Tools
         [TestInitialize]
         public void MyTestInitialize()
         {
+            screenRecorder.StartRecording(TestContext);
             UIMap.SetPlaybackSettings();
             UIMap.AssertStudioIsRunning();
             UIMap.Click_NewWorkflow_RibbonButton();
             WorkflowTabUIMap.Drag_Toolbox_For_Each_Onto_DesignSurface();
+        }
+
+        [TestCleanup]
+        public void StopScreenRecording()
+        {
+            screenRecorder.StopRecording(TestContext);
         }
 
         UIMap UIMap

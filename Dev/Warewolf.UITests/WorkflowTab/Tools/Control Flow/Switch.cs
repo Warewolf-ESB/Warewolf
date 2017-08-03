@@ -3,13 +3,22 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.UITests.DialogsUIMapClasses;
 using Warewolf.UITests.WorkflowTab.Tools.ControlFlow.ControlFlowToolsUIMapClasses;
 using Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses;
+using Warewolf.Web.UI.Tests.ScreenRecording;
 
 namespace Warewolf.UITests.WorkflowTab.Tools.Control_Flow
 {
     [CodedUITest]
     public class Switch
     {
+        public TestContext TestContext { get; set; }
+        private FfMpegVideoRecorder screenRecorder = new FfMpegVideoRecorder();
+
         [TestMethod]
+        [DeploymentItem(@"avformat-57.dll")]
+        [DeploymentItem(@"avutil-55.dll")]
+        [DeploymentItem(@"swresample-2.dll")]
+        [DeploymentItem(@"swscale-4.dll")]
+        [DeploymentItem(@"avcodec-57.dll")]
         [TestCategory("Control Flow Tools")]
         public void SwitchTool_DragOnWorkflow_UITest()
         {
@@ -27,10 +36,17 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Control_Flow
         [TestInitialize]
         public void MyTestInitialize()
         {
+            screenRecorder.StartRecording(TestContext);
             UIMap.SetPlaybackSettings();
             UIMap.AssertStudioIsRunning();
             UIMap.InitializeABlankWorkflow();
             WorkflowTabUIMap.Drag_Toolbox_Switch_Onto_DesignSurface();
+        }
+
+        [TestCleanup]
+        public void StopScreenRecording()
+        {
+            screenRecorder.StopRecording(TestContext);
         }
 
         UIMap UIMap

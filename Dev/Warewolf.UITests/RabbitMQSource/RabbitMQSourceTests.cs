@@ -2,15 +2,24 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.UITests.Explorer.ExplorerUIMapClasses;
 using Warewolf.UITests.RabbitMQSource.RabbitMQSourceUIMapClasses;
+using Warewolf.Web.UI.Tests.ScreenRecording;
 
 namespace Warewolf.UITests.RabbitMQSource
 {
     [CodedUITest]
     public class RabbitMQSourceTests
     {
+        public TestContext TestContext { get; set; }
+        private FfMpegVideoRecorder screenRecorder = new FfMpegVideoRecorder();
+
         const string SourceName = "CodedUITestRabbitMQSource";
 
         [TestMethod]
+        [DeploymentItem(@"avformat-57.dll")]
+        [DeploymentItem(@"avutil-55.dll")]
+        [DeploymentItem(@"swresample-2.dll")]
+        [DeploymentItem(@"swscale-4.dll")]
+        [DeploymentItem(@"avcodec-57.dll")]
         [TestCategory("Database Sources")]
         // ReSharper disable once InconsistentNaming
         public void Create_Save_And_Open_RabbitMQSource_From_ExplorerContextMenu_UITests()
@@ -41,13 +50,20 @@ namespace Warewolf.UITests.RabbitMQSource
 
         #region Additional test attributes
 
-        [TestInitialize()]
+        [TestInitialize]
         public void MyTestInitialize()
         {
+            screenRecorder.StartRecording(TestContext);
             UIMap.SetPlaybackSettings();
             UIMap.AssertStudioIsRunning();
         }
-        
+
+        [TestCleanup]
+        public void StopScreenRecording()
+        {
+            screenRecorder.StopRecording(TestContext);
+        }
+
         public UIMap UIMap
         {
             get

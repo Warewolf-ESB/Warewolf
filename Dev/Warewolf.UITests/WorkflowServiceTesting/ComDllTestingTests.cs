@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.UITests.WorkflowTab.Tools.Resources.ResourcesToolsUIMapClasses;
 using Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses;
+using Warewolf.Web.UI.Tests.ScreenRecording;
 
 
 namespace Warewolf.UITests.WorkflowServiceTesting
@@ -9,7 +10,15 @@ namespace Warewolf.UITests.WorkflowServiceTesting
     [CodedUITest]
     public class ComDllTestingTests
     {
+        public TestContext TestContext { get; set; }
+        private FfMpegVideoRecorder screenRecorder = new FfMpegVideoRecorder();
+
         [TestMethod]
+        [DeploymentItem(@"avformat-57.dll")]
+        [DeploymentItem(@"avutil-55.dll")]
+        [DeploymentItem(@"swresample-2.dll")]
+        [DeploymentItem(@"swscale-4.dll")]
+        [DeploymentItem(@"avcodec-57.dll")]
         [TestCategory("Source Wizards")]
         public void ChooseComPluginSelection()
         {
@@ -34,6 +43,11 @@ namespace Warewolf.UITests.WorkflowServiceTesting
         }
 
         [TestMethod]
+        [DeploymentItem(@"avformat-57.dll")]
+        [DeploymentItem(@"avutil-55.dll")]
+        [DeploymentItem(@"swresample-2.dll")]
+        [DeploymentItem(@"swscale-4.dll")]
+        [DeploymentItem(@"avcodec-57.dll")]
         [TestCategory("Source Wizards")]
         public void ChangeComPluginSelection()
         {
@@ -71,11 +85,18 @@ namespace Warewolf.UITests.WorkflowServiceTesting
 
         #region Additional test attributes
         
-        [TestInitialize()]
+        [TestInitialize]
         public void MyTestInitialize()
         {
+            screenRecorder.StartRecording(TestContext);
             UIMap.SetPlaybackSettings();
             UIMap.AssertStudioIsRunning();
+        }
+
+        [TestCleanup]
+        public void StopScreenRecording()
+        {
+            screenRecorder.StopRecording(TestContext);
         }
 
         UIMap UIMap

@@ -4,15 +4,24 @@ using Warewolf.UITests.DialogsUIMapClasses;
 using Warewolf.UITests.EmailSource.EmailSourceUIMapClasses;
 using Warewolf.UITests.WorkflowTab.Tools.Email.EmailToolsUIMapClasses;
 using Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses;
+using Warewolf.Web.UI.Tests.ScreenRecording;
 
 namespace Warewolf.UITests.WorkflowTab.Tools.Email
 {
     [CodedUITest]
     public class SMTP_Send
     {
+        public TestContext TestContext { get; set; }
+        private FfMpegVideoRecorder screenRecorder = new FfMpegVideoRecorder();
+
         const string SourceName = "EmailSourceFromTool";
 
         [TestMethod]
+        [DeploymentItem(@"avformat-57.dll")]
+        [DeploymentItem(@"avutil-55.dll")]
+        [DeploymentItem(@"swresample-2.dll")]
+        [DeploymentItem(@"swscale-4.dll")]
+        [DeploymentItem(@"avcodec-57.dll")]
         [TestCategory("Email Tools")]
         public void SMTPSendTool_Small_And_LargeView_Then_NewSource_UITest()
         {
@@ -71,6 +80,11 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Email
         }
 
         [TestMethod]
+        [DeploymentItem(@"avformat-57.dll")]
+        [DeploymentItem(@"avutil-55.dll")]
+        [DeploymentItem(@"swresample-2.dll")]
+        [DeploymentItem(@"swscale-4.dll")]
+        [DeploymentItem(@"avcodec-57.dll")]
         [TestCategory("Email Tools")]
         public void SMTPMultipleAttachmentsUITest()
         {
@@ -99,10 +113,17 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Email
         [TestInitialize]
         public void MyTestInitialize()
         {
+            screenRecorder.StartRecording(TestContext);
             UIMap.SetPlaybackSettings();
             UIMap.AssertStudioIsRunning();
             UIMap.InitializeABlankWorkflow();
             WorkflowTabUIMap.Drag_Toolbox_SMTP_Email_Onto_DesignSurface();
+        }
+
+        [TestCleanup]
+        public void StopScreenRecording()
+        {
+            screenRecorder.StopRecording(TestContext);
         }
 
         UIMap UIMap
