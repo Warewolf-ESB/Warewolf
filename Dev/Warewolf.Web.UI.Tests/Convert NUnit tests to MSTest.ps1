@@ -2,7 +2,7 @@
 foreach ($Class in (Get-ChildItem "$PSScriptRoot\*.cs" -Recurse)) {
     $ClassContent = (Get-Content $Class)
     if ($ClassContent -ne $null) {
-        $ClassContent.replace("using NUnit.Framework;", "using Microsoft.VisualStudio.TestTools.UnitTesting;").replace("[TestFixture]", "[TestClass]").replace("[SetUp]", "[TestInitialize]").replace("[TearDown]", "[TestCleanup]").replace("[Test]", "[TestMethod]").replace("driver = new FirefoxDriver();","driver = new InternetExplorerDriver();").replace("using OpenQA.Selenium.Firefox;","using OpenQA.Selenium.IE;") | Set-Content $Class
+        $ClassContent.replace("using NUnit.Framework;", "using Microsoft.VisualStudio.TestTools.UnitTesting;").replace("[TestFixture]", "[TestClass]").replace("[SetUp]", "[TestInitialize]").replace("[TearDown]", "[TestCleanup]").replace("[Test]", "[TestMethod]`r`n        [DeploymentItem(@`"avformat-57.dll`")]`r`n        [DeploymentItem(@`"avutil-55.dll`")]`r`n        [DeploymentItem(@`"swresample-2.dll`")]`r`n        [DeploymentItem(@`"swscale-4.dll`")]`r`n        [DeploymentItem(@`"avcodec-57.dll`")]").replace("driver = new FirefoxDriver();","driver = new InternetExplorerDriver();").replace("using OpenQA.Selenium.Firefox;","using OpenQA.Selenium.IE;") | Set-Content $Class
     }
 }
 foreach ($Class in (Get-ChildItem "$PSScriptRoot\*.cs" -Recurse)) {

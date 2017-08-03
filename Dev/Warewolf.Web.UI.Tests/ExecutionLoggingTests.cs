@@ -53,12 +53,9 @@ namespace SeleniumTests
         [TestMethod]
         [DeploymentItem(@"avformat-57.dll")]
         [DeploymentItem(@"avutil-55.dll")]
-        [DeploymentItem(@"postproc-54.dll")]
         [DeploymentItem(@"swresample-2.dll")]
         [DeploymentItem(@"swscale-4.dll")]
         [DeploymentItem(@"avcodec-57.dll")]
-        [DeploymentItem(@"avdevice-57.dll")]
-        [DeploymentItem(@"avfilter-6.dll")]
         public void ExecutionLoggingTest()
         {
             driver.Navigate().GoToUrl(baseURL + "/ExecutionLogging");
