@@ -47,6 +47,19 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Data
 
         [TestMethod]
         [TestCategory("Assign Tool")]
+        public void AssignTool_ClickTextboxTwice_Then_HelpText_DoesNotChanging_UITest()
+        {
+            DataToolsUIMap.Single_Click_Assign_Row1_Textbox();
+            //Update Help Text
+            var initialImage = UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Help.HelpTextEditor.CaptureImage();
+            DataToolsUIMap.Single_Click_Assign_Row1_Textbox();
+            var assignImage = UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Help.HelpTextEditor.CaptureImage();
+            Assert.AreNotEqual(initialImage, assignImage);
+            DataToolsUIMap.Delete_Assign_With_Context_Menu();
+        }
+
+        [TestMethod]
+        [TestCategory("Assign Tool")]
         public void AssignTool_Url_UITest()
         {
             DialogsUIMap.Click_Assign_Tool_url();
