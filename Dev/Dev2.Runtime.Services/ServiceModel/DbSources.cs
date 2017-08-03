@@ -15,9 +15,9 @@ using Dev2.Runtime.ServiceModel.Esb.Brokers;
 
 namespace Dev2.Runtime.ServiceModel
 {
-    public class DbSources : ExceptionManager
+    public class DbSources : ExceptionManager, IDbSources
     {
-        
+
         #region Get database list
 
         public virtual DatabaseValidationResult DoDatabaseValidation(DbSource dbSourceDetails)
