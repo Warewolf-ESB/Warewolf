@@ -60,6 +60,7 @@ namespace Dev2.Tests.Runtime.Services
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("GetLogDataService_Execute")]
+        [DeploymentItem(@"TextFiles\LogFileWithFlatResultsNEwFormat.txt", "TextFiles")]
         public void GetLogDataService_Execute_WithExecutionId_ShouldFilterLogData()
         {
             //------------Setup for test--------------------------
@@ -78,6 +79,7 @@ namespace Dev2.Tests.Runtime.Services
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("GetLogDataService_Execute")]
+        [DeploymentItem(@"TextFiles\LogFileWithFlatResultsNEwFormat.txt", "TextFiles")]
         public void GetLogDataService_Execute_WithExecutionId_ShouldFilterLogData_NewFormat()
         {
             //------------Setup for test--------------------------

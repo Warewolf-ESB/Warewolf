@@ -121,6 +121,7 @@ namespace Dev2.Tests.Runtime.Services
         [TestMethod]
         [Owner("Sanele Mthembu")]
         [TestCategory("GetLogDataService_Execute")]
+        [DeploymentItem(@"TextFiles\LogFileWithFlatResultsNEwFormat.txt", "TextFiles")]
         public void GetLogDataService_Execute_WithStartDate_ShouldFilterLogData()
         {
             //------------Setup for test--------------------------
@@ -146,6 +147,7 @@ namespace Dev2.Tests.Runtime.Services
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("GetLogDataService_Execute")]
+        [DeploymentItem(@"TextFiles\LogFileWithFlatResultsNEwFormat.txt", "TextFiles")]
         public void GetLogDataService_Execute_WithEndDate_ShouldFilterLogData()
         {
             //------------Setup for test--------------------------
@@ -171,6 +173,7 @@ namespace Dev2.Tests.Runtime.Services
         [TestMethod]
         [Owner("Sanele Mthembu")]
         [TestCategory("GetLogDataService_Execute")]
+        [DeploymentItem(@"TextFiles\LogFileWithFlatResultsNEwFormat.txt", "TextFiles")]
         public void GetLogDataService_Execute_WithStatus_ShouldFilterLogData()
         {
             //------------Setup for test--------------------------
@@ -194,6 +197,7 @@ namespace Dev2.Tests.Runtime.Services
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("GetLogDataService_Execute")]
+        [DeploymentItem(@"TextFiles\LogFileWithFlatResultsNEwFormat.txt", "TextFiles")]
         public void GetLogDataService_Execute_WithUser_ShouldFilterLogData()
         {
             //------------Setup for test--------------------------
@@ -216,6 +220,7 @@ namespace Dev2.Tests.Runtime.Services
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("GetLogDataService_Execute")]
+        [DeploymentItem(@"TextFiles\LogFileWithFlatResultsNEwFormat.txt", "TextFiles")]
         public void GetLogDataService_Execute_WithExecutionId_ShouldFilterLogData()
         {
             //------------Setup for test--------------------------
@@ -238,6 +243,7 @@ namespace Dev2.Tests.Runtime.Services
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("GetLogDataService_Execute")]
+        [DeploymentItem(@"TextFiles\LogFileWithFlatResultsNEwFormat.txt", "TextFiles")]
         public void GetLogDataService_Execute_WithExecutionTime_ShouldFilterLogData()
         {
             //------------Setup for test--------------------------
@@ -260,6 +266,7 @@ namespace Dev2.Tests.Runtime.Services
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("GetLogDataService_Execute")]
+        [DeploymentItem(@"TextFiles\LogFileWithFlatResultsNEwFormat.txt", "TextFiles")]
         public void GetLogDataService_Execute_WithBadUser_ShouldFilterLogData()
         {
             //------------Setup for test--------------------------
