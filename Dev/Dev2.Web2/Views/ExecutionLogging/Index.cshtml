@@ -164,7 +164,6 @@
         $.ajax({
             type: "POST",
             url: url,
-            crossDomain: true,
             data: { 'logEntries': response },
             success: function (executionListHTML) {
                 showExecutionList();
