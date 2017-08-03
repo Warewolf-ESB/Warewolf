@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.UITests.DialogsUIMapClasses;
 using Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses;
 using Warewolf.UITests.Explorer.ExplorerUIMapClasses;
+using Warewolf.Web.UI.Tests.ScreenRecording;
 
 // ReSharper disable InconsistentNaming
 
@@ -11,7 +12,15 @@ namespace Warewolf.UITests
     [CodedUITest]
     public class DuplicateDialogTests
     {
+        public TestContext TestContext { get; set; }
+        private FfMpegVideoRecorder screenRecorder = new FfMpegVideoRecorder();
+
         [TestMethod]
+        [DeploymentItem(@"avformat-57.dll")]
+        [DeploymentItem(@"avutil-55.dll")]
+        [DeploymentItem(@"swresample-2.dll")]
+        [DeploymentItem(@"swscale-4.dll")]
+        [DeploymentItem(@"avcodec-57.dll")]
         [TestCategory("Save Dialog")]
         public void DuplicateResource_ThenAddsNewItemItem()
         {
@@ -22,6 +31,11 @@ namespace Warewolf.UITests
         }
         
         [TestMethod]
+        [DeploymentItem(@"avformat-57.dll")]
+        [DeploymentItem(@"avutil-55.dll")]
+        [DeploymentItem(@"swresample-2.dll")]
+        [DeploymentItem(@"swscale-4.dll")]
+        [DeploymentItem(@"avcodec-57.dll")]
         [TestCategory("Save Dialog")]
         public void DuplicateFolder_ThenAddsNewFolderItem()
         {
@@ -32,6 +46,11 @@ namespace Warewolf.UITests
         }
 
         [TestMethod]
+        [DeploymentItem(@"avformat-57.dll")]
+        [DeploymentItem(@"avutil-55.dll")]
+        [DeploymentItem(@"swresample-2.dll")]
+        [DeploymentItem(@"swscale-4.dll")]
+        [DeploymentItem(@"avcodec-57.dll")]
         [TestCategory("Save Dialog")]
         public void DuplicateFolder_And_Use_Same_Name_Shows_Error()
         {
@@ -42,6 +61,11 @@ namespace Warewolf.UITests
         }
 
         [TestMethod]
+        [DeploymentItem(@"avformat-57.dll")]
+        [DeploymentItem(@"avutil-55.dll")]
+        [DeploymentItem(@"swresample-2.dll")]
+        [DeploymentItem(@"swscale-4.dll")]
+        [DeploymentItem(@"avcodec-57.dll")]
         [TestCategory("Save Dialog")]
         public void DuplicateWorkflow_Updates_The_Workflow_Display_Name()
         {
@@ -60,8 +84,15 @@ namespace Warewolf.UITests
         [TestInitialize]
         public void MyTestInitialize()
         {
+            screenRecorder.StartRecording(TestContext);
             UIMap.SetPlaybackSettings();
             UIMap.AssertStudioIsRunning();
+        }
+
+        [TestCleanup]
+        public void StopScreenRecording()
+        {
+            screenRecorder.StopRecording(TestContext);
         }
 
         UIMap UIMap

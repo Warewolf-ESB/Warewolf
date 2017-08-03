@@ -4,15 +4,24 @@ using Warewolf.UITests.DialogsUIMapClasses;
 using Warewolf.UITests.ExchangeSource.ExchangeSourceUIMapClasses;
 using Warewolf.UITests.WorkflowTab.Tools.Email.EmailToolsUIMapClasses;
 using Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses;
+using Warewolf.Web.UI.Tests.ScreenRecording;
 
 namespace Warewolf.UITests.Tools
 {
     [CodedUITest]
     public class Exchange_Send
     {
+        public TestContext TestContext { get; set; }
+        private FfMpegVideoRecorder screenRecorder = new FfMpegVideoRecorder();
+
         const string SourceName = "ExchangeSourceFromTool";
 
         [TestMethod]
+        [DeploymentItem(@"avformat-57.dll")]
+        [DeploymentItem(@"avutil-55.dll")]
+        [DeploymentItem(@"swresample-2.dll")]
+        [DeploymentItem(@"swscale-4.dll")]
+        [DeploymentItem(@"avcodec-57.dll")]
         [TestCategory("Email Tools")]
         public void ExchangeSendTool_Small_And_LargeView_Then_NewSource_UITest()
         {
@@ -52,6 +61,11 @@ namespace Warewolf.UITests.Tools
         }
 
         [TestMethod]
+        [DeploymentItem(@"avformat-57.dll")]
+        [DeploymentItem(@"avutil-55.dll")]
+        [DeploymentItem(@"swresample-2.dll")]
+        [DeploymentItem(@"swscale-4.dll")]
+        [DeploymentItem(@"avcodec-57.dll")]
         [TestCategory("Email Tools")]
         public void ExchangeMultipleAttachments_LargeViewUITest()
         {
@@ -80,10 +94,17 @@ namespace Warewolf.UITests.Tools
         [TestInitialize]
         public void MyTestInitialize()
         {
+            screenRecorder.StartRecording(TestContext);
             UIMap.SetPlaybackSettings();
             UIMap.AssertStudioIsRunning();
             UIMap.InitializeABlankWorkflow();
             WorkflowTabUIMap.Drag_Toolbox_Exchange_Send_Onto_DesignSurface();
+        }
+
+        [TestCleanup]
+        public void StopScreenRecording()
+        {
+            screenRecorder.StopRecording(TestContext);
         }
 
         UIMap UIMap

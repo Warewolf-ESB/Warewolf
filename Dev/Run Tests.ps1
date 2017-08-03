@@ -350,7 +350,7 @@ function Move-Artifacts-To-TestResults([bool]$DotCover, [bool]$Server, [bool]$St
 	        }
 	    } elseif ($trxContent.TestRun.Results.UnitTestResult.outcome -eq "Failed") {
             $PlayList += "<Add Test=`"" + $trxContent.TestRun.TestDefinitions.UnitTest.TestMethod.className + "." + $trxContent.TestRun.TestDefinitions.UnitTest.TestMethod.name + "`" />"
-        } else {
+        } elseif ($trxContent.TestRun.Results.UnitTestResult -eq $null) {
 		    Write-Host Error parsing TestRun.Results.UnitTestResult from trx file at $_.FullName
         }
     }

@@ -4,17 +4,26 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.UITests.DialogsUIMapClasses;
 using Warewolf.UITests.DotNetPluginSource.DotNetPluginSourceUIMapClasses;
 using Warewolf.UITests.Explorer.ExplorerUIMapClasses;
+using Warewolf.Web.UI.Tests.ScreenRecording;
 
 namespace Warewolf.UITests
 {
     [CodedUITest]
     public class DotNetPluginSourceTests
     {
+        public TestContext TestContext { get; set; }
+        private FfMpegVideoRecorder screenRecorder = new FfMpegVideoRecorder();
+
         const string DLLAssemblySourceName = "CodedUITestDLLDLLSource";
         const string GACAssemblySourceName = "CodedUITestGACDLLSource";
         const string SourceNameToEdit = "DotNetPluginSourceToEdit";
 
         [TestMethod]
+        [DeploymentItem(@"avformat-57.dll")]
+        [DeploymentItem(@"avutil-55.dll")]
+        [DeploymentItem(@"swresample-2.dll")]
+        [DeploymentItem(@"swscale-4.dll")]
+        [DeploymentItem(@"avcodec-57.dll")]
         [TestCategory("Plugin Sources")]
         public void Select_GACAssembly_DotNetPluginSource_UITests()
         {
@@ -34,6 +43,11 @@ namespace Warewolf.UITests
         }
 
         [TestMethod]
+        [DeploymentItem(@"avformat-57.dll")]
+        [DeploymentItem(@"avutil-55.dll")]
+        [DeploymentItem(@"swresample-2.dll")]
+        [DeploymentItem(@"swscale-4.dll")]
+        [DeploymentItem(@"avcodec-57.dll")]
         [TestCategory("Plugin Sources")]
         public void Edit_DotNetSource_Keeps_The_Changes_On_ReOpen_UITests()
         {
@@ -56,6 +70,11 @@ namespace Warewolf.UITests
 
        
         [TestMethod]
+        [DeploymentItem(@"avformat-57.dll")]
+        [DeploymentItem(@"avutil-55.dll")]
+        [DeploymentItem(@"swresample-2.dll")]
+        [DeploymentItem(@"swscale-4.dll")]
+        [DeploymentItem(@"avcodec-57.dll")]
         [TestCategory("Plugin Sources")]
         public void Select_AssemblyAndConfigFile_Then_Validate_Clear_On_GACSelection_UITests()
         {
@@ -95,13 +114,20 @@ namespace Warewolf.UITests
 
         #region Additional test attributes
 
-        [TestInitialize()]
+        [TestInitialize]
         public void MyTestInitialize()
         {
+            screenRecorder.StartRecording(TestContext);
             UIMap.SetPlaybackSettings();
             UIMap.AssertStudioIsRunning();
         }
-        
+
+        [TestCleanup]
+        public void StopScreenRecording()
+        {
+            screenRecorder.StopRecording(TestContext);
+        }
+
         public UIMap UIMap
         {
             get
