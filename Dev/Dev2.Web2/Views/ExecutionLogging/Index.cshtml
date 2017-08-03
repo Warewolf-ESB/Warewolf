@@ -14,48 +14,49 @@
     <script src="@Url.Content("~/Scripts/jquery-1.8.3.js")" type="text/javascript"></script>
     <script src="@Url.Content("~/Scripts/jquery-ui-1.9.2.custom.min.js")" type="text/javascript"></script>
     <script src="~/Scripts/jquery.unobtrusive-ajax.min.js" type="text/javascript"></script>
+    <script src="~/Scripts/getBrowser.js" type="text/javascript"></script>
     <link rel='stylesheet' type='text/css' href='~/Content/Site.css' />
 </head>
 
-    <div id="ExecutionFilters" style="padding-top: 6px;">
+<div id="ExecutionFilters" style="padding-top: 6px;">
 
-        <table id="filterTable">
-            <tr>
-                <td class="serverName">
-                    @Html.LabelFor(model => model.Item2.Server)
-                </td>
-                <td class="protocol">
-                    @Html.DropDownListFor(m => m.Item2.Protocol, Model.Item2.Protocols, new { id = "protocolDropdown", @class = "form-control" })
-                </td>
-                <td class="serverDesc">://</td>
-                <td class="serverText">@Html.EditorFor(model => model.Item2.Server, new { htmlAttributes = new { id = "serverName", @class = "form-control" } })</td>
-                <td class="serverDesc">:</td>
-                <td>@Html.EditorFor(model => model.Item2.Port, new { htmlAttributes = new { id = "port", @class = "form-control" } })</td>
-                <td><button id="updateServer" class="btn btn-default">Update</button></td>
+    <table id="filterTable">
+        <tr>
+            <td class="serverName">
+                @Html.LabelFor(model => model.Item2.Server)
+            </td>
+            <td class="protocol">
+                @Html.DropDownListFor(m => m.Item2.Protocol, Model.Item2.Protocols, new { id = "protocolDropdown", @class = "form-control" })
+            </td>
+            <td class="serverDesc">://</td>
+            <td class="serverText">@Html.EditorFor(model => model.Item2.Server, new { htmlAttributes = new { id = "serverName", @class = "form-control" } })</td>
+            <td class="serverDesc">:</td>
+            <td>@Html.EditorFor(model => model.Item2.Port, new { htmlAttributes = new { id = "port", @class = "form-control" } })</td>
+            <td><button id="updateServer" class="btn btn-default">Update</button></td>
 
-            </tr>
-        </table>
-    </div>
-    <div id="loader">
-        <div id="loader_1" class="loader"></div>
-        <div id="loader_2" class="loader"></div>
-        <div id="loader_3" class="loader"></div>
-        <div id="loader_4" class="loader"></div>
-        <div id="loader_5" class="loader"></div>
-        <div id="loader_6" class="loader"></div>
-        <div id="loader_7" class="loader"></div>
-        <div id="loader_8" class="loader"></div>
-    </div>
-    <div style="display:none;" id="divExecutionList" class="animate-bottom">        
-    </div>
-
+        </tr>
+    </table>
+</div>
+<div id="loader">
+    <div id="loader_1" class="loader"></div>
+    <div id="loader_2" class="loader"></div>
+    <div id="loader_3" class="loader"></div>
+    <div id="loader_4" class="loader"></div>
+    <div id="loader_5" class="loader"></div>
+    <div id="loader_6" class="loader"></div>
+    <div id="loader_7" class="loader"></div>
+    <div id="loader_8" class="loader"></div>
+</div>
+<div style="display:none;" id="divExecutionList" class="animate-bottom">
+</div>
 
 <div class="dialogResult">
     <p class="exResult"></p>
 </div>
 
-
 <script type="text/javascript">
+
+    var browserType;
 
     function showExecutionList() {
         document.getElementById("loader").style.display = "none";
@@ -93,29 +94,69 @@
     });
 
     function getLogData() {
+        $.support.cors = true;
         var serverUrl = getServerUrl();
         var wareWolfUrl = serverUrl + "/services/GetLogDataService";
+        var pingUrl = serverUrl + "/secure/ping";
+        if (browserType == "Edge") {
 
-        $.ajax({
-            type: "POST",
-            url: wareWolfUrl,
-            cache: false,
-            crossDomain: true,
-            xhrFields: {
-                withCredentials: true
-            },
-            success: OnSuccessCall,
-            fail: OnFailCall,
-            error: OnErrorCall
-        });
+            var oReq = new XMLHttpRequest();
+            oReq.open('GET', pingUrl, true);
+            oReq.withCredentials = true;
+            oReq.onreadystatechange = function () {
+                if (oReq.readyState == oReq.DONE) {
+                    if (oReq.status == 200) {
+                        var xhr = new XMLHttpRequest();
+                        xhr.open('POST', wareWolfUrl, true); 
+                        xhr.withCredentials = true;
+                        xhr.onreadystatechange = function () {
+                            if (xhr.readyState == xhr.DONE) {
+                                if (xhr.status == 200) {
+                                    var returnData = JSON.parse(xhr.response);
+                                    OnSuccessCall(returnData, xhr.statusText, xhr);
+                                }
+                            }
+                        };
+                        xhr.send();
+                    }
+                }
+            };
+            oReq.send();
+        }
+        else {
+            $.ajax({
+                type: "POST",
+                url: wareWolfUrl,
+                cache: false,
+                crossDomain: true,
+                xhrFields: {
+                    withCredentials: true
+                },
+                success: OnSuccessCall,
+                fail: OnFailCall,
+                error: OnErrorCall
+            });
+        }
     }
 
-    var OnSuccessCall = function (response,textStatus,jqXHR) {        
+    function jsonpCallback(data) {
+        alert(data);
+        alert("jsonpCallback");
+    }
+
+    var OnSuccessCall = function (response, textStatus, jqXHR) {
+
+        var url = "ExecutionLogging/ExecutionList";
+
+        if (browserType == "Firefox") {
+            url = "/ExecutionLogging/ExecutionList";
+        }
+
         $.ajax({
             type: "POST",
-            url: "/ExecutionLogging/ExecutionList",
+            url: url,
             crossDomain: true,
-            data: { 'logEntries': response},
+            data: { 'logEntries': response },
             success: function (executionListHTML) {
                 showExecutionList();
                 $("#divExecutionList").html(executionListHTML);
@@ -127,7 +168,7 @@
     var OnFailCall = function (request, status, error) {
         alert(request.responseText + " " + status + " " + error);
         reset();
-        getLogData();
+        hideExecutionAndLoader();
     }
 
     var OnErrorCall = function (request, status, error) {
@@ -157,21 +198,16 @@
         }
     };
 
-    function reloadJs(src) {
-        src = $('script[src$="' + src + '"]').attr("src");
-        $('script[src$="' + src + '"]').remove();
-        $('<script/>').attr('src', src).appendTo('body');
-    }
-
-    $(document).one('ready', function () {        
+    $(document).one('ready', function () {
+        browserType = browser();
         getLogData();
     });
 
-    $(document).ready(function () {        
+    $(document).ready(function () {
         $('#updateServer').on('click', function (e) {
             e.preventDefault();
             e.stopPropagation();
-            hideExecutionList();            
+            hideExecutionList();
             getLogData();
         });
 
@@ -183,8 +219,8 @@
             else {
                 $("#port").val("3142");
             }
-        });        
-    })
+        });
+    });
 </script>
 
 @section Scripts {
