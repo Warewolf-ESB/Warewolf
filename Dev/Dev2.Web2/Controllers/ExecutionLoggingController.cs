@@ -3,6 +3,7 @@ using Dev2.Web2.Models.ExecutionLogging;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Web.Http.Cors;
 using System.Web.Mvc;
 
 namespace Dev2.Web2.Controllers
@@ -11,11 +12,17 @@ namespace Dev2.Web2.Controllers
     {
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            filterContext.RequestContext.HttpContext.Response.AddHeader("Access-Control-Allow-Origin", "*");
+            var ctx = filterContext.RequestContext.HttpContext;
+            var origin = ctx.Request.Headers["Origin"];
+            var allowOrigin = !string.IsNullOrWhiteSpace(origin) ? origin : "*";
+            ctx.Response.AddHeader("Access-Control-Allow-Origin", allowOrigin);
+            ctx.Response.AddHeader("Access-Control-Allow-Headers", "*");
+            ctx.Response.AddHeader("Access-Control-Allow-Credentials", "true");
             base.OnActionExecuting(filterContext);
         }
     }
 
+    [EnableCors("*","*","*",PreflightMaxAge =10000,SupportsCredentials = true)]
     public class ExecutionLoggingController : Controller
     {
         // GET: ExecutionLogging
