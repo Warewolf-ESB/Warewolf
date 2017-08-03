@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Security.Principal;
 using System.Text;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces.Core;
@@ -70,29 +72,6 @@ namespace Dev2.Tests.Runtime.ServiceModel
             //------------Setup for test--------------------------
             var db = new Mock<IDbSources>();
             db.Setup(a => a.DoDatabaseValidation(It.IsAny<DbSource>())).Returns(default(DatabaseValidationResult));
-            var service = new TestDbSourceService(db.Object);
-            var dbSourceDefinition = new DbSourceDefinition();
-
-            //------------Execute Test---------------------------
-            var stringBuilder = service.Execute(new Dictionary<string, StringBuilder>()
-            {
-                {"DbSource",dbSourceDefinition.SerializeToJsonStringBuilder() }
-            }, It.IsAny<IWorkspace>());
-            //------------Assert Results-------------------------
-            Assert.AreEqual("TestDbSourceService", service.HandlesType());
-            db.Verify(a => a.DoDatabaseValidation(It.IsAny<DbSource>()), Times.Once);
-            var message = stringBuilder.DeserializeToObject<ExecuteMessage>();
-            Assert.AreEqual("Problem testing connection.", message.Message.ToString());
-            Assert.IsTrue(message.HasError);
-        }
-        [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        [TestCategory("TestDbSourceService_HandlesType")]
-        public void Execute_Problemtestingconnection_GivenThrowsException_ReturnsActualError()
-        {
-            //------------Setup for test--------------------------
-            var db = new Mock<IDbSources>();
-            db.Setup(a => a.DoDatabaseValidation(It.IsAny<DbSource>())).Throws(new Exception("Problem testing connection."));
             var service = new TestDbSourceService(db.Object);
             var dbSourceDefinition = new DbSourceDefinition();
 
