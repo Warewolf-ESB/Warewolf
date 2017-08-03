@@ -28,7 +28,8 @@ Param(
   [switch]$RunAllServerTests,
   [switch]$RunAllReleaseResourcesTests,
   [switch]$RunAllCodedUITests,
-  [switch]$RunWarewolfServiceTests
+  [switch]$RunWarewolfServiceTests,
+  [string]$MergeDotCoverSnapshotsInDirectory
 )
 $JobSpecs = @{}
 #Unit Tests
@@ -298,13 +299,33 @@ function Move-File-To-TestResults([string]$SourceFilePath, [string]$DestinationF
     }
 }
 
+function Merge-DotCover-Snapshots($DotCoverSnapshots, [string]$DestinationFilePath, [string]$LogFilePath) {
+	Copy-On-Write "$DestinationFilePath"
+    Copy-On-Write "$LogFilePath"
+    if ($DotCoverSnapshots -ne $null -and $DotCoverSnapshots.Count -gt 1) {
+        if ($DotCoverSnapshots -ne $null -and $DotCoverSnapshots.Count -gt 5) {
+            $DotCoverSnapshotsString = $DotCoverSnapshots[0] + "`";`"" + $DotCoverSnapshots[1]
+            &"$DotCoverPath" "merge" "/Source=`"$DotCoverSnapshotsString`"" "/Output=`"$DestinationFilePath`"" "/LogFile=`"$LogFilePath`""
+            foreach ($DotCoverSnapshot in $DotCoverSnapshots[2..($DotCoverSnapshots.Count-2)]) {
+                $DotCoverSnapshotsString = $DestinationFilePath + "`";`"" + $DotCoverSnapshot
+                &"$DotCoverPath" "merge" "/Source=`"$DotCoverSnapshotsString`"" "/Output=`"$DestinationFilePath`"" "/LogFile=`"$LogFilePath`""
+            }
+        } else {
+            $DotCoverSnapshotsString = $DotCoverSnapshots -join "`";`""
+            &"$DotCoverPath" "merge" "/Source=`"$DotCoverSnapshotsString`"" "/Output=`"$DestinationFilePath`"" "/LogFile=`"$LogFilePath`""
+        }
+    } else {
+        Write-Warning Cannot merge $DotCoverSnapshots
+    }
+}
+
 function Move-Artifacts-To-TestResults([bool]$DotCover, [bool]$Server, [bool]$Studio) {
-    if (Test-Path "$env:vs140comntools..\IDE\CommonExtensions\Microsoft\TestWindow\TestResults\*.trx") {
-        Move-Item "$env:vs140comntools..\IDE\CommonExtensions\Microsoft\TestWindow\TestResults\*.trx" "$TestsResultsPath"
+    if (Test-Path "C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\Common7\IDE\CommonExtensions\Microsoft\TestWindow\TestResults\*.trx") {
+        Move-Item "C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\Common7\IDE\CommonExtensions\Microsoft\TestWindow\TestResults\*.trx" "$TestsResultsPath"
         Write-Host Moved loose TRX files from VS install directory into TestResults.
     }
 
-    # Write failing tests playlistfunction Move-Artifacts-T.
+    # Write failing tests playlist.
     Write-Host Writing all test failures in `"$TestsResultsPath`" to a playlist file
 
     $PlayList = "<Playlist Version=`"1.0`">"
@@ -403,9 +424,7 @@ function Move-Artifacts-To-TestResults([bool]$DotCover, [bool]$Server, [bool]$St
         }
     }
     if ($Server -and $Studio -and $DotCover) {
-		$MergedSnapshot = "$TestsResultsPath\$JobName Merged Server and Studio DotCover.dcvr"
-		Copy-On-Write "$MergedSnapshot"
-        &"$DotCoverPath" "merge" "/Source=`"$TestsResultsPath\$JobName Server DotCover.dcvr`";`"$TestsResultsPath\$JobName Studio DotCover.dcvr`"" "/Output=`"$MergedSnapshot`"" "/LogFile=`"$TestsResultsPath\ServerAndStudioDotCoverSnapshotMerge.log`""
+        Merge-DotCover-Snapshots @("$TestsResultsPath\$JobName Server DotCover.dcvr", "$TestsResultsPath\$JobName Studio DotCover.dcvr") "$TestsResultsPath\$JobName Merged Server and Studio DotCover.dcvr" "$TestsResultsPath\ServerAndStudioDotCoverSnapshotMerge.log"
     }
     if ($RecordScreen.IsPresent) {
         Move-ScreenRecordings-To-TestResults
@@ -932,7 +951,7 @@ if ($TotalNumberOfJobsToRun -gt 0) {
                 # Create full DotCover argument string.
                 $DotCoverLogFile = "$TestsResultsPath\DotCover.xml.log"
                 Copy-On-Write $DotCoverLogFile
-                $FullArgsList = " cover `"$DotCoverRunnerXMLPath`" /LogFile=`"$DotCoverLogFile'`""
+                $FullArgsList = " cover `"$DotCoverRunnerXMLPath`" /LogFile=`"$DotCoverLogFile`""
 
                 #Write DotCover Runner Batch File
                 $DotCoverRunnerPath = "$TestsResultsPath\Run $JobName DotCover.bat"
@@ -1173,6 +1192,11 @@ if ($RunWarewolfServiceTests.IsPresent) {
     New-Item -Force -Path "$TestsResultsPath\TestResults.trx" -ItemType File -Value $TRXFileContents
 }
 
+if ($MergeDotCoverSnapshotsInDirectory -ne "") {
+    $DotCoverSnapshots = Get-ChildItem $MergeDotCoverSnapshotsInDirectory\*.dcvr -Recurse
+    Merge-DotCover-Snapshots $DotCoverSnapshots "$TestsPath\Merged DotCover Snapshots.dcvr" "$TestsPath\DotCover Snapshot Merge.log"
+}
+
 if ($Cleanup.IsPresent) {
     if ($ApplyDotCover) {
         Cleanup-ServerStudio $false
@@ -1196,7 +1220,7 @@ if ($RunAllJobs.IsPresent) {
     Invoke-Expression -Command ("&'$PSCommandPath' -JobName '$RunAllCodedUITests' -StartStudio -ResourcesType UITests")
 }
 
-if (!$RunAllJobs.IsPresent -and !$Cleanup.IsPresent -and !$AssemblyFileVersionsTest.IsPresent -and !$RunAllUnitTests.IsPresent -and !$RunAllServerTests.IsPresent -and !$RunAllCodedUITests.IsPresent -and $JobName -eq "" -and !$RunWarewolfServiceTests.IsPresent) {
+if (!$RunAllJobs.IsPresent -and !$Cleanup.IsPresent -and !$AssemblyFileVersionsTest.IsPresent -and !$RunAllUnitTests.IsPresent -and !$RunAllServerTests.IsPresent -and !$RunAllCodedUITests.IsPresent -and $JobName -eq "" -and !$RunWarewolfServiceTests.IsPresent -and !$MergeDotCoverSnapshotsInDirectory -eq "") {
     $ServerPath,$ResourcesType = Install-Server $ServerPath $ResourcesType
     Start-Server $ServerPath $ResourcesType
     if (!$StartServer.IsPresent) {

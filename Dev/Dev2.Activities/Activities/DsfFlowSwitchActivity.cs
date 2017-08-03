@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Diagnostics;
 using Dev2.Interfaces;
@@ -27,6 +28,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public DsfFlowSwitchActivity()
             : base("Switch")
         {
+        }
+
+        public DsfFlowSwitchActivity(string displayName, IDebugDispatcher debugDispatcher, bool isAsync = false)
+            : base(displayName, debugDispatcher, isAsync)
+        {
+
         }
 
         #endregion
