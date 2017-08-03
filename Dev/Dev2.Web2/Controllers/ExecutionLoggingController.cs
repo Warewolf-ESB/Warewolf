@@ -7,9 +7,19 @@ using System.Web.Mvc;
 
 namespace Dev2.Web2.Controllers
 {
+    public class AllowCrossSiteJsonAttribute : ActionFilterAttribute
+    {
+        public override void OnActionExecuting(ActionExecutingContext filterContext)
+        {
+            filterContext.RequestContext.HttpContext.Response.AddHeader("Access-Control-Allow-Origin", "*");
+            base.OnActionExecuting(filterContext);
+        }
+    }
+
     public class ExecutionLoggingController : Controller
     {
-       // GET: ExecutionLogging
+        // GET: ExecutionLogging
+        [AllowCrossSiteJson]
         public ActionResult Index()
         {
             var request = CheckRequest(null);
@@ -18,6 +28,7 @@ namespace Dev2.Web2.Controllers
         }
 
         [HttpGet]
+        [AllowCrossSiteJson]
         public ActionResult Index(string server)
         {
             var request = CheckRequest(null);
@@ -33,6 +44,7 @@ namespace Dev2.Web2.Controllers
 
         [HttpPost]
         [ValidateInput(false)]
+        [AllowCrossSiteJson]
         public ActionResult ExecutionList(LogEntry[] logEntries)
         {
             var emptyModel = new List<LogEntry>();
