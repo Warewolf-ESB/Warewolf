@@ -6,6 +6,7 @@ using Warewolf.UITests.DotNetPluginSource.DotNetPluginSourceUIMapClasses;
 using Warewolf.UITests.WorkflowTab.Tools.Resources.ResourcesToolsUIMapClasses;
 using Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses;
 using Warewolf.UITests.Explorer.ExplorerUIMapClasses;
+using Warewolf.Web.UI.Tests.ScreenRecording;
 
 // ReSharper disable CyclomaticComplexity
 
@@ -14,7 +15,15 @@ namespace Warewolf.UITests.DependencyGraph
     [CodedUITest]
     public class ShowDependencyTests
     {
+        public TestContext TestContext { get; set; }
+        private FfMpegVideoRecorder screenRecorder = new FfMpegVideoRecorder();
+
         [TestMethod]
+        [DeploymentItem(@"avformat-57.dll")]
+        [DeploymentItem(@"avutil-55.dll")]
+        [DeploymentItem(@"swresample-2.dll")]
+        [DeploymentItem(@"swscale-4.dll")]
+        [DeploymentItem(@"avcodec-57.dll")]
         [TestCategory("Dependency Graph")]
         [Owner("Nkosinathi Sangweni")]
         public void Explorer_GivenDotnetWorkflowAsDependencyIsDoubleClicked_ShouldOpenWorkflowTabWithToolsInside()
@@ -31,6 +40,11 @@ namespace Warewolf.UITests.DependencyGraph
         }
 
         [TestMethod]
+        [DeploymentItem(@"avformat-57.dll")]
+        [DeploymentItem(@"avutil-55.dll")]
+        [DeploymentItem(@"swresample-2.dll")]
+        [DeploymentItem(@"swscale-4.dll")]
+        [DeploymentItem(@"avcodec-57.dll")]
         [TestCategory("Dependency Graph")]
         [Owner("Nkosinathi Sangweni")]
         public void Explorer_GivenSourceIsDoubleClicked_ShouldOpenSourceTab()
@@ -46,6 +60,11 @@ namespace Warewolf.UITests.DependencyGraph
         }
 
         [TestMethod]
+        [DeploymentItem(@"avformat-57.dll")]
+        [DeploymentItem(@"avutil-55.dll")]
+        [DeploymentItem(@"swresample-2.dll")]
+        [DeploymentItem(@"swscale-4.dll")]
+        [DeploymentItem(@"avcodec-57.dll")]
         [TestCategory("Dependency Graph")]
         public void ShowDependencies_ExplorerContextMenuItem_UITest()
         {
@@ -63,8 +82,15 @@ namespace Warewolf.UITests.DependencyGraph
         [TestInitialize]
         public void MyTestInitialize()
         {
+            screenRecorder.StartRecording(TestContext);
             UIMap.SetPlaybackSettings();
             UIMap.AssertStudioIsRunning();
+        }
+
+        [TestCleanup]
+        public void StopScreenRecording()
+        {
+            screenRecorder.StopRecording(TestContext);
         }
 
         UIMap UIMap
