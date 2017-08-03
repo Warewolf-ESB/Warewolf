@@ -3,13 +3,22 @@ using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.UITests.WorkflowTab.Tools.Data.DataToolsUIMapClasses;
 using Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses;
+using Warewolf.Web.UI.Tests.ScreenRecording;
 
 namespace Warewolf.UITests.WorkflowTab.Tools.Data
 {
     [CodedUITest]
     public class Data_Merge
     {
+        public TestContext TestContext { get; set; }
+        private FfMpegVideoRecorder screenRecorder = new FfMpegVideoRecorder();
+
         [TestMethod]
+        [DeploymentItem(@"avformat-57.dll")]
+        [DeploymentItem(@"avutil-55.dll")]
+        [DeploymentItem(@"swresample-2.dll")]
+        [DeploymentItem(@"swscale-4.dll")]
+        [DeploymentItem(@"avcodec-57.dll")]
         [TestCategory("Data Tools")]
         public void DataMergeTool_Small_And_Large_Then_QVIView_UITest()
         {
@@ -30,6 +39,11 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Data
         }
 
         [TestMethod]
+        [DeploymentItem(@"avformat-57.dll")]
+        [DeploymentItem(@"avutil-55.dll")]
+        [DeploymentItem(@"swresample-2.dll")]
+        [DeploymentItem(@"swscale-4.dll")]
+        [DeploymentItem(@"avcodec-57.dll")]
         [TestCategory("Data Tools")]
         public void DataMerge_ScrollingUITest()
         {
@@ -42,6 +56,11 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Data
         }
 
         [TestMethod]
+        [DeploymentItem(@"avformat-57.dll")]
+        [DeploymentItem(@"avutil-55.dll")]
+        [DeploymentItem(@"swresample-2.dll")]
+        [DeploymentItem(@"swscale-4.dll")]
+        [DeploymentItem(@"avcodec-57.dll")]
         [TestCategory("Data Tools")]
         public void DataMerge_KeyboardDelete_ShouldNot_DeleteRow()
         {
@@ -56,6 +75,11 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Data
         }
 
         [TestMethod]
+        [DeploymentItem(@"avformat-57.dll")]
+        [DeploymentItem(@"avutil-55.dll")]
+        [DeploymentItem(@"swresample-2.dll")]
+        [DeploymentItem(@"swscale-4.dll")]
+        [DeploymentItem(@"avcodec-57.dll")]
         [TestCategory("Data Tools")]
         public void DataMerge_KeyboardAnyKeys_ShouldNot_ChangeAnything()
         {
@@ -70,6 +94,11 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Data
         }
 
         [TestMethod]
+        [DeploymentItem(@"avformat-57.dll")]
+        [DeploymentItem(@"avutil-55.dll")]
+        [DeploymentItem(@"swresample-2.dll")]
+        [DeploymentItem(@"swscale-4.dll")]
+        [DeploymentItem(@"avcodec-57.dll")]
         [TestCategory("Data Tools")]
         public void DataMerge_KeyboardSelection_Should_AllowSelection()
         {
@@ -88,12 +117,19 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Data
         [TestInitialize]
         public void MyTestInitialize()
         {
+            screenRecorder.StartRecording(TestContext);
             UIMap.SetPlaybackSettings();
             UIMap.AssertStudioIsRunning();
             UIMap.Click_NewWorkflow_RibbonButton();
             WorkflowTabUIMap.Drag_Toolbox_Data_Merge_Onto_DesignSurface();
         }
-        
+
+        [TestCleanup]
+        public void StopScreenRecording()
+        {
+            screenRecorder.StopRecording(TestContext);
+        }
+
         UIMap UIMap
         {
             get

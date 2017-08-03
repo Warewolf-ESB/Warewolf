@@ -5,16 +5,25 @@ using Warewolf.UITests.DialogsUIMapClasses;
 using Warewolf.UITests.WorkflowTab.Tools.Data.DataToolsUIMapClasses;
 using Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses;
 using Warewolf.UITests.Explorer.ExplorerUIMapClasses;
+using Warewolf.Web.UI.Tests.ScreenRecording;
 
 namespace Warewolf.UITests.Workflow
 {
     [CodedUITest]
     public class Shortcut_Keys
     {
+        public TestContext TestContext { get; set; }
+        private FfMpegVideoRecorder screenRecorder = new FfMpegVideoRecorder();
+
         private const string Folder = "Acceptance Tests";
         private const string HelloWorld = "Hello World";
         
         [TestMethod]
+        [DeploymentItem(@"avformat-57.dll")]
+        [DeploymentItem(@"avutil-55.dll")]
+        [DeploymentItem(@"swresample-2.dll")]
+        [DeploymentItem(@"swscale-4.dll")]
+        [DeploymentItem(@"avcodec-57.dll")]
         [TestCategory("Shortcut Keys")]
         public void Open_And_Save_Workflow_With_ShortcutKeys()
         {
@@ -30,6 +39,11 @@ namespace Warewolf.UITests.Workflow
         }
 
         [TestMethod]
+        [DeploymentItem(@"avformat-57.dll")]
+        [DeploymentItem(@"avutil-55.dll")]
+        [DeploymentItem(@"swresample-2.dll")]
+        [DeploymentItem(@"swscale-4.dll")]
+        [DeploymentItem(@"avcodec-57.dll")]
         [TestCategory("Shortcut Keys")]
         public void Shortcut_Control_S_Saves_Dirty_Workflows()
         {
@@ -42,6 +56,11 @@ namespace Warewolf.UITests.Workflow
         }
 
         [TestMethod]
+        [DeploymentItem(@"avformat-57.dll")]
+        [DeploymentItem(@"avutil-55.dll")]
+        [DeploymentItem(@"swresample-2.dll")]
+        [DeploymentItem(@"swscale-4.dll")]
+        [DeploymentItem(@"avcodec-57.dll")]
         [TestCategory("Shortcut Keys")]
         public void Shortcut_Control_D_Opens_DeployTabWith_Resource_Selected()
         {
@@ -56,6 +75,11 @@ namespace Warewolf.UITests.Workflow
         }
 
         [TestMethod]
+        [DeploymentItem(@"avformat-57.dll")]
+        [DeploymentItem(@"avutil-55.dll")]
+        [DeploymentItem(@"swresample-2.dll")]
+        [DeploymentItem(@"swscale-4.dll")]
+        [DeploymentItem(@"avcodec-57.dll")]
         [TestCategory("Shortcut Keys")]
         public void Shortcut_Control_W_Opens_NewWorkflow_In_The_Selected_Folder()
         {
@@ -68,6 +92,11 @@ namespace Warewolf.UITests.Workflow
         }
 
         [TestMethod]
+        [DeploymentItem(@"avformat-57.dll")]
+        [DeploymentItem(@"avutil-55.dll")]
+        [DeploymentItem(@"swresample-2.dll")]
+        [DeploymentItem(@"swscale-4.dll")]
+        [DeploymentItem(@"avcodec-57.dll")]
         [TestCategory("Shortcut Keys")]
         public void Shortcut_Control_D_Opens_DeployWizardTab()
         {
@@ -79,11 +108,18 @@ namespace Warewolf.UITests.Workflow
 
         #region Additional test attributes
 
-        [TestInitialize()]
+        [TestInitialize]
         public void MyTestInitialize()
         {
+            screenRecorder.StartRecording(TestContext);
             UIMap.SetPlaybackSettings();
             UIMap.AssertStudioIsRunning();
+        }
+
+        [TestCleanup]
+        public void StopScreenRecording()
+        {
+            screenRecorder.StopRecording(TestContext);
         }
 
         UIMap UIMap

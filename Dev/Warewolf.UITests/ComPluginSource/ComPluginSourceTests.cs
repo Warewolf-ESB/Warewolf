@@ -2,15 +2,24 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.UITests.ComPluginSource.ComPluginSourceUIMapClasses;
 using Warewolf.UITests.Explorer.ExplorerUIMapClasses;
+using Warewolf.Web.UI.Tests.ScreenRecording;
 
 namespace Warewolf.UITests
 {
     [CodedUITest]
     public class COMPluginSourceTests
     {
+        public TestContext TestContext { get; set; }
+        private FfMpegVideoRecorder screenRecorder = new FfMpegVideoRecorder();
+
         const string SourceName = "CodedUITestCOMPluginSource";
 
         [TestMethod]
+        [DeploymentItem(@"avformat-57.dll")]
+        [DeploymentItem(@"avutil-55.dll")]
+        [DeploymentItem(@"swresample-2.dll")]
+        [DeploymentItem(@"swscale-4.dll")]
+        [DeploymentItem(@"avcodec-57.dll")]
         [TestCategory("Plugin Sources")]
         public void Create_ComPluginSource_From_ExplorerContextMenu_UITests()
         {
@@ -35,13 +44,20 @@ namespace Warewolf.UITests
 
         #region Additional test attributes
 
-        [TestInitialize()]
+        [TestInitialize]
         public void MyTestInitialize()
         {
+            screenRecorder.StartRecording(TestContext);
             UIMap.SetPlaybackSettings();
             UIMap.AssertStudioIsRunning();
         }
-        
+
+        [TestCleanup]
+        public void StopScreenRecording()
+        {
+            screenRecorder.StopRecording(TestContext);
+        }
+
         public UIMap UIMap
         {
             get

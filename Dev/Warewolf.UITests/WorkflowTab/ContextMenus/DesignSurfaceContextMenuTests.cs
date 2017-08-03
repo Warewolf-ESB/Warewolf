@@ -3,13 +3,22 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.UITests.WorkflowTab.Tools.Data.DataToolsUIMapClasses;
 using Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses;
 using Warewolf.UITests.Explorer.ExplorerUIMapClasses;
+using Warewolf.Web.UI.Tests.ScreenRecording;
 
 namespace Warewolf.UITests.WindowsDesignSurfaceContextMenu
 {
     [CodedUITest]
     public class DesignSurfaceContextMenuTests
     {
+        public TestContext TestContext { get; set; }
+        private FfMpegVideoRecorder screenRecorder = new FfMpegVideoRecorder();
+
         [TestMethod]
+        [DeploymentItem(@"avformat-57.dll")]
+        [DeploymentItem(@"avutil-55.dll")]
+        [DeploymentItem(@"swresample-2.dll")]
+        [DeploymentItem(@"swscale-4.dll")]
+        [DeploymentItem(@"avcodec-57.dll")]
         public void CopyAndPasteWorkflowToItselfDoesNotCopy()
         {
             UIMap.Click_NewWorkflow_RibbonButton();
@@ -29,11 +38,18 @@ namespace Warewolf.UITests.WindowsDesignSurfaceContextMenu
 
         #region Additional test attributes
 
-        [TestInitialize()]
+        [TestInitialize]
         public void MyTestInitialize()
         {
+            screenRecorder.StartRecording(TestContext);
             UIMap.SetPlaybackSettings();
             UIMap.AssertStudioIsRunning();
+        }
+
+        [TestCleanup]
+        public void StopScreenRecording()
+        {
+            screenRecorder.StopRecording(TestContext);
         }
 
         public UIMap UIMap

@@ -4,6 +4,7 @@ using Warewolf.UITests.Common;
 using Warewolf.UITests.DialogsUIMapClasses;
 using Warewolf.UITests.Explorer.ExplorerUIMapClasses;
 using Warewolf.UITests.WorkflowServiceTesting.WorkflowServiceTestingUIMapClasses;
+using Warewolf.Web.UI.Tests.ScreenRecording;
 
 namespace Warewolf.UITests.WorkflowServiceTesting
 {
@@ -13,8 +14,15 @@ namespace Warewolf.UITests.WorkflowServiceTesting
     [CodedUITest]
     public class DotnetTestingTests
     {
-
+        public TestContext TestContext { get; set; }
+        private FfMpegVideoRecorder screenRecorder = new FfMpegVideoRecorder();
+        
         [TestMethod]
+        [DeploymentItem(@"avformat-57.dll")]
+        [DeploymentItem(@"avutil-55.dll")]
+        [DeploymentItem(@"swresample-2.dll")]
+        [DeploymentItem(@"swscale-4.dll")]
+        [DeploymentItem(@"avcodec-57.dll")]
         [TestCategory("Dotnet Connector Mocking Tests")]
         public void ClickGenerateTestFromDebugCreatesDotnetTestStepsExpandedFalse()
         {
@@ -25,6 +33,11 @@ namespace Warewolf.UITests.WorkflowServiceTesting
         }
 
         [TestMethod]
+        [DeploymentItem(@"avformat-57.dll")]
+        [DeploymentItem(@"avutil-55.dll")]
+        [DeploymentItem(@"swresample-2.dll")]
+        [DeploymentItem(@"swscale-4.dll")]
+        [DeploymentItem(@"avcodec-57.dll")]
         [TestCategory("Dotnet Connector Mocking Tests")]
         public void ExpandingDotnetDllShowsChildStepsExpandedTrue()
         {
@@ -41,6 +54,11 @@ namespace Warewolf.UITests.WorkflowServiceTesting
         }
 
         [TestMethod]
+        [DeploymentItem(@"avformat-57.dll")]
+        [DeploymentItem(@"avutil-55.dll")]
+        [DeploymentItem(@"swresample-2.dll")]
+        [DeploymentItem(@"swscale-4.dll")]
+        [DeploymentItem(@"avcodec-57.dll")]
         [TestCategory("Dotnet Connector Mocking Tests")]
         public void DeletingConstructorRemovesTheStep()
         {
@@ -51,6 +69,11 @@ namespace Warewolf.UITests.WorkflowServiceTesting
         }
 
         [TestMethod]
+        [DeploymentItem(@"avformat-57.dll")]
+        [DeploymentItem(@"avutil-55.dll")]
+        [DeploymentItem(@"swresample-2.dll")]
+        [DeploymentItem(@"swscale-4.dll")]
+        [DeploymentItem(@"avcodec-57.dll")]
         [TestCategory("Dotnet Connector Mocking Tests")]
         public void DeletingFavouriteRemovesTheStep()
         {
@@ -61,6 +84,11 @@ namespace Warewolf.UITests.WorkflowServiceTesting
         }
 
         [TestMethod]
+        [DeploymentItem(@"avformat-57.dll")]
+        [DeploymentItem(@"avutil-55.dll")]
+        [DeploymentItem(@"swresample-2.dll")]
+        [DeploymentItem(@"swscale-4.dll")]
+        [DeploymentItem(@"avcodec-57.dll")]
         [TestCategory("Dotnet Connector Mocking Tests")]
         public void ConstructorValuesAreLoadedCorrectly()
         {           
@@ -74,6 +102,11 @@ namespace Warewolf.UITests.WorkflowServiceTesting
         }
 
         [TestMethod]
+        [DeploymentItem(@"avformat-57.dll")]
+        [DeploymentItem(@"avutil-55.dll")]
+        [DeploymentItem(@"swresample-2.dll")]
+        [DeploymentItem(@"swscale-4.dll")]
+        [DeploymentItem(@"avcodec-57.dll")]
         [TestCategory("Dotnet Connector Mocking Tests")]
         public void ChangeVariableOnTheStepoutPutSetsTheDisplayNameWithAStar()
         {
@@ -86,6 +119,11 @@ namespace Warewolf.UITests.WorkflowServiceTesting
 
 
         [TestMethod]
+        [DeploymentItem(@"avformat-57.dll")]
+        [DeploymentItem(@"avutil-55.dll")]
+        [DeploymentItem(@"swresample-2.dll")]
+        [DeploymentItem(@"swscale-4.dll")]
+        [DeploymentItem(@"avcodec-57.dll")]
         [TestCategory("Dotnet Connector Mocking Tests")]
         public void FavouriteFoodsValuesAreLoadedCorreclty()
         {
@@ -101,6 +139,11 @@ namespace Warewolf.UITests.WorkflowServiceTesting
         }
 
         [TestMethod]
+        [DeploymentItem(@"avformat-57.dll")]
+        [DeploymentItem(@"avutil-55.dll")]
+        [DeploymentItem(@"swresample-2.dll")]
+        [DeploymentItem(@"swscale-4.dll")]
+        [DeploymentItem(@"avcodec-57.dll")]
         [TestCategory("Dotnet Connector Mocking Tests")]
         public void RunTestsHasTheTestPassing()
         {
@@ -112,6 +155,11 @@ namespace Warewolf.UITests.WorkflowServiceTesting
         }
 
         [TestMethod]
+        [DeploymentItem(@"avformat-57.dll")]
+        [DeploymentItem(@"avutil-55.dll")]
+        [DeploymentItem(@"swresample-2.dll")]
+        [DeploymentItem(@"swscale-4.dll")]
+        [DeploymentItem(@"avcodec-57.dll")]
         [TestCategory("Dotnet Connector Mocking Tests")]
         public void RunTestsWithAssertHasTheTestFailingWhenConstructorValueIsSetToEmpty()
         {
@@ -126,6 +174,11 @@ namespace Warewolf.UITests.WorkflowServiceTesting
         }
 
         [TestMethod]
+        [DeploymentItem(@"avformat-57.dll")]
+        [DeploymentItem(@"avutil-55.dll")]
+        [DeploymentItem(@"swresample-2.dll")]
+        [DeploymentItem(@"swscale-4.dll")]
+        [DeploymentItem(@"avcodec-57.dll")]
         [TestCategory("Dotnet Connector Mocking Tests")]
         public void RunTestsWithAssertHasTheTestPassing()
         {
@@ -139,6 +192,11 @@ namespace Warewolf.UITests.WorkflowServiceTesting
         }
 
         [TestMethod]
+        [DeploymentItem(@"avformat-57.dll")]
+        [DeploymentItem(@"avutil-55.dll")]
+        [DeploymentItem(@"swresample-2.dll")]
+        [DeploymentItem(@"swscale-4.dll")]
+        [DeploymentItem(@"avcodec-57.dll")]
         [TestCategory("Dotnet Connector Mocking Tests")]
         public void RunTestsWithMockHasTheTestFailingWhenConstructorValueIsSetToEmpty()
         {
@@ -153,6 +211,11 @@ namespace Warewolf.UITests.WorkflowServiceTesting
         }
 
         [TestMethod]
+        [DeploymentItem(@"avformat-57.dll")]
+        [DeploymentItem(@"avutil-55.dll")]
+        [DeploymentItem(@"swresample-2.dll")]
+        [DeploymentItem(@"swscale-4.dll")]
+        [DeploymentItem(@"avcodec-57.dll")]
         [TestCategory("Dotnet Connector Mocking Tests")]
         public void RunTestsWithMockHasTheTestPassing()
         {
@@ -167,15 +230,22 @@ namespace Warewolf.UITests.WorkflowServiceTesting
 
         #region Additional test attributes
 
-        [TestInitialize()]
+        [TestInitialize]
         public void MyTestInitialize()
         {
+            screenRecorder.StartRecording(TestContext);
             UIMap.SetPlaybackSettings();
             UIMap.AssertStudioIsRunning();
             ExplorerUIMap.Filter_Explorer("DotnetWorkflowForTesting");
             ExplorerUIMap.DoubleClick_Explorer_Localhost_First_Item();
             UIMap.Press_F6();
             UIMap.Click_Create_Test_From_Debug();
+        }
+
+        [TestCleanup]
+        public void StopScreenRecording()
+        {
+            screenRecorder.StopRecording(TestContext);
         }
 
         UIMap UIMap
