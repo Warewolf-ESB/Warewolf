@@ -60,13 +60,15 @@
       <SpecificVersion>False</SpecificVersion>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="TechTalk.SpecFlow">
-      <HintPath>..\packages\SpecFlow.2.1.0\lib\net45\TechTalk.SpecFlow.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="TechTalk.SpecFlow, Version=2.2.0.0, Culture=neutral, PublicKeyToken=0778194805d6db41, processorArchitecture=MSIL">
+      <HintPath>..\packages\SpecFlow.2.2.0\lib\net45\TechTalk.SpecFlow.dll</HintPath>
     </Reference>
     <Reference Include="WindowsBase" />
   </ItemGroup>
@@ -176,11 +178,12 @@
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PreBuildEvent>"$(ProjectDir)\fnr.exe" --cl --dir "$(SolutionDir)$(ProjectName)" --fileMask *.feature.cs --find "[Microsoft.VisualStudio.TestTools.UnitTesting.TestClassAttribute()]" --replace "[Microsoft.VisualStudio.TestTools.UITesting.CodedUITestAttribute()]"</PreBuildEvent>
+    <PreBuildEvent>
+    </PreBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PostBuildEvent>REM IF EXIST "%25vs120comntools%25" IF NOT EXIST "%25vs120comntools%25..\IDE\PrivateAssemblies\Dev2.CodedUI.SpecGenerator.dll" echo f | xcopy /Y /Q "$(TargetDir)Dev2.CodedUI.SpecGenerator.dll" "%25vs120comntools%25..\IDE\PrivateAssemblies\Dev2.CodedUI.SpecGenerator.dll"
-REM IF EXIST "%25vs140comntools%25" IF NOT EXIST "%25vs140comntools%25..\IDE\PrivateAssemblies\Dev2.CodedUI.SpecGenerator.dll" echo f | xcopy /Y /Q "$(TargetDir)Dev2.CodedUI.SpecGenerator.dll" "%25vs140comntools%25..\IDE\PrivateAssemblies\Dev2.CodedUI.SpecGenerator.dll"</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
