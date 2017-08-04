@@ -1,4 +1,9 @@
 ﻿@TestingFrameworkMocking
+@MSTest:DeploymentItem:avformat-57.dll
+@MSTest:DeploymentItem:avutil-55.dll
+@MSTest:DeploymentItem:swresample-2.dll
+@MSTest:DeploymentItem:swscale-4.dll
+@MSTest:DeploymentItem:avcodec-57.dll
 Feature: TestingFrameworkMocking
 
 Scenario: Executing Release Tests for Hello World should all be passing
