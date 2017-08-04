@@ -29,6 +29,7 @@ namespace Warewolf.UISpecs
         [Microsoft.VisualStudio.TestTools.UnitTesting.ClassInitializeAttribute()]
         public static void FeatureSetup(Microsoft.VisualStudio.TestTools.UnitTesting.TestContext testContext)
         {
+            SetDefaultPlaybackSettings.TestContext = testContext;
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner(null, 0);
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "SwitchTool", "\tIn order to continue to control the flow of execution through workflows\r\n\tAs a W" +
                     "arewolf Studio user\r\n\tI want to perform a composition of recorded actions agains" +
