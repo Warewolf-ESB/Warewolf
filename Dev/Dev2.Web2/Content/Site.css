@@ -81,11 +81,40 @@ body {
 /*FOOTER*/
 
 
+.generalMessageWrap {
+    width: 100%;
+    bottom: 0px;
+    margin-top: 20px;
+}
+
+.generalMessage {
+    width: 100%;
+    margin: auto;
+}
+
+.generalMessageContent {
+    float: left;
+    width: 100%;
+    background-color: gray;
+    padding: 20px 0;
+}
+
+.generalMessage p {
+    float: left;
+    width: 100%;
+    text-align: center;
+    color: #fff;
+    font-size: 20px;
+}
+
+
 
 #divExecutionList {
     display: none;
 }
-
+#generalMessageDiv {
+    display: none;
+}
 
 
 /* Override the default bootstrap behavior where horizontal description lists 
