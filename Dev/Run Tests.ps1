@@ -545,7 +545,8 @@ function Install-Server([string]$ServerPath,[string]$ResourcesType) {
 }
 
 function Start-Server([string]$ServerPath,[string]$ResourcesType) {
-    Write-Warning Will now stop any currently running Warewolf servers and studios and delete all resources in Warewolf ProgramData. New resources will be deployed from ((Get-Item $ServerPath).Directory.FullName + "\Resources - $ResourcesType\*").
+    $ServerFolderPath = (Get-Item $ServerPath).Directory.FullName
+    Write-Warning "Will now stop any currently running Warewolf servers and studios and delete all resources in Warewolf ProgramData. New resources will be deployed from $ServerFolderPath\Resources - $ResourcesType\*"
     Cleanup-ServerStudio
     Copy-Item -Path ((Get-Item $ServerPath).Directory.FullName + "\Resources - $ResourcesType\*") -Destination "$env:ProgramData\Warewolf" -Recurse -Force
 	
