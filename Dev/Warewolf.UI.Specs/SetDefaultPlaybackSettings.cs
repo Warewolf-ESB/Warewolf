@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UITesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
 using Warewolf.UITests;
 using Warewolf.Web.UI.Tests.ScreenRecording;
@@ -9,13 +10,6 @@ namespace Warewolf.UISpecs
     class SetDefaultPlaybackSettings
     {
         public static TestContext TestContext { get; set; }
-
-        [AssemblyInitialize]
-        public static void AssemblyInit(TestContext context)
-        {
-            TestContext = context;
-        }
-
         private FfMpegVideoRecorder screenRecorder = new FfMpegVideoRecorder();
 
         [BeforeScenario]
@@ -29,6 +23,7 @@ namespace Warewolf.UISpecs
         public void StopScreenRecording()
         {
             screenRecorder.StopRecording(TestContext);
+            Playback.Cleanup();
         }
     }
 }
