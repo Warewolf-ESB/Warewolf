@@ -20,5 +20,7 @@ namespace Dev2.Web2.Models.ExecutionLogging
         public string Port { get; set; }
         public string Protocol { get; set; }
         public string SortBy { get; set; }
+
+        public string ComputerName { get; set; }
     }
 }
