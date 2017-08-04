@@ -1,4 +1,9 @@
 ﻿@SaveDialog
+@MSTest:DeploymentItem:avformat-57.dll
+@MSTest:DeploymentItem:avutil-55.dll
+@MSTest:DeploymentItem:swresample-2.dll
+@MSTest:DeploymentItem:swscale-4.dll
+@MSTest:DeploymentItem:avcodec-57.dll
 Feature: SaveDialog
 	In order to save services
 	As a warewolf studio user
