@@ -29,7 +29,7 @@ Param(
   [switch]$RunAllReleaseResourcesTests,
   [switch]$RunAllCodedUITests,
   [switch]$RunWarewolfServiceTests,
-  [string]$MergeDotCoverSnapshotsInDirectory
+  [string]$MergeDotCoverSnapshotsInDirectory=""
 )
 $JobSpecs = @{}
 #Unit Tests
@@ -350,7 +350,7 @@ function Move-Artifacts-To-TestResults([bool]$DotCover, [bool]$Server, [bool]$St
 	        }
 	    } elseif ($trxContent.TestRun.Results.UnitTestResult.outcome -eq "Failed") {
             $PlayList += "<Add Test=`"" + $trxContent.TestRun.TestDefinitions.UnitTest.TestMethod.className + "." + $trxContent.TestRun.TestDefinitions.UnitTest.TestMethod.name + "`" />"
-        } else {
+        } elseif ($trxContent.TestRun.Results.UnitTestResult -eq $null) {
 		    Write-Host Error parsing TestRun.Results.UnitTestResult from trx file at $_.FullName
         }
     }
@@ -1220,7 +1220,7 @@ if ($RunAllJobs.IsPresent) {
     Invoke-Expression -Command ("&'$PSCommandPath' -JobName '$RunAllCodedUITests' -StartStudio -ResourcesType UITests")
 }
 
-if (!$RunAllJobs.IsPresent -and !$Cleanup.IsPresent -and !$AssemblyFileVersionsTest.IsPresent -and !$RunAllUnitTests.IsPresent -and !$RunAllServerTests.IsPresent -and !$RunAllCodedUITests.IsPresent -and $JobName -eq "" -and !$RunWarewolfServiceTests.IsPresent -and !$MergeDotCoverSnapshotsInDirectory -eq "") {
+if (!$RunAllJobs.IsPresent -and !$Cleanup.IsPresent -and !$AssemblyFileVersionsTest.IsPresent -and !$RunAllUnitTests.IsPresent -and !$RunAllServerTests.IsPresent -and !$RunAllCodedUITests.IsPresent -and $JobName -eq "" -and !$RunWarewolfServiceTests.IsPresent -and $MergeDotCoverSnapshotsInDirectory -eq "") {
     $ServerPath,$ResourcesType = Install-Server $ServerPath $ResourcesType
     Start-Server $ServerPath $ResourcesType
     if (!$StartServer.IsPresent) {
