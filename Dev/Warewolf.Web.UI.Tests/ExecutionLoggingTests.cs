@@ -3,31 +3,38 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Microsoft.VisualStudio.TestTools.UITesting;
 using OpenQA.Selenium;
 using OpenQA.Selenium.IE;
+using Warewolf.Web.UI.Tests.ScreenRecording;
 using OpenQA.Selenium.Support.UI;
 using System.Net;
+using System.Windows.Forms;
+using System.IO;
 
 namespace SeleniumTests
 {
-    [CodedUITest]
+    [TestClass]
     public class ExecutionLoggingTests
     {
+        public TestContext TestContext { get; set; }
+        private FfMpegVideoRecorder screenRecorder = new FfMpegVideoRecorder();
         private IWebDriver driver;
         private StringBuilder verificationErrors;
         private string baseURL;
         private bool acceptNextAlert = true;
-        
+
+
         [TestInitialize]
         public void SetupTest()
         {
+            //Generate some test log data
             WebRequest.Create("http://localhost:3142/secure/Hello%20World.json?Name=Tester");
             driver = new InternetExplorerDriver();
             baseURL = "http://my.warewolf.io";
+            screenRecorder.StartRecording(TestContext);
             verificationErrors = new StringBuilder();
         }
-        
+
         [TestCleanup]
         public void TeardownTest()
         {
@@ -39,15 +46,17 @@ namespace SeleniumTests
             {
                 // Ignore errors if unable to close the browser
             }
+            screenRecorder.StopRecording(TestContext);
             Assert.AreEqual("", verificationErrors.ToString());
         }
         
         [TestMethod]
-        public void TheExecutionLoggingTestsTest()
+        public void ExecutionLoggingTest()
         {
             driver.Navigate().GoToUrl(baseURL + "/ExecutionLogging");
             driver.FindElement(By.Id("updateServer")).Click();
         }
+
         private bool IsElementPresent(By by)
         {
             try
