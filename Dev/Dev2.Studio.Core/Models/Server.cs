@@ -397,8 +397,10 @@ namespace Dev2.Studio.Core.Models
             {
                 Connection.Connect(Guid.Empty);
             }
-            _version = ProxyLayer.AdminManagerProxy.GetServerVersion();
-
+            if (_version == null)
+            {
+                _version = ProxyLayer.AdminManagerProxy.GetServerVersion();
+            }
             return _version;
         }
 
@@ -458,8 +460,10 @@ namespace Dev2.Studio.Core.Models
             {
                 Connection.Connect(Guid.Empty);
             }
-            _serverInformation = ProxyLayer.AdminManagerProxy.GetServerInformation();
-
+            if (_serverInformation == null)
+            {
+                _serverInformation = ProxyLayer.AdminManagerProxy.GetServerInformation();
+            }
             return _serverInformation;
         }
         
