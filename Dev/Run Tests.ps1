@@ -28,7 +28,8 @@ Param(
   [switch]$RunAllServerTests,
   [switch]$RunAllReleaseResourcesTests,
   [switch]$RunAllCodedUITests,
-  [switch]$RunWarewolfServiceTests
+  [switch]$RunWarewolfServiceTests,
+  [string]$MergeDotCoverSnapshotsInDirectory
 )
 $JobSpecs = @{}
 #Unit Tests
@@ -39,96 +40,96 @@ $JobSpecs["COMIPC Unit Tests"]				 	= "Warewolf.COMIPC.Tests"
 $JobSpecs["Studio View Models Unit Tests"]	 	= "Warewolf.Studio.ViewModels.Tests"
 $JobSpecs["Activity Designers Unit Tests"]	 	= "Dev2.Activities.Designers.Tests"
 $JobSpecs["Activities Unit Tests"]				= "Dev2.Activities.Tests"
-$JobSpecs["Other Tools Specs"]		 			= "Warewolf.Tools.Specs", "(TestCategory!=Scripting)&(TestCategory!=Storage)&(TestCategory!=Utility)&(TestCategory!=ControlFlow)&(TestCategory!=Data)&(TestCategory!=Database)&(TestCategory!=Email)&(TestCategory!=FileAndFolderCopy)&(TestCategory!=FileAndFolderCreate)&(TestCategory!=FileAndFolderDelete)&(TestCategory!=FileAndFolderMove)&(TestCategory!=ReadFolder)&(TestCategory!=ReadFile)&(TestCategory!=FileAndFolderRename)&(TestCategory!=Unzip)&(TestCategory!=WriteFile)&(TestCategory!=Zip)&(TestCategory!=LoopConstructs)&(TestCategory!=Recordset)&(TestCategory!=Resources)"
-$JobSpecs["Scripting Tools Specs"]		 		= "Warewolf.Tools.Specs", "(TestCategory=Scripting)"
-$JobSpecs["Storage Tools Specs"]		 		= "Warewolf.Tools.Specs", "(TestCategory=Storage)"
-$JobSpecs["Utility Tools Specs"]		 		= "Warewolf.Tools.Specs", "(TestCategory=Utility)"
-$JobSpecs["Control Flow Tools Specs"]		 	= "Warewolf.Tools.Specs", "(TestCategory=ControlFlow)"
-$JobSpecs["Data Tools Specs"]		 			= "Warewolf.Tools.Specs", "(TestCategory=Data)"
-$JobSpecs["Database Tools Specs"]		 		= "Warewolf.Tools.Specs", "(TestCategory=Database)"
-$JobSpecs["Email Tools Specs"]		 			= "Warewolf.Tools.Specs", "(TestCategory=Email)"
-$JobSpecs["File And Folder Copy Tool Specs"]	= "Warewolf.Tools.Specs", "(TestCategory=FileAndFolderCopy)"
-$JobSpecs["File And Folder Create Tool Specs"]	= "Warewolf.Tools.Specs", "(TestCategory=FileAndFolderCreate)"
-$JobSpecs["File And Folder Delete Tool Specs"]	= "Warewolf.Tools.Specs", "(TestCategory=FileAndFolderDelete)"
-$JobSpecs["File And Folder Move Tool Specs"]	= "Warewolf.Tools.Specs", "(TestCategory=FileAndFolderMove)"
-$JobSpecs["Folder Read Tool Specs"]		 		= "Warewolf.Tools.Specs", "(TestCategory=ReadFolder)"
-$JobSpecs["File Read Tool Specs"]		 		= "Warewolf.Tools.Specs", "(TestCategory=ReadFile)"
-$JobSpecs["File And Folder Rename Tool Specs"]	= "Warewolf.Tools.Specs", "(TestCategory=FileAndFolderRename)"
-$JobSpecs["Unzip Tool Specs"]		 			= "Warewolf.Tools.Specs", "(TestCategory=Unzip)"
-$JobSpecs["Write File Tool Specs"]		 		= "Warewolf.Tools.Specs", "(TestCategory=WriteFile)"
-$JobSpecs["Zip Tool Specs"]		 				= "Warewolf.Tools.Specs", "(TestCategory=Zip)"
-$JobSpecs["Loop Construct Tools Specs"]			= "Warewolf.Tools.Specs", "(TestCategory=LoopConstructs)"
-$JobSpecs["Recordset Tools Specs"]		 		= "Warewolf.Tools.Specs", "(TestCategory=Recordset)"
-$JobSpecs["Resource Tools Specs"]		 		= "Warewolf.Tools.Specs", "(TestCategory=Resources)"
+$JobSpecs["Other Tools Specs"]		 			= "Warewolf.Tools.Specs"
+$JobSpecs["Scripting Tools Specs"]		 		= "Warewolf.Tools.Specs", "Scripting"
+$JobSpecs["Storage Tools Specs"]		 		= "Warewolf.Tools.Specs", "Storage"
+$JobSpecs["Utility Tools Specs"]		 		= "Warewolf.Tools.Specs", "Utility"
+$JobSpecs["Control Flow Tools Specs"]		 	= "Warewolf.Tools.Specs", "ControlFlow"
+$JobSpecs["Data Tools Specs"]		 			= "Warewolf.Tools.Specs", "Data"
+$JobSpecs["Database Tools Specs"]		 		= "Warewolf.Tools.Specs", "Database"
+$JobSpecs["Email Tools Specs"]		 			= "Warewolf.Tools.Specs", "Email"
+$JobSpecs["File And Folder Copy Tool Specs"]	= "Warewolf.Tools.Specs", "FileAndFolderCopy"
+$JobSpecs["File And Folder Create Tool Specs"]	= "Warewolf.Tools.Specs", "FileAndFolderCreate"
+$JobSpecs["File And Folder Delete Tool Specs"]	= "Warewolf.Tools.Specs", "FileAndFolderDelete"
+$JobSpecs["File And Folder Move Tool Specs"]	= "Warewolf.Tools.Specs", "FileAndFolderMove"
+$JobSpecs["Folder Read Tool Specs"]		 		= "Warewolf.Tools.Specs", "ReadFolder"
+$JobSpecs["File Read Tool Specs"]		 		= "Warewolf.Tools.Specs", "ReadFile"
+$JobSpecs["File And Folder Rename Tool Specs"]	= "Warewolf.Tools.Specs", "FileAndFolderRename"
+$JobSpecs["Unzip Tool Specs"]		 			= "Warewolf.Tools.Specs", "Unzip"
+$JobSpecs["Write File Tool Specs"]		 		= "Warewolf.Tools.Specs", "WriteFile"
+$JobSpecs["Zip Tool Specs"]		 				= "Warewolf.Tools.Specs", "Zip"
+$JobSpecs["Loop Construct Tools Specs"]			= "Warewolf.Tools.Specs", "LoopConstructs"
+$JobSpecs["Recordset Tools Specs"]		 		= "Warewolf.Tools.Specs", "Recordset"
+$JobSpecs["Resource Tools Specs"]		 		= "Warewolf.Tools.Specs", "Resources"
 $JobSpecs["UI Binding Tests"] 				 	= "Warewolf.UIBindingTests.*"
 #Server Tests
 $JobSpecs["Integration Tests"]				 									= "Dev2.IntegrationTests"
 $JobSpecs["Other Specs"]		 												= "Dev2.*.Specs,Warewolf.*.Specs"
-$JobSpecs["Other Activities Specs"]		 										= "Dev2.Activities.Specs", "(TestCategory!=ExampleWorkflowExecution)&(TestCategory!=WorkflowExecution)&(TestCategory!=SubworkflowExecution)&(TestCategory!=StudioTestFramework)&(TestCategory!=StudioTestFrameworkWithDataTools)&(TestCategory!=StudioTestFrameworkWithDatabaseTools)&(TestCategory!=StudioTestFrameworkWithDeletedResources)&(TestCategory!=StudioTestFrameworkWithDropboxTools)&(TestCategory!=StudioTestFrameworkWithFileAndFolderTools)&(TestCategory!=StudioTestFrameworkWithHelloWorldWorkflow)&(TestCategory!=StudioTestFrameworkWithHTTPWebTools)&(TestCategory!=StudioTestFrameworkWithScriptingTools)&(TestCategory!=StudioTestFrameworkWithSubworkflow)&(TestCategory!=StudioTestFrameworkWithUtilityTools)"
-$JobSpecs["Example Workflow Execution Specs"] 									= "Dev2.Activities.Specs", "(TestCategory=ExampleWorkflowExecution)"
-$JobSpecs["Subworkflow Execution Specs"]										= "Dev2.Activities.Specs", "(TestCategory=SubworkflowExecution)"
-$JobSpecs["Workflow Execution Specs"]		 									= "Dev2.Activities.Specs", "(TestCategory=WorkflowExecution)"
-$JobSpecs["Studio Test Framework Specs"]		 								= "Dev2.Activities.Specs", "(TestCategory=StudioTestFramework)"
-$JobSpecs["Studio Test Framework With Data Tools Specs"]		 				= "Dev2.Activities.Specs", "(TestCategory=StudioTestFrameworkWithDataTools)"
-$JobSpecs["Studio Test Framework With Database Tools Specs"]					= "Dev2.Activities.Specs", "(TestCategory=StudioTestFrameworkWithDatabaseTools)"
-$JobSpecs["Studio Test Framework With Deleted Resources Specs"]					= "Dev2.Activities.Specs", "(TestCategory=StudioTestFrameworkWithDeletedResources)"
-$JobSpecs["Studio Test Framework With Dropbox Tools Specs"]		 				= "Dev2.Activities.Specs", "(TestCategory=StudioTestFrameworkWithDropboxTools)"
-$JobSpecs["Studio Test Framework With File And Folder Tools Specs"]				= "Dev2.Activities.Specs", "(TestCategory=StudioTestFrameworkWithFileAndFolderTools)"
-$JobSpecs["Studio Test Framework With Hello World Workflow Specs"]				= "Dev2.Activities.Specs", "(TestCategory=StudioTestFrameworkWithHelloWorldWorkflow)"
-$JobSpecs["Studio Test Framework With HTTP Web Tools Specs"]					= "Dev2.Activities.Specs", "(TestCategory=StudioTestFrameworkWithHTTPWebTools)"
-$JobSpecs["Studio Test Framework With Scripting Tools Specs"]					= "Dev2.Activities.Specs", "(TestCategory=StudioTestFrameworkWithScriptingTools)"
-$JobSpecs["Studio Test Framework With Subworkflow Specs"]		 				= "Dev2.Activities.Specs", "(TestCategory=StudioTestFrameworkWithSubworkflow)"
-$JobSpecs["Studio Test Framework With Utility Tools Specs"]		 				= "Dev2.Activities.Specs", "(TestCategory=StudioTestFrameworkWithUtilityTools)"
-$JobSpecs["Other Security Specs"] 												= "Warewolf.Security.Specs", "(TestCategory!=ConflictingContributeViewExecutePermissionsSecurity)&(TestCategory=ConflictingExecutePermissionsSecurity)&(TestCategory=ConflictingViewExecutePermissionsSecurity)&(TestCategory=ConflictingViewPermissionsSecurity)&(TestCategory=NoConflictingPermissionsSecurity)&(TestCategory=OverlappingUserGroupsPermissionsSecurity)&(TestCategory=ResourcePermissionsSecurity)&(TestCategory=ServerPermissionsSecurity)"
-$JobSpecs["Conflicting Contribute View And Execute Permissions Security Specs"] = "Warewolf.Security.Specs", "(TestCategory=ConflictingContributeViewExecutePermissionsSecurity)"
-$JobSpecs["Conflicting Execute Permissions Security Specs"]					    = "Warewolf.Security.Specs", "(TestCategory=ConflictingExecutePermissionsSecurity)"
-$JobSpecs["Conflicting View And Execute Permissions Security Specs"]			= "Warewolf.Security.Specs", "(TestCategory=ConflictingViewExecutePermissionsSecurity)"
-$JobSpecs["Conflicting View Permissions Security Specs"]						= "Warewolf.Security.Specs", "(TestCategory=ConflictingViewPermissionsSecurity)"
-$JobSpecs["No Conflicting Permissions Security Specs"]							= "Warewolf.Security.Specs", "(TestCategory=NoConflictingPermissionsSecurity)"
-$JobSpecs["Overlapping User Groups Permissions Security Specs"]					= "Warewolf.Security.Specs", "(TestCategory=OverlappingUserGroupsPermissionsSecurity)"
-$JobSpecs["Resource Permissions Security Specs"]								= "Warewolf.Security.Specs", "(TestCategory=ResourcePermissionsSecurity)"
-$JobSpecs["Server Permissions Security Specs"]									= "Warewolf.Security.Specs", "(TestCategory=ServerPermissionsSecurity)"
+$JobSpecs["Other Activities Specs"]		 										= "Dev2.Activities.Specs"
+$JobSpecs["Example Workflow Execution Specs"] 									= "Dev2.Activities.Specs", "ExampleWorkflowExecution"
+$JobSpecs["Subworkflow Execution Specs"]										= "Dev2.Activities.Specs", "SubworkflowExecution"
+$JobSpecs["Workflow Execution Specs"]		 									= "Dev2.Activities.Specs", "WorkflowExecution"
+$JobSpecs["Studio Test Framework Specs"]		 								= "Dev2.Activities.Specs", "StudioTestFramework"
+$JobSpecs["Studio Test Framework With Data Tools Specs"]		 				= "Dev2.Activities.Specs", "StudioTestFrameworkWithDataTools"
+$JobSpecs["Studio Test Framework With Database Tools Specs"]					= "Dev2.Activities.Specs", "StudioTestFrameworkWithDatabaseTools"
+$JobSpecs["Studio Test Framework With Deleted Resources Specs"]					= "Dev2.Activities.Specs", "StudioTestFrameworkWithDeletedResources"
+$JobSpecs["Studio Test Framework With Dropbox Tools Specs"]		 				= "Dev2.Activities.Specs", "StudioTestFrameworkWithDropboxTools"
+$JobSpecs["Studio Test Framework With File And Folder Tools Specs"]				= "Dev2.Activities.Specs", "StudioTestFrameworkWithFileAndFolderTools"
+$JobSpecs["Studio Test Framework With Hello World Workflow Specs"]				= "Dev2.Activities.Specs", "StudioTestFrameworkWithHelloWorldWorkflow"
+$JobSpecs["Studio Test Framework With HTTP Web Tools Specs"]					= "Dev2.Activities.Specs", "StudioTestFrameworkWithHTTPWebTools"
+$JobSpecs["Studio Test Framework With Scripting Tools Specs"]					= "Dev2.Activities.Specs", "StudioTestFrameworkWithScriptingTools"
+$JobSpecs["Studio Test Framework With Subworkflow Specs"]		 				= "Dev2.Activities.Specs", "StudioTestFrameworkWithSubworkflow"
+$JobSpecs["Studio Test Framework With Utility Tools Specs"]		 				= "Dev2.Activities.Specs", "StudioTestFrameworkWithUtilityTools"
+$JobSpecs["Other Security Specs"] 												= "Warewolf.Security.Specs"
+$JobSpecs["Conflicting Contribute View And Execute Permissions Security Specs"] = "Warewolf.Security.Specs", "ConflictingContributeViewExecutePermissionsSecurity"
+$JobSpecs["Conflicting Execute Permissions Security Specs"]					    = "Warewolf.Security.Specs", "ConflictingExecutePermissionsSecurity"
+$JobSpecs["Conflicting View And Execute Permissions Security Specs"]			= "Warewolf.Security.Specs", "ConflictingViewExecutePermissionsSecurity"
+$JobSpecs["Conflicting View Permissions Security Specs"]						= "Warewolf.Security.Specs", "ConflictingViewPermissionsSecurity"
+$JobSpecs["No Conflicting Permissions Security Specs"]							= "Warewolf.Security.Specs", "NoConflictingPermissionsSecurity"
+$JobSpecs["Overlapping User Groups Permissions Security Specs"]					= "Warewolf.Security.Specs", "OverlappingUserGroupsPermissionsSecurity"
+$JobSpecs["Resource Permissions Security Specs"]								= "Warewolf.Security.Specs", "ResourcePermissionsSecurity"
+$JobSpecs["Server Permissions Security Specs"]									= "Warewolf.Security.Specs", "ServerPermissionsSecurity"
 #UI Tests
-$JobSpecs["Other UI Tests"]					    = "Warewolf.UITests", "(TestCategory!=Tools)&(TestCategory!=Data Tools)&(TestCategory!=Database Tools)&(TestCategory!=Dropbox Tools)&(TestCategory!=File Tools)&(TestCategory!=HTTP Tools)&(TestCategory!=Recordset Tools)&(TestCategory!=Sharepoint Tools)&(TestCategory!=Utility Tools)&(TestCategory!=Explorer)&(TestCategory!=Tabs and Panes)&(TestCategory!=Deploy)&(TestCategory!=Debug Input)&(TestCategory!=Workflow Testing)&(TestCategory!=Default Layout)&(TestCategory!=Resource Tools)&(TestCategory!=Save Dialog)&(TestCategory!=Shortcut Keys)&(TestCategory!=Settings)&(TestCategory!=Dependency Graph)&(TestCategory!=Variables)&(TestCategory!=Email Tools)&(TestCategory!=Plugin Sources)&(TestCategory!=Web Sources)&(TestCategory!=Database Sources)&(TestCategory!=Workflow Mocking Tests)&(TestCategory!=Assign Tool)&(TestCategory!=Control Flow Tools)&(TestCategory!=DotNet Connector Mocking Tests)&(TestCategory!=DotNet Connector Tool)&(TestCategory!=Hello World Mocking Tests)&(TestCategory!=Server Sources)&(TestCategory!=Source Wizards)"
-$JobSpecs["Other UI Specs"]					    = "Warewolf.UISpecs", "(TestCategory!=DBConnector)&(TestCategory!=PluginConnector)&(TestCategory!=WebConnector)&(TestCategory!=Explorer)&(TestCategory!=Deploy)&(TestCategory!=SaveDialog)"
-$JobSpecs["Assign Tool UI Tests"]				= "Warewolf.UITests", "(TestCategory=Assign Tool)"
-$JobSpecs["Control Flow Tools UI Tests"]		= "Warewolf.UITests", "(TestCategory=Control Flow Tools)"
-$JobSpecs["Database Sources UI Tests"]			= "Warewolf.UITests", "(TestCategory=Database Sources)"
-$JobSpecs["Database Tools UI Tests"]			= "Warewolf.UITests", "(TestCategory=Database Tools)"
-$JobSpecs["Data Tools UI Tests"]				= "Warewolf.UITests", "(TestCategory=Data Tools)"
-$JobSpecs["DB Connector UI Specs"]				= "Warewolf.UISpecs", "(TestCategory=DBConnector)"
-$JobSpecs["Debug Input UI Tests"]				= "Warewolf.UITests", "(TestCategory=Debug Input)"
-$JobSpecs["Default Layout UI Tests"]			= "Warewolf.UITests", "(TestCategory=Default Layout)"
-$JobSpecs["Dependency Graph UI Tests"]			= "Warewolf.UITests", "(TestCategory=Dependency Graph)"
-$JobSpecs["Deploy UI Specs"]					= "Warewolf.UISpecs", "(TestCategory=Deploy)"
-$JobSpecs["Deploy UI Tests"]					= "Warewolf.UITests", "(TestCategory=Deploy)"
-$JobSpecs["DotNet Connector Mocking UI Tests"]	= "Warewolf.UITests", "(TestCategory=DotNet Connector Mocking Tests)"
-$JobSpecs["DotNet Connector Tool UI Tests"]	    = "Warewolf.UITests", "(TestCategory=DotNet Connector Tool)"
-$JobSpecs["Dropbox Tools UI Tests"]			    = "Warewolf.UITests", "(TestCategory=Dropbox Tools)"
-$JobSpecs["Email Tools UI Tests"]				= "Warewolf.UITests", "(TestCategory=Email Tools)"
-$JobSpecs["Explorer UI Specs"]					= "Warewolf.UISpecs", "(TestCategory=Explorer)"
-$JobSpecs["Explorer UI Tests"]					= "Warewolf.UITests", "(TestCategory=Explorer)"
-$JobSpecs["File Tools UI Tests"]				= "Warewolf.UITests", "(TestCategory=File Tools)"
-$JobSpecs["Hello World Mocking UI Tests"]		= "Warewolf.UITests", "(TestCategory=Hello World Mocking Tests)"
-$JobSpecs["HTTP Tools UI Tests"]				= "Warewolf.UITests", "(TestCategory=HTTP Tools)"
-$JobSpecs["Plugin Sources UI Tests"]			= "Warewolf.UITests", "(TestCategory=Plugin Sources)"
-$JobSpecs["Recordset Tools UI Tests"]			= "Warewolf.UITests", "(TestCategory=Recordset Tools)"
-$JobSpecs["Resource Tools UI Tests"]			= "Warewolf.UITests", "(TestCategory=Resource Tools)"
-$JobSpecs["Save Dialog UI Specs"]				= "Warewolf.UISpecs", "(TestCategory=SaveDialog)"
-$JobSpecs["Save Dialog UI Tests"]				= "Warewolf.UITests", "(TestCategory=Save Dialog)"
-$JobSpecs["Server Sources UI Tests"]			= "Warewolf.UITests", "(TestCategory=Server Sources)"
-$JobSpecs["Settings UI Tests"]					= "Warewolf.UITests", "(TestCategory=Settings)"
-$JobSpecs["Sharepoint Tools UI Tests"]			= "Warewolf.UITests", "(TestCategory=Sharepoint Tools)"
-$JobSpecs["Shortcut Keys UI Tests"]			    = "Warewolf.UITests", "(TestCategory=Shortcut Keys)"
-$JobSpecs["Source Wizards UI Tests"]			= "Warewolf.UITests", "(TestCategory=Source Wizards)"
-$JobSpecs["Tabs And Panes UI Tests"]			= "Warewolf.UITests", "(TestCategory=Tabs and Panes)"
-$JobSpecs["Tools UI Tests"]					    = "Warewolf.UITests", "(TestCategory=Tools)"
-$JobSpecs["Utility Tools UI Tests"]			    = "Warewolf.UITests", "(TestCategory=Utility Tools)"
-$JobSpecs["Variables UI Tests"]				    = "Warewolf.UITests", "(TestCategory=Variables)"
-$JobSpecs["Web Connector UI Specs"]			    = "Warewolf.UISpecs", "(TestCategory=WebConnector)"
-$JobSpecs["Web Sources UI Tests"]				= "Warewolf.UITests", "(TestCategory=Web Sources)"
-$JobSpecs["Workflow Mocking Tests UI Tests"]	= "Warewolf.UITests", "(TestCategory=Workflow Mocking Tests)"
-$JobSpecs["Workflow Testing UI Tests"]			= "Warewolf.UITests", "(TestCategory=Workflow Testing)"
+$JobSpecs["Other UI Tests"]					    = "Warewolf.UITests"
+$JobSpecs["Other UI Specs"]					    = "Warewolf.UISpecs"
+$JobSpecs["Assign Tool UI Tests"]				= "Warewolf.UITests", "Assign Tool"
+$JobSpecs["Control Flow Tools UI Tests"]		= "Warewolf.UITests", "Control Flow Tools"
+$JobSpecs["Database Sources UI Tests"]			= "Warewolf.UITests", "Database Sources"
+$JobSpecs["Database Tools UI Tests"]			= "Warewolf.UITests", "Database Tools"
+$JobSpecs["Data Tools UI Tests"]				= "Warewolf.UITests", "Data Tools"
+$JobSpecs["DB Connector UI Specs"]				= "Warewolf.UISpecs", "DBConnector"
+$JobSpecs["Debug Input UI Tests"]				= "Warewolf.UITests", "Debug Input"
+$JobSpecs["Default Layout UI Tests"]			= "Warewolf.UITests", "Default Layout"
+$JobSpecs["Dependency Graph UI Tests"]			= "Warewolf.UITests", "Dependency Graph"
+$JobSpecs["Deploy UI Specs"]					= "Warewolf.UISpecs", "Deploy"
+$JobSpecs["Deploy UI Tests"]					= "Warewolf.UITests", "Deploy"
+$JobSpecs["DotNet Connector Mocking UI Tests"]	= "Warewolf.UITests", "DotNet Connector Mocking Tests"
+$JobSpecs["DotNet Connector Tool UI Tests"]	    = "Warewolf.UITests", "DotNet Connector Tool"
+$JobSpecs["Dropbox Tools UI Tests"]			    = "Warewolf.UITests", "Dropbox Tools"
+$JobSpecs["Email Tools UI Tests"]				= "Warewolf.UITests", "Email Tools"
+$JobSpecs["Explorer UI Specs"]					= "Warewolf.UISpecs", "Explorer"
+$JobSpecs["Explorer UI Tests"]					= "Warewolf.UITests", "Explorer"
+$JobSpecs["File Tools UI Tests"]				= "Warewolf.UITests", "File Tools"
+$JobSpecs["Hello World Mocking UI Tests"]		= "Warewolf.UITests", "Hello World Mocking Tests"
+$JobSpecs["HTTP Tools UI Tests"]				= "Warewolf.UITests", "HTTP Tools"
+$JobSpecs["Plugin Sources UI Tests"]			= "Warewolf.UITests", "Plugin Sources"
+$JobSpecs["Recordset Tools UI Tests"]			= "Warewolf.UITests", "Recordset Tools"
+$JobSpecs["Resource Tools UI Tests"]			= "Warewolf.UITests", "Resource Tools"
+$JobSpecs["Save Dialog UI Specs"]				= "Warewolf.UISpecs", "SaveDialog"
+$JobSpecs["Save Dialog UI Tests"]				= "Warewolf.UITests", "Save Dialog"
+$JobSpecs["Server Sources UI Tests"]			= "Warewolf.UITests", "Server Sources"
+$JobSpecs["Settings UI Tests"]					= "Warewolf.UITests", "Settings"
+$JobSpecs["Sharepoint Tools UI Tests"]			= "Warewolf.UITests", "Sharepoint Tools"
+$JobSpecs["Shortcut Keys UI Tests"]			    = "Warewolf.UITests", "Shortcut Keys"
+$JobSpecs["Source Wizards UI Tests"]			= "Warewolf.UITests", "Source Wizards"
+$JobSpecs["Tabs And Panes UI Tests"]			= "Warewolf.UITests", "Tabs and Panes"
+$JobSpecs["Tools UI Tests"]					    = "Warewolf.UITests", "Tools"
+$JobSpecs["Utility Tools UI Tests"]			    = "Warewolf.UITests", "Utility Tools"
+$JobSpecs["Variables UI Tests"]				    = "Warewolf.UITests", "Variables"
+$JobSpecs["Web Connector UI Specs"]			    = "Warewolf.UISpecs", "WebConnector"
+$JobSpecs["Web Sources UI Tests"]				= "Warewolf.UITests", "Web Sources"
+$JobSpecs["Workflow Mocking Tests UI Tests"]	= "Warewolf.UITests", "Workflow Mocking Tests"
+$JobSpecs["Workflow Testing UI Tests"]			= "Warewolf.UITests", "Workflow Testing"
 $JobSpecs["Web UI Tests"]		 				= "Warewolf.Web.UI.Tests"
 
 $UnitTestJobNames = "Other Unit Tests,COMIPC Unit Tests,Studio View Models Unit Tests,Activity Designers Unit Tests,Activities Unit Tests,Scripting Tools Specs,Storage Tools Specs,Utility Tools Specs,ControlFlow Tools Specs,Data Tools Specs,Database Tools Specs,Email Tools Specs,File And Folder Copy Tool Specs,File And Folder Create Tool Specs,File And Folder Delete Tool Specs,File And Folder Move Tool Specs,Folder Read Tool Specs,File Read Tool Specs,File And Folder Rename Tool Specs,Unzip Tool Specs,Write File Tool Specs,Zip Tool Specs,FileAndFolder Tools Specs,LoopConstructs Tools Specs,Recordset Tools Specs,Resources Tools Specs,UI Binding Tests,Runtime Unit Tests,Studio Core Unit Tests"
@@ -197,7 +198,7 @@ function FindFile-InParent([string[]]$FileSpecs,[int]$NumberOfParentsToSearch=7)
                 $FileSpec = Split-Path -Path $FileSpec -leaf
 			} else {
                 if (!$CurrentDirectory) {
-	                $CurrentDirectory = $PSScriptRoot
+	                $CurrentDirectory = $TestsPath
                 }
             }
 		    if (Test-Path "$CurrentDirectory\$FileSpec") {
@@ -298,13 +299,33 @@ function Move-File-To-TestResults([string]$SourceFilePath, [string]$DestinationF
     }
 }
 
+function Merge-DotCover-Snapshots($DotCoverSnapshots, [string]$DestinationFilePath, [string]$LogFilePath) {
+	Copy-On-Write "$DestinationFilePath"
+    Copy-On-Write "$LogFilePath"
+    if ($DotCoverSnapshots -ne $null -and $DotCoverSnapshots.Count -gt 1) {
+        if ($DotCoverSnapshots -ne $null -and $DotCoverSnapshots.Count -gt 5) {
+            $DotCoverSnapshotsString = $DotCoverSnapshots[0] + "`";`"" + $DotCoverSnapshots[1]
+            &"$DotCoverPath" "merge" "/Source=`"$DotCoverSnapshotsString`"" "/Output=`"$DestinationFilePath`"" "/LogFile=`"$LogFilePath`""
+            foreach ($DotCoverSnapshot in $DotCoverSnapshots[2..($DotCoverSnapshots.Count-2)]) {
+                $DotCoverSnapshotsString = $DestinationFilePath + "`";`"" + $DotCoverSnapshot
+                &"$DotCoverPath" "merge" "/Source=`"$DotCoverSnapshotsString`"" "/Output=`"$DestinationFilePath`"" "/LogFile=`"$LogFilePath`""
+            }
+        } else {
+            $DotCoverSnapshotsString = $DotCoverSnapshots -join "`";`""
+            &"$DotCoverPath" "merge" "/Source=`"$DotCoverSnapshotsString`"" "/Output=`"$DestinationFilePath`"" "/LogFile=`"$LogFilePath`""
+        }
+    } else {
+        Write-Warning Cannot merge $DotCoverSnapshots
+    }
+}
+
 function Move-Artifacts-To-TestResults([bool]$DotCover, [bool]$Server, [bool]$Studio) {
-    if (Test-Path "$env:vs140comntools..\IDE\CommonExtensions\Microsoft\TestWindow\TestResults\*.trx") {
-        Move-Item "$env:vs140comntools..\IDE\CommonExtensions\Microsoft\TestWindow\TestResults\*.trx" "$TestsResultsPath"
+    if (Test-Path "C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\Common7\IDE\CommonExtensions\Microsoft\TestWindow\TestResults\*.trx") {
+        Move-Item "C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\Common7\IDE\CommonExtensions\Microsoft\TestWindow\TestResults\*.trx" "$TestsResultsPath"
         Write-Host Moved loose TRX files from VS install directory into TestResults.
     }
 
-    # Write failing tests playlistfunction Move-Artifacts-T.
+    # Write failing tests playlist.
     Write-Host Writing all test failures in `"$TestsResultsPath`" to a playlist file
 
     $PlayList = "<Playlist Version=`"1.0`">"
@@ -403,15 +424,13 @@ function Move-Artifacts-To-TestResults([bool]$DotCover, [bool]$Server, [bool]$St
         }
     }
     if ($Server -and $Studio -and $DotCover) {
-		$MergedSnapshot = "$TestsResultsPath\$JobName Merged Server and Studio DotCover.dcvr"
-		Copy-On-Write "$MergedSnapshot"
-        &"$DotCoverPath" "merge" "/Source=`"$TestsResultsPath\$JobName Server DotCover.dcvr`";`"$TestsResultsPath\$JobName Studio DotCover.dcvr`"" "/Output=`"$MergedSnapshot`"" "/LogFile=`"$TestsResultsPath\ServerAndStudioDotCoverSnapshotMerge.log`""
+        Merge-DotCover-Snapshots @("$TestsResultsPath\$JobName Server DotCover.dcvr", "$TestsResultsPath\$JobName Studio DotCover.dcvr") "$TestsResultsPath\$JobName Merged Server and Studio DotCover.dcvr" "$TestsResultsPath\ServerAndStudioDotCoverSnapshotMerge.log"
     }
     if ($RecordScreen.IsPresent) {
         Move-ScreenRecordings-To-TestResults
     }
-    if (Test-Path "$PSScriptRoot\Run *.bat") {
-        foreach ($testRunner in (Get-ChildItem "$PSScriptRoot\Run *.bat")) {
+    if (Test-Path "$TestsResultsPath\..\Run *.bat") {
+        foreach ($testRunner in (Get-ChildItem "$TestsResultsPath\..\Run *.bat")) {
 	        Move-File-To-TestResults $testRunner.FullName $testRunner.Name
         }
     }
@@ -619,6 +638,16 @@ function AssemblyIsNotAlreadyDefinedWithoutWildcards([string]$AssemblyNameToChec
     !$JobAssemblySpecs.Contains($AssemblyNameToCheck)
 }
 
+function AllCategoriesDefinedForProject([string]$AssemblyNameToCheck) {
+    $JobCategorySpecs = @()
+    foreach ($Job in $JobSpecs.Values) {
+        if ($Job.Count -gt 1 -and $AssemblyNameToCheck -eq $Job[0]) {
+            $JobCategorySpecs += $Job[1]
+        }
+    }
+    $JobCategorySpecs
+}
+
 function Resolve-Project-Folder-Specs([string]$ProjectFolderSpec) {
     $TestAssembliesList = ""
     $ProjectFolderSpecInParent = FindFile-InParent $ProjectFolderSpec
@@ -729,7 +758,7 @@ if ($TotalNumberOfJobsToRun -gt 0) {
             if ($Args.Count -gt 0) {
                 $TestList = $Args.ForEach({ "," + $_ })
             } else {
-                Get-ChildItem "$PSScriptRoot" -Filter *.playlist | `
+                Get-ChildItem "$TestsPath" -Filter *.playlist | `
                 Foreach-Object{
 	                [xml]$playlistContent = Get-Content $_.FullName
 	                if ($playlistContent.Playlist.Add.count -gt 0) {
@@ -751,7 +780,7 @@ if ($TotalNumberOfJobsToRun -gt 0) {
         }
     } else {
         if ($TestList = "") {
-            Get-ChildItem "$PSScriptRoot" -Filter *.playlist | `
+            Get-ChildItem "$TestsPath" -Filter *.playlist | `
             Foreach-Object{
 	            [xml]$playlistContent = Get-Content $_.FullName
 	            if ($playlistContent.Playlist.Add.count -gt 0) {
@@ -833,10 +862,13 @@ if ($TotalNumberOfJobsToRun -gt 0) {
 
             # Create full VSTest argument string.
             if ($TestCategories -ne "") {
-				if (!$TestCategories.StartsWith("(TestCategory")) {
-					$TestCategories = "(TestCategory=" + $TestCategories  + ")"
-				}
-                $TestCategories = " /TestCaseFilter:`"$TestCategories`""
+                $TestCategories = " /TestCaseFilter:`"(TestCategory=" + $TestCategories  + ")`""
+            } else {
+                $DefinedCategories = AllCategoriesDefinedForProject $ProjectSpec
+                if ($DefinedCategories.Count -gt 0) {
+                    $TestCategories = $DefinedCategories -join ")&(TestCategory!="
+                    $TestCategories = " /TestCaseFilter:`"(TestCategory!=$TestCategories)`""
+                }
             }
             if($RecordScreen.IsPresent) {
                 $TestSettings =  " /Settings:`"" + $TestSettingsFile + "`""
@@ -868,10 +900,13 @@ if ($TotalNumberOfJobsToRun -gt 0) {
 
             # Create full MSTest argument string.
             if ($TestCategories -ne "") {
-				if ($TestCategories.StartsWith("(TestCategory")) {
-					$TestCategories = $TestCategories.Replace("(TestCategory", "").Replace("=", "").Replace(")", "")
-				}
                 $TestCategories = " /category:`"$TestCategories`""
+            } else {
+                $DefinedCategories = AllCategoriesDefinedForProject $ProjectSpec
+                if ($DefinedCategories.Count -gt 0) {
+                    $TestCategories = $DefinedCategories -join "&!"
+                    $TestCategories = " /category:`"!$TestCategories`""
+                }
             }
             $FullArgsList = $TestAssembliesList + " /resultsfile:`"" + $TestResultsFile + "`"" + $TestList + $TestSettings + $TestCategories
 
@@ -916,7 +951,7 @@ if ($TotalNumberOfJobsToRun -gt 0) {
                 # Create full DotCover argument string.
                 $DotCoverLogFile = "$TestsResultsPath\DotCover.xml.log"
                 Copy-On-Write $DotCoverLogFile
-                $FullArgsList = " cover `"$DotCoverRunnerXMLPath`" /LogFile=`"$DotCoverLogFile'`""
+                $FullArgsList = " cover `"$DotCoverRunnerXMLPath`" /LogFile=`"$DotCoverLogFile`""
 
                 #Write DotCover Runner Batch File
                 $DotCoverRunnerPath = "$TestsResultsPath\Run $JobName DotCover.bat"
@@ -1157,6 +1192,11 @@ if ($RunWarewolfServiceTests.IsPresent) {
     New-Item -Force -Path "$TestsResultsPath\TestResults.trx" -ItemType File -Value $TRXFileContents
 }
 
+if ($MergeDotCoverSnapshotsInDirectory -ne "") {
+    $DotCoverSnapshots = Get-ChildItem $MergeDotCoverSnapshotsInDirectory\*.dcvr -Recurse
+    Merge-DotCover-Snapshots $DotCoverSnapshots "$TestsPath\Merged DotCover Snapshots.dcvr" "$TestsPath\DotCover Snapshot Merge.log"
+}
+
 if ($Cleanup.IsPresent) {
     if ($ApplyDotCover) {
         Cleanup-ServerStudio $false
@@ -1180,7 +1220,7 @@ if ($RunAllJobs.IsPresent) {
     Invoke-Expression -Command ("&'$PSCommandPath' -JobName '$RunAllCodedUITests' -StartStudio -ResourcesType UITests")
 }
 
-if (!$RunAllJobs.IsPresent -and !$Cleanup.IsPresent -and !$AssemblyFileVersionsTest.IsPresent -and !$RunAllUnitTests.IsPresent -and !$RunAllServerTests.IsPresent -and !$RunAllCodedUITests.IsPresent -and $JobName -eq "" -and !$RunWarewolfServiceTests.IsPresent) {
+if (!$RunAllJobs.IsPresent -and !$Cleanup.IsPresent -and !$AssemblyFileVersionsTest.IsPresent -and !$RunAllUnitTests.IsPresent -and !$RunAllServerTests.IsPresent -and !$RunAllCodedUITests.IsPresent -and $JobName -eq "" -and !$RunWarewolfServiceTests.IsPresent -and !$MergeDotCoverSnapshotsInDirectory -eq "") {
     $ServerPath,$ResourcesType = Install-Server $ServerPath $ResourcesType
     Start-Server $ServerPath $ResourcesType
     if (!$StartServer.IsPresent) {
