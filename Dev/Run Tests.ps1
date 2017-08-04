@@ -550,7 +550,6 @@ function Start-Server([string]$ServerPath,[string]$ResourcesType) {
     Copy-Item -Path ((Get-Item $ServerPath).Directory.FullName + "\Resources - $ResourcesType\*") -Destination "$env:ProgramData\Warewolf" -Recurse -Force
 	
     Start-Service "Warewolf Server"
-    Write-Host Server has started.
 
     #Check if started
     $Output = @()
@@ -569,6 +568,8 @@ function Start-Server([string]$ServerPath,[string]$ResourcesType) {
         Write-Error -Message "Server Cannot Start."
         sleep 30
         exit 1
+    } else {
+        Write-Host Server has started.
     }
 }
 
