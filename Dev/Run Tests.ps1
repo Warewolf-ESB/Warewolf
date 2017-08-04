@@ -500,8 +500,8 @@ function Install-Server([string]$ServerPath,[string]$ResourcesType) {
     <TargetExecutable>$ServerPath</TargetExecutable>
     <Output>$env:ProgramData\Warewolf\Server Log\dotCover.dcvr</Output>
     <Scope>
-	    <ScopeEntry>$ServerBinDir\**\*.dll</ScopeEntry>
-	    <ScopeEntry>$ServerBinDir\**\*.exe</ScopeEntry>
+	    <ScopeEntry>$ServerBinDir\*.dll</ScopeEntry>
+	    <ScopeEntry>$ServerBinDir\*.exe</ScopeEntry>
     </Scope>
 </AnalyseParams>
 "@
@@ -601,8 +601,8 @@ function Start-Studio {
     <TargetExecutable>$StudioPath</TargetExecutable>
     <Output>$env:LocalAppData\Warewolf\Studio Logs\dotCover.dcvr</Output>
     <Scope>
-    	<ScopeEntry>$StudioBinDir\**\*.dll</ScopeEntry>
-    	<ScopeEntry>$StudioBinDir\**\*.exe</ScopeEntry>
+    	<ScopeEntry>$StudioBinDir\*.dll</ScopeEntry>
+    	<ScopeEntry>$StudioBinDir\*.exe</ScopeEntry>
     </Scope>
 </AnalyseParams>
 "@
@@ -935,8 +935,8 @@ if ($TotalNumberOfJobsToRun -gt 0) {
                 foreach ($TestAssembliesDirectory in $TestAssembliesDirectories) {
                     $DotCoverArgs += @"
 
-        <ScopeEntry>$TestAssembliesDirectory\**\*.dll</ScopeEntry>
-        <ScopeEntry>$TestAssembliesDirectory\**\*.exe</ScopeEntry>
+        <ScopeEntry>$TestAssembliesDirectory\*.dll</ScopeEntry>
+        <ScopeEntry>$TestAssembliesDirectory\*.exe</ScopeEntry>
 "@
                 }
                 $DotCoverArgs += @"
