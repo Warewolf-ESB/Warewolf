@@ -171,7 +171,7 @@ namespace Dev2.Activities.Designers2.Core
 
         protected override void OnPreviewMouseLeftButtonDown(MouseButtonEventArgs e)
         {
-            if (ViewModel != null)
+            if (ViewModel != null && e.OriginalSource.GetType()==typeof(Border))
             {
                 UpdateHelpDescriptor(ViewModel.HelpText);
             }
