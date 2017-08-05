@@ -1233,13 +1233,19 @@ namespace Warewolf.Studio.ViewModels
                     existingItem.SetPermissions(explorerItem.Permissions, isDeploy);
                     existingItem.IsResourceChecked = isResourceChecked;
                     CreateExplorerItemsSync(explorerItem.Children, server, existingItem, isDialog, isDeploy);
-                    explorerItemModels.Add(existingItem);
+                    if (!explorerItemModels.Contains(existingItem))
+                    {
+                        explorerItemModels.Add(existingItem);
+                    }
                 }
                 else
                 {
                     var itemCreated = CreateExplorerItem(server, parent, isDialog, isDeploy, explorerItem);
                     CreateExplorerItemsSync(explorerItem.Children, server, itemCreated, isDialog, isDeploy);
-                    explorerItemModels.Add(itemCreated);
+                    if (!explorerItemModels.Contains(itemCreated))
+                    {
+                        explorerItemModels.Add(itemCreated);
+                    }
                 }
             }
             return explorerItemModels;
