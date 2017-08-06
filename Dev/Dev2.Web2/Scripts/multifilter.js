@@ -51,12 +51,12 @@
                                 }
                             }
                         }
-                        else if (col_index == 3 || col_index == 4) {
-                            
+                        else if (col_index == 4 || col_index == 5) {
+                            console.log(cell);
                             var dateTimeValue = Date.parse(valueToFilterStr);
                             var filterDateTimeValue = Date.parse(filter);
                             if (dateTimeValue & filterDateTimeValue) {
-                                if (col_index == 3) {
+                                if (col_index == 4) {
                                     if (dateTimeValue >= filterDateTimeValue) {
                                         cell.attr('data-filtered', 'positive');
                                     }
@@ -64,7 +64,7 @@
                                         cell.attr('data-filtered', 'negative');
                                     }
                                 }
-                                else if (col_index == 4) {
+                                else if (col_index == 5) {
                                     if (dateTimeValue <= filterDateTimeValue) {
                                         cell.attr('data-filtered', 'positive');
                                     }
