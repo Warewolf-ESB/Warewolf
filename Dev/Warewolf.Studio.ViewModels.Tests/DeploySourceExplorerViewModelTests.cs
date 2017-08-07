@@ -227,6 +227,10 @@ namespace Warewolf.Studio.ViewModels.Tests
             var env = _target.Environments.First();
             var explorerItemViewModelMock = new Mock<IExplorerItemViewModel>();
             explorerItemViewModelMock.SetupGet(it => it.IsVisible).Returns(true);
+            explorerItemViewModelMock.SetupGet(it => it.ResourceType).Returns("Dev2Server");
+            explorerItemViewModelMock.SetupGet(it => it.ResourceName).Returns("newServerName");
+            explorerItemViewModelMock.SetupGet(it => it.ResourceId).Returns(serverId);
+            explorerItemViewModelMock.SetupGet(it => it.Children).Returns(new ObservableCollection<IExplorerItemViewModel>());
             env.AddChild(explorerItemViewModelMock.Object);
             env.ResourceId = serverId;
             var environmentViewModels = _target.Environments.Union(new[] { environmentViewModelMock.Object }).ToList();

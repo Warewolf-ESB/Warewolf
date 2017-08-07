@@ -258,7 +258,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _target.Environments = list;
             var actual = _target.Environments;
             //assert
-            Assert.AreSame(list, actual);
+            Assert.AreEqual(1, actual.Count);
             Assert.IsTrue(isEnvironmentsChanged);
         }
 
