@@ -17,9 +17,9 @@ using Warewolf.Storage.Interfaces;
 
 namespace Dev2.Activities
 {
-    public class DsfSwitch:DsfActivityAbstract<string>
+    public class DsfSwitch : DsfActivityAbstract<string>
     {
-              public DsfFlowSwitchActivity Inner;
+        public DsfFlowSwitchActivity Inner;
 
         public DsfSwitch(DsfFlowSwitchActivity inner)
       : base("Switch")
@@ -28,18 +28,17 @@ namespace Dev2.Activities
             UniqueID = inner.UniqueID;
         }
 
-       public DsfSwitch() { }
+        public DsfSwitch() { }
 
         public override List<string> GetOutputs()
         {
             return new List<string>();
         }
 
-        public Dictionary<string,IDev2Activity> Switches { get; set; }
+        public Dictionary<string, IDev2Activity> Switches { get; set; }
         public IEnumerable<IDev2Activity> Default { get; set; }
 
         public string Switch { get; set; }
-        #region Overrides of DsfNativeActivity<string>
 
         /// <summary>
         /// When overridden runs the activity's execution logic 
@@ -69,13 +68,13 @@ namespace Dev2.Activities
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public new string Result { get; set; }
-        
+
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
             _debugOutputs.Clear();
             _debugInputs.Clear();
-            var startTime = DateTime.Now;
+            NextNodes = new List<IDev2Activity>();
             try
             {
                 Dev2Switch ds = new Dev2Switch { SwitchVariable = Switch };
@@ -126,45 +125,39 @@ namespace Dev2.Activities
                     _debugOutputs = new List<DebugItem>();
                 }
             }
-
         }
 
         void Debug(IDSFDataObject dataObject, string firstOrDefault, Dev2Switch ds)
         {
             try
             {
-
-    
-            if(dataObject.IsDebugMode())
-            {
-                List<DebugItem> result = new List<DebugItem>();
-                DebugItem itemToAdd = new DebugItem();
-                var debugResult = new DebugItemWarewolfAtomResult(firstOrDefault, "", ds.SwitchVariable, "", "Switch on", "", "=");
-                itemToAdd.AddRange(debugResult.GetDebugItemResult());
-                result.Add(itemToAdd);
-                _debugInputs = result;
-                
-                
-                if(Inner != null)
+                if (dataObject.IsDebugMode())
                 {
-                    Inner.SetDebugInputs(_debugInputs);
+                    List<DebugItem> result = new List<DebugItem>();
+                    DebugItem itemToAdd = new DebugItem();
+                    var debugResult = new DebugItemWarewolfAtomResult(firstOrDefault, "", ds.SwitchVariable, "", "Switch on", "", "=");
+                    itemToAdd.AddRange(debugResult.GetDebugItemResult());
+                    result.Add(itemToAdd);
+                    _debugInputs = result;
+
+                    if (Inner != null)
+                    {
+                        Inner.SetDebugInputs(_debugInputs);
+                    }
                 }
             }
-            }
-                // ReSharper disable EmptyGeneralCatchClause
-            catch 
-                // ReSharper restore EmptyGeneralCatchClause
+            // ReSharper disable EmptyGeneralCatchClause
+            catch
+            // ReSharper restore EmptyGeneralCatchClause
             {
 
             }
         }
 
-        void DebugOutput(IDSFDataObject dataObject)
+        private void DebugOutput(IDSFDataObject dataObject)
         {
             try
             {
-
-
                 if (dataObject.IsDebugMode())
                 {
                     List<DebugItem> result = new List<DebugItem>();
@@ -178,7 +171,6 @@ namespace Dev2.Activities
                     {
                         Inner.SetDebugOutputs(_debugOutputs);
                     }
-
                 }
             }
             // ReSharper disable EmptyGeneralCatchClause
@@ -189,10 +181,6 @@ namespace Dev2.Activities
             }
         }
 
-        #endregion
-
-        #region Overrides of DsfNativeActivity<string>
-
         public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
         {
             return _debugInputs;
@@ -202,9 +190,6 @@ namespace Dev2.Activities
         {
             return _debugOutputs;
         }
-
-
-        #endregion
     }
 
     public class TestMockSwitchStep : DsfActivityAbstract<string>
