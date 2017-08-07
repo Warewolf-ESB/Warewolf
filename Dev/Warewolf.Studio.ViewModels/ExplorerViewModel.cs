@@ -479,10 +479,10 @@ namespace Warewolf.Studio.ViewModels
                 }
                 if (server.EnvironmentID != Guid.Empty)
                 {
-                    if (_environments.Any(o => o.ResourceId == environmentModel.ResourceId))
+                    Application.Current.Dispatcher.Invoke(delegate
                     {
                         _environments.Remove(environmentModel);
-                    }
+                    });
                 }
             }
             OnPropertyChanged(() => Environments);
@@ -497,7 +497,6 @@ namespace Warewolf.Studio.ViewModels
             {
                 //
             }
-
         }
 
         protected virtual async Task<bool> LoadEnvironment(IEnvironmentViewModel localhostEnvironment, bool isDeploy = false,bool reloadCatalogue = true)

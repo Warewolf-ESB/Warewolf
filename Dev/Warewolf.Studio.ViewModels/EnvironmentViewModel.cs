@@ -1072,26 +1072,7 @@ namespace Warewolf.Studio.ViewModels
                 {
                     IsLoading = true;
                     var result = await LoadDialog(null, isDeploy, reloadCatalogue);
-
-                    var shellViewModel = CustomContainer.Get<IShellViewModel>();
-                    if (shellViewModel != null)
-                    {
-                        IExplorerViewModel explorerViewModel = shellViewModel.ExplorerViewModel;
-                        IEnvironmentViewModel environmentViewModel = explorerViewModel?.Environments[0];
-                        var servers = environmentViewModel?.Children?.Flatten(model => model.Children).Where(y => y.ResourceType == "Dev2Server");
-                        IConnectControlViewModel connectControlViewModel = explorerViewModel?.ConnectControlViewModel;
-                        foreach (var server in servers)
-                        {
-                            var serverExists = connectControlViewModel?.Servers?.FirstOrDefault(o => o.EnvironmentID == server.ResourceId);
-                            if (serverExists == null)
-                            {
-                                ConnectControlSingleton.Instance.ReloadServer();
-                                shellViewModel.ActiveServer?.UpdateRepository?.FireServerSaved(server.ResourceId);
-                                connectControlViewModel?.LoadServers();
-                            }
-                        }
-                    }
-
+                    ReloadConnectControl();
                     return result;
                 }
                 finally
@@ -1100,6 +1081,24 @@ namespace Warewolf.Studio.ViewModels
                 }
             }
             return false;
+        }
+
+        private void ReloadConnectControl()
+        {
+            IExplorerViewModel explorerViewModel = ShellViewModel?.ExplorerViewModel;
+            IEnvironmentViewModel environmentViewModel = explorerViewModel?.Environments[0];
+            var servers = environmentViewModel?.Children?.Flatten(model => model.Children).Where(y => y.ResourceType == "Dev2Server");
+            IConnectControlViewModel connectControlViewModel = explorerViewModel?.ConnectControlViewModel;
+            foreach (var server in servers)
+            {
+                var serverExists = connectControlViewModel?.Servers?.FirstOrDefault(o => o.EnvironmentID == server.ResourceId);
+                if (serverExists == null)
+                {
+                    ConnectControlSingleton.Instance.ReloadServer();
+                    ShellViewModel?.LocalhostServer?.UpdateRepository?.FireServerSaved(server.ResourceId);
+                    connectControlViewModel?.LoadServers();
+                }
+            }
         }
 
         public bool IsLoading { get; set; }
