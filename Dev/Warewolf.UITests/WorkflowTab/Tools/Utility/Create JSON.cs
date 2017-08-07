@@ -8,22 +8,12 @@ namespace Warewolf.UITests.Tools.Utility
     public class Create_JSON
     {
         [TestMethod]
-        [DeploymentItem(@"avformat-57.dll")]
-        [DeploymentItem(@"avutil-55.dll")]
-        [DeploymentItem(@"swresample-2.dll")]
-        [DeploymentItem(@"swscale-4.dll")]
-        [DeploymentItem(@"avcodec-57.dll")]
 		[TestCategory("Tools")]
         public void CreateJSONTool_OpenLargeViewUITest()
         {            
             UIMap.Open_Json_Tool_Large_View();         
         }
         [TestMethod]
-        [DeploymentItem(@"avformat-57.dll")]
-        [DeploymentItem(@"avutil-55.dll")]
-        [DeploymentItem(@"swresample-2.dll")]
-        [DeploymentItem(@"swscale-4.dll")]
-        [DeploymentItem(@"avcodec-57.dll")]
 		[TestCategory("Tools")]
         public void CreateJSONTool_OpenQVIUITest()
         {            
@@ -35,7 +25,6 @@ namespace Warewolf.UITests.Tools.Utility
         [TestInitialize]
         public void MyTestInitialize()
         {
-            screenRecorder.StartRecording(TestContext);
             UIMap.SetPlaybackSettings();
             UIMap.CloseHangingDialogs();
             UIMap.Click_New_Workflow_Ribbon_Button();

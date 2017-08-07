@@ -3,22 +3,13 @@ using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.UITests.DialogsUIMapClasses;
 using Warewolf.UITests.Scheduler.SchedulerUIMapClasses;
-using Warewolf.Web.UI.Tests.ScreenRecording;
 
 namespace Warewolf.UITests.Scheduler
 {
     [CodedUITest]
     public class SchedulerTest
     {
-        public TestContext TestContext { get; set; }
-        private FfMpegVideoRecorder screenRecorder = new FfMpegVideoRecorder();
-
         [TestMethod]
-        [DeploymentItem(@"avformat-57.dll")]
-        [DeploymentItem(@"avutil-55.dll")]
-        [DeploymentItem(@"swresample-2.dll")]
-        [DeploymentItem(@"swscale-4.dll")]
-        [DeploymentItem(@"avcodec-57.dll")]
         [TestCategory("Scheduler")]
         public void Create_SchedulerTask_From_SidebarRibbonButton_UITests()
         {
@@ -53,11 +44,6 @@ namespace Warewolf.UITests.Scheduler
         }
 
         [TestMethod]
-        [DeploymentItem(@"avformat-57.dll")]
-        [DeploymentItem(@"avutil-55.dll")]
-        [DeploymentItem(@"swresample-2.dll")]
-        [DeploymentItem(@"swscale-4.dll")]
-        [DeploymentItem(@"avcodec-57.dll")]
         [TestCategory("Scheduler")]
         public void Delete_SchedulerTask_Button_Enables_When_Task_IsDisabled_UITests()
         {
@@ -69,11 +55,6 @@ namespace Warewolf.UITests.Scheduler
         }
 
         [TestMethod]
-        [DeploymentItem(@"avformat-57.dll")]
-        [DeploymentItem(@"avutil-55.dll")]
-        [DeploymentItem(@"swresample-2.dll")]
-        [DeploymentItem(@"swscale-4.dll")]
-        [DeploymentItem(@"avcodec-57.dll")]
         [TestCategory("Scheduler")]
         public void Delete_SchedulerTask_Removes_Task_From_List_UITests()
         {
@@ -91,16 +72,9 @@ namespace Warewolf.UITests.Scheduler
         [TestInitialize]
         public void MyTestInitialize()
         {
-            screenRecorder.StartRecording(TestContext);
             UIMap.SetPlaybackSettings();
             UIMap.AssertStudioIsRunning();
             UIMap.Click_Scheduler_RibbonButton();
-        }
-
-        [TestCleanup]
-        public void StopScreenRecording()
-        {
-            screenRecorder.StopRecording(TestContext);
         }
 
         UIMap UIMap

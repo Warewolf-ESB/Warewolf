@@ -3,22 +3,13 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.UITests.DialogsUIMapClasses;
 using Warewolf.UITests.WorkflowTab.Tools.Data.DataToolsUIMapClasses;
 using Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses;
-using Warewolf.Web.UI.Tests.ScreenRecording;
 
 namespace Warewolf.UITests.WorkflowTab.Tools.Data
 {
     [CodedUITest]
     public class Assign
     {
-        public TestContext TestContext { get; set; }
-        private FfMpegVideoRecorder screenRecorder = new FfMpegVideoRecorder();
-
         [TestMethod]
-        [DeploymentItem(@"avformat-57.dll")]
-        [DeploymentItem(@"avutil-55.dll")]
-        [DeploymentItem(@"swresample-2.dll")]
-        [DeploymentItem(@"swscale-4.dll")]
-        [DeploymentItem(@"avcodec-57.dll")]
         [TestCategory("Assign Tool")]
         public void AssignTool_Small_And_LargeView_Resize_UITest()
         {
@@ -45,11 +36,6 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Data
         }
 
         [TestMethod]
-        [DeploymentItem(@"avformat-57.dll")]
-        [DeploymentItem(@"avutil-55.dll")]
-        [DeploymentItem(@"swresample-2.dll")]
-        [DeploymentItem(@"swscale-4.dll")]
-        [DeploymentItem(@"avcodec-57.dll")]
         [TestCategory("Assign Tool")]
         public void AssignTool_ClickDoneButton_Then_DeleteTool_UITest()
         {
@@ -60,11 +46,6 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Data
         }
 
         [TestMethod]
-        [DeploymentItem(@"avformat-57.dll")]
-        [DeploymentItem(@"avutil-55.dll")]
-        [DeploymentItem(@"swresample-2.dll")]
-        [DeploymentItem(@"swscale-4.dll")]
-        [DeploymentItem(@"avcodec-57.dll")]
         [TestCategory("Assign Tool")]
         public void AssignTool_ClickTextboxTwice_Then_HelpText_DoesNotChanging_UITest()
         {
@@ -85,11 +66,6 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Data
         }
 
         [TestMethod]
-        [DeploymentItem(@"avformat-57.dll")]
-        [DeploymentItem(@"avutil-55.dll")]
-        [DeploymentItem(@"swresample-2.dll")]
-        [DeploymentItem(@"swscale-4.dll")]
-        [DeploymentItem(@"avcodec-57.dll")]
         [TestCategory("Assign Tool")]
         public void AssignTool_QuickVariableInput_FromList_UITest()
         {
@@ -102,11 +78,6 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Data
         }
 
         [TestMethod]
-        [DeploymentItem(@"avformat-57.dll")]
-        [DeploymentItem(@"avutil-55.dll")]
-        [DeploymentItem(@"swresample-2.dll")]
-        [DeploymentItem(@"swscale-4.dll")]
-        [DeploymentItem(@"avcodec-57.dll")]
         [TestCategory("Assign Tool")]
         public void AssignTool_DebugOutput_UITest()
         {
@@ -117,11 +88,6 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Data
         }
 
         [TestMethod]
-        [DeploymentItem(@"avformat-57.dll")]
-        [DeploymentItem(@"avutil-55.dll")]
-        [DeploymentItem(@"swresample-2.dll")]
-        [DeploymentItem(@"swscale-4.dll")]
-        [DeploymentItem(@"avcodec-57.dll")]
         [TestCategory("Assign Tool")]
         public void AssignTool_AddRemoveVariables_UITest()
         {
@@ -137,11 +103,6 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Data
         }
 
         [TestMethod]
-        [DeploymentItem(@"avformat-57.dll")]
-        [DeploymentItem(@"avutil-55.dll")]
-        [DeploymentItem(@"swresample-2.dll")]
-        [DeploymentItem(@"swscale-4.dll")]
-        [DeploymentItem(@"avcodec-57.dll")]
         [TestCategory("Assign Tool")]
         public void AssignTool_AddVariablesInsertRow_UITest()
         {
@@ -161,17 +122,10 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Data
         [TestInitialize]
         public void MyTestInitialize()
         {
-            screenRecorder.StartRecording(TestContext);
             UIMap.SetPlaybackSettings();
             UIMap.AssertStudioIsRunning();
             UIMap.Click_NewWorkflow_RibbonButton();
             WorkflowTabUIMap.Drag_Toolbox_MultiAssign_Onto_DesignSurface();
-        }
-
-        [TestCleanup]
-        public void StopScreenRecording()
-        {
-            screenRecorder.StopRecording(TestContext);
         }
 
         UIMap UIMap

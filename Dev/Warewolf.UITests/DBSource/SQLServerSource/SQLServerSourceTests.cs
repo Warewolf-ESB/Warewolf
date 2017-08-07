@@ -3,24 +3,15 @@ using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.UITests.DBSource.DBSourceUIMapClasses;
 using Warewolf.UITests.Explorer.ExplorerUIMapClasses;
-using Warewolf.Web.UI.Tests.ScreenRecording;
 
 namespace Warewolf.UITests
 {
     [CodedUITest]
     public class SQLServerSourceTests
     {
-        public TestContext TestContext { get; set; }
-        private FfMpegVideoRecorder screenRecorder = new FfMpegVideoRecorder();
-
         const string SourceName = "CodedUITestSQLServerSource";
 
         [TestMethod]
-        [DeploymentItem(@"avformat-57.dll")]
-        [DeploymentItem(@"avutil-55.dll")]
-        [DeploymentItem(@"swresample-2.dll")]
-        [DeploymentItem(@"swscale-4.dll")]
-        [DeploymentItem(@"avcodec-57.dll")]
         [TestCategory("Database Sources")]
         // ReSharper disable once InconsistentNaming
         public void Create_Save_And_Edit_SQLServerSource_From_ExplorerContextMenu_UITests()
@@ -59,11 +50,6 @@ namespace Warewolf.UITests
         }
 
         [TestMethod]
-        [DeploymentItem(@"avformat-57.dll")]
-        [DeploymentItem(@"avutil-55.dll")]
-        [DeploymentItem(@"swresample-2.dll")]
-        [DeploymentItem(@"swscale-4.dll")]
-        [DeploymentItem(@"avcodec-57.dll")]
         [TestCategory("Database Sources")]
         // ReSharper disable once InconsistentNaming
         public void Test_SQLServerSource_From_ExplorerContextMenu_UITests()
@@ -87,20 +73,13 @@ namespace Warewolf.UITests
 
         #region Additional test attributes
 
-        [TestInitialize]
+        [TestInitialize()]
         public void MyTestInitialize()
         {
-            screenRecorder.StartRecording(TestContext);
             UIMap.SetPlaybackSettings();
             UIMap.AssertStudioIsRunning();
         }
-
-        [TestCleanup]
-        public void StopScreenRecording()
-        {
-            screenRecorder.StopRecording(TestContext);
-        }
-
+        
         public UIMap UIMap
         {
             get

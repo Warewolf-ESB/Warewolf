@@ -5,25 +5,16 @@ using Warewolf.UITests.Common;
 using Warewolf.UITests.DialogsUIMapClasses;
 using Warewolf.UITests.Explorer.ExplorerUIMapClasses;
 using Warewolf.UITests.WorkflowServiceTesting.WorkflowServiceTestingUIMapClasses;
-using Warewolf.Web.UI.Tests.ScreenRecording;
 
 namespace Warewolf.UITests
 {
     [CodedUITest]
     public class HelloWorldTestFrameworkMockingTests
     {
-        public TestContext TestContext { get; set; }
-        private FfMpegVideoRecorder screenRecorder = new FfMpegVideoRecorder();
-
         private const string HelloWorld = "Hello World";
         private const string Message = "Hello There World";
 
         [TestMethod]
-        [DeploymentItem(@"avformat-57.dll")]
-        [DeploymentItem(@"avutil-55.dll")]
-        [DeploymentItem(@"swresample-2.dll")]
-        [DeploymentItem(@"swscale-4.dll")]
-        [DeploymentItem(@"avcodec-57.dll")]
         [TestCategory("Hello World Mocking Tests")]
         public void ClickGenerateTestFromDebugCreatesTestSteps()
         {   
@@ -40,11 +31,6 @@ namespace Warewolf.UITests
         }
         
         [TestMethod]
-        [DeploymentItem(@"avformat-57.dll")]
-        [DeploymentItem(@"avutil-55.dll")]
-        [DeploymentItem(@"swresample-2.dll")]
-        [DeploymentItem(@"swscale-4.dll")]
-        [DeploymentItem(@"avcodec-57.dll")]
         [TestCategory("Hello World Mocking Tests")]
         public void ClickNewTestWithUnsavedExistingTest()
         {
@@ -55,11 +41,6 @@ namespace Warewolf.UITests
         }
         
         [TestMethod]
-        [DeploymentItem(@"avformat-57.dll")]
-        [DeploymentItem(@"avutil-55.dll")]
-        [DeploymentItem(@"swresample-2.dll")]
-        [DeploymentItem(@"swscale-4.dll")]
-        [DeploymentItem(@"avcodec-57.dll")]
         [TestCategory("Hello World Mocking Tests")]
         public void ClickRunTestStepAfterCreatingTestHasAllTestsPassing()
         {
@@ -71,11 +52,6 @@ namespace Warewolf.UITests
         }
         
         [TestMethod]
-        [DeploymentItem(@"avformat-57.dll")]
-        [DeploymentItem(@"avutil-55.dll")]
-        [DeploymentItem(@"swresample-2.dll")]
-        [DeploymentItem(@"swscale-4.dll")]
-        [DeploymentItem(@"avcodec-57.dll")]
         [TestCategory("Hello World Mocking Tests")]
         public void ClickDeleteTestStepRemovesTestStepFromTest()
         {
@@ -88,11 +64,6 @@ namespace Warewolf.UITests
         }
 
         [TestMethod]
-        [DeploymentItem(@"avformat-57.dll")]
-        [DeploymentItem(@"avutil-55.dll")]
-        [DeploymentItem(@"swresample-2.dll")]
-        [DeploymentItem(@"swscale-4.dll")]
-        [DeploymentItem(@"avcodec-57.dll")]
         [TestCategory("Hello World Mocking Tests")]
         public void SelectMockForTestStepAssignNameHidesTheTestStatusIcon()
         {
@@ -101,11 +72,6 @@ namespace Warewolf.UITests
         }
         
         [TestMethod]
-        [DeploymentItem(@"avformat-57.dll")]
-        [DeploymentItem(@"avutil-55.dll")]
-        [DeploymentItem(@"swresample-2.dll")]
-        [DeploymentItem(@"swscale-4.dll")]
-        [DeploymentItem(@"avcodec-57.dll")]
         [TestCategory("Hello World Mocking Tests")]
         public void ClickAssignNameToolOnDesignSurfaceAddsTestSteps()
         {
@@ -116,11 +82,6 @@ namespace Warewolf.UITests
         }
 
         [TestMethod]
-        [DeploymentItem(@"avformat-57.dll")]
-        [DeploymentItem(@"avutil-55.dll")]
-        [DeploymentItem(@"swresample-2.dll")]
-        [DeploymentItem(@"swscale-4.dll")]
-        [DeploymentItem(@"avcodec-57.dll")]
         [TestCategory("Hello World Mocking Tests")]
         public void ChangingTheOutputMessageShouldFailTestSteps()
         {
@@ -133,22 +94,15 @@ namespace Warewolf.UITests
 
         #region Additional test attributes
 
-        [TestInitialize]
+        [TestInitialize()]
         public void MyTestInitialize()
         {
-            screenRecorder.StartRecording(TestContext);
             UIMap.SetPlaybackSettings();
             UIMap.AssertStudioIsRunning();
             ExplorerUIMap.Filter_Explorer(HelloWorld);
             ExplorerUIMap.DoubleClick_Explorer_Localhost_First_Item();
             UIMap.Press_F6();
             UIMap.Click_Create_Test_From_Debug();
-        }
-
-        [TestCleanup]
-        public void StopScreenRecording()
-        {
-            screenRecorder.StopRecording(TestContext);
         }
 
         UIMap UIMap

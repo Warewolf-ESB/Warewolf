@@ -3,26 +3,17 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.UITests.DialogsUIMapClasses;
 using Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses;
 using Warewolf.UITests.Explorer.ExplorerUIMapClasses;
-using Warewolf.Web.UI.Tests.ScreenRecording;
 
 namespace Warewolf.UITests.SaveDialog
 {
     [CodedUITest]
     public class SaveDialogTests
     {
-        public TestContext TestContext { get; set; }
-        private FfMpegVideoRecorder screenRecorder = new FfMpegVideoRecorder();
-
         private const string HelloWorld = "Hello World";
         private const string FolderToRename = "FolderToRename";
         private const string FolderRenamed = "FolderToRename_Renamed";
 
         [TestMethod]
-        [DeploymentItem(@"avformat-57.dll")]
-        [DeploymentItem(@"avutil-55.dll")]
-        [DeploymentItem(@"swresample-2.dll")]
-        [DeploymentItem(@"swscale-4.dll")]
-        [DeploymentItem(@"avcodec-57.dll")]
         [TestCategory("Save Dialog")]
         public void Save_Dialog_Filter_Given_HelloWorld_Filters_Explorer_Tree()
         {
@@ -33,11 +24,6 @@ namespace Warewolf.UITests.SaveDialog
         }
         
         [TestMethod]
-        [DeploymentItem(@"avformat-57.dll")]
-        [DeploymentItem(@"avutil-55.dll")]
-        [DeploymentItem(@"swresample-2.dll")]
-        [DeploymentItem(@"swscale-4.dll")]
-        [DeploymentItem(@"avcodec-57.dll")]
         [TestCategory("Save Dialog")]
         public void Server_Context_Menu_Has_New_Folder_Only()
         {
@@ -47,11 +33,6 @@ namespace Warewolf.UITests.SaveDialog
         }
 
         [TestMethod]
-        [DeploymentItem(@"avformat-57.dll")]
-        [DeploymentItem(@"avutil-55.dll")]
-        [DeploymentItem(@"swresample-2.dll")]
-        [DeploymentItem(@"swscale-4.dll")]
-        [DeploymentItem(@"avcodec-57.dll")]
         [TestCategory("Save Dialog")]
         public void Folder_Items_Context_Menu_Has_New_Folder_And_Rename()
         {
@@ -63,11 +44,6 @@ namespace Warewolf.UITests.SaveDialog
         }
 
         [TestMethod]
-        [DeploymentItem(@"avformat-57.dll")]
-        [DeploymentItem(@"avutil-55.dll")]
-        [DeploymentItem(@"swresample-2.dll")]
-        [DeploymentItem(@"swscale-4.dll")]
-        [DeploymentItem(@"avcodec-57.dll")]
         [TestCategory("Save Dialog")]
         public void Resources_Items_Context_Menu_Has_Delete_And_Rename()
         {
@@ -79,11 +55,6 @@ namespace Warewolf.UITests.SaveDialog
         }
 
         [TestMethod]
-        [DeploymentItem(@"avformat-57.dll")]
-        [DeploymentItem(@"avutil-55.dll")]
-        [DeploymentItem(@"swresample-2.dll")]
-        [DeploymentItem(@"swscale-4.dll")]
-        [DeploymentItem(@"avcodec-57.dll")]
         [TestCategory("Save Dialog")]
         public void SaveDialogServiceNameValidationInvalidChars()
         {
@@ -92,11 +63,6 @@ namespace Warewolf.UITests.SaveDialog
         }
 
         [TestMethod]
-        [DeploymentItem(@"avformat-57.dll")]
-        [DeploymentItem(@"avutil-55.dll")]
-        [DeploymentItem(@"swresample-2.dll")]
-        [DeploymentItem(@"swscale-4.dll")]
-        [DeploymentItem(@"avcodec-57.dll")]
         [TestCategory("Save Dialog")]
         public void SaveDialogServiceNameValidationNameEndsWithNumber()
         {
@@ -104,11 +70,6 @@ namespace Warewolf.UITests.SaveDialog
             Assert.IsTrue(DialogsUIMap.SaveDialogWindow.SaveButton.Enabled, "Save dialog save button is not enabled. Check workflow name is valid and that another workflow by that name does not already exist.");
         }
         [TestMethod]
-        [DeploymentItem(@"avformat-57.dll")]
-        [DeploymentItem(@"avutil-55.dll")]
-        [DeploymentItem(@"swresample-2.dll")]
-        [DeploymentItem(@"swscale-4.dll")]
-        [DeploymentItem(@"avcodec-57.dll")]
         [TestCategory("Save Dialog")]
         public void SaveDialogServiceNameValidationNameEndsWithEmptySpace()
         {
@@ -117,11 +78,6 @@ namespace Warewolf.UITests.SaveDialog
         }
 
         [TestMethod]
-        [DeploymentItem(@"avformat-57.dll")]
-        [DeploymentItem(@"avutil-55.dll")]
-        [DeploymentItem(@"swresample-2.dll")]
-        [DeploymentItem(@"swscale-4.dll")]
-        [DeploymentItem(@"avcodec-57.dll")]
         [TestCategory("Save Dialog")]
         public void CloseSaveDialogRemovesExplorerFilter()
         {
@@ -133,11 +89,6 @@ namespace Warewolf.UITests.SaveDialog
         }
 
         [TestMethod]
-        [DeploymentItem(@"avformat-57.dll")]
-        [DeploymentItem(@"avutil-55.dll")]
-        [DeploymentItem(@"swresample-2.dll")]
-        [DeploymentItem(@"swscale-4.dll")]
-        [DeploymentItem(@"avcodec-57.dll")]
         [TestCategory("Save Dialog")]
         public void RenameFolderFromSaveDialog()
         {
@@ -150,11 +101,6 @@ namespace Warewolf.UITests.SaveDialog
         }
 
         [TestMethod]
-        [DeploymentItem(@"avformat-57.dll")]
-        [DeploymentItem(@"avutil-55.dll")]
-        [DeploymentItem(@"swresample-2.dll")]
-        [DeploymentItem(@"swscale-4.dll")]
-        [DeploymentItem(@"avcodec-57.dll")]
         [TestCategory("Save Dialog")]
         public void MoveFolderToSameLocationFromSaveDialog()
         {
@@ -164,11 +110,6 @@ namespace Warewolf.UITests.SaveDialog
         }
 
         [TestMethod]
-        [DeploymentItem(@"avformat-57.dll")]
-        [DeploymentItem(@"avutil-55.dll")]
-        [DeploymentItem(@"swresample-2.dll")]
-        [DeploymentItem(@"swscale-4.dll")]
-        [DeploymentItem(@"avcodec-57.dll")]
         [TestCategory("Save Dialog")]
         public void MoveFolderToFolderToRenameFromSaveDialog()
         {
@@ -179,11 +120,6 @@ namespace Warewolf.UITests.SaveDialog
         }
 
         [TestMethod]
-        [DeploymentItem(@"avformat-57.dll")]
-        [DeploymentItem(@"avutil-55.dll")]
-        [DeploymentItem(@"swresample-2.dll")]
-        [DeploymentItem(@"swscale-4.dll")]
-        [DeploymentItem(@"avcodec-57.dll")]
         [TestCategory("Save Dialog")]
         public void MoveResourceToLocalhostFromSaveDialog()
         {
@@ -195,11 +131,6 @@ namespace Warewolf.UITests.SaveDialog
         }
 
         [TestMethod]
-        [DeploymentItem(@"avformat-57.dll")]
-        [DeploymentItem(@"avutil-55.dll")]
-        [DeploymentItem(@"swresample-2.dll")]
-        [DeploymentItem(@"swscale-4.dll")]
-        [DeploymentItem(@"avcodec-57.dll")]
         [TestCategory("Save Dialog")]
         public void DoubleClickItemInSaveDialogDoesNotOpenResource()
         {
@@ -214,18 +145,11 @@ namespace Warewolf.UITests.SaveDialog
         [TestInitialize]
         public void MyTestInitialize()
         {
-            screenRecorder.StartRecording(TestContext);
             UIMap.SetPlaybackSettings();
             UIMap.AssertStudioIsRunning();
             ExplorerUIMap.Create_New_Workflow_In_LocalHost_With_Shortcut();
             WorkflowTabUIMap.Make_Workflow_Savable_By_Dragging_Start();
             WorkflowTabUIMap.Save_Workflow_Using_Shortcut();
-        }
-
-        [TestCleanup]
-        public void StopScreenRecording()
-        {
-            screenRecorder.StopRecording(TestContext);
         }
 
         UIMap UIMap

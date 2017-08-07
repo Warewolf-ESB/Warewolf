@@ -2,22 +2,13 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.UITests.DialogsUIMapClasses;
 using Warewolf.UITests.Settings.SettingsUIMapClasses;
-using Warewolf.Web.UI.Tests.ScreenRecording;
 
 namespace Warewolf.UITests.Settings.Performance_Counters
 {
     [CodedUITest]
     public class ConfigureSettingsperfomanceCounter
     {
-        public TestContext TestContext { get; set; }
-        private FfMpegVideoRecorder screenRecorder = new FfMpegVideoRecorder();
-
         [TestMethod]
-        [DeploymentItem(@"avformat-57.dll")]
-        [DeploymentItem(@"avutil-55.dll")]
-        [DeploymentItem(@"swresample-2.dll")]
-        [DeploymentItem(@"swscale-4.dll")]
-        [DeploymentItem(@"avcodec-57.dll")]
         [TestCategory("Settings")]
         public void Reset_Then_Configure_PerfomanceCounter_UITest()
         {
@@ -31,20 +22,13 @@ namespace Warewolf.UITests.Settings.Performance_Counters
 
         #region Additional test attributes
 
-        [TestInitialize]
+        [TestInitialize()]
         public void MyTestInitialize()
         {
-            screenRecorder.StartRecording(TestContext);
             UIMap.SetPlaybackSettings();
             UIMap.AssertStudioIsRunning();
             UIMap.Click_ConfigureSetting_From_Menu();
             SettingsUIMap.Select_PerfomanceCounterTab();
-        }
-
-        [TestCleanup]
-        public void StopScreenRecording()
-        {
-            screenRecorder.StopRecording(TestContext);
         }
 
         UIMap UIMap

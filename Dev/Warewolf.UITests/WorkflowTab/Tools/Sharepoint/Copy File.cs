@@ -3,24 +3,16 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.UITests.SharepointSource.SharepointSourceUIMapClasses;
 using Warewolf.UITests.WorkflowTab.Tools.Sharepoint.SharepointToolsUIMapClasses;
 using Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses;
-using Warewolf.Web.UI.Tests.ScreenRecording;
 
 namespace Warewolf.UITests.WorkflowTab.Tools.Sharepoint
 {
     [CodedUITest]
     public class Copy_File
     {
-        public TestContext TestContext { get; set; }
-        private FfMpegVideoRecorder screenRecorder = new FfMpegVideoRecorder();
 
         const string SourceName = "SharepointSourceFromTool";
 
         [TestMethod]
-        [DeploymentItem(@"avformat-57.dll")]
-        [DeploymentItem(@"avutil-55.dll")]
-        [DeploymentItem(@"swresample-2.dll")]
-        [DeploymentItem(@"swscale-4.dll")]
-        [DeploymentItem(@"avcodec-57.dll")]
         [TestCategory("Sharepoint Tools")]
         public void SharepointCopyFileTool_Small_And_LargeView_Then_NewSource_UITest()
         {
@@ -79,10 +71,9 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Sharepoint
 
         #region Additional test attributes
 
-        [TestInitialize]
+        [TestInitialize()]
         public void MyTestInitialize()
         {
-            screenRecorder.StartRecording(TestContext);
             UIMap.SetPlaybackSettings();
             UIMap.AssertStudioIsRunning();
             UIMap.Click_NewWorkflow_RibbonButton();

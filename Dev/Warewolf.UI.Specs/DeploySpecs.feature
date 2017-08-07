@@ -1,9 +1,4 @@
-﻿@Deploy
-@MSTest:DeploymentItem:avformat-57.dll
-@MSTest:DeploymentItem:avutil-55.dll
-@MSTest:DeploymentItem:swresample-2.dll
-@MSTest:DeploymentItem:swscale-4.dll
-@MSTest:DeploymentItem:avcodec-57.dll
+﻿@Deploy 
 Feature: DeploySpecs
 
 Scenario: Deploying From Explorer Opens The Deploy With Resource Already Checked

@@ -2,24 +2,15 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.UITests.Explorer.ExplorerUIMapClasses;
 using Warewolf.UITests.WebSource.WebSourceUIMapClasses;
-using Warewolf.Web.UI.Tests.ScreenRecording;
 
 namespace Warewolf.UITests.WebSource
 {
     [CodedUITest]
     public class WebSourceTests
     {
-        public TestContext TestContext { get; set; }
-        private FfMpegVideoRecorder screenRecorder = new FfMpegVideoRecorder();
-
         const string SourceName = "CodedUITestWebServiceSource";
 
         [TestMethod]
-        [DeploymentItem(@"avformat-57.dll")]
-        [DeploymentItem(@"avutil-55.dll")]
-        [DeploymentItem(@"swresample-2.dll")]
-        [DeploymentItem(@"swscale-4.dll")]
-        [DeploymentItem(@"avcodec-57.dll")]
         [TestCategory("Web Sources")]
         // ReSharper disable once InconsistentNaming
         public void Create_Save_And_Edit_WebServiceSource_From_ExplorerContextMenu_UITests()
@@ -60,11 +51,6 @@ namespace Warewolf.UITests.WebSource
         /// If this test is failing, check first to see if the Link is still working.
         /// </summary>
         [TestMethod]
-        [DeploymentItem(@"avformat-57.dll")]
-        [DeploymentItem(@"avutil-55.dll")]
-        [DeploymentItem(@"swresample-2.dll")]
-        [DeploymentItem(@"swscale-4.dll")]
-        [DeploymentItem(@"avcodec-57.dll")]
         [TestCategory("Web Sources")]
         // ReSharper disable once InconsistentNaming        
         public void Test_WebServiceSource_DefaulQuery_UITests()
@@ -82,20 +68,13 @@ namespace Warewolf.UITests.WebSource
 
         #region Additional test attributes
 
-        [TestInitialize]
+        [TestInitialize()]
         public void MyTestInitialize()
         {
-            screenRecorder.StartRecording(TestContext);
             UIMap.SetPlaybackSettings();
             UIMap.AssertStudioIsRunning();
         }
-
-        [TestCleanup]
-        public void StopScreenRecording()
-        {
-            screenRecorder.StopRecording(TestContext);
-        }
-
+        
         public UIMap UIMap
         {
             get

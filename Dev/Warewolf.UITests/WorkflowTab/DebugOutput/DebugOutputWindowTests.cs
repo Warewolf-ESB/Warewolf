@@ -6,25 +6,16 @@ using Warewolf.UITests.WorkflowTab.Tools.StorageDropbox.DropboxToolsUIMapClasses
 using Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses;
 using Warewolf.UITests.Explorer.ExplorerUIMapClasses;
 using Warewolf.UITests.WorkflowTab.Tools.Utility.UtilityToolsUIMapClasses;
-using Warewolf.Web.UI.Tests.ScreenRecording;
 
 namespace Warewolf.UITests.DebugOutputTests
 {
     [CodedUITest]
     public class DebugOutputWindowTests
     {
-        public TestContext TestContext { get; set; }
-        private FfMpegVideoRecorder screenRecorder = new FfMpegVideoRecorder();
-
         const string SelectionHighlightWf = "SelectionHighlightWf";
         const string DropboxSelectionHighlightWf = "DropboxSelectionHighlightWf";
 
         [TestMethod]
-        [DeploymentItem(@"avformat-57.dll")]
-        [DeploymentItem(@"avutil-55.dll")]
-        [DeploymentItem(@"swresample-2.dll")]
-        [DeploymentItem(@"swscale-4.dll")]
-        [DeploymentItem(@"avcodec-57.dll")]
         [TestCategory("Debug Input")]
         public void HelloWorld_Is_Highlighted_After_Execution_UITest()
         {
@@ -37,11 +28,6 @@ namespace Warewolf.UITests.DebugOutputTests
         }
 
         [TestMethod]
-        [DeploymentItem(@"avformat-57.dll")]
-        [DeploymentItem(@"avutil-55.dll")]
-        [DeploymentItem(@"swresample-2.dll")]
-        [DeploymentItem(@"swscale-4.dll")]
-        [DeploymentItem(@"avcodec-57.dll")]
         [TestCategory("Debug Input")]
         public void WebRequestTool_Is_Highlighted_After_Execution_UITest()
         {
@@ -53,11 +39,6 @@ namespace Warewolf.UITests.DebugOutputTests
         }
 
         [TestMethod]
-        [DeploymentItem(@"avformat-57.dll")]
-        [DeploymentItem(@"avutil-55.dll")]
-        [DeploymentItem(@"swresample-2.dll")]
-        [DeploymentItem(@"swscale-4.dll")]
-        [DeploymentItem(@"avcodec-57.dll")]
         [TestCategory("Debug Input")]
         public void WorkFlowSelection_Validation_UITest()
         {
@@ -73,11 +54,6 @@ namespace Warewolf.UITests.DebugOutputTests
         }
 
         [TestMethod]
-        [DeploymentItem(@"avformat-57.dll")]
-        [DeploymentItem(@"avutil-55.dll")]
-        [DeploymentItem(@"swresample-2.dll")]
-        [DeploymentItem(@"swscale-4.dll")]
-        [DeploymentItem(@"avcodec-57.dll")]
         [TestCategory("Debug Input")]
         public void DropboxWorkFlowSelection_Validation_UITest()
         {
@@ -93,11 +69,6 @@ namespace Warewolf.UITests.DebugOutputTests
         }
 
         [TestMethod]
-        [DeploymentItem(@"avformat-57.dll")]
-        [DeploymentItem(@"avutil-55.dll")]
-        [DeploymentItem(@"swresample-2.dll")]
-        [DeploymentItem(@"swscale-4.dll")]
-        [DeploymentItem(@"avcodec-57.dll")]
         [TestCategory("Debug Input")]
         public void SelectAndApplyWorkFlowSelection_Validation_UITest()
         {
@@ -109,11 +80,6 @@ namespace Warewolf.UITests.DebugOutputTests
         }
 
         [TestMethod]
-        [DeploymentItem(@"avformat-57.dll")]
-        [DeploymentItem(@"avutil-55.dll")]
-        [DeploymentItem(@"swresample-2.dll")]
-        [DeploymentItem(@"swscale-4.dll")]
-        [DeploymentItem(@"avcodec-57.dll")]
         [TestCategory("Debug Input")]
         public void DropboxDownloadWorkFlowSelection_Validation_UITest()
         {
@@ -125,11 +91,6 @@ namespace Warewolf.UITests.DebugOutputTests
         }
 
         [TestMethod]
-        [DeploymentItem(@"avformat-57.dll")]
-        [DeploymentItem(@"avutil-55.dll")]
-        [DeploymentItem(@"swresample-2.dll")]
-        [DeploymentItem(@"swscale-4.dll")]
-        [DeploymentItem(@"avcodec-57.dll")]
         [TestCategory("Debug Input")]
         public void DropboxDeleteWorkFlowSelection_Validation_UITest()
         {
@@ -141,11 +102,6 @@ namespace Warewolf.UITests.DebugOutputTests
         }
 
         [TestMethod]
-        [DeploymentItem(@"avformat-57.dll")]
-        [DeploymentItem(@"avutil-55.dll")]
-        [DeploymentItem(@"swresample-2.dll")]
-        [DeploymentItem(@"swscale-4.dll")]
-        [DeploymentItem(@"avcodec-57.dll")]
         [TestCategory("Debug Input")]
         public void DropboxUploadWorkFlowSelection_Validation_UITest()
         {
@@ -157,11 +113,6 @@ namespace Warewolf.UITests.DebugOutputTests
         }
 
         [TestMethod]
-        [DeploymentItem(@"avformat-57.dll")]
-        [DeploymentItem(@"avutil-55.dll")]
-        [DeploymentItem(@"swresample-2.dll")]
-        [DeploymentItem(@"swscale-4.dll")]
-        [DeploymentItem(@"avcodec-57.dll")]
         [TestCategory("Debug Input")]
         public void DropboxListWorkFlowSelection_Validation_UITest()
         {
@@ -177,15 +128,9 @@ namespace Warewolf.UITests.DebugOutputTests
         [TestInitialize]
         public void MyTestInitialize()
         {
-            screenRecorder.StartRecording(TestContext);
             UIMap.SetPlaybackSettings();
             UIMap.AssertStudioIsRunning();
-        }
 
-        [TestCleanup]
-        public void StopScreenRecording()
-        {
-            screenRecorder.StopRecording(TestContext);
         }
 
         UIMap UIMap
