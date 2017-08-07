@@ -127,8 +127,23 @@ namespace Warewolf.Studio.ViewModels
             }
             set
             {
-                _environments = value;
-                OnPropertyChanged(() => Environments);
+                if (value != null)
+                {
+                    var items = new ObservableCollection<IEnvironmentViewModel>();
+                    foreach (var env in value)
+                    {
+                        if (!items.Any(o => o.ResourceId == env.ResourceId))
+                        {
+                            items.Add(env);
+                        }
+                    }
+                    if (items.Count > 0)
+                    {
+                        _environments?.Clear();
+                        _environments = items;
+                    }
+                    OnPropertyChanged(() => Environments);
+                }
             }
         }
 
@@ -378,7 +393,10 @@ namespace Warewolf.Studio.ViewModels
             IsLoading = true;
             var environmentModel = CreateEnvironmentFromServer(server, _shellViewModel);
             environmentModel.IsSelected = true;
-            _environments.Add(environmentModel);
+            if (!_environments.Any(o => o.ResourceId == environmentModel.ResourceId))
+            {
+                _environments.Add(environmentModel);
+            }
             Environments = _environments;
             var result = await LoadEnvironment(environmentModel, IsDeploy);
             IsLoading = result;
@@ -461,7 +479,10 @@ namespace Warewolf.Studio.ViewModels
                 }
                 if (server.EnvironmentID != Guid.Empty)
                 {
-                    _environments.Remove(environmentModel);
+                    if (_environments.Any(o => o.ResourceId == environmentModel.ResourceId))
+                    {
+                        _environments.Remove(environmentModel);
+                    }
                 }
             }
             OnPropertyChanged(() => Environments);
