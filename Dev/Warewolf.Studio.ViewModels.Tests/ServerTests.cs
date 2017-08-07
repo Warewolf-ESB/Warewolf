@@ -474,6 +474,34 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
+        public void GetServerInformation_Given_ServerInformation_IsNotNUll_Returns_ServerInformation()
+        {
+            //------------Setup for test--------------------------
+            _envConnection.Setup(model => model.IsLocalHost).Returns(false);
+            var server = new Server(Guid.Empty, _envConnection.Object);
+            PrivateObject privateObj = new PrivateObject(server);
+            Dictionary<string, string> info = new Dictionary<string, string>();
+            info.Add("information", "value for inforamtion");
+            privateObj.SetField("_serverInformation", info);
+            var information = server.GetServerInformation();
+            Assert.IsNotNull(information);
+            Assert.AreEqual(info, information);
+        }
+
+        [TestMethod]
+        public void GetServerVersion_Given_ServerVersion_IsNotNUll_Returns_ServerVersion()
+        {
+            //------------Setup for test--------------------------
+            _envConnection.Setup(model => model.IsLocalHost).Returns(false);
+            var server = new Server(Guid.Empty, _envConnection.Object);
+            PrivateObject privateObj = new PrivateObject(server);
+            privateObj.SetField("_version", "0.0.0.1");
+            var version = server.GetServerVersion();
+            Assert.IsNotNull(version);
+            Assert.AreEqual("0.0.0.1", version);
+        }
+
+        [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void EnvironmentModel_Constructor_NullConnection_ThrowsArgumentNullException()
         {

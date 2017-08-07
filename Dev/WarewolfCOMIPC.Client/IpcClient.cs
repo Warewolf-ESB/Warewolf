@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.IO.Pipes;
 using Newtonsoft.Json;
+using System.Reflection;
 // ReSharper disable InconsistentNaming
 
 // ReSharper disable NonLocalizedString
@@ -22,7 +23,10 @@ namespace WarewolfCOMIPC.Client
             string token = Guid.NewGuid().ToString();
 
             // Pass token to child process
-            var psi = new ProcessStartInfo("WarewolfCOMIPC.exe", token)
+            string currentAssemblyPath = Assembly.GetExecutingAssembly().Location;
+            string currentAssemblyDirectoryPath = Path.GetDirectoryName(currentAssemblyPath);
+            string clientPath = Path.Combine(currentAssemblyDirectoryPath, "WarewolfCOMIPC.exe");
+            var psi = new ProcessStartInfo(clientPath, token)
             {
                 Verb = "runas",
                 UseShellExecute = false,
