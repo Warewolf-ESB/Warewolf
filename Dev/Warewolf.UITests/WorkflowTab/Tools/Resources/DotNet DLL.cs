@@ -5,22 +5,13 @@ using Warewolf.UITests.DotNetPluginSource.DotNetPluginSourceUIMapClasses;
 using Warewolf.UITests.WorkflowTab.Tools.Resources.ResourcesToolsUIMapClasses;
 using Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses;
 using Warewolf.UITests.Explorer.ExplorerUIMapClasses;
-using Warewolf.Web.UI.Tests.ScreenRecording;
 
 namespace Warewolf.UITests.WorkflowTab.Tools.Resources
 {
     [CodedUITest]
     public class DotNet_DLL_UITests
     {
-        public TestContext TestContext { get; set; }
-        private FfMpegVideoRecorder screenRecorder = new FfMpegVideoRecorder();
-
         [TestMethod]
-        [DeploymentItem(@"avformat-57.dll")]
-        [DeploymentItem(@"avutil-55.dll")]
-        [DeploymentItem(@"swresample-2.dll")]
-        [DeploymentItem(@"swscale-4.dll")]
-        [DeploymentItem(@"avcodec-57.dll")]
         [TestCategory("Resource Tools")]
         public void DotNetDLLTool_Small_And_LargeView_Then_NewSource_UITest()
         {
@@ -60,11 +51,6 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Resources
         }
         
         [TestMethod]
-        [DeploymentItem(@"avformat-57.dll")]
-        [DeploymentItem(@"avutil-55.dll")]
-        [DeploymentItem(@"swresample-2.dll")]
-        [DeploymentItem(@"swscale-4.dll")]
-        [DeploymentItem(@"avcodec-57.dll")]
         [TestCategory("Resource Tools")]
         public void Selecting_Source_Enables_ClassName_UITests()
         {
@@ -73,11 +59,6 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Resources
         }
 
         [TestMethod]
-        [DeploymentItem(@"avformat-57.dll")]
-        [DeploymentItem(@"avutil-55.dll")]
-        [DeploymentItem(@"swresample-2.dll")]
-        [DeploymentItem(@"swscale-4.dll")]
-        [DeploymentItem(@"avcodec-57.dll")]
         [TestCategory("Resource Tools")]
         public void Selecting_Classname_Enabled_Constructor_And_Actions_UITests()
         {
@@ -89,11 +70,6 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Resources
         }
 
         [TestMethod]
-        [DeploymentItem(@"avformat-57.dll")]
-        [DeploymentItem(@"avutil-55.dll")]
-        [DeploymentItem(@"swresample-2.dll")]
-        [DeploymentItem(@"swscale-4.dll")]
-        [DeploymentItem(@"avcodec-57.dll")]
         [TestCategory("Resource Tools")]
         public void Selecting_Classname_Loads_Class_Constructors_UITests()
         {
@@ -108,11 +84,6 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Resources
         }
 
         [TestMethod]
-        [DeploymentItem(@"avformat-57.dll")]
-        [DeploymentItem(@"avutil-55.dll")]
-        [DeploymentItem(@"swresample-2.dll")]
-        [DeploymentItem(@"swscale-4.dll")]
-        [DeploymentItem(@"avcodec-57.dll")]
         [TestCategory("DotNet Connector Tool")]
         public void DotNetDLLTool_EditSource_UITest()
         {
@@ -131,11 +102,6 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Resources
         }
         
         [TestMethod]
-        [DeploymentItem(@"avformat-57.dll")]
-        [DeploymentItem(@"avutil-55.dll")]
-        [DeploymentItem(@"swresample-2.dll")]
-        [DeploymentItem(@"swscale-4.dll")]
-        [DeploymentItem(@"avcodec-57.dll")]
         [TestCategory("DotNet Connector Tool")]
         public void GAC_Selecting_Classname_Loads_Class_Constructors_UITests()
         {
@@ -147,11 +113,6 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Resources
         }
 
         [TestMethod]
-        [DeploymentItem(@"avformat-57.dll")]
-        [DeploymentItem(@"avutil-55.dll")]
-        [DeploymentItem(@"swresample-2.dll")]
-        [DeploymentItem(@"swscale-4.dll")]
-        [DeploymentItem(@"avcodec-57.dll")]
         [TestCategory("DotNet Connector Tool")]
         public void Selecting_Classname_Loads_Actions_UITests()
         {
@@ -164,11 +125,6 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Resources
         }
 
         [TestMethod]
-        [DeploymentItem(@"avformat-57.dll")]
-        [DeploymentItem(@"avutil-55.dll")]
-        [DeploymentItem(@"swresample-2.dll")]
-        [DeploymentItem(@"swscale-4.dll")]
-        [DeploymentItem(@"avcodec-57.dll")]
         [TestCategory("DotNet Connector Tool")]
         public void Selecting_Classname_AndCtor_With_Parameters_Shows_Inputs_Grid_UITests()
         {
@@ -184,11 +140,6 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Resources
         }
 
         [TestMethod]
-        [DeploymentItem(@"avformat-57.dll")]
-        [DeploymentItem(@"avutil-55.dll")]
-        [DeploymentItem(@"swresample-2.dll")]
-        [DeploymentItem(@"swscale-4.dll")]
-        [DeploymentItem(@"avcodec-57.dll")]
         [TestCategory("DotNet Connector Tool")]
         public void Selecting_Action_With_Paramerters_Shows_Inputs_Grid_UITests()
         {
@@ -204,11 +155,6 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Resources
         }
 
         [TestMethod]
-        [DeploymentItem(@"avformat-57.dll")]
-        [DeploymentItem(@"avutil-55.dll")]
-        [DeploymentItem(@"swresample-2.dll")]
-        [DeploymentItem(@"swscale-4.dll")]
-        [DeploymentItem(@"avcodec-57.dll")]
         [TestCategory("DotNet Connector Tool")]
         public void Selecting_Action_Then_Clear_Removes_Empty_Actions()
         {
@@ -226,11 +172,6 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Resources
         }
 
         [TestMethod]
-        [DeploymentItem(@"avformat-57.dll")]
-        [DeploymentItem(@"avutil-55.dll")]
-        [DeploymentItem(@"swresample-2.dll")]
-        [DeploymentItem(@"swscale-4.dll")]
-        [DeploymentItem(@"avcodec-57.dll")]
         [TestCategory("DotNet Connector Tool")]
         public void Selecting_Classname_And_Action_Creates_New_Blank_Action_Dropbox_UITests()
         {
@@ -251,17 +192,10 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Resources
         [TestInitialize]
         public void MyTestInitialize()
         {
-            screenRecorder.StartRecording(TestContext);
             UIMap.SetPlaybackSettings();
             UIMap.AssertStudioIsRunning();
             ExplorerUIMap.Create_New_Workflow_In_LocalHost_With_Shortcut();
             WorkflowTabUIMap.Drag_DotNetDLLConnector_Onto_DesignSurface();
-        }
-
-        [TestCleanup]
-        public void StopScreenRecording()
-        {
-            screenRecorder.StopRecording(TestContext);
         }
 
         UIMap UIMap

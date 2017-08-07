@@ -1,9 +1,4 @@
-﻿@MSTest:DeploymentItem:avformat-57.dll
-@MSTest:DeploymentItem:avutil-55.dll
-@MSTest:DeploymentItem:swresample-2.dll
-@MSTest:DeploymentItem:swscale-4.dll
-@MSTest:DeploymentItem:avcodec-57.dll
-Feature: SwitchTool
+﻿Feature: SwitchTool
 	In order to continue to control the flow of execution through workflows
 	As a Warewolf Studio user
 	I want to perform a composition of recorded actions against the switch tool
