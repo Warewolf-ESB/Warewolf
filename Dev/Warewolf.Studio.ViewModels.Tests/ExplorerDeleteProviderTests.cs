@@ -87,12 +87,18 @@ namespace Warewolf.Studio.ViewModels.Tests
             mock.SetupGet(repository => repository.UpdateManagerProxy).Returns(updateManagerProxy.Object);
             mock.Setup(repository => repository.HasDependencies(It.IsAny<IExplorerItemViewModel>(), It.IsAny<IDependencyGraphGenerator>(), It.IsAny<IExecuteMessage>()))
                 .Returns(new DeletedFileMetadata() { IsDeleted = true, DeleteAnyway = true });
+
+            var mockExplorerItemModelParent = new Mock<IExplorerItemViewModel>();
+            mockExplorerItemModelParent.Setup(model => model.ResourceType).Returns("Folder");
+            mockExplorerItemModelParent.Setup(model => model.ResourcePath).Returns("folderPath");
+
             var mockExplorerItemModel = new Mock<IExplorerItemViewModel>();
             var child = new Mock<IExplorerItemViewModel>();
 
             child.SetupGet(model => model.ResourceType).Returns("Version");
             mockExplorerItemModel.Setup(model => model.ResourceType).Returns("Version");
             mockExplorerItemModel.Setup(model => model.ResourcePath).Returns("path");
+            mockExplorerItemModel.Setup(model => model.Parent).Returns(mockExplorerItemModelParent.Object);
             mockExplorerItemModel.Setup(model => model.AsList())
                                  .Returns(new List<IExplorerItemViewModel>()
                                  {
