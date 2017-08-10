@@ -84,6 +84,32 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
+        public void ValidateEnvironmentContainsDoesNotAdd()
+        {
+            //arrange
+            var environmentViewModelMock = new Mock<IEnvironmentViewModel>();
+            environmentViewModelMock.SetupGet(it => it.IsConnected).Returns(true);
+            environmentViewModelMock.SetupGet(it => it.ResourceName).Returns("localhostServerResourceName");
+
+            var environmentId = _target.ConnectControlViewModel.SelectedConnection.EnvironmentID;
+
+            var mockServer = new Mock<IServer>();
+            mockServer.Setup(server => server.DisplayName).Returns("localhostServerResourceName");
+            mockServer.Setup(server => server.EnvironmentID).Returns(environmentId);
+            environmentViewModelMock.SetupGet(it => it.Server).Returns(mockServer.Object);
+
+            var items = new ObservableCollection<IEnvironmentViewModel>();
+            items.Add(environmentViewModelMock.Object);
+            items.Add(environmentViewModelMock.Object);
+
+            _target.Environments = items;
+            //act
+
+            //assert
+            Assert.AreEqual(1, _target.Environments.Count);
+        }
+
+        [TestMethod]
         public void TestClearSearchTextCommand()
         {
             //arrange

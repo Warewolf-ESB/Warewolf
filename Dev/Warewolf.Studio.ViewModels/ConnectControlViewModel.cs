@@ -116,7 +116,6 @@ namespace Warewolf.Studio.ViewModels
             Servers.Insert(idx, updatedServer);
             SelectedConnection = shellViewModel?.LocalhostServer;
 
-            //foreach (var server in Servers)
             if (!updatedServer.IsConnected && !updatedServer.IsLocalHost)
             {
                 updatedServer.DisplayName.Replace("(Connected)", "");

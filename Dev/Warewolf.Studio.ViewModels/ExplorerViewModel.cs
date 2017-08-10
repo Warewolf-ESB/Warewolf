@@ -405,7 +405,7 @@ namespace Warewolf.Studio.ViewModels
         void ServerReConnected(object _, IServer server)
         {
             if (!IsLoading && server.EnvironmentID == Guid.Empty)
-                Application.Current.Dispatcher.Invoke(async () =>
+                Application.Current?.Dispatcher?.Invoke(async () =>
                 {
                     IsLoading = true;
 
@@ -454,13 +454,13 @@ namespace Warewolf.Studio.ViewModels
 
         void ServerDisconnectDetected(object _, IServer server)
         {
-            Application.Current.Dispatcher.Invoke(() =>
+            Application.Current?.Dispatcher?.Invoke(() =>
             {
                 IPopupController controller = CustomContainer.Get<IPopupController>();
                 ServerDisconnected(_, server);
                 if (!ShowServerDownError)
                 {
-                    controller.ShowServerNotConnected(server.DisplayName);
+                    controller?.ShowServerNotConnected(server.DisplayName);
                     ShowServerDownError = true;
                 }
             });
@@ -479,7 +479,7 @@ namespace Warewolf.Studio.ViewModels
                 }
                 if (server.EnvironmentID != Guid.Empty)
                 {
-                    Application.Current.Dispatcher.Invoke(delegate
+                    Application.Current?.Dispatcher?.Invoke(delegate
                     {
                         _environments.Remove(environmentModel);
                     });

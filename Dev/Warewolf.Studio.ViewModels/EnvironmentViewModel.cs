@@ -79,15 +79,11 @@ namespace Warewolf.Studio.ViewModels
         private bool _isSaveDialog;
 
         public EnvironmentViewModel(IServer server, IShellViewModel shellViewModel, bool isDialog = false, Action<IExplorerItemViewModel> selectAction = null)
-        {            
-            if (server == null)
-                throw new ArgumentNullException(nameof(server));
-            if (shellViewModel == null)
-                throw new ArgumentNullException(nameof(shellViewModel));
-            _shellViewModel = shellViewModel;
+        {
+            Server = server ?? throw new ArgumentNullException(nameof(server));
+            _shellViewModel = shellViewModel ?? throw new ArgumentNullException(nameof(shellViewModel));
             _isDialog = isDialog;
             _controller = CustomContainer.Get<IPopupController>();
-            Server = server;
             _children = new ObservableCollection<IExplorerItemViewModel>();
 
             NewServiceCommand = new DelegateCommand(() =>
@@ -1083,7 +1079,7 @@ namespace Warewolf.Studio.ViewModels
             return false;
         }
 
-        private void ReloadConnectControl()
+        public void ReloadConnectControl()
         {
             IExplorerViewModel explorerViewModel = ShellViewModel?.ExplorerViewModel;
             if (explorerViewModel?.Environments != null)
