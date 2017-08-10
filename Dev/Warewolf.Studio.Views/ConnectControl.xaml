@@ -65,6 +65,9 @@
                 ToolTip="{Binding Path=NewConnectionToolTip}"
                 Command="{Binding NewConnectionCommand}"
                 Visibility="{Binding IsConnecting, Converter={StaticResource BoolToVisibilityConverterNegative}}">
+            <i:Interaction.Behaviors>
+                <core:HelpSetter Text="{x:Static languages:HelpText.ConnectControlNewConnectionHelp}" DataContext="{Binding}" />
+            </i:Interaction.Behaviors>
         </Button>
         <customControls:CircularProgressBar Grid.Column="2" 
                                             Height="22" 
