@@ -118,6 +118,11 @@ namespace Warewolf.Studio.Views
         {
             var explorerItemViewModelRename = ExplorerItemViewModelRename();
 
+            if (e.Key == Key.Enter && explorerItemViewModelRename == null)
+            {
+                var requestServiceNameViewModel = DataContext as RequestServiceNameViewModel;
+                requestServiceNameViewModel?.OkCommand.Execute(this);
+            }
             if (e.Key == Key.Escape)
             {
                 HandleRenameResource(e, explorerItemViewModelRename);
