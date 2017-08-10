@@ -579,7 +579,7 @@ function Start-Server([string]$ServerPath,[string]$ResourcesType) {
             Write-Warning "my.warewolf.io cannot be hosted. C:\Program Files (x86)\IIS Express\iisexpress.exe not found."
         }
     } else {
-        Write-Warning "my.warewolf.io cannot be hosted. $v\Webs not found."
+        Write-Warning "my.warewolf.io cannot be hosted. $ServerFolderPath\Webs not found."
     }
 }
 
