@@ -379,6 +379,19 @@ namespace Dev2.Studio.Core {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to There are changes that have not been tested.
+        ///Would you like to test the changes? 
+        ///-----------------------------------------------------------------
+        ///Yes - Test your changes.
+        ///No - Discard your changes..
+        /// </summary>
+        public static string ItemSource_HasChanged_NotTested {
+            get {
+                return ResourceManager.GetString("ItemSource_HasChanged_NotTested", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Your changes have not been saved.
         ///Would you like to save? 
         ///-----------------------------------------------------------------

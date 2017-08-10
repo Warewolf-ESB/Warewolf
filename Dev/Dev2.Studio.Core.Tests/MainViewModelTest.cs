@@ -2813,7 +2813,8 @@ namespace Dev2.Core.Tests
             vieFactory.Setup(factory => factory.GetViewGivenServerResourceType(It.IsAny<string>())).Returns(viewMock.Object);
             var mvm = new ShellViewModel(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, versionChecker.Object, vieFactory.Object, false);
             var popup = new Mock<Common.Interfaces.Studio.Controller.IPopupController>();
-            popup.Setup(a => a.ShowSchedulerCloseConfirmation()).Returns(MessageBoxResult.Cancel).Verifiable();
+            popup.Setup(a => a.Show(StringResources.Unsaved_Changes, StringResources.CloseHeader,
+                               MessageBoxButton.YesNoCancel, MessageBoxImage.Information, @"", false, false, true, false, false, false)).Returns(MessageBoxResult.Cancel).Verifiable();
             var scheduler = new SchedulerViewModel(EventPublishers.Aggregator, new DirectoryObjectPickerDialog(), popup.Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => environmentModel) { WorkSurfaceContext = WorkSurfaceContext.Scheduler };
             var task = new Mock<IScheduledResource>();
             task.Setup(a => a.IsDirty).Returns(true);
@@ -2968,6 +2969,8 @@ namespace Dev2.Core.Tests
             vieFactory.Setup(factory => factory.GetViewGivenServerResourceType(It.IsAny<string>())).Returns(viewMock.Object);
             var mvm = new ShellViewModel(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, versionChecker.Object, vieFactory.Object, false);
             var popup = new Mock<Common.Interfaces.Studio.Controller.IPopupController>();
+            popup.Setup(a => a.Show(StringResources.Unsaved_Changes, StringResources.CloseHeader,
+                               MessageBoxButton.YesNoCancel, MessageBoxImage.Information, @"", false, false, true, false, false, false)).Returns(MessageBoxResult.Yes).Verifiable();
 
             var settings = new SettingsViewModelForTest(EventPublishers.Aggregator, popup.Object, new SynchronousAsyncWorker(), new NativeWindow()) { RetValue = true, WorkSurfaceContext = WorkSurfaceContext.Settings };
             var task = new Mock<IScheduledResource>();
@@ -3014,7 +3017,8 @@ namespace Dev2.Core.Tests
             vieFactory.Setup(factory => factory.GetViewGivenServerResourceType(It.IsAny<string>())).Returns(viewMock.Object);
             var mvm = new ShellViewModel(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, versionChecker.Object, vieFactory.Object, false);
             var popup = new Mock<Common.Interfaces.Studio.Controller.IPopupController>();
-            popup.Setup(a => a.ShowSchedulerCloseConfirmation()).Returns(MessageBoxResult.Yes).Verifiable();
+            popup.Setup(a => a.Show(StringResources.Unsaved_Changes, StringResources.CloseHeader,
+                               MessageBoxButton.YesNoCancel, MessageBoxImage.Information, @"", false, false, true, false, false, false)).Returns(MessageBoxResult.Yes).Verifiable();
             var scheduler = new SchedulerViewModelForTesting(EventPublishers.Aggregator, new DirectoryObjectPickerDialog(), popup.Object, new SynchronousAsyncWorker()) { RetValue = true, WorkSurfaceContext = WorkSurfaceContext.Scheduler };
             var task = new Mock<IScheduledResource>();
             task.Setup(a => a.IsDirty).Returns(true);
@@ -3023,6 +3027,67 @@ namespace Dev2.Core.Tests
             environmentRepository.Setup(repo => repo.All()).Returns(new List<IServer>());
             mvm.Items.Add(vm);
             Assert.IsTrue(mvm.OnStudioClosing());
+
+        }
+
+        [TestMethod]
+        [TestCategory("MainViewModel_OnStudioClosing")]
+        [Owner("Pieter Terblanche")]
+        public void MainViewModel_OnStudioClosing_CallsWorkflowOnClosing()
+        {
+            //Barney, commented out when I removed the feedback stuff from the studio
+            //SetupDefaultMef();
+
+            var viewModel = new Mock<IShellViewModel>();
+            var server = new Mock<IServer>();
+            server.SetupGet(server1 => server1.IsConnected).Returns(true);
+            viewModel.SetupGet(model => model.ActiveServer).Returns(server.Object);
+            viewModel.SetupGet(model => model.ActiveServer).Returns(server.Object);
+            viewModel.SetupGet(model => model.LocalhostServer).Returns(server.Object);
+            CustomContainer.Register(viewModel.Object);
+
+            var eventPublisher = new Mock<IEventAggregator>();
+            var environmentRepository = new Mock<IServerRepository>();
+
+            var environmentModel = new Mock<IServer>();
+            var environmentConnection = new Mock<IEnvironmentConnection>().Object;
+            environmentModel.SetupGet(a => a.Connection).Returns(environmentConnection);
+            environmentModel.SetupGet(a => a.IsLocalHost).Returns(true);
+            Mock<IAuthorizationService> mockAuthService = new Mock<IAuthorizationService>();
+            var mockSecurityService = new Mock<ISecurityService>();
+            mockSecurityService.Setup(a => a.Permissions).Returns(new List<WindowsGroupPermission>(new[] { WindowsGroupPermission.CreateEveryone(), }));
+            mockAuthService.SetupGet(service => service.SecurityService).Returns(mockSecurityService.Object);
+            environmentModel.Setup(c => c.AuthorizationService).Returns(mockAuthService.Object);
+            environmentRepository.Setup(repo => repo.Source).Returns(environmentModel.Object);
+            environmentModel.SetupGet(a => a.IsConnected).Returns(true);
+            var versionChecker = new Mock<IVersionChecker>();
+            var asyncWorker = new Mock<IAsyncWorker>();
+            asyncWorker.Setup(w => w.Start(It.IsAny<System.Action>(), It.IsAny<System.Action>())).Verifiable();
+            var connected1 = new Mock<IServer>();
+            var connected2 = new Mock<IServer>();
+            var notConnected = new Mock<IServer>();
+            connected1.Setup(a => a.IsConnected).Returns(true).Verifiable();
+            connected1.Setup(a => a.Disconnect()).Verifiable();
+            connected2.Setup(a => a.IsConnected).Returns(true).Verifiable();
+            connected2.Setup(a => a.Disconnect()).Verifiable();
+            IList<IServer> lst = new List<IServer> { connected1.Object, connected2.Object, notConnected.Object };
+            environmentRepository.Setup(repo => repo.All()).Returns(lst);
+            var vieFactory = new Mock<IViewFactory>();
+            var viewMock = new Mock<IView>();
+            vieFactory.Setup(factory => factory.GetViewGivenServerResourceType(It.IsAny<string>())).Returns(viewMock.Object);
+            var mvm = new ShellViewModel(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, versionChecker.Object, vieFactory.Object, false);
+            var popup = new Mock<Common.Interfaces.Studio.Controller.IPopupController>();
+            popup.Setup(a => a.Show(StringResources.Unsaved_Changes, StringResources.CloseHeader,
+                               MessageBoxButton.YesNoCancel, MessageBoxImage.Information, @"", false, false, true, false, false, false)).Returns(MessageBoxResult.Yes).Verifiable();
+
+            ServerRepository.Instance.ActiveServer = environmentModel.Object;
+            var activetx = ShellViewModel.Items.ToList().First(i => i.WorkSurfaceViewModel.WorkSurfaceContext == WorkSurfaceContext.Workflow);
+
+
+            var vm = new WorkSurfaceContextViewModel(new EventAggregator(), new WorkSurfaceKey(), activetx.WorkSurfaceViewModel, new Mock<Common.Interfaces.Studio.Controller.IPopupController>().Object, (a, b, c) => { });
+
+            mvm.Items.Add(vm);
+            Assert.IsFalse(mvm.OnStudioClosing());
 
         }
 
