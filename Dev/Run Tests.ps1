@@ -247,7 +247,7 @@ function Cleanup-ServerStudio([bool]$Force=$true) {
     taskkill /im "Warewolf Studio.exe" /f  2>&1 | %{if (!($_.ToString().StartsWith("ERROR: "))) {Write-Host $_}}
 
     #Stop my.warewolf.io
-    taskkill /im iisexpress.exe
+    taskkill /im iisexpress.exe /f  2>&1 | %{if (!($_.ToString().StartsWith("ERROR: "))) {Write-Host $_}}
 
     #Stop Server
     $ServiceOutput = ""
