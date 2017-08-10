@@ -18,7 +18,7 @@ namespace Warewolf.Web.Tests
         {
             try
             {
-                WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(2));
+                WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(5));
                 wait.Until(ExpectedConditions.AlertIsPresent());
                 driver.SwitchTo().Alert();
                 return true;
