@@ -54,7 +54,7 @@ namespace SeleniumTests
         [DeploymentItem(@"swresample-2.dll")]
         [DeploymentItem(@"swscale-4.dll")]
         [DeploymentItem(@"avcodec-57.dll")]
-        public void ExecutionLogging_Firefox_UITest()
+        public void ExecutionLogging_ClickRefresh_Firefox_UITest()
         {
             driver.Navigate().GoToUrl(baseURL + "/ExecutionLogging");
             Assert.IsFalse(driver.IsAlertPresent(), driver.CloseAlertAndGetItsText(false));
