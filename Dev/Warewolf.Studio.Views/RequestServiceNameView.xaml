@@ -16,6 +16,7 @@
         ShowInTaskbar="True" 
         MouseDown="RequestServiceNameView_OnMouseDown"
         KeyUp="RequestServiceNameView_OnKeyUp"
+        PreviewKeyDown="RequestServiceNameView_PreviewKeyDown"
         Title="SaveDialogView"
         mc:Ignorable="d">
     

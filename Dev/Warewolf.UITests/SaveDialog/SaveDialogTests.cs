@@ -139,7 +139,23 @@ namespace Warewolf.UITests.SaveDialog
             DialogsUIMap.Click_SaveDialog_CancelButton();
             UIMap.ResourceDidNotOpen();
         }
-        
+
+        [TestMethod]
+        [TestCategory("Save Dialog")]
+        public void PressEnterSavesResourceAndClosesSaveDialog()
+        {
+            var resourceFolder = "EnterSavesResourceFolder";
+            DialogsUIMap.Enter_Valid_Service_Name_Into_Save_Dialog("EnterSavesResource");
+            DialogsUIMap.RightClick_Save_Dialog_Localhost();
+            DialogsUIMap.Select_NewFolder_From_SaveDialogContextMenu();
+            DialogsUIMap.Name_New_Folder_From_Save_Dialog(resourceFolder);
+            Assert.IsTrue(DialogsUIMap.SaveDialogWindow.Exists);
+            WorkflowTabUIMap.Enter_Using_Shortcut();
+            ExplorerUIMap.Filter_Explorer(resourceFolder);
+            ExplorerUIMap.Delete_FirstResource_From_ExplorerContextMenu();
+            DialogsUIMap.Click_MessageBox_Yes();
+        }
+
         #region Additional test attributes
 
         [TestInitialize]
