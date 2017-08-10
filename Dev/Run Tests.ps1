@@ -394,6 +394,9 @@ function Move-Artifacts-To-TestResults([bool]$DotCover, [bool]$Server, [bool]$St
         if (Test-Path "$env:ProgramData\Warewolf\Server Log\dotCover.log") {
             Move-File-To-TestResults "$env:ProgramData\Warewolf\Server Log\dotCover.log" "$JobName Server DotCover.log"
         }
+        if (Test-Path "$env:ProgramData\Warewolf\Server Log\my.warewolf.io.log") {
+            Move-File-To-TestResults "$env:ProgramData\Warewolf\Server Log\my.warewolf.io.log" "$JobName my.warewolf.io.log"
+        }
     }
     if ($Studio -and $DotCover) {
         $StudioSnapshot = "$env:LocalAppData\Warewolf\Studio Logs\dotCover.dcvr"
