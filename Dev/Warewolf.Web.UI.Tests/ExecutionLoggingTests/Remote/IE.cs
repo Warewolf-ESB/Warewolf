@@ -7,8 +7,9 @@ using OpenQA.Selenium.IE;
 using Warewolf.Web.UI.Tests.ScreenRecording;
 using System.Net;
 using Warewolf.Web.Tests;
+using Warewolf.Web.UI.Tests.ExecutionLoggingTests;
 
-namespace SeleniumTests
+namespace Warewolf.Web.UI.Tests.ExecutionLoggingTests.Remote
 {
     [TestClass]
     public class IE
@@ -55,9 +56,7 @@ namespace SeleniumTests
         [DeploymentItem(@"avcodec-57.dll")]
         public void ExecutionLogging_ClickRefresh_IE_UITest()
         {
-            driver.Navigate().GoToUrl(baseURL + "/ExecutionLogging");
-            Assert.IsFalse(driver.IsAlertPresent(), driver.CloseAlertAndGetItsText(false));
-            driver.FindElement(By.Id("updateServer")).Click();
+            ExecutionLogging_UITests.ClickRefresh_UITest(driver, baseURL);
         }
 
         private bool IsElementPresent(By by)
