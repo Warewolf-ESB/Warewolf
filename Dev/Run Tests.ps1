@@ -29,7 +29,7 @@ Param(
   [switch]$RunAllReleaseResourcesTests,
   [switch]$RunAllCodedUITests,
   [switch]$RunWarewolfServiceTests,
-  [string]$MergeDotCoverSnapshotsInDirectory
+  [string]$MergeDotCoverSnapshotsInDirectory=""
 )
 $JobSpecs = @{}
 #Unit Tests
@@ -500,8 +500,8 @@ function Install-Server([string]$ServerPath,[string]$ResourcesType) {
     <TargetExecutable>$ServerPath</TargetExecutable>
     <Output>$env:ProgramData\Warewolf\Server Log\dotCover.dcvr</Output>
     <Scope>
-	    <ScopeEntry>$ServerBinDir\**\*.dll</ScopeEntry>
-	    <ScopeEntry>$ServerBinDir\**\*.exe</ScopeEntry>
+	    <ScopeEntry>$ServerBinDir\*.dll</ScopeEntry>
+	    <ScopeEntry>$ServerBinDir\*.exe</ScopeEntry>
     </Scope>
 </AnalyseParams>
 "@
@@ -545,12 +545,12 @@ function Install-Server([string]$ServerPath,[string]$ResourcesType) {
 }
 
 function Start-Server([string]$ServerPath,[string]$ResourcesType) {
-    Write-Host Cleaning up old resources in Warewolf ProgramData and copying in new resources from ((Get-Item $ServerPath).Directory.FullName + "\Resources - $ResourcesType\*").
+    $ServerFolderPath = (Get-Item $ServerPath).Directory.FullName
+    Write-Warning "Will now stop any currently running Warewolf servers and studios and delete all resources in Warewolf ProgramData. New resources will be deployed from $ServerFolderPath\Resources - $ResourcesType\*"
     Cleanup-ServerStudio
     Copy-Item -Path ((Get-Item $ServerPath).Directory.FullName + "\Resources - $ResourcesType\*") -Destination "$env:ProgramData\Warewolf" -Recurse -Force
 	
     Start-Service "Warewolf Server"
-    Write-Host Server has started.
 
     #Check if started
     $Output = @()
@@ -569,6 +569,8 @@ function Start-Server([string]$ServerPath,[string]$ResourcesType) {
         Write-Error -Message "Server Cannot Start."
         sleep 30
         exit 1
+    } else {
+        Write-Host Server has started.
     }
 }
 
@@ -601,8 +603,8 @@ function Start-Studio {
     <TargetExecutable>$StudioPath</TargetExecutable>
     <Output>$env:LocalAppData\Warewolf\Studio Logs\dotCover.dcvr</Output>
     <Scope>
-    	<ScopeEntry>$StudioBinDir\**\*.dll</ScopeEntry>
-    	<ScopeEntry>$StudioBinDir\**\*.exe</ScopeEntry>
+    	<ScopeEntry>$StudioBinDir\*.dll</ScopeEntry>
+    	<ScopeEntry>$StudioBinDir\*.exe</ScopeEntry>
     </Scope>
 </AnalyseParams>
 "@
@@ -935,8 +937,8 @@ if ($TotalNumberOfJobsToRun -gt 0) {
                 foreach ($TestAssembliesDirectory in $TestAssembliesDirectories) {
                     $DotCoverArgs += @"
 
-        <ScopeEntry>$TestAssembliesDirectory\**\*.dll</ScopeEntry>
-        <ScopeEntry>$TestAssembliesDirectory\**\*.exe</ScopeEntry>
+        <ScopeEntry>$TestAssembliesDirectory\*.dll</ScopeEntry>
+        <ScopeEntry>$TestAssembliesDirectory\*.exe</ScopeEntry>
 "@
                 }
                 $DotCoverArgs += @"
@@ -1220,7 +1222,7 @@ if ($RunAllJobs.IsPresent) {
     Invoke-Expression -Command ("&'$PSCommandPath' -JobName '$RunAllCodedUITests' -StartStudio -ResourcesType UITests")
 }
 
-if (!$RunAllJobs.IsPresent -and !$Cleanup.IsPresent -and !$AssemblyFileVersionsTest.IsPresent -and !$RunAllUnitTests.IsPresent -and !$RunAllServerTests.IsPresent -and !$RunAllCodedUITests.IsPresent -and $JobName -eq "" -and !$RunWarewolfServiceTests.IsPresent -and !$MergeDotCoverSnapshotsInDirectory -eq "") {
+if (!$RunAllJobs.IsPresent -and !$Cleanup.IsPresent -and !$AssemblyFileVersionsTest.IsPresent -and !$RunAllUnitTests.IsPresent -and !$RunAllServerTests.IsPresent -and !$RunAllCodedUITests.IsPresent -and $JobName -eq "" -and !$RunWarewolfServiceTests.IsPresent -and $MergeDotCoverSnapshotsInDirectory -eq "") {
     $ServerPath,$ResourcesType = Install-Server $ServerPath $ResourcesType
     Start-Server $ServerPath $ResourcesType
     if (!$StartServer.IsPresent) {
