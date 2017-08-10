@@ -29,7 +29,6 @@ namespace Warewolf.UISpecs
         [Microsoft.VisualStudio.TestTools.UnitTesting.ClassInitializeAttribute()]
         public static void FeatureSetup(Microsoft.VisualStudio.TestTools.UnitTesting.TestContext testContext)
         {
-            SetDefaultPlaybackSettings.TestContext = testContext;
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner(null, 0);
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "WorkflowTestingTab", "\tIn order to test workflows\r\n\tAs a Warewolf Studio user\r\n\tI want to perform a com" +
                     "position of recorded actions", ProgrammingLanguage.CSharp, new string[] {

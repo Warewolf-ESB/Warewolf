@@ -1,21 +1,20 @@
 using System;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Opera;
 using Warewolf.Web.UI.Tests.ScreenRecording;
-using OpenQA.Selenium.Support.UI;
 using System.Net;
-using System.Windows.Forms;
-using System.IO;
+using Warewolf.Web.Tests;
+using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Remote;
+using System.Diagnostics;
 
 namespace SeleniumTests
 {
     [TestClass]
-    public class ExecutionLoggingTests
+    public class Opera
     {
         public TestContext TestContext { get; set; }
         private FfMpegVideoRecorder screenRecorder = new FfMpegVideoRecorder();
@@ -24,19 +23,13 @@ namespace SeleniumTests
         private string baseURL;
         private bool acceptNextAlert = true;
 
-
         [TestInitialize]
         public void SetupTest()
         {
             //Generate some test log data
             WebRequest.Create("http://localhost:3142/secure/Hello%20World.json?Name=Tester");
-
-            ChromeOptions chromeOptions = new ChromeOptions();
-            chromeOptions.AddArguments(new[] { "--test-type"});
-            DesiredCapabilities capabilities = DesiredCapabilities.Chrome();
-            capabilities.SetCapability("chrome.switches", new[] { "--incognito" });
-            capabilities.SetCapability(ChromeOptions.Capability, chromeOptions);
-            driver = new ChromeDriver();
+            
+            driver = new OperaDriver(new OperaOptions() { BinaryLocation = @"C:\Program Files\Opera\47.0.2631.39\opera.exe" });
             baseURL = "http://my.warewolf.io";
             screenRecorder.StartRecording(TestContext);
             verificationErrors = new StringBuilder();
@@ -48,6 +41,12 @@ namespace SeleniumTests
             try
             {
                 driver.Quit();
+                driver.Dispose();
+                Process[] processes = Process.GetProcessesByName("opera");
+                foreach (var process in processes)
+                {
+                    process.Kill();
+                }
             }
             catch (Exception)
             {
@@ -63,9 +62,10 @@ namespace SeleniumTests
         [DeploymentItem(@"swresample-2.dll")]
         [DeploymentItem(@"swscale-4.dll")]
         [DeploymentItem(@"avcodec-57.dll")]
-        public void ExecutionLoggingTest()
+        public void ExecutionLogging_Opera_UITest()
         {
             driver.Navigate().GoToUrl(baseURL + "/ExecutionLogging");
+            Assert.IsFalse(driver.IsAlertPresent(), driver.CloseAlertAndGetItsText(false));
             driver.FindElement(By.Id("updateServer")).Click();
         }
 
@@ -79,34 +79,6 @@ namespace SeleniumTests
             catch (NoSuchElementException)
             {
                 return false;
-            }
-        }
-        
-        private bool IsAlertPresent()
-        {
-            try
-            {
-                driver.SwitchTo().Alert();
-                return true;
-            }
-            catch (NoAlertPresentException)
-            {
-                return false;
-            }
-        }
-        
-        private string CloseAlertAndGetItsText() {
-            try {
-                IAlert alert = driver.SwitchTo().Alert();
-                string alertText = alert.Text;
-                if (acceptNextAlert) {
-                    alert.Accept();
-                } else {
-                    alert.Dismiss();
-                }
-                return alertText;
-            } finally {
-                acceptNextAlert = true;
             }
         }
     }
