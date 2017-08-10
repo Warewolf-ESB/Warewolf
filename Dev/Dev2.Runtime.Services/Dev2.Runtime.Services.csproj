@@ -183,7 +183,8 @@
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile><Compile Include="Properties\AssemblyInfo.cs" Condition="!Exists('..\AssemblyCommonInfo.cs')"/>
 	<None Include="..\Run Tests.ps1">
-      <Link>Properties\Run Tests.ps1</Link>
+      <Link>Run Tests.ps1</Link>
+	  <Visible>False</Visible>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <Compile Include="DynamicProxy\Constants.cs" />

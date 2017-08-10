@@ -56,7 +56,8 @@
     </Compile>
     <Compile Include="NamedPipeClientStreamWrapper.cs" />
 	<None Include="..\Run Tests.ps1">
-      <Link>Properties\Run Tests.ps1</Link>
+      <Link>Run Tests.ps1</Link>
+	  <Visible>False</Visible>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

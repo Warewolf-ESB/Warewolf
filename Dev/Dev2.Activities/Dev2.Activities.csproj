@@ -175,8 +175,9 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" Condition="!Exists('..\AssemblyCommonInfo.cs')"/>
 	<None Include="..\Run Tests.ps1">
-      <Link>Properties\Run Tests.ps1</Link>
+      <Link>Run Tests.ps1</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  <Visible>False</Visible>
     </None>
     <Compile Include="Activities\ActivityParser.cs" />
     <Compile Include="Activities\DebugCopyException.cs" />

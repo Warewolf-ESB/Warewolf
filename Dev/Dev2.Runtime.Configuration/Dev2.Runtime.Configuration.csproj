@@ -83,7 +83,8 @@
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
 	<None Include="..\Run Tests.ps1">
-      <Link>Properties\Run Tests.ps1</Link>
+      <Link>Run Tests.ps1</Link>
+	  <Visible>False</Visible>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <Compile Include="..\Dev2.Studio.Core\AppResources\Converters\BooleanInvertConverter.cs">
