@@ -63,7 +63,7 @@ namespace Warewolf.Web.UI.Tests.ExecutionLoggingTests.Remote
         [DeploymentItem(@"swresample-2.dll")]
         [DeploymentItem(@"swscale-4.dll")]
         [DeploymentItem(@"avcodec-57.dll")]
-        public void ExecutionLogging_ClickRefresh_Opera_UITest()
+        public void ExecutionLogging_Remote_ClickRefresh_Opera_UITest()
         {
             ExecutionLogging_UITests.ClickRefresh_UITest(driver, baseURL);
         }
