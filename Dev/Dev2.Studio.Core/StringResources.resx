@@ -215,6 +215,17 @@ Cancel - Returns you to the tab.</value>
 
 Version History will also be deleted.</value>
   </data>
+  <data name="CloseHeader" xml:space="preserve">
+    <value>Unsaved changes</value>
+  </data>
+    <data name="Unsaved_Changes" xml:space="preserve">
+    <value>Your changes have not been saved.
+Would you like to save? 
+-----------------------------------------------------------------
+Yes - Save your changes.
+No - Discard your changes.
+Cancel - Do not close the studio.</value>
+  </data>
   <data name="DialogBody_ConfirmFolderDelete" xml:space="preserve">
     <value>Are you sure you wish to delete {0} folder and all its contents?</value>
   </data>

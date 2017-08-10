@@ -1840,6 +1840,145 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
+        public MessageBoxResult ShowUnsavedWorkDialog()
+        {
+            var popupResult = PopupProvider.Show(StringResources.Unsaved_Changes, StringResources.CloseHeader,
+                               MessageBoxButton.YesNoCancel, MessageBoxImage.Information, @"", false, false, true, false, false, false);
+
+            return popupResult;
+        }
+
+        public bool CheckUnsavedTabs()
+        {
+            var closeStudio = true;
+            List<WorkSurfaceContextViewModel> workSurfaceContextViewModels = Items.ToList();
+            foreach (WorkSurfaceContextViewModel workSurfaceContextViewModel in workSurfaceContextViewModels)
+            {
+                var vm = workSurfaceContextViewModel.WorkSurfaceViewModel;
+                if (vm != null)
+                {
+                    if (vm.WorkSurfaceContext == WorkSurfaceContext.Help)
+                    {
+                        continue;
+                    }
+                    if (vm.WorkSurfaceContext == WorkSurfaceContext.Workflow)
+                    {
+                        var workflowDesignerViewModel = vm as WorkflowDesignerViewModel;
+                        if (workflowDesignerViewModel != null)
+                        {
+                            var resourceModel = workflowDesignerViewModel.ResourceModel as IContextualResourceModel;
+                            if (resourceModel != null && !resourceModel.IsWorkflowSaved)
+                            {
+                                closeStudio = CallSaveDialog(closeStudio);
+                                break;
+                            }
+                        }
+                    }
+                    else if (vm.WorkSurfaceContext == WorkSurfaceContext.Settings)
+                    {
+                        var settingsViewModel = vm as SettingsViewModel;
+                        if (settingsViewModel != null && settingsViewModel.IsDirty)
+                        {
+                            closeStudio = CallSaveDialog(closeStudio);
+                            break;
+                        }
+                    }
+                    else if (vm.WorkSurfaceContext == WorkSurfaceContext.Scheduler)
+                    {
+                        var schedulerViewModel = vm as SchedulerViewModel;
+                        if (schedulerViewModel?.SelectedTask != null && schedulerViewModel.SelectedTask.IsDirty)
+                        {
+                            closeStudio = CallSaveDialog(closeStudio);
+                            break;
+                        }
+                    }
+                    else if (vm.GetType().Name == "SourceViewModel`1")
+                    {
+                        var serverSourceModel = vm as SourceViewModel<IServerSource>;
+                        if (serverSourceModel != null && serverSourceModel.IsDirty)
+                        {
+                            closeStudio = CallSaveDialog(closeStudio);
+                            break;
+                        }
+                        var pluginSourceModel = vm as SourceViewModel<IPluginSource>;
+                        if (pluginSourceModel != null && pluginSourceModel.IsDirty)
+                        {
+                            closeStudio = CallSaveDialog(closeStudio);
+                            break;
+                        }
+                        var wcfServerSourceModel = vm as SourceViewModel<IWcfServerSource>;
+                        if (wcfServerSourceModel != null && wcfServerSourceModel.IsDirty)
+                        {
+                            closeStudio = CallSaveDialog(closeStudio);
+                            break;
+                        }
+                        var rabbitMqServiceSourceModel = vm as SourceViewModel<IRabbitMQServiceSourceDefinition>;
+                        if (rabbitMqServiceSourceModel != null && rabbitMqServiceSourceModel.IsDirty)
+                        {
+                            closeStudio = CallSaveDialog(closeStudio);
+                            break;
+                        }
+                        var sharepointServerSourceModel = vm as SourceViewModel<ISharepointServerSource>;
+                        if (sharepointServerSourceModel != null && sharepointServerSourceModel.IsDirty)
+                        {
+                            closeStudio = CallSaveDialog(closeStudio);
+                            break;
+                        }
+                        var oAuthSourceModel = vm as SourceViewModel<IOAuthSource>;
+                        if (oAuthSourceModel != null && oAuthSourceModel.IsDirty)
+                        {
+                            closeStudio = CallSaveDialog(closeStudio);
+                            break;
+                        }
+                        var exchangeSourceModel = vm as SourceViewModel<IExchangeSource>;
+                        if (exchangeSourceModel != null && exchangeSourceModel.IsDirty)
+                        {
+                            closeStudio = CallSaveDialog(closeStudio);
+                            break;
+                        }
+                        var comPluginSourceModel = vm as SourceViewModel<IComPluginSource>;
+                        if (comPluginSourceModel != null && comPluginSourceModel.IsDirty)
+                        {
+                            closeStudio = CallSaveDialog(closeStudio);
+                            break;
+                        }
+                        var webServiceSourceModel = vm as SourceViewModel<IWebServiceSource>;
+                        if (webServiceSourceModel != null && webServiceSourceModel.IsDirty)
+                        {
+                            closeStudio = CallSaveDialog(closeStudio);
+                            break;
+                        }
+                        var emailServiceSourceModel = vm as SourceViewModel<IEmailServiceSource>;
+                        if (emailServiceSourceModel != null && emailServiceSourceModel.IsDirty)
+                        {
+                            closeStudio = CallSaveDialog(closeStudio);
+                            break;
+                        }
+                    }
+                }
+            }
+            return closeStudio;
+        }
+
+        private bool CallSaveDialog(bool closeStudio)
+        {
+            var result = ShowUnsavedWorkDialog();
+            // CANCEL - DON'T CLOSE THE STUDIO
+            // NO - DON'T SAVE ANYTHING AND CLOSE THE STUDIO
+            // YES - CALL THE SAVE ALL COMMAND AND CLOSE THE STUDIO
+            if (result == MessageBoxResult.Cancel)
+            {
+                closeStudio = false;
+            }
+            else if (result == MessageBoxResult.Yes)
+            {
+                closeStudio = true;
+                SaveAllCommand.Execute(null);
+            }
+
+            return closeStudio;
+        }
+
         public bool OnStudioClosing()
         {
             List<WorkSurfaceContextViewModel> workSurfaceContextViewModels = Items.ToList();
@@ -1848,7 +1987,11 @@ namespace Dev2.Studio.ViewModels
                 var vm = workSurfaceContextViewModel.WorkSurfaceViewModel;
                 if (vm != null)
                 {
-                    if (vm.WorkSurfaceContext == WorkSurfaceContext.Settings)
+                    if (vm.WorkSurfaceContext == WorkSurfaceContext.Help)
+                    {
+                        continue;
+                    }
+                    else if (vm.WorkSurfaceContext == WorkSurfaceContext.Settings)
                     {
                         var settingsViewModel = vm as SettingsViewModel;
                         if (settingsViewModel != null && settingsViewModel.IsDirty)

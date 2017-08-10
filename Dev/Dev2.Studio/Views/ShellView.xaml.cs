@@ -414,17 +414,21 @@ namespace Dev2.Studio.Views
             ShellViewModel shellViewModel = DataContext as ShellViewModel;
             if (shellViewModel != null)
             {
-                if (!shellViewModel.OnStudioClosing())
-                {
-                    e.Cancel = true;
-                }
+                //if (!shellViewModel.OnStudioClosing())
+                //{
+                //    e.Cancel = true;
+                //}
 
                 if (shellViewModel.IsDownloading())
                 {
                     e.Cancel = true;
                 }
-            }
 
+                if (!shellViewModel.CheckUnsavedTabs())
+                {
+                    e.Cancel = true;
+                }
+            }
             GetFilePath();
             SaveLayout(shellViewModel);
         }

@@ -127,11 +127,15 @@ namespace Warewolf.Studio.Views
         private void RequestServiceNameView_OnKeyUp(object sender, KeyEventArgs e)
         {
             var explorerItemViewModelRename = ExplorerItemViewModelRename();
+            var requestServiceNameViewModel = DataContext as RequestServiceNameViewModel;
 
+            if (e.Key == Key.Enter)
+            {
+                requestServiceNameViewModel?.OkCommand.Execute(this);
+            }
             if (e.Key == Key.Escape)
             {
                 HandleRenameResource(e, explorerItemViewModelRename);
-                var requestServiceNameViewModel = DataContext as RequestServiceNameViewModel;
                 requestServiceNameViewModel?.CancelCommand.Execute(this);
             }
         }
