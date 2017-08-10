@@ -70,6 +70,15 @@ namespace Dev2.Studio.Core {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unsaved changes.
+        /// </summary>
+        public static string CloseHeader {
+            get {
+                return ResourceManager.GetString("CloseHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Closing Service Test Window from Taskbar handle exception. .
         /// </summary>
         public static string CloseTestViewHandledException {
@@ -502,6 +511,20 @@ namespace Dev2.Studio.Core {
         public static string SourcePermission_Error {
             get {
                 return ResourceManager.GetString("SourcePermission_Error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your changes have not been saved.
+        ///Would you like to save? 
+        ///-----------------------------------------------------------------
+        ///Yes - Save your changes.
+        ///No - Discard your changes.
+        ///Cancel - Do not close the studio..
+        /// </summary>
+        public static string Unsaved_Changes {
+            get {
+                return ResourceManager.GetString("Unsaved_Changes", resourceCulture);
             }
         }
         
