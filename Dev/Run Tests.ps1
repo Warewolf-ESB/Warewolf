@@ -246,6 +246,9 @@ function Cleanup-ServerStudio([bool]$Force=$true) {
     #Force Kill
     taskkill /im "Warewolf Studio.exe" /f  2>&1 | %{if (!($_.ToString().StartsWith("ERROR: "))) {Write-Host $_}}
 
+    #Stop my.warewolf.io
+    taskkill /im iisexpress.exe
+
     #Stop Server
     $ServiceOutput = ""
     sc.exe stop "Warewolf Server" 2>&1 | %{$ServiceOutput += "`n" + $_}
@@ -275,9 +278,6 @@ function Cleanup-ServerStudio([bool]$Force=$true) {
         sleep 30
         exit 1
     }
-
-    #Stop my.warewolf.io
-    taskkill /im iisexpress.exe
 }
 
 function Copy-On-Write([string]$FilePath) {
@@ -577,7 +577,7 @@ function Start-Server([string]$ServerPath,[string]$ResourcesType) {
     }
     if (Test-Path "$ServerFolderPath\Webs") {
         if (Test-Path "C:\Program Files (x86)\IIS Express\iisexpress.exe") {
-            $process = Start-Process -FilePath "C:\Program Files (x86)\IIS Express\iisexpress.exe" -ArgumentList "/path:`"$ServerFolderPath\Webs`" /port:18405" -NoNewWindow -PassThru -RedirectStandardOutput "$env:programdata\Warewolf\Server Log\my.warewolf.io.log"
+            Start-Process -FilePath "C:\Program Files (x86)\IIS Express\iisexpress.exe" -ArgumentList "/path:`"$ServerFolderPath\Webs`" /port:18405" -NoNewWindow -PassThru -RedirectStandardOutput "$env:programdata\Warewolf\Server Log\my.warewolf.io.log"
             &"C:\Program Files (x86)\IIS Express\iisexpress.exe" /path:"$ServerFolderPath\Webs" /port:18405
         } else {
             Write-Warning "my.warewolf.io cannot be hosted. C:\Program Files (x86)\IIS Express\iisexpress.exe not found."
