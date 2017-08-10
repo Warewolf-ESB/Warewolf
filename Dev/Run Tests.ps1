@@ -572,14 +572,14 @@ function Start-Server([string]$ServerPath,[string]$ResourcesType) {
     } else {
         Write-Host Server has started.
     }
-    if (Test-Path "$ServerPath\Webs") {
+    if (Test-Path "$ServerFolderPath\Webs") {
         if (Test-Path "C:\Program Files (x86)\IIS Express\iisexpress.exe") {
-            &"C:\Program Files (x86)\IIS Express\iisexpress.exe" /path:"$ServerPath\Webs" /port:18405
+            &"C:\Program Files (x86)\IIS Express\iisexpress.exe" /path:"$ServerFolderPath\Webs" /port:18405
         } else {
             Write-Warning "my.warewolf.io cannot be hosted. C:\Program Files (x86)\IIS Express\iisexpress.exe not found."
         }
     } else {
-        Write-Warning "my.warewolf.io cannot be hosted. $ServerPath\Webs not found."
+        Write-Warning "my.warewolf.io cannot be hosted. $v\Webs not found."
     }
 }
 
