@@ -55,7 +55,7 @@ namespace Warewolf.Web.UI.Tests.ExecutionLoggingTests.Local
         [DeploymentItem(@"swresample-2.dll")]
         [DeploymentItem(@"swscale-4.dll")]
         [DeploymentItem(@"avcodec-57.dll")]
-        public void ExecutionLogging_ClickRefresh_Firefox_UITest()
+        public void ExecutionLogging_Local_ClickRefresh_Firefox_UITest()
         {
             ExecutionLogging_UITests.ClickRefresh_UITest(driver, baseURL);
         }
