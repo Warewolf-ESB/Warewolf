@@ -35,17 +35,24 @@ namespace Warewolf.Web.Tests
 
         public static string CloseAlertAndGetItsText(this IWebDriver driver, bool acceptAlert)
         {
-            IAlert alert = driver.SwitchTo().Alert();
-            string alertText = alert.Text;
-            if (acceptAlert)
+            try
             {
-                alert.Accept();
+                IAlert alert = driver.SwitchTo().Alert();
+                string alertText = alert.Text;
+                if (acceptAlert)
+                {
+                    alert.Accept();
+                }
+                else
+                {
+                    alert.Dismiss();
+                }
+                return alertText;
             }
-            else
+            catch (NoAlertPresentException)
             {
-                alert.Dismiss();
+                return string.Empty;
             }
-            return alertText;
         }
     }
 }
