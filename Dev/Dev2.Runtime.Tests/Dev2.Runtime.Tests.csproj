@@ -264,6 +264,7 @@
     <Compile Include="ServiceModel\Data\ScalarTests.cs" />
     <Compile Include="ServiceModel\Data\WcfSourceTests.cs" />
     <Compile Include="ServiceModel\OauthSourceTest.cs" />
+    <Compile Include="ServiceModel\TestDbSourceServiceTests.cs" />
     <Compile Include="Services\CreateFolderTest.cs" />
     <Compile Include="Services\DeleteItemsTest.cs" />
     <Compile Include="Security\SecurityConfigFetcher.cs" />
