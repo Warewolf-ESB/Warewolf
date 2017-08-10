@@ -27,6 +27,10 @@ namespace Warewolf.Web.Tests
             {
                 return false;
             }
+            catch (WebDriverTimeoutException)
+            {
+                return false;
+            }
         }
 
         public static string CloseAlertAndGetItsText(this IWebDriver driver, bool acceptAlert)
