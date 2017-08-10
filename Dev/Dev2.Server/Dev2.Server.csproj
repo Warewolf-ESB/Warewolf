@@ -342,10 +342,11 @@
   <ItemGroup>
     <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
-    </Compile><Compile Include="Properties\AssemblyInfo.cs" Condition="!Exists('..\AssemblyCommonInfo.cs')"/>
-	<None Include="..\Run Tests.ps1">
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" Condition="!Exists('..\AssemblyCommonInfo.cs')" />
+    <None Include="..\Run Tests.ps1">
       <Link>Run Tests.ps1</Link>
-	  <Visible>False</Visible>
+      <Visible>False</Visible>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Dockerfile">
@@ -498,6 +499,7 @@
     <PostBuildEvent>echo D | xcopy /Y /E /F /D "$(SolutionDir)Resources - Release" "$(TargetDir)Resources - Release"
 if "$(ConfigurationName)"=="Debug" echo D | xcopy /Y /E /F /D "$(SolutionDir)Resources - ServerTests" "$(TargetDir)Resources - ServerTests"
 if "$(ConfigurationName)"=="Debug" echo D | xcopy /Y /E /F /D "$(SolutionDir)Resources - UITests" "$(TargetDir)Resources - UITests"
+if "$(ConfigurationName)"=="Debug" echo D | xcopy /Y /E /F /D "$(SolutionDir)Dev2.Web2" "$(TargetDir)Webs"
 taskkill /f /im WarewolfCOMIPC.exe /fi "STATUS eq RUNNING"
 taskkill /f /im WarewolfCOMIPC.vshost.exe /fi "STATUS eq RUNNING"
 if not exist "$(TargetDir)WarewolfCOMIPC.exe" xcopy /Y "$(SolutionDir)WarewolfCOMIPC\bin\x86\$(ConfigurationName)\WarewolfCOMIPC.exe" "$(TargetDir)"
