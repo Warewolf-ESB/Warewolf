@@ -1,33 +1,38 @@
 using System;
 using System.Text;
-using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Firefox;
+using OpenQA.Selenium.Chrome;
 using Warewolf.Web.UI.Tests.ScreenRecording;
 using System.Net;
-using Warewolf.Web.UI.Tests.ScreenRecording;
-using OpenQA.Selenium.Support.UI;
+using OpenQA.Selenium.Remote;
 using Warewolf.Web.Tests;
+using Warewolf.Web.UI.Tests.ExecutionLoggingTests;
 
-namespace SeleniumTests
+namespace Warewolf.Web.UI.Tests.ExecutionLoggingTests.Remote
 {
     [TestClass]
-    public class Firefox
+    public class ChromeIncognito
     {
         public TestContext TestContext { get; set; }
         private FfMpegVideoRecorder screenRecorder = new FfMpegVideoRecorder();
         private IWebDriver driver;
         private StringBuilder verificationErrors;
         private string baseURL;
+        private bool acceptNextAlert = true;
 
         [TestInitialize]
         public void SetupTest()
         {
             //Generate some test log data
             WebRequest.Create("http://localhost:3142/secure/Hello%20World.json?Name=Tester");
-            
-            driver = new FirefoxDriver();
+
+            ChromeOptions chromeOptions = new ChromeOptions();
+            chromeOptions.AddArguments(new[] { "--test-type" });
+            DesiredCapabilities capabilities = DesiredCapabilities.Chrome();
+            capabilities.SetCapability("chrome.switches", new[] { "--incognito" });
+            capabilities.SetCapability(ChromeOptions.Capability, chromeOptions);
+            driver = new ChromeDriver();
             baseURL = "http://my.warewolf.io";
             screenRecorder.StartRecording(TestContext);
             verificationErrors = new StringBuilder();
@@ -54,11 +59,9 @@ namespace SeleniumTests
         [DeploymentItem(@"swresample-2.dll")]
         [DeploymentItem(@"swscale-4.dll")]
         [DeploymentItem(@"avcodec-57.dll")]
-        public void ExecutionLogging_ClickRefresh_Firefox_UITest()
+        public void ExecutionLogging_Remote_ChromeIncognito_ClickRefresh_UITest()
         {
-            driver.Navigate().GoToUrl(baseURL + "/ExecutionLogging");
-            Assert.IsFalse(driver.IsAlertPresent(), driver.CloseAlertAndGetItsText(false));
-            driver.FindElement(By.Id("updateServer")).Click();
+            ExecutionLogging_UITests.ClickRefresh_UITest(driver, baseURL);
         }
 
         private bool IsElementPresent(By by)
