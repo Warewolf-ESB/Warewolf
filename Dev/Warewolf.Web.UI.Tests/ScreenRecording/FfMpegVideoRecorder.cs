@@ -83,18 +83,13 @@ namespace Warewolf.Web.UI.Tests.ScreenRecording
                     PixelFormat.Format24bppRgb);
 
                 var graphics = Graphics.FromImage(bitmap);
-
-                var sw = new StreamWriter(Console.OpenStandardError());
-                Console.SetOut(sw);
+                
                 while (!this.stopped || (DateTime.Now - this.startDateTime < TimeSpan.FromMilliseconds(100)))
                 {
                     graphics.CopyFromScreen(0, 0, 0, 0, Screen.PrimaryScreen.Bounds.Size);
                     writer.WriteVideoFrame(bitmap);
                     Thread.Sleep(10);
                 }
-                sw = new StreamWriter(Console.OpenStandardOutput());
-                sw.AutoFlush = true;
-                Console.SetOut(sw);
 
                 writer.Close();
                 writer.Dispose();
