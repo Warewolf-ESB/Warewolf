@@ -3,8 +3,14 @@ using OpenQA.Selenium;
 using Warewolf.Web.UI.Tests.ScreenRecording;
 using OpenQA.Selenium.Support.UI;
 using System;
+using System.Net;
+using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Remote;
+using OpenQA.Selenium.Firefox;
+using OpenQA.Selenium.IE;
+using OpenQA.Selenium.Opera;
 
-namespace Warewolf.Web.Tests
+namespace Warewolf.Web.UI.Tests
 {
     public static class WebDriverExtentionMethods
     {
