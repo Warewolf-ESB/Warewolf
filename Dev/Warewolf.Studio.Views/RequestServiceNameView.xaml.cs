@@ -76,9 +76,13 @@ namespace Warewolf.Studio.Views
 
         public void Save()
         {
-            if (OkButton.IsEnabled)
+            if (OkButton.IsEnabled && OkButton.IsVisible)
             {
                 OkButton.Command.Execute(null);
+            }
+            else if (DuplicateButton.IsEnabled && DuplicateButton.IsVisible)
+            {
+                DuplicateButton.Command.Execute(null);
             }
         }
 
