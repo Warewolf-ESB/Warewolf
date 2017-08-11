@@ -379,10 +379,10 @@ namespace Dev2.Studio.Core {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to There are changes that have not been tested.
-        ///Would you like to test the changes? 
+        ///   Looks up a localized string similar to There are incomplete changes.
+        ///Would you like to complete the changes? 
         ///-----------------------------------------------------------------
-        ///Yes - Test your changes.
+        ///Yes - Complete your changes.
         ///No - Discard your changes..
         /// </summary>
         public static string ItemSource_HasChanged_NotTested {
