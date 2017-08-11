@@ -98,6 +98,15 @@ namespace Warewolf.UITests.Explorer.ExplorerUIMapClasses
             Mouse.Click(DialogsUIMap.MessageBoxWindow.YesButton, new Point(32, 5));
         }
 
+        [Given(@"I Select Delete Version")]
+        [When(@"I Select Delete Version")]
+        [Then(@"I Select Delete Version")]
+        public void Select_Delete_Version()
+        {
+            Mouse.Click(UIMap.MainStudioWindow.ExplorerContextMenu.Delete);
+            Mouse.Click(DialogsUIMap.MessageBoxWindow.YesButton, new Point(32, 5));
+        }
+
         [Given(@"I DoubleClick Explorer Localhost Second Item")]
         [When(@"I DoubleClick Explorer Localhost Second Item")]
         [Then(@"I DoubleClick Explorer Localhost Second Item")]
@@ -312,6 +321,12 @@ namespace Warewolf.UITests.Explorer.ExplorerUIMapClasses
         public void RightClick_Explorer_Localhost_First_Item_First_SubItem()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem, MouseButtons.Right, ModifierKeys.None, new Point(77, 9));
+        }
+
+        [When(@"I RightClick Explorer Localhost Second Item First SubItem")]
+        public void RightClick_Explorer_Localhost_Second_Item_First_SubItem()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem.FirstSubItem, MouseButtons.Right, ModifierKeys.None, new Point(77, 9));
         }
 
         [Given(@"I RightClick Localhost")]
@@ -947,6 +962,15 @@ namespace Warewolf.UITests.Explorer.ExplorerUIMapClasses
         public void Select_ShowVersionHistory_From_ExplorerContextMenu()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, MouseButtons.Right, ModifierKeys.None, new Point(77, 12));
+            Mouse.Click(UIMap.MainStudioWindow.ExplorerContextMenu.ShowVersionHistory);
+        }
+
+        [Given(@"I Select Show Version History From Explorer SecondItem Context Menu")]
+        [When(@"I Select Show Version History From Explorer SecondItem Context Menu")]
+        [Then(@"I Select Show Version History From Explorer SecondItem Context Menu")]
+        public void Select_ShowVersionHistory_From_Explorer_SecondItem_ContextMenu()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem, MouseButtons.Right, ModifierKeys.None, new Point(77, 12));
             Mouse.Click(UIMap.MainStudioWindow.ExplorerContextMenu.ShowVersionHistory);
         }
 
