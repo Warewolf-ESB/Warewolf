@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.UITests.ComPluginSource.ComPluginSourceUIMapClasses;
+using Warewolf.UITests.DialogsUIMapClasses;
 using Warewolf.UITests.Explorer.ExplorerUIMapClasses;
 
 namespace Warewolf.UITests
@@ -31,6 +32,24 @@ namespace Warewolf.UITests
             ExplorerUIMap.Select_Source_From_ExplorerContextMenu(SourceName);
             UIMap.WaitForControlVisible(ComPluginSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab.WorkSurfaceContext.DataTree);
             Assert.IsFalse(string.IsNullOrEmpty(ComPluginSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab.WorkSurfaceContext.AssemblyNameTextBox.Text), "Assembly Name Textbox is empty after selecting an assembly.");
+        }
+
+        [TestMethod]
+        [TestCategory("Plugin Sources")]
+        [Owner("Pieter Terblanche")]
+        public void CreateComPluginSource_GivenTabHasChanges_ClosingStudioPromptsChanges()
+        {
+            //Create Source
+            ExplorerUIMap.Select_NewCOMPluginSource_From_ExplorerContextMenu();
+            Assert.IsTrue(ComPluginSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab.WorkSurfaceContext.SearchTextBox.Enabled, "Search Textbox is not enabled");
+            UIMap.WaitForSpinner(ComPluginSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab.WorkSurfaceContext.DataTree.Spinner);
+            Assert.IsTrue(ComPluginSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab.WorkSurfaceContext.DataTree.Enabled, "Data Tree is not enabled");
+            Assert.IsTrue(ComPluginSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab.WorkSurfaceContext.RefreshButton.Enabled, "Refresh Button is not enabled");
+            ComPluginSourceUIMap.Select_AssemblyFile_From_COMPluginDataTree("Microsoft");
+
+            Mouse.Click(UIMap.MainStudioWindow.CloseStudioButton);
+            DialogsUIMap.Click_MessageBox_Cancel();
+            Assert.IsTrue(ComPluginSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab.Exists);
         }
 
         #region Additional test attributes
@@ -87,6 +106,20 @@ namespace Warewolf.UITests
 
         private ComPluginSourceUIMap _ComPluginSourceUIMap;
 
+        DialogsUIMap DialogsUIMap
+        {
+            get
+            {
+                if (_DialogsUIMap == null)
+                {
+                    _DialogsUIMap = new DialogsUIMap();
+                }
+
+                return _DialogsUIMap;
+            }
+        }
+
+        private DialogsUIMap _DialogsUIMap;
         #endregion
     }
 }
