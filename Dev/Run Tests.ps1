@@ -583,21 +583,15 @@ function Start-Server([string]$ServerPath,[string]$ResourcesType) {
     $WebsPath = ""
     if (Test-Path "$ServerFolderPath\_PublishedWebsites\Dev2.Web") {
             $WebsPath = "$ServerFolderPath\_PublishedWebsites\Dev2.Web"
+            $IISExpressPath = "C:\Program Files (x86)\IIS Express\iisexpress.exe"
+            if (!(Test-Path $IISExpressPath)) {
+                Write-Warning "my.warewolf.io cannot be hosted. $IISExpressPath not found."
+            } else {
+                Start-Process -FilePath $IISExpressPath -ArgumentList "/path:`"$WebsPath`" /port:18405" -NoNewWindow -PassThru -RedirectStandardOutput "$env:programdata\Warewolf\Server Log\my.warewolf.io.log"
+                Write-Host my.warewolf.io has started.
+            }
     } else {
-        if (Test-Path "$ServerFolderPath\Webs") {
-            $WebsPath = "$ServerFolderPath\Webs"
-        }
-    }
-    if ($WebsPath -ne "") {
-        $IISExpressPath = "C:\Program Files (x86)\IIS Express\iisexpress.exe"
-        if (!(Test-Path $IISExpressPath)) {
-            Write-Warning "my.warewolf.io cannot be hosted. $IISExpressPath not found."
-        } else {
-            Start-Process -FilePath $IISExpressPath -ArgumentList "/path:`"$WebsPath`" /port:18405" -NoNewWindow -PassThru -RedirectStandardOutput "$env:programdata\Warewolf\Server Log\my.warewolf.io.log"
-            Write-Host my.warewolf.io has started.
-        }
-    } else {
-        Write-Warning "my.warewolf.io cannot be hosted. Webs not found at either $ServerFolderPath\Webs nor at $ServerFolderPath\_PublishedWebsites\Dev2.Web"
+        Write-Warning "my.warewolf.io cannot be hosted. Webs not found at $ServerFolderPath\_PublishedWebsites\Dev2.Web"
     }
 }
 
