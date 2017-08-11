@@ -928,73 +928,44 @@ namespace Warewolf.Studio.ViewModels.Tests
             _serverMock.SetupGet(it => it.EnvironmentID).Returns(serverID);
             _serverMock.Setup(it => it.LoadExplorer(false)).Returns(Task.FromResult(explorerItemMock.Object));
 
-            //var mockExplorerItem = new Mock<IExplorerItemViewModel>();
-            //mockExplorerItem.SetupGet(a => a.ResourceType).Returns("Dev2Server");
-            //mockExplorerItem.SetupGet(a => a.ResourceId).Returns(serverID);
-
-            //var mockExplorerItems = new Mock<ObservableCollection<IExplorerItemViewModel>>();
-            //mockExplorerItems.Object.Add(mockExplorerItem.Object);
-
-            //var mockEnvironment = new Mock<IEnvironmentViewModel>();
-            //mockEnvironment.SetupGet(a => a.Children).Returns(mockExplorerItems.Object);
-
-            //var mockEnvironments = new Mock<ObservableCollection<IEnvironmentViewModel>>();
-            //mockEnvironments.Object.Add(mockEnvironment.Object);
-
             var localhost = new Mock<IServer>();
             localhost.Setup(a => a.DisplayName).Returns("Localhost");
             localhost.SetupGet(server => server.CanDeployTo).Returns(true);
 
-            var mockServers = new Mock<ObservableCollection<IServer>>();
-            mockServers.Object.Add(_serverMock.Object);
-
-            var mockConnectControl = new Mock<IConnectControlViewModel>();
-            mockConnectControl.SetupGet(a => a.Servers).Returns(mockServers.Object);
-
             var shellViewModel = new Mock<IShellViewModel>();
-            var resourceId = Guid.NewGuid();
 
             var env = new Mock<IEnvironmentViewModel>();
             var exploreItm = new Mock<IExplorerItemViewModel>();
-            exploreItm.SetupGet(model => model.ResourceName).Returns("Folder1");
-            exploreItm.SetupGet(model => model.ResourceType).Returns("Folder");
-            exploreItm.SetupGet(model => model.ResourceId).Returns(Guid.NewGuid());
-            var exploreItmChild = new Mock<IExplorerItemViewModel>();
-            exploreItmChild.SetupGet(model => model.ResourceName).Returns("Server1");
-            exploreItmChild.SetupGet(model => model.ResourceType).Returns("Dev2Server");
-            exploreItmChild.SetupGet(model => model.ResourceId).Returns(serverID);
-            exploreItm.SetupGet(model => model.Children).Returns(new BindableCollection<IExplorerItemViewModel>()
-            {
-                exploreItmChild.Object
-            });
+            exploreItm.SetupGet(model => model.ResourceName).Returns("a");
+            exploreItm.SetupGet(model => model.ResourceType).Returns("Dev2Server");
+            exploreItm.SetupGet(model => model.ResourceId).Returns(serverID);
+            exploreItm.SetupGet(model => model.Children).Returns(new BindableCollection<IExplorerItemViewModel>());
 
             var exploreItm1 = new Mock<IExplorerItemViewModel>();
-            exploreItm1.SetupGet(model => model.ResourceName).Returns("Folder2");
-            exploreItm1.SetupGet(model => model.ResourceType).Returns("Folder");
-            exploreItm1.SetupGet(model => model.ResourceId).Returns(Guid.NewGuid());
-            var exploreItm1Child = new Mock<IExplorerItemViewModel>();
-            exploreItm1Child.SetupGet(model => model.ResourceName).Returns("Server2");
-            exploreItm1Child.SetupGet(model => model.ResourceType).Returns("Dev2Server");
-            exploreItm1Child.SetupGet(model => model.ResourceId).Returns(resourceId);
-            exploreItm1.SetupGet(model => model.Children).Returns(new BindableCollection<IExplorerItemViewModel>()
-            {
-                exploreItm1Child.Object
-            });
-
+            exploreItm1.SetupGet(model => model.ResourceName).Returns("a");
+            exploreItm1.SetupGet(model => model.ResourceType).Returns("Dev2Server");
+            exploreItm1.SetupGet(model => model.ResourceId).Returns(serverID);
+            exploreItm1.SetupGet(model => model.Children).Returns(new BindableCollection<IExplorerItemViewModel>());
             env.SetupGet(model => model.Children).Returns(new BindableCollection<IExplorerItemViewModel>()
             {
                 exploreItm.Object,exploreItm1.Object
             });
+
             shellViewModel.SetupGet(model => model.ExplorerViewModel).Returns(new Mock<IExplorerViewModel>().Object);
             shellViewModel.SetupGet(model => model.ExplorerViewModel.Environments).Returns(new BindableCollection<IEnvironmentViewModel>()
             {
                 env.Object
             });
-            
+            var mockConnectControl = new Mock<IConnectControlViewModel>();
+            mockConnectControl.SetupGet(a => a.Servers).Returns(new BindableCollection<IServer>()
+            {
+                _serverMock.Object
+            });
+
             shellViewModel.Setup(model => model.ExplorerViewModel.ConnectControlViewModel).Returns(mockConnectControl.Object);
             shellViewModel.Setup(x => x.LocalhostServer).Returns(localhost.Object);
             shellViewModel.Setup(x => x.ActiveServer).Returns(new Mock<IServer>().Object);
-
+            CustomContainer.Register(shellViewModel.Object);
             _target = new EnvironmentViewModel(_serverMock.Object, shellViewModel.Object);
 
             //act
