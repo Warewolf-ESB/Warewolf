@@ -1934,7 +1934,7 @@ namespace Dev2.Studio.ViewModels
                             break;
                         }
                         var pluginSourceModel = vm as SourceViewModel<IPluginSource>;
-                        if (pluginSourceModel != null && pluginSourceModel.IsDirty)
+                        if (pluginSourceModel != null)
                         {
                             if (pluginSourceModel.IsDirty || pluginSourceModel.ViewModel.HasChanged)
                             {
@@ -1943,7 +1943,7 @@ namespace Dev2.Studio.ViewModels
                             break;
                         }
                         var wcfServerSourceModel = vm as SourceViewModel<IWcfServerSource>;
-                        if (wcfServerSourceModel != null && wcfServerSourceModel.IsDirty)
+                        if (wcfServerSourceModel != null)
                         {
                             if (wcfServerSourceModel.IsDirty || wcfServerSourceModel.ViewModel.HasChanged)
                             {
@@ -1952,7 +1952,7 @@ namespace Dev2.Studio.ViewModels
                             break;
                         }
                         var rabbitMqServiceSourceModel = vm as SourceViewModel<IRabbitMQServiceSourceDefinition>;
-                        if (rabbitMqServiceSourceModel != null && rabbitMqServiceSourceModel.IsDirty)
+                        if (rabbitMqServiceSourceModel != null)
                         {
                             if (rabbitMqServiceSourceModel.IsDirty || rabbitMqServiceSourceModel.ViewModel.HasChanged)
                             {
@@ -1961,7 +1961,7 @@ namespace Dev2.Studio.ViewModels
                             break;
                         }
                         var sharepointServerSourceModel = vm as SourceViewModel<ISharepointServerSource>;
-                        if (sharepointServerSourceModel != null && sharepointServerSourceModel.IsDirty)
+                        if (sharepointServerSourceModel != null)
                         {
                             if (sharepointServerSourceModel.IsDirty || sharepointServerSourceModel.ViewModel.HasChanged)
                             {
@@ -1970,7 +1970,7 @@ namespace Dev2.Studio.ViewModels
                             break;
                         }
                         var oAuthSourceModel = vm as SourceViewModel<IOAuthSource>;
-                        if (oAuthSourceModel != null && oAuthSourceModel.IsDirty)
+                        if (oAuthSourceModel != null)
                         {
                             if (oAuthSourceModel.IsDirty || oAuthSourceModel.ViewModel.HasChanged)
                             {
@@ -1979,7 +1979,7 @@ namespace Dev2.Studio.ViewModels
                             break;
                         }
                         var exchangeSourceModel = vm as SourceViewModel<IExchangeSource>;
-                        if (exchangeSourceModel != null && exchangeSourceModel.IsDirty)
+                        if (exchangeSourceModel != null)
                         {
                             if (exchangeSourceModel.IsDirty || exchangeSourceModel.ViewModel.HasChanged)
                             {
@@ -1988,7 +1988,7 @@ namespace Dev2.Studio.ViewModels
                             break;
                         }
                         var comPluginSourceModel = vm as SourceViewModel<IComPluginSource>;
-                        if (comPluginSourceModel != null && comPluginSourceModel.IsDirty)
+                        if (comPluginSourceModel != null)
                         {
                             if (comPluginSourceModel.IsDirty || comPluginSourceModel.ViewModel.HasChanged)
                             {
@@ -1997,7 +1997,7 @@ namespace Dev2.Studio.ViewModels
                             break;
                         }
                         var webServiceSourceModel = vm as SourceViewModel<IWebServiceSource>;
-                        if (webServiceSourceModel != null && webServiceSourceModel.IsDirty)
+                        if (webServiceSourceModel != null)
                         {
                             if (webServiceSourceModel.IsDirty || webServiceSourceModel.ViewModel.HasChanged)
                             {
@@ -2006,7 +2006,7 @@ namespace Dev2.Studio.ViewModels
                             break;
                         }
                         var emailServiceSourceModel = vm as SourceViewModel<IEmailServiceSource>;
-                        if (emailServiceSourceModel != null && emailServiceSourceModel.IsDirty)
+                        if (emailServiceSourceModel != null)
                         {
                             if (emailServiceSourceModel.IsDirty || emailServiceSourceModel.ViewModel.HasChanged)
                             {
@@ -2015,7 +2015,7 @@ namespace Dev2.Studio.ViewModels
                             break;
                         }
                         var dbSourceModel = vm as SourceViewModel<IDbSource>;
-                        if (dbSourceModel != null && dbSourceModel.IsDirty)
+                        if (dbSourceModel != null)
                         {
                             if (dbSourceModel.IsDirty || dbSourceModel.ViewModel.HasChanged)
                             {
