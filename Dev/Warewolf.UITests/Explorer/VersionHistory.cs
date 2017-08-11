@@ -5,6 +5,7 @@ using Warewolf.UITests.Explorer.ExplorerUIMapClasses;
 using Warewolf.UITests.WorkflowTab.Tools.Utility.UtilityToolsUIMapClasses;
 using Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
+using System.Drawing;
 
 // ReSharper disable InconsistentNaming
 
@@ -41,6 +42,30 @@ namespace Warewolf.UITests
             ExplorerUIMap.Select_Make_Current_Version();
             UtilityToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Comment.LargeViewContentCustom.CommentComboBox.TextEdit.WaitForControlCondition(control => control is WpfEdit && ((WpfEdit)control).Text != string.Empty, 60000);
             Assert.AreEqual("Trivial workflow for testing make current version in the explorer.", UtilityToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Comment.LargeViewContentCustom.CommentComboBox.TextEdit.Text, "Workflow did not roll back to older version.");
+        }
+
+        [TestMethod]
+        [TestCategory("Explorer")]
+        public void SetVersionHistory_ForResource()
+        {
+            ExplorerUIMap.Filter_Explorer("VersionWorkflow");
+            ExplorerUIMap.DoubleClick_Explorer_Localhost_Second_Item();
+            UtilityToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Comment.LargeViewContentCustom.CommentComboBox.TextEdit.WaitForControlCondition(control => control is WpfEdit && ((WpfEdit)control).Text != string.Empty, 60000);
+            UtilityToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Comment.LargeViewContentCustom.CommentComboBox.TextEdit.Text = "Bobby";
+            WorkflowTabUIMap.Save_Workflow_Using_Shortcut();
+            ExplorerUIMap.Select_ShowVersionHistory_From_Explorer_SecondItem_ContextMenu();
+            Assert.IsTrue(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem.FirstSubItem.Exists, "No version history found for workflow after editting and saving it.");
+            ExplorerUIMap.RightClick_Explorer_Localhost_Second_Item_First_SubItem();
+            Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.MakeCurrentVersionMenuItem.Enabled, "The make current version option is not enabled on the explorer context menu.");
+            ExplorerUIMap.Select_Make_Current_Version();
+            UtilityToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Comment.LargeViewContentCustom.CommentComboBox.TextEdit.WaitForControlCondition(control => control is WpfEdit && ((WpfEdit)control).Text != string.Empty, 60000);
+            Assert.AreEqual("Trivial workflow for testing make current version in the explorer.", UtilityToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Comment.LargeViewContentCustom.CommentComboBox.TextEdit.Text, "Workflow did not roll back to older version.");
+            Mouse.Click(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerRefreshButton, new Point(10, 10));
+            Assert.IsTrue(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem.FirstSubItem.Exists, "No version history found for workflow after refreshing Explorer.");
+            ExplorerUIMap.RightClick_Explorer_Localhost_Second_Item_First_SubItem();
+            ExplorerUIMap.Select_Delete_Version();
+            ExplorerUIMap.RightClick_Explorer_Localhost_Second_Item_First_SubItem();
+            ExplorerUIMap.Select_Delete_Version();
         }
 
         [TestMethod]

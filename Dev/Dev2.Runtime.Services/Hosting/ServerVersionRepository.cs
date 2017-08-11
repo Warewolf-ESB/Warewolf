@@ -170,7 +170,8 @@ namespace Dev2.Runtime.Hosting
             Resource oldResource = new Resource(xml);
             StoreAndDeleteCurrentIfRenamed(res, oldResource, resourcePath);
             UpdateVersionInfoIfNotExists(resourceId, xml, res);
-            _catalogue.SaveResource(Guid.Empty, xml.ToStringBuilder(), "", "Rollback", "WorkflowService");
+            var savePath = res.GetSavePath();
+            _catalogue.SaveResource(Guid.Empty, xml.ToStringBuilder(), savePath, "Rollback", "WorkflowService");
             if (oldResource.ResourceName != res.ResourceName)
                 _catalogue.GetResource(Guid.Empty, res.ResourceID).ResourceName = oldResource.ResourceName;
             return new RollbackResult { DisplayName = oldResource.ResourceName, VersionHistory = GetVersions(resourceId) };
