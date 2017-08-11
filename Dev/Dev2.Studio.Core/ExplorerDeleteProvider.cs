@@ -36,7 +36,7 @@ namespace Dev2.Studio.Core
                     }
                     if (explorerItemViewModel.ResourceType == "Version")
                     {
-                        _repository.VersionManager.DeleteVersion(explorerItemViewModel.ResourceId, explorerItemViewModel.VersionNumber, explorerItemViewModel.ResourcePath);
+                        _repository.VersionManager.DeleteVersion(explorerItemViewModel.ResourceId, explorerItemViewModel.VersionNumber, explorerItemViewModel.Parent.ResourcePath);
                     }
                     else if (explorerItemViewModel.ResourceType == "Folder")
                     {
