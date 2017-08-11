@@ -467,6 +467,29 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
+        public void TestRefreshEnvironmentSetsPermissions()
+        {
+            //arrange
+            var environmentViewModelMock = new Mock<IEnvironmentViewModel>();
+            var serverMock = new Mock<IServer>();
+            var envId = Guid.NewGuid();
+            serverMock.SetupGet(it => it.EnvironmentID).Returns(envId);
+            environmentViewModelMock.SetupGet(it => it.Server).Returns(serverMock.Object);
+            environmentViewModelMock.SetupGet(it => it.IsConnected).Returns(true);
+            _target.Environments = new ObservableCollection<IEnvironmentViewModel>() { environmentViewModelMock.Object };
+            _target.SearchText = "someText";
+
+            //act
+            _target.RefreshEnvironment(envId);
+
+            //assert
+            environmentViewModelMock.VerifyGet(it => it.IsConnected);
+            environmentViewModelMock.Verify(it => it.Load(It.IsAny<bool>(), It.IsAny<bool>()));
+            environmentViewModelMock.Verify(it => it.Filter("someText"));
+            environmentViewModelMock.Verify(it => it.SetPropertiesForDialogFromPermissions(It.IsAny<IWindowsGroupPermission>()));
+        }
+
+        [TestMethod]
         public async Task TestRefreshSelectedEnvironment()
         {
             //arrange
