@@ -263,8 +263,7 @@ namespace Warewolf.UITests.DialogsUIMapClasses
         [Then(@"I Name New Folder as ""(.*)""")]
         public void Name_New_Folder_From_Save_Dialog(string name)
         {
-            SaveDialogWindow.ExplorerView.ExplorerTree.localhost.FirstItem.UIItemEdit.Text = name;
-            Keyboard.SendKeys(SaveDialogWindow.ExplorerView.ExplorerTree.localhost.FirstItem.UIItemEdit, "{Right}{Enter}", ModifierKeys.None);
+            Keyboard.SendKeys(name + "{Right}{Enter}", ModifierKeys.None);
         }
 
         [Given(@"I Hit Escape Key On The Keyboard")]
