@@ -14,7 +14,7 @@ namespace Warewolf.Web.UI.Tests.NoWarewolfServer
         [TestInitialize]
         public void SetupTest()
         {
-            driver.InitializeWebDriver(TestContext.DataRow["BrowserName"].ToString());
+            driver.InitializeWebDriver(TestContext.DataRow[0].ToString());
             screenRecorder.StartRecording(TestContext);
         }
 
