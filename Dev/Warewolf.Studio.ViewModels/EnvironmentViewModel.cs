@@ -1091,7 +1091,7 @@ namespace Warewolf.Studio.ViewModels
                 {
                     ObservableCollection<IServer> connectControlServers = connectControlViewModel.Servers?.Where(o => !o.IsLocalHost).ToObservableCollection();
 
-                    if (connectControlServers.Count > explorerServers.Count())
+                    if (connectControlServers?.Count > explorerServers?.Count())
                     {
                         foreach (var serv in connectControlServers)
                         {
