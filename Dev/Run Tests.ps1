@@ -580,15 +580,24 @@ function Start-Server([string]$ServerPath,[string]$ResourcesType) {
     } else {
         Write-Host Server has started.
     }
-    if (Test-Path "$ServerFolderPath\Webs") {
-        if (Test-Path "C:\Program Files (x86)\IIS Express\iisexpress.exe") {
-            Start-Process -FilePath "C:\Program Files (x86)\IIS Express\iisexpress.exe" -ArgumentList "/path:`"$ServerFolderPath\Webs`" /port:18405" -NoNewWindow -PassThru -RedirectStandardOutput "$env:programdata\Warewolf\Server Log\my.warewolf.io.log"
-            Write-Host my.warewolf.io has started.
+    $WebsPath = ""
+    if (Test-Path "$ServerFolderPath\_PublishedWebsites\Dev2.Web") {
+            $WebsPath = "$ServerFolderPath\_PublishedWebsites\Dev2.Web"
+    } else {
+        if (Test-Path "$ServerFolderPath\Webs") {
+            $WebsPath = "$ServerFolderPath\Webs"
+        }
+    }
+    if ($WebsPath -ne "") {
+        $IISExpressPath = "C:\Program Files (x86)\IIS Express\iisexpress.exe"
+        if (!(Test-Path $IISExpressPath)) {
+            Write-Warning "my.warewolf.io cannot be hosted. $IISExpressPath not found."
         } else {
-            Write-Warning "my.warewolf.io cannot bping e hosted. C:\Program Files (x86)\IIS Express\iisexpress.exe not found."
+            Start-Process -FilePath $IISExpressPath -ArgumentList "/path:`"$WebsPath`" /port:18405" -NoNewWindow -PassThru -RedirectStandardOutput "$env:programdata\Warewolf\Server Log\my.warewolf.io.log"
+            Write-Host my.warewolf.io has started.
         }
     } else {
-        Write-Warning "my.warewolf.io cannot be hosted. $ServerFolderPath\Webs not found."
+        Write-Warning "my.warewolf.io cannot be hosted. Webs not found at either $ServerFolderPath\Webs nor at $ServerFolderPath\_PublishedWebsites\Dev2.Web"
     }
 }
 
