@@ -203,10 +203,10 @@ No - Discard your changes.
 Cancel - Returns you to the workflow.</value>
   </data>
   <data name="ItemSource_HasChanged_NotTested" xml:space="preserve">
-    <value>There are changes that have not been tested.
-Would you like to test the changes? 
+    <value>There are incomplete changes.
+Would you like to complete the changes? 
 -----------------------------------------------------------------
-Yes - Test your changes.
+Yes - Complete your changes.
 No - Discard your changes.</value>
   </data>
   <data name="ItemSource_NotSaved" xml:space="preserve">
