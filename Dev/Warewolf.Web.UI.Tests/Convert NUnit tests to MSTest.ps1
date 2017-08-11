@@ -18,9 +18,9 @@ foreach ($Class in (Get-ChildItem "$PSScriptRoot\*.cs" -Recurse)) {
                 {
 					"            screenRecorder.StartRecording(TestContext);"
                 }
-                if ($_ -eq "            Assert.AreEqual(`"`", verificationErrors.ToString());" -and $PreviousLine -ne "            screenRecorder.StopRecording(TestContext);") 
+                if ($_ -eq "            Assert.AreEqual(`"`", verificationErrors.ToString());" -and $PreviousLine -ne "            screenRecorder.StopRecording(TestContext.CurrentTestOutcome);") 
                 {
-					"            screenRecorder.StopRecording(TestContext);"
+					"            screenRecorder.StopRecording(TestContext.CurrentTestOutcome);"
                 }
                 if ($_ -eq "using OpenQA.Selenium.Support.UI;" -and $PreviousLine -ne "using Warewolf.Web.UI.Tests.ScreenRecording;") 
                 {

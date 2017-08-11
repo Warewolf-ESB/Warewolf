@@ -45,7 +45,7 @@ namespace Warewolf.Web.UI.Tests.ExecutionLoggingTests.Remote
             {
                 // Ignore errors if unable to close the browser
             }
-            screenRecorder.StopRecording(TestContext);
+            screenRecorder.StopRecording(TestContext.CurrentTestOutcome);
             Assert.AreEqual("", verificationErrors.ToString());
         }
         

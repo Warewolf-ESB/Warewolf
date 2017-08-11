@@ -24,7 +24,7 @@ namespace Warewolf.Web.UI.Tests.ScreenRecording
         {
             if (!this.stopped)
             {
-                this.StopRecording();
+                this.StopRecording(UnitTestOutcome.Error);
             }
         }
 
@@ -49,17 +49,18 @@ namespace Warewolf.Web.UI.Tests.ScreenRecording
             return true;
         }
 
-        public void StopRecording(TestContext TestContext=null)
+        public void StopRecording(UnitTestOutcome TestOutcome)
         {
             this.stopped = true;
             this.recordingTask.Wait();
-            if (TestContext == null || TestContext.CurrentTestOutcome == UnitTestOutcome.Passed)
+            if (TestOutcome == UnitTestOutcome.Passed)
             {
                 File.Delete(this.filename);
             }
             else
             {
-                TestContext.AddResultFile(this.filename);
+                string TestResultsRootPath = Directory.GetParent(Directory.GetParent(Directory.GetParent(filename).ToString()).ToString()).ToString();
+                File.Move(filename, Path.Combine(TestResultsRootPath, Path.GetFileName(filename)));
             }
         }
 
