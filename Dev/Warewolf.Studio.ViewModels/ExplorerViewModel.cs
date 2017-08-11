@@ -127,8 +127,23 @@ namespace Warewolf.Studio.ViewModels
             }
             set
             {
-                _environments = value;
-                OnPropertyChanged(() => Environments);
+                if (value != null)
+                {
+                    var items = new ObservableCollection<IEnvironmentViewModel>();
+                    foreach (var env in value)
+                    {
+                        if (!items.Any(o => o.ResourceId == env.ResourceId))
+                        {
+                            items.Add(env);
+                        }
+                    }
+                    if (items.Count > 0)
+                    {
+                        _environments?.Clear();
+                        _environments = items;
+                    }
+                    OnPropertyChanged(() => Environments);
+                }
             }
         }
 
@@ -378,7 +393,10 @@ namespace Warewolf.Studio.ViewModels
             IsLoading = true;
             var environmentModel = CreateEnvironmentFromServer(server, _shellViewModel);
             environmentModel.IsSelected = true;
-            _environments.Add(environmentModel);
+            if (!_environments.Any(o => o.ResourceId == environmentModel.ResourceId))
+            {
+                _environments.Add(environmentModel);
+            }
             Environments = _environments;
             var result = await LoadEnvironment(environmentModel, IsDeploy);
             IsLoading = result;
@@ -387,7 +405,7 @@ namespace Warewolf.Studio.ViewModels
         void ServerReConnected(object _, IServer server)
         {
             if (!IsLoading && server.EnvironmentID == Guid.Empty)
-                Application.Current.Dispatcher.Invoke(async () =>
+                Application.Current?.Dispatcher?.Invoke(async () =>
                 {
                     IsLoading = true;
 
@@ -436,13 +454,13 @@ namespace Warewolf.Studio.ViewModels
 
         void ServerDisconnectDetected(object _, IServer server)
         {
-            Application.Current.Dispatcher.Invoke(() =>
+            Application.Current?.Dispatcher?.Invoke(() =>
             {
                 IPopupController controller = CustomContainer.Get<IPopupController>();
                 ServerDisconnected(_, server);
                 if (!ShowServerDownError)
                 {
-                    controller.ShowServerNotConnected(server.DisplayName);
+                    controller?.ShowServerNotConnected(server.DisplayName);
                     ShowServerDownError = true;
                 }
             });
@@ -461,7 +479,10 @@ namespace Warewolf.Studio.ViewModels
                 }
                 if (server.EnvironmentID != Guid.Empty)
                 {
-                    _environments.Remove(environmentModel);
+                    Application.Current?.Dispatcher?.Invoke(delegate
+                    {
+                        _environments.Remove(environmentModel);
+                    });
                 }
             }
             OnPropertyChanged(() => Environments);
@@ -476,7 +497,6 @@ namespace Warewolf.Studio.ViewModels
             {
                 //
             }
-
         }
 
         protected virtual async Task<bool> LoadEnvironment(IEnvironmentViewModel localhostEnvironment, bool isDeploy = false,bool reloadCatalogue = true)

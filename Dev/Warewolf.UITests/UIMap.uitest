@@ -11157,6 +11157,62 @@
                 </UIObject>
               </Descendants>
             </UIObject>
+            <UIObject ControlType="Custom" Id="ComboboxListItemAsRestrictedRemoteConnection" FriendlyName="Restricted Remote Connection" SpecialControlType="None">
+              <TechnologyName>UIA</TechnologyName>
+              <WindowTitles>
+                <WindowTitle>Warewolf</WindowTitle>
+              </WindowTitles>
+              <AndCondition>
+                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                <PropertyCondition Name="ClassName">Uia.ComboEditorItemControl</PropertyCondition>
+                <PropertyCondition Name="Name">Restricted Remote Connection</PropertyCondition>
+              </AndCondition>
+              <SupportLevel>0</SupportLevel>
+              <Descendants>
+                <UIObject ControlType="Text" Id="Text" FriendlyName="Restricted Remote Connection" SpecialControlType="None">
+                  <TechnologyName>UIA</TechnologyName>
+                  <WindowTitles>
+                    <WindowTitle>Warewolf</WindowTitle>
+                  </WindowTitles>
+                  <AndCondition>
+                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                    <PropertyCondition Name="ControlType">Text</PropertyCondition>
+                    <PropertyCondition Name="Name">Restricted Remote Connection</PropertyCondition>
+                  </AndCondition>
+                  <SupportLevel>0</SupportLevel>
+                  <Descendants />
+                </UIObject>
+              </Descendants>
+            </UIObject>
+            <UIObject ControlType="Custom" Id="ComboboxListItemAsChangingServerAuthUITest" FriendlyName="ChangingServerAuthUITest" SpecialControlType="None">
+              <TechnologyName>UIA</TechnologyName>
+              <WindowTitles>
+                <WindowTitle>Warewolf</WindowTitle>
+              </WindowTitles>
+              <AndCondition>
+                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                <PropertyCondition Name="ClassName">Uia.ComboEditorItemControl</PropertyCondition>
+                <PropertyCondition Name="Name">ChangingServerAuthUITest</PropertyCondition>
+              </AndCondition>
+              <SupportLevel>0</SupportLevel>
+              <Descendants>
+                <UIObject ControlType="Text" Id="Text" FriendlyName="ChangingServerAuthUITest" SpecialControlType="None">
+                  <TechnologyName>UIA</TechnologyName>
+                  <WindowTitles>
+                    <WindowTitle>Warewolf</WindowTitle>
+                  </WindowTitles>
+                  <AndCondition>
+                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                    <PropertyCondition Name="ControlType">Text</PropertyCondition>
+                    <PropertyCondition Name="Name">ChangingServerAuthUITest</PropertyCondition>
+                  </AndCondition>
+                  <SupportLevel>0</SupportLevel>
+                  <Descendants />
+                </UIObject>
+              </Descendants>
+            </UIObject>
             <UIObject ControlType="Custom" Id="ComboboxListItemAspostgresDB" FriendlyName="postgres" SpecialControlType="None">
               <TechnologyName>UIA</TechnologyName>
               <WindowTitles>

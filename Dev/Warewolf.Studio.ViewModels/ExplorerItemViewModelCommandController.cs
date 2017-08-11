@@ -24,13 +24,14 @@ namespace Warewolf.Studio.ViewModels
         public void RollbackCommand(IExplorerRepository explorerRepository, IExplorerTreeItem parent, Guid resourceId, string versionNumber)
         {
             var output = explorerRepository.Rollback(resourceId, versionNumber);
-            parent.AreVersionsVisible = true;
+            parent.AreVersionsVisible = false;
             parent.ResourceName = output.DisplayName;
             if (parent.Server != null)
             {
                 _shellViewModel.CloseResource(resourceId, parent.Server.EnvironmentID);
                 _shellViewModel.OpenCurrentVersion(resourceId, parent.Server.EnvironmentID);
             }
+            parent.AreVersionsVisible = true;
         }
 
         internal void OpenCommand(ExplorerItemViewModel item, IServer server)
@@ -193,6 +194,10 @@ namespace Warewolf.Studio.ViewModels
 
                 parentChildren.RemoveAt(index);
                 parent.Children = new ObservableCollection<IExplorerItemViewModel>(parentChildren);
+                if (parent.ChildrenCount == 0)
+                {
+                    parent.AreVersionsVisible = true;
+                }
             }
         }
         public void DuplicateResource(IExplorerItemViewModel explorerItemViewModel)

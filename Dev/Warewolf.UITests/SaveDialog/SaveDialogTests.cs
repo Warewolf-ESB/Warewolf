@@ -139,7 +139,39 @@ namespace Warewolf.UITests.SaveDialog
             DialogsUIMap.Click_SaveDialog_CancelButton();
             UIMap.ResourceDidNotOpen();
         }
-        
+
+        [TestMethod]
+        [TestCategory("Save Dialog")]
+        public void PressEnterSavesResourceAndClosesSaveDialog()
+        {
+            var resourceFolder = "EnterSavesResourceFolder";
+            DialogsUIMap.Enter_Valid_Service_Name_Into_Save_Dialog("EnterSavesResource");
+            DialogsUIMap.RightClick_Save_Dialog_Localhost();
+            DialogsUIMap.Select_NewFolder_From_SaveDialogContextMenu();
+            DialogsUIMap.Name_New_Folder_From_Save_Dialog(resourceFolder);
+            Assert.IsTrue(DialogsUIMap.SaveDialogWindow.Exists);
+            WorkflowTabUIMap.Enter_Using_Shortcut();
+            Assert.IsFalse(DialogsUIMap.SaveDialogWindow.Exists);
+        }
+
+
+        [TestMethod]
+        [TestCategory("Save Dialog")]
+        public void ClickingSave_ThenPressEnter_SavesResource_AndClosesSaveDialog()
+        {
+            WorkflowTabUIMap.Escape_Using_Shortcut();
+            Mouse.Click(UIMap.MainStudioWindow.SideMenuBar.SaveButton);
+
+            var resourceFolder = "ClickSaveEnterSavesResourceFolder";
+            DialogsUIMap.Enter_Valid_Service_Name_Into_Save_Dialog("ClickSaveEnterSavesResource");
+            DialogsUIMap.RightClick_Save_Dialog_Localhost();
+            DialogsUIMap.Select_NewFolder_From_SaveDialogContextMenu();
+            DialogsUIMap.Name_New_Folder_From_Save_Dialog(resourceFolder);
+            Assert.IsTrue(DialogsUIMap.SaveDialogWindow.Exists);
+            WorkflowTabUIMap.Enter_Using_Shortcut();
+            Assert.IsFalse(DialogsUIMap.SaveDialogWindow.Exists);
+        }
+
         #region Additional test attributes
 
         [TestInitialize]
