@@ -76,7 +76,10 @@ namespace Warewolf.Studio.Views
 
         public void Save()
         {
-            OkButton.Command.Execute(null);
+            if (OkButton.IsEnabled)
+            {
+                OkButton.Command.Execute(null);
+            }
         }
 
         private void RequestServiceNameView_OnMouseDown(object sender, MouseButtonEventArgs e)
@@ -130,8 +133,7 @@ namespace Warewolf.Studio.Views
 
         private void ExecuteOkCommand()
         {
-            var requestServiceNameViewModel = DataContext as RequestServiceNameViewModel;
-            requestServiceNameViewModel?.OkCommand.Execute(this);
+            Save();
         }
 
         private void RequestServiceNameView_OnKeyUp(object sender, KeyEventArgs e)
