@@ -370,13 +370,14 @@
     <value>Change the connection properties of the selected Warewolf Server.&lt;br&gt;	&lt;br/&gt;	Allows you to change remote server URL, Port and Authentication.&lt;br&gt;	&lt;br/&gt;	&lt;b&gt;localhost&lt;/b&gt; cannot be edited in this way.</value>
   </data>
   <data name="ConnectControlViewSelectHelp" xml:space="preserve">
-    <value>Select the Warewolf Server from the drop down list that you want to use. &lt;br/&gt;	&lt;br/&gt;	If you want to connect to a Warewolf Server that is not in the drop down list, then select  &lt;b&gt;New Remote Server…&lt;/b&gt;&lt;br/&gt;	&lt;br/&gt;	Servers with an active connection will show &lt;b&gt;(Connected)&lt;/b&gt; next to them.</value>
+    <value>Select the Warewolf Server from the drop down list that you want to use. &lt;br/&gt;	&lt;br/&gt;	If you want to connect to a Warewolf Server that is not in the drop down list, then click the  &lt;b&gt;New&lt;/b&gt; button &lt;br/&gt;	&lt;br/&gt;	Servers with an active connection will show &lt;b&gt;(Connected)&lt;/b&gt; next to them.</value>
   </data>
   <data name="ConnectControlViewToggleConnectionHelp" xml:space="preserve">
     <value>Disconnects or Connects to the selected remote Warewolf Server. &lt;br/&gt;	&lt;br/&gt;	Connected Servers will be Disconnected and vice versa. &lt;br/&gt;	&lt;br/&gt;	&lt;b&gt;localhost&lt;/b&gt; cannot be disconnected and should always be connected. If it is not connected, try restarting the Warewolf Server service in Task Manager.</value>
   </data>
   <data name="ConnectControlNewConnectionHelp" xml:space="preserve">
-    <value>Create a connection to a new server.</value>
+    <value>Create a new Warewolf Server connection. &lt;br/&gt;	&lt;br/&gt; Make sure that the server is running before attempting to test the connection or to connect to the server.
+    </value>
   </data>
   <data name="CopyHelpDestination" xml:space="preserve">
     <value>Any variable and/or data goes in here.	Put the full path of the destination you are copying to here.	You can use File System, URI, SFTP, FTP or FTPS format.	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;</value>
