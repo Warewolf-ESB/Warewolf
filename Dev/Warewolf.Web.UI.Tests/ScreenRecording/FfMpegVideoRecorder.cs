@@ -38,7 +38,7 @@ namespace Warewolf.Web.UI.Tests.ScreenRecording
             this.stopped = false;
             this.startDateTime = DateTime.Now;
             
-            this.filename = Path.Combine(TestContext.DeploymentDirectory, TestContext.TestName + "_on_" + Environment.MachineName) + "." + VideoExtention;
+            this.filename = Path.Combine(TestContext.DeploymentDirectory, TestContext.TestName + "_on_" + TestContext.DataRow["BrowserName"].ToString() + "_on_" + Environment.MachineName) + "." + VideoExtention;
 
             if (File.Exists(this.filename))
             {

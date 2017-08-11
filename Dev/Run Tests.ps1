@@ -89,6 +89,8 @@ $JobSpecs["No Conflicting Permissions Security Specs"]							= "Warewolf.Securit
 $JobSpecs["Overlapping User Groups Permissions Security Specs"]					= "Warewolf.Security.Specs", "OverlappingUserGroupsPermissionsSecurity"
 $JobSpecs["Resource Permissions Security Specs"]								= "Warewolf.Security.Specs", "ResourcePermissionsSecurity"
 $JobSpecs["Server Permissions Security Specs"]									= "Warewolf.Security.Specs", "ServerPermissionsSecurity"
+$JobSpecs["Execution Logging Web UI Tests"]										= "Warewolf.Web.UI.Tests", "ExecutionLogging"
+$JobSpecs["No Warewolf Server Web UI Tests"]									= "Warewolf.Web.UI.Tests", "NoWarewolfServer"
 #UI Tests
 $JobSpecs["Other UI Tests"]					    = "Warewolf.UITests"
 $JobSpecs["Other UI Specs"]					    = "Warewolf.UISpecs"
@@ -130,7 +132,7 @@ $JobSpecs["Web Connector UI Specs"]			    = "Warewolf.UISpecs", "WebConnector"
 $JobSpecs["Web Sources UI Tests"]				= "Warewolf.UITests", "Web Sources"
 $JobSpecs["Workflow Mocking Tests UI Tests"]	= "Warewolf.UITests", "Workflow Mocking Tests"
 $JobSpecs["Workflow Testing UI Tests"]			= "Warewolf.UITests", "Workflow Testing"
-$JobSpecs["Web UI Tests"]		 				= "Warewolf.Web.UI.Tests"
+
 
 $UnitTestJobNames = "Other Unit Tests,COMIPC Unit Tests,Studio View Models Unit Tests,Activity Designers Unit Tests,Activities Unit Tests,Scripting Tools Specs,Storage Tools Specs,Utility Tools Specs,ControlFlow Tools Specs,Data Tools Specs,Database Tools Specs,Email Tools Specs,File And Folder Copy Tool Specs,File And Folder Create Tool Specs,File And Folder Delete Tool Specs,File And Folder Move Tool Specs,Folder Read Tool Specs,File Read Tool Specs,File And Folder Rename Tool Specs,Unzip Tool Specs,Write File Tool Specs,Zip Tool Specs,FileAndFolder Tools Specs,LoopConstructs Tools Specs,Recordset Tools Specs,Resources Tools Specs,UI Binding Tests,Runtime Unit Tests,Studio Core Unit Tests"
 $ServerTestJobNames = "Other Specs,Subworkflow Execution Specs,Workflow Execution Specs,Integration Tests,Other Activities Specs"
@@ -583,7 +585,7 @@ function Start-Server([string]$ServerPath,[string]$ResourcesType) {
             Start-Process -FilePath "C:\Program Files (x86)\IIS Express\iisexpress.exe" -ArgumentList "/path:`"$ServerFolderPath\Webs`" /port:18405" -NoNewWindow -PassThru -RedirectStandardOutput "$env:programdata\Warewolf\Server Log\my.warewolf.io.log"
             Write-Host my.warewolf.io has started.
         } else {
-            Write-Warning "my.warewolf.io cannot be hosted. C:\Program Files (x86)\IIS Express\iisexpress.exe not found."
+            Write-Warning "my.warewolf.io cannot bping e hosted. C:\Program Files (x86)\IIS Express\iisexpress.exe not found."
         }
     } else {
         Write-Warning "my.warewolf.io cannot be hosted. $ServerFolderPath\Webs not found."
