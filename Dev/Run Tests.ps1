@@ -592,6 +592,7 @@ function Start-my.warewolf.io {
     if ($ServerPath -eq "" -or !(Test-Path $ServerPath)) {
         $ServerPath = Find-Warewolf-Server-Exe
     }
+    $ServerFolderPath = (Get-Item $ServerPath).Directory.FullName
     if (Test-Path "$ServerFolderPath\_PublishedWebsites\Dev2.Web") {
         $WebsPath = "$ServerFolderPath\_PublishedWebsites\Dev2.Web"
         $IISExpressPath = "C:\Program Files (x86)\IIS Express\iisexpress.exe"
