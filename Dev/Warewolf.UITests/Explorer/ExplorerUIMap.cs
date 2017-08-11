@@ -726,6 +726,22 @@ namespace Warewolf.UITests.Explorer.ExplorerUIMapClasses
             Mouse.Click(UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.Text, new Point(226, 13));
         }
 
+        [When(@"I Connect To Restricted Remote Server")]
+        public void ConnectToRestrictedRemoteServer()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton, new Point(136, 7));
+            Assert.IsTrue(UIMap.MainStudioWindow.ComboboxListItemAsRestrictedRemoteConnection.Exists, "Restricted Remote Connection option does not exist in Source server combobox.");
+            Mouse.Click(UIMap.MainStudioWindow.ComboboxListItemAsRestrictedRemoteConnection.Text, new Point(226, 13));
+        }
+
+        [When(@"I Connect To Restricted Remote Server")]
+        public void ConnectToChangingServerAuthUITest()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton, new Point(136, 7));
+            Assert.IsTrue(UIMap.MainStudioWindow.ComboboxListItemAsChangingServerAuthUITest.Exists, "ChangingServerAuthUITest option does not exist in Source server combobox.");
+            Mouse.Click(UIMap.MainStudioWindow.ComboboxListItemAsChangingServerAuthUITest.Text, new Point(226, 13));
+        }
+
         [When(@"I Select NewODBCSource From Explorer Context Menu")]
         [When(@"I Select NewODBCSource From Explorer Context Menu")]
         [When(@"I Select NewODBCSource From Explorer Context Menu")]
