@@ -352,7 +352,10 @@ namespace Dev2.Studio.Core
                 // Don't just clear and add, environments may be connected!!!
                 foreach (var newEnv in environments.Where(newEnv => !Environments.Contains(newEnv)))
                 {
-                    Environments.Add(newEnv);
+                    if (!Environments.Contains(newEnv))
+                    {
+                        Environments.Add(newEnv);
+                    }
                 }
                 foreach (var newEnv in environments.Where(newEnv => Environments.Contains(newEnv)))
                 {
@@ -364,7 +367,10 @@ namespace Dev2.Studio.Core
                             res.Disconnect();                            
                         }
                         Environments.Remove(res);
-                        Environments.Add(newEnv);
+                        if (!Environments.Contains(newEnv))
+                        {
+                            Environments.Add(newEnv);
+                        }
                     }
                 }
 

@@ -55,6 +55,20 @@ namespace Warewolf.UITests
             Assert.AreEqual(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.BreadcrumbbarList.HelloWorld2ListItem.DisplayText, newName);
         }
 
+        [TestMethod]
+        [TestCategory("Save Dialog")]
+        public void PressEnterSavesResourceAndClosesSaveDialog()
+        {
+            ExplorerUIMap.Click_Duplicate_From_ExplorerContextMenu("Hello World");
+            const string newName = "HelloWorldDuplicateEnter";
+            WorkflowTabUIMap.Enter_Duplicate_workflow_name(newName);
+            WorkflowTabUIMap.Enter_Using_Shortcut();
+            ExplorerUIMap.Filter_Explorer(newName);
+            ExplorerUIMap.Delete_FirstResource_From_ExplorerContextMenu();
+            DialogsUIMap.Click_MessageBox_Yes();
+        }
+
+
         #region Additional test attributes
 
         [TestInitialize]

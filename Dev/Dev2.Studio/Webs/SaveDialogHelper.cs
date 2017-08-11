@@ -73,8 +73,7 @@ namespace Dev2.Webs
                 }
 
                 var requestViewModel = await RequestServiceNameViewModel.CreateAsync(environmentViewModel, selectedPath, header);
-
-                loaded?.Invoke();
+                
                 var messageBoxResult = requestViewModel.ShowSaveDialog();
                 if (messageBoxResult == MessageBoxResult.OK)
                 {
@@ -82,6 +81,7 @@ namespace Dev2.Webs
                     var serializeObject = JsonConvert.SerializeObject(value);
                     callbackHandler.Save(serializeObject, server);
                 }
+                loaded?.Invoke();
             }
             catch (Exception)
             {
