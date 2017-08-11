@@ -560,9 +560,8 @@ function Install-Server([string]$ServerPath,[string]$ResourcesType) {
 
 function Start-Server([string]$ServerPath,[string]$ResourcesType) {
     $ServerFolderPath = (Get-Item $ServerPath).Directory.FullName
-    Write-Warning "Will now stop any currently running Warewolf servers and studios and delete all resources in Warewolf ProgramData. New resources will be deployed from $ServerFolderPath\Resources - $ResourcesType\*"
-    Cleanup-ServerStudio
-    Copy-Item -Path ((Get-Item $ServerPath).Directory.FullName + "\Resources - $ResourcesType\*") -Destination "$env:ProgramData\Warewolf" -Recurse -Force
+    Write-Host Deploying New resources from $ServerFolderPath\Resources - $ResourcesType\*
+    Copy-Item -Path ($ServerFolderPath + "\Resources - $ResourcesType\*") -Destination "$env:ProgramData\Warewolf" -Recurse -Force
 	
     Start-Service "Warewolf Server"
 
@@ -593,6 +592,8 @@ function Start-my.warewolf.io {
         $ServerPath = Find-Warewolf-Server-Exe
     }
     $ServerFolderPath = (Get-Item $ServerPath).Directory.FullName
+    Write-Warning "Will now stop any currently running Warewolf servers and studios and delete all resources in Warewolf ProgramData."
+    Cleanup-ServerStudio
     if (Test-Path "$ServerFolderPath\_PublishedWebsites\Dev2.Web") {
         $WebsPath = "$ServerFolderPath\_PublishedWebsites\Dev2.Web"
         $IISExpressPath = "C:\Program Files (x86)\IIS Express\iisexpress.exe"
