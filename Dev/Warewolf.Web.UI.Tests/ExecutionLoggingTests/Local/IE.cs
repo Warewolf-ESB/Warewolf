@@ -19,7 +19,6 @@ namespace Warewolf.Web.UI.Tests.ExecutionLoggingTests.Local
         private IWebDriver driver;
         private StringBuilder verificationErrors;
         private string baseURL;
-        private bool acceptNextAlert = true;
 
         [TestInitialize]
         public void SetupTest()
@@ -44,7 +43,7 @@ namespace Warewolf.Web.UI.Tests.ExecutionLoggingTests.Local
             {
                 // Ignore errors if unable to close the browser
             }
-            screenRecorder.StopRecording(TestContext);
+            screenRecorder.StopRecording(TestContext.CurrentTestOutcome);
             Assert.AreEqual("", verificationErrors.ToString());
         }
         
