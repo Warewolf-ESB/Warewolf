@@ -151,9 +151,7 @@ namespace Warewolf.UITests.SaveDialog
             DialogsUIMap.Name_New_Folder_From_Save_Dialog(resourceFolder);
             Assert.IsTrue(DialogsUIMap.SaveDialogWindow.Exists);
             WorkflowTabUIMap.Enter_Using_Shortcut();
-            ExplorerUIMap.Filter_Explorer(resourceFolder);
-            ExplorerUIMap.Delete_FirstResource_From_ExplorerContextMenu();
-            DialogsUIMap.Click_MessageBox_Yes();
+            Assert.IsFalse(DialogsUIMap.SaveDialogWindow.Exists);
         }
 
 
@@ -171,9 +169,7 @@ namespace Warewolf.UITests.SaveDialog
             DialogsUIMap.Name_New_Folder_From_Save_Dialog(resourceFolder);
             Assert.IsTrue(DialogsUIMap.SaveDialogWindow.Exists);
             WorkflowTabUIMap.Enter_Using_Shortcut();
-            ExplorerUIMap.Filter_Explorer(resourceFolder);
-            ExplorerUIMap.Delete_FirstResource_From_ExplorerContextMenu();
-            DialogsUIMap.Click_MessageBox_Yes();
+            Assert.IsFalse(DialogsUIMap.SaveDialogWindow.Exists);
         }
 
         #region Additional test attributes
