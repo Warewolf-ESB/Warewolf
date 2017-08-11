@@ -46,7 +46,7 @@ namespace Warewolf.Web.UI.Tests.NoWarewolfServer
         [DeploymentItem(@"avcodec-57.dll")]
         [TestCategory("NoWarewolfServer")]
         [DataSource("Microsoft.VisualStudio.TestTools.DataSource.CSV", "|DataDirectory|\\SupportedBrowsers.csv", "SupportedBrowsers#csv", DataAccessMethod.Sequential), DeploymentItem("BrowserWebDrivers\\SupportedBrowsers.csv")]
-        public void NoWarewolfServer_ChromeIncognito_ClickRefresh_UITest()
+        public void NoWarewolfServer_ClickRefresh_UITest()
         {
             driver.driver.Navigate().GoToUrl(driver.baseURL + "/ExecutionLogging");
             Assert.IsTrue(driver.driver.IsAlertPresent(), "No alert that local Warewolf server is not running.");
