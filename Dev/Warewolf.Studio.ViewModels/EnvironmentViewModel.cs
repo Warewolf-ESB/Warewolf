@@ -22,6 +22,7 @@ using Dev2.Common.Common;
 using Dev2.Studio.Core;
 using Dev2.Studio.Interfaces;
 using Warewolf.Studio.Core;
+using Dev2.ConnectionHelpers;
 // ReSharper disable InconsistentNaming
 // ReSharper disable ValueParameterNotUsed
 
@@ -78,15 +79,11 @@ namespace Warewolf.Studio.ViewModels
         private bool _isSaveDialog;
 
         public EnvironmentViewModel(IServer server, IShellViewModel shellViewModel, bool isDialog = false, Action<IExplorerItemViewModel> selectAction = null)
-        {            
-            if (server == null)
-                throw new ArgumentNullException(nameof(server));
-            if (shellViewModel == null)
-                throw new ArgumentNullException(nameof(shellViewModel));
-            _shellViewModel = shellViewModel;
+        {
+            Server = server ?? throw new ArgumentNullException(nameof(server));
+            _shellViewModel = shellViewModel ?? throw new ArgumentNullException(nameof(shellViewModel));
             _isDialog = isDialog;
             _controller = CustomContainer.Get<IPopupController>();
-            Server = server;
             _children = new ObservableCollection<IExplorerItemViewModel>();
 
             NewServiceCommand = new DelegateCommand(() =>
@@ -1071,6 +1068,7 @@ namespace Warewolf.Studio.ViewModels
                 {
                     IsLoading = true;
                     var result = await LoadDialog(null, isDeploy, reloadCatalogue);
+                    ReloadConnectControl();
                     return result;
                 }
                 finally
@@ -1079,6 +1077,48 @@ namespace Warewolf.Studio.ViewModels
                 }
             }
             return false;
+        }
+
+        public void ReloadConnectControl()
+        {
+            IExplorerViewModel explorerViewModel = ShellViewModel?.ExplorerViewModel;
+            if (explorerViewModel?.Environments != null)
+            {
+                IEnvironmentViewModel environmentViewModel = explorerViewModel?.Environments[0];
+                var explorerServers = environmentViewModel?.Children?.Flatten(model => model.Children).Where(y => y.ResourceType == "Dev2Server");
+                IConnectControlViewModel connectControlViewModel = explorerViewModel?.ConnectControlViewModel;
+                if (connectControlViewModel != null)
+                {
+                    ObservableCollection<IServer> connectControlServers = connectControlViewModel.Servers?.Where(o => !o.IsLocalHost).ToObservableCollection();
+
+                    if (connectControlServers?.Count > explorerServers?.Count())
+                    {
+                        foreach (var serv in connectControlServers)
+                        {
+                            var found = explorerServers.FirstOrDefault(a => a.ResourceId == serv.EnvironmentID);
+                            if (found == null)
+                            {
+                                ConnectControlSingleton.Instance.ReloadServer();
+                                ShellViewModel?.LocalhostServer?.UpdateRepository?.FireServerSaved(serv.EnvironmentID);
+                                connectControlViewModel.LoadServers();
+                            }
+                        }
+                    }
+                    else
+                    {
+                        foreach (var server in explorerServers)
+                        {
+                            var serverExists = connectControlServers?.FirstOrDefault(o => o.EnvironmentID == server.ResourceId);
+                            if (serverExists == null)
+                            {
+                                ConnectControlSingleton.Instance.ReloadServer();
+                                ShellViewModel?.LocalhostServer?.UpdateRepository?.FireServerSaved(server.ResourceId);
+                                connectControlViewModel.LoadServers();
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         public bool IsLoading { get; set; }
@@ -1233,13 +1273,19 @@ namespace Warewolf.Studio.ViewModels
                     existingItem.SetPermissions(explorerItem.Permissions, isDeploy);
                     existingItem.IsResourceChecked = isResourceChecked;
                     CreateExplorerItemsSync(explorerItem.Children, server, existingItem, isDialog, isDeploy);
-                    explorerItemModels.Add(existingItem);
+                    if (!explorerItemModels.Contains(existingItem))
+                    {
+                        explorerItemModels.Add(existingItem);
+                    }
                 }
                 else
                 {
                     var itemCreated = CreateExplorerItem(server, parent, isDialog, isDeploy, explorerItem);
                     CreateExplorerItemsSync(explorerItem.Children, server, itemCreated, isDialog, isDeploy);
-                    explorerItemModels.Add(itemCreated);
+                    if (!explorerItemModels.Contains(itemCreated))
+                    {
+                        explorerItemModels.Add(itemCreated);
+                    }
                 }
             }
             return explorerItemModels;
