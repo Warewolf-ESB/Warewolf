@@ -213,7 +213,7 @@ namespace Dev2.Services.Security
             };
         }
 
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         public static WindowsGroupPermission CreateEveryone()
         {
             return new WindowsGroupPermission

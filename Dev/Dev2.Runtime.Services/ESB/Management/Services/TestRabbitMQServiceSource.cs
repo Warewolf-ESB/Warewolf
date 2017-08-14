@@ -18,7 +18,7 @@ using Dev2.Common.Interfaces.Enums;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    [SuppressMessage("ReSharper", "UnusedMember.Global")]
+
     public class TestRabbitMQServiceSource : IEsbManagementEndpoint
     {
 

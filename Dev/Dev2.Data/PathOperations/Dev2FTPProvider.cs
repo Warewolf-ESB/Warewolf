@@ -32,7 +32,7 @@ namespace Dev2.Data.PathOperations
 { 
     [Serializable]
     // ReSharper disable InconsistentNaming
-    [SuppressMessage("ReSharper", "UnusedMember.Global")]
+
     public class Dev2FTPProvider : IActivityIOOperationsEndPoint
     // ReSharper restore InconsistentNaming
     {

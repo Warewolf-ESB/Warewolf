@@ -158,7 +158,7 @@ namespace Dev2
             return GetJsonForEnvironmentWithColumnIODirection(dataObject, dataList, enDev2ColumnArgumentDirection.Output, update);
         }
 
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         public static void UpdateEnvironmentFromXmlPayload(IDSFDataObject dataObject, StringBuilder rawPayload, string dataList, int update)
         {
 

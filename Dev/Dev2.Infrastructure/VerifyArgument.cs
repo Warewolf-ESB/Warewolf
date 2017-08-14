@@ -53,7 +53,7 @@ namespace Dev2
         /// </summary>
         /// <param name="name">The argument name.</param>
         /// <param name="value">The value.</param>
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         public static void IsNotNullOrWhitespace([NotNull] string name, string value)
         {
             if(string.IsNullOrWhiteSpace(value) || string.IsNullOrEmpty(value))

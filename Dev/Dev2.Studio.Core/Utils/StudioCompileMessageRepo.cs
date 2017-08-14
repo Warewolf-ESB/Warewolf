@@ -19,12 +19,12 @@ namespace Dev2.Studio.Core.Utils
 {
     public interface IStudioCompileMessageRepo
     {
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         CompileMessageList GetCompileMessagesFromServer(IContextualResourceModel resourceModel);
     }
     public interface IStudioCompileMessageRepoFactory
     {
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         IStudioCompileMessageRepo Create();
     }
 

@@ -19,7 +19,7 @@ namespace Dev2.Studio.Utils
 {
     public static class VersionInfo
     {
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         public static string FetchVersionInfo()
         {
             var versionResource = GetVersionResource();

@@ -33,7 +33,7 @@ namespace Dev2.PathOperations
     /// <summary>
     /// Used for internal security reasons
     /// </summary>
-    [SuppressMessage("ReSharper", "UnusedMember.Global")]
+
     public sealed class SafeTokenHandle : SafeHandleZeroOrMinusOneIsInvalid
     {
         private SafeTokenHandle()
@@ -59,7 +59,7 @@ namespace Dev2.PathOperations
     /// Purpose : To provide file system IO operations to the File activities
     /// </summary>
     [Serializable]
-    [SuppressMessage("ReSharper", "UnusedMember.Global")]
+
     public class Dev2FileSystemProvider : IActivityIOOperationsEndPoint
     {
         private static readonly ReaderWriterLockSlim _fileLock = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);

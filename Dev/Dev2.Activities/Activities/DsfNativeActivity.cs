@@ -1116,19 +1116,19 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         public IDebugState GetDebugState()
         {
             return _debugState;
         }
 
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         public Guid GetWorkSurfaceMappingId()
         {
             return WorkSurfaceMappingId;
         }
 
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         public virtual IList<IActionableErrorInfo> PerformValidation()
         {
             return new List<IActionableErrorInfo>();

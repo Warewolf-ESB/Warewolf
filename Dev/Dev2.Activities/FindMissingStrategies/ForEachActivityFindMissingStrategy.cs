@@ -22,7 +22,7 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.FindMissingStrategies
 {
-    [SuppressMessage("ReSharper", "UnusedMember.Global")] //This is loaded based on SpookyAction implementing IFindMissingStrategy
+ //This is loaded based on SpookyAction implementing IFindMissingStrategy
     public class ForEachActivityFindMissingStrategy : IFindMissingStrategy
     {
         #region Implementation of ISpookyLoadable<Enum>

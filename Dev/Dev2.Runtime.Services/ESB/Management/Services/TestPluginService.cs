@@ -30,7 +30,7 @@ using Unlimited.Framework.Converters.Graph.Ouput;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    [SuppressMessage("ReSharper", "UnusedMember.Global")]
+
     public class TestPluginService : IEsbManagementEndpoint
     {
         IResourceCatalog _rescat;

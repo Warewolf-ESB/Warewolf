@@ -21,7 +21,7 @@ using Warewolf.Core;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    [SuppressMessage("ReSharper", "UnusedMember.Global")]
+
     public class FetchPluginActionsWithReturnsTypes : IEsbManagementEndpoint
     {
         private readonly IResourceCatalog _catalog;

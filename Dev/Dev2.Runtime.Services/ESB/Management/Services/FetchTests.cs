@@ -19,7 +19,7 @@ namespace Dev2.Runtime.ESB.Management.Services
     /// <summary>
     /// Adds a resource
     /// </summary>
-    [SuppressMessage("ReSharper", "UnusedMember.Global")]
+
     public class FetchTests : IEsbManagementEndpoint
     {
 

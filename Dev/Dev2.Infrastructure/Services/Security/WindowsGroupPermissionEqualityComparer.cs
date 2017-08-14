@@ -13,7 +13,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Services.Security
 {
-    [SuppressMessage("ReSharper", "UnusedMember.Global")]
+
     public class WindowsGroupPermissionEqualityComparer : IEqualityComparer<WindowsGroupPermission>
     {
         #region Implementation of IEqualityComparer<in WindowsGroupPermission>

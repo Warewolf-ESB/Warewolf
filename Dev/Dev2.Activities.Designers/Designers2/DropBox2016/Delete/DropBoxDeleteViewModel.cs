@@ -29,7 +29,7 @@ namespace Dev2.Activities.Designers2.DropBox2016.Delete
         private string _deletePath;
         private string _result;
 
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         public DropBoxDeleteViewModel(ModelItem modelItem)
            : this(modelItem, new DropboxSourceManager())
         {

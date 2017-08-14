@@ -103,7 +103,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             SetIsNew(xml);
         }
 
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         public Version Version { get; set; }
         [JsonIgnore]
         public bool IsUpgraded { get; set; }

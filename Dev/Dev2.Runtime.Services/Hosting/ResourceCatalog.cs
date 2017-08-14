@@ -379,7 +379,7 @@ namespace Dev2.Runtime.Hosting
 
         #endregion
 
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         public StringBuilder ToPayload(IResource resource)
         {
             var result = new StringBuilder();

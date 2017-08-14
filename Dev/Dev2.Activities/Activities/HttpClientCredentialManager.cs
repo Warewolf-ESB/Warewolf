@@ -8,7 +8,7 @@ namespace Dev2.Activities
 {
     public static class HttpClientCredentialManager
     {
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         public static HttpClientHandler SetCredentialOnHandler(WebSource source, HttpClientHandler httpClientHandler)
         {
             if (source.AuthenticationType == AuthenticationType.User && httpClientHandler != null)

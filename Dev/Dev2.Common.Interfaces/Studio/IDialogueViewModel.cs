@@ -30,7 +30,7 @@ namespace Dev2.Common.Interfaces.Studio
         Visibility HyperlinkVisibility { get; }
         ICommand OkCommand { get; }
         //event ClosedOperationEventHandler OnOkClick;
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         void SetupDialogue(string title, string description, string imageSourceuri, string descriptionTitleText, string hyperlink = null, string linkText = null);
 
     }

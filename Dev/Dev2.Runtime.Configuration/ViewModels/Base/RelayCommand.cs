@@ -108,7 +108,7 @@ namespace Dev2.Runtime.Configuration.ViewModels.Base
             _execute((T)parameter);
         }
 
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         public void RaiseCanExecuteChanged()
         {
             CanExecuteChanged?.Invoke(this, EventArgs.Empty);

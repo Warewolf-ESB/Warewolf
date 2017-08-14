@@ -281,7 +281,7 @@ namespace Dev2.Common.ExtMethods
             return Accellerator + input;
         }
 
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         public static string RemoveWhiteSpace(this string value)
         {
             var cleanString = new StringBuilder(value.Trim()).Replace(" ", "");

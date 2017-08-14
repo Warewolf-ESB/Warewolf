@@ -5,7 +5,7 @@ using System.Windows.Controls;
 
 namespace Warewolf.Studio.CustomControls
 {
-    [SuppressMessage("ReSharper", "UnusedMember.Global")]
+
     public class PasswordBoxHelper
     {
         static bool _isInistialised = false;

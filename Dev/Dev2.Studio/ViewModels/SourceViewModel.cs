@@ -91,7 +91,7 @@ namespace Dev2.ViewModels
 
 
 
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         public string ResourceType
         {
             get

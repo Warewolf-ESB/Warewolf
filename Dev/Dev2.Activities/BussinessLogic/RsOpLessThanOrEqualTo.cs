@@ -18,7 +18,7 @@ namespace Dev2.DataList
     /// <summary>
     /// Class for the "less than or equal to symbol" recordset search option 
     /// </summary>
-    [SuppressMessage("ReSharper", "UnusedMember.Global")]
+
     public class RsOpLessThanOrEqualTo : AbstractRecsetSearchValidation
     {
         // Bug 8725 - Fixed to be double rather than int

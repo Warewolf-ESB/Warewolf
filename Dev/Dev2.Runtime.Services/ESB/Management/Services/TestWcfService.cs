@@ -18,7 +18,7 @@ using Unlimited.Framework.Converters.Graph.Ouput;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    [SuppressMessage("ReSharper", "UnusedMember.Global")]
+
     public class TestWcfService : IEsbManagementEndpoint
     {
         private IResourceCatalog _rescat;

@@ -178,7 +178,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// <summary>
         /// Gets or sets the files and folders option.
         /// </summary>
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         [Inputs("Files & Folders")]
         [FindMissing]
         public bool IsFilesAndFoldersSelected

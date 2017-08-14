@@ -15,7 +15,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities.Value_Objects
     /// <summary>
     /// Used with the ForEach Activity
     /// </summary>
-    [SuppressMessage("ReSharper", "UnusedMember.Global")]
+
     public class ForEachBootstrapTO : DynamicObject
     {
         public enForEachExecutionType ExeType { get; set; }
