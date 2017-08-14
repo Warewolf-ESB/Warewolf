@@ -393,12 +393,12 @@ namespace Dev2.Studio.Core.Models
 
         public string GetServerVersion()
         {
-            if (!Connection.IsConnected)
-            {
-                Connection.Connect(Guid.Empty);
-            }
             if (_version == null)
             {
+                if (!Connection.IsConnected)
+                {
+                    Connection.Connect(Guid.Empty);
+                }
                 _version = ProxyLayer.AdminManagerProxy.GetServerVersion();
             }
             return _version;
