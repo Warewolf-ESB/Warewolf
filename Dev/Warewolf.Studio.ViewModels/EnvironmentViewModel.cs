@@ -1131,7 +1131,7 @@ namespace Warewolf.Studio.ViewModels
                 var explorerItems = await Server.LoadExplorer(reloadCatalogue);
                 if(explorerItems != null)
                 {
-                    CreateExplorerItemsSync(explorerItems.Children, Server, this, selectedPath != null, Children.Any(a => AllowResourceCheck));
+                    CreateExplorerItemsSync(explorerItems.Children, Server, this, selectedPath != null, isDeploy);
                 }
                 IsLoaded = true;
                 IsConnecting = false;
