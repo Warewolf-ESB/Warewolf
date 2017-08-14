@@ -32,8 +32,8 @@ namespace Dev2.Runtime.ESB.Management.Services
         ISecurityWrapper _securityWrapper;
         private IResourceCatalog _catalog;
         
-        // ReSharper disable once MemberCanBeInternal
-        // ReSharper disable once EmptyConstructor
+        
+        
         public DeleteScheduledResource()
         {
 

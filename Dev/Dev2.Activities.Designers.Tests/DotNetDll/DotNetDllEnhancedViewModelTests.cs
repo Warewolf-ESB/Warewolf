@@ -25,7 +25,7 @@ using Moq;
 using TestingDotnetDllCascading;
 using Warewolf.Core;
 using Warewolf.Testing;
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Activities.Designers.Tests.DotNetDll
 {

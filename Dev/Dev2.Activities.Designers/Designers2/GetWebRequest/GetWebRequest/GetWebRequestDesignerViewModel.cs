@@ -23,7 +23,7 @@ using Dev2.Providers.Errors;
 using Dev2.Studio.Interfaces;
 using Warewolf.Resource.Errors;
 
-// ReSharper disable CheckNamespace
+
 namespace Dev2.Activities.Designers2.GetWebRequest
 {
     public class GetWebRequestDesignerViewModel : ActivityDesignerViewModel

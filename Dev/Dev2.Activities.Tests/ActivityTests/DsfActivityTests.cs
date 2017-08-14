@@ -30,7 +30,7 @@ namespace Dev2.Tests.Activities.ActivityTests
     /// <summary>
     /// Summary description for DateTimeDifferenceTests
     /// </summary>
-    // ReSharper disable InconsistentNaming
+    
     [TestClass]
     public class DsfActivityTests : BaseActivityUnitTest
     {
@@ -225,10 +225,10 @@ namespace Dev2.Tests.Activities.ActivityTests
             User = new Mock<IPrincipal>().Object;
             var result = ExecuteProcess(null, true, null, false, true, false, environmentID);
 
-            // ReSharper disable PossibleNullReferenceException
+            
             var resultEnvironmentID = result.EnvironmentID;
             var isRemoteOverridden = result.IsRemoteInvokeOverridden;
-            // ReSharper restore PossibleNullReferenceException
+            
 
             //------------Assert Results-------------------------
             Assert.AreEqual(environmentID, resultEnvironmentID);
@@ -237,9 +237,9 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("DsfActivity_UpdateDebugParentID")]
-        // ReSharper disable InconsistentNaming
+        
         public void DsfActivity_UpdateDebugParentID_UniqueIdSameIfNestingLevelNotChanged()
-        // ReSharper restore InconsistentNaming
+
         {
             var dataObject = new DsfDataObject(CurrentDl, Guid.NewGuid())
             {
@@ -262,9 +262,9 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("DsfActivity_UpdateDebugParentID")]
-        // ReSharper disable InconsistentNaming
+        
         public void DsfActivity_UpdateDebugParentID_UniqueIdNotSameIfNestingLevelIncreased()
-        // ReSharper restore InconsistentNaming
+
         {
             var dataObject = new DsfDataObject(CurrentDl, Guid.NewGuid())
             {
@@ -338,9 +338,9 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfActivity_ExecuteTool")]
-        // ReSharper disable InconsistentNaming
+        
         public void DsfActivity_ExecuteTool_DataObjectWithNullChannel_ShouldError()
-        // ReSharper restore InconsistentNaming
+
         {
             var dataObject = new DsfDataObject(CurrentDl, Guid.NewGuid())
             {

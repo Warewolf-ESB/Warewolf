@@ -266,7 +266,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.AssignObject
             var shape = new XElement("root");
             var data = new XElement("root");
 
-            // ReSharper disable NotAccessedVariable
+            
             int row = 0;
             dynamic variableList;
             scenarioContext.TryGetValue("variableList", out variableList);

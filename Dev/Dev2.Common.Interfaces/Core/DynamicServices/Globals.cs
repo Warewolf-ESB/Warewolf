@@ -125,7 +125,7 @@ namespace Dev2.Common.Interfaces.Core.DynamicServices
         /// <summary>
         ///     A PostgreSQL database
         /// </summary>
-        [SuppressMessage("ReSharper", "InconsistentNaming")]
+
         PostgreSQL,
 
 

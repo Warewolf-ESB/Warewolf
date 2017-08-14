@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using GACManagerApi.Fusion;
-// ReSharper disable UnusedMember.Global
-// ReSharper disable InconsistentNaming
-// ReSharper disable FieldCanBeMadeReadOnly.Local
+
+
+
 
 namespace GACManagerApi
 {

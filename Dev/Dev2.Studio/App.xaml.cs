@@ -52,7 +52,7 @@ using Warewolf.Studio.Models.Help;
 using Warewolf.Studio.Models.Toolbox;
 using Warewolf.Studio.ViewModels.Help;
 using Warewolf.Studio.ViewModels.ToolBox;
-// ReSharper disable RedundantUsingDirective
+
 using Dev2.Utils;
 using log4net.Config;
 using Warewolf.Studio.ViewModels;
@@ -61,10 +61,10 @@ using Dev2.Studio.Diagnostics;
 using Dev2.Studio.ViewModels;
 using Dev2.Util;
 using System.Globalization;
-// ReSharper disable RedundantAssignment
-// ReSharper disable CheckNamespace
+
+
 namespace Dev2.Studio
-// ReSharper restore CheckNamespace
+
 {
     /// <summary>
     /// Interaction logic for App.xaml
@@ -73,12 +73,12 @@ namespace Dev2.Studio
     {
         ShellViewModel _shellViewModel;
         //This is ignored because when starting the studio twice the second one crashes without this line
-        // ReSharper disable RedundantDefaultFieldInitializer
-        // ReSharper disable NotAccessedField.Local
-        // ReSharper disable RedundantDefaultFieldInitializer
+        
+        
+        
         private Mutex _processGuard = null;
-        // ReSharper restore RedundantDefaultFieldInitializer
-        // ReSharper restore NotAccessedField.Local
+        
+        
         private AppExceptionHandler _appExceptionHandler;
         private bool _hasShutdownStarted;
 
@@ -114,7 +114,7 @@ namespace Dev2.Studio
                     DirectoryHelper.CleanUp(Path.Combine(GlobalConstants.TempLocation, "Warewolf", "Debug"));
                 });
 
-            // ReSharper disable once UnusedVariable
+            
             var localprocessGuard = e.Args.Length > 0
                                         ? new Mutex(true, e.Args[0], out createdNew)
                                         : new Mutex(true, "Warewolf Studio", out createdNew);
@@ -285,9 +285,9 @@ namespace Dev2.Studio
             {
                 base.OnExit(e);
             }
-            // ReSharper disable EmptyGeneralCatchClause
+            
             catch
-            // ReSharper restore EmptyGeneralCatchClause
+            
             {
                 // Best effort ;)
             }
@@ -314,9 +314,9 @@ namespace Dev2.Studio
             {
                 base.Shutdown();
             }
-            // ReSharper disable EmptyGeneralCatchClause
+            
             catch
-            // ReSharper restore EmptyGeneralCatchClause
+            
             {
                 // Best effort ;)
             }

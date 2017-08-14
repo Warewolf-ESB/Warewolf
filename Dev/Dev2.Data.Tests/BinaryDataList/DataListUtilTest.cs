@@ -28,7 +28,7 @@ using Dev2.Data.Interfaces.Enums;
 namespace Dev2.Data.Tests.BinaryDataList
 {
     [TestClass]
-    // ReSharper disable InconsistentNaming
+    
     public class DataListUtilTest
     {
 
@@ -516,9 +516,9 @@ namespace Dev2.Data.Tests.BinaryDataList
             var tokens = new List<string> { "f1", "", "f3", "f4", "" };
 
             var tokenizer = new Mock<IDev2Tokenizer>();
-            // ReSharper disable ImplicitlyCapturedClosure
+            
             tokenizer.Setup(t => t.HasMoreOps()).Returns(() => tokenNumber < TokenCount);
-            // ReSharper restore ImplicitlyCapturedClosure
+            
             tokenizer.Setup(t => t.NextToken()).Returns(() => tokens[tokenNumber++]);
 
             var target = new Collection<ObservablePair<string, string>>();
@@ -554,9 +554,9 @@ namespace Dev2.Data.Tests.BinaryDataList
             var tokens = new List<string> { "f1", "", "f2", "f3", "" };
 
             var tokenizer = new Mock<IDev2Tokenizer>();
-            // ReSharper disable ImplicitlyCapturedClosure
+            
             tokenizer.Setup(t => t.HasMoreOps()).Returns(() => tokenNumber < TokenCount);
-            // ReSharper restore ImplicitlyCapturedClosure
+            
             tokenizer.Setup(t => t.NextToken()).Returns(() => tokens[tokenNumber++]);
 
             var target = new Collection<ObservablePair<string, string>>();

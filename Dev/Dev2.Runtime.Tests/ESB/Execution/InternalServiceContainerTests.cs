@@ -13,7 +13,7 @@ using Moq;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Tests.Runtime.ESB.Execution
 {

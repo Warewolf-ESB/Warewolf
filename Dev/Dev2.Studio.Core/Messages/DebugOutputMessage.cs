@@ -11,9 +11,9 @@
 using System.Collections.Generic;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 
-// ReSharper disable CheckNamespace
+
 namespace Dev2.Studio.Core.Messages
-// ReSharper restore CheckNamespace
+
 {
     public class DebugOutputMessage : IMessage
     {

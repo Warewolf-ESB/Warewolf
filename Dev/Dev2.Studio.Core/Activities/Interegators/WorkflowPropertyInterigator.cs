@@ -12,7 +12,7 @@ using Dev2.Common.Common;
 using Dev2.Studio.Interfaces;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
-// ReSharper disable once CheckNamespace
+
 namespace Dev2.Studio.Core.Activities.Interegators
 {
     public static class WorkflowPropertyInterigator

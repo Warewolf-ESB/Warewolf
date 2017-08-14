@@ -56,9 +56,9 @@ namespace Dev2.Runtime.ESB.Management.Services
                 values.TryGetValue("DbService", out resourceDefinition);
 
                 IDatabaseService src = serializer.Deserialize<IDatabaseService>(resourceDefinition);
-                // ReSharper disable MaximumChainedReferences
+                
                 var parameters = src.Inputs?.Select(a => new MethodParameter() { EmptyToNull = a.EmptyIsNull, IsRequired = a.RequiredField, Name = a.Name, Value = a.Value }).ToList() ?? new List<MethodParameter>();
-                // ReSharper restore MaximumChainedReferences
+                
                 var source = ResourceCatalog.Instance.GetResource<DbSource>(GlobalConstants.ServerWorkspaceID, src.Source.Id) ?? new DbSource
                              {
                                  DatabaseName = src.Source.DbName,

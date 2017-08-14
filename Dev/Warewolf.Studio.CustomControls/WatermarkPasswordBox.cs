@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 using System.Windows.Controls;
-// ReSharper disable UnusedMember.Global
+
 
 namespace Warewolf.Studio.CustomControls
 {

@@ -14,7 +14,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 
-// ReSharper disable once CheckNamespace
+
 namespace Dev2.Common.Interfaces.Studio
 {
     // Sashen Naidoo - 29-08-2012 - PBI 5037

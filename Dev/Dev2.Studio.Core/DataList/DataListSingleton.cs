@@ -10,7 +10,7 @@
 
 using Dev2.Studio.Interfaces.DataList;
 
-// ReSharper disable once CheckNamespace
+
 namespace Dev2.Studio.Core
 {
     /// <summary>

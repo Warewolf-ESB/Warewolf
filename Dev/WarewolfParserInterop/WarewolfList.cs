@@ -141,7 +141,7 @@ namespace WarewolfParserInterop
         }
 
 
-      // ReSharper restore FunctionNeverReturns
+      
 
         IEnumerator IEnumerable.GetEnumerator()
         {

@@ -187,9 +187,9 @@ namespace Dev2.FindMissingStrategies
         private static IEnumerable<string> InternalFindMissing<T>(IEnumerable<T> data)
         {
             IList<string> results = new List<string>();
-            // ReSharper disable LoopCanBeConvertedToQuery
+            
             foreach(T row in data)
-            // ReSharper restore LoopCanBeConvertedToQuery
+            
             {
                 IEnumerable<PropertyInfo> properties = StringAttributeRefectionUtils.ExtractAdornedProperties<FindMissingAttribute>(row);
                 foreach(PropertyInfo propertyInfo in properties)

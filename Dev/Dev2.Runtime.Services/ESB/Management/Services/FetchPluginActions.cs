@@ -45,7 +45,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 var pluginSource = serializer.Deserialize<PluginSourceDefinition>(values["source"]);
                 var ns = serializer.Deserialize<INamespaceItem>(values["namespace"]);
-                // ReSharper disable MaximumChainedReferences
+                
                 PluginServices services = new PluginServices();
                 var src = ResourceCatalog.Instance.GetResource<PluginSource>(GlobalConstants.ServerWorkspaceID, pluginSource.Id);
                 //src.AssemblyName = ns.FullName;
@@ -67,7 +67,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     Message = serializer.SerializeToBuilder(methods)
                 });
                 }
-                // ReSharper disable once RedundantIfElseBlock
+                
                 else
                 {
                     return serializer.SerializeToBuilder(new ExecuteMessage()
@@ -77,7 +77,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     });
                 }
 
-                // ReSharper restore MaximumChainedReferences
+                
             }
             catch (Exception e)
             {

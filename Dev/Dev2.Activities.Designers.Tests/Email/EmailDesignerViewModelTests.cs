@@ -31,7 +31,7 @@ using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-// ReSharper disable InconsistentNaming
+
 namespace Dev2.Activities.Designers.Tests.Email
 {
     [TestClass]
@@ -54,9 +54,9 @@ namespace Dev2.Activities.Designers.Tests.Email
             //------------Setup for test--------------------------
 
             //------------Execute Test---------------------------
-            // ReSharper disable ObjectCreationAsStatement
+            
             new EmailDesignerViewModel(CreateModelItem(), null, null, null);
-            // ReSharper restore ObjectCreationAsStatement
+            
 
             //------------Assert Results-------------------------
         }
@@ -70,9 +70,9 @@ namespace Dev2.Activities.Designers.Tests.Email
             //------------Setup for test--------------------------
 
             //------------Execute Test---------------------------
-            // ReSharper disable ObjectCreationAsStatement
+            
             new EmailDesignerViewModel(CreateModelItem(), new Mock<IAsyncWorker>().Object, null, null);
-            // ReSharper restore ObjectCreationAsStatement
+            
 
             //------------Assert Results-------------------------
         }
@@ -86,9 +86,9 @@ namespace Dev2.Activities.Designers.Tests.Email
             //------------Setup for test--------------------------
 
             //------------Execute Test---------------------------
-            // ReSharper disable ObjectCreationAsStatement
+            
             new EmailDesignerViewModel(CreateModelItem(), new Mock<IAsyncWorker>().Object, new Mock<IServer>().Object, null);
-            // ReSharper restore ObjectCreationAsStatement
+            
 
             //------------Assert Results-------------------------
         }

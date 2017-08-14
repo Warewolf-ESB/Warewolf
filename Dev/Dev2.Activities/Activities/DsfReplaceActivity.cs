@@ -35,9 +35,9 @@ using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 
-// ReSharper disable CheckNamespace
+
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
-// ReSharper restore CheckNamespace
+
 {
     /// <New>
     /// Activity for replacing a certain character set in a number of field with a new character set 
@@ -254,7 +254,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
                 // now push the result to the server
             }
-            // ReSharper disable EmptyGeneralCatchClause
+            
             catch (Exception ex)
             {
                 Dev2Logger.Error("DSFReplace", ex);

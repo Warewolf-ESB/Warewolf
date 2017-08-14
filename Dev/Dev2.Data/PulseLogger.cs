@@ -43,9 +43,9 @@ namespace Dev2.Data
                     ServerStats.TotalTime,
                     DateTime.Now - Process.GetCurrentProcess().StartTime));
             }
-                // ReSharper disable EmptyGeneralCatchClause
+                
             catch
-                // ReSharper restore EmptyGeneralCatchClause
+                
             {
                 // cant have any errors here
             }
@@ -95,9 +95,9 @@ namespace Dev2.Data
                     WorkflowExecutionWatcher.HasAWorkflowBeenExecuted = false;
                 }
             }
-                // ReSharper disable EmptyGeneralCatchClause
+                
             catch
-                // ReSharper restore EmptyGeneralCatchClause
+                
             {
                 // cant have any errors here
             }

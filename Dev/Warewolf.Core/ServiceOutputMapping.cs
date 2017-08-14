@@ -14,7 +14,7 @@ using Dev2.Common.Interfaces.DB;
 using Dev2.Data.Util;
 using Dev2.Util;
 
-// ReSharper disable ExplicitCallerInfoArgument
+
 
 namespace Warewolf.Core
 {

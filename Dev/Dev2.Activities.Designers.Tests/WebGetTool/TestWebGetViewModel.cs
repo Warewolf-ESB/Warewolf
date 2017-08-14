@@ -20,8 +20,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Unlimited.Framework.Converters.Graph.String.Xml;
 using Warewolf.Core;
-// ReSharper disable InconsistentNaming
-// ReSharper disable All
+
+
 
 namespace Dev2.Activities.Designers.Tests.WebGetTool
 {

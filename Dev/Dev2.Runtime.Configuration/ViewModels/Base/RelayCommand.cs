@@ -24,9 +24,9 @@ namespace Dev2.Runtime.Configuration.ViewModels.Base
         {
             if(handlingMethod == null)
             {
-                // ReSharper disable NotResolvedInText
+                
                 throw new ArgumentNullException("HandingMethod");
-                // ReSharper restore NotResolvedInText
+                
             }
 
             _handlingMethod = handlingMethod;
@@ -96,9 +96,9 @@ namespace Dev2.Runtime.Configuration.ViewModels.Base
 
         public bool CanExecute(object parameter)
         {
-            // ReSharper disable SimplifyConditionalTernaryExpression
+            
             return _canExecute?.Invoke((T)parameter) ?? true;
-            // ReSharper restore SimplifyConditionalTernaryExpression
+            
         }
 
         public event EventHandler CanExecuteChanged;

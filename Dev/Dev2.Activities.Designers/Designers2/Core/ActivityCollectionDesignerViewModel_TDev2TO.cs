@@ -22,8 +22,8 @@ using Dev2.Common.Interfaces.Infrastructure.Providers.Validation;
 using Dev2.Common.Interfaces.Interfaces;
 using Dev2.Studio.Core.Activities.Utils;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
-// ReSharper disable MemberCanBeProtected.Global
-// ReSharper disable MemberCanBePrivate.Global
+
+
 
 //using Dev2.Interfaces;
 
@@ -40,7 +40,7 @@ namespace Dev2.Activities.Designers2.Core
         where TDev2TOFn : class, IDev2TOFn, IPerformsValidation, new()
     {
         TDev2TOFn _initialDto = new TDev2TOFn();
-        // ReSharper disable once FieldCanBeMadeReadOnly.Local
+        
         object _syncLock = new object();
 
         protected ActivityCollectionDesignerViewModel(ModelItem modelItem)

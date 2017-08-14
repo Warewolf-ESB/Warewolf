@@ -12,8 +12,8 @@ using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Studio.Core.Activities.Utils;
 using Warewolf.Core;
-// ReSharper disable ExplicitCallerInfoArgument
-// ReSharper disable ConvertToAutoProperty
+
+
 
 namespace Dev2.Activities.Designers2.Core.ActionRegion
 {
@@ -86,7 +86,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             {
                 Errors.Clear();
                 IsRefreshing = true;
-                // ReSharper disable once ExplicitCallerInfoArgument
+                
                 if (_source?.SelectedSource != null)
                 {
                     Actions = _model.GetActions(_source.SelectedSource);
@@ -95,7 +95,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
                     IsEnabled = true;
                 }
                 IsRefreshing = false;
-                // ReSharper disable once ExplicitCallerInfoArgument
+                
                 OnPropertyChanged(@"IsEnabled");
             }
             catch (Exception e)

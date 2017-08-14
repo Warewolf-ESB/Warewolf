@@ -15,9 +15,9 @@ using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
 using Warewolf.Resource.Errors;
 
-// ReSharper disable ClassWithVirtualMembersNeverInherited.Global
-// ReSharper disable MemberCanBePrivate.Global
-// ReSharper disable UnusedAutoPropertyAccessor.Global
+
+
+
 
 namespace Dev2.Activities.DropBox2016.DeleteActivity
 {
@@ -31,7 +31,7 @@ namespace Dev2.Activities.DropBox2016.DeleteActivity
 
         public DsfDropBoxDeleteActivity()
         {
-            // ReSharper disable once VirtualMemberCallInContructor
+            
             DisplayName = "Delete from Dropbox";
         }
 

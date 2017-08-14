@@ -9,8 +9,8 @@ using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
-// ReSharper disable ConvertToAutoProperty
-// ReSharper disable InconsistentNaming
+
+
 
 namespace Dev2.Activities.Designers.Tests
 {

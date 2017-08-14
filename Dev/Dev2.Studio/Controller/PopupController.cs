@@ -17,7 +17,7 @@ using Dev2.Studio.ViewModels.Dialogs;
 using Warewolf.Studio.Core.Popup;
 using Warewolf.Studio.ViewModels;
 
-// ReSharper disable CheckNamespace
+
 namespace Dev2.Studio.Controller
 {
     public class PopupController : Common.Interfaces.Studio.Controller.IPopupController

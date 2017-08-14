@@ -13,10 +13,10 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Warewolf.Resource.Errors;
-// ReSharper disable InconsistentNaming
-// ReSharper disable UnusedParameter.Global
-// ReSharper disable MemberCanBePrivate.Global
-// ReSharper disable UnusedAutoPropertyAccessor.Global
+
+
+
+
 
 namespace Dev2
 {

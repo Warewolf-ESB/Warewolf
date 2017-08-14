@@ -43,11 +43,11 @@ namespace Dev2.TaskScheduler.Wrappers
             return _taskServiceConvertorFactory.CreateRootFolder(Instance.CreateFolder(subFolderName, sddlForm));
         }
 
-// ReSharper disable ParameterHidesMember
-// ReSharper disable InconsistentNaming
+
+
         public void DeleteTask(string Name, bool exceptionOnNotExists = true)
-// ReSharper restore InconsistentNaming
-// ReSharper restore ParameterHidesMember
+
+
         {
             Instance.DeleteTask(Name, exceptionOnNotExists);
         }
@@ -62,26 +62,26 @@ namespace Dev2.TaskScheduler.Wrappers
             return _instance.Tasks.Any(a => a.Name == name);
         }
 
-// ReSharper disable ParameterHidesMember
-// ReSharper disable InconsistentNaming
+
+
         public IDev2Task RegisterTaskDefinition(string Path, IDev2TaskDefinition definition)
-// ReSharper restore InconsistentNaming
-// ReSharper restore ParameterHidesMember
+
+
         {
             return _taskServiceConvertorFactory.CreateTask(Instance.RegisterTaskDefinition(Path, definition.Instance));
         }
 
-// ReSharper disable ParameterHidesMember
-// ReSharper disable InconsistentNaming
+
+
         public IDev2Task RegisterTaskDefinition(string Path, IDev2TaskDefinition definition, TaskCreation createType,
-// ReSharper restore InconsistentNaming
-// ReSharper restore ParameterHidesMember
-// ReSharper disable InconsistentNaming
+
+
+
             string UserId,
-// ReSharper restore InconsistentNaming
-// ReSharper disable InconsistentNaming
+
+
             string password = null, TaskLogonType LogonType = TaskLogonType.S4U,
-// ReSharper restore InconsistentNaming
+
             string sddl = null)
         {
             return

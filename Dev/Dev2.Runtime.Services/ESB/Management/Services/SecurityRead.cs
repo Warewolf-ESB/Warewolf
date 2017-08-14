@@ -24,7 +24,7 @@ using Dev2.Runtime.Interfaces;
 using Dev2.Services.Security;
 using Dev2.Workspaces;
 using Newtonsoft.Json;
-// ReSharper disable MemberCanBePrivate.Global
+
 
 namespace Dev2.Runtime.ESB.Management.Services
 {

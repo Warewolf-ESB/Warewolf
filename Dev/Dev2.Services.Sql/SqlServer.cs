@@ -179,9 +179,9 @@ namespace Dev2.Services.Sql
             }
         }
 
-        // ReSharper disable InconsistentNaming
+        
         private string CreateTVFCommand(string fullProcedureName, List<IDbDataParameter> parameters)
-            // ReSharper restore InconsistentNaming
+    
         {
             if (parameters == null || parameters.Count == 0)
             {

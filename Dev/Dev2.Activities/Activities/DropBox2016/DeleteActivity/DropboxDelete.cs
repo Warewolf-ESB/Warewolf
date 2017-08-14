@@ -6,7 +6,7 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Wrappers;
 using Dropbox.Api;
 using Dropbox.Api.Files;
-// ReSharper disable MemberCanBePrivate.Global
+
 
 namespace Dev2.Activities.DropBox2016.DeleteActivity
 {

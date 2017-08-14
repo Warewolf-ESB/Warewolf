@@ -11,7 +11,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-// ReSharper disable once CheckNamespace
+
 namespace Dev2.Studio.Core.ViewModels.Base
 {
     public class ValidationController : SimpleBaseViewModel

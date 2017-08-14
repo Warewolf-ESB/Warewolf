@@ -31,13 +31,13 @@ using Dev2.Studio.ViewModels.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Dev2.Studio.Interfaces.Enums;
-// ReSharper disable CyclomaticComplexity
+
 
 namespace Dev2.Core.Tests
 {
     [ExcludeFromCodeCoverage]
     [TestClass]
-    // ReSharper disable InconsistentNaming
+    
     public partial class DebugOutputViewModelTest
     {
         static Mock<IResourceRepository> _resourceRepo = new Mock<IResourceRepository>();
@@ -1171,7 +1171,7 @@ namespace Dev2.Core.Tests
             Assert.IsNotNull(debugOutpuViewModel.AddNewTestCommand);
             //---------------Execute Test ----------------------
             var fieldInfo = typeof(DebugOutputViewModel).GetField("_contextualResourceModel", BindingFlags.NonPublic | BindingFlags.Instance);
-            // ReSharper disable once PossibleNullReferenceException
+            
             var value =(IContextualResourceModel) fieldInfo.GetValue(debugOutpuViewModel);
             //---------------Test Result -----------------------
             Assert.IsNotNull(value);

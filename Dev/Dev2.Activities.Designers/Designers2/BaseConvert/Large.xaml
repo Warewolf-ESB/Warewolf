@@ -35,14 +35,14 @@
         </ResourceDictionary>
     </core:ActivityDesignerTemplate.Resources>
     <core:ActivityDesignerTemplate.RightButtons>
-        <!-- ReSharper disable UnusedMember.Global -->
+        
         <core:ActivityDesignerButton x:Name="DoneButton"
                                      Content="Done"
                                      Margin="0,0,7,12"
                                      IsValidatedBefore="True"
                                      IsClosedAfter="True"
                                      Style="{StaticResource ActivityDesignerButtonStyle}" />
-        <!-- ReSharper restore UnusedMember.Global -->
+        
     </core:ActivityDesignerTemplate.RightButtons>
     <Grid Margin="{StaticResource ElementBorder}">
         <Grid.RowDefinitions>

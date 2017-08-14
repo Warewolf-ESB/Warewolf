@@ -12,9 +12,9 @@ using Dev2.Data.TO;
 using Dev2.DataList.Contract;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-// ReSharper disable UnusedVariable
 
-// ReSharper disable InconsistentNaming
+
+
 
 namespace Dev2.Data.Tests.Parsers
 {

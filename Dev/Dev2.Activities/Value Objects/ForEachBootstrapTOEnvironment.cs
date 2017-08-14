@@ -9,7 +9,7 @@ using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 
-// ReSharper disable once CheckNamespace
+
 namespace Unlimited.Applications.BusinessDesignStudio.Activities.Value_Objects
 {
     /// <summary>

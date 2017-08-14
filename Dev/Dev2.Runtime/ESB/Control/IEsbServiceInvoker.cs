@@ -14,10 +14,10 @@ using Dev2.Data.TO;
 using Dev2.Interfaces;
 using Dev2.Runtime;
 
-// ReSharper disable CheckNamespace
+
 namespace Dev2.DynamicServices
 {
-    // ReSharper restore CheckNamespace
+    
 
     public interface IEsbServiceInvoker
     {

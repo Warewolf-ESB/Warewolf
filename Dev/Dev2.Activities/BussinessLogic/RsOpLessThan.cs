@@ -12,7 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-// ReSharper disable CheckNamespace
+
 namespace Dev2.DataList
 {
     /// <summary>

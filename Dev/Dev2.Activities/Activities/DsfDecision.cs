@@ -17,19 +17,19 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 
-// ReSharper disable CyclomaticComplexity
-// ReSharper disable MemberCanBePrivate.Global
+
+
 
 namespace Dev2.Activities
 {
     public class DsfDecision : DsfActivityAbstract<string>
     {
-        // ReSharper disable MemberCanBePrivate.Global
+        
         public IEnumerable<IDev2Activity> TrueArm { get; set; }
 
         public IEnumerable<IDev2Activity> FalseArm { get; set; }
         public Dev2DecisionStack Conditions { get; set; }
-        // ReSharper restore MemberCanBePrivate.Global
+        
         readonly DsfFlowDecisionActivity _inner;
         #region Overrides of DsfNativeActivity<string>
         public DsfDecision(DsfFlowDecisionActivity inner) : this()
@@ -296,9 +296,9 @@ namespace Dev2.Activities
                 itemToAdd.AddRange(new DebugItemStaticDataParams(resultString, "").GetDebugItemResult());
                 result.Add(itemToAdd);
             }
-            // ReSharper disable EmptyGeneralCatchClause
+            
             catch (Exception)
-            // ReSharper restore EmptyGeneralCatchClause
+            
             {
                 itemToAdd.AddRange(new DebugItemStaticDataParams(resultString, "").GetDebugItemResult());
                 result.Add(itemToAdd);
@@ -389,7 +389,7 @@ namespace Dev2.Activities
     {
         private readonly DsfDecision _dsfDecision;
 
-        // ReSharper disable once UnusedMember.Global
+        
         public TestMockDecisionStep():base("Mock Decision")
         {            
         }

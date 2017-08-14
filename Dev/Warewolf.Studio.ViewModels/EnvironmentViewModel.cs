@@ -23,8 +23,8 @@ using Dev2.Studio.Core;
 using Dev2.Studio.Interfaces;
 using Warewolf.Studio.Core;
 using Dev2.ConnectionHelpers;
-// ReSharper disable InconsistentNaming
-// ReSharper disable ValueParameterNotUsed
+
+
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -326,7 +326,7 @@ namespace Warewolf.Studio.ViewModels
             IsExpanded = true;
             var id = Guid.NewGuid();
             var name = GetChildNameFromChildren();
-            // ReSharper disable once UseObjectOrCollectionInitializer
+            
             var child = new ExplorerItemViewModel(Server, this, a => { SelectAction(a); }, _shellViewModel, _controller)
             {
                 ResourceId = id,
@@ -1212,7 +1212,7 @@ namespace Warewolf.Studio.ViewModels
             return AsList(Children);
         }
 
-        // ReSharper disable once ParameterTypeCanBeEnumerable.Local
+        
         private ICollection<IExplorerItemViewModel> AsList(ICollection<IExplorerItemViewModel> rootCollection)
         {
             return rootCollection.Union(rootCollection.SelectMany(a => a.AsList())).ToList();
@@ -1244,9 +1244,9 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        // ReSharper disable ParameterTypeCanBeEnumerable.Local
+        
         public void CreateExplorerItemsSync(IList<IExplorerItem> explorerItems, IServer server, IExplorerTreeItem parent, bool isDialog = false, bool isDeploy = false)
-        // ReSharper restore ParameterTypeCanBeEnumerable.Local
+        
         {
             if (explorerItems == null) return;
             var explorerItemModels = CreateExplorerItemModels(explorerItems, server, parent, isDialog, isDeploy);
@@ -1263,7 +1263,7 @@ namespace Warewolf.Studio.ViewModels
         public ObservableCollection<IExplorerItemViewModel> CreateExplorerItemModels(IEnumerable<IExplorerItem> explorerItems, IServer server, IExplorerTreeItem parent, bool isDialog, bool isDeploy)
         {
             var explorerItemModels = new ObservableCollection<IExplorerItemViewModel>();
-            // ReSharper disable once LoopCanBeConvertedToQuery
+            
             foreach(var explorerItem in explorerItems)
             {
                 var existingItem = parent?.Children?.FirstOrDefault(model => model.ResourcePath.ToLowerInvariant() == explorerItem.ResourcePath.ToLower());

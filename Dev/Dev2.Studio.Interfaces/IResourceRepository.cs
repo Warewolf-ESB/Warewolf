@@ -23,8 +23,8 @@ using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Common;
 using Dev2.Studio.Interfaces.Enums;
 
-// ReSharper disable UnusedMethodReturnValue.Global
-// ReSharper disable ParameterTypeCanBeEnumerable.Global
+
+
 
 
 namespace Dev2.Studio.Interfaces

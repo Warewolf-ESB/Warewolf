@@ -22,11 +22,11 @@ using Dev2.Webs.Callbacks;
 using Dev2.Studio.Core;
 using Dev2.Studio.Interfaces.Enums;
 
-// ReSharper disable UnusedAutoPropertyAccessor.Local
 
-// ReSharper disable CheckNamespace
+
+
 namespace Dev2.Studio.ViewModels.Help
-// ReSharper restore CheckNamespace
+
 {
     public class HelpViewModel : BaseWorkSurfaceViewModel
     {

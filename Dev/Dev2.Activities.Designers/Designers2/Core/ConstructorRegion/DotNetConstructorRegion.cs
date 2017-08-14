@@ -10,12 +10,12 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Common.Interfaces.ToolBase.DotNet;
 using Dev2.Studio.Core.Activities.Utils;
-// ReSharper disable ExplicitCallerInfoArgument
-// ReSharper disable ClassWithVirtualMembersNeverInherited.Global
-// ReSharper disable MemberCanBePrivate.Global
-// ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
-// ReSharper disable UnusedMember.Global
-// ReSharper disable CollectionNeverUpdated.Local
+
+
+
+
+
+
 
 namespace Dev2.Activities.Designers2.Core.ConstructorRegion
 {
@@ -118,10 +118,10 @@ namespace Dev2.Activities.Designers2.Core.ConstructorRegion
             {
                 Errors.Clear();
                 IsRefreshing = true;
-                // ReSharper disable once ExplicitCallerInfoArgument
+                
                 UpdateBasedOnNamespace();
                 IsRefreshing = false;
-                // ReSharper disable once ExplicitCallerInfoArgument
+                
                 OnPropertyChanged(@"IsEnabled");
             }
             catch (Exception e)

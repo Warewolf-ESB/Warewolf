@@ -24,7 +24,7 @@ using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.Security;
 using Dev2.Runtime.ServiceModel.Data;
 using Warewolf.Resource.Errors;
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Runtime.ResourceCatalogImpl
 {

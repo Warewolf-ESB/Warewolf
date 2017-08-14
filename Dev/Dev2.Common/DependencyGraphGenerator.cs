@@ -37,7 +37,7 @@ namespace Dev2.Common
         /// <param name="height">The height.</param>
         /// <param name="nestingLevel">How deep should the graph show.</param>
         /// <returns></returns>
-        [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
+
         public IGraph BuildGraph(StringBuilder xmlData, string modelName, double width, double height, int nestingLevel)
         {
             if (xmlData == null || xmlData.Length == 0)
@@ -128,7 +128,7 @@ namespace Dev2.Common
             }
         }
 
-        [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
+
         private IDependencyVisualizationNode CreateNode(XElement nodeElm, string resourceName, double width, double height, ref double count)
         {
             var screenWidth = width;
@@ -148,10 +148,10 @@ namespace Dev2.Common
             double.TryParse(tmpX, out x);
             double.TryParse(tmpY, out y);
 
-            // ReSharper disable once PossibleNullReferenceException
+            
             var id = nodeElm.Attribute("id").Value;
             var isTarget = id == resourceName;
-            // ReSharper disable once PossibleNullReferenceException
+            
             var broken = string.Equals(nodeElm.Attribute("broken").Value, "true", StringComparison.OrdinalIgnoreCase);
 
             if (isTarget)

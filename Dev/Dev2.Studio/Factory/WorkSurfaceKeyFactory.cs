@@ -17,7 +17,7 @@ using Dev2.Studio.Core;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.Enums;
 
-// ReSharper disable once CheckNamespace
+
 namespace Dev2.Factory
 {
     /// <summary>

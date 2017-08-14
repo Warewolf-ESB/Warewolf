@@ -46,7 +46,7 @@ namespace Dev2.Common.Interfaces
         IList<IFileListing> FetchFiles(IFileListing file);
         IList<Guid> FetchDependenciesOnList(IEnumerable<Guid> values);
         List<IWindowsGroupPermission> FetchPermissions();
-        // ReSharper disable once InconsistentNaming
+
         IEnumerable<IRabbitMQServiceSourceDefinition> FetchRabbitMQServiceSources();
         IList<IWcfServerSource> FetchWcfSources();
         IList<IWcfAction> WcfActions(IWcfServerSource source);

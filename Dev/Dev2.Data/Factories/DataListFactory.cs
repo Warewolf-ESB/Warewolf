@@ -18,8 +18,8 @@ using Dev2.Data.Parsers;
 using Dev2.Data.TO;
 using Dev2.DataList.Contract.Binary_Objects;
 
-// ReSharper disable CheckNamespace
-// ReSharper disable InconsistentNaming
+
+
 namespace Dev2.DataList.Contract
 {
     public static class DataListFactory

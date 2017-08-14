@@ -3,7 +3,7 @@ using System.ComponentModel;
 using Dev2.Common.Interfaces;
 using Newtonsoft.Json;
 
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Data
 {

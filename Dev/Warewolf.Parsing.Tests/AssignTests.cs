@@ -3,7 +3,7 @@ using Dev2.Common.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.Storage;
 using WarewolfParserInterop;
-// ReSharper disable InconsistentNaming
+
 
 namespace WarewolfParsingTest
 {
@@ -90,7 +90,7 @@ namespace WarewolfParsingTest
             //------------Assert Results-------------------------
             Assert.AreEqual(x.IsRecordSetExpression, true);
             var rec = x as LanguageAST.LanguageExpression.RecordSetExpression;
-            // ReSharper disable once PossibleNullReferenceException
+            
             Assert.IsTrue(rec.Item.Index.IsIndexExpression);
         }
 
@@ -108,7 +108,7 @@ namespace WarewolfParsingTest
             //------------Assert Results-------------------------
             Assert.AreEqual(x.IsRecordSetExpression, true);
             var rec = x as LanguageAST.LanguageExpression.RecordSetExpression;
-            // ReSharper disable once PossibleNullReferenceException
+            
             Assert.IsTrue(rec.Item.Index.IsIndexExpression);
         }
 
@@ -126,7 +126,7 @@ namespace WarewolfParsingTest
             //------------Assert Results-------------------------
             Assert.AreEqual(x.IsRecordSetExpression, true);
             var rec = x as LanguageAST.LanguageExpression.RecordSetExpression;
-            // ReSharper disable once PossibleNullReferenceException
+            
             Assert.IsTrue(rec.Item.Index.IsIntIndex);
         }
 
@@ -144,7 +144,7 @@ namespace WarewolfParsingTest
             //------------Assert Results-------------------------
             Assert.AreEqual(x.IsRecordSetExpression, true);
             var rec = x as LanguageAST.LanguageExpression.RecordSetExpression;
-            // ReSharper disable once PossibleNullReferenceException
+            
             Assert.IsTrue(rec.Item.Index.IsIntIndex);
         }
 
@@ -162,7 +162,7 @@ namespace WarewolfParsingTest
             //------------Assert Results-------------------------
             Assert.AreEqual(x.IsRecordSetNameExpression, true);
             var rec = x as LanguageAST.LanguageExpression.RecordSetNameExpression;
-            // ReSharper disable once PossibleNullReferenceException
+            
             Assert.IsTrue(rec.Item.Index.IsIntIndex);
         }
 
@@ -180,7 +180,7 @@ namespace WarewolfParsingTest
             //------------Assert Results-------------------------
             Assert.AreEqual(x.IsRecordSetNameExpression, true);
             var rec = x as LanguageAST.LanguageExpression.RecordSetNameExpression;
-            // ReSharper disable once PossibleNullReferenceException
+            
             Assert.IsTrue(rec.Item.Index.IsIntIndex);
         }
 
@@ -198,7 +198,7 @@ namespace WarewolfParsingTest
             //------------Assert Results-------------------------
             Assert.AreEqual(x.IsRecordSetNameExpression, true);
             var rec = x as LanguageAST.LanguageExpression.RecordSetNameExpression;
-            // ReSharper disable once PossibleNullReferenceException
+            
             Assert.IsTrue(rec.Item.Index.IsIndexExpression);
         }
 
@@ -216,7 +216,7 @@ namespace WarewolfParsingTest
             //------------Assert Results-------------------------
             Assert.AreEqual(x.IsRecordSetNameExpression, true);
             var rec = x as LanguageAST.LanguageExpression.RecordSetNameExpression;
-            // ReSharper disable once PossibleNullReferenceException
+            
             Assert.IsTrue(rec.Item.Index.IsIndexExpression);
         }
 
@@ -234,7 +234,7 @@ namespace WarewolfParsingTest
             //------------Assert Results-------------------------
             Assert.AreEqual(x.IsRecordSetNameExpression, true);
             var rec = x as LanguageAST.LanguageExpression.RecordSetNameExpression;
-            // ReSharper disable once PossibleNullReferenceException
+            
             Assert.IsTrue(rec.Item.Index.IsIndexExpression);
         }
 
@@ -373,7 +373,7 @@ namespace WarewolfParsingTest
 
             //------------Assert Results-------------------------
 
-            // ReSharper disable once PossibleNullReferenceException
+            
             Assert.IsTrue(x.Scalar.ContainsKey("b"));
         }
 
@@ -471,7 +471,7 @@ namespace WarewolfParsingTest
 
             //------------Assert Results-------------------------
 
-            // ReSharper disable once PossibleNullReferenceException
+            
             Assert.IsTrue(x.RecordSets.ContainsKey("bx"));
             Assert.IsTrue(x.RecordSets["bx"].Data.ContainsKey("d"));
         }
@@ -489,7 +489,7 @@ namespace WarewolfParsingTest
 
             //------------Assert Results-------------------------
 
-            // ReSharper disable once PossibleNullReferenceException
+            
             Assert.IsTrue(x.RecordSets.ContainsKey("Rec"));
             Assert.IsTrue(x.RecordSets["Rec"].Data.ContainsKey("d"));
             Assert.IsTrue(x.RecordSets["Rec"].Data.ContainsKey("a"));
@@ -510,7 +510,7 @@ namespace WarewolfParsingTest
 
             //------------Assert Results-------------------------
 
-            // ReSharper disable once PossibleNullReferenceException
+            
             Assert.IsTrue(x.RecordSets.ContainsKey("Rec"));
             Assert.IsTrue(x.RecordSets["Rec"].Data.ContainsKey("d"));
             Assert.IsTrue(x.RecordSets["Rec"].Data.ContainsKey("a"));

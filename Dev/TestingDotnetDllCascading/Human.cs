@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-// ReSharper disable MemberCanBePrivate.Global
-// ReSharper disable UnusedMember.Global
-// ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
+
+
+
 
 namespace TestingDotnetDllCascading
 {
@@ -25,7 +25,7 @@ namespace TestingDotnetDllCascading
     public class Human
     {
         private List<Food> _favouriteFoodsProperty;
-        // ReSharper disable once UnusedAutoPropertyAccessor.Local
+        
         public string Name { get; set; }
         public Human()
         {

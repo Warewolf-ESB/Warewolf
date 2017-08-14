@@ -14,11 +14,11 @@ using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Interfaces;
 using Dev2.Studio.Interfaces;
 
-// ReSharper disable ClassWithVirtualMembersNeverInherited.Global
-// ReSharper disable AutoPropertyCanBeMadeGetOnly.Local
-// ReSharper disable ConvertPropertyToExpressionBody
-// ReSharper disable MemberCanBePrivate.Global
-// ReSharper disable ExplicitCallerInfoArgument
+
+
+
+
+
 
 namespace Dev2.Activities.Designers2.DropBox2016.Delete
 {
@@ -41,7 +41,7 @@ namespace Dev2.Activities.Designers2.DropBox2016.Delete
             _sourceManager = sourceManager;
             EditDropboxSourceCommand = new RelayCommand(o => EditDropBoxSource(), p => IsDropboxSourceSelected);
             NewSourceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(CreateOAuthSource);
-            // ReSharper disable once VirtualMemberCallInContructor
+            
             Sources = LoadOAuthSources();
             AddTitleBarLargeToggle();
             EditDropboxSourceCommand.RaiseCanExecuteChanged();
@@ -63,13 +63,13 @@ namespace Dev2.Activities.Designers2.DropBox2016.Delete
                 var oauthSource = GetProperty<DropBoxSource>();
                 return oauthSource ?? GetProperty<DropBoxSource>();
             }
-            // ReSharper disable once ExplicitCallerInfoArgument
+            
             set
             {
                 SetProperty(value);
                 EditDropboxSourceCommand.RaiseCanExecuteChanged();
                 OnPropertyChanged("IsDropboxSourceSelected");
-                // ReSharper disable once RedundantArgumentDefaultValue
+                
                 OnPropertyChanged("SelectedSource");
             }
         }
@@ -84,7 +84,7 @@ namespace Dev2.Activities.Designers2.DropBox2016.Delete
             {
                 SetProperty(value);
                 _sources = value;
-                // ReSharper disable once RedundantArgumentDefaultValue
+                
                 OnPropertyChanged("Sources");
             }
         }

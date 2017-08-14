@@ -41,7 +41,7 @@ namespace Dev2.Studio.Core
                     else if (explorerItemViewModel.ResourceType == "Folder")
                     {
                         var explorerItemViewModels = explorerItemViewModel.AsList();
-                        // ReSharper disable once LoopCanBeConvertedToQuery
+                        
                         var deleteFileMetaData = new DeletedFileMetadata
                         {
                             IsDeleted = true,

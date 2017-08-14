@@ -15,7 +15,7 @@ using System.Reflection;
 using Dev2.Interfaces;
 using Dev2.Util;
 using Dev2.Utilities;
-// ReSharper disable LoopCanBeConvertedToQuery
+
 
 namespace Dev2.FindMissingStrategies
 {

@@ -49,11 +49,11 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json;
 using Warewolf.Studio.ViewModels;
-// ReSharper disable ReturnTypeCanBeEnumerable.Local
-// ReSharper disable NotAccessedVariable
 
-// ReSharper disable InconsistentNaming
-// ReSharper disable CheckNamespace
+
+
+
+
 namespace BusinessDesignStudio.Unit.Tests
 {
     /// <summary>
@@ -901,9 +901,9 @@ namespace BusinessDesignStudio.Unit.Tests
         [TestCategory("ResourceRepository_Delete")]
         [Description("Unassigned resources can be deleted")]
         [Owner("Ashley Lewis")]
-        // ReSharper disable InconsistentNaming
+        
         public void ResourceRepository_UnitTest_DeleteUnassignedResource_ResourceDeletedFromRepository()
-        // ReSharper restore InconsistentNaming
+
         {
 
             var msg = new ExecuteMessage();
@@ -934,9 +934,9 @@ namespace BusinessDesignStudio.Unit.Tests
         [TestMethod]
         [TestCategory("ResourceRepository_Delete")]
         [Owner("Hagashen Naidu")]
-        // ReSharper disable InconsistentNaming
+        
         public void ResourceRepository_DeleteResource_StudioResourceRepositoryRemoveItemCalled()
-        // ReSharper restore InconsistentNaming
+
         {
 
             var msg = new ExecuteMessage();
@@ -969,9 +969,9 @@ namespace BusinessDesignStudio.Unit.Tests
         [TestMethod]
         [TestCategory("ResourceRepository_Delete")]
         [Owner("Hagashen Naidu")]
-        // ReSharper disable InconsistentNaming
+        
         public void ResourceRepository_DeleteResource_ResourceNameUnsaved_StudioResourceRepositoryRemoveItemNeverCalled()
-        // ReSharper restore InconsistentNaming
+
         {
 
             var msg = new ExecuteMessage();
@@ -1003,9 +1003,9 @@ namespace BusinessDesignStudio.Unit.Tests
         [TestMethod]
         [TestCategory("ResourceRepository_Delete")]
         [Owner("Hagashen Naidu")]
-        // ReSharper disable InconsistentNaming
+        
         public void ResourceRepository_DeleteResource_ResourceNameNotUnsavedUnassignedCategory_StudioResourceRepositoryRemoveItemCalled()
-        // ReSharper restore InconsistentNaming
+
         {
 
             var msg = new ExecuteMessage();

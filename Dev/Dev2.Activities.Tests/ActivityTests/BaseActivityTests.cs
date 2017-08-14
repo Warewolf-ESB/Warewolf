@@ -29,7 +29,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             List<DebugItem> inRes;
             List<DebugItem> outRes;
 
-            // ReSharper disable InconsistentNaming
+            
             const string dataList = "<ADL><OutVar1/><OutVar2/><ResultVar/></ADL>";
             
             const string dataListWithData = "<ADL>" +
@@ -165,5 +165,5 @@ namespace Dev2.Tests.Activities.ActivityTests
             return new List<string> { result };
         }
     }
-    // ReSharper restore InconsistentNaming
+    
 }

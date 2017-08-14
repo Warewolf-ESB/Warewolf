@@ -29,7 +29,7 @@ using Warewolf.Security.Encryption;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 
-// ReSharper disable UnusedMember.Global
+
 
 namespace Dev2.Data.Util
 {

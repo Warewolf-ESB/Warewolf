@@ -27,11 +27,11 @@ using Dev2.Security;
 using Dev2.Services.Security;
 using Dev2.Studio.Core.AppResources.Repositories;
 using Dev2.Studio.Interfaces;
-// ReSharper disable NonReadonlyMemberInGetHashCode
-// ReSharper disable ExplicitCallerInfoArgument
-// ReSharper disable ExplicitCallerInfoArgument
 
-// ReSharper disable CheckNamespace
+
+
+
+
 namespace Dev2.Studio.Core.Models
 {
 
@@ -189,7 +189,7 @@ namespace Dev2.Studio.Core.Models
 
                 return Connection?.DisplayName ?? "Default Name";
             }
-            // ReSharper disable once ValueParameterNotUsed
+            
             set
             {
                 Connection.DisplayName = DisplayName;
@@ -284,7 +284,7 @@ namespace Dev2.Studio.Core.Models
             OnPropertyChanged("IsConnected");
         }
 
-        [SuppressMessage("ReSharper", "UnusedMember.Local")]
+        
         void RaiseLoadedResources()
         {
             ResourcesLoaded?.Invoke(this, new ResourcesLoadedEventArgs { Model = this });

@@ -14,7 +14,7 @@ using Dev2.Interfaces;
 using Unlimited.Framework.Converters.Graph;
 using Unlimited.Framework.Converters.Graph.String.Json;
 using WarewolfParserInterop;
-// ReSharper disable ParameterTypeCanBeEnumerable.Local
+
 
 namespace Dev2.Activities
 {

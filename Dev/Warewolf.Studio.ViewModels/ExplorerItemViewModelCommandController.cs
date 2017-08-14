@@ -6,8 +6,8 @@ using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Common.Interfaces.Versioning;
 using Dev2.Studio.Interfaces;
 
-// ReSharper disable NonLocalizedString
-// ReSharper disable InconsistentNaming
+
+
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -239,7 +239,7 @@ namespace Warewolf.Studio.ViewModels
 
         public ExplorerItemViewModel CreateChild(string name, Guid id, IServer server, ExplorerItemViewModel explorerItem, Action<IExplorerItemViewModel> selectAction)
         {
-            // ReSharper disable once UseObjectOrCollectionInitializer
+            
             var child = new ExplorerItemViewModel(server, explorerItem, selectAction, _shellViewModel, _popupController)
             {
                 ResourcePath = explorerItem.ResourcePath + "\\" + name,

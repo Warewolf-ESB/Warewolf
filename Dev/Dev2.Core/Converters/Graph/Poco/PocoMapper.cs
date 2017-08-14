@@ -17,10 +17,10 @@ using Dev2;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Core.Graph;
 
-// ReSharper disable CheckNamespace
+
 
 namespace Unlimited.Framework.Converters.Graph.Poco
-// ReSharper restore CheckNamespace
+
 {
     [Serializable]
     public class PocoMapper : IMapper

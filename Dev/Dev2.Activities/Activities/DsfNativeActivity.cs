@@ -46,18 +46,18 @@ using Warewolf.Resource.Messages;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 
-// ReSharper disable NonReadonlyMemberInGetHashCode
-// ReSharper disable ReturnTypeCanBeEnumerable.Global
-// ReSharper disable CheckNamespace
-// ReSharper disable InconsistentNaming
-// ReSharper disable RedundantExtendsListEntry
-// ReSharper disable UnusedMember.Global
-// ReSharper disable RedundantAssignment
-// ReSharper disable MemberCanBeProtected.Global
-// ReSharper disable UnusedAutoPropertyAccessor.Global
-// ReSharper disable MemberCanBePrivate.Global
-// ReSharper disable FieldCanBeMadeReadOnly.Global
-// ReSharper disable VirtualMemberNeverOverridden.Global
+
+
+
+
+
+
+
+
+
+
+
+
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
     public abstract class DsfNativeActivity<T> : NativeActivity<T>, IDev2ActivityIOMapping, IDev2Activity, IEquatable<DsfNativeActivity<T>>

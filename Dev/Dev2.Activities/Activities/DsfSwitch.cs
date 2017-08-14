@@ -11,9 +11,9 @@ using Dev2.Interfaces;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Storage.Interfaces;
 
-// ReSharper disable MemberCanBePrivate.Global
-// ReSharper disable FieldCanBeMadeReadOnly.Global
-// ReSharper disable UnusedMember.Global
+
+
+
 
 namespace Dev2.Activities
 {
@@ -146,9 +146,9 @@ namespace Dev2.Activities
                     }
                 }
             }
-            // ReSharper disable EmptyGeneralCatchClause
+            
             catch
-            // ReSharper restore EmptyGeneralCatchClause
+            
             {
 
             }
@@ -173,9 +173,9 @@ namespace Dev2.Activities
                     }
                 }
             }
-            // ReSharper disable EmptyGeneralCatchClause
+            
             catch
-            // ReSharper restore EmptyGeneralCatchClause
+            
             {
 
             }

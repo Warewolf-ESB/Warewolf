@@ -2,7 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.Storage;
 using WarewolfParserInterop;
-// ReSharper disable InconsistentNaming
+
 
 namespace WarewolfParsingTest
 {
@@ -159,7 +159,7 @@ namespace WarewolfParsingTest
             var env = CreateEnvironmentWithData();
           
             //------------Execute Test---------------------------
-            // ReSharper disable once RedundantAssignment
+            
             var updated = PublicFunctions.EvalUpdate("[[s]]", env, 0, a => DataStorage.WarewolfAtom.NewDataString("[[s]]"));
             updated = PublicFunctions.EvalUpdate("[[[[s]]]]", updated, 0, a => DataStorage.WarewolfAtom.NewDataString("e"));
             //------------Assert Results-------------------------

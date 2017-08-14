@@ -6,7 +6,7 @@ using Dev2.Common.Interfaces;
 using Dev2.Data.Util;
 using Gma.DataStructures.StringSearch;
 
-// ReSharper disable UnusedAutoPropertyAccessor.Global
+
 
 namespace Dev2.Studio.Core.DataList
 {

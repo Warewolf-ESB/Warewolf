@@ -13,12 +13,12 @@ using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Studio.Core.Activities.Utils;
 using Warewolf.Core;
-// ReSharper disable ExplicitCallerInfoArgument
-// ReSharper disable UnusedAutoPropertyAccessor.Global
-// ReSharper disable ConvertToAutoProperty
-// ReSharper disable ClassWithVirtualMembersNeverInherited.Global
-// ReSharper disable MemberCanBePrivate.Global
-// ReSharper disable UnusedMember.Global
+
+
+
+
+
+
 
 namespace Dev2.Activities.Designers2.Core.ActionRegion
 {
@@ -104,12 +104,12 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             try
             {
                 Errors.Clear();
-                // ReSharper disable once ExplicitCallerInfoArgument
+                
                 if (_source?.SelectedSource != null)
                 {
                     LoadActions(_model);                   
                 }
-                // ReSharper disable once ExplicitCallerInfoArgument
+                
                 OnPropertyChanged(@"IsEnabled");
             }
             catch (Exception e)

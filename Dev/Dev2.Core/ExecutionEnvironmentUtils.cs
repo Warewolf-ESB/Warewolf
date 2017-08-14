@@ -363,7 +363,7 @@ namespace Dev2
             }
         }
 
-        // ReSharper disable once InconsistentNaming
+
         static string RemoveXMLPrefix(string a)
         {
             if (a.StartsWith(GlobalConstants.XMLPrefix))
@@ -540,7 +540,7 @@ namespace Dev2
             return recSetItems;
         }
 
-        // ReSharper disable once ParameterTypeCanBeEnumerable.Local
+        
         static Dictionary<string, Schema> BuildPropertyDefinition(IGrouping<string, string> groupedRecSet)
         {
             return groupedRecSet.ToDictionary(DataListUtil.ExtractFieldNameOnlyFromValue, name => new Schema { Type = "string" });
@@ -549,7 +549,7 @@ namespace Dev2
 
     public class Schema
     {
-        // ReSharper disable UnusedAutoPropertyAccessor.Global
+        
 
         [JsonProperty("type")]
         public string Type { get; set; }

@@ -23,7 +23,7 @@ using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
 using Newtonsoft.Json;
 
-// ReSharper disable InconsistentNaming
+
 namespace Dev2.Runtime.ServiceModel
 {
     public delegate string WebExecuteString(WebSource source, WebRequestMethod method, string relativeUri, string data, bool throwError, out ErrorResultTO errors, string[] headers = null);
@@ -183,9 +183,9 @@ namespace Dev2.Runtime.ServiceModel
 
         #region Execute(client, address, method, data)
 
-        // ReSharper disable UnusedParameter.Local
+        
         static byte[] Execute(WebClient client, string address, WebRequestMethod method, byte[] data, bool throwError, out ErrorResultTO errors)
-            // ReSharper restore UnusedParameter.Local
+            
         {
             errors = new ErrorResultTO();
             switch (method)

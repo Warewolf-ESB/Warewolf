@@ -11,7 +11,7 @@
 using Caliburn.Micro;
 using Dev2.Studio.Interfaces.Enums;
 
-// ReSharper disable once CheckNamespace
+
 namespace Dev2.Studio.ViewModels.WorkSurface
 {
     public interface IWorkSurfaceViewModel : IScreen

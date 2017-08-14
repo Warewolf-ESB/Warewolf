@@ -45,7 +45,7 @@ using Dev2.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-// ReSharper disable InconsistentNaming
+
 namespace Dev2.Core.Tests
 {
     [TestClass]
@@ -66,9 +66,9 @@ namespace Dev2.Core.Tests
             //------------Setup for test--------------------------
 
             //------------Execute Test---------------------------
-            // ReSharper disable ObjectCreationAsStatement
+            
             new WorkSurfaceContextViewModel(null, new Mock<IWorkSurfaceViewModel>().Object);
-            // ReSharper restore ObjectCreationAsStatement
+            
             //------------Assert Results-------------------------
         }
 
@@ -81,9 +81,9 @@ namespace Dev2.Core.Tests
             //------------Setup for test--------------------------
 
             //------------Execute Test---------------------------
-            // ReSharper disable ObjectCreationAsStatement
+            
             new WorkSurfaceContextViewModel(new WorkSurfaceKey(), null);
-            // ReSharper restore ObjectCreationAsStatement
+            
             //------------Assert Results-------------------------
         }
 
@@ -160,9 +160,9 @@ namespace Dev2.Core.Tests
             resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel>());
 
             ExecuteMessage exeMsg = null;
-            // ReSharper disable ExpressionIsAlwaysNull
+            
             resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IServer>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(exeMsg);
-            // ReSharper restore ExpressionIsAlwaysNull
+            
 
             var resourceModel = ResourceModel ?? new Mock<IContextualResourceModel>();
             resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
@@ -359,9 +359,9 @@ namespace Dev2.Core.Tests
             mockWorkSurfaceViewModel.Setup(m => m.BindToModel()).Verifiable();
 
             var viewModel = WorkflowDesignerViewModelMock(true);
-            // ReSharper disable UseObjectOrCollectionInitializer
+            
             var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(workSurfaceKey, viewModel);
-            // ReSharper restore UseObjectOrCollectionInitializer
+            
             workSurfaceContextViewModel.WorkSurfaceViewModel = new WorkSurfaceViewModelTest();
             workSurfaceContextViewModel.DebugOutputViewModel = viewModel.DebugOutputViewModel;
             //------------Execute Test---------------------------
@@ -386,9 +386,9 @@ namespace Dev2.Core.Tests
             mockWorkSurfaceViewModel.Setup(m => m.BindToModel()).Verifiable();
 
             var viewModel = WorkflowDesignerViewModelMock(true);
-            // ReSharper disable UseObjectOrCollectionInitializer
+            
             var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(workSurfaceKey, viewModel);
-            // ReSharper restore UseObjectOrCollectionInitializer
+            
             workSurfaceContextViewModel.WorkSurfaceViewModel = new WorkSurfaceViewModelTest();
             workSurfaceContextViewModel.DebugOutputViewModel = viewModel.DebugOutputViewModel;
             //------------Execute Test---------------------------

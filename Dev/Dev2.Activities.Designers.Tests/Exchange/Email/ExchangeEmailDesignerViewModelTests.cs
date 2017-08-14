@@ -23,7 +23,7 @@ using Dev2.Threading;
 using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Activities.Designers.Tests.Exchange.Email
 {
@@ -133,9 +133,9 @@ namespace Dev2.Activities.Designers.Tests.Exchange.Email
             //------------Setup for test--------------------------
 
             //------------Execute Test---------------------------
-            // ReSharper disable ObjectCreationAsStatement
+            
             new ExchangeEmailDesignerViewModel(CreateModelItem(), null, new Mock<IServer>().Object, null);
-            // ReSharper restore ObjectCreationAsStatement
+            
 
             //------------Assert Results-------------------------
         }
@@ -149,9 +149,9 @@ namespace Dev2.Activities.Designers.Tests.Exchange.Email
             //------------Setup for test--------------------------
 
             //------------Execute Test---------------------------
-            // ReSharper disable ObjectCreationAsStatement
+            
             new ExchangeEmailDesignerViewModel(CreateModelItem(), null, (IServer)null, null);
-            // ReSharper restore ObjectCreationAsStatement
+            
 
             //------------Assert Results-------------------------
         }
@@ -165,9 +165,9 @@ namespace Dev2.Activities.Designers.Tests.Exchange.Email
             //------------Setup for test--------------------------
 
             //------------Execute Test---------------------------
-            // ReSharper disable ObjectCreationAsStatement
+            
             new ExchangeEmailDesignerViewModel(CreateModelItem(), new Mock<IAsyncWorker>().Object, new Mock<IServer>().Object, null);
-            // ReSharper restore ObjectCreationAsStatement
+            
 
             //------------Assert Results-------------------------
         }
@@ -902,14 +902,14 @@ namespace Dev2.Activities.Designers.Tests.Exchange.Email
 
         public ExchangeSource SelectedEmailSourceModelItemValue
         {
-            // ReSharper disable ExplicitCallerInfoArgument
+            
             get { return GetProperty<ExchangeSource>("SelectedEmailSource"); }
-            // ReSharper restore ExplicitCallerInfoArgument
+            
             set
             {
-                // ReSharper disable ExplicitCallerInfoArgument
+                
                 SetProperty(value, "SelectedEmailSource");
-                // ReSharper restore ExplicitCallerInfoArgument
+                
             }
         }
     }

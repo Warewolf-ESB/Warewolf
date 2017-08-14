@@ -5,8 +5,8 @@ using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
 
-// ReSharper disable PrivateMembersMustHaveComments
-// ReSharper disable PublicMembersMustHaveComments
+
+
 namespace Dev2.Runtime.ResourceCatalogImpl
 {
     internal class ResourceCopyProvider: IResourceCopyProvider

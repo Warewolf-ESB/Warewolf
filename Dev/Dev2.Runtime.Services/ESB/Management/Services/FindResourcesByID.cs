@@ -28,7 +28,7 @@ namespace Dev2.Runtime.ESB.Management.Services
     /// <summary>
     /// Find a resource by its id
     /// </summary>
-    // ReSharper disable InconsistentNaming
+    
 
     public class FindResourcesByID : IEsbManagementEndpoint
     {

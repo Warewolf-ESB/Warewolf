@@ -21,9 +21,9 @@ namespace Dev2.Infrastructure.Tests.Communication
         [Description("Constructor must initialize Date to now.")]
         [TestCategory("UnitTest")]
         [Owner("Trevor Williams-Ros")]
-        // ReSharper disable InconsistentNaming
+        
         public void MemoConstructor_UnitTest_Date_Now()
-        // ReSharper restore InconsistentNaming
+
         {
             var memo = new Memo();
             var diff = DateTime.Now - memo.Date;
@@ -35,9 +35,9 @@ namespace Dev2.Infrastructure.Tests.Communication
         [Description("DateString must return the Date property formatted as yyyy-MM-dd.HH.mm.ss.ffff.")]
         [TestCategory("UnitTest")]
         [Owner("Trevor Williams-Ros")]
-// ReSharper disable InconsistentNaming
+
         public void MemoDateString_UnitTest_Format_Correct()
-// ReSharper restore InconsistentNaming
+
         {
             var memo = new Memo();
             Assert.AreEqual(memo.Date.ToString("yyyy-MM-dd.HH.mm.ss.ffff"), memo.DateString);
@@ -47,9 +47,9 @@ namespace Dev2.Infrastructure.Tests.Communication
         [Description("Equals to null returns false.")]
         [TestCategory("UnitTest")]
         [Owner("Trevor Williams-Ros")]
-// ReSharper disable InconsistentNaming
+
         public void MemoEquals_UnitTest_Null_False()
-// ReSharper restore InconsistentNaming
+
         {
             var memo = new Memo();
             var result = memo.Equals(null);
@@ -60,9 +60,9 @@ namespace Dev2.Infrastructure.Tests.Communication
         [Description("Equals to another type returns false.")]
         [TestCategory("UnitTest")]
         [Owner("Trevor Williams-Ros")]
-// ReSharper disable InconsistentNaming
+
         public void MemoEquals_UnitTest_OtherType_False()
-// ReSharper restore InconsistentNaming
+
         {
             var memo = new Memo();
             var result = memo.Equals(new object());
@@ -73,9 +73,9 @@ namespace Dev2.Infrastructure.Tests.Communication
         [Description("Equals to same type but different ID returns false.")]
         [TestCategory("UnitTest")]
         [Owner("Trevor Williams-Ros")]
-// ReSharper disable InconsistentNaming
+
         public void MemoEquals_UnitTest_SameTypeAndDifferentID_False()
-// ReSharper restore InconsistentNaming
+
         {
             var memo1 = new Memo { InstanceID = Guid.NewGuid() };
             var memo2 = new Memo { InstanceID = Guid.NewGuid() };
@@ -87,9 +87,9 @@ namespace Dev2.Infrastructure.Tests.Communication
         [Description("Equals to same type and same ID returns true.")]
         [TestCategory("UnitTest")]
         [Owner("Trevor Williams-Ros")]
-// ReSharper disable InconsistentNaming
+
         public void MemoEquals_UnitTest_SameTypeAndSameID_True()
-// ReSharper restore InconsistentNaming
+
         {
             var memo1 = new Memo { InstanceID = Guid.NewGuid() };
             var memo2 = new Memo { InstanceID = memo1.InstanceID };
@@ -101,9 +101,9 @@ namespace Dev2.Infrastructure.Tests.Communication
         [Description("GetHashCode returns hash code of ID property.")]
         [TestCategory("UnitTest")]
         [Owner("Trevor Williams-Ros")]
-// ReSharper disable InconsistentNaming
+
         public void MemoGetHashCode_UnitTest_Result_HashCodeOfID()
-// ReSharper restore InconsistentNaming
+
         {
             var memo = new Memo { InstanceID = Guid.NewGuid() };
             var expected = memo.InstanceID.GetHashCode();

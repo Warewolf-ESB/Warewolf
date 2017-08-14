@@ -19,7 +19,7 @@ using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Interfaces;
 using Dev2.TO;
-// ReSharper disable MemberCanBePrivate.Global
+
 
 namespace Dev2.Activities.Designers2.SharepointListRead
 {
@@ -408,9 +408,9 @@ namespace Dev2.Activities.Designers2.SharepointListRead
 
             var selectedSharepointServer = SelectedSharepointServer;
             var selectedList = SelectedList;
-            // ReSharper disable ImplicitlyCapturedClosure
+            
             _asyncWorker.Start(() => GetListFields(selectedSharepointServer, selectedList), columnList =>
-                // ReSharper restore ImplicitlyCapturedClosure
+                
             {
                 if(columnList != null)
                 {

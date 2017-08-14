@@ -216,14 +216,14 @@ namespace Dev2.Common.ExtMethods
             bool result = false;
             try
             {
-                // ReSharper disable ReturnValueOfPureMethodIsNotUsed
+                
                 Convert.FromBase64String(payload);
-                // ReSharper restore ReturnValueOfPureMethodIsNotUsed
+                
                 result = true;
             }
-            // ReSharper disable EmptyGeneralCatchClause
+            
             catch (Exception)
-            // ReSharper restore EmptyGeneralCatchClause
+            
             {
                 // if error is thrown we know it is not a valid base64 string
             }

@@ -78,7 +78,7 @@ namespace Dev2.Utils
                 {
                     nodes[0].CollectNodes(allNodes);
 
-                    // ReSharper disable once ForCanBeConvertedToForeach
+                    
                     for(int i = 0; i < allNodes.Count; i++)
                     {
                         if(allNodes[i] is DatalistRecordSetNode)

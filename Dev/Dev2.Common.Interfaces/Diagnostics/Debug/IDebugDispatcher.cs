@@ -11,7 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-// ReSharper disable UnusedMemberInSuper.Global
+
 
 namespace Dev2.Common.Interfaces.Diagnostics.Debug
 {

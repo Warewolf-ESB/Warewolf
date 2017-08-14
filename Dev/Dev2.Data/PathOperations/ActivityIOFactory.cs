@@ -19,9 +19,9 @@ using Dev2.Data.Interfaces;
 using Dev2.Data.Interfaces.Enums;
 using Warewolf.Resource.Errors;
 
-// ReSharper disable CheckNamespace
+
 namespace Dev2.PathOperations
-// ReSharper restore CheckNamespace
+
 {
 
     /// <summary>

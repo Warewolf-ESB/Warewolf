@@ -12,7 +12,7 @@ using Warewolf.Core;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 
-// ReSharper disable ReturnValueOfPureMethodIsNotUsed
+
 
 namespace Dev2.Activities.WcfEndPoint
 {

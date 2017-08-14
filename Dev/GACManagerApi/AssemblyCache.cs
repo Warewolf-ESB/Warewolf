@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using GACManagerApi.Fusion;
-// ReSharper disable NonLocalizedString
+
 
 namespace GACManagerApi
 {

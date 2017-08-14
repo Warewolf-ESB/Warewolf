@@ -23,10 +23,10 @@ namespace Dev2
 {
     public class Impersonator : IDisposable, IImpersonator
     {
-        // ReSharper disable InconsistentNaming
+        
         const int LOGON32_PROVIDER_DEFAULT = 0;
         const int LOGON32_LOGON_INTERACTIVE = 2;
-        // ReSharper restore InconsistentNaming
+
 
         #region DllImports
 

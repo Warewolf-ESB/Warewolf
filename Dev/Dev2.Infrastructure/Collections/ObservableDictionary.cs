@@ -17,7 +17,7 @@ using System.ComponentModel;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
 using Warewolf.Resource.Errors;
-// ReSharper disable UnusedMember.Global
+
 
 namespace Dev2.Collections
 {

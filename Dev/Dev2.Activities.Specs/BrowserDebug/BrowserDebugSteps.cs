@@ -122,7 +122,7 @@ namespace Dev2.Activities.Specs.BrowserDebug
             List<string> expectedflow = new List<string> { sequenceflow1, sequenceflow2, sequenceflow3 };
             List<string> actualflow = new List<string>();
 
-            // ReSharper disable once LoopCanBeConvertedToQuery
+            
             foreach (var debugState in allDebugStates)
             {
                 if (debugState.IsFirstStep())
@@ -130,7 +130,7 @@ namespace Dev2.Activities.Specs.BrowserDebug
                 if (debugState.StateType != StateType.End)
                 {
 
-                    // ReSharper disable once LoopCanBeConvertedToQuery
+                    
                     foreach (var debugStateChild in debugState.Children)
                     {
                         actualflow.Add(debugStateChild.DisplayName);

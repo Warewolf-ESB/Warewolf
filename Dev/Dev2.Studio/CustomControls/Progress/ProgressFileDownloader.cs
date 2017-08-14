@@ -81,9 +81,9 @@ namespace Dev2.CustomControls.Progress
                 foreach(var v in dir.GetFiles(path).Where(a => a.Contains("tmp")))
                     file.Delete(v);
             }
-            // ReSharper disable EmptyGeneralCatchClause
+            
             catch
-            // ReSharper restore EmptyGeneralCatchClause
+            
             {
                 //best effort.
             }

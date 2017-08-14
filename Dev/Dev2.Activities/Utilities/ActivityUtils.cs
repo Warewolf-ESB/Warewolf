@@ -17,7 +17,7 @@ using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.Runtime.ServiceModel.Data;
 using Warewolf.Core;
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Utilities
 {

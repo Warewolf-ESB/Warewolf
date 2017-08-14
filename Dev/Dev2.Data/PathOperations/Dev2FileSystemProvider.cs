@@ -25,8 +25,8 @@ using Dev2.Data.Interfaces.Enums;
 using Microsoft.Win32.SafeHandles;
 using Warewolf.Resource.Errors;
 
-// ReSharper disable CheckNamespace
-// ReSharper disable InconsistentNaming
+
+
 namespace Dev2.PathOperations
 {
 
@@ -65,7 +65,7 @@ namespace Dev2.PathOperations
         private static readonly ReaderWriterLockSlim _fileLock = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
         const int LOGON32_PROVIDER_DEFAULT = 0;
         //This parameter causes LogonUser to create a primary token. 
-        // ReSharper disable once InconsistentNaming
+
         const int LOGON32_LOGON_INTERACTIVE = 2;
 
         public IActivityIOPath IOPath

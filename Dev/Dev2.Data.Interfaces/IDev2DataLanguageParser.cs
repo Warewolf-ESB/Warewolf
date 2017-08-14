@@ -11,9 +11,9 @@
 using System.Collections.Generic;
 using Dev2.Data.Interfaces;
 
-// ReSharper disable CheckNamespace
+
 namespace Dev2.DataList.Contract
-// ReSharper restore CheckNamespace
+
 {
     public interface IDev2DataLanguageParser
     {

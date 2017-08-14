@@ -41,9 +41,9 @@ namespace Dev2.TO
                 Errors[propertyName] = errorsTos;
             }
 
-            // ReSharper disable ExplicitCallerInfoArgument
+            
             OnPropertyChanged("Errors");
-            // ReSharper restore ExplicitCallerInfoArgument
+            
 
             List<IActionableErrorInfo> errorList;
             if(Errors.TryGetValue(propertyName, out errorList))

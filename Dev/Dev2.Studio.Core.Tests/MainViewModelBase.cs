@@ -85,9 +85,9 @@ namespace Dev2.Core.Tests
             WindowManager = new Mock<IWindowManager>();
             Mock<IAsyncWorker> asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
             Mock<IWorkspaceItemRepository> mockWorkspaceItemRepository = GetworkspaceItemRespository();
-            // ReSharper disable ObjectCreationAsStatement
+            
             new WorkspaceItemRepository(mockWorkspaceItemRepository.Object);
-            // ReSharper restore ObjectCreationAsStatement
+            
             var vieFactory = new Mock<IViewFactory>();
             var viewMock = new Mock<IView>();
             vieFactory.Setup(factory => factory.GetViewGivenServerResourceType(It.IsAny<string>()))
@@ -114,9 +114,9 @@ namespace Dev2.Core.Tests
             BrowserPopupController = new Mock<IBrowserPopupController>();
             Mock<IAsyncWorker> asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
             Mock<IWorkspaceItemRepository> mockWorkspaceItemRepository = GetworkspaceItemRespository();
-            // ReSharper disable ObjectCreationAsStatement
+            
             new WorkspaceItemRepository(mockWorkspaceItemRepository.Object);
-            // ReSharper restore ObjectCreationAsStatement
+            
             var explorerViewModel = new Mock<IExplorerViewModel>();
             var vieFactory = new Mock<IViewFactory>();
             var viewMock = new Mock<IView>();
