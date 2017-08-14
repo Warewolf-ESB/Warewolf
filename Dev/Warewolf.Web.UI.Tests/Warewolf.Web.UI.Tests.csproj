@@ -69,6 +69,10 @@
   <ItemGroup>
     <None Include="Convert NUnit tests to MSTest.ps1" />
     <None Include="packages.config" />
+	<None Include="..\Run Tests.ps1">
+      <Link>Properties\Run Tests.ps1</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
