@@ -79,8 +79,9 @@ namespace Warewolf.Studio.Views
             if (OkButton.IsEnabled && OkButton.IsVisible)
             {
                 OkButton.Command.Execute(null);
+                return;
             }
-            else if (DuplicateButton.IsEnabled && DuplicateButton.IsVisible)
+            if (DuplicateButton.IsEnabled && DuplicateButton.IsVisible)
             {
                 DuplicateButton.Command.Execute(null);
             }
