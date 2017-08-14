@@ -73,6 +73,10 @@
     <None Include="App.config" />
     <None Include="Convert NUnit tests to MSTest.ps1" />
     <None Include="packages.config" />
+	<None Include="..\Run Tests.ps1">
+      <Link>Properties\Run Tests.ps1</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="BrowserWebDrivers\SupportedBrowsers.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
