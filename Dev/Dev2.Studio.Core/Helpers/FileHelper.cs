@@ -70,7 +70,7 @@ namespace Dev2.Studio.Core.Helpers
             }
         }
 
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         public static string CreateATemporaryFile(StringBuilder fileContent, string uniqueOutputPath)
         {
             CreateTextFile(fileContent, uniqueOutputPath);

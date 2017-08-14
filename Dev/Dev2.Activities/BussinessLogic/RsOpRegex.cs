@@ -19,7 +19,7 @@ namespace Dev2.DataList
     /// <summary>
     /// Class for the "regex" recordset search option 
     /// </summary>
-    [SuppressMessage("ReSharper", "UnusedMember.Global")]
+
     public class RsOpRegex : AbstractRecsetSearchValidation
     {
         public override Func<DataStorage.WarewolfAtom, bool> CreateFunc(IEnumerable<DataStorage.WarewolfAtom> values, IEnumerable<DataStorage.WarewolfAtom> warewolfAtoms, IEnumerable<DataStorage.WarewolfAtom> to, bool all)

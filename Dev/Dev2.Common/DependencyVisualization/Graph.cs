@@ -50,7 +50,7 @@ namespace Dev2.Common.DependencyVisualization
 
         #region Methods
 
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         public new string ToString()
         {
             var result = new StringBuilder($"<graph title=\"{Title}\">");

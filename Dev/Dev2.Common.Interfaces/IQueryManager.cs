@@ -19,10 +19,10 @@ namespace Dev2.Common.Interfaces
     public interface IQueryManager
     {
         
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         IExecuteMessage FetchDependencies(Guid resourceId);
         IExecuteMessage FetchDependants(Guid resourceId);
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         StringBuilder FetchResourceXaml(Guid resourceId);
         Task<IExplorerItem> Load(bool reloadCatalogue = false);
         IList<IToolDescriptor> FetchTools();

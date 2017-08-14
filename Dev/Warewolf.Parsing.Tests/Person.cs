@@ -3,7 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace WarewolfParsingTest
 {
-    [SuppressMessage("ReSharper", "UnusedMember.Global")]
+
     public class Person
     {
 

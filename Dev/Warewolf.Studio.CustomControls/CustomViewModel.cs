@@ -16,7 +16,7 @@ namespace Warewolf.Studio.CustomControls
         
     }
 
-    [SuppressMessage("ReSharper", "UnusedMember.Global")]
+
     public class CustomViewModel : INotifyPropertyChanged
     {
         readonly IServer _server;

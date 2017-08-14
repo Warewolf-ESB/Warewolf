@@ -16,7 +16,7 @@ using Microsoft.Win32;
 // ReSharper disable NonLocalizedString
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    [SuppressMessage("ReSharper", "UnusedMember.Global")]
+
     public class GetComDllListings : IEsbManagementEndpoint
     {
         #region Implementation of ISpookyLoadable<out string>

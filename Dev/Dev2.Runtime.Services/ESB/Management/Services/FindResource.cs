@@ -29,7 +29,7 @@ namespace Dev2.Runtime.ESB.Management.Services
     /// <summary>
     /// Find resources in the service catalog
     /// </summary>
-    [SuppressMessage("ReSharper", "UnusedMember.Global")]
+
     public class FindResource : IEsbManagementEndpoint
     {
         public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)

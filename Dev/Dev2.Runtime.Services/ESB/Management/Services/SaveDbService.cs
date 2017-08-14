@@ -30,7 +30,7 @@ using Warewolf.Core;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    [SuppressMessage("ReSharper", "UnusedMember.Global")]
+
     // ReSharper disable once MemberCanBeInternal
     public class SaveDbService : IEsbManagementEndpoint
     {

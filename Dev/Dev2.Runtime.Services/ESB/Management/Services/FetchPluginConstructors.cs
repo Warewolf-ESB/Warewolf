@@ -20,7 +20,7 @@ using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    [SuppressMessage("ReSharper", "UnusedMember.Global")]
+
     public class FetchPluginConstructors : IEsbManagementEndpoint
     {
         private readonly IResourceCatalog _catalog;

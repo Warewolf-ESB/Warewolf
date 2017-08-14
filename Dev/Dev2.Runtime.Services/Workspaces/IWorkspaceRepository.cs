@@ -55,14 +55,14 @@ namespace Dev2.Workspaces
         /// Saves the specified workspace to storage.
         /// </summary>
         /// <param name="workspace">The workspace to be saved.</param>
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         void Save(IWorkspace workspace);
 
         /// <summary>
         /// Deletes the specified workspace from storage.
         /// </summary>
         /// <param name="workspace">The workspace to be deleted.</param>
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         void Delete(IWorkspace workspace);
 
         /// <summary>

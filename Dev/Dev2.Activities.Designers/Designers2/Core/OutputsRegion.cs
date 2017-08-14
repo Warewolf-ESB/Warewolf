@@ -75,7 +75,7 @@ namespace Dev2.Activities.Designers2.Core
           
         }
 
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         //Needed for Deserialization
         public OutputsRegion()
         {

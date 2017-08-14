@@ -47,7 +47,7 @@ namespace Dev2.Studio.Core.Activities.Utils
             }
         }
 
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         public static ModelItem CreateModelItem(object parent, object objectToMakeModelItem)
         {
             EditingContext ec = new EditingContext();
@@ -56,7 +56,7 @@ namespace Dev2.Studio.Core.Activities.Utils
             return mtm.CreateModelItem(CreateModelItem(parent), objectToMakeModelItem);
         }
 
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         public static ModelItem CreateModelItem()
         {
             return CreateModelItem(new object());

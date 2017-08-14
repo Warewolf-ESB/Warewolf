@@ -64,7 +64,7 @@ namespace Dev2.Services.Sql
         }
         #region FetchDataSet
 
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         public DataSet FetchDataSet(params SqlParameter[] parameters)
         {
             VerifyConnection();

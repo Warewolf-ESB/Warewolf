@@ -20,7 +20,7 @@ using Dev2.Utilities;
 
 namespace Dev2.FindMissingStrategies
 {
-    [SuppressMessage("ReSharper", "UnusedMember.Global")] //This is loaded based on SpookyAction implementing IFindMissingStrategy
+ //This is loaded based on SpookyAction implementing IFindMissingStrategy
     public class SequenceActivityFindMissingStrategy : IFindMissingStrategy
     {
         #region Implementation of ISpookyLoadable<Enum>

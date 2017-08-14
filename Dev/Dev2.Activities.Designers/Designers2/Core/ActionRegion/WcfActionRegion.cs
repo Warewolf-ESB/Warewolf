@@ -422,14 +422,14 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
         #endregion
 
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         protected virtual void OnSomethingChanged(IToolRegion args)
         {
             var handler = SomethingChanged;
             handler?.Invoke(this, args);
         }
 
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             var handler = PropertyChanged;

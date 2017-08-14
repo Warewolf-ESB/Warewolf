@@ -52,7 +52,7 @@ namespace Dev2.Studio.Interfaces
 
         Task<bool> Move(IExplorerTreeItem destination);
 
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         void AddSibling(IExplorerItemViewModel sibling);
         void CreateNewFolder();
         void Apply(Action<IExplorerItemViewModel> action);

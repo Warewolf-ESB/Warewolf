@@ -18,7 +18,7 @@ namespace Dev2.DataList
     /// <summary>
     /// Class for the "greater than or equal to symbol" recordset search option 
     /// </summary>
-    [SuppressMessage("ReSharper", "UnusedMember.Global")]
+
     public class RsOpGreaterThanOrEqualTo : AbstractRecsetSearchValidation
     {
 

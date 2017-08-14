@@ -57,7 +57,7 @@ namespace Dev2.Data.SystemTemplates.Models
             return result;
         }
 
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         public void AddModelItem(Dev2Decision item)
         {
             TheStack.Add(item);

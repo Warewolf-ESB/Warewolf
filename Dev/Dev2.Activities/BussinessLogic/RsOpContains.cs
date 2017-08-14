@@ -20,7 +20,7 @@ namespace Dev2.DataList
     /// <summary>
     /// Class for the "contains" recordset search option 
     /// </summary>
-    [SuppressMessage("ReSharper", "UnusedMember.Global")]
+
     public class RsOpContains : AbstractRecsetSearchValidation
     {
         #region Overrides of AbstractRecsetSearchValidation

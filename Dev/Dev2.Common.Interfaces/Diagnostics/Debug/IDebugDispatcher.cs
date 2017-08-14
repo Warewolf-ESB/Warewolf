@@ -26,7 +26,7 @@ namespace Dev2.Common.Interfaces.Diagnostics.Debug
         ///     Removes the specified workspace from the dispatcher.
         /// </summary>
         /// <param name="workspaceId">The ID of workspace to be removed.</param>
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         void Remove(Guid workspaceId);
 
         /// <summary>

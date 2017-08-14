@@ -26,7 +26,7 @@ using ServiceStack.Common.Extensions;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    [SuppressMessage("ReSharper", "UnusedMember.Global")]
+
     public class GetDependanciesOnList : IEsbManagementEndpoint
     {
         #region Implementation of ISpookyLoadable<string>

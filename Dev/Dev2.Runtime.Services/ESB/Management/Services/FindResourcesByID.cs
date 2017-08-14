@@ -29,7 +29,7 @@ namespace Dev2.Runtime.ESB.Management.Services
     /// Find a resource by its id
     /// </summary>
     // ReSharper disable InconsistentNaming
-    [SuppressMessage("ReSharper", "UnusedMember.Global")]
+
     public class FindResourcesByID : IEsbManagementEndpoint
     {
         public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)

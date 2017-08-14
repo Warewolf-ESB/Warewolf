@@ -19,7 +19,7 @@ using Dev2.Runtime.Interfaces;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    [SuppressMessage("ReSharper", "UnusedMember.Global")]
+
     public class SaveWcfServiceSource : IEsbManagementEndpoint
     {
         private IExplorerServerResourceRepository _serverExplorerRepository;

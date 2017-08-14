@@ -54,7 +54,7 @@ namespace Dev2.Runtime.WebServer
             return WebApp.Start<WebServerStartup>(startOptions);
         }
 
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         public void Configuration(IAppBuilder app)
         {
             var listener = (HttpListener)app.Properties[typeof(HttpListener).FullName];

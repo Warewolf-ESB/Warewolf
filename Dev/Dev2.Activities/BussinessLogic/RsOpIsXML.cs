@@ -20,7 +20,7 @@ namespace Dev2.DataList
     /// Class for the "is xml" recordset search option 
     /// </summary>
     // ReSharper disable once InconsistentNaming
-    [SuppressMessage("ReSharper", "UnusedMember.Global")]
+
     public class RsOpIsXML : AbstractRecsetSearchValidation
     {
         public override Func<DataStorage.WarewolfAtom, bool> CreateFunc(IEnumerable<DataStorage.WarewolfAtom> values, IEnumerable<DataStorage.WarewolfAtom> warewolfAtoms, IEnumerable<DataStorage.WarewolfAtom> to, bool all)

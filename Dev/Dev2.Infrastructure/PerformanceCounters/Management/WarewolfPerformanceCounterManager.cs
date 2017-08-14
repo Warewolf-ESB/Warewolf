@@ -50,7 +50,7 @@ namespace Dev2.PerformanceCounters.Management
             }
             
         }
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         public void RemoverCounter(Guid resourceId, WarewolfPerfCounterType type, string name)
         {
             var toRemove = _resourceCounters.FirstOrDefault(a =>

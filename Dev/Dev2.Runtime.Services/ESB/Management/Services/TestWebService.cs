@@ -20,7 +20,7 @@ using Unlimited.Framework.Converters.Graph.Ouput;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    [SuppressMessage("ReSharper", "UnusedMember.Global")]
+
     public class TestWebService : IEsbManagementEndpoint
     // ReSharper restore UnusedMember.Global
     {

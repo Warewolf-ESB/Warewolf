@@ -182,7 +182,7 @@ namespace Dev2.MathOperations
 
         public event EventHandler ItemAdded;
 
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         protected void OnItemAdded()
         {
             ItemAdded?.Invoke(this, new EventArgs());

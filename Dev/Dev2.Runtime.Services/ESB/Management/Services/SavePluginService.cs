@@ -30,7 +30,7 @@ using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    [SuppressMessage("ReSharper", "UnusedMember.Global")]
+
     public class SavePluginService : IEsbManagementEndpoint
     {
         IExplorerServerResourceRepository _serverExplorerRepository;
