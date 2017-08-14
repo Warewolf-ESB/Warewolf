@@ -2967,11 +2967,12 @@ namespace Dev2.Core.Tests
             var vieFactory = new Mock<IViewFactory>();
             var viewMock = new Mock<IView>();
             vieFactory.Setup(factory => factory.GetViewGivenServerResourceType(It.IsAny<string>())).Returns(viewMock.Object);
-            var mvm = new ShellViewModel(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, versionChecker.Object, vieFactory.Object, false);
+            
             var popup = new Mock<Common.Interfaces.Studio.Controller.IPopupController>();
             popup.Setup(a => a.Show(StringResources.Unsaved_Changes, StringResources.CloseHeader,
-                               MessageBoxButton.YesNoCancel, MessageBoxImage.Information, @"", false, false, true, false, false, false)).Returns(MessageBoxResult.Yes).Verifiable();
+                               MessageBoxButton.YesNoCancel, MessageBoxImage.Information, @"", false, false, true, false, false, false)).Returns(MessageBoxResult.Cancel).Verifiable();
 
+            var mvm = new ShellViewModel(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, versionChecker.Object, vieFactory.Object, false, null, popup.Object);
             var settings = new SettingsViewModelForTest(EventPublishers.Aggregator, popup.Object, new SynchronousAsyncWorker(), new NativeWindow()) { RetValue = true, WorkSurfaceContext = WorkSurfaceContext.Settings };
             var task = new Mock<IScheduledResource>();
             task.Setup(a => a.IsDirty).Returns(true);
@@ -2979,7 +2980,7 @@ namespace Dev2.Core.Tests
             var vm = new WorkSurfaceContextViewModel(new EventAggregator(), new WorkSurfaceKey(), settings, new Mock<Common.Interfaces.Studio.Controller.IPopupController>().Object, (a, b, c) => { });
             environmentRepository.Setup(repo => repo.All()).Returns(new List<IServer>());
             mvm.Items.Add(vm);
-            Assert.IsTrue(mvm.OnStudioClosing());
+            Assert.IsFalse(mvm.OnStudioClosing());
 
         }
 
@@ -3015,10 +3016,12 @@ namespace Dev2.Core.Tests
             var vieFactory = new Mock<IViewFactory>();
             var viewMock = new Mock<IView>();
             vieFactory.Setup(factory => factory.GetViewGivenServerResourceType(It.IsAny<string>())).Returns(viewMock.Object);
-            var mvm = new ShellViewModel(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, versionChecker.Object, vieFactory.Object, false);
+            
             var popup = new Mock<Common.Interfaces.Studio.Controller.IPopupController>();
             popup.Setup(a => a.Show(StringResources.Unsaved_Changes, StringResources.CloseHeader,
-                               MessageBoxButton.YesNoCancel, MessageBoxImage.Information, @"", false, false, true, false, false, false)).Returns(MessageBoxResult.Yes).Verifiable();
+                               MessageBoxButton.YesNoCancel, MessageBoxImage.Information, @"", false, false, true, false, false, false)).Returns(MessageBoxResult.Cancel).Verifiable();
+
+            var mvm = new ShellViewModel(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, versionChecker.Object, vieFactory.Object, false, null, popup.Object);
             var scheduler = new SchedulerViewModelForTesting(EventPublishers.Aggregator, new DirectoryObjectPickerDialog(), popup.Object, new SynchronousAsyncWorker()) { RetValue = true, WorkSurfaceContext = WorkSurfaceContext.Scheduler };
             var task = new Mock<IScheduledResource>();
             task.Setup(a => a.IsDirty).Returns(true);
@@ -3026,7 +3029,7 @@ namespace Dev2.Core.Tests
             var vm = new WorkSurfaceContextViewModel(new EventAggregator(), new WorkSurfaceKey(), scheduler, new Mock<Common.Interfaces.Studio.Controller.IPopupController>().Object, (a, b, c) => { });
             environmentRepository.Setup(repo => repo.All()).Returns(new List<IServer>());
             mvm.Items.Add(vm);
-            Assert.IsTrue(mvm.OnStudioClosing());
+            Assert.IsFalse(mvm.OnStudioClosing());
 
         }
 
@@ -3075,20 +3078,29 @@ namespace Dev2.Core.Tests
             var vieFactory = new Mock<IViewFactory>();
             var viewMock = new Mock<IView>();
             vieFactory.Setup(factory => factory.GetViewGivenServerResourceType(It.IsAny<string>())).Returns(viewMock.Object);
-            var mvm = new ShellViewModel(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, versionChecker.Object, vieFactory.Object, false);
+            
             var popup = new Mock<Common.Interfaces.Studio.Controller.IPopupController>();
             popup.Setup(a => a.Show(StringResources.Unsaved_Changes, StringResources.CloseHeader,
-                               MessageBoxButton.YesNoCancel, MessageBoxImage.Information, @"", false, false, true, false, false, false)).Returns(MessageBoxResult.Yes).Verifiable();
+                               MessageBoxButton.YesNoCancel, MessageBoxImage.Information, @"", false, false, true, false, false, false)).Returns(MessageBoxResult.Cancel).Verifiable();
+
+            var mvm = new ShellViewModel(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, versionChecker.Object, vieFactory.Object, false, null, popup.Object);
+
+            CreateFullExportsAndVm();
+            var surfaceViewModel = new Mock<IWorkSurfaceViewModel>();
+            var workSurfaceKey = new WorkSurfaceKey()
+            {
+                WorkSurfaceContext = WorkSurfaceContext.Workflow
+            };
+            var surfaceContext = new Mock<WorkSurfaceContextViewModel>(workSurfaceKey, surfaceViewModel.Object);
+            ShellViewModel.Items.Add(surfaceContext.Object);
 
             ServerRepository.Instance.ActiveServer = environmentModel.Object;
             var activetx = ShellViewModel.Items.ToList().First(i => i.WorkSurfaceViewModel.WorkSurfaceContext == WorkSurfaceContext.Workflow);
-
 
             var vm = new WorkSurfaceContextViewModel(new EventAggregator(), new WorkSurfaceKey(), activetx.WorkSurfaceViewModel, new Mock<Common.Interfaces.Studio.Controller.IPopupController>().Object, (a, b, c) => { });
 
             mvm.Items.Add(vm);
             Assert.IsFalse(mvm.OnStudioClosing());
-
         }
 
         #endregion
