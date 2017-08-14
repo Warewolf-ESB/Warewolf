@@ -441,6 +441,48 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
+        public async Task TestServerDisconnected()
+        {
+            //arrange
+            var studioUpdateManagerMock = new Mock<IStudioUpdateManager>();
+
+            var serverConnectionEnvironmentId = Guid.NewGuid();
+
+            var serverConnectionMock = new Mock<IServer>();
+            serverConnectionMock.Setup(it => it.ConnectAsync()).Returns(Task.FromResult(true));
+            serverConnectionMock.SetupGet(it => it.UpdateRepository).Returns(studioUpdateManagerMock.Object);
+            serverConnectionMock.SetupGet(it => it.EnvironmentID).Returns(serverConnectionEnvironmentId);
+            serverConnectionMock.SetupGet(server => server.EnvironmentID).Returns(serverConnectionEnvironmentId);
+            serverConnectionMock.SetupGet(it => it.DisplayName).Returns("someName");
+            serverConnectionMock.SetupGet(it => it.DisplayName).Returns("someName (Connected)");
+
+            var explorerItemMock = new Mock<IExplorerItem>();
+            serverConnectionMock.Setup(it => it.LoadExplorer(It.IsAny<bool>())).Returns(Task.FromResult(explorerItemMock.Object));
+
+            var child = new Mock<IExplorerItemViewModel>();
+            child.SetupGet(it => it.AllowResourceCheck).Returns(true);
+            child.SetupGet(it => it.IsVisible).Returns(true);
+            var mockEnvironment = new Mock<IEnvironmentViewModel>();
+            mockEnvironment.Setup(env => env.Server).Returns(serverConnectionMock.Object);
+            mockEnvironment.Setup(env => env.Children).Returns(new ObservableCollection<IExplorerItemViewModel>() { child.Object });
+            mockEnvironment.Setup(env => env.AsList()).Returns(new ObservableCollection<IExplorerItemViewModel>() { child.Object });
+
+            _target.Environments.Add(mockEnvironment.Object);
+            var isEnvironments = false;
+            _target.PropertyChanged += (s, e) =>
+            {
+                isEnvironments = isEnvironments || e.PropertyName == "Environments";
+            };
+
+            //act
+            await _target.ConnectControlViewModel.Connect(serverConnectionMock.Object);
+
+            //assert   
+            Assert.IsTrue(isEnvironments);
+            Assert.IsTrue(_target.Environments.Any());
+        }
+
+        [TestMethod]
         public void TestServerReConnected()
         {
             //arrange
@@ -468,6 +510,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             //assert   
             Assert.IsFalse(isEnvironments);
+            Assert.IsFalse(_target.IsLoading);
         }
       
         [TestMethod]
