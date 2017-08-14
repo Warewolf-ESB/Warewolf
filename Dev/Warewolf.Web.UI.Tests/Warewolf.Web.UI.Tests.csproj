@@ -75,7 +75,7 @@
     <None Include="packages.config" />
 	  <None Include="..\Run Tests.ps1">
       <Visible>False</Visible>
-      <Link>Properties\Run Tests.ps1</Link>
+      <Link>Run Tests.ps1</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="BrowserWebDrivers\SupportedBrowsers.csv">
