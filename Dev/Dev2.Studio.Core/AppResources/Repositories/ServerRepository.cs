@@ -350,9 +350,9 @@ namespace Dev2.Studio.Core
                 }
                 var environments = LookupEnvironments(Source);
                 // Don't just clear and add, environments may be connected!!!
-                foreach (var newEnv in environments.Where(newEnv => !Environments.Contains(newEnv)))
+                foreach (var newEnv in environments.Where(newEnv => !ValidateIfEnvironmentExists(newEnv)))
                 {
-                    Environments.Add(newEnv);
+                    AddEnvironmentIfNotExist(newEnv);
                 }
                 foreach (var newEnv in environments.Where(newEnv => Environments.Contains(newEnv)))
                 {
@@ -361,10 +361,10 @@ namespace Dev2.Studio.Core
                     {
                         if (res.IsConnected)
                         {
-                            res.Disconnect();                            
+                            res.Disconnect();
                         }
                         Environments.Remove(res);
-                        Environments.Add(newEnv);
+                        AddEnvironmentIfNotExist(newEnv);
                     }
                 }
 
@@ -377,6 +377,19 @@ namespace Dev2.Studio.Core
 
                 IsLoaded = true;
             }
+        }
+
+        private void AddEnvironmentIfNotExist(IServer newEnv)
+        {
+            if (!ValidateIfEnvironmentExists(newEnv))
+            {
+                Environments.Add(newEnv);
+            }
+        }
+
+        private bool ValidateIfEnvironmentExists(IServer newEnv)
+        {
+            return Environments.Contains(newEnv);
         }
 
         protected virtual void LoadComplete()

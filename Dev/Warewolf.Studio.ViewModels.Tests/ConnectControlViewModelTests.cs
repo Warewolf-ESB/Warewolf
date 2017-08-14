@@ -708,6 +708,71 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsNotNull(connectControlViewModel.SelectedConnection);
         }
 
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("ConnectControlViewModel_UpdateRepositoryOnServerSaved")]
+        public void ConnectControlViewModelUpdateRepositoryOnServerSaved()
+        {
+            var serverGuid = Guid.NewGuid();
+            Uri uri = new Uri("http://bravo.com/");
+            var serverDisplayName = "johnnyBravoServer";
+
+            var mockShellViewModel = new Mock<IShellViewModel>();
+            var mockExplorerRepository = new Mock<IExplorerRepository>();
+            var mockEnvironmentConnection = new Mock<IEnvironmentConnection>();
+
+            mockEnvironmentConnection.Setup(a => a.AppServerUri).Returns(uri);
+            mockEnvironmentConnection.Setup(a => a.UserName).Returns("johnny");
+            mockEnvironmentConnection.Setup(a => a.Password).Returns("bravo");
+            mockEnvironmentConnection.Setup(a => a.WebServerUri).Returns(uri);
+            mockEnvironmentConnection.Setup(a => a.ID).Returns(serverGuid);
+            mockEnvironmentConnection.Setup(a => a.IsConnected).Returns(false);
+            mockEnvironmentConnection.SetupProperty(a => a.DisplayName);
+            mockEnvironmentConnection.Object.DisplayName = serverDisplayName;
+
+            mockExplorerRepository.Setup(
+                repository => repository.CreateFolder(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Guid>()));
+            mockExplorerRepository.Setup(
+                repository => repository.Rename(It.IsAny<IExplorerItemViewModel>(), It.IsAny<string>())).Returns(true);
+
+            var server = new ServerForTesting(mockExplorerRepository);
+            var server2 = new Server(serverGuid, mockEnvironmentConnection.Object);
+            server.EnvironmentID = serverGuid;
+            server.ResourceName = "mr_J_bravo";
+            server.Connection = mockEnvironmentConnection.Object;
+            mockShellViewModel.Setup(a => a.ActiveServer).Returns(server);
+            mockShellViewModel.Setup(model => model.LocalhostServer).Returns(server);
+
+            CustomContainer.Register<IServer>(server);
+            CustomContainer.Register(mockShellViewModel.Object);
+
+            var environmentModel = new Mock<IServer>();
+            environmentModel.SetupGet(a => a.Connection).Returns(mockEnvironmentConnection.Object);
+            environmentModel.SetupGet(a => a.IsConnected).Returns(true);
+
+            var e1 = new Server(serverGuid, mockEnvironmentConnection.Object);
+            var repo = new TestServerRespository(environmentModel.Object, e1) { ActiveServer = e1 };
+            var environmentRepository = new ServerRepository(repo);
+            Assert.IsNotNull(environmentRepository);
+
+            bool passed = false;
+            mockShellViewModel.Setup(a => a.OpenResource(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<IServer>()))
+                .Callback((Guid id1, Guid id2, IServer a) =>
+                {
+                    passed = a.EnvironmentID == serverGuid;
+                });
+            //------------Setup for test--------------------------
+            var connectControlViewModel = new ConnectControlViewModel(server, new EventAggregator());
+            PrivateObject privateObject = new PrivateObject(connectControlViewModel);
+            privateObject.SetProperty("IsConnecting", false);
+            privateObject.Invoke("UpdateRepositoryOnServerSaved", serverGuid, false);
+            //------------Execute Test---------------------------
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual("johnnyBravoServer", mockEnvironmentConnection.Object.DisplayName);
+        }
+
         #endregion Test methods
 
         #region Private helper methods
