@@ -45,7 +45,7 @@ namespace Warewolf.Web.UI.Tests.NoWarewolfServer
         [DeploymentItem(@"swscale-4.dll")]
         [DeploymentItem(@"avcodec-57.dll")]
         [TestCategory("NoWarewolfServer")]
-        [DataSource("Microsoft.VisualStudio.TestTools.DataSource.CSV", "|DataDirectory|\\SupportedBrowsers.csv", "SupportedBrowsers#csv", DataAccessMethod.Sequential), DeploymentItem("BrowserWebDrivers\\SupportedBrowsers.csv")]
+        [DataSource("Microsoft.VisualStudio.TestTools.DataSource.CSV", "|DataDirectory|\\SupportedBrowsers.csv", "SupportedBrowsers#csv", DataAccessMethod.Sequential), DeploymentItem("SupportedBrowsers.csv")]
         public void NoWarewolfServer_ClickRefresh_UITest()
         {
             driver.driver.Navigate().GoToUrl(driver.baseURL + "/ExecutionLogging");
