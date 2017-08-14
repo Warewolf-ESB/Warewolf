@@ -21,6 +21,7 @@ using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Services.Security;
 using Dev2.Studio.Interfaces;
 using Microsoft.Practices.Prism.Mvvm;
+using Dev2.Common;
 
 // ReSharper disable MemberCanBeProtected.Global
 // ReSharper disable MemberCanBePrivate.Global
@@ -472,6 +473,22 @@ namespace Warewolf.Studio.ViewModels
 
         void ServerDisconnected(object _, IServer server)
         {
+            RemoveEnvironmentFromCollection(server);
+            try
+            {
+                if (SelectedServer != null && this is DeployDestinationViewModel)
+                {
+                    OnPropertyChanged(() => SelectedServer.IsConnected);
+                }
+            }
+            catch (Exception ex)
+            {
+                Dev2Logger.Error("Error occurred trying to disconnect server " + server.Name, ex);
+            }
+        }
+
+        private void RemoveEnvironmentFromCollection(IServer server)
+        {
             var environmentModel = _environments?.FirstOrDefault(model => model?.Server?.EnvironmentID == server?.EnvironmentID);
             if (environmentModel != null)
             {
@@ -488,17 +505,6 @@ namespace Warewolf.Studio.ViewModels
                 }
             }
             OnPropertyChanged(() => Environments);
-            try
-            {
-                if (SelectedServer != null && this is DeployDestinationViewModel)
-                {
-                    OnPropertyChanged(() => SelectedServer.IsConnected);
-                }
-            }
-            catch (Exception)
-            {
-                //
-            }
         }
 
         protected virtual async Task<bool> LoadEnvironment(IEnvironmentViewModel localhostEnvironment, bool isDeploy = false,bool reloadCatalogue = true)
