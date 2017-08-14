@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Dev2.Common.Interfaces.Security;
 
-// ReSharper disable UnusedMemberInSuper.Global
-// ReSharper disable UnusedMember.Global
+
+
 
 namespace Dev2.Studio.Interfaces
 {

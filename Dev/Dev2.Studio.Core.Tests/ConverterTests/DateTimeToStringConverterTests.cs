@@ -12,7 +12,7 @@ using System;
 using Dev2.Studio.Core.AppResources.Converters;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-// ReSharper disable InconsistentNaming
+
 namespace Dev2.Core.Tests.ConverterTests
 {
     [TestClass]

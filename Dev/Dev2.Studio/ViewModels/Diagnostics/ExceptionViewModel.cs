@@ -31,7 +31,7 @@ using Dev2.Common;
 using Dev2.Studio.Controller;
 using Dev2.Studio.Interfaces;
 
-// ReSharper disable CheckNamespace
+
 namespace Dev2.Studio.ViewModels.Diagnostics
 {
     /// <summary>

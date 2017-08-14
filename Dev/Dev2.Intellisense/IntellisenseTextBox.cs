@@ -28,13 +28,13 @@ using Dev2.Data.Interfaces;
 using Dev2.Studio.InterfaceImplementors;
 using Dev2.Studio.Interfaces;
 
-// ReSharper disable ForCanBeConvertedToForeach
 
-// ReSharper disable ExplicitCallerInfoArgument
-// ReSharper disable UnusedMember.Global
-// ReSharper disable NonLocalizedString
-// ReSharper disable CheckNamespace
-// ReSharper disable ConditionIsAlwaysTrueOrFalse
+
+
+
+
+
+
 
 namespace Dev2.UI
 {
@@ -206,9 +206,9 @@ namespace Dev2.UI
                         {
                             Text = currentProvider.PerformResultInsertion(appendText, context);
                         }
-                        // ReSharper disable EmptyGeneralCatchClause
+                        
                         catch
-                        // ReSharper restore EmptyGeneralCatchClause
+                        
                         {
                             //This try catch is to prevent the intellisense box from ever being crashed from a provider.
                             //This catch is intentionally blanks since if a provider throws an exception the intellisense
@@ -511,9 +511,9 @@ namespace Dev2.UI
                         results = provider.GetIntellisenseResults(context);
                         _intellisenseResults = results.ToList();
                     }
-                    // ReSharper disable EmptyGeneralCatchClause
+                    
                     catch
-                    // ReSharper restore EmptyGeneralCatchClause
+                    
                     {
                         //This try catch is to prevent the intellisense box from ever being crashed from a provider.
                         //This catch is intentionally blanks since if a provider throws an exception the intellisense

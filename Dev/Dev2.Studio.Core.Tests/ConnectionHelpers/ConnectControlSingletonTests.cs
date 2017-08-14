@@ -22,8 +22,8 @@ using Moq;
 namespace Dev2.Core.Tests.ConnectionHelpers
 {
     [TestClass]
-    // ReSharper disable InconsistentNaming
-    // ReSharper disable ObjectCreationAsStatement
+    
+    
     public class ConnectControlSingletonTests
     {
 

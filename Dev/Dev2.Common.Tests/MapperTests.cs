@@ -9,8 +9,8 @@ namespace Dev2.Common.Tests
         public string Surname { get; set; }
         public int Id { get; set; }
 #pragma warning disable 169
-        // ReSharper disable once FieldCanBeMadeReadOnly.Local
-        // ReSharper disable once ConvertToConstant.Local
+        
+        
         private string _name = "name";
 #pragma warning restore 169
 

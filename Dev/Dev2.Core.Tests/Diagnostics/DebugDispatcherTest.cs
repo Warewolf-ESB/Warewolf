@@ -128,9 +128,9 @@ namespace Dev2.Tests.Diagnostics
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("DebugDispatcher_Write")]
-        // ReSharper disable InconsistentNaming
+        
         public void DebugDispatcher_Write_WhenRemoteInvoke_ExpectRemoteItemsAddedToRepo()
-        // ReSharper restore InconsistentNaming
+
         {
             //------------Setup for test--------------------------
             var workspaceID = Guid.NewGuid();

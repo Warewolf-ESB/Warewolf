@@ -140,9 +140,9 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             if(dependencies != null)
             {
-// ReSharper disable ImplicitlyCapturedClosure
+
                 dependencies.ForEach(c =>
-// ReSharper restore ImplicitlyCapturedClosure
+
                     { results.Add(c.ResourceID != Guid.Empty ? c.ResourceID.ToString() : c.ResourceName); });
                 dependencies.ToList().ForEach(c =>
                     { results.AddRange(c.ResourceID != Guid.Empty ? FetchRecursiveDependancies(c.ResourceID, workspaceId) : FetchRecursiveDependancies(workspaceId, c.ResourceName)); });

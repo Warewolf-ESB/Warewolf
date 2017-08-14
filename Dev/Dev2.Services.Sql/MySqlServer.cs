@@ -190,7 +190,7 @@ namespace Dev2.Services.Sql
             }
         }
 
-        // ReSharper disable InconsistentNaming
+        
 
         private string FetchHelpTextContinueOnException(string fullProcedureName, IDbConnection con)
         {

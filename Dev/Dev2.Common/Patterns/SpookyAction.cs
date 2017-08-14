@@ -14,10 +14,10 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 
-// ReSharper disable CheckNamespace
+
 
 namespace Dev2.Common
-// ReSharper restore CheckNamespace
+
 {
     /// <summary>
     ///     Base class for all spooky action at a distanced impls

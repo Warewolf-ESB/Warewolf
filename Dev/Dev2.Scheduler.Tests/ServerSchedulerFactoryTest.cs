@@ -19,7 +19,7 @@ using Dev2.TaskScheduler.Wrappers.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.Win32.TaskScheduler;
 using Moq;
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Scheduler.Test
 {
@@ -123,9 +123,9 @@ directory
 
             var cFactory = new Mock<ITaskServiceConvertorFactory>();
             cFactory.Setup(f => f.CreateExecAction("notepad", null, null))
-                // ReSharper disable RedundantArgumentDefaultValue
+                
                 .Returns(new Dev2ExecAction(new TaskServiceConvertorFactory(), new ExecAction("notepad.exe", null, null)));
-            // ReSharper restore RedundantArgumentDefaultValue
+            
             var mockTask = new Mock<IDev2TaskDefinition>();
             mockTask.Setup(a => a.AddAction(It.IsAny<IAction>()));
             mockTask.Setup(a => a.AddTrigger(It.IsAny<ITrigger>()));
@@ -188,9 +188,9 @@ directory
         [TestCategory("ServerSchedulerFactory_CreateMonthlyTrigger")]
         public void ServerSchedulerFactory_CreateMonthlyTrigger()
         {
-            // ReSharper disable RedundantArgumentDefaultValue
+            
             CheckTriggerTypes(new MonthlyTrigger(1, MonthsOfTheYear.AllMonths));
-            // ReSharper restore RedundantArgumentDefaultValue
+            
         }
 
         [TestMethod]
@@ -230,9 +230,9 @@ directory
         [TestCategory("ServerSchedulerFactory_CreateWeeklyTrigger")]
         public void ServerSchedulerFactory_CreateWeeklyTrigger()
         {
-            // ReSharper disable RedundantArgumentDefaultValue
+            
             CheckTriggerTypes(new WeeklyTrigger(DaysOfTheWeek.AllDays, 1));
-            // ReSharper restore RedundantArgumentDefaultValue
+            
         }
 
 

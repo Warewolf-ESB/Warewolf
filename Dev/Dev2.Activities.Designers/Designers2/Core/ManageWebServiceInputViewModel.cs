@@ -20,9 +20,9 @@ using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.Practices.Prism.Commands;
 using Newtonsoft.Json;
 using Warewolf.Core;
-// ReSharper disable FieldCanBeMadeReadOnly.Local
-// ReSharper disable MemberCanBePrivate.Global
-// ReSharper disable UnusedAutoPropertyAccessor.Global
+
+
+
 
 namespace Dev2.Activities.Designers2.Core
 {
@@ -128,13 +128,13 @@ namespace Dev2.Activities.Designers2.Core
 
                     Description = responseService.GetOutputDescription();
                 }
-                // ReSharper disable MaximumChainedReferences
+                
                 var outputMapping = _recordsetList.SelectMany(recordset => recordset.Fields, (recordset, recordsetField) =>
                 {
                     var serviceOutputMapping = new ServiceOutputMapping(recordsetField.Name, recordsetField.Alias, recordset.Name) { Path = recordsetField.Path };
                     return serviceOutputMapping;
                 }).Cast<IServiceOutputMapping>().ToList();
-                // ReSharper restore MaximumChainedReferences
+                
                 _generateOutputArea.IsEnabled = true;
                 _generateOutputArea.Outputs = outputMapping;
 

@@ -19,7 +19,7 @@ using Dev2.Common.Interfaces.Help;
 using Dev2.Studio.Interfaces;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
-// ReSharper disable InconsistentNaming
+
 namespace Dev2.Activities.Designers.Tests.MultiAssignObjectTests
 {
     [TestClass]
@@ -70,9 +70,9 @@ namespace Dev2.Activities.Designers.Tests.MultiAssignObjectTests
         [TestMethod]
         [Owner("Clint Stedman")]
         [TestCategory("MultiAssignObjectActivityViewModel_Constructor")]
-        // ReSharper disable InconsistentNaming
+        
         public void MultiAssignObjectActivityViewModel_Constructor_CollectionNameInitialized()
-        // ReSharper restore InconsistentNaming
+
         {
             //init
             const string ExpectedCollectionName = "FieldsCollection";

@@ -25,8 +25,8 @@ using Microsoft.Practices.Prism.Mvvm;
 using Microsoft.Practices.Prism.PubSubEvents;
 using Warewolf.Resource.Errors;
 
-// ReSharper disable AutoPropertyCanBeMadeGetOnly.Local
-// ReSharper disable InconsistentNaming
+
+
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -285,7 +285,7 @@ namespace Warewolf.Studio.ViewModels
                     _selectedConnection = value;
                     if (value.EnvironmentID != Guid.Empty && !value.IsConnected)
                     {
-                        // ReSharper disable once UnusedVariable
+                        
                         var isConnected = CheckVersionConflict();
                     }
                     SetActiveEnvironment();

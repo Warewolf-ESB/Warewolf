@@ -17,8 +17,8 @@ using System.Linq;
 using Dev2.Common.TimeZoneBuilder;
 using Warewolf.Resource.Errors;
 
-// ReSharper disable NonLocalizedString
-// ReSharper disable CollectionNeverQueried.Local
+
+
 
 namespace Dev2.Common.DateAndTime
 {

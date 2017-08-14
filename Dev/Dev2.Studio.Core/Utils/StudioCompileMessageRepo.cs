@@ -14,7 +14,7 @@ using Dev2.Controller;
 using Dev2.Data.ServiceModel.Messages;
 using Dev2.Studio.Interfaces;
 
-// ReSharper disable once CheckNamespace
+
 namespace Dev2.Studio.Core.Utils
 {
     public interface IStudioCompileMessageRepo

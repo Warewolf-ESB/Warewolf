@@ -16,13 +16,13 @@ using Dev2.Runtime.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Workspaces;
 using Unlimited.Framework.Converters.Graph.Ouput;
-// ReSharper disable MemberCanBePrivate.Global
+
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
 
     public class TestWebService : IEsbManagementEndpoint
-    // ReSharper restore UnusedMember.Global
+    
     {
         IResourceCatalog _rescat;
         IWebServices _webServices;
@@ -52,9 +52,9 @@ namespace Dev2.Runtime.ESB.Management.Services
                 values.TryGetValue("WebService", out resourceDefinition);
 
                 IWebService src = serializer.Deserialize<IWebService>(resourceDefinition);
-                // ReSharper disable MaximumChainedReferences
+                
                 var parameters = src.Inputs?.Select(a => new MethodParameter { EmptyToNull = a.EmptyIsNull, IsRequired = a.RequiredField, Name = a.Name, Value = a.Value }).ToList() ?? new List<MethodParameter>();
-                // ReSharper restore MaximumChainedReferences
+                
                 var requestHeaders = src.Headers.Select(nameValue => nameValue.Name + ":" + nameValue.Value).ToList();
                 var requestHeader = string.Join(";", requestHeaders).TrimEnd(':',';');
                 var res = new WebService

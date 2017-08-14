@@ -4,7 +4,7 @@ using Dev2.Activities.Designers2.Core;
 using Dev2.Data.ServiceModel;
 using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Activities.Designers.Tests.Core
 {

@@ -54,13 +54,13 @@ namespace Dev2.Tests.Runtime.Services
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
-        // ReSharper disable InconsistentNaming
+        
         public void HostSecureConfig_WithoutConfig_Expected_ThrowsArgumentNullException()
-        // ReSharper restore InconsistentNaming
+
         {
-            // ReSharper disable ObjectCreationAsStatement
+            
             new HostSecureConfig(null);
-            // ReSharper restore ObjectCreationAsStatement
+            
         }
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -75,7 +75,7 @@ namespace Dev2.Tests.Runtime.Services
         //}
 
         [TestMethod]
-        // ReSharper disable InconsistentNaming
+        
         public void HostSecureConfig_WithDefaultSettings_Expected_LoadsDefaultValues()
         {
             TestConfig(DefaultServerID, DefaultServerKey, DefaultSystemKeyPublic, false);
@@ -136,7 +136,7 @@ namespace Dev2.Tests.Runtime.Services
 
         #endregion
 
-        // ReSharper restore InconsistentNaming
+
 
     }
 }

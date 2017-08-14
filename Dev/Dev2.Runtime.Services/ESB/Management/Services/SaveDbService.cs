@@ -26,12 +26,12 @@ using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Workspaces;
 using Warewolf.Core;
-// ReSharper disable MemberCanBePrivate.Global
+
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
 
-    // ReSharper disable once MemberCanBeInternal
+    
     public class SaveDbService : IEsbManagementEndpoint
     {
 
@@ -62,9 +62,9 @@ namespace Dev2.Runtime.ESB.Management.Services
                 values.TryGetValue("DbService", out resourceDefinition);
 
                 IDatabaseService service = serializer.Deserialize<DatabaseService>(resourceDefinition);
-                // ReSharper disable MaximumChainedReferences
+                
                 var parameters = service.Inputs?.Select(a => new MethodParameter() { EmptyToNull = a.EmptyIsNull, IsRequired = a.RequiredField, Name = a.Name, Value = a.Value }).ToList() ?? new List<MethodParameter>();
-                // ReSharper restore MaximumChainedReferences
+                
                 var source = ResourceCatalog.Instance.GetResource<DbSource>(GlobalConstants.ServerWorkspaceID, service.Source.Id);
                 var output = new List<MethodOutput>(service.OutputMappings.Select(a => new MethodOutput(a.MappedFrom, a.MappedTo, "", false, a.RecordSetName, false, "", false, "", false)));
                 var recset = new Recordset();

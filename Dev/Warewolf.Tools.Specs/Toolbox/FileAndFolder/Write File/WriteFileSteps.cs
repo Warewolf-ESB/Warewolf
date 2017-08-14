@@ -21,9 +21,9 @@ using Dev2.Data.Interfaces;
 using Dev2.Interfaces;
 using Dev2.Studio.Core.Activities.Utils;
 
-// ReSharper disable CheckNamespace
+
 namespace Warewolf.ToolsSpecs.Toolbox.FileAndFolder.Write_File
-// ReSharper restore CheckNamespace
+
 {
     [Binding]
     public class WriteFileSteps : FileToolsBase

@@ -187,9 +187,9 @@ namespace Dev2.Runtime.ESB.Management.Services
             if (dependencies != null)
             {
                 sb.Append($"<node id=\"{resource.ResourceID}\" x=\"\" y=\"\" broken=\"false\">");
-                // ReSharper disable ImplicitlyCapturedClosure
+                
                 dependencies.ForEach(c => sb.Append($"<dependency id=\"{c.ResourceID}\" />"));
-                // ReSharper restore ImplicitlyCapturedClosure
+                
                 sb.Append("</node>");
                 seenResource.Add(resourceGuid);
                 dependencies.ToList().ForEach(c =>

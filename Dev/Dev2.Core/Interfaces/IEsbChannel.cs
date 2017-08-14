@@ -14,10 +14,10 @@ using Dev2.Data.TO;
 using Dev2.Interfaces;
 using Warewolf.Storage.Interfaces;
 
-// ReSharper disable CheckNamespace
+
 
 namespace Dev2
-// ReSharper restore CheckNamespace
+
 {
     public interface IEsbChannel
     {

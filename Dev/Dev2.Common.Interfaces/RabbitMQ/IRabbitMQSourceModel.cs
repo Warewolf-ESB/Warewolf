@@ -12,7 +12,7 @@
 using System;
 using System.Collections.Generic;
 
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Common.Interfaces.RabbitMQ
 {

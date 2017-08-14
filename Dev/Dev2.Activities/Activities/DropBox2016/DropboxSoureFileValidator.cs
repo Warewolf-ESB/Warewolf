@@ -21,7 +21,7 @@ namespace Dev2.Activities.DropBox2016
         {
             try
             {
-                // ReSharper disable once ReturnValueOfPureMethodIsNotUsed
+                
                 Path.GetFullPath(_dropBoxSource);
             }
             catch (ArgumentException)

@@ -26,7 +26,7 @@ using Dev2.Runtime.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Workspaces;
 using Unlimited.Framework.Converters.Graph.Ouput;
-// ReSharper disable MemberCanBePrivate.Global
+
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -63,9 +63,9 @@ namespace Dev2.Runtime.ESB.Management.Services
                 IPluginService src = serializer.Deserialize<IPluginService>(resourceDefinition);
 
 
-                // ReSharper disable MaximumChainedReferences
+                
                 var parameters = src.Inputs?.Select(a => new MethodParameter { EmptyToNull = a.EmptyIsNull, IsRequired = a.RequiredField, Name = a.Name, Value = a.Value, TypeName = a.TypeName }).ToList() ?? new List<MethodParameter>();
-                // ReSharper restore MaximumChainedReferences
+                
                 var pluginsrc = ResourceCatalog.Instance.GetResource<PluginSource>(GlobalConstants.ServerWorkspaceID, src.Source.Id);
                 var res = new PluginService
                 {

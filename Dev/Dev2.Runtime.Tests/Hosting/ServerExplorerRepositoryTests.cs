@@ -29,7 +29,7 @@ using Dev2.Runtime.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Tests.Runtime.Hosting
 {
@@ -46,14 +46,14 @@ namespace Dev2.Tests.Runtime.Hosting
             var factory = new Mock<IExplorerItemFactory>();
             var dir = new Mock<IDirectory>();
             var catalogue = new Mock<IResourceCatalog>();
-            // ReSharper disable ObjectCreationAsStatement
+            
             var sync = new Mock<IExplorerRepositorySync>();
             var testCatalogue = new Mock<ITestCatalog>();
             var repo = new ServerExplorerRepository(catalogue.Object, factory.Object, dir.Object, sync.Object, new Mock<IServerVersionRepository>().Object, new FileWrapper(), testCatalogue.Object);
             Assert.AreEqual(repo.Directory, dir.Object);
             Assert.AreEqual(repo.ResourceCatalogue, catalogue.Object);
 
-            // ReSharper restore ObjectCreationAsStatement
+            
 
         }
         [TestMethod, ExpectedException(typeof(ArgumentNullException))]
@@ -66,11 +66,11 @@ namespace Dev2.Tests.Runtime.Hosting
             var factory = new Mock<IExplorerItemFactory>();
             var dir = new Mock<IDirectory>();
 
-            // ReSharper disable ObjectCreationAsStatement
+            
             var sync = new Mock<IExplorerRepositorySync>();
             var testCatalogue = new Mock<ITestCatalog>();
             new ServerExplorerRepository(null, factory.Object, dir.Object, sync.Object, new Mock<IServerVersionRepository>().Object, new FileWrapper(), testCatalogue.Object);
-            // ReSharper restore ObjectCreationAsStatement
+            
 
         }
 
@@ -84,10 +84,10 @@ namespace Dev2.Tests.Runtime.Hosting
             var factory = new Mock<IExplorerItemFactory>();
             var dir = new Mock<IDirectory>();
 
-            // ReSharper disable ObjectCreationAsStatement
+            
             var sync = new Mock<IExplorerRepositorySync>();
             new ServerExplorerRepository(null, factory.Object, dir.Object, sync.Object, new Mock<IServerVersionRepository>().Object, new FileWrapper(), null);
-            // ReSharper restore ObjectCreationAsStatement
+            
 
         }
         [TestMethod, ExpectedException(typeof(ArgumentNullException))]
@@ -99,11 +99,11 @@ namespace Dev2.Tests.Runtime.Hosting
             var catalogue = new Mock<IResourceCatalog>();
             var dir = new Mock<IDirectory>();
 
-            // ReSharper disable ObjectCreationAsStatement
+            
             var sync = new Mock<IExplorerRepositorySync>();
             var testCatalogue = new Mock<ITestCatalog>();
             new ServerExplorerRepository(catalogue.Object, null, dir.Object, sync.Object, new Mock<IServerVersionRepository>().Object, new FileWrapper(),testCatalogue.Object);
-            // ReSharper restore ObjectCreationAsStatement
+            
 
         }
         [TestMethod, ExpectedException(typeof(ArgumentNullException))]
@@ -116,11 +116,11 @@ namespace Dev2.Tests.Runtime.Hosting
             var factory = new Mock<IExplorerItemFactory>();
 
 
-            // ReSharper disable ObjectCreationAsStatement
+            
             var sync = new Mock<IExplorerRepositorySync>();
             var testCatalogue = new Mock<ITestCatalog>();
             new ServerExplorerRepository(catalogue.Object, factory.Object, null, sync.Object, new Mock<IServerVersionRepository>().Object, new FileWrapper(),testCatalogue.Object);
-            // ReSharper restore ObjectCreationAsStatement
+            
 
         }
 
@@ -1117,13 +1117,13 @@ namespace Dev2.Tests.Runtime.Hosting
             var factory = new Mock<IExplorerItemFactory>();
             var dir = new Mock<IDirectory>();
             var catalogue = new Mock<IResourceCatalog>();
-            // ReSharper disable ObjectCreationAsStatement
+            
             var sync = new Mock<IExplorerRepositorySync>();
             var repo = new ServerExplorerRepository(catalogue.Object, factory.Object, dir.Object, sync.Object, new Mock<IServerVersionRepository>().Object, new FileWrapper(), testCatalogue.Object);
             var res = repo.AddItem(null, Guid.NewGuid());
             Assert.AreEqual(res.Status, ExecStatus.Fail);
             Assert.AreEqual(res.Message, "Item to add was null");
-            // ReSharper restore ObjectCreationAsStatement
+            
 
         }
 
@@ -1137,13 +1137,13 @@ namespace Dev2.Tests.Runtime.Hosting
             var factory = new Mock<IExplorerItemFactory>();
             var dir = new Mock<IDirectory>();
             var catalogue = new Mock<IResourceCatalog>();
-            // ReSharper disable ObjectCreationAsStatement
+            
             var sync = new Mock<IExplorerRepositorySync>();
             var repo = new ServerExplorerRepository(catalogue.Object, factory.Object, dir.Object, sync.Object, new Mock<IServerVersionRepository>().Object, new FileWrapper(), testCatalogue.Object);
             var res = repo.RenameItem(null, "bob", Guid.NewGuid());
             Assert.AreEqual(res.Status, ExecStatus.Fail);
             Assert.AreEqual(res.Message, "Item to rename was null");
-            // ReSharper restore ObjectCreationAsStatement
+            
 
         }
 
@@ -1157,13 +1157,13 @@ namespace Dev2.Tests.Runtime.Hosting
             var factory = new Mock<IExplorerItemFactory>();
             var dir = new Mock<IDirectory>();
             var catalogue = new Mock<IResourceCatalog>();
-            // ReSharper disable ObjectCreationAsStatement
+            
             var sync = new Mock<IExplorerRepositorySync>();
             var repo = new ServerExplorerRepository(catalogue.Object, factory.Object, dir.Object, sync.Object, new Mock<IServerVersionRepository>().Object, new FileWrapper(), testCatalogue.Object);
             var res = repo.DeleteItem(null, Guid.NewGuid());
             Assert.AreEqual(res.Status, ExecStatus.Fail);
             Assert.AreEqual(res.Message, "Item to delete was null");
-            // ReSharper restore ObjectCreationAsStatement
+            
 
         }
     }

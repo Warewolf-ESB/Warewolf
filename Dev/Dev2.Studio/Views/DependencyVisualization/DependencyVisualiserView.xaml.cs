@@ -17,7 +17,7 @@ using Infragistics.Controls.Maps;
 using Microsoft.Practices.Prism.Mvvm;
 using Warewolf.Studio.ViewModels;
 
-// ReSharper disable once CheckNamespace
+
 namespace Dev2.Studio.Views.DependencyVisualization
 {
     public partial class DependencyVisualiserView : IView

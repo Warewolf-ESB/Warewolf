@@ -14,7 +14,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 
-// ReSharper disable once CheckNamespace
+
 namespace Dev2.DataList
 {
     /// <summary>

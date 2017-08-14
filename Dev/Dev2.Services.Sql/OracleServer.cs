@@ -7,10 +7,10 @@ using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Services.Sql;
 using Oracle.ManagedDataAccess.Client;
-// ReSharper disable NonLocalizedString
-// ReSharper disable ForCanBeConvertedToForeach
-// ReSharper disable ReturnTypeCanBeEnumerable.Global
-// ReSharper disable UnusedMember.Global
+
+
+
+
 
 namespace Dev2.Services.Sql
 {
@@ -226,7 +226,7 @@ namespace Dev2.Services.Sql
             return parameters;
         }
 
-        // ReSharper disable InconsistentNaming
+        
 
         private string FetchHelpTextContinueOnException(string fullProcedureName, IDbConnection con)
         {

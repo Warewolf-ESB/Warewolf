@@ -20,9 +20,9 @@ using Dev2.Common.Interfaces.Scheduler.Interfaces;
 using Dev2.Common.Interfaces.WindowsTaskScheduler.Wrappers;
 using Dev2.Communication;
 using Microsoft.Win32.TaskScheduler;
-// ReSharper disable NonLocalizedString
-// ReSharper disable ConvertToAutoProperty
-// ReSharper disable MemberCanBePrivate.Global
+
+
+
 
 namespace Dev2.Scheduler
 {

@@ -14,9 +14,9 @@ using System.Windows;
 using System.Windows.Data;
 using Dev2.Studio.Interfaces;
 
-// ReSharper disable CheckNamespace
+
 namespace Dev2.Studio.Core.AppResources.Converters
-// ReSharper restore CheckNamespace
+
 {
     public class DeployViewConnectedToVisiblityConverter : IValueConverter
     {

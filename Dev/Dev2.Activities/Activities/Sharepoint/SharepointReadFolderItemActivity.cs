@@ -32,8 +32,8 @@ namespace Dev2.Activities.Sharepoint
             ServerInputPath = string.Empty;
         }
 
-        // ReSharper disable MemberCanBePrivate.Global
-        // ReSharper disable UnusedAutoPropertyAccessor.Global
+        
+        
         /// <summary>
         /// Gets or sets the files option.
         /// </summary>

@@ -16,7 +16,7 @@ using Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin;
 using DummyNamespaceForTest;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Tests.Runtime.ESB.ComPlugin
 {

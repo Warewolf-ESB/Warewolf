@@ -17,7 +17,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Tests.Diagnostics
 {
-    // ReSharper disable InconsistentNaming
+    
     [TestClass]
     public class DebugItemTests
     {
@@ -95,18 +95,18 @@ namespace Dev2.Tests.Diagnostics
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
-        // ReSharper disable InconsistentNaming - Unit Test
+
         public void TryCache_With_NullParameters_Expected_ThrowsArgumentNullException()
-        // ReSharper restore InconsistentNaming
+
         {
             var debugState = new DebugItem();
             debugState.TryCache(null);
         }
 
         [TestMethod]
-        // ReSharper disable InconsistentNaming - Unit Test
+
         public void TryCache_With_ValueGreaterThanMaxCharDispatchCount_Expected_TruncatesValueToActCharDispatchCount()
-        // ReSharper restore InconsistentNaming
+
         {
             var item = CreateDebugItemWithLongValue();
 
@@ -117,9 +117,9 @@ namespace Dev2.Tests.Diagnostics
         }
 
         [TestMethod]
-        // ReSharper disable InconsistentNaming - Unit Test
+
         public void TryCache_With_ValueGreaterThanMaxCharDispatchCount_Expected_InvokesSaveFileWithFullContent()
-        // ReSharper restore InconsistentNaming
+
         {
             var item = CreateDebugItemWithLongValue();
 
@@ -133,9 +133,9 @@ namespace Dev2.Tests.Diagnostics
         }
 
         [TestMethod]
-        // ReSharper disable InconsistentNaming - Unit Test
+
         public void TryCache_With_ValueEqualToMaxCharDispatchCount_Expected_DoesNotTruncateValueToActCharDispatchCount()
-        // ReSharper restore InconsistentNaming
+
         {
             var item = CreateDebugItemWithLongValue();
             item.Value = item.Value.Substring(0, DebugItem.MaxCharDispatchCount);
@@ -147,9 +147,9 @@ namespace Dev2.Tests.Diagnostics
         }
 
         [TestMethod]
-        // ReSharper disable InconsistentNaming - Unit Test
+
         public void TryCache_With_ValueEqualToMaxCharDispatchCount_Expected_DoesNotInvokeSaveFile()
-        // ReSharper restore InconsistentNaming
+
         {
             var item = CreateDebugItemWithLongValue();
             item.Value = item.Value.Substring(0, DebugItem.MaxCharDispatchCount);
@@ -161,9 +161,9 @@ namespace Dev2.Tests.Diagnostics
         }
 
         [TestMethod]
-        // ReSharper disable InconsistentNaming - Unit Test
+
         public void TryCache_With_ValueLessThanMaxCharDispatchCount_Expected_DoesNotTruncateValueToActCharDispatchCount()
-        // ReSharper restore InconsistentNaming
+
         {
             const int ExpectedLength = 100;
             var item = CreateDebugItemWithLongValue();
@@ -176,9 +176,9 @@ namespace Dev2.Tests.Diagnostics
         }
 
         [TestMethod]
-        // ReSharper disable InconsistentNaming - Unit Test
+
         public void TryCache_With_ValueLessThanMaxCharDispatchCount_Expected_DoesNotInvokeSaveFile()
-        // ReSharper restore InconsistentNaming
+
         {
             const int ExpectedLength = 100;
             var item = CreateDebugItemWithLongValue();
@@ -195,9 +195,9 @@ namespace Dev2.Tests.Diagnostics
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
-        // ReSharper disable InconsistentNaming - Unit Test
+
         public void SaveFile_With_NullParameters_Expected_ThrowsArgumentNullException()
-        // ReSharper restore InconsistentNaming
+
         {
             var debugState = new DebugItem();
 
@@ -205,9 +205,9 @@ namespace Dev2.Tests.Diagnostics
         }
 
         [TestMethod]
-        // ReSharper disable InconsistentNaming - Unit Test
+
         public void SaveFile_With_Contents_Expected_SavesFileToDisk()
-        // ReSharper restore InconsistentNaming
+
         {
             var debugState = new DebugItem();
 
@@ -225,9 +225,9 @@ namespace Dev2.Tests.Diagnostics
         [TestMethod]
         [Owner("Massimo Guerrera")]
         [TestCategory("DebugIem_SaveFile")]
-        // ReSharper disable InconsistentNaming - Unit Test
+
         public void DebugIem_SaveFile_WithContentsNewLineChars_ExpectedSavesFileToDiskWithCorrectChars()
-        // ReSharper restore InconsistentNaming
+
         {
             var debugState = new DebugItem();
 

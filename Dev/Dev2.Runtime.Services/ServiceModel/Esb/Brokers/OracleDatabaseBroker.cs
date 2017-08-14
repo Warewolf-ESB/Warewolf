@@ -136,12 +136,12 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
                     //
                     IDbCommand command = CommandFromServiceMethod(server, dbService.Method);
 
-                    // ReSharper disable PossibleNullReferenceException
+                    
 
                     var databaseName = (dbService.Source as DbSource).DatabaseName;
                     var fullProcedureName = dbService.Method.ExecuteAction.Substring(dbService.Method.ExecuteAction.IndexOf(".", StringComparison.Ordinal) + 1);
 
-                    // ReSharper disable once RedundantAssignment
+                    
                     var outParams = server.GetProcedureOutParams(fullProcedureName, databaseName);
                     var countRefCursors = outParams.Count(parameter => parameter.OracleDbType == OracleDbType.RefCursor);
                     var countSingleParams = outParams.Count(parameter => parameter.OracleDbType != OracleDbType.RefCursor);
@@ -170,7 +170,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
 
                     
 
-                    // ReSharper restore PossibleNullReferenceException
+                    
                     foreach (var dbDataParameter in outParams)
                     {
                         cmd.Parameters.Add(dbDataParameter);

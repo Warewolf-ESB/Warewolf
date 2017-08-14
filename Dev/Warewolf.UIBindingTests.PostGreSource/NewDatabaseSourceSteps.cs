@@ -21,7 +21,7 @@ using Warewolf.Studio.ViewModels;
 using Warewolf.Studio.Views;
 using Warewolf.UIBindingTests.Core;
 
-// ReSharper disable RedundantAssignment
+
 
 namespace Warewolf.UIBindingTests.PostGreSource
 {
@@ -140,9 +140,9 @@ namespace Warewolf.UIBindingTests.PostGreSource
 
             var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
             manageDatabaseSourceControl.SetAuthenticationType((AuthenticationType)authp);
-            // ReSharper disable PossibleNullReferenceException
+            
             (manageDatabaseSourceControl.DataContext as ManagePostgreSqlSourceViewModel).AuthenticationType = (AuthenticationType)authp;
-            // ReSharper restore PossibleNullReferenceException
+            
         }
 
         [Then(@"Authentication Type is selected as ""(.*)""")]

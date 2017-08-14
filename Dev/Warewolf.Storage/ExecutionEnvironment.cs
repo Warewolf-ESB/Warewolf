@@ -18,9 +18,9 @@ using System.Text;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage.Interfaces;
 using WarewolfParserInterop;
-// ReSharper disable ThrowingSystemException
-// ReSharper disable ParameterTypeCanBeEnumerable.Local
-// ReSharper disable LoopCanBeConvertedToQuery
+
+
+
 
 namespace Warewolf.Storage
 {

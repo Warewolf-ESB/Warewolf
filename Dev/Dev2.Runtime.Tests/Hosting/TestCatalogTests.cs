@@ -11,8 +11,8 @@ using Dev2.Data;
 using Dev2.DataList.Contract;
 using Dev2.Runtime;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-// ReSharper disable ObjectCreationAsStatement
-// ReSharper disable InconsistentNaming
+
+
 
 namespace Dev2.Tests.Runtime.Hosting
 {

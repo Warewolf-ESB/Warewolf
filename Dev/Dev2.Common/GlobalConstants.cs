@@ -31,7 +31,7 @@ namespace Dev2.Common
         {
             SystemEvents.TimeChanged += (sender, args) =>
             {
-                // ReSharper disable once ConvertToLambdaExpression
+                
                 CultureInfo.CurrentCulture.ClearCachedData();
             };
 
@@ -44,18 +44,18 @@ namespace Dev2.Common
              */
             SystemEvents.UserPreferenceChanged += (sender, args) =>
             {
-                // ReSharper disable once ConvertToLambdaExpression
+                
                 CultureInfo.CurrentCulture.ClearCachedData();
             };
         }
 
         public const string ArmResultText = "Flow Arm";
-        // ReSharper disable InconsistentNaming
+        
         //Default TimeoutValue
-        // ReSharper disable UnusedMember.Global
+        
         public static readonly TimeSpan DefaultTimeoutValue = new TimeSpan(0, 0, 20, 0);
 
-        // ReSharper restore UnusedMember.Global
+        
 
         public static string DefaultServerLogFileConfig = "<log4net>" +
                                              "<appender name=\"LogFileAppender\" type=\"Log4Net.Async.AsyncRollingFileAppender,Log4Net.Async\">" +
@@ -160,21 +160,21 @@ namespace Dev2.Common
                                              "</log4net>";
 
         // Max String Size
-        // ReSharper disable InconsistentNaming
+        
         public const double MAX_SIZE_FOR_STRING = 1 << 12; // = 4K
 
-        // ReSharper restore InconsistentNaming
+
 
         // Max storage buffer size to avoid LOH ;)
-        // ReSharper disable InconsistentNaming
+        
         public const int MAX_BUFFER_SIZE = 35000;
 
-        // ReSharper restore InconsistentNaming
+
 
         public const double DesignHeightTolerance = 0.00000001;
 
         // Force Webserver Constants
-        // ReSharper disable UnusedMember.Global
+        
         public const int ViewInBrowserForceDownloadSize = 51200; // 500 KB and a file must be downloaded
 
         //Runtime Configuration
@@ -186,16 +186,16 @@ namespace Dev2.Common
         public const string Dev2MessageBoxNoInputsWhenHyperlinkClickedDialog = "2";
 
         // WF Constants
-        // ReSharper disable InconsistentNaming
+        
         public const int _xamlPoolSize = 5;
 
-        // ReSharper restore InconsistentNaming
+
 
         // Constant for unique batch size processing
-        // ReSharper disable InconsistentNaming
+        
         public const int _uniqueBatchSize = 1000;
 
-        // ReSharper restore InconsistentNaming
+
 
         //Network
         public const int NetworkTimeOut = 30000; //Bug 8796
@@ -221,14 +221,14 @@ namespace Dev2.Common
         public const string WebserverReplaceTag = "[[Dev2WebServer]]";
 
         // JSON constants
-        // ReSharper disable InconsistentNaming
+        
         public const string OpenJSON = "<JSON>";
 
-        // ReSharper restore InconsistentNaming
-        // ReSharper disable InconsistentNaming
+
+        
         public const string CloseJSON = "</JSON>";
 
-        // ReSharper restore InconsistentNaming
+
 
         // Service Action Constants
         public const string OutputDefOpenTag = "<Outputs>";
@@ -245,14 +245,14 @@ namespace Dev2.Common
         public const string ManagementServicePayload = "Dev2System.ManagmentServicePayload";
         public const string ErrorPayload = "Dev2System.Dev2Error";
 
-        // ReSharper disable InconsistentNaming
+        
         public const string ActivityRSResult = "Dev2ActivityResults";
 
-        // ReSharper restore InconsistentNaming
-        // ReSharper disable InconsistentNaming
+
+        
         public const string ActivityRSField = "Dev2Result";
 
-        // ReSharper restore InconsistentNaming
+
         public const string StarExpression = "*";
 
         public const string EqualsExpression = "=";
@@ -303,10 +303,10 @@ namespace Dev2.Common
         public const string DefaultTrueArmText = "True";
         public const string DefaultFalseArmText = "False";
 
-        // ReSharper disable InconsistentNaming
+        
         public const string VBSerializerToken = "__!__";
 
-        // ReSharper restore InconsistentNaming
+
 
         public const string DisplayNamePropertyText = "DisplayName"; // PBI 9220 - 2013.04.29 - TWR
 
@@ -329,10 +329,10 @@ namespace Dev2.Common
         // Brendon Hack Constants
         public const string PostData = "postData";
 
-        // ReSharper disable InconsistentNaming
+        
         public const string DLID = "dlid";
 
-        // ReSharper restore InconsistentNaming
+
 
         public const string DecisionWizardErrorString = "Couldn't find the resource needed to configure the Decision.";
         public const string DecisionWizardErrorHeading = "Missing System Model Dev2DecisionStack";
@@ -419,8 +419,8 @@ where pn.nspname = 'public';
 
         // Security
         //public const string BuiltInAdministrator = "BuiltIn\\Administrators";
-        // ReSharper disable ConvertToConstant.Global
-        // ReSharper disable FieldCanBeMadeReadOnly.Global
+        
+        
         public static String PublicUsername = @"\";
 
         // GAC
@@ -436,7 +436,7 @@ where pn.nspname = 'public';
         public static readonly string RemoteDebugServerInvoke = "RemoteWarewolfServerDebug";
 
         // Date Time
-        // ReSharper disable MemberCanBePrivate.Global
+        
         public static readonly string LongTimePattern = CultureInfo.CurrentCulture.DateTimeFormat.LongTimePattern;
 
         public static readonly string ShortTimePattern = CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern;
@@ -509,10 +509,10 @@ where pn.nspname = 'public';
             "There is An Error"
         };
 
-        // ReSharper disable UnusedAutoPropertyAccessor.Global
+        
         public static int VersionCount = 20;
 
-        // ReSharper restore UnusedAutoPropertyAccessor.Global
+        
         public static string WebServiceTimeoutMessage =
             "Output mapping took too long. More then 10 seconds. Please use the JSONPath feature ( green icon above ) to reduce your dataset complexity. You can find out more on JSONPath at http://goessner.net/articles/JsonPath/";
 
@@ -586,7 +586,7 @@ where pn.nspname = 'public';
                 //#if DEBUG
                 //                return Assembly.GetExecutingAssembly().GetName().Version.Minor-1;
                 //#endif
-                // ReSharper disable once HeuristicUnreachableCode
+                
 #pragma warning disable 162
                 return 7;
 #pragma warning restore 162
@@ -600,7 +600,7 @@ where pn.nspname = 'public';
                 //#if DEBUG
                 //                return Assembly.GetExecutingAssembly().GetName().Version.Major-1;
                 //#endif
-                // ReSharper disable once HeuristicUnreachableCode
+                
 #pragma warning disable 162
                 return 0;
 #pragma warning restore 162
@@ -615,7 +615,7 @@ where pn.nspname = 'public';
         public static string Warewolf = "Warewolf";
         public static string WarewolfServices = "Warewolf Services";
         public static string UserEchoURL = "http://community.warewolf.io/topics/249-https-connection-from-localhost-to-a-remote-server/";
-        // ReSharper restore InconsistentNaming
+
         public static void HandleEmptyParameters(object paramaTer, string name)
         {
             try
@@ -642,9 +642,9 @@ where pn.nspname = 'public';
         
 
 
-        // ReSharper restore UnusedMember.Global
-        // ReSharper restore ConvertToConstant.Global
-        // ReSharper restore FieldCanBeMadeReadOnly.Global
-        // ReSharper restore MemberCanBePrivate.Global
+        
+        
+        
+        
     }
 }

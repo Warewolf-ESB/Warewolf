@@ -19,11 +19,11 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
-// ReSharper disable InconsistentNaming
 
-// ReSharper disable CheckNamespace
+
+
 namespace ActivityUnitTests.ActivityTest
-// ReSharper restore CheckNamespace
+
 {
     /// <summary>
     /// Summary description for CountRecordsTest

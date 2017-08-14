@@ -11,11 +11,11 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 
-// ReSharper disable CheckNamespace
+
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
-// ReSharper restore CheckNamespace
-// ReSharper disable InconsistentNaming
+
+
     public enum enDev2HTMLType { FORM, PAGETITLE, META, IMAGE, TEXT, MENU }
 
     public class Util
@@ -57,9 +57,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 if(ValueIsNumber(comparisonValue.ToString()))
                 {
-                    // ReSharper disable CompareOfFloatsByEqualityOperator
+                    
                     return double.Parse(value) == double.Parse(comparisonValue.ToString());
-                    // ReSharper restore CompareOfFloatsByEqualityOperator
+                    
                 }
             }
 
@@ -92,9 +92,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 if(ValueIsNumber(comparisonValue.ToString()))
                 {
-                    // ReSharper disable CompareOfFloatsByEqualityOperator
+                    
                     return double.Parse(value) != double.Parse(comparisonValue.ToString());
-                    // ReSharper restore CompareOfFloatsByEqualityOperator
+                    
                 }
             }
 

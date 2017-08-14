@@ -13,7 +13,7 @@ using Dev2.DynamicServices.Objects;
 using Dev2.Workspaces;
 using Microsoft.Win32;
 //http://procbits.com/2010/11/08/get-all-progid-on-system-for-com-automation
-// ReSharper disable NonLocalizedString
+
 namespace Dev2.Runtime.ESB.Management.Services
 {
 

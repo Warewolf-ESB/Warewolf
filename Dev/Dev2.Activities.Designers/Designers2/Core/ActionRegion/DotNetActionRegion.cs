@@ -13,8 +13,8 @@ using Dev2.Common.Interfaces.ToolBase.DotNet;
 using Dev2.Studio.Core.Activities.Utils;
 using Warewolf.Core;
 
-// ReSharper disable ExplicitCallerInfoArgument
-// ReSharper disable FieldCanBeMadeReadOnly.Local
+
+
 
 namespace Dev2.Activities.Designers2.Core.ActionRegion
 {
@@ -114,10 +114,10 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             {
                 Errors.Clear();
                 IsRefreshing = true;
-                // ReSharper disable once ExplicitCallerInfoArgument
+                
                 UpdateBasedOnNamespace();
                 IsRefreshing = false;
-                // ReSharper disable once ExplicitCallerInfoArgument
+                
                 OnPropertyChanged(@"IsEnabled");
             }
             catch (Exception e)

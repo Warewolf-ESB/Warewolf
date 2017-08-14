@@ -3,8 +3,8 @@ using Dev2.Common.Interfaces.DB;
 using System;
 using System.Collections.Generic;
 
-// ReSharper disable MergeConditionalExpression
-// ReSharper disable NonReadonlyMemberInGetHashCode
+
+
 
 namespace Warewolf.Core
 {

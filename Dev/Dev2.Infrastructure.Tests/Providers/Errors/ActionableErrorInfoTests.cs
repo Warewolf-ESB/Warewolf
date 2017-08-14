@@ -16,7 +16,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Infrastructure.Tests.Providers.Errors
 {
     [TestClass]
-    // ReSharper disable InconsistentNaming
+    
     public class ActionableErrorInfoTests
     {
         [TestMethod]

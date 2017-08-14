@@ -28,17 +28,17 @@ using System.Windows.Input;
 using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Threading;
-// ReSharper disable NonLocalizedString
-// ReSharper disable MemberCanBePrivate.Global
-// ReSharper disable UnusedMember.Global
-// ReSharper disable MemberCanBeProtected.Global
-// ReSharper disable EventNeverSubscribedTo.Global
-// ReSharper disable VirtualMemberNeverOverriden.Global
-// ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
 
-// ReSharper disable CheckNamespace
+
+
+
+
+
+
+
+
 namespace System.Windows.Controls
-// ReSharper restore CheckNamespace
+
 {
     /// <summary>
     /// Represents a control that provides a text box for user input and a
@@ -242,7 +242,7 @@ namespace System.Windows.Controls
 
             if(newValue < 0 && newValue != -1)
             {
-                // ReSharper disable once NotResolvedInText
+                
                 throw new ArgumentOutOfRangeException("MinimumPrefixLength");
             }
         }
@@ -313,7 +313,7 @@ namespace System.Windows.Controls
                 d.SetValue(e.Property, e.OldValue);
 
                 throw new ArgumentException(string.Format(CultureInfo.InvariantCulture,
-                    // ReSharper disable once NotResolvedInText
+                    
                     Dev2.Runtime.Configuration.Properties.Resources.AutoComplete_OnMinimumPopulateDelayPropertyChanged_InvalidValue, newValue), "value");
             }
 
@@ -588,7 +588,7 @@ namespace System.Windows.Controls
                     source.SetValue(e.Property, e.OldValue);
                 }
 
-                // ReSharper disable once NotResolvedInText
+                
                 throw new ArgumentException(string.Format(CultureInfo.InvariantCulture, Dev2.Runtime.Configuration.Properties.Resources.AutoComplete_OnMaxDropDownHeightPropertyChanged_InvalidValue, e.NewValue), "value");
             }
 
@@ -973,7 +973,7 @@ namespace System.Windows.Controls
         /// <param name="e">Event arguments.</param>
         [SuppressMessage("Microsoft.Usage", "CA2208:InstantiateArgumentExceptionsCorrectly", Justification = "The exception will be thrown when the CLR setter is used in most situations.")]
         [ExcludeFromCodeCoverage]
-        // ReSharper disable once CyclomaticComplexity
+        
         private static void OnFilterModePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             AutoCompleteBox source = d as AutoCompleteBox;
@@ -996,7 +996,7 @@ namespace System.Windows.Controls
             {
                 source?.SetValue(e.Property, e.OldValue);
 
-                // ReSharper disable once NotResolvedInText
+                
                 throw new ArgumentException(Dev2.Runtime.Configuration.Properties.Resources.AutoComplete_OnFilterModePropertyChanged_InvalidValue, "value");
             }
 
@@ -1846,7 +1846,7 @@ namespace System.Windows.Controls
         /// if possible. Otherwise, null.
         /// </returns>
         [SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate", Justification = "Following the GetTemplateChild pattern for the method.")]
-        // ReSharper disable once VirtualMemberNeverOverriden.Global
+        
         [ExcludeFromCodeCoverage]
         protected virtual ISelectionAdapter GetSelectionAdapterPart()
         {
@@ -1855,10 +1855,10 @@ namespace System.Windows.Controls
             if(selector != null)
             {
                 // Check if it is already an IItemsSelector
-                // ReSharper disable once SuspiciousTypeConversion.Global
+                
                 adapter = selector as ISelectionAdapter ?? new SelectorSelectionAdapter(selector);
             }
-            // ReSharper disable once SuspiciousTypeConversion.Global
+            
             return adapter ?? GetTemplateChild(ElementSelectionAdapter) as ISelectionAdapter;
         }
 
@@ -1900,7 +1900,7 @@ namespace System.Windows.Controls
         /// <param name="e">A
         /// <see cref="T:System.Windows.Controls.PopulatingEventArgs" /> that
         /// contains the event data.</param>
-        // ReSharper disable once VirtualMemberNeverOverriden.Global
+        
         protected virtual void OnPopulating(PopulatingEventArgs e)
         {
 #if SILVERLIGHT
@@ -2151,7 +2151,7 @@ namespace System.Windows.Controls
         /// <param name="value">The new string value.</param>
         private void UpdateTextValue(string value)
         {
-            // ReSharper disable once IntroduceOptionalParameters.Local
+            
             UpdateTextValue(value, null);
         }
 
@@ -2304,7 +2304,7 @@ namespace System.Windows.Controls
 #endif
             OnPopulated(populated);
 
-            // ReSharper disable once PossibleUnintendedReferenceComparison
+            
             if(SelectionAdapter != null && SelectionAdapter.ItemsSource != _view)
             {
                 SelectionAdapter.ItemsSource = _view;
@@ -2455,7 +2455,7 @@ namespace System.Windows.Controls
         /// Walks through the items enumeration. Performance is not going to be 
         /// perfect with the current implementation.
         /// </summary>
-        // ReSharper disable once CyclomaticComplexity
+        
         private void RefreshView()
         {
             if(_items == null)
@@ -2559,7 +2559,7 @@ namespace System.Windows.Controls
 
             // Clear and set the view on the selection adapter
             ClearView();
-            // ReSharper disable once PossibleUnintendedReferenceComparison
+            
             if(SelectionAdapter != null && SelectionAdapter.ItemsSource != _view)
             {
                 SelectionAdapter.ItemsSource = _view;
@@ -2574,7 +2574,7 @@ namespace System.Windows.Controls
         /// Method that handles the ObservableCollection.CollectionChanged event for the ItemsSource property.
         /// </summary>
         /// <param name="e">The event data.</param>
-        // ReSharper disable once CyclomaticComplexity
+        
         [ExcludeFromCodeCoverage]
         private void ItemsSourceCollectionChanged(NotifyCollectionChangedEventArgs e)
         {
@@ -2766,7 +2766,7 @@ namespace System.Windows.Controls
         {
             if(e == null)
             {
-                // ReSharper disable once UseNameofExpression
+                
                 throw new ArgumentNullException("e");
             }
 

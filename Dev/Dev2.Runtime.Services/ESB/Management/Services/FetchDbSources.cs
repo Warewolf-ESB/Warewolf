@@ -40,7 +40,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             var serializer = new Dev2JsonSerializer();
 
-            // ReSharper disable MaximumChainedReferences
+            
             List<DbSourceDefinition> list = Resources.GetResourceList<DbSource>(GlobalConstants.ServerWorkspaceID).Select(a =>
             {
                 var res = a as DbSource;
@@ -63,7 +63,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }).ToList();
          
             return serializer.SerializeToBuilder(new ExecuteMessage { HasError = false, Message = serializer.SerializeToBuilder(list) });
-            // ReSharper restore MaximumChainedReferences
+            
         }
 
         public DynamicService CreateServiceEntry()

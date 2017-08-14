@@ -14,7 +14,7 @@ using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    // ReSharper disable once UnusedMember.Global
+    
     public class DuplicateFolderService : IEsbManagementEndpoint
     {
 
@@ -35,7 +35,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             _catalog = catalog;
         }
 
-        // ReSharper disable once MemberCanBeInternal
+        
         public DuplicateFolderService()
         {
 

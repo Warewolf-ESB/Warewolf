@@ -54,7 +54,7 @@ namespace Dev2.Activities
         /// The property that holds all the conversions
         /// </summary>
 
-        // ReSharper disable MemberCanBePrivate.Global
+        
         public EmailSource SelectedEmailSource
         {
             get
@@ -72,7 +72,7 @@ namespace Dev2.Activities
                 }
             }
         }
-        // ReSharper restore MemberCanBePrivate.Global
+        
         [FindMissing]
         public string FromAccount { get; set; }
         [FindMissing]
@@ -100,7 +100,7 @@ namespace Dev2.Activities
         }
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        // ReSharper disable once MemberCanBePrivate.Global
+        
         protected string DecryptedPassword => DataListUtil.NotEncrypted(Password) ? Password : DpapiWrapper.Decrypt(Password);
 
         [FindMissing]
@@ -110,9 +110,9 @@ namespace Dev2.Activities
         [FindMissing]
         public string Bcc { get; set; }
 
-        // ReSharper disable MemberCanBePrivate.Global
+        
         public enMailPriorityEnum Priority { get; set; }
-        // ReSharper restore MemberCanBePrivate.Global
+        
         [FindMissing]
         public string Subject { get; set; }
         [FindMissing]
@@ -120,7 +120,7 @@ namespace Dev2.Activities
         [FindMissing]
         public string Body { get; set; }
 
-        // ReSharper disable once UnusedAutoPropertyAccessor.Local
+        
         public bool IsHtml { get; set; }
 
         /// <summary>
@@ -182,9 +182,9 @@ namespace Dev2.Activities
         /// When overridden runs the activity's execution logic
         /// </summary>
         /// <param name="context">The context to be used.</param>
-        // ReSharper disable MethodTooLong
+        
         protected override void OnExecute(NativeActivityContext context)
-            // ReSharper restore MethodTooLong
+            
         {
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
             ExecuteTool(dataObject, 0);
@@ -343,9 +343,9 @@ namespace Dev2.Activities
             return indexToUpsertTo;
         }
 
-        // ReSharper disable TooManyArguments
+        
         string SendEmail(EmailSource runtimeSource, IWarewolfListIterator colItr, IWarewolfIterator fromAccountItr, IWarewolfIterator passwordItr, IWarewolfIterator toItr, IWarewolfIterator ccItr, IWarewolfIterator bccItr, IWarewolfIterator subjectItr, IWarewolfIterator bodyItr, IWarewolfIterator attachmentsItr, out ErrorResultTO errors)
-            // ReSharper restore TooManyArguments
+            
         {
             errors = new ErrorResultTO();
             var fromAccountValue = colItr.FetchNextValue(fromAccountItr);

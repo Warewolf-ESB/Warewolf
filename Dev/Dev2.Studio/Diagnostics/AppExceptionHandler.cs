@@ -11,10 +11,10 @@
 using System;
 using Dev2.Studio.Interfaces;
 
-// ReSharper disable once CheckNamespace
-// ReSharper disable CheckNamespace
+
+
 namespace Dev2.Studio.Diagnostics
-// ReSharper restore CheckNamespace
+
 {
     public class AppExceptionHandler : AppExceptionHandlerAbstract
     {

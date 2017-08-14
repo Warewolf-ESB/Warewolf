@@ -2,7 +2,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using System.Net.Http;
 using Dev2.Runtime.ServiceModel.Data;
-// ReSharper disable UnusedMember.Global
+
 
 namespace Dev2.Activities
 {

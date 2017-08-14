@@ -2,8 +2,8 @@
 using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
 using System;
 
-// ReSharper disable NonReadonlyMemberInGetHashCode
-// ReSharper disable MergeConditionalExpression
+
+
 
 namespace Dev2.Common.Interfaces.Core
 {

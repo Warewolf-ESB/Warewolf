@@ -12,11 +12,11 @@ using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.Practices.Prism;
 
-// ReSharper disable NotAccessedField.Local
+
 
 namespace Dev2.Activities.Designers2.Core.Web.Delete
 {
-    // ReSharper disable once ClassWithVirtualMembersNeverInherited.Global
+    
     public class WebDeleteInputRegion : IWebDeleteInputArea
     {
         private readonly ModelItem _modelItem;
@@ -47,7 +47,7 @@ namespace Dev2.Activities.Designers2.Core.Web.Delete
         }
         private void SourceOnSomethingChanged(object sender, IToolRegion args)
         {
-            // ReSharper disable once ExplicitCallerInfoArgument
+            
             if (_source?.SelectedSource != null)
             {
                 RequestUrl = _source.SelectedSource.HostName;
@@ -60,7 +60,7 @@ namespace Dev2.Activities.Designers2.Core.Web.Delete
                 }));
                 IsEnabled = true;
             }
-            // ReSharper disable once ExplicitCallerInfoArgument
+            
             OnPropertyChanged(@"IsEnabled");
         }
         private void SetupHeaders(ModelItem modelItem)

@@ -11,7 +11,7 @@ namespace Dev2.PerformanceCounters.Counters
         private PerformanceCounter _counter;
         private Stopwatch _stopwatch;
 
-        // ReSharper disable once InconsistentNaming
+
         private const WarewolfPerfCounterType _perfCounterType = WarewolfPerfCounterType.RequestsPerSecond;
         public WarewolfRequestsPerSecondPerformanceCounter()
         {

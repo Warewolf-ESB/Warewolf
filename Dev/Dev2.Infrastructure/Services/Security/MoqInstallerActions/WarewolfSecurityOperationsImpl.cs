@@ -102,9 +102,9 @@ namespace Dev2.Services.Security.MoqInstallerActions
         {
             if (string.IsNullOrEmpty(currentUser))
             {
-                // ReSharper disable NotResolvedInText
+                
                 throw new ArgumentNullException("Null or Empty User");
-                // ReSharper restore NotResolvedInText
+                
             }
 
             using (var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))

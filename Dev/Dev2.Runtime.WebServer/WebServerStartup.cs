@@ -17,7 +17,7 @@ using Microsoft.AspNet.SignalR;
 using Microsoft.Owin.Cors;
 using Microsoft.Owin.Hosting;
 using Owin;
-// ReSharper disable ParameterTypeCanBeEnumerable.Global
+
 
 namespace Dev2.Runtime.WebServer
 {

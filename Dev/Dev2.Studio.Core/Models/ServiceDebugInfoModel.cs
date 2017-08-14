@@ -11,7 +11,7 @@
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.Enums;
 
-// ReSharper disable once CheckNamespace
+
 namespace Dev2.Studio.Core.Models
 {
     public class ServiceDebugInfoModel : IServiceDebugInfoModel

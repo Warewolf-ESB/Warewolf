@@ -2,7 +2,7 @@
 using System.Runtime.InteropServices;
 using System.Text;
 using Dev2.Common;
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Activities.Specs
 {
@@ -94,7 +94,7 @@ namespace Dev2.Activities.Specs
         /// The windows error code returned by LsaAddAccountRights
         public long SetRight(String accountName, String privilegeName)
         {
-            // ReSharper disable once RedundantAssignment
+            
             long winErrorCode = 0; //contains the last error
 
             //pointer an size for the SID
@@ -148,7 +148,7 @@ namespace Dev2.Activities.Specs
                                         LSA_AccessPolicy.POLICY_VIEW_LOCAL_INFORMATION
                                     );
                 //initialize a pointer for the policy handle
-                // ReSharper disable once RedundantAssignment
+                
                 IntPtr policyHandle = IntPtr.Zero;
 
                 //these attributes are not used, but LsaOpenPolicy wants them to exists

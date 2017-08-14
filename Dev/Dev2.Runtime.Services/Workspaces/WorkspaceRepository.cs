@@ -19,8 +19,8 @@ using Dev2.Common;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Interfaces;
 
-// ReSharper disable CheckNamespace
-// ReSharper disable InconsistentNaming
+
+
 namespace Dev2.Workspaces
 {
     /// <summary>
@@ -214,9 +214,9 @@ namespace Dev2.Workspaces
         {
             lock(_readLock)
             {
-                // ReSharper disable RedundantAssignment
+                
                 var filesToIgnore = servicesToIgnore.Select(s => s += ".xml").ToList();
-                // ReSharper restore RedundantAssignment
+                
                 var targetPath = EnvironmentVariables.GetWorkspacePath(workspace.ID);
                 _resourceCatalog.SyncTo(ServerWorkspacePath, targetPath, true, true, filesToIgnore);
             }
@@ -290,9 +290,9 @@ namespace Dev2.Workspaces
                         {
                             return (IWorkspace)formatter.Deserialize(stream);
                         }
-                        // ReSharper disable EmptyGeneralCatchClause 
+                         
                         catch(Exception ex)
-                        // ReSharper restore EmptyGeneralCatchClause
+                        
                         {
                             Dev2Logger.Error(ex);
                             // Deserialization failed so overwrite with new one.
@@ -370,9 +370,9 @@ namespace Dev2.Workspaces
                         {
                             return (ConcurrentDictionary<string, Guid>)formatter.Deserialize(stream);
                         }
-                        // ReSharper disable EmptyGeneralCatchClause 
+                         
                         catch(Exception ex)
-                        // ReSharper restore EmptyGeneralCatchClause
+                        
                         {
                             Dev2Logger.Error("WorkspaceRepository", ex);
                             // Deserialization failed so overwrite with new one.

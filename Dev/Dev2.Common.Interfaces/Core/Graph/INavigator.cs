@@ -11,10 +11,10 @@
 using System;
 using System.Collections.Generic;
 
-// ReSharper disable CheckNamespace
+
 
 namespace Dev2.Common.Interfaces.Core.Graph
-// ReSharper restore CheckNamespace
+
 {
     public interface INavigator : IDisposable
     {

@@ -14,7 +14,7 @@ using System.Activities.Presentation;
 using System.Activities.Presentation.Model;
 using System.Diagnostics.CodeAnalysis;
 
-// ReSharper disable once CheckNamespace
+
 namespace Dev2.Studio.Core.Activities.Utils
 {
     public static class ModelItemUtils
@@ -33,7 +33,7 @@ namespace Dev2.Studio.Core.Activities.Utils
                     var modelProperty = modelItem.Properties[propertyName];
                     if(modelProperty != null)
                     {
-                        // ReSharper disable once ConvertIfStatementToConditionalTernaryExpression
+                        
                         if(modelProperty.PropertyType == typeof(InArgument<T>))
                         {
                             modelProperty.SetValue(InArgument<T>.FromValue(value));

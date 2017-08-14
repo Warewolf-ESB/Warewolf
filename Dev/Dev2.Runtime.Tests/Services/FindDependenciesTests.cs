@@ -17,9 +17,9 @@ using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-// ReSharper disable PossibleNullReferenceException
 
-// ReSharper disable InconsistentNaming
+
+
 
 namespace Dev2.Tests.Runtime.Services
 {
@@ -107,7 +107,7 @@ namespace Dev2.Tests.Runtime.Services
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("FindDependencies_Execute")]
-        [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
+        
         public void FindDependencies_Execute_GetDependsOnMe_ShouldReturnDependantsRecursive()
         {
             //------------Setup for test--------------------------
@@ -165,7 +165,7 @@ namespace Dev2.Tests.Runtime.Services
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("FindDependencies_Execute")]
-        [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
+        
         public void FindDependencies_Execute_GetDependsOnMeFalse_ShouldReturnDependenciesRecursive()
         {
             //------------Setup for test--------------------------
@@ -224,7 +224,7 @@ namespace Dev2.Tests.Runtime.Services
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("FindDependencies_Execute")]
-        [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
+        
         public void FindDependencies_Execute_GetDependsOnMe_WhenCircular_ShouldReturnDependantsRecursive()
         {
             //------------Setup for test--------------------------

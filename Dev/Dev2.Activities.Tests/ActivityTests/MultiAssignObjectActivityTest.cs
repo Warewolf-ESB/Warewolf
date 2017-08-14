@@ -22,7 +22,7 @@ using System;
 namespace Dev2.Tests.Activities.ActivityTests
 {
     [TestClass]
-    // ReSharper disable InconsistentNaming
+    
     public class MultiAssignObjectActivityTest : BaseActivityUnitTest
     {
         [TestMethod]

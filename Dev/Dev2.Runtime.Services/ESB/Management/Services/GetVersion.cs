@@ -26,7 +26,7 @@ using Dev2.Runtime.Interfaces;
 using Dev2.Util;
 using Dev2.Workspaces;
 using Warewolf.Resource.Errors;
-// ReSharper disable MemberCanBePrivate.Global
+
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -73,9 +73,9 @@ namespace Dev2.Runtime.ESB.Management.Services
                 }
                 if (!values.ContainsKey("versionInfo"))
                 {
-// ReSharper disable NotResolvedInText
+
                     throw new ArgumentNullException(ErrorResource.NoResourceIdInTheIncomingData);
-// ReSharper restore NotResolvedInText
+
                 }
                
                 var version = serializer.Deserialize<IVersionInfo>(values["versionInfo"]);

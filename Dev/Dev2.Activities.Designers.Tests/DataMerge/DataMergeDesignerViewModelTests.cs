@@ -248,10 +248,10 @@ namespace Dev2.Activities.Designers.Tests.DataMerge
 
             var dto = new DataMergeDTO("a&]]", DataMergeDTO.MergeTypeIndex, "", 0, "ab", "Left");
 
-            // ReSharper disable PossibleNullReferenceException
+            
             var miCollection = mi.Properties["MergeCollection"].Collection;
             var dtoModelItem = miCollection.Add(dto);
-            // ReSharper restore PossibleNullReferenceException
+            
 
             var viewModel = new DataMergeDesignerViewModel(mi);
             viewModel.GetDatalistString = () =>

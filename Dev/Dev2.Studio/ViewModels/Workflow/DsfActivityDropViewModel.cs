@@ -18,7 +18,7 @@ using Dev2.Studio.Enums;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.ViewModels.WorkSurface;
 
-// ReSharper disable CheckNamespace
+
 namespace Dev2.Studio.ViewModels.Workflow
 {
     public class DsfActivityDropViewModel : SimpleBaseViewModel

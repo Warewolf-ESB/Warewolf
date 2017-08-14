@@ -108,9 +108,9 @@ namespace Dev2.ScheduleExecutor
                     {
                         if (response != null)
                         {
-                            // ReSharper disable AssignNullToNotNullAttribute
+                            
                             using (var reader = new StreamReader(response.GetResponseStream()))
-                            // ReSharper restore AssignNullToNotNullAttribute
+                            
                             {
                                 result = reader.ReadToEnd();
                             }
@@ -179,9 +179,9 @@ namespace Dev2.ScheduleExecutor
                 {
                     if(response != null)
                     {
-                        // ReSharper disable AssignNullToNotNullAttribute
+                        
                         using(var reader = new StreamReader(response.GetResponseStream()))
-                            // ReSharper restore AssignNullToNotNullAttribute
+                            
                         {
                             result = reader.ReadToEnd();
                         }
@@ -340,8 +340,8 @@ namespace Dev2.ScheduleExecutor
 
         }
 
-        [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
-        // ReSharper disable once ReturnTypeCanBeEnumerable.Local
+        
+        
         private static List<IDebugItemResult> ProcessRecordSet(XElement recordSetElement, IEnumerable<XElement> elements)
         {
             var processRecordSet = new List<IDebugItemResult>();
@@ -350,7 +350,7 @@ namespace Dev2.ScheduleExecutor
             if(xAttribute != null)
             {
                 var index = xAttribute.Value;
-                // ReSharper disable once LoopCanBeConvertedToQuery
+                
                 foreach (var xElement in elements)
                 {
                     var debugItemResult = new DebugItemResult
@@ -383,9 +383,9 @@ namespace Dev2.ScheduleExecutor
                     tsw.WriteLine(logMessage);
                 }
             }
-            // ReSharper disable EmptyGeneralCatchClause
+            
             catch
-            // ReSharper restore EmptyGeneralCatchClause
+            
             {
             }
         }
@@ -404,9 +404,9 @@ namespace Dev2.ScheduleExecutor
                         FileInfo fileInfo = logFiles.OrderByDescending(f => f.LastWriteTime).First();
                         fileInfo.Delete();
                     }
-                    // ReSharper disable EmptyGeneralCatchClause
+                    
                     catch
-                    // ReSharper restore EmptyGeneralCatchClause
+                    
                     {
                     }
                 }

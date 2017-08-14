@@ -23,7 +23,7 @@ namespace Dev2.Common.Interfaces.Core
         }
         public bool Equals(IComPluginSource other)
         {
-            // ReSharper disable once PossibleNullReferenceException
+            
             return string.Equals(ResourceName, other.ResourceName) && Id.Equals(other.Id) && Equals(ClsId, other.ClsId) && Is32Bit == other.Is32Bit && Id.Equals(other.Id) && Equals(SelectedDll, other.SelectedDll) && string.Equals(Name, ((ComPluginSourceDefinition)other).Name);
         }
 

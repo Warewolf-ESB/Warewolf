@@ -5,8 +5,8 @@ using System.Linq;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Monitoring;
 using Dev2.PerformanceCounters.Counters;
-// ReSharper disable MemberCanBePrivate.Global
-// ReSharper disable UnusedParameter.Local
+
+
 
 namespace Dev2.PerformanceCounters.Management
 {
@@ -18,7 +18,7 @@ namespace Dev2.PerformanceCounters.Management
         private readonly IPerformanceCounterPersistence _perf;
         private IList<IPerformanceCounter> _resourceCounters;
 
-        // ReSharper disable once ParameterTypeCanBeEnumerable.Local
+        
         public WarewolfPerformanceCounterManager(IList<IPerformanceCounter> counters, IList<IResourcePerformanceCounter> resourceCounters, IWarewolfPerformanceCounterRegister register, IPerformanceCounterPersistence perf)
         {
             _counters = counters;

@@ -43,9 +43,9 @@ namespace Dev2.Runtime.ESB.Management.Services
 
                 if (string.IsNullOrEmpty(type))
                 {
-                    // ReSharper disable NotResolvedInText
+                    
                     throw new ArgumentNullException("type");
-                    // ReSharper restore NotResolvedInText
+                    
                 }
                 Dev2Logger.Info("Find Sources By Type. " + type);
                 enSourceType sourceType;

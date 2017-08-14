@@ -21,7 +21,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
-// ReSharper disable InconsistentNaming 
+ 
 namespace Dev2.Activities.Designers.Tests.BaseConvert
 {
     [TestClass]
@@ -83,13 +83,13 @@ namespace Dev2.Activities.Designers.Tests.BaseConvert
             var modelItem = ModelItemUtils.CreateModelItem(new DsfBaseConvertActivity());
             modelItem.SetProperty("DisplayName", displayName);
 
-            // ReSharper disable PossibleNullReferenceException
+            
             var modelItemCollection = modelItem.Properties["ConvertCollection"].Collection;
             foreach(var dto in items)
             {
                 modelItemCollection.Add(dto);
             }
-            // ReSharper restore PossibleNullReferenceException
+            
 
             return modelItem;
         }

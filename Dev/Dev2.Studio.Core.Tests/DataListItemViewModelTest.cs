@@ -15,7 +15,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Core.Tests
 {
 
-    // ReSharper disable InconsistentNaming
+    
 
     /// <summary>
     ///This is a test class for DataListItemViewModelTest and is intended

@@ -31,19 +31,19 @@ using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 
-// ReSharper disable CheckNamespace
+
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
-// ReSharper restore CheckNamespace
+
 {
     [ToolDescriptorInfo("Utility-FormatNumber", "Format Number", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Utility", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Utility_Format Number")]
     public class DsfNumberFormatActivity : DsfActivityAbstract<string>
     {
         #region Class Members
 
-        // ReSharper disable InconsistentNaming
+        
         private static readonly IDev2NumberFormatter _numberFormatter; //  REVIEW : Should this not be an instance variable....
 
-        // ReSharper restore InconsistentNaming
+
 
         #endregion Class Members
 

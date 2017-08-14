@@ -76,9 +76,9 @@ namespace Dev2.Runtime.WebServer
                     Response.Response.Dispose();
                 }
             }
-            // ReSharper disable EmptyGeneralCatchClause
+            
             catch
-            // ReSharper restore EmptyGeneralCatchClause
+            
             {
                 // best effort to clean up ;)
             }

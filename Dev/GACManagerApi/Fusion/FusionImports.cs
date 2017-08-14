@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-// ReSharper disable MemberCanBePrivate.Global
-// ReSharper disable NonLocalizedString
+
+
 
 namespace GACManagerApi.Fusion
 {

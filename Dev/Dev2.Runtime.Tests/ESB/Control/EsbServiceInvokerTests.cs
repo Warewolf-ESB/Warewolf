@@ -24,7 +24,7 @@ using Moq;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage.Interfaces;
 
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Tests.Runtime.ESB.Control
 {
@@ -127,7 +127,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             var locater = new Mock<IServiceLocator>();
             EsbExecuteRequest executeRequest = null;
             locater.Setup(l => l.FindService(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(default(DynamicService));
-            // ReSharper disable once ExpressionIsAlwaysNull
+            
 
             var invoker = new EsbServiceInvoker(channel.Object, workSpace.Object, executeRequest);
             PrivateObject privateObject = new PrivateObject(invoker);
@@ -169,7 +169,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             obj.SetupGet(o => o.ResourceID).Returns(serviceId);
             locater.Setup(l => l.FindService(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(dynamicService);
             locater.Setup(l => l.FindSourceByName(It.IsAny<string>(), It.IsAny<Guid>())).Returns(new Source());
-            // ReSharper disable once ExpressionIsAlwaysNull
+            
 
             var invoker = new EsbServiceInvoker(channel.Object, workSpace.Object, executeRequest);
             PrivateObject privateObject = new PrivateObject(invoker);
@@ -214,7 +214,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             obj.SetupGet(o => o.IsServiceTestExecution).Returns(true);
             locater.Setup(l => l.FindService(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(dynamicService);
             locater.Setup(l => l.FindSourceByName(It.IsAny<string>(), It.IsAny<Guid>())).Returns(new Source());
-            // ReSharper disable once ExpressionIsAlwaysNull
+            
 
             var invoker = new EsbServiceInvoker(channel.Object, workSpace.Object, executeRequest);
             PrivateObject privateObject = new PrivateObject(invoker);
@@ -256,7 +256,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
                 ServiceName = "SomeService"
             };
             locater.Setup(l => l.FindService(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new DynamicService { ID = newGuid, Actions = { new ServiceAction { Name = "Name", ActionType = enActionType.InvokeManagementDynamicService } } });
-            // ReSharper disable once ExpressionIsAlwaysNull
+            
 
             var invoker = new EsbServiceInvoker(channel.Object, workSpace.Object, executeRequest);
             PrivateObject privateObject = new PrivateObject(invoker);
@@ -300,7 +300,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
                 ServiceName = "SomeService"
             };
             locater.Setup(l => l.FindService(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new DynamicService { ID = newGuid, Actions = { new ServiceAction { Name = "Name", ActionType = enActionType.InvokeManagementDynamicService } } });
-            // ReSharper disable once ExpressionIsAlwaysNull
+            
 
             var invoker = new EsbServiceInvoker(channel.Object, workSpace.Object, executeRequest);
             PrivateObject privateObject = new PrivateObject(invoker);
@@ -352,7 +352,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
                 ServiceName = "SomeService"
             };
             locater.Setup(l => l.FindService(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new DynamicService { ID = newGuid, Actions = { new ServiceAction { Name = "Name", ActionType = enActionType.InvokeManagementDynamicService } } });
-            // ReSharper disable once ExpressionIsAlwaysNull
+            
 
             var invoker = new EsbServiceInvoker(channel.Object, workSpace.Object, executeRequest);
             PrivateObject privateObject = new PrivateObject(invoker);
@@ -410,7 +410,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
                 }
             });
             locater.Setup(lo => lo.FindSourceByName("SourceName", It.IsAny<Guid>())).Returns(new Source());
-            // ReSharper disable once ExpressionIsAlwaysNull
+            
 
             var invoker = new EsbServiceInvoker(channel.Object, workSpace.Object, executeRequest);
             PrivateObject privateObject = new PrivateObject(invoker);
@@ -454,7 +454,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             };
 
             locater.Setup(lo => lo.FindSourceByName("SourceName", It.IsAny<Guid>())).Returns(new Source());
-            // ReSharper disable once ExpressionIsAlwaysNull
+            
 
             var invoker = new EsbServiceInvoker(channel.Object, workSpace.Object, executeRequest);
             PrivateObject privateObject = new PrivateObject(invoker);
@@ -489,7 +489,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             };
 
             locater.Setup(lo => lo.FindSourceByName("SourceName", It.IsAny<Guid>())).Returns(new Source());
-            // ReSharper disable once ExpressionIsAlwaysNull
+            
 
             var invoker = new EsbServiceInvoker(channel.Object, workSpace.Object, executeRequest);
             PrivateObject privateObject = new PrivateObject(invoker);
@@ -524,7 +524,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             };
 
             locater.Setup(lo => lo.FindService("Hello World", It.IsAny<Guid>())).Returns(new DynamicService());
-            // ReSharper disable once ExpressionIsAlwaysNull
+            
 
             var invoker = new EsbServiceInvoker(channel.Object, workSpace.Object, executeRequest);
             PrivateObject privateObject = new PrivateObject(invoker);
@@ -562,7 +562,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             };
 
             locater.Setup(lo => lo.FindService("Hello World", valueFunction)).Returns((DynamicService)null);
-            // ReSharper disable once ExpressionIsAlwaysNull
+            
 
             var invoker = new EsbServiceInvoker(channel.Object, workSpace.Object, executeRequest);
             PrivateObject privateObject = new PrivateObject(invoker);
@@ -577,7 +577,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             Assert.AreEqual(1, errorResultTO.FetchErrors().Count);
             StringAssert.Contains(errorResultTO.FetchErrors().Single(), ErrorResource.ServiceNotFound);
             locater.VerifyAll();
-            // ReSharper disable once RedundantNameQualifier
+            
             var toTypes = typeof(Dev2.Data.ServiceTestModelTO);
             var common = typeof(Dev2.Common.Interfaces.TestRunResult);
             var enumerable = toTypes.Assembly.ExportedTypes.Where(type => !type.IsInterface);
@@ -627,7 +627,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
                     serviceAction
                 }
             });
-            // ReSharper disable once ExpressionIsAlwaysNull
+            
 
             var invoker = new EsbServiceInvoker(channel.Object, workSpace.Object, executeRequest);
             PrivateObject privateObject = new PrivateObject(invoker);
@@ -673,7 +673,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
                     serviceAction
                 }
             });
-            // ReSharper disable once ExpressionIsAlwaysNull
+            
 
             var invoker = new EsbServiceInvoker(channel.Object, workSpace.Object, executeRequest);
             PrivateObject privateObject = new PrivateObject(invoker);
@@ -722,7 +722,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
                     serviceAction, new ServiceAction()
                 }
             });
-            // ReSharper disable once ExpressionIsAlwaysNull
+            
 
             var invoker = new EsbServiceInvoker(channel.Object, workSpace.Object, executeRequest);
             PrivateObject privateObject = new PrivateObject(invoker);
@@ -790,7 +790,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
                 ServiceName = "SomeService"
             };
             locater.Setup(l => l.FindService(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new DynamicService { ID = serviceId, Actions = { new ServiceAction { Name = "Name", ActionType = enActionType.InvokeManagementDynamicService } } });
-            // ReSharper disable once ExpressionIsAlwaysNull
+            
 
             var invoker = new EsbServiceInvoker(channel.Object, workSpace.Object, executeRequest);
             PrivateObject privateObject = new PrivateObject(invoker);
@@ -843,7 +843,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
                 ServiceName = "SomeService"
             };
             locater.Setup(l => l.FindService(It.IsAny<Guid>(), It.IsAny<Guid>())).Throws(new Exception("error"));
-            // ReSharper disable once ExpressionIsAlwaysNull
+            
 
             var invoker = new EsbServiceInvoker(channel.Object, workSpace.Object, executeRequest);
             PrivateObject privateObject = new PrivateObject(invoker);
@@ -891,7 +891,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
                 ServiceName = "SomeService"
             };
             locater.Setup(l => l.FindService(It.IsAny<string>(), It.IsAny<Guid>())).Returns(new DynamicService());
-            // ReSharper disable once ExpressionIsAlwaysNull
+            
 
             var invoker = new EsbServiceInvoker(channel.Object, workSpace.Object, executeRequest);
             PrivateObject privateObject = new PrivateObject(invoker);
@@ -942,7 +942,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
                 ServiceName = "SomeService"
             };
             locater.Setup(l => l.FindService(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new DynamicService());
-            // ReSharper disable once ExpressionIsAlwaysNull
+            
 
             var invoker = new EsbServiceInvoker(channel.Object, workSpace.Object, executeRequest);
             PrivateObject privateObject = new PrivateObject(invoker);

@@ -16,7 +16,7 @@ using System.Collections.Generic;
 using System.Xml.Linq;
 using Warewolf.Security.Encryption;
 
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Data.ServiceModel
 {

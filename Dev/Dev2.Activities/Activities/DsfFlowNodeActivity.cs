@@ -29,11 +29,11 @@ using Newtonsoft.Json;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 
-// ReSharper disable NonReadonlyMemberInGetHashCode
 
-// ReSharper disable CheckNamespace
+
+
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
-// ReSharper restore CheckNamespace
+
 {
     public abstract class DsfFlowNodeActivity<TResult> : DsfActivityAbstract<TResult>, IFlowNodeActivity
     {
@@ -302,9 +302,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 itemToAdd.AddRange(new DebugItemStaticDataParams(resultString, "").GetDebugItemResult());
                 result.Add(itemToAdd);
             }
-                // ReSharper disable EmptyGeneralCatchClause
+                
             catch(Exception)
-                // ReSharper restore EmptyGeneralCatchClause
+                
             {
 
                     itemToAdd.AddRange(new DebugItemStaticDataParams(resultString, "").GetDebugItemResult());
