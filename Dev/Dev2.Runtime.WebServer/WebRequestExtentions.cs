@@ -47,8 +47,8 @@ namespace Dev2.Runtime.WebServer
             {
                 var pathStartIndex = webServerUrl.IndexOf("public/", StringComparison.InvariantCultureIgnoreCase);
                 path = webServerUrl.Substring(pathStartIndex)
-                                   .Replace("/.tests", "")
                                    .Replace("/.tests.trx", "")
+                                   .Replace("/.tests", "")
                                    .Replace("public", "")
                                    .Replace("Public", "")
                                    .TrimStart('/')
@@ -58,8 +58,8 @@ namespace Dev2.Runtime.WebServer
             {
                 var pathStartIndex = webServerUrl.IndexOf("secure/", StringComparison.InvariantCultureIgnoreCase);
                 path = webServerUrl.Substring(pathStartIndex)
-                                    .Replace("/.tests", "")
                                     .Replace("/.tests.trx", "")
+                                    .Replace("/.tests", "")
                                     .Replace("secure", "")
                                     .Replace("Secure", "")
                                     .TrimStart('/')
