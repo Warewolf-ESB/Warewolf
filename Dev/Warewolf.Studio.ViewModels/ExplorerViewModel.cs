@@ -481,7 +481,7 @@ namespace Warewolf.Studio.ViewModels
             }
             catch (Exception ex)
             {
-                Dev2Logger.Error("Error occurred trying to disconnect server " + server.Name, ex);
+                Dev2Logger.Error("Error occurred trying to disconnect server " + server.Name, ex.Message);
             }
         }
 
