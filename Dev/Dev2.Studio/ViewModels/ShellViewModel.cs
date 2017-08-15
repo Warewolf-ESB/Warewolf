@@ -1560,7 +1560,6 @@ namespace Dev2.Studio.ViewModels
 
         void SaveAll(object obj)
         {
-            ContinueShutDown = true;
             for (int index = Items.Count - 1; index >= 0; index--)
             {
                 var workSurfaceContextViewModel = Items[index];
@@ -1577,16 +1576,10 @@ namespace Dev2.Studio.ViewModels
                 {
                     var vm = workSurfaceContextViewModel.WorkSurfaceViewModel;
                     var viewModel = vm as IStudioTab;
-                    var deactivate = viewModel?.DoDeactivate(true);
-                    if (ContinueShutDown && deactivate != null)
-                    {
-                        ContinueShutDown = (bool)deactivate;
-                    }
+                    viewModel?.DoDeactivate(true);
                 }
             }
         }
-
-        public bool ContinueShutDown;
 
         public void ResetMainView()
         {
@@ -1850,7 +1843,7 @@ namespace Dev2.Studio.ViewModels
         public MessageBoxResult ShowUnsavedWorkDialog()
         {
             var popupResult = PopupProvider.Show(StringResources.Unsaved_Changes, StringResources.CloseHeader,
-                               MessageBoxButton.YesNoCancel, MessageBoxImage.Information, @"", false, false, true, false, false, false);
+                               MessageBoxButton.YesNo, MessageBoxImage.Information, @"", false, false, true, false, false, false);
 
             return popupResult;
         }
@@ -1858,21 +1851,15 @@ namespace Dev2.Studio.ViewModels
         private bool CallSaveDialog(bool closeStudio)
         {
             var result = ShowUnsavedWorkDialog();
-            // CANCEL - DON'T CLOSE THE STUDIO
             // NO - DON'T SAVE ANYTHING AND CLOSE THE STUDIO
-            // YES - CALL THE SAVE ALL COMMAND AND CLOSE THE STUDIO
-            if (result == MessageBoxResult.Cancel)
+            // YES - DON'T CLOSE THE STUDIO
+            if (result == MessageBoxResult.Yes)
             {
                 closeStudio = false;
             }
-            else if (result == MessageBoxResult.Yes)
+            else if (result == MessageBoxResult.No)
             {
                 closeStudio = true;
-                SaveAllCommand.Execute(null);
-                if (!ContinueShutDown)
-                {
-                    closeStudio = false;
-                }
             }
 
             return closeStudio;
