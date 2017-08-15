@@ -61,7 +61,7 @@
                     <td class="exRow" style="display:none;">
                         @Html.DisplayFor(modelItem => item.ExecutionId)
                     </td>
-                    <td class="exRow">
+                    <td class="exRow exUrl">
                         @{
                             if (item.Url == null)
                             {
@@ -73,20 +73,20 @@
                             }
                         }
                     </td>
-                    <td class="exRow">
+                    <td class="exRow exTime">
                         @Html.DisplayFor(modelItem => item.ExecutionTime)
                     </td>
-                    <td class="exRow">
+                    <td class="exRow exStatus">
                         @Html.DisplayFor(modelItem => item.Status)
                     </td>
-                    <td class="exRow">
+                    <td class="exRow exStart">
                         @Html.DisplayFor(modelItem => item.StartDateTime)
                     </td>
-                    <td class="exRow">
+                    <td class="exRow exComplete">
                         @Html.DisplayFor(modelItem => item.CompletedDateTime)
                     </td>
                     
-                    <td class="exRow">
+                    <td class="exRow exUser">
                         @Html.DisplayFor(modelItem => item.User)
                     </td>
                     <td>

@@ -127,6 +127,9 @@
                                     }
                                 }
                             };
+                            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                            xhr.setRequestHeader("Content-Length", xhr.response.length);
+                            xhr.setRequestHeader("Connection", "close");
                             xhr.send();
                         }
                         else {
