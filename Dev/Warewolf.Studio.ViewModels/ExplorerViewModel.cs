@@ -223,6 +223,8 @@ namespace Warewolf.Studio.ViewModels
             environmentViewModel.ForcedRefresh = false;
             IsRefreshing = false;
             environmentViewModel.IsConnecting = false;
+            var perm = new WindowsGroupPermission { Permissions = environmentViewModel.Server.GetPermissions(environmentViewModel.ResourceId) };
+            environmentViewModel.SetPropertiesForDialogFromPermissions(perm);
         }
 
         public virtual void Filter(string filter)
