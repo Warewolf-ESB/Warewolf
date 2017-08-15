@@ -32,8 +32,6 @@ using Npgsql;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage.Interfaces;
 
-
-
 namespace Dev2.Services.Execution
 {
     public class DatabaseServiceExecution : ServiceExecutionAbstract<DbService, DbSource>
@@ -43,9 +41,6 @@ namespace Dev2.Services.Execution
         {
             _sqlServer = new SqlServer();
         }
-
-
-
 
         private IDbServer _sqlServer; 
         public string ProcedureName { private get; set; }
