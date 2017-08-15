@@ -187,12 +187,7 @@ namespace Dev2.Runtime.WebServer.Hubs
             }
             catch (Exception e)
             {
-                // ReSharper disable InvokeAsExtensionMethod
                 Dev2Logger.Error(this, e, "Warewolf Error");
-                // ReSharper restore InvokeAsExtensionMethod
-                
-                Dev2Logger.Error(this, e);
-                
             }
 
             return null;
@@ -284,12 +279,7 @@ namespace Dev2.Runtime.WebServer.Hubs
             }
             catch (Exception e)
             {
-                // ReSharper disable InvokeAsExtensionMethod
                 Dev2Logger.Error(this, e, "Warewolf Error");
-                // ReSharper restore InvokeAsExtensionMethod
-                
-                Dev2Logger.Error(this, e);
-                
             }
 
             return null;

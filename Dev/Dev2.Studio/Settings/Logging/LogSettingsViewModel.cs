@@ -23,17 +23,6 @@ using Newtonsoft.Json;
 
 namespace Dev2.Settings.Logging
 {
-    public enum LogLevel
-    {
-        
-        OFF,
-        FATAL,
-        ERROR,
-        WARN,
-        INFO,
-        DEBUG,
-        TRACE
-    }
     public class LogSettingsViewModel : SettingsItemViewModel, ILogSettings, IUpdatesHelp
     {
         public IServer CurrentEnvironment

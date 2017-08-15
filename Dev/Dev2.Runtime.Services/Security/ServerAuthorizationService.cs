@@ -205,13 +205,7 @@ namespace Dev2.Runtime.Security
                     user = request.User.Identity.Name;
                     DumpPermissionsOnError(request.User);
                 }
-
-                
-                Dev2Logger.Error("AUTH ERROR FOR USER : " + user);
-                
-                // ReSharper disable InvokeAsExtensionMethod
                 Dev2Logger.Error("AUTH ERROR FOR USER : " + user, "Warewolf Error");
-                // ReSharper restore InvokeAsExtensionMethod
             }
 
             return result;
