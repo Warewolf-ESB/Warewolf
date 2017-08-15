@@ -169,7 +169,15 @@ td {
     width: 100%;
     border: 1px solid #ddd;
     font-size: 12px;
+    display: block;
 }
+    #executionList thead {
+        display: block;
+    }
+
+    #executionList tbody {
+        display: block;
+    }
 
     #executionList th {
         cursor: pointer;
@@ -180,13 +188,14 @@ td {
     #executionList tr {
         border-bottom: 1px solid #ddd;
         padding: 0px;
+        display: block;
     }
 
     #executionList td {
         border-bottom: 1px solid #ddd;
         padding: 2px;
         overflow: hidden;
-        white-space: nowrap
+        white-space: nowrap;
     }
 
     #executionList .exRow {
@@ -220,6 +229,7 @@ td {
 
     #executionList .exUrl {
         width: 100%;
+        max-width: 300px;
     }
 
     #executionList .exUser {
@@ -570,6 +580,7 @@ td {
     border-collapse: collapse;
     width: 100%;
     margin-bottom: 3px;
+    display: block;
 }
 
     #executionFilters td {
@@ -577,7 +588,7 @@ td {
         background-color: transparent;
         border: none;
         overflow: hidden;
-        white-space: nowrap
+        white-space: nowrap;
     }
 
     #executionFilters .filterContainId {
