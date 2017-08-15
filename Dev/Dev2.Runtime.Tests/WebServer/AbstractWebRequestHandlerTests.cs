@@ -308,7 +308,7 @@ namespace Dev2.Tests.Runtime.WebServer
             var responseWriter = handlerMock.CreateFromMock(webRequestTO, "Hello World.XML", string.Empty, new NameValueCollection(), principal.Object);
             //---------------Test Result -----------------------
             Assert.IsNotNull(responseWriter);
-            dataObject.VerifyGet(o => o.ReturnType, Times.Exactly(4));
+            dataObject.VerifyGet(o => o.ReturnType);
         }
 
         [TestMethod]
@@ -349,7 +349,7 @@ namespace Dev2.Tests.Runtime.WebServer
             var responseWriter = handlerMock.CreateFromMock(webRequestTO, "Hello World.JSON", string.Empty, new NameValueCollection(), principal.Object);
             //---------------Test Result -----------------------
             Assert.IsNotNull(responseWriter);
-            dataObject.VerifyGet(o => o.ReturnType, Times.Exactly(4));
+            dataObject.VerifyGet(o => o.ReturnType);
         }
 
         [TestMethod]
@@ -1747,6 +1747,7 @@ namespace Dev2.Tests.Runtime.WebServer
             var dataObject = new Mock<IDSFDataObject>();
             dataObject.SetupProperty(o => o.ResourceID);
             dataObject.SetupProperty(o => o.TestsResourceIds);
+            dataObject.Setup(o => o.ReturnType).Returns(EmitionTypes.TEST);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             dataObject.Object.SetTestResourceIds(resourceCatalog.Object, webRequestTO, "*");
@@ -1765,7 +1766,7 @@ namespace Dev2.Tests.Runtime.WebServer
             var webRequestTO = new WebRequestTO()
             {
                 Variables = new NameValueCollection() { { "isPublic", "true" } },
-                WebServerUrl = "http://rsaklfnkosinath:3142/public/.tests"
+                WebServerUrl = "http://rsaklfnkosinath:3142/public/.tests"                
             };
             var resourceCatalog = new Mock<IResourceCatalog>();
             resourceCatalog.Setup(catalog => catalog.GetResources(It.IsAny<Guid>()))
@@ -1773,6 +1774,7 @@ namespace Dev2.Tests.Runtime.WebServer
             var dataObject = new Mock<IDSFDataObject>();
             dataObject.SetupProperty(o => o.ResourceID);
             dataObject.SetupProperty(o => o.TestsResourceIds);
+            dataObject.Setup(o => o.ReturnType).Returns(EmitionTypes.TEST);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             dataObject.Object.SetTestResourceIds(resourceCatalog.Object, webRequestTO, "*");
