@@ -34,7 +34,7 @@ using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Studio.Interfaces;
 
-// ReSharper disable UnusedMember.Global
+
 
 namespace Dev2.Activities.Specs.Scheduler
 {
@@ -201,10 +201,10 @@ namespace Dev2.Activities.Specs.Scheduler
             {
                 scheduler.ActiveItem = new TabItem { Header = "History" };
                 Thread.Sleep(12000);
-                // ReSharper disable RedundantAssignment
+                
                 var scheduledResource = scheduler.SelectedTask;
                 IList<IResourceHistory> x = scheduler.ScheduledResourceModel.CreateHistory(scheduledResource).ToList();
-                // ReSharper restore RedundantAssignment
+                
 
                 if (status == "Success")
                     Assert.AreEqual(ScheduleRunStatus.Success, x[0].TaskHistoryOutput.Success);
@@ -231,9 +231,9 @@ namespace Dev2.Activities.Specs.Scheduler
         public void ThenTheHistoryDebugOutputForForRowIs(string p0, int p1, Table table)
         {
             IList<IResourceHistory> resources = _scenarioContext["History"] as IList<IResourceHistory>;
-            // ReSharper disable AssignNullToNotNullAttribute
+            
             var debug = resources.First().DebugOutput;
-            // ReSharper restore AssignNullToNotNullAttribute
+            
             var debugTocompare = debug.Last();
             _commonSteps.ThenTheDebugOutputAs(table, debugTocompare.Outputs.SelectMany(s => s.ResultsList).ToList(), true);
         }
@@ -304,9 +304,9 @@ namespace Dev2.Activities.Specs.Scheduler
                 var id = GetUserSecurityIdentifier(name);
                 accountExists = id.IsAccountSid();
             }
-            // ReSharper disable EmptyGeneralCatchClause
+            
             catch (Exception)
-            // ReSharper restore EmptyGeneralCatchClause
+            
             {
                 /* Invalid user account */
             }

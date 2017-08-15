@@ -23,7 +23,7 @@ using Warewolf.Studio.ViewModels;
 namespace Dev2.Core.Tests
 {
     [TestClass]
-    // ReSharper disable InconsistentNaming
+    
     public class DragDropHelpersTests
     {
         [TestInitialize]

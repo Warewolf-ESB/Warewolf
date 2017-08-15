@@ -17,7 +17,7 @@ using Dev2.DataList;
 
 namespace Dev2.BussinessLogic
 {
-    [SuppressMessage("ReSharper", "UnusedMember.Global")]
+
     public class RsOpNotBinary : AbstractRecsetSearchValidation
     {
         public override Func<DataStorage.WarewolfAtom, bool> CreateFunc(IEnumerable<DataStorage.WarewolfAtom> values, IEnumerable<DataStorage.WarewolfAtom> warewolfAtoms, IEnumerable<DataStorage.WarewolfAtom> to, bool all)

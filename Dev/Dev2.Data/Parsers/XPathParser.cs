@@ -19,7 +19,7 @@ using Dev2.Data.Util;
 using org.xml.sax;
 using Saxon.Api;
 using Warewolf.Resource.Errors;
-// ReSharper disable LoopCanBeConvertedToQuery
+
 
 namespace Dev2.Data.Parsers
 {

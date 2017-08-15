@@ -15,8 +15,8 @@ using Dev2.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using IPopupController = Dev2.Common.Interfaces.Studio.Controller.IPopupController;
-// ReSharper disable PossibleUnintendedReferenceComparison
-// ReSharper disable InconsistentNaming
+
+
 
 namespace Warewolf.Studio.ViewModels.Tests
 {
@@ -1003,14 +1003,14 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(_target.Equals(otherDifferentType));
 
             Assert.IsFalse(_target == null);
-            // ReSharper disable once EqualExpressionComparison
+            
             Assert.IsTrue(Equals(_target, _target));
             Assert.IsFalse(_target == otherSameId);
             Assert.IsFalse(_target == otherDifferentId);
             Assert.IsFalse(ReferenceEquals(_target, otherDifferentType));
 
             Assert.IsTrue(_target != null);
-            // ReSharper disable once EqualExpressionComparison
+            
             Assert.IsFalse(!Equals(_target, _target));
             Assert.IsTrue(_target != otherSameId);
             Assert.IsTrue(_target != otherDifferentId);

@@ -26,9 +26,9 @@ using System.Windows;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Interfaces;
 
-// ReSharper disable ConvertPropertyToExpressionBody
 
-// ReSharper disable InconsistentNaming
+
+
 
 namespace Dev2.Activities.Designers2.RabbitMQ.Consume
 {

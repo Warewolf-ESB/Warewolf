@@ -9,7 +9,7 @@ using System.Text;
 using Dev2.Runtime.Interfaces;
 using System.Reflection;
 
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Publish
 {

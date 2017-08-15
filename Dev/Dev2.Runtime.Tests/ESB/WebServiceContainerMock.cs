@@ -19,7 +19,7 @@ namespace Dev2.Tests.Runtime.ESB
 {
     public class WebServiceContainerMock : WebServiceContainer
     {
-        // ReSharper disable once TooManyDependencies
+        
         public WebServiceContainerMock(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel)
             : base(sa, dataObj, theWorkspace, esbChannel)
         {

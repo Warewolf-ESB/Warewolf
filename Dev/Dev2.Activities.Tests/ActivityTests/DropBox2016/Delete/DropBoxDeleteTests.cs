@@ -5,8 +5,8 @@ using Dev2.Common.Interfaces.Wrappers;
 using Dropbox.Api.Files;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-// ReSharper disable InconsistentNaming
-// ReSharper disable UnusedVariable
+
+
 
 namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Delete
 {

@@ -25,7 +25,7 @@ using Dev2.Studio.Core.Models;
 using Dev2.Studio.Interfaces.Enums;
 using Dev2.Util;
 
-// ReSharper disable CheckNamespace
+
 namespace Dev2.Studio.Core
 {
 
@@ -241,9 +241,9 @@ namespace Dev2.Studio.Core
 
                 var tryReadFile = File.Exists(path) ? File.ReadAllText(path) : null;
 
-                // ReSharper disable RedundantAssignment
+                
                 var xml = new XElement("Environments");
-                // ReSharper restore RedundantAssignment
+                
                 var result = new List<Guid>();
 
                 if (!string.IsNullOrEmpty(tryReadFile))
@@ -261,9 +261,9 @@ namespace Dev2.Studio.Core
                             }
                         }
                     }
-                    // ReSharper disable EmptyGeneralCatchClause
+                    
                     catch { }
-                    // ReSharper restore EmptyGeneralCatchClause
+                    
                 }
 
                 return result;
@@ -350,9 +350,9 @@ namespace Dev2.Studio.Core
                 }
                 var environments = LookupEnvironments(Source);
                 // Don't just clear and add, environments may be connected!!!
-                foreach (var newEnv in environments.Where(newEnv => !Environments.Contains(newEnv)))
+                foreach (var newEnv in environments.Where(newEnv => !ValidateIfEnvironmentExists(newEnv)))
                 {
-                    Environments.Add(newEnv);
+                    AddEnvironmentIfNotExist(newEnv);
                 }
                 foreach (var newEnv in environments.Where(newEnv => Environments.Contains(newEnv)))
                 {
@@ -361,10 +361,10 @@ namespace Dev2.Studio.Core
                     {
                         if (res.IsConnected)
                         {
-                            res.Disconnect();                            
+                            res.Disconnect();
                         }
                         Environments.Remove(res);
-                        Environments.Add(newEnv);
+                        AddEnvironmentIfNotExist(newEnv);
                     }
                 }
 
@@ -377,6 +377,19 @@ namespace Dev2.Studio.Core
 
                 IsLoaded = true;
             }
+        }
+
+        private void AddEnvironmentIfNotExist(IServer newEnv)
+        {
+            if (!ValidateIfEnvironmentExists(newEnv))
+            {
+                Environments.Add(newEnv);
+            }
+        }
+
+        private bool ValidateIfEnvironmentExists(IServer newEnv)
+        {
+            return Environments.Contains(newEnv);
         }
 
         protected virtual void LoadComplete()
@@ -452,9 +465,9 @@ namespace Dev2.Studio.Core
             {
                 defaultEnvironment.Connect();
             }
-            // ReSharper disable EmptyGeneralCatchClause
+            
             catch (Exception err)
-            // ReSharper restore EmptyGeneralCatchClause
+            
             {
                 Dev2Logger.Info(err);
                 //Swallow exception for localhost connection

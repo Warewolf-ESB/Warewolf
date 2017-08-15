@@ -7,7 +7,7 @@ using Dev2.DataList;
 using Dev2.DataList.Contract;
 using Microsoft.Practices.Prism.Mvvm;
 using Newtonsoft.Json;
-// ReSharper disable MemberCanBePrivate.Global
+
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -34,7 +34,7 @@ namespace Warewolf.Studio.ViewModels
         private TestRunResult _result;
         private bool _canEditVariable;
 
-        // ReSharper disable once UnusedMember.Global
+        
         public ServiceTestOutput()
         {
             

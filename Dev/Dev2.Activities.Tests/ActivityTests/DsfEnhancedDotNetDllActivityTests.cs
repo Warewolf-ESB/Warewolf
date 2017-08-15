@@ -21,7 +21,7 @@ using Warewolf.Core;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Tests.Activities.ActivityTests
 {
@@ -1235,7 +1235,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
     internal class DsfEnhancedDotNetDllActivityMock : DsfEnhancedDotNetDllActivity
     {
-        // ReSharper disable once RedundantAssignment
+        
         public void ExecuteMock(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO errors)
         {
             ExecutionImpl(esbChannel, dataObject, inputs, outputs, out errors, 0);

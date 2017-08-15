@@ -17,7 +17,7 @@ using Dev2.Studio.Core.AppResources.ExtensionMethods;
 using Dev2.Studio.ViewModels;
 using Dev2.Studio.ViewModels.WorkSurface;
 using Infragistics.Windows.DockManager;
-// ReSharper disable CheckNamespace
+
 
 namespace Dev2.Studio.AppResources.Behaviors
 {

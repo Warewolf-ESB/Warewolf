@@ -97,9 +97,9 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Dev2.Activities.Designers2.MultiAssignObject;
 using Dev2.Activities.Scripting;
 
-// ReSharper disable RedundantNameQualifier
 
-// ReSharper disable CheckNamespace
+
+
 namespace Dev2.Studio.ActivityDesigners
 {
     public static class ActivityDesignerHelper

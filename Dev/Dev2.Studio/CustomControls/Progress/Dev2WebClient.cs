@@ -45,9 +45,9 @@ namespace Dev2.Helpers
                 _webClient.DownloadFileCompleted -= value;
             }
         }
-        // ReSharper disable UnusedAutoPropertyAccessor.Local
+        
         public bool IsBusy { get; private set; }
-        // ReSharper restore UnusedAutoPropertyAccessor.Local
+        
 
         public void CancelAsync()
         {

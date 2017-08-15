@@ -13,7 +13,7 @@ using System.Collections.Generic;
 using Dev2.Web;
 using Warewolf.Resource.Errors;
 
-// ReSharper disable once CheckNamespace
+
 namespace Dev2.DataList.Contract
 {
     public sealed class DataListFormat

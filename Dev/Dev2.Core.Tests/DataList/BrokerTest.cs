@@ -115,9 +115,9 @@ namespace Dev2.Tests.DataList
         }
 
         [TestMethod]
-        // ReSharper disable InconsistentNaming
+        
         public void PersistSessionWithSavedData_ExpectSavedData()
-        // ReSharper restore InconsistentNaming
+
         {
             //DeleteDir();
             // bootstrap
@@ -189,6 +189,6 @@ namespace Dev2.Tests.DataList
         
         #endregion PersistSession Tests
 
-        // ReSharper restore InconsistentNaming
+
     }
 }

@@ -12,15 +12,15 @@ using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Workspaces;
-// ReSharper disable MemberCanBeInternal
-// ReSharper disable MemberCanBePrivate.Global
+
+
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
     /// <summary>
     /// Adds a resource
     /// </summary>
-    [SuppressMessage("ReSharper", "UnusedMember.Global")]
+
     public class FetchTestsForDeploy : IEsbManagementEndpoint
     {
         private ITestCatalog _testCatalog;

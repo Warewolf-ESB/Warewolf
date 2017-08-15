@@ -9,7 +9,7 @@
 */
 
 
-// ReSharper disable CheckNamespace
+
 
 namespace Dev2.Studio.Views.Diagnostics
 {

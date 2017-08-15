@@ -27,7 +27,7 @@ using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-// ReSharper disable CheckNamespace
+
 namespace Dev2.DynamicServices.Test
 {
     /// <summary>
@@ -232,7 +232,7 @@ namespace Dev2.DynamicServices.Test
         [ExpectedException(typeof(ArgumentNullException))]
         public void WorkspaceRepositoryWithNullResourceCatalogExpectedThrowsArgumentNullException()
         {
-            // ReSharper disable once ObjectCreationAsStatement
+            
             new WorkspaceRepository(null);
         }
 
@@ -243,7 +243,7 @@ namespace Dev2.DynamicServices.Test
             var catalog = new Mock<IResourceCatalog>();
             catalog.Setup(c => c.LoadWorkspace(It.IsAny<Guid>())).Verifiable();
 
-            // ReSharper disable once ObjectCreationAsStatement
+            
             new WorkspaceRepository(catalog.Object);
 
             catalog.Verify(c => c.LoadWorkspace(It.IsAny<Guid>()), Times.Never());

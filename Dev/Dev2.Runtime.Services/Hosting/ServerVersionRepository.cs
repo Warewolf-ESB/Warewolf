@@ -73,9 +73,9 @@ namespace Dev2.Runtime.Hosting
             var versionPath = resource.GetResourcePath(GlobalConstants.ServerWorkspaceID);
             var path = GetVersionFolderFromResource(versionPath);
 
-            // ReSharper disable ImplicitlyCapturedClosure
+            
             var files = _directory.GetFiles(path).Where(a => a.Contains(resource.VersionInfo.VersionId.ToString()));
-            // ReSharper restore ImplicitlyCapturedClosure
+            
             return files.Select(a => CreateVersionFromFilePath(a, resource, path)).OrderByDescending(a => a.VersionInfo.DateTimeStamp).Take(GlobalConstants.VersionCount).ToList();
         }
 
@@ -89,14 +89,14 @@ namespace Dev2.Runtime.Hosting
             }
             var path = GetVersionFolderFromResource(resourcePath);
 
-            // ReSharper disable ImplicitlyCapturedClosure
+            
             var files = _directory.GetFiles(path).Where(a => a.Contains(resource.VersionInfo.VersionId.ToString()));
             var versionPath = Path.Combine(ServerExplorerRepository.DirectoryStructureFromPath(newPath), "VersionControl");
             if (!_directory.Exists(versionPath))
                 _directory.CreateIfNotExists(versionPath);
-            // ReSharper restore ImplicitlyCapturedClosure
+            
             IEnumerable<string> enumerable = files as IList<string> ?? files.ToList();
-            // ReSharper disable once AssignNullToNotNullAttribute
+            
             enumerable.ForEach(a => _file.Move(a, Path.Combine(versionPath, Path.GetFileName(a))));
         }
 
@@ -170,7 +170,8 @@ namespace Dev2.Runtime.Hosting
             Resource oldResource = new Resource(xml);
             StoreAndDeleteCurrentIfRenamed(res, oldResource, resourcePath);
             UpdateVersionInfoIfNotExists(resourceId, xml, res);
-            _catalogue.SaveResource(Guid.Empty, xml.ToStringBuilder(), "", "Rollback", "WorkflowService");
+            var savePath = res.GetSavePath();
+            _catalogue.SaveResource(Guid.Empty, xml.ToStringBuilder(), savePath, "Rollback", "WorkflowService");
             if (oldResource.ResourceName != res.ResourceName)
                 _catalogue.GetResource(Guid.Empty, res.ResourceID).ResourceName = oldResource.ResourceName;
             return new RollbackResult { DisplayName = oldResource.ResourceName, VersionHistory = GetVersions(resourceId) };

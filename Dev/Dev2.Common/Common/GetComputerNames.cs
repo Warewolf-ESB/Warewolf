@@ -14,7 +14,7 @@ using System.DirectoryServices;
 using System.Linq;
 using System.Management;
 using System.Security.Principal;
-// ReSharper disable ConditionIsAlwaysTrueOrFalse
+
 
 namespace Dev2.Common.Common
 {
@@ -81,9 +81,9 @@ namespace Dev2.Common.Common
                             queryStr += itr.Current["Workgroup"] as string;
                         }
                     }
-                    // ReSharper disable EmptyGeneralCatchClause
+                    
                     catch
-                    // ReSharper restore EmptyGeneralCatchClause
+                    
                     {
                         // best effort ;)
                     }

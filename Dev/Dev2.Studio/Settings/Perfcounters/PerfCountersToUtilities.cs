@@ -6,8 +6,8 @@ using System.Linq;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Monitoring;
 using Dev2.PerformanceCounters.Counters;
-// ReSharper disable ParameterTypeCanBeEnumerable.Global
-// ReSharper disable ReturnTypeCanBeEnumerable.Global
+
+
 
 namespace Dev2.Settings.Perfcounters
 {

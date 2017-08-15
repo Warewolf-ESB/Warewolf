@@ -20,9 +20,9 @@ namespace Dev2.Infrastructure.Tests.Communication
         [Description("Constructor must initialize Errors list and set IsValid to true.")]
         [TestCategory("UnitTest")]
         [Owner("Trevor Williams-Ros")]
-        // ReSharper disable InconsistentNaming
+        
         public void DesignValidationMemoConstructor_UnitTest_Intialization_ErrorsNotNullAndIsValidTrue()
-        // ReSharper restore InconsistentNaming
+
         {
             var memo = new DesignValidationMemo();
             Assert.IsNotNull(memo.Errors);

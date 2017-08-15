@@ -1,4 +1,4 @@
-﻿// ReSharper disable once CheckNamespace
+﻿
 namespace Dev2.Common.Interfaces.SaveDialog
 {
     public class ResourceName

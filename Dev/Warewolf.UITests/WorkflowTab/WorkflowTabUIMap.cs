@@ -1333,6 +1333,22 @@ namespace Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses
             Keyboard.SendKeys(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, "S", (ModifierKeys.Control));
         }
 
+        [Given(@"I Press Escape Using Shortcut")]
+        [When(@"I Press Escape Using Shortcut")]
+        [Then(@"I Press Escape Using Shortcut")]
+        public void Escape_Using_Shortcut()
+        {
+            Keyboard.SendKeys("{Esc}", ModifierKeys.None);
+        }
+
+        [Given(@"I Press Enter Using Shortcut")]
+        [When(@"I Press Enter Using Shortcut")]
+        [Then(@"I Press Enter Using Shortcut")]
+        public void Enter_Using_Shortcut()
+        {
+            Keyboard.SendKeys("{Enter}", ModifierKeys.None);
+        }
+
         [Then(@"There is an error")]
         public void TheArdonerhasAnError()
         {

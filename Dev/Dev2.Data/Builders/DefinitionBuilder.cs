@@ -14,8 +14,8 @@ using System.Xml;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Data.Interfaces.Enums;
 
-// ReSharper disable CheckNamespace
-// ReSharper disable InconsistentNaming
+
+
 namespace Dev2.DataList.Contract
 {
     public class DefinitionBuilder

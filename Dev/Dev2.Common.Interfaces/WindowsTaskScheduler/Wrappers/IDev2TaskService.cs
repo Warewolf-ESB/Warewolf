@@ -54,7 +54,7 @@ namespace Dev2.Common.Interfaces.WindowsTaskScheduler.Wrappers
         /// </summary>
         /// <param name="taskPath">The task path.</param>
         /// <returns>The task.</returns>
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         IDev2Task GetTask(string taskPath);
 
         /// <summary>

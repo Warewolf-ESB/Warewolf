@@ -17,7 +17,7 @@ namespace Dev2.Infrastructure.Tests.MoqInstallerActions
     [TestClass]
     public class IntallerActionsForDevelopmentTest
     {
-        // ReSharper disable InconsistentNaming
+        
 
         [TestMethod]
         [Owner("Travis Frisinger")]
@@ -43,7 +43,7 @@ namespace Dev2.Infrastructure.Tests.MoqInstallerActions
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("InstallerActionsForDevelopment_ExecuteInstallerActions")]
-        // ReSharper disable InconsistentNaming
+        
         public void InstallerActionsForDevelopment_ExecuteInstallerActions_WhenGroupExist_ExpectUserNotAdded()
         {
             var warewolfGroupOps = MoqInstallerActionFactory.CreateSecurityOperationsObject();
@@ -63,6 +63,6 @@ namespace Dev2.Infrastructure.Tests.MoqInstallerActions
             Assert.IsTrue(isAdminAMember);
         }
 
-        // ReSharper restore InconsistentNaming
+
     }
 }

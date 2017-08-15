@@ -21,9 +21,9 @@ using Dev2.Runtime.Execution;
 using Dev2.Workspaces;
 using Warewolf.Resource.Errors;
 
-// ReSharper disable CheckNamespace
+
 namespace Dev2.Runtime.ESB.Management
-    // ReSharper restore CheckNamespace
+    
 {
     public class TerminateExecution : IEsbManagementEndpoint
     {

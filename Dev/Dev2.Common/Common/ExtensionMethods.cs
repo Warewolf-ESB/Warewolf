@@ -470,7 +470,7 @@ namespace Dev2.Common.Common
             if (string.IsNullOrEmpty(content) || !content.TrimStart().StartsWith("<")) return false;
             try
             {
-                // ReSharper disable once ReturnValueOfPureMethodIsNotUsed
+                
                 XDocument.Parse(content);
                 return true;
             }

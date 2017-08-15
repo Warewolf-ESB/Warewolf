@@ -50,9 +50,9 @@ namespace Dev2.Core.Tests.Helpers
         [TestCategory("ProgressFileDownloaderUnitTest")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.Description("Test for ProgressFileDownloader's RehydrateDialog method, it is expected to rehydrate the progress dialogs label and progress values")]
         [Owner("Ashley Lewis")]
-// ReSharper disable InconsistentNaming
+
         public void ProgressFileDownloader_UnitTest_RehydrateDialog_ProgressDialogRehydrated()
-// ReSharper restore InconsistentNaming
+
         {
             //init
             var mockWebClient = new Mock<IDev2WebClient>();
@@ -73,12 +73,12 @@ namespace Dev2.Core.Tests.Helpers
         [TestMethod, ExpectedException(typeof(ArgumentNullException))]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ProgresssFileDownloader_Ctor")]
-// ReSharper disable InconsistentNaming
+
         public void ProgresssFileDownloader_Ctor_VerifyExceptionThrownIfWebClientsNull()
         {
-// ReSharper disable ObjectCreationAsStatement
+
             new ProgressFileDownloader(null,  new Mock<IFile>().Object, new Mock<ICryptoProvider>().Object);
-// ReSharper restore ObjectCreationAsStatement
+
 
         }
 
@@ -87,9 +87,9 @@ namespace Dev2.Core.Tests.Helpers
         [TestCategory("ProgresssFileDownloader_Ctor")]
         public void ProgresssFileDownloader_Ctor_VerifyExceptionThrownIfFileClientsNull()
         {
-            // ReSharper disable ObjectCreationAsStatement
+            
             new ProgressFileDownloader(new Mock<IDev2WebClient>().Object, null, new Mock<ICryptoProvider>().Object);
-            // ReSharper restore ObjectCreationAsStatement
+            
         }
 
         [TestMethod, ExpectedException(typeof(ArgumentNullException))]
@@ -97,9 +97,9 @@ namespace Dev2.Core.Tests.Helpers
         [TestCategory("ProgresssFileDownloader_Ctor")]
         public void ProgresssFileDownloader_Ctor_VerifyExceptionThrownIfCryptoIsNull()
         {
-            // ReSharper disable ObjectCreationAsStatement
+            
             new ProgressFileDownloader(new Mock<IDev2WebClient>().Object, new Mock<IFile>().Object, null);
-            // ReSharper restore ObjectCreationAsStatement
+            
         }
 
         [TestMethod]

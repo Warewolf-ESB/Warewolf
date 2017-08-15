@@ -32,7 +32,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Dev2.Studio.Interfaces.Enums;
 
-// ReSharper disable InconsistentNaming
+
 namespace Dev2.Core.Tests.Environments
 {
 
@@ -77,9 +77,9 @@ namespace Dev2.Core.Tests.Environments
         [ExpectedException(typeof(ArgumentNullException))]
         public void EnvironmentRepositoryConstructorWithNullSourceExpectedThrowsArgumentNullException()
         {
-            // ReSharper disable ObjectCreationAsStatement
+            
             new TestServerRespository(null);
-            // ReSharper restore ObjectCreationAsStatement
+            
         }
 
         [TestMethod]
@@ -351,9 +351,9 @@ namespace Dev2.Core.Tests.Environments
             var source = new Mock<IServer>();
             var repo = new TestServerRespository(source.Object);
             IServer e1 = null;
-            // ReSharper disable ExpressionIsAlwaysNull
+            
             var result = repo.Save(e1);
-            // ReSharper restore ExpressionIsAlwaysNull
+            
             Assert.AreEqual(result, "Not Saved");
         }
 
@@ -1163,9 +1163,9 @@ namespace Dev2.Core.Tests.Environments
 
         static string BackupFile(string path)
         {
-            // ReSharper disable AssignNullToNotNullAttribute
+            
             var bakPath = Path.Combine(Path.GetDirectoryName(path), Path.GetFileName(path) + ".bak");
-            // ReSharper restore AssignNullToNotNullAttribute
+            
             if (File.Exists(bakPath))
             {
                 File.Delete(bakPath);

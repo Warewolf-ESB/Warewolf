@@ -15,7 +15,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Data.Tests.Builders
 {
     [TestClass]
-    // ReSharper disable InconsistentNaming
+    
     public class RecordSetCollectionBuilderTest
     {
         [TestMethod]

@@ -20,7 +20,7 @@ namespace Dev2.Studio.Interfaces
         string WebsiteServiceName { get; set; }
         string MetaTags { get; set; }
         string FormEncodingType { get; set; }
-        // ReSharper disable once InconsistentNaming
+
         string XMLConfiguration { get; set; }
         string Html { get; set; }
         string ServiceName { get; set; }

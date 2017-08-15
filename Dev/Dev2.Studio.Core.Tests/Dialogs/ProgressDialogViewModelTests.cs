@@ -15,7 +15,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Core.Tests.Dialogs
 {
     [TestClass]
-    // ReSharper disable InconsistentNaming
+    
     public class ProgressDialogViewModelTests
     {
         [TestMethod]
@@ -24,9 +24,9 @@ namespace Dev2.Core.Tests.Dialogs
         [TestCategory("ProgressDialogViewModel_CTOR")]
         public void ProgressDialogViewModel_CTOR_CancelActionIsNull_Exception()
         {
-// ReSharper disable ObjectCreationAsStatement
+
             new ProgressDialogViewModel(null, () => {}, () => {});
-// ReSharper restore ObjectCreationAsStatement
+
         }
 
         [TestMethod]
@@ -35,9 +35,9 @@ namespace Dev2.Core.Tests.Dialogs
         [TestCategory("ProgressDialogViewModel_CTOR")]
         public void ProgressDialogViewModel_CTOR_ShowDialogActionIsNull_Exception()
         {
-            // ReSharper disable ObjectCreationAsStatement
+            
             new ProgressDialogViewModel(() => { },null, () => { });
-            // ReSharper restore ObjectCreationAsStatement
+            
         }
 
         [TestMethod]
@@ -46,9 +46,9 @@ namespace Dev2.Core.Tests.Dialogs
         [TestCategory("ProgressDialogViewModel_CTOR")]
         public void ProgressDialogViewModel_CTOR_ClosegActionIsNull_Exception()
         {
-            // ReSharper disable ObjectCreationAsStatement
+            
             new ProgressDialogViewModel(() => { }, () => { }, null);
-            // ReSharper restore ObjectCreationAsStatement
+            
         }
 
         [TestMethod]

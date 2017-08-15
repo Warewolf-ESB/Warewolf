@@ -23,10 +23,10 @@ namespace Dev2.Data.Operations
     {
         #region Class Members
 
-        // ReSharper disable InconsistentNaming
+        
         const string _decimalSeperator = ".";
         private static readonly IFunctionEvaluator _functionEvaluator = MathOpsFactory.CreateFunctionEvaluator();
-        // ReSharper restore InconsistentNaming
+
 
         #endregion Class Members
 
@@ -38,9 +38,9 @@ namespace Dev2.Data.Operations
         /// <param name="formatNumberTO">The information on how to format the number.</param>
         /// <returns></returns>
         /// <exception cref="System.ArgumentNullException">formatNumberTO</exception>
-        // ReSharper disable InconsistentNaming
+        
         public string Format(IFormatNumberTO formatNumberTO)
-        // ReSharper restore InconsistentNaming
+
         {
             if(formatNumberTO == null)
             {
@@ -66,9 +66,9 @@ namespace Dev2.Data.Operations
 
         #region Private Methods
 
-        // ReSharper disable InconsistentNaming
+        
         private string BuildRoundingExpression(IFormatNumberTO formatNumberTO)
-        // ReSharper restore InconsistentNaming
+
         {
             string expression;
 
@@ -95,9 +95,9 @@ namespace Dev2.Data.Operations
             return expression;
         }
 
-        // ReSharper disable InconsistentNaming
+        
         private string Round(IFormatNumberTO formatNumberTO)
-        // ReSharper restore InconsistentNaming
+
         {
             string error;
             string result;

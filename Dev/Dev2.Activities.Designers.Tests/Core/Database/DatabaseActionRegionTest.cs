@@ -14,7 +14,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Warewolf.Core;
 
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Activities.Designers.Tests.Core.Database
 {
@@ -231,7 +231,7 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
 
             //------------Execute Test---------------------------
             DbActionRegion dbActionRegion = new DbActionRegion(src.Object, ModelItemUtils.CreateModelItem(act), sourceRegion, new SynchronousAsyncWorker());
-            // ReSharper disable once UseObjectOrCollectionInitializer
+            
             DbActionMemento dbActionRegionToRestore = new DbActionMemento();
             dbActionRegionToRestore.IsEnabled = false;
             dbActionRegionToRestore.SelectedAction = action;

@@ -10,7 +10,7 @@
 
 using System;
 
-// ReSharper disable CheckNamespace
+
 namespace Dev2.DataList.Contract
 {
     /// <summary>

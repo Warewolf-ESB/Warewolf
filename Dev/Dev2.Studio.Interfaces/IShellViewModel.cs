@@ -10,7 +10,7 @@ using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
 using Dev2.Common.Interfaces.Versioning;
 
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Studio.Interfaces
 {

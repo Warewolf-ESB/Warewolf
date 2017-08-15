@@ -30,7 +30,7 @@ using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-// ReSharper disable InconsistentNaming        
+        
 
 namespace Dev2.Core.Tests
 {

@@ -8,7 +8,7 @@ using Warewolf.Security.Encryption;
 
 namespace Dev2.Services.Sql
 {
-    // ReSharper disable once InconsistentNaming
+    
     internal class ODBCFactory : IDbFactory
     {
         #region Implementation of IDbFactory

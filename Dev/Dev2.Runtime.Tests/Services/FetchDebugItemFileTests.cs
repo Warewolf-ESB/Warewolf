@@ -107,9 +107,9 @@ namespace Dev2.Tests.Runtime.Services
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("FetchDebugItemFile_Execute")]
-// ReSharper disable InconsistentNaming
+
         public void FetchDebugItemFile_Execute_FileHasMultiLines_ReturnedMessageWillBeMultiLines()
-// ReSharper restore InconsistentNaming
+
         {
             var multiLines = new StringBuilder();
             multiLines.AppendLine("Line One");

@@ -21,7 +21,7 @@ namespace Dev2.Runtime.Hosting
                 Message = msg
             };
         }
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         public static ResourceCatalogResult CreateAccessViolationResult(string msg)
         {
             return new ResourceCatalogResult()

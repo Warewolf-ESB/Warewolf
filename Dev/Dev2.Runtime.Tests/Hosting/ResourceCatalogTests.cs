@@ -49,9 +49,9 @@ using Newtonsoft.Json;
 using Unlimited.Framework.Converters.Graph.Ouput;
 using Warewolf.ResourceManagement;
 
-// ReSharper disable PossibleMultipleEnumeration
 
-// ReSharper disable InconsistentNaming
+
+
 namespace Dev2.Tests.Runtime.Hosting
 {
     [TestClass]
@@ -356,9 +356,9 @@ namespace Dev2.Tests.Runtime.Hosting
                 expected.ResourceName = "";
                 catalog.SaveResource(workspaceID, expected.ToStringBuilder(), "", reason: "reason", user: "bob");
             }
-            // ReSharper disable EmptyGeneralCatchClause
+            
             catch (Exception)
-            // ReSharper restore EmptyGeneralCatchClause
+            
             { }
             var res = catalog.GetResourceContents(workspaceID, expected.ResourceID).ToString();
             Assert.IsFalse(res.Contains("federatedresource"));
@@ -1729,9 +1729,9 @@ namespace Dev2.Tests.Runtime.Hosting
             var actionElem = xElement.Element("Action");
             Assert.IsNotNull(actionElem);
             var xamlElem = actionElem.Element("XamlDefinition");
-            // ReSharper disable PossibleNullReferenceException
+            
             Assert.IsTrue(xamlElem.Value.Contains("DisplayName=\"TestName\""));
-            // ReSharper restore PossibleNullReferenceException
+            
         }
 
         [TestMethod]

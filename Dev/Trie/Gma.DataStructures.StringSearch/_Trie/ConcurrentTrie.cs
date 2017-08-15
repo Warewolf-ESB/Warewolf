@@ -5,7 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Gma.DataStructures.StringSearch
 {
-    [SuppressMessage("ReSharper", "UnusedMember.Global")]
+
     public class ConcurrentTrie<TValue> : ConcurrentTrieNode<TValue>, ITrie<TValue>
     {
         public IEnumerable<TValue> Retrieve(string query)

@@ -6,7 +6,7 @@ using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Tests.Runtime.ESB.Execution
 {
@@ -28,7 +28,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
                 var workSpace = new Mock<IWorkspace>();
                 var channel = new Mock<IEsbChannel>();
                 var serviceAction = new ServiceAction();
-                // ReSharper disable once UnusedVariable
+                
                 var wfExecutionContainer = new WfExecutionContainer(serviceAction, obj.Object, workSpace.Object, channel.Object);
             }
             catch(Exception ex)

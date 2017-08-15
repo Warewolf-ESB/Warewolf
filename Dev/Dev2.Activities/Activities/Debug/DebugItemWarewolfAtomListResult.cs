@@ -7,9 +7,9 @@ using Dev2.Data.Parsers;
 using Dev2.Data.Util;
 using Dev2.Diagnostics;
 using Warewolf.Storage;
-// ReSharper disable ConvertToAutoProperty
-// ReSharper disable MemberCanBePrivate.Global
-// ReSharper disable UnusedMember.Global
+
+
+
 
 namespace Dev2.Activities.Debug
 {
@@ -376,10 +376,10 @@ namespace Dev2.Activities.Debug
                     item = "";
                 }
                 groupName = rawExpression.Replace(".WarewolfPositionColumn", "");
-                // ReSharper disable EmptyStatement
+                
                 displayExpression = DataListUtil.AddBracketsToValueIfNotExist(DataListUtil.CreateRecordsetDisplayValue(DataListUtil.ExtractRecordsetNameFromValue(_variable), DataListUtil.ExtractFieldNameFromValue(_variable), index)).Replace(".WarewolfPositionColumn", "");
                 ;
-                // ReSharper restore EmptyStatement
+                
             }
             else
             {

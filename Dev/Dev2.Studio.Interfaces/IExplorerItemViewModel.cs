@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Dev2.Common.Interfaces.Security;
 
-// ReSharper disable UnusedMemberInSuper.Global
-// ReSharper disable UnusedMember.Global
+
+
 
 namespace Dev2.Studio.Interfaces
 {
@@ -52,7 +52,7 @@ namespace Dev2.Studio.Interfaces
 
         Task<bool> Move(IExplorerTreeItem destination);
 
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         void AddSibling(IExplorerItemViewModel sibling);
         void CreateNewFolder();
         void Apply(Action<IExplorerItemViewModel> action);

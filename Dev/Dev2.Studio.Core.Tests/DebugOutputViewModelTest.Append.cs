@@ -19,7 +19,7 @@ using Dev2.Studio.ViewModels.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-// ReSharper disable InconsistentNaming
+
 namespace Dev2.Core.Tests
 {
     public partial class DebugOutputViewModelTest
@@ -181,17 +181,17 @@ namespace Dev2.Core.Tests
             Assert.AreEqual(2, viewModel.RootItems.Count);
             var child = viewModel.RootItems[0] as DebugStateTreeViewItemViewModel;
             Assert.IsNotNull(child);
-            // ReSharper disable ConditionIsAlwaysTrueOrFalse
+            
             if(child != null)
-            // ReSharper restore ConditionIsAlwaysTrueOrFalse
+            
             {
                 Assert.AreEqual("Content", child.Content.DisplayName);
             }
             var child2 = viewModel.RootItems[1] as DebugStateTreeViewItemViewModel;
             Assert.IsNotNull(child2);
-            // ReSharper disable ConditionIsAlwaysTrueOrFalse
+            
             if(child2 != null)
-            // ReSharper restore ConditionIsAlwaysTrueOrFalse
+            
             {
                 Assert.AreEqual("Content2", child2.Content.DisplayName);
             }

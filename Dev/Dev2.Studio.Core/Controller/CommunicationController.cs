@@ -22,9 +22,9 @@ using Dev2.Communication;
 using Dev2.SignalR.Wrappers;
 using Dev2.Studio.Interfaces;
 using Warewolf.Resource.Errors;
-// ReSharper disable UnusedParameter.Local
-// ReSharper disable UnusedMemberInSuper.Global
-// ReSharper disable CheckNamespace
+
+
+
 
 namespace Dev2.Controller
 {

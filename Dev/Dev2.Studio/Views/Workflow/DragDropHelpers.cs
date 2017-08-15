@@ -14,9 +14,9 @@ using System.Windows;
 using Dev2.Studio.Interfaces;
 using Warewolf.Studio.ViewModels;
 
-// ReSharper disable CheckNamespace
+
 namespace Dev2.Studio.Views.Workflow
-// ReSharper restore CheckNamespace
+
 {
     public class DragDropHelpers
     {

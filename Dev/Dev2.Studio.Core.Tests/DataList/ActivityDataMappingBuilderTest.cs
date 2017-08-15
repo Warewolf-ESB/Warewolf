@@ -733,7 +733,7 @@ namespace Dev2.Core.Tests.DataList
             Assert.AreEqual(0, result.Inputs.Count);
 
         }
-        // ReSharper restore InconsistentNaming
+
         #endregion
 
     }

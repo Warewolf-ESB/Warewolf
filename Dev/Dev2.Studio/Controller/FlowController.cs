@@ -34,13 +34,12 @@ using Dev2.Webs.Callbacks;
 using Newtonsoft.Json;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Studio.Views;
-// ReSharper disable SuspiciousTypeConversion.Global
 
 #endregion
 
-// ReSharper disable CheckNamespace
+
 namespace Dev2.Studio.Controller
-// ReSharper restore CheckNamespace
+
 {
     public interface IFlowController
     {

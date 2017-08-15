@@ -18,7 +18,7 @@ using Warewolf.Storage;
 
 namespace Dev2.BussinessLogic
 {
-    [SuppressMessage("ReSharper", "UnusedMember.Global")]
+
     public class RsOpIsBetween : AbstractRecsetSearchValidation
     {
         #region Overrides of AbstractRecsetSearchValidation

@@ -13,7 +13,7 @@ using Microsoft.Practices.Prism.PubSubEvents;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Studio.Interfaces;
 
-// ReSharper disable MergeConditionalExpression
+
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -59,7 +59,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 _emailServiceSource = source;
                 _emailServiceSource.Path = exchangeSource.Path;
-                // ReSharper disable once VirtualMemberCallInContructor
+                
                 FromModel(_emailServiceSource);
                 SetupHeaderTextFromExisting();
             });
@@ -133,7 +133,7 @@ namespace Warewolf.Studio.ViewModels
         public override void UpdateHelpDescriptor(string helpText)
         {
             var mainViewModel = CustomContainer.Get<IShellViewModel>();
-            mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
+            mainViewModel?.HelpViewModel?.UpdateHelpText(helpText);
         }
 
         public override void Save()
@@ -412,7 +412,7 @@ namespace Warewolf.Studio.ViewModels
                     }
                     ;
             }
-            // ReSharper disable once RedundantIfElseBlock
+            
             else
             {
                 _emailServiceSource.AutoDiscoverUrl = AutoDiscoverUrl;
@@ -474,9 +474,9 @@ namespace Warewolf.Studio.ViewModels
         public string TestMessage
         {
             get { return _testMessage; }
-            // ReSharper disable UnusedMember.Local
+            
             set
-            // ReSharper restore UnusedMember.Local
+            
             {
                 _testMessage = value;
                 OnPropertyChanged(() => TestMessage);

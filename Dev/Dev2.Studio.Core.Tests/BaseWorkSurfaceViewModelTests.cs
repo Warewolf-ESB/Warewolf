@@ -13,7 +13,7 @@ using Caliburn.Micro;
 using Dev2.Studio.ViewModels.WorkSurface;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Core.Tests
 {

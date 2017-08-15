@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Dev2.DataList;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Tests.Activities.FindRecsetOptionsTests
 {

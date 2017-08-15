@@ -81,7 +81,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 _oAuthSource = source;
                 _oAuthSource.ResourcePath = oAuthSource.ResourcePath;
-                // ReSharper disable once VirtualMemberCallInContructor
+                
                 FromModel(_oAuthSource);
                 SetupHeaderTextFromExisting();
                 SetupCommands();
@@ -183,7 +183,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        // ReSharper disable once ConvertToAutoProperty
+        
         public List<string> Types
         {
             get
@@ -336,7 +336,7 @@ namespace Warewolf.Studio.ViewModels
 
         #region Overrides of SourceBaseImpl<IOAuthSource>
 
-        // ReSharper disable once ConvertToAutoProperty
+        
         public override string Name
         {
             get
@@ -475,7 +475,7 @@ namespace Warewolf.Studio.ViewModels
                     ResourceID = _oAuthSource?.ResourceID ?? Guid.NewGuid()
                 }
             ;
-            // ReSharper disable once RedundantIfElseBlock
+            
             else
             {
                 _oAuthSource.AppKey = AppKey;

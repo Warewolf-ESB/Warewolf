@@ -35,12 +35,12 @@ using Dev2.Services.Security;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage.Interfaces;
 
-// ReSharper disable UnusedMember.Global
-// ReSharper disable MemberCanBePrivate.Global
-// ReSharper disable CyclomaticComplexity
-// ReSharper disable FunctionComplexityOverflow
 
-// ReSharper disable CheckNamespace
+
+
+
+
+
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
 
@@ -91,9 +91,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// <value>
         /// The friendly name of the source.
         /// </value>
-        // ReSharper disable ConvertToAutoProperty
+        
         public InArgument<string> FriendlySourceName
-        // ReSharper restore ConvertToAutoProperty
+        
         {
             get
             {
@@ -105,11 +105,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        // ReSharper disable ConvertToAutoProperty
-        // ReSharper disable InconsistentNaming
+        
+        
         public InArgument<Guid> EnvironmentID
-        // ReSharper restore InconsistentNaming
-        // ReSharper restore ConvertToAutoProperty
+
+        
         {
             get
             {
@@ -121,9 +121,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        // ReSharper disable InconsistentNaming
+        
         public InArgument<Guid> ResourceID { get; set; }
-        // ReSharper restore InconsistentNaming
+
 
         /// <summary>
         /// Gets or sets the type.
@@ -171,9 +171,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// <value>
         /// The service URI.
         /// </value>
-        // ReSharper disable ConvertToAutoProperty
+        
         public string ServiceUri
-        // ReSharper restore ConvertToAutoProperty
+        
         {
             get
             {
@@ -220,9 +220,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         string _serviceUri;
         InArgument<string> _friendlySourceName;
-        // ReSharper disable InconsistentNaming
+        
         InArgument<Guid> _environmentID;
-        // ReSharper restore InconsistentNaming
+
         [NonSerialized]
         IAuthorizationService _authorizationService;
         public override void UpdateDebugParentID(IDSFDataObject dataObject)

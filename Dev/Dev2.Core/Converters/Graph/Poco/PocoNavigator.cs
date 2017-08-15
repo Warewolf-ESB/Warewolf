@@ -245,9 +245,9 @@ namespace Unlimited.Framework.Converters.Graph.Poco
                     }
                     else
                     {
-                        // ReSharper disable RedundantAssignment
+                        
                         currentData = null;
-                        // ReSharper restore RedundantAssignment
+                        
                     }
 
                     return returnData;

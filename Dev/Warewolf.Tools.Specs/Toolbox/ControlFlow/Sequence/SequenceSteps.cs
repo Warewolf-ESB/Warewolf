@@ -520,9 +520,9 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
             {
                 DebugDispatcher.Instance.Remove(Guid.Empty);
             }
-            // ReSharper disable EmptyGeneralCatchClause
+            
             catch (Exception)
-            // ReSharper restore EmptyGeneralCatchClause
+            
             {
                 //May already been removed
             }

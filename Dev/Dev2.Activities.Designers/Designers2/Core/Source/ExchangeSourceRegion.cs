@@ -10,7 +10,7 @@ using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Studio.Core.Activities.Utils;
-// ReSharper disable UnusedMember.Local
+
 
 namespace Dev2.Activities.Designers2.Core.Source
 {
@@ -104,7 +104,7 @@ namespace Dev2.Activities.Designers2.Core.Source
         public string ToolRegionName { get; set; }
         public bool IsEnabled { get; set; }
         public IList<IToolRegion> Dependants { get; set; }
-        // ReSharper disable once UnassignedGetOnlyAutoProperty
+        
         public IList<string> Errors { get; set; }
 
         public IToolRegion CloneRegion()
@@ -166,7 +166,7 @@ namespace Dev2.Activities.Designers2.Core.Source
                 SavedSource = value;
                 SourceId = value.ResourceID;
             }
-            // ReSharper disable once ExplicitCallerInfoArgument
+            
             OnPropertyChanged("SelectedSource");
         }
 

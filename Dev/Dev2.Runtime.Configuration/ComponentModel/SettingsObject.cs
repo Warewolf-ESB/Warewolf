@@ -107,9 +107,9 @@ namespace Dev2.Runtime.Configuration.ComponentModel
                 {
                     value = property.GetValue(attributedObject, null);
                 }
-                // ReSharper disable EmptyGeneralCatchClause
+                
                 catch(Exception)
-                // ReSharper restore EmptyGeneralCatchClause
+                
                 {
 #if DEBUG
                     //DIE execution DIE ... dude what are you doing?! Fix this otherwise the property won't show as an option in the settings treeview.

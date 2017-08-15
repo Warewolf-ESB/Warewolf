@@ -33,12 +33,12 @@ namespace Dev2.Reflection
         private static Predicate<T> CreatePredicate()
         {
             // If the default is not null, then set to false.
-            // ReSharper disable RedundantCast
+            
             if ((object) default(T) != null)
             {
                 return t => false;
             }
-            // ReSharper restore RedundantCast
+            
 
             // Create the expression that checks and return.
             ParameterExpression p = Expression.Parameter(typeof (T), "t");

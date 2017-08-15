@@ -12,9 +12,9 @@ using Caliburn.Micro;
 using Dev2.Data.Interfaces.Enums;
 using Dev2.Studio.Interfaces.DataList;
 
-// ReSharper disable InconsistentNaming
 
-// ReSharper disable CheckNamespace
+
+
 namespace Dev2.Studio.Core.Models.DataList
 {
     public class DataListItemModel : PropertyChangedBase, IDataListItemModel

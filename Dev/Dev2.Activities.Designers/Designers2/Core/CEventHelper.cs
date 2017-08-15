@@ -95,9 +95,9 @@ namespace Dev2.Activities.Designers2.Core
                     }
                 }
             }
-                // ReSharper disable EmptyGeneralCatchClause
+                
             catch
-                // ReSharper restore EmptyGeneralCatchClause
+                
             {
 
 

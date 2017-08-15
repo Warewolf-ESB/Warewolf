@@ -33,7 +33,7 @@ namespace Dev2.Runtime.ESB.Management.Services
     /// <summary>
     /// Deploy a resource
     /// </summary>
-    [SuppressMessage("ReSharper", "UnusedMember.Global")]
+
     public class DirectDeploy : IEsbManagementEndpoint
     {
         private bool _existingResource;

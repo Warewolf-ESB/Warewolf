@@ -14,8 +14,8 @@ using Dev2.Common;
 using Dev2.Common.Interfaces.StringTokenizer.Interfaces;
 using Dev2.Tests.Properties;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-// ReSharper disable InconsistentNaming
-// ReSharper disable LocalizableElement
+
+
 
 namespace Dev2.Tests {
     /// <summary>

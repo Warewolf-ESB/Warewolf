@@ -4,10 +4,10 @@ namespace Dev2.Common.Interfaces
 {
     public class WarewolfException:Exception
     {
-        // ReSharper disable TooManyDependencies
+        
         public WarewolfException(string message, Exception innerException,ExceptionType exceptionType, ExceptionSeverity severity) :
             base(message, innerException??new Exception())
-            // ReSharper restore TooManyDependencies
+            
         {
             Severity = severity;
             ExceptionType = exceptionType;            

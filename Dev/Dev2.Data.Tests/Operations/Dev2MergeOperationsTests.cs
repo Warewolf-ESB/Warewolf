@@ -12,7 +12,7 @@ using System;
 using Dev2.Data.Interfaces;
 using Dev2.Data.Operations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Data.Tests.Operations
 {

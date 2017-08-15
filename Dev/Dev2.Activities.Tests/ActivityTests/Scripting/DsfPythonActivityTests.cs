@@ -6,7 +6,7 @@ using Dev2.Common.Interfaces.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Core;
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Tests.Activities.ActivityTests.Scripting
 {
@@ -37,7 +37,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
             //---------------Execute Test ----------------------
             var toolDescriptorInfo = typeof(DsfPythonActivity).GetCustomAttributes(typeof(ToolDescriptorInfo), false).Single() as ToolDescriptorInfo;
             //---------------Test Result -----------------------
-            // ReSharper disable once PossibleNullReferenceException
+            
             Assert.AreEqual("Scripting", toolDescriptorInfo.Category );
             Assert.AreEqual("python script", toolDescriptorInfo.FilterTag );
             Assert.AreEqual("Scripting-Python", toolDescriptorInfo.Icon );

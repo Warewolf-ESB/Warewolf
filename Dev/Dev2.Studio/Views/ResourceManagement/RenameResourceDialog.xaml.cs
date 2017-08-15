@@ -13,7 +13,7 @@ using Dev2.Common.ExtMethods;
 using Dev2.Studio.Core;
 using Dev2.Studio.Interfaces;
 
-// ReSharper disable once CheckNamespace
+
 namespace Dev2.Studio.Views.ResourceManagement
 {
     /// <summary>
@@ -21,7 +21,7 @@ namespace Dev2.Studio.Views.ResourceManagement
     /// </summary>
     public partial class RenameResourceDialog
     {
-        // ReSharper disable once ConvertToConstant.Local
+        
         private readonly bool _openDependencyGraph = false;
 
         public bool OpenDependencyGraph => _openDependencyGraph;

@@ -44,7 +44,7 @@ namespace Dev2.Core.Tests.ViewModelTests
 
         #endregion Additional test attributes
 
-        // ReSharper disable InconsistentNaming
+        
 
         [TestMethod]
         public void ShowExceptionDialog_Expected_WindowManagerInvokedForViewModel()

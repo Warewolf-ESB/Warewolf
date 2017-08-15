@@ -33,7 +33,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         [TestCategory("DebugStateTreeViewItemViewModel_Constructor")]
         [Owner("Trevor Williams-Ros")]
-        // ReSharper disable InconsistentNaming
+        
         public void DebugStateTreeViewItemViewModel_Constructor_IsExpanded_False()
         {
             //Setup
@@ -79,9 +79,9 @@ namespace Dev2.Core.Tests
             envRep.Setup(e => e.All()).Returns(() => new[] { env.Object, env2.Object });
 
             var content = new DebugState { EnvironmentID = environmentID };
-            // ReSharper disable ObjectCreationAsStatement
+            
             new DebugStateTreeViewItemViewModelMock(envRep.Object) { Content = content };
-            // ReSharper restore ObjectCreationAsStatement
+            
             Assert.AreEqual(ServerName, content.Server);
         }
         [TestMethod]
@@ -103,9 +103,9 @@ namespace Dev2.Core.Tests
             envRep.Setup(e => e.All()).Returns(() => new[] { env.Object, env2.Object });
 
             var content = new DebugState { EnvironmentID = environmentID ,Server = "BobsServer"};
-            // ReSharper disable ObjectCreationAsStatement
+            
             new DebugStateTreeViewItemViewModelMock(envRep.Object) { Content = content };
-            // ReSharper restore ObjectCreationAsStatement
+            
             Assert.AreEqual("BobsServer", content.Server);
         }
         // BUG 8373: TWR
@@ -340,9 +340,9 @@ namespace Dev2.Core.Tests
 
 
             //------------Execute Test---------------------------
-            // ReSharper disable ObjectCreationAsStatement
+            
             new DebugStateTreeViewItemViewModelMock(envRep.Object) { Content = content };
-            // ReSharper restore ObjectCreationAsStatement
+            
 
             //------------Assert Results-------------------------
             Assert.AreEqual(serverName, content.Server);
@@ -404,5 +404,5 @@ namespace Dev2.Core.Tests
         }
     }
 
-    // ReSharper restore InconsistentNaming
+    
 }

@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.UITests.DialogsUIMapClasses;
 using Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses;
 using Warewolf.UITests.Explorer.ExplorerUIMapClasses;
+using System.Drawing;
 
 namespace Warewolf.UITests.SaveDialog
 {
@@ -139,7 +140,43 @@ namespace Warewolf.UITests.SaveDialog
             DialogsUIMap.Click_SaveDialog_CancelButton();
             UIMap.ResourceDidNotOpen();
         }
-        
+
+        [TestMethod]
+        [TestCategory("Save Dialog")]
+        public void PressEnterSavesResourceAndClosesSaveDialog()
+        {
+            var resourceFolder = "EnterSavesResourceFolder";
+            DialogsUIMap.RightClick_Save_Dialog_Localhost();
+            DialogsUIMap.Select_NewFolder_From_SaveDialogContextMenu();
+            DialogsUIMap.Name_New_Folder_From_Save_Dialog(resourceFolder);
+            Assert.IsTrue(DialogsUIMap.SaveDialogWindow.Exists);
+            DialogsUIMap.Enter_Valid_Service_Name_Into_Save_Dialog("EnterSavesResource");
+            WorkflowTabUIMap.Enter_Using_Shortcut();
+            Point point;
+            DialogsUIMap.SaveDialogWindow.WaitForControlCondition(control => !control.TryGetClickablePoint(out point), 60000);
+            Assert.IsFalse(DialogsUIMap.SaveDialogWindow.Exists);
+        }
+
+
+        [TestMethod]
+        [TestCategory("Save Dialog")]
+        public void ClickingSave_ThenPressEnter_SavesResource_AndClosesSaveDialog()
+        {
+            WorkflowTabUIMap.Escape_Using_Shortcut();
+            Mouse.Click(UIMap.MainStudioWindow.SideMenuBar.SaveButton);
+
+            var resourceFolder = "ClickSaveEnterSavesResourceFolder";
+            DialogsUIMap.RightClick_Save_Dialog_Localhost();
+            DialogsUIMap.Select_NewFolder_From_SaveDialogContextMenu();
+            DialogsUIMap.Name_New_Folder_From_Save_Dialog(resourceFolder);
+            Assert.IsTrue(DialogsUIMap.SaveDialogWindow.Exists);
+            DialogsUIMap.Enter_Valid_Service_Name_Into_Save_Dialog("ClickSaveEnterSavesResource");
+            WorkflowTabUIMap.Enter_Using_Shortcut();
+            Point point;
+            DialogsUIMap.SaveDialogWindow.WaitForControlCondition(control => !control.TryGetClickablePoint(out point), 60000);
+            Assert.IsFalse(DialogsUIMap.SaveDialogWindow.Exists);
+        }
+
         #region Additional test attributes
 
         [TestInitialize]

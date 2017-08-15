@@ -22,7 +22,7 @@ using Warewolf.Storage;
 using Warewolf.Tools.Specs.BaseTypes;
 using WarewolfParserInterop;
 
-// ReSharper disable NotAccessedVariable
+
 
 namespace Warewolf.ToolsSpecs.Toolbox.Recordset
 {

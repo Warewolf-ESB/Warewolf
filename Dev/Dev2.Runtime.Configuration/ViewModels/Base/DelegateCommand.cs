@@ -65,7 +65,7 @@ namespace Dev2.Runtime.Configuration.ViewModels.Base
 
         public event EventHandler CanExecuteChanged;
 
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         protected virtual void OnCanExecuteChanged()
         {
             var handler = CanExecuteChanged;
