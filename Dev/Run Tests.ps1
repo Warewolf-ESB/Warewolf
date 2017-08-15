@@ -29,7 +29,8 @@ Param(
   [switch]$RunAllReleaseResourcesTests,
   [switch]$RunAllCodedUITests,
   [switch]$RunWarewolfServiceTests,
-  [string]$MergeDotCoverSnapshotsInDirectory=""
+  [string]$MergeDotCoverSnapshotsInDirectory="",
+  [switch]${Startmy.warewolf.io}
 )
 $JobSpecs = @{}
 #Unit Tests
@@ -89,6 +90,8 @@ $JobSpecs["No Conflicting Permissions Security Specs"]							= "Warewolf.Securit
 $JobSpecs["Overlapping User Groups Permissions Security Specs"]					= "Warewolf.Security.Specs", "OverlappingUserGroupsPermissionsSecurity"
 $JobSpecs["Resource Permissions Security Specs"]								= "Warewolf.Security.Specs", "ResourcePermissionsSecurity"
 $JobSpecs["Server Permissions Security Specs"]									= "Warewolf.Security.Specs", "ServerPermissionsSecurity"
+$JobSpecs["Execution Logging Web UI Tests"]										= "Warewolf.Web.UI.Tests", "ExecutionLogging"
+$JobSpecs["No Warewolf Server Web UI Tests"]									= "Warewolf.Web.UI.Tests", "NoWarewolfServer"
 #UI Tests
 $JobSpecs["Other UI Tests"]					    = "Warewolf.UITests"
 $JobSpecs["Other UI Specs"]					    = "Warewolf.UISpecs"
@@ -130,10 +133,9 @@ $JobSpecs["Web Connector UI Specs"]			    = "Warewolf.UISpecs", "WebConnector"
 $JobSpecs["Web Sources UI Tests"]				= "Warewolf.UITests", "Web Sources"
 $JobSpecs["Workflow Mocking Tests UI Tests"]	= "Warewolf.UITests", "Workflow Mocking Tests"
 $JobSpecs["Workflow Testing UI Tests"]			= "Warewolf.UITests", "Workflow Testing"
-$JobSpecs["Web UI Tests"]		 				= "Warewolf.Web.UI.Tests"
 
 $UnitTestJobNames = "Other Unit Tests,COMIPC Unit Tests,Studio View Models Unit Tests,Activity Designers Unit Tests,Activities Unit Tests,Scripting Tools Specs,Storage Tools Specs,Utility Tools Specs,ControlFlow Tools Specs,Data Tools Specs,Database Tools Specs,Email Tools Specs,File And Folder Copy Tool Specs,File And Folder Create Tool Specs,File And Folder Delete Tool Specs,File And Folder Move Tool Specs,Folder Read Tool Specs,File Read Tool Specs,File And Folder Rename Tool Specs,Unzip Tool Specs,Write File Tool Specs,Zip Tool Specs,FileAndFolder Tools Specs,LoopConstructs Tools Specs,Recordset Tools Specs,Resources Tools Specs,UI Binding Tests,Runtime Unit Tests,Studio Core Unit Tests"
-$ServerTestJobNames = "Other Specs,Subworkflow Execution Specs,Workflow Execution Specs,Integration Tests,Other Activities Specs"
+$ServerTestJobNames = "Other Specs,Subworkflow Execution Specs,Workflow Execution Specs,Integration Tests,Other Activities Specs,Execution Logging Web UI Tests,No Warewolf Server Web UI Tests"
 $ReleaseResourcesJobNames = "Example Workflow Execution Specs,Conflicting Contribute View And Execute Permissions Security Specs,Conflicting Execute Permissions Security Specs,Conflicting View And Execute Permissions Security Specs,Conflicting View Permissions Security Specs,No Conflicting Permissions Security Specs,Overlapping User Groups Permissions Security Specs,Resource Permissions Security Specs,Server Permissions Security Specs"
 $UITestJobNames = "Other UI Tests,Other UI Specs,Assign Tool UI Tests,Control Flow Tools UI Tests,Database Sources UI Tests,Database Tools UI Tests,Data Tools UI Tests,DB Connector UI Specs,Debug Input UI Tests,Default Layout UI Tests,Dependency Graph UI Tests,Deploy UI Specs,Deploy UI Tests,DotNet Connector Mocking UI Tests,DotNet Connector Tool UI Tests,Dropbox Tools UI Tests,Email Tools UI Tests,Explorer UI Specs,Explorer UI Tests,File Tools UI Tests,Hello World Mocking UI Tests,HTTP Tools UI Tests,Plugin Sources UI Tests,Recordset Tools UI Tests,Resource Tools UI Tests,Save Dialog UI Specs,Save Dialog UI Tests,Server Sources UI Tests,Settings UI Tests,Sharepoint Tools UI Tests,Shortcut Keys UI Tests,Source Wizards UI Tests,Tabs And Panes UI Tests,Tools UI Tests,Utility Tools UI Tests,Variables UI Tests,Web Connector UI Specs,Web Sources UI Tests,Workflow Mocking Tests UI Tests,Workflow Testing UI Tests"
 
@@ -245,6 +247,9 @@ function Cleanup-ServerStudio([bool]$Force=$true) {
 
     #Force Kill
     taskkill /im "Warewolf Studio.exe" /f  2>&1 | %{if (!($_.ToString().StartsWith("ERROR: "))) {Write-Host $_}}
+
+    #Stop my.warewolf.io
+    taskkill /im iisexpress.exe /f  2>&1 | %{if (!($_.ToString().StartsWith("ERROR: "))) {Write-Host $_}}
 
     #Stop Server
     $ServiceOutput = ""
@@ -391,6 +396,9 @@ function Move-Artifacts-To-TestResults([bool]$DotCover, [bool]$Server, [bool]$St
         if (Test-Path "$env:ProgramData\Warewolf\Server Log\dotCover.log") {
             Move-File-To-TestResults "$env:ProgramData\Warewolf\Server Log\dotCover.log" "$JobName Server DotCover.log"
         }
+        if (Test-Path "$env:ProgramData\Warewolf\Server Log\my.warewolf.io.log") {
+            Move-File-To-TestResults "$env:ProgramData\Warewolf\Server Log\my.warewolf.io.log" "$JobName my.warewolf.io.log"
+        }
     }
     if ($Studio -and $DotCover) {
         $StudioSnapshot = "$env:LocalAppData\Warewolf\Studio Logs\dotCover.dcvr"
@@ -447,19 +455,26 @@ function Move-ScreenRecordings-To-TestResults {
     }
 }
 
+function Find-Warewolf-Server-Exe {
+    $ServerPath = FindFile-InParent $ServerPathSpecs
+    if ($ServerPath.EndsWith(".zip")) {
+		Expand-Archive "$ServerPath" "$TestsResultsPath\Server" -Force
+		$ServerPath = "$TestsResultsPath\Server\" + $ServerExeName
+	}
+    if ($ServerPath -eq "" -or !(Test-Path $ServerPath)) {
+        Write-Error -Message "Cannot find Warewolf Server.exe. Please provide a path to that file as a commandline parameter like this: -ServerPath"
+        sleep 30
+        exit 1
+    } else {
+        return $ServerPath
+    }
+}
+
 function Install-Server([string]$ServerPath,[string]$ResourcesType) {
     if ($ServerPath -eq "" -or !(Test-Path $ServerPath)) {
-        $ServerPath = FindFile-InParent $ServerPathSpecs
-        if ($ServerPath.EndsWith(".zip")) {
-			Expand-Archive "$ServerPath" "$TestsResultsPath\Server" -Force
-			$ServerPath = "$TestsResultsPath\Server\" + $ServerExeName
-		}
-        if ($ServerPath -eq "" -or !(Test-Path $ServerPath)) {
-            Write-Error -Message "Cannot find Warewolf Server.exe. Please provide a path to that file as a commandline parameter like this: -ServerPath"
-            sleep 30
-            exit 1
-        }
+        $ServerPath = Find-Warewolf-Server-Exe
     }
+    Write-Warning "Will now stop any currently running Warewolf servers and studios and delete all resources in Warewolf ProgramData. If you have existing Warewolf workflow or other resources you must back them up yourself."
     if ($ResourcesType -eq "") {
 	    $title = "Server Resources"
 	    $message = "What type of resources would you like to install the server with?"
@@ -546,9 +561,8 @@ function Install-Server([string]$ServerPath,[string]$ResourcesType) {
 
 function Start-Server([string]$ServerPath,[string]$ResourcesType) {
     $ServerFolderPath = (Get-Item $ServerPath).Directory.FullName
-    Write-Warning "Will now stop any currently running Warewolf servers and studios and delete all resources in Warewolf ProgramData. New resources will be deployed from $ServerFolderPath\Resources - $ResourcesType\*"
-    Cleanup-ServerStudio
-    Copy-Item -Path ((Get-Item $ServerPath).Directory.FullName + "\Resources - $ResourcesType\*") -Destination "$env:ProgramData\Warewolf" -Recurse -Force
+    Write-Host Deploying New resources from $ServerFolderPath\Resources - $ResourcesType\*
+    Copy-Item -Path ($ServerFolderPath + "\Resources - $ResourcesType\*") -Destination "$env:ProgramData\Warewolf" -Recurse -Force
 	
     Start-Service "Warewolf Server"
 
@@ -571,6 +585,26 @@ function Start-Server([string]$ServerPath,[string]$ResourcesType) {
         exit 1
     } else {
         Write-Host Server has started.
+    }
+}
+
+function Start-my.warewolf.io {
+    if ($ServerPath -eq "" -or !(Test-Path $ServerPath)) {
+        $ServerPath = Find-Warewolf-Server-Exe
+    }
+    $ServerFolderPath = (Get-Item $ServerPath).Directory.FullName
+    Cleanup-ServerStudio
+    if (Test-Path "$ServerFolderPath\_PublishedWebsites\Dev2.Web") {
+        $WebsPath = "$ServerFolderPath\_PublishedWebsites\Dev2.Web"
+        $IISExpressPath = "C:\Program Files (x86)\IIS Express\iisexpress.exe"
+        if (!(Test-Path $IISExpressPath)) {
+            Write-Warning "my.warewolf.io cannot be hosted. $IISExpressPath not found."
+        } else {
+            Start-Process -FilePath $IISExpressPath -ArgumentList "/path:`"$WebsPath`" /port:18405" -NoNewWindow -PassThru -RedirectStandardOutput "$env:programdata\Warewolf\Server Log\my.warewolf.io.log"
+            Write-Host my.warewolf.io has started.
+        }
+    } else {
+        Write-Warning "my.warewolf.io cannot be hosted. Webs not found at $ServerFolderPath\_PublishedWebsites\Dev2.Web"
     }
 }
 
@@ -918,10 +952,13 @@ if ($TotalNumberOfJobsToRun -gt 0) {
             Out-File -LiteralPath "$TestRunnerPath" -Encoding default -InputObject `"$MSTestPath`"$FullArgsList
         }
         if (Test-Path "$TestsResultsPath\..\Run $JobName.bat") {
-            if (($StartServer.IsPresent -or $StartStudio.IsPresent) -and !$Parallelize.IsPresent) {
-                Start-Server $ServerPath $ResourcesType
-                if ($StartStudio.IsPresent) {
-                    Start-Studio
+            if ($StartServer.IsPresent -or $StartStudio.IsPresent -or ${Startmy.warewolf.io}.IsPresent) {
+                Start-my.warewolf.io
+                if ($StartServer.IsPresent -or $StartStudio.IsPresent) {
+                    Start-Server $ServerPath $ResourcesType
+                    if ($StartStudio.IsPresent) {
+                        Start-Studio
+                    }
                 }
             }
             if ($ApplyDotCover -and !$StartServer.IsPresent -and !$StartStudio.IsPresent) {
@@ -962,12 +999,12 @@ if ($TotalNumberOfJobsToRun -gt 0) {
                 
                 #Run DotCover Runner Batch File
                 &"$DotCoverRunnerPath"
-                if ($StartServer.IsPresent -or $StartStudio.IsPresent) {
+                if ($StartServer.IsPresent -or $StartStudio.IsPresent -or ${Startmy.warewolf.io}.IsPresent) {
                     Cleanup-ServerStudio $false
                 }
             } else {
                 &"$TestRunnerPath"
-                if (($StartServer.IsPresent -or $StartStudio.IsPresent) -and !$Parallelize.IsPresent) {
+                if ($StartServer.IsPresent -or $StartStudio.IsPresent -or ${Startmy.warewolf.io}.IsPresent) {
                     Cleanup-ServerStudio
                 }
             }
@@ -1223,9 +1260,12 @@ if ($RunAllJobs.IsPresent) {
 }
 
 if (!$RunAllJobs.IsPresent -and !$Cleanup.IsPresent -and !$AssemblyFileVersionsTest.IsPresent -and !$RunAllUnitTests.IsPresent -and !$RunAllServerTests.IsPresent -and !$RunAllCodedUITests.IsPresent -and $JobName -eq "" -and !$RunWarewolfServiceTests.IsPresent -and $MergeDotCoverSnapshotsInDirectory -eq "") {
-    $ServerPath,$ResourcesType = Install-Server $ServerPath $ResourcesType
-    Start-Server $ServerPath $ResourcesType
-    if (!$StartServer.IsPresent) {
-        Start-Studio
+    Start-my.warewolf.io
+    if (!${Startmy.warewolf.io}.IsPresent) {
+        $ServerPath,$ResourcesType = Install-Server $ServerPath $ResourcesType
+        Start-Server $ServerPath $ResourcesType
+        if (!$StartServer.IsPresent -and !${Startmy.warewolf.io}.IsPresent) {
+            Start-Studio
+        }
     }
 }
