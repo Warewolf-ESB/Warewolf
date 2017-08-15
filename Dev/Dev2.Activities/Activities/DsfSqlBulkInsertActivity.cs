@@ -152,12 +152,7 @@ namespace Dev2.Activities
                 {
                     allErrors.AddError(e.Message);
                 }
-                
-                Dev2Logger.Error(this, e);
-                
-                // ReSharper disable InvokeAsExtensionMethod
                 Dev2Logger.Error(this, e, "Warewolf Error");
-                // ReSharper restore InvokeAsExtensionMethod
             }
             finally
             {
