@@ -48,7 +48,7 @@ namespace Warewolf.UITests
             ComPluginSourceUIMap.Select_AssemblyFile_From_COMPluginDataTree("Microsoft");
 
             Mouse.Click(UIMap.MainStudioWindow.CloseStudioButton);
-            DialogsUIMap.Click_MessageBox_Cancel();
+            DialogsUIMap.Click_MessageBox_Yes();
             Assert.IsTrue(ComPluginSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab.Exists);
         }
 
