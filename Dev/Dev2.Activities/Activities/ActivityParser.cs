@@ -62,7 +62,7 @@ namespace Dev2.Activities
             {
                 
                 return ParseFlowStep(step, seenActivities);
-                // ReSharper disable RedundantIfElseBlock
+                
             }
             else
             {
@@ -78,7 +78,7 @@ namespace Dev2.Activities
                 }
             }
             return null;
-            // ReSharper restore RedundantIfElseBlock
+            
         }
 
         IEnumerable<IDev2Activity> ParseSwitch(FlowSwitch<string> switchFlowSwitch, List<IDev2Activity> seenActivities)
@@ -122,9 +122,9 @@ namespace Dev2.Activities
                     return new List<IDev2Activity> { activity};
                 }
                 var rawText = activity.ExpressionText;
-                // ReSharper disable MaximumChainedReferences
+                
                 var activityTextjson = rawText.Substring(rawText.IndexOf("{", StringComparison.Ordinal)).Replace(@""",AmbientDataList)","").Replace("\"","!");
-                // ReSharper restore MaximumChainedReferences
+                
                 var activityText = Dev2DecisionStack.FromVBPersitableModelToJSON(activityTextjson);
                 var decisionStack =  JsonConvert.DeserializeObject<Dev2DecisionStack>(activityText);
                 var dec = new DsfDecision(activity);

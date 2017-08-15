@@ -22,7 +22,7 @@ using Newtonsoft.Json;
 
 namespace Dev2.Tests.Runtime.Services
 {
-    // ReSharper disable InconsistentNaming
+    
 
     [TestClass]
     public class SecurityWriteTests

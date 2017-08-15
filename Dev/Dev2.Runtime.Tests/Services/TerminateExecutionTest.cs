@@ -146,7 +146,7 @@ namespace Dev2.Tests.Runtime.Services
         private Dictionary<string, StringBuilder> GetDictionary()
         {
             var dict = new Dictionary<string, StringBuilder>();
-            // ReSharper disable ImpureMethodCallOnReadonlyValueField
+            
             dict["ResourceID"] = new StringBuilder(ResourceID.ToString());
             return dict;
         }

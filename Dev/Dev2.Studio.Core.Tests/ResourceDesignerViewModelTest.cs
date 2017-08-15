@@ -50,7 +50,7 @@ namespace Dev2.Core.Tests
 
 
         #region DefaultDefinition Tests
-        // ReSharper disable InconsistentNaming
+        
 
         /// <summary>
         /// Tests that the Default Service Definition for Services

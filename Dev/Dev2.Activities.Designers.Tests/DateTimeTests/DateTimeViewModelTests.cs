@@ -16,8 +16,8 @@ using Dev2.Studio.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Moq.Protected;
-// ReSharper disable ObjectCreationAsStatement
-// ReSharper disable CollectionNeverQueried.Local
+
+
 
 namespace Dev2.Activities.Designers.Tests.DateTimeTests
 {
@@ -28,9 +28,9 @@ namespace Dev2.Activities.Designers.Tests.DateTimeTests
         [TestCategory("DateTimeActivityViewModel_SelectedTimeModifierTypeSelectedItem")]
         [Description("DateTime ViewModel clears the TimeModifierAmountDisplay property of the model item if the SelectedTimeModifierType property of the view model is set to a blank string")]
         [Owner("Ashley Lewis")]
-        // ReSharper disable InconsistentNaming
+        
         public void DateTimeActivityViewModel_SelectedTimeModifierTypeChange_SelectedTimeModifierTypeSetToABlankString_TimeModifierAmountDisplayCleared()
-        // ReSharper restore InconsistentNaming
+
         {
             //init
             var expected = string.Empty;
@@ -58,9 +58,9 @@ namespace Dev2.Activities.Designers.Tests.DateTimeTests
         [TestCategory("DateTimeActivityViewModel_SelectedTimeModifierTypeSelectedItem")]
         [Description("DateTime ViewModel does not clear the TimeModifierAmountDisplay property of the model item if the SelectedTimeModifierType property of the view model is set to some string")]
         [Owner("Ashley Lewis")]
-        // ReSharper disable InconsistentNaming
+        
         public void DateTimeActivityViewModel_SelectedTimeModifierTypeChange_SelectedTimeModifierTypeSetToABlankString_TimeModifierAmountDisplayNotCleared()
-        // ReSharper restore InconsistentNaming
+
         {
             //init
             var expected = "Some Data";

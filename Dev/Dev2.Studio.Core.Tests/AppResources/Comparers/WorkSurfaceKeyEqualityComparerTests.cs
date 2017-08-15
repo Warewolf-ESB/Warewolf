@@ -162,9 +162,9 @@ namespace Dev2.Core.Tests.AppResources.Comparers
             connection2.Setup(connection => connection.WorkspaceID).Returns(enviroId2);
             e2.Setup(model => model.Connection).Returns(connection2.Object);
             var repo = new TestLoadServerRespository(source.Object, e1.Object, e2.Object);
-            // ReSharper disable ObjectCreationAsStatement
+            
             new ServerRepository(repo);
-            // ReSharper restore ObjectCreationAsStatement
+            
             var debugState = new Mock<IDebugState>();
             debugState.Setup(c => c.OriginatingResourceID).Returns(resId);
             debugState.Setup(c => c.ServerID).Returns(serverId);

@@ -18,10 +18,10 @@ using Dev2.Common;
 using Dev2.Common.Interfaces.Core.Graph;
 using Unlimited.Framework.Converters.Graph.Ouput;
 
-// ReSharper disable CheckNamespace
+
 
 namespace Unlimited.Framework.Converters.Graph.Output
-// ReSharper restore CheckNamespace
+
 {
     /// <summary>
     ///     A serialization service which uses the DataContractSerializer to serialize to XML

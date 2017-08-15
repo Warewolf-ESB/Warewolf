@@ -21,7 +21,7 @@ namespace Dev2.Common.Utils
         public int[] GroupNumbers { private get; set; }
         public Func<string, string> TransformFunction { private get; set; }
 
-        // ReSharper disable once ParameterTypeCanBeEnumerable.Local
+        
         public static string TransformAllMatches(string initial, List<StringTransform> transforms)
         {
             StringBuilder result = new StringBuilder(initial);

@@ -315,7 +315,7 @@ namespace Dev2.Studio.Core.Specs.IntellisenseSpecs
         public void ThenTheResultTextShouldBeWithCaretPositionWillBe(string p0, int p1)
         {
            var res =  ScenarioContext.Current["stringResult"] as IIntellisenseStringResult;
-            // ReSharper disable once PossibleNullReferenceException
+            
             Assert.AreEqual(res.Result,p0);
             Assert.AreEqual(p1,res.CaretPosition);
         }

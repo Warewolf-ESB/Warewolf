@@ -12,7 +12,7 @@ using System;
 using System.ServiceProcess;
 using Dev2.Util;
 
-// ReSharper disable CheckNamespace
+
 namespace Dev2.Studio.Core.Services
 {
     public class WindowsServiceManager : IWindowsServiceManager

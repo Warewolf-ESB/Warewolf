@@ -13,10 +13,10 @@ using Dev2.Common.Interfaces.WebService;
 using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-// ReSharper disable UnusedMember.Local
-// ReSharper disable UnusedVariable
-// ReSharper disable UseObjectOrCollectionInitializer
-// ReSharper disable InconsistentNaming
+
+
+
+
 
 namespace Dev2.Activities.Designers.Tests.Core
 {

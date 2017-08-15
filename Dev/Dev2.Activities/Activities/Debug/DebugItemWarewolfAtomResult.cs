@@ -2,8 +2,8 @@ using System.Collections.Generic;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data.Util;
 using Dev2.Diagnostics;
-// ReSharper disable MemberCanBePrivate.Global
-// ReSharper disable UnusedMember.Global
+
+
 
 namespace Dev2.Activities.Debug
 {

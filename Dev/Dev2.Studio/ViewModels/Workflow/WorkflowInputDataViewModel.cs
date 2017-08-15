@@ -34,11 +34,11 @@ using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Threading;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-// ReSharper disable MemberCanBePrivate.Global
 
-// ReSharper disable CheckNamespace
+
+
 namespace Dev2.Studio.ViewModels.Workflow
-// ReSharper restore CheckNamespace
+
 {
     public class WorkflowInputDataViewModel : SimpleBaseViewModel
     {
@@ -101,9 +101,9 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
 
             _resourceModel = input.ResourceModel;
-            // ReSharper disable DoNotCallOverridableMethodsInConstructor
+            
             DisplayName = @"Debug input data";
-            // ReSharper restore DoNotCallOverridableMethodsInConstructor
+            
             _dataListConversionUtils = new DataListConversionUtils();
             _popupController = CustomContainer.Get<IPopupController>();
         }
@@ -684,7 +684,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         }
 
 
-        // ReSharper disable once ParameterTypeCanBeEnumerable.Local
+        
         private bool AddBlankRowToRecordset(IDataListItem dlItem, IList<IScalar> columns, int indexToInsertAt, int indexNum)
         {
             bool itemsAdded = false;

@@ -12,7 +12,7 @@ using System;
 using System.Threading.Tasks;
 using Dev2.Studio.ViewModels.Diagnostics;
 
-// ReSharper disable once CheckNamespace
+
 namespace Dev2.Studio.Diagnostics
 {
     public abstract class AppExceptionPopupControllerAbstract : IAppExceptionPopupController

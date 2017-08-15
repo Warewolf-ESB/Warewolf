@@ -20,12 +20,12 @@ using Dev2.Studio.Interfaces;
 using Microsoft.Practices.Prism;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage;
-// ReSharper disable MemberCanBePrivate.Global
-// ReSharper disable UnusedMember.Global
+
+
 
 namespace Dev2.Activities.Designers2.Core
 {
-    // ReSharper disable ClassWithVirtualMembersNeverInherited.Global
+    
     public class OutputsRegion : IOutputsToolRegion
     {
         private readonly ModelItem _modelItem;
@@ -75,7 +75,7 @@ namespace Dev2.Activities.Designers2.Core
           
         }
 
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         //Needed for Deserialization
         public OutputsRegion()
         {
@@ -85,11 +85,11 @@ namespace Dev2.Activities.Designers2.Core
 
         void OutputsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            // ReSharper disable ExplicitCallerInfoArgument
+            
             OnPropertyChanged("IsOutputsEmptyRows");
             AddItemPropertyChangeEvent(e);
             RemoveItemPropertyChangeEvent(e);
-            // ReSharper restore ExplicitCallerInfoArgument
+            
         }
 
 
@@ -182,7 +182,7 @@ namespace Dev2.Activities.Designers2.Core
                 ObjectResult = region.ObjectResult;
                 ObjectName = region.ObjectName;
                 IsObject = region.IsObject;
-                // ReSharper disable once ExplicitCallerInfoArgument
+                
                 OnPropertyChanged("IsOutputsEmptyRows");
             }
         }

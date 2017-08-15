@@ -23,6 +23,17 @@ using Newtonsoft.Json;
 
 namespace Dev2.Settings.Logging
 {
+    public enum LogLevel
+    {
+        
+        OFF,
+        FATAL,
+        ERROR,
+        WARN,
+        INFO,
+        DEBUG,
+        TRACE
+    }
     public class LogSettingsViewModel : SettingsItemViewModel, ILogSettings, IUpdatesHelp
     {
         public IServer CurrentEnvironment
@@ -34,9 +45,9 @@ namespace Dev2.Settings.Logging
             set
             {
                 _currentEnvironment = value;
-                // ReSharper disable once ExplicitCallerInfoArgument
+                
                 OnPropertyChanged("CanEditStudioLogSettings");
-                // ReSharper disable once ExplicitCallerInfoArgument
+                
                 OnPropertyChanged("CanEditLogSettings");
             }
         }
@@ -52,7 +63,7 @@ namespace Dev2.Settings.Logging
         private LogLevel _studioFileLogLevel;
         private LogSettingsViewModel _item;
 
-        // ReSharper disable once UnusedMember.Global
+        
         public LogSettingsViewModel()
         {
 

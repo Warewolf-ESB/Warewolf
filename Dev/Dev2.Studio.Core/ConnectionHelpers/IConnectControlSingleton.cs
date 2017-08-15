@@ -16,18 +16,18 @@ namespace Dev2.ConnectionHelpers
 {
     public interface IConnectControlSingleton
     {
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         void EditConnection(int selectedIndex, Action<int> openWizard);
         void ToggleConnection(int selectedIndex);
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         void ToggleConnection(Guid environmentId);
         void Refresh(Guid environmentId);
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         void SetConnectionState(Guid environmentId, ConnectionEnumerations.ConnectedState connectedState);
         event EventHandler<ConnectionStatusChangedEventArg> ConnectedStatusChanged;
         event EventHandler<ConnectedServerChangedEvent> ConnectedServerChanged;
         ObservableCollection<IConnectControlEnvironment> Servers { get; set; }
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         void Remove(Guid environmentId);
 
         void ReloadServer();

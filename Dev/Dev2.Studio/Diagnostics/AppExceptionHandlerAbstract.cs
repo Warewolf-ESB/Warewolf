@@ -12,7 +12,7 @@ using System;
 using System.Text;
 using Dev2.Common;
 
-// ReSharper disable once CheckNamespace
+
 namespace Dev2.Studio.Diagnostics
 {
     public abstract class AppExceptionHandlerAbstract : IAppExceptionHandler

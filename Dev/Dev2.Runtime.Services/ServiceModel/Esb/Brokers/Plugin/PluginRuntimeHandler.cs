@@ -21,7 +21,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using ServiceStack.Common.Extensions;
 
-// ReSharper disable UnusedMember.Global
+
 
 namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
 {
@@ -48,7 +48,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             }
             if (setupInfo.PluginConstructor.Inputs != null)
             {
-                // ReSharper disable once LoopCanBeConvertedToQuery
+                
                 foreach (var constructorArg in setupInfo.PluginConstructor.Inputs)
                 {
                     var setupValuesForParameters = SetupValuesForParameters(constructorArg.Value, constructorArg.TypeName, constructorArg.EmptyToNull, loadedAssembly);
@@ -61,7 +61,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
 
             var instance = BuildInstance(setupInfo, type, constructorArgs, loadedAssembly);
             var serializeToJsonString = instance.SerializeToJsonString(new KnownTypesBinder() { KnownTypes = new List<Type>() { type } });
-            // ReSharper disable once PossibleNullReferenceException
+            
             setupInfo.PluginConstructor.ReturnObject = serializeToJsonString;
             return new PluginExecutionDto(serializeToJsonString)
             {
@@ -189,7 +189,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             {
                 var typeList = BuildTypeList(dev2MethodInfo.Parameters, loadedAssembly);
                 var valuedTypeList = new List<object>();
-                // ReSharper disable once LoopCanBeConvertedToQuery
+                
                 foreach (var methodParameter in dev2MethodInfo.Parameters)
                 {
                     var valuesForParameters = SetupValuesForParameters(methodParameter.Value, methodParameter.TypeName, methodParameter.EmptyToNull, loadedAssembly);
@@ -332,7 +332,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                 var type = assembly.GetType(fullName);
                 var methodInfos = type.GetMethods();
 
-                // ReSharper disable once CyclomaticComplexity
+                
                 methodInfos.ToList().ForEach(info =>
                 {
                     var serviceMethod = new ServiceMethod
@@ -463,7 +463,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
 
                 return jObject;
             }
-            // ReSharper disable once RedundantCatchClause
+            
             catch (Exception e)
             {
                 Dev2Logger.Error(e, "Warewolf Error");
@@ -486,7 +486,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
 
         static Type GetEnumerableType(Type type)
         {
-            // ReSharper disable once LoopCanBeConvertedToQuery
+            
             foreach (var intType in type.GetInterfaces())
             {
                 if (intType.IsGenericType

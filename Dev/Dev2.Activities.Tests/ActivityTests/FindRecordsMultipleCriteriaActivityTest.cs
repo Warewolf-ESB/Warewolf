@@ -21,7 +21,7 @@ using Warewolf.Storage.Interfaces;
 
 namespace Dev2.Tests.Activities.ActivityTests
 {
-    // ReSharper disable InconsistentNaming
+    
     /// <summary>
     /// Summary description for FindRecordsActivityTest
     /// </summary>

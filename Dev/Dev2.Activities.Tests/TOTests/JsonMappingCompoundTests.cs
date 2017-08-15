@@ -16,7 +16,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-// ReSharper disable InconsistentNaming
+
 namespace Dev2.Tests.Activities.TOTests
 {
 
@@ -29,7 +29,7 @@ namespace Dev2.Tests.Activities.TOTests
         public void JsonMappingCompoundTo_Constructor_SetsProperties_NotIsCompound()
         {
             //------------Setup for test--------------------------
-            // ReSharper disable RedundantArgumentName
+            
             var dataObject = new DsfDataObject(xmldata: string.Empty, dataListId: Guid.NewGuid());
 
             dataObject.Environment.Assign("[[a]]", "10", 0);
@@ -367,6 +367,6 @@ namespace Dev2.Tests.Activities.TOTests
 
         }
 
-        // ReSharper restore RedundantArgumentName
+        
     }
 }

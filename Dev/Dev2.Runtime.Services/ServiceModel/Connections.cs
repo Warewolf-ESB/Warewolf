@@ -26,10 +26,10 @@ using Dev2.Communication;
 using Dev2.Runtime.Diagnostics;
 using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.AspNet.SignalR.Client;
-// ReSharper disable ClassWithVirtualMembersNeverInherited.Global
-// ReSharper disable MemberCanBePrivate.Global
 
-// ReSharper disable InconsistentNaming
+
+
+
 namespace Dev2.Runtime.ServiceModel
 {
     public class Connections : ExceptionManager, IConnections
@@ -37,9 +37,9 @@ namespace Dev2.Runtime.ServiceModel
 
         #region Fields
 
-        // ReSharper disable FieldCanBeMadeReadOnly.Local
+        
         Func<List<string>> _fetchComputers;
-        // ReSharper restore FieldCanBeMadeReadOnly.Local
+        
 
         #endregion
 
@@ -83,9 +83,9 @@ namespace Dev2.Runtime.ServiceModel
             try
             {
                 // Validate URI, ports, etc...
-                // ReSharper disable ObjectCreationAsStatement
+                
                 new Uri(connection.Address);
-                // ReSharper restore ObjectCreationAsStatement
+                
 
                 var connectResult = ConnectToServer(connection);
                 if(!string.IsNullOrEmpty(connectResult))

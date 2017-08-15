@@ -18,9 +18,9 @@ using Dev2.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Utils;
 
-// ReSharper disable CheckNamespace
+
 namespace Dev2.Diagnostics
-// ReSharper restore CheckNamespace
+
 {
     [Serializable]
     public class DebugItem : IDebugItem

@@ -9,7 +9,7 @@ using Moq;
 using Warewolf.Core;
 using Warewolf.Storage.Interfaces;
 
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Services.Execution.Tests
 {

@@ -22,7 +22,7 @@ using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
 using Dev2.Workspaces;
 using Warewolf.Resource.Errors;
-// ReSharper disable MemberCanBePrivate.Global
+
 
 namespace Dev2.Runtime.ESB.Management.Services
 {

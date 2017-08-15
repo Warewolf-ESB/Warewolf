@@ -14,9 +14,9 @@ using Dev2.Data.Interfaces.Enums;
 
 namespace Dev2.Data.TO
 {
-    // ReSharper disable InconsistentNaming
+    
     public class FormatNumberTO : IFormatNumberTO
-    // ReSharper restore InconsistentNaming
+    
 
     {
         #region Properties

@@ -27,7 +27,7 @@ namespace DummyNamespaceForTest
         }
         public string Name { get; set; }
 
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         public DummyClassForPluginTest DummyMethod()
         {
             return new DummyClassForPluginTest {Name = "test data"};

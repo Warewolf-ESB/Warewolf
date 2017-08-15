@@ -18,7 +18,7 @@ using Dev2.Services.Security;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-// ReSharper disable InconsistentNaming
+
 namespace Dev2.Tests.Runtime.WebServer.Controllers
 {
     [TestClass]

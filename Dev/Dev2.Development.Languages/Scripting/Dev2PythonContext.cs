@@ -15,7 +15,7 @@ using Dev2.Common.Interfaces.Scripting;
 using IronPython.Hosting;
 using Microsoft.Scripting;
 using Microsoft.Scripting.Hosting;
-// ReSharper disable NonLocalizedString
+
 
 namespace Dev2.Development.Languages.Scripting
 {

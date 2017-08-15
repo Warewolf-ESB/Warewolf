@@ -10,7 +10,7 @@
 
 using System.Collections.Generic;
 
-// ReSharper disable once CheckNamespace
+
 namespace Dev2.DataList.Contract
 {
     public class OutputTO {

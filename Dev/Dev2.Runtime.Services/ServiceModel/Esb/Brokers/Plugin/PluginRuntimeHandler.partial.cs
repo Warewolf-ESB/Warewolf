@@ -21,7 +21,7 @@ using Dev2.Data.Util;
 using Dev2.Runtime.ServiceModel.Data;
 using Newtonsoft.Json;
 using Unlimited.Framework.Converters.Graph;
-// ReSharper disable UnusedMember.Global
+
 
 namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
 {
@@ -33,7 +33,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
     {
         private readonly IAssemblyLoader _assemblyLoader;
 
-        // ReSharper disable once MemberCanBePrivate.Global
+        
         public PluginRuntimeHandler(IAssemblyLoader assemblyLoader)
         {
             _assemblyLoader = assemblyLoader;
@@ -166,7 +166,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             return null;
         }
 
-        // ReSharper disable once InconsistentNaming
+
         Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
         {
             string[] tokens = args.Name.Split(",".ToCharArray());
@@ -322,7 +322,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             object result = pluginResult;
             var method = methodToRun as MethodInfo;
             // When it returns a primitive or string and it is not XML or JSON, make it so ;)
-            // ReSharper disable once PossibleNullReferenceException
+            
             if ((method != null && method.ReturnType.IsPrimitive || method.ReturnType.FullName == "System.String") && !DataListUtil.IsXml(pluginResult.ToString()) && !DataListUtil.IsJson(pluginResult.ToString()))
             {
                 // add our special tags ;)
@@ -354,7 +354,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
 
                 return result;
             }
-            // ReSharper disable once RedundantCatchClause
+            
             catch (BadImageFormatException)
             {
                 throw;
@@ -375,7 +375,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                 var list = ListNamespacesWIthReturnTypes(assemblyLocation, assemblyName);
 
 
-                // ReSharper disable once LoopCanBeConvertedToQuery
+                
                 foreach (var keyVale in list)
                 {
                     result.Add(new NamespaceItem
@@ -389,7 +389,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
 
                 return result;
             }
-            // ReSharper disable once RedundantCatchClause
+            
             catch (BadImageFormatException)
             {
                 throw;
@@ -405,7 +405,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
         private List<Type> BuildTypeList(IEnumerable<IMethodParameter> parameters, Assembly assembly)
         {
             var typeList = new List<Type>();
-            // ReSharper disable once LoopCanBeConvertedToQuery
+            
             if (parameters != null)
                 foreach (var methodParameter in parameters)
                 {

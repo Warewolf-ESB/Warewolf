@@ -14,7 +14,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Tests.Activities.Validation
 {
     [TestClass]
-    // ReSharper disable InconsistentNaming
+    
     public class IsValidExpressionRuleTests
     {
         [TestMethod]

@@ -27,7 +27,7 @@
     </core:ActivityDesignerTemplate.Resources>
 
     <core:ActivityDesignerTemplate.RightButtons>
-        <!-- ReSharper disable UnusedMember.Global -->
+        
         <core:ActivityDesignerButton x:Name="DoneButton"
                                      Visibility="{Binding GenerateOutputsVisible, Converter={StaticResource BoolToVisibilityConverterNegative}}"
                                      Content="{Binding ButtonDisplayValue}"
@@ -35,7 +35,7 @@
                                      IsValidatedBefore="True"
                                      IsClosedAfter="True"
                                      Style="{StaticResource ActivityDesignerButtonStyle}" />
-        <!-- ReSharper restore UnusedMember.Global -->
+        
     </core:ActivityDesignerTemplate.RightButtons>
 
     <Grid x:Name="MainGrid" Margin="{StaticResource ElementBorder}">
@@ -69,7 +69,7 @@
 
             <Control Template="{StaticResource NewDotNetSelectionNamespaceGrid}"/>
 
-            <!-- ReSharper disable UnusedMember.Global -->
+            
             <Control x:Name="InputsControl" Grid.Row="1" Template="{StaticResource NewInputsGrid}"/>
 
             <Control x:Name="OutputsControl" Grid.Row="2" DataContext="{Binding OutputsRegion}" Template="{StaticResource NewOutputsGrid}"/>
@@ -80,7 +80,7 @@
               Visibility="{Binding OnErrorVisible}">
                 <errors:OnError />
             </Grid>
-            <!-- ReSharper restore UnusedMember.Global -->
+            
         </Grid>
 
         <Grid  Visibility="{Binding GenerateOutputsVisible, Converter={StaticResource BoolToVisibilityConverterPositive}}">

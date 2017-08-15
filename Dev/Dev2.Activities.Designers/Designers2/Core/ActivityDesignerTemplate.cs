@@ -41,9 +41,9 @@ namespace Dev2.Activities.Designers2.Core
             }
             set
             {
-                // ReSharper disable PossibleUnintendedReferenceComparison
+                
                 if(_dataGrid != value)
-                // ReSharper restore PossibleUnintendedReferenceComparison
+                
                 {
                     if(_dataGrid != null)
                     {

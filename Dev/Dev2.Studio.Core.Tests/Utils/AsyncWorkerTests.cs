@@ -18,7 +18,7 @@ using Moq;
 namespace Dev2.Core.Tests.Utils
 {
     [TestClass]
-    // ReSharper disable InconsistentNaming
+    
     public class AsyncWorkerTests
     {
         [TestMethod]

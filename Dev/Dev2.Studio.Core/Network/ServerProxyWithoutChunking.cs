@@ -45,10 +45,10 @@ using Microsoft.AspNet.SignalR.Client;
 using ServiceStack.Messaging.Rcon;
 using Warewolf.Resource.Errors;
 
-// ReSharper disable CheckNamespace
-// ReSharper disable MemberCanBePrivate.Global
-// ReSharper disable UnusedAutoPropertyAccessor.Global
-// ReSharper disable UnusedMethodReturnValue.Global
+
+
+
+
 
 namespace Dev2.Network
 {
@@ -689,9 +689,9 @@ namespace Dev2.Network
 
         #endregion
 
-        // ReSharper disable InconsistentNaming
+        
         public Guid ID { get; private set; }
-        // ReSharper restore InconsistentNaming
+
         public bool Equals(IEnvironmentConnection other)
         {
             if (other == null)

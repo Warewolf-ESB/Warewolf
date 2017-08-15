@@ -20,7 +20,7 @@ namespace Dev2.Infrastructure.Tests.SharedModels
     [TestClass]
     public class DbColumnTest
     {
-        // ReSharper disable InconsistentNaming
+        
 
         [TestMethod]
         [Owner("Travis Frisinger")]
@@ -617,6 +617,6 @@ namespace Dev2.Infrastructure.Tests.SharedModels
             StringAssert.Contains(result, "xml");
         }
 
-        // ReSharper restore InconsistentNaming
+
     }
 }

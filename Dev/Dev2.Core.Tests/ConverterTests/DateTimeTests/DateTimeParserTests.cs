@@ -15,7 +15,7 @@ using Dev2.Common;
 using Dev2.Common.DateAndTime;
 using Dev2.Common.Interfaces.Core.Convertors.DateAndTime;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Tests.ConverterTests.DateTimeTests
 {

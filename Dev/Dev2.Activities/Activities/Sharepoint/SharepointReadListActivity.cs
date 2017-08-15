@@ -19,8 +19,8 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Core;
 using Warewolf.Storage.Interfaces;
 using WarewolfParserInterop;
-// ReSharper disable MemberCanBePrivate.Global
-// ReSharper disable UnusedAutoPropertyAccessor.Global
+
+
 
 namespace Dev2.Activities.Sharepoint
 {

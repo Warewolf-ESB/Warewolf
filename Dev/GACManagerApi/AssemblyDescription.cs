@@ -3,10 +3,10 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using GACManagerApi.Fusion;
-// ReSharper disable NonLocalizedString
-// ReSharper disable MemberCanBePrivate.Global
-// ReSharper disable UnusedAutoPropertyAccessor.Global
-// ReSharper disable UnusedMember.Global
+
+
+
+
 
 namespace GACManagerApi
 {

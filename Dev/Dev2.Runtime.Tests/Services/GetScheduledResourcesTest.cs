@@ -66,7 +66,7 @@ namespace Dev2.Tests.Runtime.Services
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("Services_ScheduledResource_Get")]
         [TestMethod]
-// ReSharper disable InconsistentNaming
+
         public void GetScheduledResources_Execute_ReturnsScheduledResources()
 
         {
@@ -152,5 +152,5 @@ namespace Dev2.Tests.Runtime.Services
             return output;
         }
     }
-    // ReSharper restore InconsistentNaming
+    
 }

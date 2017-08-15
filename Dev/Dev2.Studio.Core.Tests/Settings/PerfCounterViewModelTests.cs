@@ -21,8 +21,8 @@ using Dev2.Studio.Interfaces;
 using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-// ReSharper disable InconsistentNaming
-// ReSharper disable ObjectCreationAsStatement
+
+
 
 namespace Dev2.Core.Tests.Settings
 {

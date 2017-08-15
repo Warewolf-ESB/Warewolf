@@ -35,7 +35,7 @@ namespace Dev2.Tests.Runtime.ESB.ComPlugin
     /// Summary description for ComPluginRuntimeHandlerTest
     /// </summary>
     [TestClass]
-    [SuppressMessage("ReSharper", "InconsistentNaming")]
+
     public class ComPluginRuntimeHandlerTest
     {
         public const string adodbConnectionClassId = "00000514-0000-0010-8000-00AA006D2EA4";
@@ -44,7 +44,7 @@ namespace Dev2.Tests.Runtime.ESB.ComPlugin
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary>
-        // ReSharper disable once UnusedMember.Global
+        
         public TestContext TestContext { get; set; }
 
         [ClassInitialize]

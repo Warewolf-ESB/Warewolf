@@ -9,7 +9,7 @@
 */
 
 using System;
-// ReSharper disable CheckNamespace
+
 namespace Unlimited.Applications.BusinessDesignStudio.Activities.Utilities
 {
     [AttributeUsage(AttributeTargets.Property)]

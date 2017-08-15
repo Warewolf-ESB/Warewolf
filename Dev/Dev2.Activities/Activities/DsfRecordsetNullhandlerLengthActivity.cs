@@ -26,9 +26,9 @@ using Warewolf.Core;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage.Interfaces;
 
-// ReSharper disable CheckNamespace
+
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
-// ReSharper restore CheckNamespace
+
 {
 
     [ToolDescriptorInfo("RecordSet-Length", "Length", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Recordset", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Recordset_Length")]
@@ -67,13 +67,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public bool TreatNullAsZero { get; set; }
 
-        // ReSharper disable RedundantOverridenMember
+        
         protected override void CacheMetadata(NativeActivityMetadata metadata)
         {
             base.CacheMetadata(metadata);
 
         }
-        // ReSharper restore RedundantOverridenMember
+        
 
         protected override void OnExecute(NativeActivityContext context)
         {

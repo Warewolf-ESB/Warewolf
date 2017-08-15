@@ -10,7 +10,7 @@
 
 using System.Diagnostics;
 
-// ReSharper disable once CheckNamespace
+
 namespace Dev2.Studio.Core.AppResources.Browsers
 {
     public class ExternalBrowserPopupController : BrowserPopupControllerAbstract

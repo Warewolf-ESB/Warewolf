@@ -49,7 +49,7 @@ namespace Dev2.Studio.Interfaces.Enums
         ComPluginSource,
         SharepointServerSource,
         Exchange,
-        // ReSharper disable once InconsistentNaming
+
         RabbitMQSource,
         WcfSource,
         ServiceTestsViewer

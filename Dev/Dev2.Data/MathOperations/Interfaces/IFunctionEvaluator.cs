@@ -8,7 +8,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-// ReSharper disable once CheckNamespace
+
 namespace Dev2.MathOperations
 {
 

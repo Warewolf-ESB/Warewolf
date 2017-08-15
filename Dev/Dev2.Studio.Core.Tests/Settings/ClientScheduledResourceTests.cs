@@ -22,7 +22,7 @@ using Dev2.Studio.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-// ReSharper disable InconsistentNaming
+
 namespace Dev2.Core.Tests.Settings
 {
     [TestClass]
@@ -166,11 +166,11 @@ namespace Dev2.Core.Tests.Settings
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            // ReSharper disable AssignNullToNotNullAttribute
-            // ReSharper disable ObjectCreationAsStatement
+            
+            
             new ClientScheduledResourceModel(null, () => { });
-            // ReSharper restore ObjectCreationAsStatement
-            // ReSharper restore AssignNullToNotNullAttribute
+            
+            
             //------------Assert Results-------------------------
         }
     }
@@ -179,7 +179,7 @@ namespace Dev2.Core.Tests.Settings
     {
         #region Implementation of IResourceHistory
 
-        // ReSharper disable UnusedAutoPropertyAccessor.Local
+        
         public string WorkflowOutput { get; private set; }
         public IList<IDebugState> DebugOutput { get; private set; }
         public IEventInfo TaskHistoryOutput { get; private set; }

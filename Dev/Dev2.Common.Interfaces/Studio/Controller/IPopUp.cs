@@ -9,14 +9,14 @@
 */
 
 
-// ReSharper disable CheckNamespace
+
 
 using System.Collections.Generic;
 using System.Windows;
 using Dev2.Common.Interfaces.PopupController;
 
 namespace Dev2.Common.Interfaces.Studio.Controller
-// ReSharper restore CheckNamespace
+
 {
     public interface IPopupController
     {

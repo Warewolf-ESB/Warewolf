@@ -48,9 +48,9 @@ namespace Dev2.Core.Tests.Network
             {
                 serverProxy.Connect(serverGuid);
             }
-            // ReSharper disable EmptyGeneralCatchClause
+            
             catch
-            // ReSharper restore EmptyGeneralCatchClause
+            
             {
 
             }
@@ -82,9 +82,9 @@ namespace Dev2.Core.Tests.Network
                 serverProxy.Connect(serverGuid);
 
             }
-            // ReSharper disable EmptyGeneralCatchClause
+            
             catch
-            // ReSharper restore EmptyGeneralCatchClause
+            
             {
 
 

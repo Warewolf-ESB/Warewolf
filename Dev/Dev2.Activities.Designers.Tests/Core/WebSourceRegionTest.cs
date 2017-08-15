@@ -9,7 +9,7 @@ using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.ToolBase;
 
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Activities.Designers.Tests.Core
 {
@@ -136,7 +136,7 @@ namespace Dev2.Activities.Designers.Tests.Core
             var s2 = new WebServiceSourceDefinition() { Id = Guid.NewGuid() };
             src.Setup(a => a.RetrieveSources()).Returns(new List<IWebServiceSource> { websrc, s2 });
             WebSourceRegion region = new WebSourceRegion(src.Object, ModelItemUtils.CreateModelItem(act));
-            // ReSharper disable once UseObjectOrCollectionInitializer
+            
             WebSourceRegion regionToRestore = new WebSourceRegion(src.Object, ModelItemUtils.CreateModelItem(act));
             regionToRestore.SelectedSource = s2;
 

@@ -197,15 +197,18 @@ namespace Dev2.Runtime.Security
             if (!result)
             {
                 var user = "NULL USER";
-                // ReSharper disable ConditionIsAlwaysTrueOrFalse
+                
 
                 if (request.User.Identity != null)
-                // ReSharper restore ConditionIsAlwaysTrueOrFalse
+                
                 {
                     user = request.User.Identity.Name;
                     DumpPermissionsOnError(request.User);
                 }
 
+                
+                Dev2Logger.Error("AUTH ERROR FOR USER : " + user);
+                
                 // ReSharper disable InvokeAsExtensionMethod
                 Dev2Logger.Error("AUTH ERROR FOR USER : " + user, "Warewolf Error");
                 // ReSharper restore InvokeAsExtensionMethod

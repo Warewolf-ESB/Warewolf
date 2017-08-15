@@ -16,7 +16,7 @@ using Dev2.Data.ServiceModel;
 using Dev2.Studio.Interfaces;
 using Warewolf.Resource.Errors;
 
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Studio.Core
 {
@@ -345,7 +345,7 @@ namespace Dev2.Studio.Core
                 throw new WarewolfSaveException(output.Message.ToString(), null);
         }
 
-        // ReSharper disable once InconsistentNaming
+
         public string TestRabbitMQServiceSource(IRabbitMQServiceSourceDefinition rabbitMqServiceSource)
         {
             var con = Connection;

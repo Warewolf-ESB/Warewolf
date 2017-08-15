@@ -12,7 +12,7 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using Dev2.Common;
-// ReSharper disable NonLocalizedString
+
 
 namespace Dev2.Providers.Logs
 {

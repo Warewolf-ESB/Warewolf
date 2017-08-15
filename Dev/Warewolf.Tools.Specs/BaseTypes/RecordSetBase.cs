@@ -63,7 +63,7 @@ namespace Warewolf.Tools.Specs.BaseTypes
             var dataListViewModel = new DataListViewModel();
             dataListViewModel.InitializeDataListViewModel(new ResourceModel(null));
             DataListSingleton.SetDataList(dataListViewModel);
-            // ReSharper disable NotAccessedVariable
+            
             int row = 0;
             dynamic variableList;
             scenarioContext.TryGetValue("variableList", out variableList);
@@ -121,9 +121,9 @@ namespace Warewolf.Tools.Specs.BaseTypes
                     }
                     DataListSingleton.ActiveDataList.WriteToResourceModel();
                 }
-                    // ReSharper disable EmptyGeneralCatchClause
+                    
                 catch
-                    // ReSharper restore EmptyGeneralCatchClause
+                    
                 {
                     
                 }
@@ -161,9 +161,9 @@ namespace Warewolf.Tools.Specs.BaseTypes
                         }
                     }
                 }
-                // ReSharper disable EmptyGeneralCatchClause
+                
                 catch
-                // ReSharper restore EmptyGeneralCatchClause
+                
                 {
 
                 }

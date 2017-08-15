@@ -23,7 +23,7 @@ namespace Dev2
 
         public static int EntiresCount => RegisterdTypes.Count;
 
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         public static void Clear()
         {
             RegisterdTypes.Clear();

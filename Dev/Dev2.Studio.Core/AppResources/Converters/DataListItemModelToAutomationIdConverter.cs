@@ -14,7 +14,7 @@ using System.Windows.Data;
 using Dev2.Studio.Core.Models.DataList;
 using Dev2.Studio.Interfaces.DataList;
 
-// ReSharper disable once CheckNamespace
+
 namespace Dev2.Studio.Core.AppResources.Converters
 {
     public class DataListItemModelToAutomationIdConverter : IValueConverter

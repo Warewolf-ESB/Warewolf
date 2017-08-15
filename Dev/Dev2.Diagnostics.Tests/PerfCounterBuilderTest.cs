@@ -6,8 +6,8 @@ using Dev2.Common.Interfaces.Monitoring;
 using Dev2.PerformanceCounters.Counters;
 using Dev2.PerformanceCounters.Management;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-// ReSharper disable RedundantAssignment
-// ReSharper disable InconsistentNaming
+
+
 
 namespace Dev2.Diagnostics.Test
 {
@@ -17,14 +17,14 @@ namespace Dev2.Diagnostics.Test
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("PerformanceCounterBuilder_CtorBuildCounters")]
-        // ReSharper disable once InconsistentNaming
+
         public void PerformanceCounterBuilder_CtorBuildCounters_Valid_ExpectNewCounters()
         {
             try
             {
                 PerformanceCounterCategory.Delete("Warewolf");
             }
-            // ReSharper disable once EmptyGeneralCatchClause
+            
             catch
             {
 
@@ -37,7 +37,7 @@ namespace Dev2.Diagnostics.Test
                 new WarewolfNumberOfAuthErrors(),
                 new WarewolfServicesNotFoundCounter()
             };
-            // ReSharper disable once ObjectCreationAsStatement
+            
             new WarewolfPerformanceCounterRegister(lst, new List<IResourcePerformanceCounter>());
             PerformanceCounterCategory cat = new PerformanceCounterCategory("Warewolf");
             var counters = cat.GetCounters();
@@ -55,14 +55,14 @@ namespace Dev2.Diagnostics.Test
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("PerformanceCounterBuilder_CtorBuildCounters")]
-        // ReSharper disable once InconsistentNaming
+
         public void PerformanceCounterBuilder_CtorBuildCounters_RebuildDoesNotReset_ExpectNewCounters()
         {
             try
             {
                 PerformanceCounterCategory.Delete("Warewolf");
             }
-            // ReSharper disable once EmptyGeneralCatchClause
+            
             catch
             {
 
@@ -103,7 +103,7 @@ namespace Dev2.Diagnostics.Test
             {
                 PerformanceCounterCategory.Delete("Warewolf");
             }
-            // ReSharper disable once EmptyGeneralCatchClause
+            
             catch
             {
 

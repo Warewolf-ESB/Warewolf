@@ -20,7 +20,7 @@ using Infragistics.Calculations.CalcManager;
 using Infragistics.Calculations.Engine;
 using Warewolf.Resource.Errors;
 
-// ReSharper disable CheckNamespace
+
 namespace Dev2.MathOperations
 {
     // PBI: 1214
@@ -61,9 +61,9 @@ namespace Dev2.MathOperations
             {
                 return _functions.AsQueryable().Where(expression).ToList();
             }
-            // ReSharper disable NotResolvedInText
+            
             throw new ArgumentNullException(ErrorResource.ExpressionCannotBeNull);
-            // ReSharper restore NotResolvedInText
+            
         }
 
         /// <summary>
@@ -120,9 +120,9 @@ namespace Dev2.MathOperations
             }
             else
             {
-                // ReSharper disable NotResolvedInText
+                
                 throw new ArgumentNullException(ErrorResource.CannotRemoveNullListOfFunctions);
-                // ReSharper restore NotResolvedInText
+                
             }
         }
 
@@ -138,9 +138,9 @@ namespace Dev2.MathOperations
             }
             else
             {
-                // ReSharper disable NotResolvedInText
+                
                 throw new ArgumentNullException(ErrorResource.FunctionCannotBeNull);
-                // ReSharper restore NotResolvedInText
+                
             }
         }
 
@@ -156,9 +156,9 @@ namespace Dev2.MathOperations
             }
             else
             {
-                // ReSharper disable NotResolvedInText
+                
                 throw new ArgumentNullException(ErrorResource.CannotSaveNullListOfFunctions);
-                // ReSharper restore NotResolvedInText
+                
             }
         }
         /// <summary>
@@ -173,16 +173,16 @@ namespace Dev2.MathOperations
             }
             else
             {
-                // ReSharper disable NotResolvedInText
+                
                 throw new ArgumentNullException(ErrorResource.FunctionCannotBeNull);
-                // ReSharper restore NotResolvedInText
+                
             }
             return "Saved";
         }
 
         public event EventHandler ItemAdded;
 
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         protected void OnItemAdded()
         {
             ItemAdded?.Invoke(this, new EventArgs());

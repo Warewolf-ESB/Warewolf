@@ -21,7 +21,7 @@ using System.Reflection;
 using System.Text;
 using Dev2.Development.Languages.Scripting;
 using Dev2.Interfaces;
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Tests.Activities.ActivityTests.Scripting
 {

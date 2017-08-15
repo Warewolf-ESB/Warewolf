@@ -23,7 +23,7 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
     /// Summary description for MixedActivityFindMissingStrategyTests
     /// </summary>
     [TestClass]
-    // ReSharper disable InconsistentNaming
+    
     public class MixedActivityFindMissingStrategyTests
     {
         /// <summary>

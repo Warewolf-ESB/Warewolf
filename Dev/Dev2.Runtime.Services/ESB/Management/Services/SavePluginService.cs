@@ -26,11 +26,11 @@ using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Workspaces;
-// ReSharper disable MemberCanBePrivate.Global
+
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    [SuppressMessage("ReSharper", "UnusedMember.Global")]
+
     public class SavePluginService : IEsbManagementEndpoint
     {
         IExplorerServerResourceRepository _serverExplorerRepository;
@@ -59,8 +59,8 @@ namespace Dev2.Runtime.ESB.Management.Services
                 values.TryGetValue("PluginService", out resourceDefinition);
 
                 IPluginService serviceDef = serializer.Deserialize<IPluginService>(resourceDefinition);
-                // ReSharper disable MaximumChainedReferences
-                // ReSharper restore MaximumChainedReferences
+                
+                
                 var source = ResourceCatalogue.GetResource<PluginSource>(GlobalConstants.ServerWorkspaceID, serviceDef.Source.Id);
                 var output = new List<MethodOutput>(serviceDef.OutputMappings.Select(a => new MethodOutput(a.MappedFrom, a.MappedTo, "", false, a.RecordSetName, false, "", false, "", false)));
                 var recset = new RecordsetList();

@@ -4,8 +4,8 @@ using System.ComponentModel;
 using Dev2.Runtime.ServiceModel.Data;
 using Newtonsoft.Json;
 
-// ReSharper disable UnusedMemberInSuper.Global
-// ReSharper disable UnusedMember.Global
+
+
 
 namespace Dev2.Common.Interfaces
 {

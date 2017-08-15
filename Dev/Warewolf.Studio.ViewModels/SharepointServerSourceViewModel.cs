@@ -25,10 +25,10 @@ using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Interfaces;
 using Microsoft.Practices.Prism.PubSubEvents;
-// ReSharper disable MemberCanBePrivate.Global
-// ReSharper disable VirtualMemberCallInContructor
-// ReSharper disable UnusedMember.Global
-// ReSharper disable UnusedAutoPropertyAccessor.Global
+
+
+
+
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -306,7 +306,7 @@ namespace Warewolf.Studio.ViewModels
                     IsSharepointOnline = IsSharepointOnline,
                     Id = _sharePointServiceSource?.Id ?? Guid.NewGuid()
                 };
-            // ReSharper disable once RedundantIfElseBlock
+            
             else
             {
                 _sharePointServiceSource.AuthenticationType = AuthenticationType;
@@ -348,7 +348,7 @@ namespace Warewolf.Studio.ViewModels
                 {
                     return _requestServiceNameViewModel.Result;
                 }
-                // ReSharper disable once RedundantIfElseBlock
+                
                 else
                 {
                     throw _requestServiceNameViewModel.Exception;

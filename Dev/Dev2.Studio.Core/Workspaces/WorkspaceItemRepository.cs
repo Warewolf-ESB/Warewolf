@@ -20,8 +20,8 @@ using Dev2.Studio.Core;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.Enums;
 
-// ReSharper disable CheckNamespace
-// ReSharper disable MemberCanBePrivate.Global
+
+
 
 namespace Dev2.Workspaces
 {
@@ -122,9 +122,9 @@ namespace Dev2.Workspaces
                     var xml = XElement.Parse(File.ReadAllText(RepositoryPath));
                     result.AddRange(xml.Elements().Select(x => new WorkspaceItem(x)));
                 }
-                // ReSharper disable EmptyGeneralCatchClause
+                
                 catch
-                // ReSharper restore EmptyGeneralCatchClause
+                
                 {
                     // corrupt so ignore
                 }

@@ -27,7 +27,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             var action = xml.Descendants("Action").FirstOrDefault();
             if (action == null)
             {
-                // ReSharper disable once PossibleNullReferenceException
+                
                 if (xml.HasAttributes && xml.Attribute("Type").Value == "WcfService")
                 {
                     action = xml;

@@ -40,7 +40,7 @@ namespace Dev2.Studio.Interfaces
         /// <exception cref="System.ArgumentNullException">defaultEnvironment</exception>
         IList<IServer> LookupEnvironments(IServer defaultEnvironment, IList<string> environmentGuids = null);
 
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         void Clear();
 
         ICollection<IServer> ReloadAllServers();

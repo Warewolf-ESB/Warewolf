@@ -14,9 +14,9 @@ using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Interfaces.Versioning;
 using Dev2.Providers.Errors;
 
-// ReSharper disable CheckNamespace
+
 namespace Dev2.Data.ServiceModel
-// ReSharper restore CheckNamespace
+
 {
 
     /// <summary>
@@ -27,9 +27,9 @@ namespace Dev2.Data.ServiceModel
         /// <summary>
         /// The resource ID that uniquely identifies the resource.
         /// </summary>
-// ReSharper disable InconsistentNaming
+
         public Guid ResourceID { get; set; }
-// ReSharper restore InconsistentNaming
+
 
         /// <summary>
         /// The display name of the resource.

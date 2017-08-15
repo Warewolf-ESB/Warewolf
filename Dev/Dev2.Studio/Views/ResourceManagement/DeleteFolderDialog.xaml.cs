@@ -12,7 +12,7 @@ using Dev2.Studio.Core;
 using System;
 using System.Windows;
 
-// ReSharper disable once CheckNamespace
+
 namespace Dev2.Studio.Views.ResourceManagement
 {
     /// <summary>

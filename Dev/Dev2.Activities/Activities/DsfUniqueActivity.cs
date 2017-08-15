@@ -65,7 +65,7 @@ namespace Dev2.Activities
 
         #region Overrides of DsfNativeActivity<string>
 
-        // ReSharper disable RedundantOverridenMember
+        
         protected override void CacheMetadata(NativeActivityMetadata metadata)
         {
             base.CacheMetadata(metadata);

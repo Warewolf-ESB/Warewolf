@@ -2,7 +2,7 @@
 using System.Globalization;
 using Dev2.CustomControls.Converters;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.CustomControls.Tests.Converters
 {

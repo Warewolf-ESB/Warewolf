@@ -22,9 +22,9 @@ namespace Dev2.Tests.Activities.ActivityTests
         [Owner("Travis Frisinger")]
         [TestCategory("SqlBulkCopyWrapper_WriteToServer")]
         [ExpectedException(typeof(ArgumentException))]
-        // ReSharper disable InconsistentNaming
+        
         public void SqlBulkCopyWrapper_WriteToServer_WhenNullBulkCopyObject_ExpectException()
-        // ReSharper restore InconsistentNaming
+
         {
             //------------Setup for test--------------------------
             var sqlBulkCopyWrapper = new SqlBulkCopyWrapper(null);

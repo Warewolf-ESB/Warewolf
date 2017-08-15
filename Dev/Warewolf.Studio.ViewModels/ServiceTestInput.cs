@@ -11,7 +11,7 @@ namespace Warewolf.Studio.ViewModels
         private string _value;
         private bool _emptyIsNull;
 
-        // ReSharper disable once UnusedMember.Global
+        
         public ServiceTestInput()
         {
             

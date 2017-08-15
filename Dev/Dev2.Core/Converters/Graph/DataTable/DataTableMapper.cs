@@ -31,9 +31,9 @@ namespace Dev2.Converters.Graph.DataTable
 
                 var result = new List<IPath>();
 
-                // ReSharper disable LoopCanBeConvertedToQuery
+                
                 foreach (DataColumn col in cols)
-                    // ReSharper restore LoopCanBeConvertedToQuery
+                    
                 {
                     string colName = col.ColumnName;
                     result.Add(new DataTablePath(tblName, colName));

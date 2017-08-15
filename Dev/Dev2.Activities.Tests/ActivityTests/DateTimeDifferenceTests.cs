@@ -17,15 +17,15 @@ using Dev2.Tests.Activities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
-// ReSharper disable CheckNamespace
+
 namespace ActivityUnitTests.ActivityTests
-// ReSharper restore CheckNamespace
+
 {
     /// <summary>
     /// Summary description for DateTimeDifferenceTests
     /// </summary>
     [TestClass]
-    // ReSharper disable InconsistentNaming
+    
     public class DateTimeDifferenceTests : BaseActivityUnitTest
     {
         /// <summary>
@@ -110,9 +110,9 @@ namespace ActivityUnitTests.ActivityTests
         [TestMethod]
         [TestCategory("DateTimeDifferenceUnitTest")]
         [Owner("Massimo Guerrera")]
-        // ReSharper disable InconsistentNaming
+        
         public void DateTimeDifference_DateTimeDifferenceUnitTest_ExecuteWithBlankInput_DateTimeNowIsUsed()
-        // ReSharper restore InconsistentNaming
+
         {
             const string currDL = @"<root><MyTestResult></MyTestResult></root>";
             SetupArguments(currDL

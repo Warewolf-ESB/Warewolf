@@ -44,9 +44,9 @@ namespace Dev2.Activities.Designers2.Core
         readonly AdornerControl _errorsAdorner;
         bool _isDisposed;
         DependencyPropertyDescriptor _zIndexProperty;
-        // ReSharper disable InconsistentNaming
+        
         protected TViewModel _dataContext;
-        // ReSharper restore InconsistentNaming
+
         bool _isSetFocusActionSet;
         MenuItem _showCollapseLargeView;
 

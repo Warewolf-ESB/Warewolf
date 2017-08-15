@@ -13,7 +13,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Core;
 
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Tests.Activities.ActivityTests.Scripting
 {
@@ -74,7 +74,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
             //---------------Execute Test ----------------------
             var toolDescriptorInfo = typeof(DsfJavascriptActivity).GetCustomAttributes(typeof(ToolDescriptorInfo), false).Single() as ToolDescriptorInfo;
             //---------------Test Result -----------------------
-            // ReSharper disable once PossibleNullReferenceException
+            
             Assert.AreEqual("Scripting", toolDescriptorInfo.Category );
             Assert.AreEqual("javascript script JSON JS", toolDescriptorInfo.FilterTag );
             Assert.AreEqual("Scripting-JavaScript", toolDescriptorInfo.Icon );

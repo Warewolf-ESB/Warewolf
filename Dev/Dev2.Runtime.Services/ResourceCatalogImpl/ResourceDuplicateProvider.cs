@@ -14,9 +14,9 @@ using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
 using ServiceStack.Common;
-// ReSharper disable ParameterTypeCanBeEnumerable.Local
-// ReSharper disable MemberCanBePrivate.Global
-// ReSharper disable UnusedMember.Global
+
+
+
 
 namespace Dev2.Runtime.ResourceCatalogImpl
 {
@@ -229,7 +229,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
 
                 var contents = _resourceCatalog.GetResourceContents(GlobalConstants.ServerWorkspaceID, updatedResource.ResourceID);
 
-                // ReSharper disable once LoopCanBeConvertedToQuery
+                
                 foreach (var oldToNewUpdate in oldToNewUpdates)
                 {
                     contents = contents.Replace(oldToNewUpdate.Key.ToString().ToLowerInvariant(), oldToNewUpdate.Value.ToString().ToLowerInvariant());

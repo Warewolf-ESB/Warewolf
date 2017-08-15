@@ -31,9 +31,9 @@ namespace Dev2.Tests.ConverterTests.GraphTests
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("InterrogatorFactory_CreateInteregator")]
-        // ReSharper disable InconsistentNaming
+        
         public void DataTableInterrogator_CreateMapper_WhenDataTable_ExpectDataTableInterrogator()
-        // ReSharper restore InconsistentNaming
+
         {
             //------------Setup for test--------------------------
             DataTable obj = new DataTable();

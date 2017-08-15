@@ -35,7 +35,7 @@ using Warewolf.Core;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage.Interfaces;
 
-// ReSharper disable ConvertToAutoProperty
+
 
 namespace Dev2.Activities
 {
@@ -58,9 +58,9 @@ namespace Dev2.Activities
         /// </summary>  
         [Inputs("CommandFileName")]
         [FindMissing]
-        // ReSharper disable ConvertToAutoProperty
+        
         public string CommandFileName
-        // ReSharper restore ConvertToAutoProperty
+        
         {
             get
             {
@@ -77,9 +77,9 @@ namespace Dev2.Activities
 
         [Outputs("CommandResult")]
         [FindMissing]
-        // ReSharper disable ConvertToAutoProperty
+        
         public string CommandResult
-        // ReSharper restore ConvertToAutoProperty
+        
         {
             get
             {
@@ -227,9 +227,9 @@ namespace Dev2.Activities
 
                 if (processStartInfo == null)
                 {
-                    // ReSharper disable NotResolvedInText
+                    
                     throw new ArgumentNullException("processStartInfo");
-                    // ReSharper restore NotResolvedInText
+                    
                 }
 
                 _process.StartInfo = processStartInfo;

@@ -13,9 +13,9 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 
-// ReSharper disable CheckNamespace
+
 namespace Dev2.Common
-// ReSharper restore CheckNamespace
+
 {
     /// <summary>
     /// Environment Variables to be used in the Server

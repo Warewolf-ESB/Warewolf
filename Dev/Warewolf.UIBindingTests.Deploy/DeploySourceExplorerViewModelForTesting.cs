@@ -46,7 +46,7 @@ namespace Warewolf.UIBindingTests.Deploy
         public DeploySourceExplorerViewModelForTesting(IShellViewModel shellViewModel, Microsoft.Practices.Prism.PubSubEvents.IEventAggregator aggregator, IDeployStatsViewerViewModel statsArea)
             : base(shellViewModel, aggregator, statsArea)
         {
-            // ReSharper disable once VirtualMemberCallInContructor
+            
             SelectedItems = new List<IExplorerTreeItem>();
         }
 

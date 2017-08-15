@@ -3,7 +3,7 @@ using System.Xml.Linq;
 using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-// ReSharper disable CheckNamespace
+
 namespace Dev2.Tests.Runtime.ServiceModel
 {
     [TestClass]

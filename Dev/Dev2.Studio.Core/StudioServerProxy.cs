@@ -13,7 +13,7 @@ using Dev2.Common.Interfaces.Versioning;
 using Dev2.Controller;
 using Dev2.Studio.Interfaces;
 
-// ReSharper disable LoopCanBeConvertedToQuery
+
 
 namespace Dev2.Studio.Core
 {

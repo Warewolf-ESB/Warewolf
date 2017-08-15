@@ -19,10 +19,10 @@ using Dev2.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Warewolf.Core;
-// ReSharper disable UnusedVariable
-// ReSharper disable UseObjectOrCollectionInitializer
 
-// ReSharper disable InconsistentNaming
+
+
+
 
 namespace Dev2.Activities.Designers.Tests.SqlServer
 {

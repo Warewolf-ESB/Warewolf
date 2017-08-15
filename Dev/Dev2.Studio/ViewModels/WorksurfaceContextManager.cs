@@ -44,9 +44,9 @@ using Microsoft.Practices.Prism.Mvvm;
 using ServiceStack.Net30.Collections.Concurrent;
 using Warewolf.Studio.ViewModels;
 using Warewolf.Studio.Views;
-// ReSharper disable InconsistentNaming
-// ReSharper disable NonLocalizedString
-// ReSharper disable CheckNamespace
+
+
+
 
 namespace Dev2.Studio.ViewModels
 {
@@ -435,7 +435,7 @@ namespace Dev2.Studio.ViewModels
             Task<IRequestServiceNameViewModel> saveViewModel = GetSaveViewModel(resourcePath, Warewolf.Studio.Resources.Languages.Core.SqlServerSourceNewHeaderLabel);
             var key = (WorkSurfaceKey)WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.SqlServerSource);
             key.ServerID = ActiveServer.ServerID;
-            // ReSharper disable once PossibleInvalidOperationException
+            
             var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, new SourceViewModel<IDbSource>(_shellViewModel.EventPublisher, new ManageSqlServerSourceViewModel(new ManageDatabaseSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveServer.Name), saveViewModel, new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), _shellViewModel.AsyncWorker)
             {
                 SelectedGuid = key.ResourceID.Value
@@ -449,7 +449,7 @@ namespace Dev2.Studio.ViewModels
             Task<IRequestServiceNameViewModel> saveViewModel = GetSaveViewModel(resourcePath, Warewolf.Studio.Resources.Languages.Core.MySqlSourceNewHeaderLabel);
             var key = (WorkSurfaceKey)WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.MySqlSource);
             key.ServerID = ActiveServer.ServerID;
-            // ReSharper disable once PossibleInvalidOperationException
+            
             var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, new SourceViewModel<IDbSource>(_shellViewModel.EventPublisher, new ManageMySqlSourceViewModel(new ManageDatabaseSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveServer.Name), saveViewModel, new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), _shellViewModel.AsyncWorker)
             {
                 SelectedGuid = key.ResourceID.Value
@@ -461,7 +461,7 @@ namespace Dev2.Studio.ViewModels
             Task<IRequestServiceNameViewModel> saveViewModel = GetSaveViewModel(resourcePath, Warewolf.Studio.Resources.Languages.Core.PostgreSqlSourceNewHeaderLabel);
             var key = (WorkSurfaceKey)WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.PostgreSqlSource);
             key.ServerID = ActiveServer.ServerID;
-            // ReSharper disable once PossibleInvalidOperationException
+            
             var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key,
                 new SourceViewModel<IDbSource>(_shellViewModel.EventPublisher, new ManagePostgreSqlSourceViewModel(
                                                 new ManageDatabaseSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveServer.Name)
@@ -479,7 +479,7 @@ namespace Dev2.Studio.ViewModels
             Task<IRequestServiceNameViewModel> saveViewModel = GetSaveViewModel(resourcePath, Warewolf.Studio.Resources.Languages.Core.OracleSourceNewHeaderLabel);
             var key = (WorkSurfaceKey)WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.OracleSource);
             key.ServerID = ActiveServer.ServerID;
-            // ReSharper disable once PossibleInvalidOperationException
+            
             var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, new SourceViewModel<IDbSource>(_shellViewModel.EventPublisher, new ManageOracleSourceViewModel(new ManageDatabaseSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveServer.Name)
                 , saveViewModel
                 , new Microsoft.Practices.Prism.PubSubEvents.EventAggregator()
@@ -494,7 +494,7 @@ namespace Dev2.Studio.ViewModels
             Task<IRequestServiceNameViewModel> saveViewModel = GetSaveViewModel(resourcePath, Warewolf.Studio.Resources.Languages.Core.OdbcSourceNewHeaderLabel);
             var key = (WorkSurfaceKey)WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.OdbcSource);
             key.ServerID = ActiveServer.ServerID;
-            // ReSharper disable once PossibleInvalidOperationException
+            
             var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, new SourceViewModel<IDbSource>(_shellViewModel.EventPublisher, new ManageOdbcSourceViewModel(new ManageDatabaseSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveServer.Name)
                 , saveViewModel
                 , new Microsoft.Practices.Prism.PubSubEvents.EventAggregator()
@@ -514,7 +514,7 @@ namespace Dev2.Studio.ViewModels
             Task<IRequestServiceNameViewModel> saveViewModel = GetSaveViewModel(resourcePath, Warewolf.Studio.Resources.Languages.Core.WebserviceNewHeaderLabel);
             var key = (WorkSurfaceKey)WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.WebSource);
             key.ServerID = ActiveServer.ServerID;
-            // ReSharper disable once PossibleInvalidOperationException
+            
             var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, new SourceViewModel<IWebServiceSource>(_shellViewModel.EventPublisher, new ManageWebserviceSourceViewModel(new ManageWebServiceSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveServer.Name), saveViewModel, new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), _shellViewModel.AsyncWorker, new ExternalProcessExecutor()) { SelectedGuid = key.ResourceID.Value }, _shellViewModel.PopupProvider, new ManageWebserviceSourceControl(), ActiveServer));
             AddAndActivateWorkSurface(workSurfaceContextViewModel);
         }
@@ -524,7 +524,7 @@ namespace Dev2.Studio.ViewModels
             Task<IRequestServiceNameViewModel> saveViewModel = GetSaveViewModel(resourcePath, Warewolf.Studio.Resources.Languages.Core.PluginSourceNewHeaderLabel);
             var key = (WorkSurfaceKey)WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.PluginSource);
             key.ServerID = ActiveServer.ServerID;
-            // ReSharper disable once PossibleInvalidOperationException
+            
             var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, new SourceViewModel<IPluginSource>(_shellViewModel.EventPublisher, new ManagePluginSourceViewModel(new ManagePluginSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveServer.Name),
                 saveViewModel, new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), _shellViewModel.AsyncWorker)
             { SelectedGuid = key.ResourceID.Value }, _shellViewModel.PopupProvider, new ManagePluginSourceControl(), ActiveServer));
@@ -537,7 +537,7 @@ namespace Dev2.Studio.ViewModels
             Task<IRequestServiceNameViewModel> saveViewModel = GetSaveViewModel(resourcePath, Warewolf.Studio.Resources.Languages.Core.ComPluginSourceNewHeaderLabel);
             var key = (WorkSurfaceKey)WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.ComPluginSource);
             key.ServerID = ActiveServer.ServerID;
-            // ReSharper disable once PossibleInvalidOperationException
+            
             var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, new SourceViewModel<IComPluginSource>(_shellViewModel.EventPublisher, new ManageComPluginSourceViewModel(new ManageComPluginSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveServer.Name),
                 saveViewModel, new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), _shellViewModel.AsyncWorker)
             { SelectedGuid = key.ResourceID.Value }, _shellViewModel.PopupProvider, new ManageComPluginSourceControl(), ActiveServer));

@@ -243,10 +243,10 @@ namespace Dev2.TO
 
         void RaiseCanAddRemoveChanged()
         {
-            // ReSharper disable ExplicitCallerInfoArgument
+            
             OnPropertyChanged("CanRemove");
             OnPropertyChanged("CanAdd");
-            // ReSharper restore ExplicitCallerInfoArgument
+            
         }
 
         public bool IsSearchCriteriaEnabled

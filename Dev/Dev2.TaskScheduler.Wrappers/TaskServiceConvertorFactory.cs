@@ -118,10 +118,10 @@ namespace Dev2.TaskScheduler.Wrappers
 
                     break;
                 case TaskTriggerType.Daily:
-// ReSharper disable PossibleNullReferenceException
+
                     trigger = new Dev2DailyTrigger(this,
                         new DailyTrigger((serialisedTrigger as DailyTrigger).DaysInterval));
-// ReSharper restore PossibleNullReferenceException
+
 
                     break;
                 case TaskTriggerType.Event:
@@ -150,18 +150,18 @@ namespace Dev2.TaskScheduler.Wrappers
                     break;
                 case TaskTriggerType.Monthly:
                     var a = serialisedTrigger as MonthlyTrigger;
-// ReSharper disable PossibleNullReferenceException
+
                     trigger = new Dev2MonthlyTrigger(this, new MonthlyTrigger(a.DaysOfMonth.First(), a.MonthsOfYear));
-// ReSharper restore PossibleNullReferenceException
+
 
                     break;
                 case TaskTriggerType.MonthlyDOW:
                     var b = serialisedTrigger as MonthlyDOWTrigger;
                     trigger = new Dev2MonthlyDowTrigger(this,
-// ReSharper disable PossibleNullReferenceException
+
                         new MonthlyDOWTrigger(b.DaysOfWeek, b.MonthsOfYear,
                             b.WeeksOfMonth));
-// ReSharper restore PossibleNullReferenceException
+
 
                     break;
                 case TaskTriggerType.Registration:
@@ -182,16 +182,16 @@ namespace Dev2.TaskScheduler.Wrappers
                     break;
                 case TaskTriggerType.Time:
                     var y = serialisedTrigger as TimeTrigger;
-// ReSharper disable PossibleNullReferenceException
+
                     trigger = new Dev2TimeTrigger(this, new TimeTrigger(y.StartBoundary));
-// ReSharper restore PossibleNullReferenceException
+
 
                     break;
                 case TaskTriggerType.Weekly:
                     var z = serialisedTrigger as WeeklyTrigger;
-// ReSharper disable PossibleNullReferenceException
+
                     trigger = new Dev2WeeklyTrigger(this, new WeeklyTrigger(z.DaysOfWeek, z.WeeksInterval));
-// ReSharper restore PossibleNullReferenceException
+
 
                     break;
                 default:

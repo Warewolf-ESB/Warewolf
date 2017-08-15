@@ -22,9 +22,9 @@ namespace Dev2.Infrastructure.Tests.Providers.Events
         [Description("GetEvent must add a new subject when invoked for the first time for the type.")]
         [TestCategory("UnitTest")]
         [Owner("Trevor Williams-Ros")]
-        // ReSharper disable InconsistentNaming
+        
         public void EventPublisherGetEvent_UnitTest_FirstTimeForType_New()
-        // ReSharper restore InconsistentNaming
+
         {
             var publisher = new EventPublisher();
             Assert.AreEqual(0, publisher.Count);
@@ -39,9 +39,9 @@ namespace Dev2.Infrastructure.Tests.Providers.Events
         [Description("GetEvent must return an existing subject when invoked for the second time for the type.")]
         [TestCategory("UnitTest")]
         [Owner("Trevor Williams-Ros")]
-        // ReSharper disable InconsistentNaming
+        
         public void EventPublisherGetEvent_UnitTest_SecondTimeForType_Existing()
-        // ReSharper restore InconsistentNaming
+
         {
             var publisher = new EventPublisher();
             Assert.AreEqual(0, publisher.Count);
@@ -61,9 +61,9 @@ namespace Dev2.Infrastructure.Tests.Providers.Events
         [Description("Publish must find the subject and invoke OnNext on it for a type that has been previously requested by GetEvent.")]
         [TestCategory("UnitTest")]
         [Owner("Trevor Williams-Ros")]
-        // ReSharper disable InconsistentNaming
+        
         public void EventPublisherPublish_UnitTest_RegisteredType_FindsSubjectAndInvokesOnNext()
-        // ReSharper restore InconsistentNaming
+
         {
             var memo = new DesignValidationMemo();
 
@@ -78,9 +78,9 @@ namespace Dev2.Infrastructure.Tests.Providers.Events
         [Description("Publish must find the subject and invoke OnNext on it for an object whose type has been previously requested by GetEvent.")]
         [TestCategory("UnitTest")]
         [Owner("Trevor Williams-Ros")]
-        // ReSharper disable InconsistentNaming
+        
         public void EventPublisherPublish_UnitTest_RegisteredObjectType_FindsSubjectAndInvokesOnNext()
-        // ReSharper restore InconsistentNaming
+
         {
             var memo = new DesignValidationMemo() as object;
 
@@ -96,9 +96,9 @@ namespace Dev2.Infrastructure.Tests.Providers.Events
         [Description("Publish must not find the subject and not invoke OnNext for a type that has not been previously requested by GetEvent.")]
         [TestCategory("UnitTest")]
         [Owner("Trevor Williams-Ros")]
-        // ReSharper disable InconsistentNaming
+        
         public void EventPublisherPublish_UnitTest_UnregisteredType_DoesNotFindSubject()
-        // ReSharper restore InconsistentNaming
+
         {
             var memo = new Memo();
 
@@ -112,9 +112,9 @@ namespace Dev2.Infrastructure.Tests.Providers.Events
         [TestMethod]
         [TestCategory("EventPublisherPublish_RemoveEvent")]
         [Owner("Trevor Williams-Ros")]
-        // ReSharper disable InconsistentNaming
+        
         public void EventPublisherPublish_RemoveEvent_RegisteredObjectType_Removed()
-        // ReSharper restore InconsistentNaming
+
         {
             var publisher = new EventPublisher();
             var subscription = publisher.GetEvent<DesignValidationMemo>();
@@ -128,9 +128,9 @@ namespace Dev2.Infrastructure.Tests.Providers.Events
         [TestMethod]
         [TestCategory("EventPublisherPublish_RemoveEvent")]
         [Owner("Trevor Williams-Ros")]
-        // ReSharper disable InconsistentNaming
+        
         public void EventPublisherPublish_RemoveEvent_UnregisteredObjectType_NotRemoved()
-        // ReSharper restore InconsistentNaming
+
         {
             var publisher = new EventPublisher();
             var subscription = publisher.GetEvent<DesignValidationMemo>();

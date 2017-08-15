@@ -28,7 +28,7 @@ namespace Dev2.Tests.Runtime.Util
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("FindResourceHelper_SerializeResourceForStudio")]
-// ReSharper disable InconsistentNaming
+
         public void FindResourceHelper_SerializeResourceForStudio_WhenNewResource_ExpectValidResource()
 
         {
@@ -122,5 +122,5 @@ namespace Dev2.Tests.Runtime.Util
         }
 
     }
-    // ReSharper restore InconsistentNaming
+    
 }

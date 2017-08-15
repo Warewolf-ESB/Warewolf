@@ -20,7 +20,7 @@ using Warewolf.Core;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    [SuppressMessage("ReSharper", "UnusedMember.Global")]
+
     public class FetchComPluginActions : IEsbManagementEndpoint
     {
         public string HandlesType()
@@ -35,7 +35,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 var pluginSource = serializer.Deserialize<ComPluginSourceDefinition>(values["source"]);
                 var ns = serializer.Deserialize<INamespaceItem>(values["namespace"]);
-                // ReSharper disable MaximumChainedReferences
+                
                 ComPluginServices services = new ComPluginServices();
                 var src = ResourceCatalog.Instance.GetResource<ComPluginSource>(GlobalConstants.ServerWorkspaceID, pluginSource.Id);
                 //src.AssemblyName = ns.FullName;
@@ -88,7 +88,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             try
             {
                 var cleanTypeName = Type.GetType(typeName);
-                // ReSharper disable once PossibleNullReferenceException
+                
                 return $"{name} ({cleanTypeName.Name})";
             }
             catch (Exception)

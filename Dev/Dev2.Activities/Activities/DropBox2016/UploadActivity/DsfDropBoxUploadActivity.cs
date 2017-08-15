@@ -19,7 +19,7 @@ using Warewolf.Core;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage.Interfaces;
 
-// ReSharper disable MemberCanBePrivate.Global
+
 
 namespace Dev2.Activities.DropBox2016.UploadActivity
 {
@@ -36,7 +36,7 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
 
         public DsfDropBoxUploadActivity()
         {
-            // ReSharper disable once VirtualMemberCallInContructor
+            
             DisplayName = "Upload to Dropbox";
             OverWriteMode = true;
         }
@@ -47,15 +47,15 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
             _clientWrapper = clientWrapper;
         }
 
-        // ReSharper disable once UnusedAutoPropertyAccessor.Global
+        
         public OauthSource SelectedSource { get; set; }
 
-        // ReSharper disable once UnusedAutoPropertyAccessor.Global
+        
         [Inputs("Local File Path")]
         [FindMissing]
         public string FromPath { get; set; }
 
-        // ReSharper disable once UnusedAutoPropertyAccessor.Global
+        
         [Inputs("Path in the user's Dropbox")]
         [FindMissing]
         public string ToPath { get; set; }
@@ -86,7 +86,7 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
             }
         }
 
-        // ReSharper disable once MemberCanBeProtected.Global
+        
 
         protected virtual DropboxClient GetClient()
         {

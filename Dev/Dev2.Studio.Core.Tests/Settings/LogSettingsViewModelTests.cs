@@ -7,7 +7,7 @@ using Dev2.Studio.Interfaces;
 using log4net.Config;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Core.Tests.Settings
 {

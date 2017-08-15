@@ -14,7 +14,7 @@ using Dev2.Common.Interfaces.ToolBase.WCF;
 using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.Practices.Prism;
 
-// ReSharper disable ExplicitCallerInfoArgument
+
 
 namespace Dev2.Activities.Designers2.Core.InputRegion
 {
@@ -23,11 +23,11 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
         private readonly ModelItem _modelItem;
         private readonly IActionToolRegion<IWcfAction> _action;
         bool _isEnabled;
-        // ReSharper disable once NotAccessedField.Local
+        
         private ICollection<IServiceInput> _inputs;
         private bool _isInputsEmptyRows;
 
-        // ReSharper disable once UnusedMember.Global
+        
         public WcfInputRegion()
         {
             ToolRegionName = "WcfInputRegion";
@@ -51,7 +51,7 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
                 UpdateOnActionSelection();
             IsEnabled = action?.SelectedAction != null;
         }
-        // ReSharper disable once MemberCanBePrivate.Global
+        
         public WcfInputRegion(IActionInputDatatalistMapper datatalistMapper)
         {
             _datatalistMapper = datatalistMapper;
@@ -100,9 +100,9 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
             {
                 Errors.Clear();
 
-                // ReSharper disable once ExplicitCallerInfoArgument
+                
                 UpdateOnActionSelection();
-                // ReSharper disable once ExplicitCallerInfoArgument
+                
                 OnPropertyChanged(@"Inputs");
                 OnPropertyChanged(@"IsEnabled");
             }

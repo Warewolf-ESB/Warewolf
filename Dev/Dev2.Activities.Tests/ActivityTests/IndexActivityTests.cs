@@ -22,7 +22,7 @@ namespace Dev2.Tests.Activities.ActivityTests
     /// Summary description for DateTimeDifferenceTests
     /// </summary>
     [TestClass]
-    // ReSharper disable InconsistentNaming
+    
     public class IndexActivityTests : BaseActivityUnitTest
     {
         /// <summary>

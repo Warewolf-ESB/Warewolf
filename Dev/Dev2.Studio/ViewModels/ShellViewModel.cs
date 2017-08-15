@@ -64,11 +64,11 @@ using Dev2.Data.ServiceModel;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.Enums;
 
-// ReSharper disable CatchAllClause
-// ReSharper disable InconsistentNaming
-// ReSharper disable NonLocalizedString
 
-// ReSharper disable CheckNamespace
+
+
+
+
 namespace Dev2.Studio.ViewModels
 {
     public class ShellViewModel : BaseConductor<WorkSurfaceContextViewModel>,
@@ -486,11 +486,11 @@ namespace Dev2.Studio.ViewModels
 
             ExplorerViewModel = explorer ?? new ExplorerViewModel(this, CustomContainer.Get<Microsoft.Practices.Prism.PubSubEvents.IEventAggregator>(), true);
 
-            // ReSharper disable DoNotCallOverridableMethodsInConstructor
+            
             AddWorkspaceItems();
             ShowStartPage();
             DisplayName = @"Warewolf" + $" ({ClaimsPrincipal.Current.Identity.Name})".ToUpperInvariant();
-            // ReSharper restore DoNotCallOverridableMethodsInConstructor
+            
 
         }
 
@@ -1304,7 +1304,7 @@ namespace Dev2.Studio.ViewModels
             Task<IRequestServiceNameViewModel> saveViewModel = _worksurfaceContextManager.GetSaveViewModel(resourcePath, Warewolf.Studio.Resources.Languages.Core.ServerSourceNewHeaderLabel);
             var key = (WorkSurfaceKey)WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.ServerSource);
             key.ServerID = ActiveServer.ServerID;
-            // ReSharper disable once PossibleInvalidOperationException
+            
             var manageNewServerSourceModel = new ManageNewServerSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveServer.Name);
             var manageNewServerViewModel = new ManageNewServerViewModel(manageNewServerSourceModel, saveViewModel, new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), _asyncWorker, new ExternalProcessExecutor()) { SelectedGuid = key.ResourceID.Value };
             var workSurfaceViewModel = new SourceViewModel<IServerSource>(EventPublisher, manageNewServerViewModel, PopupProvider, new ManageServerControl(), ActiveServer);
@@ -1721,9 +1721,9 @@ namespace Dev2.Studio.ViewModels
             if (ServerRepository == null) return;
 
             HashSet<IWorkspaceItem> workspaceItemsToRemove = new HashSet<IWorkspaceItem>();
-            // ReSharper disable ForCanBeConvertedToForeach
+            
             for (int i = 0; i < _getWorkspaceItemRepository().WorkspaceItems.Count; i++)
-            // ReSharper restore ForCanBeConvertedToForeach
+            
             {
                 //
                 // Get the environment for the workspace item

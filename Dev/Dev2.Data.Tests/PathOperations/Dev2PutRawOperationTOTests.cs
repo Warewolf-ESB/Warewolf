@@ -12,7 +12,7 @@ using Dev2.PathOperations;
 using Dev2.Data.Interfaces.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-// ReSharper disable once InconsistentNaming
+
 namespace Dev2.Data.Tests.PathOperations
 {
     [TestClass]

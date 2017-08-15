@@ -121,9 +121,9 @@ namespace Dev2.Runtime.Configuration
         {
             var rootDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
-            // ReSharper disable AssignNullToNotNullAttribute
+            
             return Path.Combine(rootDir, "Settings", "Application.xml");
-            // ReSharper restore AssignNullToNotNullAttribute
+            
         }
 
         #endregion
@@ -142,9 +142,9 @@ namespace Dev2.Runtime.Configuration
 
                     return new Settings.Configuration(xml);
                 }
-                // ReSharper disable EmptyGeneralCatchClause
+                
                 catch(Exception ex)
-                // ReSharper restore EmptyGeneralCatchClause
+                
                 {
                     // error occurred so ignore and load empty
                     Dev2Logger.Error(ex, "Warewolf Error");

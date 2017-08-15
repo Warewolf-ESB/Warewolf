@@ -16,7 +16,7 @@ using Moq;
 namespace Dev2.Activities.Designers.Tests.Core
 {
     [TestClass]
-    [SuppressMessage("ReSharper", "InconsistentNaming")]
+
     public class WebPostInputRegionTest
     {
         [TestMethod]

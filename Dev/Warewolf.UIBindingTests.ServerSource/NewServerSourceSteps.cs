@@ -14,7 +14,7 @@ using Moq;
 using TechTalk.SpecFlow;
 using Warewolf.Studio.ViewModels;
 using Warewolf.Studio.Views;
-// ReSharper disable RedundantAssignment
+
 
 namespace Warewolf.UIBindingTests.ServerSource
 {

@@ -17,7 +17,7 @@ namespace Dev2.Common.Interfaces.Diagnostics.Debug
     ///     Defines the requirements for a class whose state can be written to a <see cref="IDebugWriter" />
     /// </summary>
 
-    // ReSharper disable InconsistentNaming
+    
     public interface IDebugState : IEquatable<IDebugState>
     {
         /// <summary>
