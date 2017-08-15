@@ -18,7 +18,7 @@ using Warewolf.Storage;
 
 namespace Dev2.BussinessLogic
 {
-    [SuppressMessage("ReSharper", "UnusedMember.Global")]
+
     public class RsOpNotBetween : AbstractRecsetSearchValidation
     {
         public override Func<DataStorage.WarewolfAtom, bool> CreateFunc(IEnumerable<DataStorage.WarewolfAtom> values, IEnumerable<DataStorage.WarewolfAtom> warewolfAtoms, IEnumerable<DataStorage.WarewolfAtom> tovals, bool all)

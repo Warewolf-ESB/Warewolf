@@ -48,7 +48,7 @@ namespace Dev2.Runtime.ServiceModel
         #region Get
 
         // POST: Service/EmailSources/Get
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         public EmailSource Get(string resourceId, Guid workspaceId, Guid dataListId)
         {
             var result = new EmailSource();
@@ -73,7 +73,7 @@ namespace Dev2.Runtime.ServiceModel
         #region Test
 
         // POST: Service/EmailSources/Test
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         public ValidationResult Test(string args, Guid workspaceId, Guid dataListId)
         {
             try

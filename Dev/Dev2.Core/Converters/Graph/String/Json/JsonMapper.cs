@@ -18,10 +18,10 @@ using Dev2.Common.Interfaces.Core.Graph;
 using Newtonsoft.Json.Linq;
 using Warewolf.Resource.Errors;
 
-// ReSharper disable CheckNamespace
+
 
 namespace Unlimited.Framework.Converters.Graph.String.Json
-// ReSharper restore CheckNamespace
+
 {
     [Serializable]
     public class JsonMapper : IMapper
@@ -113,13 +113,13 @@ namespace Unlimited.Framework.Converters.Graph.String.Json
                     {
                         if (property.IsEnumerable())
                         {
-                            // ReSharper disable RedundantCast
+                            
                             var enumerableData = propertyData as IEnumerable;
-                            // ReSharper restore RedundantCast
+                            
 
-                            // ReSharper disable ConditionIsAlwaysTrueOrFalse
+                            
                             if (enumerableData != null)
-                                // ReSharper restore ConditionIsAlwaysTrueOrFalse
+                                
                             {
                                 IEnumerator enumerator = enumerableData.GetEnumerator();
                                 enumerator.Reset();

@@ -8,7 +8,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json.Linq;
 using WarewolfParserInterop;
-// ReSharper disable InconsistentNaming
+
 
 namespace Warewolf.Storage.Tests
 {

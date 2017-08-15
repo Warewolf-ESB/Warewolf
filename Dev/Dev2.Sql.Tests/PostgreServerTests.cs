@@ -16,9 +16,9 @@ namespace Dev2.Sql.Tests
         [Owner("Trevor Williams-Ros")]
         [TestCategory("PostgreServer_Connect")]
         [ExpectedException(typeof(ArgumentNullException))]
-        // ReSharper disable InconsistentNaming
+        
         public void PostgreServer_Connect_ConnectionStringIsNull_ThrowsArgumentNullException()
-            // ReSharper restore InconsistentNaming
+    
         {
             //------------Setup for test--------------------------
             var sqlServer = new PostgreServer();
@@ -39,9 +39,9 @@ namespace Dev2.Sql.Tests
         [Owner("Trevor Williams-Ros")]
         [TestCategory("PostgreServer_Connect")]
         [ExpectedException(typeof(ArgumentException))]
-        // ReSharper disable InconsistentNaming
+        
         public void PostgreServer_Connect_ConnectionStringIsInvalid_ThrowsArgumentException()
-            // ReSharper restore InconsistentNaming
+    
         {
             //------------Setup for test--------------------------
             var sqlServer = new PostgreServer();
@@ -62,9 +62,9 @@ namespace Dev2.Sql.Tests
         [Owner("Trevor Williams-Ros")]
         [TestCategory("PostgreServer_FetchDataTable")]
         [ExpectedException(typeof(ArgumentNullException))]
-        // ReSharper disable InconsistentNaming
+        
         public void PostgreServer_FetchDataTable_CommandIsNull_ThrowsArgumentNullException()
-            // ReSharper restore InconsistentNaming
+    
         {
             //------------Setup for test--------------------------
             var sqlServer = new PostgreServer();
@@ -85,9 +85,9 @@ namespace Dev2.Sql.Tests
         [Owner("Trevor Williams-Ros")]
         [TestCategory("PostgreServer_FetchDatabases")]
         [ExpectedException(typeof(Exception))]
-        // ReSharper disable InconsistentNaming
+        
         public void PostgreServer_FetchDatabases_ConnectionNotInitialized_ThrowsConnectFirstException()
-            // ReSharper restore InconsistentNaming
+    
         {
             //------------Setup for test--------------------------
             var sqlServer = new PostgreServer();
@@ -108,9 +108,9 @@ namespace Dev2.Sql.Tests
         [Owner("Trevor Williams-Ros")]
         [TestCategory("PostgreServer_FetchStoredProcedures")]
         [ExpectedException(typeof(ArgumentNullException))]
-        // ReSharper disable InconsistentNaming
+        
         public void PostgreServer_FetchStoredProcedures_FunctionProcessorIsNull_ThrowsArgumentNullException()
-            // ReSharper restore InconsistentNaming
+    
         {
             //------------Setup for test--------------------------
             var sqlServer = new PostgreServer();
@@ -135,9 +135,9 @@ namespace Dev2.Sql.Tests
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("PostgreServer_FetchDataTable_addParams")]
-        // ReSharper disable InconsistentNaming
+        
         public void PostgreServer_FetchDataTable_AddParams_VerifyAllAdded()
-            // ReSharper restore InconsistentNaming
+    
         {
             //------------Setup for test--------------------------
             var factory = new Mock<IDbFactory>();
@@ -182,9 +182,9 @@ namespace Dev2.Sql.Tests
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("PostgreServer_FetchDataTable_addParams")]
-        // ReSharper disable InconsistentNaming
+        
         public void PostgreServer_FetchDataTable_ConnectionsString()
-            // ReSharper restore InconsistentNaming
+    
         {
             //------------Setup for test--------------------------
             var factory = new Mock<IDbFactory>();
@@ -223,9 +223,9 @@ namespace Dev2.Sql.Tests
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("PostgreServer_FetchDataTable_addParams")]
-        // ReSharper disable InconsistentNaming
+        
         public void PostgreServer_FetchDataTable_ConnectionsStringNull()
-            // ReSharper restore InconsistentNaming
+    
         {
             //------------Setup for test--------------------------
             var factory = new Mock<IDbFactory>();
@@ -259,9 +259,9 @@ namespace Dev2.Sql.Tests
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("PostgreServer_FetchDataTable_addParams")]
-        // ReSharper disable InconsistentNaming
+        
         public void PostgreServer_CreateCommand_CreateCommand()
-            // ReSharper restore InconsistentNaming
+    
         {
             //------------Setup for test--------------------------
             var factory = new Mock<IDbFactory>();
@@ -302,9 +302,9 @@ namespace Dev2.Sql.Tests
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("PostgreServer_IsTableValueFunction")]
-        // ReSharper disable InconsistentNaming
+        
         public void PostgreServer_IsTableValueFunction_InvalidRow()
-            // ReSharper restore InconsistentNaming
+    
         {
             //------------Setup for test--------------------------
 
@@ -319,9 +319,9 @@ namespace Dev2.Sql.Tests
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("PostgreServer_IsFunction")]
 
-        // ReSharper disable InconsistentNaming
+        
         public void PostgreServer_IsFunction_InvalidRow()
-            // ReSharper restore InconsistentNaming
+    
         {
             //------------Setup for test--------------------------
 
@@ -335,9 +335,9 @@ namespace Dev2.Sql.Tests
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("PostgreServer_IsSp")]
-        // ReSharper disable InconsistentNaming
+        
         public void PostgreServer_IsSP_InvalidRow()
-            // ReSharper restore InconsistentNaming
+    
         {
             //------------Setup for test--------------------------
 
@@ -356,9 +356,9 @@ namespace Dev2.Sql.Tests
         [Owner("Trevor Williams-Ros")]
         [TestCategory("PostgreServer_CreateCommand")]
         [ExpectedException(typeof(Exception))]
-        // ReSharper disable InconsistentNaming
+        
         public void PostgreServer_CreateCommand_ConnectionNotInitialized_ThrowsConnectFirstException()
-            // ReSharper restore InconsistentNaming
+    
         {
             //------------Setup for test--------------------------
             var sqlServer = new PostgreServer();

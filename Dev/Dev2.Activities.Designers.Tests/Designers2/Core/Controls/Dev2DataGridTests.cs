@@ -110,7 +110,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core.Controls
         static ModelItemCollection CreateModelItemCollection(int itemCount, params bool[] blankFieldAndValues)
         {
             var modelItem = ModelItemUtils.CreateModelItem(new DsfMultiAssignActivity());
-            // ReSharper disable PossibleNullReferenceException
+            
             var modelItemCollection = modelItem.Properties["FieldsCollection"].Collection;
             for(var i = 0; i < itemCount; i++)
             {
@@ -121,7 +121,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core.Controls
 
                 modelItemCollection.Add(dto);
             }
-            // ReSharper restore PossibleNullReferenceException
+            
             return modelItemCollection;
         }
     }

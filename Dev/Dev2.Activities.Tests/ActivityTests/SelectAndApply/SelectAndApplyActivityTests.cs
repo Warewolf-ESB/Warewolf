@@ -14,7 +14,7 @@ using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 using WarewolfParserInterop;
 
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Tests.Activities.ActivityTests.SelectAndApply
 {

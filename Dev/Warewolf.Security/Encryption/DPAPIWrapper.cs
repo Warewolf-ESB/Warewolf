@@ -116,7 +116,7 @@ namespace Warewolf.Security.Encryption
 
             try
             {
-                // ReSharper disable once ReturnValueOfPureMethodIsNotUsed
+                
                 Convert.FromBase64String(base64String);
                 return true;
             }

@@ -9,7 +9,7 @@ using Dev2.Studio.Interfaces;
 
 namespace Warewolf.Studio.ViewModels
 {
-    // ReSharper disable once InconsistentNaming
+    
     public class ManageRabbitMQSourceModel : IRabbitMQSourceModel
     {
         private readonly IStudioUpdateManager _updateManager;

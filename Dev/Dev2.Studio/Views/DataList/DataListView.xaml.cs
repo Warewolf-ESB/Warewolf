@@ -16,7 +16,7 @@ using Dev2.Studio.Interfaces.DataList;
 using Dev2.Studio.ViewModels.WorkSurface;
 using Microsoft.Practices.Prism.Mvvm;
 
-// ReSharper disable once CheckNamespace
+
 namespace Dev2.Studio.Views.DataList
 {
     /// <summary>

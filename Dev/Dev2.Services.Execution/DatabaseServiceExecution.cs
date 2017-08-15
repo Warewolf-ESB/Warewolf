@@ -32,7 +32,7 @@ using Npgsql;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage.Interfaces;
 
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Services.Execution
 {
@@ -136,7 +136,7 @@ namespace Dev2.Services.Execution
             }
         }
 
-        // ReSharper disable once OptionalParameterHierarchyMismatch
+        
         protected override object ExecuteService(int update, out ErrorResultTO errors, IOutputFormatter formater = null)
         {
             errors = new ErrorResultTO();
@@ -252,9 +252,9 @@ namespace Dev2.Services.Execution
                     var parameters = GetSqlParameters();
                     if (parameters != null)
                     {
-                        // ReSharper disable CoVariantArrayConversion
+                        
                         using (var dataSet = ((SqlServer)_sqlServer).FetchDataTable(parameters.ToArray()))
-                        // ReSharper restore CoVariantArrayConversion
+                        
                         {
                             TranslateDataTableToEnvironment(dataSet, DataObj.Environment, update);
                         }
@@ -279,9 +279,9 @@ namespace Dev2.Services.Execution
 
                     if (parameters != null)
                     {
-                        // ReSharper disable CoVariantArrayConversion
+                        
                         using (var dataSet = server.FetchDataTable(parameters.ToArray(), server.GetProcedureOutParams(ProcedureName, Source.DatabaseName)))
-                        // ReSharper restore CoVariantArrayConversion
+                        
                         {
                             TranslateDataTableToEnvironment(dataSet, DataObj.Environment, update);
                             return true;
@@ -382,9 +382,9 @@ namespace Dev2.Services.Execution
 
                     if (parameters != null)
                     {
-                        // ReSharper disable CoVariantArrayConversion
+                        
                         using (var dataSet = server.FetchDataTable(parameters.ToArray(), server.GetProcedureOutParams(ProcedureName, Source.DatabaseName)))
-                        // ReSharper restore CoVariantArrayConversion
+                        
                         {
                             TranslateDataTableToEnvironment(dataSet, DataObj.Environment, update);
                             return true;
@@ -460,9 +460,9 @@ namespace Dev2.Services.Execution
 
                     if (parameters != null)
                     {
-                        // ReSharper disable CoVariantArrayConversion
+                        
                         using (var dataSet = server.FetchDataTable())
-                        //// ReSharper restore CoVariantArrayConversion
+                        
                         {
                             TranslateDataTableToEnvironment(dataSet, DataObj.Environment, update);
                             return true;
@@ -541,9 +541,9 @@ namespace Dev2.Services.Execution
 
                     if (parameters != null)
                     {
-                        // ReSharper disable CoVariantArrayConversion
+                        
                         using (var dataSet = server.FetchDataTable(parameters.ToArray(), server.GetProcedureOutParams(ProcedureName)))
-                        // ReSharper restore CoVariantArrayConversion
+                        
                         {
                             TranslateDataTableToEnvironment(dataSet, DataObj.Environment, update);
                             return true;

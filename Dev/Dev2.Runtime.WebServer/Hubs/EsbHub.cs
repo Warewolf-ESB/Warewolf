@@ -32,7 +32,7 @@ using Dev2.Runtime.WebServer.Security;
 using Dev2.Services.Security;
 using Microsoft.AspNet.SignalR.Hubs;
 using Warewolf.Resource.Errors;
-// ReSharper disable UnusedMember.Global
+
 
 
 // Interface between the Studio and Server. Commands sent from the Studio come here to get processed, this is why methods are unused or only used in tests.
@@ -187,9 +187,9 @@ namespace Dev2.Runtime.WebServer.Hubs
             }
             catch (Exception e)
             {
-                // ReSharper disable InvokeAsExtensionMethod
+                
                 Dev2Logger.Error(this, e);
-                // ReSharper restore InvokeAsExtensionMethod
+                
             }
 
             return null;
@@ -281,9 +281,9 @@ namespace Dev2.Runtime.WebServer.Hubs
             }
             catch (Exception e)
             {
-                // ReSharper disable InvokeAsExtensionMethod
+                
                 Dev2Logger.Error(this, e);
-                // ReSharper restore InvokeAsExtensionMethod
+                
             }
 
             return null;
@@ -319,10 +319,10 @@ namespace Dev2.Runtime.WebServer.Hubs
                         var request = _serializer.Deserialize<EsbExecuteRequest>(sb);
 
                         var user = string.Empty;
-                        // ReSharper disable ConditionIsAlwaysTrueOrFalse
+                        
                         var userPrinciple = Context.User;
                         if (Context.User.Identity != null)
-                        // ReSharper restore ConditionIsAlwaysTrueOrFalse
+                        
                         {
                             user = Context.User.Identity.Name;
                             userPrinciple = Context.User;

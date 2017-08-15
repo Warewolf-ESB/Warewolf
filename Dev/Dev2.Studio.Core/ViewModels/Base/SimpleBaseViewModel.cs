@@ -11,9 +11,9 @@
 using System;
 using Caliburn.Micro;
 
-// ReSharper disable CheckNamespace
+
 namespace Dev2.Studio.Core.ViewModels.Base
-// ReSharper restore CheckNamespace
+
 {
     public abstract class SimpleBaseViewModel : Screen, IDisposable
     {

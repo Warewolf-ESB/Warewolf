@@ -10,7 +10,7 @@
 
 using System.ComponentModel;
 
-// ReSharper disable once CheckNamespace
+
 namespace Dev2.Studio.ViewModels.Diagnostics
 {
     public enum DebugStatus

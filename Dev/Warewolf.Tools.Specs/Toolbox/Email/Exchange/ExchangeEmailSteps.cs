@@ -80,7 +80,7 @@ namespace Dev2.Activities.Specs.Toolbox.Exchange.Email
             };
             ResourceCatalog.Instance.SaveResource(Guid.Empty, emailSource, "");
             var emailSender = new Mock<IDev2EmailSender>();
-            // ReSharper disable once RedundantAssignment
+            
             var eR = new ErrorResultTO();
             emailSender
                 .Setup(sender => sender.SendEmail(It.IsAny<IExchange>(), It.IsAny<IWarewolfListIterator>(), It.IsAny<IWarewolfIterator>(), It.IsAny<IWarewolfIterator>(), It.IsAny<IWarewolfIterator>(), It.IsAny<IWarewolfIterator>(), It.IsAny<IWarewolfIterator>(), It.IsAny<IWarewolfIterator>(), out eR))
@@ -162,7 +162,7 @@ namespace Dev2.Activities.Specs.Toolbox.Exchange.Email
             };
             ResourceCatalog.Instance.SaveResource(Guid.Empty, emailSource, "");
             var emailSender = new Mock<IDev2EmailSender>();
-            // ReSharper disable once RedundantAssignment
+            
             var eR = new ErrorResultTO();
             emailSender
                 .Setup(sender => sender.SendEmail(It.IsAny<IExchange>(), It.IsAny<IWarewolfListIterator>(), It.IsAny<IWarewolfIterator>(), It.IsAny<IWarewolfIterator>(), It.IsAny<IWarewolfIterator>(), It.IsAny<IWarewolfIterator>(), It.IsAny<IWarewolfIterator>(), It.IsAny<IWarewolfIterator>(), out eR))

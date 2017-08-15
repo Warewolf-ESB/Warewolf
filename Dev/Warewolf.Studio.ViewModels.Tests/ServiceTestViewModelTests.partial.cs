@@ -28,9 +28,9 @@ using Dev2.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
-// ReSharper disable UseObjectOrCollectionInitializer
 
-// ReSharper disable InconsistentNaming
+
+
 
 namespace Warewolf.Studio.ViewModels.Tests
 {
@@ -975,7 +975,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsNotNull(testFrameworkViewModel);
             //---------------Execute Test ----------------------
             IServiceTestStep serviceTestStep = null;
-            // ReSharper disable once ExpressionIsAlwaysNull
+            
             var parameters = new object[] { modelItem, serviceTestStep };
             methodInfo.Invoke(testFrameworkViewModel, parameters);
             //---------------Test Result -----------------------
@@ -1018,7 +1018,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsNotNull(testFrameworkViewModel);
             //---------------Execute Test ----------------------
             IServiceTestStep serviceTestStep = null;
-            // ReSharper disable once ExpressionIsAlwaysNull
+            
             var parameters = new object[] { modelItem, serviceTestStep };
             methodInfo.Invoke(testFrameworkViewModel, parameters);
             //---------------Test Result -----------------------
@@ -1061,7 +1061,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsNotNull(testFrameworkViewModel);
             //---------------Execute Test ----------------------
             IServiceTestStep serviceTestStep = null;
-            // ReSharper disable once ExpressionIsAlwaysNull
+            
             var parameters = new object[] { modelItem, serviceTestStep };
             methodInfo.Invoke(testFrameworkViewModel, parameters);
             //---------------Test Result -----------------------
@@ -1101,7 +1101,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Execute Test ----------------------
             IServiceTestStep serviceTestStep = new ServiceTestStep(Guid.NewGuid(), "", new BindableCollection<IServiceTestOutput>(), StepType.Assert);
             var outputs = new List<string>() { "a", "b" };
-            // ReSharper disable once ExpressionIsAlwaysNull
+            
             var parameters = new object[] { outputs, serviceTestStep };
             var invoke = methodInfo.Invoke(null, parameters) as List<IServiceTestOutput>;
             //---------------Test Result -----------------------
@@ -1144,7 +1144,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             IServiceTestStep serviceTestStep = new ServiceTestStep(Guid.NewGuid(), "", serviceTestOutputs, StepType.Assert);
             serviceTestStep.Children = new BindableCollection<IServiceTestStep>();
             serviceTestStep.ActivityType = typeof(DsfEnhancedDotNetDllActivity).Name;
-            // ReSharper disable once ExpressionIsAlwaysNull
+            
             var parameters = new object[] { pluginAction, serviceTestStep };
             methodInfo.Invoke(testFrameworkViewModel, parameters);
             //---------------Test Result -----------------------
@@ -1206,7 +1206,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             };
             ObservableCollection<IServiceTestStep> collection = new BindableCollection<IServiceTestStep>() { serviceTestStep };
 
-            // ReSharper disable once ExpressionIsAlwaysNull
+            
             var parameters = new object[] { dotNetDllActivity, serviceTestStep, collection };
             methodInfo.Invoke(testFrameworkViewModel, parameters);
             //---------------Test Result -----------------------
@@ -1254,7 +1254,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             };
             var outputs = new List<string>();
 
-            // ReSharper disable once ExpressionIsAlwaysNull
+            
             var parameters = new object[] { outputs, serviceTestStep };
             var testOutputs = methodInfo.Invoke(testFrameworkViewModel, parameters) as List<IServiceTestOutput>;
             //---------------Test Result -----------------------
@@ -1302,7 +1302,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             };
             var outputs = new List<string>() { "a", "b" };
 
-            // ReSharper disable once ExpressionIsAlwaysNull
+            
             var parameters = new object[] { outputs, serviceTestStep };
             var testOutputs = methodInfo.Invoke(testFrameworkViewModel, parameters) as List<IServiceTestOutput>;
             //---------------Test Result -----------------------
@@ -1341,7 +1341,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var outputs = new List<string>() { "a", "b" };
             IServiceTestStep serviceTestStep = new ServiceTestStep(Guid.NewGuid(), "", new BindableCollection<IServiceTestOutput>(), StepType.Assert);
 
-            // ReSharper disable once ExpressionIsAlwaysNull
+            
             var parameters = new object[] { Guid.NewGuid().ToString(), "Dispaly", outputs, typeof(DsfSequenceActivity), ModelItemUtils.CreateModelItem(new DsfSequenceActivity()), serviceTestStep };
             var invoke = (bool)methodInfo.Invoke(testFrameworkViewModel, parameters);
             //---------------Test Result -----------------------
@@ -1604,7 +1604,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             var synchronousAsyncWorker = new SynchronousAsyncWorker();
-            // ReSharper disable once ObjectCreationAsStatement
+            
             new ServiceTestViewModel(CreateResourceModel(), synchronousAsyncWorker, new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object, newTestFromDebugMessage);
             var exceptions = synchronousAsyncWorker.Exceptions.Count;
             Assert.AreEqual(1, exceptions);

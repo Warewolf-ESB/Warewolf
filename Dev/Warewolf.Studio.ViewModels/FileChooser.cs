@@ -115,7 +115,7 @@ namespace Warewolf.Studio.ViewModels
                 var driveName = string.Join(";", Drives.SelectMany(a => a.FilterSelected(new List<string>())).ToList());
                 return driveName;
             }
-            // ReSharper disable once ValueParameterNotUsed
+            
             set
             {
                 OnPropertyChanged(() => DriveName);

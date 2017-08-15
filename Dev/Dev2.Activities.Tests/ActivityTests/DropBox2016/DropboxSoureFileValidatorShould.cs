@@ -7,8 +7,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Tests.Activities.ActivityTests.DropBox2016
 {
 
-    [SuppressMessage("ReSharper", "InconsistentNaming")]
-    [SuppressMessage("ReSharper", "UnusedMember.Local")]
+
+    
     public static class Files
     {
         public static readonly string PathEmpty = String.Empty;
@@ -20,8 +20,8 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016
         public static readonly string PathToolLong = @"c:\fffffffffffffffffffffffffffffffffff\gfgfgfgfgfgfgfgfgfgfgfgfgfgfgfgfgfgfgfgf\ggggggggggggggggg\fffffffffffffff\gggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg";
     }
 
-    [SuppressMessage("ReSharper", "InconsistentNaming")]
-    [SuppressMessage("ReSharper", "UnusedMember.Local")]
+
+    
     [TestClass]
     public class DropboxSoureFileValidatorShould
     {

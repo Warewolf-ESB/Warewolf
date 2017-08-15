@@ -55,7 +55,7 @@ namespace Dev2.Common.Interfaces.WindowsTaskScheduler.Wrappers
         /// <returns>
         ///     <c>true</c> if properties have been set; otherwise, <c>false</c>.
         /// </returns>
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         bool IsSet();
     }
 }

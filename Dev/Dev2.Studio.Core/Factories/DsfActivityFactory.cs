@@ -15,9 +15,9 @@ using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.Enums;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
-// ReSharper disable CheckNamespace
+
 namespace Dev2.Studio.Core.Factories
-// ReSharper restore CheckNamespace
+
 {
     public static class DsfActivityFactory
     {

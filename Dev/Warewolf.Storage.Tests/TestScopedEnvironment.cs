@@ -8,7 +8,7 @@ using Newtonsoft.Json.Linq;
 using Warewolf.Storage.Interfaces;
 using WarewolfParserInterop;
 
-// ReSharper disable InconsistentNaming
+
 
 namespace Warewolf.Storage.Tests
 {
@@ -739,7 +739,7 @@ namespace Warewolf.Storage.Tests
                (s, i,val) =>
                {
 
-                   // ReSharper disable once PossibleNullReferenceException
+                   
                    var replaced =  fun(s,i,val);
                    Assert.IsTrue(orzipped.Any(a=>a.Item1==val&&a.Item2==replaced));
                   
@@ -755,7 +755,7 @@ namespace Warewolf.Storage.Tests
             p.SetFieldOrProperty("_doReplace", new Func<string, int, string, string>(
                 (s, i, val) =>
                 {
-                    // ReSharper disable once PossibleNullReferenceException
+                    
                     var replaced = fun(s, i, val);
 
                     Assert.AreEqual(replaced, val);

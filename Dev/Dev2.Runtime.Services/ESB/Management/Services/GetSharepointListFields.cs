@@ -19,7 +19,7 @@ using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    [SuppressMessage("ReSharper", "UnusedMember.Global")]
+
     public class GetSharepointListFields : IEsbManagementEndpoint
     {
         #region Implementation of ISpookyLoadable<string>

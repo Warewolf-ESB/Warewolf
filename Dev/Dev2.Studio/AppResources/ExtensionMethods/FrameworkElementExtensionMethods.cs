@@ -11,7 +11,7 @@
 using System.Windows;
 using System.Windows.Media;
 
-// ReSharper disable once CheckNamespace
+
 namespace Dev2.Studio.AppResources.ExtensionMethods
 {
     public static class FrameworkElementExtensionMethods

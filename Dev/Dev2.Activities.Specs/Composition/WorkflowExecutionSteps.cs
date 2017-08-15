@@ -354,7 +354,7 @@ namespace Dev2.Activities.Specs.Composition
                 {
                     PerformanceCounterCategory.Delete("Warewolf");
                 }
-                // ReSharper disable once EmptyGeneralCatchClause
+                
                 catch { }
                 var register = new WarewolfPerformanceCounterRegister(new List<IPerformanceCounter>
                                                             {   new WarewolfCurrentExecutionsPerformanceCounter(),
@@ -1325,7 +1325,7 @@ namespace Dev2.Activities.Specs.Composition
             return stringBuilder.ToString();
         }
 
-        // ReSharper disable InconsistentNaming
+        
         public double GetServerCPUUsage()
         {
             var processorTimeCounter = new PerformanceCounter(
@@ -1535,9 +1535,9 @@ namespace Dev2.Activities.Specs.Composition
             var mappings = new List<DataColumnMapping>();
 
             var pos = 1;
-            // ReSharper disable LoopCanBeConvertedToQuery
+            
             foreach (var row in table.Rows)
-            // ReSharper restore LoopCanBeConvertedToQuery
+            
             {
                 var outputColumn = row["Column"];
                 var inputColumn = row["Mapping"];
@@ -1586,9 +1586,9 @@ namespace Dev2.Activities.Specs.Composition
                 var mappings = new List<DataColumnMapping>();
 
                 var pos = 1;
-                // ReSharper disable LoopCanBeConvertedToQuery
+                
                 foreach (var row in table.Rows)
-                // ReSharper restore LoopCanBeConvertedToQuery
+                
                 {
                     var outputColumn = row["Column"];
                     var inputColumn = row["Mapping"];
@@ -2403,9 +2403,9 @@ namespace Dev2.Activities.Specs.Composition
 
 
         [Given(@"""(.*)"" contains an Delete ""(.*)"" as")]
-        // ReSharper disable InconsistentNaming
+        
         public void GivenContainsAnDeleteAs(string parentName, string activityName, Table table)
-        // ReSharper restore InconsistentNaming
+
         {
             var del = new DsfPathDelete { InputPath = table.Rows[0][0], Result = table.Rows[0][1], DisplayName = activityName };
             _commonSteps.AddVariableToVariableList(table.Rows[0][1]);
@@ -2441,9 +2441,9 @@ namespace Dev2.Activities.Specs.Composition
 
 
         [Given(@"""(.*)"" contains workflow ""(.*)"" with mapping as")]
-        // ReSharper disable InconsistentNaming
+        
         public void GivenContainsWorkflowWithMappingAs(string forEachName, string nestedWF, Table mappings)
-        // ReSharper restore InconsistentNaming
+
         {
             var forEachAct = (DsfForEachActivity)_scenarioContext[forEachName];
             var environmentModel = LocalEnvModel;
@@ -2457,9 +2457,9 @@ namespace Dev2.Activities.Specs.Composition
             }
             if (resource == null)
             {
-                // ReSharper disable NotResolvedInText
+                
                 throw new ArgumentNullException("resource");
-                // ReSharper restore NotResolvedInText
+                
             }
             var dataMappingViewModel = GetDataMappingViewModel(resource, mappings);
 
@@ -3068,13 +3068,13 @@ namespace Dev2.Activities.Specs.Composition
                     throw new Exception(errorMessage);
                 }
                 dsfEnhancedDotNetDllActivity.OutputDescription = responseService.Description;
-                // ReSharper disable MaximumChainedReferences
+                
                 var outputMapping = _recordsetList.SelectMany(recordset => recordset.Fields, (recordset, recordsetField) =>
                 {
                     var serviceOutputMapping = new ServiceOutputMapping(recordsetField.Name, recordsetField.Alias, recordset.Name) { Path = recordsetField.Path };
                     return serviceOutputMapping;
                 }).Cast<IServiceOutputMapping>().ToList();
-                // ReSharper restore MaximumChainedReferences
+                
                 dsfEnhancedDotNetDllActivity.Outputs = outputMapping;
             }
 
@@ -4020,7 +4020,7 @@ namespace Dev2.Activities.Specs.Composition
             var testResults = dbServiceModel.TestService(databaseService);
 
             var mappings = new List<IServiceOutputMapping>();
-            // ReSharper disable once LoopCanBeConvertedToQuery
+            
             if (testResults?.Columns.Count > 1)
             {
                 var recordsetName = string.IsNullOrEmpty(testResults.TableName) ? serviceName.Replace(".", "_") : testResults.TableName;
@@ -4132,7 +4132,7 @@ namespace Dev2.Activities.Specs.Composition
             };
 
             var mappings = new List<IServiceOutputMapping>();
-            // ReSharper disable once LoopCanBeConvertedToQuery
+            
             if (testResults?.Columns.Count > 1)
             {
                 var recordsetName = string.IsNullOrEmpty(testResults.TableName) ? serviceName.Replace(".", "_") : testResults.TableName;
@@ -4231,7 +4231,7 @@ namespace Dev2.Activities.Specs.Composition
             };
 
             var mappings = new List<IServiceOutputMapping>();
-            // ReSharper disable once LoopCanBeConvertedToQuery
+            
             if (testResults?.Columns.Count > 1)
             {
                 var recordsetName = string.IsNullOrEmpty(testResults.TableName) ? serviceName.Replace(".", "_") : testResults.TableName;
@@ -4309,7 +4309,7 @@ namespace Dev2.Activities.Specs.Composition
             };
 
             var mappings = new List<IServiceOutputMapping>();
-            // ReSharper disable once LoopCanBeConvertedToQuery
+            
             if (testResults?.Columns.Count > 1)
             {
                 var recordsetName = string.IsNullOrEmpty(testResults.TableName) ? serviceName.Replace(".", "_") : testResults.TableName;

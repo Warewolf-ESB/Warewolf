@@ -11,7 +11,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("WorksurfaceKeyFactory_Create_SqlServerSource")]
-        // ReSharper disable once InconsistentNaming
+
         public void WorksurfaceKeyFactory_Create_SqlServerSource_NewGuid_Expected()
         {
             //------------Setup for test--------------------------
@@ -26,7 +26,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("WorksurfaceKeyFactory_Create_MySqlSource")]
-        // ReSharper disable once InconsistentNaming
+
         public void WorksurfaceKeyFactory_Create_MySqlSource_NewGuid_Expected()
         {
             //------------Setup for test--------------------------
@@ -41,7 +41,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("WorksurfaceKeyFactory_Create_PostgreSqlSource")]
-        // ReSharper disable once InconsistentNaming
+
         public void WorksurfaceKeyFactory_Create_PostgreSqlSource_NewGuid_Expected()
         {
             //------------Setup for test--------------------------
@@ -56,7 +56,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("WorksurfaceKeyFactory_Create_OracleSource")]
-        // ReSharper disable once InconsistentNaming
+
         public void WorksurfaceKeyFactory_Create_OracleSource_NewGuid_Expected()
         {
             //------------Setup for test--------------------------
@@ -71,7 +71,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("WorksurfaceKeyFactory_Create_OdbcSource")]
-        // ReSharper disable once InconsistentNaming
+
         public void WorksurfaceKeyFactory_Create_OdbcSource_NewGuid_Expected()
         {
             //------------Setup for test--------------------------

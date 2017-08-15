@@ -16,7 +16,7 @@
 
 using System.Diagnostics.CodeAnalysis;
 
-// ReSharper disable once CheckNamespace
+
 namespace System.Windows.Controls
 {
     /// <summary>

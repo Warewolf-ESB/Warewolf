@@ -16,8 +16,8 @@ using Dev2.Validation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
-// ReSharper disable InconsistentNaming
-// ReSharper disable ImplicitlyCapturedClosure
+
+
 namespace Dev2.Tests.Activities.TOTests
 {
     [TestClass]

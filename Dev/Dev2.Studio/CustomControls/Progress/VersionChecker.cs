@@ -16,7 +16,7 @@ using Dev2.Common.Interfaces;
 using Dev2.Studio.Utils;
 using Warewolf.Core;
 
-// ReSharper disable CheckNamespace
+
 namespace Dev2.Studio.Core.Helpers
 {
     public class VersionChecker : IVersionChecker

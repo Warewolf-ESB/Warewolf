@@ -16,7 +16,7 @@ using System.Linq;
 using System.Reflection;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
-// ReSharper disable ReturnTypeCanBeEnumerable.Local
+
 
 namespace Dev2.Tests.Activities.ActivityTests
 {
@@ -24,7 +24,7 @@ namespace Dev2.Tests.Activities.ActivityTests
     /// Tests that the Properties have not changed on the activities
     /// </summary>
     [TestClass]
-    // ReSharper disable InconsistentNaming
+    
     public class HighLevel_ActivityTests : BaseActivityUnitTest
     {
         #region Fields

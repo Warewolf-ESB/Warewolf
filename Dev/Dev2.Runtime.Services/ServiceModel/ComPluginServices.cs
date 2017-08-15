@@ -35,13 +35,13 @@ namespace Dev2.Runtime.ServiceModel
 
         #region DeserializeService
 
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         protected virtual Service DeserializeService(string args)
         {
             return JsonConvert.DeserializeObject<ComPluginService>(args);
         }
 
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         protected virtual Service DeserializeService(XElement xml, string resourceType)
         {
             return xml == null ? new ComPluginService() : new ComPluginService(xml);

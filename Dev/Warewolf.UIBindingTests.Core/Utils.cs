@@ -8,7 +8,7 @@ using TechTalk.SpecFlow;
 using Warewolf.Studio.Themes.Luna;
 using Warewolf.Studio.ViewModels;
 
-// ReSharper disable ObjectCreationAsStatement
+
 
 namespace Warewolf.UIBindingTests.Core
 {
@@ -124,7 +124,7 @@ namespace Warewolf.UIBindingTests.Core
             Assert.AreEqual(isEnabled, controlEnabled, "Control " + controlName + " in view " + viewName + " is not " + enabledString + ".");
         }
 
-        // ReSharper disable once InconsistentNaming
+
         public static void ResetViewModel<T,U>(T newViewModel, T currentViewModel)
             where T : SourceBaseImpl<U>
             where U:IEquatable<U>

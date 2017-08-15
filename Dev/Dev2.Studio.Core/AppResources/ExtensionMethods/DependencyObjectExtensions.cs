@@ -15,7 +15,7 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
 
-// ReSharper disable once CheckNamespace
+
 namespace Dev2.Studio.Core.AppResources.ExtensionMethods
 {
     public static class DependencyObjectExtensions

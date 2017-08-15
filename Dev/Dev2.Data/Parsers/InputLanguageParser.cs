@@ -46,9 +46,9 @@ namespace Dev2.DataList.Contract
         /// <returns></returns>
         public IList<IDev2Definition> ParseAndAllowBlanks(string InputDefinition)
         {
-            // ReSharper disable RedundantBaseQualifier
+            
             return base.Parse(InputDefinition, false);
-            // ReSharper restore RedundantBaseQualifier
+            
         }
         #endregion
     }

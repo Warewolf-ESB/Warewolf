@@ -111,7 +111,7 @@ namespace Warewolf.Studio.ViewModels.Help
             GC.SuppressFinalize(this);
         }
 
-        // ReSharper disable once UnusedParameter.Local
+        
         void Dispose(bool disposing)
         {
             HelpModel.OnHelpTextReceived -= OnHelpTextReceived;

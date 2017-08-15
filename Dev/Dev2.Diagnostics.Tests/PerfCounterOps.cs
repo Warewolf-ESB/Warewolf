@@ -7,9 +7,9 @@ using Dev2.PerformanceCounters.Counters;
 using Dev2.PerformanceCounters.Management;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-// ReSharper disable EmptyStatement
 
-// ReSharper disable InconsistentNaming
+
+
 
 namespace Dev2.Diagnostics.Test
 {
@@ -27,7 +27,7 @@ namespace Dev2.Diagnostics.Test
                     PerformanceCounterCategory.Delete("Warewolf");
                     PerformanceCounterCategory.Delete("Warewolf Services");
                 }
-                // ReSharper disable once EmptyGeneralCatchClause
+                
                 catch
                 {
 

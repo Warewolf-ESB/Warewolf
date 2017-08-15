@@ -20,8 +20,8 @@ using Moq;
 using Warewolf.Core;
 using Warewolf.Testing;
 
-// ReSharper disable InconsistentNaming
-// ReSharper disable ObjectCreationAsStatement
+
+
 
 namespace Dev2.Activities.Designers.Tests.ComDll
 {

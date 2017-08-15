@@ -19,7 +19,7 @@ using Dev2.DataList.Contract;
 using Dev2.Intellisense.Provider;
 using Dev2.Studio.Interfaces;
 
-// ReSharper disable CheckNamespace
+
 namespace Dev2.Studio.InterfaceImplementors
 {
     public class DateTimeIntellisenseProvider : IIntellisenseProvider

@@ -273,7 +273,7 @@ namespace Dev2.DynamicServices.Objects
             return IsCompiled;
         }
 
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         public void SetActivity(Activity activity)
         {
             _workflowActivity = activity;

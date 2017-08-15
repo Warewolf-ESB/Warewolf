@@ -20,8 +20,8 @@ using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Studio.Interfaces;
 using Microsoft.Practices.Prism.PubSubEvents;
 
-// ReSharper disable MemberCanBePrivate.Global
-// ReSharper disable UnusedAutoPropertyAccessor.Global
+
+
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -347,7 +347,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 return ToNewSource();
             }
-            // ReSharper disable once RedundantIfElseBlock
+            
             else
             {
                 _pluginSource.FileSystemAssemblyName = FileSystemAssemblyName;
@@ -382,7 +382,7 @@ namespace Warewolf.Studio.ViewModels
                     {
                         return _requestServiceNameViewModel.Result;
                     }
-                    // ReSharper disable once RedundantIfElseBlock
+                    
                     else
                     {
                         throw _requestServiceNameViewModel.Exception;

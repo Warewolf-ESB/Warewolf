@@ -24,7 +24,7 @@ using Moq;
 namespace Dev2.Tests.Runtime.WebServer.Hubs
 {
     [TestClass]
-    // ReSharper disable InconsistentNaming
+    
     public class EsbHubTests
     {
         [TestMethod]

@@ -23,9 +23,9 @@ namespace Dev2.Activities.Designers.Tests
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("CEventHelper_RemoveAll")]
-// ReSharper disable InconsistentNaming
+
         public void CEventHelper_RemoveAll_RemoveAll_ExpectRemoved()
-// ReSharper restore InconsistentNaming
+
         {
             //------------Setup for test--------------------------
             var bob = new BobEvent();
@@ -44,9 +44,9 @@ namespace Dev2.Activities.Designers.Tests
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("CEventHelper_RemoveAll")]
-        // ReSharper disable InconsistentNaming
+        
         public void CEventHelper_RemoveAll_Null()
-        // ReSharper restore InconsistentNaming
+
         {
 
             CEventHelper.RemoveAllEventHandlers(null);
@@ -55,9 +55,9 @@ namespace Dev2.Activities.Designers.Tests
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("CEventHelper_RemoveAll")]
-// ReSharper disable InconsistentNaming
+
         public void CEventHelper_RemoveAll_Static_ExpectNothingRemoved()
-// ReSharper restore InconsistentNaming
+
         {
             //------------Setup for test--------------------------
             BobEvent.GloabalBuild += BobDomorebuilding;

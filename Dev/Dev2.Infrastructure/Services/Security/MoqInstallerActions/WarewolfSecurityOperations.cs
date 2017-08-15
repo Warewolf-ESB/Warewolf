@@ -18,20 +18,20 @@ namespace Dev2.Services.Security.MoqInstallerActions
 
         bool DoesWarewolfGroupExist();
 
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         bool IsUserInGroup(string username);
 
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         void AddUserToWarewolf(string currentUser);
 
         void DeleteWarewolfGroup();
 
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         string FormatUserForInsert(string currentUser, string machineName);
 
         void AddAdministratorsGroupToWarewolf();
 
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         bool IsAdminMemberOfWarewolf();
     }
 }

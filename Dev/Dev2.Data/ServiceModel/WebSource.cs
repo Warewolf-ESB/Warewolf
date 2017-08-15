@@ -18,9 +18,9 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Warewolf.Security.Encryption;
 
-// ReSharper disable CheckNamespace
+
 namespace Dev2.Runtime.ServiceModel.Data
-// ReSharper restore CheckNamespace
+
 {
     // PBI 5656 - 2013.05.20 - TWR - Created
     public class WebSource : Resource, IDisposable,IResourceSource, IWebSource

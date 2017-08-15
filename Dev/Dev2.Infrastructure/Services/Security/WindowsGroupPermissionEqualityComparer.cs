@@ -13,12 +13,12 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Services.Security
 {
-    [SuppressMessage("ReSharper", "UnusedMember.Global")]
+
     public class WindowsGroupPermissionEqualityComparer : IEqualityComparer<WindowsGroupPermission>
     {
         #region Implementation of IEqualityComparer<in WindowsGroupPermission>
 
-        // ReSharper disable CSharpWarnings::CS1584
+        
         /// <summary>
         /// Determines whether the specified objects are equal.
         /// </summary>
@@ -26,7 +26,7 @@ namespace Dev2.Services.Security
         /// true if the specified objects are equal; otherwise, false.
         /// </returns>
         /// <param name="x">The first object to compare.</param><param name="y">The second object to compare.</param>
-        // ReSharper restore CSharpWarnings::CS1584
+        
         public bool Equals(WindowsGroupPermission x, WindowsGroupPermission y)
         {
             var isEqual = x.Permissions.Equals(y.Permissions) && x.ResourceID.Equals(y.ResourceID);

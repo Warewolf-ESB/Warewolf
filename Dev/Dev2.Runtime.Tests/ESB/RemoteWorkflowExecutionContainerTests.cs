@@ -23,7 +23,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Warewolf.Storage;
 
-// ReSharper disable InconsistentNaming
+
 namespace Dev2.Tests.Runtime.ESB
 {
     [TestClass]

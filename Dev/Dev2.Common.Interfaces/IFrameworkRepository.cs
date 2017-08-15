@@ -19,24 +19,24 @@ namespace Dev2.Common.Interfaces
     {
         ICollection<T> All();
 
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         ICollection<T> Find(Expression<Func<T, bool>> expression);
 
         T FindSingle(Expression<Func<T, bool>> expression);
 
         string Save(T instanceObj);
 
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         void Save(ICollection<T> instanceObjs);
 
         event EventHandler ItemAdded;
 
         void Load();
 
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         void Remove(T instanceObj);
 
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         void Remove(ICollection<T> instanceObjs);
     }
 }

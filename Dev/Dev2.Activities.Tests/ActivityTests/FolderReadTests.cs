@@ -14,7 +14,7 @@ using ActivityUnitTests;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
-// ReSharper disable once InconsistentNaming
+
 namespace Dev2.Tests.Activities.ActivityTests
 {
     /// <summary>
@@ -33,7 +33,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         
 
-        // ReSharper disable InconsistentNaming
+        
 
         [TestMethod]
         [Owner("Hagashen Naidu")]

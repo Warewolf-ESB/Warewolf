@@ -11,7 +11,7 @@
 using System.Collections.Generic;
 using Dev2.Common.Interfaces.Infrastructure.SharedModels;
 
-// ReSharper disable CheckNamespace
+
 namespace Dev2.Runtime.ServiceModel.Data
 {
     public class DbTable

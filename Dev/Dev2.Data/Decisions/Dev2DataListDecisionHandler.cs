@@ -25,8 +25,8 @@ using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 
-// ReSharper disable CheckNamespace
-// ReSharper disable InconsistentNaming
+
+
 namespace Dev2.Data.Decision
 {
     public class Dev2DataListDecisionHandler
@@ -56,7 +56,7 @@ namespace Dev2.Data.Decision
         /// <param name="update"></param>
         /// <returns></returns>
         /// <exception cref="System.Data.InvalidExpressionException">Could not evaluate decision data - No decision function found for [  + typeOf + ]</exception>
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         public bool ExecuteDecisionStack(string decisionDataPayload, IList<string> oldAmbientData,int update)
         {
 

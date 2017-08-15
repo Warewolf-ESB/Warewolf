@@ -21,11 +21,11 @@ using Dev2.Providers.Errors;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Tests.Runtime.XML;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-// ReSharper disable PossibleNullReferenceException
+
 
 namespace Dev2.Tests.Runtime.ServiceModel.Data
 {
-    // ReSharper disable InconsistentNaming
+    
     [TestClass]
     public class ResourceTests
     {
@@ -100,7 +100,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
         }
 
         [TestMethod]
-        [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
+        
         public void ToXMLWhereValidResourceWIthErrorInfoDataIsValidFalse()
         {
             //------------Setup for test--------------------------
@@ -119,7 +119,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.IsNotNull(errorMessagesElement);
             var errorMessageElement = errorMessagesElement.Element("ErrorMessage");
             Assert.IsNotNull(errorMessageElement);
-            // ReSharper disable once PossibleNullReferenceException
+            
             Assert.AreEqual("Fix Me", errorMessageElement.Attribute("Message").Value);
             Assert.AreEqual("Line 1", errorMessageElement.Attribute("StackTrace").Value);
             Assert.AreEqual("None", errorMessageElement.Attribute("FixType").Value);

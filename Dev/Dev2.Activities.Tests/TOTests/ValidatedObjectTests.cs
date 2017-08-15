@@ -16,7 +16,7 @@ using Dev2.Providers.Validation.Rules;
 using Dev2.TO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Tests.Activities.TOTests
 {

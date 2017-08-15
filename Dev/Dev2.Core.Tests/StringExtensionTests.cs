@@ -11,8 +11,8 @@
 using Dev2.Common.ExtMethods;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-// ReSharper disable InconsistentNaming
-// ReSharper disable CheckNamespace
+
+
 namespace Dev2.Common.Test
 {
     [TestClass]

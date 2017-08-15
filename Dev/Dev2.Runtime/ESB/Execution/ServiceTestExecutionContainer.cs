@@ -35,9 +35,9 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 
-// ReSharper disable ParameterTypeCanBeEnumerable.Local
 
-// ReSharper disable CyclomaticComplexity
+
+
 
 namespace Dev2.Runtime.ESB.Execution
 {
@@ -369,7 +369,7 @@ namespace Dev2.Runtime.ESB.Execution
                 var failureMessage = DataObject.Environment.FetchErrors();
                 wfappUtils.DispatchDebugState(DataObject, StateType.End, DataObject.Environment.HasErrors(), failureMessage, out invokeErrors, DataObject.StartTime, false, true);
 
-                // ReSharper disable once PossibleNullReferenceException
+                
                 test.TestFailing = false;
                 test.TestPassed = false;
                 test.TestPending = false;
@@ -396,7 +396,7 @@ namespace Dev2.Runtime.ESB.Execution
                 to.AddError(ex.Message);
                 var failureMessage = DataObject.Environment.FetchErrors();
                 wfappUtils.DispatchDebugState(DataObject, StateType.End, DataObject.Environment.HasErrors(), failureMessage, out invokeErrors, DataObject.StartTime, false, true);
-                // ReSharper disable once PossibleNullReferenceException
+                
                 test.TestFailing = false;
                 test.TestPassed = false;
                 test.TestPending = false;

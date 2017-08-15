@@ -25,7 +25,7 @@ using System.Text;
 using Dev2.Common.Interfaces.Enums;
 using Warewolf.Core;
 
-// ReSharper disable UnusedMember.Global
+
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -52,7 +52,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             try
             {
                 var dbSource = serializer.Deserialize<IDbSource>(values["source"]);
-                // ReSharper disable MaximumChainedReferences
+                
                 ServiceModel.Services services = new ServiceModel.Services();
 
                 var src = ResourceCatalog.Instance.GetResource<DbSource>(GlobalConstants.ServerWorkspaceID, dbSource.Id);
@@ -86,7 +86,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     });
                 }
 
-                // ReSharper restore MaximumChainedReferences
+                
             }
             catch (Exception e)
             {
@@ -100,9 +100,9 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         private DbAction CreateDbAction(ServiceMethod a, DbSource src)
         {
-            // ReSharper disable MaximumChainedReferences
+            
             var inputs = a.Parameters.Select(b => new ServiceInput(b.Name, b.DefaultValue ?? "") { ActionName = a.Name } as IServiceInput).ToList();
-            // ReSharper restore MaximumChainedReferencse
+            
             return new DbAction
             {
                 Name = a.Name,

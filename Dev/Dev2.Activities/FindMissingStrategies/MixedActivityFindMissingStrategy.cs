@@ -24,7 +24,7 @@ namespace Dev2.FindMissingStrategies
     /// <summary>
     /// Responsible for the find missing logic that apply to all the activities that have a collection property and some static properties on them
     /// </summary>
-    [SuppressMessage("ReSharper", "UnusedMember.Global")] //This is loaded based on SpookyAction implementing IFindMissingStrategy
+ //This is loaded based on SpookyAction implementing IFindMissingStrategy
     class MixedActivityFindMissingStrategy : IFindMissingStrategy
     {
         #region Implementation of ISpookyLoadable<Enum>
@@ -187,9 +187,9 @@ namespace Dev2.FindMissingStrategies
         private static IEnumerable<string> InternalFindMissing<T>(IEnumerable<T> data)
         {
             IList<string> results = new List<string>();
-            // ReSharper disable LoopCanBeConvertedToQuery
+            
             foreach(T row in data)
-            // ReSharper restore LoopCanBeConvertedToQuery
+            
             {
                 IEnumerable<PropertyInfo> properties = StringAttributeRefectionUtils.ExtractAdornedProperties<FindMissingAttribute>(row);
                 foreach(PropertyInfo propertyInfo in properties)

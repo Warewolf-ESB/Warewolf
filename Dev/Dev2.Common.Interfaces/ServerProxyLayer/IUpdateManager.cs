@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Data;
 using Dev2.Common.Interfaces.Deploy;
 using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Common.Interfaces.ServerProxyLayer
 {
@@ -22,7 +22,7 @@ namespace Dev2.Common.Interfaces.ServerProxyLayer
         void SaveOAuthSource(IOAuthSource source, Guid serverWorkspaceID);
         void SaveEmailServiceSource(IEmailServiceSource emailServiceSource, Guid serverWorkspaceID);
         void SaveExchangeSource(IExchangeSource exchangeSource, Guid serverWorkspaceID);
-        // ReSharper disable once InconsistentNaming
+
         void SaveRabbitMQServiceSource(IRabbitMQServiceSourceDefinition rabbitMqServiceSource, Guid serverWorkspaceID);
         void SaveWcfSource(IWcfServerSource wcfSource, Guid serverWorkspaceID);
     }
@@ -39,7 +39,7 @@ namespace Dev2.Common.Interfaces.ServerProxyLayer
         string TestComPluginService(IComPluginService inputValues);
         string TestEmailServiceSource(IEmailServiceSource emailServiceSource);
         string TestExchangeServiceSource(IExchangeSource emailServiceSource);
-        // ReSharper disable once InconsistentNaming
+
         string TestRabbitMQServiceSource(IRabbitMQServiceSourceDefinition rabbitMqServiceSource);
         string TestWcfServiceSource(IWcfServerSource wcfServerSource);
         string TestWcfService(IWcfService service);

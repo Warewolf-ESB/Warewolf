@@ -5,9 +5,9 @@ using System.IO;
 using System.IO.Pipes;
 using Newtonsoft.Json;
 using System.Reflection;
-// ReSharper disable InconsistentNaming
 
-// ReSharper disable NonLocalizedString
+
+
 namespace WarewolfCOMIPC.Client
 {
     public class IpcClient : IDisposable, IDev2IpcClient

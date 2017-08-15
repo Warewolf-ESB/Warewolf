@@ -14,8 +14,8 @@ namespace Dev2.Session
 {
     public interface IDev2StudioSessionBroker : IDebugSession,IDisposable
     {
-        // ReSharper disable InconsistentNaming
-        // ReSharper restore InconsistentNaming
+        
+
 
    
     }

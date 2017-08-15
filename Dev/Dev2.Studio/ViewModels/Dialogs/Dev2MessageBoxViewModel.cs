@@ -21,9 +21,9 @@ using Warewolf.Studio.Views;
 using Dev2.Studio.Core;
 using Dev2.Studio.Interfaces;
 
-// ReSharper disable PossibleNullReferenceException
 
-// ReSharper disable CheckNamespace
+
+
 namespace Dev2.Studio.ViewModels.Dialogs
 {
     public class Dev2MessageBoxViewModel : Screen
@@ -181,8 +181,7 @@ namespace Dev2.Studio.ViewModels.Dialogs
             return Path.Combine(path, "DontShowAgainOptions.xml");
         }
 
-        [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
-        private static void LoadDontShowAgainOptions()
+                private static void LoadDontShowAgainOptions()
         {
             try
             {

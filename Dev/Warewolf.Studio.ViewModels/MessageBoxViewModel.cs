@@ -4,7 +4,7 @@ using System.Windows.Input;
 using Caliburn.Micro;
 using FontAwesome.WPF;
 using Microsoft.Practices.Prism.Commands;
-// ReSharper disable UnusedAutoPropertyAccessor.Local
+
 
 namespace Warewolf.Studio.ViewModels
 {

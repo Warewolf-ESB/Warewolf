@@ -342,7 +342,7 @@ namespace Warewolf.Studio.Core
 
         public bool Equals(DllListingModel other)
         {
-            // ReSharper disable once PossibleNullReferenceException
+            
             return string.Equals(Name, other.Name) && string.Equals(FullName, other.FullName) && IsDirectory == other.IsDirectory;
         }
 

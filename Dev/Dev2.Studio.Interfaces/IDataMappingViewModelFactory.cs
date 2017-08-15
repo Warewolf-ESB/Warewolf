@@ -11,7 +11,7 @@
 using System.Collections.Specialized;
 
 namespace Dev2.Studio.Interfaces
-// ReSharper restore CheckNamespace
+
 {
     public interface IDataMappingViewModelFactory
     {

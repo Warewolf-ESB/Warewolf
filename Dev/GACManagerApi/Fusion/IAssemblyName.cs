@@ -17,7 +17,7 @@ namespace GACManagerApi.Fusion
         int GetProperty(ASM_NAME PropertyId, IntPtr pvProperty, ref uint pcbProperty);
 
         [PreserveSig()]
-        // ReSharper disable once UnusedMember.Global
+        
 #pragma warning disable 465
         int Finalize();
 #pragma warning restore 465

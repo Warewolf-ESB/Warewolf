@@ -18,7 +18,7 @@ using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    [SuppressMessage("ReSharper", "UnusedMember.Global")]
+
     public class FetchComPluginNameSpaces : IEsbManagementEndpoint
     {
         public string HandlesType()
@@ -32,7 +32,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             try
             {
                 var dbSource = serializer.Deserialize<ComPluginSourceDefinition>(values["source"]);
-                // ReSharper disable MaximumChainedReferences
+                
                 ComPluginServices services = new ComPluginServices();
                 var src = ResourceCatalog.Instance.GetResource<ComPluginSource>(GlobalConstants.ServerWorkspaceID, dbSource.Id);
                 var methods = services.Namespaces(src, Guid.Empty, Guid.Empty).Select(a => a as INamespaceItem).ToList();
@@ -41,7 +41,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     HasError = false,
                     Message = serializer.SerializeToBuilder(methods)
                 });
-                // ReSharper restore MaximumChainedReferences
+                
             }
             catch (Exception e)
             {

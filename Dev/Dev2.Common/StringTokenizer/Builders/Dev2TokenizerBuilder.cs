@@ -12,7 +12,7 @@ using Dev2.Common.Interfaces.StringTokenizer.Interfaces;
 using System.Collections.Generic;
 using Warewolf.Resource.Errors;
 
-// ReSharper disable CheckNamespace
+
 
 namespace Dev2.Common
 {

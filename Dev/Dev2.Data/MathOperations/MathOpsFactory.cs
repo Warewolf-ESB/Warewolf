@@ -34,7 +34,7 @@ namespace Dev2.Data.MathOperations {
         public static IFrameworkRepository<IFunction> FunctionRepository() {
             return new FunctionRepository();
         }
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         public static IEvaluationFunction CreateEvaluationFunctionTO(string functionName) {
             return new EvaluationFunctionTO(functionName);
         }

@@ -18,9 +18,9 @@ using Unlimited.Framework.Converters.Graph.Ouput;
 using Unlimited.Framework.Converters.Graph.String.Json;
 using Warewolf.Core;
 using Warewolf.Storage;
-// ReSharper disable UnusedMember.Local
 
-// ReSharper disable InconsistentNaming
+
+
 
 namespace Dev2.Tests.Activities.ActivityTests.Web
 {

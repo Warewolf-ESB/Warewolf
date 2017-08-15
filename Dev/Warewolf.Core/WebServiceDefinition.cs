@@ -19,7 +19,7 @@ using Dev2.Common.Interfaces.WebServices;
 namespace Warewolf.Core
 {
     public class WebServiceDefinition : IWebService
-    // ReSharper restore UnusedMember.Global
+    
     {
         WebRequestMethod _method;
 
@@ -33,9 +33,9 @@ namespace Warewolf.Core
         /// <summary>
         ///     Initializes a new instance of the <see cref="T:System.Object" /> class.
         /// </summary>
-        // ReSharper disable TooManyDependencies
+        
         public WebServiceDefinition(string name, string path, IWebServiceSource source, IList<IServiceInput> inputs, IList<IServiceOutputMapping> outputMappings, string queryString, Guid id)
-        // ReSharper restore TooManyDependencies
+        
         {
             Name = name;
             Path = path;
@@ -144,7 +144,7 @@ namespace Warewolf.Core
         {
             unchecked
             {
-                // ReSharper disable NonReadonlyFieldInGetHashCode
+                
                 int hashCode = Name?.GetHashCode() ?? 0;
 
                 hashCode = (hashCode * 397) ^ (Path?.GetHashCode() ?? 0);
@@ -162,7 +162,7 @@ namespace Warewolf.Core
                 hashCode = (hashCode * 397) ^ (PostData?.GetHashCode() ?? 0);
                 hashCode = (hashCode * 397) ^ Method.GetHashCode();
                 return hashCode;
-                // ReSharper restore NonReadonlyFieldInGetHashCode
+                
             }
         }
 
@@ -204,7 +204,7 @@ namespace Warewolf.Core
                     eq = false;
                 }
             }
-            // ReSharper disable once ConditionIsAlwaysTrueOrFalse
+            
             else if (otherHeaders == null && headers != null)
             {
                 return false;

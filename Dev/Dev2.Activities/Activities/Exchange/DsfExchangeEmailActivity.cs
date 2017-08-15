@@ -54,7 +54,7 @@ namespace Dev2.Activities.Exchange
 
         #endregion
 
-        // ReSharper disable MemberCanBePrivate.Global
+        
         public IExchangeSource SavedSource { get; set; }
 
         [FindMissing]
@@ -64,7 +64,7 @@ namespace Dev2.Activities.Exchange
         [FindMissing]
         public string Bcc { get; set; }
 
-        // ReSharper restore MemberCanBePrivate.Global
+        
         [FindMissing]
         public string Subject { get; set; }
         [FindMissing]
@@ -103,9 +103,9 @@ namespace Dev2.Activities.Exchange
         /// When overridden runs the activity's execution logic
         /// </summary>
         /// <param name="context">The context to be used.</param>
-        // ReSharper disable MethodTooLong
+        
         protected override void OnExecute(NativeActivityContext context)
-        // ReSharper restore MethodTooLong
+        
         {
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
 

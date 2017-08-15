@@ -25,7 +25,7 @@ using System.Linq;
 using System.Windows;
 using Dev2.Studio.Interfaces;
 
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Activities.Designers2.RabbitMQ.Publish
 {

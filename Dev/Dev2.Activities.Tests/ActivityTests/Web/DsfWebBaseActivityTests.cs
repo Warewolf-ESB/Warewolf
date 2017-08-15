@@ -15,13 +15,13 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Warewolf.Core;
 using Warewolf.Storage;
-// ReSharper disable MemberCanBePrivate.Global
+
 
 namespace Dev2.Tests.Activities.ActivityTests.Web
 {
     //"This Test class tests WebBaseActivity using a Delete implemantation as an example "    
     [TestClass]
-    [SuppressMessage("ReSharper", "InconsistentNaming")]
+
     public class DsfWebBaseActivityTests
     {
         private const string userAgent1 = "Mozilla/4.0";

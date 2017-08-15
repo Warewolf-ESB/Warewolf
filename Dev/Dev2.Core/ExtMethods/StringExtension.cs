@@ -22,7 +22,7 @@ namespace Dev2
 {
     public static class StringExtension
     {
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         public static bool IsDate(this string payload)
         {
             bool result = false;

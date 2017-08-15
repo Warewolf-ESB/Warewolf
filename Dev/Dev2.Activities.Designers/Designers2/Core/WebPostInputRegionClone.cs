@@ -15,7 +15,7 @@ namespace Dev2.Activities.Designers2.Core
         public string ToolRegionName { get; set; }
         public bool IsEnabled { get; set; }
         public IList<IToolRegion> Dependants { get; set; }
-        // ReSharper disable once UnusedAutoPropertyAccessor.Local
+        
         public IList<string> Errors { get; private set; }
         public ObservableCollection<INameValue> Headers { get; set; }
         public string PostData { get; set; }
@@ -37,7 +37,7 @@ namespace Dev2.Activities.Designers2.Core
         }
 
         [NotifyPropertyChangedInvocator]
-        // ReSharper disable once UnusedMember.Local
+        
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             var handler = PropertyChanged;

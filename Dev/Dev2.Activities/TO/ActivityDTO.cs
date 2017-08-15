@@ -20,18 +20,18 @@ using Dev2.TO;
 using Dev2.Util;
 using Dev2.Validation;
 using Warewolf.Resource.Errors;
-// ReSharper disable UnusedMember.Global
 
-// ReSharper disable CheckNamespace
+
+
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
-// ReSharper restore CheckNamespace
+
 {
     /// <summary>
     /// Used for activties
     /// </summary>
-    // ReSharper disable InconsistentNaming
+    
     public class ActivityDTO : ValidatedObject, IDev2TOFn
-    // ReSharper restore InconsistentNaming
+    
     {
         string _fieldName;
         string _fieldValue;
@@ -61,10 +61,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         void RaiseCanAddRemoveChanged()
         {
-            // ReSharper disable ExplicitCallerInfoArgument
+            
             OnPropertyChanged("CanRemove");
             OnPropertyChanged("CanAdd");
-            // ReSharper restore ExplicitCallerInfoArgument
+            
         }
 
         [FindMissing]

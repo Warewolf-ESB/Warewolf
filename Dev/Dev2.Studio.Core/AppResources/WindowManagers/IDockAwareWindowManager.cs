@@ -10,7 +10,7 @@
 
 using Caliburn.Micro;
 
-// ReSharper disable once CheckNamespace
+
 namespace Dev2.Studio.Core.AppResources.WindowManagers
 {
     public interface IDockAwareWindowManager : IWindowManager

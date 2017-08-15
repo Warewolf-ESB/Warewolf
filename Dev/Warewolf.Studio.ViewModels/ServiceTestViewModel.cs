@@ -38,10 +38,10 @@ using Microsoft.Practices.Prism.Mvvm;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Core;
 using Warewolf.Resource.Errors;
-// ReSharper disable ParameterTypeCanBeEnumerable.Local
-// ReSharper disable LoopCanBeConvertedToQuery
-// ReSharper disable InconsistentNaming
-// ReSharper disable ReturnTypeCanBeEnumerable.Local
+
+
+
+
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -218,7 +218,7 @@ namespace Warewolf.Studio.ViewModels
             if (exists == null)
             {
                 serviceTestStep = SelectedServiceTest.AddTestStep(debugItemContent.ID.ToString(), debugItemContent.DisplayName, debugItemContent.ActualType, new ObservableCollection<IServiceTestOutput>()) as ServiceTestStep;
-                // ReSharper disable once PossibleNullReferenceException
+                
                 if (serviceTestStep != null)
                 {
                     SetStepIcon(serviceTestStep.ActivityType, serviceTestStep);
@@ -303,7 +303,7 @@ namespace Warewolf.Studio.ViewModels
                     var serviceTestStep = SelectedServiceTest.AddTestStep(debugItemContent.ID.ToString(), debugItemContent.DisplayName, debugItemContent.ActualType, new ObservableCollection<IServiceTestOutput>()) as ServiceTestStep;
                     var hasOutputs = outputs?.Select(item => item.ResultsList).All(list => list.Count > 0);
                     var debugStateActivityTypeName = debugState.ActivityTypeName;
-                    // ReSharper disable once PossibleNullReferenceException
+                    
                     if (outputs.Count > 0 && hasOutputs.HasValue && hasOutputs.Value)
                     {
                         AddOutputs(outputs, serviceTestStep);
@@ -1535,7 +1535,7 @@ namespace Warewolf.Studio.ViewModels
         IToolDescriptor GetDescriptorFromAttribute(Type type)
         {
             var info = type.GetCustomAttributes(typeof(ToolDescriptorInfo)).First() as ToolDescriptorInfo;
-            // ReSharper disable once PossibleNullReferenceException
+            
             return new ToolDescriptor(info.Id, info.Designer, new WarewolfType(type.FullName, type.Assembly.GetName().Version, type.Assembly.Location), info.Name, info.Icon, type.Assembly.GetName().Version, true, info.Category, ToolType.Native, info.IconUri, info.FilterTag, info.ResourceToolTip, info.ResourceHelpText);
         }
 
@@ -1812,7 +1812,7 @@ namespace Warewolf.Studio.ViewModels
             SetDisplayName(isDirty);
         }
 
-        // ReSharper disable once UnusedAutoPropertyAccessor.Local
+        
         private bool CanStopTest => SelectedServiceTest != null && SelectedServiceTest.IsTestRunning;
         private bool CanRunSelectedTestInBrowser => SelectedServiceTest != null && !SelectedServiceTest.IsDirty && IsServerConnected();
         private bool CanRunSelectedTest => GetPermissions() && IsServerConnected();
@@ -2547,7 +2547,7 @@ namespace Warewolf.Studio.ViewModels
 
         public void Dispose()
         {
-            // ReSharper disable DelegateSubtraction
+            
             if (ResourceModel?.Environment?.Connection != null)
                 ResourceModel.Environment.Connection.ReceivedResourceAffectedMessage -= OnReceivedResourceAffectedMessage;
         }

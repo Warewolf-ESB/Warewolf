@@ -14,11 +14,11 @@ using System.Text;
 using Dev2.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-// ReSharper disable once CheckNamespace
+
 namespace Dev2.Core.Tests
 {
     [TestClass]
-    [SuppressMessage("ReSharper", "InconsistentNaming")]
+
     public class DependencyGraphGeneratorTest
     {
         [TestMethod]

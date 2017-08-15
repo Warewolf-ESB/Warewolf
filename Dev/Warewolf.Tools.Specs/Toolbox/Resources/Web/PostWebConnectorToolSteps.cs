@@ -19,7 +19,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using TechTalk.SpecFlow;
 
-// ReSharper disable UnusedMember.Global
+
 
 namespace Dev2.Activities.Specs.Toolbox.Resources.Web
 {

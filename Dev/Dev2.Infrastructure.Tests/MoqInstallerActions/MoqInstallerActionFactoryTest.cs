@@ -19,7 +19,7 @@ namespace Dev2.Infrastructure.Tests.MoqInstallerActions
     [TestClass]
     public class MoqInstallerActionFactoryTest
     {
-        // ReSharper disable InconsistentNaming
+        
 
         [TestMethod]
         [Owner("Travis Frisinger")]
@@ -45,6 +45,6 @@ namespace Dev2.Infrastructure.Tests.MoqInstallerActions
             Assert.IsNotNull(result);
         }
 
-        // ReSharper restore InconsistentNaming
+
     }
 }

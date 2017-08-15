@@ -131,9 +131,9 @@ namespace Dev2.PathOperations
                     {
                         return (TItem) formatter.Deserialize(stream);
                     }
-                        // ReSharper disable EmptyGeneralCatchClause 
+                         
                     catch (Exception ex)
-                        // ReSharper restore EmptyGeneralCatchClause
+                        
                     {
                         Dev2Logger.Error(ex);
                     }

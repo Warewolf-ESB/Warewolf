@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Gma.DataStructures.StringSearch
 {
-    [SuppressMessage("ReSharper", "UnusedMember.Global")]
+
     public class PatriciaSuffixTrie<TValue> : ITrie<TValue>
     {
         private readonly int m_MinQueryLength;

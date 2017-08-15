@@ -145,9 +145,9 @@ namespace Dev2.Runtime.ESB.Execution
                 {
                     if (response != null)
                     {
-                        // ReSharper disable AssignNullToNotNullAttribute
+                        
                         using (StreamReader reader = new StreamReader(response.GetResponseStream()))
-                        // ReSharper restore AssignNullToNotNullAttribute
+                        
                         {
                             result = reader.ReadToEnd();
                         }
@@ -216,9 +216,9 @@ namespace Dev2.Runtime.ESB.Execution
                 {
                     if (response != null)
                     {
-                        // ReSharper disable AssignNullToNotNullAttribute
+                        
                         using (StreamReader reader = new StreamReader(response.GetResponseStream()))
-                        // ReSharper restore AssignNullToNotNullAttribute
+                        
                         {
                             result = reader.ReadToEnd();
                         }
