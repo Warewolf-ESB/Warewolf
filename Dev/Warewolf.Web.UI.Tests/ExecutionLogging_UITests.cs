@@ -46,8 +46,28 @@ namespace Warewolf.Web.UI.Tests.ExecutionLoggingTests
         {
             //Generate some test log data
             WebRequest.Create("http://localhost:3142/secure/Hello%20World.json?Name=Tester");
-            driver.driver.Navigate().GoToUrl(driver.baseURL + "/ExecutionLogging");
-            Assert.IsFalse(driver.driver.IsAlertPresent(), driver.driver.CloseAlertAndGetItsText(false));
+            driver.driver.Navigate().GoToUrl(driver.baseURL + "/ExecutionLogging/");
+            var browserType = driver.driver.GetType().Name.ToString();
+            switch (browserType)
+            {
+                case "FirefoxDriver":
+                    Assert.AreEqual("http://localhost:3142 is requesting your username and password.", driver.driver.CloseAlertAndGetItsText(false));
+                    break;
+                case "InternetExplorerDriver":
+                    Assert.IsFalse(driver.driver.IsAlertPresent(), driver.driver.CloseAlertAndGetItsText(false));
+                    //Assert.AreEqual("http://localhost:3142 is requesting your username and password.", driver.driver.CloseAlertAndGetItsText(false));
+                    break;
+                case "OperaDriver":
+                    Assert.IsFalse(driver.driver.IsAlertPresent(), driver.driver.CloseAlertAndGetItsText(false));
+                    break;
+                case "ChromeDriver":
+                    Assert.IsFalse(driver.driver.IsAlertPresent(), driver.driver.CloseAlertAndGetItsText(false));
+                    break;
+                default:
+                    Assert.IsFalse(driver.driver.IsAlertPresent(), driver.driver.CloseAlertAndGetItsText(false));
+                    break;
+            }
+            //Assert.IsFalse(driver.driver.IsAlertPresent(), driver.driver.CloseAlertAndGetItsText(false));
             driver.driver.FindElement(By.Id("updateServer")).Click();
         }
     }
