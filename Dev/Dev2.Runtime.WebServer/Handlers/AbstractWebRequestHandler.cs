@@ -39,10 +39,10 @@ using Dev2.Services.Security;
 using Dev2.Web;
 using Dev2.Workspaces;
 
-// ReSharper disable MemberCanBeProtected.Global
-// ReSharper disable FunctionComplexityOverflow
-// ReSharper disable LoopCanBeConvertedToQuery
-// ReSharper disable MemberCanBePrivate.Global
+
+
+
+
 
 namespace Dev2.Runtime.WebServer.Handlers
 {
@@ -372,7 +372,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             return ctx.GetServiceName();
         }
 
-        // ReSharper disable InconsistentNaming
+        
         protected static string GetWorkspaceID(ICommunicationContext ctx)
         {
             return ctx.GetWorkspaceID();

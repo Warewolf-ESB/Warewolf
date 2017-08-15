@@ -141,9 +141,9 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.DateandTime
             var result = scenarioContext.Get<IDSFDataObject>("result");
             GetScalarValueFromEnvironment(result.Environment, DataListUtil.RemoveLanguageBrackets(ResultVariable),
                                        out actualValue, out error);
-            // ReSharper disable AssignNullToNotNullAttribute
+            
             TypeConverter converter = TypeDescriptor.GetConverter(Type.GetType(type));
-            // ReSharper restore AssignNullToNotNullAttribute
+            
             converter.ConvertFrom(actualValue);
         }
 

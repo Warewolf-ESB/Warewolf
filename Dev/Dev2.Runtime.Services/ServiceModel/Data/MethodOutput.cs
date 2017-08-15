@@ -35,7 +35,7 @@ namespace Dev2.Runtime.ServiceModel.Data
         }
         #region Properties
 
-        // ReSharper disable UnusedAutoPropertyAccessor.Local
+        
 
         public string Name { get; private set; }
 
@@ -60,7 +60,7 @@ namespace Dev2.Runtime.ServiceModel.Data
         public bool IsObject { get; set; }
         public bool IsJsonArray { get; set; }
 
-        // ReSharper restore UnusedAutoPropertyAccessor.Local
+        
 
         #endregion
 

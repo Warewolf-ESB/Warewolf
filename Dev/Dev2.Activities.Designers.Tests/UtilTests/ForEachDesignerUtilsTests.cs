@@ -22,8 +22,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
-// ReSharper disable InconsistentNaming
-// ReSharper disable CheckNamespace
+
+
 namespace Dev2.Core.Tests.Activities
 {
     [TestClass]

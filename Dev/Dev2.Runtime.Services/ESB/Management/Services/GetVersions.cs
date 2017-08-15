@@ -24,7 +24,7 @@ using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
 using Dev2.Workspaces;
 using Warewolf.Resource.Errors;
-// ReSharper disable MemberCanBePrivate.Global
+
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -58,9 +58,9 @@ namespace Dev2.Runtime.ESB.Management.Services
                 }
                 if (!values.ContainsKey("resourceId"))
                 {
-                    // ReSharper disable NotResolvedInText
+                    
                     throw new ArgumentNullException(ErrorResource.NoResourceIdInTheIncomingData);
-                    // ReSharper restore NotResolvedInText
+                    
                 }
                 var id = Guid.Parse(values["resourceId"].ToString());
                 Dev2Logger.Info("Get Versions. " + id);

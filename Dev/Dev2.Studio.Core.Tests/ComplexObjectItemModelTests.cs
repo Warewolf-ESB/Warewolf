@@ -2,8 +2,8 @@
 using Dev2.Studio.Core.Models.DataList;
 using Dev2.Studio.Interfaces.DataList;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-// ReSharper disable InconsistentNaming
-// ReSharper disable UseObjectOrCollectionInitializer
+
+
 
 namespace Dev2.Core.Tests
 {

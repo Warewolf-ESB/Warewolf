@@ -28,7 +28,7 @@ namespace Dev2.Activities
                     itrs.Add(paramIterator);
                 }
             }
-            // ReSharper disable once RedundantJumpStatement
+            
             return;
         }
     }

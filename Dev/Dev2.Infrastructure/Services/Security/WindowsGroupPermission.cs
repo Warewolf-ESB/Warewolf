@@ -58,9 +58,9 @@ namespace Dev2.Services.Security
             }
         }
 
-        // ReSharper disable InconsistentNaming
+        
         public Guid ResourceID { get { return _resourceId; } set { OnPropertyChanged(ref _resourceId, value); } }
-// ReSharper restore InconsistentNaming
+
 
         public string ResourceName { get { return _resourceName; } set { OnPropertyChanged(ref _resourceName, value); } }
 
@@ -213,7 +213,7 @@ namespace Dev2.Services.Security
             };
         }
 
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         public static WindowsGroupPermission CreateEveryone()
         {
             return new WindowsGroupPermission

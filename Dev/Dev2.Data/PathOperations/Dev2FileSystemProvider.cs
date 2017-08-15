@@ -25,15 +25,15 @@ using Dev2.Data.Interfaces.Enums;
 using Microsoft.Win32.SafeHandles;
 using Warewolf.Resource.Errors;
 
-// ReSharper disable CheckNamespace
-// ReSharper disable InconsistentNaming
+
+
 namespace Dev2.PathOperations
 {
 
     /// <summary>
     /// Used for internal security reasons
     /// </summary>
-    [SuppressMessage("ReSharper", "UnusedMember.Global")]
+
     public sealed class SafeTokenHandle : SafeHandleZeroOrMinusOneIsInvalid
     {
         private SafeTokenHandle()
@@ -59,13 +59,13 @@ namespace Dev2.PathOperations
     /// Purpose : To provide file system IO operations to the File activities
     /// </summary>
     [Serializable]
-    [SuppressMessage("ReSharper", "UnusedMember.Global")]
+
     public class Dev2FileSystemProvider : IActivityIOOperationsEndPoint
     {
         private static readonly ReaderWriterLockSlim _fileLock = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
         const int LOGON32_PROVIDER_DEFAULT = 0;
         //This parameter causes LogonUser to create a primary token. 
-        // ReSharper disable once InconsistentNaming
+
         const int LOGON32_LOGON_INTERACTIVE = 2;
 
         public IActivityIOPath IOPath

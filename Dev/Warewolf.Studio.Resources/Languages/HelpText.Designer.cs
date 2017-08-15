@@ -277,7 +277,8 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Create a connection to a new server..
+        ///   Looks up a localized string similar to Create a new Warewolf Server connection. &lt;br/&gt;	&lt;br/&gt; Make sure that the server is running before attempting to test the connection or to connect to the server.
+        ///    .
         /// </summary>
         public static string ConnectControlNewConnectionHelp {
             get {
@@ -295,7 +296,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select the Warewolf Server from the drop down list that you want to use. &lt;br/&gt;	&lt;br/&gt;	If you want to connect to a Warewolf Server that is not in the drop down list, then select  &lt;b&gt;New Remote Server…&lt;/b&gt;&lt;br/&gt;	&lt;br/&gt;	Servers with an active connection will show &lt;b&gt;(Connected)&lt;/b&gt; next to them..
+        ///   Looks up a localized string similar to Select the Warewolf Server from the drop down list that you want to use. &lt;br/&gt;	&lt;br/&gt;	If you want to connect to a Warewolf Server that is not in the drop down list, then click the  &lt;b&gt;New&lt;/b&gt; button &lt;br/&gt;	&lt;br/&gt;	Servers with an active connection will show &lt;b&gt;(Connected)&lt;/b&gt; next to them..
         /// </summary>
         public static string ConnectControlViewSelectHelp {
             get {

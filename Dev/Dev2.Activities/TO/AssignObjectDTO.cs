@@ -16,7 +16,7 @@ using Dev2.Common.Interfaces.Interfaces;
 
 namespace Dev2.TO
 {
-    // ReSharper disable once InconsistentNaming
+    
     public class AssignObjectDTO : ValidatedObject, IDev2TOFn
     {
         private string _fieldName;
@@ -148,10 +148,10 @@ namespace Dev2.TO
 
         private void RaiseCanAddRemoveChanged()
         {
-            // ReSharper disable ExplicitCallerInfoArgument
+            
             OnPropertyChanged("CanRemove");
             OnPropertyChanged("CanAdd");
-            // ReSharper restore ExplicitCallerInfoArgument
+            
         }
     }
 }

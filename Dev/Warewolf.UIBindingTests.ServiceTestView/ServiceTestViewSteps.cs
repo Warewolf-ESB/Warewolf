@@ -49,7 +49,7 @@ namespace Warewolf.UIBindingTests.ServiceTestViewModel
         }
 
         [Given(@"I Open serviceTestview Then DesignSurface allow drop is false")]
-        [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
+        
         public void GivenIOpenServiceTestviewThenDesignSurfaceAllowDropIsFalse()
         {
             Utils.SetupResourceDictionary();

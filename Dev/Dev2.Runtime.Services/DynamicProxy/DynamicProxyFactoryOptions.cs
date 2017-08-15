@@ -1,6 +1,6 @@
 using System.Text;
 
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Runtime.DynamicProxy
 {

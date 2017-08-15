@@ -16,7 +16,7 @@
 //using Dev2.Tests.Runtime.Hosting;
 //using Dev2.Workspaces;
 //using Microsoft.VisualStudio.TestTools.UnitTesting;
-//// ReSharper disable InconsistentNaming
+//
 
 //namespace Dev2.Tests.Runtime
 //{

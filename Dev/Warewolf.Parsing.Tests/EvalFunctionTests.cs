@@ -4,7 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.Storage;
 using WarewolfParserInterop;
 using Dev2.Common.Common;
-// ReSharper disable InconsistentNaming
+
 
 namespace WarewolfParsingTest
 {

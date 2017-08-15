@@ -25,7 +25,7 @@ namespace Dev2.Tests.Activities.ActivityTests
     /// Summary description for AssignActivity
     /// </summary>
     [TestClass]
-    // ReSharper disable InconsistentNaming
+    
     public class MultiAssignActivityTest : BaseActivityUnitTest
     {
 

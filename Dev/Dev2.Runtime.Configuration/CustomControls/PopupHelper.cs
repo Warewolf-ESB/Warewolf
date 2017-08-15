@@ -141,9 +141,9 @@ namespace System.Windows.Controls
  || Application.Current.Host == null
                 || Application.Current.Host.Content == null
 #endif
-                // ReSharper disable RedundantLogicalConditionalExpressionOperand
+                
  || false)
-            // ReSharper restore RedundantLogicalConditionalExpressionOperand
+            
             {
                 return;
             }
@@ -175,9 +175,9 @@ namespace System.Windows.Controls
             double popupContentWidth = PopupChild.ActualWidth;
             double popupContentHeight = PopupChild.ActualHeight;
 
-            // ReSharper disable CompareOfFloatsByEqualityOperator
+            
             if(rootHeight == 0 || rootWidth == 0 || popupContentWidth == 0 || popupContentHeight == 0)
-            // ReSharper restore CompareOfFloatsByEqualityOperator
+            
             {
                 return;
             }

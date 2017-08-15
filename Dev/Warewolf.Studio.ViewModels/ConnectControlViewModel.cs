@@ -25,8 +25,8 @@ using Microsoft.Practices.Prism.Mvvm;
 using Microsoft.Practices.Prism.PubSubEvents;
 using Warewolf.Resource.Errors;
 
-// ReSharper disable AutoPropertyCanBeMadeGetOnly.Local
-// ReSharper disable InconsistentNaming
+
+
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -43,15 +43,11 @@ namespace Warewolf.Studio.ViewModels
 
         public ConnectControlViewModel(IServer server, IEventAggregator aggregator, ObservableCollection<IServer> servers = null)
         {
-            if (server == null)
-            {
-                throw new ArgumentNullException(nameof(server));
-            }
             if (aggregator == null)
             {
                 throw new ArgumentNullException(nameof(aggregator));
             }
-            Server = server;
+            Server = server ?? throw new ArgumentNullException(nameof(server));
             _existingServers = servers;
             LoadServers();
             SelectedConnection = server;
@@ -115,6 +111,11 @@ namespace Warewolf.Studio.ViewModels
             updatedServer.NetworkStateChanged += OnServerOnNetworkStateChanged;
             Servers.Insert(idx, updatedServer);
             SelectedConnection = shellViewModel?.LocalhostServer;
+
+            if (!updatedServer.IsConnected && !updatedServer.IsLocalHost)
+            {
+                updatedServer.DisplayName?.Replace("(Connected)", "");
+            }
         }
 
         public void LoadServers()
@@ -284,7 +285,7 @@ namespace Warewolf.Studio.ViewModels
                     _selectedConnection = value;
                     if (value.EnvironmentID != Guid.Empty && !value.IsConnected)
                     {
-                        // ReSharper disable once UnusedVariable
+                        
                         var isConnected = CheckVersionConflict();
                     }
                     SetActiveEnvironment();

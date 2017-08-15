@@ -30,7 +30,7 @@ using Unlimited.Framework.Converters.Graph;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 using WarewolfParserInterop;
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Services.Execution
 {
@@ -138,9 +138,9 @@ namespace Dev2.Services.Execution
 
             #region Create OutputFormatter
 
-            // ReSharper disable RedundantAssignment
+            
             IOutputFormatter outputFormatter = null;
-            // ReSharper restore RedundantAssignment
+            
 
             try
             {

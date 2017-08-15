@@ -42,9 +42,9 @@ namespace Dev2.DynamicServices.Objects
             }
 
             // Travis.Frisinger : 13.11.2012 - Remove bad namespaces
-            // ReSharper disable ConditionIsAlwaysTrueOrFalse
+            
             if (GlobalConstants.runtimeNamespaceClean)
-                // ReSharper restore ConditionIsAlwaysTrueOrFalse
+                
             {
                 xamlDefinition = new Dev2XamlCleaner().CleanServiceDef(xamlDefinition);
             }

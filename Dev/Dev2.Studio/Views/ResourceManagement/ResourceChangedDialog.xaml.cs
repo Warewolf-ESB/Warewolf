@@ -15,7 +15,7 @@ using System.Windows.Controls;
 using Dev2.Studio.Interfaces;
 using Warewolf.Studio.Core;
 
-// ReSharper disable once CheckNamespace
+
 namespace Dev2.Studio.Views.ResourceManagement
 {
     public interface IResourceChangedDialog

@@ -8,7 +8,7 @@ using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Activities.Designers.Tests.Core.DotNet
 {
@@ -178,7 +178,7 @@ namespace Dev2.Activities.Designers.Tests.Core.DotNet
 
             //------------Execute Test---------------------------
             DotNetSourceRegion region = new DotNetSourceRegion(src.Object, ModelItemUtils.CreateModelItem(act));
-            // ReSharper disable once UseObjectOrCollectionInitializer
+            
             DotNetSourceRegion regionToRestore = new DotNetSourceRegion(src.Object, ModelItemUtils.CreateModelItem(act));
             regionToRestore.IsEnabled = false;
             regionToRestore.SelectedSource = s2;

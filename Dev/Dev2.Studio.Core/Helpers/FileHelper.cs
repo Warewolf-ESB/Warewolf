@@ -18,7 +18,7 @@ using Dev2.Common;
 using Ionic.Zip;
 using Warewolf.Resource.Errors;
 
-// ReSharper disable once CheckNamespace
+
 namespace Dev2.Studio.Core.Helpers
 {
     public static class FileHelper
@@ -70,7 +70,7 @@ namespace Dev2.Studio.Core.Helpers
             }
         }
 
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         public static string CreateATemporaryFile(StringBuilder fileContent, string uniqueOutputPath)
         {
             CreateTextFile(fileContent, uniqueOutputPath);

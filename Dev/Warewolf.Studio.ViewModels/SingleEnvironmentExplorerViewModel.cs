@@ -14,7 +14,7 @@ namespace Warewolf.Studio.ViewModels
         {
             _selectedId = selectedId;
             environmentViewModel.SetPropertiesForDialog();
-            // ReSharper disable once VirtualMemberCallInContructor
+            
             Environments = new ObservableCollection<IEnvironmentViewModel>
             {
                 environmentViewModel

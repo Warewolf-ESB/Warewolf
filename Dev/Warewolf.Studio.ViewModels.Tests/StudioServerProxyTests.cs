@@ -22,8 +22,8 @@ using Moq;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Core;
 
-// ReSharper disable InconsistentNaming
-// ReSharper disable ObjectCreationAsStatement
+
+
 
 namespace Warewolf.Studio.ViewModels.Tests
 {
@@ -144,8 +144,14 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockVersionManager.Setup(manager => manager.DeleteVersion(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>())).Verifiable();
             studioServerProxy.QueryManagerProxy = mockQueryManager.Object;
             studioServerProxy.VersionManager = mockVersionManager.Object;
+
+            var mockExplorerItemModelParent = new Mock<IExplorerItemViewModel>();
+            mockExplorerItemModelParent.Setup(model => model.ResourceType).Returns("Folder");
+            mockExplorerItemModelParent.Setup(model => model.ResourcePath).Returns("folderPath");
+
             var mockExplorerItemModel = new Mock<IExplorerItemViewModel>();
             mockExplorerItemModel.Setup(model => model.ResourceType).Returns("Version");
+            mockExplorerItemModel.Setup(model => model.Parent).Returns(mockExplorerItemModelParent.Object);
             var mockPopupController = new Mock<IPopupController>();
             mockPopupController.Setup(controller => controller.Show(It.IsAny<string>(), It.IsAny<string>(), MessageBoxButton.OK, MessageBoxImage.Error, "false", true, true, false, false, false, false)).Returns(MessageBoxResult.OK);
             CustomContainer.Register(mockPopupController.Object);

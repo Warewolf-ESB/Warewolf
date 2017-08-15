@@ -12,8 +12,8 @@ using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-// ReSharper disable InconsistentNaming
-// ReSharper disable UseObjectOrCollectionInitializer
+
+
 
 namespace Dev2.Activities.Designers.Tests.Core.ComDll
 {
@@ -205,7 +205,7 @@ namespace Dev2.Activities.Designers.Tests.Core.ComDll
 
             //------------Execute Test---------------------------
             ComNamespaceRegion comNamespaceRegion = new ComNamespaceRegion(src.Object, ModelItemUtils.CreateModelItem(act), sourceRegion);
-            // ReSharper disable once UseObjectOrCollectionInitializer
+            
             ComNamespaceRegion comNamespaceRegionToRestore = new ComNamespaceRegion(src.Object, ModelItemUtils.CreateModelItem(act), sourceRegion);
             comNamespaceRegionToRestore.IsEnabled = false;
             comNamespaceRegionToRestore.SelectedNamespace = namespaceItem;

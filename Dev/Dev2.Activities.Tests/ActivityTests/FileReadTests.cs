@@ -33,7 +33,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         
 
-        // ReSharper disable InconsistentNaming
+        
 
         [TestMethod]
         [Owner("Hagashen Naidu")]

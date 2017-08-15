@@ -26,7 +26,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
     [TestClass]
     public class WebSourcesTests
     {
-        // ReSharper disable InconsistentNaming
+        
         #region CTOR
 
         [TestMethod]
@@ -34,9 +34,9 @@ namespace Dev2.Tests.Runtime.ServiceModel
         public void WebSourcesConstructorWithNullResourceCatalogExpectedThrowsArgumentNullException()
         {
 #pragma warning disable 168
-            // ReSharper disable UnusedVariable
+            
             var handler = new WebSources(null);
-            // ReSharper restore UnusedVariable
+            
 #pragma warning restore 168
         }
 
@@ -98,11 +98,11 @@ namespace Dev2.Tests.Runtime.ServiceModel
             WebSources.EnsureWebClient(source, new List<string> { "a:x", "b:e" });
 
             var client = source.Client;
-            // ReSharper disable PossibleNullReferenceException
+            
             Assert.IsTrue((client.Credentials as NetworkCredential).UserName == "User");
 
             Assert.IsTrue((client.Credentials as NetworkCredential).Password == "pwd");
-            // ReSharper restore PossibleNullReferenceException
+            
         }
 
         #endregion

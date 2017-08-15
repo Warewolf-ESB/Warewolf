@@ -247,9 +247,9 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("DsfForEach_UpdateDebugParentID")]
-        // ReSharper disable InconsistentNaming
+        
         public void DsfForEach_UpdateDebugParentID_UniqueIdSameIfNestingLevelNotChanged()
-        // ReSharper restore InconsistentNaming
+
         {
             var dataObject = new DsfDataObject(CurrentDl, Guid.NewGuid())
             {
@@ -272,9 +272,9 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("DsfForEach_UpdateDebugParentID")]
-        // ReSharper disable InconsistentNaming
+        
         public void DsfForEach_UpdateDebugParentID_UniqueIdNotSameIfNestingLevelIncreased()
-        // ReSharper restore InconsistentNaming
+
         {
             var dataObject = new DsfDataObject(CurrentDl, Guid.NewGuid())
             {
@@ -298,9 +298,9 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("DsfForEach_UpdateDebugParentID")]
-        // ReSharper disable InconsistentNaming
+        
         public void DsfForEach_Execute_IncrementsAndChangesId_IdNotChangedIfNestingLevelIsZero()
-        // ReSharper restore InconsistentNaming
+
         {
             var id = SetupArguments(
                              ActivityStrings.ForEachCurrentDataList

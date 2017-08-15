@@ -10,7 +10,7 @@ namespace Warewolf.Studio.Views
     /// <summary>
     /// Interaction logic for ManageRabbitMQSourceControl.xaml
     /// </summary>
-    // ReSharper disable once InconsistentNaming
+    
     public partial class ManageRabbitMQSourceControl : IView, ICheckControlEnabledView
     {
         public ManageRabbitMQSourceControl()

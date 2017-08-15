@@ -12,8 +12,8 @@ using Microsoft.Practices.Prism.PubSubEvents;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Studio.Interfaces;
 
-// ReSharper disable VirtualMemberCallInContructor
-// ReSharper disable NotAccessedField.Local
+
+
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -124,9 +124,9 @@ namespace Warewolf.Studio.ViewModels
         public string TestMessage
         {
             get { return _testMessage; }
-            // ReSharper disable UnusedMember.Local
+            
             set
-            // ReSharper restore UnusedMember.Local
+            
             {
                 _testMessage = value;
                 OnPropertyChanged(() => TestMessage);
@@ -293,7 +293,7 @@ namespace Warewolf.Studio.ViewModels
                 {
                     return _requestServiceNameViewModel.Result;
                 }
-                // ReSharper disable once RedundantIfElseBlock
+                
                 else
                 {
                     throw _requestServiceNameViewModel.Exception;
@@ -351,7 +351,7 @@ namespace Warewolf.Studio.ViewModels
                     ResourceID = _wcfServerSource?.Id ?? Guid.NewGuid(),
                     Id = _wcfServerSource?.Id ?? Guid.NewGuid()
                 };
-            // ReSharper disable once RedundantIfElseBlock
+            
             else
             {
                 _wcfServerSource.EndpointUrl = EndpointUrl;

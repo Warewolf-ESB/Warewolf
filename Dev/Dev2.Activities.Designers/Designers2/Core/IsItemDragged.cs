@@ -16,7 +16,7 @@ namespace Dev2.Activities.Designers2.Core
     {
 
         #region Fields
-        // ReSharper disable once InconsistentNaming
+
         private static readonly Lazy<IsItemDragged> _instance = new Lazy<IsItemDragged>(() => new IsItemDragged());
 
 
@@ -37,7 +37,7 @@ namespace Dev2.Activities.Designers2.Core
 
         public static IsItemDragged Instance => _instance.Value;
 
-        // ReSharper disable once ConvertToAutoProperty
+        
         public bool IsDragged
         {
             get

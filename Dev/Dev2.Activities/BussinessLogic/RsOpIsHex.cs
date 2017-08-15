@@ -17,7 +17,7 @@ using Dev2.DataList;
 
 namespace Dev2.BussinessLogic
 {
-    [SuppressMessage("ReSharper", "UnusedMember.Global")]
+
     public class RsOpIsHex : AbstractRecsetSearchValidation
     {
         public override string HandlesType()

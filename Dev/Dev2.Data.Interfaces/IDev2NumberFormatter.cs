@@ -12,8 +12,8 @@ namespace Dev2.Data.Interfaces
 {
     public interface IDev2NumberFormatter
     {
-        // ReSharper disable InconsistentNaming
+        
         string Format(IFormatNumberTO formatNumberTO);
-        // ReSharper restore InconsistentNaming
+
     }
 }

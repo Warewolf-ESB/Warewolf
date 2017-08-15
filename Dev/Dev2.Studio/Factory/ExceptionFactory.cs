@@ -20,7 +20,7 @@ using Dev2.Studio.Model;
 using Dev2.Studio.ViewModels.Diagnostics;
 using Dev2.Threading;
 
-// ReSharper disable CheckNamespace
+
 namespace Dev2.Studio.Factory
 {
     /// <summary>

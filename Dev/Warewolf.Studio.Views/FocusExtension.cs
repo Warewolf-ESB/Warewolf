@@ -7,7 +7,7 @@ using Dev2.CustomControls.Converters;
 
 namespace Warewolf.Studio.Views
 {
-    // ReSharper disable UnusedMember.Global
+    
     public static class FocusExtension
     {
         public static bool GetIsFocused(DependencyObject obj)
@@ -56,5 +56,5 @@ namespace Warewolf.Studio.Views
             return _convertor.Convert(!(bool)value, targetType, parameter, culture);
         }
     }
-    // ReSharper restore UnusedMember.Global
+    
 }

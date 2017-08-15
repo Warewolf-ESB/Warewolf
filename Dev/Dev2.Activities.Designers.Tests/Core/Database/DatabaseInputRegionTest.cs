@@ -20,7 +20,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Warewolf.Core;
 
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Activities.Designers.Tests.Core.Database
 {
@@ -128,7 +128,7 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             DbActionRegion dbActionRegion = new DbActionRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfSqlServerDatabaseActivity()), sourceRegion, new SynchronousAsyncWorker());
 
             var region = new DatabaseInputRegion(ModelItemUtils.CreateModelItem(act), dbActionRegion);
-            // ReSharper disable once UseObjectOrCollectionInitializer
+            
             var regionToRestore = new DatabaseInputRegionClone();
             regionToRestore.IsEnabled = true;
             //------------Execute Test---------------------------
@@ -175,7 +175,7 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
 
             //---------------Assert Precondition----------------
 
-            // ReSharper disable once PossibleNullReferenceException
+            
             var countBefore = DataListSingleton.ActiveDataList.ScalarCollection.Count;
             Assert.AreEqual(0, countBefore);
             //---------------Execute Test ----------------------
@@ -214,7 +214,7 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
 
             //---------------Assert Precondition----------------
 
-            // ReSharper disable once PossibleNullReferenceException
+            
             var countBefore = DataListSingleton.ActiveDataList.ScalarCollection.Count;
             Assert.AreEqual(0, countBefore);
             //---------------Execute Test ----------------------
@@ -263,7 +263,7 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
 
             //---------------Assert Precondition----------------
 
-            // ReSharper disable once PossibleNullReferenceException
+            
             var countBefore = DataListSingleton.ActiveDataList.ScalarCollection.Count;
             Assert.AreEqual(0, countBefore);
             //---------------Execute Test ----------------------

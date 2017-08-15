@@ -23,7 +23,7 @@ using Warewolf.Storage;
 namespace Dev2.Tests.Activities.ActivityTests.Web
 {
     [TestClass]
-    [SuppressMessage("ReSharper", "InconsistentNaming")]
+
     public class DsfWebDeleteActivityTests
     {
         [TestMethod]
@@ -216,7 +216,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             dsfWebDeleteActivity.Inputs = serviceInputs;
             dsfWebDeleteActivity.Outputs = serviceOutputs;
             var serviceXml = XmlResource.Fetch("WebService");
-            // ReSharper disable once ObjectCreationAsStatement
+            
             new WebService(serviceXml) { RequestResponse = response };
             dsfWebDeleteActivity.OutputDescription = new OutputDescription();
             dsfWebDeleteActivity.ResourceCatalog = new Mock<IResourceCatalog>().Object;

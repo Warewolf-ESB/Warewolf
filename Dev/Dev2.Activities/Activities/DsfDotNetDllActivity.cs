@@ -12,8 +12,8 @@ using Unlimited.Framework.Converters.Graph;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 
-// ReSharper disable MemberCanBePrivate.Global
-// ReSharper disable UnusedAutoPropertyAccessor.Global
+
+
 
 namespace Dev2.Activities
 {

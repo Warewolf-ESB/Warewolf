@@ -31,10 +31,10 @@ namespace Dev2.Tests.Runtime.Hosting
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ServerVersionRepostory_Ctor")]
         [ExpectedException(typeof(ArgumentNullException))]
-        // ReSharper disable InconsistentNaming
+        
         public void ServerVersionRepostory_Ctor_Null_strategy()
         {
-            // ReSharper disable once UnusedVariable
+            
             var strat = new Mock<IVersionStrategy>();
             var cat = new Mock<IResourceCatalog>();
             var resourceId = Guid.NewGuid();
@@ -403,6 +403,45 @@ namespace Dev2.Tests.Runtime.Hosting
             cat.Verify(a => a.SaveResource(Guid.Empty, It.IsAny<StringBuilder>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
             cat.Verify(a => a.DeleteResource(Guid.Empty, "moon", "Unknown", false), Times.Never());
         }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("ServerVersionRepostory_Rollback")]
+        public void ServerVersionRepostory_Rollback_Version_GetSavePath()
+        {
+            var strat = new Mock<IVersionStrategy>();
+            var cat = new Mock<IResourceCatalog>();
+            var resourceId = Guid.NewGuid();
+            var versionId = Guid.NewGuid();
+            var file = new Mock<IFile>();
+            var dir = new Mock<IDirectory>();
+            const string rootPath = "bob";
+            const string savePath = "NewPath/UnitTestResource";
+
+            var resource = new Mock<IResource>();
+            resource.Setup(a => a.ResourceName).Returns("UnitTestResource");
+            resource.Setup(a => a.GetSavePath()).Returns(savePath);
+            resource.Setup(a => a.ToStringBuilder()).Returns(new StringBuilder(ResourceOne));
+            file.Setup(a => a.ReadAllText(It.IsAny<string>())).Returns(ResourceOne);
+            cat.Setup(a => a.GetResource(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(resource.Object).Verifiable();
+
+            resource.Setup(a => a.VersionInfo).Returns(new VersionInfo(DateTime.Now, "mook", "usr", "12345", resourceId, versionId));
+            resource.Setup(a => a.GetResourcePath(It.IsAny<Guid>())).Returns("");
+            dir.Setup(a => a.GetFiles(It.IsAny<string>())).Returns(new[] { versionId + "_2_" + DateTime.Now.Ticks + "_jjj" });
+            strat.Setup(a => a.GetNextVersion(resource.Object, resource.Object, "usr", "mook")).Returns(new VersionInfo(DateTime.Now, "mook", "usr", "123456", resourceId, versionId));
+            strat.Setup(a => a.GetCurrentVersion(resource.Object, resource.Object, "usr", "mook")).Returns(new VersionInfo(DateTime.Now, "mook", "usr", "654321", resourceId, versionId));
+            cat.Setup(a => a.SaveResource(Guid.Empty, It.IsAny<StringBuilder>(), savePath, It.IsAny<string>(), It.IsAny<string>()));
+
+            //------------Setup for test--------------------------
+            var serverVersionRepostory = CreateServerVersionRepository(strat.Object, cat.Object, dir.Object, rootPath, file.Object);
+            //------------Execute Test---------------------------
+            var res = serverVersionRepostory.RollbackTo(resourceId, "2");
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(res.VersionHistory.Count, 1);
+            cat.Verify(a => a.SaveResource(Guid.Empty, It.IsAny<StringBuilder>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
+            cat.Verify(a => a.DeleteResource(Guid.Empty, "moon", "Unknown", false), Times.Never());
+        }
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ServerVersionRepostory_Rollback")]
@@ -586,7 +625,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
         }
 
-        // ReSharper restore InconsistentNaming
+
 
         const string ResourceOne = @"<Service ID=""fef087f1-18ba-406d-a9da-44b6aa2dd1bf"" Version=""1.0"" ServerID=""51a58300-7e9d-4927-a57b-e5d700b11b55"" Name=""UnitTestResource"" ResourceType=""WorkflowService"" IsValid=""false"">
   <DisplayName>UnitTestResource</DisplayName>

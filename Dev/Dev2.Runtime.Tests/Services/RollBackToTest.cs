@@ -58,7 +58,7 @@ namespace Dev2.Tests.Runtime.Services
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("RolbackTo_Name")]
-// ReSharper disable InconsistentNaming
+
         public void RolbackTo_Name_GetName()
 
         {
@@ -143,5 +143,5 @@ namespace Dev2.Tests.Runtime.Services
             server.Verify(a=>a.RollbackTo(res,"1"));
         }
     }
-    // ReSharper restore InconsistentNaming
+    
 }

@@ -18,7 +18,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
             {
                 return ComPluginServiceExecutionFactory.GetNamespaces(pluginSource);
             }
-                // ReSharper disable once RedundantCatchClause
+                
             catch (BadImageFormatException)
             {
                 throw;

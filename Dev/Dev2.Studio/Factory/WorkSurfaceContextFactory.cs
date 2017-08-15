@@ -20,7 +20,7 @@ using Dev2.Studio.ViewModels.Help;
 using Dev2.Studio.ViewModels.Workflow;
 using Dev2.Studio.ViewModels.WorkSurface;
 
-// ReSharper disable once CheckNamespace
+
 namespace Dev2.Studio.Factory
 {
     public static class WorkSurfaceContextFactory

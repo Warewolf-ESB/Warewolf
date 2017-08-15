@@ -17,7 +17,7 @@ namespace Dev2.Tests.Runtime.WebServer.Hubs
     [TestClass]
     public class ResultsCacheTest
     {
-        // ReSharper disable InconsistentNaming
+        
 
         [TestMethod]
         [Owner("Travis Frisinger")]
@@ -245,7 +245,7 @@ namespace Dev2.Tests.Runtime.WebServer.Hubs
             return reciept;
         }
 
-        // ReSharper restore InconsistentNaming
+
     }
 
 }

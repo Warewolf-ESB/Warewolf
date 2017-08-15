@@ -23,7 +23,7 @@ namespace Dev2.Settings.Logging
 {
     public enum LogLevel
     {
-        // ReSharper disable InconsistentNaming
+        
         OFF,
         FATAL,
         ERROR,
@@ -43,9 +43,9 @@ namespace Dev2.Settings.Logging
             set
             {
                 _currentEnvironment = value;
-                // ReSharper disable once ExplicitCallerInfoArgument
+                
                 OnPropertyChanged("CanEditStudioLogSettings");
-                // ReSharper disable once ExplicitCallerInfoArgument
+                
                 OnPropertyChanged("CanEditLogSettings");
             }
         }
@@ -60,7 +60,7 @@ namespace Dev2.Settings.Logging
         private LogLevel _studioFileLogLevel;
         private LogSettingsViewModel _item;
 
-        // ReSharper disable once UnusedMember.Global
+        
         public LogSettingsViewModel()
         {
 

@@ -28,9 +28,9 @@ namespace Dev2.Sql.Tests
         [Owner("Trevor Williams-Ros")]
         [TestCategory("SqlServer_Connect")]
         [ExpectedException(typeof(ArgumentNullException))]
-// ReSharper disable InconsistentNaming
+
         public void SqlServer_Connect_ConnectionStringIsNull_ThrowsArgumentNullException()
-// ReSharper restore InconsistentNaming
+
         {
             //------------Setup for test--------------------------
             var sqlServer = new SqlServer();
@@ -51,9 +51,9 @@ namespace Dev2.Sql.Tests
         [Owner("Trevor Williams-Ros")]
         [TestCategory("SqlServer_Connect")]
         [ExpectedException(typeof(ArgumentException))]
-// ReSharper disable InconsistentNaming
+
         public void SqlServer_Connect_ConnectionStringIsInvalid_ThrowsArgumentException()
-// ReSharper restore InconsistentNaming
+
         {
             //------------Setup for test--------------------------
             var sqlServer = new SqlServer();
@@ -74,9 +74,9 @@ namespace Dev2.Sql.Tests
         [Owner("Trevor Williams-Ros")]
         [TestCategory("SqlServer_Connect")]
         [ExpectedException(typeof(ArgumentNullException))]
-// ReSharper disable InconsistentNaming
+
         public void SqlServer_Connect_CommandTextIsNull_ThrowsArgumentNullException()
-// ReSharper restore InconsistentNaming
+
         {
             //------------Setup for test--------------------------
             var sqlServer = new SqlServer();
@@ -97,9 +97,9 @@ namespace Dev2.Sql.Tests
         [Owner("Trevor Williams-Ros")]
         [TestCategory("SqlServer_FetchDataTable")]
         [ExpectedException(typeof(Exception))]
-// ReSharper disable InconsistentNaming
+
         public void SqlServer_FetchDataTable_ConnectionNotInitialized_ThrowsConnectFirstException()
-// ReSharper restore InconsistentNaming
+
         {
             //------------Setup for test--------------------------
             var sqlServer = new SqlServer();
@@ -120,9 +120,9 @@ namespace Dev2.Sql.Tests
         [Owner("Trevor Williams-Ros")]
         [TestCategory("SqlServer_FetchDataTable")]
         [ExpectedException(typeof(ArgumentNullException))]
-// ReSharper disable InconsistentNaming
+
         public void SqlServer_FetchDataTable_CommandIsNull_ThrowsArgumentNullException()
-// ReSharper restore InconsistentNaming
+
         {
             //------------Setup for test--------------------------
             var sqlServer = new SqlServer();
@@ -143,9 +143,9 @@ namespace Dev2.Sql.Tests
         [Owner("Trevor Williams-Ros")]
         [TestCategory("SqlServer_FetchDatabases")]
         [ExpectedException(typeof(Exception))]
-// ReSharper disable InconsistentNaming
+
         public void SqlServer_FetchDatabases_ConnectionNotInitialized_ThrowsConnectFirstException()
-// ReSharper restore InconsistentNaming
+
         {
             //------------Setup for test--------------------------
             var sqlServer = new SqlServer();
@@ -166,9 +166,9 @@ namespace Dev2.Sql.Tests
         [Owner("Trevor Williams-Ros")]
         [TestCategory("SqlServer_FetchStoredProcedures")]
         [ExpectedException(typeof(ArgumentNullException))]
-// ReSharper disable InconsistentNaming
+
         public void SqlServer_FetchStoredProcedures_FunctionProcessorIsNull_ThrowsArgumentNullException()
-// ReSharper restore InconsistentNaming
+
         {
             //------------Setup for test--------------------------
             var sqlServer = new SqlServer();
@@ -191,9 +191,9 @@ namespace Dev2.Sql.Tests
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("SqlServer_FetchStoredProcedures")]
-// ReSharper disable InconsistentNaming
+
         public void SqlServer_FetchStoredProcedures_EmptyReturnsNothing()
-// ReSharper restore InconsistentNaming
+
         {
             //------------Setup for test--------------------------
             var factory = new Mock<IDbFactory>();
@@ -232,9 +232,9 @@ namespace Dev2.Sql.Tests
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("SqlServer_FetchStoredProcedures")]
-// ReSharper disable InconsistentNaming
+
         public void SqlServer_FetchStoredProcedures_SPReturnsSPs()
-// ReSharper restore InconsistentNaming
+
         {
             //------------Setup for test--------------------------
             var factory = new Mock<IDbFactory>();
@@ -296,9 +296,9 @@ namespace Dev2.Sql.Tests
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("SqlServer_FetchStoredProcedures")]
-// ReSharper disable InconsistentNaming
+
         public void SqlServer_FetchStoredProcedures_FuncReturnsSPs()
-// ReSharper restore InconsistentNaming
+
         {
             //------------Setup for test--------------------------
             var factory = new Mock<IDbFactory>();
@@ -358,9 +358,9 @@ namespace Dev2.Sql.Tests
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("SqlServer_FetchStoredProcedures")]
-// ReSharper disable InconsistentNaming
+
         public void SqlServer_FetchStoredProcedures_TableValuesProcFunc_NotReturned()
-// ReSharper restore InconsistentNaming
+
         {
             //------------Setup for test--------------------------
             var factory = new Mock<IDbFactory>();
@@ -425,9 +425,9 @@ namespace Dev2.Sql.Tests
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("SqlServer_Connect")]
-        // ReSharper disable InconsistentNaming
+        
         public void SqlServer_FetchStoredProcedures_Connect_VerifyUnderlyingConnectionIsCalled()
-        // ReSharper restore InconsistentNaming
+
         {
             //------------Setup for test--------------------------
             var factory = new Mock<IDbFactory>();
@@ -460,9 +460,9 @@ namespace Dev2.Sql.Tests
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("SqlServer_BeginTransaction")]
-        // ReSharper disable InconsistentNaming
+        
         public void SqlServer_FetchStoredProcedures_BeginTransaction()
-        // ReSharper restore InconsistentNaming
+
         {
             //------------Setup for test--------------------------
             var factory = new Mock<IDbFactory>();
@@ -498,9 +498,9 @@ namespace Dev2.Sql.Tests
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("SqlServer_RollbackTransaction")]
-        // ReSharper disable InconsistentNaming
+        
         public void SqlServer_FetchStoredProcedures_RollbackTransaction()
-        // ReSharper restore InconsistentNaming
+
         {
             //------------Setup for test--------------------------
             var factory = new Mock<IDbFactory>();
@@ -538,9 +538,9 @@ namespace Dev2.Sql.Tests
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("SqlServer_FetchStoredProcedures")]
-// ReSharper disable InconsistentNaming
+
         public void SqlServer_FetchStoredProcedures_TableValuesProcWithParamsFunc_NotReturned()
-// ReSharper restore InconsistentNaming
+
         {
             //------------Setup for test--------------------------
             var factory = new Mock<IDbFactory>();
@@ -610,9 +610,9 @@ namespace Dev2.Sql.Tests
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("SqlServer_FetchStoredProcedures")]
-        // ReSharper disable InconsistentNaming
+        
         public void SqlServer_FetchDatabases_CallsSchemaFunctionWithCorrectyParams()
-        // ReSharper restore InconsistentNaming
+
         {
             //------------Setup for test--------------------------
             var factory = new Mock<IDbFactory>();
@@ -658,9 +658,9 @@ namespace Dev2.Sql.Tests
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("SqlServer_FetchStoredProcedures")]
-        // ReSharper disable InconsistentNaming
+        
         public void SqlServer_FetchDatabases_OnException()
-        // ReSharper restore InconsistentNaming
+
         {
             //------------Setup for test--------------------------
             var factory = new Mock<IDbFactory>();
@@ -705,9 +705,9 @@ namespace Dev2.Sql.Tests
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("SqlServer_FetchDataTable")]
-        // ReSharper disable InconsistentNaming
+        
         public void SqlServer_FetchDataTable_OnException()
-        // ReSharper restore InconsistentNaming
+
         {
             //------------Setup for test--------------------------
             var factory = new Mock<IDbFactory>();
@@ -753,9 +753,9 @@ namespace Dev2.Sql.Tests
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("SqlServer_FetchDataTable_addParams")]
-        // ReSharper disable InconsistentNaming
+        
         public void SqlServer_FetchDataTable_AddParams_VerifyAllAdded()
-        // ReSharper restore InconsistentNaming
+
         {
             //------------Setup for test--------------------------
             var factory = new Mock<IDbFactory>();
@@ -800,9 +800,9 @@ namespace Dev2.Sql.Tests
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("SqlServer_FetchDataTable_addParams")]
-        // ReSharper disable InconsistentNaming
+        
         public void SqlServer_FetchDataTable_ConnectionsString()
-        // ReSharper restore InconsistentNaming
+
         {
             //------------Setup for test--------------------------
             var factory = new Mock<IDbFactory>();
@@ -841,9 +841,9 @@ namespace Dev2.Sql.Tests
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("SqlServer_FetchDataTable_addParams")]
-        // ReSharper disable InconsistentNaming
+        
         public void SqlServer_FetchDataTable_ConnectionsStringNull()
-        // ReSharper restore InconsistentNaming
+
         {
             //------------Setup for test--------------------------
             var factory = new Mock<IDbFactory>();
@@ -877,9 +877,9 @@ namespace Dev2.Sql.Tests
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("SqlServer_FetchDataTable_addParams")]
-        // ReSharper disable InconsistentNaming
+        
         public void SqlServer_Connect_SetsCommandType()
-        // ReSharper restore InconsistentNaming
+
         {
             //------------Setup for test--------------------------
             var factory = new Mock<IDbFactory>();
@@ -915,9 +915,9 @@ namespace Dev2.Sql.Tests
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("SqlServer_FetchDataTable_addParams")]
-        // ReSharper disable InconsistentNaming
+        
         public void SqlServer_CreateCommand_CreateCommand()
-        // ReSharper restore InconsistentNaming
+
         {
             //------------Setup for test--------------------------
             var factory = new Mock<IDbFactory>();
@@ -958,9 +958,9 @@ namespace Dev2.Sql.Tests
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("SqlServer_FetchDataTable_addParams")]
-        // ReSharper disable InconsistentNaming
+        
         public void SqlServer_FetchDataSet_CallsNestedFactory()
-        // ReSharper restore InconsistentNaming
+
         {
             //------------Setup for test--------------------------
             var factory = new Mock<IDbFactory>();
@@ -1002,9 +1002,9 @@ namespace Dev2.Sql.Tests
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("SqlServer_FetchDataTable_addParams")]
-        // ReSharper disable InconsistentNaming
+        
         public void SqlServer_FetchDataSet_CallsNestedFactory_ParamsOnly_UsesNestedCommand()
-        // ReSharper restore InconsistentNaming
+
         {
             //------------Setup for test--------------------------
             var factory = new Mock<IDbFactory>();
@@ -1045,9 +1045,9 @@ namespace Dev2.Sql.Tests
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("SqlServer_IsTableValueFunction")]
-        // ReSharper disable InconsistentNaming
+        
         public void SqlServer_IsTableValueFunction_InvalidRow()
-        // ReSharper restore InconsistentNaming
+
         {
             //------------Setup for test--------------------------
 
@@ -1062,9 +1062,9 @@ namespace Dev2.Sql.Tests
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("SqlServer_IsFunction")]
 
-        // ReSharper disable InconsistentNaming
+        
         public void SqlServer_IsFunction_InvalidRow()
-        // ReSharper restore InconsistentNaming
+
         {
             //------------Setup for test--------------------------
 
@@ -1078,9 +1078,9 @@ namespace Dev2.Sql.Tests
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("SqlServer_IsSp")]
-        // ReSharper disable InconsistentNaming
+        
         public void SqlServer_IsSP_InvalidRow()
-        // ReSharper restore InconsistentNaming
+
         {
             //------------Setup for test--------------------------
 
@@ -1099,9 +1099,9 @@ namespace Dev2.Sql.Tests
         [Owner("Trevor Williams-Ros")]
         [TestCategory("SqlServer_CreateCommand")]
         [ExpectedException(typeof(Exception))]
-// ReSharper disable InconsistentNaming
+
         public void SqlServer_CreateCommand_ConnectionNotInitialized_ThrowsConnectFirstException()
-// ReSharper restore InconsistentNaming
+
         {
             //------------Setup for test--------------------------
             var sqlServer = new SqlServer();

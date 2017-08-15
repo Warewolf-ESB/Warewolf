@@ -25,7 +25,7 @@ namespace Dev2.Infrastructure.Tests.Providers.Validation.Rules
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ComposeAbleRule_Ctor")]
         [ExpectedException(typeof(ArgumentNullException))]
-// ReSharper disable InconsistentNaming
+
         public void ComposeAbleRule_Null()
 
         {
@@ -111,7 +111,7 @@ namespace Dev2.Infrastructure.Tests.Providers.Validation.Rules
             Assert.IsNull(cr.Check());
 
         }
-        // ReSharper restore InconsistentNaming
+
     }
 
     public class Rule1 :Rule<string>

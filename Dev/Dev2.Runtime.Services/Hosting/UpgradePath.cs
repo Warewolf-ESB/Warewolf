@@ -37,7 +37,7 @@ namespace Dev2.Runtime.Hosting
         {
             if (resource.Attribute("ServerVersion") == null)
                 return new Version();
-            // ReSharper disable once PossibleNullReferenceException
+            
             return Version.Parse(resource.Attribute("ServerVersion").Value);
         }
         public IResourceUpgrade Upgrade { get; }

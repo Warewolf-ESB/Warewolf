@@ -27,9 +27,21 @@ using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    [SuppressMessage("ReSharper", "UnusedMember.Global")]
+
     public class TestDbSourceService : IEsbManagementEndpoint
     {
+        private readonly IDbSources _dbSources;
+
+        public TestDbSourceService()
+            : this(new DbSources())
+        {
+
+        }
+
+        public TestDbSourceService(IDbSources dbSources)
+        {
+            _dbSources = dbSources;
+        }
         public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
         {
             return Guid.Empty;
@@ -53,11 +65,10 @@ namespace Dev2.Runtime.ESB.Management.Services
                 values.TryGetValue("DbSource", out resourceDefinition);
 
                 IDbSource src = serializer.Deserialize<DbSourceDefinition>(resourceDefinition);
-                var con = new DbSources();
                 DatabaseValidationResult result = null;
                 Common.Utilities.PerformActionInsideImpersonatedContext(Common.Utilities.OrginalExecutingUser, () =>
                 {
-                    result = con.DoDatabaseValidation(new DbSource
+                    result = _dbSources.DoDatabaseValidation(new DbSource
                     {
                         AuthenticationType = src.AuthenticationType,
                         Server = src.ServerName,
@@ -70,9 +81,9 @@ namespace Dev2.Runtime.ESB.Management.Services
                 });
                 if (result == null)
                 {
-                    result = new DatabaseValidationResult { ErrorMessage = "Problem testing connection." };
+                    result = new DatabaseValidationResult { ErrorMessage = "Problem testing connection.", IsValid = false };
                 }
-                msg.HasError = false;
+
                 msg.Message = new StringBuilder(result.IsValid ? serializer.Serialize(result.DatabaseList) : result.ErrorMessage);
                 msg.HasError = !result.IsValid;
 

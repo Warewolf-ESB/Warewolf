@@ -11,7 +11,7 @@
 using System;
 using System.Runtime.InteropServices;
 
-// ReSharper disable CheckNamespace
+
 namespace Dev2.Studio.Core.Services.System
 {
     /// <summary>

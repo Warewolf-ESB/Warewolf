@@ -11,7 +11,7 @@
 using Dev2.Common.Interfaces.Interfaces;
 using Dev2.Data.Interfaces.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Tests
 {

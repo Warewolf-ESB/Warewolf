@@ -18,15 +18,15 @@ using Dev2.Interfaces;
 using Dev2.Util;
 using Dev2.Utilities;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
-// ReSharper disable ReturnTypeCanBeEnumerable.Local
-// ReSharper disable LoopCanBeConvertedToQuery
+
+
 
 namespace Dev2.FindMissingStrategies
 {
     /// <summary>
     /// Responsible for the find missing logic that applys to all the activities that only have a collection property on them
     /// </summary>
-    [SuppressMessage("ReSharper", "UnusedMember.Global")] //This is loaded based on SpookyAction implementing IFindMissingStrategy
+ //This is loaded based on SpookyAction implementing IFindMissingStrategy
     public class DataGridActivityFindMissingStrategy : IFindMissingStrategy
     {
 

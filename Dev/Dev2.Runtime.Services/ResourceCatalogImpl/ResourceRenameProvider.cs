@@ -13,9 +13,9 @@ using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
 using Warewolf.Resource.Errors;
-// ReSharper disable PrivateMembersMustHaveComments
-// ReSharper disable PublicMembersMustHaveComments
-// ReSharper disable InconsistentNaming
+
+
+
 
 namespace Dev2.Runtime.ResourceCatalogImpl
 {
@@ -45,7 +45,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                     return ResourceCatalogResultBuilder.CreateFailResult($"{ErrorResource.FailedToFindResource} '{resourceID}' to '{newName}'");
                 }
 
-                // ReSharper disable once PossibleInvalidOperationException
+                
                 _versionRepository.StoreVersion(_resourceCatalog.GetResource(Guid.Empty, resourceID.Value), "unknown", "Rename", workspaceID, resourcePath);
                 //rename and save to workspace
                 var renameResult = UpdateResourceName(workspaceID, resourcesToUpdate[0], newName, resourcePath);

@@ -659,7 +659,7 @@ namespace Dev2.Studio.Core
                 throw new WarewolfSupportServiceException(ErrorResource.ServiceDoesNotExist, null);
             }
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
-            // ReSharper disable once InconsistentNaming
+    
             List<IRabbitMQServiceSourceDefinition> rabbitMQServiceSources = serializer.Deserialize<List<IRabbitMQServiceSourceDefinition>>(result.Message.ToString());
             return rabbitMQServiceSources;
         }

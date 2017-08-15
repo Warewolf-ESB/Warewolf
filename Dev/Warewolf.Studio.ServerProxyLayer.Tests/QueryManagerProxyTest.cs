@@ -20,9 +20,9 @@ using Dev2.Studio.ViewModels.DataList;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-// ReSharper disable AccessToForEachVariableInClosure
-// ReSharper disable InconsistentNaming
-// ReSharper disable UnusedVariable
+
+
+
 
 namespace Warewolf.Studio.ServerProxyLayer.Test
 {

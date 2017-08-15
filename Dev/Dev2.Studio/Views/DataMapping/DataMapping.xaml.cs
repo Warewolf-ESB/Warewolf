@@ -11,7 +11,7 @@
 using System.Windows;
 using System.Windows.Input;
 
-// ReSharper disable once CheckNamespace
+
 namespace Unlimited.Applications.BusinessDesignStudio.Views
 {
     /// <summary>

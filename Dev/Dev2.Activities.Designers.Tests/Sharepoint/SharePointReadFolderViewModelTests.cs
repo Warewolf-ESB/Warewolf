@@ -56,7 +56,7 @@ namespace Dev2.Activities.Designers.Tests.Sharepoint
 
 
             //------------Execute Test---------------------------
-            // ReSharper disable once ObjectCreationAsStatement
+            
             new SharePointReadFolderDesignerViewModel(CreateModelItem(), null, new Mock<IServer>().Object);
             //------------Assert Results-------------------------
         }
@@ -71,7 +71,7 @@ namespace Dev2.Activities.Designers.Tests.Sharepoint
 
 
             //------------Execute Test---------------------------
-            // ReSharper disable once ObjectCreationAsStatement
+            
             new SharePointReadFolderDesignerViewModel(CreateModelItem(), new SynchronousAsyncWorker(), null);
             //------------Assert Results-------------------------
         }

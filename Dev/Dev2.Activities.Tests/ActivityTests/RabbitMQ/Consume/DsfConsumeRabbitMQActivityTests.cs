@@ -17,7 +17,7 @@ using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 using System.Reflection;
 
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
 {

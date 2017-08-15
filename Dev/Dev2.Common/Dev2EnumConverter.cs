@@ -23,9 +23,9 @@ namespace Dev2.Common.Interfaces.Enums.Enums
 
             IList<string> result = new List<string>();
 
-            // ReSharper disable LoopCanBeConvertedToQuery
+            
             foreach (object value in Enum.GetValues(enumType))
-            // ReSharper restore LoopCanBeConvertedToQuery
+            
             {
                 result.Add((value as Enum).GetDescription());
             }
@@ -45,9 +45,9 @@ namespace Dev2.Common.Interfaces.Enums.Enums
         {
             if (!type.IsEnum) throw new InvalidOperationException(ErrorResource.ExpectedEnumerationTypeParameter);
 
-            // ReSharper disable LoopCanBeConvertedToQuery
+            
             foreach (object value in Enum.GetValues(type))
-            // ReSharper restore LoopCanBeConvertedToQuery
+            
             {
                 if ((value as Enum).GetDescription() == discription)
                 {

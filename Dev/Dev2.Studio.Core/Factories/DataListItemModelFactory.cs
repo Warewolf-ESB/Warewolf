@@ -14,12 +14,12 @@ using Dev2.Data.Interfaces.Enums;
 using Dev2.Studio.Core.Models.DataList;
 using Dev2.Studio.Interfaces.DataList;
 
-// ReSharper disable once CheckNamespace
+
 namespace Dev2.Studio.Core.Factories
 {
     public static class DataListItemModelFactory
     {
-        // ReSharper disable MethodOverloadWithOptionalParameter
+        
 
         public static IRecordSetFieldItemModel CreateDataListModel(string displayname, string description, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection = enDev2ColumnArgumentDirection.None, IDataListItemModel parent = null, OptomizedObservableCollection<IDataListItemModel> children = null, bool hasError = false, string errorMessage = "", bool isEditable = true, bool isVisable = true, bool isSelected = false)
         {

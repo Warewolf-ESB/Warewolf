@@ -34,8 +34,8 @@ using Microsoft.Practices.Prism.Commands;
 using Warewolf.Core;
 
 
-// ReSharper disable MemberCanBePrivate.Global
-// ReSharper disable UnusedAutoPropertyAccessor.Global
+
+
 namespace Dev2.Activities.Designers2.MySqlDatabase
 {
     public class MySqlDatabaseDesignerViewModel : CustomToolWithRegionBase, IDatabaseServiceViewModel
@@ -221,7 +221,7 @@ namespace Dev2.Activities.Designers2.MySqlDatabase
 
         IErrorInfo WorstDesignError
         {
-            // ReSharper disable once UnusedMember.Local
+            
             get { return _worstDesignError; }
             set
             {
@@ -300,7 +300,7 @@ namespace Dev2.Activities.Designers2.MySqlDatabase
         public DelegateCommand TestInputCommand { get; set; }
 
         private string Type => GetProperty<string>();
-        // ReSharper disable InconsistentNaming
+        
         
         void AddTitleBarMappingToggle()
         {

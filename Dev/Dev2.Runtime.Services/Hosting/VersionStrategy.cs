@@ -54,7 +54,7 @@ namespace Dev2.Runtime.Hosting
                 return new VersionInfo(DateTime.Now, reason, userName, 1.ToString(CultureInfo.InvariantCulture), newResource.ResourceID, Guid.NewGuid());
 
 
-            // ReSharper disable PossibleNullReferenceException
+            
             return new VersionInfo(DateTime.Now, reason, userName, (1 + int.Parse(oldresource.VersionNumber)).ToString(CultureInfo.InvariantCulture), oldresource.ResourceId, oldresource.VersionId);
         }
 
@@ -64,9 +64,9 @@ namespace Dev2.Runtime.Hosting
                 return new VersionInfo(DateTime.Now, reason, userName, 1.ToString(CultureInfo.InvariantCulture), oldResource.ResourceID, Guid.NewGuid());
 
 
-            // ReSharper disable PossibleNullReferenceException
+            
             return oldResource.VersionInfo;
-            // ReSharper restore PossibleNullReferenceException
+            
         }
 
     }

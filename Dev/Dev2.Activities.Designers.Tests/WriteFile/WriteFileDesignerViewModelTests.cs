@@ -21,7 +21,7 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 namespace Dev2.Activities.Designers.Tests.WriteFile
 {
     [TestClass]
-    // ReSharper disable InconsistentNaming
+    
     public class WriteFileDesignerViewModelTests
     {
         [TestMethod]

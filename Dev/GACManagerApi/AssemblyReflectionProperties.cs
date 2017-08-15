@@ -1,5 +1,5 @@
 ﻿using System.Reflection;
-// ReSharper disable MemberCanBePrivate.Global
+
 
 namespace GACManagerApi
 {

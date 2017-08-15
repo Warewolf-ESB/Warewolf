@@ -76,7 +76,15 @@ namespace Warewolf.Studio.Views
 
         public void Save()
         {
-            OkButton.Command.Execute(null);
+            if (OkButton.IsEnabled && OkButton.IsVisible)
+            {
+                OkButton.Command.Execute(null);
+                return;
+            }
+            if (DuplicateButton.IsEnabled && DuplicateButton.IsVisible)
+            {
+                DuplicateButton.Command.Execute(null);
+            }
         }
 
         private void RequestServiceNameView_OnMouseDown(object sender, MouseButtonEventArgs e)
@@ -118,10 +126,19 @@ namespace Warewolf.Studio.Views
         {
             var explorerItemViewModelRename = ExplorerItemViewModelRename();
 
+            if (e.Key == Key.Enter && explorerItemViewModelRename == null)
+            {
+                ExecuteOkCommand();
+            }
             if (e.Key == Key.Escape)
             {
                 HandleRenameResource(e, explorerItemViewModelRename);
             }
+        }
+
+        private void ExecuteOkCommand()
+        {
+            Save();
         }
 
         private void RequestServiceNameView_OnKeyUp(object sender, KeyEventArgs e)
@@ -133,6 +150,14 @@ namespace Warewolf.Studio.Views
                 HandleRenameResource(e, explorerItemViewModelRename);
                 var requestServiceNameViewModel = DataContext as RequestServiceNameViewModel;
                 requestServiceNameViewModel?.CancelCommand.Execute(this);
+            }
+        }
+        private void RequestServiceNameView_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            var explorerItemViewModelRename = ExplorerItemViewModelRename();
+            if (e.Key == Key.Enter && explorerItemViewModelRename == null)
+            {
+                ExecuteOkCommand();
             }
         }
 
@@ -154,5 +179,7 @@ namespace Warewolf.Studio.Views
                 e.Handled = true;
             }
         }
+
+        
     }
 }

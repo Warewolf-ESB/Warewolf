@@ -35,14 +35,14 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 
-// ReSharper disable CheckNamespace
+
 namespace ActivityUnitTests
-// ReSharper restore CheckNamespace
+
 {
     [TestClass]
     public class BaseActivityUnitTest
     {
-        // ReSharper disable once MemberInitializerValueIgnored
+        
        
 
         public BaseActivityUnitTest()
@@ -56,7 +56,7 @@ namespace ActivityUnitTests
       
         }
 
-        // ReSharper disable UnusedAutoPropertyAccessor.Local
+        
         protected Guid ExecutionId { get; set; }
 
         protected string TestData { get; set; }

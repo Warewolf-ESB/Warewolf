@@ -22,7 +22,7 @@ namespace Dev2.Tests.Runtime.Hosting
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("UpgradePath_Ctor")]
         [ExpectedException(typeof(ArgumentNullException))]
-// ReSharper disable InconsistentNaming
+
         public void UpgradePath_Ctor_NullParamsFrom_ExpectException()
 
         {
@@ -122,6 +122,6 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Assert Results-------------------------
             Assert.IsFalse(upgrade.CanUpgrade(XElement.Parse("<a ServerVersion=\"1.0.0.0\"></a>")));
         }
-            // ReSharper restore InconsistentNaming
+    
     }
 }

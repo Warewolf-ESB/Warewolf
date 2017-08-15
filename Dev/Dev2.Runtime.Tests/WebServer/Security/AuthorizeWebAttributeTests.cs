@@ -47,9 +47,9 @@ namespace Dev2.Tests.Runtime.WebServer.Security
             //------------Setup for test--------------------------
 
             //------------Execute Test---------------------------
-            // ReSharper disable ObjectCreationAsStatement
+            
             new AuthorizeWebAttribute(null);
-            // ReSharper restore ObjectCreationAsStatement
+            
 
             //------------Assert Results-------------------------
         }

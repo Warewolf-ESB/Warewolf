@@ -14,12 +14,12 @@ using System.Text;
 
 namespace Dev2.Runtime
 {
-    [SuppressMessage("ReSharper", "UnusedMember.Global")]
+
     public static class Utilities
     {
         #region GenerateString
 
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         public static string GenerateString(this Random random, int length, string prefix = "")
         {
             var modulo = length / 3;

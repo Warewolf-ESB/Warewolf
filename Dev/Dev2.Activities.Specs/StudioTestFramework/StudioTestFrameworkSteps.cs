@@ -39,15 +39,15 @@ using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Studio.ViewModels;
 using Dev2.Studio.Interfaces.Enums;
-// ReSharper disable UnusedParameter.Global
-// ReSharper disable InconsistentNaming
 
-// ReSharper disable UnusedMember.Global
+
+
+
 
 namespace Dev2.Activities.Specs.TestFramework
 {
     [Binding]
-    [SuppressMessage("ReSharper", "UseObjectOrCollectionInitializer")]
+
     public class StudioTestFrameworkSteps
     {
 
@@ -174,7 +174,7 @@ namespace Dev2.Activities.Specs.TestFramework
         {
             _resourceForTests = resourceName;
             var resourceId = Guid.NewGuid();
-            // ReSharper disable once UnusedVariable
+            
             var environmentModel = ServerRepository.Instance.Source;
             var resourceModel = new ResourceModel(environmentModel)
             {
@@ -220,7 +220,7 @@ namespace Dev2.Activities.Specs.TestFramework
                     serviceTestModelTos.Add(serviceTestModelTO);
                 }
             }
-            // ReSharper disable once UnusedVariable
+            
             var resourceModel = new ResourceModel(environmentModel)
             {
                 ID = savedSource.ID,
@@ -244,7 +244,7 @@ namespace Dev2.Activities.Specs.TestFramework
         {
             var environmentModel = ServerRepository.Instance.Source;
             MyContext.Get<Guid>(resourceName + "id");
-            // ReSharper disable once UnusedVariable
+            
             var savedSource = environmentModel.ResourceRepository.All().First(model => model.ResourceName.Equals(_resourceForTests, StringComparison.InvariantCultureIgnoreCase));
             environmentModel.ResourceRepository.DeleteResource(savedSource);
 
@@ -310,7 +310,7 @@ namespace Dev2.Activities.Specs.TestFramework
                 serviceTestModelTos.Add(serviceTestModelTO);
 
             }
-            // ReSharper disable once UnusedVariable
+            
             var resourceModel = new ResourceModel(environmentModel)
             {
                 ID = resourceID,
@@ -471,7 +471,7 @@ namespace Dev2.Activities.Specs.TestFramework
         {
             var serviceTestViewModel = GetTestFrameworkFromContext();
             var debugForTest = serviceTestViewModel.SelectedServiceTest.DebugForTest;
-            // ReSharper disable once PossibleNullReferenceException
+            
             var debugItemResults = debugForTest.LastOrDefault(state => state.StateType == StateType.End).AssertResultList.First().ResultsList;
             
             var actualAssetMessage = debugItemResults.Select(result =>  result.Value).First();
@@ -486,7 +486,7 @@ namespace Dev2.Activities.Specs.TestFramework
         {
             var serviceTestViewModel = GetTestFrameworkFromContext();
             var debugForTest = serviceTestViewModel.SelectedServiceTest.DebugForTest;
-            // ReSharper disable once PossibleNullReferenceException
+            
             var debugItemResults = debugForTest.LastOrDefault(state => state.StateType == StateType.TestAggregate).AssertResultList.First().ResultsList;
 
             var actualAssetMessage = debugItemResults.Select(result => result.Value).First();
@@ -502,7 +502,7 @@ namespace Dev2.Activities.Specs.TestFramework
         {
             var serviceTestViewModel = GetTestFrameworkFromContext();
             var debugForTest = serviceTestViewModel.SelectedServiceTest.DebugForTest;
-            // ReSharper disable once PossibleNullReferenceException
+            
             var debugItemResults = debugForTest.LastOrDefault(state => state.StateType == StateType.TestAggregate).AssertResultList.First().ResultsList;
             var externalProcessExecutor = new SpecExternalProcessExecutor();
             var first = debugItemResults.Select(result =>
@@ -529,7 +529,7 @@ namespace Dev2.Activities.Specs.TestFramework
             Assert.IsTrue(stepsPending);
             Assert.IsTrue(allPending);
             Assert.IsTrue(allOutputsPending);
-            // ReSharper disable once LoopCanBePartlyConvertedToQuery
+            
             foreach (var serviceTestStep in serviceTestSteps)
             {
                 var allStepOutPutspending = serviceTestStep.StepOutputs.All(output => output.Result?.RunTestResult == RunResult.TestPending);
@@ -965,7 +965,7 @@ namespace Dev2.Activities.Specs.TestFramework
 
 
         [Then(@"The WebResponse as")]
-        // ReSharper disable once CyclomaticComplexity
+        
         public void ThenTheWebResponseAs(Table table)
         {
             var serviceTest = GetTestFrameworkFromContext();
@@ -985,7 +985,7 @@ namespace Dev2.Activities.Specs.TestFramework
                             foreach (var resultPairs in jObject)
                             {
                                 var testObj = resultPairs as JObject;
-                                // ReSharper disable once PossibleNullReferenceException
+                                
                                 var testName = testObj.Property("Test Name").Value.ToString();
                                 if (testName != tableRow["Test Name"])
                                 {
@@ -1388,7 +1388,7 @@ namespace Dev2.Activities.Specs.TestFramework
         public void ThenTheConfirmationPopupIsShown()
         {
             var mock = MyContext["popupController"] as Mock<Common.Interfaces.Studio.Controller.IPopupController>;
-            // ReSharper disable once PossibleNullReferenceException
+            
             mock.VerifyAll();
         }
 
@@ -1554,7 +1554,7 @@ namespace Dev2.Activities.Specs.TestFramework
 
 
             var resourceId = Guid.NewGuid();
-            // ReSharper disable once UnusedVariable
+            
             var resourceModel = new ResourceModel(environmentModel)
             {
                 ResourceName = resourceName,
@@ -1601,7 +1601,7 @@ namespace Dev2.Activities.Specs.TestFramework
                     }
                 }
 
-                // ReSharper disable once UnusedVariable
+                
                 var resourceModel = new ResourceModel(environmentModel)
                 {
                     ID = savedSource.ID,
@@ -1783,7 +1783,7 @@ namespace Dev2.Activities.Specs.TestFramework
                         if (foundNode != null)
                         {
                             var decisionNode = foundNode as FlowDecision;
-                            // ReSharper disable once PossibleNullReferenceException
+                            
                             var condition = decisionNode.Condition;
                             var activity = (DsfFlowNodeActivity<bool>)condition;
                             var expression = activity.ExpressionText;
@@ -1824,7 +1824,7 @@ namespace Dev2.Activities.Specs.TestFramework
                             return false;
                         });
                         var decisionNode = foundNode as FlowStep;
-                        // ReSharper disable once PossibleNullReferenceException
+                        
                         var action = decisionNode.Action;
                         var activity = (DsfActivityAbstract<string>)action;
                         var var = tableRow["Output Variable"];
@@ -1878,7 +1878,7 @@ namespace Dev2.Activities.Specs.TestFramework
         [Then(@"I Add Decision ""(.*)"" as TestStep")]
         [Given(@"I Add Decision ""(.*)"" as TestStep")]
         [When(@"I Add Decision ""(.*)"" as TestStep")]
-        // ReSharper disable once CyclomaticComplexity
+        
         public void ThenIAddDecisionAsTestStep(string actNameToFind)
         {
             var serviceTest = GetTestFrameworkFromContext();
@@ -1896,7 +1896,7 @@ namespace Dev2.Activities.Specs.TestFramework
 
                     bool isCorr;
                     var node = searchNode as FlowDecision;
-                    // ReSharper disable once ConvertIfStatementToConditionalTernaryExpression
+                    
                     if (node != null)
                     {
                         isCorr = node.DisplayName.TrimEnd(' ').Equals(actNameToFind, StringComparison.InvariantCultureIgnoreCase);
@@ -1981,7 +1981,7 @@ namespace Dev2.Activities.Specs.TestFramework
 
                     bool isCorr;
                     var node = searchNode as FlowSwitch<string>;
-                    // ReSharper disable once ConvertIfStatementToConditionalTernaryExpression
+                    
                     if (node != null)
                     {
                         isCorr = node.DisplayName.TrimEnd(' ').Equals(actNameToFind, StringComparison.InvariantCultureIgnoreCase);
@@ -2248,7 +2248,7 @@ namespace Dev2.Activities.Specs.TestFramework
                         if (foundNode != null)
                         {
                             var decisionNode = foundNode as FlowDecision;
-                            // ReSharper disable once PossibleNullReferenceException
+                            
                             var condition = decisionNode.Condition;
                             var activity = (DsfFlowNodeActivity<bool>)condition;
                             var expression = activity.ExpressionText;
@@ -2280,7 +2280,7 @@ namespace Dev2.Activities.Specs.TestFramework
                             return false;
                         });
                         var decisionNode = foundNode as FlowStep;
-                        // ReSharper disable once PossibleNullReferenceException
+                        
                         var action = decisionNode.Action;
                         var activity = (DsfActivityAbstract<string>)action;
                         var var = tableRow["Output Variable"];

@@ -116,9 +116,9 @@ namespace Dev2.Activities.Designers2.GetWebRequest.GetWebRequestWithTimeout
         private string TimeOutText
         {
             get { return GetProperty<string>(); }
-            // ReSharper disable UnusedMember.Local
+            
             set { SetProperty(value); }
-            // ReSharper restore UnusedMember.Local
+            
         }
 
         #region Overrides of ActivityDesignerViewModel
@@ -153,17 +153,17 @@ namespace Dev2.Activities.Designers2.GetWebRequest.GetWebRequestWithTimeout
             {
                 PreviewViewModel.InputsVisibility = Visibility.Visible;
 
-                // ReSharper disable MaximumChainedReferences
+                
                 var mustRemainKeys = PreviewViewModel.Inputs
                                                      .Where(i => variableList.Contains(i.Key))
                                                      .ToList();
-                // ReSharper restore MaximumChainedReferences
+                
 
-                // ReSharper disable MaximumChainedReferences
+                
                 var mustRemove = PreviewViewModel.Inputs
                                                  .Where(i => !variableList.Contains(i.Key))
                                                  .ToList();
-                // ReSharper restore MaximumChainedReferences
+                
 
                 mustRemove.ForEach(r => PreviewViewModel.Inputs.Remove(r));
 
@@ -297,9 +297,9 @@ namespace Dev2.Activities.Designers2.GetWebRequest.GetWebRequestWithTimeout
                                   ? new string[0]
                                   : Headers.Split(new[] { '\n', '\r', ';' }, StringSplitOptions.RemoveEmptyEntries);
 
-                // ReSharper disable MaximumChainedReferences
+                
                 var headersEntries = headers.Select(header => header.Split(':')).Select(headerSegments => new Tuple<string, string>(headerSegments[0], headerSegments[1])).ToList();
-                // ReSharper restore MaximumChainedReferences
+                
 
                 url = PreviewViewModel.Inputs.Aggregate(url,
                                                         (current, previewInput) =>

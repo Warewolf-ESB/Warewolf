@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Diagnostics;
-// ReSharper disable UnassignedGetOnlyAutoProperty
-// ReSharper disable UnusedMember.Global
-// ReSharper disable MemberCanBePrivate.Global
+
+
+
 
 namespace Dev2.Activities.Debug
 {

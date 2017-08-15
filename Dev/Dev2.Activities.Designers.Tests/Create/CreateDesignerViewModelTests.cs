@@ -20,7 +20,7 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 namespace Dev2.Activities.Designers.Tests.Create
 {
     [TestClass]
-    // ReSharper disable InconsistentNaming
+    
     public class CreateDesignerViewModelTests
     {
         [TestMethod]

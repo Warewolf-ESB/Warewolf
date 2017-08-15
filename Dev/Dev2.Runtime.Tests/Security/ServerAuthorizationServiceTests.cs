@@ -25,7 +25,7 @@ namespace Dev2.Tests.Runtime.Security
     [TestClass]
     public class ServerAuthorizationServiceTests
     {
-        // ReSharper disable InconsistentNaming
+        
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
@@ -531,6 +531,6 @@ namespace Dev2.Tests.Runtime.Security
             //------------Assert Results-------------------------
         }
 
-        // ReSharper restore InconsistentNaming
+
     }
 }

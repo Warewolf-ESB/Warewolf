@@ -30,7 +30,7 @@ namespace Dev2.Activities
     public class DsfEnhancedDotNetDllActivity : DsfMethodBasedActivity
     {
         private List<IDebugState> _childStatesToDispatch;
-        // ReSharper disable once MemberCanBePrivate.Global
+        
         public INamespaceItem Namespace { get; set; }
         public IPluginConstructor Constructor { get; set; }
         public List<IPluginAction> MethodsToRun { get; set; }
