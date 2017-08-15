@@ -22,8 +22,8 @@ using Dev2.Common.Interfaces.Threading;
 using Dev2.Studio.Interfaces;
 using Microsoft.Practices.Prism.Commands;
 using Warewolf.Studio.Core;
-// ReSharper disable MemberCanBePrivate.Global
-// ReSharper disable UnusedAutoPropertyAccessor.Global
+
+
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -471,7 +471,7 @@ namespace Warewolf.Studio.ViewModels
                     {
                         return _requestServiceNameViewModel.Result;
                     }
-                    // ReSharper disable once RedundantIfElseBlock
+                    
                     else
                     {
                         throw _requestServiceNameViewModel.Exception;

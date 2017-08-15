@@ -25,7 +25,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         [ExpectedException(typeof(ArgumentNullException))]
         public void EmailSourcesConstructorWithNullResourceCatalogExpectedThrowsArgumentNullException()
         {
-            // ReSharper disable once UnusedVariable
+            
             var handler = new EmailSources(null);
         }
 

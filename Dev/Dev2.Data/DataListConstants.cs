@@ -12,8 +12,8 @@ using System.Collections.Generic;
 using Dev2.Data.Decisions.Operations;
 using Dev2.Data.SystemTemplates.Models;
 
-// ReSharper disable CheckNamespace
-// ReSharper disable InconsistentNaming
+
+
 namespace Dev2.Data.SystemTemplates
 {
     public static class DataListConstants

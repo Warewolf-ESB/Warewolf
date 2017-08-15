@@ -3,7 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using System.Runtime.InteropServices;
 using System.Text;
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Settings.Scheduler
 {
@@ -14,7 +14,7 @@ namespace Dev2.Settings.Scheduler
         private static extern void CoTaskMemFree(IntPtr ptr);
 
         [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-        // ReSharper disable once InconsistentNaming
+
         private struct CREDUI_INFO
         {
             public int cbSize;

@@ -22,8 +22,8 @@ using Moq;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Core;
 
-// ReSharper disable InconsistentNaming
-// ReSharper disable ObjectCreationAsStatement
+
+
 
 namespace Warewolf.Studio.ViewModels.Tests
 {

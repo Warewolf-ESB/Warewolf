@@ -9,7 +9,7 @@ using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Activities.Designers.Tests.Core.ComDll
 {
@@ -179,7 +179,7 @@ namespace Dev2.Activities.Designers.Tests.Core.ComDll
 
             //------------Execute Test---------------------------
             ComSourceRegion region = new ComSourceRegion(src.Object, ModelItemUtils.CreateModelItem(act));
-            // ReSharper disable once UseObjectOrCollectionInitializer
+            
             ComSourceRegion regionToRestore = new ComSourceRegion(src.Object, ModelItemUtils.CreateModelItem(act));
             regionToRestore.IsEnabled = false;
             regionToRestore.SelectedSource = s2;

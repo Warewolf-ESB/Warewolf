@@ -22,7 +22,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
 
         }
-        // ReSharper disable once RedundantAssignment
+        
         public void ExecuteMock(IDSFDataObject dataObject, int update)
         {
             ExecuteTool(dataObject, update);

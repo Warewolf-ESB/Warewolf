@@ -19,10 +19,10 @@ namespace Dev2.Common.Interfaces
     public interface IQueryManager
     {
         
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         IExecuteMessage FetchDependencies(Guid resourceId);
         IExecuteMessage FetchDependants(Guid resourceId);
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         StringBuilder FetchResourceXaml(Guid resourceId);
         Task<IExplorerItem> Load(bool reloadCatalogue = false);
         IList<IToolDescriptor> FetchTools();
@@ -46,7 +46,7 @@ namespace Dev2.Common.Interfaces
         IList<IFileListing> FetchFiles(IFileListing file);
         IList<Guid> FetchDependenciesOnList(IEnumerable<Guid> values);
         List<IWindowsGroupPermission> FetchPermissions();
-        // ReSharper disable once InconsistentNaming
+
         IEnumerable<IRabbitMQServiceSourceDefinition> FetchRabbitMQServiceSources();
         IList<IWcfServerSource> FetchWcfSources();
         IList<IWcfAction> WcfActions(IWcfServerSource source);

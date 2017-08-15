@@ -13,9 +13,9 @@ using System.Globalization;
 using System.Windows.Data;
 using Dev2.Common.Interfaces.Security;
 
-// ReSharper disable CheckNamespace
+
 namespace Dev2.Studio.AppResources.Converters
-// ReSharper restore CheckNamespace
+
 {
     public class NavigationViewModelPermissionToBooleanConverter : IMultiValueConverter
     {

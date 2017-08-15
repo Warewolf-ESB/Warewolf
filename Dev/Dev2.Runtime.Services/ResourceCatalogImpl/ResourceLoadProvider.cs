@@ -21,7 +21,7 @@ using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
 using ServiceStack.Common.Extensions;
 using Warewolf.Resource.Errors;
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Runtime.ResourceCatalogImpl
 {
@@ -46,7 +46,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                 _perfCounter = CustomContainer.Get<IWarewolfPerformanceCounterLocater>().GetCounter("Count of requests for workflows which don't exist");
 
             }
-            // ReSharper disable once EmptyGeneralCatchClause
+            
             catch (Exception)
             {
 

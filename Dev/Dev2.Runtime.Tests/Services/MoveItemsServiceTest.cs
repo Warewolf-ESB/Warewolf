@@ -27,7 +27,7 @@ using Moq;
 namespace Dev2.Tests.Runtime.Services
 {
     [TestClass]
-    // ReSharper disable InconsistentNaming
+    
     public class MoveItemsServiceTest
     {
         [TestMethod]

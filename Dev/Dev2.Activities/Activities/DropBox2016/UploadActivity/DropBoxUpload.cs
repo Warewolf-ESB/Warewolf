@@ -8,7 +8,7 @@ using System.IO;
 using System.Net;
 using Dev2.Common.Interfaces.Wrappers;
 
-// ReSharper disable MemberCanBePrivate.Global
+
 
 namespace Dev2.Activities.DropBox2016.UploadActivity
 {
@@ -16,7 +16,7 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
     {
         private readonly IFilenameValidator _validator;
 
-        // ReSharper disable once FieldCanBeMadeReadOnly.Local
+        
         private WriteMode _writeMode;
 
         private readonly string _dropboxPath;

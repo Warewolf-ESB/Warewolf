@@ -19,8 +19,8 @@ using Dev2.Studio.Interfaces.Deploy;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.Threading;
 
-// ReSharper disable ClassWithVirtualMembersNeverInherited.Global
-// ReSharper disable MemberCanBeProtected.Global
+
+
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -56,7 +56,7 @@ namespace Warewolf.Studio.ViewModels
         {
             VerifyArgument.AreNotNull(new Dictionary<string, object> { { "destination", destination }, { "source", source }, { "selectedItems", selectedItems }, { "stats", stats }, { "popupController", popupController } });
             _destination = destination;
-            // ReSharper disable once VirtualMemberCallInContructor
+            
             PopupController = popupController;
 
             _source = source;

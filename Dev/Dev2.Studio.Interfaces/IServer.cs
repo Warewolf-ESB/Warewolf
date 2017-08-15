@@ -21,7 +21,7 @@ using Dev2.Services.Security;
 using Newtonsoft.Json;
 
 namespace Dev2.Studio.Interfaces
-// ReSharper restore CheckNamespace
+
 {
     public interface IServer : IEquatable<IServer>
     {

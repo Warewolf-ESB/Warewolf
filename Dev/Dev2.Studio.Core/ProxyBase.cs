@@ -8,7 +8,7 @@ namespace Dev2.Studio.Core
     {
 
         public ICommunicationControllerFactory CommunicationControllerFactory { get; private set; }
-        // ReSharper disable once NotAccessedField.Local
+        
         protected readonly IEnvironmentConnection Connection;
 
         protected ProxyBase(ICommunicationControllerFactory communicationControllerFactory, IEnvironmentConnection connection)

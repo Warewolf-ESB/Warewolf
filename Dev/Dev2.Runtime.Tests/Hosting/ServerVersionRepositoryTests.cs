@@ -31,10 +31,10 @@ namespace Dev2.Tests.Runtime.Hosting
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ServerVersionRepostory_Ctor")]
         [ExpectedException(typeof(ArgumentNullException))]
-        // ReSharper disable InconsistentNaming
+        
         public void ServerVersionRepostory_Ctor_Null_strategy()
         {
-            // ReSharper disable once UnusedVariable
+            
             var strat = new Mock<IVersionStrategy>();
             var cat = new Mock<IResourceCatalog>();
             var resourceId = Guid.NewGuid();
@@ -625,7 +625,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
         }
 
-        // ReSharper restore InconsistentNaming
+
 
         const string ResourceOne = @"<Service ID=""fef087f1-18ba-406d-a9da-44b6aa2dd1bf"" Version=""1.0"" ServerID=""51a58300-7e9d-4927-a57b-e5d700b11b55"" Name=""UnitTestResource"" ResourceType=""WorkflowService"" IsValid=""false"">
   <DisplayName>UnitTestResource</DisplayName>

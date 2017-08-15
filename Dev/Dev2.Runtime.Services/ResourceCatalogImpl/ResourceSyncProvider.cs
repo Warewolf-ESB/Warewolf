@@ -48,22 +48,22 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             else
             {
                 filesToCopyFromSource.AddRange(sourceFiles
-                    // ReSharper disable SimplifyLinqExpression
+                    
                     .Where(sf => !destinationFiles.Any(df => string.Compare(df.Name, sf.Name, StringComparison.OrdinalIgnoreCase) == 0)));
-                // ReSharper restore SimplifyLinqExpression
+                
             }
 
             //
             // Calculate the files which are to be deleted from the destination, this respects the delete parameter
             //
-            // ReSharper disable once CollectionNeverQueried.Local
+            
             var filesToDeleteFromDestination = new List<FileInfo>();
             if (delete)
             {
                 filesToDeleteFromDestination.AddRange(destinationFiles
-                    // ReSharper disable SimplifyLinqExpression
+                    
                     .Where(sf => !sourceFiles.Any(df => string.Compare(df.Name, sf.Name, StringComparison.OrdinalIgnoreCase) == 0)));
-                // ReSharper restore SimplifyLinqExpression
+                
             }
 
             //

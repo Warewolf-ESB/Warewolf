@@ -4,7 +4,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-// ReSharper disable once CheckNamespace
+
 namespace Gma.DataStructures.StringSearch
 {
     public class SuffixTrie<T> : ITrie<T>

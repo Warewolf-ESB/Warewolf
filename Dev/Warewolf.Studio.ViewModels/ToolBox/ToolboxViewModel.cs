@@ -64,7 +64,7 @@ namespace Warewolf.Studio.ViewModels.ToolBox
             }
         }
 
-        // ReSharper disable once MemberCanBePrivate.Global
+        
         public ObservableCollection<IToolDescriptorViewModel> BackedUpTools
         {
             get { return _backedUpTools; }
@@ -110,7 +110,7 @@ namespace Warewolf.Studio.ViewModels.ToolBox
             set
             {
 
-                // ReSharper disable once PossibleUnintendedReferenceComparison
+                
                 if (value != _selectedTool)
                 {
                     _selectedTool = value;
@@ -175,9 +175,9 @@ namespace Warewolf.Studio.ViewModels.ToolBox
             GC.SuppressFinalize(this);
         }
 
-        // ReSharper disable UnusedParameter.Local
+        
         void Dispose(bool disposing)
-        // ReSharper restore UnusedParameter.Local
+        
         {
             _localModel.OnserverDisconnected -= _localModel_OnserverDisconnected;
             _remoteModel.OnserverDisconnected -= _remoteModel_OnserverDisconnected;

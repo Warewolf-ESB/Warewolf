@@ -9,7 +9,7 @@ using Dev2.Data.Util;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 using WarewolfParserInterop;
-// ReSharper disable MemberCanBePrivate.Global
+
 
 namespace Dev2.Activities
 {
@@ -102,7 +102,7 @@ namespace Dev2.Activities
             while (innerIterator.HasMoreData())
             {
                 var stringToUse = "";
-                // ReSharper disable once LoopCanBeConvertedToQuery
+                
                 foreach (var warewolfIterator in innerListOfIters)
                 {
                     stringToUse += warewolfIterator.GetNextValue();

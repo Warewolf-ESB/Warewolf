@@ -170,9 +170,9 @@ namespace Dev2.Runtime.Configuration.ViewModels
             {
                 return _settingsView;
             }
-            // ReSharper disable UnusedMember.Local
+            
             private set
-            // ReSharper restore UnusedMember.Local
+            
             {
                 if(value == null)
                 {
@@ -220,9 +220,9 @@ namespace Dev2.Runtime.Configuration.ViewModels
 
         private Func<XElement, XElement> SaveCallback { get; set; }
         private System.Action CancelCallback { get; set; }
-        // ReSharper disable UnusedAutoPropertyAccessor.Local
+        
         private System.Action SettingChangedCallback { get; set; }
-        // ReSharper restore UnusedAutoPropertyAccessor.Local
+        
 
         #endregion
 

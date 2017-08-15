@@ -33,7 +33,7 @@ namespace Dev2.Runtime.ESB.Management.Services
     /// <summary>
     /// Internal service to fetch compile time messages
     /// </summary>
-    [SuppressMessage("ReSharper", "UnusedMember.Global")]
+
     public class FetchDependantCompileMessages : IEsbManagementEndpoint
     {
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
@@ -92,7 +92,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 var deps = enumerable.Distinct().ToList();
                 if(deps.Count > 0)
                 {
-                    // ReSharper disable ExpressionIsAlwaysNull
+                    
                     msgs = new CompileMessageList();
                     var compileMessageTo = new CompileMessageTO
                     {
@@ -102,7 +102,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     msgs.Dependants =new List<string>();
                     deps.ForEach(s => msgs.Dependants.Add(s));
                     msgs.MessageList = new List<ICompileMessageTO> { compileMessageTo };
-                    // ReSharper restore ExpressionIsAlwaysNull
+                    
                     return serializer.SerializeToBuilder(msgs);
                 }
             }

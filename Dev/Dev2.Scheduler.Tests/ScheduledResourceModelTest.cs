@@ -22,7 +22,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.Win32.TaskScheduler;
 using Moq;
 
-// ReSharper disable InconsistentNaming
+
 namespace Dev2.Scheduler.Test
 {
     [TestClass]
@@ -78,9 +78,9 @@ namespace Dev2.Scheduler.Test
             _folder.Setup(a => a.ValidTasks).Returns(new List<IDev2Task>());
             try
             {
-                // ReSharper disable ObjectCreationAsStatement
+                
                 new ScheduledResourceModel(null, null, null, null, null, null, null);
-                // ReSharper restore ObjectCreationAsStatement
+                
             }
             catch (Exception e)
             {
@@ -272,9 +272,9 @@ securityWrapper
             _convertorFactory.Setup(a => a.CreateTaskEventLog(It.IsAny<string>())).Returns(log);
 
             //test
-            // ReSharper disable UseObjectOrCollectionInitializer
+            
             var model = new ScheduledResourceModel(_mockService.Object, _folderId, _agentPath, _convertorFactory.Object,
-                                                   // ReSharper restore UseObjectOrCollectionInitializer
+                                                   
                                                    @"c:\", _wrapper.Object, a => a.WorkflowName);
             model.DirectoryHelper = dirHelper.Object;
             model.FileHelper = fileHelper.Object;
@@ -319,9 +319,9 @@ securityWrapper
             _convertorFactory.Setup(a => a.CreateTaskEventLog(It.IsAny<string>())).Returns(log);
 
             //test
-            // ReSharper disable UseObjectOrCollectionInitializer
+            
             var model = new ScheduledResourceModel(_mockService.Object, _folderId, _agentPath, _convertorFactory.Object,
-                                                   // ReSharper restore UseObjectOrCollectionInitializer
+                                                   
                                                    @"c:\", _wrapper.Object, a => a.WorkflowName);
             model.DirectoryHelper = dirHelper.Object;
             model.FileHelper = fileHelper.Object;
@@ -357,9 +357,9 @@ securityWrapper
             _convertorFactory.Setup(a => a.CreateTaskEventLog(It.IsAny<string>())).Returns(log);
 
             //test
-            // ReSharper disable UseObjectOrCollectionInitializer
+            
             var model = new ScheduledResourceModel(_mockService.Object, _folderId, _agentPath, _convertorFactory.Object,
-                                                   // ReSharper restore UseObjectOrCollectionInitializer
+                                                   
                                                    @"c:\", _wrapper.Object, a => a.WorkflowName);
             model.DirectoryHelper = dirHelper.Object;
             model.FileHelper = fileHelper.Object;
@@ -396,9 +396,9 @@ securityWrapper
             _convertorFactory.Setup(a => a.CreateTaskEventLog(It.IsAny<string>())).Returns(log);
 
             //test
-            // ReSharper disable UseObjectOrCollectionInitializer
+            
             var model = new ScheduledResourceModel(_mockService.Object, _folderId, _agentPath, _convertorFactory.Object,
-                                                   // ReSharper restore UseObjectOrCollectionInitializer
+                                                   
                                                    @"c:\", _wrapper.Object, a => a.WorkflowName);
             model.DirectoryHelper = dirHelper.Object;
             model.FileHelper = fileHelper.Object;
@@ -629,7 +629,7 @@ securityWrapper
                 };
             return history;
         }
-        // ReSharper restore InconsistentNaming
+
 
     }
 

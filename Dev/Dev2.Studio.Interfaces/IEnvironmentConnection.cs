@@ -23,7 +23,7 @@ using Dev2.SignalR.Wrappers;
 using System.Network;
 using Dev2.Common.Interfaces.Studio.Core;
 
-// ReSharper disable InconsistentNaming
+
 namespace Dev2.Studio.Interfaces
 {
     public interface IEnvironmentConnection:IDisposable,IEquatable<IEnvironmentConnection>

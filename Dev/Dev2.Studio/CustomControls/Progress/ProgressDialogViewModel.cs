@@ -95,9 +95,9 @@ namespace Dev2.CustomControls.Progress
             }
             set
             {
-                // ReSharper disable CompareOfFloatsByEqualityOperator
+                
                 if(_progressValue != value)
-                // ReSharper restore CompareOfFloatsByEqualityOperator
+                
                 {
                     _progressValue = value;
                     OnPropertyChanged();

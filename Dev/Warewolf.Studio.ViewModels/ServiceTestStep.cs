@@ -7,8 +7,8 @@ using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.Util;
 using Microsoft.Practices.Prism.Mvvm;
 using Newtonsoft.Json;
-// ReSharper disable MemberCanBePrivate.Global
-// ReSharper disable ParameterTypeCanBeEnumerable.Local
+
+
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -303,7 +303,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        // ReSharper disable once UnusedMember.Global
+        
         public bool IsExpanderVisible => Children.Count > 0;
 
         public bool AssertSelected

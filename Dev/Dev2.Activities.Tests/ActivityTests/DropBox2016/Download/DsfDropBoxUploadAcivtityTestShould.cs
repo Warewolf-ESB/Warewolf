@@ -11,7 +11,7 @@ using Dropbox.Api.Files;
 using Dropbox.Api.Stone;
 using Moq;
 
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Download
 {
@@ -34,7 +34,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Download
 
         #region Overrides of DsfDropBoxUploadActivity
 
-        // ReSharper disable once RedundantOverridenMember
+        
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
             base.ExecuteTool(dataObject, update);

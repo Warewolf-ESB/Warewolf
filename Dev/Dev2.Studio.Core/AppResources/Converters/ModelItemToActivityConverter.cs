@@ -15,7 +15,7 @@ using System.Globalization;
 using System.Windows.Data;
 using Dev2.Activities;
 
-// ReSharper disable once CheckNamespace
+
 namespace Dev2.Studio.Core.AppResources.Converters
 {
     public class ModelItemToActivityConverter : IValueConverter

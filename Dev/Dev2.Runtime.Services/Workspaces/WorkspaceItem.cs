@@ -12,13 +12,13 @@ using System;
 using System.Runtime.Serialization;
 using System.Xml.Linq;
 
-// ReSharper disable CheckNamespace
+
 namespace Dev2.Workspaces
 {
     [Serializable]
-// ReSharper disable PartialTypeWithSinglePart
+
     public partial class WorkspaceItem : IWorkspaceItem
-// ReSharper restore PartialTypeWithSinglePart
+
     {
         public const string ServiceServiceType = "DynamicService";
         public const string SourceServiceType = "Source";

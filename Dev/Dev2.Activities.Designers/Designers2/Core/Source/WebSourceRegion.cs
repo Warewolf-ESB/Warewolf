@@ -13,10 +13,10 @@ using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Common.Interfaces.WebService;
 using Dev2.Studio.Core.Activities.Utils;
 
-// ReSharper disable ClassWithVirtualMembersNeverInherited.Global
-// ReSharper disable MemberCanBePrivate.Global
-// ReSharper disable ExplicitCallerInfoArgument
-// ReSharper disable UnusedMember.Global
+
+
+
+
 
 namespace Dev2.Activities.Designers2.Core.Source
 {

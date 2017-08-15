@@ -1,6 +1,6 @@
 ﻿using Dev2.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Infrastructure.Tests
 {

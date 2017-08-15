@@ -16,7 +16,7 @@ using System.Web.Http;
 using Dev2.Runtime.WebServer.Handlers;
 using Dev2.Runtime.WebServer.Security;
 
-// ReSharper disable InconsistentNaming
+
 namespace Dev2.Runtime.WebServer.Controllers
 {
     [AuthorizeWeb]

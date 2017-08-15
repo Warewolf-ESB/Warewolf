@@ -10,7 +10,7 @@
 
 using Dev2.Data.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Data.Tests
 {

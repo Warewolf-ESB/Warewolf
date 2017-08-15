@@ -27,7 +27,7 @@ using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    [SuppressMessage("ReSharper", "UnusedMember.Global")]
+
     public class FetchWebSources : IEsbManagementEndpoint
     {
         public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
@@ -49,7 +49,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             var serializer = new Dev2JsonSerializer();
 
-            // ReSharper disable MaximumChainedReferences
+            
             List<IWebServiceSource> list = Resources.GetResourceList<WebSource>(GlobalConstants.ServerWorkspaceID).Select(a =>
             {
                 var res = a as WebSource;
@@ -70,7 +70,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 return null;
             }).ToList();
             return serializer.SerializeToBuilder(new ExecuteMessage { HasError = false, Message = serializer.SerializeToBuilder(list) });
-            // ReSharper restore MaximumChainedReferences
+            
         }
 
         public DynamicService CreateServiceEntry()

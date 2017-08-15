@@ -21,9 +21,9 @@ using System.Net;
 using System.Text;
 using Dev2.Studio.Interfaces;
 
-// ReSharper disable InconsistentNaming
 
-// ReSharper disable CheckNamespace
+
+
 namespace Dev2.Studio.Core.Network
 {
     public enum UrlType

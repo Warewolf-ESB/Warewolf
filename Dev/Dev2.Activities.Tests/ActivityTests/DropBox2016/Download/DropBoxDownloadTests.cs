@@ -11,7 +11,7 @@ using Moq;
 namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Download
 {
     [TestClass]
-    [SuppressMessage("ReSharper", "InconsistentNaming")]
+
     public class DropBoxDownloadTests
     {
         private Mock<IDropboxDownload> CreateDropboxDownloadMock()

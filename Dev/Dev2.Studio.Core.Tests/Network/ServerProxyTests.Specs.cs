@@ -14,7 +14,7 @@ using Dev2.SignalR.Wrappers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-// ReSharper disable InconsistentNaming
+
 namespace Dev2.Core.Tests.Network
 {
     public partial class ServerProxyTests

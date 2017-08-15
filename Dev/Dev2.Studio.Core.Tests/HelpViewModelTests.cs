@@ -20,7 +20,7 @@ using Moq;
 
 namespace Dev2.Core.Tests
 {
-    // ReSharper disable InconsistentNaming
+    
     [TestClass]
     public class HelpViewModelTests
     {

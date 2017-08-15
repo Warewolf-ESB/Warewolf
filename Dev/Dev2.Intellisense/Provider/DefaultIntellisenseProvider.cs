@@ -17,9 +17,9 @@ using Dev2.Services.Events;
 using Dev2.Studio.Core;
 using Dev2.Studio.Interfaces;
 
-// ReSharper disable CheckNamespace
+
 namespace Dev2.Studio.InterfaceImplementors
-// ReSharper restore CheckNamespace
+
 {
 
     public class DefaultIntellisenseProvider : DependencyObject, IIntellisenseProvider
@@ -64,7 +64,7 @@ namespace Dev2.Studio.InterfaceImplementors
                 context.CaretPosition = result.CaretPosition;
                 return result.Result;
             }
-            // ReSharper disable once RedundantIfElseBlock
+            
             else
             {
 

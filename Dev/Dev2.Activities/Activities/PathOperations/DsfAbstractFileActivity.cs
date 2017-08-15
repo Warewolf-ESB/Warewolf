@@ -28,10 +28,10 @@ using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Security.Encryption;
 using Warewolf.Storage.Interfaces;
 
-// ReSharper disable CheckNamespace
+
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
-// ReSharper restore CheckNamespace
-// ReSharper disable ConvertToAutoProperty
+
+
 {
     /// <summary>
     /// PBI : 1172

@@ -10,12 +10,12 @@ using Dev2.Data.ServiceModel;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Studio.Interfaces;
 
-// ReSharper disable ClassWithVirtualMembersNeverInherited.Global
-// ReSharper disable UnusedMember.Global
-// ReSharper disable AutoPropertyCanBeMadeGetOnly.Local
-// ReSharper disable ConvertPropertyToExpressionBody
-// ReSharper disable UseNullPropagation
-// ReSharper disable MemberCanBePrivate.Global
+
+
+
+
+
+
 
 namespace Dev2.Activities.Designers2.DropBox2016.Download
 {
@@ -39,7 +39,7 @@ namespace Dev2.Activities.Designers2.DropBox2016.Download
             _sourceManager = sourceManager;
             EditDropboxSourceCommand = new RelayCommand(o => EditDropBoxSource(), p => IsDropboxSourceSelected);
             NewSourceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(CreateOAuthSource);
-            // ReSharper disable once VirtualMemberCallInContructor
+            
             Sources = LoadOAuthSources();
             AddTitleBarLargeToggle();
             EditDropboxSourceCommand.RaiseCanExecuteChanged();
@@ -53,13 +53,13 @@ namespace Dev2.Activities.Designers2.DropBox2016.Download
                 var oauthSource = GetProperty<DropBoxSource>();
                 return oauthSource ?? GetProperty<DropBoxSource>();
             }
-            // ReSharper disable once ExplicitCallerInfoArgument
+            
             set
             {
                 SetProperty(value);
                 EditDropboxSourceCommand.RaiseCanExecuteChanged();
                 OnPropertyChanged("IsDropboxSourceSelected");
-                // ReSharper disable once RedundantArgumentDefaultValue
+                
                 OnPropertyChanged("SelectedSource");
             }
         }
@@ -74,7 +74,7 @@ namespace Dev2.Activities.Designers2.DropBox2016.Download
             {
                 SetProperty(value);
                 _sources = value;
-                // ReSharper disable once RedundantArgumentDefaultValue
+                
                 OnPropertyChanged("Sources");
             }
         }

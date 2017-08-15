@@ -11,10 +11,10 @@ using Dev2.Studio.Interfaces;
 using Dev2.Threading;
 using Warewolf.Resource.Errors;
 
-// ReSharper disable ArrangeTypeMemberModifiers
-// ReSharper disable UnusedMember.Local
 
-// ReSharper disable UnusedAutoPropertyAccessor.Local
+
+
+
 
 namespace Dev2.Activities.Designers2.SharepointFolderRead
 {

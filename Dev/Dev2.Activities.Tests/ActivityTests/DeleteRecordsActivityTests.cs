@@ -22,7 +22,7 @@ namespace Dev2.Tests.Activities.ActivityTests
     /// Summary description for CountRecordsTest
     /// </summary>
     [TestClass]
-    // ReSharper disable InconsistentNaming
+    
     public class DeleteRecordsActivityTest : BaseActivityUnitTest
     {
         /// <summary>

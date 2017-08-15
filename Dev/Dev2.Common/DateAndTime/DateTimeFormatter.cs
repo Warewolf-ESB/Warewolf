@@ -13,7 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Common.DateAndTime
 {
@@ -91,9 +91,9 @@ namespace Dev2.Common.DateAndTime
                 //
                 // If nothing has gone wrong yet
                 //
-                // ReSharper disable ConditionIsAlwaysTrueOrFalse
+                
                 if (nothingDied)
-                // ReSharper restore ConditionIsAlwaysTrueOrFalse
+                
                 {
                     //
                     // If there is no output format use the input format

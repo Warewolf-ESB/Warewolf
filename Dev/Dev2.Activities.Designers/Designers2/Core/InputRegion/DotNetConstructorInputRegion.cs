@@ -16,11 +16,11 @@ using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.Practices.Prism;
 using Warewolf.Core;
-// ReSharper disable UnusedMember.Global
-// ReSharper disable MemberCanBePrivate.Global
-// ReSharper disable ClassWithVirtualMembersNeverInherited.Global
 
-// ReSharper disable ExplicitCallerInfoArgument
+
+
+
+
 
 namespace Dev2.Activities.Designers2.Core.InputRegion
 {
@@ -34,7 +34,7 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
         private readonly IActionInputDatatalistMapper _datatalistMapper;
         private RelayCommand _viewObjectResult;
 
-        // ReSharper disable once UnusedMember.Global
+        
         public DotNetConstructorInputRegion()
         {
             ToolRegionName = "DotNetConstructorInputRegion";
@@ -60,7 +60,7 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
             IsEnabled = action?.SelectedConstructor != null;
         }
 
-        // ReSharper disable once MemberCanBePrivate.Global
+        
         public DotNetConstructorInputRegion(IActionInputDatatalistMapper datatalistMapper)
         {
             _datatalistMapper = datatalistMapper;
@@ -107,9 +107,9 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
             {
                 Errors.Clear();
 
-                // ReSharper disable once ExplicitCallerInfoArgument
+                
                 UpdateOnActionSelection();
-                // ReSharper disable once ExplicitCallerInfoArgument
+                
                 OnPropertyChanged(@"Inputs");
                 OnPropertyChanged(@"IsEnabled");
             }

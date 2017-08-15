@@ -15,7 +15,7 @@ using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Factory;
 using Dev2.Studio.ViewModels.DataList;
 using Dev2.Studio.Interfaces;
-// ReSharper disable NonLocalizedString
+
 
 namespace Dev2.Activities.Designers2.Service
 {

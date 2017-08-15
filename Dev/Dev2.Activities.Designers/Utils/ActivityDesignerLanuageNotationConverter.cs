@@ -12,7 +12,7 @@ using System;
 using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.Util;
 
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Activities.Utils
 {

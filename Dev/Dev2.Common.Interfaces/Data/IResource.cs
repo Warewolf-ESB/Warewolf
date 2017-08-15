@@ -24,10 +24,10 @@ namespace Dev2.Common.Interfaces.Data
         /// <summary>
         ///     The resource ID that uniquely identifies the resource.
         /// </summary>
-        // ReSharper disable InconsistentNaming
+        
         Guid ResourceID { get; set; }
 
-        // ReSharper restore InconsistentNaming
+
 
         /// <summary>
         ///     The version that uniquely identifies the resource.
@@ -108,9 +108,9 @@ namespace Dev2.Common.Interfaces.Data
         void ReadDataList(XElement xml);
         void GetInputsOutputs(XElement xml);
         void SetIsNew(XElement xml);
-        // ReSharper disable InconsistentNaming
+        
         void UpdateErrorsBasedOnXML(XElement xml);
-        // ReSharper restore InconsistentNaming
+
 
        bool IsSource { get; }
        bool IsService { get; }

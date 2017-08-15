@@ -17,7 +17,7 @@ namespace Dev2.Runtime.ServiceModel.Data
     {
         private ExchangeService _exchangeService;
 
-        // ReSharper disable once NotAccessedField.Local
+        
         private IExchangeEmailSender _emailSender;
 
         public static int DefaultTimeout = 100000; // (100 seconds)

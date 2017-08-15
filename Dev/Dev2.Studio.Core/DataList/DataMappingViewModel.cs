@@ -19,7 +19,7 @@ using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Interfaces;
 
-// ReSharper disable CheckNamespace
+
 namespace Dev2.Studio.ViewModels.DataList
 {
     public class DataMappingViewModel : SimpleBaseViewModel, IDataMappingViewModel
@@ -27,9 +27,9 @@ namespace Dev2.Studio.ViewModels.DataList
         #region Locals
 
         private IWebActivity _activity;
-// ReSharper disable InconsistentNaming
+
         public bool _isInitialLoad;
-// ReSharper restore InconsistentNaming
+
         private string _activityName;
         private string _xmlOutput;
 

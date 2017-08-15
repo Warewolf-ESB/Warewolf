@@ -20,7 +20,7 @@ using Moq;
 namespace Dev2.Core.Tests
 {
     [TestClass]
-    // ReSharper disable InconsistentNaming
+    
     public class FileSystemQueryTest
     {
         [TestMethod]
@@ -204,9 +204,9 @@ namespace Dev2.Core.Tests
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-// ReSharper disable ObjectCreationAsStatement
+
             new FileSystemQuery(null, new DirectoryEntryFactory(), new ShareCollectionFactory());
-// ReSharper restore ObjectCreationAsStatement
+
             //------------Assert Results-------------------------
         }
 
@@ -219,9 +219,9 @@ namespace Dev2.Core.Tests
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            // ReSharper disable ObjectCreationAsStatement
+            
             new FileSystemQuery(new DirectoryWrapper(), null, new ShareCollectionFactory());
-            // ReSharper restore ObjectCreationAsStatement
+            
             //------------Assert Results-------------------------
         }
 
@@ -234,9 +234,9 @@ namespace Dev2.Core.Tests
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            // ReSharper disable ObjectCreationAsStatement
+            
             new FileSystemQuery(new DirectoryWrapper(), new DirectoryEntryFactory(), null);
-            // ReSharper restore ObjectCreationAsStatement
+            
             //------------Assert Results-------------------------
         }
 

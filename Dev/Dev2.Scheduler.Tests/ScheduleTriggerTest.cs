@@ -75,9 +75,9 @@ namespace Dev2.Scheduler.Test
 
         }
 
-        // ReSharper disable UnusedAutoPropertyAccessor.Local
+        
         public TriggerCollection Instance { get; private set; }
-        // ReSharper restore UnusedAutoPropertyAccessor.Local
+        
         public new ITrigger Add(ITrigger unboundTrigger)
         {
             base.Add(unboundTrigger);

@@ -26,7 +26,7 @@ using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    [SuppressMessage("ReSharper", "UnusedMember.Global")]
+
     public class DeleteResource : IEsbManagementEndpoint
     {
         private readonly IResourceCatalog _resourceCatalog;

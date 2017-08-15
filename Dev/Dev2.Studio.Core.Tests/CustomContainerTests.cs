@@ -16,7 +16,7 @@ namespace Dev2.Core.Tests
     /// Summary description for CustomContainerTests
     /// </summary>
     [TestClass]
-    // ReSharper disable InconsistentNaming
+    
     public class CustomContainerTests
     {
         [TestInitialize]

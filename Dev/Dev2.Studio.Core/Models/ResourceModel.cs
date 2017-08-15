@@ -36,7 +36,7 @@ using Dev2.Studio.Interfaces.Enums;
 using Microsoft.Practices.Prism.Mvvm;
 using Warewolf.Resource.Errors;
 
-// ReSharper disable CheckNamespace
+
 namespace Dev2.Studio.Core.Models
 {
     public class ResourceModel : ValidationController, IDataErrorInfo, IContextualResourceModel
@@ -144,9 +144,9 @@ namespace Dev2.Studio.Core.Models
                     _validationService.Subscribe(_environment.EnvironmentID, ReceiveEnvironmentValidation);
                 }
                 NotifyOfPropertyChange(nameof(Environment));
-                // ReSharper disable NotResolvedInText
+                
                 NotifyOfPropertyChange("CanExecute");
-                // ReSharper restore NotResolvedInText
+                
             }
         }
 

@@ -29,7 +29,7 @@ namespace Dev2.Runtime.ESB.Management.Services
     /// <summary>
     /// Find resources in the service catalog
     /// </summary>
-    [SuppressMessage("ReSharper", "UnusedMember.Global")]
+
     public class FindResource : IEsbManagementEndpoint
     {
         public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
@@ -69,7 +69,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 List<Resource> resources;
                 if (resourceId == null || resourceId == "*")
                 {
-                    // ReSharper disable once RedundantAssignment
+                    
                     resources = ResourceCatalog.Instance.GetResourceList(theWorkspace.ID, new Dictionary<string, string> { { "resourceName", resourceName }, { "type", type } }).ToList();
                 }
                 else

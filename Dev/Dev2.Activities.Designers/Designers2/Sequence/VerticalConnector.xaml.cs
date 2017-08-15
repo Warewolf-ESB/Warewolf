@@ -19,7 +19,7 @@ using System.Activities.Presentation.Hosting;
 using System.Windows;
 using System.Windows.Media.Animation;
 
-// ReSharper disable CheckNamespace
+
 namespace System.Activities.Core.Presentation
 {
     public partial class VerticalConnector

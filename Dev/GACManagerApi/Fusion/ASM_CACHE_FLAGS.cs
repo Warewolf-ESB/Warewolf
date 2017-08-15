@@ -1,5 +1,5 @@
 ﻿using System;
-// ReSharper disable InconsistentNaming
+
 
 namespace GACManagerApi.Fusion
 {

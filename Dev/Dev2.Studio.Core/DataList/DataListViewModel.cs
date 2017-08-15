@@ -40,9 +40,9 @@ using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.DataList;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage;
-// ReSharper disable MemberCanBePrivate.Global
 
-// ReSharper disable CheckNamespace
+
+
 namespace Dev2.Studio.ViewModels.DataList
 {
     public class DataListViewModel : BaseViewModel, IDataListViewModel, IUpdatesHelp
@@ -664,7 +664,7 @@ namespace Dev2.Studio.ViewModels.DataList
             CheckDataListItemsForDuplicates(DataList);
         }
 
-        // ReSharper disable once ParameterTypeCanBeEnumerable.Local
+        
         private void CheckDataListItemsForDuplicates(IEnumerable<IDataListItemModel> itemsToCheck)
         {
             List<IGrouping<string, IDataListItemModel>> duplicates = itemsToCheck.ToLookup(x => x.DisplayName).ToList();
@@ -887,7 +887,7 @@ namespace Dev2.Studio.ViewModels.DataList
             _scalarHandler.AddScalars(c);
         }
 
-        // ReSharper disable InconsistentNaming
+        
 
         private const string RootTag = "DataList";
         private const string Description = "Description";
@@ -988,7 +988,7 @@ namespace Dev2.Studio.ViewModels.DataList
 
             if (DataList != null)
             {
-                // ReSharper disable once LoopCanBeConvertedToQuery
+                
                 missingWorkflowParts.AddRange(_missingDataList.MissingScalars(partsToVerify, excludeUnusedItems));
                 missingWorkflowParts.AddRange(_missingDataList.MissingRecordsets(partsToVerify, excludeUnusedItems));
             }

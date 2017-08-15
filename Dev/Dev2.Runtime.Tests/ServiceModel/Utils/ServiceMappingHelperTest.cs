@@ -18,7 +18,7 @@ using Dev2.Tests.Runtime.XML;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Framework.Converters.Graph.Ouput;
 using Unlimited.Framework.Converters.Graph.Output;
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Tests.Runtime.ServiceModel.Utils
 {

@@ -11,8 +11,8 @@
 using System;
 using Dev2.Data;
 
-// ReSharper disable CheckNamespace
-// ReSharper disable InconsistentNaming
+
+
 
 namespace Dev2.Session
 {

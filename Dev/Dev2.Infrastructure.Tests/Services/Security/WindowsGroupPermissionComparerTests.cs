@@ -13,7 +13,7 @@ using System.ComponentModel;
 using Dev2.Services.Security;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-// ReSharper disable InconsistentNaming
+
 namespace Dev2.Infrastructure.Tests.Services.Security
 {
     [TestClass]
@@ -28,9 +28,9 @@ namespace Dev2.Infrastructure.Tests.Services.Security
             //------------Setup for test-------------------------
 
             //------------Execute Test---------------------------
-            // ReSharper disable ObjectCreationAsStatement
+            
             new WindowsGroupPermissionComparer(ListSortDirection.Ascending, null);
-            // ReSharper restore ObjectCreationAsStatement
+            
 
             //------------Assert Results-------------------------
         }

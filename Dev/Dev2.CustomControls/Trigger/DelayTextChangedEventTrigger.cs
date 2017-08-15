@@ -48,9 +48,9 @@ namespace Dev2.CustomControls.Trigger
             _subscription = observable.Subscribe(ProcessKeyPress);
         }
 
-// ReSharper disable RedundantNameQualifier
+
         private void ProcessKeyPress(EventPattern<EventArgs> obj)
-// ReSharper restore RedundantNameQualifier
+
         {
             Dispatcher.BeginInvoke(() => InvokeActions(null));
         }

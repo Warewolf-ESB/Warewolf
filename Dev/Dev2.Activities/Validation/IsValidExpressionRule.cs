@@ -24,9 +24,9 @@ namespace Dev2.Validation
     public class IsValidExpressionRule : Rule<string>
     {
         readonly string _variableValue;
-        // ReSharper disable NotAccessedField.Local
+        
         readonly ObservableCollection<ObservablePair<string, string>> _inputs;
-        // ReSharper restore NotAccessedField.Local
+        
         readonly string _datalist;
         string _outputValue;
 

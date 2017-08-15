@@ -8,7 +8,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-// ReSharper disable CheckNamespace
+
 namespace Dev2.SignalR.Wrappers
 {
     public enum ConnectionStateWrapped

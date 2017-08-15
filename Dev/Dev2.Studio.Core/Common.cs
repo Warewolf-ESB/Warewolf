@@ -32,9 +32,9 @@ namespace Dev2.Studio.Core
             }
             return result;
         }
-        // ReSharper disable InconsistentNaming
+        
         public static enDev2ColumnArgumentDirection ParseColumnIODirection(XmlAttribute attr)
-            // ReSharper restore InconsistentNaming
+    
         {
             enDev2ColumnArgumentDirection result = enDev2ColumnArgumentDirection.None;
 

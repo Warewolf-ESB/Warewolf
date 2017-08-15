@@ -23,7 +23,7 @@ using System.Windows.Data;
 
 #endregion
 
-// ReSharper disable once CheckNamespace
+
 namespace Dev2.Studio.Core.AppResources.Converters
 {
     internal static class EnumValueDescriptionCache

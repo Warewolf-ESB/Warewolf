@@ -23,7 +23,7 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 namespace Dev2.Activities.Designers.Tests.Zip
 {
     [TestClass]
-    // ReSharper disable InconsistentNaming
+    
     public class ZipDesignerViewModelTests
     {
         [TestMethod]

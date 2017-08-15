@@ -13,7 +13,7 @@ using Dev2.Validation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
-// ReSharper disable InconsistentNaming
+
 namespace Dev2.Tests.Activities.TOTests
 {
     [TestClass]
@@ -66,9 +66,9 @@ namespace Dev2.Tests.Activities.TOTests
             var findRecordsTO = new FindRecordsTO();
             const string searchType = "MyValue";
             //------------Execute Test---------------------------
-            // ReSharper disable ImplicitlyCapturedClosure
+            
             var notifyPropertyChanged = TestUtils.PropertyChangedTester(findRecordsTO, () => findRecordsTO.SearchType, () => findRecordsTO.SearchType = searchType);
-            // ReSharper restore ImplicitlyCapturedClosure
+            
             //------------Assert Results-------------------------
             Assert.AreEqual(searchType, findRecordsTO.SearchType);
             Assert.IsTrue(notifyPropertyChanged);
@@ -83,9 +83,9 @@ namespace Dev2.Tests.Activities.TOTests
             var findRecordsTO = new FindRecordsTO();
             const string searchCriteria = "MyValue";
             //------------Execute Test---------------------------
-            // ReSharper disable ImplicitlyCapturedClosure
+            
             var notifyPropertyChanged = TestUtils.PropertyChangedTester(findRecordsTO, () => findRecordsTO.SearchCriteria, () => findRecordsTO.SearchCriteria = searchCriteria);
-            // ReSharper restore ImplicitlyCapturedClosure
+            
             //------------Assert Results-------------------------
             Assert.AreEqual(searchCriteria, findRecordsTO.SearchCriteria);
             Assert.IsTrue(notifyPropertyChanged);

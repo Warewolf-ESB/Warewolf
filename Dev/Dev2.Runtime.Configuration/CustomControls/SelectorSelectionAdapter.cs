@@ -27,9 +27,9 @@ namespace System.Windows.Controls
     /// an <see cref="T:System.Windows.Controls.AutoCompleteBox" /> control.
     /// </summary>
     /// <QualityBand>Stable</QualityBand>
-    // ReSharper disable PartialTypeWithSinglePart
+    
     public partial class SelectorSelectionAdapter : ISelectionAdapter
-    // ReSharper restore PartialTypeWithSinglePart
+    
     {
         /// <summary>
         /// The Selector instance.
