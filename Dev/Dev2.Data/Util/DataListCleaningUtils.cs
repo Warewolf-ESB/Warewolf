@@ -15,14 +15,14 @@ using Dev2.Data.Interfaces;
 using Dev2.Data.Parsers;
 using Dev2.Data.Util;
 
-// ReSharper disable CheckNamespace
+
 namespace Dev2.DataList.Contract
-// ReSharper restore CheckNamespace
+
 {
     public class DataListCleaningUtils
     {
 
-        // ReSharper disable InconsistentNaming
+        
 
         //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
         public static List<string> SplitIntoRegions(string result)

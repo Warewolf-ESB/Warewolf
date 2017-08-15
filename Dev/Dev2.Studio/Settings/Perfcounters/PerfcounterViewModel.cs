@@ -18,13 +18,13 @@ using Dev2.Studio.Enums;
 using Dev2.Studio.Interfaces;
 using Newtonsoft.Json;
 using Warewolf.Studio.ViewModels;
-// ReSharper disable RedundantArgumentDefaultValue
-// ReSharper disable RedundantOverload.Global
-// ReSharper disable MemberCanBePrivate.Global
-// ReSharper disable UnusedAutoPropertyAccessor.Global
-// ReSharper disable UnusedMember.Global
-// ReSharper disable ClassWithVirtualMembersNeverInherited.Global
-// ReSharper disable InconsistentNaming
+
+
+
+
+
+
+
 namespace Dev2.Settings.Perfcounters
 {
     public class PerfcounterViewModel : SettingsItemViewModel, IUpdatesHelp

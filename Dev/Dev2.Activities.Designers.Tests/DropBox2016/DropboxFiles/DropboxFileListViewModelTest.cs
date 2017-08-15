@@ -21,7 +21,7 @@ using Moq;
 namespace Dev2.Activities.Designers.Tests.DropBox2016.DropboxFiles
 {
     [TestClass]
-    [SuppressMessage("ReSharper", "InconsistentNaming")]
+
     public class DropboxFileListViewModelTest
     {
 
@@ -319,7 +319,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.DropboxFiles
             var agg = new Mock<IEventAggregator>();
             var model = CreateModelItem();
             //------------Setup for test--------------------------
-            // ReSharper disable once UseObjectOrCollectionInitializer
+            
             var boxUploadViewModel = new DropBoxFileListDesignerViewModel(model, TestResourceCatalog.LazySourceManager.Value);
 
             //------------Execute Test---------------------------
@@ -341,7 +341,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.DropboxFiles
             var agg = new Mock<IEventAggregator>();
             var model = CreateModelItem();
             //------------Setup for test--------------------------
-            // ReSharper disable once UseObjectOrCollectionInitializer
+            
             var dropBoxFileListViewModel = new DropBoxFileListDesignerViewModel(model, TestResourceCatalog.LazySourceManager.Value);
 
             //------------Execute Test---------------------------
@@ -363,7 +363,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.DropboxFiles
             var agg = new Mock<IEventAggregator>();
             var model = CreateModelItem();
             //------------Setup for test--------------------------
-            // ReSharper disable once UseObjectOrCollectionInitializer
+            
             var dropBoxFileListViewModel = new DropBoxFileListDesignerViewModel(model, TestResourceCatalog.LazySourceManager.Value);
 
             //------------Execute Test---------------------------
@@ -385,7 +385,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.DropboxFiles
             var agg = new Mock<IEventAggregator>();
             var model = CreateModelItem();
             //------------Setup for test--------------------------
-            // ReSharper disable once UseObjectOrCollectionInitializer
+            
             var dropBoxFileListViewModel = new DropBoxFileListDesignerViewModel(model, TestResourceCatalog.LazySourceManager.Value);
 
             //------------Execute Test---------------------------
@@ -407,7 +407,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.DropboxFiles
             var agg = new Mock<IEventAggregator>();
             var model = CreateModelItem();
             //------------Setup for test--------------------------
-            // ReSharper disable once UseObjectOrCollectionInitializer
+            
             var dropBoxFileListViewModel = new DropBoxFileListDesignerViewModel(model, TestResourceCatalog.LazySourceManager.Value);
 
             //------------Execute Test---------------------------
@@ -428,7 +428,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.DropboxFiles
             var agg = new Mock<IEventAggregator>();
             var model = CreateModelItem();
             //------------Setup for test--------------------------
-            // ReSharper disable once UseObjectOrCollectionInitializer
+            
             var dropBoxFileListViewModel = new DropBoxFileListDesignerViewModel(model, TestResourceCatalog.LazySourceManager.Value);
 
             //------------Execute Test---------------------------
@@ -449,7 +449,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.DropboxFiles
             var agg = new Mock<IEventAggregator>();
             var model = CreateModelItem();
             //------------Setup for test--------------------------
-            // ReSharper disable once UseObjectOrCollectionInitializer
+            
             var dropBoxFileListViewModel = new DropBoxFileListDesignerViewModel(model, TestResourceCatalog.LazySourceManager.Value);
 
             //------------Execute Test---------------------------
@@ -471,7 +471,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.DropboxFiles
             var agg = new Mock<IEventAggregator>();
             var model = CreateModelItem();
             //------------Setup for test--------------------------
-            // ReSharper disable once UseObjectOrCollectionInitializer
+            
             var boxUploadViewModel = new DropBoxFileListDesignerViewModel(model, TestResourceCatalog.LazySourceManager.Value);
 
             //------------Execute Test---------------------------
@@ -500,7 +500,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.DropboxFiles
                 new DropBoxSource(), new DropBoxSource()
             });
             //------------Setup for test--------------------------
-            // ReSharper disable once UseObjectOrCollectionInitializer
+            
             var mockVM = new DropBoxFileListDesignerViewModel(model, mock.Object);
             //---------------Assert Precondition----------------
             mockVM.Sources.Clear();
@@ -523,7 +523,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.DropboxFiles
             shellViewModelMock.Setup(viewModel => viewModel.NewDropboxSource(It.IsAny<string>()));
             CustomContainer.Register(shellViewModelMock.Object);
             //------------Setup for test--------------------------
-            // ReSharper disable once UseObjectOrCollectionInitializer
+            
 
 
             var mockVM = new DropBoxFileListDesignerViewModel(model, TestResourceCatalog.LazySourceManager.Value);

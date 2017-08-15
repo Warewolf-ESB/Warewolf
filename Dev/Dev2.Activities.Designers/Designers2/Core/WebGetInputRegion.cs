@@ -10,7 +10,7 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Studio.Core.Activities.Utils;
-// ReSharper disable NotAccessedField.Local
+
 
 namespace Dev2.Activities.Designers2.Core
 {
@@ -79,7 +79,7 @@ namespace Dev2.Activities.Designers2.Core
 
         private void SourceOnSomethingChanged(object sender, IToolRegion args)
         {
-            // ReSharper disable once ExplicitCallerInfoArgument
+            
             if (_source?.SelectedSource != null)
             {
                 RequestUrl = _source.SelectedSource.HostName;
@@ -92,7 +92,7 @@ namespace Dev2.Activities.Designers2.Core
                 }));
                 IsEnabled = true;
             }
-            // ReSharper disable once ExplicitCallerInfoArgument
+            
             OnPropertyChanged(@"IsEnabled");
         }
 

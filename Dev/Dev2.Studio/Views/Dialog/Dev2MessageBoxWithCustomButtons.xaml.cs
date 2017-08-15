@@ -15,7 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Dev2.Common.ExtMethods;
 
-// ReSharper disable once CheckNamespace
+
 namespace Dev2.ViewModels.Dialogs
 {
     /// <summary>

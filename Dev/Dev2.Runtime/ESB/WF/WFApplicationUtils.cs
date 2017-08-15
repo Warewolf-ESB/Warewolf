@@ -26,8 +26,8 @@ using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Interfaces;
 using FluentAssertions.Common;
 
-// ReSharper disable ReturnTypeCanBeEnumerable.Local
-// ReSharper disable ParameterTypeCanBeEnumerable.Local
+
+
 
 namespace Dev2.Runtime.ESB.WF
 {

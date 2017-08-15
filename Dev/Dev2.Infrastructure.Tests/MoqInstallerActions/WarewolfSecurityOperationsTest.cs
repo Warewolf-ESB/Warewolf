@@ -17,7 +17,7 @@ namespace Dev2.Infrastructure.Tests.MoqInstallerActions
     [TestClass]
     public class WarewolfSecurityOperationsTest
     {
-        // ReSharper disable InconsistentNaming
+        
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("WarewolfSecurityOperations_AddWarewolfGroup")]
@@ -246,6 +246,6 @@ namespace Dev2.Infrastructure.Tests.MoqInstallerActions
 
         #endregion
 
-        // ReSharper restore InconsistentNaming
+
     }
 }

@@ -75,7 +75,7 @@ namespace Dev2.Webs.Callbacks
             Owner?.Close();
         }
 
-        // ReSharper disable once EventNeverSubscribedTo.Global
+        
 #pragma warning disable 67
         public event NavigateRequestedEventHandler NavigateRequested;
 #pragma warning restore 67

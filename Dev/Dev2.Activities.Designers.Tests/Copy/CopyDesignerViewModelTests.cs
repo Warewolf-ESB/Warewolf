@@ -20,7 +20,7 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 namespace Dev2.Activities.Designers.Tests.Copy
 {
     [TestClass]
-    // ReSharper disable InconsistentNaming
+    
     public class CopyDesignerViewModelTests
     {
         [TestMethod]

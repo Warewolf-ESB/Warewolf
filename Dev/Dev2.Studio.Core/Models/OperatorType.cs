@@ -13,7 +13,7 @@ using System.ComponentModel;
 using Dev2.Studio.Interfaces;
 using Warewolf.Resource.Errors;
 
-// ReSharper disable once CheckNamespace
+
 namespace Dev2.Studio.Core.Models
 {
     public class OperatorType : IDataErrorInfo, IOperatorType

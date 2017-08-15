@@ -15,7 +15,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Activities.Designers.Tests.Designers2.Core
 {
     [TestClass]
-    // ReSharper disable InconsistentNaming
+    
     public class VariableUtilsTests
     {
         [TestMethod]

@@ -23,9 +23,9 @@ using Dev2.Runtime.ServiceModel.Data;
 using Newtonsoft.Json;
 using Unlimited.Framework.Converters.Graph;
 using WarewolfCOMIPC.Client;
-// ReSharper disable ClassNeverInstantiated.Global
-// ReSharper disable UnusedVariable
-// ReSharper disable NonLocalizedString
+
+
+
 
 namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
 {
@@ -385,7 +385,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
 
                 return result;
             }
-            // ReSharper disable once RedundantCatchClause
+            
             catch (BadImageFormatException)
             {
                 throw;
@@ -406,7 +406,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
         private List<Type> BuildTypeList(IEnumerable<MethodParameter> parameters)
         {
             var typeList = new List<Type>();
-            // ReSharper disable once LoopCanBeConvertedToQuery
+            
             foreach (var methodParameter in parameters)
             {
                 var type = DeriveType(methodParameter.TypeName);

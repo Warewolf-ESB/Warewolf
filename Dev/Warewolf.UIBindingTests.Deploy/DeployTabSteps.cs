@@ -21,7 +21,7 @@ using TechTalk.SpecFlow;
 using Warewolf.Studio.ViewModels;
 using Dev2.Threading;
 
-// ReSharper disable InconsistentNaming
+
 
 namespace Warewolf.UIBindingTests.Deploy
 {
@@ -41,7 +41,7 @@ namespace Warewolf.UIBindingTests.Deploy
             Core.Utils.SetupResourceDictionary();
             var shell = GetMockShellVm(true, localhostString);
             var shellViewModel = GetMockShellVm(false, destinationServerString);
-            // ReSharper disable once UseObjectOrCollectionInitializer
+            
             var dest = new DeployDestinationViewModelForTesting(shellViewModel, GetMockAggegator());
             dest.ConnectControlViewModel.SelectedConnection = shellViewModel.ActiveServer;
             ScenarioContext.Current.Add(connectControlString, dest.ConnectControlViewModel.SelectedConnection);
@@ -240,7 +240,7 @@ namespace Warewolf.UIBindingTests.Deploy
                 ResourceName = "Examples",
                 Children = new ObservableCollection<IExplorerItemViewModel>
                 {
-                    // ReSharper disable once ExpressionIsAlwaysNull
+                    
                     new ExplorerItemViewModel(server.Object, ax, a => { }
                     , new Mock<IShellViewModel>().Object
                     , new Mock<Dev2.Common.Interfaces.Studio.Controller.IPopupController>().Object)
@@ -649,7 +649,7 @@ namespace Warewolf.UIBindingTests.Deploy
             {
                 GetPopup().Verify(controller => controller.ShowDeployServerVersionConflict("1.0.0.0", "0.0.0.1"));
             }
-            // ReSharper disable once UnusedVariable
+            
             catch (Exception)
             {
                 var message = GetViewModel().ErrorMessage;

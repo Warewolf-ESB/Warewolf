@@ -89,9 +89,9 @@ namespace Dev2.Runtime.ServiceModel.Data
         [JsonConverter(typeof(StringEnumConverter))]
         public AuthenticationType AuthenticationType { get; set; }
 
-// ReSharper disable InconsistentNaming
+
         public string UserID { get; set; }
-// ReSharper restore InconsistentNaming
+
 
         public string Password { get; set; }
 

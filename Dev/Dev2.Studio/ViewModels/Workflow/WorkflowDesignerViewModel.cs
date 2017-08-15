@@ -86,15 +86,15 @@ using Dev2.Workspaces;
 using Newtonsoft.Json;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Studio.ViewModels;
-// ReSharper disable MemberCanBePrivate.Global
-// ReSharper disable ConvertToAutoProperty
-// ReSharper disable UnusedMember.Global
-// ReSharper disable LoopCanBeConvertedToQuery
 
 
-// ReSharper disable CheckNamespace
+
+
+
+
+
 namespace Dev2.Studio.ViewModels.Workflow
-// ReSharper restore CheckNamespace
+
 {
     public class FromToolBox
     {
@@ -117,12 +117,12 @@ namespace Dev2.Studio.ViewModels.Workflow
         protected dynamic DataObject { get; set; }
         List<ModelItem> _selectedDebugItems = new List<ModelItem>();
         DelegateCommand _expandAllCommand;
-        // ReSharper disable once InconsistentNaming
+
         protected ModelService ModelService;
         IContextualResourceModel _resourceModel;
-        // ReSharper disable once InconsistentNaming
+
         protected Dictionary<IDataListVerifyPart, string> _uniqueWorkflowParts;
-        // ReSharper disable InconsistentNaming
+        
         protected WorkflowDesigner _wd;
         DesignerMetadata _wdMeta;
 
@@ -162,9 +162,9 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// <param name="resource">Resource that will be opened</param>
         /// <param name="workflowHelper">Serialization helper</param>
         /// <param name="createDesigner">create a new designer flag</param>
-        // ReSharper disable TooManyDependencies
+        
         private WorkflowDesignerViewModel(IEventAggregator eventPublisher, IContextualResourceModel resource, IWorkflowHelper workflowHelper, bool createDesigner = true)
-            // ReSharper restore TooManyDependencies
+            
             : this(eventPublisher, resource, workflowHelper,
                 CustomContainer.Get<IPopupController>(), new AsyncWorker(), new ExternalProcessExecutor(), createDesigner)
         {
@@ -181,7 +181,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// <param name="executor">Execute external Processes</param>
         /// <param name="createDesigner">Create a new designer flag</param>
         /// <param name="liteInit"> Lite initialise designer. Testing only</param>
-        // ReSharper disable TooManyDependencies
+        
         public WorkflowDesignerViewModel(IEventAggregator eventPublisher, IContextualResourceModel resource, IWorkflowHelper workflowHelper, IPopupController popupController, IAsyncWorker asyncWorker, IExternalProcessExecutor executor, bool createDesigner = true, bool liteInit = false)
             : base(eventPublisher)
         {
@@ -608,9 +608,9 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             if (!string.IsNullOrEmpty(contextualResourceModel.DataList))
             {
-                // ReSharper disable MaximumChainedReferences
+                
                 _originalDataList = contextualResourceModel.DataList.Replace("<DataList>", "").Replace("</DataList>", "").Replace(Environment.NewLine, "").Trim();
-                // ReSharper restore MaximumChainedReferences
+                
             }
         }
 
@@ -1068,11 +1068,11 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// <param name="addedItem"></param>
         /// <returns></returns>
 
-        // ReSharper disable MethodTooLong
-        // ReSharper disable ExcessiveIndentation
+        
+        
         protected ModelItem PerformAddItems(ModelItem addedItem)
-        // ReSharper restore ExcessiveIndentation
-        // ReSharper restore MethodTooLong
+        
+        
         {
             var mi = addedItem;
             var computedValue = mi.Content?.ComputedValue;
@@ -1786,12 +1786,12 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             if (ModelService != null)
             {
-                // ReSharper disable MaximumChainedReferences
+                
                 var selectedModelItem = (from mi in _modelItems
                                          let instanceID = ModelItemUtils.GetUniqueID(mi)
                                          where instanceID == itemId || instanceID == parentId
                                          select mi).FirstOrDefault();
-                // ReSharper restore MaximumChainedReferences
+                
 
                 if (selectedModelItem == null)
                 {
@@ -2080,9 +2080,9 @@ namespace Dev2.Studio.ViewModels.Workflow
             try
             {
                 if (!string.IsNullOrEmpty(dataList))
-                    // ReSharper disable ReturnValueOfPureMethodIsNotUsed
+                    
                     XElement.Parse(dataList);
-                // ReSharper restore ReturnValueOfPureMethodIsNotUsed
+                
             }
             catch (Exception)
             {
@@ -2674,9 +2674,9 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 CEventHelper.RemoveAllEventHandlers(_wd);
             }
-            // ReSharper disable EmptyGeneralCatchClause
+            
             catch { }
-            // ReSharper restore EmptyGeneralCatchClause
+            
             _debugSelectionChangedService?.Unsubscribe();
             base.OnDispose();
         }

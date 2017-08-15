@@ -9,7 +9,7 @@
 */
 
 using System.Collections.Generic;
-// ReSharper disable CheckNamespace
+
 
 
 namespace ActivityUnitTests.Utils {

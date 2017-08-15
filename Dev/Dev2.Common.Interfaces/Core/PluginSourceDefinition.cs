@@ -38,7 +38,7 @@ namespace Dev2.Common.Interfaces.Core
 
         public bool Equals(IPluginSource other)
         {
-            // ReSharper disable once PossibleNullReferenceException
+            
             return string.Equals(Name, other.Name) &&
                 string.Equals(Path, other.Path) &&
                 string.Equals(ConfigFilePath, other.ConfigFilePath) &&

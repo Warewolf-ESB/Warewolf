@@ -8,7 +8,7 @@ namespace Dev2.Common
 {
     public class DebugStateTreeBuilder
     {
-        [SuppressMessage("ReSharper", "PossibleMultipleEnumeration")]
+
         public static IEnumerable<IDebugState> BuildTree(IEnumerable<IDebugState> source)
         {
             var groups = source?.GroupBy(i => i.ParentID) ?? new List<IGrouping<Guid?, IDebugState>>();

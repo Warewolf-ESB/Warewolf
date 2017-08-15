@@ -127,9 +127,9 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Random
             var result = scenarioContext.Get<IDSFDataObject>("result");
             GetScalarValueFromEnvironment(result.Environment, ResultVariable,
                                        out actualValue, out error);
-            // ReSharper disable AssignNullToNotNullAttribute
+            
             TypeConverter converter = TypeDescriptor.GetConverter(Type.GetType(type));
-            // ReSharper restore AssignNullToNotNullAttribute
+            
             converter.ConvertFrom(actualValue);
             if (length == 0)
             {
@@ -149,9 +149,9 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Random
             var result = scenarioContext.Get<IDSFDataObject>("result");
             GetScalarValueFromEnvironment(result.Environment, ResultVariable,
                                        out actualValue, out error);
-            // ReSharper disable AssignNullToNotNullAttribute
+            
             TypeConverter converter = TypeDescriptor.GetConverter(Type.GetType(type));
-            // ReSharper restore AssignNullToNotNullAttribute
+            
             if(actualValue != null)
             {
                 converter.ConvertFrom(actualValue);

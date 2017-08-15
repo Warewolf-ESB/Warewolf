@@ -9,12 +9,12 @@ using System.Runtime.InteropServices;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using WarewolfCOMIPC.Client;
-// ReSharper disable NonLocalizedString
-// ReSharper disable ArrangeTypeModifiers
+
+
 
 namespace WarewolfCOMIPC
 {
-    // ReSharper disable once ClassNeverInstantiated.Global
+    
     class Program
     {
         static void Main(string[] args)

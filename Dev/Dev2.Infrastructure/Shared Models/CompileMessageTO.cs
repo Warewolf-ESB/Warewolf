@@ -22,7 +22,7 @@ namespace Dev2.Data.ServiceModel.Messages
     /// Send compile time messages to the studio ;)
     /// </summary>
     [Serializable]
-    // ReSharper disable InconsistentNaming
+    
     public class CompileMessageTO : ICompileMessageTO
     {
         public Guid UniqueID { get; set; }

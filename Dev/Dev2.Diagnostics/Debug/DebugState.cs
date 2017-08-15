@@ -191,9 +191,9 @@ namespace Dev2.Diagnostics.Debug
             {
                 return XmlConvert.ToString(Duration);
             }
-            // ReSharper disable ValueParameterNotUsed
+            
             set
-            // ReSharper restore ValueParameterNotUsed
+            
             {
             }
         }
@@ -406,7 +406,7 @@ namespace Dev2.Diagnostics.Debug
         {
 
             writer.Write(items.Count);
-            // ReSharper disable ForCanBeConvertedToForeach
+            
             for (var i = 0; i < items.Count; i++)
             {
                 writer.Write(items[i].FetchResultsList().Count);
@@ -422,7 +422,7 @@ namespace Dev2.Diagnostics.Debug
                     writer.Write(itemResult.MoreLink);
                 }
             }
-            // ReSharper restore ForCanBeConvertedToForeach
+            
         }
 
         private static void Deserialize(IByteReaderBase reader, ICollection<IDebugItem> items)

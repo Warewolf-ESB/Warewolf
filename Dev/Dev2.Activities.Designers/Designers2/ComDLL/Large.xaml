@@ -27,7 +27,7 @@
     </core:ActivityDesignerTemplate.Resources>
 
     <core:ActivityDesignerTemplate.RightButtons>
-        <!-- ReSharper disable UnusedMember.Global -->
+        
         <core:ActivityDesignerButton x:Name="DoneButton"
                                      Visibility="{Binding GenerateOutputsVisible, Converter={StaticResource BoolToVisibilityConverterNegative}}"
                                      Content="{Binding ButtonDisplayValue}"
@@ -78,7 +78,7 @@
               Visibility="{Binding OnErrorVisible}">
                 <errors:OnError />
             </Grid>
-            <!-- ReSharper restore UnusedMember.Global -->
+            
         </Grid>
 
         <Grid  Visibility="{Binding GenerateOutputsVisible, Converter={StaticResource BoolToVisibilityConverterPositive}}">

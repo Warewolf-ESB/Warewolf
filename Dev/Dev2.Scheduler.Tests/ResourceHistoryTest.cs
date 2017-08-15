@@ -23,9 +23,9 @@ namespace Dev2.Scheduler.Test
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("TaskSheduler_ResourceHistoryTest_Construct")]
-        // ReSharper disable InconsistentNaming
+        
         public void TaskSheduler_ResourceHistory_ShouldConstructCorrectly()
-        // ReSharper restore InconsistentNaming
+
         {
             var a = new List<IDebugState>();
             var b = new EventInfo(new DateTime(2001, 01, 01), new TimeSpan(1, 0, 0), new DateTime(2001, 01, 01), ScheduleRunStatus.Error, "sdf");

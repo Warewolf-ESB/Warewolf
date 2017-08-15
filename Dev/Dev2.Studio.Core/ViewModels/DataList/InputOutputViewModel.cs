@@ -24,13 +24,13 @@ using Dev2.Studio.Core.Views;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Warewolf.Storage;
-// ReSharper disable VirtualMemberCallInConstructor
-// ReSharper disable MemberCanBePrivate.Global
 
-// ReSharper disable once CheckNamespace
-// ReSharper disable CheckNamespace
+
+
+
+
 namespace Dev2.Studio.ViewModels.DataList
-// ReSharper restore CheckNamespace
+
 {
     public class InputOutputViewModel : SimpleBaseViewModel, IInputOutputViewModel, ICloneable
     {

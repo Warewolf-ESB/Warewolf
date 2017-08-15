@@ -6,7 +6,7 @@ using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.DynamicServices;
 using Dev2.Runtime.Hosting;
-// ReSharper disable PossibleNullReferenceException
+
 
 namespace Dev2.Runtime.ServiceModel.Data
 {
@@ -37,7 +37,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             var action = xml.Descendants("Action").FirstOrDefault();
             if(action == null)
             {
-                // ReSharper disable once PossibleNullReferenceException
+                
                 if (xml.HasAttributes && xml.Attribute("Type").Value == "ComPlugin")
                 {
                     action = xml;

@@ -15,9 +15,9 @@ using Infragistics.Calculations;
 using Infragistics.Calculations.CalcManager;
 using Warewolf.Resource.Errors;
 
-// ReSharper disable CheckNamespace
+
 namespace Dev2.MathOperations
-// ReSharper restore CheckNamespace
+
 {
 
     // PBI 1214: This class is used to create a dev2 function used by the Calculate Tool
@@ -124,7 +124,7 @@ namespace Dev2.MathOperations
             }
             else
             {
-                // ReSharper disable once NotResolvedInText
+                
                 throw new ArgumentNullException("Cannot set Function Name to an empty string");
             }
         }

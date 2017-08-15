@@ -13,7 +13,7 @@ using Dev2.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Core;
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Tests.Activities.ActivityTests.Scripting
 {
@@ -60,7 +60,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
             //---------------Execute Test ----------------------
             var toolDescriptorInfo = typeof(DsfRubyActivity).GetCustomAttributes(typeof(ToolDescriptorInfo), false).Single() as ToolDescriptorInfo;
             //---------------Test Result -----------------------
-            // ReSharper disable once PossibleNullReferenceException
+            
             Assert.AreEqual("Scripting", toolDescriptorInfo.Category );
             Assert.AreEqual("ruby script", toolDescriptorInfo.FilterTag );
             Assert.AreEqual("Scripting-Ruby", toolDescriptorInfo.Icon );

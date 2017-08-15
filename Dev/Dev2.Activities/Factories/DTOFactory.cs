@@ -14,10 +14,10 @@ using Dev2.Data.Interfaces.Enums;
 using Dev2.Studio.Core.Helpers;
 using Dev2.TO;
 
-// ReSharper disable CheckNamespace
-// ReSharper disable InconsistentNaming
+
+
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
-// ReSharper restore CheckNamespace
+
 {
     public class DTOFactory
     {
@@ -26,9 +26,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             IDev2TOFn toReturn = null;
 
             TypeSwitch.Do(dto,
-                // ReSharper disable ImplicitlyCapturedClosure
+                
                 TypeSwitch.Case<ActivityDTO>(x => toReturn = new ActivityDTO(initializeWith, "", index, inserted)),
-                // ReSharper restore ImplicitlyCapturedClosure
+                
                 TypeSwitch.Case<DataSplitDTO>(x =>
                 {
                     var dataSplitDto = dto as DataSplitDTO;
@@ -61,7 +61,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         toReturn = new BaseConvertTO(initializeWith, baseConvertTO.FromType, baseConvertTO.ToType, baseConvertTO.ToExpression, index, inserted);
                     }
                 }),
-                // ReSharper disable ImplicitlyCapturedClosure
+                
                 TypeSwitch.Case<GatherSystemInformationTO>(x => toReturn =
                     new GatherSystemInformationTO(enTypeOfSystemInformationToGather.FullDateTime,
                         initializeWith, index, inserted)),

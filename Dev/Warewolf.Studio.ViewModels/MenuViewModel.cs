@@ -17,7 +17,7 @@ using Dev2.Studio.Interfaces;
 using FontAwesome.WPF;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
-// ReSharper disable MemberCanBePrivate.Global
+
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -67,7 +67,7 @@ namespace Warewolf.Studio.ViewModels
             });
             SlideClosedCommand = new DelegateCommand(() =>
             {
-                // ReSharper disable CompareOfFloatsByEqualityOperator
+                
                 if (_viewModel.MenuPanelWidth >= 80 && !_isOverLock)
                 {
                     SlideClosed(_viewModel);

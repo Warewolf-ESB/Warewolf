@@ -429,9 +429,9 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
             ModelItemCollection.Clear();
             var selectedDatabase = SelectedDatabase;
             var selectedTable = SelectedTable;
-            // ReSharper disable ImplicitlyCapturedClosure
+            
             _asyncWorker.Start(() => GetDatabaseTableColumns(selectedDatabase, selectedTable), columnList =>
-            // ReSharper restore ImplicitlyCapturedClosure
+            
             {
                 if (columnList.HasErrors)
                 {

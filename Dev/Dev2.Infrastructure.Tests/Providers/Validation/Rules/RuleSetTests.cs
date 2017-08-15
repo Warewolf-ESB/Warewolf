@@ -14,7 +14,7 @@ using Dev2.Providers.Errors;
 using Dev2.Providers.Validation.Rules;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-// ReSharper disable InconsistentNaming
+
 namespace Dev2.Infrastructure.Tests.Providers.Validation.Rules
 {
     [TestClass]

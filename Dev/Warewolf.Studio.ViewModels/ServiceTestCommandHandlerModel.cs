@@ -11,8 +11,8 @@ using Dev2.Common.Interfaces.Threading;
 using Dev2.Data;
 using Dev2.Studio.Interfaces;
 
-// ReSharper disable ParameterTypeCanBeEnumerable.Local
-// ReSharper disable CyclomaticComplexity
+
+
 
 namespace Warewolf.Studio.ViewModels
 {

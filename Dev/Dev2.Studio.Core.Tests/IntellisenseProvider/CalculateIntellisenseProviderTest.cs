@@ -21,7 +21,7 @@ namespace Dev2.Core.Tests.IntellisenseProvider
     [TestClass]
     public class CalculateIntellisenseProviderTest
     {
-        // ReSharper disable InconsistentNaming
+        
         #region CalculateIntellisenseProvider Tests
 
         [TestMethod]

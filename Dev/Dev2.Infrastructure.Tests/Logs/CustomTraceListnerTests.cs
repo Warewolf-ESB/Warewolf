@@ -12,7 +12,7 @@ using System;
 using Dev2.Providers.Logs;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-// ReSharper disable InconsistentNaming
+
 namespace Dev2.Infrastructure.Tests.Logs
 {
     [TestClass]

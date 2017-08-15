@@ -11,7 +11,7 @@
 using Dev2.Studio.Interfaces;
 using Moq;
 
-// ReSharper disable once CheckNamespace
+
 namespace Dev2.Studio.Core.AppResources.Repositories
 {
     class TestResourceRepository : ResourceRepository

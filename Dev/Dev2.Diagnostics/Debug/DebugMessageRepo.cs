@@ -1,4 +1,4 @@
-// ReSharper disable ReturnTypeCanBeEnumerable.Global
+
 
 namespace Dev2.Diagnostics.Debug
 {

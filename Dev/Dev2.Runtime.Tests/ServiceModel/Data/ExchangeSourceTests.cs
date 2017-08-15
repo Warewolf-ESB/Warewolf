@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 
-// ReSharper disable CheckNamespace
+
 
 namespace Dev2.Tests.Runtime.ServiceModel
 {

@@ -9,7 +9,7 @@ using Dev2.Services;
 using Warewolf.Resource.Errors;
 using Dev2.Common.Interfaces.Studio.Core;
 using Dev2.Studio.Interfaces;
-// ReSharper disable ParameterTypeCanBeEnumerable.Global
+
 
 namespace Dev2.Activities.Designers2.Service
 {

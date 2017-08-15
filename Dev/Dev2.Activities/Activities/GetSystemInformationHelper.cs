@@ -23,7 +23,7 @@ using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using Dev2.Runtime.ESB.Management.Services;
 
-// ReSharper disable InconsistentNaming
+
 namespace Dev2.Activities
 {
     public interface IGetSystemInformation

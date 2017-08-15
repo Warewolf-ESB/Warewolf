@@ -15,7 +15,7 @@ using System.Windows;
 using System.Windows.Data;
 using Dev2.Common.Interfaces.Enums.Enums;
 
-// ReSharper disable once CheckNamespace
+
 namespace Dev2.Studio.Core.AppResources.Converters
 {
     public class EnumToBoolConverter : DependencyObject, IValueConverter

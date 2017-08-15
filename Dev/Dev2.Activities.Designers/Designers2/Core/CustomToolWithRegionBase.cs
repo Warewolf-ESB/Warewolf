@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using Dev2.Common.Interfaces.ToolBase;
 
-// ReSharper disable InconsistentNaming
-// ReSharper disable VirtualMemberCallInContructor
+
+
 
 namespace Dev2.Activities.Designers2.Core
 {
     public abstract class CustomToolWithRegionBase : ActivityDesignerViewModel, INotifyPropertyChanged, ICustomToolViewModelWithRegionBase
     {
-        // ReSharper disable FieldCanBeMadeReadOnly.Local
+        
         protected IList<IToolRegion> _regions;
 
         #region Implementation of INotifyPropertyChanged
@@ -23,7 +23,7 @@ namespace Dev2.Activities.Designers2.Core
         }
         #endregion
 
-        // ReSharper disable once PublicConstructorInAbstractClass
+        
         public CustomToolWithRegionBase(ModelItem modelItem)
             : base(modelItem)
         {
@@ -31,7 +31,7 @@ namespace Dev2.Activities.Designers2.Core
 
         public abstract IList<IToolRegion> BuildRegions();
 
-        // ReSharper disable PublicConstructorInAbstractClass
+        
         public CustomToolWithRegionBase(ModelItem modelItem, IList<IToolRegion> regions)
             : base(modelItem)
         {

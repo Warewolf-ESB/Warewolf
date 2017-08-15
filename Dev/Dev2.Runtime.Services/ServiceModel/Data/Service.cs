@@ -19,7 +19,7 @@ using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Common.Interfaces.Data;
 using Newtonsoft.Json;
 using Unlimited.Framework.Converters.Graph;
-// ReSharper disable ConvertToAutoProperty
+
 
 namespace Dev2.Runtime.ServiceModel.Data
 {
@@ -86,7 +86,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             action.Add(inputs);
             action.Add(outputs);
 
-            // ReSharper disable once RedundantBaseQualifier
+            
             var result = base.ToXml();
             result.AddFirst(
                 new XElement("Actions", action),

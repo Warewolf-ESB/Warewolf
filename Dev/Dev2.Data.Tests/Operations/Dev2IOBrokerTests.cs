@@ -29,9 +29,9 @@ namespace Dev2.Data.Tests.Operations
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("ActivityIOFactory_CreateOperationEndPointFromIOPath")]
-        // ReSharper disable InconsistentNaming
+        
         public void ActivityIOFactory_CreateOperationEndPointFromIOPath_WithSftp_ShouldSetTypeTpSFtp()
-        // ReSharper restore InconsistentNaming
+
         {
             //------------Setup for test--------------------------
             const string Path = "sftp://sftp.theunlimited.co.za/text.txt";

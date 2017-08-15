@@ -21,11 +21,11 @@ using Dev2.Common;
 using Microsoft.Win32.SafeHandles;
 using Warewolf.Resource.Errors;
 
-// ReSharper disable CheckNamespace
+
 
 namespace Dev2
 {
-    // ReSharper restore CheckNamespace
+    
 
     /// <summary>
     ///     Used for internal security reasons
@@ -52,11 +52,11 @@ namespace Dev2
 
     public class FileIO
     {
-// ReSharper disable InconsistentNaming
+
         private const int LOGON32_PROVIDER_DEFAULT = 0;
-// ReSharper restore InconsistentNaming
+
         //This parameter causes LogonUser to create a primary token. 
-// ReSharper disable InconsistentNaming
+
         private const int LOGON32_LOGON_INTERACTIVE = 2;
 
         #region Permissions
@@ -211,6 +211,6 @@ namespace Dev2
 
         #endregion Permissions
 
-// ReSharper restore InconsistentNaming
+
     }
 }

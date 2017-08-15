@@ -24,10 +24,10 @@ using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
 using Dev2.Workspaces;
 using Warewolf.Resource.Errors;
-// ReSharper disable MemberCanBePrivate.Global
-// ReSharper disable CollectionNeverQueried.Global
-// ReSharper disable UnusedAutoPropertyAccessor.Global
-// ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
+
+
+
+
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -157,7 +157,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
         }
 
-        // ReSharper disable InconsistentNaming
+        
         public string title { get; set; }
         public bool isFolder { get; set; }
         public string key { get; set; }

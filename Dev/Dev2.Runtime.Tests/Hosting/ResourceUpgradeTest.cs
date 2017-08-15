@@ -26,9 +26,9 @@ namespace Dev2.Tests.Runtime.Hosting
         public void ResourceUpgrade_Ctor_Null_Params_Func()
         {
             //------------Setup for test--------------------------
-            // ReSharper disable ObjectCreationAsStatement
+            
             new ResourceUpgrade( null);
-            // ReSharper restore ObjectCreationAsStatement
+            
 
             //------------Execute Test---------------------------
 
@@ -41,11 +41,11 @@ namespace Dev2.Tests.Runtime.Hosting
         public void ResourceUpgrade_Properties()
         {
             //------------Setup for test--------------------------
-            // ReSharper disable ObjectCreationAsStatement
+            
             var x = new Func<XElement,XElement>( async=>async);
             var a = new ResourceUpgrade(x);
             Assert.AreEqual(x,a.UpgradeFunc);
-            // ReSharper restore ObjectCreationAsStatement
+            
 
             //------------Execute Test---------------------------
 

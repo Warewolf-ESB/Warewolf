@@ -30,7 +30,7 @@ namespace Dev2.Core.Tests
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary>
-        // ReSharper disable once ConvertToAutoProperty
+        
         public TestContext TestContext
         {
             get
@@ -70,7 +70,7 @@ namespace Dev2.Core.Tests
         #region Positive Test Cases
 
         [TestMethod]
-        // ReSharper disable once InconsistentNaming
+
         public void Dev2DialogueSetup_CorrectParameterSet_Test()
         {
             IDialogueViewModel dev2Dialogue = new DialogueViewModel();
@@ -89,7 +89,7 @@ namespace Dev2.Core.Tests
         #region Negative Test Cases
 
         [TestMethod]
-        // ReSharper disable once InconsistentNaming
+
         public void Dev2Dialogue_NullTitle_ValidDescriptionImgSourceDecsriptionTitle_Expected_DialogueSetup_TitleSetToEmptyStringNotNull()
         {
             IDialogueViewModel dev2Dialogue = new DialogueViewModel();
@@ -105,7 +105,7 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
-        // ReSharper disable InconsistentNaming
+        
         public void Dev2Dialogue_NullDescription_ValidDescriptionImgSourceDecsriptionTitle_Expected_DialogueSetup_DescriptionSetToEmpty()
 
         {
@@ -209,6 +209,6 @@ namespace Dev2.Core.Tests
         }
 
         #endregion Negative Test Cases
-        // ReSharper restore InconsistentNaming
+
     }
 }

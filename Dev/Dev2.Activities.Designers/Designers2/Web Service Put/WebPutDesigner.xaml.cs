@@ -9,7 +9,7 @@
 */
 
 
-// ReSharper disable once CheckNamespace
+
 namespace Dev2.Activities.Designers2.Web_Service_Put
 {
     // Interaction logic for WebServiceGetDesigner.xaml

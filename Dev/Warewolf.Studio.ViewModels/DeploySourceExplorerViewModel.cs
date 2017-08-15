@@ -9,7 +9,7 @@ using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.Deploy;
 
-// ReSharper disable InconsistentNaming
+
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -34,9 +34,9 @@ namespace Warewolf.Studio.ViewModels
             _shellViewModel = shellViewModel;
             _selectAction = SelectAction;
             _selectedEnv = selectedEnvironment;
-            // ReSharper disable once VirtualMemberCallInContructor
+            
             Environments = new ObservableCollection<IEnvironmentViewModel> { localhostEnvironment };
-            // ReSharper disable once VirtualMemberCallInContructor
+            
             LoadEnvironment(localhostEnvironment);
 
             ConnectControlViewModel = new ConnectControlViewModel(_shellViewModel.LocalhostServer, aggregator, _shellViewModel.ExplorerViewModel.ConnectControlViewModel.Servers);

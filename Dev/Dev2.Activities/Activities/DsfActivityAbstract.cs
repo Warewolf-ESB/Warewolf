@@ -27,13 +27,13 @@ using Newtonsoft.Json;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage.Interfaces;
 
-// ReSharper disable UnusedMember.Global
-// ReSharper disable MemberCanBeProtected.Global
-// ReSharper disable MemberCanBePrivate.Global
-// ReSharper disable RedundantAssignment
 
-// ReSharper disable CheckNamespace
-// ReSharper disable InconsistentNaming
+
+
+
+
+
+
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
     public abstract class DsfActivityAbstract<T> : DsfNativeActivity<T>, IActivityTemplateFactory, INotifyPropertyChanged

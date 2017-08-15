@@ -27,7 +27,7 @@ using Infragistics;
 using Infragistics.Windows.DockManager;
 using Infragistics.Windows.DockManager.Events;
 
-// ReSharper disable CheckNamespace
+
 namespace Dev2.Studio.Dock
 {
     /// <summary>
@@ -666,7 +666,7 @@ namespace Dev2.Studio.Dock
         /// <summary>
         /// Returns the pane being initialized
         /// </summary>
-        // ReSharper disable once ConvertToAutoProperty
+        
         public ContentPane Pane => _pane;
 
     }

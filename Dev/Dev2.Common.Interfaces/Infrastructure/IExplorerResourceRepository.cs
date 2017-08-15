@@ -19,7 +19,7 @@ namespace Dev2.Common.Interfaces.Infrastructure
     {
 
         IExplorerItem Load(Guid workSpaceId, bool reload = false);
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         IExplorerItem Load(string type, Guid workSpaceId);
         IExplorerRepositoryResult RenameItem(IExplorerItem itemToRename, string newName, Guid workSpaceId);
         IExplorerRepositoryResult RenameFolder(string path, string newName, Guid workSpaceId);

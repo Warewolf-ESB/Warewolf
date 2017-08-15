@@ -36,38 +36,38 @@ using Warewolf.Resource.Messages;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 
-// ReSharper disable CheckNamespace
+
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
-// ReSharper restore CheckNamespace
+
 {
     [ToolDescriptorInfo("Execution-ForEach", "ForEach", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Loop Constructs", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_LoopConstruct_For Each")]
     public class DsfForEachActivity : DsfActivityAbstract<bool>
     {
         string _previousParentId;
-        // ReSharper disable FieldCanBeMadeReadOnly.Local
+        
         Dev2ActivityIOIteration _inputItr = new Dev2ActivityIOIteration();
-        // ReSharper restore FieldCanBeMadeReadOnly.Local
+        
         #region Variables
 
         private string _forEachElementName;
         private string _displayName;
-        // ReSharper disable ConvertToConstant.Local
+        
         readonly int _previousInputsIndex = -1;
 
         readonly int _previousOutputsIndex = -1;
-        // ReSharper restore ConvertToConstant.Local
+        
         private string _inputsToken = "*";
         private string _outputsToken = "*";
 
-        // ReSharper disable InconsistentNaming
+        
         private ForEachBootstrapTO operationalData;
-        // ReSharper restore InconsistentNaming
+
 
         #endregion Variables
 
         #region Properties
 
-        // ReSharper disable MemberCanBePrivate.Global
+        
         public enForEachType ForEachType { get; set; }
 
 
@@ -88,9 +88,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         [Inputs("FromDisplayName")]
         [FindMissing]
-        // ReSharper disable UnusedMember.Global
+        
         public string FromDisplayName
-        // ReSharper restore UnusedMember.Global
+        
         {
             get
             {
@@ -105,9 +105,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         [Inputs("ForEachElementName")]
         [FindMissing]
-        // ReSharper disable ConvertToAutoProperty
+        
         public string ForEachElementName
-        // ReSharper restore ConvertToAutoProperty
+        
         {
             get
             {
@@ -119,9 +119,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        // ReSharper disable UnusedMember.Global
+        
         public int ExecutionCount
-        // ReSharper restore UnusedMember.Global
+        
         {
             get
             {
@@ -133,47 +133,47 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 return 0;
             }
         }
-        // ReSharper restore MemberCanBePrivate.Global
-        // ReSharper disable InconsistentNaming
-        // ReSharper disable UnusedMember.Global
+        
+        
+        
         public Variable test { get; set; }
-        // ReSharper restore UnusedMember.Global
-        // ReSharper restore InconsistentNaming
+        
+
         public ActivityFunc<string, bool> DataFunc { get; set; }
 
-        // ReSharper disable UnusedMember.Global
+        
         public bool FailOnFirstError { get; set; }
-        // ReSharper restore UnusedMember.Global
-        // ReSharper disable UnusedAutoPropertyAccessor.Local
-        // ReSharper disable UnusedMember.Global
+        
+        
+        
         public string ElementName { private set; get; }
-        // ReSharper restore UnusedMember.Global
-        // ReSharper disable UnusedMember.Global
+        
+        
         public string PreservedDataList { private set; get; }
-        // ReSharper restore UnusedMember.Global
-        // ReSharper restore UnusedAutoPropertyAccessor.Local
+        
+        
 
-        // ReSharper restore FieldCanBeMadeReadOnly.Local
+        
 #pragma warning disable 169
-        // ReSharper disable UnusedMember.Local
+        
         private List<bool> _results = new List<bool>();
-        // ReSharper restore UnusedMember.Local
+        
 #pragma warning restore 169
 
         // REMOVE : No longer used
 #pragma warning disable 169
-        // ReSharper disable UnusedMember.Local
+        
         DelegateInArgument<string> _actionArgument = new DelegateInArgument<string>("explicitDataFromParent");
-        // ReSharper restore UnusedMember.Local
+        
 #pragma warning restore 169
 
         // used to avoid IO mapping adjustment issues ;)
         // REMOVE : 2 variables below not used any more.....
 
-        // ReSharper disable FieldCanBeMadeReadOnly.Local
+        
         private Variable<string> _origInput = new Variable<string>("origInput");
         private Variable<string> _origOutput = new Variable<string>("origOutput");
-        // ReSharper restore FieldCanBeMadeReadOnly.Local
+        
         readonly object _forEachExecutionObject = new object();
         private string _childUniqueID;
         private Guid _originalUniqueID;
@@ -741,9 +741,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         IterateIOMapping(idx);
                     }
                     dataObject.ParentInstanceID = UniqueID;
-                    // ReSharper disable RedundantTypeArgumentsOfMethod
+                    
                     context.ScheduleFunc(DataFunc, UniqueID, ActivityCompleted);
-                    // ReSharper restore RedundantTypeArgumentsOfMethod
+                    
                     return;
                 }
 

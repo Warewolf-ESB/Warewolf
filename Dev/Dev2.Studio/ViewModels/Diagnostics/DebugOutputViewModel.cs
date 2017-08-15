@@ -36,12 +36,12 @@ using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Interfaces;
 using DelegateCommand = Dev2.Runtime.Configuration.ViewModels.Base.DelegateCommand;
-// ReSharper disable InconsistentNaming
-// ReSharper disable NonLocalizedString
 
-// ReSharper disable CheckNamespace
+
+
+
 namespace Dev2.Studio.ViewModels.Diagnostics
-// ReSharper restore CheckNamespace
+
 {
     /// <summary>
     ///     This is the view-model of the UI.  It provides a data source
@@ -518,7 +518,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         }
 
         //This is used in the debug view to open the more link file. This is called Dynamically so shows as unused.
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         [ExcludeFromCodeCoverage]
         public void OpenMoreLink(IDebugLineItem item)
         {

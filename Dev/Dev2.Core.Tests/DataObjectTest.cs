@@ -24,10 +24,10 @@ using Moq;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 
-// ReSharper disable FunctionComplexityOverflow
 
-// ReSharper disable InconsistentNaming
-// ReSharper disable MethodTooLong
+
+
+
 namespace Dev2.Tests
 {
     [TestClass]

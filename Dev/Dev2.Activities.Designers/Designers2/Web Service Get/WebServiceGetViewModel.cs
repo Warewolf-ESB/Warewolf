@@ -20,8 +20,8 @@ using Dev2.Studio.Interfaces;
 using Microsoft.Practices.Prism.Commands;
 using Warewolf.Core;
 
-// ReSharper disable MemberCanBePrivate.Global
-// ReSharper disable UnusedAutoPropertyAccessor.Global
+
+
 
 namespace Dev2.Activities.Designers2.Web_Service_Get
 {
@@ -170,7 +170,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
 
         IErrorInfo WorstDesignError
         {
-            // ReSharper disable once UnusedMember.Local
+            
             get { return _worstDesignError; }
             set
             {
@@ -285,7 +285,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
         public DelegateCommand TestInputCommand { get; set; }
 
         private string Type => GetProperty<string>();
-        // ReSharper disable InconsistentNaming
+        
 
         private void FixErrors()
         {

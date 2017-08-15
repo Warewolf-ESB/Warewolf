@@ -23,9 +23,9 @@
             }
             set
             {
-                // ReSharper disable PossibleUnintendedReferenceComparison
+                
                 if (value != _contextMenuSettings)
-                // ReSharper restore PossibleUnintendedReferenceComparison
+                
                 {
                     _contextMenuSettings = value;
                     _contextMenuSettings.Grid = this;

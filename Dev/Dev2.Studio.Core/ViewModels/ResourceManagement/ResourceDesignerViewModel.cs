@@ -15,7 +15,7 @@ using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.Enums;
 using Warewolf.Resource.Errors;
 
-// ReSharper disable once CheckNamespace
+
 namespace Dev2.Studio.Core.ViewModels
 {
     public class ResourceDesignerViewModel : SimpleBaseViewModel, IDisposable, IDesignerViewModel

@@ -23,8 +23,8 @@ using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Common;
 using Dev2.Studio.Interfaces.Enums;
 
-// ReSharper disable UnusedMethodReturnValue.Global
-// ReSharper disable ParameterTypeCanBeEnumerable.Global
+
+
 
 
 namespace Dev2.Studio.Interfaces
@@ -34,7 +34,7 @@ namespace Dev2.Studio.Interfaces
         void UpdateWorkspace();
         void DeployResource(IResourceModel resource, string savePath);
         ExecuteMessage DeleteResource(IResourceModel resource);
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         void Add(IResourceModel resource);
         void ForceLoad();
         void UpdateServer(IServer server);
@@ -56,7 +56,7 @@ namespace Dev2.Studio.Interfaces
         bool HasDependencies(IContextualResourceModel resourceModel);
         ExecuteMessage StopExecution(IContextualResourceModel resourceModel);
         ICollection<IResourceModel> All();
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         ICollection<IResourceModel> Find(Expression<Func<IResourceModel, bool>> expression);
         IResourceModel FindSingle(Expression<Func<IResourceModel, bool>> expression, bool fetchDefinition = false, bool prepairForDeployment = false);
         ExecuteMessage Save(IResourceModel instanceObj);

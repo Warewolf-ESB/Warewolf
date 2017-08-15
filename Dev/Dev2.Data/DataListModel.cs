@@ -294,7 +294,7 @@ namespace Dev2.Data
         }
 
         private enDev2ColumnArgumentDirection ParseColumnIODirection(XmlAttribute attr)
-        // ReSharper restore InconsistentNaming
+
         {
             enDev2ColumnArgumentDirection result = enDev2ColumnArgumentDirection.None;
 

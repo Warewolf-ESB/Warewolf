@@ -13,7 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Dev2.Studio.Interfaces;
 
-// ReSharper disable CheckNamespace
+
 namespace Dev2.Studio.InterfaceImplementors
 {
     public class CompositeIntellisenseProvider : List<IIntellisenseProvider>, IIntellisenseProvider

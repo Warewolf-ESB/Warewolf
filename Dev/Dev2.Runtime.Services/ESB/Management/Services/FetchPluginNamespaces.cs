@@ -18,7 +18,7 @@ using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    [SuppressMessage("ReSharper", "UnusedMember.Global")]
+
     public class FetchPluginNamespaces : IEsbManagementEndpoint
     {
         public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
@@ -44,7 +44,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 var dbSource = serializer.Deserialize<PluginSourceDefinition>(values["source"]);
                 var containsKey = values.ContainsKey("fetchJson");
            
-                // ReSharper disable MaximumChainedReferences
+                
                 PluginServices services = new PluginServices();
                 var src = ResourceCatalog.Instance.GetResource<PluginSource>(GlobalConstants.ServerWorkspaceID, dbSource.Id);
                 List<INamespaceItem> methods = containsKey ? services.NamespacesWithJsonObjects(src, Guid.Empty, Guid.Empty).Select(a => a as INamespaceItem).ToList() 
@@ -54,7 +54,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     HasError = false,
                     Message = serializer.SerializeToBuilder(methods)
                 });
-                // ReSharper restore MaximumChainedReferences
+                
             }
             catch (Exception e)
             {

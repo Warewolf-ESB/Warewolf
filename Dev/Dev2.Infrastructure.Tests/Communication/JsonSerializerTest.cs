@@ -12,7 +12,7 @@ using System.Text;
 using Dev2.Communication;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Infrastructure.Tests.Communication
 {

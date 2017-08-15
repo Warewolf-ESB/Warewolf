@@ -26,7 +26,7 @@ namespace Dev2.Services.Security
 
     public abstract class AuthorizationServiceBase : DisposableObject, IAuthorizationService
     {
-        // ReSharper disable once InconsistentNaming
+
         protected readonly ISecurityService _securityService;
         readonly bool _isLocalConnection;
 
@@ -105,9 +105,9 @@ namespace Dev2.Services.Security
             }
             remove
             {
-                // ReSharper disable DelegateSubtraction
+                
                 _permissionsModifedHandler -= value;
-                // ReSharper restore DelegateSubtraction
+                
             }
         }
 
@@ -164,18 +164,18 @@ namespace Dev2.Services.Security
 
         protected void DumpPermissionsOnError(IPrincipal principal)
         {
-            // ReSharper disable ConditionIsAlwaysTrueOrFalse
+            
             if(principal.Identity != null)
-            // ReSharper restore ConditionIsAlwaysTrueOrFalse
+            
             {
                 Dev2Logger.Error("PERM DUMP FOR [ " + principal.Identity.Name + " ]", "Warewolf Error");
             }
             else
-            // ReSharper disable HeuristicUnreachableCode
+            
             {
                 Dev2Logger.Error("PERM DUMP FOR [ NULL USER ]", "Warewolf Error");
             }
-            // ReSharper restore HeuristicUnreachableCode
+            
 
             foreach(var perm in _securityService.Permissions)
             {
@@ -201,7 +201,7 @@ namespace Dev2.Services.Security
             var serverPermissions = _securityService.Permissions;
             var resourcePermissions = serverPermissions.Where(p => IsInRole(principal, p) && p.Matches(resource) && !p.IsServer).ToList();
             var groupPermissions = new List<WindowsGroupPermission>();
-            // ReSharper disable LoopCanBeConvertedToQuery
+            
             foreach(var permission in serverPermissions)
             {
                 if(resourcePermissions.Any(groupPermission => groupPermission.WindowsGroup == permission.WindowsGroup))
@@ -213,7 +213,7 @@ namespace Dev2.Services.Security
                     groupPermissions.Add(permission);
                 }
             }
-            // ReSharper restore LoopCanBeConvertedToQuery
+            
 
             groupPermissions.AddRange(resourcePermissions);
             //FilterAdminGroupForRemote(groupPermissions);
@@ -312,9 +312,9 @@ namespace Dev2.Services.Security
                     isInRole = principal.IsInRole(windowsGroup);
                 }
             }
-            // ReSharper disable EmptyGeneralCatchClause
+            
             catch { }
-            // ReSharper restore EmptyGeneralCatchClause
+            
             
             return isInRole || p.IsBuiltInGuestsForExecution;
         }
