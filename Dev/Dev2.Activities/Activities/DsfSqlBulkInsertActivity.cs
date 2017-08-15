@@ -38,7 +38,7 @@ using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 
-// ReSharper disable MemberCanBePrivate.Global
+
 
 namespace Dev2.Activities
 {
@@ -152,9 +152,9 @@ namespace Dev2.Activities
                 {
                     allErrors.AddError(e.Message);
                 }
-                // ReSharper disable InvokeAsExtensionMethod
+                
                 Dev2Logger.Error(this, e);
-                // ReSharper restore InvokeAsExtensionMethod
+                
             }
             finally
             {
@@ -442,7 +442,7 @@ namespace Dev2.Activities
             while(iteratorCollection.HasMoreData())
             {
 
-                // ReSharper disable LoopCanBeConvertedToQuery
+                
                 var values = listOfIterators.Select(iteratorCollection.FetchNextValue).Where(val => val != null).Select(val =>
                 {
                     try
@@ -462,7 +462,7 @@ namespace Dev2.Activities
                     continue;
                 }
 
-                // ReSharper disable once CoVariantArrayConversion
+                
                 dataTableToInsert.Rows.Add(enumerable.ToArray());                
             }
         }

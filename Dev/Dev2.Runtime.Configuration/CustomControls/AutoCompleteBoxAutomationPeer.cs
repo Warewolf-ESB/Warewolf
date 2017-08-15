@@ -123,9 +123,9 @@ namespace System.Windows.Automation.Peers
                 }
             }
 
-            // ReSharper disable ConvertIfStatementToNullCoalescingExpression
+            
             if(iface == null)
-            // ReSharper restore ConvertIfStatementToNullCoalescingExpression
+            
             {
                 iface = base.GetPattern(patternInterface);
             }

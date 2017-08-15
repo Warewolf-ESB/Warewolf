@@ -33,8 +33,8 @@ using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Interfaces;
 using Dev2.TO;
-// ReSharper disable MemberCanBePrivate.Global
-// ReSharper disable UnusedMember.Global
+
+
 
 namespace Dev2.Activities.Designers2.Decision
 {
@@ -298,21 +298,21 @@ namespace Dev2.Activities.Designers2.Decision
 
         protected override IEnumerable<IActionableErrorInfo> ValidateThis()
         {
-            // ReSharper disable LoopCanBeConvertedToQuery
+            
             foreach (var error in GetRuleSet("DisplayText").ValidateRules("'DisplayText'", () => IsDisplayTextFocused = true))
-            // ReSharper restore LoopCanBeConvertedToQuery
+            
             {
                 yield return error;
             }
-            // ReSharper disable LoopCanBeConvertedToQuery
+            
             foreach (var error in GetRuleSet("TrueArmText").ValidateRules("'TrueArmText'", () => IsTrueArmFocused = true))
-            // ReSharper restore LoopCanBeConvertedToQuery
+            
             {
                 yield return error;
             }
-            // ReSharper disable LoopCanBeConvertedToQuery
+            
             foreach (var error in GetRuleSet("FalseArmText").ValidateRules("'FalseArmText'", () => IsFalseArmFocused = true))
-            // ReSharper restore LoopCanBeConvertedToQuery
+            
             {
                 yield return error;
             }
@@ -346,7 +346,7 @@ namespace Dev2.Activities.Designers2.Decision
 
         #region Implementation of IHandle<ConfigureDecisionExpressionMessage>
 
-        // ReSharper disable once UnusedParameter.Global
+        
         public void Handle(ConfigureDecisionExpressionMessage message)
         {
             ShowLarge = true;

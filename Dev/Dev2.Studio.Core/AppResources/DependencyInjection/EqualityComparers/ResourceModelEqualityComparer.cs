@@ -12,12 +12,12 @@ using System;
 using System.Collections.Generic;
 using Dev2.Studio.Interfaces;
 
-// ReSharper disable once CheckNamespace
+
 namespace Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers
 {
     public class ResourceModelEqualityComparer : IEqualityComparer<IResourceModel>
     {
-        // ReSharper disable once InconsistentNaming
+
         private static readonly Lazy<ResourceModelEqualityComparer> _current
             = new Lazy<ResourceModelEqualityComparer>(() => new ResourceModelEqualityComparer());
 

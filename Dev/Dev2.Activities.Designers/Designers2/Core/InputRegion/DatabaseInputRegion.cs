@@ -14,7 +14,7 @@ using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.Practices.Prism;
 using Warewolf.Core;
 
-// ReSharper disable ExplicitCallerInfoArgument
+
 
 namespace Dev2.Activities.Designers2.Core.InputRegion
 {
@@ -24,7 +24,7 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
         private readonly ModelItem _modelItem;
         private readonly IActionToolRegion<IDbAction> _action;
         bool _isEnabled;
-        // ReSharper disable once NotAccessedField.Local
+        
         private ICollection<IServiceInput> _inputs;
         private bool _isInputsEmptyRows;
 
@@ -88,7 +88,7 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
             }
         }
 
-        // ReSharper disable once MemberCanBePrivate.Global
+        
         public DatabaseInputRegion(IActionInputDatatalistMapper datatalistMapper)
         {
             _datatalistMapper = datatalistMapper;
@@ -100,9 +100,9 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
             {
                 Errors.Clear();
 
-                // ReSharper disable once ExplicitCallerInfoArgument
+                
                 UpdateOnActionSelection();
-                // ReSharper disable once ExplicitCallerInfoArgument
+                
                 OnPropertyChanged(@"Inputs");
                 OnPropertyChanged(@"IsEnabled");
             }

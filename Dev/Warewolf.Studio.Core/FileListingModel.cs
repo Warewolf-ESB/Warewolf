@@ -15,7 +15,7 @@ using System.Linq;
 using System.Windows.Input;
 using Dev2.Common.Interfaces;
 using Microsoft.Practices.Prism.Mvvm;
-// ReSharper disable NonReadonlyMemberInGetHashCode
+
 
 namespace Warewolf.Studio.Core
 {
@@ -209,7 +209,7 @@ namespace Warewolf.Studio.Core
 
         public bool Equals(FileListingModel other)
         {
-            // ReSharper disable once PossibleNullReferenceException
+            
             return string.Equals(Name, other.Name) && string.Equals(FullName, other.FullName) &&
                    IsDirectory == other.IsDirectory;
         }

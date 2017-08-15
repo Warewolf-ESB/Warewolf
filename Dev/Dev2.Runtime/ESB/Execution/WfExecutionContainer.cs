@@ -137,7 +137,7 @@ namespace Dev2.Runtime.ESB.Execution
             return isAuthorized;
         }
 
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         public void Eval(DynamicActivity flowchartProcess, IDSFDataObject dsfDataObject, int update)
         {
             IDev2Activity resource = new ActivityParser().Parse(flowchartProcess);

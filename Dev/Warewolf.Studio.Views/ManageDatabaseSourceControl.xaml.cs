@@ -149,7 +149,7 @@ namespace Warewolf.Studio.Views
         }
 
 
-        // ReSharper disable once InconsistentNaming
+
         private void XamComboEditor_Loaded(object sender, RoutedEventArgs e)
         {
         }

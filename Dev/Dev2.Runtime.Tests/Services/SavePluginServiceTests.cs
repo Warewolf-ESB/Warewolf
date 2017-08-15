@@ -5,7 +5,7 @@ using Dev2.Common.Interfaces.Enums;
 using Dev2.Runtime.ESB.Management.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Tests.Runtime.Services
 {

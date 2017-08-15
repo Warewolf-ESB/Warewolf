@@ -14,11 +14,11 @@ using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Runtime.Interfaces;
-// ReSharper disable MemberCanBePrivate.Global
+
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    [SuppressMessage("ReSharper", "UnusedMember.Global")]
+
     public class SaveExchangeServiceSource : IEsbManagementEndpoint
     {
         private IExplorerServerResourceRepository _serverExplorerRepository;

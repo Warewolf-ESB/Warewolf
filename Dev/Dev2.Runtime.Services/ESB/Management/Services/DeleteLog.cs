@@ -23,7 +23,7 @@ using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    // ReSharper disable once MemberCanBeInternal
+    
     public class DeleteLog : IEsbManagementEndpoint
     {
 

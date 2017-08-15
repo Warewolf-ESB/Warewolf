@@ -10,20 +10,20 @@ namespace Dev2.Common.Interfaces
         void RequestClose();
 
 
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         void EnterName(string serviceName);
 
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         bool IsSaveButtonEnabled();
 
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         string GetValidationMessage();
 
 
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         void Cancel();
 
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         void Save();
     }
 }

@@ -22,7 +22,7 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 namespace Dev2.Activities.Designers.Tests.Designers2.Core.Credentials
 {
     [TestClass]
-    // ReSharper disable InconsistentNaming
+    
     public class CredentialsActivityDesignerViewModelTests
     {
         [TestMethod]
@@ -81,9 +81,9 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core.Credentials
         }
 
 
-        // ReSharper disable UnusedParameter.Local
+        
         static void Verify_ValidateUserNameAndPassword(string userName, string password, bool isPasswordError, string expectedMessageFormat)
-        // ReSharper restore UnusedParameter.Local
+        
         {
             //------------Setup for test-------------------------
             Mock<IDataListViewModel> mockDataListViewModel = new Mock<IDataListViewModel>();

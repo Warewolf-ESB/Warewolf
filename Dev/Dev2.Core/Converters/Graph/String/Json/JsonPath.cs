@@ -15,7 +15,7 @@ using Dev2.Common;
 using Dev2.Common.Interfaces.Core.Graph;
 using Newtonsoft.Json.Linq;
 
-// ReSharper disable once CheckNamespace
+
 namespace Unlimited.Framework.Converters.Graph.String.Json
 {
     [Serializable]

@@ -10,11 +10,11 @@ using System.Windows.Input;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.Studio.Interfaces;
 
-// ReSharper disable MemberCanBePrivate.Global
-// ReSharper disable VirtualMemberCallInContructor
-// ReSharper disable ValueParameterNotUsed
-// ReSharper disable UnusedMember.Global
-// ReSharper disable InconsistentNaming
+
+
+
+
+
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -236,7 +236,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 return ToNewSource();
             }
-            // ReSharper disable once RedundantIfElseBlock
+            
             else
             {
                 _rabbitMQServiceSource.HostName = HostName;

@@ -21,11 +21,11 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
-// ReSharper disable InconsistentNaming
+
 namespace Dev2.Tests.Activities.ActivityTests
 {
     [TestClass]
-    // ReSharper disable InconsistentNaming
+    
     public class SendEmailActivityTests : BaseActivityUnitTest
     {
         [TestMethod]

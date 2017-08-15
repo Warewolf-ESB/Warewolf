@@ -241,7 +241,7 @@ namespace Dev2.Activities.PathOperations
         }
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        // ReSharper disable once MemberCanBePrivate.Global
+        
         protected string DecryptedDestinationPassword => DataListUtil.NotEncrypted(DestinationPassword) ? DestinationPassword : DpapiWrapper.Decrypt(DestinationPassword);
 
         #endregion Properties

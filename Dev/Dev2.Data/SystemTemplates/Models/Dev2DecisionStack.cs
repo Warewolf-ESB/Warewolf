@@ -57,7 +57,7 @@ namespace Dev2.Data.SystemTemplates.Models
             return result;
         }
 
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         public void AddModelItem(Dev2Decision item)
         {
             TheStack.Add(item);
@@ -68,9 +68,9 @@ namespace Dev2.Data.SystemTemplates.Models
             return idx < TotalDecisions ? TheStack[idx] : null;
         }
 
-        // ReSharper disable InconsistentNaming
+        
         public string ToVBPersistableModel()
-        // ReSharper restore InconsistentNaming
+
         {
 
             string result = ToWebModel();
@@ -107,9 +107,9 @@ namespace Dev2.Data.SystemTemplates.Models
             return result.ToString();
         }
 
-        // ReSharper disable InconsistentNaming
+        
         public static string FromVBPersitableModelToJSON(string val)
-        // ReSharper restore InconsistentNaming
+
         {
             return val.Replace("!", "\"");
 

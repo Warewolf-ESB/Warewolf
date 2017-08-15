@@ -32,12 +32,12 @@ using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ResourceCatalogImpl;
 using Dev2.Runtime.ServiceModel.Data;
 using Warewolf.ResourceManagement;
-// ReSharper disable InconsistentNaming
-// ReSharper disable MemberCanBePrivate.Global
+
+
 
 namespace Dev2.Runtime.Hosting
 {
-    // ReSharper disable once ClassWithVirtualMembersNeverInherited.Global
+    
     public class ResourceCatalog : IResourceCatalog, IDisposable
     {
         readonly object _loadLock = new object();
@@ -379,7 +379,7 @@ namespace Dev2.Runtime.Hosting
 
         #endregion
 
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         public StringBuilder ToPayload(IResource resource)
         {
             var result = new StringBuilder();

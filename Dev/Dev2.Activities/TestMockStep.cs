@@ -12,7 +12,7 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Storage.Interfaces;
 using WarewolfParserInterop;
 
-// ReSharper disable UnusedMember.Global
+
 
 namespace Dev2
 {

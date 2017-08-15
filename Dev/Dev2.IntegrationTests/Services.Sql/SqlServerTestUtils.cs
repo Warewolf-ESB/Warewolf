@@ -18,7 +18,7 @@ namespace Dev2.Integration.Tests.Services.Sql
     [TestClass]
     public class SqlServerTestUtils
     {
-        // ReSharper disable InconsistentNaming
+        
 
         public static DbSource CreateDev2TestingDbSource(AuthenticationType authenticationType = AuthenticationType.User)
         {
@@ -37,6 +37,6 @@ namespace Dev2.Integration.Tests.Services.Sql
             return dbSource;
         }
 
-        // ReSharper restore InconsistentNaming
+
     }
 }

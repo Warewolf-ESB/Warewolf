@@ -9,11 +9,11 @@
 */
 
 using Dev2.Common.Interfaces.Data;
-// ReSharper disable UnusedAutoPropertyAccessor.Global
-// ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
-// ReSharper disable MemberCanBePrivate.Global
 
-// ReSharper disable once CheckNamespace
+
+
+
+
 namespace Dev2.DataList.Contract
 {
     public class Dev2Definition : IDev2Definition
@@ -27,7 +27,7 @@ namespace Dev2.DataList.Contract
         public Dev2Definition(string name, string mapsTo, string value, bool isEvaluated, string defaultValue, bool isRequired, string rawValue) : this(name, mapsTo, value, string.Empty, isEvaluated, defaultValue, isRequired, rawValue) { }
 
         public Dev2Definition(string name, string mapsTo, string value, string recordSet, bool isEvaluated, string defaultValue, bool isRequired, string rawValue)
-            // ReSharper disable once IntroduceOptionalParameters.Global
+            
             : this(name, mapsTo, value, recordSet, isEvaluated, defaultValue, isRequired, rawValue, false)
         {
         }

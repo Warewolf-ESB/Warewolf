@@ -6,7 +6,7 @@ using Dev2.Common.Interfaces.Explorer;
 using Dev2.Studio.Interfaces;
 using Microsoft.Practices.Prism.PubSubEvents;
 using Moq;
-// ReSharper disable InconsistentNaming
+
 
 namespace Warewolf.Studio.ViewModels.Tests
 {

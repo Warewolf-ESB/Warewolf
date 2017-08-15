@@ -8,9 +8,9 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-// ReSharper disable RedundantUsingDirective
 
-// ReSharper restore RedundantUsingDirective
+
+
 
 using System;
 using System.Diagnostics;
@@ -60,9 +60,9 @@ namespace Dev2.Instrumentation
 #endif
         }
 
-        // ReSharper disable UnusedMember.Local
+        
         static void Start(string productId, string callHomeUrl)
-        // ReSharper restore UnusedMember.Local
+        
         {
 
             Perform(() =>
@@ -73,9 +73,9 @@ namespace Dev2.Instrumentation
                 var fvi = VersionInfo.FetchVersionInfo();
                 var productVersion = fvi;
 #else
-                // ReSharper disable ConvertToConstant.Local
+                
                 var productVersion = "0.0.9999.0";
-                // ReSharper restore ConvertToConstant.Local
+                
 #endif
                 TBConfig.SetFilePath(filePath);
                 TBConfig.CreateConfig(callHomeUrl, productId, productVersion, productVersion, false);
@@ -157,9 +157,9 @@ namespace Dev2.Instrumentation
                     WriteError(result);
                 }
             }
-            // ReSharper disable EmptyGeneralCatchClause
+            
             catch
-            // ReSharper restore EmptyGeneralCatchClause
+            
             {
                 // this is a tracker issue ;(
             }

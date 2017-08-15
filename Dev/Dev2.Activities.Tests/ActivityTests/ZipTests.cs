@@ -19,15 +19,15 @@ using Dev2.Tests.Activities.Mocks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
-// ReSharper disable CheckNamespace
+
 namespace ActivityUnitTests.ActivityTests
-// ReSharper restore CheckNamespace
+
 {
     /// <summary>
     /// Summary description for DateTimeDifferenceTests
     /// </summary>
     [TestClass]
-    // ReSharper disable InconsistentNaming
+    
     public class ZipTests : BaseActivityUnitTest
     {
         static TestContext myTestContext;
@@ -128,9 +128,9 @@ namespace ActivityUnitTests.ActivityTests
 
             foreach(string fileName in fileNames)
             {
-                // ReSharper disable LocalizableElement
+                
                 File.WriteAllText(fileName, "TestData");
-                // ReSharper restore LocalizableElement
+                
             }
 
             var activityOperationBrokerMock = new ActivityOperationBrokerMock();

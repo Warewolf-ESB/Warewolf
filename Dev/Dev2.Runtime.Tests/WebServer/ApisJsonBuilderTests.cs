@@ -10,7 +10,7 @@ using Dev2.Services.Security;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-// ReSharper disable InconsistentNaming
+
 namespace Dev2.Tests.Runtime.WebServer
 {
     [TestClass]
@@ -26,7 +26,7 @@ namespace Dev2.Tests.Runtime.WebServer
             
             
             //------------Execute Test---------------------------
-            // ReSharper disable once ObjectCreationAsStatement
+            
             new ApisJsonBuilder(null,new Mock<IResourceCatalog>().Object);
             //------------Assert Results-------------------------
         }
@@ -41,7 +41,7 @@ namespace Dev2.Tests.Runtime.WebServer
             
             
             //------------Execute Test---------------------------
-            // ReSharper disable once ObjectCreationAsStatement
+            
             new ApisJsonBuilder(new Mock<IAuthorizationService>().Object,null);
             //------------Assert Results-------------------------
         }

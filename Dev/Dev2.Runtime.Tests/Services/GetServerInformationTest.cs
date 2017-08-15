@@ -42,7 +42,7 @@ namespace Dev2.Tests.Runtime.Services
         [TestMethod]
         [Owner("Peter Bezuidenhout")]
         [TestCategory("GetServerInformation_HandlesType")]
-        // ReSharper disable InconsistentNaming
+        
         public void GetServerInformation_HandlesType_ExpectName()
 
         {
@@ -73,4 +73,4 @@ namespace Dev2.Tests.Runtime.Services
     }
 }
 
-// ReSharper restore InconsistentNaming
+

@@ -15,7 +15,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Data;
 
-// ReSharper disable CheckNamespace
+
 namespace Dev2.Studio.Core.AppResources.Converters
 {
     public class MultipleBoolToVisibilityValueConverter : IMultiValueConverter

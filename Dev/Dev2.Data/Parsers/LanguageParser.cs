@@ -13,10 +13,10 @@ using System.Collections.Generic;
 using System.Xml;
 using Dev2.Common.Interfaces.Data;
 
-// ReSharper disable CheckNamespace
-// ReSharper disable InconsistentNaming
+
+
 namespace Dev2.DataList.Contract
-// ReSharper restore CheckNamespace
+
 {
     public abstract class LanguageParser
     {

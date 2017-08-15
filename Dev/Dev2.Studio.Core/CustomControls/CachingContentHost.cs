@@ -12,7 +12,7 @@ using System.Windows;
 using System.Windows.Controls;
 using Caliburn.Micro;
 
-// ReSharper disable once CheckNamespace
+
 namespace Dev2.Studio.Core.CustomControls
 {
     public class CachingContentHost : ContentControl

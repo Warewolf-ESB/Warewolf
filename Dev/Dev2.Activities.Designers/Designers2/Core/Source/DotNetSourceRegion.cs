@@ -11,7 +11,7 @@ using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.Practices.Prism.Commands;
 
-// ReSharper disable ExplicitCallerInfoArgument
+
 
 namespace Dev2.Activities.Designers2.Core.Source
 {
@@ -21,7 +21,7 @@ namespace Dev2.Activities.Designers2.Core.Source
         private IPluginSource _selectedSource;
         private ICollection<IPluginSource> _sources;
         private readonly ModelItem _modelItem;
-        // ReSharper disable once UnusedMember.Local
+        
         readonly Dictionary<Guid, IList<IToolRegion>> _previousRegions = new Dictionary<Guid, IList<IToolRegion>>();
         private Guid _sourceId;
         private Action _sourceChangedAction;

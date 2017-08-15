@@ -15,7 +15,7 @@ using Dev2.Services.Execution;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-// ReSharper disable InconsistentNaming
+
 namespace Dev2.Tests.Runtime.ESB
 {
     // BUG 9710 - 2013.06.20 - TWR - Created

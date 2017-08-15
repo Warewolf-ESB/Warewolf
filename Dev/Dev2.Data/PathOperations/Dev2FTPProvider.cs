@@ -24,17 +24,17 @@ using Dev2.Data.Interfaces.Enums;
 using Dev2.PathOperations;
 using Renci.SshNet;
 using Warewolf.Resource.Errors;
-// ReSharper disable ThrowFromCatchWithNoInnerException
-// ReSharper disable ReturnTypeCanBeEnumerable.Local
-// ReSharper disable ParameterTypeCanBeEnumerable.Local
+
+
+
 
 namespace Dev2.Data.PathOperations
 { 
     [Serializable]
-    // ReSharper disable InconsistentNaming
-    [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
+
     public class Dev2FTPProvider : IActivityIOOperationsEndPoint
-    // ReSharper restore InconsistentNaming
+    
     {
         const int SftpTimeoutSeconds = 10;
 

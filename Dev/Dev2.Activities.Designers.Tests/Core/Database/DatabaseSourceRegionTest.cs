@@ -11,7 +11,7 @@ using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Activities.Designers.Tests.Core.Database
 {
@@ -180,7 +180,7 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             
             //------------Execute Test---------------------------
             DatabaseSourceRegion region = new DatabaseSourceRegion(src.Object, ModelItemUtils.CreateModelItem(act), enSourceType.SqlDatabase);
-            // ReSharper disable once UseObjectOrCollectionInitializer
+            
             DatabaseSourceRegion regionToRestore = new DatabaseSourceRegion(src.Object, ModelItemUtils.CreateModelItem(act), enSourceType.SqlDatabase);
             regionToRestore.SelectedSource = s2;
 

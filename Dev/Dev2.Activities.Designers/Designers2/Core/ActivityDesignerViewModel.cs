@@ -27,7 +27,7 @@ using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Validation;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Studio.Core.Activities.Utils;
-// ReSharper disable ConvertToAutoProperty
+
 
 namespace Dev2.Activities.Designers2.Core
 {

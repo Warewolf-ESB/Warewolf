@@ -23,7 +23,7 @@ namespace Dev2.Data.Binary_Objects
 
         int FetchNextIndex();
 
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         int MaxIndex();
     }
 }

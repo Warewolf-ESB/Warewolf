@@ -38,7 +38,7 @@ namespace Dev2.Scheduler
             return new ScheduleTrigger(state, trigger, _service, _serviceConvertorFactory);
         }
 
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         public IScheduleTrigger CreateTrigger(Trigger trigger)
         {
             switch (trigger.TriggerType)

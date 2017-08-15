@@ -20,7 +20,7 @@ using Warewolf.Studio.ViewModels;
 using Warewolf.Studio.Views;
 using Warewolf.UIBindingTests.Core;
 
-// ReSharper disable RedundantAssignment
+
 
 namespace Warewolf.UIBindingTests.MySqlDatabaseSource
 {
@@ -140,9 +140,9 @@ namespace Warewolf.UIBindingTests.MySqlDatabaseSource
 
             var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
             manageDatabaseSourceControl.SetAuthenticationType((AuthenticationType)authp);
-            // ReSharper disable PossibleNullReferenceException
+            
             (manageDatabaseSourceControl.DataContext as ManageMySqlSourceViewModel).AuthenticationType = (AuthenticationType)authp;
-            // ReSharper restore PossibleNullReferenceException
+            
         }
 
         [Then(@"Authentication Type is selected as ""(.*)""")]

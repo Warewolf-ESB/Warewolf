@@ -9,7 +9,7 @@
 */
 
 
-// ReSharper disable CheckNamespace
+
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {

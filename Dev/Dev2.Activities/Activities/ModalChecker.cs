@@ -14,7 +14,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using Warewolf.Resource.Errors;
 
-// ReSharper disable UnusedMember.Local
+
 
 namespace Dev2.Activities
 {
@@ -31,7 +31,7 @@ namespace Dev2.Activities
         }
 
         #region Native Windows Stuff
-        // ReSharper disable InconsistentNaming
+        
         private const int WS_EX_DLGMODALFRAME = 0x00000001;
         private const int GWL_EXSTYLE = -20;
         public delegate bool EnumThreadDelegate(IntPtr hWnd, IntPtr lParam);
@@ -99,10 +99,10 @@ namespace Dev2.Activities
 
         }
 
-        // ReSharper disable UnusedMethodReturnValue.Local
-        // ReSharper disable UnusedParameter.Local
+        
+        
         private int WindowEnum(IntPtr hWnd, int lParam)
-        // ReSharper restore UnusedMethodReturnValue.Local
+        
         {
             IntPtr processId;
 

@@ -10,7 +10,7 @@ using Dev2.Studio.ViewModels.WorkSurface;
 using Microsoft.Practices.Prism.Mvvm;
 using Warewolf.Studio.ViewModels;
 
-// ReSharper disable MemberCanBePrivate.Global
+
 
 namespace Dev2.ViewModels
 {
@@ -91,7 +91,7 @@ namespace Dev2.ViewModels
 
 
 
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         public string ResourceType
         {
             get

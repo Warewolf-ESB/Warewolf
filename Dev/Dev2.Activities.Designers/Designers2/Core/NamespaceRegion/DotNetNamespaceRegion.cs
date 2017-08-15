@@ -9,14 +9,14 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Common.Interfaces.ToolBase.DotNet;
 using Dev2.Studio.Core.Activities.Utils;
-// ReSharper disable ClassWithVirtualMembersNeverInherited.Global
-// ReSharper disable MemberCanBePrivate.Global
-// ReSharper disable UnusedAutoPropertyAccessor.Global
-// ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
-// ReSharper disable UnusedMember.Global
 
-// ReSharper disable FieldCanBeMadeReadOnly.Local
-// ReSharper disable ExplicitCallerInfoArgument
+
+
+
+
+
+
+
 
 namespace Dev2.Activities.Designers2.Core.NamespaceRegion
 {
@@ -110,10 +110,10 @@ namespace Dev2.Activities.Designers2.Core.NamespaceRegion
             {
                 Errors.Clear();
 
-                // ReSharper disable once ExplicitCallerInfoArgument
+                
                 UpdateBasedOnSource();
                 SelectedNamespace = null;
-                // ReSharper disable once ExplicitCallerInfoArgument
+                
                 OnPropertyChanged(@"IsEnabled");
             }
             catch (Exception e)

@@ -13,7 +13,7 @@ using System.Data;
 using System.Linq;
 using Dev2.Converters.Graph.DataTable;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Tests.ConverterTests.GraphTests.DataTable_Test
 {

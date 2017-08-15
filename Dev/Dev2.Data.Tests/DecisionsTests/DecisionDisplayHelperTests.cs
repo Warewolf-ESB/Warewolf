@@ -1,7 +1,7 @@
 using Dev2.Data.Decisions.Operations;
 using Dev2.DataList;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Data.Tests.DecisionsTests
 {

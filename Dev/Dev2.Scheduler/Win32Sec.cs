@@ -25,9 +25,9 @@ using LSA_HANDLE = System.IntPtr;
 
 
 [StructLayout(LayoutKind.Sequential)]
-// ReSharper disable CheckNamespace
-// ReSharper disable InconsistentNaming
-// ReSharper disable UnusedMember.Local
+
+
+
 internal struct LSA_OBJECT_ATTRIBUTES
 {
     internal int Length;
@@ -237,9 +237,9 @@ public class SecurityWrapper : ISecurityWrapper
         // Domain failed. Try local pc.
         using (var pcLocal = new PrincipalContext(ContextType.Machine))
         {
-            // ReSharper disable LoopCanBeConvertedToQuery
+            
             foreach (var grp in FetchSchedulerGroups())
-            // ReSharper restore LoopCanBeConvertedToQuery
+            
             {
                 if (CleanUser(grp).ToLower() == userName.ToLower())
                 {

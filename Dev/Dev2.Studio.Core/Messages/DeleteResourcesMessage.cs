@@ -12,7 +12,7 @@ using System;
 using System.Collections.Generic;
 using Dev2.Studio.Interfaces;
 
-// ReSharper disable CheckNamespace
+
 namespace Dev2.Studio.Core.Messages
 {
     public class DeleteResourcesMessage : IMessage

@@ -18,7 +18,7 @@ using Unlimited.Framework.Converters.Graph.Poco;
 using Unlimited.Framework.Converters.Graph.String.Json;
 using Unlimited.Framework.Converters.Graph.String.Xml;
 using Unlimited.UnitTest.Framework.ConverterTests.GraphTests;
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Tests.ConverterTests.GraphTests
 {

@@ -24,7 +24,7 @@ namespace Warewolf.Studio.Views
 
         #region Automation ID's
 
-        // ReSharper disable InconsistentNaming
+        
         public string ServerComboBoxAutomationID
         {
             get { return (string)GetValue(ServerComboBoxAutomationIDProperty); }

@@ -18,12 +18,12 @@ using System.Web.Services.Discovery;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
-// ReSharper disable UnusedVariable
-// ReSharper disable StringCompareIsCultureSpecific.3
-// ReSharper disable ConditionIsAlwaysTrueOrFalse
 
-// ReSharper disable InconsistentNaming
-// ReSharper disable UseNameofExpression
+
+
+
+
+
 
 namespace Dev2.Runtime.DynamicProxy
 {

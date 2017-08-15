@@ -10,7 +10,7 @@
 
 using Dev2.Common.Interfaces.Core.Convertors.DateAndTime;
 using System;
-// ReSharper disable ConvertIfStatementToConditionalTernaryExpression
+
 
 namespace Dev2.Common.DateAndTime.TO
 {

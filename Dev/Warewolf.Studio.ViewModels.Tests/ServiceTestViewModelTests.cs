@@ -32,11 +32,11 @@ using Dev2.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
-// ReSharper disable PossibleNullReferenceException
 
-// ReSharper disable ObjectCreationAsStatement
 
-// ReSharper disable InconsistentNaming
+
+
+
 
 namespace Warewolf.Studio.ViewModels.Tests
 {
@@ -1259,7 +1259,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 		public void RunSelectedTestCommand_GivenSelectedTestIsNotDirty_ShouldRunTheTest()
 		{
 			//---------------Set up test pack-------------------
-			// ReSharper disable once NotAccessedVariable
+			
 			var retVal = new StringBuilder();
 			Mock<IServer> mockEnvironmentModel = new Mock<IServer>();
 			Mock<IEnvironmentConnection> conn = new Mock<IEnvironmentConnection>();
@@ -2501,7 +2501,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 			//---------------Assert Precondition----------------
 			var fieldInfo = typeof(ServiceTestViewModel).GetField("_serverName", BindingFlags.Instance | BindingFlags.NonPublic);
 
-			// ReSharper disable once PossibleNullReferenceException
+			
 			var server = fieldInfo.GetValue(testFrameworkViewModel).ToString();
 			Assert.AreEqual(" - GenDev", server);
 			//---------------Execute Test ----------------------
@@ -2531,7 +2531,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 			//---------------Assert Precondition----------------
 			var fieldInfo = typeof(ServiceTestViewModel).GetField("_serverName", BindingFlags.Instance | BindingFlags.NonPublic);
 
-			// ReSharper disable once PossibleNullReferenceException
+			
 			var server = fieldInfo.GetValue(testFrameworkViewModel).ToString();
 			Assert.AreEqual("", server);
 			//---------------Execute Test ----------------------

@@ -88,10 +88,10 @@ namespace Dev2.Data.Builders
             }
             IList<IRecordSetDefinition> tmpDefs = new List<IRecordSetDefinition>();
 
-            // ReSharper disable LoopCanBeConvertedToQuery
+            
             foreach(string setName in tmpNames)
             {
-                // ReSharper restore LoopCanBeConvertedToQuery
+                
                 IList<IDev2Definition> tmpOutput = tmpCollections[setName];
                 tmpDefs.Add(new RecordSetDefinition(setName, tmpOutput));
             }

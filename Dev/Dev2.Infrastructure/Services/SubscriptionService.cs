@@ -40,9 +40,9 @@ namespace Dev2.Services
                     _events = _events.ObserveOnDispatcher();
                 }
             }
-            // ReSharper disable EmptyGeneralCatchClause
+            
             catch
-            // ReSharper restore EmptyGeneralCatchClause
+            
             {
                 // FOR TESTING FUNNIES!!
             }

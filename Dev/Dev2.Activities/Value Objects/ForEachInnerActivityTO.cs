@@ -10,7 +10,7 @@
 
 using System;
 using System.Collections.Generic;
-// ReSharper disable CheckNamespace
+
 namespace Unlimited.Applications.BusinessDesignStudio.Activities.Value_Objects
 {
     /// <summary>

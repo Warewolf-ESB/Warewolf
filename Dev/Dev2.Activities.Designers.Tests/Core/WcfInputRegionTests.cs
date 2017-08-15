@@ -27,7 +27,7 @@ using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Warewolf.Core;
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Activities.Designers.Tests.Core
 {
@@ -143,7 +143,7 @@ namespace Dev2.Activities.Designers.Tests.Core
             WcfActionRegion WcfActionRegion = new WcfActionRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfWcfEndPointActivity()), sourceRegion);
 
             var region = new WcfInputRegion(ModelItemUtils.CreateModelItem(act), WcfActionRegion);
-            // ReSharper disable once UseObjectOrCollectionInitializer
+            
             var regionToRestore = new WcfInputRegionClone();
             regionToRestore.IsEnabled = true;
             //------------Execute Test---------------------------

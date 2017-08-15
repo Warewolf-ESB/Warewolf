@@ -60,8 +60,8 @@ using Moq;
 using Dev2.ViewModels;
 
 //using System.Windows.Media.Imaging;
-// ReSharper disable InconsistentNaming
-// ReSharper disable ObjectCreationAsStatement
+
+
 namespace Dev2.Core.Tests
 {
     /// <summary>
@@ -132,7 +132,7 @@ namespace Dev2.Core.Tests
             CreateFullExportsAndVm();
             ActiveEnvironment.Setup(e => e.IsConnected).Returns(isConnected);
             ActiveEnvironment.Setup(e => e.CanStudioExecute).Returns(canStudioExecute);
-            // ReSharper disable MaximumChainedReferences
+            
             AuthorizationService.Setup(a => a.IsAuthorized(AuthorizationContext.Administrator, It.IsAny<string>())).Returns(isAuthorized);
 
 
@@ -886,13 +886,13 @@ namespace Dev2.Core.Tests
             //Setup
             CustomContainer.Register(new Mock<Common.Interfaces.Studio.Controller.IPopupController>().Object);
             CreateFullExportsAndVmWithEmptyRepo();
-            // ReSharper disable once SuggestVarOrType_Elsewhere
+            
             Mock<IServer> environmentRepo = CreateMockEnvironment();
-            // ReSharper disable once SuggestVarOrType_Elsewhere
+            
             Mock<IAuthorizationService> mockAuthService = new Mock<IAuthorizationService>();
             mockAuthService.Setup(c => c.GetResourcePermissions(It.IsAny<Guid>())).Returns(Permissions.Administrator);
             environmentRepo.Setup(c => c.AuthorizationService).Returns(mockAuthService.Object);
-            // ReSharper disable once SuggestVarOrType_Elsewhere
+            
             Mock<IResourceRepository> resourceRepo = new Mock<IResourceRepository>();
             resourceRepo.Setup(c => c.FetchResourceDefinition(It.IsAny<IServer>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
             resourceRepo.Setup(r => r.Save(It.IsAny<IResourceModel>())).Verifiable();
@@ -1074,9 +1074,9 @@ namespace Dev2.Core.Tests
         [TestCategory("MainViewmodel_Delete")]
         [Description("Unassigned resources can be deleted")]
         [Owner("Ashley Lewis")]
-        // ReSharper disable InconsistentNaming
+        
         public void MainViewmodel_UnitTest_DeleteUnassignedResource_ResourceRepositoryDeleteResourceCalled()
-        // ReSharper restore InconsistentNaming
+
         {
             //Isolate delete unassigned resource as a functional unit
             CreateFullExportsAndVm();
@@ -1664,7 +1664,7 @@ namespace Dev2.Core.Tests
             CustomContainer.Register(new Mock<IWindowManager>().Object);
             envRepo.Setup(e => e.All()).Returns(new List<IServer>());
             envRepo.Setup(e => e.Source).Returns(new Mock<IServer>().Object);
-            // ReSharper disable once RedundantArgumentDefaultValue
+            
             var vieFactory = new Mock<IViewFactory>();
             var viewMock = new Mock<IView>();
             vieFactory.Setup(factory => factory.GetViewGivenServerResourceType(It.IsAny<string>())).Returns(viewMock.Object);
@@ -4022,9 +4022,9 @@ namespace Dev2.Core.Tests
         {
 
         }
-        // ReSharper disable TooManyDependencies
+        
         public SchedulerViewModelForTesting(IEventAggregator eventPublisher, DirectoryObjectPickerDialog directoryObjectPicker, Common.Interfaces.Studio.Controller.IPopupController popupController, IAsyncWorker asyncWorker)
-            // ReSharper restore TooManyDependencies
+            
             : base(eventPublisher, directoryObjectPicker, popupController, asyncWorker, new Mock<IServer>().Object, a => new Mock<IServer>().Object)
         {
 
@@ -4046,9 +4046,9 @@ namespace Dev2.Core.Tests
 
         }
 
-        // ReSharper disable TooManyDependencies
+        
         public SettingsViewModelForTest(IEventAggregator eventPublisher, Common.Interfaces.Studio.Controller.IPopupController popupController,
-                                       // ReSharper restore TooManyDependencies
+                                       
                                        IAsyncWorker asyncWorker, IWin32Window parentWindow)
             : base(eventPublisher, popupController, asyncWorker, parentWindow, new Mock<IServer>().Object, a => new Mock<IServer>().Object)
         {
@@ -4062,5 +4062,5 @@ namespace Dev2.Core.Tests
 
         public bool RetValue { get; set; }
     }
-    // ReSharper restore MaximumChainedReferences
+    
 }

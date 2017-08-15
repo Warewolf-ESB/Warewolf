@@ -10,7 +10,7 @@
 
 
 
-// ReSharper disable once CheckNamespace
+
 namespace Unlimited.Applications.BusinessDesignStudio.Views
 {
     /// <summary>

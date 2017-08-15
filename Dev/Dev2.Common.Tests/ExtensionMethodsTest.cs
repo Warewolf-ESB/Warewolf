@@ -19,7 +19,7 @@ using Dev2.Common.Common;
 using Dev2.Common.ExtMethods;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-// ReSharper disable InconsistentNaming
+
 namespace Dev2.Common.Tests
 {
     [TestClass]
@@ -754,9 +754,9 @@ namespace Dev2.Common.Tests
             //------------Setup for test--------------------------
             StringBuilder sb = null;
             //------------Execute Test---------------------------
-            // ReSharper disable ExpressionIsAlwaysNull
+            
             var isNullOrEmpty = sb.IsNullOrEmpty();
-            // ReSharper restore ExpressionIsAlwaysNull
+            
             //------------Assert Results-------------------------
             Assert.IsTrue(isNullOrEmpty);
         }
@@ -769,9 +769,9 @@ namespace Dev2.Common.Tests
             //------------Setup for test--------------------------
             StringBuilder sb = new StringBuilder();
             //------------Execute Test---------------------------
-            // ReSharper disable ExpressionIsAlwaysNull
+            
             var isNullOrEmpty = sb.IsNullOrEmpty();
-            // ReSharper restore ExpressionIsAlwaysNull
+            
             //------------Assert Results-------------------------
             Assert.IsTrue(isNullOrEmpty);
         }   
@@ -784,9 +784,9 @@ namespace Dev2.Common.Tests
             //------------Setup for test--------------------------
             StringBuilder sb = new StringBuilder(null);
             //------------Execute Test---------------------------
-            // ReSharper disable ExpressionIsAlwaysNull
+            
             var isNullOrEmpty = sb.IsNullOrEmpty();
-            // ReSharper restore ExpressionIsAlwaysNull
+            
             //------------Assert Results-------------------------
             Assert.IsTrue(isNullOrEmpty);
         } 
@@ -799,9 +799,9 @@ namespace Dev2.Common.Tests
             //------------Setup for test--------------------------
             StringBuilder sb = new StringBuilder("Hello");
             //------------Execute Test---------------------------
-            // ReSharper disable ExpressionIsAlwaysNull
+            
             var isNullOrEmpty = sb.IsNullOrEmpty();
-            // ReSharper restore ExpressionIsAlwaysNull
+            
             //------------Assert Results-------------------------
             Assert.IsFalse(isNullOrEmpty);
         }

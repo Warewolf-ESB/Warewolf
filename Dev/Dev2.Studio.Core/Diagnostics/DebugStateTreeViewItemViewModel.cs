@@ -9,8 +9,8 @@ using Dev2.Services.Events;
 using Dev2.Studio.Diagnostics;
 using Dev2.Studio.Interfaces;
 
-// ReSharper disable UnusedMemberInSuper.Global
-// ReSharper disable CheckNamespace
+
+
 
 namespace Dev2.Studio.Core
 {
@@ -66,7 +66,7 @@ namespace Dev2.Studio.Core
             }
         }
 
-        // ReSharper disable once CyclomaticComplexity
+        
         protected override void Initialize(IDebugState content)
         {
             //            _inputs.Clear();
@@ -125,7 +125,7 @@ namespace Dev2.Studio.Core
             if (content.AssertResultList != null)
             {
                 var setAllError = false;
-                // ReSharper disable once UnusedVariable
+                
                 foreach (var debugItem in content.AssertResultList.Where(debugItem => debugItem.ResultsList.Any(debugItemResult => debugItemResult.HasError)))
                 {
                     setAllError = true;

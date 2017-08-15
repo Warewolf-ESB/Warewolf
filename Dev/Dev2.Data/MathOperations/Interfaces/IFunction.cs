@@ -20,7 +20,7 @@ namespace Dev2.MathOperations {
         IList<string> ArgumentDescriptions { get; }
         string Description { get; }
 
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         void CreateCustomFunction(string functionName, List<string> arguments, List<string> argumentDescriptions, string description,
            Func<double[], double> function, IDev2CalculationManager calcManager);
     }

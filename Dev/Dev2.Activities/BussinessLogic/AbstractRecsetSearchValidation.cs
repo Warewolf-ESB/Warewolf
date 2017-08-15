@@ -12,7 +12,7 @@ using System;
 using System.Collections.Generic;
 using Dev2.DataList.Contract;
 
-// ReSharper disable once CheckNamespace
+
 namespace Dev2.DataList
 {
     /// <summary>

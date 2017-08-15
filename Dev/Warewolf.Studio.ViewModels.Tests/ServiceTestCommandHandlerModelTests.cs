@@ -20,8 +20,8 @@ using Dev2.Studio.ViewModels.DataList;
 using Dev2.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-// ReSharper disable InconsistentNaming
-// ReSharper disable UseObjectOrCollectionInitializer
+
+
 
 namespace Warewolf.Studio.ViewModels.Tests
 {
@@ -630,7 +630,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             }
             catch (TargetInvocationException ex)
             {
-                // ReSharper disable once PossibleNullReferenceException
+                
                 var b = ex.InnerException.GetType() == typeof(NullReferenceException);
                 //---------------Test Result -----------------------
                 Assert.IsTrue(b);

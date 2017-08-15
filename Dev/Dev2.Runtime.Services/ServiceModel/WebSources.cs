@@ -23,7 +23,7 @@ using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
 using Newtonsoft.Json;
 
-// ReSharper disable InconsistentNaming
+
 namespace Dev2.Runtime.ServiceModel
 {
     public delegate string WebExecuteString(WebSource source, WebRequestMethod method, string relativeUri, string data, bool throwError, out ErrorResultTO errors, string[] headers = null);
@@ -55,7 +55,7 @@ namespace Dev2.Runtime.ServiceModel
         #region Get
 
         // POST: Service/WebSources/Get
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         public WebSource Get(string resourceId, Guid workspaceId, Guid dataListId)
         {
             var result = new WebSource();
@@ -80,7 +80,7 @@ namespace Dev2.Runtime.ServiceModel
         #region Test
 
         // POST: Service/WebSources/Test
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         public ValidationResult Test(string args, Guid workspaceId, Guid dataListId)
         {
             try
@@ -172,7 +172,7 @@ namespace Dev2.Runtime.ServiceModel
             return $"{source.Address}{relativeUri}";
         }
 
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         public static byte[] Execute(WebSource source, WebRequestMethod method, string relativeUri, byte[] data, bool throwError, out ErrorResultTO errors, string[] headers = null)
         {
             EnsureWebClient(source, headers);
@@ -183,9 +183,9 @@ namespace Dev2.Runtime.ServiceModel
 
         #region Execute(client, address, method, data)
 
-        // ReSharper disable UnusedParameter.Local
+        
         static byte[] Execute(WebClient client, string address, WebRequestMethod method, byte[] data, bool throwError, out ErrorResultTO errors)
-            // ReSharper restore UnusedParameter.Local
+            
         {
             errors = new ErrorResultTO();
             switch (method)

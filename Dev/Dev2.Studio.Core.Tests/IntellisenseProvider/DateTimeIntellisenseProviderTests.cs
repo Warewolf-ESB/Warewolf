@@ -20,7 +20,7 @@ using Moq;
 namespace Dev2.Core.Tests.IntellisenseProvider
 {
     [TestClass]
-    // ReSharper disable InconsistentNaming
+    
     public class DateTimeIntellisenseProviderTests
     {
         [TestMethod]

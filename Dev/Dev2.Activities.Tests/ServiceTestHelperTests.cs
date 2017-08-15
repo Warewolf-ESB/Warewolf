@@ -22,7 +22,7 @@ using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Storage.Interfaces;
 
-// ReSharper disable InconsistentNaming
+
 namespace Dev2.Tests.Activities
 {
     [TestClass]

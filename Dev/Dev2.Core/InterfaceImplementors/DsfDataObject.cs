@@ -27,12 +27,12 @@ using Dev2.Interfaces;
 using Dev2.Web;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
-// ReSharper disable FunctionComplexityOverflow
 
-// ReSharper disable CheckNamespace
+
+
 
 namespace Dev2.DynamicServices
-// ReSharper restore CheckNamespace
+
 {
     /// <summary>
     ///     The core TO used in the execution engine ;)
@@ -70,9 +70,9 @@ namespace Dev2.DynamicServices
                         xe = XElement.Parse(xmldata);
                     }
                 }
-                // ReSharper disable EmptyGeneralCatchClause
+                
                 catch (Exception)
-                // ReSharper restore EmptyGeneralCatchClause
+                
                 {
                     // we only trying to parse ;)
                 }
@@ -460,9 +460,9 @@ namespace Dev2.DynamicServices
             DatalistOutMergeID = datalistOutMergeId;
 
             enDataListMergeTypes datalistOutMergeType;
-            // ReSharper disable ConvertIfStatementToConditionalTernaryExpression
+            
             if (Enum.TryParse(ExtractValue(xe, "DatalistOutMergeType"), true, out datalistOutMergeType))
-            // ReSharper restore ConvertIfStatementToConditionalTernaryExpression
+            
             {
                 DatalistOutMergeType = datalistOutMergeType;
             }

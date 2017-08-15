@@ -18,7 +18,7 @@ namespace Dev2.Data.Interfaces.Enums {
     /// Purpose : To abstract IO endpoint types
     /// </summary>
     [Serializable]
-// ReSharper disable InconsistentNaming
+
     public enum enActivityIOPathType {
 
         FileSystem,

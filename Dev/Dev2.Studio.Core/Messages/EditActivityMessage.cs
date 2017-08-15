@@ -10,9 +10,9 @@
 
 using System;
 using System.Activities.Presentation.Model;
-// ReSharper disable InconsistentNaming
 
-// ReSharper disable once CheckNamespace
+
+
 namespace Dev2.Studio.Core.Messages
 {
     public class EditActivityMessage : IMessage

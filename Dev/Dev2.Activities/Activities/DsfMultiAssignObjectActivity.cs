@@ -34,11 +34,11 @@ using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 using WarewolfParserInterop;
 
-// ReSharper disable UnusedMember.Global
 
-// ReSharper disable CheckNamespace
+
+
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
-// ReSharper restore CheckNamespace
+
 {
     [ToolDescriptorInfo("AssignObject", "Assign Object", ToolType.Native, "A86C4D10-B4D0-4775-AF4D-C66D5A6CE76F", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Data", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Data_Assign_Object")]
     public class DsfMultiAssignObjectActivity : DsfActivityAbstract<string>
@@ -59,9 +59,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Properties
 
-        // ReSharper disable ConvertToAutoProperty
+        
         public IList<AssignObjectDTO> FieldsCollection
-        // ReSharper restore ConvertToAutoProperty
+        
         {
             get
             {
@@ -99,13 +99,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Overridden NativeActivity Methods
 
-        // ReSharper disable RedundantOverridenMember
+        
         protected override void CacheMetadata(NativeActivityMetadata metadata)
         {
             base.CacheMetadata(metadata);
         }
 
-        // ReSharper restore RedundantOverridenMember
+        
 
         protected override void OnExecute(NativeActivityContext context)
         {
@@ -420,7 +420,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         var recSetResult = evalResult as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
                         if (recSetResult != null)
                         {
-                            // ReSharper disable once ConvertIfStatementToConditionalTernaryExpression
+                            
                             if (DataListUtil.GetRecordsetIndexType(assignValue.Name) == enRecordsetIndexType.Blank)
                             {
                                 AddDebugItem(new DebugItemWarewolfAtomListResult(recSetResult, evalResult2, "", assignValue.Name, VariableLabelText, NewFieldLabelText, "="), debugItem);

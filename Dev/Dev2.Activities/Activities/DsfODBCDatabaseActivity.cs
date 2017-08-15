@@ -12,9 +12,9 @@ using Warewolf.Core;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage.Interfaces;
 
-// ReSharper disable NonLocalizedString
 
-// ReSharper disable InconsistentNaming
+
+
 
 namespace Dev2.Activities
 {

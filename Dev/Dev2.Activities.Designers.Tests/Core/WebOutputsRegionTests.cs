@@ -12,7 +12,7 @@ using Newtonsoft.Json.Serialization;
 using Warewolf.Core;
 using Warewolf.Storage;
 
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Activities.Designers.Tests.Core
 {

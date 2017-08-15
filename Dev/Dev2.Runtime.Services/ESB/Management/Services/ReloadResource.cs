@@ -27,7 +27,7 @@ namespace Dev2.Runtime.ESB.Management.Services
     /// <summary>
     /// Reload a resource from disk ;)
     /// </summary>
-    [SuppressMessage("ReSharper", "UnusedMember.Global")]
+
     public class ReloadResource : IEsbManagementEndpoint
     {
         public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)

@@ -18,19 +18,19 @@ using System.Windows.Input;
 using Dev2.Studio.AppResources.ExtensionMethods;
 using Warewolf.Resource.Errors;
 
-// ReSharper disable CheckNamespace
+
 
 namespace Dev2.CustomControls
-// ReSharper restore CheckNamespace
+
 {
     [TemplatePart(Name = PART_Thumb, Type = typeof (Thumb))]
     public class SimpleGridSplitter : Control
     {
         #region fields
 
-// ReSharper disable InconsistentNaming
+
         private const string PART_Thumb = "Thumb";
-// ReSharper restore InconsistentNaming
+
         private Grid _containingGrid;
         private Thumb _thumb;
 
@@ -213,9 +213,9 @@ namespace Dev2.CustomControls
             return delta;
         }
 
-        // ReSharper disable UnusedParameter.Local
+        
         private void ResizeColumns(double horizontalChange)
-            // ReSharper restore UnusedParameter.Local
+            
         {
             throw new NotImplementedException();
         }

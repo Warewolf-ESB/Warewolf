@@ -15,7 +15,7 @@ using System.Reflection;
 using System.Text;
 using Dev2.Data.Parsers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Data.Tests
 {

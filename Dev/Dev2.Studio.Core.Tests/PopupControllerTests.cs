@@ -22,7 +22,7 @@ using PopupController = Dev2.Studio.Controller.PopupController;
 namespace Dev2.Core.Tests
 {
     [TestClass]
-    // ReSharper disable InconsistentNaming
+    
     public class PopupControllerTests
     {
         [TestMethod]

@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using GACManagerApi.Fusion;
-// ReSharper disable MemberCanBePrivate.Global
-// ReSharper disable UnusedMember.Global
-// ReSharper disable UnusedAutoPropertyAccessor.Global
-// ReSharper disable CollectionNeverQueried.Global
+
+
+
+
 
 namespace GACManagerApi
 {

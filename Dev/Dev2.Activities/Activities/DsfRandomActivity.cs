@@ -32,8 +32,8 @@ using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 
-// ReSharper disable MemberCanBePrivate.Global
-// ReSharper disable FunctionComplexityOverflow
+
+
 
 namespace Dev2.Activities
 {

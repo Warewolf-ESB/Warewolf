@@ -79,7 +79,7 @@ namespace Dev2.Core.Tests
         #endregion
 
         #region CTOR Tests
-        // ReSharper disable InconsistentNaming
+        
 
 
         // Travis  : PBI 5779

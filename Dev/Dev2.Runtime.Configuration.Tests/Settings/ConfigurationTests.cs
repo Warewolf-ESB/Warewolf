@@ -33,18 +33,18 @@ namespace Dev2.Runtime.Configuration.Tests.Settings
         [ExpectedException(typeof(ArgumentNullException))]
         public void ConstructorWithNullXmlExpectedThrowsArgumentNullException()
         {
-            // ReSharper disable UnusedVariable
+            
             var config = new Configuration.Settings.Configuration((XElement)null);
-            // ReSharper restore UnusedVariable
+            
         } 
         
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void ConstructorWithNullWebServerUriExpectedThrowsArgumentNullException()
         {
-            // ReSharper disable UnusedVariable
+            
             var config = new Configuration.Settings.Configuration((string)null);
-            // ReSharper restore UnusedVariable
+            
         }
         
 
@@ -52,18 +52,18 @@ namespace Dev2.Runtime.Configuration.Tests.Settings
         [ExpectedException(typeof(ArgumentException))]
         public void ConstructorWithInvalidXmlVersionExpectedThrowsArgumentException()
         {
-            // ReSharper disable UnusedVariable
+            
             var config = new Configuration.Settings.Configuration(new XElement("x", new XElement("y"), new XElement("z")));
-            // ReSharper restore UnusedVariable
+            
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void ConstructorWithInvalidXmlExpectedThrowsArgumentNullException()
         {
-            // ReSharper disable UnusedVariable  
+              
             var config = new Configuration.Settings.Configuration(new XElement("x", new XAttribute("Version", "1.0"), new XElement("y"), new XElement("z")));
-            // ReSharper restore UnusedVariable
+            
         }
 
         [TestMethod]
@@ -110,9 +110,9 @@ namespace Dev2.Runtime.Configuration.Tests.Settings
                 if((settings = value as SettingsBase) != null)
                 {
                     var expected = settings.ToXml().ToString(SaveOptions.DisableFormatting);
-                    // ReSharper disable PossibleNullReferenceException
+                    
                     var actual = result.Element(settings.SettingName).ToString(SaveOptions.DisableFormatting);
-                    // ReSharper restore PossibleNullReferenceException
+                    
                     Assert.AreEqual(expected, actual);
                 }
                 else if((version = value as Version) != null)

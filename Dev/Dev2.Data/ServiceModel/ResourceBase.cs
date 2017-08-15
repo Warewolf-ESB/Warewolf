@@ -19,7 +19,7 @@ using Dev2.Providers.Errors;
 using Newtonsoft.Json;
 using Warewolf.Resource.Errors;
 
-// ReSharper disable CheckNamespace
+
 
 namespace Dev2.Runtime.ServiceModel.Data
 {
@@ -103,7 +103,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             SetIsNew(xml);
         }
 
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         public Version Version { get; set; }
         [JsonIgnore]
         public bool IsUpgraded { get; set; }
@@ -282,9 +282,9 @@ namespace Dev2.Runtime.ServiceModel.Data
                 new XAttribute("IsValid", IsValid),
                 new XElement("DisplayName", ResourceName ?? string.Empty),
                 new XElement("AuthorRoles", AuthorRoles ?? string.Empty),
-                // ReSharper disable ConstantNullCoalescingCondition
+                
                 new XElement("ErrorMessages", WriteErrors() ?? null)
-                // ReSharper restore ConstantNullCoalescingCondition
+                
                 );
         }
 

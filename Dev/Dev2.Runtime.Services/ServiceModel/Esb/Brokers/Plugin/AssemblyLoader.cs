@@ -5,14 +5,14 @@ using System.Reflection;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Warewolf.Resource.Errors;
-// ReSharper disable NonLocalizedString
+
 
 namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
 {
     public interface IAssemblyLoader
     {
         bool TryLoadAssembly(string assemblyLocation, string assemblyName, out Assembly loadedAssembly);
-        // ReSharper disable once UnusedMemberInSuper.Global
+        
         void LoadDepencencies(Assembly asm, string assemblyLocation);
     }
     public class AssemblyLoader : IAssemblyLoader

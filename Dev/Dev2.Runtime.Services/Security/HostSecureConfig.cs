@@ -216,7 +216,7 @@ namespace Dev2.Runtime.Security
         /// <param name="serverKey">The server key.</param>
         /// <param name="systemKey">The system key.</param>
         /// <returns>a <see cref="NameValueCollection"/> configuration.</returns>
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         public static NameValueCollection CreateSettings(string serverID, string serverKey, string systemKey)
         {
             return new NameValueCollection

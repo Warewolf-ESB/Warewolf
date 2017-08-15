@@ -11,7 +11,7 @@ namespace Warewolf.Studio.ViewModels
         readonly IStudioUpdateManager _updateRepository;
         readonly IQueryManager _queryProxy;
 
-        // ReSharper disable once UnusedParameter.Local
+        
         public ManageWcfSourceModel(IStudioUpdateManager updateRepository, IQueryManager queryProxy)
         {
             _updateRepository = updateRepository;

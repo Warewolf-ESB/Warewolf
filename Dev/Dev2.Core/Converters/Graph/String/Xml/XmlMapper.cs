@@ -15,19 +15,19 @@ using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Core.Graph;
 
-// ReSharper disable CheckNamespace
+
 
 namespace Unlimited.Framework.Converters.Graph.String.Xml
-// ReSharper restore CheckNamespace
+
 {
     [Serializable]
     public class XmlMapper : IMapper
     {
         #region Constructors
 
-        // ReSharper disable EmptyConstructor
+        
         public XmlMapper()
-            // ReSharper restore EmptyConstructor
+            
         {
         }
 

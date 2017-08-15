@@ -20,7 +20,7 @@ namespace Dev2.Tests
     ///to contain all DataListUtilTest Unit Tests
     ///</summary>
     [TestClass]
-    // ReSharper disable InconsistentNaming
+    
     public class DataListCleaningUtilTest
     {
  

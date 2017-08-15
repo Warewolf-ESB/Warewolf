@@ -13,7 +13,7 @@ using Dev2.Common.Interfaces.Data;
 using Dev2.Data.Interfaces.Enums;
 using Dev2.DataList.Contract;
 
-// ReSharper disable once CheckNamespace
+
 namespace Dev2.Studio.Core.Factories
 {
     public static class DataMappingListFactory

@@ -1,4 +1,4 @@
-// ReSharper disable RedundantUsingDirective
+
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
@@ -96,7 +96,7 @@ namespace Dev2
             return Result;
         }
 
-        // ReSharper disable once MemberCanBePrivate.Global
+        
         public class ServerLifecycleManagerService : ServiceBase
         {
             public ServerLifecycleManagerService()
@@ -131,7 +131,7 @@ namespace Dev2
         private readonly PulseTracker _pulseTracker;
         private IpcClient _ipcIpcClient;
         
-        // ReSharper disable once UnusedParameter.Local
+        
         ServerLifecycleManager(string[] arguments)
         {
             _pulseLogger = new PulseLogger(60000);
@@ -345,7 +345,7 @@ namespace Dev2
         {
             try
             {
-                // ReSharper disable once AssignNullToNotNullAttribute
+                
                 Directory.SetCurrentDirectory(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
             }
             catch (Exception e)
@@ -402,7 +402,7 @@ namespace Dev2
             }
         }
 
-        // ReSharper disable once InconsistentNaming
+
         private void EnableSSLForServer(string webServerSslPort, List<Dev2Endpoint> endpoints)
         {
             if (!string.IsNullOrEmpty(webServerSslPort) && _isWebServerSslEnabled)
@@ -430,7 +430,7 @@ namespace Dev2
             }
         }
         
-        // ReSharper disable once MemberCanBePrivate.Global
+        
         internal void CleanupServer()
         {
             try
@@ -624,17 +624,17 @@ namespace Dev2
         {
 
             Write("Loading server workspace...  ");
-            // ReSharper disable UnusedVariable
+            
             var instance = WorkspaceRepository.Instance;
-            // ReSharper restore UnusedVariable
+            
             WriteLine("done.");
         }
 
         void LoadHostSecurityProvider()
         {
-            // ReSharper disable UnusedVariable
+            
             var instance = HostSecurityProvider.Instance;
-            // ReSharper restore UnusedVariable
+            
         }
 
         void StartWebServer()
@@ -669,7 +669,7 @@ namespace Dev2
             }
         }
 
-        // ReSharper disable once MemberCanBePrivate.Global
+        
         internal static void WriteLine(string message)
         {
             if (Environment.UserInteractive)
@@ -684,7 +684,7 @@ namespace Dev2
 
         }
 
-        // ReSharper disable once MemberCanBePrivate.Global
+        
         internal static void Write(string message)
         {
             if (Environment.UserInteractive)

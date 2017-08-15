@@ -20,7 +20,7 @@ namespace Dev2.Infrastructure.Tests.Communication
 
         private static readonly Guid RequestID = Guid.NewGuid();
 
-        // ReSharper disable InconsistentNaming
+        
 
         [TestMethod]
         [Owner("Travis Frisinger")]
@@ -116,6 +116,6 @@ namespace Dev2.Infrastructure.Tests.Communication
         }
 
 
-        // ReSharper restore InconsistentNaming
+
     }
 }

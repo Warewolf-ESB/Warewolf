@@ -13,7 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-// ReSharper disable ClassWithVirtualMembersNeverInherited.Global
+
 
 namespace Dev2.Common
 {
@@ -163,9 +163,9 @@ namespace Dev2.Common
                         result.Append(_charEnumerator.Current);
                     }
                 }
-                // ReSharper disable EmptyGeneralCatchClause
+                
                 catch (Exception)
-                // ReSharper restore EmptyGeneralCatchClause
+                
                 {
                     // _charEnumerator will return null reference exception when done ;)
                 }
@@ -211,9 +211,9 @@ namespace Dev2.Common
             catch
             {
                 // error, return remaining portion of the string
-                // ReSharper disable RedundantAssignment
+                
                 result = RemainderToString();
-                // ReSharper restore RedundantAssignment
+                
             }
 
             return result;

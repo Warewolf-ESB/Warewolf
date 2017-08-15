@@ -13,9 +13,9 @@ namespace Warewolf.Studio.Views
         {
             InitializeComponent();
             RichTextDocument richTextDocument = XamRichTextEditor.Document;
-            // ReSharper disable PossibleNullReferenceException
+            
             Color color = (Color)ColorConverter.ConvertFromString("#FFF4F2EE");
-            // ReSharper restore PossibleNullReferenceException
+            
             var colorInfo = new ColorInfo(color);
             richTextDocument.RootNode.Settings = new DocumentSettings
             {

@@ -13,7 +13,7 @@ using Dev2.Common.Interfaces.Threading;
 using Dev2.Studio.Interfaces;
 using Dev2.Threading;
 
-// ReSharper disable InconsistentNaming
+
 
 namespace Warewolf.Studio.ViewModels.Tests
 {

@@ -1,7 +1,7 @@
 ﻿using Dev2.TO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-// ReSharper disable InconsistentNaming
+
 namespace Dev2.Tests.Activities.TOTests
 {
     [TestClass]
