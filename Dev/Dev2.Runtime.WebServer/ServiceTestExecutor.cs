@@ -74,7 +74,7 @@ namespace Dev2.Runtime.WebServer
                     formatter = dataObject.RunMultipleTestBatchesAndReturnJSON(userPrinciple, workspaceGuid, serializer, formatter,
                     resourceCatalog, testCatalog, ref executePayload);
                 }
-                else if (dataObject.ReturnType == Web.EmitionTypes.TRX)
+                if (dataObject.ReturnType == Web.EmitionTypes.TRX)
                 {
                     formatter = dataObject.RunMultipleTestBatchesAndReturnTRX(userPrinciple, workspaceGuid, serializer, formatter,
                     resourceCatalog, testCatalog, ref executePayload);
@@ -88,7 +88,7 @@ namespace Dev2.Runtime.WebServer
                     formatter = dataObject.RunSingleTestBatchAndReturnJSON(userPrinciple, workspaceGuid, serializer, formatter,
                         serviceName, testCatalog, ref executePayload);
                 }
-                else if (dataObject.ReturnType == Web.EmitionTypes.TRX)
+                if (dataObject.ReturnType == Web.EmitionTypes.TRX)
                 {
                     formatter = dataObject.RunSingleTestBatchAndReturnTRX(userPrinciple, workspaceGuid, serializer, formatter,
                         serviceName, testCatalog, ref executePayload);

@@ -16,15 +16,13 @@ using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.WebServer.TransferObjects;
 using Dev2.Services.Security;
 using Dev2.Web;
-using Newtonsoft.Json.Linq;
 using Warewolf.Storage;
-using System.Xml.Linq;
 
 namespace Dev2.Runtime.WebServer
 {
     internal static class DataObjectExtentions
     {
-        public static string SetEmitionType(this IDSFDataObject dataObject, string serviceName, NameValueCollection headers)
+        public static string SetEmitionType(this IDSFDataObject dataObject, WebRequestTO webRequest, string serviceName, NameValueCollection headers)
         {
             int loc;
             if (!string.IsNullOrEmpty(serviceName) && (loc = serviceName.LastIndexOf(".", StringComparison.Ordinal)) > 0)
@@ -55,13 +53,13 @@ namespace Dev2.Runtime.WebServer
                         {
                             dataObject.TestName = "*";
                         }
-                        if (typeOf.StartsWith("trx", StringComparison.InvariantCultureIgnoreCase))
-                        {
-                            dataObject.ReturnType = EmitionTypes.TRX;
-                        }
                         if (typeOf.StartsWith("tests", StringComparison.InvariantCultureIgnoreCase))
                         {
                             dataObject.ReturnType = EmitionTypes.TEST;
+                        }
+                        if (typeOf.StartsWith("trx", StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            dataObject.ReturnType = EmitionTypes.TRX;
                         }
                     }
 
@@ -74,6 +72,14 @@ namespace Dev2.Runtime.WebServer
             }
             else
             {
+                if (serviceName == "*" && webRequest.WebServerUrl.EndsWith("/.tests", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    dataObject.ReturnType = EmitionTypes.TEST;
+                }
+                if (serviceName == "*" && webRequest.WebServerUrl.EndsWith("/.trx", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    dataObject.ReturnType = EmitionTypes.TRX;
+                }
                 dataObject.SetContentType(headers);
             }
             return serviceName;
@@ -146,7 +152,7 @@ namespace Dev2.Runtime.WebServer
 
         public static void SetTestResourceIds(this IDSFDataObject dataObject, IResourceCatalog catalog, WebRequestTO webRequest, string serviceName)
         {
-            if (webRequest.IsRunAllTestsRequest(serviceName))
+            if (IsRunAllTestsRequest(dataObject.ReturnType, serviceName))
             {
                 var pathOfAllResources = webRequest.GetPathForAllResources();
                 dataObject.ResourceID = Guid.Empty;
@@ -165,11 +171,10 @@ namespace Dev2.Runtime.WebServer
             }
         }
 
-        public static void SetupForTestExecution(this IDSFDataObject dataObject, WebRequestTO requestTO, string serviceName, NameValueCollection headers)
+        public static void SetupForTestExecution(this IDSFDataObject dataObject, string serviceName, NameValueCollection headers)
         {
-            if (requestTO.IsRunAllTestsRequest(serviceName))
+            if (IsRunAllTestsRequest(dataObject.ReturnType, serviceName))
             {
-                dataObject.ReturnType = EmitionTypes.TEST;
                 dataObject.IsServiceTestExecution = true;
                 dataObject.TestName = "*";
             }
@@ -177,6 +182,11 @@ namespace Dev2.Runtime.WebServer
             {
                 dataObject.SetContentType(headers);
             }
+        }
+
+        private static bool IsRunAllTestsRequest(EmitionTypes returnType, string serviceName)
+        {
+            return !string.IsNullOrEmpty(serviceName) && (serviceName == "*" || serviceName == ".tests" || serviceName == ".tests.trx") && (returnType == EmitionTypes.TEST || returnType == EmitionTypes.TRX);
         }
 
         public static void SetResourceNameAndId(this IDSFDataObject dataObject, IResourceCatalog catalog, string serviceName, out IResource resource)
@@ -230,7 +240,7 @@ namespace Dev2.Runtime.WebServer
         public static bool CanExecuteCurrentResource(this IDSFDataObject dataObject, IResource resource, IAuthorizationService service)
         {
             var canExecute = true;
-            if (service != null && dataObject.ReturnType != EmitionTypes.TEST)
+            if (service != null && dataObject.ReturnType != EmitionTypes.TEST && dataObject.ReturnType != EmitionTypes.TRX)
             {
                 var hasView = service.IsAuthorized(AuthorizationContext.View, dataObject.ResourceID.ToString());
                 var hasExecute = service.IsAuthorized(AuthorizationContext.Execute, dataObject.ResourceID.ToString());
@@ -244,11 +254,11 @@ namespace Dev2.Runtime.WebServer
                                                                          IResourceCatalog catalog, ITestCatalog testCatalog,
                                                                          ref string executePayload)
         {
+            var taskList = new List<Task>();
+            var testResults = new List<IServiceTestModelTO>();
             foreach (var testsResourceId in dataObject.TestsResourceIds)
             {
                 var allTests = testCatalog.Fetch(testsResourceId);
-                var taskList = new List<Task>();
-                var testResults = new List<IServiceTestModelTO>();
                 foreach (var test in allTests)
                 {
                     var dataObjectClone = dataObject.Clone();
@@ -261,16 +271,16 @@ namespace Dev2.Runtime.WebServer
                         serializer, testResults, dataObjectClone);
                     taskList.Add(lastTask);
                 }
-                Task.WaitAll(taskList.ToArray());
-                formatter = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json");
-                var objArray = (from testRunResult in testResults
-                                where testRunResult != null
-                                select testRunResult.BuildTestResultJSONForWebRequest()
-                                ).ToList();
-                if (objArray.Count > 0)
-                {
-                    executePayload = (executePayload == string.Empty ? "[" : executePayload.TrimEnd("\r\n]".ToCharArray()) + ",") + serializer.Serialize(objArray).TrimStart('[');
-                }
+            }
+            Task.WaitAll(taskList.ToArray());
+            formatter = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json");
+            var objArray = (from testRunResult in testResults
+                            where testRunResult != null
+                            select testRunResult.BuildTestResultJSONForWebRequest()
+                            ).ToList();
+            if (objArray.Count > 0)
+            {
+                executePayload = (executePayload == string.Empty ? "[" : executePayload.TrimEnd("\r\n]".ToCharArray()) + ",") + serializer.Serialize(objArray).TrimStart('[');
             }
             return formatter;
         }
@@ -280,11 +290,11 @@ namespace Dev2.Runtime.WebServer
                                                                         IResourceCatalog catalog, ITestCatalog testCatalog,
                                                                         ref string executePayload)
         {
+            var testResults = new List<IServiceTestModelTO>();
+            var taskList = new List<Task>();
             foreach (var testsResourceId in dataObject.TestsResourceIds)
             {
                 var allTests = testCatalog.Fetch(testsResourceId);
-                var taskList = new List<Task>();
-                var testResults = new List<IServiceTestModelTO>();
                 foreach (var test in allTests)
                 {
                     var dataObjectClone = dataObject.Clone();
@@ -297,10 +307,10 @@ namespace Dev2.Runtime.WebServer
                         serializer, testResults, dataObjectClone);
                     taskList.Add(lastTask);
                 }
-                Task.WaitAll(taskList.ToArray());
-                formatter = DataListFormat.CreateFormat("XML", EmitionTypes.XML, "text/xml");
-                executePayload = ServiceTestModelTRXResultBuilder.BuildTestResultTRX(dataObject.ServiceName, testResults);
             }
+            Task.WaitAll(taskList.ToArray());
+            formatter = DataListFormat.CreateFormat("XML", EmitionTypes.XML, "text/xml");
+            executePayload = ServiceTestModelTRXResultBuilder.BuildTestResultTRX(dataObject.ServiceName, testResults);
             return formatter;
         }
 
