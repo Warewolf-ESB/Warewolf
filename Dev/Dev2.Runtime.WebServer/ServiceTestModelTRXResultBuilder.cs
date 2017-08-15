@@ -83,7 +83,7 @@ namespace Dev2.Runtime.WebServer
             {
                 var unitTestDefinitionElement = TRXFile.CreateElement("UnitTest");
                 unitTestDefinitionElement.SetAttribute("name", TestResult.TestName.Replace(" ", "_"));
-                unitTestDefinitionElement.SetAttribute("storage", TestResult.TestName.Replace(" ", "_"));
+                unitTestDefinitionElement.SetAttribute("storage", ServiceName.Replace(" ", "_"));
                 unitTestDefinitionElement.SetAttribute("id", testIDs[testIDIndex].ToString());
                 var executionElement = TRXFile.CreateElement("Execution");
                 executionElement.SetAttribute("id", executionIDs[testIDIndex].ToString());
@@ -107,6 +107,7 @@ namespace Dev2.Runtime.WebServer
             testListDefaultListElement.SetAttribute("name", "All Loaded Results");
             testListDefaultListElement.SetAttribute("id", "19431567-8539-422a-85d7-44ee4e166bda");
             testListsElement.AppendChild(testListDefaultListElement);
+            testRunElement.AppendChild(testListsElement);
             var testEntriesElement = TRXFile.CreateElement("TestEntries");
             testIDIndex = 0;
             foreach (var TestResult in TestResults.FindAll((result) => { return result != null; }))
