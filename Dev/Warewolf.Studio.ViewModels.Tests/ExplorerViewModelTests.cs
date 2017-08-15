@@ -556,6 +556,12 @@ namespace Warewolf.Studio.ViewModels.Tests
             serverMock.SetupGet(it => it.EnvironmentID).Returns(envId);
             environmentViewModelMock.SetupGet(it => it.Server).Returns(serverMock.Object);
             environmentViewModelMock.SetupGet(it => it.IsConnected).Returns(true);
+
+            var child = new Mock<IExplorerItemViewModel>();
+            child.SetupGet(it => it.AllowResourceCheck).Returns(true);
+            child.SetupGet(it => it.IsVisible).Returns(true);
+            environmentViewModelMock.Setup(a => a.Children).Returns(new ObservableCollection<IExplorerItemViewModel>() { child.Object });
+
             _target.Environments = new ObservableCollection<IEnvironmentViewModel>() { environmentViewModelMock.Object };
             _target.SearchText = "someText";
 
