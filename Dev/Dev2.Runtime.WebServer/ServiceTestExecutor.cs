@@ -46,7 +46,7 @@ namespace Dev2.Runtime.WebServer
             await lastTask;
         }
 
-        public static string SetpForTestExecution(Dev2JsonSerializer serializer, EsbExecuteRequest esbExecuteRequest,IDSFDataObject dataObject)
+        public static string SetupForTestExecution(Dev2JsonSerializer serializer, EsbExecuteRequest esbExecuteRequest,IDSFDataObject dataObject)
         {
             var result = serializer.Deserialize<ServiceTestModelTO>(esbExecuteRequest.ExecuteResult);
             string executePayload;
@@ -67,25 +67,31 @@ namespace Dev2.Runtime.WebServer
         public static DataListFormat ExecuteTests(string serviceName, IDSFDataObject dataObject, DataListFormat formatter,
             IPrincipal userPrinciple, Guid workspaceGuid, Dev2JsonSerializer serializer, ITestCatalog testCatalog, IResourceCatalog resourceCatalog, ref string executePayload)
         {
-            if (dataObject.TestsResourceIds?.Any() ?? false)
+            if (dataObject.TestsResourceIds?.Any() ?? false && serviceName == "*")
             {
-                formatter = dataObject.RunMultipleTestBatches(userPrinciple, workspaceGuid, serializer, formatter,
+                if (dataObject.ReturnType == Web.EmitionTypes.TEST)
+                {
+                    formatter = dataObject.RunMultipleTestBatchesAndReturnJSON(userPrinciple, workspaceGuid, serializer, formatter,
                     resourceCatalog, testCatalog, ref executePayload);
+                }
+                else if (dataObject.ReturnType == Web.EmitionTypes.TRX)
+                {
+                    formatter = dataObject.RunMultipleTestBatchesAndReturnTRX(userPrinciple, workspaceGuid, serializer, formatter,
+                    resourceCatalog, testCatalog, ref executePayload);
+                }
                 dataObject.ResourceID = Guid.Empty;
             }
             else
             {
-                const string TrxExtension = ".tests.trx";
-                if (!serviceName.EndsWith(TrxExtension, StringComparison.CurrentCultureIgnoreCase))
+                if (dataObject.ReturnType == Web.EmitionTypes.TEST)
                 {
-                    var objArray = dataObject.RunSingleTestBatchAndReturnJSON(serviceName, userPrinciple, workspaceGuid, serializer, testCatalog,
-                        ref formatter);
-                    executePayload = serializer.Serialize(objArray);
+                    formatter = dataObject.RunSingleTestBatchAndReturnJSON(userPrinciple, workspaceGuid, serializer, formatter,
+                        serviceName, testCatalog, ref executePayload);
                 }
-                else
+                else if (dataObject.ReturnType == Web.EmitionTypes.TRX)
                 {
-                    executePayload = dataObject.RunSingleTestBatchAndReturnTRX(serviceName.Replace(TrxExtension, string.Empty), userPrinciple, workspaceGuid, serializer, testCatalog,
-                        ref formatter);
+                    formatter = dataObject.RunSingleTestBatchAndReturnTRX(userPrinciple, workspaceGuid, serializer, formatter,
+                        serviceName, testCatalog, ref executePayload);
                 }
 
             }
@@ -94,8 +100,5 @@ namespace Dev2.Runtime.WebServer
             dataObject.Environment = null;
             return formatter;
         }
-
-
-
     }
 }

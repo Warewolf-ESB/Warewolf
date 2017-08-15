@@ -151,7 +151,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             formatter = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json");
             if (dataObject.IsServiceTestExecution)
             {
-                executePayload = ServiceTestExecutor.SetpForTestExecution(serializer, esbExecuteRequest, dataObject);
+                executePayload = ServiceTestExecutor.SetupForTestExecution(serializer, esbExecuteRequest, dataObject);
                 return new StringResponseWriter(executePayload, formatter.ContentType);
             }
             if (dataObject.IsDebugFromWeb)

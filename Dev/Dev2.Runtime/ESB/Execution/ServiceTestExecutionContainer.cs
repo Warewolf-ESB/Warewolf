@@ -1,3 +1,13 @@
+/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
 using System;
 using System.Activities;
 using System.Collections.Generic;
@@ -35,10 +45,6 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 
-
-
-
-
 namespace Dev2.Runtime.ESB.Execution
 {
     public class ServiceTestExecutionContainer : EsbExecutionContainer
@@ -70,12 +76,10 @@ namespace Dev2.Runtime.ESB.Execution
         /// <returns></returns>
         public override Guid Execute(out ErrorResultTO errors, int update)
         {
-
             errors = new ErrorResultTO();
             ITestCatalog testCatalog = TstCatalog ?? TestCatalog.Instance;
             // WorkflowApplicationFactory wfFactor = new WorkflowApplicationFactory();
             Guid result = GlobalConstants.NullDataListID;
-
 
             Dev2Logger.Debug("Entered Wf Container");
 
@@ -90,13 +94,13 @@ namespace Dev2.Runtime.ESB.Execution
             if (DataObject.ResourceID == Guid.Empty && ServiceAction?.Service != null)
                 DataObject.ResourceID = ServiceAction.Service.ID;
 
-
             // Travis : Now set Data List
             DataObject.DataList = ServiceAction.DataListSpecification;
             // Set original instance ID, only if not set yet - original resource;
             if (DataObject.OriginalInstanceID == Guid.Empty)
                 DataObject.OriginalInstanceID = DataObject.DataListID;
             Dev2Logger.Info($"Started Execution for Service Name:{DataObject.ServiceName} Resource Id:{DataObject.ResourceID} Mode:{(DataObject.IsDebug ? "Debug" : "Execute")}");
+
             //Set execution origin
             if (!string.IsNullOrWhiteSpace(DataObject.ParentServiceName))
             {
@@ -111,7 +115,6 @@ namespace Dev2.Runtime.ESB.Execution
             {
                 DataObject.ExecutionOrigin = ExecutionOrigin.External;
             }
-
 
             ErrorResultTO to = errors;
             var serviceTestModelTo = testCatalog.FetchTest(DataObject.ResourceID, DataObject.TestName);
