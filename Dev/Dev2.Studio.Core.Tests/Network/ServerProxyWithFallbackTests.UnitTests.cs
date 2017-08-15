@@ -3,7 +3,7 @@ using System.Net;
 using Dev2.Network;
 using Dev2.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Core.Tests.Network
 {

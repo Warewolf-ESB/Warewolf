@@ -248,6 +248,7 @@ namespace Dev2.Runtime.WebServer
                     dataObjectClone.Environment = new ExecutionEnvironment();
                     dataObjectClone.TestName = test.TestName;
                     var res = catalog.GetResource(GlobalConstants.ServerWorkspaceID, testsResourceId);
+                    dataObjectClone.ServiceName = res.ResourceName;
                     var resourcePath = res.GetResourcePath(GlobalConstants.ServerWorkspaceID).Replace("\\", "/");
                     var lastTask = ServiceTestExecutor.GetTaskForTestExecution(resourcePath, userPrinciple, workspaceGuid,
                         serializer, testResults, dataObjectClone);
@@ -259,8 +260,10 @@ namespace Dev2.Runtime.WebServer
                                 where testRunResult != null
                                 select testRunResult.BuildTestResultJSONForWebRequest()
                                 ).ToList();
-
-                executePayload = executePayload + Environment.NewLine + serializer.Serialize(objArray);
+                if (objArray.Count > 0)
+                {
+                    executePayload = (executePayload == string.Empty ? "[" : executePayload.TrimEnd("\r\n]".ToCharArray()) + ",") + serializer.Serialize(objArray).TrimStart('[');
+                }
             }
             return formatter;
         }

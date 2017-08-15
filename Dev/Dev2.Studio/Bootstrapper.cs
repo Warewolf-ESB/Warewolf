@@ -111,28 +111,28 @@ namespace Dev2
         protected override void OnStartup(object sender, StartupEventArgs e)
         {
 
-            // ReSharper disable JoinDeclarationAndInitializer
-            // ReSharper disable RedundantAssignment
-            // ReSharper disable ConvertToConstant.Local
+            
+            
+            
             bool start = true;
-            // ReSharper restore ConvertToConstant.Local
-            // ReSharper restore RedundantAssignment
-            // ReSharper restore JoinDeclarationAndInitializer
+            
+            
+            
 #if !DEBUG
             start = CheckWindowsService();
 #endif
 
-            // ReSharper disable once ConditionIsAlwaysTrueOrFalse
+            
             if(start)
             {
                 base.OnStartup(sender, e);
             }
             else
-            // ReSharper disable HeuristicUnreachableCode
+            
             {
                 Application.Shutdown();
             }
-            // ReSharper restore HeuristicUnreachableCode
+            
         }
 
         #region Overrides of BootstrapperBase
@@ -154,7 +154,7 @@ namespace Dev2
          * IT IS REQUIRED FOR UPDATES IN RELEASE MODE ;)
          * REMOVING IT MEANS IT IS NOT POSSIBLE TO BUILD AN INSTALLER ;)
          */
-        // ReSharper disable once UnusedMember.Local
+        
         private bool CheckWindowsService()
         {
             IWindowsServiceManager windowsServiceManager = CustomContainer.Get<IWindowsServiceManager>();

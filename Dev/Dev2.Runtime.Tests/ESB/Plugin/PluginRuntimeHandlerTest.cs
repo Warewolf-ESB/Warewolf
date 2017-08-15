@@ -34,7 +34,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
     /// Summary description for PluginRuntimeHandlerTest
     /// </summary>
     [TestClass]
-    [SuppressMessage("ReSharper", "InconsistentNaming")]
+
     public class PluginRuntimeHandlerTest
     {
 

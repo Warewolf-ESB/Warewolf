@@ -19,7 +19,7 @@ using ActivityUnitTests;
 using Dev2.Activities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-// ReSharper disable InconsistentNaming
+
 namespace Dev2.Tests.Activities.ActivityTests
 {
     /// <summary>

@@ -18,7 +18,7 @@ namespace Dev2.Tests.Activities.ActivityTests
     [TestClass]
     public class SqlBulkInserterTests
     {
-        // ReSharper disable InconsistentNaming
+        
 
         [TestMethod]
         [Owner("Travis Frisinger")]
@@ -91,6 +91,6 @@ namespace Dev2.Tests.Activities.ActivityTests
 
 
 
-        // ReSharper restore InconsistentNaming
+
     }
 }

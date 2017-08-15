@@ -75,9 +75,9 @@ namespace Dev2.Services.Sql
             {
                 return sqlConnection.GetSchema(collectionName);
             }
-            // ReSharper disable RedundantIfElseBlock
+            
             else
-            // ReSharper restore RedundantIfElseBlock
+            
             {
                 throw new Exception(string.Format(ErrorResource.InvalidSqlConnection, "Sql"));
             }

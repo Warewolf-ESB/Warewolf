@@ -31,7 +31,7 @@ namespace Dev2.Tests.ConverterTests.Base
         public TestContext TestContext { get; set; }
 
         [TestMethod]
-        // ReSharper disable InconsistentNaming
+        
         public void Factory_Can_Create_Converter_Expected_HexConverter()
         {
             IBaseConverter converter = Fac.CreateConverter(enDev2BaseConvertType.Hex);
@@ -361,6 +361,6 @@ namespace Dev2.Tests.ConverterTests.Base
         //}
         #endregion
 
-        // ReSharper restore InconsistentNaming
+
     }
 }

@@ -1,12 +1,12 @@
 ﻿using System;
 
 #pragma warning disable 1591
-// ReSharper disable UnusedMember.Global
-// ReSharper disable MemberCanBePrivate.Global
-// ReSharper disable UnusedAutoPropertyAccessor.Global
-// ReSharper disable IntroduceOptionalParameters.Global
-// ReSharper disable MemberCanBeProtected.Global
-// ReSharper disable InconsistentNaming
+
+
+
+
+
+
 
 namespace Dev2.Common.Annotations
 {
@@ -106,7 +106,7 @@ namespace Dev2.Common.Annotations
 
   /// <summary>
   /// Indicates that the function argument should be string literal and match one
-  /// of the parameters of the caller function. For example, ReSharper annotates
+  
   /// the parameter of <see cref="System.ArgumentNullException"/>.
   /// </summary>
   /// <example><code>
@@ -321,7 +321,7 @@ namespace Dev2.Common.Annotations
   }
 
   /// <summary>
-  /// Should be used on attributes and causes ReSharper to not mark symbols marked with such attributes
+  
   /// as unused (as well as by other usage inspections)
   /// </summary>
   [AttributeUsage(AttributeTargets.Class | AttributeTargets.GenericParameter)]
@@ -468,7 +468,7 @@ namespace Dev2.Common.Annotations
   }
 
   /// <summary>
-  /// An extension method marked with this attribute is processed by ReSharper code completion
+  
   /// as a 'Source Template'. When extension method is completed over some expression, it's source code
   /// is automatically expanded like a template at call site.
   /// </summary>

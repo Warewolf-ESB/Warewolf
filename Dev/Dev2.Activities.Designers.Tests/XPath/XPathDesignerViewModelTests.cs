@@ -21,7 +21,7 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 namespace Dev2.Activities.Designers.Tests.XPath
 {
     [TestClass]
-    // ReSharper disable InconsistentNaming
+    
     public class XPathDesignerViewModelTests
     {
         [TestMethod]

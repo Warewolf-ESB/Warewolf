@@ -11,7 +11,7 @@
 using Dev2.Common.Common;
 using Dev2.Data.SystemTemplates.Models;
 
-// ReSharper disable once CheckNamespace
+
 namespace Dev2.Webs
 {
     public static class FlowNodeHelper

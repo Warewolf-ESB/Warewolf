@@ -21,10 +21,10 @@ using Dev2.Studio.Interfaces;
 using Microsoft.Practices.Prism.Commands;
 using Warewolf.Core;
 
-// ReSharper disable UnusedMember.Global
 
-// ReSharper disable MemberCanBePrivate.Global
-// ReSharper disable UnusedAutoPropertyAccessor.Global
+
+
+
 
 namespace Dev2.Activities.Designers2.Web_Service_Put
 {
@@ -176,7 +176,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Put
 
         IErrorInfo WorstDesignError
         {
-            // ReSharper disable once UnusedMember.Local
+            
             get
             {
                 return _worstDesignError;

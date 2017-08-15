@@ -20,7 +20,7 @@ using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    [SuppressMessage("ReSharper", "UnusedMember.Global")]
+
     public class FetchPluginConstructors : IEsbManagementEndpoint
     {
         private readonly IResourceCatalog _catalog;
@@ -48,7 +48,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
                 var pluginSource = values["source"].DeserializeToObject<PluginSourceDefinition>();
                 var ns = values["namespace"].DeserializeToObject<INamespaceItem>();
-                // ReSharper disable MaximumChainedReferences
+                
                 var services = new PluginServices();
                 var src = Resources.GetResource<PluginSource>(GlobalConstants.ServerWorkspaceID, pluginSource.Id);
                 var svc = new PluginService();

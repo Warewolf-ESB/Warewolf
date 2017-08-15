@@ -17,14 +17,14 @@ using Dev2.TO;
 using Dev2.Util;
 using Dev2.Validation;
 
-// ReSharper disable CheckNamespace
+
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
-// ReSharper restore CheckNamespace
+
 {
-    // ReSharper disable InconsistentNaming
+    
     public class DataMergeDTO : ValidatedObject, IDev2TOFn
-    // ReSharper restore InconsistentNaming
+    
     {
         public const string MergeTypeIndex = "Index";
         public const string MergeTypeChars = "Chars";
@@ -86,10 +86,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         void RaiseCanAddRemoveChanged()
         {
-            // ReSharper disable ExplicitCallerInfoArgument
+            
             OnPropertyChanged("CanRemove");
             OnPropertyChanged("CanAdd");
-            // ReSharper restore ExplicitCallerInfoArgument
+            
         }
 
         [FindMissing]

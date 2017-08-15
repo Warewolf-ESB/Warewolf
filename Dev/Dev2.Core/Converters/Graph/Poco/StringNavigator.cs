@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using Dev2.Common.Interfaces.Core.Graph;
 
-// ReSharper disable CheckNamespace
+
 namespace Unlimited.Framework.Converters.Graph.Poco
-    // ReSharper restore CheckNamespace
+    
 {
     public class StringNavigator : INavigator {
         readonly object _data;

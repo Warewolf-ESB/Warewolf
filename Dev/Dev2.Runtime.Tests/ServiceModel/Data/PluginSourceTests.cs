@@ -14,9 +14,9 @@ using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Tests.Runtime.XML;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-// ReSharper disable CheckNamespace
+
 namespace Dev2.Tests.Runtime.ServiceModel
-// ReSharper restore CheckNamespace
+
 {
     // BUG 9500 - 2013.05.31 - TWR : added proper testing
     [TestClass]

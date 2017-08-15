@@ -7,7 +7,7 @@ using System.Reflection;
 using System.IO;
 using System.Diagnostics;
 
-// ReSharper disable InconsistentNaming
+
 
 namespace WarewolfCOMIPC.Test
 {

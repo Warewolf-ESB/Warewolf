@@ -8,7 +8,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-// ReSharper disable InconsistentNaming
+
 namespace Dev2.Activities.Designers2.RabbitMQ.Publish
 {
     public partial class RabbitMQPublishDesigner

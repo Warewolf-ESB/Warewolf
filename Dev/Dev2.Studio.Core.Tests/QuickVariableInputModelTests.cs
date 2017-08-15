@@ -16,7 +16,7 @@ using Dev2.Studio.Core.Models.QuickVariableInput;
 using Dev2.ViewModels.QuickVariableInput;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Core.Tests
 {
@@ -51,9 +51,9 @@ namespace Dev2.Core.Tests
         #region Case Convert Tests
 
         [TestMethod]
-        // ReSharper disable InconsistentNaming
+        
         public void QuickVariableInput_Using_Case_Convert_Check_Row_Count_Expected_3()
-        // ReSharper restore InconsistentNaming
+
         {
             DsfCaseConvertActivity activity = new DsfCaseConvertActivity();
             activity.ConvertCollection.Add(new CaseConvertTO("[[result1]]", "UPPER", "[[result1]]", 1));
@@ -70,9 +70,9 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
-        // ReSharper disable InconsistentNaming
+        
         public void QuickVariableInput_Using_Case_Convert_Add_List_To_Collection_Overwrite_False_Expected_5()
-        // ReSharper restore InconsistentNaming
+
         {
             DsfCaseConvertActivity activity = new DsfCaseConvertActivity();
             activity.ConvertCollection.Add(new CaseConvertTO("[[result1]]", "UPPER", "[[result1]]", 1));
@@ -91,9 +91,9 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
-        // ReSharper disable InconsistentNaming
+        
         public void QuickVariableInput_Using_Case_Convert_Add_List_To_Collection_Overwrite_True_Expected_5()
-        // ReSharper restore InconsistentNaming
+
         {
             DsfCaseConvertActivity activity = new DsfCaseConvertActivity();
             activity.ConvertCollection.Add(new CaseConvertTO("[[result1]]", "UPPER", "[[result1]]", 1));

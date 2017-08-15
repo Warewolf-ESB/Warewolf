@@ -6,7 +6,7 @@ using System.Runtime.CompilerServices;
 using Dev2.Activities.Annotations;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.ToolBase;
-// ReSharper disable UnusedMember.Local
+
 
 namespace Dev2.Activities.Designers2.Core
 {
@@ -16,7 +16,7 @@ namespace Dev2.Activities.Designers2.Core
         public string ToolRegionName { get; set; }
         public bool IsEnabled { get; set; }
         public IList<IToolRegion> Dependants { get; set; }
-        // ReSharper disable once UnusedAutoPropertyAccessor.Local
+        
         public IList<string> Errors { get; private set; }
         public ObservableCollection<INameValue> Headers { get; set; }
         public string QueryString { get; set; }

@@ -8,7 +8,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Warewolf.Storage;
 
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Tests
 {
@@ -73,7 +73,7 @@ namespace Dev2.Tests
             iList.AddVariableToIterateOn(i6.Object);
             var sender = new Mock<IDev2EmailSender>();
             var excEmailSender = new Mock<IExchangeEmailSender>();
-            // ReSharper disable once RedundantAssignment
+            
             var eR = new ErrorResultTO();
             excEmailSender.Setup(p => p.Send(It.IsAny<ExchangeService>(), It.IsAny<EmailMessage>()));
             sender.SetupGet(emailSender => emailSender.ExchangeService).Returns(new ExchangeService());
@@ -83,7 +83,7 @@ namespace Dev2.Tests
             //---------------Assert Precondition----------------
             Assert.IsNotNull(sender);
             //---------------Execute Test ----------------------
-            // ReSharper disable once RedundantAssignment
+            
             var er = new ErrorResultTO();
             try
             {

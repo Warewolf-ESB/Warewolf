@@ -17,7 +17,7 @@ using Dev2.Studio.Core.InterfaceImplementors;
 using Dev2.Studio.Core.Models;
 using Dev2.Studio.Interfaces;
 
-// ReSharper disable once CheckNamespace
+
 namespace Dev2.ConnectionHelpers
 {
     public class ConnectControlSingleton : IConnectControlSingleton

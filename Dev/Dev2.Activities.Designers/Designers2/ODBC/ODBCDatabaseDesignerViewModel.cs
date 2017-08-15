@@ -33,13 +33,13 @@ using Dev2.Studio.Interfaces;
 using Microsoft.Practices.Prism.Commands;
 using Warewolf.Core;
 
-// ReSharper disable ExplicitCallerInfoArgument
 
-// ReSharper disable UnusedMember.Global
-// ReSharper disable MemberCanBePrivate.Global
+
+
+
 namespace Dev2.Activities.Designers2.ODBC
 {
-    // ReSharper disable once InconsistentNaming
+    
     public class ODBCDatabaseDesignerViewModel : CustomToolWithRegionBase, IDatabaseServiceViewModel
     {
         private IOutputsToolRegion _outputsRegion;
@@ -223,7 +223,7 @@ namespace Dev2.Activities.Designers2.ODBC
 
         IErrorInfo WorstDesignError
         {
-            // ReSharper disable once UnusedMember.Local
+            
             get { return _worstDesignError; }
             set
             {
@@ -316,7 +316,7 @@ namespace Dev2.Activities.Designers2.ODBC
         public ICommand TestInputCommand { get; set; }
 
         private string Type => GetProperty<string>();
-        // ReSharper disable InconsistentNaming
+        
         
         void AddTitleBarMappingToggle()
         {

@@ -38,9 +38,9 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
         [ExpectedException(typeof(ArgumentNullException))]
         public void ConstructorWithNullExpectedThrowsArgumentNullException()
         {
-            // ReSharper disable ObjectCreationAsStatement
+            
             new RecordsetRecord(null);
-            // ReSharper restore ObjectCreationAsStatement
+            
         }
 
         [TestMethod]

@@ -11,7 +11,7 @@
 using System;
 using Dev2.Common.Interfaces.Data;
 
-// ReSharper disable CheckNamespace
+
 namespace Dev2.Runtime.ServiceModel.Data
 {
     public class ResourceForTree : IComparable<ResourceForTree>, IResourceForTree

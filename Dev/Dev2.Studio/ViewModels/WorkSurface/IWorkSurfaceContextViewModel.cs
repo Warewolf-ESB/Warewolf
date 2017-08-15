@@ -20,9 +20,9 @@ using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.DataList;
 using Dev2.Studio.ViewModels.Diagnostics;
 
-// ReSharper disable CheckNamespace
+
 namespace Dev2.Studio.ViewModels.WorkSurface
-// ReSharper restore CheckNamespace
+
 {
     public interface IWorkSurfaceContextViewModel
     {

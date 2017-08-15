@@ -60,7 +60,7 @@ namespace Dev2.Tests.Runtime.Services
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("GetVersions_HandlesType")]
-// ReSharper disable InconsistentNaming
+
         public void GetVersions_HandlesType_ExpectName()
 
         {
@@ -264,4 +264,4 @@ namespace Dev2.Tests.Runtime.Services
 </Service>";
     }
 }
-// ReSharper restore InconsistentNaming
+

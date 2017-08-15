@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-// ReSharper disable InconsistentNaming
-// ReSharper disable UnusedMember.Global
-// ReSharper disable ConvertToAutoProperty
-// ReSharper disable ConvertPropertyToExpressionBody
-// ReSharper disable NotAccessedField.Local
-// ReSharper disable FieldCanBeMadeReadOnly.Local
-// ReSharper disable PrivateFieldCanBeConvertedToLocalVariable
+
+
+
+
+
+
+
 
 namespace GACManagerApi.Fusion
 {

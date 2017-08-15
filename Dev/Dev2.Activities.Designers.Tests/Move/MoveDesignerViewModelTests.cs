@@ -18,7 +18,7 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 namespace Dev2.Activities.Designers.Tests.Move
 {
     [TestClass]
-    // ReSharper disable InconsistentNaming
+    
     public class MoveDesignerViewModelTests
     {
         [TestMethod]

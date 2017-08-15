@@ -25,9 +25,9 @@ using Dev2.Studio.Views.DependencyVisualization;
 using Microsoft.Practices.Prism.Mvvm;
 using Warewolf.Studio.ViewModels;
 
-// ReSharper disable CheckNamespace
+
 namespace Dev2.Studio.ViewModels.DependencyVisualization
-// ReSharper restore CheckNamespace
+
 {
     public class DependencyVisualiserViewModel : BaseWorkSurfaceViewModel
     {

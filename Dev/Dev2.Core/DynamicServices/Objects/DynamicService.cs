@@ -28,7 +28,7 @@ using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.DynamicServices.Objects.Base;
 
-// ReSharper disable once CheckNamespace
+
 namespace Dev2.DynamicServices
 {
     /// <summary>

@@ -27,9 +27,9 @@ namespace Dev2.Tests
             {
                 Directory.Delete(dir, true);
             }
-            // ReSharper disable EmptyGeneralCatchClause
+            
             catch { }
-            // ReSharper restore EmptyGeneralCatchClause
+            
         }
 
         #endregion

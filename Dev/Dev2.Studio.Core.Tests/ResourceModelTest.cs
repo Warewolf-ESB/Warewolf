@@ -30,9 +30,9 @@ using Dev2.Studio.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Dev2.Studio.Interfaces.Enums;
-// ReSharper disable PossibleNullReferenceException
 
-// ReSharper disable InconsistentNaming
+
+
 namespace Dev2.Core.Tests
 {
     [TestClass]
@@ -521,9 +521,9 @@ namespace Dev2.Core.Tests
         {
             const string TestCategory = "Test2";
             const string TestXaml = "current xaml";
-            // ReSharper disable ImplicitlyCapturedClosure
+            
             Verify_ToServiceDefinition_GivenXamlPresent(ResourceType.WorkflowService, TestCategory, TestXaml, true, serviceElement =>
-            // ReSharper restore ImplicitlyCapturedClosure
+            
             {
                 var actionElement = serviceElement.Element("Action");
                 Assert.IsNotNull(actionElement, "actionElement = null");
@@ -575,7 +575,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("ResourceModel_ToServiceDefinition")]
-        [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
+
         public void ResourceModel_ToServiceDefinition_GivenHasMoreThanOneError_ThenThereShouldBeTwoErrorElements()
         {
             //------------Setup for test--------------------------

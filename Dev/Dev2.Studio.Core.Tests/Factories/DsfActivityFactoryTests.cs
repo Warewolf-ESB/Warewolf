@@ -25,7 +25,7 @@ namespace Dev2.Core.Tests.Factories
     [TestClass]
     public class DsfActivityFactoryTests
     {
-        // ReSharper disable InconsistentNaming
+        
 
         [TestMethod]
         [TestCategory("DsfActivityFactory_CreateDsfActivity")]
@@ -211,14 +211,14 @@ namespace Dev2.Core.Tests.Factories
         {
 
             var repo = new TestLoadServerRespository(mockEnvironment.Object) { IsLoaded = true };
-            // ReSharper disable ObjectCreationAsStatement
+            
             new ServerRepository(repo);
-            // ReSharper restore ObjectCreationAsStatement
+            
             repo.ActiveServer = mockEnvironment.Object;
 
             return repo;
         }
 
-        // ReSharper restore InconsistentNaming
+
     }
 }

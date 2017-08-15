@@ -15,9 +15,9 @@ using Infragistics.Calculations.CalcManager;
 using Infragistics.Calculations.Engine;
 using Warewolf.Resource.Errors;
 
-// ReSharper disable CheckNamespace
+
 namespace Dev2.MathOperations
-// ReSharper restore CheckNamespace
+
 {
     public class FunctionEvaluator : IFunctionEvaluator
     {

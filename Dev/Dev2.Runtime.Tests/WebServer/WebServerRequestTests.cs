@@ -26,7 +26,7 @@ namespace Dev2.Tests.Runtime.WebServer
         [Owner("Trevor Williams-Ros")]
         [TestCategory("WebServerRequest_Constructor")]
         [ExpectedException(typeof(ArgumentNullException))]
-        // ReSharper disable InconsistentNaming
+        
         public void WebServerRequest_Constructor_RequestIsNull_ThrowsArgumentNullException()
         {
             //------------Setup for test--------------------------
@@ -124,6 +124,6 @@ namespace Dev2.Tests.Runtime.WebServer
             Assert.AreEqual(expectedContent, content);
         }
 
-        // ReSharper restore InconsistentNaming
+
     }
 }

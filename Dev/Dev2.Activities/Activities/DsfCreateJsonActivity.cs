@@ -30,10 +30,10 @@ using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
 using Warewolf.Storage.Interfaces;
 
-// ReSharper disable CheckNamespace
+
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
-// ReSharper restore CheckNamespace
+
 {
     [ToolDescriptorInfo("Scripting-CreateJSON", "Create JSON", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Utility", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Utility_Create_JSON")]
     public class DsfCreateJsonActivity : DsfActivityAbstract<string>
@@ -65,13 +65,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             return new List<string> { JsonString };
         }
-        // ReSharper disable RedundantOverridenMember
+        
         protected override void CacheMetadata(NativeActivityMetadata metadata)
         {
             base.CacheMetadata(metadata);
         }
 
-        // ReSharper restore RedundantOverridenMember
+        
 
         protected override void OnExecute(NativeActivityContext context)
         {
@@ -94,16 +94,16 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 if (JsonMappings == null)
                     dataObject.Environment.AddError("Json Mappings supplied to activity is null.");
 
-                // ReSharper disable AssignNullToNotNullAttribute
+                
                 if (!dataObject.Environment.Errors.Any() && !JsonMappings.Any())
-                // ReSharper restore AssignNullToNotNullAttribute
+                
                 {
                     dataObject.Environment.AddError("No JSON Mappings supplied to activity.");
                 }
 
-                // ReSharper disable AssignNullToNotNullAttribute
+                
                 if (!dataObject.Environment.Errors.Any())
-                // ReSharper restore AssignNullToNotNullAttribute
+                
                 {
                     JsonMappings.ToList().ForEach(m =>
                         {
@@ -116,9 +116,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 if (dataObject.IsDebugMode())
                 {
                     int j = 0;
-                    // ReSharper disable PossibleNullReferenceException
+                    
                     foreach (JsonMappingTo a in JsonMappings.Where(to => !String.IsNullOrEmpty(to.SourceName)))
-                    // ReSharper restore PossibleNullReferenceException
+                    
                     {
                         var debugItem = new DebugItem();
                         AddDebugItem(new DebugItemStaticDataParams(string.Empty, (++j).ToString(CultureInfo.InvariantCulture)), debugItem);
@@ -131,16 +131,16 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     // JsonMappings.Count() is larger than zero
                     var json = new JObject(); // outermost JSON would always be a single JObject, i.e. {'name': value}
-                    // ReSharper disable AssignNullToNotNullAttribute
+                    
                     List<JsonMappingTo> jsonMappingList = JsonMappings.ToList();
-                    // ReSharper restore AssignNullToNotNullAttribute
+                    
 
                     // build the list of JsonMappingCompoundTo - a compound is either a single expression or a comma seperated list of expressions
-                    // ReSharper disable MaximumChainedReferences
+                    
                     List<JsonMappingCompoundTo> results = jsonMappingList.Where(to => !String.IsNullOrEmpty(to.SourceName)).Select(jsonMapping =>
                         new JsonMappingCompoundTo(dataObject.Environment, jsonMapping
                             )).ToList();
-                    // ReSharper restore MaximumChainedReferences
+                    
 
 
 
@@ -206,9 +206,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             catch (Exception e)
             {
-                // ReSharper disable AssignNullToNotNullAttribute
+                
                 JsonMappings.ToList().ForEach(x =>
-                // ReSharper restore AssignNullToNotNullAttribute
+                
                 {
                     AddDebugInputItem(new DebugItemStaticDataParams("", x.SourceName, "SourceName", "="));
                     AddDebugInputItem(new DebugItemStaticDataParams("", x.DestinationName, "DestinationName"));
@@ -302,9 +302,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override IList<DsfForEachItem> GetForEachInputs()
         {
-            // ReSharper disable MaximumChainedReferences
+            
             var items = JsonMappings.Where(c => !string.IsNullOrEmpty(c.SourceName)).Select(c => c.SourceName).ToArray();
-            // ReSharper restore MaximumChainedReferences
+            
             return GetForEachItems(items);
         }
 

@@ -100,15 +100,15 @@ namespace Dev2.Activities.Designers2.FindRecordsMultipleCriteria
 
         protected override IEnumerable<IActionableErrorInfo> ValidateThis()
         {
-            // ReSharper disable LoopCanBeConvertedToQuery
+            
             foreach(var error in GetRuleSet("FieldsToSearch").ValidateRules("'In Field(s)'", () => IsFieldsToSearchFocused = true))
-            // ReSharper restore LoopCanBeConvertedToQuery
+            
             {
                 yield return error;
             }
-            // ReSharper disable LoopCanBeConvertedToQuery
+            
             foreach(var error in GetRuleSet("Result").ValidateRules("'Result'", () => IsResultFocused = true))
-            // ReSharper restore LoopCanBeConvertedToQuery
+            
             {
                 yield return error;
             }

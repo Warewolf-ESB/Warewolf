@@ -5,10 +5,10 @@ using System.Runtime.CompilerServices;
 using Dev2.Common.Annotations;
 using Dev2.Common.Interfaces.DB;
 
-// ReSharper disable once CheckNamespace
+
 namespace Dev2.Common.Interfaces
 {
-    // ReSharper disable once ClassWithVirtualMembersNeverInherited.Global
+    
     public class PluginAction : IPluginAction, INotifyPropertyChanged, IEquatable<PluginAction>
     {
         public string FullName { get; set; }

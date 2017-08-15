@@ -30,7 +30,7 @@ namespace Dev2.Core.Tests.Services
         ///</summary>
         public TestContext TestContext { get; set; }
 
-        // ReSharper disable InconsistentNaming
+        
         
         [TestMethod]
         [Owner("Travis Frisinger")]
@@ -362,6 +362,6 @@ namespace Dev2.Core.Tests.Services
 
         #endregion
 
-        // ReSharper restore InconsistentNaming
+
     }
 }

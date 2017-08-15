@@ -10,7 +10,7 @@
 
 using System;
 using System.IO;
-// ReSharper disable ConditionIsAlwaysTrueOrFalse
+
 
 namespace Dev2.Common.Common
 {

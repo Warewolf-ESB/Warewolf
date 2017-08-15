@@ -11,7 +11,7 @@
 using System.Activities;
 using System.Activities.Hosting;
 using System.Collections.Generic;
-// ReSharper disable CheckNamespace
+
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities.Hosting
 {

@@ -12,7 +12,7 @@ using Dev2.ConnectionHelpers;
 using Dev2.Controller;
 using Dev2.Studio.Interfaces;
 
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Studio.Core
 {
@@ -74,7 +74,7 @@ namespace Dev2.Studio.Core
             UpdateManagerProxy.SaveEmailServiceSource(emailServiceSource, GlobalConstants.ServerWorkspaceID);
         }
 
-        // ReSharper disable once InconsistentNaming
+
         public void Save(IRabbitMQServiceSourceDefinition rabbitMqServiceSource)
         {
             UpdateManagerProxy.SaveRabbitMQServiceSource(rabbitMqServiceSource, GlobalConstants.ServerWorkspaceID);
@@ -94,7 +94,7 @@ namespace Dev2.Studio.Core
             return UpdateManagerProxy.TestEmailServiceSource(emailServiceSource);
         }
 
-        // ReSharper disable once InconsistentNaming
+
         public string TestConnection(IRabbitMQServiceSourceDefinition rabbitMqServiceSource)
         {
             return UpdateManagerProxy.TestRabbitMQServiceSource(rabbitMqServiceSource);

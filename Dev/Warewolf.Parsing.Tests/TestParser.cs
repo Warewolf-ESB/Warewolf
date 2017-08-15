@@ -6,8 +6,8 @@ using Dev2.Common.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.Storage;
 using WarewolfParserInterop;
-// ReSharper disable RedundantAssignment
-// ReSharper disable InconsistentNaming
+
+
 
 namespace WarewolfParsingTest
 {
@@ -282,13 +282,13 @@ namespace WarewolfParsingTest
             var ast = PublicFunctions.EvalEnvExpression("[[rec(1).a]]", 0, false, env);
             Assert.IsTrue(ast.IsWarewolfAtomListresult);
             var x = ast as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
-            // ReSharper disable PossibleNullReferenceException
+            
             var val = x.Item.First();
 
             Assert.IsTrue(val.IsInt);
             var intval = val as DataStorage.WarewolfAtom.Int;
             Assert.AreEqual(2, intval.Item);
-            // ReSharper restore PossibleNullReferenceException
+            
         }
 
         [TestMethod]
@@ -302,13 +302,13 @@ namespace WarewolfParsingTest
             var ast = PublicFunctions.EvalEnvExpression("[[rec().a]]", 0, false, env);
             Assert.IsTrue(ast.IsWarewolfAtomListresult);
             var x = ast as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
-            // ReSharper disable PossibleNullReferenceException
+            
             var val = x.Item.First();
 
             Assert.IsTrue(val.IsInt);
             var intval = val as DataStorage.WarewolfAtom.Int;
             Assert.AreEqual(3, intval.Item);
-            // ReSharper restore PossibleNullReferenceException
+            
         }
 
         private DataStorage.WarewolfEnvironment CreateTestEnvWithData()
@@ -342,11 +342,11 @@ namespace WarewolfParsingTest
             var ast = PublicFunctions.EvalEnvExpression("[[a]]", 0, false, env);
             Assert.IsTrue(ast.IsWarewolfAtomResult);
             var x = ast as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
-            // ReSharper disable PossibleNullReferenceException
+            
             Assert.IsTrue(x.Item.IsDataString);
             var val = x.Item as DataStorage.WarewolfAtom.DataString;
             Assert.AreEqual("a", val.Item);
-            // ReSharper restore PossibleNullReferenceException
+            
         }
 
 
@@ -380,11 +380,11 @@ namespace WarewolfParsingTest
             var ast = PublicFunctions.EvalEnvExpression("[[[[c]]]]", 0, false, env);
             Assert.IsTrue(ast.IsWarewolfAtomListresult);
             var x = ast as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
-            // ReSharper disable PossibleNullReferenceException
+            
             Assert.IsTrue(x.Item[0].IsDataString);
             var val = x.Item[0] as DataStorage.WarewolfAtom.DataString;
             Assert.AreEqual("a", val.Item);
-            // ReSharper rstore PossibleNullReferenceException
+            
         }
 
 
@@ -401,11 +401,11 @@ namespace WarewolfParsingTest
             Assert.IsTrue(ast.IsWarewolfAtomListresult);
             var x = (ast as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult).Item.First();
 
-            // ReSharper disable PossibleNullReferenceException
+            
             Assert.IsTrue(x.IsInt);
             var val = x as DataStorage.WarewolfAtom.Int;
             Assert.AreEqual(2, val.Item);
-            // ReSharper rstore PossibleNullReferenceException
+            
         }
 
 
@@ -436,7 +436,7 @@ namespace WarewolfParsingTest
 
 
 
-            // ReSharper restore PossibleNullReferenceException
+            
         }
 
 
@@ -456,7 +456,7 @@ namespace WarewolfParsingTest
             Assert.IsTrue(recordSet.Data["a"][0].IsInt);
             Assert.AreEqual((recordSet.Data["a"][0] as DataStorage.WarewolfAtom.Int).Item, 30);
             Assert.AreEqual((recordSet.Data["a"][1] as DataStorage.WarewolfAtom.Int).Item, 30);
-            // ReSharper rstore PossibleNullReferenceException
+            
         }
 
         [TestMethod]
@@ -472,7 +472,7 @@ namespace WarewolfParsingTest
             Assert.IsTrue(recordSet.Data.ContainsKey("a"));
             Assert.AreEqual(recordSet.Data["a"].Count, 1);
 
-            // ReSharper rstore PossibleNullReferenceException
+            
         }
 
         [TestMethod]
@@ -497,7 +497,7 @@ namespace WarewolfParsingTest
             Assert.IsTrue(recordSet.Data["a"][0].IsInt);
             Assert.AreEqual((recordSet.Data["a"][0] as DataStorage.WarewolfAtom.Int).Item, 25);
             Assert.AreEqual((recordSet.Data["a"][1] as DataStorage.WarewolfAtom.Int).Item, 33);
-            // ReSharper rstore PossibleNullReferenceException
+            
         }
 
 
@@ -520,7 +520,7 @@ namespace WarewolfParsingTest
             Assert.AreEqual((recordSet.Data["a"][1] as DataStorage.WarewolfAtom.Int).Item, 22);
             Assert.AreEqual((recordSet.Data["a"][2] as DataStorage.WarewolfAtom.Int).Item, 21);
             Assert.AreEqual(recordSet.Optimisations, DataStorage.WarewolfAttribute.Fragmented);
-            // ReSharper rstore PossibleNullReferenceException
+            
         }
 
 
@@ -543,7 +543,7 @@ namespace WarewolfParsingTest
             Assert.AreEqual((recordSet.Data["a"][1] as DataStorage.WarewolfAtom.Int).Item, 22);
             Assert.AreEqual((recordSet.Data["a"][2] as DataStorage.WarewolfAtom.Int).Item, 21);
             Assert.AreEqual(recordSet.Optimisations, DataStorage.WarewolfAttribute.Ordinal);
-            // ReSharper rstore PossibleNullReferenceException
+            
         }
 
         [TestMethod]
@@ -565,7 +565,7 @@ namespace WarewolfParsingTest
             Assert.AreEqual((recordSet.Data["a"][1] as DataStorage.WarewolfAtom.Int).Item, 22);
             Assert.AreEqual((recordSet.Data["a"][2] as DataStorage.WarewolfAtom.Int).Item, 21);
             Assert.AreEqual(recordSet.Optimisations, DataStorage.WarewolfAttribute.Sorted);
-            // ReSharper rstore PossibleNullReferenceException
+            
         }
 
         [TestMethod]
@@ -587,7 +587,7 @@ namespace WarewolfParsingTest
             Assert.AreEqual((recordSet.Data["a"][1] as DataStorage.WarewolfAtom.Int).Item, 22);
             Assert.AreEqual((recordSet.Data["a"][2] as DataStorage.WarewolfAtom.Int).Item, 21);
             Assert.AreEqual(recordSet.Optimisations, DataStorage.WarewolfAttribute.Ordinal);
-            // ReSharper rstore PossibleNullReferenceException
+            
         }
 
 
@@ -614,7 +614,7 @@ namespace WarewolfParsingTest
             Assert.AreEqual((recordSet.Data["a"][2] as DataStorage.WarewolfAtom.Int).Item, 22);
             Assert.AreEqual((recordSet.Data["a"][3] as DataStorage.WarewolfAtom.Int).Item, 21);
             Assert.AreEqual(recordSet.Optimisations, DataStorage.WarewolfAttribute.Sorted);
-            // ReSharper rstore PossibleNullReferenceException
+            
         }
 
 
@@ -640,7 +640,7 @@ namespace WarewolfParsingTest
             Assert.AreEqual((recordSet.Data["a"][2] as DataStorage.WarewolfAtom.Int).Item, 22);
             Assert.AreEqual((recordSet.Data["a"][3] as DataStorage.WarewolfAtom.Int).Item, 21);
             Assert.AreEqual(recordSet.Optimisations, DataStorage.WarewolfAttribute.Fragmented);
-            // ReSharper rstore PossibleNullReferenceException
+            
         }
 
 
@@ -1163,9 +1163,9 @@ namespace WarewolfParsingTest
             var testEnv = WarewolfTestData.CreateTestEnvEmpty("");
             var testEnv3 = PublicFunctions.EvalAssignWithFrame(new AssignValue("[[rec().a]]", "25"), 0, testEnv);
             var testEnv4 = PublicFunctions.EvalAssignWithFrame(new AssignValue("[[rec().a]]", "25"), 0, testEnv3);
-            // ReSharper disable UnusedVariable
+            
             var testEnv5 = PublicFunctions.EvalAssignWithFrame(new AssignValue("[[rec().a]]", "25"), 0, testEnv4);
-            // ReSharper restore UnusedVariable
+            
 
 
 
@@ -2066,6 +2066,6 @@ namespace WarewolfParsingTest
 
         }
 
-        // ReSharper restore InconsistentNaming
+
     }
 }

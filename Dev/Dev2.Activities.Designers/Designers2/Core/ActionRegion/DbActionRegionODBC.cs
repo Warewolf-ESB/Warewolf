@@ -8,12 +8,12 @@ using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Studio.Core.Activities.Utils;
-// ReSharper disable UnusedMember.Global
-// ReSharper disable ConvertToAutoProperty
-// ReSharper disable MemberCanBePrivate.Global
-// ReSharper disable UnusedAutoPropertyAccessor.Global
 
-// ReSharper disable ExplicitCallerInfoArgument
+
+
+
+
+
 
 namespace Dev2.Activities.Designers2.Core.ActionRegion
 {
@@ -63,7 +63,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             {
                 Errors.Clear();
                 IsRefreshing = true;
-                // ReSharper disable once ExplicitCallerInfoArgument
+                
                 if (_source?.SelectedSource != null)
                 {
                     CommandText = String.Empty;
@@ -71,7 +71,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
                     IsEnabled = true;
                 }
                 IsRefreshing = false;
-                // ReSharper disable once ExplicitCallerInfoArgument
+                
                 OnPropertyChanged(@"IsEnabled");
             }
             catch (Exception e)

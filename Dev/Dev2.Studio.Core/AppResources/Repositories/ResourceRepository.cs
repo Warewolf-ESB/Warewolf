@@ -37,12 +37,12 @@ using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.Enums;
 using Dev2.Utils;
 using Warewolf.Resource.Errors;
-// ReSharper disable NonLocalizedString
-// ReSharper disable ParameterTypeCanBeEnumerable.Local
-// ReSharper disable RedundantNameQualifier
-// ReSharper disable CheckNamespace
-// ReSharper disable UnusedMember.Global
-// ReSharper disable UnusedParameter.Global
+
+
+
+
+
+
 
 namespace Dev2.Studio.Core.AppResources.Repositories
 {

@@ -16,9 +16,9 @@ using Dev2.Common.Interfaces;
 using Dev2.Data.Interfaces;
 using Dev2.Data.TO;
 
-// ReSharper disable CheckNamespace
+
 namespace Dev2.DataList.Contract
-// ReSharper restore CheckNamespace
+
 {
     /// <summary>
     /// Used studio side for funky stuff?!
@@ -40,9 +40,9 @@ namespace Dev2.DataList.Contract
             IList<IDev2DataLanguageIntellisensePart> result = new List<IDev2DataLanguageIntellisensePart>();
 
             XmlDocument xDoc = new XmlDocument();
-            // ReSharper disable TooWideLocalVariableScope
+            
             string rawRecsetName;
-            // ReSharper restore TooWideLocalVariableScope
+            
             if (FilterTO == null)
             {
                 FilterTO = new IntellisenseFilterOpsTO();
@@ -60,9 +60,9 @@ namespace Dev2.DataList.Contract
                 }
                 if (rawRecsetName.Contains("()"))
                 {
-                    // ReSharper disable RedundantAssignment
+                    
                     rawRecsetName = rawRecsetName.Replace("()", "");
-                    // ReSharper restore RedundantAssignment
+                    
                 }
             }
 

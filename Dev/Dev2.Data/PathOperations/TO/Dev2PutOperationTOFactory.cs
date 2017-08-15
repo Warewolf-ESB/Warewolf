@@ -21,7 +21,7 @@ namespace Dev2.PathOperations
     /// </summary>
     public class Dev2PutOperationTOFactory
     {
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         public IFileWrite CreateDev2PutOperationTO(bool append, string content, bool overwrite)
         {
             return new Dev2PutOperationTO(append, content, overwrite);

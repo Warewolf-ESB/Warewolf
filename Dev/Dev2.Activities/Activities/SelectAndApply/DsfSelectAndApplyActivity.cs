@@ -18,9 +18,9 @@ using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 
-// ReSharper disable InconsistentNaming
 
-// ReSharper disable MemberCanBePrivate.Global
+
+
 
 namespace Dev2.Activities.SelectAndApply
 {

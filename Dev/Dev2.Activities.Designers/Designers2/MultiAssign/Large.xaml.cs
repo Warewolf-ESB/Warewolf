@@ -11,7 +11,7 @@
 using System;
 using System.Windows;
 using System.Windows.Controls;
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Activities.Designers2.MultiAssign
 {

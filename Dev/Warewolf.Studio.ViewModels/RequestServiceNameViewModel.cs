@@ -41,7 +41,7 @@ namespace Warewolf.Studio.ViewModels
         private bool _fixReferences;
         MessageBoxResult ViewResult { get; set; }
 
-        // ReSharper disable once EmptyConstructor
+        
         public RequestServiceNameViewModel()
         {
         }
@@ -174,7 +174,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 return _fixReferences;
             }
-            // ReSharper disable once UnusedMember.Global
+            
             set
             {
                 _fixReferences = value;
@@ -295,7 +295,7 @@ namespace Warewolf.Studio.ViewModels
                 return _treeItem;
             }
 
-            // ReSharper disable once UnusedMember.Local
+            
             set
             {
                 _treeItem = value;

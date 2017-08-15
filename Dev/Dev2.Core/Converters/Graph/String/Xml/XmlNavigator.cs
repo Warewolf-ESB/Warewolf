@@ -16,7 +16,7 @@ using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Converters.Graph;
 using Warewolf.Resource.Errors;
 
-// ReSharper disable once CheckNamespace
+
 namespace Unlimited.Framework.Converters.Graph.String.Xml
 {
     [Serializable]
@@ -217,7 +217,7 @@ namespace Unlimited.Framework.Converters.Graph.String.Xml
                 {
                     BuildIndexedTree(validPaths, indexedPathSegments, rootIndexedValueTreeNode);
                     WriteToResults(validPaths, indexedPathSegments, rootIndexedValueTreeNode, results);
-                    // ReSharper disable once LoopVariableIsNeverChangedInsideLoop
+                    
                 } while (EnumerateIndexedTree(rootIndexedValueTreeNode) > 0);
             }
             return results;

@@ -11,7 +11,7 @@
 using System;
 using System.Windows;
 
-// ReSharper disable once CheckNamespace
+
 namespace Dev2.Studio.Dock
 {
     /// <summary>

@@ -16,12 +16,12 @@ using Dev2.Interfaces;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 
-// ReSharper disable UseObjectOrCollectionInitializer
+
 
 namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
 {
     [TestClass]
-    [SuppressMessage("ReSharper", "InconsistentNaming")]
+
     public class DropboxFileListActivityShould
     {
         private static DsfDropboxFileListActivity CreateDropboxActivity()
@@ -114,7 +114,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
             Assert.IsNotNull(dropBoxDownloadActivityMock);
             //---------------Execute Test ----------------------
             var executionEnvironment = new Mock<IExecutionEnvironment>().Object;
-            // ReSharper disable once RedundantAssignment
+            
             var debugOutputs = dropBoxDownloadActivityMock.GetDebugOutputs(executionEnvironment, 0);
             //---------------Test Result -----------------------
             Assert.AreEqual(0, debugOutputs.Count);
@@ -156,7 +156,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
             var datObj = new Mock<IDSFDataObject>();
             var executionEnvironment = new Mock<IExecutionEnvironment>();
             datObj.Setup(o => o.Environment).Returns(executionEnvironment.Object);
-            // ReSharper disable once RedundantAssignment
+            
             //---------------Test Result -----------------------
         }
 
@@ -454,7 +454,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
             var datObj = new Mock<IDSFDataObject>();
             var executionEnvironment = new Mock<IExecutionEnvironment>();
             datObj.Setup(o => o.Environment).Returns(executionEnvironment.Object);
-            // ReSharper disable once RedundantAssignment
+            
             //---------------Test Result -----------------------
         }
 
@@ -608,7 +608,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
 
         public string PerformBaseExecution(Dictionary<string, string> evaluatedValues)
         {
-            // ReSharper disable once RedundantBaseQualifier
+            
             return base.PerformExecution(evaluatedValues)[0];
         }
 

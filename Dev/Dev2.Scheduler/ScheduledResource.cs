@@ -15,7 +15,7 @@ using Dev2.Common.Interfaces.Data.TO;
 using Dev2.Common.Interfaces.Scheduler.Interfaces;
 using Dev2.Data.TO;
 using Newtonsoft.Json;
-// ReSharper disable NonLocalizedString
+
 
 namespace Dev2.Scheduler
 {
@@ -143,7 +143,7 @@ namespace Dev2.Scheduler
             {
                 return _status;
             }
-            // ReSharper disable once ValueParameterNotUsed
+            
             set
             {
             

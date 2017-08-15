@@ -31,9 +31,9 @@ namespace Dev2.Core.Tests
         [TestCategory("FlowController_UnitTest")]
         [Description("Handling a configure decision expression message with isnew true will not display the decision wizard")]
         [Owner("Ashley Lewis")]
-        // ReSharper disable InconsistentNaming
+        
         public void FlowController_HandleConfigureDecisionExpressionMessageAndIsNewTrue_WizardNotShown()
-        // ReSharper restore InconsistentNaming
+
         {
             #region setup first Mock ModelItem
             var popupController = new Mock<IPopupController>();

@@ -33,7 +33,7 @@ using Dev2.ViewModels;
 using Dev2.Workspaces;
 using Infragistics.Windows.DockManager;
 
-// ReSharper disable CheckNamespace
+
 namespace Dev2.Studio.Views
 {
     public partial class ShellView : IWin32Window
@@ -159,7 +159,7 @@ namespace Dev2.Studio.Views
         }
 
         [StructLayout(LayoutKind.Sequential)]
-        // ReSharper disable InconsistentNaming
+        
         public struct MINMAXINFO
         {
             public POINT ptReserved;

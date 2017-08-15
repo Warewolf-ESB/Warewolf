@@ -52,7 +52,7 @@ namespace WarewolfCOMIPC.Client
     [Serializable]
     public class MethodInfoTO
     {
-        // ReSharper disable once EmptyConstructor
+        
         public MethodInfoTO()
         {
             
@@ -64,7 +64,7 @@ namespace WarewolfCOMIPC.Client
     public class ParameterInfoTO
     {
 
-        // ReSharper disable once EmptyConstructor
+        
         public ParameterInfoTO()
         {
             

@@ -34,8 +34,8 @@ using Dev2.Studio.Interfaces;
 using Microsoft.Practices.Prism.Commands;
 using Warewolf.Core;
 
-// ReSharper disable UnusedMember.Global
-// ReSharper disable MemberCanBePrivate.Global
+
+
 
 namespace Dev2.Activities.Designers2.Oracle
 {
@@ -221,7 +221,7 @@ namespace Dev2.Activities.Designers2.Oracle
 
         IErrorInfo WorstDesignError
         {
-            // ReSharper disable once UnusedMember.Local
+            
             get { return _worstDesignError; }
             set
             {
@@ -233,7 +233,7 @@ namespace Dev2.Activities.Designers2.Oracle
                 }
             }
         }
-        // ReSharper disable once UnusedMember.Local
+        
         public int LabelWidth { get; set; }
         
         public List<KeyValuePair<string, string>> Properties { get; private set; }
@@ -300,7 +300,7 @@ namespace Dev2.Activities.Designers2.Oracle
         public ICommand TestInputCommand { get; set; }
 
         private string Type => GetProperty<string>();
-        // ReSharper disable InconsistentNaming
+        
         
         void AddTitleBarMappingToggle()
         {

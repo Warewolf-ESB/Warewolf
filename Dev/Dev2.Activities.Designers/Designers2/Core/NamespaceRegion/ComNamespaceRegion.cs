@@ -100,10 +100,10 @@ namespace Dev2.Activities.Designers2.Core.NamespaceRegion
             {
                 Errors.Clear();
 
-                // ReSharper disable once ExplicitCallerInfoArgument
+                
                 UpdateBasedOnSource();
                 
-                // ReSharper disable once ExplicitCallerInfoArgument
+                
                 OnPropertyChanged(@"IsEnabled");
             }
             catch (Exception e)

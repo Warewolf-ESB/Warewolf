@@ -16,9 +16,9 @@ using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 
-// ReSharper disable CheckNamespace
+
 namespace Dev2.Tests.Runtime.ServiceModel
-// ReSharper restore CheckNamespace
+
 {
     [TestClass]
     public class DbSourceTests

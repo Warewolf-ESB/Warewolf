@@ -26,14 +26,14 @@ namespace Dev2.Activities.Designers.Tests.Email
 
         public EmailSource SelectedEmailSourceModelItemValue
         {
-            // ReSharper disable ExplicitCallerInfoArgument
+            
             get { return GetProperty<EmailSource>("SelectedEmailSource"); }
-            // ReSharper restore ExplicitCallerInfoArgument
+            
             set
             {
-                // ReSharper disable ExplicitCallerInfoArgument
+                
                 SetProperty(value, "SelectedEmailSource");
-                // ReSharper restore ExplicitCallerInfoArgument
+                
             }
         }
 

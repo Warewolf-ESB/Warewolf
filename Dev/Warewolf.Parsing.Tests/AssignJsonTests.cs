@@ -5,10 +5,10 @@ using System;
 using System.Collections.Generic;
 using Warewolf.Storage;
 using WarewolfParserInterop;
-// ReSharper disable UnusedVariable
 
-// ReSharper disable InconsistentNaming
-// ReSharper disable PossibleNullReferenceException
+
+
+
 
 namespace WarewolfParsingTest
 {
@@ -407,7 +407,7 @@ namespace WarewolfParsingTest
             JObject j = new JObject();
 
             //------------Execute Test---------------------------
-            // ReSharper disable once RedundantAssignment
+            
             var obj = WarewolfDataEvaluationCommon.addAtomicPropertyToJson(j, "Name", DataStorage.WarewolfAtom.NewDataString("a"));
             obj = WarewolfDataEvaluationCommon.addAtomicPropertyToJson(j, "Name", DataStorage.WarewolfAtom.NewDataString("x"));
             var result = obj.ToString();
@@ -426,7 +426,7 @@ namespace WarewolfParsingTest
             JObject j = new JObject();
 
             //------------Execute Test---------------------------
-            // ReSharper disable once RedundantAssignment
+            
             var obj = WarewolfDataEvaluationCommon.addAtomicPropertyToJson(j, "Name", DataStorage.WarewolfAtom.Nothing);
             var result = obj.ToString();
             //------------Assert Results-------------------------
@@ -459,7 +459,7 @@ namespace WarewolfParsingTest
             JObject j = new JObject();
 
             //------------Execute Test---------------------------
-            // ReSharper disable once RedundantAssignment
+            
             var obj = WarewolfDataEvaluationCommon.addArrayPropertyToJson(j, "Name", new List<DataStorage.WarewolfAtom> { DataStorage.WarewolfAtom.NewDataString("a"), DataStorage.WarewolfAtom.NewDataString("b") });
             obj = WarewolfDataEvaluationCommon.addArrayPropertyToJson(j, "Name", new List<DataStorage.WarewolfAtom> { DataStorage.WarewolfAtom.NewDataString("x"), DataStorage.WarewolfAtom.NewDataString("y") });
             var result = obj.ToString();
@@ -742,7 +742,7 @@ namespace WarewolfParsingTest
             //------------Setup for test--------------------------
             var arr = new JArray();
             //------------Execute Test---------------------------
-            // ReSharper disable once AccessToStaticMemberViaDerivedType
+            
             var res = AssignEvaluation.indexToInt(LanguageAST.Index.IndexExpression.NewIndexExpression(LanguageAST.LanguageExpression.NewWarewolfAtomExpression(DataStorage.WarewolfAtom.Nothing)), arr);
             //------------Assert Results-------------------------
         }
@@ -824,7 +824,7 @@ namespace WarewolfParsingTest
             var parsed = EvaluationFunctions.parseLanguageExpressionWithoutUpdate("[[@Person.Child().Name]]");
 
             var val = (LanguageAST.LanguageExpression.JsonIdentifierExpression)parsed;
-            // ReSharper disable once RedundantAssignment
+            
             var env2 = AssignEvaluation.assignGivenAValue(env, result, val.Item);
             env2 = AssignEvaluation.assignGivenAValue(env2, secondResult, val.Item);
             Assert.IsTrue(env2.JsonObjects.ContainsKey("Person"));
@@ -845,7 +845,7 @@ namespace WarewolfParsingTest
             var parsed2 = EvaluationFunctions.parseLanguageExpressionWithoutUpdate("[[@Person.Child().Age]]");
             var val = (LanguageAST.LanguageExpression.JsonIdentifierExpression)parsed;
             var val2 = (LanguageAST.LanguageExpression.JsonIdentifierExpression)parsed2;
-            // ReSharper disable once RedundantAssignment
+            
             var env2 = AssignEvaluation.assignGivenAValue(env, result, val.Item);
             env2 = AssignEvaluation.assignGivenAValue(env2, secondResult, val2.Item);
             Assert.IsTrue(env2.JsonObjects.ContainsKey("Person"));
@@ -867,7 +867,7 @@ namespace WarewolfParsingTest
             var parsed2 = EvaluationFunctions.parseLanguageExpressionWithoutUpdate("[[@Person.Child(*).Name]]");
             var val = (LanguageAST.LanguageExpression.JsonIdentifierExpression)parsed;
             var val2 = (LanguageAST.LanguageExpression.JsonIdentifierExpression)parsed2;
-            // ReSharper disable once RedundantAssignment
+            
             var env2 = AssignEvaluation.assignGivenAValue(env, result, val.Item);
             env2 = AssignEvaluation.assignGivenAValue(env2, secondResult, val.Item);
             env2 = AssignEvaluation.assignGivenAValue(env2, thirdResult, val2.Item);
@@ -892,7 +892,7 @@ namespace WarewolfParsingTest
             var val = (LanguageAST.LanguageExpression.JsonIdentifierExpression)parsed;
             var val2 = (LanguageAST.LanguageExpression.JsonIdentifierExpression)parsed2;
             var val3 = (LanguageAST.LanguageExpression.JsonIdentifierExpression)parsed3;
-            // ReSharper disable once RedundantAssignment
+            
             var env2 = AssignEvaluation.assignGivenAValue(env, result, val.Item);
             env2 = AssignEvaluation.assignGivenAValue(env2, secondResult, val.Item);
             env2 = AssignEvaluation.assignGivenAValue(env2, thirdResult, val2.Item);
