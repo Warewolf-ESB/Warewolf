@@ -60,8 +60,9 @@ namespace Warewolf.UITests
             ExplorerUIMap.Select_Make_Current_Version();
             UtilityToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Comment.LargeViewContentCustom.CommentComboBox.TextEdit.WaitForControlCondition(control => control is WpfEdit && ((WpfEdit)control).Text != string.Empty, 60000);
             Assert.AreEqual("Trivial workflow for testing make current version in the explorer.", UtilityToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Comment.LargeViewContentCustom.CommentComboBox.TextEdit.Text, "Workflow did not roll back to older version.");
-            Mouse.Click(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerRefreshButton, new Point(10, 10));
+            ExplorerUIMap.Click_Explorer_Refresh_Button();
             Assert.IsTrue(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem.FirstSubItem.Exists, "No version history found for workflow after refreshing Explorer.");
+            ExplorerUIMap.DoubleClick_Explorer_Localhost_Second_Item();
             ExplorerUIMap.RightClick_Explorer_Localhost_Second_Item_First_SubItem();
             ExplorerUIMap.Select_Delete_Version();
             ExplorerUIMap.RightClick_Explorer_Localhost_Second_Item_First_SubItem();
