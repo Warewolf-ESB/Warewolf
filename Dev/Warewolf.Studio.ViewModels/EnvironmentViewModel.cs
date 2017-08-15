@@ -1087,7 +1087,7 @@ namespace Warewolf.Studio.ViewModels
 
                     var explorerServers = environmentViewModel?.Children?.Flatten(model => model.Children).Where(y => y.ResourceType == "Dev2Server");
                     IConnectControlViewModel connectControlViewModel = explorerViewModel?.ConnectControlViewModel;
-                    if (connectControlViewModel != null)
+                    if (connectControlViewModel != null && explorerServers.Any())
                     {
                         ObservableCollection<IServer> connectControlServers = connectControlViewModel.Servers?.Where(o => !o.IsLocalHost).ToObservableCollection();
 
