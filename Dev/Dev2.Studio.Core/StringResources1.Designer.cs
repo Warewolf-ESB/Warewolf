@@ -529,11 +529,10 @@ namespace Dev2.Studio.Core {
         
         /// <summary>
         ///   Looks up a localized string similar to Your changes have not been saved.
-        ///Would you like to save? 
+        ///Would you like to return to the studio? 
         ///-----------------------------------------------------------------
-        ///Yes - Save your changes.
-        ///No - Discard your changes.
-        ///Cancel - Do not close the studio..
+        ///Yes - Return to studio.
+        ///No - Discard your changes..
         /// </summary>
         public static string Unsaved_Changes {
             get {
