@@ -254,25 +254,7 @@ namespace Dev2.Runtime.WebServer
                                                                          IResourceCatalog catalog, ITestCatalog testCatalog,
                                                                          ref string executePayload)
         {
-            var taskList = new List<Task>();
-            var testResults = new List<IServiceTestModelTO>();
-            foreach (var testsResourceId in dataObject.TestsResourceIds)
-            {
-                var allTests = testCatalog.Fetch(testsResourceId);
-                foreach (var test in allTests)
-                {
-                    var dataObjectClone = dataObject.Clone();
-                    dataObjectClone.Environment = new ExecutionEnvironment();
-                    dataObjectClone.TestName = test.TestName;
-                    var res = catalog.GetResource(GlobalConstants.ServerWorkspaceID, testsResourceId);
-                    dataObjectClone.ServiceName = res.ResourceName;
-                    var resourcePath = res.GetResourcePath(GlobalConstants.ServerWorkspaceID).Replace("\\", "/");
-                    var lastTask = ServiceTestExecutor.GetTaskForTestExecution(resourcePath, userPrinciple, workspaceGuid,
-                        serializer, testResults, dataObjectClone);
-                    taskList.Add(lastTask);
-                }
-            }
-            Task.WaitAll(taskList.ToArray());
+            List<IServiceTestModelTO> testResults = RunListOfTests(dataObject, userPrinciple, workspaceGuid, serializer, catalog, testCatalog);
             formatter = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json");
             var objArray = (from testRunResult in testResults
                             where testRunResult != null
@@ -290,25 +272,7 @@ namespace Dev2.Runtime.WebServer
                                                                         IResourceCatalog catalog, ITestCatalog testCatalog,
                                                                         ref string executePayload)
         {
-            var testResults = new List<IServiceTestModelTO>();
-            var taskList = new List<Task>();
-            foreach (var testsResourceId in dataObject.TestsResourceIds)
-            {
-                var allTests = testCatalog.Fetch(testsResourceId);
-                foreach (var test in allTests)
-                {
-                    var dataObjectClone = dataObject.Clone();
-                    dataObjectClone.Environment = new ExecutionEnvironment();
-                    dataObjectClone.TestName = test.TestName;
-                    var res = catalog.GetResource(GlobalConstants.ServerWorkspaceID, testsResourceId);
-                    dataObjectClone.ServiceName = res.ResourceName;
-                    var resourcePath = res.GetResourcePath(GlobalConstants.ServerWorkspaceID).Replace("\\", "/");
-                    var lastTask = ServiceTestExecutor.GetTaskForTestExecution(resourcePath, userPrinciple, workspaceGuid,
-                        serializer, testResults, dataObjectClone);
-                    taskList.Add(lastTask);
-                }
-            }
-            Task.WaitAll(taskList.ToArray());
+            List<IServiceTestModelTO> testResults = RunListOfTests(dataObject, userPrinciple, workspaceGuid, serializer, catalog, testCatalog);
             formatter = DataListFormat.CreateFormat("XML", EmitionTypes.XML, "text/xml");
             executePayload = ServiceTestModelTRXResultBuilder.BuildTestResultTRX(dataObject.ServiceName, testResults);
             return formatter;
@@ -351,6 +315,30 @@ namespace Dev2.Runtime.WebServer
                 var lastTask = ServiceTestExecutor.GetTaskForTestExecution(serviceName, userPrinciple, workspaceGuid,
                     serializer, testResults, dataObjectClone);
                 taskList.Add(lastTask);
+            }
+            Task.WaitAll(taskList.ToArray());
+            return testResults;
+        }
+
+        private static List<IServiceTestModelTO> RunListOfTests(IDSFDataObject dataObject, IPrincipal userPrinciple, Guid workspaceGuid, Dev2JsonSerializer serializer, IResourceCatalog catalog, ITestCatalog testCatalog)
+        {
+            var testResults = new List<IServiceTestModelTO>();
+            var taskList = new List<Task>();
+            foreach (var testsResourceId in dataObject.TestsResourceIds)
+            {
+                var allTests = testCatalog.Fetch(testsResourceId);
+                foreach (var test in allTests)
+                {
+                    var dataObjectClone = dataObject.Clone();
+                    dataObjectClone.Environment = new ExecutionEnvironment();
+                    dataObjectClone.TestName = test.TestName;
+                    var res = catalog.GetResource(GlobalConstants.ServerWorkspaceID, testsResourceId);
+                    dataObjectClone.ServiceName = res.ResourceName;
+                    var resourcePath = res.GetResourcePath(GlobalConstants.ServerWorkspaceID).Replace("\\", "/");
+                    var lastTask = ServiceTestExecutor.GetTaskForTestExecution(resourcePath, userPrinciple, workspaceGuid,
+                        serializer, testResults, dataObjectClone);
+                    taskList.Add(lastTask);
+                }
             }
             Task.WaitAll(taskList.ToArray());
             return testResults;
