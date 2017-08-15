@@ -2812,7 +2812,7 @@ namespace Dev2.Core.Tests
             
             var popup = new Mock<Common.Interfaces.Studio.Controller.IPopupController>();
             popup.Setup(a => a.Show(StringResources.Unsaved_Changes, StringResources.CloseHeader,
-                               MessageBoxButton.YesNoCancel, MessageBoxImage.Information, @"", false, false, true, false, false, false)).Returns(MessageBoxResult.Cancel).Verifiable();
+                               MessageBoxButton.YesNo, MessageBoxImage.Information, @"", false, false, true, false, false, false)).Returns(MessageBoxResult.Yes).Verifiable();
 
             var mvm = new ShellViewModel(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, versionChecker.Object, vieFactory.Object, false, null, popup.Object);
 
@@ -2861,7 +2861,7 @@ namespace Dev2.Core.Tests
 
             var popup = new Mock<Common.Interfaces.Studio.Controller.IPopupController>();
             popup.Setup(a => a.Show(StringResources.Unsaved_Changes, StringResources.CloseHeader,
-                               MessageBoxButton.YesNoCancel, MessageBoxImage.Information, @"", false, false, true, false, false, false)).Returns(MessageBoxResult.Yes).Verifiable();
+                               MessageBoxButton.YesNo, MessageBoxImage.Information, @"", false, false, true, false, false, false)).Returns(MessageBoxResult.No).Verifiable();
             var mvm = new ShellViewModel(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, versionChecker.Object, vieFactory.Object, false, null, popup.Object);
 
             var scheduler = new SchedulerViewModel(EventPublishers.Aggregator, new DirectoryObjectPickerDialog(), popup.Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IServer>().Object) { WorkSurfaceContext = WorkSurfaceContext.Scheduler };
@@ -2919,7 +2919,7 @@ namespace Dev2.Core.Tests
 
             var popup = new Mock<Common.Interfaces.Studio.Controller.IPopupController>();
             popup.Setup(a => a.Show(StringResources.Unsaved_Changes, StringResources.CloseHeader,
-                               MessageBoxButton.YesNoCancel, MessageBoxImage.Information, @"", false, false, true, false, false, false)).Returns(MessageBoxResult.Yes).Verifiable();
+                               MessageBoxButton.YesNo, MessageBoxImage.Information, @"", false, false, true, false, false, false)).Returns(MessageBoxResult.No).Verifiable();
             var mvm = new ShellViewModel(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, versionChecker.Object, vieFactory.Object, false, null, popup.Object);
             
 
@@ -2932,7 +2932,7 @@ namespace Dev2.Core.Tests
             var vm = new WorkSurfaceContextViewModel(new EventAggregator(), new WorkSurfaceKey(), settings, new Mock<Common.Interfaces.Studio.Controller.IPopupController>().Object, (a, b, c) => { });
 
             mvm.Items.Add(vm);
-            Assert.IsFalse(mvm.OnStudioClosing());
+            Assert.IsTrue(mvm.OnStudioClosing());
 
         }
 
@@ -2967,7 +2967,7 @@ namespace Dev2.Core.Tests
 
             var popup = new Mock<Common.Interfaces.Studio.Controller.IPopupController>();
             popup.Setup(a => a.Show(StringResources.Unsaved_Changes, StringResources.CloseHeader,
-                               MessageBoxButton.YesNoCancel, MessageBoxImage.Information, @"", false, false, true, false, false, false)).Returns(MessageBoxResult.Cancel).Verifiable();
+                               MessageBoxButton.YesNo, MessageBoxImage.Information, @"", false, false, true, false, false, false)).Returns(MessageBoxResult.Yes).Verifiable();
 
             var mvm = new ShellViewModel(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, versionChecker.Object, vieFactory.Object, false, null, popup.Object);
             var settings = new SettingsViewModelForTest(EventPublishers.Aggregator, popup.Object, new SynchronousAsyncWorker(), new NativeWindow()) { RetValue = true, WorkSurfaceContext = WorkSurfaceContext.Settings };
@@ -3013,7 +3013,7 @@ namespace Dev2.Core.Tests
 
             var popup = new Mock<Common.Interfaces.Studio.Controller.IPopupController>();
             popup.Setup(a => a.Show(StringResources.Unsaved_Changes, StringResources.CloseHeader,
-                               MessageBoxButton.YesNoCancel, MessageBoxImage.Information, @"", false, false, true, false, false, false)).Returns(MessageBoxResult.Cancel).Verifiable();
+                               MessageBoxButton.YesNo, MessageBoxImage.Information, @"", false, false, true, false, false, false)).Returns(MessageBoxResult.Yes).Verifiable();
 
             var mvm = new ShellViewModel(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, versionChecker.Object, vieFactory.Object, false, null, popup.Object);
             var scheduler = new SchedulerViewModelForTesting(EventPublishers.Aggregator, new DirectoryObjectPickerDialog(), popup.Object, new SynchronousAsyncWorker()) { RetValue = true, WorkSurfaceContext = WorkSurfaceContext.Scheduler };
@@ -3072,7 +3072,7 @@ namespace Dev2.Core.Tests
 
             var popup = new Mock<Common.Interfaces.Studio.Controller.IPopupController>();
             popup.Setup(a => a.Show(StringResources.Unsaved_Changes, StringResources.CloseHeader,
-                               MessageBoxButton.YesNoCancel, MessageBoxImage.Information, @"", false, false, true, false, false, false)).Returns(MessageBoxResult.Cancel).Verifiable();
+                               MessageBoxButton.YesNo, MessageBoxImage.Information, @"", false, false, true, false, false, false)).Returns(MessageBoxResult.Yes).Verifiable();
 
             var mvm = new ShellViewModel(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, versionChecker.Object, vieFactory.Object, false, null, popup.Object);
 
@@ -3138,7 +3138,7 @@ namespace Dev2.Core.Tests
 
             var popup = new Mock<Common.Interfaces.Studio.Controller.IPopupController>();
             popup.Setup(a => a.Show(StringResources.Unsaved_Changes, StringResources.CloseHeader,
-                               MessageBoxButton.YesNoCancel, MessageBoxImage.Information, @"", false, false, true, false, false, false)).Returns(MessageBoxResult.Cancel).Verifiable();
+                               MessageBoxButton.YesNo, MessageBoxImage.Information, @"", false, false, true, false, false, false)).Returns(MessageBoxResult.Yes).Verifiable();
 
             mvm = new ShellViewModel(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, versionChecker.Object, vieFactory.Object, false, null, popup.Object);
             CreateFullExportsAndVm();
