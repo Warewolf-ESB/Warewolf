@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.UITests.DBSource.DBSourceUIMapClasses;
 using Warewolf.UITests.Explorer.ExplorerUIMapClasses;
+using Warewolf.UITests.DialogsUIMapClasses;
 
 namespace Warewolf.UITests
 {
@@ -71,6 +72,19 @@ namespace Warewolf.UITests
             DBSourceUIMap.Select_Dev2TestingDB_From_DB_Source_Wizard_Database_Combobox();
         }
 
+        [TestMethod]
+        [TestCategory("Database Sources")]
+        [Owner("Pieter Terblanche")]
+        public void CreateSQLServerSource_GivenTabHasChanges_ClosingStudioPromptsChanges()
+        {
+            //Create Source
+            ExplorerUIMap.Click_NewSQLServerSource_From_ExplorerContextMenu();
+            DBSourceUIMap.Enter_Text_Into_DatabaseServer_Tab("RSAKLFSVRDEV");
+            Mouse.Click(UIMap.MainStudioWindow.CloseStudioButton);
+            DialogsUIMap.Click_MessageBox_Cancel();
+            Assert.IsTrue(DBSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.Exists);
+        }
+
         #region Additional test attributes
 
         [TestInitialize()]
@@ -124,6 +138,20 @@ namespace Warewolf.UITests
         }
 
         private DBSourceUIMap _DBSourceUIMap;
+        DialogsUIMap DialogsUIMap
+        {
+            get
+            {
+                if (_DialogsUIMap == null)
+                {
+                    _DialogsUIMap = new DialogsUIMap();
+                }
+
+                return _DialogsUIMap;
+            }
+        }
+
+        private DialogsUIMap _DialogsUIMap;
 
         #endregion
     }
