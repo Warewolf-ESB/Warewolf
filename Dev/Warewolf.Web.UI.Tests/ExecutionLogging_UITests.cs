@@ -25,7 +25,7 @@ namespace Warewolf.Web.UI.Tests.ExecutionLoggingTests
         {
             try
             {
-                driver.driver.Quit();
+                driver.Quit();
             }
             catch (Exception)
             {
@@ -51,24 +51,24 @@ namespace Warewolf.Web.UI.Tests.ExecutionLoggingTests
             //Generate some test log data
             WebRequest.Create("http://localhost:3142/secure/Hello%20World.json?Name=Tester");
             driver.driver.Navigate().GoToUrl(driver.baseURL + "/ExecutionLogging/");
-            var browserType = driver.driver.GetType().Name.ToString();
+            var browserType = TestContext.DataRow[0].ToString();
             switch (browserType)
             {
-                case "FirefoxDriver":
-                    Assert.AreEqual("http://localhost:3142 is requesting your username and password.", driver.driver.CloseAlertAndGetItsText(false));
+                case "Firefox":
+                    Assert.AreEqual("http://localhost:3142 is requesting your username and password.", driver.CloseAlertAndGetItsText(false));
                     break;
-                case "InternetExplorerDriver":
-                    Assert.IsFalse(driver.driver.IsAlertPresent(), driver.driver.CloseAlertAndGetItsText(false));
+                case "InternetExplorer":
+                    Assert.IsFalse(driver.IsAlertPresent(), driver.CloseAlertAndGetItsText(false));
                     //Assert.AreEqual("http://localhost:3142 is requesting your username and password.", driver.driver.CloseAlertAndGetItsText(false));
                     break;
-                case "OperaDriver":
-                    Assert.IsFalse(driver.driver.IsAlertPresent(), driver.driver.CloseAlertAndGetItsText(false));
+                case "Opera":
+                    Assert.IsFalse(driver.IsAlertPresent(), driver.CloseAlertAndGetItsText(false));
                     break;
-                case "ChromeDriver":
-                    Assert.IsFalse(driver.driver.IsAlertPresent(), driver.driver.CloseAlertAndGetItsText(false));
+                case "ChromeIncognito":
+                    Assert.IsFalse(driver.IsAlertPresent(), driver.CloseAlertAndGetItsText(false));
                     break;
                 default:
-                    Assert.IsFalse(driver.driver.IsAlertPresent(), driver.driver.CloseAlertAndGetItsText(false));
+                    Assert.IsFalse(driver.IsAlertPresent(), driver.CloseAlertAndGetItsText(false));
                     break;
             }
             //Assert.IsFalse(driver.driver.IsAlertPresent(), driver.driver.CloseAlertAndGetItsText(false));

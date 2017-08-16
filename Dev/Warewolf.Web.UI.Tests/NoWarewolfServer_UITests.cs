@@ -23,13 +23,7 @@ namespace Warewolf.Web.UI.Tests.NoWarewolfServer
         {
             try
             {
-                driver.driver.Quit();
-                driver.driver.Dispose();
-                Process[] processes = Process.GetProcessesByName("opera");
-                foreach (var process in processes)
-                {
-                    process.Kill();
-                }
+                driver.Quit();
             }
             catch (Exception)
             {
@@ -52,9 +46,9 @@ namespace Warewolf.Web.UI.Tests.NoWarewolfServer
         public void Release_NoWarewolfServer_ClickRefresh_UITest()
 #endif
         {
-            driver.driver.Navigate().GoToUrl(driver.baseURL + "/ExecutionLogging");
-            Assert.IsTrue(driver.driver.IsAlertPresent(), "No alert that local Warewolf server is not running.");
-            Assert.AreEqual("Local Warewolf Server Not Found", driver.driver.CloseAlertAndGetItsText(false), "Alert text is not correct");
+            driver.Navigate().GoToUrl(driver.baseURL + "/ExecutionLogging");
+            Assert.IsTrue(driver.IsAlertPresent(), "No alert that local Warewolf server is not running.");
+            Assert.AreEqual("Local Warewolf Server Not Found", driver.CloseAlertAndGetItsText(false), "Alert text is not correct");
         }
     }
 }
