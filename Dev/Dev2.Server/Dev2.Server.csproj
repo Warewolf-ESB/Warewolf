@@ -491,7 +491,7 @@
     <PostBuildEvent>echo D | xcopy /Y /E /F /D "$(SolutionDir)Resources - Release" "$(TargetDir)Resources - Release"
 if "$(ConfigurationName)"=="Debug" echo D | xcopy /Y /E /F /D "$(SolutionDir)Resources - ServerTests" "$(TargetDir)Resources - ServerTests"
 if "$(ConfigurationName)"=="Debug" echo D | xcopy /Y /E /F /D "$(SolutionDir)Resources - UITests" "$(TargetDir)Resources - UITests"
-if "$(ConfigurationName)"=="Debug" if not exist "$(TargetDir)_PublishedWebsites" echo D | xcopy /Y /E /F /D "$(SolutionDir)Dev2.Web2" "$(TargetDir)_PublishedWebsites\Dev2.Web"
+if "$(ConfigurationName)"=="Debug" if not exist "$(TargetDir)_PublishedWebsites\Dev2.Web" echo D | xcopy /Y /E /F /D "$(SolutionDir)Dev2.Web2" "$(TargetDir)_PublishedWebsites\Dev2.Web"
 taskkill /f /im WarewolfCOMIPC.exe /fi "STATUS eq RUNNING"
 taskkill /f /im WarewolfCOMIPC.vshost.exe /fi "STATUS eq RUNNING"
 if not exist "$(TargetDir)WarewolfCOMIPC.exe" xcopy /Y "$(SolutionDir)WarewolfCOMIPC\bin\x86\$(ConfigurationName)\WarewolfCOMIPC.exe" "$(TargetDir)"
