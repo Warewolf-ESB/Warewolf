@@ -2932,7 +2932,7 @@ namespace Dev2.Core.Tests
             var vm = new WorkSurfaceContextViewModel(new EventAggregator(), new WorkSurfaceKey(), settings, new Mock<Common.Interfaces.Studio.Controller.IPopupController>().Object, (a, b, c) => { });
 
             mvm.Items.Add(vm);
-            Assert.IsTrue(mvm.OnStudioClosing());
+            Assert.IsFalse(mvm.OnStudioClosing());
 
         }
 
