@@ -205,10 +205,7 @@ namespace Dev2.Runtime.Security
                     user = request.User.Identity.Name;
                     DumpPermissionsOnError(request.User);
                 }
-
-                
-                Dev2Logger.Error("AUTH ERROR FOR USER : " + user);
-                
+                Dev2Logger.Error("AUTH ERROR FOR USER : " + user, "Warewolf Error");
             }
 
             return result;

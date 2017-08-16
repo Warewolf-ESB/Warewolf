@@ -12,6 +12,8 @@ namespace Warewolf.Web.UI.Tests
         public IWebDriver driver;
 #if DEBUG
         public string baseURL = "http://localhost:18405";
+        public string userName = "";
+        public string password = "";
 #else
         public string baseURL = "http://my.warewolf.io";
 #endif
@@ -22,7 +24,10 @@ namespace Warewolf.Web.UI.Tests
             {
                 case "Firefox":
                     {
-                        driver = new FirefoxDriver();
+                        var profileManager = new FirefoxProfileManager();
+                        FirefoxProfile myprofile = profileManager.GetProfile("ExecutionLoggingTestUser");
+                        var firefoxOptions = new FirefoxOptions();
+                        driver = new FirefoxDriver(myprofile);
                         break;
                     }
                 case "IE":
@@ -32,7 +37,7 @@ namespace Warewolf.Web.UI.Tests
                     }
                 case "Opera":
                     {
-                        driver = new OperaDriver(new OperaOptions() { BinaryLocation = @"C:\Program Files\Opera\47.0.2631.39\opera.exe" });
+                        driver = new OperaDriver(new OperaOptions() { BinaryLocation = @"C:\Program Files\Opera\47.0.2631.55\opera.exe" });
                         break;
                     }
                 default:
@@ -40,6 +45,7 @@ namespace Warewolf.Web.UI.Tests
                     {
                         ChromeOptions chromeOptions = new ChromeOptions();
                         chromeOptions.AddArguments(new[] { "--test-type" });
+                        chromeOptions.AddArgument("start-maximized");
                         DesiredCapabilities capabilities = DesiredCapabilities.Chrome();
                         capabilities.SetCapability("chrome.switches", new[] { "--incognito" });
                         capabilities.SetCapability(ChromeOptions.Capability, chromeOptions);

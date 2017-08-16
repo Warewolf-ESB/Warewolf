@@ -91,9 +91,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             }
             catch (Exception e)
             {
-                
-                Dev2Logger.Error(this, e);
-                
+                Dev2Logger.Error(this, e, "Warewolf Error");
             }
         }
 
