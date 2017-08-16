@@ -7,8 +7,8 @@ using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Studio.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-// ReSharper disable PossibleUnintendedReferenceComparison
-// ReSharper disable InconsistentNaming
+
+
 
 namespace Warewolf.Studio.ViewModels.ToolBox.Tests
 {

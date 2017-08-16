@@ -32,9 +32,9 @@ using Warewolf.Core;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage.Interfaces;
 
-// ReSharper disable CheckNamespace
+
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
-// ReSharper restore CheckNamespace
+
 {
     /// <New>
     /// Activity for finding records accoring to a search criteria that the user specifies

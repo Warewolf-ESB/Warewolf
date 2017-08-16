@@ -18,7 +18,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Warewolf.Core;
 
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Activities.Designers.Tests.Core.DotNet
 {

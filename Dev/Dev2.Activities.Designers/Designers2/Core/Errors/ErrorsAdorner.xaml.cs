@@ -14,7 +14,7 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 using Dev2.Providers.Errors;
 
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Activities.Designers2.Core.Errors
 {

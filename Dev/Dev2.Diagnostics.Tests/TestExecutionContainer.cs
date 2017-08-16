@@ -12,7 +12,7 @@ using Dev2.Runtime;
 using Dev2.Runtime.ESB.Execution;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Diagnostics.Test
 {
@@ -28,7 +28,7 @@ namespace Dev2.Diagnostics.Test
                 {
                     PerformanceCounterCategory.Delete("Warewolf");
                 }
-                // ReSharper disable once EmptyGeneralCatchClause
+                
                 catch { }
 
                 WarewolfPerformanceCounterRegister register = new WarewolfPerformanceCounterRegister(new List<IPerformanceCounter>

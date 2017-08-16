@@ -10,7 +10,7 @@ using System.Xml.Linq;
 using Warewolf.Security.Encryption;
 using Warewolf.Sharepoint;
 
-// ReSharper disable MemberCanBePrivate.Global
+
 
 namespace Dev2.Data.ServiceModel
 {

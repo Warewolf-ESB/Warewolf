@@ -15,7 +15,7 @@ using System.Data.Odbc;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Services.Sql;
 using Microsoft.Win32;
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Services.Sql
 {

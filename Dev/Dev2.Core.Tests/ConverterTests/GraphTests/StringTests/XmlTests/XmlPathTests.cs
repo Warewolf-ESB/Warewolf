@@ -13,7 +13,7 @@ using System.Xml.Linq;
 using Dev2.Common.Interfaces.Core.Graph;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Framework.Converters.Graph.String.Xml;
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
 {

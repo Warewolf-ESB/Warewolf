@@ -18,7 +18,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Activities.Designers.Tests.QuickVariableInput
 {
     [TestClass]
-    // ReSharper disable InconsistentNaming
+    
     public partial class QuickVariableInputViewModelTests
     {
         [TestMethod]

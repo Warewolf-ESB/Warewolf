@@ -21,7 +21,7 @@ using Moq;
 namespace Dev2.Activities.Designers.Tests.Designers2.Core
 {
     [TestClass]
-    // ReSharper disable InconsistentNaming
+    
     public class ActivityDesignerButtonTests
     {
         #region Tests

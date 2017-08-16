@@ -26,7 +26,7 @@ using Dev2.Studio.ViewModels.DataList;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Warewolf.Core;
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Activities.Designers.Tests.Core
 {
@@ -139,7 +139,7 @@ namespace Dev2.Activities.Designers.Tests.Core
             DotNetActionRegion DotNetActionRegion = new DotNetActionRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfDotNetDllActivity()), sourceRegion, nameSpace.Object);
 
             var region = new DotNetInputRegion(ModelItemUtils.CreateModelItem(act), DotNetActionRegion);
-            // ReSharper disable once UseObjectOrCollectionInitializer
+            
             var regionToRestore = new DotNetInputRegionClone();
             regionToRestore.IsEnabled = true;
             //------------Execute Test---------------------------

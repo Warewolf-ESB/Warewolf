@@ -27,7 +27,7 @@ using Dev2.Studio.ViewModels.DataList;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Activities.Designers.Tests.Core
 {
@@ -140,7 +140,7 @@ namespace Dev2.Activities.Designers.Tests.Core
             DotNetConstructorRegion DotNetConstructorRegion = new DotNetConstructorRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfEnhancedDotNetDllActivity()), sourceRegion, nameSpace.Object);
 
             var region = new DotNetConstructorInputRegion(ModelItemUtils.CreateModelItem(act), DotNetConstructorRegion);
-            // ReSharper disable once UseObjectOrCollectionInitializer
+            
             var regionToRestore = new DotNetConstructorInputRegionClone();
             regionToRestore.IsEnabled = true;
             //------------Execute Test---------------------------

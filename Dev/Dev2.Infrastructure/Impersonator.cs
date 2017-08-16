@@ -23,10 +23,10 @@ namespace Dev2
 {
     public class Impersonator : IDisposable, IImpersonator
     {
-        // ReSharper disable InconsistentNaming
+        
         const int LOGON32_PROVIDER_DEFAULT = 0;
         const int LOGON32_LOGON_INTERACTIVE = 2;
-        // ReSharper restore InconsistentNaming
+
 
         #region DllImports
 
@@ -164,7 +164,7 @@ namespace Dev2
 
         #endregion
 
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         public static bool RunAs(string userName, string domain, string password, Action action)
         {
             var result = false;

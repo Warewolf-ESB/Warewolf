@@ -24,15 +24,15 @@ using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.PathOperations.Extension;
 using Ionic.Zip;
 using Warewolf.Resource.Errors;
-// ReSharper disable LoopCanBeConvertedToQuery
-// ReSharper disable NonLocalizedString
 
-// ReSharper disable CheckNamespace
+
+
+
 namespace Dev2.PathOperations
-// ReSharper restore CheckNamespace
+
 {
 
-    // ReSharper disable InconsistentNaming
+    
     internal class Dev2ActivityIOBroker : IActivityOperationsBroker
     {
         private readonly IFile _fileWrapper;

@@ -20,7 +20,7 @@ using System.Windows.Data;
 using System.Windows.Markup;
 using Infragistics;
 
-// ReSharper disable once CheckNamespace
+
 namespace Dev2.Studio.Dock
 {
     /// <summary>
@@ -390,7 +390,7 @@ namespace Dev2.Studio.Dock
             container.SetValue(ItemForContainerPropertyKey, item);
             container.SetValue(ContentControl.ContentProperty, item);
 
-            // ReSharper disable once PossibleUnintendedReferenceComparison
+            
             if(item != container)
                 container.SetValue(FrameworkElement.DataContextProperty, item);
         }

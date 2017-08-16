@@ -34,7 +34,7 @@ namespace Dev2.Tests.Runtime.ResourceUpgraders
         [TestMethod]
         [Owner("Kerneels Roos")]
         [TestCategory("EncryptionResourceUpgrader_Upgrade")]
-        // ReSharper disable InconsistentNaming
+        
         public void EncryptionResourceUpgrader_Upgrade_HasMatchin_ExpectReplace()
         {
             _matchAndReplaceWhereAppropriate(_beforeContainingSource, _beforeWithoutSource, _connectionString);
@@ -74,7 +74,7 @@ namespace Dev2.Tests.Runtime.ResourceUpgraders
         [TestMethod]
         [Owner("Kerneels Roos")]
         [TestCategory("EncryptionResourceUpgrader_Upgrade")]
-        // ReSharper disable InconsistentNaming
+        
         public void EncryptionResourceUpgrader_Upgrade_CanDecrypt()
         {
             //------------Setup for test--------------------------
@@ -98,7 +98,7 @@ namespace Dev2.Tests.Runtime.ResourceUpgraders
         [TestMethod]
         [Owner("Kerneels Roos")]
         [TestCategory("EncryptionResourceUpgrader_Upgrade")]
-        // ReSharper disable InconsistentNaming
+        
         public void EncryptionResourceUpgrader_TwiceUpgrade_DoesNotEncrypt()
         {
             //------------Setup for test--------------------------

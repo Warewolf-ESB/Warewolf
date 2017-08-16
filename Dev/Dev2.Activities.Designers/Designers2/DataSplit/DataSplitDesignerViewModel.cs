@@ -120,9 +120,9 @@ namespace Dev2.Activities.Designers2.DataSplit
 
         protected override IEnumerable<IActionableErrorInfo> ValidateThis()
         {
-            // ReSharper disable LoopCanBeConvertedToQuery  InitialFocusElement
+         
             foreach(var error in GetRuleSet("SourceString").ValidateRules("'String to Split'", () => IsSourceStringFocused = true))
-            // ReSharper restore LoopCanBeConvertedToQuery
+            
             {
                 yield return error;
             }

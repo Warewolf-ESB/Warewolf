@@ -56,6 +56,9 @@
     <Reference Include="Moq">
       <HintPath>..\packages\Moq.4.2.1510.2205\lib\net40\Moq.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="nunit.framework">
       <HintPath>..\packages\NUnit.3.0.0\lib\net45\nunit.framework.dll</HintPath>
     </Reference>
@@ -64,7 +67,7 @@
     <Reference Include="System" />
     <Reference Include="System.Xaml" />
     <Reference Include="TechTalk.SpecFlow">
-      <HintPath>..\packages\SpecFlow.2.1.0\lib\net45\TechTalk.SpecFlow.dll</HintPath>
+      <HintPath>..\packages\SpecFlow.2.2.0\lib\net45\TechTalk.SpecFlow.dll</HintPath>
     </Reference>
     <Reference Include="Warewolf.Studio.Core">
       <HintPath>..\Warewolf.Studio.Core\bin\Debug\Warewolf.Studio.Core.dll</HintPath>

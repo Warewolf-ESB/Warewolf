@@ -29,14 +29,14 @@ using Warewolf.Security.Encryption;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 
-// ReSharper disable UnusedMember.Global
+
 
 namespace Dev2.Data.Util
 {
     /// <summary>
     /// General DataList utility methods
     /// </summary>
-    [SuppressMessage("ReSharper", "UnusedMember.Global")]
+
     public static class DataListUtil
     {
         #region Class Members

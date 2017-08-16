@@ -15,9 +15,9 @@ using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.Enums;
 using Dev2.Utils;
 
-// ReSharper disable CheckNamespace
+
 namespace Dev2.Studio.Core.Factories
-// ReSharper restore CheckNamespace
+
 {
     public static class ResourceModelFactory
     {

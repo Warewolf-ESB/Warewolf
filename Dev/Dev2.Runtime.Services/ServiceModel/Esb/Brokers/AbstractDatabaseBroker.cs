@@ -19,8 +19,8 @@ using Dev2.Data.Util;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Sql;
 using Unlimited.Framework.Converters.Graph;
-// ReSharper disable UnusedMemberHierarchy.Global
-// ReSharper disable UnusedParameter.Global
+
+
 
 namespace Dev2.Runtime.ServiceModel.Esb.Brokers
 {
@@ -29,7 +29,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
     {
         #region TheCache
 
-        // ReSharper disable StaticFieldInGenericType
+        
         //
         // This means that the values of 
         //      AbstractDatabaseBroker<DbServer1>.TheCache 
@@ -38,7 +38,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
         //
         public static ConcurrentDictionary<string, ServiceMethodList> TheCache = new ConcurrentDictionary<string, ServiceMethodList>();
         //
-        // ReSharper restore StaticFieldInGenericType
+        
 
         #endregion
         

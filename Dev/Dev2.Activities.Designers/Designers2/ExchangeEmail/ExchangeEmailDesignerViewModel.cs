@@ -23,14 +23,14 @@ using Dev2.Threading;
 using Dev2.Validation;
 using Warewolf.Resource.Errors;
 using Dev2.Studio.Interfaces;
-// ReSharper disable UnusedMember.Global
 
-// ReSharper disable NotAccessedField.Local
-// ReSharper disable UnusedAutoPropertyAccessor.Local
-// ReSharper disable UseNullPropagation
-// ReSharper disable ConvertPropertyToExpressionBody
-// ReSharper disable ArrangeTypeMemberModifiers
-// ReSharper disable MergeSequentialChecks
+
+
+
+
+
+
+
 
 namespace Dev2.Activities.Designers2.ExchangeEmail
 {
@@ -42,7 +42,7 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
         readonly IAsyncWorker _asyncWorker;
         private ISourceToolRegion<IExchangeSource> _sourceRegion;
 
-        // ReSharper disable once AutoPropertyCanBeMadeGetOnly.Local
+        
         public RelayCommand TestEmailAccountCommand { get; private set; }
         public ICommand ChooseAttachmentsCommand { get; private set; }
 
@@ -295,7 +295,7 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
         void ChooseAttachments()
         {
 
-            // ReSharper disable once InconsistentNaming
+    
             const string Separator = ";";
             var message = new FileChooserMessage();
             message.SelectedFiles = Attachments.Split(Separator.ToCharArray());

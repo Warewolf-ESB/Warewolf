@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-// ReSharper disable once CheckNamespace
+
 namespace Gma.DataStructures.StringSearch
 {
     internal class StringComparer<T> : IEqualityComparer<T>

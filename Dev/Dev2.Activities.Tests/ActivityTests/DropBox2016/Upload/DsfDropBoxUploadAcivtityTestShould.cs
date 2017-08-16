@@ -18,7 +18,7 @@ using Moq;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Upload
 {
@@ -228,7 +228,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Upload
             var esbChannel = new Mock<IEsbChannel>().Object;
             var datObj = new Mock<IDSFDataObject>().Object;
             var executionEnvironment = new Mock<IExecutionEnvironment>().Object;
-            // ReSharper disable once RedundantAssignment
+            
             var errorResultTO = new ErrorResultTO();
             dsfDropBoxUploadAcivtityMock.Execute(esbChannel, datObj, String.Empty, String.Empty, out errorResultTO, 0);
             var debugOutputs = dsfDropBoxUploadAcivtityMock.GetDebugOutputs(executionEnvironment, 0);
@@ -252,7 +252,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Upload
             var datObj = new Mock<IDSFDataObject>();
             var executionEnvironment = new Mock<IExecutionEnvironment>();
             datObj.Setup(o => o.Environment).Returns(executionEnvironment.Object);
-            // ReSharper disable once RedundantAssignment
+            
             IDSFDataObject dataObject = datObj.Object;
             dsfDropBoxUploadAcivtityMock.Execute(dataObject, 0);
             //---------------Test Result -----------------------
@@ -276,7 +276,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Upload
             var datObj = new Mock<IDSFDataObject>();
             var executionEnvironment = new Mock<IExecutionEnvironment>();
             datObj.Setup(o => o.Environment).Returns(executionEnvironment.Object);
-            // ReSharper disable once RedundantAssignment
+            
             IDSFDataObject dataObject = datObj.Object;
             dsfDropBoxUploadAcivtityMock.Execute(dataObject, 0);
             //---------------Test Result -----------------------
@@ -386,7 +386,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Upload
 
         #region Overrides of DsfDropBoxUploadActivity
 
-        // ReSharper disable once RedundantOverridenMember
+        
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
             base.ExecuteTool(dataObject, update);

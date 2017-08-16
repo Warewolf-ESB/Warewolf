@@ -9,13 +9,13 @@ using System.Data.Common;
 using System.Linq;
 using System.Text;
 using Warewolf.Resource.Errors;
-// ReSharper disable ReturnTypeCanBeEnumerable.Global
+
 
 namespace Dev2.Services.Sql
 {
     public class PostgreServer : IDbServer
     {
-        // ReSharper disable once SuggestVarOrType_Elsewhere
+        
 
         private readonly IDbFactory _factory;
         private IDbCommand _command;
@@ -24,14 +24,14 @@ namespace Dev2.Services.Sql
 
         public bool IsConnected
         {
-            // ReSharper disable once ConvertPropertyToExpressionBody
+            
             get { return _connection != null && _connection.State == ConnectionState.Open; }
         }
 
         public string ConnectionString
         {
-            // ReSharper disable once ConvertPropertyToExpressionBody
-            // ReSharper disable once MergeConditionalExpression
+            
+            
             get { return _connection == null ? null : _connection.ConnectionString; }
         }
 
@@ -43,7 +43,7 @@ namespace Dev2.Services.Sql
 
             var proceduresDataTable = GetSchema(_connection);
 
-            // ReSharper disable once LoopCanBePartlyConvertedToQuery
+            
             foreach (DataRow row in proceduresDataTable.Rows)
             {
                 var type = row["proretset"];
@@ -126,7 +126,7 @@ namespace Dev2.Services.Sql
             }
             finally
             {
-                // ReSharper disable once UseNullPropagation
+                
                 if (reader != null) reader.Close();
             }
 
@@ -171,7 +171,7 @@ namespace Dev2.Services.Sql
 
             var proceduresDataTable = GetSchema(_connection);
 
-            // ReSharper disable once LoopCanBePartlyConvertedToQuery
+            
             foreach (DataRow row in proceduresDataTable.Rows)
             {
                 var fullProcedureName = row["Name"].ToString();
@@ -307,7 +307,7 @@ namespace Dev2.Services.Sql
         {
             using (
                 var command = _factory.CreateCommand(connection, CommandType.Text,
-                    // ReSharper disable once UseStringInterpolation
+                    
                     string.Format("SHOW CREATE PROCEDURE {0} ", objectName)))
             {
                 return ExecuteReader(command, CommandBehavior.SchemaOnly & CommandBehavior.KeyInfo,
@@ -347,7 +347,7 @@ namespace Dev2.Services.Sql
             var originalCommandText = command.CommandText;
             var parameters = new List<IDbDataParameter>();
 
-            // ReSharper disable once UseStringInterpolation
+            
             var proc = string.Format(@"select parameter_name as paramname, parameters.udt_name as datatype, parameters.parameter_mode as direction FROM information_schema.routines
                 JOIN information_schema.parameters ON routines.specific_name=parameters.specific_name
                 WHERE routines.specific_schema='public' and routine_name ='{0}' 
@@ -447,13 +447,13 @@ namespace Dev2.Services.Sql
                 if (disposing)
                 {
                     // Dispose managed resources.
-                    // ReSharper disable once UseNullPropagation
+                    
                     if (_transaction != null)
                     {
                         _transaction.Dispose();
                     }
 
-                    // ReSharper disable once UseNullPropagation
+                    
                     if (_command != null)
                     {
                         _command.Dispose();

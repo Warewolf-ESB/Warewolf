@@ -9,7 +9,7 @@ using Warewolf.Security.Encryption;
 
 namespace Dev2.Data.ServiceModel
 {
-    [SuppressMessage("ReSharper", "UnusedMember.Global")]
+
     public abstract class OauthSource : Resource, IResourceSource, IOAuthSource
     {
 

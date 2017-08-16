@@ -21,9 +21,9 @@ namespace Dev2.Infrastructure.Tests.Logs
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("PulseLogger_Ctor")]
-// ReSharper disable InconsistentNaming
+
         public void PulseLogger_Ctor_CheckValues_ExpectInitialised()
-// ReSharper restore InconsistentNaming
+
         {
             //------------Setup for test--------------------------
             var pulseLogger = new PulseLogger(25);
@@ -40,9 +40,9 @@ namespace Dev2.Infrastructure.Tests.Logs
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("PulseLogger_Ctor")]
-// ReSharper disable InconsistentNaming
+
         public void PulseLogger_Ctor_Start_ExpectInitialised()
-// ReSharper restore InconsistentNaming
+
         {
             //------------Setup for test--------------------------
             var pulseLogger = new PulseLogger(2000);

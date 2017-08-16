@@ -14,7 +14,7 @@ namespace Dev2.Activities.Designers2.Core.CloneInputRegion
         public string ToolRegionName { get; set; }
         public bool IsEnabled { get; set; }
         public IList<IToolRegion> Dependants { get; set; }
-        // ReSharper disable once UnusedAutoPropertyAccessor.Local
+        
         public IList<string> Errors { get; private set; }
         public IList<IServiceInput> Inputs { get; set; }
         public IToolRegion CloneRegion()
@@ -33,7 +33,7 @@ namespace Dev2.Activities.Designers2.Core.CloneInputRegion
         }
 
         [NotifyPropertyChangedInvocator]
-        // ReSharper disable once UnusedMember.Local
+        
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             var handler = PropertyChanged;

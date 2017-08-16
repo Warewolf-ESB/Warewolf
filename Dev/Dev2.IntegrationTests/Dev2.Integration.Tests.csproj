@@ -44,7 +44,7 @@
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <Prefer32Bit>false</Prefer32Bit>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -54,12 +54,13 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
+    <Compile Include="Load Tests.cs" />
     <None Include="..\Run Tests.ps1">
       <Visible>False</Visible>
       <Link>Run Tests.ps1</Link>
@@ -116,9 +117,8 @@
     <Reference Include="MvvmFoundation.Wpf">
       <HintPath>..\Binaries\MvvmFoundation.Wpf.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Nuane.SftpLite">
       <HintPath>..\Binaries\Sftp Server\Nuane.SftpLite.dll</HintPath>
@@ -285,6 +285,10 @@
       <Project>{B48FFDF5-6B1B-4279-A93F-2913B9D3BE83}</Project>
       <Name>Dev2.Runtime.Services</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Dev2.Runtime.Tests\Dev2.Runtime.Tests.csproj">
+      <Project>{85617545-2121-4683-9828-daedb5878ce9}</Project>
+      <Name>Dev2.Runtime.Tests</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dev2.Runtime\Dev2.Runtime.csproj">
       <Project>{9623c7dd-85ee-41ab-89b1-1a9784a97da7}</Project>
       <Name>Dev2.Runtime</Name>
@@ -326,9 +330,6 @@
     <EmbeddedResource Include="Server Test\Workspace\XML\Google_Address_Lookup.xml" />
     <EmbeddedResource Include="Server Test\Workspace\XML\BUG_10638_Result.xml" />
     <EmbeddedResource Include="Server Test\Workspace\XML\Bug_10528_Result.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="bin\debug\Warewolf Server.exe" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

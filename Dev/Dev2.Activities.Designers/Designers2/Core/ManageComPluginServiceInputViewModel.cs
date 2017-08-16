@@ -29,7 +29,7 @@ using Newtonsoft.Json;
 using Warewolf.Core;
 using Warewolf.Resource.Errors;
 
-// ReSharper disable FieldCanBeMadeReadOnly.Local
+
 
 namespace Dev2.Activities.Designers2.Core
 {
@@ -185,13 +185,13 @@ namespace Dev2.Activities.Designers2.Core
                         throw new Exception(errorMessage);
                     }
                     Description = responseService.Description;
-                    // ReSharper disable MaximumChainedReferences
+                    
                     var outputMapping = _recordsetList.SelectMany(recordset => recordset.Fields, (recordset, recordsetField) =>
                     {
                         var serviceOutputMapping = new ServiceOutputMapping(recordsetField.Name, recordsetField.Alias, recordset.Name) { Path = recordsetField.Path };
                         return serviceOutputMapping;
                     }).Cast<IServiceOutputMapping>().ToList();
-                    // ReSharper restore MaximumChainedReferences
+                    
                     _generateOutputArea.IsEnabled = true;
                     _generateOutputArea.Outputs = outputMapping;
                 }
@@ -272,7 +272,7 @@ namespace Dev2.Activities.Designers2.Core
         #region Implementation of IManageServiceInputViewModel<IPluginService>
 
         public Action TestAction { get; set; }
-        // ReSharper disable once AutoPropertyCanBeMadeGetOnly.Local
+        
         public ICommand TestCommand { get; private set; }
 
         public bool TestPassed
@@ -333,9 +333,9 @@ namespace Dev2.Activities.Designers2.Core
         }
 
         public ImageSource TestIconImageSource { get; set; }
-        // ReSharper disable once AutoPropertyCanBeMadeGetOnly.Local
+        
         public ICommand CloseCommand { get; private set; }
-        // ReSharper disable once AutoPropertyCanBeMadeGetOnly.Local
+        
         public ICommand OkCommand { get; private set; }
         public Action OkAction { get; set; }
         public Action CloseAction { get; set; }

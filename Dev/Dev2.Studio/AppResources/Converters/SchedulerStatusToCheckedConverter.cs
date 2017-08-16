@@ -14,7 +14,7 @@ using System.Windows;
 using System.Windows.Data;
 using Dev2.Common.Interfaces.Scheduler.Interfaces;
 
-// ReSharper disable once CheckNamespace
+
 namespace Dev2.AppResources.Converters
 {
     public class SchedulerStatusToCheckedConverter : DependencyObject, IValueConverter

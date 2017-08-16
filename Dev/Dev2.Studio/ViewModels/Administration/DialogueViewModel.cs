@@ -18,7 +18,7 @@ using Dev2.Common.Interfaces.Studio;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Studio.Core.AppResources;
 
-// ReSharper disable CheckNamespace
+
 namespace Dev2.Studio.ViewModels.Administration
 {
 

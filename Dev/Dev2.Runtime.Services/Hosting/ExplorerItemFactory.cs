@@ -22,7 +22,7 @@ using Dev2.Explorer;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.Security;
 using Dev2.Services.Security;
-// ReSharper disable MemberCanBePrivate.Global
+
 
 namespace Dev2.Runtime.Hosting
 {
@@ -75,15 +75,15 @@ namespace Dev2.Runtime.Hosting
         }
         private void AddChildren(IExplorerItem rootNode, IEnumerable<IResource> resourceList, string type, Guid workSpaceId)
         {
-            // ReSharper disable PossibleMultipleEnumeration
+            
 
             var children = resourceList.Where(a => GetResourceParent(a.GetResourcePath(workSpaceId)) == rootNode.ResourcePath && a.ResourceType == type.ToString());
-            // ReSharper restore PossibleMultipleEnumeration
+            
             foreach (var node in rootNode.Children)
             {
-                // ReSharper disable PossibleMultipleEnumeration
+                
                 AddChildren(node, resourceList, type, workSpaceId);
-                // ReSharper restore PossibleMultipleEnumeration
+                
             }
             foreach (var resource in children)
             {
@@ -103,14 +103,14 @@ namespace Dev2.Runtime.Hosting
 
         private void AddChildren(IExplorerItem rootNode, IEnumerable<IResource> resourceList, Guid workSpaceId)
         {
-            // ReSharper disable PossibleMultipleEnumeration
+            
             var children = resourceList.Where(a => GetResourceParent(a.GetResourcePath(workSpaceId)).Equals(rootNode.ResourcePath, StringComparison.InvariantCultureIgnoreCase));
-            // ReSharper restore PossibleMultipleEnumeration
+            
             foreach (var node in rootNode.Children)
             {
-                // ReSharper disable PossibleMultipleEnumeration
+                
                 AddChildren(node, resourceList, workSpaceId);
-                // ReSharper restore PossibleMultipleEnumeration
+                
             }
             foreach (var resource in children)
             {

@@ -26,7 +26,7 @@ namespace Dev2.Runtime.ESB.Management.Services
     /// <summary>
     /// Find resources by type
     /// </summary>
-    [SuppressMessage("ReSharper", "UnusedMember.Global")]
+
     public class FindSourcesByType : IEsbManagementEndpoint
     {
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
@@ -43,9 +43,9 @@ namespace Dev2.Runtime.ESB.Management.Services
 
                 if (string.IsNullOrEmpty(type))
                 {
-                    // ReSharper disable NotResolvedInText
+                    
                     throw new ArgumentNullException("type");
-                    // ReSharper restore NotResolvedInText
+                    
                 }
                 Dev2Logger.Info("Find Sources By Type. " + type, "Warewolf Info");
                 enSourceType sourceType;

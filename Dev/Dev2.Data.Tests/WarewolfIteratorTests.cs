@@ -3,7 +3,7 @@ using Dev2.Common.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using WarewolfParserInterop;
 
-// ReSharper disable InconsistentNaming
+
 namespace Dev2.Data.Tests
 {
     [TestClass]

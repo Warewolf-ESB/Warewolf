@@ -170,16 +170,16 @@ namespace Dev2.Activities.Designers2.Email
 
         EmailSource EmailSource
         {
-            // ReSharper disable ExplicitCallerInfoArgument
+            
             get { return GetProperty<EmailSource>("SelectedEmailSource"); }
-            // ReSharper restore ExplicitCallerInfoArgument
+            
             set
             {
                 if(!_isInitializing)
                 {
-                    // ReSharper disable ExplicitCallerInfoArgument
+                    
                     SetProperty(value, "SelectedEmailSource");
-                    // ReSharper restore ExplicitCallerInfoArgument
+                    
                 }
             }
         }

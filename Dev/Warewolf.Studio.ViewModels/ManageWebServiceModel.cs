@@ -15,7 +15,7 @@ using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.WebService;
 using Dev2.Common.Interfaces.WebServices;
 using Dev2.Studio.Interfaces;
-// ReSharper disable UnusedMember.Global
+
 
 namespace Warewolf.Studio.ViewModels
 {

@@ -11,9 +11,9 @@
 using System;
 using System.Threading.Tasks;
 
-// ReSharper disable CheckNamespace
+
 namespace Dev2.Studio.Core.Helpers
-// ReSharper restore CheckNamespace
+
 {
     public interface IVersionChecker
     {

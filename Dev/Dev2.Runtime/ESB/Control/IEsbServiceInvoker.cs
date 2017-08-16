@@ -14,10 +14,10 @@ using Dev2.Data.TO;
 using Dev2.Interfaces;
 using Dev2.Runtime;
 
-// ReSharper disable CheckNamespace
+
 namespace Dev2.DynamicServices
 {
-    // ReSharper restore CheckNamespace
+    
 
     public interface IEsbServiceInvoker
     {
@@ -38,7 +38,7 @@ namespace Dev2.DynamicServices
         /// <param name="isLocal">if set to <c>true</c> [is local].</param>
         /// <param name="masterDataListId">The master data list unique identifier.</param>
         /// <returns></returns>
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         IEsbExecutionContainer GenerateInvokeContainer(IDSFDataObject dataObject, Guid serviceId, bool isLocal, Guid masterDataListId);
 
         /// <summary>

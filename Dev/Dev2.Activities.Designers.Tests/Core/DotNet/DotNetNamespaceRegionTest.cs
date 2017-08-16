@@ -11,8 +11,8 @@ using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-// ReSharper disable InconsistentNaming
-// ReSharper disable UseObjectOrCollectionInitializer
+
+
 
 namespace Dev2.Activities.Designers.Tests.Core.DotNet
 {
@@ -204,7 +204,7 @@ namespace Dev2.Activities.Designers.Tests.Core.DotNet
 
             //------------Execute Test---------------------------
             DotNetNamespaceRegion dotNetNamespaceRegion = new DotNetNamespaceRegion(src.Object, ModelItemUtils.CreateModelItem(act), sourceRegion);
-            // ReSharper disable once UseObjectOrCollectionInitializer
+            
             DotNetNamespaceRegion dotNetNamespaceRegionToRestore = new DotNetNamespaceRegion(src.Object, ModelItemUtils.CreateModelItem(act), sourceRegion);
             dotNetNamespaceRegionToRestore.IsEnabled = false;
             dotNetNamespaceRegionToRestore.SelectedNamespace = namespaceItem;

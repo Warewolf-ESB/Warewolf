@@ -22,8 +22,8 @@ using Dev2.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-// ReSharper disable InconsistentNaming
-// ReSharper disable ObjectCreationAsStatement
+
+
 
 namespace Warewolf.Studio.ViewModels.Tests
 {
@@ -506,9 +506,9 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void EnvironmentModel_Constructor_NullConnection_ThrowsArgumentNullException()
         {
             //var wizard = new Mock<IWizardEngine>();
-            // ReSharper disable ObjectCreationAsStatement
+            
             new Server(Guid.NewGuid(), null);
-            // ReSharper restore ObjectCreationAsStatement
+            
         }
 
         [TestMethod]
@@ -528,9 +528,9 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void EnvironmentModel_Constructor_ConnectionAndNullResourceRepository_ThrowsArgumentNullException()
         {
             var connection = CreateConnection();
-            // ReSharper disable ObjectCreationAsStatement
+            
             new Server(Guid.NewGuid(), connection.Object, null);
-            // ReSharper restore ObjectCreationAsStatement
+            
         }
 
         [TestMethod]

@@ -10,9 +10,9 @@ using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.Util;
 using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.Practices.Prism.Mvvm;
-// ReSharper disable ParameterTypeCanBeEnumerable.Local
-// ReSharper disable NonReadonlyMemberInGetHashCode
-// ReSharper disable ArrangeThisQualifier
+
+
+
 
 namespace Warewolf.Studio.ViewModels
 {

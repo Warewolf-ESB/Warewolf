@@ -24,8 +24,8 @@ using Dev2.Runtime.Security;
 using Dev2.Scheduler;
 using Dev2.Workspaces;
 using Warewolf.Resource.Errors;
-// ReSharper disable MemberCanBePrivate.Global
-// ReSharper disable UnusedMember.Global
+
+
 
 namespace Dev2.Runtime.ESB.Management.Services
 {

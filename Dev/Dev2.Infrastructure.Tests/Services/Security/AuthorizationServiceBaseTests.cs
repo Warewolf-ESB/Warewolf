@@ -19,7 +19,7 @@ using Dev2.Services.Security.MoqInstallerActions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-// ReSharper disable InconsistentNaming
+
 namespace Dev2.Infrastructure.Tests.Services.Security
 {
     [TestClass]
@@ -34,9 +34,9 @@ namespace Dev2.Infrastructure.Tests.Services.Security
             //------------Setup for test--------------------------
 
             //------------Execute Test---------------------------
-            // ReSharper disable ObjectCreationAsStatement
+            
             new TestAuthorizationServiceBase(null);
-            // ReSharper restore ObjectCreationAsStatement
+            
 
             //------------Assert Results-------------------------
         }

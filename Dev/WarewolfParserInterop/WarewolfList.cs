@@ -125,7 +125,7 @@ namespace WarewolfParserInterop
           _currentEnumerator?.Reset();
       }
 
-      [SuppressMessage("ReSharper", "UnusedMember.Global")]
+  
       public bool Apply (Func<T,T> action )
       {
           for(int i = 0; i < _count; i++)
@@ -141,7 +141,7 @@ namespace WarewolfParserInterop
         }
 
 
-      // ReSharper restore FunctionNeverReturns
+      
 
         IEnumerator IEnumerable.GetEnumerator()
         {
@@ -170,7 +170,7 @@ namespace WarewolfParserInterop
 
       public int Length => _values.Length;
 
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         public WarewolfAtomList<T> DeletePosition(int position)
       {
           var lst = new WarewolfAtomList<T>(_defaultValue);
@@ -184,7 +184,7 @@ namespace WarewolfParserInterop
       }
 
 
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         public IEnumerable<int> Where(Func<T, bool> func)
       {
 

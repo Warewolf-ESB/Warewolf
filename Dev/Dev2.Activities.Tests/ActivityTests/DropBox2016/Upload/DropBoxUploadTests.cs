@@ -6,12 +6,12 @@ using Dev2.Common.Interfaces.Wrappers;
 using Dropbox.Api.Files;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-// ReSharper disable ObjectCreationAsStatement
+
 
 namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Upload
 {
     [TestClass]
-    [SuppressMessage("ReSharper", "InconsistentNaming")]
+
     public class DropBoxUploadTests
     {
         private Mock<IDropBoxUpload> CreateDropboxUploadMock()

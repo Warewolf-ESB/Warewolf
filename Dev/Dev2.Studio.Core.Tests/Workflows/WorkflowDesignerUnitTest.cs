@@ -54,7 +54,7 @@ using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.Interfaces;
 using Dev2.Studio.Interfaces.Enums;
 
-// ReSharper disable InconsistentNaming
+
 namespace Dev2.Core.Tests.Workflows
 {
     [TestClass]
@@ -1165,9 +1165,9 @@ namespace Dev2.Core.Tests.Workflows
                     resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel>());
 
                     ExecuteMessage exeMsg = null;
-                    // ReSharper disable ExpressionIsAlwaysNull
+                    
                     resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IServer>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(exeMsg);
-                    // ReSharper restore ExpressionIsAlwaysNull
+                    
 
                     var resourceModel = new Mock<IContextualResourceModel>();
                     resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
@@ -1324,9 +1324,9 @@ namespace Dev2.Core.Tests.Workflows
         [ExpectedException(typeof(ArgumentNullException))]
         public void WorkflowDesignerViewModel_UnitTest_ConstructorWithNullWorkflowHelper_ThrowsArgumentNullException()
         {
-            // ReSharper disable ObjectCreationAsStatement
+            
             new WorkflowDesignerViewModel(new Mock<IEventAggregator>().Object,
-                // ReSharper restore ObjectCreationAsStatement
+                
                 null, null,
                 new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), new Mock<IExternalProcessExecutor>().Object, false);
 
@@ -1589,9 +1589,9 @@ namespace Dev2.Core.Tests.Workflows
         [TestMethod]
         [TestCategory("WorkflowDesignerViewModel_DragOnToForEach")]
         [Owner("Hagashen Naidu")]
-        // ReSharper disable InconsistentNaming
+        
         public void WorkflowDesignerViewModel_PerformAddItems_ForEachActivity_DragOnRemoteWorkflow()
-        // ReSharper restore InconsistentNaming
+
         {
             #region Setup view model constructor parameters
 
@@ -1848,9 +1848,9 @@ namespace Dev2.Core.Tests.Workflows
         [TestCategory("WorkflowDesignerViewModel_PerformAddItems")]
         [Description("WorkflowDesigner assigns new unique id on copy paste of an activity/tool")]
         [Owner("Ashley Lewis")]
-        // ReSharper disable InconsistentNaming
+        
         public void WorkflowDesignerViewModel_PerformAddItems_ModelItemWithUniqueID_NewIDAssigned()
-        // ReSharper restore InconsistentNaming
+
         {
             var notExpected = Guid.NewGuid().ToString();
 
@@ -1908,9 +1908,9 @@ namespace Dev2.Core.Tests.Workflows
             {
                 IDev2Activity dev2Activity = actual.Content.ComputedValue as IDev2Activity;
                 Assert.IsNotNull(dev2Activity);
-                // ReSharper disable ConditionIsAlwaysTrueOrFalse
+                
                 if (dev2Activity != null)
-                // ReSharper restore ConditionIsAlwaysTrueOrFalse
+                
                 {
                     Assert.AreNotEqual(notExpected, dev2Activity.UniqueID, "Activity ID not changed");
                 }
@@ -1920,9 +1920,9 @@ namespace Dev2.Core.Tests.Workflows
         [TestMethod]
         [TestCategory("WorkflowDesignerViewModel_PerformAddItems")]
         [Owner("Pieter Terblanche")]
-        // ReSharper disable InconsistentNaming
+        
         public void WorkflowDesignerViewModel_PerformAddItems_ModelItemWithDsfDecision_DecisionHandled()
-        // ReSharper restore InconsistentNaming
+
         {
             var notExpected = Guid.NewGuid().ToString();
 
@@ -1990,9 +1990,9 @@ namespace Dev2.Core.Tests.Workflows
         [TestMethod]
         [TestCategory("WorkflowDesignerViewModel_PerformAddItems")]
         [Owner("Pieter Terblanche")]
-        // ReSharper disable InconsistentNaming
+        
         public void WorkflowDesignerViewModel_PerformAddItems_ModelItemWithDsfSwitch_SwitchHandled()
-        // ReSharper restore InconsistentNaming
+
         {
             #region Setup view model constructor parameters
 
@@ -2058,9 +2058,9 @@ namespace Dev2.Core.Tests.Workflows
         [TestMethod]
         [TestCategory("WorkflowDesignerViewModel_PerformAddItems")]
         [Owner("Pieter Terblanche")]
-        // ReSharper disable InconsistentNaming
+        
         public void WorkflowDesignerViewModel_PerformAddItems_ModelItemWithFlowStepWithServiceName_FlowStepHandled()
-        // ReSharper restore InconsistentNaming
+
         {
             #region Setup view model constructor parameters
 
@@ -2122,9 +2122,9 @@ namespace Dev2.Core.Tests.Workflows
         [TestMethod]
         [TestCategory("WorkflowDesignerViewModel_PerformAddItems")]
         [Owner("Pieter Terblanche")]
-        // ReSharper disable InconsistentNaming
+        
         public void WorkflowDesignerViewModel_PerformAddItems_ModelItemWithFlowStepWithoutServiceName_FlowStepHandled()
-        // ReSharper restore InconsistentNaming
+
         {
             #region Setup view model constructor parameters
             var resourceId = Guid.NewGuid();
@@ -2196,9 +2196,9 @@ namespace Dev2.Core.Tests.Workflows
         [TestMethod]
         [TestCategory("WorkflowDesignerViewModel_PerformAddItems")]
         [Owner("Pieter Terblanche")]
-        // ReSharper disable InconsistentNaming
+        
         public void WorkflowDesignerViewModel_PerformAddItems_ApplyForDrop_DropNotHandled()
-        // ReSharper restore InconsistentNaming
+
         {
             #region Setup view model constructor parameters
             var resourceId = Guid.NewGuid();
@@ -2832,9 +2832,9 @@ namespace Dev2.Core.Tests.Workflows
         {
 
             var repo = new TestLoadServerRespository(mockEnvironment.Object) { IsLoaded = true };
-            // ReSharper disable ObjectCreationAsStatement
+            
             new ServerRepository(repo);
-            // ReSharper restore ObjectCreationAsStatement
+            
             repo.ActiveServer = mockEnvironment.Object;
 
             return repo;

@@ -16,7 +16,7 @@ using Dev2.Dialogs;
 using Dev2.Studio.Interfaces;
 using Warewolf.Studio.Core;
 
-// ReSharper disable once CheckNamespace
+
 namespace Dev2.Studio.Views.Workflow
 {
     /// <summary>

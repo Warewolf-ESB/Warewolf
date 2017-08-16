@@ -1,5 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-// ReSharper disable InconsistentNaming
+
 
 namespace Warewolf.Core.Tests
 {

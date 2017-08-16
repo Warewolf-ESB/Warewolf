@@ -31,9 +31,9 @@ using Warewolf.Core;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage.Interfaces;
 
-// ReSharper disable CheckNamespace
+
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
-// ReSharper restore CheckNamespace
+
 {
     [ToolDescriptorInfo("Data-BaseConversion", "Base Convert", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Activities", "1.0.0.0", "", "Data", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Data_Base_Convert")]
     public class DsfBaseConvertActivity : DsfActivityAbstract<string>, ICollectionActivity
@@ -73,20 +73,20 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Overridden NativeActivity Methods
 
-        // ReSharper disable RedundantOverridenMember
+        
         protected override void CacheMetadata(NativeActivityMetadata metadata)
         {
             base.CacheMetadata(metadata);
         }
-        // ReSharper restore RedundantOverridenMember
+        
 
         /// <summary>
         /// The execute method that is called when the activity is executed at run time and will hold all the logic of the activity
         /// </summary>       
-        // ReSharper disable MethodTooLong
-        // ReSharper disable FunctionComplexityOverflow
+        
+        
         protected override void OnExecute(NativeActivityContext context)
-            // ReSharper restore MethodTooLong
+            
         {
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
 
@@ -386,9 +386,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             var result = new List<DsfForEachItem>();
 
-            // ReSharper disable LoopCanBeConvertedToQuery
+            
             foreach(var item in ConvertCollection)
-            // ReSharper restore LoopCanBeConvertedToQuery
+            
             {
                 if(!string.IsNullOrEmpty(item.FromExpression) && item.FromExpression.Contains("[["))
                 {
@@ -403,9 +403,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             var result = new List<DsfForEachItem>();
 
-            // ReSharper disable LoopCanBeConvertedToQuery
+            
             foreach(var item in ConvertCollection)
-            // ReSharper restore LoopCanBeConvertedToQuery
+            
             {
                 if(!string.IsNullOrEmpty(item.FromExpression) && item.FromExpression.Contains("[["))
                 {

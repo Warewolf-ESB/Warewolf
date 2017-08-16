@@ -11,12 +11,12 @@
 using System;
 
 #pragma warning disable 1591
-// ReSharper disable UnusedMember.Global
-// ReSharper disable MemberCanBePrivate.Global
-// ReSharper disable UnusedAutoPropertyAccessor.Global
-// ReSharper disable IntroduceOptionalParameters.Global
-// ReSharper disable MemberCanBeProtected.Global
-// ReSharper disable InconsistentNaming
+
+
+
+
+
+
 
 namespace Dev2.Annotations
 {
@@ -79,11 +79,6 @@ namespace Dev2.Annotations
     public string FormatParameterName { get; private set; }
   }
 
-  /// <summary>
-  /// Indicates that the function argument should be string literal and match one
-  /// of the parameters of the caller function. For example, ReSharper annotates
-  /// the parameter of <see cref="System.ArgumentNullException"/>
-  /// </summary>
   /// <example><code>
   /// public void Foo(string param) {
   ///   if (param == null)
@@ -294,11 +289,7 @@ namespace Dev2.Annotations
     public ImplicitUseTargetFlags TargetFlags { get; private set; }
   }
 
-  /// <summary>
-  /// Should be used on attributes and causes ReSharper
-  /// to not mark symbols marked with such attributes as unused
-  /// (as well as by other usage inspections)
-  /// </summary>
+  
   [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
   public sealed class MeansImplicitUseAttribute : Attribute
   {

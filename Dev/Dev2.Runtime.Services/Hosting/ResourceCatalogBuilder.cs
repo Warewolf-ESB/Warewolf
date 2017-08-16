@@ -32,9 +32,9 @@ namespace Dev2.Runtime.Hosting
     /// <summary>
     /// Transfer FileStream and ResourcePath together
     /// </summary>
-    // ReSharper disable InconsistentNaming
+    
     internal class ResourceBuilderTO
-    // ReSharper restore InconsistentNaming
+    
     {
         internal string FilePath;
         internal FileStream FileStream;

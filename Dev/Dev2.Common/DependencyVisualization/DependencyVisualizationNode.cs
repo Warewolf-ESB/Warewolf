@@ -10,7 +10,7 @@ namespace Dev2.Common.DependencyVisualization
     {
         #region Class Members
 
-        // ReSharper disable once InconsistentNaming
+
         private const string _errorImagePath = "/Images/Close_Box_Red.png";
 
         #endregion Class Members
@@ -64,7 +64,7 @@ namespace Dev2.Common.DependencyVisualization
             get { return _locationX; }
             set
             {
-                // ReSharper disable once CompareOfFloatsByEqualityOperator
+                
                 if (value == _locationX)
                     return;
 
@@ -79,7 +79,7 @@ namespace Dev2.Common.DependencyVisualization
             get { return _locationY; }
             set
             {
-                // ReSharper disable once CompareOfFloatsByEqualityOperator
+                
                 if (value == _locationY)
                     return;
 

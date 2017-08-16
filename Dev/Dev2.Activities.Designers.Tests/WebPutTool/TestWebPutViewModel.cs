@@ -15,8 +15,8 @@ using Dev2.Studio.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Warewolf.Core;
-// ReSharper disable InconsistentNaming
-// ReSharper disable All
+
+
 
 namespace Dev2.Activities.Designers.Tests.WebPutTool
 {

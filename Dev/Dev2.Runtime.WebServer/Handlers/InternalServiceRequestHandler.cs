@@ -91,9 +91,9 @@ namespace Dev2.Runtime.WebServer.Handlers
             }
             catch (Exception e)
             {
-                // ReSharper disable InvokeAsExtensionMethod
-                Dev2Logger.Error(this, e, "Warewolf Error");
-                // ReSharper restore InvokeAsExtensionMethod
+                
+                Dev2Logger.Error(this, e);
+                
             }
         }
 

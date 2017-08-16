@@ -32,8 +32,8 @@ namespace Dev2.Activities.Sharepoint
             ServerInputPath = string.Empty;
         }
 
-        // ReSharper disable MemberCanBePrivate.Global
-        // ReSharper disable UnusedAutoPropertyAccessor.Global
+        
+        
         /// <summary>
         /// Gets or sets the files option.
         /// </summary>
@@ -60,7 +60,7 @@ namespace Dev2.Activities.Sharepoint
         /// <summary>
         /// Gets or sets the files and folders option.
         /// </summary>
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         [Inputs("Files & Folders")]
         [FindMissing]
         public bool IsFilesAndFoldersSelected

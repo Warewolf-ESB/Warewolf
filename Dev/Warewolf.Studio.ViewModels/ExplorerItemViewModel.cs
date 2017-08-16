@@ -30,13 +30,13 @@ using Microsoft.Practices.Prism.Mvvm;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Studio.Core;
 using Warewolf.Studio.Core.Popup;
-// ReSharper disable NonReadonlyMemberInGetHashCode
-// ReSharper disable NonLocalizedString
-// ReSharper disable InconsistentNaming
-// ReSharper disable MemberCanBePrivate.Global
-// ReSharper disable UnusedAutoPropertyAccessor.Global
-// ReSharper disable NotAccessedField.Local
-// ReSharper disable UnusedMember.Global
+
+
+
+
+
+
+
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -1169,7 +1169,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 return _isResource;
             }
-            // ReSharper disable once ValueParameterNotUsed
+            
             set
             {
                 if (IsFolder)
@@ -1251,7 +1251,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        // ReSharper disable MemberCanBePrivate.Global
+        
         public bool CanCreateWorkflowService
         {
             get { return _canCreateWorkflowService && !IsSaveDialog; }
@@ -1274,7 +1274,7 @@ namespace Warewolf.Studio.ViewModels
         }
 
         public bool ShowContextMenu { get; set; }
-        // ReSharper restore MemberCanBePrivate.Global
+        
 
         public bool CanRename
         {

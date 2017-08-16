@@ -136,7 +136,7 @@ namespace Dev2.Activities.Designers2.Core
         List<IServiceOutputMapping> GetDbOutputMappingsFromTable(DataTable testResults)
         {
             List<IServiceOutputMapping> mappings = new List<IServiceOutputMapping>();
-            // ReSharper disable once LoopCanBeConvertedToQuery
+            
             if (testResults != null)
             {
                 if (testResults.Columns.Count >= 1)

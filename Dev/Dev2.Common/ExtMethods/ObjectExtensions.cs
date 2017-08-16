@@ -35,9 +35,9 @@ namespace Dev2.Common.ExtMethods
     }
     public static class ObjectExtensions
     {
-        // ReSharper disable RedundantNameQualifier
+        
         const Formatting Formatting = Newtonsoft.Json.Formatting.Indented;
-        // ReSharper restore RedundantNameQualifier
+        
         static readonly JsonSerializerSettings SerializerSettings = new JsonSerializerSettings
         {
             TypeNameHandling = TypeNameHandling.Objects,
@@ -76,7 +76,7 @@ namespace Dev2.Common.ExtMethods
                 var deserialize = Deserialize<T>(serialize);
                 return deserialize;
             }
-            // ReSharper disable once UnusedVariable
+            
             catch (Exception)
             {
 

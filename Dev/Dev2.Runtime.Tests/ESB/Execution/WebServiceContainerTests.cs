@@ -5,7 +5,7 @@ using Dev2.Services.Execution;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Tests.Runtime.ESB.Execution
 {
@@ -23,7 +23,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             //---------------Execute Test ----------------------
             try
             {
-                // ReSharper disable once ObjectCreationAsStatement
+                
                 new WebServiceContainer(new Mock<IServiceExecution>().Object);
             }
             catch(Exception ex)

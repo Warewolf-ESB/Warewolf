@@ -41,11 +41,11 @@ using Warewolf.Resource.Errors;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.DataList;
 using Dev2.Common.Common;
-// ReSharper disable NonLocalizedString
-// ReSharper disable UnusedAutoPropertyAccessor.Local
-// ReSharper disable MemberCanBePrivate.Global
-// ReSharper disable UnusedMember.Global
-// ReSharper disable ParameterTypeCanBeEnumerable.Global
+
+
+
+
+
 
 namespace Dev2.Activities.Designers2.Service
 {
@@ -435,7 +435,7 @@ namespace Dev2.Activities.Designers2.Service
         public IDataMappingViewModel DataMappingViewModel => MappingManager.DataMappingViewModel;
 
         public string Type => GetProperty<string>();
-        // ReSharper disable InconsistentNaming
+        
         Guid EnvironmentID => GetProperty<Guid>();
 
         public Guid ResourceID => GetProperty<Guid>();
@@ -511,9 +511,9 @@ namespace Dev2.Activities.Designers2.Service
             return true;
         }
 
-        // ReSharper disable InconsistentNaming
+        
         void OnEnvironmentModel_ResourcesLoaded(object sender, ResourcesLoadedEventArgs e)
-        // ReSharper restore InconsistentNaming
+
         {
             _worker.Start(() => GetResourceModel(e.Model), () => MappingManager.CheckVersions(this));
             e.Model.ResourcesLoaded -= OnEnvironmentModel_ResourcesLoaded;
@@ -644,13 +644,13 @@ namespace Dev2.Activities.Designers2.Service
 
         void AddTitleBarEditToggle()
         {
-            // ReSharper disable RedundantArgumentName
+            
             var toggle = ActivityDesignerToggle.Create("ServicePropertyEdit", "Edit", "ServicePropertyEdit", "Edit", "ShowParentToggle",
                 autoReset: true,
                 target: this,
                 dp: ShowParentProperty
                 );
-            // ReSharper restore RedundantArgumentName
+            
             TitleBarToggles.Add(toggle);
         }
 

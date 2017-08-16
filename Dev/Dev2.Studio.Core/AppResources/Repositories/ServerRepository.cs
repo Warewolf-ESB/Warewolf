@@ -25,7 +25,7 @@ using Dev2.Studio.Core.Models;
 using Dev2.Studio.Interfaces.Enums;
 using Dev2.Util;
 
-// ReSharper disable CheckNamespace
+
 namespace Dev2.Studio.Core
 {
 
@@ -241,9 +241,9 @@ namespace Dev2.Studio.Core
 
                 var tryReadFile = File.Exists(path) ? File.ReadAllText(path) : null;
 
-                // ReSharper disable RedundantAssignment
+                
                 var xml = new XElement("Environments");
-                // ReSharper restore RedundantAssignment
+                
                 var result = new List<Guid>();
 
                 if (!string.IsNullOrEmpty(tryReadFile))
@@ -261,9 +261,9 @@ namespace Dev2.Studio.Core
                             }
                         }
                     }
-                    // ReSharper disable EmptyGeneralCatchClause
+                    
                     catch { }
-                    // ReSharper restore EmptyGeneralCatchClause
+                    
                 }
 
                 return result;
@@ -465,9 +465,9 @@ namespace Dev2.Studio.Core
             {
                 defaultEnvironment.Connect();
             }
-            // ReSharper disable EmptyGeneralCatchClause
+            
             catch (Exception err)
-            // ReSharper restore EmptyGeneralCatchClause
+            
             {
                 Dev2Logger.Info(err, "Warewolf Info");
                 //Swallow exception for localhost connection

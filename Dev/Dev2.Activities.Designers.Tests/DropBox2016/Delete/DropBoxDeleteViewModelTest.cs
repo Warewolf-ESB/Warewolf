@@ -13,7 +13,7 @@ using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Activities.Designers.Tests.DropBox2016.Delete
 {
@@ -190,7 +190,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Delete
             var model = CreateModelItem();
 
             //------------Execute Test---------------------------
-            // ReSharper disable once UseObjectOrCollectionInitializer
+            
             var dropBoxDeleteViewModel = new DropBoxDeleteViewModel(model, TestResourceCatalog.LazySourceManager.Value);
             dropBoxDeleteViewModel.DeletePath = "A";
 
@@ -213,7 +213,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Delete
             var agg = new Mock<IEventAggregator>();
             var model = CreateModelItem();
             //------------Execute Test---------------------------
-            // ReSharper disable once UseObjectOrCollectionInitializer
+            
             var dropBoxDeleteViewModel = new DropBoxDeleteViewModel(model, TestResourceCatalog.LazySourceManager.Value);
             dropBoxDeleteViewModel.Result = "A";
 

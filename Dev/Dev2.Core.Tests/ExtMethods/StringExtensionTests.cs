@@ -14,7 +14,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Tests.ExtMethods
 {
     [TestClass]
-    // ReSharper disable InconsistentNaming
+    
     public class StringExtensionTests
     {
         [TestMethod]

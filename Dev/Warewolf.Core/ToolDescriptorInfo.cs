@@ -6,7 +6,7 @@ namespace Warewolf.Core
     public class ToolDescriptorInfo : Attribute
     {
 
-        // ReSharper disable once TooManyDependencies
+        
         public ToolDescriptorInfo(string iconName, string name, ToolType toolType, string id, string assemblyname, string version ,string path, string category, string iconUri, string tag)
         {
             IconUri = iconUri;

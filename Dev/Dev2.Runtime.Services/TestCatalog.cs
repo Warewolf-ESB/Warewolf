@@ -13,9 +13,9 @@ using Dev2.Communication;
 using Dev2.Data;
 using Dev2.Data.Util;
 using Warewolf.Security.Encryption;
-// ReSharper disable ParameterTypeCanBeEnumerable.Local
 
-// ReSharper disable LoopCanBeConvertedToQuery
+
+
 
 namespace Dev2.Runtime
 {

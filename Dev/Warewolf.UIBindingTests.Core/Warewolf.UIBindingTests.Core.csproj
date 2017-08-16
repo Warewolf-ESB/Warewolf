@@ -30,7 +30,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -39,7 +39,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="FontAwesome.WPF, Version=4.5.0.37524, Culture=neutral, PublicKeyToken=0758b07a11a4f466, processorArchitecture=MSIL">
@@ -97,9 +97,8 @@
       <HintPath>..\packages\Moq.4.2.1510.2205\lib\net40\Moq.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -111,9 +110,8 @@
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="TechTalk.SpecFlow, Version=2.1.0.0, Culture=neutral, PublicKeyToken=0778194805d6db41, processorArchitecture=MSIL">
-      <HintPath>..\packages\SpecFlow.2.1.0\lib\net45\TechTalk.SpecFlow.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="TechTalk.SpecFlow, Version=2.2.0.0, Culture=neutral, PublicKeyToken=0778194805d6db41, processorArchitecture=MSIL">
+      <HintPath>..\packages\SpecFlow.2.2.0\lib\net45\TechTalk.SpecFlow.dll</HintPath>
     </Reference>
     <Reference Include="WindowsBase" />
   </ItemGroup>

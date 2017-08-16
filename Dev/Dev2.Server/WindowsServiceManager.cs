@@ -314,9 +314,9 @@ namespace Dev2
             bool serviceExists = false;
             try
             {
-                // ReSharper disable UnusedVariable
+                
                 var controller = new ServiceController(AppSettings.ServiceName);
-                // ReSharper restore UnusedVariable
+                
                 serviceExists = true;
             }
             catch (Exception ex)

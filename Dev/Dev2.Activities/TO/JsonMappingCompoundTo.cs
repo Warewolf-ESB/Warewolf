@@ -22,9 +22,9 @@ namespace Dev2.TO
     public class JsonMappingEvaluated
     {
         readonly IExecutionEnvironment _env;
-        // ReSharper disable MemberCanBePrivate.Global
+        
         public JsonMappingTo Simple { get; set; }
-        // ReSharper restore MemberCanBePrivate.Global
+        
         object _evalResultAsObject;
         CommonFunctions.WarewolfEvalResult _evalResult;
 
@@ -134,7 +134,7 @@ namespace Dev2.TO
                 {
                     // we know this is a comma seperated list of expressions
                     Evaluations =
-                        // ReSharper disable MaximumChainedReferences
+                        
                         ((LanguageAST.LanguageExpression.ComplexExpression)FsInteropFunctions.ParseLanguageExpression(Compound.SourceName,0))
                             .Item
                             .Where(x => !x.IsWarewolfAtomExpression)
@@ -142,7 +142,7 @@ namespace Dev2.TO
                             .Select(x =>
                                 new JsonMappingEvaluated(env1, x))
                             .ToList();
-                }         // ReSharper restore MaximumChainedReferences
+                }         
             }
         }
 
@@ -310,7 +310,7 @@ namespace Dev2.TO
                     }
                     if (complex.Item.Count() < 3 ||
                         complex.Item.Count() % 2 != 1 ||
-                        // ReSharper disable MaximumChainedReferences
+                        
                        !Enumerable.Range(1, complex.Item.Count() - 1)
                            .Where(i => i % 2 == 1)
                            .Select(i =>
@@ -319,7 +319,7 @@ namespace Dev2.TO
                                             complex.Item.ElementAt(i)
                                             ) == ",")
                            .Aggregate((a, b) => a && b))
-                    // ReSharper restore MaximumChainedReferences
+                    
                     {
                         return ErrorResource.ExpressionMustBeCommaSeperated;
                     }

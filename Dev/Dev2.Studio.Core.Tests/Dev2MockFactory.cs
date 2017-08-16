@@ -28,7 +28,7 @@ using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.DataList;
 using Dev2.Studio.Interfaces.Enums;
 
-// ReSharper disable InconsistentNaming
+
 namespace Dev2.Core.Tests
 {
     public static class Dev2MockFactory
@@ -185,7 +185,7 @@ namespace Dev2.Core.Tests
             return mockDataListViewModel;
         }
 
-        // ReSharper disable ParameterHidesMember
+        
 
         public static Mock<IPopupController> CreateIPopup(MessageBoxResult returningResult)
         {

@@ -18,7 +18,7 @@ using Dev2.SignalR.Wrappers.New;
 using Dev2.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-// ReSharper disable InconsistentNaming
+
 namespace Dev2.Core.Tests.Network
 {
     [TestClass]
@@ -129,9 +129,9 @@ namespace Dev2.Core.Tests.Network
             {
                 serverProxy.Connect(x);
             }
-// ReSharper disable EmptyGeneralCatchClause
+
             catch
-// ReSharper restore EmptyGeneralCatchClause
+
             {
                 
              

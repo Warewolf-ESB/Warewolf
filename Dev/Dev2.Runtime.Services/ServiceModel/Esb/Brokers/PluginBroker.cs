@@ -29,7 +29,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
             {
                 return PluginServiceExecutionFactory.GetNamespaces(pluginSource);
             }
-            // ReSharper disable once RedundantCatchClause
+            
             catch (BadImageFormatException)
             {
                 throw;
@@ -42,7 +42,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
             {
                 return PluginServiceExecutionFactory.GetNamespacesWithJsonObjects(pluginSource);
             }
-            // ReSharper disable once RedundantCatchClause
+            
             catch (BadImageFormatException)
             {
                 throw;

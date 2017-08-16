@@ -29,7 +29,7 @@ using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage.Interfaces;
 
-// ReSharper disable CheckNamespace
+
 namespace Dev2.Activities
 {
     /// <summary>

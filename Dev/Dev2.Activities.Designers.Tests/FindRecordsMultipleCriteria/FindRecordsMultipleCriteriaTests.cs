@@ -24,7 +24,7 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 namespace Dev2.Activities.Designers.Tests.FindRecordsMultipleCriteria
 {
     // OnSearchTypeChanged moved from FindRecordsTO tests
-    // ReSharper disable InconsistentNaming
+    
     [TestClass]
     public class FindRecordsMultipleCriteriaTests
     {
@@ -359,7 +359,7 @@ namespace Dev2.Activities.Designers.Tests.FindRecordsMultipleCriteria
             var dto5 = new FindRecordsTO("", "Is Between", 4);
             var dto6 = new FindRecordsTO("", "Is Not Between", 5);
 
-            // ReSharper disable PossibleNullReferenceException
+            
             var miCollection = mi.Properties["ResultsCollection"].Collection;
             var dtoModelItem1 = miCollection.Add(dto1);
             var dtoModelItem2 = miCollection.Add(dto2);
@@ -367,7 +367,7 @@ namespace Dev2.Activities.Designers.Tests.FindRecordsMultipleCriteria
             var dtoModelItem4 = miCollection.Add(dto4);
             var dtoModelItem5 = miCollection.Add(dto5);
             var dtoModelItem6 = miCollection.Add(dto6);
-            // ReSharper restore PossibleNullReferenceException
+            
 
             var viewModel = new FindRecordsMultipleCriteriaDesignerViewModel(mi);
             SetDataListString(viewModel);
@@ -421,13 +421,13 @@ namespace Dev2.Activities.Designers.Tests.FindRecordsMultipleCriteria
             var modelItem = ModelItemUtils.CreateModelItem(new DsfFindRecordsMultipleCriteriaActivity());
             modelItem.SetProperty("DisplayName", displayName);
 
-            // ReSharper disable PossibleNullReferenceException
+            
             var modelItemCollection = modelItem.Properties["ResultsCollection"].Collection;
             foreach(var dto in items)
             {
                 modelItemCollection.Add(dto);
             }
-            // ReSharper restore PossibleNullReferenceException
+            
 
             return modelItem;
         }

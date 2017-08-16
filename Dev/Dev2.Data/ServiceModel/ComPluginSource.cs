@@ -3,9 +3,9 @@ using System.Xml.Linq;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.DynamicServices;
-// ReSharper disable NonLocalizedString
 
-// ReSharper disable CheckNamespace
+
+
 namespace Dev2.Runtime.ServiceModel.Data
 {
     [Serializable]

@@ -17,7 +17,7 @@ using Unlimited.Framework.Converters.Graph.Ouput;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    // ReSharper disable once UnusedMember.Global
+    
     public class TestComPluginService : IEsbManagementEndpoint
     {
 
@@ -44,9 +44,9 @@ namespace Dev2.Runtime.ESB.Management.Services
                 values.TryGetValue("ComPluginService", out resourceDefinition);
                 IComPluginService src = serializer.Deserialize<IComPluginService>(resourceDefinition);
 
-                // ReSharper disable MaximumChainedReferences
+                
                 var parameters = src.Inputs?.Select(a => new MethodParameter { EmptyToNull = a.EmptyIsNull, IsRequired = a.RequiredField, Name = a.Name, Value = a.Value, TypeName = a.TypeName }).ToList() ?? new List<MethodParameter>();
-                // ReSharper restore MaximumChainedReferences
+                
                 var pluginsrc = ResourceCatalog.Instance.GetResource<ComPluginSource>(GlobalConstants.ServerWorkspaceID, src.Source.Id);
                 var res = new ComPluginService
                 {

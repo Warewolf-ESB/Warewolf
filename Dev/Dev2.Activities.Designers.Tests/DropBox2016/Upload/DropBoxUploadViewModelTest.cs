@@ -19,7 +19,7 @@ using Moq;
 namespace Dev2.Activities.Designers.Tests.DropBox2016.Upload
 {
     [TestClass]
-    [SuppressMessage("ReSharper", "InconsistentNaming")]
+
     public class DropBoxUploadViewModelTest
     {
         private DropBoxUploadViewModel CreateMockViewModel()
@@ -239,7 +239,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Upload
             var agg = new Mock<IEventAggregator>();
             var model = CreateModelItem();
             //------------Setup for test--------------------------
-            // ReSharper disable once UseObjectOrCollectionInitializer
+            
             var boxUploadViewModel =new DropBoxUploadViewModel(model, TestResourceCatalog.LazySourceManager.Value);
 
             //------------Execute Test---------------------------
@@ -261,7 +261,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Upload
             var agg = new Mock<IEventAggregator>();
             var model = CreateModelItem();
             //------------Setup for test--------------------------
-            // ReSharper disable once UseObjectOrCollectionInitializer
+            
             var boxUploadViewModel =new DropBoxUploadViewModel(model, TestResourceCatalog.LazySourceManager.Value);
 
             //------------Execute Test---------------------------
@@ -283,7 +283,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Upload
             var agg = new Mock<IEventAggregator>();
             var model = CreateModelItem();
             //------------Setup for test--------------------------
-            // ReSharper disable once UseObjectOrCollectionInitializer
+            
             var boxUploadViewModel =new DropBoxUploadViewModel(model, TestResourceCatalog.LazySourceManager.Value);
 
             //------------Execute Test---------------------------
@@ -305,7 +305,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Upload
             var agg = new Mock<IEventAggregator>();
             var model = CreateModelItem();
             //------------Setup for test--------------------------
-            // ReSharper disable once UseObjectOrCollectionInitializer
+            
             var boxUploadViewModel =new DropBoxUploadViewModel(model, TestResourceCatalog.LazySourceManager.Value);
 
             //------------Execute Test---------------------------
@@ -327,7 +327,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Upload
             var agg = new Mock<IEventAggregator>();
             var model = CreateModelItem();
             //------------Setup for test--------------------------
-            // ReSharper disable once UseObjectOrCollectionInitializer
+            
             var boxUploadViewModel =new DropBoxUploadViewModel(model, TestResourceCatalog.LazySourceManager.Value);
 
             //------------Execute Test---------------------------
@@ -355,7 +355,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Upload
             {
                 new DropBoxSource(), new DropBoxSource()
             });
-            // ReSharper disable once UseObjectOrCollectionInitializer
+            
             var mockVM = new DropBoxUploadViewModel(model, mock.Object);
             //---------------Assert Precondition----------------
             mockVM.Sources.Clear();

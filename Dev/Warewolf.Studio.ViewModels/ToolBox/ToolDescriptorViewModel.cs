@@ -8,7 +8,7 @@ using Dev2;
 using Dev2.Common.Interfaces.Toolbox;
 using Microsoft.Practices.Prism.Mvvm;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
-// ReSharper disable NonLocalizedString
+
 
 namespace Warewolf.Studio.ViewModels.ToolBox
 {

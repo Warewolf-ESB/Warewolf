@@ -15,7 +15,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Common.Tests.Utils
 {
-    // ReSharper disable InconsistentNaming
+    
     [TestClass]
     public class TextUtilsTests
     {

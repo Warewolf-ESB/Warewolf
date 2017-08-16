@@ -19,7 +19,7 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 namespace Dev2.Activities.Designers.Tests.DeleteRecords
 {
     [TestClass]
-    // ReSharper disable InconsistentNaming
+    
     public class DeleteRecordsDesignerViewModelTests
     {
         [TestMethod]
