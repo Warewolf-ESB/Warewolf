@@ -17,9 +17,9 @@ using Microsoft.Practices.Prism.PubSubEvents;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Moq;
-// ReSharper disable MethodSupportsCancellation
-// ReSharper disable ConvertToConstant.Local
-// ReSharper disable InconsistentNaming
+
+
+
 
 namespace Warewolf.Studio.ViewModels.Tests
 {

@@ -51,7 +51,7 @@ namespace Dev2.Activities.Designers.Tests.Sharepoint
 
 
             //------------Execute Test---------------------------
-            // ReSharper disable once ObjectCreationAsStatement
+            
             new SharePointFileDownLoadDesignerViewModel(CreateModelItem(), null, new Mock<IServer>().Object);
             //------------Assert Results-------------------------
         }
@@ -66,7 +66,7 @@ namespace Dev2.Activities.Designers.Tests.Sharepoint
 
 
             //------------Execute Test---------------------------
-            // ReSharper disable once ObjectCreationAsStatement
+            
             new SharePointFileDownLoadDesignerViewModel(CreateModelItem(), new SynchronousAsyncWorker(), null);
             //------------Assert Results-------------------------
         }

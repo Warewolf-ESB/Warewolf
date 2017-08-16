@@ -23,7 +23,7 @@ namespace Dev2.Diagnostics.Test
                 {
                     PerformanceCounterCategory.Delete("Warewolf");
                 }
-                    // ReSharper disable once EmptyGeneralCatchClause
+                    
                 catch
                 {
 

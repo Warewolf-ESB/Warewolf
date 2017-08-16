@@ -46,7 +46,7 @@ namespace Dev2.Common
         public ExchangeService ExchangeService { get; set; }
 
         public string SendEmail(IExchange runtimeSource, IWarewolfListIterator colItr, IWarewolfIterator toItr, IWarewolfIterator ccItr, IWarewolfIterator bccItr, IWarewolfIterator subjectItr, IWarewolfIterator bodyItr, IWarewolfIterator attachmentsItr, out ErrorResultTO errors)
-        // ReSharper restore TooManyArguments
+        
         {
             InitializeService();
             errors = new ErrorResultTO();

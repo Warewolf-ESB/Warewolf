@@ -13,7 +13,7 @@ using System.Windows;
 using System.Windows.Data;
 using System.Xml;
 
-// ReSharper disable once CheckNamespace
+
 namespace Dev2.Studio.Dock
 {
     /// <summary>

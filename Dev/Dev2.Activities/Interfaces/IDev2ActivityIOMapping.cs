@@ -9,7 +9,7 @@
 */
 
 using Dev2;
-// ReSharper disable CheckNamespace
+
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
     /// <summary>

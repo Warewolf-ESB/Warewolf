@@ -17,7 +17,7 @@ using Dev2.Activities;
 using Dev2.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-// ReSharper disable AccessToModifiedClosure
+
 namespace Dev2.Tests.Activities.ActivityTests
 {
     /// <summary>
@@ -338,7 +338,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             CollectionAssert.AreEqual(expectedValue, actualRet, comparer);
         }
 
-        // ReSharper disable InconsistentNaming
+        
 
         [TestMethod]
         [Owner("Hagashen Naidu")]

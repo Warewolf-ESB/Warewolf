@@ -213,7 +213,7 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
 
         IErrorInfo WorstDesignError
         {
-            // ReSharper disable once UnusedMember.Local
+            
             get { return _worstDesignError; }
             set
             {
@@ -271,7 +271,7 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
         private ObservableCollection<IMethodToolRegion<IPluginAction>> _methodsToRunList;
 
         private string Type => GetProperty<string>();
-        // ReSharper disable InconsistentNaming
+        
 
         private void FixErrors()
         {

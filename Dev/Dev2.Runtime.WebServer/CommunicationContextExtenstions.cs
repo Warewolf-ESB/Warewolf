@@ -8,7 +8,7 @@ namespace Dev2.Runtime.WebServer
         {
             return ctx.Request.BoundVariables["servicename"];
         }
-        // ReSharper disable InconsistentNaming
+        
         public static string GetWorkspaceID(this ICommunicationContext ctx)
         {
             return ctx.Request.QueryString["wid"];

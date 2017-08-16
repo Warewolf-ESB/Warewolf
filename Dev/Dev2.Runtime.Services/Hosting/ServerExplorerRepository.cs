@@ -26,12 +26,12 @@ using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.Security;
 using ServiceStack.Common.Extensions;
 using Warewolf.Resource.Errors;
-// ReSharper disable UnusedMember.Global
-// ReSharper disable ArrangeTypeMemberModifiers
-// ReSharper disable UnusedMember.Local
 
-// ReSharper disable ConvertToAutoProperty
-// ReSharper disable MemberCanBePrivate.Global
+
+
+
+
+
 namespace Dev2.Runtime.Hosting
 {
     public class ServerExplorerRepository : IExplorerServerResourceRepository

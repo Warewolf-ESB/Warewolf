@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using Dev2.Common.Interfaces;
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Data
 {

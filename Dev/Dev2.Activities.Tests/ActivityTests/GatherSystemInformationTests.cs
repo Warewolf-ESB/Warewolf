@@ -27,16 +27,16 @@ namespace Dev2.Tests.Activities.ActivityTests
     /// Summary description for CountRecordsTest
     /// </summary>
     [TestClass]
-    // ReSharper disable InconsistentNaming
+    
     public class GatherSystemInformationTests : BaseActivityUnitTest
     {
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary>
-        // ReSharper disable UnusedMember.Global
+        
         public TestContext TestContext { get; set; }
-        // ReSharper restore UnusedMember.Global
+        
 
 
         [TestMethod]

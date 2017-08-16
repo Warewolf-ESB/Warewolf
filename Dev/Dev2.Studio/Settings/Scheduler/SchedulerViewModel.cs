@@ -46,7 +46,7 @@ using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Threading;
 using Warewolf.Studio.Resources.Languages;
 using Warewolf.Studio.ViewModels;
-// ReSharper disable NonLocalizedString
+
 
 namespace Dev2.Settings.Scheduler
 {
@@ -78,7 +78,7 @@ namespace Dev2.Settings.Scheduler
         private DebugOutputViewModel _debugOutputViewModel;
         private string _displayName;
 
-        // ReSharper disable once MemberCanBeProtected.Global
+        
         public SchedulerViewModel()
             : this(EventPublishers.Aggregator, new DirectoryObjectPickerDialog(), new PopupController(), new AsyncWorker(), CustomContainer.Get<IShellViewModel>().ActiveServer, null)
         {

@@ -65,7 +65,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 _emailServiceSource = source;
                 _emailServiceSource.Path = emailServiceSource.Path;
-                // ReSharper disable once VirtualMemberCallInContructor
+                
                 FromModel(_emailServiceSource);
                 Item = ToModel();
                 SetupHeaderTextFromExisting();
@@ -549,7 +549,7 @@ namespace Warewolf.Studio.ViewModels
                     Id = _emailServiceSource?.Id ?? Guid.NewGuid()
                 }
             ;
-            // ReSharper disable once RedundantIfElseBlock
+            
             else
             {
                 _emailServiceSource.HostName = HostName;

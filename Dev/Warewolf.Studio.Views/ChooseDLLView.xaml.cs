@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Windows.Input;
 using Dev2.Common.Interfaces;
-// ReSharper disable InconsistentNaming
+
 
 namespace Warewolf.Studio.Views
 {

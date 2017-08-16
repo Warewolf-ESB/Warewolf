@@ -9,9 +9,9 @@ namespace Warewolf.Core
     {
 
 
-        // ReSharper disable TooManyDependencies
+        
         public ToolDescriptor(Guid id, IWarewolfType designer, IWarewolfType activity, string name, string icon, Version version, bool isSupported, string category, ToolType toolType, string iconUri, string filterTag,string toolTip, string helpText)
-        // ReSharper restore TooManyDependencies
+        
         {
             if (id == Guid.Empty) throw new ArgumentNullException("id", "empty guids not allowed fo tools");
             VerifyArgument.AreNotNull(new Dictionary<string, object> { { "id", id }, { "designer", designer }, { "activity", activity }, { "name", name }, { "icon", icon }, { "version", version }, { "category", category }, { iconUri, "iconUri" }, { filterTag, "filterTag" } });

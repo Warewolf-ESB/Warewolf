@@ -13,7 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Dev2.Common;
 using Dev2.DataList.Contract;
-// ReSharper disable CheckNamespace
+
 
 namespace Dev2.DataList
 {
@@ -54,9 +54,9 @@ namespace Dev2.DataList
         private static void SortRecordsetOptions()
         {
             Dictionary<string, IFindRecsetOptions> tmpDictionary = new Dictionary<string, IFindRecsetOptions>();
-            // ReSharper disable LoopCanBeConvertedToQuery
+            
             foreach (string findRecordsOperation in GlobalConstants.FindRecordsOperations)
-            // ReSharper restore LoopCanBeConvertedToQuery
+            
             {
                 KeyValuePair<string, IFindRecsetOptions> firstOrDefault = _options.FirstOrDefault(c => c.Value.HandlesType().Equals(findRecordsOperation,StringComparison.InvariantCultureIgnoreCase));
                 if (!string.IsNullOrEmpty(firstOrDefault.Key))

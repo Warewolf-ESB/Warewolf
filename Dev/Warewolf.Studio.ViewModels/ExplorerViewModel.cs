@@ -23,17 +23,17 @@ using Dev2.Studio.Interfaces;
 using Microsoft.Practices.Prism.Mvvm;
 using Dev2.Common;
 
-// ReSharper disable MemberCanBeProtected.Global
-// ReSharper disable MemberCanBePrivate.Global
-// ReSharper disable UnusedAutoPropertyAccessor.Global
+
+
+
 
 namespace Warewolf.Studio.ViewModels
 {
     public class ExplorerViewModelBase : BindableBase, IExplorerViewModel, IUpdatesHelp
     {
-        // ReSharper disable once InconsistentNaming
+
         protected ObservableCollection<IEnvironmentViewModel> _environments;
-        // ReSharper disable once InconsistentNaming
+
         protected string _searchText;
         private bool _isRefreshing;
         private IExplorerTreeItem _selectedItem;
@@ -223,6 +223,8 @@ namespace Warewolf.Studio.ViewModels
             environmentViewModel.ForcedRefresh = false;
             IsRefreshing = false;
             environmentViewModel.IsConnecting = false;
+            var perm = new WindowsGroupPermission { Permissions = environmentViewModel.Server.GetPermissions(environmentViewModel.ResourceId) };
+            environmentViewModel.SetPropertiesForDialogFromPermissions(perm);
         }
 
         public virtual void Filter(string filter)
@@ -334,7 +336,7 @@ namespace Warewolf.Studio.ViewModels
             _selectAction = selectAction;
             localhostEnvironment.SelectAction = selectAction ?? (a => { });
             localhostEnvironment.IsSelected = true;
-            // ReSharper disable VirtualMemberCallInContructor
+            
             Environments = new ObservableCollection<IEnvironmentViewModel> { localhostEnvironment };
             if (loadLocalHost)
 #pragma warning disable 4014

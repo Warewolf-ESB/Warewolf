@@ -22,8 +22,8 @@ using Warewolf.Core;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 
-// ReSharper disable MemberCanBePrivate.Global
-// ReSharper disable UnusedAutoPropertyAccessor.Global
+
+
 
 namespace Dev2.Activities.Sharepoint
 {
@@ -40,7 +40,7 @@ namespace Dev2.Activities.Sharepoint
         }
 
         [FindMissing]
-        // ReSharper disable once UnusedAutoPropertyAccessor.Global
+        
         public new string Result { get; set; }
         /// <summary>
         /// When overridden runs the activity's execution logic 

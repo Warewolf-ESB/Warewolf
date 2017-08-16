@@ -391,7 +391,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         #endregion
 
-        // ReSharper disable InconsistentNaming
+        
 
         [TestMethod]
         [Owner("Hagashen Naidu")]

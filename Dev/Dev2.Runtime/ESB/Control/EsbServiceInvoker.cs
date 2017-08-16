@@ -29,9 +29,9 @@ using Dev2.Runtime.ESB.Execution;
 using Dev2.Workspaces;
 using Warewolf.Resource.Errors;
 
-// ReSharper disable CheckNamespace
+
 namespace Dev2.Runtime.ESB
-// ReSharper restore CheckNamespace
+
 {
 
     #region Invokes Endpoint and returns responses to the Caller
@@ -263,9 +263,9 @@ namespace Dev2.Runtime.ESB
 
                     return GenerateContainer(sa, dataObject, _workspace);
                 }
-                // ReSharper disable RedundantIfElseBlock
+                
                 else
-                // ReSharper restore RedundantIfElseBlock
+                
                 {
                     var resourceId = dataObject.ResourceID;
                     Dev2Logger.Debug($"Getting DynamicService: {serviceName}", dataObject.ExecutionID.ToString());

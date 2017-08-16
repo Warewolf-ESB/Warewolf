@@ -1,5 +1,5 @@
-﻿// ReSharper disable InconsistentNaming
-// ReSharper disable UnusedMember.Global
+﻿
+
 namespace GACManagerApi.Fusion
 {
     public enum IASSEMBLYCACHE_UNINSTALL_DISPOSITION

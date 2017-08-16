@@ -100,7 +100,7 @@ namespace Warewolf.Studio.Views
                 }
                 ProtocolItems.SelectedItem = protocol;
             }
-            // ReSharper disable once EmptyGeneralCatchClause
+            
             catch
             {
 
@@ -113,7 +113,7 @@ namespace Warewolf.Studio.Views
             {
                 PortTextBox.Text = port;
             }
-            // ReSharper disable once EmptyGeneralCatchClause
+            
             catch
             {
 

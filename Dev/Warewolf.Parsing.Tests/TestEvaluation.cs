@@ -7,10 +7,10 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.Storage;
 using WarewolfParserInterop;
 using Newtonsoft.Json.Linq;
-// ReSharper disable PossibleNullReferenceException
-// ReSharper disable InconsistentNaming
-// ReSharper disable UnusedVariable
-// ReSharper disable UnusedVariable
+
+
+
+
 
 namespace WarewolfParsingTest
 {
@@ -194,9 +194,9 @@ namespace WarewolfParsingTest
              };
             var testEnv = WarewolfTestData.CreateTestEnvEmpty("");
 
-            // ReSharper disable UnusedVariable
+            
             var testEnv2 = PublicFunctions.EvalMultiAssign(assigns, 0, testEnv);
-            // ReSharper restore UnusedVariable
+            
             ExecutionEnvironment env = new ExecutionEnvironment();
             env.AssignWithFrame(new AssignValue("[[rec().a]]", "25"), 0);
             env.AssignWithFrame(new AssignValue("[[rec().a]]", "26"), 0);
@@ -225,9 +225,9 @@ namespace WarewolfParsingTest
              };
             var testEnv = WarewolfTestData.CreateTestEnvEmpty("");
 
-            // ReSharper disable UnusedVariable
+            
             var testEnv2 = PublicFunctions.EvalMultiAssign(assigns, 0, testEnv);
-            // ReSharper restore UnusedVariable
+            
             ExecutionEnvironment env = new ExecutionEnvironment();
             env.AssignWithFrame(new AssignValue("[[rec().a]]", "1"), 0);
             env.AssignWithFrame(new AssignValue("[[rec().a]]", "26"), 0);
@@ -258,9 +258,9 @@ namespace WarewolfParsingTest
              };
             var testEnv = WarewolfTestData.CreateTestEnvEmpty("");
 
-            // ReSharper disable UnusedVariable
+            
             var testEnv2 = PublicFunctions.EvalMultiAssign(assigns, 0, testEnv);
-            // ReSharper restore UnusedVariable
+            
             ExecutionEnvironment env = new ExecutionEnvironment();
             env.AssignWithFrame(new AssignValue("[[rec().a]]", "1"), 0);
             env.AssignWithFrame(new AssignValue("[[rec().a]]", "26"), 0);
@@ -289,9 +289,9 @@ namespace WarewolfParsingTest
              };
             var testEnv = WarewolfTestData.CreateTestEnvEmpty("");
 
-            // ReSharper disable UnusedVariable
+            
             var testEnv2 = PublicFunctions.EvalMultiAssign(assigns, 0, testEnv);
-            // ReSharper restore UnusedVariable
+            
             ExecutionEnvironment env = new ExecutionEnvironment();
             env.AssignWithFrame(new AssignValue("[[rec().a]]", "25"), 0);
             env.AssignWithFrame(new AssignValue("[[rec().a]]", "26"), 0);
@@ -317,7 +317,7 @@ namespace WarewolfParsingTest
             var testEnv = WarewolfTestData.CreateTestEnvEmpty("");
 
 
-            // ReSharper restore UnusedVariable
+            
             ExecutionEnvironment env = new ExecutionEnvironment();
 
 
@@ -345,16 +345,16 @@ namespace WarewolfParsingTest
              };
             ExecutionEnvironment env = new ExecutionEnvironment();
 
-            // ReSharper disable UnusedVariable
+            
             var testEnv2 = PublicFunctions.EvalMultiAssign(assigns, 0, testEnv);
-            // ReSharper restore UnusedVariable
+            
 
             env.AssignWithFrame(new AssignValue("[[rec().a]]", "25"), 0);
             env.AssignWithFrame(new AssignValue("[[rec().a]]", "26"), 0);
             env.AssignWithFrame(new AssignValue("[[rec().a]]", "27"), 0);
             env.AssignWithFrame(new AssignValue("[[rec().a]]", "28"), 0);
 
-            // ReSharper restore UnusedVariable
+            
             
             var items = env.EvalWhere("[[rec()]]", a => PublicFunctions.AtomtoString(a) == "25", 0);
             Assert.AreEqual(items.ToArray()[0], 1);
@@ -371,9 +371,9 @@ namespace WarewolfParsingTest
             WarewolfTestData.CreateTestEnvEmpty("");
 
 
-            // ReSharper restore UnusedVariable
+            
             ExecutionEnvironment env = new ExecutionEnvironment();
-            // ReSharper disable once UnusedVariable
+            
             var items = env.EvalWhere("x", a => PublicFunctions.AtomtoString(a) == "25", 0);
 
         }
@@ -385,11 +385,11 @@ namespace WarewolfParsingTest
         public void WarewolfParse_Eval_where_WithNoIndexAndMultipleColumns_MultipleEvalsErrorsOnComplex()
         {
 
-            // ReSharper disable once UnusedVariable
+            
             var testEnv = WarewolfTestData.CreateTestEnvEmpty("");
 
             ExecutionEnvironment env = new ExecutionEnvironment();
-            // ReSharper disable once UnusedVariable
+            
             var items = env.EvalWhere("[[rec()]] b", a => PublicFunctions.AtomtoString(a) == "25", 0);
 
         }
@@ -884,9 +884,9 @@ namespace WarewolfParsingTest
              };
             var testEnv = WarewolfTestData.CreateTestEnvEmpty("");
 
-            // ReSharper disable UnusedVariable
+            
             var testEnv2 = PublicFunctions.EvalMultiAssign(assigns, 0, testEnv);
-            // ReSharper restore UnusedVariable
+            
             ExecutionEnvironment env = new ExecutionEnvironment();
             env.AssignWithFrame(new AssignValue("[[rec().a]]", "25"), 0);
             env.AssignWithFrame(new AssignValue("[[rec().a]]", "26"), 0);
@@ -917,9 +917,9 @@ namespace WarewolfParsingTest
              };
             var testEnv = WarewolfTestData.CreateTestEnvEmpty("");
 
-            // ReSharper disable UnusedVariable
+            
             var testEnv2 = PublicFunctions.EvalMultiAssign(assigns, 0, testEnv);
-            // ReSharper restore UnusedVariable
+            
             ExecutionEnvironment env = new ExecutionEnvironment();
             env.AssignWithFrame(new AssignValue("[[rec().a]]", "25"), 0);
             env.AssignWithFrame(new AssignValue("[[rec().a]]", "26"), 0);
@@ -948,9 +948,9 @@ namespace WarewolfParsingTest
              };
             var testEnv = WarewolfTestData.CreateTestEnvEmpty("");
 
-            // ReSharper disable UnusedVariable
+            
             var testEnv2 = PublicFunctions.EvalMultiAssign(assigns, 0, testEnv);
-            // ReSharper restore UnusedVariable
+            
             ExecutionEnvironment env = new ExecutionEnvironment();
             env.AssignWithFrame(new AssignValue("[[rec().a]]", "25"), 0);
             env.AssignWithFrame(new AssignValue("[[rec().a]]", "26"), 0);

@@ -103,7 +103,7 @@ namespace Dev2.Scheduler
             }
         }
 
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         public IScheduledResource CreateResource(string name, SchedulerStatus status, Trigger trigger,
                                                  string workflowName,string resourceId)
         {

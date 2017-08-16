@@ -10,7 +10,7 @@ using Dev2.Studio.ViewModels.WorkSurface;
 using Microsoft.Practices.Prism.Mvvm;
 using Warewolf.Studio.ViewModels;
 
-// ReSharper disable MemberCanBePrivate.Global
+
 
 namespace Dev2.ViewModels
 {
@@ -91,7 +91,7 @@ namespace Dev2.ViewModels
 
 
 
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         public string ResourceType
         {
             get
@@ -126,12 +126,24 @@ namespace Dev2.ViewModels
             if (showMessage)
             {
                 ViewModel.UpdateHelpDescriptor(string.Empty);
-                if (ViewModel.HasChanged)
+                if (IsDirty)
                 {
-                    var result = _popupController.Show(string.Format(StringResources.ItemSource_NotSaved),
-                        $"Save {ViewModel.Header.Replace("*", "")}?",
-                                          MessageBoxButton.YesNoCancel,
-                                          MessageBoxImage.Information, "", false, false, true, false, false, false);
+                    MessageBoxResult result = IsDirtyPopup();
+                    switch (result)
+                    {
+                        case MessageBoxResult.Cancel:
+                        case MessageBoxResult.None:
+                            return false;
+                        case MessageBoxResult.No:
+                            return true;
+                        case MessageBoxResult.Yes:
+                            ViewModel.Save();
+                            break;
+                    }
+                }
+                else if (ViewModel.HasChanged)
+                {
+                    MessageBoxResult result = HasChangedPopup();
 
                     switch (result)
                     {
@@ -141,11 +153,7 @@ namespace Dev2.ViewModels
                         case MessageBoxResult.No:
                             return true;
                         case MessageBoxResult.Yes:
-                            if (ViewModel.CanSave())
-                            {
-                                ViewModel.Save();
-                            }
-                            break;
+                            return false;
                     }
                 }
             }
@@ -158,6 +166,22 @@ namespace Dev2.ViewModels
                 }
             }
             return true;
+        }
+
+        private MessageBoxResult IsDirtyPopup()
+        {
+            return _popupController.Show(string.Format(StringResources.ItemSource_NotSaved),
+                                    $"Save {ViewModel.Header.Replace("*", "")}?",
+                                                      MessageBoxButton.YesNoCancel,
+                                                      MessageBoxImage.Information, "", false, false, true, false, false, false);
+        }
+
+        private MessageBoxResult HasChangedPopup()
+        {
+            return _popupController.Show(string.Format(StringResources.ItemSource_HasChanged_NotTested),
+                                    $"Test {ViewModel.Header.Replace("*", "")}?",
+                                                      MessageBoxButton.YesNo,
+                                                      MessageBoxImage.Information, "", false, false, true, false, false, false);
         }
 
         #endregion

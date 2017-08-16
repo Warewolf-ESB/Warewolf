@@ -16,7 +16,7 @@ namespace Dev2.Runtime.ESB.Management.Services
     /// <summary>
     /// Reload a resource from disk ;)
     /// </summary>
-    [SuppressMessage("ReSharper", "UnusedMember.Global")]
+
     public class ReloadTests : IEsbManagementEndpoint
     {
         #region Implementation of ISpookyLoadable<out string>

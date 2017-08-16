@@ -23,10 +23,10 @@ using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Interfaces;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.PubSubEvents;
-// ReSharper disable MemberCanBePrivate.Global
-// ReSharper disable VirtualMemberCallInContructor
-// ReSharper disable ValueParameterNotUsed
-// ReSharper disable UnusedMember.Global
+
+
+
+
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -114,7 +114,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 _webServiceSource = source;
                 _webServiceSource.Path = webServiceSource.Path;
-                // ReSharper disable once VirtualMemberCallInContructor
+                
                 FromModel(_webServiceSource);
                 Item = ToSource();
                 SetupHeaderTextFromExisting();
@@ -332,7 +332,7 @@ namespace Warewolf.Studio.ViewModels
                     Id = _webServiceSource?.Id ?? SelectedGuid
                 }
             ;
-            // ReSharper disable once RedundantIfElseBlock
+            
             else
             {
                 _webServiceSource.AuthenticationType = AuthenticationType;
@@ -378,7 +378,7 @@ namespace Warewolf.Studio.ViewModels
                     {
                         return _requestServiceNameViewModel.Result;
                     }
-                    // ReSharper disable once RedundantIfElseBlock
+                    
                     else
                     {
                         throw _requestServiceNameViewModel.Exception;

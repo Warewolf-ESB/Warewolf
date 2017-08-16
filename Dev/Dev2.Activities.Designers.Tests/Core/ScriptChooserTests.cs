@@ -3,7 +3,7 @@ using System.IO;
 using System.Linq;
 using Dev2.Activities.Designers2.Core;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Activities.Designers.Tests.Core
 {

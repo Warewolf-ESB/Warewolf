@@ -62,7 +62,7 @@ namespace Dev2.Tests.Runtime.Services
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("Services_ScheduledResource_GetHistory")]
         [TestMethod]
-        // ReSharper disable InconsistentNaming
+        
         public void SaveScheduledResourceTest_ServiceName()
         {
             SchedulerTestBaseStaticMethods.SaveScheduledResourceTest_ServiceName("GetScheduledResourceHistoryService", new GetScheduledResourceHistory());
@@ -139,7 +139,7 @@ namespace Dev2.Tests.Runtime.Services
 
         }
 
-        // ReSharper restore InconsistentNaming
+
 
     }
 }

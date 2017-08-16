@@ -13,7 +13,7 @@ using System;
 using System.Text;
 using Warewolf.Resource.Errors;
 
-// ReSharper disable CheckNamespace
+
 
 namespace Dev2.Common
 {

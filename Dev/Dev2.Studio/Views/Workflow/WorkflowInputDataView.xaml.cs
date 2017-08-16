@@ -30,7 +30,7 @@ using Infragistics.Controls.Grids.Primitives;
 using Newtonsoft.Json;
 using Warewolf.Studio.Core;
 
-// ReSharper disable CheckNamespace
+
 namespace Dev2.Studio.Views.Workflow
 {
     /// <summary>

@@ -83,7 +83,7 @@ namespace Dev2.Common.Interfaces.WindowsTaskScheduler.Wrappers
         /// <returns>
         ///     A <see cref="Task" /> instance that represents the new task.
         /// </returns>
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         IDev2Task RegisterTaskDefinition(string Path, IDev2TaskDefinition definition);
 
         /// <summary>

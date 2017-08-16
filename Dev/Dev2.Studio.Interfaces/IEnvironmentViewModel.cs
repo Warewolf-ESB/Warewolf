@@ -37,7 +37,7 @@ namespace Dev2.Studio.Interfaces
 
         ICollection<IExplorerItemViewModel> AsList();
 
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         void SetItemCheckedState(Guid id, bool state);
 
         void SelectItem(string selectedPath, Action<IExplorerItemViewModel> foundAction);

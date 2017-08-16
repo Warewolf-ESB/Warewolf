@@ -17,9 +17,9 @@ using Dev2.Util;
 using Dev2.Utilities;
 using Dev2.Validation;
 
-// ReSharper disable CheckNamespace
+
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
-// ReSharper restore CheckNamespace
+
 {
     public class FindRecordsTO : ValidatedObject, IDev2TOFn
     {
@@ -131,10 +131,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         void RaiseCanAddRemoveChanged()
         {
-            // ReSharper disable ExplicitCallerInfoArgument
+            
             OnPropertyChanged("CanRemove");
             OnPropertyChanged("CanAdd");
-            // ReSharper restore ExplicitCallerInfoArgument
+            
         }
 
         public bool IsSearchCriteriaEnabled

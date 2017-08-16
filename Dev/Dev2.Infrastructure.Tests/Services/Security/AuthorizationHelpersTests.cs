@@ -17,7 +17,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Infrastructure.Tests.Services.Security
 {
     [TestClass]
-    // ReSharper disable InconsistentNaming
+    
     public class AuthorizationHelpersTests
     {
         [TestMethod]

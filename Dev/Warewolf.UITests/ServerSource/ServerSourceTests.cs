@@ -158,6 +158,19 @@ namespace Warewolf.UITests.ServerSource
             Assert.IsFalse(UIMap.ControlExistsNow(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.SecondRemoteServer), "Server is duplicated in the explorer after changing auth.");
         }
 
+        [TestMethod]
+        [TestCategory("Server Sources")]
+        [Owner("Pieter Terblanche")]
+        public void CreateNewServer_GivenTabHasChanges_ClosingStudioPromptsChanges()
+        {
+            //Create Source
+            ExplorerUIMap.Select_NewServerSource_From_ExplorerContextMenu();
+            ServerSourceUIMap.Enter_TextIntoAddress_On_ServerSourceTab("tst-ci-remote");
+            Mouse.Click(UIMap.MainStudioWindow.CloseStudioButton);
+            DialogsUIMap.Click_MessageBox_Yes();
+            Assert.IsTrue(ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.Exists);
+        }
+
         #region Additional test attributes
 
         [TestInitialize()]

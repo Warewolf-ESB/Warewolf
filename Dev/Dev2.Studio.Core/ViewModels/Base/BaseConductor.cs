@@ -11,7 +11,7 @@
 using System;
 using Caliburn.Micro;
 
-// ReSharper disable CheckNamespace
+
 namespace Dev2.Studio.Core.ViewModels.Base
 {
     public class BaseConductor<T> : Conductor<T>.Collection.OneActive, IDisposable

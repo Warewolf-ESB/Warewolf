@@ -13,7 +13,7 @@ using System.Globalization;
 using System.Windows.Data;
 using Dev2.Common.Interfaces.Scheduler.Interfaces;
 
-// ReSharper disable once CheckNamespace
+
 namespace Dev2.Studio.Core.AppResources.Converters
 {
 

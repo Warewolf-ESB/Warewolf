@@ -16,14 +16,14 @@ using Dev2.TO;
 using Dev2.Util;
 using Dev2.Validation;
 
-// ReSharper disable CheckNamespace
+
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
-// ReSharper restore CheckNamespace
+
 {
-    // ReSharper disable InconsistentNaming
+    
     public class DataSplitDTO : ValidatedObject, IDev2TOFn, IOutputTOConvert
-    // ReSharper restore InconsistentNaming
+    
     {
         public const string SplitTypeIndex = "Index";
         public const string SplitTypeChars = "Chars";
@@ -76,10 +76,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         void RaiseCanAddRemoveChanged()
         {
-            // ReSharper disable ExplicitCallerInfoArgument
+            
             OnPropertyChanged("CanRemove");
             OnPropertyChanged("CanAdd");
-            // ReSharper restore ExplicitCallerInfoArgument
+            
         }
 
         public bool EnableAt { get { return _enableAt; } set { OnPropertyChanged(ref _enableAt, value); } }

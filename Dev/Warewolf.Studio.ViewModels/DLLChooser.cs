@@ -17,7 +17,7 @@ using Dev2.Common.Interfaces;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Microsoft.Practices.Prism.Mvvm;
 using Warewolf.Studio.Core;
-// ReSharper disable InconsistentNaming
+
 
 namespace Warewolf.Studio.ViewModels
 {

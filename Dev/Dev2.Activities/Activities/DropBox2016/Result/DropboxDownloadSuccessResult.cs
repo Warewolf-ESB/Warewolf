@@ -2,7 +2,7 @@ using Dev2.Common.Interfaces;
 using Dropbox.Api.Files;
 using Dropbox.Api.Stone;
 
-// ReSharper disable ClassWithVirtualMembersNeverInherited.Global
+
 
 namespace Dev2.Activities.DropBox2016.Result
 {

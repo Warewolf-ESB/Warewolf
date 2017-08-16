@@ -10,7 +10,7 @@
 
 using System.ComponentModel;
 
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Data.Interfaces.Enums
 {

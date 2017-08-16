@@ -15,9 +15,9 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using FluentAssertions;
 using Warewolf.Security.Encryption;
 
-// ReSharper disable InconsistentNaming
 
-// ReSharper disable once CheckNamespace
+
+
 namespace Dev2.Warewolf.Security.Encryption
 {
     [TestClass]
@@ -72,6 +72,6 @@ namespace Dev2.Warewolf.Security.Encryption
             }
         }
 
-        // ReSharper restore InconsistentNaming
+
     }
 }

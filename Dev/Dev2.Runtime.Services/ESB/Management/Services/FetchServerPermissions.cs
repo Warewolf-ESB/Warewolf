@@ -17,7 +17,7 @@ namespace Dev2.Runtime.ESB.Management.Services
     /// <summary>
     /// Find Server Username
     /// </summary>
-    [SuppressMessage("ReSharper", "UnusedMember.Global")]
+
     public class FetchServerPermissions : IEsbManagementEndpoint
     {
         public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)

@@ -44,9 +44,9 @@ namespace Warewolf.ResourceManagement
                     });
                     return act;
                 }
-                    // ReSharper disable EmptyGeneralCatchClause
+                    
                 catch(Exception err) //errors caught inside
-                    // ReSharper restore EmptyGeneralCatchClause
+                    
                 {
                     Dev2Logger.Error(err, "Warewolf Error");
                     if(failOnException)

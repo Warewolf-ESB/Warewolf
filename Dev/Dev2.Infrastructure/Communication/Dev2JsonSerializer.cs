@@ -24,9 +24,9 @@ namespace Dev2.Communication
     /// </summary>
     public class Dev2JsonSerializer : ISerializer
     {
-// ReSharper disable RedundantNameQualifier
+
         const Formatting Formatting = Newtonsoft.Json.Formatting.Indented;
-// ReSharper restore RedundantNameQualifier
+
         readonly JsonSerializerSettings _serializerSettings = new JsonSerializerSettings
             {
                 TypeNameHandling = TypeNameHandling.Objects,
@@ -133,9 +133,9 @@ namespace Dev2.Communication
                             }
                         }
                     }
-                    // ReSharper disable EmptyGeneralCatchClause
+                    
                     catch
-                    // ReSharper restore EmptyGeneralCatchClause
+                    
                     {
                         // Do nothing default(T) returned below ;)
                     }

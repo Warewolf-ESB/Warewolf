@@ -44,7 +44,7 @@ using Microsoft.Win32.TaskScheduler;
 using Moq;
 using Dev2.Studio.Interfaces.Enums;
 
-// ReSharper disable InconsistentNaming
+
 namespace Dev2.Core.Tests.Settings
 {
     [TestClass]
@@ -72,9 +72,9 @@ namespace Dev2.Core.Tests.Settings
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            // ReSharper disable ObjectCreationAsStatement
+            
             new SchedulerViewModel(null, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a=> new Mock<IServer>().Object);
-            // ReSharper restore ObjectCreationAsStatement
+            
             //------------Assert Results-------------------------
         }
 
@@ -86,9 +86,9 @@ namespace Dev2.Core.Tests.Settings
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            // ReSharper disable ObjectCreationAsStatement
+            
             new SchedulerViewModel();
-            // ReSharper restore ObjectCreationAsStatement
+            
             //------------Assert Results-------------------------
         }
 
@@ -100,9 +100,9 @@ namespace Dev2.Core.Tests.Settings
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            // ReSharper disable ObjectCreationAsStatement
+            
             new SchedulerViewModel(new Mock<IEventAggregator>().Object, null, new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object,a=> new Mock<IServer>().Object);
-            // ReSharper restore ObjectCreationAsStatement
+            
             //------------Assert Results-------------------------
         }
 
@@ -114,9 +114,9 @@ namespace Dev2.Core.Tests.Settings
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            // ReSharper disable ObjectCreationAsStatement
+            
             new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, null, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IServer>().Object);
-            // ReSharper restore ObjectCreationAsStatement
+            
             //------------Assert Results-------------------------
         }
         [TestMethod]
@@ -127,9 +127,9 @@ namespace Dev2.Core.Tests.Settings
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            // ReSharper disable ObjectCreationAsStatement
+            
             new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, null, new Mock<IServer>().Object, a => new Mock<IServer>().Object);
-            // ReSharper restore ObjectCreationAsStatement
+            
             //------------Assert Results-------------------------
         }
 
@@ -1885,13 +1885,13 @@ namespace Dev2.Core.Tests.Settings
         {
             //------------Setup for test--------------------------
 
-            // ReSharper disable UseObjectOrCollectionInitializer
+            
             DailyTrigger t = new DailyTrigger();
 
             t.StartBoundary = new DateTime(2014, 01, 01);
             DailyTrigger t2 = new DailyTrigger();
             t2.StartBoundary = new DateTime(2014, 01, 01);
-            // ReSharper restore UseObjectOrCollectionInitializer           
+            
             //------------Execute Test---------------------------
 
             //------------Assert Results-------------------------
@@ -1906,13 +1906,13 @@ namespace Dev2.Core.Tests.Settings
         {
             //------------Setup for test--------------------------
 
-            // ReSharper disable UseObjectOrCollectionInitializer
+            
             DailyTrigger t = new DailyTrigger();
 
             t.StartBoundary = new DateTime(2014, 01, 01);
             DailyTrigger t2 = new DailyTrigger();
             t2.StartBoundary = new DateTime(2015, 01, 01);
-            // ReSharper restore UseObjectOrCollectionInitializer
+            
             //------------Execute Test---------------------------
 
             //------------Assert Results-------------------------

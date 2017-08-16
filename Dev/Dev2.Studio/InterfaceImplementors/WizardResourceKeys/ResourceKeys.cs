@@ -10,7 +10,7 @@
 
 
 
-// ReSharper disable once CheckNamespace
+
 namespace Dev2.Studio.InterfaceImplementors.WizardResourceKeys
 {
     public enum ResourceKeys

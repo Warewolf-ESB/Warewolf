@@ -17,7 +17,7 @@ namespace Dev2.Common.Interfaces.Infrastructure.Events
     {
         int Count { get; }
 
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         bool RemoveEvent<TEvent>() where TEvent : class, new();
 
         IObservable<TEvent> GetEvent<TEvent>() where TEvent : class, new();

@@ -4,13 +4,13 @@ using System.Diagnostics;
 using System.Linq;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Monitoring;
-// ReSharper disable MemberCanBePrivate.Global
+
 
 namespace Dev2.PerformanceCounters.Management
 {
     public class WarewolfPerformanceCounterRegister : IWarewolfPerformanceCounterRegister
     {
-        // ReSharper disable once ParameterTypeCanBeEnumerable.Local
+        
         public  WarewolfPerformanceCounterRegister(IList<IPerformanceCounter> counters, IList<IResourcePerformanceCounter> resourcePerformanceCounters  )
         {
             RegisterCountersOnMachine(counters, GlobalConstants.Warewolf);

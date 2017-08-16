@@ -202,6 +202,13 @@ Yes - Save the workflow.
 No - Discard your changes.
 Cancel - Returns you to the workflow.</value>
   </data>
+  <data name="ItemSource_HasChanged_NotTested" xml:space="preserve">
+    <value>There are incomplete changes.
+Would you like to complete the changes? 
+-----------------------------------------------------------------
+Yes - Complete your changes.
+No - Discard your changes.</value>
+  </data>
   <data name="ItemSource_NotSaved" xml:space="preserve">
     <value>Your changes have not been saved.
 Would you like to save? 
@@ -214,6 +221,16 @@ Cancel - Returns you to the tab.</value>
     <value>Are you sure you wish to delete {0} {1}?
 
 Version History will also be deleted.</value>
+  </data>
+  <data name="CloseHeader" xml:space="preserve">
+    <value>Unsaved changes</value>
+  </data>
+    <data name="Unsaved_Changes" xml:space="preserve">
+    <value>Your changes have not been saved.
+Would you like to return to the studio? 
+-----------------------------------------------------------------
+Yes - Return to studio.
+No - Discard your changes.</value>
   </data>
   <data name="DialogBody_ConfirmFolderDelete" xml:space="preserve">
     <value>Are you sure you wish to delete {0} folder and all its contents?</value>

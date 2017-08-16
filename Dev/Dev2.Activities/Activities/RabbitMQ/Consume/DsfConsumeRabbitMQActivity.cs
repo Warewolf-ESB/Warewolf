@@ -30,16 +30,16 @@ using Warewolf.Core;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage.Interfaces;
 
-// ReSharper disable UseStringInterpolation
-// ReSharper disable CyclomaticComplexity
-// ReSharper disable FunctionComplexityOverflow
 
-// ReSharper disable MemberCanBePrivate.Global
-// ReSharper disable UnusedMember.Global
-// ReSharper disable UnusedAutoPropertyAccessor.Global
 
-// ReSharper disable VirtualMemberCallInContructor
-// ReSharper disable InconsistentNaming
+
+
+
+
+
+
+
+
 namespace Dev2.Activities.RabbitMQ.Consume
 {
     [ToolDescriptorInfo("RabbitMq", "RabbitMQ Consume", ToolType.Native, "406ea660-64cf-4c82-b6f0-42d48172a799", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Utility", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Utility_Rabbit_MQ_Consume")]

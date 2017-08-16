@@ -30,9 +30,9 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
         [TestMethod]
         [TestCategory("ActivityCollectionDesignerViewModel_Constructor")]
         [Owner("Trevor Williams-Ros")]
-        // ReSharper disable InconsistentNaming
+        
         public void ActivityCollectionDesignerViewModel_Constructor_NoRows_TwoBlankRowsAdded()
-        // ReSharper restore InconsistentNaming
+
         {
             //exe
             var vm = new TestActivityDesignerCollectionViewModelItemsInitialized(CreateModelItem(0));
@@ -44,9 +44,9 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
         [TestMethod]
         [TestCategory("ActivityCollectionDesignerViewModel_Constructor")]
         [Owner("Trevor Williams-Ros")]
-        // ReSharper disable InconsistentNaming
+        
         public void ActivityCollectionDesignerViewModel_Constructor_OneBlankRow_OneBlankRowAdded()
-        // ReSharper restore InconsistentNaming
+
         {
             //exe
             var vm = new TestActivityDesignerCollectionViewModelItemsInitialized(CreateModelItem(1));
@@ -58,9 +58,9 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
         [TestMethod]
         [TestCategory("ActivityCollectionDesignerViewModel_Constructor")]
         [Owner("Trevor Williams-Ros")]
-        // ReSharper disable InconsistentNaming
+        
         public void ActivityCollectionDesignerViewModel_Constructor_TwoBlankRows_NoRowAdded()
-        // ReSharper restore InconsistentNaming
+
         {
             CreateModelItem(2);
             //exe
@@ -73,9 +73,9 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
         [TestMethod]
         [TestCategory("ActivityCollectionDesignerViewModel_Constructor")]
         [Owner("Trevor Williams-Ros")]
-        // ReSharper disable InconsistentNaming
+        
         public void ActivityCollectionDesignerViewModel_Constructor_NoBlankRows_BlankRowAdded()
-        // ReSharper restore InconsistentNaming
+
         {
             var items = CreateItemsList(3);
             items.RemoveAt(2); // remove last blank row
@@ -90,7 +90,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
             Assert.AreEqual(3, vm.ItemCount);
             Assert.AreEqual(string.Format("Activity ({0})", 2), vm.ModelItem.GetProperty("DisplayName"));
 
-            // ReSharper disable PossibleNullReferenceException
+            
             var mic = vm.ModelItem.Properties[vm.CollectionName].Collection;
 
             for(var j = 0; j < 3; j++)
@@ -377,9 +377,9 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
             viewModel.TestAddToCollection(source, true);
 
             //------------Assert Results-------------------------
-            // ReSharper disable PossibleNullReferenceException
+            
             var mic = viewModel.ModelItem.Properties[viewModel.CollectionName].Collection;
-            // ReSharper restore PossibleNullReferenceException
+            
 
             // Extra blank row is also added
             Assert.AreEqual(ExpectedItemCount + 1, viewModel.ItemCount);
@@ -420,10 +420,10 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
                 source.Add("NewField" + i);
             }
             viewModel.TestAddToCollection(source, true);
-            // ReSharper disable PossibleNullReferenceException
+            
             var mic = viewModel.ModelItem.Properties[viewModel.CollectionName].Collection;
             var dto = (ActivityDTO)mic[0].GetCurrentValue();
-            // ReSharper restore PossibleNullReferenceException
+            
             //------------Execute Test---------------------------
             dto.FieldName = "Test";
             //------------Assert Results-------------------------
@@ -452,7 +452,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
             viewModel.TestAddToCollection(source, false);
 
             //------------Assert Results-------------------------
-            // ReSharper disable PossibleNullReferenceException
+            
             var mic = viewModel.ModelItem.Properties[viewModel.CollectionName].Collection;
 
             // Extra blank row is also added
@@ -468,7 +468,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
             Assert.AreSame(items[2], mic[4].GetCurrentValue());
             VerifyItem(mic[4], 5, "", "");
 
-            // ReSharper restore PossibleNullReferenceException
+            
 
             Assert.AreEqual(string.Format("Activity ({0})", ExpectedItemCount - 1), viewModel.ModelItem.GetProperty("DisplayName"));
         }
@@ -495,7 +495,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
             viewModel.TestAddToCollection(source, false);
 
             //------------Assert Results-------------------------
-            // ReSharper disable PossibleNullReferenceException
+            
             var mic = viewModel.ModelItem.Properties[viewModel.CollectionName].Collection;
 
             // Extra blank row is also added
@@ -508,7 +508,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
             Assert.AreSame(items[0], mic[2].GetCurrentValue());
             VerifyItem(mic[2], 3, "", "");
 
-            // ReSharper restore PossibleNullReferenceException
+            
 
             Assert.AreEqual(string.Format("Activity ({0})", ExpectedItemCount - 1), viewModel.ModelItem.GetProperty("DisplayName"));
         }
@@ -550,7 +550,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
             Assert.AreEqual(expectedItemCount, viewModel.ItemCount);
             Assert.AreEqual(string.Format("Activity ({0})", expectedNonBlankItemCount), viewModel.ModelItem.GetProperty("DisplayName"));
 
-            // ReSharper disable PossibleNullReferenceException
+            
             var mic = viewModel.ModelItem.Properties[viewModel.CollectionName].Collection;
 
             for(int i = 0, j = 0; j < expectedItemCount; j++)
@@ -559,7 +559,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
                 Assert.AreSame(items[i++], dto);
                 Assert.AreEqual(j + 1, dto.IndexNumber);
             }
-            // ReSharper restore PossibleNullReferenceException
+            
         }
 
         [TestMethod]
@@ -598,13 +598,13 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
             Assert.AreEqual(expectedItemCount, viewModel.ItemCount);
             Assert.AreEqual(string.Format("Activity ({0})", expectedNonBlankItemCount), viewModel.ModelItem.GetProperty("DisplayName"));
 
-            // ReSharper disable PossibleNullReferenceException
+            
             var mic = viewModel.ModelItem.Properties[viewModel.CollectionName].Collection;
 
             Assert.AreSame(items[0], mic[0].GetCurrentValue());
             Assert.AreSame(items[1], mic[1].GetCurrentValue());
             Assert.AreSame(items[2], mic[2].GetCurrentValue());
-            // ReSharper restore PossibleNullReferenceException
+            
         }
 
         [TestMethod]
@@ -640,12 +640,12 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
             Assert.AreEqual(2, viewModel.ItemCount);
             Assert.AreEqual(string.Format("Activity ({0})", ExpectedNonBlankItemCount), viewModel.ModelItem.GetProperty("DisplayName"));
 
-            // ReSharper disable PossibleNullReferenceException
+            
             var mic = viewModel.ModelItem.Properties[viewModel.CollectionName].Collection;
 
             Assert.AreSame(items[0], mic[0].GetCurrentValue());
             Assert.AreSame(items[1], mic[1].GetCurrentValue());
-            // ReSharper restore PossibleNullReferenceException
+            
         }
 
         [TestMethod]
@@ -718,7 +718,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
             Assert.AreEqual(expectedItemCount, viewModel.ItemCount);
             Assert.AreEqual(string.Format("Activity ({0})", expectedNonBlankItemCount), viewModel.ModelItem.GetProperty("DisplayName"));
 
-            // ReSharper disable PossibleNullReferenceException
+            
             var mic = viewModel.ModelItem.Properties[viewModel.CollectionName].Collection;
 
             for(int i = 0, j = 0; j < expectedItemCount; j++)
@@ -734,7 +734,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
                     Assert.AreSame(items[i++], dto);
                 }
             }
-            // ReSharper restore PossibleNullReferenceException
+            
         }
 
         [TestMethod]
@@ -881,7 +881,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
             Assert.AreEqual(expectedItemCount, viewModel.ItemCount);
             Assert.AreEqual(string.Format("Activity ({0})", expectedNonBlankItemCount), viewModel.ModelItem.GetProperty("DisplayName"));
 
-            // ReSharper disable PossibleNullReferenceException
+            
             var mic = viewModel.ModelItem.Properties[viewModel.CollectionName].Collection;
 
             for(int i = 0, j = 0; i < expectedItemCount; i++, j++)
@@ -896,7 +896,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
                 Assert.AreSame(items[j], dto);
             }
 
-            // ReSharper restore PossibleNullReferenceException
+            
         }
 
         [TestMethod]
@@ -967,7 +967,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
             var expectedItemCount = startItemCount + 1;
             Assert.AreEqual(expectedItemCount, viewModel.ItemCount);
 
-            // ReSharper disable PossibleNullReferenceException
+            
             var mic = viewModel.ModelItem.Properties[viewModel.CollectionName].Collection;
 
             for(int i = 0, j = 0; i < expectedItemCount; i++)
@@ -986,7 +986,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
                 }
             }
 
-            // ReSharper restore PossibleNullReferenceException
+            
         }
 
         [TestMethod]
@@ -1044,7 +1044,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
             Assert.AreEqual(expectedItemCount, viewModel.ItemCount);
             Assert.AreEqual(string.Format("Activity ({0})", expectedNonBlankItemCount), viewModel.ModelItem.GetProperty("DisplayName"));
 
-            // ReSharper disable PossibleNullReferenceException
+            
             var mic = viewModel.ModelItem.Properties[viewModel.CollectionName].Collection;
 
             for(int i = 0, j = 0; j < expectedItemCount; j++)
@@ -1056,7 +1056,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
                 var dto = (ActivityDTO)mic[j].GetCurrentValue();
                 Assert.AreSame(items[i++], dto);
             }
-            // ReSharper restore PossibleNullReferenceException
+            
         }
 
 
@@ -1096,11 +1096,11 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
 
         static void VerifyItem(ModelItem modelItem, int indexNumber, string fieldName, string fieldValue)
         {
-            // ReSharper disable PossibleNullReferenceException
+            
             Assert.AreEqual(indexNumber, modelItem.Properties["IndexNumber"].ComputedValue);
             Assert.AreEqual(fieldName, modelItem.Properties["FieldName"].ComputedValue);
             Assert.AreEqual(fieldValue, modelItem.Properties["FieldValue"].ComputedValue);
-            // ReSharper restore PossibleNullReferenceException
+            
         }
 
         void Verify_CollectionUnchanged(List<ActivityDTO> items, TestActivityDesignerCollectionViewModelItemsInitialized viewModel)
@@ -1108,7 +1108,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
             var expectedItemCount = items.Count;
             Assert.AreEqual(expectedItemCount, viewModel.ItemCount);
 
-            // ReSharper disable PossibleNullReferenceException
+            
             var mic = viewModel.ModelItem.Properties[viewModel.CollectionName].Collection;
 
             for(int i = 0, j = 0; i < expectedItemCount; i++, j++)
@@ -1119,7 +1119,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
                 Assert.AreSame(items[j], dto);
             }
 
-            // ReSharper restore PossibleNullReferenceException
+            
         }
 
         static void VerifyCollection(ActivityCollectionDesignerViewModel<ActivityDTO> viewModel, int expectedItemCount, Dictionary<int, ActivityDTO> expectedItemsByIndexNumber = null, bool allRowsBlank = false)
@@ -1128,7 +1128,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
             Assert.AreEqual(expectedItemCount, viewModel.ItemCount);
             Assert.AreEqual(string.Format("Activity ({0})", expectedNonBlankItemCount), viewModel.ModelItem.GetProperty("DisplayName"));
 
-            // ReSharper disable PossibleNullReferenceException
+            
             var mic = viewModel.ModelItem.Properties[viewModel.CollectionName].Collection;
 
             for(var j = 0; j < expectedItemCount; j++)
@@ -1155,7 +1155,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
                     }
                 }
             }
-            // ReSharper restore PossibleNullReferenceException
+            
         }
 
         static Mock<ModelItem> GenerateMockModelItem(int noOfActivitiesInModelItem = 2)
@@ -1201,13 +1201,13 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
             var modelItem = ModelItemUtils.CreateModelItem(new DsfMultiAssignActivity());
             modelItem.SetProperty("DisplayName", displayName);
 
-            // ReSharper disable PossibleNullReferenceException
+            
             var modelItemCollection = modelItem.Properties["FieldsCollection"].Collection;
             foreach(var dto in items)
             {
                 modelItemCollection.Add(dto);
             }
-            // ReSharper restore PossibleNullReferenceException
+            
 
             return modelItem;
         }

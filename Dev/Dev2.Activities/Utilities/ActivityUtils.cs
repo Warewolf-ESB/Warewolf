@@ -17,14 +17,14 @@ using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.Runtime.ServiceModel.Data;
 using Warewolf.Core;
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Utilities
 {
-    [SuppressMessage("ReSharper", "UnusedMember.Global")]
+
     public static class ActivityUtils
     {
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         public static DsfSqlServerDatabaseActivity GetDsfSqlServerDatabaseActivity(DsfDatabaseActivity dbActivity, DbService service, DbSource source)
         {
             DsfSqlServerDatabaseActivity dsfSqlServerDatabaseActivity = null;
@@ -62,7 +62,7 @@ namespace Dev2.Utilities
             return dsfSqlServerDatabaseActivity;
         }
 
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         public static DsfMySqlDatabaseActivity GetDsfMySqlDatabaseActivity(DsfDatabaseActivity dbActivity, DbSource source, DbService service)
         {
             var dsfMySqlDatabaseActivity = new DsfMySqlDatabaseActivity
@@ -96,7 +96,7 @@ namespace Dev2.Utilities
             return dsfMySqlDatabaseActivity;
         }
 
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         public static DsfOracleDatabaseActivity GetDsfOracleDatabaseActivity(DsfDatabaseActivity dbActivity, DbService service, DbSource source)
         {
             var DsfOracleDatabaseActivity = new DsfOracleDatabaseActivity
@@ -129,7 +129,7 @@ namespace Dev2.Utilities
             return DsfOracleDatabaseActivity;
         }
 
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         public static DsfODBCDatabaseActivity GetDsfODBCDatabaseActivity(DsfDatabaseActivity dbActivity, DbService service, DbSource source)
         {
             var dsfOdbcDatabaseActivity = new DsfODBCDatabaseActivity
@@ -162,7 +162,7 @@ namespace Dev2.Utilities
             return dsfOdbcDatabaseActivity;
         }
 
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         public static DsfPostgreSqlActivity GetDsfPostgreSqlActivity(DsfDatabaseActivity dbActivity, DbService service, DbSource source)
         {
             DsfPostgreSqlActivity dsfSqlServerDatabaseActivity = null;

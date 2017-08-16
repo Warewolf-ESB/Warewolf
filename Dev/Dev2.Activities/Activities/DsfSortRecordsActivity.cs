@@ -24,9 +24,9 @@ using Warewolf.Core;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage.Interfaces;
 
-// ReSharper disable CheckNamespace
+
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
-// ReSharper restore CheckNamespace
+
 {
     [ToolDescriptorInfo("RecordSet-SortRecords", "Sort", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Recordset", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Recordset_Sort")]
     public class DsfSortRecordsActivity : DsfActivityAbstract<string>
@@ -43,9 +43,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// Gets or sets the selected sort.
         /// </summary>
         [Inputs("SelectedSort")]
-        // ReSharper disable MemberCanBePrivate.Global
+        
         public string SelectedSort { get; set; }
-        // ReSharper restore MemberCanBePrivate.Global
+        
 
         public DsfSortRecordsActivity()
             : base("Sort Records")
@@ -55,12 +55,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             DisplayName = "Sort Records";
         }
 
-        // ReSharper disable RedundantOverridenMember
+        
         protected override void CacheMetadata(NativeActivityMetadata metadata)
         {
             base.CacheMetadata(metadata);
         }
-        // ReSharper restore RedundantOverridenMember
+        
 
 
         protected override void OnExecute(NativeActivityContext context)

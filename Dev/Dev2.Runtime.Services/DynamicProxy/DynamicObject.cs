@@ -1,7 +1,7 @@
 using System;
 using System.Reflection;
 
-// ReSharper disable UseNameofExpression
+
 
 namespace Dev2.Runtime.DynamicProxy
 {

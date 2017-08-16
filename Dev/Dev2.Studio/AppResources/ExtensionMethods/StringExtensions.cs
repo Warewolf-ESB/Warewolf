@@ -13,7 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-// ReSharper disable once CheckNamespace
+
 namespace Dev2.Studio.AppResources.ExtensionMethods
 {
     public static class StringExtensions
@@ -36,10 +36,8 @@ namespace Dev2.Studio.AppResources.ExtensionMethods
             StringBuilder sb = new StringBuilder();
             foreach(char c in str)
             {
-                // ReSharper disable PossibleMultipleEnumeration
-                if(!toExclude.Contains(c))
-                    // ReSharper restore PossibleMultipleEnumeration
-                    sb.Append(c);
+                                if(!toExclude.Contains(c))
+                                        sb.Append(c);
             }
             return sb.ToString();
         }

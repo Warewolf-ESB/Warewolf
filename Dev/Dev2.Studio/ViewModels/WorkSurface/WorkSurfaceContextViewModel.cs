@@ -39,11 +39,11 @@ using Dev2.Studio.Interfaces.DataList;
 using Dev2.Studio.Interfaces.Enums;
 using Warewolf.Studio.ViewModels;
 
-// ReSharper disable ClassWithVirtualMembersNeverInherited.Global
-// ReSharper disable UnusedMember.Global
-// ReSharper disable MemberCanBePrivate.Global
 
-// ReSharper disable CheckNamespace
+
+
+
+
 namespace Dev2.Studio.ViewModels.WorkSurface
 {
     /// <summary>
@@ -715,7 +715,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
                 if (_server.Connection != null)
                 {
-                    // ReSharper disable DelegateSubtraction
+                    
                     _server.Connection.ReceivedResourceAffectedMessage -= OnReceivedResourceAffectedMessage;
                 }
             }

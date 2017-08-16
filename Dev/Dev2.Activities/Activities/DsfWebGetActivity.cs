@@ -17,8 +17,8 @@ using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 
-// ReSharper disable UnusedAutoPropertyAccessor.Global
-// ReSharper disable MemberCanBePrivate.Global
+
+
 
 namespace Dev2.Activities
 {
@@ -118,7 +118,7 @@ namespace Dev2.Activities
 
         #endregion
 
-        // ReSharper disable once MemberCanBeProtected.Global
+        
         public DsfWebGetActivity()
         {
             Type = "GET Web Method";

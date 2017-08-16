@@ -36,7 +36,7 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 namespace Dev2.Tests.Activities.ActivityTests
 {
     [TestClass]
-    // ReSharper disable InconsistentNaming
+    
     public class NativeActivityTest
     {
 
@@ -56,17 +56,17 @@ namespace Dev2.Tests.Activities.ActivityTests
         [ExpectedException(typeof(ArgumentNullException))]
         public void ConstructorWithNullDebugDispatcher_Expected_ArgumentNullException()
         {
-            // ReSharper disable ObjectCreationAsStatement
+            
             new TestActivity(null);
-            // ReSharper restore ObjectCreationAsStatement
+            
         }
 
         [TestMethod]
         public void ConstructorWithDebugDispatcher_Expected_NoArgumentNullException()
         {
-            // ReSharper disable ObjectCreationAsStatement
+            
             new TestActivity(DebugDispatcher.Instance);
-            // ReSharper restore ObjectCreationAsStatement
+            
         }
 
         [TestMethod]
@@ -382,9 +382,9 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("DsfActivity_UpdateDebugParentID")]
-        // ReSharper disable InconsistentNaming
+        
         public void DsfActivity_UpdateDebugParentID_UniqueIdSameIfNestingLevelNotChanged()
-        // ReSharper restore InconsistentNaming
+
         {
             var dataObject = new DsfDataObject("<Datalist></Datalist>", Guid.NewGuid())
             {
@@ -407,9 +407,9 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("DsfNativeActivity_UpdateDebugParentID")]
-        // ReSharper disable InconsistentNaming
+        
         public void DsfNativeActivity_UpdateDebugParentID_UniqueIdNotSameIfNestingLevelIncreased()
-        // ReSharper restore InconsistentNaming
+
         {
             var dataObject = new DsfDataObject("<Datalist></Datalist>", Guid.NewGuid())
             {

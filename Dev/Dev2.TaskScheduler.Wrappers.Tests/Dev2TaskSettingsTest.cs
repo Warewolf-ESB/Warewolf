@@ -12,7 +12,7 @@ using System;
 using System.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.Win32.TaskScheduler;
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.TaskScheduler.Wrappers.Test
 {
@@ -27,7 +27,7 @@ namespace Dev2.TaskScheduler.Wrappers.Test
         {
             var service = new TaskService();
             var task =service.NewTask();
-            // ReSharper disable once UseObjectOrCollectionInitializer
+            
             var settings = new Dev2TaskSettings(task.Settings);
             settings.AllowDemandStart = true;
             settings.DeleteExpiredTaskAfter = new TimeSpan(2);

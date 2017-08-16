@@ -45,7 +45,7 @@ namespace Dev2.Settings.Security
         bool _isUpdatingHelpText;
         private static IDomain _domain;
 
-        // ReSharper disable once UnusedMember.Global
+        
         public SecurityViewModel()
         {
             
@@ -520,7 +520,7 @@ namespace Dev2.Settings.Security
         {
             try
             {
-                // ReSharper disable once UnusedVariable
+                
                 var computerDomain = _domain.GetComputerDomain();
                 return Visibility.Visible;
             }

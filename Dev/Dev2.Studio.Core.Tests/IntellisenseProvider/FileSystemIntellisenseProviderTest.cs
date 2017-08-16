@@ -25,7 +25,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Core.Tests.IntellisenseProvider
 {
     [TestClass]
-    // ReSharper disable InconsistentNaming
+    
     public class FileSystemIntellisenseProviderTest
     {
         private IResourceModel _resourceModel;

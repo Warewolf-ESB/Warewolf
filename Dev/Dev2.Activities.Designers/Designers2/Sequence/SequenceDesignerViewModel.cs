@@ -59,9 +59,9 @@ namespace Dev2.Activities.Designers2.Sequence
             {
                 return _smallViewItem;
             }
-            // ReSharper disable ValueParameterNotUsed
+            
             set
-            // ReSharper restore ValueParameterNotUsed
+            
             {
                 var test = value as ModelItem;
 

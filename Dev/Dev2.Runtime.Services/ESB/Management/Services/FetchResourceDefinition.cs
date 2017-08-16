@@ -28,9 +28,9 @@ using System.Text.RegularExpressions;
 using Dev2.Common.Interfaces.Enums;
 using Warewolf.Resource.Errors;
 using Warewolf.Security.Encryption;
-// ReSharper disable NonLocalizedString
-// ReSharper disable MemberCanBeInternal
-// ReSharper disable UnusedMember.Global
+
+
+
 
 namespace Dev2.Runtime.ESB.Management.Services
 {

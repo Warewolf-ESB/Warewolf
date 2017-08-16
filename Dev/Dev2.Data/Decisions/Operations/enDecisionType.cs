@@ -11,8 +11,8 @@
 using System;
 using System.Linq;
 using System.Reflection;
-// ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
-// ReSharper disable InconsistentNaming
+
+
 
 namespace Dev2.Data.Decisions.Operations
 {
@@ -53,7 +53,7 @@ namespace Dev2.Data.Decisions.Operations
 
         public static string GetFailureMessage(enDecisionType decisionType)
         {
-            // ReSharper disable once RedundantAssignment
+            
             string errorMsg = string.Empty;
             switch (decisionType)
             {

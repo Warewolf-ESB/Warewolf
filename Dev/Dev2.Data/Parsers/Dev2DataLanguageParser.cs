@@ -23,11 +23,11 @@ using Dev2.Data.TO;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Warewolf.Resource.Errors;
-// ReSharper disable NonLocalizedString
-// ReSharper disable CatchAllClause
-// ReSharper disable RedundantAssignment
-// ReSharper disable ParameterTypeCanBeEnumerable.Local
-// ReSharper disable LoopCanBeConvertedToQuery
+
+
+
+
+
 
 namespace Dev2.Data.Parsers
 {
@@ -79,7 +79,7 @@ namespace Dev2.Data.Parsers
                     {
                         _expressionCache.TryAdd(expression, result);
                     }
-                    // ReSharper disable once EmptyGeneralCatchClause
+                    
                     catch { }
 
                 return result;
@@ -121,14 +121,14 @@ namespace Dev2.Data.Parsers
                     {
                         _payloadCache.TryAdd(key, result);
                     }
-                    // ReSharper disable once EmptyGeneralCatchClause
+                    
                     catch { }
                 return result;
             }, _payloadCache);
 
         }
 
-        // ReSharper disable once InconsistentNaming
+
         private T WrapAndClear<T, U>(Func<T> runFunc, ConcurrentDictionary<U, T> clearIfException)
         {
             try
@@ -373,9 +373,9 @@ namespace Dev2.Data.Parsers
             IList<IIntellisenseResult> result = new List<IIntellisenseResult>();
 
             // region to evaluate
-            // ReSharper disable ConditionIsAlwaysTrueOrFalse
+            
             if (payload != null)
-            // ReSharper restore ConditionIsAlwaysTrueOrFalse
+            
             {
                 string[] parts = tmp.ToString().Split('.');
                 string search = parts[0].ToLower();
@@ -1064,9 +1064,9 @@ namespace Dev2.Data.Parsers
         /// </exception>
         private bool IsValidIndex(IParseTO to) => _parserHelper.IsValidIndex(to);
 
-        // ReSharper disable once UnusedMember.Local
+        
         private bool CheckValidIndex(ParseTO to, string part, int start, int end) => _parserHelper.CheckValidIndex(to, part, start, end);
-        // ReSharper disable once UnusedMember.Local
+        
         private bool CheckCurrentIndex(ParseTO to, int start, string raw, int end) => _parserHelper.CheckCurrentIndex(to, start, raw, end);
         #endregion
     }

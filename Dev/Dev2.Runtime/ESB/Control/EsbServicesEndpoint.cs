@@ -26,7 +26,7 @@ using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 
-// ReSharper disable InconsistentNaming
+
 namespace Dev2.Runtime.ESB.Control
 {
 

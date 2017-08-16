@@ -26,10 +26,10 @@ using Dev2.Common.Interfaces;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.DataList;
 
-// ReSharper disable InconsistentNaming
-// ReSharper disable CheckNamespace
+
+
 namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
-// ReSharper restore CheckNamespace
+
 {
     [TestClass]
     [ExcludeFromCodeCoverage]

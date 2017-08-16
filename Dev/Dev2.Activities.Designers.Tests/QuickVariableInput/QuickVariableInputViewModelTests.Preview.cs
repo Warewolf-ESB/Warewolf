@@ -15,7 +15,7 @@ using Dev2.Activities.Designers2.Core.QuickVariableInput;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Providers.Errors;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Activities.Designers.Tests.QuickVariableInput
 {

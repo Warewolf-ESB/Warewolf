@@ -23,7 +23,7 @@ using Dev2.MathOperations;
 using Dev2.Studio.Interfaces;
 using Warewolf.Resource.Errors;
 
-// ReSharper disable CheckNamespace
+
 namespace Dev2.Studio.InterfaceImplementors
 {
     public sealed class CalculateIntellisenseProvider : IIntellisenseProvider

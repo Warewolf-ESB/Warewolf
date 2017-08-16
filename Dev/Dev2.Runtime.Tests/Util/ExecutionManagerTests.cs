@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Threading;
 using Dev2.Runtime.ESB.Execution;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Tests.Runtime.Util
 {
@@ -26,7 +26,7 @@ namespace Dev2.Tests.Runtime.Util
             Assert.IsFalse(executionManager.IsRefreshing);
         }
 
-        private ExecutionManager GetConstructedExecutionManager()
+        public static ExecutionManager GetConstructedExecutionManager()
         {
             return (ExecutionManager)Activator.CreateInstance(typeof(ExecutionManager), true);
         }
@@ -139,28 +139,6 @@ namespace Dev2.Tests.Runtime.Util
             Assert.IsNotNull(waitHandles);
             Assert.AreEqual(0, waitHandles.Count);
             Assert.IsTrue(_threadTracker);
-        }
-        [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("ExecutionManager_StopExecution")]
-        public void ExecutionManager_StartRefresh_WaitsForCurrentExecutions()
-        {
-            //------------Setup for test--------------------------
-            var executionManager = GetConstructedExecutionManager();
-            executionManager.AddExecution();
-            var stopwatch = new Stopwatch();
-            var t = new Thread(()=>
-            {
-                stopwatch.Start();
-                Thread.Sleep(2000);
-                executionManager.CompleteExecution();
-            });
-            t.Start();
-            //------------Execute Test---------------------------
-            executionManager.StartRefresh();
-            stopwatch.Stop();
-            //------------Assert Results-------------------------
-            Assert.IsTrue(stopwatch.ElapsedMilliseconds>2000,stopwatch.ElapsedMilliseconds.ToString());
         }
     }
 }

@@ -19,7 +19,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
-// ReSharper disable InconsistentNaming
+
 namespace Dev2.Activities.Designers.Tests.DataSplit
 {
     [TestClass]
@@ -148,13 +148,13 @@ namespace Dev2.Activities.Designers.Tests.DataSplit
             var modelItem = ModelItemUtils.CreateModelItem(new DsfDataSplitActivity());
             modelItem.SetProperty("DisplayName", displayName);
 
-            // ReSharper disable PossibleNullReferenceException
+            
             var modelItemCollection = modelItem.Properties["ResultsCollection"].Collection;
             foreach(var dto in items)
             {
                 modelItemCollection.Add(dto);
             }
-            // ReSharper restore PossibleNullReferenceException
+            
             return modelItem;
         }
 
@@ -221,10 +221,10 @@ namespace Dev2.Activities.Designers.Tests.DataSplit
 
             var dto = new DataSplitDTO("a]]", DataSplitDTO.SplitTypeIndex, "a", 0);
 
-            // ReSharper disable PossibleNullReferenceException
+            
             var miCollection = mi.Properties["ResultsCollection"].Collection;
             var dtoModelItem = miCollection.Add(dto);
-            // ReSharper restore PossibleNullReferenceException
+            
 
             var viewModel = new DataSplitDesignerViewModel(mi);
             viewModel.GetDatalistString = () =>
@@ -278,10 +278,10 @@ namespace Dev2.Activities.Designers.Tests.DataSplit
 
             var dto = new DataSplitDTO("a]]", DataSplitDTO.SplitTypeIndex, "a", 0);
 
-            // ReSharper disable PossibleNullReferenceException
+            
             var miCollection = mi.Properties["ResultsCollection"].Collection;
             miCollection.Add(dto);
-            // ReSharper restore PossibleNullReferenceException
+            
 
             var viewModel = new DataSplitDesignerViewModel(mi);
             return viewModel;

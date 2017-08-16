@@ -26,9 +26,9 @@ namespace Dev2.Tests.Diagnostics
 
 
         [TestMethod]
-        // ReSharper disable InconsistentNaming - Unit Test
+
         public void Constructor_Expected_InitializesInputsAndOutputsAsEmptyLists()
-        // ReSharper restore InconsistentNaming
+
         {
             var debugState = new DebugState();
 
@@ -205,9 +205,9 @@ namespace Dev2.Tests.Diagnostics
 
 
         [TestMethod]
-        // ReSharper disable InconsistentNaming - Unit Test
+
         public void Constructor_With_ByteReaderBase_Expected_InvokesByteReaderBase()
-        // ReSharper restore InconsistentNaming
+
         {
             var reader = new Mock<IByteReaderBase>();
             reader.Setup(w => w.ReadInt32()).Verifiable();
@@ -216,9 +216,9 @@ namespace Dev2.Tests.Diagnostics
             reader.Setup(w => w.ReadGuid()).Verifiable();
             reader.Setup(w => w.ReadDateTime()).Verifiable();
 
-            // ReSharper disable ObjectCreationAsStatement
+            
             new DebugState(reader.Object);
-            // ReSharper restore ObjectCreationAsStatement
+            
 
             reader.Verify(w => w.ReadInt32());
             reader.Verify(w => w.ReadString());
@@ -232,9 +232,9 @@ namespace Dev2.Tests.Diagnostics
         #region Write
 
         [TestMethod]
-        // ReSharper disable InconsistentNaming - Unit Test
+
         public void Write_With_ByteWriterBase_Expected_InvokesByteWriterBase()
-        // ReSharper restore InconsistentNaming
+
         {
             var debugState = new DebugState();
 
@@ -258,9 +258,9 @@ namespace Dev2.Tests.Diagnostics
         #region Serialization
 
         [TestMethod]
-        // ReSharper disable InconsistentNaming - Unit Test
+
         public void Serialized_Expected_CanBeDeserialized()
-        // ReSharper restore InconsistentNaming
+
         {
             var rw = new MockByteReaderWriter();
 
@@ -295,7 +295,7 @@ namespace Dev2.Tests.Diagnostics
 
         }
 
-        // ReSharper disable InconsistentNaming
+        
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("DebugItem_Add")]

@@ -28,9 +28,9 @@ namespace Dev2.Core.Tests.UtilsTests
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("DataListConversionUtilTest_CreateListToBindTo")]
-        // ReSharper disable InconsistentNaming
+        
         public void DataListConversionUtilTest_CreateListToBindTo_WhenColumnHasInputMapping_ExpectCollectionWithOneItem()
-        // ReSharper restore InconsistentNaming
+
         {
             //------------Setup for test--------------------------
             var converter = new DataListConversionUtils();
@@ -53,9 +53,9 @@ namespace Dev2.Core.Tests.UtilsTests
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("DataListConversionUtilTest_CreateListToBindTo")]
-        // ReSharper disable InconsistentNaming
+        
         public void DataListConversionUtilTest_CreateListToBindTo_WhenColumnHasBothMapping_ExpectCollectionWithOneItem()
-        // ReSharper restore InconsistentNaming
+
         {
             //------------Setup for test--------------------------
             var converter = new DataListConversionUtils();
@@ -79,9 +79,9 @@ namespace Dev2.Core.Tests.UtilsTests
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("DataListConversionUtilTest_CreateListToBindTo")]
-        // ReSharper disable InconsistentNaming
+        
         public void DataListConversionUtilTest_CreateListToBindTo_WhenScalarHasInputMapping_ExpectCollectionWithOneItem()
-        // ReSharper restore InconsistentNaming
+
         {
             //------------Setup for test--------------------------
             var converter = new DataListConversionUtils();
@@ -103,9 +103,9 @@ namespace Dev2.Core.Tests.UtilsTests
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("DataListConversionUtilTest_CreateListToBindTo")]
-        // ReSharper disable InconsistentNaming
+        
         public void DataListConversionUtilTest_CreateListToBindTo_WhenScalarHasBothMapping_ExpectCollectionWithOneItem()
-        // ReSharper restore InconsistentNaming
+
         {
             //------------Setup for test--------------------------
             var converter = new DataListConversionUtils();
@@ -127,9 +127,9 @@ namespace Dev2.Core.Tests.UtilsTests
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("DataListConversionUtilTest_CreateListToBindTo")]
-        // ReSharper disable InconsistentNaming
+        
         public void DataListConversionUtilTest_CreateListToBindTo_WhenScalarHasNoneMapping_ExpectCollectionWithNoItems()
-        // ReSharper restore InconsistentNaming
+
         {
             //------------Setup for test--------------------------
             var converter = new DataListConversionUtils();
