@@ -42,7 +42,11 @@ namespace Warewolf.Web.UI.Tests.ExecutionLoggingTests
         [DeploymentItem(@"avcodec-57.dll")]
         [TestCategory("ExecutionLogging")]
         [DataSource("Microsoft.VisualStudio.TestTools.DataSource.CSV", "|DataDirectory|\\SupportedBrowsers.csv", "SupportedBrowsers#csv", DataAccessMethod.Sequential), DeploymentItem("SupportedBrowsers.csv")]
+#if DEBUG
         public void ExecutionLogging_ClickRefresh_UITest()
+#else
+        public void Release_ExecutionLogging_ClickRefresh_UITest()
+#endif
         {
             //Generate some test log data
             WebRequest.Create("http://localhost:3142/secure/Hello%20World.json?Name=Tester");
