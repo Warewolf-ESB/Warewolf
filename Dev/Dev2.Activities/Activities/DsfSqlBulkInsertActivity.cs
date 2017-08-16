@@ -152,9 +152,7 @@ namespace Dev2.Activities
                 {
                     allErrors.AddError(e.Message);
                 }
-                
-                Dev2Logger.Error(this, e);
-                
+                Dev2Logger.Error(this, e, "Warewolf Error");
             }
             finally
             {
