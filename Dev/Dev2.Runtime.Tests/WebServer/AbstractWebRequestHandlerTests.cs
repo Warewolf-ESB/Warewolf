@@ -387,7 +387,43 @@ namespace Dev2.Tests.Runtime.WebServer
             dataObject.VerifySet(o => o.ReturnType = EmitionTypes.TEST, Times.Once);
             dataObject.VerifySet(o => o.IsServiceTestExecution = true, Times.Once);
             dataObject.VerifySet(o => o.TestName = "*", Times.Once);
+        }
 
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void CreateForm_GivenWebRequestHasStartServiceNameRequestEndsWithTestsTRX_ShouldSetDataobjectsTRXOptions()
+        {
+            //---------------Set up test pack-------------------
+            var principal = new Mock<IPrincipal>();
+            var authorizationService = new Mock<IAuthorizationService>();
+            authorizationService.Setup(service => service.IsAuthorized(It.IsAny<AuthorizationContext>(), It.IsAny<string>())).Returns(true);
+            var dataObject = new Mock<IDSFDataObject>();
+            dataObject.SetupAllProperties();
+            var env = new Mock<IExecutionEnvironment>();
+            env.SetupAllProperties();
+            dataObject.SetupGet(o => o.Environment).Returns(env.Object);
+            dataObject.SetupGet(o => o.RawPayload).Returns(new StringBuilder("<raw>SomeData</raw>"));
+            var resourceCatalog = new Mock<IResourceCatalog>();
+            var testCatalog = new Mock<ITestCatalog>();
+            testCatalog.Setup(catalog => catalog.Fetch(It.IsAny<Guid>())).Returns(new List<IServiceTestModelTO>());
+            var wRepo = new Mock<IWorkspaceRepository>();
+            wRepo.SetupGet(repository => repository.ServerWorkspace).Returns(new Workspace(Guid.Empty));
+            var handlerMock = new AbstractWebRequestHandlerMock(dataObject.Object, authorizationService.Object, resourceCatalog.Object, testCatalog.Object, wRepo.Object);
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            var webRequestTO = new WebRequestTO()
+            {
+                Variables = new NameValueCollection()
+                {
+                },
+                WebServerUrl = "http://rsaklfnkosinath:3142/secure/Home/HelloWorld/.tests.trx"
+            };
+            var responseWriter = handlerMock.CreateFromMock(webRequestTO, "*", string.Empty, new NameValueCollection(), principal.Object);
+            //---------------Test Result -----------------------
+            Assert.IsNotNull(responseWriter);
+            dataObject.VerifySet(o => o.ReturnType = EmitionTypes.TRX, Times.Once);
+            dataObject.VerifySet(o => o.IsServiceTestExecution = true, Times.Once);
+            dataObject.VerifySet(o => o.TestName = "*", Times.Once);
         }
 
         [TestMethod]
@@ -1655,6 +1691,28 @@ namespace Dev2.Tests.Runtime.WebServer
             Assert.AreEqual("hello World", emitionType);
             Assert.AreEqual("hello World", dataObject.Object.ServiceName);
         }
+
+        [TestMethod]
+        [Owner("Ashley Lewis")]
+        public void SetEmitionType_GivenServiceNameEndsWithteststrx_ShouldSetDataObjectContentTypeTRX()
+        {
+            //---------------Set up test pack-------------------
+            const string ServiceName = "hello World.tests";
+            NameValueCollection collection = new NameValueCollection();
+
+            var dataObject = new Mock<IDSFDataObject>();
+            dataObject.SetupProperty(o => o.ReturnType);
+            dataObject.SetupProperty(o => o.ServiceName);
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            var emitionType = dataObject.Object.SetEmitionType(new WebRequestTO(), ServiceName, collection);
+            //---------------Test Result -----------------------
+            dataObject.VerifySet(o => o.ReturnType = EmitionTypes.TRX, Times.Exactly(1));
+            dataObject.VerifySet(o => o.ReturnType = EmitionTypes.XML, Times.Exactly(1));
+            Assert.AreEqual("hello World", emitionType);
+            Assert.AreEqual("hello World", dataObject.Object.ServiceName);
+        }
+
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void SetEmitionType_GivenServiceNameEndsWithJson_ShouldSetDataObjectContentTypeJson()
