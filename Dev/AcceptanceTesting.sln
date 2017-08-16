@@ -221,8 +221,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.UIBindingTests.Com
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.UIBindingTests.ComPluginSource", "Warewolf.UIBindingTests.ComPluginSource\Warewolf.UIBindingTests.ComPluginSource.csproj", "{33A52ABE-7B5E-4B1A-A958-2CAC502C653D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GACManagerApi", "GACManagerApi\GACManagerApi.csproj", "{2909743E-72FF-48BF-A081-E61A73D2E6EC}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestingDotnetDllCascading", "TestingDotnetDllCascading\TestingDotnetDllCascading.csproj", "{A4F1DAA7-9EAB-4E46-9E73-BAE87179F737}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Scheduler.Tests", "Dev2.Scheduler.Tests\Dev2.Scheduler.Tests.csproj", "{211601FA-019A-4F23-9A30-5FE5344E1BE1}"
@@ -893,14 +891,6 @@ Global
 		{33A52ABE-7B5E-4B1A-A958-2CAC502C653D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{33A52ABE-7B5E-4B1A-A958-2CAC502C653D}.Release|x86.ActiveCfg = Release|Any CPU
 		{33A52ABE-7B5E-4B1A-A958-2CAC502C653D}.Release|x86.Build.0 = Release|Any CPU
-		{2909743E-72FF-48BF-A081-E61A73D2E6EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2909743E-72FF-48BF-A081-E61A73D2E6EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2909743E-72FF-48BF-A081-E61A73D2E6EC}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{2909743E-72FF-48BF-A081-E61A73D2E6EC}.Debug|x86.Build.0 = Debug|Any CPU
-		{2909743E-72FF-48BF-A081-E61A73D2E6EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2909743E-72FF-48BF-A081-E61A73D2E6EC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2909743E-72FF-48BF-A081-E61A73D2E6EC}.Release|x86.ActiveCfg = Release|Any CPU
-		{2909743E-72FF-48BF-A081-E61A73D2E6EC}.Release|x86.Build.0 = Release|Any CPU
 		{A4F1DAA7-9EAB-4E46-9E73-BAE87179F737}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A4F1DAA7-9EAB-4E46-9E73-BAE87179F737}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A4F1DAA7-9EAB-4E46-9E73-BAE87179F737}.Debug|x86.ActiveCfg = Debug|Any CPU
