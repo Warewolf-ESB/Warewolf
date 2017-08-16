@@ -128,8 +128,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Resource", "Warewo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WarewolfCOMIPC.Client", "WarewolfCOMIPC.Client\WarewolfCOMIPC.Client.csproj", "{BCA6F2B3-C102-45B5-8F64-F0CCE2533F1F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GACManagerApi", "GACManagerApi\GACManagerApi.csproj", "{2909743E-72FF-48BF-A081-E61A73D2E6EC}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Scheduler.Tests", "Dev2.Scheduler.Tests\Dev2.Scheduler.Tests.csproj", "{211601FA-019A-4F23-9A30-5FE5344E1BE1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Common.Tests", "Dev2.Common.Tests\Dev2.Common.Tests.csproj", "{B0564C7A-9DA8-4751-B5D4-D446138E0987}"
@@ -353,10 +351,6 @@ Global
 		{BCA6F2B3-C102-45B5-8F64-F0CCE2533F1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BCA6F2B3-C102-45B5-8F64-F0CCE2533F1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BCA6F2B3-C102-45B5-8F64-F0CCE2533F1F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2909743E-72FF-48BF-A081-E61A73D2E6EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2909743E-72FF-48BF-A081-E61A73D2E6EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2909743E-72FF-48BF-A081-E61A73D2E6EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2909743E-72FF-48BF-A081-E61A73D2E6EC}.Release|Any CPU.Build.0 = Release|Any CPU
 		{211601FA-019A-4F23-9A30-5FE5344E1BE1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{211601FA-019A-4F23-9A30-5FE5344E1BE1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{211601FA-019A-4F23-9A30-5FE5344E1BE1}.Release|Any CPU.ActiveCfg = Debug|Any CPU
