@@ -70,6 +70,15 @@ namespace Dev2.Studio.Core {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unsaved changes.
+        /// </summary>
+        public static string CloseHeader {
+            get {
+                return ResourceManager.GetString("CloseHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Closing Service Test Window from Taskbar handle exception. .
         /// </summary>
         public static string CloseTestViewHandledException {
@@ -370,6 +379,19 @@ namespace Dev2.Studio.Core {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to There are incomplete changes.
+        ///Would you like to complete the changes? 
+        ///-----------------------------------------------------------------
+        ///Yes - Complete your changes.
+        ///No - Discard your changes..
+        /// </summary>
+        public static string ItemSource_HasChanged_NotTested {
+            get {
+                return ResourceManager.GetString("ItemSource_HasChanged_NotTested", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Your changes have not been saved.
         ///Would you like to save? 
         ///-----------------------------------------------------------------
@@ -502,6 +524,19 @@ namespace Dev2.Studio.Core {
         public static string SourcePermission_Error {
             get {
                 return ResourceManager.GetString("SourcePermission_Error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your changes have not been saved.
+        ///Would you like to return to the studio? 
+        ///-----------------------------------------------------------------
+        ///Yes - Return to studio.
+        ///No - Discard your changes..
+        /// </summary>
+        public static string Unsaved_Changes {
+            get {
+                return ResourceManager.GetString("Unsaved_Changes", resourceCulture);
             }
         }
         

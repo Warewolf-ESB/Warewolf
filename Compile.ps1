@@ -44,6 +44,14 @@ if (!(Test-Path "$MSBuildPath" -ErrorAction SilentlyContinue)) {
     $MSBuildPath = $MSBuildPath.Substring($SubStringStart, $MSBuildPath.IndexOf($EndKey) - $SubStringStart) + "\MSBuild\15.0\Bin\MSBuild.exe"
 }
 if (!(Test-Path "$MSBuildPath" -ErrorAction SilentlyContinue)) {
+    if (Test-Path $MSBuildPath.Replace("Enterprise", "Professional")) {
+        $MSBuildPath = $MSBuildPath.Replace("Enterprise", "Professional")
+    }
+    if (Test-Path $MSBuildPath.Replace("Enterprise", "Community")) {
+        $MSBuildPath = $MSBuildPath.Replace("Enterprise", "Community")
+    }
+}
+if (!(Test-Path "$MSBuildPath" -ErrorAction SilentlyContinue)) {
 	Write-Host MSBuild not found. Download from: https://aka.ms/vs/15/release/vs_buildtools.exe
     sleep 10
     exit 1
@@ -209,7 +217,7 @@ if ($RegenerateSpecFlowFeatureFiles.IsPresent) {
 		$FullPath = $ProjectDir.FullName
 		$ProjectName = $ProjectDir.Name
 		if (Test-Path "$FullPath\$ProjectName.csproj") {
-			&"$PSScriptRoot\Dev\packages\SpecFlow.2.1.0\tools\specflow.exe" "generateAll" "$FullPath\$ProjectName.csproj" "/force" "/verbose"
+			&"$PSScriptRoot\Dev\packages\SpecFlow.2.2.0\tools\specflow.exe" "generateAll" "$FullPath\$ProjectName.csproj" "/force" "/verbose"
 		} else {
             Write-Warning -Message "Project file not found in folder $FullPath`nExpected it to be $FullPath\$ProjectName.csproj"
         }

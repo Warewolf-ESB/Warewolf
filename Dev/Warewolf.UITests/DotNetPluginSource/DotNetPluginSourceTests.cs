@@ -93,6 +93,20 @@ namespace Warewolf.UITests
             }
         }
 
+        [TestMethod]
+        [TestCategory("Plugin Sources")]
+        [Owner("Pieter Terblanche")]
+        public void CreateDotNetSource_GivenTabHasChanges_ClosingStudioPromptsChanges()
+        {
+            //Create Source
+            ExplorerUIMap.Click_NewDotNetPluginSource_From_ExplorerContextMenu();
+            const string newDll = @"C:\ProgramData\Warewolf\Resources\TestingDotnetDllCascading.dll";
+            DotNetPluginSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.WorkSurfaceContext.AssemblyComboBox.TextEdit.Text = newDll;
+            Mouse.Click(UIMap.MainStudioWindow.CloseStudioButton);
+            DialogsUIMap.Click_MessageBox_Yes();
+            Assert.IsTrue(DotNetPluginSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.Exists);
+        }
+
         #region Additional test attributes
 
         [TestInitialize()]
