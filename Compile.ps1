@@ -44,6 +44,14 @@ if (!(Test-Path "$MSBuildPath" -ErrorAction SilentlyContinue)) {
     $MSBuildPath = $MSBuildPath.Substring($SubStringStart, $MSBuildPath.IndexOf($EndKey) - $SubStringStart) + "\MSBuild\15.0\Bin\MSBuild.exe"
 }
 if (!(Test-Path "$MSBuildPath" -ErrorAction SilentlyContinue)) {
+    if (Test-Path $MSBuildPath.Replace("Enterprise", "Professional")) {
+        $MSBuildPath = $MSBuildPath.Replace("Enterprise", "Professional")
+    }
+    if (Test-Path $MSBuildPath.Replace("Enterprise", "Community")) {
+        $MSBuildPath = $MSBuildPath.Replace("Enterprise", "Community")
+    }
+}
+if (!(Test-Path "$MSBuildPath" -ErrorAction SilentlyContinue)) {
 	Write-Host MSBuild not found. Download from: https://aka.ms/vs/15/release/vs_buildtools.exe
     sleep 10
     exit 1
