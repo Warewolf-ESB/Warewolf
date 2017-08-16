@@ -103,7 +103,7 @@ namespace Dev2.Activities.Designers2.Script
         public override void UpdateHelpDescriptor(string helpText)
         {
             var mainViewModel = CustomContainer.Get<IShellViewModel>();
-            mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
+            mainViewModel?.HelpViewModel?.UpdateHelpText(helpText);
         }
 
         public void ChooseScriptSources()
