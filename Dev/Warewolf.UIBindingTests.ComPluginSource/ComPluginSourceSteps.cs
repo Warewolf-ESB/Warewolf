@@ -189,7 +189,6 @@ public class COMPluginSourceSteps
         var managePluginSourceControl = ScenarioContext.Current.Get<ManageComPluginSourceControl>(Utils.ViewNameKey);
         var mockStudioUpdateManager = FeatureContext.Current.Get<Mock<IManageComPluginSourceModel>>("updateManager").Object;
         var mockEventAggregator = FeatureContext.Current.Get<Mock<IEventAggregator>>("eventAggregator").Object;
-        var mockSynchronousAsyncWorker = FeatureContext.Current.Get<Mock<SynchronousAsyncWorker>>("synchronousAsyncWorker").Object;
 
         try
         {

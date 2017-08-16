@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Warewolf.UITests.DialogsUIMapClasses;
 using Warewolf.UITests.Explorer.ExplorerUIMapClasses;
 using Warewolf.UITests.RabbitMQSource.RabbitMQSourceUIMapClasses;
 
@@ -37,6 +38,19 @@ namespace Warewolf.UITests.RabbitMQSource
             //Open Source
             ExplorerUIMap.Select_Source_From_ExplorerContextMenu(SourceName);
             Assert.IsTrue(RabbitMQSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.RabbitMqSourceTab.Exists, "RabbitMQ Source Tab does not exist");
+        }
+
+        [TestMethod]
+        [TestCategory("RabbitMQ Sources")]
+        [Owner("Pieter Terblanche")]
+        public void CreateRabbitMQSource_GivenTabHasChanges_ClosingStudioPromptsChanges()
+        {
+            //Create Source
+            ExplorerUIMap.Select_NewRabbitMQSource_From_ExplorerContextMenu();
+            RabbitMQSourceUIMap.Enter_Text_On_RabbitMQSourceTab();
+            Mouse.Click(UIMap.MainStudioWindow.CloseStudioButton);
+            DialogsUIMap.Click_MessageBox_Yes();
+            Assert.IsTrue(RabbitMQSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.RabbitMqSourceTab.Exists);
         }
 
         #region Additional test attributes
@@ -92,7 +106,20 @@ namespace Warewolf.UITests.RabbitMQSource
         }
 
         private RabbitMQSourceUIMap _RabbitMQSourceUIMap;
+        DialogsUIMap DialogsUIMap
+        {
+            get
+            {
+                if (_DialogsUIMap == null)
+                {
+                    _DialogsUIMap = new DialogsUIMap();
+                }
 
+                return _DialogsUIMap;
+            }
+        }
+
+        private DialogsUIMap _DialogsUIMap;
         #endregion
     }
 }
