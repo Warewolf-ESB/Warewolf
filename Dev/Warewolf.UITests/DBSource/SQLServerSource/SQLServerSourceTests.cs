@@ -81,7 +81,7 @@ namespace Warewolf.UITests
             ExplorerUIMap.Click_NewSQLServerSource_From_ExplorerContextMenu();
             DBSourceUIMap.Enter_Text_Into_DatabaseServer_Tab("RSAKLFSVRDEV");
             Mouse.Click(UIMap.MainStudioWindow.CloseStudioButton);
-            DialogsUIMap.Click_MessageBox_Yes();
+            DialogsUIMap.Click_MessageBox_Cancel();
             Assert.IsTrue(DBSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.Exists);
         }
 

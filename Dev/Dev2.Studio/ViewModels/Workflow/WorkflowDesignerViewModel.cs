@@ -2742,16 +2742,21 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 return;
             }
+
             var resourceModel = message.ResourceModel;
             WorkspaceItemRepository.Instance.Remove(resourceModel);
             var unsavedName = resourceModel.ResourceName;
             UpdateResourceModel(message, resourceModel, unsavedName);
             PublishMessages(resourceModel);
             DisposeDesigner();
-            ActivityDesignerHelper.AddDesignerAttributes(this);
-            _workflowInputDataViewModel = WorkflowInputDataViewModel.Create(_resourceModel);
-            UpdateWorkflowLink(GetWorkflowLink());
-            NotifyOfPropertyChange(() => DesignerView);
+
+            if (message.KeepTabOpen)
+            {
+                ActivityDesignerHelper.AddDesignerAttributes(this);
+                _workflowInputDataViewModel = WorkflowInputDataViewModel.Create(_resourceModel);
+                UpdateWorkflowLink(GetWorkflowLink());
+                NotifyOfPropertyChange(() => DesignerView);
+            }
             RemoveUnsavedWorkflowName(unsavedName);
         }
         internal void RemoveUnsavedWorkflowName(string unsavedName)
