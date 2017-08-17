@@ -123,43 +123,41 @@ namespace Dev2.ViewModels
 
         public bool DoDeactivate(bool showMessage)
         {
+            ViewModel.UpdateHelpDescriptor(string.Empty);
             if (showMessage)
             {
-                ViewModel.UpdateHelpDescriptor(string.Empty);
                 if (IsDirty)
                 {
                     MessageBoxResult result = IsDirtyPopup();
                     switch (result)
                     {
-                        case MessageBoxResult.Cancel:
-                        case MessageBoxResult.None:
-                            return false;
                         case MessageBoxResult.No:
                             return true;
                         case MessageBoxResult.Yes:
                             ViewModel.Save();
                             break;
+                        default:
+                            return false;
                     }
                 }
                 else if (ViewModel.HasChanged)
                 {
                     MessageBoxResult result = HasChangedPopup();
-
                     switch (result)
                     {
-                        case MessageBoxResult.Cancel:
-                        case MessageBoxResult.None:
-                            return false;
                         case MessageBoxResult.No:
                             return true;
-                        case MessageBoxResult.Yes:
+                        default:
                             return false;
                     }
+                }
+                else
+                {
+                    return true;
                 }
             }
             else
             {
-                ViewModel.UpdateHelpDescriptor(String.Empty);
                 if (ViewModel.CanSave())
                 {
                     ViewModel.Save();

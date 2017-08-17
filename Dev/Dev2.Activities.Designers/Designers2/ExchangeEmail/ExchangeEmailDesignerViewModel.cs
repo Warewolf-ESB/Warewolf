@@ -402,16 +402,7 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
         public override void UpdateHelpDescriptor(string helpText)
         {
             var mainViewModel = CustomContainer.Get<IShellViewModel>();
-
-            if (mainViewModel != null)
-            {
-                SetHelpModelHelpText(helpText, mainViewModel);
-            }
-        }
-
-        private void SetHelpModelHelpText(string helpText, IShellViewModel mainViewModel)
-        {
-            mainViewModel.HelpViewModel.UpdateHelpText(helpText);
+            mainViewModel?.HelpViewModel?.UpdateHelpText(helpText);
         }
     }
 }
