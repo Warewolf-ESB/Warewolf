@@ -561,15 +561,6 @@ namespace Warewolf.UITests.DialogsUIMapClasses
             Mouse.Click(MessageBoxWindow.OKButton, new Point(35, 11));
         }
 
-        [Given(@"I Click MessageBox Cancel")]
-        [When(@"I Click MessageBox Cancel")]
-        [Then(@"I Click MessageBox Cancel")]
-        [Given(@"I Click MessageBox Cancel")]
-        public void Click_MessageBox_Cancel()
-        {
-            Mouse.Click(MessageBoxWindow.CancelButton, new Point(35, 11));
-        }
-
         public void Duplicate_Test_Name_MessageBox_Ok()
         {
             Assert.IsTrue(MessageBoxWindow.DuplicateTestNameText.Exists, "Duplicate test name message box does not appear on the surface.");
