@@ -22,45 +22,48 @@ namespace Warewolf.Web.UI.Tests.ScreenRecording
 
         public void Dispose()
         {
-            if (!this.stopped)
+            if (!stopped)
             {
-                this.StopRecording(UnitTestOutcome.Error);
+                StopRecording(UnitTestOutcome.Error);
             }
         }
 
         public bool StartRecording(TestContext TestContext)
         {
-            if (this.isRunning)
+            if (isRunning)
             {
                 return false;
             }
 
-            this.stopped = false;
-            this.startDateTime = DateTime.Now;
+            stopped = false;
+            startDateTime = DateTime.Now;
             
-            this.filename = Path.Combine(TestContext.DeploymentDirectory, TestContext.TestName + "_on_" + TestContext.DataRow[0].ToString() + "_on_" + Environment.MachineName) + "." + VideoExtention;
+            filename = Path.Combine(TestContext.DeploymentDirectory, TestContext.TestName + "_on_" + TestContext.DataRow[0].ToString() + "_on_" + Environment.MachineName) + "." + VideoExtention;
 
-            if (File.Exists(this.filename))
+            if (File.Exists(filename))
             {
-                File.Delete(this.filename);
+                File.Delete(filename);
             }
 
-            this.recordingTask = Task.Factory.StartNew(this.Record);
+            recordingTask = Task.Factory.StartNew(Record);
             return true;
         }
 
         public void StopRecording(UnitTestOutcome TestOutcome)
         {
-            this.stopped = true;
-            this.recordingTask.Wait();
+            stopped = true;
+            recordingTask.Wait();
             if (TestOutcome == UnitTestOutcome.Passed)
             {
-                File.Delete(this.filename);
+                File.Delete(filename);
             }
             else
             {
-                string TestResultsRootPath = Directory.GetParent(Directory.GetParent(Directory.GetParent(filename).ToString()).ToString()).ToString();
-                File.Move(filename, Path.Combine(TestResultsRootPath, Path.GetFileName(filename)));
+                if (!File.Exists(filename))
+                {
+                    string TestResultsRootPath = Directory.GetParent(Directory.GetParent(Directory.GetParent(filename).ToString()).ToString()).ToString();
+                    File.Move(filename, Path.Combine(TestResultsRootPath, Path.GetFileName(filename)));
+                }
             }
         }
 
@@ -68,11 +71,11 @@ namespace Warewolf.Web.UI.Tests.ScreenRecording
         {
             try
             {
-                this.isRunning = true;
+                isRunning = true;
 
                 var writer = new VideoFileWriter();
                 writer.Open(
-                    this.filename,
+                    filename,
                     Screen.PrimaryScreen.Bounds.Width,
                     Screen.PrimaryScreen.Bounds.Height,
                     10,
@@ -85,7 +88,7 @@ namespace Warewolf.Web.UI.Tests.ScreenRecording
 
                 var graphics = Graphics.FromImage(bitmap);
                 
-                while (!this.stopped || (DateTime.Now - this.startDateTime < TimeSpan.FromMilliseconds(100)))
+                while (!stopped || (DateTime.Now - startDateTime < TimeSpan.FromMilliseconds(100)))
                 {
                     graphics.CopyFromScreen(0, 0, 0, 0, Screen.PrimaryScreen.Bounds.Size);
                     writer.WriteVideoFrame(bitmap);
@@ -97,7 +100,7 @@ namespace Warewolf.Web.UI.Tests.ScreenRecording
             }
             finally
             {
-                this.isRunning = false;
+                isRunning = false;
             }
         }
     }

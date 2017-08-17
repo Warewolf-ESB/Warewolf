@@ -7,7 +7,6 @@ using OpenQA.Selenium.Remote;
 using OpenQA.Selenium.Support.UI;
 using System;
 using System.Diagnostics;
-using System.Linq;
 
 namespace Warewolf.Web.UI.Tests
 {
@@ -26,10 +25,10 @@ namespace Warewolf.Web.UI.Tests
             {
                 case "Firefox":
                     {
-                        var profileManager = new FirefoxProfileManager();
-                        FirefoxProfile myprofile = profileManager.GetProfile("ExecutionLoggingTestUser");
-                        var firefoxOptions = new FirefoxOptions();
-                        driver = new FirefoxDriver(myprofile);
+                        //FirefoxProfile profile = new FirefoxProfile(@"C:\Windows\FirefoxUser\z3vxiwsp.ExecutionLoggingTestUser");
+                        //profile.SetPreference("extra", "pref");
+                        //driver = new FirefoxDriver(profile);
+                        driver = new FirefoxDriver();
                         break;
                     }
                 case "IE":
@@ -74,7 +73,6 @@ namespace Warewolf.Web.UI.Tests
         public void Quit()
         {
             driver.Quit();
-            driver.Close();
             foreach (var process in Process.GetProcessesByName("opera"))
             {
                 process.Kill();
@@ -83,6 +81,7 @@ namespace Warewolf.Web.UI.Tests
             {
                 process.Kill();
             }
+            driver.Close();
         }
 
         public IOptions Manage()
@@ -130,6 +129,7 @@ namespace Warewolf.Web.UI.Tests
             try
             {
                 IAlert alert = driver.SwitchTo().Alert();
+                //alert.SetAuthenticationCredentials("", "");
                 string alertText = alert.Text;
                 if (acceptAlert)
                 {

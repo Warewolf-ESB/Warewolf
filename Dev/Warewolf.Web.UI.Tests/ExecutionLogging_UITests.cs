@@ -2,7 +2,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 using System;
 using System.Net;
-using Warewolf.Web.UI.Tests;
 
 namespace Warewolf.Web.UI.Tests.ExecutionLoggingTests
 {
@@ -59,20 +58,21 @@ namespace Warewolf.Web.UI.Tests.ExecutionLoggingTests
                     break;
                 case "InternetExplorer":
                     Assert.IsFalse(driver.IsAlertPresent(), driver.CloseAlertAndGetItsText(false));
-                    //Assert.AreEqual("http://localhost:3142 is requesting your username and password.", driver.driver.CloseAlertAndGetItsText(false));
+                    driver.driver.FindElement(By.Id("updateServer")).Click();
                     break;
                 case "Opera":
                     Assert.IsFalse(driver.IsAlertPresent(), driver.CloseAlertAndGetItsText(false));
+                    driver.driver.FindElement(By.Id("updateServer")).Click();
                     break;
                 case "ChromeIncognito":
                     Assert.IsFalse(driver.IsAlertPresent(), driver.CloseAlertAndGetItsText(false));
+                    driver.driver.FindElement(By.Id("updateServer")).Click();
                     break;
                 default:
                     Assert.IsFalse(driver.IsAlertPresent(), driver.CloseAlertAndGetItsText(false));
+                    driver.driver.FindElement(By.Id("updateServer")).Click();
                     break;
             }
-            //Assert.IsFalse(driver.driver.IsAlertPresent(), driver.driver.CloseAlertAndGetItsText(false));
-            driver.driver.FindElement(By.Id("updateServer")).Click();
         }
     }
 }
