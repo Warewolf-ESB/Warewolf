@@ -514,7 +514,7 @@ namespace Warewolf.UITests.DialogsUIMapClasses
         [Given(@"I Click MessageBox Cancel")]
         [When(@"I Click MessageBox Cancel")]
         [Then(@"I Click MessageBox Cancel")]
-        public void ThenIClickMessageBoxCancel()
+        public void Click_MessageBox_Cancel()
         {
             Mouse.Click(MessageBoxWindow.CancelButton);
         }

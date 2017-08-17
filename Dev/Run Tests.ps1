@@ -23,7 +23,7 @@ Param(
   [switch]$Parallelize,
   [string]$Category,
   [string]$ProjectName,
-  [string]$TestList,
+  [string]$TestList="",
   [switch]$RunAllUnitTests,
   [switch]$RunAllServerTests,
   [switch]$RunAllReleaseResourcesTests,
@@ -768,6 +768,22 @@ if ($ProjectName) {
 }
 $TotalNumberOfJobsToRun = $JobNames.length
 if ($TotalNumberOfJobsToRun -gt 0) {
+    if ($VSTestPath -ne "" -and !(Test-Path "$VSTestPath" -ErrorAction SilentlyContinue)) {
+        if (Test-Path $VSTestPath.Replace("Enterprise", "Professional")) {
+            $VSTestPath = $VSTestPath.Replace("Enterprise", "Professional")
+        }
+        if (Test-Path $VSTestPath.Replace("Enterprise", "Community")) {
+            $VSTestPath = $VSTestPath.Replace("Enterprise", "Community")
+        }
+    }
+    if ($MSTestPath -ne "" -and !(Test-Path "$MSTestPath" -ErrorAction SilentlyContinue)) {
+        if (Test-Path $MSTestPath.Replace("Enterprise", "Professional")) {
+            $MSTestPath = $MSTestPath.Replace("Enterprise", "Professional")
+        }
+        if (Test-Path $MSTestPath.Replace("Enterprise", "Community")) {
+            $MSTestPath = $MSTestPath.Replace("Enterprise", "Community")
+        }
+    }
     if (!(Test-Path $VSTestPath) -and !(Test-Path $MSTestPath)) {
         Write-Error -Message "Error cannot find VSTest.console.exe or MSTest.exe. Use either -VSTestPath `'`' or -MSTestPath `'`' parameters to pass paths to one of those files."
         sleep 30
@@ -791,23 +807,19 @@ if ($TotalNumberOfJobsToRun -gt 0) {
 
     if (!$MSTest.IsPresent) {
         # Read playlists and args.
-        if ($TestList = "") {
-            if ($Args.Count -gt 0) {
-                $TestList = $Args.ForEach({ "," + $_ })
-            } else {
-                Get-ChildItem "$TestsPath" -Filter *.playlist | `
-                Foreach-Object{
-	                [xml]$playlistContent = Get-Content $_.FullName
-	                if ($playlistContent.Playlist.Add.count -gt 0) {
-	                    foreach( $TestName in $playlistContent.Playlist.Add) {
-		                    $TestList += "," + $TestName.Test.SubString($TestName.Test.LastIndexOf(".") + 1)
-	                    }
-	                } else {        
-                        if ($playlistContent.Playlist.Add.Test -ne $null) {
-                            $TestList = " /Tests:" + $playlistContent.Playlist.Add.Test.SubString($playlistContent.Playlist.Add.Test.LastIndexOf(".") + 1)
-                        } else {
-	                        Write-Host Error parsing Playlist.Add from playlist file at $_.FullName
-                        }
+        if ($TestList -eq "") {
+            Get-ChildItem "$TestsPath" -Filter *.playlist | `
+            Foreach-Object{
+	            [xml]$playlistContent = Get-Content $_.FullName
+	            if ($playlistContent.Playlist.Add.count -gt 0) {
+	                foreach( $TestName in $playlistContent.Playlist.Add) {
+		                $TestList += "," + $TestName.Test.SubString($TestName.Test.LastIndexOf(".") + 1)
+	                }
+	            } else {        
+                    if ($playlistContent.Playlist.Add.Test -ne $null) {
+                        $TestList = " /Tests:" + $playlistContent.Playlist.Add.Test.SubString($playlistContent.Playlist.Add.Test.LastIndexOf(".") + 1)
+                    } else {
+	                    Write-Host Error parsing Playlist.Add from playlist file at $_.FullName
                     }
                 }
             }
@@ -816,7 +828,7 @@ if ($TotalNumberOfJobsToRun -gt 0) {
             }
         }
     } else {
-        if ($TestList = "") {
+        if ($TestList -eq "") {
             Get-ChildItem "$TestsPath" -Filter *.playlist | `
             Foreach-Object{
 	            [xml]$playlistContent = Get-Content $_.FullName
@@ -898,13 +910,15 @@ if ($TotalNumberOfJobsToRun -gt 0) {
             Set-Location -Path "$TestsResultsPath\.."
 
             # Create full VSTest argument string.
-            if ($TestCategories -ne "") {
-                $TestCategories = " /TestCaseFilter:`"(TestCategory=" + $TestCategories  + ")`""
-            } else {
-                $DefinedCategories = AllCategoriesDefinedForProject $ProjectSpec
-                if ($DefinedCategories.Count -gt 0) {
-                    $TestCategories = $DefinedCategories -join ")&(TestCategory!="
-                    $TestCategories = " /TestCaseFilter:`"(TestCategory!=$TestCategories)`""
+            if ($TestList -eq "") {
+                if ($TestCategories -ne "") {
+                    $TestCategories = " /TestCaseFilter:`"(TestCategory=" + $TestCategories  + ")`""
+                } else {
+                    $DefinedCategories = AllCategoriesDefinedForProject $ProjectSpec
+                    if ($DefinedCategories.Count -gt 0) {
+                        $TestCategories = $DefinedCategories -join ")&(TestCategory!="
+                        $TestCategories = " /TestCaseFilter:`"(TestCategory!=$TestCategories)`""
+                    }
                 }
             }
             if($RecordScreen.IsPresent) {
@@ -936,13 +950,15 @@ if ($TotalNumberOfJobsToRun -gt 0) {
             }
 
             # Create full MSTest argument string.
-            if ($TestCategories -ne "") {
-                $TestCategories = " /category:`"$TestCategories`""
-            } else {
-                $DefinedCategories = AllCategoriesDefinedForProject $ProjectSpec
-                if ($DefinedCategories.Count -gt 0) {
-                    $TestCategories = $DefinedCategories -join "&!"
-                    $TestCategories = " /category:`"!$TestCategories`""
+            if ($TestList -eq "") {
+                if ($TestCategories -ne "") {
+                    $TestCategories = " /category:`"$TestCategories`""
+                } else {
+                    $DefinedCategories = AllCategoriesDefinedForProject $ProjectSpec
+                    if ($DefinedCategories.Count -gt 0) {
+                        $TestCategories = $DefinedCategories -join "&!"
+                        $TestCategories = " /category:`"!$TestCategories`""
+                    }
                 }
             }
             $FullArgsList = $TestAssembliesList + " /resultsfile:`"" + $TestResultsFile + "`"" + $TestList + $TestSettings + $TestCategories
