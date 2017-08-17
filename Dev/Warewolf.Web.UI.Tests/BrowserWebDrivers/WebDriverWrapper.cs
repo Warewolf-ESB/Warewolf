@@ -7,6 +7,7 @@ using OpenQA.Selenium.Remote;
 using OpenQA.Selenium.Support.UI;
 using System;
 using System.Diagnostics;
+using System.Linq;
 
 namespace Warewolf.Web.UI.Tests
 {
@@ -15,8 +16,6 @@ namespace Warewolf.Web.UI.Tests
         public IWebDriver driver;
 #if DEBUG
         public string baseURL = "http://localhost:18405";
-        public string userName = "";
-        public string password = "";
 #else
         public string baseURL = "http://my.warewolf.io";
 #endif
@@ -40,7 +39,20 @@ namespace Warewolf.Web.UI.Tests
                     }
                 case "Opera":
                     {
-                        driver = new OperaDriver(new OperaOptions() { BinaryLocation = @"C:\Program Files\Opera\47.0.2631.55\opera.exe" });
+                        string path = @"C:\Program Files\Opera";
+                        var operaPath = string.Empty;
+
+                        string[] files = System.IO.Directory.GetFiles(path, "*.exe", System.IO.SearchOption.AllDirectories);
+                        foreach (var file in files)
+                        {
+                            if (file.EndsWith("opera.exe"))
+                            {
+                                operaPath = file;
+                                break;
+                            }
+                        }
+
+                        driver = new OperaDriver(new OperaOptions() { BinaryLocation = operaPath });
                         break;
                     }
                 default:
