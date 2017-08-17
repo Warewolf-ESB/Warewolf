@@ -1560,26 +1560,26 @@ namespace Dev2.Studio.ViewModels
 
         void SaveAll(object obj)
         {
+            ContinueShutDown = true;
             for (int index = Items.Count - 1; index >= 0; index--)
             {
                 var workSurfaceContextViewModel = Items[index];
-                ActivateItem(workSurfaceContextViewModel);
+
                 var workSurfaceContext = workSurfaceContextViewModel.WorkSurfaceKey.WorkSurfaceContext;
-                if (workSurfaceContext == WorkSurfaceContext.Workflow)
+                if (workSurfaceContext == WorkSurfaceContext.Help)
                 {
-                    if (workSurfaceContextViewModel.CanSave())
-                    {
-                        workSurfaceContextViewModel.Save();
-                    }
+                    continue;
                 }
-                else
+                DeactivateItem(workSurfaceContextViewModel, true);
+                if (!CloseCurrent)
                 {
-                    var vm = workSurfaceContextViewModel.WorkSurfaceViewModel;
-                    var viewModel = vm as IStudioTab;
-                    viewModel?.DoDeactivate(true);
+                    ContinueShutDown = false;
+                    break;
                 }
             }
         }
+
+        public bool ContinueShutDown;
 
         public void ResetMainView()
         {
@@ -1808,24 +1808,7 @@ namespace Dev2.Studio.ViewModels
         private readonly object _locker = new object();
         void SaveOnBackgroundTask(bool isStudioShutdown)
         {
-
             SaveWorkspaceItems();
-            //            Task t = new Task(() =>
-            //            {
-            //
-            //                lock (_locker)
-            //                {
-            //                    foreach (var ctx in Items.Where(a => true).ToList())
-            //                    {
-            //                        if (!ctx.WorkSurfaceViewModel.DisplayName.ToLower().Contains("version") && ctx.IsEnvironmentConnected())
-            //                        {
-            //                            ctx.Save(true, isStudioShutdown);
-            //                        }
-            //                    }
-            //                }
-            //            });
-            //            t.Start();
-
         }
 
         void SaveAndShutdown(bool isStudioShutdown)
@@ -1843,7 +1826,7 @@ namespace Dev2.Studio.ViewModels
         public MessageBoxResult ShowUnsavedWorkDialog()
         {
             var popupResult = PopupProvider.Show(StringResources.Unsaved_Changes, StringResources.CloseHeader,
-                               MessageBoxButton.YesNo, MessageBoxImage.Information, @"", false, false, true, false, false, false);
+                               MessageBoxButton.YesNoCancel, MessageBoxImage.Information, @"", false, false, true, false, false, false);
 
             return popupResult;
         }
@@ -1851,15 +1834,21 @@ namespace Dev2.Studio.ViewModels
         private bool CallSaveDialog(bool closeStudio)
         {
             var result = ShowUnsavedWorkDialog();
+            // CANCEL - DON'T CLOSE THE STUDIO
             // NO - DON'T SAVE ANYTHING AND CLOSE THE STUDIO
-            // YES - DON'T CLOSE THE STUDIO
-            if (result == MessageBoxResult.Yes)
+            // YES - CALL THE SAVE ALL COMMAND AND CLOSE THE STUDIO
+            if (result == MessageBoxResult.Cancel)
             {
                 closeStudio = false;
             }
-            else if (result == MessageBoxResult.No)
+            else if (result == MessageBoxResult.Yes)
             {
                 closeStudio = true;
+                SaveAllCommand.Execute(null);
+                if (!ContinueShutDown)
+                {
+                    closeStudio = false;
+                }
             }
 
             return closeStudio;
