@@ -4,11 +4,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 15.0.26430.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.UITests", "Warewolf.UITests\Warewolf.UITests.csproj", "{91A84D74-7D50-4046-A8FE-82E52B5DBEE5}"
-	ProjectSection(ProjectDependencies) = postProject
-		{7B37A4F9-645A-4CB0-A44A-C948B614E9E8} = {7B37A4F9-645A-4CB0-A44A-C948B614E9E8}
-	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Web.UI.Tests", "Warewolf.Web.UI.Tests\Warewolf.Web.UI.Tests.csproj", "{7B37A4F9-645A-4CB0-A44A-C948B614E9E8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.UI.Specs", "Warewolf.UI.Specs\Warewolf.UI.Specs.csproj", "{227596D7-ACEE-48AB-8A27-2B20AF449C97}"
 EndProject
@@ -22,10 +17,6 @@ Global
 		{91A84D74-7D50-4046-A8FE-82E52B5DBEE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{91A84D74-7D50-4046-A8FE-82E52B5DBEE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{91A84D74-7D50-4046-A8FE-82E52B5DBEE5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7B37A4F9-645A-4CB0-A44A-C948B614E9E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7B37A4F9-645A-4CB0-A44A-C948B614E9E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7B37A4F9-645A-4CB0-A44A-C948B614E9E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7B37A4F9-645A-4CB0-A44A-C948B614E9E8}.Release|Any CPU.Build.0 = Release|Any CPU
 		{227596D7-ACEE-48AB-8A27-2B20AF449C97}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{227596D7-ACEE-48AB-8A27-2B20AF449C97}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{227596D7-ACEE-48AB-8A27-2B20AF449C97}.Release|Any CPU.ActiveCfg = Release|Any CPU

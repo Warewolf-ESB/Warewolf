@@ -25,10 +25,9 @@ namespace Warewolf.Web.UI.Tests
             {
                 case "Firefox":
                     {
-                        //FirefoxProfile profile = new FirefoxProfile(@"C:\Windows\FirefoxUser\z3vxiwsp.ExecutionLoggingTestUser");
-                        //profile.SetPreference("extra", "pref");
-                        //driver = new FirefoxDriver(profile);
-                        driver = new FirefoxDriver();
+                        FirefoxProfile profile = new FirefoxProfile(@"C:\Windows\FirefoxUser\z3vxiwsp.ExecutionLoggingTestUser");
+                        profile.SetPreference("extra", "pref");
+                        driver = new FirefoxDriver(profile);
                         break;
                     }
                 case "IE":
@@ -129,7 +128,7 @@ namespace Warewolf.Web.UI.Tests
             try
             {
                 IAlert alert = driver.SwitchTo().Alert();
-                //alert.SetAuthenticationCredentials("", "");
+                alert.SetAuthenticationCredentials("", "");
                 string alertText = alert.Text;
                 if (acceptAlert)
                 {
