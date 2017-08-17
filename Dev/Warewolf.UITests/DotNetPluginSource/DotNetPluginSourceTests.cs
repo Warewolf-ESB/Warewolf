@@ -103,7 +103,7 @@ namespace Warewolf.UITests
             const string newDll = @"C:\ProgramData\Warewolf\Resources\TestingDotnetDllCascading.dll";
             DotNetPluginSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.WorkSurfaceContext.AssemblyComboBox.TextEdit.Text = newDll;
             Mouse.Click(UIMap.MainStudioWindow.CloseStudioButton);
-            DialogsUIMap.Click_MessageBox_Yes();
+            DialogsUIMap.Click_MessageBox_Cancel();
             Assert.IsTrue(DotNetPluginSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.Exists);
         }
 

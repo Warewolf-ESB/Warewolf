@@ -213,8 +213,9 @@ namespace Warewolf.Studio.ViewModels
             environmentViewModel.IsConnecting = true;
             if (environmentViewModel.IsConnected)
             {
+                var isDeploy = environmentViewModel.Children.Any(a => a.AllowResourceCheck);
                 environmentViewModel.ForcedRefresh = true;
-                await environmentViewModel.Load(true, refresh);
+                await environmentViewModel.Load(isDeploy, refresh);
                 if (!string.IsNullOrEmpty(SearchText))
                 {
                     Filter(SearchText);

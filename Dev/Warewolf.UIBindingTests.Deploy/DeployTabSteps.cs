@@ -475,19 +475,26 @@ namespace Warewolf.UIBindingTests.Deploy
         [Given(@"I select ""(.*)"" from Source Server")]
         public void WhenISelectFromSourceServer(string resourceName)
         {
-            var viewModel = GetViewModel();
-            var explorerItemViewModels = viewModel.Source.SelectedEnvironment.Children[0].Children;
-            var explorerItemViewModel = explorerItemViewModels.FirstOrDefault(model => model.ResourceName.Contains(resourceName));
-            if (explorerItemViewModel != null)
+            try
             {
-                explorerItemViewModel.CanDeploy = true;
-                explorerItemViewModel.IsResourceChecked = true;
-                ((DeploySourceExplorerViewModelForTesting)viewModel.Source).SetSelecetdItems(new List<IExplorerTreeItem>
+                var viewModel = GetViewModel();
+                var explorerItemViewModels = viewModel.Source.SelectedEnvironment.Children[0].Children;
+                var explorerItemViewModel = explorerItemViewModels.FirstOrDefault(model => model.ResourceName.Contains(resourceName));
+                if (explorerItemViewModel != null)
+                {
+                    explorerItemViewModel.CanDeploy = true;
+                    explorerItemViewModel.IsResourceChecked = true;
+                    ((DeploySourceExplorerViewModelForTesting)viewModel.Source).SetSelecetdItems(new List<IExplorerTreeItem>
                 {
                     explorerItemViewModel
                 });
+                }
+                ThenCalculationIsInvoked();
             }
-            ThenCalculationIsInvoked();
+            catch (Exception ex)
+            {
+                throw new Exception("Could not select resource from source server. Resource: " + resourceName, ex);
+            }
         }
 
         [Then(@"deploy is successfull")]

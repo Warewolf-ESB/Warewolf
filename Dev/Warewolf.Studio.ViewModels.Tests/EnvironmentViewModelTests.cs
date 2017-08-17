@@ -61,7 +61,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(_target.RefreshCommand.CanExecute(null));
 
             //assert
-            Assert.IsFalse(_target.ShowContextMenu);
+            Assert.IsTrue(_target.ShowContextMenu);
         }
 
         [TestMethod]
