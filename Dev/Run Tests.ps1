@@ -768,6 +768,22 @@ if ($ProjectName) {
 }
 $TotalNumberOfJobsToRun = $JobNames.length
 if ($TotalNumberOfJobsToRun -gt 0) {
+    if ($VSTestPath -ne "" -and !(Test-Path "$VSTestPath" -ErrorAction SilentlyContinue)) {
+        if (Test-Path $VSTestPath.Replace("Enterprise", "Professional")) {
+            $VSTestPath = $VSTestPath.Replace("Enterprise", "Professional")
+        }
+        if (Test-Path $VSTestPath.Replace("Enterprise", "Community")) {
+            $VSTestPath = $VSTestPath.Replace("Enterprise", "Community")
+        }
+    }
+    if ($MSTestPath -ne "" -and !(Test-Path "$MSTestPath" -ErrorAction SilentlyContinue)) {
+        if (Test-Path $MSTestPath.Replace("Enterprise", "Professional")) {
+            $MSTestPath = $MSTestPath.Replace("Enterprise", "Professional")
+        }
+        if (Test-Path $MSTestPath.Replace("Enterprise", "Community")) {
+            $MSTestPath = $MSTestPath.Replace("Enterprise", "Community")
+        }
+    }
     if (!(Test-Path $VSTestPath) -and !(Test-Path $MSTestPath)) {
         Write-Error -Message "Error cannot find VSTest.console.exe or MSTest.exe. Use either -VSTestPath `'`' or -MSTestPath `'`' parameters to pass paths to one of those files."
         sleep 30
