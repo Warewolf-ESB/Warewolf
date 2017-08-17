@@ -177,15 +177,29 @@
     };
 
     var OnFailCall = function (request, status, error) {
-        alert(request.responseText + " " + status + " " + error);
+        var serverName = document.getElementById("serverName").value;
         reset();
         hideExecutionAndLoader();
+        if (request.status == 0) {
+            alert("Local Warewolf Server Not Found");
+        }
+        else if (request.status == 200) {
+            alert("Server: " + serverName + " is not running");
+            getLogData();
+        }
     }
 
     var OnErrorCall = function (request, status, error) {
-        alert(request.responseText + " " + status + " " + error);
+        var serverName = document.getElementById("serverName").value;
         reset();
         hideExecutionAndLoader();
+        if (request.status == 0) {
+            alert("Local Warewolf Server Not Found");
+        }
+        else if (request.status == 200) {
+            alert("Server: " + serverName + " is not running");
+            getLogData();
+        }
     }
 
     var createDialog = function () {
@@ -223,6 +237,7 @@
             getLogData();
         });
 
+        
         $("#protocolDropdown").change(function () {
             var value = document.getElementById("protocolDropdown").value;
             if (value == "https") {

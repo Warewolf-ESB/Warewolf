@@ -57,44 +57,44 @@
         <tbody>
             @foreach (var item in Model)
             {
-                <tr>
-                    <td class="exRow" style="display:none;">
-                        @Html.DisplayFor(modelItem => item.ExecutionId)
-                    </td>
-                    <td class="exRow exUrl">
-                        @{
+            <tr>
+                <td class="exRow" style="display:none;">
+                    @Html.DisplayFor(modelItem => item.ExecutionId)
+                </td>
+                <td class="exRow exUrl">
+                    @{
                             if (item.Url == null)
                             {
-                                @Html.DisplayFor(modelItem => item.Url)
+                        @Html.DisplayFor(modelItem => item.Url)
                             }
                             else
                             {
-                                <div id="executionUrlDiv">
-                                    <a class="executionUrl" title="@item.Url" href="@item.Url" target="_blank">@item.Url</a>
-                                </div>
+                        <div id="executionUrlDiv">
+                            <a class="executionUrl" title="@item.Url" href="@item.Url" target="_blank">@item.Url</a>
+                        </div>
                             }
-                        }
-                    </td>
-                    <td class="exRow exTime">
-                        @Html.DisplayFor(modelItem => item.ExecutionTime)
-                    </td>
-                    <td class="exRow exStatus">
-                        @Html.DisplayFor(modelItem => item.Status)
-                    </td>
-                    <td class="exRow exStart">
-                        @Html.DisplayFor(modelItem => item.StartDateTime)
-                    </td>
-                    <td class="exRow exComplete">
-                        @Html.DisplayFor(modelItem => item.CompletedDateTime)
-                    </td>
-                    
-                    <td class="exRow exUser">
-                        @Html.DisplayFor(modelItem => item.User)
-                    </td>
-                    <td>
-                        <a class="details" href="javascript:;">[...]</a>
-                    </td>
-                </tr>
+                    }
+                </td>
+                <td class="exRow exTime">
+                    @Html.DisplayFor(modelItem => item.ExecutionTime)
+                </td>
+                <td class="exRow exStatus">
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+                <td class="exRow exStart">
+                    @Html.DisplayFor(modelItem => item.StartDateTime)
+                </td>
+                <td class="exRow exComplete">
+                    @Html.DisplayFor(modelItem => item.CompletedDateTime)
+                </td>
+
+                <td class="exRow exUser">
+                    @Html.DisplayFor(modelItem => item.User)
+                </td>
+                <td>
+                    <a class="details" href="javascript:;">[...]</a>
+                </td>
+            </tr>
                             }
         </tbody>
     </table>
@@ -116,51 +116,42 @@
             format: 'Y-m-d H:i:s',
             lang: 'en'
         });
-    });
-
-    $(document).ready(function () {
-
-        $("#executionList .details").click(function (e) {
-            e.preventDefault();
-            var serverUrl = getServerUrl();
-            var executionId = $(this).closest("tr").find("td").eq(0).html().trim();
-            var wareWolfUrl = serverUrl + "/services/GetServiceExecutionResult";
-
-            $.ajax({
-                type: "GET",
-                url: wareWolfUrl,
-                data: { ExecutionId: executionId },
-                cache: false,
-                datatype: 'jsonp',
-                crossDomain: true,
-                xhrFields: {
-                    withCredentials: true
-                },
-                success: function (response) {        
-                    createDialog();
-                    window.resultDialog.dialog('open');
-                    $('.exResult').text(response.Result);
-                },
-                fail: OnFailCall,
-                error: OnErrorCall
-            });
-        });
-
-        $('.executionUrl').on('click', function () {
-            return confirm('Are you sure you want to execute the process again?');
-        });
 
         $('#ResetButton').on('click', function (e) {
-            $('#executionFilters input').val(null).trigger('change');
+            $('#executionFilters input').val("").keyup();
+        });
 
-            var table = document.getElementById("executionList");
-            var tr = table.getElementsByTagName("tr");
-            for (i = 0; i < tr.length; i++) {
-                td = tr[i].getElementsByTagName("td")[0];
-                if (td) {
-                    tr[i].style.display = "";
-                }
-            }
+        $(document).ready(function () {
+
+            $("#executionList .details").click(function (e) {
+                e.preventDefault();
+                var serverUrl = getServerUrl();
+                var executionId = $(this).closest("tr").find("td").eq(0).html().trim();
+                var wareWolfUrl = serverUrl + "/services/GetServiceExecutionResult";
+
+                $.ajax({
+                    type: "GET",
+                    url: wareWolfUrl,
+                    data: { ExecutionId: executionId },
+                    cache: false,
+                    datatype: 'jsonp',
+                    crossDomain: true,
+                    xhrFields: {
+                        withCredentials: true
+                    },
+                    success: function (response) {
+                        createDialog();
+                        window.resultDialog.dialog('open');
+                        $('.exResult').text(response.Result);
+                    },
+                    fail: OnFailCall,
+                    error: OnErrorCall
+                });
+            });
+
+            $('.executionUrl').on('click', function () {
+                return confirm('Are you sure you want to execute the process again?');
+            });
         });
     })
 </script>

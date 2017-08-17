@@ -34,8 +34,7 @@
                 rows.each(function () {
                     var row = $(this);
                     var cell = $(row.children(item_tag)[col_index]);
-                    if (filter)
-                    {
+                    if (filter) {
                         var valueToFilterStr = cell.text().toLowerCase();
                         if (col_index == 2) {
                             if (valueToFilterStr.indexOf(filter.toLowerCase()) !== -1) {
@@ -52,7 +51,6 @@
                             }
                         }
                         else if (col_index == 4 || col_index == 5) {
-                            console.log(cell);
                             var dateTimeValue = Date.parse(valueToFilterStr);
                             var filterDateTimeValue = Date.parse(filter);
                             if (dateTimeValue & filterDateTimeValue) {
@@ -74,8 +72,7 @@
                                 }
                             }
                         }
-                        else
-                        {
+                        else {
                             if (valueToFilterStr.indexOf(filter.toLowerCase()) !== -1) {
                                 cell.attr('data-filtered', 'positive');
                             } else {
@@ -90,17 +87,13 @@
                             }
                         }
                     }
-                    else
-                    {
+                    else {
                         cell.attr('data-filtered', 'positive');
-                        if (row.find(item_tag + "[data-filtered=negative]").length > 0)
-                        {
+                        if (row.find(item_tag + "[data-filtered=negative]").length > 0) {
                             row.hide();
                         }
-                        else
-                        {
-                            if (row.find(item_tag + "[data-filtered=positive]").length > 0)
-                            {
+                        else {
+                            if (row.find(item_tag + "[data-filtered=positive]").length > 0) {
                                 row.show();
                             }
                         }
