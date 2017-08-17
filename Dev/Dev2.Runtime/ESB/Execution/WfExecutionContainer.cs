@@ -10,8 +10,6 @@
 
 using System;
 using System.Activities;
-using System.Diagnostics.CodeAnalysis;
-using System.Globalization;
 using System.Threading;
 using Dev2.Activities;
 using Dev2.Common;
@@ -52,8 +50,7 @@ namespace Dev2.Runtime.ESB.Execution
             var user = Thread.CurrentPrincipal;
             if (string.IsNullOrEmpty(DataObject.WebUrl))
             {
-                var dataObjectWebUrl = $"{EnvironmentVariables.WebServerUri}secure/{DataObject.ServiceName}.{DataObject.ReturnType}?" + DataObject.QueryString;
-                DataObject.WebUrl = dataObjectWebUrl.ToLower(CultureInfo.InvariantCulture);
+                DataObject.WebUrl = $"{EnvironmentVariables.WebServerUri}secure/{DataObject.ServiceName}.{DataObject.ReturnType}?" + DataObject.QueryString;
             }
             if (!DataObject.IsSubExecution)
             {

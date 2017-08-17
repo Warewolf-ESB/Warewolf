@@ -23,8 +23,6 @@ using System.Security.Principal;
 using System.ServiceProcess;
 using System.Text;
 using System.Threading;
-using System.Xml;
-using CommandLine;
 using Dev2.Activities;
 using Dev2.Common;
 using Dev2.Common.Common;
