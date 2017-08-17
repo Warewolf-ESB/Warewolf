@@ -894,13 +894,15 @@ if ($TotalNumberOfJobsToRun -gt 0) {
             Set-Location -Path "$TestsResultsPath\.."
 
             # Create full VSTest argument string.
-            if ($TestCategories -ne "") {
-                $TestCategories = " /TestCaseFilter:`"(TestCategory=" + $TestCategories  + ")`""
-            } else {
-                $DefinedCategories = AllCategoriesDefinedForProject $ProjectSpec
-                if ($DefinedCategories.Count -gt 0) {
-                    $TestCategories = $DefinedCategories -join ")&(TestCategory!="
-                    $TestCategories = " /TestCaseFilter:`"(TestCategory!=$TestCategories)`""
+            if ($TestList -eq "") {
+                if ($TestCategories -ne "") {
+                    $TestCategories = " /TestCaseFilter:`"(TestCategory=" + $TestCategories  + ")`""
+                } else {
+                    $DefinedCategories = AllCategoriesDefinedForProject $ProjectSpec
+                    if ($DefinedCategories.Count -gt 0) {
+                        $TestCategories = $DefinedCategories -join ")&(TestCategory!="
+                        $TestCategories = " /TestCaseFilter:`"(TestCategory!=$TestCategories)`""
+                    }
                 }
             }
             if($RecordScreen.IsPresent) {
@@ -932,13 +934,15 @@ if ($TotalNumberOfJobsToRun -gt 0) {
             }
 
             # Create full MSTest argument string.
-            if ($TestCategories -ne "") {
-                $TestCategories = " /category:`"$TestCategories`""
-            } else {
-                $DefinedCategories = AllCategoriesDefinedForProject $ProjectSpec
-                if ($DefinedCategories.Count -gt 0) {
-                    $TestCategories = $DefinedCategories -join "&!"
-                    $TestCategories = " /category:`"!$TestCategories`""
+            if ($TestList -eq "") {
+                if ($TestCategories -ne "") {
+                    $TestCategories = " /category:`"$TestCategories`""
+                } else {
+                    $DefinedCategories = AllCategoriesDefinedForProject $ProjectSpec
+                    if ($DefinedCategories.Count -gt 0) {
+                        $TestCategories = $DefinedCategories -join "&!"
+                        $TestCategories = " /category:`"!$TestCategories`""
+                    }
                 }
             }
             $FullArgsList = $TestAssembliesList + " /resultsfile:`"" + $TestResultsFile + "`"" + $TestList + $TestSettings + $TestCategories
