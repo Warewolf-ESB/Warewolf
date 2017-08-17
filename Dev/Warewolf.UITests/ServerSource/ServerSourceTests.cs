@@ -168,6 +168,23 @@ namespace Warewolf.UITests.ServerSource
             ServerSourceUIMap.Enter_TextIntoAddress_On_ServerSourceTab("tst-ci-remote");
             Mouse.Click(UIMap.MainStudioWindow.CloseStudioButton);
             DialogsUIMap.Click_MessageBox_Yes();
+            DialogsUIMap.Click_MessageBox_Yes();
+            Assert.IsTrue(ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.Exists);
+        }
+
+        [TestMethod]
+        [TestCategory("Server Sources")]
+        [Owner("Pieter Terblanche")]
+        public void CreateNewServer_CreateNewWorkflow_ClosingWorkflowDoesNotError()
+        {
+            //Create Source
+            ExplorerUIMap.Select_NewServerSource_From_ExplorerContextMenu();
+            ServerSourceUIMap.Enter_TextIntoAddress_On_ServerSourceTab("tst-ci-remote");
+            UIMap.Click_NewWorkflow_RibbonButton();
+            WorkflowTabUIMap.Make_Workflow_Savable_By_Dragging_Start();
+            Mouse.Click(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.CloseButton);
+            DialogsUIMap.Click_MessageBox_Yes();
+            UIMap.Save_With_Ribbon_Button_And_Dialog("WorkflowSaveError");
             Assert.IsTrue(ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.Exists);
         }
 

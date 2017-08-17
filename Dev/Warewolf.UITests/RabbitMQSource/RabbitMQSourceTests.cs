@@ -49,7 +49,7 @@ namespace Warewolf.UITests.RabbitMQSource
             ExplorerUIMap.Select_NewRabbitMQSource_From_ExplorerContextMenu();
             RabbitMQSourceUIMap.Enter_Text_On_RabbitMQSourceTab();
             Mouse.Click(UIMap.MainStudioWindow.CloseStudioButton);
-            DialogsUIMap.Click_MessageBox_Yes();
+            DialogsUIMap.Click_MessageBox_Cancel();
             Assert.IsTrue(RabbitMQSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.RabbitMqSourceTab.Exists);
         }
 
