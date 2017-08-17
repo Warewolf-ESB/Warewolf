@@ -23,7 +23,7 @@ Param(
   [switch]$Parallelize,
   [string]$Category,
   [string]$ProjectName,
-  [string]$TestList,
+  [string]$TestList="",
   [switch]$RunAllUnitTests,
   [switch]$RunAllServerTests,
   [switch]$RunAllReleaseResourcesTests,
@@ -791,7 +791,7 @@ if ($TotalNumberOfJobsToRun -gt 0) {
 
     if (!$MSTest.IsPresent) {
         # Read playlists and args.
-        if ($TestList = "") {
+        if ($TestList -eq "") {
             if ($Args.Count -gt 0) {
                 $TestList = $Args.ForEach({ "," + $_ })
             } else {
@@ -816,7 +816,7 @@ if ($TotalNumberOfJobsToRun -gt 0) {
             }
         }
     } else {
-        if ($TestList = "") {
+        if ($TestList -eq "") {
             Get-ChildItem "$TestsPath" -Filter *.playlist | `
             Foreach-Object{
 	            [xml]$playlistContent = Get-Content $_.FullName
