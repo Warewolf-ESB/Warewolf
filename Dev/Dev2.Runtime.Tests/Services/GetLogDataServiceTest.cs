@@ -114,7 +114,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.IsNotNull(logEntriesObject);
             var value = logEntriesObject[0].Url;
             Assert.IsFalse(string.IsNullOrEmpty(value));
-            Assert.AreEqual("http://RSAKLFPETERB:3142/Examples\\Loop Constructs - Select and Apply.XML", value);
+            Assert.AreEqual("http://pieter:3142/secure/hello world.xml?<datalist><name></name></datalist>", value);
 
         }
 
@@ -210,7 +210,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(1, logEntriesObject.Count);
             //------------Execute Test---------------------------
 
-            var stringBuilders = new Dictionary<string, StringBuilder> {{ "User", "DEV2\\nkosinathi.sangweni".ToStringBuilder()}};
+            var stringBuilders = new Dictionary<string, StringBuilder> {{ "User", "DEV2\\pieter.terblanche".ToStringBuilder()}};
             logEntriesJson = getLogDataService.Execute(stringBuilders, null);
             //------------Assert Results-------------------------
             logEntriesObject = JsonConvert.DeserializeObject<List<LogEntry>>(logEntriesJson.ToString());
@@ -233,30 +233,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(1, logEntriesObject.Count);
             //------------Execute Test---------------------------
 
-            var stringBuilders = new Dictionary<string, StringBuilder> {{ "ExecutionId", "674b2bf6-225d-446b-a645-aee95ed731af".ToStringBuilder()}};
-            logEntriesJson = getLogDataService.Execute(stringBuilders, null);
-            //------------Assert Results-------------------------
-            logEntriesObject = JsonConvert.DeserializeObject<List<LogEntry>>(logEntriesJson.ToString());
-            Assert.AreEqual(1, logEntriesObject.Count);
-        }
-
-        [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        [TestCategory("GetLogDataService_Execute")]
-        [DeploymentItem(@"TextFiles\LogFileWithFlatResultsNEwFormat.txt", "TextFiles")]
-        public void GetLogDataService_Execute_WithExecutionTime_ShouldFilterLogData()
-        {
-            //------------Setup for test--------------------------
-            const string logFilePath = @"TextFiles\LogFileWithFlatResultsNEwFormat.txt";
-            var getLogDataService = new GetLogDataService { ServerLogFilePath = logFilePath };
-            //---------------Assert Precondition----------------
-            var logEntriesJson = getLogDataService.Execute(new Dictionary<string, StringBuilder>(), null);
-            Assert.IsNotNull(logEntriesJson);
-            var logEntriesObject = JsonConvert.DeserializeObject<List<LogEntry>>(logEntriesJson.ToString());
-            Assert.AreEqual(1, logEntriesObject.Count);
-            //------------Execute Test---------------------------
-
-            var stringBuilders = new Dictionary<string, StringBuilder> {{ "ExecutionTime", "601".ToStringBuilder()}};
+            var stringBuilders = new Dictionary<string, StringBuilder> {{ "ExecutionId", "06385e0f-ac27-4cf0-af55-7642c3c08ba3".ToStringBuilder()}};
             logEntriesJson = getLogDataService.Execute(stringBuilders, null);
             //------------Assert Results-------------------------
             logEntriesObject = JsonConvert.DeserializeObject<List<LogEntry>>(logEntriesJson.ToString());

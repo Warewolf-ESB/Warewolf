@@ -76,20 +76,14 @@
                         }
                         else
                         {
-                            if (valueToFilterStr.indexOf(filter.toLowerCase()) !== -1)
-                            {
+                            if (valueToFilterStr.indexOf(filter.toLowerCase()) !== -1) {
                                 cell.attr('data-filtered', 'positive');
-                            }
-                            else
-                            {
+                            } else {
                                 cell.attr('data-filtered', 'negative');
                             }
-                            if (row.find(item_tag + "[data-filtered=negative]").length > 0)
-                            {
+                            if (row.find(item_tag + "[data-filtered=negative]").length > 0) {
                                 row.hide();
-                            }
-                            else
-                            {
+                            } else {
                                 if (row.find(item_tag + "[data-filtered=positive]").length > 0) {
                                     row.show();
                                 }
