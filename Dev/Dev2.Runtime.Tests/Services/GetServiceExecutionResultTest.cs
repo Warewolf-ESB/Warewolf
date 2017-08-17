@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
-using System.Text.RegularExpressions;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Communication;
 using Dev2.Runtime.ESB.Management.Services;
@@ -54,7 +53,7 @@ namespace Dev2.Tests.Runtime.Services
             //------------Execute Test---------------------------
 
             //------------Assert Results-------------------------
-            Assert.AreEqual("GetServiceExecutionService", getLogDataService.HandlesType());
+            Assert.AreEqual("GetServiceExecutionResult", getLogDataService.HandlesType());
         }
 
         [TestMethod]
@@ -69,11 +68,11 @@ namespace Dev2.Tests.Runtime.Services
             //---------------Assert Precondition----------------
             Assert.IsNotNull(getLogDataService);
             //------------Execute Test---------------------------
-            var stringBuilders = new Dictionary<string, StringBuilder> { { "ExecutionId", new StringBuilder("674b2bf6-225d-446b-a645-aee95ed731af") } };
+            var stringBuilders = new Dictionary<string, StringBuilder> { { "ExecutionId", new StringBuilder("06385e0f-ac27-4cf0-af55-7642c3c08ba3") } };
             var logEntriesJson = getLogDataService.Execute(stringBuilders, null);
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             var logEntry = serializer.Deserialize<LogEntry>(logEntriesJson.ToString());
-            Assert.AreEqual("", logEntry.Result);
+            Assert.AreEqual("{  \"Message\": \"Hello World.\"}", logEntry.Result);
 
         }
         [TestMethod]
@@ -88,7 +87,7 @@ namespace Dev2.Tests.Runtime.Services
             //---------------Assert Precondition----------------
             Assert.IsNotNull(getLogDataService);
             //------------Execute Test---------------------------
-            var stringBuilders = new Dictionary<string, StringBuilder> { { "ExecutionId", new StringBuilder("674b2bf6-225d-446b-a645-aee95ed731af") } };
+            var stringBuilders = new Dictionary<string, StringBuilder> { { "ExecutionId", new StringBuilder("06385e0f-ac27-4cf0-af55-7642c3c08ba3") } };
             var logEntriesJson = getLogDataService.Execute(stringBuilders, null);
 
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();

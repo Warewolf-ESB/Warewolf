@@ -1,374 +1,139 @@
 ﻿[Header]
-2017-07-13 10:13:20,325 INFO  - [Warewolf Info] - Loading settings provider...  
-2017-07-13 10:13:20,335 INFO  - [Warewolf Info] - done.
-2017-07-13 10:13:20,348 INFO  - [Warewolf Info] - Configure logging...  
-2017-07-13 10:13:20,407 INFO  - [Warewolf Info] - done.
-2017-07-13 10:13:20,666 INFO  - [Warewolf Info] - Loading resource catalog...  
-2017-07-13 10:13:22,866 INFO  - [Warewolf Info] - done.
-2017-07-13 10:13:23,840 INFO  - [Warewolf Info] - SecurityServiceRead
-2017-07-13 10:13:23,843 DEBUG - [Warewolf Debug] - Start Security Read
-2017-07-13 10:13:24,140 INFO  - [Warewolf Info] - SecurityServiceRaisePermissionsModified
-2017-07-13 10:13:24,140 INFO  - [Warewolf Info] - SecurityServiceRaisePermissionsModified
-2017-07-13 10:13:24,140 INFO  - [Warewolf Info] - SecurityServiceRaisePermissionsChanged
-2017-07-13 10:13:24,140 INFO  - [Warewolf Info] - SecurityServiceRaisePermissionsChanged
-2017-07-13 10:13:24,140 INFO  - [Warewolf Info] - SecurityServiceRead
-2017-07-13 10:13:24,178 ERROR - [Warewolf Error] - System.NullReferenceException: Object reference not set to an instance of an object.
-   at Dev2.Runtime.Security.ServerAuthorizationService..ctor(ISecurityService securityService) in C:\Repo\WarewolfESB\Dev\Dev2.Runtime.Services\Security\ServerAuthorizationService.cs:line 49
-2017-07-13 10:13:24,428 INFO  - [Warewolf Info] - 
+2017-08-17 08:42:02,096 INFO  - [Warewolf Info] - Loading settings provider...  
+2017-08-17 08:42:02,101 INFO  - [Warewolf Info] - done.
+2017-08-17 08:42:02,103 INFO  - [Warewolf Info] - Configure logging...  
+2017-08-17 08:42:02,117 INFO  - [Warewolf Info] - done.
+2017-08-17 08:42:02,162 INFO  - [Warewolf Info] - Loading resource catalog...  
+2017-08-17 08:42:03,090 INFO  - [Warewolf Info] - done.
+2017-08-17 08:42:03,651 INFO  - [Warewolf Info] - SecurityServiceRead
+2017-08-17 08:42:03,654 DEBUG - [Warewolf Debug] - Start Security Read
+2017-08-17 08:42:03,927 INFO  - [Warewolf Info] - SecurityServiceRaisePermissionsModified
+2017-08-17 08:42:03,927 INFO  - [Warewolf Info] - SecurityServiceRaisePermissionsModified
+2017-08-17 08:42:03,927 INFO  - [Warewolf Info] - SecurityServiceRaisePermissionsChanged
+2017-08-17 08:42:03,927 INFO  - [Warewolf Info] - SecurityServiceRaisePermissionsChanged
+2017-08-17 08:42:03,927 INFO  - [Warewolf Info] - SecurityServiceRead
+2017-08-17 08:42:03,931 ERROR - [Warewolf Error] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at Dev2.Runtime.Security.ServerAuthorizationService..ctor(ISecurityService securityService) in D:\Source\Repos\Warewolf-ESB\Dev\Dev2.Runtime.Services\Security\ServerAuthorizationService.cs:line 49
+2017-08-17 08:42:04,030 INFO  - [Warewolf Info] - 
 Web Server Started
-2017-07-13 10:13:24,428 INFO  - [Warewolf Info] - Web server listening at http://*:3142/
-2017-07-13 10:13:24,428 INFO  - [Warewolf Info] - Web server listening at https://*:3143/
-2017-07-13 10:13:24,968 INFO  - [Warewolf Info] - Loading server workspace...  
-2017-07-13 10:13:25,045 INFO  - [Warewolf Info] - done.
-2017-07-13 10:13:25,064 INFO  - [Warewolf Info] - Preloading assemblies...  
-2017-07-13 10:13:25,635 INFO  - [Warewolf Info] - done.
-2017-07-13 10:13:25,636 INFO  - [Warewolf Info] - Loading resource activity cache...  
-2017-07-13 10:13:25,652 DEBUG - [Warewolf Debug] - Generating Service Graph
-2017-07-13 10:13:26,175 DEBUG - [Warewolf Debug] - Generated Service Graph
-2017-07-13 10:13:26,178 DEBUG - [Warewolf Debug] - Getting Dynamic Objects
-2017-07-13 10:13:26,763 DEBUG - [Warewolf Debug] - Generating Service Graph
-2017-07-13 10:13:26,840 DEBUG - [Warewolf Debug] - Generated Service Graph
-2017-07-13 10:13:26,840 DEBUG - [Warewolf Debug] - Getting Dynamic Objects
-2017-07-13 10:13:26,979 DEBUG - [Warewolf Debug] - Generating Service Graph
-2017-07-13 10:13:27,047 DEBUG - [Warewolf Debug] - Generated Service Graph
-2017-07-13 10:13:27,047 DEBUG - [Warewolf Debug] - Getting Dynamic Objects
-2017-07-13 10:13:27,081 DEBUG - [Warewolf Debug] - Generating Service Graph
-2017-07-13 10:13:27,136 DEBUG - [Warewolf Debug] - Generated Service Graph
-2017-07-13 10:13:27,136 DEBUG - [Warewolf Debug] - Getting Dynamic Objects
-2017-07-13 10:13:27,164 DEBUG - [Warewolf Debug] - Generating Service Graph
-2017-07-13 10:13:27,293 DEBUG - [Warewolf Debug] - Generated Service Graph
-2017-07-13 10:13:27,293 DEBUG - [Warewolf Debug] - Getting Dynamic Objects
-2017-07-13 10:13:27,313 DEBUG - [Warewolf Debug] - Generating Service Graph
-2017-07-13 10:13:27,370 DEBUG - [Warewolf Debug] - Generated Service Graph
-2017-07-13 10:13:27,370 DEBUG - [Warewolf Debug] - Getting Dynamic Objects
-2017-07-13 10:13:27,383 DEBUG - [Warewolf Debug] - Generating Service Graph
-2017-07-13 10:13:27,484 DEBUG - [Warewolf Debug] - Generated Service Graph
-2017-07-13 10:13:27,484 DEBUG - [Warewolf Debug] - Getting Dynamic Objects
-2017-07-13 10:13:27,496 DEBUG - [Warewolf Debug] - Generating Service Graph
-2017-07-13 10:13:27,564 DEBUG - [Warewolf Debug] - Generated Service Graph
-2017-07-13 10:13:27,564 DEBUG - [Warewolf Debug] - Getting Dynamic Objects
-2017-07-13 10:13:27,573 DEBUG - [Warewolf Debug] - Generating Service Graph
-2017-07-13 10:13:27,605 DEBUG - [Warewolf Debug] - Generated Service Graph
-2017-07-13 10:13:27,605 DEBUG - [Warewolf Debug] - Getting Dynamic Objects
-2017-07-13 10:13:27,693 DEBUG - [Warewolf Debug] - Generating Service Graph
-2017-07-13 10:13:27,728 DEBUG - [Warewolf Debug] - Generated Service Graph
-2017-07-13 10:13:27,728 DEBUG - [Warewolf Debug] - Getting Dynamic Objects
-2017-07-13 10:13:27,747 DEBUG - [Warewolf Debug] - Generating Service Graph
-2017-07-13 10:13:27,776 DEBUG - [Warewolf Debug] - Generated Service Graph
-2017-07-13 10:13:27,776 DEBUG - [Warewolf Debug] - Getting Dynamic Objects
-2017-07-13 10:13:27,783 DEBUG - [Warewolf Debug] - Generating Service Graph
-2017-07-13 10:13:27,815 DEBUG - [Warewolf Debug] - Generated Service Graph
-2017-07-13 10:13:27,815 DEBUG - [Warewolf Debug] - Getting Dynamic Objects
-2017-07-13 10:13:27,823 DEBUG - [Warewolf Debug] - Generating Service Graph
-2017-07-13 10:13:27,858 DEBUG - [Warewolf Debug] - Generated Service Graph
-2017-07-13 10:13:27,858 DEBUG - [Warewolf Debug] - Getting Dynamic Objects
-2017-07-13 10:13:27,867 DEBUG - [Warewolf Debug] - Generating Service Graph
-2017-07-13 10:13:27,905 DEBUG - [Warewolf Debug] - Generated Service Graph
-2017-07-13 10:13:27,905 DEBUG - [Warewolf Debug] - Getting Dynamic Objects
-2017-07-13 10:13:27,918 DEBUG - [Warewolf Debug] - Generating Service Graph
-2017-07-13 10:13:27,981 DEBUG - [Warewolf Debug] - Generated Service Graph
-2017-07-13 10:13:27,981 DEBUG - [Warewolf Debug] - Getting Dynamic Objects
-2017-07-13 10:13:27,994 DEBUG - [Warewolf Debug] - Generating Service Graph
-2017-07-13 10:13:28,030 DEBUG - [Warewolf Debug] - Generated Service Graph
-2017-07-13 10:13:28,030 DEBUG - [Warewolf Debug] - Getting Dynamic Objects
-2017-07-13 10:13:28,039 DEBUG - [Warewolf Debug] - Generating Service Graph
-2017-07-13 10:13:28,080 DEBUG - [Warewolf Debug] - Generated Service Graph
-2017-07-13 10:13:28,080 DEBUG - [Warewolf Debug] - Getting Dynamic Objects
-2017-07-13 10:13:28,092 DEBUG - [Warewolf Debug] - Generating Service Graph
-2017-07-13 10:13:28,130 DEBUG - [Warewolf Debug] - Generated Service Graph
-2017-07-13 10:13:28,131 DEBUG - [Warewolf Debug] - Getting Dynamic Objects
-2017-07-13 10:13:28,143 DEBUG - [Warewolf Debug] - Generating Service Graph
-2017-07-13 10:13:28,179 DEBUG - [Warewolf Debug] - Generated Service Graph
-2017-07-13 10:13:28,179 DEBUG - [Warewolf Debug] - Getting Dynamic Objects
-2017-07-13 10:13:28,187 DEBUG - [Warewolf Debug] - Generating Service Graph
-2017-07-13 10:13:28,243 DEBUG - [Warewolf Debug] - Generated Service Graph
-2017-07-13 10:13:28,243 DEBUG - [Warewolf Debug] - Getting Dynamic Objects
-2017-07-13 10:13:28,256 DEBUG - [Warewolf Debug] - Generating Service Graph
-2017-07-13 10:13:28,317 DEBUG - [Warewolf Debug] - Generated Service Graph
-2017-07-13 10:13:28,317 DEBUG - [Warewolf Debug] - Getting Dynamic Objects
-2017-07-13 10:13:28,372 DEBUG - [Warewolf Debug] - Generating Service Graph
-2017-07-13 10:13:28,410 DEBUG - [Warewolf Debug] - Generated Service Graph
-2017-07-13 10:13:28,410 DEBUG - [Warewolf Debug] - Getting Dynamic Objects
-2017-07-13 10:13:28,419 DEBUG - [Warewolf Debug] - Generating Service Graph
-2017-07-13 10:13:28,457 DEBUG - [Warewolf Debug] - Generated Service Graph
-2017-07-13 10:13:28,457 DEBUG - [Warewolf Debug] - Getting Dynamic Objects
-2017-07-13 10:13:28,467 DEBUG - [Warewolf Debug] - Generating Service Graph
-2017-07-13 10:13:28,511 DEBUG - [Warewolf Debug] - Generated Service Graph
-2017-07-13 10:13:28,511 DEBUG - [Warewolf Debug] - Getting Dynamic Objects
-2017-07-13 10:13:28,524 DEBUG - [Warewolf Debug] - Generating Service Graph
-2017-07-13 10:13:28,580 DEBUG - [Warewolf Debug] - Generated Service Graph
-2017-07-13 10:13:28,580 DEBUG - [Warewolf Debug] - Getting Dynamic Objects
-2017-07-13 10:13:28,591 DEBUG - [Warewolf Debug] - Generating Service Graph
-2017-07-13 10:13:28,625 DEBUG - [Warewolf Debug] - Generated Service Graph
-2017-07-13 10:13:28,625 DEBUG - [Warewolf Debug] - Getting Dynamic Objects
-2017-07-13 10:13:28,633 DEBUG - [Warewolf Debug] - Generating Service Graph
-2017-07-13 10:13:28,684 DEBUG - [Warewolf Debug] - Generated Service Graph
-2017-07-13 10:13:28,684 DEBUG - [Warewolf Debug] - Getting Dynamic Objects
-2017-07-13 10:13:28,695 DEBUG - [Warewolf Debug] - Generating Service Graph
-2017-07-13 10:13:28,743 DEBUG - [Warewolf Debug] - Generated Service Graph
-2017-07-13 10:13:28,743 DEBUG - [Warewolf Debug] - Getting Dynamic Objects
-2017-07-13 10:13:28,754 DEBUG - [Warewolf Debug] - Generating Service Graph
-2017-07-13 10:13:28,785 DEBUG - [Warewolf Debug] - Generated Service Graph
-2017-07-13 10:13:28,785 DEBUG - [Warewolf Debug] - Getting Dynamic Objects
-2017-07-13 10:13:28,835 DEBUG - [Warewolf Debug] - Generating Service Graph
-2017-07-13 10:13:28,863 DEBUG - [Warewolf Debug] - Generated Service Graph
-2017-07-13 10:13:28,863 DEBUG - [Warewolf Debug] - Getting Dynamic Objects
-2017-07-13 10:13:28,871 DEBUG - [Warewolf Debug] - Generating Service Graph
-2017-07-13 10:13:28,890 DEBUG - [Warewolf Debug] - Generated Service Graph
-2017-07-13 10:13:28,890 DEBUG - [Warewolf Debug] - Getting Dynamic Objects
-2017-07-13 10:13:28,898 DEBUG - [Warewolf Debug] - Generating Service Graph
-2017-07-13 10:13:28,945 DEBUG - [Warewolf Debug] - Generated Service Graph
-2017-07-13 10:13:28,945 DEBUG - [Warewolf Debug] - Getting Dynamic Objects
-2017-07-13 10:13:28,957 DEBUG - [Warewolf Debug] - Generating Service Graph
-2017-07-13 10:13:29,023 DEBUG - [Warewolf Debug] - Generated Service Graph
-2017-07-13 10:13:29,023 DEBUG - [Warewolf Debug] - Getting Dynamic Objects
-2017-07-13 10:13:29,032 DEBUG - [Warewolf Debug] - Generating Service Graph
-2017-07-13 10:13:29,088 DEBUG - [Warewolf Debug] - Generated Service Graph
-2017-07-13 10:13:29,088 DEBUG - [Warewolf Debug] - Getting Dynamic Objects
-2017-07-13 10:13:29,099 DEBUG - [Warewolf Debug] - Generating Service Graph
-2017-07-13 10:13:29,116 DEBUG - [Warewolf Debug] - Generated Service Graph
-2017-07-13 10:13:29,116 DEBUG - [Warewolf Debug] - Getting Dynamic Objects
-2017-07-13 10:13:29,121 DEBUG - [Warewolf Debug] - Generating Service Graph
-2017-07-13 10:13:29,172 DEBUG - [Warewolf Debug] - Generated Service Graph
-2017-07-13 10:13:29,172 DEBUG - [Warewolf Debug] - Getting Dynamic Objects
-2017-07-13 10:13:29,187 DEBUG - [Warewolf Debug] - Generating Service Graph
-2017-07-13 10:13:29,252 DEBUG - [Warewolf Debug] - Generated Service Graph
-2017-07-13 10:13:29,252 DEBUG - [Warewolf Debug] - Getting Dynamic Objects
-2017-07-13 10:13:29,262 DEBUG - [Warewolf Debug] - Generating Service Graph
-2017-07-13 10:13:29,297 DEBUG - [Warewolf Debug] - Generated Service Graph
-2017-07-13 10:13:29,298 DEBUG - [Warewolf Debug] - Getting Dynamic Objects
-2017-07-13 10:13:29,309 DEBUG - [Warewolf Debug] - Generating Service Graph
-2017-07-13 10:13:29,356 DEBUG - [Warewolf Debug] - Generated Service Graph
-2017-07-13 10:13:29,356 DEBUG - [Warewolf Debug] - Getting Dynamic Objects
-2017-07-13 10:13:29,462 DEBUG - [Warewolf Debug] - Generating Service Graph
-2017-07-13 10:13:29,513 DEBUG - [Warewolf Debug] - Generated Service Graph
-2017-07-13 10:13:29,513 DEBUG - [Warewolf Debug] - Getting Dynamic Objects
-2017-07-13 10:13:29,526 DEBUG - [Warewolf Debug] - Generating Service Graph
-2017-07-13 10:13:29,583 DEBUG - [Warewolf Debug] - Generated Service Graph
-2017-07-13 10:13:29,583 DEBUG - [Warewolf Debug] - Getting Dynamic Objects
-2017-07-13 10:13:29,596 DEBUG - [Warewolf Debug] - Generating Service Graph
-2017-07-13 10:13:29,637 DEBUG - [Warewolf Debug] - Generated Service Graph
-2017-07-13 10:13:29,637 DEBUG - [Warewolf Debug] - Getting Dynamic Objects
-2017-07-13 10:13:29,737 DEBUG - [Warewolf Debug] - Generating Service Graph
-2017-07-13 10:13:29,779 DEBUG - [Warewolf Debug] - Generated Service Graph
-2017-07-13 10:13:29,779 DEBUG - [Warewolf Debug] - Getting Dynamic Objects
-2017-07-13 10:13:29,789 DEBUG - [Warewolf Debug] - Generating Service Graph
-2017-07-13 10:13:29,831 DEBUG - [Warewolf Debug] - Generated Service Graph
-2017-07-13 10:13:29,831 DEBUG - [Warewolf Debug] - Getting Dynamic Objects
-2017-07-13 10:13:29,843 DEBUG - [Warewolf Debug] - Generating Service Graph
-2017-07-13 10:13:29,894 DEBUG - [Warewolf Debug] - Generated Service Graph
-2017-07-13 10:13:29,894 DEBUG - [Warewolf Debug] - Getting Dynamic Objects
-2017-07-13 10:13:29,924 DEBUG - [Warewolf Debug] - Generating Service Graph
-2017-07-13 10:13:29,970 DEBUG - [Warewolf Debug] - Generated Service Graph
-2017-07-13 10:13:29,970 DEBUG - [Warewolf Debug] - Getting Dynamic Objects
-2017-07-13 10:13:29,979 DEBUG - [Warewolf Debug] - Generating Service Graph
-2017-07-13 10:13:30,008 DEBUG - [Warewolf Debug] - Generated Service Graph
-2017-07-13 10:13:30,008 DEBUG - [Warewolf Debug] - Getting Dynamic Objects
-2017-07-13 10:13:30,015 DEBUG - [Warewolf Debug] - Generating Service Graph
-2017-07-13 10:13:30,083 DEBUG - [Warewolf Debug] - Generated Service Graph
-2017-07-13 10:13:30,083 DEBUG - [Warewolf Debug] - Getting Dynamic Objects
-2017-07-13 10:13:30,096 DEBUG - [Warewolf Debug] - Generating Service Graph
-2017-07-13 10:13:30,158 DEBUG - [Warewolf Debug] - Generated Service Graph
-2017-07-13 10:13:30,158 DEBUG - [Warewolf Debug] - Getting Dynamic Objects
-2017-07-13 10:13:30,171 DEBUG - [Warewolf Debug] - Generating Service Graph
-2017-07-13 10:13:30,181 DEBUG - [Warewolf Debug] - Generated Service Graph
-2017-07-13 10:13:30,181 DEBUG - [Warewolf Debug] - Getting Dynamic Objects
-2017-07-13 10:13:30,185 DEBUG - [Warewolf Debug] - Generating Service Graph
-2017-07-13 10:13:30,216 DEBUG - [Warewolf Debug] - Generated Service Graph
-2017-07-13 10:13:30,216 DEBUG - [Warewolf Debug] - Getting Dynamic Objects
-2017-07-13 10:13:30,223 DEBUG - [Warewolf Debug] - Generating Service Graph
-2017-07-13 10:13:30,252 DEBUG - [Warewolf Debug] - Generated Service Graph
-2017-07-13 10:13:30,252 DEBUG - [Warewolf Debug] - Getting Dynamic Objects
-2017-07-13 10:13:30,260 DEBUG - [Warewolf Debug] - Generating Service Graph
-2017-07-13 10:13:30,278 DEBUG - [Warewolf Debug] - Generated Service Graph
-2017-07-13 10:13:30,278 DEBUG - [Warewolf Debug] - Getting Dynamic Objects
-2017-07-13 10:13:30,282 DEBUG - [Warewolf Debug] - Generating Service Graph
-2017-07-13 10:13:30,380 DEBUG - [Warewolf Debug] - Generated Service Graph
-2017-07-13 10:13:30,380 DEBUG - [Warewolf Debug] - Getting Dynamic Objects
-2017-07-13 10:13:30,395 DEBUG - [Warewolf Debug] - Generating Service Graph
-2017-07-13 10:13:30,483 DEBUG - [Warewolf Debug] - Generated Service Graph
-2017-07-13 10:13:30,483 DEBUG - [Warewolf Debug] - Getting Dynamic Objects
-2017-07-13 10:13:30,500 DEBUG - [Warewolf Debug] - Generating Service Graph
-2017-07-13 10:13:30,525 DEBUG - [Warewolf Debug] - Generated Service Graph
-2017-07-13 10:13:30,525 DEBUG - [Warewolf Debug] - Getting Dynamic Objects
-2017-07-13 10:13:30,530 DEBUG - [Warewolf Debug] - Generating Service Graph
-2017-07-13 10:13:30,555 DEBUG - [Warewolf Debug] - Generated Service Graph
-2017-07-13 10:13:30,555 DEBUG - [Warewolf Debug] - Getting Dynamic Objects
-2017-07-13 10:13:30,561 DEBUG - [Warewolf Debug] - Generating Service Graph
-2017-07-13 10:13:30,608 DEBUG - [Warewolf Debug] - Generated Service Graph
-2017-07-13 10:13:30,608 DEBUG - [Warewolf Debug] - Getting Dynamic Objects
-2017-07-13 10:13:30,624 DEBUG - [Warewolf Debug] - Generating Service Graph
-2017-07-13 10:13:30,624 DEBUG - [Warewolf Debug] - Generated Service Graph
-2017-07-13 10:13:30,642 DEBUG - [Warewolf Debug] - Generating Service Graph
-2017-07-13 10:13:30,643 DEBUG - [Warewolf Debug] - Generated Service Graph
-2017-07-13 10:13:30,644 DEBUG - [Warewolf Debug] - Generating Service Graph
-2017-07-13 10:13:30,644 DEBUG - [Warewolf Debug] - Generated Service Graph
-2017-07-13 10:13:30,644 DEBUG - [Warewolf Debug] - Generating Service Graph
-2017-07-13 10:13:30,644 DEBUG - [Warewolf Debug] - Generated Service Graph
-2017-07-13 10:13:30,644 DEBUG - [Warewolf Debug] - Generating Service Graph
-2017-07-13 10:13:30,644 DEBUG - [Warewolf Debug] - Generated Service Graph
-2017-07-13 10:13:30,645 DEBUG - [Warewolf Debug] - Generating Service Graph
-2017-07-13 10:13:30,645 DEBUG - [Warewolf Debug] - Generated Service Graph
-2017-07-13 10:13:30,645 DEBUG - [Warewolf Debug] - Generating Service Graph
-2017-07-13 10:13:30,645 DEBUG - [Warewolf Debug] - Generated Service Graph
-2017-07-13 10:13:30,646 DEBUG - [Warewolf Debug] - Generating Service Graph
-2017-07-13 10:13:30,646 DEBUG - [Warewolf Debug] - Generated Service Graph
-2017-07-13 10:13:30,646 DEBUG - [Warewolf Debug] - Generating Service Graph
-2017-07-13 10:13:30,646 DEBUG - [Warewolf Debug] - Generated Service Graph
-2017-07-13 10:13:30,647 DEBUG - [Warewolf Debug] - Generating Service Graph
-2017-07-13 10:13:30,647 DEBUG - [Warewolf Debug] - Generated Service Graph
-2017-07-13 10:13:30,647 DEBUG - [Warewolf Debug] - Generating Service Graph
-2017-07-13 10:13:30,647 DEBUG - [Warewolf Debug] - Generated Service Graph
-2017-07-13 10:13:30,647 DEBUG - [Warewolf Debug] - Generating Service Graph
-2017-07-13 10:13:30,647 DEBUG - [Warewolf Debug] - Generated Service Graph
-2017-07-13 10:13:30,648 DEBUG - [Warewolf Debug] - Generating Service Graph
-2017-07-13 10:13:30,648 DEBUG - [Warewolf Debug] - Generated Service Graph
-2017-07-13 10:13:30,648 DEBUG - [Warewolf Debug] - Generating Service Graph
-2017-07-13 10:13:30,648 DEBUG - [Warewolf Debug] - Generated Service Graph
-2017-07-13 10:13:30,649 DEBUG - [Warewolf Debug] - Generating Service Graph
-2017-07-13 10:13:30,649 DEBUG - [Warewolf Debug] - Generated Service Graph
-2017-07-13 10:13:30,649 DEBUG - [Warewolf Debug] - Generating Service Graph
-2017-07-13 10:13:30,649 DEBUG - [Warewolf Debug] - Generated Service Graph
-2017-07-13 10:13:30,649 DEBUG - [Warewolf Debug] - Generating Service Graph
-2017-07-13 10:13:30,650 DEBUG - [Warewolf Debug] - Generated Service Graph
-2017-07-13 10:13:30,653 DEBUG - [Warewolf Debug] - Getting Dynamic Objects
-2017-07-13 10:13:30,673 DEBUG - [Warewolf Debug] - Getting Dynamic Objects
-2017-07-13 10:13:30,679 INFO  - [Warewolf Info] - done.
-2017-07-13 10:13:30,690 INFO  - [Warewolf Info] - Loading Test catalog...  
-2017-07-13 10:13:30,694 INFO  - [Warewolf Info] - done.
-2017-07-13 10:13:30,694 INFO  - [Warewolf Info] - Press <ENTER> to terminate service and/or web server if started
-2017-07-13 10:14:10,088 DEBUG - [Warewolf Debug] - Execute Command Invoked For [ DEV2\nkosinathi.sangweni : NTLM : True ] For Service [ SecurityReadService ]
-2017-07-13 10:14:10,089 DEBUG - [Warewolf Debug] - Execute Command Invoked For [ DEV2\nkosinathi.sangweni : NTLM : True ] For Service [ FetchToolsService ]
-2017-07-13 10:14:10,170 DEBUG - [3681b06a-15b0-4055-8949-deb60408e908] - Mapping Inputs from Environment
-2017-07-13 10:14:10,170 DEBUG - [30332636-37a8-4d32-8f2c-1b659b6fd732] - Mapping Inputs from Environment
-2017-07-13 10:14:10,217 DEBUG - [3681b06a-15b0-4055-8949-deb60408e908] - Creating Invoker
-2017-07-13 10:14:10,217 DEBUG - [30332636-37a8-4d32-8f2c-1b659b6fd732] - Creating Invoker
-2017-07-13 10:14:10,223 DEBUG - [3681b06a-15b0-4055-8949-deb60408e908] - Finding service
-2017-07-13 10:14:10,223 DEBUG - [30332636-37a8-4d32-8f2c-1b659b6fd732] - Finding service
-2017-07-13 10:14:10,225 DEBUG - [3681b06a-15b0-4055-8949-deb60408e908] - Mapping Action Dependencies
-2017-07-13 10:14:10,226 DEBUG - [30332636-37a8-4d32-8f2c-1b659b6fd732] - Mapping Action Dependencies
-2017-07-13 10:14:10,226 DEBUG - [3681b06a-15b0-4055-8949-deb60408e908] - Getting container
-2017-07-13 10:14:10,226 DEBUG - [30332636-37a8-4d32-8f2c-1b659b6fd732] - Getting container
-2017-07-13 10:14:10,468 DEBUG - [Warewolf Debug] - Start Security Read
-2017-07-13 10:14:12,408 INFO  - [Warewolf System Data] - 
-    Process Memory Usage(mb): 19
-    Number of Requests: 2 
-    Time Taken(Ms): 617   
-    Uptime: 00:01:03.2309421
-2017-07-13 10:14:12,710 DEBUG - [Warewolf Debug] - Execute Command Invoked For [ DEV2\nkosinathi.sangweni : NTLM : True ] For Service [ GetServerVersion ]
-2017-07-13 10:14:12,720 DEBUG - [d6a70512-32e4-42c8-91b3-07c51f8bba9f] - Mapping Inputs from Environment
-2017-07-13 10:14:12,721 DEBUG - [d6a70512-32e4-42c8-91b3-07c51f8bba9f] - Creating Invoker
-2017-07-13 10:14:12,721 DEBUG - [d6a70512-32e4-42c8-91b3-07c51f8bba9f] - Finding service
-2017-07-13 10:14:12,721 DEBUG - [d6a70512-32e4-42c8-91b3-07c51f8bba9f] - Mapping Action Dependencies
-2017-07-13 10:14:12,721 DEBUG - [d6a70512-32e4-42c8-91b3-07c51f8bba9f] - Getting container
-2017-07-13 10:14:12,779 DEBUG - [Warewolf Debug] - Execute Command Invoked For [ DEV2\nkosinathi.sangweni : NTLM : True ] For Service [ FindSourcesByType ]
-2017-07-13 10:14:12,787 DEBUG - [32208778-5e6a-4031-b564-0c844838ad32] - Mapping Inputs from Environment
-2017-07-13 10:14:12,787 DEBUG - [32208778-5e6a-4031-b564-0c844838ad32] - Creating Invoker
-2017-07-13 10:14:12,787 DEBUG - [32208778-5e6a-4031-b564-0c844838ad32] - Finding service
-2017-07-13 10:14:12,787 DEBUG - [32208778-5e6a-4031-b564-0c844838ad32] - Mapping Action Dependencies
-2017-07-13 10:14:12,787 DEBUG - [32208778-5e6a-4031-b564-0c844838ad32] - Getting container
-2017-07-13 10:14:12,801 INFO  - [Warewolf Info] - Find Sources By Type. Dev2Server
-2017-07-13 10:14:12,891 DEBUG - [Warewolf Debug] - Execute Command Invoked For [ DEV2\nkosinathi.sangweni : NTLM : True ] For Service [ FetchExplorerItemsService ]
-2017-07-13 10:14:12,901 DEBUG - [aba1efb4-5123-4fdc-96c9-2525debde0cf] - Mapping Inputs from Environment
-2017-07-13 10:14:12,906 DEBUG - [aba1efb4-5123-4fdc-96c9-2525debde0cf] - Creating Invoker
-2017-07-13 10:14:12,906 DEBUG - [aba1efb4-5123-4fdc-96c9-2525debde0cf] - Finding service
-2017-07-13 10:14:12,906 DEBUG - [aba1efb4-5123-4fdc-96c9-2525debde0cf] - Mapping Action Dependencies
-2017-07-13 10:14:12,906 DEBUG - [aba1efb4-5123-4fdc-96c9-2525debde0cf] - Getting container
-2017-07-13 10:14:12,923 INFO  - [Warewolf Info] - Fetch Explorer Items
-2017-07-13 10:14:12,941 DEBUG - [Warewolf Debug] - Execute Command Invoked For [ DEV2\nkosinathi.sangweni : NTLM : True ] For Service [ FindResourcesByID ]
-2017-07-13 10:14:12,963 DEBUG - [09aa7024-4119-427e-9cbb-f4a3084431d0] - Mapping Inputs from Environment
-2017-07-13 10:14:12,963 DEBUG - [09aa7024-4119-427e-9cbb-f4a3084431d0] - Creating Invoker
-2017-07-13 10:14:12,963 DEBUG - [09aa7024-4119-427e-9cbb-f4a3084431d0] - Finding service
-2017-07-13 10:14:12,963 DEBUG - [09aa7024-4119-427e-9cbb-f4a3084431d0] - Mapping Action Dependencies
-2017-07-13 10:14:12,963 DEBUG - [09aa7024-4119-427e-9cbb-f4a3084431d0] - Getting container
-2017-07-13 10:14:18,140 DEBUG - [Warewolf Debug] - Execute Command Invoked For [ DEV2\nkosinathi.sangweni : NTLM : True ] For Service [ FetchResourceDuplicates ]
-2017-07-13 10:14:18,158 DEBUG - [7b99480f-8787-40e3-a32e-937f74656e07] - Mapping Inputs from Environment
-2017-07-13 10:14:18,158 DEBUG - [7b99480f-8787-40e3-a32e-937f74656e07] - Creating Invoker
-2017-07-13 10:14:18,158 DEBUG - [7b99480f-8787-40e3-a32e-937f74656e07] - Finding service
-2017-07-13 10:14:18,158 DEBUG - [7b99480f-8787-40e3-a32e-937f74656e07] - Mapping Action Dependencies
-2017-07-13 10:14:18,158 DEBUG - [7b99480f-8787-40e3-a32e-937f74656e07] - Getting container
-2017-07-13 10:14:18,334 INFO  - [Warewolf Info] - Fetch Duplicate ResourcesError
-2017-07-13 10:15:12,403 INFO  - [Warewolf System Data] - 
-    Process Memory Usage(mb): 20
+2017-08-17 08:42:04,030 INFO  - [Warewolf Info] - Web server listening at http://*:3142/
+2017-08-17 08:42:04,030 INFO  - [Warewolf Info] - Web server listening at https://*:3143/
+2017-08-17 08:42:05,866 INFO  - [Warewolf Info] - Loading server workspace...  
+2017-08-17 08:42:05,888 INFO  - [Warewolf Info] - done.
+2017-08-17 08:42:05,891 INFO  - [Warewolf Info] - Preloading assemblies...  
+2017-08-17 08:42:06,023 INFO  - [Warewolf Info] - done.
+2017-08-17 08:42:06,023 INFO  - [Warewolf Info] - Loading resource activity cache...  
+2017-08-17 08:42:06,404 ERROR - [Warewolf Error] - System.Activities.InvalidWorkflowException: The following errors were encountered while processing the workflow tree:
+'DynamicActivity': The private implementation of activity '1: DynamicActivity' has the following validation error:   Flowchart 'WorkflowWithNoStartNodeConnected' does not have a StartNode.
+   at System.Activities.Validation.ActivityValidationServices.ThrowIfViolationsExist(IList`1 validationErrors, ExceptionReason reason)
+   at System.Activities.WorkflowInspectionServices.<GetActivities>d__3.MoveNext()
+   at System.Linq.Enumerable.FirstOrDefault[TSource](IEnumerable`1 source)
+   at Dev2.Activities.ActivityParser.Parse(DynamicActivity dynamicActivity, List`1 seenActivities) in D:\Source\Repos\Warewolf-ESB\Dev\Dev2.Activities\Activities\ActivityParser.cs:line 23
+2017-08-17 08:42:06,406 ERROR - [Warewolf Error] - System.Activities.InvalidWorkflowException: The following errors were encountered while processing the workflow tree:
+'DynamicActivity': The private implementation of activity '1: DynamicActivity' has the following validation error:   Flowchart 'WorkflowWithNoStartNodeConnected' does not have a StartNode.
+   at System.Activities.Validation.ActivityValidationServices.ThrowIfViolationsExist(IList`1 validationErrors, ExceptionReason reason)
+   at System.Activities.WorkflowInspectionServices.<GetActivities>d__3.MoveNext()
+   at System.Linq.Enumerable.FirstOrDefault[TSource](IEnumerable`1 source)
+   at Dev2.Activities.ActivityParser.Parse(DynamicActivity dynamicActivity, List`1 seenActivities) in D:\Source\Repos\Warewolf-ESB\Dev\Dev2.Activities\Activities\ActivityParser.cs:line 51
+   at Dev2.Activities.ActivityParser.Parse(DynamicActivity dynamicActivity) in D:\Source\Repos\Warewolf-ESB\Dev\Dev2.Activities\Activities\ActivityParser.cs:line 171
+   at Warewolf.ResourceManagement.ResourceActivityCache.Parse(DynamicActivity activity, Guid resourceIdGuid, Boolean failOnException) in D:\Source\Repos\Warewolf-ESB\Dev\Warewolf.ResourceManagement\ResourceActivityCache.cs:line 35
+2017-08-17 08:42:08,820 INFO  - [Warewolf Info] - done.
+2017-08-17 08:42:08,825 INFO  - [Warewolf Info] - Loading Test catalog...  
+2017-08-17 08:42:08,927 INFO  - [Warewolf Info] - done.
+2017-08-17 08:42:11,699 DEBUG - [Warewolf Debug] - Execute Command Invoked For [ DEV2\Pieter.Terblanche : NTLM : True ] For Service [ SecurityReadService ]
+2017-08-17 08:42:11,739 DEBUG - [Warewolf Debug] - Execute Command Invoked For [ DEV2\Pieter.Terblanche : NTLM : True ] For Service [ FetchToolsService ]
+2017-08-17 08:42:11,744 DEBUG - [400112d0-3323-4d85-875c-e9f28b34d15b] - Remote Invoke
+2017-08-17 08:42:11,744 DEBUG - [400112d0-3323-4d85-875c-e9f28b34d15b] - Mapping Inputs from Environment
+2017-08-17 08:42:11,757 DEBUG - [c0ba9268-dcf6-4a5c-84b7-db87d653090b] - Remote Invoke
+2017-08-17 08:42:11,757 DEBUG - [c0ba9268-dcf6-4a5c-84b7-db87d653090b] - Mapping Inputs from Environment
+2017-08-17 08:42:11,789 DEBUG - [400112d0-3323-4d85-875c-e9f28b34d15b] - Creating Invoker
+2017-08-17 08:42:11,789 DEBUG - [c0ba9268-dcf6-4a5c-84b7-db87d653090b] - Creating Invoker
+2017-08-17 08:42:11,794 DEBUG - [400112d0-3323-4d85-875c-e9f28b34d15b] - Finding service
+2017-08-17 08:42:11,794 DEBUG - [c0ba9268-dcf6-4a5c-84b7-db87d653090b] - Finding service
+2017-08-17 08:42:11,795 DEBUG - [400112d0-3323-4d85-875c-e9f28b34d15b] - Mapping Action Dependencies
+2017-08-17 08:42:11,795 DEBUG - [c0ba9268-dcf6-4a5c-84b7-db87d653090b] - Mapping Action Dependencies
+2017-08-17 08:42:11,795 DEBUG - [400112d0-3323-4d85-875c-e9f28b34d15b] - Getting container
+2017-08-17 08:42:11,795 DEBUG - [c0ba9268-dcf6-4a5c-84b7-db87d653090b] - Getting container
+2017-08-17 08:42:11,923 DEBUG - [Warewolf Debug] - Start Security Read
+2017-08-17 08:42:12,391 DEBUG - [Warewolf Debug] - Execute Command Invoked For [ DEV2\Pieter.Terblanche : NTLM : True ] For Service [ GetServerVersion ]
+2017-08-17 08:42:12,393 DEBUG - [790ba9d2-41b1-43f0-b6ff-5e680cdaa221] - Remote Invoke
+2017-08-17 08:42:12,393 DEBUG - [790ba9d2-41b1-43f0-b6ff-5e680cdaa221] - Mapping Inputs from Environment
+2017-08-17 08:42:12,393 DEBUG - [790ba9d2-41b1-43f0-b6ff-5e680cdaa221] - Creating Invoker
+2017-08-17 08:42:12,393 DEBUG - [790ba9d2-41b1-43f0-b6ff-5e680cdaa221] - Finding service
+2017-08-17 08:42:12,393 DEBUG - [790ba9d2-41b1-43f0-b6ff-5e680cdaa221] - Mapping Action Dependencies
+2017-08-17 08:42:12,393 DEBUG - [790ba9d2-41b1-43f0-b6ff-5e680cdaa221] - Getting container
+2017-08-17 08:42:12,469 DEBUG - [Warewolf Debug] - Execute Command Invoked For [ DEV2\Pieter.Terblanche : NTLM : True ] For Service [ FindSourcesByType ]
+2017-08-17 08:42:12,472 DEBUG - [c3639e2d-d400-40af-a721-2e555670c6d7] - Remote Invoke
+2017-08-17 08:42:12,472 DEBUG - [c3639e2d-d400-40af-a721-2e555670c6d7] - Mapping Inputs from Environment
+2017-08-17 08:42:12,472 DEBUG - [c3639e2d-d400-40af-a721-2e555670c6d7] - Creating Invoker
+2017-08-17 08:42:12,472 DEBUG - [c3639e2d-d400-40af-a721-2e555670c6d7] - Finding service
+2017-08-17 08:42:12,472 DEBUG - [c3639e2d-d400-40af-a721-2e555670c6d7] - Mapping Action Dependencies
+2017-08-17 08:42:12,472 DEBUG - [c3639e2d-d400-40af-a721-2e555670c6d7] - Getting container
+2017-08-17 08:42:12,483 INFO  - [Warewolf Info] - Find Sources By Type. Dev2Server
+2017-08-17 08:42:12,595 DEBUG - [Warewolf Debug] - Execute Command Invoked For [ DEV2\Pieter.Terblanche : NTLM : True ] For Service [ FetchExplorerItemsService ]
+2017-08-17 08:42:12,597 DEBUG - [ea4ad998-8b6a-4e61-b7b5-be6ec6e7577e] - Remote Invoke
+2017-08-17 08:42:12,597 DEBUG - [ea4ad998-8b6a-4e61-b7b5-be6ec6e7577e] - Mapping Inputs from Environment
+2017-08-17 08:42:12,597 DEBUG - [ea4ad998-8b6a-4e61-b7b5-be6ec6e7577e] - Creating Invoker
+2017-08-17 08:42:12,597 DEBUG - [ea4ad998-8b6a-4e61-b7b5-be6ec6e7577e] - Finding service
+2017-08-17 08:42:12,597 DEBUG - [ea4ad998-8b6a-4e61-b7b5-be6ec6e7577e] - Mapping Action Dependencies
+2017-08-17 08:42:12,597 DEBUG - [ea4ad998-8b6a-4e61-b7b5-be6ec6e7577e] - Getting container
+2017-08-17 08:42:12,610 INFO  - [Warewolf Info] - Fetch Explorer Items
+2017-08-17 08:42:12,611 DEBUG - [Warewolf Debug] - Execute Command Invoked For [ DEV2\Pieter.Terblanche : NTLM : True ] For Service [ FindResourcesByID ]
+2017-08-17 08:42:12,616 DEBUG - [417a3319-ff13-4853-a28b-45a0c9e255a4] - Remote Invoke
+2017-08-17 08:42:12,616 DEBUG - [417a3319-ff13-4853-a28b-45a0c9e255a4] - Mapping Inputs from Environment
+2017-08-17 08:42:12,616 DEBUG - [417a3319-ff13-4853-a28b-45a0c9e255a4] - Creating Invoker
+2017-08-17 08:42:12,616 DEBUG - [417a3319-ff13-4853-a28b-45a0c9e255a4] - Finding service
+2017-08-17 08:42:12,616 DEBUG - [417a3319-ff13-4853-a28b-45a0c9e255a4] - Mapping Action Dependencies
+2017-08-17 08:42:12,616 DEBUG - [417a3319-ff13-4853-a28b-45a0c9e255a4] - Getting container
+2017-08-17 08:42:16,898 DEBUG - [Warewolf Debug] - Execute Command Invoked For [ DEV2\Pieter.Terblanche : NTLM : True ] For Service [ FetchResourceDuplicates ]
+2017-08-17 08:42:16,900 DEBUG - [0e517a04-188d-4757-a0c9-b492bf26bb35] - Remote Invoke
+2017-08-17 08:42:16,900 DEBUG - [0e517a04-188d-4757-a0c9-b492bf26bb35] - Mapping Inputs from Environment
+2017-08-17 08:42:16,900 DEBUG - [0e517a04-188d-4757-a0c9-b492bf26bb35] - Creating Invoker
+2017-08-17 08:42:16,900 DEBUG - [0e517a04-188d-4757-a0c9-b492bf26bb35] - Finding service
+2017-08-17 08:42:16,900 DEBUG - [0e517a04-188d-4757-a0c9-b492bf26bb35] - Mapping Action Dependencies
+2017-08-17 08:42:16,900 DEBUG - [0e517a04-188d-4757-a0c9-b492bf26bb35] - Getting container
+2017-08-17 08:42:17,013 INFO  - [Warewolf Info] - Fetch Duplicate ResourcesError
+2017-08-17 08:42:59,617 INFO  - [Warewolf System Data] - 
+    Process Memory Usage(mb): 11
     Number of Requests: 7 
-    Time Taken(Ms): 1808   
-    Uptime: 00:02:03.2298750
-2017-07-13 10:16:12,399 INFO  - [Warewolf System Data] - 
-    Process Memory Usage(mb): 20
-    Number of Requests: 7 
-    Time Taken(Ms): 1808   
-    Uptime: 00:03:03.2259617
-2017-07-13 10:16:55,545 DEBUG - [Warewolf Debug] - Execute Command Invoked For [ DEV2\nkosinathi.sangweni : NTLM : True ] For Service [ FindResourcesByID ]
-2017-07-13 10:16:55,613 DEBUG - [03659971-6b50-42e7-af3e-1177fc2e86ed] - Mapping Inputs from Environment
-2017-07-13 10:16:55,613 DEBUG - [03659971-6b50-42e7-af3e-1177fc2e86ed] - Creating Invoker
-2017-07-13 10:16:55,613 DEBUG - [03659971-6b50-42e7-af3e-1177fc2e86ed] - Finding service
-2017-07-13 10:16:55,613 DEBUG - [03659971-6b50-42e7-af3e-1177fc2e86ed] - Mapping Action Dependencies
-2017-07-13 10:16:55,613 DEBUG - [03659971-6b50-42e7-af3e-1177fc2e86ed] - Getting container
-2017-07-13 10:16:55,825 DEBUG - [Warewolf Debug] - Execute Command Invoked For [ DEV2\nkosinathi.sangweni : NTLM : True ] For Service [ FetchResourceDefinitionService ]
-2017-07-13 10:16:55,856 DEBUG - [316977c0-eb39-44cb-8a76-2b886fb68363] - Mapping Inputs from Environment
-2017-07-13 10:16:55,857 DEBUG - [316977c0-eb39-44cb-8a76-2b886fb68363] - Creating Invoker
-2017-07-13 10:16:55,857 DEBUG - [316977c0-eb39-44cb-8a76-2b886fb68363] - Finding service
-2017-07-13 10:16:55,857 DEBUG - [316977c0-eb39-44cb-8a76-2b886fb68363] - Mapping Action Dependencies
-2017-07-13 10:16:55,857 DEBUG - [316977c0-eb39-44cb-8a76-2b886fb68363] - Getting container
-2017-07-13 10:16:55,889 INFO  - [Warewolf Info] - Fetch Resource definition. ResourceId: ea916fa6-76ca-4243-841c-74fa18dd8c14
-2017-07-13 10:16:57,192 DEBUG - [Warewolf Debug] - Execute Command Invoked For [ DEV2\nkosinathi.sangweni : NTLM : True ] For Service [ FindResourcesByID ]
-2017-07-13 10:16:57,199 DEBUG - [83c71b02-f04d-4737-918e-6671bfe63675] - Mapping Inputs from Environment
-2017-07-13 10:16:57,199 DEBUG - [83c71b02-f04d-4737-918e-6671bfe63675] - Creating Invoker
-2017-07-13 10:16:57,199 DEBUG - [83c71b02-f04d-4737-918e-6671bfe63675] - Finding service
-2017-07-13 10:16:57,199 DEBUG - [83c71b02-f04d-4737-918e-6671bfe63675] - Mapping Action Dependencies
-2017-07-13 10:16:57,199 DEBUG - [83c71b02-f04d-4737-918e-6671bfe63675] - Getting container
-2017-07-13 10:17:07,092 DEBUG - [Warewolf Debug] - Execute Command Invoked For [ DEV2\nkosinathi.sangweni : NTLM : True ] For Service [ Examples\Loop Constructs - Select and Apply ]
-2017-07-13 10:17:07,105 DEBUG - [674b2bf6-225d-446b-a645-aee95ed731af] - Mapping Inputs from Environment
-2017-07-13 10:17:07,117 DEBUG - [674b2bf6-225d-446b-a645-aee95ed731af] - Creating Invoker
-2017-07-13 10:17:07,117 DEBUG - [674b2bf6-225d-446b-a645-aee95ed731af] - Finding service
-2017-07-13 10:17:07,117 DEBUG - [674b2bf6-225d-446b-a645-aee95ed731af] - Mapping Action Dependencies
-2017-07-13 10:17:07,117 DEBUG - [674b2bf6-225d-446b-a645-aee95ed731af] - Getting container
-2017-07-13 10:17:07,232 DEBUG - [674b2bf6-225d-446b-a645-aee95ed731af] - About to execute web request [ Examples\Loop Constructs - Select and Apply ] for User [ DEV2\nkosinathi.sangweni : NTLM : True ] with DataObject Payload [  ]
-2017-07-13 10:17:07,232 DEBUG - [674b2bf6-225d-446b-a645-aee95ed731af] - Request URL [ http://RSAKLFPETERB:3142/Examples\Loop Constructs - Select and Apply.XML ]
-2017-07-13 10:17:07,232 DEBUG - [674b2bf6-225d-446b-a645-aee95ed731af] - Entered Wf Container
-2017-07-13 10:17:07,233 INFO  - [674b2bf6-225d-446b-a645-aee95ed731af] - Started Execution for Service Name:Loop Constructs - Select and Apply Resource Id:ea916fa6-76ca-4243-841c-74fa18dd8c14 Mode:Debug
-2017-07-13 10:17:07,284 DEBUG - [Warewolf Debug] - EnvironmentID: 00000000-0000-0000-0000-000000000000 Debug:Loop Constructs - Select and Apply
-2017-07-13 10:17:07,294 DEBUG - [674b2bf6-225d-446b-a645-aee95ed731af] - Getting Resource to Execute
-2017-07-13 10:17:07,295 DEBUG - [674b2bf6-225d-446b-a645-aee95ed731af] - Fetching Execution Plan for ea916fa6-76ca-4243-841c-74fa18dd8c14 for workspace 444fa69f-cfba-4f7d-be4c-d8e4a6a63233
-2017-07-13 10:17:07,301 DEBUG - [Warewolf Debug] - Generating Service Graph
-2017-07-13 10:17:07,361 DEBUG - [Warewolf Debug] - Generated Service Graph
-2017-07-13 10:17:07,361 DEBUG - [Warewolf Debug] - Getting Dynamic Objects
-2017-07-13 10:17:07,372 DEBUG - [674b2bf6-225d-446b-a645-aee95ed731af] - Got Resource to Execute
-2017-07-13 10:17:07,381 INFO  - [Warewolf Info] - Debug Already Started
-2017-07-13 10:17:07,400 DEBUG - [Warewolf Debug] - EnvironmentID: 00000000-0000-0000-0000-000000000000 Debug:Use the Select and Apply tool to:
-2017-07-13 10:17:07,401 INFO  - [Warewolf Info] - Debug Already Started
-2017-07-13 10:17:07,401 DEBUG - [Warewolf Debug] - EnvironmentID: 00000000-0000-0000-0000-000000000000 Debug:EXAMPLE 1 - Get data from Object
-2017-07-13 10:17:07,404 INFO  - [Warewolf Info] - Debug Already Started
-2017-07-13 10:17:07,404 DEBUG - [Warewolf Debug] - EnvironmentID: 00000000-0000-0000-0000-000000000000 Debug:SETUP
-2017-07-13 10:17:07,634 INFO  - [Warewolf Info] - Debug Already Started
-2017-07-13 10:17:07,634 DEBUG - [Warewolf Debug] - EnvironmentID: 00000000-0000-0000-0000-000000000000 Debug:Assign Object (5)
-2017-07-13 10:17:07,635 DEBUG - [Warewolf Debug] - EnvironmentID: 00000000-0000-0000-0000-000000000000 Debug:SETUP
-2017-07-13 10:17:07,650 INFO  - [Warewolf Info] - Debug Already Started
-2017-07-13 10:17:07,654 DEBUG - [Warewolf Debug] - EnvironmentID: 00000000-0000-0000-0000-000000000000 Debug:Select and apply
-2017-07-13 10:17:07,699 INFO  - [Warewolf Info] - Debug Already Started
-2017-07-13 10:17:07,699 DEBUG - [Warewolf Debug] - EnvironmentID: 00000000-0000-0000-0000-000000000000 Debug:Assign (1)
-2017-07-13 10:17:07,700 DEBUG - [Warewolf Debug] - EnvironmentID: 00000000-0000-0000-0000-000000000000 Debug:Select and apply
-2017-07-13 10:17:07,700 INFO  - [Warewolf Info] - Debug Already Started
-2017-07-13 10:17:07,701 DEBUG - [Warewolf Debug] - EnvironmentID: 00000000-0000-0000-0000-000000000000 Debug:Comment
-2017-07-13 10:17:07,701 INFO  - [Warewolf Info] - Debug Already Started
-2017-07-13 10:17:07,702 DEBUG - [Warewolf Debug] - EnvironmentID: 00000000-0000-0000-0000-000000000000 Debug:EXAMPLE 2 - Update an Object
-2017-07-13 10:17:07,706 INFO  - [Warewolf Info] - Debug Already Started
-2017-07-13 10:17:07,706 DEBUG - [Warewolf Debug] - EnvironmentID: 00000000-0000-0000-0000-000000000000 Debug:Select and apply
-2017-07-13 10:17:07,725 INFO  - [Warewolf Info] - Debug Already Started
-2017-07-13 10:17:07,726 DEBUG - [Warewolf Debug] - EnvironmentID: 00000000-0000-0000-0000-000000000000 Debug:Case Conversion (1)
-2017-07-13 10:17:07,726 INFO  - [Warewolf Info] - Debug Already Started
-2017-07-13 10:17:07,726 DEBUG - [Warewolf Debug] - EnvironmentID: 00000000-0000-0000-0000-000000000000 Debug:Case Conversion (1)
-2017-07-13 10:17:07,727 INFO  - [Warewolf Info] - Debug Already Started
-2017-07-13 10:17:07,727 DEBUG - [Warewolf Debug] - EnvironmentID: 00000000-0000-0000-0000-000000000000 Debug:Case Conversion (1)
-2017-07-13 10:17:07,727 DEBUG - [Warewolf Debug] - EnvironmentID: 00000000-0000-0000-0000-000000000000 Debug:Select and apply
-2017-07-13 10:17:07,727 INFO  - [Warewolf Info] - Debug Already Started
-2017-07-13 10:17:07,727 DEBUG - [Warewolf Debug] - EnvironmentID: 00000000-0000-0000-0000-000000000000 Debug:Friend Names are now in Upper Case
-2017-07-13 10:17:07,738 DEBUG - [Warewolf Debug] - EnvironmentID: 00000000-0000-0000-0000-000000000000 Debug:Loop Constructs - Select and Apply
-2017-07-13 10:17:07,834 DEBUG - [674b2bf6-225d-446b-a645-aee95ed731af] - Execution Result :
-{  "PetsName": "The Guv",  "Pet": {    "Name": "The Guv",    "Type": "Dog",    "Friend": [      {        "Name": "DAISY"      },      {        "Name": "ALEX"      },      {        "Name": "JAMIE"      }    ]  }}
-2017-07-13 10:17:07,834 INFO  - [674b2bf6-225d-446b-a645-aee95ed731af] - Completed Execution for Service Name:Loop Constructs - Select and Apply Resource Id: ea916fa6-76ca-4243-841c-74fa18dd8c14 Mode:Debug
-2017-07-13 10:17:12,406 INFO  - [Warewolf System Data] - 
-    Process Memory Usage(mb): 23
-    Number of Requests: 11 
-    Time Taken(Ms): 2635   
-    Uptime: 00:04:03.2334898
+    Time Taken(Ms): 1189   
+    Uptime: 00:01:00.0775736
+2017-08-17 08:43:20,718 DEBUG - [Warewolf Debug] - Execute Command Invoked For [ DEV2\Pieter.Terblanche : NTLM : True ] For Service [ FindResourcesByID ]
+2017-08-17 08:43:20,720 DEBUG - [4a186503-6889-439d-8aac-157068ea95d2] - Remote Invoke
+2017-08-17 08:43:20,720 DEBUG - [4a186503-6889-439d-8aac-157068ea95d2] - Mapping Inputs from Environment
+2017-08-17 08:43:20,721 DEBUG - [4a186503-6889-439d-8aac-157068ea95d2] - Creating Invoker
+2017-08-17 08:43:20,721 DEBUG - [4a186503-6889-439d-8aac-157068ea95d2] - Finding service
+2017-08-17 08:43:20,721 DEBUG - [4a186503-6889-439d-8aac-157068ea95d2] - Mapping Action Dependencies
+2017-08-17 08:43:20,721 DEBUG - [4a186503-6889-439d-8aac-157068ea95d2] - Getting container
+2017-08-17 08:43:20,875 DEBUG - [Warewolf Debug] - Execute Command Invoked For [ DEV2\Pieter.Terblanche : NTLM : True ] For Service [ FetchResourceDefinitionService ]
+2017-08-17 08:43:20,877 DEBUG - [e69d4487-f400-4a2a-a3b2-f3a8bcdca298] - Remote Invoke
+2017-08-17 08:43:20,877 DEBUG - [e69d4487-f400-4a2a-a3b2-f3a8bcdca298] - Mapping Inputs from Environment
+2017-08-17 08:43:20,877 DEBUG - [e69d4487-f400-4a2a-a3b2-f3a8bcdca298] - Creating Invoker
+2017-08-17 08:43:20,877 DEBUG - [e69d4487-f400-4a2a-a3b2-f3a8bcdca298] - Finding service
+2017-08-17 08:43:20,877 DEBUG - [e69d4487-f400-4a2a-a3b2-f3a8bcdca298] - Mapping Action Dependencies
+2017-08-17 08:43:20,877 DEBUG - [e69d4487-f400-4a2a-a3b2-f3a8bcdca298] - Getting container
+2017-08-17 08:43:20,884 INFO  - [Warewolf Info] - Fetch Resource definition. ResourceId: acb75027-ddeb-47d7-814e-a54c37247ec1
+2017-08-17 08:43:24,089 DEBUG - [Warewolf Debug] - Execute Command Invoked For [ DEV2\Pieter.Terblanche : NTLM : True ] For Service [ Hello World ]
+2017-08-17 08:43:24,092 DEBUG - [06385e0f-ac27-4cf0-af55-7642c3c08ba3] - Remote Invoke
+2017-08-17 08:43:24,092 DEBUG - [06385e0f-ac27-4cf0-af55-7642c3c08ba3] - Mapping Inputs from Environment
+2017-08-17 08:43:24,123 DEBUG - [06385e0f-ac27-4cf0-af55-7642c3c08ba3] - Creating Invoker
+2017-08-17 08:43:24,123 DEBUG - [06385e0f-ac27-4cf0-af55-7642c3c08ba3] - Finding service
+2017-08-17 08:43:24,123 DEBUG - [06385e0f-ac27-4cf0-af55-7642c3c08ba3] - Mapping Action Dependencies
+2017-08-17 08:43:24,123 DEBUG - [06385e0f-ac27-4cf0-af55-7642c3c08ba3] - Getting container
+2017-08-17 08:43:24,130 DEBUG - [06385e0f-ac27-4cf0-af55-7642c3c08ba3] - About to execute web request [ Hello World ] for User [ DEV2\Pieter.Terblanche : NTLM : True ] with DataObject Payload [  ]
+2017-08-17 08:43:24,130 DEBUG - [06385e0f-ac27-4cf0-af55-7642c3c08ba3] - Request URL [ http://pieter:3142/secure/hello world.xml?<datalist><name></name></datalist> ]
+2017-08-17 08:43:24,130 DEBUG - [06385e0f-ac27-4cf0-af55-7642c3c08ba3] - Entered Wf Container
+2017-08-17 08:43:24,130 INFO  - [06385e0f-ac27-4cf0-af55-7642c3c08ba3] - Started Execution for Service Name:Hello World Resource Id:acb75027-ddeb-47d7-814e-a54c37247ec1 Mode:Debug
+2017-08-17 08:43:24,165 DEBUG - [Warewolf Debug] - EnvironmentID: 00000000-0000-0000-0000-000000000000 Debug:Hello World
+2017-08-17 08:43:24,173 DEBUG - [06385e0f-ac27-4cf0-af55-7642c3c08ba3] - Getting Resource to Execute
+2017-08-17 08:43:24,174 DEBUG - [06385e0f-ac27-4cf0-af55-7642c3c08ba3] - Fetching Execution Plan for acb75027-ddeb-47d7-814e-a54c37247ec1 for workspace dd444373-9e40-41ef-bc1d-7bd3a167dc33
+2017-08-17 08:43:24,219 DEBUG - [06385e0f-ac27-4cf0-af55-7642c3c08ba3] - Got Resource to Execute
+2017-08-17 08:43:24,243 INFO  - [Warewolf Info] - Debug Already Started
+2017-08-17 08:43:24,267 DEBUG - [Warewolf Debug] - EnvironmentID: 00000000-0000-0000-0000-000000000000 Debug:Decision
+2017-08-17 08:43:24,275 INFO  - [Warewolf Info] - Debug Already Started
+2017-08-17 08:43:24,276 DEBUG - [Warewolf Debug] - EnvironmentID: 00000000-0000-0000-0000-000000000000 Debug:Assign a value to Name if blank (1)
+2017-08-17 08:43:24,325 INFO  - [Warewolf Info] - Debug Already Started
+2017-08-17 08:43:24,325 DEBUG - [Warewolf Debug] - EnvironmentID: 00000000-0000-0000-0000-000000000000 Debug:Set the output variable (1)
+2017-08-17 08:43:24,326 DEBUG - [Warewolf Debug] - EnvironmentID: 00000000-0000-0000-0000-000000000000 Debug:Hello World
+2017-08-17 08:43:24,397 DEBUG - [06385e0f-ac27-4cf0-af55-7642c3c08ba3] - Execution Result [ {  "Message": "Hello World."} ]
+2017-08-17 08:43:24,397 INFO  - [06385e0f-ac27-4cf0-af55-7642c3c08ba3] - Completed Execution for Service Name:Hello World Resource Id: acb75027-ddeb-47d7-814e-a54c37247ec1 Mode:Debug
