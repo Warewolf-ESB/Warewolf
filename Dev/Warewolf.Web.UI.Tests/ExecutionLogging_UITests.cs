@@ -64,8 +64,8 @@ namespace Warewolf.Web.UI.Tests.ExecutionLoggingTests
                     driver.ClickUpdateServer();
                     break;
                 case "Opera":
-                    ValidateBrowser(browserType);
-                    driver.ClickUpdateServer();
+                    //ValidateBrowser(browserType);
+                    //driver.ClickUpdateServer();
                     break;
                 case "ChromeIncognito":
                     ValidateBrowser(browserType);
