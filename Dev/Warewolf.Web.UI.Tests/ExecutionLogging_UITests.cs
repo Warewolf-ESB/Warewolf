@@ -54,25 +54,37 @@ namespace Warewolf.Web.UI.Tests.ExecutionLoggingTests
             switch (browserType)
             {
                 case "Firefox":
-                    Assert.AreEqual("http://localhost:3142 is requesting your username and password.", driver.CloseAlertAndGetItsText(false));
+                    Assert.IsTrue(driver.IsAlertPresent(), browserType + " is expecting the user credentials dialog");
+                    string expectedError = "http://localhost:3142 is requesting your username and password.";
+                    string assertMessage = browserType + " did not match the user credentials dialog error message.";
+                    Assert.AreEqual(expectedError, driver.CloseAlertAndGetItsText(false), assertMessage);
                     break;
                 case "InternetExplorer":
-                    Assert.IsFalse(driver.IsAlertPresent(), driver.CloseAlertAndGetItsText(false));
-                    driver.driver.FindElement(By.Id("updateServer")).Click();
+                    ValidateBrowser(browserType);
+                    driver.ClickUpdateServer();
                     break;
                 case "Opera":
-                    Assert.IsFalse(driver.IsAlertPresent(), driver.CloseAlertAndGetItsText(false));
-                    driver.driver.FindElement(By.Id("updateServer")).Click();
+                    ValidateBrowser(browserType);
+                    driver.ClickUpdateServer();
                     break;
                 case "ChromeIncognito":
-                    Assert.IsFalse(driver.IsAlertPresent(), driver.CloseAlertAndGetItsText(false));
-                    driver.driver.FindElement(By.Id("updateServer")).Click();
+                    ValidateBrowser(browserType);
+                    driver.ClickUpdateServer();
                     break;
                 default:
-                    Assert.IsFalse(driver.IsAlertPresent(), driver.CloseAlertAndGetItsText(false));
-                    driver.driver.FindElement(By.Id("updateServer")).Click();
+                    ValidateBrowser(browserType);
+                    driver.ClickUpdateServer();
                     break;
             }
+        }
+
+        private void ValidateBrowser(string browserType)
+        {
+            Assert.IsTrue(driver.WaitForSpinner());
+            Assert.IsTrue(driver.WaitForExecutionList());
+            Assert.IsTrue(driver.driver.FindElement(By.Id("executionList")).Displayed);
+            string assertMessage = browserType + " should not show the user credentials dialog" + Environment.NewLine + driver.CloseAlertAndGetItsText(false);
+            Assert.IsFalse(driver.IsAlertPresent(), assertMessage);
         }
     }
 }
