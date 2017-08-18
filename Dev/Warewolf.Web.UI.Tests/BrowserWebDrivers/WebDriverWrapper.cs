@@ -38,20 +38,20 @@ namespace Warewolf.Web.UI.Tests
                     }
                 case "Opera":
                     {
-                        //string path = @"C:\Program Files\Opera";
-                        //var operaPath = string.Empty;
+                        string path = @"C:\Program Files\Opera";
+                        var operaPath = string.Empty;
 
-                        //string[] files = System.IO.Directory.GetFiles(path, "*.exe", System.IO.SearchOption.AllDirectories);
-                        //foreach (var file in files)
-                        //{
-                        //    if (file.EndsWith("opera.exe"))
-                        //    {
-                        //        operaPath = file;
-                        //        break;
-                        //    }
-                        //}
+                        string[] files = System.IO.Directory.GetFiles(path, "*.exe", System.IO.SearchOption.AllDirectories);
+                        foreach (var file in files)
+                        {
+                            if (file.EndsWith("opera.exe"))
+                            {
+                                operaPath = file;
+                                break;
+                            }
+                        }
 
-                        //driver = new OperaDriver(new OperaOptions() { BinaryLocation = operaPath });
+                        driver = new OperaDriver(new OperaOptions() { BinaryLocation = operaPath });
                         break;
                     }
                 default:
