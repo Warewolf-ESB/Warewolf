@@ -128,7 +128,6 @@ namespace Warewolf.Web.UI.Tests
             try
             {
                 IAlert alert = driver.SwitchTo().Alert();
-                alert.SetAuthenticationCredentials("", "");
                 string alertText = alert.Text;
                 if (acceptAlert)
                 {
@@ -144,6 +143,37 @@ namespace Warewolf.Web.UI.Tests
             {
                 return string.Empty;
             }
+        }
+
+        public bool WaitForSpinner()
+        {
+            try
+            {
+                WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(5));
+                wait.Until(ExpectedConditions.InvisibilityOfElementLocated(By.Id("loader")));
+                return true;
+            }
+            catch (InvalidElementStateException)
+            {
+                return false;
+            }
+        }
+        public bool WaitForExecutionList()
+        {
+            try
+            {
+                WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(5));
+                wait.Until(ExpectedConditions.ElementIsVisible(By.Id("executionList")));
+                return true;
+            }
+            catch (InvalidElementStateException)
+            {
+                return false;
+            }
+        }
+        public void ClickUpdateServer()
+        {
+            driver.FindElement(By.Id("updateServer")).Click();
         }
     }
 }
