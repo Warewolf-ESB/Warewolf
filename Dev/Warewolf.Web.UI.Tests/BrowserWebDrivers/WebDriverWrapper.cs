@@ -25,9 +25,10 @@ namespace Warewolf.Web.UI.Tests
             {
                 case "Firefox":
                     {
-                        FirefoxProfile profile = new FirefoxProfile(@"C:\Windows\FirefoxUser\z3vxiwsp.ExecutionLoggingTestUser");
-                        profile.SetPreference("extra", "pref");
-                        driver = new FirefoxDriver(profile);
+                        //FirefoxProfile profile = new FirefoxProfile(@"C:\Windows\FirefoxUser\z3vxiwsp.ExecutionLoggingTestUser");
+                        //profile.SetPreference("extra", "pref");
+                        //driver = new FirefoxDriver(profile);
+                        driver = new FirefoxDriver();
                         break;
                     }
                 case "IE":
