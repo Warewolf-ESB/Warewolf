@@ -24,10 +24,6 @@ using Dev2.Diagnostics.Debug;
 using Dev2.Interfaces;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Interfaces;
-using FluentAssertions.Common;
-
-
-
 
 namespace Dev2.Runtime.ESB.WF
 {
@@ -131,11 +127,11 @@ namespace Dev2.Runtime.ESB.WF
                         var executePayload = ExecutionEnvironmentUtils.GetJsonOutputFromEnvironment(dataObject, resource.DataList.ToString(), 0);
                         if (dataObject.Environment.HasErrors())
                         {
-                            Dev2Logger.Error(GlobalConstants.ExecutionLoggingResultStartTag + (executePayload ?? "").RemoveNewLines() + GlobalConstants.ExecutionLoggingResultEndTag, dataObject.ExecutionID.ToString());
+                            Dev2Logger.Error(GlobalConstants.ExecutionLoggingResultStartTag + (executePayload ?? "").Replace(Environment.NewLine, string.Empty) + GlobalConstants.ExecutionLoggingResultEndTag, dataObject.ExecutionID.ToString());
                         }
                         else
                         {
-                            Dev2Logger.Debug(GlobalConstants.ExecutionLoggingResultStartTag + (executePayload ?? "").RemoveNewLines() + GlobalConstants.ExecutionLoggingResultEndTag, dataObject.ExecutionID.ToString());
+                            Dev2Logger.Debug(GlobalConstants.ExecutionLoggingResultStartTag + (executePayload ?? "").Replace(Environment.NewLine, string.Empty) + GlobalConstants.ExecutionLoggingResultEndTag, dataObject.ExecutionID.ToString());
                         }
 
                     }

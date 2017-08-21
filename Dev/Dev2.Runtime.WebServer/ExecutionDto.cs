@@ -9,7 +9,6 @@ using Dev2.Interfaces;
 using Dev2.Runtime.WebServer.Responses;
 using Dev2.Runtime.WebServer.TransferObjects;
 using Dev2.Web;
-using FluentAssertions.Common;
 
 namespace Dev2.Runtime.WebServer
 {
@@ -105,11 +104,11 @@ namespace Dev2.Runtime.WebServer
 
             if (dataObject.Environment.HasErrors())
             {
-                Dev2Logger.Error(GlobalConstants.ExecutionLoggingResultStartTag + (executePayload ?? "").RemoveNewLines() + GlobalConstants.ExecutionLoggingResultEndTag, dataObject.ExecutionID.ToString());
+                Dev2Logger.Error(GlobalConstants.ExecutionLoggingResultStartTag + (executePayload ?? "").Replace(Environment.NewLine,string.Empty) + GlobalConstants.ExecutionLoggingResultEndTag, dataObject.ExecutionID.ToString());
             }
             else
             {
-                Dev2Logger.Debug(GlobalConstants.ExecutionLoggingResultStartTag + (executePayload ?? "").RemoveNewLines() + GlobalConstants.ExecutionLoggingResultEndTag, dataObject.ExecutionID.ToString());
+                Dev2Logger.Debug(GlobalConstants.ExecutionLoggingResultStartTag + (executePayload ?? "").Replace(Environment.NewLine, string.Empty) + GlobalConstants.ExecutionLoggingResultEndTag, dataObject.ExecutionID.ToString());
             }
             if (!dataObject.Environment.HasErrors() && esbExecuteRequest.WasInternalService)
             {

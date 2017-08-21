@@ -30,15 +30,15 @@ namespace Dev2.Communication
         readonly JsonSerializerSettings _serializerSettings = new JsonSerializerSettings
             {
                 TypeNameHandling = TypeNameHandling.Objects,
-                TypeNameAssemblyFormat = FormatterAssemblyStyle.Simple,
+            TypeNameAssemblyFormatHandling = TypeNameAssemblyFormatHandling.Simple,
                 ReferenceLoopHandling = ReferenceLoopHandling.Serialize,
                 PreserveReferencesHandling = PreserveReferencesHandling.Objects
             };
         readonly JsonSerializerSettings _deSerializerSettings = new JsonSerializerSettings
             {
-                TypeNameHandling = TypeNameHandling.Auto,                
-                TypeNameAssemblyFormat = FormatterAssemblyStyle.Simple,
-                ReferenceLoopHandling = ReferenceLoopHandling.Serialize,
+                TypeNameHandling = TypeNameHandling.Auto,
+            TypeNameAssemblyFormatHandling = TypeNameAssemblyFormatHandling.Simple,
+            ReferenceLoopHandling = ReferenceLoopHandling.Serialize,
                 PreserveReferencesHandling = PreserveReferencesHandling.Objects,
             };
         public string Serialize<T>(T message)
@@ -68,7 +68,7 @@ namespace Dev2.Communication
                 var jsonSerializer = new JsonSerializer
                 {
                     TypeNameHandling = _serializerSettings.TypeNameHandling,
-                    TypeNameAssemblyFormat = _serializerSettings.TypeNameAssemblyFormat,
+                    TypeNameAssemblyFormatHandling = _serializerSettings.TypeNameAssemblyFormatHandling,
                     ReferenceLoopHandling = _serializerSettings.ReferenceLoopHandling,
                     PreserveReferencesHandling = _serializerSettings.PreserveReferencesHandling
                 };                
@@ -91,7 +91,7 @@ namespace Dev2.Communication
                 JsonSerializer serializer = new JsonSerializer
                 {
                     TypeNameHandling = _deSerializerSettings.TypeNameHandling,
-                    TypeNameAssemblyFormat = _serializerSettings.TypeNameAssemblyFormat,
+                    TypeNameAssemblyFormatHandling = _serializerSettings.TypeNameAssemblyFormatHandling,
                     ReferenceLoopHandling = _serializerSettings.ReferenceLoopHandling,
                     PreserveReferencesHandling = _serializerSettings.PreserveReferencesHandling
                 };
@@ -153,7 +153,7 @@ namespace Dev2.Communication
                 var jsonSerializer = new JsonSerializer
                 {
                     TypeNameHandling = _serializerSettings.TypeNameHandling,
-                    TypeNameAssemblyFormat = _serializerSettings.TypeNameAssemblyFormat,
+                    TypeNameAssemblyFormatHandling = _serializerSettings.TypeNameAssemblyFormatHandling,
                     ReferenceLoopHandling = _serializerSettings.ReferenceLoopHandling,
                     PreserveReferencesHandling = _serializerSettings.PreserveReferencesHandling
                 };
@@ -173,7 +173,7 @@ namespace Dev2.Communication
                 var jsonSerializer = new JsonSerializer
                 {
                     TypeNameHandling = _serializerSettings.TypeNameHandling,
-                    TypeNameAssemblyFormat = _serializerSettings.TypeNameAssemblyFormat,
+                    TypeNameAssemblyFormatHandling = _serializerSettings.TypeNameAssemblyFormatHandling,
                     ReferenceLoopHandling = _serializerSettings.ReferenceLoopHandling,
                     PreserveReferencesHandling = _serializerSettings.PreserveReferencesHandling
                 };
