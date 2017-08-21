@@ -53,7 +53,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             try
             {
-                Dev2Logger.Info("Save Resource Service", "Warewolf Info");
+                Dev2Logger.Info("Save Resource Service","Warewolf Info");
                 StringBuilder resourceDefinition;
 
                 values.TryGetValue("ServerSource", out resourceDefinition);
@@ -73,19 +73,25 @@ namespace Dev2.Runtime.ESB.Management.Services
                 con.WebServerPort = int.Parse(port);
                 Connections tester = new Connections();
                 var res = tester.CanConnectToServer(con);
-                if(res.IsValid)
-                ResourceCatalog.Instance.SaveResource(GlobalConstants.ServerWorkspaceID,con, src.ResourcePath);
-                ServerExplorerRepo.UpdateItem(con);
-                msg.HasError = false;
-                msg.Message = new StringBuilder(res.IsValid ? "" : res.ErrorMessage);
-
+                if (res.IsValid)
+                {
+                    ResourceCatalog.Instance.SaveResource(GlobalConstants.ServerWorkspaceID, con, src.ResourcePath);
+                    ServerExplorerRepo.UpdateItem(con);
+                    msg.HasError = false;
+                    msg.Message = new StringBuilder();
+                }
+                else
+                {
+                    msg.HasError = true;
+                    msg.Message = new StringBuilder(res.ErrorMessage);
+                }
 
             }
             catch (Exception err)
             {
                 msg.HasError = true;
                 msg.Message = new StringBuilder(err.Message);
-                Dev2Logger.Error(err, "Warewolf Error");
+                Dev2Logger.Error(err,"Warewolf Error");
 
             }
 
