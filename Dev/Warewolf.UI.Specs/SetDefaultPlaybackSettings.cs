@@ -6,7 +6,7 @@ using Warewolf.UITests;
 namespace Warewolf.UISpecs
 {
     [Binding]
-    [DeploymentItem("Warewolf.UITests.dll")]
+    [DeploymentItem("Warewolf.UI.Tests.dll")]
     class SetDefaultPlaybackSettings
     {
         [BeforeScenario]
