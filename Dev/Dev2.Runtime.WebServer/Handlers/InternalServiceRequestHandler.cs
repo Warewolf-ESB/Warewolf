@@ -26,7 +26,6 @@ using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.Security;
 using Dev2.Runtime.WebServer.TransferObjects;
 using Dev2.Services.Security;
-using FluentAssertions.Common;
 using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.WebServer.Handlers
@@ -102,7 +101,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                 var xElement = XDocument.Parse(payLoad);
                 xElement.Descendants().Where(e => e.Name == "BDSDebugMode" || e.Name == "DebugSessionID" || e.Name == "EnvironmentID").Remove();
                 var s = xElement.ToString(SaveOptions.DisableFormatting);
-                var buildStudioUrl = s.RemoveNewLines().Replace(" ", "%20");
+                var buildStudioUrl = s.Replace(Environment.NewLine,string.Empty).Replace(" ", "%20");
                 return buildStudioUrl;
             }
             catch (Exception e)

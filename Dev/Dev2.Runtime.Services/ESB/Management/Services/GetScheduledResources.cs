@@ -64,7 +64,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 var sb = new StringBuilder(JsonConvert.SerializeObject(resources, Formatting.Indented, new JsonSerializerSettings
                 {
                     TypeNameHandling = TypeNameHandling.Objects,
-                    TypeNameAssemblyFormat = FormatterAssemblyStyle.Simple
+                    TypeNameAssemblyFormatHandling = TypeNameAssemblyFormatHandling.Simple
                 }));
                 return sb;
             }
