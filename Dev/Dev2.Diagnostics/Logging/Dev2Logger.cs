@@ -10,7 +10,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
@@ -145,7 +144,27 @@ namespace Dev2.Common
             return 0;
         }
 
-
+        public static void UpdateFileLoggerToProgramData(string settingsConfigFile)
+        {
+            var settingsDocument = XDocument.Load(settingsConfigFile);
+            var log4netElement = settingsDocument.Element("log4net");
+            if (log4netElement != null)
+            {
+                var appenderElements = log4netElement.Elements("appender");
+                var appenders = appenderElements as IList<XElement> ?? appenderElements.ToList();
+                var fileAppender = appenders.FirstOrDefault(element => element.Attribute("name").Value == "LogFileAppender");
+                var fileElement = fileAppender?.Element("file");
+                if (fileElement != null)
+                {
+                    XAttribute valueAttrib = fileElement.Attribute("value");
+                    if (valueAttrib != null)
+                    {
+                        valueAttrib.SetValue("%envFolderPath{CommonApplicationData}\\Warewolf\\Server Log\\wareWolf-Server.log");
+                        settingsDocument.Save(settingsConfigFile);
+                    }
+                }
+            }
+        }
         public static void WriteLogSettings(string maxLogSize, string fileLogLevel, string eventLogLevel, string settingsConfigFile,string applicationNameForEventLog)
         {
             var settingsDocument = XDocument.Load(settingsConfigFile);
