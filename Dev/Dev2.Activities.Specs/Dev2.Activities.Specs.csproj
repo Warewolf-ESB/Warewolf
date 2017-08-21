@@ -76,6 +76,12 @@
     </Compile>
     <Compile Include="Dev2LocalSecurityWrapper.cs" />
     <Compile Include="ISpecExternalProcessExecutor.cs" />
+    <Compile Include="Sources\ServerSource1.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ServerSource.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Sources\ServerSourceSteps.cs" />
     <Compile Include="SpecExternalProcessExecutor.cs" />
     <Compile Include="StudioTestFramework\StudioTestFrameworkWithDeletedResources.feature.cs">
       <DependentUpon>StudioTestFrameworkWithDeletedResources.feature</DependentUpon>
@@ -332,6 +338,10 @@
     <None Include="Scheduler\Scheduler.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Scheduler.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Sources\ServerSource.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>ServerSource1.feature.cs</LastGenOutput>
     </None>
     <None Include="StudioTestFramework\StudioTestFrameworkWithDeletedResources.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
