@@ -9,8 +9,8 @@
     <ProjectGuid>{227596D7-ACEE-48AB-8A27-2B20AF449C97}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Warewolf.UISpecs</RootNamespace>
-    <AssemblyName>Warewolf.UISpecs</AssemblyName>
+    <RootNamespace>Warewolf.UI.Specs</RootNamespace>
+    <AssemblyName>Warewolf.UI.Specs</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -68,7 +68,7 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="TechTalk.SpecFlow">
-      <HintPath>..\packages\SpecFlow.2.1.0\lib\net45\TechTalk.SpecFlow.dll</HintPath>
+      <HintPath>..\packages\SpecFlow.2.2.0\lib\net45\TechTalk.SpecFlow.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="TechTalk.SpecFlow.Generator, Version=2.2.0.0, Culture=neutral, PublicKeyToken=0778194805d6db41, processorArchitecture=MSIL">
@@ -181,9 +181,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Warewolf.UITests\Warewolf.UITests.csproj">
+    <ProjectReference Include="..\Warewolf.UI.Tests\Warewolf.UI.Tests.csproj">
       <Project>{91a84d74-7d50-4046-a8fe-82e52b5dbee5}</Project>
-      <Name>Warewolf.UITests</Name>
+      <Name>Warewolf.UI.Tests</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
