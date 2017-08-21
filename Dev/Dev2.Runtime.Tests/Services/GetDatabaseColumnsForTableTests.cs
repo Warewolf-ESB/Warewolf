@@ -164,7 +164,7 @@ namespace Dev2.Tests.Runtime.Services
             string someJsonData = JsonConvert.SerializeObject(dbSource, new JsonSerializerSettings
             {
                 TypeNameHandling = TypeNameHandling.Objects,
-                TypeNameAssemblyFormat = FormatterAssemblyStyle.Simple
+                TypeNameAssemblyFormatHandling = TypeNameAssemblyFormatHandling.Simple
             });
             var esb = new GetDatabaseColumnsForTable();
             var mockWorkspace = new Mock<IWorkspace>();
@@ -177,7 +177,7 @@ namespace Dev2.Tests.Runtime.Services
             var result = JsonConvert.DeserializeObject<DbColumnList>(actual.ToString(), new JsonSerializerSettings
             {
                 TypeNameHandling = TypeNameHandling.Objects,
-                TypeNameAssemblyFormat = FormatterAssemblyStyle.Simple
+                TypeNameAssemblyFormatHandling = TypeNameAssemblyFormatHandling.Simple
             });
             Assert.AreEqual(4, result.Items.Count);
 
@@ -215,7 +215,7 @@ namespace Dev2.Tests.Runtime.Services
             string someJsonData = JsonConvert.SerializeObject(dbSource,new JsonSerializerSettings
             {
                 TypeNameHandling = TypeNameHandling.Objects,
-                TypeNameAssemblyFormat = FormatterAssemblyStyle.Simple
+                TypeNameAssemblyFormatHandling = TypeNameAssemblyFormatHandling.Simple
             });
             var esb = new GetDatabaseColumnsForTable();
             var mockWorkspace = new Mock<IWorkspace>();
@@ -228,7 +228,7 @@ namespace Dev2.Tests.Runtime.Services
             var result = JsonConvert.DeserializeObject<DbColumnList>(actual.ToString(), new JsonSerializerSettings
             {
                 TypeNameHandling = TypeNameHandling.Objects,
-                TypeNameAssemblyFormat = FormatterAssemblyStyle.Simple
+                TypeNameAssemblyFormatHandling = TypeNameAssemblyFormatHandling.Simple
             });
             Assert.AreEqual(3, result.Items.Count);
 
@@ -260,7 +260,7 @@ namespace Dev2.Tests.Runtime.Services
             string someJsonData = JsonConvert.SerializeObject(dbSource, new JsonSerializerSettings
             {
                 TypeNameHandling = TypeNameHandling.Objects,
-                TypeNameAssemblyFormat = FormatterAssemblyStyle.Simple
+                TypeNameAssemblyFormatHandling = TypeNameAssemblyFormatHandling.Simple
             });
             var esb = new GetDatabaseColumnsForTable();
             var mockWorkspace = new Mock<IWorkspace>();
@@ -273,7 +273,7 @@ namespace Dev2.Tests.Runtime.Services
             var result = JsonConvert.DeserializeObject<DbColumnList>(actual.ToString(), new JsonSerializerSettings
             {
                 TypeNameHandling = TypeNameHandling.Objects,
-                TypeNameAssemblyFormat = FormatterAssemblyStyle.Simple
+                TypeNameAssemblyFormatHandling = TypeNameAssemblyFormatHandling.Simple
             });
             Assert.AreEqual(3, result.Items.Count);
 
