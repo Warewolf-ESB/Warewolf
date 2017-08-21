@@ -274,7 +274,7 @@ namespace Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses
         [Given(@"I Drag Explorer Remote GenericResource Onto Workflow Design Surface")]
         [When(@"I Drag Explorer Remote GenericResource Onto Workflow Design Surface")]
         [Then(@"I Drag Explorer Remote GenericResource Onto Workflow Design Surface")]
-        public void Drag_Explorer_Remote_workflow1_Onto_Workflow_Design_Surface()
+        public void Drag_Explorer_Remote_GenericResource_Onto_Workflow_Design_Surface()
         {
             if (ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem.ItemEdit.Text != "GenericResource")
                 ExplorerUIMap.Click_Explorer_Refresh_Button();
