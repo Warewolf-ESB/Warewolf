@@ -75,69 +75,69 @@ namespace Dev2.Activities.Specs.StudioTestFramework
 #line 9
   testRunner.Given("test folder is cleaned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
+            TechTalk.SpecFlow.Table table1033 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Input Var Name"});
+            table1033.AddRow(new string[] {
+                        "[[a]]"});
+#line 10
+  testRunner.And("I have \"Workflow 1\" with inputs as", ((string)(null)), table1033, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table1034 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Ouput Var Name"});
+            table1034.AddRow(new string[] {
+                        "[[outputValue]]"});
+#line 13
+  testRunner.And("\"Workflow 1\" has outputs as", ((string)(null)), table1034, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table1035 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Input Var Name"});
+            table1035.AddRow(new string[] {
+                        "[[rec().a]]"});
+            table1035.AddRow(new string[] {
+                        "[[rec().b]]"});
+#line 16
+  testRunner.Given("I have \"Workflow 2\" with inputs as", ((string)(null)), table1035, "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table1036 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Ouput Var Name"});
+            table1036.AddRow(new string[] {
+                        "[[returnVal]]"});
+#line 20
+  testRunner.And("\"Workflow 2\" has outputs as", ((string)(null)), table1036, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table1037 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Input Var Name"});
+            table1037.AddRow(new string[] {
+                        "[[A]]"});
+            table1037.AddRow(new string[] {
+                        "[[B]]"});
+            table1037.AddRow(new string[] {
+                        "[[C]]"});
+#line 23
+  testRunner.Given("I have \"Workflow 3\" with inputs as", ((string)(null)), table1037, "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table1038 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Ouput Var Name"});
+            table1038.AddRow(new string[] {
+                        "[[message]]"});
+#line 28
+  testRunner.And("\"Workflow 3\" has outputs as", ((string)(null)), table1038, "And ");
+#line hidden
             TechTalk.SpecFlow.Table table1039 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input Var Name"});
             table1039.AddRow(new string[] {
-                        "[[a]]"});
-#line 10
-  testRunner.And("I have \"Workflow 1\" with inputs as", ((string)(null)), table1039, "And ");
+                        "[[input]]"});
+#line 31
+  testRunner.Given("I have \"WorkflowWithTests\" with inputs as", ((string)(null)), table1039, "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table1040 = new TechTalk.SpecFlow.Table(new string[] {
                         "Ouput Var Name"});
             table1040.AddRow(new string[] {
                         "[[outputValue]]"});
-#line 13
-  testRunner.And("\"Workflow 1\" has outputs as", ((string)(null)), table1040, "And ");
+#line 34
+  testRunner.And("\"WorkflowWithTests\" has outputs as", ((string)(null)), table1040, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table1041 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Input Var Name"});
-            table1041.AddRow(new string[] {
-                        "[[rec().a]]"});
-            table1041.AddRow(new string[] {
-                        "[[rec().b]]"});
-#line 16
-  testRunner.Given("I have \"Workflow 2\" with inputs as", ((string)(null)), table1041, "Given ");
-#line hidden
-            TechTalk.SpecFlow.Table table1042 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Ouput Var Name"});
-            table1042.AddRow(new string[] {
-                        "[[returnVal]]"});
-#line 20
-  testRunner.And("\"Workflow 2\" has outputs as", ((string)(null)), table1042, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table1043 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Input Var Name"});
-            table1043.AddRow(new string[] {
-                        "[[A]]"});
-            table1043.AddRow(new string[] {
-                        "[[B]]"});
-            table1043.AddRow(new string[] {
-                        "[[C]]"});
-#line 23
-  testRunner.Given("I have \"Workflow 3\" with inputs as", ((string)(null)), table1043, "Given ");
-#line hidden
-            TechTalk.SpecFlow.Table table1044 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Ouput Var Name"});
-            table1044.AddRow(new string[] {
-                        "[[message]]"});
-#line 28
-  testRunner.And("\"Workflow 3\" has outputs as", ((string)(null)), table1044, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table1045 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Input Var Name"});
-            table1045.AddRow(new string[] {
-                        "[[input]]"});
-#line 31
-  testRunner.Given("I have \"WorkflowWithTests\" with inputs as", ((string)(null)), table1045, "Given ");
-#line hidden
-            TechTalk.SpecFlow.Table table1046 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Ouput Var Name"});
-            table1046.AddRow(new string[] {
-                        "[[outputValue]]"});
-#line 34
-  testRunner.And("\"WorkflowWithTests\" has outputs as", ((string)(null)), table1046, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table1047 = new TechTalk.SpecFlow.Table(new string[] {
                         "TestName",
                         "AuthenticationType",
                         "Error",
@@ -145,7 +145,7 @@ namespace Dev2.Activities.Specs.StudioTestFramework
                         "TestPending",
                         "TestInvalid",
                         "TestPassed"});
-            table1047.AddRow(new string[] {
+            table1041.AddRow(new string[] {
                         "Test1",
                         "Windows",
                         "false",
@@ -153,7 +153,7 @@ namespace Dev2.Activities.Specs.StudioTestFramework
                         "false",
                         "false",
                         "true"});
-            table1047.AddRow(new string[] {
+            table1041.AddRow(new string[] {
                         "Test2",
                         "Windows",
                         "false",
@@ -161,7 +161,7 @@ namespace Dev2.Activities.Specs.StudioTestFramework
                         "false",
                         "false",
                         "false"});
-            table1047.AddRow(new string[] {
+            table1041.AddRow(new string[] {
                         "Test3",
                         "Windows",
                         "false",
@@ -169,7 +169,7 @@ namespace Dev2.Activities.Specs.StudioTestFramework
                         "false",
                         "true",
                         "false"});
-            table1047.AddRow(new string[] {
+            table1041.AddRow(new string[] {
                         "Test4",
                         "Windows",
                         "false",
@@ -178,7 +178,7 @@ namespace Dev2.Activities.Specs.StudioTestFramework
                         "false",
                         "false"});
 #line 37
-  testRunner.And("\"WorkflowWithTests\" Tests as", ((string)(null)), table1047, "And ");
+  testRunner.And("\"WorkflowWithTests\" Tests as", ((string)(null)), table1041, "And ");
 #line hidden
         }
         
@@ -196,18 +196,18 @@ this.FeatureBackground();
 #line 46
  testRunner.Given("I have a workflow \"TestWFWithDropBoxUpload\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table1048 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1042 = new TechTalk.SpecFlow.Table(new string[] {
                         "Local File",
                         "OverwriteOrAdd",
                         "DropboxFile",
                         "Result"});
-            table1048.AddRow(new string[] {
+            table1042.AddRow(new string[] {
                         "C:\\Home.Dropbox",
                         "Overwrite",
                         "source.xml",
                         "[[res]]"});
 #line 47
- testRunner.And("\"TestWFWithDropBoxUpload\" contains a DropboxUpload \"UploadTool\" Setup as", ((string)(null)), table1048, "And ");
+ testRunner.And("\"TestWFWithDropBoxUpload\" contains a DropboxUpload \"UploadTool\" Setup as", ((string)(null)), table1042, "And ");
 #line 50
  testRunner.And("I save workflow \"TestWFWithDropBoxUpload\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 51
@@ -242,27 +242,27 @@ this.FeatureBackground();
 #line 60
  testRunner.Given("I have a workflow \"TestWFWithDropBoxDelete\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table1049 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1043 = new TechTalk.SpecFlow.Table(new string[] {
                         "Local File",
                         "OverwriteOrAdd",
                         "DropboxFile",
                         "Result"});
-            table1049.AddRow(new string[] {
+            table1043.AddRow(new string[] {
                         "C:\\Home.Delete",
                         "Overwrite",
                         "ToDelete.xml",
                         "[[res]]"});
 #line 61
- testRunner.And("\"TestWFWithDropBoxDelete\" contains a DropboxUpload \"UploadTool\" Setup as", ((string)(null)), table1049, "And ");
+ testRunner.And("\"TestWFWithDropBoxDelete\" contains a DropboxUpload \"UploadTool\" Setup as", ((string)(null)), table1043, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1050 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1044 = new TechTalk.SpecFlow.Table(new string[] {
                         "DropboxFile",
                         "Result"});
-            table1050.AddRow(new string[] {
+            table1044.AddRow(new string[] {
                         "ToDelete.xml",
                         "[[res]]"});
 #line 64
- testRunner.And("\"TestWFWithDropBoxDelete\" contains a DropboxDelete \"DeleteTool\" Setup as", ((string)(null)), table1050, "And ");
+ testRunner.And("\"TestWFWithDropBoxDelete\" contains a DropboxDelete \"DeleteTool\" Setup as", ((string)(null)), table1044, "And ");
 #line 67
  testRunner.And("I save workflow \"TestWFWithDropBoxDelete\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 68
@@ -299,31 +299,31 @@ this.FeatureBackground();
 #line 78
  testRunner.Given("I have a workflow \"TestWFWithDropBoxDowload\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table1051 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1045 = new TechTalk.SpecFlow.Table(new string[] {
                         "Local File",
                         "OverwriteOrAdd",
                         "DropboxFile",
                         "Result"});
-            table1051.AddRow(new string[] {
+            table1045.AddRow(new string[] {
                         "C:\\Home.Delete",
                         "Overwrite",
                         "Download.xml",
                         "[[res]]"});
 #line 79
- testRunner.And("\"TestWFWithDropBoxDowload\" contains a DropboxUpload \"UploadTool\" Setup as", ((string)(null)), table1051, "And ");
+ testRunner.And("\"TestWFWithDropBoxDowload\" contains a DropboxUpload \"UploadTool\" Setup as", ((string)(null)), table1045, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1052 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1046 = new TechTalk.SpecFlow.Table(new string[] {
                         "Local File",
                         "OverwriteOrAdd",
                         "DropboxFile",
                         "Result"});
-            table1052.AddRow(new string[] {
+            table1046.AddRow(new string[] {
                         "C:\\Home.Delete",
                         "Overwrite",
                         "Download.xml",
                         "[[res]]"});
 #line 82
- testRunner.And("\"TestWFWithDropBoxDowload\" contains a DropboxDownLoad \"DownloadTool\" Setup as", ((string)(null)), table1052, "And ");
+ testRunner.And("\"TestWFWithDropBoxDowload\" contains a DropboxDownLoad \"DownloadTool\" Setup as", ((string)(null)), table1046, "And ");
 #line 85
  testRunner.And("I save workflow \"TestWFWithDropBoxDowload\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 86
@@ -360,31 +360,31 @@ this.FeatureBackground();
 #line 96
  testRunner.Given("I have a workflow \"TestWFWithDropBoxList\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table1053 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1047 = new TechTalk.SpecFlow.Table(new string[] {
                         "Local File",
                         "OverwriteOrAdd",
                         "DropboxFile",
                         "Result"});
-            table1053.AddRow(new string[] {
+            table1047.AddRow(new string[] {
                         "C:\\Home.Delete",
                         "Overwrite",
                         "Home/Download.xml",
                         "[[res]]"});
 #line 97
- testRunner.And("\"TestWFWithDropBoxList\" contains a DropboxUpload \"UploadTool\" Setup as", ((string)(null)), table1053, "And ");
+ testRunner.And("\"TestWFWithDropBoxList\" contains a DropboxUpload \"UploadTool\" Setup as", ((string)(null)), table1047, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1054 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1048 = new TechTalk.SpecFlow.Table(new string[] {
                         "Read",
                         "LoadSubFolders",
                         "DropboxFile",
                         "Result"});
-            table1054.AddRow(new string[] {
+            table1048.AddRow(new string[] {
                         "Files",
                         "true",
                         "Home",
                         "[[res().Files]]"});
 #line 100
- testRunner.And("\"TestWFWithDropBoxList\" contains a DropboxList \"ListTool\" Setup as", ((string)(null)), table1054, "And ");
+ testRunner.And("\"TestWFWithDropBoxList\" contains a DropboxList \"ListTool\" Setup as", ((string)(null)), table1048, "And ");
 #line 103
  testRunner.And("I save workflow \"TestWFWithDropBoxList\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 104
@@ -421,16 +421,16 @@ this.FeatureBackground();
 #line 114
   testRunner.Given("I have a workflow \"TestWFCOMDLL\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table1055 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1049 = new TechTalk.SpecFlow.Table(new string[] {
                         "Source",
                         "Namespace",
                         "Action"});
-            table1055.AddRow(new string[] {
+            table1049.AddRow(new string[] {
                         "RandomSource",
                         "System.Random",
                         "Next"});
 #line 115
-  testRunner.And("\"TestWFCOMDLL\" contains an COM DLL \"COMService\" as", ((string)(null)), table1055, "And ");
+  testRunner.And("\"TestWFCOMDLL\" contains an COM DLL \"COMService\" as", ((string)(null)), table1049, "And ");
 #line 118
     testRunner.And("I save workflow \"TestWFCOMDLL\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 119
@@ -440,16 +440,16 @@ this.FeatureBackground();
 #line 121
    testRunner.And("I Add \"COMService\" as TestStep", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1056 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1050 = new TechTalk.SpecFlow.Table(new string[] {
                         "Variable Name",
                         "Condition",
                         "Value"});
-            table1056.AddRow(new string[] {
+            table1050.AddRow(new string[] {
                         "[[PrimitiveReturnValue]]",
                         "Not Date",
                         ""});
 #line 122
-   testRunner.And("I add StepOutputs as", ((string)(null)), table1056, "And ");
+   testRunner.And("I add StepOutputs as", ((string)(null)), table1050, "And ");
 #line 125
    testRunner.When("I save", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 126

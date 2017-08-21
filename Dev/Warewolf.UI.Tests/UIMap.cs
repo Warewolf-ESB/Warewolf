@@ -39,6 +39,7 @@ namespace Warewolf.UITests
             Playback.PlaybackSettings.MatchExactHierarchy = true;
             Playback.PlaybackSettings.SkipSetPropertyVerification = true;
             Playback.PlaybackSettings.SmartMatchOptions = SmartMatchOptions.None;
+            Playback.PlaybackSettings.WaitForReadyTimeout = 60000;
             Mouse.MouseMoveSpeed = 2500;
             Mouse.MouseDragSpeed = 2500;
 
