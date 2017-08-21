@@ -20,6 +20,7 @@ using Dev2.Communication;
 using Dev2.Runtime.Diagnostics;
 using Dev2.Runtime.Interfaces;
 using Microsoft.AspNet.SignalR.Client;
+using Dev2.DynamicServices;
 
 namespace Dev2.Runtime.ServiceModel
 {
@@ -79,7 +80,7 @@ namespace Dev2.Runtime.ServiceModel
                 if (hex != null)
                 {
                     result.IsValid = false;  // This we know how to handle this
-                    result.ErrorMessage = "Connection Error : " + hex.Response.ReasonPhrase;
+                    result.ErrorMessage = Resources.ConnectionError + hex.Response.ReasonPhrase;
                     return result;
                 }
 
@@ -87,18 +88,18 @@ namespace Dev2.Runtime.ServiceModel
                 // get something more relevant ;)
                 if (ex.Message == "One or more errors occurred." && ex.InnerException != null)
                 {
-                    result.ErrorMessage = "Connection Error : " + GetLastExeptionMessage(ex);
+                    result.ErrorMessage = Resources.ConnectionError + GetLastExeptionMessage(ex);
                 }
                 else
                 {
                     var msg = ex.Message;
-                    if (msg.IndexOf("Connection Error : ", StringComparison.Ordinal) >= 0 || msg.IndexOf("Invalid URI:", StringComparison.Ordinal) >= 0)
+                    if (msg.IndexOf(Resources.ConnectionError, StringComparison.Ordinal) >= 0 || msg.IndexOf("Invalid URI:", StringComparison.Ordinal) >= 0)
                     {
                         result.ErrorMessage = ex.Message;
                     }
                     else
                     {
-                        result.ErrorMessage = "Connection Error : " + ex.Message;
+                        result.ErrorMessage = Resources.ConnectionError + ex.Message;
                     }
                 }
             }

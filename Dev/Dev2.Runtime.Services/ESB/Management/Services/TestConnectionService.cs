@@ -11,7 +11,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
@@ -64,7 +63,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             try
             {
 
-                Dev2Logger.Info("Test connection Service", string.Empty);
+                Dev2Logger.Info("Test connection Service", "Warewolf Info");
                 StringBuilder resourceDefinition;
 
                 values.TryGetValue("ServerSource", out resourceDefinition);
@@ -89,7 +88,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 msg.HasError = true;
                 msg.Message = new StringBuilder(err.Message);
-                Dev2Logger.Error(err,string.Empty);
+                Dev2Logger.Error(err, "Warewolf Error");
 
             }
 
