@@ -146,6 +146,7 @@ namespace Dev2
             try
             {
                 Dev2Logger.AddEventLogging(settingsConfigFile, "Warewolf Server");
+                Dev2Logger.UpdateFileLoggerToProgramData(settingsConfigFile);
                 XmlConfigurator.ConfigureAndWatch(new FileInfo(settingsConfigFile));
             }
             catch (Exception e)
