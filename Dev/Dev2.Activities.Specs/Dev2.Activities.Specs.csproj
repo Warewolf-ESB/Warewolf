@@ -69,7 +69,7 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Composition\WorkflowExecution1.feature.cs">
+    <Compile Include="Composition\WorkflowExecution.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>WorkflowExecution.feature</DependentUpon>
@@ -324,7 +324,7 @@
     </None>
     <None Include="Composition\WorkflowExecution.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>WorkflowExecution1.feature.cs</LastGenOutput>
+      <LastGenOutput>WorkflowExecution.feature.cs</LastGenOutput>
     </None>
     <None Include="packages.config">
       <SubType>Designer</SubType>
@@ -564,6 +564,9 @@
     <Error Condition="!Exists('..\packages\MSTest.TestAdapter.1.1.18\build\net45\MSTest.TestAdapter.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\MSTest.TestAdapter.1.1.18\build\net45\MSTest.TestAdapter.targets'))" />
   </Target>
   <Import Project="..\packages\MSTest.TestAdapter.1.1.18\build\net45\MSTest.TestAdapter.targets" Condition="Exists('..\packages\MSTest.TestAdapter.1.1.18\build\net45\MSTest.TestAdapter.targets')" />
+  <PropertyGroup>
+    <PreBuildEvent>"$(SolutionDir)packages\SpecFlow.2.2.0\tools\specflow.exe" generateall "$(ProjectPath)"</PreBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
