@@ -33,7 +33,7 @@ Scenario: Create BadUser Server Source
 	| username | Password |
 	| BadUser  | I73573r0 |
 	And I save as "WinServerSource2"
-	Then The result is "Connection Error : Unauthorized"	
+	Then The result is "Connection Error :Unauthorized"	
 
 Scenario: Create Public Server Source
 	Given I create a server source as
