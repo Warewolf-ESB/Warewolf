@@ -1,8 +1,8 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses;
+using Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses;
 
-namespace Warewolf.UITests.DebugInputWindow
+namespace Warewolf.UI.Tests.DebugInputWindow
 {
     [CodedUITest]
     public class DebugInputWindowTests

@@ -1,11 +1,11 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Drawing;
-using Warewolf.UITests.Explorer.ExplorerUIMapClasses;
-using Warewolf.UITests.SharepointSource.SharepointSourceUIMapClasses;
-using Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses;
+using Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses;
+using Warewolf.UI.Tests.SharepointSource.SharepointSourceUIMapClasses;
+using Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses;
 
-namespace Warewolf.UITests.SharepointSource
+namespace Warewolf.UI.Tests.SharepointSource
 {
     [CodedUITest]
     public class SharepointSourceTests

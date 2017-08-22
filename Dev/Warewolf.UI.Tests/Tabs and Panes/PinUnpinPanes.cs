@@ -3,20 +3,20 @@ using System.Windows.Forms;
 using System.Drawing;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Warewolf.UITests.DBSource.DBSourceUIMapClasses;
-using Warewolf.UITests.DependencyGraph.DependencyGraphUIMapClasses;
-using Warewolf.UITests.Deploy.DeployUIMapClasses;
-using Warewolf.UITests.DotNetPluginSource.DotNetPluginSourceUIMapClasses;
-using Warewolf.UITests.Explorer.ExplorerUIMapClasses;
-using Warewolf.UITests.Scheduler.SchedulerUIMapClasses;
-using Warewolf.UITests.ServerSource.ServerSourceUIMapClasses;
-using Warewolf.UITests.Settings.SettingsUIMapClasses;
-using Warewolf.UITests.WorkflowTab.Tools.Data.DataToolsUIMapClasses;
-using Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses;
-using Warewolf.UITests.WebSource.WebSourceUIMapClasses;
-using Warewolf.UITests.WorkflowServiceTesting.WorkflowServiceTestingUIMapClasses;
+using Warewolf.UI.Tests.DBSource.DBSourceUIMapClasses;
+using Warewolf.UI.Tests.DependencyGraph.DependencyGraphUIMapClasses;
+using Warewolf.UI.Tests.Deploy.DeployUIMapClasses;
+using Warewolf.UI.Tests.DotNetPluginSource.DotNetPluginSourceUIMapClasses;
+using Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses;
+using Warewolf.UI.Tests.Scheduler.SchedulerUIMapClasses;
+using Warewolf.UI.Tests.ServerSource.ServerSourceUIMapClasses;
+using Warewolf.UI.Tests.Settings.SettingsUIMapClasses;
+using Warewolf.UI.Tests.WorkflowTab.Tools.Data.DataToolsUIMapClasses;
+using Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses;
+using Warewolf.UI.Tests.WebSource.WebSourceUIMapClasses;
+using Warewolf.UI.Tests.WorkflowServiceTesting.WorkflowServiceTestingUIMapClasses;
 
-namespace Warewolf.UITests.Tabs
+namespace Warewolf.UI.Tests.Tabs
 {
     [CodedUITest]
     public class PinUnpinPanes

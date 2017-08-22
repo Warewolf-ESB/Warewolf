@@ -1,10 +1,10 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Warewolf.UITests.WorkflowTab.Tools.HTTPWebMethods.HTTPToolsUIMapClasses;
-using Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses;
-using Warewolf.UITests.WebSource.WebSourceUIMapClasses;
+using Warewolf.UI.Tests.WorkflowTab.Tools.HTTPWebMethods.HTTPToolsUIMapClasses;
+using Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses;
+using Warewolf.UI.Tests.WebSource.WebSourceUIMapClasses;
 
-namespace Warewolf.UITests.Tools
+namespace Warewolf.UI.Tests.Tools
 {
     [CodedUITest]
     public class HttpWebGet

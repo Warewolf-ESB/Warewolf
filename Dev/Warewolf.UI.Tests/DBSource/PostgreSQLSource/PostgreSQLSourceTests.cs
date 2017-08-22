@@ -1,9 +1,9 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Warewolf.UITests.DBSource.DBSourceUIMapClasses;
-using Warewolf.UITests.Explorer.ExplorerUIMapClasses;
+using Warewolf.UI.Tests.DBSource.DBSourceUIMapClasses;
+using Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses;
 
-namespace Warewolf.UITests.PostgreSQLSource
+namespace Warewolf.UI.Tests.PostgreSQLSource
 {
     [CodedUITest]
     public class PostgreSQLSourceTests

@@ -1,10 +1,10 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Warewolf.UITests.WorkflowTab.Tools.Data.DataToolsUIMapClasses;
-using Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses;
-using Warewolf.UITests.Explorer.ExplorerUIMapClasses;
+using Warewolf.UI.Tests.WorkflowTab.Tools.Data.DataToolsUIMapClasses;
+using Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses;
+using Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses;
 
-namespace Warewolf.UITests.WindowsDesignSurfaceContextMenu
+namespace Warewolf.UI.Tests.WindowsDesignSurfaceContextMenu
 {
     [CodedUITest]
     public class DesignSurfaceContextMenuTests

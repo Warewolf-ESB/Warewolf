@@ -1,12 +1,12 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.IO;
-using Warewolf.UITests.DialogsUIMapClasses;
-using Warewolf.UITests.Explorer.ExplorerUIMapClasses;
-using Warewolf.UITests.ServerSource.ServerSourceUIMapClasses;
-using Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses;
+using Warewolf.UI.Tests.DialogsUIMapClasses;
+using Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses;
+using Warewolf.UI.Tests.ServerSource.ServerSourceUIMapClasses;
+using Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses;
 
-namespace Warewolf.UITests.ServerSource
+namespace Warewolf.UI.Tests.ServerSource
 {
     [CodedUITest]
     public class ServerSourceTests

@@ -5,18 +5,18 @@ using Microsoft.VisualStudio.TestTools.UITest.Extension;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 using TechTalk.SpecFlow;
-using Warewolf.UITests.DialogsUIMapClasses;
+using Warewolf.UI.Tests.DialogsUIMapClasses;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
 using MouseButtons = System.Windows.Forms.MouseButtons;
 using System.Drawing;
 using System.Windows.Input;
-using Warewolf.UITests.Explorer.ExplorerUIMapClasses;
-using Warewolf.UITests.DotNetPluginSource.DotNetPluginSourceUIMapClasses;
-using Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses;
-using Warewolf.UITests.ComPluginSource.ComPluginSourceUIMapClasses;
+using Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses;
+using Warewolf.UI.Tests.DotNetPluginSource.DotNetPluginSourceUIMapClasses;
+using Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses;
+using Warewolf.UI.Tests.ComPluginSource.ComPluginSourceUIMapClasses;
 
-namespace Warewolf.UITests.WorkflowTab.Tools.Database.DatabaseToolsUIMapClasses
+namespace Warewolf.UI.Tests.WorkflowTab.Tools.Database.DatabaseToolsUIMapClasses
 {
     [Binding]
     public partial class DatabaseToolsUIMap

@@ -1,9 +1,9 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Warewolf.UITests.Explorer.ExplorerUIMapClasses;
-using Warewolf.UITests.WebSource.WebSourceUIMapClasses;
+using Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses;
+using Warewolf.UI.Tests.WebSource.WebSourceUIMapClasses;
 
-namespace Warewolf.UITests.WebSource
+namespace Warewolf.UI.Tests.WebSource
 {
     [CodedUITest]
     public class WebSourceTests

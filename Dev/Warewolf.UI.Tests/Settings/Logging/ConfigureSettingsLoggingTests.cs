@@ -1,8 +1,8 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Warewolf.UITests.Settings.SettingsUIMapClasses;
+using Warewolf.UI.Tests.Settings.SettingsUIMapClasses;
 
-namespace Warewolf.UITests
+namespace Warewolf.UI.Tests
 {
     [CodedUITest]
     public class ConfigureSettingsLoggingTests

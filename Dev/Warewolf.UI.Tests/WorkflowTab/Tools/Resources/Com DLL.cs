@@ -1,11 +1,11 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Warewolf.UITests.ComPluginSource.ComPluginSourceUIMapClasses;
-using Warewolf.UITests.DialogsUIMapClasses;
-using Warewolf.UITests.WorkflowTab.Tools.Resources.ResourcesToolsUIMapClasses;
-using Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses;
+using Warewolf.UI.Tests.ComPluginSource.ComPluginSourceUIMapClasses;
+using Warewolf.UI.Tests.DialogsUIMapClasses;
+using Warewolf.UI.Tests.WorkflowTab.Tools.Resources.ResourcesToolsUIMapClasses;
+using Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses;
 
-namespace Warewolf.UITests.WorkflowTab.Tools.Resources
+namespace Warewolf.UI.Tests.WorkflowTab.Tools.Resources
 {
     [CodedUITest]
     public class Com_DLL

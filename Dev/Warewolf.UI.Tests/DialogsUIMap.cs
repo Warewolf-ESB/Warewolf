@@ -5,16 +5,16 @@ using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 using System;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses;
+using Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses;
 using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
 using System.Drawing;
 using TechTalk.SpecFlow;
-using Warewolf.UITests.Common;
-using Warewolf.UITests.Explorer.ExplorerUIMapClasses;
-using Warewolf.UITests.WorkflowServiceTesting.WorkflowServiceTestingUIMapClasses;
-using Warewolf.UITests.WorkflowTab.Tools.ControlFlow.ControlFlowToolsUIMapClasses;
+using Warewolf.UI.Tests.Common;
+using Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses;
+using Warewolf.UI.Tests.WorkflowServiceTesting.WorkflowServiceTestingUIMapClasses;
+using Warewolf.UI.Tests.WorkflowTab.Tools.ControlFlow.ControlFlowToolsUIMapClasses;
 
-namespace Warewolf.UITests.DialogsUIMapClasses
+namespace Warewolf.UI.Tests.DialogsUIMapClasses
 {
     [Binding]
     public partial class DialogsUIMap

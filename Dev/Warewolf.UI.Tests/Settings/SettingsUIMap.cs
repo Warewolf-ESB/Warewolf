@@ -3,17 +3,17 @@ using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 using System;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses;
+using Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses;
 using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
 using System.Drawing;
 using TechTalk.SpecFlow;
-using Warewolf.UITests.Explorer.ExplorerUIMapClasses;
-using Warewolf.UITests.WorkflowServiceTesting.WorkflowServiceTestingUIMapClasses;
-using Warewolf.UITests.DialogsUIMapClasses;
-using Warewolf.UITests.ServerSource.ServerSourceUIMapClasses;
-using Warewolf.UITests.Deploy.DeployUIMapClasses;
+using Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses;
+using Warewolf.UI.Tests.WorkflowServiceTesting.WorkflowServiceTestingUIMapClasses;
+using Warewolf.UI.Tests.DialogsUIMapClasses;
+using Warewolf.UI.Tests.ServerSource.ServerSourceUIMapClasses;
+using Warewolf.UI.Tests.Deploy.DeployUIMapClasses;
 
-namespace Warewolf.UITests.Settings.SettingsUIMapClasses
+namespace Warewolf.UI.Tests.Settings.SettingsUIMapClasses
 {
     [Binding]
     public partial class SettingsUIMap

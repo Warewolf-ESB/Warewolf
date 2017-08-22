@@ -1,15 +1,15 @@
 ﻿using System.Drawing;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Warewolf.UITests.DialogsUIMapClasses;
-using Warewolf.UITests.Explorer.ExplorerUIMapClasses;
-using Warewolf.UITests.WorkflowServiceTesting.WorkflowServiceTestingUIMapClasses;
-using Warewolf.UITests.Common;
-using Warewolf.UITests.WorkflowTab.Tools.Data.DataToolsUIMapClasses;
-using Warewolf.UITests.WorkflowTab.Tools.Utility.UtilityToolsUIMapClasses;
-using Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses;
+using Warewolf.UI.Tests.DialogsUIMapClasses;
+using Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses;
+using Warewolf.UI.Tests.WorkflowServiceTesting.WorkflowServiceTestingUIMapClasses;
+using Warewolf.UI.Tests.Common;
+using Warewolf.UI.Tests.WorkflowTab.Tools.Data.DataToolsUIMapClasses;
+using Warewolf.UI.Tests.WorkflowTab.Tools.Utility.UtilityToolsUIMapClasses;
+using Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses;
 
-namespace Warewolf.UITests.WorkflowServiceTesting
+namespace Warewolf.UI.Tests.WorkflowServiceTesting
 {
     [CodedUITest]
     public class TestFrameworkMockingTests

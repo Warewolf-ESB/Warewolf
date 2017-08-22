@@ -1,10 +1,10 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Warewolf.UITests.RabbitMQSource.RabbitMQSourceUIMapClasses;
-using Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses;
-using Warewolf.UITests.WorkflowTab.Tools.Utility.UtilityToolsUIMapClasses;
+using Warewolf.UI.Tests.RabbitMQSource.RabbitMQSourceUIMapClasses;
+using Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses;
+using Warewolf.UI.Tests.WorkflowTab.Tools.Utility.UtilityToolsUIMapClasses;
 
-namespace Warewolf.UITests.WorkflowTab.Tools.Utility
+namespace Warewolf.UI.Tests.WorkflowTab.Tools.Utility
 {
     [CodedUITest]
     public class RabbitMQPublish
