@@ -72,6 +72,7 @@ namespace Warewolf.UI.Specs
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Create New DB Connector With Variables")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DBConnector")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DBConnector")]
         public virtual void CreateNewDBConnectorWithVariables()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create New DB Connector With Variables", ((string[])(null)));
@@ -106,6 +107,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Execute New DB Connector With Variables")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DBConnector")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DBConnector")]
         public virtual void ExecuteNewDBConnectorWithVariables()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute New DB Connector With Variables", ((string[])(null)));
@@ -148,6 +150,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Create DB Source From Tool")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DBConnector")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DBConnector")]
         public virtual void CreateDBSourceFromTool()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create DB Source From Tool", ((string[])(null)));
