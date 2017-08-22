@@ -568,8 +568,9 @@ namespace Warewolf.UITests
         public void Click_Deploy_Ribbon_Button()
         {
             Mouse.Click(MainStudioWindow.SideMenuBar.DeployButton, new Point(16, 11));
-            Playback.Wait(2000);
+            DeployUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WaitForControlExist(60000);
             Assert.IsTrue(DeployUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.Exists, "Deploy tab does not exist after clicking deploy ribbon button.");
+            DeployUIMap.WhenIValidateTheResourceTreeIsLoaded();
         }
 
         [Given(@"I Click Scheduler Ribbon Button")]
