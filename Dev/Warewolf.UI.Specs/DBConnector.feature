@@ -1,4 +1,4 @@
-﻿	@DBConnector
+﻿@DBConnector
 Feature: DBConnector
 	In order to connect to databases
 	As a Warewolf Studio user

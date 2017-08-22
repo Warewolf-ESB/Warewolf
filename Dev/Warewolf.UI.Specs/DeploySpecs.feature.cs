@@ -71,6 +71,7 @@ namespace Warewolf.UI.Specs
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Deploying From Explorer Opens The Deploy With Resource Already Checked")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DeploySpecs")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Deploy")]
         public virtual void DeployingFromExplorerOpensTheDeployWithResourceAlreadyChecked()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Deploying From Explorer Opens The Deploy With Resource Already Checked", ((string[])(null)));
@@ -95,6 +96,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Deploy ViewOnlyWorkflow to remoteConnection")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DeploySpecs")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Deploy")]
         public virtual void DeployViewOnlyWorkflowToRemoteConnection()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Deploy ViewOnlyWorkflow to remoteConnection", ((string[])(null)));
@@ -128,6 +130,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Deploy button is enabling when selecting resource in source side")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DeploySpecs")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Deploy")]
         public virtual void DeployButtonIsEnablingWhenSelectingResourceInSourceSide()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Deploy button is enabling when selecting resource in source side", ((string[])(null)));
@@ -152,6 +155,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Filtering and clearing filter on source side")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DeploySpecs")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Deploy")]
         public virtual void FilteringAndClearingFilterOnSourceSide()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Filtering and clearing filter on source side", ((string[])(null)));
@@ -176,6 +180,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Deploying with filter enabled")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DeploySpecs")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Deploy")]
         public virtual void DeployingWithFilterEnabled()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Deploying with filter enabled", ((string[])(null)));
@@ -208,6 +213,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Deploy is enabled when I change server after validation thrown")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DeploySpecs")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Deploy")]
         public virtual void DeployIsEnabledWhenIChangeServerAfterValidationThrown()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Deploy is enabled when I change server after validation thrown", ((string[])(null)));
@@ -238,6 +244,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Select All resources to deploy")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DeploySpecs")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Deploy")]
         public virtual void SelectAllResourcesToDeploy()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Select All resources to deploy", ((string[])(null)));
@@ -265,6 +272,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Deploying From Explorer Opens The Deploy With All Resources in Folder Already Che" +
             "cked")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DeploySpecs")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Deploy")]
         public virtual void DeployingFromExplorerOpensTheDeployWithAllResourcesInFolderAlreadyChecked()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Deploying From Explorer Opens The Deploy With All Resources in Folder Already Che" +
@@ -292,6 +300,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Cancel Deploy Returns to Deploy Tab")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DeploySpecs")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Deploy")]
         public virtual void CancelDeployReturnsToDeployTab()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Cancel Deploy Returns to Deploy Tab", ((string[])(null)));
@@ -326,6 +335,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Deploy Conflicting Resource With Resource In A Different Path")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DeploySpecs")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Deploy")]
         public virtual void DeployConflictingResourceWithResourceInADifferentPath()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Deploy Conflicting Resource With Resource In A Different Path", ((string[])(null)));
@@ -362,6 +372,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Changing Authentication Type of Resource And Save Keeps the Changes")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DeploySpecs")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Deploy")]
         public virtual void ChangingAuthenticationTypeOfResourceAndSaveKeepsTheChanges()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Changing Authentication Type of Resource And Save Keeps the Changes", ((string[])(null)));
@@ -385,6 +396,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Changing Server AuthenticationType from Deploy And Save Edit Server From Explorer" +
             " Has Changes")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DeploySpecs")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Deploy")]
         public virtual void ChangingServerAuthenticationTypeFromDeployAndSaveEditServerFromExplorerHasChanges()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Changing Server AuthenticationType from Deploy And Save Edit Server From Explorer" +
@@ -409,6 +421,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Changing Seleced Server On desploy Source While Connected To Remote Server On the" +
             " Explorer")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DeploySpecs")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Deploy")]
         public virtual void ChangingSelecedServerOnDesploySourceWhileConnectedToRemoteServerOnTheExplorer()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Changing Seleced Server On desploy Source While Connected To Remote Server On the" +
@@ -434,6 +447,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Deploy From RemoteConnection")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DeploySpecs")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Deploy")]
         public virtual void DeployFromRemoteConnection()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Deploy From RemoteConnection", ((string[])(null)));
