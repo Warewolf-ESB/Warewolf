@@ -6,7 +6,10 @@ namespace Dev2.Runtime.Hosting
 {
     public class ServiceActionRepo
     {
-        static readonly Lazy<ServiceActionRepo> _instance = new Lazy<ServiceActionRepo>(System.Threading.LazyThreadSafetyMode.ExecutionAndPublication);
+        static readonly Lazy<ServiceActionRepo> _instance = new Lazy<ServiceActionRepo>(()=>
+        {
+            return new ServiceActionRepo();
+        },System.Threading.LazyThreadSafetyMode.ExecutionAndPublication);
         readonly Dictionary<Guid,DynamicService> _actionsCache;
 
         public void AddToCache(Guid key, DynamicService value)
