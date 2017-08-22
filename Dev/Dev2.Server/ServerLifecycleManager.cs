@@ -223,12 +223,12 @@ namespace Dev2
                 ConfigureLoggging();
                 _ipcIpcClient = IpcClient.GetIPCExecutor();
                 var catalog = LoadResourceCatalog();
-                StartWebServer();
                 _timer = new Timer(PerformTimerActions, null, 1000, GlobalConstants.NetworkComputerNameQueryFreq);
                 StartPulseLogger();
                 LoadPerformanceCounters();
                 LoadServerWorkspace();
                 LoadActivityCache(catalog);
+                StartWebServer();
                 LoadTestCatalog();
                 ServerLoop(interactiveMode);
             }
