@@ -1,9 +1,9 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Warewolf.UITests.Explorer.ExplorerUIMapClasses;
+using Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses;
 // ReSharper disable InconsistentNaming
 
-namespace Warewolf.UITests
+namespace Warewolf.UI.Tests
 {
     [CodedUITest]
     public class Filter

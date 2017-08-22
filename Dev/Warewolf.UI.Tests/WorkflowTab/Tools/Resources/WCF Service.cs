@@ -1,10 +1,10 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Warewolf.UITests.WorkflowTab.Tools.Resources.ResourcesToolsUIMapClasses;
-using Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses;
-using Warewolf.UITests.WcfSource.WcfSourceUIMapClasses;
+using Warewolf.UI.Tests.WorkflowTab.Tools.Resources.ResourcesToolsUIMapClasses;
+using Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses;
+using Warewolf.UI.Tests.WcfSource.WcfSourceUIMapClasses;
 
-namespace Warewolf.UITests.WorkflowTab.Tools.Resources
+namespace Warewolf.UI.Tests.WorkflowTab.Tools.Resources
 {
     [CodedUITest]
     public class WCF_Service

@@ -1,10 +1,10 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Warewolf.UITests.DropboxSource.DropboxSourceUIMapClasses;
-using Warewolf.UITests.WorkflowTab.Tools.StorageDropbox.DropboxToolsUIMapClasses;
-using Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses;
+using Warewolf.UI.Tests.DropboxSource.DropboxSourceUIMapClasses;
+using Warewolf.UI.Tests.WorkflowTab.Tools.StorageDropbox.DropboxToolsUIMapClasses;
+using Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses;
 
-namespace Warewolf.UITests.WorkflowTab.Tools.Storage_Dropbox
+namespace Warewolf.UI.Tests.WorkflowTab.Tools.Storage_Dropbox
 {
     [CodedUITest]
     public class Download

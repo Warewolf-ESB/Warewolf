@@ -4,9 +4,9 @@ using System.IO;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses;
+using Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses;
 
-namespace Warewolf.UITests.Workflow
+namespace Warewolf.UI.Tests.Workflow
 {
     [CodedUITest]
     public class Default_LayoutTests

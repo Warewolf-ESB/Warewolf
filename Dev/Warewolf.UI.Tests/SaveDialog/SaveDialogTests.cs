@@ -1,11 +1,11 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Warewolf.UITests.DialogsUIMapClasses;
-using Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses;
-using Warewolf.UITests.Explorer.ExplorerUIMapClasses;
+using Warewolf.UI.Tests.DialogsUIMapClasses;
+using Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses;
+using Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses;
 using System.Drawing;
 
-namespace Warewolf.UITests.SaveDialog
+namespace Warewolf.UI.Tests.SaveDialog
 {
     [CodedUITest]
     public class SaveDialogTests

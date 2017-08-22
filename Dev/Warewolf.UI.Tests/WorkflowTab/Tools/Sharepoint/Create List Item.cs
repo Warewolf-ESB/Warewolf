@@ -1,10 +1,10 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Warewolf.UITests.SharepointSource.SharepointSourceUIMapClasses;
-using Warewolf.UITests.WorkflowTab.Tools.Sharepoint.SharepointToolsUIMapClasses;
-using Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses;
+using Warewolf.UI.Tests.SharepointSource.SharepointSourceUIMapClasses;
+using Warewolf.UI.Tests.WorkflowTab.Tools.Sharepoint.SharepointToolsUIMapClasses;
+using Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses;
 
-namespace Warewolf.UITests.WorkflowTab.Tools.Sharepoint
+namespace Warewolf.UI.Tests.WorkflowTab.Tools.Sharepoint
 {
     [CodedUITest]
     public class Create_List_Item

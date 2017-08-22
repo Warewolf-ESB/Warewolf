@@ -1,10 +1,10 @@
 ﻿using System.Windows.Input;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Warewolf.UITests.DialogsUIMapClasses;
-using Warewolf.UITests.Scheduler.SchedulerUIMapClasses;
+using Warewolf.UI.Tests.DialogsUIMapClasses;
+using Warewolf.UI.Tests.Scheduler.SchedulerUIMapClasses;
 
-namespace Warewolf.UITests.Scheduler
+namespace Warewolf.UI.Tests.Scheduler
 {
     [CodedUITest]
     public class SchedulerTest

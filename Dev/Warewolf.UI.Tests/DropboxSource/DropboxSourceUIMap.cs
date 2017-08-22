@@ -1,14 +1,14 @@
-﻿using Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses;
+﻿using Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses;
 using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
 using TechTalk.SpecFlow;
-using Warewolf.UITests.Explorer.ExplorerUIMapClasses;
-using Warewolf.UITests.WorkflowServiceTesting.WorkflowServiceTestingUIMapClasses;
-using Warewolf.UITests.DialogsUIMapClasses;
-using Warewolf.UITests.Deploy.DeployUIMapClasses;
-using Warewolf.UITests.Settings.SettingsUIMapClasses;
-using Warewolf.UITests.ServerSource.ServerSourceUIMapClasses;
+using Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses;
+using Warewolf.UI.Tests.WorkflowServiceTesting.WorkflowServiceTestingUIMapClasses;
+using Warewolf.UI.Tests.DialogsUIMapClasses;
+using Warewolf.UI.Tests.Deploy.DeployUIMapClasses;
+using Warewolf.UI.Tests.Settings.SettingsUIMapClasses;
+using Warewolf.UI.Tests.ServerSource.ServerSourceUIMapClasses;
 
-namespace Warewolf.UITests.DropboxSource.DropboxSourceUIMapClasses
+namespace Warewolf.UI.Tests.DropboxSource.DropboxSourceUIMapClasses
 {
     [Binding]
     public partial class DropboxSourceUIMap

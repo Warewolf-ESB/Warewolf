@@ -1,10 +1,10 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Warewolf.UITests.DBSource.DBSourceUIMapClasses;
-using Warewolf.UITests.WorkflowTab.Tools.Database.DatabaseToolsUIMapClasses;
-using Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses;
+using Warewolf.UI.Tests.DBSource.DBSourceUIMapClasses;
+using Warewolf.UI.Tests.WorkflowTab.Tools.Database.DatabaseToolsUIMapClasses;
+using Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses;
 
-namespace Warewolf.UITests.Tools
+namespace Warewolf.UI.Tests.Tools
 {
     [CodedUITest]
     public class MySQLTests

@@ -1,15 +1,15 @@
 ﻿using System.Drawing;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Warewolf.UITests.DependencyGraph.DependencyGraphUIMapClasses;
-using Warewolf.UITests.DotNetPluginSource.DotNetPluginSourceUIMapClasses;
-using Warewolf.UITests.WorkflowTab.Tools.Resources.ResourcesToolsUIMapClasses;
-using Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses;
-using Warewolf.UITests.Explorer.ExplorerUIMapClasses;
+using Warewolf.UI.Tests.DependencyGraph.DependencyGraphUIMapClasses;
+using Warewolf.UI.Tests.DotNetPluginSource.DotNetPluginSourceUIMapClasses;
+using Warewolf.UI.Tests.WorkflowTab.Tools.Resources.ResourcesToolsUIMapClasses;
+using Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses;
+using Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses;
 
 // ReSharper disable CyclomaticComplexity
 
-namespace Warewolf.UITests.DependencyGraph
+namespace Warewolf.UI.Tests.DependencyGraph
 {
     [CodedUITest]
     public class ShowDependencyTests

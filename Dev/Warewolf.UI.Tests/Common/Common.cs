@@ -1,4 +1,4 @@
-﻿namespace Warewolf.UITests.Common
+﻿namespace Warewolf.UI.Tests.Common
 {
     public enum TestResultEnum
     {

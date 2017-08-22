@@ -1,30 +1,30 @@
 ﻿using TechTalk.SpecFlow;
-using Warewolf.UITests.DialogsUIMapClasses;
+using Warewolf.UI.Tests.DialogsUIMapClasses;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
 using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
 using MouseButtons = System.Windows.Forms.MouseButtons;
 using System.Drawing;
 using System.Windows.Input;
-using Warewolf.UITests.ComPluginSource;
-using Warewolf.UITests.Explorer.ExplorerUIMapClasses;
-using Warewolf.UITests.DotNetPluginSource.DotNetPluginSourceUIMapClasses;
-using Warewolf.UITests.WorkflowTab.Tools.ControlFlow.ControlFlowToolsUIMapClasses;
-using Warewolf.UITests.WorkflowTab.Tools.Data.DataToolsUIMapClasses;
-using Warewolf.UITests.WorkflowTab.Tools.Scripting.ScriptingToolsUIMapClasses;
-using Warewolf.UITests.WorkflowTab.Tools.Resources.ResourcesToolsUIMapClasses;
-using Warewolf.UITests.WorkflowTab.Tools.Recordset.RecordsetToolsUIMapClasses;
-using Warewolf.UITests.WorkflowTab.Tools.LoopConstructs.LoopConstructToolsUIMapClasses;
-using Warewolf.UITests.WorkflowTab.Tools.HTTPWebMethods.HTTPToolsUIMapClasses;
-using Warewolf.UITests.WorkflowTab.Tools.FileFTPFTPSSFTP.FileToolsUIMapClasses;
-using Warewolf.UITests.WorkflowTab.Tools.Email.EmailToolsUIMapClasses;
-using Warewolf.UITests.WorkflowTab.Tools.Database.DatabaseToolsUIMapClasses;
-using Warewolf.UITests.WorkflowTab.Tools.Utility.UtilityToolsUIMapClasses;
-using Warewolf.UITests.WorkflowTab.Tools.StorageDropbox.DropboxToolsUIMapClasses;
-using Warewolf.UITests.WorkflowTab.Tools.Sharepoint.SharepointToolsUIMapClasses;
-using Warewolf.UITests.ComPluginSource.ComPluginSourceUIMapClasses;
+using Warewolf.UI.Tests.ComPluginSource;
+using Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses;
+using Warewolf.UI.Tests.DotNetPluginSource.DotNetPluginSourceUIMapClasses;
+using Warewolf.UI.Tests.WorkflowTab.Tools.ControlFlow.ControlFlowToolsUIMapClasses;
+using Warewolf.UI.Tests.WorkflowTab.Tools.Data.DataToolsUIMapClasses;
+using Warewolf.UI.Tests.WorkflowTab.Tools.Scripting.ScriptingToolsUIMapClasses;
+using Warewolf.UI.Tests.WorkflowTab.Tools.Resources.ResourcesToolsUIMapClasses;
+using Warewolf.UI.Tests.WorkflowTab.Tools.Recordset.RecordsetToolsUIMapClasses;
+using Warewolf.UI.Tests.WorkflowTab.Tools.LoopConstructs.LoopConstructToolsUIMapClasses;
+using Warewolf.UI.Tests.WorkflowTab.Tools.HTTPWebMethods.HTTPToolsUIMapClasses;
+using Warewolf.UI.Tests.WorkflowTab.Tools.FileFTPFTPSSFTP.FileToolsUIMapClasses;
+using Warewolf.UI.Tests.WorkflowTab.Tools.Email.EmailToolsUIMapClasses;
+using Warewolf.UI.Tests.WorkflowTab.Tools.Database.DatabaseToolsUIMapClasses;
+using Warewolf.UI.Tests.WorkflowTab.Tools.Utility.UtilityToolsUIMapClasses;
+using Warewolf.UI.Tests.WorkflowTab.Tools.StorageDropbox.DropboxToolsUIMapClasses;
+using Warewolf.UI.Tests.WorkflowTab.Tools.Sharepoint.SharepointToolsUIMapClasses;
+using Warewolf.UI.Tests.ComPluginSource.ComPluginSourceUIMapClasses;
 
-namespace Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses
+namespace Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses
 {
     [Binding]
     public partial class WorkflowTabUIMap

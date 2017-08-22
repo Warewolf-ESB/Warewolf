@@ -1,17 +1,17 @@
 ﻿using TechTalk.SpecFlow;
-using Warewolf.UITests.DialogsUIMapClasses;
+using Warewolf.UI.Tests.DialogsUIMapClasses;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
 using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
 using MouseButtons = System.Windows.Forms.MouseButtons;
 using System.Drawing;
 using System.Windows.Input;
-using Warewolf.UITests.Explorer.ExplorerUIMapClasses;
-using Warewolf.UITests.DotNetPluginSource.DotNetPluginSourceUIMapClasses;
-using Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses;
-using Warewolf.UITests.ComPluginSource.ComPluginSourceUIMapClasses;
+using Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses;
+using Warewolf.UI.Tests.DotNetPluginSource.DotNetPluginSourceUIMapClasses;
+using Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses;
+using Warewolf.UI.Tests.ComPluginSource.ComPluginSourceUIMapClasses;
 
-namespace Warewolf.UITests.WorkflowTab.Tools.Sharepoint.SharepointToolsUIMapClasses
+namespace Warewolf.UI.Tests.WorkflowTab.Tools.Sharepoint.SharepointToolsUIMapClasses
 {
     [Binding]
     public partial class SharepointToolsUIMap

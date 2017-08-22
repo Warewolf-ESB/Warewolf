@@ -1,11 +1,11 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Warewolf.UITests.DialogsUIMapClasses;
-using Warewolf.UITests.EmailSource.EmailSourceUIMapClasses;
-using Warewolf.UITests.WorkflowTab.Tools.Email.EmailToolsUIMapClasses;
-using Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses;
+using Warewolf.UI.Tests.DialogsUIMapClasses;
+using Warewolf.UI.Tests.EmailSource.EmailSourceUIMapClasses;
+using Warewolf.UI.Tests.WorkflowTab.Tools.Email.EmailToolsUIMapClasses;
+using Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses;
 
-namespace Warewolf.UITests.WorkflowTab.Tools.Email
+namespace Warewolf.UI.Tests.WorkflowTab.Tools.Email
 {
     [CodedUITest]
     public class SMTP_Send
