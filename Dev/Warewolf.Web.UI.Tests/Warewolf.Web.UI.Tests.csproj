@@ -825,4 +825,7 @@
     <Error Condition="!Exists('..\packages\Accord.Video.FFMPEG.3.6.0\build\Accord.Video.FFMPEG.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Accord.Video.FFMPEG.3.6.0\build\Accord.Video.FFMPEG.targets'))" />
   </Target>
   <Import Project="..\packages\Accord.Video.FFMPEG.3.6.0\build\Accord.Video.FFMPEG.targets" Condition="Exists('..\packages\Accord.Video.FFMPEG.3.6.0\build\Accord.Video.FFMPEG.targets')" />
+  <PropertyGroup>
+    <PostBuildEvent>if exist "$(ProjectDir)WebDriverProfiles" if not exist "$(TargetDir)WebDriverProfiles\" xcopy /Y /Q /R /S "$(ProjectDir)WebDriverProfiles" "$(TargetDir)WebDriverProfiles\"</PostBuildEvent>
+  </PropertyGroup>
 </Project>
