@@ -42,7 +42,7 @@ namespace Dev2.Activities.Designers2.PostgreSql
         private IOutputsToolRegion _outputsRegion;
         private IDatabaseInputRegion _inputArea;
         private ISourceToolRegion<IDbSource> _sourceRegion;
-        private IActionToolRegion<IDbAction> _actionRegion;
+        private IDbActionToolRegion<IDbAction> _actionRegion;
 
         private IErrorInfo _worstDesignError;
 
@@ -52,10 +52,11 @@ namespace Dev2.Activities.Designers2.PostgreSql
 
         readonly string _sourceNotFoundMessage = Warewolf.Studio.Resources.Languages.Core.DatabaseServiceSourceNotFound;
 
-        public PostgreSqlDatabaseDesignerViewModel(ModelItem modelItem, IAsyncWorker worker)
+        public PostgreSqlDatabaseDesignerViewModel(ModelItem modelItem, IAsyncWorker worker, IViewPropertyBuilder propertyBuilder)
             : base(modelItem)
         {
             _worker = worker;
+            _propertyBuilder = propertyBuilder;
             var shellViewModel = CustomContainer.Get<IShellViewModel>();
             var server = shellViewModel.ActiveServer;
             var model = CustomContainer.CreateInstance<IDbServiceModel>(server.UpdateRepository, server.QueryProxy, shellViewModel, server);
@@ -103,9 +104,7 @@ namespace Dev2.Activities.Designers2.PostgreSql
             SetDisplayName("");
             OutputsRegion.OutputMappingEnabled = true;
             TestInputCommand = new DelegateCommand(TestProcedure);
-
-            InitializeProperties();
-
+            Properties = _propertyBuilder.BuildProperties(ActionRegion, SourceRegion, Type);
             if (OutputsRegion != null && OutputsRegion.IsEnabled)
             {
                 var recordsetItem = OutputsRegion.Outputs.FirstOrDefault(mapping => !string.IsNullOrEmpty(mapping.RecordSetName));
@@ -192,7 +191,7 @@ namespace Dev2.Activities.Designers2.PostgreSql
                 ClearValidationMemoWithNoFoundError();
             }
             UpdateWorstError();
-            InitializeProperties();
+            Properties = _propertyBuilder.BuildProperties(ActionRegion, SourceRegion, Type);
         }
 
         void UpdateWorstError()
@@ -233,21 +232,7 @@ namespace Dev2.Activities.Designers2.PostgreSql
         public int LabelWidth { get; set; }
 
         public List<KeyValuePair<string, string>> Properties { get; private set; }
-        void InitializeProperties()
-        {
-            Properties = new List<KeyValuePair<string, string>>();
-            AddProperty("Source :", SourceRegion.SelectedSource == null ? "" : SourceRegion.SelectedSource.Name);
-            AddProperty("Type :", Type);
-            AddProperty("Procedure :", ActionRegion.SelectedAction == null ? "" : ActionRegion.SelectedAction.Name);
-        }
-
-        void AddProperty(string key, string value)
-        {
-            if (!string.IsNullOrEmpty(value))
-            {
-                Properties.Add(new KeyValuePair<string, string>(key, value));
-            }
-        }
+        
 
         public IManageDatabaseInputViewModel ManageServiceInputViewModel { get; set; }
 
@@ -292,6 +277,7 @@ namespace Dev2.Activities.Designers2.PostgreSql
 
         bool _generateOutputsVisible;
         private readonly IAsyncWorker _worker;
+        private readonly IViewPropertyBuilder _propertyBuilder;
 
         public DelegateCommand TestInputCommand { get; set; }
 
@@ -365,7 +351,7 @@ namespace Dev2.Activities.Designers2.PostgreSql
 
         #region Implementation of IDatabaseServiceViewModel
 
-        public IActionToolRegion<IDbAction> ActionRegion
+        public IDbActionToolRegion<IDbAction> ActionRegion
         {
             get
             {

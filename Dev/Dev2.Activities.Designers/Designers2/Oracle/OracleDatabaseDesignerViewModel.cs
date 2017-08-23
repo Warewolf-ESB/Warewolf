@@ -44,7 +44,7 @@ namespace Dev2.Activities.Designers2.Oracle
         private IOutputsToolRegion _outputsRegion;
         private IDatabaseInputRegion _inputArea;
         private ISourceToolRegion<IDbSource> _sourceRegion;
-        private IActionToolRegion<IDbAction> _actionRegion;
+        private IDbActionToolRegion<IDbAction> _actionRegion;
 
         private IErrorInfo _worstDesignError;
 
@@ -364,7 +364,7 @@ namespace Dev2.Activities.Designers2.Oracle
 
         #region Implementation of IDatabaseServiceViewModel
 
-        public IActionToolRegion<IDbAction> ActionRegion
+        public IDbActionToolRegion<IDbAction> ActionRegion
         {
             get
             {
