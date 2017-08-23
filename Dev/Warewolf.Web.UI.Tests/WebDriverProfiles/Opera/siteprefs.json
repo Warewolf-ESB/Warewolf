@@ -1,0 +1,177 @@
+// lkR4/GPc97dBzFnzKEUwRdRYzIRObfLqdJ3Pwjod1y+1OThA3ahOSl1+FNt0ZpC3SMFj6GdK1awGnZxDT6lBL3P31OAvqgyepyeFszxJQQtsh6OOYWqvzibUzqZ8oDr2wvV42EEagP9cLpZGhyMKJ2FnOVT/rPm5JeG6tNoPYJW+1DtTqtBHdAcUVD7BB+oe5UvJf0zcUMtAoiPXV6MQed/5bc3cVuNxgfT7wQmUuGRYo/9rJ+ZOhD88tqzTxXJEbz5je9p0TIObGwI64ha6o/6b8Tj80uBlX/7115EwrAcF5fONHfm6AwFHa8G2tX4aepMkdcpX7gUsG0hSqn6AdQ==
+{
+    "@encoding": "UTF-8",
+    "@version": "1.0",
+    "preferences": {
+        "config": {
+            "useragent": [{
+                "@value": "Mozilla/5.0 ($PLATFORM) AppleWebKit/537.36 (KHTML, like Gecko) $CHR Safari/537.36",
+                "@id": "35"
+            }]
+        },
+        "@clean_all": "1",
+        "host": [{
+            "@name": "gyao.yahoo.co.jp",
+            "section": {
+                "@name": "User Agent",
+                "pref": {
+                    "@value": "35",
+                    "@name": "Spoof UserAgent ID"
+                }
+            }
+        }, {
+            "@name": "hangouts.google.com",
+            "section": {
+                "@name": "User Agent",
+                "pref": {
+                    "@value": "35",
+                    "@name": "Spoof UserAgent ID"
+                }
+            }
+        }, {
+            "@name": "googleforwork.com",
+            "section": {
+                "@name": "User Agent",
+                "pref": {
+                    "@value": "35",
+                    "@name": "Spoof UserAgent ID"
+                }
+            }
+        }, {
+            "@name": "chat.google.com",
+            "section": {
+                "@name": "User Agent",
+                "pref": {
+                    "@value": "35",
+                    "@name": "Spoof UserAgent ID"
+                }
+            }
+        }, {
+            "@name": "meet.google.com",
+            "section": {
+                "@name": "User Agent",
+                "pref": {
+                    "@value": "35",
+                    "@name": "Spoof UserAgent ID"
+                }
+            }
+        }, {
+            "@name": "sites.google.com",
+            "section": {
+                "@name": "User Agent",
+                "pref": {
+                    "@value": "35",
+                    "@name": "Spoof UserAgent ID"
+                }
+            }
+        }, {
+            "@name": "gamespot.com",
+            "section": {
+                "@name": "User Agent",
+                "pref": {
+                    "@value": "35",
+                    "@name": "Spoof UserAgent ID"
+                }
+            }
+        }, {
+            "@name": "zdnet.com",
+            "section": {
+                "@name": "User Agent",
+                "pref": {
+                    "@value": "35",
+                    "@name": "Spoof UserAgent ID"
+                }
+            }
+        }, {
+            "@name": "giantbomb.com",
+            "section": {
+                "@name": "User Agent",
+                "pref": {
+                    "@value": "35",
+                    "@name": "Spoof UserAgent ID"
+                }
+            }
+        }, {
+            "@name": "tvguide.com",
+            "section": {
+                "@name": "User Agent",
+                "pref": {
+                    "@value": "35",
+                    "@name": "Spoof UserAgent ID"
+                }
+            }
+        }, {
+            "@name": "cnet.com",
+            "section": {
+                "@name": "User Agent",
+                "pref": {
+                    "@value": "35",
+                    "@name": "Spoof UserAgent ID"
+                }
+            }
+        }, {
+            "@name": "techrepublic.com",
+            "section": {
+                "@name": "User Agent",
+                "pref": {
+                    "@value": "35",
+                    "@name": "Spoof UserAgent ID"
+                }
+            }
+        }, {
+            "@name": "slack.com",
+            "section": {
+                "@name": "User Agent",
+                "pref": {
+                    "@value": "35",
+                    "@name": "Spoof UserAgent ID"
+                }
+            }
+        }, {
+            "@name": "paypal.com",
+            "section": {
+                "@name": "User Agent",
+                "pref": {
+                    "@value": "35",
+                    "@name": "Spoof UserAgent ID"
+                }
+            }
+        }, {
+            "@name": "bank.barclays.co.uk",
+            "section": {
+                "@name": "User Agent",
+                "pref": {
+                    "@value": "35",
+                    "@name": "Spoof UserAgent ID"
+                }
+            }
+        }, {
+            "@name": "ipla.tv",
+            "section": {
+                "@name": "User Agent",
+                "pref": {
+                    "@value": "35",
+                    "@name": "Spoof UserAgent ID"
+                }
+            }
+        }, {
+            "@name": "ing.com.au",
+            "section": {
+                "@name": "User Agent",
+                "pref": {
+                    "@value": "35",
+                    "@name": "Spoof UserAgent ID"
+                }
+            }
+        }, {
+            "@name": "cbsnews.com",
+            "section": {
+                "@name": "User Agent",
+                "pref": {
+                    "@value": "35",
+                    "@name": "Spoof UserAgent ID"
+                }
+            }
+        }]
+    }
+}
