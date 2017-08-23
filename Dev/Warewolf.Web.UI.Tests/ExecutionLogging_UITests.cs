@@ -39,6 +39,7 @@ namespace Warewolf.Web.UI.Tests.ExecutionLoggingTests
         [DeploymentItem(@"swresample-2.dll")]
         [DeploymentItem(@"swscale-4.dll")]
         [DeploymentItem(@"avcodec-57.dll")]
+        [DeploymentItem(@"WebDriverProfiles", @"WebDriverProfiles")]
         [TestCategory("ExecutionLogging")]
         [DataSource("Microsoft.VisualStudio.TestTools.DataSource.CSV", "|DataDirectory|\\SupportedBrowsers.csv", "SupportedBrowsers#csv", DataAccessMethod.Sequential), DeploymentItem("SupportedBrowsers.csv")]
 #if DEBUG
