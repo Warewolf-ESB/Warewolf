@@ -159,9 +159,10 @@ namespace Dev2.Activities.Designers2.PostgreSql
             UpdateWorstError();
         }
 
-        public PostgreSqlDatabaseDesignerViewModel(ModelItem modelItem, IDbServiceModel model, IAsyncWorker worker)
+        public PostgreSqlDatabaseDesignerViewModel(ModelItem modelItem, IDbServiceModel model, IAsyncWorker worker, IViewPropertyBuilder propertyBuilder)
             : base(modelItem)
         {
+            _propertyBuilder = propertyBuilder;
             Model = model;
             _worker = worker;
             SetupCommonProperties();

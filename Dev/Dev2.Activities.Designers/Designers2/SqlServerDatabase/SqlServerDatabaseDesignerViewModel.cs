@@ -165,10 +165,11 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
             UpdateWorstError();
         }
 
-        public SqlServerDatabaseDesignerViewModel(ModelItem modelItem, IDbServiceModel model, IAsyncWorker worker)
+        public SqlServerDatabaseDesignerViewModel(ModelItem modelItem, IDbServiceModel model, IAsyncWorker worker, IViewPropertyBuilder propertyBuilder)
             : base(modelItem)
         {
             Model = model;
+            _propertyBuilder = propertyBuilder;
             _worker = worker;
             SetupCommonProperties();
         }
