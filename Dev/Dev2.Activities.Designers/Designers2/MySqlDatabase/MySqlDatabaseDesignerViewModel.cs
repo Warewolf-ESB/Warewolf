@@ -162,11 +162,12 @@ namespace Dev2.Activities.Designers2.MySqlDatabase
             UpdateWorstError();
         }
 
-        public MySqlDatabaseDesignerViewModel(ModelItem modelItem, IDbServiceModel model, IAsyncWorker worker)
+        public MySqlDatabaseDesignerViewModel(ModelItem modelItem, IDbServiceModel model, IAsyncWorker worker, IViewPropertyBuilder propertyBuilder)
             : base(modelItem)
         {
             Model = model;
             _worker = worker;
+            _propertyBuilder = propertyBuilder;
             SetupCommonProperties();
         }
 
