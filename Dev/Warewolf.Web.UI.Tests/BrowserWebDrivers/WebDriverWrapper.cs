@@ -7,6 +7,7 @@ using OpenQA.Selenium.Remote;
 using OpenQA.Selenium.Support.UI;
 using System;
 using System.Diagnostics;
+using System.IO;
 
 namespace Warewolf.Web.UI.Tests
 {
@@ -25,10 +26,8 @@ namespace Warewolf.Web.UI.Tests
             {
                 case "Firefox":
                     {
-                        //FirefoxProfile profile = new FirefoxProfile(@"C:\Windows\FirefoxUser\z3vxiwsp.ExecutionLoggingTestUser");
-                        //profile.SetPreference("extra", "pref");
-                        //driver = new FirefoxDriver(profile);
-                        driver = new FirefoxDriver();
+                        FirefoxProfile profile = new FirefoxProfile(Path.Combine(Environment.CurrentDirectory, "WebDriverProfiles", "Firefox"));
+                        driver = new FirefoxDriver(profile);
                         break;
                     }
                 case "IE":
@@ -41,21 +40,27 @@ namespace Warewolf.Web.UI.Tests
                         string path = @"C:\Program Files\Opera";
                         var operaPath = string.Empty;
 
-                        string[] files = System.IO.Directory.GetFiles(path, "*.exe", System.IO.SearchOption.AllDirectories);
+                        string[] files = Directory.GetFiles(path, "*opera.exe", System.IO.SearchOption.AllDirectories);
                         foreach (var file in files)
                         {
-                            if (file.EndsWith("opera.exe"))
-                            {
-                                operaPath = file;
-                                break;
-                            }
+                            operaPath = file;
+                            break;
                         }
 
-                        driver = new OperaDriver(new OperaOptions() { BinaryLocation = operaPath });
+                        OperaOptions operaOptions = new OperaOptions(){ BinaryLocation = operaPath };
+                        operaOptions.AddArguments(new[] { "user-data-dir=" + Path.Combine(Environment.CurrentDirectory, "WebDriverProfiles", "Opera"), "start-maximized" });
+                        driver = new OperaDriver(operaOptions);
+                        break;
+                    }
+                case "Chrome":
+                    {
+                        ChromeOptions chromeOptions = new ChromeOptions();
+                        chromeOptions.AddArguments(new[] { "user-data-dir=" + Path.Combine(Environment.CurrentDirectory, "WebDriverProfiles", "Chrome"), "start-maximized" });
+                        driver = new ChromeDriver(chromeOptions);
                         break;
                     }
                 default:
-                case "Chrome":
+                case "ChromeIncognito":
                     {
                         ChromeOptions chromeOptions = new ChromeOptions();
                         chromeOptions.AddArguments(new[] { "--test-type" });
