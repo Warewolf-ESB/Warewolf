@@ -50,6 +50,7 @@ namespace Warewolf.Web.UI.Tests
         [DeploymentItem(@"swresample-2.dll")]
         [DeploymentItem(@"swscale-4.dll")]
         [DeploymentItem(@"avcodec-57.dll")]
+        [DeploymentItem(@"WebDriverProfiles", @"WebDriverProfiles")]
         [TestCategory("ExecutionLogging")]
         public void ExecutionLogging_ClickOperaRefresh_UITest()
         {
@@ -72,6 +73,7 @@ namespace Warewolf.Web.UI.Tests
         [DeploymentItem(@"swresample-2.dll")]
         [DeploymentItem(@"swscale-4.dll")]
         [DeploymentItem(@"avcodec-57.dll")]
+        [DeploymentItem(@"WebDriverProfiles", @"WebDriverProfiles")]
         [TestCategory("NoWarewolfServer")]
         public void NoWarewolfServer_ClickOperaRefresh_UITest()
         {

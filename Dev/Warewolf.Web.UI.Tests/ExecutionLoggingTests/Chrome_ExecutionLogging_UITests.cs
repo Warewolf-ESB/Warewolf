@@ -42,6 +42,7 @@ namespace Warewolf.Web.UI.Tests.ExecutionLoggingTests
         [DeploymentItem(@"swscale-4.dll")]
         [DeploymentItem(@"avcodec-57.dll")]
         [TestCategory("ExecutionLogging")]
+        [DeploymentItem(@"WebDriverProfiles", @"WebDriverProfiles")]
         public void ExecutionLogging_ClickChromeRefresh_UITest()
         {
             //Generate some test log data
@@ -64,6 +65,7 @@ namespace Warewolf.Web.UI.Tests.ExecutionLoggingTests
         [DeploymentItem(@"swscale-4.dll")]
         [DeploymentItem(@"avcodec-57.dll")]
         [TestCategory("NoWarewolfServer")]
+        [DeploymentItem(@"WebDriverProfiles", @"WebDriverProfiles")]
         public void NoWarewolfServer_ClickChromeRefresh_UITest()
         {
             driver.GoToUrl();
