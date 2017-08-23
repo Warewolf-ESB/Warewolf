@@ -49,8 +49,13 @@ namespace Warewolf.Web.UI.Tests
             driver.CreateWebRequest();
             driver.GoToUrl();
 
-            Assert.IsTrue(driver.IsAlertPresent(), string.Format(GlobalConstants.UserCredentialsNotShowingError, browserName));
-            Assert.AreEqual(GlobalConstants.ExpectedUserAuthError, driver.CloseAlertAndGetItsText(false), string.Format(GlobalConstants.UserAuthAssertMessage, browserName));
+            Assert.IsTrue(driver.WaitForSpinner());
+            Assert.IsTrue(driver.WaitForExecutionList());
+            Assert.IsTrue(driver.IsExecutionListVisible());
+            string assertMessage = string.Format(GlobalConstants.UserCredentialsShowingError, browserName) + Environment.NewLine + driver.CloseAlertAndGetItsText(false);
+            Assert.IsFalse(driver.IsAlertPresent(), assertMessage);
+
+            driver.ClickUpdateServer();
         }
 
         [TestMethod]
