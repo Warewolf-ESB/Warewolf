@@ -211,9 +211,10 @@ namespace Warewolf.Studio.ViewModels
         {
             IsRefreshing = true;
             environmentViewModel.IsConnecting = true;
+            var isDeploy = false;
             if (environmentViewModel.IsConnected)
             {
-                var isDeploy = environmentViewModel.Children.Any(a => a.AllowResourceCheck);
+                isDeploy = environmentViewModel.Children.Any(a => a.AllowResourceCheck);
                 environmentViewModel.ForcedRefresh = true;
                 await environmentViewModel.Load(isDeploy, refresh);
                 if (!string.IsNullOrEmpty(SearchText))
@@ -226,6 +227,7 @@ namespace Warewolf.Studio.ViewModels
             environmentViewModel.IsConnecting = false;
             var perm = new WindowsGroupPermission { Permissions = environmentViewModel.Server.GetPermissions(environmentViewModel.ResourceId) };
             environmentViewModel.SetPropertiesForDialogFromPermissions(perm);
+            environmentViewModel.AllowResourceCheck = isDeploy;
         }
 
         public virtual void Filter(string filter)
@@ -382,7 +384,7 @@ namespace Warewolf.Studio.ViewModels
                         _environments.Add(environmentModel);
                         if (shouldLoad)
                         {
-                            await environmentModel.Load(true, true);
+                            await environmentModel.Load(false, true);
                         }
                         environmentViewModel = environmentModel;
                     }
