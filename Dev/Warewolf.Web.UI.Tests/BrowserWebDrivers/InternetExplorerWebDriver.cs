@@ -6,7 +6,7 @@ namespace Warewolf.Web.UI.Tests.BrowserWebDrivers
     {
         public InternetExplorerWebDriver() : base(new InternetExplorerDriver())
         {
-            
+            return this;
         }
     }
 }

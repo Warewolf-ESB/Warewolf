@@ -176,14 +176,5 @@ namespace Warewolf.Web.UI.Tests
 
             return operaPath;
         }
-
-        public static FirefoxProfile GetFirefoxProfile()
-        {
-            //FirefoxProfile profile = new FirefoxProfile(@"C:\Windows\FirefoxUser\z3vxiwsp.ExecutionLoggingTestUser");
-            //profile.SetPreference("extra", "pref");
-            //return profile;
-
-            return new FirefoxProfile();
-        }
     }
 }
