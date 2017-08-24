@@ -28,7 +28,7 @@ namespace Warewolf.Web.UI.Tests.ScreenRecording
             }
         }
 
-        public bool StartRecording(TestContext TestContext)
+        public bool StartRecording(TestContext TestContext, string browserName)
         {
             if (isRunning)
             {
@@ -38,7 +38,7 @@ namespace Warewolf.Web.UI.Tests.ScreenRecording
             stopped = false;
             startDateTime = DateTime.Now;
             
-            filename = Path.Combine(TestContext.DeploymentDirectory, TestContext.TestName + "_on_" + TestContext.DataRow[0].ToString() + "_on_" + Environment.MachineName) + "." + VideoExtention;
+            filename = Path.Combine(TestContext.DeploymentDirectory, TestContext.TestName + "_on_" + browserName + "_on_" + Environment.MachineName) + "." + VideoExtention;
 
             if (File.Exists(filename))
             {
