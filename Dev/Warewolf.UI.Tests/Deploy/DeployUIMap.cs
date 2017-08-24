@@ -15,34 +15,6 @@ namespace Warewolf.UI.Tests.Deploy.DeployUIMapClasses
     [Binding]
     public partial class DeployUIMap
     {
-        public void TryCloseDeployWizardTab()
-        {
-            try
-            {
-                if (UIMap.ControlExistsNow(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab))
-                {
-                    Click_Close_Deploy_Tab_Button();
-                }
-                if (UIMap.ControlExistsNow(DialogsUIMap.MessageBoxWindow.NoButton))
-                {
-                    DialogsUIMap.Click_MessageBox_No();
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("TryClose method failed to close Deploy tab.\n" + e.Message);
-            }
-        }
-
-        [Given(@"I validate the Resource tree is loaded")]
-        [When(@"I validate the Resource tree is loaded")]
-        [Then(@"I validate the Resource tree is loaded")]
-        public void WhenIValidateTheResourceTreeIsLoaded()
-        {
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerExplorer.Exists);
-            UIMap.WaitForSpinner(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerExplorer.ExplorerTree.LocalHost.Spinner);
-        }
-
         [Given(@"Destination Remote Server Is Connected")]
         [Then(@"Destination Remote Server Is Connected")]
         public void ThenDestinationRemoteServerIsConnected()
