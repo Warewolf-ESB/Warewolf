@@ -305,7 +305,7 @@ namespace Warewolf.UI.Tests.Deploy.DeployUIMapClasses
             {
                 successful = UIMap.ControlExistsNow(DialogsUIMap.MessageBoxWindow.ResourcesDeployedSucText);
                 Mouse.Click(DialogsUIMap.MessageBoxWindow.OKButton);
-                DialogsUIMap.MessageBoxWindow.WaitForControlExist(3000);
+                Playback.Wait(3000);
             }
             Assert.IsTrue(successful, "Deploy failed.");
         }
