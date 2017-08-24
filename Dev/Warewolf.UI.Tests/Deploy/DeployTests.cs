@@ -76,18 +76,6 @@ namespace Warewolf.UI.Tests
 
         [TestMethod]
         [TestCategory("Deploy")]
-        public void Deploy_ResourcePermissions_TogglesDeployButtonCorrectly()
-        {
-            const string Source = "ResourceWithViewAndExecutePerm";
-            SettingsUIMap.SetupPublicPermissionsForForLocalhost(Source);
-            ExplorerUIMap.SetupPublicPermissionsForForRemoteServer(Source);
-            ExplorerUIMap.Select_RemoteConnectionIntegration_From_Explorer();
-            ExplorerUIMap.Click_EditServerButton_From_ExplorerConnectControl();
-            ServerSourceUIMap.WhenIChangeResourcePermissionsandValidate(Source);
-        }
-
-        [TestMethod]
-        [TestCategory("Deploy")]
         public void Deploy_EditingServer_KeepsSelectedServer()
         {
             DeployUIMap.Select_RemoteConnectionIntegration_From_Deploy_Tab_Source_Server_Combobox();

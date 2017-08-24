@@ -89,19 +89,12 @@ namespace Warewolf.UI.Tests.ServerSource.ServerSourceUIMapClasses
         public void WhenIChangeResourcePermissionsandValidate(string resource)
         {
             var publicRadioButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.PublicRadioButton;
-            if (!publicRadioButton.Selected)
-            {
-                publicRadioButton.Selected = true;
-                Click_Server_Source_Wizard_Test_Connection_Button();
-                UIMap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
-                //Click_Close_Server_Source_Wizard_Tab_Button();
-                DeployUIMap.Select_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_Combobox();
-            }
-            else
-            {
-                //Click_Close_Server_Source_Wizard_Tab_Button();
-                DeployUIMap.Select_ConnectedRemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_Combobox();
-            }
+            Assert.IsFalse(publicRadioButton.Selected, "Remote Connection Integration server is not expected to be using public auth.");
+            publicRadioButton.Selected = true;
+            Click_Server_Source_Wizard_Test_Connection_Button();
+            UIMap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
+            Click_Close_Server_Source_Wizard_Tab_Button();
+            DeployUIMap.Select_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_Combobox();
             DeployUIMap.ValidateICanNotDeploy(resource);
         }        
 
