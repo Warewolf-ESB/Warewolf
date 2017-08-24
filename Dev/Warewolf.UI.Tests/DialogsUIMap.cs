@@ -333,65 +333,51 @@ namespace Warewolf.UI.Tests.DialogsUIMapClasses
             Mouse.Click(SaveDialogWindow.ExplorerView.ExplorerTree.localhost, MouseButtons.Right, ModifierKeys.None, new Point(77, 9));
             Assert.IsTrue(SaveDialogWindow.SaveDialogContextMenu.NewFolderMenuItem.Exists);
         }
-
-        [Given(@"I Select Rename From SaveDialog Context Menu")]
+        
         [When(@"I Select Rename From SaveDialog Context Menu")]
-        [Then(@"I Select Rename From SaveDialog Context Menu")]
         private void Select_Rename_From_SaveDialog_ContextMenu()
         {
             Mouse.Click(SaveDialogWindow.SaveDialogContextMenu.RenameMenuItem);
         }
-
-        [Given(@"I Remove WorkflowName From Save Dialog")]
+        
         [When(@"I Remove WorkflowName From Save Dialog")]
-        [Then(@"I Remove WorkflowName From Save Dialog")]
         public void Remove_WorkflowName_From_Save_Dialog()
         {
             SaveDialogWindow.ServiceNameTextBox.Text = "";
             Assert.AreEqual("Cannot be null", SaveDialogWindow.ErrorLabel.DisplayText, "Name cannot be null validation message does not appear");
             Assert.AreEqual(false, SaveDialogWindow.SaveButton.Enabled, "Save button on the Save dialog is enabled");
         }
-
-        [Given(@"I Select Delete From SaveDialog Context Menu")]
+        
         [When(@"I Select Delete From SaveDialog Context Menu")]
-        [Then(@"I Select Delete From SaveDialog Context Menu")]
         public void Select_Delete_From_SaveDialog_ContextMenu()
         {
             Mouse.Click(SaveDialogWindow.SaveDialogContextMenu.DeleteMenuItem);
             Assert.IsTrue(MessageBoxWindow.Exists);
             Assert.IsTrue(MessageBoxWindow.DeleteConfirmation.Exists);
         }
-
-        [Given(@"I Click SaveDialog CancelButton")]
+        
         [When(@"I Click SaveDialog CancelButton")]
-        [Then(@"I Click SaveDialog CancelButton")]
         public void Click_SaveDialog_CancelButton()
         {
             Mouse.Click(SaveDialogWindow.CancelButton, new Point(6, 7));
         }
-
-        [Given(@"I Click Duplicate From Duplicate Dialog")]
+        
         [When(@"I Click Duplicate From Duplicate Dialog")]
-        [Then(@"I Click Duplicate From Duplicate Dialog")]
         public void Click_Duplicate_From_Duplicate_Dialog()
         {
             Assert.IsTrue(SaveDialogWindow.DuplicateButton.Exists, "Duplicate button does not exist");
             Mouse.Click(SaveDialogWindow.DuplicateButton, new Point(26, 10));
         }
-
-        [Given(@"I Enter Service Name Into Save Dialog As ""(.*)"" and Append Unique Guid")]
+        
         [When(@"I Enter Service Name Into Save Dialog As ""(.*)"" and Append Unique Guid")]
-        [Then(@"I Enter Service Name Into Save Dialog As ""(.*)"" and Append Unique Guid")]
         public void Enter_Service_Name_Into_Save_Dialog_and_Append_Unique_Guid(string ServiceName)
         {
             WpfText errorLabel = SaveDialogWindow.ErrorLabel;
             SaveDialogWindow.ServiceNameTextBox.Text = ServiceName + Guid.NewGuid().ToString().Substring(0, 8);
             Assert.IsTrue(SaveDialogWindow.SaveButton.Enabled, "Save dialog save button is not enabled. Check workflow name is valid and that another workflow by that name does not already exist.");
         }
-
-        [Given(@"I Click SaveDialog Save Button")]
+        
         [When(@"I Click SaveDialog Save Button")]
-        [Then(@"I Click SaveDialog Save Button")]
         public void Click_SaveDialog_Save_Button()
         {
             Assert.IsTrue(SaveDialogWindow.SaveButton.Enabled, "Save button on the Save Dialog is not Enabled");
@@ -403,10 +389,8 @@ namespace Warewolf.UI.Tests.DialogsUIMapClasses
         {
             UIMap.WaitForSpinner(SaveDialogWindow.ExplorerView.ExplorerTree.localhost.Checkbox.Spinner);
         }
-
-        [Given(@"I Enter Invalid Service Name With Whitespace Into Save Dialog As ""(.*)""")]
+        
         [When(@"I Enter Invalid Service Name With Whitespace Into Save Dialog As ""(.*)""")]
-        [Then(@"I Enter Invalid Service Name With Whitespace Into Save Dialog As ""(.*)""")]
         public void I_Enter_Invalid_Service_Name_With_Whitespace_Into_SaveDialog(string ServiceName)
         {
             WpfText errorLabel = SaveDialogWindow.ErrorLabel;
@@ -414,10 +398,8 @@ namespace Warewolf.UI.Tests.DialogsUIMapClasses
             Assert.AreEqual("'Name' contains leading or trailing whitespace characters.", errorLabel.DisplayText, "Error is not the same as expected");
             Assert.IsFalse(SaveDialogWindow.SaveButton.Enabled, "Save dialog save button is not enabled. Check workflow name is valid and that another workflow by that name does not already exist.");
         }
-
-        [Given(@"I Enter Invalid Service Name With Whitespace Into Duplicate Dialog As ""(.*)""")]
+        
         [When(@"I Enter Invalid Service Name With Whitespace Into Duplicate Dialog As ""(.*)""")]
-        [Then(@"I Enter Invalid Service Name With Whitespace Into Duplicate Dialog As ""(.*)""")]
         public void Enter_Invalid_Service_Name_With_Whitespace_Into_Duplicate_Dialog(string ServiceName)
         {
             WpfText errorLabel = SaveDialogWindow.ErrorLabel;
@@ -425,20 +407,16 @@ namespace Warewolf.UI.Tests.DialogsUIMapClasses
             Assert.AreEqual("'Name' contains leading or trailing whitespace characters.", errorLabel.DisplayText, "Error is not the same as expected");
             Assert.IsFalse(SaveDialogWindow.DuplicateButton.Enabled, "Save dialog save button is not enabled. Check workflow name is valid and that another workflow by that name does not already exist.");
         }
-
-        [Given(@"I Enter Invalid Service Name Into Save Dialog As ""(.*)""")]
+        
         [When(@"I Enter Invalid Service Name Into Save Dialog As ""(.*)""")]
-        [Then(@"I Enter Invalid Service Name Into Save Dialog As ""(.*)""")]
         public void I_Enter_Invalid_Service_Name_Into_SaveDialog(string ServiceName)
         {
             WpfText errorLabel = SaveDialogWindow.ErrorLabel;
             SaveDialogWindow.ServiceNameTextBox.Text = ServiceName;
             Assert.AreEqual("'Name' contains invalid characters", errorLabel.DisplayText, "Error is not the same as expected");
         }
-
-        [Given(@"I Enter Invalid Service Name Into Duplicate Dialog As ""(.*)""")]
+        
         [When(@"I Enter Invalid Service Name Into Duplicate Dialog As ""(.*)""")]
-        [Then(@"I Enter Invalid Service Name Into Duplicate Dialog As ""(.*)""")]
         public void Enter_Invalid_Service_Name_Into_Duplicate_Dialog(string ServiceName)
         {
             WpfText errorLabel = SaveDialogWindow.ErrorLabel;
@@ -446,20 +424,16 @@ namespace Warewolf.UI.Tests.DialogsUIMapClasses
             Assert.AreEqual("'Name' contains leading or trailing whitespace characters.", errorLabel.DisplayText, "Error is not the same as expected");
             Assert.IsFalse(SaveDialogWindow.DuplicateButton.Enabled, "Save dialog save button is not enabled. Check workflow name is valid and that another workflow by that name does not already exist.");
         }
-
-        [Given(@"I Enter Service Name Into Duplicate Dialog As ""(.*)""")]
+        
         [When(@"I Enter Service Name Into Duplicate Dialog As ""(.*)""")]
-        [Then(@"I Enter Service Name Into Duplicate Dialog As ""(.*)""")]
         public void Enter_Service_Name_Into_Duplicate_Dialog(string ServiceName)
         {
             WpfText errorLabel = SaveDialogWindow.ErrorLabel;
             SaveDialogWindow.ServiceNameTextBox.Text = ServiceName;
             Assert.IsTrue(SaveDialogWindow.DuplicateButton.Enabled, "Save dialog save button is not enabled. Check workflow name is valid and that another workflow by that name does not already exist.");
         }
-
-        [Given(@"I Enter Service Name Into Save Dialog As ""(.*)""")]
+        
         [When(@"I Enter Service Name Into Save Dialog As ""(.*)""")]
-        [Then(@"I Enter Service Name Into Save Dialog As ""(.*)""")]
         public void Enter_Valid_Service_Name_Into_Save_Dialog(string ServiceName)
         {
             Assert.IsTrue(SaveDialogWindow.Exists, "Save dialog does not exist on the Surface.");
@@ -467,6 +441,7 @@ namespace Warewolf.UI.Tests.DialogsUIMapClasses
         }
 
         [Given(@"same name error message is shown")]
+        [Then(@"same name error message is shown")]
         public void GivenSameNameErrorMessageIsShown()
         {
             Assert.AreEqual("An item with this name already exists in this folder.", SaveDialogWindow.ErrorLabel.DisplayText);
@@ -478,26 +453,20 @@ namespace Warewolf.UI.Tests.DialogsUIMapClasses
             SaveDialogWindow.ServiceNameTextBox.Text = ServiceName;
             Assert.IsTrue(SaveDialogWindow.SaveButton.Enabled, "Save dialog save button is not enabled. Check workflow name is valid and that another workflow by that name does not already exist.");
         }
-
-        [Given(@"I Double Click Resource On The Save Dialog")]
+        
         [When(@"I Double Click Resource On The Save Dialog")]
-        [Then(@"I Double Click Resource On The Save Dialog")]
         public void DoubleClickResourceOnTheSaveDialog()
         {
             Mouse.DoubleClick(SaveDialogWindow.ExplorerView.ExplorerTree.localhost.FirstItem);
         }
-
-        [Given(@"I Select LocalHost on the Save Dialog")]
+        
         [When(@"I Select LocalHost on the Save Dialog")]
-        [Then(@"I Select LocalHost on the Save Dialog")]
         public void WhenISelectLocalHostOnTheSaveDialog()
         {
             Mouse.Click(SaveDialogWindow.ExplorerView.ExplorerTree.localhost);
         }
-
-        [Given(@"I Filter Save Dialog Explorer with ""(.*)""")]
+        
         [When(@"I Filter Save Dialog Explorer with ""(.*)""")]
-        [Then(@"I Filter Save Dialog Explorer with ""(.*)""")]
         public void Filter_Save_Dialog_Explorer(string FilterText)
         {
             var searchTextBox = SaveDialogWindow.ExplorerView.SearchTextBox;
@@ -510,10 +479,8 @@ namespace Warewolf.UI.Tests.DialogsUIMapClasses
         {
             SaveDialogWindow.UpdateDuplicatedRelat.Checked = true;
         }
-
-        [Given(@"I Click MessageBox Cancel")]
+        
         [When(@"I Click MessageBox Cancel")]
-        [Then(@"I Click MessageBox Cancel")]
         public void Click_MessageBox_Cancel()
         {
             Mouse.Click(MessageBoxWindow.CancelButton);
@@ -526,36 +493,29 @@ namespace Warewolf.UI.Tests.DialogsUIMapClasses
             Assert.IsTrue(MessageBoxWindow.DeployVersionConflicText.Exists);
         }
 
-        [Then(@"Deploy is Successfully")]
-        [When(@"Deploy is Successfully")]
         [Given(@"Deploy is Successfully")]
+        [Then(@"Deploy is Successfully")]
         public void ThenDeployIsSuccessfully()
         {
             Assert.IsTrue(MessageBoxWindow.Exists);
             Assert.IsTrue(MessageBoxWindow.ResourcesDeployedSucText.Exists);
         }
 
-        [Then(@"Message box window appears")]
-        [When(@"Message box window appears")]
         [Given(@"Message box window appears")]
+        [Then(@"Message box window appears")]
         public void ThenMessageBoxWindowAppears()
         {
             Assert.IsTrue(MessageBoxWindow.Exists);
         }
-
-        [Given(@"I Click MessageBox No")]
+        
         [When(@"I Click MessageBox No")]
-        [Then(@"I Click MessageBox No")]
         public void Click_MessageBox_No()
         {
             MessageBoxWindow.NoButton.DrawHighlight();
             Mouse.Click(MessageBoxWindow.NoButton);
         }
-
-        [Given(@"I Click MessageBox OK")]
+        
         [When(@"I Click MessageBox OK")]
-        [Then(@"I Click MessageBox OK")]
-        [Given(@"I Click MessageBox OK")]
         public void Click_MessageBox_OK()
         {
             Mouse.Click(MessageBoxWindow.OKButton, new Point(35, 11));
@@ -584,43 +544,35 @@ namespace Warewolf.UI.Tests.DialogsUIMapClasses
         {
             Mouse.Click(MessageBoxWindow.OKButton, new Point(35, 11));
         }
-
-        [Then(@"I Click Deploy version conflicts MessageBox OK")]
+        
         [When(@"I Click Deploy version conflicts MessageBox OK")]
         public void ClickDeployVersionConflictsMessageBoxOK()
         {
             Assert.IsTrue(MessageBoxWindow.DeployVersionConflicText.Exists, "Deploy Version Conflicts MessageBox does not Exist");
             Mouse.Click(MessageBoxWindow.OKButton, new Point(35, 11));
         }
-
-        [Then(@"I Click Deploy conflicts MessageBox OK")]
+        
         [When(@"I Click Deploy conflicts MessageBox OK")]
         public void ClickDeployConflictsMessageBoxOK()
         {
             Assert.IsTrue(MessageBoxWindow.DeployConflictsText.Exists, "Deploy Conflicts MessageBox does not Exist");
             Mouse.Click(MessageBoxWindow.OKButton, new Point(35, 11));
         }
-
-        [Then(@"I Click Deploy Successful MessageBox OK")]
+        
         [When(@"I Click Deploy Successful MessageBox OK")]
         public void ClickDeploySuccessfulMessageBoxOK()
         {
             Assert.IsTrue(MessageBoxWindow.ResourcesDeployedSucText.Exists, "Deploy Successful MessageBox does not Exist");
             Mouse.Click(MessageBoxWindow.OKButton, new Point(35, 11));
         }
-
-        [Given(@"I Click MessageBox DeleteAnyway")]
+        
         [When(@"I Click MessageBox DeleteAnyway")]
-        [Then(@"I Click MessageBox DeleteAnyway")]
-        [Given(@"I Click MessageBox DeleteAnyway")]
         public void Click_MessageBox_DeleteAnyway()
         {
             Mouse.Click(MessageBoxWindow.DeleteAnyway, new Point(35, 11));
         }
-
-        [Given(@"I Click MessageBox Yes")]
+        
         [When(@"I Click MessageBox Yes")]
-        [Then(@"I Click MessageBox Yes")]
         public void Click_MessageBox_Yes()
         {
             Mouse.Click(MessageBoxWindow.YesButton, new Point(32, 5));
@@ -647,10 +599,8 @@ namespace Warewolf.UI.Tests.DialogsUIMapClasses
         {
             Mouse.Click(MessageBoxWindow.YesButton, new Point(39, 17));
         }
-
-        [Given(@"I Try Click MessageBox No")]
+        
         [When(@"I Try Click MessageBox No")]
-        [Then(@"I Try Click MessageBox No")]
         public void TryClickMessageBoxNo()
         {
             var TimeBefore = System.DateTime.Now;
@@ -673,8 +623,6 @@ namespace Warewolf.UI.Tests.DialogsUIMapClasses
         }
 
         [When(@"I Try Click Message Box OK")]
-        [Then(@"I Try Click Message Box OK")]
-        [Given(@"I Try Click Message Box OK")]
         public void TryClickMessageBoxOK()
         {
             var TimeBefore = System.DateTime.Now;

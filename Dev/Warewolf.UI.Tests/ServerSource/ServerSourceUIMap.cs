@@ -57,7 +57,7 @@ namespace Warewolf.UI.Tests.ServerSource.ServerSourceUIMapClasses
                 Click_Server_Source_Wizard_Test_Connection_Button();
                 UIMap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
                 Playback.Wait(1000);
-                Click_Close_Server_Source_Wizard_Tab_Button();
+                //Click_Close_Server_Source_Wizard_Tab_Button();
                 DeployUIMap.Select_RemoteConnectionIntegration_From_Deploy_Tab_Source_Server_Combobox();
                 Mouse.Click(DeployUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.EditSourceButton);
                 Playback.Wait(1000);
@@ -73,7 +73,7 @@ namespace Warewolf.UI.Tests.ServerSource.ServerSourceUIMapClasses
                 Click_Server_Source_Wizard_Test_Connection_Button();
                 UIMap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
                 Playback.Wait(1000);
-                Click_Close_Server_Source_Wizard_Tab_Button();
+                //Click_Close_Server_Source_Wizard_Tab_Button();
                 DeployUIMap.Select_RemoteConnectionIntegration_From_Deploy_Tab_Source_Server_Combobox();
                 Mouse.Click(DeployUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.EditSourceButton);
                 Playback.Wait(1000);
@@ -84,6 +84,26 @@ namespace Warewolf.UI.Tests.ServerSource.ServerSourceUIMapClasses
                 Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.PublicRadioButton.Selected, "Public Radio Button not selected.");
             }
         }
+        
+        [When(@"I Change Permissions For Resource ""(.*)"" and Validate")]
+        public void WhenIChangeResourcePermissionsandValidate(string resource)
+        {
+            var publicRadioButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.PublicRadioButton;
+            if (!publicRadioButton.Selected)
+            {
+                publicRadioButton.Selected = true;
+                Click_Server_Source_Wizard_Test_Connection_Button();
+                UIMap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
+                //Click_Close_Server_Source_Wizard_Tab_Button();
+                DeployUIMap.Select_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_Combobox();
+            }
+            else
+            {
+                //Click_Close_Server_Source_Wizard_Tab_Button();
+                DeployUIMap.Select_ConnectedRemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_Combobox();
+            }
+            DeployUIMap.ValidateICanNotDeploy(resource);
+        }        
 
         public void Click_UserButton_On_ServerSourceTab()
         {

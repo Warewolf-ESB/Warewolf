@@ -248,9 +248,10 @@ namespace Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses
         {
             var toggleButton = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton;
             Mouse.Click(toggleButton, new Point(136, 7));
-            UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.WaitForControlExist(6000);
+            UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.WaitForControlExist(60000);
+            Assert.IsTrue(UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.Exists, "Remote Connection Integration does not appear in the explorer connect control.");
             Mouse.Click(UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.Text, new Point(138, 6));
-            Playback.Wait(1000);
+            UIMap.WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.Checkbox.Spinner);
         }
 
         [Then(@"Remote ""(.*)"" is open")]
@@ -477,10 +478,8 @@ namespace Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.NewServerButton, new Point(11, 10));
         }
-
-        [Given(@"I Click Edit Server Button From Explorer Connect Control")]
+        
         [When(@"I Click Edit Server Button From Explorer Connect Control")]
-        [Then(@"I Click Edit Server Button From Explorer Connect Control")]
         public void Click_EditServerButton_From_ExplorerConnectControl()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.EditServerButton, new Point(11, 10));

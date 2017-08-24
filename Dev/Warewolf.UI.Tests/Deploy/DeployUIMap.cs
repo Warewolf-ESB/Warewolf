@@ -322,13 +322,20 @@ namespace Warewolf.UI.Tests.Deploy.DeployUIMapClasses
         {
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerExplorer.ExplorerTree.SourceServerName.FirstExplorerTreeItem.CheckBox.Checked = true;
         }
-
-        [Given(@"I Click Deploy Tab Deploy Button")]
+        
         [When(@"I Click Deploy Tab Deploy Button")]
-        [Then(@"I Click Deploy Tab Deploy Button")]
         public void Click_Deploy_Tab_Deploy_Button()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DeployButton);
+            DialogsUIMap.MessageBoxWindow.WaitForControlExist(60000);
+            var successful = false;
+            while (DialogsUIMap.MessageBoxWindow.Exists)
+            {
+                successful = DialogsUIMap.MessageBoxWindow.ResourcesDeployedSucText.Exists;
+                Mouse.Click(DialogsUIMap.MessageBoxWindow.OKButton);
+                DialogsUIMap.MessageBoxWindow.WaitForControlExist(60000);
+            }
+            Assert.IsTrue(successful, "Deploy failed.");
         }
 
         [When(@"I Select ""(.*)"" from the source tab")]
@@ -347,10 +354,8 @@ namespace Warewolf.UI.Tests.Deploy.DeployUIMapClasses
         {
             Enter_DeployViewOnly_Into_Deploy_Source_Filter(ServiceName);
         }
-
-        [Then(@"I Click Deploy button")]
+        
         [Given(@"I Click Deploy button")]
-        [When(@"I Click Deploy button")]
         public void ThenIClickDeployButton()
         {
             Click_Deploy_Tab_Deploy_Button();
