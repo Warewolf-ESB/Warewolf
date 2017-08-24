@@ -27,14 +27,6 @@ namespace Warewolf.Web.UI.Tests
             try
             {
                 driver.Quit();
-                foreach (var process in Process.GetProcessesByName("opera"))
-                {
-                    process.Kill();
-                }
-                foreach (var process in Process.GetProcessesByName("operadriver"))
-                {
-                    process.Kill();
-                }
                 driver.Close();
             }
             catch (Exception)
@@ -77,6 +69,7 @@ namespace Warewolf.Web.UI.Tests
         [TestCategory("NoWarewolfServer")]
         public void NoWarewolfServer_ClickOperaRefresh_UITest()
         {
+            Assert.IsTrue(driver.KillServerIfRunning(), GlobalConstants.LocalWarewolfServerExpectedDownError);
             driver.GoToUrl();
             Assert.IsTrue(driver.IsAlertPresent(), GlobalConstants.IsAlertPresentError);
             Assert.AreEqual(GlobalConstants.LocalWarewolfServerError, driver.CloseAlertAndGetItsText(false), GlobalConstants.AlertText);

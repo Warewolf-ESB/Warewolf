@@ -508,6 +508,7 @@ namespace Dev2.Activities.Designers2.ODBC
         }
 
         private IDbServiceModel Model { get; set; }
+        IDbActionToolRegion<IDbAction> IDatabaseServiceViewModel.ActionRegion { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         void SetRegionVisibility(bool value)
         {
