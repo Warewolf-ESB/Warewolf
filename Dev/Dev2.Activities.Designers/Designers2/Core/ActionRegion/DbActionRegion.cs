@@ -22,7 +22,7 @@ using Warewolf.Core;
 
 namespace Dev2.Activities.Designers2.Core.ActionRegion
 {
-    public class DbActionRegion : IActionToolRegion<IDbAction>
+    public class DbActionRegion : IDbActionToolRegion<IDbAction>
     {
         private readonly ModelItem _modelItem;
         private readonly ISourceToolRegion<IDbSource> _source;
@@ -137,7 +137,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             }
         }
 
-        string ProcedureName
+        public string ProcedureName
         {
             get { return _modelItem.GetProperty<string>("ProcedureName"); }
             set

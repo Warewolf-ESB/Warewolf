@@ -36,7 +36,7 @@ namespace Dev2.Activities.Designers.Tests.MySql
             var act = new DsfMySqlDatabaseActivity();
 
             //------------Execute Test---------------------------
-            var mySql = new MySqlDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod, new SynchronousAsyncWorker());
+            var mySql = new MySqlDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod, new SynchronousAsyncWorker(),new ViewPropertyBuilder());
             mySql.Validate();
 
             //------------Assert Results-------------------------
@@ -53,7 +53,7 @@ namespace Dev2.Activities.Designers.Tests.MySql
             var mod = new MySqlModel();
             var act = new DsfMySqlDatabaseActivity();
 
-            var mySql = new MySqlDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod, new SynchronousAsyncWorker());
+            var mySql = new MySqlDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod, new SynchronousAsyncWorker(), new ViewPropertyBuilder());
             //------------Execute Test---------------------------
             mySql.ClearValidationMemoWithNoFoundError();
             //------------Assert Results-------------------------
@@ -71,7 +71,7 @@ namespace Dev2.Activities.Designers.Tests.MySql
             var act = new DsfMySqlDatabaseActivity();
 
             //------------Execute Test---------------------------
-            var mySql = new MySqlDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod, new SynchronousAsyncWorker());
+            var mySql = new MySqlDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod, new SynchronousAsyncWorker(), new ViewPropertyBuilder());
 
             //------------Assert Results-------------------------
             Assert.IsTrue(mySql.SourceRegion.IsEnabled);
@@ -90,7 +90,7 @@ namespace Dev2.Activities.Designers.Tests.MySql
             var act = new DsfMySqlDatabaseActivity();
 
             //------------Execute Test---------------------------
-            var mySql = new MySqlDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod, new SynchronousAsyncWorker());
+            var mySql = new MySqlDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod, new SynchronousAsyncWorker(), new ViewPropertyBuilder());
             mySql.ManageServiceInputViewModel = new InputViewForTest(mySql, mod);
             mySql.SourceRegion.SelectedSource = mySql.SourceRegion.Sources.First();
 
@@ -111,7 +111,7 @@ namespace Dev2.Activities.Designers.Tests.MySql
             var act = new DsfMySqlDatabaseActivity();
 
             //------------Execute Test---------------------------
-            var mySql = new MySqlDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod, new SynchronousAsyncWorker());
+            var mySql = new MySqlDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod, new SynchronousAsyncWorker(), new ViewPropertyBuilder());
             mySql.ManageServiceInputViewModel = new InputViewForTest(mySql, mod);
             mySql.SourceRegion.SelectedSource = mySql.SourceRegion.Sources.First();
 #pragma warning disable 4014
@@ -144,7 +144,7 @@ namespace Dev2.Activities.Designers.Tests.MySql
             var act = new DsfMySqlDatabaseActivity();
 
             //------------Execute Test---------------------------
-            var mySql = new MySqlDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod, new SynchronousAsyncWorker());
+            var mySql = new MySqlDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod, new SynchronousAsyncWorker(), new ViewPropertyBuilder());
             mySql.ManageServiceInputViewModel = new InputViewForTest(mySql, mod);
             mySql.SourceRegion.SelectedSource = mySql.SourceRegion.Sources.First();
 #pragma warning disable 4014
@@ -175,7 +175,7 @@ namespace Dev2.Activities.Designers.Tests.MySql
             var mod = new MySqlModel();
             mod.HasRecError = true;
             var act = new DsfMySqlDatabaseActivity();
-            var viewModel = new MySqlDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod, new SynchronousAsyncWorker());
+            var viewModel = new MySqlDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod, new SynchronousAsyncWorker(), new ViewPropertyBuilder());
             //------------Execute Test---------------------------
             viewModel.UpdateHelpDescriptor("help");
             //------------Assert Results-------------------------
@@ -192,7 +192,7 @@ namespace Dev2.Activities.Designers.Tests.MySql
             var act = new DsfMySqlDatabaseActivity();
 
             //------------Execute Test---------------------------
-            var mySql = new MySqlDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod, new SynchronousAsyncWorker());
+            var mySql = new MySqlDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod, new SynchronousAsyncWorker(), new ViewPropertyBuilder());
             mySql.ManageServiceInputViewModel = new InputViewForTest(mySql, mod);
             mySql.SourceRegion.SelectedSource = mySql.SourceRegion.Sources.First();
             mySql.ActionRegion.SelectedAction = mySql.ActionRegion.Actions.First();
@@ -224,7 +224,7 @@ namespace Dev2.Activities.Designers.Tests.MySql
             var act = new DsfMySqlDatabaseActivity();
 
             //------------Execute Test---------------------------
-            var mySql = new MySqlDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod, new SynchronousAsyncWorker());
+            var mySql = new MySqlDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod, new SynchronousAsyncWorker(), new ViewPropertyBuilder());
             mySql.ManageServiceInputViewModel = new InputViewForTest(mySql, mod);
             mySql.SourceRegion.SelectedSource = mySql.SourceRegion.Sources.First();
             mySql.ActionRegion.SelectedAction = mySql.ActionRegion.Actions.First();
@@ -258,7 +258,7 @@ namespace Dev2.Activities.Designers.Tests.MySql
             var id = Guid.NewGuid();
             var mod = new MySqlModel();
             var act = new DsfMySqlDatabaseActivity();
-            var sqlServer = new MySqlDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod, new SynchronousAsyncWorker());
+            var sqlServer = new MySqlDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod, new SynchronousAsyncWorker(), new ViewPropertyBuilder());
             sqlServer.ManageServiceInputViewModel = new InputViewForTest(sqlServer, mod);
             sqlServer.SourceRegion.SelectedSource = sqlServer.SourceRegion.Sources.First();
             sqlServer.ActionRegion.IsRefreshing = false;
@@ -281,7 +281,7 @@ namespace Dev2.Activities.Designers.Tests.MySql
             var act = new DsfMySqlDatabaseActivity();
 
             //------------Execute Test---------------------------
-            var mySql = new MySqlDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod, new SynchronousAsyncWorker());
+            var mySql = new MySqlDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod, new SynchronousAsyncWorker(), new ViewPropertyBuilder());
             mySql.ManageServiceInputViewModel = new InputViewForTest(mySql, mod);
             mySql.SourceRegion.SelectedSource = mySql.SourceRegion.Sources.First();
             mySql.ActionRegion.SelectedAction = mySql.ActionRegion.Actions.First();
