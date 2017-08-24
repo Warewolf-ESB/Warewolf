@@ -61,7 +61,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Put
             SetupCommonProperties();
         }
 
-    
+
 
         Guid UniqueID => GetProperty<Guid>();
 
@@ -74,7 +74,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Put
                 ErrorType = ErrorType.None,
                 Message = "Service Working Normally"
             };
-            if(SourceRegion.SelectedSource == null)
+            if (SourceRegion.SelectedSource == null)
             {
                 UpdateLastValidationMemoWithSourceNotFoundError();
             }
@@ -118,7 +118,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Put
         void UpdateDesignValidationErrors(IEnumerable<IErrorInfo> errors)
         {
             DesignValidationErrors.Clear();
-            foreach(var error in errors)
+            foreach (var error in errors)
             {
                 DesignValidationErrors.Add(error);
             }
@@ -132,21 +132,21 @@ namespace Dev2.Activities.Designers2.Web_Service_Put
 
         public override void Validate()
         {
-            if(Errors == null)
+            if (Errors == null)
             {
                 Errors = new List<IActionableErrorInfo>();
             }
             Errors.Clear();
 
             Errors = Regions.SelectMany(a => a.Errors).Select(a => new ActionableErrorInfo(new ErrorInfo() { Message = a, ErrorType = ErrorType.Critical }, () => { }) as IActionableErrorInfo).ToList();
-            if(SourceRegion.Errors.Count > 0)
+            if (SourceRegion.Errors.Count > 0)
             {
-                foreach(var designValidationError in SourceRegion.Errors)
+                foreach (var designValidationError in SourceRegion.Errors)
                 {
                     DesignValidationErrors.Add(new ErrorInfo { ErrorType = ErrorType.Critical, Message = designValidationError });
                 }
             }
-            if(Errors.Count <= 0)
+            if (Errors.Count <= 0)
             {
                 ClearValidationMemoWithNoFoundError();
             }
@@ -156,17 +156,17 @@ namespace Dev2.Activities.Designers2.Web_Service_Put
 
         void UpdateWorstError()
         {
-            if(DesignValidationErrors.Count == 0)
+            if (DesignValidationErrors.Count == 0)
             {
                 DesignValidationErrors.Add(NoError);
             }
 
             IErrorInfo[] worstError = { DesignValidationErrors[0] };
 
-            foreach(var error in DesignValidationErrors.Where(error => error.ErrorType > worstError[0].ErrorType))
+            foreach (var error in DesignValidationErrors.Where(error => error.ErrorType > worstError[0].ErrorType))
             {
                 worstError[0] = error;
-                if(error.ErrorType == ErrorType.Critical)
+                if (error.ErrorType == ErrorType.Critical)
                 {
                     break;
                 }
@@ -176,14 +176,14 @@ namespace Dev2.Activities.Designers2.Web_Service_Put
 
         IErrorInfo WorstDesignError
         {
-            
+
             get
             {
                 return _worstDesignError;
             }
             set
             {
-                if(_worstDesignError != value)
+                if (_worstDesignError != value)
                 {
                     _worstDesignError = value;
                     IsWorstErrorReadOnly = value == null || value.ErrorType == ErrorType.None || value.FixType == FixType.None || value.FixType == FixType.Delete;
@@ -214,10 +214,10 @@ namespace Dev2.Activities.Designers2.Web_Service_Put
 
             InitializeProperties();
 
-            if(OutputsRegion != null && OutputsRegion.IsEnabled)
+            if (OutputsRegion != null && OutputsRegion.IsEnabled)
             {
                 var recordsetItem = OutputsRegion.Outputs.FirstOrDefault(mapping => !string.IsNullOrEmpty(mapping.RecordSetName));
-                if(recordsetItem != null)
+                if (recordsetItem != null)
                 {
                     OutputsRegion.IsEnabled = true;
                 }
@@ -238,7 +238,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Put
 
         void AddProperty(string key, string value)
         {
-            if(!string.IsNullOrEmpty(value))
+            if (!string.IsNullOrEmpty(value))
             {
                 Properties.Add(new KeyValuePair<string, string>(key, value));
             }
@@ -248,7 +248,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Put
 
         public void TestProcedure()
         {
-            if(SourceRegion.SelectedSource != null)
+            if (SourceRegion.SelectedSource != null)
             {
                 var service = ToModel();
                 ManageServiceInputViewModel.InputArea.Inputs = service.Inputs;
@@ -308,18 +308,18 @@ namespace Dev2.Activities.Designers2.Web_Service_Put
         {
             var index = DisplayName.IndexOf(" -", StringComparison.Ordinal);
 
-            if(index > 0)
+            if (index > 0)
             {
                 DisplayName = DisplayName.Remove(index);
             }
 
             var displayName = DisplayName;
 
-            if(!string.IsNullOrEmpty(displayName) && displayName.Contains("Dsf"))
+            if (!string.IsNullOrEmpty(displayName) && displayName.Contains("Dsf"))
             {
                 DisplayName = displayName;
             }
-            if(!string.IsNullOrWhiteSpace(outputFieldName))
+            if (!string.IsNullOrWhiteSpace(outputFieldName))
             {
                 DisplayName = displayName + outputFieldName;
             }
@@ -349,16 +349,25 @@ namespace Dev2.Activities.Designers2.Web_Service_Put
         public override IList<IToolRegion> BuildRegions()
         {
             IList<IToolRegion> regions = new List<IToolRegion>();
-            if(SourceRegion == null)
+            if (SourceRegion == null)
             {
                 SourceRegion = new WebSourceRegion(Model, ModelItem) { SourceChangedAction = () => { OutputsRegion.IsEnabled = false; } };
                 regions.Add(SourceRegion);
-                //InputArea = new WebDeleteInputRegion(ModelItem, SourceRegion);
                 InputArea = new WebPutInputRegion(ModelItem, SourceRegion);
+                InputArea.PropertyChanged += (sender, args) =>
+                 {
+                     if (args.PropertyName == "PutData")
+                     {
+                         if (InputArea.Headers.All(value => string.IsNullOrEmpty(value.Name)))
+                         {
+                             ((ManageWebServiceInputViewModel)ManageServiceInputViewModel).BuidHeaders(InputArea.PutData);
+                         }
+                     }
+                 };
                 regions.Add(InputArea);
                 OutputsRegion = new OutputsRegion(ModelItem, true);
                 regions.Add(OutputsRegion);
-                if(OutputsRegion.Outputs.Count > 0)
+                if (OutputsRegion.Outputs.Count > 0)
                 {
                     OutputsRegion.IsEnabled = true;
                 }
@@ -419,7 +428,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Put
         public void ErrorMessage(Exception exception, bool hasError)
         {
             Errors = new List<IActionableErrorInfo>();
-            if(hasError)
+            if (hasError)
             {
                 Errors = new List<IActionableErrorInfo> { new ActionableErrorInfo(new ErrorInfo() { ErrorType = ErrorType.Critical, FixData = "", FixType = FixType.None, Message = exception.Message, StackTrace = exception.StackTrace }, () => { }) };
             }
@@ -440,8 +449,8 @@ namespace Dev2.Activities.Designers2.Web_Service_Put
                 Name = "",
                 Path = "",
                 Id = Guid.NewGuid(),
-                
-                PostData =  InputArea.PutData,
+
+                PostData = InputArea.PutData,
                 Headers = InputArea.Headers.Select(value => new NameValue { Name = value.Name, Value = value.Value }).ToList(),
                 QueryString = InputArea.QueryString,
                 RequestUrl = SourceRegion.SelectedSource.HostName,
@@ -458,7 +467,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Put
             string postValue = InputArea.PutData;
             _builder.GetValue(s, dt);
             _builder.GetValue(postValue, dt);
-            foreach(var nameValue in InputArea.Headers)
+            foreach (var nameValue in InputArea.Headers)
             {
                 _builder.GetValue(nameValue.Name, dt);
                 _builder.GetValue(nameValue.Value, dt);

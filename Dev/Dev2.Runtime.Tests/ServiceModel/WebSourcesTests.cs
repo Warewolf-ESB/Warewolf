@@ -67,7 +67,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         {
             var source = new WebSource { Address = "www.foo.bar", AuthenticationType = AuthenticationType.Anonymous };
 
-            WebSources.EnsureWebClient(source, new List<string>());
+            WebSources.CreateWebClient(source, new List<string>());
 
             var client = source.Client;
             var agent = client.Headers["user-agent"];
@@ -79,7 +79,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         {
             var source = new WebSource { Address = "www.foo.bar", AuthenticationType = AuthenticationType.Anonymous };
 
-            WebSources.EnsureWebClient(source, new List<string> { "a:x", "b:e" });
+            WebSources.CreateWebClient(source, new List<string> { "a:x", "b:e" });
 
             var client = source.Client;
             var agent = client.Headers["user-agent"];
@@ -95,7 +95,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         {
             var source = new WebSource { Address = "www.foo.bar", AuthenticationType = AuthenticationType.User, UserName = "User", Password = "pwd" };
 
-            WebSources.EnsureWebClient(source, new List<string> { "a:x", "b:e" });
+            WebSources.CreateWebClient(source, new List<string> { "a:x", "b:e" });
 
             var client = source.Client;
             

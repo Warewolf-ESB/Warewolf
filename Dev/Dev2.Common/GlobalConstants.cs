@@ -32,7 +32,7 @@ namespace Dev2.Common
         {
             SystemEvents.TimeChanged += (sender, args) =>
             {
-                
+
                 CultureInfo.CurrentCulture.ClearCachedData();
             };
 
@@ -45,7 +45,7 @@ namespace Dev2.Common
              */
             SystemEvents.UserPreferenceChanged += (sender, args) =>
             {
-                
+
                 CultureInfo.CurrentCulture.ClearCachedData();
             };
         }
@@ -54,13 +54,13 @@ namespace Dev2.Common
         public const string ExecutionLoggingResultEndTag = " ]";
 
         public const string ArmResultText = "Flow Arm";
-        
+
         //Default TimeoutValue
-        
+
         public static readonly TimeSpan DefaultTimeoutValue = new TimeSpan(0, 0, 20, 0);
         public static string LogFileDateFormat = "yyyy-MM-dd HH:mm:ss,fff";
 
-        
+
 
         public static string LogFileRegex = @"(\d+[-.\/]\d+[-.\/]\d+ \d+[:]\d+[:]\d+,\d+)\s+(\w+)\s+[-]\s+[[](\w+[-]\w+[-]\w+[-]\w+[-]\w+)[]]\s+[-]\s+"
             ;
@@ -168,13 +168,13 @@ namespace Dev2.Common
                                              "</log4net>";
 
         // Max String Size
-        
+
         public const double MAX_SIZE_FOR_STRING = 1 << 12; // = 4K
 
 
 
         // Max storage buffer size to avoid LOH ;)
-        
+
         public const int MAX_BUFFER_SIZE = 35000;
 
 
@@ -182,7 +182,7 @@ namespace Dev2.Common
         public const double DesignHeightTolerance = 0.00000001;
 
         // Force Webserver Constants
-        
+
         public const int ViewInBrowserForceDownloadSize = 51200; // 500 KB and a file must be downloaded
 
         //Runtime Configuration
@@ -194,13 +194,13 @@ namespace Dev2.Common
         public const string Dev2MessageBoxNoInputsWhenHyperlinkClickedDialog = "2";
 
         // WF Constants
-        
+
         public const int _xamlPoolSize = 5;
 
 
 
         // Constant for unique batch size processing
-        
+
         public const int _uniqueBatchSize = 1000;
 
 
@@ -229,11 +229,11 @@ namespace Dev2.Common
         public const string WebserverReplaceTag = "[[Dev2WebServer]]";
 
         // JSON constants
-        
+
         public const string OpenJSON = "<JSON>";
 
 
-        
+
         public const string CloseJSON = "</JSON>";
 
 
@@ -253,11 +253,11 @@ namespace Dev2.Common
         public const string ManagementServicePayload = "Dev2System.ManagmentServicePayload";
         public const string ErrorPayload = "Dev2System.Dev2Error";
 
-        
+
         public const string ActivityRSResult = "Dev2ActivityResults";
 
 
-        
+
         public const string ActivityRSField = "Dev2Result";
 
 
@@ -311,7 +311,7 @@ namespace Dev2.Common
         public const string DefaultTrueArmText = "True";
         public const string DefaultFalseArmText = "False";
 
-        
+
         public const string VBSerializerToken = "__!__";
 
 
@@ -337,7 +337,7 @@ namespace Dev2.Common
         // Brendon Hack Constants
         public const string PostData = "postData";
 
-        
+
         public const string DLID = "dlid";
 
 
@@ -427,8 +427,8 @@ where pn.nspname = 'public';
 
         // Security
         //public const string BuiltInAdministrator = "BuiltIn\\Administrators";
-        
-        
+
+
         public static String PublicUsername = @"\";
 
         // GAC
@@ -444,7 +444,7 @@ where pn.nspname = 'public';
         public static readonly string RemoteDebugServerInvoke = "RemoteWarewolfServerDebug";
 
         // Date Time
-        
+
         public static readonly string LongTimePattern = CultureInfo.CurrentCulture.DateTimeFormat.LongTimePattern;
 
         public static readonly string ShortTimePattern = CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern;
@@ -517,10 +517,10 @@ where pn.nspname = 'public';
             "There is An Error"
         };
 
-        
+
         public static int VersionCount = 20;
 
-        
+
         public static string WebServiceTimeoutMessage =
             "Output mapping took too long. More then 10 seconds. Please use the JSONPath feature ( green icon above ) to reduce your dataset complexity. You can find out more on JSONPath at http://goessner.net/articles/JsonPath/";
 
@@ -594,7 +594,7 @@ where pn.nspname = 'public';
                 //#if DEBUG
                 //                return Assembly.GetExecutingAssembly().GetName().Version.Minor-1;
                 //#endif
-                
+
 #pragma warning disable 162
                 return 7;
 #pragma warning restore 162
@@ -608,12 +608,17 @@ where pn.nspname = 'public';
                 //#if DEBUG
                 //                return Assembly.GetExecutingAssembly().GetName().Version.Major-1;
                 //#endif
-                
+
 #pragma warning disable 162
                 return 0;
 #pragma warning restore 162
             }
         }
+
+        public static string ApplicationJsonHeader { get; } = "application/json";
+        public static string ApplicationXmlHeader { get; } = "application/xml";
+        public static string ApplicationTextHeader { get; } = "text/plain";
+        public static string ContentType { get;}= "Content-Type";
 
         public static string DropboxPathNotFoundException = "Dropbox location cannot be found";
         public static string DropboxPathNotFileException = "Please specify the path of a file in Dropbox";
@@ -650,9 +655,9 @@ where pn.nspname = 'public';
 
 
 
-        
-        
-        
-        
+
+
+
+
     }
 }
