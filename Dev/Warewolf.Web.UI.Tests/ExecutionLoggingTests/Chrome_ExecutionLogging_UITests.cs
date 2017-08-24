@@ -68,6 +68,7 @@ namespace Warewolf.Web.UI.Tests.ExecutionLoggingTests
         [DeploymentItem(@"WebDriverProfiles", @"WebDriverProfiles")]
         public void NoWarewolfServer_ClickChromeRefresh_UITest()
         {
+            Assert.IsTrue(driver.KillServerIfRunning(), GlobalConstants.LocalWarewolfServerExpectedDownError);
             driver.GoToUrl();
             Assert.IsTrue(driver.IsAlertPresent(), GlobalConstants.IsAlertPresentError);
             Assert.AreEqual(GlobalConstants.LocalWarewolfServerError, driver.CloseAlertAndGetItsText(false), GlobalConstants.AlertText);
