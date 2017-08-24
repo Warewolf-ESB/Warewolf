@@ -6208,9 +6208,9 @@
                     <WindowTitle>Warewolf</WindowTitle>
                   </WindowTitles>
                   <AndCondition>
-                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                     <PropertyCondition Name="ControlType">Text</PropertyCondition>
-                    <PropertyCondition Name="Name">localhost</PropertyCondition>
+                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                    <PropertyCondition Name="Name" Operator="Contains">localhost</PropertyCondition>
                   </AndCondition>
                   <SupportLevel>0</SupportLevel>
                   <Descendants />
@@ -6237,10 +6237,10 @@
                 <WindowTitle>Warewolf</WindowTitle>
               </WindowTitles>
               <AndCondition>
-                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                 <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                 <PropertyCondition Name="ClassName">Uia.ComboEditorItemControl</PropertyCondition>
-                <PropertyCondition Name="Name">Microsoft SQL Server</PropertyCondition>
+                <PropertyCondition Name="Name" Operator="Contains">Microsoft SQL Server</PropertyCondition>
               </AndCondition>
               <SupportLevel>0</SupportLevel>
               <Descendants>
@@ -6250,9 +6250,9 @@
                     <WindowTitle>Warewolf</WindowTitle>
                   </WindowTitles>
                   <AndCondition>
-                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                     <PropertyCondition Name="ControlType">Text</PropertyCondition>
-                    <PropertyCondition Name="Name">Microsoft SQL Server</PropertyCondition>
+                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                    <PropertyCondition Name="Name" Operator="Contains">Microsoft SQL Server</PropertyCondition>
                   </AndCondition>
                   <SupportLevel>0</SupportLevel>
                   <Descendants />
@@ -6446,10 +6446,10 @@
                 <WindowTitle>Warewolf</WindowTitle>
               </WindowTitles>
               <AndCondition>
-                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                 <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                 <PropertyCondition Name="ClassName">Uia.ComboEditorItemControl</PropertyCondition>
-                <PropertyCondition Name="Name">PostgreSQL Database</PropertyCondition>
+                <PropertyCondition Name="Name" Operator="Contains">PostgreSQL Database</PropertyCondition>
               </AndCondition>
               <SupportLevel>0</SupportLevel>
               <Descendants>
@@ -6459,9 +6459,9 @@
                     <WindowTitle>Warewolf</WindowTitle>
                   </WindowTitles>
                   <AndCondition>
-                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                     <PropertyCondition Name="ControlType">Text</PropertyCondition>
-                    <PropertyCondition Name="Name">PostgreSQL Database</PropertyCondition>
+                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                    <PropertyCondition Name="Name" Operator="Contains">PostgreSQL Database</PropertyCondition>
                   </AndCondition>
                   <SupportLevel>0</SupportLevel>
                   <Descendants />
@@ -6474,10 +6474,10 @@
                 <WindowTitle>Warewolf</WindowTitle>
               </WindowTitles>
               <AndCondition>
-                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                 <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                 <PropertyCondition Name="ClassName">Uia.ComboEditorItemControl</PropertyCondition>
-                <PropertyCondition Name="Name">Oracle Database</PropertyCondition>
+                <PropertyCondition Name="Name" Operator="Contains">Oracle Database</PropertyCondition>
               </AndCondition>
               <SupportLevel>0</SupportLevel>
               <Descendants />
@@ -6488,10 +6488,10 @@
                 <WindowTitle>Warewolf</WindowTitle>
               </WindowTitles>
               <AndCondition>
-                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                 <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                 <PropertyCondition Name="ClassName">Uia.ComboEditorItemControl</PropertyCondition>
-                <PropertyCondition Name="Name">ODBC Database</PropertyCondition>
+                <PropertyCondition Name="Name" Operator="Contains">ODBC Database</PropertyCondition>
               </AndCondition>
               <SupportLevel>0</SupportLevel>
               <Descendants>
@@ -6501,9 +6501,9 @@
                     <WindowTitle>Warewolf</WindowTitle>
                   </WindowTitles>
                   <AndCondition>
-                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                     <PropertyCondition Name="ControlType">Text</PropertyCondition>
-                    <PropertyCondition Name="Name">ODBC Database</PropertyCondition>
+                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                    <PropertyCondition Name="Name" Operator="Contains">ODBC Database</PropertyCondition>
                   </AndCondition>
                   <SupportLevel>0</SupportLevel>
                   <Descendants />
@@ -6516,10 +6516,10 @@
                 <WindowTitle>Warewolf</WindowTitle>
               </WindowTitles>
               <AndCondition>
-                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                 <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                 <PropertyCondition Name="ClassName">Uia.ComboEditorItemControl</PropertyCondition>
-                <PropertyCondition Name="Name">MySql Database</PropertyCondition>
+                <PropertyCondition Name="Name" Operator="Contains">MySql Database</PropertyCondition>
               </AndCondition>
               <SupportLevel>0</SupportLevel>
               <Descendants>
@@ -6529,9 +6529,9 @@
                     <WindowTitle>Warewolf</WindowTitle>
                   </WindowTitles>
                   <AndCondition>
-                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                     <PropertyCondition Name="ControlType">Text</PropertyCondition>
-                    <PropertyCondition Name="Name">MySql Database</PropertyCondition>
+                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                    <PropertyCondition Name="Name" Operator="Contains">MySql Database</PropertyCondition>
                   </AndCondition>
                   <SupportLevel>0</SupportLevel>
                   <Descendants />
@@ -11079,9 +11079,9 @@
                     <WindowTitle>Warewolf</WindowTitle>
                   </WindowTitles>
                   <AndCondition>
-                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                     <PropertyCondition Name="ControlType">Text</PropertyCondition>
-                    <PropertyCondition Name="Name">Remote Connection Integration</PropertyCondition>
+                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                    <PropertyCondition Name="Name" Operator="Contains">Remote Connection Integration</PropertyCondition>
                   </AndCondition>
                   <SupportLevel>0</SupportLevel>
                   <Descendants />
@@ -11107,9 +11107,9 @@
                     <WindowTitle>Warewolf</WindowTitle>
                   </WindowTitles>
                   <AndCondition>
-                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                     <PropertyCondition Name="ControlType">Text</PropertyCondition>
-                    <PropertyCondition Name="Name">Restricted Remote Connection</PropertyCondition>
+                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                    <PropertyCondition Name="Name" Operator="Contains">Restricted Remote Connection</PropertyCondition>
                   </AndCondition>
                   <SupportLevel>0</SupportLevel>
                   <Descendants />
@@ -11122,10 +11122,10 @@
                 <WindowTitle>Warewolf</WindowTitle>
               </WindowTitles>
               <AndCondition>
-                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                 <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                 <PropertyCondition Name="ClassName">Uia.ComboEditorItemControl</PropertyCondition>
-                <PropertyCondition Name="Name">ChangingServerAuthUITest</PropertyCondition>
+                <PropertyCondition Name="Name" Operator="Contains">ChangingServerAuthUITest</PropertyCondition>
               </AndCondition>
               <SupportLevel>0</SupportLevel>
               <Descendants>
@@ -11135,9 +11135,9 @@
                     <WindowTitle>Warewolf</WindowTitle>
                   </WindowTitles>
                   <AndCondition>
-                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                     <PropertyCondition Name="ControlType">Text</PropertyCondition>
-                    <PropertyCondition Name="Name">ChangingServerAuthUITest</PropertyCondition>
+                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                    <PropertyCondition Name="Name" Operator="Contains">ChangingServerAuthUITest</PropertyCondition>
                   </AndCondition>
                   <SupportLevel>0</SupportLevel>
                   <Descendants />
@@ -11150,10 +11150,10 @@
                 <WindowTitle>Warewolf (DEV2\DYLAN.DELPORT)</WindowTitle>
               </WindowTitles>
               <AndCondition>
-                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                 <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                 <PropertyCondition Name="ClassName">Uia.ComboEditorItemControl</PropertyCondition>
-                <PropertyCondition Name="Name">postgres</PropertyCondition>
+                <PropertyCondition Name="Name" Operator="Contains">postgres</PropertyCondition>
               </AndCondition>
               <SupportLevel>0</SupportLevel>
               <Descendants>
@@ -11163,9 +11163,9 @@
                     <WindowTitle>Warewolf (DEV2\DYLAN.DELPORT)</WindowTitle>
                   </WindowTitles>
                   <AndCondition>
-                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                     <PropertyCondition Name="ControlType">Text</PropertyCondition>
-                    <PropertyCondition Name="Name">postgres</PropertyCondition>
+                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                    <PropertyCondition Name="Name" Operator="Contains">postgres</PropertyCondition>
                   </AndCondition>
                   <SupportLevel>0</SupportLevel>
                   <Descendants />
@@ -11178,10 +11178,10 @@
                 <WindowTitle>Warewolf (DEV2\DYLAN.DELPORT)</WindowTitle>
               </WindowTitles>
               <AndCondition>
-                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                 <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                 <PropertyCondition Name="ClassName">Uia.ComboEditorItemControl</PropertyCondition>
-                <PropertyCondition Name="Name">mysql</PropertyCondition>
+                <PropertyCondition Name="Name" Operator="Contains">mysql</PropertyCondition>
               </AndCondition>
               <SupportLevel>0</SupportLevel>
               <Descendants>
@@ -11191,9 +11191,9 @@
                     <WindowTitle>Warewolf (DEV2\DYLAN.DELPORT)</WindowTitle>
                   </WindowTitles>
                   <AndCondition>
-                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                     <PropertyCondition Name="ControlType">Text</PropertyCondition>
-                    <PropertyCondition Name="Name">mysql</PropertyCondition>
+                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                    <PropertyCondition Name="Name" Operator="Contains">mysql</PropertyCondition>
                   </AndCondition>
                   <SupportLevel>0</SupportLevel>
                   <Descendants />
@@ -11206,10 +11206,10 @@
                 <WindowTitle>Warewolf (DEV2\DYLAN.DELPORT)</WindowTitle>
               </WindowTitles>
               <AndCondition>
-                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                 <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                 <PropertyCondition Name="ClassName">Uia.ComboEditorItemControl</PropertyCondition>
-                <PropertyCondition Name="Name">HR</PropertyCondition>
+                <PropertyCondition Name="Name" Operator="Contains">HR</PropertyCondition>
               </AndCondition>
               <SupportLevel>0</SupportLevel>
               <Descendants>
@@ -11219,9 +11219,9 @@
                     <WindowTitle>Warewolf (DEV2\DYLAN.DELPORT)</WindowTitle>
                   </WindowTitles>
                   <AndCondition>
-                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                     <PropertyCondition Name="ControlType">Text</PropertyCondition>
-                    <PropertyCondition Name="Name">HR</PropertyCondition>
+                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                    <PropertyCondition Name="Name" Operator="Contains">HR</PropertyCondition>
                   </AndCondition>
                   <SupportLevel>0</SupportLevel>
                   <Descendants />
@@ -11234,10 +11234,10 @@
                 <WindowTitle>Warewolf (DEV2\DYLAN.DELPORT)</WindowTitle>
               </WindowTitles>
               <AndCondition>
-                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                 <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                 <PropertyCondition Name="ClassName">Uia.ComboEditorItemControl</PropertyCondition>
-                <PropertyCondition Name="Name">Excel Files</PropertyCondition>
+                <PropertyCondition Name="Name" Operator="Contains">Excel Files</PropertyCondition>
               </AndCondition>
               <SupportLevel>0</SupportLevel>
               <Descendants>
@@ -11247,9 +11247,9 @@
                     <WindowTitle>Warewolf (DEV2\DYLAN.DELPORT)</WindowTitle>
                   </WindowTitles>
                   <AndCondition>
-                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                     <PropertyCondition Name="ControlType">Text</PropertyCondition>
-                    <PropertyCondition Name="Name">Excel Files</PropertyCondition>
+                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                    <PropertyCondition Name="Name" Operator="Contains">Excel Files</PropertyCondition>
                   </AndCondition>
                   <SupportLevel>0</SupportLevel>
                   <Descendants />
@@ -11262,10 +11262,10 @@
                 <WindowTitle>Warewolf (DEV2\DYLAN.DELPORT)</WindowTitle>
               </WindowTitles>
               <AndCondition>
-                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                 <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                 <PropertyCondition Name="ClassName">Uia.ComboEditorItemControl</PropertyCondition>
-                <PropertyCondition Name="Name">Dropbox</PropertyCondition>
+                <PropertyCondition Name="Name" Operator="Contains">Dropbox</PropertyCondition>
               </AndCondition>
               <SupportLevel>0</SupportLevel>
               <Descendants>
@@ -11275,9 +11275,9 @@
                     <WindowTitle>Warewolf (DEV2\DYLAN.DELPORT)</WindowTitle>
                   </WindowTitles>
                   <AndCondition>
-                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                     <PropertyCondition Name="ControlType">Text</PropertyCondition>
-                    <PropertyCondition Name="Name">Dropbox</PropertyCondition>
+                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                    <PropertyCondition Name="Name" Operator="Contains">Dropbox</PropertyCondition>
                   </AndCondition>
                   <SupportLevel>0</SupportLevel>
                   <Descendants />
@@ -11290,10 +11290,10 @@
                 <WindowTitle>Warewolf</WindowTitle>
               </WindowTitles>
               <AndCondition>
-                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                 <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                 <PropertyCondition Name="ClassName">Uia.ComboEditorItemControl</PropertyCondition>
-                <PropertyCondition Name="Name">Dev2TestingDB</PropertyCondition>
+                <PropertyCondition Name="Name" Operator="Contains">Dev2TestingDB</PropertyCondition>
               </AndCondition>
               <SupportLevel>0</SupportLevel>
               <Descendants>
@@ -11303,9 +11303,9 @@
                     <WindowTitle>Warewolf</WindowTitle>
                   </WindowTitles>
                   <AndCondition>
-                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                     <PropertyCondition Name="ControlType">Text</PropertyCondition>
-                    <PropertyCondition Name="Name">Dev2TestingDB</PropertyCondition>
+                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                    <PropertyCondition Name="Name" Operator="Contains">Dev2TestingDB</PropertyCondition>
                   </AndCondition>
                   <SupportLevel>0</SupportLevel>
                   <Descendants />

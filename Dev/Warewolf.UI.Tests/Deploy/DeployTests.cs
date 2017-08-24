@@ -81,7 +81,7 @@ namespace Warewolf.UI.Tests
             const string Source = "ResourceWithViewAndExecutePerm";
             SettingsUIMap.SetupPublicPermissionsForForLocalhost(Source);
             ExplorerUIMap.SetupPublicPermissionsForForRemoteServer(Source);
-            ExplorerUIMap.Select_ConnectedRemoteConnectionIntegration_From_Explorer();
+            ExplorerUIMap.Select_RemoteConnectionIntegration_From_Explorer();
             ExplorerUIMap.Click_EditServerButton_From_ExplorerConnectControl();
             ServerSourceUIMap.WhenIChangeResourcePermissionsandValidate(Source);
         }

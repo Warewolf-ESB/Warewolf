@@ -233,23 +233,13 @@ namespace Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses
             Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem, new Point(90, 7));
         }
         
-        [When(@"I Select Remote Connection Integration \(Connected\) From Explorer")]
-        public void Select_ConnectedRemoteConnectionIntegration_From_Explorer()
-        {
-            var toggleButton = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton;
-            Mouse.Click(toggleButton, new Point(136, 7));
-            UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.WaitForControlExist(6000);
-            Mouse.Click(UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.Text, new Point(138, 6));
-            Playback.Wait(1000);
-        }
-        
         [When(@"I Select Remote Connection Integration From Explorer")]
         public void Select_RemoteConnectionIntegration_From_Explorer()
         {
             var toggleButton = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton;
             Mouse.Click(toggleButton, new Point(136, 7));
-            UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.WaitForControlExist(60000);
-            Assert.IsTrue(UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.Exists, "Remote Connection Integration does not appear in the explorer connect control.");
+            UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.Text.WaitForControlExist(60000);
+            Assert.IsTrue(UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.Text.Exists, "Remote Connection Integration does not appear in the explorer connect control.");
             Mouse.Click(UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.Text, new Point(138, 6));
             UIMap.WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.Checkbox.Spinner);
         }
