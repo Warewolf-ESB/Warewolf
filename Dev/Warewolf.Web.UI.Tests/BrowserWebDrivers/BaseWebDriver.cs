@@ -27,6 +27,18 @@ namespace Warewolf.Web.UI.Tests
         public void Close()
         {
             _driver.Close();
+            foreach (var process in Process.GetProcessesByName("opera"))
+            {
+                process.Kill();
+            }
+            foreach (var process in Process.GetProcessesByName("operadriver"))
+            {
+                process.Kill();
+            }
+            foreach (var process in Process.GetProcessesByName("ieserverdriver"))
+            {
+                process.Kill();
+            }
         }
 
         public void Quit()
