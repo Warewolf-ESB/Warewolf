@@ -239,7 +239,7 @@ namespace Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses
             var toggleButton = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton;
             Mouse.Click(toggleButton, new Point(136, 7));
             UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.WaitForControlExist(6000);
-            Mouse.Click(UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegrationConnected.Text, new Point(138, 6));
+            Mouse.Click(UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.Text, new Point(138, 6));
             Playback.Wait(1000);
         }
         
