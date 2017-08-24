@@ -33,9 +33,6 @@ using Dev2.Studio.Interfaces;
 using Microsoft.Practices.Prism.Commands;
 using Warewolf.Core;
 
-
-
-
 namespace Dev2.Activities.Designers2.MySqlDatabase
 {
     public class MySqlDatabaseDesignerViewModel : CustomToolWithRegionBase, IDatabaseServiceViewModel
@@ -43,7 +40,7 @@ namespace Dev2.Activities.Designers2.MySqlDatabase
         private IOutputsToolRegion _outputsRegion;
         private IDatabaseInputRegion _inputArea;
         private ISourceToolRegion<IDbSource> _sourceRegion;
-        private IActionToolRegion<IDbAction> _actionRegion;
+        private IDbActionToolRegion<IDbAction> _actionRegion;
 
         private IErrorInfo _worstDesignError;
 
@@ -53,10 +50,11 @@ namespace Dev2.Activities.Designers2.MySqlDatabase
 
         readonly string _sourceNotFoundMessage = Warewolf.Studio.Resources.Languages.Core.DatabaseServiceSourceNotFound;
 
-        public MySqlDatabaseDesignerViewModel(ModelItem modelItem, IAsyncWorker worker)
+        public MySqlDatabaseDesignerViewModel(ModelItem modelItem, IAsyncWorker worker, IViewPropertyBuilder propertyBuilder)
             : base(modelItem)
         {
             _worker = worker;
+            _propertyBuilder = propertyBuilder;
             var shellViewModel = CustomContainer.Get<IShellViewModel>();
             var server = shellViewModel.ActiveServer;
             var model = CustomContainer.CreateInstance<IDbServiceModel>(server.UpdateRepository, server.QueryProxy, shellViewModel, server);
@@ -108,7 +106,7 @@ namespace Dev2.Activities.Designers2.MySqlDatabase
             OutputsRegion.OutputMappingEnabled = true;
             TestInputCommand = new DelegateCommand(TestProcedure);
 
-            InitializeProperties();
+            Properties = _propertyBuilder.BuildProperties(ActionRegion, SourceRegion, Type);
 
             if (OutputsRegion != null && OutputsRegion.IsEnabled)
             {
@@ -164,15 +162,15 @@ namespace Dev2.Activities.Designers2.MySqlDatabase
             UpdateWorstError();
         }
 
-        public MySqlDatabaseDesignerViewModel(ModelItem modelItem, IDbServiceModel model, IAsyncWorker worker)
+        public MySqlDatabaseDesignerViewModel(ModelItem modelItem, IDbServiceModel model, IAsyncWorker worker, IViewPropertyBuilder propertyBuilder)
             : base(modelItem)
         {
             Model = model;
             _worker = worker;
+            _propertyBuilder = propertyBuilder;
             SetupCommonProperties();
         }
 
-        #region Overrides of ActivityDesignerViewModel
 
         public override void Validate()
         {
@@ -196,7 +194,8 @@ namespace Dev2.Activities.Designers2.MySqlDatabase
                 ClearValidationMemoWithNoFoundError();
             }
             UpdateWorstError();
-            InitializeProperties();
+
+            Properties = _propertyBuilder.BuildProperties(ActionRegion, SourceRegion, Type);
         }
 
         void UpdateWorstError()
@@ -221,7 +220,7 @@ namespace Dev2.Activities.Designers2.MySqlDatabase
 
         IErrorInfo WorstDesignError
         {
-            
+
             get { return _worstDesignError; }
             set
             {
@@ -237,21 +236,8 @@ namespace Dev2.Activities.Designers2.MySqlDatabase
         public int LabelWidth { get; set; }
 
         public List<KeyValuePair<string, string>> Properties { get; private set; }
-        void InitializeProperties()
-        {
-            Properties = new List<KeyValuePair<string, string>>();
-            AddProperty("Source :", SourceRegion.SelectedSource == null ? "" : SourceRegion.SelectedSource.Name);
-            AddProperty("Type :", Type);
-            AddProperty("Procedure :", ActionRegion.SelectedAction == null ? "" : ActionRegion.SelectedAction.Name);
-        }
 
-        void AddProperty(string key, string value)
-        {
-            if (!string.IsNullOrEmpty(value))
-            {
-                Properties.Add(new KeyValuePair<string, string>(key, value));
-            }
-        }
+
 
         public IManageDatabaseInputViewModel ManageServiceInputViewModel { get; set; }
 
@@ -296,12 +282,13 @@ namespace Dev2.Activities.Designers2.MySqlDatabase
 
         bool _generateOutputsVisible;
         private readonly IAsyncWorker _worker;
+        private readonly IViewPropertyBuilder _propertyBuilder;
 
         public DelegateCommand TestInputCommand { get; set; }
 
         private string Type => GetProperty<string>();
-        
-        
+
+
         void AddTitleBarMappingToggle()
         {
             HasLargeView = true;
@@ -319,7 +306,7 @@ namespace Dev2.Activities.Designers2.MySqlDatabase
             mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
         }
 
-        #endregion
+
 
         #region Overrides of CustomToolWithRegionBase
 
@@ -328,9 +315,9 @@ namespace Dev2.Activities.Designers2.MySqlDatabase
             IList<IToolRegion> regions = new List<IToolRegion>();
             if (SourceRegion == null)
             {
-                SourceRegion = new DatabaseSourceRegion(Model, ModelItem,enSourceType.MySqlDatabase) { SourceChangedAction = () => { OutputsRegion.IsEnabled = false; } };
+                SourceRegion = new DatabaseSourceRegion(Model, ModelItem, enSourceType.MySqlDatabase) { SourceChangedAction = () => { OutputsRegion.IsEnabled = false; } };
                 regions.Add(SourceRegion);
-                ActionRegion = new DbActionRegion(Model, ModelItem, SourceRegion,_worker);
+                ActionRegion = new DbActionRegion(Model, ModelItem, SourceRegion, _worker);
                 ActionRegion.ErrorsHandler += (sender, list) =>
                 {
                     List<ActionableErrorInfo> errorInfos = list.Select(error => new ActionableErrorInfo(new ErrorInfo { ErrorType = ErrorType.Critical, Message = error }, () => { })).ToList();
@@ -363,7 +350,7 @@ namespace Dev2.Activities.Designers2.MySqlDatabase
 
         #region Implementation of IDatabaseServiceViewModel
 
-        public IActionToolRegion<IDbAction> ActionRegion
+        public IDbActionToolRegion<IDbAction> ActionRegion
         {
             get
             {
