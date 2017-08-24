@@ -1,5 +1,4 @@
 ﻿using OpenQA.Selenium;
-using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.ObjectModel;
@@ -27,7 +26,14 @@ namespace Warewolf.Web.UI.Tests
        
         public void Close()
         {
-            _driver.Close();
+            try
+            {
+                _driver.Close();
+            }
+            catch (Exception)
+            {
+                // Ignore errors if unable to close the browser
+            }
             foreach (var process in Process.GetProcessesByName("opera"))
             {
                 process.Kill();
@@ -69,7 +75,9 @@ namespace Warewolf.Web.UI.Tests
 
         public void CreateWebRequest()
         {
-            WebRequest.Create("http://localhost:3142/secure/Hello%20World.json?Name=Tester");
+            var request = WebRequest.Create("http://localhost:3142/secure/Hello%20World.json?Name=Tester");
+            request.Credentials = CredentialCache.DefaultCredentials;
+            request.GetResponse();
         }
 
         public ITargetLocator SwitchTo()
