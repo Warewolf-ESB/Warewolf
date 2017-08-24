@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
+using System.Windows.Input;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.Core.Extensions;
 using Dev2.Activities.Designers2.Core.Source;
@@ -48,6 +49,10 @@ namespace Dev2.Activities.Designers2.Web_Service_Put
             var model = CustomContainer.CreateInstance<IWebServiceModel>(server.UpdateRepository, server.QueryProxy, shellViewModel, server);
             Model = model;
             _builder = new ServiceInputBuilder();
+            CellChangedCommand = new Runtime.Configuration.ViewModels.Base.DelegateCommand(o =>
+            {
+                var o1 = o;
+            });
             SetupCommonProperties();
             this.RunViewSetup();
             HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_WebMethod_Put;
@@ -489,6 +494,8 @@ namespace Dev2.Activities.Designers2.Web_Service_Put
                 OnPropertyChanged();
             }
         }
+
+        public ICommand CellChangedCommand { get; set; }
 
         void SetRegionVisibility(bool value)
         {

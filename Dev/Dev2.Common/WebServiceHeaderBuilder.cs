@@ -11,12 +11,13 @@ namespace Dev2.Common
     {
         public void BuildHeader(IHeaderRegion region, string content)
         {
-
+            var hasEmptyHeaders = region.Headers?.Any(value => !string.IsNullOrEmpty(value.Name)) ?? false;
+            if (hasEmptyHeaders) return;
             var isValidJson = content?.IsValidJson() ?? false;
             if (isValidJson)
             {
                 var jsonHeader = new NameValue(GlobalConstants.ContentType, GlobalConstants.ApplicationJsonHeader);
-                
+
                 SetupHeader(region, jsonHeader);
             }
             else
@@ -25,7 +26,7 @@ namespace Dev2.Common
                 if (isValidXml)
                 {
                     var jsonHeader = new NameValue(GlobalConstants.ContentType, GlobalConstants.ApplicationXmlHeader);
-                    
+
                     SetupHeader(region, jsonHeader);
                 }
             }
