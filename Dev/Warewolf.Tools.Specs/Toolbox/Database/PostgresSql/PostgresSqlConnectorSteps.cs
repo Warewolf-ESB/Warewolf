@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
+using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.PostgreSql;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
@@ -65,7 +66,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             mockDbServiceModel.Setup(model => model.GetActions(_postgresSqlSource));
             mockServiceInputViewModel.SetupAllProperties();
 
-            var postgresDesignerViewModel = new PostgreSqlDatabaseDesignerViewModel(modelItem, mockDbServiceModel.Object, new SynchronousAsyncWorker());
+            var postgresDesignerViewModel = new PostgreSqlDatabaseDesignerViewModel(modelItem, mockDbServiceModel.Object, new SynchronousAsyncWorker(), new ViewPropertyBuilder());
 
             ScenarioContext.Current.Add("viewModel", postgresDesignerViewModel);
             ScenarioContext.Current.Add("mockServiceInputViewModel", mockServiceInputViewModel);
@@ -209,7 +210,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             mockDbServiceModel.Setup(model => model.RetrieveSources()).Returns(dbSources);
             mockDbServiceModel.Setup(model => model.GetActions(It.IsAny<IDbSource>())).Returns(new List<IDbAction> { _getEmployees, _selectedAction });
             mockServiceInputViewModel.SetupAllProperties();
-            var postgresDesignerViewModel = new PostgreSqlDatabaseDesignerViewModel(modelItem, mockDbServiceModel.Object, new SynchronousAsyncWorker());
+            var postgresDesignerViewModel = new PostgreSqlDatabaseDesignerViewModel(modelItem, mockDbServiceModel.Object, new SynchronousAsyncWorker(), new ViewPropertyBuilder());
 
             ScenarioContext.Current.Add("viewModel", postgresDesignerViewModel);
             ScenarioContext.Current.Add("mockServiceInputViewModel", mockServiceInputViewModel);

@@ -44,7 +44,7 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
         private IOutputsToolRegion _outputsRegion;
         private IDatabaseInputRegion _inputArea;
         private ISourceToolRegion<IDbSource> _sourceRegion;
-        private IActionToolRegion<IDbAction> _actionRegion;
+        private IDbActionToolRegion<IDbAction> _actionRegion;
 
         private IErrorInfo _worstDesignError;
 
@@ -53,11 +53,12 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
         const string OutputDisplayName = " - Outputs";
 
         readonly string _sourceNotFoundMessage = Warewolf.Studio.Resources.Languages.Core.DatabaseServiceSourceNotFound;
-        
-        public SqlServerDatabaseDesignerViewModel(ModelItem modelItem, IAsyncWorker worker)
+
+        public SqlServerDatabaseDesignerViewModel(ModelItem modelItem, IAsyncWorker worker, IViewPropertyBuilder propertyBuilder)
             : base(modelItem)
         {
             _worker = worker;
+            _propertyBuilder = propertyBuilder;
             var shellViewModel = CustomContainer.Get<IShellViewModel>();
             var server = shellViewModel.ActiveServer;
             var model = CustomContainer.CreateInstance<IDbServiceModel>(server.UpdateRepository, server.QueryProxy, shellViewModel, server);
@@ -109,8 +110,7 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
             OutputsRegion.OutputMappingEnabled = true;
             TestInputCommand = new DelegateCommand(TestProcedure);
 
-            InitializeProperties();
-
+            Properties = _propertyBuilder.BuildProperties(ActionRegion, SourceRegion, Type);
             if (OutputsRegion != null && OutputsRegion.IsEnabled)
             {
                 var recordsetItem = OutputsRegion.Outputs.FirstOrDefault(mapping => !string.IsNullOrEmpty(mapping.RecordSetName));
@@ -165,10 +165,11 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
             UpdateWorstError();
         }
 
-        public SqlServerDatabaseDesignerViewModel(ModelItem modelItem, IDbServiceModel model, IAsyncWorker worker)
+        public SqlServerDatabaseDesignerViewModel(ModelItem modelItem, IDbServiceModel model, IAsyncWorker worker, IViewPropertyBuilder propertyBuilder)
             : base(modelItem)
         {
             Model = model;
+            _propertyBuilder = propertyBuilder;
             _worker = worker;
             SetupCommonProperties();
         }
@@ -197,7 +198,7 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
                 ClearValidationMemoWithNoFoundError();
             }
             UpdateWorstError();
-            InitializeProperties();
+            Properties = _propertyBuilder.BuildProperties(ActionRegion, SourceRegion, Type);
         }
 
         void UpdateWorstError()
@@ -222,7 +223,7 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
 
         IErrorInfo WorstDesignError
         {
-            
+
             get { return _worstDesignError; }
             set
             {
@@ -238,22 +239,7 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
         public int LabelWidth { get; set; }
 
         public List<KeyValuePair<string, string>> Properties { get; private set; }
-        void InitializeProperties()
-        {
-            Properties = new List<KeyValuePair<string, string>>();
-            AddProperty("Source :", SourceRegion.SelectedSource == null ? "" : SourceRegion.SelectedSource.Name);
-            AddProperty("Type :", Type);
-            AddProperty("Procedure :", ActionRegion.SelectedAction == null ? "" : ActionRegion.SelectedAction.Name);
-        }
-
-        void AddProperty(string key, string value)
-        {
-            if (!string.IsNullOrEmpty(value))
-            {
-                Properties.Add(new KeyValuePair<string, string>(key, value));
-            }
-        }
-
+        
         public IManageDatabaseInputViewModel ManageServiceInputViewModel { get; set; }
 
         public void TestProcedure()
@@ -297,12 +283,13 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
 
         bool _generateOutputsVisible;
         private readonly IAsyncWorker _worker;
+        private readonly IViewPropertyBuilder _propertyBuilder;
 
         public ICommand TestInputCommand { get; set; }
 
         private string Type => GetProperty<string>();
-        
-        
+
+
         void AddTitleBarMappingToggle()
         {
             HasLargeView = true;
@@ -331,7 +318,7 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
             {
                 SourceRegion = new DatabaseSourceRegion(Model, ModelItem, enSourceType.SqlDatabase) { SourceChangedAction = () => { OutputsRegion.IsEnabled = false; } };
                 regions.Add(SourceRegion);
-                ActionRegion = new DbActionRegion(Model, ModelItem, SourceRegion,_worker);
+                ActionRegion = new DbActionRegion(Model, ModelItem, SourceRegion, _worker);
                 ActionRegion.ErrorsHandler += (sender, list) =>
                 {
                     var errorInfos = list.Select(error => new ActionableErrorInfo(new ErrorInfo { ErrorType = ErrorType.Critical, Message = error }, () => { })).ToList();
@@ -365,7 +352,7 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
 
         #region Implementation of IDatabaseServiceViewModel
 
-        public IActionToolRegion<IDbAction> ActionRegion
+        public IDbActionToolRegion<IDbAction> ActionRegion
         {
             get
             {
