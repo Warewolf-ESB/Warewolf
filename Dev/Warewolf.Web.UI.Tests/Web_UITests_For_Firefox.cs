@@ -1,22 +1,22 @@
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using Warewolf.Web.UI.Tests.BrowserWebDrivers;
 using Warewolf.Web.UI.Tests.ScreenRecording;
 
-namespace Warewolf.Web.UI.Tests.ExecutionLoggingTests
+namespace Warewolf.Web.UI.Tests
 {
     [TestClass]
-    public class Chrome_ExecutionLogging_UITests
+    public class Web_UITests_For_Firefox
     {
         private BaseWebDriver driver;
-        string browserName = "Chrome";
+        string browserName = "Firefox";
         public TestContext TestContext { get; set; }
         private FfMpegVideoRecorder screenRecorder = new FfMpegVideoRecorder();
 
         [TestInitialize]
         public void SetupTest()
         {
-            driver = new ChromeWebDriver();
+            driver = new FirefoxWebDriver();
             screenRecorder.StartRecording(TestContext, browserName);
         }
 
@@ -41,9 +41,9 @@ namespace Warewolf.Web.UI.Tests.ExecutionLoggingTests
         [DeploymentItem(@"swresample-2.dll")]
         [DeploymentItem(@"swscale-4.dll")]
         [DeploymentItem(@"avcodec-57.dll")]
-        [TestCategory("ExecutionLogging")]
         [DeploymentItem(@"WebDriverProfiles", @"WebDriverProfiles")]
-        public void ExecutionLogging_ClickChromeRefresh_UITest()
+        [TestCategory("ExecutionLogging")]
+        public void Firefox_ExecutionLogging_ClickRefresh_UITest()
         {
             //Generate some test log data
             driver.CreateWebRequest();
@@ -64,9 +64,9 @@ namespace Warewolf.Web.UI.Tests.ExecutionLoggingTests
         [DeploymentItem(@"swresample-2.dll")]
         [DeploymentItem(@"swscale-4.dll")]
         [DeploymentItem(@"avcodec-57.dll")]
-        [TestCategory("NoWarewolfServer")]
         [DeploymentItem(@"WebDriverProfiles", @"WebDriverProfiles")]
-        public void NoWarewolfServer_ClickChromeRefresh_UITest()
+        [TestCategory("NoWarewolfServer")]
+        public void NoWarewolfServer_ClickFirefoxRefresh_UITest()
         {
             Assert.IsTrue(driver.KillServerIfRunning(), GlobalConstants.LocalWarewolfServerExpectedDownError);
             driver.GoToUrl();

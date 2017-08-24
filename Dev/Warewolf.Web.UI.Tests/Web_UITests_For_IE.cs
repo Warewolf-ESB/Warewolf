@@ -1,23 +1,22 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.Web.UI.Tests.BrowserWebDrivers;
-using System.Diagnostics;
 using Warewolf.Web.UI.Tests.ScreenRecording;
 
 namespace Warewolf.Web.UI.Tests
 {
     [TestClass]
-    public class Opera_ExecutionLogging_UITests
+    public class Web_UITests_For_IE
     {
         private BaseWebDriver driver;
-        string browserName = "Opera";
+        string browserName = "InternetExplorer";
         public TestContext TestContext { get; set; }
         private FfMpegVideoRecorder screenRecorder = new FfMpegVideoRecorder();
 
         [TestInitialize]
         public void SetupTest()
         {
-            driver = new OperaWebDriver();
+            driver = new InternetExplorerWebDriver();
             screenRecorder.StartRecording(TestContext, browserName);
         }
 
@@ -44,7 +43,7 @@ namespace Warewolf.Web.UI.Tests
         [DeploymentItem(@"avcodec-57.dll")]
         [DeploymentItem(@"WebDriverProfiles", @"WebDriverProfiles")]
         [TestCategory("ExecutionLogging")]
-        public void ExecutionLogging_ClickOperaRefresh_UITest()
+        public void InternetExplorer_ExecutionLogging_ClickRefresh_UITest()
         {
             //Generate some test log data
             driver.CreateWebRequest();
@@ -67,7 +66,7 @@ namespace Warewolf.Web.UI.Tests
         [DeploymentItem(@"avcodec-57.dll")]
         [DeploymentItem(@"WebDriverProfiles", @"WebDriverProfiles")]
         [TestCategory("NoWarewolfServer")]
-        public void NoWarewolfServer_ClickOperaRefresh_UITest()
+        public void NoWarewolfServer_ClickInternetExplorerRefresh_UITest()
         {
             Assert.IsTrue(driver.KillServerIfRunning(), GlobalConstants.LocalWarewolfServerExpectedDownError);
             driver.GoToUrl();
