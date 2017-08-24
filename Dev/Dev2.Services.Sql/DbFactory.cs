@@ -37,7 +37,7 @@ namespace Dev2.Services.Sql
             _sqlConnection.StatisticsEnabled = true;
             _sqlConnection.InfoMessage += (sender, args) =>
             {
-                Dev2Logger.Debug("SQL Server:" + args.Message + " Source:" + args.Source, "Warewolf Debug");
+                Dev2Logger.Debug("SQL Server:" + args.Message + " Source:" + args.Source, GlobalConstants.WarewolfDebug);
                 foreach (SqlError error in args.Errors)
                 {
                     var errorMessages = new StringBuilder();
@@ -47,7 +47,7 @@ namespace Dev2.Services.Sql
                                         "Source: " + error.Source + Environment.NewLine +
                                         "Procedure: " + error.Procedure + Environment.NewLine);
 
-                    Dev2Logger.Error("SQL Error:" + errorMessages.ToString(), "Warewolf Error");
+                    Dev2Logger.Error("SQL Error:" + errorMessages.ToString(), GlobalConstants.WarewolfError);
                 }
                 
             };

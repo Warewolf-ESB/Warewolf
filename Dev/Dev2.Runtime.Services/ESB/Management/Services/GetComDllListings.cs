@@ -40,7 +40,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             var msg = new ExecuteMessage();
             var serializer = new Dev2JsonSerializer();
-            Dev2Logger.Info("Get COMDll Listings", "Warewolf Info");
+            Dev2Logger.Info("Get COMDll Listings", GlobalConstants.WarewolfInfo);
             
             try
             {
@@ -61,7 +61,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch (Exception ex)
             {
-                Dev2Logger.Error(ex, "Warewolf Error");
+                Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
                 msg.HasError = true;
                 msg.SetMessage(ex.Message);
             }

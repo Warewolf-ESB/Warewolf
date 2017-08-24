@@ -59,7 +59,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 ExecuteMessage message = new ExecuteMessage();
                 message.HasError = true;
                 message.SetMessage(ErrorResource.NoSharepointServerSet);
-                Dev2Logger.Debug(ErrorResource.NoSharepointServerSet, "Warewolf Debug");
+                Dev2Logger.Debug(ErrorResource.NoSharepointServerSet, GlobalConstants.WarewolfDebug);
                 return serializer.SerializeToBuilder(message);
             }
 
@@ -81,26 +81,26 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch(Exception e)
             {
-                Dev2Logger.Error(e, "Warewolf Error");
+                Dev2Logger.Error(e, GlobalConstants.WarewolfError);
                 var res = new DbTableList("Invalid JSON data for sharepoint server parameter. Exception: {0}", e.Message);
                 return serializer.SerializeToBuilder(res);
             }
             if(runtimeSource == null)
             {
                 var res = new DbTableList(ErrorResource.InvalidSharepointServerSource);
-                Dev2Logger.Debug(ErrorResource.InvalidSharepointServerSource, "Warewolf Debug");
+                Dev2Logger.Debug(ErrorResource.InvalidSharepointServerSource, GlobalConstants.WarewolfDebug);
                 return serializer.SerializeToBuilder(res);
             }
             if(string.IsNullOrEmpty(runtimeSource.Server))
             {
                 var res = new DbTableList(ErrorResource.InvalidSharepointServerSent, serializedSource);
-                Dev2Logger.Debug(string.Format(ErrorResource.InvalidSharepointServerSent, serializedSource), "Warewolf Debug");
+                Dev2Logger.Debug(string.Format(ErrorResource.InvalidSharepointServerSent, serializedSource), GlobalConstants.WarewolfDebug);
                 return serializer.SerializeToBuilder(res);
             }
 
             try
             {
-                Dev2Logger.Info("Get Sharepoint Server Lists. " + source.Server, "Warewolf Debug");
+                Dev2Logger.Info("Get Sharepoint Server Lists. " + source.Server, GlobalConstants.WarewolfDebug);
                 List<SharepointListTo> lists = runtimeSource.LoadLists();
                 return serializer.SerializeToBuilder(lists);
             }

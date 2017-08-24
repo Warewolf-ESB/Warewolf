@@ -257,7 +257,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             
             catch (Exception ex)
             {
-                Dev2Logger.Error("DSFReplace", ex, "Warewolf Error");
+                Dev2Logger.Error("DSFReplace", ex, GlobalConstants.WarewolfError);
                 allErrors.AddError(ex.Message);
             }
             finally

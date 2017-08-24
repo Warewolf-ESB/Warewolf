@@ -55,7 +55,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 if (tmp != null)
                 {
                     var res = serializer.Deserialize<IScheduledResource>(tmp);
-                    Dev2Logger.Info("Get Scheduled History. " +tmp, "Warewolf Info");
+                    Dev2Logger.Info("Get Scheduled History. " +tmp, GlobalConstants.WarewolfInfo);
                     IList<IResourceHistory> resources;
                     using (var model = SchedulerFactory.CreateModel(GlobalConstants.SchedulerFolderId, SecurityWrapper))
                     {
@@ -63,12 +63,12 @@ namespace Dev2.Runtime.ESB.Management.Services
                     }
                     return serializer.SerializeToBuilder(resources);
                 }
-                Dev2Logger.Debug("No resource Provided", "Warewolf Debug");
+                Dev2Logger.Debug("No resource Provided", GlobalConstants.WarewolfDebug);
                 return serializer.SerializeToBuilder(new List<IResourceHistory>());
             }
             catch (Exception e)
             {
-                Dev2Logger.Error(e, "Warewolf Error");
+                Dev2Logger.Error(e, GlobalConstants.WarewolfError);
                 throw;
             }
         }

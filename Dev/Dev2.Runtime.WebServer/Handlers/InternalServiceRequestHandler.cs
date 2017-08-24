@@ -90,7 +90,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             }
             catch (Exception e)
             {
-                Dev2Logger.Error(this, e, "Warewolf Error");
+                Dev2Logger.Error(this, e, GlobalConstants.WarewolfError);
             }
         }
 
@@ -224,7 +224,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                 }
                 catch (Exception e)
                 {
-                    Dev2Logger.Error(e.Message, e, "Warewolf Error");
+                    Dev2Logger.Error(e.Message, e, GlobalConstants.WarewolfError);
                 }
 
 

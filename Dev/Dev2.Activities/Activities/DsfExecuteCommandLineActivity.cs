@@ -179,7 +179,7 @@ namespace Dev2.Activities
             }
             catch(Exception e)
             {
-                Dev2Logger.Error("DSFCommandLine", e, "Warewolf Error");
+                Dev2Logger.Error("DSFCommandLine", e, GlobalConstants.WarewolfError);
                 allErrors.AddError(e.Message);
             }
             finally

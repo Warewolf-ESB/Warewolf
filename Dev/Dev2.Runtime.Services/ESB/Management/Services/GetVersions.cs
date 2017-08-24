@@ -63,13 +63,13 @@ namespace Dev2.Runtime.ESB.Management.Services
                     
                 }
                 var id = Guid.Parse(values["resourceId"].ToString());
-                Dev2Logger.Info("Get Versions. " + id, "Warewolf Info");
+                Dev2Logger.Info("Get Versions. " + id, GlobalConstants.WarewolfInfo);
                 var item = ServerVersionRepo.GetVersions(id);
                 return serializer.SerializeToBuilder(item);
             }
             catch (Exception e)
             {
-                Dev2Logger.Error(e, "Warewolf Error");
+                Dev2Logger.Error(e, GlobalConstants.WarewolfError);
                 IExplorerRepositoryResult error = new ExplorerRepositoryResult(ExecStatus.Fail, e.Message);
                 return serializer.SerializeToBuilder(error);
             }

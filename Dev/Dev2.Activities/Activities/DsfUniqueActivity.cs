@@ -134,7 +134,7 @@ namespace Dev2.Activities
             }
             catch(Exception e)
             {
-                Dev2Logger.Error("DSFUnique", e, "Warewolf Error");
+                Dev2Logger.Error("DSFUnique", e, GlobalConstants.WarewolfError);
                 allErrors.AddError(e.Message);
             }
             finally

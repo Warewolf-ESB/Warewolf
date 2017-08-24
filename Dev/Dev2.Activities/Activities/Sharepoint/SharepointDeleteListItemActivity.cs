@@ -140,7 +140,7 @@ namespace Dev2.Activities.Sharepoint
             }
             catch (Exception e)
             {
-                Dev2Logger.Error("SharepointDeleteListItemActivity", e, "Warewolf Error");
+                Dev2Logger.Error("SharepointDeleteListItemActivity", e, GlobalConstants.WarewolfError);
                 allErrors.AddError(e.Message);
             }
             finally

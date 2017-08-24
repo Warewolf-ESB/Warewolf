@@ -256,7 +256,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                     }
                     catch (Exception ex)
                     {
-                        Dev2Logger.Error("AbstractWebRequestHandler", ex, "Warewolf Error");
+                        Dev2Logger.Error("AbstractWebRequestHandler", ex, GlobalConstants.WarewolfError);
                     }
                 }
             }

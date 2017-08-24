@@ -140,7 +140,7 @@ namespace Dev2.Activities.Sharepoint
                                     }
                                     catch (Exception e)
                                     {
-                                        Dev2Logger.Error(e, "Warewolf Error");
+                                        Dev2Logger.Error(e, GlobalConstants.WarewolfError);
                                         //Ignore sharepoint exception on retrieval not all fields can be retrieved.
                                     }
                                     var correctedVariable = variableName;
@@ -160,7 +160,7 @@ namespace Dev2.Activities.Sharepoint
             }
             catch (Exception e)
             {
-                Dev2Logger.Error("SharepointReadListActivity", e, "Warewolf Error");
+                Dev2Logger.Error("SharepointReadListActivity", e, GlobalConstants.WarewolfError);
                 allErrors.AddError(e.Message);
             }
             finally

@@ -35,7 +35,7 @@ namespace Dev2.Runtime.ESB.Execution
             }
             catch(Exception e)
             {
-                Dev2Logger.Error("RemoteDebugItemParser", e, "Warewolf Error");
+                Dev2Logger.Error("RemoteDebugItemParser", e, GlobalConstants.WarewolfError);
             }
 
             return null;
