@@ -3,6 +3,7 @@ using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Net;
 
 namespace Warewolf.Web.UI.Tests
@@ -47,6 +48,11 @@ namespace Warewolf.Web.UI.Tests
         public void GoToUrl()
         {
             Navigate().GoToUrl(baseURL + "/ExecutionLogging/");
+        }
+
+        public bool KillServerIfRunning()
+        {
+            return Process.GetProcessesByName("Warewolf Server").Length == 0;
         }
 
         public void CreateWebRequest()
