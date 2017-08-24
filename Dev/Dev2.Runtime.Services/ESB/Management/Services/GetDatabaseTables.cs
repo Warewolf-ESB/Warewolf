@@ -78,7 +78,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             if(string.IsNullOrEmpty(database))
             {
                 var res = new DbTableList("No database set.");
-                Dev2Logger.Debug("No database set.", "Warewolf Debug");
+                Dev2Logger.Debug("No database set.", GlobalConstants.WarewolfDebug);
                 return serializer.SerializeToBuilder(res);
             }
 
@@ -95,26 +95,26 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch(Exception e)
             {
-                Dev2Logger.Error(e, "Warewolf Error");
+                Dev2Logger.Error(e, GlobalConstants.WarewolfError);
                 var res = new DbTableList("Invalid JSON data for Database parameter. Exception: {0}", e.Message);
                 return serializer.SerializeToBuilder(res);
             }
             if(runtimeDbSource == null)
             {
                 var res = new DbTableList("Invalid Database source");
-                Dev2Logger.Debug("Invalid Database source", "Warewolf Debug");
+                Dev2Logger.Debug("Invalid Database source", GlobalConstants.WarewolfDebug);
                 return serializer.SerializeToBuilder(res);
             }
             if(string.IsNullOrEmpty(runtimeDbSource.DatabaseName) || string.IsNullOrEmpty(runtimeDbSource.Server))
             {
                 var res = new DbTableList("Invalid database sent {0}.", database);
-                Dev2Logger.Debug($"Invalid database sent {database}.", "Warewolf Debug");
+                Dev2Logger.Debug($"Invalid database sent {database}.", GlobalConstants.WarewolfDebug);
                 return serializer.SerializeToBuilder(res);
             }
 
             try
             {
-                Dev2Logger.Info("Get Database Tables. " + dbSource.DatabaseName, "Warewolf Info");
+                Dev2Logger.Info("Get Database Tables. " + dbSource.DatabaseName, GlobalConstants.WarewolfInfo);
                 var tables = new DbTableList();
                 DataTable columnInfo;
                 switch(dbSource.ServerType)

@@ -111,7 +111,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             }
             catch (Exception e)
             {
-                Dev2Logger.Error("IOutputDescription Test(PluginInvokeArgs setupInfo)", e, "Warewolf Error");
+                Dev2Logger.Error("IOutputDescription Test(PluginInvokeArgs setupInfo)", e, GlobalConstants.WarewolfError);
                 jsonResult = null;
                 return null;
             }
@@ -170,7 +170,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
         Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
         {
             string[] tokens = args.Name.Split(",".ToCharArray());
-            Dev2Logger.Debug("Resolving : " + args.Name, "Warewolf Debug");
+            Dev2Logger.Debug("Resolving : " + args.Name, GlobalConstants.WarewolfDebug);
             var directoryName = Path.GetDirectoryName(_assemblyLocation);
             var path = Path.Combine(new[] { directoryName, tokens[0] + ".dll" });
             var assembly = Assembly.LoadFile(path);
@@ -203,7 +203,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             }
             catch (BadImageFormatException e)
             {
-                Dev2Logger.Error(e, "Warewolf Error");
+                Dev2Logger.Error(e, GlobalConstants.WarewolfError);
                 throw;
             }
         }
@@ -236,7 +236,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             }
             catch (BadImageFormatException e)
             {
-                Dev2Logger.Error(e, "Warewolf Error");
+                Dev2Logger.Error(e, GlobalConstants.WarewolfError);
                 throw;
             }
         }

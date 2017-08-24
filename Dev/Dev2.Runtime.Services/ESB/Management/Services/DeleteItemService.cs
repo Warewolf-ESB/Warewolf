@@ -88,7 +88,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
 
                     itemToDelete = ServerExplorerRepo.Find(a => a.ResourceId.ToString() == itemBeingDeleted.ToString());
-                    Dev2Logger.Info("Delete Item Service." + itemToDelete, "Warewolf Info");
+                    Dev2Logger.Info("Delete Item Service." + itemToDelete, GlobalConstants.WarewolfInfo);
                     item = ServerExplorerRepo.DeleteItem(itemToDelete, GlobalConstants.ServerWorkspaceID);
 
                 }
@@ -106,7 +106,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch (Exception e)
             {
-                Dev2Logger.Error("Delete Item Error", e, "Warewolf Error");
+                Dev2Logger.Error("Delete Item Error", e, GlobalConstants.WarewolfError);
                 item = new ExplorerRepositoryResult(ExecStatus.Fail, e.Message);
             }
             return serializer.SerializeToBuilder(item);

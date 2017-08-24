@@ -166,7 +166,7 @@ namespace Dev2
                         }
                         catch (Exception ex)
                         {
-                            Dev2Logger.Error("DataListUtil", ex, "Warewolf Error");
+                            Dev2Logger.Error("DataListUtil", ex, GlobalConstants.WarewolfError);
                             tr.Close();
                             reader.Close();
                             isFragment = false;

@@ -52,20 +52,21 @@ namespace Dev2.Runtime.ESB.Execution
             {
                 DataObject.WebUrl = $"{EnvironmentVariables.WebServerUri}secure/{DataObject.ServiceName}.{DataObject.ReturnType}?" + DataObject.QueryString;
             }
+            string dataObjectExecutionId = DataObject.ExecutionID.ToString();
             if (!DataObject.IsSubExecution)
             {
-                Dev2Logger.Debug("About to execute web request [ " + DataObject.ServiceName + " ] for User [ " + user?.Identity?.Name + " : " + user?.Identity?.AuthenticationType + " : " + user?.Identity?.IsAuthenticated + " ] with DataObject Payload [ " + DataObject.RawPayload + " ]", DataObject.ExecutionID.ToString());
-                Dev2Logger.Debug("Request URL [ " + DataObject.WebUrl + " ]", DataObject.ExecutionID.ToString());
+                Dev2Logger.Debug(string.Format(GlobalConstants.ExecuteWebRequestString, DataObject.ServiceName, user?.Identity?.Name, user?.Identity?.AuthenticationType, user?.Identity?.IsAuthenticated, DataObject.RawPayload), dataObjectExecutionId);
+                Dev2Logger.Debug("Request URL [ " + DataObject.WebUrl + " ]", dataObjectExecutionId);
             }
-            Dev2Logger.Debug("Entered Wf Container", DataObject.ExecutionID.ToString());
+            Dev2Logger.Debug("Entered Wf Container", dataObjectExecutionId);
             DataObject.ServiceName = ServiceAction.ServiceName;
 
             if (DataObject.ServerID == Guid.Empty)
             {
                 DataObject.ServerID = HostSecurityProvider.Instance.ServerID;
             }
-
-            Dev2Logger.Info($"Started Execution for Service Name:{DataObject.ServiceName} Resource Id:{DataObject.ResourceID} Mode:{(DataObject.IsDebug ? "Debug" : "Execute")}", DataObject.ExecutionID.ToString());
+            string executionForServiceString = string.Format(GlobalConstants.ExecutionForServiceString, DataObject.ServiceName, DataObject.ResourceID, (DataObject.IsDebug ? "Debug" : "Execute"));
+            Dev2Logger.Info("Started " + executionForServiceString, dataObjectExecutionId);
             if (!string.IsNullOrWhiteSpace(DataObject.ParentServiceName))
             {
                 DataObject.ExecutionOrigin = ExecutionOrigin.Workflow;
@@ -89,14 +90,9 @@ namespace Dev2.Runtime.ESB.Execution
             {
                 errors.AddError(err, true);
             }
-            if (!DataObject.IsSubExecution)
-            {
-                Dev2Logger.Info($"Completed Execution for Service Name:{DataObject.ServiceName} Resource Id: {DataObject.ResourceID} Mode:{(DataObject.IsDebug ? "Debug" : "Execute")}", DataObject.ExecutionID.ToString());
-            }
-            else
-            {
-                Dev2Logger.Info($"Completed Sub Execution for Service Name:{DataObject.ServiceName} Resource Id: {DataObject.ResourceID} Mode:{(DataObject.IsDebug ? "Debug" : "Execute")}", DataObject.ExecutionID.ToString());
-            }
+
+            string executionTypeString = DataObject.IsSubExecution ? "Completed Sub " : "Completed ";
+            Dev2Logger.Info(executionTypeString + executionForServiceString, dataObjectExecutionId);
             return result;
         }
 

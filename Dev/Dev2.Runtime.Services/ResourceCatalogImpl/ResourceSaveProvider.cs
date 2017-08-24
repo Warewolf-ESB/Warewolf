@@ -57,7 +57,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
 
                     var resource = new Resource(xml);
                     GlobalConstants.InvalidateCache(resource.ResourceID);
-                    Dev2Logger.Info("Save Resource." + resource, "Warewolf Info");
+                    Dev2Logger.Info("Save Resource." + resource, GlobalConstants.WarewolfInfo);
                     _serverVersionRepository.StoreVersion(resource, user, reason, workspaceID, savedPath);
 
                     resource.UpgradeXml(xml, resource);
@@ -69,7 +69,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             }
             catch (Exception err)
             {
-                Dev2Logger.Error("Save Error", err, "Warewolf Error");
+                Dev2Logger.Error("Save Error", err, GlobalConstants.WarewolfError);
                 throw;
             }
         }
@@ -342,12 +342,12 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                     ((ResourceCatalog)_resourceCatalog).AddToActivityCache(resource);
 
                     #endregion
-                    Dev2Logger.Debug($"Removing Execution Plan for {resource.ResourceID} for workspace {workspaceID}", "Warewolf Debug");
+                    Dev2Logger.Debug($"Removing Execution Plan for {resource.ResourceID} for workspace {workspaceID}", GlobalConstants.WarewolfDebug);
                     ((ResourceCatalog)_resourceCatalog).RemoveFromResourceActivityCache(workspaceID, resource);
-                    Dev2Logger.Debug($"Removed Execution Plan for {resource.ResourceID} for workspace {workspaceID}", "Warewolf Debug");
-                    Dev2Logger.Debug($"Adding Execution Plan for {resource.ResourceID} for workspace {workspaceID}", "Warewolf Debug");
+                    Dev2Logger.Debug($"Removed Execution Plan for {resource.ResourceID} for workspace {workspaceID}", GlobalConstants.WarewolfDebug);
+                    Dev2Logger.Debug($"Adding Execution Plan for {resource.ResourceID} for workspace {workspaceID}", GlobalConstants.WarewolfDebug);
                     ((ResourceCatalog)_resourceCatalog).Parse(workspaceID, resource.ResourceID);
-                    Dev2Logger.Debug($"Added Execution Plan for {resource.ResourceID} for workspace {workspaceID}", "Warewolf Debug");
+                    Dev2Logger.Debug($"Added Execution Plan for {resource.ResourceID} for workspace {workspaceID}", GlobalConstants.WarewolfDebug);
                     tx.Complete();
                     saveResult = ResourceCatalogResultBuilder.CreateSuccessResult($"{(updated ? "Updated" : "Added")} {resource.ResourceType} '{resource.ResourceName}'");
                 }

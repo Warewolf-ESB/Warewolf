@@ -30,7 +30,7 @@ namespace Dev2.PerformanceCounters.Counters
             catch(Exception e)
             {
                 
-               Dev2Logger.Error(e, "Warewolf Error");
+               Dev2Logger.Error(e, GlobalConstants.WarewolfError);
             }
         }
 
@@ -45,7 +45,7 @@ namespace Dev2.PerformanceCounters.Counters
             catch (Exception e)
             {
 
-                Dev2Logger.Error(e, "Warewolf Error");
+                Dev2Logger.Error(e, GlobalConstants.WarewolfError);
             }
         }
 
@@ -60,7 +60,7 @@ namespace Dev2.PerformanceCounters.Counters
             catch (Exception e)
             {
 
-                Dev2Logger.Error(e, "Warewolf Error");
+                Dev2Logger.Error(e, GlobalConstants.WarewolfError);
             }
         }
 

@@ -39,7 +39,7 @@ namespace Dev2.Runtime.ESB.Management.Services
            
             var serializer = new Dev2JsonSerializer();
             var itemToAdd = serializer.Deserialize<ServerExplorerItem>(values["itemToAdd"]);
-            Dev2Logger.Info("Add Folder Service." +itemToAdd, "Warewolf Info");
+            Dev2Logger.Info("Add Folder Service." +itemToAdd, GlobalConstants.WarewolfInfo);
             itemToAdd.Permissions = Permissions.Contribute;
             if(itemToAdd.ResourcePath.ToLower().StartsWith("root\\"))
             {

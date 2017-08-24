@@ -89,13 +89,13 @@ namespace Dev2.Runtime.ESB.Execution
 
         public override Guid Execute(out ErrorResultTO errors, int update)
         {
-            Dev2Logger.Info($"Starting Remote Execution. Service Name:{DataObject.ServiceName} Resource Id:{DataObject.ResourceID} Mode:{(DataObject.IsDebug ? "Debug" : "Execute")}", "Warewolf Info");
+            Dev2Logger.Info($"Starting Remote Execution. Service Name:{DataObject.ServiceName} Resource Id:{DataObject.ResourceID} Mode:{(DataObject.IsDebug ? "Debug" : "Execute")}", GlobalConstants.WarewolfInfo);
 
             var serviceName = DataObject.ServiceName;
 
             errors = new ErrorResultTO();
 
-            Dev2Logger.Debug("Creating DataList fragment for remote execute", "Warewolf Debug");
+            Dev2Logger.Debug("Creating DataList fragment for remote execute", GlobalConstants.WarewolfDebug);
             var dataListFragment = ExecutionEnvironmentUtils.GetXmlInputFromEnvironment(DataObject, DataObject.RemoteInvokeResultShape.ToString(), update);
 
             string result = string.Empty;
@@ -117,12 +117,12 @@ namespace Dev2.Runtime.ESB.Execution
             {
                 var errorMessage = e.Message.Contains("Forbidden") ? "Executing a service requires Execute permissions" : e.Message;
                 DataObject.Environment.Errors.Add(errorMessage);
-                Dev2Logger.Error(e, "Warewolf Error");
+                Dev2Logger.Error(e, GlobalConstants.WarewolfError);
             }
 
             // Create tmpDL
             ExecutionEnvironmentUtils.UpdateEnvironmentFromOutputPayload(DataObject, result.ToStringBuilder(), DataObject.RemoteInvokeResultShape.ToString());
-            Dev2Logger.Info($"Completed Remote Execution. Service Name:{DataObject.ServiceName} Resource Id:{DataObject.ResourceID} Mode:{(DataObject.IsDebug ? "Debug" : "Execute")}", "Warewolf Info");
+            Dev2Logger.Info($"Completed Remote Execution. Service Name:{DataObject.ServiceName} Resource Id:{DataObject.ResourceID} Mode:{(DataObject.IsDebug ? "Debug" : "Execute")}", GlobalConstants.WarewolfInfo);
 
             return Guid.Empty;
         }
@@ -138,7 +138,7 @@ namespace Dev2.Runtime.ESB.Execution
 
             var serviceToExecute = GetServiceToExecute(connection, serviceName);
             var req = BuildPostRequest(serviceToExecute, payload, connection.AuthenticationType, connection.UserName, connection.Password, isDebugMode);
-            Dev2Logger.Debug("Executing the remote request.", "Warewolf Debug");
+            Dev2Logger.Debug("Executing the remote request.", GlobalConstants.WarewolfDebug);
             if (req != null)
             {
                 using (var response = req.GetResponse() as HttpWebResponse)
@@ -209,7 +209,7 @@ namespace Dev2.Runtime.ESB.Execution
             var serviceToExecute = GetServiceToExecute(connection, serviceName);
             var requestUri = serviceToExecute + "?" + payload;
             var req = BuildGetWebRequest(requestUri, connection.AuthenticationType, connection.UserName, connection.Password, isDebugMode) ?? BuildPostRequest(serviceToExecute, payload, connection.AuthenticationType, connection.UserName, connection.Password, isDebugMode);
-            Dev2Logger.Debug("Executing the remote request.", "Warewolf Debug");
+            Dev2Logger.Debug("Executing the remote request.", GlobalConstants.WarewolfDebug);
             if (req != null)
             {
                 using (var response = req.GetResponse() as HttpWebResponse)

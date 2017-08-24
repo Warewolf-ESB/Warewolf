@@ -49,7 +49,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             var serializer = new Dev2JsonSerializer();
             try
             {
-                Dev2Logger.Info("Delete Test Service", "Warewolf Info");
+                Dev2Logger.Info("Delete Test Service", GlobalConstants.WarewolfInfo);
 
                 StringBuilder resourceIdString;
                 values.TryGetValue("resourceID", out resourceIdString);
@@ -75,7 +75,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch (Exception err)
             {
-                Dev2Logger.Error(err, "Warewolf Error");
+                Dev2Logger.Error(err, GlobalConstants.WarewolfError);
                 var res = new CompressedExecuteMessage { HasError = true, Message = new StringBuilder(err.Message) };
                 return serializer.SerializeToBuilder(res);
             }

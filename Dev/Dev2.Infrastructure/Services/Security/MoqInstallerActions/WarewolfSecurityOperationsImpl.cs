@@ -121,7 +121,7 @@ namespace Dev2.Services.Security.MoqInstallerActions
                         }
                         catch (Exception)
                         {
-                            Dev2Logger.Error(string.Format(ErrorResource.UserDoesNotExistOnTheMachine, currentUser), "Warewolf Error");
+                            Dev2Logger.Error(string.Format(ErrorResource.UserDoesNotExistOnTheMachine, currentUser), GlobalConstants.WarewolfError);
                         }
                     }
                 }

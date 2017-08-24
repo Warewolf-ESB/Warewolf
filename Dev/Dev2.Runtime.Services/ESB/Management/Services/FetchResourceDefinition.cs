@@ -91,12 +91,12 @@ namespace Dev2.Runtime.ESB.Management.Services
                 Guid resourceId;
                 Guid.TryParse(serviceId, out resourceId);
 
-                Dev2Logger.Info($"Fetch Resource definition. ResourceId: {resourceId}", "Warewolf Info");
+                Dev2Logger.Info($"Fetch Resource definition. ResourceId: {resourceId}", GlobalConstants.WarewolfInfo);
                 return GetResourceDefinition(theWorkspace, serializer, res, prepairForDeployment, resourceId);
             }
             catch (Exception err)
             {
-                Dev2Logger.Error(err, "Warewolf Error");
+                Dev2Logger.Error(err, GlobalConstants.WarewolfError);
                 throw;
             }
         }
@@ -130,7 +130,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch (Exception e)
             {
-                Dev2Logger.Error(string.Format(ErrorResource.ErrorGettingResourceDefinition, resourceId), e, "Warewolf Error");
+                Dev2Logger.Error(string.Format(ErrorResource.ErrorGettingResourceDefinition, resourceId), e, GlobalConstants.WarewolfError);
             }
 
             if (!res.Message.IsNullOrEmpty())
@@ -146,7 +146,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 }
                 catch (CryptographicException e)
                 {
-                    Dev2Logger.Error(@"Encryption had issues.", e, "Warewolf Error");
+                    Dev2Logger.Error(@"Encryption had issues.", e, GlobalConstants.WarewolfError);
                 }
             }
 

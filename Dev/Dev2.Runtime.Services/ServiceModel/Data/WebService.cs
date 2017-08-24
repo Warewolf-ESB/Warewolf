@@ -218,7 +218,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             }
             catch(JsonException je)
             {
-                Dev2Logger.Error(je, "Warewolf Error");
+                Dev2Logger.Error(je, GlobalConstants.WarewolfError);
             }
         }
 

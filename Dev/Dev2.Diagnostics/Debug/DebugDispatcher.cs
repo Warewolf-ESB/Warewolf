@@ -135,7 +135,7 @@ namespace Dev2.Diagnostics.Debug
 
                 remoteDebugItems.Clear();
             }
-            Dev2Logger.Debug($"EnvironmentID: {debugState.EnvironmentID} Debug:{debugState.DisplayName}","Warewolf Debug");
+            Dev2Logger.Debug($"EnvironmentID: {debugState.EnvironmentID} Debug:{debugState.DisplayName}",GlobalConstants.WarewolfDebug);
             QueueWrite(debugState);
 
             if (debugState.IsFinalStep())

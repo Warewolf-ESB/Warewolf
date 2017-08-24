@@ -50,10 +50,10 @@ namespace Dev2.Common
             };
         }
 
-        public const string ExecutionLoggingResultStartTag = "Execution Result [ ";
-        public const string ExecutionLoggingResultEndTag = " ]";
+        public static string ExecutionLoggingResultStartTag = "Execution Result [ ";
+        public static string ExecutionLoggingResultEndTag = " ]";
 
-        public const string ArmResultText = "Flow Arm";
+        public static string ArmResultText = "Flow Arm";
         
         //Default TimeoutValue
         
@@ -62,8 +62,7 @@ namespace Dev2.Common
 
         
 
-        public static string LogFileRegex = @"(\d+[-.\/]\d+[-.\/]\d+ \d+[:]\d+[:]\d+,\d+)\s+(\w+)\s+[-]\s+[[](\w+[-]\w+[-]\w+[-]\w+[-]\w+)[]]\s+[-]\s+"
-            ;
+        public static string LogFileRegex = @"(\d+[-.\/]\d+[-.\/]\d+ \d+[:]\d+[:]\d+,\d+)\s+(\w+)\s+[-]\s+[[](\w+[-]\w+[-]\w+[-]\w+[-]\w+)[]]\s+[-]\s+";
 
         public static string DefaultServerLogFileConfig = "<log4net>" +
                                              "<appender name=\"LogFileAppender\" type=\"Log4Net.Async.AsyncRollingFileAppender,Log4Net.Async\">" +
@@ -459,6 +458,14 @@ where pn.nspname = 'public';
 
         public static string AnythingToXmlPathSeperator = ",";
         public static string AnytingToXmlCommaToken = "__COMMA__";
+
+        // Wf Execution Container
+        public static string ExecuteWebRequestString = "About to execute web request [ '{0}' ] for User [ '{1}' : '{2}' : '{3}' ] with DataObject Payload [ '{4}' ]";
+        public static string ExecutionForServiceString = "Execution for Service Name: '{0}' Resource Id: '{1}' Mode: '{2}'";
+
+        public static string WarewolfInfo = "Warewolf Info";
+        public static string WarewolfError = "Warewolf Error";
+        public static string WarewolfDebug = "Warewolf Debug";
 
         // Resource Picker
         public static string ResourcePickerWorkflowString = "DsfWorkflowActivity";

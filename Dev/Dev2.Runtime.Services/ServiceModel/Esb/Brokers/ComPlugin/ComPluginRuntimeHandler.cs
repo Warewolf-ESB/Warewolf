@@ -98,14 +98,14 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
             }
             catch (COMException e)
             {
-                Dev2Logger.Error("IOutputDescription Test(PluginInvokeArgs setupInfo)", e, "Warewolf Error");
+                Dev2Logger.Error("IOutputDescription Test(PluginInvokeArgs setupInfo)", e, GlobalConstants.WarewolfError);
                 throw;
             }
             catch (Exception e)
             {
                 if (e.InnerException is COMException)
                     throw e.InnerException;
-                Dev2Logger.Error("IOutputDescription Test(PluginInvokeArgs setupInfo)", e, "Warewolf Error");
+                Dev2Logger.Error("IOutputDescription Test(PluginInvokeArgs setupInfo)", e, GlobalConstants.WarewolfError);
                 jsonResult = null;
                 return null;
             }
@@ -192,7 +192,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
                         }
                         catch (Exception k)
                         {
-                            Dev2Logger.Error($"Failed to convert {argType?.FullName}", k, "Warewolf Error");
+                            Dev2Logger.Error($"Failed to convert {argType?.FullName}", k, GlobalConstants.WarewolfError);
                         }
                     }
                 }
@@ -233,7 +233,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
             }
             catch (BadImageFormatException e)
             {
-                Dev2Logger.Error(e, "Warewolf Error");
+                Dev2Logger.Error(e, GlobalConstants.WarewolfError);
                 throw;
             }
         }
@@ -254,7 +254,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
                 }
                 catch (Exception ex)
                 {
-                    Dev2Logger.Error("GetType", ex, "Warewolf Error");
+                    Dev2Logger.Error("GetType", ex, GlobalConstants.WarewolfError);
                     type = Type.GetTypeFromCLSID(clasID, true);
 
                 }                

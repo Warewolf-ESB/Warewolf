@@ -56,7 +56,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             }
             catch (Exception err)
             {
-                Dev2Logger.Error(err, "Warewolf Error");
+                Dev2Logger.Error(err, GlobalConstants.WarewolfError);
                 return ResourceCatalogResultBuilder.CreateFailResult($"{ErrorResource.FailedToRenameResource} '{resourceID}' to '{newName}'");
             }
             return ResourceCatalogResultBuilder.CreateSuccessResult($"Renamed Resource \'{resourceID}\' to \'{newName}\'");
@@ -74,7 +74,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             }
             catch (Exception err)
             {
-                Dev2Logger.Error("Rename Category error", err, "Warewolf Error");
+                Dev2Logger.Error("Rename Category error", err, GlobalConstants.WarewolfError);
                 return ResourceCatalogResultBuilder.CreateFailResult($"<CompilerMessage>Failed to Category from \'{oldCategory}\' to \'{newCategory}\'</CompilerMessage>");
             }
         }
@@ -113,7 +113,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             }
             catch (Exception err)
             {
-                Dev2Logger.Error("Rename Category error", err, "Warewolf Error");
+                Dev2Logger.Error("Rename Category error", err, GlobalConstants.WarewolfError);
                 return ResourceCatalogResultBuilder.CreateFailResult($"<CompilerMessage>Failed to Category from \'{oldCategory}\' to \'{newCategory}\'</CompilerMessage>");
             }
         }
