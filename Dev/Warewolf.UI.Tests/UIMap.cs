@@ -597,7 +597,7 @@ namespace Warewolf.UI.Tests
         public void Click_Settings_RibbonButton()
         {
             Mouse.Click(MainStudioWindow.SideMenuBar.ConfigureSettingsButton, new Point(7, 2));
-            MainStudioWindow.DockManager.SplitPaneMiddle.DrawHighlight();
+            SettingsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WaitForControlExist(60000);
             Assert.IsTrue(SettingsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.Exists, "Settings tab does not exist after clicking settings ribbon button.");
         }
 
