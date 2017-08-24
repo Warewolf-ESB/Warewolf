@@ -570,7 +570,7 @@ namespace Warewolf.UI.Tests
             Mouse.Click(MainStudioWindow.SideMenuBar.DeployButton, new Point(16, 11));
             DeployUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WaitForControlExist(60000);
             Assert.IsTrue(DeployUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.Exists, "Deploy tab does not exist after clicking deploy ribbon button.");
-            DeployUIMap.WhenIValidateTheResourceTreeIsLoaded();
+            WaitForSpinner(DeployUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerExplorer.ExplorerTree.LocalHost.Spinner);
         }
 
         [Given(@"I Click Scheduler Ribbon Button")]
