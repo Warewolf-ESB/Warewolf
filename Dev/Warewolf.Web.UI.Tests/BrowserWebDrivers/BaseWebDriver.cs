@@ -46,6 +46,10 @@ namespace Warewolf.Web.UI.Tests
             {
                 process.Kill();
             }
+            foreach (var process in Process.GetProcessesByName("geckodriver"))
+            {
+                process.Kill();
+            }
         }
 
         public void Quit()
@@ -190,14 +194,11 @@ namespace Warewolf.Web.UI.Tests
             string path = @"C:\Program Files\Opera";
             var operaPath = string.Empty;
 
-            string[] files = System.IO.Directory.GetFiles(path, "*.exe", System.IO.SearchOption.AllDirectories);
+            string[] files = System.IO.Directory.GetFiles(path, "*opera.exe", System.IO.SearchOption.AllDirectories);
             foreach (var file in files)
             {
-                if (file.EndsWith("opera.exe"))
-                {
-                    operaPath = file;
-                    break;
-                }
+                operaPath = file;
+                break;
             }
 
             return operaPath;
