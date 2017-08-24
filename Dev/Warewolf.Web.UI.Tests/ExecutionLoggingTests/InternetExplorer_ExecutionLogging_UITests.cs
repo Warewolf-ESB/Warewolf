@@ -68,6 +68,7 @@ namespace Warewolf.Web.UI.Tests
         [TestCategory("NoWarewolfServer")]
         public void NoWarewolfServer_ClickInternetExplorerRefresh_UITest()
         {
+            Assert.IsTrue(driver.KillServerIfRunning(), GlobalConstants.LocalWarewolfServerExpectedDownError);
             driver.GoToUrl();
             Assert.IsTrue(driver.IsAlertPresent(), GlobalConstants.IsAlertPresentError);
             Assert.AreEqual(GlobalConstants.LocalWarewolfServerError, driver.CloseAlertAndGetItsText(false), GlobalConstants.AlertText);
