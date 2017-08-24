@@ -27,14 +27,6 @@ namespace Warewolf.Web.UI.Tests
             try
             {
                 driver.Quit();
-                foreach (var process in Process.GetProcessesByName("opera"))
-                {
-                    process.Kill();
-                }
-                foreach (var process in Process.GetProcessesByName("operadriver"))
-                {
-                    process.Kill();
-                }
                 driver.Close();
             }
             catch (Exception)
