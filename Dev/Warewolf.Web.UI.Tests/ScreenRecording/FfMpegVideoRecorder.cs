@@ -59,10 +59,15 @@ namespace Warewolf.Web.UI.Tests.ScreenRecording
             }
             else
             {
-                if (!File.Exists(filename))
+                string TestResultsRootPath = Directory.GetParent(Directory.GetParent(Directory.GetParent(filename).ToString()).ToString()).ToString();
+                string destFileName = Path.Combine(TestResultsRootPath, Path.GetFileName(filename));
+                if (File.Exists(filename))
                 {
-                    string TestResultsRootPath = Directory.GetParent(Directory.GetParent(Directory.GetParent(filename).ToString()).ToString()).ToString();
-                    File.Move(filename, Path.Combine(TestResultsRootPath, Path.GetFileName(filename)));
+                    if (File.Exists(destFileName))
+                    {
+                        File.Delete(destFileName);
+                    }
+                    File.Move(filename, destFileName);
                 }
             }
         }

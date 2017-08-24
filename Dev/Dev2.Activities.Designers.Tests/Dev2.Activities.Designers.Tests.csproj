@@ -126,6 +126,7 @@
     <Compile Include="Core\GenerateInputsRegionTests.cs" />
     <Compile Include="Core\ManageWebServiceInputViewModelTests.cs" />
     <Compile Include="Core\ScriptChooserTests.cs" />
+    <Compile Include="Core\ViewPropertyBuilderTests.cs" />
     <Compile Include="Core\WcfInputRegionTests.cs" />
     <Compile Include="Core\WebDeleteInputRegionTest.cs" />
     <Compile Include="Core\WebInputRegionTest.cs" />
