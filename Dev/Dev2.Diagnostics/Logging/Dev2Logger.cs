@@ -163,8 +163,34 @@ namespace Dev2.Common
                         settingsDocument.Save(settingsConfigFile);
                     }
                 }
+                var layoutElement = fileAppender?.Element("layout");
+                if (layoutElement != null)
+                {
+                    UpdateConversionPattern(settingsConfigFile, settingsDocument, layoutElement);
+                }
+                var eventLogAppender = appenders.FirstOrDefault(element => element.Attribute("name").Value == "EventLogLogger");
+                var eventLayoutElement = eventLogAppender?.Element("layout");
+                if (eventLayoutElement != null)
+                {
+                    UpdateConversionPattern(settingsConfigFile, settingsDocument, eventLayoutElement);
+                }
             }
         }
+
+        private static void UpdateConversionPattern(string settingsConfigFile, XDocument settingsDocument, XElement layoutElement)
+        {
+            var conversionPatternElement = layoutElement.Element("conversionPattern");
+            if (conversionPatternElement != null)
+            {
+                XAttribute valueAttrib = conversionPatternElement.Attribute("value");
+                if (valueAttrib != null)
+                {
+                    valueAttrib.SetValue("%date %-5level - %message%newline");
+                    settingsDocument.Save(settingsConfigFile);
+                }
+            }
+        }
+
         public static void WriteLogSettings(string maxLogSize, string fileLogLevel, string eventLogLevel, string settingsConfigFile,string applicationNameForEventLog)
         {
             var settingsDocument = XDocument.Load(settingsConfigFile);
