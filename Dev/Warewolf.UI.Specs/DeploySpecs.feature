@@ -81,9 +81,6 @@ Scenario: Cancel Deploy Returns to Deploy Tab
 	And I Click Deploy Tab Destination Server Remote Connection Intergration Item
 	Then Deploy Button Is Enabled
 	When I Click Deploy Tab Deploy Button
-	Then Deploy Version Conflict Window Shows
-	And I Click MessageBox Cancel
-	And Deploy Window Is Still Open
 
 Scenario: Deploy Conflicting Resource With Resource In A Different Path
 	Given The Warewolf Studio is running
