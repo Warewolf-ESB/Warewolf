@@ -125,6 +125,7 @@ namespace Warewolf.UI.Tests.ServerSource
             ExplorerUIMap.Click_NewServerButton_From_ExplorerConnectControl();
             ServerSourceUIMap.Select_http_From_Server_Source_Wizard_Address_Protocol_Dropdown();
             ServerSourceUIMap.Enter_TextIntoAddress_On_ServerSourceTab("localhost");
+            ServerSourceUIMap.Select_Server_Authentication_Public();
             Assert.IsTrue(ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.NewServerSource.TestConnectionButton.Enabled, "Test Connection button not enabled");
             ServerSourceUIMap.Click_Server_Source_Wizard_Test_Connection_Button();
             Assert.IsTrue(UIMap.MainStudioWindow.SideMenuBar.SaveButton.Enabled, "Save ribbon button is not enabled after successfully testing new source.");
