@@ -19,7 +19,9 @@ namespace Warewolf.UIBindingTests.Deploy
         public void SetSelecetdItems(IEnumerable<IExplorerTreeItem> items)
         {
             foreach (var explorerTreeItem in items)
+            {
                 SelectedItems.Add(explorerTreeItem);
+            }
         }
 
         public void SetSelecetdItemsForConflicts(IEnumerable<IExplorerTreeItem> items)
@@ -91,7 +93,6 @@ namespace Warewolf.UIBindingTests.Deploy
                     new ExplorerItemViewModel(new Mock<IServer>().Object, ax, a => { }, new Mock<IShellViewModel>().Object, new Mock<Dev2.Common.Interfaces.Studio.Controller.IPopupController>().Object) {ResourceId = Guid.NewGuid(),ResourceName = "File and Folder - Create", ResourcePath = "Examples\\File and Folder - Create" },
                     new ExplorerItemViewModel(new Mock<IServer>().Object, ax, a => { }, new Mock<IShellViewModel>().Object, new Mock<Dev2.Common.Interfaces.Studio.Controller.IPopupController>().Object) {ResourceId = Guid.NewGuid(),ResourceName = "FetchPlayers", ResourcePath = "DB Service\\FetchPlayers",ResourceType = "DbService"},
                     new ExplorerItemViewModel(new Mock<IServer>().Object, ax, a => { }, new Mock<IShellViewModel>().Object, new Mock<Dev2.Common.Interfaces.Studio.Controller.IPopupController>().Object) {ResourceId = Guid.NewGuid(),ResourceName = "Source", ResourcePath = "Remote\\Source",ResourceType = "DbSource"},
-                    new ExplorerItemViewModel(new Mock<IServer>().Object, ax, a => { }, new Mock<IShellViewModel>().Object, new Mock<Dev2.Common.Interfaces.Studio.Controller.IPopupController>().Object) {ResourceId = Guid.NewGuid(),ResourceName = "NameIdConflict", ResourcePath = "Examples\bob",ResourceType = "DbSource"},
                     new ExplorerItemViewModel(new Mock<IServer>().Object, ax, a => { }, new Mock<IShellViewModel>().Object, new Mock<Dev2.Common.Interfaces.Studio.Controller.IPopupController>().Object) {ResourceId = Guid.Parse("7CC8CA4E-8261-433F-8EF1-612DE003907C"),ResourceName = "DifferentNameSameID", ResourcePath = "Examples\\DifferentNameSameID",ResourceType = "DbSource"}
                 },
                 UnfilteredChildren = new ObservableCollection<IExplorerItemViewModel>
@@ -106,7 +107,6 @@ namespace Warewolf.UIBindingTests.Deploy
                     new ExplorerItemViewModel(new Mock<IServer>().Object, ax, a => { }, new Mock<IShellViewModel>().Object, new Mock<Dev2.Common.Interfaces.Studio.Controller.IPopupController>().Object) {ResourceId = Guid.NewGuid(),ResourceName = "File and Folder - Create", ResourcePath = "Examples\\File and Folder - Create" },
                     new ExplorerItemViewModel(new Mock<IServer>().Object, ax, a => { }, new Mock<IShellViewModel>().Object, new Mock<Dev2.Common.Interfaces.Studio.Controller.IPopupController>().Object) {ResourceId = Guid.NewGuid(),ResourceName = "FetchPlayers", ResourcePath = "DB Service\\FetchPlayers",ResourceType = "DbService"},
                     new ExplorerItemViewModel(new Mock<IServer>().Object, ax, a => { }, new Mock<IShellViewModel>().Object, new Mock<Dev2.Common.Interfaces.Studio.Controller.IPopupController>().Object) {ResourceId = Guid.NewGuid(),ResourceName = "Source", ResourcePath = "Remote\\Source",ResourceType = "DbSource"},
-                    new ExplorerItemViewModel(new Mock<IServer>().Object, ax, a => { }, new Mock<IShellViewModel>().Object, new Mock<Dev2.Common.Interfaces.Studio.Controller.IPopupController>().Object) {ResourceId = Guid.NewGuid(),ResourceName = "NameIdConflict", ResourcePath = "Examples\bob",ResourceType = "DbSource"},
                     new ExplorerItemViewModel(new Mock<IServer>().Object, ax, a => { }, new Mock<IShellViewModel>().Object, new Mock<Dev2.Common.Interfaces.Studio.Controller.IPopupController>().Object) {ResourceId = Guid.Parse("7CC8CA4E-8261-433F-8EF1-612DE003907C"),ResourceName = "DifferentNameSameID", ResourcePath = "Examples\\DifferentNameSameID",ResourceType = "DbSource"}
                 }
             };
