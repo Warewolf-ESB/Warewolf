@@ -107,7 +107,6 @@ $JobSpecs["Debug Input UI Tests"]				= "Warewolf.UI.Tests", "Debug Input"
 $JobSpecs["Default Layout UI Tests"]			= "Warewolf.UI.Tests", "Default Layout"
 $JobSpecs["Dependency Graph UI Tests"]			= "Warewolf.UI.Tests", "Dependency Graph"
 $JobSpecs["Deploy UI Specs"]					= "Warewolf.UI.Specs", "Deploy"
-$JobSpecs["Deploy Security UI Specs"]			= "Warewolf.UI.Specs", "DeploySecurity"
 $JobSpecs["Deploy UI Tests"]					= "Warewolf.UI.Tests", "Deploy"
 $JobSpecs["DotNet Connector Mocking UI Tests"]	= "Warewolf.UI.Tests", "DotNet Connector Mocking Tests"
 $JobSpecs["DotNet Connector Tool UI Tests"]	    = "Warewolf.UI.Tests", "DotNet Connector Tool"
@@ -369,6 +368,7 @@ function Move-Artifacts-To-TestResults([bool]$DotCover, [bool]$Server, [bool]$St
     Write-Host Playlist file written to `"$OutPlaylistPath`".
     if ($Server) {
         Move-File-To-TestResults "$env:ProgramData\Warewolf\Server Log\wareWolf-Server.log" "$JobName Server.log"
+        Move-File-To-TestResults "$env:ProgramData\Warewolf\Server Log\my.warewolf.io.log" "$JobName my.warewolf.io Server.log"
     }
     if ($Studio) {
         Move-File-To-TestResults "$env:LocalAppData\Warewolf\Studio Logs\Warewolf Studio.log" "$JobName Studio.log"
