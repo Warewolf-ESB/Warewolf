@@ -22,24 +22,19 @@ using Dev2.Studio.Interfaces;
 using Microsoft.Practices.Prism.Commands;
 using Warewolf.Core;
 
-
-
-
-
-
 namespace Dev2.Activities.Designers2.Web_Service_Put
 {
     public class WebServicePutViewModel : CustomToolWithRegionBase, IWebServicePutViewModel
     {
-        private readonly IServiceInputBuilder _builder;
+        readonly IServiceInputBuilder _builder;
         const string DoneText = "Done";
         const string FixText = "Fix";
         const string OutputDisplayName = " - Outputs";
-        private IWebPutInputArea _inputArea;
-        private IOutputsToolRegion _outputsRegion;
-        private ISourceToolRegion<IWebServiceSource> _sourceRegion;
+        IWebPutInputArea _inputArea;
+        IOutputsToolRegion _outputsRegion;
+        ISourceToolRegion<IWebServiceSource> _sourceRegion;
 
-        private IErrorInfo _worstDesignError;
+        IErrorInfo _worstDesignError;
 
         public WebServicePutViewModel(ModelItem modelItem)
             : base(modelItem)
@@ -48,11 +43,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Put
             var server = shellViewModel.ActiveServer;
             var model = CustomContainer.CreateInstance<IWebServiceModel>(server.UpdateRepository, server.QueryProxy, shellViewModel, server);
             Model = model;
-            _builder = new ServiceInputBuilder();
-            CellChangedCommand = new Runtime.Configuration.ViewModels.Base.DelegateCommand(o =>
-            {
-                var o1 = o;
-            });
+            _builder = new ServiceInputBuilder();           
             SetupCommonProperties();
             this.RunViewSetup();
             HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_WebMethod_Put;
@@ -70,7 +61,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Put
 
         Guid UniqueID => GetProperty<Guid>();
 
-        private void SetupCommonProperties()
+        void SetupCommonProperties()
         {
             AddTitleBarMappingToggle();
             InitialiseViewModel(new ManageWebServiceInputViewModel(this, Model));
@@ -131,10 +122,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Put
         }
 
         readonly string _sourceNotFoundMessage = Warewolf.Studio.Resources.Languages.Core.DatabaseServiceSourceNotFound;
-
-
-        #region Overrides of ActivityDesignerViewModel
-
+        
         public override void Validate()
         {
             if (Errors == null)
@@ -197,7 +185,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Put
             }
         }
 
-        private void InitialiseViewModel(IManageWebServiceInputViewModel manageServiceInputViewModel)
+        void InitialiseViewModel(IManageWebServiceInputViewModel manageServiceInputViewModel)
         {
             ManageServiceInputViewModel = manageServiceInputViewModel;
 
@@ -267,7 +255,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Put
             }
         }
 
-        private IErrorInfo NoError { get; set; }
+        IErrorInfo NoError { get; set; }
 
         public bool IsWorstErrorReadOnly
         {
@@ -302,7 +290,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Put
 
         public DelegateCommand TestInputCommand { get; set; }
 
-        private string Type => GetProperty<string>();
+        string Type => GetProperty<string>();
 
         void AddTitleBarMappingToggle()
         {
@@ -346,11 +334,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Put
             var mainViewModel = CustomContainer.Get<IShellViewModel>();
             mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
         }
-
-        #endregion
-
-        #region Overrides of CustomToolWithRegionBase
-
+        
         public override IList<IToolRegion> BuildRegions()
         {
             IList<IToolRegion> regions = new List<IToolRegion>();
@@ -387,11 +371,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Put
         }
 
         public ErrorRegion ErrorRegion { get; private set; }
-
-        #endregion
-
-        #region Implementation of IWebServicePutViewModel
-
+        
         public IOutputsToolRegion OutputsRegion
         {
             get
@@ -465,7 +445,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Put
             return webServiceDefinition;
         }
 
-        private IList<IServiceInput> InputsFromModel()
+        IList<IServiceInput> InputsFromModel()
         {
             var dt = new List<IServiceInput>();
             string s = InputArea.QueryString;
@@ -480,7 +460,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Put
             return dt;
         }
 
-        private IWebServiceModel Model { get; set; }
+        IWebServiceModel Model { get; set; }
         public bool GenerateOutputsVisible
         {
             get
@@ -504,7 +484,6 @@ namespace Dev2.Activities.Designers2.Web_Service_Put
             ErrorRegion.IsEnabled = value;
             SourceRegion.IsEnabled = value;
         }
-
-        #endregion
+        
     }
 }
