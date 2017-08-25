@@ -129,12 +129,12 @@ namespace Dev2.Runtime.Security
 
         protected override void LogStart([CallerMemberName]string methodName = null)
         {
-            Dev2Logger.Info("SecurityService"+ methodName, "Warewolf Info");
+            Dev2Logger.Info("SecurityService"+ methodName, GlobalConstants.WarewolfInfo);
         }
 
         protected override void LogEnd([CallerMemberName]string methodName = null)
         {
-            Dev2Logger.Info("SecurityService"+ methodName, "Warewolf Info");
+            Dev2Logger.Info("SecurityService"+ methodName, GlobalConstants.WarewolfInfo);
         }
     }
 }

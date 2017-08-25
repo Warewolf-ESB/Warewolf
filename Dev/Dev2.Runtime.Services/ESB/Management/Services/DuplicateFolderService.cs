@@ -64,13 +64,13 @@ namespace Dev2.Runtime.ESB.Management.Services
 
                     var resourceCatalog = _catalog ?? ResourceCatalog.Instance;
                     var resourceCatalogResult = resourceCatalog.DuplicateFolder(sourcePath.ToString(), destinationPath.ToString(), newResourceName.ToString(), bool.Parse(fixRefs?.ToString() ?? false.ToString()));
-                    Dev2Logger.Error(resourceCatalogResult.Message, "Warewolf Error");                    
+                    Dev2Logger.Error(resourceCatalogResult.Message, GlobalConstants.WarewolfError);                    
                     return serializer.SerializeToBuilder(resourceCatalogResult);
 
                 }
                 catch (Exception x)
                 {
-                    Dev2Logger.Error(x.Message + " DuplicateResourceService", x, "Warewolf Error");
+                    Dev2Logger.Error(x.Message + " DuplicateResourceService", x, GlobalConstants.WarewolfError);
                     var result = new ExecuteMessage { HasError = true, Message = x.Message.ToStringBuilder() };
                     return serializer.SerializeToBuilder(result);
                 }

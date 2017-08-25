@@ -120,24 +120,24 @@ namespace Dev2.Runtime.ESB.WF
                 if (debugState.StateType == StateType.End)
                 {
                     debugDispatcher.Write(debugState, dataObject.IsServiceTestExecution, dataObject.IsDebugFromWeb, dataObject.TestName, dataObject.RemoteInvoke, dataObject.RemoteInvokerID, dataObject.ParentInstanceID, dataObject.RemoteDebugItems);
-
+                    string dataObjectExecutionId = dataObject.ExecutionID.ToString();
                     try
                     {
                         var resource = _lazyCat.GetResource(GlobalConstants.ServerWorkspaceID, dataObject.ResourceID);
                         var executePayload = ExecutionEnvironmentUtils.GetJsonOutputFromEnvironment(dataObject, resource.DataList.ToString(), 0);
+                        string executionLogginResultString = GlobalConstants.ExecutionLoggingResultStartTag + (executePayload ?? "").Replace(Environment.NewLine, string.Empty) + GlobalConstants.ExecutionLoggingResultEndTag;
                         if (dataObject.Environment.HasErrors())
                         {
-                            Dev2Logger.Error(GlobalConstants.ExecutionLoggingResultStartTag + (executePayload ?? "").Replace(Environment.NewLine, string.Empty) + GlobalConstants.ExecutionLoggingResultEndTag, dataObject.ExecutionID.ToString());
+                            Dev2Logger.Error(executionLogginResultString, dataObjectExecutionId);
                         }
                         else
                         {
-                            Dev2Logger.Debug(GlobalConstants.ExecutionLoggingResultStartTag + (executePayload ?? "").Replace(Environment.NewLine, string.Empty) + GlobalConstants.ExecutionLoggingResultEndTag, dataObject.ExecutionID.ToString());
+                            Dev2Logger.Debug(executionLogginResultString, dataObjectExecutionId);
                         }
-
                     }
                     catch (Exception)
                     {
-                        Dev2Logger.Debug("Error getting execution result for :" + dataObject.ResourceID, dataObject.ExecutionID.ToString());
+                        Dev2Logger.Debug("Error getting execution result for :" + dataObject.ResourceID, dataObjectExecutionId);
                     }
                 }
                 else

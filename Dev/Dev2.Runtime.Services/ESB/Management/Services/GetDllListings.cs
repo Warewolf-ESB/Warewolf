@@ -34,7 +34,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             ExecuteMessage msg = new ExecuteMessage();
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
-            Dev2Logger.Info("Get Dll Listings", "Warewolf Info");
+            Dev2Logger.Info("Get Dll Listings", GlobalConstants.WarewolfInfo);
             StringBuilder dllListing;
 
             values.TryGetValue("currentDllListing", out dllListing);
@@ -49,7 +49,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 }
                 catch (Exception ex)
                 {
-                    Dev2Logger.Error(ex, "Warewolf Error");
+                    Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
                     msg.HasError = true;
                     msg.SetMessage(ex.Message);
                 }
@@ -74,7 +74,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 }
                 catch (Exception e)
                 {
-                    Dev2Logger.Error(e.Message, "Warewolf Error");
+                    Dev2Logger.Error(e.Message, GlobalConstants.WarewolfError);
                 }
                 var enumAssembly = new AssemblyCacheEnumerator();
                 var assemblyName = enumAssembly.GetNextAssembly();
@@ -91,7 +91,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     }
                     catch (Exception e)
                     {
-                        Dev2Logger.Error(e.Message, "Warewolf Error");
+                        Dev2Logger.Error(e.Message, GlobalConstants.WarewolfError);
                     }
                     //  Create an assembly view model.
                     assemblyName = enumAssembly.GetNextAssembly();
@@ -121,7 +121,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch (Exception e)
             {
-                Dev2Logger.Error(ErrorResource.ErrorEnumeratingDirectory, e, "Warewolf Error");
+                Dev2Logger.Error(ErrorResource.ErrorEnumeratingDirectory, e, GlobalConstants.WarewolfError);
             }
             return null;
         }
@@ -136,7 +136,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch (Exception e)
             {
-                Dev2Logger.Error(ErrorResource.ErrorEnumeratingDirectory, e, "Warewolf Error");
+                Dev2Logger.Error(ErrorResource.ErrorEnumeratingDirectory, e, GlobalConstants.WarewolfError);
             }
             return dllListing;
         }

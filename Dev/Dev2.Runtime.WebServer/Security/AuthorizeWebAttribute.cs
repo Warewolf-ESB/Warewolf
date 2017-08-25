@@ -86,7 +86,7 @@ namespace Dev2.Runtime.WebServer.Security
             }
             catch(Exception e)
             {
-                Dev2Logger.Error(e, "Warewolf Error");
+                Dev2Logger.Error(e, GlobalConstants.WarewolfError);
             }
 
             return authorizationRequest;

@@ -75,7 +75,7 @@ namespace Dev2
             };
             if (Environment.UserInteractive)
             {
-                Dev2Logger.Info("** Starting In Interactive Mode **", "Warewolf Info");
+                Dev2Logger.Info("** Starting In Interactive Mode **", GlobalConstants.WarewolfInfo);
                 using (_singleton = new ServerLifecycleManager(arguments))
                 {
                     _singleton.Run(true);
@@ -85,7 +85,7 @@ namespace Dev2
             }
             else
             {
-                Dev2Logger.Info("** Starting In Service Mode **", "Warewolf Info");
+                Dev2Logger.Info("** Starting In Service Mode **", GlobalConstants.WarewolfInfo);
                 using (var service = new ServerLifecycleManagerService())
                 {
                     ServiceBase.Run(service);
@@ -105,14 +105,14 @@ namespace Dev2
 
             protected override void OnStart(string[] args)
             {
-                Dev2Logger.Info("** Service Started **", "Warewolf Info");
+                Dev2Logger.Info("** Service Started **", GlobalConstants.WarewolfInfo);
                 _singleton = new ServerLifecycleManager(null);
                 _singleton.Run(false);
             }
 
             protected override void OnStop()
             {
-                Dev2Logger.Info("** Service Stopped **", "Warewolf Info");
+                Dev2Logger.Info("** Service Stopped **", GlobalConstants.WarewolfInfo);
                 _singleton.Stop(false, 0);
                 _singleton = null;
             }
@@ -151,7 +151,7 @@ namespace Dev2
             }
             catch (Exception e)
             {
-                Dev2Logger.Error("Error in startup.", e, "Warewolf Error");
+                Dev2Logger.Error("Error in startup.", e, GlobalConstants.WarewolfError);
             }
             Common.Utilities.ServerUser = new WindowsPrincipal(WindowsIdentity.GetCurrent());
             SetupTempCleanupSetting();
@@ -235,7 +235,7 @@ namespace Dev2
             catch (Exception e)
             {
                 Console.WriteLine(e);
-                Dev2Logger.Error("Error Starting Server", e, "Warewolf Error");
+                Dev2Logger.Error("Error Starting Server", e, GlobalConstants.WarewolfError);
                 Stop(true, 0);
             }
 
@@ -519,7 +519,7 @@ namespace Dev2
             catch (Exception err)
             {
                 // ignored
-                Dev2Logger.Error(err, "Warewolf Error");
+                Dev2Logger.Error(err, GlobalConstants.WarewolfError);
             }
         }
 
@@ -673,11 +673,11 @@ namespace Dev2
             if (Environment.UserInteractive)
             {
                 Console.WriteLine(message);
-                Dev2Logger.Info(message, "Warewolf Info");
+                Dev2Logger.Info(message, GlobalConstants.WarewolfInfo);
             }
             else
             {
-                Dev2Logger.Info(message, "Warewolf Info");
+                Dev2Logger.Info(message, GlobalConstants.WarewolfInfo);
             }
 
         }
@@ -688,11 +688,11 @@ namespace Dev2
             if (Environment.UserInteractive)
             {
                 Console.Write(message);
-                Dev2Logger.Info(message, "Warewolf Info");
+                Dev2Logger.Info(message, GlobalConstants.WarewolfInfo);
             }
             else
             {
-                Dev2Logger.Info(message, "Warewolf Info");
+                Dev2Logger.Info(message, GlobalConstants.WarewolfInfo);
             }
         }
 
@@ -708,12 +708,12 @@ namespace Dev2
             }
             catch (Exception err)
             {
-                Dev2Logger.Error(err, "Warewolf Error");
+                Dev2Logger.Error(err, GlobalConstants.WarewolfError);
             }
         }
         static void LogException(Exception ex)
         {
-            Dev2Logger.Error("Dev2.ServerLifecycleManager", ex, "Warewolf Error");
+            Dev2Logger.Error("Dev2.ServerLifecycleManager", ex, GlobalConstants.WarewolfError);
         }
     }
 }

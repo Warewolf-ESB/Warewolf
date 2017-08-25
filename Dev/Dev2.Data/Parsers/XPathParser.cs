@@ -111,7 +111,7 @@ namespace Dev2.Data.Parsers
                     throw new Exception(ErrorResource.XPathProvidedNotValid);
                 }
 
-                Dev2Logger.Error(exception, "Warewolf Error");
+                Dev2Logger.Error(exception, GlobalConstants.WarewolfError);
                 throw;
             }
         }

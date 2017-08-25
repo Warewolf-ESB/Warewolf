@@ -47,7 +47,7 @@ namespace Dev2.Data.Decisions.Operations
                     }
                     catch(Exception ex)
                     {
-                        Dev2Logger.Error(ex, "Warewolf Error");
+                        Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
                         // Best effort ;)
                     }
                 }

@@ -50,7 +50,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             try
             {
-                Dev2Logger.Info("Save Resource Service", "Warewolf Info");
+                Dev2Logger.Info("Save Resource Service", GlobalConstants.WarewolfInfo);
                 StringBuilder resourceDefinition;
 
                 values.TryGetValue("DbSource", out resourceDefinition);
@@ -105,7 +105,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 msg.HasError = true;
                 msg.Message = new StringBuilder(err.Message);
-                Dev2Logger.Error(err, "Warewolf Error");
+                Dev2Logger.Error(err, GlobalConstants.WarewolfError);
 
             }
 

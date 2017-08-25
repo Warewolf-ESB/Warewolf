@@ -209,7 +209,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             catch (Exception exception)
             {
-                Dev2Logger.Error("DSFRecordsMultipleCriteria", exception, "Warewolf Error");
+                Dev2Logger.Error("DSFRecordsMultipleCriteria", exception, GlobalConstants.WarewolfError);
                 allErrors.AddError(exception.Message);
             }
             finally

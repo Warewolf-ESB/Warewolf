@@ -72,7 +72,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 var res = new ExecuteMessage();
                 res.HasError = true;
                 res.SetMessage(ErrorResource.NoSharepointServerSet);
-                Dev2Logger.Debug(ErrorResource.NoSharepointServerSet, "Warewolf Debug");
+                Dev2Logger.Debug(ErrorResource.NoSharepointServerSet, GlobalConstants.WarewolfDebug);
                 return serializer.SerializeToBuilder(res);
             }
             if(string.IsNullOrEmpty(listName))
@@ -80,7 +80,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 var res = new ExecuteMessage();
                 res.HasError = true;
                 res.SetMessage(ErrorResource.NoSharepointListNameSet);
-                Dev2Logger.Debug(ErrorResource.NoSharepointListNameSet, "Warewolf Debug");
+                Dev2Logger.Debug(ErrorResource.NoSharepointListNameSet, GlobalConstants.WarewolfDebug);
                 return serializer.SerializeToBuilder(res);
             }
             var editableFieldsOnly = false;
@@ -103,7 +103,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch(Exception ex)
             {
-                Dev2Logger.Error(ex, "Warewolf Error");
+                Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
                 var res = new DbColumnList(ex);
                 return serializer.SerializeToBuilder(res);
             }

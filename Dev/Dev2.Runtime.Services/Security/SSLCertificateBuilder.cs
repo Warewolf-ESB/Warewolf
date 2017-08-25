@@ -56,7 +56,7 @@ namespace Dev2.Runtime.Security
             }
             catch(Exception e)
             {
-                Dev2Logger.Error(e, "Warewolf Error");
+                Dev2Logger.Error(e, GlobalConstants.WarewolfError);
             }
             finally
             {

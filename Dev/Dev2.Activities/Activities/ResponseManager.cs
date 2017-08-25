@@ -74,7 +74,7 @@ namespace Dev2.Activities
             catch (Exception e)
             {
                 dataObj.Environment.AddError(e.Message);
-                Dev2Logger.Error(e.Message, e, "Warewolf Error");
+                Dev2Logger.Error(e.Message, e, GlobalConstants.WarewolfError);
             }
         }
 
@@ -87,7 +87,7 @@ namespace Dev2.Activities
             }
             catch (Exception ex1)
             {
-                Dev2Logger.Error(ex1, "Warewolf Error");
+                Dev2Logger.Error(ex1, GlobalConstants.WarewolfError);
             }
 
         }

@@ -55,30 +55,12 @@ namespace Warewolf.UI.Tests
             switch (errorType)
             {
                 case "Microsoft.VisualStudio.TestTools.UITest.Extension.UITestControlNotAvailableException":
-                    messageText = errorType + "\n" + e.Error.Message;
-                    exceptionSource = (e.Error as UITestControlNotAvailableException).ExceptionSource;
-                    if (exceptionSource is UITestControl)
-                    {
-                        Console.WriteLine(messageText + "\n" + (exceptionSource as UITestControl).FriendlyName);
-                    }
                     e.Result = PlaybackErrorOptions.Retry;
                     break;
                 case "Microsoft.VisualStudio.TestTools.UITest.Extension.FailedToPerformActionOnBlockedControlException":
-                    messageText = errorType + "\n" + e.Error.Message;
-                    exceptionSource = (e.Error as FailedToPerformActionOnBlockedControlException).ExceptionSource;
-                    if (exceptionSource is UITestControl)
-                    {
-                        Console.WriteLine(messageText + "\n" + (exceptionSource as UITestControl).FriendlyName);
-                    }
                     e.Result = PlaybackErrorOptions.Retry;
                     break;
                 case "Microsoft.VisualStudio.TestTools.UITest.Extension.UITestControlNotFoundException":
-                    messageText = errorType + "\n" + e.Error.Message;
-                    exceptionSource = (e.Error as UITestControlNotFoundException).ExceptionSource;
-                    if (exceptionSource is UITestControl)
-                    {
-                        Console.WriteLine(messageText + "\n" + (exceptionSource as UITestControl).FriendlyName);
-                    }
                     e.Result = PlaybackErrorOptions.Retry;
                     break;
             }
@@ -88,11 +70,7 @@ namespace Warewolf.UI.Tests
         public void AssertStudioIsRunning()
         {
             Assert.IsTrue(MainStudioWindow.Exists, "Warewolf studio is not running. You are expected to run \"Dev\\Run Tests.ps1\" as an administrator and wait for it to complete before running any coded UI tests");
-            Keyboard.SendKeys(MainStudioWindow, "{Tab}", ModifierKeys.None);
-            Keyboard.SendKeys(MainStudioWindow, "^%{F4}");
-            var TimeBefore = System.DateTime.Now;
-            WaitForSpinner(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
-            Console.WriteLine("Waited " + (System.DateTime.Now - TimeBefore).Milliseconds.ToString() + "ms for the explorer spinner to disappear.");
+            Keyboard.SendKeys(MainStudioWindow, "^%{F4}");            
         }
         
         public void TryPin_Unpinned_Pane_To_Default_Position()
@@ -597,7 +575,7 @@ namespace Warewolf.UI.Tests
         public void Click_Settings_RibbonButton()
         {
             Mouse.Click(MainStudioWindow.SideMenuBar.ConfigureSettingsButton, new Point(7, 2));
-            MainStudioWindow.DockManager.SplitPaneMiddle.DrawHighlight();
+            SettingsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WaitForControlExist(60000);
             Assert.IsTrue(SettingsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.Exists, "Settings tab does not exist after clicking settings ribbon button.");
         }
 

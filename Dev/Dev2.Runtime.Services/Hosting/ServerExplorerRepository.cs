@@ -382,7 +382,7 @@ namespace Dev2.Runtime.Hosting
         {
             if (itemToAdd == null)
             {
-                Dev2Logger.Info("Invalid Item", "Warewolf Info");
+                Dev2Logger.Info("Invalid Item", GlobalConstants.WarewolfInfo);
                 return new ExplorerRepositoryResult(ExecStatus.Fail, ErrorResource.ItemToAddIsNull);
             }
             var resourceType = itemToAdd.ResourceType;
@@ -413,7 +413,7 @@ namespace Dev2.Runtime.Hosting
                 }
                 catch (Exception err)
                 {
-                    Dev2Logger.Error("Add Folder Error", err, "Warewolf Error");
+                    Dev2Logger.Error("Add Folder Error", err, GlobalConstants.WarewolfError);
                     return new ExplorerRepositoryResult(ExecStatus.Fail, err.Message);
                 }
             }
@@ -427,7 +427,7 @@ namespace Dev2.Runtime.Hosting
                 }
                 catch (Exception err)
                 {
-                    Dev2Logger.Error("Add Item Error", err, "Warewolf Error");
+                    Dev2Logger.Error("Add Item Error", err, GlobalConstants.WarewolfError);
                     return new ExplorerRepositoryResult(ExecStatus.Fail, err.Message);
                 }
             }

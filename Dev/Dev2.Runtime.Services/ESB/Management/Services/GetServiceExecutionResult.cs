@@ -22,7 +22,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             var executionId = values["ExecutionId"];
             var trimExecutionId = executionId.ToString().Trim();
             var serializer = new Dev2JsonSerializer();
-            if (LogDataCache.CurrentResults == null || LogDataCache.CurrentResults.Count() == 0)
+            if (LogDataCache.CurrentResults == null || !LogDataCache.CurrentResults.Any())
             {
                 LogDataCache.CurrentResults = BuildTempObjects();
             }
@@ -38,7 +38,6 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             var logEntry = new LogEntry { Result = replace };
             return serializer.SerializeToBuilder(logEntry);
-
         }
 
         public DynamicService CreateServiceEntry()
@@ -51,6 +50,5 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             return findServices;
         }
-
     }
 }

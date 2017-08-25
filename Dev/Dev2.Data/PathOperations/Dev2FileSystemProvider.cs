@@ -127,7 +127,7 @@ namespace Dev2.PathOperations
                 }
                 catch (Exception ex)
                 {
-                    Dev2Logger.Error(ex, "Warewolf Error");
+                    Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
                     throw new Exception(ex.Message, ex);
                 }
 
@@ -254,7 +254,7 @@ namespace Dev2.PathOperations
             }
             catch (Exception ex)
             {
-                Dev2Logger.Error("Error getting file: "+src.Path,ex, "Warewolf Error");
+                Dev2Logger.Error("Error getting file: "+src.Path,ex, GlobalConstants.WarewolfError);
                 result = false;
             }
             return result;
@@ -311,7 +311,7 @@ namespace Dev2.PathOperations
                 }
                 catch (Exception ex)
                 {
-                    Dev2Logger.Error(ex, "Warewolf Error");
+                    Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
                     throw;
                 }
             }
@@ -377,7 +377,7 @@ namespace Dev2.PathOperations
                     }
                     catch (Exception ex)
                     {
-                        Dev2Logger.Error(ex, "Warewolf Error");
+                        Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
                         throw;
                     }
                 }
@@ -425,7 +425,7 @@ namespace Dev2.PathOperations
                     }
                     catch (Exception ex)
                     {
-                        Dev2Logger.Error(ex, "Warewolf Error");
+                        Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
                         throw;
                     }
                 }
@@ -681,7 +681,7 @@ namespace Dev2.PathOperations
                 }
                 catch (Exception ex)
                 {
-                    Dev2Logger.Error(ex, "Warewolf Error");
+                    Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
                     throw;
                 }
 

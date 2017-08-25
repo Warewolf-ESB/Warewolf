@@ -71,7 +71,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
 
             IEnumerable<Guid> resourceIds = JsonConvert.DeserializeObject<List<string>>(resourceIdsString).Select(Guid.Parse);
-            Dev2Logger.Info("Get Dependencies On List. " + resourceIdsString, "Warewolf Info");
+            Dev2Logger.Info("Get Dependencies On List. " + resourceIdsString, GlobalConstants.WarewolfInfo);
             if(!string.IsNullOrEmpty(dependsOnMeString))
             {
                 if(!bool.TryParse(dependsOnMeString, out dependsOnMe))
@@ -98,7 +98,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch (Exception e)
             {
-                Dev2Logger.Error(e, "Warewolf Error");
+                Dev2Logger.Error(e, GlobalConstants.WarewolfError);
                 throw;
             }
         }

@@ -53,7 +53,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                             }
                             catch (Exception e)
                             {
-                                Dev2Logger.Error("GetComDllListingsService-Execute", e, "Warewolf Error");
+                                Dev2Logger.Error("GetComDllListingsService-Execute", e, GlobalConstants.WarewolfError);
                             }
                         }
                     }

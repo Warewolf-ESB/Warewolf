@@ -294,7 +294,7 @@ namespace Dev2.Workspaces
                         catch(Exception ex)
                         
                         {
-                            Dev2Logger.Error(ex, "Warewolf Error");
+                            Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
                             // Deserialization failed so overwrite with new one.
                         }
                     }
@@ -374,7 +374,7 @@ namespace Dev2.Workspaces
                         catch(Exception ex)
                         
                         {
-                            Dev2Logger.Error("WorkspaceRepository", ex, "Warewolf Error");
+                            Dev2Logger.Error("WorkspaceRepository", ex, GlobalConstants.WarewolfError);
                             // Deserialization failed so overwrite with new one.
                         }
                     }

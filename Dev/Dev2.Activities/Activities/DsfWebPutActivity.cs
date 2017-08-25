@@ -96,7 +96,7 @@ namespace Dev2.Activities
             catch (UriFormatException e)
             {
                 //CurrentDataObject.Environment.AddError(e.Message);// To investigate this
-                Dev2Logger.Error(e.Message, e, "Warewolf Error"); // Error must be added on the environment
+                Dev2Logger.Error(e.Message, e, GlobalConstants.WarewolfError); // Error must be added on the environment
                 return httpClient;
             }
 

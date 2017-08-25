@@ -54,7 +54,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             try
             {
 
-                Dev2Logger.Info("Get Scheduled Resources", "Warewolf Info");
+                Dev2Logger.Info("Get Scheduled Resources", GlobalConstants.WarewolfInfo);
                 ObservableCollection<IScheduledResource> resources;
                 using(var model = SchedulerFactory.CreateModel(GlobalConstants.SchedulerFolderId, SecurityWrapper))
                 {
@@ -70,7 +70,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch (Exception err)
             {
-                Dev2Logger.Error(err, "Warewolf Error");
+                Dev2Logger.Error(err, GlobalConstants.WarewolfError);
                 throw;
             }
         }
