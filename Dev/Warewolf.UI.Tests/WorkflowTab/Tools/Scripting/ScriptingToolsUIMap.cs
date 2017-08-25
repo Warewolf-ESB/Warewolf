@@ -8,6 +8,7 @@ using Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses;
 using Warewolf.UI.Tests.DotNetPluginSource.DotNetPluginSourceUIMapClasses;
 using Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses;
 using Warewolf.UI.Tests.ComPluginSource.ComPluginSourceUIMapClasses;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Warewolf.UI.Tests.WorkflowTab.Tools.Scripting.ScriptingToolsUIMapClasses
 {
@@ -25,6 +26,24 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Scripting.ScriptingToolsUIMapClass
         {
             Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Python, new Point(117, 9));
         }
+
+        [When(@"I Click Python Attachment Button")]
+        public void Click_Python_Attachment_Button()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Python.LargeView.AttachFileButton);
+            Assert.IsTrue(DialogsUIMap.SelectFilesWindow.Exists, "The Select Files Window is expected to be visible");
+        }
+
+
+        [When(@"I Select Python File")]
+        public void Select_Python_File()
+        {
+            Mouse.DoubleClick(DialogsUIMap.SelectFilesWindow.DrivesDataTree.CTreeItem.AttachmentsForEmailFolder);
+            DialogsUIMap.SelectFilesWindow.DrivesDataTree.CTreeItem.AttachmentsForEmailFolder.attachment1.PythonCheckBox.Checked = true;
+            Assert.IsNotNull(DialogsUIMap.SelectFilesWindow.FileNameTextBox.Text, "Files Name is empty even after selecting a File..");
+            Mouse.Click(DialogsUIMap.SelectFilesWindow.SelectButton);
+        }
+
 
         [When(@"I Open Ruby Large View")]
         public void Open_Ruby_LargeView()

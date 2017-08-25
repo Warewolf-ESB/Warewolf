@@ -6710,10 +6710,29 @@ namespace Warewolf.UI.Tests.DialogsUIMapClasses
                 return this.mCheckBox;
             }
         }
+        
+        public WpfCheckBox PythonCheckBox
+        {
+            get
+            {
+                if ((this.mPythonCheckBox == null))
+                {
+                    this.mPythonCheckBox = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mPythonCheckBox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_CheckBoxtestPython.py_AutoID";
+                    this.mPythonCheckBox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mPythonCheckBox.WindowTitles.Add("Select File(s)");
+                    #endregion
+                }
+                return this.mPythonCheckBox;
+            }
+        }
         #endregion
         
         #region Fields
         private WpfCheckBox mCheckBox;
+        
+        private WpfCheckBox mPythonCheckBox;
         #endregion
     }
     
