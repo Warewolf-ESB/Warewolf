@@ -259,27 +259,11 @@ namespace Warewolf.UI.Tests
                 {
                     this.mComboboxListItemAsTSTCIREMOTE = new WpfText(this);
                     #region Search Criteria
-                    this.mComboboxListItemAsTSTCIREMOTE.SearchProperties[WpfText.PropertyNames.Name] = "TSTCIREMOTE";
+                    this.mComboboxListItemAsTSTCIREMOTE.SearchProperties.Add(new PropertyExpression(WpfText.PropertyNames.Name, "TSTCIREMOTE", PropertyExpressionOperator.Contains));
                     this.mComboboxListItemAsTSTCIREMOTE.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mComboboxListItemAsTSTCIREMOTE;
-            }
-        }
-        
-        public WpfText ComboboxListItemAsTSTCIREMOTEConnected
-        {
-            get
-            {
-                if ((this.mComboboxListItemAsTSTCIREMOTEConnected == null))
-                {
-                    this.mComboboxListItemAsTSTCIREMOTEConnected = new WpfText(this);
-                    #region Search Criteria
-                    this.mComboboxListItemAsTSTCIREMOTEConnected.SearchProperties[WpfText.PropertyNames.Name] = "TSTCIREMOTE (Connected)";
-                    this.mComboboxListItemAsTSTCIREMOTEConnected.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mComboboxListItemAsTSTCIREMOTEConnected;
             }
         }
         
@@ -292,30 +276,6 @@ namespace Warewolf.UI.Tests
                     this.mComboboxListItemAsLocalhost = new ComboboxListItemAsLocalhost(this);
                 }
                 return this.mComboboxListItemAsLocalhost;
-            }
-        }
-        
-        public ComboboxListItemAsLocalhostConnected ComboboxListItemAsLocalhostConnected
-        {
-            get
-            {
-                if ((this.mComboboxListItemAsLocalhostConnected == null))
-                {
-                    this.mComboboxListItemAsLocalhostConnected = new ComboboxListItemAsLocalhostConnected(this);
-                }
-                return this.mComboboxListItemAsLocalhostConnected;
-            }
-        }
-        
-        public ComboboxListItemAsRemoteConnectionIntegrationConnected ComboboxListItemAsRemoteConnectionIntegrationConnected
-        {
-            get
-            {
-                if ((this.mComboboxListItemAsRemoteConnectionIntegrationConnected == null))
-                {
-                    this.mComboboxListItemAsRemoteConnectionIntegrationConnected = new ComboboxListItemAsRemoteConnectionIntegrationConnected(this);
-                }
-                return this.mComboboxListItemAsRemoteConnectionIntegrationConnected;
             }
         }
         
@@ -589,7 +549,7 @@ namespace Warewolf.UI.Tests
                     this.mComboboxListItemOracleDatabase = new WpfCustom(this);
                     #region Search Criteria
                     this.mComboboxListItemOracleDatabase.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ComboEditorItemControl";
-                    this.mComboboxListItemOracleDatabase.SearchProperties[WpfControl.PropertyNames.Name] = "Oracle Database";
+                    this.mComboboxListItemOracleDatabase.SearchProperties.Add(new PropertyExpression(WpfControl.PropertyNames.Name, "Oracle Database", PropertyExpressionOperator.Contains));
                     this.mComboboxListItemOracleDatabase.WindowTitles.Add("Warewolf");
                     #endregion
                 }
@@ -1085,13 +1045,7 @@ namespace Warewolf.UI.Tests
         
         private WpfText mComboboxListItemAsTSTCIREMOTE;
         
-        private WpfText mComboboxListItemAsTSTCIREMOTEConnected;
-        
         private ComboboxListItemAsLocalhost mComboboxListItemAsLocalhost;
-        
-        private ComboboxListItemAsLocalhostConnected mComboboxListItemAsLocalhostConnected;
-        
-        private ComboboxListItemAsRemoteConnectionIntegrationConnected mComboboxListItemAsRemoteConnectionIntegrationConnected;
         
         private WpfCustom mComboboxListItemAsHttp;
         
@@ -11326,7 +11280,7 @@ namespace Warewolf.UI.Tests
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfText.PropertyNames.Name] = "localhost";
+            this.SearchProperties.Add(new PropertyExpression(WpfText.PropertyNames.Name, "localhost", PropertyExpressionOperator.Contains));
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
@@ -11340,81 +11294,7 @@ namespace Warewolf.UI.Tests
                 {
                     this.mText = new WpfText(this);
                     #region Search Criteria
-                    this.mText.SearchProperties[WpfText.PropertyNames.Name] = "localhost";
-                    this.mText.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mText;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfText mText;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class ComboboxListItemAsLocalhostConnected : WpfCustom
-    {
-        
-        public ComboboxListItemAsLocalhostConnected(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ComboEditorItemControl";
-            this.SearchProperties[WpfControl.PropertyNames.Name] = "localhost (Connected)";
-            this.WindowTitles.Add("Warewolf");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfText Text
-        {
-            get
-            {
-                if ((this.mText == null))
-                {
-                    this.mText = new WpfText(this);
-                    #region Search Criteria
-                    this.mText.SearchProperties[WpfText.PropertyNames.Name] = "localhost (Connected)";
-                    this.mText.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mText;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfText mText;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class ComboboxListItemAsRemoteConnectionIntegrationConnected : WpfCustom
-    {
-        
-        public ComboboxListItemAsRemoteConnectionIntegrationConnected(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ComboEditorItemControl";
-            this.SearchProperties[WpfControl.PropertyNames.Name] = "Remote Connection Integration (Connected)";
-            this.WindowTitles.Add("Warewolf");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfText Text
-        {
-            get
-            {
-                if ((this.mText == null))
-                {
-                    this.mText = new WpfText(this);
-                    #region Search Criteria
-                    this.mText.SearchProperties[WpfText.PropertyNames.Name] = "Remote Connection Integration (Connected)";
+                    this.mText.SearchProperties.Add(new PropertyExpression(WpfText.PropertyNames.Name, "localhost", PropertyExpressionOperator.Contains));
                     this.mText.WindowTitles.Add("Warewolf");
                     #endregion
                 }
@@ -11437,7 +11317,7 @@ namespace Warewolf.UI.Tests
         {
             #region Search Criteria
             this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ComboEditorItemControl";
-            this.SearchProperties[WpfControl.PropertyNames.Name] = "Microsoft SQL Server";
+            this.SearchProperties.Add(new PropertyExpression(WpfControl.PropertyNames.Name, "Microsoft SQL Server", PropertyExpressionOperator.Contains));
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
@@ -11451,7 +11331,7 @@ namespace Warewolf.UI.Tests
                 {
                     this.mMicrosoftSQLServerText = new WpfText(this);
                     #region Search Criteria
-                    this.mMicrosoftSQLServerText.SearchProperties[WpfText.PropertyNames.Name] = "Microsoft SQL Server";
+                    this.mMicrosoftSQLServerText.SearchProperties.Add(new PropertyExpression(WpfText.PropertyNames.Name, "Microsoft SQL Server", PropertyExpressionOperator.Contains));
                     this.mMicrosoftSQLServerText.WindowTitles.Add("Warewolf");
                     #endregion
                 }
@@ -11474,7 +11354,7 @@ namespace Warewolf.UI.Tests
         {
             #region Search Criteria
             this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ComboEditorItemControl";
-            this.SearchProperties[WpfControl.PropertyNames.Name] = "PostgreSQL Database";
+            this.SearchProperties.Add(new PropertyExpression(WpfControl.PropertyNames.Name, "PostgreSQL Database", PropertyExpressionOperator.Contains));
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
@@ -11488,7 +11368,7 @@ namespace Warewolf.UI.Tests
                 {
                     this.mPostgreSQLDatabase = new WpfText(this);
                     #region Search Criteria
-                    this.mPostgreSQLDatabase.SearchProperties[WpfText.PropertyNames.Name] = "PostgreSQL Database";
+                    this.mPostgreSQLDatabase.SearchProperties.Add(new PropertyExpression(WpfText.PropertyNames.Name, "PostgreSQL Database", PropertyExpressionOperator.Contains));
                     this.mPostgreSQLDatabase.WindowTitles.Add("Warewolf");
                     #endregion
                 }
@@ -11511,7 +11391,7 @@ namespace Warewolf.UI.Tests
         {
             #region Search Criteria
             this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ComboEditorItemControl";
-            this.SearchProperties[WpfControl.PropertyNames.Name] = "ODBC Database";
+            this.SearchProperties.Add(new PropertyExpression(WpfControl.PropertyNames.Name, "ODBC Database", PropertyExpressionOperator.Contains));
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
@@ -11525,7 +11405,7 @@ namespace Warewolf.UI.Tests
                 {
                     this.mODBCDatabaseText = new WpfText(this);
                     #region Search Criteria
-                    this.mODBCDatabaseText.SearchProperties[WpfText.PropertyNames.Name] = "ODBC Database";
+                    this.mODBCDatabaseText.SearchProperties.Add(new PropertyExpression(WpfText.PropertyNames.Name, "ODBC Database", PropertyExpressionOperator.Contains));
                     this.mODBCDatabaseText.WindowTitles.Add("Warewolf");
                     #endregion
                 }
@@ -11548,7 +11428,7 @@ namespace Warewolf.UI.Tests
         {
             #region Search Criteria
             this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ComboEditorItemControl";
-            this.SearchProperties[WpfControl.PropertyNames.Name] = "MySql Database";
+            this.SearchProperties.Add(new PropertyExpression(WpfControl.PropertyNames.Name, "MySql Database", PropertyExpressionOperator.Contains));
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
@@ -11562,7 +11442,7 @@ namespace Warewolf.UI.Tests
                 {
                     this.mMySqlDatabaseText = new WpfText(this);
                     #region Search Criteria
-                    this.mMySqlDatabaseText.SearchProperties[WpfText.PropertyNames.Name] = "MySql Database";
+                    this.mMySqlDatabaseText.SearchProperties.Add(new PropertyExpression(WpfText.PropertyNames.Name, "MySql Database", PropertyExpressionOperator.Contains));
                     this.mMySqlDatabaseText.WindowTitles.Add("Warewolf");
                     #endregion
                 }
@@ -19565,7 +19445,7 @@ namespace Warewolf.UI.Tests
         {
             #region Search Criteria
             this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ComboEditorItemControl";
-            this.SearchProperties[WpfControl.PropertyNames.Name] = "Remote Connection Integration";
+            this.SearchProperties.Add(new PropertyExpression(WpfControl.PropertyNames.Name, "Remote Connection Integration", PropertyExpressionOperator.Contains));
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
@@ -19579,7 +19459,7 @@ namespace Warewolf.UI.Tests
                 {
                     this.mText = new WpfText(this);
                     #region Search Criteria
-                    this.mText.SearchProperties[WpfText.PropertyNames.Name] = "Remote Connection Integration";
+                    this.mText.SearchProperties.Add(new PropertyExpression(WpfText.PropertyNames.Name, "Remote Connection Integration", PropertyExpressionOperator.Contains));
                     this.mText.WindowTitles.Add("Warewolf");
                     #endregion
                 }
@@ -19602,7 +19482,7 @@ namespace Warewolf.UI.Tests
         {
             #region Search Criteria
             this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ComboEditorItemControl";
-            this.SearchProperties[WpfControl.PropertyNames.Name] = "Restricted Remote Connection";
+            this.SearchProperties.Add(new PropertyExpression(WpfControl.PropertyNames.Name, "Restricted Remote Connection", PropertyExpressionOperator.Contains));
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
@@ -19616,7 +19496,7 @@ namespace Warewolf.UI.Tests
                 {
                     this.mText = new WpfText(this);
                     #region Search Criteria
-                    this.mText.SearchProperties[WpfText.PropertyNames.Name] = "Restricted Remote Connection";
+                    this.mText.SearchProperties.Add(new PropertyExpression(WpfText.PropertyNames.Name, "Restricted Remote Connection", PropertyExpressionOperator.Contains));
                     this.mText.WindowTitles.Add("Warewolf");
                     #endregion
                 }
@@ -19639,7 +19519,7 @@ namespace Warewolf.UI.Tests
         {
             #region Search Criteria
             this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ComboEditorItemControl";
-            this.SearchProperties[WpfControl.PropertyNames.Name] = "ChangingServerAuthUITest";
+            this.SearchProperties.Add(new PropertyExpression(WpfControl.PropertyNames.Name, "ChangingServerAuthUITest", PropertyExpressionOperator.Contains));
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
@@ -19653,7 +19533,7 @@ namespace Warewolf.UI.Tests
                 {
                     this.mText = new WpfText(this);
                     #region Search Criteria
-                    this.mText.SearchProperties[WpfText.PropertyNames.Name] = "ChangingServerAuthUITest";
+                    this.mText.SearchProperties.Add(new PropertyExpression(WpfText.PropertyNames.Name, "ChangingServerAuthUITest", PropertyExpressionOperator.Contains));
                     this.mText.WindowTitles.Add("Warewolf");
                     #endregion
                 }
@@ -19676,7 +19556,7 @@ namespace Warewolf.UI.Tests
         {
             #region Search Criteria
             this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ComboEditorItemControl";
-            this.SearchProperties[WpfControl.PropertyNames.Name] = "postgres";
+            this.SearchProperties.Add(new PropertyExpression(WpfControl.PropertyNames.Name, "postgres", PropertyExpressionOperator.Contains));
             this.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
             #endregion
         }
@@ -19690,7 +19570,7 @@ namespace Warewolf.UI.Tests
                 {
                     this.mText = new WpfText(this);
                     #region Search Criteria
-                    this.mText.SearchProperties[WpfText.PropertyNames.Name] = "postgres";
+                    this.mText.SearchProperties.Add(new PropertyExpression(WpfText.PropertyNames.Name, "postgres", PropertyExpressionOperator.Contains));
                     this.mText.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
                     #endregion
                 }
@@ -19713,7 +19593,7 @@ namespace Warewolf.UI.Tests
         {
             #region Search Criteria
             this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ComboEditorItemControl";
-            this.SearchProperties[WpfControl.PropertyNames.Name] = "mysql";
+            this.SearchProperties.Add(new PropertyExpression(WpfControl.PropertyNames.Name, "mysql", PropertyExpressionOperator.Contains));
             this.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
             #endregion
         }
@@ -19727,7 +19607,7 @@ namespace Warewolf.UI.Tests
                 {
                     this.mText = new WpfText(this);
                     #region Search Criteria
-                    this.mText.SearchProperties[WpfText.PropertyNames.Name] = "mysql";
+                    this.mText.SearchProperties.Add(new PropertyExpression(WpfText.PropertyNames.Name, "mysql", PropertyExpressionOperator.Contains));
                     this.mText.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
                     #endregion
                 }
@@ -19750,7 +19630,7 @@ namespace Warewolf.UI.Tests
         {
             #region Search Criteria
             this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ComboEditorItemControl";
-            this.SearchProperties[WpfControl.PropertyNames.Name] = "HR";
+            this.SearchProperties.Add(new PropertyExpression(WpfControl.PropertyNames.Name, "HR", PropertyExpressionOperator.Contains));
             this.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
             #endregion
         }
@@ -19764,7 +19644,7 @@ namespace Warewolf.UI.Tests
                 {
                     this.mText = new WpfText(this);
                     #region Search Criteria
-                    this.mText.SearchProperties[WpfText.PropertyNames.Name] = "HR";
+                    this.mText.SearchProperties.Add(new PropertyExpression(WpfText.PropertyNames.Name, "HR", PropertyExpressionOperator.Contains));
                     this.mText.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
                     #endregion
                 }
@@ -19787,7 +19667,7 @@ namespace Warewolf.UI.Tests
         {
             #region Search Criteria
             this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ComboEditorItemControl";
-            this.SearchProperties[WpfControl.PropertyNames.Name] = "Excel Files";
+            this.SearchProperties.Add(new PropertyExpression(WpfControl.PropertyNames.Name, "Excel Files", PropertyExpressionOperator.Contains));
             this.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
             #endregion
         }
@@ -19801,7 +19681,7 @@ namespace Warewolf.UI.Tests
                 {
                     this.mText = new WpfText(this);
                     #region Search Criteria
-                    this.mText.SearchProperties[WpfText.PropertyNames.Name] = "Excel Files";
+                    this.mText.SearchProperties.Add(new PropertyExpression(WpfText.PropertyNames.Name, "Excel Files", PropertyExpressionOperator.Contains));
                     this.mText.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
                     #endregion
                 }
@@ -19824,7 +19704,7 @@ namespace Warewolf.UI.Tests
         {
             #region Search Criteria
             this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ComboEditorItemControl";
-            this.SearchProperties[WpfControl.PropertyNames.Name] = "Dropbox";
+            this.SearchProperties.Add(new PropertyExpression(WpfControl.PropertyNames.Name, "Dropbox", PropertyExpressionOperator.Contains));
             this.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
             #endregion
         }
@@ -19838,7 +19718,7 @@ namespace Warewolf.UI.Tests
                 {
                     this.mUIDropboxText = new WpfText(this);
                     #region Search Criteria
-                    this.mUIDropboxText.SearchProperties[WpfText.PropertyNames.Name] = "Dropbox";
+                    this.mUIDropboxText.SearchProperties.Add(new PropertyExpression(WpfText.PropertyNames.Name, "Dropbox", PropertyExpressionOperator.Contains));
                     this.mUIDropboxText.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
                     #endregion
                 }
@@ -19861,7 +19741,7 @@ namespace Warewolf.UI.Tests
         {
             #region Search Criteria
             this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ComboEditorItemControl";
-            this.SearchProperties[WpfControl.PropertyNames.Name] = "Dev2TestingDB";
+            this.SearchProperties.Add(new PropertyExpression(WpfControl.PropertyNames.Name, "Dev2TestingDB", PropertyExpressionOperator.Contains));
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
@@ -19875,7 +19755,7 @@ namespace Warewolf.UI.Tests
                 {
                     this.mUIDev2TestingDBText = new WpfText(this);
                     #region Search Criteria
-                    this.mUIDev2TestingDBText.SearchProperties[WpfText.PropertyNames.Name] = "Dev2TestingDB";
+                    this.mUIDev2TestingDBText.SearchProperties.Add(new PropertyExpression(WpfText.PropertyNames.Name, "Dev2TestingDB", PropertyExpressionOperator.Contains));
                     this.mUIDev2TestingDBText.WindowTitles.Add("Warewolf");
                     #endregion
                 }

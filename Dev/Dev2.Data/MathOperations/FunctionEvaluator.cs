@@ -83,7 +83,7 @@ namespace Dev2.MathOperations
                 }
                 catch(Exception ex)
                 {
-                    Dev2Logger.Error(ErrorResource.FunctionEvaluationError, ex, "Warewolf Error");
+                    Dev2Logger.Error(ErrorResource.FunctionEvaluationError, ex, GlobalConstants.WarewolfError);
                     error = ex.Message;
                     evaluationState = false;
                 }

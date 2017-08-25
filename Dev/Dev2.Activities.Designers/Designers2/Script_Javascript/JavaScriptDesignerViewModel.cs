@@ -44,7 +44,6 @@ namespace Dev2.Activities.Designers2.Script_Javascript
 
         public bool EscapeScript { get; private set; }
 
-
         public ICommand ChooseScriptSourceCommand { get; private set; }
 
         public string ScriptTypeDefaultText
@@ -54,7 +53,6 @@ namespace Dev2.Activities.Designers2.Script_Javascript
         }
 
         public static readonly DependencyProperty ScriptTypeTextProperty = DependencyProperty.Register("ScriptTypeDefaultText", typeof(string), typeof(JavaScriptDesignerViewModel), new PropertyMetadata("JavaScript Syntax"));
-
 
         public override void Validate()
         {
@@ -67,11 +65,11 @@ namespace Dev2.Activities.Designers2.Script_Javascript
         }
 
         public void ChooseScriptSources()
-        {            
+        {
             var fileChooserMessage = _scriptChooser.ChooseScriptSources(IncludeFile);
             fileChooserMessage.Filter = "js";
             _eventPublisher.Publish(fileChooserMessage);
+            IncludeFile = string.Join(";", fileChooserMessage.SelectedFiles);
         }
-
     }
 }

@@ -189,7 +189,7 @@ namespace Dev2.Runtime.ESB
 
                         if (errors.HasErrors())
                         {
-                            Dev2Logger.Error(errors.MakeDisplayReady(), "Warewolf Error");
+                            Dev2Logger.Error(errors.MakeDisplayReady(), GlobalConstants.WarewolfError);
                         }
                     }
                 }

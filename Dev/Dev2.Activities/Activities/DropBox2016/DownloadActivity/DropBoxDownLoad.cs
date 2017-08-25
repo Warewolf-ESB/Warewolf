@@ -48,7 +48,7 @@ namespace Dev2.Activities.DropBox2016.DownloadActivity
             }
             catch (Exception exception)
             {
-                Dev2Logger.Error(exception.Message, "Warewolf Error");
+                Dev2Logger.Error(exception.Message, GlobalConstants.WarewolfError);
 
                 var hasInnerExc = exception.InnerException != null;
                 if (hasInnerExc)

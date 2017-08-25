@@ -392,7 +392,7 @@ namespace Dev2.Runtime.ESB.Execution
             }
             catch (Exception ex)
             {
-                Dev2Logger.Error(ex, "Warewolf Error");
+                Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
                 to.AddError(ex.Message);
                 var failureMessage = DataObject.Environment.FetchErrors();
                 wfappUtils.DispatchDebugState(DataObject, StateType.End, DataObject.Environment.HasErrors(), failureMessage, out invokeErrors, DataObject.StartTime, false, true);
@@ -411,7 +411,7 @@ namespace Dev2.Runtime.ESB.Execution
                 {
                     testRunResult.RunTestResult = RunResult.TestInvalid;
                     testRunResult.Message = ex.Message;
-                    Dev2Logger.Error($"Test {DataObject.TestName} for Resource {DataObject.ServiceName} ID {DataObject.ResourceID} marked invalid in general exception", "Warewolf Error");
+                    Dev2Logger.Error($"Test {DataObject.TestName} for Resource {DataObject.ServiceName} ID {DataObject.ResourceID} marked invalid in general exception", GlobalConstants.WarewolfError);
                 }
                 testRunResult.DebugForTest = TestDebugMessageRepo.Instance.FetchDebugItems(resourceId, test.TestName);
                 _request.ExecuteResult = serializer.SerializeToBuilder(testRunResult);
@@ -513,13 +513,13 @@ namespace Dev2.Runtime.ESB.Execution
 
         private IServiceTestModelTO Eval(Guid resourceId, IDSFDataObject dataObject, IServiceTestModelTO test)
         {
-            Dev2Logger.Debug("Getting Resource to Execute", "Warewolf Debug");
+            Dev2Logger.Debug("Getting Resource to Execute", GlobalConstants.WarewolfDebug);
             var resourceCatalog = ResourceCat ?? ResourceCatalog.Instance;
             IDev2Activity resource = resourceCatalog.Parse(TheWorkspace.ID, resourceId);
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             var execPlan = serializer.SerializeToBuilder(resource);
             var clonedExecPlan = serializer.Deserialize<IDev2Activity>(execPlan);
-            Dev2Logger.Debug("Got Resource to Execute", "Warewolf Debug");
+            Dev2Logger.Debug("Got Resource to Execute", GlobalConstants.WarewolfDebug);
 
             if (test != null)
             {

@@ -89,7 +89,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     {
                         throw new ArgumentException(string.Format(ErrorResource.FailedToFindResource, "newName"));
                     }
-                    Dev2Logger.Info($"Rename Item. Path:{explorerItem.ResourcePath} NewPath:{newName}", "Warewolf Info");
+                    Dev2Logger.Info($"Rename Item. Path:{explorerItem.ResourcePath} NewPath:{newName}", GlobalConstants.WarewolfInfo);
                     item = ServerExplorerRepo.RenameItem(explorerItem, newName.ToString(), GlobalConstants.ServerWorkspaceID);
                 }
                 else if (folderToBeRenamed != null)
@@ -106,7 +106,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch(Exception e)
             {
-                Dev2Logger.Error(e, "Warewolf Error");
+                Dev2Logger.Error(e, GlobalConstants.WarewolfError);
                 item = new ExplorerRepositoryResult(ExecStatus.Fail, e.Message);
             }
             return serializer.SerializeToBuilder(item);

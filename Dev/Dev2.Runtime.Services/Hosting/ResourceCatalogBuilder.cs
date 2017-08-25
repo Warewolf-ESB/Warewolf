@@ -95,7 +95,7 @@ namespace Dev2.Runtime.Hosting
 
                         if ((fa & FileAttributes.ReadOnly) == FileAttributes.ReadOnly)
                         {
-                            Dev2Logger.Info("Removed READONLY Flag from [ " + file + " ]", "Warewolf Info");
+                            Dev2Logger.Info("Removed READONLY Flag from [ " + file + " ]", GlobalConstants.WarewolfInfo);
                             File.SetAttributes(file, FileAttributes.Normal);
                         }
 
@@ -124,7 +124,7 @@ namespace Dev2.Runtime.Hosting
                 }
                 catch (Exception e)
                 {
-                    Dev2Logger.Error(ErrorResource.ErrorLoadingTypes, e, "Warewolf Error");
+                    Dev2Logger.Error(ErrorResource.ErrorLoadingTypes, e, GlobalConstants.WarewolfError);
                 }
                 streams.ForEach(currentItem =>
                 {
@@ -136,7 +136,7 @@ namespace Dev2.Runtime.Hosting
                     }
                     catch (Exception e)
                     {
-                        Dev2Logger.Error("Resource [ " + currentItem.FilePath + " ] caused " + e.Message, "Warewolf Error");
+                        Dev2Logger.Error("Resource [ " + currentItem.FilePath + " ] caused " + e.Message, GlobalConstants.WarewolfError);
                     }
                                       
                     StringBuilder result = xml?.ToStringBuilder();
@@ -212,7 +212,7 @@ namespace Dev2.Runtime.Hosting
                                     }
                                     catch (Exception err)
                                     {
-                                        Dev2Logger.Error(err, "Warewolf Error");
+                                        Dev2Logger.Error(err, GlobalConstants.WarewolfError);
                                     }
                                     throw;
                                 }
@@ -252,7 +252,7 @@ namespace Dev2.Runtime.Hosting
                     }
                     else
                     {
-                        Dev2Logger.Debug(string.Format("'{0}' wasn't loaded because it isn't signed or has modified since it was signed.", currentItem.FilePath), "Warewolf Debug");
+                        Dev2Logger.Debug(string.Format("'{0}' wasn't loaded because it isn't signed or has modified since it was signed.", currentItem.FilePath), GlobalConstants.WarewolfDebug);
                     }
                 });
             }
@@ -288,13 +288,13 @@ namespace Dev2.Runtime.Hosting
                     CreateDupResource(dupRes,filePath);
                     Dev2Logger.Debug(
                         string.Format(ErrorResource.ResourceAlreadyLoaded,
-                            res.ResourceName, filePath, dupRes.FilePath), "Warewolf Debug");
+                            res.ResourceName, filePath, dupRes.FilePath), GlobalConstants.WarewolfDebug);
                 }
                 else
                 {
                     Dev2Logger.Debug(string.Format(
                             "Resource '{0}' from file '{1}' wasn't loaded because a resource with the same name has already been loaded but cannot find its location.",
-                            res.ResourceName, filePath), "Warewolf Debug");
+                            res.ResourceName, filePath), GlobalConstants.WarewolfDebug);
                 }
             }
         }

@@ -145,7 +145,7 @@ namespace Dev2.Activities.Sharepoint
             }
             catch (Exception e)
             {
-                Dev2Logger.Error("SharepointUpdateListItemActivity", e, "Warewolf Error");
+                Dev2Logger.Error("SharepointUpdateListItemActivity", e, GlobalConstants.WarewolfError);
                 allErrors.AddError(e.Message);
             }
             finally

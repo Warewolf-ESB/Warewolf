@@ -53,7 +53,7 @@ namespace Dev2.Services.Execution
                 if (!connected)
                 {
                     Dev2Logger.Error(string.Format(ErrorResource.FailedToConnectWithConnectionString,
-                        Source.ConnectionString), "Warewolf Error");
+                        Source.ConnectionString), GlobalConstants.WarewolfError);
                 }
             }
             catch (SqlException sex)
@@ -68,12 +68,12 @@ namespace Dev2.Services.Execution
                                          "Procedure: " + sex.Errors[i].Procedure + Environment.NewLine);
                 }
                 errors.AddError(errorMessages.ToString());
-                Dev2Logger.Error(errorMessages.ToString(), "Warewolf Error");
+                Dev2Logger.Error(errorMessages.ToString(), GlobalConstants.WarewolfError);
             }
             catch (Exception ex)
             {
                 errors.AddError($"{ex.Message}{Environment.NewLine}{ex.StackTrace}");
-                Dev2Logger.Error(ex, "Warewolf Error");
+                Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
             }
         }
 
@@ -86,7 +86,7 @@ namespace Dev2.Services.Execution
                 if (!connected)
                 {
                     Dev2Logger.Error(string.Format(ErrorResource.FailedToConnectWithConnectionString,
-                        Source.ConnectionString), "Warewolf Error");
+                        Source.ConnectionString), GlobalConstants.WarewolfError);
                 }
                 return server;
             }
@@ -95,12 +95,12 @@ namespace Dev2.Services.Execution
                 var errorMessages = new StringBuilder();
                 errorMessages.Append(sex.Message);
                 errors.AddError(errorMessages.ToString());
-                Dev2Logger.Error(errorMessages.ToString(), "Warewolf Error");
+                Dev2Logger.Error(errorMessages.ToString(), GlobalConstants.WarewolfError);
             }
             catch (Exception ex)
             {
                 errors.AddError($"{ex.Message}{Environment.NewLine}{ex.StackTrace}");
-                Dev2Logger.Error(ex, "Warewolf Error");
+                Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
             }
             return server;
         }
@@ -258,7 +258,7 @@ namespace Dev2.Services.Execution
             }
             catch (Exception ex)
             {
-                Dev2Logger.Error("SQL Error:", ex, "Warewolf Error");
+                Dev2Logger.Error("SQL Error:", ex, GlobalConstants.WarewolfError);
                 errors.AddError($"SQL Error: {ex.Message}");
             }
         }
@@ -347,7 +347,7 @@ namespace Dev2.Services.Execution
                 if (!connected)
                 {
                     Dev2Logger.Error(string.Format(ErrorResource.FailedToConnectWithConnectionString,
-                        Source.ConnectionString), "Warewolf Error");
+                        Source.ConnectionString), GlobalConstants.WarewolfError);
                 }
                 return server;
             }
@@ -356,12 +356,12 @@ namespace Dev2.Services.Execution
                 var errorMessages = new StringBuilder();
                 errorMessages.Append(oex.Message);
                 errors.AddError(errorMessages.ToString());
-                Dev2Logger.Error(errorMessages.ToString(), "Warewolf Error");
+                Dev2Logger.Error(errorMessages.ToString(), GlobalConstants.WarewolfError);
             }
             catch (Exception ex)
             {
                 errors.AddError($"{ex.Message}{Environment.NewLine}{ex.StackTrace}");
-                Dev2Logger.Error(ex, "Warewolf Error");
+                Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
             }
             return server;
         }
@@ -425,7 +425,7 @@ namespace Dev2.Services.Execution
                 if (!connected)
                 {
                     Dev2Logger.Error(string.Format(ErrorResource.FailedToConnectWithConnectionString,
-                        Source.ConnectionString), "Warewolf Error");
+                        Source.ConnectionString), GlobalConstants.WarewolfError);
                 }
                 return server;
             }
@@ -434,12 +434,12 @@ namespace Dev2.Services.Execution
                 var errorMessages = new StringBuilder();
                 errorMessages.Append(oex.Message);
                 errors.AddError(errorMessages.ToString());
-                Dev2Logger.Error(errorMessages.ToString(), "Warewolf Error");
+                Dev2Logger.Error(errorMessages.ToString(), GlobalConstants.WarewolfError);
             }
             catch (Exception ex)
             {
                 errors.AddError($"{ex.Message}{Environment.NewLine}{ex.StackTrace}");
-                Dev2Logger.Error(ex, "Warewolf Error");
+                Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
             }
             return server;
         }
@@ -507,7 +507,7 @@ namespace Dev2.Services.Execution
                 if (!connected)
                 {
                     Dev2Logger.Error(string.Format(ErrorResource.FailedToConnectWithConnectionString,
-                        Source.ConnectionString), "Warewolf Error");
+                        Source.ConnectionString), GlobalConstants.WarewolfError);
                 }
                 return server;
             }
@@ -516,12 +516,12 @@ namespace Dev2.Services.Execution
                 var errorMessages = new StringBuilder();
                 errorMessages.Append(ex.Message);
                 errors.AddError(errorMessages.ToString());
-                Dev2Logger.Error(errorMessages.ToString(), "Warewolf Error");
+                Dev2Logger.Error(errorMessages.ToString(), GlobalConstants.WarewolfError);
             }
             catch (Exception ex)
             {
                 errors.AddError($"{ex.Message}{Environment.NewLine}{ex.StackTrace}");
-                Dev2Logger.Error(ex, "Warewolf Error");
+                Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
             }
             return server;
         }

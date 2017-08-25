@@ -21,7 +21,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            Dev2Logger.Info("Get Log Data Service", "Warewolf Info");
+            Dev2Logger.Info("Get Log Data Service", GlobalConstants.WarewolfInfo);
 
             var serializer = new Dev2JsonSerializer();
             try
@@ -71,7 +71,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch (Exception e)
             {
-                Dev2Logger.Info("Get Log Data ServiceError", e, "Warewolf Info");
+                Dev2Logger.Info("Get Log Data ServiceError", e, GlobalConstants.WarewolfInfo);
             }
             return serializer.SerializeToBuilder("");
         }

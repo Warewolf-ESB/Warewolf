@@ -233,24 +233,14 @@ namespace Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses
             Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem, new Point(90, 7));
         }
         
-        [When(@"I Select Remote Connection Integration \(Connected\) From Explorer")]
-        public void Select_ConnectedRemoteConnectionIntegration_From_Explorer()
-        {
-            var toggleButton = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton;
-            Mouse.Click(toggleButton, new Point(136, 7));
-            UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.WaitForControlExist(6000);
-            Mouse.Click(UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegrationConnected.Text, new Point(138, 6));
-            Playback.Wait(1000);
-        }
-        
         [When(@"I Select Remote Connection Integration From Explorer")]
         public void Select_RemoteConnectionIntegration_From_Explorer()
         {
             var toggleButton = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton;
             Mouse.Click(toggleButton, new Point(136, 7));
-            UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.WaitForControlExist(6000);
+            UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.Text.WaitForControlExist(60000);
+            Assert.IsTrue(UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.Text.Exists, "Remote Connection Integration does not appear in the explorer connect control.");
             Mouse.Click(UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.Text, new Point(138, 6));
-            Playback.Wait(1000);
         }
 
         [Then(@"Remote ""(.*)"" is open")]
@@ -477,10 +467,8 @@ namespace Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.NewServerButton, new Point(11, 10));
         }
-
-        [Given(@"I Click Edit Server Button From Explorer Connect Control")]
+        
         [When(@"I Click Edit Server Button From Explorer Connect Control")]
-        [Then(@"I Click Edit Server Button From Explorer Connect Control")]
         public void Click_EditServerButton_From_ExplorerConnectControl()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.EditServerButton, new Point(11, 10));
@@ -730,8 +718,9 @@ namespace Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses
         public void ConnectToRestrictedRemoteServer()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton, new Point(136, 7));
-            Assert.IsTrue(UIMap.MainStudioWindow.ComboboxListItemAsRestrictedRemoteConnection.Exists, "Restricted Remote Connection option does not exist in Source server combobox.");
+            Assert.IsTrue(UIMap.MainStudioWindow.ComboboxListItemAsRestrictedRemoteConnection.Text.Exists, "Restricted Remote Connection option does not exist in Source server combobox.");
             Mouse.Click(UIMap.MainStudioWindow.ComboboxListItemAsRestrictedRemoteConnection.Text, new Point(226, 13));
+            UIMap.WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner);
         }
 
         [When(@"I Connect To Restricted Remote Server")]

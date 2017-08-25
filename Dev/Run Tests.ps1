@@ -261,6 +261,9 @@ function Cleanup-ServerStudio([bool]$Force=$true) {
         Wait-Process "Warewolf Server" -Timeout $WaitForCloseTimeout  2>&1 | out-null
     }
     taskkill /im "Warewolf Server.exe" /f  2>&1 | out-null
+    taskkill /im "operadriver.exe" /f  2>&1 | out-null
+    taskkill /im "geckodriver.exe" /f  2>&1 | out-null
+    taskkill /im "IEDriverServer.exe" /f  2>&1 | out-null
 
     #Delete All Studio and Server Resources Except Logs
     $ToClean = "$env:LOCALAPPDATA\Warewolf\DebugData\PersistSettings.dat",
@@ -368,6 +371,7 @@ function Move-Artifacts-To-TestResults([bool]$DotCover, [bool]$Server, [bool]$St
     Write-Host Playlist file written to `"$OutPlaylistPath`".
     if ($Server) {
         Move-File-To-TestResults "$env:ProgramData\Warewolf\Server Log\wareWolf-Server.log" "$JobName Server.log"
+        Move-File-To-TestResults "$env:ProgramData\Warewolf\Server Log\my.warewolf.io.log" "$JobName my.warewolf.io Server.log"
     }
     if ($Studio) {
         Move-File-To-TestResults "$env:LocalAppData\Warewolf\Studio Logs\Warewolf Studio.log" "$JobName Studio.log"
@@ -400,6 +404,9 @@ function Move-Artifacts-To-TestResults([bool]$DotCover, [bool]$Server, [bool]$St
         }
         if (Test-Path "$env:ProgramData\Warewolf\Server Log\my.warewolf.io.log") {
             Move-File-To-TestResults "$env:ProgramData\Warewolf\Server Log\my.warewolf.io.log" "$JobName my.warewolf.io.log"
+        }
+        if (Test-Path "$env:ProgramData\Warewolf\Server Log\my.warewolf.io.errors.log") {
+            Move-File-To-TestResults "$env:ProgramData\Warewolf\Server Log\my.warewolf.io.errors.log" "$JobName my.warewolf.io Errors.log"
         }
     }
     if ($Studio -and $DotCover) {
@@ -602,7 +609,7 @@ function Start-my.warewolf.io {
         if (!(Test-Path $IISExpressPath)) {
             Write-Warning "my.warewolf.io cannot be hosted. $IISExpressPath not found."
         } else {
-            Start-Process -FilePath $IISExpressPath -ArgumentList "/path:`"$WebsPath`" /port:18405" -NoNewWindow -PassThru -RedirectStandardOutput "$env:programdata\Warewolf\Server Log\my.warewolf.io.log"
+            Start-Process -FilePath $IISExpressPath -ArgumentList "/path:`"$WebsPath`" /port:18405" -NoNewWindow -PassThru -RedirectStandardOutput "$env:programdata\Warewolf\Server Log\my.warewolf.io.log" -RedirectStandardError "$env:programdata\Warewolf\Server Log\my.warewolf.io.errors.log"
             Write-Host my.warewolf.io has started.
         }
     } else {
@@ -921,6 +928,8 @@ if ($TotalNumberOfJobsToRun -gt 0) {
                         $TestCategories = " /TestCaseFilter:`"(TestCategory!=$TestCategories)`""
                     }
                 }
+            } else {
+                $TestList = " /Tests:" + $TestList
             }
             if($RecordScreen.IsPresent) {
                 $TestSettings =  " /Settings:`"" + $TestSettingsFile + "`""
@@ -961,6 +970,9 @@ if ($TotalNumberOfJobsToRun -gt 0) {
                         $TestCategories = " /category:`"!$TestCategories`""
                     }
                 }
+            } else {
+                $TestNames = $TestList.Split(",") -join " /test:"
+                $TestList = " /test:" + $TestNames
             }
             $FullArgsList = $TestAssembliesList + " /resultsfile:`"" + $TestResultsFile + "`"" + $TestList + $TestSettings + $TestCategories
 

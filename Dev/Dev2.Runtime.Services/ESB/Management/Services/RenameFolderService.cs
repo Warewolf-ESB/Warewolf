@@ -66,12 +66,12 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                     throw new ArgumentException(string.Format(ErrorResource.ValueNotSupplied, "newPath"));
                 }
-                Dev2Logger.Info($"Reanme Folder. Path:{path} NewPath:{newPath}", "Warewolf Info");
+                Dev2Logger.Info($"Reanme Folder. Path:{path} NewPath:{newPath}", GlobalConstants.WarewolfInfo);
                 item = ServerExplorerRepository.Instance.RenameFolder(path.ToString(), newPath.ToString(), theWorkspace.ID);
             }
             catch(Exception e)
             {
-                Dev2Logger.Error(e, "Warewolf Error");
+                Dev2Logger.Error(e, GlobalConstants.WarewolfError);
                 item = new ExplorerRepositoryResult(ExecStatus.Fail, e.Message);
             }
             var serializer = new Dev2JsonSerializer();

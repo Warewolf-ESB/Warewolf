@@ -43,7 +43,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             try
             {
 
-                Dev2Logger.Info("Fetch Server Log Started", "Warewolf Info");
+                Dev2Logger.Info("Fetch Server Log Started", GlobalConstants.WarewolfInfo);
                 var result = new ExecuteMessage { HasError = false };
                 if (File.Exists(_serverLogPath))
                 {
@@ -61,7 +61,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch (Exception err)
             {
-                Dev2Logger.Error("Fetch Server Log Error", err, "Warewolf Error");
+                Dev2Logger.Error("Fetch Server Log Error", err, GlobalConstants.WarewolfError);
                 throw;
             }
         }

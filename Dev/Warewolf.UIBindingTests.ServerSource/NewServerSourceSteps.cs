@@ -43,6 +43,7 @@ namespace Warewolf.UIBindingTests.ServerSource
             FeatureContext.Current.Add("updateManager", mockStudioUpdateManager);
             FeatureContext.Current.Add("requestServiceNameViewModel", mockRequestServiceNameViewModel);
             FeatureContext.Current.Add("externalProcessExecutor", mockExecutor);
+            FeatureContext.Current.Add("manageServerSourceViewModel", manageServerSourceViewModel);
         }
 
         [BeforeScenario("ServerSource")]
@@ -52,6 +53,9 @@ namespace Warewolf.UIBindingTests.ServerSource
             ScenarioContext.Current.Add("updateManager", FeatureContext.Current.Get<Mock<IManageServerSourceModel>>("updateManager"));
             ScenarioContext.Current.Add("requestServiceNameViewModel", FeatureContext.Current.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel"));
             ScenarioContext.Current.Add("externalProcessExecutor", FeatureContext.Current.Get<Mock<IExternalProcessExecutor>>("externalProcessExecutor"));
+            var manageNewServerViewModel = FeatureContext.Current.Get<ManageNewServerViewModel>("manageServerSourceViewModel");
+            manageNewServerViewModel.HeaderText = "New Server Source";
+            manageNewServerViewModel.Header = "New Server Source";
         }
 
         [Given(@"I open New Server Source")]

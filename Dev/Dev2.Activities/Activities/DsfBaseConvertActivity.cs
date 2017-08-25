@@ -136,7 +136,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                     catch(Exception e)
                     {
-                        Dev2Logger.Error("DSFBaseConvert", e, "Warewolf Error");
+                        Dev2Logger.Error("DSFBaseConvert", e, GlobalConstants.WarewolfError);
                         allErrors.AddError(e.Message);
                         if(dataObject.IsDebugMode())
                         {
@@ -147,7 +147,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             catch(Exception e)
             {
-                Dev2Logger.Error("DSFBaseConvert", e, "Warewolf Error");
+                Dev2Logger.Error("DSFBaseConvert", e, GlobalConstants.WarewolfError);
                 allErrors.AddError(e.Message);
             }
             finally

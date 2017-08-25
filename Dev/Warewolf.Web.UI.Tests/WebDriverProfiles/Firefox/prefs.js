@@ -110,6 +110,7 @@ user_pref("sanity-test.driver-version", "10.0.14393.0");
 user_pref("sanity-test.running", false);
 user_pref("sanity-test.version", "20170814072924");
 user_pref("security.sandbox.content.tempDirSuffix", "{547ed795-ef36-441f-b727-31d00bcea31a}");
+user_pref("signon.autologin.proxy", true);
 user_pref("signon.importedFromSqlite", true);
 user_pref("storage.vacuum.last.index", 0);
 user_pref("storage.vacuum.last.places.sqlite", 1503475753);

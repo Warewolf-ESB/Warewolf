@@ -32,7 +32,7 @@ namespace Dev2.Runtime.Diagnostics
         protected void RaiseError(Exception ex)
         {
             RaiseError(ex.Message);
-            Dev2Logger.Info(ex.Message + " Stacktrace : " + ex.Message, "Warewolf Info");
+            Dev2Logger.Info(ex.Message + " Stacktrace : " + ex.Message, GlobalConstants.WarewolfInfo);
         }
 
         protected void RaiseError(string error)
@@ -40,7 +40,7 @@ namespace Dev2.Runtime.Diagnostics
             HasErrors = true;
             Error = error;
 
-            Dev2Logger.Info(error, "Warewolf Info");
+            Dev2Logger.Info(error, GlobalConstants.WarewolfInfo);
         }
     }
 }

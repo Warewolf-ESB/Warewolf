@@ -137,7 +137,7 @@ namespace Dev2.Data.Parsers
             }
             catch (Exception e)
             {
-                Dev2Logger.Error(e, "Warewolf Error");
+                Dev2Logger.Error(e, GlobalConstants.WarewolfError);
                 clearIfException.Clear();
                 throw;
             }

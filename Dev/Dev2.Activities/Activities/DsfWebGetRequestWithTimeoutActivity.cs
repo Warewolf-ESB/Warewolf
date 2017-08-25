@@ -184,7 +184,7 @@ namespace Dev2.Activities
             }
             catch (Exception e)
             {
-                Dev2Logger.Error("DSFWebGetRequest", e, "Warewolf Error");
+                Dev2Logger.Error("DSFWebGetRequest", e, GlobalConstants.WarewolfError);
                 allErrors.AddError(e.Message);
             }
             finally

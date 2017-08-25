@@ -159,6 +159,10 @@ namespace Warewolf.Web.UI.Tests
                 wait.Until(ExpectedConditions.InvisibilityOfElementLocated(By.Id("loader")));
                 return true;
             }
+            catch (InvalidOperationException)
+            {
+                return false;
+            }
             catch (InvalidElementStateException)
             {
                 return false;

@@ -40,7 +40,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
 
-            Dev2Logger.Info("Fetch Debug Item File Started", "Warewolf Info");
+            Dev2Logger.Info("Fetch Debug Item File Started", GlobalConstants.WarewolfInfo);
             try
             {
 
@@ -49,7 +49,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             if(values == null)
             {
-                Dev2Logger.Debug(ErrorResource.valuesAreMissing, "Warewolf Debug");
+                Dev2Logger.Debug(ErrorResource.valuesAreMissing, GlobalConstants.WarewolfDebug);
                 throw new InvalidDataContractException(ErrorResource.valuesAreMissing);
             }
 
@@ -57,7 +57,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             values.TryGetValue("DebugItemFilePath", out tmp);
             if(tmp == null || tmp.Length == 0)
             {
-                Dev2Logger.Debug("DebugItemFilePath is missing", "Warewolf Debug");
+                Dev2Logger.Debug("DebugItemFilePath is missing", GlobalConstants.WarewolfDebug);
                 throw new InvalidDataContractException(string.Format(ErrorResource.PropertyMusHaveAValue, "DebugItemFilePath "));
             }
 
@@ -65,7 +65,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             if(File.Exists(debugItemFilePath))
             {
-                Dev2Logger.Debug("DebugItemFilePath found", "Warewolf Debug");
+                Dev2Logger.Debug("DebugItemFilePath found", GlobalConstants.WarewolfDebug);
 
                 var lines = File.ReadLines(debugItemFilePath);
                 foreach(var line in lines)
@@ -76,12 +76,12 @@ namespace Dev2.Runtime.ESB.Management.Services
                 Dev2JsonSerializer serializer = new Dev2JsonSerializer();
                 return serializer.SerializeToBuilder(result);
             }
-            Dev2Logger.Debug("DebugItemFilePath not found, throwing an exception", "Warewolf Debug");
+            Dev2Logger.Debug("DebugItemFilePath not found, throwing an exception", GlobalConstants.WarewolfDebug);
             throw new InvalidDataContractException(string.Format(string.Format(ErrorResource.NotFound, debugItemFilePath)));
             }
             catch (Exception e)
             {
-                Dev2Logger.Error(e, "Warewolf Error");
+                Dev2Logger.Error(e, GlobalConstants.WarewolfError);
                 throw;
             }
 

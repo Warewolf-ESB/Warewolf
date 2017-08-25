@@ -46,7 +46,7 @@ namespace Dev2.Common
                     }
                     catch (Exception e)
                     {
-                        Dev2Logger.Info("ApplicationPath Error -> " + e.Message, "Warewolf Info");
+                        Dev2Logger.Info("ApplicationPath Error -> " + e.Message, GlobalConstants.WarewolfInfo);
                         _appPath = Directory.GetCurrentDirectory(); // fail safe ;)
                     }
 

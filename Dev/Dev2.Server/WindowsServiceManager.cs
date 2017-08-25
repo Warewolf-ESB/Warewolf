@@ -289,7 +289,7 @@ namespace Dev2
             }
             catch (Exception ex)
             {
-                Dev2Logger.Error(ex, "Warewolf Error");
+                Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
             }
 
             if (serviceExists)
@@ -321,7 +321,7 @@ namespace Dev2
             }
             catch (Exception ex)
             {
-                Dev2Logger.Error(ex, "Warewolf Error");
+                Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
             }
 
             if (serviceExists)

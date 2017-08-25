@@ -73,7 +73,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Download
             }
             catch (Exception e)
             {
-                Dev2Logger.Error(e.Message, e, "Warewolf Error");
+                Dev2Logger.Error(e.Message, e, GlobalConstants.WarewolfError);
                 Exception = new DropboxFailureResult(new Exception()).GetException();
                 return new List<string> { string.Empty };
             }

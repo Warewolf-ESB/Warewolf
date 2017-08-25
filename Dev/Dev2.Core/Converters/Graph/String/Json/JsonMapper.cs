@@ -83,7 +83,7 @@ namespace Unlimited.Framework.Converters.Graph.String.Json
                     }
                     catch (Exception ex)
                     {
-                        Dev2Logger.Error(ex, "Warewolf Error");
+                        Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
                         propertyData = null;
                     }
 
@@ -104,7 +104,7 @@ namespace Unlimited.Framework.Converters.Graph.String.Json
                     }
                     catch (Exception ex)
                     {
-                        Dev2Logger.Error(ex, "Warewolf Error");
+                        Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
                         propertyData = null;
                         //TODO When an exception is encountered stop discovery for this path and write to log
                     }

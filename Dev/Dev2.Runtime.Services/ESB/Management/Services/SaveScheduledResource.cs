@@ -61,7 +61,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
 
                     var res = serializer.Deserialize<IScheduledResource>(tmp);
-                    Dev2Logger.Info("Save Scheduled Resource. Scheduled Resource:" +res, "Warewolf Info");
+                    Dev2Logger.Info("Save Scheduled Resource. Scheduled Resource:" +res, GlobalConstants.WarewolfInfo);
                     using(var model = SchedulerFactory.CreateModel(GlobalConstants.SchedulerFolderId, SecurityWrapper))
                     {
                         StringBuilder userName;
@@ -95,7 +95,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch(Exception e)
             {
-                Dev2Logger.Error(e, "Warewolf Error");
+                Dev2Logger.Error(e, GlobalConstants.WarewolfError);
                 result.Message.Append($"Error while saving: {e.Message.Remove(e.Message.IndexOf('.'))}");
                 result.HasError = true;
             }

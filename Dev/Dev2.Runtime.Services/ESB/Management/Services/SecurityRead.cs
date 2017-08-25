@@ -54,7 +54,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         }
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            Dev2Logger.Debug("Start Security Read", "Warewolf Debug");
+            Dev2Logger.Debug("Start Security Read", GlobalConstants.WarewolfDebug);
             var serverSecuritySettingsFile = EnvironmentVariables.ServerSecuritySettingsFile;
             if(File.Exists(serverSecuritySettingsFile))
             {
@@ -66,11 +66,11 @@ namespace Dev2.Runtime.ESB.Management.Services
                         encryptedData = reader.ReadToEnd();
                     }
                 }
-                Dev2Logger.Debug("Security Data Read", "Warewolf Debug");
+                Dev2Logger.Debug("Security Data Read", GlobalConstants.WarewolfDebug);
                 try
                 {
                     var decryptData = SecurityEncryption.Decrypt(encryptedData);
-                    Dev2Logger.Debug(decryptData, "Warewolf Debug");
+                    Dev2Logger.Debug(decryptData, GlobalConstants.WarewolfDebug);
                     var currentSecuritySettingsTo = JsonConvert.DeserializeObject<SecuritySettingsTO>(decryptData);
                     if(currentSecuritySettingsTo.WindowsGroupPermissions.Any(a=>a.ResourceID!= Guid.Empty))
                     {
@@ -111,7 +111,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 }
                 catch(Exception e)
                 {
-                    Dev2Logger.Error("SecurityRead", e, "Warewolf Error");
+                    Dev2Logger.Error("SecurityRead", e, GlobalConstants.WarewolfError);
                 }
             }
 

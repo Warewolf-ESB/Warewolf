@@ -24,20 +24,26 @@ namespace Dev2.Settings.Logging
         public static LogLevel GetEnumFromDescription(string description)
         {
             var type = typeof(T);
-            if (!type.IsEnum) throw new InvalidOperationException();
+            if (!type.IsEnum)
+            {
+                throw new InvalidOperationException();
+            }
             foreach (var field in type.GetFields())
             {
-                var attribute = Attribute.GetCustomAttribute(field,
-                    typeof(DescriptionAttribute)) as DescriptionAttribute;
+                var attribute = Attribute.GetCustomAttribute(field, typeof(DescriptionAttribute)) as DescriptionAttribute;
                 if (attribute != null)
                 {
                     if (attribute.Description == description)
+                    {
                         return (LogLevel)field.GetValue(null);
+                    }
                 }
                 else
                 {
                     if (field.Name == description)
+                    {
                         return (LogLevel)field.GetValue(null);
+                    }
                 }
             }
             throw new Exception();
