@@ -921,6 +921,8 @@ if ($TotalNumberOfJobsToRun -gt 0) {
                         $TestCategories = " /TestCaseFilter:`"(TestCategory!=$TestCategories)`""
                     }
                 }
+            } else {
+                $TestList = " /Tests:" + $TestList
             }
             if($RecordScreen.IsPresent) {
                 $TestSettings =  " /Settings:`"" + $TestSettingsFile + "`""
@@ -961,6 +963,9 @@ if ($TotalNumberOfJobsToRun -gt 0) {
                         $TestCategories = " /category:`"!$TestCategories`""
                     }
                 }
+            } else {
+                $TestNames = $TestList.Split(",") -join " /test:"
+                $TestList = " /test:" + $TestNames
             }
             $FullArgsList = $TestAssembliesList + " /resultsfile:`"" + $TestResultsFile + "`"" + $TestList + $TestSettings + $TestCategories
 

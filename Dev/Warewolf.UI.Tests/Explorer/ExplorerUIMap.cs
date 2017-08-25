@@ -730,8 +730,9 @@ namespace Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses
         public void ConnectToRestrictedRemoteServer()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton, new Point(136, 7));
-            Assert.IsTrue(UIMap.MainStudioWindow.ComboboxListItemAsRestrictedRemoteConnection.Exists, "Restricted Remote Connection option does not exist in Source server combobox.");
+            Assert.IsTrue(UIMap.MainStudioWindow.ComboboxListItemAsRestrictedRemoteConnection.Text.Exists, "Restricted Remote Connection option does not exist in Source server combobox.");
             Mouse.Click(UIMap.MainStudioWindow.ComboboxListItemAsRestrictedRemoteConnection.Text, new Point(226, 13));
+            UIMap.WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner);
         }
 
         [When(@"I Connect To Restricted Remote Server")]
