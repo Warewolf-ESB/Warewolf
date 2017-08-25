@@ -3947,6 +3947,19 @@
                               <SupportLevel>0</SupportLevel>
                               <Descendants />
                             </UIObject>
+                            <UIObject ControlType="CheckBox" Id="PythonCheckBox" FriendlyName="UI_CheckBoxtestPython.py_AutoID" SpecialControlType="None">
+                              <TechnologyName>UIA</TechnologyName>
+                              <WindowTitles>
+                                <WindowTitle>Select File(s)</WindowTitle>
+                              </WindowTitles>
+                              <AndCondition>
+                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                <PropertyCondition Name="ControlType">CheckBox</PropertyCondition>
+                                <PropertyCondition Name="AutomationId">UI_CheckBoxtestPython.py_AutoID</PropertyCondition>
+                              </AndCondition>
+                              <SupportLevel>0</SupportLevel>
+                              <Descendants />
+                            </UIObject>
                           </Descendants>
                         </UIObject>
                         <UIObject ControlType="TreeItem" Id="attachment2" FriendlyName="" SpecialControlType="None">

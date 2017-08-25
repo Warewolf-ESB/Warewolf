@@ -48,7 +48,7 @@ namespace Warewolf.UIBindingTests.Deploy
 
             ScenarioContext.Current[destinationString] = dest;
             var stats = new DeployStatsViewerViewModel(dest);
-            var src = new DeploySourceExplorerViewModelForTesting(shell, GetMockAggegator(), GetStatsVm(dest)) { Children = new List<IExplorerItemViewModel> { CreateExplorerVms() } };
+            var src = new DeploySourceExplorerViewModelForTesting(shell, GetMockAggegator(), GetStatsVm(dest));
             ScenarioContext.Current["Src"] = src;
             var popupController = GetPopup().Object;
             var vm = new SingleExplorerDeployViewModel(dest, src, new List<IExplorerTreeItem>(), stats, shell, popupController,  new SynchronousAsyncWorker());
@@ -63,10 +63,7 @@ namespace Warewolf.UIBindingTests.Deploy
             var dest = new DeployDestinationViewModelForTesting(GetMockShellVm(false, destinationServerString), GetMockAggegator());
             ScenarioContext.Current[destinationString] = dest;
             var stats = new DeployStatsViewerViewModel(dest);
-            var src = new DeploySourceExplorerViewModelForTesting(shell, GetMockAggegator(), GetStatsVm(dest))
-            {
-                Children = new List<IExplorerItemViewModel> { CreateExplorerVms() }
-            };
+            var src = new DeploySourceExplorerViewModelForTesting(shell, GetMockAggegator(), GetStatsVm(dest));
             ScenarioContext.Current["Src"] = src;
             var vm = new SingleExplorerDeployViewModel(dest, src, new List<IExplorerTreeItem>(), stats, shell, GetPopup().Object);
             vm.Destination.SelectedEnvironment.Children = new ObservableCollection<IExplorerItemViewModel>();
@@ -230,29 +227,29 @@ namespace Warewolf.UIBindingTests.Deploy
             };
         }
 
-        static IExplorerItemViewModel CreateExplorerVms()
-        {
-            ExplorerItemViewModel ax = null;
-            var server = new Mock<IServer>();
-            server.SetupGet(server1 => server1.CanDeployFrom).Returns(true);
-            ax = new ExplorerItemViewModel(server.Object, null, a => { }, new Mock<IShellViewModel>().Object, new Mock<Dev2.Common.Interfaces.Studio.Controller.IPopupController>().Object)
-            {
-                ResourceName = "Examples",
-                Children = new ObservableCollection<IExplorerItemViewModel>
-                {
+        //static IExplorerItemViewModel CreateExplorerVms()
+        //{
+        //    ExplorerItemViewModel ax = null;
+        //    var server = new Mock<IServer>();
+        //    server.SetupGet(server1 => server1.CanDeployFrom).Returns(true);
+        //    ax = new ExplorerItemViewModel(server.Object, null, a => { }, new Mock<IShellViewModel>().Object, new Mock<Dev2.Common.Interfaces.Studio.Controller.IPopupController>().Object)
+        //    {
+        //        ResourceName = "Examples",
+        //        Children = new ObservableCollection<IExplorerItemViewModel>
+        //        {
                     
-                    new ExplorerItemViewModel(server.Object, ax, a => { }
-                    , new Mock<IShellViewModel>().Object
-                    , new Mock<Dev2.Common.Interfaces.Studio.Controller.IPopupController>().Object)
-                    {
-                        ResourceName = "Utility - Date and Time",
-                        ResourcePath = "Examples\\Utility - Date and Time",
-                        ResourceType = "WorkflowService"
-                    }
-                }
-            };
-            return ax;
-        }
+        //            new ExplorerItemViewModel(server.Object, ax, a => { }
+        //            , new Mock<IShellViewModel>().Object
+        //            , new Mock<Dev2.Common.Interfaces.Studio.Controller.IPopupController>().Object)
+        //            {
+        //                ResourceName = "Utility - Date and Time",
+        //                ResourcePath = "Examples\\Utility - Date and Time",
+        //                ResourceType = "WorkflowService"
+        //            }
+        //        }
+        //    };
+        //    return ax;
+        //}
 
         [Given(@"selected Source Server is ""(.*)""")]
         public void GivenSelectedSourceServerIs(string selectedSourceServer)
