@@ -69,7 +69,7 @@ namespace Warewolf.Web.UI.Tests
 
         public void GoToUrl()
         {
-            Navigate().GoToUrl(baseURL + "/ExecutionLogging/");
+            Navigate().GoToUrl(baseURL + "/ExecutionLogging");
         }
 
         public bool KillServerIfRunning()
@@ -114,7 +114,7 @@ namespace Warewolf.Web.UI.Tests
         {
             try
             {
-                WebDriverWait wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(5));
+                WebDriverWait wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(30));
                 wait.Until(ExpectedConditions.AlertIsPresent());
                 SwitchTo().Alert();
                 return true;

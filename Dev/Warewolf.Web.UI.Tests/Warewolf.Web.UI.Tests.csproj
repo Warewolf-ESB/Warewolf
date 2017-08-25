@@ -66,15 +66,15 @@
     <Compile Include="BrowserWebDrivers\FirefoxWebDriver.cs" />
     <Compile Include="BrowserWebDrivers\InternetExplorerWebDriver.cs" />
     <Compile Include="BrowserWebDrivers\OperaWebDriver.cs" />
-    <Compile Include="ExecutionLoggingTests\Chrome_ExecutionLogging_UITests.cs" />
+    <Compile Include="Web_UITests_For_Chome.cs" />
     <Compile Include="GlobalConstants.cs" />
     <Compile Include="ScreenRecording\FfMpegVideoRecorder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ScreenRecording\IVideoRecorder.cs" />
     <Compile Include="BrowserWebDrivers\BaseWebDriver.cs" />
-    <Compile Include="ExecutionLoggingTests\Firefox_ExecutionLogging_UITests.cs" />
-    <Compile Include="ExecutionLoggingTests\InternetExplorer_ExecutionLogging_UITests.cs" />
-    <Compile Include="ExecutionLoggingTests\Opera_ExecutionLogging_UITests.cs" />
+    <Compile Include="Web_UITests_For_Firefox.cs" />
+    <Compile Include="Web_UITests_For_IE.cs" />
+    <Compile Include="Web_UITests_For_Opera.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
