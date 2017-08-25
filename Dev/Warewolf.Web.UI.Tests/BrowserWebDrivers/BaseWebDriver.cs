@@ -1,5 +1,4 @@
 ﻿using OpenQA.Selenium;
-using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.ObjectModel;
@@ -27,7 +26,30 @@ namespace Warewolf.Web.UI.Tests
        
         public void Close()
         {
-            _driver.Close();
+            try
+            {
+                _driver.Close();
+            }
+            catch (Exception)
+            {
+                // Ignore errors if unable to close the browser
+            }
+            foreach (var process in Process.GetProcessesByName("opera"))
+            {
+                process.Kill();
+            }
+            foreach (var process in Process.GetProcessesByName("operadriver"))
+            {
+                process.Kill();
+            }
+            foreach (var process in Process.GetProcessesByName("ieserverdriver"))
+            {
+                process.Kill();
+            }
+            foreach (var process in Process.GetProcessesByName("geckodriver"))
+            {
+                process.Kill();
+            }
         }
 
         public void Quit()
@@ -47,7 +69,7 @@ namespace Warewolf.Web.UI.Tests
 
         public void GoToUrl()
         {
-            Navigate().GoToUrl(baseURL + "/ExecutionLogging/");
+            Navigate().GoToUrl(baseURL + "/ExecutionLogging");
         }
 
         public bool KillServerIfRunning()
@@ -57,7 +79,9 @@ namespace Warewolf.Web.UI.Tests
 
         public void CreateWebRequest()
         {
-            WebRequest.Create("http://localhost:3142/secure/Hello%20World.json?Name=Tester");
+            var request = WebRequest.Create("http://localhost:3142/secure/Hello%20World.json?Name=Tester");
+            request.Credentials = CredentialCache.DefaultCredentials;
+            request.GetResponse();
         }
 
         public ITargetLocator SwitchTo()
@@ -90,7 +114,7 @@ namespace Warewolf.Web.UI.Tests
         {
             try
             {
-                WebDriverWait wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(5));
+                WebDriverWait wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(30));
                 wait.Until(ExpectedConditions.AlertIsPresent());
                 SwitchTo().Alert();
                 return true;
@@ -170,14 +194,11 @@ namespace Warewolf.Web.UI.Tests
             string path = @"C:\Program Files\Opera";
             var operaPath = string.Empty;
 
-            string[] files = System.IO.Directory.GetFiles(path, "*.exe", System.IO.SearchOption.AllDirectories);
+            string[] files = System.IO.Directory.GetFiles(path, "*opera.exe", System.IO.SearchOption.AllDirectories);
             foreach (var file in files)
             {
-                if (file.EndsWith("opera.exe"))
-                {
-                    operaPath = file;
-                    break;
-                }
+                operaPath = file;
+                break;
             }
 
             return operaPath;

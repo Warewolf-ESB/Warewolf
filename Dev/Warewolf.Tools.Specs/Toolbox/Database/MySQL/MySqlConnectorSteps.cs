@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Linq.Expressions;
+using Dev2.Activities.Designers2.Core;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Studio.Interfaces;
 using Dev2.Threading;
@@ -75,7 +76,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.Resources.MySQL
             mockDatabaseInputViewModel.SetupAllProperties();
             mockDatabaseInputViewModel.Setup(model => model.OkSelected).Returns(true);
 
-            var mysqlDesignerViewModel = new MySqlDatabaseDesignerViewModel(modelItem, mockDbServiceModel.Object, new SynchronousAsyncWorker());
+            var mysqlDesignerViewModel = new MySqlDatabaseDesignerViewModel(modelItem, mockDbServiceModel.Object, new SynchronousAsyncWorker(), new ViewPropertyBuilder());
 
             ScenarioContext.Current.Add("mysqlActivity", mysqlActivity);
             ScenarioContext.Current.Add("viewModel", mysqlDesignerViewModel);
@@ -318,7 +319,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.Resources.MySQL
             
             mockDatabaseInputViewModel.Setup(model => model.OkSelected).Returns(true);
 
-            var mysqlDesignerViewModel = new MySqlDatabaseDesignerViewModel(modelItem, mockDbServiceModel.Object, new SynchronousAsyncWorker());
+            var mysqlDesignerViewModel = new MySqlDatabaseDesignerViewModel(modelItem, mockDbServiceModel.Object, new SynchronousAsyncWorker(), new ViewPropertyBuilder());
 
             var selectedSource = SetupSelectedSource(mysqlDesignerViewModel);            
 
