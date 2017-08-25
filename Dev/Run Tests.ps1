@@ -261,6 +261,9 @@ function Cleanup-ServerStudio([bool]$Force=$true) {
         Wait-Process "Warewolf Server" -Timeout $WaitForCloseTimeout  2>&1 | out-null
     }
     taskkill /im "Warewolf Server.exe" /f  2>&1 | out-null
+    taskkill /im "operadriver.exe" /f  2>&1 | out-null
+    taskkill /im "geckodriver.exe" /f  2>&1 | out-null
+    taskkill /im "IEDriverServer.exe" /f  2>&1 | out-null
 
     #Delete All Studio and Server Resources Except Logs
     $ToClean = "$env:LOCALAPPDATA\Warewolf\DebugData\PersistSettings.dat",
