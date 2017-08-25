@@ -24,33 +24,10 @@ namespace Dev2.Activities.Designers2.Web_Service_Put
             SetInitialFocus();
         }
 
-        #region Overrides of ActivityDesignerTemplate
-
         protected override IInputElement GetInitialFocusElement()
         {
             return MainGrid;
         }
-
-        #endregion
-        void RequestBody_OnSizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            var viewModel = DataContext as WebServicePutViewModel;
-
-            if (viewModel != null)
-            {
-                var dataContext = viewModel.InputArea;
-                if (dataContext.IsEnabled)
-                {
-                    //MinHeight = dataContext.MinHeight + 25;
-                    //MaxHeight += e.NewSize.Height;
-                    //Height = MinHeight;
-                }
-            }
-        }
-
-        private void AutoCompleteBox_OnTextChanged(object sender, RoutedEventArgs e)
-        {
-            System.Diagnostics.Debug.WriteLine("a");
-        }
+        
     }
 }
