@@ -131,7 +131,7 @@ namespace Dev2.Activities.Designers.Tests.Core
             Assert.IsTrue(inputview.OutputArea.IsEnabled);
             Assert.IsNotNull(inputview.OutputArea.Outputs);
             Assert.IsTrue(inputview.OutputArea.Outputs.Count>0);
-            Assert.AreEqual(3, webget.InputArea.Headers.Count);
+            Assert.AreEqual(2, webget.InputArea.Headers.Count);
         }
 
         [TestMethod]
