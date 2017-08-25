@@ -121,19 +121,25 @@ namespace Warewolf.UI.Tests.ServerSource
             {
                 File.Delete(ServerSourceDefinition);
             }
-            ExplorerUIMap.ConnectToRestrictedRemoteServer();
-            ExplorerUIMap.Click_NewServerButton_From_ExplorerConnectControl();
-            ServerSourceUIMap.Select_http_From_Server_Source_Wizard_Address_Protocol_Dropdown();
-            ServerSourceUIMap.Enter_TextIntoAddress_On_ServerSourceTab("localhost");
-            ServerSourceUIMap.Select_Server_Authentication_Public();
-            Assert.IsTrue(ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.NewServerSource.TestConnectionButton.Enabled, "Test Connection button not enabled");
-            ServerSourceUIMap.Click_Server_Source_Wizard_Test_Connection_Button();
-            Assert.IsTrue(UIMap.MainStudioWindow.SideMenuBar.SaveButton.Enabled, "Save ribbon button is not enabled after successfully testing new source.");
-            UIMap.Save_With_Ribbon_Button_And_Dialog(ServerSourceName);
-            if (File.Exists(ServerSourceDefinition))
+            try
             {
-                File.Delete(ServerSourceDefinition);
-                Assert.Fail("Created new server source on server without permission to do so.");
+                ExplorerUIMap.ConnectToRestrictedRemoteServer();
+                ExplorerUIMap.Click_NewServerButton_From_ExplorerConnectControl();
+                ServerSourceUIMap.Select_http_From_Server_Source_Wizard_Address_Protocol_Dropdown();
+                ServerSourceUIMap.Enter_TextIntoAddress_On_ServerSourceTab("localhost");
+                ServerSourceUIMap.Select_Server_Authentication_Public();
+                Assert.IsTrue(ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.NewServerSource.TestConnectionButton.Enabled, "Test Connection button not enabled");
+                ServerSourceUIMap.Click_Server_Source_Wizard_Test_Connection_Button();
+                Assert.IsTrue(UIMap.MainStudioWindow.SideMenuBar.SaveButton.Enabled, "Save ribbon button is not enabled after successfully testing new source.");
+                UIMap.Save_With_Ribbon_Button_And_Dialog(ServerSourceName);
+            }
+            finally
+            {
+                if (File.Exists(ServerSourceDefinition))
+                {
+                    File.Delete(ServerSourceDefinition);
+                    Assert.Fail("Created new server source on server without permission to do so.");
+                }
             }
         }
 
