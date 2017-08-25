@@ -44,7 +44,6 @@ namespace Dev2.Activities.Designers2.Script_Python
 
         public bool EscapeScript { get; private set; }
 
-
         public ICommand ChooseScriptSourceCommand { get; private set; }
 
         public string ScriptTypeDefaultText
@@ -54,7 +53,6 @@ namespace Dev2.Activities.Designers2.Script_Python
         }
 
         public static readonly DependencyProperty ScriptTypeTextProperty = DependencyProperty.Register("ScriptTypeDefaultText", typeof(string), typeof(PythonDesignerViewModel), new PropertyMetadata("Python Syntax"));
-
 
         public override void Validate()
         {
@@ -67,11 +65,11 @@ namespace Dev2.Activities.Designers2.Script_Python
         }
 
         public void ChooseScriptSources()
-        {            
+        {
             var fileChooserMessage = _scriptChooser.ChooseScriptSources(IncludeFile);
             fileChooserMessage.Filter = "py";
             _eventPublisher.Publish(fileChooserMessage);
+            IncludeFile = string.Join(";", fileChooserMessage.SelectedFiles);
         }
-
     }
 }
