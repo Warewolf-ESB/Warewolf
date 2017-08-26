@@ -23,3 +23,18 @@ Scenario: Changing Resource Permissions From Explorer Deploy Shows Changes
 	When I Select Remote Connection Integration From Explorer
 	And I Click Edit Server Button From Explorer Connect Control
 	And I Change Permissions For Resource "ResourceWithViewAndExecutePerm" and Validate
+
+Scenario: Changing Connected Server Source Auth And Reconnect
+	Given I Connect To Server With Changed Auth
+	When I Click Edit Server Button From Explorer Connect Control
+	Given Server Source Wizard Tab Test Button Is Enabled
+	And Server Source Wizard Tab Test Button Is Enabled
+	When I Click Server Source Wizard Test Connection Button For Valid Server Source
+	And I Click Save Ribbon Button
+	Then I Connect To Server With Changed Auth
+	When I Click Edit Server Button From Explorer Connect Control
+	And I Select Server Authentication Windows
+	Then Server Source Wizard Tab Test Button Is Enabled
+	When I Click Server Source Wizard Test Connection Button For Valid Server Source
+	And I Click Save Ribbon Button
+	Then I Connect To Server With Changed Auth

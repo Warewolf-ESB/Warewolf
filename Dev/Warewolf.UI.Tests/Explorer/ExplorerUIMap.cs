@@ -723,12 +723,14 @@ namespace Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses
             UIMap.WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner);
         }
 
-        [When(@"I Connect To Restricted Remote Server")]
-        public void ConnectToChangingServerAuthUITest()
+        [Given(@"I Connect To Server With Changed Auth")]
+        [Then(@"I Connect To Server With Changed Auth")]
+        public void ConnectToChangingServerAuth()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton, new Point(136, 7));
             Assert.IsTrue(UIMap.MainStudioWindow.ComboboxListItemAsChangingServerAuthUITest.Exists, "ChangingServerAuthUITest option does not exist in Source server combobox.");
             Mouse.Click(UIMap.MainStudioWindow.ComboboxListItemAsChangingServerAuthUITest.Text, new Point(226, 13));
+            Assert.IsFalse(UIMap.ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.SecondRemoteServer), "Server is duplicated in the explorer after changing auth.");
         }
 
         [When(@"I Select NewODBCSource From Explorer Context Menu")]

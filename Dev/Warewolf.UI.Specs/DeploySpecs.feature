@@ -16,7 +16,7 @@ Scenario: Deploy ViewOnlyWorkflow to remoteConnection
 	And I Select RemoteConnectionIntegration From Deploy Tab Destination Server Combobox
 	And I Select "DeployViewOnly" from the source tab 
 	Then Filtered Resourse Is Checked For Deploy
-	And I Click Deploy button
+	When I Click Deploy button
     
 Scenario: Deploy button is enabling when selecting resource in source side
 	 Given The Warewolf Studio is running
