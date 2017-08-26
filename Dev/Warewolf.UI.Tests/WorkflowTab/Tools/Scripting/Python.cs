@@ -1,6 +1,8 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.IO;
+using System.Threading;
 using Warewolf.UI.Tests.WorkflowTab.Tools.Scripting.ScriptingToolsUIMapClasses;
 using Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses;
 
@@ -65,12 +67,9 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Scripting
             }
             finally
             {
-                if (File.Exists(fileName))
+                if (File.Exists(fileName) && WaitForFile(fileName))
                 {
                     File.Delete(fileName);
-                }
-                if (Directory.Exists(Path.GetDirectoryName(fileName)))
-                {
                     Directory.Delete(Path.GetDirectoryName(fileName));
                 }
             }
@@ -87,7 +86,36 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Scripting
             UIMap.InitializeABlankWorkflow();
             WorkflowTabUIMap.Drag_Toolbox_Python_Onto_DesignSurface();
         }
-        
+
+        bool WaitForFile(string fullPath)
+        {
+            int numTries = 0;
+            while (true)
+            {
+                ++numTries;
+                try
+                {
+                    using (FileStream fs = new FileStream(fullPath,
+                        FileMode.Open, FileAccess.ReadWrite,
+                        FileShare.None, 100))
+                    {
+                        fs.ReadByte();
+                        break;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    if (numTries > 10)
+                    {
+                        return false;
+                    }
+                    Thread.Sleep(500);
+                }
+            }
+            
+            return true;
+        }
+
         UIMap UIMap
         {
             get
