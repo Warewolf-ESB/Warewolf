@@ -33,34 +33,46 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Scripting
         [TestCategory("Tools")]
         public void PytonScriptTool_LargeView_SelectFile_UITest()
         {
-            var path = @"C:\.Python";
             var fileName = @"C:\.Python\testPython.py";
-            if (!Directory.Exists(path))
+            if (!Directory.Exists(Path.GetDirectoryName(fileName)))
             {
-                Directory.CreateDirectory(path);
+                Directory.CreateDirectory(Path.GetDirectoryName(fileName));
             }
             if (!File.Exists(fileName))
             {
                 File.Create(fileName);
             }
-
-            Assert.IsTrue(ScriptingToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Python.Exists, "Python tool on the design surface does not exist");
-            //Small View
-            Assert.IsTrue(ScriptingToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Python.SmallView.ScriptIntellisenseCombobox.Exists, "Python script textbox does not exist after dragging on tool from the toolbox.");
-            Assert.IsTrue(ScriptingToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Python.SmallView.ResultIntellisenseCombobox.Exists, "Python result textbox does not exist after dragging on tool from the toolbox.");
-            //Large View
-            ScriptingToolsUIMap.Open_Python_LargeView();
-            ScriptingToolsUIMap.Click_Python_Attachment_Button();
-            ScriptingToolsUIMap.Select_Python_File();
-            Assert.IsNotNull(ScriptingToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Python.LargeView.AttachmentsIntellisenseCombobox.Textbox, "Python Include File is expecting to have a value");
-
-            if (File.Exists(fileName))
+            string[] ProblemDirs = { @"C:\$SysReset", @"C:\$Windows.~BT", @"C:\$Windows.~WS" };
+            foreach (var dir in ProblemDirs)
             {
-                File.Delete(fileName);
+                if (Directory.Exists(dir))
+                {
+                    Directory.Delete(dir, true);
+                }
             }
-            if (Directory.Exists(path))
+
+            try
             {
-                Directory.Delete(path);
+                Assert.IsTrue(ScriptingToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Python.Exists, "Python tool on the design surface does not exist");
+                //Small View
+                Assert.IsTrue(ScriptingToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Python.SmallView.ScriptIntellisenseCombobox.Exists, "Python script textbox does not exist after dragging on tool from the toolbox.");
+                Assert.IsTrue(ScriptingToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Python.SmallView.ResultIntellisenseCombobox.Exists, "Python result textbox does not exist after dragging on tool from the toolbox.");
+                //Large View
+                ScriptingToolsUIMap.Open_Python_LargeView();
+                ScriptingToolsUIMap.Click_Python_Attachment_Button();
+                ScriptingToolsUIMap.Select_Python_File();
+                Assert.IsNotNull(ScriptingToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Python.LargeView.AttachmentsIntellisenseCombobox.Textbox, "Python Include File is expecting to have a value");
+            }
+            finally
+            {
+                if (File.Exists(fileName))
+                {
+                    File.Delete(fileName);
+                }
+                if (Directory.Exists(Path.GetDirectoryName(fileName)))
+                {
+                    Directory.Delete(Path.GetDirectoryName(fileName));
+                }
             }
         }
 
