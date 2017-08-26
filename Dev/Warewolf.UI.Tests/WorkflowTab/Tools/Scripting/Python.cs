@@ -35,6 +35,17 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Scripting
         [TestCategory("Tools")]
         public void PytonScriptTool_LargeView_SelectFile_UITest()
         {
+            foreach (var dir in Directory.GetDirectories(@"C:\", ".*"))
+            {
+                Directory.Delete(dir, true);
+            }
+            foreach (var dir in Directory.GetDirectories(@"C:\", "$*"))
+            {
+                if (dir != @"C:\$Recycle.Bin")
+                {
+                    Directory.Delete(dir, true);
+                }
+            }
             var fileName = @"C:\.Python\testPython.py";
             if (!Directory.Exists(Path.GetDirectoryName(fileName)))
             {
@@ -42,15 +53,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Scripting
             }
             if (!File.Exists(fileName))
             {
-                File.Create(fileName);
-            }
-            string[] ProblemDirs = { @"C:\$SysReset", @"C:\$Windows.~BT", @"C:\$Windows.~WS" };
-            foreach (var dir in ProblemDirs)
-            {
-                if (Directory.Exists(dir))
-                {
-                    Directory.Delete(dir, true);
-                }
+                File.Create(fileName).Close();
             }
 
             try
