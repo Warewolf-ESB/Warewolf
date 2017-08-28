@@ -6,8 +6,8 @@ namespace Warewolf.Web.UI.Tests.BrowserWebDrivers
 {
     public class FirefoxWebDriver : BaseWebDriver
     {
-        static FirefoxProfile firefoxProfile = new FirefoxProfile(Path.Combine(Environment.CurrentDirectory, "WebDriverProfiles", "Firefox"));
-        public FirefoxWebDriver() : base(new FirefoxDriver(new FirefoxBinary(), firefoxProfile, TimeSpan.FromSeconds(180)))
+        static FirefoxOptions firefoxOptions = new FirefoxOptions() { Profile = new FirefoxProfile(Path.Combine(Environment.CurrentDirectory, "WebDriverProfiles", "Firefox")) };
+        public FirefoxWebDriver() : base(new FirefoxDriver(FirefoxDriverService.CreateDefaultService(@"C:\Windows"), firefoxOptions, TimeSpan.FromMinutes(3)))
         {
             
         }
