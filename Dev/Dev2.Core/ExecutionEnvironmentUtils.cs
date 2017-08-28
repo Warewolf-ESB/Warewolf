@@ -24,11 +24,12 @@ namespace Dev2
     {
         public static string GetXmlOutputFromEnvironment(IDSFDataObject dataObject, string dataList, int update)
         {
-            var xml = JsonConvert.DeserializeXNode(GetJsonForEnvironmentWithColumnIODirection(dataObject, dataList, enDev2ColumnArgumentDirection.Output, update), "DataList", true);
+            var jsonOutput = GetJsonForEnvironmentWithColumnIoDirection(dataObject, dataList, enDev2ColumnArgumentDirection.Output, update);
+            var xml = JsonConvert.DeserializeXNode(jsonOutput, "DataList", true);
             return xml.ToString();
         }
 
-        private static string GetJsonForEnvironmentWithColumnIODirection(IDSFDataObject dataObject, string dataList, enDev2ColumnArgumentDirection requestIODirection, int update)
+        private static string GetJsonForEnvironmentWithColumnIoDirection(IDSFDataObject dataObject, string dataList, enDev2ColumnArgumentDirection requestIODirection, int update)
         {
             var environment = dataObject.Environment;
             var fixedDataList = dataList.Replace(GlobalConstants.SerializableResourceQuote, "\"").Replace(GlobalConstants.SerializableResourceSingleQuote, "\'");
@@ -77,7 +78,7 @@ namespace Dev2
                 var dataListString = outputObj.ToString(Newtonsoft.Json.Formatting.Indented);
                 return dataListString;
             }
-            return null;
+            return "{}";
         }
 
         private static void AddObjectsToOutput(IExecutionEnvironment environment, string objName, JObject outputObj)
@@ -155,7 +156,7 @@ namespace Dev2
 
         public static string GetJsonOutputFromEnvironment(IDSFDataObject dataObject, string dataList, int update)
         {
-            return GetJsonForEnvironmentWithColumnIODirection(dataObject, dataList, enDev2ColumnArgumentDirection.Output, update);
+            return GetJsonForEnvironmentWithColumnIoDirection(dataObject, dataList, enDev2ColumnArgumentDirection.Output, update);
         }
 
     
@@ -375,7 +376,7 @@ namespace Dev2
         }
         public static string GetXmlInputFromEnvironment(IDSFDataObject dataObject, string dataList, int update)
         {
-            var xml = JsonConvert.DeserializeXNode(GetJsonForEnvironmentWithColumnIODirection(dataObject, dataList, enDev2ColumnArgumentDirection.Input, update), "DataList", true);
+            var xml = JsonConvert.DeserializeXNode(GetJsonForEnvironmentWithColumnIoDirection(dataObject, dataList, enDev2ColumnArgumentDirection.Input, update), "DataList", true);
             return xml.ToString();
         }
 
