@@ -96,6 +96,7 @@ user_pref("media.gmp-widevinecdm.lastUpdate", 1503475817);
 user_pref("media.gmp-widevinecdm.version", "1.4.8.903");
 user_pref("media.gmp.storage.version.observed", 1);
 user_pref("media.hardware-video-decoding.failed", false);
+user_pref("network.automatic-ntlm-auth.trusted-uris", "http://localhost:3142");
 user_pref("network.cookie.prefsMigrated", true);
 user_pref("pdfjs.migrationVersion", 2);
 user_pref("pdfjs.previousHandler.alwaysAskBeforeHandling", true);
