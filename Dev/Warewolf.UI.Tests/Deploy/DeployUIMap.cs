@@ -327,7 +327,7 @@ namespace Warewolf.UI.Tests.Deploy.DeployUIMapClasses
             Enter_DeployViewOnly_Into_Deploy_Source_Filter(ServiceName);
         }
         
-        [Given(@"I Click Deploy button")]
+        [When(@"I Click Deploy button")]
         public void ThenIClickDeployButton()
         {
             Click_Deploy_Tab_Deploy_Button();
