@@ -114,12 +114,14 @@ namespace Warewolf.UI.Tests.ServerSource.ServerSourceUIMapClasses
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.PasswordTextBox.Text = password;
         }
 
+        [When("I Select Server Authentication Public")]
         public void Select_Server_Authentication_Public()
         {
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.PublicRadioButton.Selected = true;
         }
 
-        internal void Select_Server_Authentication_Windows()
+        [When("I Select Server Authentication Windows")]
+        public void Select_Server_Authentication_Windows()
         {
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.WindowsRadioButton.Selected = true;
         }
@@ -139,6 +141,14 @@ namespace Warewolf.UI.Tests.ServerSource.ServerSourceUIMapClasses
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.NewServerSource.TestConnectionButton, new Point(51, 8));
             UIMap.WaitForSpinner(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.NewServerSource.Spinner);
+            Assert.IsTrue(UIMap.MainStudioWindow.SideMenuBar.SaveButton.Enabled, "Save ribbon button is not enabled after successfully testing new source.");
+        }
+
+        [When(@"I Click Server Source Wizard Test Connection Button For Valid Server Source")]
+        public void Click_Server_Source_Wizard_Test_Connection_Button_For_Valid_Server_Source()
+        {
+            Click_Server_Source_Wizard_Test_Connection_Button();
+            Assert.IsTrue(UIMap.MainStudioWindow.SideMenuBar.SaveButton.Enabled, "Save ribbon button is not enabled after successfully testing new source.");
         }
 
         [Given(@"I Create Remote Server Source As ""(.*)"" with address ""(.*)""")]
@@ -168,13 +178,18 @@ namespace Warewolf.UI.Tests.ServerSource.ServerSourceUIMapClasses
             UIMap.Save_With_Ribbon_Button_And_Dialog(ServerSourceName);
             Click_Close_Server_Source_Wizard_Tab_Button();
         }
-
-        [Given(@"I Click Close Server Source Wizard Tab Button")]
+        
         [When(@"I Click Close Server Source Wizard Tab Button")]
-        [Then(@"I Click Close Server Source Wizard Tab Button")]
         public void Click_Close_Server_Source_Wizard_Tab_Button()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.CloseButton, new Point(5, 5));
+        }
+
+        [Given(@"Server Source Wizard Tab Test Button Is Enabled")]
+        [Then(@"Server Source Wizard Tab Test Button Is Enabled")]
+        public void TestConnectionButtonIsEnabled()
+        {
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.NewServerSource.TestConnectionButton.Enabled, "Test Connection button not enabled");
         }
 
         public UIMap UIMap

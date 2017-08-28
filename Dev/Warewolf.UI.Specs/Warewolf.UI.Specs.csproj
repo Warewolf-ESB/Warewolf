@@ -127,7 +127,7 @@
     </None>
     <None Include="DeploySecuritySpecs.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>DeploySecuritySpecs.cs</LastGenOutput>
+      <LastGenOutput>DeploySecuritySpecs.feature.cs</LastGenOutput>
     </None>
     <None Include="DeploySpecs.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
