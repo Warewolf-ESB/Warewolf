@@ -41,8 +41,9 @@ namespace Warewolf.Web.UI.Tests.ExecutionLoggingTests
         [DeploymentItem(@"swresample-2.dll")]
         [DeploymentItem(@"swscale-4.dll")]
         [DeploymentItem(@"avcodec-57.dll")]
-        [TestCategory("ExecutionLogging")]
+        [DeploymentItem(@"chromedriver.exe")]
         [DeploymentItem(@"WebDriverProfiles", @"WebDriverProfiles")]
+        [TestCategory("ExecutionLogging")]
         public void Chrome_ExecutionLogging_ClickRefresh_UITest()
         {
             //Generate some test log data
@@ -64,8 +65,9 @@ namespace Warewolf.Web.UI.Tests.ExecutionLoggingTests
         [DeploymentItem(@"swresample-2.dll")]
         [DeploymentItem(@"swscale-4.dll")]
         [DeploymentItem(@"avcodec-57.dll")]
-        [TestCategory("NoWarewolfServer")]
+        [DeploymentItem(@"chromedriver.exe")]
         [DeploymentItem(@"WebDriverProfiles", @"WebDriverProfiles")]
+        [TestCategory("NoWarewolfServer")]
         public void Chrome_NoWarewolfServer_ClickRefresh_UITest()
         {
             Assert.IsTrue(driver.KillServerIfRunning(), GlobalConstants.LocalWarewolfServerExpectedDownError);

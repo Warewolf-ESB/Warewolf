@@ -531,10 +531,8 @@ namespace Warewolf.UI.Tests
             WaitForControlVisible(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab);
             Assert.IsTrue(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.StartNode.Exists, "Start Node Does Not Exist after clicking new workflow ribbon button.");
         }
-
-        [Given(@"I Click Save Ribbon Button")]
+        
         [When(@"I Click Save Ribbon Button")]
-        [Then(@"I Click Save Ribbon Button")]
         public void Click_Save_RibbonButton()
         {
             Mouse.Click(MainStudioWindow.SideMenuBar.SaveButton);
@@ -837,9 +835,7 @@ namespace Warewolf.UI.Tests
         {
             Mouse.Click(MainStudioWindow.DesignSurfaceContextMenu.ShowLargeView, new Point(43, 15));
         }
-
-        [Then(@"I Click Create Test From Debug")]
-        [Given(@"I Click Create Test From Debug")]
+        
         [When(@"I Click Create Test From Debug")]
         public void Click_Create_Test_From_Debug()
         {
@@ -847,11 +843,6 @@ namespace Warewolf.UI.Tests
             WaitForControlEnabled(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.CreateTestFromDebugButton, CreateTestButtonEnabledTimeout);
             Assert.IsTrue(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.CreateTestFromDebugButton.Enabled, "Debug Output New Test button not enabled after waiting for " + CreateTestButtonEnabledTimeout + "ms.");
             Mouse.Click(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.CreateTestFromDebugButton, new Point(5, 5));
-        }
-
-        public void Save_Button_IsEnabled()
-        {
-            MainStudioWindow.SideMenuBar.SaveButton.EnsureClickable();
         }
 
         [Then(@"Hello World Workflow Tab Is Open")]

@@ -1,6 +1,8 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.IO;
+using System.Threading;
 using Warewolf.UI.Tests.WorkflowTab.Tools.Scripting.ScriptingToolsUIMapClasses;
 using Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses;
 
@@ -33,34 +35,46 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Scripting
         [TestCategory("Tools")]
         public void PytonScriptTool_LargeView_SelectFile_UITest()
         {
-            var path = @"C:\.Python";
-            var fileName = @"C:\.Python\testPython.py";
-            if (!Directory.Exists(path))
+            foreach (var dir in Directory.GetDirectories(@"C:\", ".*"))
             {
-                Directory.CreateDirectory(path);
+                Directory.Delete(dir, true);
+            }
+            foreach (var dir in Directory.GetDirectories(@"C:\", "$*"))
+            {
+                if (dir != @"C:\$Recycle.Bin")
+                {
+                    Directory.Delete(dir, true);
+                }
+            }
+            var fileName = @"C:\.Python\testPython.py";
+            if (!Directory.Exists(Path.GetDirectoryName(fileName)))
+            {
+                Directory.CreateDirectory(Path.GetDirectoryName(fileName));
             }
             if (!File.Exists(fileName))
             {
-                File.Create(fileName);
+                File.Create(fileName).Close();
             }
 
-            Assert.IsTrue(ScriptingToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Python.Exists, "Python tool on the design surface does not exist");
-            //Small View
-            Assert.IsTrue(ScriptingToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Python.SmallView.ScriptIntellisenseCombobox.Exists, "Python script textbox does not exist after dragging on tool from the toolbox.");
-            Assert.IsTrue(ScriptingToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Python.SmallView.ResultIntellisenseCombobox.Exists, "Python result textbox does not exist after dragging on tool from the toolbox.");
-            //Large View
-            ScriptingToolsUIMap.Open_Python_LargeView();
-            ScriptingToolsUIMap.Click_Python_Attachment_Button();
-            ScriptingToolsUIMap.Select_Python_File();
-            Assert.IsNotNull(ScriptingToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Python.LargeView.AttachmentsIntellisenseCombobox.Textbox, "Python Include File is expecting to have a value");
-
-            if (File.Exists(fileName))
+            try
             {
-                File.Delete(fileName);
+                Assert.IsTrue(ScriptingToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Python.Exists, "Python tool on the design surface does not exist");
+                //Small View
+                Assert.IsTrue(ScriptingToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Python.SmallView.ScriptIntellisenseCombobox.Exists, "Python script textbox does not exist after dragging on tool from the toolbox.");
+                Assert.IsTrue(ScriptingToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Python.SmallView.ResultIntellisenseCombobox.Exists, "Python result textbox does not exist after dragging on tool from the toolbox.");
+                //Large View
+                ScriptingToolsUIMap.Open_Python_LargeView();
+                ScriptingToolsUIMap.Click_Python_Attachment_Button();
+                ScriptingToolsUIMap.Select_Python_File();
+                Assert.IsNotNull(ScriptingToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Python.LargeView.AttachmentsIntellisenseCombobox.Textbox, "Python Include File is expecting to have a value");
             }
-            if (Directory.Exists(path))
+            finally
             {
-                Directory.Delete(path);
+                if (File.Exists(fileName) && WaitForFile(fileName))
+                {
+                    File.Delete(fileName);
+                    Directory.Delete(Path.GetDirectoryName(fileName));
+                }
             }
         }
 
@@ -75,7 +89,36 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Scripting
             UIMap.InitializeABlankWorkflow();
             WorkflowTabUIMap.Drag_Toolbox_Python_Onto_DesignSurface();
         }
-        
+
+        bool WaitForFile(string fullPath)
+        {
+            int numTries = 0;
+            while (true)
+            {
+                ++numTries;
+                try
+                {
+                    using (FileStream fs = new FileStream(fullPath,
+                        FileMode.Open, FileAccess.ReadWrite,
+                        FileShare.None, 100))
+                    {
+                        fs.ReadByte();
+                        break;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    if (numTries > 10)
+                    {
+                        return false;
+                    }
+                    Thread.Sleep(500);
+                }
+            }
+            
+            return true;
+        }
+
         UIMap UIMap
         {
             get
