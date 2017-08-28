@@ -40,8 +40,8 @@ namespace Warewolf.Studio.ViewModels
         private bool _isDuplicate;
         private bool _fixReferences;
         MessageBoxResult ViewResult { get; set; }
+        private IServerRepository _serverRepository;
 
-        
         public RequestServiceNameViewModel()
         {
         }
@@ -62,10 +62,11 @@ namespace Warewolf.Studio.ViewModels
             Name = header;
             IsDuplicate = explorerItemViewModel != null;
 
-            if (ServerRepository.Instance.ActiveServer == null)
+            _serverRepository = CustomContainer.Get<IServerRepository>();
+            if (_serverRepository.ActiveServer == null)
             {
                 var shellViewModel = CustomContainer.Get<IShellViewModel>();
-                ServerRepository.Instance.ActiveServer = shellViewModel?.ActiveServer;
+                _serverRepository.ActiveServer = shellViewModel?.ActiveServer;
             }
 
             return this;
@@ -86,7 +87,7 @@ namespace Warewolf.Studio.ViewModels
             return true;
         }
 
-        readonly IEnvironmentConnection _lazyCon = ServerRepository.Instance.ActiveServer?.Connection;
+        readonly IEnvironmentConnection _lazyCon = CustomContainer.Get<IServerRepository>()?.ActiveServer?.Connection ?? ServerRepository.Instance.ActiveServer?.Connection;
         ICommunicationController _lazyComs = new CommunicationController { ServiceName = "DuplicateResourceService" };
 
         private void CallDuplicateService()
@@ -111,7 +112,7 @@ namespace Warewolf.Studio.ViewModels
                 _lazyComs.AddPayloadArgument("sourcePath", _explorerItemViewModel.ResourcePath);
                 _lazyComs.AddPayloadArgument("destinationPath", Path);
 
-                var executeCommand = _lazyComs.ExecuteCommand<ResourceCatalogDuplicateResult>(_lazyCon ?? ServerRepository.Instance.ActiveServer?.Connection, GlobalConstants.ServerWorkspaceID);
+                var executeCommand = _lazyComs.ExecuteCommand<ResourceCatalogDuplicateResult>(_lazyCon ?? _serverRepository.ActiveServer?.Connection, GlobalConstants.ServerWorkspaceID);
                 if (executeCommand == null)
                 {
                     var environmentViewModel = SingleEnvironmentExplorerViewModel.Environments.FirstOrDefault();
@@ -174,7 +175,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 return _fixReferences;
             }
-            
+
             set
             {
                 _fixReferences = value;
@@ -295,7 +296,7 @@ namespace Warewolf.Studio.ViewModels
                 return _treeItem;
             }
 
-            
+
             set
             {
                 _treeItem = value;

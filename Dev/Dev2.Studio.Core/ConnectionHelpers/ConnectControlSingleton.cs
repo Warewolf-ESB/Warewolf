@@ -28,12 +28,16 @@ namespace Dev2.ConnectionHelpers
         public const string NewServerText = "New Remote Server...";
         public event EventHandler<ConnectionStatusChangedEventArg> ConnectedStatusChanged;
         public event EventHandler<ConnectedServerChangedEvent> ConnectedServerChanged;
-        public event EventHandler<ConnectedServerChangedEvent> AfterReload; 
-        public static IConnectControlSingleton Instance => _instance ?? (_instance = new ConnectControlSingleton(ServerProvider.Instance,
-            ServerRepository.Instance));
+        public event EventHandler<ConnectedServerChangedEvent> AfterReload;
+        public static IConnectControlSingleton Instance
+        {
+            get
+            {
+                return _instance ?? (_instance = new ConnectControlSingleton(ServerProvider.Instance, CustomContainer.Get<IServerRepository>()));
+            }
+        }
 
-        public ConnectControlSingleton(IEnvironmentModelProvider serverProvider,
-                                         IServerRepository serverRepository)
+        public ConnectControlSingleton(IEnvironmentModelProvider serverProvider, IServerRepository serverRepository)
         {
             VerifyArgument.IsNotNull("serverProvider", serverProvider);
             VerifyArgument.IsNotNull("environmentRepository", serverRepository);
@@ -49,16 +53,16 @@ namespace Dev2.ConnectionHelpers
         {
             var index = Servers.IndexOf(Servers.FirstOrDefault(s => s.Server.EnvironmentID == environmentId));
 
-            if(index != -1)
+            if (index != -1)
             {
                 var selectedServer = Servers[index];
-                if(selectedServer.IsConnected)
+                if (selectedServer.IsConnected)
                 {
                     Disconnect(selectedServer.Server);
                 }
 
 
-                if(ConnectedServerChanged != null)
+                if (ConnectedServerChanged != null)
                 {
                     var localhost = Servers.FirstOrDefault(s => s.Server.IsLocalHost);
                     Guid localhostId = localhost?.Server.EnvironmentID ?? Guid.Empty;
@@ -93,10 +97,10 @@ namespace Dev2.ConnectionHelpers
         public void Refresh(Guid environmentId)
         {
             var selectedEnvironment = Servers.FirstOrDefault(s => s.Server.EnvironmentID == environmentId);
-            if(selectedEnvironment != null)
+            if (selectedEnvironment != null)
             {
                 var index = Servers.IndexOf(selectedEnvironment);
-                if(index != -1)
+                if (index != -1)
                 {
                     Connect(selectedEnvironment);
                 }
@@ -105,13 +109,13 @@ namespace Dev2.ConnectionHelpers
 
         public void ToggleConnection(int selectedIndex)
         {
-            if(selectedIndex != -1 && selectedIndex <= Servers.Count)
+            if (selectedIndex != -1 && selectedIndex <= Servers.Count)
             {
                 var selectedServer = Servers[selectedIndex];
-                if(selectedServer != null)
+                if (selectedServer != null)
                 {
                     var environment = selectedServer.Server;
-                    if(selectedServer.IsConnected)
+                    if (selectedServer.IsConnected)
                     {
                         Disconnect(environment);
                     }
@@ -128,7 +132,7 @@ namespace Dev2.ConnectionHelpers
             var connectControlEnvironment = Servers.FirstOrDefault(s => s.Server.EnvironmentID == environmentId);
             var index = Servers.IndexOf(connectControlEnvironment);
 
-            if(index != -1)
+            if (index != -1)
             {
                 ToggleConnection(index);
             }
@@ -181,7 +185,7 @@ namespace Dev2.ConnectionHelpers
             Servers.Clear();
             Servers.Add(CreateNewRemoteServerEnvironment());
             var servers = _serverProvider.Load();
-            foreach(var server in servers)
+            foreach (var server in servers)
             {
                 Servers.Add(new ConnectControlEnvironment
                 {
