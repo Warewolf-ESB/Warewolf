@@ -18,12 +18,12 @@ namespace Dev2.Tests
         public void ExecutionEnvironmentUtils_GetSwaggerOutputForService_NullServiceName_ExpectedException()
         {
             //------------Setup for test--------------------------
-            
+
             //------------Execute Test---------------------------
             ExecutionEnvironmentUtils.GetSwaggerOutputForService(null, "", "");
             //------------Assert Results-------------------------
         }
-        
+
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("ExecutionEnvironmentUtils_GetSwaggerOutputForService")]
@@ -31,12 +31,12 @@ namespace Dev2.Tests
         public void ExecutionEnvironmentUtils_GetSwaggerOutputForService_EmptyDataList_ExpectedException()
         {
             //------------Setup for test--------------------------
-            
+
             //------------Execute Test---------------------------
             ExecutionEnvironmentUtils.GetSwaggerOutputForService(new Mock<IResource>().Object, "", "");
             //------------Assert Results-------------------------
         }
-        
+
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("ExecutionEnvironmentUtils_GetSwaggerOutputForService")]
@@ -44,7 +44,7 @@ namespace Dev2.Tests
         public void ExecutionEnvironmentUtils_GetSwaggerOutputForService_NullDataList_ExpectedException()
         {
             //------------Setup for test--------------------------
-            
+
             //------------Execute Test---------------------------
             ExecutionEnvironmentUtils.GetSwaggerOutputForService(new Mock<IResource>().Object, null, "");
             //------------Assert Results-------------------------
@@ -67,7 +67,7 @@ namespace Dev2.Tests
             //------------Execute Test---------------------------
             var swaggerOutputForService = ExecutionEnvironmentUtils.GetSwaggerOutputForService(mockResource.Object, "<DataList></DataList>", "http://serverName:3142/public/resourceName.api").Replace(Environment.NewLine, "").Replace(" ", "");
             //------------Assert Results-------------------------
-            StringAssert.Contains(swaggerOutputForService,expectedSwaggerVersion);
+            StringAssert.Contains(swaggerOutputForService, expectedSwaggerVersion);
             StringAssert.Contains(swaggerOutputForService, expectedEmptyParameters);
             StringAssert.Contains(swaggerOutputForService, expectedEmptyResponse);
             StringAssert.Contains(swaggerOutputForService, "\"schemes\":[\"http\"]");
@@ -86,17 +86,17 @@ namespace Dev2.Tests
             const string expectedSwaggerVersion = "\"swagger\":2";
             const string expectedParameters = "\"parameters\":[" +
                                                         "{" +
-                                                            "\"name\":\"Name\","+
-                                                            "\"in\":\"query\","+
-                                                            "\"required\":true,"+
-                                                            "\"type\":\"string\""+
+                                                            "\"name\":\"Name\"," +
+                                                            "\"in\":\"query\"," +
+                                                            "\"required\":true," +
+                                                            "\"type\":\"string\"" +
                                                    "}]";
             const string expectedEmptyResponse = "\"200\":{\"schema\":{\"$ref\":\"#/definition/Output\"}}";
 
             //------------Execute Test---------------------------
             var swaggerOutputForService = ExecutionEnvironmentUtils.GetSwaggerOutputForService(mockResource.Object, "<DataList><Name Description=\"\" IsEditable=\"True\" ColumnIODirection=\"Input\" /></DataList>", "https://serverName:3142/public/resourceName.api").Replace(Environment.NewLine, "").Replace(" ", "");
             //------------Assert Results-------------------------
-            StringAssert.Contains(swaggerOutputForService,expectedSwaggerVersion);
+            StringAssert.Contains(swaggerOutputForService, expectedSwaggerVersion);
             StringAssert.Contains(swaggerOutputForService, expectedParameters);
             StringAssert.Contains(swaggerOutputForService, expectedEmptyResponse);
             StringAssert.Contains(swaggerOutputForService, "\"schemes\":[\"https\"]");
@@ -115,17 +115,17 @@ namespace Dev2.Tests
             const string expectedSwaggerVersion = "\"swagger\":2";
             const string expectedParameters = "\"parameters\":[" +
                                                         "{" +
-                                                            "\"name\":\"DataList\","+
-                                                            "\"in\":\"query\","+
-                                                            "\"required\":true,"+
-                                                            "\"schema\":{\"$ref\":\"#/definitions/DataList\"}"+
+                                                            "\"name\":\"DataList\"," +
+                                                            "\"in\":\"query\"," +
+                                                            "\"required\":true," +
+                                                            "\"schema\":{\"$ref\":\"#/definitions/DataList\"}" +
                                                    "}]";
             const string expectedEmptyResponse = "\"200\":{\"schema\":{\"$ref\":\"#/definition/Output\"}}";
             const string expectedDataListDefinition = "\"DataList\":{\"type\":\"object\",\"properties\":{\"rc\":{\"type\":\"object\",\"properties\":{\"test\":{\"type\":\"string\"}}";
             //------------Execute Test---------------------------
             var swaggerOutputForService = ExecutionEnvironmentUtils.GetSwaggerOutputForService(mockResource.Object, "<DataList> <rc Description=\"\" IsEditable=\"True\" ColumnIODirection=\"Input\"><test Description=\"\" IsEditable=\"True\" ColumnIODirection=\"Input\" /></rc></DataList>", "http://serverName:3142/public/resourceName.api").Replace(Environment.NewLine, "").Replace(" ", "");
             //------------Assert Results-------------------------
-            StringAssert.Contains(swaggerOutputForService,expectedSwaggerVersion);
+            StringAssert.Contains(swaggerOutputForService, expectedSwaggerVersion);
             StringAssert.Contains(swaggerOutputForService, expectedParameters);
             StringAssert.Contains(swaggerOutputForService, expectedEmptyResponse);
             StringAssert.Contains(swaggerOutputForService, expectedDataListDefinition);
@@ -145,17 +145,17 @@ namespace Dev2.Tests
             const string expectedSwaggerVersion = "\"swagger\":2";
             const string expectedParameters = "\"parameters\":[" +
                                                         "{" +
-                                                            "\"name\":\"DataList\","+
-                                                            "\"in\":\"query\","+
-                                                            "\"required\":true,"+
-                                                            "\"schema\":{\"$ref\":\"#/definitions/DataList\"}"+
+                                                            "\"name\":\"DataList\"," +
+                                                            "\"in\":\"query\"," +
+                                                            "\"required\":true," +
+                                                            "\"schema\":{\"$ref\":\"#/definitions/DataList\"}" +
                                                    "}]";
             const string expectedEmptyResponse = "\"200\":{\"schema\":{\"$ref\":\"#/definition/Output\"}}";
             const string expectedDataListDefinition = "\"DataList\":{\"type\":\"object\",\"properties\":{\"Name\":{\"type\":\"string\"},\"rc\":{\"type\":\"object\",\"properties\":{\"test\":{\"type\":\"string\"}}";
             //------------Execute Test---------------------------
             var swaggerOutputForService = ExecutionEnvironmentUtils.GetSwaggerOutputForService(mockResource.Object, "<DataList><Name Description=\"\" IsEditable=\"True\" ColumnIODirection=\"Input\" /> <rc Description=\"\" IsEditable=\"True\" ColumnIODirection=\"Input\"><test Description=\"\" IsEditable=\"True\" ColumnIODirection=\"Input\" /></rc></DataList>", "https://serverName:3142/public/resourceName.api").Replace(Environment.NewLine, "").Replace(" ", "");
             //------------Assert Results-------------------------
-            StringAssert.Contains(swaggerOutputForService,expectedSwaggerVersion);
+            StringAssert.Contains(swaggerOutputForService, expectedSwaggerVersion);
             StringAssert.Contains(swaggerOutputForService, expectedParameters);
             StringAssert.Contains(swaggerOutputForService, expectedEmptyResponse);
             StringAssert.Contains(swaggerOutputForService, expectedDataListDefinition);
@@ -175,17 +175,17 @@ namespace Dev2.Tests
                                     "<a Description=\"\" IsEditable=\"True\" ColumnIODirection=\"Output\" />" +
                                     "</rec>" +
                                     "</DataList>";
-            dataObj.Environment.Assign("[[rec().a]]","1",0);
-            dataObj.Environment.Assign("[[rec().a]]","2",0);
+            dataObj.Environment.Assign("[[rec().a]]", "1", 0);
+            dataObj.Environment.Assign("[[rec().a]]", "2", 0);
             //------------Execute Test---------------------------
             var actual = ExecutionEnvironmentUtils.GetXmlOutputFromEnvironment(dataObj, dataList, 0);
             //------------Assert Results-------------------------
-            StringAssert.Contains(actual,"<DataList>");
-            StringAssert.Contains(actual,"<rec>");
-            StringAssert.Contains(actual,"<a>1</a>");
-            StringAssert.Contains(actual,"<a>2</a>");
-            StringAssert.Contains(actual,"</rec>");
-            StringAssert.Contains(actual,"</DataList>");
+            StringAssert.Contains(actual, "<DataList>");
+            StringAssert.Contains(actual, "<rec>");
+            StringAssert.Contains(actual, "<a>1</a>");
+            StringAssert.Contains(actual, "<a>2</a>");
+            StringAssert.Contains(actual, "</rec>");
+            StringAssert.Contains(actual, "</DataList>");
         }
 
         [TestMethod]
@@ -205,22 +205,22 @@ namespace Dev2.Tests
                                     "<c Description=\"\" IsEditable=\"True\" ColumnIODirection=\"Input\" />" +
                                     "</rec>" +
                                     "</DataList>";
-            dataObj.Environment.Assign("[[rec().a]]","1",0);
-            dataObj.Environment.Assign("[[rec().b]]","2",0);
-            dataObj.Environment.Assign("[[rec().c]]","3",0);
-            dataObj.Environment.Assign("[[Name]]","Bob",0);
-            dataObj.Environment.Assign("[[Surname]]","Mary",0);
-            dataObj.Environment.Assign("[[FullName]]","Bob Mary",0);
+            dataObj.Environment.Assign("[[rec().a]]", "1", 0);
+            dataObj.Environment.Assign("[[rec().b]]", "2", 0);
+            dataObj.Environment.Assign("[[rec().c]]", "3", 0);
+            dataObj.Environment.Assign("[[Name]]", "Bob", 0);
+            dataObj.Environment.Assign("[[Surname]]", "Mary", 0);
+            dataObj.Environment.Assign("[[FullName]]", "Bob Mary", 0);
             //------------Execute Test---------------------------
             var actual = ExecutionEnvironmentUtils.GetXmlOutputFromEnvironment(dataObj, dataList, 0);
             //------------Assert Results-------------------------
-            StringAssert.Contains(actual,"<DataList>");
-            StringAssert.Contains(actual,"<rec>");
-            StringAssert.Contains(actual,"<a>1</a>");
-            StringAssert.Contains(actual,"<a></a>");
-            StringAssert.Contains(actual,"</rec>");
-            StringAssert.Contains(actual,"</DataList>");
-            StringAssert.Contains(actual,"<FullName>Bob Mary</FullName>");
+            StringAssert.Contains(actual, "<DataList>");
+            StringAssert.Contains(actual, "<rec>");
+            StringAssert.Contains(actual, "<a>1</a>");
+            StringAssert.Contains(actual, "<a></a>");
+            StringAssert.Contains(actual, "</rec>");
+            StringAssert.Contains(actual, "</DataList>");
+            StringAssert.Contains(actual, "<FullName>Bob Mary</FullName>");
             Assert.IsFalse(actual.Contains("<Name>Bob</Name>"));
             Assert.IsFalse(actual.Contains("<Surname>Mary</Surname>"));
             Assert.IsFalse(actual.Contains("<b>2</b>"));
@@ -244,24 +244,52 @@ namespace Dev2.Tests
                                     "<c Description=\"\" IsEditable=\"True\" ColumnIODirection=\"Input\" />" +
                                     "</rec>" +
                                     "</DataList>";
-            dataObj.Environment.Assign("[[rec().a]]","1",0);
-            dataObj.Environment.Assign("[[rec().b]]","2",0);
-            dataObj.Environment.Assign("[[rec().c]]","3",0);
-            dataObj.Environment.Assign("[[Name]]","Bob",0);
-            dataObj.Environment.Assign("[[Surname]]","Mary",0);
-            dataObj.Environment.Assign("[[FullName]]","Bob Mary",0);
+            dataObj.Environment.Assign("[[rec().a]]", "1", 0);
+            dataObj.Environment.Assign("[[rec().b]]", "2", 0);
+            dataObj.Environment.Assign("[[rec().c]]", "3", 0);
+            dataObj.Environment.Assign("[[Name]]", "Bob", 0);
+            dataObj.Environment.Assign("[[Surname]]", "Mary", 0);
+            dataObj.Environment.Assign("[[FullName]]", "Bob Mary", 0);
             //------------Execute Test---------------------------
             var actual = ExecutionEnvironmentUtils.GetJsonOutputFromEnvironment(dataObj, dataList, 0);
             //------------Assert Results-------------------------
-            StringAssert.Contains(actual,"rec");
-            StringAssert.Contains(actual,"\"a\": \"1\"");
-            StringAssert.Contains(actual,"\"a\": \"\"");
-            StringAssert.Contains(actual,"\"a\": \"\"");
-            StringAssert.Contains(actual,"\"FullName\": \"Bob Mary\"");
+            StringAssert.Contains(actual, "rec");
+            StringAssert.Contains(actual, "\"a\": \"1\"");
+            StringAssert.Contains(actual, "\"a\": \"\"");
+            StringAssert.Contains(actual, "\"a\": \"\"");
+            StringAssert.Contains(actual, "\"FullName\": \"Bob Mary\"");
             Assert.IsFalse(actual.Contains("\"Name\": \"Bob\""));
             Assert.IsFalse(actual.Contains("\"Surname\": \"Mary\""));
             Assert.IsFalse(actual.Contains("\"b\": \"2\""));
             Assert.IsFalse(actual.Contains("\"c\": \"3\""));
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("ExecutionEnvironmentUtils_GetJsonForEnvironmentWithColumnIoDirection")]
+        public void ExecutionEnvironmentUtils_GetJsonForEnvironmentWithColumnIoDirection_WhenEmptyDataList_ShouldReturnEmptyJson()
+        {
+            //------------Setup for test--------------------------
+            var dataObj = new DsfDataObject(string.Empty, Guid.NewGuid());
+            const string dataList = "<DataList></DataList>";
+            //------------Execute Test---------------------------
+            var outPutJson = ExecutionEnvironmentUtils.GetJsonOutputFromEnvironment(dataObj, dataList, 0);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("{}", outPutJson);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("ExecutionEnvironmentUtils_GetXmlOutputFromEnvironment")]
+        public void ExecutionEnvironmentUtils_GetXmlOutputFromEnvironment_WhenEmptyDataList_ShouldReturnEmptyXml()
+        {
+            //------------Setup for test--------------------------
+            var dataObj = new DsfDataObject(string.Empty, Guid.NewGuid());
+            const string dataList = "<DataList></DataList>";
+            //------------Execute Test---------------------------
+            var outPutJson = ExecutionEnvironmentUtils.GetXmlOutputFromEnvironment(dataObj, dataList, 0);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("<DataList />", outPutJson);
         }
     }
 }
