@@ -121,41 +121,26 @@ namespace Warewolf.UI.Tests.ServerSource
             {
                 File.Delete(ServerSourceDefinition);
             }
-            ExplorerUIMap.ConnectToRestrictedRemoteServer();
-            ExplorerUIMap.Click_NewServerButton_From_ExplorerConnectControl();
-            ServerSourceUIMap.Select_http_From_Server_Source_Wizard_Address_Protocol_Dropdown();
-            ServerSourceUIMap.Enter_TextIntoAddress_On_ServerSourceTab("localhost");
-            Assert.IsTrue(ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.NewServerSource.TestConnectionButton.Enabled, "Test Connection button not enabled");
-            ServerSourceUIMap.Click_Server_Source_Wizard_Test_Connection_Button();
-            Assert.IsTrue(UIMap.MainStudioWindow.SideMenuBar.SaveButton.Enabled, "Save ribbon button is not enabled after successfully testing new source.");
-            UIMap.Save_With_Ribbon_Button_And_Dialog(ServerSourceName);
-            if (File.Exists(ServerSourceDefinition))
+            try
             {
-                File.Delete(ServerSourceDefinition);
-                Assert.Fail("Created new server source on server without permission to do so.");
+                ExplorerUIMap.ConnectToRestrictedRemoteServer();
+                ExplorerUIMap.Click_NewServerButton_From_ExplorerConnectControl();
+                ServerSourceUIMap.Select_http_From_Server_Source_Wizard_Address_Protocol_Dropdown();
+                ServerSourceUIMap.Enter_TextIntoAddress_On_ServerSourceTab("localhost");
+                ServerSourceUIMap.Select_Server_Authentication_Public();
+                Assert.IsTrue(ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.NewServerSource.TestConnectionButton.Enabled, "Test Connection button not enabled");
+                ServerSourceUIMap.Click_Server_Source_Wizard_Test_Connection_Button();
+                Assert.IsTrue(UIMap.MainStudioWindow.SideMenuBar.SaveButton.Enabled, "Save ribbon button is not enabled after successfully testing new source.");
+                UIMap.Save_With_Ribbon_Button_And_Dialog(ServerSourceName);
             }
-        }
-
-        [TestMethod]
-        [TestCategory("Server Sources")]
-        public void Try_Change_A_Connected_Server_Source_Auth_And_Reconnect()
-        {
-            ExplorerUIMap.ConnectToChangingServerAuthUITest();
-            ExplorerUIMap.Click_EditServerButton_From_ExplorerConnectControl();
-            ServerSourceUIMap.Select_Server_Authentication_Public();
-            Assert.IsTrue(ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.NewServerSource.TestConnectionButton.Enabled, "Test Connection button not enabled");
-            ServerSourceUIMap.Click_Server_Source_Wizard_Test_Connection_Button();
-            Assert.IsTrue(UIMap.MainStudioWindow.SideMenuBar.SaveButton.Enabled, "Save ribbon button is not enabled after successfully testing new source.");
-            UIMap.Click_Save_RibbonButton();
-            ExplorerUIMap.ConnectToChangingServerAuthUITest();
-            ExplorerUIMap.Click_EditServerButton_From_ExplorerConnectControl();
-            ServerSourceUIMap.Select_Server_Authentication_Windows();
-            Assert.IsTrue(ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.NewServerSource.TestConnectionButton.Enabled, "Test Connection button not enabled");
-            ServerSourceUIMap.Click_Server_Source_Wizard_Test_Connection_Button();
-            Assert.IsTrue(UIMap.MainStudioWindow.SideMenuBar.SaveButton.Enabled, "Save ribbon button is not enabled after successfully testing new source.");
-            UIMap.Click_Save_RibbonButton();
-            ExplorerUIMap.ConnectToChangingServerAuthUITest();
-            Assert.IsFalse(UIMap.ControlExistsNow(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.SecondRemoteServer), "Server is duplicated in the explorer after changing auth.");
+            finally
+            {
+                if (File.Exists(ServerSourceDefinition))
+                {
+                    File.Delete(ServerSourceDefinition);
+                    Assert.Fail("Created new server source on server without permission to do so.");
+                }
+            }
         }
 
         [TestMethod]
@@ -166,9 +151,9 @@ namespace Warewolf.UI.Tests.ServerSource
             //Create Source
             ExplorerUIMap.Select_NewServerSource_From_ExplorerContextMenu();
             ServerSourceUIMap.Enter_TextIntoAddress_On_ServerSourceTab("tst-ci-remote");
+            Playback.Wait(500);
             Mouse.Click(UIMap.MainStudioWindow.CloseStudioButton);
-            DialogsUIMap.Click_MessageBox_Yes();
-            DialogsUIMap.Click_MessageBox_Yes();
+            DialogsUIMap.Click_MessageBox_Cancel();
             Assert.IsTrue(ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.Exists);
         }
 

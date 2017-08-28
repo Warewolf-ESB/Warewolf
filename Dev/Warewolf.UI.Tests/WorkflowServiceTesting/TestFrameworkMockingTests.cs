@@ -132,7 +132,7 @@ namespace Warewolf.UI.Tests.WorkflowServiceTesting
             UIMap.Click_New_Workflow_Tab();
             UIMap.Click_Create_Test_From_Debug();
             DialogsUIMap.Click_MessageBox_OK();
-            UIMap.Save_Button_IsEnabled();
+            Assert.IsTrue(UIMap.MainStudioWindow.SideMenuBar.SaveButton.Enabled, "Save button is not enabled after creating two new unsaved tests.");
         }
 
         [TestMethod]
