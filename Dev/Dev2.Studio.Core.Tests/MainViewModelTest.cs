@@ -2792,6 +2792,7 @@ namespace Dev2.Core.Tests
         {
             var eventPublisher = new Mock<IEventAggregator>();
             var environmentRepository = new Mock<IServerRepository>();
+            CustomContainer.Register(environmentRepository.Object);
             var environmentModel = new Mock<IServer>().Object;
             environmentRepository.Setup(repo => repo.Source).Returns(environmentModel);
 
@@ -2847,6 +2848,7 @@ namespace Dev2.Core.Tests
 
             var eventPublisher = new Mock<IEventAggregator>();
             var environmentRepository = new Mock<IServerRepository>();
+            CustomContainer.Register(environmentRepository.Object);
             var connected1 = new Mock<IServer>();
             var connected2 = new Mock<IServer>();
             var notConnected = new Mock<IServer>();
@@ -2897,7 +2899,7 @@ namespace Dev2.Core.Tests
 
             var eventPublisher = new Mock<IEventAggregator>();
             var environmentRepository = new Mock<IServerRepository>();
-
+            CustomContainer.Register(environmentRepository.Object);
             var environmentModel = new Mock<IServer>();
             var environmentConnection = new Mock<IEnvironmentConnection>().Object;
             environmentModel.SetupGet(a => a.Connection).Returns(environmentConnection);
@@ -2957,6 +2959,7 @@ namespace Dev2.Core.Tests
             var eventPublisher = new Mock<IEventAggregator>();
             var environmentRepository = new Mock<IServerRepository>();
             environmentRepository.Setup(repo => repo.Source).Returns(new Mock<IServer>().Object);
+            CustomContainer.Register(environmentRepository.Object);
             var versionChecker = new Mock<IVersionChecker>();
             var asyncWorker = new Mock<IAsyncWorker>();
             asyncWorker.Setup(w => w.Start(It.IsAny<System.Action>(), It.IsAny<System.Action>())).Verifiable();
@@ -3003,6 +3006,7 @@ namespace Dev2.Core.Tests
             var eventPublisher = new Mock<IEventAggregator>();
             var environmentRepository = new Mock<IServerRepository>();
             environmentRepository.Setup(repo => repo.Source).Returns(new Mock<IServer>().Object);
+            CustomContainer.Register(environmentRepository.Object);
             var versionChecker = new Mock<IVersionChecker>();
             var asyncWorker = new Mock<IAsyncWorker>();
             asyncWorker.Setup(w => w.Start(It.IsAny<System.Action>(), It.IsAny<System.Action>())).Verifiable();
@@ -3050,7 +3054,7 @@ namespace Dev2.Core.Tests
 
             var eventPublisher = new Mock<IEventAggregator>();
             var environmentRepository = new Mock<IServerRepository>();
-
+            CustomContainer.Register(environmentRepository.Object);
             var environmentModel = new Mock<IServer>();
             var environmentConnection = new Mock<IEnvironmentConnection>().Object;
             environmentModel.SetupGet(a => a.Connection).Returns(environmentConnection);
@@ -3147,7 +3151,7 @@ namespace Dev2.Core.Tests
             var popup = new Mock<Common.Interfaces.Studio.Controller.IPopupController>();
             popup.Setup(a => a.Show(StringResources.Unsaved_Changes, StringResources.CloseHeader,
                                MessageBoxButton.YesNoCancel, MessageBoxImage.Information, @"", false, false, true, false, false, false)).Returns(MessageBoxResult.Cancel).Verifiable();
-
+            CustomContainer.Register(environmentRepository.Object);
             mvm = new ShellViewModel(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, versionChecker.Object, vieFactory.Object, false, null, popup.Object);
             CreateFullExportsAndVm();
         }
@@ -3167,16 +3171,17 @@ namespace Dev2.Core.Tests
             resourceModelMock.SetupGet(model => model.Environment.EnvironmentID).Returns(Guid.NewGuid);
             resourceModelMock.SetupGet(model => model.ID).Returns(Guid.NewGuid);
             resourceModelMock.SetupGet(model => model.ServerID).Returns(Guid.NewGuid);
-            var worksurfaceContextManager = new WorksurfaceContextManager(false, ShellViewModel, new Mock<IServerRepository>().Object, new Mock<IViewFactory>().Object);
+            var newMockServer = new Mock<IServerRepository>();
+            newMockServer.Setup(repository => repository.ActiveServer).Returns(environmentModel.Object);
+            CustomContainer.DeRegister<IServerRepository>();
+            CustomContainer.Register(newMockServer.Object);
+            var worksurfaceContextManager = new WorksurfaceContextManager(false, ShellViewModel, newMockServer.Object, new Mock<IViewFactory>().Object);
 
             ActiveEnvironment.Setup(model => model.Name).Returns("localhost");
             //---------------Execute Test ----------------------
             worksurfaceContextManager.DisplayResourceWizard(resourceModelMock.Object);
 
-            var newMockServer = new Mock<IServerRepository>();
-            newMockServer.Setup(repository => repository.ActiveServer).Returns(environmentModel.Object);
-            CustomContainer.DeRegister<IServerRepository>();
-            CustomContainer.Register(newMockServer.Object);
+           
             var activetx = ShellViewModel.Items.ToList().First(i => i.WorkSurfaceViewModel.GetType().Name == "SourceViewModel`1");
 
             var vm = new WorkSurfaceContextViewModel(new EventAggregator(), new WorkSurfaceKey(), activetx.WorkSurfaceViewModel, new Mock<Common.Interfaces.Studio.Controller.IPopupController>().Object, (a, b, c) => { });
@@ -3202,13 +3207,15 @@ namespace Dev2.Core.Tests
             resourceModelMock.SetupGet(model => model.Environment.EnvironmentID).Returns(Guid.NewGuid);
             resourceModelMock.SetupGet(model => model.ID).Returns(Guid.NewGuid);
             resourceModelMock.SetupGet(model => model.ServerID).Returns(Guid.NewGuid);
-            var worksurfaceContextManager = new WorksurfaceContextManager(false, ShellViewModel, new Mock<IServerRepository>().Object, new Mock<IViewFactory>().Object);
+            var mock = new Mock<IServerRepository>();
+            mock.Setup(repository => repository.ActiveServer).Returns(environmentModel.Object);
+            CustomContainer.Register(mock.Object);
+            var worksurfaceContextManager = new WorksurfaceContextManager(false, ShellViewModel, mock.Object, new Mock<IViewFactory>().Object);
 
             ActiveEnvironment.Setup(model => model.Name).Returns("localhost");
             //---------------Execute Test ----------------------
             worksurfaceContextManager.DisplayResourceWizard(resourceModelMock.Object);
 
-            ServerRepository.Instance.ActiveServer = environmentModel.Object;
             var activetx = ShellViewModel.Items.ToList().First(i => i.WorkSurfaceViewModel.GetType().Name == "SourceViewModel`1");
 
             var vm = new WorkSurfaceContextViewModel(new EventAggregator(), new WorkSurfaceKey(), activetx.WorkSurfaceViewModel, new Mock<Common.Interfaces.Studio.Controller.IPopupController>().Object, (a, b, c) => { });
@@ -3233,13 +3240,17 @@ namespace Dev2.Core.Tests
             resourceModelMock.SetupGet(model => model.Environment.EnvironmentID).Returns(Guid.NewGuid);
             resourceModelMock.SetupGet(model => model.ID).Returns(Guid.NewGuid);
             resourceModelMock.SetupGet(model => model.ServerID).Returns(Guid.NewGuid);
-            var worksurfaceContextManager = new WorksurfaceContextManager(false, ShellViewModel, new Mock<IServerRepository>().Object, new Mock<IViewFactory>().Object);
+
+            var mock = new Mock<IServerRepository>();
+            mock.Setup(repository => repository.ActiveServer).Returns(environmentModel.Object);
+            mock.Setup(repository => repository.All()).Returns(new List<IServer>() {environmentModel.Object});
+            CustomContainer.Register(mock.Object);
+            var worksurfaceContextManager = new WorksurfaceContextManager(false, ShellViewModel, mock.Object, new Mock<IViewFactory>().Object);
 
             ActiveEnvironment.Setup(model => model.Name).Returns("localhost");
             //---------------Execute Test ----------------------
             worksurfaceContextManager.DisplayResourceWizard(resourceModelMock.Object);
 
-            ServerRepository.Instance.ActiveServer = environmentModel.Object;
             var activetx = ShellViewModel.Items.ToList().First(i => i.WorkSurfaceViewModel.GetType().Name == "SourceViewModel`1");
 
             var vm = new WorkSurfaceContextViewModel(new EventAggregator(), new WorkSurfaceKey(), activetx.WorkSurfaceViewModel, new Mock<Common.Interfaces.Studio.Controller.IPopupController>().Object, (a, b, c) => { });
@@ -3295,13 +3306,15 @@ namespace Dev2.Core.Tests
             resourceModelMock.SetupGet(model => model.Environment.EnvironmentID).Returns(Guid.NewGuid);
             resourceModelMock.SetupGet(model => model.ID).Returns(Guid.NewGuid);
             resourceModelMock.SetupGet(model => model.ServerID).Returns(Guid.NewGuid);
-            var worksurfaceContextManager = new WorksurfaceContextManager(false, ShellViewModel, new Mock<IServerRepository>().Object, new Mock<IViewFactory>().Object);
+            var mock = new Mock<IServerRepository>();
+            mock.Setup(repository => repository.ActiveServer).Returns(environmentModel.Object);
+            CustomContainer.Register(mock.Object);
+            var worksurfaceContextManager = new WorksurfaceContextManager(false, ShellViewModel, mock.Object, new Mock<IViewFactory>().Object);
 
             ActiveEnvironment.Setup(model => model.Name).Returns("localhost");
             //---------------Execute Test ----------------------
             worksurfaceContextManager.DisplayResourceWizard(resourceModelMock.Object);
 
-            ServerRepository.Instance.ActiveServer = environmentModel.Object;
             var activetx = ShellViewModel.Items.ToList().First(i => i.WorkSurfaceViewModel.GetType().Name == "SourceViewModel`1");
 
             var vm = new WorkSurfaceContextViewModel(new EventAggregator(), new WorkSurfaceKey(), activetx.WorkSurfaceViewModel, new Mock<Common.Interfaces.Studio.Controller.IPopupController>().Object, (a, b, c) => { });
@@ -3326,13 +3339,15 @@ namespace Dev2.Core.Tests
             resourceModelMock.SetupGet(model => model.Environment.EnvironmentID).Returns(Guid.NewGuid);
             resourceModelMock.SetupGet(model => model.ID).Returns(Guid.NewGuid);
             resourceModelMock.SetupGet(model => model.ServerID).Returns(Guid.NewGuid);
-            var worksurfaceContextManager = new WorksurfaceContextManager(false, ShellViewModel, new Mock<IServerRepository>().Object, new Mock<IViewFactory>().Object);
+            var mock = new Mock<IServerRepository>();
+            mock.Setup(repository => repository.ActiveServer).Returns(environmentModel.Object);
+            CustomContainer.Register(mock.Object);
+            var worksurfaceContextManager = new WorksurfaceContextManager(false, ShellViewModel, mock.Object, new Mock<IViewFactory>().Object);
 
             ActiveEnvironment.Setup(model => model.Name).Returns("localhost");
             //---------------Execute Test ----------------------
             worksurfaceContextManager.DisplayResourceWizard(resourceModelMock.Object);
-
-            ServerRepository.Instance.ActiveServer = environmentModel.Object;
+          
             var activetx = ShellViewModel.Items.ToList().First(i => i.WorkSurfaceViewModel.GetType().Name == "SourceViewModel`1");
 
             var vm = new WorkSurfaceContextViewModel(new EventAggregator(), new WorkSurfaceKey(), activetx.WorkSurfaceViewModel, new Mock<Common.Interfaces.Studio.Controller.IPopupController>().Object, (a, b, c) => { });
@@ -3357,13 +3372,16 @@ namespace Dev2.Core.Tests
             resourceModelMock.SetupGet(model => model.Environment.EnvironmentID).Returns(Guid.NewGuid);
             resourceModelMock.SetupGet(model => model.ID).Returns(Guid.NewGuid);
             resourceModelMock.SetupGet(model => model.ServerID).Returns(Guid.NewGuid);
-            var worksurfaceContextManager = new WorksurfaceContextManager(false, ShellViewModel, new Mock<IServerRepository>().Object, new Mock<IViewFactory>().Object);
+            var mock = new Mock<IServerRepository>();
+            mock.Setup(repository => repository.ActiveServer).Returns(environmentModel.Object);
+            CustomContainer.DeRegister<IServerRepository>();
+            CustomContainer.Register(mock.Object);
+            var worksurfaceContextManager = new WorksurfaceContextManager(false, ShellViewModel, mock.Object, new Mock<IViewFactory>().Object);
 
             ActiveEnvironment.Setup(model => model.Name).Returns("localhost");
             //---------------Execute Test ----------------------
             worksurfaceContextManager.DisplayResourceWizard(resourceModelMock.Object);
 
-            ServerRepository.Instance.ActiveServer = environmentModel.Object;
             var activetx = ShellViewModel.Items.ToList().First(i => i.WorkSurfaceViewModel.GetType().Name == "SourceViewModel`1");
 
             var vm = new WorkSurfaceContextViewModel(new EventAggregator(), new WorkSurfaceKey(), activetx.WorkSurfaceViewModel, new Mock<Common.Interfaces.Studio.Controller.IPopupController>().Object, (a, b, c) => { });
@@ -3388,16 +3406,17 @@ namespace Dev2.Core.Tests
             resourceModelMock.SetupGet(model => model.Environment.EnvironmentID).Returns(Guid.NewGuid);
             resourceModelMock.SetupGet(model => model.ID).Returns(Guid.NewGuid);
             resourceModelMock.SetupGet(model => model.ServerID).Returns(Guid.NewGuid);
-            var worksurfaceContextManager = new WorksurfaceContextManager(false, ShellViewModel, new Mock<IServerRepository>().Object, new Mock<IViewFactory>().Object);
+            var newMockServer = new Mock<IServerRepository>();
+            newMockServer.Setup(repository => repository.ActiveServer).Returns(environmentModel.Object);
+            CustomContainer.DeRegister<IServerRepository>();
+            CustomContainer.Register(newMockServer.Object);
+            var worksurfaceContextManager = new WorksurfaceContextManager(false, ShellViewModel, newMockServer.Object, new Mock<IViewFactory>().Object);
 
             ActiveEnvironment.Setup(model => model.Name).Returns("localhost");
             //---------------Execute Test ----------------------
             worksurfaceContextManager.DisplayResourceWizard(resourceModelMock.Object);
 
-            var newMockServer = new Mock<IServerRepository>();
-            newMockServer.Setup(repository => repository.ActiveServer).Returns(environmentModel.Object);
-            CustomContainer.DeRegister<IServerRepository>();
-            CustomContainer.Register(newMockServer.Object);
+            
             var activetx = ShellViewModel.Items.ToList().First(i => i.WorkSurfaceViewModel.GetType().Name == "SourceViewModel`1");
 
             var vm = new WorkSurfaceContextViewModel(new EventAggregator(), new WorkSurfaceKey(), activetx.WorkSurfaceViewModel, new Mock<Common.Interfaces.Studio.Controller.IPopupController>().Object, (a, b, c) => { });
@@ -3422,13 +3441,16 @@ namespace Dev2.Core.Tests
             resourceModelMock.SetupGet(model => model.Environment.EnvironmentID).Returns(Guid.NewGuid);
             resourceModelMock.SetupGet(model => model.ID).Returns(Guid.NewGuid);
             resourceModelMock.SetupGet(model => model.ServerID).Returns(Guid.NewGuid);
-            var worksurfaceContextManager = new WorksurfaceContextManager(false, ShellViewModel, new Mock<IServerRepository>().Object, new Mock<IViewFactory>().Object);
+            var mock = new Mock<IServerRepository>();
+            mock.Setup(repository => repository.ActiveServer).Returns(environmentModel.Object);
+            CustomContainer.Register(mock.Object);
+
+            var worksurfaceContextManager = new WorksurfaceContextManager(false, ShellViewModel, mock.Object, new Mock<IViewFactory>().Object);
 
             ActiveEnvironment.Setup(model => model.Name).Returns("localhost");
             //---------------Execute Test ----------------------
             worksurfaceContextManager.DisplayResourceWizard(resourceModelMock.Object);
 
-            ServerRepository.Instance.ActiveServer = environmentModel.Object;
             var activetx = ShellViewModel.Items.ToList().First(i => i.WorkSurfaceViewModel.GetType().Name == "SourceViewModel`1");
 
             var vm = new WorkSurfaceContextViewModel(new EventAggregator(), new WorkSurfaceKey(), activetx.WorkSurfaceViewModel, new Mock<Common.Interfaces.Studio.Controller.IPopupController>().Object, (a, b, c) => { });
@@ -3484,13 +3506,15 @@ namespace Dev2.Core.Tests
             resourceModelMock.SetupGet(model => model.Environment.EnvironmentID).Returns(Guid.NewGuid);
             resourceModelMock.SetupGet(model => model.ID).Returns(Guid.NewGuid);
             resourceModelMock.SetupGet(model => model.ServerID).Returns(Guid.NewGuid);
-            var worksurfaceContextManager = new WorksurfaceContextManager(false, ShellViewModel, new Mock<IServerRepository>().Object, new Mock<IViewFactory>().Object);
+            var mock = new Mock<IServerRepository>();
+            mock.Setup(repository => repository.ActiveServer).Returns(environmentModel.Object);
+            CustomContainer.Register(mock.Object);
+            var worksurfaceContextManager = new WorksurfaceContextManager(false, ShellViewModel, mock.Object, new Mock<IViewFactory>().Object);
 
             ActiveEnvironment.Setup(model => model.Name).Returns("localhost");
             //---------------Execute Test ----------------------
             worksurfaceContextManager.DisplayResourceWizard(resourceModelMock.Object);
 
-            ServerRepository.Instance.ActiveServer = environmentModel.Object;
             var activetx = ShellViewModel.Items.ToList().First(i => i.WorkSurfaceViewModel.GetType().Name == "SourceViewModel`1");
 
             var vm = new WorkSurfaceContextViewModel(new EventAggregator(), new WorkSurfaceKey(), activetx.WorkSurfaceViewModel, new Mock<Common.Interfaces.Studio.Controller.IPopupController>().Object, (a, b, c) => { });

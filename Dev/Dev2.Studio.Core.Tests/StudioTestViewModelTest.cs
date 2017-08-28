@@ -22,7 +22,12 @@ namespace Dev2.Core.Tests
     [TestClass]
     public class StudioTestViewModelTest
     {
-       
+        [TestInitialize]
+        public void Init()
+        {
+            var newServerRepo = new Mock<IServerRepository>();
+            CustomContainer.Register(newServerRepo.Object);
+        } 
     
         [TestMethod]
         [Owner("Hagashen Naidu")]
