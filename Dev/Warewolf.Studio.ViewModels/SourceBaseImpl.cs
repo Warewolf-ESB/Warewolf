@@ -86,7 +86,7 @@ namespace Warewolf.Studio.ViewModels
             var environmentViewModel = explorerViewModel.Environments.FirstOrDefault(model => model.Server.EnvironmentID == environmentId);
             if (environmentViewModel != null)
             {
-                var env = ServerRepository.Instance.Get(environmentId);
+                var env = CustomContainer.Get<IServerRepository>().Get(environmentId);
                 var resource = env.ResourceRepository.LoadContextualResourceModel(resourceId);
                 var item = environmentViewModel.FindByPath(resource.GetSavePath());
                 var viewModel = environmentViewModel as EnvironmentViewModel;

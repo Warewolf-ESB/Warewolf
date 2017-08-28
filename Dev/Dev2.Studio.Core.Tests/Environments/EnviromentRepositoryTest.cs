@@ -93,7 +93,8 @@ namespace Dev2.Core.Tests.Environments
         [TestMethod]
         public void EnvironmentRepositoryConstructorWithNoParametersExpectedCreatesAndAddsDefaultSource()
         {
-            var repo = new TestServerRespository();
+            var source = new Mock<IServer>();
+            var repo = new TestServerRespository(source.Object);
             var environmentModels = repo.All().ToList();
             Assert.AreEqual(1, environmentModels.Count);
             var localhostEnvironment = environmentModels[0];

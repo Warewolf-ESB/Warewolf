@@ -108,7 +108,8 @@ namespace Dev2.Factory
             var origin = debugState.WorkspaceID;
             if (origin != Guid.Empty)
             {
-                IServer server = ServerRepository.Instance.FindSingle(model => model.Connection.WorkspaceID == origin);
+                var serverRepository = CustomContainer.Get<IServerRepository>();
+                IServer server = serverRepository.FindSingle(model => model.Connection.WorkspaceID == origin);
                 Guid environmentID = server.EnvironmentID;
                 return new WorkSurfaceKey
                 {

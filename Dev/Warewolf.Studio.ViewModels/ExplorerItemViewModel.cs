@@ -1869,7 +1869,7 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                return _server ?? ServerRepository.Instance.FindSingle(model => model.EnvironmentID == Server.EnvironmentID);
+                return _server ?? CustomContainer.Get<IServerRepository>().FindSingle(model => model.EnvironmentID == Server.EnvironmentID);
             }
             set
             {
