@@ -320,7 +320,7 @@ namespace Warewolf.Studio.ViewModels
                             }
                         }
 
-                        if (!supportsDirectServerDeploy || deployResponse.Where(r => r.HasError).Any())
+                        if (!supportsDirectServerDeploy || deployResponse.Any(r => r.HasError))
                         {
                             _shell.DeployResources(sourceEnvServer.EnvironmentID, destinationEnvironmentId, notfolders, Destination.DeployTests);
                         }
