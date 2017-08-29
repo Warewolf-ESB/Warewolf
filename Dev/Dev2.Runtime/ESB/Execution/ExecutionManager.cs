@@ -6,15 +6,15 @@ namespace Dev2.Runtime.ESB.Execution
 {
     public class ExecutionManager : IExecutionManager
     {
-        private static readonly Lazy<ExecutionManager> LazyCat = new Lazy<ExecutionManager>(() =>
+        static readonly Lazy<ExecutionManager> LazyCat = new Lazy<ExecutionManager>(() =>
         {
             var c = new ExecutionManager();
             return c;
         }, LazyThreadSafetyMode.PublicationOnly);
 
-        private bool _isRefreshing;
-        private int _currentExecutions;
-        private readonly List<AutoResetEvent> _waitHandles = new List<AutoResetEvent>();
+        bool _isRefreshing;
+        int _currentExecutions;
+        readonly List<ManualResetEvent> _waitHandles = new List<ManualResetEvent>();
 
         private ExecutionManager()
         {
@@ -56,7 +56,7 @@ namespace Dev2.Runtime.ESB.Execution
             }
         }
 
-        public void AddWait(AutoResetEvent eventPulse)
+        public void AddWait(ManualResetEvent eventPulse)
         {
             _waitHandles.Add(eventPulse);
         }

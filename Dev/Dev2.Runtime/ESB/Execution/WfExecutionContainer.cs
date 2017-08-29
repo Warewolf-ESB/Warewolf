@@ -29,7 +29,7 @@ namespace Dev2.Runtime.ESB.Execution
 {
     public class WfExecutionContainer : EsbExecutionContainer
     {
-        private static readonly AutoResetEvent EventPulse = new AutoResetEvent(false);
+        private static readonly ManualResetEvent EventPulse = new ManualResetEvent(false);
 
         public WfExecutionContainer(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel)
             : base(sa, dataObj, theWorkspace, esbChannel)
