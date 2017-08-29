@@ -221,6 +221,28 @@ function FindFile-InParent([string[]]$FileSpecs,[int]$NumberOfParentsToSearch=7)
     $FilePath
 }
 
+function Copy-On-Write([string]$FilePath) {
+    if (Test-Path $FilePath) {
+        $num = 1
+        $FileExtention = (Get-Item $FilePath -ErrorAction Stop).Extension
+        $FilePathWithoutExtention = $FilePath.Substring(0, $FilePath.LastIndexOf('.'))
+        while(Test-Path "$FilePathWithoutExtention.$num$FileExtention")
+        {
+            $num += 1
+        }
+        $FilePath | Move-Item -Destination "$FilePathWithoutExtention.$num$FileExtention"
+    }
+}
+
+function Move-File-To-TestResults([string]$SourceFilePath, [string]$DestinationFileName) {
+    $DestinationFilePath = "$TestsResultsPath\$DestinationFileName"
+    if (Test-Path $SourceFilePath) {
+        Copy-On-Write $DestinationFilePath
+        Write-Host Moving `"$SourceFilePath`" to `"$DestinationFilePath`"
+        Move-Item "$SourceFilePath" "$DestinationFilePath"
+    }
+}
+
 function Cleanup-ServerStudio([bool]$Force=$true) {
     if ($Force) {
         $WaitForCloseTimeout = 10
@@ -266,11 +288,9 @@ function Cleanup-ServerStudio([bool]$Force=$true) {
     taskkill /im "geckodriver.exe" /f  2>&1 | out-null
     taskkill /im "IEDriverServer.exe" /f  2>&1 | out-null
 
-    #Delete All Studio and Server Resources Except Logs
+    #Delete Certain Studio and Server Resources
     $ToClean = "$env:LOCALAPPDATA\Warewolf\DebugData\PersistSettings.dat",
                "$env:LOCALAPPDATA\Warewolf\UserInterfaceLayouts\WorkspaceLayout.xml",
-               "$env:PROGRAMDATA\Warewolf\Resources",
-               "$env:PROGRAMDATA\Warewolf\Tests",
                "$env:PROGRAMDATA\Warewolf\Workspaces",
                "$env:PROGRAMDATA\Warewolf\Server Settings"
 
@@ -286,28 +306,12 @@ function Cleanup-ServerStudio([bool]$Force=$true) {
         sleep 30
         exit 1
     }
-}
 
-function Copy-On-Write([string]$FilePath) {
-    if (Test-Path $FilePath) {
-        $num = 1
-        $FileExtention = [System.IO.Path]::GetExtension($FilePath)
-        $FilePathWithoutExtention = $FilePath.Substring(0, $FilePath.LastIndexOf('.'))
-        while(Test-Path "$FilePathWithoutExtention.$num$FileExtention")
-        {
-            $num += 1
-        }
-        $FilePath | Move-Item -Destination "$FilePathWithoutExtention.$num$FileExtention"
+    if ("$JobName" -eq "") {
+        $JobName = "Test Run"
     }
-}
-
-function Move-File-To-TestResults([string]$SourceFilePath, [string]$DestinationFileName) {
-    $DestinationFilePath = "$TestsResultsPath\$DestinationFileName"
-    if (Test-Path $SourceFilePath) {
-        Copy-On-Write $DestinationFilePath
-        Write-Host Moving `"$SourceFilePath`" to `"$DestinationFilePath`"
-        Move-Item "$SourceFilePath" "$DestinationFilePath"
-    }
+    Move-File-To-TestResults "$env:PROGRAMDATA\Warewolf\Resources" "Server Resources $JobName"
+    Move-File-To-TestResults "$env:PROGRAMDATA\Warewolf\Tests" "Server Service Tests $JobName"
 }
 
 function Merge-DotCover-Snapshots($DotCoverSnapshots, [string]$DestinationFilePath, [string]$LogFilePath) {
@@ -484,7 +488,7 @@ function Install-Server([string]$ServerPath,[string]$ResourcesType) {
     if ($ServerPath -eq "" -or !(Test-Path $ServerPath)) {
         $ServerPath = Find-Warewolf-Server-Exe
     }
-    Write-Warning "Will now stop any currently running Warewolf servers and studios and delete all resources in Warewolf ProgramData. If you have existing Warewolf workflow or other resources you must back them up yourself."
+    Write-Warning "Will now stop any currently running Warewolf servers and studios. Resources will backed up to $TestsResultsPath."
     if ($ResourcesType -eq "") {
 	    $title = "Server Resources"
 	    $message = "What type of resources would you like to install the server with?"
