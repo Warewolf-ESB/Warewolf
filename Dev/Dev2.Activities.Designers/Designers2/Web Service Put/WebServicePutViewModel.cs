@@ -474,7 +474,9 @@ namespace Dev2.Activities.Designers2.Web_Service_Put
                 OnPropertyChanged();
             }
         }
-        
+
+        public ICommand CellChangedCommand { get; set; }
+
         void SetRegionVisibility(bool value)
         {
             InputArea.IsEnabled = value;
