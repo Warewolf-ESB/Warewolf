@@ -104,7 +104,7 @@ namespace Dev2.Tests.Runtime.Util
             //------------Setup for test--------------------------
             var executionManager = GetConstructedExecutionManager();
             PrivateObject p = new PrivateObject(executionManager);
-            var autoResetEvent = new AutoResetEvent(false);
+            var autoResetEvent = new ManualResetEvent(false);
             //------------Execute Test---------------------------
             executionManager.AddWait(autoResetEvent);
             //------------Assert Results-------------------------
@@ -122,7 +122,7 @@ namespace Dev2.Tests.Runtime.Util
             //------------Setup for test--------------------------
             var executionManager = GetConstructedExecutionManager();
             PrivateObject p = new PrivateObject(executionManager);
-            var autoResetEvent = new AutoResetEvent(false);
+            var autoResetEvent = new ManualResetEvent(false);
             executionManager.AddWait(autoResetEvent);
             var _threadTracker = false;
             var t = new Thread(()=>
