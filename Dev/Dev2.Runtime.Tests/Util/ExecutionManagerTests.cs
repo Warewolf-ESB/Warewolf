@@ -108,7 +108,7 @@ namespace Dev2.Tests.Runtime.Util
             //------------Execute Test---------------------------
             executionManager.AddWait(autoResetEvent);
             //------------Assert Results-------------------------
-            var waitHandles = p.GetFieldOrProperty("_waitHandles") as List<AutoResetEvent>;
+            var waitHandles = p.GetFieldOrProperty("_waitHandles") as List<ManualResetEvent>;
             Assert.IsNotNull(waitHandles);
             Assert.AreEqual(1,waitHandles.Count);
             Assert.AreEqual(autoResetEvent,waitHandles[0]);
@@ -135,7 +135,7 @@ namespace Dev2.Tests.Runtime.Util
             executionManager.StopRefresh();
             Thread.Sleep(1000);
             //------------Assert Results-------------------------
-            var waitHandles = p.GetFieldOrProperty("_waitHandles") as List<AutoResetEvent>;
+            var waitHandles = p.GetFieldOrProperty("_waitHandles") as List<ManualResetEvent>;
             Assert.IsNotNull(waitHandles);
             Assert.AreEqual(0, waitHandles.Count);
             Assert.IsTrue(_threadTracker);
