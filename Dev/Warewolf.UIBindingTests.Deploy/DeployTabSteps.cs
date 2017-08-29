@@ -39,11 +39,23 @@ namespace Warewolf.UIBindingTests.Deploy
         public static void SetupForSystem()
         {
             Core.Utils.SetupResourceDictionary();
+            var serverRepo = new Mock<IServerRepository>();
+
+            
             var shell = GetMockShellVm(true, localhostString);
             var shellViewModel = GetMockShellVm(false, destinationServerString);
-            
-            var dest = new DeployDestinationViewModelForTesting(shellViewModel, GetMockAggegator());
-            dest.ConnectControlViewModel.SelectedConnection = shellViewModel.ActiveServer;
+            serverRepo.Setup(repository => repository.ActiveServer).Returns(shellViewModel.ActiveServer);
+            serverRepo.Setup(repository => repository.Source).Returns(shellViewModel.ActiveServer);
+            serverRepo.Setup(repository => repository.All()).Returns(new List<IServer>()
+            {
+                shellViewModel.ActiveServer
+            });
+            serverRepo.Setup(repository => repository.Get(It.IsAny<Guid>())).Returns(shellViewModel.ActiveServer);
+            CustomContainer.Register(serverRepo.Object);
+            var dest = new DeployDestinationViewModelForTesting(shellViewModel, GetMockAggegator())
+            {
+                ConnectControlViewModel = {SelectedConnection = shellViewModel.ActiveServer}
+            };
             ScenarioContext.Current.Add(connectControlString, dest.ConnectControlViewModel.SelectedConnection);
 
             ScenarioContext.Current[destinationString] = dest;

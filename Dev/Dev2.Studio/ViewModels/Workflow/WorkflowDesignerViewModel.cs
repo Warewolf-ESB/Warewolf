@@ -209,7 +209,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             _workflowInputDataViewModel = WorkflowInputDataViewModel.Create(_resourceModel);
             GetWorkflowLink();
             DataListViewModel = DataListViewModelFactory.CreateDataListViewModel(_resourceModel);
-            DebugOutputViewModel = new DebugOutputViewModel(_resourceModel.Environment.Connection.ServerEvents, ServerRepository.Instance, new DebugOutputFilterStrategy(), ResourceModel);
+            DebugOutputViewModel = new DebugOutputViewModel(_resourceModel.Environment.Connection.ServerEvents, CustomContainer.Get<IServerRepository>(), new DebugOutputFilterStrategy(), ResourceModel);
             _firstWorkflowChange = true;
         }
 
@@ -1180,13 +1180,14 @@ namespace Dev2.Studio.ViewModels.Workflow
 
                 if (viewModel != null)
                 {
-                    IServer server = ServerRepository.Instance.FindSingle(c => c.EnvironmentID == viewModel.Server.EnvironmentID);
-                    ServerRepository.Instance.ActiveServer = server;
+                    var serverRepository = CustomContainer.Get<IServerRepository>();
+                    IServer server = serverRepository.FindSingle(c => c.EnvironmentID == viewModel.Server.EnvironmentID);
+                    serverRepository.ActiveServer = server;
                     var theResource = server?.ResourceRepository.LoadContextualResourceModel(viewModel.ResourceId);
 
                     if (theResource != null)
                     {
-                        DsfActivity d = DsfActivityFactory.CreateDsfActivity(theResource, droppedActivity, true, ServerRepository.Instance, _resourceModel.Environment.IsLocalHostCheck());
+                        DsfActivity d = DsfActivityFactory.CreateDsfActivity(theResource, droppedActivity, true, serverRepository, _resourceModel.Environment.IsLocalHostCheck());
 
                         UpdateForRemote(d, theResource);
                     }
@@ -1212,7 +1213,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             DsfActivity activity = droppedActivity;
             IContextualResourceModel resource = _resourceModel.Environment.ResourceRepository.FindSingle(
                 c => c.Category == activity.ServiceName) as IContextualResourceModel;
-            IServerRepository serverRepository = ServerRepository.Instance;
+            IServerRepository serverRepository = CustomContainer.Get<IServerRepository>();
             droppedActivity = DsfActivityFactory.CreateDsfActivity(resource, droppedActivity, false, serverRepository, _resourceModel.Environment.IsLocalHostCheck());
             WorkflowDesignerUtils.CheckIfRemoteWorkflowAndSetProperties(droppedActivity, resource, serverRepository.ActiveServer);
             modelProperty1.SetValue(droppedActivity);
@@ -2292,7 +2293,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         [ExcludeFromCodeCoverage]
         private IResourcePickerDialog CreateResourcePickerDialog(enDsfActivityType activityType)
         {
-            var server = ServerRepository.Instance.ActiveServer;
+            var server = CustomContainer.Get<IServerRepository>().ActiveServer;
 
             if (server.Permissions == null)
             {
@@ -2521,11 +2522,11 @@ namespace Dev2.Studio.ViewModels.Workflow
 
             if (envID != null && modelProperty != null)
             {
-                IServer server = ServerRepository.Instance.FindSingle(c => c.EnvironmentID == envID);
+                IServer server = CustomContainer.Get<IServerRepository>().FindSingle(c => c.EnvironmentID == envID);
                 var resource = server?.ResourceRepository.LoadContextualResourceModel(resourceID.Value);
                 if (resource != null)
                 {
-                    DsfActivity d = DsfActivityFactory.CreateDsfActivity(resource, null, true, ServerRepository.Instance, _resourceModel.Environment.IsLocalHostCheck());
+                    DsfActivity d = DsfActivityFactory.CreateDsfActivity(resource, null, true, CustomContainer.Get<IServerRepository>(), _resourceModel.Environment.IsLocalHostCheck());
                     d.ServiceName = d.DisplayName = d.ToolboxFriendlyName = resource.Category;
                     UpdateForRemote(d, resource);
                     modelProperty.SetValue(d);

@@ -41,6 +41,12 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
     [TestClass]
     public class ActivityDesignerViewModelTests
     {
+        [TestInitialize]
+        public void Init()
+        {
+            var serverRepo = new Mock<IServerRepository>();
+            CustomContainer.Register(serverRepo.Object);
+        }
 
         [TestMethod]
         [TestCategory("ActivityDesignerViewModel_UnitTest")]

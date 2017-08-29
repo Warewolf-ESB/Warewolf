@@ -235,9 +235,11 @@ namespace Dev2.Studio
         private void ShowSplash()
         {            
             // Create the window 
-            var server = ServerRepository.Instance.Source;
+            var repository = ServerRepository.Instance;
+            var server = repository.Source;
             server.Connect();
             CustomContainer.Register(server);
+            CustomContainer.Register(repository);
             var toolBoxViewModel = new ToolboxViewModel(new ToolboxModel(server, server, null), new ToolboxModel(server, server, null));
             CustomContainer.Register<IToolboxViewModel>(toolBoxViewModel);
 

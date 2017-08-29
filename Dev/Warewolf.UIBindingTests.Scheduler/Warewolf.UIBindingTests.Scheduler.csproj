@@ -63,6 +63,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="PresentationFramework" />
+    <Reference Include="System.Xaml" />
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
@@ -74,9 +75,17 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Dev2.Activities.Designers\Dev2.Activities.Designers.csproj">
+      <Project>{b95b724a-b052-4e18-98a4-88072c8df2c2}</Project>
+      <Name>Dev2.Activities.Designers</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">
       <Project>{13C0C6E9-7DC3-4DC3-8535-031C263CEE0B}</Project>
       <Name>Dev2.Common.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Core\Dev2.Core.csproj">
+      <Project>{6007c1f1-ce38-474a-a88c-0c05a77bc415}</Project>
+      <Name>Dev2.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.Infrastructure\Dev2.Infrastructure.csproj">
       <Project>{615eae6d-040c-4364-b708-63dc8755cd4f}</Project>
@@ -85,6 +94,10 @@
     <ProjectReference Include="..\Dev2.Scheduler\Dev2.Scheduler.csproj">
       <Project>{4db41f93-e0b7-454c-b4c4-b7e20671e7ab}</Project>
       <Name>Dev2.Scheduler</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Studio.Core\Dev2.Studio.Core.csproj">
+      <Project>{a58b157b-960b-4e84-8957-24e4884c5c77}</Project>
+      <Name>Dev2.Studio.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.Studio.Interfaces\Dev2.Studio.Interfaces.csproj">
       <Project>{37149e8e-fef2-47c0-8391-80dcce86d26d}</Project>

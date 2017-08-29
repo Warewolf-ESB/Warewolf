@@ -113,7 +113,8 @@ namespace Dev2.Settings.Scheduler
             directoryObjectPicker1.ShowAdvancedView = false;
 
             InitializeHelp();
-            DebugOutputViewModel = new DebugOutputViewModel(new EventPublisher(), ServerRepository.Instance, new DebugOutputFilterStrategy());
+            var serverRepository = CustomContainer.Get<IServerRepository>();
+            DebugOutputViewModel = new DebugOutputViewModel(new EventPublisher(), serverRepository, new DebugOutputFilterStrategy());
 
             Server = server;
             SetupServer(server);
@@ -674,7 +675,8 @@ namespace Dev2.Settings.Scheduler
             if (CurrentEnvironment?.AuthorizationService != null && CurrentEnvironment.IsConnected && tmpEnv.Permissions.Any(a => a.Administrator))
             {
                 ClearConnectionError();
-                var server = CurrentEnvironment ?? ServerRepository.Instance.ActiveServer;
+                var serverRepository = CustomContainer.Get<IServerRepository>();
+                var server = CurrentEnvironment ?? serverRepository.ActiveServer;
 
                 if (server.Permissions == null)
                 {
