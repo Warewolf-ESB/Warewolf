@@ -133,7 +133,7 @@ namespace Dev2.Studio.ViewModels
         private readonly IServerRepository _repository;
         private readonly IViewFactory _factory;
 
-        public IServerRepository ServerRepo => _repository ?? ServerRepository.Instance;
+        public IServerRepository ServerRepo => _repository ?? CustomContainer.Get<IServerRepository>();
         public IViewFactory ViewFactoryProvider => _factory ?? new ViewFactory();
         private readonly ShellViewModel _shellViewModel;
         private readonly bool _createDesigners;

@@ -118,3 +118,11 @@ Scenario: Executing a Forward Sort Recordset workflow
 Scenario: Executing Hello world in browser 
 Given I Debug "http://localhost:3142/secure/Hello%20World.json?Name=&wid=5f895e8d-07a3-4f87-869f-7c03d86f330b" in Browser
 Then Browser content is "Hello World."
+
+Scenario: Executing Workflow with empty Json Assign in browser 
+Given I Debug "http://localhost:3142/secure/AssignOnlyWithNoOutput.json" in Browser
+Then Browser content is "{}"
+
+Scenario: Executing Workflow with empty Xml Assign in browser 
+Given I Debug "http://localhost:3142/secure/AssignOnlyWithNoOutput.xml" in Browser
+Then Browser content is "<DataList />"

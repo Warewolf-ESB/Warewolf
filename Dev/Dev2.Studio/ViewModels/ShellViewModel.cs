@@ -459,7 +459,7 @@ namespace Dev2.Studio.ViewModels
 
         [ExcludeFromCodeCoverage]
         public ShellViewModel()
-            : this(EventPublishers.Aggregator, new AsyncWorker(), Core.ServerRepository.Instance, new VersionChecker(), new ViewFactory())
+            : this(EventPublishers.Aggregator, new AsyncWorker(), CustomContainer.Get<IServerRepository>(), new VersionChecker(), new ViewFactory())
         {
         }
 
@@ -1906,8 +1906,8 @@ namespace Dev2.Studio.ViewModels
                             if (serverSourceModel.IsDirty || serverSourceModel.ViewModel.HasChanged)
                             {
                                 closeStudio = CallSaveDialog(closeStudio);
+                                break;
                             }
-                            break;
                         }
                         var pluginSourceModel = vm as SourceViewModel<IPluginSource>;
                         if (pluginSourceModel != null)
@@ -1915,8 +1915,8 @@ namespace Dev2.Studio.ViewModels
                             if (pluginSourceModel.IsDirty || pluginSourceModel.ViewModel.HasChanged)
                             {
                                 closeStudio = CallSaveDialog(closeStudio);
+                                break;
                             }
-                            break;
                         }
                         var wcfServerSourceModel = vm as SourceViewModel<IWcfServerSource>;
                         if (wcfServerSourceModel != null)
@@ -1924,8 +1924,8 @@ namespace Dev2.Studio.ViewModels
                             if (wcfServerSourceModel.IsDirty || wcfServerSourceModel.ViewModel.HasChanged)
                             {
                                 closeStudio = CallSaveDialog(closeStudio);
+                                break;
                             }
-                            break;
                         }
                         var rabbitMqServiceSourceModel = vm as SourceViewModel<IRabbitMQServiceSourceDefinition>;
                         if (rabbitMqServiceSourceModel != null)
@@ -1933,8 +1933,8 @@ namespace Dev2.Studio.ViewModels
                             if (rabbitMqServiceSourceModel.IsDirty || rabbitMqServiceSourceModel.ViewModel.HasChanged)
                             {
                                 closeStudio = CallSaveDialog(closeStudio);
+                                break;
                             }
-                            break;
                         }
                         var sharepointServerSourceModel = vm as SourceViewModel<ISharepointServerSource>;
                         if (sharepointServerSourceModel != null)
@@ -1942,8 +1942,8 @@ namespace Dev2.Studio.ViewModels
                             if (sharepointServerSourceModel.IsDirty || sharepointServerSourceModel.ViewModel.HasChanged)
                             {
                                 closeStudio = CallSaveDialog(closeStudio);
+                                break;
                             }
-                            break;
                         }
                         var oAuthSourceModel = vm as SourceViewModel<IOAuthSource>;
                         if (oAuthSourceModel != null)
@@ -1951,8 +1951,8 @@ namespace Dev2.Studio.ViewModels
                             if (oAuthSourceModel.IsDirty || oAuthSourceModel.ViewModel.HasChanged)
                             {
                                 closeStudio = CallSaveDialog(closeStudio);
+                                break;
                             }
-                            break;
                         }
                         var exchangeSourceModel = vm as SourceViewModel<IExchangeSource>;
                         if (exchangeSourceModel != null)
@@ -1960,8 +1960,8 @@ namespace Dev2.Studio.ViewModels
                             if (exchangeSourceModel.IsDirty || exchangeSourceModel.ViewModel.HasChanged)
                             {
                                 closeStudio = CallSaveDialog(closeStudio);
+                                break;
                             }
-                            break;
                         }
                         var comPluginSourceModel = vm as SourceViewModel<IComPluginSource>;
                         if (comPluginSourceModel != null)
@@ -1969,8 +1969,8 @@ namespace Dev2.Studio.ViewModels
                             if (comPluginSourceModel.IsDirty || comPluginSourceModel.ViewModel.HasChanged)
                             {
                                 closeStudio = CallSaveDialog(closeStudio);
+                                break;
                             }
-                            break;
                         }
                         var webServiceSourceModel = vm as SourceViewModel<IWebServiceSource>;
                         if (webServiceSourceModel != null)
@@ -1978,8 +1978,8 @@ namespace Dev2.Studio.ViewModels
                             if (webServiceSourceModel.IsDirty || webServiceSourceModel.ViewModel.HasChanged)
                             {
                                 closeStudio = CallSaveDialog(closeStudio);
+                                break;
                             }
-                            break;
                         }
                         var emailServiceSourceModel = vm as SourceViewModel<IEmailServiceSource>;
                         if (emailServiceSourceModel != null)
@@ -1987,8 +1987,8 @@ namespace Dev2.Studio.ViewModels
                             if (emailServiceSourceModel.IsDirty || emailServiceSourceModel.ViewModel.HasChanged)
                             {
                                 closeStudio = CallSaveDialog(closeStudio);
+                                break;
                             }
-                            break;
                         }
                         var dbSourceModel = vm as SourceViewModel<IDbSource>;
                         if (dbSourceModel != null)
@@ -1996,8 +1996,8 @@ namespace Dev2.Studio.ViewModels
                             if (dbSourceModel.IsDirty || dbSourceModel.ViewModel.HasChanged)
                             {
                                 closeStudio = CallSaveDialog(closeStudio);
+                                break;
                             }
-                            break;
                         }
                     }
                 }

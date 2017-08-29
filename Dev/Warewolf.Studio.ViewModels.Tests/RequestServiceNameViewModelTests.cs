@@ -39,6 +39,10 @@ namespace Warewolf.Studio.ViewModels.Tests
         public async Task RequestServiceNameViewModel_CreateAsync_ParametersPassed_ShouldConstructCorrectly()
         {
             //------------Setup for test--------------------------
+            var serverRepo = new Mock<IServerRepository>();
+            var connectionObject = new Mock<IEnvironmentConnection>();
+            serverRepo.Setup(repository => repository.ActiveServer.Connection).Returns(connectionObject.Object);
+            CustomContainer.Register(serverRepo.Object);
             //------------Execute Test---------------------------
             var requestServiceNameViewModel = await RequestServiceNameViewModel.CreateAsync(new Mock<IEnvironmentViewModel>().Object, "", "");
             //------------Assert Results-------------------------
@@ -58,6 +62,10 @@ namespace Warewolf.Studio.ViewModels.Tests
             CustomContainer.RegisterInstancePerRequestType<IRequestServiceNameView>(() => mockRequestServiceNameView.Object);
             var mockEnvironmentModel = new Mock<IEnvironmentViewModel>();
             mockEnvironmentModel.Setup(model => model.LoadDialog(It.IsAny<Guid>())).Returns(Task.FromResult(true));
+            var serverRepo = new Mock<IServerRepository>();
+            var connectionObject = new Mock<IEnvironmentConnection>();
+            serverRepo.Setup(repository => repository.ActiveServer.Connection).Returns(connectionObject.Object);
+            CustomContainer.Register(serverRepo.Object);
             var requestServiceNameViewModel = await RequestServiceNameViewModel.CreateAsync(mockEnvironmentModel.Object, "", "");
             requestServiceNameViewModel.ShowSaveDialog();
             requestServiceNameViewModel.Name = "TestResource";
@@ -78,6 +86,10 @@ namespace Warewolf.Studio.ViewModels.Tests
             var mockRequestServiceNameView = new Mock<IRequestServiceNameView>();
             CustomContainer.RegisterInstancePerRequestType<IRequestServiceNameView>(() => mockRequestServiceNameView.Object);
             var mockEnvironmentModel = new Mock<IEnvironmentViewModel>();
+            var serverRepo = new Mock<IServerRepository>();
+            var connectionObject = new Mock<IEnvironmentConnection>();
+            serverRepo.Setup(repository => repository.ActiveServer.Connection).Returns(connectionObject.Object);
+            CustomContainer.Register(serverRepo.Object);
             var requestServiceNameViewModel = await RequestServiceNameViewModel.CreateAsync(mockEnvironmentModel.Object, "", "");
             requestServiceNameViewModel.ShowSaveDialog();
             requestServiceNameViewModel.Name = "TestResource";
@@ -103,6 +115,10 @@ namespace Warewolf.Studio.ViewModels.Tests
             var mockRequestServiceNameView = new Mock<IRequestServiceNameView>();
             CustomContainer.RegisterInstancePerRequestType<IRequestServiceNameView>(() => mockRequestServiceNameView.Object);
             var mockEnvironmentModel = new Mock<IEnvironmentViewModel>();
+            var serverRepo = new Mock<IServerRepository>();
+            var connectionObject = new Mock<IEnvironmentConnection>();
+            serverRepo.Setup(repository => repository.ActiveServer.Connection).Returns(connectionObject.Object);
+            CustomContainer.Register(serverRepo.Object);
             var requestServiceNameViewModel = await RequestServiceNameViewModel.CreateAsync(mockEnvironmentModel.Object, "", "");
             requestServiceNameViewModel.ShowSaveDialog();
             requestServiceNameViewModel.Name = "TestResource";
@@ -138,6 +154,10 @@ namespace Warewolf.Studio.ViewModels.Tests
             var mockRequestServiceNameView = new Mock<IRequestServiceNameView>();
             CustomContainer.RegisterInstancePerRequestType<IRequestServiceNameView>(() => mockRequestServiceNameView.Object);
             var mockEnvironmentModel = new Mock<IEnvironmentViewModel>();
+            var serverRepo = new Mock<IServerRepository>();
+            var connectionObject = new Mock<IEnvironmentConnection>();
+            serverRepo.Setup(repository => repository.ActiveServer.Connection).Returns(connectionObject.Object);
+            CustomContainer.Register(serverRepo.Object);
             var requestServiceNameViewModel = await RequestServiceNameViewModel.CreateAsync(mockEnvironmentModel.Object, "", "");
             requestServiceNameViewModel.ShowSaveDialog();
 
@@ -299,6 +319,10 @@ namespace Warewolf.Studio.ViewModels.Tests
             CustomContainer.RegisterInstancePerRequestType<IRequestServiceNameView>(() => mockRequestServiceNameView.Object);
             var mockEnvironmentModel = new Mock<IEnvironmentViewModel>();
             mockEnvironmentModel.Setup(model => model.LoadDialog(It.IsAny<Guid>())).Returns(Task.FromResult(false));
+            var serverRepo = new Mock<IServerRepository>();
+            var connectionObject = new Mock<IEnvironmentConnection>();
+            serverRepo.Setup(repository => repository.ActiveServer.Connection).Returns(connectionObject.Object);
+            CustomContainer.Register(serverRepo.Object);
             var requestServiceNameViewModel = await RequestServiceNameViewModel.CreateAsync(mockEnvironmentModel.Object, "", "");
             requestServiceNameViewModel.ShowSaveDialog();
             requestServiceNameViewModel.Name = "TesResource";
@@ -321,6 +345,10 @@ namespace Warewolf.Studio.ViewModels.Tests
             CustomContainer.RegisterInstancePerRequestType<IRequestServiceNameView>(() => mockRequestServiceNameView.Object);
             var mockEnvironmentModel = new Mock<IEnvironmentViewModel>();
             mockEnvironmentModel.Setup(model => model.LoadDialog(It.IsAny<Guid>())).Returns(Task.FromResult(false));
+            var serverRepo = new Mock<IServerRepository>();
+            var connectionObject = new Mock<IEnvironmentConnection>();
+            serverRepo.Setup(repository => repository.ActiveServer.Connection).Returns(connectionObject.Object);
+            CustomContainer.Register(serverRepo.Object);
             var requestServiceNameViewModel = await RequestServiceNameViewModel.CreateAsync(mockEnvironmentModel.Object, "", "") as RequestServiceNameViewModel;
             Assert.IsNotNull(requestServiceNameViewModel);
             requestServiceNameViewModel.PropertyChanged += (sender, args) =>
@@ -348,6 +376,10 @@ namespace Warewolf.Studio.ViewModels.Tests
             CustomContainer.RegisterInstancePerRequestType<IRequestServiceNameView>(() => mockRequestServiceNameView.Object);
             var mockEnvironmentModel = new Mock<IEnvironmentViewModel>();
             mockEnvironmentModel.Setup(model => model.LoadDialog(It.IsAny<Guid>())).Returns(Task.FromResult(false));
+            var serverRepo = new Mock<IServerRepository>();
+            var connectionObject = new Mock<IEnvironmentConnection>();
+            serverRepo.Setup(repository => repository.ActiveServer.Connection).Returns(connectionObject.Object);
+            CustomContainer.Register(serverRepo.Object);
             var requestServiceNameViewModel = await RequestServiceNameViewModel.CreateAsync(mockEnvironmentModel.Object, "", "");
             requestServiceNameViewModel.ShowSaveDialog();
             //------------Execute Test---------------------------
@@ -368,6 +400,10 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockRequestServiceNameView.Setup(view => view.RequestClose()).Verifiable();
             CustomContainer.RegisterInstancePerRequestType<IRequestServiceNameView>(() => mockRequestServiceNameView.Object);
             var mockEnvironmentModel = new Mock<IEnvironmentViewModel>();
+            var serverRepo = new Mock<IServerRepository>();
+            var connectionObject = new Mock<IEnvironmentConnection>();
+            serverRepo.Setup(repository => repository.ActiveServer.Connection).Returns(connectionObject.Object);
+            CustomContainer.Register(serverRepo.Object);
             var requestServiceNameViewModel = await RequestServiceNameViewModel.CreateAsync(mockEnvironmentModel.Object, "", "");
             //------------Execute Test---------------------------
             requestServiceNameViewModel.Name = "Test";
@@ -385,6 +421,10 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockRequestServiceNameView.Setup(view => view.RequestClose()).Verifiable();
             CustomContainer.RegisterInstancePerRequestType<IRequestServiceNameView>(() => mockRequestServiceNameView.Object);
             var mockEnvironmentModel = new Mock<IEnvironmentViewModel>();
+            var serverRepo = new Mock<IServerRepository>();
+            var connectionObject = new Mock<IEnvironmentConnection>();
+            serverRepo.Setup(repository => repository.ActiveServer.Connection).Returns(connectionObject.Object);
+            CustomContainer.Register(serverRepo.Object);
             var requestServiceNameViewModel = await RequestServiceNameViewModel.CreateAsync(mockEnvironmentModel.Object, "", "");
             requestServiceNameViewModel.ShowSaveDialog();
             requestServiceNameViewModel.SingleEnvironmentExplorerViewModel.Environments = new ObservableCollection<IEnvironmentViewModel>();
@@ -404,6 +444,10 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockRequestServiceNameView.Setup(view => view.RequestClose()).Verifiable();
             CustomContainer.RegisterInstancePerRequestType<IRequestServiceNameView>(() => mockRequestServiceNameView.Object);
             var mockEnvironmentModel = new Mock<IEnvironmentViewModel>();
+            var serverRepo = new Mock<IServerRepository>();
+            var connectionObject = new Mock<IEnvironmentConnection>();
+            serverRepo.Setup(repository => repository.ActiveServer.Connection).Returns(connectionObject.Object);
+            CustomContainer.Register(serverRepo.Object);
             var requestServiceNameViewModel = await RequestServiceNameViewModel.CreateAsync(mockEnvironmentModel.Object, "", "");
            
             var fieldInfo = typeof(RequestServiceNameViewModel).GetField("_selectedPath", BindingFlags.NonPublic | BindingFlags.Instance);
@@ -451,6 +495,10 @@ namespace Warewolf.Studio.ViewModels.Tests
             item.Setup(model => model.ResourceType).Returns("type");
             item.Setup(model => model.ResourceName).Returns("name");
             selectedItemMock.Setup(sitem => sitem.SelectedItem).Returns(item.Object);
+            var serverRepo = new Mock<IServerRepository>();
+            var connectionObject = new Mock<IEnvironmentConnection>();
+            serverRepo.Setup(repository => repository.ActiveServer.Connection).Returns(connectionObject.Object);
+            CustomContainer.Register(serverRepo.Object);
             var viewModel = RequestServiceNameViewModel.CreateAsync(envModel.Object, "", "", itemObj.Object).Result;
 
             controller.Setup(communicationController => communicationController.AddPayloadArgument("ResourceID", It.IsAny<string>()));
@@ -499,6 +547,10 @@ namespace Warewolf.Studio.ViewModels.Tests
             item.Setup(model => model.ResourceType).Returns("type");
             item.Setup(model => model.ResourceName).Returns("name");
             selectedItemMock.Setup(sitem => sitem.SelectedItem).Returns(item.Object);
+            var serverRepo = new Mock<IServerRepository>();
+            var connectionObject = new Mock<IEnvironmentConnection>();
+            serverRepo.Setup(repository => repository.ActiveServer.Connection).Returns(connectionObject.Object);
+            CustomContainer.Register(serverRepo.Object);
             var viewModel = RequestServiceNameViewModel.CreateAsync(envModel.Object, "", "").Result;
 
             controller.Setup(communicationController => communicationController.AddPayloadArgument("ResourceID", It.IsAny<string>()));
@@ -542,6 +594,10 @@ namespace Warewolf.Studio.ViewModels.Tests
             item.Setup(model => model.ResourceName).Returns("name");
             item.Setup(model => model.IsFolder).Returns(true);
             selectedItemMock.Setup(sitem => sitem.SelectedItem).Returns(item.Object);
+            var serverRepo = new Mock<IServerRepository>();
+            var connectionObject = new Mock<IEnvironmentConnection>();
+            serverRepo.Setup(repository => repository.ActiveServer.Connection).Returns(connectionObject.Object);
+            CustomContainer.Register(serverRepo.Object);
             var viewModel = RequestServiceNameViewModel.CreateAsync(envModel.Object, "", "", itemObj.Object).Result;
 
             controller.Setup(communicationController => communicationController.AddPayloadArgument("ResourceID", It.IsAny<string>()));
