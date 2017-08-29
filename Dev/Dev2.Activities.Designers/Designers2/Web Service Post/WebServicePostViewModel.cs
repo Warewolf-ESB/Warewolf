@@ -341,6 +341,16 @@ namespace Dev2.Activities.Designers2.Web_Service_Post
                 SourceRegion = new WebSourceRegion(Model, ModelItem) { SourceChangedAction = () => { OutputsRegion.IsEnabled = false; } };
                 regions.Add(SourceRegion);
                 InputArea = new WebPostInputRegion(ModelItem, SourceRegion);
+                InputArea.PropertyChanged += (sender, args) =>
+                {
+                    if (args.PropertyName == "PostData")
+                    {
+                        if (InputArea.Headers.All(value => string.IsNullOrEmpty(value.Name)))
+                        {
+                            ((ManageWebServiceInputViewModel)ManageServiceInputViewModel).BuidHeaders(InputArea.PostData);
+                        }
+                    }
+                };
                 regions.Add(InputArea);
                 OutputsRegion = new OutputsRegion(ModelItem, true);
                 regions.Add(OutputsRegion);
