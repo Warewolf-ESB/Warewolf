@@ -459,7 +459,7 @@ namespace Dev2.Studio.ViewModels
 
         [ExcludeFromCodeCoverage]
         public ShellViewModel()
-            : this(EventPublishers.Aggregator, new AsyncWorker(), Core.ServerRepository.Instance, new VersionChecker(), new ViewFactory())
+            : this(EventPublishers.Aggregator, new AsyncWorker(), CustomContainer.Get<IServerRepository>(), new VersionChecker(), new ViewFactory())
         {
         }
 

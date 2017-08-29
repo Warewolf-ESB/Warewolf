@@ -93,12 +93,19 @@ namespace Dev2.Core.Tests.Environments
         [TestMethod]
         public void EnvironmentRepositoryConstructorWithNoParametersExpectedCreatesAndAddsDefaultSource()
         {
-            var repo = new TestServerRespository();
+            var source = new Mock<IServer>();
+            Mock<IEnvironmentConnection> con = new Mock<IEnvironmentConnection>();
+            con.Setup(connection => connection.WebServerUri).Returns(new Uri("http://localhost:3142"));
+            source.Setup(server => server.Connection).Returns(con.Object);
+            var mock = new Mock<IServerRepository>();
+            CustomContainer.DeRegister<IServerRepository>();
+            CustomContainer.Register(mock.Object);
+            var repo = new TestServerRespository(source.Object);
             var environmentModels = repo.All().ToList();
             Assert.AreEqual(1, environmentModels.Count);
             var localhostEnvironment = environmentModels[0];
             Assert.IsNotNull(localhostEnvironment);
-            StringAssert.Contains(localhostEnvironment.Connection.WebServerUri.Host.ToLower(), Environment.MachineName.ToLower());
+            StringAssert.Contains(localhostEnvironment.Connection.WebServerUri.Host.ToLower(), "localhost");
         }
 
         #endregion

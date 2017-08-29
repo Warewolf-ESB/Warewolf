@@ -91,8 +91,11 @@ namespace Dev2.Activities.Specs.Scheduler
             CustomContainer.Register(mockshell.Object);
             var mockPopupController = new Mock<IPopupController>();
             mockPopupController.Setup(controller => controller.ShowDeleteConfirmation(It.IsAny<string>())).Returns(MessageBoxResult.Yes);
+            var serverRepository = ServerRepository.Instance;
+            IServer server = serverRepository.Source;
+            CustomContainer.Register(serverRepository);
             SchedulerViewModel scheduler = new SchedulerViewModel(EventPublishers.Aggregator, new DirectoryObjectPickerDialog(), mockPopupController.Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, new Mock<IServer>().Object, a => new Mock<IServer>().Object);
-            IServer server = ServerRepository.Instance.Source;
+         
             var resourceId = table.Rows[0]["ResourceId"];
 
             server.Connect();

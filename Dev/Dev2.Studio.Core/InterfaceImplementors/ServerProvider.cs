@@ -62,7 +62,7 @@ namespace Dev2.Studio.Core.InterfaceImplementors
 
         public List<IServer> Load()
         {
-            return Load(ServerRepository.Instance);
+            return Load(CustomContainer.Get<IServerRepository>());
         }
 
         public List<IServer> Load(IServerRepository serverRepository)
@@ -82,7 +82,7 @@ namespace Dev2.Studio.Core.InterfaceImplementors
 
         public List<IServer> ReloadServers()
         {
-            return ReloadServers(ServerRepository.Instance);
+            return ReloadServers(CustomContainer.Get<IServerRepository>());
         }
 
         public List<IServer> ReloadServers(IServerRepository serverRepository)

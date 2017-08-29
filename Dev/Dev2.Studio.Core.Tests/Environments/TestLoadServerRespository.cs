@@ -18,7 +18,8 @@ namespace Dev2.Core.Tests.Environments
     {
         public int LoadInternalHitCount { get; set; }
 
-        public TestLoadServerRespository()
+        public TestLoadServerRespository(IServer server)
+            :base(server)
         {
         }
 
