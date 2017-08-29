@@ -10,7 +10,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using System.Text;
 using System.Xml.Linq;
@@ -32,10 +31,6 @@ namespace Dev2.Runtime.ServiceModel
     // PBI 5656 - 2013.05.20 - TWR - Created
     public class WebSources : ExceptionManager
     {
-        readonly IResourceCatalog _resourceCatalog;
-
-        #region CTOR
-
         public WebSources()
             : this(ResourceCatalog.Instance)
         {
@@ -47,13 +42,7 @@ namespace Dev2.Runtime.ServiceModel
             {
                 throw new ArgumentNullException(nameof(resourceCatalog));
             }
-            _resourceCatalog = resourceCatalog;
         }
-
-        #endregion
-
-        #region Get
-
         // POST: Service/WebSources/Get
     
         public WebSource Get(string resourceId, Guid workspaceId, Guid dataListId)
@@ -74,10 +63,6 @@ namespace Dev2.Runtime.ServiceModel
             }
             return result;
         }
-
-        #endregion
-
-        #region Test
 
         // POST: Service/WebSources/Test
     
@@ -107,10 +92,6 @@ namespace Dev2.Runtime.ServiceModel
                 return new ValidationResult { IsValid = false, ErrorMessage = ex.Message };
             }
         }
-
-        #endregion
-
-        #region CanConnectServer
 
         ValidationResult CanConnectServer(WebSource source)
         {
@@ -145,13 +126,9 @@ namespace Dev2.Runtime.ServiceModel
             }
         }
 
-        #endregion
-
-        #region Execute
-
         public static string Execute(WebSource source, WebRequestMethod method, string relativeUri, string data, bool throwError, out ErrorResultTO errors, string[] headers = null)
         {
-            EnsureWebClient(source, headers);
+            CreateWebClient(source, headers);
             return Execute(source.Client, GetAddress(source, relativeUri), method, data, throwError, out errors);
         }
 
@@ -175,16 +152,11 @@ namespace Dev2.Runtime.ServiceModel
     
         public static byte[] Execute(WebSource source, WebRequestMethod method, string relativeUri, byte[] data, bool throwError, out ErrorResultTO errors, string[] headers = null)
         {
-            EnsureWebClient(source, headers);
-            return Execute(source.Client, GetAddress(source, relativeUri), method, data, throwError, out errors);
+            CreateWebClient(source, headers);
+            return Execute(source.Client, GetAddress(source, relativeUri), method, data, out errors);
         }
-
-        #endregion
-
-        #region Execute(client, address, method, data)
-
         
-        static byte[] Execute(WebClient client, string address, WebRequestMethod method, byte[] data, bool throwError, out ErrorResultTO errors)
+        static byte[] Execute(WebClient client, string address, WebRequestMethod method, byte[] data, out ErrorResultTO errors)
             
         {
             errors = new ErrorResultTO();
@@ -200,30 +172,15 @@ namespace Dev2.Runtime.ServiceModel
 
         static string Execute(WebClient client, string address, WebRequestMethod method, string data, bool throwError, out ErrorResultTO errors)
         {
-            if (method == WebRequestMethod.Put)
-            {
-                if (data != null)
-                {
-
-                    var deserializeObject = JsonConvert.DeserializeObject(data);
-                    if (deserializeObject != null)
-                    {
-                        client.Headers["Content-Type"] = "application/json";
-                    }
-                }
-
-
-            }
             errors = new ErrorResultTO();
             try
             {
                 switch (method)
                 {
                     case WebRequestMethod.Get:
-                        return FixResponse(client.DownloadString(address));
-
+                        return client.DownloadString(address);
                     default:
-                        return FixResponse(client.UploadString(address, method.ToString().ToUpperInvariant(), data));
+                        return client.UploadString(address, method.ToString().ToUpperInvariant(), data);
                 }
             }
             catch (Exception e)
@@ -242,22 +199,9 @@ namespace Dev2.Runtime.ServiceModel
 
             return string.Empty;
         }
+        
 
-
-        #endregion
-
-        #region FixResponse
-
-        static string FixResponse(string result)
-        {
-            return result;
-        }
-
-        #endregion
-
-        #region EnsureWebClient
-
-        public static void EnsureWebClient(WebSource source, IEnumerable<string> headers)
+        public static void CreateWebClient(WebSource source, IEnumerable<string> headers)
         {
             if (source != null && source.Client != null)
             {
@@ -288,8 +232,5 @@ namespace Dev2.Runtime.ServiceModel
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls | SecurityProtocolType.Ssl3;
             }
         }
-
-        #endregion
     }
-
 }

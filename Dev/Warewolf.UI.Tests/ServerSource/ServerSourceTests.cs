@@ -151,7 +151,21 @@ namespace Warewolf.UI.Tests.ServerSource
             //Create Source
             ExplorerUIMap.Select_NewServerSource_From_ExplorerContextMenu();
             ServerSourceUIMap.Enter_TextIntoAddress_On_ServerSourceTab("tst-ci-remote");
-            Playback.Wait(500);
+            Mouse.Click(UIMap.MainStudioWindow.CloseStudioButton);
+            DialogsUIMap.Click_MessageBox_Cancel();
+            Assert.IsTrue(ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.Exists);
+        }
+
+        [TestMethod]
+        [TestCategory("Server Sources")]
+        [Owner("Pieter Terblanche")]
+        public void CreateNewServer_GivenExistingOpenTabHasNoChanges_ClosingStudioPromptsChanges()
+        {
+            const string ExistingSourceName = "ExistingCodedUITestServerSource";
+            ExplorerUIMap.Select_Source_From_ExplorerContextMenu(ExistingSourceName);
+            //Create Source
+            ExplorerUIMap.Select_NewServerSource_From_ExplorerContextMenu();
+            ServerSourceUIMap.Enter_TextIntoAddress_On_ServerSourceTab("tst-ci-remote");
             Mouse.Click(UIMap.MainStudioWindow.CloseStudioButton);
             DialogsUIMap.Click_MessageBox_Cancel();
             Assert.IsTrue(ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.Exists);

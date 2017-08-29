@@ -92,6 +92,7 @@
                         <controls:Dev2DataGrid x:Name="Headers"
                                    Grid.Row="1" 
                                    ItemsSource="{Binding InputArea.Headers, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        
                                    Style="{StaticResource ActivityMappingDataGridStyle}"
                                    Height="Auto"
                                    IsEnabled="{Binding InputArea.IsEnabled}"
@@ -114,6 +115,7 @@
                                                     MaxHeight="80"
                                                     Margin="0,0,1,1"
                                                     TextWrapping="Wrap"
+                                                    TextChanged="AutoCompleteBox_OnTextChanged"
                                                     WrapInBrackets="False"
                                                     ToolTip="{x:Static languages:Tooltips.WebRequestToolTipHeader}"
                                                     Text="{Binding Path=Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
