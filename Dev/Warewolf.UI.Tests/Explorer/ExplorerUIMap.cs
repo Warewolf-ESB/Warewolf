@@ -70,7 +70,7 @@ namespace Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses
         [Then(@"First remote Item should be ""(.*)""")]
         public void FirstRemoteItemShouldBe(string resource)
         {
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem.ItemEdit.Text == resource);
+            Assert.AreEqual(resource, MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem.ItemEdit.Text);
         }
 
         public void Select_Source_From_ExplorerContextMenu(String sourceName)
