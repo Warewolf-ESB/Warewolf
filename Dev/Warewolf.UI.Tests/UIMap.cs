@@ -69,10 +69,11 @@ namespace Warewolf.UI.Tests
         [Given("The Warewolf Studio is running")]
         public void AssertStudioIsRunning()
         {
+            Try_Click_No_On_Script_Error_Messagebox();
             Assert.IsTrue(MainStudioWindow.Exists, "Warewolf studio is not running. You are expected to run \"Dev\\Run Tests.ps1\" as an administrator and wait for it to complete before running any coded UI tests");
-            Keyboard.SendKeys(MainStudioWindow, "^%{F4}");            
+            Keyboard.SendKeys(MainStudioWindow, "^%{F4}");
         }
-        
+
         public void TryPin_Unpinned_Pane_To_Default_Position()
         {
             var TimeBefore = System.DateTime.Now;
@@ -202,7 +203,7 @@ namespace Warewolf.UI.Tests
             }
             Assert.AreEqual(text, MainStudioWindow.DebugInputDialog.TabItemsTabList.InputDataTab.InputsTable.Row1.InputValueCell.InputValueComboboxl.InputValueText.Text, "Debug input data row1 textbox text is not equal to \'" + text + "\' after typing that in.");
         }
-        
+
         public void CreateAndSave_Dice_Workflow(string WorkflowName)
         {
             ExplorerUIMap.Select_NewWorkFlowService_From_ContextMenu();
@@ -531,7 +532,7 @@ namespace Warewolf.UI.Tests
             WaitForControlVisible(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab);
             Assert.IsTrue(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.StartNode.Exists, "Start Node Does Not Exist after clicking new workflow ribbon button.");
         }
-        
+
         [When(@"I Click Save Ribbon Button")]
         public void Click_Save_RibbonButton()
         {
@@ -554,7 +555,7 @@ namespace Warewolf.UI.Tests
         [Then(@"I Click Scheduler Ribbon Button")]
         public void Click_Scheduler_RibbonButton()
         {
-            Mouse.Click(MainStudioWindow.SideMenuBar.SchedulerButton, new Point(4, 12));            
+            Mouse.Click(MainStudioWindow.SideMenuBar.SchedulerButton, new Point(4, 12));
         }
 
         [Given(@"I Click Debug Ribbon Button")]
@@ -811,7 +812,7 @@ namespace Warewolf.UI.Tests
         {
             Mouse.Click(MainStudioWindow.ExplorerContextMenu.Open);
         }
-        
+
         [When(@"I Select Paste FromContextMenu")]
         public void Select_Paste_FromContextMenu()
         {
@@ -835,7 +836,7 @@ namespace Warewolf.UI.Tests
         {
             Mouse.Click(MainStudioWindow.DesignSurfaceContextMenu.ShowLargeView, new Point(43, 15));
         }
-        
+
         [When(@"I Click Create Test From Debug")]
         public void Click_Create_Test_From_Debug()
         {
@@ -936,6 +937,14 @@ namespace Warewolf.UI.Tests
                 File.Delete(filePath2);
                 Directory.Delete(folderName);
                 Assert.IsFalse(Directory.Exists(folderName));
+            }
+        }
+
+        public void Try_Click_No_On_Script_Error_Messagebox()
+        {
+            if (ControlExistsNow(ScriptErrorMessagebox))
+            {
+                Mouse.Click(ScriptErrorMessagebox.ScriptErrorBody.NOButton, new Point(25, 15));
             }
         }
 

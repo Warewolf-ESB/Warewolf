@@ -18,6 +18,7 @@ namespace Warewolf.UI.Tests
     using System.Windows.Input;
     using Microsoft.VisualStudio.TestTools.UITest.Extension;
     using Microsoft.VisualStudio.TestTools.UITesting;
+    using Microsoft.VisualStudio.TestTools.UITesting.HtmlControls;
     using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
@@ -41,10 +42,24 @@ namespace Warewolf.UI.Tests
                 return this.mMainStudioWindow;
             }
         }
+        
+        public ScriptErrorMessagebox ScriptErrorMessagebox
+        {
+            get
+            {
+                if ((this.mScriptErrorMessagebox == null))
+                {
+                    this.mScriptErrorMessagebox = new ScriptErrorMessagebox();
+                }
+                return this.mScriptErrorMessagebox;
+            }
+        }
         #endregion
         
         #region Fields
         private MainStudioWindow mMainStudioWindow;
+        
+        private ScriptErrorMessagebox mScriptErrorMessagebox;
         #endregion
     }
     
@@ -19840,6 +19855,91 @@ namespace Warewolf.UI.Tests
         
         #region Fields
         private WpfText mText;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class ScriptErrorMessagebox : BrowserWindow
+    {
+        
+        public ScriptErrorMessagebox()
+        {
+            #region Search Criteria
+            this.SearchProperties[UITestControl.PropertyNames.Name] = "Script Error";
+            this.SearchProperties[UITestControl.PropertyNames.ClassName] = "Internet Explorer_TridentDlgFrame";
+            this.WindowTitles.Add("Script Error");
+            #endregion
+        }
+        
+        public void LaunchUrl(System.Uri url)
+        {
+            this.CopyFrom(BrowserWindow.Launch(url));
+        }
+        
+        #region Properties
+        public ScriptErrorBody ScriptErrorBody
+        {
+            get
+            {
+                if ((this.mScriptErrorBody == null))
+                {
+                    this.mScriptErrorBody = new ScriptErrorBody(this);
+                }
+                return this.mScriptErrorBody;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private ScriptErrorBody mScriptErrorBody;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class ScriptErrorBody : HtmlDocument
+    {
+        
+        public ScriptErrorBody(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[HtmlDocument.PropertyNames.Id] = "bdy";
+            this.SearchProperties[HtmlDocument.PropertyNames.RedirectingPage] = "False";
+            this.SearchProperties[HtmlDocument.PropertyNames.FrameDocument] = "False";
+            this.FilterProperties[HtmlDocument.PropertyNames.Title] = "Script Error";
+            this.FilterProperties[HtmlDocument.PropertyNames.AbsolutePath] = "/error.dlg";
+            this.FilterProperties[HtmlDocument.PropertyNames.PageUrl] = "res://ieframe.dll/error.dlg";
+            this.WindowTitles.Add("Script Error");
+            #endregion
+        }
+        
+        #region Properties
+        public HtmlButton NOButton
+        {
+            get
+            {
+                if ((this.mNOButton == null))
+                {
+                    this.mNOButton = new HtmlButton(this);
+                    #region Search Criteria
+                    this.mNOButton.SearchProperties[HtmlButton.PropertyNames.Id] = "btnNo";
+                    this.mNOButton.SearchProperties[HtmlButton.PropertyNames.Name] = null;
+                    this.mNOButton.SearchProperties[HtmlButton.PropertyNames.DisplayText] = "No";
+                    this.mNOButton.SearchProperties[HtmlButton.PropertyNames.Type] = "reset";
+                    this.mNOButton.FilterProperties[HtmlButton.PropertyNames.Title] = null;
+                    this.mNOButton.FilterProperties[HtmlButton.PropertyNames.Class] = null;
+                    this.mNOButton.FilterProperties[HtmlButton.PropertyNames.ControlDefinition] = "id=btnNo style=\"FONT-SIZE: 8pt; HEIGHT: ";
+                    this.mNOButton.FilterProperties[HtmlButton.PropertyNames.TagInstance] = "2";
+                    this.mNOButton.WindowTitles.Add("Script Error");
+                    #endregion
+                }
+                return this.mNOButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private HtmlButton mNOButton;
         #endregion
     }
 }
