@@ -41,6 +41,7 @@ namespace Warewolf.Web.UI.Tests
         [DeploymentItem(@"swresample-2.dll")]
         [DeploymentItem(@"swscale-4.dll")]
         [DeploymentItem(@"avcodec-57.dll")]
+        [DeploymentItem(@"geckodriver.exe")]
         [DeploymentItem(@"WebDriverProfiles", @"WebDriverProfiles")]
         [TestCategory("ExecutionLogging")]
         public void Firefox_ExecutionLogging_ClickRefresh_UITest()
@@ -64,6 +65,7 @@ namespace Warewolf.Web.UI.Tests
         [DeploymentItem(@"swresample-2.dll")]
         [DeploymentItem(@"swscale-4.dll")]
         [DeploymentItem(@"avcodec-57.dll")]
+        [DeploymentItem(@"geckodriver.exe")]
         [DeploymentItem(@"WebDriverProfiles", @"WebDriverProfiles")]
         [TestCategory("NoWarewolfServer")]
         public void Firefox_NoWarewolfServer_ClickRefresh_UITest()

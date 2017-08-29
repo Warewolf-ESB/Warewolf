@@ -21,9 +21,6 @@ using Microsoft.Practices.Prism.Commands;
 using Newtonsoft.Json;
 using Warewolf.Core;
 
-
-
-
 namespace Dev2.Activities.Designers2.Core
 {
     public class ManageWebServiceInputViewModel : IManageWebServiceInputViewModel
@@ -95,6 +92,18 @@ namespace Dev2.Activities.Designers2.Core
                 OnPropertyChanged();
             }
         }
+
+        public void BuidHeaders(string requestpayLoad)
+        {
+            try
+            {
+                _serviceHeaderBuilder.BuildHeader(_viewmodel.GetHeaderRegion(), requestpayLoad);
+            }
+            catch (Exception)
+            {
+                // 
+            }
+        }
         public void ExecuteTest()
         {
             ViewErrors = new List<IActionableErrorInfo>();
@@ -103,6 +112,7 @@ namespace Dev2.Activities.Designers2.Core
             TestResults = null;
             IsTesting = true;
 
+           
             try
             {
                 var testResult = _serverModel.TestService(Model);
@@ -110,15 +120,7 @@ namespace Dev2.Activities.Designers2.Core
                 using (var responseService = serializer.Deserialize<WebService>(testResult))
                 {
                     TestResults = responseService.RequestResponse;
-                    try
-                    {
-                        _serviceHeaderBuilder.BuildHeader(_viewmodel.GetHeaderRegion(), TestResults);
-                    }
-                    catch (Exception)
-                    {
-                        // 
-                    }
-
+                    BuidHeaders(TestResults);
                     _recordsetList = responseService.Recordsets;
                     if (_recordsetList.Any(recordset => recordset.HasErrors))
                     {
