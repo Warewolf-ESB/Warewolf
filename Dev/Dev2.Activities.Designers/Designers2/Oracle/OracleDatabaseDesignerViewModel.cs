@@ -54,10 +54,11 @@ namespace Dev2.Activities.Designers2.Oracle
 
         readonly string _sourceNotFoundMessage = Warewolf.Studio.Resources.Languages.Core.DatabaseServiceSourceNotFound;
         
-        public OracleDatabaseDesignerViewModel(ModelItem modelItem, IAsyncWorker worker)
+        public OracleDatabaseDesignerViewModel(ModelItem modelItem, IAsyncWorker worker, IViewPropertyBuilder propertyBuilder)
             : base(modelItem)
         {
             _worker = worker;
+            _propertyBuilder = propertyBuilder;
             var shellViewModel = CustomContainer.Get<IShellViewModel>();
             var server = shellViewModel.ActiveServer;
             var model = CustomContainer.CreateInstance<IDbServiceModel>(server.UpdateRepository, server.QueryProxy, shellViewModel, server);
@@ -108,8 +109,8 @@ namespace Dev2.Activities.Designers2.Oracle
             SetDisplayName("");
             OutputsRegion.OutputMappingEnabled = true;
             TestInputCommand = new DelegateCommand(TestProcedure);
-
-            InitializeProperties();
+            
+            Properties = _propertyBuilder.BuildProperties(ActionRegion, SourceRegion, Type);
 
             if (OutputsRegion != null && OutputsRegion.IsEnabled)
             {
@@ -165,11 +166,12 @@ namespace Dev2.Activities.Designers2.Oracle
             UpdateWorstError();
         }
 
-        public OracleDatabaseDesignerViewModel(ModelItem modelItem, IDbServiceModel model, IAsyncWorker worker)
+        public OracleDatabaseDesignerViewModel(ModelItem modelItem, IDbServiceModel model, IAsyncWorker worker, IViewPropertyBuilder propertyBuilder)
             : base(modelItem)
         {
             Model = model;
             _worker = worker;
+            _propertyBuilder = propertyBuilder;
             SetupCommonProperties();
         }
 
@@ -196,7 +198,7 @@ namespace Dev2.Activities.Designers2.Oracle
                 ClearValidationMemoWithNoFoundError();
             }
             UpdateWorstError();
-            InitializeProperties();
+            Properties = _propertyBuilder.BuildProperties(ActionRegion, SourceRegion, Type);
         }
 
         void UpdateWorstError()
@@ -237,22 +239,7 @@ namespace Dev2.Activities.Designers2.Oracle
         public int LabelWidth { get; set; }
         
         public List<KeyValuePair<string, string>> Properties { get; private set; }
-        void InitializeProperties()
-        {
-            Properties = new List<KeyValuePair<string, string>>();
-            AddProperty("Source :", SourceRegion.SelectedSource == null ? "" : SourceRegion.SelectedSource.Name);
-            AddProperty("Type :", Type);
-            AddProperty("Procedure :", ActionRegion.SelectedAction == null ? "" : ActionRegion.SelectedAction.Name);
-        }
-
-        void AddProperty(string key, string value)
-        {
-            if (!string.IsNullOrEmpty(value))
-            {
-                Properties.Add(new KeyValuePair<string, string>(key, value));
-            }
-        }
-
+        
         public IManageDatabaseInputViewModel ManageServiceInputViewModel { get; set; }
 
         public void TestProcedure()
@@ -296,6 +283,7 @@ namespace Dev2.Activities.Designers2.Oracle
 
         bool _generateOutputsVisible;
         private readonly IAsyncWorker _worker;
+        private readonly IViewPropertyBuilder _propertyBuilder;
 
         public ICommand TestInputCommand { get; set; }
 

@@ -460,6 +460,38 @@ testRunner.Then("Browser content is \"Hello World.\"", ((string)(null)), ((TechT
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Executing Workflow with empty Json Assign in browser")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BrowserDebug")]
+        public virtual void ExecutingWorkflowWithEmptyJsonAssignInBrowser()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Executing Workflow with empty Json Assign in browser", ((string[])(null)));
+#line 122
+this.ScenarioSetup(scenarioInfo);
+#line 123
+testRunner.Given("I Debug \"http://localhost:3142/secure/AssignOnlyWithNoOutput.json\" in Browser", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 124
+testRunner.Then("Browser content is \"{}\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Executing Workflow with empty Xml Assign in browser")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BrowserDebug")]
+        public virtual void ExecutingWorkflowWithEmptyXmlAssignInBrowser()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Executing Workflow with empty Xml Assign in browser", ((string[])(null)));
+#line 126
+this.ScenarioSetup(scenarioInfo);
+#line 127
+testRunner.Given("I Debug \"http://localhost:3142/secure/AssignOnlyWithNoOutput.xml\" in Browser", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 128
+testRunner.Then("Browser content is \"<DataList />\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore

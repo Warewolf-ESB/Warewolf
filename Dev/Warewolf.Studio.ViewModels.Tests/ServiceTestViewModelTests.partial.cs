@@ -56,7 +56,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             var testFrameworkViewModel = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object);
             testFrameworkViewModel.WebClient = new Mock<IWarewolfWebClient>().Object;
             var debugTreeViewItemViewModels = new List<IDebugTreeViewItemViewModel>();
-            var debugStateTreeViewItemViewModel = new DebugStateTreeViewItemViewModel(new TestServerRespository());
+            var server = new Mock<IServer>();
+            var debugStateTreeViewItemViewModel = new DebugStateTreeViewItemViewModel(new TestServerRespository(server.Object));
             var debugState = new DebugState
             {
                 HasError = true,
@@ -93,7 +94,9 @@ namespace Warewolf.Studio.ViewModels.Tests
             var testFrameworkViewModel = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object);
             testFrameworkViewModel.WebClient = new Mock<IWarewolfWebClient>().Object;
             var debugTreeViewItemViewModels = new List<IDebugTreeViewItemViewModel>();
-            var debugStateTreeViewItemViewModel = new DebugStateTreeViewItemViewModel(new TestServerRespository());
+            var server = new Mock<IServer>();
+
+            var debugStateTreeViewItemViewModel = new DebugStateTreeViewItemViewModel(new TestServerRespository(server.Object));
             var debugState = new DebugState
             {
                 HasError = false,
@@ -131,7 +134,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             var testFrameworkViewModel = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object);
             testFrameworkViewModel.WebClient = new Mock<IWarewolfWebClient>().Object;
             var debugTreeViewItemViewModels = new List<IDebugTreeViewItemViewModel>();
-            var debugStateTreeViewItemViewModel = new DebugStateTreeViewItemViewModel(new TestServerRespository());
+            var server = new Mock<IServer>();
+            var debugStateTreeViewItemViewModel = new DebugStateTreeViewItemViewModel(new TestServerRespository(server.Object));
             var debugState = new DebugState
             {
                 HasError = false,
