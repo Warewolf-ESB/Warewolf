@@ -1,11 +1,12 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UITesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
-using Warewolf.UITests;
+using Warewolf.UI.Tests;
 
 namespace Warewolf.UISpecs
 {
     [Binding]
-    [DeploymentItem("Warewolf.UITests.dll")]
+    [DeploymentItem("Warewolf.UI.Tests.dll")]
     class SetDefaultPlaybackSettings
     {
         [BeforeScenario]

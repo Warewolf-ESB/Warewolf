@@ -4,17 +4,20 @@ using System.Linq;
 using Dev2.Activities.Designers.Tests.WebGetTool;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.Web_Service_Post;
+using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Help;
 using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Common.Interfaces.WebService;
+using Dev2.Communication;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using TestingDotnetDllCascading;
 using Warewolf.Core;
-
+using Warewolf.Studio.ViewModels;
 
 
 namespace Dev2.Activities.Designers.Tests.WebPostTool
@@ -95,6 +98,113 @@ namespace Dev2.Activities.Designers.Tests.WebPostTool
             //---------------Test Result -----------------------
             Assert.AreEqual(postViewModel.Errors.Count, 1);
             Assert.AreEqual(postViewModel.DesignValidationErrors.Count, 2);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void WebPut_BodyIsJSonNoHeaders_ExpectNewHeadersAdded()
+        {
+            //---------------Set up test pack-------------------
+            CustomContainer.LoadedTypes = new List<Type>()
+            {
+                typeof(ManageWebServiceModel)
+            };
+            var shellVm = new Mock<IShellViewModel>();
+            var serverMock = new Mock<IServer>();
+            var updateProxy = new Mock<IStudioUpdateManager>();
+            var updateManager = new Mock<IQueryManager>();
+            serverMock.Setup(server => server.UpdateRepository).Returns(updateProxy.Object);
+            serverMock.Setup(server => server.QueryProxy).Returns(updateManager.Object);
+            shellVm.Setup(model => model.ActiveServer).Returns(serverMock.Object);
+            CustomContainer.Register(shellVm.Object);
+            var mod = GetMockModel();
+            var act = GetPostActivityWithOutPuts(mod);
+            act.Headers = new List<INameValue>();
+            var modelItem = ModelItemUtils.CreateModelItem(act);
+            var postViewModel = new WebServicePostViewModel(modelItem);
+            var oldCount = postViewModel.InputArea.Headers.Count;
+            //---------------Assert Precondition----------------
+            Assert.AreEqual(1, oldCount);
+            //---------------Execute Test ----------------------
+            var human = new Human();
+            Dev2JsonSerializer h = new Dev2JsonSerializer();
+            var humanString = h.Serialize(human);
+            var person = "\"{title\": \"Person\",\"type\": \"object\"}";
+            postViewModel.InputArea.PostData = humanString;
+            var newCount = postViewModel.InputArea.Headers.Count;
+            //---------------Test Result -----------------------
+            Assert.AreEqual(GlobalConstants.ApplicationJsonHeader, postViewModel.InputArea.Headers.Single(value => value.Value == GlobalConstants.ApplicationJsonHeader).Value);
+            Assert.AreEqual(GlobalConstants.ContentType, postViewModel.InputArea.Headers.Single(value => value.Name == GlobalConstants.ContentType).Name);
+            Assert.IsTrue(newCount > oldCount);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void WebPut_BodyIsXmlNoHeaders_ExpectNewHeadersAdded()
+        {
+            //---------------Set up test pack-------------------
+            CustomContainer.LoadedTypes = new List<Type>()
+            {
+                typeof(ManageWebServiceModel)
+            };
+            var shellVm = new Mock<IShellViewModel>();
+            var serverMock = new Mock<IServer>();
+            var updateProxy = new Mock<IStudioUpdateManager>();
+            var updateManager = new Mock<IQueryManager>();
+            serverMock.Setup(server => server.UpdateRepository).Returns(updateProxy.Object);
+            serverMock.Setup(server => server.QueryProxy).Returns(updateManager.Object);
+            shellVm.Setup(model => model.ActiveServer).Returns(serverMock.Object);
+            CustomContainer.Register(shellVm.Object);
+            var mod = GetMockModel();
+            var act = GetPostActivityWithOutPuts(mod);
+            act.Headers = new List<INameValue>();
+            var modelItem = ModelItemUtils.CreateModelItem(act);
+            var postViewModel = new WebServicePostViewModel(modelItem);
+            var oldCount = postViewModel.InputArea.Headers.Count;
+            //---------------Assert Precondition----------------
+
+            //---------------Execute Test ----------------------
+            var person = "<person sex=\"female\"><firstname>Anna</firstname><lastname>Smith</lastname></person>";
+            postViewModel.InputArea.PostData = person;
+            var newCount = postViewModel.InputArea.Headers.Count;
+            //---------------Test Result -----------------------
+            Assert.AreEqual(GlobalConstants.ApplicationXmlHeader, postViewModel.InputArea.Headers.Single(value => value.Value == GlobalConstants.ApplicationXmlHeader).Value);
+            Assert.AreEqual(GlobalConstants.ContentType, postViewModel.InputArea.Headers.Single(value => value.Name == GlobalConstants.ContentType).Name);
+            Assert.IsTrue(newCount > oldCount);
+        }
+        
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void WebPut_BodyIsXmlExistingHeaders_ExpectNoHeadersAdded()
+        {
+            //---------------Set up test pack-------------------
+            CustomContainer.LoadedTypes = new List<Type>()
+            {
+                typeof(ManageWebServiceModel)
+            };
+            var shellVm = new Mock<IShellViewModel>();
+            var serverMock = new Mock<IServer>();
+            var updateProxy = new Mock<IStudioUpdateManager>();
+            var updateManager = new Mock<IQueryManager>();
+            serverMock.Setup(server => server.UpdateRepository).Returns(updateProxy.Object);
+            serverMock.Setup(server => server.QueryProxy).Returns(updateManager.Object);
+            shellVm.Setup(model => model.ActiveServer).Returns(serverMock.Object);
+            CustomContainer.Register(shellVm.Object);
+            var mod = GetMockModel();
+            var act = GetPostActivityWithOutPuts(mod);
+            var modelItem = ModelItemUtils.CreateModelItem(act);
+            var postViewModel = new WebServicePostViewModel(modelItem);
+
+            var oldCount = postViewModel.InputArea.Headers.Count;
+            //---------------Assert Precondition----------------
+
+            //---------------Execute Test ----------------------
+            var person = "<person sex=\"female\"><firstname>Anna</firstname><lastname>Smith</lastname></person>";
+            postViewModel.InputArea.PostData = person;
+            var newCount = postViewModel.InputArea.Headers.Count;
+            //---------------Test Result -----------------------
+            Assert.IsTrue(newCount == oldCount);
         }
 
         [TestMethod]

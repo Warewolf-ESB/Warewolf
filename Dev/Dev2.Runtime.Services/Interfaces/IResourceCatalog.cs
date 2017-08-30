@@ -19,5 +19,6 @@ namespace Dev2.Runtime.Interfaces
         void AddToActivityCache(IResource resource);
         ConcurrentDictionary<Guid, List<IResource>> WorkspaceResources { get; }
         IDev2Activity Parse(Guid workspaceID, Guid resourceID);
+        IDev2Activity Parse(Guid workspaceID, Guid resourceID, string executionId);
     }
 }

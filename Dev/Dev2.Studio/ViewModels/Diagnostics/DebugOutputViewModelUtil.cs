@@ -44,7 +44,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         public bool IsValidLineItem(IDebugLineItem item)
         {
             if (item != null) return false;
-            Dev2Logger.Debug("Debug line item is null, did not proceed");
+            Dev2Logger.Debug("Debug line item is null, did not proceed", "Warewolf Debug");
             return true;
         }
         public bool IsItemMoreLinkValid(IDebugLineItem item)

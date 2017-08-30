@@ -2832,6 +2832,7 @@ namespace Dev2.Core.Tests.Workflows
         {
 
             var repo = new TestLoadServerRespository(mockEnvironment.Object) { IsLoaded = true };
+            CustomContainer.Register<IServerRepository>(repo);
             
             new ServerRepository(repo);
             

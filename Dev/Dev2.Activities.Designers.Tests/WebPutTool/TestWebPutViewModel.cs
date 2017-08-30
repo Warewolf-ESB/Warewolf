@@ -1,21 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml.Linq;
 using Dev2.Activities.Designers.Tests.WebGetTool;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.Web_Service_Post;
 using Dev2.Activities.Designers2.Web_Service_Put;
+using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Help;
 using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Common.Interfaces.WebService;
+using Dev2.Communication;
+using Dev2.Data.Util;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Newtonsoft.Json;
+using TestingDotnetDllCascading;
 using Warewolf.Core;
-
+using Warewolf.Studio.ViewModels;
 
 
 namespace Dev2.Activities.Designers.Tests.WebPutTool
@@ -30,9 +36,9 @@ namespace Dev2.Activities.Designers.Tests.WebPutTool
             return new MyWebModel();
         }
 
-        private static DsfWebPostActivity GetPostActivityWithOutPuts(MyWebModel mod)
+        private static DsfWebPutActivity GetPostActivityWithOutPuts(MyWebModel mod)
         {
-            return new DsfWebPostActivity()
+            return new DsfWebPutActivity()
             {
                 SourceId = mod.Sources[0].Id,
                 Outputs =
@@ -47,9 +53,9 @@ namespace Dev2.Activities.Designers.Tests.WebPutTool
             };
         }
 
-        private static DsfWebPostActivity GetEmptyPostActivity()
+        private static DsfWebPutActivity GetEmptyPostActivity()
         {
-            return new DsfWebPostActivity();
+            return new DsfWebPutActivity();
         }
 
         private WebServicePostViewModel GetWebServicePostViewModel()
@@ -79,7 +85,7 @@ namespace Dev2.Activities.Designers.Tests.WebPutTool
             Assert.IsTrue(postViewModel.OutputsRegion.IsEnabled);
         }
 
-        private static WebServicePutViewModel CreateViewModel(DsfWebPostActivity act, MyWebModel mod)
+        private static WebServicePutViewModel CreateViewModel(DsfWebPutActivity act, MyWebModel mod)
         {
             return new WebServicePutViewModel(ModelItemUtils.CreateModelItem(act), mod);
         }
@@ -87,7 +93,7 @@ namespace Dev2.Activities.Designers.Tests.WebPutTool
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         //public void Validate_GivenHasNewInstance_ShouldHaveOneDefaultError()
-        public void WebPost_MethodName_ValidateExpectErrors()
+        public void WebPut_MethodName_ValidateExpectErrors()
         {
             //---------------Set up test pack-------------------
             var id = Guid.NewGuid();
@@ -206,7 +212,7 @@ namespace Dev2.Activities.Designers.Tests.WebPutTool
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         //public void TesInputCommand_GivenSourceIsSet_ShouldHaveMappings()
-        public void WebPost_TestActionSetSourceAndTestClickOkHasMappings()
+        public void WebPut_TestActionSetSourceAndTestClickOkHasMappings()
         {
             //---------------Set up test pack-------------------
             var id = Guid.NewGuid();
@@ -235,7 +241,7 @@ namespace Dev2.Activities.Designers.Tests.WebPutTool
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void WebPost_TestActionSetSourceAndTestClickOkHasMappingsErrorFromServer()
+        public void WebPut_TestActionSetSourceAndTestClickOkHasMappingsErrorFromServer()
         {
             //---------------Set up test pack-------------------
             var id = Guid.NewGuid();
@@ -255,13 +261,13 @@ namespace Dev2.Activities.Designers.Tests.WebPutTool
 
             //---------------Execute Test ----------------------
             Assert.IsTrue(postViewModel.ErrorRegion.IsEnabled);
-            
+
             //---------------Test Result -----------------------
         }
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void WebPost_TestActionSetSourceAndTestClickOkHasserialisationIssue()
+        public void WebPut_TestActionSetSourceAndTestClickOkHasserialisationIssue()
         {
             //---------------Set up test pack-------------------
             var id = Guid.NewGuid();
@@ -280,13 +286,13 @@ namespace Dev2.Activities.Designers.Tests.WebPutTool
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             Assert.AreEqual(postViewModel.OutputsRegion.Outputs.First().MappedFrom, "Result");
-            
+
             //---------------Test Result -----------------------
         }
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void WebPost_TestActionSetSourceAndTestClickOkHasHeaders()
+        public void WebPut_TestActionSetSourceAndTestClickOkHasHeaders()
         {
             //---------------Set up test pack-------------------
             var id = Guid.NewGuid();
@@ -315,9 +321,141 @@ namespace Dev2.Activities.Designers.Tests.WebPutTool
             //---------------Test Result -----------------------
         }
 
+
+
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void WebPost_TestActionSetSourceAndTestClickOkHasQueryStringAndHeaders()
+        public void WebPut_BodyIsJSonNoHeaders_ExpectNewHeadersAdded()
+        {
+            //---------------Set up test pack-------------------
+            CustomContainer.LoadedTypes = new List<Type>()
+            {
+                typeof(ManageWebServiceModel)
+            };
+            var shellVm = new Mock<IShellViewModel>();
+            var serverMock = new Mock<IServer>();
+            var updateProxy = new Mock<IStudioUpdateManager>();
+            var updateManager = new Mock<IQueryManager>();
+            serverMock.Setup(server => server.UpdateRepository).Returns(updateProxy.Object);
+            serverMock.Setup(server => server.QueryProxy).Returns(updateManager.Object);
+            shellVm.Setup(model => model.ActiveServer).Returns(serverMock.Object);
+            CustomContainer.Register(shellVm.Object);
+            var mod = GetMockModel();
+            var act = GetPostActivityWithOutPuts(mod);
+            act.Headers = new List<INameValue>();
+            var modelItem = ModelItemUtils.CreateModelItem(act);
+            var postViewModel = new WebServicePutViewModel(modelItem);
+            var oldCount = postViewModel.InputArea.Headers.Count;
+            //---------------Assert Precondition----------------
+            Assert.AreEqual(1, oldCount);
+            //---------------Execute Test ----------------------
+            var human = new Human();
+            Dev2JsonSerializer h = new Dev2JsonSerializer();
+            var humanString = h.Serialize(human);
+            var person = "\"{title\": \"Person\",\"type\": \"object\"}";
+            postViewModel.InputArea.PutData = humanString;
+            var newCount = postViewModel.InputArea.Headers.Count;
+            //---------------Test Result -----------------------
+            Assert.AreEqual(GlobalConstants.ApplicationJsonHeader, postViewModel.InputArea.Headers.Single(value => value.Value == GlobalConstants.ApplicationJsonHeader).Value);
+            Assert.AreEqual(GlobalConstants.ContentType, postViewModel.InputArea.Headers.Single(value => value.Name == GlobalConstants.ContentType).Name);
+            Assert.IsTrue(newCount > oldCount);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void WebPut_BodyIsXmlNoHeaders_ExpectNewHeadersAdded()
+        {
+            //---------------Set up test pack-------------------
+            CustomContainer.LoadedTypes = new List<Type>()
+            {
+                typeof(ManageWebServiceModel)
+            };
+            var shellVm = new Mock<IShellViewModel>();
+            var serverMock = new Mock<IServer>();
+            var updateProxy = new Mock<IStudioUpdateManager>();
+            var updateManager = new Mock<IQueryManager>();
+            serverMock.Setup(server => server.UpdateRepository).Returns(updateProxy.Object);
+            serverMock.Setup(server => server.QueryProxy).Returns(updateManager.Object);
+            shellVm.Setup(model => model.ActiveServer).Returns(serverMock.Object);
+            CustomContainer.Register(shellVm.Object);
+            var mod = GetMockModel();
+            var act = GetPostActivityWithOutPuts(mod);
+            act.Headers = new List<INameValue>();
+            var modelItem = ModelItemUtils.CreateModelItem(act);
+            var postViewModel = new WebServicePutViewModel(modelItem);
+            var oldCount = postViewModel.InputArea.Headers.Count;
+            //---------------Assert Precondition----------------
+
+            //---------------Execute Test ----------------------
+            var person = "<person sex=\"female\"><firstname>Anna</firstname><lastname>Smith</lastname></person>";
+            postViewModel.InputArea.PutData = person;
+            var newCount = postViewModel.InputArea.Headers.Count;
+            //---------------Test Result -----------------------
+            Assert.AreEqual(GlobalConstants.ApplicationXmlHeader, postViewModel.InputArea.Headers.Single(value => value.Value == GlobalConstants.ApplicationXmlHeader).Value);
+            Assert.AreEqual(GlobalConstants.ContentType, postViewModel.InputArea.Headers.Single(value => value.Name == GlobalConstants.ContentType).Name);
+            Assert.IsTrue(newCount > oldCount);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void WebPut_BodyIsJSonExistingHeaders_ExpectNoHeadersAdded()
+        {
+            //---------------Set up test pack-------------------
+            var id = Guid.NewGuid();
+            var mod = GetMockModel();
+            var act = GetPostActivityWithOutPuts(mod);
+            var postViewModel = CreateViewModel(act, mod);
+            postViewModel.ManageServiceInputViewModel = new InputViewForTest(postViewModel, mod);
+            postViewModel.SourceRegion.SelectedSource = postViewModel.SourceRegion.Sources.First();
+            postViewModel.InputArea.Headers.Add(new NameValue("[[a]]", "asa"));
+            var dev2JsonSerializer = new Dev2JsonSerializer();
+            var oldCount = postViewModel.InputArea.Headers.Count;
+            //---------------Assert Precondition----------------
+
+            //---------------Execute Test ----------------------
+            var human = new Human();
+            postViewModel.InputArea.PutData = dev2JsonSerializer.Serialize(human);
+            var newCount = postViewModel.InputArea.Headers.Count;
+            //---------------Test Result -----------------------
+            Assert.IsTrue(newCount == oldCount);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void WebPut_BodyIsXmlExistingHeaders_ExpectNoHeadersAdded()
+        {
+            //---------------Set up test pack-------------------
+            CustomContainer.LoadedTypes = new List<Type>()
+            {
+                typeof(ManageWebServiceModel)
+            };
+            var shellVm = new Mock<IShellViewModel>();
+            var serverMock = new Mock<IServer>();
+            var updateProxy = new Mock<IStudioUpdateManager>();
+            var updateManager = new Mock<IQueryManager>();
+            serverMock.Setup(server => server.UpdateRepository).Returns(updateProxy.Object);
+            serverMock.Setup(server => server.QueryProxy).Returns(updateManager.Object);
+            shellVm.Setup(model => model.ActiveServer).Returns(serverMock.Object);
+            CustomContainer.Register(shellVm.Object);
+            var mod = GetMockModel();
+            var act = GetPostActivityWithOutPuts(mod);
+            var modelItem = ModelItemUtils.CreateModelItem(act);
+            var postViewModel = new WebServicePutViewModel(modelItem);
+            
+            var oldCount = postViewModel.InputArea.Headers.Count;
+            //---------------Assert Precondition----------------
+           
+            //---------------Execute Test ----------------------
+            var person = "<person sex=\"female\"><firstname>Anna</firstname><lastname>Smith</lastname></person>";
+            postViewModel.InputArea.PutData = person;
+            var newCount = postViewModel.InputArea.Headers.Count;
+            //---------------Test Result -----------------------
+            Assert.IsTrue(newCount == oldCount);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void WebPut_TestActionSetSourceAndTestClickOkHasQueryStringAndHeaders()
         {
             //---------------Set up test pack-------------------
             var id = Guid.NewGuid();
@@ -351,7 +489,7 @@ namespace Dev2.Activities.Designers.Tests.WebPutTool
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void WebPost_TestActionSetSourceAndTestClickOkHasQueryStringAndHeadersRecSet()
+        public void WebPut_TestActionSetSourceAndTestClickOkHasQueryStringAndHeadersRecSet()
         {
             //---------------Set up test pack-------------------
             var id = Guid.NewGuid();
@@ -384,6 +522,8 @@ namespace Dev2.Activities.Designers.Tests.WebPutTool
         }
 
     }
+
+
 
     public class InputViewForTest : ManageWebServiceInputViewModel
     {

@@ -126,6 +126,7 @@
     <Compile Include="Core\GenerateInputsRegionTests.cs" />
     <Compile Include="Core\ManageWebServiceInputViewModelTests.cs" />
     <Compile Include="Core\ScriptChooserTests.cs" />
+    <Compile Include="Core\ViewPropertyBuilderTests.cs" />
     <Compile Include="Core\WcfInputRegionTests.cs" />
     <Compile Include="Core\WebDeleteInputRegionTest.cs" />
     <Compile Include="Core\WebInputRegionTest.cs" />
@@ -150,6 +151,9 @@
     <Compile Include="CreateJsonDesignerViewModelTests\CreateJsonDesignerViewModelTests.cs" />
     <Compile Include="MultiAssignObjectTests\MultiAssignObjectViewModelTests.cs" />
     <Compile Include="MySql\TestMySqlViewModel.cs" />
+    <Compile Include="Oracle\InputViewForTest.cs" />
+    <Compile Include="Oracle\OracleModel.cs" />
+    <Compile Include="Oracle\TestOracleViewModel.cs" />
     <Compile Include="RabbitMQ\Consume\RabbitMQConsumeDesignerViewModelTest.cs" />
     <Compile Include="RabbitMQ\Publish\RabbitMQPublishDesignerViewModelTest.cs" />
     <Compile Include="Exchange\Email\ExchangeEmailDesignerViewModelTests.cs" />

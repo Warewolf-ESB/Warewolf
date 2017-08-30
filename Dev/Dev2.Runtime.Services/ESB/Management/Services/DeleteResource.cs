@@ -80,7 +80,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                     if (!Guid.TryParse(tmp.ToString(), out resourceId))
                     {
-                        Dev2Logger.Info("Delete Resource Service. Invalid Parameter Guid:");
+                        Dev2Logger.Info("Delete Resource Service. Invalid Parameter Guid:", GlobalConstants.WarewolfInfo);
                         var failureResult = new ExecuteMessage { HasError = true };
                         failureResult.SetMessage("Invalid guid passed for ResourceID");
                         return serializer.SerializeToBuilder(failureResult);
@@ -91,7 +91,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                     type = tmp.ToString();
                 }
-                Dev2Logger.Info("Delete Resource Service. Resource:" + resourceId);
+                Dev2Logger.Info("Delete Resource Service. Resource:" + resourceId, GlobalConstants.WarewolfInfo);
 
                 var msg = MyResourceCatalog.DeleteResource(theWorkspace.ID, resourceId, type);
                 if (theWorkspace.ID == GlobalConstants.ServerWorkspaceID)

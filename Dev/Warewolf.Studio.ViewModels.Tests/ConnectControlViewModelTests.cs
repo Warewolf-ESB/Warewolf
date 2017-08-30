@@ -53,6 +53,15 @@ namespace Warewolf.Studio.ViewModels.Tests
             _serverMock.SetupGet(it => it.EnvironmentID).Returns(_serverEnvironmentId);
             //_serverMock.Setup(it => it.GetAllServerConnections()).Returns(new List<IServer> {_serverIIMock.Object});
             _changedProperties = new List<string>();
+            var serverRepo = new Mock<IServerRepository>();
+            serverRepo.Setup(repository => repository.ActiveServer).Returns(_serverMock.Object);
+            serverRepo.Setup(repository => repository.Source).Returns(_serverMock.Object);
+            serverRepo.Setup(repository => repository.All()).Returns(new List<IServer>()
+            {
+                _serverMock.Object
+            });
+            serverRepo.Setup(repository => repository.Get(It.IsAny<Guid>())).Returns(_serverMock.Object);
+            CustomContainer.Register(serverRepo.Object);
             _target = new ConnectControlViewModel(_serverMock.Object, _eventAggregatorMock.Object) { ShouldUpdateActiveEnvironment = true };
             _target.ShouldUpdateActiveEnvironment = true;
             _target.PropertyChanged += _target_PropertyChanged;

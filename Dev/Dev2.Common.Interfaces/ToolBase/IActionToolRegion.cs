@@ -15,6 +15,12 @@ namespace Dev2.Common.Interfaces.ToolBase
         double LabelWidth { get; set; }
     }
 
+    public interface IDbActionToolRegion<T> : IActionToolRegion<T>
+    {
+        string ProcedureName { get; set; }
+    }
+
+
     public interface IMethodToolRegion<T> : IToolRegion
     {
         T SelectedMethod { get; set; }

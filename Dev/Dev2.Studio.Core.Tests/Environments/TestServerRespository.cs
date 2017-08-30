@@ -22,7 +22,8 @@ namespace Dev2.Core.Tests.Environments
         public int WriteSessionHitCount { get; set; }
         public int ReadSessionHitCount { get; set; }
 
-        public TestServerRespository()
+        public TestServerRespository(IServer server)
+            :base(server)
         {
             IsReadWriteEnabled = false;
         }

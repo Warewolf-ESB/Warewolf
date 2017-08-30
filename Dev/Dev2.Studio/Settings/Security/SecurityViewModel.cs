@@ -320,7 +320,7 @@ namespace Dev2.Settings.Security
                     };
                     popupController.Show(popupMessage);
                 }
-                Dev2Logger.Error(@"Error opening group picker: ", e);
+                Dev2Logger.Error(@"Error opening group picker: ", e, "Warewolf Error");
             }
             return DialogResult.Cancel;
         }

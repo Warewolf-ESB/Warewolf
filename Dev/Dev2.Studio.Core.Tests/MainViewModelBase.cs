@@ -73,7 +73,7 @@ namespace Dev2.Core.Tests
             var mockEnv = new Mock<IServerRepository>();
             mockEnv.SetupProperty(g => g.ActiveServer); // Start tracking changes
             mockEnv.Setup(g => g.All()).Returns(new List<IServer>());
-
+            CustomContainer.Register(mockEnv.Object);
             var mockEnvironmentModel = new Mock<IServer>();
             mockEnvironmentModel.Setup(model => model.AuthorizationService).Returns(new Mock<IAuthorizationService>().Object);
             mockEnv.Setup(repository => repository.Source).Returns(mockEnvironmentModel.Object);
@@ -154,6 +154,8 @@ namespace Dev2.Core.Tests
         {
             var models = new List<IServer> { EnvironmentModel.Object };
             var mock = new Mock<IServerRepository>();
+            CustomContainer.DeRegister<IServerRepository>();
+            CustomContainer.Register(mock.Object);
             mock.Setup(s => s.All()).Returns(models);
             mock.Setup(s => s.Source).Returns(EnvironmentModel.Object);
             mock.Setup(repo => repo.Get(It.IsAny<Guid>())).Returns(EnvironmentModel.Object);

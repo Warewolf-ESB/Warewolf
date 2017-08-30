@@ -145,8 +145,8 @@ namespace Dev2.Workspaces
             }
             catch (Exception ex)
             {
-                Dev2Logger.Error(ex.Message);
                 workspaceID = ServerWorkspaceID;
+                Dev2Logger.Error(ex.Message, workspaceID.ToString());
             }
             return workspaceID;
         }
@@ -294,7 +294,7 @@ namespace Dev2.Workspaces
                         catch(Exception ex)
                         
                         {
-                            Dev2Logger.Error(ex);
+                            Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
                             // Deserialization failed so overwrite with new one.
                         }
                     }
@@ -374,7 +374,7 @@ namespace Dev2.Workspaces
                         catch(Exception ex)
                         
                         {
-                            Dev2Logger.Error("WorkspaceRepository", ex);
+                            Dev2Logger.Error("WorkspaceRepository", ex, GlobalConstants.WarewolfError);
                             // Deserialization failed so overwrite with new one.
                         }
                     }

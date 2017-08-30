@@ -140,7 +140,7 @@ namespace Dev2.Activities.Sharepoint
                                     }
                                     catch (Exception e)
                                     {
-                                        Dev2Logger.Error(e);
+                                        Dev2Logger.Error(e, GlobalConstants.WarewolfError);
                                         //Ignore sharepoint exception on retrieval not all fields can be retrieved.
                                     }
                                     var correctedVariable = variableName;
@@ -160,7 +160,7 @@ namespace Dev2.Activities.Sharepoint
             }
             catch (Exception e)
             {
-                Dev2Logger.Error("SharepointReadListActivity", e);
+                Dev2Logger.Error("SharepointReadListActivity", e, GlobalConstants.WarewolfError);
                 allErrors.AddError(e.Message);
             }
             finally
@@ -284,7 +284,7 @@ namespace Dev2.Activities.Sharepoint
                     if (!string.IsNullOrEmpty(fieldName))
                     {
                         AddDebugItem(new DebugEvalResult(fieldName, "Field Name", env, update), debugItem);
-                        //AddDebugItem(new DebugItemStaticDataParams(varDebug.FieldName, "Field Name"), debugItem);
+
                     }
                     var searchType = varDebug.SearchType;
                     if (!string.IsNullOrEmpty(searchType))

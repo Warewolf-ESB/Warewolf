@@ -372,7 +372,8 @@ namespace Warewolf.UIBindingTests.PostGreSource
             errorMessage = "Exception: " + loginFailedForUserTest + Environment.NewLine + Environment.NewLine +
                            "Inner Exception: " + loginFailedForUserTest;
             var viewModel = ScenarioContext.Current.Get<ManagePostgreSqlSourceViewModel>("viewModel");
-            Assert.AreEqual(errorMessage, viewModel.TestMessage);
+            var contains = viewModel.TestMessage.Contains(loginFailedForUserTest);
+            Assert.IsTrue(contains);
         }
 
 

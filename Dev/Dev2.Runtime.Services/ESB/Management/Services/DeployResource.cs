@@ -73,10 +73,10 @@ namespace Dev2.Runtime.ESB.Management.Services
                 throw new InvalidDataContractException("SavePath is missing");
             }
             values.TryGetValue("ResourceDefinition", out resourceDefinition);
-            Dev2Logger.Info("Deploy Resource.");
+            Dev2Logger.Info("Deploy Resource.", GlobalConstants.WarewolfInfo);
             if(resourceDefinition == null || resourceDefinition.Length == 0)
             {
-                Dev2Logger.Info("Roles or ResourceDefinition missing");
+                Dev2Logger.Info("Roles or ResourceDefinition missing", GlobalConstants.WarewolfInfo);
                 throw new InvalidDataContractException("Roles or ResourceDefinition missing");
             }
 

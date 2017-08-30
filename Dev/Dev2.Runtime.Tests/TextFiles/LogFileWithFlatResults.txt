@@ -1,0 +1,1013 @@
+﻿[Header]
+2017-05-25 11:56:02,717 [Warewolf Info] INFO  - Loading settings provider...  
+2017-05-25 11:56:02,723 [Warewolf Info] INFO  - done.
+2017-05-25 11:56:02,751 [Warewolf Info] INFO  - Configure logging...  
+2017-05-25 11:56:02,765 [Warewolf Info] INFO  - done.
+2017-05-25 11:56:02,814 [Warewolf Info] INFO  - Loading resource catalog...  
+2017-05-25 11:56:04,589 [Warewolf Debug] DEBUG - Resource 'Remote Connection Integration' from file 'C:\ProgramData\Warewolf\Resources\Remote Connection Integration.xml' wasn't loaded because a resource with the same name has already been loaded from file 'C:\ProgramData\Warewolf\Resources\Acceptance Testing Resources\Remote Connection Integration.xml'.
+2017-05-25 11:56:04,915 [Warewolf Info] INFO  - done.
+2017-05-25 11:56:05,737 [Warewolf Debug] INFO  - SecurityServiceRead
+2017-05-25 11:56:05,740 [Warewolf Debug] DEBUG - Start Security Read
+2017-05-25 11:56:06,017 [Warewolf Info] INFO  - SecurityServiceRaisePermissionsModified
+2017-05-25 11:56:06,017 [Warewolf Info] INFO  - SecurityServiceRaisePermissionsModified
+2017-05-25 11:56:06,017 [Warewolf Error] INFO  - SecurityServiceRaisePermissionsChanged
+2017-05-25 11:56:06,017 [Warewolf Error] INFO  - SecurityServiceRaisePermissionsChanged
+2017-05-25 11:56:06,017 [Warewolf Error] INFO  - SecurityServiceRead
+2017-05-25 11:56:06,076 [Warewolf Error] ERROR - System.NullReferenceException: Object reference not set to an instance of an object.
+   at Dev2.Runtime.Security.ServerAuthorizationService..ctor(ISecurityService securityService) in C:\Warewolf-ESB\Dev\Dev2.Runtime.Services\Security\ServerAuthorizationService.cs:line 49
+2017-05-25 11:56:06,176 [Warewolf Info] INFO  - 
+Web Server Started
+2017-05-25 11:56:06,176 [Warewolf Info] INFO  - Web server listening at http://*:3142/
+2017-05-25 11:56:06,176 [Warewolf Info] INFO  - Web server listening at https://*:3143/
+2017-05-25 11:56:06,868 [Warewolf Info] INFO  - Loading server workspace...  
+2017-05-25 11:56:06,884 [Warewolf Info] INFO  - done.
+2017-05-25 11:56:06,892 [Warewolf Info] INFO  - Preloading assemblies...  
+2017-05-25 11:56:07,487 [Warewolf Debug] INFO  - done.
+2017-05-25 11:56:07,487 [Warewolf Debug] INFO  - Loading resource activity cache...  
+2017-05-25 11:56:07,490 [Warewolf Debug] DEBUG - Fetching Execution Plan for 499a1606-1e70-4c83-a75b-d594ccfaa1ac for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:07,499 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:07,571 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:07,575 [Warewolf Debug] DEBUG - Getting Dynamic Objects
+2017-05-25 11:56:07,724 [Warewolf Debug] DEBUG - Fetching Execution Plan for 3f70d2b5-97d3-4f0d-91c6-de333f633c15 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:07,725 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:07,741 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:07,741 [Warewolf Debug] DEBUG - Getting Dynamic Objects
+2017-05-25 11:56:07,850 [Warewolf Debug] DEBUG - Fetching Execution Plan for 07c3665e-6fc6-4493-9caa-5d4ca137174c for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:07,856 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:07,878 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:07,878 [Warewolf Debug] DEBUG - Getting Dynamic Objects
+2017-05-25 11:56:07,974 [Warewolf Debug] DEBUG - Fetching Execution Plan for a3bedd6e-c1d3-4051-a165-e8febd75b073 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:07,975 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:08,008 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:08,008 [Warewolf Debug] DEBUG - Getting Dynamic Objects
+2017-05-25 11:56:08,017 [Warewolf Debug] DEBUG - Fetching Execution Plan for 95073c7d-87e7-408f-84c4-6ddfde5231ad for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:08,018 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:08,028 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:08,028 [Warewolf Debug] DEBUG - Getting Dynamic Objects
+2017-05-25 11:56:08,081 [Warewolf Debug] DEBUG - Fetching Execution Plan for 10fd0ac7-cbdf-49eb-9ff5-66250ecf3961 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:08,082 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:08,105 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:08,106 [Warewolf Debug] DEBUG - Getting Dynamic Objects
+2017-05-25 11:56:08,126 [Warewolf Debug] DEBUG - Fetching Execution Plan for fbf12c6a-549c-46c6-9d69-543cfdb7c386 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:08,127 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:08,135 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:08,135 [Warewolf Debug] DEBUG - Getting Dynamic Objects
+2017-05-25 11:56:08,140 [Warewolf Debug] DEBUG - Fetching Execution Plan for 9a90923a-f6b1-4e91-bc39-e8658e76234c for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:08,141 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:08,141 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:08,141 [Warewolf Debug] DEBUG - Fetching Execution Plan for 42d31e43-69a1-4f18-996e-7c3f24baf7ba for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:08,141 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:08,155 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:08,155 [Warewolf Debug] DEBUG - Getting Dynamic Objects
+2017-05-25 11:56:08,196 [Warewolf Error] ERROR - System.Activities.InvalidWorkflowException: The following errors were encountered while processing the workflow tree:
+'DynamicActivity': The private implementation of activity '1: DynamicActivity' has the following validation error:   Flowchart 'WorkflowWithNoStartNodeConnected' does not have a StartNode.
+   at System.Activities.Validation.ActivityValidationServices.ThrowIfViolationsExist(IList`1 validationErrors, ExceptionReason reason)
+   at System.Activities.WorkflowInspectionServices.<GetActivities>d__3.MoveNext()
+   at System.Linq.Enumerable.FirstOrDefault[TSource](IEnumerable`1 source)
+   at Dev2.Activities.ActivityParser.Parse(DynamicActivity dynamicActivity, List`1 seenActivities) in C:\Warewolf-ESB\Dev\Dev2.Activities\Activities\ActivityParser.cs:line 51
+2017-05-25 11:56:08,229 [(null)] ERROR - System.Activities.InvalidWorkflowException: The following errors were encountered while processing the workflow tree:
+'DynamicActivity': The private implementation of activity '1: DynamicActivity' has the following validation error:   Flowchart 'WorkflowWithNoStartNodeConnected' does not have a StartNode.
+   at System.Activities.Validation.ActivityValidationServices.ThrowIfViolationsExist(IList`1 validationErrors, ExceptionReason reason)
+   at System.Activities.WorkflowInspectionServices.<GetActivities>d__3.MoveNext()
+   at System.Linq.Enumerable.FirstOrDefault[TSource](IEnumerable`1 source)
+   at Dev2.Activities.ActivityParser.Parse(DynamicActivity dynamicActivity, List`1 seenActivities) in C:\Warewolf-ESB\Dev\Dev2.Activities\Activities\ActivityParser.cs:line 51
+   at Dev2.Activities.ActivityParser.Parse(DynamicActivity dynamicActivity) in C:\Warewolf-ESB\Dev\Dev2.Activities\Activities\ActivityParser.cs:line 171
+   at Warewolf.ResourceManagement.ResourceActivityCache.Parse(DynamicActivity activity, Guid resourceIdGuid, Boolean failOnException) in C:\Warewolf-ESB\Dev\Warewolf.ResourceManagement\ResourceActivityCache.cs:line 35
+2017-05-25 11:56:08,232 [Warewolf Debug] DEBUG - Fetching Execution Plan for e296f78f-27ec-40de-817a-0e874528050e for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:08,232 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:08,270 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:08,270 [Warewolf Debug] DEBUG - Getting Dynamic Objects
+2017-05-25 11:56:08,309 [Warewolf Debug] DEBUG - Fetching Execution Plan for 8ad6609e-2365-455e-806e-09b238e58f6f for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:08,310 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:08,324 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:08,324 [Warewolf Debug] DEBUG - Getting Dynamic Objects
+2017-05-25 11:56:08,429 [Warewolf Debug] DEBUG - Fetching Execution Plan for 58cdaa9f-9134-4f97-ab25-226c09f0b0c9 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:08,430 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:08,441 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:08,441 [Warewolf Debug] DEBUG - Getting Dynamic Objects
+2017-05-25 11:56:08,448 [Warewolf Debug] DEBUG - Fetching Execution Plan for 7cc40b46-9977-497a-acd5-da3dbd324b81 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:08,448 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:08,448 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:08,448 [Warewolf Debug] DEBUG - Getting Dynamic Objects
+2017-05-25 11:56:08,452 [Warewolf Debug] DEBUG - Fetching Execution Plan for 1f5d42ba-67b3-47ea-8bf6-cd48b0f3d131 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:08,453 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:08,461 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:08,461 [Warewolf Debug] DEBUG - Getting Dynamic Objects
+2017-05-25 11:56:08,467 [Warewolf Debug] DEBUG - Fetching Execution Plan for 6d52b9ef-1305-4655-8cde-fc36fb4745ad for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:08,468 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:08,476 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:08,476 [Warewolf Debug] DEBUG - Getting Dynamic Objects
+2017-05-25 11:56:08,481 [Warewolf Debug] DEBUG - Fetching Execution Plan for ebd4b225-f44a-4faa-8e01-fcf5bd69d56c for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:08,482 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:08,490 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:08,490 [Warewolf Debug] DEBUG - Getting Dynamic Objects
+2017-05-25 11:56:08,496 [Warewolf Debug] DEBUG - Fetching Execution Plan for 2e1f05ae-974a-401f-9e06-0863747f4d9f for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:08,497 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:08,497 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:08,497 [Warewolf Debug] DEBUG - Getting Dynamic Objects
+2017-05-25 11:56:08,501 [Warewolf Debug] DEBUG - Fetching Execution Plan for 41617daa-509e-40eb-aa76-b0827028721d for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:08,502 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:08,591 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:08,591 [Warewolf Debug] DEBUG - Getting Dynamic Objects
+2017-05-25 11:56:08,606 [Warewolf Debug] DEBUG - Fetching Execution Plan for 3182dad0-339e-4a0c-926b-4417f7deea46 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:08,607 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:08,678 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:08,678 [Warewolf Debug] DEBUG - Getting Dynamic Objects
+2017-05-25 11:56:08,692 [Warewolf Debug] DEBUG - Fetching Execution Plan for 0102103e-3a30-48df-b49f-20b008618c9d for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:08,693 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:08,704 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:08,704 [Warewolf Debug] DEBUG - Getting Dynamic Objects
+2017-05-25 11:56:08,713 [Warewolf Debug] DEBUG - Fetching Execution Plan for b8e90a2b-6e79-4fd7-b606-47c0e313dfb6 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:08,714 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:08,756 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:08,756 [Warewolf Debug] DEBUG - Getting Dynamic Objects
+2017-05-25 11:56:08,772 [Warewolf Debug] DEBUG - Fetching Execution Plan for 3136e75d-cdea-4d8c-a89e-4beccb5c8534 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:08,773 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:08,773 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:08,773 [Warewolf Debug] DEBUG - Getting Dynamic Objects
+2017-05-25 11:56:08,778 [Warewolf Debug] DEBUG - Fetching Execution Plan for 0357cc44-b84e-47cf-9c85-1147367f95a8 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:08,778 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:08,786 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:08,787 [Warewolf Debug] DEBUG - Getting Dynamic Objects
+2017-05-25 11:56:08,792 [Warewolf Debug] DEBUG - Fetching Execution Plan for 770f9978-d926-46e9-8ea9-b0b7c1a57104 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:08,792 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:08,802 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:08,802 [Warewolf Debug] DEBUG - Getting Dynamic Objects
+2017-05-25 11:56:08,808 [Warewolf Debug] DEBUG - Fetching Execution Plan for 7e308523-3403-46a4-9095-3364d7c42259 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:08,808 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:08,818 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:08,818 [Warewolf Debug] DEBUG - Getting Dynamic Objects
+2017-05-25 11:56:08,823 [Warewolf Debug] DEBUG - Fetching Execution Plan for 72f7ba25-275d-4bf1-a5b0-3676b6cadd21 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:08,824 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:08,825 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:08,825 [Warewolf Debug] DEBUG - Fetching Execution Plan for 09dbd47e-50cf-4741-9a35-3e7efc12133b for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:08,825 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:08,825 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:08,825 [Warewolf Debug] DEBUG - Fetching Execution Plan for 532ba82d-794f-42a6-949f-be6a941fdf1e for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:08,827 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:08,827 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:08,827 [Warewolf Debug] DEBUG - Fetching Execution Plan for b69d9560-52a7-4711-8d11-deb187baba89 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:08,828 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:08,828 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:08,828 [Warewolf Debug] DEBUG - Fetching Execution Plan for db7547a9-6b66-4b42-884b-f4605f39d24d for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:08,828 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:08,839 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:08,839 [Warewolf Debug] DEBUG - Getting Dynamic Objects
+2017-05-25 11:56:08,844 [Warewolf Debug] DEBUG - Fetching Execution Plan for 8caee650-caaa-4464-8b0d-6aacb222fcde for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:08,845 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:08,845 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:08,845 [Warewolf Debug] DEBUG - Getting Dynamic Objects
+2017-05-25 11:56:08,848 [Warewolf Debug] DEBUG - Fetching Execution Plan for 2b16b13f-fc23-4c50-9766-0f6a9f76b5c4 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:08,848 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:08,857 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:08,857 [Warewolf Debug] DEBUG - Getting Dynamic Objects
+2017-05-25 11:56:08,864 [Warewolf Debug] DEBUG - Fetching Execution Plan for 86ae73bd-4a17-4e13-b143-97612dc64937 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:08,864 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:08,885 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:08,885 [Warewolf Debug] DEBUG - Getting Dynamic Objects
+2017-05-25 11:56:08,891 [Warewolf Debug] DEBUG - Fetching Execution Plan for 3775413b-aaf0-4bd4-923a-126aa2bd3ac4 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:08,892 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:08,959 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:08,959 [Warewolf Debug] DEBUG - Getting Dynamic Objects
+2017-05-25 11:56:08,983 [Warewolf Debug] DEBUG - Fetching Execution Plan for 538baa30-32f3-48e9-b887-e7d47ce888cf for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:08,984 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:09,122 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:09,122 [Warewolf Debug] DEBUG - Getting Dynamic Objects
+2017-05-25 11:56:09,236 [Warewolf Error] ERROR - System.Xaml.XamlObjectWriterException: Cannot set unknown member 'Dev2.Activities.EmailSender.EmailSource'.
+   at System.Xaml.XamlObjectWriter.WriteStartMember(XamlMember property)
+   at System.Xaml.XamlServices.Transform(XamlReader xamlReader, XamlWriter xamlWriter, Boolean closeWriter)
+   at System.Activities.XamlIntegration.FuncFactory`1.Evaluate()
+   at System.Activities.DynamicActivity.OnInternalCacheMetadata(Boolean createEmptyBindings)
+   at System.Activities.Activity.InternalCacheMetadata(Boolean createEmptyBindings, IList`1& validationErrors)
+   at System.Activities.ActivityUtilities.ProcessActivity(ChildActivity childActivity, ChildActivity& nextActivity, Stack`1& activitiesRemaining, ActivityCallStack parentChain, IList`1& validationErrors, ProcessActivityTreeOptions options, ProcessActivityCallback callback)
+   at System.Activities.ActivityUtilities.ProcessActivityTreeCore(ChildActivity currentActivity, ActivityCallStack parentChain, ProcessActivityTreeOptions options, ProcessActivityCallback callback, IList`1& validationErrors)
+   at System.Activities.ActivityUtilities.CacheRootMetadata(Activity activity, LocationReferenceEnvironment hostEnvironment, ProcessActivityTreeOptions options, ProcessActivityCallback callback, IList`1& validationErrors)
+   at System.Activities.WorkflowInspectionServices.<GetActivities>d__3.MoveNext()
+   at System.Linq.Enumerable.FirstOrDefault[TSource](IEnumerable`1 source)
+   at Dev2.Activities.ActivityParser.Parse(DynamicActivity dynamicActivity, List`1 seenActivities) in C:\Warewolf-ESB\Dev\Dev2.Activities\Activities\ActivityParser.cs:line 23
+   at Dev2.Activities.ActivityParser.Parse(DynamicActivity dynamicActivity) in C:\Warewolf-ESB\Dev\Dev2.Activities\Activities\ActivityParser.cs:line 171
+   at Warewolf.ResourceManagement.ResourceActivityCache.Parse(DynamicActivity activity, Guid resourceIdGuid, Boolean failOnException) in C:\Warewolf-ESB\Dev\Warewolf.ResourceManagement\ResourceActivityCache.cs:line 35
+2017-05-25 11:56:09,238 [Warewolf Debug] DEBUG - Fetching Execution Plan for af4219a2-cfa2-4d57-b0b7-4d538840ba38 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:09,239 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:09,260 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:09,260 [Warewolf Debug] DEBUG - Getting Dynamic Objects
+2017-05-25 11:56:09,268 [Warewolf Debug] DEBUG - Fetching Execution Plan for f8b55bd8-e0d1-4258-85ab-210d7a59116a for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:09,269 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:09,269 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:09,269 [Warewolf Debug] DEBUG - Fetching Execution Plan for 97d6272e-15a1-483f-afdb-a076f602604f for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:09,276 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:09,276 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:09,276 [Warewolf Debug] DEBUG - Fetching Execution Plan for b1c12282-1712-419c-9929-5dfe42c90210 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:09,313 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:09,313 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:09,313 [Warewolf Debug] DEBUG - Fetching Execution Plan for f8b1a579-2394-489e-835e-21b42e304e09 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:09,314 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:09,314 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:09,314 [Warewolf Debug] DEBUG - Fetching Execution Plan for ad08beb0-9e5d-4270-af8d-43abd953afbd for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:09,314 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:09,314 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:09,314 [Warewolf Debug] DEBUG - Fetching Execution Plan for b9184f70-64ea-4dc5-b23b-02fcd5f91082 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:09,315 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:09,315 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:09,315 [Warewolf Debug] DEBUG - Fetching Execution Plan for 62652f31-813a-4b97-b488-02e4c16150ff for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:09,316 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:09,316 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:09,316 [Warewolf Debug] DEBUG - Fetching Execution Plan for ebba47dc-e5d4-4303-a203-09e2e9761d16 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:09,316 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:09,316 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:09,316 [Warewolf Debug] DEBUG - Fetching Execution Plan for 78899836-7c8f-4a8e-8c0a-b45eba3a522e for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:09,317 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:09,317 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:09,317 [Warewolf Debug] DEBUG - Fetching Execution Plan for 94d4b4ca-31e1-494d-886b-cd94224c9a8b for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:09,318 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:09,318 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:09,318 [Warewolf Debug] DEBUG - Fetching Execution Plan for 3032b7fd-f12a-4ab8-be7d-2f4705c31317 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:09,319 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:09,319 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:09,319 [Warewolf Debug] DEBUG - Fetching Execution Plan for e541d860-cd10-4aec-b2fe-79eca3c62c25 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:09,320 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:09,320 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:09,320 [Warewolf Debug] DEBUG - Fetching Execution Plan for ab4d5ab5-ad44-421d-8125-adfcc3aa655b for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:09,320 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:09,320 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:09,320 [Warewolf Debug] DEBUG - Fetching Execution Plan for 0fb49fec-e454-4357-a06f-08f329558b18 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:09,321 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:09,321 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:09,321 [Warewolf Debug] DEBUG - Fetching Execution Plan for dc163197-7a76-4f4c-a783-69d6d53b2f3a for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:09,322 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:09,322 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:09,322 [Warewolf Debug] DEBUG - Fetching Execution Plan for ed7c3655-4922-4f24-9881-83462661832d for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:09,322 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:09,322 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:09,322 [Warewolf Debug] DEBUG - Fetching Execution Plan for 33000f45-a656-4b4e-9a9f-b0981bb79739 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:09,323 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:09,323 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:09,323 [Warewolf Debug] DEBUG - Fetching Execution Plan for 83b698ee-296a-4b70-b3e6-d4c57ef33aa1 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:09,323 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:09,338 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:09,338 [Warewolf Debug] DEBUG - Getting Dynamic Objects
+2017-05-25 11:56:09,345 [Warewolf Debug] DEBUG - Fetching Execution Plan for 07ff7162-cead-4167-b295-219d4a5c3ec9 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:09,346 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:09,356 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:09,356 [Warewolf Debug] DEBUG - Getting Dynamic Objects
+2017-05-25 11:56:09,365 [Warewolf Debug] DEBUG - Fetching Execution Plan for 184c472e-0157-47be-b5f7-99b7f0ce2f8b for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:09,365 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:09,382 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:09,382 [Warewolf Debug] DEBUG - Getting Dynamic Objects
+2017-05-25 11:56:09,389 [Warewolf Debug] DEBUG - Fetching Execution Plan for b05ebf4a-147c-4d27-a2a3-0bedfefed6a6 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:09,390 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:09,412 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:09,412 [Warewolf Debug] DEBUG - Getting Dynamic Objects
+2017-05-25 11:56:09,420 [Warewolf Debug] DEBUG - Fetching Execution Plan for ad43ad77-a89a-4fe5-9568-3a5395f7b46b for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:09,421 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:09,421 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:09,421 [Warewolf Debug] DEBUG - Fetching Execution Plan for 9781ccc4-c5d2-4dfd-9149-0c652ceaee1f for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:09,421 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:09,421 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:09,421 [Warewolf Debug] DEBUG - Fetching Execution Plan for e7ea5196-33f7-4e0e-9d66-44bd67528a96 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:09,422 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:09,432 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:09,432 [Warewolf Debug] DEBUG - Getting Dynamic Objects
+2017-05-25 11:56:09,436 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:09,447 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:09,448 [Warewolf Debug] DEBUG - Fetching Execution Plan for 83836461-af13-4fee-b0b8-a286651515ae for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:09,448 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:09,498 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:09,498 [Warewolf Debug] DEBUG - Getting Dynamic Objects
+2017-05-25 11:56:09,503 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:09,550 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:09,557 [Warewolf Debug] DEBUG - Fetching Execution Plan for 0916b04d-d4e9-4bdc-ae61-4eb93df2f374 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:09,558 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:09,558 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:09,558 [Warewolf Debug] DEBUG - Fetching Execution Plan for 13dafbb7-f4c1-40cc-8334-e11661fdc989 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:09,559 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:09,574 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:09,574 [Warewolf Debug] DEBUG - Getting Dynamic Objects
+2017-05-25 11:56:09,577 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:09,588 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:09,593 [Warewolf Debug] DEBUG - Fetching Execution Plan for 0003e31f-38bb-4ae7-9617-14fec77e30fd for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:09,595 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:09,595 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:09,595 [Warewolf Debug] DEBUG - Fetching Execution Plan for 8b75c386-cff2-432f-8033-194fdf75f716 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:09,595 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:09,596 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:09,596 [Warewolf Debug] DEBUG - Fetching Execution Plan for 0bdc3207-ff6b-4c01-a5eb-c7060222f75d for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:09,597 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:09,661 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:09,661 [Warewolf Debug] DEBUG - Getting Dynamic Objects
+2017-05-25 11:56:09,665 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:09,726 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:09,832 [Warewolf Debug] DEBUG - Fetching Execution Plan for 9e9660d8-1a3c-45ab-a330-673c2343e517 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:09,833 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:09,885 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:09,885 [Warewolf Debug] DEBUG - Getting Dynamic Objects
+2017-05-25 11:56:09,889 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:09,935 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:09,950 [Warewolf Debug] DEBUG - Fetching Execution Plan for 2314142b-98be-479e-b10b-1847c774355d for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:09,951 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:09,959 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:09,959 [Warewolf Debug] DEBUG - Getting Dynamic Objects
+2017-05-25 11:56:09,964 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:09,972 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:10,002 [(null)] ERROR - System.Activities.InvalidWorkflowException: The following errors were encountered while processing the workflow tree:
+'DynamicActivity': The private implementation of activity '1: DynamicActivity' has the following validation error:   Flowchart 'CreateTestFromDebugButtonDisabledOnUnsavedWorkflow' does not have a StartNode.
+   at System.Activities.Validation.ActivityValidationServices.ThrowIfViolationsExist(IList`1 validationErrors, ExceptionReason reason)
+   at System.Activities.WorkflowInspectionServices.<GetActivities>d__3.MoveNext()
+   at System.Linq.Enumerable.FirstOrDefault[TSource](IEnumerable`1 source)
+   at Dev2.Activities.ActivityParser.Parse(DynamicActivity dynamicActivity, List`1 seenActivities) in C:\Warewolf-ESB\Dev\Dev2.Activities\Activities\ActivityParser.cs:line 23
+2017-05-25 11:56:10,032 [Warewolf Error] ERROR - System.Activities.InvalidWorkflowException: The following errors were encountered while processing the workflow tree:
+'DynamicActivity': The private implementation of activity '1: DynamicActivity' has the following validation error:   Flowchart 'CreateTestFromDebugButtonDisabledOnUnsavedWorkflow' does not have a StartNode.
+   at System.Activities.Validation.ActivityValidationServices.ThrowIfViolationsExist(IList`1 validationErrors, ExceptionReason reason)
+   at System.Activities.WorkflowInspectionServices.<GetActivities>d__3.MoveNext()
+   at System.Linq.Enumerable.FirstOrDefault[TSource](IEnumerable`1 source)
+   at Dev2.Activities.ActivityParser.Parse(DynamicActivity dynamicActivity, List`1 seenActivities) in C:\Warewolf-ESB\Dev\Dev2.Activities\Activities\ActivityParser.cs:line 51
+   at Dev2.Activities.ActivityParser.Parse(DynamicActivity dynamicActivity) in C:\Warewolf-ESB\Dev\Dev2.Activities\Activities\ActivityParser.cs:line 171
+   at Warewolf.ResourceManagement.ResourceActivityCache.Parse(DynamicActivity activity, Guid resourceIdGuid, Boolean failOnException) in C:\Warewolf-ESB\Dev\Warewolf.ResourceManagement\ResourceActivityCache.cs:line 35
+2017-05-25 11:56:10,033 [Warewolf Debug] DEBUG - Fetching Execution Plan for 160f5e24-6e63-481a-ac20-1eb17a903d01 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:10,034 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:10,034 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:10,034 [Warewolf Debug] DEBUG - Fetching Execution Plan for a28ddff1-3dff-4c69-b04d-67c633f63721 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:10,035 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:10,036 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:10,036 [Warewolf Debug] DEBUG - Getting Dynamic Objects
+2017-05-25 11:56:10,039 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:10,039 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:10,039 [Warewolf Debug] DEBUG - Fetching Execution Plan for 99331c23-385b-4da7-abeb-c429f25735c1 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:10,040 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:10,048 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:10,048 [Warewolf Debug] DEBUG - Getting Dynamic Objects
+2017-05-25 11:56:10,052 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:10,059 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:10,096 [Warewolf Debug] DEBUG - Fetching Execution Plan for 468f6974-769d-4c1a-9b3a-333b46afd6b9 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:10,097 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:10,105 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:10,105 [Warewolf Debug] DEBUG - Getting Dynamic Objects
+2017-05-25 11:56:10,109 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:10,117 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:10,118 [Warewolf Debug] DEBUG - Fetching Execution Plan for 5b9fc8cb-db6c-402f-9bbb-e1b164bacc79 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:10,119 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:10,129 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:10,129 [Warewolf Debug] DEBUG - Getting Dynamic Objects
+2017-05-25 11:56:10,133 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:10,143 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:10,144 [Warewolf Debug] DEBUG - Fetching Execution Plan for 73a8858e-cd2b-4d05-852a-be7f248de116 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:10,145 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:10,155 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:10,155 [Warewolf Debug] DEBUG - Getting Dynamic Objects
+2017-05-25 11:56:10,159 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:10,169 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:10,170 [Warewolf Debug] DEBUG - Fetching Execution Plan for 682c3af4-36da-4e1a-8b63-cd3686a01fc6 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:10,171 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:10,171 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:10,171 [Warewolf Debug] DEBUG - Fetching Execution Plan for e072be75-8ed8-44b6-a534-28496fef1359 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:10,171 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:10,194 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:10,194 [Warewolf Debug] DEBUG - Getting Dynamic Objects
+2017-05-25 11:56:10,198 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:10,214 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:10,222 [Warewolf Debug] DEBUG - Fetching Execution Plan for 802a20e8-4e7c-46ed-afc9-2e6a1ed8f12e for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:10,223 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:10,236 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:10,236 [Warewolf Debug] DEBUG - Getting Dynamic Objects
+2017-05-25 11:56:10,240 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:10,253 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:10,254 [Warewolf Debug] DEBUG - Fetching Execution Plan for 7350d937-8102-4568-ab03-26aa17be2856 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:10,255 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:10,269 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:10,269 [Warewolf Debug] DEBUG - Getting Dynamic Objects
+2017-05-25 11:56:10,273 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:10,287 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:10,288 [Warewolf Debug] DEBUG - Fetching Execution Plan for c78a3436-e895-4efc-b849-b1d7f9e5a0e9 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:10,288 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:10,299 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:10,299 [Warewolf Debug] DEBUG - Getting Dynamic Objects
+2017-05-25 11:56:10,303 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:10,313 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:10,314 [Warewolf Debug] DEBUG - Fetching Execution Plan for dbf66ac8-bec0-444d-82c6-6ab1ecffb92c for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:10,315 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:10,325 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:10,325 [Warewolf Debug] DEBUG - Getting Dynamic Objects
+2017-05-25 11:56:10,329 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:10,337 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:10,340 [Warewolf Debug] DEBUG - Fetching Execution Plan for 78a7d23b-c703-44ee-bf3a-ebf1fa5ec4cb for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:10,341 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:10,341 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:10,341 [Warewolf Debug] DEBUG - Fetching Execution Plan for 7c928096-42b2-4717-826a-55a47d4596be for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:10,342 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:10,370 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:10,370 [Warewolf Debug] DEBUG - Getting Dynamic Objects
+2017-05-25 11:56:10,374 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:10,399 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:10,402 [Warewolf Debug] DEBUG - Fetching Execution Plan for acdce7cf-c381-4b17-a760-6add19b89343 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:10,403 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:10,426 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:10,426 [Warewolf Debug] DEBUG - Getting Dynamic Objects
+2017-05-25 11:56:10,431 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:10,456 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:10,459 [Warewolf Debug] DEBUG - Fetching Execution Plan for a0478679-7a95-4248-8c6b-d05ecc5ee246 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:10,460 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:10,460 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:10,460 [Warewolf Debug] DEBUG - Fetching Execution Plan for c5381f15-c5e5-41a9-b322-ab7b2a891aa5 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:10,461 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:10,481 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:10,481 [Warewolf Debug] DEBUG - Getting Dynamic Objects
+2017-05-25 11:56:10,486 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:10,505 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:10,508 [Warewolf Debug] DEBUG - Fetching Execution Plan for cb1e9256-95e8-4479-a223-10555b904bce for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:10,508 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:10,518 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:10,518 [Warewolf Debug] DEBUG - Getting Dynamic Objects
+2017-05-25 11:56:10,523 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:10,532 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:10,534 [Warewolf Debug] DEBUG - Fetching Execution Plan for cea78c88-b579-49b6-8b50-8c156ff874f7 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:10,535 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:10,571 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:10,571 [Warewolf Debug] DEBUG - Getting Dynamic Objects
+2017-05-25 11:56:10,576 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:10,612 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:10,618 [Warewolf Debug] DEBUG - Fetching Execution Plan for acb75027-ddeb-47d7-814e-a54c37247ec1 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:10,619 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:10,642 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:10,642 [Warewolf Debug] DEBUG - Getting Dynamic Objects
+2017-05-25 11:56:10,647 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:10,671 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:10,673 [Warewolf Debug] DEBUG - Fetching Execution Plan for 10fb2ed4-6d0e-4076-b7d3-3b2aa8135f08 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:10,674 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:10,700 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:10,700 [Warewolf Debug] DEBUG - Getting Dynamic Objects
+2017-05-25 11:56:10,704 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:10,729 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:10,732 [Warewolf Debug] DEBUG - Fetching Execution Plan for 9b914373-47e4-4cc5-a169-95e8c21c8efe for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:10,733 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:10,747 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:10,747 [Warewolf Debug] DEBUG - Getting Dynamic Objects
+2017-05-25 11:56:10,752 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:10,765 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:10,765 [Warewolf Debug] DEBUG - Fetching Execution Plan for 9ceae9ff-6689-4bf9-b0a8-e11e1d73421e for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:10,767 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:10,767 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:10,767 [Warewolf Debug] DEBUG - Getting Dynamic Objects
+2017-05-25 11:56:10,771 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:10,772 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:10,772 [Warewolf Debug] DEBUG - Fetching Execution Plan for eb7f47e6-053b-4ca0-9404-ecbdd4e64814 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:10,772 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:10,781 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:10,781 [Warewolf Debug] DEBUG - Getting Dynamic Objects
+2017-05-25 11:56:10,786 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:10,797 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:10,799 [Warewolf Debug] DEBUG - Fetching Execution Plan for 034484d9-7617-4c7e-9373-c65794f56545 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:10,800 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:10,800 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:10,800 [Warewolf Debug] DEBUG - Getting Dynamic Objects
+2017-05-25 11:56:10,804 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:10,804 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:10,804 [Warewolf Debug] DEBUG - Fetching Execution Plan for 12a06f6e-0df7-4b65-aa9c-16e1701af81b for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:10,805 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:10,805 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:10,805 [Warewolf Debug] DEBUG - Getting Dynamic Objects
+2017-05-25 11:56:10,808 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:10,808 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:10,808 [Warewolf Debug] DEBUG - Fetching Execution Plan for b99623d7-22f6-49ee-b38a-88689085077b for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:10,809 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:10,823 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:10,823 [Warewolf Debug] DEBUG - Getting Dynamic Objects
+2017-05-25 11:56:10,827 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:10,839 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:10,935 [Warewolf Debug] DEBUG - Fetching Execution Plan for 2252dfd0-5ecf-4376-9861-30cec1ad5836 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:10,935 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:10,943 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:10,943 [Warewolf Debug] DEBUG - Getting Dynamic Objects
+2017-05-25 11:56:10,948 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:10,956 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:10,957 [Warewolf Debug] DEBUG - Fetching Execution Plan for c75a5307-5015-4a37-bf00-68a804b41295 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:10,957 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:10,968 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:10,968 [Warewolf Debug] DEBUG - Getting Dynamic Objects
+2017-05-25 11:56:10,972 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:10,983 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:10,984 [Warewolf Debug] DEBUG - Fetching Execution Plan for 12c7fc46-ee4a-4f5c-ac2d-d3c2a85deceb for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:10,985 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:11,002 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:11,002 [Warewolf Debug] DEBUG - Getting Dynamic Objects
+2017-05-25 11:56:11,005 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:11,021 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:11,023 [Warewolf Debug] DEBUG - Fetching Execution Plan for 92b1ea72-20cf-4181-b2df-5d78c30acb0c for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:11,024 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:11,024 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:11,024 [Warewolf Debug] DEBUG - Fetching Execution Plan for a923113a-facf-4d9e-9e46-b6092c2fdf50 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:11,025 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:11,032 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:11,032 [Warewolf Debug] DEBUG - Getting Dynamic Objects
+2017-05-25 11:56:11,035 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:11,042 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:11,044 [Warewolf Debug] DEBUG - Fetching Execution Plan for a9cf9069-0558-4579-bcfd-9e9d5ce6eb4a for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:11,044 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:11,046 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:11,046 [Warewolf Debug] DEBUG - Getting Dynamic Objects
+2017-05-25 11:56:11,050 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:11,050 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:11,050 [Warewolf Debug] DEBUG - Fetching Execution Plan for a8c300e8-f53b-4851-89ee-e6f0daca72a1 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:11,051 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:11,067 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:11,067 [Warewolf Debug] DEBUG - Getting Dynamic Objects
+2017-05-25 11:56:11,070 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:11,086 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:11,089 [Warewolf Debug] DEBUG - Fetching Execution Plan for c8c98c13-9c68-4899-abe6-fd2540ba65b7 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:11,090 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:11,148 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:11,148 [Warewolf Debug] DEBUG - Getting Dynamic Objects
+2017-05-25 11:56:11,152 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:11,204 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:11,216 [Warewolf Debug] DEBUG - Fetching Execution Plan for 1d4fad35-0342-40eb-ac80-ee4ba8111aab for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:11,217 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:11,234 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:11,234 [Warewolf Debug] DEBUG - Getting Dynamic Objects
+2017-05-25 11:56:11,238 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:11,253 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:11,255 [Warewolf Debug] DEBUG - Fetching Execution Plan for ff6f5a15-3a1f-4835-82c0-01947061520e for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:11,256 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:11,275 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:11,275 [Warewolf Debug] DEBUG - Getting Dynamic Objects
+2017-05-25 11:56:11,279 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:11,299 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:11,301 [Warewolf Debug] DEBUG - Fetching Execution Plan for 1e2830ab-d368-4744-837d-38967753dee9 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:11,302 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:11,311 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:11,311 [Warewolf Debug] DEBUG - Getting Dynamic Objects
+2017-05-25 11:56:11,315 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:11,323 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:11,323 [Warewolf Debug] DEBUG - Fetching Execution Plan for 65a86a4f-fef8-49fb-990b-b4254e7572dd for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:11,324 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:11,324 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:11,324 [Warewolf Debug] DEBUG - Fetching Execution Plan for bd0b6e17-14b5-4f15-add3-e4c5d25126a0 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:11,325 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:11,349 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:11,349 [Warewolf Debug] DEBUG - Getting Dynamic Objects
+2017-05-25 11:56:11,353 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:11,375 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:11,378 [Warewolf Debug] DEBUG - Fetching Execution Plan for 7a1faef5-337f-4c53-9144-e379f4261966 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:11,379 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:11,394 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:11,394 [Warewolf Debug] DEBUG - Getting Dynamic Objects
+2017-05-25 11:56:11,398 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:11,408 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:11,413 [Warewolf Debug] DEBUG - Fetching Execution Plan for 078d7868-3edd-4ffd-9254-288ffbb9bdfe for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:11,414 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:11,414 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:11,414 [Warewolf Debug] DEBUG - Getting Dynamic Objects
+2017-05-25 11:56:11,419 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:11,419 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:11,419 [Warewolf Debug] DEBUG - Fetching Execution Plan for 15330aeb-b4f9-4dbd-96b6-1866be4f09d7 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:11,419 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:11,431 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:11,431 [Warewolf Debug] DEBUG - Getting Dynamic Objects
+2017-05-25 11:56:11,435 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:11,448 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:11,449 [Warewolf Debug] DEBUG - Fetching Execution Plan for 24f32c16-8511-44b8-bf14-be882c66b3b0 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:11,450 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:11,450 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:11,450 [Warewolf Debug] DEBUG - Getting Dynamic Objects
+2017-05-25 11:56:11,454 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:11,454 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:11,454 [Warewolf Debug] DEBUG - Fetching Execution Plan for b65bd0c2-4b17-426d-a515-3891ab8c4a93 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:11,455 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:11,513 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:11,513 [Warewolf Debug] DEBUG - Getting Dynamic Objects
+2017-05-25 11:56:11,517 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:11,573 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:11,587 [Warewolf Debug] DEBUG - Fetching Execution Plan for 0b27b860-10e4-4005-ba7a-ad1727d139bd for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:11,588 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:11,602 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:11,602 [Warewolf Debug] DEBUG - Getting Dynamic Objects
+2017-05-25 11:56:11,605 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:11,618 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:11,620 [Warewolf Debug] DEBUG - Fetching Execution Plan for 75547f6f-3b4b-4a0d-88b4-72efae3bc85f for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:11,621 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:11,842 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:11,842 [Warewolf Debug] DEBUG - Getting Dynamic Objects
+2017-05-25 11:56:11,848 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:12,083 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:12,112 [Warewolf Debug] DEBUG - Fetching Execution Plan for 71638d9f-4b43-4e42-bd8d-912b2d392653 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:12,113 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:12,121 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:12,121 [Warewolf Debug] DEBUG - Getting Dynamic Objects
+2017-05-25 11:56:12,125 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:12,133 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:12,164 [Warewolf Error] ERROR - System.Activities.InvalidWorkflowException: The following errors were encountered while processing the workflow tree:
+'DynamicActivity': The private implementation of activity '1: DynamicActivity' has the following validation error:   Flowchart 'Shortcut_Control_S_Saves_Dirty_Workflows' does not have a StartNode.
+   at System.Activities.Validation.ActivityValidationServices.ThrowIfViolationsExist(IList`1 validationErrors, ExceptionReason reason)
+   at System.Activities.WorkflowInspectionServices.<GetActivities>d__3.MoveNext()
+   at System.Linq.Enumerable.FirstOrDefault[TSource](IEnumerable`1 source)
+   at Dev2.Activities.ActivityParser.Parse(DynamicActivity dynamicActivity, List`1 seenActivities) in C:\Warewolf-ESB\Dev\Dev2.Activities\Activities\ActivityParser.cs:line 51
+2017-05-25 11:56:12,197 [Warewolf Error] ERROR - System.Activities.InvalidWorkflowException: The following errors were encountered while processing the workflow tree:
+'DynamicActivity': The private implementation of activity '1: DynamicActivity' has the following validation error:   Flowchart 'Shortcut_Control_S_Saves_Dirty_Workflows' does not have a StartNode.
+   at System.Activities.Validation.ActivityValidationServices.ThrowIfViolationsExist(IList`1 validationErrors, ExceptionReason reason)
+   at System.Activities.WorkflowInspectionServices.<GetActivities>d__3.MoveNext()
+   at System.Linq.Enumerable.FirstOrDefault[TSource](IEnumerable`1 source)
+   at Dev2.Activities.ActivityParser.Parse(DynamicActivity dynamicActivity, List`1 seenActivities) in C:\Warewolf-ESB\Dev\Dev2.Activities\Activities\ActivityParser.cs:line 51
+   at Dev2.Activities.ActivityParser.Parse(DynamicActivity dynamicActivity) in C:\Warewolf-ESB\Dev\Dev2.Activities\Activities\ActivityParser.cs:line 171
+   at Warewolf.ResourceManagement.ResourceActivityCache.Parse(DynamicActivity activity, Guid resourceIdGuid, Boolean failOnException) in C:\Warewolf-ESB\Dev\Warewolf.ResourceManagement\ResourceActivityCache.cs:line 35
+2017-05-25 11:56:12,198 [Warewolf Debug] DEBUG - Fetching Execution Plan for aaf29529-7b2d-4e7a-81b3-27cb8c40b39e for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:12,198 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:12,207 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:12,207 [Warewolf Debug] DEBUG - Getting Dynamic Objects
+2017-05-25 11:56:12,211 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:12,219 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:12,257 [Warewolf Error] ERROR - System.Activities.InvalidWorkflowException: The following errors were encountered while processing the workflow tree:
+'DynamicActivity': The private implementation of activity '1: DynamicActivity' has the following validation error:   Flowchart 'ShowVersionsTestWorkflow' does not have a StartNode.
+   at System.Activities.Validation.ActivityValidationServices.ThrowIfViolationsExist(IList`1 validationErrors, ExceptionReason reason)
+   at System.Activities.WorkflowInspectionServices.<GetActivities>d__3.MoveNext()
+   at System.Linq.Enumerable.FirstOrDefault[TSource](IEnumerable`1 source)
+   at Dev2.Activities.ActivityParser.Parse(DynamicActivity dynamicActivity, List`1 seenActivities) in C:\Warewolf-ESB\Dev\Dev2.Activities\Activities\ActivityParser.cs:line 23
+2017-05-25 11:56:12,287 [Warewolf Error] ERROR - System.Activities.InvalidWorkflowException: The following errors were encountered while processing the workflow tree:
+'DynamicActivity': The private implementation of activity '1: DynamicActivity' has the following validation error:   Flowchart 'ShowVersionsTestWorkflow' does not have a StartNode.
+   at System.Activities.Validation.ActivityValidationServices.ThrowIfViolationsExist(IList`1 validationErrors, ExceptionReason reason)
+   at System.Activities.WorkflowInspectionServices.<GetActivities>d__3.MoveNext()
+   at System.Linq.Enumerable.FirstOrDefault[TSource](IEnumerable`1 source)
+   at Dev2.Activities.ActivityParser.Parse(DynamicActivity dynamicActivity, List`1 seenActivities) in C:\Warewolf-ESB\Dev\Dev2.Activities\Activities\ActivityParser.cs:line 51
+   at Dev2.Activities.ActivityParser.Parse(DynamicActivity dynamicActivity) in C:\Warewolf-ESB\Dev\Dev2.Activities\Activities\ActivityParser.cs:line 171
+   at Warewolf.ResourceManagement.ResourceActivityCache.Parse(DynamicActivity activity, Guid resourceIdGuid, Boolean failOnException) in C:\Warewolf-ESB\Dev\Warewolf.ResourceManagement\ResourceActivityCache.cs:line 35
+2017-05-25 11:56:12,288 [Warewolf Debug] DEBUG - Fetching Execution Plan for d970025f-64e3-4e9e-9fd5-9abae652ecc0 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:12,289 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:12,299 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:12,299 [Warewolf Debug] DEBUG - Getting Dynamic Objects
+2017-05-25 11:56:12,304 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:12,314 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:12,315 [Warewolf Debug] DEBUG - Fetching Execution Plan for 9520769f-2f56-4476-ba67-144d93df3c5c for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:12,316 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:12,340 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:12,340 [Warewolf Debug] DEBUG - Getting Dynamic Objects
+2017-05-25 11:56:12,345 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:12,369 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:12,373 [Warewolf Debug] DEBUG - Fetching Execution Plan for 2bb6f8f4-1d30-44c6-8d6d-fdb92d82214a for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:12,374 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:12,498 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:12,498 [Warewolf Debug] DEBUG - Getting Dynamic Objects
+2017-05-25 11:56:12,503 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:12,615 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:12,642 [Warewolf Debug] DEBUG - Fetching Execution Plan for 622109c4-7af8-42b0-96f9-8bdf781a5531 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:12,643 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:12,667 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:12,667 [Warewolf Debug] DEBUG - Getting Dynamic Objects
+2017-05-25 11:56:12,671 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:12,695 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:12,698 [Warewolf Debug] DEBUG - Fetching Execution Plan for 0cf225a7-3af8-41a6-bdd3-a3e4bb00317a for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:12,699 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:12,707 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:12,707 [Warewolf Debug] DEBUG - Getting Dynamic Objects
+2017-05-25 11:56:12,712 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:12,782 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:12,783 [Warewolf Debug] DEBUG - Fetching Execution Plan for ffa6880d-3b24-4d34-b829-a2db45e1c664 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:12,784 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:12,784 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:12,784 [Warewolf Debug] DEBUG - Fetching Execution Plan for 2ac0f29a-638e-4f9a-a2cb-b9694087f96c for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:12,785 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:12,848 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:12,848 [Warewolf Debug] DEBUG - Getting Dynamic Objects
+2017-05-25 11:56:12,853 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:12,917 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:12,925 [Warewolf Debug] DEBUG - Fetching Execution Plan for b7169e40-b206-4b10-b8dd-a5f58d7b17e8 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:12,926 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:12,938 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:12,938 [Warewolf Debug] DEBUG - Getting Dynamic Objects
+2017-05-25 11:56:12,942 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:12,953 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:12,955 [Warewolf Debug] DEBUG - Fetching Execution Plan for adf576b3-82ee-49dc-a08f-7f55aa23752a for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:12,955 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:12,956 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:12,956 [Warewolf Debug] DEBUG - Fetching Execution Plan for f088c68c-e8e2-45ad-98e2-52bbe8b463b6 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:12,956 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:12,969 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:12,969 [Warewolf Debug] DEBUG - Getting Dynamic Objects
+2017-05-25 11:56:12,974 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:12,984 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:12,988 [Warewolf Debug] DEBUG - Fetching Execution Plan for 0bb174fb-e75a-4882-a4ef-169f0367fbad for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:12,989 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:13,053 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:13,053 [Warewolf Debug] DEBUG - Getting Dynamic Objects
+2017-05-25 11:56:13,057 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:13,123 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:13,129 [Warewolf Debug] DEBUG - Fetching Execution Plan for 0738350c-7053-48fa-9775-5010f5234b7a for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,130 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:13,144 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:13,144 [Warewolf Debug] DEBUG - Getting Dynamic Objects
+2017-05-25 11:56:13,148 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:13,163 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:13,164 [Warewolf Debug] DEBUG - Fetching Execution Plan for 73cb4ce7-e2ae-433f-89d1-764f329a6ded for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,165 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:13,187 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:13,187 [Warewolf Debug] DEBUG - Getting Dynamic Objects
+2017-05-25 11:56:13,191 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:13,213 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:13,216 [Warewolf Debug] DEBUG - Fetching Execution Plan for 8a17f8f4-8217-4417-b7e9-4ab925ce827f for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,216 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:13,230 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:13,230 [Warewolf Debug] DEBUG - Getting Dynamic Objects
+2017-05-25 11:56:13,233 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:13,246 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:13,247 [Warewolf Debug] DEBUG - Fetching Execution Plan for f5c34b8c-8f79-49a4-8132-d9bcec2165f1 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,248 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:13,273 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:13,273 [Warewolf Debug] DEBUG - Getting Dynamic Objects
+2017-05-25 11:56:13,277 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:13,301 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:13,304 [Warewolf Debug] DEBUG - Fetching Execution Plan for 995e4561-3339-45a7-a289-f022ec18784e for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,305 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:13,315 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:13,315 [Warewolf Debug] DEBUG - Getting Dynamic Objects
+2017-05-25 11:56:13,320 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:13,329 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:13,330 [Warewolf Debug] DEBUG - Fetching Execution Plan for e29fa6b2-6deb-497f-99e9-6e007101c1de for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,331 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:56:13,331 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:56:13,331 [Warewolf Debug] DEBUG - Fetching Execution Plan for 2ba04e79-45eb-4414-9a8c-2b23e741bd89 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,332 [Warewolf Debug] DEBUG - Fetching Execution Plan for 4568869c-ee32-44f1-904f-e4dd67649c15 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,333 [Warewolf Debug] DEBUG - Fetching Execution Plan for 319f1da2-eb1b-41a8-a57f-0d21aaeb0207 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,333 [Warewolf Debug] DEBUG - Fetching Execution Plan for 539cf9fc-2b19-4d5d-90ee-c1d887f367c0 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,333 [Warewolf Debug] DEBUG - Fetching Execution Plan for a4225aee-5ca6-4c82-86b0-1293367cfebd for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,334 [Warewolf Debug] DEBUG - Fetching Execution Plan for 396aa6a7-3d1a-4d15-8622-be0a6df4a19a for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,334 [Warewolf Debug] DEBUG - Fetching Execution Plan for 007609cf-1322-4177-a213-f65804a0c151 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,335 [Warewolf Debug] DEBUG - Fetching Execution Plan for c8c07bea-9508-4053-b9a9-094e22e79346 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,335 [Warewolf Debug] DEBUG - Fetching Execution Plan for 2a592042-5b49-4c45-84c8-30474b3e4707 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,336 [Warewolf Debug] DEBUG - Fetching Execution Plan for fb350c58-b11a-4824-8070-4e38eb77bb33 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,336 [Warewolf Debug] DEBUG - Fetching Execution Plan for f301fe9f-dd4f-4f50-b33c-dae4e152a8c5 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,336 [Warewolf Debug] DEBUG - Fetching Execution Plan for 71fdf6f3-e7a7-4a51-ac2f-7866c41dfb9e for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,336 [Warewolf Debug] DEBUG - Fetching Execution Plan for a1ed078c-4aea-4431-accc-46d473047d1d for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,337 [Warewolf Debug] DEBUG - Fetching Execution Plan for 574db259-f4d1-4348-9bb3-31efecfa8fdf for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,338 [Warewolf Debug] DEBUG - Fetching Execution Plan for c34f9b5e-6f73-4f85-aa58-7b14dc7fa205 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,338 [Warewolf Debug] DEBUG - Fetching Execution Plan for a2fa18f6-a1a6-4b67-9988-e1094af30810 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,339 [Warewolf Debug] DEBUG - Fetching Execution Plan for b111d3af-775c-4393-81ba-7d01f5afefd1 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,339 [Warewolf Debug] DEBUG - Fetching Execution Plan for c14a99d9-b23b-44ab-88d5-c110d98b93a9 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,339 [Warewolf Debug] DEBUG - Fetching Execution Plan for ba8173e4-3c53-4c44-a41f-b0309d64d440 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,340 [Warewolf Debug] DEBUG - Fetching Execution Plan for f93b37f3-1dd3-400d-9015-3f69e0926c7a for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,340 [Warewolf Debug] DEBUG - Fetching Execution Plan for 60625413-4508-4a36-82ad-cde8ca580dfe for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,341 [Warewolf Debug] DEBUG - Fetching Execution Plan for f810ecd2-079b-4f9a-9a08-89a110993661 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,341 [Warewolf Debug] DEBUG - Fetching Execution Plan for 47906d60-f5b6-45f5-a86f-b6674c6453a9 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,341 [Warewolf Debug] DEBUG - Fetching Execution Plan for e5bb10c2-0101-4da4-9c94-be91adcac301 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,342 [Warewolf Debug] DEBUG - Fetching Execution Plan for b2203766-92a7-486f-b453-6417d1cd1900 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,342 [Warewolf Debug] DEBUG - Fetching Execution Plan for 4d1dd376-17f9-48ed-b315-b02e662771e0 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,343 [Warewolf Debug] DEBUG - Fetching Execution Plan for a054d217-5df9-4d65-90f6-560dda2a0527 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,343 [Warewolf Debug] DEBUG - Fetching Execution Plan for a27061e0-a834-44b1-9382-98e237727af7 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,343 [Warewolf Debug] DEBUG - Fetching Execution Plan for 7cbd4829-2830-4c66-9a58-c05c1ac11245 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,344 [Warewolf Debug] DEBUG - Fetching Execution Plan for d5ca43e9-ef51-4061-917c-47457fd9f559 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,344 [Warewolf Debug] DEBUG - Fetching Execution Plan for 9e4f9219-2716-4989-aebd-738715942b9f for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,345 [Warewolf Debug] DEBUG - Fetching Execution Plan for 4d504fbb-c973-4d29-8c1d-e6ec03644ec2 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,346 [Warewolf Debug] DEBUG - Fetching Execution Plan for 5f6e1821-e90f-464d-bea5-0c2291531467 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,346 [Warewolf Debug] DEBUG - Fetching Execution Plan for 2ee3aeb5-026d-48c2-9c1a-a1fdfb8ebcfa for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,346 [Warewolf Debug] DEBUG - Fetching Execution Plan for 66cc95da-8bea-4d8a-8897-1ef8f43d3a83 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,347 [Warewolf Debug] DEBUG - Fetching Execution Plan for d639ef21-7810-4447-a377-5e74b190d520 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,348 [Warewolf Debug] DEBUG - Fetching Execution Plan for 51093632-bde1-4ea2-8aea-abad651afe78 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,348 [Warewolf Debug] DEBUG - Fetching Execution Plan for de91e3f0-c2f0-49da-9d38-513075ceef96 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,349 [Warewolf Debug] DEBUG - Fetching Execution Plan for 2f767328-bd54-4368-8047-d61a8e825143 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,349 [Warewolf Debug] DEBUG - Fetching Execution Plan for d0bff741-b938-4e8d-8ae1-2faa451bfe9c for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,350 [Warewolf Debug] DEBUG - Fetching Execution Plan for 9204608f-e239-4692-b591-1d5526fac950 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,350 [Warewolf Debug] DEBUG - Fetching Execution Plan for 1498ce17-de7b-4178-8afb-0dd1f42ed837 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,351 [Warewolf Debug] DEBUG - Fetching Execution Plan for 070c9f89-0fa4-417c-a6e6-a2b5a7218b46 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,351 [Warewolf Debug] DEBUG - Fetching Execution Plan for 8003f1b1-739d-4035-8f1f-4c6ea123356e for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,352 [Warewolf Debug] DEBUG - Fetching Execution Plan for 4ae63171-962b-4a7c-802e-ec65e97830d0 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,352 [Warewolf Debug] DEBUG - Fetching Execution Plan for c838f28e-60ab-48ca-a892-01ea744d01ac for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,352 [Warewolf Debug] DEBUG - Fetching Execution Plan for 66d45cf1-b1a0-43f0-bc43-5371a8e97a21 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,353 [Warewolf Debug] DEBUG - Fetching Execution Plan for a57d2aed-f7f9-4104-8b46-a73a28121b42 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,353 [Warewolf Debug] DEBUG - Fetching Execution Plan for 12bae1d8-d106-47d6-bf04-daf6a72049d3 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,354 [Warewolf Debug] DEBUG - Fetching Execution Plan for 42ed5d74-ab2e-4a85-ba02-58937e50a35d for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,354 [Warewolf Debug] DEBUG - Fetching Execution Plan for 89256c3b-31e1-4190-a6df-233aebcfa94f for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,355 [Warewolf Debug] DEBUG - Fetching Execution Plan for a972ae27-9cad-4daf-bbb6-0139f8a310b5 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,355 [Warewolf Debug] DEBUG - Fetching Execution Plan for d8632e35-fa76-406d-860c-516af6b554a7 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,355 [Warewolf Debug] DEBUG - Fetching Execution Plan for 8cd94345-fdc1-42ee-8114-998bfd8701a7 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,356 [Warewolf Debug] DEBUG - Fetching Execution Plan for 5a13e6ba-1302-479c-85dd-3d961d9f1223 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,356 [Warewolf Debug] DEBUG - Fetching Execution Plan for 66432fa3-e8f7-44c2-af67-0a13cbe80174 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,356 [Warewolf Debug] DEBUG - Fetching Execution Plan for a324d5bd-86c3-4061-a258-1e28a0377eda for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,356 [Warewolf Debug] DEBUG - Fetching Execution Plan for e9bdf5ea-95a6-404a-a118-9be421651aac for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,357 [Warewolf Debug] DEBUG - Fetching Execution Plan for 6fde6dc8-26f7-4ea0-9704-05db24df9f2f for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,358 [Warewolf Debug] DEBUG - Fetching Execution Plan for c1617b08-1a43-440d-8bdb-f49db216a9fb for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,358 [Warewolf Debug] DEBUG - Fetching Execution Plan for 135b1f15-c6d1-4a60-9c9e-9523f22314b3 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,358 [Warewolf Debug] DEBUG - Fetching Execution Plan for 785a91d4-89eb-4096-9160-208e956b132e for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,358 [Warewolf Debug] DEBUG - Fetching Execution Plan for 70d36093-114b-4ce8-b838-7e68089e6aea for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,359 [Warewolf Debug] DEBUG - Fetching Execution Plan for 2b7eb460-2479-4b3e-a0f0-79a6a5afaa68 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,359 [Warewolf Debug] DEBUG - Fetching Execution Plan for b39e1ad4-0836-4a9a-881a-61058f24fe8c for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,359 [Warewolf Debug] DEBUG - Fetching Execution Plan for aa68177d-fc58-4cba-a54f-016542bf0624 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,360 [Warewolf Debug] DEBUG - Fetching Execution Plan for 084d7a27-31c9-4c93-988a-432134e64d43 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,360 [Warewolf Debug] DEBUG - Fetching Execution Plan for 969f7e4e-dd1c-4d05-aaab-fd11ccc281aa for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,360 [Warewolf Debug] DEBUG - Fetching Execution Plan for 09d1eb17-39b5-43a8-9bf2-bc1f2ca29f59 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,361 [Warewolf Debug] DEBUG - Fetching Execution Plan for bb55f7a7-7024-4cb2-b586-480208c24d7b for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,361 [Warewolf Debug] DEBUG - Fetching Execution Plan for d7a0dcc8-48ff-4c66-ab54-0b37180d886f for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,361 [Warewolf Debug] DEBUG - Fetching Execution Plan for bba8c0c2-eb6f-4e1b-8fa7-83f3d20f16a1 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,362 [Warewolf Debug] DEBUG - Fetching Execution Plan for d7263d15-8d62-445c-9fe3-616ca0c511a3 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,362 [Warewolf Debug] DEBUG - Fetching Execution Plan for ee2afa45-fbe3-4939-a4fa-f1abe70cda82 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,362 [Warewolf Debug] DEBUG - Fetching Execution Plan for 13ee4a5d-0236-496e-a864-a41cd99f3147 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,363 [Warewolf Debug] DEBUG - Fetching Execution Plan for 062fb5ac-b4a2-4bd8-986c-f60ac1392d39 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,363 [Warewolf Debug] DEBUG - Fetching Execution Plan for 6e0daa96-df0b-4c4e-ab4f-7501497d779c for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,363 [Warewolf Debug] DEBUG - Fetching Execution Plan for ec10e90b-888d-478f-9eac-5af5ab978e6a for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,364 [Warewolf Debug] DEBUG - Getting Dynamic Objects
+2017-05-25 11:56:13,367 [Warewolf Debug] DEBUG - Fetching Execution Plan for e8ea9009-538b-410c-8c1d-4b3bf565fa43 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,367 [Warewolf Debug] DEBUG - Fetching Execution Plan for 5f011ff4-1e47-4771-b79f-e474434495de for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,368 [Warewolf Debug] DEBUG - Fetching Execution Plan for 11282e01-26f4-41d7-9d75-87267433aa69 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,369 [Warewolf Debug] DEBUG - Fetching Execution Plan for 06df47cf-3585-471b-84d8-fab9564a1e99 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,369 [Warewolf Debug] DEBUG - Fetching Execution Plan for d523284d-4da5-4db8-a145-eb830edabd29 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,369 [Warewolf Debug] DEBUG - Fetching Execution Plan for e4eb3de1-62a4-4d9e-8731-cbcba9a72cf8 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,370 [Warewolf Debug] DEBUG - Fetching Execution Plan for 80a481eb-00bc-438f-a016-2fef3e8f237d for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,370 [Warewolf Debug] DEBUG - Fetching Execution Plan for 84c05098-f929-47ef-9f92-f6b172f84ff3 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,370 [Warewolf Debug] DEBUG - Fetching Execution Plan for 2b43a18d-d730-4dba-9605-ba8b56e808af for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,371 [Warewolf Debug] DEBUG - Getting Dynamic Objects
+2017-05-25 11:56:13,374 [Warewolf Debug] DEBUG - Fetching Execution Plan for 0f2b3712-e889-4557-aa4b-032fad6af502 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,375 [Warewolf Debug] DEBUG - Fetching Execution Plan for 9fec4544-d144-4eba-81a6-835f128b9ddb for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,375 [Warewolf Debug] DEBUG - Fetching Execution Plan for f87b2be2-841c-4577-8624-04c7d4d32647 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,375 [Warewolf Debug] DEBUG - Fetching Execution Plan for c36d859c-cad5-438c-98d9-9d5278b4a538 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,376 [Warewolf Debug] DEBUG - Fetching Execution Plan for b82a3659-b752-47a3-b656-a297f74d7200 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,376 [Warewolf Debug] DEBUG - Fetching Execution Plan for c2e42596-8e88-4894-a162-5e53937fb9e9 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,377 [Warewolf Debug] DEBUG - Fetching Execution Plan for 67bd66b1-5d39-46c5-bb51-695075d6f530 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,377 [Warewolf Debug] DEBUG - Fetching Execution Plan for a3d68a3d-258d-47a7-92a6-cfd38434b048 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,377 [Warewolf Debug] DEBUG - Fetching Execution Plan for e8a9d43a-da08-4986-9fda-f0c19d8feda6 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,377 [Warewolf Debug] DEBUG - Fetching Execution Plan for 1b6d313c-2ace-42fd-bc66-acb12899d5ca for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,378 [Warewolf Debug] DEBUG - Fetching Execution Plan for f5826dfd-bfeb-4eda-a252-8cd0da54e190 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,378 [Warewolf Debug] DEBUG - Fetching Execution Plan for 7cac6223-0d8e-4dc0-b88c-7098785c6583 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,379 [Warewolf Debug] DEBUG - Fetching Execution Plan for fa968516-6bb8-4f3a-a29a-3b0a142c3ce8 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,379 [Warewolf Debug] DEBUG - Fetching Execution Plan for 51fbcf21-127e-4298-a743-4f20bc24f307 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,379 [Warewolf Debug] DEBUG - Fetching Execution Plan for c04e2432-8706-4acd-99b6-71fd8ff36c0f for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,380 [Warewolf Debug] DEBUG - Fetching Execution Plan for 1fe818b0-c3cb-4d05-b02a-acb5e131b7e7 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,380 [Warewolf Debug] DEBUG - Fetching Execution Plan for 4e7fde21-c01a-413a-8604-7629f122f08f for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,380 [Warewolf Debug] DEBUG - Fetching Execution Plan for 66db757b-c67b-4a09-9565-7f4412eadaa9 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,381 [Warewolf Debug] DEBUG - Fetching Execution Plan for 30414408-20fd-4763-942e-f78b21ab712c for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,381 [Warewolf Debug] DEBUG - Fetching Execution Plan for d2c762e6-63ed-4ef5-a26b-319b60a46903 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,381 [Warewolf Debug] DEBUG - Fetching Execution Plan for 76005f81-a28e-4fbf-8ef8-3d2783005074 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,382 [Warewolf Debug] DEBUG - Fetching Execution Plan for 6d0f26d1-d779-4bd4-93e1-fd142d61275d for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,382 [Warewolf Debug] DEBUG - Fetching Execution Plan for ee5a7be5-a51d-435c-bcd6-4df1a9aaea75 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,382 [Warewolf Debug] DEBUG - Fetching Execution Plan for 16437dd3-31a5-4510-b818-fc41455eca55 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,383 [Warewolf Debug] DEBUG - Fetching Execution Plan for fe8e1b24-79bf-4678-8d01-1df12bf139b8 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,383 [Warewolf Debug] DEBUG - Fetching Execution Plan for 25c00005-7ef7-4bc1-9b4f-ceb8f810e7f8 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,383 [Warewolf Debug] DEBUG - Fetching Execution Plan for aa1e5b8d-ecdb-4e3b-a04e-9909096b625e for workspace 00000000-0000-0000-0000-000000000000
+2017-05-25 11:56:13,384 [Warewolf Info] INFO  - done.
+2017-05-25 11:56:13,406 [Warewolf Info] INFO  - Loading Test catalog...  
+2017-05-25 11:56:13,481 [Warewolf Info] INFO  - done.
+2017-05-25 11:56:13,481 [Warewolf Info] INFO  - Press <ENTER> to terminate service and/or web server if started
+2017-05-25 11:56:23,746 [Warewolf Debug] DEBUG - Execute Command Invoked For [ DEV2\nkosinathi.sangweni : NTLM : True ] For Service [ FetchToolsService ]
+2017-05-25 11:56:23,746 [Warewolf Debug] DEBUG - Execute Command Invoked For [ DEV2\nkosinathi.sangweni : NTLM : True ] For Service [ SecurityReadService ]
+2017-05-25 11:56:23,796 [] DEBUG - Mapping Inputs from Environment
+2017-05-25 11:56:23,796 [] DEBUG - Mapping Inputs from Environment
+2017-05-25 11:56:23,837 [] DEBUG - Creating Invoker
+2017-05-25 11:56:23,837 [] DEBUG - Creating Invoker
+2017-05-25 11:56:23,841 [] DEBUG - Finding service
+2017-05-25 11:56:23,842 [] DEBUG - Finding service
+2017-05-25 11:56:23,842 [] DEBUG - Mapping Action Dependencies
+2017-05-25 11:56:23,842 [] DEBUG - Mapping Action Dependencies
+2017-05-25 11:56:23,843 [] DEBUG - Getting container
+2017-05-25 11:56:23,843 [] DEBUG - Getting container
+2017-05-25 11:56:24,078 [Warewolf Debug] DEBUG - Start Security Read
+2017-05-25 11:56:24,694 [Warewolf Debug] DEBUG - Execute Command Invoked For [ DEV2\nkosinathi.sangweni : NTLM : True ] For Service [ GetServerVersion ]
+2017-05-25 11:56:24,706 [] DEBUG - Mapping Inputs from Environment
+2017-05-25 11:56:24,707 [] DEBUG - Creating Invoker
+2017-05-25 11:56:24,707 [] DEBUG - Finding service
+2017-05-25 11:56:24,707 [] DEBUG - Mapping Action Dependencies
+2017-05-25 11:56:24,707 [] DEBUG - Getting container
+2017-05-25 11:56:24,772 [Warewolf Debug] DEBUG - Execute Command Invoked For [ DEV2\nkosinathi.sangweni : NTLM : True ] For Service [ FindSourcesByType ]
+2017-05-25 11:56:24,787 [Warewolf Info] DEBUG - Mapping Inputs from Environment
+2017-05-25 11:56:24,788 [Warewolf Info] DEBUG - Creating Invoker
+2017-05-25 11:56:24,788 [Warewolf Info] DEBUG - Finding service
+2017-05-25 11:56:24,788 [Warewolf Info] DEBUG - Mapping Action Dependencies
+2017-05-25 11:56:24,788 [Warewolf Info] DEBUG - Getting container
+2017-05-25 11:56:24,794 [Warewolf Info] INFO  - Find Sources By Type. Dev2Server
+2017-05-25 11:56:24,985 [Warewolf Debug] DEBUG - Execute Command Invoked For [ DEV2\nkosinathi.sangweni : NTLM : True ] For Service [ FetchExplorerItemsService ]
+2017-05-25 11:56:25,000 [Warewolf Info] DEBUG - Mapping Inputs from Environment
+2017-05-25 11:56:25,000 [Warewolf Info] DEBUG - Creating Invoker
+2017-05-25 11:56:25,000 [Warewolf Info] DEBUG - Finding service
+2017-05-25 11:56:25,000 [Warewolf Info] DEBUG - Mapping Action Dependencies
+2017-05-25 11:56:25,001 [Warewolf Info] DEBUG - Getting container
+2017-05-25 11:56:25,008 [Warewolf Info] INFO  - Fetch Explorer Items
+2017-05-25 11:56:25,026 [Warewolf Debug] DEBUG - Execute Command Invoked For [ DEV2\nkosinathi.sangweni : NTLM : True ] For Service [ FindResourcesByID ]
+2017-05-25 11:56:25,075 [] DEBUG - Mapping Inputs from Environment
+2017-05-25 11:56:25,075 [] DEBUG - Creating Invoker
+2017-05-25 11:56:25,075 [] DEBUG - Finding service
+2017-05-25 11:56:25,075 [] DEBUG - Mapping Action Dependencies
+2017-05-25 11:56:25,075 [] DEBUG - Getting container
+2017-05-25 11:56:25,313 [] DEBUG - Execute Command Invoked For [ DEV2\nkosinathi.sangweni : NTLM : True ] For Service [ FetchResourceDefinitionService ]
+2017-05-25 11:56:25,321 [] DEBUG - Mapping Inputs from Environment
+2017-05-25 11:56:25,321 [] DEBUG - Creating Invoker
+2017-05-25 11:56:25,321 [] DEBUG - Finding service
+2017-05-25 11:56:25,321 [] DEBUG - Mapping Action Dependencies
+2017-05-25 11:56:25,321 [] DEBUG - Getting container
+2017-05-25 11:56:25,327 [Warewolf Info] INFO  - Fetch Resource definition. ResourceId: e7ea5196-33f7-4e0e-9d66-44bd67528a96
+2017-05-25 11:56:25,845 [Warewolf Debug] DEBUG - Resource 'Remote Connection Integration' from file 'C:\ProgramData\Warewolf\Resources\Remote Connection Integration.xml' wasn't loaded because a resource with the same name has already been loaded from file 'C:\ProgramData\Warewolf\Resources\Acceptance Testing Resources\Remote Connection Integration.xml'.
+2017-05-25 11:56:34,540 [Warewolf Debug] DEBUG - Execute Command Invoked For [ DEV2\nkosinathi.sangweni : NTLM : True ] For Service [ FetchResourceDuplicates ]
+2017-05-25 11:56:34,553 [] DEBUG - Mapping Inputs from Environment
+2017-05-25 11:56:34,554 [] DEBUG - Creating Invoker
+2017-05-25 11:56:34,554 [] DEBUG - Finding service
+2017-05-25 11:56:34,554 [] DEBUG - Mapping Action Dependencies
+2017-05-25 11:56:34,554 [] DEBUG - Getting container
+2017-05-25 11:56:34,788 [Warewolf Info] INFO  - Fetch Duplicate ResourcesError
+2017-05-25 11:56:59,941 [Warewolf System Data] INFO  - 
+    Process Memory Usage(mb): 14
+    Number of Requests: 8 
+    Time Taken(Ms): 2847   
+    Uptime: 03:42:19.6002515
+2017-05-25 11:57:01,572 [Warewolf Debug] DEBUG - Execute Command Invoked For [ DEV2\nkosinathi.sangweni : NTLM : True ] For Service [ AssignOutput ]
+2017-05-25 11:57:01,580 [] DEBUG - Mapping Inputs from Environment
+2017-05-25 11:57:01,591 [] DEBUG - Creating Invoker
+2017-05-25 11:57:01,591 [] DEBUG - Finding service
+2017-05-25 11:57:01,591 [] DEBUG - Mapping Action Dependencies
+2017-05-25 11:57:01,591 [] DEBUG - Getting container
+2017-05-25 11:57:01,686 [e890c88f-0be5-40c1-80ce-39f82d3ab303] DEBUG - Entered Wf Container
+2017-05-25 11:57:01,686 [e890c88f-0be5-40c1-80ce-39f82d3ab303] INFO  - Started Execution for Service Name:AssignOutput Resource Id:e7ea5196-33f7-4e0e-9d66-44bd67528a96 Mode:Debug
+2017-05-25 11:57:01,700 [e890c88f-0be5-40c1-80ce-39f82d3ab303] DEBUG - Studio Debug inputs [ <DataList /> ]
+2017-05-25 11:57:01,719 [Warewolf Debug] DEBUG - EnvironmentID: 00000000-0000-0000-0000-000000000000 Debug:AssignOutput
+2017-05-25 11:57:01,730 [Warewolf Debug] DEBUG - Getting Resource to Execute
+2017-05-25 11:57:01,730 [Warewolf Debug] DEBUG - Fetching Execution Plan for e7ea5196-33f7-4e0e-9d66-44bd67528a96 for workspace d72310e9-8eb2-481b-bc38-15aae43df42e
+2017-05-25 11:57:01,731 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:57:01,741 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:57:01,741 [Warewolf Debug] DEBUG - Getting Dynamic Objects
+2017-05-25 11:57:01,742 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:57:01,752 [e890c88f-0be5-40c1-80ce-39f82d3ab303] DEBUG - Generated Service Graph
+2017-05-25 11:57:01,752 [e890c88f-0be5-40c1-80ce-39f82d3ab303] DEBUG - Got Resource to Execute
+2017-05-25 11:57:01,848 [Warewolf Info] INFO  - Debug Already Started
+2017-05-25 11:57:01,853 [Warewolf Debug] DEBUG - EnvironmentID: 00000000-0000-0000-0000-000000000000 Debug:Assign (1)
+2017-05-25 11:57:01,859 [Warewolf Debug] DEBUG - EnvironmentID: 00000000-0000-0000-0000-000000000000 Debug:AssignOutput
+2017-05-25 11:57:01,978 [e890c88f-0be5-40c1-80ce-39f82d3ab303] DEBUG - Execution Result :
+{  "a": "a"}
+2017-05-25 11:57:01,978 [e890c88f-0be5-40c1-80ce-39f82d3ab303] INFO  - Completed Execution for Service Name:AssignOutput Resource Id: e7ea5196-33f7-4e0e-9d66-44bd67528a96 Mode:Debug
+2017-05-25 11:57:49,934 [] DEBUG - Execute Command Invoked For [ DEV2\nkosinathi.sangweni : NTLM : True ] For Service [ SaveResourceService ]
+2017-05-25 11:57:49,942 [] DEBUG - Mapping Inputs from Environment
+2017-05-25 11:57:49,942 [] DEBUG - Creating Invoker
+2017-05-25 11:57:49,942 [] DEBUG - Finding service
+2017-05-25 11:57:49,942 [] DEBUG - Mapping Action Dependencies
+2017-05-25 11:57:49,942 [] DEBUG - Getting container
+2017-05-25 11:57:49,964 [Warewolf Info] INFO  - Save Resource Service
+2017-05-25 11:57:49,973 [Warewolf Debug] INFO  - Save Resource.{"IsSource":false,"IsService":true,"IsFolder":false,"IsReservedService":false,"IsServer":false,"IsResourceVersion":false,"Version":null,"ResourceID":"e7ea5196-33f7-4e0e-9d66-44bd67528a96","ResourceType":"WorkflowService","ResourceName":"AssignOutput","IsValid":false,"Errors":[],"ReloadActions":false,"UserPermissions":0,"VersionInfo":null}
+2017-05-25 11:57:49,978 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:57:49,989 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:57:50,003 [Warewolf Debug] DEBUG - Removing Execution Plan for e7ea5196-33f7-4e0e-9d66-44bd67528a96 for workspace d72310e9-8eb2-481b-bc38-15aae43df42e
+2017-05-25 11:57:50,003 [Warewolf Debug] DEBUG - Removed Execution Plan for e7ea5196-33f7-4e0e-9d66-44bd67528a96 for workspace d72310e9-8eb2-481b-bc38-15aae43df42e
+2017-05-25 11:57:50,003 [Warewolf Debug] DEBUG - Adding Execution Plan for e7ea5196-33f7-4e0e-9d66-44bd67528a96 for workspace d72310e9-8eb2-481b-bc38-15aae43df42e
+2017-05-25 11:57:50,003 [Warewolf Debug] DEBUG - Fetching Execution Plan for e7ea5196-33f7-4e0e-9d66-44bd67528a96 for workspace d72310e9-8eb2-481b-bc38-15aae43df42e
+2017-05-25 11:57:50,004 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:57:50,020 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:57:50,020 [Warewolf Debug] DEBUG - Getting Dynamic Objects
+2017-05-25 11:57:50,021 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-25 11:57:50,030 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-25 11:57:50,032 [Warewolf Debug] DEBUG - Added Execution Plan for e7ea5196-33f7-4e0e-9d66-44bd67528a96 for workspace d72310e9-8eb2-481b-bc38-15aae43df42e
+2017-05-25 11:57:52,904 [88e98702-8a38-43e3-b99e-46c4ce60fd20] DEBUG - Remote Invoke
+2017-05-25 11:57:52,909 [88e98702-8a38-43e3-b99e-46c4ce60fd20] DEBUG - About to execute web request [ AssignOutput.json ] for User [ DEV2\nkosinathi.sangweni : NTLM : True ] with DataObject Payload [ <DataList></DataList> ]
+2017-05-25 11:57:52,909 [88e98702-8a38-43e3-b99e-46c4ce60fd20] DEBUG - Request URL [ http://rsaklfnkosinath:3142/secure/AssignOutput.json?<DataList></DataList>&wid=d72310e9-8eb2-481b-bc38-15aae43df42e ]
+2017-05-25 11:57:52,912 [88e98702-8a38-43e3-b99e-46c4ce60fd20] DEBUG - Mapping Inputs from Environment
+2017-05-25 11:57:52,912 [88e98702-8a38-43e3-b99e-46c4ce60fd20] DEBUG - Creating Invoker
+2017-05-25 11:57:52,912 [88e98702-8a38-43e3-b99e-46c4ce60fd20] DEBUG - Finding service
+2017-05-25 11:57:52,912 [88e98702-8a38-43e3-b99e-46c4ce60fd20] DEBUG - Mapping Action Dependencies
+2017-05-25 11:57:52,912 [88e98702-8a38-43e3-b99e-46c4ce60fd20] DEBUG - Getting container
+2017-05-25 11:57:53,201 [88e98702-8a38-43e3-b99e-46c4ce60fd20] DEBUG - Entered Wf Container
+2017-05-25 11:57:53,201 [88e98702-8a38-43e3-b99e-46c4ce60fd20] INFO  - Started Execution for Service Name:AssignOutput Resource Id:e7ea5196-33f7-4e0e-9d66-44bd67528a96 Mode:Execute
+2017-05-25 11:57:53,201 [88e98702-8a38-43e3-b99e-46c4ce60fd20] DEBUG - Studio Debug inputs [ <DataList /> ]
+2017-05-25 11:57:53,202 [88e98702-8a38-43e3-b99e-46c4ce60fd20] DEBUG - Getting Resource to Execute
+2017-05-25 11:57:53,202 [88e98702-8a38-43e3-b99e-46c4ce60fd20] DEBUG - Fetching Execution Plan for e7ea5196-33f7-4e0e-9d66-44bd67528a96 for workspace d72310e9-8eb2-481b-bc38-15aae43df42e
+2017-05-25 11:57:53,202 [88e98702-8a38-43e3-b99e-46c4ce60fd20] DEBUG - Got Resource to Execute
+2017-05-25 11:57:53,204 [88e98702-8a38-43e3-b99e-46c4ce60fd20] INFO  - Completed Execution for Service Name:AssignOutput Resource Id: e7ea5196-33f7-4e0e-9d66-44bd67528a96 Mode:Execute
+2017-05-25 11:57:53,208 [88e98702-8a38-43e3-b99e-46c4ce60fd20] DEBUG - Execution Result [ {  "a": "a"} ]
+2017-05-25 11:57:56,222 [4048dfcc-83ac-4ce8-b6f3-16f07c8f4adf] DEBUG - Remote Invoke
+2017-05-25 11:57:56,222 [4048dfcc-83ac-4ce8-b6f3-16f07c8f4adf] DEBUG - About to execute web request [ AssignOutput.json ] for User [ DEV2\nkosinathi.sangweni : NTLM : True ] with DataObject Payload [ <DataList></DataList> ]
+2017-05-25 11:57:56,222 [4048dfcc-83ac-4ce8-b6f3-16f07c8f4adf] DEBUG - Request URL [ http://rsaklfnkosinath:3142/secure/AssignOutput.json?<DataList></DataList>&wid=d72310e9-8eb2-481b-bc38-15aae43df42e ]
+2017-05-25 11:57:56,222 [4048dfcc-83ac-4ce8-b6f3-16f07c8f4adf] DEBUG - Mapping Inputs from Environment
+2017-05-25 11:57:56,222 [4048dfcc-83ac-4ce8-b6f3-16f07c8f4adf] DEBUG - Creating Invoker
+2017-05-25 11:57:56,222 [4048dfcc-83ac-4ce8-b6f3-16f07c8f4adf] DEBUG - Finding service
+2017-05-25 11:57:56,222 [4048dfcc-83ac-4ce8-b6f3-16f07c8f4adf] DEBUG - Mapping Action Dependencies
+2017-05-25 11:57:56,222 [4048dfcc-83ac-4ce8-b6f3-16f07c8f4adf] DEBUG - Getting container
+2017-05-25 11:57:56,473 [4048dfcc-83ac-4ce8-b6f3-16f07c8f4adf] DEBUG - Entered Wf Container
+2017-05-25 11:57:56,473 [4048dfcc-83ac-4ce8-b6f3-16f07c8f4adf] INFO  - Started Execution for Service Name:AssignOutput Resource Id:e7ea5196-33f7-4e0e-9d66-44bd67528a96 Mode:Execute
+2017-05-25 11:57:56,473 [4048dfcc-83ac-4ce8-b6f3-16f07c8f4adf] DEBUG - Studio Debug inputs [ <DataList /> ]
+2017-05-25 11:57:56,473 [4048dfcc-83ac-4ce8-b6f3-16f07c8f4adf] DEBUG - Getting Resource to Execute
+2017-05-25 11:57:56,473 [4048dfcc-83ac-4ce8-b6f3-16f07c8f4adf] DEBUG - Fetching Execution Plan for e7ea5196-33f7-4e0e-9d66-44bd67528a96 for workspace d72310e9-8eb2-481b-bc38-15aae43df42e
+2017-05-25 11:57:56,473 [4048dfcc-83ac-4ce8-b6f3-16f07c8f4adf] DEBUG - Got Resource to Execute
+2017-05-25 11:57:56,473 [4048dfcc-83ac-4ce8-b6f3-16f07c8f4adf] INFO  - Completed Execution for Service Name:AssignOutput Resource Id: e7ea5196-33f7-4e0e-9d66-44bd67528a96 Mode:Execute
+2017-05-25 11:57:56,473 [4048dfcc-83ac-4ce8-b6f3-16f07c8f4adf] DEBUG - Execution Result [ {  "a": "a"} ]
+2017-05-25 11:57:58,810 [be4f2201-63ea-42ac-b90d-564e7077b533] DEBUG - Remote Invoke
+2017-05-25 11:57:58,811 [be4f2201-63ea-42ac-b90d-564e7077b533] DEBUG - About to execute web request [ AssignOutput.json ] for User [ DEV2\nkosinathi.sangweni : NTLM : True ] with DataObject Payload [ <DataList></DataList> ]
+2017-05-25 11:57:58,811 [be4f2201-63ea-42ac-b90d-564e7077b533] DEBUG - Request URL [ http://rsaklfnkosinath:3142/secure/AssignOutput.json?<DataList></DataList>&wid=d72310e9-8eb2-481b-bc38-15aae43df42e ]
+2017-05-25 11:57:58,811 [be4f2201-63ea-42ac-b90d-564e7077b533] DEBUG - Mapping Inputs from Environment
+2017-05-25 11:57:58,811 [be4f2201-63ea-42ac-b90d-564e7077b533] DEBUG - Creating Invoker
+2017-05-25 11:57:58,811 [be4f2201-63ea-42ac-b90d-564e7077b533] DEBUG - Finding service
+2017-05-25 11:57:58,811 [be4f2201-63ea-42ac-b90d-564e7077b533] DEBUG - Mapping Action Dependencies
+2017-05-25 11:57:58,811 [be4f2201-63ea-42ac-b90d-564e7077b533] DEBUG - Getting container
+2017-05-25 11:57:59,074 [be4f2201-63ea-42ac-b90d-564e7077b533] DEBUG - Entered Wf Container
+2017-05-25 11:57:59,074 [be4f2201-63ea-42ac-b90d-564e7077b533] INFO  - Started Execution for Service Name:AssignOutput Resource Id:e7ea5196-33f7-4e0e-9d66-44bd67528a96 Mode:Execute
+2017-05-25 11:57:59,075 [be4f2201-63ea-42ac-b90d-564e7077b533] DEBUG - Studio Debug inputs [ <DataList /> ]
+2017-05-25 11:57:59,075 [be4f2201-63ea-42ac-b90d-564e7077b533] DEBUG - Getting Resource to Execute
+2017-05-25 11:57:59,075 [be4f2201-63ea-42ac-b90d-564e7077b533] DEBUG - Fetching Execution Plan for e7ea5196-33f7-4e0e-9d66-44bd67528a96 for workspace d72310e9-8eb2-481b-bc38-15aae43df42e
+2017-05-25 11:57:59,075 [be4f2201-63ea-42ac-b90d-564e7077b533] DEBUG - Got Resource to Execute
+2017-05-25 11:57:59,075 [be4f2201-63ea-42ac-b90d-564e7077b533] INFO  - Completed Execution for Service Name:AssignOutput Resource Id: e7ea5196-33f7-4e0e-9d66-44bd67528a96 Mode:Execute
+2017-05-25 11:57:59,075 [be4f2201-63ea-42ac-b90d-564e7077b533] DEBUG - Execution Result [ {  "a": "a"} ]
+2017-05-25 11:57:59,940 [Warewolf System Data] INFO  - 
+    Process Memory Usage(mb): 17
+    Number of Requests: 13 
+    Time Taken(Ms): 4132   
+    Uptime: 03:43:19.5990884
+2017-05-25 11:58:59,951 [Warewolf System Data] INFO  - 
+    Process Memory Usage(mb): 17
+    Number of Requests: 13 
+    Time Taken(Ms): 4132   
+    Uptime: 03:44:19.6101519
+2017-05-25 11:59:59,951 [Warewolf System Data] INFO  - 
+    Process Memory Usage(mb): 17
+    Number of Requests: 13 
+    Time Taken(Ms): 4132   
+    Uptime: 03:45:19.6102578
+2017-05-25 12:00:59,951 [Warewolf System Data] INFO  - 
+    Process Memory Usage(mb): 17
+    Number of Requests: 13 
+    Time Taken(Ms): 4132   
+    Uptime: 03:46:19.6101845

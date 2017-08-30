@@ -56,7 +56,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             var result = new ExecuteMessage { HasError = false };
-            Dev2Logger.Info("Delete Scheduled Resource Service");
+            Dev2Logger.Info("Delete Scheduled Resource Service", GlobalConstants.WarewolfInfo);
             StringBuilder tmp;
             values.TryGetValue("Resource", out tmp);
             var serializer = new Dev2JsonSerializer();
@@ -64,7 +64,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             if (tmp != null)
             {
                 var res = serializer.Deserialize<IScheduledResource>(tmp);
-                Dev2Logger.Info("Delete Scheduled Resource Service." + res);
+                Dev2Logger.Info("Delete Scheduled Resource Service." + res, GlobalConstants.WarewolfInfo);
                 using (var model = SchedulerFactory.CreateModel(GlobalConstants.SchedulerFolderId, SecurityWrapper))
                 {
                     model.DeleteSchedule(res);
@@ -72,7 +72,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             else
             {
-                Dev2Logger.Info("Delete Scheduled Resource Service. No Resource Selected");
+                Dev2Logger.Info("Delete Scheduled Resource Service. No Resource Selected", GlobalConstants.WarewolfInfo);
                 result.Message.Append("No Resource Selected");
                 result.HasError = true;
             }

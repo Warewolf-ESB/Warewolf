@@ -147,7 +147,7 @@ namespace Dev2.Runtime.Configuration
                 
                 {
                     // error occurred so ignore and load empty
-                    Dev2Logger.Error(ex);
+                    Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
                 }
             }
             return new Settings.Configuration(WebServerUri);

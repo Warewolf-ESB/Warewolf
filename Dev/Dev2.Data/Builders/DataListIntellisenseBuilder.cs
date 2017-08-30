@@ -78,7 +78,7 @@ namespace Dev2.DataList.Contract
                 }
                 catch (Exception ex)
                 {
-                    Dev2Logger.Error(ex);
+                    Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
                 }
 
                 if (tmpRootNl != null)
@@ -177,7 +177,7 @@ namespace Dev2.DataList.Contract
             }
             catch (Exception ex)
             {
-                Dev2Logger.Error(ex);
+                Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
             }
 
             return result;

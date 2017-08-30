@@ -202,6 +202,7 @@ namespace Dev2.Tests.Runtime.WebServer
             var env = new Mock<IExecutionEnvironment>();
             env.SetupAllProperties();
             dataObject.SetupGet(o => o.Environment).Returns(env.Object);
+            dataObject.SetupGet(o => o.ExecutionID).Returns(new Guid());
             dataObject.SetupGet(o => o.IsServiceTestExecution).Returns(false);
             dataObject.SetupGet(o => o.RawPayload).Returns(new StringBuilder("<raw>SomeData</raw>"));
             var resourceCatalog = new Mock<IResourceCatalog>();
@@ -215,7 +216,7 @@ namespace Dev2.Tests.Runtime.WebServer
             var handlerMock = new AbstractWebRequestHandlerMock(dataObject.Object, authorizationService.Object, resourceCatalog.Object, testCatalog.Object, wRepo.Object);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            var webRequestTO = new WebRequestTO()
+            var webRequestTo = new WebRequestTO()
             {
                 Variables = new NameValueCollection()
                 {
@@ -223,7 +224,7 @@ namespace Dev2.Tests.Runtime.WebServer
                 },
                 WebServerUrl = "http://rsaklfnkosinath:3142/secure/Home/HelloWorld.Json"
             };
-            var responseWriter = handlerMock.CreateFromMock(webRequestTO, "Hello World.Json", string.Empty, new NameValueCollection(), principal.Object);
+            var responseWriter = handlerMock.CreateFromMock(webRequestTo, "Hello World.Json", string.Empty, new NameValueCollection(), principal.Object);
             //---------------Test Result -----------------------
             Assert.IsNotNull(responseWriter);
 

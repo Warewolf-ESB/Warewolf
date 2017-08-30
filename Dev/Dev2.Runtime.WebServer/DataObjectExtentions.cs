@@ -4,7 +4,6 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Net;
 using System.Security.Principal;
-using System.Threading.Tasks;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
@@ -116,7 +115,7 @@ namespace Dev2.Runtime.WebServer
         {
             var contains = webRequest?.Variables?.AllKeys.Contains("IsDebug");
             if (contains != null && contains.Value)
-            {
+            {                
                 dataObject.IsDebug = true;
                 dataObject.IsDebugFromWeb = true;
                 dataObject.ClientID = Guid.NewGuid();
@@ -126,7 +125,6 @@ namespace Dev2.Runtime.WebServer
 
         public static void SetupForRemoteInvoke(this IDSFDataObject dataObject, NameValueCollection headers)
         {
-            Dev2Logger.Debug("Remote Invoke");
             if (headers != null)
             {
                 var isRemote = headers.Get(HttpRequestHeader.Cookie.ToString());

@@ -84,12 +84,12 @@ namespace Dev2.Runtime.ESB.Management.Services
 
 
                 var itemToMove = ServerExplorerRepo.Find(Guid.Parse(itemToBeRenamed.ToString())) ?? ServerExplorerRepo.Find(a => a.ResourcePath == itemToBeRenamedPath.ToString());
-                Dev2Logger.Info($"Move Item. Path:{itemToBeRenamed} NewPath:{newPath}");
+                Dev2Logger.Info($"Move Item. Path:{itemToBeRenamed} NewPath:{newPath}", GlobalConstants.WarewolfInfo);
                 item = ServerExplorerRepo.MoveItem(itemToMove, newPath.ToString(), GlobalConstants.ServerWorkspaceID);               
             }
             catch (Exception e)
             {
-                Dev2Logger.Error(e);
+                Dev2Logger.Error(e, GlobalConstants.WarewolfError);
                 item = new ExplorerRepositoryResult(ExecStatus.Fail, e.Message);
             }
             return serializer.SerializeToBuilder(item);

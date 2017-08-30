@@ -1,4 +1,4 @@
-﻿	@DBConnector
+﻿@DBConnector
 Feature: DBConnector
 	In order to connect to databases
 	As a Warewolf Studio user
@@ -44,4 +44,3 @@ Scenario: Create DB Source From Tool
 	When I Select RSAKLFSVRDEV From Server Source Wizard Dropdownlist
 	And I Click DB Source Wizard Test Connection Button
 	Then The DB Source Wizard Test Succeeded Image Is Visible
-	

@@ -45,7 +45,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 result.HasError = true;
                 result.SetMessage("Error reloading tests...");
-                Dev2Logger.Error(ex);
+                Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
             }
 
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();

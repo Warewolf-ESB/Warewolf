@@ -47,7 +47,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             try
             {
-                Dev2Logger.Info("Find Dependencies");
+                Dev2Logger.Info("Find Dependencies", GlobalConstants.WarewolfInfo);
                 var result = new ExecuteMessage { HasError = false };
 
                 string resourceId = null;
@@ -100,7 +100,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch (Exception e)
             {
-                Dev2Logger.Error(e);
+                Dev2Logger.Error(e, GlobalConstants.WarewolfError);
                 throw;
             }
         }

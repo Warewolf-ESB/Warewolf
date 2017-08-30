@@ -11,14 +11,16 @@ Param(
   [switch]$Server,
   [switch]$Studio,
   [switch]$Release,
+  [switch]$Web,
   [switch]$RegenerateSpecFlowFeatureFiles
 )
 $KnownSolutionFiles = "$PSScriptRoot\Dev\AcceptanceTesting.sln",
                       "$PSScriptRoot\Dev\UITesting.sln",
                       "$PSScriptRoot\Dev\Server.sln",
                       "$PSScriptRoot\Dev\Studio.sln",
-                      "$PSScriptRoot\Dev\Release.sln"
-$NoSolutionParametersPresent = !($AcceptanceTesting.IsPresent) -and !($UITesting.IsPresent) -and !($Server.IsPresent) -and !($Studio.IsPresent) -and !($Release.IsPresent)
+                      "$PSScriptRoot\Dev\Release.sln",
+                      "$PSScriptRoot\Dev\Web2.sln"
+$NoSolutionParametersPresent = !($AcceptanceTesting.IsPresent) -and !($UITesting.IsPresent) -and !($Server.IsPresent) -and !($Studio.IsPresent) -and !($Release.IsPresent) -and !($Web.IsPresent) -and !($RegenerateSpecFlowFeatureFiles.IsPresent)
 if ($Target -ne "") {
 	$Target = "/t:" + $Target
 }
@@ -233,7 +235,7 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
         $GetSolutionFileInfo = Get-Item $SolutionFile
         $SolutionFileName = $GetSolutionFileInfo.Name
         $SolutionFileExtension = $GetSolutionFileInfo.Extension
-        $OutputFolderName = $SolutionFileName.TrimEnd("." + $SolutionFileExtension)
+        $OutputFolderName = $SolutionFileName.TrimEnd("." + $SolutionFileExtension).TrimEnd("2")
         if ((Get-Variable "$OutputFolderName*" -ValueOnly).IsPresent -or $NoSolutionParametersPresent) {
             if ($SolutionWideOutputs.IsPresent) {
                 $OutputProperty = "/property:OutDir=$PSScriptRoot\Bin\$OutputFolderName"

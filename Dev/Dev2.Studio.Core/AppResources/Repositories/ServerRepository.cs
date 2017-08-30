@@ -469,7 +469,7 @@ namespace Dev2.Studio.Core
             catch (Exception err)
             
             {
-                Dev2Logger.Info(err);
+                Dev2Logger.Info(err, "Warewolf Info");
                 //Swallow exception for localhost connection
             }
             if (!defaultEnvironment.IsConnected)

@@ -122,7 +122,8 @@ namespace Dev2.Tests.Runtime.Services
                 {
                     AuthenticationType = AuthenticationType.Public,
                     Enabled = true,
-                    TestName = "Test MyWF"
+                    TestName = "Test MyWF",
+                    Password = "Password"
                 }
             };
             var repo = new Mock<ITestCatalog>();

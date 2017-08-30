@@ -38,14 +38,15 @@ namespace Warewolf.UIBindingTests.Core
         {
             var window = new Window {Content = view};
             var app = Application.Current;
-            
-            app.MainWindow = window;
-            app.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(() =>
-            {
-                app.MainWindow.Close();
-            }));
 
-            
+            if (app != null)
+            {
+                app.MainWindow = window;
+                app.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(() =>
+                {
+                    app.MainWindow.Close();
+                }));
+            }
         }
 
         public static void SetupResourceDictionary()

@@ -337,6 +337,7 @@
     <Compile Include="ISharepointReadListTo.cs" />
     <Compile Include="ISharepointSource.cs" />
     <Compile Include="IVersionStrategy.cs" />
+    <Compile Include="IViewPropertyBuilder.cs" />
     <Compile Include="IWarewolfIterator.cs" />
     <Compile Include="IWarewolfListIterator.cs" />
     <Compile Include="IWarewolfWebClient.cs" />

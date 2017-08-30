@@ -77,7 +77,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         /// <param name="dto">The dto.</param>
         public void DeployResources(IServer sourceEnviroment, IServer targetEnviroment, IDeployDto dto)
         {
-            Dev2Logger.Info($"Deploy Resources. Source:{sourceEnviroment.DisplayName} Destination:{targetEnviroment.Name}");
+            Dev2Logger.Info($"Deploy Resources. Source:{sourceEnviroment.DisplayName} Destination:{targetEnviroment.Name}", "Warewolf Info");
             _deployService.Deploy(dto, sourceEnviroment, targetEnviroment);
 
         }
@@ -231,7 +231,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                     return contextualResourceModel;
                 }
             }
-            Dev2Logger.Error(string.Format(ErrorResource.MultipleResourcesFound, resourceId));
+            Dev2Logger.Error(string.Format(ErrorResource.MultipleResourcesFound, resourceId), "Warewolf Error");
             return null;
         }
 
@@ -267,7 +267,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         private void AddResourceIfNotExist(IResourceModel instanceObj)
         {
-            Dev2Logger.Info($"Save Resource: {instanceObj.ResourceName}  Environment:{_server.Name}");
+            Dev2Logger.Info($"Save Resource: {instanceObj.ResourceName}  Environment:{_server.Name}", "Warewolf Info");
             var workflow = FindSingle(c => c.ID == instanceObj.ID);
 
             if (workflow == null)
@@ -295,7 +295,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             {
                 throw new ArgumentNullException(nameof(resource));
             }
-            Dev2Logger.Info($"Deploy Resource. Resource:{resource.DisplayName} Environment:{_server.Name}");
+            Dev2Logger.Info($"Deploy Resource. Resource:{resource.DisplayName} Environment:{_server.Name}", "Warewolf Info");
             var theResource = FindSingle(c => c.ResourceName.Equals(resource.ResourceName, StringComparison.CurrentCultureIgnoreCase));
 
             if (theResource != null)
@@ -322,7 +322,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         public ExecuteMessage DeleteResource(IResourceModel resource)
         {
-            Dev2Logger.Info($"DeleteResource Resource: {resource.DisplayName}  Environment:{_server.Name}");
+            Dev2Logger.Info($"DeleteResource Resource: {resource.DisplayName}  Environment:{_server.Name}", "Warewolf Info");
             IResourceModel res = _resourceModels.FirstOrDefault(c => c.ID == resource.ID);
 
             if (res == null)
@@ -460,12 +460,12 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             }
 
             HydrateResourceModels(resourceList, _server.Connection.ServerID);
-            Dev2Logger.Warn("Loading Resources - End");
+            Dev2Logger.Warn("Loading Resources - End", "Warewolf Warn");
         }
 
         private static CommunicationController GetCommunicationControllerForLoadResources()
         {
-            Dev2Logger.Warn("Loading Resources - Start");
+            Dev2Logger.Warn("Loading Resources - Start", "Warewolf Warn");
             var comsController = new CommunicationController { ServiceName = "FindResourceService" };
             comsController.AddPayloadArgument("ResourceName", "*");
             comsController.AddPayloadArgument("ResourceId", "*");
@@ -504,7 +504,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                 }
                 catch
                 {
-                    Dev2Logger.Warn($"Resource Not Loaded - {item.ResourceName} - {item.ResourceID}");
+                    Dev2Logger.Warn($"Resource Not Loaded - {item.ResourceName} - {item.ResourceID}", "Warewolf Warn");
                 }
             }
         }
@@ -987,7 +987,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
             // log the trace for fetch ;)
             if (result != null)
-                Dev2Logger.Debug($"Fetched Definition For {resourceModelId} From Workspace {workspaceId}");
+                Dev2Logger.Debug($"Fetched Definition For {resourceModelId} From Workspace {workspaceId}", "Warewolf Debug");
 
             return result;
         }
@@ -1010,7 +1010,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
             // log the trace for fetch ;)
             if (result != null)
-                Dev2Logger.Debug($"Fetched Definition For {resourceModelId} From Workspace {workspaceId}");
+                Dev2Logger.Debug($"Fetched Definition For {resourceModelId} From Workspace {workspaceId}", "Warewolf Debug");
 
             return result;
         }
@@ -1033,7 +1033,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
             // log the trace for fetch ;)
             if (result != null)
-                Dev2Logger.Debug($"Fetched Definition For {resourceModelId} From Workspace {workspaceId}");
+                Dev2Logger.Debug($"Fetched Definition For {resourceModelId} From Workspace {workspaceId}", "Warewolf Debug");
 
             return result;
         }

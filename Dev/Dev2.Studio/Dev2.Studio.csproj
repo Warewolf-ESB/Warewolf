@@ -101,6 +101,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\InfragisticsWPF4.Calculations.XamCalculationManager.v15.1.dll</HintPath>
     </Reference>
+    <Reference Include="InfragisticsWPF4.Controls.Editors.XamComboEditor.v15.1, Version=15.1.20151.2055, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Editors.XamComboEditor.v15.1.dll</HintPath>
+    </Reference>
     <Reference Include="InfragisticsWPF4.Controls.Grids.XamGrid.v15.1, Version=15.1.20151.2055, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\InfragisticsWPF4.Controls.Grids.XamGrid.v15.1.dll</HintPath>
@@ -361,11 +365,14 @@
     </Compile>
     <Compile Include="CustomControls\Progress\ProgressFileDownloader.cs" />
     <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="Settings\Logging\EnumHelper.cs" />
+    <Compile Include="Settings\Logging\ILogSettings.cs" />
     <Compile Include="Settings\Logging\LoggingView.xaml.cs">
       <DependentUpon>LoggingView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Dialogs\IResourcePickerDialog.cs" />
     <Compile Include="Dialogs\ResourcePickerDialog.cs" />
+    <Compile Include="Settings\Logging\LogLevel.cs" />
     <Compile Include="Settings\Logging\LogSettingsViewModel.cs" />
     <Compile Include="Settings\Perfcounters\PerfCountersToUtilities.cs" />
     <Compile Include="Settings\Perfcounters\PerfCounterView.xaml.cs">

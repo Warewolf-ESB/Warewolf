@@ -64,7 +64,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             try
             {
-                Dev2Logger.Info("Save Resource Service");
+                Dev2Logger.Info("Save Resource Service", GlobalConstants.WarewolfInfo);
                 StringBuilder resourceDefinition;
 
                 string workspaceIdString = string.Empty;
@@ -105,7 +105,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch (Exception err)
             {
-                Dev2Logger.Error(err);
+                Dev2Logger.Error(err, GlobalConstants.WarewolfError);
                 throw;
             }
         }

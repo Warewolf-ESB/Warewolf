@@ -36,7 +36,7 @@ namespace Warewolf.Studio.ViewModels
 
         internal void OpenCommand(ExplorerItemViewModel item, IServer server)
         {
-            Dev2Logger.Info("Open resource: " + item.ResourceName + " - ResourceId: " + item.ResourceId);
+            Dev2Logger.Info("Open resource: " + item.ResourceName + " - ResourceId: " + item.ResourceId, "Warewolf Info");
             if (item.IsFolder)
             {
                 item.IsExpanded = !item.IsExpanded;

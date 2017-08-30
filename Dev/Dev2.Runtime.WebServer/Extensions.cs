@@ -23,7 +23,7 @@ namespace Dev2.Runtime.WebServer
         {
             if(user == null)
             {
-                Dev2Logger.Debug("Null User");
+                Dev2Logger.Debug("Null User", GlobalConstants.WarewolfDebug);
             }
 
             return user != null && user.Identity.IsAuthenticated;
@@ -40,7 +40,7 @@ namespace Dev2.Runtime.WebServer
                 }
                 catch(Exception ex)
                 {
-                    Dev2Logger.Error("Dev2.Runtime.WebServer.Extensions", ex);
+                    Dev2Logger.Error("Dev2.Runtime.WebServer.Extensions", ex, GlobalConstants.WarewolfError);
                 }
             }
             return Encoding.UTF8;

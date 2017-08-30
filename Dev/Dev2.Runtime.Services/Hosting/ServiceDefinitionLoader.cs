@@ -113,7 +113,6 @@ namespace Dev2.Runtime.Hosting
             {
                 throw new ArgumentException("serviceData");
             }
-            Dev2Logger.Debug("Generating Service Graph");
             List<DynamicServiceObjectBase> result = new List<DynamicServiceObjectBase>();
             var xe = serviceData.ToXElement();
 
@@ -262,7 +261,6 @@ namespace Dev2.Runtime.Hosting
                 }
 
             }
-            Dev2Logger.Debug("Generated Service Graph");
             return result;
         }
 

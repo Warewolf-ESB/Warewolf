@@ -42,7 +42,6 @@ namespace Dev2.Interfaces
         Guid ClientID { get; set; }
         bool IsOnDemandSimulation { get; set; }
         Guid ServerID { get; set; }
-      //  ErrorResultTO Errors { get; set; }
         int NumberOfSteps { get; set; }
         IPrincipal ExecutingUser { get; set; }
         Guid DatalistOutMergeID { get; set; }
@@ -106,6 +105,9 @@ namespace Dev2.Interfaces
         bool StopExecution { get; set; }
         IServiceTestModelTO ServiceTest { get; set; }
         List<Guid> TestsResourceIds { get; set; }
+        Guid? ExecutionID { get; set; }
+        string WebUrl { get; set; }
         bool IsSubExecution { get; set; }
+        string QueryString { get; set; }
     }
 }

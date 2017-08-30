@@ -4,7 +4,7 @@ namespace Warewolf.Web.UI.Tests.ScreenRecording
 {
     public interface IVideoRecorder
     {
-        bool StartRecording(TestContext TestContext);
-        void StopRecording(TestContext TestContext);
+        bool StartRecording(TestContext TestContext, string browserName);
+        void StopRecording(UnitTestOutcome TestContext);
     }
 }

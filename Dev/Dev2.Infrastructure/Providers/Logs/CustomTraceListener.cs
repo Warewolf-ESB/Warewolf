@@ -55,7 +55,7 @@ namespace Dev2.Providers.Logs
         {
             try
             {
-                Dev2Logger.Info(value);
+                Dev2Logger.Info(value, GlobalConstants.WarewolfInfo);
             }
             catch(ObjectDisposedException)
             {
@@ -68,7 +68,7 @@ namespace Dev2.Providers.Logs
             try
             {
 
-                Dev2Logger.Info(value);
+                Dev2Logger.Info(value, GlobalConstants.WarewolfInfo);
 
             }
             catch(ObjectDisposedException)

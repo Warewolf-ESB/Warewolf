@@ -68,7 +68,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 var res = new ExecuteMessage { HasError = true };
                 res.SetMessage(ErrorResource.NoSharepointServerSet);
-                Dev2Logger.Debug(ErrorResource.NoSharepointServerSet);
+                Dev2Logger.Debug(ErrorResource.NoSharepointServerSet, GlobalConstants.WarewolfDebug);
                 return serializer.SerializeToBuilder(res);
             }
             try
@@ -93,7 +93,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch(Exception ex)
             {
-                Dev2Logger.Error(ex);
+                Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
                 msg.Message = serializer.SerializeToBuilder(ex.Message);
             }
             return serializer.SerializeToBuilder(msg);

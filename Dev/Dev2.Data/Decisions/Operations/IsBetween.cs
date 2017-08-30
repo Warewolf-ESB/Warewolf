@@ -49,7 +49,7 @@ namespace Dev2.Data.Decisions.Operations
                     }
                     catch(Exception ex)
                     {
-                        Dev2Logger.Error(ex);
+                        Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
                     }
                 }
 
@@ -77,7 +77,7 @@ namespace Dev2.Data.Decisions.Operations
             }
             catch(Exception e)
             {
-                Dev2Logger.Error(ErrorResource.IsBetweenDataTypeMismatch,e);
+                Dev2Logger.Error(ErrorResource.IsBetweenDataTypeMismatch,e, GlobalConstants.WarewolfError);
                 throw new InvalidDataException(ErrorResource.IsBetweenDataTypeMismatch);
             }            
             return left >= 0 && right <= 0 || left <= 0 && right >= 0;

@@ -95,7 +95,7 @@ namespace Unlimited.Framework.Converters.Graph.Output
                         }
                         catch (Exception ex)
                         {
-                            Dev2Logger.Error(ex);
+                            Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
                             // we want to return null                    
                         }
                     }

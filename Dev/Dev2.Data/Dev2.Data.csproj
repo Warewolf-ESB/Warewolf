@@ -127,9 +127,10 @@
     <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
-    <None Include="..\Run Tests.ps1">
-      <Link>Properties\Run Tests.ps1</Link>
+	<None Include="..\Run Tests.ps1">
+      <Link>Run Tests.ps1</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  <Visible>False</Visible>
     </None>
     <Compile Include="DataListConversionUtils.cs" />
     <Compile Include="DataListItem.cs" />

@@ -76,7 +76,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                     resources = ResourceCatalog.Instance.GetResourceList(theWorkspace.ID, new Dictionary<string, string> { { "guidCsv", resourceId }, { "type", type } }).ToList();
                 }
-                Dev2Logger.Info("Find Resource. ResourceName: " + resourceName);
+                Dev2Logger.Info("Find Resource. ResourceName: " + resourceName, GlobalConstants.WarewolfInfo);
 
 
                 IList<SerializableResource> resourceList = resources.Select(r=>new FindResourceHelper().SerializeResourceForStudio(r,theWorkspace.ID)).ToList();
@@ -86,7 +86,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch (Exception err)
             {
-                Dev2Logger.Error(err);
+                Dev2Logger.Error(err, GlobalConstants.WarewolfError);
                 throw;
             }
         }

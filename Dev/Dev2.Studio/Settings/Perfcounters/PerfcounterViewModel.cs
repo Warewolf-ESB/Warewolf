@@ -49,7 +49,8 @@ namespace Dev2.Settings.Perfcounters
 
         static IEnvironmentViewModel GetEnvironment()
         {
-            var server = ServerRepository.Instance.ActiveServer;
+            var serverRepository = CustomContainer.Get<IServerRepository>();
+            var server = serverRepository.ActiveServer;
             if (server == null)
             {
                 var shellViewModel = CustomContainer.Get<IShellViewModel>();

@@ -83,13 +83,15 @@ namespace Dev2.Tests.Runtime.Services
             var createFolderService = new AddFolderService();
 
             ServerExplorerItem item = new ServerExplorerItem("a", Guid.NewGuid(), "Folder", null, Permissions.DeployFrom, "");
+            item.ResourcePath = @"root\";
             var repo = new Mock<IExplorerServerResourceRepository>();
             var ws = new Mock<IWorkspace>();
             repo.Setup(a => a.AddItem(item, It.IsAny<Guid>())).Returns(new ExplorerRepositoryResult(ExecStatus.Fail, "noddy"));
             var serializer = new Dev2JsonSerializer();
-            var inputs = new Dictionary<string, StringBuilder>();
-            inputs.Add("itemToAdd", serializer.SerializeToBuilder(item));
-
+            var inputs = new Dictionary<string, StringBuilder>
+            {
+                { "itemToAdd", serializer.SerializeToBuilder(item) }
+            };
             ws.Setup(a => a.ID).Returns(Guid.Empty);
             createFolderService.ServerExplorerRepo = repo.Object;
             //------------Execute Test---------------------------

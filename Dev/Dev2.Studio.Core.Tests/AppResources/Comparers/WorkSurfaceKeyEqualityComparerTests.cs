@@ -9,6 +9,7 @@
 */
 
 using System;
+using System.Linq.Expressions;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Core.Tests.Environments;
 using Dev2.Factory;
@@ -147,12 +148,18 @@ namespace Dev2.Core.Tests.AppResources.Comparers
             var enviroId = Guid.NewGuid();
             var enviroId2 = Guid.NewGuid();
 
+            var serverRepo = new Mock<IServerRepository>();
+            
+            CustomContainer.DeRegister<IServerRepository>();
+            CustomContainer.Register(serverRepo.Object);
             var source = new Mock<IServer>();
             var sourceConnection = new Mock<IEnvironmentConnection>();
             sourceConnection.Setup(connection => connection.WorkspaceID).Returns(Guid.NewGuid);
             source.Setup(model => model.Connection).Returns(sourceConnection.Object);
             var e1 = new Mock<IServer>();
             e1.Setup(model => model.EnvironmentID).Returns(Guid.NewGuid);
+            //serverRepo.Setup(repository => repository.FindSingle(server => ))
+            //    .Returns(source.Object);
             var connection1 = new Mock<IEnvironmentConnection>();
             connection1.Setup(connection => connection.WorkspaceID).Returns(enviroId);
             e1.Setup(model => model.Connection).Returns(connection1.Object);
@@ -169,7 +176,8 @@ namespace Dev2.Core.Tests.AppResources.Comparers
             debugState.Setup(c => c.OriginatingResourceID).Returns(resId);
             debugState.Setup(c => c.ServerID).Returns(serverId);
             debugState.Setup(c => c.WorkspaceID).Returns(enviroId);
-
+            serverRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IServer,bool>>>()))
+                .Returns(e1.Object);
             var key1 = WorkSurfaceKeyFactory.CreateKey(debugState.Object);
 
 

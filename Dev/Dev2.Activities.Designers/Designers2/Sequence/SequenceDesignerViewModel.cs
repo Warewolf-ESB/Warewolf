@@ -153,7 +153,7 @@ namespace Dev2.Activities.Designers2.Sequence
                 }
                 catch (RuntimeBinderException e)
                 {
-                    Dev2Logger.Error(e);
+                    Dev2Logger.Error(e, "Warewolf Error");
                 }
             }
             return false;

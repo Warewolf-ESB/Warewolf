@@ -876,7 +876,7 @@ namespace Dev2.Studio.ViewModels.DataList
             }
             catch (Exception e)
             {
-                Dev2Logger.Error(e);
+                Dev2Logger.Error(e, "Warewolf Error");
             }
         }
 

@@ -102,6 +102,8 @@ namespace Dev2.Runtime.WebServer.Handlers
                 ServiceName = serviceName
                 ,
                 WorkspaceID = workspaceGuid
+                ,
+                ExecutionID = Guid.NewGuid()
             };
             dataObject.SetupForWebDebug(webRequest);
             webRequest.BindRequestVariablesToDataObject(ref dataObject);
@@ -113,6 +115,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             IResource resource;
             dataObject.SetResourceNameAndId(_resourceCatalog, serviceName, out resource);
             dataObject.SetTestResourceIds(_resourceCatalog, webRequest, serviceName);
+            dataObject.WebUrl = webRequest.WebServerUrl;
             var serializer = new Dev2JsonSerializer();
             var esbEndpoint = new EsbServicesEndpoint();
             dataObject.EsbChannel = esbEndpoint;
@@ -126,7 +129,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             {
                 esbExecuteRequest.AddArgument(key, new StringBuilder(webRequest.Variables[key]));
             }
-            Dev2Logger.Debug("About to execute web request [ " + serviceName + " ] for User [ " + user?.Identity?.Name + " : " + user?.Identity?.AuthenticationType + " : " + user?.Identity?.IsAuthenticated + " ] with DataObject Payload [ " + dataObject.RawPayload + " ]");
+            
             var executionDlid = GlobalConstants.NullDataListID;
             var formatter = DataListFormat.CreateFormat("XML", EmitionTypes.XML, "text/xml");
             if (canExecute && dataObject.ReturnType != EmitionTypes.SWAGGER)
@@ -253,7 +256,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                     }
                     catch (Exception ex)
                     {
-                        Dev2Logger.Error("AbstractWebRequestHandler", ex);
+                        Dev2Logger.Error("AbstractWebRequestHandler", ex, GlobalConstants.WarewolfError);
                     }
                 }
             }

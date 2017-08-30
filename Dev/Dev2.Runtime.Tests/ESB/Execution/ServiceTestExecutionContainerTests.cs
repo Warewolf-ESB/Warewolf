@@ -80,7 +80,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             cataLog.Setup(cat => cat.FetchTest(resourceId, TestName)).Returns(testModelTO);
             var resourceCat = new Mock<IResourceCatalog>();
             var activity = new Mock<IDev2Activity>();
-            resourceCat.Setup(catalog => catalog.Parse(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(activity.Object);
+            resourceCat.Setup(catalog => catalog.Parse(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<string>())).Returns(activity.Object);
             var workSpace = new Mock<IWorkspace>();
             var channel = new Mock<IEsbChannel>();
             var esbExecuteRequest = new EsbExecuteRequest();
@@ -153,7 +153,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             cataLog.Setup(cat => cat.FetchTest(resourceId, TestName)).Returns(testModelTO);
             var resourceCat = new Mock<IResourceCatalog>();
             var activity = new Mock<IDev2Activity>();
-            resourceCat.Setup(catalog => catalog.Parse(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(activity.Object);
+            resourceCat.Setup(catalog => catalog.Parse(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<string>())).Returns(activity.Object);
             var workSpace = new Mock<IWorkspace>();
             var channel = new Mock<IEsbChannel>();
             var esbExecuteRequest = new EsbExecuteRequest();

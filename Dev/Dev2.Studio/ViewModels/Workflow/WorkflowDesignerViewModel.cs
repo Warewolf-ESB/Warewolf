@@ -209,7 +209,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             _workflowInputDataViewModel = WorkflowInputDataViewModel.Create(_resourceModel);
             GetWorkflowLink();
             DataListViewModel = DataListViewModelFactory.CreateDataListViewModel(_resourceModel);
-            DebugOutputViewModel = new DebugOutputViewModel(_resourceModel.Environment.Connection.ServerEvents, ServerRepository.Instance, new DebugOutputFilterStrategy(), ResourceModel);
+            DebugOutputViewModel = new DebugOutputViewModel(_resourceModel.Environment.Connection.ServerEvents, CustomContainer.Get<IServerRepository>(), new DebugOutputFilterStrategy(), ResourceModel);
             _firstWorkflowChange = true;
         }
 
@@ -818,7 +818,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                         }
                         catch (Exception e)
                         {
-                            Dev2Logger.Error("OpenWorkflowLinkCommand", e);
+                            Dev2Logger.Error("OpenWorkflowLinkCommand", e, "Warewolf Error");
                         }
 
                     }
@@ -1180,13 +1180,14 @@ namespace Dev2.Studio.ViewModels.Workflow
 
                 if (viewModel != null)
                 {
-                    IServer server = ServerRepository.Instance.FindSingle(c => c.EnvironmentID == viewModel.Server.EnvironmentID);
-                    ServerRepository.Instance.ActiveServer = server;
+                    var serverRepository = CustomContainer.Get<IServerRepository>();
+                    IServer server = serverRepository.FindSingle(c => c.EnvironmentID == viewModel.Server.EnvironmentID);
+                    serverRepository.ActiveServer = server;
                     var theResource = server?.ResourceRepository.LoadContextualResourceModel(viewModel.ResourceId);
 
                     if (theResource != null)
                     {
-                        DsfActivity d = DsfActivityFactory.CreateDsfActivity(theResource, droppedActivity, true, ServerRepository.Instance, _resourceModel.Environment.IsLocalHostCheck());
+                        DsfActivity d = DsfActivityFactory.CreateDsfActivity(theResource, droppedActivity, true, serverRepository, _resourceModel.Environment.IsLocalHostCheck());
 
                         UpdateForRemote(d, theResource);
                     }
@@ -1212,7 +1213,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             DsfActivity activity = droppedActivity;
             IContextualResourceModel resource = _resourceModel.Environment.ResourceRepository.FindSingle(
                 c => c.Category == activity.ServiceName) as IContextualResourceModel;
-            IServerRepository serverRepository = ServerRepository.Instance;
+            IServerRepository serverRepository = CustomContainer.Get<IServerRepository>();
             droppedActivity = DsfActivityFactory.CreateDsfActivity(resource, droppedActivity, false, serverRepository, _resourceModel.Environment.IsLocalHostCheck());
             WorkflowDesignerUtils.CheckIfRemoteWorkflowAndSetProperties(droppedActivity, resource, serverRepository.ActiveServer);
             modelProperty1.SetValue(droppedActivity);
@@ -1221,14 +1222,14 @@ namespace Dev2.Studio.ViewModels.Workflow
         private void InitializeFlowSwitch(ModelItem mi)
         {
             // Travis.Frisinger : 28.01.2013 - Switch Amendments
-            Dev2Logger.Info("Publish message of type - " + typeof(ConfigureSwitchExpressionMessage));
+            Dev2Logger.Info("Publish message of type - " + typeof(ConfigureSwitchExpressionMessage), "Warewolf Info");
             _expressionString = FlowController.ConfigureSwitchExpression(new ConfigureSwitchExpressionMessage { ModelItem = mi, Server = _resourceModel.Environment, IsNew = true });
             AddMissingWithNoPopUpAndFindUnusedDataListItemsImpl(false);
         }
 
         private void InitializeFlowDecision(ModelItem mi)
         {
-            Dev2Logger.Info("Publish message of type - " + typeof(ConfigureDecisionExpressionMessage));
+            Dev2Logger.Info("Publish message of type - " + typeof(ConfigureDecisionExpressionMessage), "Warewolf Info");
             ModelProperty modelProperty = mi.Properties["Action"];
 
             InitialiseWithAction(modelProperty);
@@ -1520,7 +1521,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// <date>2013/02/06</date>
         public void Handle(AddStringListToDataListMessage message)
         {
-            Dev2Logger.Info(message.GetType().Name);
+            Dev2Logger.Info(message.GetType().Name, "Warewolf Info");
             IDataListViewModel dlvm = DataListSingleton.ActiveDataList;
             if (dlvm != null)
             {
@@ -1901,7 +1902,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 var workspace = GlobalConstants.ServerWorkspaceID;
 
                 // log the trace for fetch ;)
-                Dev2Logger.Info($"Null Definition For {_resourceModel.ID} :: {_resourceModel.ResourceName}. Fetching...");
+                Dev2Logger.Info($"Null Definition For {_resourceModel.ID} :: {_resourceModel.ResourceName}. Fetching...", "Warewolf Info");
 
                 // In the case of null of empty try fetching again ;)
                 var msg = Server.ResourceRepository.FetchResourceDefinition(_resourceModel.Environment, workspace, _resourceModel.ID, false);
@@ -1917,7 +1918,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 if (_resourceModel.ResourceType == ResourceType.WorkflowService)
                 {
                     // log the trace for fetch ;)
-                    Dev2Logger.Info($"Could not find {_resourceModel.ResourceName}. Creating a new workflow");
+                    Dev2Logger.Info($"Could not find {_resourceModel.ResourceName}. Creating a new workflow", "Warewolf Info");
                     var activityBuilder = _workflowHelper.CreateWorkflow(_resourceModel.ResourceName);
                     _wd.Load(activityBuilder);
                     BindToModel();
@@ -2292,7 +2293,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         [ExcludeFromCodeCoverage]
         private IResourcePickerDialog CreateResourcePickerDialog(enDsfActivityType activityType)
         {
-            var server = ServerRepository.Instance.ActiveServer;
+            var server = CustomContainer.Get<IServerRepository>().ActiveServer;
 
             if (server.Permissions == null)
             {
@@ -2521,11 +2522,11 @@ namespace Dev2.Studio.ViewModels.Workflow
 
             if (envID != null && modelProperty != null)
             {
-                IServer server = ServerRepository.Instance.FindSingle(c => c.EnvironmentID == envID);
+                IServer server = CustomContainer.Get<IServerRepository>().FindSingle(c => c.EnvironmentID == envID);
                 var resource = server?.ResourceRepository.LoadContextualResourceModel(resourceID.Value);
                 if (resource != null)
                 {
-                    DsfActivity d = DsfActivityFactory.CreateDsfActivity(resource, null, true, ServerRepository.Instance, _resourceModel.Environment.IsLocalHostCheck());
+                    DsfActivity d = DsfActivityFactory.CreateDsfActivity(resource, null, true, CustomContainer.Get<IServerRepository>(), _resourceModel.Environment.IsLocalHostCheck());
                     d.ServiceName = d.DisplayName = d.ToolboxFriendlyName = resource.Category;
                     UpdateForRemote(d, resource);
                     modelProperty.SetValue(d);
@@ -2722,7 +2723,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public void Handle(EditActivityMessage message)
         {
-            Dev2Logger.Info(message.GetType().Name);
+            Dev2Logger.Info(message.GetType().Name, "Warewolf Info");
             EditActivity(message.ModelItem, message.ParentEnvironmentID);
         }
 
@@ -2742,16 +2743,21 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 return;
             }
+
             var resourceModel = message.ResourceModel;
             WorkspaceItemRepository.Instance.Remove(resourceModel);
             var unsavedName = resourceModel.ResourceName;
             UpdateResourceModel(message, resourceModel, unsavedName);
             PublishMessages(resourceModel);
             DisposeDesigner();
-            ActivityDesignerHelper.AddDesignerAttributes(this);
-            _workflowInputDataViewModel = WorkflowInputDataViewModel.Create(_resourceModel);
-            UpdateWorkflowLink(GetWorkflowLink());
-            NotifyOfPropertyChange(() => DesignerView);
+
+            if (message.KeepTabOpen)
+            {
+                ActivityDesignerHelper.AddDesignerAttributes(this);
+                _workflowInputDataViewModel = WorkflowInputDataViewModel.Create(_resourceModel);
+                UpdateWorkflowLink(GetWorkflowLink());
+                NotifyOfPropertyChange(() => DesignerView);
+            }
             RemoveUnsavedWorkflowName(unsavedName);
         }
         internal void RemoveUnsavedWorkflowName(string unsavedName)
@@ -2788,7 +2794,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         private void PublishMessages(IContextualResourceModel resourceModel)
         {
             UpdateResource(resourceModel);
-            Dev2Logger.Info("Publish message of type - " + typeof(UpdateResourceMessage));
+            Dev2Logger.Info("Publish message of type - " + typeof(UpdateResourceMessage), "Warewolf Info");
             EventPublisher.Publish(new UpdateResourceMessage(resourceModel));
         }
 

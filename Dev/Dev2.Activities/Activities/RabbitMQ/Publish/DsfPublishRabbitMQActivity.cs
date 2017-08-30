@@ -118,12 +118,12 @@ namespace Dev2.Activities.RabbitMQ.Publish
                         Channel.BasicPublish(queueName, "", basicProperties, Encoding.UTF8.GetBytes(message));
                     }
                 }
-                Dev2Logger.Debug($"Message published to queue {queueName}");
+                Dev2Logger.Debug($"Message published to queue {queueName}", GlobalConstants.WarewolfDebug);
                 return new List<string> { "Success" };
             }
             catch (Exception ex)
             {
-                Dev2Logger.Error("PublishRabbitMQActivity", ex);
+                Dev2Logger.Error("PublishRabbitMQActivity", ex, GlobalConstants.WarewolfError);
                 throw new Exception(ex.GetAllMessages());
             }
         }

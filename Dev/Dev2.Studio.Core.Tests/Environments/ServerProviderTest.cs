@@ -82,8 +82,9 @@ namespace Dev2.Core.Tests.Environments
             var targetEnv = EnviromentRepositoryTest.CreateMockEnvironment(EnviromentRepositoryTest.Server1Source);
             var repository = new Mock<IServerRepository>();
             repository.Setup(r => r.All()).Returns(new[] { targetEnv.Object });
-
-            if(useParameterless)
+            CustomContainer.DeRegister<IServerRepository>();
+            CustomContainer.Register(repository.Object);
+            if (useParameterless)
             {
                 
                 ServerRepository.Instance.IsLoaded = true;  // so that we don't connect to a server!

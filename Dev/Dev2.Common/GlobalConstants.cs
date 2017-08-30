@@ -17,6 +17,7 @@ using System.Globalization;
 using System.IO;
 using System.Security.Principal;
 using Warewolf.Resource.Errors;
+using System.Text.RegularExpressions;
 
 namespace Dev2.Common
 {
@@ -31,7 +32,7 @@ namespace Dev2.Common
         {
             SystemEvents.TimeChanged += (sender, args) =>
             {
-                
+
                 CultureInfo.CurrentCulture.ClearCachedData();
             };
 
@@ -44,18 +45,25 @@ namespace Dev2.Common
              */
             SystemEvents.UserPreferenceChanged += (sender, args) =>
             {
-                
+
                 CultureInfo.CurrentCulture.ClearCachedData();
             };
         }
 
-        public const string ArmResultText = "Flow Arm";
-        
-        //Default TimeoutValue
-        
-        public static readonly TimeSpan DefaultTimeoutValue = new TimeSpan(0, 0, 20, 0);
+        public static string ExecutionLoggingResultStartTag = "Execution Result [ ";
+        public static string ExecutionLoggingResultEndTag = " ]";
 
-        
+        public static string ArmResultText = "Flow Arm";
+
+        //Default TimeoutValue
+
+        public static readonly TimeSpan DefaultTimeoutValue = new TimeSpan(0, 0, 20, 0);
+        public static string LogFileDateFormat = "yyyy-MM-dd HH:mm:ss,fff";
+
+
+
+        public static string LogFileRegex = @"(\d+[-.\/]\d+[-.\/]\d+ \d+[:]\d+[:]\d+,\d+)\s+(\w+)\s+[-]\s+[[](\w+[-]\w+[-]\w+[-]\w+[-]\w+)[]]\s+[-]\s+"
+            ;
 
         public static string DefaultServerLogFileConfig = "<log4net>" +
                                              "<appender name=\"LogFileAppender\" type=\"Log4Net.Async.AsyncRollingFileAppender,Log4Net.Async\">" +
@@ -71,7 +79,7 @@ namespace Dev2.Common
     "<layout type=\"log4net.Layout.PatternLayout\">" +
     "<header value=\"[Header]&#xD;&#xA;\" />" +
                                              "<footer value=\"[Footer]&#xD;&#xA;\" />" +
-                                             "<conversionPattern value=\"%date [%thread] %-5level - %message%newline\" />" +
+                                             "<conversionPattern value=\"%date %-5level - %message%newline\" />" +
                                              "</layout>" +
                                              "<!-- Alternate layout using XML			" +
                                              "<layout type=\"log4net.Layout.XMLLayout\" /> -->" +
@@ -97,7 +105,7 @@ namespace Dev2.Common
                                              "<logName value=\"Warewolf\"/>" +
                                              "<applicationName value=\"Warewolf Server\"/>" +
                                              "<layout type=\"log4net.Layout.PatternLayout\">" +
-                                                "<conversionPattern value=\"%date [%thread] %-5level - %message%newline\" />" +
+                                                "<conversionPattern value=\"%date %-5level - %message%newline\" />" +
                                               "</layout>" +
                                              "</appender>" +
                                              "<!-- Setup the root category, add the appenders and set the default level -->" +
@@ -122,7 +130,7 @@ namespace Dev2.Common
     "<layout type=\"log4net.Layout.PatternLayout\">" +
     "<header value=\"[Header]&#xD;&#xA;\" />" +
                                              "<footer value=\"[Footer]&#xD;&#xA;\" />" +
-                                             "<conversionPattern value=\"%date [%thread] %-5level - %message%newline\" />" +
+                                             "<conversionPattern value=\"%date %-5level - %message%newline\" />" +
                                              "</layout>" +
                                              "<!-- Alternate layout using XML			" +
                                              "<layout type=\"log4net.Layout.XMLLayout\" /> -->" +
@@ -148,7 +156,7 @@ namespace Dev2.Common
                                              "<logName value=\"Warewolf\"/>" +
                                              "<applicationName value=\"Warewolf Studio\"/>" +
                                              "<layout type=\"log4net.Layout.PatternLayout\">" +
-                                                "<conversionPattern value=\"%date [%thread] %-5level - %message%newline\" />" +
+                                                "<conversionPattern value=\"%date %-5level - %message%newline\" />" +
                                               "</layout>" +
                                              "</appender>" +
                                              "<!-- Setup the root category, add the appenders and set the default level -->" +
@@ -160,13 +168,13 @@ namespace Dev2.Common
                                              "</log4net>";
 
         // Max String Size
-        
+
         public const double MAX_SIZE_FOR_STRING = 1 << 12; // = 4K
 
 
 
         // Max storage buffer size to avoid LOH ;)
-        
+
         public const int MAX_BUFFER_SIZE = 35000;
 
 
@@ -174,7 +182,7 @@ namespace Dev2.Common
         public const double DesignHeightTolerance = 0.00000001;
 
         // Force Webserver Constants
-        
+
         public const int ViewInBrowserForceDownloadSize = 51200; // 500 KB and a file must be downloaded
 
         //Runtime Configuration
@@ -186,13 +194,13 @@ namespace Dev2.Common
         public const string Dev2MessageBoxNoInputsWhenHyperlinkClickedDialog = "2";
 
         // WF Constants
-        
+
         public const int _xamlPoolSize = 5;
 
 
 
         // Constant for unique batch size processing
-        
+
         public const int _uniqueBatchSize = 1000;
 
 
@@ -221,11 +229,11 @@ namespace Dev2.Common
         public const string WebserverReplaceTag = "[[Dev2WebServer]]";
 
         // JSON constants
-        
+
         public const string OpenJSON = "<JSON>";
 
 
-        
+
         public const string CloseJSON = "</JSON>";
 
 
@@ -245,11 +253,11 @@ namespace Dev2.Common
         public const string ManagementServicePayload = "Dev2System.ManagmentServicePayload";
         public const string ErrorPayload = "Dev2System.Dev2Error";
 
-        
+
         public const string ActivityRSResult = "Dev2ActivityResults";
 
 
-        
+
         public const string ActivityRSField = "Dev2Result";
 
 
@@ -303,7 +311,7 @@ namespace Dev2.Common
         public const string DefaultTrueArmText = "True";
         public const string DefaultFalseArmText = "False";
 
-        
+
         public const string VBSerializerToken = "__!__";
 
 
@@ -329,7 +337,7 @@ namespace Dev2.Common
         // Brendon Hack Constants
         public const string PostData = "postData";
 
-        
+
         public const string DLID = "dlid";
 
 
@@ -419,8 +427,8 @@ where pn.nspname = 'public';
 
         // Security
         //public const string BuiltInAdministrator = "BuiltIn\\Administrators";
-        
-        
+
+
         public static String PublicUsername = @"\";
 
         // GAC
@@ -436,7 +444,7 @@ where pn.nspname = 'public';
         public static readonly string RemoteDebugServerInvoke = "RemoteWarewolfServerDebug";
 
         // Date Time
-        
+
         public static readonly string LongTimePattern = CultureInfo.CurrentCulture.DateTimeFormat.LongTimePattern;
 
         public static readonly string ShortTimePattern = CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern;
@@ -451,6 +459,14 @@ where pn.nspname = 'public';
 
         public static string AnythingToXmlPathSeperator = ",";
         public static string AnytingToXmlCommaToken = "__COMMA__";
+
+        // Wf Execution Container
+        public static string ExecuteWebRequestString = "About to execute web request [ '{0}' ] for User [ '{1}' : '{2}' : '{3}' ] with DataObject Payload [ '{4}' ]";
+        public static string ExecutionForServiceString = "Execution for Service Name: '{0}' Resource Id: '{1}' Mode: '{2}'";
+
+        public static string WarewolfInfo = "Warewolf Info";
+        public static string WarewolfError = "Warewolf Error";
+        public static string WarewolfDebug = "Warewolf Debug";
 
         // Resource Picker
         public static string ResourcePickerWorkflowString = "DsfWorkflowActivity";
@@ -509,10 +525,10 @@ where pn.nspname = 'public';
             "There is An Error"
         };
 
-        
+
         public static int VersionCount = 20;
 
-        
+
         public static string WebServiceTimeoutMessage =
             "Output mapping took too long. More then 10 seconds. Please use the JSONPath feature ( green icon above ) to reduce your dataset complexity. You can find out more on JSONPath at http://goessner.net/articles/JsonPath/";
 
@@ -586,7 +602,7 @@ where pn.nspname = 'public';
                 //#if DEBUG
                 //                return Assembly.GetExecutingAssembly().GetName().Version.Minor-1;
                 //#endif
-                
+
 #pragma warning disable 162
                 return 7;
 #pragma warning restore 162
@@ -600,12 +616,17 @@ where pn.nspname = 'public';
                 //#if DEBUG
                 //                return Assembly.GetExecutingAssembly().GetName().Version.Major-1;
                 //#endif
-                
+
 #pragma warning disable 162
                 return 0;
 #pragma warning restore 162
             }
         }
+
+        public static string ApplicationJsonHeader { get; } = "application/json";
+        public static string ApplicationXmlHeader { get; } = "application/xml";
+        public static string ApplicationTextHeader { get; } = "text/plain";
+        public static string ContentType { get;}= "Content-Type";
 
         public static string DropboxPathNotFoundException = "Dropbox location cannot be found";
         public static string DropboxPathNotFileException = "Please specify the path of a file in Dropbox";
@@ -639,12 +660,12 @@ where pn.nspname = 'public';
             }
         }
 
-        
 
 
-        
-        
-        
-        
+
+
+
+
+
     }
 }

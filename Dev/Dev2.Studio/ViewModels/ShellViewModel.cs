@@ -459,7 +459,7 @@ namespace Dev2.Studio.ViewModels
 
         [ExcludeFromCodeCoverage]
         public ShellViewModel()
-            : this(EventPublishers.Aggregator, new AsyncWorker(), Core.ServerRepository.Instance, new VersionChecker(), new ViewFactory())
+            : this(EventPublishers.Aggregator, new AsyncWorker(), CustomContainer.Get<IServerRepository>(), new VersionChecker(), new ViewFactory())
         {
         }
 
@@ -496,7 +496,7 @@ namespace Dev2.Studio.ViewModels
 
         public void Handle(ShowReverseDependencyVisualizer message)
         {
-            Dev2Logger.Debug(message.GetType().Name);
+            Dev2Logger.Debug(message.GetType().Name, "Warewolf Debug");
             if (message.Model != null)
             {
                 _worksurfaceContextManager.AddReverseDependencyVisualizerWorkSurface(message.Model);
@@ -505,7 +505,7 @@ namespace Dev2.Studio.ViewModels
 
         public void Handle(SaveAllOpenTabsMessage message)
         {
-            Dev2Logger.Debug(message.GetType().Name);
+            Dev2Logger.Debug(message.GetType().Name, "Warewolf Debug");
             PersistTabs();
         }
 
@@ -513,7 +513,7 @@ namespace Dev2.Studio.ViewModels
         public void Handle(AddWorkSurfaceMessage message)
         {
             IsNewWorkflowSaved = true;
-            Dev2Logger.Info(message.GetType().Name);
+            Dev2Logger.Info(message.GetType().Name, "Warewolf Info");
             _worksurfaceContextManager.AddWorkSurface(message.WorkSurfaceObject);
             if (message.ShowDebugWindowOnLoad)
             {
@@ -528,13 +528,13 @@ namespace Dev2.Studio.ViewModels
 
         public void Handle(DeleteResourcesMessage message)
         {
-            Dev2Logger.Info(message.GetType().Name);
+            Dev2Logger.Info(message.GetType().Name, "Warewolf Info");
             DeleteResources(message.ResourceModels, message.FolderName, message.ShowDialog, message.ActionToDoOnDelete);
         }
 
         public void Handle(DeleteFolderMessage message)
         {
-            Dev2Logger.Info(message.GetType().Name);
+            Dev2Logger.Info(message.GetType().Name, "Warewolf Info");
             if (ShowDeleteDialogForFolder(message.FolderName))
             {
                 message.ActionToDoOnDelete?.Invoke();
@@ -545,7 +545,7 @@ namespace Dev2.Studio.ViewModels
 
         public void Handle(ShowDependenciesMessage message)
         {
-            Dev2Logger.Info(message.GetType().Name);
+            Dev2Logger.Info(message.GetType().Name, "Warewolf Info");
             var model = message.ResourceModel;
             var dependsOnMe = message.ShowDependentOnMe;
             _worksurfaceContextManager.ShowDependencies(dependsOnMe, model, ActiveServer);
@@ -1560,26 +1560,26 @@ namespace Dev2.Studio.ViewModels
 
         void SaveAll(object obj)
         {
+            ContinueShutDown = true;
             for (int index = Items.Count - 1; index >= 0; index--)
             {
                 var workSurfaceContextViewModel = Items[index];
-                ActivateItem(workSurfaceContextViewModel);
+
                 var workSurfaceContext = workSurfaceContextViewModel.WorkSurfaceKey.WorkSurfaceContext;
-                if (workSurfaceContext == WorkSurfaceContext.Workflow)
+                if (workSurfaceContext == WorkSurfaceContext.Help)
                 {
-                    if (workSurfaceContextViewModel.CanSave())
-                    {
-                        workSurfaceContextViewModel.Save();
-                    }
+                    continue;
                 }
-                else
+                DeactivateItem(workSurfaceContextViewModel, true);
+                if (!CloseCurrent)
                 {
-                    var vm = workSurfaceContextViewModel.WorkSurfaceViewModel;
-                    var viewModel = vm as IStudioTab;
-                    viewModel?.DoDeactivate(true);
+                    ContinueShutDown = false;
+                    break;
                 }
             }
         }
+
+        public bool ContinueShutDown;
 
         public void ResetMainView()
         {
@@ -1729,12 +1729,12 @@ namespace Dev2.Studio.ViewModels
                 // Get the environment for the workspace item
                 //
                 IWorkspaceItem item = _getWorkspaceItemRepository().WorkspaceItems[i];
-                Dev2Logger.Info($"Start Proccessing WorkspaceItem: {item.ServiceName}");
+                Dev2Logger.Info($"Start Proccessing WorkspaceItem: {item.ServiceName}", "Warewolf Info");
                 IServer environment = ServerRepository.All().Where(env => env.IsConnected).TakeWhile(env => env.Connection != null).FirstOrDefault(env => env.EnvironmentID == item.EnvironmentID);
 
                 if (environment?.ResourceRepository == null)
                 {
-                    Dev2Logger.Info(@"Environment Not Found");
+                    Dev2Logger.Info(@"Environment Not Found", "Warewolf Info");
                     if (environment != null && item.EnvironmentID == environment.EnvironmentID)
                     {
                         workspaceItemsToRemove.Add(item);
@@ -1742,7 +1742,7 @@ namespace Dev2.Studio.ViewModels
                 }
                 if (environment != null)
                 {
-                    Dev2Logger.Info($"Proccessing WorkspaceItem: {item.ServiceName} for Environment: {environment.DisplayName}");
+                    Dev2Logger.Info($"Proccessing WorkspaceItem: {item.ServiceName} for Environment: {environment.DisplayName}", "Warewolf Info");
                     if (environment.ResourceRepository != null)
                     {
                         environment.ResourceRepository.LoadResourceFromWorkspace(item.ID, item.WorkspaceID);
@@ -1762,7 +1762,7 @@ namespace Dev2.Studio.ViewModels
                         }
                         else
                         {
-                            Dev2Logger.Info($"Got Resource Model: {resource.DisplayName} ");
+                            Dev2Logger.Info($"Got Resource Model: {resource.DisplayName} ", "Warewolf Info");
                             var fetchResourceDefinition = environment.ResourceRepository.FetchResourceDefinition(environment, item.WorkspaceID, resource.ID, false);
                             resource.WorkflowXaml = fetchResourceDefinition.Message;
                             resource.IsWorkflowSaved = item.IsWorkflowSaved;
@@ -1808,24 +1808,7 @@ namespace Dev2.Studio.ViewModels
         private readonly object _locker = new object();
         void SaveOnBackgroundTask(bool isStudioShutdown)
         {
-
             SaveWorkspaceItems();
-            //            Task t = new Task(() =>
-            //            {
-            //
-            //                lock (_locker)
-            //                {
-            //                    foreach (var ctx in Items.Where(a => true).ToList())
-            //                    {
-            //                        if (!ctx.WorkSurfaceViewModel.DisplayName.ToLower().Contains("version") && ctx.IsEnvironmentConnected())
-            //                        {
-            //                            ctx.Save(true, isStudioShutdown);
-            //                        }
-            //                    }
-            //                }
-            //            });
-            //            t.Start();
-
         }
 
         void SaveAndShutdown(bool isStudioShutdown)
@@ -1843,7 +1826,7 @@ namespace Dev2.Studio.ViewModels
         public MessageBoxResult ShowUnsavedWorkDialog()
         {
             var popupResult = PopupProvider.Show(StringResources.Unsaved_Changes, StringResources.CloseHeader,
-                               MessageBoxButton.YesNo, MessageBoxImage.Information, @"", false, false, true, false, false, false);
+                               MessageBoxButton.YesNoCancel, MessageBoxImage.Information, @"", false, false, true, false, false, false);
 
             return popupResult;
         }
@@ -1851,15 +1834,21 @@ namespace Dev2.Studio.ViewModels
         private bool CallSaveDialog(bool closeStudio)
         {
             var result = ShowUnsavedWorkDialog();
+            // CANCEL - DON'T CLOSE THE STUDIO
             // NO - DON'T SAVE ANYTHING AND CLOSE THE STUDIO
-            // YES - DON'T CLOSE THE STUDIO
-            if (result == MessageBoxResult.Yes)
+            // YES - CALL THE SAVE ALL COMMAND AND CLOSE THE STUDIO
+            if (result == MessageBoxResult.Cancel)
             {
                 closeStudio = false;
             }
-            else if (result == MessageBoxResult.No)
+            else if (result == MessageBoxResult.Yes)
             {
                 closeStudio = true;
+                SaveAllCommand.Execute(null);
+                if (!ContinueShutDown)
+                {
+                    closeStudio = false;
+                }
             }
 
             return closeStudio;
@@ -1917,8 +1906,8 @@ namespace Dev2.Studio.ViewModels
                             if (serverSourceModel.IsDirty || serverSourceModel.ViewModel.HasChanged)
                             {
                                 closeStudio = CallSaveDialog(closeStudio);
+                                break;
                             }
-                            break;
                         }
                         var pluginSourceModel = vm as SourceViewModel<IPluginSource>;
                         if (pluginSourceModel != null)
@@ -1926,8 +1915,8 @@ namespace Dev2.Studio.ViewModels
                             if (pluginSourceModel.IsDirty || pluginSourceModel.ViewModel.HasChanged)
                             {
                                 closeStudio = CallSaveDialog(closeStudio);
+                                break;
                             }
-                            break;
                         }
                         var wcfServerSourceModel = vm as SourceViewModel<IWcfServerSource>;
                         if (wcfServerSourceModel != null)
@@ -1935,8 +1924,8 @@ namespace Dev2.Studio.ViewModels
                             if (wcfServerSourceModel.IsDirty || wcfServerSourceModel.ViewModel.HasChanged)
                             {
                                 closeStudio = CallSaveDialog(closeStudio);
+                                break;
                             }
-                            break;
                         }
                         var rabbitMqServiceSourceModel = vm as SourceViewModel<IRabbitMQServiceSourceDefinition>;
                         if (rabbitMqServiceSourceModel != null)
@@ -1944,8 +1933,8 @@ namespace Dev2.Studio.ViewModels
                             if (rabbitMqServiceSourceModel.IsDirty || rabbitMqServiceSourceModel.ViewModel.HasChanged)
                             {
                                 closeStudio = CallSaveDialog(closeStudio);
+                                break;
                             }
-                            break;
                         }
                         var sharepointServerSourceModel = vm as SourceViewModel<ISharepointServerSource>;
                         if (sharepointServerSourceModel != null)
@@ -1953,8 +1942,8 @@ namespace Dev2.Studio.ViewModels
                             if (sharepointServerSourceModel.IsDirty || sharepointServerSourceModel.ViewModel.HasChanged)
                             {
                                 closeStudio = CallSaveDialog(closeStudio);
+                                break;
                             }
-                            break;
                         }
                         var oAuthSourceModel = vm as SourceViewModel<IOAuthSource>;
                         if (oAuthSourceModel != null)
@@ -1962,8 +1951,8 @@ namespace Dev2.Studio.ViewModels
                             if (oAuthSourceModel.IsDirty || oAuthSourceModel.ViewModel.HasChanged)
                             {
                                 closeStudio = CallSaveDialog(closeStudio);
+                                break;
                             }
-                            break;
                         }
                         var exchangeSourceModel = vm as SourceViewModel<IExchangeSource>;
                         if (exchangeSourceModel != null)
@@ -1971,8 +1960,8 @@ namespace Dev2.Studio.ViewModels
                             if (exchangeSourceModel.IsDirty || exchangeSourceModel.ViewModel.HasChanged)
                             {
                                 closeStudio = CallSaveDialog(closeStudio);
+                                break;
                             }
-                            break;
                         }
                         var comPluginSourceModel = vm as SourceViewModel<IComPluginSource>;
                         if (comPluginSourceModel != null)
@@ -1980,8 +1969,8 @@ namespace Dev2.Studio.ViewModels
                             if (comPluginSourceModel.IsDirty || comPluginSourceModel.ViewModel.HasChanged)
                             {
                                 closeStudio = CallSaveDialog(closeStudio);
+                                break;
                             }
-                            break;
                         }
                         var webServiceSourceModel = vm as SourceViewModel<IWebServiceSource>;
                         if (webServiceSourceModel != null)
@@ -1989,8 +1978,8 @@ namespace Dev2.Studio.ViewModels
                             if (webServiceSourceModel.IsDirty || webServiceSourceModel.ViewModel.HasChanged)
                             {
                                 closeStudio = CallSaveDialog(closeStudio);
+                                break;
                             }
-                            break;
                         }
                         var emailServiceSourceModel = vm as SourceViewModel<IEmailServiceSource>;
                         if (emailServiceSourceModel != null)
@@ -1998,8 +1987,8 @@ namespace Dev2.Studio.ViewModels
                             if (emailServiceSourceModel.IsDirty || emailServiceSourceModel.ViewModel.HasChanged)
                             {
                                 closeStudio = CallSaveDialog(closeStudio);
+                                break;
                             }
-                            break;
                         }
                         var dbSourceModel = vm as SourceViewModel<IDbSource>;
                         if (dbSourceModel != null)
@@ -2007,8 +1996,8 @@ namespace Dev2.Studio.ViewModels
                             if (dbSourceModel.IsDirty || dbSourceModel.ViewModel.HasChanged)
                             {
                                 closeStudio = CallSaveDialog(closeStudio);
+                                break;
                             }
-                            break;
                         }
                     }
                 }

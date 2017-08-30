@@ -79,7 +79,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 }
                
                 var version = serializer.Deserialize<IVersionInfo>(values["versionInfo"]);
-                Dev2Logger.Info("Get Version. " + version);
+                Dev2Logger.Info("Get Version. " + version, GlobalConstants.WarewolfInfo);
                 StringBuilder tmp;
                 Guid resourceId = Guid.Empty;
                 values.TryGetValue("resourceId", out tmp);
@@ -99,7 +99,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch (Exception e)
             {
-                Dev2Logger.Error(e);
+                Dev2Logger.Error(e, GlobalConstants.WarewolfError);
                 IExplorerRepositoryResult error = new ExplorerRepositoryResult(ExecStatus.Fail, e.Message);
                 return serializer.SerializeToBuilder(error);
             }

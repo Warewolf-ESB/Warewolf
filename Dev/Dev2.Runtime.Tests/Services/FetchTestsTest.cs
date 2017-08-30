@@ -20,6 +20,27 @@ namespace Dev2.Tests.Runtime.Services
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("GetResourceID")]
+        public void GetResourceID_GivenArgsWithResourceId_ShouldReturnResourceId()
+        {
+            //------------Setup for test--------------------------
+            var fetchTests = new FetchTests();
+            var stringBuilder = new StringBuilder();
+            var resId = Guid.NewGuid();
+            stringBuilder.Append(resId);
+            //------------Execute Test---------------------------
+            var requestArgs = new Dictionary<string, StringBuilder>
+            {
+                { "resourceID", stringBuilder }
+            };
+            //------------Execute Test---------------------------
+            var resourceID = fetchTests.GetResourceID(requestArgs);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(resId, resourceID);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("GetResourceID")]
         public void GetResourceID_ShouldReturnEmptyGuid()
         {
             //------------Setup for test--------------------------

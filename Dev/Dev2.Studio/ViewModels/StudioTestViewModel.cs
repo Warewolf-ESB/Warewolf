@@ -39,7 +39,7 @@ namespace Dev2.ViewModels
                     NotifyOfPropertyChange(() => DisplayName);
                 }
             };
-            DebugOutputViewModel = new DebugOutputViewModel(new EventPublisher(), ServerRepository.Instance, new DebugOutputFilterStrategy(), ViewModel.WorkflowDesignerViewModel.ResourceModel) { IsTestView = true };
+            DebugOutputViewModel = new DebugOutputViewModel(new EventPublisher(), CustomContainer.Get<IServerRepository>(), new DebugOutputFilterStrategy(), ViewModel.WorkflowDesignerViewModel.ResourceModel) { IsTestView = true };
         }
 
         public override bool HasVariables => false;
@@ -97,7 +97,7 @@ namespace Dev2.ViewModels
 
         public void Handle(DebugOutputMessage message)
         {
-            Dev2Logger.Info(message.GetType().Name);
+            Dev2Logger.Info(message.GetType().Name, "Warewolf Info");
             DebugOutputViewModel.Clear();
             DebugOutputViewModel.DebugStatus = DebugStatus.Ready;
             foreach (var debugState in message.DebugStates)

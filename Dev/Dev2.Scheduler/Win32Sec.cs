@@ -261,7 +261,7 @@ public class SecurityWrapper : ISecurityWrapper
                     }
                     catch (Exception err)
                     {
-                        Dev2Logger.Error(string.Format(ErrorResource.SchedulerErrorEnumeratingGroups, grp), err);
+                        Dev2Logger.Error(string.Format(ErrorResource.SchedulerErrorEnumeratingGroups, grp), err, GlobalConstants.WarewolfError);
                     }
                 }
 

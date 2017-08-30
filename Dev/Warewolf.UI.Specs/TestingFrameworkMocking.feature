@@ -17,11 +17,11 @@ Scenario: Creating A Test From Debug While Theres An Unsaved Test In The Tests T
 	And I Click The Create "4"th test Button
 	Then I Open Explorer First Item Context Menu	
 	And I Execute Workflow Using DebugRun Button
-	And I Click Create Test From Debug
-	And Message box window appears
+	When I Click Create Test From Debug
+	Then Message box window appears
 	And I Click Save Before Continuing MessageBox OK 
 	And Test tab is open
 	And I Click Close Clean Workflow Tab
 	And I Click EnableDisable Test 4, dirty "true"
 	And I Delete Test "4"
-	And I Click MessageBox Yes
+	When I Click MessageBox Yes

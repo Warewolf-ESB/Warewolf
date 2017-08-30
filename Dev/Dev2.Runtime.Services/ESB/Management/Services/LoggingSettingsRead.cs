@@ -34,7 +34,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch (Exception e)
             {
-                Dev2Logger.Error("LoggingSettingsRead", e);
+                Dev2Logger.Error("LoggingSettingsRead", e, GlobalConstants.WarewolfError);
             }
             return null;
         }

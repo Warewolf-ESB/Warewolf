@@ -197,7 +197,11 @@ namespace Warewolf.Studio.Views
         {
             WindowsRadioButton.Focus();
         }
-       
+
+        public void SetDatabaseComboxBindingVisibility(Visibility collapsed)
+        {
+            DatabaseComboxContainer.Visibility = collapsed;
+        }
     }
 
     public class NullToVisibilityConverter : IValueConverter

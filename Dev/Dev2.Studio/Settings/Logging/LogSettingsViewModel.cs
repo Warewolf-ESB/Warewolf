@@ -1,9 +1,11 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Windows;
 using System.Windows.Input;
@@ -21,17 +23,6 @@ using Newtonsoft.Json;
 
 namespace Dev2.Settings.Logging
 {
-    public enum LogLevel
-    {
-        
-        OFF,
-        FATAL,
-        ERROR,
-        WARN,
-        INFO,
-        DEBUG,
-        TRACE
-    }
     public class LogSettingsViewModel : SettingsItemViewModel, ILogSettings, IUpdatesHelp
     {
         public IServer CurrentEnvironment
@@ -51,6 +42,7 @@ namespace Dev2.Settings.Logging
         }
         private string _serverLogMaxSize;
         private string _studioLogMaxSize;
+        private string _selectedLoggingType;
         private LogLevel _serverEventLogLevel;
         private LogLevel _studioEventLogLevel;
         private ProgressDialogViewModel _progressDialogViewModel;
@@ -157,7 +149,7 @@ namespace Dev2.Settings.Logging
         [ExcludeFromCodeCoverage]
         public virtual void Save(LoggingSettingsTo logSettings)
         {
-            logSettings.FileLoggerLogLevel = ServerFileLogLevel.ToString();
+            //logSettings.FileLoggerLogLevel = ServerFileLogLevel.ToString();
             logSettings.EventLogLoggerLogLevel = ServerEventLogLevel.ToString();
             logSettings.FileLoggerLogSize = int.Parse(ServerLogMaxSize);
             var settingsConfigFile = HelperUtils.GetStudioLogSettingsConfigFile();
@@ -223,20 +215,6 @@ namespace Dev2.Settings.Logging
                 OnPropertyChanged();
             }
         }
-
-        public LogLevel ServerFileLogLevel
-        {
-            get
-            {
-                return _serverFileLogLevel;
-            }
-            set
-            {
-                _serverFileLogLevel = value;
-                IsDirty = !Equals(Item);
-                OnPropertyChanged();
-            }
-        }
         public LogLevel StudioFileLogLevel
         {
             get
@@ -248,6 +226,26 @@ namespace Dev2.Settings.Logging
                 _studioFileLogLevel = value;
                 IsDirty = !Equals(Item);
                 OnPropertyChanged();
+            }
+        }
+
+        public IEnumerable<string> LoggingTypes => EnumHelper<LogLevel>.GetDiscriptionsAsList(typeof(LogLevel)).ToList();
+
+        public string SelectedLoggingType
+        {
+            get
+            {
+                return EnumHelper<LogLevel>.GetEnumDescription(ServerEventLogLevel.ToString());
+            }
+            set
+            {
+                if (string.IsNullOrEmpty(value) && string.IsNullOrEmpty(ServerEventLogLevel.ToString()))
+                    return;
+                var logLevel = LoggingTypes.Single(p => p.ToString().Contains(value));
+                _selectedLoggingType = logLevel;
+
+                var enumFromDescription = EnumHelper<LogLevel>.GetEnumFromDescription(logLevel);
+                ServerEventLogLevel = enumFromDescription;
             }
         }
 
@@ -293,7 +291,7 @@ namespace Dev2.Settings.Logging
                         OnPropertyChanged();
                     }
                 }
-              
+
             }
         }
 
@@ -322,23 +320,10 @@ namespace Dev2.Settings.Logging
                             string.Equals(_studioEventLogLevel.ToString(), other._studioEventLogLevel.ToString()) &&
                             string.Equals(_serverFileLogLevel.ToString(), other._serverFileLogLevel.ToString()) &&
                             string.Equals(_studioFileLogLevel.ToString(), other._studioFileLogLevel.ToString()) &&
+                            Equals(_selectedLoggingType, other._selectedLoggingType) &&
                             int.Parse(_serverLogMaxSize) == int.Parse(other._serverLogMaxSize) &&
                             int.Parse(_studioLogMaxSize) == int.Parse(other._studioLogMaxSize);
             return equalsSeq;
         }
-    }
-
-    public interface ILogSettings
-    {
-        ICommand GetServerLogFileCommand { get; }
-        ICommand GetStudioLogFileCommand { get; }
-        LogLevel ServerEventLogLevel { get; set; }
-        LogLevel StudioEventLogLevel { get; set; }
-        string StudioLogMaxSize { get; }
-        string ServerLogMaxSize { get; }
-        bool CanEditStudioLogSettings { get; }
-        bool CanEditLogSettings { get; }
-        LogLevel ServerFileLogLevel { get; }
-        LogLevel StudioFileLogLevel { get; }
     }
 }

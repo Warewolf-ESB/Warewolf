@@ -54,7 +54,9 @@ namespace Warewolf.UIBindingTests.Odbc
         [BeforeScenario("ODBCSource")]
         public void SetupForDatabaseSource()
         {
-            ScenarioContext.Current.Add(Utils.ViewNameKey, FeatureContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey));
+            var manageDatabaseSourceControl = FeatureContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
+            manageDatabaseSourceControl.SetDatabaseComboxBindingVisibility(Visibility.Collapsed);
+            ScenarioContext.Current.Add(Utils.ViewNameKey, manageDatabaseSourceControl);
             ScenarioContext.Current.Add("updateManager", FeatureContext.Current.Get<Mock<IManageDatabaseSourceModel>>("updateManager"));
             ScenarioContext.Current.Add("requestServiceNameViewModel", FeatureContext.Current.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel"));
             ScenarioContext.Current.Add(Utils.ViewModelNameKey, FeatureContext.Current.Get<ManageOdbcSourceViewModel>(Utils.ViewModelNameKey));
@@ -100,7 +102,8 @@ namespace Warewolf.UIBindingTests.Odbc
         public void GivenIOpen(string name)
         {
             var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
-            var upd = FeatureContext.Current.Get<Mock<IManageDatabaseSourceModel>>("updateManager").Object;
+            var mock = FeatureContext.Current.Get<Mock<IManageDatabaseSourceModel>>("updateManager");
+            var upd = mock.Object;
             var dbsrc = new DbSourceDefinition
             {
                 Name = name,
@@ -108,6 +111,8 @@ namespace Warewolf.UIBindingTests.Odbc
                 ServerName = "Localhost",
                 AuthenticationType = AuthenticationType.Windows
             };
+
+            mock.Setup(mo => mo.FetchDbSource(It.IsAny<Guid>())).Returns(dbsrc);
             FeatureContext.Current["dbsrc"] = dbsrc;
             var mockEventAggregator = new Mock<IEventAggregator>();
             var viewModel = new ManageOdbcSourceViewModel(upd, mockEventAggregator.Object, dbsrc, new SynchronousAsyncWorker());
@@ -209,12 +214,16 @@ namespace Warewolf.UIBindingTests.Odbc
             {
                 mockUpdateManager.Setup(manager => manager.TestDbConnection(It.IsAny<IDbSource>()))
                     .Returns(new List<string> { "Dev2TestingDB" });
+                var databaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
+                databaseSourceControl.SetDatabaseComboxBindingVisibility(Visibility.Visible);
             }
             else if (isLongRunning)
             {
                 var viewModel = ScenarioContext.Current.Get<ManageOdbcSourceViewModel>("viewModel");
                 mockUpdateManager.Setup(manager => manager.TestDbConnection(It.IsAny<IDbSource>()));
                 viewModel.AsyncWorker = new AsyncWorker();
+                var databaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
+                databaseSourceControl.SetDatabaseComboxBindingVisibility(Visibility.Hidden);
             }
             else
             {

@@ -1,0 +1,167 @@
+﻿[Header]
+2017-05-24 14:40:45,961 [Warewolf Info] INFO  - Loading settings provider...  
+2017-05-24 14:40:45,969 [Warewolf Info] INFO  - done.
+2017-05-24 14:40:46,070 [Warewolf Info] INFO  - Configure logging...  
+2017-05-24 14:40:46,094 [Warewolf Info] INFO  - done.
+2017-05-24 14:40:46,202 [Warewolf Info] INFO  - Loading resource catalog...  
+2017-05-24 14:40:48,976 [Warewolf Info] INFO  - done.
+2017-05-24 14:40:50,076 [Warewolf Debug] INFO  - SecurityServiceRead
+2017-05-24 14:40:50,079 [Warewolf Debug] DEBUG - Start Security Read
+2017-05-24 14:40:50,526 [Warewolf Info] INFO  - SecurityServiceRaisePermissionsModified
+2017-05-24 14:40:50,526 [Warewolf Error] INFO  - SecurityServiceRaisePermissionsModified
+2017-05-24 14:40:50,526 [Warewolf Error] INFO  - SecurityServiceRaisePermissionsChanged
+2017-05-24 14:40:50,526 [Warewolf Error] INFO  - SecurityServiceRaisePermissionsChanged
+2017-05-24 14:40:50,526 [Warewolf Error] INFO  - SecurityServiceRead
+2017-05-24 14:40:50,598 [Warewolf Error] ERROR - System.NullReferenceException: Object reference not set to an instance of an object.
+   at Dev2.Runtime.Security.ServerAuthorizationService..ctor(ISecurityService securityService) in C:\Users\Sanele.Mthembu\Repo2\Dev\Dev2.Runtime.Services\Security\ServerAuthorizationService.cs:line 49
+2017-05-24 14:40:50,747 [Warewolf Info] INFO  - 
+Web Server Started
+2017-05-24 14:40:50,747 [Warewolf Info] INFO  - Web server listening at http://*:3142/
+2017-05-24 14:40:50,747 [Warewolf Info] INFO  - Web server listening at https://*:3143/
+2017-05-24 14:40:51,492 [Warewolf Info] INFO  - Loading server workspace...  
+2017-05-24 14:40:51,512 [Warewolf Info] INFO  - done.
+2017-05-24 14:40:51,526 [Warewolf Info] INFO  - Preloading assemblies...  
+2017-05-24 14:40:53,017 [Warewolf Debug] INFO  - done.
+2017-05-24 14:40:53,018 [Warewolf Debug] INFO  - Loading resource activity cache...  
+2017-05-24 14:40:53,022 [Warewolf Debug] DEBUG - Fetching Execution Plan for 752f1854-8b5a-4b01-aecf-c21cf2fac0c4 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,035 [Warewolf Debug] DEBUG - Fetching Execution Plan for d89ec19d-4c7d-4336-a033-85b06456dddc for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,037 [Warewolf Debug] DEBUG - Fetching Execution Plan for 698b2389-8b1e-46b1-9814-87c71ce3a3bb for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,037 [Warewolf Debug] DEBUG - Fetching Execution Plan for 6ef3bd94-c4e0-4534-9888-fffe95f066ef for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,038 [Warewolf Debug] DEBUG - Fetching Execution Plan for d2c8abb2-4aa0-4994-9054-3b346ed2d026 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,038 [Warewolf Debug] DEBUG - Fetching Execution Plan for 2a9d9656-7cde-41b6-9604-f02ac0c4760a for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,039 [Warewolf Debug] DEBUG - Fetching Execution Plan for 681d5de2-369b-42e5-99fd-62b27d23de06 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,039 [Warewolf Debug] DEBUG - Fetching Execution Plan for 61e45ade-11d0-4b40-9501-6da6c71e3440 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,039 [Warewolf Debug] DEBUG - Fetching Execution Plan for b6a12da1-844a-4b71-a5ad-1a0b07a27b6b for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,040 [Warewolf Debug] DEBUG - Fetching Execution Plan for 0d6f8aa3-0fa8-4418-a570-46d242771473 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,040 [Warewolf Debug] DEBUG - Fetching Execution Plan for d9e84a28-a1f0-4065-a9c5-7005ff166ec1 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,040 [Warewolf Debug] DEBUG - Fetching Execution Plan for ee078b81-9864-4621-acee-12f3d43325e2 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,041 [Warewolf Debug] DEBUG - Fetching Execution Plan for a7d8fe2f-9972-4df4-a2f4-303c5da95f1a for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,041 [Warewolf Debug] DEBUG - Fetching Execution Plan for 0ed76d6e-8b8a-4ff5-b429-9adeb1266a0b for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,042 [Warewolf Debug] DEBUG - Fetching Execution Plan for 05be793d-dea2-4b95-9943-f1cee165c205 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,042 [Warewolf Debug] DEBUG - Fetching Execution Plan for 74987c02-869b-46d6-918a-7e4ec6909113 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,043 [Warewolf Debug] DEBUG - Fetching Execution Plan for 5d80d9cd-42c9-428c-8546-2f8668b4ff86 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,043 [Warewolf Debug] DEBUG - Fetching Execution Plan for da496510-bd80-402d-9ed8-db0de728a95e for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,044 [Warewolf Debug] DEBUG - Fetching Execution Plan for 9e33601b-fc7a-40e3-aa9c-16053c377dff for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,044 [Warewolf Debug] DEBUG - Fetching Execution Plan for 7ee5f818-e16e-4428-9410-cb175efc27c1 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,045 [Warewolf Debug] DEBUG - Fetching Execution Plan for 0575714e-9449-439a-9f2a-ec7d81a23e52 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,056 [Warewolf Debug] DEBUG - Fetching Execution Plan for bae29905-64ff-432b-8c7f-e2a920a12e93 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,057 [Warewolf Debug] DEBUG - Fetching Execution Plan for de10f0c9-66f1-4b17-883a-7d4721ef8c0b for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,057 [Warewolf Debug] DEBUG - Fetching Execution Plan for b27393dd-abd7-4f6d-83dd-583764f24df1 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,058 [Warewolf Debug] DEBUG - Fetching Execution Plan for a550f635-78ab-423f-8787-c27893f75240 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,058 [Warewolf Debug] DEBUG - Fetching Execution Plan for 5de7051b-e278-470c-971c-6b85536e83d8 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,059 [Warewolf Debug] DEBUG - Fetching Execution Plan for 23d58486-5aad-43fb-8df4-12c9fa802c94 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,059 [Warewolf Debug] DEBUG - Fetching Execution Plan for e051b2f8-a8d0-4e1a-aa96-50562cf8cdbb for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,061 [Warewolf Debug] DEBUG - Fetching Execution Plan for 23fa0f1e-b29c-492c-b148-21f8e8361fd8 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,062 [Warewolf Debug] DEBUG - Fetching Execution Plan for 2a877366-ef36-4f64-9e0b-f7e88ec54a8e for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,062 [Warewolf Debug] DEBUG - Fetching Execution Plan for f617ec2b-3f30-4e60-a399-5f680617cf3a for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,063 [Warewolf Debug] DEBUG - Fetching Execution Plan for 72b04f4f-8846-47f5-bab4-c745a2a3b82c for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,063 [Warewolf Debug] DEBUG - Fetching Execution Plan for b77a03b2-24f1-4af0-aadc-abc361de81d9 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,064 [Warewolf Debug] DEBUG - Fetching Execution Plan for b3692eed-0a0a-4d43-bd92-6cc39ccfdc90 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,064 [Warewolf Debug] DEBUG - Fetching Execution Plan for 5a18fa18-c372-4957-afbb-9aca24875b7c for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,065 [Warewolf Debug] DEBUG - Fetching Execution Plan for 756e93d6-c7db-4071-8b5e-8c23d754e5f5 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,065 [Warewolf Debug] DEBUG - Fetching Execution Plan for 98790f85-3d24-48b7-aa1b-7cd88e31f3bd for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,066 [Warewolf Debug] DEBUG - Fetching Execution Plan for 07e07df8-6e36-4866-bff4-0594d243d89f for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,066 [Warewolf Debug] DEBUG - Fetching Execution Plan for f3dee72d-24e2-4274-a999-c05b96739882 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,067 [Warewolf Debug] DEBUG - Fetching Execution Plan for b78507e4-c898-4b34-82d6-e68d687a8700 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,069 [Warewolf Debug] DEBUG - Fetching Execution Plan for ea0b5ad6-3ce8-4a42-ae59-d60297ea0f4e for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,070 [Warewolf Debug] DEBUG - Fetching Execution Plan for 3204a7de-b27b-4220-9366-6ef690bff5b5 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,070 [Warewolf Debug] DEBUG - Fetching Execution Plan for cb1452f3-f2b6-4d22-bd1f-515bcda17e97 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,071 [Warewolf Debug] DEBUG - Fetching Execution Plan for 7aa9ab4b-b5e2-4770-bff7-9f8b518da4cd for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,071 [Warewolf Debug] DEBUG - Fetching Execution Plan for c0f102ec-b5e0-4288-8665-5a711e76e965 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,072 [Warewolf Debug] DEBUG - Fetching Execution Plan for 368ec351-5545-4300-9ab8-6dd849461fe0 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,072 [Warewolf Debug] DEBUG - Fetching Execution Plan for 0bc74683-1150-4142-91e3-604b5d6c2760 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,073 [Warewolf Debug] DEBUG - Fetching Execution Plan for a313cf24-2520-495c-853f-dae85126b85c for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,074 [Warewolf Debug] DEBUG - Fetching Execution Plan for 074d8880-f6a8-477b-a32e-773691dbac5b for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,074 [Warewolf Debug] DEBUG - Fetching Execution Plan for 3bcf2f59-9f92-4139-8a8b-10f836708893 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,075 [Warewolf Debug] DEBUG - Fetching Execution Plan for 5853e7fc-afbb-49ce-b8d5-9064df7aac22 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,075 [Warewolf Debug] DEBUG - Fetching Execution Plan for f6cccdb1-6767-4568-b85a-1e2f83da9d9d for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,076 [Warewolf Debug] DEBUG - Fetching Execution Plan for 8ecb9071-a989-42fe-a74c-03476b1e28c4 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,076 [Warewolf Debug] DEBUG - Fetching Execution Plan for 5b69b9e3-819e-49c2-b202-568a17fdd586 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,079 [Warewolf Debug] DEBUG - Fetching Execution Plan for 57c75890-dbc6-405f-939f-bac42bccee61 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,079 [Warewolf Debug] DEBUG - Fetching Execution Plan for 6860de5d-04fc-426e-9998-c344a800fbbb for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,080 [Warewolf Debug] DEBUG - Fetching Execution Plan for 01dacd0c-43cf-4f08-9847-f7d942988e3e for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,080 [Warewolf Debug] DEBUG - Fetching Execution Plan for 641f6c13-e318-41d4-9c62-1735a193bb1c for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,081 [Warewolf Debug] DEBUG - Fetching Execution Plan for 19624495-c8bf-410d-9ae6-ac052fd931e8 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,081 [Warewolf Debug] DEBUG - Fetching Execution Plan for bf4d5816-8369-4cfe-9a0b-00cdce2893c5 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,082 [Warewolf Debug] DEBUG - Fetching Execution Plan for f66a9995-66c5-4e4e-9171-e4bdde1c5afc for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,082 [Warewolf Debug] DEBUG - Fetching Execution Plan for 7511f9ea-52e0-40d8-9136-496f65a0bbca for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,082 [Warewolf Debug] DEBUG - Fetching Execution Plan for c4403cfb-4c7d-46a1-9204-adb99f0fdac4 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,083 [Warewolf Debug] DEBUG - Fetching Execution Plan for 508fd2e2-5d78-4eba-90cb-627c4e6ebe04 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,083 [Warewolf Debug] DEBUG - Fetching Execution Plan for 04737a7e-eed5-45b2-ac0f-5091645fe1d3 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,084 [Warewolf Debug] DEBUG - Fetching Execution Plan for 10137291-e2b2-4c02-9707-9b1a6182dea0 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,084 [Warewolf Debug] DEBUG - Fetching Execution Plan for cad7ad24-de17-41aa-bd7e-22367f1e17cb for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,087 [Warewolf Debug] DEBUG - Getting Dynamic Objects
+2017-05-24 14:40:53,089 [Warewolf Debug] DEBUG - Fetching Execution Plan for b69f3737-e64e-4117-b992-fdfdbe20a8a2 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,090 [Warewolf Debug] DEBUG - Fetching Execution Plan for a5a5d740-bcf1-4f01-8a42-7bb7b20b112a for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,092 [Warewolf Debug] DEBUG - Fetching Execution Plan for ce0f5adf-e9f3-4169-8a89-e372caeb5fc7 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,092 [Warewolf Debug] DEBUG - Fetching Execution Plan for 42d4a27b-fd20-4d99-b9c4-5c79c6d94fa2 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,093 [Warewolf Debug] DEBUG - Fetching Execution Plan for 9bdb686f-1082-4455-9b4a-fa6e7f7809d3 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,093 [Warewolf Debug] DEBUG - Fetching Execution Plan for d051e1c1-6885-49df-b39e-4f249698cca2 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,094 [Warewolf Debug] DEBUG - Fetching Execution Plan for 654cb5b8-8281-4448-b131-c78da4915ebe for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,094 [Warewolf Debug] DEBUG - Fetching Execution Plan for 1f10b508-15f0-4372-98c7-4f7cb45c51ab for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,094 [Warewolf Debug] DEBUG - Fetching Execution Plan for a4529a31-bebd-4d5e-8d74-2b26ae4297e4 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,095 [Warewolf Debug] DEBUG - Fetching Execution Plan for 9f0b4a98-287b-466a-9cef-340e4bc2e245 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,095 [Warewolf Debug] DEBUG - Fetching Execution Plan for 7bb788ac-2891-493c-af46-84991d69fcfd for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,096 [Warewolf Debug] DEBUG - Fetching Execution Plan for 025b18a5-7531-40c9-a784-1f637f0c480f for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,096 [Warewolf Debug] DEBUG - Fetching Execution Plan for 53dfb062-9c33-4b0b-a5f9-8a3984f944ea for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,097 [Warewolf Debug] DEBUG - Fetching Execution Plan for 938de709-0acb-4a37-8f06-529f4157dbd0 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,097 [Warewolf Debug] DEBUG - Fetching Execution Plan for c1a26af1-058a-4031-af87-fa10a8c2cba5 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,098 [Warewolf Debug] DEBUG - Fetching Execution Plan for 580d7f9e-e643-417b-8d43-bc5ee12dce1b for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,098 [Warewolf Debug] DEBUG - Fetching Execution Plan for 4dec01bd-ff92-4665-8a6a-1d0b022c4b62 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,098 [Warewolf Debug] DEBUG - Fetching Execution Plan for 7e3f3ef5-e85b-4246-92d9-b6e12d487730 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,099 [Warewolf Debug] DEBUG - Fetching Execution Plan for 5651c289-d45d-4d10-93b6-859ad799d956 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,099 [Warewolf Debug] DEBUG - Fetching Execution Plan for ab8025df-22cf-4140-a4c7-e875b6cee717 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,099 [Warewolf Debug] DEBUG - Fetching Execution Plan for cc0703b1-e711-45ac-befb-7c18e3fff0dd for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,100 [Warewolf Debug] DEBUG - Fetching Execution Plan for 5f92db85-0ff2-4c15-8200-da843d63812c for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,100 [Warewolf Debug] DEBUG - Fetching Execution Plan for 3f43061a-e571-466f-b3fb-5a8fed69dfa0 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,101 [Warewolf Debug] DEBUG - Fetching Execution Plan for 81e4ead9-2826-4649-9e5a-11c80a4cd4b4 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,101 [Warewolf Debug] DEBUG - Fetching Execution Plan for 30d077ab-0369-4377-9eb8-5fe72433c9fc for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,101 [Warewolf Debug] DEBUG - Fetching Execution Plan for c30849f1-0803-441d-8459-c78569e2ab1d for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,102 [Warewolf Debug] DEBUG - Fetching Execution Plan for 902b7cb7-a191-4861-a2bf-af9df08420f4 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,102 [Warewolf Debug] DEBUG - Getting Dynamic Objects
+2017-05-24 14:40:53,102 [Warewolf Debug] DEBUG - Fetching Execution Plan for 700c5882-59ab-4102-9315-b038b1e38553 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,103 [Warewolf Info] DEBUG - Fetching Execution Plan for 692a1d36-0595-4b7e-8f9c-5b3601f658e8 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,103 [Warewolf Info] DEBUG - Fetching Execution Plan for ec3f48dc-f469-42f0-be14-933d346dd511 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,104 [Warewolf Info] DEBUG - Fetching Execution Plan for 8b1f7442-9ede-42c4-838e-e554519986f5 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,104 [Warewolf Info] DEBUG - Fetching Execution Plan for db569f26-b1f7-4967-81b8-82ad83eb011f for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,104 [Warewolf Info] DEBUG - Fetching Execution Plan for b382172e-0941-4871-8f3e-eff3d4865afb for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,105 [Warewolf Info] DEBUG - Fetching Execution Plan for 5a500dce-1170-4c21-ab9a-1ab6feee3789 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,105 [Warewolf Info] DEBUG - Fetching Execution Plan for 1d9e722a-66c4-4656-b8fc-9686dbd5e258 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,106 [Warewolf Info] DEBUG - Fetching Execution Plan for 22ea983f-7e2c-416c-acb1-c868af547400 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,106 [Warewolf Info] DEBUG - Fetching Execution Plan for 38348e7b-5c4b-404e-bd7b-701d77d80c35 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,107 [Warewolf Info] DEBUG - Fetching Execution Plan for 15474994-67db-4e52-92ce-516ca08ec646 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,107 [Warewolf Info] DEBUG - Fetching Execution Plan for cc370255-1288-4027-9f2f-127d02662cab for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,108 [Warewolf Info] DEBUG - Fetching Execution Plan for f43ef173-047f-45db-a931-12e1ec2abbf4 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,108 [Warewolf Info] DEBUG - Fetching Execution Plan for 786134a9-107e-40c8-a171-9de3c4638238 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,108 [Warewolf Info] DEBUG - Fetching Execution Plan for 7b1faa5e-f7c2-421d-85d8-4f0a649203a4 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,109 [Warewolf Info] DEBUG - Fetching Execution Plan for 001059d3-5045-4c36-87af-2bd6f196c762 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,110 [Warewolf Info] DEBUG - Fetching Execution Plan for 4583b996-b490-43d7-a8c4-10bc9bdc3e63 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,110 [Warewolf Info] DEBUG - Fetching Execution Plan for 9709d56c-b4bd-488b-af1d-25197d3359b8 for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,111 [Warewolf Info] DEBUG - Fetching Execution Plan for c2af0255-5d97-4b7e-8cb1-4088a80249cd for workspace 00000000-0000-0000-0000-000000000000
+2017-05-24 14:40:53,112 [Warewolf Info] INFO  - done.
+2017-05-24 14:40:53,138 [Warewolf Info] INFO  - Loading Test catalog...  
+2017-05-24 14:40:53,143 [Warewolf Info] INFO  - done.
+2017-05-24 14:40:53,143 [Warewolf Info] INFO  - Press <ENTER> to terminate service and/or web server if started
+2017-05-24 14:40:53,868 [a9a0c4e4-e771-46d1-8fa2-c1d408503335] DEBUG - Remote Invoke
+2017-05-24 14:40:55,888 [a9a0c4e4-e771-46d1-8fa2-c1d408503335] DEBUG - About to execute web request [ Unassigned/Unsaved 1.json ] for User [ DEV2\Sanele.Mthembu : NTLM : True ] with DataObject Payload [ <DataList></DataList> ]
+2017-05-24 14:40:55,888 [a9a0c4e4-e771-46d1-8fa2-c1d408503335] DEBUG - Request URL [ http://rsaklfsanele:3142/secure/Unassigned/Unsaved 1.json?<DataList></DataList>&wid=3667c210-7322-441f-b4e5-f465e46ae22d ]
+2017-05-24 14:40:55,927 [a9a0c4e4-e771-46d1-8fa2-c1d408503335] DEBUG - Mapping Inputs from Environment
+2017-05-24 14:40:55,972 [a9a0c4e4-e771-46d1-8fa2-c1d408503335] DEBUG - Creating Invoker
+2017-05-24 14:40:55,978 [a9a0c4e4-e771-46d1-8fa2-c1d408503335] DEBUG - Finding service
+2017-05-24 14:40:55,986 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-24 14:40:56,055 [a9a0c4e4-e771-46d1-8fa2-c1d408503335] DEBUG - Generated Service Graph
+2017-05-24 14:40:56,056 [a9a0c4e4-e771-46d1-8fa2-c1d408503335] DEBUG - Mapping Action Dependencies
+2017-05-24 14:40:56,056 [a9a0c4e4-e771-46d1-8fa2-c1d408503335] DEBUG - Getting container
+2017-05-24 14:40:56,297 [a9a0c4e4-e771-46d1-8fa2-c1d408503335] DEBUG - Entered Wf Container
+2017-05-24 14:40:56,298 [a9a0c4e4-e771-46d1-8fa2-c1d408503335] INFO  - Started Execution for Service Name:Unsaved 1 Resource Id:67086ff5-033e-4a6c-ad98-53c11c95c612 Mode:Execute
+2017-05-24 14:40:56,333 [a9a0c4e4-e771-46d1-8fa2-c1d408503335] DEBUG - Studio Debug inputs [ <DataList /> ]
+2017-05-24 14:40:56,340 [Warewolf Debug] DEBUG - Getting Resource to Execute
+2017-05-24 14:40:56,340 [Warewolf Debug] DEBUG - Fetching Execution Plan for 67086ff5-033e-4a6c-ad98-53c11c95c612 for workspace 3667c210-7322-441f-b4e5-f465e46ae22d
+2017-05-24 14:40:56,341 [Warewolf Debug] DEBUG - Generating Service Graph
+2017-05-24 14:40:56,355 [Warewolf Debug] DEBUG - Generated Service Graph
+2017-05-24 14:40:56,356 [Warewolf Debug] DEBUG - Getting Dynamic Objects
+2017-05-24 14:40:56,464 [a9a0c4e4-e771-46d1-8fa2-c1d408503335] DEBUG - Got Resource to Execute
+2017-05-24 14:40:56,754 [a9a0c4e4-e771-46d1-8fa2-c1d408503335] INFO  - Completed Execution for Service Name:Unsaved 1 Resource Id: 67086ff5-033e-4a6c-ad98-53c11c95c612 Mode:Execute
+2017-05-24 14:40:56,768 [a9a0c4e4-e771-46d1-8fa2-c1d408503335] DEBUG - Execution Result [ {
+  "Result": "6"
+} ]

@@ -179,7 +179,7 @@ namespace Dev2.Activities
             }
             catch(Exception e)
             {
-                Dev2Logger.Error("DSFCommandLine", e);
+                Dev2Logger.Error("DSFCommandLine", e, GlobalConstants.WarewolfError);
                 allErrors.AddError(e.Message);
             }
             finally
@@ -255,7 +255,6 @@ namespace Dev2.Activities
                     reader.Append(_process.StandardOutput.ReadToEnd());
                     if(!_process.HasExited && _process.Threads.Cast<ProcessThread>().Any(a=>a.ThreadState == System.Diagnostics.ThreadState.Wait && a.WaitReason == ThreadWaitReason.UserRequest))
                     {
-                        //reader.Append(_process.StandardOutput.ReadToEnd());
                         _process.Kill();
                     }
 
@@ -267,7 +266,6 @@ namespace Dev2.Activities
                         {
                             continue;
                         }
-                        //_process.OutputDataReceived -= a;
                         _process.Kill();
                         throw new ApplicationException(ErrorResource.UserInputRequired);
                     }
@@ -282,7 +280,6 @@ namespace Dev2.Activities
                     KillProcessAndChildren(_process.Id);
                 }
                 reader.Append(_process.StandardOutput.ReadToEnd());
-                //_process.OutputDataReceived -= a;
                 _process.Close();
             }
             return true;

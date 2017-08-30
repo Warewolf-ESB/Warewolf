@@ -133,7 +133,7 @@ namespace Dev2.Studio.ViewModels
         private readonly IServerRepository _repository;
         private readonly IViewFactory _factory;
 
-        public IServerRepository ServerRepo => _repository ?? ServerRepository.Instance;
+        public IServerRepository ServerRepo => _repository ?? CustomContainer.Get<IServerRepository>();
         public IViewFactory ViewFactoryProvider => _factory ?? new ViewFactory();
         private readonly ShellViewModel _shellViewModel;
         private readonly bool _createDesigners;
@@ -157,7 +157,7 @@ namespace Dev2.Studio.ViewModels
 
         public void Handle(RemoveResourceAndCloseTabMessage message)
         {
-            Dev2Logger.Debug(message.GetType().Name);
+            Dev2Logger.Debug(message.GetType().Name, "Warewolf Debug");
             if (message.ResourceToRemove == null)
             {
                 return;
@@ -179,7 +179,7 @@ namespace Dev2.Studio.ViewModels
 
         public void Handle(NewTestFromDebugMessage message, IWorkSurfaceKey workSurfaceKey = null)
         {
-            Dev2Logger.Debug(message.GetType().Name);
+            Dev2Logger.Debug(message.GetType().Name, "Warewolf Debug");
             workSurfaceKey = TryGetOrCreateWorkSurfaceKey(workSurfaceKey, WorkSurfaceContext.ServiceTestsViewer, message.ResourceID);
             var found = FindWorkSurfaceContextViewModel(workSurfaceKey as WorkSurfaceKey);
             if (found != null)
@@ -700,7 +700,7 @@ namespace Dev2.Studio.ViewModels
             {
                 case MessageBoxResult.Yes:
                     workflowVm.ResourceModel.Commit();
-                    Dev2Logger.Info(@"Publish message of type - " + typeof(SaveResourceMessage));
+                    Dev2Logger.Info(@"Publish message of type - " + typeof(SaveResourceMessage), "Warewolf Info");
                     _shellViewModel.EventPublisher.Publish(new SaveResourceMessage(workflowVm.ResourceModel, false, false));
                     return !workflowVm.WorkflowName.ToLower().StartsWith(@"unsaved");
                 case MessageBoxResult.No:
@@ -718,7 +718,7 @@ namespace Dev2.Studio.ViewModels
                     }
                     catch (Exception e)
                     {
-                        Dev2Logger.Info(@"Exception: " + e.Message);
+                        Dev2Logger.Info(@"Exception: " + e.Message, "Warewolf Info");
                     }
 
                     NewWorkflowNames.Instance.Remove(workflowVm.ResourceModel.ResourceName);

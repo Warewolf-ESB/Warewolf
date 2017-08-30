@@ -18,7 +18,6 @@ using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.Interfaces.Enums.Enums;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Services.Events;
-using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Interfaces;
 
 namespace Dev2.Activities.Designers2.Script
@@ -26,12 +25,14 @@ namespace Dev2.Activities.Designers2.Script
     public class ScriptDesignerViewModel : ActivityDesignerViewModel
     {
         readonly IEventAggregator _eventPublisher;
+        readonly IScriptChooser _scriptChooser;
         public ScriptDesignerViewModel(ModelItem modelItem)
             : base(modelItem)
         {
             _eventPublisher = EventPublishers.Aggregator;
             _eventPublisher.Subscribe(this);
 
+            _scriptChooser = new ScriptChooser();
             EscapeScript = true;
             ScriptTypes = Dev2EnumConverter.ConvertEnumsTypeToStringList<enScriptType>();
             SelectedScriptType = Dev2EnumConverter.ConvertEnumValueToString(ScriptType);
@@ -55,7 +56,7 @@ namespace Dev2.Activities.Designers2.Script
             get { return (string)GetValue(SelectedScriptTypeProperty); }
             set { SetValue(SelectedScriptTypeProperty, value); }
         }
-        
+
         public static readonly DependencyProperty SelectedScriptTypeProperty =
             DependencyProperty.Register("SelectedScriptType", typeof(string), typeof(ScriptDesignerViewModel), new PropertyMetadata(null, OnSelectedScriptTypeChanged));
 
@@ -103,37 +104,15 @@ namespace Dev2.Activities.Designers2.Script
         public override void UpdateHelpDescriptor(string helpText)
         {
             var mainViewModel = CustomContainer.Get<IShellViewModel>();
-            mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
+            mainViewModel?.HelpViewModel?.UpdateHelpText(helpText);
         }
 
         public void ChooseScriptSources()
         {
-            const string Separator = @";";
-            var chooserMessage = new FileChooserMessage();
-            if (IncludeFile == null)
-            {
-                IncludeFile = "";
-            }
-            chooserMessage.SelectedFiles = IncludeFile?.Split(Separator.ToCharArray());
-            chooserMessage.PropertyChanged += (sender, args) =>
-            {
-                if (args.PropertyName == @"SelectedFiles")
-                {
-                    if (chooserMessage.SelectedFiles != null)
-                    {
-                        if (string.IsNullOrEmpty(IncludeFile))
-                        {
-                            IncludeFile = string.Join(Separator, chooserMessage.SelectedFiles);
-                        }
-                        else
-                        {
-                            IncludeFile += Separator + string.Join(Separator, chooserMessage.SelectedFiles);
-                        }
-                    }
-                }
-            };
-            _eventPublisher.Publish(chooserMessage);
+            var fileChooserMessage = _scriptChooser.ChooseScriptSources(IncludeFile);
+            fileChooserMessage.Filter = "js";
+            _eventPublisher.Publish(fileChooserMessage);
+            IncludeFile = string.Join(";", fileChooserMessage.SelectedFiles);
         }
-
     }
 }

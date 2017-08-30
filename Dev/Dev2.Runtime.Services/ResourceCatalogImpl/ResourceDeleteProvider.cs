@@ -90,7 +90,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             }
             catch (Exception err)
             {
-                Dev2Logger.Error("Delete Error", err);
+                Dev2Logger.Error("Delete Error", err, GlobalConstants.WarewolfError);
                 throw;
             }
         

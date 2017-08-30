@@ -10,7 +10,6 @@
 
 using System;
 using System.Activities;
-using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using Dev2.Activities;
 using Dev2.Common;
@@ -30,7 +29,7 @@ namespace Dev2.Runtime.ESB.Execution
 {
     public class WfExecutionContainer : EsbExecutionContainer
     {
-        private static readonly AutoResetEvent EventPulse = new AutoResetEvent(false);
+        private static readonly ManualResetEvent EventPulse = new ManualResetEvent(false);
 
         public WfExecutionContainer(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel)
             : base(sa, dataObj, theWorkspace, esbChannel)
@@ -47,20 +46,33 @@ namespace Dev2.Runtime.ESB.Execution
         {
             errors = new ErrorResultTO();
             Guid result = GlobalConstants.NullDataListID;
-
-            Dev2Logger.Debug("Entered Wf Container");
+            DataObject.ExecutionID = DataObject.ExecutionID ?? Guid.NewGuid();
+            var user = Thread.CurrentPrincipal;
+            if (string.IsNullOrEmpty(DataObject.WebUrl))
+            {
+                DataObject.WebUrl = $"{EnvironmentVariables.WebServerUri}secure/{DataObject.ServiceName}.{DataObject.ReturnType}?" + DataObject.QueryString;
+            }
+            string dataObjectExecutionId = DataObject.ExecutionID.ToString();
+            if (!DataObject.IsSubExecution)
+            {
+                Dev2Logger.Debug(string.Format(GlobalConstants.ExecuteWebRequestString, DataObject.ServiceName, user?.Identity?.Name, user?.Identity?.AuthenticationType, user?.Identity?.IsAuthenticated, DataObject.RawPayload), dataObjectExecutionId);
+                Dev2Logger.Debug("Request URL [ " + DataObject.WebUrl + " ]", dataObjectExecutionId);
+            }
+            Dev2Logger.Debug("Entered Wf Container", dataObjectExecutionId);
             DataObject.ServiceName = ServiceAction.ServiceName;
 
-            if(DataObject.ServerID == Guid.Empty)
+            if (DataObject.ServerID == Guid.Empty)
+            {
                 DataObject.ServerID = HostSecurityProvider.Instance.ServerID;
-           
-            Dev2Logger.Info($"Started Execution for Service Name:{DataObject.ServiceName} Resource Id:{DataObject.ResourceID} Mode:{(DataObject.IsDebug ? "Debug" : "Execute")}");
-            if(!string.IsNullOrWhiteSpace(DataObject.ParentServiceName))
+            }
+            string executionForServiceString = string.Format(GlobalConstants.ExecutionForServiceString, DataObject.ServiceName, DataObject.ResourceID, (DataObject.IsDebug ? "Debug" : "Execute"));
+            Dev2Logger.Info("Started " + executionForServiceString, dataObjectExecutionId);
+            if (!string.IsNullOrWhiteSpace(DataObject.ParentServiceName))
             {
                 DataObject.ExecutionOrigin = ExecutionOrigin.Workflow;
                 DataObject.ExecutionOriginDescription = DataObject.ParentServiceName;
             }
-            else if(DataObject.IsDebug)
+            else if (DataObject.IsDebug)
             {
                 DataObject.ExecutionOrigin = ExecutionOrigin.Debug;
             }
@@ -70,16 +82,17 @@ namespace Dev2.Runtime.ESB.Execution
             }
             var userPrinciple = Thread.CurrentPrincipal;
             Common.Utilities.PerformActionInsideImpersonatedContext(userPrinciple, () => { result = ExecuteWf(); });
-            foreach(var err in DataObject.Environment.Errors)
+            foreach (var err in DataObject.Environment.Errors)
             {
                 errors.AddError(err, true);
             }
-            foreach(var err in DataObject.Environment.AllErrors)
+            foreach (var err in DataObject.Environment.AllErrors)
             {
                 errors.AddError(err, true);
             }
 
-            Dev2Logger.Info($"Completed Execution for Service Name:{DataObject.ServiceName} Resource Id: {DataObject.ResourceID} Mode:{(DataObject.IsDebug ? "Debug" : "Execute")}");
+            string executionTypeString = DataObject.IsSubExecution ? "Completed Sub " : "Completed ";
+            Dev2Logger.Info(executionTypeString + executionForServiceString, dataObjectExecutionId);
             return result;
         }
 
@@ -110,7 +123,7 @@ namespace Dev2.Runtime.ESB.Execution
             }
             catch (InvalidWorkflowException iwe)
             {
-                Dev2Logger.Error(iwe);
+                Dev2Logger.Error(iwe, DataObject.ExecutionID.ToString());
                 var msg = iwe.Message;
 
                 int start = msg.IndexOf("Flowchart ", StringComparison.Ordinal);
@@ -120,7 +133,7 @@ namespace Dev2.Runtime.ESB.Execution
             }
             catch (Exception ex)
             {
-                Dev2Logger.Error(ex);
+                Dev2Logger.Error(ex, DataObject.ExecutionID.ToString());
                 DataObject.Environment.AddError(ex.Message);
                 wfappUtils.DispatchDebugState(DataObject, StateType.End, DataObject.Environment.HasErrors(), DataObject.Environment.FetchErrors(), out invokeErrors, DataObject.StartTime, false, true);
             }
@@ -147,9 +160,9 @@ namespace Dev2.Runtime.ESB.Execution
 
         private void Eval(Guid resourceID, IDSFDataObject dataObject)
         {
-            Dev2Logger.Debug("Getting Resource to Execute");
-            IDev2Activity resource = ResourceCatalog.Instance.Parse(TheWorkspace.ID, resourceID);
-            Dev2Logger.Debug("Got Resource to Execute");
+            Dev2Logger.Debug("Getting Resource to Execute", dataObject.ExecutionID.ToString());
+            IDev2Activity resource = ResourceCatalog.Instance.Parse(TheWorkspace.ID, resourceID, dataObject.ExecutionID.ToString());
+            Dev2Logger.Debug("Got Resource to Execute", dataObject.ExecutionID.ToString());
             EvalInner(dataObject, resource, dataObject.ForEachUpdateValue);
 
         }
@@ -157,7 +170,7 @@ namespace Dev2.Runtime.ESB.Execution
         {
             return null;
         }
-        
+
         static void EvalInner(IDSFDataObject dsfDataObject, IDev2Activity resource, int update)
         {
             var exe = CustomContainer.Get<IExecutionManager>();

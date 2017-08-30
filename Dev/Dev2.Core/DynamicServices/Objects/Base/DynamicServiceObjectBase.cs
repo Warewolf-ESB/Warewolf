@@ -107,7 +107,7 @@ namespace Dev2.DynamicServices.Objects.Base
 
         private void WriteOutput(string traceMsg)
         {
-            Dev2Logger.Info(traceMsg);
+            Dev2Logger.Info(traceMsg, GlobalConstants.WarewolfInfo);
             Console.WriteLine(traceMsg);
         }
 

@@ -37,7 +37,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             try
             {
-                Dev2Logger.Info("Save RabbitMQ Service Source");
+                Dev2Logger.Info("Save RabbitMQ Service Source", GlobalConstants.WarewolfInfo);
                 StringBuilder resourceDefinition;
                 msg.HasError = false;
 
@@ -66,7 +66,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 msg.HasError = true;
                 msg.Message = new StringBuilder(err.Message);
-                Dev2Logger.Error("Save RabbitMQ Service Source Failed: " + err.Message);
+                Dev2Logger.Error("Save RabbitMQ Service Source Failed: " + err.Message, GlobalConstants.WarewolfError);
             }
 
             return serializer.SerializeToBuilder(msg);
