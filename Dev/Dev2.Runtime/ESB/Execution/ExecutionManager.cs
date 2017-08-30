@@ -16,7 +16,7 @@ namespace Dev2.Runtime.ESB.Execution
         int _currentExecutions;
         readonly List<ManualResetEvent> _waitHandles = new List<ManualResetEvent>();
 
-        private ExecutionManager()
+        ExecutionManager()
         {
             _isRefreshing = false;
             _currentExecutions = 0;          
@@ -25,10 +25,14 @@ namespace Dev2.Runtime.ESB.Execution
 
         public void StartRefresh()
         {
+            if(_isRefreshing)
+            {
+                return;
+            }
             _isRefreshing = true;
             while (_currentExecutions > 0)
             {
-                Thread.Sleep(10);
+                Thread.Sleep(1);
             }
         }
         public void StopRefresh()
