@@ -174,15 +174,21 @@ namespace Dev2.Runtime.ESB.Execution
         static void EvalInner(IDSFDataObject dsfDataObject, IDev2Activity resource, int update)
         {
             var exe = CustomContainer.Get<IExecutionManager>();
+            Dev2Logger.Debug("Got Execution Manager", GlobalConstants.WarewolfDebug);
             if (exe != null)
             {
                 if (!exe.IsRefreshing || dsfDataObject.IsSubExecution)
                 {
+                    Dev2Logger.Debug("Adding Execution to Execution Manager", GlobalConstants.WarewolfDebug);
                     exe.AddExecution();
+                    Dev2Logger.Debug("Added Execution to Execution Manager", GlobalConstants.WarewolfDebug);
                 }
                 else
                 {
+                    Dev2Logger.Debug("Adding Wait to Execution Manager", GlobalConstants.WarewolfDebug);
                     exe.AddWait(EventPulse);
+                    Dev2Logger.Debug("Added Wait to Execution Manager", GlobalConstants.WarewolfDebug);
+                    Dev2Logger.Debug("Waiting", GlobalConstants.WarewolfDebug);
                     EventPulse.WaitOne();
                 }
             }
@@ -191,7 +197,9 @@ namespace Dev2.Runtime.ESB.Execution
                 throw new InvalidOperationException(GlobalConstants.NoStartNodeError);
             }
             WorkflowExecutionWatcher.HasAWorkflowBeenExecuted = true;
+            Dev2Logger.Debug("Starting Execute", GlobalConstants.WarewolfDebug);
             var next = resource.Execute(dsfDataObject, update);
+            Dev2Logger.Debug("Executed first node", GlobalConstants.WarewolfDebug);
             while (next != null)
             {
                 if (!dsfDataObject.StopExecution)
