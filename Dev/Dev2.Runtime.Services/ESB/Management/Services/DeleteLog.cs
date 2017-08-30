@@ -49,19 +49,19 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 msg.HasError = true;
                 msg.SetMessage(FormatMessage(ErrorResource.CannotDeleteFileWithoutFilename, filePath, directory));
-                Dev2Logger.Info(msg.Message.ToString());
+                Dev2Logger.Info(msg.Message.ToString(), GlobalConstants.WarewolfInfo);
             }
             else if(string.IsNullOrWhiteSpace(directory))
             {
                 msg.HasError = true;
                 msg.SetMessage(FormatMessage(ErrorResource.CannotDeleteFileWithoughtDirectory, filePath, directory));
-                Dev2Logger.Info(msg.Message.ToString());
+                Dev2Logger.Info(msg.Message.ToString(), GlobalConstants.WarewolfInfo);
             }
             else if(!Directory.Exists(directory))
             {
                 msg.HasError = true;
                 msg.SetMessage(FormatMessage(string.Format(ErrorResource.DirectoryDoesNotExist,directory), filePath, directory));
-                Dev2Logger.Info(msg.Message.ToString());
+                Dev2Logger.Info(msg.Message.ToString(), GlobalConstants.WarewolfInfo);
             }
             else
             {
@@ -71,7 +71,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                     msg.HasError = true;
                     msg.SetMessage(FormatMessage(ErrorResource.FileDoesNotExist, filePath, directory));
-                    Dev2Logger.Info(msg.Message.ToString());
+                    Dev2Logger.Info(msg.Message.ToString(), GlobalConstants.WarewolfInfo);
                 }
                 else
                 {
@@ -84,7 +84,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     {
                         msg.HasError = true;
                         msg.SetMessage(FormatMessage(ex.Message, filePath, directory));
-                        Dev2Logger.Error(ex);
+                        Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
                     }
                 }
             }

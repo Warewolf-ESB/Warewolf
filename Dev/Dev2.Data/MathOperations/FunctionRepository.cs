@@ -82,7 +82,7 @@ namespace Dev2.MathOperations
                 }
                 catch (InvalidOperationException ioex)
                 {
-                    Dev2Logger.Error(ioex);
+                    Dev2Logger.Error(ioex, GlobalConstants.WarewolfError);
                     IFunction func = MathOpsFactory.CreateFunction();
                     return func;
                 }

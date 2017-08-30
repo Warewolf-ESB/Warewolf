@@ -52,7 +52,7 @@ namespace Dev2.Activities.DropBox2016.DropboxFileActivity
             }
             catch (Exception exception)
             {
-                Dev2Logger.Error(exception.Message);
+                Dev2Logger.Error(exception.Message, GlobalConstants.WarewolfError);
                 var hasInnerExc = exception.InnerException != null;
                 if (hasInnerExc)
                 {

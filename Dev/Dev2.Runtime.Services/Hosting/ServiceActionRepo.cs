@@ -6,8 +6,11 @@ namespace Dev2.Runtime.Hosting
 {
     public class ServiceActionRepo
     {
-        readonly Dictionary<Guid,DynamicService> _actionsCache = new Dictionary<Guid, DynamicService>();
-        private static ServiceActionRepo _instance;
+        static readonly Lazy<ServiceActionRepo> _instance = new Lazy<ServiceActionRepo>(()=>
+        {
+            return new ServiceActionRepo();
+        },System.Threading.LazyThreadSafetyMode.ExecutionAndPublication);
+        readonly Dictionary<Guid,DynamicService> _actionsCache;
 
         public void AddToCache(Guid key, DynamicService value)
         {
@@ -27,10 +30,13 @@ namespace Dev2.Runtime.Hosting
             return null;
         }
 
-        public static ServiceActionRepo Instance => _instance ?? (_instance = new ServiceActionRepo());
+        public static ServiceActionRepo Instance => _instance.Value;
 
         //Private constructor to ensure that Singleton is used
-        private ServiceActionRepo() { }
+        ServiceActionRepo()
+        {
+            _actionsCache = new Dictionary<Guid, DynamicService>();
+        }
 
         public void RemoveFromCache(Guid key)
         {

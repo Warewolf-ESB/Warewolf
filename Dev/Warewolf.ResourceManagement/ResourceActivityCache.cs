@@ -48,7 +48,7 @@ namespace Warewolf.ResourceManagement
                 catch(Exception err) //errors caught inside
                     
                 {
-                    Dev2Logger.Error(err);
+                    Dev2Logger.Error(err, "Warewolf Error");
                     if(failOnException)
                     throw;
                 }

@@ -232,6 +232,15 @@ namespace Dev2.DynamicServices {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Connection Error :.
+        /// </summary>
+        public static string ConnectionError {
+            get {
+                return ResourceManager.GetString("ConnectionError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Binary value must be greater than 8 characters.
         /// </summary>
         public static string Dev2BinaryConverterPayloadToSmallException {

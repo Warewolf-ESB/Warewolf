@@ -187,9 +187,7 @@ namespace Dev2.Runtime.WebServer.Hubs
             }
             catch (Exception e)
             {
-                
-                Dev2Logger.Error(this, e);
-                
+                Dev2Logger.Error(this, e, GlobalConstants.WarewolfError);
             }
 
             return null;
@@ -281,9 +279,7 @@ namespace Dev2.Runtime.WebServer.Hubs
             }
             catch (Exception e)
             {
-                
-                Dev2Logger.Error(this, e);
-                
+                Dev2Logger.Error(this, e, GlobalConstants.WarewolfError);
             }
 
             return null;
@@ -327,7 +323,7 @@ namespace Dev2.Runtime.WebServer.Hubs
                             user = Context.User.Identity.Name;
                             userPrinciple = Context.User;
                             Thread.CurrentPrincipal = userPrinciple;
-                            Dev2Logger.Debug("Execute Command Invoked For [ " + user + " : "+userPrinciple?.Identity?.AuthenticationType+" : "+userPrinciple?.Identity?.IsAuthenticated+" ] For Service [ " + request.ServiceName + " ]");
+                            Dev2Logger.Debug("Execute Command Invoked For [ " + user + " : "+userPrinciple?.Identity?.AuthenticationType+" : "+userPrinciple?.Identity?.IsAuthenticated+" ] For Service [ " + request.ServiceName + " ]", GlobalConstants.WarewolfDebug);
                         }
                         StringBuilder processRequest = null;
                         Common.Utilities.PerformActionInsideImpersonatedContext(userPrinciple, () => { processRequest = internalServiceRequestHandler.ProcessRequest(request, workspaceId, dataListId, Context.ConnectionId); });
@@ -343,7 +339,7 @@ namespace Dev2.Runtime.WebServer.Hubs
                         {
                             if (!ResultsCache.Instance.AddResult(future, value))
                             {
-                                Dev2Logger.Error(new Exception(string.Format(ErrorResource.FailedToBuildFutureReceipt, Context.ConnectionId, value)));
+                                Dev2Logger.Error(new Exception(string.Format(ErrorResource.FailedToBuildFutureReceipt, Context.ConnectionId, value)), GlobalConstants.WarewolfError);
                             }
                         }
                         return new Receipt { PartID = envelope.PartID, ResultParts = 1 };
@@ -351,7 +347,7 @@ namespace Dev2.Runtime.WebServer.Hubs
                     }
                     catch (Exception e)
                     {
-                        Dev2Logger.Error(e);
+                        Dev2Logger.Error(e, GlobalConstants.WarewolfError);
                     }
                     return null;
                 });
@@ -360,8 +356,8 @@ namespace Dev2.Runtime.WebServer.Hubs
             }
             catch (Exception e)
             {
-                Dev2Logger.Error(e);
-                Dev2Logger.Info("Is End of Stream:" + endOfStream);
+                Dev2Logger.Error(e, GlobalConstants.WarewolfError);
+                Dev2Logger.Info("Is End of Stream:" + endOfStream, GlobalConstants.WarewolfInfo);
             }
             return null;
         }

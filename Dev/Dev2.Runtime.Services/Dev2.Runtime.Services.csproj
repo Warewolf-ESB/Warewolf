@@ -182,6 +182,8 @@
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
     <Compile Include="IDbSources.cs" />
+    <Compile Include="Interfaces\IConnections.cs" />
+    <Compile Include="Interfaces\IHubFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" Condition="!Exists('..\AssemblyCommonInfo.cs')" />
     <None Include="..\Run Tests.ps1">
       <Link>Properties\Run Tests.ps1</Link>
@@ -230,15 +232,18 @@
     <Compile Include="ESB\Management\Services\FetchExplorerItems.cs" />
     <Compile Include="ESB\Management\Services\GetDllListings.cs" />
     <Compile Include="ESB\Management\Services\GetFiles.cs" />
+    <Compile Include="ESB\Management\Services\GetLogDataService.cs" />
     <Compile Include="ESB\Management\Services\GetServerIformation.cs" />
     <Compile Include="ESB\Management\Services\GetMinSupportedServerVersion.cs" />
     <Compile Include="ESB\Management\Services\GetServerInformationalVersion.cs" />
+    <Compile Include="ESB\Management\Services\GetServiceExecutionResult.cs" />
     <Compile Include="ESB\Management\Services\GetSharepointListFields.cs" />
     <Compile Include="ESB\Management\Services\GetServerVersion.cs" />
     <Compile Include="ESB\Management\Services\GetSharepointListService.cs" />
     <Compile Include="ESB\Management\Services\FetchToolsService.cs" />
     <Compile Include="ESB\Management\Services\GetVersion.cs" />
     <Compile Include="ESB\Management\Services\GetVersions.cs" />
+    <Compile Include="ESB\Management\Services\LogDataServiceBase.cs" />
     <Compile Include="ESB\Management\Services\LoggingSettingsRead.cs" />
     <Compile Include="ESB\Management\Services\LoggingSettingsWrite.cs" />
     <Compile Include="ESB\Management\Services\MoveItemService.cs" />
@@ -398,7 +403,7 @@
     <Compile Include="ServiceModel\Esb\Brokers\Plugin\PluginServiceExecutionFactory.partial.cs" />
     <Compile Include="ServiceModel\Esb\Brokers\PostgreSqlDataBaseBroker.cs" />
     <Compile Include="ServiceModel\Esb\Brokers\SqlDatabaseBroker.cs" />
-    <Compile Include="ServiceModel\IConnections.cs" />
+    <Compile Include="ServiceModel\HubFactory.cs" />
     <Compile Include="ServiceModel\PluginServices.cs" />
     <Compile Include="ServiceModel\Utils\ServiceMappingHelper.cs" />
     <Compile Include="ServiceModel\WebServices.cs" />

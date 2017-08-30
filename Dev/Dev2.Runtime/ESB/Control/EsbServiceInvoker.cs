@@ -109,7 +109,7 @@ namespace Dev2.Runtime.ESB
 
                     try
                     {
-                        Dev2Logger.Debug("Finding service");
+                        Dev2Logger.Debug("Finding service", dataObject.ExecutionID.ToString());
                         var theService = serviceId == Guid.Empty ? _serviceLocator.FindService(serviceName, _workspace.ID) : _serviceLocator.FindService(serviceId, _workspace.ID);
                         
                         if (theService == null)
@@ -153,14 +153,14 @@ namespace Dev2.Runtime.ESB
                             {
                                 throw new Exception(ErrorResource.CanOnlyExecuteWorkflowsFromWebBrowser);
                             }
-                            Dev2Logger.Debug("Mapping Action Dependencies");
+                            Dev2Logger.Debug("Mapping Action Dependencies", dataObject.ExecutionID.ToString());
                             MapServiceActionDependencies(theStart);
                             
                             if (theStart != null)
                             {
                                 theStart.Service = theService;
                                 theStart.DataListSpecification = theService.DataListSpecification;
-                                Dev2Logger.Debug("Getting container");
+                                Dev2Logger.Debug("Getting container", dataObject.ExecutionID.ToString());
                                 var container = GenerateContainer(theStart, dataObject, _workspace);
                                 container.Execute(out errors, 0);                                
                                 
@@ -189,7 +189,7 @@ namespace Dev2.Runtime.ESB
 
                         if (errors.HasErrors())
                         {
-                            Dev2Logger.Error(errors.MakeDisplayReady());
+                            Dev2Logger.Error(errors.MakeDisplayReady(), GlobalConstants.WarewolfError);
                         }
                     }
                 }
@@ -268,6 +268,7 @@ namespace Dev2.Runtime.ESB
                 
                 {
                     var resourceId = dataObject.ResourceID;
+                    Dev2Logger.Debug($"Getting DynamicService: {serviceName}", dataObject.ExecutionID.ToString());
                     DynamicService theService = GetService(serviceName, resourceId);
                     IEsbExecutionContainer executionContainer = null;
 
@@ -295,7 +296,7 @@ namespace Dev2.Runtime.ESB
         {
             try
             {
-                Dev2Logger.Debug($"Getting DynamicService: {serviceName}");
+             
                 if (resourceId == Guid.Empty)
                 {
                     return _serviceLocator.FindService(serviceName, _workspace.ID) ?? _serviceLocator.FindService(serviceName, GlobalConstants.ServerWorkspaceID); //Check the workspace is it something we are working on if not use the server version

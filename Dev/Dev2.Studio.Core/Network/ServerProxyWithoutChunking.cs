@@ -80,8 +80,8 @@ namespace Dev2.Network
             Principal = ClaimsPrincipal.Current;
             AppServerUri = new Uri(uriString);
             WebServerUri = new Uri(uriString.Replace("/dsf", ""));
-            Dev2Logger.Debug(credentials);
-            Dev2Logger.Debug("***** Attempting Server Hub : " + uriString + " -> " + CredentialCache.DefaultNetworkCredentials.Domain + @"\" + Principal.Identity.Name);
+            Dev2Logger.Debug(credentials, "Warewolf Debug");
+            Dev2Logger.Debug("***** Attempting Server Hub : " + uriString + " -> " + CredentialCache.DefaultNetworkCredentials.Domain + @"\" + Principal.Identity.Name, "Warewolf Debug");
             HubConnection = new HubConnectionWrapper(uriString) { Credentials = credentials };
             HubConnection.Error += OnHubConnectionError;
             HubConnection.Closed += HubConnectionOnClosed;
@@ -166,7 +166,7 @@ namespace Dev2.Network
 
         void HasDisconnected()
         {
-            Dev2Logger.Debug("*********** Hub connection down");
+            Dev2Logger.Debug("*********** Hub connection down", "Warewolf Debug");
             IsConnected = false;
             IsConnecting = false;
             if (IsShuttingDown)
@@ -257,7 +257,7 @@ namespace Dev2.Network
                 aex.Flatten();
                 aex.Handle(ex =>
                 {
-                    Dev2Logger.Error(this, aex);
+                    Dev2Logger.Error(this, aex, "Warewolf Error");
                     var hex = ex as HttpClientException;
                     if (hex != null)
                     {
@@ -327,7 +327,7 @@ namespace Dev2.Network
                 {
                     if (ex.Message.Contains("1.4"))
                         throw new FallbackException();
-                    Dev2Logger.Error(this, aex);
+                    Dev2Logger.Error(this, aex, "Warewolf Error");
                     var hex = ex as HttpClientException;
                     if (hex != null)
                     {
@@ -388,7 +388,7 @@ namespace Dev2.Network
 
         void HandleConnectError(Exception e)
         {
-            Dev2Logger.Error(this, e);
+            Dev2Logger.Error(this, e, "Warewolf Error");
             StartReconnectTimer();
         }
 
@@ -447,7 +447,7 @@ namespace Dev2.Network
                 aex.Flatten();
                 aex.Handle(ex =>
                 {
-                    Dev2Logger.Error(this, aex);
+                    Dev2Logger.Error(this, aex, "Warewolf Error");
                     var hex = ex as HttpClientException;
                     if (hex != null)
                     {
@@ -464,7 +464,7 @@ namespace Dev2.Network
             }
             catch (Exception e)
             {
-                Dev2Logger.Error(this, e);
+                Dev2Logger.Error(this, e, "Warewolf Error");
             }
         }
 
@@ -509,7 +509,7 @@ namespace Dev2.Network
 
         void OnHubConnectionError(Exception exception)
         {
-            Dev2Logger.Error(this, exception);
+            Dev2Logger.Error(this, exception, "Warewolf Error");
         }
 
         void OnMemoReceived(string objString)
@@ -534,7 +534,7 @@ namespace Dev2.Network
             }
             catch (Exception e)
             {
-                Dev2Logger.Error(this, e);
+                Dev2Logger.Error(this, e, "Warewolf Error");
             }
             RaisePermissionsChanged();
         }
@@ -629,7 +629,7 @@ namespace Dev2.Network
                 throw new ArgumentNullException(nameof(payload));
             }
 
-            Dev2Logger.Debug("Execute Command Payload [ " + payload + " ]");
+            Dev2Logger.Debug("Execute Command Payload [ " + payload + " ]", "Warewolf Debug");
 
             var messageId = Guid.NewGuid();
             var envelope = new Envelope
@@ -662,7 +662,7 @@ namespace Dev2.Network
             }
             catch (Exception e)
             {
-                Dev2Logger.Error(e);
+                Dev2Logger.Error(e, "Warewolf Error");
             }
             return result;
         }

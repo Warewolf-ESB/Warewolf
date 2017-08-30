@@ -21,7 +21,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Download
         
         public void Execute(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO tmpErrors, int update)
         {
-            //ExecutionImpl(esbChannel, dataObject, inputs, outputs, out tmpErrors, update);
+            
             tmpErrors = new ErrorResultTO();
         }
 
@@ -61,7 +61,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Download
                 var dropboxResult = GetDropboxSingleExecutor(It.IsAny<IDropboxSingleExecutor<IDropboxResult>>()).ExecuteTask(TestConstant.DropboxClientInstance.Value);
                 if (IsUplodValidSuccess)
                 {
-                    //FileSuccesResult = GlobalConstants.DropBoxSucces;
+                    
                     Response = ((DropboxDownloadSuccessResult)dropboxResult).GetDownloadResponse();
                 }
                 else
@@ -73,9 +73,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Download
             }
             catch (Exception e)
             {
-                //dataObject.Environment.AddError(e.Message);
-                Dev2Logger.Error(e.Message, e);
-                //FileSuccesResult = GlobalConstants.DropBoxFailure;
+                Dev2Logger.Error(e.Message, e, GlobalConstants.WarewolfError);
                 Exception = new DropboxFailureResult(new Exception()).GetException();
                 return new List<string> { string.Empty };
             }

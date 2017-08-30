@@ -8,7 +8,10 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
+using System.ComponentModel;
 using System.Windows;
+using Dev2.Activities.Designers2.Core.Controls;
 
 namespace Dev2.Activities.Designers2.Web_Service_Put
 {
@@ -43,6 +46,11 @@ namespace Dev2.Activities.Designers2.Web_Service_Put
                     //Height = MinHeight;
                 }
             }
+        }
+
+        private void AutoCompleteBox_OnTextChanged(object sender, RoutedEventArgs e)
+        {
+            System.Diagnostics.Debug.WriteLine("a");
         }
     }
 }

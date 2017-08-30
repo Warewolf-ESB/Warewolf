@@ -34,7 +34,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             try
             {
-                Dev2Logger.Info("Find Server User Name");
+                Dev2Logger.Info("Find Server User Name", GlobalConstants.WarewolfInfo);
                 var user = Thread.CurrentPrincipal;
                 var permissionsMemo = new PermissionsModifiedMemo
                 {
@@ -46,7 +46,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch (Exception err)
             {
-                Dev2Logger.Error(err);
+                Dev2Logger.Error(err, GlobalConstants.WarewolfError);
                 throw;
             }
         }

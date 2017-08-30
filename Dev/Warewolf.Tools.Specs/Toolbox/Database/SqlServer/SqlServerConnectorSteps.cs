@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
+using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.SqlServerDatabase;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
@@ -56,7 +57,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             var dbSources = new ObservableCollection<IDbSource> { _greenPointSource };
             mockDbServiceModel.Setup(model => model.RetrieveSources()).Returns(dbSources);
             mockServiceInputViewModel.SetupAllProperties();
-            var sqlServerDesignerViewModel = new SqlServerDatabaseDesignerViewModel(modelItem, mockDbServiceModel.Object, new SynchronousAsyncWorker());
+            var sqlServerDesignerViewModel = new SqlServerDatabaseDesignerViewModel(modelItem, mockDbServiceModel.Object, new SynchronousAsyncWorker(), new ViewPropertyBuilder());
 
             ScenarioContext.Current.Add("viewModel", sqlServerDesignerViewModel);
             ScenarioContext.Current.Add("mockServiceInputViewModel", mockServiceInputViewModel);
@@ -229,7 +230,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             mockDbServiceModel.Setup(model => model.RetrieveSources()).Returns(dbSources);
             mockDbServiceModel.Setup(model => model.GetActions(It.IsAny<IDbSource>())).Returns(new List<IDbAction> { _getCountriesAction, _importOrderAction });
             mockServiceInputViewModel.SetupAllProperties();
-            var sqlServerDesignerViewModel = new SqlServerDatabaseDesignerViewModel(modelItem, mockDbServiceModel.Object, new SynchronousAsyncWorker());
+            var sqlServerDesignerViewModel = new SqlServerDatabaseDesignerViewModel(modelItem, mockDbServiceModel.Object, new SynchronousAsyncWorker(), new ViewPropertyBuilder());
 
             ScenarioContext.Current.Add("viewModel", sqlServerDesignerViewModel);
             ScenarioContext.Current.Add("mockServiceInputViewModel", mockServiceInputViewModel);
@@ -409,7 +410,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             mockDbServiceModel.Setup(model => model.GetActions(It.IsAny<IDbSource>())).Returns(new List<IDbAction> { _getCountriesAction, _importOrderAction });
             mockServiceInputViewModel.SetupAllProperties();
 
-            var sqlServerDesignerViewModel = new SqlServerDatabaseDesignerViewModel(modelItem, mockDbServiceModel.Object, new SynchronousAsyncWorker());
+            var sqlServerDesignerViewModel = new SqlServerDatabaseDesignerViewModel(modelItem, mockDbServiceModel.Object, new SynchronousAsyncWorker(), new ViewPropertyBuilder());
 
             ScenarioContext.Current.Add("viewModel", sqlServerDesignerViewModel);
             ScenarioContext.Current.Add("privateObject", privateObject);

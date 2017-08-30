@@ -77,12 +77,12 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch (Exception ex) when (ex is AccessViolationException)
             {
-                Dev2Logger.Error(ex.Message,ex);
+                Dev2Logger.Error(ex.Message,ex, GlobalConstants.WarewolfError);
                 throw;
             }
             catch (Exception ex) when (ex is IOException)
             {
-                Dev2Logger.Error(ex.Message, ex);
+                Dev2Logger.Error(ex.Message, ex, GlobalConstants.WarewolfError);
                 throw;
             }
         }

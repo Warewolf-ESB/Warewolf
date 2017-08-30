@@ -213,11 +213,11 @@ namespace Dev2.Activities.SelectAndApply
             }
             catch (NullDataSource e)
             {
-                Dev2Logger.Error("DSFSelectAndApply", e);
+                Dev2Logger.Error("DSFSelectAndApply", e, GlobalConstants.WarewolfError);
             }
             catch (Exception e)
             {
-                Dev2Logger.Error("DSFSelectAndApply", e);
+                Dev2Logger.Error("DSFSelectAndApply", e, GlobalConstants.WarewolfError);
                 allErrors.AddError(e.Message);
             }
             finally

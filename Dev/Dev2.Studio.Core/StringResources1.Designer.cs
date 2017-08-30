@@ -406,6 +406,15 @@ namespace Dev2.Studio.Core {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Network Error.
+        /// </summary>
+        public static string NetworkSettingErrorPrefix {
+            get {
+                return ResourceManager.GetString("NetworkSettingErrorPrefix", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unsaved.
         /// </summary>
         public static string NewWorkflowBaseName {
@@ -447,6 +456,15 @@ namespace Dev2.Studio.Core {
         public static string Ribbon_StopExecution {
             get {
                 return ResourceManager.GetString("Ribbon_StopExecution", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save Error.
+        /// </summary>
+        public static string SaveSettingErrorHeader {
+            get {
+                return ResourceManager.GetString("SaveSettingErrorHeader", resourceCulture);
             }
         }
         
@@ -519,6 +537,42 @@ namespace Dev2.Studio.Core {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to LOGGING.
+        /// </summary>
+        public static string SettingsLogging {
+            get {
+                return ResourceManager.GetString("SettingsLogging", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PERFORMANCE COUNTERS.
+        /// </summary>
+        public static string SettingsPerformanceCounters {
+            get {
+                return ResourceManager.GetString("SettingsPerformanceCounters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SECURITY.
+        /// </summary>
+        public static string SettingsSecurity {
+            get {
+                return ResourceManager.GetString("SettingsSecurity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Settings.
+        /// </summary>
+        public static string SettingsTitle {
+            get {
+                return ResourceManager.GetString("SettingsTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Source server permission Deploy From not allowed..
         /// </summary>
         public static string SourcePermission_Error {
@@ -529,10 +583,11 @@ namespace Dev2.Studio.Core {
         
         /// <summary>
         ///   Looks up a localized string similar to Your changes have not been saved.
-        ///Would you like to return to the studio? 
+        ///Would you like to save? 
         ///-----------------------------------------------------------------
-        ///Yes - Return to studio.
-        ///No - Discard your changes..
+        ///Yes - Save your changes.
+        ///No - Discard your changes.
+        ///Cancel - Do not close the studio..
         /// </summary>
         public static string Unsaved_Changes {
             get {

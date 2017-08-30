@@ -518,7 +518,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             catch (Exception e)
             {
                 XmlData = @"Invalid characters entered";
-                Dev2Logger.Error(e.StackTrace, e);
+                Dev2Logger.Error(e.StackTrace, e, "Warewolf Error");
             }
         }
 

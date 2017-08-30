@@ -226,7 +226,7 @@ namespace Dev2.Data.Util
             }
             catch (Exception err)
             {
-                Dev2Logger.Error(err);
+                Dev2Logger.Error(err, GlobalConstants.WarewolfError);
                 throw;
             }
 

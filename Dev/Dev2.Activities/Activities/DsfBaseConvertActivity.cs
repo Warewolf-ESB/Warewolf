@@ -136,14 +136,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                     catch(Exception e)
                     {
-                        Dev2Logger.Error("DSFBaseConvert", e);
+                        Dev2Logger.Error("DSFBaseConvert", e, GlobalConstants.WarewolfError);
                         allErrors.AddError(e.Message);
                         if(dataObject.IsDebugMode())
                         {
-                            //var debugItem = new DebugItem();
-                            // AddDebugItem(new DebugItemStaticDataParams("", outputIndex.ToString(CultureInfo.InvariantCulture)), debugItem);
-                            // AddDebugItem(new DebugEvalResult(item.FromExpression, "", env), debugItem);
-                            // _debugOutputs.Add(debugItem);
                             outputIndex++;
                         }
                     }
@@ -151,7 +147,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             catch(Exception e)
             {
-                Dev2Logger.Error("DSFBaseConvert", e);
+                Dev2Logger.Error("DSFBaseConvert", e, GlobalConstants.WarewolfError);
                 allErrors.AddError(e.Message);
             }
             finally

@@ -1,0 +1,255 @@
+﻿@model Tuple<List<Dev2.Common.LogEntry>, ExecutionLoggingRequestViewModel>
+@using Dev2.Web2.Models.ExecutionLogging;
+
+@{
+    ViewBag.Title = "Warewolf";
+}
+
+<head>
+    <meta charset='utf-8' />
+    <meta content='en' name='language' />
+    <meta content='width=device-width, initial-scale=1' name='viewport' />
+    <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
+    <script src="@Url.Content("~/Scripts/jquery-1.8.3.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery-ui-1.9.2.custom.min.js")" type="text/javascript"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js" type="text/javascript"></script>
+    <script src="~/Scripts/getBrowser.js" type="text/javascript"></script>
+    <link rel='stylesheet' type='text/css' href='~/Content/Site.css' />
+</head>
+
+<div id="ExecutionFilters" style="padding-top: 6px;">
+
+    <table id="filterTable">
+        <tr>
+            <td class="serverName">
+                @Html.LabelFor(model => model.Item2.Server)
+            </td>
+            <td class="protocol">
+                @Html.DropDownListFor(m => m.Item2.Protocol, Model.Item2.Protocols, new { id = "protocolDropdown", @class = "form-control" })
+            </td>
+            <td class="serverDesc">://</td>
+            <td class="serverText">@Html.EditorFor(model => model.Item2.Server, new { htmlAttributes = new { id = "serverName", @class = "form-control" } })</td>
+            <td class="serverDesc">:</td>
+            <td>@Html.EditorFor(model => model.Item2.Port, new { htmlAttributes = new { id = "port", @class = "form-control" } })</td>
+            <td><button id="updateServer" class="btn btn-default">Update</button></td>
+
+        </tr>
+    </table>
+</div>
+<div id="loader">
+    <div id="loader_1" class="loader"></div>
+    <div id="loader_2" class="loader"></div>
+    <div id="loader_3" class="loader"></div>
+    <div id="loader_4" class="loader"></div>
+    <div id="loader_5" class="loader"></div>
+    <div id="loader_6" class="loader"></div>
+    <div id="loader_7" class="loader"></div>
+    <div id="loader_8" class="loader"></div>
+</div>
+<div id="divExecutionList" class="animate-bottom">
+</div>
+
+<div class="dialogResult">
+    <p class="exResult"></p>
+</div>
+
+<div id="generalMessageDiv" class="generalMessageWrap">
+    <div class="generalMessage">
+        <div class="generalMessageContent">
+            <p class="generalMessageText"></p>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    var browserType;
+
+    function showExecutionList() {
+        document.getElementById("loader").style.display = "none";
+        document.getElementById("divExecutionList").style.display = "block";
+        document.getElementById("generalMessageDiv").style.display = "none";
+    }
+
+    function hideExecutionList() {
+        document.getElementById("loader").style.display = "block";
+        document.getElementById("divExecutionList").style.display = "none";
+        document.getElementById("generalMessageDiv").style.display = "none";
+    }
+
+    function hideExecutionAndLoader() {
+        document.getElementById("loader").style.display = "none";
+        document.getElementById("divExecutionList").style.display = "none";
+    }
+
+    function getServerUrl() {
+        var protocol = document.getElementById("protocolDropdown").value;
+        var serverName = document.getElementById("serverName").value;
+        var port = document.getElementById("port").value;
+
+        var serverUrl = protocol + "://" + serverName + ":" + port;
+
+        return serverUrl;
+    }
+
+    function reset() {
+        document.getElementById("protocolDropdown").value = "http";
+        document.getElementById("serverName").value = "localhost";
+        document.getElementById("port").value = "3142";
+    }
+
+    $('#serverName').keypress(function (e) {
+        if (e.keyCode == 13)
+            $('#updateServer').click();
+    });
+
+    function getLogData() {
+        $.support.cors = true;
+        var serverUrl = getServerUrl().toLowerCase();
+        var wareWolfUrl = serverUrl + "/services/GetLogDataService";
+        var pingUrl = serverUrl + "/secure/ping";
+        if (browserType == "Edge") {
+                var oReq = new XMLHttpRequest();
+                oReq.open('GET', pingUrl, true);
+                oReq.withCredentials = true;
+                oReq.onreadystatechange = function () {
+                    if (oReq.readyState == oReq.DONE) {
+                        if (oReq.status == 200) {
+                            var xhr = new XMLHttpRequest();
+                            xhr.open('POST', wareWolfUrl, true);
+                            xhr.withCredentials = true;
+                            xhr.onreadystatechange = function () {
+                                if (xhr.readyState == xhr.DONE) {
+                                    if (xhr.status == 200) {
+                                        var returnData = JSON.parse(xhr.response);
+                                        OnSuccessCall(returnData, xhr.statusText, xhr);
+                                    }
+                                }
+                            };
+                            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                            xhr.setRequestHeader("Content-Length", xhr.response.length);
+                            xhr.setRequestHeader("Connection", "close");
+                            xhr.send();
+                        }
+                        else {
+                            $('.generalMessageText').text("This feature is not currently available in Microsoft Edge");
+                            hideExecutionAndLoader();
+                            document.getElementById("generalMessageDiv").style.display = "block";
+                        }
+                    }
+                };
+                oReq.send();
+        }
+        else {
+            $.ajax({
+                type: "POST",
+                url: wareWolfUrl,
+                cache: false,
+                crossDomain: true,
+                xhrFields: {
+                    withCredentials: true
+                },
+                success: OnSuccessCall,
+                fail: OnFailCall,
+                error: OnErrorCall
+            });
+        }
+    }
+
+    var OnSuccessCall = function (response, textStatus, jqXHR) {
+
+        var url = "ExecutionLogging/ExecutionList";
+        if (browserType == "Firefox") {
+            url = "/ExecutionLogging/ExecutionList";
+        }
+
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: { 'logEntries': response },
+            success: function (executionListHTML) {
+                showExecutionList();
+                $("#divExecutionList").html(executionListHTML);
+            },
+            error: OnErrorCall
+        });
+    };
+
+    var OnFailCall = function (request, status, error) {
+        var serverName = document.getElementById("serverName").value;
+        reset();
+        hideExecutionAndLoader();
+        if (request.status == 0) {
+            alert("Local Warewolf Server Not Found");
+        }
+        else if (request.status == 200) {
+            alert("Service not found: " + serverName + " - check server version");
+            getLogData();
+        }
+    }
+
+    var OnErrorCall = function (request, status, error) {
+        var serverName = document.getElementById("serverName").value;
+        reset();
+        hideExecutionAndLoader();
+        if (request.status == 0) {
+            alert("Local Warewolf Server Not Found");
+        }
+        else if (request.status == 200) {
+            alert("Service not found: " + serverName + " - check server version");
+            getLogData();
+        }
+    }
+
+    var createDialog = function () {
+        var opt = {
+            autoOpen: false,
+            modal: true,
+            title: "Result",
+            maxWidth: 600,
+            maxHeight: 500,
+            minWidth: 400,
+            minHeight: 300,
+            width: 400,
+            height: 300,
+            hide: {
+                effect: "fade",
+                duration: 500
+            }
+        };
+        if (window.resultDialog == null) {
+            window.resultDialog = $('.dialogResult').dialog(opt);
+        }
+    };
+
+    $(document).one('ready', function () {
+        browserType = browser();
+        getLogData();
+    });
+
+    $(document).ready(function () {
+        $('#updateServer').on('click', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            browserType = browser();
+            hideExecutionList();
+            getLogData();
+        });
+
+        
+        $("#protocolDropdown").change(function () {
+            var value = document.getElementById("protocolDropdown").value;
+            if (value == "https") {
+                $("#port").val("3143");
+            }
+            else {
+                $("#port").val("3142");
+            }
+        });
+    });
+</script>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

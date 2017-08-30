@@ -183,6 +183,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Internal Services\GetComputerNamesTests.cs" />
+    <Compile Include="Server Refresh\ServerRefreshTests.cs" />
     <Compile Include="Server Test\InternalServices\FindDependenciesServiceTest.cs" />
     <Compile Include="Server Test\InternalServices\FindResourceServiceTest.cs" />
     <Compile Include="Dev2.Studio.Core.Tests\MoqConfigurationReader.cs" />
@@ -316,6 +317,10 @@
     <ProjectReference Include="..\Dev2.Studio.Interfaces\Dev2.Studio.Interfaces.csproj">
       <Project>{37149E8E-FEF2-47C0-8391-80DCCE86D26D}</Project>
       <Name>Dev2.Studio.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Util\Dev2.Util.csproj">
+      <Project>{1990550D-EA6F-4DAC-9B5E-8571E86923ED}</Project>
+      <Name>Dev2.Util</Name>
     </ProjectReference>
     <ProjectReference Include="..\Warewolf.Storage\Warewolf.Storage.csproj">
       <Project>{b3d070e0-11c1-4c1c-81a5-e680c1494945}</Project>

@@ -72,13 +72,13 @@ namespace Dev2.Runtime.ESB.Management.Services
             var execMessage = new ExecuteMessage { HasError = false };
             if(!values.ContainsKey("resourceId"))
             {
-                Dev2Logger.Info("Delete Version. Invalid Resource Id");
+                Dev2Logger.Info("Delete Version. Invalid Resource Id", GlobalConstants.WarewolfInfo);
                 execMessage.HasError = true;
                 execMessage.Message = new StringBuilder( "No resourceId sent to server");
             }
             else if(!values.ContainsKey("versionNumber") )
             {
-                Dev2Logger.Info("Delete Version. Invalid Version number");
+                Dev2Logger.Info("Delete Version. Invalid Version number", GlobalConstants.WarewolfInfo);
                 execMessage.HasError = true;
                 execMessage.Message = new StringBuilder("No versionNumber sent to server");
             }
@@ -88,7 +88,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                     var guid = Guid.Parse(values["resourceId"].ToString());
                     var version = values["versionNumber"].ToString();
-                    Dev2Logger.Info($"Delete Version. ResourceId:{guid} VersionNumber{version}");
+                    Dev2Logger.Info($"Delete Version. ResourceId:{guid} VersionNumber{version}", GlobalConstants.WarewolfInfo);
                     StringBuilder tmp;
                     string resourcePath = "";
                     values.TryGetValue("resourcePath", out tmp);
@@ -101,7 +101,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 }
                 catch (Exception e)
                 {
-                    Dev2Logger.Error("Delete Version Error.",e);
+                    Dev2Logger.Error("Delete Version Error.",e, GlobalConstants.WarewolfError);
                     execMessage.HasError = true;
                     execMessage.Message = new StringBuilder( e.Message);
                 }

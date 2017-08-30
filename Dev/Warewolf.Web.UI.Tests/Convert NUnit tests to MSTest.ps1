@@ -2,7 +2,7 @@
 foreach ($Class in (Get-ChildItem "$PSScriptRoot\*.cs" -Recurse)) {
     $ClassContent = (Get-Content $Class)
     if ($ClassContent -ne $null) {
-        $ClassContent.replace("using NUnit.Framework;", "using Microsoft.VisualStudio.TestTools.UnitTesting;").replace("[TestFixture]", "[TestClass]").replace("[SetUp]", "[TestInitialize]").replace("[TearDown]", "[TestCleanup]").replace("[Test]", "[TestMethod]").replace("driver = new FirefoxDriver();","driver = new InternetExplorerDriver();").replace("using OpenQA.Selenium.Firefox;","using OpenQA.Selenium.IE;") | Set-Content $Class
+        $ClassContent.replace("using NUnit.Framework;", "using Microsoft.VisualStudio.TestTools.UnitTesting;").replace("[TestFixture]", "[TestClass]").replace("[SetUp]", "[TestInitialize]").replace("[TearDown]", "[TestCleanup]").replace("[Test]", "[TestMethod]`r`n        [DeploymentItem(@`"avformat-57.dll`")]`r`n        [DeploymentItem(@`"avutil-55.dll`")]`r`n        [DeploymentItem(@`"swresample-2.dll`")]`r`n        [DeploymentItem(@`"swscale-4.dll`")]`r`n        [DeploymentItem(@`"avcodec-57.dll`")]") | Set-Content $Class
     }
 }
 foreach ($Class in (Get-ChildItem "$PSScriptRoot\*.cs" -Recurse)) {
@@ -18,9 +18,9 @@ foreach ($Class in (Get-ChildItem "$PSScriptRoot\*.cs" -Recurse)) {
                 {
 					"            screenRecorder.StartRecording(TestContext);"
                 }
-                if ($_ -eq "            Assert.AreEqual(`"`", verificationErrors.ToString());" -and $PreviousLine -ne "            screenRecorder.StopRecording(TestContext);") 
+                if ($_ -eq "            Assert.AreEqual(`"`", verificationErrors.ToString());" -and $PreviousLine -ne "            screenRecorder.StopRecording(TestContext.CurrentTestOutcome);") 
                 {
-					"            screenRecorder.StopRecording(TestContext);"
+					"            screenRecorder.StopRecording(TestContext.CurrentTestOutcome);"
                 }
                 if ($_ -eq "using OpenQA.Selenium.Support.UI;" -and $PreviousLine -ne "using Warewolf.Web.UI.Tests.ScreenRecording;") 
                 {

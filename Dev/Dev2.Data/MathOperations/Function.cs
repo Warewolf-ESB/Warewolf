@@ -108,7 +108,7 @@ namespace Dev2.MathOperations
             }
             catch (Exception ex)
             {
-                Dev2Logger.Error("Function", ex);
+                Dev2Logger.Error("Function", ex, GlobalConstants.WarewolfError);
                 custCalculation = null;
                 isSucessfullyCreated = false;
             }

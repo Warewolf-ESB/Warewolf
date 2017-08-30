@@ -97,7 +97,7 @@ namespace Dev2.Services.Sql
                 }
                 catch(Exception e)
                 {
-                    Dev2Logger.Error(@"Error creating transaction",e);
+                    Dev2Logger.Error(@"Error creating transaction",e, GlobalConstants.WarewolfError);
                 }
             }
         }

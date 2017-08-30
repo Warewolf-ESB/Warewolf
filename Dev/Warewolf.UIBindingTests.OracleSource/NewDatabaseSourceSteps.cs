@@ -95,7 +95,8 @@ namespace Warewolf.UIBindingTests.OracleSource
         public void GivenIOpen(string name)
         {
             var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
-            var upd = FeatureContext.Current.Get<Mock<IManageDatabaseSourceModel>>("updateManager").Object;
+            var mock = FeatureContext.Current.Get<Mock<IManageDatabaseSourceModel>>("updateManager");
+            var upd = mock.Object;
             var dbsrc = new DbSourceDefinition
             {
                 Name = name,
@@ -103,6 +104,7 @@ namespace Warewolf.UIBindingTests.OracleSource
                 ServerName = "RSAKLFSVRDEV",
                 AuthenticationType = AuthenticationType.Windows
             };
+            mock.Setup(model => model.FetchDbSource(It.IsAny<Guid>())).Returns(dbsrc);
             FeatureContext.Current["dbsrc"] = dbsrc;
             var mockEventAggregator = new Mock<IEventAggregator>();
             var viewModel = new ManageOracleSourceViewModel(upd, mockEventAggregator.Object, dbsrc, new SynchronousAsyncWorker());

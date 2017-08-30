@@ -59,13 +59,13 @@ namespace Dev2.Data.PathOperations
                 }
                 else
                 {
-                    Dev2Logger.Debug($"SFTP_GET:{path.Path}");
+                    Dev2Logger.Debug($"SFTP_GET:{path.Path}", GlobalConstants.WarewolfDebug);
                     ReadFromSftp(path, ref result, filesToCleanup);
                 }
             }
             catch (Exception ex)
             {
-                Dev2Logger.Error(this, ex);
+                Dev2Logger.Error(this, ex, GlobalConstants.WarewolfError);
                 var message = $"{ex.Message} ,  [{path.Path}]";
                 throw new Exception(message, ex);
             }
@@ -179,7 +179,7 @@ namespace Dev2.Data.PathOperations
             }
             catch (Exception e)
             {
-                Dev2Logger.Debug(@"Exception Creating SFTP Client",e);
+                Dev2Logger.Debug(@"Exception Creating SFTP Client",e, GlobalConstants.WarewolfError);
                 
                 if(e.Message.Contains(@"timeout"))
                 {
@@ -239,7 +239,7 @@ namespace Dev2.Data.PathOperations
                 }
                 catch (Exception ex)
                 {
-                    Dev2Logger.Error(this, ex);
+                    Dev2Logger.Error(this, ex, GlobalConstants.WarewolfError);
                     ok = true;
                 }
             }
@@ -252,7 +252,7 @@ namespace Dev2.Data.PathOperations
                 }
                 catch (Exception ex)
                 {
-                    Dev2Logger.Error(@"Exception in Put command",ex);
+                    Dev2Logger.Error(@"Exception in Put command",ex, GlobalConstants.WarewolfError);
                     throw;
                 }
             }
@@ -322,7 +322,7 @@ namespace Dev2.Data.PathOperations
                         catch (Exception e)
                         {
 
-                            Dev2Logger.Debug(@"Exception WriteToSFTP",e);
+                            Dev2Logger.Debug(@"Exception WriteToSFTP",e, GlobalConstants.WarewolfDebug);
                             sftp.Disconnect();
                             sftp.Dispose();
                             throw new Exception(ErrorResource.FileNotCreated);
@@ -351,13 +351,13 @@ namespace Dev2.Data.PathOperations
                 {
                     if (!DeleteOp(new List<IActivityIOPath> { src }))
                     {
-                        Dev2Logger.Error($"Error Deleting Path: {src.Path}");
+                        Dev2Logger.Error($"Error Deleting Path: {src.Path}", GlobalConstants.WarewolfError);
                     }
                 }
             }
             catch (Exception ex)
             {
-                Dev2Logger.Error(this, ex);
+                Dev2Logger.Error(this, ex, GlobalConstants.WarewolfError);
                 throw new Exception(ex.Message, ex);
             }
 
@@ -422,7 +422,7 @@ namespace Dev2.Data.PathOperations
             }
             catch (Exception ex)
             {
-                Dev2Logger.Error(this, ex);
+                Dev2Logger.Error(this, ex, GlobalConstants.WarewolfError);
                 throw;
             }
 
@@ -522,7 +522,7 @@ namespace Dev2.Data.PathOperations
             }
             catch (Exception ex)
             {
-                Dev2Logger.Error(this, ex);
+                Dev2Logger.Error(this, ex, GlobalConstants.WarewolfError);
             }
             finally
             {
@@ -544,7 +544,7 @@ namespace Dev2.Data.PathOperations
             catch (Exception ex)
             {
                 result = false;
-                Dev2Logger.Error(this, ex);
+                Dev2Logger.Error(this, ex, GlobalConstants.WarewolfError);
             }
             finally
             {
@@ -601,7 +601,7 @@ namespace Dev2.Data.PathOperations
             }
             catch (Exception ex)
             {
-                Dev2Logger.Error(this, ex);
+                Dev2Logger.Error(this, ex, GlobalConstants.WarewolfError);
                 string message = $"{ex.Message} : [{src.Path}]";
                 throw new Exception(message, ex);
             }
@@ -622,7 +622,7 @@ namespace Dev2.Data.PathOperations
             }
             catch (Exception ex)
             {
-                Dev2Logger.Error(this, ex);
+                Dev2Logger.Error(this, ex, GlobalConstants.WarewolfError);
                 string message = $"{ex.Message} : [{src.Path}]";
                 throw new Exception(message, ex);
             }
@@ -735,7 +735,7 @@ namespace Dev2.Data.PathOperations
             }
             catch (Exception ex)
             {
-                Dev2Logger.Error(this, ex);
+                Dev2Logger.Error(this, ex, GlobalConstants.WarewolfError);
                 throw;
             }
             finally
@@ -758,7 +758,7 @@ namespace Dev2.Data.PathOperations
             catch (Exception ex)
             {
                 sftp.Dispose();
-                Dev2Logger.Error(this, ex);
+                Dev2Logger.Error(this, ex, GlobalConstants.WarewolfError);
                 throw new Exception(string.Format(ErrorResource.DirectoryNotFound, path));
             }
             finally
@@ -930,7 +930,7 @@ namespace Dev2.Data.PathOperations
                 catch (Exception e)
                 {
                     var message = string.Format(ErrorResource.CouldNotDelete, activityIOPath.Path);
-                    Dev2Logger.Error(message, e);
+                    Dev2Logger.Error(message, e, GlobalConstants.WarewolfError);
                     throw new Exception(message);
                 }
             }
@@ -997,12 +997,12 @@ namespace Dev2.Data.PathOperations
             }
             catch(WebException wex)
             {
-                Dev2Logger.Error(this, wex);
+                Dev2Logger.Error(this, wex, GlobalConstants.WarewolfError);
                 isAlive = false;
             }
             catch(Exception ex)
             {
-                Dev2Logger.Error(this, ex);
+                Dev2Logger.Error(this, ex, GlobalConstants.WarewolfError);
                 throw;
             }
             finally
@@ -1026,7 +1026,7 @@ namespace Dev2.Data.PathOperations
             }
             catch(Exception ex)
             {
-                Dev2Logger.Error(this, ex);
+                Dev2Logger.Error(this, ex, GlobalConstants.WarewolfError);
                 isAlive = false;
             }
             return isAlive;
@@ -1087,12 +1087,12 @@ namespace Dev2.Data.PathOperations
             }
             catch(WebException wex)
             {
-                Dev2Logger.Error(this, wex);
+                Dev2Logger.Error(this, wex, GlobalConstants.WarewolfError);
                 isAlive = false;
             }
             catch(Exception ex)
             {
-                Dev2Logger.Error(this, ex);
+                Dev2Logger.Error(this, ex, GlobalConstants.WarewolfError);
                 throw;
             }
             finally
@@ -1118,7 +1118,7 @@ namespace Dev2.Data.PathOperations
             catch(Exception ex)
             {
                 isAlive = false;
-                Dev2Logger.Error(this, ex);
+                Dev2Logger.Error(this, ex, GlobalConstants.WarewolfError);
             }
             finally
             {

@@ -36,7 +36,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             try
             {
 
-                Dev2Logger.Info("Test WebserviceSource");
+                Dev2Logger.Info("Test WebserviceSource", GlobalConstants.WarewolfInfo);
                 StringBuilder resourceDefinition;
 
                 values.TryGetValue("WebserviceSource", out resourceDefinition);
@@ -62,7 +62,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 msg.HasError = true;
                 msg.Message = new StringBuilder(err.Message);
-                Dev2Logger.Error(err);
+                Dev2Logger.Error(err, GlobalConstants.WarewolfError);
 
             }
 

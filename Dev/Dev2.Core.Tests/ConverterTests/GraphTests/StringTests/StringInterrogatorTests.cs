@@ -9,9 +9,13 @@
 */
 
 using System;
+using System.Collections.Generic;
 using Dev2.Common.Interfaces.Core.Graph;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Unlimited.Framework.Converters.Graph;
+using Unlimited.Framework.Converters.Graph.Poco;
 using Unlimited.Framework.Converters.Graph.String;
+using Unlimited.Framework.Converters.Graph.String.Json;
 using Unlimited.Framework.Converters.Graph.String.Xml;
 
 namespace Unlimited.UnitTest.Framework.ConverterTests.GraphTests.StringTests {
@@ -84,5 +88,56 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.GraphTests.StringTests {
 
             Assert.AreEqual(expected, actual);
         }
+
+        [TestMethod]
+        [ExpectedException(typeof(Exception))]
+        public void CreateNavigator_Given_TypeofIPath_Expected_Exception()
+        {
+            var stringInterrogator = new StringInterrogator();
+            stringInterrogator.CreateNavigator(XmlGiven(), typeof(IPath));
+        }
+
+        [TestMethod]        
+        public void CreateNavigator_Given_TypeofPocoPath_Expected_PocoNavigator()
+        {
+            var stringInterrogator = new StringInterrogator();
+            var navigator = stringInterrogator.CreateNavigator(XmlGiven(), typeof(PocoPath));
+            Assert.IsNotNull(navigator);
+            Assert.IsTrue(navigator.GetType() == typeof(PocoNavigator));
+        }
+
+        [TestMethod]        
+        public void CreateNavigator_Given_TypeofStringPath_Expected_StringNavigator()
+        {
+            var stringInterrogator = new StringInterrogator();
+            var navigator = stringInterrogator.CreateNavigator(XmlGiven(), typeof(StringPath));
+            Assert.IsNotNull(navigator);
+            Assert.IsTrue(navigator.GetType() == typeof(StringNavigator));
+        }
+
+        [TestMethod]        
+        public void CreateNavigator_Given_TypeofUnExistingType_Expected_PocoPath()
+        {
+            var stringInterrogator = new StringInterrogator();
+            var navigator = stringInterrogator.CreateNavigator(XmlGiven(), typeof(UnExistingType));
+            Assert.IsNull(navigator);
+        }
+    }
+
+    internal class UnExistingType: BasePath
+    {
+        #region Overrides of BasePath
+
+        public override IEnumerable<IPathSegment> GetSegements()
+        {
+            yield break;
+        }
+
+        public override IPathSegment CreatePathSegment(string pathSegmentString)
+        {
+            return null;
+        }
+
+        #endregion
     }
 }

@@ -40,7 +40,7 @@ Scenario: Opening Workflow local and remote using right click
    And I Filter the Explorer with "LocalWorkflowWithRemoteSubworkflowToDelete"
    And I RightClick Explorer Localhost First Item
    And I Select Delete From Explorer Context Menu
-   And I Click MessageBox Yes 
+   When I Click MessageBox Yes
  
  Scenario: Deleting a Folder in localhost
    Given The Warewolf Studio is running

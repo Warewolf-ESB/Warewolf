@@ -1,0 +1,11 @@
+﻿
+.wrapper-dropdown-5 {
+    position: relative;
+    width:100px;
+    padding-left:20px;
+    background: #fff;    
+    border-radius: 3px;
+    cursor: pointer;
+    outline: none;
+    transition: all 0.3s ease-out;
+}

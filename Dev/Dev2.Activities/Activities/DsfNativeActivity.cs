@@ -151,7 +151,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected override void Execute(NativeActivityContext context)
         {
-            Dev2Logger.Debug($"Start {GetType().Name}");
+            Dev2Logger.Debug($"Start {GetType().Name}", GlobalConstants.WarewolfDebug);
             _tmpErrors = new ErrorResultTO();
             _isOnDemandSimulation = false;
             var dataObject = context.GetExtension<IDSFDataObject>();
@@ -177,7 +177,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             catch (Exception ex)
             {
 
-                Dev2Logger.Error("OnExecute", ex);
+                Dev2Logger.Error("OnExecute", ex, GlobalConstants.WarewolfError);
                 errorString = ex.Message;
                 var errorResultTO = new ErrorResultTO();
                 errorResultTO.AddError(errorString);
@@ -458,7 +458,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
                 catch (Exception e)
                 {
-                    Dev2Logger.Error("Debug Dispatch Error", e);
+                    Dev2Logger.Error("Debug Dispatch Error", e, GlobalConstants.WarewolfError);
                     AddErrorToDataList(e, dataObject);
                     errorMessage = dataObject.Environment.FetchErrors();
                     _debugState.ErrorMessage = errorMessage;
@@ -477,7 +477,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             else
             {
                 _debugState.StateType = stateType;
-                Dev2Logger.Info("Debug Already Started");
+                Dev2Logger.Info("Debug Already Started", GlobalConstants.WarewolfInfo);
             }
 
             if (_debugState != null)
@@ -501,7 +501,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
                 catch(Exception err)
                 {
-                    Dev2Logger.Error("DispatchDebugState", err);
+                    Dev2Logger.Error("DispatchDebugState", err, GlobalConstants.WarewolfError);
                     AddErrorToDataList(err, dataObject);
                     var errorMessage = dataObject.Environment.FetchErrors();
                     _debugState.ErrorMessage = errorMessage;
@@ -1011,7 +1011,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 errorBuilder.AppendLine($"--[ Execution Exception ]--\r\nService Name = {serviceName}\r\nError Message = {e} \r\n--[ End Execution Exception ]--");
             }
-            Dev2Logger.Error("DsfNativeActivity", new Exception(errorBuilder.ToString()));
+            Dev2Logger.Error("DsfNativeActivity", new Exception(errorBuilder.ToString()), GlobalConstants.WarewolfError);
         }
 
         public abstract IList<DsfForEachItem> GetForEachInputs();
@@ -1056,7 +1056,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             catch (Exception ex)
             {
                 data.Environment.AddError(ex.Message);
-                Dev2Logger.Error("OnExecute", ex);
+                Dev2Logger.Error("OnExecute", ex, GlobalConstants.WarewolfError);
 
             }
             finally
@@ -1112,7 +1112,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             catch (Exception e)
             {
-                Dev2Logger.Error(e);
+                Dev2Logger.Error(e, GlobalConstants.WarewolfError);
             }
         }
 

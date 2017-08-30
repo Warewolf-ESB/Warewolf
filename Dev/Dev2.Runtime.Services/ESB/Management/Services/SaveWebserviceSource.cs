@@ -38,7 +38,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             try
             {
-                Dev2Logger.Info("Save Webservice Source");
+                Dev2Logger.Info("Save Webservice Source", GlobalConstants.WarewolfInfo);
                 StringBuilder resourceDefinition;
 
                 values.TryGetValue("WebserviceSource", out resourceDefinition);
@@ -64,7 +64,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 msg.HasError = true;
                 msg.Message = new StringBuilder(err.Message);
-                Dev2Logger.Error(err);
+                Dev2Logger.Error(err, GlobalConstants.WarewolfError);
 
             }
 

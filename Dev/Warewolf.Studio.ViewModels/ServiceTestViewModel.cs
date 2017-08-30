@@ -681,7 +681,7 @@ namespace Warewolf.Studio.ViewModels
 
         private void OnError(Exception exception)
         {
-            Dev2Logger.Error(exception);
+            Dev2Logger.Error(exception, "Warewolf Error");
             throw exception;
         }
 
@@ -2371,7 +2371,7 @@ namespace Warewolf.Studio.ViewModels
                 }
                 catch (Exception ex)
                 {
-                    Dev2Logger.Error("IServiceTestModelTO DeleteTest(IServiceTestModel model)", ex);
+                    Dev2Logger.Error("IServiceTestModelTO DeleteTest(IServiceTestModel model)", ex, "Warewolf Error");
                 }
             }
             if (_tests.Count == 1 && _tests.Single().GetType() == typeof(DummyServiceTest))

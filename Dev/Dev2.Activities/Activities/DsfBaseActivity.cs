@@ -121,7 +121,7 @@ namespace Dev2.Activities
             }
             catch (Exception ex)
             {
-                Dev2Logger.Error(string.Format("{0} Exception", DisplayName), ex);
+                Dev2Logger.Error(string.Format("{0} Exception", DisplayName), ex, GlobalConstants.WarewolfError);
                 allErrors.AddError(ex.Message);
             }
             finally

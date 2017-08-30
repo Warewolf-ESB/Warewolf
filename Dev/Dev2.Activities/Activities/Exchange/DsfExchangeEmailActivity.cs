@@ -189,7 +189,7 @@ namespace Dev2.Activities.Exchange
             }
             catch (Exception e)
             {
-                Dev2Logger.Error("DSFEmail", e);
+                Dev2Logger.Error("DSFEmail", e, GlobalConstants.WarewolfError);
                 allErrors.AddError(e.Message);
             }
 

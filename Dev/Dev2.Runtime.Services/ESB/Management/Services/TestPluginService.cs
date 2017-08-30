@@ -56,7 +56,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             try
             {
 
-                Dev2Logger.Info("Test Plugin Service");
+                Dev2Logger.Info("Test Plugin Service", GlobalConstants.WarewolfInfo);
                 StringBuilder resourceDefinition;
 
                 values.TryGetValue("PluginService", out resourceDefinition);
@@ -85,7 +85,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 msg.HasError = true;
                 msg.Message = new StringBuilder(err.Message);
-                Dev2Logger.Error(err);
+                Dev2Logger.Error(err, GlobalConstants.WarewolfError);
 
             }
 

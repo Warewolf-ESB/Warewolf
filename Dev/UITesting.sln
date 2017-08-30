@@ -1,16 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26430.16
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.UITests", "Warewolf.UITests\Warewolf.UITests.csproj", "{91A84D74-7D50-4046-A8FE-82E52B5DBEE5}"
-	ProjectSection(ProjectDependencies) = postProject
-		{7B37A4F9-645A-4CB0-A44A-C948B614E9E8} = {7B37A4F9-645A-4CB0-A44A-C948B614E9E8}
-	EndProjectSection
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.UI.Tests", "Warewolf.UI.Tests\Warewolf.UI.Tests.csproj", "{02F87C5E-5BDC-4932-8892-87A35B0108FF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Web.UI.Tests", "Warewolf.Web.UI.Tests\Warewolf.Web.UI.Tests.csproj", "{7B37A4F9-645A-4CB0-A44A-C948B614E9E8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.UI.Specs", "Warewolf.UI.Specs\Warewolf.UI.Specs.csproj", "{2E592262-E25F-4EE8-80BE-586D2788F927}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.UI.Specs", "Warewolf.UI.Specs\Warewolf.UI.Specs.csproj", "{227596D7-ACEE-48AB-8A27-2B20AF449C97}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechTalk.SpecFlow.CodedUI.MsTest", "TechTalk.SpecFlow.CodedUI.MsTest\TechTalk.SpecFlow.CodedUI.MsTest.csproj", "{E1E0ED81-67C9-4375-ADBB-6936A9C74C05}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -18,26 +15,23 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{91A84D74-7D50-4046-A8FE-82E52B5DBEE5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{91A84D74-7D50-4046-A8FE-82E52B5DBEE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{91A84D74-7D50-4046-A8FE-82E52B5DBEE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{91A84D74-7D50-4046-A8FE-82E52B5DBEE5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7B37A4F9-645A-4CB0-A44A-C948B614E9E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7B37A4F9-645A-4CB0-A44A-C948B614E9E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7B37A4F9-645A-4CB0-A44A-C948B614E9E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7B37A4F9-645A-4CB0-A44A-C948B614E9E8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{227596D7-ACEE-48AB-8A27-2B20AF449C97}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{227596D7-ACEE-48AB-8A27-2B20AF449C97}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{227596D7-ACEE-48AB-8A27-2B20AF449C97}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{227596D7-ACEE-48AB-8A27-2B20AF449C97}.Release|Any CPU.Build.0 = Release|Any CPU
+		{02F87C5E-5BDC-4932-8892-87A35B0108FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{02F87C5E-5BDC-4932-8892-87A35B0108FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{02F87C5E-5BDC-4932-8892-87A35B0108FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{02F87C5E-5BDC-4932-8892-87A35B0108FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E592262-E25F-4EE8-80BE-586D2788F927}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E592262-E25F-4EE8-80BE-586D2788F927}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E592262-E25F-4EE8-80BE-586D2788F927}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E592262-E25F-4EE8-80BE-586D2788F927}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E1E0ED81-67C9-4375-ADBB-6936A9C74C05}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E1E0ED81-67C9-4375-ADBB-6936A9C74C05}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E1E0ED81-67C9-4375-ADBB-6936A9C74C05}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E1E0ED81-67C9-4375-ADBB-6936A9C74C05}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
-	GlobalSection(TestCaseManagementSettings) = postSolution
-		CategoryFile = Dev2.UI.Tests.vsmdi
-	EndGlobalSection
-	GlobalSection(CodealikeProperties) = postSolution
-		SolutionGuid = e700b763-40fc-4ea1-a307-b85689995018
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BF244005-0EA5-468F-AFC8-7EEEEBB40487}
 	EndGlobalSection
 EndGlobal

@@ -41,7 +41,7 @@ namespace Dev2.Data
                     GC.GetTotalMemory(false) / 10000000,
                     ServerStats.TotalRequests,
                     ServerStats.TotalTime,
-                    DateTime.Now - Process.GetCurrentProcess().StartTime));
+                    DateTime.Now - Process.GetCurrentProcess().StartTime), "Warewolf System Data");
             }
                 
             catch

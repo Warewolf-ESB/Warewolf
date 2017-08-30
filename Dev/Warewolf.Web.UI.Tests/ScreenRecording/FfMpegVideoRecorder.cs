@@ -22,44 +22,53 @@ namespace Warewolf.Web.UI.Tests.ScreenRecording
 
         public void Dispose()
         {
-            if (!this.stopped)
+            if (!stopped)
             {
-                this.StopRecording();
+                StopRecording(UnitTestOutcome.Error);
             }
         }
 
-        public bool StartRecording(TestContext TestContext)
+        public bool StartRecording(TestContext TestContext, string browserName)
         {
-            if (this.isRunning)
+            if (isRunning)
             {
                 return false;
             }
 
-            this.stopped = false;
-            this.startDateTime = DateTime.Now;
+            stopped = false;
+            startDateTime = DateTime.Now;
             
-            this.filename = Path.Combine(TestContext.DeploymentDirectory, TestContext.TestName + "_on_" + Environment.MachineName) + "." + VideoExtention;
+            filename = Path.Combine(TestContext.DeploymentDirectory, TestContext.TestName + "_on_" + browserName + "_on_" + Environment.MachineName) + "." + VideoExtention;
 
-            if (File.Exists(this.filename))
+            if (File.Exists(filename))
             {
-                File.Delete(this.filename);
+                File.Delete(filename);
             }
 
-            this.recordingTask = Task.Factory.StartNew(this.Record);
+            recordingTask = Task.Factory.StartNew(Record);
             return true;
         }
 
-        public void StopRecording(TestContext TestContext=null)
+        public void StopRecording(UnitTestOutcome TestOutcome)
         {
-            this.stopped = true;
-            this.recordingTask.Wait();
-            if (TestContext == null || TestContext.CurrentTestOutcome == UnitTestOutcome.Passed)
+            stopped = true;
+            recordingTask.Wait();
+            if (TestOutcome == UnitTestOutcome.Passed)
             {
-                File.Delete(this.filename);
+                File.Delete(filename);
             }
             else
             {
-                TestContext.AddResultFile(this.filename);
+                string TestResultsRootPath = Directory.GetParent(Directory.GetParent(Directory.GetParent(filename).ToString()).ToString()).ToString();
+                string destFileName = Path.Combine(TestResultsRootPath, Path.GetFileName(filename));
+                if (File.Exists(filename))
+                {
+                    if (File.Exists(destFileName))
+                    {
+                        File.Delete(destFileName);
+                    }
+                    File.Move(filename, destFileName);
+                }
             }
         }
 
@@ -67,11 +76,11 @@ namespace Warewolf.Web.UI.Tests.ScreenRecording
         {
             try
             {
-                this.isRunning = true;
+                isRunning = true;
 
                 var writer = new VideoFileWriter();
                 writer.Open(
-                    this.filename,
+                    filename,
                     Screen.PrimaryScreen.Bounds.Width,
                     Screen.PrimaryScreen.Bounds.Height,
                     10,
@@ -83,25 +92,20 @@ namespace Warewolf.Web.UI.Tests.ScreenRecording
                     PixelFormat.Format24bppRgb);
 
                 var graphics = Graphics.FromImage(bitmap);
-
-                var sw = new StreamWriter(Console.OpenStandardError());
-                Console.SetOut(sw);
-                while (!this.stopped || (DateTime.Now - this.startDateTime < TimeSpan.FromMilliseconds(100)))
+                
+                while (!stopped || (DateTime.Now - startDateTime < TimeSpan.FromMilliseconds(100)))
                 {
                     graphics.CopyFromScreen(0, 0, 0, 0, Screen.PrimaryScreen.Bounds.Size);
                     writer.WriteVideoFrame(bitmap);
                     Thread.Sleep(10);
                 }
-                sw = new StreamWriter(Console.OpenStandardOutput());
-                sw.AutoFlush = true;
-                Console.SetOut(sw);
 
                 writer.Close();
                 writer.Dispose();
             }
             finally
             {
-                this.isRunning = false;
+                isRunning = false;
             }
         }
     }

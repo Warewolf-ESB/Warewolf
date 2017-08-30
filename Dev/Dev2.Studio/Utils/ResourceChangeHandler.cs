@@ -72,7 +72,7 @@ namespace Dev2.Utils
                 }
                 else
                 {
-                    Dev2Logger.Info("Publish message of type - " + typeof(ShowReverseDependencyVisualizer));
+                    Dev2Logger.Info("Publish message of type - " + typeof(ShowReverseDependencyVisualizer), "Warewolf Info");
                     _eventPublisher.Publish(new ShowReverseDependencyVisualizer(resource));
                 }
             }

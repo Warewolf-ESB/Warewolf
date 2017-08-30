@@ -166,7 +166,7 @@ namespace Dev2.Data.SystemTemplates.Models
             }
             catch(Exception ex)
             {
-                Dev2Logger.Error("Dev2DecisionStack", ex);
+                Dev2Logger.Error("Dev2DecisionStack", ex, GlobalConstants.WarewolfError);
                 // Best effort ;)
             }
 

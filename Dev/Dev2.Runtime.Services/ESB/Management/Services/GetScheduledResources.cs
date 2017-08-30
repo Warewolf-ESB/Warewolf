@@ -54,7 +54,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             try
             {
 
-                Dev2Logger.Info("Get Scheduled Resources");
+                Dev2Logger.Info("Get Scheduled Resources", GlobalConstants.WarewolfInfo);
                 ObservableCollection<IScheduledResource> resources;
                 using(var model = SchedulerFactory.CreateModel(GlobalConstants.SchedulerFolderId, SecurityWrapper))
                 {
@@ -64,13 +64,13 @@ namespace Dev2.Runtime.ESB.Management.Services
                 var sb = new StringBuilder(JsonConvert.SerializeObject(resources, Formatting.Indented, new JsonSerializerSettings
                 {
                     TypeNameHandling = TypeNameHandling.Objects,
-                    TypeNameAssemblyFormat = FormatterAssemblyStyle.Simple
+                    TypeNameAssemblyFormatHandling = TypeNameAssemblyFormatHandling.Simple
                 }));
                 return sb;
             }
             catch (Exception err)
             {
-                Dev2Logger.Error(err);
+                Dev2Logger.Error(err, GlobalConstants.WarewolfError);
                 throw;
             }
         }

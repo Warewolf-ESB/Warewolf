@@ -25,9 +25,6 @@ using Dev2.Interfaces;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Interfaces;
 
-
-
-
 namespace Dev2.Runtime.ESB.WF
 {
     public sealed class WfApplicationUtils
@@ -35,6 +32,7 @@ namespace Dev2.Runtime.ESB.WF
         readonly Action<DebugOutputBase, DebugItem> _add;
 
         public WfApplicationUtils()
+
         {
             _add = AddDebugItem;
         }
@@ -122,6 +120,25 @@ namespace Dev2.Runtime.ESB.WF
                 if (debugState.StateType == StateType.End)
                 {
                     debugDispatcher.Write(debugState, dataObject.IsServiceTestExecution, dataObject.IsDebugFromWeb, dataObject.TestName, dataObject.RemoteInvoke, dataObject.RemoteInvokerID, dataObject.ParentInstanceID, dataObject.RemoteDebugItems);
+                    string dataObjectExecutionId = dataObject.ExecutionID.ToString();
+                    try
+                    {
+                        var resource = _lazyCat.GetResource(GlobalConstants.ServerWorkspaceID, dataObject.ResourceID);
+                        var executePayload = ExecutionEnvironmentUtils.GetJsonOutputFromEnvironment(dataObject, resource.DataList.ToString(), 0);
+                        string executionLogginResultString = GlobalConstants.ExecutionLoggingResultStartTag + (executePayload ?? "").Replace(Environment.NewLine, string.Empty) + GlobalConstants.ExecutionLoggingResultEndTag;
+                        if (dataObject.Environment.HasErrors())
+                        {
+                            Dev2Logger.Error(executionLogginResultString, dataObjectExecutionId);
+                        }
+                        else
+                        {
+                            Dev2Logger.Debug(executionLogginResultString, dataObjectExecutionId);
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        Dev2Logger.Debug("Error getting execution result for :" + dataObject.ResourceID, dataObjectExecutionId);
+                    }
                 }
                 else
                 {
@@ -129,6 +146,7 @@ namespace Dev2.Runtime.ESB.WF
                 }
             }
         }
+
 
         private static DebugState BuildDebugState(IDSFDataObject dataObject, StateType stateType, bool hasErrors, string existingErrors, DateTime? workflowStartTime, bool durationVisible, Guid parentInstanceId, string name, bool hasError)
         {

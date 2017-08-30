@@ -11,6 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Windows;
 using Caliburn.Micro;
+using Dev2;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Enums;
@@ -42,6 +43,13 @@ namespace Warewolf.UIBindingTests.WorkflowDesigner
     public class Workflow_Designer
     {
         private Mock<IShellViewModel> _shellViewModelMock;
+
+        [TestInitialize]
+        public void Init()
+        {
+            var serverRepo = new Mock<IServerRepository>();
+            CustomContainer.Register(serverRepo.Object);
+        }
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
@@ -1180,6 +1188,8 @@ namespace Warewolf.UIBindingTests.WorkflowDesigner
             resourceModel.Setup(m => m.ResourceName).Returns("Some resource name 66");
             var workflowHelper = new Mock<IWorkflowHelper>();
             workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(workflow);
+
+            
 
             var viewModel = new WorkflowDesignerViewModelMock(resourceModel.Object, workflowHelper.Object, new Mock<IExternalProcessExecutor>().Object);
             viewModel.InitializeDesigner(new Dictionary<Type, Type>());

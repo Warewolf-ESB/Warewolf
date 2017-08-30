@@ -39,16 +39,28 @@ namespace Warewolf.UIBindingTests.Deploy
         public static void SetupForSystem()
         {
             Core.Utils.SetupResourceDictionary();
+            var serverRepo = new Mock<IServerRepository>();
+
+            
             var shell = GetMockShellVm(true, localhostString);
             var shellViewModel = GetMockShellVm(false, destinationServerString);
-            
-            var dest = new DeployDestinationViewModelForTesting(shellViewModel, GetMockAggegator());
-            dest.ConnectControlViewModel.SelectedConnection = shellViewModel.ActiveServer;
+            serverRepo.Setup(repository => repository.ActiveServer).Returns(shellViewModel.ActiveServer);
+            serverRepo.Setup(repository => repository.Source).Returns(shellViewModel.ActiveServer);
+            serverRepo.Setup(repository => repository.All()).Returns(new List<IServer>()
+            {
+                shellViewModel.ActiveServer
+            });
+            serverRepo.Setup(repository => repository.Get(It.IsAny<Guid>())).Returns(shellViewModel.ActiveServer);
+            CustomContainer.Register(serverRepo.Object);
+            var dest = new DeployDestinationViewModelForTesting(shellViewModel, GetMockAggegator())
+            {
+                ConnectControlViewModel = {SelectedConnection = shellViewModel.ActiveServer}
+            };
             ScenarioContext.Current.Add(connectControlString, dest.ConnectControlViewModel.SelectedConnection);
 
             ScenarioContext.Current[destinationString] = dest;
             var stats = new DeployStatsViewerViewModel(dest);
-            var src = new DeploySourceExplorerViewModelForTesting(shell, GetMockAggegator(), GetStatsVm(dest)) { Children = new List<IExplorerItemViewModel> { CreateExplorerVms() } };
+            var src = new DeploySourceExplorerViewModelForTesting(shell, GetMockAggegator(), GetStatsVm(dest));
             ScenarioContext.Current["Src"] = src;
             var popupController = GetPopup().Object;
             var vm = new SingleExplorerDeployViewModel(dest, src, new List<IExplorerTreeItem>(), stats, shell, popupController,  new SynchronousAsyncWorker());
@@ -63,10 +75,7 @@ namespace Warewolf.UIBindingTests.Deploy
             var dest = new DeployDestinationViewModelForTesting(GetMockShellVm(false, destinationServerString), GetMockAggegator());
             ScenarioContext.Current[destinationString] = dest;
             var stats = new DeployStatsViewerViewModel(dest);
-            var src = new DeploySourceExplorerViewModelForTesting(shell, GetMockAggegator(), GetStatsVm(dest))
-            {
-                Children = new List<IExplorerItemViewModel> { CreateExplorerVms() }
-            };
+            var src = new DeploySourceExplorerViewModelForTesting(shell, GetMockAggegator(), GetStatsVm(dest));
             ScenarioContext.Current["Src"] = src;
             var vm = new SingleExplorerDeployViewModel(dest, src, new List<IExplorerTreeItem>(), stats, shell, GetPopup().Object);
             vm.Destination.SelectedEnvironment.Children = new ObservableCollection<IExplorerItemViewModel>();
@@ -230,29 +239,29 @@ namespace Warewolf.UIBindingTests.Deploy
             };
         }
 
-        static IExplorerItemViewModel CreateExplorerVms()
-        {
-            ExplorerItemViewModel ax = null;
-            var server = new Mock<IServer>();
-            server.SetupGet(server1 => server1.CanDeployFrom).Returns(true);
-            ax = new ExplorerItemViewModel(server.Object, null, a => { }, new Mock<IShellViewModel>().Object, new Mock<Dev2.Common.Interfaces.Studio.Controller.IPopupController>().Object)
-            {
-                ResourceName = "Examples",
-                Children = new ObservableCollection<IExplorerItemViewModel>
-                {
+        //static IExplorerItemViewModel CreateExplorerVms()
+        //{
+        //    ExplorerItemViewModel ax = null;
+        //    var server = new Mock<IServer>();
+        //    server.SetupGet(server1 => server1.CanDeployFrom).Returns(true);
+        //    ax = new ExplorerItemViewModel(server.Object, null, a => { }, new Mock<IShellViewModel>().Object, new Mock<Dev2.Common.Interfaces.Studio.Controller.IPopupController>().Object)
+        //    {
+        //        ResourceName = "Examples",
+        //        Children = new ObservableCollection<IExplorerItemViewModel>
+        //        {
                     
-                    new ExplorerItemViewModel(server.Object, ax, a => { }
-                    , new Mock<IShellViewModel>().Object
-                    , new Mock<Dev2.Common.Interfaces.Studio.Controller.IPopupController>().Object)
-                    {
-                        ResourceName = "Utility - Date and Time",
-                        ResourcePath = "Examples\\Utility - Date and Time",
-                        ResourceType = "WorkflowService"
-                    }
-                }
-            };
-            return ax;
-        }
+        //            new ExplorerItemViewModel(server.Object, ax, a => { }
+        //            , new Mock<IShellViewModel>().Object
+        //            , new Mock<Dev2.Common.Interfaces.Studio.Controller.IPopupController>().Object)
+        //            {
+        //                ResourceName = "Utility - Date and Time",
+        //                ResourcePath = "Examples\\Utility - Date and Time",
+        //                ResourceType = "WorkflowService"
+        //            }
+        //        }
+        //    };
+        //    return ax;
+        //}
 
         [Given(@"selected Source Server is ""(.*)""")]
         public void GivenSelectedSourceServerIs(string selectedSourceServer)
@@ -475,19 +484,26 @@ namespace Warewolf.UIBindingTests.Deploy
         [Given(@"I select ""(.*)"" from Source Server")]
         public void WhenISelectFromSourceServer(string resourceName)
         {
-            var viewModel = GetViewModel();
-            var explorerItemViewModels = viewModel.Source.SelectedEnvironment.Children[0].Children;
-            var explorerItemViewModel = explorerItemViewModels.FirstOrDefault(model => model.ResourceName.Contains(resourceName));
-            if (explorerItemViewModel != null)
+            try
             {
-                explorerItemViewModel.CanDeploy = true;
-                explorerItemViewModel.IsResourceChecked = true;
-                ((DeploySourceExplorerViewModelForTesting)viewModel.Source).SetSelecetdItems(new List<IExplorerTreeItem>
+                var viewModel = GetViewModel();
+                var explorerItemViewModels = viewModel.Source.SelectedEnvironment.Children[0].Children;
+                var explorerItemViewModel = explorerItemViewModels.FirstOrDefault(model => model.ResourceName.Contains(resourceName));
+                if (explorerItemViewModel != null)
+                {
+                    explorerItemViewModel.CanDeploy = true;
+                    explorerItemViewModel.IsResourceChecked = true;
+                    ((DeploySourceExplorerViewModelForTesting)viewModel.Source).SetSelecetdItems(new List<IExplorerTreeItem>
                 {
                     explorerItemViewModel
                 });
+                }
+                ThenCalculationIsInvoked();
             }
-            ThenCalculationIsInvoked();
+            catch (Exception ex)
+            {
+                throw new Exception("Could not select resource from source server. Resource: " + resourceName, ex);
+            }
         }
 
         [Then(@"deploy is successfull")]

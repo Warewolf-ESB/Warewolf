@@ -118,14 +118,14 @@ namespace Dev2.Activities.Specs
                                             ref accountType);
 
             //say what you're doing
-            Dev2Logger.Info("LookupAccountName result = " + result);
-            Dev2Logger.Info("IsValidSid: " + IsValidSid(sid));
-            Dev2Logger.Info("LookupAccountName domainName: " + domainName);
+            Dev2Logger.Info("LookupAccountName result = " + result, "Warewolf Info");
+            Dev2Logger.Info("IsValidSid: " + IsValidSid(sid), "Warewolf Info");
+            Dev2Logger.Info("LookupAccountName domainName: " + domainName, "Warewolf Info");
 
             if (!result)
             {
                 winErrorCode = GetLastError();
-                Dev2Logger.Info("LookupAccountName failed: " + winErrorCode);
+                Dev2Logger.Info("LookupAccountName failed: " + winErrorCode, "Warewolf Info");
             }
             else
             {
@@ -165,7 +165,7 @@ namespace Dev2.Activities.Specs
 
                 if (winErrorCode != 0)
                 {
-                    Dev2Logger.Info("OpenPolicy failed: " + winErrorCode);
+                    Dev2Logger.Info("OpenPolicy failed: " + winErrorCode, "Warewolf Info");
                 }
                 else
                 {
@@ -185,7 +185,7 @@ namespace Dev2.Activities.Specs
                     winErrorCode = LsaNtStatusToWinError(status);
                     if (winErrorCode != 0)
                     {
-                        Dev2Logger.Info("LsaAddAccountRights failed: " + winErrorCode);
+                        Dev2Logger.Info("LsaAddAccountRights failed: " + winErrorCode, "Warewolf Info");
                     }
 
                     LsaClose(policyHandle);

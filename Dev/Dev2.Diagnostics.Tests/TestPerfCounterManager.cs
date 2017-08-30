@@ -33,7 +33,7 @@ namespace Dev2.Diagnostics.Test
             catch (Exception err)
             {
                 // ignored
-                Dev2Logger.Error(err);
+                Dev2Logger.Error(err, GlobalConstants.WarewolfError);
             }
         }
 

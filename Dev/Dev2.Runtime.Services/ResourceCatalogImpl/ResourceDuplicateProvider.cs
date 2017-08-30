@@ -51,7 +51,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             }
             catch (Exception x)
             {
-                Dev2Logger.Error($"resource{sourcePath} ", x);
+                Dev2Logger.Error($"resource{sourcePath} ", x, GlobalConstants.WarewolfError);
                 return new ResourceCatalogDuplicateResult
                 {
                     Status = ExecStatus.Fail,
@@ -75,7 +75,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             }
             catch (Exception x)
             {
-                Dev2Logger.Error($"resource{resourceId} ", x);
+                Dev2Logger.Error($"resource{resourceId} ", x, GlobalConstants.WarewolfError);
                 return null;
             }
         }
@@ -197,7 +197,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                 }
                 catch (Exception e)
                 {
-                    Dev2Logger.Error(e.Message, e);
+                    Dev2Logger.Error(e.Message, e, GlobalConstants.WarewolfError);
                 }
             }
             

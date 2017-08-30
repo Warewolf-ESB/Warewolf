@@ -375,7 +375,6 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Upload
 
         public void Execute(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO tmpErrors, int update)
         {
-            //ExecutionImpl(esbChannel, dataObject, inputs, outputs, out tmpErrors, update);
             tmpErrors = new ErrorResultTO();
         }
 
@@ -414,7 +413,6 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Upload
                 var dropboxResult = DropboxSingleExecutor.ExecuteTask(_dropboxClientWrapper);
                 if (IsUplodValidSuccess)
                 {
-                    //FileSuccesResult = GlobalConstants.DropBoxSucces;
                     FileMetadata = ((DropboxUploadSuccessResult)dropboxResult).GerFileMetadata();
                 }
                 else
@@ -426,9 +424,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Upload
             }
             catch (Exception e)
             {
-                //dataObject.Environment.AddError(e.Message);
-                Dev2Logger.Error(e.Message, e);
-                //FileSuccesResult = GlobalConstants.DropBoxFailure;
+                Dev2Logger.Error(e.Message, e, GlobalConstants.WarewolfError);
                 Exception = new DropboxFailureResult(new Exception()).GetException();
                 return new List<string> { string.Empty };
             }

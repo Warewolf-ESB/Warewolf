@@ -521,6 +521,26 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You have pasted text which contains tabs into a textbox on the design surface. Tabs are not allowed in textboxes on the design surface and will be replaced with spaces.
+        ///    
+        ///Please note that tabs are fully supported at runtime, in variables and when reading from files..
+        /// </summary>
+        public static string IntellisenseTabInserted {
+            get {
+                return ResourceManager.GetString("IntellisenseTabInserted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tabs Pasted.
+        /// </summary>
+        public static string IntellisenseTabInsertedHeader {
+            get {
+                return ResourceManager.GetString("IntellisenseTabInsertedHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &quot;Invalid text&quot;.
         /// </summary>
         public static string InvalidPermissionHeader {
@@ -652,6 +672,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string MySqlSourceNewHeaderLabel {
             get {
                 return ResourceManager.GetString("MySqlSourceNewHeaderLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to http://my.warewolf.io/ExecutionLogging.
+        /// </summary>
+        public static string MyWarewolfUrl {
+            get {
+                return ResourceManager.GetString("MyWarewolfUrl", resourceCulture);
             }
         }
         

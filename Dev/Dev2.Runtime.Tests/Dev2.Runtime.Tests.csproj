@@ -258,6 +258,9 @@
     <Compile Include="ServiceModel\OauthSourceTest.cs" />
     <Compile Include="ServiceModel\TestDbSourceServiceTests.cs" />
     <Compile Include="Services\CreateFolderTest.cs" />
+    <Compile Include="Services\FindResourceTestsS.cs" />
+    <Compile Include="Services\FetchServerPermissionsTests.cs" />
+    <Compile Include="Services\DeleteAllTestsTests.cs" />
     <Compile Include="Services\DeleteItemsTest.cs" />
     <Compile Include="Security\SecurityConfigFetcher.cs" />
     <Compile Include="Services\DeleteResourceServiceTests.cs" />
@@ -275,8 +278,11 @@
     <Compile Include="Services\FetchTestsForDeployTest.cs" />
     <Compile Include="Services\FetchTestsTest.cs" />
     <Compile Include="Services\FindDependenciesTests.cs" />
+    <Compile Include="Services\GetLogDataServiceTest.cs" />
     <Compile Include="Services\GetServerInformationTest.cs" />
     <Compile Include="Services\GetServerVersionTest.cs" />
+    <Compile Include="Services\GetFilesTests.cs" />
+    <Compile Include="Services\GetServiceExecutionResultTest.cs" />
     <Compile Include="Services\GetVersionTest.cs" />
     <Compile Include="Services\GetDirectoriesRelativeToServerTests.cs" />
     <Compile Include="Services\GetScheduledResourceHistoryTest.cs" />
@@ -389,7 +395,6 @@
     <Compile Include="WebServer\WebServerRequestTests.cs" />
     <Compile Include="WebServer\WebServerContextTests.cs" />
     <Compile Include="WebServer\GetLogFileServiceHandlerTest.cs" />
-    <Compile Include="WebServer\WebsiteResourceHandlerTest.cs" />
     <Compile Include="WF\WfApplicationUtilsTests.cs" />
     <Compile Include="WorkspaceItemTests.cs" />
     <Compile Include="WorkspaceTest.cs" />
@@ -696,6 +701,23 @@
     <EmbeddedResource Include="XML\put.xml" />
     <EmbeddedResource Include="XML\WebPutServiceSource.xml" />
     <EmbeddedResource Include="XML\Big Bulk Testing.xml" />
+    <EmbeddedResource Include="TextFiles\LogFileWithTenRecords.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TextFiles\LogFileWithFlatResults.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TextFiles\LogFileWithFlatResultsNEwFormat.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <Content Include="TextFiles\SubFolderB\SubFolderBTextFile1.txt" />
+    <Content Include="TextFiles\SubFolderA\SubFolderATextFile1.txt" />
+    <EmbeddedResource Include="TextFiles\LogFileWithUrl.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <Content Include="TextFiles\TextFile2.txt" />
+    <Content Include="TextFiles\TextFile1.txt" />
+    <EmbeddedResource Include="XML\DebugPayload.xml" />
     <Content Include="XML\GenDev.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

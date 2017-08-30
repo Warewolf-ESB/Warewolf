@@ -41,7 +41,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             try
             {
-                Dev2Logger.Info("Test Wcf Service");
+                Dev2Logger.Info("Test Wcf Service", GlobalConstants.WarewolfInfo);
                 StringBuilder resourceDefinition;
 
                 values.TryGetValue("wcfService", out resourceDefinition);
@@ -69,7 +69,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 msg.HasError = true;
                 msg.Message = new StringBuilder(err.Message);
-                Dev2Logger.Error(err);
+                Dev2Logger.Error(err, GlobalConstants.WarewolfError);
             }
 
             return serializer.SerializeToBuilder(msg);

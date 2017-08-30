@@ -50,7 +50,7 @@ namespace Dev2.Runtime.Security
             }
             catch (Exception e)
             {
-                Dev2Logger.Error(e);
+                Dev2Logger.Error(e, GlobalConstants.WarewolfError);
             }
         }
 
@@ -205,10 +205,7 @@ namespace Dev2.Runtime.Security
                     user = request.User.Identity.Name;
                     DumpPermissionsOnError(request.User);
                 }
-
-                
-                Dev2Logger.Error("AUTH ERROR FOR USER : " + user);
-                
+                Dev2Logger.Error("AUTH ERROR FOR USER : " + user, GlobalConstants.WarewolfError);
             }
 
             return result;

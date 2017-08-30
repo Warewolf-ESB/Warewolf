@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using Dev2.Common;
@@ -20,15 +19,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
     public class DeleteAllTests : IEsbManagementEndpoint
     {
-        #region Implementation of ISpookyLoadable<out string>
-
-
-
-        #endregion
-
-        #region Implementation of IEsbManagementEndpoint
-
-        /// <summary>
+       /// <summary>
         /// Executes the service
         /// </summary>
         /// <param name="values">The values.</param>
@@ -50,7 +41,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 result.HasError = true;
                 result.SetMessage("Error reloading tests...");
-                Dev2Logger.Error(ex);
+                Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
             }
 
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
@@ -73,16 +64,12 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             StringBuilder tmp;
             requestArgs.TryGetValue("resourceID", out tmp);
-            if (tmp != null)
+            if (tmp == null)
             {
-                Guid resourceId;
-                if (Guid.TryParse(tmp.ToString(), out resourceId))
-                {
-                    return resourceId;
-                }
+                return Guid.Empty;
             }
-
-            return Guid.Empty;
+            Guid resourceId;
+            return Guid.TryParse(tmp.ToString(), out resourceId) ? resourceId : Guid.Empty;
         }
 
         public AuthorizationContext GetAuthorizationContextForService()
@@ -106,6 +93,5 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
         }
         private ITestCatalog _testCatalog;
-        #endregion
     }
 }

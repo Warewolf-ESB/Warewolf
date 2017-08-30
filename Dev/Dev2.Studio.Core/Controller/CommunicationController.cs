@@ -243,7 +243,7 @@ namespace Dev2.Controller
                 }
                 catch (Exception e)
                 {
-                    Dev2Logger.Error("Error popup", e);
+                    Dev2Logger.Error("Error popup", e, "Warewolf Error");
                 }
             }
         }
@@ -367,7 +367,7 @@ namespace Dev2.Controller
                 }
                 catch (NullReferenceException e)
                 {
-                    Dev2Logger.Debug("fallback to non compressed", e);
+                    Dev2Logger.Debug("fallback to non compressed", e, "Warewolf Debug");
                     return serializer.Deserialize<T>(payload);
 
                 }
@@ -412,7 +412,7 @@ namespace Dev2.Controller
                 }
                 catch (NullReferenceException e)
                 {
-                    Dev2Logger.Debug("fallback to non compressed", e);
+                    Dev2Logger.Debug("fallback to non compressed", e, "Warewolf Debug");
                     return serializer.Deserialize<T>(payload);
 
                 }

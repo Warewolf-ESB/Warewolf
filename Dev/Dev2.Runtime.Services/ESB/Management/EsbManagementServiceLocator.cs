@@ -57,7 +57,7 @@ namespace Dev2.Runtime.ESB.Management
                 }
                 else
                 {
-                    Dev2Logger.Error("EsbManagementServiceLocator", new Exception(string.Format(ErrorResource.FailedToLoadManagementService, endpoint.HandlesType())));
+                    Dev2Logger.Error("EsbManagementServiceLocator", new Exception(string.Format(ErrorResource.FailedToLoadManagementService, endpoint.HandlesType())), GlobalConstants.WarewolfError);
                 }
             }
 

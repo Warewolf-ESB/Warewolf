@@ -46,7 +46,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            Dev2Logger.Info("Fetch Duplicate ResourcesError");
+            Dev2Logger.Info("Fetch Duplicate ResourcesError", GlobalConstants.WarewolfInfo);
             var serializer = new Dev2JsonSerializer();
             try
             {
@@ -57,7 +57,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch (Exception e)
             {
-                Dev2Logger.Info("Fetch Duplicate ResourcesError", e);
+                Dev2Logger.Info("Fetch Duplicate ResourcesError", e, GlobalConstants.WarewolfInfo);
                 IExplorerRepositoryResult error = new ExplorerRepositoryResult(ExecStatus.Fail, e.Message);
                 return serializer.SerializeToBuilder(error);
             }

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -16,14 +15,13 @@ using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-
-    public class GetFiles : IEsbManagementEndpoint
+    public class GetFiles : IEsbManagementEndpoint, IGetFiles
     {
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             ExecuteMessage msg = new ExecuteMessage();
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
-            Dev2Logger.Info("Get Files");
+            Dev2Logger.Info("Get Files", GlobalConstants.WarewolfInfo);
             StringBuilder currentFolder;
 
             values.TryGetValue("fileListing", out currentFolder);
@@ -33,11 +31,12 @@ namespace Dev2.Runtime.ESB.Management.Services
                 try
                 {
                     msg.HasError = false;
-                    msg.Message = serializer.SerializeToBuilder(GetFilesAndFolders(src));
+                    var filesAndFolders = GetFilesAndFolders(src);
+                    msg.Message = serializer.SerializeToBuilder(filesAndFolders);
                 }
                 catch (Exception ex)
                 {
-                    Dev2Logger.Error(ex);
+                    Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
                     msg.HasError = true;
                     msg.SetMessage(ex.Message);
                 }
@@ -51,7 +50,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             return serializer.SerializeToBuilder(msg);
         }
 
-        static List<IFileListing> GetFilesAndFolders(IFileListing src)
+        public List<IFileListing> GetFilesAndFolders(IFileListing src)
         {
             var completeList = new List<IFileListing>();
       
@@ -67,7 +66,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 }
                 catch (Exception e)
                 {
-                    Dev2Logger.Error(e.Message);
+                    Dev2Logger.Error(e.Message, GlobalConstants.WarewolfError);
                 }
 
             }
@@ -79,7 +78,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             return completeList;
         }
 
-        static IFileListing BuildFileListing(DriveInfo info)
+        public IFileListing BuildFileListing(DriveInfo info)
         {
 
             try
@@ -91,12 +90,12 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch (Exception e)
             {
-                Dev2Logger.Error(ErrorResource.ErrorEnumeratingDirectory, e);
+                Dev2Logger.Error(ErrorResource.ErrorEnumeratingDirectory, e, GlobalConstants.WarewolfError);
             }
             return null;
         }
 
-        static FileListing BuildFileListing(DirectoryInfo directory)
+        public FileListing BuildFileListing(DirectoryInfo directory)
         {
             var dllListing = BuildFileListing(directory as FileSystemInfo);
             try
@@ -106,12 +105,12 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch (Exception e)
             {
-                Dev2Logger.Error(ErrorResource.ErrorEnumeratingDirectory, e);
+                Dev2Logger.Error(ErrorResource.ErrorEnumeratingDirectory, e, GlobalConstants.WarewolfError);
             }
             return dllListing;
         }
 
-        static List<IFileListing> GetChildren(DirectoryInfo directory)
+        public List<IFileListing> GetChildren(DirectoryInfo directory)
         {
             var directories = directory.EnumerateDirectories();
             var childList = new List<IFileListing>();
@@ -134,7 +133,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             return childList;
         }
 
-        static FileListing BuildFileListing(FileSystemInfo fileInfo)
+        public FileListing BuildFileListing(FileSystemInfo fileInfo)
         {
             var dllListing = new FileListing { Name = fileInfo.Name, FullName = fileInfo.FullName };
             return dllListing;
@@ -174,5 +173,18 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             return AuthorizationContext.Any;
         }
+    }
+
+    public interface IGetFiles
+    {
+        FileListing BuildFileListing(FileSystemInfo fileInfo);
+
+        IFileListing BuildFileListing(DriveInfo info);
+
+        FileListing BuildFileListing(DirectoryInfo directory);
+
+        List<IFileListing> GetChildren(DirectoryInfo directory);
+
+        List<IFileListing> GetFilesAndFolders(IFileListing src);
     }
 }

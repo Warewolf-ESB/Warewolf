@@ -135,7 +135,7 @@ namespace Dev2.PathOperations
                     catch (Exception ex)
                         
                     {
-                        Dev2Logger.Error(ex);
+                        Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
                     }
                 }
             }

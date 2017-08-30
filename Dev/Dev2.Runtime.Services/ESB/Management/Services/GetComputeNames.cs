@@ -23,7 +23,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             try
             {
 
-                Dev2Logger.Info("Get Computer Names");
+                Dev2Logger.Info("Get Computer Names", GlobalConstants.WarewolfInfo);
 
 
 
@@ -39,7 +39,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 msg.HasError = true;
                 msg.Message = new StringBuilder(err.Message);
-                Dev2Logger.Error(err);
+                Dev2Logger.Error(err, GlobalConstants.WarewolfError);
 
             }
 

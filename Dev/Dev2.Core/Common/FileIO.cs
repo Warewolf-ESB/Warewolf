@@ -148,7 +148,7 @@ namespace Dev2
             }
             catch (Exception ex)
             {
-                Dev2Logger.Error("FileIO", ex);
+                Dev2Logger.Error("FileIO", ex, GlobalConstants.WarewolfError);
                 throw;
             }
             return result;

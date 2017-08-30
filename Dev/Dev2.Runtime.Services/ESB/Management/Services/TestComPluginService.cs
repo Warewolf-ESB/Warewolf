@@ -38,7 +38,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             try
             {
 
-                Dev2Logger.Info("Test ComPlugin Service");
+                Dev2Logger.Info("Test ComPlugin Service", GlobalConstants.WarewolfInfo);
                 StringBuilder resourceDefinition;
 
                 values.TryGetValue("ComPluginService", out resourceDefinition);
@@ -64,7 +64,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                     msg.HasError = true;
                     msg.Message = new StringBuilder(serializedResult);
-                    Dev2Logger.Error(serializedResult);
+                    Dev2Logger.Error(serializedResult, GlobalConstants.WarewolfError);
                 }
                 else
                 {
@@ -76,7 +76,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 msg.HasError = true;
                 msg.Message = new StringBuilder(err.Message);
-                Dev2Logger.Error(err);
+                Dev2Logger.Error(err, GlobalConstants.WarewolfError);
             }
 
             return serializer.SerializeToBuilder(msg);

@@ -168,19 +168,19 @@ namespace Dev2.Services.Security
             if(principal.Identity != null)
             
             {
-                Dev2Logger.Error("PERM DUMP FOR [ " + principal.Identity.Name + " ]");
+                Dev2Logger.Error("PERM DUMP FOR [ " + principal.Identity.Name + " ]", GlobalConstants.WarewolfError);
             }
             else
             
             {
-                Dev2Logger.Error("PERM DUMP FOR [ NULL USER ]");
+                Dev2Logger.Error("PERM DUMP FOR [ NULL USER ]", GlobalConstants.WarewolfError);
             }
             
 
             foreach(var perm in _securityService.Permissions)
             {
-                Dev2Logger.Error("PERM -> " + perm.WindowsGroup);
-                Dev2Logger.Error("IS USER IN IT [ " + principal.IsInRole(perm.WindowsGroup) + " ]");
+                Dev2Logger.Error("PERM -> " + perm.WindowsGroup, GlobalConstants.WarewolfError);
+                Dev2Logger.Error("IS USER IN IT [ " + principal.IsInRole(perm.WindowsGroup) + " ]", GlobalConstants.WarewolfError);
             }
         }
 

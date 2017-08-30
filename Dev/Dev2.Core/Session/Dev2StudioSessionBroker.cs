@@ -228,12 +228,12 @@ namespace Dev2.Session
                             }
                             catch (Exception e)
                             {
-                                Dev2Logger.Error(e);
+                                Dev2Logger.Error(e, GlobalConstants.WarewolfError);
                             }
                         }
                         else
                         {
-                            Dev2Logger.Error("No debug data stream [ " + _debugPath + " ] ");
+                            Dev2Logger.Error("No debug data stream [ " + _debugPath + " ] ", GlobalConstants.WarewolfError);
                         }
 
                         s.Close();
