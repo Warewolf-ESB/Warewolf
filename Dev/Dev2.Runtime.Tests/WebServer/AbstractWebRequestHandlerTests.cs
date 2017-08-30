@@ -419,6 +419,7 @@ namespace Dev2.Tests.Runtime.WebServer
                 },
                 WebServerUrl = "http://rsaklfnkosinath:3142/secure/Home/HelloWorld/.tests.trx"
             };
+            Common.Utilities.ServerUser = principal.Object;
             var responseWriter = handlerMock.CreateFromMock(webRequestTO, "*", string.Empty, new NameValueCollection(), principal.Object);
             //---------------Test Result -----------------------
             Assert.IsNotNull(responseWriter);
@@ -1708,8 +1709,7 @@ namespace Dev2.Tests.Runtime.WebServer
             //---------------Execute Test ----------------------
             var emitionType = dataObject.Object.SetEmitionType(new WebRequestTO(), ServiceName, collection);
             //---------------Test Result -----------------------
-            dataObject.VerifySet(o => o.ReturnType = EmitionTypes.TRX, Times.Exactly(1));
-            dataObject.VerifySet(o => o.ReturnType = EmitionTypes.XML, Times.Exactly(1));
+            dataObject.VerifySet(o => o.ReturnType = EmitionTypes.TEST, Times.Exactly(1));
             Assert.AreEqual("hello World", emitionType);
             Assert.AreEqual("hello World", dataObject.Object.ServiceName);
         }

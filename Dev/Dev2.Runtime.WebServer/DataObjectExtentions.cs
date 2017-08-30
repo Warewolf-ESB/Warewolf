@@ -76,7 +76,7 @@ namespace Dev2.Runtime.WebServer
                 {
                     dataObject.ReturnType = EmitionTypes.TEST;
                 }
-                if (serviceName == "*" && webRequest.WebServerUrl.EndsWith("/.trx", StringComparison.InvariantCultureIgnoreCase))
+                if (serviceName == "*" && webRequest.WebServerUrl.EndsWith("/.tests.trx", StringComparison.InvariantCultureIgnoreCase))
                 {
                     dataObject.ReturnType = EmitionTypes.TRX;
                 }
