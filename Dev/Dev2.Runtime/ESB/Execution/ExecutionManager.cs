@@ -31,7 +31,7 @@ namespace Dev2.Runtime.ESB.Execution
 
         public void Wait()
         {
-            lock (_executionLock)
+            //lock (_executionLock)
             {
                 EventPulse.WaitOne();
             }
@@ -43,7 +43,7 @@ namespace Dev2.Runtime.ESB.Execution
             //    autoResetEvent.Set();
             //}
             //_waitHandles.Clear();
-            lock (_executionLock)
+            //lock (_executionLock)
             {
                 EventPulse.Set();
                 _isRefreshing = false;
