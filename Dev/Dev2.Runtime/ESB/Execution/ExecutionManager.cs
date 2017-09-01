@@ -5,44 +5,54 @@ using System.Threading;
 namespace Dev2.Runtime.ESB.Execution
 {
     public class ExecutionManager : IExecutionManager
-    {
-        private static readonly Lazy<ExecutionManager> LazyCat = new Lazy<ExecutionManager>(() =>
-        {
-            var c = new ExecutionManager();
-            return c;
-        }, LazyThreadSafetyMode.PublicationOnly);
-
-        private bool _isRefreshing;
-        private int _currentExecutions;
-        private readonly List<AutoResetEvent> _waitHandles = new List<AutoResetEvent>();
-
-        private ExecutionManager()
+    {       
+        bool _isRefreshing;
+        int _currentExecutions;        
+        static ManualResetEvent EventPulse = new ManualResetEvent(false);
+        static readonly object _executionLock = new object();
+        public ExecutionManager()
         {
             _isRefreshing = false;
             _currentExecutions = 0;          
         }
-        public static ExecutionManager Instance => LazyCat.Value;
 
         public void StartRefresh()
         {
+            if(_isRefreshing)
+            {
+                return;
+            }
             _isRefreshing = true;
             while (_currentExecutions > 0)
             {
-                Thread.Sleep(10);
+                Thread.Sleep(1);
+            }
+        }
+
+        public void Wait()
+        {
+            //lock (_executionLock)
+            {
+                EventPulse.WaitOne();
             }
         }
         public void StopRefresh()
         {
-            foreach(var autoResetEvent in _waitHandles)
+            //foreach(var autoResetEvent in _waitHandles)
+            //{
+            //    autoResetEvent.Set();
+            //}
+            //_waitHandles.Clear();
+            //lock (_executionLock)
             {
-                autoResetEvent.Set();
-            }
-            _waitHandles.Clear();
-            _isRefreshing = false;
+                EventPulse.Set();
+                _isRefreshing = false;
+            }            
         }
         public void AddExecution()
         {
-            _currentExecutions++;
+            Interlocked.Increment(ref _currentExecutions);
+            //_currentExecutions++;
 
         }
 
@@ -52,13 +62,10 @@ namespace Dev2.Runtime.ESB.Execution
         {
             if (_currentExecutions > 0)
             {
-                _currentExecutions--;
+                Interlocked.Decrement(ref _currentExecutions);
+                //_currentExecutions--;
             }
         }
-
-        public void AddWait(AutoResetEvent eventPulse)
-        {
-            _waitHandles.Add(eventPulse);
-        }
+        
     }
 }

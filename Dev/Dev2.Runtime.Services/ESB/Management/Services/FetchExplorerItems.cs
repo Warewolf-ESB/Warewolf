@@ -75,9 +75,15 @@ namespace Dev2.Runtime.ESB.Management.Services
                 if (reloadResourceCatalogue)
                 {
                     var exeManager = CustomContainer.Get<IExecutionManager>();
-                    exeManager?.StartRefresh();
-                    ResourceCatalog.Instance.Reload();
-                    exeManager?.StopRefresh();
+                    if (exeManager != null)
+                    {
+                        if (!exeManager.IsRefreshing)
+                        {
+                            exeManager.StartRefresh();
+                            ResourceCatalog.Instance.Reload();
+                            exeManager.StopRefresh();
+                        }                        
+                    }
                 }
                 var item = ServerExplorerRepo.Load(GlobalConstants.ServerWorkspaceID, reloadResourceCatalogue);
                 CompressedExecuteMessage message = new CompressedExecuteMessage();
