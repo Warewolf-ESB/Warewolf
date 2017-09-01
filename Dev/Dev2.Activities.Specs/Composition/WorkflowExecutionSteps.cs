@@ -87,6 +87,8 @@ using Warewolf.Studio.ViewModels;
 using Warewolf.Tools.Specs.BaseTypes;
 using Dev2.Data.Interfaces.Enums;
 using TestingDotnetDllCascading;
+using Warewolf.Sharepoint;
+using Dev2.Runtime.Hosting;
 
 namespace Dev2.Activities.Specs.Composition
 {
@@ -1676,6 +1678,7 @@ namespace Dev2.Activities.Specs.Composition
             var rubyActivity = new DsfRubyActivity { DisplayName = activityName, Result = Result, Script = scriptToRun };
             _commonSteps.AddActivityToActivityList(parentName, activityName, rubyActivity);
         }
+
         [Given(@"""(.*)"" contains SharepointDownloadFile ""(.*)"" as")]
         public void GivenContainsSharepointDownloadFileAs(string parentName, string activityName, Table table)
         {
@@ -2715,6 +2718,23 @@ namespace Dev2.Activities.Specs.Composition
             repository.DeleteResource(resourceModel);
         }
 
+        [Then(@"the file ""(.*)"" is deleted from the Sharepoint server as cleanup")]
+        public void ThenFileIsDeletedFromSharepointServerAsCleanup(string fileName)
+        {
+            DeleteSharepointFile(fileName);
+        }
+
+        private static void DeleteSharepointFile(string serverPathTo)
+        {
+            var serverPathUniqueNameGuid = ScenarioContext.Current.Get<string>("serverPathToUniqueNameGuid");
+            var serverPath = CommonSteps.AddGuidToPath(serverPathTo, serverPathUniqueNameGuid);
+            if (!String.IsNullOrEmpty(serverPathUniqueNameGuid))
+            {
+                var sharepointHelper = new SharepointHelper("http://rsaklfsvrdev/");
+                sharepointHelper.Delete(serverPath);
+            }
+        }
+
         [Then(@"workflow ""(.*)"" has ""(.*)"" Versions in explorer")]
         public void ThenWorkflowHasVersionsInExplorer(string workflowName, int numberOfVersions)
         {
@@ -3212,7 +3232,6 @@ namespace Dev2.Activities.Specs.Composition
             ExecuteWorkflow(resourceModel);
         }
 
-
         [AfterScenario]
         public void CleanUp()
         {
@@ -3224,7 +3243,7 @@ namespace Dev2.Activities.Specs.Composition
             _resetEvt?.Close();
         }
 
-        [Then(@"I set logging to ""(.*)""")]
+       [Then(@"I set logging to ""(.*)""")]
         public void ThenISetLoggingTo(string logLevel)
         {
             var allowedLogLevels = new[] { "DEBUG", "NONE" };
