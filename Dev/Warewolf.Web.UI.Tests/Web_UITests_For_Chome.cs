@@ -68,7 +68,7 @@ namespace Warewolf.Web.UI.Tests.ExecutionLoggingTests
         [DeploymentItem(@"chromedriver.exe")]
         [DeploymentItem(@"WebDriverProfiles", @"WebDriverProfiles")]
         [TestCategory("NoWarewolfServer")]
-        public void Chrome_NoWarewolfServer_ClickRefresh_UITest()
+        public void Chrome_NoWarewolfServer_UITest()
         {
             Assert.IsTrue(driver.KillServerIfRunning(), GlobalConstants.LocalWarewolfServerExpectedDownError);
             driver.GoToUrl();
