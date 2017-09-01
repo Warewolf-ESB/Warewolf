@@ -29,7 +29,7 @@ namespace Dev2.Runtime.ESB.Execution
 {
     public class WfExecutionContainer : EsbExecutionContainer
     {
-        private static readonly AutoResetEvent EventPulse = new AutoResetEvent(false);
+        
 
         public WfExecutionContainer(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel)
             : base(sa, dataObj, theWorkspace, esbChannel)
@@ -174,16 +174,21 @@ namespace Dev2.Runtime.ESB.Execution
         static void EvalInner(IDSFDataObject dsfDataObject, IDev2Activity resource, int update)
         {
             var exe = CustomContainer.Get<IExecutionManager>();
+            Dev2Logger.Debug("Got Execution Manager", GlobalConstants.WarewolfDebug);
             if (exe != null)
             {
                 if (!exe.IsRefreshing || dsfDataObject.IsSubExecution)
                 {
+                    Dev2Logger.Debug("Adding Execution to Execution Manager", GlobalConstants.WarewolfDebug);
                     exe.AddExecution();
+                    Dev2Logger.Debug("Added Execution to Execution Manager", GlobalConstants.WarewolfDebug);
                 }
                 else
                 {
-                    exe.AddWait(EventPulse);
-                    EventPulse.WaitOne();
+                    Dev2Logger.Debug("Waiting", GlobalConstants.WarewolfDebug);
+                    exe.Wait();
+                    Dev2Logger.Debug("Continued Execution", GlobalConstants.WarewolfDebug);
+                                        
                 }
             }
             if (resource == null)
@@ -191,7 +196,9 @@ namespace Dev2.Runtime.ESB.Execution
                 throw new InvalidOperationException(GlobalConstants.NoStartNodeError);
             }
             WorkflowExecutionWatcher.HasAWorkflowBeenExecuted = true;
+            Dev2Logger.Debug("Starting Execute", GlobalConstants.WarewolfDebug);
             var next = resource.Execute(dsfDataObject, update);
+            Dev2Logger.Debug("Executed first node", GlobalConstants.WarewolfDebug);
             while (next != null)
             {
                 if (!dsfDataObject.StopExecution)

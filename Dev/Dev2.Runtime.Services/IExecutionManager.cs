@@ -14,6 +14,6 @@ namespace Dev2.Runtime
 
         void CompleteExecution();
 
-        void AddWait(AutoResetEvent eventPulse);
+        void Wait();        
     }
 }
