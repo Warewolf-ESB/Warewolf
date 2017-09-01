@@ -225,8 +225,8 @@ function Copy-On-Write([string]$FilePath) {
     if (Test-Path $FilePath) {
         $num = 1
         $FileExtention = (Get-Item $FilePath -ErrorAction Stop).Extension
-        $FilePathWithoutExtention = $FilePath.Substring(0, $FilePath.LastIndexOf('.'))
-        while(Test-Path "$FilePathWithoutExtention.$num$FileExtention")
+        $FilePathWithoutExtention = $FilePath.Substring(0, $FilePath.LastIndexOf('.')+1)
+        while(Test-Path "$FilePathWithoutExtention$num$FileExtention")
         {
             $num += 1
         }
