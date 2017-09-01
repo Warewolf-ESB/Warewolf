@@ -310,6 +310,7 @@ namespace Warewolf.UI.Tests.Deploy.DeployUIMapClasses
                 Mouse.Click(DialogsUIMap.MessageBoxWindow.OKButton);
                 if (!successful)
                 {
+                    Playback.Wait(10000);
                     DialogsUIMap.MessageBoxWindow.WaitForControlExist(60000);
                 }
             }
