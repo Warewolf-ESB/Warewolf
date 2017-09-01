@@ -29,7 +29,7 @@ namespace Dev2.Runtime.ESB.Execution
 {
     public class WfExecutionContainer : EsbExecutionContainer
     {
-        private static readonly ManualResetEvent EventPulse = new ManualResetEvent(false);
+        
 
         public WfExecutionContainer(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel)
             : base(sa, dataObj, theWorkspace, esbChannel)
@@ -185,11 +185,10 @@ namespace Dev2.Runtime.ESB.Execution
                 }
                 else
                 {
-                    Dev2Logger.Debug("Adding Wait to Execution Manager", GlobalConstants.WarewolfDebug);
-                    exe.AddWait(EventPulse);
-                    Dev2Logger.Debug("Added Wait to Execution Manager", GlobalConstants.WarewolfDebug);
                     Dev2Logger.Debug("Waiting", GlobalConstants.WarewolfDebug);
-                    EventPulse.WaitOne();
+                    exe.Wait();
+                    Dev2Logger.Debug("Continued Execution", GlobalConstants.WarewolfDebug);
+                                        
                 }
             }
             if (resource == null)
