@@ -6,9 +6,11 @@ namespace Warewolf.Web.UI.Tests.BrowserWebDrivers
 {
     public class OperaWebDriver : BaseWebDriver
     {
+        static OperaDriverService driverService = OperaDriverService.CreateDefaultService(Environment.CurrentDirectory);
         static OperaOptions operaOptions = new OperaOptions() { BinaryLocation = GetOperaPath() };
-        public OperaWebDriver() : base(new OperaDriver(@"C:\windows", operaOptions, TimeSpan.FromMinutes(3)))
+        public OperaWebDriver() : base(new OperaDriver(driverService, operaOptions, TimeSpan.FromMinutes(3)))
         {
+            driverService.Port = 18406;
             operaOptions.AddArguments(new[] { "user-data-dir=" + Path.Combine(Environment.CurrentDirectory, "WebDriverProfiles", "Opera"), "start-maximized" });
         }
     }
