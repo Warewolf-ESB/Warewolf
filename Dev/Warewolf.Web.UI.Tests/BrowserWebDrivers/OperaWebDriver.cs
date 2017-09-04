@@ -6,7 +6,7 @@ namespace Warewolf.Web.UI.Tests.BrowserWebDrivers
 {
     public class OperaWebDriver : BaseWebDriver
     {
-        static OperaDriverService driverService = OperaDriverService.CreateDefaultService(Environment.CurrentDirectory);
+        static OperaDriverService driverService = OperaDriverService.CreateDefaultService(@"C:\Windows");
         static OperaOptions operaOptions = new OperaOptions() { BinaryLocation = GetOperaPath() };
         public OperaWebDriver() : base(new OperaDriver(driverService, operaOptions, TimeSpan.FromMinutes(3)))
         {
