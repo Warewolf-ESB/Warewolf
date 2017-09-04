@@ -5,9 +5,10 @@ namespace Warewolf.Web.UI.Tests.BrowserWebDrivers
 {
     public class InternetExplorerWebDriver : BaseWebDriver
     {
-        public InternetExplorerWebDriver() : base(new InternetExplorerDriver(Environment.CurrentDirectory, new InternetExplorerOptions(), TimeSpan.FromMinutes(3)))
+        static InternetExplorerDriverService driverService = InternetExplorerDriverService.CreateDefaultService(Environment.CurrentDirectory);
+        public InternetExplorerWebDriver() : base(new InternetExplorerDriver(driverService, new InternetExplorerOptions(), TimeSpan.FromMinutes(3)))
         {
-            
+            driverService.Port = 18406;
         }
     }
 }
