@@ -172,10 +172,6 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="SharedResourceDictionary.cs" />
-    <Compile Include="Theme.cs" />
-    <Compile Include="XamGrid\ContextMenuOpeningEventArgs.cs" />
-    <Compile Include="XamGrid\ContextMenuSettings.cs" />
-    <Compile Include="XamGrid\XamGridEx.cs" />
     <Resource Include="Images\Filter.png" />
     <Resource Include="Images\FilterClearButton.png" />
     <Resource Include="Images\MagnifyingGlass.png" />
