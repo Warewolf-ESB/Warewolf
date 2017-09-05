@@ -114,6 +114,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <Compile Include="AssemblyWrapper.cs" />
+    <Compile Include="EqualityFactory.cs" />
     <Compile Include="DependencyVisualization\DependencyVisualizationNode.cs" />
     <Compile Include="DebugStateTreeBuilder.cs" />
     <Compile Include="DeplyResult.cs" />

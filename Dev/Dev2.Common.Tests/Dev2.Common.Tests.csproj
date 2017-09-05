@@ -61,6 +61,7 @@
     <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
+    <Compile Include="CommonComparerTests.cs" />
     <Compile Include="DebugStateTreeBuilderTests.cs" />
     <Compile Include="JsonResource.cs" />
     <None Include="..\Run Tests.ps1">
@@ -71,6 +72,7 @@
     <Compile Include="ExtensionMethodsTest.cs" />
     <Compile Include="MapperTests.cs" />
     <Compile Include="DistinctByTests.cs" />
+    <Compile Include="Person.cs" />
     <Compile Include="Utils\TextUtilsTests.cs" />
     <EmbeddedResource Include="Json\FlatStates.json" />
   </ItemGroup>
