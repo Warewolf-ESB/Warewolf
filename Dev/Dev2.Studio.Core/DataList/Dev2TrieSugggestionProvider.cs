@@ -235,7 +235,7 @@ namespace Dev2.Studio.Core.DataList
             }
             IEnumerable<string> suggestions = null;
             List<string> permutationsOfCapitalization = Permute(filter);
-            foreach (var str in permutationsOfCapitalization)
+            foreach (var str in permutationsOfCapitalization.Distinct())
             {
                 IEnumerable<string> newSuggestions = trie.Retrieve(str);
                 if (suggestions == null)
