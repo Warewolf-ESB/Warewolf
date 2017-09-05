@@ -581,14 +581,6 @@ namespace Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses
             UIMap.WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
         }
 
-        [Given(@"I Wait For Explorer First Remote Server Spinner")]
-        [When(@"I Wait For Explorer First Remote Server Spinner")]
-        [Then(@"I Wait For Explorer First Remote Server Spinner")]
-        public void WaitForExplorerFirstRemoteServerSpinner()
-        {
-            UIMap.WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.Checkbox.Spinner);
-        }
-
         [Given(@"I Try Remove ""(.*)"" From Explorer")]
         [When(@"I Try Remove ""(.*)"" From Explorer")]
         [Then(@"I Try Remove ""(.*)"" From Explorer")]
@@ -712,6 +704,7 @@ namespace Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton, new Point(136, 7));
             Assert.IsTrue(UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.Exists, "Remote Connection Integration option does not exist in Source server combobox.");
             Mouse.Click(UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.Text, new Point(226, 13));
+            UIMap.WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.Checkbox.Spinner, 180000);
         }
 
         [When(@"I Connect To Restricted Remote Server")]

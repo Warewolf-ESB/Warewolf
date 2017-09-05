@@ -364,7 +364,6 @@
       <DependentUpon>ProgressDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="CustomControls\Progress\ProgressFileDownloader.cs" />
-    <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Settings\Logging\EnumHelper.cs" />
     <Compile Include="Settings\Logging\ILogSettings.cs" />
     <Compile Include="Settings\Logging\LoggingView.xaml.cs">

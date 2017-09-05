@@ -1132,7 +1132,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ActivityResources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
