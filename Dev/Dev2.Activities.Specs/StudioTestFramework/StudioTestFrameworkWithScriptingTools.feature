@@ -141,6 +141,7 @@ Scenario: Test WF with Sharepoint Copy File
 	When I delete "Test 1"
 	Then The "DeleteConfirmation" popup is shown I click Ok
 	Then workflow "ShapointCopyFileTestWF" is deleted as cleanup
+	Then the file "e.xml" is deleted from the Sharepoint server as cleanup
 	
 Scenario: Test WF with Sharepoint Create List Items
 	Given I have a workflow "ShapointCreateListItemsTestWF"	
@@ -242,6 +243,7 @@ Scenario: Test WF with Sharepoint Download File
 	When I delete "Test 1"
 	Then The "DeleteConfirmation" popup is shown I click Ok
 	Then workflow "ShapointDownloadFileTestWF" is deleted as cleanup
+	Then the file "Hello World.xml" is deleted from the Sharepoint server as cleanup
 	
 Scenario: Test WF with Sharepoint Upload File
 	Given I have a workflow "ShapointUploadFileTestWF"		 
@@ -263,6 +265,7 @@ Scenario: Test WF with Sharepoint Upload File
 	When I delete "Test 1"
 	Then The "DeleteConfirmation" popup is shown I click Ok
 	Then workflow "ShapointUploadFileTestWF" is deleted as cleanup
+	Then the file "a.xml" is deleted from the Sharepoint server as cleanup
 
 Scenario: Test WF with Sharepoint Move File
 	Given I have a workflow "ShapointMoveFileTestWF"	
