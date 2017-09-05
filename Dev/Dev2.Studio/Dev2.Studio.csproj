@@ -487,9 +487,6 @@
     <Compile Include="Views\Help\FeedbackView.xaml.cs">
       <DependentUpon>FeedbackView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\UIAutomation\AutomationIdCreaterView.xaml.cs">
-      <DependentUpon>AutomationIdCreaterView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\Administration\DialogueView.xaml.cs">
       <DependentUpon>DialogueView.xaml</DependentUpon>
     </Compile>
@@ -656,10 +653,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Help\FeedbackView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\UIAutomation\AutomationIdCreaterView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
