@@ -416,9 +416,6 @@
       <DependentUpon>DependencyVisualiserView.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Views\Dialog\Dev2MessageBoxWithCustomButtons.xaml.cs">
-      <DependentUpon>Dev2MessageBoxWithCustomButtons.xaml</DependentUpon>
-    </Compile>
     <Compile Include="ViewModels\Help\HelpViewModel.cs" />
     <Compile Include="ViewModels\Workflow\WorkflowInputDataViewModel.cs" />
     <Compile Include="ViewModels\Workflow\DsfActivityDropViewModel.cs">
@@ -613,10 +610,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\DependencyVisualization\DependencyVisualiserView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Dialog\Dev2MessageBoxWithCustomButtons.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -932,9 +925,7 @@
       <Name>WarewolfParserInterop</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Views\Dialogs\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="Help\PageNotAvailable.htm">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
