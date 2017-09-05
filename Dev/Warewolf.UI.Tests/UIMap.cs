@@ -168,7 +168,7 @@ namespace Warewolf.UI.Tests
             }, searchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString()));
         }
 
-        public void WaitForSpinner(UITestControl control, int searchTimeout = 30000)
+        public void WaitForSpinner(UITestControl control, int searchTimeout = 60000)
         {
             WaitForControlNotVisible(control, searchTimeout);
         }
