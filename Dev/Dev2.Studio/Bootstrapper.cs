@@ -147,10 +147,7 @@ namespace Dev2
         #region Private Methods
 
         /*
-         * DELETE THIS METHOD AND LOOSE A VERY IMPORTANT PART OF YOU ;)
-         * 
-         * IT IS REQUIRED FOR UPDATES IN RELEASE MODE ;)
-         * REMOVING IT MEANS IT IS NOT POSSIBLE TO BUILD AN INSTALLER ;)
+         * You must be in Release config to see the only reference to this function. - Ashley
          */
         
         private bool CheckWindowsService()
