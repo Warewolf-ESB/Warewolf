@@ -18,7 +18,7 @@ namespace Dev2.Integration.Tests.Server_Refresh
     [TestClass]
     public class ServerRefreshTests
     {
-        private const string PassResult = @"C:\ProgramData\Warewolf\Resources\PassResult.xml";
+        const string PassResult = @"C:\ProgramData\Warewolf\Resources\PassResult.xml";
         [TestMethod]
         [Ignore("Need to figure out why this test times out on the build machines")]
         public void Run_a_workflow_to_test_server_refresh()

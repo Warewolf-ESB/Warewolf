@@ -55,7 +55,6 @@ Scenario: Opening Workflow local and remote using right click
  Scenario: Deleting a Resource Remote
    Given The Warewolf Studio is running
    When I Connect To Remote Server
-   And I Wait For Explorer First Remote Server Spinner
    And I Click New Workflow Ribbon Button
    And I validate and delete the existing resource with "LocalWorkflowWithRemoteSubworkflowToDelete"
    And I Filter the Explorer with "GenericResource"
