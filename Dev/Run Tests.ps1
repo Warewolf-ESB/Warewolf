@@ -230,7 +230,7 @@ function Copy-On-Write([string]$FilePath) {
         {
             $num += 1
         }
-        $FilePath | Move-Item -Destination "$FilePathWithoutExtention.$num$FileExtention"
+        $FilePath | Move-Item -Destination "$FilePathWithoutExtention$num$FileExtention"
     }
 }
 
@@ -318,6 +318,9 @@ function Merge-DotCover-Snapshots($DotCoverSnapshots, [string]$DestinationFilePa
 	Copy-On-Write "$DestinationFilePath"
     Copy-On-Write "$LogFilePath"
     if ($DotCoverSnapshots -ne $null -and $DotCoverSnapshots.Count -gt 1) {
+        if (Test-Path $DestinationFilePath -and $DotCoverSnapshots[0] -ne $DestinationFilePath) {
+            $DotCoverSnapshots = $DestinationFilePath + $DotCoverSnapshots
+        }
         if ($DotCoverSnapshots -ne $null -and $DotCoverSnapshots.Count -gt 5) {
             $DotCoverSnapshotsString = $DotCoverSnapshots[0] + "`";`"" + $DotCoverSnapshots[1]
             &"$DotCoverPath" "merge" "/Source=`"$DotCoverSnapshotsString`"" "/Output=`"$DestinationFilePath`"" "/LogFile=`"$LogFilePath`""
@@ -934,7 +937,9 @@ if ($TotalNumberOfJobsToRun -gt 0) {
                     }
                 }
             } else {
-                $TestList = " /Tests:" + $TestList
+                if (!($TestList.StartsWith(" /Tests:"))) {
+                    $TestList = " /Tests:" + $TestList
+                }
             }
             if($RecordScreen.IsPresent) {
                 $TestSettings =  " /Settings:`"" + $TestSettingsFile + "`""
@@ -976,8 +981,10 @@ if ($TotalNumberOfJobsToRun -gt 0) {
                     }
                 }
             } else {
-                $TestNames = $TestList.Split(",") -join " /test:"
-                $TestList = " /test:" + $TestNames
+                if (!($TestList.StartsWith(" /test:"))) {
+                    $TestNames = $TestList.Split(",") -join " /test:"
+                    $TestList = " /test:" + $TestNames
+                }
             }
             $FullArgsList = $TestAssembliesList + " /resultsfile:`"" + $TestResultsFile + "`"" + $TestList + $TestSettings + $TestCategories
 
