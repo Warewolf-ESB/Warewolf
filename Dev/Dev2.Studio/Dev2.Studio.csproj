@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Dev2</RootNamespace>
     <AssemblyName>Warewolf Studio</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
@@ -416,9 +416,6 @@
       <DependentUpon>DependencyVisualiserView.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Views\Dialog\Dev2MessageBoxWithCustomButtons.xaml.cs">
-      <DependentUpon>Dev2MessageBoxWithCustomButtons.xaml</DependentUpon>
-    </Compile>
     <Compile Include="ViewModels\Help\HelpViewModel.cs" />
     <Compile Include="ViewModels\Workflow\WorkflowInputDataViewModel.cs" />
     <Compile Include="ViewModels\Workflow\DsfActivityDropViewModel.cs">
@@ -486,9 +483,6 @@
     </Compile>
     <Compile Include="Views\Help\FeedbackView.xaml.cs">
       <DependentUpon>FeedbackView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\UIAutomation\AutomationIdCreaterView.xaml.cs">
-      <DependentUpon>AutomationIdCreaterView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Administration\DialogueView.xaml.cs">
       <DependentUpon>DialogueView.xaml</DependentUpon>
@@ -619,10 +613,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Dialog\Dev2MessageBoxWithCustomButtons.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\Diagnostics\ReportsViewerView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -656,10 +646,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Help\FeedbackView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\UIAutomation\AutomationIdCreaterView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -741,6 +727,7 @@
     <None Include="Achitecture\EnvironmentRepositoryRelationships.cd" />
     <None Include="App.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </None>
     <None Include="app.manifest" />
     <None Include="packages.config">
@@ -939,9 +926,7 @@
       <Name>WarewolfParserInterop</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Views\Dialogs\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="Help\PageNotAvailable.htm">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
