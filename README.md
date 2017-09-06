@@ -31,7 +31,7 @@ Release notes are available at http://warewolf.io/release-notes.php
 
 You can download the latest compiled release from https://warewolf.io
 
-Please note that Warewolf is built for Windows 7, Windows 8.1, Windows 10, Windows Server 2008, Windows Server 2012 and Windows Server 2016. Compiling Warewolf requires at least [Visual Studio 2017](www.visualstudio.com/en-us/downloads/download-visual-studio-vs) with the ".NET desktop development" and "ASP.NET and web development" workloads and the "F# language support" individual component also installed.
+Please note that Warewolf is built for Windows 7, Windows 8.1, Windows 10, Windows Server 2008, Windows Server 2012 and Windows Server 2016. Compiling Warewolf requires at least [Visual Studio 2017](www.visualstudio.com/en-us/downloads/download-visual-studio-vs) with the ".NET desktop development" and "ASP.NET and web development" workloads and the "F# language support" and ".NET Framework 4.7 targetting pack" individual components also installed.
 
 
 **License and Software Versions:** 
