@@ -75,6 +75,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>WorkflowExecution.feature</DependentUpon>
     </Compile>
+    <Compile Include="Deploy\Deploy Feature.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Deploy Feature.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Deploy\DeployFeatureSteps.cs" />
     <Compile Include="Dev2LocalSecurityWrapper.cs" />
     <Compile Include="ISpecExternalProcessExecutor.cs" />
     <Compile Include="Sources\ServerSource.feature.cs">
@@ -332,6 +338,10 @@
     <None Include="Composition\WorkflowExecution.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>WorkflowExecution.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Deploy\Deploy Feature.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Deploy Feature.feature.cs</LastGenOutput>
     </None>
     <None Include="packages.config">
       <SubType>Designer</SubType>

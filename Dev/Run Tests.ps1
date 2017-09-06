@@ -934,7 +934,9 @@ if ($TotalNumberOfJobsToRun -gt 0) {
                     }
                 }
             } else {
-                $TestList = " /Tests:" + $TestList
+                if (!($TestList.StartsWith(" /Tests:"))) {
+                    $TestList = " /Tests:" + $TestList
+                }
             }
             if($RecordScreen.IsPresent) {
                 $TestSettings =  " /Settings:`"" + $TestSettingsFile + "`""
@@ -976,8 +978,10 @@ if ($TotalNumberOfJobsToRun -gt 0) {
                     }
                 }
             } else {
-                $TestNames = $TestList.Split(",") -join " /test:"
-                $TestList = " /test:" + $TestNames
+                if (!($TestList.StartsWith(" /test:"))) {
+                    $TestNames = $TestList.Split(",") -join " /test:"
+                    $TestList = " /test:" + $TestNames
+                }
             }
             $FullArgsList = $TestAssembliesList + " /resultsfile:`"" + $TestResultsFile + "`"" + $TestList + $TestSettings + $TestCategories
 
