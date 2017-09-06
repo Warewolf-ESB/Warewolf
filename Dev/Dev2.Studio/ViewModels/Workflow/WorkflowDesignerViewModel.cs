@@ -110,7 +110,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         #region Overrides of Screen
 
-        protected readonly IDesignerManagementService DesignerManagementService;
+        protected readonly IDesignerManagementService _designerManagementService;
         readonly IWorkflowHelper _workflowHelper;
         DelegateCommand _collapseAllCommand;
 
@@ -118,7 +118,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         List<ModelItem> _selectedDebugItems = new List<ModelItem>();
         DelegateCommand _expandAllCommand;
 
-        protected ModelService ModelService;
+        protected ModelService _modelService;
         IContextualResourceModel _resourceModel;
 
         protected Dictionary<IDataListVerifyPart, string> _uniqueWorkflowParts;
@@ -201,7 +201,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 SetOriginalDataList(_resourceModel);
             }
-            DesignerManagementService = new DesignerManagementService(resource, _resourceModel.Environment.ResourceRepository);
+            _designerManagementService = new DesignerManagementService(resource, _resourceModel.Environment.ResourceRepository);
             if (createDesigner)
             {
                 ActivityDesignerHelper.AddDesignerAttributes(this, liteInit);
@@ -754,7 +754,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public StringBuilder DesignerText => ServiceDefinition;
 
-        public StringBuilder ServiceDefinition { get { return _workflowHelper.SerializeWorkflow(ModelService); } set { } }
+        public StringBuilder ServiceDefinition { get { return _workflowHelper.SerializeWorkflow(_modelService); } set { } }
 
         #endregion
 
@@ -769,11 +769,11 @@ namespace Dev2.Studio.ViewModels.Workflow
                     bool val = Convert.ToBoolean(param);
                     if (val)
                     {
-                        DesignerManagementService.RequestCollapseAll();
+                        _designerManagementService.RequestCollapseAll();
                     }
                     else
                     {
-                        DesignerManagementService.RequestRestoreAll();
+                        _designerManagementService.RequestRestoreAll();
                     }
                 }));
             }
@@ -788,11 +788,11 @@ namespace Dev2.Studio.ViewModels.Workflow
                     bool val = Convert.ToBoolean(param);
                     if (val)
                     {
-                        DesignerManagementService.RequestExpandAll();
+                        _designerManagementService.RequestExpandAll();
                     }
                     else
                     {
-                        DesignerManagementService.RequestRestoreAll();
+                        _designerManagementService.RequestRestoreAll();
                     }
                 }));
             }
@@ -1084,11 +1084,11 @@ namespace Dev2.Studio.ViewModels.Workflow
             if (computedValue is IDev2Activity)
             {
                 (computedValue as IDev2Activity).UniqueID = Guid.NewGuid().ToString();
-                _modelItems = ModelService.Find(ModelService.Root, typeof (IDev2Activity));
+                _modelItems = _modelService.Find(_modelService.Root, typeof (IDev2Activity));
             }
             if (computedValue is Activity)
             {
-                _activityCollection = ModelService.Find(ModelService.Root, typeof (Activity));
+                _activityCollection = _modelService.Find(_modelService.Root, typeof (Activity));
             }
 
             if (mi.ItemType == typeof (FlowSwitch<string>))
@@ -1299,7 +1299,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         [ExcludeFromCodeCoverage]
         private void SetLastDroppedPoint(DragEventArgs e)
         {
-            var senderAsFrameworkElement = ModelService.Root.View as FrameworkElement;
+            var senderAsFrameworkElement = _modelService.Root.View as FrameworkElement;
             UIElement freePormPanel = senderAsFrameworkElement?.FindNameAcrossNamescopes("flowchartPanel");
             if (freePormPanel != null)
             {
@@ -1599,7 +1599,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 _wd.Context.Items.Subscribe<Selection>(OnItemSelected);
                 _wd.Context.Services.Subscribe<ModelService>(ModelServiceSubscribe);
                 _wd.Context.Services.Subscribe<DesignerView>(DesigenrViewSubscribe);
-                _wd.Context.Services.Publish(DesignerManagementService);
+                _wd.Context.Services.Publish(_designerManagementService);
 
                 _wd.View.Measure(new Size(2000, 2000));
                 _wd.View.PreviewDrop += ViewPreviewDrop;
@@ -1632,7 +1632,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 Selection.Subscribe(_wd.Context, SelectedItemChanged);
 
                 LoadDesignerXaml();
-                _workflowHelper.EnsureImplementation(ModelService);
+                _workflowHelper.EnsureImplementation(_modelService);
 
                 //For Changing the icon of the flowchart.
                 WorkflowDesignerIcons.Activities.Flowchart = Application.Current.TryFindResource("Explorer-WorkflowService-Icon") as DrawingBrush;
@@ -1718,15 +1718,15 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         protected void ModelServiceSubscribe(ModelService instance)
         {
-            ModelService = instance;
-            ModelService.ModelChanged += ModelServiceModelChanged;
+            _modelService = instance;
+            _modelService.ModelChanged += ModelServiceModelChanged;
             if (_activityCollection == null)
             {
-                _activityCollection = ModelService.Find(ModelService.Root, typeof(Activity));
+                _activityCollection = _modelService.Find(_modelService.Root, typeof(Activity));
             }
             if (_modelItems == null)
             {
-                _modelItems = ModelService.Find(ModelService.Root, typeof(IDev2Activity));
+                _modelItems = _modelService.Find(_modelService.Root, typeof(IDev2Activity));
             }
         }
 
@@ -1785,7 +1785,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         protected virtual ModelItem GetSelectedModelItem(Guid itemId, Guid parentId)
         {
-            if (ModelService != null)
+            if (_modelService != null)
             {
                 
                 var selectedModelItem = (from mi in _modelItems
@@ -1797,7 +1797,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 if (selectedModelItem == null)
                 {
                     // Find the root flow chart
-                    selectedModelItem = ModelService.Find(ModelService.Root, typeof(Flowchart)).FirstOrDefault();
+                    selectedModelItem = _modelService.Find(_modelService.Root, typeof(Flowchart)).FirstOrDefault();
                 }
                 else
                 {
@@ -2105,7 +2105,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public ModelItem GetModelItem(Guid workSurfaceMappingId, Guid parentID)
         {
-            var modelItems = ModelService.Find(ModelService.Root, typeof(IDev2Activity));
+            var modelItems = _modelService.Find(_modelService.Root, typeof(IDev2Activity));
             ModelItem selectedModelItem = null;
             foreach (var mi in modelItems)
             {
@@ -2190,7 +2190,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             var dp1 = dp as Run;
             if (dp1?.Parent is TextBlock && dp1.DataContext.GetType().Name.Contains("FlowchartDesigner"))
             {
-                var selectedModelItem = ModelService.Find(ModelService.Root, typeof(Flowchart)).FirstOrDefault();
+                var selectedModelItem = _modelService.Find(_modelService.Root, typeof(Flowchart)).FirstOrDefault();
                 if (selectedModelItem != null)
                 {
                     SelectSingleModelItem(selectedModelItem);
@@ -2201,7 +2201,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             var dp2 = dp as TextBlock;
             if (dp2 != null && dp2.DataContext.GetType().Name.Contains("FlowchartDesigner"))
             {
-                var selectedModelItem = ModelService.Find(ModelService.Root, typeof(Flowchart)).FirstOrDefault();
+                var selectedModelItem = _modelService.Find(_modelService.Root, typeof(Flowchart)).FirstOrDefault();
                 if (selectedModelItem != null)
                 {
                     SelectSingleModelItem(selectedModelItem);
@@ -2640,7 +2640,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 _virtualizedContainerServicePopulateAllMethod = null;
             }
 
-            DesignerManagementService?.Dispose();
+            _designerManagementService?.Dispose();
             _debugSelectionChangedService?.Unsubscribe();
 
             if (_resourceModel != null)
@@ -2649,9 +2649,9 @@ namespace Dev2.Studio.ViewModels.Workflow
                 _resourceModel.OnResourceSaved -= UpdateOriginalDataList;
             }
 
-            if (ModelService != null)
+            if (_modelService != null)
             {
-                ModelService.ModelChanged -= ModelServiceModelChanged;
+                _modelService.ModelChanged -= ModelServiceModelChanged;
             }
 
             if (_uniqueWorkflowParts != null)
@@ -2783,10 +2783,10 @@ namespace Dev2.Studio.ViewModels.Workflow
                 _virtualizedContainerServicePopulateAllMethod = null;
             }
 
-            DesignerManagementService?.Dispose();
-            if (ModelService != null)
+            _designerManagementService?.Dispose();
+            if (_modelService != null)
             {
-                ModelService.ModelChanged -= ModelServiceModelChanged;
+                _modelService.ModelChanged -= ModelServiceModelChanged;
             }
             _debugSelectionChangedService?.Unsubscribe();
         }
