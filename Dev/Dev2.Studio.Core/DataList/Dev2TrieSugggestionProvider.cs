@@ -233,21 +233,7 @@ namespace Dev2.Studio.Core.DataList
             {
                 return new string[0];
             }
-            IEnumerable<string> suggestions = null;
-            List<string> permutationsOfCapitalization = Permute(filter);
-            foreach (var str in permutationsOfCapitalization.Distinct())
-            {
-                IEnumerable<string> newSuggestions = trie.Retrieve(str);
-                if (suggestions == null)
-                {
-                    suggestions = newSuggestions;
-                }
-                else
-                {
-                    suggestions = suggestions.Concat(newSuggestions);
-                }
-            }
-            return suggestions;
+            return trie.Retrieve(filter);
         }
 
         List<string> Permute(string s)
