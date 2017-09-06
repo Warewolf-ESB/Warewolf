@@ -314,26 +314,37 @@ function Cleanup-ServerStudio([bool]$Force=$true) {
     Move-File-To-TestResults "$env:PROGRAMDATA\Warewolf\Tests" "Server Service Tests $JobName"
 }
 
+function Wait-For-FileUnlock([string]$FilePath) {
+    $locked = $true
+    $RetryCount = 0
+    while($locked -and $RetryCount -lt 12) {
+        $RetryCount++
+        try {
+            [IO.File]::OpenWrite($FilePath).close()
+            $locked = $false
+        } catch {
+            Sleep 10
+        }
+    }
+    return $locked
+}
+
 function Merge-DotCover-Snapshots($DotCoverSnapshots, [string]$DestinationFilePath, [string]$LogFilePath) {
-	Copy-On-Write "$DestinationFilePath"
-    Copy-On-Write "$LogFilePath"
     if ($DotCoverSnapshots -ne $null -and $DotCoverSnapshots.Count -gt 1) {
-        if (Test-Path $DestinationFilePath -and $DotCoverSnapshots[0] -ne $DestinationFilePath) {
-            $DotCoverSnapshots = $DestinationFilePath + $DotCoverSnapshots
-        }
-        if ($DotCoverSnapshots -ne $null -and $DotCoverSnapshots.Count -gt 5) {
-            $DotCoverSnapshotsString = $DotCoverSnapshots[0] + "`";`"" + $DotCoverSnapshots[1]
-            &"$DotCoverPath" "merge" "/Source=`"$DotCoverSnapshotsString`"" "/Output=`"$DestinationFilePath`"" "/LogFile=`"$LogFilePath`""
-            foreach ($DotCoverSnapshot in $DotCoverSnapshots[2..($DotCoverSnapshots.Count-2)]) {
-                $DotCoverSnapshotsString = $DestinationFilePath + "`";`"" + $DotCoverSnapshot
-                &"$DotCoverPath" "merge" "/Source=`"$DotCoverSnapshotsString`"" "/Output=`"$DestinationFilePath`"" "/LogFile=`"$LogFilePath`""
-            }
-        } else {
-            $DotCoverSnapshotsString = $DotCoverSnapshots -join "`";`""
-            &"$DotCoverPath" "merge" "/Source=`"$DotCoverSnapshotsString`"" "/Output=`"$DestinationFilePath`"" "/LogFile=`"$LogFilePath`""
-        }
+        $DotCoverSnapshotsString = $DotCoverSnapshots -join "`";`""
+        Copy-On-Write "$LogFilePath.merge.log"
+        Copy-On-Write "$LogFilePath.report.log"
+        Copy-On-Write "$DestinationFilePath.dcvr"
+        Copy-On-Write "$DestinationFilePath.html"
+        &"$DotCoverPath" "merge" "/Source=`"$DotCoverSnapshotsString`"" "/Output=`"$DestinationFilePath.dcvr`"" "/LogFile=`"$LogFilePath.merge.log`""
+    }
+    if (Test-Path "$DestinationFilePath.dcvr") {
+        &"$DotCoverPath" "report" "/Source=`"$DestinationFilePath.dcvr`"" "/Output=`"$DestinationFilePath\DotCover Report.html`"" "/ReportType=HTML" "/LogFile=`"$LogFilePath.report.log`""
     } else {
-        Write-Warning Cannot merge $DotCoverSnapshots
+        $LoneSnapshot = $DotCoverSnapshots[0].FullName
+        if ($DotCoverSnapshots.Count -eq 1 -and (Test-Path "$LoneSnapshot")) {
+            &"$DotCoverPath" "report" "/Source=`"$LoneSnapshot`"" "/Output=`"$DestinationFilePath\DotCover Report.html`"" "/ReportType=HTML" "/LogFile=`"$LogFilePath.report.log`""
+        }
     }
 }
 
@@ -390,17 +401,7 @@ function Move-Artifacts-To-TestResults([bool]$DotCover, [bool]$Server, [bool]$St
         while (!(Test-Path $ServerSnapshot) -and $Timeout++ -lt 10) {
             sleep 10
         }
-        $locked = $true
-        $RetryCount = 0
-        while($locked -and $RetryCount -lt 12) {
-            $RetryCount++
-            try {
-                [IO.File]::OpenWrite($ServerSnapshot).close()
-                $locked = $false
-            } catch {
-                Sleep 10
-            }
-        }
+        $locked = Wait-For_FileUnlock $ServerSnapshot
         if (!($locked)) {
             Write-Host Moving Server coverage snapshot file from $ServerSnapshot to $TestsResultsPath\$JobName Server DotCover.dcvr
             Move-File-To-TestResults $ServerSnapshot "$JobName Server DotCover.dcvr"
@@ -424,17 +425,7 @@ function Move-Artifacts-To-TestResults([bool]$DotCover, [bool]$Server, [bool]$St
             sleep 10
         }
         if (Test-Path $StudioSnapshot) {
-            $locked = $true
-            $RetryCount = 0
-            while($locked -and $RetryCount -lt 12) {
-                $RetryCount++
-                try {
-                    [IO.File]::OpenWrite($StudioSnapshot).close()
-                    $locked = $false
-                } catch {
-                    Sleep 10
-                }
-            }
+            $locked = Wait-For-FileUnlock $StudioSnapshot
             if (!($locked)) {
                 Write-Host Moving Studio coverage snapshot file from $StudioSnapshot to $TestsResultsPath\$JobName Studio DotCover.dcvr
                 Move-Item $StudioSnapshot "$TestsResultsPath\$JobName Studio DotCover.dcvr" -force
@@ -449,7 +440,7 @@ function Move-Artifacts-To-TestResults([bool]$DotCover, [bool]$Server, [bool]$St
         }
     }
     if ($Server -and $Studio -and $DotCover) {
-        Merge-DotCover-Snapshots @("$TestsResultsPath\$JobName Server DotCover.dcvr", "$TestsResultsPath\$JobName Studio DotCover.dcvr") "$TestsResultsPath\$JobName Merged Server and Studio DotCover.dcvr" "$TestsResultsPath\ServerAndStudioDotCoverSnapshotMerge.log"
+        Merge-DotCover-Snapshots @("$TestsResultsPath\$JobName Server DotCover.dcvr", "$TestsResultsPath\$JobName Studio DotCover.dcvr") "$TestsResultsPath\$JobName Merged Server and Studio DotCover" "$TestsResultsPath\ServerAndStudioDotCoverSnapshot"
     }
     if ($RecordScreen.IsPresent) {
         Move-ScreenRecordings-To-TestResults
@@ -756,7 +747,7 @@ function Resolve-Test-Assembly-File-Specs([string]$TestAssemblyFileSpecs) {
 $JobNames = @()
 $JobAssemblySpecs = @()
 $JobCategories = @()
-if ($JobName -ne $null -and $JobName -ne "") {
+if ($JobName -ne $null -and $JobName -ne "" -and $MergeDotCoverSnapshotsInDirectory -eq "") {
     foreach ($Job in $JobName.Split(",")) {
         $Job = $Job.TrimEnd("1234567890 ")
         if ($JobSpecs.ContainsKey($Job)) {
@@ -1053,6 +1044,9 @@ if ($TotalNumberOfJobsToRun -gt 0) {
             Move-Artifacts-To-TestResults $ApplyDotCover ($StartServer.IsPresent -or $StartStudio.IsPresent) $StartStudio.IsPresent
         }
     }
+    if ($ApplyDotCover) {
+        Invoke-Expression -Command ("&'$PSCommandPath' -JobName '$JobName' -MergeDotCoverSnapshotsInDirectory '$TestsResultsPath'")
+    }
 }
 
 if ($AssemblyFileVersionsTest.IsPresent) {
@@ -1275,7 +1269,12 @@ if ($RunWarewolfServiceTests.IsPresent) {
 
 if ($MergeDotCoverSnapshotsInDirectory -ne "") {
     $DotCoverSnapshots = Get-ChildItem $MergeDotCoverSnapshotsInDirectory\*.dcvr -Recurse
-    Merge-DotCover-Snapshots $DotCoverSnapshots "$TestsPath\Merged DotCover Snapshots.dcvr" "$TestsPath\DotCover Snapshot Merge.log"
+    if ($JobName -eq "") {
+        $JobName = "DotCover"
+    }
+    $MergedSnapshotFileName = $JobName.Split(",")[0]
+    $MergedSnapshotFileName = "Merged $MergedSnapshotFileName Snapshots"
+    Merge-DotCover-Snapshots $DotCoverSnapshots "$MergeDotCoverSnapshotsInDirectory\$MergedSnapshotFileName" "$MergeDotCoverSnapshotsInDirectory\DotCover"
 }
 
 if ($Cleanup.IsPresent) {
