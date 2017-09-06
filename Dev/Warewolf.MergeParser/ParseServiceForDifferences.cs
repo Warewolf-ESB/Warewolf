@@ -1,4 +1,6 @@
 ﻿using System.Activities.Presentation.Model;
+using System.Activities.Statements;
+using System.Activities.Presentation.Services;
 
 namespace Warewolf.MergeParser
 {
@@ -11,6 +13,7 @@ namespace Warewolf.MergeParser
         {
             _mergeHead = mergeHead;
             _head = head;
+           
         }
 
 
