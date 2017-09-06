@@ -230,7 +230,7 @@ function Copy-On-Write([string]$FilePath) {
         {
             $num += 1
         }
-        $FilePath | Move-Item -Destination "$FilePathWithoutExtention.$num$FileExtention"
+        $FilePath | Move-Item -Destination "$FilePathWithoutExtention$num$FileExtention"
     }
 }
 
