@@ -318,6 +318,9 @@ function Merge-DotCover-Snapshots($DotCoverSnapshots, [string]$DestinationFilePa
 	Copy-On-Write "$DestinationFilePath"
     Copy-On-Write "$LogFilePath"
     if ($DotCoverSnapshots -ne $null -and $DotCoverSnapshots.Count -gt 1) {
+        if (Test-Path $DestinationFilePath -and $DotCoverSnapshots[0] -ne $DestinationFilePath) {
+            $DotCoverSnapshots = $DestinationFilePath + $DotCoverSnapshots
+        }
         if ($DotCoverSnapshots -ne $null -and $DotCoverSnapshots.Count -gt 5) {
             $DotCoverSnapshotsString = $DotCoverSnapshots[0] + "`";`"" + $DotCoverSnapshots[1]
             &"$DotCoverPath" "merge" "/Source=`"$DotCoverSnapshotsString`"" "/Output=`"$DestinationFilePath`"" "/LogFile=`"$LogFilePath`""
