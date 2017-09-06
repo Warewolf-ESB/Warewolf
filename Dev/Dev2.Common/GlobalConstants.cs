@@ -627,6 +627,7 @@ where pn.nspname = 'public';
         public static string ApplicationXmlHeader { get; } = "application/xml";
         public static string ApplicationTextHeader { get; } = "text/plain";
         public static string ContentType { get;}= "Content-Type";
+        public static string SaveReasonForDeploy { get; } = "Deploy";
 
         public static string DropboxPathNotFoundException = "Dropbox location cannot be found";
         public static string DropboxPathNotFileException = "Please specify the path of a file in Dropbox";
