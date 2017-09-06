@@ -269,6 +269,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Web", "Dev2.Web2\Dev2.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.MergeParser", "Warewolf.MergeParser\Warewolf.MergeParser.csproj", "{01B6F143-3F8C-4545-B06F-57D2C5AE7C9C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.MergeParser.Tests", "Warewolf.MergeParser.Tests\Warewolf.MergeParser.Tests.csproj", "{240C477A-DD4C-4604-A6E9-43024257104E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -1064,6 +1066,14 @@ Global
 		{01B6F143-3F8C-4545-B06F-57D2C5AE7C9C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{01B6F143-3F8C-4545-B06F-57D2C5AE7C9C}.Release|x86.ActiveCfg = Release|Any CPU
 		{01B6F143-3F8C-4545-B06F-57D2C5AE7C9C}.Release|x86.Build.0 = Release|Any CPU
+		{240C477A-DD4C-4604-A6E9-43024257104E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{240C477A-DD4C-4604-A6E9-43024257104E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{240C477A-DD4C-4604-A6E9-43024257104E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{240C477A-DD4C-4604-A6E9-43024257104E}.Debug|x86.Build.0 = Debug|Any CPU
+		{240C477A-DD4C-4604-A6E9-43024257104E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{240C477A-DD4C-4604-A6E9-43024257104E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{240C477A-DD4C-4604-A6E9-43024257104E}.Release|x86.ActiveCfg = Release|Any CPU
+		{240C477A-DD4C-4604-A6E9-43024257104E}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
