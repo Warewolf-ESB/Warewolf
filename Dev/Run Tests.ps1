@@ -1069,7 +1069,7 @@ if ($AssemblyFileVersionsTest.IsPresent) {
 		    }
 
             # Check for invalid.
-            if ($ReadVersion.StartsWith("0.0.") -or $ReadVersion.EndsWith(".0") -or ($LastReadVersion -ne $ReadVersion -and $LastReadVersion -ne "0.0.0.0")) {
+            if ($ReadVersion.StartsWith("0.0.") -or ($LastReadVersion -ne $ReadVersion -and $LastReadVersion -ne "0.0.0.0")) {
 			    $getFullPath = $file.FullName
 	            Write-Host ERROR! Invalid version! $getFullPath $ReadVersion $LastReadVersion
 	            throw "ERROR! `"$getFullPath $ReadVersion`" is either an invalid version or not equal to `"$LastReadVersion`". All Warewolf assembly versions in `"$TestsPath`" must conform and cannot start with 0.0. or end with .0"
