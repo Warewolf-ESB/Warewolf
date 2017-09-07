@@ -19,19 +19,34 @@ namespace Gma.DataStructures.StringSearch
             m_OtherRest = otherRest;
         }
 
-        public MatchKind MatchKind => m_ThisRest.Length == 0
-            ? (m_OtherRest.Length == 0
-                ? MatchKind.ExactMatch
-                : MatchKind.IsContained)
-            : (m_OtherRest.Length == 0
-                ? MatchKind.Contains
-                : MatchKind.Partial);
+        public MatchKind MatchKind
+        {
+            get
+            {
+                return m_ThisRest.Length == 0
+                    ? (m_OtherRest.Length == 0
+                        ? MatchKind.ExactMatch
+                        : MatchKind.IsContained)
+                    : (m_OtherRest.Length == 0
+                        ? MatchKind.Contains
+                        : MatchKind.Partial);
+            }
+        }
 
-        public StringPartition OtherRest => m_OtherRest;
+        public StringPartition OtherRest
+        {
+            get { return m_OtherRest; }
+        }
 
-        public StringPartition ThisRest => m_ThisRest;
+        public StringPartition ThisRest
+        {
+            get { return m_ThisRest; }
+        }
 
-        public StringPartition CommonHead => m_CommonHead;
+        public StringPartition CommonHead
+        {
+            get { return m_CommonHead; }
+        }
 
 
         public bool Equals(ZipResult other)
