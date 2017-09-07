@@ -137,6 +137,55 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.RabbitMQ
             Assert.IsFalse(equals);
         }
 
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void DisplayName_Same_Object_IsEqual()
+        {
+            //---------------Set up test pack-------------------
+            var uniqueId = Guid.NewGuid().ToString();
+            var multiAssign = new DsfConsumeRabbitMQActivity() { UniqueID = uniqueId, Result = "" , DisplayName = "a"};
+            var multiAssign1 = new DsfConsumeRabbitMQActivity() { UniqueID = uniqueId, Result = "", DisplayName = "a" };
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(multiAssign);
+            //---------------Execute Test ----------------------
+            var @equals = multiAssign.Equals(multiAssign1);
+            //---------------Test Result -----------------------
+            Assert.IsTrue(equals);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void DisplayName_Different_Object_Is_Not_Equal()
+        {
+            //---------------Set up test pack-------------------
+            var uniqueId = Guid.NewGuid().ToString();
+            var multiAssign = new DsfConsumeRabbitMQActivity() { UniqueID = uniqueId, Result = "a", DisplayName = "A" };
+            var multiAssign1 = new DsfConsumeRabbitMQActivity() { UniqueID = uniqueId, Result = "a", DisplayName = "ass" };
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(multiAssign);
+            //---------------Execute Test ----------------------
+            var @equals = multiAssign.Equals(multiAssign1);
+            //---------------Test Result -----------------------
+            Assert.IsFalse(equals);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void DisplayName_Different_Object_Is_Not_Equal_CaseSensitive()
+        {
+            //---------------Set up test pack-------------------
+            var uniqueId = Guid.NewGuid().ToString();
+            var multiAssign = new DsfConsumeRabbitMQActivity() { UniqueID = uniqueId, Result = "A", DisplayName = "AAA" };
+            var multiAssign1 = new DsfConsumeRabbitMQActivity() { UniqueID = uniqueId, Result = "A", DisplayName = "aaa" };
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(multiAssign);
+            //---------------Execute Test ----------------------
+            var @equals = multiAssign.Equals(multiAssign1);
+            //---------------Test Result -----------------------
+            Assert.IsFalse(equals);
+        }
+
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void Response_Same_Object_IsEqual()

@@ -418,6 +418,7 @@ namespace Dev2.Activities.RabbitMQ.Consume
                 && string.Equals(ObjectName, other.ObjectName)
                 && RabbitMQSourceResourceId.Equals(other.RabbitMQSourceResourceId)
                 && string.Equals(QueueName, other.QueueName)
+                && string.Equals(DisplayName, other.DisplayName)
                 && string.Equals(Response, other.Response)
                 && string.Equals(Prefetch, other.Prefetch)
                 && Acknowledge == other.Acknowledge
@@ -445,6 +446,7 @@ namespace Dev2.Activities.RabbitMQ.Consume
                 hashCode = (hashCode * 397) ^ _timeOut;
                 hashCode = (hashCode * 397) ^ IsObject.GetHashCode();
                 hashCode = (hashCode * 397) ^ (ObjectName != null ? ObjectName.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (DisplayName != null ? DisplayName.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ RabbitMQSourceResourceId.GetHashCode();
                 hashCode = (hashCode * 397) ^ (QueueName != null ? QueueName.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (Response != null ? Response.GetHashCode() : 0);
