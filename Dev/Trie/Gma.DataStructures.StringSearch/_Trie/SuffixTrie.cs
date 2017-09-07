@@ -1,14 +1,16 @@
 ﻿// This code is distributed under MIT license. Copyright (c) 2013 George Mamaladze
 // See license.txt or http://opensource.org/licenses/mit-license.php
+
 using System.Collections.Generic;
 using System.Linq;
+
 
 namespace Gma.DataStructures.StringSearch
 {
     public class SuffixTrie<T> : ITrie<T>
     {
-        private readonly Trie<T> m_InnerTrie;
-        private readonly int m_MinSuffixLength;
+        private readonly Trie<T> _mInnerTrie;
+        private readonly int _mMinSuffixLength;
 
         public SuffixTrie(int minSuffixLength)
             : this(new Trie<T>(), minSuffixLength)
@@ -17,24 +19,38 @@ namespace Gma.DataStructures.StringSearch
 
         private SuffixTrie(Trie<T> innerTrie, int minSuffixLength)
         {
-            m_InnerTrie = innerTrie;
-            m_MinSuffixLength = minSuffixLength;
+
+            _mInnerTrie = innerTrie;
+            _mMinSuffixLength = minSuffixLength;
         }
 
         public IEnumerable<T> Retrieve(string query)
         {
             return
-                m_InnerTrie
-                    .Retrieve(query)
-                    .Distinct();
+                _mInnerTrie
+                    .Retrieve(query).Distinct(new StringComparer<T>());
         }
+
+        
 
         public void Add(string key, T value)
         {
-            foreach (string suffix in GetAllSuffixes(m_MinSuffixLength, key))
+            var original = GetAllSuffixes(_mMinSuffixLength, key);
+            var lowerCasedString = GetAllSuffixes(_mMinSuffixLength, key.ToLower());
+            var upperCasedString = GetAllSuffixes(_mMinSuffixLength, key.ToUpper());
+            var reversedString = GetAllSuffixes(_mMinSuffixLength, ReverseString(key));
+            var suffixes =lowerCasedString?.Union(upperCasedString)?.Union(original.Union(reversedString));
+            foreach (string suffix in suffixes?? new List<string>())
             {
-                m_InnerTrie.Add(suffix, value);
+                _mInnerTrie.Add(suffix, value);
             }
+
+        }
+        private string ReverseString(string input)
+        {
+            var array = input?.Select(c => char.IsLetter(c) ? (char.IsUpper(c) ? char.ToLower(c) : char.ToUpper(c)) : c).ToArray();
+            string reversedCase = new string(array);
+            return reversedCase;
         }
 
         private static IEnumerable<string> GetAllSuffixes(int minSuffixLength, string word)

@@ -1,10 +1,12 @@
 ﻿// This code is distributed under MIT license. Copyright (c) 2013 George Mamaladze
 // See license.txt or http://opensource.org/licenses/mit-license.php
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 namespace Gma.DataStructures.StringSearch
 {
+
     public class PatriciaSuffixTrie<TValue> : ITrie<TValue>
     {
         private readonly int m_MinQueryLength;
@@ -22,10 +24,7 @@ namespace Gma.DataStructures.StringSearch
             m_InnerTrie = innerTrie;
         }
 
-        protected int MinQueryLength
-        {
-            get { return m_MinQueryLength; }
-        }
+        protected int MinQueryLength => m_MinQueryLength;
 
         public IEnumerable<TValue> Retrieve(string query)
         {
