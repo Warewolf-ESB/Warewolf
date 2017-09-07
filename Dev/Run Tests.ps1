@@ -1045,7 +1045,7 @@ if ($TotalNumberOfJobsToRun -gt 0) {
         }
     }
     if ($ApplyDotCover) {
-        Invoke-Expression -Command ("&'$PSCommandPath' -JobName '$JobName' -MergeDotCoverSnapshotsInDirectory '$TestsResultsPath'")
+        Invoke-Expression -Command ("&'$PSCommandPath' -JobName '$JobName' -MergeDotCoverSnapshotsInDirectory '$TestsResultsPath' -DotCoverPath '$DotCoverPath'")
     }
 }
 
