@@ -279,16 +279,16 @@ namespace Dev2.Studio.Core.DataList
             return suffixes;
         }
 
+        string TitleCase(string input)
+        {
+            return input?[0].ToString().ToUpper() + input?.Substring(1).ToLower();
+        }
+
         string ReverseCase(string input)
         {
             var array = input?.Select(c => char.IsLetter(c) ? (char.IsUpper(c) ? char.ToLower(c) : char.ToUpper(c)) : c).ToArray();
             string reversedCase = new string(array);
             return reversedCase;
-        }
-
-        string TitleCase(string input)
-        {
-            return input?[0].ToString().ToUpper() + input?.Substring(1).ToLower();
         }
 
         #endregion Implementation of ISuggestionProvider
