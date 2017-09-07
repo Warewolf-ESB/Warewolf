@@ -67,7 +67,7 @@ if ("$NuGetPath" -eq "" -or !(Test-Path "$NuGetPath" -ErrorAction SilentlyContin
     }
 }
 if ("$NuGetPath" -eq "" -or !(Test-Path "$NuGetPath" -ErrorAction SilentlyContinue)) {
-	Write-Host NuGet not found. Download from: https://dist.nuget.org/win-x86-commandline/latest/nuget.exe
+	Write-Host NuGet not found. Download from: https://dist.nuget.org/win-x86-commandline/latest/nuget.exe to: c:\windows\nuget.exe. If you do not have permission to create c:\windows\nuget.exe use the -NuGet switch.
     sleep 10
     exit 1
 }
