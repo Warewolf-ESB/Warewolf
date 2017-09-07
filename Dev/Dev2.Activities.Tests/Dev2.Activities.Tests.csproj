@@ -171,6 +171,7 @@
       <Link>Run Tests.ps1</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <Compile Include="ActivityComparerTests\Assigns\ActivityDTOTests.cs" />
     <Compile Include="ActivityComparerTests\Assigns\MultiAssignComparerTests.cs" />
     <Compile Include="ActivityTests\AbstractMultipleFilesActivityTests.cs" />
     <Compile Include="ActivityTests\AggregateCalculateActivityTest.cs" />
