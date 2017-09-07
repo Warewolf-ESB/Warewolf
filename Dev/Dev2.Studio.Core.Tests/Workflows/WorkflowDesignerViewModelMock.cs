@@ -60,7 +60,7 @@ namespace Dev2.Core.Tests.Workflows
         {
             _moq.SetupAllProperties();
             _wd = _moq.Object;
-            ModelService = modelService;
+            _modelService = modelService;
         }
 
         public WorkflowDesignerViewModelMock(IContextualResourceModel resource, IWorkflowHelper workflowHelper, IPopupController popupController, IExternalProcessExecutor processExecutor, bool createDesigner = false)
@@ -138,7 +138,7 @@ namespace Dev2.Core.Tests.Workflows
         public void SetupRequestExapandAll()
         {
             RequestedExpandAll = false;
-            DesignerManagementService.ExpandAllRequested += (sender, args) =>
+            _designerManagementService.ExpandAllRequested += (sender, args) =>
             {
                 RequestedExpandAll = true;
             };
@@ -147,7 +147,7 @@ namespace Dev2.Core.Tests.Workflows
         public void SetupRequestRestoreAll()
         {
             RequestedExpandAll = false;
-            DesignerManagementService.RestoreAllRequested += (sender, args) =>
+            _designerManagementService.RestoreAllRequested += (sender, args) =>
             {
                 RequestedRestoreAll = true;
             };
@@ -156,7 +156,7 @@ namespace Dev2.Core.Tests.Workflows
         public void SetupRequestCollapseAll()
         {
             RequestedExpandAll = false;
-            DesignerManagementService.CollapseAllRequested += (sender, args) =>
+            _designerManagementService.CollapseAllRequested += (sender, args) =>
             {
                 RequestedCollapseAll = true;
             };

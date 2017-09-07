@@ -9,7 +9,6 @@
 */
 
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Dev2.Activities;
 using Dev2.Common.Interfaces.DB;
@@ -18,13 +17,10 @@ using Dev2.DataList.Contract;
 using Dev2.Runtime.ServiceModel.Data;
 using Warewolf.Core;
 
-
 namespace Dev2.Utilities
 {
-
     public static class ActivityUtils
-    {
-    
+    {    
         public static DsfSqlServerDatabaseActivity GetDsfSqlServerDatabaseActivity(DsfDatabaseActivity dbActivity, DbService service, DbSource source)
         {
             DsfSqlServerDatabaseActivity dsfSqlServerDatabaseActivity = null;

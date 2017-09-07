@@ -37,7 +37,7 @@ using Warewolf.ResourceManagement;
 
 namespace Dev2.Runtime.Hosting
 {
-    
+
     public class ResourceCatalog : IResourceCatalog, IDisposable
     {
         readonly object _loadLock = new object();
@@ -218,15 +218,15 @@ namespace Dev2.Runtime.Hosting
         public void AddToActivityCache(IResource resource)
         {
             IResourceActivityCache parser = null;
-            if(_parsers != null && !_parsers.TryGetValue(GlobalConstants.ServerWorkspaceID, out parser))
+            if (_parsers != null && !_parsers.TryGetValue(GlobalConstants.ServerWorkspaceID, out parser))
             {
                 parser = new ResourceActivityCache(CustomContainer.Get<IActivityParser>(), new ConcurrentDictionary<Guid, IDev2Activity>());
                 _parsers.Add(GlobalConstants.ServerWorkspaceID, parser);
             }
-            if(parser != null && !parser.HasActivityInCache(resource.ResourceID))
+            if (parser != null && !parser.HasActivityInCache(resource.ResourceID))
             {
                 var service = GetService(GlobalConstants.ServerWorkspaceID, resource.ResourceID, resource.ResourceName);
-                if(service != null)
+                if (service != null)
                 {
                     var sa = service.Actions.FirstOrDefault();
                     MapServiceActionDependencies(GlobalConstants.ServerWorkspaceID, sa);
@@ -352,7 +352,7 @@ namespace Dev2.Runtime.Hosting
             }
         }
 
-        internal ResourceCatalogResult SaveImpl(Guid workspaceID, IResource resource, StringBuilder contents, bool overwriteExisting = true, string savedPath = "") => ((ResourceSaveProvider)_catalogPluginContainer.SaveProvider).SaveImpl(workspaceID, resource, contents, overwriteExisting, savedPath);
+        internal ResourceCatalogResult SaveImpl(Guid workspaceID, IResource resource, StringBuilder contents, bool overwriteExisting = true, string savedPath = "", string reason = "") => ((ResourceSaveProvider)_catalogPluginContainer.SaveProvider).SaveImpl(workspaceID, resource, contents, overwriteExisting, savedPath, reason);
 
         #endregion
 
@@ -379,7 +379,7 @@ namespace Dev2.Runtime.Hosting
 
         #endregion
 
-    
+
         public StringBuilder ToPayload(IResource resource)
         {
             var result = new StringBuilder();
