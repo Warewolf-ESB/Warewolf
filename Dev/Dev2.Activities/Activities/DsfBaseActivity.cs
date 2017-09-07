@@ -23,7 +23,6 @@ namespace Dev2.Activities
     {
         private List<string> _executionResult;
        public IResponseManager ResponseManager { get; set; }
-        #region Get Debug Inputs/Outputs
 
         public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList, int update)
         {
@@ -39,9 +38,7 @@ namespace Dev2.Activities
             return _debugInputs;
         }
 
-        #endregion Get Debug Inputs/Outputs
 
-        #region GetForEachInputs/Outputs
 
         [Outputs("Result")]
         [FindMissing]
@@ -194,13 +191,11 @@ namespace Dev2.Activities
             return GetForEachItems(Result);
         }
 
-        #endregion GetForEachInputs/Outputs
-
         public bool Equals(DsfBaseActivity other)
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            return base.Equals(other) && Equals(_executionResult, other._executionResult) && string.Equals(Result, other.Result);
+            return base.Equals(other) && string.Equals(Result, other.Result);
         }
 
         public override bool Equals(object obj)

@@ -43,7 +43,7 @@ using Warewolf.Storage.Interfaces;
 namespace Dev2.Activities.RabbitMQ.Consume
 {
     [ToolDescriptorInfo("RabbitMq", "RabbitMQ Consume", ToolType.Native, "406ea660-64cf-4c82-b6f0-42d48172a799", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Utility", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Utility_Rabbit_MQ_Consume")]
-    public class DsfConsumeRabbitMQActivity : DsfBaseActivity,IEquatable<DsfConsumeRabbitMQActivity>
+    public class DsfConsumeRabbitMQActivity : DsfBaseActivity, IEquatable<DsfConsumeRabbitMQActivity>
     {
         public List<string> _messages;
         public string _result = "Success";
@@ -394,7 +394,36 @@ namespace Dev2.Activities.RabbitMQ.Consume
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            return base.Equals(other) && string.Equals(Result, other.Result) && Prefetch == other.Prefetch && TimeOut == other.TimeOut  && IsObject == other.IsObject && string.Equals(ObjectName, other.ObjectName) && RabbitMQSourceResourceId.Equals(other.RabbitMQSourceResourceId) && string.Equals(QueueName, other.QueueName) && string.Equals(Response, other.Response) && string.Equals(Prefetch, other.Prefetch) && Acknowledge == other.Acknowledge && string.Equals(TimeOut, other.TimeOut) && ReQueue == other.ReQueue  && Equals(Connection, other.Connection)  && Equals(RabbitSource, other.RabbitSource);
+            bool sourceIsSame;
+            var b = RabbitSource == null && other.RabbitSource != null;
+            var b1 = other.RabbitSource == null && RabbitSource != null;
+            if (b || b1)
+            {
+                sourceIsSame = false;
+            }
+            else if(RabbitSource == null && other.RabbitSource == null)
+            {
+                sourceIsSame = true;
+            }
+            else
+            {
+                sourceIsSame = RabbitSource?.Equals(other.RabbitSource) ?? false;
+            }
+            //var sourceIsSame = (RabbitSource?.Equals(other.RabbitSource) ?? false);
+            return base.Equals(other)
+                && string.Equals(Result, other.Result)
+                && Prefetch == other.Prefetch
+                && TimeOut == other.TimeOut
+                && IsObject == other.IsObject
+                && string.Equals(ObjectName, other.ObjectName)
+                && RabbitMQSourceResourceId.Equals(other.RabbitMQSourceResourceId)
+                && string.Equals(QueueName, other.QueueName)
+                && string.Equals(Response, other.Response)
+                && string.Equals(Prefetch, other.Prefetch)
+                && Acknowledge == other.Acknowledge
+                && string.Equals(TimeOut, other.TimeOut)
+                && ReQueue == other.ReQueue
+                && sourceIsSame;
         }
 
         public override bool Equals(object obj)
@@ -402,7 +431,7 @@ namespace Dev2.Activities.RabbitMQ.Consume
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
             if (obj.GetType() != this.GetType()) return false;
-            return Equals((DsfConsumeRabbitMQActivity) obj);
+            return Equals((DsfConsumeRabbitMQActivity)obj);
         }
 
         public override int GetHashCode()
@@ -411,10 +440,9 @@ namespace Dev2.Activities.RabbitMQ.Consume
             {
                 int hashCode = base.GetHashCode();
                 hashCode = (hashCode * 397) ^ (_messages != null ? _messages.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (_result != null ? _result.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ _prefetch.GetHashCode();
+                hashCode = (hashCode * 397) ^ (Result != null ? Result.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ Prefetch.GetHashCode();
                 hashCode = (hashCode * 397) ^ _timeOut;
-                hashCode = (hashCode * 397) ^ (_connectionFactory != null ? _connectionFactory.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ IsObject.GetHashCode();
                 hashCode = (hashCode * 397) ^ (ObjectName != null ? ObjectName.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ RabbitMQSourceResourceId.GetHashCode();

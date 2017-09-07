@@ -175,6 +175,7 @@
     <Compile Include="ActivityComparerTests\ObjectAssign\MultiAssignComparerTests.cs" />
     <Compile Include="ActivityComparerTests\Assigns\ActivityDTOTests.cs" />
     <Compile Include="ActivityComparerTests\Assigns\MultiAssignComparerTests.cs" />
+    <Compile Include="ActivityComparerTests\RabbitMQ\DsfConsumeRabbitMQActivityComparerTests.cs" />
     <Compile Include="ActivityTests\AbstractMultipleFilesActivityTests.cs" />
     <Compile Include="ActivityTests\AggregateCalculateActivityTest.cs" />
     <Compile Include="ActivityTests\BaseActivityTests.cs" />
