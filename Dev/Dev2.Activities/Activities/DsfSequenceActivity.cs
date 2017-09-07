@@ -33,7 +33,7 @@ namespace Dev2.Activities
 {
 
     [ToolDescriptorInfo("ControlFlow-Sequence", "Sequence", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Control Flow", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Flow_Sequence")]
-    public class DsfSequenceActivity : DsfActivityAbstract<string>
+    public class DsfSequenceActivity : DsfActivityAbstract<string>,IEquatable<DsfSequenceActivity>
     {
         private readonly Sequence _innerSequence = new Sequence();
         string _previousParentID;
@@ -301,6 +301,34 @@ namespace Dev2.Activities
         {
             ServiceTestHelper.UpdateDebugStateWithAssertions(dataObject, serviceTestTestSteps, childId.ToString());
             
-        }   
+        }
+
+        public bool Equals(DsfSequenceActivity other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return base.Equals(other) && Equals(_innerSequence, other._innerSequence) && string.Equals(_previousParentID, other._previousParentID) && _originalUniqueID.Equals(other._originalUniqueID) && Equals(Activities, other.Activities);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((DsfSequenceActivity) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ (_innerSequence != null ? _innerSequence.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (_previousParentID != null ? _previousParentID.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ _originalUniqueID.GetHashCode();
+                hashCode = (hashCode * 397) ^ (Activities != null ? Activities.GetHashCode() : 0);
+                return hashCode;
+            }
+        }
     }
 }

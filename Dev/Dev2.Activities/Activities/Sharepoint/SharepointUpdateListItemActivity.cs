@@ -28,7 +28,7 @@ using Warewolf.Storage.Interfaces;
 namespace Dev2.Activities.Sharepoint
 {
     [ToolDescriptorInfo("SharepointLogo", "Update List Item(s)", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Sharepoint", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_SharePoint_Update_List_Item")]
-    public class SharepointUpdateListItemActivity : DsfActivityAbstract<string>
+    public class SharepointUpdateListItemActivity : DsfActivityAbstract<string>,IEquatable<SharepointUpdateListItemActivity>
     {
         readonly SharepointUtils _sharepointUtils;
 
@@ -246,5 +246,37 @@ namespace Dev2.Activities.Sharepoint
         public Guid SharepointServerResourceId { get; set; }
         public string SharepointList { get; set; }
         public List<SharepointReadListTo> ReadListItems { get; set; }
+
+        public bool Equals(SharepointUpdateListItemActivity other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return base.Equals(other) && Equals(_sharepointUtils, other._sharepointUtils) && _indexCounter == other._indexCounter && Equals(FilterCriteria, other.FilterCriteria) && RequireAllCriteriaToMatch == other.RequireAllCriteriaToMatch && string.Equals(Result, other.Result) && SharepointServerResourceId.Equals(other.SharepointServerResourceId) && string.Equals(SharepointList, other.SharepointList) && Equals(ReadListItems, other.ReadListItems);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((SharepointUpdateListItemActivity) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ (_sharepointUtils != null ? _sharepointUtils.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ _indexCounter;
+                hashCode = (hashCode * 397) ^ (FilterCriteria != null ? FilterCriteria.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ RequireAllCriteriaToMatch.GetHashCode();
+                hashCode = (hashCode * 397) ^ (Result != null ? Result.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ SharepointServerResourceId.GetHashCode();
+                hashCode = (hashCode * 397) ^ (SharepointList != null ? SharepointList.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (ReadListItems != null ? ReadListItems.GetHashCode() : 0);
+                return hashCode;
+            }
+        }
     }
 }

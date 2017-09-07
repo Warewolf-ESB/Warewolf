@@ -40,7 +40,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
     /// Activity for finding records accoring to a search criteria that the user specifies
     /// </New>
     [ToolDescriptorInfo("RecordSet-FindRecords", "Find Records", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Recordset", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Recordset_Find_Records")]
-    public class DsfFindRecordsMultipleCriteriaActivity : DsfActivityAbstract<string>, ICollectionActivity
+    public class DsfFindRecordsMultipleCriteriaActivity : DsfActivityAbstract<string>, ICollectionActivity,IEquatable<DsfFindRecordsMultipleCriteriaActivity>
     {
         #region Properties
 
@@ -532,5 +532,36 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
         #endregion
+
+        public bool Equals(DsfFindRecordsMultipleCriteriaActivity other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return base.Equals(other) && string.Equals(FieldsToSearch, other.FieldsToSearch) && string.Equals(Result, other.Result) && string.Equals(StartIndex, other.StartIndex) && MatchCase == other.MatchCase && RequireAllTrue == other.RequireAllTrue && RequireAllFieldsToMatch == other.RequireAllFieldsToMatch && Equals(ResultsCollection, other.ResultsCollection);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((DsfFindRecordsMultipleCriteriaActivity) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ (FieldsToSearch != null ? FieldsToSearch.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Result != null ? Result.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (StartIndex != null ? StartIndex.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ MatchCase.GetHashCode();
+                hashCode = (hashCode * 397) ^ RequireAllTrue.GetHashCode();
+                hashCode = (hashCode * 397) ^ RequireAllFieldsToMatch.GetHashCode();
+                hashCode = (hashCode * 397) ^ (ResultsCollection != null ? ResultsCollection.GetHashCode() : 0);
+                return hashCode;
+            }
+        }
     }
 }

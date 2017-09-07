@@ -39,7 +39,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
 {
     [ToolDescriptorInfo("Data-Assign", "Assign", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Data", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Data_Assign")]
-    public class DsfMultiAssignActivity : DsfActivityAbstract<string>
+    public class DsfMultiAssignActivity : DsfActivityAbstract<string>,IEquatable<DsfMultiAssignActivity>
     {
         
         public const string CalculateTextConvertPrefix = GlobalConstants.CalculateTextConvertPrefix;
@@ -478,7 +478,34 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     where !string.IsNullOrEmpty(item.FieldName) && item.FieldName.Contains("[[")
                     select new DsfForEachItem { Name = item.FieldValue, Value = item.FieldName }).ToList();
         }
-      
+
+        public bool Equals(DsfMultiAssignActivity other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return base.Equals(other) && Equals(_fieldsCollection, other._fieldsCollection) && UpdateAllOccurrences == other.UpdateAllOccurrences && CreateBookmark == other.CreateBookmark && string.Equals(ServiceHost, other.ServiceHost);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((DsfMultiAssignActivity) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ (_fieldsCollection != null ? _fieldsCollection.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ UpdateAllOccurrences.GetHashCode();
+                hashCode = (hashCode * 397) ^ CreateBookmark.GetHashCode();
+                hashCode = (hashCode * 397) ^ (ServiceHost != null ? ServiceHost.GetHashCode() : 0);
+                return hashCode;
+            }
+        }
     }
 
 }

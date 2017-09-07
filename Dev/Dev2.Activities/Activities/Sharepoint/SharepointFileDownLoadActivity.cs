@@ -24,7 +24,7 @@ using Warewolf.Storage.Interfaces;
 namespace Dev2.Activities.Sharepoint
 {
     [ToolDescriptorInfo("SharepointLogo", "Download File", ToolType.Native, "2246E59B-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Sharepoint", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_SharePoint_Download_File")]
-    public class SharepointFileDownLoadActivity : DsfAbstractFileActivity
+    public class SharepointFileDownLoadActivity : DsfAbstractFileActivity,IEquatable<SharepointFileDownLoadActivity>
     {
         public SharepointFileDownLoadActivity() : base("SharePoint Download File")
         {
@@ -212,6 +212,35 @@ namespace Dev2.Activities.Sharepoint
                 debugOutput.FlushStringBuilder();
             }
             return _debugOutputs;
+        }
+
+        public bool Equals(SharepointFileDownLoadActivity other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return base.Equals(other) && string.Equals(ServerInputPath, other.ServerInputPath) && string.Equals(LocalInputPath, other.LocalInputPath) && Overwrite == other.Overwrite && Equals(SharepointSource, other.SharepointSource) && SharepointServerResourceId.Equals(other.SharepointServerResourceId);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((SharepointFileDownLoadActivity) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ (ServerInputPath != null ? ServerInputPath.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (LocalInputPath != null ? LocalInputPath.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ Overwrite.GetHashCode();
+                hashCode = (hashCode * 397) ^ (SharepointSource != null ? SharepointSource.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ SharepointServerResourceId.GetHashCode();
+                return hashCode;
+            }
         }
     }
 }

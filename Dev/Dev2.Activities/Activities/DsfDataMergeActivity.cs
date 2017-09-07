@@ -39,7 +39,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
 {
     [ToolDescriptorInfo("Data-DataMerge", "Data Merge", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Data", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Data_Data_Merge")]
-    public class DsfDataMergeActivity : DsfActivityAbstract<string>, ICollectionActivity
+    public class DsfDataMergeActivity : DsfActivityAbstract<string>, ICollectionActivity,IEquatable<DsfDataMergeActivity>
     {
         #region Class Members
 
@@ -503,6 +503,32 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public override List<string> GetOutputs()
         {
             return new List<string> { Result };
+        }
+
+        public bool Equals(DsfDataMergeActivity other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return base.Equals(other) && string.Equals(_result, other._result) && Equals(_mergeCollection, other._mergeCollection);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((DsfDataMergeActivity) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ (_result != null ? _result.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (_mergeCollection != null ? _mergeCollection.GetHashCode() : 0);
+                return hashCode;
+            }
         }
     }
 }

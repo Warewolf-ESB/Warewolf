@@ -43,7 +43,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
     /// Activity for replacing a certain character set in a number of field with a new character set 
     /// </New>
     [ToolDescriptorInfo("Data-Replace", "Replace", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Data", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Data_Replace")]
-    public class DsfReplaceActivity : DsfActivityAbstract<string>
+    public class DsfReplaceActivity : DsfActivityAbstract<string>,IEquatable<DsfReplaceActivity>
     {
 
         #region Properties
@@ -360,5 +360,33 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #endregion
 
+        public bool Equals(DsfReplaceActivity other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return base.Equals(other) && string.Equals(FieldsToSearch, other.FieldsToSearch) && string.Equals(Find, other.Find) && string.Equals(ReplaceWith, other.ReplaceWith) && CaseMatch == other.CaseMatch && string.Equals(Result, other.Result);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((DsfReplaceActivity) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ (FieldsToSearch != null ? FieldsToSearch.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Find != null ? Find.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (ReplaceWith != null ? ReplaceWith.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ CaseMatch.GetHashCode();
+                hashCode = (hashCode * 397) ^ (Result != null ? Result.GetHashCode() : 0);
+                return hashCode;
+            }
+        }
     }
 }

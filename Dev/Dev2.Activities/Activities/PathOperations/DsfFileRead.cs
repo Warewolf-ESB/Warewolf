@@ -33,7 +33,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
     /// Purpose : To provide an activity that can read the contents of a file from FTP, FTPS and file system
     /// </summary>
     [ToolDescriptorInfo("FileFolder-Read", "Read File", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "File, FTP, FTPS & SFTP", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_File_Read_File")]
-    public class DsfFileRead : DsfAbstractFileActivity, IPathInput
+    public class DsfFileRead : DsfAbstractFileActivity, IPathInput,IEquatable<DsfFileRead>
     {
 
         public DsfFileRead()
@@ -146,5 +146,28 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
         #endregion
+
+        public bool Equals(DsfFileRead other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return base.Equals(other) && string.Equals(InputPath, other.InputPath);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((DsfFileRead) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return (base.GetHashCode() * 397) ^ (InputPath != null ? InputPath.GetHashCode() : 0);
+            }
+        }
     }
 }

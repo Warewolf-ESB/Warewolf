@@ -39,7 +39,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
 
     [ToolDescriptorInfo("Utility-DateTime", "Date Time", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Utility", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Utility_Date_Time")]
-    public class DsfDateTimeActivity : DsfActivityAbstract<string>, IDateTimeOperationTO
+    public class DsfDateTimeActivity : DsfActivityAbstract<string>, IDateTimeOperationTO,IEquatable<DsfDateTimeActivity>
     {
 
         #region Properties
@@ -375,5 +375,36 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
         #endregion
+
+        public bool Equals(DsfDateTimeActivity other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return base.Equals(other) && string.Equals(DateTime, other.DateTime) && string.Equals(InputFormat, other.InputFormat) && string.Equals(OutputFormat, other.OutputFormat) && string.Equals(TimeModifierType, other.TimeModifierType) && string.Equals(TimeModifierAmountDisplay, other.TimeModifierAmountDisplay) && TimeModifierAmount == other.TimeModifierAmount && string.Equals(Result, other.Result);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((DsfDateTimeActivity) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ (DateTime != null ? DateTime.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (InputFormat != null ? InputFormat.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (OutputFormat != null ? OutputFormat.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (TimeModifierType != null ? TimeModifierType.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (TimeModifierAmountDisplay != null ? TimeModifierAmountDisplay.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ TimeModifierAmount;
+                hashCode = (hashCode * 397) ^ (Result != null ? Result.GetHashCode() : 0);
+                return hashCode;
+            }
+        }
     }
 }

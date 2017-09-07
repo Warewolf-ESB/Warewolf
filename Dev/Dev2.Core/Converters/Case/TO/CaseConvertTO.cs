@@ -8,6 +8,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using Dev2.Common.Interfaces.Core.Convertors.Case;
@@ -19,7 +20,7 @@ using Dev2.Util;
 
 namespace Dev2
 {
-    public class CaseConvertTO : ICaseConvertTO, IPerformsValidation
+    public class CaseConvertTO : ICaseConvertTO, IPerformsValidation,IEquatable<CaseConvertTO>
     {
         #region Fields
 
@@ -228,5 +229,38 @@ namespace Dev2
         }
 
         #endregion
+
+        public bool Equals(CaseConvertTO other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return string.Equals(_convertType, other._convertType) && Equals(_errors, other._errors) && string.Equals(_result, other._result) && string.Equals(_stringToConvert, other._stringToConvert) && Inserted == other.Inserted && Equals(Expressions, other.Expressions) && IndexNumber == other.IndexNumber && string.Equals(ExpressionToConvert, other.ExpressionToConvert) && string.Equals(WatermarkTextVariable, other.WatermarkTextVariable) && string.Equals(Error, other.Error);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((CaseConvertTO) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = (_convertType != null ? _convertType.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (_errors != null ? _errors.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (_result != null ? _result.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (_stringToConvert != null ? _stringToConvert.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ Inserted.GetHashCode();
+                hashCode = (hashCode * 397) ^ (Expressions != null ? Expressions.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ IndexNumber;
+                hashCode = (hashCode * 397) ^ (ExpressionToConvert != null ? ExpressionToConvert.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (WatermarkTextVariable != null ? WatermarkTextVariable.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Error != null ? Error.GetHashCode() : 0);
+                return hashCode;
+            }
+        }
     }
 }
