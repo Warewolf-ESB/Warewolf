@@ -19,7 +19,10 @@ namespace Gma.DataStructures.StringSearch
         }
 
 
-        protected override int KeyLength => 1;
+        protected override int KeyLength
+        {
+            get { return 1; }
+        }
 
         protected override IEnumerable<TValue> Values()
         {
