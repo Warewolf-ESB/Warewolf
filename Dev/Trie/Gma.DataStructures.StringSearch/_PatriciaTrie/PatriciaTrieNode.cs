@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Text;
 
 namespace Gma.DataStructures.StringSearch
 {
@@ -27,7 +28,10 @@ namespace Gma.DataStructures.StringSearch
             m_Children = children;
         }
 
-        protected override int KeyLength => m_Key.Length;
+        protected override int KeyLength
+        {
+            get { return m_Key.Length; }
+        }
 
         protected override IEnumerable<TValue> Values()
         {
@@ -129,6 +133,22 @@ namespace Gma.DataStructures.StringSearch
                 }
             }
             return null;
+        }
+
+        public string Traversal()
+        {
+            var result = new StringBuilder();
+            result.Append(m_Key);
+
+            string subtreeResult = string.Join(" ; ", m_Children.Values.Select(node => node.Traversal()).ToArray());
+            if (subtreeResult.Length != 0)
+            {
+                result.Append("[");
+                result.Append(subtreeResult);
+                result.Append("]");
+            }
+
+            return result.ToString();
         }
 
         public override string ToString()
