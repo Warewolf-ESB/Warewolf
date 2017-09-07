@@ -30,7 +30,7 @@ using Warewolf.Resource.Errors;
 namespace Dev2.Activities.RabbitMQ.Publish
 {
     [ToolDescriptorInfo("RabbitMq", "RabbitMQ Publish", ToolType.Native, "FFEC6885-597E-49A2-A1AD-AE81E33DF809", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Utility", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Utility_Rabbit_MQ_Publish")]
-    public class DsfPublishRabbitMQActivity : DsfBaseActivity
+    public class DsfPublishRabbitMQActivity : DsfBaseActivity,IEquatable<DsfPublishRabbitMQActivity>
     {
         #region Ctor
 
@@ -129,5 +129,38 @@ namespace Dev2.Activities.RabbitMQ.Publish
         }
 
         #endregion Overrides of DsfBaseActivity
+
+        public bool Equals(DsfPublishRabbitMQActivity other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return base.Equals(other) && RabbitMQSourceResourceId.Equals(other.RabbitMQSourceResourceId) && string.Equals(QueueName, other.QueueName) && IsDurable == other.IsDurable && IsExclusive == other.IsExclusive && IsAutoDelete == other.IsAutoDelete && string.Equals(Message, other.Message)  && Equals(RabbitMQSource, other.RabbitMQSource);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((DsfPublishRabbitMQActivity) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ RabbitMQSourceResourceId.GetHashCode();
+                hashCode = (hashCode * 397) ^ (QueueName != null ? QueueName.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ IsDurable.GetHashCode();
+                hashCode = (hashCode * 397) ^ IsExclusive.GetHashCode();
+                hashCode = (hashCode * 397) ^ IsAutoDelete.GetHashCode();
+                hashCode = (hashCode * 397) ^ (Message != null ? Message.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Connection != null ? Connection.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Channel != null ? Channel.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (RabbitMQSource != null ? RabbitMQSource.GetHashCode() : 0);
+                return hashCode;
+            }
+        }
     }
 }

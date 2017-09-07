@@ -25,7 +25,7 @@ using WarewolfParserInterop;
 namespace Dev2.Activities.Sharepoint
 {
     [ToolDescriptorInfo("SharepointLogo", "Read List Item(s)", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Sharepoint", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_SharePoint_Read_List_Item")]
-    public class SharepointReadListActivity : DsfActivityAbstract<string>
+    public class SharepointReadListActivity : DsfActivityAbstract<string>,IEquatable<SharepointReadListActivity>
     {
 
         public SharepointReadListActivity()
@@ -324,5 +324,35 @@ namespace Dev2.Activities.Sharepoint
         }
 
 
+        public bool Equals(SharepointReadListActivity other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return base.Equals(other) && _indexCounter == other._indexCounter && Equals(ReadListItems, other.ReadListItems) && SharepointServerResourceId.Equals(other.SharepointServerResourceId) && string.Equals(SharepointList, other.SharepointList) && Equals(FilterCriteria, other.FilterCriteria) && RequireAllCriteriaToMatch == other.RequireAllCriteriaToMatch && Equals(SharepointUtils, other.SharepointUtils);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((SharepointReadListActivity) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ _indexCounter;
+                hashCode = (hashCode * 397) ^ (ReadListItems != null ? ReadListItems.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ SharepointServerResourceId.GetHashCode();
+                hashCode = (hashCode * 397) ^ (SharepointList != null ? SharepointList.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (FilterCriteria != null ? FilterCriteria.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ RequireAllCriteriaToMatch.GetHashCode();
+                hashCode = (hashCode * 397) ^ (SharepointUtils != null ? SharepointUtils.GetHashCode() : 0);
+                return hashCode;
+            }
+        }
     }
 }

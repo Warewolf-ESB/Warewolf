@@ -40,7 +40,7 @@ using Warewolf.Storage.Interfaces;
 namespace Dev2.Activities
 {
     [ToolDescriptorInfo("Scripting-CMDScript", "CMD Script", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Scripting", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Scripting_CMD_Script")]
-    public class DsfExecuteCommandLineActivity : DsfActivityAbstract<string>
+    public class DsfExecuteCommandLineActivity : DsfActivityAbstract<string>,IEquatable<DsfExecuteCommandLineActivity>
     {
         #region Fields
 
@@ -490,5 +490,34 @@ namespace Dev2.Activities
         #endregion
 
         #endregion
+
+        public bool Equals(DsfExecuteCommandLineActivity other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return base.Equals(other) && string.Equals(CommandFileName, other.CommandFileName) && string.Equals(CommandResult, other.CommandResult)  && Equals(_nativeActivityContext, other._nativeActivityContext) && _commandPriority == other._commandPriority;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((DsfExecuteCommandLineActivity) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ (CommandFileName != null ? CommandFileName.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (CommandResult != null ? CommandResult.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (_process != null ? _process.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (_nativeActivityContext != null ? _nativeActivityContext.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (int) _commandPriority;
+                return hashCode;
+            }
+        }
     }
 }

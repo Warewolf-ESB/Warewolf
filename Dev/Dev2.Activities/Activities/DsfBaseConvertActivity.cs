@@ -36,7 +36,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
 {
     [ToolDescriptorInfo("Data-BaseConversion", "Base Convert", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Activities", "1.0.0.0", "", "Data", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Data_Base_Convert")]
-    public class DsfBaseConvertActivity : DsfActivityAbstract<string>, ICollectionActivity
+    public class DsfBaseConvertActivity : DsfActivityAbstract<string>, ICollectionActivity,IEquatable<DsfBaseConvertActivity>
     {
 
         #region Fields
@@ -438,5 +438,31 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
         #endregion
+
+        public bool Equals(DsfBaseConvertActivity other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return base.Equals(other) && Equals(_fac, other._fac) && ConvertCollection.SequenceEqual(other.ConvertCollection) ;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((DsfBaseConvertActivity) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ (_fac != null ? _fac.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (ConvertCollection != null ? ConvertCollection.GetHashCode() : 0);
+                return hashCode;
+            }
+        }
     }
 }

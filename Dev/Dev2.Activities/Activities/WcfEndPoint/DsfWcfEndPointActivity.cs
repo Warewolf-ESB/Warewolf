@@ -17,7 +17,7 @@ using Warewolf.Storage;
 namespace Dev2.Activities.WcfEndPoint
 {
     [ToolDescriptorInfo("WcfEndPoint", "WCF", ToolType.Native, "6AEB1028-6332-46F9-8BED-641DE4EA038E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Resources", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Resources_WCF")]
-    public class DsfWcfEndPointActivity : DsfMethodBasedActivity
+    public class DsfWcfEndPointActivity : DsfMethodBasedActivity,IEquatable<DsfWcfEndPointActivity>
     {
         public IWcfAction Method { get; set; }
         public IOutputDescription OutputDescription { get; set; }
@@ -86,6 +86,33 @@ namespace Dev2.Activities.WcfEndPoint
         public override enFindMissingType GetFindMissingType()
         {
             return enFindMissingType.DataGridActivity;
+        }
+
+        public bool Equals(DsfWcfEndPointActivity other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return base.Equals(other) && Equals(Method, other.Method) && Equals(OutputDescription, other.OutputDescription) && Equals(Source, other.Source);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((DsfWcfEndPointActivity) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ (Method != null ? Method.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (OutputDescription != null ? OutputDescription.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Source != null ? Source.GetHashCode() : 0);
+                return hashCode;
+            }
         }
     }
 }

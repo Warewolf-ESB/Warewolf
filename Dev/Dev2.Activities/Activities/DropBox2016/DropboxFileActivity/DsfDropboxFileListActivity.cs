@@ -22,7 +22,7 @@ using Warewolf.Storage.Interfaces;
 namespace Dev2.Activities.DropBox2016.DropboxFileActivity
 {
     [ToolDescriptorInfo("Dropbox", "List Contents", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090D8C8EA3E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Storage: Dropbox", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Dropbox_List_Contents")]
-    public class DsfDropboxFileListActivity : DsfBaseActivity
+    public class DsfDropboxFileListActivity : DsfBaseActivity,IEquatable<DsfDropboxFileListActivity>
     {
         
         public IDropboxFactory DropboxFactory { get; set; }
@@ -196,5 +196,41 @@ namespace Dev2.Activities.DropBox2016.DropboxFileActivity
 
 
         #endregion
+
+        public bool Equals(DsfDropboxFileListActivity other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return base.Equals(other) && Equals(_dropboxClient, other._dropboxClient) && Equals(DropboxFactory, other.DropboxFactory) && Equals(SelectedSource, other.SelectedSource) && Equals(Files, other.Files) && Equals(Exception, other.Exception) && IncludeMediaInfo == other.IncludeMediaInfo && IsRecursive == other.IsRecursive && IncludeDeleted == other.IncludeDeleted && string.Equals(ToPath, other.ToPath) && IsFilesSelected == other.IsFilesSelected && IsFoldersSelected == other.IsFoldersSelected && IsFilesAndFoldersSelected == other.IsFilesAndFoldersSelected;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((DsfDropboxFileListActivity) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ (_dropboxClient != null ? _dropboxClient.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (DropboxFactory != null ? DropboxFactory.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (SelectedSource != null ? SelectedSource.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Files != null ? Files.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Exception != null ? Exception.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ IncludeMediaInfo.GetHashCode();
+                hashCode = (hashCode * 397) ^ IsRecursive.GetHashCode();
+                hashCode = (hashCode * 397) ^ IncludeDeleted.GetHashCode();
+                hashCode = (hashCode * 397) ^ (ToPath != null ? ToPath.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ IsFilesSelected.GetHashCode();
+                hashCode = (hashCode * 397) ^ IsFoldersSelected.GetHashCode();
+                hashCode = (hashCode * 397) ^ IsFilesAndFoldersSelected.GetHashCode();
+                return hashCode;
+            }
+        }
     }
 }

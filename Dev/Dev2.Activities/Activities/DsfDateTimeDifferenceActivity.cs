@@ -38,7 +38,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
 {
     [ToolDescriptorInfo("Utility-DateTimeDifference", "Date Time Diff", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Utility", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Utility_Date_Time_Diff")]
-    public class DsfDateTimeDifferenceActivity : DsfActivityAbstract<string>, IDateTimeDiffTO
+    public class DsfDateTimeDifferenceActivity : DsfActivityAbstract<string>, IDateTimeDiffTO,IEquatable<DsfDateTimeDifferenceActivity>
     {
 
         #region Properties
@@ -347,5 +347,33 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #endregion
 
+        public bool Equals(DsfDateTimeDifferenceActivity other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return base.Equals(other) && string.Equals(Input1, other.Input1) && string.Equals(Input2, other.Input2) && string.Equals(InputFormat, other.InputFormat) && string.Equals(OutputType, other.OutputType) && string.Equals(Result, other.Result);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((DsfDateTimeDifferenceActivity) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ (Input1 != null ? Input1.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Input2 != null ? Input2.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (InputFormat != null ? InputFormat.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (OutputType != null ? OutputType.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Result != null ? Result.GetHashCode() : 0);
+                return hashCode;
+            }
+        }
     }
 }

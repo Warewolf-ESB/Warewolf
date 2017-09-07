@@ -39,7 +39,7 @@ using WarewolfParserInterop;
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
     [ToolDescriptorInfo("Data-DataSplit", "Data Split", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Data", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Data_Data_Split")]
-    public class DsfDataSplitActivity : DsfActivityAbstract<string>, ICollectionActivity
+    public class DsfDataSplitActivity : DsfActivityAbstract<string>, ICollectionActivity,IEquatable<DsfDataSplitActivity>
     {
         #region Fields
 
@@ -688,6 +688,35 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public override List<string> GetOutputs()
         {
             return ResultsCollection.Select(dto => dto.OutputVariable).ToList();
+        }
+
+        public bool Equals(DsfDataSplitActivity other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return base.Equals(other) && string.Equals(SourceString, other.SourceString) && _indexCounter == other._indexCounter && Equals(_resultsCollection, other._resultsCollection) && _reverseOrder == other._reverseOrder && SkipBlankRows == other.SkipBlankRows;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((DsfDataSplitActivity) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ (SourceString != null ? SourceString.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ _indexCounter;
+                hashCode = (hashCode * 397) ^ (_resultsCollection != null ? _resultsCollection.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ ReverseOrder.GetHashCode();
+                hashCode = (hashCode * 397) ^ SkipBlankRows.GetHashCode();
+                return hashCode;
+            }
         }
     }
 }

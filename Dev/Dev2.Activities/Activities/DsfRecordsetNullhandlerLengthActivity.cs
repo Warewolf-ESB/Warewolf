@@ -32,7 +32,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
 
     [ToolDescriptorInfo("RecordSet-Length", "Length", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Recordset", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Recordset_Length")]
-    public class DsfRecordsetNullhandlerLengthActivity : DsfActivityAbstract<string>
+    public class DsfRecordsetNullhandlerLengthActivity : DsfActivityAbstract<string>,IEquatable<DsfRecordsetNullhandlerLengthActivity>
     {
         #region Fields
 
@@ -241,5 +241,31 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #endregion
 
+        public bool Equals(DsfRecordsetNullhandlerLengthActivity other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return base.Equals(other) && string.Equals(RecordsetName, other.RecordsetName) && string.Equals(RecordsLength, other.RecordsLength) && TreatNullAsZero == other.TreatNullAsZero;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((DsfRecordsetNullhandlerLengthActivity) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ (RecordsetName != null ? RecordsetName.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (RecordsLength != null ? RecordsLength.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ TreatNullAsZero.GetHashCode();
+                return hashCode;
+            }
+        }
     }
 }

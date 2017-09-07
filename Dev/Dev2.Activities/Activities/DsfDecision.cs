@@ -22,7 +22,7 @@ using Warewolf.Storage.Interfaces;
 
 namespace Dev2.Activities
 {
-    public class DsfDecision : DsfActivityAbstract<string>
+    public class DsfDecision : DsfActivityAbstract<string>,IEquatable<DsfDecision>
     {
         
         public IEnumerable<IDev2Activity> TrueArm { get; set; }
@@ -382,6 +382,36 @@ namespace Dev2.Activities
         }
 
         public bool And { get; set; }
+
+        public bool Equals(DsfDecision other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return base.Equals(other) && Equals(_inner, other._inner) && Equals(TrueArm, other.TrueArm) && Equals(FalseArm, other.FalseArm) && Equals(Conditions, other.Conditions) && string.Equals(Result, other.Result) && And == other.And;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((DsfDecision) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ (_inner != null ? _inner.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (TrueArm != null ? TrueArm.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (FalseArm != null ? FalseArm.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Conditions != null ? Conditions.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Result != null ? Result.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ And.GetHashCode();
+                return hashCode;
+            }
+        }
     }
 
 
