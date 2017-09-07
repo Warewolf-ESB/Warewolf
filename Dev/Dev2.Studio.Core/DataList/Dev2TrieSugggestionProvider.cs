@@ -36,7 +36,7 @@ namespace Dev2.Studio.Core.DataList
                     var currentVar = var as LanguageAST.LanguageExpression.ScalarExpression;
                     if (currentVar != null)
                     {
-                        PatriciaTrieScalars.Add(DataListUtil.AddBracketsToValueIfNotExist(currentVar.Item), DataListUtil.AddBracketsToValueIfNotExist(currentVar.Item), false);
+                        PatriciaTrieScalars.Add(DataListUtil.AddBracketsToValueIfNotExist(currentVar.Item), DataListUtil.AddBracketsToValueIfNotExist(currentVar.Item));
                     }
                 }
                 PatriciaTrieRecsets = new SuffixTrie<string>(1);
@@ -47,7 +47,7 @@ namespace Dev2.Studio.Core.DataList
                     if (currentVar != null)
                     {
                         var name = DataListUtil.AddBracketsToValueIfNotExist(DataListUtil.MakeValueIntoHighLevelRecordset(currentVar.Item.Name, Equals(currentVar.Item.Index, LanguageAST.Index.Star)));
-                        PatriciaTrieRecsets.Add(name, name, false);
+                        PatriciaTrieRecsets.Add(name, name);
                     }
                 }
                 PatriciaTrieRecsetsFields = new SuffixTrie<string>(1);
@@ -63,7 +63,7 @@ namespace Dev2.Studio.Core.DataList
                             index = "*";
                         }
                         var name = DataListUtil.AddBracketsToValueIfNotExist(DataListUtil.CreateRecordsetDisplayValue(currentVar.Item.Name, currentVar.Item.Column, index));
-                        PatriciaTrieRecsetsFields.Add(name, name, false);
+                        PatriciaTrieRecsetsFields.Add(name, name);
                     }
                 }
                 PatriciaTrieJsonObjects = new SuffixTrie<string>(1);
@@ -139,7 +139,7 @@ namespace Dev2.Studio.Core.DataList
                     {
                         objectName = "@" + objectName;
                     }
-                    PatriciaTrieJsonObjects.Add(DataListUtil.AddBracketsToValueIfNotExist(objectName), DataListUtil.AddBracketsToValueIfNotExist(objectName), false);
+                    PatriciaTrieJsonObjects.Add(DataListUtil.AddBracketsToValueIfNotExist(objectName), DataListUtil.AddBracketsToValueIfNotExist(objectName));
                     return null;
                 }
 
@@ -152,7 +152,7 @@ namespace Dev2.Studio.Core.DataList
                     {
                         objectName = "@" + objectName;
                     }
-                    PatriciaTrieJsonObjects.Add(DataListUtil.AddBracketsToValueIfNotExist(objectName), DataListUtil.AddBracketsToValueIfNotExist(objectName), false);
+                    PatriciaTrieJsonObjects.Add(DataListUtil.AddBracketsToValueIfNotExist(objectName), DataListUtil.AddBracketsToValueIfNotExist(objectName));
                     return AddJsonVariables(indexNestedExpression.Item.Next, objectName);
                 }
 
@@ -164,7 +164,7 @@ namespace Dev2.Studio.Core.DataList
                     {
                         objectName = "@" + objectName;
                     }
-                    PatriciaTrieJsonObjects.Add(DataListUtil.AddBracketsToValueIfNotExist(objectName), DataListUtil.AddBracketsToValueIfNotExist(objectName), false);
+                    PatriciaTrieJsonObjects.Add(DataListUtil.AddBracketsToValueIfNotExist(objectName), DataListUtil.AddBracketsToValueIfNotExist(objectName));
                     var next = nestedNameExpression.Item.Next;
                     return AddJsonVariables(next, objectName);
                 }
