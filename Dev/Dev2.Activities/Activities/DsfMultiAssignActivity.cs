@@ -488,7 +488,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return base.Equals(other) && sequenceEqual
                 && UpdateAllOccurrences == other.UpdateAllOccurrences
                 && CreateBookmark == other.CreateBookmark 
-                && string.Equals(ServiceHost, other.ServiceHost);
+                && string.Equals(ServiceHost, other.ServiceHost)
+                && string.Equals(DisplayName, other.DisplayName);
         }
 
         public override bool Equals(object obj)
@@ -505,6 +506,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 int hashCode = base.GetHashCode();
                 hashCode = (hashCode * 397) ^ (FieldsCollection != null ? FieldsCollection.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (DisplayName != null ? DisplayName.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ UpdateAllOccurrences.GetHashCode();
                 hashCode = (hashCode * 397) ^ CreateBookmark.GetHashCode();
                 hashCode = (hashCode * 397) ^ (ServiceHost != null ? ServiceHost.GetHashCode() : 0);
