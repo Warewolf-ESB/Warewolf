@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Linq;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Toolbox;
@@ -12,7 +13,7 @@ using Warewolf.Resource.Errors;
 namespace Dev2.Activities
 {
     [ToolDescriptorInfo("Postgre", "PostgreSQL", ToolType.Native, "8999E59B-38A3-43BB-A92F-6090C5C3EA80", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Database", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Database_PostgreSQL")]
-    public class DsfPostgreSqlActivity : DsfActivity
+    public class DsfPostgreSqlActivity : DsfActivity,IEquatable<DsfPostgreSqlActivity>
     {
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public IServiceExecution ServiceExecution { get; protected set; }
@@ -75,6 +76,32 @@ namespace Dev2.Activities
         public override enFindMissingType GetFindMissingType()
         {
             return enFindMissingType.DataGridActivity;
+        }
+
+        public bool Equals(DsfPostgreSqlActivity other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return base.Equals(other) && Equals(ServiceExecution, other.ServiceExecution) && string.Equals(ProcedureName, other.ProcedureName);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((DsfPostgreSqlActivity) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ (ServiceExecution != null ? ServiceExecution.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (ProcedureName != null ? ProcedureName.GetHashCode() : 0);
+                return hashCode;
+            }
         }
     }
 }

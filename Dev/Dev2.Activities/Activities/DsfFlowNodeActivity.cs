@@ -35,7 +35,7 @@ using Warewolf.Storage.Interfaces;
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
 {
-    public abstract class DsfFlowNodeActivity<TResult> : DsfActivityAbstract<TResult>, IFlowNodeActivity
+    public abstract class DsfFlowNodeActivity<TResult> : DsfActivityAbstract<TResult>, IFlowNodeActivity, IEquatable<DsfFlowNodeActivity<TResult>>
     {
         // Changing the ExpressionText property of a VisualBasicValue during runtime has no effect. 
         // The expression text is only evaluated and converted to an expression tree when CacheMetadata() is called.
@@ -346,17 +346,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// <param name="obj">The object to compare with the current object. </param>
         public override bool Equals(object obj)
         {
-            var act = obj as IDev2Activity;
-            if (obj is IFlowNodeActivity)
-            {
-                var flowNodeAct = this as IFlowNodeActivity;
-                var other = act as IFlowNodeActivity;
-                if (other != null)
-                {
-                    return UniqueID == act.UniqueID && flowNodeAct.ExpressionText.Equals(other.ExpressionText);
-                }
-            }
-            return base.Equals(obj);
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((DsfFlowNodeActivity<TResult>) obj);
         }
 
         #region Overrides of Object
@@ -369,17 +362,26 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// </returns>
         public override int GetHashCode()
         {
-   
-
-
-                return UniqueID.GetHashCode();
-
-
-
+            unchecked
+            {
+                var hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ (_expression != null ? _expression.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ EqualityComparer<TResult>.Default.GetHashCode(_theResult);
+                hashCode = (hashCode * 397) ^ _dataListId.GetHashCode();
+                hashCode = (hashCode * 397) ^ (_dataObject != null ? _dataObject.GetHashCode() : 0);
+                return hashCode;
+            }
         }
 
         #endregion
 
         #endregion
+
+        public bool Equals(DsfFlowNodeActivity<TResult> other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return base.Equals(other) && Equals(ExpressionText, other.ExpressionText) && EqualityComparer<TResult>.Default.Equals(_theResult, other._theResult) && _dataListId.Equals(other._dataListId) && Equals(_dataObject, other._dataObject);
+        }
     }
 }

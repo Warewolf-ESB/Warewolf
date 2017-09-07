@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using Dev2.Common.Interfaces.DB;
@@ -15,7 +16,7 @@ using Warewolf.Storage.Interfaces;
 namespace Dev2.Activities
 {
     [ToolDescriptorInfo("Database", "Oracle", ToolType.Native, "8999E59B-38A3-43BB-A98F-6090C5C9EA10", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Database", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Database_Oracle")]
-    public class DsfOracleDatabaseActivity : DsfActivity
+    public class DsfOracleDatabaseActivity : DsfActivity,IEquatable<DsfOracleDatabaseActivity>
     {
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public IServiceExecution ServiceExecution { get; protected set; }
@@ -92,6 +93,32 @@ namespace Dev2.Activities
         public override enFindMissingType GetFindMissingType()
         {
             return enFindMissingType.DataGridActivity;
+        }
+
+        public bool Equals(DsfOracleDatabaseActivity other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return base.Equals(other) && Equals(ServiceExecution, other.ServiceExecution) && string.Equals(ProcedureName, other.ProcedureName);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((DsfOracleDatabaseActivity) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ (ServiceExecution != null ? ServiceExecution.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (ProcedureName != null ? ProcedureName.GetHashCode() : 0);
+                return hashCode;
+            }
         }
     }
 }

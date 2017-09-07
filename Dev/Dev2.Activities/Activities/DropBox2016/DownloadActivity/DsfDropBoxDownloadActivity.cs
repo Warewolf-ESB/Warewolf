@@ -25,7 +25,7 @@ using Warewolf.Storage.Interfaces;
 namespace Dev2.Activities.DropBox2016.DownloadActivity
 {
     [ToolDescriptorInfo("Dropbox", "Download", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090D8C8EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Storage: Dropbox", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Dropbox_Download")]
-    public class DsfDropBoxDownloadActivity : DsfBaseActivity
+    public class DsfDropBoxDownloadActivity : DsfBaseActivity,IEquatable<DsfDropBoxDownloadActivity>
     {
         public DsfDropBoxDownloadActivity()
         {
@@ -183,6 +183,34 @@ namespace Dev2.Activities.DropBox2016.DownloadActivity
 
         }
 
+        public bool Equals(DsfDropBoxDownloadActivity other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return base.Equals(other) && Equals(DropboxFile, other.DropboxFile) && Equals(SelectedSource, other.SelectedSource) && string.Equals(ToPath, other.ToPath) && OverwriteFile == other.OverwriteFile && string.Equals(FromPath, other.FromPath);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((DsfDropBoxDownloadActivity) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ (DropboxFile != null ? DropboxFile.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (SelectedSource != null ? SelectedSource.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (ToPath != null ? ToPath.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ OverwriteFile.GetHashCode();
+                hashCode = (hashCode * 397) ^ (FromPath != null ? FromPath.GetHashCode() : 0);
+                return hashCode;
+            }
+        }
     }
 
         #endregion Overrides of DsfActivity

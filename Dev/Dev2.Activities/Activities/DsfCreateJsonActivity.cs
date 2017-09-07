@@ -36,7 +36,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
 {
     [ToolDescriptorInfo("Scripting-CreateJSON", "Create JSON", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Utility", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Utility_Create_JSON")]
-    public class DsfCreateJsonActivity : DsfActivityAbstract<string>
+    public class DsfCreateJsonActivity : DsfActivityAbstract<string>,IEquatable<DsfCreateJsonActivity>
     {
         /// <summary>
         ///     Gets or sets the Warewolf source scalars, lists or record sets, and the destination JSON names of the resulting
@@ -319,6 +319,32 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public override enFindMissingType GetFindMissingType()
         {
             return enFindMissingType.MixedActivity;
+        }
+
+        public bool Equals(DsfCreateJsonActivity other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return base.Equals(other) && Equals(JsonMappings, other.JsonMappings) && string.Equals(JsonString, other.JsonString);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((DsfCreateJsonActivity) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ (JsonMappings != null ? JsonMappings.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (JsonString != null ? JsonString.GetHashCode() : 0);
+                return hashCode;
+            }
         }
     }
 }

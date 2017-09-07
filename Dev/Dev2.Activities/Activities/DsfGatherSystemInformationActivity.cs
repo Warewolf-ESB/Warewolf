@@ -35,7 +35,7 @@ using WarewolfParserInterop;
 namespace Dev2.Activities
 {
     [ToolDescriptorInfo("Utility-SystemInformation", "Sys Info", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Utility", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Utility_Sys_Info")]
-    public class DsfGatherSystemInformationActivity : DsfActivityAbstract<string>, ICollectionActivity
+    public class DsfGatherSystemInformationActivity : DsfActivityAbstract<string>, ICollectionActivity,IEquatable<DsfGatherSystemInformationActivity>
     {
         #region Fields
 
@@ -466,6 +466,33 @@ namespace Dev2.Activities
         }
 
         #endregion
+
+        public bool Equals(DsfGatherSystemInformationActivity other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return base.Equals(other) && Equals(_getSystemInformation, other._getSystemInformation) && Equals(_currentIdentity, other._currentIdentity) && Equals(SystemInformationCollection, other.SystemInformationCollection);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((DsfGatherSystemInformationActivity) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ (_getSystemInformation != null ? _getSystemInformation.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (_currentIdentity != null ? _currentIdentity.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (SystemInformationCollection != null ? SystemInformationCollection.GetHashCode() : 0);
+                return hashCode;
+            }
+        }
     }
 
 

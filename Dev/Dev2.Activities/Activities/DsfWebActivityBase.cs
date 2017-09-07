@@ -17,7 +17,7 @@ using Warewolf.Storage.Interfaces;
 
 namespace Dev2.Activities
 {
-    public class DsfWebActivityBase : DsfActivity
+    public class DsfWebActivityBase : DsfActivity,IEquatable<DsfWebActivityBase>
     {
         private readonly WebRequestMethod _method;
         private const string UserAgent = "User-Agent";
@@ -151,6 +151,34 @@ namespace Dev2.Activities
                 return resultAsString;
             }
             return null;
+        }
+
+        public bool Equals(DsfWebActivityBase other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return base.Equals(other) && _method == other._method && Equals(Headers, other.Headers) && string.Equals(QueryString, other.QueryString) && Equals(OutputDescription, other.OutputDescription);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((DsfWebActivityBase) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ (int) _method;
+                hashCode = (hashCode * 397) ^ (Headers != null ? Headers.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (QueryString != null ? QueryString.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (OutputDescription != null ? OutputDescription.GetHashCode() : 0);
+                return hashCode;
+            }
         }
     }
 }

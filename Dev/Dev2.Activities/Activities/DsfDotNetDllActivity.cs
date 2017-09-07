@@ -18,7 +18,7 @@ using Warewolf.Storage;
 namespace Dev2.Activities
 {
     //[ToolDescriptorInfo("DotNetDll", "DotNet DLL", ToolType.Native, "6AEB1038-6332-46F9-8BDD-641DE4EA038E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Resources", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Resources_Dot_net_DLL")]
-    public class DsfDotNetDllActivity : DsfMethodBasedActivity
+    public class DsfDotNetDllActivity : DsfMethodBasedActivity,IEquatable<DsfDotNetDllActivity>
     {
         public IPluginAction Method { get; set; }
         public INamespaceItem Namespace { get; set; }
@@ -114,5 +114,31 @@ namespace Dev2.Activities
             return enFindMissingType.DataGridActivity;
         }
 
+        public bool Equals(DsfDotNetDllActivity other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return base.Equals(other) && Equals(Method, other.Method) && Equals(Namespace, other.Namespace) && Equals(OutputDescription, other.OutputDescription);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((DsfDotNetDllActivity) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ (Method != null ? Method.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Namespace != null ? Namespace.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (OutputDescription != null ? OutputDescription.GetHashCode() : 0);
+                return hashCode;
+            }
+        }
     }
 }

@@ -41,7 +41,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
 {
     [ToolDescriptorInfo("AssignObject", "Assign Object", ToolType.Native, "A86C4D10-B4D0-4775-AF4D-C66D5A6CE76F", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Data", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Data_Assign_Object")]
-    public class DsfMultiAssignObjectActivity : DsfActivityAbstract<string>
+    public class DsfMultiAssignObjectActivity : DsfActivityAbstract<string>,IEquatable<DsfMultiAssignObjectActivity>
     {
         #region Constants
 
@@ -510,5 +510,33 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
         #endregion GetForEachInputs/Outputs
+
+        public bool Equals(DsfMultiAssignObjectActivity other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return base.Equals(other) && Equals(_fieldsCollection, other._fieldsCollection) && UpdateAllOccurrences == other.UpdateAllOccurrences && CreateBookmark == other.CreateBookmark && string.Equals(ServiceHost, other.ServiceHost);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((DsfMultiAssignObjectActivity) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ (_fieldsCollection != null ? _fieldsCollection.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ UpdateAllOccurrences.GetHashCode();
+                hashCode = (hashCode * 397) ^ CreateBookmark.GetHashCode();
+                hashCode = (hashCode * 397) ^ (ServiceHost != null ? ServiceHost.GetHashCode() : 0);
+                return hashCode;
+            }
+        }
     }
 }
