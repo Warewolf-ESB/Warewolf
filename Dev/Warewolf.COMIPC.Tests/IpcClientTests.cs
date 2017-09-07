@@ -43,7 +43,7 @@ namespace WarewolfCOMIPC.Test
 
         }
 
-        private const string adodbConnectionClassId = "00000514-0000-0010-8000-00AA006D2EA4";
+        private const string AdodbConnectionClassId = "00000514-0000-0010-8000-00AA006D2EA4";
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
@@ -59,7 +59,7 @@ namespace WarewolfCOMIPC.Test
             //---------------Assert Precondition----------------
             Assert.IsNotNull(client);
             //---------------Execute Test ----------------------
-            var invoke = client.Invoke(Guid.Parse(adodbConnectionClassId), "ToString", Execute.GetType, new ParameterInfoTO[] { });
+            var invoke = client.Invoke(Guid.Parse(AdodbConnectionClassId), "ToString", Execute.GetType, new ParameterInfoTO[] { });
             //---------------Test Result -----------------------
             Assert.IsNull(invoke);
         }
@@ -78,7 +78,7 @@ namespace WarewolfCOMIPC.Test
             //---------------Assert Precondition----------------
             Assert.IsNotNull(client);
             //---------------Execute Test ----------------------
-            var invoke = client.Invoke(Guid.Parse(adodbConnectionClassId), "ToString", Execute.GetMethods, new ParameterInfoTO[] { }) as List<MethodInfoTO>;
+            var invoke = client.Invoke(Guid.Parse(AdodbConnectionClassId), "ToString", Execute.GetMethods, new ParameterInfoTO[] { }) as List<MethodInfoTO>;
             //---------------Test Result -----------------------
             Assert.IsNotNull(invoke);
             CollectionAssert.AllItemsAreNotNull(invoke);
@@ -99,7 +99,7 @@ namespace WarewolfCOMIPC.Test
             //---------------Assert Precondition----------------
             Assert.IsNotNull(client);
             //---------------Execute Test ----------------------
-            var invoke = client.Invoke(Guid.Parse(adodbConnectionClassId), "ToString", Execute.ExecuteSpecifiedMethod, new ParameterInfoTO[] { });
+            var invoke = client.Invoke(Guid.Parse(AdodbConnectionClassId), "ToString", Execute.ExecuteSpecifiedMethod, new ParameterInfoTO[] { });
             //---------------Test Result -----------------------
             Assert.IsNotNull(invoke);
         }
@@ -118,7 +118,7 @@ namespace WarewolfCOMIPC.Test
             //---------------Assert Precondition----------------
             Assert.IsNotNull(client);
             //---------------Execute Test ----------------------
-            var invoke = client.Invoke(Guid.Parse(adodbConnectionClassId), "ToString", Execute.GetNamespaces, new ParameterInfoTO[] { });
+            var invoke = client.Invoke(Guid.Parse(AdodbConnectionClassId), "ToString", Execute.GetNamespaces, new ParameterInfoTO[] { });
             //---------------Test Result -----------------------
             Assert.IsNull(invoke);
         }
