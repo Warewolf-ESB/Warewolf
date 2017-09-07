@@ -173,6 +173,7 @@
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
     <Compile Include="CollectionComparer\ActivityDTOComparer.cs" />
+    <Compile Include="CollectionComparer\ActivityDtoObjectComparer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" Condition="!Exists('..\AssemblyCommonInfo.cs')" />
     <None Include="..\Run Tests.ps1">
       <Link>Run Tests.ps1</Link>

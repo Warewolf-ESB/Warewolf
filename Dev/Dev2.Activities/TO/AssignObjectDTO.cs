@@ -8,16 +8,18 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Validation;
 using Dev2.Providers.Validation.Rules;
 using Dev2.Util;
 using System.Collections.Generic;
+using System.Linq;
 using Dev2.Common.Interfaces.Interfaces;
 
 namespace Dev2.TO
 {
-    
-    public class AssignObjectDTO : ValidatedObject, IDev2TOFn
+
+    public class AssignObjectDTO : ValidatedObject, IDev2TOFn, IEquatable<AssignObjectDTO>
     {
         private string _fieldName;
         private string _fieldValue;
@@ -148,10 +150,45 @@ namespace Dev2.TO
 
         private void RaiseCanAddRemoveChanged()
         {
-            
+
             OnPropertyChanged("CanRemove");
             OnPropertyChanged("CanAdd");
-            
+
+        }
+
+        public bool Equals(AssignObjectDTO other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return string.Equals(FieldName, other.FieldName)
+                && string.Equals(FieldValue, other.FieldValue)
+                && IndexNumber == other.IndexNumber
+                && IsFieldNameFocused == other.IsFieldNameFocused
+                && IsFieldValueFocused == other.IsFieldValueFocused
+                && string.Equals(WatermarkTextVariable, other.WatermarkTextVariable)
+                && string.Equals(WatermarkTextValue, other.WatermarkTextValue)
+                && Inserted == other.Inserted && OutList.SequenceEqual(other.OutList, StringComparer.Ordinal);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((AssignObjectDTO)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = (FieldName != null ? FieldName.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (FieldValue != null ? FieldValue.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ IndexNumber;
+                hashCode = (hashCode * 397) ^ IsFieldNameFocused.GetHashCode();
+                hashCode = (hashCode * 397) ^ IsFieldValueFocused.GetHashCode();
+                return hashCode;
+            }
         }
     }
 }
