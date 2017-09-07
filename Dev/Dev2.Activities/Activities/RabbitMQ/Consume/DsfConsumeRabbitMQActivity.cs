@@ -43,7 +43,7 @@ using Warewolf.Storage.Interfaces;
 namespace Dev2.Activities.RabbitMQ.Consume
 {
     [ToolDescriptorInfo("RabbitMq", "RabbitMQ Consume", ToolType.Native, "406ea660-64cf-4c82-b6f0-42d48172a799", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Utility", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Utility_Rabbit_MQ_Consume")]
-    public class DsfConsumeRabbitMQActivity : DsfBaseActivity
+    public class DsfConsumeRabbitMQActivity : DsfBaseActivity,IEquatable<DsfConsumeRabbitMQActivity>
     {
         public List<string> _messages;
         public string _result = "Success";
@@ -387,6 +387,48 @@ namespace Dev2.Activities.RabbitMQ.Consume
                             dataObject.Environment.Assign(Response, message, update);
                         }
                 }
+            }
+        }
+
+        public bool Equals(DsfConsumeRabbitMQActivity other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return base.Equals(other) && string.Equals(Result, other.Result) && Prefetch == other.Prefetch && TimeOut == other.TimeOut  && IsObject == other.IsObject && string.Equals(ObjectName, other.ObjectName) && RabbitMQSourceResourceId.Equals(other.RabbitMQSourceResourceId) && string.Equals(QueueName, other.QueueName) && string.Equals(Response, other.Response) && string.Equals(Prefetch, other.Prefetch) && Acknowledge == other.Acknowledge && string.Equals(TimeOut, other.TimeOut) && ReQueue == other.ReQueue  && Equals(Connection, other.Connection)  && Equals(RabbitSource, other.RabbitSource);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((DsfConsumeRabbitMQActivity) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ (_messages != null ? _messages.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (_result != null ? _result.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ _prefetch.GetHashCode();
+                hashCode = (hashCode * 397) ^ _timeOut;
+                hashCode = (hashCode * 397) ^ (_connectionFactory != null ? _connectionFactory.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ IsObject.GetHashCode();
+                hashCode = (hashCode * 397) ^ (ObjectName != null ? ObjectName.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ RabbitMQSourceResourceId.GetHashCode();
+                hashCode = (hashCode * 397) ^ (QueueName != null ? QueueName.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Response != null ? Response.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Prefetch != null ? Prefetch.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ Acknowledge.GetHashCode();
+                hashCode = (hashCode * 397) ^ (TimeOut != null ? TimeOut.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ ReQueue.GetHashCode();
+                hashCode = (hashCode * 397) ^ (Consumer != null ? Consumer.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Connection != null ? Connection.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Channel != null ? Channel.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (RabbitSource != null ? RabbitSource.GetHashCode() : 0);
+                return hashCode;
             }
         }
     }

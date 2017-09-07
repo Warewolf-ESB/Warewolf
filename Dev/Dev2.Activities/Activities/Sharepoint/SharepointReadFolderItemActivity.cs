@@ -25,7 +25,7 @@ using Warewolf.Storage.Interfaces;
 namespace Dev2.Activities.Sharepoint
 {
     [ToolDescriptorInfo("SharepointLogo", "Read Folder", ToolType.Native, "8222E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Sharepoint", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_SharePoint_Read_Folder")]
-    public class SharepointReadFolderItemActivity : DsfAbstractFileActivity
+    public class SharepointReadFolderItemActivity : DsfAbstractFileActivity,IEquatable<SharepointReadFolderItemActivity>
     {
         public SharepointReadFolderItemActivity() : base("SharePoint Read Folder Items")
         {
@@ -309,6 +309,36 @@ namespace Dev2.Activities.Sharepoint
                 debugOutput.FlushStringBuilder();
             }
             return _debugOutputs;
+        }
+
+        public bool Equals(SharepointReadFolderItemActivity other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return base.Equals(other) && IsFilesSelected == other.IsFilesSelected && IsFoldersSelected == other.IsFoldersSelected && IsFilesAndFoldersSelected == other.IsFilesAndFoldersSelected && string.Equals(ServerInputPath, other.ServerInputPath) && Equals(SharepointSource, other.SharepointSource) && SharepointServerResourceId.Equals(other.SharepointServerResourceId);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((SharepointReadFolderItemActivity) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ IsFilesSelected.GetHashCode();
+                hashCode = (hashCode * 397) ^ IsFoldersSelected.GetHashCode();
+                hashCode = (hashCode * 397) ^ IsFilesAndFoldersSelected.GetHashCode();
+                hashCode = (hashCode * 397) ^ (ServerInputPath != null ? ServerInputPath.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (SharepointSource != null ? SharepointSource.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ SharepointServerResourceId.GetHashCode();
+                return hashCode;
+            }
         }
     }
 }

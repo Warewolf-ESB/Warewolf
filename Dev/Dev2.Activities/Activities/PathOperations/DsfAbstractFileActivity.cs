@@ -38,7 +38,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
     /// Status : New
     /// Purpose : To provide a base activity for all file activities to inherit from
     /// </summary>
-    public abstract class DsfAbstractFileActivity : DsfActivityAbstract<string>, IPathAuth, IResult, IPathCertVerify
+    public abstract class DsfAbstractFileActivity : DsfActivityAbstract<string>, IPathAuth, IResult, IPathCertVerify,IEquatable<DsfAbstractFileActivity>
     {
 
         private string _username;
@@ -285,6 +285,35 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         static string GetBlankedOutPassword(string password)
         {
             return "".PadRight((password ?? "").Length, '*');
+        }
+
+        public bool Equals(DsfAbstractFileActivity other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return base.Equals(other) && string.Equals(Username, other.Username) && string.Equals(Password, other.Password) && string.Equals(PrivateKeyFile, other.PrivateKeyFile) && string.Equals(Result, other.Result) && IsNotCertVerifiable == other.IsNotCertVerifiable;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((DsfAbstractFileActivity) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ (Password != null ? Password.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Username != null ? Username.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (PrivateKeyFile != null ? PrivateKeyFile.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Result != null ? Result.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ IsNotCertVerifiable.GetHashCode();
+                return hashCode;
+            }
         }
     }
 }

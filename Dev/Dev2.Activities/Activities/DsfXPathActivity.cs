@@ -31,7 +31,7 @@ using Warewolf.Storage.Interfaces;
 namespace Dev2.Activities
 {
     [ToolDescriptorInfo("Utility-Path", "XPath", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Utility", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Utility_Xpath")]
-    public class DsfXPathActivity : DsfActivityAbstract<string>, ICollectionActivity
+    public class DsfXPathActivity : DsfActivityAbstract<string>, ICollectionActivity,IEquatable<DsfXPathActivity>
     {
         #region Fields
 
@@ -489,5 +489,32 @@ namespace Dev2.Activities
         }
 
         #endregion
+
+        public bool Equals(DsfXPathActivity other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return base.Equals(other) && Equals(ResultsCollection, other.ResultsCollection) && string.Equals(SourceString, other.SourceString) ;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((DsfXPathActivity) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ (ResultsCollection != null ? ResultsCollection.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (SourceString != null ? SourceString.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ _isDebugMode.GetHashCode();
+                return hashCode;
+            }
+        }
     }
 }

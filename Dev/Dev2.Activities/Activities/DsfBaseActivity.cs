@@ -19,7 +19,7 @@ using Warewolf.Storage.Interfaces;
 
 namespace Dev2.Activities
 {
-    public abstract class DsfBaseActivity : DsfActivityAbstract<string>
+    public abstract class DsfBaseActivity : DsfActivityAbstract<string>,IEquatable<DsfBaseActivity>
     {
         private List<string> _executionResult;
        public IResponseManager ResponseManager { get; set; }
@@ -195,5 +195,31 @@ namespace Dev2.Activities
         }
 
         #endregion GetForEachInputs/Outputs
+
+        public bool Equals(DsfBaseActivity other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return base.Equals(other) && Equals(_executionResult, other._executionResult) && string.Equals(Result, other.Result);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((DsfBaseActivity) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ (_executionResult != null ? _executionResult.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Result != null ? Result.GetHashCode() : 0);
+                return hashCode;
+            }
+        }
     }
 }

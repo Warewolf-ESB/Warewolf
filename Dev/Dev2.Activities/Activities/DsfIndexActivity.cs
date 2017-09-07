@@ -37,7 +37,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
 {
     [ToolDescriptorInfo("Data-FindIndex", "Find Index", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Data", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Data_Find_Index")]
-    public class DsfIndexActivity : DsfActivityAbstract<string>
+    public class DsfIndexActivity : DsfActivityAbstract<string>,IEquatable<DsfIndexActivity>
     {
 
         #region Properties
@@ -321,5 +321,35 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #endregion
 
+        public bool Equals(DsfIndexActivity other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return base.Equals(other) && string.Equals(InField, other.InField) && string.Equals(Index, other.Index) && string.Equals(Characters, other.Characters) && string.Equals(Direction, other.Direction) && string.Equals(Result, other.Result) && MatchCase == other.MatchCase && string.Equals(StartIndex, other.StartIndex);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((DsfIndexActivity) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ (InField != null ? InField.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Index != null ? Index.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Characters != null ? Characters.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Direction != null ? Direction.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Result != null ? Result.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ MatchCase.GetHashCode();
+                hashCode = (hashCode * 397) ^ (StartIndex != null ? StartIndex.GetHashCode() : 0);
+                return hashCode;
+            }
+        }
     }
 }

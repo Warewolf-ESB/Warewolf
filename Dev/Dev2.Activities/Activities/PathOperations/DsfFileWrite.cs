@@ -38,7 +38,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
     /// Purpose : To provide an activity that can write a file and its contents via FTP, FTPS and file system
     /// </summary>
     [ToolDescriptorInfo("FileFolder-Write", "Write File", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "File, FTP, FTPS & SFTP", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_File_Write_File")]
-    public class DsfFileWrite : DsfAbstractFileActivity, IFileWrite, IPathOutput, IPathOverwrite
+    public class DsfFileWrite : DsfAbstractFileActivity, IFileWrite, IPathOutput, IPathOverwrite,IEquatable<DsfFileWrite>
     {
 
         public DsfFileWrite()
@@ -242,6 +242,36 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public override IList<DsfForEachItem> GetForEachOutputs()
         {
             return GetForEachItems(Result);
+        }
+
+        public bool Equals(DsfFileWrite other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return base.Equals(other) && Append == other.Append && string.Equals(FileContents, other.FileContents) && string.Equals(OutputPath, other.OutputPath) && Overwrite == other.Overwrite && AppendTop == other.AppendTop && AppendBottom == other.AppendBottom;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((DsfFileWrite) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ Append.GetHashCode();
+                hashCode = (hashCode * 397) ^ (FileContents != null ? FileContents.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (OutputPath != null ? OutputPath.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ Overwrite.GetHashCode();
+                hashCode = (hashCode * 397) ^ AppendTop.GetHashCode();
+                hashCode = (hashCode * 397) ^ AppendBottom.GetHashCode();
+                return hashCode;
+            }
         }
     }
 }

@@ -44,7 +44,7 @@ using Warewolf.Storage.Interfaces;
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
 
-    public class DsfActivity : DsfActivityAbstract<bool>
+    public class DsfActivity : DsfActivityAbstract<bool>,IEquatable<DsfActivity>
     {
         #region Fields
         private InArgument<string> _iconPath = string.Empty;
@@ -799,5 +799,57 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
         #endregion
+
+        public bool Equals(DsfActivity other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return base.Equals(other) && Equals(_iconPath, other._iconPath) && string.Equals(_previousInstanceId, other._previousInstanceId) && Equals(_inputs, other._inputs) && Equals(_outputs, other._outputs) && string.Equals(_serviceUri, other._serviceUri) && Equals(_friendlySourceName, other._friendlySourceName) && Equals(_environmentID, other._environmentID) && Equals(HelpLink, other.HelpLink) && Equals(ResourceID, other.ResourceID) && Equals(Type, other.Type) && Equals(ActionName, other.ActionName) && string.Equals(ServiceName, other.ServiceName) && RunWorkflowAsync == other.RunWorkflowAsync && string.Equals(DataTags, other.DataTags) && string.Equals(ResultValidationRequiredTags, other.ResultValidationRequiredTags) && string.Equals(ResultValidationExpression, other.ResultValidationExpression) && string.Equals(Category, other.Category) && string.Equals(Tags, other.Tags) && DeferExecution == other.DeferExecution && ServiceServer.Equals(other.ServiceServer) && string.Equals(ToolboxFriendlyName, other.ToolboxFriendlyName) && string.Equals(AuthorRoles, other.AuthorRoles) && string.Equals(ActivityStateData, other.ActivityStateData) && RemoveInputFromOutput == other.RemoveInputFromOutput && IsObject == other.IsObject && string.Equals(ObjectName, other.ObjectName) && string.Equals(ObjectResult, other.ObjectResult) && SourceId.Equals(other.SourceId);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((DsfActivity) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ (_iconPath != null ? _iconPath.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (_previousInstanceId != null ? _previousInstanceId.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (_inputs != null ? _inputs.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (_outputs != null ? _outputs.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (_serviceUri != null ? _serviceUri.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (_friendlySourceName != null ? _friendlySourceName.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (_environmentID != null ? _environmentID.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (HelpLink != null ? HelpLink.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (ResourceID != null ? ResourceID.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Type != null ? Type.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (ActionName != null ? ActionName.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (ServiceName != null ? ServiceName.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ RunWorkflowAsync.GetHashCode();
+                hashCode = (hashCode * 397) ^ (DataTags != null ? DataTags.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (ResultValidationRequiredTags != null ? ResultValidationRequiredTags.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (ResultValidationExpression != null ? ResultValidationExpression.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Category != null ? Category.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Tags != null ? Tags.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ DeferExecution.GetHashCode();
+                hashCode = (hashCode * 397) ^ ServiceServer.GetHashCode();
+                hashCode = (hashCode * 397) ^ (ToolboxFriendlyName != null ? ToolboxFriendlyName.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (AuthorRoles != null ? AuthorRoles.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (ActivityStateData != null ? ActivityStateData.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ RemoveInputFromOutput.GetHashCode();
+                hashCode = (hashCode * 397) ^ IsObject.GetHashCode();
+                hashCode = (hashCode * 397) ^ (ObjectName != null ? ObjectName.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (ObjectResult != null ? ObjectResult.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ SourceId.GetHashCode();
+                return hashCode;
+            }
+        }
     }
 }

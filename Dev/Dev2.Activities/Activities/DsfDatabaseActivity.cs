@@ -8,6 +8,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
 using Dev2.Data.TO;
 using Dev2.Interfaces;
 using Dev2.Services.Execution;
@@ -15,7 +16,7 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Activities
 {
-    public class DsfDatabaseActivity : DsfActivity
+    public class DsfDatabaseActivity : DsfActivity,IEquatable<DsfDatabaseActivity>
     {
         public IServiceExecution ServiceExecution { get; protected set; }
 
@@ -63,5 +64,28 @@ namespace Dev2.Activities
         #endregion
 
         #endregion
+
+        public bool Equals(DsfDatabaseActivity other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return base.Equals(other) && Equals(ServiceExecution, other.ServiceExecution);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((DsfDatabaseActivity) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return (base.GetHashCode() * 397) ^ (ServiceExecution != null ? ServiceExecution.GetHashCode() : 0);
+            }
+        }
     }
 }

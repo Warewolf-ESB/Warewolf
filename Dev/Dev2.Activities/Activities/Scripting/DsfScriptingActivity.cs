@@ -36,7 +36,7 @@ namespace Dev2.Activities
     /// Activity used for executing JavaScript through a tool
     /// </summary>
     //[ToolDescriptorInfo("Scripting-JavaScript", "Script", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Scripting", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Scripting_Script")]
-    public class DsfScriptingActivity : DsfActivityAbstract<string>
+    public class DsfScriptingActivity : DsfActivityAbstract<string>,IEquatable<DsfScriptingActivity>
     {
         #region Properties
 
@@ -233,5 +233,35 @@ namespace Dev2.Activities
         }
 
         #endregion GetForEachInputs/Outputs
+
+        public bool Equals(DsfScriptingActivity other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return base.Equals(other) && Equals(_sources, other._sources) && ScriptType == other.ScriptType && EscapeScript == other.EscapeScript && string.Equals(IncludeFile, other.IncludeFile) && string.Equals(Script, other.Script) && string.Equals(Result, other.Result);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((DsfScriptingActivity) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ (_sources != null ? _sources.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (int) ScriptType;
+                hashCode = (hashCode * 397) ^ EscapeScript.GetHashCode();
+                hashCode = (hashCode * 397) ^ (IncludeFile != null ? IncludeFile.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Script != null ? Script.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Result != null ? Result.GetHashCode() : 0);
+                return hashCode;
+            }
+        }
     }
 }

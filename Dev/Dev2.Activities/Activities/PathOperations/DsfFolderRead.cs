@@ -41,7 +41,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
     /// Purpose : To provide an activity that can read a folder's contents via FTP, FTPS and file system
     /// </summary>
     [ToolDescriptorInfo("FileFolder-ReadFolder", "Read Folder", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "File, FTP, FTPS & SFTP", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_File_Read_Folder")]
-    public class DsfFolderRead : DsfAbstractFileActivity, IPathInput
+    public class DsfFolderRead : DsfAbstractFileActivity, IPathInput,IEquatable<DsfFolderRead>
     {
 
         public DsfFolderRead()
@@ -250,5 +250,33 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
         #endregion
+
+        public bool Equals(DsfFolderRead other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return base.Equals(other) && IsFilesSelected == other.IsFilesSelected && IsFoldersSelected == other.IsFoldersSelected && IsFilesAndFoldersSelected == other.IsFilesAndFoldersSelected && string.Equals(InputPath, other.InputPath);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((DsfFolderRead) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ IsFilesSelected.GetHashCode();
+                hashCode = (hashCode * 397) ^ IsFoldersSelected.GetHashCode();
+                hashCode = (hashCode * 397) ^ IsFilesAndFoldersSelected.GetHashCode();
+                hashCode = (hashCode * 397) ^ (InputPath != null ? InputPath.GetHashCode() : 0);
+                return hashCode;
+            }
+        }
     }
 }

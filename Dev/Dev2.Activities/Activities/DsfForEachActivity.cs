@@ -41,7 +41,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
 {
     [ToolDescriptorInfo("Execution-ForEach", "ForEach", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Loop Constructs", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_LoopConstruct_For Each")]
-    public class DsfForEachActivity : DsfActivityAbstract<bool>
+    public class DsfForEachActivity : DsfActivityAbstract<bool>,IEquatable<DsfForEachActivity>
     {
         string _previousParentId;
         
@@ -976,5 +976,55 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #endregion
 
+        public bool Equals(DsfForEachActivity other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return base.Equals(other) && string.Equals(_previousParentId, other._previousParentId) && Equals(_inputItr, other._inputItr) && string.Equals(_forEachElementName, other._forEachElementName) && string.Equals(_displayName, other._displayName) && _previousInputsIndex == other._previousInputsIndex && _previousOutputsIndex == other._previousOutputsIndex && string.Equals(_inputsToken, other._inputsToken) && string.Equals(_outputsToken, other._outputsToken) && Equals(operationalData, other.operationalData) && Equals(_results, other._results) && Equals(_actionArgument, other._actionArgument) && Equals(_origInput, other._origInput) && Equals(_origOutput, other._origOutput) && Equals(_forEachExecutionObject, other._forEachExecutionObject) && string.Equals(_childUniqueID, other._childUniqueID) && _originalUniqueID.Equals(other._originalUniqueID) && ForEachType == other.ForEachType && string.Equals(From, other.From) && string.Equals(To, other.To) && string.Equals(Recordset, other.Recordset) && string.Equals(CsvIndexes, other.CsvIndexes) && string.Equals(NumOfExections, other.NumOfExections) && Equals(test, other.test) && Equals(DataFunc, other.DataFunc) && FailOnFirstError == other.FailOnFirstError && string.Equals(ElementName, other.ElementName) && string.Equals(PreservedDataList, other.PreservedDataList);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((DsfForEachActivity) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ (_previousParentId != null ? _previousParentId.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (_inputItr != null ? _inputItr.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (_forEachElementName != null ? _forEachElementName.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (_displayName != null ? _displayName.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ _previousInputsIndex;
+                hashCode = (hashCode * 397) ^ _previousOutputsIndex;
+                hashCode = (hashCode * 397) ^ (_inputsToken != null ? _inputsToken.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (_outputsToken != null ? _outputsToken.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (operationalData != null ? operationalData.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (_results != null ? _results.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (_actionArgument != null ? _actionArgument.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (_origInput != null ? _origInput.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (_origOutput != null ? _origOutput.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (_forEachExecutionObject != null ? _forEachExecutionObject.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (_childUniqueID != null ? _childUniqueID.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ _originalUniqueID.GetHashCode();
+                hashCode = (hashCode * 397) ^ (int) ForEachType;
+                hashCode = (hashCode * 397) ^ (From != null ? From.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (To != null ? To.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Recordset != null ? Recordset.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (CsvIndexes != null ? CsvIndexes.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (NumOfExections != null ? NumOfExections.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (test != null ? test.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (DataFunc != null ? DataFunc.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ FailOnFirstError.GetHashCode();
+                hashCode = (hashCode * 397) ^ (ElementName != null ? ElementName.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (PreservedDataList != null ? PreservedDataList.GetHashCode() : 0);
+                return hashCode;
+            }
+        }
     }
 }

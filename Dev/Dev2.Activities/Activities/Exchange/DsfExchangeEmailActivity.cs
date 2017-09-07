@@ -27,7 +27,7 @@ using Warewolf.Storage.Interfaces;
 namespace Dev2.Activities.Exchange
 {
     [ToolDescriptorInfo("Utility-SendMail", "Exchange Send", ToolType.Native, "8926E59B-18A3-03BB-A92F-6090C5C3EA80", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Email", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Email_Exchange_Send")]
-    public class DsfExchangeEmailActivity : DsfActivityAbstract<string>
+    public class DsfExchangeEmailActivity : DsfActivityAbstract<string>,IEquatable<DsfExchangeEmailActivity>
     {
         private readonly IDev2EmailSender _emailSender;
 
@@ -334,5 +334,37 @@ namespace Dev2.Activities.Exchange
         }
 
         #endregion
+
+        public bool Equals(DsfExchangeEmailActivity other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return base.Equals(other) && Equals(SavedSource, other.SavedSource) && string.Equals(To, other.To) && string.Equals(Cc, other.Cc) && string.Equals(Bcc, other.Bcc) && string.Equals(Subject, other.Subject) && string.Equals(Attachments, other.Attachments) && string.Equals(Body, other.Body) && string.Equals(Result, other.Result);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((DsfExchangeEmailActivity) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ (SavedSource != null ? SavedSource.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (To != null ? To.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Cc != null ? Cc.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Bcc != null ? Bcc.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Subject != null ? Subject.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Attachments != null ? Attachments.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Body != null ? Body.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Result != null ? Result.GetHashCode() : 0);
+                return hashCode;
+            }
+        }
     }
 }
