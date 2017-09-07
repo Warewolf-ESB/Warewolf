@@ -149,6 +149,7 @@
     <Compile Include="ManageOracleSourceViewModel.cs" />
     <Compile Include="ManagePostgreSqlSourceViewModel.cs" />
     <Compile Include="ManageSqlServerSourceViewModel.cs" />
+    <Compile Include="MergeWorkflowViewModel.cs" />
     <Compile Include="ServiceTestStep.cs" />
     <Compile Include="SingleExplorerDeployViewModel.cs" />
     <Compile Include="ExplorerItemViewModelCommandController.cs" />
