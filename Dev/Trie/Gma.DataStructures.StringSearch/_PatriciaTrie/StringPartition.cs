@@ -6,6 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using Warewolf.Resource.Errors;
 
 namespace Gma.DataStructures.StringSearch
 {
@@ -19,36 +20,30 @@ namespace Gma.DataStructures.StringSearch
         private readonly int m_StartIndex;
 
         public StringPartition(string origin)
-            : this(origin, 0, origin==null ? 0 : origin.Length)
+            : this(origin, 0, origin?.Length ?? 0)
         {
         }
 
         public StringPartition(string origin, int startIndex)
-            : this(origin, startIndex, origin == null ? 0 : origin.Length - startIndex)
+            : this(origin, startIndex, origin?.Length - startIndex ?? 0)
         {
         }
 
         public StringPartition(string origin, int startIndex, int partitionLength)
         {
             if (origin == null) throw new ArgumentNullException("origin");
-            if (startIndex < 0) throw new ArgumentOutOfRangeException("startIndex", "The value must be non negative.");
+            if (startIndex < 0) throw new ArgumentOutOfRangeException("startIndex", ErrorResource.PositiveNumberRequired);
             if (partitionLength < 0)
-                throw new ArgumentOutOfRangeException("partitionLength", "The value must be non negative.");
+                throw new ArgumentOutOfRangeException("partitionLength", ErrorResource.PositiveNumberRequired);
             m_Origin = string.Intern(origin);
             m_StartIndex = startIndex;
             int availableLength = m_Origin.Length - startIndex;
             m_PartitionLength = Math.Min(partitionLength, availableLength);
         }
 
-        public char this[int index]
-        {
-            get { return m_Origin[m_StartIndex + index]; }
-        }
+        public char this[int index] => m_Origin[m_StartIndex + index];
 
-        public int Length
-        {
-            get { return m_PartitionLength; }
-        }
+        public int Length => m_PartitionLength;
 
         #region IEnumerable<char> Members
 
@@ -83,7 +78,7 @@ namespace Gma.DataStructures.StringSearch
         {
             unchecked
             {
-                int hashCode = (m_Origin != null ? m_Origin.GetHashCode() : 0);
+                int hashCode = m_Origin?.GetHashCode() ?? 0;
                 hashCode = (hashCode*397) ^ m_PartitionLength;
                 hashCode = (hashCode*397) ^ m_StartIndex;
                 return hashCode;
