@@ -32,7 +32,7 @@ using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.ViewModels;
 using Dev2.Workspaces;
 using Infragistics.Windows.DockManager;
-
+using Warewolf.Studio.Views;
 
 namespace Dev2.Studio.Views
 {
@@ -197,6 +197,12 @@ namespace Dev2.Studio.Views
             if ((Keyboard.Modifiers == (ModifierKeys.Alt | ModifierKeys.Control)) && (e.Key == Key.F4))
             {
                 ResetToStartupView();
+            }
+            if (e.Key == Key.Home && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
+            {
+                var window = new Window();
+                window.Content = new MergeWorkflowView();
+                window.Show();
             }
             if (e.Key == Key.F1)
             {
