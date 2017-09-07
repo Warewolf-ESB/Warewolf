@@ -233,8 +233,39 @@ namespace Dev2.Studio.Core.DataList
             {
                 return new string[0];
             }
-            var suggestions = trie.Retrieve(filter);
+            IEnumerable<string> suggestions = null;
+            List<string> permutationsOfCapitalization = Permute(filter);
+            foreach (var str in permutationsOfCapitalization.Distinct())
+            {
+                IEnumerable<string> newSuggestions = trie.Retrieve(str);
+                if (suggestions == null)
+                {
+                    suggestions = newSuggestions;
+                }
+                else
+                {
+                    suggestions = suggestions.Concat(newSuggestions);
+                }
+            }
             return suggestions;
+        }
+
+        List<string> Permute(string s)
+        {
+            List<string> listPermutations = new List<string>();
+
+            char[] array = s.ToLower().ToCharArray();
+            int iterations = (1 << array.Length) - 1;
+
+            for (int i = 0; i <= iterations; i++)
+            {
+                for (int j = 0; j < array.Length; j++)
+                    array[j] = (i & (1 << j)) != 0
+                                  ? char.ToUpper(array[j])
+                                  : char.ToLower(array[j]);
+                listPermutations.Add(new string(array));
+            }
+            return listPermutations;
         }
 
         #endregion Implementation of ISuggestionProvider

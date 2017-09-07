@@ -81,7 +81,6 @@ namespace Dev2.DynamicServices
         /// </summary>
         public string AssemblyLocation { get; set; }
 
-        //2013.04.29: Ashley Lewis PBI 8721 - The service now stores the namespace in this internal generic source
         /// <summary>
         ///     The namespace the server uses
         /// </summary>

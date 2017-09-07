@@ -31,7 +31,6 @@
     <converters3:EmailSourceToDisplayTextConverter x:Key="EmailSourceToDisplayTextConverter" />
     <converters3:MessageBoxImageToSystemIconConverter x:Key="MessageBoxImageToSystemIconConverter" />
     <converters:DebugItemResultTypeToColorConverter x:Key="DebugItemResultTypeToColorConverter" />
-    <converters:BooleanInvertConverter x:Key="BooleanInvertConverter" />
     <converters5:SchedulerStatusToCheckedConverter x:Key="SchedulerStatusToCheckedConverter" />
     <converters7:InverseScheduleStatusConverter x:Key="InverseScheduleStatusConverter" />
     <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />

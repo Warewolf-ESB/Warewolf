@@ -8,7 +8,7 @@ namespace Dev2.Runtime.ESB.Execution
     {       
         bool _isRefreshing;
         int _currentExecutions;        
-        static ManualResetEvent EventPulse = new ManualResetEvent(false);
+        static ManualResetEvent _eventPulse = new ManualResetEvent(false);
         static readonly object _executionLock = new object();
         public ExecutionManager()
         {
@@ -31,29 +31,16 @@ namespace Dev2.Runtime.ESB.Execution
 
         public void Wait()
         {
-            //lock (_executionLock)
-            {
-                EventPulse.WaitOne();
-            }
+            _eventPulse.WaitOne();
         }
         public void StopRefresh()
         {
-            //foreach(var autoResetEvent in _waitHandles)
-            //{
-            //    autoResetEvent.Set();
-            //}
-            //_waitHandles.Clear();
-            //lock (_executionLock)
-            {
-                EventPulse.Set();
-                _isRefreshing = false;
-            }            
+            _eventPulse.Set();
+            _isRefreshing = false;
         }
         public void AddExecution()
         {
             Interlocked.Increment(ref _currentExecutions);
-            //_currentExecutions++;
-
         }
 
         public bool IsRefreshing => _isRefreshing;
@@ -63,9 +50,7 @@ namespace Dev2.Runtime.ESB.Execution
             if (_currentExecutions > 0)
             {
                 Interlocked.Decrement(ref _currentExecutions);
-                //_currentExecutions--;
             }
-        }
-        
+        }        
     }
 }
