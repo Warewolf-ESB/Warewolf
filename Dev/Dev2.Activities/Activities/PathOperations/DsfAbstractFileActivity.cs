@@ -38,7 +38,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
     /// Status : New
     /// Purpose : To provide a base activity for all file activities to inherit from
     /// </summary>
-    public abstract class DsfAbstractFileActivity : DsfActivityAbstract<string>, IPathAuth, IResult, IPathCertVerify,IEquatable<DsfAbstractFileActivity>
+    public abstract class DsfAbstractFileActivity : DsfActivityAbstract<string>, IPathAuth, IResult, IPathCertVerify, IEquatable<DsfAbstractFileActivity>
     {
 
         private string _username;
@@ -95,7 +95,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                     else
                                     {
                                         foreach (var region in DataListCleaningUtils.SplitIntoRegions(output.OutPutDescription))
-                                        {                                            
+                                        {
                                             dataObject.Environment.Assign(region, value, update);
                                         }
                                     }
@@ -108,15 +108,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     {
                         foreach (var region in DataListCleaningUtils.SplitIntoRegions(Result))
                         {
-                            dataObject.Environment.Assign(region, "",update);
+                            dataObject.Environment.Assign(region, "", update);
                         }
                     }
                     if (dataObject.IsDebugMode())
-                        {
+                    {
                         if (!String.IsNullOrEmpty(Result))
-                            {
-                                AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment, update));
-                            }
+                        {
+                            AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment, update));
+                        }
                     }
                 }
                 catch (Exception ex)
@@ -147,7 +147,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)] 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         protected string DecryptedPassword => DataListUtil.NotEncrypted(Password) ? Password : DpapiWrapper.Decrypt(Password);
 
         /// <summary>
@@ -291,7 +291,36 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            return base.Equals(other) && string.Equals(Username, other.Username) && string.Equals(Password, other.Password) && string.Equals(PrivateKeyFile, other.PrivateKeyFile) && string.Equals(Result, other.Result) && IsNotCertVerifiable == other.IsNotCertVerifiable;
+            string temPpassword = Password;
+            string temPpassword1 = other.Password;
+
+            try
+            {
+                temPpassword = DpapiWrapper.DecryptIfEncrypted(Password);
+            }
+            catch (Exception)
+            {
+                // 
+            }
+
+
+            try
+            {
+                temPpassword1 = DpapiWrapper.DecryptIfEncrypted(other.Password);
+            }
+            catch (Exception)
+            {
+                // 
+            }
+
+
+            return base.Equals(other)
+                && string.Equals(Username, other.Username)
+                && string.Equals(temPpassword, temPpassword1)
+                && string.Equals(DisplayName, other.DisplayName)
+                && string.Equals(PrivateKeyFile, other.PrivateKeyFile)
+                && string.Equals(Result, other.Result)
+                && IsNotCertVerifiable == other.IsNotCertVerifiable;
         }
 
         public override bool Equals(object obj)
@@ -299,7 +328,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
             if (obj.GetType() != this.GetType()) return false;
-            return Equals((DsfAbstractFileActivity) obj);
+            return Equals((DsfAbstractFileActivity)obj);
         }
 
         public override int GetHashCode()
