@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using Dev2;
 using Dev2.Activities;
 using Dev2.Activities.PathOperations;
 using Dev2.Common.Interfaces;
@@ -38,7 +39,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
     /// </summary>
     [ToolDescriptorInfo("FileFolder-Zip", "Zip", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "File, FTP, FTPS & SFTP", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_File_Zip")]
     public class DsfZip : DsfAbstractMultipleFilesActivity, IZip, IPathInput, IPathOutput, IPathOverwrite,
-                          IDestinationUsernamePassword
+                          IDestinationUsernamePassword, IEquatable<DsfZip>
     {
         private string _compressionRatio;
 
@@ -63,7 +64,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         [FindMissing]
         public string ArchivePassword
         {
-            get { return _archivePassword; }
+            get => _archivePassword;
             set
             {
                 if (DataListUtil.ShouldEncrypt(value))
@@ -104,8 +105,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         [Inputs("Compession Ratio"), FindMissing]
         public string CompressionRatio
         {
-            get { return _compressionRatio; }
-            set { _compressionRatio = string.IsNullOrEmpty(value) ? value : value.Replace(" ", ""); }
+            get => _compressionRatio;
+            set => _compressionRatio = string.IsNullOrEmpty(value) ? value : value.Replace(" ", "");
         }
         #endregion Properties
 
@@ -192,5 +193,36 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return GetForEachItems(ArchiveName, ArchivePassword, CompressionRatio, InputPath, OutputPath);
         }
         #endregion
+
+        public bool Equals(DsfZip other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            var passWordsCompare = CommonEqualityOps.PassWordsCompare(ArchivePassword, other.ArchivePassword);
+            return base.Equals(other) 
+                && string.Equals(CompressionRatio, other.CompressionRatio)
+                && passWordsCompare
+                && string.Equals(ArchiveName, other.ArchiveName);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((DsfZip) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ (CompressionRatio != null ? CompressionRatio.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (ArchivePassword != null ? ArchivePassword.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (ArchiveName != null ? ArchiveName.GetHashCode() : 0);
+                return hashCode;
+            }
+        }
     }
 }

@@ -199,7 +199,7 @@ namespace Dev2.Activities.DropBox2016.DropboxFileActivity
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            var isSourceEqual = CommonSourceEquality.IsSourceEqual<IResource>(SelectedSource, other.SelectedSource);
+            var isSourceEqual = CommonEqualityOps.IsSourceEqual<IResource>(SelectedSource, other.SelectedSource);
             return base.Equals(other) 
                 && isSourceEqual
                 && Files.SequenceEqual(other.Files, StringComparer.Ordinal) 

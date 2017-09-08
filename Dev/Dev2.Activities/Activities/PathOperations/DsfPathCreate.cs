@@ -36,7 +36,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
     /// Purpose : To create an activity to create files on FTP, FTPS and file system
     /// </summary>
     [ToolDescriptorInfo("FileFolder-Create", "Create", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "File, FTP, FTPS & SFTP", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_File_Create")]
-    public class DsfPathCreate : DsfAbstractFileActivity, IPathOutput, IPathOverwrite
+    public class DsfPathCreate : DsfAbstractFileActivity, IPathOutput, IPathOverwrite,IEquatable<DsfPathCreate>
     {
 
         public DsfPathCreate()
@@ -159,5 +159,31 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
         #endregion
+
+        public bool Equals(DsfPathCreate other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return base.Equals(other) && string.Equals(OutputPath, other.OutputPath) && Overwrite == other.Overwrite;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((DsfPathCreate) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ (OutputPath != null ? OutputPath.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ Overwrite.GetHashCode();
+                return hashCode;
+            }
+        }
     }
 }

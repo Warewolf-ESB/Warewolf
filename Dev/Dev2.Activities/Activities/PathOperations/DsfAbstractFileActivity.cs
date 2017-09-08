@@ -12,6 +12,7 @@ using System;
 using System.Activities;
 using System.Collections.Generic;
 using System.ComponentModel;
+using Dev2;
 using Dev2.Activities;
 using Dev2.Activities.Debug;
 using Dev2.Common;
@@ -291,32 +292,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            string temPpassword = Password;
-            string temPpassword1 = other.Password;
-
-            try
-            {
-                temPpassword = DpapiWrapper.DecryptIfEncrypted(Password);
-            }
-            catch (Exception)
-            {
-                // 
-            }
-
-
-            try
-            {
-                temPpassword1 = DpapiWrapper.DecryptIfEncrypted(other.Password);
-            }
-            catch (Exception)
-            {
-                // 
-            }
-
-
+            var passWordsCompare = CommonEqualityOps.PassWordsCompare(Password, other.Password);
             return base.Equals(other)
                 && string.Equals(Username, other.Username)
-                && string.Equals(temPpassword, temPpassword1)
+                && passWordsCompare
                 && string.Equals(DisplayName, other.DisplayName)
                 && string.Equals(PrivateKeyFile, other.PrivateKeyFile)
                 && string.Equals(Result, other.Result)

@@ -255,7 +255,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            return base.Equals(other) && IsFilesSelected == other.IsFilesSelected && IsFoldersSelected == other.IsFoldersSelected && IsFilesAndFoldersSelected == other.IsFilesAndFoldersSelected && string.Equals(InputPath, other.InputPath);
+            return base.Equals(other) 
+                && IsFilesSelected == other.IsFilesSelected
+                && IsFoldersSelected == other.IsFoldersSelected 
+                && IsFilesAndFoldersSelected == other.IsFilesAndFoldersSelected 
+                && string.Equals(InputPath, other.InputPath);
         }
 
         public override bool Equals(object obj)
