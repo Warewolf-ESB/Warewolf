@@ -134,6 +134,37 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Assigns
             //---------------Test Result -----------------------
             Assert.IsTrue(equals);
         }
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void FieldsCollectionSameDifferentIndexNumbers_EmptyAssigns_Is_Not_Equal()
+        {
+            //---------------Set up test pack-------------------
+            var uniqueId = Guid.NewGuid().ToString();
+            var multiAssign = new DsfMultiAssignActivity()
+            {
+                UniqueID = uniqueId,
+                FieldsCollection = new List<ActivityDTO>()
+                {
+                    new ActivityDTO("a","a",1),
+                    new ActivityDTO("B","B",2),
+                }
+            };
+            var multiAssign1 = new DsfMultiAssignActivity()
+            {
+                UniqueID = uniqueId,
+                FieldsCollection = new List<ActivityDTO>()
+                {
+                    new ActivityDTO("B","B",1),
+                    new ActivityDTO("a","a",2)
+                }
+            };
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(multiAssign);
+            //---------------Execute Test ----------------------
+            var @equals = multiAssign.Equals(multiAssign1);
+            //---------------Test Result -----------------------
+            Assert.IsFalse(equals);
+        }
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
