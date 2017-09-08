@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using Dev2.TO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
-namespace Dev2.Tests.Activities.ActivityComparerTests.Assigns
+namespace Dev2.Tests.Activities.ActivityComparerTests.ObjectAssign
 
 {
     [TestClass]
-    public class MultiAssignComparerTests
+    public class DsfMultiAssignObjectActivityComparerTests
     {
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
@@ -15,8 +16,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Assigns
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var multiAssign = new DsfMultiAssignActivity() { UniqueID = uniqueId };
-            var multiAssign1 = new DsfMultiAssignActivity() { UniqueID = uniqueId };
+            var multiAssign = new DsfMultiAssignObjectActivity() { UniqueID = uniqueId };
+            var multiAssign1 = new DsfMultiAssignObjectActivity() { UniqueID = uniqueId };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(multiAssign);
             //---------------Execute Test ----------------------
@@ -31,8 +32,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Assigns
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var multiAssign = new DsfMultiAssignActivity();
-            var multiAssign1 = new DsfMultiAssignActivity();
+            var multiAssign = new DsfMultiAssignObjectActivity();
+            var multiAssign1 = new DsfMultiAssignObjectActivity();
             //---------------Assert Precondition----------------
             Assert.IsNotNull(multiAssign);
             //---------------Execute Test ----------------------
@@ -47,8 +48,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Assigns
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var multiAssign = new DsfMultiAssignActivity() { UniqueID = uniqueId ,FieldsCollection = new List<ActivityDTO>() };
-            var multiAssign1 = new DsfMultiAssignActivity() { UniqueID = uniqueId ,FieldsCollection = new List<ActivityDTO>() };
+            var multiAssign = new DsfMultiAssignObjectActivity() { UniqueID = uniqueId ,FieldsCollection = new List<AssignObjectDTO>() };
+            var multiAssign1 = new DsfMultiAssignObjectActivity() { UniqueID = uniqueId ,FieldsCollection = new List<AssignObjectDTO>() };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(multiAssign);
             //---------------Execute Test ----------------------
@@ -63,20 +64,20 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Assigns
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var multiAssign = new DsfMultiAssignActivity()
+            var multiAssign = new DsfMultiAssignObjectActivity()
             {
                 UniqueID = uniqueId,
-                FieldsCollection = new List<ActivityDTO>()
+                FieldsCollection = new List<AssignObjectDTO>()
                 {
-                    new ActivityDTO("a","a",1)
+                    new AssignObjectDTO("a","a",1)
                 }
             };
-            var multiAssign1 = new DsfMultiAssignActivity()
+            var multiAssign1 = new DsfMultiAssignObjectActivity()
             {
                 UniqueID = uniqueId,
-                FieldsCollection = new List<ActivityDTO>()
+                FieldsCollection = new List<AssignObjectDTO>()
                 {
-                    new ActivityDTO("a","a",1)
+                    new AssignObjectDTO("a","a",1)
                 }
             };
             //---------------Assert Precondition----------------
@@ -93,20 +94,20 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Assigns
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var multiAssign = new DsfMultiAssignActivity()
+            var multiAssign = new DsfMultiAssignObjectActivity()
             {
                 UniqueID = uniqueId,
-                FieldsCollection = new List<ActivityDTO>()
+                FieldsCollection = new List<AssignObjectDTO>()
                 {
-                    new ActivityDTO("A","a",1)
+                    new AssignObjectDTO("A","a",1)
                 }
             };
-            var multiAssign1 = new DsfMultiAssignActivity()
+            var multiAssign1 = new DsfMultiAssignObjectActivity()
             {
                 UniqueID = uniqueId,
-                FieldsCollection = new List<ActivityDTO>()
+                FieldsCollection = new List<AssignObjectDTO>()
                 {
-                    new ActivityDTO("a","a",1)
+                    new AssignObjectDTO("a","a",1)
                 }
             };
             //---------------Assert Precondition----------------
@@ -123,21 +124,21 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Assigns
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var multiAssign = new DsfMultiAssignActivity()
+            var multiAssign = new DsfMultiAssignObjectActivity()
             {
                 UniqueID = uniqueId,
-                FieldsCollection = new List<ActivityDTO>()
+                FieldsCollection = new List<AssignObjectDTO>()
                 {
-                    new ActivityDTO("a","a",1)
+                    new AssignObjectDTO("a","a",1)
                 }
               
             };
-            var multiAssign1 = new DsfMultiAssignActivity()
+            var multiAssign1 = new DsfMultiAssignObjectActivity()
             {
                 UniqueID = uniqueId,
-                FieldsCollection = new List<ActivityDTO>()
+                FieldsCollection = new List<AssignObjectDTO>()
                 {
-                    new ActivityDTO("a","a",1)
+                    new AssignObjectDTO("a","a",1)
                 }
             };
             //---------------Assert Precondition----------------
@@ -155,21 +156,21 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Assigns
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var multiAssign = new DsfMultiAssignActivity()
+            var multiAssign = new DsfMultiAssignObjectActivity()
             {
                 UniqueID = uniqueId,
-                FieldsCollection = new List<ActivityDTO>()
+                FieldsCollection = new List<AssignObjectDTO>()
                 {
-                    new ActivityDTO("a","a",1)
+                    new AssignObjectDTO("a","a",1)
                 }
               
             };
-            var multiAssign1 = new DsfMultiAssignActivity()
+            var multiAssign1 = new DsfMultiAssignObjectActivity()
             {
                 UniqueID = uniqueId,
-                FieldsCollection = new List<ActivityDTO>()
+                FieldsCollection = new List<AssignObjectDTO>()
                 {
-                    new ActivityDTO("a","a",1)
+                    new AssignObjectDTO("a","a",1)
                 }
             };
             //---------------Assert Precondition----------------
@@ -188,22 +189,22 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Assigns
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var multiAssign = new DsfMultiAssignActivity()
+            var multiAssign = new DsfMultiAssignObjectActivity()
             {
                 UniqueID = uniqueId,
-                FieldsCollection = new List<ActivityDTO>()
+                FieldsCollection = new List<AssignObjectDTO>()
                 {
-                    new ActivityDTO("a","a",1)
+                    new AssignObjectDTO("a","a",1)
                 },
                 CreateBookmark = false
 
             };
-            var multiAssign1 = new DsfMultiAssignActivity()
+            var multiAssign1 = new DsfMultiAssignObjectActivity()
             {
                 UniqueID = uniqueId,
-                FieldsCollection = new List<ActivityDTO>()
+                FieldsCollection = new List<AssignObjectDTO>()
                 {
-                    new ActivityDTO("a","a",1)
+                    new AssignObjectDTO("a","a",1)
                 },
                 CreateBookmark = false
             };
@@ -223,22 +224,22 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Assigns
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var multiAssign = new DsfMultiAssignActivity()
+            var multiAssign = new DsfMultiAssignObjectActivity()
             {
                 UniqueID = uniqueId,
-                FieldsCollection = new List<ActivityDTO>()
+                FieldsCollection = new List<AssignObjectDTO>()
                 {
-                    new ActivityDTO("a","a",1)
+                    new AssignObjectDTO("a","a",1)
                 },
                 CreateBookmark = false
 
             };
-            var multiAssign1 = new DsfMultiAssignActivity()
+            var multiAssign1 = new DsfMultiAssignObjectActivity()
             {
                 UniqueID = uniqueId,
-                FieldsCollection = new List<ActivityDTO>()
+                FieldsCollection = new List<AssignObjectDTO>()
                 {
-                    new ActivityDTO("a","a",1)
+                    new AssignObjectDTO("a","a",1)
                 },
                 CreateBookmark = false
             };
@@ -258,22 +259,22 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Assigns
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var multiAssign = new DsfMultiAssignActivity()
+            var multiAssign = new DsfMultiAssignObjectActivity()
             {
                 UniqueID = uniqueId,
-                FieldsCollection = new List<ActivityDTO>()
+                FieldsCollection = new List<AssignObjectDTO>()
                 {
-                    new ActivityDTO("a","a",1)
+                    new AssignObjectDTO("a","a",1)
                 },
                 CreateBookmark = false
 
             };
-            var multiAssign1 = new DsfMultiAssignActivity()
+            var multiAssign1 = new DsfMultiAssignObjectActivity()
             {
                 UniqueID = uniqueId,
-                FieldsCollection = new List<ActivityDTO>()
+                FieldsCollection = new List<AssignObjectDTO>()
                 {
-                    new ActivityDTO("a","a",1)
+                    new AssignObjectDTO("a","a",1)
                 },
                 CreateBookmark = false
             };
@@ -293,22 +294,22 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Assigns
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var multiAssign = new DsfMultiAssignActivity()
+            var multiAssign = new DsfMultiAssignObjectActivity()
             {
                 UniqueID = uniqueId,
-                FieldsCollection = new List<ActivityDTO>()
+                FieldsCollection = new List<AssignObjectDTO>()
                 {
-                    new ActivityDTO("a","a",1)
+                    new AssignObjectDTO("a","a",1)
                 },
                 CreateBookmark = false
 
             };
-            var multiAssign1 = new DsfMultiAssignActivity()
+            var multiAssign1 = new DsfMultiAssignObjectActivity()
             {
                 UniqueID = uniqueId,
-                FieldsCollection = new List<ActivityDTO>()
+                FieldsCollection = new List<AssignObjectDTO>()
                 {
-                    new ActivityDTO("a","a",1)
+                    new AssignObjectDTO("a","a",1)
                 },
                 CreateBookmark = false
             };

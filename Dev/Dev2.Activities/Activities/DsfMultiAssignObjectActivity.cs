@@ -25,6 +25,7 @@ using System.Activities;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using Dev2.CollectionComparer;
 using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.TO;
 using Dev2.Interfaces;
@@ -41,7 +42,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
 {
     [ToolDescriptorInfo("AssignObject", "Assign Object", ToolType.Native, "A86C4D10-B4D0-4775-AF4D-C66D5A6CE76F", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Data", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Data_Assign_Object")]
-    public class DsfMultiAssignObjectActivity : DsfActivityAbstract<string>,IEquatable<DsfMultiAssignObjectActivity>
+    public class DsfMultiAssignObjectActivity : DsfActivityAbstract<string>, IEquatable<DsfMultiAssignObjectActivity>
     {
         #region Constants
 
@@ -59,9 +60,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Properties
 
-        
+
         public IList<AssignObjectDTO> FieldsCollection
-        
+
         {
             get
             {
@@ -99,13 +100,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Overridden NativeActivity Methods
 
-        
+
         protected override void CacheMetadata(NativeActivityMetadata metadata)
         {
             base.CacheMetadata(metadata);
         }
 
-        
+
 
         protected override void OnExecute(NativeActivityContext context)
         {
@@ -420,7 +421,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         var recSetResult = evalResult as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
                         if (recSetResult != null)
                         {
-                            
+
                             if (DataListUtil.GetRecordsetIndexType(assignValue.Name) == enRecordsetIndexType.Blank)
                             {
                                 AddDebugItem(new DebugItemWarewolfAtomListResult(recSetResult, evalResult2, "", assignValue.Name, VariableLabelText, NewFieldLabelText, "="), debugItem);
@@ -515,7 +516,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            return base.Equals(other) && Equals(_fieldsCollection, other._fieldsCollection) && UpdateAllOccurrences == other.UpdateAllOccurrences && CreateBookmark == other.CreateBookmark && string.Equals(ServiceHost, other.ServiceHost);
+            return base.Equals(other) && FieldsCollection.SequenceEqual(other.FieldsCollection, new ActivityDtoObjectComparer())
+                && UpdateAllOccurrences == other.UpdateAllOccurrences
+                && CreateBookmark == other.CreateBookmark
+                && string.Equals(ServiceHost, other.ServiceHost);
         }
 
         public override bool Equals(object obj)
@@ -523,7 +527,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
             if (obj.GetType() != this.GetType()) return false;
-            return Equals((DsfMultiAssignObjectActivity) obj);
+            return Equals((DsfMultiAssignObjectActivity)obj);
         }
 
         public override int GetHashCode()
@@ -531,7 +535,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             unchecked
             {
                 int hashCode = base.GetHashCode();
-                hashCode = (hashCode * 397) ^ (_fieldsCollection != null ? _fieldsCollection.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (FieldsCollection != null ? FieldsCollection.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ UpdateAllOccurrences.GetHashCode();
                 hashCode = (hashCode * 397) ^ CreateBookmark.GetHashCode();
                 hashCode = (hashCode * 397) ^ (ServiceHost != null ? ServiceHost.GetHashCode() : 0);

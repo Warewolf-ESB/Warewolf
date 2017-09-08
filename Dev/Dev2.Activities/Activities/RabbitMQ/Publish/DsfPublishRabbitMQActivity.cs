@@ -21,12 +21,6 @@ using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
 using Warewolf.Resource.Errors;
 
-
-
-
-
-
-
 namespace Dev2.Activities.RabbitMQ.Publish
 {
     [ToolDescriptorInfo("RabbitMq", "RabbitMQ Publish", ToolType.Native, "FFEC6885-597E-49A2-A1AD-AE81E33DF809", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Utility", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Utility_Rabbit_MQ_Publish")]
@@ -134,7 +128,30 @@ namespace Dev2.Activities.RabbitMQ.Publish
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            return base.Equals(other) && RabbitMQSourceResourceId.Equals(other.RabbitMQSourceResourceId) && string.Equals(QueueName, other.QueueName) && IsDurable == other.IsDurable && IsExclusive == other.IsExclusive && IsAutoDelete == other.IsAutoDelete && string.Equals(Message, other.Message)  && Equals(RabbitMQSource, other.RabbitMQSource);
+            bool sourceIsSame;
+            var b = RabbitMQSource == null && other.RabbitMQSource != null;
+            var b1 = other.RabbitMQSource == null && RabbitMQSource != null;
+            if (b || b1)
+            {
+                sourceIsSame = false;
+            }
+            else if (RabbitMQSource == null && other.RabbitMQSource == null)
+            {
+                sourceIsSame = true;
+            }
+            else
+            {
+                sourceIsSame = RabbitMQSource?.Equals(other.RabbitMQSource) ?? false;
+            }
+            return base.Equals(other)
+                && RabbitMQSourceResourceId.Equals(other.RabbitMQSourceResourceId) 
+                && string.Equals(QueueName, other.QueueName) 
+                && IsDurable == other.IsDurable 
+                && IsExclusive == other.IsExclusive 
+                && IsAutoDelete == other.IsAutoDelete
+                && string.Equals(Message, other.Message)  
+                && string.Equals(DisplayName, other.DisplayName)  
+                && sourceIsSame;
         }
 
         public override bool Equals(object obj)
@@ -152,6 +169,7 @@ namespace Dev2.Activities.RabbitMQ.Publish
                 int hashCode = base.GetHashCode();
                 hashCode = (hashCode * 397) ^ RabbitMQSourceResourceId.GetHashCode();
                 hashCode = (hashCode * 397) ^ (QueueName != null ? QueueName.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (DisplayName != null ? DisplayName.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ IsDurable.GetHashCode();
                 hashCode = (hashCode * 397) ^ IsExclusive.GetHashCode();
                 hashCode = (hashCode * 397) ^ IsAutoDelete.GetHashCode();
