@@ -195,6 +195,7 @@
     <Compile Include="ActivityComparerTests\Scripting\DsfPythonActivityTests.cs" />
     <Compile Include="ActivityComparerTests\Scripting\DsfRubyActivityTests.cs" />
     <Compile Include="ActivityComparerTests\Scripting\DsfScriptingActivityTests.cs" />
+    <Compile Include="ActivityComparerTests\SelectAndApply\DsfSelectAndApplyActivityComparerTests.cs" />
     <Compile Include="ActivityTests\AbstractMultipleFilesActivityTests.cs" />
     <Compile Include="ActivityTests\AggregateCalculateActivityTest.cs" />
     <Compile Include="ActivityTests\BaseActivityTests.cs" />

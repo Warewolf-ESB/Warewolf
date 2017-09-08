@@ -8,6 +8,7 @@ using System.Activities;
 using System.Collections.Generic;
 using System.Linq;
 using Dev2.Common.Interfaces;
+using Dev2.Comparer;
 using Dev2.Data.TO;
 using Dev2.Diagnostics.Debug;
 using Dev2.Interfaces;
@@ -17,10 +18,6 @@ using Warewolf.Core;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
-
-
-
-
 
 namespace Dev2.Activities.SelectAndApply
 {
@@ -38,7 +35,7 @@ namespace Dev2.Activities.SelectAndApply
             ApplyActivityFunc = new ActivityFunc<string, bool>
             {
                 DisplayName = "Data Action",
-                Argument = new DelegateInArgument<string>($"explicitData_{DateTime.Now.ToString("yyyyMMddhhmmss")}")
+                Argument = new DelegateInArgument<string>($"explicitData_{DateTime.Now:yyyyMMddhhmmss}")
             };
         }
 
@@ -203,8 +200,7 @@ namespace Dev2.Activities.SelectAndApply
                     //Assign the warewolfAtom to Alias using new environment
                     scopedEnvironment.SetDataSource(exp);
 
-                    var exeAct = ApplyActivityFunc.Handler as IDev2Activity;
-                    if (exeAct != null)
+                    if (ApplyActivityFunc.Handler is IDev2Activity exeAct)
                     {
                         _childUniqueID = exeAct.UniqueID;
                         exeAct.Execute(dataObject, 0);
@@ -275,8 +271,7 @@ namespace Dev2.Activities.SelectAndApply
                         {
                             if (data.IsWarewolfAtomResult)
                             {
-                                var atom = data as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
-                                if (atom != null)
+                                if (data is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult atom)
                                     AddDebugOutputItem(new DebugItemWarewolfAtomResult(atom.Item.ToString(), expression, ""));
                             }
                         }
@@ -332,7 +327,14 @@ namespace Dev2.Activities.SelectAndApply
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            return base.Equals(other) && string.Equals(_previousParentId, other._previousParentId) && _originalUniqueID.Equals(other._originalUniqueID) && string.Equals(_childUniqueID, other._childUniqueID) && string.Equals(DataSource, other.DataSource) && string.Equals(Alias, other.Alias) && Equals(ApplyActivityFunc, other.ApplyActivityFunc);
+            ActivityFuncComparer activityFuncComparer = new ActivityFuncComparer();
+            return base.Equals(other) 
+                && string.Equals(_previousParentId, other._previousParentId)
+                && Equals(_originalUniqueID,other._originalUniqueID)
+                && string.Equals(_childUniqueID, other._childUniqueID)
+                && string.Equals(DataSource, other.DataSource) 
+                && string.Equals(Alias, other.Alias) 
+                && activityFuncComparer.Equals(ApplyActivityFunc, other.ApplyActivityFunc);
         }
 
         public override bool Equals(object obj)
