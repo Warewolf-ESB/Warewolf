@@ -174,6 +174,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <Compile Include="ActivityComparerTests\DropBox2016\DsfDropBoxDeleteActivityComparerTests.cs" />
+    <Compile Include="ActivityComparerTests\DropBox2016\DsfDropBoxDownloadActivityComparerTests.cs" />
     <Compile Include="ActivityComparerTests\DropBox2016\DsfDropBoxUploadActivityComparerTests.cs" />
     <Compile Include="ActivityComparerTests\ObjectAssign\AssignObjectDtoTests.cs" />
     <Compile Include="ActivityComparerTests\ObjectAssign\MultiAssignComparerTests.cs" />

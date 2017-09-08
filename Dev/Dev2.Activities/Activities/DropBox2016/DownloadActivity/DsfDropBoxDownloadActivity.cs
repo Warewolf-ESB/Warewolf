@@ -129,16 +129,13 @@ namespace Dev2.Activities.DropBox2016.DownloadActivity
         //All units used here has been unit tested seperately
         protected override List<string> PerformExecution(Dictionary<string, string> evaluatedValues)
         {
-            string localToPath;
-            evaluatedValues.TryGetValue("ToPath", out localToPath);
-            string localFromPath;
-            evaluatedValues.TryGetValue("FromPath", out localFromPath);
+            evaluatedValues.TryGetValue("ToPath", out var localToPath);
+            evaluatedValues.TryGetValue("FromPath", out var localFromPath);
             IDropboxSingleExecutor<IDropboxResult> dropBoxDownLoad = new DropBoxDownLoad(localToPath);
             var dropboxSingleExecutor = GetDropboxSingleExecutor(dropBoxDownLoad);
             _dropboxClientWrapper = _dropboxClientWrapper ?? new DropboxClientWrapper(GetClient());
             var dropboxExecutionResult = dropboxSingleExecutor.ExecuteTask(_dropboxClientWrapper);
-            var dropboxSuccessResult = dropboxExecutionResult as DropboxDownloadSuccessResult;
-            if (dropboxSuccessResult != null)
+            if (dropboxExecutionResult is DropboxDownloadSuccessResult dropboxSuccessResult)
             {
                 Response = dropboxSuccessResult.GetDownloadResponse();
                 var bytes = Response.GetContentAsByteArrayAsync().Result;
@@ -153,8 +150,7 @@ namespace Dev2.Activities.DropBox2016.DownloadActivity
                 }
                 return new List<string> { GlobalConstants.DropBoxSuccess };
             }
-            var dropboxFailureResult = dropboxExecutionResult as DropboxFailureResult;
-            if (dropboxFailureResult != null)
+            if (dropboxExecutionResult is DropboxFailureResult dropboxFailureResult)
             {
                 Exception = dropboxFailureResult.GetException();
             }
@@ -187,7 +183,13 @@ namespace Dev2.Activities.DropBox2016.DownloadActivity
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            return base.Equals(other) && Equals(DropboxFile, other.DropboxFile) && Equals(SelectedSource, other.SelectedSource) && string.Equals(ToPath, other.ToPath) && OverwriteFile == other.OverwriteFile && string.Equals(FromPath, other.FromPath);
+            var isSourceEqual = CommonSourceEquality.IsSourceEqual(SelectedSource, other.SelectedSource);
+            return base.Equals(other) 
+                && isSourceEqual
+                && string.Equals(ToPath, other.ToPath) 
+                && string.Equals(DisplayName, other.DisplayName) 
+                && OverwriteFile == other.OverwriteFile
+                && string.Equals(FromPath, other.FromPath);
         }
 
         public override bool Equals(object obj)
@@ -203,7 +205,6 @@ namespace Dev2.Activities.DropBox2016.DownloadActivity
             unchecked
             {
                 int hashCode = base.GetHashCode();
-                hashCode = (hashCode * 397) ^ (DropboxFile != null ? DropboxFile.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (SelectedSource != null ? SelectedSource.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (ToPath != null ? ToPath.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ OverwriteFile.GetHashCode();
