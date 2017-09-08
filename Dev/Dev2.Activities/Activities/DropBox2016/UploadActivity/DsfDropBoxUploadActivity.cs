@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using Dev2.Activities.Debug;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Wrappers;
 using Dev2.Diagnostics;
@@ -184,7 +185,7 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            var isSourceEqual = CommonSourceEquality.IsSourceEqual(SelectedSource, other.SelectedSource);
+            var isSourceEqual = CommonSourceEquality.IsSourceEqual<IResource>(SelectedSource,other.SelectedSource);
             return base.Equals(other) 
                 && isSourceEqual
                 && string.Equals(FromPath, other.FromPath) 

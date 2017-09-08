@@ -21,6 +21,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Dev2.Common.Interfaces.Core.DynamicServices;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Data.Util;
 using Dev2.Interfaces;
 using Dev2.Runtime.Interfaces;
@@ -382,7 +383,7 @@ namespace Dev2.Activities.RabbitMQ.Consume
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
           
-            var isSourceEqual = CommonSourceEquality.IsSourceEqual(RabbitSource, other.RabbitSource);
+            var isSourceEqual = CommonSourceEquality.IsSourceEqual<IResource>(RabbitSource, other.RabbitSource);
             return base.Equals(other)
                 && string.Equals(Result, other.Result)
                 && Prefetch == other.Prefetch

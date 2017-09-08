@@ -339,7 +339,17 @@ namespace Dev2.Activities.Exchange
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            return base.Equals(other) && Equals(SavedSource, other.SavedSource) && string.Equals(To, other.To) && string.Equals(Cc, other.Cc) && string.Equals(Bcc, other.Bcc) && string.Equals(Subject, other.Subject) && string.Equals(Attachments, other.Attachments) && string.Equals(Body, other.Body) && string.Equals(Result, other.Result);
+            var isSourceEqual = CommonSourceEquality.IsSourceEqual(SavedSource, other.SavedSource);
+            return base.Equals(other) 
+                && isSourceEqual
+                && string.Equals(To, other.To) 
+                && string.Equals(Cc, other.Cc) 
+                && string.Equals(Bcc, other.Bcc) 
+                && string.Equals(Subject, other.Subject)
+                && string.Equals(Attachments, other.Attachments)
+                && string.Equals(Body, other.Body)
+                && string.Equals(DisplayName, other.DisplayName)
+                && string.Equals(Result, other.Result);
         }
 
         public override bool Equals(object obj)
@@ -359,6 +369,7 @@ namespace Dev2.Activities.Exchange
                 hashCode = (hashCode * 397) ^ (To != null ? To.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (Cc != null ? Cc.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (Bcc != null ? Bcc.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (DisplayName != null ? DisplayName.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (Subject != null ? Subject.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (Attachments != null ? Attachments.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (Body != null ? Body.GetHashCode() : 0);

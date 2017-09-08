@@ -1,10 +1,12 @@
-﻿using Dev2.Common.Interfaces.Data;
+﻿using System;
 
 namespace Dev2
 {
     public static class CommonSourceEquality
     {
-        public static bool IsSourceEqual(IResource source1, IResource source2)
+
+        public static bool IsSourceEqual<T>(T source1, T source2)
+            where T : IEquatable<T>
         {
             bool sourceIsSame;
             var b = source1 == null && source2 != null;
