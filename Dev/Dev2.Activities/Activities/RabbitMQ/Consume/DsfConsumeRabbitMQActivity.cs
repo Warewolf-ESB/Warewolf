@@ -30,16 +30,6 @@ using Warewolf.Core;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage.Interfaces;
 
-
-
-
-
-
-
-
-
-
-
 namespace Dev2.Activities.RabbitMQ.Consume
 {
     [ToolDescriptorInfo("RabbitMq", "RabbitMQ Consume", ToolType.Native, "406ea660-64cf-4c82-b6f0-42d48172a799", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Utility", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Utility_Rabbit_MQ_Consume")]
@@ -154,14 +144,12 @@ namespace Dev2.Activities.RabbitMQ.Consume
                     return _messages;
                 }
 
-                string queueName;
-                if (!evaluatedValues.TryGetValue("QueueName", out queueName))
+                if (!evaluatedValues.TryGetValue("QueueName", out var queueName))
                 {
                     _messages.Add(ErrorResource.RabbitQueueNameRequired);
                     return _messages;
                 }
-                string prefetch;
-                if (!evaluatedValues.TryGetValue("Prefetch", out prefetch))
+                if (!evaluatedValues.TryGetValue("Prefetch", out var prefetch))
                 {
                     prefetch = string.Empty;
                 }
@@ -225,13 +213,12 @@ namespace Dev2.Activities.RabbitMQ.Consume
                                 {
                                     throw new Exception(string.Format(ErrorResource.RabbitQueueNotFound, queueName));
                                 }
-                                BasicDeliverEventArgs basicDeliverEventArgs;
                                 ulong? tag = null;
-                                while (Consumer.Queue.Dequeue((int)TimeSpan.FromSeconds(_timeOut).TotalMilliseconds, out basicDeliverEventArgs) && _prefetch > msgCount)
+                                while (Consumer.Queue.Dequeue((int)TimeSpan.FromSeconds(_timeOut).TotalMilliseconds, out var basicDeliverEventArgs) && _prefetch > msgCount)
                                 {
                                     if (basicDeliverEventArgs == null)
                                     {
-                                        _result = string.Format("Empty, timeout: {0} second(s)", _timeOut);
+                                        _result = $"Empty, timeout: {_timeOut} second(s)";
                                     }
                                     else
                                     {
@@ -394,22 +381,8 @@ namespace Dev2.Activities.RabbitMQ.Consume
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            bool sourceIsSame;
-            var b = RabbitSource == null && other.RabbitSource != null;
-            var b1 = other.RabbitSource == null && RabbitSource != null;
-            if (b || b1)
-            {
-                sourceIsSame = false;
-            }
-            else if(RabbitSource == null && other.RabbitSource == null)
-            {
-                sourceIsSame = true;
-            }
-            else
-            {
-                sourceIsSame = RabbitSource?.Equals(other.RabbitSource) ?? false;
-            }
-            //var sourceIsSame = (RabbitSource?.Equals(other.RabbitSource) ?? false);
+          
+            var isSourceEqual = CommonSourceEquality.IsSourceEqual(RabbitSource, other.RabbitSource);
             return base.Equals(other)
                 && string.Equals(Result, other.Result)
                 && Prefetch == other.Prefetch
@@ -424,7 +397,7 @@ namespace Dev2.Activities.RabbitMQ.Consume
                 && Acknowledge == other.Acknowledge
                 && string.Equals(TimeOut, other.TimeOut)
                 && ReQueue == other.ReQueue
-                && sourceIsSame;
+                && isSourceEqual;
         }
 
         public override bool Equals(object obj)

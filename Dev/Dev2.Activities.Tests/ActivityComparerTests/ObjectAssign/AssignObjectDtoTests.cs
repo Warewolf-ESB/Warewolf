@@ -8,7 +8,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.ObjectAssign
     {
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void Equals_EmptyTos_IsEqual()
+        public void Equals_EmptyTos_Object_IsEqual()
         {
             //---------------Set up test pack-------------------
             var multiAssign = new AssignObjectDTO();
@@ -23,7 +23,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.ObjectAssign
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void Equals_FieldNames_Is_IsEqual()
+        public void Equals_FieldNames_Object_Is_IsEqual()
         {
             //---------------Set up test pack-------------------
             var multiAssign = new AssignObjectDTO("A","A",1);
@@ -38,7 +38,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.ObjectAssign
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void Equals_DiffentFieldNames_Is_NotIsEqual()
+        public void Equals_DiffentFieldNames_Object_Is_NotIsEqual()
         {
             //---------------Set up test pack-------------------
             var multiAssign = new AssignObjectDTO("A","A",1);
@@ -53,7 +53,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.ObjectAssign
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void Equals_DiffentFielValue_Is_NotIsEqual()
+        public void Equals_DiffentFielValue_Object_Is_NotIsEqual()
         {
             //---------------Set up test pack-------------------
             var multiAssign = new AssignObjectDTO("A","A",1);
@@ -68,7 +68,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.ObjectAssign
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void Equals_DiffentindexNumber_Is_NotIsEqual()
+        public void Equals_DiffentindexNumber_Object_Is_NotIsEqual()
         {
             //---------------Set up test pack-------------------
             var multiAssign = new AssignObjectDTO("A","A",1);

@@ -173,6 +173,8 @@
       <Link>Run Tests.ps1</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <Compile Include="ActivityComparerTests\DropBox2016\DsfDropBoxDeleteActivityComparerTests.cs" />
+    <Compile Include="ActivityComparerTests\DropBox2016\DsfDropBoxUploadActivityComparerTests.cs" />
     <Compile Include="ActivityComparerTests\ObjectAssign\AssignObjectDtoTests.cs" />
     <Compile Include="ActivityComparerTests\ObjectAssign\MultiAssignComparerTests.cs" />
     <Compile Include="ActivityComparerTests\Assigns\ActivityDTOTests.cs" />

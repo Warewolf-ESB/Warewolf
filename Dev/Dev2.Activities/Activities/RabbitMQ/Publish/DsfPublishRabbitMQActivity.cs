@@ -24,7 +24,7 @@ using Warewolf.Resource.Errors;
 namespace Dev2.Activities.RabbitMQ.Publish
 {
     [ToolDescriptorInfo("RabbitMq", "RabbitMQ Publish", ToolType.Native, "FFEC6885-597E-49A2-A1AD-AE81E33DF809", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Utility", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Utility_Rabbit_MQ_Publish")]
-    public class DsfPublishRabbitMQActivity : DsfBaseActivity,IEquatable<DsfPublishRabbitMQActivity>
+    public class DsfPublishRabbitMQActivity : DsfBaseActivity, IEquatable<DsfPublishRabbitMQActivity>
     {
         #region Ctor
 
@@ -128,30 +128,16 @@ namespace Dev2.Activities.RabbitMQ.Publish
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            bool sourceIsSame;
-            var b = RabbitMQSource == null && other.RabbitMQSource != null;
-            var b1 = other.RabbitMQSource == null && RabbitMQSource != null;
-            if (b || b1)
-            {
-                sourceIsSame = false;
-            }
-            else if (RabbitMQSource == null && other.RabbitMQSource == null)
-            {
-                sourceIsSame = true;
-            }
-            else
-            {
-                sourceIsSame = RabbitMQSource?.Equals(other.RabbitMQSource) ?? false;
-            }
+            var isSourceEqual = CommonSourceEquality.IsSourceEqual(RabbitMQSource, other.RabbitMQSource);
             return base.Equals(other)
-                && RabbitMQSourceResourceId.Equals(other.RabbitMQSourceResourceId) 
-                && string.Equals(QueueName, other.QueueName) 
-                && IsDurable == other.IsDurable 
-                && IsExclusive == other.IsExclusive 
+                && RabbitMQSourceResourceId.Equals(other.RabbitMQSourceResourceId)
+                && string.Equals(QueueName, other.QueueName)
+                && IsDurable == other.IsDurable
+                && IsExclusive == other.IsExclusive
                 && IsAutoDelete == other.IsAutoDelete
-                && string.Equals(Message, other.Message)  
-                && string.Equals(DisplayName, other.DisplayName)  
-                && sourceIsSame;
+                && string.Equals(Message, other.Message)
+                && string.Equals(DisplayName, other.DisplayName)
+                && isSourceEqual;
         }
 
         public override bool Equals(object obj)
@@ -159,7 +145,7 @@ namespace Dev2.Activities.RabbitMQ.Publish
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
             if (obj.GetType() != this.GetType()) return false;
-            return Equals((DsfPublishRabbitMQActivity) obj);
+            return Equals((DsfPublishRabbitMQActivity)obj);
         }
 
         public override int GetHashCode()
