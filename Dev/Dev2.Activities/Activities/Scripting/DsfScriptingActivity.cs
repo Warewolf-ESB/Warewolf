@@ -238,7 +238,12 @@ namespace Dev2.Activities
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            return base.Equals(other) && Equals(_sources, other._sources) && ScriptType == other.ScriptType && EscapeScript == other.EscapeScript && string.Equals(IncludeFile, other.IncludeFile) && string.Equals(Script, other.Script) && string.Equals(Result, other.Result);
+            return base.Equals(other)
+                && ScriptType == other.ScriptType
+                && EscapeScript == other.EscapeScript 
+                && string.Equals(IncludeFile, other.IncludeFile) 
+                && string.Equals(Script, other.Script) 
+                && string.Equals(Result, other.Result);
         }
 
         public override bool Equals(object obj)
