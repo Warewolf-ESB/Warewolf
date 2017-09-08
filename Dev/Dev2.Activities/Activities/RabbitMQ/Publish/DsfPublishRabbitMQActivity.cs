@@ -129,7 +129,7 @@ namespace Dev2.Activities.RabbitMQ.Publish
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            var isSourceEqual = CommonSourceEquality.IsSourceEqual<IResource>(RabbitMQSource,other.RabbitMQSource);
+            var isSourceEqual = CommonEqualityOps.IsSourceEqual<IResource>(RabbitMQSource,other.RabbitMQSource);
             return base.Equals(other)
                 && RabbitMQSourceResourceId.Equals(other.RabbitMQSourceResourceId)
                 && string.Equals(QueueName, other.QueueName)
