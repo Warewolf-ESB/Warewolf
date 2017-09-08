@@ -17,6 +17,7 @@ using RabbitMQ.Client;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Dev2.Common.Interfaces.Data;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
 using Warewolf.Resource.Errors;
@@ -128,7 +129,7 @@ namespace Dev2.Activities.RabbitMQ.Publish
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            var isSourceEqual = CommonSourceEquality.IsSourceEqual(RabbitMQSource, other.RabbitMQSource);
+            var isSourceEqual = CommonSourceEquality.IsSourceEqual<IResource>(RabbitMQSource,other.RabbitMQSource);
             return base.Equals(other)
                 && RabbitMQSourceResourceId.Equals(other.RabbitMQSourceResourceId)
                 && string.Equals(QueueName, other.QueueName)

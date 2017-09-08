@@ -177,6 +177,7 @@
     <Compile Include="ActivityComparerTests\DropBox2016\DsfDropBoxDownloadActivityComparerTests.cs" />
     <Compile Include="ActivityComparerTests\DropBox2016\DsfDropboxFileListActivityComparerTests.cs" />
     <Compile Include="ActivityComparerTests\DropBox2016\DsfDropBoxUploadActivityComparerTests.cs" />
+    <Compile Include="ActivityComparerTests\Exchange\DsfExchangeEmailActivityComparerTests.cs" />
     <Compile Include="ActivityComparerTests\ObjectAssign\AssignObjectDtoTests.cs" />
     <Compile Include="ActivityComparerTests\ObjectAssign\MultiAssignComparerTests.cs" />
     <Compile Include="ActivityComparerTests\Assigns\ActivityDTOTests.cs" />
