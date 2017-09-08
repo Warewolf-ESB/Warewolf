@@ -16,6 +16,7 @@ using System.Linq;
 using Dev2;
 using Dev2.Activities;
 using Dev2.Activities.Debug;
+using Dev2.CollectionComparer;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
@@ -483,7 +484,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            return base.Equals(other) && Equals(_fieldsCollection, other._fieldsCollection) && UpdateAllOccurrences == other.UpdateAllOccurrences && CreateBookmark == other.CreateBookmark && string.Equals(ServiceHost, other.ServiceHost);
+            var sequenceEqual = FieldsCollection.SequenceEqual(other.FieldsCollection, new ActivityDtoComparer());
+            return base.Equals(other) && sequenceEqual
+                && UpdateAllOccurrences == other.UpdateAllOccurrences
+                && CreateBookmark == other.CreateBookmark 
+                && string.Equals(ServiceHost, other.ServiceHost);
         }
 
         public override bool Equals(object obj)
@@ -499,7 +504,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             unchecked
             {
                 int hashCode = base.GetHashCode();
-                hashCode = (hashCode * 397) ^ (_fieldsCollection != null ? _fieldsCollection.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (FieldsCollection != null ? FieldsCollection.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ UpdateAllOccurrences.GetHashCode();
                 hashCode = (hashCode * 397) ^ CreateBookmark.GetHashCode();
                 hashCode = (hashCode * 397) ^ (ServiceHost != null ? ServiceHost.GetHashCode() : 0);

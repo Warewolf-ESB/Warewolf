@@ -173,7 +173,12 @@
       <Link>Run Tests.ps1</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <Compile Include="ActivityComparerTests\ObjectAssign\AssignObjectDtoTests.cs" />
+    <Compile Include="ActivityComparerTests\ObjectAssign\MultiAssignComparerTests.cs" />
+    <Compile Include="ActivityComparerTests\Assigns\ActivityDTOTests.cs" />
     <Compile Include="ActivityComparerTests\Assigns\MultiAssignComparerTests.cs" />
+    <Compile Include="ActivityComparerTests\RabbitMQ\DsfConsumeRabbitMqActivityComparerTests.cs" />
+    <Compile Include="ActivityComparerTests\RabbitMQ\DsfPublishRabbitMqActivityComparerTests.cs" />
     <Compile Include="ActivityTests\AbstractMultipleFilesActivityTests.cs" />
     <Compile Include="ActivityTests\AggregateCalculateActivityTest.cs" />
     <Compile Include="ActivityTests\BaseActivityTests.cs" />
