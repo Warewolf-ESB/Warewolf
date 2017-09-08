@@ -25,7 +25,7 @@ using System.Activities;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using Dev2.CollectionComparer;
+using Dev2.Comparer;
 using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.TO;
 using Dev2.Interfaces;

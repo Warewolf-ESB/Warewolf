@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Dev2.TO;
 
-namespace Dev2.CollectionComparer
+namespace Dev2.Comparer
 {
     public class ActivityDtoObjectComparer : IEqualityComparer<AssignObjectDTO>
     {
