@@ -184,7 +184,14 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            return base.Equals(other) && Equals(SelectedSource, other.SelectedSource) && string.Equals(FromPath, other.FromPath) && string.Equals(ToPath, other.ToPath);
+            var isSourceEqual = CommonSourceEquality.IsSourceEqual(SelectedSource, other.SelectedSource);
+            return base.Equals(other) 
+                && isSourceEqual
+                && string.Equals(FromPath, other.FromPath) 
+                && string.Equals(DisplayName, other.DisplayName) 
+                && Equals(OverWriteMode,other.OverWriteMode)
+                && Equals(AddMode,other.AddMode)
+                && string.Equals(ToPath, other.ToPath);
         }
 
         public override bool Equals(object obj)
@@ -203,6 +210,8 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
                 hashCode = (hashCode * 397) ^ (SelectedSource != null ? SelectedSource.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (FromPath != null ? FromPath.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (ToPath != null ? ToPath.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ OverWriteMode.GetHashCode();
+                hashCode = (hashCode * 397) ^ AddMode.GetHashCode();
                 return hashCode;
             }
         }
