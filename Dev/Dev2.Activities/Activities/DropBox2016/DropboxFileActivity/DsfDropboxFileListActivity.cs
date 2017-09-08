@@ -107,15 +107,13 @@ namespace Dev2.Activities.DropBox2016.DropboxFileActivity
 
         protected override List<string> PerformExecution(Dictionary<string, string> evaluatedValues)
         {
-            string toPath;
-            evaluatedValues.TryGetValue("ToPath", out toPath);
+            evaluatedValues.TryGetValue("ToPath", out var toPath);
 
             IDropboxSingleExecutor<IDropboxResult> dropboxFileRead = new DropboxFileRead(IsRecursive, toPath, IncludeMediaInfo, IncludeDeleted);
             var dropboxSingleExecutor = GetDropboxSingleExecutor(dropboxFileRead);
             _dropboxClientWrapper = _dropboxClientWrapper ?? new DropboxClientWrapper(GetDropboxClient());
             var dropboxExecutionResult = dropboxSingleExecutor.ExecuteTask(_dropboxClientWrapper);
-            var dropboxSuccessResult = dropboxExecutionResult as DropboxListFolderSuccesResult;
-            if (dropboxSuccessResult != null)
+            if (dropboxExecutionResult is DropboxListFolderSuccesResult dropboxSuccessResult)
             {
                 var listFolderResult = dropboxSuccessResult.GetListFolderResulResult();
                 var metadatas = listFolderResult.Entries;
@@ -135,8 +133,7 @@ namespace Dev2.Activities.DropBox2016.DropboxFileActivity
 
                 return new List<string> { GlobalConstants.DropBoxSuccess };
             }
-            var dropboxFailureResult = dropboxExecutionResult as DropboxFailureResult;
-            if (dropboxFailureResult != null)
+            if (dropboxExecutionResult is DropboxFailureResult dropboxFailureResult)
             {
                 Exception = dropboxFailureResult.GetException();
             }
@@ -201,7 +198,18 @@ namespace Dev2.Activities.DropBox2016.DropboxFileActivity
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            return base.Equals(other) && Equals(_dropboxClient, other._dropboxClient) && Equals(DropboxFactory, other.DropboxFactory) && Equals(SelectedSource, other.SelectedSource) && Equals(Files, other.Files) && Equals(Exception, other.Exception) && IncludeMediaInfo == other.IncludeMediaInfo && IsRecursive == other.IsRecursive && IncludeDeleted == other.IncludeDeleted && string.Equals(ToPath, other.ToPath) && IsFilesSelected == other.IsFilesSelected && IsFoldersSelected == other.IsFoldersSelected && IsFilesAndFoldersSelected == other.IsFilesAndFoldersSelected;
+            var isSourceEqual = CommonSourceEquality.IsSourceEqual(SelectedSource, other.SelectedSource);
+            return base.Equals(other) 
+                && isSourceEqual
+                && Files.SequenceEqual(other.Files, StringComparer.Ordinal) 
+                && IncludeMediaInfo == other.IncludeMediaInfo
+                && IsRecursive == other.IsRecursive
+                && IncludeDeleted == other.IncludeDeleted 
+                && string.Equals(ToPath, other.ToPath) 
+                && string.Equals(DisplayName, other.DisplayName) 
+                && IsFilesSelected == other.IsFilesSelected
+                && IsFoldersSelected == other.IsFoldersSelected
+                && IsFilesAndFoldersSelected == other.IsFilesAndFoldersSelected;
         }
 
         public override bool Equals(object obj)
@@ -217,15 +225,13 @@ namespace Dev2.Activities.DropBox2016.DropboxFileActivity
             unchecked
             {
                 int hashCode = base.GetHashCode();
-                hashCode = (hashCode * 397) ^ (_dropboxClient != null ? _dropboxClient.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (DropboxFactory != null ? DropboxFactory.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (SelectedSource != null ? SelectedSource.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (Files != null ? Files.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (Exception != null ? Exception.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ IncludeMediaInfo.GetHashCode();
                 hashCode = (hashCode * 397) ^ IsRecursive.GetHashCode();
                 hashCode = (hashCode * 397) ^ IncludeDeleted.GetHashCode();
                 hashCode = (hashCode * 397) ^ (ToPath != null ? ToPath.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (DisplayName != null ? DisplayName.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ IsFilesSelected.GetHashCode();
                 hashCode = (hashCode * 397) ^ IsFoldersSelected.GetHashCode();
                 hashCode = (hashCode * 397) ^ IsFilesAndFoldersSelected.GetHashCode();
