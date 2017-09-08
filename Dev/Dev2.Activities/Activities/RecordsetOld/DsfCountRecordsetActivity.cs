@@ -55,13 +55,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             DisplayName = "Count Records";
         }
 
-        
-        protected override void CacheMetadata(NativeActivityMetadata metadata)
-        {
-            base.CacheMetadata(metadata);
-
-        }
-        
 
         protected override void OnExecute(NativeActivityContext context)
         {
@@ -213,7 +206,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            return base.Equals(other) && string.Equals(RecordsetName, other.RecordsetName) && string.Equals(CountNumber, other.CountNumber);
+            return base.Equals(other) 
+                && string.Equals(RecordsetName, other.RecordsetName) 
+                && string.Equals(DisplayName, other.DisplayName) 
+                && string.Equals(CountNumber, other.CountNumber);
         }
 
         public override bool Equals(object obj)
