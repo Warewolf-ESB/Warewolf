@@ -15,8 +15,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.RabbitMQ
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var rabbitMqActivity = new DsfConsumeRabbitMQActivity() { UniqueID = uniqueId };
-            var rabbitMqActivity1 = new DsfConsumeRabbitMQActivity() { UniqueID = uniqueId };
+            var rabbitMqActivity = new DsfConsumeRabbitMQActivity { UniqueID = uniqueId };
+            var rabbitMqActivity1 = new DsfConsumeRabbitMQActivity { UniqueID = uniqueId };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(rabbitMqActivity);
             //---------------Execute Test ----------------------
@@ -47,8 +47,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.RabbitMQ
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var multiAssign = new DsfConsumeRabbitMQActivity() { UniqueID = uniqueId, Result = "" };
-            var multiAssign1 = new DsfConsumeRabbitMQActivity() { UniqueID = uniqueId, Result = "" };
+            var multiAssign = new DsfConsumeRabbitMQActivity { UniqueID = uniqueId, Result = "" };
+            var multiAssign1 = new DsfConsumeRabbitMQActivity { UniqueID = uniqueId, Result = "" };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(multiAssign);
             //---------------Execute Test ----------------------
@@ -63,8 +63,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.RabbitMQ
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var multiAssign = new DsfConsumeRabbitMQActivity() { UniqueID = uniqueId, Result = "" };
-            var multiAssign1 = new DsfConsumeRabbitMQActivity() { UniqueID = uniqueId, Result = "a" };
+            var multiAssign = new DsfConsumeRabbitMQActivity { UniqueID = uniqueId, Result = "" };
+            var multiAssign1 = new DsfConsumeRabbitMQActivity { UniqueID = uniqueId, Result = "a" };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(multiAssign);
             //---------------Execute Test ----------------------
@@ -79,8 +79,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.RabbitMQ
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var multiAssign = new DsfConsumeRabbitMQActivity() { UniqueID = uniqueId, Result = "A" };
-            var multiAssign1 = new DsfConsumeRabbitMQActivity() { UniqueID = uniqueId, Result = "a" };
+            var multiAssign = new DsfConsumeRabbitMQActivity { UniqueID = uniqueId, Result = "A" };
+            var multiAssign1 = new DsfConsumeRabbitMQActivity { UniqueID = uniqueId, Result = "a" };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(multiAssign);
             //---------------Execute Test ----------------------
@@ -95,8 +95,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.RabbitMQ
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var multiAssign = new DsfConsumeRabbitMQActivity() { UniqueID = uniqueId, Result = "" , QueueName = "a"};
-            var multiAssign1 = new DsfConsumeRabbitMQActivity() { UniqueID = uniqueId, Result = "", QueueName = "a" };
+            var multiAssign = new DsfConsumeRabbitMQActivity { UniqueID = uniqueId, Result = "" , QueueName = "a"};
+            var multiAssign1 = new DsfConsumeRabbitMQActivity { UniqueID = uniqueId, Result = "", QueueName = "a" };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(multiAssign);
             //---------------Execute Test ----------------------
@@ -111,8 +111,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.RabbitMQ
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var multiAssign = new DsfConsumeRabbitMQActivity() { UniqueID = uniqueId, Result = "a", QueueName = "A" };
-            var multiAssign1 = new DsfConsumeRabbitMQActivity() { UniqueID = uniqueId, Result = "a", QueueName = "ass" };
+            var multiAssign = new DsfConsumeRabbitMQActivity { UniqueID = uniqueId, Result = "a", QueueName = "A" };
+            var multiAssign1 = new DsfConsumeRabbitMQActivity { UniqueID = uniqueId, Result = "a", QueueName = "ass" };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(multiAssign);
             //---------------Execute Test ----------------------
@@ -127,8 +127,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.RabbitMQ
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var multiAssign = new DsfConsumeRabbitMQActivity() { UniqueID = uniqueId, Result = "A", QueueName = "AAA" };
-            var multiAssign1 = new DsfConsumeRabbitMQActivity() { UniqueID = uniqueId, Result = "A", QueueName = "aaa" };
+            var multiAssign = new DsfConsumeRabbitMQActivity { UniqueID = uniqueId, Result = "A", QueueName = "AAA" };
+            var multiAssign1 = new DsfConsumeRabbitMQActivity { UniqueID = uniqueId, Result = "A", QueueName = "aaa" };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(multiAssign);
             //---------------Execute Test ----------------------
@@ -144,8 +144,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.RabbitMQ
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var multiAssign = new DsfConsumeRabbitMQActivity() { UniqueID = uniqueId, Result = "" , DisplayName = "a"};
-            var multiAssign1 = new DsfConsumeRabbitMQActivity() { UniqueID = uniqueId, Result = "", DisplayName = "a" };
+            var multiAssign = new DsfConsumeRabbitMQActivity { UniqueID = uniqueId, Result = "" , DisplayName = "a"};
+            var multiAssign1 = new DsfConsumeRabbitMQActivity { UniqueID = uniqueId, Result = "", DisplayName = "a" };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(multiAssign);
             //---------------Execute Test ----------------------
@@ -160,8 +160,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.RabbitMQ
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var multiAssign = new DsfConsumeRabbitMQActivity() { UniqueID = uniqueId, Result = "a", DisplayName = "A" };
-            var multiAssign1 = new DsfConsumeRabbitMQActivity() { UniqueID = uniqueId, Result = "a", DisplayName = "ass" };
+            var multiAssign = new DsfConsumeRabbitMQActivity { UniqueID = uniqueId, Result = "a", DisplayName = "A" };
+            var multiAssign1 = new DsfConsumeRabbitMQActivity { UniqueID = uniqueId, Result = "a", DisplayName = "ass" };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(multiAssign);
             //---------------Execute Test ----------------------
@@ -176,8 +176,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.RabbitMQ
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var multiAssign = new DsfConsumeRabbitMQActivity() { UniqueID = uniqueId, Result = "A", DisplayName = "AAA" };
-            var multiAssign1 = new DsfConsumeRabbitMQActivity() { UniqueID = uniqueId, Result = "A", DisplayName = "aaa" };
+            var multiAssign = new DsfConsumeRabbitMQActivity { UniqueID = uniqueId, Result = "A", DisplayName = "AAA" };
+            var multiAssign1 = new DsfConsumeRabbitMQActivity { UniqueID = uniqueId, Result = "A", DisplayName = "aaa" };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(multiAssign);
             //---------------Execute Test ----------------------
@@ -192,8 +192,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.RabbitMQ
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var multiAssign = new DsfConsumeRabbitMQActivity() { UniqueID = uniqueId, Result = "" , QueueName = "a", Response = "klkl"};
-            var multiAssign1 = new DsfConsumeRabbitMQActivity() { UniqueID = uniqueId, Result = "", QueueName = "a", Response = "klkl"};
+            var multiAssign = new DsfConsumeRabbitMQActivity { UniqueID = uniqueId, Result = "" , QueueName = "a", Response = "klkl"};
+            var multiAssign1 = new DsfConsumeRabbitMQActivity { UniqueID = uniqueId, Result = "", QueueName = "a", Response = "klkl"};
             //---------------Assert Precondition----------------
             Assert.IsNotNull(multiAssign);
             //---------------Execute Test ----------------------
@@ -208,8 +208,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.RabbitMQ
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var multiAssign = new DsfConsumeRabbitMQActivity() { UniqueID = uniqueId, Result = "a", QueueName = "ass", Response = "klkl" };
-            var multiAssign1 = new DsfConsumeRabbitMQActivity() { UniqueID = uniqueId, Result = "a", QueueName = "ass", Response = "klklkkkkk" };
+            var multiAssign = new DsfConsumeRabbitMQActivity { UniqueID = uniqueId, Result = "a", QueueName = "ass", Response = "klkl" };
+            var multiAssign1 = new DsfConsumeRabbitMQActivity { UniqueID = uniqueId, Result = "a", QueueName = "ass", Response = "klklkkkkk" };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(multiAssign);
             //---------------Execute Test ----------------------
@@ -224,8 +224,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.RabbitMQ
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var multiAssign = new DsfConsumeRabbitMQActivity() { UniqueID = uniqueId, Result = "A", QueueName = "AAA", Response = "KLKL" };
-            var multiAssign1 = new DsfConsumeRabbitMQActivity() { UniqueID = uniqueId, Result = "A", QueueName = "AAA", Response = "klkl" };
+            var multiAssign = new DsfConsumeRabbitMQActivity { UniqueID = uniqueId, Result = "A", QueueName = "AAA", Response = "KLKL" };
+            var multiAssign1 = new DsfConsumeRabbitMQActivity { UniqueID = uniqueId, Result = "A", QueueName = "AAA", Response = "klkl" };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(multiAssign);
             //---------------Execute Test ----------------------
@@ -240,8 +240,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.RabbitMQ
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var multiAssign = new DsfConsumeRabbitMQActivity() { UniqueID = uniqueId, Result = "" };
-            var multiAssign1 = new DsfConsumeRabbitMQActivity() { UniqueID = uniqueId, Result = "" };
+            var multiAssign = new DsfConsumeRabbitMQActivity { UniqueID = uniqueId, Result = "" };
+            var multiAssign1 = new DsfConsumeRabbitMQActivity { UniqueID = uniqueId, Result = "" };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(multiAssign);
             //---------------Execute Test ----------------------
@@ -256,8 +256,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.RabbitMQ
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var multiAssign = new DsfConsumeRabbitMQActivity() { UniqueID = uniqueId, Result = "a", ObjectName  = ""};
-            var multiAssign1 = new DsfConsumeRabbitMQActivity() { UniqueID = uniqueId, Result = "a" , ObjectName = "a"};
+            var multiAssign = new DsfConsumeRabbitMQActivity { UniqueID = uniqueId, Result = "a", ObjectName  = ""};
+            var multiAssign1 = new DsfConsumeRabbitMQActivity { UniqueID = uniqueId, Result = "a" , ObjectName = "a"};
             //---------------Assert Precondition----------------
             Assert.IsNotNull(multiAssign);
             //---------------Execute Test ----------------------
@@ -272,8 +272,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.RabbitMQ
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var multiAssign = new DsfConsumeRabbitMQActivity() { UniqueID = uniqueId, Result = "A", ObjectName = "A"};
-            var multiAssign1 = new DsfConsumeRabbitMQActivity() { UniqueID = uniqueId, Result = "A" , ObjectName = "a"};
+            var multiAssign = new DsfConsumeRabbitMQActivity { UniqueID = uniqueId, Result = "A", ObjectName = "A"};
+            var multiAssign1 = new DsfConsumeRabbitMQActivity { UniqueID = uniqueId, Result = "A" , ObjectName = "a"};
             //---------------Assert Precondition----------------
             Assert.IsNotNull(multiAssign);
             //---------------Execute Test ----------------------
@@ -288,8 +288,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.RabbitMQ
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var multiAssign = new DsfConsumeRabbitMQActivity() { UniqueID = uniqueId, Result = "", RabbitMQSourceResourceId = Guid.Empty};
-            var multiAssign1 = new DsfConsumeRabbitMQActivity() { UniqueID = uniqueId, Result = "", RabbitMQSourceResourceId = Guid.Empty };
+            var multiAssign = new DsfConsumeRabbitMQActivity { UniqueID = uniqueId, Result = "", RabbitMQSourceResourceId = Guid.Empty};
+            var multiAssign1 = new DsfConsumeRabbitMQActivity { UniqueID = uniqueId, Result = "", RabbitMQSourceResourceId = Guid.Empty };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(multiAssign);
             //---------------Execute Test ----------------------
@@ -304,8 +304,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.RabbitMQ
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var multiAssign = new DsfConsumeRabbitMQActivity() { UniqueID = uniqueId, Result = "a", ObjectName  = "a", RabbitMQSourceResourceId = Guid.NewGuid()};
-            var multiAssign1 = new DsfConsumeRabbitMQActivity() { UniqueID = uniqueId, Result = "a" , ObjectName = "a", RabbitMQSourceResourceId = Guid.NewGuid()};
+            var multiAssign = new DsfConsumeRabbitMQActivity { UniqueID = uniqueId, Result = "a", ObjectName  = "a", RabbitMQSourceResourceId = Guid.NewGuid()};
+            var multiAssign1 = new DsfConsumeRabbitMQActivity { UniqueID = uniqueId, Result = "a" , ObjectName = "a", RabbitMQSourceResourceId = Guid.NewGuid()};
             //---------------Assert Precondition----------------
             Assert.IsNotNull(multiAssign);
             //---------------Execute Test ----------------------
@@ -320,8 +320,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.RabbitMQ
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var multiAssign = new DsfConsumeRabbitMQActivity() { UniqueID = uniqueId, Result = "A", ObjectName = "A", RabbitMQSourceResourceId = Guid.Empty };
-            var multiAssign1 = new DsfConsumeRabbitMQActivity() { UniqueID = uniqueId, Result = "A" , ObjectName = "a", RabbitMQSourceResourceId = Guid.Empty.ToString().ToLower().ToGuid() };
+            var multiAssign = new DsfConsumeRabbitMQActivity { UniqueID = uniqueId, Result = "A", ObjectName = "A", RabbitMQSourceResourceId = Guid.Empty };
+            var multiAssign1 = new DsfConsumeRabbitMQActivity { UniqueID = uniqueId, Result = "A" , ObjectName = "a", RabbitMQSourceResourceId = Guid.Empty.ToString().ToLower().ToGuid() };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(multiAssign);
             //---------------Execute Test ----------------------
@@ -336,8 +336,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.RabbitMQ
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var rabbitMqActivity = new DsfConsumeRabbitMQActivity() { UniqueID = uniqueId, Result = "A" };
-            var rabbitMqActivity1 = new DsfConsumeRabbitMQActivity() { UniqueID = uniqueId, Result = "A" };
+            var rabbitMqActivity = new DsfConsumeRabbitMQActivity { UniqueID = uniqueId, Result = "A" };
+            var rabbitMqActivity1 = new DsfConsumeRabbitMQActivity { UniqueID = uniqueId, Result = "A" };
             //---------------Assert Precondition----------------
             Assert.IsTrue(rabbitMqActivity.Equals(rabbitMqActivity1));
             //---------------Execute Test ----------------------
@@ -354,8 +354,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.RabbitMQ
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var rabbitMqActivity = new DsfConsumeRabbitMQActivity() { UniqueID = uniqueId, Result = "A" };
-            var rabbitMqActivity1 = new DsfConsumeRabbitMQActivity() { UniqueID = uniqueId, Result = "A" };
+            var rabbitMqActivity = new DsfConsumeRabbitMQActivity { UniqueID = uniqueId, Result = "A" };
+            var rabbitMqActivity1 = new DsfConsumeRabbitMQActivity { UniqueID = uniqueId, Result = "A" };
             //---------------Assert Precondition----------------
             Assert.IsTrue(rabbitMqActivity.Equals(rabbitMqActivity1));
             //---------------Execute Test ----------------------
@@ -372,8 +372,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.RabbitMQ
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var rabbitMqActivity = new DsfConsumeRabbitMQActivity() { UniqueID = uniqueId, Result = "A", Prefetch = "1"};
-            var rabbitMqActivity1 = new DsfConsumeRabbitMQActivity() { UniqueID = uniqueId, Result = "A" , Prefetch = "1"};
+            var rabbitMqActivity = new DsfConsumeRabbitMQActivity { UniqueID = uniqueId, Result = "A", Prefetch = "1"};
+            var rabbitMqActivity1 = new DsfConsumeRabbitMQActivity { UniqueID = uniqueId, Result = "A" , Prefetch = "1"};
             //---------------Assert Precondition----------------
             Assert.IsTrue(rabbitMqActivity.Equals(rabbitMqActivity1));
             //---------------Execute Test ----------------------
@@ -390,8 +390,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.RabbitMQ
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var rabbitMqActivity = new DsfConsumeRabbitMQActivity() { UniqueID = uniqueId, Result = "A", Prefetch = "1" };
-            var rabbitMqActivity1 = new DsfConsumeRabbitMQActivity() { UniqueID = uniqueId, Result = "A", Prefetch = "1" };
+            var rabbitMqActivity = new DsfConsumeRabbitMQActivity { UniqueID = uniqueId, Result = "A", Prefetch = "1" };
+            var rabbitMqActivity1 = new DsfConsumeRabbitMQActivity { UniqueID = uniqueId, Result = "A", Prefetch = "1" };
             //---------------Assert Precondition----------------
             Assert.IsTrue(rabbitMqActivity.Equals(rabbitMqActivity1));
             //---------------Execute Test ----------------------
@@ -408,8 +408,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.RabbitMQ
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var rabbitMqActivity = new DsfConsumeRabbitMQActivity() { UniqueID = uniqueId, Result = "A", Prefetch = "1", TimeOut = "1"};
-            var rabbitMqActivity1 = new DsfConsumeRabbitMQActivity() { UniqueID = uniqueId, Result = "A" , Prefetch = "1", TimeOut = "1"};
+            var rabbitMqActivity = new DsfConsumeRabbitMQActivity { UniqueID = uniqueId, Result = "A", Prefetch = "1", TimeOut = "1"};
+            var rabbitMqActivity1 = new DsfConsumeRabbitMQActivity { UniqueID = uniqueId, Result = "A" , Prefetch = "1", TimeOut = "1"};
             //---------------Assert Precondition----------------
             Assert.IsTrue(rabbitMqActivity.Equals(rabbitMqActivity1));
             //---------------Execute Test ----------------------
@@ -426,8 +426,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.RabbitMQ
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var rabbitMqActivity = new DsfConsumeRabbitMQActivity() { UniqueID = uniqueId, Result = "A", Prefetch = "1", TimeOut = "1" };
-            var rabbitMqActivity1 = new DsfConsumeRabbitMQActivity() { UniqueID = uniqueId, Result = "A", Prefetch = "1", TimeOut = "1" };
+            var rabbitMqActivity = new DsfConsumeRabbitMQActivity { UniqueID = uniqueId, Result = "A", Prefetch = "1", TimeOut = "1" };
+            var rabbitMqActivity1 = new DsfConsumeRabbitMQActivity { UniqueID = uniqueId, Result = "A", Prefetch = "1", TimeOut = "1" };
             //---------------Assert Precondition----------------
             Assert.IsTrue(rabbitMqActivity.Equals(rabbitMqActivity1));
             //---------------Execute Test ----------------------
@@ -444,8 +444,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.RabbitMQ
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var rabbitMqActivity = new DsfConsumeRabbitMQActivity() { UniqueID = uniqueId, Result = "A", Prefetch = "1", TimeOut = "1", IsObject = true };
-            var rabbitMqActivity1 = new DsfConsumeRabbitMQActivity() { UniqueID = uniqueId, Result = "A" , Prefetch = "1", TimeOut = "1", IsObject = true };
+            var rabbitMqActivity = new DsfConsumeRabbitMQActivity { UniqueID = uniqueId, Result = "A", Prefetch = "1", TimeOut = "1", IsObject = true };
+            var rabbitMqActivity1 = new DsfConsumeRabbitMQActivity { UniqueID = uniqueId, Result = "A" , Prefetch = "1", TimeOut = "1", IsObject = true };
             //---------------Assert Precondition----------------
             Assert.IsTrue(rabbitMqActivity.Equals(rabbitMqActivity1));
             //---------------Execute Test ----------------------
@@ -462,8 +462,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.RabbitMQ
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var rabbitMqActivity = new DsfConsumeRabbitMQActivity() { UniqueID = uniqueId, Result = "A", Prefetch = "1", TimeOut = "1", IsObject = true};
-            var rabbitMqActivity1 = new DsfConsumeRabbitMQActivity() { UniqueID = uniqueId, Result = "A", Prefetch = "1", TimeOut = "1", IsObject = true };
+            var rabbitMqActivity = new DsfConsumeRabbitMQActivity { UniqueID = uniqueId, Result = "A", Prefetch = "1", TimeOut = "1", IsObject = true};
+            var rabbitMqActivity1 = new DsfConsumeRabbitMQActivity { UniqueID = uniqueId, Result = "A", Prefetch = "1", TimeOut = "1", IsObject = true };
             //---------------Assert Precondition----------------
             Assert.IsTrue(rabbitMqActivity.Equals(rabbitMqActivity1));
             //---------------Execute Test ----------------------
@@ -480,8 +480,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.RabbitMQ
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var rabbitMqActivity = new DsfConsumeRabbitMQActivity() { UniqueID = uniqueId, Result = "A", Prefetch = "1", TimeOut = "1", IsObject = true };
-            var rabbitMqActivity1 = new DsfConsumeRabbitMQActivity() { UniqueID = uniqueId, Result = "A" , Prefetch = "1", TimeOut = "1", IsObject = true };
+            var rabbitMqActivity = new DsfConsumeRabbitMQActivity { UniqueID = uniqueId, Result = "A", Prefetch = "1", TimeOut = "1", IsObject = true };
+            var rabbitMqActivity1 = new DsfConsumeRabbitMQActivity { UniqueID = uniqueId, Result = "A" , Prefetch = "1", TimeOut = "1", IsObject = true };
             //---------------Assert Precondition----------------
             Assert.IsTrue(rabbitMqActivity.Equals(rabbitMqActivity1));
             //---------------Execute Test ----------------------
@@ -498,8 +498,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.RabbitMQ
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var rabbitMqActivity = new DsfConsumeRabbitMQActivity() { UniqueID = uniqueId, Result = "A", Prefetch = "1", TimeOut = "1", IsObject = true};
-            var rabbitMqActivity1 = new DsfConsumeRabbitMQActivity() { UniqueID = uniqueId, Result = "A", Prefetch = "1", TimeOut = "1", IsObject = true };
+            var rabbitMqActivity = new DsfConsumeRabbitMQActivity { UniqueID = uniqueId, Result = "A", Prefetch = "1", TimeOut = "1", IsObject = true};
+            var rabbitMqActivity1 = new DsfConsumeRabbitMQActivity { UniqueID = uniqueId, Result = "A", Prefetch = "1", TimeOut = "1", IsObject = true };
             //---------------Assert Precondition----------------
             Assert.IsTrue(rabbitMqActivity.Equals(rabbitMqActivity1));
             //---------------Execute Test ----------------------
@@ -516,12 +516,12 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.RabbitMQ
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var rabbitMqActivity = new DsfConsumeRabbitMQActivity() { UniqueID = uniqueId, Result = "A", Prefetch = "1", TimeOut = "1", IsObject = true };
-            var rabbitMqActivity1 = new DsfConsumeRabbitMQActivity() { UniqueID = uniqueId, Result = "A" , Prefetch = "1", TimeOut = "1", IsObject = true };
+            var rabbitMqActivity = new DsfConsumeRabbitMQActivity { UniqueID = uniqueId, Result = "A", Prefetch = "1", TimeOut = "1", IsObject = true };
+            var rabbitMqActivity1 = new DsfConsumeRabbitMQActivity { UniqueID = uniqueId, Result = "A" , Prefetch = "1", TimeOut = "1", IsObject = true };
             //---------------Assert Precondition----------------
             Assert.IsTrue(rabbitMqActivity.Equals(rabbitMqActivity1));
             //---------------Execute Test ----------------------
-            rabbitMqActivity.RabbitSource = new RabbitMQSource(){ResourceID = Guid.NewGuid()};
+            rabbitMqActivity.RabbitSource = new RabbitMQSource {ResourceID = Guid.NewGuid()};
             rabbitMqActivity1.RabbitSource = new RabbitMQSource();
             var @equals = rabbitMqActivity.Equals(rabbitMqActivity1);
             //---------------Test Result -----------------------
@@ -534,8 +534,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.RabbitMQ
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var rabbitMqActivity = new DsfConsumeRabbitMQActivity() { UniqueID = uniqueId, Result = "A", Prefetch = "1", TimeOut = "1", IsObject = true};
-            var rabbitMqActivity1 = new DsfConsumeRabbitMQActivity() { UniqueID = uniqueId, Result = "A", Prefetch = "1", TimeOut = "1", IsObject = true };
+            var rabbitMqActivity = new DsfConsumeRabbitMQActivity { UniqueID = uniqueId, Result = "A", Prefetch = "1", TimeOut = "1", IsObject = true};
+            var rabbitMqActivity1 = new DsfConsumeRabbitMQActivity { UniqueID = uniqueId, Result = "A", Prefetch = "1", TimeOut = "1", IsObject = true };
             //---------------Assert Precondition----------------
             Assert.IsTrue(rabbitMqActivity.Equals(rabbitMqActivity1));
             //---------------Execute Test ----------------------

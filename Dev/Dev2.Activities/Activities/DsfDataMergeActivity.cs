@@ -509,7 +509,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            return base.Equals(other) && string.Equals(_result, other._result) && Equals(_mergeCollection, other._mergeCollection);
+            return base.Equals(other) && string.Equals(Result, other.Result) && Equals(_mergeCollection, other._mergeCollection);
         }
 
         public override bool Equals(object obj)
