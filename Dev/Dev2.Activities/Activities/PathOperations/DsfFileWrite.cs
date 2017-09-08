@@ -248,7 +248,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            return base.Equals(other) && Append == other.Append && string.Equals(FileContents, other.FileContents) && string.Equals(OutputPath, other.OutputPath) && Overwrite == other.Overwrite && AppendTop == other.AppendTop && AppendBottom == other.AppendBottom;
+            return base.Equals(other) 
+                && Append == other.Append
+                && string.Equals(FileContents, other.FileContents) 
+                && string.Equals(OutputPath, other.OutputPath) 
+                && Overwrite == other.Overwrite 
+                && AppendTop == other.AppendTop
+                && AppendBottom == other.AppendBottom;
         }
 
         public override bool Equals(object obj)

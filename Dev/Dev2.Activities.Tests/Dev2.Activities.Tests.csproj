@@ -182,6 +182,8 @@
     <Compile Include="ActivityComparerTests\ObjectAssign\MultiAssignComparerTests.cs" />
     <Compile Include="ActivityComparerTests\Assigns\ActivityDTOTests.cs" />
     <Compile Include="ActivityComparerTests\Assigns\MultiAssignComparerTests.cs" />
+    <Compile Include="ActivityComparerTests\PathOperations\DsfFileReadComparerTests.cs" />
+    <Compile Include="ActivityComparerTests\PathOperations\DsfFileWriteComparerTests.cs" />
     <Compile Include="ActivityComparerTests\RabbitMQ\DsfConsumeRabbitMqActivityComparerTests.cs" />
     <Compile Include="ActivityComparerTests\RabbitMQ\DsfPublishRabbitMqActivityComparerTests.cs" />
     <Compile Include="ActivityTests\AbstractMultipleFilesActivityTests.cs" />
