@@ -65,14 +65,12 @@ namespace Dev2.Activities.DropBox2016.DeleteActivity
             DropboxSingleExecutor = new DropboxDelete(evaluatedValues["DeletePath"]);
             _dropboxClientWrapper = _dropboxClientWrapper ?? new DropboxClientWrapper(GetClient());
             var dropboxExecutionResult = DropboxSingleExecutor.ExecuteTask(_dropboxClientWrapper);
-            var dropboxSuccessResult = dropboxExecutionResult as DropboxDeleteSuccessResult;
-            if (dropboxSuccessResult != null)
+            if (dropboxExecutionResult is DropboxDeleteSuccessResult dropboxSuccessResult)
             {
                 dropboxSuccessResult.GerFileMetadata();
                 return new List<string> { GlobalConstants.DropBoxSuccess };
             }
-            var dropboxFailureResult = dropboxExecutionResult as DropboxFailureResult;
-            if (dropboxFailureResult != null)
+            if (dropboxExecutionResult is DropboxFailureResult dropboxFailureResult)
             {
                 Exception = dropboxFailureResult.GetException();
             }
@@ -106,14 +104,18 @@ namespace Dev2.Activities.DropBox2016.DeleteActivity
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            return base.Equals(other) && Equals(SelectedSource, other.SelectedSource) && string.Equals(DeletePath, other.DeletePath);
+            var isSourceEqual = CommonSourceEquality.IsSourceEqual(SelectedSource, other.SelectedSource);
+            return base.Equals(other) 
+                && isSourceEqual
+                && string.Equals(DisplayName, other.DisplayName)
+                && string.Equals(DeletePath, other.DeletePath);
         }
 
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
+            if (obj.GetType() != GetType()) return false;
             return Equals((DsfDropBoxDeleteActivity) obj);
         }
 
