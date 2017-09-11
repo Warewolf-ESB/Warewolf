@@ -747,7 +747,7 @@ function Resolve-Test-Assembly-File-Specs([string]$TestAssemblyFileSpecs) {
 $JobNames = @()
 $JobAssemblySpecs = @()
 $JobCategories = @()
-if ($JobName -ne $null -and $JobName -ne "" -and $MergeDotCoverSnapshotsInDirectory -eq "") {
+if ($JobName -ne $null -and $JobName -ne "" -and $MergeDotCoverSnapshotsInDirectory -eq "" -and $Cleanup.IsPresent -eq $false) {
     foreach ($Job in $JobName.Split(",")) {
         $Job = $Job.TrimEnd("1234567890 ")
         if ($JobSpecs.ContainsKey($Job)) {
