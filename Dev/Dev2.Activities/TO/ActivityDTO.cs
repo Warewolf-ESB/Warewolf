@@ -253,11 +253,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             return ruleSet;
         }
-
-     
-
-       
-
+        
         public bool Equals(ActivityDTO other)
         {
             if (ReferenceEquals(null, other)) return false;
