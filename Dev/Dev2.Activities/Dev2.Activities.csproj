@@ -179,6 +179,8 @@
     <Compile Include="CommonEqualityOps.cs" />
     <Compile Include="Comparer\ActivityFuncComparer.cs" />
     <Compile Include="Comparer\DelegateArgumentComparer.cs" />
+    <Compile Include="Comparer\SharepointReadListToComparer.cs" />
+    <Compile Include="Comparer\SharepointSearchToComparer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" Condition="!Exists('..\AssemblyCommonInfo.cs')" />
     <None Include="..\Run Tests.ps1">
       <Link>Run Tests.ps1</Link>
