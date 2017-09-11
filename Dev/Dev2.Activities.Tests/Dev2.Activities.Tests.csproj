@@ -173,8 +173,11 @@
       <Link>Run Tests.ps1</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <Compile Include="ActivityComparerTests\BaseConvert\BaseConvertTOEqualityTests.cs" />
     <Compile Include="ActivityComparerTests\Database\DbColumnEqualityTests.cs" />
     <Compile Include="ActivityComparerTests\Database\DsfSqlBulkInsertActivityEqualityTests.cs" />
+    <Compile Include="ActivityComparerTests\DsfAggregateCalculateActivityEquatableTests.cs" />
+    <Compile Include="ActivityComparerTests\BaseConvert\DsfBaseConvertActivityEquatableTests.cs" />
     <Compile Include="ActivityComparerTests\Sharepoint\SharepointDeleteFileActivityEqualityTests.cs" />
     <Compile Include="ActivityComparerTests\Sharepoint\SharepointDeleteListItemActivityEqualityTests.cs" />
     <Compile Include="ActivityComparerTests\Sharepoint\SharepointFileDownLoadActivityEqualityTests.cs" />
