@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Warewolf.Security.Encryption;
 
-namespace Dev2
+namespace Dev2.Common
 {
     public static class CommonEqualityOps
     {

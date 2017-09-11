@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using Dev2.Common;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Validation;
 using Dev2.Common.Interfaces.Interfaces;
@@ -207,7 +208,7 @@ namespace Dev2
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            var collectionEquals = CollectionEquals(Expressions, other.Expressions, StringComparer.Ordinal);
+            var collectionEquals = CommonEqualityOps.CollectionEquals(Expressions, other.Expressions, StringComparer.Ordinal);
             return string.Equals(FromExpression, other.FromExpression)
                    && string.Equals(FromType, other.FromType)
                    && string.Equals(ToExpression, other.ToExpression)
@@ -245,12 +246,6 @@ namespace Dev2
             }
         }
 
-        private static bool CollectionEquals<T>(IEnumerable<T> source, IEnumerable<T> source1, IEqualityComparer<T> equalityComparer)
-        {
-            if (source == null && source1 == null) return true;
-            if (source == null || source1 == null) return false;
-            var sequenceEqual = source.SequenceEqual(source1, equalityComparer);
-            return sequenceEqual;
-        }
+       
     }
 }
