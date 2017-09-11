@@ -3,6 +3,7 @@ using System.Activities;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Data;
@@ -199,7 +200,12 @@ namespace Dev2.Activities.Sharepoint
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            return base.Equals(other) && string.Equals(ServerInputPath, other.ServerInputPath) && Equals(SharepointSource, other.SharepointSource) && SharepointServerResourceId.Equals(other.SharepointServerResourceId);
+            var isSourceEqual = CommonEqualityOps.IsSourceEqual<IResource>(SharepointSource, other.SharepointSource);
+            return base.Equals(other) 
+                && string.Equals(ServerInputPath, other.ServerInputPath)
+                && string.Equals(DisplayName, other.DisplayName)
+                && isSourceEqual
+                && SharepointServerResourceId.Equals(other.SharepointServerResourceId);
         }
 
         public override bool Equals(object obj)
@@ -216,6 +222,7 @@ namespace Dev2.Activities.Sharepoint
             {
                 int hashCode = base.GetHashCode();
                 hashCode = (hashCode * 397) ^ (ServerInputPath != null ? ServerInputPath.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (DisplayName != null ? DisplayName.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (SharepointSource != null ? SharepointSource.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ SharepointServerResourceId.GetHashCode();
                 return hashCode;

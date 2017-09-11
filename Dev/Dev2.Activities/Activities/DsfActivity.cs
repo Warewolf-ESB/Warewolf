@@ -804,7 +804,26 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            return base.Equals(other) && Equals(_iconPath, other._iconPath) && string.Equals(_previousInstanceId, other._previousInstanceId) && Equals(_inputs, other._inputs) && Equals(_outputs, other._outputs) && string.Equals(_serviceUri, other._serviceUri) && Equals(_friendlySourceName, other._friendlySourceName) && Equals(_environmentID, other._environmentID) && Equals(HelpLink, other.HelpLink) && Equals(ResourceID, other.ResourceID) && Equals(Type, other.Type) && Equals(ActionName, other.ActionName) && string.Equals(ServiceName, other.ServiceName) && RunWorkflowAsync == other.RunWorkflowAsync && string.Equals(DataTags, other.DataTags) && string.Equals(ResultValidationRequiredTags, other.ResultValidationRequiredTags) && string.Equals(ResultValidationExpression, other.ResultValidationExpression) && string.Equals(Category, other.Category) && string.Equals(Tags, other.Tags) && DeferExecution == other.DeferExecution && ServiceServer.Equals(other.ServiceServer) && string.Equals(ToolboxFriendlyName, other.ToolboxFriendlyName) && string.Equals(AuthorRoles, other.AuthorRoles) && string.Equals(ActivityStateData, other.ActivityStateData) && RemoveInputFromOutput == other.RemoveInputFromOutput && IsObject == other.IsObject && string.Equals(ObjectName, other.ObjectName) && string.Equals(ObjectResult, other.ObjectResult) && SourceId.Equals(other.SourceId);
+            return base.Equals(other) 
+                && Equals(Inputs, other.Inputs) 
+                && Equals(Outputs, other.Outputs) 
+                && string.Equals(_serviceUri, other._serviceUri) 
+                && Equals(_friendlySourceName, other._friendlySourceName) 
+                && Equals(_environmentID, other._environmentID) 
+                && Equals(HelpLink, other.HelpLink) 
+                && Equals(ResourceID, other.ResourceID) 
+                && Equals(Type, other.Type) 
+                && Equals(ActionName, other.ActionName)
+                && string.Equals(ServiceName, other.ServiceName) 
+                && RunWorkflowAsync == other.RunWorkflowAsync 
+                && string.Equals(DataTags, other.DataTags) 
+                && string.Equals(ResultValidationRequiredTags, other.ResultValidationRequiredTags)
+                && string.Equals(Category, other.Category) 
+                && string.Equals(AuthorRoles, other.AuthorRoles)
+                && IsObject == other.IsObject 
+                && string.Equals(ObjectName, other.ObjectName) 
+                && string.Equals(ObjectResult, other.ObjectResult)
+                && SourceId.Equals(other.SourceId);
         }
 
         public override bool Equals(object obj)
