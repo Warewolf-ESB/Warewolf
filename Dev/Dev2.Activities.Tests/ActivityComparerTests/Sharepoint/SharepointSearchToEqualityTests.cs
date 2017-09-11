@@ -263,7 +263,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Sharepoint
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void Equals_DiffentValueToMatch_Object_Is_Not_IsEqual_CaseSensitive()
+        public void Equals_DiffentValueToMatch_Object_Is_Not_Equal_CaseSensitive()
         {
             //---------------Set up test pack-------------------
             var listTo = new SharepointSearchTo { FieldName = "A", ValueToMatch = "sss" };

@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using Dev2.Common;
 using Dev2.Common.Interfaces.Core.Convertors.Case;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Validation;
@@ -20,7 +21,7 @@ using Dev2.Util;
 
 namespace Dev2
 {
-    public class CaseConvertTO : ICaseConvertTO, IPerformsValidation,IEquatable<CaseConvertTO>
+    public class CaseConvertTO : ICaseConvertTO, IPerformsValidation
     {
         #region Fields
 
@@ -230,11 +231,18 @@ namespace Dev2
 
         #endregion
 
-        public bool Equals(CaseConvertTO other)
+        public bool Equals(ICaseConvertTO other)
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            return string.Equals(_convertType, other._convertType) && Equals(_errors, other._errors) && string.Equals(_result, other._result) && string.Equals(_stringToConvert, other._stringToConvert) && Inserted == other.Inserted && Equals(Expressions, other.Expressions) && IndexNumber == other.IndexNumber && string.Equals(ExpressionToConvert, other.ExpressionToConvert) && string.Equals(WatermarkTextVariable, other.WatermarkTextVariable) && string.Equals(Error, other.Error);
+            var collectionEquals = CommonEqualityOps.CollectionEquals(Expressions, other.Expressions, StringComparer.Ordinal);
+            return string.Equals(ConvertType, other.ConvertType)
+                   && string.Equals(Result, other.Result)
+                   && string.Equals(StringToConvert, other.StringToConvert)
+                   && Inserted == other.Inserted
+                   && collectionEquals
+                   && IndexNumber == other.IndexNumber
+                   && string.Equals(ExpressionToConvert, other.ExpressionToConvert);
         }
 
         public override bool Equals(object obj)
@@ -242,17 +250,17 @@ namespace Dev2
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
             if (obj.GetType() != this.GetType()) return false;
-            return Equals((CaseConvertTO) obj);
+            return Equals((ICaseConvertTO) obj);
         }
 
         public override int GetHashCode()
         {
             unchecked
             {
-                var hashCode = (_convertType != null ? _convertType.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (_errors != null ? _errors.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (_result != null ? _result.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (_stringToConvert != null ? _stringToConvert.GetHashCode() : 0);
+                var hashCode = (ConvertType != null ? ConvertType.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Errors != null ? Errors.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Result != null ? Result.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (StringToConvert != null ? StringToConvert.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ Inserted.GetHashCode();
                 hashCode = (hashCode * 397) ^ (Expressions != null ? Expressions.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ IndexNumber;

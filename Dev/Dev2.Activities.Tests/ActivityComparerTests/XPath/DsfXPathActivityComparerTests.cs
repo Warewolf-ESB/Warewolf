@@ -1,6 +1,4 @@
 ﻿using System;
-using Dev2.Common.ExtMethods;
-using Dev2.Data.ServiceModel;
 using Dev2.Activities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;

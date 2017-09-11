@@ -7,7 +7,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Tests.Activities.ActivityComparerTests.Sharepoint
 {
     [TestClass]
-    public class SharepointDeleteListItemActivityEqualityTests
+    public class SharepointReadListActivityEqualityTests
     {
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
@@ -15,8 +15,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Sharepoint
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var sharepointActivity = new SharepointDeleteListItemActivity() { UniqueID = uniqueId };
-            var activity = new SharepointDeleteListItemActivity() { UniqueID = uniqueId };
+            var sharepointActivity = new SharepointReadListActivity() { UniqueID = uniqueId };
+            var activity = new SharepointReadListActivity() { UniqueID = uniqueId };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(sharepointActivity);
             //---------------Execute Test ----------------------
@@ -31,8 +31,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Sharepoint
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var activity1 = new SharepointDeleteListItemActivity();
-            var selectAndApplyActivity = new SharepointDeleteListItemActivity();
+            var activity1 = new SharepointReadListActivity();
+            var selectAndApplyActivity = new SharepointReadListActivity();
             //---------------Assert Precondition----------------
             Assert.IsNotNull(activity1);
             //---------------Execute Test ----------------------
@@ -47,8 +47,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Sharepoint
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var activity1 = new SharepointDeleteListItemActivity() { UniqueID = uniqueId, DisplayName = "a" };
-            var selectAndApplyActivity = new SharepointDeleteListItemActivity() { UniqueID = uniqueId, DisplayName = "a" };
+            var activity1 = new SharepointReadListActivity() { UniqueID = uniqueId, DisplayName = "a" };
+            var selectAndApplyActivity = new SharepointReadListActivity() { UniqueID = uniqueId, DisplayName = "a" };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(activity1);
             //---------------Execute Test ----------------------
@@ -63,8 +63,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Sharepoint
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var activity1 = new SharepointDeleteListItemActivity() { UniqueID = uniqueId, DisplayName = "A" };
-            var selectAndApplyActivity = new SharepointDeleteListItemActivity() { UniqueID = uniqueId, DisplayName = "ass" };
+            var activity1 = new SharepointReadListActivity() { UniqueID = uniqueId, DisplayName = "A" };
+            var selectAndApplyActivity = new SharepointReadListActivity() { UniqueID = uniqueId, DisplayName = "ass" };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(activity1);
             //---------------Execute Test ----------------------
@@ -79,8 +79,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Sharepoint
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var activity1 = new SharepointDeleteListItemActivity() { UniqueID = uniqueId, DisplayName = "AAA" };
-            var selectAndApplyActivity = new SharepointDeleteListItemActivity() { UniqueID = uniqueId, DisplayName = "aaa" };
+            var activity1 = new SharepointReadListActivity() { UniqueID = uniqueId, DisplayName = "AAA" };
+            var selectAndApplyActivity = new SharepointReadListActivity() { UniqueID = uniqueId, DisplayName = "aaa" };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(activity1);
             //---------------Execute Test ----------------------
@@ -88,54 +88,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Sharepoint
             //---------------Test Result -----------------------
             Assert.IsFalse(@equals);
         }
-
-        [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        public void DeleteCount_Same_Object_IsEqual()
-        {
-            //---------------Set up test pack-------------------
-            var uniqueId = Guid.NewGuid().ToString();
-            var itemActivity = new SharepointDeleteListItemActivity() { UniqueID = uniqueId, DeleteCount = "a" };
-            var activity = new SharepointDeleteListItemActivity() { UniqueID = uniqueId, DeleteCount = "a" };
-            //---------------Assert Precondition----------------
-            Assert.IsNotNull(itemActivity);
-            //---------------Execute Test ----------------------
-            var @equals = itemActivity.Equals(activity);
-            //---------------Test Result -----------------------
-            Assert.IsTrue(@equals);
-        }
-
-        [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        public void DeleteCount_Different_Object_Is_Not_Equal()
-        {
-            //---------------Set up test pack-------------------
-            var uniqueId = Guid.NewGuid().ToString();
-            var activity = new SharepointDeleteListItemActivity() { UniqueID = uniqueId, DeleteCount = "A" };
-            var activity1 = new SharepointDeleteListItemActivity() { UniqueID = uniqueId, DeleteCount = "ass" };
-            //---------------Assert Precondition----------------
-            Assert.IsNotNull(activity);
-            //---------------Execute Test ----------------------
-            var @equals = activity.Equals(activity1);
-            //---------------Test Result -----------------------
-            Assert.IsFalse(@equals);
-        }
-
-        [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        public void DeleteCount_Different_Object_Is_Not_Equal_CaseSensitive()
-        {
-            //---------------Set up test pack-------------------
-            var uniqueId = Guid.NewGuid().ToString();
-            var activity = new SharepointDeleteListItemActivity() { UniqueID = uniqueId, DeleteCount = "AAA" };
-            var activity1 = new SharepointDeleteListItemActivity() { UniqueID = uniqueId, DeleteCount = "aaa" };
-            //---------------Assert Precondition----------------
-            Assert.IsNotNull(activity);
-            //---------------Execute Test ----------------------
-            var @equals = activity.Equals(activity1);
-            //---------------Test Result -----------------------
-            Assert.IsFalse(@equals);
-        }
+        
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
@@ -143,8 +96,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Sharepoint
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var itemActivity = new SharepointDeleteListItemActivity() { UniqueID = uniqueId, SharepointList = "a" };
-            var activity = new SharepointDeleteListItemActivity() { UniqueID = uniqueId, SharepointList = "a" };
+            var itemActivity = new SharepointReadListActivity() { UniqueID = uniqueId, SharepointList = "a" };
+            var activity = new SharepointReadListActivity() { UniqueID = uniqueId, SharepointList = "a" };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(itemActivity);
             //---------------Execute Test ----------------------
@@ -159,8 +112,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Sharepoint
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var activity = new SharepointDeleteListItemActivity() { UniqueID = uniqueId, SharepointList = "A" };
-            var activity1 = new SharepointDeleteListItemActivity() { UniqueID = uniqueId, SharepointList = "ass" };
+            var activity = new SharepointReadListActivity() { UniqueID = uniqueId, SharepointList = "A" };
+            var activity1 = new SharepointReadListActivity() { UniqueID = uniqueId, SharepointList = "ass" };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(activity);
             //---------------Execute Test ----------------------
@@ -175,8 +128,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Sharepoint
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var activity = new SharepointDeleteListItemActivity() { UniqueID = uniqueId, SharepointList = "AAA" };
-            var activity1 = new SharepointDeleteListItemActivity() { UniqueID = uniqueId, SharepointList = "aaa" };
+            var activity = new SharepointReadListActivity() { UniqueID = uniqueId, SharepointList = "AAA" };
+            var activity1 = new SharepointReadListActivity() { UniqueID = uniqueId, SharepointList = "aaa" };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(activity);
             //---------------Execute Test ----------------------
@@ -192,8 +145,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Sharepoint
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid();
-            var sharepointActivity = new SharepointDeleteListItemActivity() { UniqueID = uniqueId.ToString(), SharepointServerResourceId = uniqueId };
-            var sharepoint = new SharepointDeleteListItemActivity() { UniqueID = uniqueId.ToString(), SharepointServerResourceId = uniqueId };
+            var sharepointActivity = new SharepointReadListActivity() { UniqueID = uniqueId.ToString(), SharepointServerResourceId = uniqueId };
+            var sharepoint = new SharepointReadListActivity() { UniqueID = uniqueId.ToString(), SharepointServerResourceId = uniqueId };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(sharepointActivity);
             //---------------Execute Test ----------------------
@@ -208,8 +161,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Sharepoint
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var sharepointActivity = new SharepointDeleteListItemActivity() { UniqueID = uniqueId, SharepointServerResourceId = Guid.NewGuid() };
-            var sharepoint = new SharepointDeleteListItemActivity() { UniqueID = uniqueId, SharepointServerResourceId = Guid.NewGuid() };
+            var sharepointActivity = new SharepointReadListActivity() { UniqueID = uniqueId, SharepointServerResourceId = Guid.NewGuid() };
+            var sharepoint = new SharepointReadListActivity() { UniqueID = uniqueId, SharepointServerResourceId = Guid.NewGuid() };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(sharepointActivity);
             //---------------Execute Test ----------------------
@@ -224,8 +177,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Sharepoint
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var sharepointActivity = new SharepointDeleteListItemActivity() { UniqueID = uniqueId, ReadListItems = new List<SharepointReadListTo>() };
-            var sharepoint = new SharepointDeleteListItemActivity() { UniqueID = uniqueId, ReadListItems = new List<SharepointReadListTo>() };
+            var sharepointActivity = new SharepointReadListActivity() { UniqueID = uniqueId, ReadListItems = new List<SharepointReadListTo>() };
+            var sharepoint = new SharepointReadListActivity() { UniqueID = uniqueId, ReadListItems = new List<SharepointReadListTo>() };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(sharepointActivity);
             //---------------Execute Test ----------------------
@@ -240,7 +193,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Sharepoint
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var sharepointDeleteListItemActivity = new SharepointDeleteListItemActivity()
+            var SharepointReadListActivity = new SharepointReadListActivity()
             {
                 UniqueID = uniqueId,
                 ReadListItems = new List<SharepointReadListTo>()
@@ -248,7 +201,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Sharepoint
                     new SharepointReadListTo("a","a","a","a")
                 }
             };
-            var listItemActivity = new SharepointDeleteListItemActivity()
+            var listItemActivity = new SharepointReadListActivity()
             {
                 UniqueID = uniqueId,
                 ReadListItems = new List<SharepointReadListTo>()
@@ -257,9 +210,9 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Sharepoint
                 }
             };
             //---------------Assert Precondition----------------
-            Assert.IsNotNull(sharepointDeleteListItemActivity);
+            Assert.IsNotNull(SharepointReadListActivity);
             //---------------Execute Test ----------------------
-            var @equals = sharepointDeleteListItemActivity.Equals(listItemActivity);
+            var @equals = SharepointReadListActivity.Equals(listItemActivity);
             //---------------Test Result -----------------------
             Assert.IsTrue(@equals);
         }
@@ -269,7 +222,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Sharepoint
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var activity = new SharepointDeleteListItemActivity()
+            var activity = new SharepointReadListActivity()
             {
                 UniqueID = uniqueId,
                 ReadListItems = new List<SharepointReadListTo>()
@@ -278,7 +231,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Sharepoint
                     new SharepointReadListTo("B","B","",""){IndexNumber = 2},
                 }
             };
-            var listItemActivity = new SharepointDeleteListItemActivity()
+            var listItemActivity = new SharepointReadListActivity()
             {
                 UniqueID = uniqueId,
                 ReadListItems = new List<SharepointReadListTo>()
@@ -301,7 +254,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Sharepoint
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var itemActivity = new SharepointDeleteListItemActivity()
+            var itemActivity = new SharepointReadListActivity()
             {
                 UniqueID = uniqueId,
                 ReadListItems = new List<SharepointReadListTo>()
@@ -309,7 +262,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Sharepoint
                     new SharepointReadListTo("A","a","","")
                 }
             };
-            var createListItemActivity = new SharepointDeleteListItemActivity()
+            var createListItemActivity = new SharepointReadListActivity()
             {
                 UniqueID = uniqueId,
                 ReadListItems = new List<SharepointReadListTo>()
@@ -336,12 +289,12 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Sharepoint
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var sharepointActivity = new SharepointDeleteListItemActivity()
+            var sharepointActivity = new SharepointReadListActivity()
             {
                 UniqueID = uniqueId,
                 ReadListItems = new List<SharepointReadListTo>()
             };
-            var sharepoint = new SharepointDeleteListItemActivity()
+            var sharepoint = new SharepointReadListActivity()
             {
                 UniqueID = uniqueId
                 ,
@@ -367,7 +320,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Sharepoint
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var sharepointDeleteListItemActivity = new SharepointDeleteListItemActivity()
+            var SharepointReadListActivity = new SharepointReadListActivity()
             {
                 UniqueID = uniqueId,
                 ReadListItems = new List<SharepointReadListTo>()
@@ -379,7 +332,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Sharepoint
                     new SharepointSearchTo("a","a","",1)
                 }
             };
-            var listItemActivity = new SharepointDeleteListItemActivity()
+            var listItemActivity = new SharepointReadListActivity()
             {
                 UniqueID = uniqueId,
                 ReadListItems = new List<SharepointReadListTo>()
@@ -393,9 +346,9 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Sharepoint
 
             };
             //---------------Assert Precondition----------------
-            Assert.IsNotNull(sharepointDeleteListItemActivity);
+            Assert.IsNotNull(SharepointReadListActivity);
             //---------------Execute Test ----------------------
-            var @equals = sharepointDeleteListItemActivity.Equals(listItemActivity);
+            var @equals = SharepointReadListActivity.Equals(listItemActivity);
             //---------------Test Result -----------------------
             Assert.IsTrue(@equals);
         }
@@ -405,7 +358,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Sharepoint
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var activity = new SharepointDeleteListItemActivity()
+            var activity = new SharepointReadListActivity()
             {
                 UniqueID = uniqueId,
                 FilterCriteria = new List<SharepointSearchTo>()
@@ -414,7 +367,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Sharepoint
                     new SharepointSearchTo("B","B","",2)
                 }
             };
-            var listItemActivity = new SharepointDeleteListItemActivity()
+            var listItemActivity = new SharepointReadListActivity()
             {
                 UniqueID = uniqueId,
                 FilterCriteria = new List<SharepointSearchTo>()
@@ -437,7 +390,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Sharepoint
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var itemActivity = new SharepointDeleteListItemActivity()
+            var itemActivity = new SharepointReadListActivity()
             {
                 UniqueID = uniqueId,
                 
@@ -446,7 +399,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Sharepoint
                     new SharepointSearchTo("A","a","",1)
                 },
             };
-            var createListItemActivity = new SharepointDeleteListItemActivity()
+            var createListItemActivity = new SharepointReadListActivity()
             {
                 UniqueID = uniqueId,
                 
@@ -469,8 +422,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Sharepoint
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var activity = new SharepointDeleteListItemActivity { UniqueID = uniqueId, RequireAllCriteriaToMatch = true };
-            var activity1 = new SharepointDeleteListItemActivity { UniqueID = uniqueId, RequireAllCriteriaToMatch = true };
+            var activity = new SharepointReadListActivity { UniqueID = uniqueId, RequireAllCriteriaToMatch = true };
+            var activity1 = new SharepointReadListActivity { UniqueID = uniqueId, RequireAllCriteriaToMatch = true };
             //---------------Assert Precondition----------------
             Assert.IsTrue(activity.Equals(activity1));
             //---------------Execute Test ----------------------
@@ -478,7 +431,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Sharepoint
             activity1.RequireAllCriteriaToMatch = false;
             var @equals = activity.Equals(activity1);
             //---------------Test Result -----------------------
-            Assert.IsFalse(equals);
+            Assert.IsFalse(@equals);
         }
 
         [TestMethod]
@@ -487,8 +440,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Sharepoint
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var sharepointCopyFileActivity = new SharepointDeleteListItemActivity { UniqueID = uniqueId, RequireAllCriteriaToMatch = true };
-            var sharepoint = new SharepointDeleteListItemActivity { UniqueID = uniqueId, RequireAllCriteriaToMatch = true };
+            var sharepointCopyFileActivity = new SharepointReadListActivity { UniqueID = uniqueId, RequireAllCriteriaToMatch = true };
+            var sharepoint = new SharepointReadListActivity { UniqueID = uniqueId, RequireAllCriteriaToMatch = true };
             //---------------Assert Precondition----------------
             Assert.IsTrue(sharepointCopyFileActivity.Equals(sharepoint));
             //---------------Execute Test ----------------------
@@ -496,7 +449,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Sharepoint
             sharepoint.RequireAllCriteriaToMatch = true;
             var @equals = sharepointCopyFileActivity.Equals(sharepoint);
             //---------------Test Result -----------------------
-            Assert.IsTrue(equals);
+            Assert.IsTrue(@equals);
         }
 
 
