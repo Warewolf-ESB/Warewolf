@@ -807,29 +807,22 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return base.Equals(other) 
                 && Equals(Inputs, other.Inputs) 
                 && Equals(Outputs, other.Outputs) 
-                && string.Equals(ServiceUri, other.ServiceUri) 
-                && Equals(FriendlySourceName, other.FriendlySourceName) 
-                && Equals(EnvironmentID, other.EnvironmentID) 
+                && string.Equals(_serviceUri, other._serviceUri) 
+                && Equals(_friendlySourceName, other._friendlySourceName) 
+                && Equals(_environmentID, other._environmentID) 
                 && Equals(HelpLink, other.HelpLink) 
                 && Equals(ResourceID, other.ResourceID) 
                 && Equals(Type, other.Type) 
-                && Equals(ActionName, other.ActionName) 
+                && Equals(ActionName, other.ActionName)
                 && string.Equals(ServiceName, other.ServiceName) 
                 && RunWorkflowAsync == other.RunWorkflowAsync 
                 && string.Equals(DataTags, other.DataTags) 
-                && string.Equals(ResultValidationRequiredTags, other.ResultValidationRequiredTags) 
-                && string.Equals(ResultValidationExpression, other.ResultValidationExpression) 
+                && string.Equals(ResultValidationRequiredTags, other.ResultValidationRequiredTags)
                 && string.Equals(Category, other.Category) 
-                && string.Equals(Tags, other.Tags) 
-                && DeferExecution == other.DeferExecution 
-                && ServiceServer.Equals(other.ServiceServer) 
-                && string.Equals(ToolboxFriendlyName, other.ToolboxFriendlyName) 
-                && string.Equals(AuthorRoles, other.AuthorRoles) 
-                && string.Equals(ActivityStateData, other.ActivityStateData) 
-                && RemoveInputFromOutput == other.RemoveInputFromOutput 
+                && string.Equals(AuthorRoles, other.AuthorRoles)
                 && IsObject == other.IsObject 
                 && string.Equals(ObjectName, other.ObjectName) 
-                && string.Equals(ObjectResult, other.ObjectResult) 
+                && string.Equals(ObjectResult, other.ObjectResult)
                 && SourceId.Equals(other.SourceId);
         }
 
