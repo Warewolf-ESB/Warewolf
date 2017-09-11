@@ -9,6 +9,7 @@ using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
+using Dev2.Comparer;
 using Dev2.Data;
 using Dev2.Data.ServiceModel;
 using Dev2.Data.TO;
@@ -251,7 +252,13 @@ namespace Dev2.Activities.Sharepoint
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            return base.Equals(other) && Equals(_sharepointUtils, other._sharepointUtils) && _indexCounter == other._indexCounter && Equals(FilterCriteria, other.FilterCriteria) && RequireAllCriteriaToMatch == other.RequireAllCriteriaToMatch && string.Equals(Result, other.Result) && SharepointServerResourceId.Equals(other.SharepointServerResourceId) && string.Equals(SharepointList, other.SharepointList) && Equals(ReadListItems, other.ReadListItems);
+            return base.Equals(other)
+                && FilterCriteria.SequenceEqual( other.FilterCriteria, new SharepointSearchToComparer())
+                && RequireAllCriteriaToMatch == other.RequireAllCriteriaToMatch 
+                && string.Equals(Result, other.Result) 
+                && SharepointServerResourceId.Equals(other.SharepointServerResourceId) 
+                && string.Equals(SharepointList, other.SharepointList)
+                && ReadListItems.SequenceEqual(other.ReadListItems, new SharepointReadListToComparer());
         }
 
         public override bool Equals(object obj)

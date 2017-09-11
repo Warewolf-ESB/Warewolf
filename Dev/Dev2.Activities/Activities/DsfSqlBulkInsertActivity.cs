@@ -21,8 +21,10 @@ using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.DynamicServices;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
+using Dev2.Comparer;
 using Dev2.Data;
 using Dev2.Data.TO;
 using Dev2.Diagnostics;
@@ -738,7 +740,21 @@ namespace Dev2.Activities
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            return base.Equals(other) && Equals(_sqlBulkInserter, other._sqlBulkInserter) && Equals(InputMappings, other.InputMappings) && Equals(Database, other.Database) && string.Equals(TableName, other.TableName) && string.Equals(Result, other.Result) && CheckConstraints == other.CheckConstraints && FireTriggers == other.FireTriggers && UseInternalTransaction == other.UseInternalTransaction && KeepIdentity == other.KeepIdentity && KeepTableLock == other.KeepTableLock && string.Equals(Timeout, other.Timeout) && string.Equals(BatchSize, other.BatchSize) && IgnoreBlankRows == other.IgnoreBlankRows;
+            var isSourceEqual = CommonEqualityOps.IsSourceEqual<IResource>(Database, other.Database);
+            var collectionEquals = CommonEqualityOps.CollectionEquals(InputMappings, other.InputMappings, new DataColumnMappingComparer());
+            return base.Equals(other)
+                && collectionEquals
+                && isSourceEqual
+                && string.Equals(TableName, other.TableName) 
+                && string.Equals(Result, other.Result)
+                && CheckConstraints == other.CheckConstraints
+                && FireTriggers == other.FireTriggers
+                && UseInternalTransaction == other.UseInternalTransaction 
+                && KeepIdentity == other.KeepIdentity
+                && KeepTableLock == other.KeepTableLock
+                && string.Equals(Timeout, other.Timeout) 
+                && string.Equals(BatchSize, other.BatchSize)
+                && IgnoreBlankRows == other.IgnoreBlankRows;
         }
 
         public override bool Equals(object obj)
@@ -754,7 +770,6 @@ namespace Dev2.Activities
             unchecked
             {
                 int hashCode = base.GetHashCode();
-                hashCode = (hashCode * 397) ^ (_sqlBulkInserter != null ? _sqlBulkInserter.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (InputMappings != null ? InputMappings.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (Database != null ? Database.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (TableName != null ? TableName.GetHashCode() : 0);

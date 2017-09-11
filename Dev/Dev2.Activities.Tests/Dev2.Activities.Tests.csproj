@@ -173,8 +173,21 @@
       <Link>Run Tests.ps1</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <Compile Include="ActivityComparerTests\BaseConvert\BaseConvertTOEqualityTests.cs" />
+    <Compile Include="ActivityComparerTests\CaseConvert\DsfCaseConvertActivityEquatableTests.cs" />
+    <Compile Include="ActivityComparerTests\CaseConvert\CaseConvertTOEqualityTests.cs" />
+    <Compile Include="ActivityComparerTests\Database\DbColumnEqualityTests.cs" />
+    <Compile Include="ActivityComparerTests\Database\DsfSqlBulkInsertActivityEqualityTests.cs" />
+    <Compile Include="ActivityComparerTests\DsfAggregateCalculateActivityEquatableTests.cs" />
+    <Compile Include="ActivityComparerTests\BaseConvert\DsfBaseConvertActivityEquatableTests.cs" />
+    <Compile Include="ActivityComparerTests\DsfCalculateActivityEquatableTests.cs" />
     <Compile Include="ActivityComparerTests\Sharepoint\SharepointDeleteFileActivityEqualityTests.cs" />
     <Compile Include="ActivityComparerTests\Sharepoint\SharepointDeleteListItemActivityEqualityTests.cs" />
+    <Compile Include="ActivityComparerTests\Sharepoint\SharepointFileDownLoadActivityEqualityTests.cs" />
+    <Compile Include="ActivityComparerTests\Sharepoint\SharepointFileUploadActivityEqualityTests.cs" />
+    <Compile Include="ActivityComparerTests\Sharepoint\SharepointMoveFileActivityEqualityTests.cs" />
+    <Compile Include="ActivityComparerTests\Sharepoint\SharepointReadFolderItemActivityEqualityTests.cs" />
+    <Compile Include="ActivityComparerTests\Sharepoint\SharepointReadListActivityEqualityTests.cs" />
     <Compile Include="ActivityComparerTests\Sharepoint\SharepointReadListToTests.cs" />
     <Compile Include="ActivityComparerTests\DropBox2016\DsfDropBoxDeleteActivityComparerTests.cs" />
     <Compile Include="ActivityComparerTests\DropBox2016\DsfDropBoxDownloadActivityComparerTests.cs" />
@@ -194,6 +207,7 @@
     <Compile Include="ActivityComparerTests\WebTools\DsfWebServiceActivityComparerTests.cs" />
     <Compile Include="ActivityComparerTests\Activity\DsfActivityComparerTest.cs" />
     <Compile Include="ActivityComparerTests\XPath\DsfXPathActivityComparerTests.cs" />
+    <Compile Include="ActivityComparerTests\Sharepoint\SharepointUpdateListItemActivityEqualityTests.cs" />
     <Compile Include="ActivityComparerTests\RabbitMQ\DsfConsumeRabbitMqActivityComparerTests.cs" />
     <Compile Include="ActivityComparerTests\RabbitMQ\DsfPublishRabbitMqActivityComparerTests.cs" />
     <Compile Include="ActivityComparerTests\RecordsetOld\DsfCountRecordsetActivityTests.cs" />
@@ -460,6 +474,7 @@
   <ItemGroup>
     <EmbeddedResource Include="XML\WebServiceResponse.xml" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

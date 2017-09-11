@@ -22,6 +22,7 @@ using Dev2.Common.Interfaces.Core.Convertors.Base;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Enums.Enums;
 using Dev2.Common.Interfaces.Toolbox;
+using Dev2.Comparer;
 using Dev2.Converters;
 using Dev2.Data.TO;
 using Dev2.Diagnostics;
@@ -181,7 +182,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     IBaseConverter from = _fac.CreateConverter((enDev2BaseConvertType)Dev2EnumConverter.GetEnumFromStringDiscription(item.FromType, typeof(enDev2BaseConvertType)));
                     IBaseConverter to = _fac.CreateConverter((enDev2BaseConvertType)Dev2EnumConverter.GetEnumFromStringDiscription(item.ToType, typeof(enDev2BaseConvertType)));
-                    IBaseConversionBroker broker = _fac.CreateBroker(@from, to);
+                    IBaseConversionBroker broker = _fac.CreateBroker(from, to);
                     var value = a.ToString();
                     if(a.IsNothing)
                     {
@@ -197,8 +198,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     var evalled = env.Eval(upper, update);
                     if (evalled.IsWarewolfAtomResult)
                     {
-                        var warewolfAtomResult = evalled as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
-                        if (warewolfAtomResult != null)
+                        if (evalled is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult warewolfAtomResult)
                         {
                             return warewolfAtomResult.Item;
                         }
@@ -443,7 +443,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            return base.Equals(other) && Equals(_fac, other._fac) && ConvertCollection.SequenceEqual(other.ConvertCollection) ;
+            var collectionEquals = CommonEqualityOps.CollectionEquals(ConvertCollection, other.ConvertCollection, new BaseConvertToComparer());
+            return base.Equals(other) 
+                && collectionEquals;
         }
 
         public override bool Equals(object obj)
