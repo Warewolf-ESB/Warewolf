@@ -205,7 +205,7 @@
     <Compile Include="ActivityComparerTests\PathOperations\DsfUnZipComparerTests.cs" />
     <Compile Include="ActivityComparerTests\PathOperations\DsfZipComparerTests.cs" />
     <Compile Include="ActivityComparerTests\WebTools\DsfWebServiceActivityComparerTests.cs" />
-    <Compile Include="ActivityComparerTests\Activity\DsfActivityComparerTests.cs" />
+    <Compile Include="ActivityComparerTests\Activity\DsfActivityComparerTest.cs" />
     <Compile Include="ActivityComparerTests\XPath\DsfXPathActivityComparerTests.cs" />
     <Compile Include="ActivityComparerTests\Sharepoint\SharepointUpdateListItemActivityEqualityTests.cs" />
     <Compile Include="ActivityComparerTests\RabbitMQ\DsfConsumeRabbitMqActivityComparerTests.cs" />
