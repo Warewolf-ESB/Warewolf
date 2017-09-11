@@ -11,6 +11,8 @@ using System.Activities;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using Dev2.Common;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.TO;
 using Dev2.Interfaces;
@@ -225,7 +227,14 @@ namespace Dev2.Activities.Sharepoint
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            return base.Equals(other) && string.Equals(ServerInputPathFrom, other.ServerInputPathFrom) && string.Equals(ServerInputPathTo, other.ServerInputPathTo) && Overwrite == other.Overwrite && Equals(SharepointSource, other.SharepointSource) && SharepointServerResourceId.Equals(other.SharepointServerResourceId);
+            var isSourceEqual = CommonEqualityOps.IsSourceEqual<IResource>(SharepointSource, other.SharepointSource);
+            return base.Equals(other) 
+                && string.Equals(ServerInputPathFrom, other.ServerInputPathFrom) 
+                && string.Equals(ServerInputPathTo, other.ServerInputPathTo) 
+                && string.Equals(DisplayName, other.DisplayName) 
+                && Overwrite == other.Overwrite
+                && isSourceEqual
+                && SharepointServerResourceId.Equals(other.SharepointServerResourceId);
         }
 
         public override bool Equals(object obj)
@@ -243,6 +252,7 @@ namespace Dev2.Activities.Sharepoint
                 int hashCode = base.GetHashCode();
                 hashCode = (hashCode * 397) ^ (ServerInputPathFrom != null ? ServerInputPathFrom.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (ServerInputPathTo != null ? ServerInputPathTo.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (DisplayName != null ? DisplayName.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ Overwrite.GetHashCode();
                 hashCode = (hashCode * 397) ^ (SharepointSource != null ? SharepointSource.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ SharepointServerResourceId.GetHashCode();

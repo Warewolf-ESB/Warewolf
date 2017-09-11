@@ -173,6 +173,7 @@
       <Link>Run Tests.ps1</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <Compile Include="ActivityComparerTests\Sharepoint\SharepointReadListToTests.cs" />
     <Compile Include="ActivityComparerTests\DropBox2016\DsfDropBoxDeleteActivityComparerTests.cs" />
     <Compile Include="ActivityComparerTests\DropBox2016\DsfDropBoxDownloadActivityComparerTests.cs" />
     <Compile Include="ActivityComparerTests\DropBox2016\DsfDropboxFileListActivityComparerTests.cs" />
@@ -180,7 +181,7 @@
     <Compile Include="ActivityComparerTests\Exchange\DsfExchangeEmailActivityComparerTests.cs" />
     <Compile Include="ActivityComparerTests\ObjectAssign\AssignObjectDtoTests.cs" />
     <Compile Include="ActivityComparerTests\ObjectAssign\MultiAssignComparerTests.cs" />
-    <Compile Include="ActivityComparerTests\Assigns\ActivityDTOTests.cs" />
+    <Compile Include="ActivityComparerTests\Assigns\ActivityDtoEqualityTests.cs" />
     <Compile Include="ActivityComparerTests\Assigns\MultiAssignComparerTests.cs" />
     <Compile Include="ActivityComparerTests\PathOperations\DsfFileReadComparerTests.cs" />
     <Compile Include="ActivityComparerTests\PathOperations\DsfFileWriteComparerTests.cs" />
@@ -196,6 +197,8 @@
     <Compile Include="ActivityComparerTests\Scripting\DsfRubyActivityTests.cs" />
     <Compile Include="ActivityComparerTests\Scripting\DsfScriptingActivityTests.cs" />
     <Compile Include="ActivityComparerTests\SelectAndApply\DsfSelectAndApplyActivityComparerTests.cs" />
+    <Compile Include="ActivityComparerTests\Sharepoint\SharepointCopyFileActivityEqualityTests.cs" />
+    <Compile Include="ActivityComparerTests\Sharepoint\SharepointCreateListItemActivityEqualityTests.cs" />
     <Compile Include="ActivityTests\AbstractMultipleFilesActivityTests.cs" />
     <Compile Include="ActivityTests\AggregateCalculateActivityTest.cs" />
     <Compile Include="ActivityTests\BaseActivityTests.cs" />
@@ -451,7 +454,6 @@
   <ItemGroup>
     <EmbeddedResource Include="XML\WebServiceResponse.xml" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
