@@ -8,6 +8,7 @@ using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
+using Dev2.Comparer;
 using Dev2.Data.ServiceModel;
 using Dev2.Data.TO;
 using Dev2.Data.Util;
@@ -25,7 +26,7 @@ using WarewolfParserInterop;
 namespace Dev2.Activities.Sharepoint
 {
     [ToolDescriptorInfo("SharepointLogo", "Read List Item(s)", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Sharepoint", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_SharePoint_Read_List_Item")]
-    public class SharepointReadListActivity : DsfActivityAbstract<string>,IEquatable<SharepointReadListActivity>
+    public class SharepointReadListActivity : DsfActivityAbstract<string>, IEquatable<SharepointReadListActivity>
     {
 
         public SharepointReadListActivity()
@@ -51,7 +52,7 @@ namespace Dev2.Activities.Sharepoint
         protected override void OnExecute(NativeActivityContext context)
         {
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
-            ExecuteTool(dataObject,0);
+            ExecuteTool(dataObject, 0);
         }
 
 
@@ -131,10 +132,10 @@ namespace Dev2.Activities.Sharepoint
                                     try
                                     {
                                         var sharepointValue = listItem[fieldName.InternalName];
-                                        
+
                                         if (sharepointValue != null)
                                         {
-                                            var sharepointVal = GetSharepointValue(sharepointValue);                                            
+                                            var sharepointVal = GetSharepointValue(sharepointValue);
                                             listItemValue = sharepointVal.ToString();
                                         }
                                     }
@@ -184,15 +185,15 @@ namespace Dev2.Activities.Sharepoint
         {
             var type = sharepointValue.GetType();
             var val = sharepointValue;
-            if(type == typeof(FieldUserValue))
+            if (type == typeof(FieldUserValue))
             {
                 var fieldValue = sharepointValue as FieldUserValue;
-                if(fieldValue != null)
+                if (fieldValue != null)
                 {
                     return fieldValue.LookupValue;
                 }
             }
-            else if(type == typeof(FieldLookupValue))
+            else if (type == typeof(FieldLookupValue))
             {
                 var fieldValue = sharepointValue as FieldLookupValue;
                 if (fieldValue != null)
@@ -213,7 +214,7 @@ namespace Dev2.Activities.Sharepoint
                 var fieldValue = sharepointValue as FieldGeolocationValue;
                 if (fieldValue != null)
                 {
-                    return string.Join(",",fieldValue.Longitude,fieldValue.Latitude,fieldValue.Altitude,fieldValue.Measure);
+                    return string.Join(",", fieldValue.Longitude, fieldValue.Latitude, fieldValue.Altitude, fieldValue.Measure);
                 }
             }
             else if (type == typeof(FieldLookupValue[]))
@@ -221,7 +222,7 @@ namespace Dev2.Activities.Sharepoint
                 var fieldValue = sharepointValue as FieldLookupValue[];
                 if (fieldValue != null)
                 {
-                    var returnString = string.Join(",",fieldValue.Select(value => value.LookupValue));
+                    var returnString = string.Join(",", fieldValue.Select(value => value.LookupValue));
                     return returnString;
                 }
             }
@@ -328,7 +329,12 @@ namespace Dev2.Activities.Sharepoint
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            return base.Equals(other) && _indexCounter == other._indexCounter && Equals(ReadListItems, other.ReadListItems) && SharepointServerResourceId.Equals(other.SharepointServerResourceId) && string.Equals(SharepointList, other.SharepointList) && Equals(FilterCriteria, other.FilterCriteria) && RequireAllCriteriaToMatch == other.RequireAllCriteriaToMatch && Equals(SharepointUtils, other.SharepointUtils);
+            return base.Equals(other)
+                   && ReadListItems.SequenceEqual(other.ReadListItems, new SharepointReadListToComparer())
+                   && SharepointServerResourceId.Equals(other.SharepointServerResourceId)
+                   && string.Equals(SharepointList, other.SharepointList)
+                   && FilterCriteria.SequenceEqual(other.FilterCriteria, new SharepointSearchToComparer())
+                   && RequireAllCriteriaToMatch == other.RequireAllCriteriaToMatch;
         }
 
         public override bool Equals(object obj)
@@ -336,7 +342,7 @@ namespace Dev2.Activities.Sharepoint
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
             if (obj.GetType() != this.GetType()) return false;
-            return Equals((SharepointReadListActivity) obj);
+            return Equals((SharepointReadListActivity)obj);
         }
 
         public override int GetHashCode()
@@ -344,13 +350,11 @@ namespace Dev2.Activities.Sharepoint
             unchecked
             {
                 int hashCode = base.GetHashCode();
-                hashCode = (hashCode * 397) ^ _indexCounter;
                 hashCode = (hashCode * 397) ^ (ReadListItems != null ? ReadListItems.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ SharepointServerResourceId.GetHashCode();
                 hashCode = (hashCode * 397) ^ (SharepointList != null ? SharepointList.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (FilterCriteria != null ? FilterCriteria.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ RequireAllCriteriaToMatch.GetHashCode();
-                hashCode = (hashCode * 397) ^ (SharepointUtils != null ? SharepointUtils.GetHashCode() : 0);
                 return hashCode;
             }
         }
