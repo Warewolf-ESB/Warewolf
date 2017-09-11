@@ -17,9 +17,11 @@ using System.Linq;
 using Dev2;
 using Dev2.Activities;
 using Dev2.Activities.Debug;
+using Dev2.Common;
 using Dev2.Common.Interfaces.Core.Convertors.Case;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
+using Dev2.Comparer;
 using Dev2.Data.TO;
 using Dev2.Diagnostics;
 using Dev2.Interfaces;
@@ -455,6 +457,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
+            CommonEqualityOps.CollectionEquals(ConvertCollection, other.ConvertCollection, new CaseConvertToComparer());
             return base.Equals(other) && Equals(ConvertCollection, other.ConvertCollection);
         }
 
