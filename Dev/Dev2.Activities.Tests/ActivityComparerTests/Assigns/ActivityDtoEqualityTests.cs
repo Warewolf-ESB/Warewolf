@@ -4,7 +4,7 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 namespace Dev2.Tests.Activities.ActivityComparerTests.Assigns
 {
     [TestClass]
-    public class ActivityDtoTests
+    public class ActivityDtoEqualityTests
     {
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]

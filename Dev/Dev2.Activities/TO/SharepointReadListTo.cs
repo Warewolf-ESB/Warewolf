@@ -1,3 +1,4 @@
+using System;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Validation;
 using Dev2.Providers.Validation.Rules;
@@ -5,7 +6,7 @@ using Dev2.Util;
 
 namespace Dev2.TO
 {
-    public class SharepointReadListTo : ValidatedObject, ISharepointReadListTo
+    public class SharepointReadListTo : ValidatedObject, ISharepointReadListTo, IEquatable<SharepointReadListTo>
     {
         int _indexNumber;
 
@@ -63,6 +64,42 @@ namespace Dev2.TO
         public override IRuleSet GetRuleSet(string propertyName, string datalist)
         {
             return new RuleSet();
+        }
+
+        public bool Equals(SharepointReadListTo other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return IndexNumber == other.IndexNumber
+                && string.Equals(InternalName, other.InternalName)
+                && string.Equals(FieldName, other.FieldName) 
+                && string.Equals(VariableName, other.VariableName) 
+                && string.Equals(Type, other.Type) 
+                && IsRequired == other.IsRequired
+                && Inserted == other.Inserted;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((SharepointReadListTo) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = _indexNumber;
+                hashCode = (hashCode * 397) ^ (InternalName != null ? InternalName.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (FieldName != null ? FieldName.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (VariableName != null ? VariableName.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Type != null ? Type.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ IsRequired.GetHashCode();
+                hashCode = (hashCode * 397) ^ Inserted.GetHashCode();
+                return hashCode;
+            }
         }
     }
 }
