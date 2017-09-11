@@ -1,4 +1,8 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using Dev2.TO;
 using Warewolf.Security.Encryption;
 
 namespace Dev2
@@ -54,6 +58,14 @@ namespace Dev2
             }
 
             return string.Equals(temPpassword, temPpassword1);
-        } 
+        }
+
+        public static bool CollectionEquals<T>(IEnumerable<T> source, IEnumerable<T> source1, IEqualityComparer<T> equalityComparer)
+        {
+            if (source == null && source1 == null) return true;
+            if (source == null || source1 == null) return false;
+            var sequenceEqual = source.SequenceEqual(source1, equalityComparer);
+            return sequenceEqual;
+        }
     }
 }
