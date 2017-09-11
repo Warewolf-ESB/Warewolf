@@ -225,7 +225,12 @@ namespace Dev2.Activities.Scripting
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            return base.Equals(other) && Equals(_sources, other._sources) && string.Equals(Script, other.Script) && ScriptType == other.ScriptType && EscapeScript == other.EscapeScript && string.Equals(Result, other.Result) && string.Equals(IncludeFile, other.IncludeFile);
+            return base.Equals(other) 
+                && string.Equals(Script, other.Script)
+                && ScriptType == other.ScriptType
+                && EscapeScript == other.EscapeScript 
+                && string.Equals(Result, other.Result) 
+                && string.Equals(IncludeFile, other.IncludeFile);
         }
 
         public override bool Equals(object obj)
@@ -246,6 +251,7 @@ namespace Dev2.Activities.Scripting
                 hashCode = (hashCode * 397) ^ (int) ScriptType;
                 hashCode = (hashCode * 397) ^ EscapeScript.GetHashCode();
                 hashCode = (hashCode * 397) ^ (Result != null ? Result.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (DisplayName != null ? DisplayName.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (IncludeFile != null ? IncludeFile.GetHashCode() : 0);
                 return hashCode;
             }
