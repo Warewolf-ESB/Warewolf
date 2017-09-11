@@ -494,7 +494,9 @@ namespace Dev2.Activities
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            return base.Equals(other) && Equals(ResultsCollection, other.ResultsCollection) && string.Equals(SourceString, other.SourceString) ;
+            return base.Equals(other)
+                && ResultsCollection.SequenceEqual(other.ResultsCollection)
+                && string.Equals(SourceString, other.SourceString) ;
         }
 
         public override bool Equals(object obj)
