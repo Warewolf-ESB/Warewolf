@@ -8,6 +8,7 @@ using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
+using Dev2.Comparer;
 using Dev2.Data.ServiceModel;
 using Dev2.Data.TO;
 using Dev2.Diagnostics;
@@ -226,7 +227,14 @@ namespace Dev2.Activities.Sharepoint
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            return base.Equals(other) && Equals(_sharepointUtils, other._sharepointUtils) && _indexCounter == other._indexCounter && string.Equals(DeleteCount, other.DeleteCount) && Equals(ReadListItems, other.ReadListItems) && SharepointServerResourceId.Equals(other.SharepointServerResourceId) && string.Equals(SharepointList, other.SharepointList) && Equals(FilterCriteria, other.FilterCriteria) && RequireAllCriteriaToMatch == other.RequireAllCriteriaToMatch;
+            return base.Equals(other) 
+                && string.Equals(DeleteCount, other.DeleteCount) 
+                && ReadListItems.SequenceEqual(other.ReadListItems, new SharepointReadListToComparer()) 
+                && SharepointServerResourceId.Equals(other.SharepointServerResourceId) 
+                && string.Equals(SharepointList, other.SharepointList) 
+                && string.Equals(DisplayName, other.DisplayName) 
+                && FilterCriteria.SequenceEqual( other.FilterCriteria, new SharepointSearchToComparer()) 
+                && RequireAllCriteriaToMatch == other.RequireAllCriteriaToMatch;
         }
 
         public override bool Equals(object obj)
@@ -242,8 +250,6 @@ namespace Dev2.Activities.Sharepoint
             unchecked
             {
                 int hashCode = base.GetHashCode();
-                hashCode = (hashCode * 397) ^ (_sharepointUtils != null ? _sharepointUtils.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ _indexCounter;
                 hashCode = (hashCode * 397) ^ (DeleteCount != null ? DeleteCount.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (ReadListItems != null ? ReadListItems.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ SharepointServerResourceId.GetHashCode();

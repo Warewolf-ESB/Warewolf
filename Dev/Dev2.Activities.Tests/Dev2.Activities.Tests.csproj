@@ -173,6 +173,8 @@
       <Link>Run Tests.ps1</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <Compile Include="ActivityComparerTests\Sharepoint\SharepointDeleteFileActivityEqualityTests.cs" />
+    <Compile Include="ActivityComparerTests\Sharepoint\SharepointDeleteListItemActivityEqualityTests.cs" />
     <Compile Include="ActivityComparerTests\Sharepoint\SharepointReadListToTests.cs" />
     <Compile Include="ActivityComparerTests\DropBox2016\DsfDropBoxDeleteActivityComparerTests.cs" />
     <Compile Include="ActivityComparerTests\DropBox2016\DsfDropBoxDownloadActivityComparerTests.cs" />
@@ -199,6 +201,7 @@
     <Compile Include="ActivityComparerTests\SelectAndApply\DsfSelectAndApplyActivityComparerTests.cs" />
     <Compile Include="ActivityComparerTests\Sharepoint\SharepointCopyFileActivityEqualityTests.cs" />
     <Compile Include="ActivityComparerTests\Sharepoint\SharepointCreateListItemActivityEqualityTests.cs" />
+    <Compile Include="ActivityComparerTests\Sharepoint\SharepointSearchToEqualityTests.cs" />
     <Compile Include="ActivityTests\AbstractMultipleFilesActivityTests.cs" />
     <Compile Include="ActivityTests\AggregateCalculateActivityTest.cs" />
     <Compile Include="ActivityTests\BaseActivityTests.cs" />
