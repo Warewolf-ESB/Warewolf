@@ -166,7 +166,7 @@ if ($AutoVersion.IsPresent -or $CustomVersion -ne "") {
     $Line6 = "[assembly: AssemblyInformationalVersion(""" + $GitCommitTime + " " + $GitCommitID + " " + $GitBranchName + """)]"
     $Line7 = "[assembly: InternalsVisibleTo(""Dev2.Activities.Designers.Tests"")]"
     $Line8 = "[assembly: InternalsVisibleTo(""Warewolf.Studio.ViewModels.Tests"")]"
-    $Line8 = "[assembly: InternalsVisibleTo(""Dev2.Runtime.Tests"")]"
+    $Line9 = "[assembly: InternalsVisibleTo(""Dev2.Runtime.Tests"")]"
     Write-Host $Line1
     $Line1 | Out-File -LiteralPath $CSharpVersionFile -Encoding utf8 -Force
     Write-Host $Line2
@@ -179,6 +179,12 @@ if ($AutoVersion.IsPresent -or $CustomVersion -ne "") {
     $Line5 | Out-File -LiteralPath $CSharpVersionFile -Encoding utf8 -Append
     Write-Host $Line6
     $Line6 | Out-File -LiteralPath $CSharpVersionFile -Encoding utf8 -Append
+    Write-Host $Line7
+    $Line7 | Out-File -LiteralPath $CSharpVersionFile -Encoding utf8 -Append
+    Write-Host $Line8
+    $Line8 | Out-File -LiteralPath $CSharpVersionFile -Encoding utf8 -Append
+    Write-Host $Line9
+    $Line9 | Out-File -LiteralPath $CSharpVersionFile -Encoding utf8 -Append
     Write-Host C Sharp version file written to `"$CSharpVersionFile`".
 
     $FSharpVersionFile = "$PSScriptRoot\Dev\AssemblyCommonInfo.fs"
