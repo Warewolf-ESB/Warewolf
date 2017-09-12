@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
-using Dev2.Activities;
 using Dev2.Common;
+using Dev2.Common.Interfaces;
 
 namespace Dev2.Comparer
 {
-    internal class DsfComDllActivityComparer : IEqualityComparer<DsfComDllActivity>
+    internal class SimplePluginComparer : IEqualityComparer<ISimpePlugin>
     {
-        public bool Equals(DsfComDllActivity p1, DsfComDllActivity p2)
+        public bool Equals(ISimpePlugin p1, ISimpePlugin p2)
         {
             if (p1 == null && p2 == null) return true;
             if (p1 == null || p2 == null) return false;
@@ -62,7 +62,7 @@ namespace Dev2.Comparer
             return methodsAreEqual && nameSpacesAreEqual && outPutsEqual;
         }
 
-        public int GetHashCode(DsfComDllActivity obj)
+        public int GetHashCode(ISimpePlugin obj)
         {
             int hashCode = base.GetHashCode();
             hashCode = (hashCode * 397) ^ ((int)obj?.GetHashCode());

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.Graph;
+using Dev2.Comparer;
 using Dev2.Data.TO;
 using Dev2.Data.Util;
 using Dev2.Interfaces;
@@ -18,7 +19,7 @@ using Warewolf.Storage;
 namespace Dev2.Activities
 {
     //[ToolDescriptorInfo("DotNetDll", "DotNet DLL", ToolType.Native, "6AEB1038-6332-46F9-8BDD-641DE4EA038E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Resources", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Resources_Dot_net_DLL")]
-    public class DsfDotNetDllActivity : DsfMethodBasedActivity,IEquatable<DsfDotNetDllActivity>
+    public class DsfDotNetDllActivity : DsfMethodBasedActivity, ISimpePlugin
     {
         public IPluginAction Method { get; set; }
         public INamespaceItem Namespace { get; set; }
@@ -114,11 +115,13 @@ namespace Dev2.Activities
             return enFindMissingType.DataGridActivity;
         }
 
-        public bool Equals(DsfDotNetDllActivity other)
+        public bool Equals(ISimpePlugin other)
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            return base.Equals(other) && Equals(Method, other.Method) && Equals(Namespace, other.Namespace) && Equals(OutputDescription, other.OutputDescription);
+            var comparer = new SimplePluginComparer();
+            var equals = comparer.Equals(this, other);
+            return base.Equals(other) && equals;
         }
 
         public override bool Equals(object obj)
@@ -126,7 +129,7 @@ namespace Dev2.Activities
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
             if (obj.GetType() != this.GetType()) return false;
-            return Equals((DsfDotNetDllActivity) obj);
+            return Equals((ISimpePlugin) obj);
         }
 
         public override int GetHashCode()

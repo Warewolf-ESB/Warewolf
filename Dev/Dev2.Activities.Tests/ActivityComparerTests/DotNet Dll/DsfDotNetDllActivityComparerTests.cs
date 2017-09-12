@@ -13,10 +13,10 @@ using Unlimited.Framework.Converters.Graph.String.Json;
 using Unlimited.Framework.Converters.Graph.String.Xml;
 using Warewolf.Core;
 
-namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
+namespace Dev2.Tests.Activities.ActivityComparerTests.DotNet_Dll
 {
     [TestClass]
-    public class DsfComDllActivityEqualityTests
+    public class DsfDotNetDllActivityComparerTests
     {
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
@@ -24,8 +24,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var activity = new DsfComDllActivity() { UniqueID = uniqueId };
-            var activity1 = new DsfComDllActivity() { UniqueID = uniqueId };
+            var activity = new DsfDotNetDllActivity() { UniqueID = uniqueId };
+            var activity1 = new DsfDotNetDllActivity() { UniqueID = uniqueId };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(activity);
             //---------------Execute Test ----------------------
@@ -40,8 +40,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var activity = new DsfComDllActivity() { UniqueID = uniqueId };
-            var activity1 = new DsfComDllActivity() { UniqueID = Guid.NewGuid().ToString() };
+            var activity = new DsfDotNetDllActivity() { UniqueID = uniqueId };
+            var activity1 = new DsfDotNetDllActivity() { UniqueID = Guid.NewGuid().ToString() };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(activity);
             //---------------Execute Test ----------------------
@@ -55,8 +55,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var activity = new DsfComDllActivity() { UniqueID = uniqueId, DisplayName = "a" };
-            var activity1 = new DsfComDllActivity() { UniqueID = uniqueId, DisplayName = "a" };
+            var activity = new DsfDotNetDllActivity() { UniqueID = uniqueId, DisplayName = "a" };
+            var activity1 = new DsfDotNetDllActivity() { UniqueID = uniqueId, DisplayName = "a" };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(activity);
             //---------------Execute Test ----------------------
@@ -71,8 +71,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var activity = new DsfComDllActivity() { UniqueID = uniqueId, DisplayName = "A" };
-            var activity1 = new DsfComDllActivity() { UniqueID = uniqueId, DisplayName = "ass" };
+            var activity = new DsfDotNetDllActivity() { UniqueID = uniqueId, DisplayName = "A" };
+            var activity1 = new DsfDotNetDllActivity() { UniqueID = uniqueId, DisplayName = "ass" };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(activity);
             //---------------Execute Test ----------------------
@@ -87,9 +87,9 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var activity = new DsfComDllActivity() { UniqueID = uniqueId, DisplayName = "AAA" };
-            var activity1 = new DsfComDllActivity() { UniqueID = uniqueId, DisplayName = "aaa" };
-            //---------------Assert DsfComDllActivity----------------
+            var activity = new DsfDotNetDllActivity() { UniqueID = uniqueId, DisplayName = "AAA" };
+            var activity1 = new DsfDotNetDllActivity() { UniqueID = uniqueId, DisplayName = "aaa" };
+            //---------------Assert DsfDotNetDllActivity----------------
             Assert.IsNotNull(activity);
             //---------------Execute Test ----------------------
             var equals = activity.Equals(activity1);
@@ -111,7 +111,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
                 Method = "b"
             };
             var uniqueId = Guid.NewGuid().ToString();
-            var activity = new DsfComDllActivity()
+            var activity = new DsfDotNetDllActivity()
             {
                 UniqueID = uniqueId
                 ,
@@ -119,14 +119,14 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
                 ,
                 Method = pluginAction
             };
-            var activity1 = new DsfComDllActivity()
+            var activity1 = new DsfDotNetDllActivity()
             {
                 UniqueID = uniqueId
                 ,
                 DisplayName = "aaa",
                 Method = pluginActiona
             };
-            //---------------Assert DsfComDllActivity----------------
+            //---------------Assert DsfDotNetDllActivity----------------
             Assert.IsNotNull(activity);
             //---------------Execute Test ----------------------
             var equals = activity.Equals(activity1);
@@ -148,7 +148,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
                 Method = "a"
             };
             var uniqueId = Guid.NewGuid().ToString();
-            var activity = new DsfComDllActivity()
+            var activity = new DsfDotNetDllActivity()
             {
                 UniqueID = uniqueId
                 ,
@@ -156,14 +156,14 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
                 ,
                 Method = pluginAction
             };
-            var activity1 = new DsfComDllActivity()
+            var activity1 = new DsfDotNetDllActivity()
             {
                 UniqueID = uniqueId
                 ,
                 DisplayName = "AAA",
                 Method = pluginActiona
             };
-            //---------------Assert DsfComDllActivity----------------
+            //---------------Assert DsfDotNetDllActivity----------------
             Assert.IsNotNull(activity);
             //---------------Execute Test ----------------------
             var equals = activity.Equals(activity1);
@@ -187,7 +187,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
                 IsObject = false
             };
             var uniqueId = Guid.NewGuid().ToString();
-            var activity = new DsfComDllActivity()
+            var activity = new DsfDotNetDllActivity()
             {
                 UniqueID = uniqueId
                 ,
@@ -195,14 +195,14 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
                 ,
                 Method = pluginAction
             };
-            var activity1 = new DsfComDllActivity()
+            var activity1 = new DsfDotNetDllActivity()
             {
                 UniqueID = uniqueId
                 ,
                 DisplayName = "aaa",
                 Method = pluginActiona
             };
-            //---------------Assert DsfComDllActivity----------------
+            //---------------Assert DsfDotNetDllActivity----------------
             Assert.IsNotNull(activity);
             //---------------Execute Test ----------------------
             var equals = activity.Equals(activity1);
@@ -226,7 +226,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
                 IsObject = true
             };
             var uniqueId = Guid.NewGuid().ToString();
-            var activity = new DsfComDllActivity()
+            var activity = new DsfDotNetDllActivity()
             {
                 UniqueID = uniqueId
                 ,
@@ -234,14 +234,14 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
                 ,
                 Method = pluginAction
             };
-            var activity1 = new DsfComDllActivity()
+            var activity1 = new DsfDotNetDllActivity()
             {
                 UniqueID = uniqueId
                 ,
                 DisplayName = "AAA",
                 Method = pluginActiona
             };
-            //---------------Assert DsfComDllActivity----------------
+            //---------------Assert DsfDotNetDllActivity----------------
             Assert.IsNotNull(activity);
             //---------------Execute Test ----------------------
             var equals = activity.Equals(activity1);
@@ -267,7 +267,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
                 OutputVariable = "[[b]]"
             };
             var uniqueId = Guid.NewGuid().ToString();
-            var activity = new DsfComDllActivity()
+            var activity = new DsfDotNetDllActivity()
             {
                 UniqueID = uniqueId
                 ,
@@ -275,14 +275,14 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
                 ,
                 Method = pluginAction
             };
-            var activity1 = new DsfComDllActivity()
+            var activity1 = new DsfDotNetDllActivity()
             {
                 UniqueID = uniqueId
                 ,
                 DisplayName = "AAA",
                 Method = pluginActiona
             };
-            //---------------Assert DsfComDllActivity----------------
+            //---------------Assert DsfDotNetDllActivity----------------
             Assert.IsNotNull(activity);
             //---------------Execute Test ----------------------
             var equals = activity.Equals(activity1);
@@ -308,7 +308,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
                 OutputVariable = "[[a]]"
             };
             var uniqueId = Guid.NewGuid().ToString();
-            var activity = new DsfComDllActivity()
+            var activity = new DsfDotNetDllActivity()
             {
                 UniqueID = uniqueId
                 ,
@@ -316,14 +316,14 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
                 ,
                 Method = pluginAction
             };
-            var activity1 = new DsfComDllActivity()
+            var activity1 = new DsfDotNetDllActivity()
             {
                 UniqueID = uniqueId
                 ,
                 DisplayName = "AAA",
                 Method = pluginActiona
             };
-            //---------------Assert DsfComDllActivity----------------
+            //---------------Assert DsfDotNetDllActivity----------------
             Assert.IsNotNull(activity);
             //---------------Execute Test ----------------------
             var equals = activity.Equals(activity1);
@@ -357,7 +357,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
                 }
             };
             var uniqueId = Guid.NewGuid().ToString();
-            var activity = new DsfComDllActivity()
+            var activity = new DsfDotNetDllActivity()
             {
                 UniqueID = uniqueId
                 ,
@@ -365,14 +365,14 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
                 ,
                 Method = pluginAction
             };
-            var activity1 = new DsfComDllActivity()
+            var activity1 = new DsfDotNetDllActivity()
             {
                 UniqueID = uniqueId
                 ,
                 DisplayName = "aaa",
                 Method = pluginActiona
             };
-            //---------------Assert DsfComDllActivity----------------
+            //---------------Assert DsfDotNetDllActivity----------------
             Assert.IsNotNull(activity);
             //---------------Execute Test ----------------------
             var equals = activity.Equals(activity1);
@@ -408,7 +408,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
                 }
             };
             var uniqueId = Guid.NewGuid().ToString();
-            var activity = new DsfComDllActivity()
+            var activity = new DsfDotNetDllActivity()
             {
                 UniqueID = uniqueId
                 ,
@@ -416,14 +416,14 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
                 ,
                 Method = pluginAction
             };
-            var activity1 = new DsfComDllActivity()
+            var activity1 = new DsfDotNetDllActivity()
             {
                 UniqueID = uniqueId
                 ,
                 DisplayName = "AAA",
                 Method = pluginActiona
             };
-            //---------------Assert DsfComDllActivity----------------
+            //---------------Assert DsfDotNetDllActivity----------------
             Assert.IsNotNull(activity);
             //---------------Execute Test ----------------------
             var equals = activity.Equals(activity1);
@@ -469,7 +469,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
                 Format = OutputFormats.ShapedXML
             };
             var uniqueId = Guid.NewGuid().ToString();
-            var activity = new DsfComDllActivity()
+            var activity = new DsfDotNetDllActivity()
             {
                 UniqueID = uniqueId
                 ,
@@ -478,7 +478,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
                 Method = pluginAction,
                 OutputDescription = description1
             };
-            var activity1 = new DsfComDllActivity()
+            var activity1 = new DsfDotNetDllActivity()
             {
                 UniqueID = uniqueId
                 ,
@@ -486,7 +486,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
                 Method = pluginActiona,
                 OutputDescription = description
             };
-            //---------------Assert DsfComDllActivity----------------
+            //---------------Assert DsfDotNetDllActivity----------------
             Assert.IsNotNull(activity);
             //---------------Execute Test ----------------------
             var equals = activity.Equals(activity1);
@@ -532,7 +532,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
                 Format = OutputFormats.ShapedXML
             };
             var uniqueId = Guid.NewGuid().ToString();
-            var activity = new DsfComDllActivity()
+            var activity = new DsfDotNetDllActivity()
             {
                 UniqueID = uniqueId
                 ,
@@ -541,7 +541,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
                 Method = pluginAction,
                 OutputDescription = description1
             };
-            var activity1 = new DsfComDllActivity()
+            var activity1 = new DsfDotNetDllActivity()
             {
                 UniqueID = uniqueId
                 ,
@@ -549,7 +549,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
                 Method = pluginActiona,
                 OutputDescription = description
             };
-            //---------------Assert DsfComDllActivity----------------
+            //---------------Assert DsfDotNetDllActivity----------------
             Assert.IsNotNull(activity);
             //---------------Execute Test ----------------------
             var equals = activity.Equals(activity1);
@@ -615,7 +615,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
                 }
             };
             var uniqueId = Guid.NewGuid().ToString();
-            var activity = new DsfComDllActivity()
+            var activity = new DsfDotNetDllActivity()
             {
                 UniqueID = uniqueId
                 ,
@@ -624,7 +624,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
                 Method = pluginAction,
                 OutputDescription = description1
             };
-            var activity1 = new DsfComDllActivity()
+            var activity1 = new DsfDotNetDllActivity()
             {
                 UniqueID = uniqueId
                 ,
@@ -632,7 +632,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
                 Method = pluginActiona,
                 OutputDescription = description
             };
-            //---------------Assert DsfComDllActivity----------------
+            //---------------Assert DsfDotNetDllActivity----------------
             Assert.IsNotNull(activity);
             //---------------Execute Test ----------------------
             var equals = activity.Equals(activity1);
@@ -698,7 +698,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
                 }
             };
             var uniqueId = Guid.NewGuid().ToString();
-            var activity = new DsfComDllActivity()
+            var activity = new DsfDotNetDllActivity()
             {
                 UniqueID = uniqueId
                 ,
@@ -707,7 +707,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
                 Method = pluginAction,
                 OutputDescription = description1
             };
-            var activity1 = new DsfComDllActivity()
+            var activity1 = new DsfDotNetDllActivity()
             {
                 UniqueID = uniqueId
                 ,
@@ -715,7 +715,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
                 Method = pluginActiona,
                 OutputDescription = description
             };
-            //---------------Assert DsfComDllActivity----------------
+            //---------------Assert DsfDotNetDllActivity----------------
             Assert.IsNotNull(activity);
             //---------------Execute Test ----------------------
             var equals = activity.Equals(activity1);
@@ -781,7 +781,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
                 }
             };
             var uniqueId = Guid.NewGuid().ToString();
-            var activity = new DsfComDllActivity()
+            var activity = new DsfDotNetDllActivity()
             {
                 UniqueID = uniqueId
                 ,
@@ -790,7 +790,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
                 Method = pluginAction,
                 OutputDescription = description1
             };
-            var activity1 = new DsfComDllActivity()
+            var activity1 = new DsfDotNetDllActivity()
             {
                 UniqueID = uniqueId
                 ,
@@ -798,7 +798,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
                 Method = pluginActiona,
                 OutputDescription = description
             };
-            //---------------Assert DsfComDllActivity----------------
+            //---------------Assert DsfDotNetDllActivity----------------
             Assert.IsNotNull(activity);
             //---------------Execute Test ----------------------
             var equals = activity.Equals(activity1);
@@ -864,7 +864,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
                 }
             };
             var uniqueId = Guid.NewGuid().ToString();
-            var activity = new DsfComDllActivity()
+            var activity = new DsfDotNetDllActivity()
             {
                 UniqueID = uniqueId
                 ,
@@ -873,7 +873,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
                 Method = pluginAction,
                 OutputDescription = description1
             };
-            var activity1 = new DsfComDllActivity()
+            var activity1 = new DsfDotNetDllActivity()
             {
                 UniqueID = uniqueId
                 ,
@@ -881,7 +881,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
                 Method = pluginActiona,
                 OutputDescription = description
             };
-            //---------------Assert DsfComDllActivity----------------
+            //---------------Assert DsfDotNetDllActivity----------------
             Assert.IsNotNull(activity);
             //---------------Execute Test ----------------------
             var equals = activity.Equals(activity1);
@@ -932,7 +932,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
                                 DisplayPath = "a",
                                 OutputExpression = "a",
                                 SampleData = "Data"
-                                
+
                             }
                         }
                     }
@@ -955,13 +955,13 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
                                 OutputExpression = "a",
                                 SampleData = "Data"
 
-                            }, 
+                            },
                         }
                     }
                 }
             };
             var uniqueId = Guid.NewGuid().ToString();
-            var activity = new DsfComDllActivity()
+            var activity = new DsfDotNetDllActivity()
             {
                 UniqueID = uniqueId
                 ,
@@ -970,7 +970,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
                 Method = pluginAction,
                 OutputDescription = description1
             };
-            var activity1 = new DsfComDllActivity()
+            var activity1 = new DsfDotNetDllActivity()
             {
                 UniqueID = uniqueId
                 ,
@@ -978,7 +978,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
                 Method = pluginActiona,
                 OutputDescription = description
             };
-            //---------------Assert DsfComDllActivity----------------
+            //---------------Assert DsfDotNetDllActivity----------------
             Assert.IsNotNull(activity);
             //---------------Execute Test ----------------------
             var equals = activity.Equals(activity1);
@@ -1043,7 +1043,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
                 }
             };
             var uniqueId = Guid.NewGuid().ToString();
-            var activity = new DsfComDllActivity()
+            var activity = new DsfDotNetDllActivity()
             {
                 UniqueID = uniqueId
                 ,
@@ -1052,7 +1052,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
                 Method = pluginAction,
                 OutputDescription = description1
             };
-            var activity1 = new DsfComDllActivity()
+            var activity1 = new DsfDotNetDllActivity()
             {
                 UniqueID = uniqueId
                 ,
@@ -1060,7 +1060,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
                 Method = pluginActiona,
                 OutputDescription = description
             };
-            //---------------Assert DsfComDllActivity----------------
+            //---------------Assert DsfDotNetDllActivity----------------
             Assert.IsNotNull(activity);
             //---------------Execute Test ----------------------
             var equals = activity.Equals(activity1);
@@ -1125,7 +1125,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
                 }
             };
             var uniqueId = Guid.NewGuid().ToString();
-            var activity = new DsfComDllActivity()
+            var activity = new DsfDotNetDllActivity()
             {
                 UniqueID = uniqueId
                 ,
@@ -1134,7 +1134,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
                 Method = pluginAction,
                 OutputDescription = description1
             };
-            var activity1 = new DsfComDllActivity()
+            var activity1 = new DsfDotNetDllActivity()
             {
                 UniqueID = uniqueId
                 ,
@@ -1142,7 +1142,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
                 Method = pluginActiona,
                 OutputDescription = description
             };
-            //---------------Assert DsfComDllActivity----------------
+            //---------------Assert DsfDotNetDllActivity----------------
             Assert.IsNotNull(activity);
             //---------------Execute Test ----------------------
             var equals = activity.Equals(activity1);
@@ -1188,7 +1188,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
                 AssemblyLocation = "a"
             };
             var uniqueId = Guid.NewGuid().ToString();
-            var activity = new DsfComDllActivity()
+            var activity = new DsfDotNetDllActivity()
             {
                 UniqueID = uniqueId
                 ,
@@ -1197,7 +1197,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
                 Method = pluginAction,
                 Namespace = namespaceItem
             };
-            var activity1 = new DsfComDllActivity()
+            var activity1 = new DsfDotNetDllActivity()
             {
                 UniqueID = uniqueId
                 ,
@@ -1205,7 +1205,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
                 Method = pluginActiona,
                 Namespace = namespaceItem1
             };
-            //---------------Assert DsfComDllActivity----------------
+            //---------------Assert DsfDotNetDllActivity----------------
             Assert.IsNotNull(activity);
             //---------------Execute Test ----------------------
             var equals = activity.Equals(activity1);
@@ -1253,7 +1253,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
                 AssemblyName = "a"
             };
             var uniqueId = Guid.NewGuid().ToString();
-            var activity = new DsfComDllActivity()
+            var activity = new DsfDotNetDllActivity()
             {
                 UniqueID = uniqueId
                 ,
@@ -1262,7 +1262,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
                 Method = pluginAction,
                 Namespace = namespaceItem
             };
-            var activity1 = new DsfComDllActivity()
+            var activity1 = new DsfDotNetDllActivity()
             {
                 UniqueID = uniqueId
                 ,
@@ -1270,7 +1270,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
                 Method = pluginActiona,
                 Namespace = namespaceItem1
             };
-            //---------------Assert DsfComDllActivity----------------
+            //---------------Assert DsfDotNetDllActivity----------------
             Assert.IsNotNull(activity);
             //---------------Execute Test ----------------------
             var equals = activity.Equals(activity1);
@@ -1319,7 +1319,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
                 FullName = "a"
             };
             var uniqueId = Guid.NewGuid().ToString();
-            var activity = new DsfComDllActivity()
+            var activity = new DsfDotNetDllActivity()
             {
                 UniqueID = uniqueId
                 ,
@@ -1328,7 +1328,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
                 Method = pluginAction,
                 Namespace = namespaceItem
             };
-            var activity1 = new DsfComDllActivity()
+            var activity1 = new DsfDotNetDllActivity()
             {
                 UniqueID = uniqueId
                 ,
@@ -1336,7 +1336,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
                 Method = pluginActiona,
                 Namespace = namespaceItem1
             };
-            //---------------Assert DsfComDllActivity----------------
+            //---------------Assert DsfDotNetDllActivity----------------
             Assert.IsNotNull(activity);
             //---------------Execute Test ----------------------
             var equals = activity.Equals(activity1);
@@ -1387,7 +1387,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
                 MethodName = "MyMethod"
             };
             var uniqueId = Guid.NewGuid().ToString();
-            var activity = new DsfComDllActivity()
+            var activity = new DsfDotNetDllActivity()
             {
                 UniqueID = uniqueId
                 ,
@@ -1396,7 +1396,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
                 Method = pluginAction,
                 Namespace = namespaceItem
             };
-            var activity1 = new DsfComDllActivity()
+            var activity1 = new DsfDotNetDllActivity()
             {
                 UniqueID = uniqueId
                 ,
@@ -1404,7 +1404,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
                 Method = pluginActiona,
                 Namespace = namespaceItem1
             };
-            //---------------Assert DsfComDllActivity----------------
+            //---------------Assert DsfDotNetDllActivity----------------
             Assert.IsNotNull(activity);
             //---------------Execute Test ----------------------
             var equals = activity.Equals(activity1);
@@ -1458,7 +1458,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
                 JsonObject = "{}"
             };
             var uniqueId = Guid.NewGuid().ToString();
-            var activity = new DsfComDllActivity()
+            var activity = new DsfDotNetDllActivity()
             {
                 UniqueID = uniqueId
                 ,
@@ -1467,7 +1467,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
                 Method = pluginAction,
                 Namespace = namespaceItem
             };
-            var activity1 = new DsfComDllActivity()
+            var activity1 = new DsfDotNetDllActivity()
             {
                 UniqueID = uniqueId
                 ,
@@ -1475,7 +1475,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
                 Method = pluginActiona,
                 Namespace = namespaceItem1
             };
-            //---------------Assert DsfComDllActivity----------------
+            //---------------Assert DsfDotNetDllActivity----------------
             Assert.IsNotNull(activity);
             //---------------Execute Test ----------------------
             var equals = activity.Equals(activity1);
@@ -1523,7 +1523,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
                 AssemblyName = "a"
             };
             var uniqueId = Guid.NewGuid().ToString();
-            var activity = new DsfComDllActivity()
+            var activity = new DsfDotNetDllActivity()
             {
                 UniqueID = uniqueId
                 ,
@@ -1532,7 +1532,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
                 Method = pluginAction,
                 Namespace = namespaceItem
             };
-            var activity1 = new DsfComDllActivity()
+            var activity1 = new DsfDotNetDllActivity()
             {
                 UniqueID = uniqueId
                 ,
@@ -1540,7 +1540,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
                 Method = pluginActiona,
                 Namespace = namespaceItem1
             };
-            //---------------Assert DsfComDllActivity----------------
+            //---------------Assert DsfDotNetDllActivity----------------
             Assert.IsNotNull(activity);
             //---------------Execute Test ----------------------
             var equals = activity.Equals(activity1);
@@ -1589,7 +1589,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
                 FullName = "a"
             };
             var uniqueId = Guid.NewGuid().ToString();
-            var activity = new DsfComDllActivity()
+            var activity = new DsfDotNetDllActivity()
             {
                 UniqueID = uniqueId
                 ,
@@ -1598,7 +1598,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
                 Method = pluginAction,
                 Namespace = namespaceItem
             };
-            var activity1 = new DsfComDllActivity()
+            var activity1 = new DsfDotNetDllActivity()
             {
                 UniqueID = uniqueId
                 ,
@@ -1606,7 +1606,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
                 Method = pluginActiona,
                 Namespace = namespaceItem1
             };
-            //---------------Assert DsfComDllActivity----------------
+            //---------------Assert DsfDotNetDllActivity----------------
             Assert.IsNotNull(activity);
             //---------------Execute Test ----------------------
             var equals = activity.Equals(activity1);
@@ -1657,7 +1657,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
                 MethodName = "MyMethod"
             };
             var uniqueId = Guid.NewGuid().ToString();
-            var activity = new DsfComDllActivity()
+            var activity = new DsfDotNetDllActivity()
             {
                 UniqueID = uniqueId
                 ,
@@ -1666,7 +1666,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
                 Method = pluginAction,
                 Namespace = namespaceItem
             };
-            var activity1 = new DsfComDllActivity()
+            var activity1 = new DsfDotNetDllActivity()
             {
                 UniqueID = uniqueId
                 ,
@@ -1674,7 +1674,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
                 Method = pluginActiona,
                 Namespace = namespaceItem1
             };
-            //---------------Assert DsfComDllActivity----------------
+            //---------------Assert DsfDotNetDllActivity----------------
             Assert.IsNotNull(activity);
             //---------------Execute Test ----------------------
             var equals = activity.Equals(activity1);
@@ -1728,7 +1728,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
                 JsonObject = "{}"
             };
             var uniqueId = Guid.NewGuid().ToString();
-            var activity = new DsfComDllActivity()
+            var activity = new DsfDotNetDllActivity()
             {
                 UniqueID = uniqueId
                 ,
@@ -1737,7 +1737,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
                 Method = pluginAction,
                 Namespace = namespaceItem
             };
-            var activity1 = new DsfComDllActivity()
+            var activity1 = new DsfDotNetDllActivity()
             {
                 UniqueID = uniqueId
                 ,
@@ -1745,13 +1745,12 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
                 Method = pluginActiona,
                 Namespace = namespaceItem1
             };
-            //---------------Assert DsfComDllActivity----------------
+            //---------------Assert DsfDotNetDllActivity----------------
             Assert.IsNotNull(activity);
             //---------------Execute Test ----------------------
             var equals = activity.Equals(activity1);
             //---------------Test Result -----------------------
             Assert.IsFalse(equals);
         }
-
     }
 }
