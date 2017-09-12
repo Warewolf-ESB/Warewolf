@@ -11,7 +11,9 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
+using Dev2.Common;
 using Dev2.Common.Interfaces.Core.Graph;
+using Dev2.Comparers;
 
 namespace Unlimited.Framework.Converters.Graph.Ouput
 {
@@ -41,5 +43,27 @@ namespace Unlimited.Framework.Converters.Graph.Ouput
         public List<IDataSourceShape> DataSourceShapes { get; set; }
 
         #endregion Properties
+
+        public bool Equals(IOutputDescription other)
+        {
+            var collectionEquals = CommonEqualityOps.CollectionEquals(DataSourceShapes, other.DataSourceShapes, new DataSourceShapeComparer());
+            return Format == other.Format && collectionEquals;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((OutputDescription)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return ((int)Format * 397) ^ (DataSourceShapes != null ? DataSourceShapes.GetHashCode() : 0);
+            }
+        }
     }
 }

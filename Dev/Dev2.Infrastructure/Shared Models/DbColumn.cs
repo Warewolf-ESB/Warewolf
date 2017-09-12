@@ -168,6 +168,7 @@ namespace Dev2.Runtime.ServiceModel.Data
                    && string.Equals(ColumnName, other.ColumnName)
                    && IsNullable == other.IsNullable
                    && DataType == other.DataType
+                   && MaxLength == other.MaxLength
                    && IsAutoIncrement == other.IsAutoIncrement;
         }
 
