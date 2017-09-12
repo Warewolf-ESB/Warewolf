@@ -8,11 +8,12 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
 using System.Collections.Generic;
 
 namespace Dev2.Common.Interfaces.Core.Graph
 {
-    public interface IDataSourceShape
+    public interface IDataSourceShape:IEquatable<IDataSourceShape>
     {
         List<IPath> Paths { get; set; }
     }
