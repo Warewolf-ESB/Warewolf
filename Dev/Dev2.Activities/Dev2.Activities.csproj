@@ -181,6 +181,9 @@
     <Compile Include="Comparer\CaseConvertToComparer.cs" />
     <Compile Include="Comparer\DataColumnMappingComparer.cs" />
     <Compile Include="Comparer\DelegateArgumentComparer.cs" />
+    <Compile Include="Comparer\EnhancedPluginComparer.cs" />
+    <Compile Include="Comparer\PluginActionComparer.cs" />
+    <Compile Include="Comparer\PluginConstructorComparer.cs" />
     <Compile Include="Comparer\SimplePluginComparer.cs" />
     <Compile Include="Comparer\ServiceInputComparer.cs" />
     <Compile Include="Comparer\SharepointReadListToComparer.cs" />

@@ -3,7 +3,7 @@ using Dev2.Common.Interfaces;
 
 namespace Dev2.Comparer
 {
-    public class SharepointReadListToComparer : IEqualityComparer<ISharepointReadListTo>
+    internal class SharepointReadListToComparer : IEqualityComparer<ISharepointReadListTo>
     {
         public bool Equals(ISharepointReadListTo x, ISharepointReadListTo y)
         {

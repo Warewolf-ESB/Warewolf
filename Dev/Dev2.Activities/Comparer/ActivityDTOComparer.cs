@@ -3,7 +3,7 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Comparer
 {
-    public class ActivityDtoComparer : IEqualityComparer<ActivityDTO>
+    internal class ActivityDtoComparer : IEqualityComparer<ActivityDTO>
     {
         public bool Equals(ActivityDTO x, ActivityDTO y)
         {

@@ -3,7 +3,7 @@ using Dev2.Common.Interfaces.DB;
 
 namespace Dev2.Comparer
 {
-    public class ServiceInputComparer : IEqualityComparer<IServiceInput>
+    internal class ServiceInputComparer : IEqualityComparer<IServiceInput>
     {
         public bool Equals(IServiceInput input1, IServiceInput input2)
         {
