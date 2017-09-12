@@ -4,8 +4,10 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using Dev2.Activities.Debug;
+using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
+using Dev2.Comparer;
 using Dev2.Data.Decisions.Operations;
 using Dev2.Data.SystemTemplates.Models;
 using Dev2.Data.TO;
@@ -17,21 +19,16 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 
-
-
-
 namespace Dev2.Activities
 {
     public class DsfDecision : DsfActivityAbstract<string>,IEquatable<DsfDecision>
     {
-        
         public IEnumerable<IDev2Activity> TrueArm { get; set; }
 
         public IEnumerable<IDev2Activity> FalseArm { get; set; }
         public Dev2DecisionStack Conditions { get; set; }
         
         readonly DsfFlowDecisionActivity _inner;
-        #region Overrides of DsfNativeActivity<string>
         public DsfDecision(DsfFlowDecisionActivity inner) : this()
         {
             _inner = inner;
@@ -74,7 +71,6 @@ namespace Dev2.Activities
             return new Dev2Decision { Cols1 = col1, Cols2 = col2, Cols3 = col3, EvaluationFn = decision.EvaluationFn };
         }
 
-        #region Overrides of DsfNativeActivity<string>
         private IDev2Activity ExecuteDecision(IDSFDataObject dataObject)
         {
             InitializeDebug(dataObject);
@@ -168,8 +164,6 @@ namespace Dev2.Activities
             return null;
         }
 
-        #endregion
-
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
             ErrorResultTO allErrors = new ErrorResultTO();
@@ -201,14 +195,10 @@ namespace Dev2.Activities
             }            
         }
 
-        #region Overrides of DsfNativeActivity<string>
-
         public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
         {
             return _debugInputs;
         }
-
-        #endregion
 
         List<DebugItem> CreateDebugInputs(IExecutionEnvironment env)
         {
@@ -270,14 +260,10 @@ namespace Dev2.Activities
             return val;
         }
 
-        #region Overrides of DsfNativeActivity<string>
-
         public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env, int update)
         {
             return _debugOutputs;
         }
-
-        #endregion
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public new string Result { get; set; }
@@ -374,7 +360,6 @@ namespace Dev2.Activities
                 }
             }
         }
-        #endregion
 
         public override List<string> GetOutputs()
         {
@@ -387,7 +372,15 @@ namespace Dev2.Activities
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            return base.Equals(other) && Equals(_inner, other._inner) && Equals(TrueArm, other.TrueArm) && Equals(FalseArm, other.FalseArm) && Equals(Conditions, other.Conditions) && string.Equals(Result, other.Result) && And == other.And;
+            var isTrueArmTheSame = CommonEqualityOps.CollectionEquals(TrueArm, TrueArm, new Dev2ActivityComparer());
+            var isFalseArmArmTheSame = CommonEqualityOps.CollectionEquals(FalseArm, FalseArm, new Dev2ActivityComparer());
+            var areConditionsEqual = CommonEqualityOps.AreObjectsEqual(Conditions, other.Conditions);
+            return base.Equals(other)
+                && isTrueArmTheSame
+                && isFalseArmArmTheSame
+                && areConditionsEqual
+                && string.Equals(Result, other.Result)
+                && And == other.And;
         }
 
         public override bool Equals(object obj)
@@ -432,8 +425,6 @@ namespace Dev2.Activities
         }
 
         public string NameOfArmToReturn { get; set; }
-
-        #region Overrides of DsfNativeActivity<string>
 
         protected override void OnExecute(NativeActivityContext context)
         {
@@ -505,6 +496,5 @@ namespace Dev2.Activities
             return new List<string>();
         }
 
-        #endregion
     }
 }

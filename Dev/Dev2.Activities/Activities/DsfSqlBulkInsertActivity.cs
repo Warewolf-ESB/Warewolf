@@ -740,7 +740,7 @@ namespace Dev2.Activities
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            var isSourceEqual = CommonEqualityOps.IsSourceEqual<IResource>(Database, other.Database);
+            var isSourceEqual = CommonEqualityOps.AreObjectsEqual<IResource>(Database, other.Database);
             var collectionEquals = CommonEqualityOps.CollectionEquals(InputMappings, other.InputMappings, new DataColumnMappingComparer());
             return base.Equals(other)
                 && collectionEquals

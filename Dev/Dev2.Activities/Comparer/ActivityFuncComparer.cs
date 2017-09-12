@@ -8,10 +8,7 @@ namespace Dev2.Comparer
         public bool Equals(ActivityFunc<string, bool> x, ActivityFunc<string, bool> y)
         {
             if (x == null && y == null) return true;
-            if (x == null || y == null)
-            {
-                return false;
-            }
+            if (x == null || y == null) return false;
             IEqualityComparer<DelegateArgument> argumentComparer = new DelegateArgumentComparer();
             var argumentsAreEqual = argumentComparer.Equals(x.Argument, y.Argument);
             var resultAreEqual = argumentComparer.Equals(x.Result, y.Result);
