@@ -176,9 +176,17 @@
     </Compile>
     <Compile Include="Comparer\ActivityDTOComparer.cs" />
     <Compile Include="Comparer\ActivityDtoObjectComparer.cs" />
-    <Compile Include="CommonEqualityOps.cs" />
     <Compile Include="Comparer\ActivityFuncComparer.cs" />
+    <Compile Include="Comparer\BaseConvertTOComparer.cs" />
+    <Compile Include="Comparer\CaseConvertToComparer.cs" />
+    <Compile Include="Comparer\NameValueComparer.cs" />
+    <Compile Include="Comparer\ServiceOutputMappingComparer.cs" />
+    <Compile Include="Comparer\ServiceInputComparer.cs" />
+    <Compile Include="Comparer\DataColumnMappingComparer.cs" />
     <Compile Include="Comparer\DelegateArgumentComparer.cs" />
+    <Compile Include="Comparer\SimplePluginComparer.cs" />
+    <Compile Include="Comparer\SharepointReadListToComparer.cs" />
+    <Compile Include="Comparer\SharepointSearchToComparer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" Condition="!Exists('..\AssemblyCommonInfo.cs')" />
     <None Include="..\Run Tests.ps1">
       <Link>Run Tests.ps1</Link>

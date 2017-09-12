@@ -328,6 +328,7 @@
     <Compile Include="IServiceTestModelTO.cs" />
     <Compile Include="IServiceTestStep.cs" />
     <Compile Include="ISharepointServerSource.cs" />
+    <Compile Include="ISimpePlugin.cs" />
     <Compile Include="ISplashView.cs" />
     <Compile Include="IStudioUpdateManager.cs" />
     <Compile Include="ISuggestionProvider.cs" />

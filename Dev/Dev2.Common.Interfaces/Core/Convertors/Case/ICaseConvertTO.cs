@@ -8,12 +8,13 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
 using System.Collections.Generic;
 using Dev2.Common.Interfaces.Interfaces;
 
 namespace Dev2.Common.Interfaces.Core.Convertors.Case
 {
-    public interface ICaseConvertTO : IDev2TOFn
+    public interface ICaseConvertTO : IDev2TOFn, IEquatable<ICaseConvertTO>
     {
         string StringToConvert { get; set; }
         string ConvertType { get; set; }

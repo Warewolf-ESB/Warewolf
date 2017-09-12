@@ -14,6 +14,7 @@ using Dev2.Runtime.ServiceModel.Data;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
+using Dev2.Comparer;
 
 namespace Dev2.Activities
 {
@@ -157,7 +158,12 @@ namespace Dev2.Activities
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            return base.Equals(other) && _method == other._method && Equals(Headers, other.Headers) && string.Equals(QueryString, other.QueryString) && Equals(OutputDescription, other.OutputDescription);
+            var headersEqual = CommonEqualityOps.CollectionEquals(Headers, other.Headers, new NameValueComparer());
+            return base.Equals(other) 
+                && _method == other._method 
+                && headersEqual
+                && string.Equals(QueryString, other.QueryString) 
+                && Equals(OutputDescription, other.OutputDescription);
         }
 
         public override bool Equals(object obj)

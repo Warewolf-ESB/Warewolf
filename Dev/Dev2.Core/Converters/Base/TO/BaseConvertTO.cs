@@ -11,6 +11,8 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
+using Dev2.Common;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Validation;
 using Dev2.Common.Interfaces.Interfaces;
@@ -206,7 +208,15 @@ namespace Dev2
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            return string.Equals(FromExpression, other.FromExpression) && string.Equals(FromType, other.FromType) && string.Equals(ToExpression, other.ToExpression) && string.Equals(ToType, other.ToType) && Equals(Expressions, other.Expressions) && string.Equals(WatermarkTextVariable, other.WatermarkTextVariable) && string.Equals(WatermarkText, other.WatermarkText) && Inserted == other.Inserted && IndexNumber == other.IndexNumber && string.Equals(Error, other.Error) && Equals(Errors, other.Errors);
+            var collectionEquals = CommonEqualityOps.CollectionEquals(Expressions, other.Expressions, StringComparer.Ordinal);
+            return string.Equals(FromExpression, other.FromExpression)
+                   && string.Equals(FromType, other.FromType)
+                   && string.Equals(ToExpression, other.ToExpression)
+                   && string.Equals(ToType, other.ToType)
+                   && collectionEquals
+                   && Inserted == other.Inserted
+                   && IndexNumber == other.IndexNumber
+                   && string.Equals(Error, other.Error);
         }
 
         public override bool Equals(object obj)
@@ -235,5 +245,7 @@ namespace Dev2
                 return hashCode;
             }
         }
+
+       
     }
 }

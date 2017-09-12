@@ -3,6 +3,8 @@ using System.Activities;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using Dev2.Common;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Data;
@@ -215,7 +217,12 @@ namespace Dev2.Activities.Sharepoint
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            return base.Equals(other) && string.Equals(ServerInputPath, other.ServerInputPath) && string.Equals(LocalInputPath, other.LocalInputPath) && Equals(SharepointSource, other.SharepointSource) && SharepointServerResourceId.Equals(other.SharepointServerResourceId);
+            var isSourceEqual = CommonEqualityOps.IsSourceEqual<IResource>(SharepointSource, other.SharepointSource);
+            return base.Equals(other)
+                && string.Equals(ServerInputPath, other.ServerInputPath) 
+                && string.Equals(LocalInputPath, other.LocalInputPath)
+                && isSourceEqual
+                && SharepointServerResourceId.Equals(other.SharepointServerResourceId);
         }
 
         public override bool Equals(object obj)

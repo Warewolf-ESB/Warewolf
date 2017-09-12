@@ -173,6 +173,25 @@
       <Link>Run Tests.ps1</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <Compile Include="ActivityComparerTests\Activity\DsfActivityComparerTest.cs" />
+    <Compile Include="ActivityComparerTests\BaseConvert\BaseConvertTOEqualityTests.cs" />
+    <Compile Include="ActivityComparerTests\CaseConvert\DsfCaseConvertActivityEquatableTests.cs" />
+    <Compile Include="ActivityComparerTests\CaseConvert\CaseConvertTOEqualityTests.cs" />
+    <Compile Include="ActivityComparerTests\Database\DbColumnEqualityTests.cs" />
+    <Compile Include="ActivityComparerTests\Database\DsfSqlBulkInsertActivityEqualityTests.cs" />
+    <Compile Include="ActivityComparerTests\Calculate\DsfAggregateCalculateActivityEquatableTests.cs" />
+    <Compile Include="ActivityComparerTests\DotNet Dll\DsfDotNetDllActivityComparerTests.cs" />
+    <Compile Include="ActivityComparerTests\BaseConvert\DsfBaseConvertActivityEquatableTests.cs" />
+    <Compile Include="ActivityComparerTests\Calculate\DsfCalculateActivityEquatableTests.cs" />
+    <Compile Include="ActivityComparerTests\ComDll\DsfComDllActivityEqualityTests.cs" />
+    <Compile Include="ActivityComparerTests\Sharepoint\SharepointDeleteFileActivityEqualityTests.cs" />
+    <Compile Include="ActivityComparerTests\Sharepoint\SharepointDeleteListItemActivityEqualityTests.cs" />
+    <Compile Include="ActivityComparerTests\Sharepoint\SharepointFileDownLoadActivityEqualityTests.cs" />
+    <Compile Include="ActivityComparerTests\Sharepoint\SharepointFileUploadActivityEqualityTests.cs" />
+    <Compile Include="ActivityComparerTests\Sharepoint\SharepointMoveFileActivityEqualityTests.cs" />
+    <Compile Include="ActivityComparerTests\Sharepoint\SharepointReadFolderItemActivityEqualityTests.cs" />
+    <Compile Include="ActivityComparerTests\Sharepoint\SharepointReadListActivityEqualityTests.cs" />
+    <Compile Include="ActivityComparerTests\Sharepoint\SharepointReadListToTests.cs" />
     <Compile Include="ActivityComparerTests\DropBox2016\DsfDropBoxDeleteActivityComparerTests.cs" />
     <Compile Include="ActivityComparerTests\DropBox2016\DsfDropBoxDownloadActivityComparerTests.cs" />
     <Compile Include="ActivityComparerTests\DropBox2016\DsfDropboxFileListActivityComparerTests.cs" />
@@ -180,7 +199,7 @@
     <Compile Include="ActivityComparerTests\Exchange\DsfExchangeEmailActivityComparerTests.cs" />
     <Compile Include="ActivityComparerTests\ObjectAssign\AssignObjectDtoTests.cs" />
     <Compile Include="ActivityComparerTests\ObjectAssign\MultiAssignComparerTests.cs" />
-    <Compile Include="ActivityComparerTests\Assigns\ActivityDTOTests.cs" />
+    <Compile Include="ActivityComparerTests\Assigns\ActivityDtoEqualityTests.cs" />
     <Compile Include="ActivityComparerTests\Assigns\MultiAssignComparerTests.cs" />
     <Compile Include="ActivityComparerTests\PathOperations\DsfFileReadComparerTests.cs" />
     <Compile Include="ActivityComparerTests\PathOperations\DsfFileWriteComparerTests.cs" />
@@ -188,7 +207,15 @@
     <Compile Include="ActivityComparerTests\PathOperations\DsfPathCreateComparerTests.cs" />
     <Compile Include="ActivityComparerTests\PathOperations\DsfUnZipComparerTests.cs" />
     <Compile Include="ActivityComparerTests\PathOperations\DsfZipComparerTests.cs" />
-    <Compile Include="ActivityComparerTests\XPath\DsfDsfXPathActivityComparerTests.cs" />
+    <Compile Include="ActivityComparerTests\WebTools\DsfWebGetWithTimeoutActivityComparerTests.cs" />
+    <Compile Include="ActivityComparerTests\WebTools\DsfWebGetRequestActivityComparerTests.cs" />
+    <Compile Include="ActivityComparerTests\WebTools\DsfWebGetActivityComparerTests.cs" />
+    <Compile Include="ActivityComparerTests\WebTools\DsfWebDeleteActivityComparerTests.cs" />
+    <Compile Include="ActivityComparerTests\WebTools\DsfWebPostActivityComparerTests.cs" />
+    <Compile Include="ActivityComparerTests\WebTools\DsfWebPutActivityComparerTests.cs" />
+    <Compile Include="ActivityComparerTests\WebTools\DsfWebServiceActivityComparerTests.cs" />
+    <Compile Include="ActivityComparerTests\XPath\DsfXPathActivityComparerTests.cs" />
+    <Compile Include="ActivityComparerTests\Sharepoint\SharepointUpdateListItemActivityEqualityTests.cs" />
     <Compile Include="ActivityComparerTests\RabbitMQ\DsfConsumeRabbitMqActivityComparerTests.cs" />
     <Compile Include="ActivityComparerTests\RabbitMQ\DsfPublishRabbitMqActivityComparerTests.cs" />
     <Compile Include="ActivityComparerTests\RecordsetOld\DsfCountRecordsetActivityTests.cs" />
@@ -197,6 +224,9 @@
     <Compile Include="ActivityComparerTests\Scripting\DsfRubyActivityTests.cs" />
     <Compile Include="ActivityComparerTests\Scripting\DsfScriptingActivityTests.cs" />
     <Compile Include="ActivityComparerTests\SelectAndApply\DsfSelectAndApplyActivityComparerTests.cs" />
+    <Compile Include="ActivityComparerTests\Sharepoint\SharepointCopyFileActivityEqualityTests.cs" />
+    <Compile Include="ActivityComparerTests\Sharepoint\SharepointCreateListItemActivityEqualityTests.cs" />
+    <Compile Include="ActivityComparerTests\Sharepoint\SharepointSearchToEqualityTests.cs" />
     <Compile Include="ActivityTests\AbstractMultipleFilesActivityTests.cs" />
     <Compile Include="ActivityTests\AggregateCalculateActivityTest.cs" />
     <Compile Include="ActivityTests\BaseActivityTests.cs" />
