@@ -175,6 +175,7 @@
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
     <Compile Include="Comparer\ActivityDTOComparer.cs" />
+    <Compile Include="Comparer\Dev2ActivityComparer.cs" />
     <Compile Include="Comparer\ActivityDtoObjectComparer.cs" />
     <Compile Include="Comparer\ActivityFuncComparer.cs" />
     <Compile Include="Comparer\BaseConvertTOComparer.cs" />
