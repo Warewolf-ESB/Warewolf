@@ -159,14 +159,15 @@ if ($AutoVersion.IsPresent -or $CustomVersion -ne "") {
     $CSharpVersionFile = "$PSScriptRoot\Dev\AssemblyCommonInfo.cs"
     Write-Host Writing C Sharp version file to `"$CSharpVersionFile`" as...
     $Line1 = "using System.Reflection;"
-    $Line2 = "[assembly: AssemblyCompany(""Warewolf"")]"
-    $Line3 = "[assembly: AssemblyProduct(""Warewolf"")]"
-    $Line4 = "[assembly: AssemblyCopyright(""Copyright Warewolf " + (Get-Date).year + """)]"
-    $Line5 = "[assembly: AssemblyVersion(""" + $FullVersionString + """)]"
-    $Line6 = "[assembly: AssemblyInformationalVersion(""" + $GitCommitTime + " " + $GitCommitID + " " + $GitBranchName + """)]"
-    $Line7 = "[assembly: InternalsVisibleTo(""Dev2.Activities.Designers.Tests"")]"
-    $Line8 = "[assembly: InternalsVisibleTo(""Warewolf.Studio.ViewModels.Tests"")]"
-    $Line9 = "[assembly: InternalsVisibleTo(""Dev2.Runtime.Tests"")]"
+    $Line2 = "using System.Runtime.CompilerServices;"
+    $Line3 = "[assembly: AssemblyCompany(""Warewolf"")]"
+    $Line4 = "[assembly: AssemblyProduct(""Warewolf"")]"
+    $Line5 = "[assembly: AssemblyCopyright(""Copyright Warewolf " + (Get-Date).year + """)]"
+    $Line6 = "[assembly: AssemblyVersion(""" + $FullVersionString + """)]"
+    $Line7 = "[assembly: AssemblyInformationalVersion(""" + $GitCommitTime + " " + $GitCommitID + " " + $GitBranchName + """)]"
+    $Line8 = "[assembly: InternalsVisibleTo(""Dev2.Activities.Designers.Tests"")]"
+    $Line9 = "[assembly: InternalsVisibleTo(""Warewolf.Studio.ViewModels.Tests"")]"
+    $Line10 = "[assembly: InternalsVisibleTo(""Dev2.Runtime.Tests"")]"
     Write-Host $Line1
     $Line1 | Out-File -LiteralPath $CSharpVersionFile -Encoding utf8 -Force
     Write-Host $Line2
@@ -185,6 +186,8 @@ if ($AutoVersion.IsPresent -or $CustomVersion -ne "") {
     $Line8 | Out-File -LiteralPath $CSharpVersionFile -Encoding utf8 -Append
     Write-Host $Line9
     $Line9 | Out-File -LiteralPath $CSharpVersionFile -Encoding utf8 -Append
+    Write-Host $Line10
+    $Line10 | Out-File -LiteralPath $CSharpVersionFile -Encoding utf8 -Append
     Write-Host C Sharp version file written to `"$CSharpVersionFile`".
 
     $FSharpVersionFile = "$PSScriptRoot\Dev\AssemblyCommonInfo.fs"
