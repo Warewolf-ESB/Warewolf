@@ -1,17 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.Graph;
-using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Toolbox;
+using Dev2.Comparer;
 using Dev2.Data.TO;
 using Dev2.Data.Util;
 using Dev2.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin;
-using Microsoft.JScript;
 using Unlimited.Framework.Converters.Graph;
 using Warewolf.Core;
 using Warewolf.Resource.Errors;
@@ -129,56 +127,9 @@ namespace Dev2.Activities
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            var equalityComparer = EqualityFactory.GetEqualityComparer<DsfComDllActivity>(
-                (p1, p2) =>
-                {
-                    bool methodsAreEqual = (p1.Method == null && p2.Method == null);
-
-                    if (p1.Method == null || p2.Method == null)
-                    {
-                        methodsAreEqual = false;
-                    }
-                    else
-                    {
-                        if (p1.Method != null && p2.Method != null)
-                        {
-                            methodsAreEqual = string.Equals(p1.Method.Method, p2.Method.Method)
-                                              && string.Equals(p1.Method.Dev2ReturnType, p2.Method.Dev2ReturnType)
-                                              && string.Equals(p1.Method.ErrorMessage, p2.Method.ErrorMessage)
-                                              && string.Equals(p1.Method.FullName, p2.Method.FullName)
-                                              && string.Equals(p1.Method.MethodResult, p2.Method.MethodResult)
-                                              && string.Equals(p1.Method.OutputVariable, p2.Method.OutputVariable)
-                                              && p1.Method.ReturnType == p2.Method.ReturnType
-                                              && Equals(p1.Method.HasError, p2.Method.HasError)
-                                              && Equals(p1.Method.IsObject, p2.Method.IsObject)
-                                              && Equals(p1.Method.IsProperty, p2.Method.IsProperty)
-                                              && Equals(p1.Method.IsVoid, p2.Method.IsVoid)
-                                              && Equals(p1.Method.ID, p2.Method.ID)
-                                              && Equals(p1.Namespace.AssemblyLocation, p2.Namespace.AssemblyLocation)
-                                              && CommonEqualityOps.CollectionEquals(p1.Method.Inputs, p2.Method.Inputs, EqualityFactory.GetEqualityComparer<IServiceInput>(
-                                                  (input1, input2) =>
-                                                  {
-                                                      return string.Equals(input1.ActionName, input2.ActionName)
-                                                             && string.Equals(input1.ActionName, input2.ActionName);
-                                                  }, input => 1))
-                                ;
-                        }
-                    }
-                    return methodsAreEqual;
-                },
-                p =>
-                {
-                    int hashCode = base.GetHashCode();
-                    hashCode = (hashCode * 397) ^ (_result?.GetHashCode() ?? 0);
-                    hashCode = (hashCode * 397) ^ (Method?.GetHashCode() ?? 0);
-                    hashCode = (hashCode * 397) ^ (Namespace?.GetHashCode() ?? 0);
-                    hashCode = (hashCode * 397) ^ (OutputDescription?.GetHashCode() ?? 0);
-                    return hashCode;
-                });
-
-            var @equals = equalityComparer.Equals(this, other);
-
-            return base.Equals(other) && @equals;
+            var comparer = new DsfComDllActivityComparer();
+            var equals = comparer.Equals(this, other);
+            return base.Equals(other) && equals;
         }
 
         public override bool Equals(object obj)

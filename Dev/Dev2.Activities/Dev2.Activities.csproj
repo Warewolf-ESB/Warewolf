@@ -181,6 +181,8 @@
     <Compile Include="Comparer\CaseConvertToComparer.cs" />
     <Compile Include="Comparer\DataColumnMappingComparer.cs" />
     <Compile Include="Comparer\DelegateArgumentComparer.cs" />
+    <Compile Include="Comparer\DsfComDllActivityComparer.cs" />
+    <Compile Include="Comparer\ServiceInputComparer.cs" />
     <Compile Include="Comparer\SharepointReadListToComparer.cs" />
     <Compile Include="Comparer\SharepointSearchToComparer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" Condition="!Exists('..\AssemblyCommonInfo.cs')" />
