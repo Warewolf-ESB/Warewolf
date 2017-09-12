@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Dev2.Comparer
 {
-    public class ActivityFuncComparer : IEqualityComparer<ActivityFunc<string, bool>>
+    internal class ActivityFuncComparer : IEqualityComparer<ActivityFunc<string, bool>>
     {
         public bool Equals(ActivityFunc<string, bool> x, ActivityFunc<string, bool> y)
         {

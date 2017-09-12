@@ -9,6 +9,7 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
+using Dev2.Comparer;
 using Dev2.Data.TO;
 using Dev2.Data.Util;
 using Dev2.Diagnostics;
@@ -27,10 +28,10 @@ using Warewolf.Storage.Interfaces;
 namespace Dev2.Activities
 {
     [ToolDescriptorInfo("DotNetDll", "DotNet DLL", ToolType.Native, "6AEB1038-6332-46F9-8BDD-641DE4EA038D", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Resources", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Resources_Dot_net_DLL")]
-    public class DsfEnhancedDotNetDllActivity : DsfMethodBasedActivity,IEquatable<DsfEnhancedDotNetDllActivity>
+    public class DsfEnhancedDotNetDllActivity : DsfMethodBasedActivity, IEquatable<DsfEnhancedDotNetDllActivity>, IEnhancedPlugin
     {
         private List<IDebugState> _childStatesToDispatch;
-        
+
         public INamespaceItem Namespace { get; set; }
         public IPluginConstructor Constructor { get; set; }
         public List<IPluginAction> MethodsToRun { get; set; }
@@ -154,7 +155,7 @@ namespace Dev2.Activities
                         }
                         if (dev2MethodInfo.HasError) break;
                         index++;
-                     
+
                     }
                 }
             }
@@ -274,8 +275,7 @@ namespace Dev2.Activities
         {
             var start = DateTime.Now;
             pluginExecutionDto.ObjectString = ObjectResult;
-            string objString;
-            IDev2MethodInfo result = PluginServiceExecutionFactory.InvokePlugin(appDomain, pluginExecutionDto, dev2MethodInfo, out objString);
+            IDev2MethodInfo result = PluginServiceExecutionFactory.InvokePlugin(appDomain, pluginExecutionDto, dev2MethodInfo, out var objString);
 
             pluginExecutionDto.ObjectString = objString;
             ObjectResult = objString;
@@ -656,7 +656,9 @@ namespace Dev2.Activities
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            return base.Equals(other) && Equals(Namespace, other.Namespace) && Equals(Constructor, other.Constructor) && Equals(MethodsToRun, other.MethodsToRun) && Equals(ConstructorInputs, other.ConstructorInputs);
+            var comparer = new EnhancedPluginComparer();
+            var @equals = comparer.Equals(this, other);
+            return base.Equals(other) && @equals;
         }
 
         public override bool Equals(object obj)
@@ -664,7 +666,7 @@ namespace Dev2.Activities
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
             if (obj.GetType() != this.GetType()) return false;
-            return Equals((DsfEnhancedDotNetDllActivity) obj);
+            return Equals((DsfEnhancedDotNetDllActivity)obj);
         }
 
         public override int GetHashCode()

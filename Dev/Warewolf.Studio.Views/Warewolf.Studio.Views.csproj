@@ -141,6 +141,8 @@
     <Reference Include="System.Activities.Presentation" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceModel.Activities" />
     <Reference Include="System.Windows" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -214,9 +216,6 @@
     </Compile>
     <Compile Include="MenuView.xaml.cs">
       <DependentUpon>MenuView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="MergeWorkflowView.xaml.cs">
-      <DependentUpon>MergeWorkflowView.xaml</DependentUpon>
     </Compile>
     <Compile Include="MessageBoxView.xaml.cs">
       <DependentUpon>MessageBoxView.xaml</DependentUpon>
@@ -321,10 +320,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="MenuView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="MergeWorkflowView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

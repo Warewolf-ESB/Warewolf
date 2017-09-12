@@ -32,7 +32,8 @@ using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.ViewModels;
 using Dev2.Workspaces;
 using Infragistics.Windows.DockManager;
-using Warewolf.Studio.Views;
+using Dev2.ViewModels.Merge;
+using Dev2.Views.Merge;
 
 namespace Dev2.Studio.Views
 {
@@ -201,7 +202,10 @@ namespace Dev2.Studio.Views
             if (e.Key == Key.Home && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
             {
                 var window = new Window();
-                window.Content = new MergeWorkflowView();
+                var vm = new MergeWorkflowViewModel();
+                var content = new MergeWorkflowView();
+                content.DataContext = vm;
+                window.Content = content;
                 window.Show();
             }
             if (e.Key == Key.F1)
