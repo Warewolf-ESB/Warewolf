@@ -166,6 +166,7 @@ if ($AutoVersion.IsPresent -or $CustomVersion -ne "") {
     $Line6 = "[assembly: AssemblyInformationalVersion(""" + $GitCommitTime + " " + $GitCommitID + " " + $GitBranchName + """)]"
     $Line7 = "[assembly: InternalsVisibleTo(""Dev2.Activities.Designers.Tests"")]"
     $Line8 = "[assembly: InternalsVisibleTo(""Warewolf.Studio.ViewModels.Tests"")]"
+    $Line8 = "[assembly: InternalsVisibleTo(""Dev2.Runtime.Tests"")]"
     Write-Host $Line1
     $Line1 | Out-File -LiteralPath $CSharpVersionFile -Encoding utf8 -Force
     Write-Host $Line2
