@@ -9,6 +9,7 @@ using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
+using Dev2.Comparer;
 using Dev2.Data;
 using Dev2.Data.ServiceModel;
 using Dev2.Data.TO;
@@ -28,7 +29,7 @@ using Warewolf.Storage.Interfaces;
 namespace Dev2.Activities.Sharepoint
 {
     [ToolDescriptorInfo("SharepointLogo", "Create List Item(s)", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Sharepoint", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_SharePoint_Create_List_Item")]
-    public class SharepointCreateListItemActivity : DsfActivityAbstract<string>,IEquatable<SharepointCreateListItemActivity>
+    public class SharepointCreateListItemActivity : DsfActivityAbstract<string>, IEquatable<SharepointCreateListItemActivity>
     {
         readonly SharepointUtils _sharepointUtils;
 
@@ -40,7 +41,7 @@ namespace Dev2.Activities.Sharepoint
         }
 
         [FindMissing]
-        
+
         public new string Result { get; set; }
         /// <summary>
         /// When overridden runs the activity's execution logic 
@@ -49,7 +50,7 @@ namespace Dev2.Activities.Sharepoint
         protected override void OnExecute(NativeActivityContext context)
         {
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
-            ExecuteTool(dataObject,0);
+            ExecuteTool(dataObject, 0);
         }
 
 
@@ -105,7 +106,7 @@ namespace Dev2.Activities.Sharepoint
                     var env = dataObject.Environment;
                     if (dataObject.IsDebugMode())
                     {
-                        AddInputDebug(env,update);
+                        AddInputDebug(env, update);
                     }
                     var sharepointHelper = sharepointSource.CreateSharepointHelper();
                     var fields = sharepointHelper.LoadFieldsForList(SharepointList, true);
@@ -113,20 +114,20 @@ namespace Dev2.Activities.Sharepoint
                     {
                         var list = sharepointHelper.LoadFieldsForList(SharepointList, ctx, true);
                         var iteratorList = new WarewolfListIterator();
-                        foreach(var sharepointReadListTo in sharepointReadListTos)
+                        foreach (var sharepointReadListTo in sharepointReadListTos)
                         {
-                            var warewolfIterator = new WarewolfIterator(env.Eval(sharepointReadListTo.VariableName,update));
+                            var warewolfIterator = new WarewolfIterator(env.Eval(sharepointReadListTo.VariableName, update));
                             iteratorList.AddVariableToIterateOn(warewolfIterator);
-                            listOfIterators.Add(sharepointReadListTo.FieldName,warewolfIterator);
+                            listOfIterators.Add(sharepointReadListTo.FieldName, warewolfIterator);
                         }
-                        while(iteratorList.HasMoreData())
+                        while (iteratorList.HasMoreData())
                         {
                             var itemCreateInfo = new ListItemCreationInformation();
                             var listItem = list.AddItem(itemCreateInfo);
-                            foreach(var warewolfIterator in listOfIterators)
+                            foreach (var warewolfIterator in listOfIterators)
                             {
                                 var sharepointFieldTo = fields.FirstOrDefault(to => to.Name == warewolfIterator.Key);
-                                if(sharepointFieldTo != null)
+                                if (sharepointFieldTo != null)
                                 {
                                     object value = warewolfIterator.Value.GetNextValue();
                                     value = _sharepointUtils.CastWarewolfValueToCorrectType(value, sharepointFieldTo.Type);
@@ -154,30 +155,30 @@ namespace Dev2.Activities.Sharepoint
                 var hasErrors = allErrors.HasErrors();
                 if (hasErrors)
                 {
-                    dataObject.Environment.Assign(Result, "Failed",update);
+                    dataObject.Environment.Assign(Result, "Failed", update);
                     DisplayAndWriteError("SharepointCreateListItemActivity", allErrors);
                     var errorString = allErrors.MakeDisplayReady();
                     dataObject.Environment.AddError(errorString);
                 }
                 if (dataObject.IsDebugMode())
                 {
-                    DispatchDebugState(dataObject, StateType.Before,update);
-                    DispatchDebugState(dataObject, StateType.After,update);
+                    DispatchDebugState(dataObject, StateType.Before, update);
+                    DispatchDebugState(dataObject, StateType.After, update);
                 }
             }
         }
 
-        void AddOutputDebug(IDSFDataObject dataObject, IExecutionEnvironment env,int update)
+        void AddOutputDebug(IDSFDataObject dataObject, IExecutionEnvironment env, int update)
         {
-            if(dataObject.IsDebugMode() && !string.IsNullOrEmpty(Result))
+            if (dataObject.IsDebugMode() && !string.IsNullOrEmpty(Result))
             {
                 var debugItem = new DebugItem();
-                AddDebugItem(new DebugEvalResult(Result, "", env,update), debugItem);
+                AddDebugItem(new DebugEvalResult(Result, "", env, update), debugItem);
                 _debugOutputs.Add(debugItem);
             }
         }
 
-        void AddInputDebug(IExecutionEnvironment env,int update)
+        void AddInputDebug(IExecutionEnvironment env, int update)
         {
             var validItems = _sharepointUtils.GetValidReadListItems(ReadListItems).ToList();
             foreach (var varDebug in validItems)
@@ -188,7 +189,7 @@ namespace Dev2.Activities.Sharepoint
                 if (!string.IsNullOrEmpty(variableName))
                 {
                     AddDebugItem(new DebugItemStaticDataParams(varDebug.FieldName, "Field Name"), debugItem);
-                    AddDebugItem(new DebugEvalResult(variableName, "Variable", env,update), debugItem);
+                    AddDebugItem(new DebugEvalResult(variableName, "Variable", env, update), debugItem);
                 }
                 _indexCounter++;
                 _debugInputs.Add(debugItem);
@@ -221,7 +222,13 @@ namespace Dev2.Activities.Sharepoint
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            return base.Equals(other) && Equals(_sharepointUtils, other._sharepointUtils) && _indexCounter == other._indexCounter && string.Equals(Result, other.Result) && SharepointServerResourceId.Equals(other.SharepointServerResourceId) && string.Equals(SharepointList, other.SharepointList) && Equals(ReadListItems, other.ReadListItems);
+
+            return base.Equals(other)
+                   && string.Equals(Result, other.Result)
+                   && SharepointServerResourceId.Equals(other.SharepointServerResourceId)
+                   && string.Equals(SharepointList, other.SharepointList)
+                   && string.Equals(DisplayName, other.DisplayName)
+                   && ReadListItems.SequenceEqual(other.ReadListItems, new SharepointReadListToComparer());
         }
 
         public override bool Equals(object obj)
@@ -229,7 +236,7 @@ namespace Dev2.Activities.Sharepoint
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
             if (obj.GetType() != this.GetType()) return false;
-            return Equals((SharepointCreateListItemActivity) obj);
+            return Equals((SharepointCreateListItemActivity)obj);
         }
 
         public override int GetHashCode()
@@ -237,9 +244,8 @@ namespace Dev2.Activities.Sharepoint
             unchecked
             {
                 int hashCode = base.GetHashCode();
-                hashCode = (hashCode * 397) ^ (_sharepointUtils != null ? _sharepointUtils.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ _indexCounter;
                 hashCode = (hashCode * 397) ^ (Result != null ? Result.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (DisplayName != null ? DisplayName.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ SharepointServerResourceId.GetHashCode();
                 hashCode = (hashCode * 397) ^ (SharepointList != null ? SharepointList.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (ReadListItems != null ? ReadListItems.GetHashCode() : 0);

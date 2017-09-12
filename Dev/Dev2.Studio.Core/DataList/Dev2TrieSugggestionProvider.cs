@@ -233,39 +233,30 @@ namespace Dev2.Studio.Core.DataList
             {
                 return new string[0];
             }
-            IEnumerable<string> suggestions = null;
-            List<string> permutationsOfCapitalization = Permute(filter);
-            foreach (var str in permutationsOfCapitalization.Distinct())
-            {
-                IEnumerable<string> newSuggestions = trie.Retrieve(str);
-                if (suggestions == null)
-                {
-                    suggestions = newSuggestions;
-                }
-                else
-                {
-                    suggestions = suggestions.Concat(newSuggestions);
-                }
-            }
-            return suggestions;
+            return trie.Retrieve(filter);
         }
 
-        List<string> Permute(string s)
+        private List<string> PermuteCapitalizations(string key)
         {
-            List<string> listPermutations = new List<string>();
+            var suffixes = new List<string>();
+            suffixes.Add(key);
+            suffixes.Add(key.ToLower());
+            suffixes.Add(key.ToUpper());
+            suffixes.Add(TitleCase(key));
+            suffixes.Add(ReverseCase(key));
+            return suffixes;
+        }
 
-            char[] array = s.ToLower().ToCharArray();
-            int iterations = (1 << array.Length) - 1;
+        string TitleCase(string input)
+        {
+            return input?[0].ToString().ToUpper() + input?.Substring(1).ToLower();
+        }
 
-            for (int i = 0; i <= iterations; i++)
-            {
-                for (int j = 0; j < array.Length; j++)
-                    array[j] = (i & (1 << j)) != 0
-                                  ? char.ToUpper(array[j])
-                                  : char.ToLower(array[j]);
-                listPermutations.Add(new string(array));
-            }
-            return listPermutations;
+        string ReverseCase(string input)
+        {
+            var array = input?.Select(c => char.IsLetter(c) ? (char.IsUpper(c) ? char.ToLower(c) : char.ToUpper(c)) : c).ToArray();
+            string reversedCase = new string(array);
+            return reversedCase;
         }
 
         #endregion Implementation of ISuggestionProvider

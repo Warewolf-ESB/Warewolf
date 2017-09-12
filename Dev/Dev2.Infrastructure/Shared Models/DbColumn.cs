@@ -159,5 +159,39 @@ namespace Dev2.Runtime.ServiceModel.Data
 
             return typeof(object);
         }
+
+        public bool Equals(IDbColumn other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return SqlDataType == other.SqlDataType
+                   && string.Equals(ColumnName, other.ColumnName)
+                   && IsNullable == other.IsNullable
+                   && DataType == other.DataType
+                   && MaxLength == other.MaxLength
+                   && IsAutoIncrement == other.IsAutoIncrement;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((IDbColumn) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = (int) SqlDataType;
+                hashCode = (hashCode * 397) ^ (ColumnName != null ? ColumnName.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ IsNullable.GetHashCode();
+                hashCode = (hashCode * 397) ^ (DataType != null ? DataType.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ IsAutoIncrement.GetHashCode();
+                hashCode = (hashCode * 397) ^ MaxLength;
+                return hashCode;
+            }
+        }
     }
 }
