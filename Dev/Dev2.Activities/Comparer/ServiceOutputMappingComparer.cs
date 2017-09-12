@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Dev2.Comparer
 {
-    public class ServiceOutputMappingComparer : IEqualityComparer<IServiceOutputMapping>
+    internal class ServiceOutputMappingComparer : IEqualityComparer<IServiceOutputMapping>
     {
         public bool Equals(IServiceOutputMapping x, IServiceOutputMapping y)
         {
