@@ -78,7 +78,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\AssemblyCommonInfo.cs">
+    <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
     <None Include="..\Run Tests.ps1">
@@ -118,6 +118,7 @@
     <Compile Include="CustomControls\WeakEventListener.cs" />
     <Compile Include="ExtensionMethods.cs" />
     <Compile Include="IAssemblyMarker.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

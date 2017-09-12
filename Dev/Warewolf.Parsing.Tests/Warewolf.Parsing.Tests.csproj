@@ -76,7 +76,7 @@
     <Compile Include="TestDistinct.cs" />
     <Compile Include="TestEvaluation.cs" />
     <Compile Include="TestParser.cs" />
-    <Compile Include="..\AssemblyCommonInfo.cs">
+    <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
     <None Include="..\Run Tests.ps1">
