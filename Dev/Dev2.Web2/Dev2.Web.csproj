@@ -156,9 +156,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\ExecutionLogging\ExecutionLoggingRequestViewModel.cs" />
-    <Compile Include="..\AssemblyCommonInfo.cs">
-      <Link>Properties\AssemblyCommonInfo.cs</Link>
-    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />
