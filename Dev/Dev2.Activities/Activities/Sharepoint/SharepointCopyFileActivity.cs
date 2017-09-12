@@ -227,7 +227,7 @@ namespace Dev2.Activities.Sharepoint
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            var isSourceEqual = CommonEqualityOps.IsSourceEqual<IResource>(SharepointSource, other.SharepointSource);
+            var isSourceEqual = CommonEqualityOps.AreObjectsEqual<IResource>(SharepointSource, other.SharepointSource);
             return base.Equals(other) 
                 && string.Equals(ServerInputPathFrom, other.ServerInputPathFrom) 
                 && string.Equals(ServerInputPathTo, other.ServerInputPathTo) 

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Dev2.Common;
 using Dev2.TO;
 
 namespace Dev2.Comparer
@@ -7,8 +8,7 @@ namespace Dev2.Comparer
     {
         public bool Equals(DataColumnMapping x, DataColumnMapping y)
         {
-            if (x == null && y == null) return true;
-            return x != null && y != null && x.Equals(y);
+            return CommonEqualityOps.AreObjectsEqual(x, y);
         }
 
         public int GetHashCode(DataColumnMapping obj)

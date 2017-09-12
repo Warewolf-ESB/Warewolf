@@ -10,7 +10,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using Dev2.Common;
@@ -22,7 +21,7 @@ using Warewolf.Storage.Interfaces;
 
 namespace Dev2.Data.SystemTemplates.Models
 {
-    public class Dev2DecisionStack : IDev2DataModel, IDev2FlowModel
+    public class Dev2DecisionStack : IDev2DataModel, IDev2FlowModel, IEquatable<Dev2DecisionStack>
     {
         private string _ver = "1.0.0";
 
@@ -187,5 +186,37 @@ namespace Dev2.Data.SystemTemplates.Models
             return toReplace.Aggregate(val, (current, r) => current.Replace(r, ""));
         }
 
+        public bool Equals(Dev2DecisionStack other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            var collectionEquals = CommonEqualityOps.CollectionEquals(TheStack, other.TheStack, new Dev2DecisionComparer());
+            return collectionEquals
+                && Mode == other.Mode
+                && string.Equals(TrueArmText, other.TrueArmText)
+                && string.Equals(FalseArmText, other.FalseArmText) 
+                && string.Equals(DisplayText, other.DisplayText);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((Dev2DecisionStack) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = (TheStack != null ? TheStack.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (int) Mode;
+                hashCode = (hashCode * 397) ^ (TrueArmText != null ? TrueArmText.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (FalseArmText != null ? FalseArmText.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (DisplayText != null ? DisplayText.GetHashCode() : 0);
+                return hashCode;
+            }
+        }
     }
 }
