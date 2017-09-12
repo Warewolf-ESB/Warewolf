@@ -179,6 +179,9 @@
     <Compile Include="Comparer\ActivityFuncComparer.cs" />
     <Compile Include="Comparer\BaseConvertTOComparer.cs" />
     <Compile Include="Comparer\CaseConvertToComparer.cs" />
+    <Compile Include="Comparer\NameValueComparer.cs" />
+    <Compile Include="Comparer\ServiceOutputMappingComparer.cs" />
+    <Compile Include="Comparer\ServiceInputComparer.cs" />
     <Compile Include="Comparer\DataColumnMappingComparer.cs" />
     <Compile Include="Comparer\DelegateArgumentComparer.cs" />
     <Compile Include="Comparer\SharepointReadListToComparer.cs" />

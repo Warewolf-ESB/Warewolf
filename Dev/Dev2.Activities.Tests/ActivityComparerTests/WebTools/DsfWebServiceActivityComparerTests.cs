@@ -2,7 +2,7 @@
 using Dev2.Activities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Dev2.Tests.Activities.ActivityComparerTests.WebService
+namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
 {
     [TestClass]
     public class DsfWebserviceActivityComparerTests

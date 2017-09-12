@@ -312,7 +312,13 @@ namespace Dev2.Activities
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            return base.Equals(other) && TimeoutSeconds == other.TimeoutSeconds && string.Equals(Method, other.Method) && string.Equals(TimeOutText, other.TimeOutText) && string.Equals(Url, other.Url) && string.Equals(Headers, other.Headers) && string.Equals(Result, other.Result);
+            return base.Equals(other) 
+                && TimeoutSeconds == other.TimeoutSeconds 
+                && string.Equals(Method, other.Method) 
+                && string.Equals(TimeOutText, other.TimeOutText) 
+                && string.Equals(Url, other.Url) 
+                && string.Equals(Headers, other.Headers) 
+                && string.Equals(Result, other.Result);
         }
 
         public override bool Equals(object obj)

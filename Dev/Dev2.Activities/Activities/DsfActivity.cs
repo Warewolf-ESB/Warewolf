@@ -34,12 +34,7 @@ using Dev2.Runtime.Security;
 using Dev2.Services.Security;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage.Interfaces;
-
-
-
-
-
-
+using Dev2.Comparer;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
@@ -804,14 +799,16 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
+            var inputsEqual = CommonEqualityOps.CollectionEquals(Inputs, other.Inputs, new ServiceInputComparer());
+            var outputsEqual = CommonEqualityOps.CollectionEquals(Outputs, other.Outputs, new ServiceOutputMappingComparer());
             return base.Equals(other)
-                && Equals(Inputs, other.Inputs)
-                && Equals(Outputs, other.Outputs)
+                && inputsEqual
+                && outputsEqual
                 && string.Equals(ServiceUri, other.ServiceUri)
                 && string.Equals(ServiceName, other.ServiceName)
+                && string.Equals(Category, other.Category)
                 && RunWorkflowAsync == other.RunWorkflowAsync
                 && IsObject == other.IsObject;
-               
         }
 
         public override bool Equals(object obj)
@@ -827,34 +824,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             unchecked
             {
                 int hashCode = base.GetHashCode();
-                hashCode = (hashCode * 397) ^ (_iconPath != null ? _iconPath.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (_previousInstanceId != null ? _previousInstanceId.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (_inputs != null ? _inputs.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (_outputs != null ? _outputs.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (_serviceUri != null ? _serviceUri.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (_friendlySourceName != null ? _friendlySourceName.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (_environmentID != null ? _environmentID.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (HelpLink != null ? HelpLink.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (ResourceID != null ? ResourceID.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (Type != null ? Type.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (ActionName != null ? ActionName.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Inputs != null ? Inputs.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Outputs != null ? Outputs.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (ServiceUri != null ? ServiceUri.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (ServiceName != null ? ServiceName.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ RunWorkflowAsync.GetHashCode();
-                hashCode = (hashCode * 397) ^ (DataTags != null ? DataTags.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (ResultValidationRequiredTags != null ? ResultValidationRequiredTags.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (ResultValidationExpression != null ? ResultValidationExpression.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (Category != null ? Category.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (Tags != null ? Tags.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ DeferExecution.GetHashCode();
-                hashCode = (hashCode * 397) ^ ServiceServer.GetHashCode();
-                hashCode = (hashCode * 397) ^ (ToolboxFriendlyName != null ? ToolboxFriendlyName.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (AuthorRoles != null ? AuthorRoles.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (ActivityStateData != null ? ActivityStateData.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ RemoveInputFromOutput.GetHashCode();
+                hashCode = (hashCode * 397) ^ RunWorkflowAsync.GetHashCode();                
                 hashCode = (hashCode * 397) ^ IsObject.GetHashCode();
-                hashCode = (hashCode * 397) ^ (ObjectName != null ? ObjectName.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (ObjectResult != null ? ObjectResult.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ SourceId.GetHashCode();
                 return hashCode;
             }
         }
