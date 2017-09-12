@@ -297,6 +297,8 @@
     <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
+    <Compile Include="CustomControls\ActivityTemplateSelector.cs" />
+    <Compile Include="CustomControls\TemplateGenerator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" Condition="!Exists('..\AssemblyCommonInfo.cs')" />
     <None Include="..\Run Tests.ps1">
       <Visible>False</Visible>
@@ -407,6 +409,7 @@
     <Compile Include="ViewModels\Diagnostics\IDebugOutputViewModelUtil.cs" />
     <Compile Include="ViewModels\Help\IHelpViewWrapper.cs" />
     <Compile Include="ViewModels\Help\HelpViewWrapper.cs" />
+    <Compile Include="ViewModels\Merge\MergeWorkflowViewModel.cs" />
     <Compile Include="ViewModels\SourceViewModel.cs" />
     <Compile Include="ViewModels\StudioTestViewModel.cs" />
     <Compile Include="ViewModels\Workflow\WorkflowDesignerDataPartUtils.cs" />
@@ -435,6 +438,9 @@
     </Compile>
     <Compile Include="Views\ImageWindow.xaml.cs">
       <DependentUpon>ImageWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Merge\MergeWorkflowView.xaml.cs">
+      <DependentUpon>MergeWorkflowView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ResourceManagement\RenameResourceDialog.xaml.cs">
       <DependentUpon>RenameResourceDialog.xaml</DependentUpon>
@@ -618,6 +624,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ImageWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Merge\MergeWorkflowView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
