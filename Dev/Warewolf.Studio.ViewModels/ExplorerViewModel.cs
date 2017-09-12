@@ -149,7 +149,7 @@ namespace Warewolf.Studio.ViewModels
         }
 
         public IEnvironmentViewModel SelectedEnvironment { get; set; }
-        public IServer SelectedServer => SelectedEnvironment.Server;
+        public IServer SelectedServer => SelectedEnvironment?.Server;
 
         public virtual string SearchText
         {
