@@ -16,9 +16,7 @@ using Warewolf.Core;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
-
-
-
+using Dev2.Comparer;
 
 namespace Dev2.Activities
 {
@@ -134,8 +132,9 @@ namespace Dev2.Activities
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
+            var headersAreEqual = CommonEqualityOps.CollectionEquals(Headers, other.Headers, new NameValueComparer());
             return base.Equals(other) 
-                && Equals(Headers, other.Headers) 
+                && headersAreEqual
                 && string.Equals(QueryString, other.QueryString) 
                 && Equals(OutputDescription, other.OutputDescription);
         }
