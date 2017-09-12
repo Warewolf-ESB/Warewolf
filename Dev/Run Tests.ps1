@@ -354,40 +354,43 @@ function Move-Artifacts-To-TestResults([bool]$DotCover, [bool]$Server, [bool]$St
         Write-Host Moved loose TRX files from VS install directory into TestResults.
     }
 
-    # Write failing tests playlist.
-    Write-Host Writing all test failures in `"$TestsResultsPath`" to a playlist file
+    if (!($Cleanup.IsPresent)) {
+        # Write failing tests playlist.
+        Write-Host Writing all test failures in `"$TestsResultsPath`" to a playlist file
 
-    $PlayList = "<Playlist Version=`"1.0`">"
-    Get-ChildItem "$TestsResultsPath" -Filter *.trx | `
-    Foreach-Object{
-        $FullTRXFilePath = $_.FullName
-	    [xml]$trxContent = Get-Content "$FullTRXFilePath"
-	    if ($trxContent.TestRun.Results.UnitTestResult.count -gt 0) {
-	        foreach($TestResult in $trxContent.TestRun.Results.UnitTestResult) {
-		        if ($TestResult.outcome -eq "Failed") {
-		            if ($trxContent.TestRun.TestDefinitions.UnitTest.TestMethod.count -gt 0) {
-		                foreach($TestDefinition in $trxContent.TestRun.TestDefinitions.UnitTest.TestMethod) {
-			                if ($TestDefinition.name -eq $TestResult.testName) {
-				                $PlayList += "<Add Test=`"" + $TestDefinition.className + "." + $TestDefinition.name + "`" />"
-			                }
+        $PlayList = "<Playlist Version=`"1.0`">"
+        Get-ChildItem "$TestsResultsPath" -Filter *.trx | `
+        Foreach-Object{
+            $FullTRXFilePath = $_.FullName
+	        [xml]$trxContent = Get-Content "$FullTRXFilePath"
+	        if ($trxContent.TestRun.Results.UnitTestResult.count -gt 0) {
+	            foreach($TestResult in $trxContent.TestRun.Results.UnitTestResult) {
+		            if ($TestResult.outcome -eq "Failed") {
+		                if ($trxContent.TestRun.TestDefinitions.UnitTest.TestMethod.count -gt 0) {
+		                    foreach($TestDefinition in $trxContent.TestRun.TestDefinitions.UnitTest.TestMethod) {
+			                    if ($TestDefinition.name -eq $TestResult.testName) {
+				                    $PlayList += "<Add Test=`"" + $TestDefinition.className + "." + $TestDefinition.name + "`" />"
+			                    }
+		                    }
+                        } else {
+			                Write-Host Error parsing TestRun.TestDefinitions.UnitTest.TestMethod from trx file at $_.FullName
+			                Continue
 		                }
-                    } else {
-			            Write-Host Error parsing TestRun.TestDefinitions.UnitTest.TestMethod from trx file at $_.FullName
-			            Continue
 		            }
-		        }
-	        }
-	    } elseif ($trxContent.TestRun.Results.UnitTestResult.outcome -eq "Failed") {
-            $PlayList += "<Add Test=`"" + $trxContent.TestRun.TestDefinitions.UnitTest.TestMethod.className + "." + $trxContent.TestRun.TestDefinitions.UnitTest.TestMethod.name + "`" />"
-        } elseif ($trxContent.TestRun.Results.UnitTestResult -eq $null) {
-		    Write-Host Error parsing TestRun.Results.UnitTestResult from trx file at $_.FullName
+	            }
+	        } elseif ($trxContent.TestRun.Results.UnitTestResult.outcome -eq "Failed") {
+                $PlayList += "<Add Test=`"" + $trxContent.TestRun.TestDefinitions.UnitTest.TestMethod.className + "." + $trxContent.TestRun.TestDefinitions.UnitTest.TestMethod.name + "`" />"
+            } elseif ($trxContent.TestRun.Results.UnitTestResult -eq $null) {
+		        Write-Host Error parsing TestRun.Results.UnitTestResult from trx file at $_.FullName
+            }
         }
+        $PlayList += "</Playlist>"
+        $OutPlaylistPath = $TestsResultsPath + "\" + $JobName + " Failures.playlist"
+        Copy-On-Write $OutPlaylistPath
+        $PlayList | Out-File -LiteralPath $OutPlaylistPath -Encoding utf8 -Force
+        Write-Host Playlist file written to `"$OutPlaylistPath`".
     }
-    $PlayList += "</Playlist>"
-    $OutPlaylistPath = $TestsResultsPath + "\" + $JobName + " Failures.playlist"
-    Copy-On-Write $OutPlaylistPath
-    $PlayList | Out-File -LiteralPath $OutPlaylistPath -Encoding utf8 -Force
-    Write-Host Playlist file written to `"$OutPlaylistPath`".
+
     if ($Server) {
         Move-File-To-TestResults "$env:ProgramData\Warewolf\Server Log\wareWolf-Server.log" "$JobName Server.log"
         Move-File-To-TestResults "$env:ProgramData\Warewolf\Server Log\my.warewolf.io.log" "$JobName my.warewolf.io Server.log"
