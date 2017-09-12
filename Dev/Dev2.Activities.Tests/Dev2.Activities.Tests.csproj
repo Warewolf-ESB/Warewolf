@@ -173,6 +173,7 @@
       <Link>Run Tests.ps1</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <Compile Include="ActivityComparerTests\Unique\DsfActivityComparerTest.cs" />
     <Compile Include="ActivityComparerTests\Activity\DsfActivityComparerTest.cs" />
     <Compile Include="ActivityComparerTests\BaseConvert\BaseConvertTOEqualityTests.cs" />
     <Compile Include="ActivityComparerTests\CaseConvert\DsfCaseConvertActivityEquatableTests.cs" />
