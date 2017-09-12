@@ -47,8 +47,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Activity
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
             var inputs = new List<Common.Interfaces.DB.IServiceInput>();
-            var inputs2 = new List<Common.Interfaces.DB.IServiceInput>();
             inputs.Add(new ServiceInput("Input1", "[[InputValue1]]"));
+            var inputs2 = new List<Common.Interfaces.DB.IServiceInput>();
             var activity = new DsfActivity() { UniqueID = uniqueId, Inputs =  inputs};
             var activity1 = new DsfActivity() { UniqueID = uniqueId, Inputs = inputs2 };
             //---------------Assert Precondition----------------
@@ -261,6 +261,55 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Activity
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
+        public void Equals_Given_SameCategory_ActivityTools_AreEqual()
+        {
+            //---------------Set up test pack-------------------
+            var uniqueId = Guid.NewGuid().ToString();
+            var activity = new DsfActivity() { UniqueID = uniqueId, Category = "" };
+            var activity1 = new DsfActivity() { UniqueID = uniqueId, Category = "" };
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(activity);
+            //---------------Execute Test ----------------------
+            var @equals = activity.Equals(activity1);
+            //---------------Test Result -----------------------
+            Assert.IsTrue(@equals);
+        }
+
+
+        [TestMethod]
+        [Owner("Sanele Mthembu")]
+        public void Equals_Given_SameCategory_Different_Casing_ActivityTools_AreEqual()
+        {
+            //---------------Set up test pack-------------------
+            var uniqueId = Guid.NewGuid().ToString();
+            var activity = new DsfActivity() { UniqueID = uniqueId, Category = "A" };
+            var activity1 = new DsfActivity() { UniqueID = uniqueId, Category = "a" };
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(activity);
+            //---------------Execute Test ----------------------
+            var @equals = activity.Equals(activity1);
+            //---------------Test Result -----------------------
+            Assert.IsFalse(@equals);
+        }
+
+        [TestMethod]
+        [Owner("Sanele Mthembu")]
+        public void Equals_Given_DifferentCategory_ActivityTools_AreNotEqual()
+        {
+            //---------------Set up test pack-------------------
+            var uniqueId = Guid.NewGuid().ToString();
+            var activity = new DsfActivity() { UniqueID = uniqueId, Category = "A" };
+            var activity1 = new DsfActivity() { UniqueID = uniqueId, Category = "B" };
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(activity);
+            //---------------Execute Test ----------------------
+            var @equals = activity.Equals(activity1);
+            //---------------Test Result -----------------------
+            Assert.IsFalse(@equals);
+        }
+
+        [TestMethod]
+        [Owner("Sanele Mthembu")]
         public void Equals_Given_Empty_ActivityDto_AreEqual()
         {
             //---------------Set up test pack-------------------
@@ -274,7 +323,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Activity
             //---------------Test Result -----------------------
             Assert.IsTrue(@equals);
         }
-
+        
         [TestMethod]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_SameFieldName_ActivityDto_AreEqual()

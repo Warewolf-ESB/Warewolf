@@ -179,10 +179,10 @@
     <Compile Include="ActivityComparerTests\CaseConvert\CaseConvertTOEqualityTests.cs" />
     <Compile Include="ActivityComparerTests\Database\DbColumnEqualityTests.cs" />
     <Compile Include="ActivityComparerTests\Database\DsfSqlBulkInsertActivityEqualityTests.cs" />
+    <Compile Include="ActivityComparerTests\Calculate\DsfAggregateCalculateActivityEquatableTests.cs" />
     <Compile Include="ActivityComparerTests\DotNet Dll\DsfDotNetDllActivityComparerTests.cs" />
-    <Compile Include="ActivityComparerTests\DsfAggregateCalculateActivityEquatableTests.cs" />
     <Compile Include="ActivityComparerTests\BaseConvert\DsfBaseConvertActivityEquatableTests.cs" />
-    <Compile Include="ActivityComparerTests\DsfCalculateActivityEquatableTests.cs" />
+    <Compile Include="ActivityComparerTests\Calculate\DsfCalculateActivityEquatableTests.cs" />
     <Compile Include="ActivityComparerTests\ComDll\DsfComDllActivityEqualityTests.cs" />
     <Compile Include="ActivityComparerTests\Sharepoint\SharepointDeleteFileActivityEqualityTests.cs" />
     <Compile Include="ActivityComparerTests\Sharepoint\SharepointDeleteListItemActivityEqualityTests.cs" />
@@ -207,6 +207,12 @@
     <Compile Include="ActivityComparerTests\PathOperations\DsfPathCreateComparerTests.cs" />
     <Compile Include="ActivityComparerTests\PathOperations\DsfUnZipComparerTests.cs" />
     <Compile Include="ActivityComparerTests\PathOperations\DsfZipComparerTests.cs" />
+    <Compile Include="ActivityComparerTests\WebTools\DsfWebGetWithTimeoutActivityComparerTests.cs" />
+    <Compile Include="ActivityComparerTests\WebTools\DsfWebGetRequestActivityComparerTests.cs" />
+    <Compile Include="ActivityComparerTests\WebTools\DsfWebGetActivityComparerTests.cs" />
+    <Compile Include="ActivityComparerTests\WebTools\DsfWebDeleteActivityComparerTests.cs" />
+    <Compile Include="ActivityComparerTests\WebTools\DsfWebPostActivityComparerTests.cs" />
+    <Compile Include="ActivityComparerTests\WebTools\DsfWebPutActivityComparerTests.cs" />
     <Compile Include="ActivityComparerTests\WebTools\DsfWebServiceActivityComparerTests.cs" />
     <Compile Include="ActivityComparerTests\XPath\DsfXPathActivityComparerTests.cs" />
     <Compile Include="ActivityComparerTests\Sharepoint\SharepointUpdateListItemActivityEqualityTests.cs" />
