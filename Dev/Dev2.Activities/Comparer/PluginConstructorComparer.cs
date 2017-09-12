@@ -13,6 +13,7 @@ namespace Dev2.Comparer
             var methodsAreEqual = Equals(p1.ID, p2.ID)
                                   && string.Equals(p1.ConstructorName, p2.ConstructorName)
                                   && string.Equals(p1.ReturnObject, p2.ReturnObject)
+                                  && Equals(p1.IsExistingObject, p2.IsExistingObject)
                                   && CommonEqualityOps.CollectionEquals(p1.Inputs, p2.Inputs, EqualityFactory.GetEqualityComparer<IConstructorParameter>(
                                       (parameter, constructorParameter) => string.Equals(parameter.Name, constructorParameter.Name)
                                                                            && string.Equals(parameter.Value, constructorParameter.Value)
