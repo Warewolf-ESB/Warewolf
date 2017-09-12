@@ -178,6 +178,7 @@
     <Compile Include="ActivityComparerTests\BaseConvert\BaseConvertTOEqualityTests.cs" />
     <Compile Include="ActivityComparerTests\CaseConvert\DsfCaseConvertActivityEquatableTests.cs" />
     <Compile Include="ActivityComparerTests\CaseConvert\CaseConvertTOEqualityTests.cs" />
+    <Compile Include="ActivityComparerTests\DotNet Dll\DsfDotNetDllActivityEqualityTests.cs" />
     <Compile Include="ActivityComparerTests\Database\DbColumnEqualityTests.cs" />
     <Compile Include="ActivityComparerTests\Database\DsfSqlBulkInsertActivityEqualityTests.cs" />
     <Compile Include="ActivityComparerTests\Calculate\DsfAggregateCalculateActivityEquatableTests.cs" />

@@ -242,6 +242,7 @@
     <Compile Include="IDropboxResult.cs" />
     <Compile Include="IEmailServiceSource.cs" />
     <Compile Include="IEmailSource.cs" />
+    <Compile Include="IEnhancedPlugin.cs" />
     <Compile Include="IExchange.cs" />
     <Compile Include="IExchangeEmailSender.cs" />
     <Compile Include="IExchangeServiceFactory.cs" />

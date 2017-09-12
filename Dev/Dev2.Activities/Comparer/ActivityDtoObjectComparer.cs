@@ -3,7 +3,7 @@ using Dev2.TO;
 
 namespace Dev2.Comparer
 {
-    public class ActivityDtoObjectComparer : IEqualityComparer<AssignObjectDTO>
+    internal class ActivityDtoObjectComparer : IEqualityComparer<AssignObjectDTO>
     {
         public bool Equals(AssignObjectDTO x, AssignObjectDTO y)
         {

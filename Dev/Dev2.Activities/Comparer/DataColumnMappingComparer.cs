@@ -3,7 +3,7 @@ using Dev2.TO;
 
 namespace Dev2.Comparer
 {
-    public class DataColumnMappingComparer : IEqualityComparer<DataColumnMapping>
+    internal class DataColumnMappingComparer : IEqualityComparer<DataColumnMapping>
     {
         public bool Equals(DataColumnMapping x, DataColumnMapping y)
         {
