@@ -179,10 +179,11 @@
     <Compile Include="ActivityComparerTests\CaseConvert\CaseConvertTOEqualityTests.cs" />
     <Compile Include="ActivityComparerTests\Database\DbColumnEqualityTests.cs" />
     <Compile Include="ActivityComparerTests\Database\DsfSqlBulkInsertActivityEqualityTests.cs" />
+    <Compile Include="ActivityComparerTests\DotNet Dll\DsfDotNetDllActivityComparerTests.cs" />
     <Compile Include="ActivityComparerTests\DsfAggregateCalculateActivityEquatableTests.cs" />
     <Compile Include="ActivityComparerTests\BaseConvert\DsfBaseConvertActivityEquatableTests.cs" />
     <Compile Include="ActivityComparerTests\DsfCalculateActivityEquatableTests.cs" />
-    <Compile Include="ActivityComparerTests\Exchange\DsfComDllActivityEqualityTests.cs" />
+    <Compile Include="ActivityComparerTests\ComDll\DsfComDllActivityEqualityTests.cs" />
     <Compile Include="ActivityComparerTests\Sharepoint\SharepointDeleteFileActivityEqualityTests.cs" />
     <Compile Include="ActivityComparerTests\Sharepoint\SharepointDeleteListItemActivityEqualityTests.cs" />
     <Compile Include="ActivityComparerTests\Sharepoint\SharepointFileDownLoadActivityEqualityTests.cs" />
@@ -475,9 +476,7 @@
   <ItemGroup>
     <EmbeddedResource Include="XML\WebServiceResponse.xml" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ActivityComparerTests\ComDll\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

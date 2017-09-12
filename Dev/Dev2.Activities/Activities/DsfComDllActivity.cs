@@ -18,7 +18,7 @@ using Warewolf.Storage;
 namespace Dev2.Activities
 {
     [ToolDescriptorInfo("DotNetDll", "Com DLL", ToolType.Native, "6AEB1038-6332-46F9-8BDD-642DE4EA029E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Resources", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Resources_Com_DLL")]
-    public class DsfComDllActivity : DsfMethodBasedActivity, IEquatable<DsfComDllActivity>
+    public class DsfComDllActivity : DsfMethodBasedActivity,ISimpePlugin
     {
         public string _result;
         public IPluginAction Method { get; set; }
@@ -123,11 +123,11 @@ namespace Dev2.Activities
             return enFindMissingType.DataGridActivity;
         }
 
-        public bool Equals(DsfComDllActivity other)
+        public bool Equals(ISimpePlugin other)
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            var comparer = new DsfComDllActivityComparer();
+            var comparer = new SimplePluginComparer();
             var equals = comparer.Equals(this, other);
             return base.Equals(other) && equals;
         }
@@ -137,7 +137,7 @@ namespace Dev2.Activities
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
             if (obj.GetType() != this.GetType()) return false;
-            return Equals((DsfComDllActivity)obj);
+            return Equals((ISimpePlugin)obj);
         }
 
         public override int GetHashCode()
