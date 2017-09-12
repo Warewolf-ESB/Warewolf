@@ -3,7 +3,7 @@ using Dev2.TO;
 
 namespace Dev2.Comparer
 {
-    public class SharepointSearchToComparer : IEqualityComparer<SharepointSearchTo>
+    internal class SharepointSearchToComparer : IEqualityComparer<SharepointSearchTo>
     {
         public bool Equals(SharepointSearchTo x, SharepointSearchTo y)
         {

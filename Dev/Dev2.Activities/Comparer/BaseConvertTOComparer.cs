@@ -2,7 +2,7 @@
 
 namespace Dev2.Comparer
 {
-    public class BaseConvertToComparer:IEqualityComparer<BaseConvertTO>
+    internal class BaseConvertToComparer:IEqualityComparer<BaseConvertTO>
     {
         public bool Equals(BaseConvertTO x, BaseConvertTO y)
         {

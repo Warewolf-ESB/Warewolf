@@ -3,7 +3,7 @@ using Dev2.Common.Interfaces.Core.Convertors.Case;
 
 namespace Dev2.Comparer
 {
-    public class CaseConvertToComparer:IEqualityComparer<ICaseConvertTO>
+    internal class CaseConvertToComparer:IEqualityComparer<ICaseConvertTO>
     {
         public bool Equals(ICaseConvertTO x, ICaseConvertTO y)
         {
