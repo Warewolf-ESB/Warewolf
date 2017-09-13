@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Dev2.Common;
 using Dev2.Data.Decisions.Operations;
 using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.TO;
@@ -22,7 +23,7 @@ using Warewolf.Storage.Interfaces;
 
 namespace Dev2.Data.SystemTemplates.Models
 {
-    public class Dev2Decision : IDev2DataModel
+    public class Dev2Decision : IDev2DataModel, IEquatable<Dev2Decision>
     {
         private const int TotalCols = 3;
 
@@ -371,5 +372,43 @@ namespace Dev2.Data.SystemTemplates.Models
 
         }
 
+        public bool Equals(Dev2Decision other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            var cols1Equal = CommonEqualityOps.CollectionEquals(Cols1, other.Cols1, new WarewolfAtomComparer());
+            var cols2Equal = CommonEqualityOps.CollectionEquals(Cols2, other.Cols2, new WarewolfAtomComparer());
+            var cols3Equal = CommonEqualityOps.CollectionEquals(Cols3, other.Cols3, new WarewolfAtomComparer());
+            return string.Equals(Col1, other.Col1) 
+                && string.Equals(Col2, other.Col2) 
+                && string.Equals(Col3, other.Col3) 
+                && cols1Equal
+                && cols2Equal
+                && cols3Equal
+                && EvaluationFn == other.EvaluationFn;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((Dev2Decision) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = (Col1 != null ? Col1.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Col2 != null ? Col2.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Col3 != null ? Col3.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Cols1 != null ? Cols1.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Cols2 != null ? Cols2.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Cols3 != null ? Cols3.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (int) EvaluationFn;
+                return hashCode;
+            }
+        }
     }
 }

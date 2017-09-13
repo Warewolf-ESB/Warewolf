@@ -126,7 +126,7 @@ namespace Dev2.Activities.RabbitMQ.Consume
             return false;
         }
 
-        internal RabbitMQSource RabbitSource { get; set; }
+        public RabbitMQSource RabbitSource { get; set; }
         public bool ShouldSerializeRabbitSource()
         {
             return false;
@@ -383,7 +383,7 @@ namespace Dev2.Activities.RabbitMQ.Consume
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
           
-            var isSourceEqual = CommonEqualityOps.IsSourceEqual<IResource>(RabbitSource, other.RabbitSource);
+            var isSourceEqual = CommonEqualityOps.AreObjectsEqual<IResource>(RabbitSource, other.RabbitSource);
             return base.Equals(other)
                 && string.Equals(Result, other.Result)
                 && Prefetch == other.Prefetch

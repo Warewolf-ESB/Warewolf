@@ -21,6 +21,7 @@ using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
+using Dev2.Comparer;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.TO;
@@ -44,8 +45,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
     public class DsfForEachActivity : DsfActivityAbstract<bool>,IEquatable<DsfForEachActivity>
     {
         string _previousParentId;
-        
-        Dev2ActivityIOIteration _inputItr = new Dev2ActivityIOIteration();
+
+        readonly Dev2ActivityIOIteration _inputItr = new Dev2ActivityIOIteration();
         
         #region Variables
 
@@ -187,7 +188,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             DataFunc = new ActivityFunc<string, bool>
             {
                 DisplayName = "Data Action",
-                Argument = new DelegateInArgument<string>(string.Format("explicitData_{0}", DateTime.Now.ToString("yyyyMMddhhmmss")))
+                Argument = new DelegateInArgument<string>($"explicitData_{DateTime.Now:yyyyMMddhhmmss}")
 
             };
             DisplayName = "For Each";
@@ -818,8 +819,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             dataObject.ForEachNestingLevel++;
             try
             {
-                ErrorResultTO errors;
-                ForEachBootstrapTO exePayload = FetchExecutionType(dataObject, dataObject.Environment, out errors, update);
+                ForEachBootstrapTO exePayload = FetchExecutionType(dataObject, dataObject.Environment, out var errors, update);
 
                 foreach (var err in errors.FetchErrors())
                 {
@@ -827,8 +827,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
                 itr = exePayload.IndexIterator;
 
-                string error;
-                ForEachInnerActivityTO innerA = GetInnerActivity(out error);
+                ForEachInnerActivityTO innerA = GetInnerActivity(out var error);
                 var exeAct = innerA?.InnerActivity;
                 allErrors.AddError(error);
                 if (dataObject.IsDebugMode())
@@ -980,7 +979,21 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            return base.Equals(other) && string.Equals(_previousParentId, other._previousParentId) && Equals(_inputItr, other._inputItr) && string.Equals(_forEachElementName, other._forEachElementName) && string.Equals(_displayName, other._displayName) && _previousInputsIndex == other._previousInputsIndex && _previousOutputsIndex == other._previousOutputsIndex && string.Equals(_inputsToken, other._inputsToken) && string.Equals(_outputsToken, other._outputsToken) && Equals(operationalData, other.operationalData) && Equals(_results, other._results) && Equals(_actionArgument, other._actionArgument) && Equals(_origInput, other._origInput) && Equals(_origOutput, other._origOutput) && Equals(_forEachExecutionObject, other._forEachExecutionObject) && string.Equals(_childUniqueID, other._childUniqueID) && _originalUniqueID.Equals(other._originalUniqueID) && ForEachType == other.ForEachType && string.Equals(From, other.From) && string.Equals(To, other.To) && string.Equals(Recordset, other.Recordset) && string.Equals(CsvIndexes, other.CsvIndexes) && string.Equals(NumOfExections, other.NumOfExections) && Equals(test, other.test) && Equals(DataFunc, other.DataFunc) && FailOnFirstError == other.FailOnFirstError && string.Equals(ElementName, other.ElementName) && string.Equals(PreservedDataList, other.PreservedDataList);
+            var activityFuncComparer = new ActivityFuncComparer();
+            var equals = activityFuncComparer.Equals(DataFunc, other.DataFunc);
+            return base.Equals(other)
+                && string.Equals(ForEachElementName, other.ForEachElementName)
+                && string.Equals(DisplayName, other.DisplayName)
+                && ForEachType == other.ForEachType 
+                && string.Equals(From, other.From)
+                && string.Equals(To, other.To) 
+                && string.Equals(Recordset, other.Recordset)
+                && string.Equals(CsvIndexes, other.CsvIndexes)
+                && string.Equals(NumOfExections, other.NumOfExections)
+                && Equals(test, other.test)
+                && @equals
+                && FailOnFirstError == other.FailOnFirstError 
+                && string.Equals(ElementName, other.ElementName);
         }
 
         public override bool Equals(object obj)
@@ -996,29 +1009,16 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             unchecked
             {
                 int hashCode = base.GetHashCode();
-                hashCode = (hashCode * 397) ^ (_previousParentId != null ? _previousParentId.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (_inputItr != null ? _inputItr.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (_forEachElementName != null ? _forEachElementName.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (_displayName != null ? _displayName.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (ForEachElementName != null ? ForEachElementName.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (DisplayName != null ? DisplayName.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ _previousInputsIndex;
                 hashCode = (hashCode * 397) ^ _previousOutputsIndex;
-                hashCode = (hashCode * 397) ^ (_inputsToken != null ? _inputsToken.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (_outputsToken != null ? _outputsToken.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (operationalData != null ? operationalData.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (_results != null ? _results.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (_actionArgument != null ? _actionArgument.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (_origInput != null ? _origInput.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (_origOutput != null ? _origOutput.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (_forEachExecutionObject != null ? _forEachExecutionObject.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (_childUniqueID != null ? _childUniqueID.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ _originalUniqueID.GetHashCode();
                 hashCode = (hashCode * 397) ^ (int) ForEachType;
                 hashCode = (hashCode * 397) ^ (From != null ? From.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (To != null ? To.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (Recordset != null ? Recordset.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (CsvIndexes != null ? CsvIndexes.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (NumOfExections != null ? NumOfExections.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (test != null ? test.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (DataFunc != null ? DataFunc.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ FailOnFirstError.GetHashCode();
                 hashCode = (hashCode * 397) ^ (ElementName != null ? ElementName.GetHashCode() : 0);
