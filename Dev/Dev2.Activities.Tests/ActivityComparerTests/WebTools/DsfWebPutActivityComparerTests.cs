@@ -216,7 +216,10 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
             {
                 Format = OutputFormats.Unknown
             };
-            var outDescr2 = new OutputDescription();
+            var outDescr2 = new OutputDescription()
+            {
+                Format = OutputFormats.ShapedXML
+            };
             var webPut = new DsfWebPutActivity() { UniqueID = uniqueId, OutputDescription = outDescr };
             var webPut1 = new DsfWebPutActivity() { UniqueID = uniqueId, OutputDescription = outDescr2 };
             //---------------Assert Precondition----------------
