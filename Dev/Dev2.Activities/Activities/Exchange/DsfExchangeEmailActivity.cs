@@ -339,7 +339,7 @@ namespace Dev2.Activities.Exchange
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            var isSourceEqual = CommonEqualityOps.IsSourceEqual(SavedSource, other.SavedSource);
+            var isSourceEqual = CommonEqualityOps.AreObjectsEqual(SavedSource, other.SavedSource);
             return base.Equals(other) 
                 && isSourceEqual
                 && string.Equals(To, other.To) 

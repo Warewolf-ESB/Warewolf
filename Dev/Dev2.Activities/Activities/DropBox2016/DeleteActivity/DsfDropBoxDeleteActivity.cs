@@ -105,7 +105,7 @@ namespace Dev2.Activities.DropBox2016.DeleteActivity
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            var isSourceEqual = CommonEqualityOps.IsSourceEqual<IResource>(SelectedSource, other.SelectedSource);
+            var isSourceEqual = CommonEqualityOps.AreObjectsEqual<IResource>(SelectedSource, other.SelectedSource);
             return base.Equals(other) 
                 && isSourceEqual
                 && string.Equals(DisplayName, other.DisplayName)

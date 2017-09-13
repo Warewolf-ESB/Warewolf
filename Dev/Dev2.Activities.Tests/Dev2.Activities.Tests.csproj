@@ -188,6 +188,7 @@
     <Compile Include="ActivityComparerTests\BaseConvert\DsfBaseConvertActivityEquatableTests.cs" />
     <Compile Include="ActivityComparerTests\Calculate\DsfCalculateActivityEquatableTests.cs" />
     <Compile Include="ActivityComparerTests\ComDll\DsfComDllActivityEqualityTests.cs" />
+    <Compile Include="ActivityComparerTests\DsfDecision\DsfDecisionEqualityTests.cs" />
     <Compile Include="ActivityComparerTests\ForEach\DsfForEachActivityComparerTests.cs" />
     <Compile Include="ActivityComparerTests\Sharepoint\SharepointDeleteFileActivityEqualityTests.cs" />
     <Compile Include="ActivityComparerTests\Sharepoint\SharepointDeleteListItemActivityEqualityTests.cs" />

@@ -1,17 +1,18 @@
 ﻿using System.Collections.Generic;
+using Dev2.Data.SystemTemplates.Models;
 
-namespace Dev2.Comparer
+namespace Dev2.Data
 {
-    internal class BaseConvertToComparer:IEqualityComparer<BaseConvertTO>
+    internal class Dev2DecisionComparer : IEqualityComparer<Dev2Decision>
     {
-        public bool Equals(BaseConvertTO x, BaseConvertTO y)
+        public bool Equals(Dev2Decision x, Dev2Decision y)
         {
             if (x == null && y == null) return true;
             if (x == null || y == null) return false;
             return x.Equals(y);
         }
 
-        public int GetHashCode(BaseConvertTO obj)
+        public int GetHashCode(Dev2Decision obj)
         {
             return obj.GetHashCode();
         }

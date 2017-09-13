@@ -30,25 +30,43 @@ namespace Warewolf.MergeParser
         public List<(Guid uniqueId, IDev2Activity activity, bool conflict)> GetDifferences()
         {
             var conflictList = new List<(Guid uniqueId, IDev2Activity activity, bool conflict)>();
-
             
             MergeHeadNodes = GetNodes(_mergeHead);
             HeadNodes = GetNodes(_head);
 
             var mergeHeadActivities = MergeHeadNodes.Select(i => i.GetProperty<IDev2Activity>("Action"));
             var headActivities = HeadNodes.Select(i => i.GetProperty<IDev2Activity>("Action"));
-            var equalItems = mergeHeadActivities.Intersect(headActivities);
+
             var nodesDifferentInMergeHead = mergeHeadActivities.Except(headActivities);
             var nodesDifferentInHead = headActivities.Except(mergeHeadActivities);
-
             var allDifferences = nodesDifferentInMergeHead.Union(nodesDifferentInHead);
 
-            foreach (var item in equalItems)
+            var isInOrder = mergeHeadActivities.Zip(headActivities, (act1, act2) => (act1,act2,act1.UniqueID == act2.UniqueID));
+            if (isInOrder.All(b => b.Item3))
             {
-                var equalItem = (Guid.Parse(item.UniqueID), item, false);
-                conflictList.Add(equalItem);
-            }
+                var equalItems = mergeHeadActivities.Intersect(headActivities);
 
+                foreach (var item in equalItems)
+                {
+                    var equalItem = (Guid.Parse(item.UniqueID), item, false);
+                    conflictList.Add(equalItem);
+                }
+            }
+            else
+            {
+                foreach(var item in isInOrder)
+                {
+                    if (!item.Item3)
+                    {
+                        var diffItem1 = (Guid.Parse(item.act1.UniqueID), item.act1, true);
+                        var diffItem2 = (Guid.Parse(item.act2.UniqueID), item.act2, true);
+                        conflictList.Add(diffItem1);
+                        conflictList.Add(diffItem2);
+                    }
+                }
+            }
+            
+                  
             foreach (var item in allDifferences)
             {
                 var diffItem = (Guid.Parse(item.UniqueID), item, true);
