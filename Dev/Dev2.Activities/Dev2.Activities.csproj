@@ -179,11 +179,15 @@
     <Compile Include="Comparer\ActivityFuncComparer.cs" />
     <Compile Include="Comparer\BaseConvertTOComparer.cs" />
     <Compile Include="Comparer\CaseConvertToComparer.cs" />
+    <Compile Include="Comparer\Dev2ActivityComparer.cs" />
     <Compile Include="Comparer\NameValueComparer.cs" />
     <Compile Include="Comparer\ServiceOutputMappingComparer.cs" />
     <Compile Include="Comparer\ServiceInputComparer.cs" />
     <Compile Include="Comparer\DataColumnMappingComparer.cs" />
     <Compile Include="Comparer\DelegateArgumentComparer.cs" />
+    <Compile Include="Comparer\EnhancedPluginComparer.cs" />
+    <Compile Include="Comparer\PluginActionComparer.cs" />
+    <Compile Include="Comparer\PluginConstructorComparer.cs" />
     <Compile Include="Comparer\SimplePluginComparer.cs" />
     <Compile Include="Comparer\SharepointReadListToComparer.cs" />
     <Compile Include="Comparer\SharepointSearchToComparer.cs" />

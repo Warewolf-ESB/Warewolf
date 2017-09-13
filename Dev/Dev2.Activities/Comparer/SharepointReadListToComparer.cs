@@ -3,12 +3,13 @@ using Dev2.Common.Interfaces;
 
 namespace Dev2.Comparer
 {
-    public class SharepointReadListToComparer : IEqualityComparer<ISharepointReadListTo>
+    internal class SharepointReadListToComparer : IEqualityComparer<ISharepointReadListTo>
     {
         public bool Equals(ISharepointReadListTo x, ISharepointReadListTo y)
         {
             if (x == null && y == null) return true;
-            return x != null && y != null && x.Equals(y);
+            if (x == null || y == null) return false;
+            return x.Equals(y);
         }
 
         public int GetHashCode(ISharepointReadListTo obj)
