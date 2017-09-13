@@ -120,23 +120,63 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Switch
             Assert.IsTrue(@equals);
         }
 
+
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        public void Equals_Given_DifferentSwitches_SwitchActivity_AreEqual()
+        public void Equals_Given_SameSwitches_DifferentArmCount_SwitchActivity_AreNotEqual()
+        {
+            //---------------Set up test pack-------------------
+            var uniqId = Guid.NewGuid().ToString();
+            var assign = new DsfMultiAssignActivity();
+            var switches = new Dictionary<string, IDev2Activity> { { "Arm", assign }, { "Arm1", assign }, { "Arm2", assign } };
+            var switches2 = new Dictionary<string, IDev2Activity> { { "Arm", assign }, { "Arm2", assign } };
+            var activity = new DsfSwitch() { UniqueID = uniqId, Switches = switches };
+            var activity1 = new DsfSwitch() { UniqueID = uniqId, Switches = switches2 };
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(activity);
+            //---------------Execute Test ----------------------
+            var @equals = activity.Equals(activity1);
+            //---------------Test Result -----------------------
+            Assert.IsFalse(@equals);
+        }
+
+        [TestMethod]
+        [Owner("Sanele Mthembu")]
+        public void Equals_Given_SameSwitches_DifferentIndexes_SwitchActivity_AreNotEqual()
+        {
+            //---------------Set up test pack-------------------
+            var uniqId = Guid.NewGuid().ToString();
+            var assign = new DsfMultiAssignActivity();
+            var switches = new Dictionary<string, IDev2Activity> { { "Arm2", assign }, { "Arm", assign } };
+            var switches2 = new Dictionary<string, IDev2Activity> { { "Arm", assign }, { "Arm2", assign } };
+            var activity = new DsfSwitch() { UniqueID = uniqId, Switches = switches };
+            var activity1 = new DsfSwitch() { UniqueID = uniqId, Switches = switches2 };
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(activity);
+            //---------------Execute Test ----------------------
+            var @equals = activity.Equals(activity1);
+            //---------------Test Result -----------------------
+            Assert.IsFalse(@equals);
+        }
+
+        [TestMethod]
+        [Owner("Sanele Mthembu")]
+        public void Equals_Given_DifferentSwitches_SwitchActivity_AreNotEqual()
         {
             //---------------Set up test pack-------------------
             var uniqId = Guid.NewGuid().ToString();
             var switches = new Dictionary<string, IDev2Activity>();
             var switches2 = new Dictionary<string, IDev2Activity> { { "", new TestActivity() } };
             var activity = new DsfSwitch() { UniqueID = uniqId, Switches = switches };
-            var activity1 = new DsfSwitch() { UniqueID = uniqId, Switches = switches };
+            var activity1 = new DsfSwitch() { UniqueID = uniqId, Switches = switches2 };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(activity);
             //---------------Execute Test ----------------------
             var @equals = activity.Equals(activity1);
             //---------------Test Result -----------------------
-            Assert.IsTrue(@equals);
+            Assert.IsFalse(@equals);
         }
+
         [TestMethod]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_SameSwitches_SwitchActivity_AreEqual()
@@ -160,7 +200,16 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Switch
         {
             //---------------Set up test pack-------------------
             var uniqId = Guid.NewGuid().ToString();
-            var inner = new DsfFlowSwitchActivity();
+            var newUniqueId = Guid.NewGuid().ToString();
+            var inner = new DsfFlowSwitchActivity()
+            {
+                UniqueID = newUniqueId
+                ,
+                ExpressionText = ""
+                ,
+                DisplayName = ""
+            };
+
             var activity = new DsfSwitch() { UniqueID = uniqId, Inner = inner };
             var activity1 = new DsfSwitch() { UniqueID = uniqId, Inner = inner };
             //---------------Assert Precondition----------------
@@ -180,11 +229,20 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Switch
             var inner = new DsfFlowSwitchActivity()
             {
                 UniqueID = Guid.NewGuid().ToString()
+                ,
+                ExpressionText = "A"
+                ,
+                DisplayName = "A"
             };
             var inner2 = new DsfFlowSwitchActivity()
             {
                 UniqueID = Guid.NewGuid().ToString()
+                ,
+                ExpressionText = "B"
+                ,
+                DisplayName = "B"
             };
+
             var activity = new DsfSwitch() { UniqueID = uniqId, Inner = inner };
             var activity1 = new DsfSwitch() { UniqueID = uniqId, Inner = inner2 };
             //---------------Assert Precondition----------------
@@ -194,6 +252,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Switch
             //---------------Test Result -----------------------
             Assert.IsFalse(@equals);
         }
+
         [TestMethod]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_DifferentDefault_SwitchActivity_AreNotEqual()

@@ -381,7 +381,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            return base.Equals(other) && Equals(ExpressionText, other.ExpressionText) && EqualityComparer<TResult>.Default.Equals(_theResult, other._theResult) && _dataListId.Equals(other._dataListId) && Equals(_dataObject, other._dataObject);
+            return base.Equals(other) 
+                && Equals(ExpressionText, other.ExpressionText) 
+                && EqualityComparer<TResult>.Default.Equals(_theResult, other._theResult) 
+                && _dataListId.Equals(other._dataListId) 
+                && Equals(_dataObject, other._dataObject);
         }
     }
 }
