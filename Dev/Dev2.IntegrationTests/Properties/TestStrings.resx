@@ -117,6 +117,48 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="inputMappingRequiredRegion" xml:space="preserve">
+    <value>&lt;Inputs&gt;
+	&lt;Input Name="Host" Source="host" DefaultValue="mail.bellevuenet.co.za"&gt;
+		&lt;Validator Type="Required" /&gt;
+	&lt;/Input&gt;
+	&lt;Input Name="Port" Source="port" DefaultValue="25"&gt;
+		&lt;Validator Type="Required" /&gt;
+	&lt;/Input&gt;
+	&lt;Input Name="From" Source="from" DefaultValue="DynamicServiceFramework@theunlimited.co.za"&gt;
+		&lt;Validator Type="Required" /&gt;
+	&lt;/Input&gt;
+	&lt;Input Name="To" Source="to"&gt;
+		&lt;Validator Type="Required" /&gt;
+	&lt;/Input&gt;
+	&lt;Input Name="Subject" Source="subject"&gt;
+		&lt;Validator Type="Required" /&gt;
+	&lt;/Input&gt;
+	&lt;Input Name="BodyType" Source="bodytype" DefaultValue="html"&gt;
+		&lt;Validator Type="Required" /&gt;
+	&lt;/Input&gt;
+	&lt;Input Name="Body" Source="body"&gt;
+		&lt;Validator Type="Required" /&gt;
+	&lt;/Input&gt;
+&lt;/Inputs&gt;</value>
+  </data>
+  <data name="sampleActivityInputMixed" xml:space="preserve">
+    <value>&lt;Inputs&gt;
+&lt;Input Name="Person" Source="[[ppl()]]" /&gt;
+&lt;Input Name="RecordCount" Source="[[recordCount]]" /&gt;
+&lt;/Inputs&gt;</value>
+  </data>
+  <data name="sampleActivityInputRecordSet" xml:space="preserve">
+    <value>&lt;Inputs&gt;
+&lt;Input Name="Person" Source="[[ppl()]]" /&gt;
+&lt;/Inputs&gt;</value>
+  </data>
+  <data name="sampleActivityInputScalar" xml:space="preserve">
+    <value>&lt;Inputs&gt;
+&lt;Input Name="fname" Source="[[firstName]]" /&gt;
+&lt;Input Name="lname" Source="[[lastName]]" /&gt;
+&lt;/Inputs&gt;</value>
+  </data>
   <data name="tokenizerBase" xml:space="preserve">
     <value>AB-CD-DE-FG-HI AB-CD-DE-FG-HI AB-CD-DE-FG-HI AB-CD-DE-FG-HI AB-CD-DE-FG-HI AB-CD-DE-FG-HI AB-CD-DE-FG-HI AB-CD-DE-FG-HI AB-CD-DE-FG-HI AB-CD-DE-FG-HI AB-CD-DE-FG-HI 
 AB-CD-DE-FG-HI AB-CD-DE-FG-HI AB-CD-DE-FG-HI AB-CD-DE-FG-HI AB-CD-DE-FG-HI AB-CD-DE-FG-HI AB-CD-DE-FG-HI AB-CD-DE-FG-HI AB-CD-DE-FG-HI AB-CD-DE-FG-HI AB-CD-DE-FG-HI 
@@ -3328,5 +3370,23 @@ AB-CD-DE-FG-HI AB-CD-DE-FG-HI AB-CD-DE-FG-HI AB-CD-DE-FG-HI AB-CD-DE-FG-HI AB-CD
 AB-CD-DE-FG-HI AB-CD-DE-FG-HI AB-CD-DE-FG-HI AB-CD-DE-FG-HI AB-CD-DE-FG-HI AB-CD-DE-FG-HI AB-CD-DE-FG-HI AB-CD-DE-FG-HI AB-CD-DE-FG-HI AB-CD-DE-FG-HI AB-CD-DE-FG-HI 
 AB-CD-DE-FG-HI AB-CD-DE-FG-HI AB-CD-DE-FG-HI AB-CD-DE-FG-HI AB-CD-DE-FG-HI AB-CD-DE-FG-HI AB-CD-DE-FG-HI AB-CD-DE-FG-HI AB-CD-DE-FG-HI AB-CD-DE-FG-HI AB-CD-DE-FG-HI 
 AB-CD-DE-FG-HI AB-CD-DE-FG-HI AB-CD-DE-FG-HI AB-CD-DE-FG-HI AB-CD-DE-FG-HI AB-CD-DE-FG-HI AB-CD-DE-FG-HI AB-CD-DE-FG-HI AB-CD-DE-FG-HI AB-CD-DE-FG-HI AB-CD-DE-FG-HI</value>
+  </data>
+  <data name="inputsWithEmptyToNullFalse" xml:space="preserve">
+    <value>&lt;Inputs&gt;
+&lt;Input Name="fname" Source="[[firstName]]" EmptyToNull="false"/&gt;
+&lt;Input Name="lname" Source="[[lastName]]" /&gt;
+&lt;/Inputs&gt;</value>
+  </data>
+  <data name="inputsWithEmptyToNullTrue" xml:space="preserve">
+    <value>&lt;Inputs&gt;
+&lt;Input Name="fname" Source="[[firstName]]" EmptyToNull="true"/&gt;
+&lt;Input Name="lname" Source="[[lastName]]" /&gt;
+&lt;/Inputs&gt;</value>
+  </data>
+  <data name="inputsWithEmptyToNullNotInXML" xml:space="preserve">
+    <value>&lt;Inputs&gt;
+&lt;Input Name="fname" Source="[[firstName]]" /&gt;
+&lt;Input Name="lname" Source="[[lastName]]" /&gt;
+&lt;/Inputs&gt;</value>
   </data>
 </root>
