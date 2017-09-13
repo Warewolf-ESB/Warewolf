@@ -7,7 +7,9 @@ namespace Dev2.Comparer
     {
         public bool Equals(AssignObjectDTO x, AssignObjectDTO y)
         {
-            return x != null && y != null && x.Equals(y);
+            if (x == null && y == null) return true;
+            if (x == null || y == null) return false;
+            return x.Equals(y);
         }
 
         public int GetHashCode(AssignObjectDTO obj)

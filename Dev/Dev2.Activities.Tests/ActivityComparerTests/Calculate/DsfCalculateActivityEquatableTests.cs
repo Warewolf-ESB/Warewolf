@@ -2,7 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
-namespace Dev2.Tests.Activities.ActivityComparerTests
+namespace Dev2.Tests.Activities.ActivityComparerTests.Calculate
 {
     [TestClass]
     public class DsfCalculateActivityEquatableTests

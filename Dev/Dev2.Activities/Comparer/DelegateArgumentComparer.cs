@@ -1,5 +1,4 @@
-﻿using System;
-using System.Activities;
+﻿using System.Activities;
 using System.Collections.Generic;
 
 namespace Dev2.Comparer

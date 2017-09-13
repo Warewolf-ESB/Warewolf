@@ -185,6 +185,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Internal Services\GetComputerNamesTests.cs" />
+    <Compile Include="Properties\TestStrings.Designer.cs" />
     <Compile Include="Server Refresh\ServerRefreshTests.cs" />
     <Compile Include="Server Test\InternalServices\FindDependenciesServiceTest.cs" />
     <Compile Include="Server Test\InternalServices\FindResourceServiceTest.cs" />
@@ -222,6 +223,7 @@
       <LastGenOutput>ParserStrings.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\TestStrings.resx" />
     <EmbeddedResource Include="TestResource.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>TestResource.Designer.cs</LastGenOutput>

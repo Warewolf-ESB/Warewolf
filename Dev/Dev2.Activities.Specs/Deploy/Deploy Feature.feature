@@ -4,10 +4,12 @@ In order to schedule workflows
 	I want to setup schedules
 
 Scenario: Deploy a renamed resource to localhost
-Given I am Connected to source server "tst-ci-remote"
+Given I am Connected to remote server "tst-ci-remote"
+And I reload the destination resources
 And the destination resource is "RenamedWorkFlowToDeploy"
 And I select resource "OriginalWorkFlowName" from source server
 And And the localhost resource is "OriginalWorkFlowName"
-When I Deploy resource to localhost
-And I reload the local resource
+When I Deploy resource to remote
+And I reload the destination resources
 Then the destination resource is "OriginalWorkFlowName"
+Then RollBack

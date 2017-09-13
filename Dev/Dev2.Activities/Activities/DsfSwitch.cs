@@ -10,10 +10,7 @@ using Dev2.Diagnostics;
 using Dev2.Interfaces;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Storage.Interfaces;
-
-
-
-
+using Dev2.Comparer;
 
 namespace Dev2.Activities
 {
@@ -195,7 +192,17 @@ namespace Dev2.Activities
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            return base.Equals(other) && Equals(Inner, other.Inner) && Equals(Switches, other.Switches) && Equals(Default, other.Default) && string.Equals(Switch, other.Switch) && string.Equals(Result, other.Result);
+            var defaultsAreEqual = Common.CommonEqualityOps.CollectionEquals(Default, other.Default, new Dev2ActivityComparer());
+            var innersComparer =  new FlowSwitchActivityComparer();            
+            var innersAreEqual = innersComparer.Equals(Inner, other.Inner);
+            var switchesComparer = new SwitchesActivityComparer();
+            var switchesAreEqual = switchesComparer.Equals(Switches, other.Switches);
+            return base.Equals(other) 
+                && innersAreEqual
+                && switchesAreEqual
+                && defaultsAreEqual
+                && string.Equals(Switch, other.Switch) 
+                && string.Equals(Result, other.Result);
         }
 
         public override bool Equals(object obj)

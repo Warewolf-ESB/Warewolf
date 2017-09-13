@@ -173,6 +173,9 @@
       <Link>Run Tests.ps1</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <Compile Include="ActivityComparerTests\Database\DsfSqlServerDatabaseActivityEqualityTests.cs" />
+    <Compile Include="ActivityComparerTests\Switch\DsfSwitchActivityComparerTest.cs" />
+    <Compile Include="ActivityComparerTests\Unique\DsfUniqueActivityComparerTest.cs" />
     <Compile Include="ActivityComparerTests\Activity\DsfActivityComparerTest.cs" />
     <Compile Include="ActivityComparerTests\BaseConvert\BaseConvertTOEqualityTests.cs" />
     <Compile Include="ActivityComparerTests\CaseConvert\DsfCaseConvertActivityEquatableTests.cs" />
@@ -185,6 +188,8 @@
     <Compile Include="ActivityComparerTests\BaseConvert\DsfBaseConvertActivityEquatableTests.cs" />
     <Compile Include="ActivityComparerTests\Calculate\DsfCalculateActivityEquatableTests.cs" />
     <Compile Include="ActivityComparerTests\ComDll\DsfComDllActivityEqualityTests.cs" />
+    <Compile Include="ActivityComparerTests\DsfDecision\DsfDecisionEqualityTests.cs" />
+    <Compile Include="ActivityComparerTests\ForEach\DsfForEachActivityComparerTests.cs" />
     <Compile Include="ActivityComparerTests\Sharepoint\SharepointDeleteFileActivityEqualityTests.cs" />
     <Compile Include="ActivityComparerTests\Sharepoint\SharepointDeleteListItemActivityEqualityTests.cs" />
     <Compile Include="ActivityComparerTests\Sharepoint\SharepointFileDownLoadActivityEqualityTests.cs" />

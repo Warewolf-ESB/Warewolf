@@ -74,7 +74,7 @@ namespace Dev2.Activities.RabbitMQ.Publish
 
         internal IModel Channel { get; set; }
 
-        internal RabbitMQSource RabbitMQSource { get; set; }
+        public RabbitMQSource RabbitMQSource { get; set; }
 
         #region Overrides of DsfBaseActivity
 
@@ -129,7 +129,7 @@ namespace Dev2.Activities.RabbitMQ.Publish
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            var isSourceEqual = CommonEqualityOps.IsSourceEqual<IResource>(RabbitMQSource,other.RabbitMQSource);
+            var isSourceEqual = CommonEqualityOps.AreObjectsEqual<IResource>(RabbitMQSource,other.RabbitMQSource);
             return base.Equals(other)
                 && RabbitMQSourceResourceId.Equals(other.RabbitMQSourceResourceId)
                 && string.Equals(QueueName, other.QueueName)
