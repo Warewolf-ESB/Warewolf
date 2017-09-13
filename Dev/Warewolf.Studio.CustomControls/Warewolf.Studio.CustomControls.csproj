@@ -123,6 +123,7 @@
     <Compile Include="DataPresenterHelpers.cs" />
     <Compile Include="DragDropExtension.cs" />
     <Compile Include="DoubleClickBehavior.cs" />
+    <Compile Include="ExpanderToBooleanConverter.cs" />
     <Compile Include="PasswordBoxAssistant.cs" />
     <Compile Include="SearchTextBox.cs" />
     <Compile Include="TextBoxColumn.cs" />

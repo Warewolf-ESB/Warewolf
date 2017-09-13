@@ -4,6 +4,7 @@ using System;
 using System.Activities.Presentation.View;
 using System.Windows;
 using System.Windows.Controls;
+using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.CustomControls
 {
@@ -27,6 +28,33 @@ namespace Dev2.CustomControls
                     {
                         template.DataContext = item;
                         return TemplateGenerator.CreateDataTemplate(() => template);
+                    }
+                }
+                else
+                {
+                    var assemblyFullName = "Dev2.Activities.Designers, Version=0.0.6465.12612, Culture=neutral, PublicKeyToken=null";
+                    var namespacePath = "Dev2.Activities.Designers2";
+                    var type = vm.ModelItem.ItemType;
+
+                    if (type == typeof(DsfFlowDecisionActivity))
+                    {
+                        var inst = Activator.CreateInstance(assemblyFullName, namespacePath + ".Decision.Large");
+                        template = inst.Unwrap() as ActivityDesignerTemplate;
+                        if (template != null)
+                        {
+                            template.DataContext = item;
+                            return TemplateGenerator.CreateDataTemplate(() => template);
+                        }
+                    }
+                    if (type == typeof(DsfFlowSwitchActivity))
+                    {
+                        var inst = Activator.CreateInstance(assemblyFullName, namespacePath + ".Switch.ConfigureSwitch");
+                        template = inst.Unwrap() as ActivityDesignerTemplate;
+                        if (template != null)
+                        {
+                            template.DataContext = item;
+                            return TemplateGenerator.CreateDataTemplate(() => template);
+                        }
                     }
                 }
             }
