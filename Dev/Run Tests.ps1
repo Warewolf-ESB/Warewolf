@@ -404,7 +404,7 @@ function Move-Artifacts-To-TestResults([bool]$DotCover, [bool]$Server, [bool]$St
         while (!(Test-Path $ServerSnapshot) -and $Timeout++ -lt 10) {
             sleep 10
         }
-        $locked = Wait-For_FileUnlock $ServerSnapshot
+        $locked = Wait-For-FileUnlock $ServerSnapshot
         if (!($locked)) {
             Write-Host Moving Server coverage snapshot file from $ServerSnapshot to $TestsResultsPath\$JobName Server DotCover.dcvr
             Move-File-To-TestResults $ServerSnapshot "$JobName Server DotCover.dcvr"
