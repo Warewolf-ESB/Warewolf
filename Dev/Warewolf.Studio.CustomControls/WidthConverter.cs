@@ -83,4 +83,54 @@ namespace Warewolf.Studio.CustomControls
             throw new NotImplementedException();
         }
     }
+
+    public class MergeWidthConverter : IMultiValueConverter
+    {
+        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+        {
+
+            try
+            {
+                var xamDataTreeNodeControl = values[0] as TreeViewItem;
+                if (xamDataTreeNodeControl != null)
+                {
+                    return xamDataTreeNodeControl.ActualWidth - 22;
+                }
+                return 22;
+            }
+            catch (Exception)
+            {
+                return 22;
+            }
+        }
+
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+    public class MergeHeaderTemplateWidthConverter : IMultiValueConverter
+    {
+        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+        {
+            try
+            {
+                var expander = values[0] as Expander;
+                if (expander != null)
+                {
+                    return expander.ActualWidth - 80;
+                }
+                return double.NaN;
+            }
+            catch (Exception)
+            {
+                return double.NaN;
+            }
+        }
+
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }
