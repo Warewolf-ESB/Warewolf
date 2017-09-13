@@ -372,13 +372,22 @@ namespace Dev2.Activities
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            var isTrueArmTheSame = CommonEqualityOps.CollectionEquals(TrueArm, TrueArm, new Dev2ActivityComparer());
-            var isFalseArmArmTheSame = CommonEqualityOps.CollectionEquals(FalseArm, FalseArm, new Dev2ActivityComparer());
+            var isTrueArmTheSame = CommonEqualityOps.CollectionEquals(TrueArm, other.TrueArm, new Dev2ActivityComparer());
+            if (!isTrueArmTheSame)
+            {
+                return false;
+            }
+            var isFalseArmArmTheSame = CommonEqualityOps.CollectionEquals(FalseArm, other.FalseArm, new Dev2ActivityComparer());
+            if (!isFalseArmArmTheSame)
+            {
+                return false;
+            }
             var areConditionsEqual = CommonEqualityOps.AreObjectsEqual(Conditions, other.Conditions);
+            if (!areConditionsEqual)
+            {
+                return false;
+            }
             return base.Equals(other)
-                && isTrueArmTheSame
-                && isFalseArmArmTheSame
-                && areConditionsEqual
                 && string.Equals(Result, other.Result)
                 && And == other.And;
         }
@@ -396,7 +405,6 @@ namespace Dev2.Activities
             unchecked
             {
                 int hashCode = base.GetHashCode();
-                hashCode = (hashCode * 397) ^ (_inner != null ? _inner.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (TrueArm != null ? TrueArm.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (FalseArm != null ? FalseArm.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (Conditions != null ? Conditions.GetHashCode() : 0);
