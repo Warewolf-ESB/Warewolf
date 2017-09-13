@@ -185,6 +185,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Internal Services\GetComputerNamesTests.cs" />
+    <Compile Include="Properties\TestStrings.Designer.cs" />
     <Compile Include="Server Refresh\ServerRefreshTests.cs" />
     <Compile Include="Server Test\InternalServices\FindDependenciesServiceTest.cs" />
     <Compile Include="Server Test\InternalServices\FindResourceServiceTest.cs" />

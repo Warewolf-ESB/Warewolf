@@ -38,7 +38,7 @@ namespace Dev2.Integration.Tests
         [TestCategory("Load Tests")]
         public void Single_Token_Perfomance_Op()
         {
-            Dev2TokenizerBuilder dtb = new Dev2TokenizerBuilder { ToTokenize = TestStrings.tokenizerBase };
+            Dev2TokenizerBuilder dtb = new Dev2TokenizerBuilder { ToTokenize = Properties.TestStrings.tokenizerBase };
 
 
             dtb.AddTokenOp("-", false);
@@ -67,7 +67,7 @@ namespace Dev2.Integration.Tests
         [TestCategory("Load Tests")]
         public void Three_Token_Perfomance_Op()
         {
-            Dev2TokenizerBuilder dtb = new Dev2TokenizerBuilder { ToTokenize = TestStrings.tokenizerBase };
+            Dev2TokenizerBuilder dtb = new Dev2TokenizerBuilder { ToTokenize = Properties.TestStrings.tokenizerBase };
 
 
             dtb.AddTokenOp("AB-", false);

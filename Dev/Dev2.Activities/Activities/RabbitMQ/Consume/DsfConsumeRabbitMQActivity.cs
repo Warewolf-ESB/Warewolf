@@ -126,7 +126,7 @@ namespace Dev2.Activities.RabbitMQ.Consume
             return false;
         }
 
-        internal RabbitMQSource RabbitSource { get; set; }
+        public RabbitMQSource RabbitSource { get; set; }
         public bool ShouldSerializeRabbitSource()
         {
             return false;
