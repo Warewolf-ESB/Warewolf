@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:customcontrols="clr-namespace:Dev2.CustomControls"
+             xmlns:workflow="clr-namespace:Dev2.Studio.Views.Workflow"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>
@@ -90,17 +91,10 @@
             </Grid.RowDefinitions>
             <StackPanel Background="{StaticResource WareWolfMenuBrush}" HorizontalAlignment="Stretch">
                 <TextBlock Margin="5" Text="Merge" Style="{StaticResource SourceHeader}" />
+                <Button Command="{Binding AddAnItem}">Add Something</Button>
             </StackPanel>
             <Grid Grid.Row="1">
-                <ListBox Grid.Column="0" x:Name="MergeListBox">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <Grid>
-
-                            </Grid>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
+                <workflow:WorkflowDesignerView DataContext="{Binding WorkflowDesignerViewModel}" />
             </Grid>
         </Grid>
     </Grid>

@@ -2837,6 +2837,18 @@ namespace Dev2.Studio.ViewModels.Workflow
             resourceModel.IsWorkflowSaved = true;
         }
 
+        public void AddItem(FlowStep step)
+        {
+            
+            var builder = WorkflowHelper.GetActivityBuilder(_modelService);
+            var chart = builder.Implementation as Flowchart;
+            chart.StartNode = step;
+
+            //var defaultParent = _modelService.Find(_modelService.Root, typeof(Flowchart)).FirstOrDefault();
+            //var mi = ModelItemUtils.CreateModelItem(defaultParent, step);
+            //PerformAddItems(mi);
+        }
+
         #region Implementation of IWorkflowDesignerViewModel
 
         public System.Action WorkflowChanged { get; set; }
