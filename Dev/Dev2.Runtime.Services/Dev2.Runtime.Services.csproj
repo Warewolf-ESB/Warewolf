@@ -181,6 +181,7 @@
     <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
+    <Compile Include="ESB\Management\Services\TaskExtentions.cs" />
     <Compile Include="IDbSources.cs" />
     <Compile Include="Interfaces\IConnections.cs" />
     <Compile Include="Interfaces\IHubFactory.cs" />
