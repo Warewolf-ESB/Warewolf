@@ -127,10 +127,10 @@
     <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
-	<None Include="..\Run Tests.ps1">
+    <None Include="..\Run Tests.ps1">
       <Link>Run Tests.ps1</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  <Visible>False</Visible>
+      <Visible>False</Visible>
     </None>
     <Compile Include="DataListConversionUtils.cs" />
     <Compile Include="DataListItem.cs" />
@@ -145,6 +145,7 @@
     <Compile Include="Decisions\Operations\NotRegex.cs" />
     <Compile Include="Decisions\Operations\NotStartsWith.cs" />
     <Compile Include="Dev2Column.cs" />
+    <Compile Include="Dev2DecisionComparer.cs" />
     <Compile Include="IComplexObject.cs" />
     <Compile Include="IDataListModel.cs" />
     <Compile Include="IIndexIterator.cs" />
@@ -287,6 +288,7 @@
     <Compile Include="Util\Scrubber.cs" />
     <Compile Include="Util\ScrubType.cs" />
     <Compile Include="Util\XmlHelper.cs" />
+    <Compile Include="WarewolfAtomComparer.cs" />
     <Compile Include="WarewolfIterator.cs" />
   </ItemGroup>
   <ItemGroup>

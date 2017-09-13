@@ -1,18 +1,20 @@
 ﻿using System.Collections.Generic;
-using Dev2.TO;
 
 namespace Dev2.Comparer
 {
-    internal class Dev2ActivityComparer : IEqualityComparer<IDev2Activity>
+    internal class Dev2ActivityComparer:IEqualityComparer<IDev2Activity>
     {
         public bool Equals(IDev2Activity x, IDev2Activity y)
         {
-            return x != null && y != null && x.Equals(y);
+            if (x == null && y == null) return true;
+            if (x == null || y == null) return false;
+
+            return x.Equals(y);
         }
 
         public int GetHashCode(IDev2Activity obj)
         {
-            return 1;
+            return obj.GetHashCode();
         }
     }
 }
