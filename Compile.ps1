@@ -158,66 +158,47 @@ if ($AutoVersion.IsPresent -or $CustomVersion -ne "") {
     # Write version files
     $CSharpVersionFile = "$PSScriptRoot\Dev\AssemblyCommonInfo.cs"
     Write-Host Writing C Sharp version file to `"$CSharpVersionFile`" as...
-    $Line1 = "using System.Reflection;"
-    $Line2 = "using System.Runtime.CompilerServices;"
-    $Line3 = "[assembly: AssemblyCompany(""Warewolf"")]"
-    $Line4 = "[assembly: AssemblyProduct(""Warewolf"")]"
-    $Line5 = "[assembly: AssemblyCopyright(""Copyright Warewolf " + (Get-Date).year + """)]"
-    $Line6 = "[assembly: AssemblyVersion(""" + $FullVersionString + """)]"
-    $Line7 = "[assembly: AssemblyInformationalVersion(""" + $GitCommitTime + " " + $GitCommitID + " " + $GitBranchName + """)]"
-    $Line8 = "[assembly: InternalsVisibleTo(""Dev2.Activities.Designers.Tests"")]"
-    $Line9 = "[assembly: InternalsVisibleTo(""Warewolf.Studio.ViewModels.Tests"")]"
-    $Line10 = "[assembly: InternalsVisibleTo(""Dev2.Runtime.Tests"")]"
-    $Line11 = "[assembly: InternalsVisibleTo(""Dev2.Studio.Core.Tests"")]"
-    Write-Host $Line1
-    $Line1 | Out-File -LiteralPath $CSharpVersionFile -Encoding utf8 -Force
-    Write-Host $Line2
-    $Line2 | Out-File -LiteralPath $CSharpVersionFile -Encoding utf8 -Append
-    Write-Host $Line3
-    $Line3 | Out-File -LiteralPath $CSharpVersionFile -Encoding utf8 -Append
-    Write-Host $Line4
-    $Line4 | Out-File -LiteralPath $CSharpVersionFile -Encoding utf8 -Append
-    Write-Host $Line5
-    $Line5 | Out-File -LiteralPath $CSharpVersionFile -Encoding utf8 -Append
-    Write-Host $Line6
-    $Line6 | Out-File -LiteralPath $CSharpVersionFile -Encoding utf8 -Append
-    Write-Host $Line7
-    $Line7 | Out-File -LiteralPath $CSharpVersionFile -Encoding utf8 -Append
-    Write-Host $Line8
-    $Line8 | Out-File -LiteralPath $CSharpVersionFile -Encoding utf8 -Append
-    Write-Host $Line9
-    $Line9 | Out-File -LiteralPath $CSharpVersionFile -Encoding utf8 -Append
-    Write-Host $Line10
-    $Line10 | Out-File -LiteralPath $CSharpVersionFile -Encoding utf8 -Append
-    Write-Host $Line11
-    $Line11 | Out-File -LiteralPath $CSharpVersionFile -Encoding utf8 -Append
+    $CSharpVersionFileContents = @"
+using System.Reflection;
+using System.Runtime.CompilerServices;
+[assembly: AssemblyCompany("Warewolf")]
+[assembly: AssemblyProduct("Warewolf")]
+[assembly: AssemblyCopyright("Copyright Warewolf 
+"@ + (Get-Date).year + @"
+")]
+[assembly: AssemblyVersion("
+"@ + $FullVersionString + @"
+")]
+[assembly: AssemblyInformationalVersion("
+"@ + $GitCommitTime + " " + $GitCommitID + " " + $GitBranchName + @"
+")]
+[assembly: InternalsVisibleTo("Dev2.Activities.Designers.Tests")]
+[assembly: InternalsVisibleTo("Warewolf.Studio.ViewModels.Tests")]
+[assembly: InternalsVisibleTo("Dev2.Runtime.Tests")]
+[assembly: InternalsVisibleTo("Dev2.Studio.Core.Tests")]
+"@
+    Write-Host $CSharpVersionFileContents
+    $CSharpVersionFileContents | Out-File -LiteralPath $CSharpVersionFile -Encoding utf8 -Force
     Write-Host C Sharp version file written to `"$CSharpVersionFile`".
 
     $FSharpVersionFile = "$PSScriptRoot\Dev\AssemblyCommonInfo.fs"
     Write-Host Writing F Sharp version file to `"$FSharpVersionFile`" as...
-    $Line1 = "namespace Warewolf.FSharp"
-    $Line2 = "open System.Reflection;"
-    $Line3 = "[<assembly: AssemblyCompany(""Warewolf"")>]"
-    $Line4 = "[<assembly: AssemblyProduct(""Warewolf"")>]"
-    $Line5 = "[<assembly: AssemblyCopyright(""Copyright Warewolf " + (Get-Date).year + """)>]"
-    $Line6 = "[<assembly: AssemblyVersion(""" + $FullVersionString + """)>]"
-    # Ashley: F# Compiler thinks this is invalid for some reason
-    #$Line7 = "[<assembly: AssemblyInformationalVersion(""" + $GitCommitTime + " " + $GitCommitID + """)>]"
-    $Line7 = "do()"
-    Write-Host $Line1
-    $Line1 | Out-File -LiteralPath $FSharpVersionFile -Encoding utf8 -Force
-    Write-Host $Line2
-    $Line2 | Out-File -LiteralPath $FSharpVersionFile -Encoding utf8 -Append
-    Write-Host $Line3
-    $Line3 | Out-File -LiteralPath $FSharpVersionFile -Encoding utf8 -Append
-    Write-Host $Line4
-    $Line4 | Out-File -LiteralPath $FSharpVersionFile -Encoding utf8 -Append
-    Write-Host $Line5
-    $Line5 | Out-File -LiteralPath $FSharpVersionFile -Encoding utf8 -Append
-    Write-Host $Line6
-    $Line6 | Out-File -LiteralPath $FSharpVersionFile -Encoding utf8 -Append
-    Write-Host $Line7
-    $Line7 | Out-File -LiteralPath $FSharpVersionFile -Encoding utf8 -Append
+    $FSharpVersionFileContents = @"
+namespace Warewolf.FSharp
+namespace Warewolf.FSharp
+open System.Reflection;
+[<assembly: AssemblyCompany("Warewolf")>]
+[<assembly: AssemblyProduct("Warewolf")>]
+[<assembly: AssemblyCopyright("Copyright Warewolf 
+"@ + (Get-Date).year + @"
+")>]
+[<assembly: AssemblyVersion(" 
+"@ + $FullVersionString + @"
+")>]
+do()
+"@
+    Write-Host $FSharpVersionFileContents
+    $FSharpVersionFileContents | Out-File -LiteralPath $FSharpVersionFile -Encoding utf8 -Force
     Write-Host F Sharp version file written to `"$FSharpVersionFile`".
     Write-Host Warewolf version written successfully! For more info about Warewolf versioning see: http://warewolf.io/ESB-blog/artefact-sharing-efficient-ci/
 }
