@@ -96,6 +96,11 @@ namespace Dev2.Runtime.ESB.Management.Services
                 IExplorerRepositoryResult error = new ExplorerRepositoryResult(ExecStatus.Fail, e.Message);
                 return serializer.SerializeToBuilder(error);
             }
+            finally
+            {
+                var exeManager = CustomContainer.Get<IExecutionManager>();
+                exeManager?.StopRefresh();
+            }
         }
 
         public DynamicService CreateServiceEntry()
