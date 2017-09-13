@@ -97,9 +97,9 @@
     <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
-	<None Include="..\Run Tests.ps1">
+    <None Include="..\Run Tests.ps1">
       <Link>Run Tests.ps1</Link>
-	  <Visible>False</Visible>
+      <Visible>False</Visible>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <Compile Include="Collections\ObservableDictionary.cs" />
@@ -132,7 +132,6 @@
     <Compile Include="PerformanceCounters\Management\PerformanceCounterTo.cs" />
     <Compile Include="PerformanceCounters\Management\WarewolfPerformanceCounterManager.cs" />
     <Compile Include="PerformanceCounters\Management\WarewolfPerformanceCounterRegister.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\Errors\ActionableErrorInfo.cs" />
     <Compile Include="Providers\Errors\ErrorInfo.cs" />
     <Compile Include="Providers\Events\EventPublisher.cs" />
