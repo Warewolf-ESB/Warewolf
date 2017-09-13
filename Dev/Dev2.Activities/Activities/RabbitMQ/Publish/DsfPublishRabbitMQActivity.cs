@@ -74,7 +74,7 @@ namespace Dev2.Activities.RabbitMQ.Publish
 
         internal IModel Channel { get; set; }
 
-        internal RabbitMQSource RabbitMQSource { get; set; }
+        public RabbitMQSource RabbitMQSource { get; set; }
 
         #region Overrides of DsfBaseActivity
 
