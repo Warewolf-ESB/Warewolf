@@ -93,7 +93,6 @@
       <DependentUpon>Wcf Source.feature</DependentUpon>
     </Compile>
     <Compile Include="WcfSourceSteps.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -140,6 +139,9 @@
       <Project>{CB0F5535-5E1D-41F9-A23C-F59FDC816B75}</Project>
       <Name>Warewolf.UIBindingTests.Core</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

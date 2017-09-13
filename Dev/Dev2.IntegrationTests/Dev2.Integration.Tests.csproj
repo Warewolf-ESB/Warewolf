@@ -222,6 +222,7 @@
       <LastGenOutput>ParserStrings.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\TestStrings.resx" />
     <EmbeddedResource Include="TestResource.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>TestResource.Designer.cs</LastGenOutput>

@@ -182,7 +182,6 @@
     <Compile Include="Comparer\ActivityFuncComparer.cs" />
     <Compile Include="Comparer\BaseConvertTOComparer.cs" />
     <Compile Include="Comparer\CaseConvertToComparer.cs" />
-    <Compile Include="Comparer\Dev2ActivityComparer.cs" />
     <Compile Include="Comparer\NameValueComparer.cs" />
     <Compile Include="Comparer\ServiceOutputMappingComparer.cs" />
     <Compile Include="Comparer\ServiceInputComparer.cs" />
