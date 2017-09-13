@@ -6,6 +6,7 @@
              xmlns:customcontrols="clr-namespace:Dev2.CustomControls"
              xmlns:customcontrols1="clr-namespace:Warewolf.Studio.CustomControls;assembly=Warewolf.Studio.CustomControls"
              xmlns:interfaces="clr-namespace:Dev2.Common.Interfaces;assembly=Dev2.Common.Interfaces"
+             xmlns:workflow="clr-namespace:Dev2.Studio.Views.Workflow"
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance IMergeWorkflowViewModel}"
              d:DesignHeight="300" d:DesignWidth="300">
@@ -289,15 +290,7 @@
                 <TextBlock Margin="5" Text="Merge" Style="{StaticResource SourceHeader}" />
             </StackPanel>
             <Grid Grid.Row="1">
-                <ListBox Grid.Column="0" x:Name="MergeListBox">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <Grid>
-
-                            </Grid>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
+                <workflow:WorkflowDesignerView DataContext="{Binding WorkflowDesignerViewModel}" />
             </Grid>
         </Grid>
     </Grid>
