@@ -19,6 +19,12 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Core;
 using System.Collections.ObjectModel;
 using Dev2.Studio.Core.Models.DataList;
+using Dev2.Studio.Core.Utils;
+using Dev2.Studio.Interfaces;
+using Dev2.Studio.Core.Factories;
+using Dev2.Studio.ViewModels.Workflow;
+using Dev2.Runtime.Configuration.ViewModels.Base;
+using System.Activities.Statements;
 
 namespace Dev2.ViewModels.Merge
 {
@@ -32,8 +38,43 @@ namespace Dev2.ViewModels.Merge
             DifferenceConflictViewModel = new DifferenceConflictViewModel();
             DifferenceConflictViewModel.WorkflowName = "Difference WorkflowName";
             DifferenceConflictViewModel.WorkflowLocation = "Difference WorkflowLocation";
+
+            DataListSingleton.SetDataList(new DataListViewModel());
+            var act = new DsfMultiAssignActivity();
+            act.FieldsCollection.Add(new ActivityDTO("[[a]]", "1", 1));
+            var mi = ModelItemUtils.CreateModelItem(act);
+            CurrentMergeList = new List<ActivityDesignerViewModel>
+            {
+                new MultiAssignDesignerViewModel(mi)
+                {
+                    ShowLarge = true
+                },
+                new CommentDesignerViewModel(ModelItemUtils.CreateModelItem(new DsfCommentActivity())),
+                new DecisionDesignerViewModel(ModelItemUtils.CreateModelItem(new DsfFlowDecisionActivity()))
+            };
+
+            string newWorflowName = NewWorkflowNames.Instance.GetNext();
+
+            IContextualResourceModel tempResource = ResourceModelFactory.CreateResourceModel(CustomContainer.Get<IShellViewModel>().ActiveServer, @"WorkflowService",
+                newWorflowName);
+            tempResource.Category = @"Unassigned\" + newWorflowName;
+            tempResource.ResourceName = newWorflowName;
+            tempResource.DisplayName = newWorflowName;
+            tempResource.IsNewWorkflow = true;
+
+            WorkflowDesignerViewModel = new WorkflowDesignerViewModel(tempResource, true);
+            AddAnItem = new DelegateCommand(o => {
+
+                var step = new FlowStep { Action = act };
+                WorkflowDesignerViewModel.AddItem(step);
+            });
         }
-        
+
+        public System.Windows.Input.ICommand AddAnItem { get; set; }
+
+        public List<ActivityDesignerViewModel> CurrentMergeList { get; set; }
+        public WorkflowDesignerViewModel WorkflowDesignerViewModel { get; set; }
+
         public IConflictViewModel CurrentConflictViewModel { get; set; }
         public IConflictViewModel DifferenceConflictViewModel { get; set; }
     }
