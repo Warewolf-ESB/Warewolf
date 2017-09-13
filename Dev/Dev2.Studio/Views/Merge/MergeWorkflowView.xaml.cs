@@ -10,6 +10,6 @@ namespace Dev2.Views.Merge
         public MergeWorkflowView()
         {
             InitializeComponent();
-        }
+        }         
     }
 }
