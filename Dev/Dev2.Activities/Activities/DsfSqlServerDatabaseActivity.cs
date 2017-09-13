@@ -109,7 +109,10 @@ namespace Dev2.Activities
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            return base.Equals(other) && Equals(ServiceExecution, other.ServiceExecution) && string.Equals(ProcedureName, other.ProcedureName) && string.Equals(ExecuteActionString, other.ExecuteActionString);
+            return base.Equals(other) 
+                && Equals(ServiceExecution, other.ServiceExecution) 
+                && string.Equals(ProcedureName, other.ProcedureName) 
+                && string.Equals(ExecuteActionString, other.ExecuteActionString);
         }
 
         public override bool Equals(object obj)
