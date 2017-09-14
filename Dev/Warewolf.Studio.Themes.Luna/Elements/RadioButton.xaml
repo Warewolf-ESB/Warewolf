@@ -184,7 +184,11 @@
             </Setter.Value>
         </Setter>
     </Style>
-
+    <Style x:Key="MergeRadioButtonStyle" TargetType="RadioButton" BasedOn="{StaticResource RadioButtonStyle}">
+        <Setter Property="Padding" Value="0,0,0,0" />
+        <Setter Property="MinHeight" Value="20" />
+        <Setter Property="MinWidth" Value="10" />
+    </Style>
 
 
     <!--  *********************************  Implicit Styles  *********************************  -->
