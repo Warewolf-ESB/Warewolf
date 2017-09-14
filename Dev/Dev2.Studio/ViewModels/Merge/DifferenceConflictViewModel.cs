@@ -29,7 +29,7 @@ namespace Dev2.ViewModels.Merge
 
             //ASSIGN
             MergeToolModel = new MergeToolModel();
-            var mergeAssignVM = MergeToolModel as MergeToolModel;
+            var mergeAssignVM = (MergeToolModel) MergeToolModel;
             mergeAssignVM.IsMergeExpanded = true;
             mergeAssignVM.IsMergeExpanderEnabled = true;
             mergeAssignVM.MergeDescription = "Difference Assign (0)";
@@ -41,7 +41,7 @@ namespace Dev2.ViewModels.Merge
             //DECISION
             var decision = new DsfFlowDecisionActivity();
             MergeToolModel = new MergeToolModel();
-            var mergeDecisionVM = MergeToolModel as MergeToolModel;
+            var mergeDecisionVM = (MergeToolModel) MergeToolModel;
             mergeDecisionVM.IsMergeExpanded = true;
             mergeDecisionVM.IsMergeExpanderEnabled = true;
             mergeDecisionVM.MergeDescription = "Difference Decision (0)";
