@@ -364,7 +364,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            return base.Equals(other) && string.Equals(FieldsToSearch, other.FieldsToSearch) && string.Equals(Find, other.Find) && string.Equals(ReplaceWith, other.ReplaceWith) && CaseMatch == other.CaseMatch && string.Equals(Result, other.Result);
+            return base.Equals(other) 
+                && string.Equals(FieldsToSearch, other.FieldsToSearch) 
+                && string.Equals(Find, other.Find) 
+                && string.Equals(ReplaceWith, other.ReplaceWith) 
+                && CaseMatch == other.CaseMatch 
+                && string.Equals(Result, other.Result);
         }
 
         public override bool Equals(object obj)

@@ -381,7 +381,12 @@ namespace Dev2.Activities
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            return base.Equals(other) && string.Equals(Length, other.Length) && RandomType == other.RandomType && string.Equals(From, other.From) && string.Equals(To, other.To) && string.Equals(Result, other.Result);
+            return base.Equals(other) 
+                && string.Equals(Length, other.Length) 
+                && RandomType == other.RandomType 
+                && string.Equals(From, other.From) 
+                && string.Equals(To, other.To) 
+                && string.Equals(Result, other.Result);
         }
 
         public override bool Equals(object obj)

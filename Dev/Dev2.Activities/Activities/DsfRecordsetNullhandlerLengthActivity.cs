@@ -245,7 +245,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            return base.Equals(other) && string.Equals(RecordsetName, other.RecordsetName) && string.Equals(RecordsLength, other.RecordsLength) && TreatNullAsZero == other.TreatNullAsZero;
+            return base.Equals(other) 
+                && string.Equals(RecordsetName, other.RecordsetName) 
+                && string.Equals(RecordsLength, other.RecordsLength) 
+                && TreatNullAsZero == other.TreatNullAsZero;
         }
 
         public override bool Equals(object obj)

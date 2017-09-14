@@ -24,10 +24,7 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Core;
 using Warewolf.Resource.Messages;
 using Warewolf.Storage.Interfaces;
-
-
-
-
+using Dev2.Comparer;
 
 namespace Dev2.Activities
 {
@@ -307,7 +304,8 @@ namespace Dev2.Activities
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            return base.Equals(other) && Equals(_innerSequence, other._innerSequence) && string.Equals(_previousParentID, other._previousParentID) && _originalUniqueID.Equals(other._originalUniqueID) && Equals(Activities, other.Activities);
+            return base.Equals(other) 
+                && CommonEqualityOps.CollectionEquals(Activities, other.Activities, new ActivityComparer());
         }
 
         public override bool Equals(object obj)

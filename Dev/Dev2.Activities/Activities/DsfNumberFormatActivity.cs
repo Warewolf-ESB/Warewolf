@@ -311,7 +311,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            return base.Equals(other) && string.Equals(Expression, other.Expression) && string.Equals(RoundingType, other.RoundingType) && string.Equals(RoundingDecimalPlaces, other.RoundingDecimalPlaces) && string.Equals(DecimalPlacesToShow, other.DecimalPlacesToShow) && string.Equals(Result, other.Result);
+            return base.Equals(other) 
+                && string.Equals(Expression, other.Expression) 
+                && string.Equals(RoundingType, other.RoundingType) 
+                && string.Equals(RoundingDecimalPlaces, other.RoundingDecimalPlaces) 
+                && string.Equals(DecimalPlacesToShow, other.DecimalPlacesToShow) 
+                && string.Equals(Result, other.Result);
         }
 
         public override bool Equals(object obj)

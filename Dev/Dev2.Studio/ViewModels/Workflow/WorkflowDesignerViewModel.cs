@@ -2841,12 +2841,21 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public void AddItem(FlowStep step)
         {
-            
-            var builder = WorkflowHelper.GetActivityBuilder(_modelService);
-            var chart = builder.Implementation as Flowchart;
-            chart.StartNode = step;
 
-            //var defaultParent = _modelService.Find(_modelService.Root, typeof(Flowchart)).FirstOrDefault();
+            ModelItem root = _wd.Context.Services.GetService<ModelService>().Root;
+            var chart = _wd.Context.Services.GetService<ModelService>().Find(root, typeof(Flowchart)).FirstOrDefault();
+            using (ModelEditingScope editingScope = chart.BeginEdit("Nodes"))
+            {
+                chart.Properties["Nodes"].Collection.Add(step);
+                editingScope.Complete();
+                //ViewStateService service = _wd.Context.Services.GetService<ViewStateService>();                                                                         
+                //ModelItem temp = chart.Properties["Nodes"].Collection[0];
+                //Point p = new Point(300, 200);
+                //service.RemoveViewState(temp,"ShapeLocation");
+                //service.StoreViewState(temp,"ShapeLocation", p);                
+            }
+
+            //
             //var mi = ModelItemUtils.CreateModelItem(defaultParent, step);
             //PerformAddItems(mi);
         }
