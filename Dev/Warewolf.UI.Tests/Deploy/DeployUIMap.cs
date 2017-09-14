@@ -317,6 +317,13 @@ namespace Warewolf.UI.Tests.Deploy.DeployUIMapClasses
             Assert.IsTrue(successful, "Deploy failed.");
         }
 
+        [When(@"I Click Deploy Tab Deploy Button And Cancel")]
+        public void Click_Deploy_Tab_Deploy_Button_And_Cancel()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DeployButton);
+            Mouse.Click(DialogsUIMap.MessageBoxWindow.CancelButton);
+        }
+
         [When(@"I Select ""(.*)"" from the source tab")]
         [Then(@"I Select ""(.*)"" from the source tab")]
         [Given(@"I Select ""(.*)"" from the source tab")]
@@ -348,7 +355,15 @@ namespace Warewolf.UI.Tests.Deploy.DeployUIMapClasses
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.CloseButton.Exists, "DeployTab close tab button does not exist.");
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.CloseButton, new Point(16, 6));
         }
-        
+
+        [Given(@"The Deploy Tab is visible")]
+        [Then(@"The Deploy Tab is visible")]
+        public void The_Deploy_Tab_is_Visible()
+        {
+            Point point;
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.TryGetClickablePoint(out point), "Deploy tab is not visible");
+        }
+
         public UIMap UIMap
         {
             get
