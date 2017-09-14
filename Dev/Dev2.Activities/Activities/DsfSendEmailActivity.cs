@@ -35,6 +35,7 @@ using Warewolf.Resource.Errors;
 using Warewolf.Security.Encryption;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
+using Dev2.Comparer;
 
 namespace Dev2.Activities
 {
@@ -563,7 +564,22 @@ namespace Dev2.Activities
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            return base.Equals(other) && string.Equals(Password, other.Password) && Equals(SelectedEmailSource, other.SelectedEmailSource) && string.Equals(FromAccount, other.FromAccount) && string.Equals(To, other.To) && string.Equals(Cc, other.Cc) && string.Equals(Bcc, other.Bcc) && Priority == other.Priority && string.Equals(Subject, other.Subject) && string.Equals(Attachments, other.Attachments) && string.Equals(Body, other.Body) && IsHtml == other.IsHtml && string.Equals(Result, other.Result);
+            var emailSourcesComparer = new EmailSourceComparer();
+            var emailSourcesAreEqual = emailSourcesComparer.Equals(SelectedEmailSource, other.SelectedEmailSource);
+            var paswordsAreEqual = CommonEqualityOps.PassWordsCompare(Password, other.Password);
+            return base.Equals(other) 
+                && paswordsAreEqual
+                && emailSourcesAreEqual
+                && string.Equals(FromAccount, other.FromAccount) 
+                && string.Equals(To, other.To) 
+                && string.Equals(Cc, other.Cc) 
+                && string.Equals(Bcc, other.Bcc) 
+                && Priority == other.Priority 
+                && string.Equals(Subject, other.Subject) 
+                && string.Equals(Attachments, other.Attachments) 
+                && string.Equals(Body, other.Body) 
+                && IsHtml == other.IsHtml 
+                && string.Equals(Result, other.Result);
         }
 
         public override bool Equals(object obj)

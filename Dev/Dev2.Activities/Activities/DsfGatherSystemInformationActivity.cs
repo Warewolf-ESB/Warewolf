@@ -30,7 +30,7 @@ using Warewolf.Core;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage.Interfaces;
 using WarewolfParserInterop;
-
+using Dev2.Comparer;
 
 namespace Dev2.Activities
 {
@@ -471,7 +471,8 @@ namespace Dev2.Activities
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            return base.Equals(other) && Equals(_getSystemInformation, other._getSystemInformation) && Equals(_currentIdentity, other._currentIdentity) && Equals(SystemInformationCollection, other.SystemInformationCollection);
+            return base.Equals(other)
+                && CommonEqualityOps.CollectionEquals(SystemInformationCollection, other.SystemInformationCollection, new GatherSystemInformationTOComparer());
         }
 
         public override bool Equals(object obj)
@@ -487,8 +488,6 @@ namespace Dev2.Activities
             unchecked
             {
                 int hashCode = base.GetHashCode();
-                hashCode = (hashCode * 397) ^ (_getSystemInformation != null ? _getSystemInformation.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (_currentIdentity != null ? _currentIdentity.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (SystemInformationCollection != null ? SystemInformationCollection.GetHashCode() : 0);
                 return hashCode;
             }

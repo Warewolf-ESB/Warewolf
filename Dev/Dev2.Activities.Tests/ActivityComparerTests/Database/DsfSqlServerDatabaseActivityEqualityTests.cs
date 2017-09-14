@@ -1,11 +1,8 @@
 ﻿using System;
 using Dev2.Activities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Dev2.Services.Execution;
-using System.Runtime.InteropServices.ComTypes;
-using Dev2.Runtime.ServiceModel.Data;
-using Moq;
-using Dev2.Runtime.ESB.Execution;
+using System.Collections.Generic;
+using Warewolf.Core;
 
 namespace Dev2.Tests.Activities.ActivityComparerTests.Database
 {
@@ -40,6 +37,41 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Database
             Assert.IsNotNull(activity1);
             //---------------Execute Test ----------------------
             var @equals = activity1.Equals(sqlDatabase);
+            //---------------Test Result -----------------------
+            Assert.IsFalse(@equals);
+        }
+
+        [TestMethod]
+        [Owner("Sanele Mthembu")]
+        public void Equals_Given_Same_SourceId_IsEqual()
+        {
+            //---------------Set up test pack-------------------
+            var uniqueId = Guid.NewGuid().ToString();
+            var sourceId = Guid.NewGuid(); ;
+            var activity1 = new DsfSqlServerDatabaseActivity() { UniqueID = uniqueId, SourceId = sourceId };
+            var activity = new DsfSqlServerDatabaseActivity() { UniqueID = uniqueId, SourceId = sourceId };
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(activity1);
+            //---------------Execute Test ----------------------
+            var @equals = activity1.Equals(activity);
+            //---------------Test Result -----------------------
+            Assert.IsTrue(@equals);
+        }
+
+        [TestMethod]
+        [Owner("Sanele Mthembu")]
+        public void Equals_Given_Different_SourceId_IsNotEqual()
+        {
+            //---------------Set up test pack-------------------
+            var uniqueId = Guid.NewGuid().ToString();
+            var sourceId = Guid.NewGuid(); ;
+            var sourceId2 = Guid.NewGuid(); ;
+            var activity1 = new DsfSqlServerDatabaseActivity() { UniqueID = uniqueId, SourceId = sourceId };
+            var activity = new DsfSqlServerDatabaseActivity() { UniqueID = uniqueId, SourceId = sourceId2 };
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(activity1);
+            //---------------Execute Test ----------------------
+            var @equals = activity1.Equals(activity);
             //---------------Test Result -----------------------
             Assert.IsFalse(@equals);
         }
@@ -104,7 +136,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Database
             //---------------Execute Test ----------------------
             var @equals = activity1.Equals(sqlDatabase);
             //---------------Test Result -----------------------
-            Assert.IsTrue(@equals);
+            Assert.IsFalse(@equals);
         }
         [TestMethod]
         [Owner("Sanele Mthembu")]
@@ -120,6 +152,71 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Database
             var @equals = activity1.Equals(sqlDatabase);
             //---------------Test Result -----------------------
             Assert.IsFalse(@equals);
+        }
+
+        
+        [TestMethod]
+        [Owner("Sanele Mthembu")]
+        public void Equals_Given_DifferentInputs_ActivityTools_AreNotEqual()
+        {
+            //---------------Set up test pack-------------------
+            var uniqueId = Guid.NewGuid().ToString();
+            var inputs = new List<Common.Interfaces.DB.IServiceInput>
+            {
+                new ServiceInput("Input1", "[[InputValue1]]")
+            };
+            var inputs2 = new List<Common.Interfaces.DB.IServiceInput>();
+            var activity = new DsfSqlServerDatabaseActivity() { UniqueID = uniqueId, Inputs =  inputs};
+            var activity1 = new DsfSqlServerDatabaseActivity() { UniqueID = uniqueId, Inputs = inputs2 };
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(activity);
+            //---------------Execute Test ----------------------
+            var @equals = activity.Equals(activity1);
+            //---------------Test Result -----------------------
+            Assert.IsFalse(@equals);
+        }
+
+        [TestMethod]
+        [Owner("Sanele Mthembu")]
+        public void Equals_Given_SameInputsDifferentIndexes_ActivityTools_AreNotEqual()
+        {
+            //---------------Set up test pack-------------------
+            var uniqueId = Guid.NewGuid().ToString();
+            var inputs = new List<Common.Interfaces.DB.IServiceInput>
+            {
+                new ServiceInput("Input2", "[[InputValue2]]"),
+                new ServiceInput("Input1", "[[InputValue1]]")                
+            };
+            var inputs2 = new List<Common.Interfaces.DB.IServiceInput>
+            {
+                new ServiceInput("Input1", "[[InputValue1]]"),
+                new ServiceInput("Input2", "[[InputValue2]]")
+            };
+            var activity = new DsfSqlServerDatabaseActivity() { UniqueID = uniqueId, Inputs =  inputs};
+            var activity1 = new DsfSqlServerDatabaseActivity() { UniqueID = uniqueId, Inputs = inputs2 };
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(activity);
+            //---------------Execute Test ----------------------
+            var @equals = activity.Equals(activity1);
+            //---------------Test Result -----------------------
+            Assert.IsFalse(@equals);
+        }
+
+        [TestMethod]
+        [Owner("Sanele Mthembu")]
+        public void Equals_Given_SameInputs_ActivityTools_AreEqual()
+        {
+            //---------------Set up test pack-------------------
+            var uniqueId = Guid.NewGuid().ToString();
+            var inputs = new List<Common.Interfaces.DB.IServiceInput>();
+            var activity = new DsfSqlServerDatabaseActivity() { UniqueID = uniqueId, Inputs =  inputs};
+            var activity1 = new DsfSqlServerDatabaseActivity() { UniqueID = uniqueId, Inputs = inputs };
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(activity);
+            //---------------Execute Test ----------------------
+            var @equals = activity.Equals(activity1);
+            //---------------Test Result -----------------------
+            Assert.IsTrue(@equals);
         }
     }
 }

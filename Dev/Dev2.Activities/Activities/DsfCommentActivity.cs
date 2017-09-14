@@ -118,7 +118,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            return base.Equals(other) && string.Equals(Text, other.Text);
+            return base.Equals(other) 
+                && string.Equals(Text, other.Text);
         }
 
         public override bool Equals(object obj)
