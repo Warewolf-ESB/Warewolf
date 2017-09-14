@@ -12,7 +12,14 @@ using System;
 using System.Activities;
 using System.Activities.Presentation;
 using System.Activities.Presentation.Model;
-using System.Diagnostics.CodeAnalysis;
+using System.Activities.Statements;
+using System.Linq;
+using System.Reflection;
+using System.Windows;
+using System.Windows.Media;
+using Dev2.Studio.Core.Interfaces;
+using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Warewolf.Core;
 
 
 namespace Dev2.Studio.Core.Activities.Utils
@@ -26,28 +33,28 @@ namespace Dev2.Studio.Core.Activities.Utils
 
         public static void SetProperty<T>(string propertyName, T value, ModelItem modelItem)
         {
-            if(propertyName != null)
+            if (propertyName != null)
             {
-                if(modelItem != null)
+                if (modelItem != null)
                 {
                     var modelProperty = modelItem.Properties[propertyName];
-                    if(modelProperty != null)
+                    if (modelProperty != null)
                     {
-                        
-                        if(modelProperty.PropertyType == typeof(InArgument<T>))
+
+                        if (modelProperty.PropertyType == typeof(InArgument<T>))
                         {
                             modelProperty.SetValue(InArgument<T>.FromValue(value));
                         }
                         else
                         {
                             modelProperty.SetValue(value);
-                        }                        
+                        }
                     }
                 }
             }
         }
 
-    
+
         public static ModelItem CreateModelItem(object parent, object objectToMakeModelItem)
         {
             EditingContext ec = new EditingContext();
@@ -56,7 +63,7 @@ namespace Dev2.Studio.Core.Activities.Utils
             return mtm.CreateModelItem(CreateModelItem(parent), objectToMakeModelItem);
         }
 
-    
+
         public static ModelItem CreateModelItem()
         {
             return CreateModelItem(new object());
@@ -66,9 +73,9 @@ namespace Dev2.Studio.Core.Activities.Utils
         {
             EditingContext ec = new EditingContext();
             ModelTreeManager mtm = new ModelTreeManager(ec);
-            
+
             mtm.Load(objectToMakeModelItem);
-           
+
             return mtm.Root;
         }
 
@@ -76,12 +83,12 @@ namespace Dev2.Studio.Core.Activities.Utils
         {
             var modelProperty = modelItem.Properties[propertyName];
             object value = default(T);
-            if(modelProperty != null)
+            if (modelProperty != null)
             {
-                if(modelProperty.PropertyType == typeof(InArgument<T>))
+                if (modelProperty.PropertyType == typeof(InArgument<T>))
                 {
                     var arg = modelProperty.ComputedValue as InArgument<T>;
-                    if(arg != null)
+                    if (arg != null)
                     {
                         value = arg.Expression.ToString();
                     }
@@ -91,9 +98,9 @@ namespace Dev2.Studio.Core.Activities.Utils
                     value = modelProperty.ComputedValue;
                 }
 
-                if(value != null)
+                if (value != null)
                 {
-                    if(typeof(T) == typeof(Guid))
+                    if (typeof(T) == typeof(Guid))
                     {
                         Guid guid;
                         Guid.TryParse(value.ToString(), out guid);
@@ -126,9 +133,9 @@ namespace Dev2.Studio.Core.Activities.Utils
         public static Guid TryGetResourceID(ModelItem modelItem)
         {
             var resourceIDArg = modelItem.Properties["ResourceID"];
-            if(resourceIDArg != null && resourceIDArg.ComputedValue != null)
+            if (resourceIDArg != null && resourceIDArg.ComputedValue != null)
             {
-                if(resourceIDArg.ComputedValue is InArgument<Guid>)
+                if (resourceIDArg.ComputedValue is InArgument<Guid>)
                 {
                     var resourceIDStr = (resourceIDArg.ComputedValue as InArgument<Guid>).Expression;
                     return Guid.Parse(resourceIDStr.ToString());
@@ -136,6 +143,40 @@ namespace Dev2.Studio.Core.Activities.Utils
                 return (Guid)resourceIDArg.ComputedValue;
             }
             return Guid.Empty;
+        }
+
+        public static T GetCurrentValue<T>(this ModelItem modelItem) where T : class, IDev2Activity
+        {
+            return modelItem.GetCurrentValue() as T;
+        }
+
+        public static ImageSource GetImageSourceForTool(this ModelItem modelItem, IApplicationAdaptor currentApp = null)
+        {
+            var computedValue = modelItem.GetCurrentValue();
+            if (computedValue is FlowStep)
+            {
+                if (modelItem.Content?.Value != null)
+                {
+                    computedValue = modelItem.Content.Value.GetCurrentValue();
+                }
+            }
+            var type = computedValue.GetType();
+            if (type.Name == "DsfDecision" || type.Name == "FlowDecision")
+            {
+                type = typeof(DsfFlowDecisionActivity);
+            }
+            if (type.Name == "DsfSwitch")
+            {
+                type = typeof(DsfFlowSwitchActivity);
+            }
+            var application = currentApp ?? new ApplicationAdaptor(Application.Current);
+            if (type.GetCustomAttributes().Any(a => a is ToolDescriptorInfo))
+            {
+                var desc = computedValue.GetDescriptorFromAttribute();
+                return application?.TryFindResource(desc.Icon) as ImageSource;
+            }
+            return application?.TryFindResource("Explorer-WorkflowService") as ImageSource;
+
         }
     }
 }

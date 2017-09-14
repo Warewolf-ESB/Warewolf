@@ -4,7 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Integration.Tests.Merge
 {
     [TestClass]
-    public class MergeWorkflowViewModelTests
+    public class MergeWorkflowViewModelIntergrationTests
     {
         [TestMethod]
         public void Constructor_GivenIsNew_ShouldPassThrough()

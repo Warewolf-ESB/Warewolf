@@ -10,7 +10,6 @@
 
 using System;
 using System.Collections.ObjectModel;
-using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.ConnectionHelpers
 {
