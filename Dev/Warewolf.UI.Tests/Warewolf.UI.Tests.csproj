@@ -210,7 +210,6 @@
     <Compile Include="WebSource\WebSourceUIMap.Designer.cs">
       <DependentUpon>WebSourceUIMap.uitest</DependentUpon>
     </Compile>
-    <Compile Include="WorkflowServiceTesting\ComDllTestingTests.cs" />
     <Compile Include="WorkflowServiceTesting\DotnetTestingTests.cs" />
     <Compile Include="WorkflowServiceTesting\HelloWorldTestFrameworkMockingTests.cs" />
     <Compile Include="WorkflowServiceTesting\TestFrameworkMockingTests.cs" />
