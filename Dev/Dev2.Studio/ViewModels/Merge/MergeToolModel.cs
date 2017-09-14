@@ -22,7 +22,9 @@ namespace Dev2.ViewModels.Merge
         private string _mergeDescription;
         private List<string> _fieldCollection;
         private bool _isMergeChecked;
-        
+
+        public bool IsVariablesChecked { get; set; }
+
         public void SetMergeIcon(Type type)
         {
             if (type == null)
