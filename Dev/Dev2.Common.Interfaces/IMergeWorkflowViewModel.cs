@@ -35,6 +35,7 @@ namespace Dev2.Common.Interfaces
         ImageSource MergeIcon { get; set; }
         string MergeDescription { get; set; }
         bool IsMergeChecked { get; set; }
+        bool IsVariablesChecked { get; set; }
         void SetMergeIcon(Type type);
     }
 }
