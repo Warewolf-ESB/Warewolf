@@ -31,7 +31,7 @@ using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage.Interfaces;
-
+using Dev2.Comparer;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
@@ -537,7 +537,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            return base.Equals(other) && string.Equals(FieldsToSearch, other.FieldsToSearch) && string.Equals(Result, other.Result) && string.Equals(StartIndex, other.StartIndex) && MatchCase == other.MatchCase && RequireAllTrue == other.RequireAllTrue && RequireAllFieldsToMatch == other.RequireAllFieldsToMatch && Equals(ResultsCollection, other.ResultsCollection);
+            var resultsCollectionsAreEqual = CommonEqualityOps.CollectionEquals(ResultsCollection, other.ResultsCollection, new FindRecordsTOComparer());
+            return base.Equals(other)
+                && string.Equals(FieldsToSearch, other.FieldsToSearch)
+                && string.Equals(Result, other.Result)
+                && string.Equals(StartIndex, other.StartIndex)
+                && MatchCase == other.MatchCase
+                && RequireAllTrue == other.RequireAllTrue
+                && RequireAllFieldsToMatch == other.RequireAllFieldsToMatch
+                && resultsCollectionsAreEqual;
         }
 
         public override bool Equals(object obj)

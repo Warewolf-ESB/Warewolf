@@ -380,7 +380,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            return base.Equals(other) && string.Equals(DateTime, other.DateTime) && string.Equals(InputFormat, other.InputFormat) && string.Equals(OutputFormat, other.OutputFormat) && string.Equals(TimeModifierType, other.TimeModifierType) && string.Equals(TimeModifierAmountDisplay, other.TimeModifierAmountDisplay) && TimeModifierAmount == other.TimeModifierAmount && string.Equals(Result, other.Result);
+            return base.Equals(other) 
+                && string.Equals(DateTime, other.DateTime) 
+                && string.Equals(InputFormat, other.InputFormat) 
+                && string.Equals(OutputFormat, other.OutputFormat) 
+                && string.Equals(TimeModifierType, other.TimeModifierType) 
+                && string.Equals(TimeModifierAmountDisplay, other.TimeModifierAmountDisplay)
+                && TimeModifierAmount == other.TimeModifierAmount 
+                && string.Equals(Result, other.Result);
         }
 
         public override bool Equals(object obj)
