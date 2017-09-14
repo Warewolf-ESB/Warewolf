@@ -931,6 +931,7 @@ if ($TotalNumberOfJobsToRun -gt 0) {
                     }
                 }
             } else {
+                $TestCategories = ""
                 if (!($TestList.StartsWith(" /Tests:"))) {
                     $TestList = " /Tests:" + $TestList
                 }
@@ -975,6 +976,7 @@ if ($TotalNumberOfJobsToRun -gt 0) {
                     }
                 }
             } else {
+                $TestCategories = ""
                 if (!($TestList.StartsWith(" /test:"))) {
                     $TestNames = $TestList.Split(",") -join " /test:"
                     $TestList = " /test:" + $TestNames
