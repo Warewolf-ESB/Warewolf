@@ -25,20 +25,13 @@ namespace Warewolf.UI.Tests.WorkflowServiceTesting
             Assert.IsTrue(ResourcesToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ComDll.LargeView.RefreshNamespaceButton.Enabled, "COM namespace refresh button should be enabled.");
             Assert.IsTrue(ResourcesToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ComDll.LargeView.ActionsCombobox.Enabled, "COM actions combobox should be enabled.");
             Assert.IsTrue(ResourcesToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ComDll.LargeView.ActionRefreshButton.Enabled, "COM actions refresh button should be enabled.");
-            Assert.IsFalse(ResourcesToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ComDll.LargeView.GenerateOutputsButton.Enabled, "COM generate outputs button should be disabled");
-            ResourcesToolsUIMap.Select_First_Item_From_Com_DLL_Large_View_Namespace_Combobox();
-            Assert.IsFalse(ResourcesToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ComDll.LargeView.GenerateOutputsButton.Enabled, "COM generate outputs button should be disabled");
-            ResourcesToolsUIMap.Select_First_Item_From_Com_DLL_Large_View_Action_Combobox();
-            Assert.IsTrue(ResourcesToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ComDll.LargeView.GenerateOutputsButton.Enabled, "COM generate outputs button should be enabled");
-            ResourcesToolsUIMap.Click_ComDll_Generate_Outputs();
+            Assert.IsFalse(ResourcesToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ComDll.LargeView.GenerateOutputsButton.Enabled, "COM generate outputs button should be disabled");            
         }
 
         [TestMethod]
         [TestCategory("Source Wizards")]
         public void ChangeComPluginSelection()
         {
-            try
-            {
                 UIMap.Click_NewWorkflow_RibbonButton();
                 WorkflowTabUIMap.Drag_ComDLLConnector_Onto_DesignSurface();
                 Assert.IsFalse(ResourcesToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ComDll.LargeView.NamespaceCombobox.Enabled, "COM namespace combobox should be disabled.");
@@ -52,21 +45,7 @@ namespace Warewolf.UI.Tests.WorkflowServiceTesting
                 Assert.IsTrue(ResourcesToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ComDll.LargeView.ActionsCombobox.Enabled, "COM actions combobox should be enabled.");
                 Assert.IsTrue(ResourcesToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ComDll.LargeView.ActionRefreshButton.Enabled, "COM actions refresh button should be enabled.");
                 Assert.IsFalse(ResourcesToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ComDll.LargeView.GenerateOutputsButton.Enabled, "COM generate outputs button should be disabled");
-                ResourcesToolsUIMap.Select_First_Item_From_Com_DLL_Large_View_Namespace_Combobox();
-                Assert.IsFalse(ResourcesToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ComDll.LargeView.GenerateOutputsButton.Enabled, "COM generate outputs button should be disabled");
-                ResourcesToolsUIMap.Select_First_Item_From_Com_DLL_Large_View_Action_Combobox();
-                Assert.IsTrue(ResourcesToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ComDll.LargeView.GenerateOutputsButton.Enabled, "COM generate outputs button should be enabled");
-                ResourcesToolsUIMap.Select_First_Item_From_Com_DLL_Large_View_Source_Combobox();
-                Assert.IsTrue(ResourcesToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ComDll.LargeView.NamespaceCombobox.Enabled, "COM namespace combobox should be enabled.");
-                Assert.IsTrue(ResourcesToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ComDll.LargeView.RefreshNamespaceButton.Enabled, "COM namespace refresh button should be enabled.");
-                Assert.IsTrue(ResourcesToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ComDll.LargeView.ActionsCombobox.Enabled, "COM actions combobox should be enabled.");
-                Assert.IsTrue(ResourcesToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ComDll.LargeView.ActionRefreshButton.Enabled, "COM actions refresh button should be enabled.");
-                Assert.IsFalse(ResourcesToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ComDll.LargeView.GenerateOutputsButton.Enabled, "COM generate outputs button should be disabled");
-            }
-            finally
-            {
-                Keyboard.SendKeys(UIMap.MainStudioWindow, "^%{F4}");
-            }
+
         }
 
         #region Additional test attributes
