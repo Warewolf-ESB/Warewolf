@@ -7,6 +7,7 @@
              xmlns:customcontrols1="clr-namespace:Warewolf.Studio.CustomControls;assembly=Warewolf.Studio.CustomControls"
              xmlns:interfaces="clr-namespace:Dev2.Common.Interfaces;assembly=Dev2.Common.Interfaces"
              xmlns:workflow="clr-namespace:Dev2.Studio.Views.Workflow"
+             xmlns:datalist="clr-namespace:Dev2.Studio.Views.DataList"
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance IMergeWorkflowViewModel}"
              d:DesignHeight="300" d:DesignWidth="300">
@@ -54,12 +55,10 @@
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
 
                         <TextBlock x:Name="MergeCurrentWorkflowName" Text="{Binding WorkflowName}" />
-                        <TextBlock x:Name="MergeCurrentWorkflowLocation" Grid.Row="1" Text="{Binding WorkflowLocation}" />
                         
                         <Expander x:Name="MergeCurrentWorkflowVariables"
                                   Grid.Row="2"
@@ -81,6 +80,9 @@
                                     </DockPanel>
                                 </DataTemplate>
                             </Expander.HeaderTemplate>
+                            <datalist:DataListView DataContext="{Binding DataListViewModel}">
+                                
+                            </datalist:DataListView>
                         </Expander>
                         
                         <TreeView x:Name="MergeCurrentDataTree"
@@ -165,12 +167,10 @@
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
 
                         <TextBlock x:Name="MergeDifferenceWorkflowName" Text="{Binding WorkflowName}" />
-                        <TextBlock x:Name="MergeDifferenceWorkflowLocation" Grid.Row="1" Text="{Binding WorkflowLocation}" />
                         
                         <Expander x:Name="MergeDifferenceWorkflowVariables"
                                   Grid.Row="2"
@@ -192,6 +192,9 @@
                                     </DockPanel>
                                 </DataTemplate>
                             </Expander.HeaderTemplate>
+                            <datalist:DataListView DataContext="{Binding DataListViewModel}">
+
+                            </datalist:DataListView>
                         </Expander>
                         
                         <TreeView x:Name="MergeDifferenceDataTree"
@@ -288,6 +291,7 @@
             </Grid.RowDefinitions>
             <StackPanel Background="{StaticResource WareWolfMenuBrush}" HorizontalAlignment="Stretch">
                 <TextBlock Margin="5" Text="Merge" Style="{StaticResource SourceHeader}" />
+                <Button Command="{Binding AddAnItem}">Add Something</Button>
             </StackPanel>
             <Grid Grid.Row="1">
                 <workflow:WorkflowDesignerView DataContext="{Binding WorkflowDesignerViewModel}" />
