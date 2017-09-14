@@ -37,7 +37,11 @@ if (!(Test-Path "$MSBuildPath" -ErrorAction SilentlyContinue)) {
     if ($GetvswhereCommand) {
         $VswherePath = $GetvswhereCommand.Path
     } else {
-        Write-Host vswhere.exe not found. Download from: https://github.com/Microsoft/vswhere/releases
+        if (Test-Path "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe") {
+            $VswherePath = "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe"
+        } else {
+            Write-Host vswhere.exe not found. Download from: https://github.com/Microsoft/vswhere/releases
+        }
     }
 	$MSBuildPath = &$VswherePath -latest -requires Microsoft.Component.MSBuild -version 15.0
     $StartKey = "installationPath: "
