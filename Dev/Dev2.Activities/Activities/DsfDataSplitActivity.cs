@@ -32,9 +32,7 @@ using Warewolf.Core;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 using WarewolfParserInterop;
-
-
-
+using Dev2.Comparer;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
@@ -694,7 +692,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            return base.Equals(other) && string.Equals(SourceString, other.SourceString) && _indexCounter == other._indexCounter && Equals(_resultsCollection, other._resultsCollection) && _reverseOrder == other._reverseOrder && SkipBlankRows == other.SkipBlankRows;
+            var resultsCollectionsAreEqual = CommonEqualityOps.CollectionEquals(ResultsCollection, other.ResultsCollection, new DataSplitDTOComparer());
+            return base.Equals(other) 
+                && string.Equals(SourceString, other.SourceString) 
+                && _indexCounter == other._indexCounter 
+                && resultsCollectionsAreEqual
+                && ReverseOrder == other.ReverseOrder
+                && SkipBlankRows == other.SkipBlankRows;
         }
 
         public override bool Equals(object obj)

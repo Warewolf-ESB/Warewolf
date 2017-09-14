@@ -29,8 +29,7 @@ using Newtonsoft.Json.Linq;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
 using Warewolf.Storage.Interfaces;
-
-
+using Dev2.Comparer;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
@@ -325,7 +324,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            return base.Equals(other) && Equals(JsonMappings, other.JsonMappings) && string.Equals(JsonString, other.JsonString);
+            var jsonMappingsAreEqual = Dev2.Common.CommonEqualityOps.CollectionEquals(JsonMappings, other.JsonMappings, new JsonMappingToComparer());
+            return base.Equals(other) 
+                && jsonMappingsAreEqual
+                && string.Equals(JsonString, other.JsonString);
         }
 
         public override bool Equals(object obj)

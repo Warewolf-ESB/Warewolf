@@ -99,7 +99,9 @@ namespace Dev2.Activities
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            return base.Equals(other) && Equals(ServiceExecution, other.ServiceExecution) && string.Equals(ProcedureName, other.ProcedureName);
+            return base.Equals(other)
+                && string.Equals(SourceId.ToString(), other.SourceId.ToString())
+                && string.Equals(ProcedureName, other.ProcedureName);
         }
 
         public override bool Equals(object obj)
@@ -115,7 +117,7 @@ namespace Dev2.Activities
             unchecked
             {
                 int hashCode = base.GetHashCode();
-                hashCode = (hashCode * 397) ^ (ServiceExecution != null ? ServiceExecution.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (SourceId != null ? SourceId.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (ProcedureName != null ? ProcedureName.GetHashCode() : 0);
                 return hashCode;
             }
