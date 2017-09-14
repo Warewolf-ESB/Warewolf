@@ -25,6 +25,7 @@ using Dev2.Studio.Core.Factories;
 using Dev2.Studio.ViewModels.Workflow;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using System.Activities.Statements;
+using Dev2.Studio.Factory;
 
 namespace Dev2.ViewModels.Merge
 {
@@ -34,10 +35,8 @@ namespace Dev2.ViewModels.Merge
         {
             CurrentConflictViewModel = new CurrentConflictViewModel();
             CurrentConflictViewModel.WorkflowName = "Current WorkflowName";
-            CurrentConflictViewModel.WorkflowLocation = "Current WorkflowLocation";
             DifferenceConflictViewModel = new DifferenceConflictViewModel();
             DifferenceConflictViewModel.WorkflowName = "Difference WorkflowName";
-            DifferenceConflictViewModel.WorkflowLocation = "Difference WorkflowLocation";
 
             DataListSingleton.SetDataList(new DataListViewModel());
             var act = new DsfMultiAssignActivity();
@@ -81,34 +80,51 @@ namespace Dev2.ViewModels.Merge
 
     public class CurrentConflictViewModel : BindableBase, ICurrentConflictViewModel
     {
-        private ObservableCollection<DataListHeaderItemModel> _baseCollection;
         private string _workflowName;
-        private string _workflowLocation;
-
-        //public List<ActivityDesignerViewModel> CurrentMergeList { get; set; }
+        
         public CurrentConflictViewModel()
         {
-            //DataListSingleton.SetDataList(new DataListViewModel());
-            //var act = new DsfMultiAssignActivity();
-            //act.FieldsCollection.Add(new ActivityDTO("[[a]]", "1", 1));
-            //CurrentMergeList = new List<ActivityDesignerViewModel>
-            //{
-            //    new MultiAssignDesignerViewModel(ModelItemUtils.CreateModelItem(act))
-            //    {
-            //        ShowLarge = true
-            //    },
-            //    new CommentDesignerViewModel(ModelItemUtils.CreateModelItem(new DsfCommentActivity())),
-            //    new DecisionDesignerViewModel(ModelItemUtils.CreateModelItem(new DsfFlowDecisionActivity()))
-            //};
-
-            MergeViewModel = new MergeViewModel();
-            MergeViewModel.IsMergeExpanded = true;
-            MergeViewModel.IsMergeExpanderEnabled = true;
-            MergeViewModel.MergeDescription = "Current Assign (0)";
-            MergeViewModel.SetMergeIcon(typeof(DsfMultiAssignActivity));
-
+            #region MockToolSetup
             MergeConflicts = new ObservableCollection<IMergeViewModel>();
-            MergeConflicts.Add(MergeViewModel);
+
+            DataListSingleton.SetDataList(new DataListViewModel());
+            var assign = new DsfMultiAssignActivity();
+            assign.FieldsCollection.Add(new ActivityDTO("[[a]]", "1", 1));
+
+            //ASSIGN
+            MergeViewModel = new MergeViewModel();
+            var mergeAssignVM = MergeViewModel as MergeViewModel;
+            mergeAssignVM.IsMergeExpanded = true;
+            mergeAssignVM.IsMergeExpanderEnabled = true;
+            mergeAssignVM.MergeDescription = "Current Assign (0)";
+            mergeAssignVM.SetMergeIcon(typeof(DsfMultiAssignActivity));
+            mergeAssignVM.ActivityDesignerViewModel = new MultiAssignDesignerViewModel(ModelItemUtils.CreateModelItem(assign));
+
+            MergeConflicts.Add(mergeAssignVM);
+
+            //DECISION
+            var decision = new DsfFlowDecisionActivity();
+            MergeViewModel = new MergeViewModel();
+            var mergeDecisionVM = MergeViewModel as MergeViewModel;
+            mergeDecisionVM.IsMergeExpanded = true;
+            mergeDecisionVM.IsMergeExpanderEnabled = true;
+            mergeDecisionVM.MergeDescription = "Current Decision (0)";
+            mergeDecisionVM.SetMergeIcon(typeof(DsfFlowDecisionActivity));
+            mergeDecisionVM.ActivityDesignerViewModel = new DecisionDesignerViewModel(ModelItemUtils.CreateModelItem(decision));
+
+            MergeConflicts.Add(mergeDecisionVM);
+
+            #endregion
+
+            string newWorflowName = NewWorkflowNames.Instance.GetNext();
+            IContextualResourceModel tempResource = ResourceModelFactory.CreateResourceModel(CustomContainer.Get<IShellViewModel>().ActiveServer, @"WorkflowService",
+                newWorflowName);
+            tempResource.Category = @"Unassigned\" + newWorflowName;
+            tempResource.ResourceName = newWorflowName;
+            tempResource.DisplayName = newWorflowName;
+            tempResource.IsNewWorkflow = true;
+
+            DataListViewModel = DataListViewModelFactory.CreateDataListViewModel(tempResource) as DataListViewModel;
         }
 
         public string WorkflowName
@@ -120,24 +136,8 @@ namespace Dev2.ViewModels.Merge
                 OnPropertyChanged(() => WorkflowName);
             }
         }
-        public string WorkflowLocation
-        {
-            get { return _workflowLocation; }
-            set
-            {
-                _workflowLocation = value;
-                OnPropertyChanged(() => WorkflowLocation);
-            }
-        }
-        public ObservableCollection<DataListHeaderItemModel> BaseCollection
-        {
-            get { return _baseCollection; }
-            set
-            {
-                _baseCollection = value;
-                OnPropertyChanged(() => BaseCollection);
-            }
-        }
+        
+        public DataListViewModel DataListViewModel { get; set; }
         public IMergeViewModel MergeViewModel { get; set; }
         public ObservableCollection<IMergeViewModel> MergeConflicts { get; set; }
     }
@@ -146,32 +146,50 @@ namespace Dev2.ViewModels.Merge
     {
         private ObservableCollection<DataListHeaderItemModel> _baseCollection;
         private string _workflowName;
-        private string _workflowLocation;
-
-        //public List<ActivityDesignerViewModel> DifferenceMergeList { get; set; }
+        
         public DifferenceConflictViewModel()
         {
-            //DataListSingleton.SetDataList(new DataListViewModel());
-            //var act = new DsfMultiAssignActivity();
-            //act.FieldsCollection.Add(new ActivityDTO("[[a]]", "1", 1));
-            //DifferenceMergeList = new List<ActivityDesignerViewModel>
-            //{
-            //    new MultiAssignDesignerViewModel(ModelItemUtils.CreateModelItem(act))
-            //    {
-            //        ShowLarge = true
-            //    },
-            //    new CommentDesignerViewModel(ModelItemUtils.CreateModelItem(new DsfCommentActivity())),
-            //    new DecisionDesignerViewModel(ModelItemUtils.CreateModelItem(new DsfFlowDecisionActivity()))
-            //};
-
-            MergeViewModel = new MergeViewModel();
-            MergeViewModel.IsMergeExpanded = true;
-            MergeViewModel.IsMergeExpanderEnabled = true;
-            MergeViewModel.MergeDescription = "Difference Assign (0)";
-            MergeViewModel.SetMergeIcon(typeof(DsfMultiAssignActivity));
-
+            #region MockToolSetup
             MergeConflicts = new ObservableCollection<IMergeViewModel>();
-            MergeConflicts.Add(MergeViewModel);
+
+            DataListSingleton.SetDataList(new DataListViewModel());
+            var assign = new DsfMultiAssignActivity();
+            assign.FieldsCollection.Add(new ActivityDTO("[[a]]", "1", 1));
+
+            //ASSIGN
+            MergeViewModel = new MergeViewModel();
+            var mergeAssignVM = MergeViewModel as MergeViewModel;
+            mergeAssignVM.IsMergeExpanded = true;
+            mergeAssignVM.IsMergeExpanderEnabled = true;
+            mergeAssignVM.MergeDescription = "Difference Assign (0)";
+            mergeAssignVM.SetMergeIcon(typeof(DsfMultiAssignActivity));
+            mergeAssignVM.ActivityDesignerViewModel = new MultiAssignDesignerViewModel(ModelItemUtils.CreateModelItem(assign));
+
+            MergeConflicts.Add(mergeAssignVM);
+
+            //DECISION
+            var decision = new DsfFlowDecisionActivity();
+            MergeViewModel = new MergeViewModel();
+            var mergeDecisionVM = MergeViewModel as MergeViewModel;
+            mergeDecisionVM.IsMergeExpanded = true;
+            mergeDecisionVM.IsMergeExpanderEnabled = true;
+            mergeDecisionVM.MergeDescription = "Difference Decision (0)";
+            mergeDecisionVM.SetMergeIcon(typeof(DsfFlowDecisionActivity));
+            mergeDecisionVM.ActivityDesignerViewModel = new DecisionDesignerViewModel(ModelItemUtils.CreateModelItem(decision));
+
+            MergeConflicts.Add(mergeDecisionVM);
+
+            #endregion
+
+            string newWorflowName = NewWorkflowNames.Instance.GetNext();
+            IContextualResourceModel tempResource = ResourceModelFactory.CreateResourceModel(CustomContainer.Get<IShellViewModel>().ActiveServer, @"WorkflowService",
+                newWorflowName);
+            tempResource.Category = @"Unassigned\" + newWorflowName;
+            tempResource.ResourceName = newWorflowName;
+            tempResource.DisplayName = newWorflowName;
+            tempResource.IsNewWorkflow = true;
+
+            DataListViewModel = DataListViewModelFactory.CreateDataListViewModel(tempResource) as DataListViewModel;
         }
 
         public string WorkflowName
@@ -183,24 +201,8 @@ namespace Dev2.ViewModels.Merge
                 OnPropertyChanged(() => WorkflowName);
             }
         }
-        public string WorkflowLocation
-        {
-            get { return _workflowLocation; }
-            set
-            {
-                _workflowLocation = value;
-                OnPropertyChanged(() => WorkflowLocation);
-            }
-        }
-        public ObservableCollection<DataListHeaderItemModel> BaseCollection
-        {
-            get { return _baseCollection; }
-            set
-            {
-                _baseCollection = value;
-                OnPropertyChanged(() => BaseCollection);
-            }
-        }
+        
+        public DataListViewModel DataListViewModel { get; set; }
         public IMergeViewModel MergeViewModel { get; set; }
         public ObservableCollection<IMergeViewModel> MergeConflicts { get; set; }
     }
@@ -239,6 +241,8 @@ namespace Dev2.ViewModels.Merge
                 MergeIcon = null;
             }
         }
+
+        public ActivityDesignerViewModel ActivityDesignerViewModel { get; set; }
 
         IToolDescriptor GetDescriptorFromAttribute(Type type)
         {

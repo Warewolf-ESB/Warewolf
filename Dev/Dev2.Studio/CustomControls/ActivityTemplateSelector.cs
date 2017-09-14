@@ -1,5 +1,6 @@
 ﻿using Dev2.Activities.Designers2.Core;
 using Dev2.Studio.ActivityDesigners;
+using Dev2.ViewModels.Merge;
 using System;
 using System.Activities.Presentation.View;
 using System.Windows;
@@ -12,7 +13,8 @@ namespace Dev2.CustomControls
     {
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
-            var vm = item as ActivityDesignerViewModel;
+            var mergeVM = item as MergeViewModel;
+            var vm = mergeVM?.ActivityDesignerViewModel;
             if (vm != null)
             {
                 DesignerView parentContentPane = FindDependencyParent.FindParent<DesignerView>(vm.ModelItem.View);
