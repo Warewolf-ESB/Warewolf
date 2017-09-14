@@ -46,7 +46,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DotNet_Dll
         }
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void DisplayName_Same_Object_IsEqual()
+        public void Equals_Given_Same_Object_IsEqual()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -62,7 +62,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DotNet_Dll
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void DisplayName_Different_Object_Is_Not_Equal()
+        public void Equals_Given_Different_Object_Is_Not_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -78,7 +78,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DotNet_Dll
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void DisplayName_Different_Object_Is_Not_Equal_CaseSensitive()
+        public void Equals_Given_Different_Object_Is_Not_Equal_CaseSensitive()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();

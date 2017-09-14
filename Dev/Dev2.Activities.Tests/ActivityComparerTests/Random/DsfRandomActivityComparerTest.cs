@@ -41,7 +41,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Random
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        public void DisplayName_Same_DisplayName_IsEqual()
+        public void Equals_Given_Same_DisplayName_IsEqual()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -57,7 +57,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Random
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        public void DisplayName_Different_DisplayName_Is_Not_Equal()
+        public void Equals_Given_Different_DisplayName_Is_Not_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -72,7 +72,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Random
         }
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        public void DisplayName_Same_Length_IsEqual()
+        public void Equals_Given_Same_Length_IsEqual()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -88,7 +88,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Random
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        public void DisplayName_Different_Length_Is_Not_Equal()
+        public void Equals_Given_Different_Length_Is_Not_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -103,7 +103,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Random
         }
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        public void DisplayName_Same_From_IsEqual()
+        public void Equals_Given_Same_From_IsEqual()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -119,7 +119,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Random
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        public void DisplayName_Different_From_Is_Not_Equal()
+        public void Equals_Given_Different_From_Is_Not_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -135,7 +135,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Random
                  
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        public void DisplayName_Same_To_IsEqual()
+        public void Equals_Given_Same_To_IsEqual()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -151,7 +151,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Random
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        public void DisplayName_Different_To_Is_Not_Equal()
+        public void Equals_Given_Different_To_Is_Not_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -167,7 +167,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Random
                  
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        public void DisplayName_Same_Result_IsEqual()
+        public void Equals_Given_Same_Result_IsEqual()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -183,7 +183,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Random
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        public void DisplayName_Different_Result_Is_Not_Equal()
+        public void Equals_Given_Different_Result_Is_Not_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -200,7 +200,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Random
                  
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        public void DisplayName_Same_RandomType_IsEqual()
+        public void Equals_Given_Same_RandomType_IsEqual()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -217,7 +217,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Random
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        public void DisplayName_Different_RandomType_Is_Not_Equal()
+        public void Equals_Given_Different_RandomType_Is_Not_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
