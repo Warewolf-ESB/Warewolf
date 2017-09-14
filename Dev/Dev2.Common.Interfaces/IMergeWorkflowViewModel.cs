@@ -14,7 +14,6 @@ namespace Dev2.Common.Interfaces
     public interface IConflictViewModel
     {
         string WorkflowName { get; set; }
-        string WorkflowLocation { get; set; }
         ObservableCollection<IMergeViewModel> MergeConflicts { get; set; }
     }
 
