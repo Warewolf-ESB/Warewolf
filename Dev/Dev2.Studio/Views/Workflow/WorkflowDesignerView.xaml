@@ -22,6 +22,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <luna:SharedResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+            <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
 
             <ContextMenu x:Key ="StartNodeContextMenu" Style="{StaticResource ContextMenuStyle}"  StaysOpen="true">
                 <MenuItem Name="DebugInputs"
@@ -160,13 +161,15 @@
     <Grid cal:Bind.Model="{Binding ., IsAsync=True}">
         <Grid x:Name="MainGrid" Margin="{StaticResource ElementBorder}">
             <Grid.RowDefinitions>
-                <RowDefinition Height="60" />
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <ScrollViewer x:Name="ScrollViewer" 
                           VerticalScrollBarVisibility="Auto" 
                           HorizontalScrollBarVisibility="Hidden" 
                           CanContentScroll="True"
+                          MaxHeight="60"
+                          Visibility="{Binding CanViewWorkflowLink,Converter={StaticResource BoolToVisibilityConverter}, FallbackValue=Collapsed, TargetNullValue=Collapsed}"
                           Width="{Binding ElementName=MainGrid, Path=ActualWidth}">
                 <StackPanel Orientation="Horizontal" 
                             OverridesDefaultStyle="False" 
@@ -191,14 +194,12 @@
                 </StackPanel>
             </ScrollViewer>
             <ContentControl Grid.Row="1"
-                                    Content="{Binding Path=DesignerView}"
-                                    AutomationProperties.AutomationId="{Binding Path=DisplayName, Mode=OneWay}"
-                            
-                                    cal:Message.Attach="[Event LostKeyboardFocus] = [Action UpdateDataList]">
-
+                            Content="{Binding Path=DesignerView}"
+                            AutomationProperties.AutomationId="{Binding Path=DisplayName, Mode=OneWay}"
+                            cal:Message.Attach="[Event LostKeyboardFocus] = [Action UpdateDataList]">
                 <i:Interaction.Behaviors>
                     <local:WorkflowDesignerLinkBehaviours CollapseAllCommand="{Binding CollapseAllCommand}"
-                                                                  ExpandAllCommand="{Binding ExpandAllCommand}" />
+                                                          ExpandAllCommand="{Binding ExpandAllCommand}" />
                 </i:Interaction.Behaviors>
                 <ig:DragDropManager.DropTarget >
                     <ig:DropTarget IsDropTarget="True" />

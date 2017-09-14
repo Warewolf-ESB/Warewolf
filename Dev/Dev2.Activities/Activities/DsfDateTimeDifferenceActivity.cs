@@ -351,7 +351,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            return base.Equals(other) && string.Equals(Input1, other.Input1) && string.Equals(Input2, other.Input2) && string.Equals(InputFormat, other.InputFormat) && string.Equals(OutputType, other.OutputType) && string.Equals(Result, other.Result);
+            return base.Equals(other) 
+                && string.Equals(Input1, other.Input1) 
+                && string.Equals(Input2, other.Input2) 
+                && string.Equals(InputFormat, other.InputFormat) 
+                && string.Equals(OutputType, other.OutputType) 
+                && string.Equals(Result, other.Result);
         }
 
         public override bool Equals(object obj)

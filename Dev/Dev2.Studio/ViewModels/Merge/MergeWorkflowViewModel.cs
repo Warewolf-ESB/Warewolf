@@ -33,6 +33,7 @@ namespace Dev2.ViewModels.Merge
                 //var step = new FlowStep { Action = act };
                 //WorkflowDesignerViewModel.AddItem(step);
             });
+            WorkflowDesignerViewModel.CanViewWorkflowLink = false;
         }
 
         //public MergeWorkflowViewModel()

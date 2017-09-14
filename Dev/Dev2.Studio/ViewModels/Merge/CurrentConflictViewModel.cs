@@ -25,6 +25,7 @@ namespace Dev2.ViewModels.Merge
             tempResource.IsNewWorkflow = true;
 
             DataListViewModel = DataListViewModelFactory.CreateDataListViewModel(tempResource) as DataListViewModel;
+            DataListViewModel.ViewSortDelete = false;
         }
 
 
