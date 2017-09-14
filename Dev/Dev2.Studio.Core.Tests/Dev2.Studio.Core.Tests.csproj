@@ -460,6 +460,10 @@
       <Project>{8FD23CE0-02BB-48E1-A914-BA467938CE78}</Project>
       <Name>Warewolf.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.MergeParser\Warewolf.MergeParser.csproj">
+      <Project>{01b6f143-3f8c-4545-b06f-57d2c5ae7c9c}</Project>
+      <Name>Warewolf.MergeParser</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Warewolf.Resource\Warewolf.Resource.csproj">
       <Project>{dff93ecb-fdd1-405e-ae02-9f4bc7571c1b}</Project>
       <Name>Warewolf.Resource</Name>
@@ -483,6 +487,10 @@
     <ProjectReference Include="..\Warewolf.Studio.ViewModels\Warewolf.Studio.ViewModels.csproj">
       <Project>{C52B12C2-6A1D-4C4F-A878-CF283662A226}</Project>
       <Name>Warewolf.Studio.ViewModels</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Testing\Warewolf.Testing.csproj">
+      <Project>{1AD4F06F-BC1C-4C9E-8184-67EAE81C2279}</Project>
+      <Name>Warewolf.Testing</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -9,6 +9,9 @@
 */
 
 using System;
+using System.Activities;
+using System.Activities.Presentation.Model;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
@@ -27,6 +30,8 @@ using FontAwesome.WPF;
 using Infragistics.Windows.DockManager.Events;
 using WinInterop = System.Windows.Interop;
 using Dev2.Studio.Core;
+using Dev2.Studio.Core.Activities.Utils;
+using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.ViewModels.Workflow;
 using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.ViewModels;
@@ -34,6 +39,8 @@ using Dev2.Workspaces;
 using Infragistics.Windows.DockManager;
 using Dev2.ViewModels.Merge;
 using Dev2.Views.Merge;
+using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Application = System.Windows.Application;
 
 namespace Dev2.Studio.Views
 {
@@ -160,7 +167,7 @@ namespace Dev2.Studio.Views
         }
 
         [StructLayout(LayoutKind.Sequential)]
-        
+
         public struct MINMAXINFO
         {
             public POINT ptReserved;
@@ -201,10 +208,58 @@ namespace Dev2.Studio.Views
             }
             if (e.Key == Key.Home && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
             {
+                var assignId = Guid.NewGuid();
+                var foreachId = Guid.NewGuid();
+                var dsfMultiAssignActivity = new DsfMultiAssignActivity()
+                {
+                    UniqueID = assignId.ToString(),
+                    FieldsCollection = new List<ActivityDTO>()
+                {
+                    new ActivityDTO("a","a",1),
+                    new ActivityDTO("a","a",2)
+                }
+                };
+                var dsfMultiAssignActivity1 = new DsfMultiAssignActivity()
+                {
+                    UniqueID = assignId.ToString(),
+                    FieldsCollection = new List<ActivityDTO>()
+                {
+                    new ActivityDTO("a","b",1),
+                    new ActivityDTO("a","a",2)
+                }
+                };
+                var dsfForEachActivity = new DsfForEachActivity()
+                {
+                    UniqueID = foreachId.ToString(),
+                    DataFunc = new ActivityFunc<string, bool>()
+                    {
+                        Handler = new DsfDateTimeActivity()
+                    }
+                };
+                var dsfForEachActivity1 = new DsfForEachActivity()
+                {
+                    UniqueID = foreachId.ToString(),
+                    DataFunc = new ActivityFunc<string, bool>()
+                    {
+                        Handler = new DsfDateTimeActivity()
+                    }
+                };
+                var assignOne = ModelItemUtils.CreateModelItem(dsfMultiAssignActivity);
+                var assign2 = ModelItemUtils.CreateModelItem(dsfMultiAssignActivity1);
+                var forEach = ModelItemUtils.CreateModelItem(dsfForEachActivity);
+                var forEach1 = ModelItemUtils.CreateModelItem(dsfForEachActivity1);
+
+                var currentChanges = new List<ModelItem>()
+            {
+                assignOne,forEach
+            };
+                var differenceChanges = new List<ModelItem>()
+            {
+                assign2,forEach1
+            };
                 var window = new Window();
-                var vm = new MergeWorkflowViewModel();
-                var content = new MergeWorkflowView();
-                content.DataContext = vm;
+                var vm = new MergeWorkflowViewModel(currentChanges, differenceChanges, new ApplicationAdaptor(Application.Current));
+                var content = new MergeWorkflowView { DataContext = vm };
                 window.Content = content;
                 window.Show();
             }
@@ -342,8 +397,7 @@ namespace Dev2.Studio.Views
             {
                 xmlDocument.LoadXml(_savedLayout);
             }
-            ShellViewModel shellViewModel = DataContext as ShellViewModel;
-            if (shellViewModel != null)
+            if (DataContext is ShellViewModel shellViewModel)
             {
                 SetMenuExpanded(xmlDocument, shellViewModel);
                 SetMenuPanelOpen(xmlDocument, shellViewModel);
@@ -526,17 +580,17 @@ namespace Dev2.Studio.Views
         {
             var dockManager = sender as XamDockManager;
             string displayName = string.Empty;
-            if (dockManager?.DataContext.GetType() == typeof (WorkflowDesignerViewModel))
+            if (dockManager?.DataContext.GetType() == typeof(WorkflowDesignerViewModel))
             {
                 var workflowDesignerViewModel = dockManager.DataContext as WorkflowDesignerViewModel;
                 displayName = workflowDesignerViewModel?.DisplayName;
             }
-            else if (dockManager?.DataContext.GetType() == typeof (StudioTestViewModel))
+            else if (dockManager?.DataContext.GetType() == typeof(StudioTestViewModel))
             {
                 var studioTestViewModel = dockManager.DataContext as StudioTestViewModel;
                 displayName = studioTestViewModel?.DisplayName;
             }
-            else if (dockManager?.DataContext.GetType() == typeof (SchedulerViewModel))
+            else if (dockManager?.DataContext.GetType() == typeof(SchedulerViewModel))
             {
                 var schedulerViewModel = dockManager.DataContext as SchedulerViewModel;
                 displayName = schedulerViewModel?.DisplayName;
