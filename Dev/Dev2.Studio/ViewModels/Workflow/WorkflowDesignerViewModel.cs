@@ -2839,12 +2839,18 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public void AddItem(FlowStep step)
         {
-            
-            var builder = WorkflowHelper.GetActivityBuilder(_modelService);
-            var chart = builder.Implementation as Flowchart;
-            chart.StartNode = step;
+            var defaultParent = _modelService.Find(_modelService.Root, typeof(Flowchart)).FirstOrDefault();
+            using (ModelEditingScope editingScope = defaultParent.BeginEdit("Activities"))
+            {
+                defaultParent.Properties["Activities"].Collection.Add(new DsfMultiAssignActivity());                
+                editingScope.Complete();
+            }
 
-            //var defaultParent = _modelService.Find(_modelService.Root, typeof(Flowchart)).FirstOrDefault();
+            //var builder = WorkflowHelper.GetActivityBuilder(_modelService);
+            //var chart = builder.Implementation as Flowchart;
+            //chart.StartNode = step;
+
+            //
             //var mi = ModelItemUtils.CreateModelItem(defaultParent, step);
             //PerformAddItems(mi);
         }
