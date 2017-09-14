@@ -284,6 +284,7 @@
     <Compile Include="TestUtil.cs" />
     <Compile Include="ComplexObjectItemModelTests.cs" />
     <Compile Include="StudioTestViewModelTest.cs" />
+    <Compile Include="MergeWorkflowViewModelTests.cs" />
     <Compile Include="UtilsTests\ActivityDesignerLanuageNotationConverterTest.cs" />
     <Compile Include="UtilsTests\DataListConversionUtilTest.cs" />
     <Compile Include="UtilsTests\WebServerTests.cs" />
@@ -484,7 +485,10 @@
       <Name>Warewolf.Studio.ViewModels</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="XML\Utility - Assign.xml" />
+    <EmbeddedResource Include="XML\Utility - Assign_Confilct.xml" />
+  </ItemGroup>
   <ItemGroup>
     <None Include="..\Dev2.Studio\App.config">
       <Link>App.config</Link>

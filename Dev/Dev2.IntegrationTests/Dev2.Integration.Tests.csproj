@@ -185,6 +185,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Internal Services\GetComputerNamesTests.cs" />
+    <Compile Include="Merge\MergeWorkflowViewModelTests.cs" />
     <Compile Include="Properties\TestStrings.Designer.cs" />
     <Compile Include="Server Refresh\ServerRefreshTests.cs" />
     <Compile Include="Server Test\InternalServices\FindDependenciesServiceTest.cs" />
@@ -321,6 +322,10 @@
     <ProjectReference Include="..\Dev2.Studio.Interfaces\Dev2.Studio.Interfaces.csproj">
       <Project>{37149E8E-FEF2-47C0-8391-80DCCE86D26D}</Project>
       <Name>Dev2.Studio.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Studio\Dev2.Studio.csproj">
+      <Project>{62247a80-2266-4295-a8f6-a05507e2796e}</Project>
+      <Name>Dev2.Studio</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.Util\Dev2.Util.csproj">
       <Project>{1990550D-EA6F-4DAC-9B5E-8571E86923ED}</Project>
