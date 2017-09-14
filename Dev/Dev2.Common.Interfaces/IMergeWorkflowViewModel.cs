@@ -14,20 +14,20 @@ namespace Dev2.Common.Interfaces
     public interface IConflictViewModel
     {
         string WorkflowName { get; set; }
-        ObservableCollection<IMergeViewModel> MergeConflicts { get; set; }
+        ObservableCollection<IMergeToolModel> MergeConflicts { get; set; }
     }
 
     public interface ICurrentConflictViewModel : IConflictViewModel
     {
-        IMergeViewModel MergeViewModel { get; set; }
+        IMergeToolModel MergeToolModel { get; set; }
     }
 
     public interface IDifferenceConflictViewModel : IConflictViewModel
     {
-        IMergeViewModel MergeViewModel { get; set; }
+        IMergeToolModel MergeToolModel { get; set; }
     }
 
-    public interface IMergeViewModel
+    public interface IMergeToolModel
     {
         List<string> FieldCollection { get; set; }
         bool IsMergeExpanderEnabled { get; set; }
