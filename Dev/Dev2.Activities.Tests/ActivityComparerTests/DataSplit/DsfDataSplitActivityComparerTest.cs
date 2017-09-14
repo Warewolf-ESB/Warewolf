@@ -40,7 +40,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DataMerge
         }
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        public void DisplayName_Same_SourceString_IsEqual()
+        public void Equals_Given_Same_SourceString_IsEqual()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -56,7 +56,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DataMerge
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        public void DisplayName_Different_SourceString_Is_Not_Equal()
+        public void Equals_Given_Different_SourceString_Is_Not_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -71,7 +71,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DataMerge
         }
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        public void DisplayName_Same_DisplayName_IsEqual()
+        public void Equals_Given_Same_DisplayName_IsEqual()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -87,7 +87,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DataMerge
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        public void DisplayName_Different_DisplayName_Is_Not_Equal()
+        public void Equals_Given_Different_DisplayName_Is_Not_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -102,7 +102,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DataMerge
         }
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        public void DisplayName_Same_SkipBlankRows_IsEqual()
+        public void Equals_Given_Same_SkipBlankRows_IsEqual()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -118,7 +118,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DataMerge
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        public void DisplayName_Different_SkipBlankRows_Is_Not_Equal()
+        public void Equals_Given_Different_SkipBlankRows_Is_Not_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -134,7 +134,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DataMerge
         
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        public void DisplayName_Same_ReverseOrder_IsEqual()
+        public void Equals_Given_Same_ReverseOrder_IsEqual()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -150,7 +150,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DataMerge
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        public void DisplayName_Different_ReverseOrder_Is_Not_Equal()
+        public void Equals_Given_Different_ReverseOrder_Is_Not_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -166,7 +166,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DataMerge
         
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        public void DisplayName_Same_ResultsCollection_IsEqual()
+        public void Equals_Given_Same_ResultsCollection_IsEqual()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -183,7 +183,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DataMerge
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        public void DisplayName_Same_ResultsCollection_Different_Indexes_Is_Not_Equal()
+        public void Equals_Given_Same_ResultsCollection_Different_Indexes_Is_Not_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -233,7 +233,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DataMerge
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        public void DisplayName_Different_ResultsCollection_Is_Not_Equal()
+        public void Equals_Given_Different_ResultsCollection_Is_Not_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();

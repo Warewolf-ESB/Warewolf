@@ -42,7 +42,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.CreateJson
         }
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        public void DisplayName_Same_DisplayName_IsEqual()
+        public void Equals_Given_Same_DisplayName_IsEqual()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -58,7 +58,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.CreateJson
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        public void DisplayName_Different_DisplayName_Is_Not_Equal()
+        public void Equals_Given_Different_DisplayName_Is_Not_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -74,7 +74,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.CreateJson
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        public void DisplayName_Same_JsonString_IsEqual()
+        public void Equals_Given_Same_JsonString_IsEqual()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -90,7 +90,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.CreateJson
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        public void DisplayName_Different_JsonString_Is_Not_Equal()
+        public void Equals_Given_Different_JsonString_Is_Not_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -106,7 +106,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.CreateJson
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        public void DisplayName_Same_JsonMappings_IsEqual()
+        public void Equals_Given_Same_JsonMappings_IsEqual()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -123,7 +123,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.CreateJson
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        public void DisplayName_Same_JsonMappings_DifferentIndexes_Is_Not_Equal()
+        public void Equals_Given_Same_JsonMappings_DifferentIndexes_Is_Not_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -160,7 +160,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.CreateJson
         }
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        public void DisplayName_Different_JsonMappings_Is_Not_Equal()
+        public void Equals_Given_Different_JsonMappings_Is_Not_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();

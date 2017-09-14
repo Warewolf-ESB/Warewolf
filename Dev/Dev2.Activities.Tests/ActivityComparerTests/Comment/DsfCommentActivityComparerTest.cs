@@ -40,7 +40,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Comment
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        public void DisplayName_Same_DisplayName_IsEqual()
+        public void Equals_Given_Same_DisplayName_IsEqual()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -56,7 +56,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Comment
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        public void DisplayName_Different_DisplayName_Is_Not_Equal()
+        public void Equals_Given_Different_DisplayName_Is_Not_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -71,7 +71,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Comment
         }
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        public void DisplayName_Same_Text_IsEqual()
+        public void Equals_Given_Same_Text_IsEqual()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -87,7 +87,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Comment
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        public void DisplayName_Same_Text_Different_Casing_IsNotEqual()
+        public void Equals_Given_Same_Text_Different_Casing_IsNotEqual()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -103,7 +103,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Comment
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        public void DisplayName_Different_Text_Is_Not_Equal()
+        public void Equals_Given_Different_Text_Is_Not_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();

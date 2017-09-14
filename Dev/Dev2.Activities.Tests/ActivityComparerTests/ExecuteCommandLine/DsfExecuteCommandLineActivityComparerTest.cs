@@ -41,7 +41,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.ExecuteCommand
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        public void DisplayName_Same_DisplayName_IsEqual()
+        public void Equals_Given_Same_DisplayName_IsEqual()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -57,7 +57,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.ExecuteCommand
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        public void DisplayName_Different_DisplayName_Is_Not_Equal()
+        public void Equals_Given_Different_DisplayName_Is_Not_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -72,7 +72,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.ExecuteCommand
         }
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        public void DisplayName_Same_CommandFileName_IsEqual()
+        public void Equals_Given_Same_CommandFileName_IsEqual()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -88,7 +88,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.ExecuteCommand
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        public void DisplayName_Same_CommandFileName_Different_Casing_IsNotEqual()
+        public void Equals_Given_Same_CommandFileName_Different_Casing_IsNotEqual()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -104,7 +104,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.ExecuteCommand
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        public void DisplayName_Different_CommandFileName_Is_Not_Equal()
+        public void Equals_Given_Different_CommandFileName_Is_Not_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -119,7 +119,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.ExecuteCommand
         }    
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        public void DisplayName_Same_CommandResult_IsEqual()
+        public void Equals_Given_Same_CommandResult_IsEqual()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -135,7 +135,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.ExecuteCommand
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        public void DisplayName_Same_CommandFileName_CommandResult_Casing_IsNotEqual()
+        public void Equals_Given_Same_CommandFileName_CommandResult_Casing_IsNotEqual()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -151,7 +151,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.ExecuteCommand
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        public void DisplayName_Different_CommandResult_Is_Not_Equal()
+        public void Equals_Given_Different_CommandResult_Is_Not_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -166,7 +166,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.ExecuteCommand
         }
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        public void DisplayName_Same_CommandFileName_CommandPriority_IsNotEqual()
+        public void Equals_Given_Same_CommandFileName_CommandPriority_IsNotEqual()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -182,7 +182,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.ExecuteCommand
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        public void DisplayName_Different_CommandPriority_Is_Not_Equal()
+        public void Equals_Given_Different_CommandPriority_Is_Not_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
