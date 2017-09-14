@@ -194,6 +194,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             _resourceModel.OnDataListChanged += FireWdChanged;
             _resourceModel.OnResourceSaved += UpdateOriginalDataList;
             _asyncWorker = asyncWorker;
+            CanViewWorkflowLink = true;
 
             PopUp = popupController;
 
@@ -732,6 +733,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         }
 
         public Visibility WorkflowLinkVisible => _resourceModel.IsVersionResource ? Visibility.Hidden : Visibility.Visible;
+        public bool CanViewWorkflowLink { get; set; }
 
         public IPopupController PopUp { get; set; }
 
