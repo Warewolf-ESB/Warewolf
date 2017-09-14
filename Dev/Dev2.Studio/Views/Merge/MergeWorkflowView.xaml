@@ -9,7 +9,7 @@
              xmlns:workflow="clr-namespace:Dev2.Studio.Views.Workflow"
              xmlns:datalist="clr-namespace:Dev2.Studio.Views.DataList"
              mc:Ignorable="d" 
-             d:DataContext="{d:DesignInstance IMergeWorkflowViewModel}"
+             d:DataContext="{d:DesignInstance interfaces:IMergeWorkflowViewModel}"
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>
         <ResourceDictionary>
@@ -61,7 +61,7 @@
                         <TextBlock x:Name="MergeCurrentWorkflowName" Text="{Binding WorkflowName}" />
                         
                         <Expander x:Name="MergeCurrentWorkflowVariables"
-                                  Grid.Row="2"
+                                  Grid.Row="1"
                                   Style="{StaticResource MergeExpander}"
                                   AutomationProperties.AutomationId="UI_MergeCurrentVariablesExpander_AutoID">
                             <Expander.HeaderTemplate>
@@ -86,7 +86,7 @@
                         </Expander>
                         
                         <TreeView x:Name="MergeCurrentDataTree"
-                                  Grid.Row="3"
+                                  Grid.Row="2"
                                   ItemsSource="{Binding MergeConflicts, Mode=TwoWay, IsAsync=True}"
                                   HorizontalAlignment="Stretch"
                                   Margin="{StaticResource ElementBorderTop}"
@@ -104,7 +104,7 @@
                                   VirtualizingStackPanel.IsVirtualizingWhenGrouping="True"
                                   VirtualizingStackPanel.IsContainerVirtualizable="True">
                             <TreeView.ItemTemplate>
-                                <HierarchicalDataTemplate DataType="{x:Type interfaces:IMergeViewModel}" ItemsSource="{Binding Path=Children, IsAsync=True}">
+                                <HierarchicalDataTemplate DataType="{x:Type interfaces:IMergeToolModel}" ItemsSource="{Binding Path=Children, IsAsync=True}">
                                     <Grid>
                                         <Grid.Width>
                                             <MultiBinding Converter="{StaticResource MergeWidthConverter}">
@@ -173,7 +173,7 @@
                         <TextBlock x:Name="MergeDifferenceWorkflowName" Text="{Binding WorkflowName}" />
                         
                         <Expander x:Name="MergeDifferenceWorkflowVariables"
-                                  Grid.Row="2"
+                                  Grid.Row="1"
                                   Style="{StaticResource MergeExpander}"
                                   AutomationProperties.AutomationId="UI_MergeDifferenceVariablesExpander_AutoID">
                             <Expander.HeaderTemplate>
@@ -198,7 +198,7 @@
                         </Expander>
                         
                         <TreeView x:Name="MergeDifferenceDataTree"
-                                  Grid.Row="3"
+                                  Grid.Row="2"
                                   ItemsSource="{Binding MergeConflicts, Mode=TwoWay, IsAsync=True}"
                                   HorizontalAlignment="Stretch"
                                   Margin="{StaticResource ElementBorderTop}"
@@ -216,7 +216,7 @@
                                   VirtualizingStackPanel.IsVirtualizingWhenGrouping="True"
                                   VirtualizingStackPanel.IsContainerVirtualizable="True">
                             <TreeView.ItemTemplate>
-                                <HierarchicalDataTemplate DataType="{x:Type interfaces:IMergeViewModel}" ItemsSource="{Binding Path=Children, IsAsync=True}">
+                                <HierarchicalDataTemplate DataType="{x:Type interfaces:IMergeToolModel}" ItemsSource="{Binding Path=Children, IsAsync=True}">
                                     <Grid>
                                         <Grid.Width>
                                             <MultiBinding Converter="{StaticResource MergeWidthConverter}">
