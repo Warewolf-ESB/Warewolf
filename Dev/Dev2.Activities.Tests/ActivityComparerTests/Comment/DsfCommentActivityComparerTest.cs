@@ -1,47 +1,41 @@
-﻿using System;
-using Dev2.Activities;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Dev2.Services.Execution;
-using System.Runtime.InteropServices.ComTypes;
-using Dev2.Runtime.ServiceModel.Data;
-using Moq;
-using Dev2.Runtime.ESB.Execution;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using Unlimited.Applications.BusinessDesignStudio.Activities;
 
-namespace Dev2.Tests.Activities.ActivityComparerTests.Database
+namespace Dev2.Tests.Activities.ActivityComparerTests.Comment
 {
     [TestClass]
-    public class DsfSqlServerDatabaseActivityEqualityTests
+    public class DsfCommentActivityComparerTest
     {
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        public void UniqueIDEquals_EmptySqlDatabase_Object_Is_Equal()
+        public void Equals_Given_DifferentUniqueIds_ActivityTools_AreNotEqual()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var sqlDatabase = new DsfSqlServerDatabaseActivity() { UniqueID = uniqueId };
-            var activity = new DsfSqlServerDatabaseActivity() { UniqueID = uniqueId };
+            var activity = new DsfCommentActivity() { UniqueID = uniqueId };
+            var activity1 = new DsfCommentActivity() { UniqueID = uniqueId };
             //---------------Assert Precondition----------------
-            Assert.IsNotNull(sqlDatabase);
+            Assert.IsNotNull(activity);
             //---------------Execute Test ----------------------
-            var equals = sqlDatabase.Equals(activity);
+            var @equals = activity.Equals(activity1);
             //---------------Test Result -----------------------
             Assert.IsTrue(@equals);
         }
-
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        public void UniqueIDDifferent_EmptySqlDatabase_Object_Is_Not_Equal()
+        public void Equals_Given_EmptyActivityTools_AreEqual()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var activity1 = new DsfSqlServerDatabaseActivity();
-            var sqlDatabase = new DsfSqlServerDatabaseActivity();
+            var activity = new DsfCommentActivity() { UniqueID = uniqueId };
+            var activity1 = new DsfCommentActivity() { UniqueID = uniqueId };
             //---------------Assert Precondition----------------
-            Assert.IsNotNull(activity1);
+            Assert.IsNotNull(activity);
             //---------------Execute Test ----------------------
-            var @equals = activity1.Equals(sqlDatabase);
+            var @equals = activity.Equals(activity1);
             //---------------Test Result -----------------------
-            Assert.IsFalse(@equals);
+            Assert.IsTrue(@equals);
         }
 
         [TestMethod]
@@ -50,12 +44,12 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Database
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var activity1 = new DsfSqlServerDatabaseActivity() { UniqueID = uniqueId, DisplayName = "a" };
-            var sqlDatabase = new DsfSqlServerDatabaseActivity() { UniqueID = uniqueId, DisplayName = "a" };
+            var activity1 = new DsfCommentActivity() { UniqueID = uniqueId, DisplayName = "a" };
+            var activity = new DsfCommentActivity() { UniqueID = uniqueId, DisplayName = "a" };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(activity1);
             //---------------Execute Test ----------------------
-            var @equals = activity1.Equals(sqlDatabase);
+            var @equals = activity1.Equals(activity);
             //---------------Test Result -----------------------
             Assert.IsTrue(@equals);
         }
@@ -66,58 +60,59 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Database
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var activity1 = new DsfSqlServerDatabaseActivity() { UniqueID = uniqueId, DisplayName = "A" };
-            var sqlDatabase = new DsfSqlServerDatabaseActivity() { UniqueID = uniqueId, DisplayName = "ass" };
+            var activity1 = new DsfCommentActivity() { UniqueID = uniqueId, DisplayName = "A" };
+            var activity = new DsfCommentActivity() { UniqueID = uniqueId, DisplayName = "ass" };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(activity1);
             //---------------Execute Test ----------------------
-            var @equals = activity1.Equals(sqlDatabase);
+            var @equals = activity1.Equals(activity);
             //---------------Test Result -----------------------
             Assert.IsFalse(@equals);
         }
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        public void DisplayName_Same_ProcedureName_IsEqual()
+        public void DisplayName_Same_Text_IsEqual()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var activity1 = new DsfSqlServerDatabaseActivity() { UniqueID = uniqueId, ProcedureName = "a" };
-            var sqlDatabase = new DsfSqlServerDatabaseActivity() { UniqueID = uniqueId, ProcedureName = "a" };
+            var activity1 = new DsfCommentActivity() { UniqueID = uniqueId, Text = "a" };
+            var activity = new DsfCommentActivity() { UniqueID = uniqueId, Text = "a" };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(activity1);
             //---------------Execute Test ----------------------
-            var @equals = activity1.Equals(sqlDatabase);
+            var @equals = activity1.Equals(activity);
             //---------------Test Result -----------------------
             Assert.IsTrue(@equals);
         }
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        public void DisplayName_Same_ProcedureName_Different_Casing_IsNotEqual()
+        public void DisplayName_Same_Text_Different_Casing_IsNotEqual()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var activity1 = new DsfSqlServerDatabaseActivity() { UniqueID = uniqueId, ProcedureName = "A" };
-            var sqlDatabase = new DsfSqlServerDatabaseActivity() { UniqueID = uniqueId, ProcedureName = "a" };
+            var activity1 = new DsfCommentActivity() { UniqueID = uniqueId, Text = "A" };
+            var activity = new DsfCommentActivity() { UniqueID = uniqueId, Text = "a" };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(activity1);
             //---------------Execute Test ----------------------
-            var @equals = activity1.Equals(sqlDatabase);
+            var @equals = activity1.Equals(activity);
             //---------------Test Result -----------------------
-            Assert.IsTrue(@equals);
+            Assert.IsFalse(@equals);
         }
+
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        public void DisplayName_Different_ProcedureName_Is_Not_Equal()
+        public void DisplayName_Different_Text_Is_Not_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var activity1 = new DsfSqlServerDatabaseActivity() { UniqueID = uniqueId, ProcedureName = "A" };
-            var sqlDatabase = new DsfSqlServerDatabaseActivity() { UniqueID = uniqueId, ProcedureName = "ass" };
+            var activity1 = new DsfCommentActivity() { UniqueID = uniqueId, Text = "A" };
+            var activity = new DsfCommentActivity() { UniqueID = uniqueId, Text = "ass" };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(activity1);
             //---------------Execute Test ----------------------
-            var @equals = activity1.Equals(sqlDatabase);
+            var @equals = activity1.Equals(activity);
             //---------------Test Result -----------------------
             Assert.IsFalse(@equals);
         }
