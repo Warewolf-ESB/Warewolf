@@ -125,6 +125,7 @@ namespace Dev2.ViewModels.Merge
             tempResource.IsNewWorkflow = true;
 
             DataListViewModel = DataListViewModelFactory.CreateDataListViewModel(tempResource) as DataListViewModel;
+            DataListViewModel.ViewSortDelete = false;
         }
 
         public string WorkflowName
@@ -144,7 +145,6 @@ namespace Dev2.ViewModels.Merge
 
     public class DifferenceConflictViewModel : BindableBase, IDifferenceConflictViewModel
     {
-        private ObservableCollection<DataListHeaderItemModel> _baseCollection;
         private string _workflowName;
         
         public DifferenceConflictViewModel()
@@ -190,6 +190,7 @@ namespace Dev2.ViewModels.Merge
             tempResource.IsNewWorkflow = true;
 
             DataListViewModel = DataListViewModelFactory.CreateDataListViewModel(tempResource) as DataListViewModel;
+            DataListViewModel.ViewSortDelete = false;
         }
 
         public string WorkflowName
@@ -215,6 +216,7 @@ namespace Dev2.ViewModels.Merge
         private string _mergeDescription;
         private List<string> _fieldCollection;
         private bool _isMergeChecked;
+        private bool _isVariablesChecked;
 
         public MergeViewModel()
         {
@@ -304,6 +306,15 @@ namespace Dev2.ViewModels.Merge
             {
                 _isMergeChecked = value;
                 OnPropertyChanged(() => IsMergeChecked);
+            }
+        }
+        public bool IsVariablesChecked
+        {
+            get { return _isVariablesChecked; }
+            set
+            {
+                _isVariablesChecked = value;
+                OnPropertyChanged(() => IsVariablesChecked);
             }
         }
     }
