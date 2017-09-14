@@ -554,7 +554,8 @@ namespace Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses
         [Then(@"I Filter the Explorer with ""(.*)""")]
         public void Filter_Explorer(string FilterText)
         {
-            MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text = FilterText;
+            if (MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text != FilterText)
+                MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text = FilterText;
         }
 
         [When(@"I validate and delete the existing resource with ""(.*)""")]
