@@ -8,17 +8,27 @@ using Dev2.Studio.ViewModels.Workflow;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using System.Collections.Generic;
 using Dev2.Studio.Core.Interfaces;
+using System.Collections.ObjectModel;
 
 namespace Dev2.ViewModels.Merge
 {
     public class MergeWorkflowViewModel : BindableBase, IMergeWorkflowViewModel
     {
-
         public MergeWorkflowViewModel(IEnumerable<ModelItem> currentMergeList, IEnumerable<ModelItem> differenceModelItems, IApplicationAdaptor applicationAdaptor)
         {
             CurrentConflictViewModel = new CurrentConflictViewModel(applicationAdaptor, currentMergeList);
             DifferenceConflictViewModel = new DifferenceConflictViewModel(applicationAdaptor, differenceModelItems);
             string newWorflowName = NewWorkflowNames.Instance.GetNext();
+
+            CurrentConflictViewModel.WorkflowName = newWorflowName;
+            DifferenceConflictViewModel.WorkflowName = newWorflowName;
+
+            Conflicts = new ObservableCollection<CompleteConflict>();
+            Conflicts.Add(new CompleteConflict
+            {
+                DiffViewModel = DifferenceConflictViewModel.MergeToolModel,
+                CurrentViewModel = CurrentConflictViewModel.MergeToolModel
+            });
 
             IContextualResourceModel tempResource = ResourceModelFactory.CreateResourceModel(CustomContainer.Get<IShellViewModel>().ActiveServer, @"WorkflowService",
                 newWorflowName);
@@ -29,40 +39,13 @@ namespace Dev2.ViewModels.Merge
             WorkflowDesignerViewModel = new WorkflowDesignerViewModel(tempResource);
             AddAnItem = new DelegateCommand(o =>
             {
-
                 //var step = new FlowStep { Action = act };
                 //WorkflowDesignerViewModel.AddItem(step);
             });
             WorkflowDesignerViewModel.CanViewWorkflowLink = false;
         }
 
-        //public MergeWorkflowViewModel()
-        //{
-        //    CurrentConflictViewModel = new CurrentConflictViewModel { WorkflowName = "Current WorkflowName" };
-        //    DifferenceConflictViewModel = new DifferenceConflictViewModel { WorkflowName = "Difference WorkflowName" };
-
-        //    DataListSingleton.SetDataList(new DataListViewModel());
-        //    var act = new DsfMultiAssignActivity();
-        //    act.FieldsCollection.Add(new ActivityDTO("[[a]]", "1", 1));
-
-
-        //    string newWorflowName = NewWorkflowNames.Instance.GetNext();
-
-        //    IContextualResourceModel tempResource = ResourceModelFactory.CreateResourceModel(CustomContainer.Get<IShellViewModel>().ActiveServer, @"WorkflowService",
-        //        newWorflowName);
-        //    tempResource.Category = @"Unassigned\" + newWorflowName;
-        //    tempResource.ResourceName = newWorflowName;
-        //    tempResource.DisplayName = newWorflowName;
-        //    tempResource.IsNewWorkflow = true;
-
-        //    WorkflowDesignerViewModel = new WorkflowDesignerViewModel(tempResource);
-        //    AddAnItem = new DelegateCommand(o =>
-        //    {
-
-        //        var step = new FlowStep { Action = act };
-        //        WorkflowDesignerViewModel.AddItem(step);
-        //    });
-        //}
+        public ObservableCollection<CompleteConflict> Conflicts { get; set; }
 
         public System.Windows.Input.ICommand AddAnItem { get; set; }
 

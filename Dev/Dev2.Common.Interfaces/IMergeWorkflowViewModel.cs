@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Windows.Media;
 
 namespace Dev2.Common.Interfaces
@@ -9,33 +7,29 @@ namespace Dev2.Common.Interfaces
     {
         IConflictViewModel CurrentConflictViewModel { get; set; }
         IConflictViewModel DifferenceConflictViewModel { get; set; }
+        ObservableCollection<CompleteConflict> Conflicts { get; set; }
     }
 
     public interface IConflictViewModel
     {
         string WorkflowName { get; set; }
-        ObservableCollection<IMergeToolModel> MergeConflicts { get; set; }
-    }
-
-    public interface ICurrentConflictViewModel : IConflictViewModel
-    {
         IMergeToolModel MergeToolModel { get; set; }
     }
 
-    public interface IDifferenceConflictViewModel : IConflictViewModel
+    public class CompleteConflict
     {
-        IMergeToolModel MergeToolModel { get; set; }
+        public IMergeToolModel CurrentViewModel { get; set; }
+        public IMergeToolModel DiffViewModel { get; set; }
     }
 
     public interface IMergeToolModel
     {
-        List<string> FieldCollection { get; set; }
         bool IsMergeExpanderEnabled { get; set; }
         bool IsMergeExpanded { get; set; }
         ImageSource MergeIcon { get; set; }
         string MergeDescription { get; set; }
         bool IsMergeChecked { get; set; }
         bool IsVariablesChecked { get; set; }
-        void SetMergeIcon(Type type);
+        ObservableCollection<IMergeToolModel> Children { get; set; }
     }
 }
