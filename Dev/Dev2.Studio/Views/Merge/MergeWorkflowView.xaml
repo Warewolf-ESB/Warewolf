@@ -187,17 +187,12 @@
                                                 <DataTemplate>
                                                     <Grid>
                                                         <Grid.ColumnDefinitions>
-                                                            <ColumnDefinition Width="{Binding ElementName=MergeGrid, Path=ColumnDefinitions[0].ActualWidth}"/>
-                                                            <ColumnDefinition Width="{Binding ElementName=MergeGrid, Path=ColumnDefinitions[1].ActualWidth}"/>
+                                                            <ColumnDefinition Width="50*"/>
+                                                            <ColumnDefinition Width="50*"/>
                                                         </Grid.ColumnDefinitions>
 
                                                         <DockPanel Grid.Column="0" x:Name="MergeCurrentDockPanel" LastChildFill="False" DataContext="{Binding CurrentViewModel}">
                                                             <StackPanel DockPanel.Dock="Left" Orientation="Horizontal">
-                                                                <RadioButton x:Name="MergeCurrentRB" 
-													                         IsChecked="{Binding IsMergeChecked}" 
-													                         GroupName="MergeActivities"
-													                         Style="{StaticResource MergeRadioButtonStyle}">
-                                                                </RadioButton>
                                                                 <Image Source="{Binding MergeIcon}" Margin="5,0,3,0" Height="16" Width="16"/>
                                                                 <TextBlock Text="{Binding MergeDescription}"
 												                       ToolTip="{Binding MergeDescription}"
@@ -215,11 +210,6 @@
                                                         </DockPanel>
                                                         <DockPanel Grid.Column="1" x:Name="MergeDifferenceDockPanel" LastChildFill="False" DataContext="{Binding DiffViewModel}">
                                                             <StackPanel DockPanel.Dock="Left" Orientation="Horizontal">
-                                                                <RadioButton x:Name="MergeDifferenceRB" 
-													                         IsChecked="{Binding IsMergeChecked}" 
-													                         GroupName="MergeActivities"
-													                         Style="{StaticResource MergeRadioButtonStyle}">
-                                                                </RadioButton>
                                                                 <Image Source="{Binding MergeIcon}" Margin="5,0,3,0" Height="16" Width="16"/>
                                                                 <TextBlock Text="{Binding MergeDescription}"
 												                           ToolTip="{Binding MergeDescription}"
@@ -245,7 +235,18 @@
                                                 </Grid.ColumnDefinitions>
                                                 <Border BorderBrush="#CFD6E1" BorderThickness="1,0,1,1" >
                                                     <Grid x:Name="MergeCurrentGrid">
-                                                        <ContentPresenter Grid.Column="1" 
+                                                        <Grid.RowDefinitions>
+                                                            <RowDefinition Height="Auto"/>
+                                                            <RowDefinition Height="*"/>
+                                                        </Grid.RowDefinitions>
+                                                        <RadioButton x:Name="MergeCurrentRB" 
+                                                                     IsChecked="{Binding IsMergeChecked}" 
+                                                                     HorizontalAlignment="Right"
+                                                                     Margin="5,5,5,0"
+                                                                     GroupName="MergeActivities"
+                                                                     Style="{StaticResource MergeRadioButtonStyle}">
+                                                        </RadioButton>
+                                                        <ContentPresenter Grid.Row="1" 
 												                          x:Name="MergeCurrentContentPresenter" 
                                                                           Content="{Binding CurrentViewModel}"
 												                          ContentTemplateSelector="{StaticResource ActivitySelector}"
@@ -262,7 +263,18 @@
                                                 </Border>
                                                 <Border Grid.Column="1" BorderBrush="#CFD6E1" BorderThickness="1,0,1,1" >
                                                     <Grid x:Name="MergeDifferenceGrid" >
-                                                        <ContentPresenter Grid.Column="1" 
+                                                        <Grid.RowDefinitions>
+                                                            <RowDefinition Height="Auto"/>
+                                                            <RowDefinition Height="*"/>
+                                                        </Grid.RowDefinitions>
+                                                        <RadioButton x:Name="MergeDifferenceRB" 
+                                                                     IsChecked="{Binding IsMergeChecked}" 
+                                                                     HorizontalAlignment="Right"
+                                                                     Margin="5,5,5,0"
+                                                                     GroupName="MergeActivities"
+                                                                     Style="{StaticResource MergeRadioButtonStyle}">
+                                                        </RadioButton>
+                                                        <ContentPresenter Grid.Row="1"
 												                          x:Name="MergeDifferenceContentPresenter" 
                                                                           Content="{Binding DiffViewModel}"
 												                          ContentTemplateSelector="{StaticResource ActivitySelector}"
