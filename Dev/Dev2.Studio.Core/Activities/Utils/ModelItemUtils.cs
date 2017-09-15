@@ -145,9 +145,10 @@ namespace Dev2.Studio.Core.Activities.Utils
             return Guid.Empty;
         }
 
-        public static T GetCurrentValue<T>(this ModelItem modelItem) where T : class, IDev2Activity
+        public static T GetCurrentValue<T>(this ModelItem modelItem) where T : class
         {
-            return modelItem.GetCurrentValue() as T;
+            var currentValue = modelItem.GetCurrentValue();
+            return currentValue as T;
         }
 
         public static ImageSource GetImageSourceForTool(this ModelItem modelItem, IApplicationAdaptor currentApp = null)
