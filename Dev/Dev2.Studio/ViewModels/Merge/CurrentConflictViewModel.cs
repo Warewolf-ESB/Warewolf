@@ -9,12 +9,11 @@ using Dev2.Studio.ViewModels.DataList;
 
 namespace Dev2.ViewModels.Merge
 {
-    public class CurrentConflictViewModel : CurrentConflictViewModelBase
+    public class CurrentConflictViewModel : ConflictViewModelBase
     {
         public CurrentConflictViewModel(IApplicationAdaptor applicationAdaptor, IEnumerable<ModelItem> modelItems) 
             : base(applicationAdaptor, modelItems)
         {
-
             string newWorflowName = NewWorkflowNames.Instance.GetNext();
             var shellViewModel = CustomContainer.Get<IShellViewModel>();
             IContextualResourceModel tempResource = ResourceModelFactory.CreateResourceModel(shellViewModel.ActiveServer, @"WorkflowService",
@@ -27,7 +26,5 @@ namespace Dev2.ViewModels.Merge
             DataListViewModel = DataListViewModelFactory.CreateDataListViewModel(tempResource) as DataListViewModel;
             DataListViewModel.ViewSortDelete = false;
         }
-
-
     }
 }

@@ -10,7 +10,7 @@ namespace Dev2.Integration.Tests.Merge
         public void Constructor_GivenIsNew_ShouldPassThrough()
         {
             //---------------Set up test pack-------------------
-            var mergeWorkflowViewModel = new MergeWorkflowViewModel();
+            var mergeWorkflowViewModel = new MergeWorkflowViewModel(null, null, null);
             //---------------Assert Precondition----------------
 
             //---------------Execute Test ----------------------
