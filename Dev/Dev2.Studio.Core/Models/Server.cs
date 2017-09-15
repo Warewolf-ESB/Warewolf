@@ -199,7 +199,7 @@ namespace Dev2.Studio.Core.Models
 
         #endregion
 
-            #region Connect
+        #region Connect
 
         public void Connect()
         {

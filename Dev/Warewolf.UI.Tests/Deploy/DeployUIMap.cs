@@ -191,7 +191,7 @@ namespace Warewolf.UI.Tests.Deploy.DeployUIMapClasses
         [Given(@"I Click Deploy Tab Destination Server Remote Connection Intergration Item")]
         public void Click_Deploy_Tab_Destination_Server_Remote_Connection_Intergration_Item()
         {
-            Mouse.Click(UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration, new Point(223, 10));
+            Mouse.Click(UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.Text, new Point(223, 10));
         }
 
         [Given(@"I Click Deploy Tab Source Server Combobox")]
