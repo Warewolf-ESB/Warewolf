@@ -14,66 +14,64 @@ namespace Warewolf.MergeParser
 {
     public class ParseServiceForDifferences
     {
-        readonly ModelItem _head;
-        readonly ModelItem _mergeHead;
+        readonly ModelItem _difference;
+        readonly ModelItem _currentDifference;
 
-        public ParseServiceForDifferences(ModelItem mergeHead,ModelItem head)
+        public ParseServiceForDifferences(ModelItem currentDif, ModelItem differenceHead)
         {
-            _mergeHead = mergeHead ?? throw new ArgumentNullException(nameof(mergeHead));
-            _head = head ?? throw new ArgumentNullException(nameof(head));
-            
+            _currentDifference = currentDif ?? throw new ArgumentNullException(nameof(currentDif));
+            _difference = differenceHead ?? throw new ArgumentNullException(nameof(differenceHead));
+
         }
 
-        public List<ModelItem> MergeHeadNodes { get; private set; }
-        public List<ModelItem> HeadNodes { get; private set; }
+        public List<ModelItem> CurrentDifferences { get; private set; }
+        public List<ModelItem> Differences { get; private set; }
 
-        public List<(Guid uniqueId, IDev2Activity activity, bool conflict)> GetDifferences()
+        private ModelItem GetCurrentModelItemUniqueId(IEnumerable<ModelItem> items, string uniqueId)
         {
-            var conflictList = new List<(Guid uniqueId, IDev2Activity activity, bool conflict)>();
-            
-            MergeHeadNodes = GetNodes(_mergeHead);
-            HeadNodes = GetNodes(_head);
+            foreach (var modelItem in items)
+            {
+                if (modelItem.GetCurrentValue<FlowStep>().Action is IDev2Activity currentValue &&
+                    currentValue.UniqueID.Equals(uniqueId, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    return ModelItemUtils.CreateModelItem(currentValue);
+                }
+            }
 
-            var mergeHeadActivities = MergeHeadNodes.Select(i => i.GetProperty<IDev2Activity>("Action"));
-            var headActivities = HeadNodes.Select(i => i.GetProperty<IDev2Activity>("Action"));
+            return default;
+        }
 
+
+
+        public List<(Guid uniqueId, ModelItem current, ModelItem difference, bool conflict)> GetDifferences()
+        {
+            var conflictList = new List<(Guid uniqueId, ModelItem current, ModelItem difference, bool conflict)>();
+            CurrentDifferences = GetNodes(_difference);
+            Differences = GetNodes(_currentDifference);
+
+            var mergeHeadActivities = CurrentDifferences.Select(i => i.GetProperty<IDev2Activity>("Action")).ToList();
+            var headActivities = Differences.Select(i => i.GetProperty<IDev2Activity>("Action")).ToList();
+            var equalItems = mergeHeadActivities.Intersect(headActivities);
             var nodesDifferentInMergeHead = mergeHeadActivities.Except(headActivities);
             var nodesDifferentInHead = headActivities.Except(mergeHeadActivities);
+
             var allDifferences = nodesDifferentInMergeHead.Union(nodesDifferentInHead);
 
-            var isInOrder = mergeHeadActivities.Zip(headActivities, (act1, act2) => (act1,act2,act1.UniqueID == act2.UniqueID));
-            if (isInOrder.All(b => b.Item3))
+            foreach (var item in equalItems)
             {
-                var equalItems = mergeHeadActivities.Intersect(headActivities);
+                var currentModelItemUniqueId = GetCurrentModelItemUniqueId(CurrentDifferences, item.UniqueID);
+                var equalItem = (Guid.Parse(item.UniqueID), currentModelItemUniqueId, currentModelItemUniqueId, false);
+                conflictList.Add(equalItem);
+            }
 
-                foreach (var item in equalItems)
-                {
-                    var equalItem = (Guid.Parse(item.UniqueID), item, false);
-                    conflictList.Add(equalItem);
-                }
-            }
-            else
+            var differenceGroups = allDifferences.GroupBy(activity => activity.UniqueID);
+            foreach (var item in differenceGroups)
             {
-                foreach(var item in isInOrder)
-                {
-                    if (!item.Item3)
-                    {
-                        var diffItem1 = (Guid.Parse(item.act1.UniqueID), item.act1, true);
-                        var diffItem2 = (Guid.Parse(item.act2.UniqueID), item.act2, true);
-                        conflictList.Add(diffItem1);
-                        conflictList.Add(diffItem2);
-                    }
-                }
-            }
-            
-                  
-            foreach (var item in allDifferences)
-            {
-                var diffItem = (Guid.Parse(item.UniqueID), item, true);
+                var currentModelItemUniqueId = GetCurrentModelItemUniqueId(CurrentDifferences, item.Key);
+                var differences = GetCurrentModelItemUniqueId(Differences, item.Key);
+                var diffItem = (Guid.Parse(item.Key), currentModelItemUniqueId, differences, true);
                 conflictList.Add(diffItem);
             }
-
-
             return conflictList;
 
         }
@@ -84,8 +82,10 @@ namespace Warewolf.MergeParser
             wd.Load(modelItem);
             var modelService = wd.Context.Services.GetService<ModelService>();
             var nodeList = modelService.Find(modelItem, typeof(FlowNode)).ToList();
-            wd = null;            
+            wd = null;
             return nodeList;
         }
+
+
     }
 }
