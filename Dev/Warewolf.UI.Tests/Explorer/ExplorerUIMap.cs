@@ -702,12 +702,23 @@ namespace Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses
         [When(@"I Connect To Remote Server")]
         public void ConnectToRemoteServer()
         {
+            ConnectToRemoteServerImpl();
+
+            Point point;
+            if (MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.Checkbox.Spinner.TryGetClickablePoint(out point))
+            {
+                Keyboard.SendKeys(MainStudioWindow, "^%{F4}");
+                ConnectToRemoteServerImpl();
+            }
+            Assert.IsFalse(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.Checkbox.Spinner.TryGetClickablePoint(out point), "Timed out waiting for remote server resources to load after 3 minutes.");
+        }
+
+        private void ConnectToRemoteServerImpl()
+        {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton, new Point(136, 7));
             Assert.IsTrue(UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.Exists, "Remote Connection Integration option does not exist in Source server combobox.");
             Mouse.Click(UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.Text, new Point(226, 13));
             UIMap.WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.Checkbox.Spinner, 180000);
-            Point point;
-            Assert.IsFalse(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.Checkbox.Spinner.TryGetClickablePoint(out point), "Timed out waiting for remote server resources to load after 3 minutes.");
         }
 
         [When(@"I Connect To Restricted Remote Server")]
