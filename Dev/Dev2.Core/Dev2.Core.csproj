@@ -195,6 +195,7 @@
     <Compile Include="Common\TypeExtensionMethods.cs" />
     <Compile Include="Converters\TypeToIconConverter.cs" />
     <Compile Include="CustomContainer.cs" />
+    <Compile Include="Dev2ActivityComparer.cs" />
     <Compile Include="DynamicServices\Objects\Dev2XamlLoader.cs" />
     <Compile Include="enFindMissingType.cs" />
     <Compile Include="ExecutionEnvironmentUtils.cs" />
