@@ -149,6 +149,8 @@
     <Compile Include="ManageOracleSourceViewModel.cs" />
     <Compile Include="ManagePostgreSqlSourceViewModel.cs" />
     <Compile Include="ManageSqlServerSourceViewModel.cs" />
+    <Compile Include="Search\SearchValue.cs" />
+    <Compile Include="Search\SearchViewModel.cs" />
     <Compile Include="ServiceTestStep.cs" />
     <Compile Include="SingleExplorerDeployViewModel.cs" />
     <Compile Include="ExplorerItemViewModelCommandController.cs" />
