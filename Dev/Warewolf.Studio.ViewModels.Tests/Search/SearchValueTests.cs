@@ -1,4 +1,5 @@
-﻿using Dev2.Studio.Interfaces;
+﻿using Dev2;
+using Dev2.Studio.Interfaces;
 using Dev2.ViewModels.Search;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -11,7 +12,7 @@ namespace Warewolf.Studio.ViewModels.Tests.Search
     {
         [TestMethod]
         [Owner("Pieter Terblanche")]
-        public void SearchValue_WhenSet_ShouldFirePropertyChanged()
+        public void SearchValue_ResourceId_WhenSet_ShouldFirePropertyChanged()
         {
             var _resId = Guid.NewGuid();
             //------------Setup for test--------------------------
@@ -116,6 +117,42 @@ namespace Warewolf.Studio.ViewModels.Tests.Search
             
             Assert.AreEqual(_match, searchValue.Match);
             Assert.IsTrue(_wasCalled);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        public void SearchValue_OpenResourced_WorkflowType()
+        {
+            //------------Setup for test--------------------------
+            var _resId = Guid.NewGuid();
+            var _name = "workflowName";
+            var _path = "resourcePath";
+            var _type = "Workflow";
+            var _match = "Input";
+            var searchValue = CreateSearchValue(_resId, _name, _path, _type, _match);
+
+            var shellViewModelMock = new Mock<IShellViewModel>();
+            CustomContainer.Register<IShellViewModel>(shellViewModelMock.Object);
+
+
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        public void SearchValue_OpenResourced_TestType()
+        {
+            //------------Setup for test--------------------------
+            var _resId = Guid.NewGuid();
+            var _name = "workflowName";
+            var _path = "resourcePath";
+            var _type = "Test";
+            var _match = "Input";
+            var searchValue = CreateSearchValue(_resId, _name, _path, _type, _match);
+
+            var shellViewModelMock = new Mock<IShellViewModel>();
+            CustomContainer.Register<IShellViewModel>(shellViewModelMock.Object);
+
+
         }
 
         private static SearchValue CreateSearchValue(Guid _resId, string _name = null, string _path = null, string _type = null, string _match = null)
