@@ -8,17 +8,13 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
-
-namespace Dev2.Studio.Interfaces.Deploy
+namespace Dev2.Studio.Interfaces.Search
 {
-
-    public delegate void ServerSate(object sender, IServer server);
-    public interface IDeployDestinationExplorerViewModel:IExplorerViewModel    
+    public interface ISearchValue
     {
-        event ServerSate ServerStateChanged;
-        Version MinSupportedVersion{get;}
-        Version ServerVersion { get; }
-        bool DeployTests { get; set; }  
+        string Name { get; set; }
+        string Path { get; set; }
+        string Type { get; set; }
+        string Match { get; set; }
     }
 }

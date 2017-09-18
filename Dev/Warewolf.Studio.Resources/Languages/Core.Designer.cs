@@ -676,6 +676,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Search.
+        /// </summary>
+        public static string MenuDialogSearchLabel {
+            get {
+                return ResourceManager.GetString("MenuDialogSearchLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Settings.
         /// </summary>
         public static string MenuDialogSettingsLabel {

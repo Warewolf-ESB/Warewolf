@@ -2707,6 +2707,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Search in Warewolf.
+        /// </summary>
+        public static string MenuSearchToolTip {
+            get {
+                return ResourceManager.GetString("MenuSearchToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Configure settings.
         /// </summary>
         public static string MenuSettingsToolTip {
