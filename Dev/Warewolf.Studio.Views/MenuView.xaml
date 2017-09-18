@@ -48,7 +48,6 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
@@ -193,39 +192,8 @@
                        Margin="0,5,0,5"
                        Style="{StaticResource MenuSeparator}" />
 
-            <!--  SEARCH  -->
-            <Button Grid.Row="7"
-                    Grid.Column="1"
-                    Width="{Binding ButtonWidth}"
-                    HorizontalAlignment="Left"
-                    Command="{Binding OpenSearchCommand}"
-                    Style="{StaticResource SideMenuButtonStyle}"
-                    ToolTip="{x:Static languages:Tooltips.MenuSearchToolTip}">
-                <DockPanel Width="{Binding ButtonWidth}"
-                           Height="35"
-                           HorizontalAlignment="Stretch"
-                           VerticalAlignment="Stretch"
-                           Background="Transparent">
-                    <TextBlock Width="35"
-                               MaxWidth="35"
-                               MaxHeight="35"
-                               Padding="7.5,7.5,7.5,7.5"
-                               Style="{StaticResource MenuTextBlockStyle}">
-                        <fa:FontAwesome FontSize="20"
-                                        FontWeight="Light"
-                                        Icon="Search" />
-                    </TextBlock>
-                    <TextBlock Padding="15,8,0,5"
-                               Style="{StaticResource MenuTextBlockStyle}"
-                               Text="{Binding Path=SearchLabel}" />
-                </DockPanel>
-                <i:Interaction.Behaviors>
-                    <core:HelpSetter DataContext="{Binding .}" Text="{x:Static languages:HelpText.MenuSearchHelp}" />
-                </i:Interaction.Behaviors>
-            </Button>
-            
             <!--  TASK  -->
-            <Button Grid.Row="8"
+            <Button Grid.Row="7"
                     Grid.Column="1"
                     Width="{Binding ButtonWidth}"
                     HorizontalAlignment="Left"
@@ -256,7 +224,7 @@
             </Button>
 
             <!--  DEBUG  -->
-            <Button Grid.Row="9"
+            <Button Grid.Row="8"
                     Grid.Column="1"
                     Width="{Binding ButtonWidth}"
                     HorizontalAlignment="Left"
@@ -286,14 +254,14 @@
                 </i:Interaction.Behaviors>
             </Button>
 
-            <Separator Grid.Row="10"
+            <Separator Grid.Row="9"
                        Grid.Column="0"
                        Grid.ColumnSpan="3"
                        Margin="0,5,0,5"
                        Style="{StaticResource MenuSeparator}" />
 
             <!--  SETTINGS  -->
-            <Button Grid.Row="11"
+            <Button Grid.Row="10"
                     Grid.Column="1"
                     Width="{Binding ButtonWidth}"
                     HorizontalAlignment="Left"
@@ -323,14 +291,14 @@
                 </i:Interaction.Behaviors>
             </Button>
 
-            <Separator Grid.Row="12"
+            <Separator Grid.Row="11"
                        Grid.Column="0"
                        Grid.ColumnSpan="3"
                        Margin="0,5,0,5"
                        Style="{StaticResource MenuSeparator}" />
 
             <!--  HELP  -->
-            <Button Grid.Row="13"
+            <Button Grid.Row="12"
                     Grid.Column="1"
                     Width="{Binding ButtonWidth}"
                     HorizontalAlignment="Left"
@@ -360,9 +328,8 @@
                 </i:Interaction.Behaviors>
             </Button>
 
-            <!-- VERSION -->
-            <Button Grid.Row="14"
-                    x:Name="VersionButton"
+            <Button x:Name="VersionButton"
+                    Grid.Row="13"
                     Grid.Column="1"
                     Width="{Binding ButtonWidth}"
                     HorizontalAlignment="Left"
@@ -399,13 +366,13 @@
                 </i:Interaction.Behaviors>
             </Button>
 
-            <Separator Grid.Row="15"
+            <Separator Grid.Row="14"
                        Grid.Column="0"
                        Grid.ColumnSpan="3"
                        Margin="0,5,0,5"
                        Style="{StaticResource MenuSeparator}" />
 
-            <Button Grid.Row="16"
+            <Button Grid.Row="15"
                     Grid.Column="1"
                     Width="{Binding ButtonWidth}"
                     HorizontalAlignment="Left"
@@ -443,7 +410,7 @@
                 </i:Interaction.Behaviors>
             </Button>
 
-            <Image Grid.Row="17"
+            <Image Grid.Row="16"
                    Grid.Column="0"
                    Grid.ColumnSpan="3"
                    Width="15"
