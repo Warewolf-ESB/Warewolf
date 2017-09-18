@@ -122,7 +122,6 @@ namespace Dev2.Studio.ViewModels
         void AddWorkSurface(IWorkSurfaceObject obj);
         bool CloseWorkSurfaceContext(WorkSurfaceContextViewModel context, PaneClosingEventArgs e, bool dontPrompt = false);
         void ViewTestsForService(IContextualResourceModel resourceModel, IWorkSurfaceKey workSurfaceKey = null);
-        void ViewSelectedTestForService(IContextualResourceModel resourceModel, IServiceTestModel selectedServiceTest, ServiceTestViewModel testViewModel, IWorkSurfaceKey workSurfaceKey = null);
         void RunAllTestsForService(IContextualResourceModel resourceModel);
         WorkSurfaceContextViewModel EditResource<T>(IWorkSurfaceKey workSurfaceKey, SourceViewModel<T> viewModel) where T : IEquatable<T>;
 
@@ -320,17 +319,6 @@ namespace Dev2.Studio.ViewModels
             var key = workSurfaceKey as WorkSurfaceKey;
             var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, vm);
             AddAndActivateWorkSurface(workSurfaceContextViewModel);
-        }
-
-        public void ViewSelectedTestForService(IContextualResourceModel resourceModel, IServiceTestModel selectedServiceTest, ServiceTestViewModel testViewModel, IWorkSurfaceKey workSurfaceKey = null)
-        {
-            var workflow = new WorkflowDesignerViewModel(resourceModel);
-            var vm = new StudioTestViewModel(_shellViewModel.EventPublisher, testViewModel, _shellViewModel.PopupProvider, new ServiceTestView());
-            workSurfaceKey = TryGetOrCreateWorkSurfaceKey(workSurfaceKey, WorkSurfaceContext.ServiceTestsViewer, resourceModel.ID);
-            var key = workSurfaceKey as WorkSurfaceKey;
-            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, vm);
-            AddAndActivateWorkSurface(workSurfaceContextViewModel);
-            testViewModel.SelectedServiceTest = selectedServiceTest;
         }
 
         public void RunAllTestsForService(IContextualResourceModel resourceModel)

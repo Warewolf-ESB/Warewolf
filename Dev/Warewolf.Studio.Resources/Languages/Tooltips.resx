@@ -999,9 +999,6 @@ You can use File System, URI, SFTP, FTP or FTPS format.</value>
   <data name="MenuSettingsToolTip" xml:space="preserve">
     <value>Configure settings</value>
   </data>
-  <data name="MenuSearchToolTip" xml:space="preserve">
-    <value>Search in Warewolf</value>
-  </data>
   <data name="MenuSchedulerToolTip" xml:space="preserve">
     <value>Schedule a service to run</value>
   </data>

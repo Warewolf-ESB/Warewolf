@@ -19,7 +19,7 @@ namespace Warewolf.Studio.Resources.Languages {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class HelpText {
@@ -1988,25 +1988,6 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string MenuSchedulerHelp {
             get {
                 return ResourceManager.GetString("MenuSchedulerHelp", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Search in Warewolf for 
-        ///- Workflow Name
-        ///- Tool title
-        ///- Tool name
-        ///- Input field
-        ///- Scalar Name
-        ///- object name
-        ///- record set name
-        ///- Input Variable
-        ///- Output Variable
-        ///- Test name.
-        /// </summary>
-        public static string MenuSearchHelp {
-            get {
-                return ResourceManager.GetString("MenuSearchHelp", resourceCulture);
             }
         }
         

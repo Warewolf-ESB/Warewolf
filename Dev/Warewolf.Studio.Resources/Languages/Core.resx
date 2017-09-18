@@ -192,9 +192,6 @@
   <data name="MenuDialogSupportLabel" xml:space="preserve">
     <value>Help</value>
   </data>
-  <data name="MenuDialogSearchLabel" xml:space="preserve">
-    <value>Search</value>
-  </data>
   <data name="MenuDialogTaskLabel" xml:space="preserve">
     <value>Task</value>
   </data>

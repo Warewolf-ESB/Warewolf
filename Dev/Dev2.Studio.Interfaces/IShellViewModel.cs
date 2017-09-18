@@ -73,7 +73,6 @@ namespace Dev2.Studio.Interfaces
         void ViewSwagger(Guid resourceId, IServer server);
         void ViewApisJson(string resourcePath, Uri webServerUri);
         void CreateTest(Guid resourceId);
-        void OpenSelectedTest(Guid resourceId, string testName);
         void RunAllTests(Guid resourceId);
         void CloseResourceTestView(Guid resourceId, Guid serverId, Guid environmentId);
         void BrowserDebug(Guid resourceId, IServer server);
@@ -93,7 +92,6 @@ namespace Dev2.Studio.Interfaces
         IAuthorizeCommand SaveCommand { get; }
         IAuthorizeCommand DebugCommand { get; }
         IAuthorizeCommand SettingsCommand { get; }
-        ICommand SearchCommand { get; }
         IAuthorizeCommand SchedulerCommand { get; }
         IToolboxViewModel ToolboxViewModel { get; }
         IHelpWindowViewModel HelpViewModel { get; }

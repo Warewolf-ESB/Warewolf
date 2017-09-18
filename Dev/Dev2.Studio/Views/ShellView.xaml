@@ -243,7 +243,6 @@
     <Window.InputBindings>
         <KeyBinding Command="{Binding ExitCommand}" Key="F4" Modifiers="Alt" />
         <KeyBinding Command="{Binding SettingsCommand}" Key="T" Modifiers="Alt" />
-        <KeyBinding Command="{Binding SearchCommand}" Key="F" Modifiers="Ctrl+Shift" />
         <KeyBinding Command="{Binding SaveCommand}" Key="S" Modifiers="Ctrl" />
         <KeyBinding Command="{Binding SaveAllCommand}" Key="S" Modifiers="Ctrl+Shift" />
         <KeyBinding Command="{Binding ActiveItem.RunCommand}" Key="R" Modifiers="Ctrl" />

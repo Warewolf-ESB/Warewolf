@@ -9,7 +9,6 @@ namespace Dev2.Common.Interfaces
         void SaveTests(Guid resourceID, List<IServiceTestModelTO> serviceTestModelTos);
         void Load();
         List<IServiceTestModelTO> Fetch(Guid resourceId);
-        List<IServiceTestModelTO> FetchAllTests();
         void DeleteTest(Guid resourceID, string testName);
         void DeleteAllTests(Guid resourceId);
         void DeleteAllTests(List<string> testsToList);
