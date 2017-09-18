@@ -8,8 +8,7 @@ using Dev2.Studio.ViewModels.Workflow;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using System.Collections.Generic;
 using Dev2.Studio.Core.Interfaces;
-using System.Collections.ObjectModel;
-using Dev2.Studio.Core.Activities.Utils;
+using System.Collections.ObjectModel;      
 
 namespace Dev2.ViewModels.Merge
 {
