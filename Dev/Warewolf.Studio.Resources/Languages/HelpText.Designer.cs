@@ -1992,6 +1992,25 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Search in Warewolf for 
+        ///- Workflow Name
+        ///- Tool title
+        ///- Tool name
+        ///- Input field
+        ///- Scalar Name
+        ///- object name
+        ///- record set name
+        ///- Input Variable
+        ///- Output Variable
+        ///- Test name.
+        /// </summary>
+        public static string MenuSearchHelp {
+            get {
+                return ResourceManager.GetString("MenuSearchHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Edit or View system settings such as Security and Logging..
         /// </summary>
         public static string MenuSettingsHelp {

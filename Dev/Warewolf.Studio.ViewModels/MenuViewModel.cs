@@ -40,6 +40,7 @@ namespace Warewolf.Studio.ViewModels
             NewServiceCommand = _viewModel.NewServiceCommand;
             DeployCommand = _viewModel.DeployCommand;
             SaveCommand = _viewModel.SaveCommand;
+            OpenSearchCommand = _viewModel.SearchCommand;
             OpenSchedulerCommand = _viewModel.SchedulerCommand;
             OpenSettingsCommand = _viewModel.SettingsCommand;
             ExecuteServiceCommand = _viewModel.DebugCommand;
@@ -107,6 +108,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
         public ICommand OpenSettingsCommand { get; set; }
+        public ICommand OpenSearchCommand { get; set; }
         public ICommand OpenSchedulerCommand { get; set; }
         public ICommand ExecuteServiceCommand
         {
@@ -143,6 +145,7 @@ namespace Warewolf.Studio.ViewModels
             OnPropertyChanged(() => NewLabel);
             OnPropertyChanged(() => SaveLabel);
             OnPropertyChanged(() => DeployLabel);
+            OnPropertyChanged(() => SearchLabel);
             OnPropertyChanged(() => TaskLabel);
             OnPropertyChanged(() => DebugLabel);
             OnPropertyChanged(() => SettingsLabel);
@@ -159,7 +162,7 @@ namespace Warewolf.Studio.ViewModels
 
         public void UpdateHelpDescriptor(string helpText)
         {
-            _viewModel?.HelpViewModel.UpdateHelpText(helpText);
+            _viewModel?.HelpViewModel?.UpdateHelpText(helpText);
         }
 
         public void Lock()
@@ -291,6 +294,15 @@ namespace Warewolf.Studio.ViewModels
                     return Resources.Languages.Core.MenuDialogDeployLabel;
                 }
 
+                return string.Empty;
+            }
+        }
+        public string SearchLabel
+        {
+            get
+            {
+                if (ButtonWidth == 125)
+                    return Resources.Languages.Core.MenuDialogSearchLabel;
                 return string.Empty;
             }
         }
