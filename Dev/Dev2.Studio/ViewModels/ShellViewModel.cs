@@ -64,11 +64,6 @@ using Dev2.Data.ServiceModel;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.Enums;
 
-
-
-
-
-
 namespace Dev2.Studio.ViewModels
 {
     public class ShellViewModel : BaseConductor<WorkSurfaceContextViewModel>,
@@ -103,6 +98,7 @@ namespace Dev2.Studio.ViewModels
         private AuthorizeCommand<string> _newDropboxSourceCommand;
         private AuthorizeCommand<string> _newWcfSourceCommand;
         private ICommand _deployCommand;
+        private ICommand _mergeCommand;
         private ICommand _exitCommand;
         private AuthorizeCommand _settingsCommand;
         private AuthorizeCommand _schedulerCommand;
@@ -452,8 +448,14 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
-
-
+        public ICommand MergeCommand
+        {
+            get
+            {
+                return _mergeCommand ??
+                       (_mergeCommand = new RelayCommand(param => OpenMergeConflictsView(Guid.Parse("acb75027-ddeb-47d7-814e-a54c37247ec1"), Guid.Parse("acb75027-ddeb-47d7-814e-a54c37247ec1"))));
+            }
+        }
 
         public IVersionChecker Version { get; }
 
@@ -680,6 +682,26 @@ namespace Dev2.Studio.ViewModels
         public void SetRefreshExplorerState(bool refresh)
         {
             ExplorerViewModel.IsRefreshing = refresh;
+        }
+
+        public void OpenMergeConflictsView(Guid currentResourceId, Guid differenceResourceId)
+        {
+            var environmentModel = ServerRepository.Get(ActiveServer.EnvironmentID);
+            if (environmentModel != null)
+            {
+                var currentResourceModel = environmentModel.ResourceRepository.LoadContextualResourceModel(currentResourceId);
+                var differenceResourceModel = environmentModel.ResourceRepository.LoadContextualResourceModel(differenceResourceId);
+
+                var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.MergeConflicts);
+                if (currentResourceModel != null && differenceResourceModel != null)
+                {
+                    workSurfaceKey.EnvironmentID = currentResourceModel.Environment.EnvironmentID;
+                    workSurfaceKey.ResourceID = currentResourceModel.ID;
+                    workSurfaceKey.ServerID = currentResourceModel.ServerID;
+
+                    _worksurfaceContextManager.ViewMergeConflictsService(currentResourceModel, differenceResourceModel, workSurfaceKey);
+                }
+            }
         }
 
         public void OpenCurrentVersion(Guid resourceId, Guid environmentId)

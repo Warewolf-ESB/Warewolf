@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
 using FontAwesome.WPF;
+using System.Windows.Controls;
 
 namespace Warewolf.Studio.Core
 {
@@ -85,6 +86,8 @@ namespace Warewolf.Studio.Core
                         return ImageAwesome.CreateImageSource(FontAwesomeIcon.History, _brush);
                     case "ServiceTestsViewer":
                         return ImageAwesome.CreateImageSource(FontAwesomeIcon.Flask, _brush);
+                    case "MergeConflicts":
+                        return _dict[CustomMenuIcons.MergeConflicts] as DrawingImage;
                     case "Settings":
                         return ImageAwesome.CreateImageSource(FontAwesomeIcon.Cogs, _brush);
                     case "DependencyViewer":

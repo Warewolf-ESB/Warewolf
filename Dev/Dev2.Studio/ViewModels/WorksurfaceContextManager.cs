@@ -44,9 +44,8 @@ using Microsoft.Practices.Prism.Mvvm;
 using ServiceStack.Net30.Collections.Concurrent;
 using Warewolf.Studio.ViewModels;
 using Warewolf.Studio.Views;
-
-
-
+using Dev2.ViewModels.Merge;
+using Dev2.Views.Merge;
 
 namespace Dev2.Studio.ViewModels
 {
@@ -121,6 +120,7 @@ namespace Dev2.Studio.ViewModels
         void AddAndActivateWorkSurface(WorkSurfaceContextViewModel context);
         void AddWorkSurface(IWorkSurfaceObject obj);
         bool CloseWorkSurfaceContext(WorkSurfaceContextViewModel context, PaneClosingEventArgs e, bool dontPrompt = false);
+        void ViewMergeConflictsService(IContextualResourceModel currentResourceModel, IContextualResourceModel differenceResourceModel, IWorkSurfaceKey workSurfaceKey = null);
         void ViewTestsForService(IContextualResourceModel resourceModel, IWorkSurfaceKey workSurfaceKey = null);
         void RunAllTestsForService(IContextualResourceModel resourceModel);
         WorkSurfaceContextViewModel EditResource<T>(IWorkSurfaceKey workSurfaceKey, SourceViewModel<T> viewModel) where T : IEquatable<T>;
@@ -308,6 +308,16 @@ namespace Dev2.Studio.ViewModels
                 workSurfaceKey.ServerID = ActiveServer.ServerID;
             }
             return workSurfaceKey;
+        }
+
+        public void ViewMergeConflictsService(IContextualResourceModel currentResourceModel, IContextualResourceModel differenceResourceModel, IWorkSurfaceKey workSurfaceKey = null)
+        {
+            var mergeViewModel = new MergeWorkflowViewModel(currentResourceModel, differenceResourceModel);
+            var vm = new MergeViewModel(_shellViewModel.EventPublisher, mergeViewModel, _shellViewModel.PopupProvider, new MergeWorkflowView());
+            workSurfaceKey = TryGetOrCreateWorkSurfaceKey(workSurfaceKey, WorkSurfaceContext.MergeConflicts, currentResourceModel.ID);
+            var key = workSurfaceKey as WorkSurfaceKey;
+            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, vm);
+            AddAndActivateWorkSurface(workSurfaceContextViewModel);
         }
 
         public void ViewTestsForService(IContextualResourceModel resourceModel, IWorkSurfaceKey workSurfaceKey = null)

@@ -61,7 +61,7 @@ using Dev2.Studio.Diagnostics;
 using Dev2.Studio.ViewModels;
 using Dev2.Util;
 using System.Globalization;
-
+using Dev2.Studio.Core.Interfaces;
 
 namespace Dev2.Studio
 
@@ -173,6 +173,8 @@ namespace Dev2.Studio
                 Dev2Logger.AddEventLogging(settingsConfigFile,"Warewolf Studio");
                 XmlConfigurator.ConfigureAndWatch(new FileInfo(settingsConfigFile));
                 _appExceptionHandler = new AppExceptionHandler(this, _shellViewModel);
+
+                CustomContainer.Register<IApplicationAdaptor>(new ApplicationAdaptor(Current));
             }
             var toolboxPane = Current.MainWindow.FindName("Toolbox") as ContentPane;
             toolboxPane?.Activate();
@@ -258,8 +260,6 @@ namespace Dev2.Studio
             CustomContainer.RegisterInstancePerRequestType<IChooseDLLView>(() => new ChooseDLLView());
             CustomContainer.RegisterInstancePerRequestType<IFileChooserView>(() => new FileChooserView());
             //CustomContainer.RegisterInstancePerRequestType<ICreateDuplicateResourceView>(() => new CreateDuplicateResourceDialog());
-            
-            
           
             var splashViewModel = new SplashViewModel(server, new ExternalProcessExecutor());
 
