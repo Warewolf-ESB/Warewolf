@@ -58,7 +58,6 @@
                     <StackPanel Grid.Row="0" Grid.Column="1" Background="{StaticResource WareWolfMenuBrush}" HorizontalAlignment="Stretch" DataContext="{Binding DifferenceConflictViewModel}">
                         <TextBlock Margin="5" Text="{Binding WorkflowName}" Style="{StaticResource SourceHeader}" />
                     </StackPanel>
-
                     <Grid Grid.Row="1" 
                           Grid.Column="0" 
                           Grid.ColumnSpan="2" 

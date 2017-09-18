@@ -83,6 +83,7 @@ namespace Dev2.Studio.Interfaces
         void ResetMainView();
         void OnActiveServerChanged();
         ICommand DeployCommand { get; }
+        ICommand MergeCommand { get; }
         ICommand ExitCommand { get; }
         IServer ActiveServer { get; set; }
         IContextualResourceModel DeployResource { get; set; }

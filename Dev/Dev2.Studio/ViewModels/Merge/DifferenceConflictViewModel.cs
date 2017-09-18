@@ -1,5 +1,4 @@
 ﻿using System.Activities.Presentation.Model;
-using System.Collections.Generic;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Utils;
@@ -11,8 +10,8 @@ namespace Dev2.ViewModels.Merge
 {
     public class DifferenceConflictViewModel : ConflictViewModelBase
     {
-        public DifferenceConflictViewModel(IApplicationAdaptor applicationAdaptor, IEnumerable<ModelItem> modelItems)
-            : base(applicationAdaptor, modelItems)
+        public DifferenceConflictViewModel(ModelItem modelItem)
+            : base(modelItem)
         {
             string newWorflowName = NewWorkflowNames.Instance.GetNext();
             var shellViewModel = CustomContainer.Get<IShellViewModel>();

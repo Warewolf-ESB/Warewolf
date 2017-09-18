@@ -410,6 +410,7 @@
     <Compile Include="ViewModels\Diagnostics\IDebugOutputViewModelUtil.cs" />
     <Compile Include="ViewModels\Help\IHelpViewWrapper.cs" />
     <Compile Include="ViewModels\Help\HelpViewWrapper.cs" />
+    <Compile Include="ViewModels\MergeViewModel.cs" />
     <Compile Include="ViewModels\Merge\CurrentConflictViewModel.cs" />
     <Compile Include="ViewModels\Merge\ConflictViewModelBase.cs" />
     <Compile Include="ViewModels\Merge\DifferenceConflictViewModel.cs" />
