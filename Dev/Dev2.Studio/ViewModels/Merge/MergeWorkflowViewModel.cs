@@ -11,6 +11,7 @@ using Dev2.Studio.Core.Factories;
 using Dev2.Studio.ViewModels.Workflow;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using System.Activities.Statements;
+using Dev2.Studio.Core.Activities.Utils;
 
 namespace Dev2.ViewModels.Merge
 {

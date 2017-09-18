@@ -86,6 +86,7 @@ using Dev2.Workspaces;
 using Newtonsoft.Json;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Studio.ViewModels;
+using System.Activities.Statements;
 
 
 
@@ -2839,23 +2840,26 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public void AddItem(FlowStep step)
         {
-
             ModelItem root = _wd.Context.Services.GetService<ModelService>().Root;
             var chart = _wd.Context.Services.GetService<ModelService>().Find(root, typeof(Flowchart)).FirstOrDefault();
-            using (ModelEditingScope editingScope = chart.BeginEdit("Nodes"))
+
+            if (chart.Properties["StartNode"].ComputedValue == null)
             {
                 chart.Properties["Nodes"].Collection.Add(step);
-                editingScope.Complete();
-                //ViewStateService service = _wd.Context.Services.GetService<ViewStateService>();                                                                         
-                //ModelItem temp = chart.Properties["Nodes"].Collection[0];
+                chart.Properties["StartNode"].SetValue(step);
+
+            }
+            else
+            {
+                ViewStateService service = _wd.Context.Services.GetService<ViewStateService>();
+                ModelItem temp = chart.Properties["Nodes"].Collection[0];
                 //Point p = new Point(300, 200);
                 //service.RemoveViewState(temp,"ShapeLocation");
-                //service.StoreViewState(temp,"ShapeLocation", p);                
-            }
+                //service.StoreViewState(temp,"ShapeLocation", p);
+                chart.Properties["Nodes"].Collection.Add(step);
+                temp.Properties["Next"].SetValue(step);
 
-            //
-            //var mi = ModelItemUtils.CreateModelItem(defaultParent, step);
-            //PerformAddItems(mi);
+            }
         }
 
         #region Implementation of IWorkflowDesignerViewModel
