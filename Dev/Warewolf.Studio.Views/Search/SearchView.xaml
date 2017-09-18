@@ -10,6 +10,7 @@
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
         MouseDown="Window_MouseDown"
+        KeyDown="Window_KeyDown"
         Title="SearchView" 
         Height="500" 
         Width="660"

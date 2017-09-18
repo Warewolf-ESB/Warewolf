@@ -38,6 +38,7 @@ namespace Dev2.ViewModels.Search
             RefreshCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() => RefreshEnvironment(SelectedEnvironment.ResourceId));
             SearchInputCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() => SearchWarewolf());
             SearchResults = new ObservableCollection<ISearchValue>();
+            IsAllSelected = true;
         }
 
         private void ServerDisconnected(object sender, IServer server)
@@ -71,7 +72,7 @@ namespace Dev2.ViewModels.Search
             {
                 if (IsWorkflowNameSelected)
                 {
-                    var children = SelectedEnvironment.UnfilteredChildren.Flatten(model => model.UnfilteredChildren).Where(model => model.ResourceName.ToLower().Contains(SearchInput.ToLower()));
+                    var children = SelectedEnvironment.UnfilteredChildren.Flatten(model => model.UnfilteredChildren).Where(model => model.ResourceName.ToLower().Contains(SearchInput.ToLower()) && model.ResourceType != "Folder");
                     foreach (var child in children)
                     {
                         var search = new SearchValue(child.ResourceId, child.ResourceName, child.ResourcePath, "Workflow", child.ResourceName, SelectedEnvironment);
@@ -92,6 +93,7 @@ namespace Dev2.ViewModels.Search
                         }
                     }
                 }
+                SearchResults.GroupBy(o => o.Type);
             }
         }
 

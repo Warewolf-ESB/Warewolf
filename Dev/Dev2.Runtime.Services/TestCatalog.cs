@@ -373,9 +373,12 @@ namespace Dev2.Runtime
         {
             Load();
             var list = new List<IServiceTestModelTO>();
-            foreach (var test in Tests)
+            if (Tests != null)
             {
-                list.AddRange(test.Value);
+                foreach (var test in Tests)
+                {
+                    list.AddRange(test.Value);
+                }
             }
 
             return list;
