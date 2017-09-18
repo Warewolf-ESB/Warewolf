@@ -1,10 +1,16 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Windows.Media;
 
 namespace Dev2.Common.Interfaces
 {
-    public interface IMergeWorkflowViewModel
+    public interface IMergeWorkflowViewModel : IDisposable, INotifyPropertyChanged, IUpdatesHelp
     {
+        bool CanSave { get; set; }
+        bool IsDirty { get; }
+        string DisplayName { get; set; }
+        void Save();
         IConflictViewModel CurrentConflictViewModel { get; set; }
         IConflictViewModel DifferenceConflictViewModel { get; set; }
         ObservableCollection<CompleteConflict> Conflicts { get; set; }
