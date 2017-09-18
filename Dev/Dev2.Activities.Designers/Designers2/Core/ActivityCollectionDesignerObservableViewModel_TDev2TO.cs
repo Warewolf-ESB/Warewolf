@@ -237,7 +237,7 @@ namespace Dev2.Activities.Designers2.Core
             {
                 return _collection;
             }
-            protected set
+            set
             {
                 _collection = value;
             }
