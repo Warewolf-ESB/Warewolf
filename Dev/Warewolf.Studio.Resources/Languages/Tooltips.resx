@@ -999,6 +999,9 @@ You can use File System, URI, SFTP, FTP or FTPS format.</value>
   <data name="MenuSettingsToolTip" xml:space="preserve">
     <value>Configure settings</value>
   </data>
+  <data name="MenuSearchToolTip" xml:space="preserve">
+    <value>Search in Warewolf</value>
+  </data>
   <data name="MenuSchedulerToolTip" xml:space="preserve">
     <value>Schedule a service to run</value>
   </data>
@@ -1746,6 +1749,15 @@ If you use recordset (*) notation, the list will be repeated for every record.</
   <data name="DataMergeToolTipAlignType" xml:space="preserve">
     <value>For Index you can specify if your data is aligned to the right or left.
 E.g. Text is normally left and numbers normally right.</value>
+  </data>
+  <data name="DecisionToolTipDisplayText" xml:space="preserve">
+    <value>Will appear on the small view.</value>
+  </data>
+  <data name="DecisionToolTipTrueArm" xml:space="preserve">
+    <value>Will appear on the design surface to help understand the flow.</value>
+  </data>
+  <data name="DecisionToolTipFalseArm" xml:space="preserve">
+    <value>Will appear on the design surface to help understand the flow</value>
   </data>
   <data name="DataListVariableInputTooltip" xml:space="preserve">
     <value>The variable name you want to declare, without the [[ ]] braces</value>
