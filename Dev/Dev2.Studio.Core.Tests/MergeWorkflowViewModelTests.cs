@@ -3,6 +3,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Dev2.Studio.Interfaces;
 using System.Text;
+using Dev2.Studio.Core.Interfaces;
+using System.Windows;
 
 namespace Dev2.Core.Tests
 {
@@ -13,6 +15,17 @@ namespace Dev2.Core.Tests
         public void Initialize_GivenIsNewNoEmptyConflicts_ShouldPassThrough()
         {
             //---------------Set up test pack-------------------
+            var applicationAdapterMock = new Mock<IApplicationAdaptor>();
+            applicationAdapterMock.Setup(a => a.Current).Returns(Application.Current);
+            CustomContainer.Register(applicationAdapterMock.Object);
+
+            var mockServer = new Mock<IServer>();
+            var mockshell = new Mock<IShellViewModel>();
+            mockshell.Setup(a => a.ActiveServer).Returns(mockServer.Object);
+            mockServer.Setup(a => a.GetServerVersion()).Returns("1.0.0.0");
+            CustomContainer.Register(mockServer.Object);
+            CustomContainer.Register(mockshell.Object);
+
             Mock<IContextualResourceModel> currentResourceModel = Dev2MockFactory.SetupResourceModelMock();
             currentResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(WorkflowXAMLForCurrent());
             currentResourceModel.Setup(resModel => resModel.DisplayName).Returns("Hello World");
@@ -33,6 +46,17 @@ namespace Dev2.Core.Tests
         public void Initialize_GivenHasConflicts_ShouldPassThrough()
         {
             //---------------Set up test pack-------------------
+            var applicationAdapter = new Mock<IApplicationAdaptor>();
+            applicationAdapter.Setup(a => a.Current).Returns(Application.Current);
+            CustomContainer.Register(applicationAdapter.Object);
+
+            var mockServer = new Mock<IServer>();
+            var mockshell = new Mock<IShellViewModel>();
+            mockshell.Setup(a => a.ActiveServer).Returns(mockServer.Object);
+            mockServer.Setup(a => a.GetServerVersion()).Returns("1.0.0.0");
+            CustomContainer.Register(mockServer.Object);
+            CustomContainer.Register(mockshell.Object);
+
             Mock<IContextualResourceModel> currentResourceModel = Dev2MockFactory.SetupResourceModelMock();
             currentResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(WorkflowXAMLForCurrent());
             currentResourceModel.Setup(resModel => resModel.DisplayName).Returns("Hello World");
@@ -58,6 +82,17 @@ namespace Dev2.Core.Tests
         public void Initialize_GivenHasConflictsAndForEach_ShouldPassThrough()
         {
             //---------------Set up test pack-------------------
+            var applicationAdapter = new Mock<IApplicationAdaptor>();
+            applicationAdapter.Setup(a => a.Current).Returns(Application.Current);
+            CustomContainer.Register(applicationAdapter.Object);
+
+            var mockServer = new Mock<IServer>();
+            var mockshell = new Mock<IShellViewModel>();
+            mockshell.Setup(a => a.ActiveServer).Returns(mockServer.Object);
+            mockServer.Setup(a => a.GetServerVersion()).Returns("1.0.0.0");
+            CustomContainer.Register(mockServer.Object);
+            CustomContainer.Register(mockshell.Object);
+
             Mock<IContextualResourceModel> currentResourceModel = Dev2MockFactory.SetupResourceModelMock();
             currentResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(WorkflowXAMLForCurrent());
             currentResourceModel.Setup(resModel => resModel.DisplayName).Returns("Hello World");
@@ -78,7 +113,24 @@ namespace Dev2.Core.Tests
 
         public static StringBuilder WorkflowXAMLForCurrent()
         {
-            return new StringBuilder(@"<Activity mc:Ignorable=""sap"" x:Class=""Hello World"" xmlns=""http://schemas.microsoft.com/netfx/2009/xaml/activities"" xmlns:av=""http://schemas.microsoft.com/winfx/2006/xaml/presentation"" xmlns:dc=""clr-namespace:Dev2.Common;assembly=Dev2.Common"" xmlns:dciipe=""clr-namespace:Dev2.Common.Interfaces.Infrastructure.Providers.Errors;assembly=Dev2.Common.Interfaces"" xmlns:ddc=""clr-namespace:Dev2.DataList.Contract;assembly=Dev2.Data"" xmlns:ddcb=""clr-namespace:Dev2.DataList.Contract.Binary_Objects;assembly=Dev2.Data"" xmlns:ddd=""clr-namespace:Dev2.Data.Decision;assembly=Dev2.Data"" xmlns:dddo=""clr-namespace:Dev2.Data.Decisions.Operations;assembly=Dev2.Data"" xmlns:ddsm=""clr-namespace:Dev2.Data.SystemTemplates.Models;assembly=Dev2.Data"" xmlns:mva=""clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities"" xmlns:s=""clr-namespace:System;assembly=mscorlib"" xmlns:sap=""http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation"" xmlns:scg=""clr-namespace:System.Collections.Generic;assembly=mscorlib"" xmlns:sco=""clr-namespace:System.Collections.ObjectModel;assembly=mscorlib"" xmlns:uaba=""clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities;assembly=Dev2.Activities"" xmlns:x=""http://schemas.microsoft.com/winfx/2006/xaml"">
+            return new StringBuilder(@"<Activity mc:Ignorable=""sap"" 
+    x:Class=""Hello World"" xmlns=""http://schemas.microsoft.com/netfx/2009/xaml/activities"" 
+    xmlns:av=""http://schemas.microsoft.com/winfx/2006/xaml/presentation"" 
+    xmlns:dc=""clr-namespace:Dev2.Common;assembly=Dev2.Common"" 
+    xmlns:dciipe=""clr-namespace:Dev2.Common.Interfaces.Infrastructure.Providers.Errors;assembly=Dev2.Common.Interfaces"" 
+    xmlns:ddc=""clr-namespace:Dev2.DataList.Contract;assembly=Dev2.Data"" 
+    xmlns:ddcb=""clr-namespace:Dev2.DataList.Contract.Binary_Objects;assembly=Dev2.Data"" 
+    xmlns:ddd=""clr-namespace:Dev2.Data.Decision;assembly=Dev2.Data"" 
+    xmlns:dddo=""clr-namespace:Dev2.Data.Decisions.Operations;assembly=Dev2.Data"" 
+    xmlns:ddsm=""clr-namespace:Dev2.Data.SystemTemplates.Models;assembly=Dev2.Data"" 
+    xmlns:mva=""clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities"" 
+    xmlns:s=""clr-namespace:System;assembly=mscorlib"" 
+    xmlns:sap=""http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation"" 
+    xmlns:scg=""clr-namespace:System.Collections.Generic;assembly=mscorlib"" 
+    xmlns:sco=""clr-namespace:System.Collections.ObjectModel;assembly=mscorlib"" 
+    xmlns:uaba=""clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities;assembly=Dev2.Activities"" 
+    xmlns:mc=""http://schemas.openxmlformats.org/markup-compatibility/2006""
+    xmlns:x=""http://schemas.microsoft.com/winfx/2006/xaml"">
   <x:Members>
 		<x:Property Name=""AmbientDataList"" Type=""InOutArgument(scg:List(x:String))"" />
 		<x:Property Name=""ParentWorkflowInstanceId"" Type=""InOutArgument(s:Guid)"" />
@@ -287,7 +339,24 @@ namespace Dev2.Core.Tests
 
         public static StringBuilder WorkflowXAMLForDifference()
         {
-            return new StringBuilder(@"<Activity mc:Ignorable=""sap"" x:Class=""Hello World"" xmlns=""http://schemas.microsoft.com/netfx/2009/xaml/activities"" xmlns:av=""http://schemas.microsoft.com/winfx/2006/xaml/presentation"" xmlns:dc=""clr-namespace:Dev2.Common;assembly=Dev2.Common"" xmlns:dciipe=""clr-namespace:Dev2.Common.Interfaces.Infrastructure.Providers.Errors;assembly=Dev2.Common.Interfaces"" xmlns:ddc=""clr-namespace:Dev2.DataList.Contract;assembly=Dev2.Data"" xmlns:ddcb=""clr-namespace:Dev2.DataList.Contract.Binary_Objects;assembly=Dev2.Data"" xmlns:ddd=""clr-namespace:Dev2.Data.Decision;assembly=Dev2.Data"" xmlns:dddo=""clr-namespace:Dev2.Data.Decisions.Operations;assembly=Dev2.Data"" xmlns:ddsm=""clr-namespace:Dev2.Data.SystemTemplates.Models;assembly=Dev2.Data"" xmlns:mva=""clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities"" xmlns:s=""clr-namespace:System;assembly=mscorlib"" xmlns:sap=""http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation"" xmlns:scg=""clr-namespace:System.Collections.Generic;assembly=mscorlib"" xmlns:sco=""clr-namespace:System.Collections.ObjectModel;assembly=mscorlib"" xmlns:uaba=""clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities;assembly=Dev2.Activities"" xmlns:x=""http://schemas.microsoft.com/winfx/2006/xaml"">
+            return new StringBuilder(@"<Activity mc:Ignorable=""sap"" 
+    x:Class=""Hello World"" xmlns=""http://schemas.microsoft.com/netfx/2009/xaml/activities"" 
+    xmlns:av=""http://schemas.microsoft.com/winfx/2006/xaml/presentation"" 
+    xmlns:dc=""clr-namespace:Dev2.Common;assembly=Dev2.Common"" 
+    xmlns:dciipe=""clr-namespace:Dev2.Common.Interfaces.Infrastructure.Providers.Errors;assembly=Dev2.Common.Interfaces"" 
+    xmlns:ddc=""clr-namespace:Dev2.DataList.Contract;assembly=Dev2.Data"" 
+    xmlns:ddcb=""clr-namespace:Dev2.DataList.Contract.Binary_Objects;assembly=Dev2.Data"" 
+    xmlns:ddd=""clr-namespace:Dev2.Data.Decision;assembly=Dev2.Data"" 
+    xmlns:dddo=""clr-namespace:Dev2.Data.Decisions.Operations;assembly=Dev2.Data"" 
+    xmlns:ddsm=""clr-namespace:Dev2.Data.SystemTemplates.Models;assembly=Dev2.Data"" 
+    xmlns:mva=""clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities"" 
+    xmlns:s=""clr-namespace:System;assembly=mscorlib"" 
+    xmlns:sap=""http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation"" 
+    xmlns:scg=""clr-namespace:System.Collections.Generic;assembly=mscorlib"" 
+    xmlns:sco=""clr-namespace:System.Collections.ObjectModel;assembly=mscorlib"" 
+    xmlns:uaba=""clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities;assembly=Dev2.Activities"" 
+    xmlns:mc=""http://schemas.openxmlformats.org/markup-compatibility/2006""
+    xmlns:x=""http://schemas.microsoft.com/winfx/2006/xaml"">
   <x:Members>
 		<x:Property Name=""AmbientDataList"" Type=""InOutArgument(scg:List(x:String))"" />
 		<x:Property Name=""ParentWorkflowInstanceId"" Type=""InOutArgument(s:Guid)"" />
