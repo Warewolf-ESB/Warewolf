@@ -33,7 +33,7 @@ using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 using WarewolfParserInterop;
-
+using Dev2.Comparer;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
@@ -509,7 +509,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            return base.Equals(other) && string.Equals(Result, other.Result) && Equals(_mergeCollection, other._mergeCollection);
+            var mergeCollsAreEqual = CommonEqualityOps.CollectionEquals(MergeCollection, other.MergeCollection, new DataMergeDTOComparer());
+            return base.Equals(other) && string.Equals(Result, other.Result)
+                && mergeCollsAreEqual;
         }
 
         public override bool Equals(object obj)
@@ -525,8 +527,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             unchecked
             {
                 int hashCode = base.GetHashCode();
-                hashCode = (hashCode * 397) ^ (_result != null ? _result.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (_mergeCollection != null ? _mergeCollection.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Result != null ? Result.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (MergeCollection != null ? MergeCollection.GetHashCode() : 0);
                 return hashCode;
             }
         }

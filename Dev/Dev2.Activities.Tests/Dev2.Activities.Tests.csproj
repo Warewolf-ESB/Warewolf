@@ -173,7 +173,29 @@
       <Link>Run Tests.ps1</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <Compile Include="ActivityComparerTests\Sequence\DsfSequenceActivityComparerTest.cs" />
+    <Compile Include="ActivityComparerTests\SysInfo\DsfGatherSystemInformationActivity.cs" />
+    <Compile Include="ActivityComparerTests\ExecuteCommandLine\DsfExecuteCommandLineActivityComparerTest.cs" />
+    <Compile Include="ActivityComparerTests\CountRecordset\DsfRecordsetNullhandlerLengthActivityComparerTest.cs" />
+    <Compile Include="ActivityComparerTests\DataSplit\DsfDataSplitActivityComparerTest.cs" />
+    <Compile Include="ActivityComparerTests\DataMerge\DsfDataMergeActivityComparerTest.cs" />
+    <Compile Include="ActivityComparerTests\CreateJson\DsfCreateJsonActivityComparerTest.cs" />
+    <Compile Include="ActivityComparerTests\CountRecordset\DsfCountRecordsetNullHandlerActivityComparerTest.cs" />
+    <Compile Include="ActivityComparerTests\DateTime\DsfDateTimeActivityComparerTest.cs" />
+    <Compile Include="ActivityComparerTests\DateTime\DsfDateTimeDifferenceActivityComparerTest.cs" />
+    <Compile Include="ActivityComparerTests\Exchange\DsfSendEmailActivityComparerTest.cs" />
+    <Compile Include="ActivityComparerTests\FindRecords\DsfFindRecordsMultipleCriteriaActivityComparerTest.cs" />
+    <Compile Include="ActivityComparerTests\DeleteRecord\DsfDeleteRecordNullHandlerActivityComparerTest.cs" />
+    <Compile Include="ActivityComparerTests\SortRecords\DsfSortRecordsActivityComparerTest.cs" />
+    <Compile Include="ActivityComparerTests\NumberFormat\DsfNumberFormatActivityComparerTest.cs" />
+    <Compile Include="ActivityComparerTests\Comment\DsfCommentActivityComparerTest.cs" />
+    <Compile Include="ActivityComparerTests\Database\DsfMySqlDatabaseActivityEqualityTests.cs" />
+    <Compile Include="ActivityComparerTests\Database\DsfODBCDatabaseActivityEqualityTests.cs" />
+    <Compile Include="ActivityComparerTests\Database\DsfOracleDatabaseActivityEqualityTests.cs" />
+    <Compile Include="ActivityComparerTests\Database\DsfPostgreSqlActivityEqualityTests.cs" />
     <Compile Include="ActivityComparerTests\Database\DsfSqlServerDatabaseActivityEqualityTests.cs" />
+    <Compile Include="ActivityComparerTests\Random\DsfRandomActivityComparerTest.cs" />
+    <Compile Include="ActivityComparerTests\Replace\DsfReplaceActivityComparerTest.cs" />
     <Compile Include="ActivityComparerTests\Switch\DsfSwitchActivityComparerTest.cs" />
     <Compile Include="ActivityComparerTests\Unique\DsfUniqueActivityComparerTest.cs" />
     <Compile Include="ActivityComparerTests\Activity\DsfActivityComparerTest.cs" />

@@ -66,13 +66,10 @@ namespace Warewolf.Studio.ViewModels
 
         public ServiceTestViewModel(IContextualResourceModel resourceModel, IAsyncWorker asyncWorker, IEventAggregator eventPublisher, IExternalProcessExecutor processExecutor, IWorkflowDesignerViewModel workflowDesignerViewModel, IMessage msg = null)
         {
-
-            if (resourceModel == null)
-                throw new ArgumentNullException(nameof(resourceModel));
             _processExecutor = processExecutor;
             AsyncWorker = asyncWorker;
             EventPublisher = eventPublisher;
-            ResourceModel = resourceModel;
+            ResourceModel = resourceModel ?? throw new ArgumentNullException(nameof(resourceModel));
             ResourceModel.Environment.IsConnectedChanged += (sender, args) =>
             {
                 ViewModelUtils.RaiseCanExecuteChanged(DeleteTestCommand);
@@ -130,10 +127,7 @@ namespace Warewolf.Studio.ViewModels
 
         public bool IsLoading
         {
-            get
-            {
-                return _isLoading;
-            }
+            get => _isLoading;
             set
             {
                 _isLoading = value;
@@ -1131,8 +1125,7 @@ namespace Warewolf.Studio.ViewModels
                         OptionsForValue = switchOptions
                     };
                     serviceTestOutputs.Add(serviceTestOutput);
-                    var serviceTestStep = SelectedServiceTest.AddTestStep(uniqueId, modelItem.GetProperty("DisplayName").ToString(), typeof(DsfSwitch).Name, serviceTestOutputs) as ServiceTestStep;
-                    if (serviceTestStep != null)
+                    if (SelectedServiceTest.AddTestStep(uniqueId, modelItem.GetProperty("DisplayName").ToString(), typeof(DsfSwitch).Name, serviceTestOutputs) is ServiceTestStep serviceTestStep)
                         SetStepIcon(typeof(DsfSwitch), serviceTestStep);
                 }
             }
@@ -1264,7 +1257,7 @@ namespace Warewolf.Studio.ViewModels
             }
             var dsfActivityAbstract = computedValue as DsfActivityAbstract<string>;
 
-            var activityUniqueID = dsfActivityAbstract?.UniqueID;
+            var activityUniqueId = dsfActivityAbstract?.UniqueID;
             var activityDisplayName = dsfActivityAbstract?.DisplayName;
             var outputs = dsfActivityAbstract?.GetOutputs();
 
@@ -1272,7 +1265,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 var boolAct = computedValue as DsfActivityAbstract<bool>;
 
-                activityUniqueID = boolAct?.UniqueID;
+                activityUniqueId = boolAct?.UniqueID;
                 activityDisplayName = boolAct?.DisplayName;
                 outputs = boolAct?.GetOutputs();
             }
@@ -1290,34 +1283,32 @@ namespace Warewolf.Studio.ViewModels
                         parentComputedValue = item.Content.Value.GetCurrentValue();
                     }
                     var parentActivityAbstract = parentComputedValue as DsfActivityAbstract<string>;
-                    var parentActivityUniqueID = parentActivityAbstract?.UniqueID;
+                    var parentActivityUniqueId = parentActivityAbstract?.UniqueID;
                     if (parentActivityAbstract == null)
                     {
                         var boolParentAct = computedValue as DsfActivityAbstract<bool>;
-                        parentActivityUniqueID = boolParentAct?.UniqueID;
+                        parentActivityUniqueId = boolParentAct?.UniqueID;
                     }
-                    if (parentActivityUniqueID == activityUniqueID)
+                    if (parentActivityUniqueId == activityUniqueId)
                     {
-                        return CheckForExists(activityUniqueID, outputs, activityDisplayName, type);
+                        return CheckForExists(activityUniqueId, outputs, activityDisplayName, type);
                     }
                 }
 
                 if (outputs != null && outputs.Count > 0)
                 {
-                    IServiceTestStep serviceTestStep;
-                    if (ServiceTestStepWithOutputs(activityUniqueID, activityDisplayName, outputs, type, item, out serviceTestStep))
+                    if (ServiceTestStepWithOutputs(activityUniqueId, activityDisplayName, outputs, type, item, out var serviceTestStep))
                     {
                         return serviceTestStep;
                     }
                 }
-                IServiceTestStep serviceTestStep1;
-                if (ServiceTestStepGetParentType(item, out serviceTestStep1))
+                if (ServiceTestStepGetParentType(item, out var serviceTestStep1))
                 {
                     return serviceTestStep1;
                 }
                 return BuildParentsFromModelItem(item);
             }
-            return CheckForExists(activityUniqueID, outputs, activityDisplayName, type);
+            return CheckForExists(activityUniqueId, outputs, activityDisplayName, type);
         }
 
         private IServiceTestStep CheckForExists(string activityUniqueID, List<string> outputs, string activityDisplayName, Type type)
@@ -1387,7 +1378,7 @@ namespace Warewolf.Studio.ViewModels
                     new ServiceTestOutput("", "", "", "")
                     {
                         HasOptionsForValue = false,
-                        AddStepOutputRow = s => step.AddNewOutput(s)
+                        AddStepOutputRow = step.AddNewOutput
                     }
                 };
             }
@@ -1395,7 +1386,7 @@ namespace Warewolf.Studio.ViewModels
                 outputs.Select(output => new ServiceTestOutput(output ?? "", "", "", "")
                 {
                     HasOptionsForValue = false,
-                    AddStepOutputRow = s => step.AddNewOutput(s)
+                    AddStepOutputRow = step.AddNewOutput
                 }).Cast<IServiceTestOutput>().ToList();
             return serviceTestOutputs;
         }
@@ -1887,10 +1878,7 @@ namespace Warewolf.Studio.ViewModels
 
         public string ErrorMessage
         {
-            get
-            {
-                return _errorMessage;
-            }
+            get => _errorMessage;
             set
             {
                 _errorMessage = value;
@@ -1900,7 +1888,7 @@ namespace Warewolf.Studio.ViewModels
 
         public IWorkflowDesignerViewModel WorkflowDesignerViewModel
         {
-            get { return _workflowDesignerViewModel; }
+            get => _workflowDesignerViewModel;
             set
             {
                 _workflowDesignerViewModel = value;
@@ -2202,19 +2190,13 @@ namespace Warewolf.Studio.ViewModels
 
         public IContextualResourceModel ResourceModel
         {
-            get
-            {
-                return _resourceModel;
-            }
-            private set
-            {
-                _resourceModel = value;
-            }
+            get => _resourceModel;
+            private set => _resourceModel = value;
         }
 
         public IServiceTestModel SelectedServiceTest
         {
-            get { return _selectedServiceTest; }
+            get => _selectedServiceTest;
             set
             {
                 if (value == null)
@@ -2319,7 +2301,7 @@ namespace Warewolf.Studio.ViewModels
 
         public string RunAllTestsUrl
         {
-            get { return _runAllTestsUrl; }
+            get => _runAllTestsUrl;
             set
             {
                 _runAllTestsUrl = value;
@@ -2329,7 +2311,7 @@ namespace Warewolf.Studio.ViewModels
 
         public string TestPassingResult
         {
-            get { return _testPassingResult; }
+            get => _testPassingResult;
             set
             {
                 _testPassingResult = value;
@@ -2341,7 +2323,7 @@ namespace Warewolf.Studio.ViewModels
 
         public ObservableCollection<IServiceTestModel> Tests
         {
-            get { return _tests; }
+            get => _tests;
             set
             {
                 _tests = value;
@@ -2534,10 +2516,7 @@ namespace Warewolf.Studio.ViewModels
 
         public string DisplayName
         {
-            get
-            {
-                return _displayName;
-            }
+            get => _displayName;
             set
             {
                 _displayName = value;

@@ -234,7 +234,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            return base.Equals(other) && string.Equals(SortField, other.SortField) && string.Equals(SelectedSort, other.SelectedSort);
+            return base.Equals(other) 
+                && string.Equals(SortField, other.SortField) 
+                && string.Equals(SelectedSort, other.SelectedSort);
         }
 
         public override bool Equals(object obj)

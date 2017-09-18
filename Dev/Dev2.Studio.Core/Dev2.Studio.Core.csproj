@@ -184,6 +184,8 @@
     <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
+    <Compile Include="ApplicationAdaptor.cs" />
+    <Compile Include="Interfaces\IApplicationAdaptor.cs" />
     <Compile Include="IViewFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" Condition="!Exists('..\AssemblyCommonInfo.cs')" />
     <None Include="..\Run Tests.ps1">
@@ -370,6 +372,7 @@
     <Compile Include="Activities\Interfaces\IServiceXmlTranslator.cs" />
     <Compile Include="StudioResourceUpdateManager.cs" />
     <Compile Include="StudioServerProxy.cs" />
+    <Compile Include="ToolDescriptionExtentions.cs" />
     <Compile Include="UpdateProxy.cs" />
     <Compile Include="Utils\HelperUtils.cs" />
     <Compile Include="Utils\NewWorkflowNames.cs" />
@@ -468,6 +471,10 @@
       <Project>{1990550D-EA6F-4DAC-9B5E-8571E86923ED}</Project>
       <Name>Dev2.Util</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Core\Warewolf.Core.csproj">
+      <Project>{8fd23ce0-02bb-48e1-a914-ba467938ce78}</Project>
+      <Name>Warewolf.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Warewolf.Security\Warewolf.Security.csproj">
       <Project>{CA5E9373-46FE-41B9-AB2E-BD637F48B456}</Project>
       <Name>Warewolf.Security</Name>
@@ -499,7 +506,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppResources\Enums\" />
-    <Folder Include="Interfaces\" />
     <Folder Include="Validation\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
