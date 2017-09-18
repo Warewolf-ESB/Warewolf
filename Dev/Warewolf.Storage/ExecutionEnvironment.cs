@@ -107,11 +107,17 @@ namespace Warewolf.Storage
             {
                 return;
             }
+            try
+            {
+                var envTemp = PublicFunctions.EvalAssignWithFrame(new AssignValue(exp, value), update, _env);
 
-            var envTemp = PublicFunctions.EvalAssignWithFrame(new AssignValue(exp, value), update, _env);
-
-            _env = envTemp;
-            CommitAssign();
+                _env = envTemp;
+                CommitAssign();
+            }
+            catch (Exception err)
+            {
+                Errors.Add(err.Message);
+            }
         }
 
         public void AssignStrict(string exp, string value, int update)
@@ -121,10 +127,17 @@ namespace Warewolf.Storage
                 return;
             }
 
-            var envTemp = PublicFunctions.EvalAssignWithFrameStrict(new AssignValue(exp, value), update, _env);
+            try
+            {
+                var envTemp = PublicFunctions.EvalAssignWithFrameStrict(new AssignValue(exp, value), update, _env);
 
-            _env = envTemp;
-            CommitAssign();
+                _env = envTemp;
+                CommitAssign();
+            }
+            catch (Exception err)
+            {
+                Errors.Add(err.Message);
+            }
         }
 
 
