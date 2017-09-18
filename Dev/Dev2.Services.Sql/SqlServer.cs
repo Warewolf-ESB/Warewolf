@@ -52,8 +52,19 @@ namespace Dev2.Services.Sql
         public bool Connect(string connectionString)
         {
             _connectionString = connectionString;
-            _connection.ConnectionString = _connectionString;
-            return true;
+            _connection = new SqlConnection {ConnectionString = _connectionString};
+
+            try
+            {
+                _connection.TryOpen();
+                return true;
+            }
+            catch (Exception e)
+            {
+                Dev2Logger.Error(e,GlobalConstants.WarewolfError);
+                return false;
+            }
+           
         }
 
         public void BeginTransaction()
