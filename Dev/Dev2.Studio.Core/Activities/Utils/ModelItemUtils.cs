@@ -151,7 +151,7 @@ namespace Dev2.Studio.Core.Activities.Utils
             return currentValue as T;
         }
 
-        public static ImageSource GetImageSourceForTool(this ModelItem modelItem, IApplicationAdaptor currentApp = null)
+        public static ImageSource GetImageSourceForTool(this ModelItem modelItem)
         {
             var computedValue = modelItem.GetCurrentValue();
             if (computedValue is FlowStep)
@@ -170,6 +170,7 @@ namespace Dev2.Studio.Core.Activities.Utils
             {
                 type = typeof(DsfFlowSwitchActivity);
             }
+            var currentApp = CustomContainer.Get<IApplicationAdaptor>();
             var application = currentApp ?? new ApplicationAdaptor(Application.Current);
             if (type.GetCustomAttributes().Any(a => a is ToolDescriptorInfo))
             {

@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Activities.Presentation.Model;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Common.Interfaces;
 using Dev2.Studio.Core.Activities.Utils;
@@ -14,23 +11,12 @@ namespace Dev2.ViewModels.Merge
 {
     public abstract class ConflictViewModelBase : BindableBase, IConflictViewModel
     {
-        protected ConflictViewModelBase(IApplicationAdaptor applicationAdaptor, IEnumerable<ModelItem> modelItems)
+        protected ConflictViewModelBase(ModelItem modelItem)
         {
-            foreach (var modelItem in modelItems)
-            {
-                MergeToolModel = AddModelItem(modelItem, applicationAdaptor);
-            }
-            //var firstOrDefault = mergeToolModel.Children.FirstOrDefault();
-            //if (firstOrDefault != null)
-            //{
-            //    firstOrDefault.IsMergeExpanded = true;
-            //    firstOrDefault.IsMergeExpanderEnabled = true;
-            //    MergeToolModel = firstOrDefault;
-            //}
+            MergeToolModel = AddModelItem(modelItem);
         }
 
-
-        public IMergeToolModel AddModelItem(ModelItem modelItem, IApplicationAdaptor applicationAdaptor)
+        public IMergeToolModel AddModelItem(ModelItem modelItem)
         {
             var mergeToolModel = new MergeToolModel();
             var currentValue = modelItem.GetCurrentValue();
@@ -41,7 +27,7 @@ namespace Dev2.ViewModels.Merge
                 var instance = Activator.CreateInstance(actual, modelItem) as ActivityDesignerViewModel;
                 var dsfActivity = activityType.GetProperty("DisplayName")?.GetValue(currentValue);
                 mergeToolModel.ActivityDesignerViewModel = instance;
-                mergeToolModel.MergeIcon = modelItem.GetImageSourceForTool(applicationAdaptor);
+                mergeToolModel.MergeIcon = modelItem.GetImageSourceForTool();
                 mergeToolModel.MergeDescription = dsfActivity?.ToString();
             }
             return mergeToolModel;

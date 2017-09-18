@@ -208,60 +208,8 @@ namespace Dev2.Studio.Views
             }
             if (e.Key == Key.Home && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
             {
-                var assignId = Guid.NewGuid();
-                var foreachId = Guid.NewGuid();
-                var dsfMultiAssignActivity = new DsfMultiAssignActivity()
-                {
-                    UniqueID = assignId.ToString(),
-                    FieldsCollection = new List<ActivityDTO>()
-                {
-                    new ActivityDTO("a","a",1),
-                    new ActivityDTO("a","a",2)
-                }
-                };
-                var dsfMultiAssignActivity1 = new DsfMultiAssignActivity()
-                {
-                    UniqueID = assignId.ToString(),
-                    FieldsCollection = new List<ActivityDTO>()
-                {
-                    new ActivityDTO("a","b",1),
-                    new ActivityDTO("a","a",2)
-                }
-                };
-                var dsfForEachActivity = new DsfForEachActivity()
-                {
-                    UniqueID = foreachId.ToString(),
-                    DataFunc = new ActivityFunc<string, bool>()
-                    {
-                        Handler = new DsfDateTimeActivity()
-                    }
-                };
-                var dsfForEachActivity1 = new DsfForEachActivity()
-                {
-                    UniqueID = foreachId.ToString(),
-                    DataFunc = new ActivityFunc<string, bool>()
-                    {
-                        Handler = new DsfDateTimeActivity()
-                    }
-                };
-                var assignOne = ModelItemUtils.CreateModelItem(dsfMultiAssignActivity);
-                var assign2 = ModelItemUtils.CreateModelItem(dsfMultiAssignActivity1);
-                var forEach = ModelItemUtils.CreateModelItem(dsfForEachActivity);
-                var forEach1 = ModelItemUtils.CreateModelItem(dsfForEachActivity1);
-
-                var currentChanges = new List<ModelItem>()
-            {
-                assignOne,forEach
-            };
-                var differenceChanges = new List<ModelItem>()
-            {
-                assign2,forEach1
-            };
-                var window = new Window();
-                var vm = new MergeWorkflowViewModel(currentChanges, differenceChanges, new ApplicationAdaptor(Application.Current));
-                var content = new MergeWorkflowView { DataContext = vm };
-                window.Content = content;
-                window.Show();
+                var shellViewModel = DataContext as ShellViewModel;
+                shellViewModel?.MergeCommand.Execute(null);
             }
             if (e.Key == Key.F1)
             {
