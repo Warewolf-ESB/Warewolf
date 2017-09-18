@@ -299,6 +299,7 @@
     </Compile>
     <Compile Include="CustomControls\ActivityTemplateSelector.cs" />
     <Compile Include="CustomControls\TemplateGenerator.cs" />
+    <Compile Include="DesignerAttributeMap.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" Condition="!Exists('..\AssemblyCommonInfo.cs')" />
     <None Include="..\Run Tests.ps1">
       <Visible>False</Visible>
@@ -410,6 +411,7 @@
     <Compile Include="ViewModels\Help\IHelpViewWrapper.cs" />
     <Compile Include="ViewModels\Help\HelpViewWrapper.cs" />
     <Compile Include="ViewModels\Merge\CurrentConflictViewModel.cs" />
+    <Compile Include="ViewModels\Merge\ConflictViewModelBase.cs" />
     <Compile Include="ViewModels\Merge\DifferenceConflictViewModel.cs" />
     <Compile Include="ViewModels\Merge\MergeToolModel.cs" />
     <Compile Include="ViewModels\Merge\MergeWorkflowViewModel.cs" />

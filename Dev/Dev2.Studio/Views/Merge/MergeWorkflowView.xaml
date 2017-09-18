@@ -33,217 +33,140 @@
             <ColumnDefinition Width="40*" MinWidth="324"/>
         </Grid.ColumnDefinitions>
         <Grid Grid.Column="0" HorizontalAlignment="Stretch" >
-            <Grid x:Name="MergeCurrentGrid" HorizontalAlignment="Stretch">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="50*"/>
-                    <ColumnDefinition Width="50*"/>
-                </Grid.ColumnDefinitions>
-                <StackPanel Background="{StaticResource WareWolfMenuBrush}" HorizontalAlignment="Stretch">
-                    <TextBlock Margin="5" Text="Current" Style="{StaticResource SourceHeader}" />
-                </StackPanel>
-                <StackPanel Grid.Column="1" Background="{StaticResource WareWolfMenuBrush}" HorizontalAlignment="Stretch">
-                    <TextBlock Margin="5" Text="Difference" Style="{StaticResource SourceHeader}" />
-                </StackPanel>
-                <Grid Grid.Row="1" 
-                      Grid.Column="0" 
-                      Grid.ColumnSpan="2" 
-                      ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                      ScrollViewer.VerticalScrollBarVisibility="Auto">
+            <ScrollViewer x:Name="ScrollViewer" 
+                          VerticalScrollBarVisibility="Auto" 
+                          HorizontalScrollBarVisibility="Hidden" 
+                          CanContentScroll="True"
+                          Height="{Binding ElementName=MainGrid, Path=ActualHeight}">
+                <Grid x:Name="MergeGrid" 
+                      HorizontalAlignment="Stretch" 
+                      Width="{Binding ElementName=ScrollViewer, Path=ActualWidth}" 
+                      ScrollViewer.CanContentScroll="True">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="50*"/>
                         <ColumnDefinition Width="50*"/>
                     </Grid.ColumnDefinitions>
-                    <Grid Grid.Column="0" x:Name="MergeCurrentGeneral" DataContext="{Binding CurrentConflictViewModel}">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="*"/>
-                        </Grid.RowDefinitions>
 
-                        <TextBlock x:Name="MergeCurrentWorkflowName" Text="{Binding WorkflowName}" />
-                        
-                        <Expander x:Name="MergeCurrentWorkflowVariables"
-                                  Grid.Row="1"
+                    <StackPanel Grid.Row="0" Background="{StaticResource WareWolfMenuBrush}" HorizontalAlignment="Stretch" DataContext="{Binding CurrentConflictViewModel}">
+                        <TextBlock Margin="5" Text="{Binding WorkflowName}" Style="{StaticResource SourceHeader}" />
+                    </StackPanel>
+                    <StackPanel Grid.Row="0" Grid.Column="1" Background="{StaticResource WareWolfMenuBrush}" HorizontalAlignment="Stretch" DataContext="{Binding DifferenceConflictViewModel}">
+                        <TextBlock Margin="5" Text="{Binding WorkflowName}" Style="{StaticResource SourceHeader}" />
+                    </StackPanel>
+
+                    <Grid Grid.Row="1" 
+                          Grid.Column="0" 
+                          Grid.ColumnSpan="2" 
+                          Margin="{StaticResource ElementBorderTop}" >
+                        <Expander x:Name="MergeWorkflowVariables"
                                   Style="{StaticResource MergeExpander}"
-                                  AutomationProperties.AutomationId="UI_MergeCurrentVariablesExpander_AutoID">
+                                  AutomationProperties.AutomationId="UI_MergeVariablesExpander_AutoID">
                             <Expander.HeaderTemplate>
                                 <DataTemplate>
-                                    <DockPanel Grid.Column="1" x:Name="MergeDifferenceDockPanel" LastChildFill="False" >
-                                        <StackPanel DockPanel.Dock="Left" Orientation="Horizontal">
-                                            <RadioButton x:Name="VariablesCurrentRB" 
-                                                         IsChecked="{Binding IsVariablesChecked}" 
-                                                         GroupName="MergeActivities"
-                                                         Style="{StaticResource MergeRadioButtonStyle}">
-                                            </RadioButton>
-                                            <TextBlock Text="Variables" FontWeight="Bold" HorizontalAlignment="Stretch">
-                                                <TextBlock.Width>
-                                                    <MultiBinding Converter="{StaticResource MergeHeaderTemplateWidthConverter}">
-                                                        <Binding RelativeSource="{RelativeSource AncestorType={x:Type Expander}}" />
-                                                        <Binding Path="ActualWidth" RelativeSource="{RelativeSource AncestorType={x:Type Expander}}" />
-                                                    </MultiBinding>
-                                                </TextBlock.Width>
-                                            </TextBlock>
-                                        </StackPanel>
-                                    </DockPanel>
-                                </DataTemplate>
-                            </Expander.HeaderTemplate>
-                            <datalist:DataListView DataContext="{Binding DataListViewModel}" 
-                                                   ScrollViewer.VerticalScrollBarVisibility="Auto"
-                                                   ScrollViewer.HorizontalScrollBarVisibility="Auto">
-                                
-                            </datalist:DataListView>
-                        </Expander>
-                        
-                        <TreeView x:Name="MergeCurrentDataTree"
-                                  Grid.Row="2"
-                                  ItemsSource="{Binding MergeConflicts, Mode=TwoWay, IsAsync=True}"
-                                  HorizontalAlignment="Stretch"
-                                  Margin="{StaticResource ElementBorderTop}"
-                                  Focusable="False"
-                                  HorizontalContentAlignment="Stretch"
-                                  Style="{StaticResource MergeTreeViewStyle}"
-                                  Grid.IsSharedSizeScope="True"
-                                  AutomationProperties.AutomationId="UI_MergeTreeView_AutoID"
-                                  ScrollViewer.CanContentScroll="True"
-                                  VirtualizingStackPanel.IsVirtualizing="True"
-                                  VirtualizingStackPanel.VirtualizationMode="Recycling"
-                                  VirtualizingStackPanel.ScrollUnit="Pixel"
-                                  VirtualizingStackPanel.CacheLength="2,1"
-                                  VirtualizingStackPanel.CacheLengthUnit="Item"
-                                  VirtualizingStackPanel.IsVirtualizingWhenGrouping="True"
-                                  VirtualizingStackPanel.IsContainerVirtualizable="True">
-                            <TreeView.ItemTemplate>
-                                <HierarchicalDataTemplate DataType="{x:Type interfaces:IMergeToolModel}" ItemsSource="{Binding Path=Children, IsAsync=True}">
-                                    <Grid>
-                                        <Grid.Width>
-                                            <MultiBinding Converter="{StaticResource MergeWidthConverter}">
-                                                <Binding RelativeSource="{RelativeSource AncestorType={x:Type TreeViewItem}}" />
-                                                <Binding Path="ActualWidth" RelativeSource="{RelativeSource AncestorType={x:Type TreeView}}" />
-                                            </MultiBinding>
-                                        </Grid.Width>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="*"/>
-                                        </Grid.RowDefinitions>
+                                    <Grid Width="{Binding ElementName=MergeWorkflowVariables, Path=ActualWidth}">
                                         <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="50*"/>
+                                            <ColumnDefinition Width="50*"/>
                                         </Grid.ColumnDefinitions>
 
-                                        <Expander x:Name="MergeCurrentExpander"
-                                                  Visibility="{Binding IsMergeExpanderEnabled, Converter={StaticResource BoolToVisibilityConverterPositive}}"
-                                                  Header="{Binding .}"
-                                                  IsExpanded="{Binding IsExpanded, Mode=TwoWay, Converter={StaticResource ExpanderToBooleanConverter}, ConverterParameter=1}"
-                                                  Style="{StaticResource MergeExpander}"
-                                                  AutomationProperties.AutomationId="{Binding StringFormat=UI_MergeCurrentExpander_{0}_AutoID, Path=MergeCurrentDescription}">
-                                            <Expander.HeaderTemplate>
-                                                <DataTemplate>
-                                                    <DockPanel Grid.Column="0" x:Name="MergeCurrentDockPanel" LastChildFill="False" >
-                                                        <StackPanel DockPanel.Dock="Left" Orientation="Horizontal">
-                                                            <RadioButton x:Name="MergeCurrentRB" 
-                                                                         IsChecked="{Binding IsMergeChecked}" 
-                                                                         GroupName="MergeActivities"
-                                                                         Style="{StaticResource MergeRadioButtonStyle}">
-                                                            </RadioButton>
-                                                            <Image Source="{Binding MergeIcon}" Margin="5,0,3,0" Height="16" Width="16"/>
-                                                            <TextBlock Text="{Binding MergeDescription}"
-                                                                       ToolTip="{Binding MergeDescription}"
-                                                                       TextTrimming="CharacterEllipsis"
-                                                                       FontWeight="Bold"
-                                                                       HorizontalAlignment="Stretch">
-                                                                <TextBlock.Width>
-                                                                    <MultiBinding Converter="{StaticResource MergeHeaderTemplateWidthConverter}">
-                                                                        <Binding RelativeSource="{RelativeSource AncestorType={x:Type Expander}}" />
-                                                                        <Binding Path="ActualWidth" RelativeSource="{RelativeSource AncestorType={x:Type Expander}}" />
-                                                                    </MultiBinding>
-                                                                </TextBlock.Width>
-                                                            </TextBlock>
-                                                        </StackPanel>
-                                                    </DockPanel>
-                                                </DataTemplate>
-                                            </Expander.HeaderTemplate>
-                                            <Grid x:Name="MergeCurrentGrid">
-                                                <ContentPresenter Grid.Column="1" 
-                                                                  x:Name="MergeCurrentContentPresenter" 
-                                                                  ContentTemplateSelector="{StaticResource ActivitySelector}"
-                                                                  ScrollViewer.VerticalScrollBarVisibility="Auto"
-                                                                  ScrollViewer.HorizontalScrollBarVisibility="Auto">
-                                                    <ContentPresenter.Width>
-                                                        <MultiBinding Converter="{StaticResource MergeWidthConverter}">
-                                                            <Binding RelativeSource="{RelativeSource AncestorType={x:Type Grid}}" />
-                                                            <Binding Path="ActualWidth" RelativeSource="{RelativeSource AncestorType={x:Type Grid}}" />
+                                        <DockPanel Grid.Column="0" x:Name="MergeCurrentDockPanel" LastChildFill="False">
+                                            <StackPanel DockPanel.Dock="Left" Orientation="Horizontal">
+                                                <TextBlock Text="Variables" FontWeight="Bold" HorizontalAlignment="Stretch">
+                                                    <TextBlock.Width>
+                                                        <MultiBinding Converter="{StaticResource MergeHeaderTemplateWidthConverter}">
+                                                            <Binding RelativeSource="{RelativeSource AncestorType={x:Type Expander}}" />
+                                                            <Binding Path="ActualWidth" RelativeSource="{RelativeSource AncestorType={x:Type Expander}}" />
                                                         </MultiBinding>
-                                                    </ContentPresenter.Width>
-                                                </ContentPresenter>
-                                            </Grid>
-                                        </Expander>
+                                                    </TextBlock.Width>
+                                                </TextBlock>
+                                            </StackPanel>
+                                        </DockPanel>
+
+                                        <DockPanel Grid.Column="1" x:Name="MergeDifferenceDockPanel" LastChildFill="False">
+                                            <StackPanel DockPanel.Dock="Left" Orientation="Horizontal">
+                                                <TextBlock Text="Variables" FontWeight="Bold" HorizontalAlignment="Stretch">
+                                                    <TextBlock.Width>
+                                                        <MultiBinding Converter="{StaticResource MergeHeaderTemplateWidthConverter}">
+                                                            <Binding RelativeSource="{RelativeSource AncestorType={x:Type Expander}}" />
+                                                            <Binding Path="ActualWidth" RelativeSource="{RelativeSource AncestorType={x:Type Expander}}" />
+                                                        </MultiBinding>
+                                                    </TextBlock.Width>
+                                                </TextBlock>
+                                            </StackPanel>
+                                        </DockPanel>
                                     </Grid>
-                                </HierarchicalDataTemplate>
-                            </TreeView.ItemTemplate>
-                        </TreeView>
-                    </Grid>
-                    <Grid Grid.Column="1" x:Name="MergeDifferenceGeneral" DataContext="{Binding DifferenceConflictViewModel}">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="*"/>
-                        </Grid.RowDefinitions>
-
-                        <TextBlock x:Name="MergeDifferenceWorkflowName" Text="{Binding WorkflowName}" />
-                        
-                        <Expander x:Name="MergeDifferenceWorkflowVariables"
-                                  Grid.Row="1"
-                                  Style="{StaticResource MergeExpander}"
-                                  AutomationProperties.AutomationId="UI_MergeDifferenceVariablesExpander_AutoID">
-                            <Expander.HeaderTemplate>
-                                <DataTemplate>
-                                    <DockPanel Grid.Column="1" x:Name="MergeDifferenceDockPanel" LastChildFill="False" >
-                                        <StackPanel DockPanel.Dock="Left" Orientation="Horizontal">
-                                            <RadioButton x:Name="VariablesDifferenceRB" 
-                                                         IsChecked="{Binding IsVariablesChecked}" 
-                                                         GroupName="MergeActivities"
-                                                         Style="{StaticResource MergeRadioButtonStyle}">
-                                            </RadioButton>
-                                            <TextBlock Text="Variables" FontWeight="Bold" HorizontalAlignment="Stretch">
-                                                <TextBlock.Width>
-                                                    <MultiBinding Converter="{StaticResource MergeHeaderTemplateWidthConverter}">
-                                                        <Binding RelativeSource="{RelativeSource AncestorType={x:Type Expander}}" />
-                                                        <Binding Path="ActualWidth" RelativeSource="{RelativeSource AncestorType={x:Type Expander}}" />
-                                                    </MultiBinding>
-                                                </TextBlock.Width>
-                                            </TextBlock>
-                                        </StackPanel>
-                                    </DockPanel>
                                 </DataTemplate>
                             </Expander.HeaderTemplate>
-                            <datalist:DataListView DataContext="{Binding DataListViewModel}" 
-                                                   ScrollViewer.VerticalScrollBarVisibility="Auto"
-                                                   ScrollViewer.HorizontalScrollBarVisibility="Auto">
-
-                            </datalist:DataListView>
+                            <Grid Width="{Binding ElementName=MergeWorkflowVariables, Path=ActualWidth}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="50*"/>
+                                    <ColumnDefinition Width="50*"/>
+                                </Grid.ColumnDefinitions>
+                                <Border BorderBrush="#CFD6E1" BorderThickness="1,0,1,1" DataContext="{Binding CurrentConflictViewModel}">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="*"/>
+                                        </Grid.RowDefinitions>
+                                        <RadioButton x:Name="VariablesCurrentRB" 
+                                                     Margin="5,5,5,0"
+                                                     IsChecked="{Binding IsVariablesChecked}" 
+                                                     HorizontalAlignment="Right"
+                                                     GroupName="MergeActivities"
+                                                     Style="{StaticResource MergeRadioButtonStyle}">
+                                        </RadioButton>
+                                        <datalist:DataListView Grid.Row="1" 
+                                                               DataContext="{Binding DataListViewModel}" 
+                                                               ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                                               ScrollViewer.HorizontalScrollBarVisibility="Auto"/>
+                                    </Grid>
+                                </Border>
+                                <Border Grid.Column="1" BorderBrush="#CFD6E1" BorderThickness="1,0,1,1" DataContext="{Binding DifferenceConflictViewModel}">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="*"/>
+                                        </Grid.RowDefinitions>
+                                        <RadioButton x:Name="VariablesDifferenceRB" 
+                                                     Margin="5,5,5,0"
+                                                     IsChecked="{Binding IsVariablesChecked}" 
+                                                     HorizontalAlignment="Right"
+                                                     GroupName="MergeActivities"
+                                                     Style="{StaticResource MergeRadioButtonStyle}">
+                                        </RadioButton>
+                                        <datalist:DataListView Grid.Row="1" 
+                                                               DataContext="{Binding DataListViewModel}" 
+                                                               ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                                               ScrollViewer.HorizontalScrollBarVisibility="Auto"/>
+                                    </Grid>
+                                </Border>
+                            </Grid>
                         </Expander>
-                        
+                    </Grid>
+
+                    <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">
                         <TreeView x:Name="MergeDifferenceDataTree"
-                                  Grid.Row="2"
-                                  ItemsSource="{Binding MergeConflicts, Mode=TwoWay, IsAsync=True}"
-                                  HorizontalAlignment="Stretch"
-                                  Margin="{StaticResource ElementBorderTop}"
-                                  Focusable="False"
-                                  HorizontalContentAlignment="Stretch"
-                                  Style="{StaticResource MergeTreeViewStyle}"
-                                  Grid.IsSharedSizeScope="True"
-                                  AutomationProperties.AutomationId="UI_MergeTreeView_AutoID"
-                                  ScrollViewer.CanContentScroll="True"
-                                  VirtualizingStackPanel.IsVirtualizing="True"
-                                  VirtualizingStackPanel.VirtualizationMode="Recycling"
-                                  VirtualizingStackPanel.ScrollUnit="Pixel"
-                                  VirtualizingStackPanel.CacheLength="2,1"
-                                  VirtualizingStackPanel.CacheLengthUnit="Item"
-                                  VirtualizingStackPanel.IsVirtualizingWhenGrouping="True"
-                                  VirtualizingStackPanel.IsContainerVirtualizable="True">
+			                      Grid.Row="2"
+			                      ItemsSource="{Binding Conflicts, Mode=TwoWay, IsAsync=True}"
+			                      HorizontalAlignment="Stretch"
+			                      Focusable="False"
+			                      HorizontalContentAlignment="Stretch"
+			                      Style="{StaticResource MergeTreeViewStyle}"
+			                      Grid.IsSharedSizeScope="True"
+			                      AutomationProperties.AutomationId="UI_MergeTreeView_AutoID"
+			                      ScrollViewer.CanContentScroll="True"
+			                      VirtualizingStackPanel.IsVirtualizing="True"
+			                      VirtualizingStackPanel.VirtualizationMode="Recycling"
+			                      VirtualizingStackPanel.ScrollUnit="Pixel"
+			                      VirtualizingStackPanel.CacheLength="2,1"
+			                      VirtualizingStackPanel.CacheLengthUnit="Item"
+			                      VirtualizingStackPanel.IsVirtualizingWhenGrouping="True"
+			                      VirtualizingStackPanel.IsContainerVirtualizable="True">
                             <TreeView.ItemTemplate>
                                 <HierarchicalDataTemplate DataType="{x:Type interfaces:IMergeToolModel}" ItemsSource="{Binding Path=Children, IsAsync=True}">
                                     <Grid>
@@ -253,58 +176,119 @@
                                                 <Binding Path="ActualWidth" RelativeSource="{RelativeSource AncestorType={x:Type TreeView}}" />
                                             </MultiBinding>
                                         </Grid.Width>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="*"/>
-                                        </Grid.RowDefinitions>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*"/>
-                                        </Grid.ColumnDefinitions>
 
-                                        <Expander x:Name="MergeCurrentExpander"
-                                                  Visibility="{Binding IsMergeExpanderEnabled, Converter={StaticResource BoolToVisibilityConverterPositive}}"
-                                                  Header="{Binding .}"
-                                                  IsExpanded="{Binding IsExpanded, Mode=TwoWay, Converter={StaticResource ExpanderToBooleanConverter}, ConverterParameter=1}"
-                                                  Style="{StaticResource MergeExpander}"
-                                                  AutomationProperties.AutomationId="{Binding StringFormat=UI_MergeDifferenceExpander_{0}_AutoID, Path=MergeDescription}">
+                                        <Expander x:Name="MergeExpander"
+							                      Visibility="{Binding IsMergeExpanderEnabled, Converter={StaticResource BoolToVisibilityConverterPositive}}"
+							                      Header="{Binding .}"                                                  
+							                      IsExpanded="{Binding IsExpanded, Mode=TwoWay, Converter={StaticResource ExpanderToBooleanConverter}, ConverterParameter=1}"
+							                      Style="{StaticResource MergeExpander}"
+							                      AutomationProperties.AutomationId="{Binding StringFormat=UI_MergeExpander_{0}_AutoID, Path=MergeDescription}">
                                             <Expander.HeaderTemplate>
                                                 <DataTemplate>
-                                                    <DockPanel Grid.Column="1" x:Name="MergeDifferenceDockPanel" LastChildFill="False" >
-                                                        <StackPanel DockPanel.Dock="Left" Orientation="Horizontal">
-                                                            <RadioButton x:Name="MergeDifferenceRB" 
-                                                                         IsChecked="{Binding IsMergeChecked}" 
-                                                                         GroupName="MergeActivities"
-                                                                         Style="{StaticResource MergeRadioButtonStyle}">
-                                                            </RadioButton>
-                                                            <Image Source="{Binding MergeIcon}" Margin="5,0,3,0" Height="16" Width="16"/>
-                                                            <TextBlock Text="{Binding MergeDescription}"
-                                                                       ToolTip="{Binding MergeDescription}"
-                                                                       TextTrimming="CharacterEllipsis"
-                                                                       FontWeight="Bold"
-                                                                       HorizontalAlignment="Stretch">
-                                                                <TextBlock.Width>
-                                                                    <MultiBinding Converter="{StaticResource MergeHeaderTemplateWidthConverter}">
-                                                                        <Binding RelativeSource="{RelativeSource AncestorType={x:Type Expander}}" />
-                                                                        <Binding Path="ActualWidth" RelativeSource="{RelativeSource AncestorType={x:Type Expander}}" />
-                                                                    </MultiBinding>
-                                                                </TextBlock.Width>
-                                                            </TextBlock>
-                                                        </StackPanel>
-                                                    </DockPanel>
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="50*"/>
+                                                            <ColumnDefinition Width="50*"/>
+                                                        </Grid.ColumnDefinitions>
+
+                                                        <DockPanel Grid.Column="0" x:Name="MergeCurrentDockPanel" LastChildFill="False" DataContext="{Binding CurrentViewModel}">
+                                                            <StackPanel DockPanel.Dock="Left" Orientation="Horizontal">
+                                                                <Image Source="{Binding MergeIcon}" Margin="5,0,3,0" Height="16" Width="16"/>
+                                                                <TextBlock Text="{Binding MergeDescription}"
+												                       ToolTip="{Binding MergeDescription}"
+												                       TextTrimming="CharacterEllipsis"
+												                       FontWeight="Bold"
+												                       HorizontalAlignment="Stretch">
+                                                                    <TextBlock.Width>
+                                                                        <MultiBinding Converter="{StaticResource MergeHeaderTemplateWidthConverter}">
+                                                                            <Binding RelativeSource="{RelativeSource AncestorType={x:Type Expander}}" />
+                                                                            <Binding Path="ActualWidth" RelativeSource="{RelativeSource AncestorType={x:Type Expander}}" />
+                                                                        </MultiBinding>
+                                                                    </TextBlock.Width>
+                                                                </TextBlock>
+                                                            </StackPanel>
+                                                        </DockPanel>
+                                                        <DockPanel Grid.Column="1" x:Name="MergeDifferenceDockPanel" LastChildFill="False" DataContext="{Binding DiffViewModel}">
+                                                            <StackPanel DockPanel.Dock="Left" Orientation="Horizontal">
+                                                                <Image Source="{Binding MergeIcon}" Margin="5,0,3,0" Height="16" Width="16"/>
+                                                                <TextBlock Text="{Binding MergeDescription}"
+												                           ToolTip="{Binding MergeDescription}"
+												                           TextTrimming="CharacterEllipsis"
+												                           FontWeight="Bold"
+												                           HorizontalAlignment="Stretch">
+                                                                    <TextBlock.Width>
+                                                                        <MultiBinding Converter="{StaticResource MergeHeaderTemplateWidthConverter}">
+                                                                            <Binding RelativeSource="{RelativeSource AncestorType={x:Type Expander}}" />
+                                                                            <Binding Path="ActualWidth" RelativeSource="{RelativeSource AncestorType={x:Type Expander}}" />
+                                                                        </MultiBinding>
+                                                                    </TextBlock.Width>
+                                                                </TextBlock>
+                                                            </StackPanel>
+                                                        </DockPanel>
+                                                    </Grid>
                                                 </DataTemplate>
                                             </Expander.HeaderTemplate>
-                                            <Grid x:Name="MergeDifferenceGrid" >
-                                                <ContentPresenter Grid.Column="1" 
-                                                                  x:Name="MergeDifferenceContentPresenter" 
-                                                                  ContentTemplateSelector="{StaticResource ActivitySelector}"
-                                                                  ScrollViewer.VerticalScrollBarVisibility="Auto"
-                                                                  ScrollViewer.HorizontalScrollBarVisibility="Auto">
-                                                    <ContentPresenter.Width>
-                                                        <MultiBinding Converter="{StaticResource MergeWidthConverter}">
-                                                            <Binding RelativeSource="{RelativeSource AncestorType={x:Type Grid}}" />
-                                                            <Binding Path="ActualWidth" RelativeSource="{RelativeSource AncestorType={x:Type Grid}}" />
-                                                        </MultiBinding>
-                                                    </ContentPresenter.Width>
-                                                </ContentPresenter>
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="50*"/>
+                                                    <ColumnDefinition Width="50*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Border BorderBrush="#CFD6E1" BorderThickness="1,0,1,1" >
+                                                    <Grid x:Name="MergeCurrentGrid">
+                                                        <Grid.RowDefinitions>
+                                                            <RowDefinition Height="Auto"/>
+                                                            <RowDefinition Height="*"/>
+                                                        </Grid.RowDefinitions>
+                                                        <RadioButton x:Name="MergeCurrentRB" 
+                                                                     IsChecked="{Binding IsMergeChecked}" 
+                                                                     HorizontalAlignment="Right"
+                                                                     Margin="5,5,5,0"
+                                                                     GroupName="MergeActivities"
+                                                                     Style="{StaticResource MergeRadioButtonStyle}">
+                                                        </RadioButton>
+                                                        <ContentPresenter Grid.Row="1" 
+												                          x:Name="MergeCurrentContentPresenter" 
+                                                                          Content="{Binding CurrentViewModel}"
+												                          ContentTemplateSelector="{StaticResource ActivitySelector}"
+												                          ScrollViewer.VerticalScrollBarVisibility="Auto"
+												                          ScrollViewer.HorizontalScrollBarVisibility="Auto">
+                                                            <ContentPresenter.Width>
+                                                                <MultiBinding Converter="{StaticResource MergeWidthConverter}">
+                                                                    <Binding RelativeSource="{RelativeSource AncestorType={x:Type Grid}}" />
+                                                                    <Binding Path="ActualWidth" RelativeSource="{RelativeSource AncestorType={x:Type Grid}}" />
+                                                                </MultiBinding>
+                                                            </ContentPresenter.Width>
+                                                        </ContentPresenter>
+                                                    </Grid>
+                                                </Border>
+                                                <Border Grid.Column="1" BorderBrush="#CFD6E1" BorderThickness="1,0,1,1" >
+                                                    <Grid x:Name="MergeDifferenceGrid" >
+                                                        <Grid.RowDefinitions>
+                                                            <RowDefinition Height="Auto"/>
+                                                            <RowDefinition Height="*"/>
+                                                        </Grid.RowDefinitions>
+                                                        <RadioButton x:Name="MergeDifferenceRB" 
+                                                                     IsChecked="{Binding IsMergeChecked}" 
+                                                                     HorizontalAlignment="Right"
+                                                                     Margin="5,5,5,0"
+                                                                     GroupName="MergeActivities"
+                                                                     Style="{StaticResource MergeRadioButtonStyle}">
+                                                        </RadioButton>
+                                                        <ContentPresenter Grid.Row="1"
+												                          x:Name="MergeDifferenceContentPresenter" 
+                                                                          Content="{Binding DiffViewModel}"
+												                          ContentTemplateSelector="{StaticResource ActivitySelector}"
+												                          ScrollViewer.VerticalScrollBarVisibility="Auto"
+												                          ScrollViewer.HorizontalScrollBarVisibility="Auto">
+                                                            <ContentPresenter.Width>
+                                                                <MultiBinding Converter="{StaticResource MergeWidthConverter}">
+                                                                    <Binding RelativeSource="{RelativeSource AncestorType={x:Type Grid}}" />
+                                                                    <Binding Path="ActualWidth" RelativeSource="{RelativeSource AncestorType={x:Type Grid}}" />
+                                                                </MultiBinding>
+                                                            </ContentPresenter.Width>
+                                                        </ContentPresenter>
+                                                    </Grid>
+                                                </Border>
                                             </Grid>
                                         </Expander>
                                     </Grid>
@@ -313,14 +297,14 @@
                         </TreeView>
                     </Grid>
                 </Grid>
-            </Grid>
+            </ScrollViewer>
         </Grid>
         <GridSplitter Grid.Column="1"
-                        Background="#C1C3C5"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Stretch"
-                        Width="5" />
-        <Grid Grid.Column="2" x:Name="MergeGrid">
+                      Background="#C1C3C5"
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Stretch"
+                      Width="5" />
+        <Grid Grid.Column="2" x:Name="WorkflowGrid">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
