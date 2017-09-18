@@ -980,6 +980,19 @@
   <data name="MenuSaveTabHelp" xml:space="preserve">
     <value>Saves the active tab in the studio</value>
   </data>
+  <data name="MenuSearchHelp" xml:space="preserve">
+    <value>Search in Warewolf for 
+- Workflow Name
+- Tool title
+- Tool name
+- Input field
+- Scalar Name
+- object name
+- record set name
+- Input Variable
+- Output Variable
+- Test name</value>
+  </data>
   <data name="MenuSchedulerHelp" xml:space="preserve">
     <value>Schedule workflow executions</value>
   </data>

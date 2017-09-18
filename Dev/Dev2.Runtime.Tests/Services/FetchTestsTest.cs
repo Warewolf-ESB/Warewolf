@@ -168,6 +168,45 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(listOfTests.Count,testModels.Count);
             Assert.AreEqual(listOfTests[0].TestName,testModels[0].TestName);
             Assert.AreEqual(resourceID,resID);
-        }        
+        }
+
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("FetchTests_Execute")]
+        public void FetchAllTests_Execute_ExpectTestList()
+        {
+            //------------Setup for test--------------------------
+            var fetchTests = new FetchTests();
+
+            var listOfTests = new List<IServiceTestModelTO>
+            {
+                new ServiceTestModelTO
+                {
+                    AuthenticationType = AuthenticationType.Public,
+                    Enabled = true,
+                    TestName = "Test MyWF"
+                }
+            };
+            var repo = new Mock<ITestCatalog>();
+            var ws = new Mock<IWorkspace>();
+            var resID = Guid.Empty;
+            repo.Setup(a => a.FetchAllTests()).Returns(listOfTests).Verifiable();
+
+            var serializer = new Dev2JsonSerializer();
+            var inputs = new Dictionary<string, StringBuilder>();
+            var resourceID = Guid.Empty;
+            inputs.Add("resourceID", new StringBuilder(resourceID.ToString()));
+            fetchTests.TestCatalog = repo.Object;
+            //------------Execute Test---------------------------
+            var res = fetchTests.Execute(inputs, ws.Object);
+            var msg = serializer.Deserialize<CompressedExecuteMessage>(res);
+            var testModels = serializer.Deserialize<List<IServiceTestModelTO>>(msg.GetDecompressedMessage());
+            //------------Assert Results-------------------------
+            repo.Verify(a => a.FetchAllTests());
+            Assert.AreEqual(listOfTests.Count, testModels.Count);
+            Assert.AreEqual(listOfTests[0].TestName, testModels[0].TestName);
+            Assert.AreEqual(resourceID, resID);
+        }
     }
 }

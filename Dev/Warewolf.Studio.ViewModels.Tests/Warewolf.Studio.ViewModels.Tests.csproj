@@ -173,6 +173,8 @@
     <Compile Include="MessageBoxViewModelTests.cs" />
     <Compile Include="RequestNameServiceViewModelTests.cs" />
     <Compile Include="RequestServiceNameViewModelTests.cs" />
+    <Compile Include="Search\SearchValueTests.cs" />
+    <Compile Include="Search\SearchViewModelTests.cs" />
     <Compile Include="ServiceTestStepTests.cs" />
     <Compile Include="ServiceTestViewModelTests.partial.cs" />
     <Compile Include="SharepointServerSourceModelTests.cs" />
