@@ -63,11 +63,8 @@ using Dev2.Common.Interfaces.Enums;
 using Dev2.Data.ServiceModel;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.Enums;
-
-
-
-
-
+using Dev2.Views.Search;
+using Dev2.ViewModels.Search;
 
 namespace Dev2.Studio.ViewModels
 {
@@ -106,6 +103,7 @@ namespace Dev2.Studio.ViewModels
         private ICommand _exitCommand;
         private AuthorizeCommand _settingsCommand;
         private AuthorizeCommand _schedulerCommand;
+        private ICommand _searchCommand;
         private ICommand _showCommunityPageCommand;
         readonly IAsyncWorker _asyncWorker;
         private readonly IViewFactory _factory;
@@ -281,6 +279,14 @@ namespace Dev2.Studio.ViewModels
             {
                 return _settingsCommand ?? (_settingsCommand =
                     new AuthorizeCommand(AuthorizationContext.Administrator, param => _worksurfaceContextManager.AddSettingsWorkSurface(), param => IsActiveServerConnected()));
+            }
+        }
+
+        public ICommand SearchCommand
+        {
+            get
+            {
+                return _searchCommand ?? (_searchCommand = new DelegateCommand(param => ShowSearchWindow()));
             }
         }
 
@@ -1158,6 +1164,36 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
+        public void OpenSelectedTest(Guid resourceId, string testName)
+        {
+            var environmentModel = ServerRepository.Get(ActiveServer.EnvironmentID);
+            if (environmentModel != null)
+            {
+                var contextualResourceModel = environmentModel.ResourceRepository.LoadContextualResourceModel(resourceId);
+                
+                var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.ServiceTestsViewer);
+                if (contextualResourceModel != null)
+                {
+                    workSurfaceKey.EnvironmentID = contextualResourceModel.Environment.EnvironmentID;
+                    workSurfaceKey.ResourceID = contextualResourceModel.ID;
+                    workSurfaceKey.ServerID = contextualResourceModel.ServerID;
+
+                    var loadTests = environmentModel.ResourceRepository.LoadResourceTests(resourceId);
+                    var selectedTest = loadTests.FirstOrDefault(model => model.TestName.ToLower().Contains(testName.ToLower()));
+
+                    if (selectedTest != null)
+                    {
+                        var workflow = new WorkflowDesignerViewModel(contextualResourceModel);
+                        var testViewModel = new ServiceTestViewModel(contextualResourceModel, new AsyncWorker(), EventPublisher, new ExternalProcessExecutor(), workflow);
+
+                        var serviceTestModel = testViewModel.ToServiceTestModel(selectedTest);
+                        _worksurfaceContextManager.ViewSelectedTestForService(contextualResourceModel, serviceTestModel, testViewModel, workSurfaceKey);
+                        testViewModel.SelectedServiceTest = serviceTestModel;
+                    }
+                }
+            }
+        }
+
         public void RunAllTests(Guid resourceId)
         {
             var environmentModel = ServerRepository.Get(ActiveServer.EnvironmentID);
@@ -1417,6 +1453,14 @@ namespace Dev2.Studio.ViewModels
             {
                 ActivateItem(workSurfaceContextViewModel);
             }
+        }
+
+        public void ShowSearchWindow()
+        {
+            var searchWindow = new SearchView();
+            var viewModel = new SearchViewModel(this, CustomContainer.Get<Microsoft.Practices.Prism.PubSubEvents.IEventAggregator>());
+            searchWindow.DataContext = viewModel;
+            searchWindow.Show();
         }
 
         public void ShowCommunityPage()

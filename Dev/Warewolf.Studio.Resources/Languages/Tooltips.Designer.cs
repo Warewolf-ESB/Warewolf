@@ -19,7 +19,7 @@ namespace Warewolf.Studio.Resources.Languages {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Tooltips {
@@ -917,6 +917,33 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string DebugToolTip {
             get {
                 return ResourceManager.GetString("DebugToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Will appear on the small view..
+        /// </summary>
+        public static string DecisionToolTipDisplayText {
+            get {
+                return ResourceManager.GetString("DecisionToolTipDisplayText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Will appear on the design surface to help understand the flow.
+        /// </summary>
+        public static string DecisionToolTipFalseArm {
+            get {
+                return ResourceManager.GetString("DecisionToolTipFalseArm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Will appear on the design surface to help understand the flow..
+        /// </summary>
+        public static string DecisionToolTipTrueArm {
+            get {
+                return ResourceManager.GetString("DecisionToolTipTrueArm", resourceCulture);
             }
         }
         
@@ -2677,6 +2704,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string MenuSchedulerToolTip {
             get {
                 return ResourceManager.GetString("MenuSchedulerToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search in Warewolf.
+        /// </summary>
+        public static string MenuSearchToolTip {
+            get {
+                return ResourceManager.GetString("MenuSearchToolTip", resourceCulture);
             }
         }
         
