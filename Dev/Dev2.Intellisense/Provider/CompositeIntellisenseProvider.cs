@@ -71,7 +71,11 @@ namespace Dev2.Studio.InterfaceImplementors
 
         public void Dispose()
         {
-            for(int i = 0; i < Count; i++) this[i].Dispose();
+            for(int i = 0; i < Count; i++)
+            {
+                this[i].Dispose();
+            }
+
             Clear();
         }
 

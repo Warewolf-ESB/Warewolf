@@ -49,7 +49,11 @@ namespace Dev2.Activities.Specs.BaseTypes
 
         public CommonSteps(ScenarioContext scenarioContext)
         {
-            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            if (scenarioContext == null)
+            {
+                throw new ArgumentNullException("scenarioContext");
+            }
+
             this.scenarioContext = scenarioContext;
         }
 
@@ -88,8 +92,13 @@ namespace Dev2.Activities.Specs.BaseTypes
             {
                 var validateFromModelView = ValidateFromModelView();
                 if (validateFromModelView != null)
+                {
                     foreach (var errorInfo in validateFromModelView)
+                    {
                         allErrors.Add(errorInfo.Message);
+                    }
+                }
+
                 var errorThrown = allErrors.Contains(fetchErrors);
                 Assert.IsTrue(allErrors.Count > 0, "Expected " + anError + " error but the environment did not contain any.");
             }
@@ -596,7 +605,10 @@ namespace Dev2.Activities.Specs.BaseTypes
                 {
                     var forEachActivity = pair.Value as DsfForEachActivity;
                     if (forEachActivity == null)
+                    {
                         return false;
+                    }
+
                     return forEachActivity.DataFunc.Handler != null && forEachActivity.DataFunc != null && forEachActivity.DataFunc.Handler as DsfForEachActivity != null;
                 });
                 var forEachParentActivity = findAllForEach.Value as DsfForEachActivity;

@@ -413,7 +413,10 @@ namespace Dev2.Runtime
         {
             var info = new DirectoryInfo(EnvironmentVariables.TestPath);
             if (!info.Exists)
+            {
                 return;
+            }
+
             var fileInfos = info.GetDirectories();
             foreach (var fileInfo in fileInfos.Where(fileInfo => !testsToIgnore.Contains(fileInfo.Name.ToUpper())))
             {

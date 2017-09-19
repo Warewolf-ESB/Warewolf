@@ -39,7 +39,11 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Rename
         public RenameSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
         {
-            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            if (scenarioContext == null)
+            {
+                throw new ArgumentNullException("scenarioContext");
+            }
+
             this.scenarioContext = scenarioContext;
         }
 
@@ -161,7 +165,9 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Rename
                 Action = rename
             };
             if (!scenarioContext.ContainsKey("activity"))
+            {
                 scenarioContext.Add("activity", rename);
+            }
         }
 
         [When(@"validating the rename tool")]
@@ -186,12 +192,17 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Rename
                 DestinationPrivateKeyFile = destPrivateKeyFile
             };
             if (!scenarioContext.ContainsKey("activity"))
+            {
                 scenarioContext.Add("activity", dsfRename);
+            }
+
             dsfRename.PerformValidation();
 
             var viewModel = new RenameDesignerViewModel(ModelItemUtils.CreateModelItem(dsfRename));
             if (!scenarioContext.ContainsKey("viewModel"))
+            {
                 scenarioContext.Add("viewModel", viewModel);
+            }
         }
     }
 }

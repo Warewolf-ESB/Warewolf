@@ -68,7 +68,10 @@ namespace Warewolf.Studio.ViewModels
         {
 
             if (resourceModel == null)
+            {
                 throw new ArgumentNullException(nameof(resourceModel));
+            }
+
             _processExecutor = processExecutor;
             AsyncWorker = asyncWorker;
             EventPublisher = eventPublisher;
@@ -116,7 +119,10 @@ namespace Warewolf.Studio.ViewModels
                     {
                         NewTestFromDebugMessage newTest = test;
                         if (newTest.RootItems == null)
+                        {
                             throw new ArgumentNullException(nameof(newTest.RootItems));
+                        }
+
                         PrepopulateTestsUsingDebug(newTest.RootItems);
                     }
                     else
@@ -145,7 +151,9 @@ namespace Warewolf.Studio.ViewModels
         {
             CreateTests(true);
             if (_canAddFromDebug)
+            {
                 AddFromDebug(models);
+            }
         }
 
         private void AddFromDebug(List<IDebugTreeViewItemViewModel> models)
@@ -340,7 +348,11 @@ namespace Warewolf.Studio.ViewModels
 
         private void AddChildDebugItems(IDebugState debugItemContent, IDebugTreeViewItemViewModel debugState, IServiceTestStep parent)
         {
-            if (NullParent(debugItemContent, ref parent)) return;
+            if (NullParent(debugItemContent, ref parent))
+            {
+                return;
+            }
+
             if (parent.ActivityType == typeof(DsfForEachActivity).Name)
             {
                 ForEachParent(debugItemContent, debugState, parent);
@@ -789,7 +801,9 @@ namespace Warewolf.Studio.ViewModels
             if (activity == null)
             {
                 if (modelItem.Content?.Value != null)
+                {
                     activity = modelItem.Content.Value.GetCurrentValue() as T;
+                }
             }
             return activity;
         }
@@ -1133,7 +1147,9 @@ namespace Warewolf.Studio.ViewModels
                     serviceTestOutputs.Add(serviceTestOutput);
                     var serviceTestStep = SelectedServiceTest.AddTestStep(uniqueId, modelItem.GetProperty("DisplayName").ToString(), typeof(DsfSwitch).Name, serviceTestOutputs) as ServiceTestStep;
                     if (serviceTestStep != null)
+                    {
                         SetStepIcon(typeof(DsfSwitch), serviceTestStep);
+                    }
                 }
             }
         }
@@ -1180,7 +1196,10 @@ namespace Warewolf.Studio.ViewModels
                             serviceTestOutputs.Add(serviceTestOutput);
                             var serviceTestStep = SelectedServiceTest.AddTestStep(uniqueId, flowSwitch.DisplayName, typeof(DsfSwitch).Name, serviceTestOutputs) as ServiceTestStep;
                             if (serviceTestStep != null)
+                            {
                                 SetStepIcon(typeof(DsfSwitch), serviceTestStep);
+                            }
+
                             return serviceTestStep;
                         }
                     }
@@ -1483,7 +1502,10 @@ namespace Warewolf.Studio.ViewModels
         private void SetStepIcon(Type type, ServiceTestStep serviceTestStep)
         {
             if (type == null)
+            {
                 return;
+            }
+
             if (type.Name == "DsfDecision" || type.Name == "FlowDecision")
             {
                 type = typeof(DsfFlowDecisionActivity);
@@ -1496,19 +1518,26 @@ namespace Warewolf.Studio.ViewModels
             {
                 var desc = GetDescriptorFromAttribute(type);
                 if (serviceTestStep != null)
+                {
                     serviceTestStep.StepIcon = Application.Current?.TryFindResource(desc.Icon) as ImageSource;
+                }
             }
             if (type.Name == "DsfActivity")
             {
                 if (serviceTestStep != null)
+                {
                     serviceTestStep.StepIcon = Application.Current?.TryFindResource("Explorer-WorkflowService") as ImageSource;
+                }
             }
         }
 
         private void SetStepIcon(string typeName, ServiceTestStep serviceTestStep)
         {
             if (string.IsNullOrEmpty(typeName))
+            {
                 return;
+            }
+
             if (typeName == "DsfDecision" || typeName == "FlowDecision")
             {
                 typeName = "DsfFlowDecisionActivity";
@@ -1523,12 +1552,16 @@ namespace Warewolf.Studio.ViewModels
             {
                 var desc = GetDescriptorFromAttribute(type);
                 if (serviceTestStep != null)
+                {
                     serviceTestStep.StepIcon = Application.Current?.TryFindResource(desc.Icon) as ImageSource;
+                }
             }
             if (type != null && type.Name == "DsfActivity")
             {
                 if (serviceTestStep != null)
+                {
                     serviceTestStep.StepIcon = Application.Current?.TryFindResource("Explorer-WorkflowService") as ImageSource;
+                }
             }
         }
 
@@ -1563,7 +1596,9 @@ namespace Warewolf.Studio.ViewModels
                         }
                         var serviceTestStep = SelectedServiceTest.AddTestStep(uniqueId, modelItem.GetProperty("DisplayName").ToString(), typeof(DsfDecision).Name, serviceTestOutputs) as ServiceTestStep;
                         if (serviceTestStep != null)
+                        {
                             SetStepIcon(typeof(DsfDecision), serviceTestStep);
+                        }
                     }
                 }
             }
@@ -1999,7 +2034,11 @@ namespace Warewolf.Studio.ViewModels
                     foreach (var serviceTestStep in serviceTestModel.TestSteps)
                     {
                         MarkChildrenPending(serviceTestStep);
-                        if (serviceTestStep.Children == null) continue;
+                        if (serviceTestStep.Children == null)
+                        {
+                            continue;
+                        }
+
                         var testSteps = serviceTestStep.Children.Flatten(step => step.Children);
                         foreach (var testStep in testSteps)
                         {
@@ -2008,7 +2047,11 @@ namespace Warewolf.Studio.ViewModels
                     }
                 }
 
-                if (serviceTestModel.Outputs == null) continue;
+                if (serviceTestModel.Outputs == null)
+                {
+                    continue;
+                }
+
                 foreach (var testOutput in serviceTestModel.Outputs.OfType<ServiceTestOutput>())
                 {
                     testOutput.TestPending = true;
@@ -2351,7 +2394,11 @@ namespace Warewolf.Studio.ViewModels
 
         private void DeleteTest(IServiceTestModel test)
         {
-            if (test == null) return;
+            if (test == null)
+            {
+                return;
+            }
+
             var nameOfItemBeingDeleted = test.NameForDisplay.Replace("*", "").TrimEnd(' ');
             if (PopupController.ShowDeleteConfirmation(nameOfItemBeingDeleted) == MessageBoxResult.Yes)
             {
@@ -2383,7 +2430,9 @@ namespace Warewolf.Studio.ViewModels
         private void DeleteTestStep(IServiceTestStep testStep)
         {
             if (testStep == null)
+            {
                 return;
+            }
 
             DeleteStep(testStep, SelectedServiceTest.TestSteps);
         }
@@ -2549,7 +2598,9 @@ namespace Warewolf.Studio.ViewModels
         {
             
             if (ResourceModel?.Environment?.Connection != null)
+            {
                 ResourceModel.Environment.Connection.ReceivedResourceAffectedMessage -= OnReceivedResourceAffectedMessage;
+            }
         }
 
         public void UpdateHelpDescriptor(string helpText)

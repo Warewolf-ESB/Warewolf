@@ -60,7 +60,11 @@ namespace Dev2.Settings.Logging
 
         public LogSettingsViewModel(LoggingSettingsTo logging, IServer currentEnvironment)
         {
-            if (logging == null) throw new ArgumentNullException(nameof(logging));
+            if (logging == null)
+            {
+                throw new ArgumentNullException(nameof(logging));
+            }
+
             CurrentEnvironment = currentEnvironment ?? throw new ArgumentNullException(nameof(currentEnvironment));
             GetServerLogFileCommand = new DelegateCommand(OpenServerLogFile);
             GetStudioLogFileCommand = new DelegateCommand(OpenStudioLogFile);
@@ -240,7 +244,10 @@ namespace Dev2.Settings.Logging
             set
             {
                 if (string.IsNullOrEmpty(value) && string.IsNullOrEmpty(ServerEventLogLevel.ToString()))
+                {
                     return;
+                }
+
                 var logLevel = LoggingTypes.Single(p => p.ToString().Contains(value));
                 _selectedLoggingType = logLevel;
 

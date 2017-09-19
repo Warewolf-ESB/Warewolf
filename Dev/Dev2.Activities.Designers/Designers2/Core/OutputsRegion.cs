@@ -95,7 +95,11 @@ namespace Dev2.Activities.Designers2.Core
 
         private void AddItemPropertyChangeEvent(NotifyCollectionChangedEventArgs args)
         {
-            if (args.NewItems == null) return;
+            if (args.NewItems == null)
+            {
+                return;
+            }
+
             foreach (INotifyPropertyChanged item in args.NewItems)
             {
                 if (item != null)
@@ -112,7 +116,11 @@ namespace Dev2.Activities.Designers2.Core
 
         private void RemoveItemPropertyChangeEvent(NotifyCollectionChangedEventArgs args)
         {
-            if (args.OldItems == null) return;
+            if (args.OldItems == null)
+            {
+                return;
+            }
+
             foreach (INotifyPropertyChanged item in args.OldItems)
             {
                 if (item != null)

@@ -219,11 +219,19 @@ namespace Dev2.Studio.Core.DataList
        
         public IEnumerable<string> GetSuggestions(string orignalText, int caretIndex, bool tokenise, enIntellisensePartType type)
         {
-            if (caretIndex < 0) return new List<string>();
+            if (caretIndex < 0)
+            {
+                return new List<string>();
+            }
+
             string filter;
             if (tokenise)
             {
-                if (caretIndex > orignalText.Length) caretIndex = orignalText.Length;
+                if (caretIndex > orignalText.Length)
+                {
+                    caretIndex = orignalText.Length;
+                }
+
                 string texttrimmedRight = orignalText.Substring(0, caretIndex);
                 int start = texttrimmedRight.LastIndexOf(texttrimmedRight.Split(_tokenisers).Last(), StringComparison.Ordinal);
                 filter = texttrimmedRight.Substring(start);
@@ -237,9 +245,14 @@ namespace Dev2.Studio.Core.DataList
             {
                 case enIntellisensePartType.RecordsetsOnly:
                     if (orignalText.Contains("(") && orignalText.IndexOf("(", StringComparison.Ordinal) < caretIndex)
+                    {
                         trie = PatriciaTrie;
+                    }
                     else
+                    {
                         trie = PatriciaTrieRecsets;
+                    }
+
                     break;
 
                 case enIntellisensePartType.ScalarsOnly:
@@ -252,15 +265,26 @@ namespace Dev2.Studio.Core.DataList
 
                 case enIntellisensePartType.RecordsetFields:
                     if (orignalText.Contains("(") && orignalText.IndexOf("(", StringComparison.Ordinal) < caretIndex)
+                    {
                         trie = PatriciaTrie;
+                    }
                     else
+                    {
                         trie = PatriciaTrieRecsetsFields;
+                    }
+
                     break;
             }
             if (filter.EndsWith("[["))
+            {
                 return trie.Retrieve("[[");
+            }
+
             if (!filter.StartsWith("[[") && filter.Contains("[["))
+            {
                 return trie.Retrieve(filter.Substring(filter.LastIndexOf("[[", StringComparison.Ordinal)));
+            }
+
             if (filter == "]" || filter == "]]")
             {
                 return new string[0];

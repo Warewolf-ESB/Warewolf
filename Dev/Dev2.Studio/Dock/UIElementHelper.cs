@@ -28,7 +28,9 @@ namespace Dev2.Studio.Dock
         public static void RaiseEvent(DependencyObject element, RoutedEventArgs e)
         {
             if(element == null)
+            {
                 throw new ArgumentNullException("element");
+            }
 
             IInputElement inputElement = element as IInputElement;
 

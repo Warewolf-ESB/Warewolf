@@ -100,7 +100,11 @@ namespace Dev2.Activities.Specs.Composition
         public WorkflowExecutionSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
         {
-            if (scenarioContext == null) throw new ArgumentNullException(nameof(scenarioContext));
+            if (scenarioContext == null)
+            {
+                throw new ArgumentNullException(nameof(scenarioContext));
+            }
+
             _scenarioContext = scenarioContext;
             _commonSteps = new CommonSteps(_scenarioContext);
             AppSettings.LocalHost = "http://localhost:3142";
@@ -415,7 +419,10 @@ namespace Dev2.Activities.Specs.Composition
                 throw new TimeoutException("Connection to Warewolf server \"" + server.Name + "\" timed out.");
             }
             if (!server.IsConnected)
+            {
                 server.Connect();
+            }
+
             if (!server.IsConnected)
             {
                 timeout--;
@@ -447,9 +454,13 @@ namespace Dev2.Activities.Specs.Composition
             if (debugState.WorkspaceID == server.Connection.WorkspaceID)
             {
                 if (debugState.StateType != StateType.Duration)
+                {
                     debugStates.Add(debugState);
+                }
                 else
+                {
                     debugStatesDuration.Add(debugState);
+                }
             }
             if (debugState.IsFinalStep() && debugState.DisplayName.Equals(workflowName))
             {
@@ -2451,7 +2462,10 @@ namespace Dev2.Activities.Specs.Composition
             var forEachAct = (DsfForEachActivity)_scenarioContext[forEachName];
             var environmentModel = LocalEnvModel;
             if (!environmentModel.IsConnected)
+            {
                 environmentModel.Connect();
+            }
+
             var resource = environmentModel.ResourceRepository.Find(a => a.Category == @"Acceptance Testing Resources\" + nestedWF).FirstOrDefault();
             if (resource == null)
             {
@@ -2624,6 +2638,7 @@ namespace Dev2.Activities.Specs.Composition
             flowSteps.Add(TestStartNode);
 
             if (activityList != null)
+            {
                 foreach (var activity in activityList)
                 {
                     if (TestStartNode.Action == null)
@@ -2637,6 +2652,7 @@ namespace Dev2.Activities.Specs.Composition
                         flowSteps.Add(flowStep);
                     }
                 }
+            }
 
             IContextualResourceModel resourceModel;
             IServer server;
@@ -2757,7 +2773,9 @@ namespace Dev2.Activities.Specs.Composition
         {
             var versions = _scenarioContext["Versions"] as IList<IExplorerItem>;
             if (versions == null || versions.Count == table.RowCount)
+            {
                 Assert.Fail("InvalidVersions");
+            }
             else
             {
                 for (var i = 0; i < versions.Count; i++)
@@ -3250,7 +3268,9 @@ namespace Dev2.Activities.Specs.Composition
             // TODO: refactor null empty checking into extension method
             if (logLevel == null ||
                 !allowedLogLevels.Contains(logLevel = logLevel.ToUpper()))
+            {
                 return;
+            }
 
             var loggingSettingsTo = new LoggingSettingsTo { FileLoggerLogLevel = logLevel, EventLogLoggerLogLevel = logLevel, FileLoggerLogSize = 200 };
             var controller = new CommunicationControllerFactory().CreateController("LoggingSettingsWriteService");

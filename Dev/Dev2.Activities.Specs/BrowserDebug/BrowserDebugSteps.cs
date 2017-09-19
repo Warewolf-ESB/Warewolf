@@ -86,9 +86,15 @@ namespace Dev2.Activities.Specs.BrowserDebug
             foreach (var debugState in allDebugStates)
             {
                 if (debugState.IsFirstStep())
+                {
                     continue;
+                }
+
                 if (!debugState.IsFinalStep())
+                {
                     Assert.IsTrue(debugState.Inputs.Count > 0);
+                }
+
                 Assert.IsTrue(debugState.Outputs.Count > 0);
             }
         }
@@ -126,7 +132,10 @@ namespace Dev2.Activities.Specs.BrowserDebug
             foreach (var debugState in allDebugStates)
             {
                 if (debugState.IsFirstStep())
+                {
                     continue;
+                }
+
                 if (debugState.StateType != StateType.End)
                 {
 
@@ -152,9 +161,14 @@ namespace Dev2.Activities.Specs.BrowserDebug
             foreach (var debugState in allDebugStates)
             {
                 if (debugState.IsFirstStep())
+                {
                     continue;
+                }
+
                 if (debugState.StateType != StateType.End)
+                {
                     Assert.IsTrue(debugState.Children.Count == numExecutions);
+                }
             }
         }
 

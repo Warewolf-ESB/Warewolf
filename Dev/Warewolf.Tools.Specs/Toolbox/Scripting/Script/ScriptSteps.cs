@@ -29,7 +29,11 @@ namespace Dev2.Activities.Specs.Toolbox.Scripting.Script
         public ScriptSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
         {
-            if (scenarioContext == null) throw new ArgumentNullException(nameof(scenarioContext));
+            if (scenarioContext == null)
+            {
+                throw new ArgumentNullException(nameof(scenarioContext));
+            }
+
             this.scenarioContext = scenarioContext;
         }
 

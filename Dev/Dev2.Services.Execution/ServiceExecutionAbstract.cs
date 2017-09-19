@@ -81,7 +81,11 @@ namespace Dev2.Services.Execution
 
         private void CreateService(ResourceCatalog catalog)
         {
-            if (!GetService(catalog)) return;
+            if (!GetService(catalog))
+            {
+                return;
+            }
+
             GetSource(catalog);
         }
 

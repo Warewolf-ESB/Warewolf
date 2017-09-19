@@ -262,12 +262,30 @@ namespace Warewolf.Studio.ViewModels
 
         private void SelectDllFromUsingAssemblyName()
         {
-            if (_selectedDll != null) return;
-            if (_assemblyName == null) return;
+            if (_selectedDll != null)
+            {
+                return;
+            }
+
+            if (_assemblyName == null)
+            {
+                return;
+            }
+
             if (!_assemblyName.StartsWith("GAC"))
-                if (!File.Exists(_assemblyName)) return;
+            {
+                if (!File.Exists(_assemblyName))
+                {
+                    return;
+                }
+            }
+
             var dll = new FileInfo(_assemblyName);
-            if (dll.Extension != ".dll") return;
+            if (dll.Extension != ".dll")
+            {
+                return;
+            }
+
             var fileListing = new FileListing { Name = dll.Name, FullName = dll.FullName };
             _selectedDll = new DllListingModel(_updateManager, fileListing);
         }

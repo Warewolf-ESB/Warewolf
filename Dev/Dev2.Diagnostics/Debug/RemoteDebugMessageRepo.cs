@@ -48,7 +48,11 @@ namespace Dev2.Diagnostics.Debug
                     IList<IDebugState> list;
                     if(_data.TryGetValue(id, out list))
                     {
-                        if(list.Contains(ds)) return;
+                        if(list.Contains(ds))
+                        {
+                            return;
+                        }
+
                         list.Add(ds);
                     }
                     else

@@ -153,8 +153,11 @@ namespace Dev2.Tests.Runtime.Services
 
             var output = esbMethod.Execute(inp, ws.Object);
             if(expectCorrectInput && hasUserNameAndPassword)
+            {
                 model.Verify(a => a.Save(It.IsAny<ScheduledResource>(), username, password));
-            if(delete)
+            }
+
+            if (delete)
             {
                 model.Verify(a => a.DeleteSchedule(It.IsAny<IScheduledResource>()));
             }

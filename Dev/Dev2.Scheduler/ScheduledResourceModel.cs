@@ -101,7 +101,9 @@ namespace Dev2.Scheduler
         {
             ITaskFolder folder = TaskService.GetFolder(WarewolfFolderPath);
             if (folder.TaskExists(resource.Name))
+            {
                 folder.DeleteTask(resource.Name, false);
+            }
         }
 
         public bool Save(IScheduledResource resource, out string errorMessage)
@@ -130,7 +132,10 @@ namespace Dev2.Scheduler
                 throw new SecurityException(String.Format(Warewolf.Studio.Resources.Languages.Core.SchedulerExecutePermissionError, resource.WorkflowName));
             }
             if (resource.Name.Any(a => "\\/:*?\"<>|".Contains(a)))
+            {
                 throw new Exception(Warewolf.Studio.Resources.Languages.Core.SchedulerInvalidCharactersError + " \\/:*?\"<>| .");
+            }
+
             var folder = TaskService.GetFolder(WarewolfFolderPath);
             var created = CreateNewTask(resource);
             created.Settings.Enabled = resource.Status == SchedulerStatus.Enabled;
@@ -309,9 +314,15 @@ namespace Dev2.Scheduler
             bool debugHasErrors = DebugHasErrors(debugHistoryPath, key);
             bool winSuccess = eventId < 103;
             if (debugExists && !debugHasErrors && winSuccess)
+            {
                 return ScheduleRunStatus.Success;
+            }
+
             if (!debugExists)
+            {
                 return ScheduleRunStatus.Unknown;
+            }
+
             return ScheduleRunStatus.Error;
         }
 
@@ -336,7 +347,11 @@ namespace Dev2.Scheduler
         private string GetUserName(string debugHistoryPath, string correlationId)
         {
             var file = DirectoryHelper.GetFiles(debugHistoryPath).FirstOrDefault(a => a.Contains(correlationId));
-            if (file != null) return file.Split('_').Last();
+            if (file != null)
+            {
+                return file.Split('_').Last();
+            }
+
             return "";
         }
 

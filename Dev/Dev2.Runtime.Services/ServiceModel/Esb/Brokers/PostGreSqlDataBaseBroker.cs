@@ -149,7 +149,11 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
                     
                     foreach (var dbDataParameter in outParams)
                     {
-                        if (command.Parameters.Contains(dbDataParameter)) continue;
+                        if (command.Parameters.Contains(dbDataParameter))
+                        {
+                            continue;
+                        }
+
                         command.Parameters.Add(dbDataParameter);
                     }
                     var dataTable = server.FetchDataTable(command);

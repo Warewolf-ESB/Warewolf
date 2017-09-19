@@ -26,7 +26,11 @@ namespace Warewolf.ToolsSpecs.Toolbox.LoopConstructs.Select_And_Apply
         public SelectAndApplySteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
         {
-            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            if (scenarioContext == null)
+            {
+                throw new ArgumentNullException("scenarioContext");
+            }
+
             this.scenarioContext = scenarioContext;
         }
 

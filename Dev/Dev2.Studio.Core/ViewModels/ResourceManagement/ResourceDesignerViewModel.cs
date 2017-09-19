@@ -56,7 +56,10 @@ namespace Dev2.Studio.Core.ViewModels
             {
                 _contexttualResourceModel.WorkflowXaml = value;
                 NotifyOfPropertyChange(() => ServiceDefinition);
-                if(ResourceModel != null) ResourceModel.WorkflowXaml = ServiceDefinition;
+                if(ResourceModel != null)
+                {
+                    ResourceModel.WorkflowXaml = ServiceDefinition;
+                }
             }
 
         }

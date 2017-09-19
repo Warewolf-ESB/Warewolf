@@ -51,8 +51,9 @@ namespace Dev2.PerformanceCounters.Counters
         {
 
                 if (IsActive)
-                    _counter.Increment();
-
+            {
+                _counter.Increment();
+            }
         }
 
         public void IncrementBy(long ticks)
@@ -80,12 +81,13 @@ namespace Dev2.PerformanceCounters.Counters
         {
 
             if (IsActive)
-               if (_counter.RawValue > 0)
+            {
+                if (_counter.RawValue > 0)
                     {
                           
                         _counter.Decrement();
                     }
-
+            }
         }
 
         public string Category => GlobalConstants.WarewolfServices;

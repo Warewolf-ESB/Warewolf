@@ -236,11 +236,16 @@ namespace Dev2.Data.Util
             var firstOpenBracket = expression.IndexOf(DataListUtil.RecordsetIndexOpeningBracket, StringComparison.Ordinal);
             var firstCloseBracket = expression.IndexOf(DataListUtil.RecordsetIndexClosingBracket, StringComparison.Ordinal);            
             if (firstOpenBracket > firstCloseBracket)
+            {
                 return EmptyBrackets;
+            }
+
             var index = ExtractIndexRegionFromRecordset(expression);
 
             if (string.IsNullOrEmpty(index))
+            {
                 return expression;
+            }
 
             string extractIndexRegionFromRecordset = $"({index})";
             return string.IsNullOrEmpty(extractIndexRegionFromRecordset) ? expression :

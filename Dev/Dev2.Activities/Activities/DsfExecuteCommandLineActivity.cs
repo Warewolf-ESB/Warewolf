@@ -190,7 +190,9 @@ namespace Dev2.Activities
                     File.Delete(_fullPath);
                     string tmpFile = _fullPath.Replace(".bat", "");
                     if (File.Exists(tmpFile))
+                    {
                         File.Delete(tmpFile);
+                    }
                 }
                 // Handle Errors    
                 var hasErrors = allErrors.HasErrors();
@@ -320,9 +322,17 @@ namespace Dev2.Activities
 
         ProcessStartInfo CreateProcessStartInfo(string val)
         {
-            if(val.StartsWith("cmd")) throw new ArgumentException(ErrorResource.CannotExecuteCMDFromTool);
-            if(val.StartsWith("explorer")) throw new ArgumentException(ErrorResource.CannotExecuteExplorerFromTool);
-            if(val.Contains("explorer"))
+            if(val.StartsWith("cmd"))
+            {
+                throw new ArgumentException(ErrorResource.CannotExecuteCMDFromTool);
+            }
+
+            if (val.StartsWith("explorer"))
+            {
+                throw new ArgumentException(ErrorResource.CannotExecuteExplorerFromTool);
+            }
+
+            if (val.Contains("explorer"))
             {
                 var directoryName = Path.GetFullPath(val);
                 {

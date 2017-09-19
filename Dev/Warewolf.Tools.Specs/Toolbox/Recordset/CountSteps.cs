@@ -28,7 +28,11 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset
         public CountSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
         {
-            if (scenarioContext == null) throw new ArgumentNullException(nameof(scenarioContext));
+            if (scenarioContext == null)
+            {
+                throw new ArgumentNullException(nameof(scenarioContext));
+            }
+
             this.scenarioContext = scenarioContext;
         }
 
@@ -59,12 +63,14 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset
             DsfActivityAbstract<string> count;
             scenarioContext.TryGetValue("activityMode", out count);
             if (count != null)
+            {
                 count = new DsfCountRecordsetNullHandlerActivity
                 {
                     RecordsetName = recordset,
                     CountNumber = string.IsNullOrEmpty(resultVariable) ? ResultVariable : resultVariable,
                     TreatNullAsZero = treaNullAsZero
                 };
+            }
             else
             {
                 count = new DsfCountRecordsetActivity

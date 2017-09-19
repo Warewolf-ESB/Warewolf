@@ -123,6 +123,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             var type = loadedAssembly.GetType(setupInfo.Fullname);
             var valuedTypeList = new List<object>();
             if (setupInfo.Parameters != null)
+            {
                 foreach (var methodParameter in setupInfo.Parameters)
                 {
                     try
@@ -138,6 +139,8 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                         valuedTypeList.Add(methodParameter.Value);
                     }
                 }
+            }
+
             var methodToRun = type.GetMethod(setupInfo.Method, typeList.ToArray());
             if (methodToRun == null && typeList.Count == 0)
             {
@@ -407,6 +410,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             var typeList = new List<Type>();
             
             if (parameters != null)
+            {
                 foreach (var methodParameter in parameters)
                 {
                     Type type;
@@ -422,6 +426,8 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
 
                     typeList.Add(type);
                 }
+            }
+
             return typeList;
         }
     }

@@ -51,13 +51,19 @@ namespace Dev2.Studio.Core
                 {
                     var currentError = new StringBuilder(Content.ErrorMessage);
                     if (!string.IsNullOrEmpty(errorMessage))
+                    {
                         if (!currentError.Contains(errorMessage))
                         {
                             currentError.Append(errorMessage);
                             Content.ErrorMessage = currentError.ToString();
                         }
+                    }
                 }
-                else Content.ErrorMessage = errorMessage;
+                else
+                {
+                    Content.ErrorMessage = errorMessage;
+                }
+
                 Content.HasError = true;
                 OnPropertyChanged("Content.ErrorMessage");
                 OnPropertyChanged("Content.HasError");

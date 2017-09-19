@@ -92,9 +92,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             try
             {
                 if (JsonMappings == null)
+                {
                     dataObject.Environment.AddError("Json Mappings supplied to activity is null.");
+                }
 
-                
                 if (!dataObject.Environment.Errors.Any() && !JsonMappings.Any())
                 
                 {
@@ -109,7 +110,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         {
                             var validationResult = new IsValidJsonCreateMappingInputRule(() => m).Check();
                             if (validationResult != null)
+                            {
                                 dataObject.Environment.AddError(validationResult.Message);
+                            }
                         });
                 }
 
@@ -162,11 +165,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                 {
                                     // if it is a compound, 
                                     if (!x.EvalResult.IsWarewolfRecordSetResult)
-                                        json.Add(new JProperty(
+                                {
+                                    json.Add(new JProperty(
                                                 x.DestinationName,
                                                 x.ComplexEvaluatedResultIndexed(0))
                                                 );
-                                    else if (x.EvalResult.IsWarewolfRecordSetResult)
+                                }
+                                else if (x.EvalResult.IsWarewolfRecordSetResult)
                                     {
                                         json.Add(
                                        x.ComplexEvaluatedResultIndexed(0));

@@ -30,7 +30,11 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset.FindRecordIndexMultiple
         public FindRecordsetIndexMultipleSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
         {
-            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            if (scenarioContext == null)
+            {
+                throw new ArgumentNullException("scenarioContext");
+            }
+
             this.scenarioContext = scenarioContext;
         }
 

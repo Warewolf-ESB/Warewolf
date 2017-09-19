@@ -117,7 +117,10 @@ namespace Dev2.Activities.Designers2.Sequence
                 if (explorerItemModel is IExplorerItemViewModel itemModel)
                 {
                     if (itemModel.Server != null)
+                    {
                         envId = itemModel.Server.EnvironmentID;
+                    }
+
                     resourceId = itemModel.ResourceId;
                 }
 

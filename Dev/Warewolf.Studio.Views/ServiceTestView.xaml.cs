@@ -118,8 +118,11 @@ namespace Warewolf.Studio.Views
         {
             var textBox = sender as IntellisenseTextBox;
             if (textBox != null)
+            {
                 RefreshCommands(e);
-            if(textBox == null)
+            }
+
+            if (textBox == null)
             {
                 var box = sender as TextBox;
                 if (box != null)

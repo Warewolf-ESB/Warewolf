@@ -19,7 +19,9 @@ namespace Dev2.Runtime.ESB.Execution
             _testOutputs = testOutputs;
             var act = originalActivity as DsfBaseActivity;
             if (act != null)
+            {
                 DisplayName = act.DisplayName;
+            }
         }
 
 

@@ -115,7 +115,10 @@ namespace Dev2.Activities.Designers2.DataMerge
         protected override void RunValidation(int index)
         {
             if (index == -1)
+            {
                 return;
+            }
+
             OnMergeTypeChanged(index);
         }
 

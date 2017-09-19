@@ -565,7 +565,9 @@ namespace Dev2.Diagnostics.Debug
             if (propertyName?.Equals("ParentID") ?? false)
             {
                 if (ParentID == Guid.Empty)
+                {
                     ParentID = null;
+                }
             }
         }
     }

@@ -372,7 +372,11 @@ namespace Dev2.Data.Util
                             for (int q = 0; q < childNl.Count; q++)
                             {
                                 var xmlNode = childNl[q];
-                                if (xmlNode == null) continue;
+                                if (xmlNode == null)
+                                {
+                                    continue;
+                                }
+
                                 var fieldIoDirection = DataListUtil.GetDev2ColumnArgumentDirection(xmlNode);
                                 if (DataListUtil.CheckIODirection(dev2ColumnArgumentDirection, fieldIoDirection))
                                 {

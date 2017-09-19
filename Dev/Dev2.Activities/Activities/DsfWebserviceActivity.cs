@@ -33,7 +33,9 @@ namespace Dev2.Activities
                 webserviceExecution.Execute(out invokeErrors, update);
                 string err = invokeErrors.MakeDataListReady();
                 if(!string.IsNullOrEmpty(err))
-                dataObject.Environment.AddError(err);
+                {
+                    dataObject.Environment.AddError(err);
+                }
             }
         }
 

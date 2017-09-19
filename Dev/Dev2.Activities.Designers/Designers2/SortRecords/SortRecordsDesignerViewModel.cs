@@ -60,7 +60,10 @@ namespace Dev2.Activities.Designers2.SortRecords
             if (single != null)
             {
                 if (Errors == null )
+                {
                     Errors = new List<IActionableErrorInfo>();
+                }
+
                 Errors.Add(single);
             }
         }

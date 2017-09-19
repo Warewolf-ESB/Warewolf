@@ -74,7 +74,9 @@ namespace Warewolf.Studio.Views
         private void ManageEmailAttachmentView_OnMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ChangedButton == MouseButton.Left)
+            {
                 DragMove();
+            }
         }
 
         private void DrivesDataTree_OnSelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)

@@ -161,7 +161,10 @@ namespace Dev2.Data.PathOperations
 
             var hostName = ExtractHostNameFromPath(path.Path);
             if (hostName.ToLower().StartsWith(@"localhost"))
+            {
                 hostName = hostName.Replace(@"localhost", @"127.0.0.1");
+            }
+
             var methods = new List<AuthenticationMethod> { new PasswordAuthenticationMethod(path.Username, path.Password) };
 
             if (!string.IsNullOrEmpty(path.PrivateKeyFile))

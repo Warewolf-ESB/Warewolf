@@ -122,7 +122,10 @@ namespace Dev2.Tests.Runtime.Services
 
             var output = esbMethod.Execute(inp, ws.Object);
             if(expectCorrectInput)
+            {
                 model.Verify(a => a.DeleteSchedule(It.IsAny<ScheduledResource>()));
+            }
+
             return serialiser.Deserialize<ExecuteMessage>(output);
 
         }

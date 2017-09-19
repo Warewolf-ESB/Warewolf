@@ -68,7 +68,11 @@ namespace Dev2.Studio.Core.DataList
         public void RemoveBlankRecordsets()
         {
             List<IRecordSetItemModel> blankList = _vm.RecsetCollection.Where(c => c.IsBlank && c.Children.Count == 1 && c.Children[0].IsBlank).ToList();
-            if (blankList.Count <= 1) return;
+            if (blankList.Count <= 1)
+            {
+                return;
+            }
+
             _vm.RecsetCollection.Remove(blankList.First());
         }
 
@@ -77,7 +81,11 @@ namespace Dev2.Studio.Core.DataList
             foreach (var recset in _vm.RecsetCollection)
             {
                 List<IRecordSetFieldItemModel> blankChildList = recset.Children.Where(c => c.IsBlank).ToList();
-                if (blankChildList.Count <= 1) continue;
+                if (blankChildList.Count <= 1)
+                {
+                    continue;
+                }
+
                 recset.Children.Remove(blankChildList.First());
             }
         }
@@ -135,7 +143,10 @@ namespace Dev2.Studio.Core.DataList
             foreach (var recset in _vm.RecsetCollection)
             {
                 List<IRecordSetFieldItemModel> blankChildList = recset.Children.Where(c => c.IsBlank).ToList();
-                if (blankChildList.Count != 0) continue;
+                if (blankChildList.Count != 0)
+                {
+                    continue;
+                }
 
                 IRecordSetFieldItemModel newChild = DataListItemModelFactory.CreateRecordSetFieldItemModel(string.Empty);
                 if (newChild != null)
@@ -260,21 +271,33 @@ namespace Dev2.Studio.Core.DataList
 
         public void FindMissingPartsForRecordset(IDataListVerifyPart part, List<IDataListVerifyPart> missingDataParts)
         {
-            if (part.IsScalar) return;
+            if (part.IsScalar)
+            {
+                return;
+            }
+
             var recset = _vm.RecsetCollection.Where(c => c.DisplayName == part.Recordset).ToList();
             if (!recset.Any())
+            {
                 missingDataParts.Add(part);
+            }
             else
             {
                 if (!string.IsNullOrEmpty(part.Field) && recset[0].Children.Count(c => c.DisplayName == part.Field) == 0)
+                {
                     missingDataParts.Add(part);
+                }
             }
         }
 
         public bool BuildRecordSetErrorMessages(IRecordSetItemModel model, out string errorMessage)
         {
             errorMessage = "";
-            if (!RecordSetHasChildren(model)) return false;
+            if (!RecordSetHasChildren(model))
+            {
+                return false;
+            }
+
             if (model.HasError)
             {
                 {
@@ -284,7 +307,10 @@ namespace Dev2.Studio.Core.DataList
             }
             var childErrors = model.Children.Where(child => child.HasError).ToList();
             if (childErrors.Any())
+            {
                 errorMessage = string.Join(Environment.NewLine, childErrors.Select(BuildErrorMessage));
+            }
+
             return true;
         }
 
@@ -323,9 +349,13 @@ namespace Dev2.Studio.Core.DataList
             {
                 var child = DataListItemModelFactory.CreateRecordSetFieldItemModel(part.Field, part.Description, recsetToAddTo);
                 if (recsetToAddTo.Children.Count > 0)
+                {
                     recsetToAddTo.Children.Insert(recsetToAddTo.Children.Count - 1, child);
+                }
                 else
+                {
                     recsetToAddTo.Children.Add(child);
+                }
             }
         }
 
@@ -341,9 +371,17 @@ namespace Dev2.Studio.Core.DataList
             }
             foreach (var recset in _vm.RecsetCollection)
             {
-                if (recset.Children.Count <= 0) continue;
+                if (recset.Children.Count <= 0)
+                {
+                    continue;
+                }
+
                 var unusedRecsetChildren = recset.Children.Where(c => c.IsUsed == false).ToList();
-                if (!unusedRecsetChildren.Any()) continue;
+                if (!unusedRecsetChildren.Any())
+                {
+                    continue;
+                }
+
                 foreach (var unusedRecsetChild in unusedRecsetChildren)
                 {
                     recset.Children.Remove(unusedRecsetChild);

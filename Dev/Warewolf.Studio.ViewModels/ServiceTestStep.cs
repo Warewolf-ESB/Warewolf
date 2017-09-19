@@ -131,7 +131,11 @@ namespace Warewolf.Studio.ViewModels
 
         private void SetControlFlowValues(ObservableCollection<IServiceTestOutput> value)
         {
-            if (ActivityType != "DsfDecision" && ActivityType != "DsfSwitch") return;
+            if (ActivityType != "DsfDecision" && ActivityType != "DsfSwitch")
+            {
+                return;
+            }
+
             foreach (var testOutput in value.OfType<ServiceTestOutput>())
             {
                 testOutput.AssertOps = new ObservableCollection<string> { "=" };
@@ -316,11 +320,13 @@ namespace Warewolf.Studio.ViewModels
                 {
                     Type = StepType.Assert;
                     if (StepOutputs != null)
+                    {
                         foreach (var serviceTestOutput in StepOutputs)
                         {
                             var item = serviceTestOutput as ServiceTestOutput;
                             item?.OnSearchTypeChanged();
                         }
+                    }
                 }
                 OnPropertyChanged(() => AssertSelected);
             }
@@ -336,6 +342,7 @@ namespace Warewolf.Studio.ViewModels
                 {
                     Type = StepType.Mock;
                     if (StepOutputs != null)
+                    {
                         foreach (var serviceTestOutput in StepOutputs)
                         {
                             var item = serviceTestOutput as ServiceTestOutput;
@@ -352,6 +359,7 @@ namespace Warewolf.Studio.ViewModels
                                 }
                             }
                         }
+                    }
                 }
                 OnPropertyChanged(() => MockSelected);
             }

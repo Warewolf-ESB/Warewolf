@@ -68,7 +68,9 @@ namespace Dev2.ScheduleExecutor
                 try
                 {
                     if (paramters.ContainsKey("ResourceId"))
+                    {
                         PostDataToWebserverAsRemoteAgent(paramters["Workflow"], paramters["TaskName"], Guid.NewGuid(), paramters["ResourceId"]);
+                    }
                     else
                     {
                         PostDataToWebserverAsRemoteAgent(paramters["Workflow"], paramters["TaskName"], Guid.NewGuid());
@@ -239,7 +241,10 @@ namespace Dev2.ScheduleExecutor
             Thread.Sleep(5000);
             string correlation = GetCorrelationId(WarewolfTaskSchedulerPath + taskName);
             if (!Directory.Exists(OutputPath))
+            {
                 Directory.CreateDirectory(OutputPath);
+            }
+
             File.WriteAllText(
                 $"{OutputPath}DebugItems_{workflowName.Replace("\\", "_")}_{DateTime.Now.ToString("yyyy-MM-dd")}_{correlation}_{user}.txt",
                 js.SerializeToBuilder(new List<DebugState> { state }).ToString());
@@ -333,7 +338,10 @@ namespace Dev2.ScheduleExecutor
             Thread.Sleep(5000);
             string correlation = GetCorrelationId(WarewolfTaskSchedulerPath + taskName);
             if (!Directory.Exists(OutputPath))
+            {
                 Directory.CreateDirectory(OutputPath);
+            }
+
             File.WriteAllText(
                 $"{OutputPath}DebugItems_{workflowName.Replace("\\", "_")}_{DateTime.Now.ToString("yyyy-MM-dd")}_{correlation}_{user}.txt",
                 js.SerializeToBuilder(new List<DebugState> { state }).ToString());

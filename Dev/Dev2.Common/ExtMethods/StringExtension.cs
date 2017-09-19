@@ -276,7 +276,10 @@ namespace Dev2.Common.ExtMethods
             const string Accellerator = "_"; // This is the default WPF accellerator symbol - used to be & in WinForms
 
             // If it already contains an accellerator, do nothing
-            if (input.Contains(Accellerator)) return input;
+            if (input.Contains(Accellerator))
+            {
+                return input;
+            }
 
             return Accellerator + input;
         }

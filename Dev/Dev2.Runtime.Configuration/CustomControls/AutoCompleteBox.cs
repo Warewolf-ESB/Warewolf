@@ -1484,7 +1484,9 @@ namespace System.Windows.Controls
             // Creating the view here ensures that View is always != null
             ClearView();
             if (Application.Current != null)
+            {
                 Style = Application.Current.TryFindResource("AutoCompleteBoxStyle") as Style;
+            }
         }
 
         /// <summary>

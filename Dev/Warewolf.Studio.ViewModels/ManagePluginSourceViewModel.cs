@@ -284,7 +284,10 @@ namespace Warewolf.Studio.ViewModels
                     src.Path = RequestServiceNameViewModel.ResourceName.Path ?? RequestServiceNameViewModel.ResourceName.Name;
                     Save(src);
                     if (RequestServiceNameViewModel.SingleEnvironmentExplorerViewModel != null)
+                    {
                         AfterSave(RequestServiceNameViewModel.SingleEnvironmentExplorerViewModel.Environments[0].ResourceId, src.Id);
+                    }
+
                     Path = src.Path;
                     _pluginSource = src;
                     ToItem();

@@ -326,7 +326,10 @@ namespace Dev2.UI
         protected void EnsureErrorStatus()
         {
             var currentText = Text;
-            if (string.IsNullOrEmpty(currentText)) return;
+            if (string.IsNullOrEmpty(currentText))
+            {
+                return;
+            }
 
             if (AllowMultipleVariables)
             {
@@ -724,7 +727,9 @@ namespace Dev2.UI
         protected virtual void OnAllowMultilinePasteChanged(bool oldValue, bool newValue)
         {
             if(TextBox != null)
+            {
                 TextBox.AcceptsReturn = newValue;
+            }
         }
 
         public static readonly DependencyProperty AllowUserCalculateModeProperty =

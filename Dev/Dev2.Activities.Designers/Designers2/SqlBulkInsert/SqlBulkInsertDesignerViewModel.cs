@@ -653,7 +653,9 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
                     List<IActionableErrorInfo> rs = GetRuleSet("InputColumn", inputColumn).ValidateRules("'Input Data or [[Variable]]'", () => ModelItem.SetProperty("IsMappingFieldFocused", true));
 
                     foreach(var looperror in rs)
+                    {
                         yield return looperror;
+                    }
                 }
 
 

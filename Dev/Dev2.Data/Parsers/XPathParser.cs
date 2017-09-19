@@ -47,9 +47,15 @@ namespace Dev2.Data.Parsers
         public IEnumerable<string> ExecuteXPath(string xmlData, string xPath)
         {
             if (string.IsNullOrEmpty(xmlData))
+            {
                 throw new ArgumentNullException(nameof(xmlData));
+            }
+
             if (string.IsNullOrEmpty(xPath))
+            {
                 throw new ArgumentNullException(nameof(xPath));
+            }
+
             try
             {
                 bool isFragment;

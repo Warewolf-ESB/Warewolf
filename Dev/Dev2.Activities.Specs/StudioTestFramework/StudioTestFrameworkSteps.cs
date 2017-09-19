@@ -53,7 +53,11 @@ namespace Dev2.Activities.Specs.TestFramework
 
         public StudioTestFrameworkSteps(ScenarioContext scenarioContext)
         {
-            if (scenarioContext == null) throw new ArgumentNullException(nameof(scenarioContext));
+            if (scenarioContext == null)
+            {
+                throw new ArgumentNullException(nameof(scenarioContext));
+            }
+
             MyContext = scenarioContext;
         }
 
@@ -1144,7 +1148,9 @@ namespace Dev2.Activities.Specs.TestFramework
         {
             var serviceTest = GetTestFrameworkFromContext();
             if (value == "true")
+            {
                 serviceTest.SelectedServiceTest.ErrorExpected = true;
+            }
         }
 
         [Then(@"change ErrorContainsText to ""(.*)""")]
@@ -2203,7 +2209,10 @@ namespace Dev2.Activities.Specs.TestFramework
                 var value = tableRow["Value"];
                 var serviceTestStep = serviceTest.SelectedServiceTest.TestSteps.First().Children.First();
                 if (count == 1)
+                {
                     serviceTestStep.StepOutputs = new BindableCollection<IServiceTestOutput>();
+                }
+
                 serviceTestStep.StepOutputs.Add(new ServiceTestOutput(varName, value, "", "")
                 {
                     AssertOp = condition

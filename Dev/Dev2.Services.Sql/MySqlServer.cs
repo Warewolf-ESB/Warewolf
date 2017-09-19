@@ -359,9 +359,15 @@ namespace Dev2.Services.Sql
                         bool isout = false;
                         const ParameterDirection direction = ParameterDirection.Input;
                         if(parameter.Contains("OUT "))
+                        {
                             isout = true;
+                        }
+
                         if (parameter.Contains("INOUT"))
+                        {
                             isout = false;
+                        }
+
                         var parameterx = parameter.Replace("IN ", "").Replace("OUT ", "");
                         if (!String.IsNullOrEmpty(parameterName))
                         {

@@ -333,7 +333,9 @@ namespace Dev2.Studio.Views.Workflow
                 {
                     var current = tree.Pop();
                     if (current.Name == name)
+                    {
                         return current;
+                    }
 
                     var count = VisualTreeHelper.GetChildrenCount(current);
                     for (var supplierCounter = 0; supplierCounter < count; ++supplierCounter)
@@ -341,7 +343,9 @@ namespace Dev2.Studio.Views.Workflow
                         var child = VisualTreeHelper.GetChild(current, supplierCounter);
                         var item = child as FrameworkElement;
                         if (item != null)
+                        {
                             tree.Push(item);
+                        }
                     }
                 }
             }
@@ -403,7 +407,9 @@ namespace Dev2.Studio.Views.Workflow
         void WorkflowInputDataView_OnMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (Mouse.LeftButton == MouseButtonState.Pressed)
+            {
                 DragMove();
+            }
         }
 
         void WorkflowInputDataView_OnClosed(object sender, EventArgs e)

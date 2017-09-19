@@ -1138,7 +1138,11 @@ namespace Dev2.Studio.ViewModels
 
         public void AddReverseDependencyVisualizerWorkSurface(IContextualResourceModel resource)
         {
-            if (resource == null) return;
+            if (resource == null)
+            {
+                return;
+            }
+
             ShowDependencies(true, resource, ActiveServer);
         }
 
@@ -1429,7 +1433,10 @@ namespace Dev2.Studio.ViewModels
                     }
                 }
                 if (dontPrompt)
+                {
                     remove = true;
+                }
+
                 if (!remove)
                 {
                     remove = ShowRemovePopup(workflowVm);
@@ -1445,7 +1452,10 @@ namespace Dev2.Studio.ViewModels
                     _shellViewModel.Items.Remove(context);
                     workflowVm.Dispose();
                     if (_shellViewModel.PreviousActive != null && _shellViewModel.PreviousActive.WorkSurfaceViewModel == vm)
+                    {
                         _shellViewModel.PreviousActive = null;
+                    }
+
                     if (e != null)
                     {
                         e.Cancel = true;

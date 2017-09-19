@@ -112,8 +112,10 @@ namespace Dev2.Session
             lock (SettingsLock)
             {
                 if (to.DataList != null)
+                {
                     to.DataListHash = to.DataList.GetHashCode();
-                        // set incoming hash //2013.01.22: Ashley Lewis - Added condition for Bug 7837
+                }
+                // set incoming hash //2013.01.22: Ashley Lewis - Added condition for Bug 7837
                 to.Error = string.Empty;
 
                 if (to.RememberInputs)

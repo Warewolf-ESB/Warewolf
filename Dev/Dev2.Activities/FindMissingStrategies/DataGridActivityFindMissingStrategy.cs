@@ -463,7 +463,9 @@ namespace Dev2.FindMissingStrategies
                                 results.AddRange(InternalFindMissing(pluginAction.Inputs));
                             }
                             if (!string.IsNullOrEmpty(pluginAction?.OutputVariable))
+                            {
                                 results.Add(pluginAction.OutputVariable);
+                            }
                         }
                     }
                     if (maAct.IsObject)

@@ -23,7 +23,11 @@ namespace Warewolf.ToolsSpecs.Toolbox.LoopConstructs
 
         public LoopConstructsCommon(ScenarioContext scenarioContext)
         {
-            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            if (scenarioContext == null)
+            {
+                throw new ArgumentNullException("scenarioContext");
+            }
+
             this.scenarioContext = scenarioContext;
         }
 

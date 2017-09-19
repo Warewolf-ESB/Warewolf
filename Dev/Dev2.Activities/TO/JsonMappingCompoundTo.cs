@@ -287,8 +287,15 @@ namespace Dev2.TO
 
         public static string IsValidJsonMappingInput(string sourceName, string destinationName)
         {
-            if (string.IsNullOrEmpty(sourceName)) return ErrorResource.SupplySourceName;
-            if (string.IsNullOrEmpty(destinationName)) return ErrorResource.SupplyDestinationName;
+            if (string.IsNullOrEmpty(sourceName))
+            {
+                return ErrorResource.SupplySourceName;
+            }
+
+            if (string.IsNullOrEmpty(destinationName))
+            {
+                return ErrorResource.SupplyDestinationName;
+            }
 
             return ValidateInput(sourceName);
 

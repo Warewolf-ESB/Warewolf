@@ -46,7 +46,11 @@ namespace Dev2.Activities.Specs.Scheduler
 
         public SchedulerSteps(ScenarioContext scenarioContext)
         {
-            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            if (scenarioContext == null)
+            {
+                throw new ArgumentNullException("scenarioContext");
+            }
+
             _scenarioContext = scenarioContext;
             _commonSteps = new CommonSteps(_scenarioContext);
         }
@@ -210,7 +214,9 @@ namespace Dev2.Activities.Specs.Scheduler
                 
 
                 if (status == "Success")
+                {
                     Assert.AreEqual(ScheduleRunStatus.Success, x[0].TaskHistoryOutput.Success);
+                }
                 else
                 {
                     Assert.IsTrue(x[0].TaskHistoryOutput.Success == ScheduleRunStatus.Error || x[0].TaskHistoryOutput.Success == ScheduleRunStatus.Error);
@@ -259,9 +265,14 @@ namespace Dev2.Activities.Specs.Scheduler
         public void ThenTheScheduleTaskHasError(string error)
         {
             if (error == "AN" && (!_scenarioContext.ContainsKey("Error") || _scenarioContext["Error"] == null))
+            {
                 Assert.Fail("Error Expected");
+            }
+
             if (error == "NO" && _scenarioContext.ContainsKey("Error") && _scenarioContext["Error"] != null)
+            {
                 Assert.Fail(_scenarioContext["Error"].ToString());
+            }
         }
 
         [When(@"the ""(.*)"" is executed ""(.*)"" times")]

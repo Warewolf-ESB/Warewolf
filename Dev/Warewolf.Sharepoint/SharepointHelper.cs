@@ -241,7 +241,10 @@ namespace Warewolf.Sharepoint
 
             if (!overwrite && !string.IsNullOrEmpty(localPath) && !string.IsNullOrEmpty(fileName))
             {
-                if (CheckIfFileExist(Path.Combine(localPath, fileName))) return "Success";
+                if (CheckIfFileExist(Path.Combine(localPath, fileName)))
+                {
+                    return "Success";
+                }
             }
 
             CreateFolderIfNotExist(localPath);
@@ -258,7 +261,10 @@ namespace Warewolf.Sharepoint
                 var fileRef = file.ServerRelativeUrl;
                 var fileInfo = File.OpenBinaryDirect(ctx, fileRef);
 
-                if (fileName == null || localPath == null) return "Failed";
+                if (fileName == null || localPath == null)
+                {
+                    return "Failed";
+                }
 
                 var newPath = Path.Combine(localPath, fileName);
 

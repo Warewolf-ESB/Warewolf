@@ -73,7 +73,9 @@ namespace Dev2.Runtime.ESB.Management.Services
             else
             {
                 if(src.IsDirectory)
+                {
                     completeList = GetChildren(new DirectoryInfo(src.FullName));
+                }
             }
             return completeList;
         }

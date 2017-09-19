@@ -26,7 +26,11 @@ namespace Dev2.Activities.Specs.Toolbox.Exchange.Email
         public ExchangeEmailSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
         {
-            if (scenarioContext == null) throw new ArgumentNullException(nameof(scenarioContext));
+            if (scenarioContext == null)
+            {
+                throw new ArgumentNullException(nameof(scenarioContext));
+            }
+
             this.scenarioContext = scenarioContext;
         }
 

@@ -133,7 +133,10 @@ namespace Dev2.Data
                 if (!tryEvaluateFunction)
                 {
                     if (error == ErrorResource.IncorrectOperandType)
+                    {
                         error += string.Format("Unable to calculate: '{0}'. Try rewriting the expression.", cleanExpression);
+                    }
+
                     throw new Exception(error);
                 }
             }

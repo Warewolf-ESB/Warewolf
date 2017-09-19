@@ -72,7 +72,9 @@ namespace Dev2.Runtime.ESB.WF
             {
                 var res = _lazyCat.GetResource(GlobalConstants.ServerWorkspaceID, remoteID);
                 if (res != null)
+                {
                     name = remoteID != Guid.Empty ? _lazyCat.GetResource(GlobalConstants.ServerWorkspaceID, remoteID).ResourceName : "localhost";
+                }
             }
             var debugState = BuildDebugState(dataObject, stateType, hasErrors, existingErrors, workflowStartTime, durationVisible, parentInstanceId, name, hasError);
 
@@ -189,7 +191,9 @@ namespace Dev2.Runtime.ESB.WF
             {
                 var defn = GetVariableName(dev2Definition);
                 if (added.Any(a => a == defn))
+                {
                     continue;
+                }
 
                 added.Add(defn);
                 var itemToAdd = new DebugItem();

@@ -20,7 +20,11 @@ namespace Dev2.Activities.Specs.Toolbox.Data.AssignObject
 
         public AssignObjectSteps(ScenarioContext scenarioContext)
         {
-            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            if (scenarioContext == null)
+            {
+                throw new ArgumentNullException("scenarioContext");
+            }
+
             this.scenarioContext = scenarioContext;
         }
 

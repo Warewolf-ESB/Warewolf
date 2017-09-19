@@ -38,7 +38,9 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             Assembly loadedAssembly;
             var tryLoadAssembly = _assemblyLoader.TryLoadAssembly(setupInfo.AssemblyLocation, setupInfo.AssemblyName, out loadedAssembly);
             if (!tryLoadAssembly)
+            {
                 throw new Exception(setupInfo.AssemblyName + "Not found");
+            }
 
             var constructorArgs = new List<object>();
             var type = loadedAssembly.GetType(setupInfo.Fullname);
@@ -110,7 +112,10 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                 Assembly loadedAssembly;
                 var tryLoadAssembly = _assemblyLoader.TryLoadAssembly(args.AssemblyLocation, args.AssemblyName, out loadedAssembly);
                 if (!tryLoadAssembly)
+                {
                     throw new Exception(args.AssemblyName + "Not found");
+                }
+
                 ExecutePlugin(dto, args, loadedAssembly, dev2MethodInfo);
                 objectString = dto.ObjectString;
                 return dev2MethodInfo;
@@ -234,7 +239,10 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                 try
                 {
                     type = Type.GetType(typeName);
-                    if (type == null) throw new TypeLoadException();
+                    if (type == null)
+                    {
+                        throw new TypeLoadException();
+                    }
                 }
                 catch (Exception)
                 {

@@ -274,7 +274,10 @@ public class SecurityWrapper : ISecurityWrapper
     private static string CleanUser(string userName)
     {
         if (userName.Contains("\\"))
+        {
             userName = userName.Split('\\').Last();
+        }
+
         return userName;
     }
 
@@ -303,7 +306,11 @@ public class SecurityWrapper : ISecurityWrapper
     /// <param name="ReturnValue">The return value from the a Win32 method call</param>
     private void TestReturnValue(uint ReturnValue)
     {
-        if (ReturnValue == 0) return;
+        if (ReturnValue == 0)
+        {
+            return;
+        }
+
         if (ReturnValue == ERROR_PRIVILEGE_DOES_NOT_EXIST)
         {
             return;
@@ -353,7 +360,11 @@ public class SecurityWrapper : ISecurityWrapper
     /// <param name="Value"></param>
     private static LSA_UNICODE_STRING InitLsaString(string Value)
     {
-        if (Value.Length > 0x7ffe) throw new ArgumentException(ErrorResource.StringTooLong);
+        if (Value.Length > 0x7ffe)
+        {
+            throw new ArgumentException(ErrorResource.StringTooLong);
+        }
+
         var lus = new LSA_UNICODE_STRING { Buffer = Value, Length = (ushort)(Value.Length * sizeof(char)) };
         lus.MaximumLength = (ushort)(lus.Length + sizeof(char));
         return lus;

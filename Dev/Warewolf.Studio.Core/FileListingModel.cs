@@ -272,7 +272,10 @@ namespace Warewolf.Studio.Core
         {
             var canAdd = UseIsSelected ? IsSelected : IsChecked;
             if (canAdd)
+            {
                 acc.Add(FullName);
+            }
+
             if (Children != null)
             {
                 foreach (var dllListingModel in Children)

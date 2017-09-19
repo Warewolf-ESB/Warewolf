@@ -109,8 +109,12 @@ namespace Dev2.Intellisense.Helper
         {
             bool bQueryUncShares = false;
             string sFileServer = string.Empty;
-            if(String.IsNullOrEmpty(searchPath)) return new List<string>();
-            if(searchPath.Length > 3)
+            if(String.IsNullOrEmpty(searchPath))
+            {
+                return new List<string>();
+            }
+
+            if (searchPath.Length > 3)
             {
                 bQueryUncShares = GetServerNameFromInput(searchPath, ref queryCollection, ref sFileServer);
             }

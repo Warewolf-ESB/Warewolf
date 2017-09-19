@@ -43,7 +43,11 @@ namespace Warewolf.Studio.CustomControls
         protected override FrameworkElement ResolveEditorControl(Cell cell, object editorValue, double availableWidth,
             double availableHeight, Binding editorBinding)
         {
-            if (editorValue != null) _textBox.Text = editorValue.ToString();
+            if (editorValue != null)
+            {
+                _textBox.Text = editorValue.ToString();
+            }
+
             return _textBox;
         }
 

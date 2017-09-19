@@ -167,7 +167,9 @@ namespace Dev2.Activities.Designers2.DropBox2016.Upload
             var shellViewModel = CustomContainer.Get<IShellViewModel>();
             var activeServer = shellViewModel.ActiveServer;
             if (activeServer != null)
+            {
                 shellViewModel.OpenResource(SelectedSource.ResourceID,activeServer.EnvironmentID, activeServer);
+            }
         }
 
         public void CreateOAuthSource()

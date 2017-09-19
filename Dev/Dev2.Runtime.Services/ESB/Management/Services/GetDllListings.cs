@@ -104,7 +104,9 @@ namespace Dev2.Runtime.ESB.Management.Services
             else
             {
                 if(src.IsDirectory)
-                completeList = GetChildrenForDllListing(new DirectoryInfo(src.FullName));
+                {
+                    completeList = GetChildrenForDllListing(new DirectoryInfo(src.FullName));
+                }
             }
             return completeList;
         }

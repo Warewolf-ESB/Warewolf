@@ -29,7 +29,11 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Assign
         public AssignSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
         {
-            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            if (scenarioContext == null)
+            {
+                throw new ArgumentNullException("scenarioContext");
+            }
+
             this.scenarioContext = scenarioContext;
         }
 
@@ -174,7 +178,9 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Assign
             var result = scenarioContext.Get<IDSFDataObject>("result");
             Assert.IsNotNull(result);
             if (result.Environment.AllErrors.Any())
+            {
                 Assert.AreEqual(p0, result.Environment.AllErrors.FirstOrDefault());
+            }
         }
     }
 }

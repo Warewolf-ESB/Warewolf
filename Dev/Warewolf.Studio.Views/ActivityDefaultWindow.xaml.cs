@@ -29,7 +29,9 @@ namespace Warewolf.Studio.Views
         void WindowBorderLess_OnMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (Mouse.LeftButton == MouseButtonState.Pressed)
+            {
                 DragMove();
+            }
         }
 
         void WindowBorderLess_OnClosed(object sender, EventArgs e)

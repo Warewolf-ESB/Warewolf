@@ -245,7 +245,10 @@ namespace Dev2.Activities
             MySqlBulkLoader sqlBulkCopy = new MySqlBulkLoader(new MySqlConnection(runtimeDatabase.ConnectionString));
             TableName = TableName.Replace("[", "").Replace("]", "");
             if (TableName.Contains("."))
+            {
                 TableName = TableName.Substring(TableName.IndexOf(".", StringComparison.Ordinal)+1);
+            }
+
             if (string.IsNullOrEmpty(BatchSize) && string.IsNullOrEmpty(Timeout))
             {
                 sqlBulkCopy = new MySqlBulkLoader(new MySqlConnection(runtimeDatabase.ConnectionString)) { TableName = TableName, FieldTerminator = ",", LineTerminator = "\n" };
@@ -481,8 +484,12 @@ namespace Dev2.Activities
                 {
                     errorsResultTo.AddError(ErrorResource.InvalidRecordset + row.InputColumn);
                 }
-                if(string.IsNullOrEmpty(row.InputColumn)) continue;
-                if(dataObject.IsDebugMode())
+                if(string.IsNullOrEmpty(row.InputColumn))
+                {
+                    continue;
+                }
+
+                if (dataObject.IsDebugMode())
                 {
                     AddDebugInputItem(row.InputColumn, row.OutputColumn.ColumnName, dataObject.Environment, row.OutputColumn.DataTypeName, indexCounter, update);
                     indexCounter++;
@@ -543,7 +550,11 @@ namespace Dev2.Activities
 
         DataTable BuildDataTableToInsert()
         {
-            if(InputMappings == null) return null;
+            if(InputMappings == null)
+            {
+                return null;
+            }
+
             var dataTableToInsert = new DataTable();
    
             foreach(var dataColumnMapping in InputMappings)
@@ -605,7 +616,11 @@ namespace Dev2.Activities
         }
         DataTable BuildDataTableToInsertMySql()
         {
-            if (InputMappings == null) return null;
+            if (InputMappings == null)
+            {
+                return null;
+            }
+
             var dataTableToInsert = new DataTable();
             foreach (var dataColumnMapping in InputMappings)
             {

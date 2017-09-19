@@ -75,7 +75,10 @@ namespace WarewolfCOMIPC.Client
         public object Invoke(Guid clsid, string function, Execute execute, ParameterInfoTO[] args)
         {
             if (_disposed)
+            {
                 throw new ObjectDisposedException(nameof(IpcClient));
+            }
+
             var info = new CallData
             {
                 CLSID = clsid,
@@ -197,7 +200,9 @@ namespace WarewolfCOMIPC.Client
         protected void Dispose(bool disposing)
         {
             if (_disposed)
+            {
                 return;
+            }
 
             if (disposing)
             {

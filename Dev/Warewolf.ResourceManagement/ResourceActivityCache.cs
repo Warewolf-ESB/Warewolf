@@ -50,7 +50,9 @@ namespace Warewolf.ResourceManagement
                 {
                     Dev2Logger.Error(err, "Warewolf Error");
                     if(failOnException)
-                    throw;
+                    {
+                        throw;
+                    }
                 }
    
             }

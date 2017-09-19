@@ -644,7 +644,11 @@ namespace Dev2.Studio.Core.Models
 
         List<XElement> WriteErrors()
         {
-            if (Errors == null || Errors.Count == 0) return null;
+            if (Errors == null || Errors.Count == 0)
+            {
+                return null;
+            }
+
             var errorElements = new List<XElement>();
             foreach (var errorInfo in Errors)
             {

@@ -106,7 +106,9 @@ namespace Dev2.Runtime.Security
         protected virtual void OnFileChangedEnableRaisingEvents(bool enabled)
         {
             if (!_disposing)
-            _configWatcher.EnableRaisingEvents = enabled;
+            {
+                _configWatcher.EnableRaisingEvents = enabled;
+            }
         }
 
         protected override void OnDisposed()

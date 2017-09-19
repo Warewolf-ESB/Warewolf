@@ -220,7 +220,9 @@ namespace Dev2.DynamicServices
             IExecutionEnvironment localEnv;
             var tryPop = _environments.TryPop(out localEnv);
             if (tryPop)
+            {
                 Environment = localEnv;
+            }
         }
 
         public void PushEnvironment(IExecutionEnvironment env)

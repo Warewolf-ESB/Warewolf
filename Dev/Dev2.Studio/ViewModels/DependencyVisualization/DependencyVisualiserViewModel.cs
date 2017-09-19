@@ -112,13 +112,18 @@ namespace Dev2.Studio.ViewModels.DependencyVisualization
             }
             set
             {
-                if (_resourceModel == value) return;
+                if (_resourceModel == value)
+                {
+                    return;
+                }
 
                 _resourceModel = value;
                 BuildGraphs();
                 NotifyOfPropertyChange(() => ResourceModel);
                 if (value != null)
+                {
                     NotifyOfPropertyChange(() => DisplayName);
+                }
             }
         }
 

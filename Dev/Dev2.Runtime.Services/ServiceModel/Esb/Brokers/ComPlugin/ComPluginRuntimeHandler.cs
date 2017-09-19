@@ -104,7 +104,10 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
             catch (Exception e)
             {
                 if (e.InnerException is COMException)
+                {
                     throw e.InnerException;
+                }
+
                 Dev2Logger.Error("IOutputDescription Test(PluginInvokeArgs setupInfo)", e, GlobalConstants.WarewolfError);
                 jsonResult = null;
                 return null;

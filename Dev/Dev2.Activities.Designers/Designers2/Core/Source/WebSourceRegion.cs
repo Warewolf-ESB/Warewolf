@@ -231,7 +231,9 @@ namespace Dev2.Activities.Designers2.Core.Source
                 if (!Equals(value, _selectedSource) && _selectedSource != null)
                 {
                     if (!string.IsNullOrEmpty(_selectedSource.HostName))
+                    {
                         StorePreviousValues(_selectedSource.Id);
+                    }
                 }
                 if (Dependants != null)
                 {

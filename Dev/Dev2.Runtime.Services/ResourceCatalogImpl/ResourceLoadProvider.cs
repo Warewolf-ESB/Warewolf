@@ -107,7 +107,11 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             if (resourceName != null)
             {
                 var resourceContents = ResourceContents<T>(workspaceID, resourceName);
-                if (resourceContents == null || resourceContents.Length == 0) return null;
+                if (resourceContents == null || resourceContents.Length == 0)
+                {
+                    return null;
+                }
+
                 return GetResource<T>(resourceContents);
             }
             return null;
@@ -253,7 +257,10 @@ namespace Dev2.Runtime.ResourceCatalogImpl
 
         public List<Guid> GetDependants(Guid workspaceID, Guid? resourceId)
         {
-            if (resourceId == null) throw new ArgumentNullException(nameof(resourceId), ErrorResource.NoResourceName);
+            if (resourceId == null)
+            {
+                throw new ArgumentNullException(nameof(resourceId), ErrorResource.NoResourceName);
+            }
 
             var resources = GetResources(workspaceID);
             var dependants = new List<Guid>();
@@ -515,7 +522,10 @@ namespace Dev2.Runtime.ResourceCatalogImpl
         private static T GetResource<T>(StringBuilder resourceContents) where T : Resource, new()
         {
             if (resourceContents == null)
+            {
                 return default(T);
+            }
+
             var elm = resourceContents.ToXElement();
             object[] args = { elm };
             return (T)Activator.CreateInstance(typeof(T), args);
