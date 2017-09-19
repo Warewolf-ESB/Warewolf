@@ -9,12 +9,18 @@ namespace Dev2.ViewModels.Merge
 {
     public class MergeToolModel : BindableBase, IMergeToolModel
     {
+
         private bool _isMergeExpanderEnabled;
         private ImageSource _mergeIcon;
         private bool _isMergeExpanded;
         private string _mergeDescription;
         private bool _isMergeChecked;
         private ObservableCollection<IMergeToolModel> _children;
+
+        public MergeToolModel()
+        {
+            Children = new ObservableCollection<IMergeToolModel>();
+        }
 
         public bool IsVariablesChecked { get; set; }
 

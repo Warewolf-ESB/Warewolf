@@ -174,7 +174,7 @@ namespace Dev2.Studio.Core.Activities.Utils
             var application = currentApp ?? new ApplicationAdaptor(Application.Current);
             if (type.GetCustomAttributes().Any(a => a is ToolDescriptorInfo))
             {
-                var desc = computedValue.GetDescriptorFromAttribute();
+                var desc = type.GetDescriptorFromAttribute();
                 return application?.TryFindResource(desc.Icon) as ImageSource;
             }
             return application?.TryFindResource("Explorer-WorkflowService") as ImageSource;

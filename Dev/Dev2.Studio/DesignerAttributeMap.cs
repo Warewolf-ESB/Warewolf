@@ -91,6 +91,7 @@ using Dev2.Activities.SelectAndApply;
 using Dev2.Activities.Sharepoint;
 using Dev2.Activities.WcfEndPoint;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Dev2.Activities.Designers2.Decision;
 
 namespace Dev2
 {
@@ -180,6 +181,7 @@ namespace Dev2
                 { typeof(DsfPublishRabbitMQActivity), typeof(RabbitMQPublishDesignerViewModel) },
                 { typeof(DsfSelectAndApplyActivity), typeof(SelectAndApplyDesignerViewModel) },
                 { typeof(DsfConsumeRabbitMQActivity), typeof(RabbitMQConsumeDesignerViewModel) },
+                { typeof(DsfFlowDecisionActivity), typeof(DecisionDesignerViewModel) },
             };
     }
 }

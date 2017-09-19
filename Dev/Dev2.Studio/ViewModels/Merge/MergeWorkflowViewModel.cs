@@ -35,16 +35,19 @@ namespace Dev2.ViewModels.Merge
             {
                 var conflict = new CompleteConflict();
                 CurrentConflictViewModel = new CurrentConflictViewModel(curr.current,currentResourceModel);
-                conflict.CurrentViewModel = CurrentConflictViewModel.MergeToolModel;
-
-                var uniqueId = curr.uniqueId;
-                if (curr.conflict)
+                if (CurrentConflictViewModel?.MergeToolModel != null)
                 {
-                    DifferenceConflictViewModel = new DifferenceConflictViewModel(curr.difference, differenceResourceModel);
-                    conflict.DiffViewModel = DifferenceConflictViewModel.MergeToolModel;
+                    conflict.CurrentViewModel = CurrentConflictViewModel.MergeToolModel;
+
+                    var uniqueId = curr.uniqueId;
+                    if (curr.conflict)
+                    {
+                        DifferenceConflictViewModel = new DifferenceConflictViewModel(curr.difference, differenceResourceModel);
+                        conflict.DiffViewModel = DifferenceConflictViewModel.MergeToolModel;
+                    }
+
+                    Conflicts.Add(conflict);
                 }
-                
-                Conflicts.Add(conflict);
             }
 
             CurrentConflictViewModel.WorkflowName = currentResourceModel.ResourceName;

@@ -28,7 +28,7 @@ namespace Dev2.CustomControls
                     template = inst.Unwrap() as ActivityDesignerTemplate;
                     if (template != null)
                     {
-                        template.DataContext = item;
+                        template.DataContext = vm;
                         return TemplateGenerator.CreateDataTemplate(() => template);
                     }
                 }
@@ -44,7 +44,7 @@ namespace Dev2.CustomControls
                         template = inst.Unwrap() as ActivityDesignerTemplate;
                         if (template != null)
                         {
-                            template.DataContext = item;
+                            template.DataContext = vm;
                             return TemplateGenerator.CreateDataTemplate(() => template);
                         }
                     }
@@ -54,7 +54,7 @@ namespace Dev2.CustomControls
                         template = inst.Unwrap() as ActivityDesignerTemplate;
                         if (template != null)
                         {
-                            template.DataContext = item;
+                            template.DataContext = vm;
                             return TemplateGenerator.CreateDataTemplate(() => template);
                         }
                     }
