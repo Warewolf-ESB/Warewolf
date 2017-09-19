@@ -25,9 +25,8 @@ namespace Dev2.Providers.Validation.Rules
         public override IActionableErrorInfo Check()
         {
             var isValid = false;
-            int x;
             var value = GetValue();
-            if(int.TryParse(value, out x))
+            if (int.TryParse(value, out int x))
             {
                 if(x >= 0)
                 {

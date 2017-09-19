@@ -40,7 +40,7 @@ using Warewolf.Storage.Interfaces;
 namespace Dev2.Activities
 {
     [ToolDescriptorInfo("Scripting-CMDScript", "CMD Script", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Scripting", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Scripting_CMD_Script")]
-    public class DsfExecuteCommandLineActivity : DsfActivityAbstract<string>
+    public class DsfExecuteCommandLineActivity : DsfActivityAbstract<string>, IDisposable
     {
         #region Fields
 
@@ -146,10 +146,7 @@ namespace Dev2.Activities
                             {
                                 throw new Exception(ErrorResource.EmptyScript);
                             }
-
-                            StreamReader errorReader;
-                            StringBuilder outputReader;
-                            if(!ExecuteProcess(val, exeToken, out errorReader, out outputReader))
+                            if (!ExecuteProcess(val, exeToken, out StreamReader errorReader, out StringBuilder outputReader))
                             {
                                 return;
                             }
@@ -494,6 +491,11 @@ namespace Dev2.Activities
         public override IList<DsfForEachItem> GetForEachOutputs()
         {
             return GetForEachItems(CommandResult);
+        }
+
+        public void Dispose()
+        {
+            ((IDisposable)_process).Dispose();
         }
 
         #endregion

@@ -97,10 +97,9 @@ namespace Dev2.Runtime.ServiceModel
         {
             try
             {
-                ErrorResultTO errors;
                 return new ValidationResult
                 {
-                    Result = Execute(source, WebRequestMethod.Get, source.DefaultQuery, (string)null, true, out errors)
+                    Result = Execute(source, WebRequestMethod.Get, source.DefaultQuery, (string)null, true, out ErrorResultTO errors)
                 };
             }
             catch (WebException wex)

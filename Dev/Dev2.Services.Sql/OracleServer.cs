@@ -79,9 +79,8 @@ namespace Dev2.Services.Sql
                     {
                         try
                         {
-                            List<IDbDataParameter> outParameters;
 
-                            List<IDbDataParameter> parameters = GetProcedureParameters(command, dbName, fullProcedureName, out outParameters);
+                            List<IDbDataParameter> parameters = GetProcedureParameters(command, dbName, fullProcedureName, out List<IDbDataParameter> outParameters);
 
                             string helpText = FetchHelpTextContinueOnException(fullProcedureName, _connection);
 
@@ -200,9 +199,7 @@ namespace Dev2.Services.Sql
                     {
                         try
                         {
-                            List<IDbDataParameter> isOut;
-                            string helpText;
-                            var parameters = DbDataParameters(dbName, command, fullProcedureName, out isOut, out helpText);
+                            var parameters = DbDataParameters(dbName, command, fullProcedureName, out List<IDbDataParameter> isOut, out string helpText);
 
                             procedureProcessor(command, parameters, helpText, fullProcedureName);
                         }
@@ -439,8 +436,7 @@ namespace Dev2.Services.Sql
             {
                 if (!_isTesting)
                 {
-                    List<IDbDataParameter> isOut;
-                    GetProcedureParameters(command, dbName, fullProcedureName, out isOut);
+                    GetProcedureParameters(command, dbName, fullProcedureName, out List<IDbDataParameter> isOut);
                     return isOut.Select(a => a as OracleParameter).ToList();
                 }
             }
@@ -464,9 +460,8 @@ namespace Dev2.Services.Sql
                     continue;
                 }
 
-                OracleDbType OracleType;
 
-                Enum.TryParse(((string)row["DATA_TYPE"]).Replace(" ", ""), true, out OracleType);
+                Enum.TryParse(((string)row["DATA_TYPE"]).Replace(" ", ""), true, out OracleDbType OracleType);
                 OracleParameter OracleParameter = GetOracleParameter(OracleType, row, parameterName, ParameterDirection.Input);
                 parameteres.Add(OracleParameter);
             }
@@ -503,9 +498,8 @@ namespace Dev2.Services.Sql
 
                 if (!String.IsNullOrEmpty(parameterName))
                 {
-                    OracleDbType OracleType;
 
-                    Enum.TryParse(((string)row["DATA_TYPE"]).Replace(" ", ""), true, out OracleType);
+                    Enum.TryParse(((string)row["DATA_TYPE"]).Replace(" ", ""), true, out OracleDbType OracleType);
                     OracleParameter OracleParameter = GetOracleParameter(OracleType, row, parameterName, direction);
 
                     GetOutParamProperties(command, outParams, parameters, isout, OracleParameter);

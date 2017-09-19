@@ -44,9 +44,8 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
 
                 Dev2Logger.Info("Save Exchange Service Source", GlobalConstants.WarewolfInfo);
-                StringBuilder resourceDefinition;
 
-                values.TryGetValue("ExchangeSource", out resourceDefinition);
+                values.TryGetValue("ExchangeSource", out StringBuilder resourceDefinition);
 
                 var src = serializer.Deserialize<ExchangeSourceDefinition>(resourceDefinition);
                 var con = new ExchangeSource

@@ -39,10 +39,9 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset.Unique
 
         protected override void BuildDataList()
         {
-            List<Tuple<string, string>> variableList;
-            scenarioContext.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
 
-            if(variableList == null)
+            if (variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 scenarioContext.Add("variableList", variableList);
@@ -51,12 +50,9 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset.Unique
             variableList.Add(new Tuple<string, string>(ResultVariable, ""));
             BuildShapeAndTestData();
 
-            string inField;
-            scenarioContext.TryGetValue("inField", out inField);
-            string returnField;
-            scenarioContext.TryGetValue("returnField", out returnField);
-            string resultVariable;
-            scenarioContext.TryGetValue("resultVariable", out resultVariable);
+            scenarioContext.TryGetValue("inField", out string inField);
+            scenarioContext.TryGetValue("returnField", out string returnField);
+            scenarioContext.TryGetValue("resultVariable", out string resultVariable);
 
             var unique = new DsfUniqueActivity
                 {
@@ -93,10 +89,9 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset.Unique
                 var rs = table.Header.ToArray()[0];
                 var field = table.Header.ToArray()[1];
 
-                List<Tuple<string, string>> emptyRecordset;
 
-                bool isAdded = scenarioContext.TryGetValue("rs", out emptyRecordset);
-                if(!isAdded)
+                bool isAdded = scenarioContext.TryGetValue("rs", out List<Tuple<string, string>> emptyRecordset);
+                if (!isAdded)
                 {
                     emptyRecordset = new List<Tuple<string, string>>();
                     scenarioContext.Add("rs", emptyRecordset);
@@ -106,10 +101,9 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset.Unique
 
             foreach(TableRow t in tableRows)
             {
-                List<Tuple<string, string>> variableList;
-                scenarioContext.TryGetValue("variableList", out variableList);
+                scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
 
-                if(variableList == null)
+                if (variableList == null)
                 {
                     variableList = new List<Tuple<string, string>>();
                     scenarioContext.Add("variableList", variableList);

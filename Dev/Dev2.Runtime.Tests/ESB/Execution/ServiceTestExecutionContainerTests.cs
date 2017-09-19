@@ -90,11 +90,10 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             Assert.IsNull(serviceTestExecutionContainer.InstanceOutputDefinition);
             Assert.IsNull(serviceTestExecutionContainer.InstanceInputDefinition);
             //---------------Execute Test ----------------------
-            ErrorResultTO errors;
             Thread.CurrentPrincipal = GlobalConstants.GenericPrincipal;
             Common.Utilities.PerformActionInsideImpersonatedContext(GlobalConstants.GenericPrincipal, () =>
             {
-                var execute = serviceTestExecutionContainer.Execute(out errors, 1);
+                var execute = serviceTestExecutionContainer.Execute(out ErrorResultTO errors, 1);
                 Assert.IsNotNull(execute, "serviceTestExecutionContainer execute results is Null.");
             });
 
@@ -165,14 +164,13 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             Assert.IsNull(serviceTestExecutionContainer.InstanceOutputDefinition);
             Assert.IsNull(serviceTestExecutionContainer.InstanceInputDefinition);
             //---------------Execute Test ----------------------
-            ErrorResultTO errors;
             Thread.CurrentPrincipal = null;
             GenericIdentity identity = new GenericIdentity("User");
             var currentPrincipal = new GenericPrincipal(identity, new[] { "Role1", "Roll2" });
             Thread.CurrentPrincipal = currentPrincipal;
             Common.Utilities.ServerUser = currentPrincipal;
 
-            var execute = serviceTestExecutionContainer.Execute(out errors, 1);
+            var execute = serviceTestExecutionContainer.Execute(out ErrorResultTO errors, 1);
             Assert.IsNotNull(execute, "serviceTestExecutionContainer execute results is Null.");
 
             //---------------Test Result -----------------------
@@ -435,11 +433,10 @@ Test Failed because of some reasons
             Assert.IsNull(serviceTestExecutionContainer.InstanceOutputDefinition);
             Assert.IsNull(serviceTestExecutionContainer.InstanceInputDefinition);
             //---------------Execute Test ----------------------
-            ErrorResultTO errors;
             Thread.CurrentPrincipal = GlobalConstants.GenericPrincipal;
             Common.Utilities.PerformActionInsideImpersonatedContext(GlobalConstants.GenericPrincipal, () =>
             {
-                var execute = serviceTestExecutionContainer.Execute(out errors, 1);
+                var execute = serviceTestExecutionContainer.Execute(out ErrorResultTO errors, 1);
                 Assert.IsNotNull(execute, "serviceTestExecutionContainer execute results is Null.");
             });
             //---------------Test Result -----------------------

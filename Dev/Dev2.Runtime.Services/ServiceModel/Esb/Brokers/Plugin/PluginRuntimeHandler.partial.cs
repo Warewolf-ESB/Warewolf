@@ -54,15 +54,13 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
         /// <returns></returns>
         public object Run(PluginInvokeArgs setupInfo)
         {
-            Assembly loadedAssembly;
             _assemblyLocation = setupInfo.AssemblyLocation;
             AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
-            if (!_assemblyLoader.TryLoadAssembly(setupInfo.AssemblyLocation, setupInfo.AssemblyName, out loadedAssembly))
+            if (!_assemblyLoader.TryLoadAssembly(setupInfo.AssemblyLocation, setupInfo.AssemblyName, out Assembly loadedAssembly))
             {
                 return null;
             }
-            object pluginResult;
-            var methodToRun = ExecutePlugin(setupInfo, loadedAssembly, out pluginResult);
+            var methodToRun = ExecutePlugin(setupInfo, loadedAssembly, out object pluginResult);
             AppDomain.CurrentDomain.AssemblyResolve -= CurrentDomain_AssemblyResolve;
             var formater = setupInfo.OutputFormatter;
             if (formater != null)
@@ -80,16 +78,14 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
         {
             try
             {
-                Assembly loadedAssembly;
                 jsonResult = null;
                 _assemblyLocation = setupInfo.AssemblyLocation;
                 AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
-                if (!_assemblyLoader.TryLoadAssembly(setupInfo.AssemblyLocation, setupInfo.AssemblyName, out loadedAssembly))
+                if (!_assemblyLoader.TryLoadAssembly(setupInfo.AssemblyLocation, setupInfo.AssemblyName, out Assembly loadedAssembly))
                 {
                     return null;
                 }
-                object pluginResult;
-                var methodToRun = ExecutePlugin(setupInfo, loadedAssembly, out pluginResult);
+                var methodToRun = ExecutePlugin(setupInfo, loadedAssembly, out object pluginResult);
 
                 AppDomain.CurrentDomain.AssemblyResolve -= CurrentDomain_AssemblyResolve;
                 // do formating here to avoid object serialization issues ;)
@@ -189,9 +185,8 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
         {
             try
             {
-                Assembly loadedAssembly;
                 List<string> namespaces = new List<string>();
-                if (_assemblyLoader.TryLoadAssembly(assemblyLocation, assemblyName, out loadedAssembly))
+                if (_assemblyLoader.TryLoadAssembly(assemblyLocation, assemblyName, out Assembly loadedAssembly))
                 {
                     // ensure we flush out the rubbish that GAC brings ;)
                     namespaces = loadedAssembly.GetTypes()
@@ -221,9 +216,8 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
         {
             try
             {
-                Assembly loadedAssembly;
                 var namespaces = new List<KeyValuePair<string, string>>();
-                if (_assemblyLoader.TryLoadAssembly(assemblyLocation, assemblyName, out loadedAssembly))
+                if (_assemblyLoader.TryLoadAssembly(assemblyLocation, assemblyName, out Assembly loadedAssembly))
                 {
                     // ensure we flush out the rubbish that GAC brings ;)
                     var types = loadedAssembly.GetTypes();
@@ -253,9 +247,8 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
         /// <returns></returns>
         public ServiceMethodList ListMethods(string assemblyLocation, string assemblyName, string fullName)
         {
-            Assembly assembly;
             var serviceMethodList = new ServiceMethodList();
-            if (_assemblyLoader.TryLoadAssembly(assemblyLocation, assemblyName, out assembly))
+            if (_assemblyLoader.TryLoadAssembly(assemblyLocation, assemblyName, out Assembly assembly))
             {
                 var type = assembly.GetType(fullName);
                 var methodInfos = type.GetMethods();

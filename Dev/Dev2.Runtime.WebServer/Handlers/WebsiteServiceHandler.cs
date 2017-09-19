@@ -40,13 +40,11 @@ namespace Dev2.Runtime.WebServer.Handlers
               
             try
             {
-                Guid workspaceGuid;
-                Guid.TryParse(workspaceID, out workspaceGuid);
+                Guid.TryParse(workspaceID, out Guid workspaceGuid);
 
-                Guid dataListGuid;
-                Guid.TryParse(dataListID, out dataListGuid);
+                Guid.TryParse(dataListID, out Guid dataListGuid);
 
-                
+
                 Thread.CurrentPrincipal = userPrinciple;
                 Dev2Logger.Info("WEB EXECUTION USER CONTEXT [ " + userPrinciple.Identity.Name + " ]", GlobalConstants.WarewolfInfo);
                 Common.Utilities.PerformActionInsideImpersonatedContext(userPrinciple, () => { result = _serviceInvoker.Invoke(className, methodName, args, workspaceGuid, dataListGuid); });

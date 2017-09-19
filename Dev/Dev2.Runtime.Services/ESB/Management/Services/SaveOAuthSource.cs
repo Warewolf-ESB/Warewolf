@@ -57,12 +57,10 @@ namespace Dev2.Runtime.ESB.Management.Services
             try
             {
                 Dev2Logger.Info("Save OAuth Source", GlobalConstants.WarewolfInfo);
-                StringBuilder resourceDefinition;
 
-                values.TryGetValue("OAuthSource", out resourceDefinition);
+                values.TryGetValue("OAuthSource", out StringBuilder resourceDefinition);
 
-                StringBuilder savePath;
-                values.TryGetValue("savePath", out savePath);
+                values.TryGetValue("savePath", out StringBuilder savePath);
 
                 var src = serializer.Deserialize<IOAuthSource>(resourceDefinition);
 

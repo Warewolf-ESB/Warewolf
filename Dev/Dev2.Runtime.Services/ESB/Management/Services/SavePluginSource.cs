@@ -39,9 +39,8 @@ namespace Dev2.Runtime.ESB.Management.Services
             try
             {
                 Dev2Logger.Info("Save Plugin Source", GlobalConstants.WarewolfInfo);
-                StringBuilder resourceDefinition;
 
-                values.TryGetValue("PluginSource", out resourceDefinition);
+                values.TryGetValue("PluginSource", out StringBuilder resourceDefinition);
 
                 var src = serializer.Deserialize<PluginSourceDefinition>(resourceDefinition);
                 if (src.Path.EndsWith("\\"))

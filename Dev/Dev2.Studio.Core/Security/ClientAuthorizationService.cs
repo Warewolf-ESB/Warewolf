@@ -52,8 +52,7 @@ namespace Dev2.Security
             {
                 serverOnlyPermissions= serverOnlyPermissions.Where(permission => permission.IsBuiltInGuests);
             }
-            Guid resourceId;
-            if (Guid.TryParse(resource, out resourceId))
+            if (Guid.TryParse(resource, out Guid resourceId))
             {
                 if (resourceId == Guid.Empty)
                 {

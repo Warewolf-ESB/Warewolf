@@ -40,10 +40,9 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Email
 
         protected override void BuildDataList()
         {
-            List<Tuple<string, string>> variableList;
-            scenarioContext.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
 
-            if(variableList == null)
+            if (variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 scenarioContext.Add("variableList", variableList);
@@ -52,20 +51,13 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Email
             variableList.Add(new Tuple<string, string>(ResultVariable, ""));
             BuildShapeAndTestData();
 
-            string body;
-            scenarioContext.TryGetValue("body", out body);
-            string subject;
-            scenarioContext.TryGetValue("subject", out subject);
-            string fromAccount;
-            scenarioContext.TryGetValue("fromAccount", out fromAccount);
-            string password;
-            scenarioContext.TryGetValue("password", out password);
-            string simulationOutput;
-            scenarioContext.TryGetValue("simulationOutput", out simulationOutput);
-            string to;
-            scenarioContext.TryGetValue("to", out to);
-            bool isHtml;
-            scenarioContext.TryGetValue("isHtml", out isHtml);
+            scenarioContext.TryGetValue("body", out string body);
+            scenarioContext.TryGetValue("subject", out string subject);
+            scenarioContext.TryGetValue("fromAccount", out string fromAccount);
+            scenarioContext.TryGetValue("password", out string password);
+            scenarioContext.TryGetValue("simulationOutput", out string simulationOutput);
+            scenarioContext.TryGetValue("to", out string to);
+            scenarioContext.TryGetValue("isHtml", out bool isHtml);
 
             var server = SimpleSmtpServer.Start(25);
             scenarioContext.Add("server", server);
@@ -132,10 +124,9 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Email
         [Given(@"I have an email variable ""(.*)"" equal to ""(.*)""")]
         public void GivenIHaveAnEmailVariableEqualTo(string variable, string value)
         {
-            List<Tuple<string, string>> variableList;
-            scenarioContext.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
 
-            if(variableList == null)
+            if (variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 scenarioContext.Add("variableList", variableList);
@@ -153,10 +144,9 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Email
         [Given(@"I have a variable ""(.*)"" with this email address ""(.*)""")]
         public void GivenIHaveAVariableWithThisEmailAddress(string variable, string emailAddress)
         {
-            List<Tuple<string, string>> variableList;
-            scenarioContext.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
 
-            if(variableList == null)
+            if (variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 scenarioContext.Add("variableList", variableList);
@@ -175,12 +165,10 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Email
         [Then(@"the email result will be ""(.*)""")]
         public void ThenTheEmailResultWillBe(string expectedResult)
         {
-            string error;
-            string actualValue;
             expectedResult = expectedResult.Replace('"', ' ').Trim();
             var result = scenarioContext.Get<IDSFDataObject>("result");
             GetScalarValueFromEnvironment(result.Environment, DataListUtil.RemoveLanguageBrackets(ResultVariable),
-                                       out actualValue, out error);
+                                       out string actualValue, out string error);
             if(string.IsNullOrEmpty(expectedResult))
             {
                 Assert.IsNull(actualValue);

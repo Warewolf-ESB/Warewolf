@@ -54,11 +54,10 @@ namespace Dev2.Converters.Graph
 
                 while (pathSegmentCount < indexedPathSegments[path].Count)
                 {
-                    IndexedPathSegmentTreeNode<string> tmpIndexedPathSegmentTreeNode;
                     IPathSegment pathSegment = indexedPathSegments[path][pathSegmentCount];
                     if (
                         !IndexedPathSegmentTreeNode.TryGetValue(pathSegment.ActualSegment,
-                            out tmpIndexedPathSegmentTreeNode))
+                            out IndexedPathSegmentTreeNode<string> tmpIndexedPathSegmentTreeNode))
                     {
                         IndexedPathSegmentTreeNode<string> newIndexedPathSegmentTreeNode =
                             CreatePathSegmentIndexedPathSegmentTreeNode(pathSegment, IndexedPathSegmentTreeNode);

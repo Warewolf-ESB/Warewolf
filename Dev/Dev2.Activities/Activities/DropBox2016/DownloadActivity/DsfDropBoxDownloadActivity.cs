@@ -25,7 +25,7 @@ using Warewolf.Storage.Interfaces;
 namespace Dev2.Activities.DropBox2016.DownloadActivity
 {
     [ToolDescriptorInfo("Dropbox", "Download", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090D8C8EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Storage: Dropbox", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Dropbox_Download")]
-    public class DsfDropBoxDownloadActivity : DsfBaseActivity
+    public class DsfDropBoxDownloadActivity : DsfBaseActivity, IDisposable
     {
         public DsfDropBoxDownloadActivity()
         {
@@ -70,11 +70,9 @@ namespace Dev2.Activities.DropBox2016.DownloadActivity
         {
             return _localPathManager;
         }
-
-        
+                
         public OauthSource SelectedSource { get; set; }
-
-        
+                
         [Inputs("Path in the user's Dropbox")]
         [FindMissing]
         public string ToPath { get; set; }
@@ -85,9 +83,7 @@ namespace Dev2.Activities.DropBox2016.DownloadActivity
         [Inputs("Local File Path")]
         [FindMissing]
         public string FromPath { get; set; }
-
         
-
         protected DropboxClient GetClient()
         {
             if (_client != null)
@@ -129,10 +125,8 @@ namespace Dev2.Activities.DropBox2016.DownloadActivity
         //All units used here has been unit tested seperately
         protected override List<string> PerformExecution(Dictionary<string, string> evaluatedValues)
         {
-            string localToPath;
-            evaluatedValues.TryGetValue("ToPath", out localToPath);
-            string localFromPath;
-            evaluatedValues.TryGetValue("FromPath", out localFromPath);
+            evaluatedValues.TryGetValue("ToPath", out string localToPath);
+            evaluatedValues.TryGetValue("FromPath", out string localFromPath);
             IDropboxSingleExecutor<IDropboxResult> dropBoxDownLoad = new DropBoxDownLoad(localToPath);
             var dropboxSingleExecutor = GetDropboxSingleExecutor(dropBoxDownLoad);
             _dropboxClientWrapper = _dropboxClientWrapper ?? new DropboxClientWrapper(GetClient());
@@ -186,6 +180,10 @@ namespace Dev2.Activities.DropBox2016.DownloadActivity
 
         }
 
+        public void Dispose()
+        {
+            _client.Dispose();
+        }
     }
 
         #endregion Overrides of DsfActivity

@@ -68,8 +68,7 @@ namespace Dev2.Activities
                 _inputVariable = evalToExpression;
             }
             _evalResult = environment.Eval(_inputVariable, update);
-            string cleanExpression;
-            var isCalcExpression = DataListUtil.IsCalcEvaluation(_inputVariable, out cleanExpression);
+            var isCalcExpression = DataListUtil.IsCalcEvaluation(_inputVariable, out string cleanExpression);
             if (isCalcExpression && !isCalculate)
             {
                 if (_evalResult.IsWarewolfAtomResult)
@@ -78,8 +77,7 @@ namespace Dev2.Activities
                     if (atomResult != null)
                     {
                         var res = atomResult.Item.ToString();
-                        string resValue;
-                        DataListUtil.IsCalcEvaluation(res, out resValue);
+                        DataListUtil.IsCalcEvaluation(res, out string resValue);
                         _evalResult = CommonFunctions.WarewolfEvalResult.NewWarewolfAtomResult(DataStorage.WarewolfAtom.NewDataString(resValue));
                     }
                 }

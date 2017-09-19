@@ -59,9 +59,8 @@ namespace Dev2.Runtime.ESB.Management.Services
             string database = null;
             string tableName = null;
             string schema = null;
-            StringBuilder tmp;
-            values.TryGetValue("Database", out tmp);
-            if(tmp != null)
+            values.TryGetValue("Database", out StringBuilder tmp);
+            if (tmp != null)
             {
                 database = tmp.ToString();
             }
@@ -195,9 +194,8 @@ namespace Dev2.Runtime.ESB.Management.Services
                         var isIdentity = row["IsIdentity"] is bool && (bool)row["IsIdentity"];
                         var dbColumn = new DbColumn { ColumnName = columnName, IsNullable = isNullable, IsAutoIncrement = isIdentity };
 
-                        SqlDbType sqlDataType;
-                        var typeValue = dbSource.ServerType == enSourceType.SqlDatabase? row["DataTypeName"] as string:((Type)row["DataType"]).Name;
-                        if(Enum.TryParse(typeValue, true, out sqlDataType))
+                        var typeValue = dbSource.ServerType == enSourceType.SqlDatabase ? row["DataTypeName"] as string : ((Type)row["DataType"]).Name;
+                        if (Enum.TryParse(typeValue, true, out SqlDbType sqlDataType))
                         {
                             dbColumn.SqlDataType = sqlDataType;
                         }

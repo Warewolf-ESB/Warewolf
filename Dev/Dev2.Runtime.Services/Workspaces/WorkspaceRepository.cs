@@ -167,11 +167,10 @@ namespace Dev2.Workspaces
             lock(_readLock)
             {
                 // PBI 9363 - 2013.05.29 - TWR: Added loadResources parameter
-                IWorkspace workspace;
-                if(force || !_items.TryGetValue(workspaceID, out workspace))
+                if (force || !_items.TryGetValue(workspaceID, out IWorkspace workspace))
                 {
                     workspace = Read(workspaceID);
-                    if(loadResources)
+                    if (loadResources)
                     {
                         _resourceCatalog.LoadWorkspace(workspaceID);
                     }
@@ -196,8 +195,7 @@ namespace Dev2.Workspaces
             List<Guid> worksSpacesToRemove = _items.Keys.Where(k => k != ServerWorkspaceID).ToList();
             foreach(Guid workspaceGuid in worksSpacesToRemove)
             {
-                IWorkspace workspace;
-                _items.TryRemove(workspaceGuid, out workspace);
+                _items.TryRemove(workspaceGuid, out IWorkspace workspace);
             }
         }
 
@@ -261,8 +259,7 @@ namespace Dev2.Workspaces
                 return;
             }
 
-            IWorkspace result;
-            _items.TryRemove(workspace.ID, out result);
+            _items.TryRemove(workspace.ID, out IWorkspace result);
             Delete(workspace.ID);
         }
 

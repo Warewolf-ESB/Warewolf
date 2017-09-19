@@ -53,8 +53,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
         /// <returns></returns>
         public object Run(ComPluginInvokeArgs setupInfo)
         {
-            object pluginResult;
-            var methodToRun = ExecuteComPlugin(setupInfo, out pluginResult);
+            var methodToRun = ExecuteComPlugin(setupInfo, out object pluginResult);
             var formater = setupInfo.OutputFormatter;
             if (formater != null)
             {
@@ -69,8 +68,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
             {
                 jsonResult = null;
 
-                object pluginResult;
-                var methodToRun = ExecuteComPlugin(setupInfo, out pluginResult);
+                var methodToRun = ExecuteComPlugin(setupInfo, out object pluginResult);
 
                 // do formating here to avoid object serialization issues ;)
                 var dataBrowser = DataBrowserFactory.CreateDataBrowser();
@@ -243,8 +241,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
 
         private Type GetType(string classId, bool is32Bit)
         {
-            Guid clasID;
-            Guid.TryParse(classId, out clasID);
+            Guid.TryParse(classId, out Guid clasID);
             var is64BitProcess = Environment.Is64BitProcess;
             Type type;
             if (is64BitProcess && is32Bit)

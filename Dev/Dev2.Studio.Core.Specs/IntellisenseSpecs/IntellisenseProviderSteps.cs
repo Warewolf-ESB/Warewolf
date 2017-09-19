@@ -259,11 +259,10 @@ namespace Dev2.Studio.Core.Specs.IntellisenseSpecs
         {
             var context = ScenarioContext.Current.Get<IntellisenseProviderContext>("context");
             string result;
-            bool isFileProvider;
 
-            if(ScenarioContext.Current.TryGetValue("isFileProvider", out isFileProvider))
+            if (ScenarioContext.Current.TryGetValue("isFileProvider", out bool isFileProvider))
             {
-                if(DataListUtil.IsEvaluated(option) || string.IsNullOrEmpty(option))
+                if (DataListUtil.IsEvaluated(option) || string.IsNullOrEmpty(option))
                 {
                     result = new DefaultIntellisenseProvider().PerformResultInsertion(option, context);
                 }

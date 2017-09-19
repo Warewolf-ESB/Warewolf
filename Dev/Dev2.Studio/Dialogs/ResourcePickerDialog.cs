@@ -106,9 +106,8 @@ namespace Dev2.Dialogs
 
         public bool ShowDialog(IServer server = null)
         {
-            DsfActivityDropViewModel dropViewModel;
             _server = server;
-            return ShowDialog(out dropViewModel);
+            return ShowDialog(out DsfActivityDropViewModel dropViewModel);
         }
 
         public void SelectResource(Guid id)

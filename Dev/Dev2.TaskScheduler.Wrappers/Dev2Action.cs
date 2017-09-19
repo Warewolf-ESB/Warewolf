@@ -13,7 +13,7 @@ using Microsoft.Win32.TaskScheduler;
 
 namespace Dev2.TaskScheduler.Wrappers
 {
-    public class Dev2Action : IAction
+    sealed class Dev2Action : IAction
     {
         private readonly Action _nativeTnstance;
 

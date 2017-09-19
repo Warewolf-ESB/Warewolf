@@ -304,6 +304,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             WebClient client = new WebClient { Credentials = activeEnvironment.Connection.HubConnection.Credentials };
             var managementServiceUri = WebServer.GetInternalServiceUri("getlogfile?numLines=10", activeEnvironment.Connection);
             var serverLogFile = await client.DownloadStringTaskAsync(managementServiceUri);
+            client.Dispose();
             return serverLogFile;
         }
 

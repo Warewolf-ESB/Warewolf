@@ -44,11 +44,9 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
         {
             BuildShapeAndTestData();
 
-            string stringToSplit;
-            scenarioContext.TryGetValue("stringToSplit", out stringToSplit);
+            scenarioContext.TryGetValue("stringToSplit", out string stringToSplit);
 
-            List<DataSplitDTO> splitCollection;
-            scenarioContext.TryGetValue("splitCollection", out splitCollection);
+            scenarioContext.TryGetValue("splitCollection", out List<DataSplitDTO> splitCollection);
 
             var dataSplit = new DsfDataSplitActivity { SourceString = stringToSplit };
 
@@ -60,11 +58,8 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
                 dataSplit.ResultsCollection.Add(dto);
                 row++;
             }
-
-            bool reverseOrder;
-            bool skipBlankRows;
-            scenarioContext.TryGetValue("ReverseOrder", out reverseOrder);
-            scenarioContext.TryGetValue("SkipBlankRows", out skipBlankRows);
+            scenarioContext.TryGetValue("ReverseOrder", out bool reverseOrder);
+            scenarioContext.TryGetValue("SkipBlankRows", out bool skipBlankRows);
             dataSplit.ReverseOrder = reverseOrder;
             dataSplit.SkipBlankRows = skipBlankRows;
             TestStartNode = new FlowStep
@@ -72,11 +67,9 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
                     Action = dataSplit
                 };
 
-            string errorVariable;
-            scenarioContext.TryGetValue("errorVariable", out errorVariable);
+            scenarioContext.TryGetValue("errorVariable", out string errorVariable);
 
-            string webserviceToCall;
-            scenarioContext.TryGetValue("webserviceToCall", out webserviceToCall);
+            scenarioContext.TryGetValue("webserviceToCall", out string webserviceToCall);
 
             dataSplit.OnErrorVariable = errorVariable;
             dataSplit.OnErrorWorkflow = webserviceToCall;
@@ -131,20 +124,18 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
         
         void AddVariables(string variable, string splitType, string splitAt, bool include = false, string escape = "")
         {
-            List<Tuple<string, string>> variableList;
-            scenarioContext.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
 
-            if(variableList == null)
+            if (variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 scenarioContext.Add("variableList", variableList);
             }
-           // variableList.Add(new Tuple<string, string>(variable, ""));
+            // variableList.Add(new Tuple<string, string>(variable, ""));
 
-            List<DataSplitDTO> splitCollection;
-            scenarioContext.TryGetValue("splitCollection", out splitCollection);
+            scenarioContext.TryGetValue("splitCollection", out List<DataSplitDTO> splitCollection);
 
-            if(splitCollection == null)
+            if (splitCollection == null)
             {
                 splitCollection = new List<DataSplitDTO>();
                 scenarioContext.Add("splitCollection", splitCollection);
@@ -171,10 +162,9 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
         [Given(@"I have a variable ""(.*)"" with a value ""(.*)""")]
         public void GivenIHaveAVariableWithAValue(string variable, string value)
         {
-            List<Tuple<string, string>> variableList;
-            scenarioContext.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
 
-            if(variableList == null)
+            if (variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 scenarioContext.Add("variableList", variableList);
@@ -217,13 +207,12 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
         public void ThenTheSplitResultWillBe(Table table)
         {
             List<TableRow> tableRows = table.Rows.ToList();
-            string error;
 
             var recordset = scenarioContext.Get<string>("recordset");
             var field = scenarioContext.Get<string>("recordField");
 
             var result = scenarioContext.Get<IDSFDataObject>("result");
-            List<string> recordSetValues = Enumerable.ToList<string>(RetrieveAllRecordSetFieldValues(result.Environment, recordset, field, out error));
+            List<string> recordSetValues = Enumerable.ToList<string>(RetrieveAllRecordSetFieldValues(result.Environment, recordset, field, out string error));
 
             Assert.AreEqual(tableRows.Count, recordSetValues.Count);
 
@@ -237,12 +226,10 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
         [Then(@"the split result for ""(.*)"" will be ""(.*)""")]
         public void ThenTheSplitResultForWillBe(string variable, string value)
         {
-            string actualValue;
-            string error;
             value = value.Replace('"', ' ').Trim();
             var result = scenarioContext.Get<IDSFDataObject>("result");
             GetScalarValueFromEnvironment(result.Environment, DataListUtil.RemoveLanguageBrackets(variable),
-                                       out actualValue, out error);
+                                       out string actualValue, out string error);
             if (!string.IsNullOrEmpty(actualValue))
             {
                 actualValue = actualValue.Replace('"', ' ').Trim();

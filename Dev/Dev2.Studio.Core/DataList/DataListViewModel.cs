@@ -478,8 +478,7 @@ namespace Dev2.Studio.ViewModels.DataList
                 return;
             }
 
-            string errorString;
-            CreateListsOfIDataListItemModelToBindTo(out errorString);
+            CreateListsOfIDataListItemModelToBindTo(out string errorString);
             if (!string.IsNullOrEmpty(errorString))
             {
                 throw new Exception(errorString);
@@ -1077,8 +1076,7 @@ namespace Dev2.Studio.ViewModels.DataList
 
                 var allErrorMessages = RecsetCollection.Select(model =>
                 {
-                    string errorMessage;
-                    if (_recordsetHandler.BuildRecordSetErrorMessages(model, out errorMessage))
+                    if (_recordsetHandler.BuildRecordSetErrorMessages(model, out string errorMessage))
                     {
                         return errorMessage;
                     }

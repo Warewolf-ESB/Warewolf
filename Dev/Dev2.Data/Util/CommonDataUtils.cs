@@ -406,8 +406,7 @@ namespace Dev2.Data.Util
 
             if (isObjectAttribute != null)
             {
-                bool isObject;
-                if (bool.TryParse(isObjectAttribute.Value, out isObject))
+                if (bool.TryParse(isObjectAttribute.Value, out bool isObject))
                 {
                     return isObject;
                 }
@@ -421,8 +420,7 @@ namespace Dev2.Data.Util
 
             if (isObjectAttribute != null)
             {
-                bool isArray;
-                if (bool.TryParse(isObjectAttribute.Value, out isArray))
+                if (bool.TryParse(isObjectAttribute.Value, out bool isArray))
                 {
                     return isArray;
                 }

@@ -90,8 +90,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             //---------------Assert Precondition----------------
             Assert.AreEqual(4, esbExecuteRequest.Args.Count);
             //---------------Execute Test ----------------------
-            ErrorResultTO errorResultTO;
-            internalServiceContainer.Execute(out errorResultTO, 1);
+            internalServiceContainer.Execute(out ErrorResultTO errorResultTO, 1);
             //---------------Test Result -----------------------
             Assert.AreEqual(1, errorResultTO.FetchErrors().Count);
             Assert.AreEqual(string.Format(ErrorResource.CouldNotLocateManagementService, "name"), errorResultTO.FetchErrors().Single());
@@ -116,8 +115,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             //---------------Assert Precondition----------------
             Assert.AreEqual(4, esbExecuteRequest.Args.Count);
             //---------------Execute Test ----------------------
-            ErrorResultTO errorResultTO;
-            var execute = internalServiceContainer.Execute(out errorResultTO, 1);
+            var execute = internalServiceContainer.Execute(out ErrorResultTO errorResultTO, 1);
             //---------------Test Result -----------------------
             locater.VerifyAll();
             

@@ -36,9 +36,8 @@ namespace Dev2.Runtime.ESB.Management.Services
             try
             {
                 Dev2Logger.Info("Save Sharepoint Source", GlobalConstants.WarewolfInfo);
-                StringBuilder resourceDefinition;
 
-                values.TryGetValue("SharepointServer", out resourceDefinition);
+                values.TryGetValue("SharepointServer", out StringBuilder resourceDefinition);
 
                 var src = serializer.Deserialize<SharePointServiceSourceDefinition>(resourceDefinition);
                 if (src.Path.EndsWith("\\"))

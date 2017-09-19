@@ -232,9 +232,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                 );
 
                             IDateTimeFormatter format = DateTimeConverterFactory.CreateFormatter();
-                            string result;
-                            string error;
-                            if(format.TryFormat(transObj, out result, out error))
+                            if (format.TryFormat(transObj, out string result, out string error))
                             {
                                 string expression = Result;
                                 dataObject.Environment.Assign(expression, result, update);

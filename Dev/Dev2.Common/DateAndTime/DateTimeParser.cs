@@ -99,9 +99,8 @@ namespace Dev2.Common.DateAndTime
 
         public string TranslateDotNetToDev2Format(string originalFormat, out string error)
         {
-            List<IDateTimeFormatPartTO> dotNetFormatParts;
             TryGetDateTimeFormatParts(originalFormat, _dateTimeFormatForwardLookupsForDotNet,
-                _dateTimeFormatPartOptionsForDotNet, out dotNetFormatParts, out error);
+                _dateTimeFormatPartOptionsForDotNet, out List<IDateTimeFormatPartTO> dotNetFormatParts, out error);
             dotNetFormatParts = ReplaceToken(dotNetFormatParts, "m", "Minutes");
             dotNetFormatParts = ReplaceToken(dotNetFormatParts, "mm", "Minutes");
             dotNetFormatParts = ReplaceToken(dotNetFormatParts, "M", "Month in single digit");
@@ -250,11 +249,10 @@ namespace Dev2.Common.DateAndTime
             while (culturesTried <= MaxAttempts)
             {
                 char[] dateTimeArray = data.ToArray();
-                List<IDateTimeFormatPartTO> formatParts;
                 int position = 0;
 
 
-                nothingDied = TryGetDateTimeFormatParts(inputFormat, _dateTimeFormatForwardLookups, _dateTimeFormatPartOptions, out formatParts, out error);
+                nothingDied = TryGetDateTimeFormatParts(inputFormat, _dateTimeFormatForwardLookups, _dateTimeFormatPartOptions, out List<IDateTimeFormatPartTO> formatParts, out error);
                 if (!string.IsNullOrEmpty(error))
                 {
                     return false;
@@ -267,9 +265,8 @@ namespace Dev2.Common.DateAndTime
                     {
                         IDateTimeFormatPartTO formatPart = formatParts[count];
 
-                        int resultLength;
                         if (TryGetDataFromDateTime(dateTimeArray, position, formatPart, result, parseAsTime,
-                            out resultLength, out error))
+                            out int resultLength, out error))
                         {
                             position += resultLength;
                         }

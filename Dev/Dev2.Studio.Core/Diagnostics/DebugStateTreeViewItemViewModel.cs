@@ -88,8 +88,7 @@ namespace Dev2.Studio.Core
             SelectionType = ActivitySelectionType.Add;
             IsSelected = content.ActivityType != ActivityType.Workflow;
 
-            Guid serverId;
-            var isRemote = Guid.TryParse(content.Server, out serverId);
+            var isRemote = Guid.TryParse(content.Server, out Guid serverId);
             if (isRemote || string.IsNullOrEmpty(content.Server))
             {
                 var envId = content.EnvironmentID;
@@ -230,8 +229,7 @@ namespace Dev2.Studio.Core
                     }
                     else
                     {
-                        DebugLineGroup group;
-                        if (!groups.TryGetValue(result.GroupName, out group))
+                        if (!groups.TryGetValue(result.GroupName, out DebugLineGroup group))
                         {
                             group = new DebugLineGroup(result.GroupName, result.Label)
                             {
@@ -242,8 +240,7 @@ namespace Dev2.Studio.Core
                             list.LineItems.Add(group);
                         }
 
-                        DebugLineGroupRow row;
-                        if (!group.Rows.TryGetValue(result.GroupIndex, out row))
+                        if (!group.Rows.TryGetValue(result.GroupIndex, out DebugLineGroupRow row))
                         {
                             row = new DebugLineGroupRow();
                             group.Rows.Add(result.GroupIndex, row);

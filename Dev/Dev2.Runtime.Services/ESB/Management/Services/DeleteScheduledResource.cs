@@ -57,8 +57,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             var result = new ExecuteMessage { HasError = false };
             Dev2Logger.Info("Delete Scheduled Resource Service", GlobalConstants.WarewolfInfo);
-            StringBuilder tmp;
-            values.TryGetValue("Resource", out tmp);
+            values.TryGetValue("Resource", out StringBuilder tmp);
             var serializer = new Dev2JsonSerializer();
 
             if (tmp != null)

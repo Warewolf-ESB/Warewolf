@@ -56,8 +56,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                     throw new ArgumentNullException(nameof(values));
                 }
-                StringBuilder tmp;
-                values.TryGetValue("ReloadResourceCatalogue", out tmp);
+                values.TryGetValue("ReloadResourceCatalogue", out StringBuilder tmp);
                 string reloadResourceCatalogueString = "";
                 if (tmp != null)
                 {

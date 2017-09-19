@@ -308,17 +308,14 @@ namespace Dev2.Runtime.Configuration.Settings
             IsInitializing = true;
 
             var postWorkflow = xml.Element("PostWorkflow");
-
-            bool boolValue;
-            int intValue;
-            IsLoggingEnabled = bool.TryParse(xml.AttributeSafe("IsLoggingEnabled"), out boolValue) && boolValue;
+            IsLoggingEnabled = bool.TryParse(xml.AttributeSafe("IsLoggingEnabled"), out bool boolValue) && boolValue;
             IsVersionLogged = bool.TryParse(xml.AttributeSafe("IsVersionLogged"), out boolValue) && boolValue;
             IsTypeLogged = bool.TryParse(xml.AttributeSafe("IsTypeLogged"), out boolValue) && boolValue;
             IsDurationLogged = bool.TryParse(xml.AttributeSafe("IsDurationLogged"), out boolValue) && boolValue;
             IsDataAndTimeLogged = bool.TryParse(xml.AttributeSafe("IsDataAndTimeLogged"), out boolValue) && boolValue;
             IsInputLogged = bool.TryParse(xml.AttributeSafe("IsInputLogged"), out boolValue) && boolValue;
             IsOutputLogged = bool.TryParse(xml.AttributeSafe("IsOutputLogged"), out boolValue) && boolValue;
-            NestedLevelCount = Int32.TryParse(xml.AttributeSafe("NestedLevelCount"), out intValue) ? intValue : 0;
+            NestedLevelCount = Int32.TryParse(xml.AttributeSafe("NestedLevelCount"), out int intValue) ? intValue : 0;
             LogAll = bool.TryParse(xml.AttributeSafe("LogAll"), out boolValue) && boolValue;
             LogFileDirectory = xml.AttributeSafe("LogFileDirectory");
             ServiceInput = xml.AttributeSafe("ServiceInput");

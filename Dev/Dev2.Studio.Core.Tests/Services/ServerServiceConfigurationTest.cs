@@ -115,8 +115,7 @@ namespace Dev2.Core.Tests.Services
         public void ServerServiceConfiguration_PromptUserToStartService_WhenServiceNotRunningAndNoneSelected_ExpectFalse()
         {
             //------------Setup for test--------------------------
-            Mock<IPopupController> controller;
-            var serverServiceConfiguration = CreateServerServiceConfiguration(false, MessageBoxResult.None, out controller);
+            var serverServiceConfiguration = CreateServerServiceConfiguration(false, MessageBoxResult.None, out Mock<IPopupController> controller);
 
             //------------Execute Test---------------------------
             var result = serverServiceConfiguration.PromptUserToStartService();
@@ -132,8 +131,7 @@ namespace Dev2.Core.Tests.Services
         public void ServerServiceConfiguration_PromptUserToStartService_WhenServiceNotRunningAndNoSelected_ExpectFalse()
         {
             //------------Setup for test--------------------------
-            Mock<IPopupController> controller;
-            var serverServiceConfiguration = CreateServerServiceConfiguration(false, MessageBoxResult.No, out controller);
+            var serverServiceConfiguration = CreateServerServiceConfiguration(false, MessageBoxResult.No, out Mock<IPopupController> controller);
 
             //------------Execute Test---------------------------
             var result = serverServiceConfiguration.PromptUserToStartService();
@@ -149,8 +147,7 @@ namespace Dev2.Core.Tests.Services
         public void ServerServiceConfiguration_PromptUserToStartService_WhenServiceNotRunningAndCancelSelected_ExpectFalse()
         {
             //------------Setup for test--------------------------
-            Mock<IPopupController> controller;
-            var serverServiceConfiguration = CreateServerServiceConfiguration(false, MessageBoxResult.Cancel, out controller);
+            var serverServiceConfiguration = CreateServerServiceConfiguration(false, MessageBoxResult.Cancel, out Mock<IPopupController> controller);
 
             //------------Execute Test---------------------------
             var result = serverServiceConfiguration.PromptUserToStartService();
@@ -166,8 +163,7 @@ namespace Dev2.Core.Tests.Services
         public void ServerServiceConfiguration_PromptUserToStartService_WhenServiceNotRunningAndOkSelected_ExpectTrue()
         {
             //------------Setup for test--------------------------
-            Mock<IPopupController> controller;
-            var serverServiceConfiguration = CreateServerServiceConfiguration(false, MessageBoxResult.OK, out controller);
+            var serverServiceConfiguration = CreateServerServiceConfiguration(false, MessageBoxResult.OK, out Mock<IPopupController> controller);
 
             //------------Execute Test---------------------------
             var result = serverServiceConfiguration.PromptUserToStartService();
@@ -183,8 +179,7 @@ namespace Dev2.Core.Tests.Services
         public void ServerServiceConfiguration_PromptUserToStartService_WhenServiceNotRunningAndYesSelected_ExpectTrue()
         {
             //------------Setup for test--------------------------
-            Mock<IPopupController> controller;
-            var serverServiceConfiguration = CreateServerServiceConfiguration(false, MessageBoxResult.Yes, out controller);
+            var serverServiceConfiguration = CreateServerServiceConfiguration(false, MessageBoxResult.Yes, out Mock<IPopupController> controller);
 
             //------------Execute Test---------------------------
             var result = serverServiceConfiguration.PromptUserToStartService();
@@ -244,8 +239,7 @@ namespace Dev2.Core.Tests.Services
         public void ServerServiceConfiguration_StartService_WhenServiceNotRunningAndProblemsStarting_ExpectFalse()
         {
             //------------Setup for test--------------------------
-            Mock<IPopupController> controller;
-            var serverServiceConfiguration = CreateServerServiceConfiguration(false, false, true, out controller);
+            var serverServiceConfiguration = CreateServerServiceConfiguration(false, false, true, out Mock<IPopupController> controller);
 
             //------------Execute Test---------------------------
             var result = serverServiceConfiguration.StartService();
@@ -261,8 +255,7 @@ namespace Dev2.Core.Tests.Services
         public void ServerServiceConfiguration_StartService_WhenServiceNotRunningAndDoesNotExist_ExpectFalse()
         {
             //------------Setup for test--------------------------
-            Mock<IPopupController> controller;
-            var serverServiceConfiguration = CreateServerServiceConfiguration(false, false, false, out controller);
+            var serverServiceConfiguration = CreateServerServiceConfiguration(false, false, false, out Mock<IPopupController> controller);
 
             //------------Execute Test---------------------------
             var result = serverServiceConfiguration.StartService();
@@ -293,8 +286,7 @@ namespace Dev2.Core.Tests.Services
         public void ServerServiceConfiguration_DoesServiceExist_WhenServiceDoesNotExist_ExpectFalse()
         {
             //------------Setup for test--------------------------
-            Mock<IPopupController> controller;
-            var serverServiceConfiguration = CreateServerServiceConfiguration(false, false, false, out controller);
+            var serverServiceConfiguration = CreateServerServiceConfiguration(false, false, false, out Mock<IPopupController> controller);
 
             //------------Execute Test---------------------------
             var result = serverServiceConfiguration.DoesServiceExist();

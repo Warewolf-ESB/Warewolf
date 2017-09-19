@@ -41,9 +41,8 @@ namespace Dev2.Studio.Core.AppResources.Converters
                 }
             });
 
-            bool invert;
             var invertStr = parameter as string;
-            bool.TryParse(invertStr, out invert);
+            bool.TryParse(invertStr, out bool invert);
 
             var result = strings.Any(string.IsNullOrEmpty) ? Visibility.Collapsed : Visibility.Visible;
 

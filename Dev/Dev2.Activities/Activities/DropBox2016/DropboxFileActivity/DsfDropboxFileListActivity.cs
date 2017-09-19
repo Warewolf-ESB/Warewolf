@@ -107,8 +107,7 @@ namespace Dev2.Activities.DropBox2016.DropboxFileActivity
 
         protected override List<string> PerformExecution(Dictionary<string, string> evaluatedValues)
         {
-            string toPath;
-            evaluatedValues.TryGetValue("ToPath", out toPath);
+            evaluatedValues.TryGetValue("ToPath", out string toPath);
 
             IDropboxSingleExecutor<IDropboxResult> dropboxFileRead = new DropboxFileRead(IsRecursive, toPath, IncludeMediaInfo, IncludeDeleted);
             var dropboxSingleExecutor = GetDropboxSingleExecutor(dropboxFileRead);

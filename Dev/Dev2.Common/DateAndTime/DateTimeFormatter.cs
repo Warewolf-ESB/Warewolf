@@ -12,8 +12,7 @@ using Dev2.Common.Interfaces.Core.Convertors.DateAndTime;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-
-
+using System.Text;
 
 namespace Dev2.Common.DateAndTime
 {
@@ -60,15 +59,14 @@ namespace Dev2.Common.DateAndTime
         /// </summary>
         public bool TryFormat(IDateTimeOperationTO dateTimeTO, out string result, out string error)
         {
-            result = "";
+            StringBuilder formattedResult = new StringBuilder();
             IDateTimeParser dateTimeParser = DateTimeConverterFactory.CreateParser();
 
             bool nothingDied = true;
-            IDateTimeResultTO dateTimeResultTO;
-            
+
             dateTimeTO.InputFormat = dateTimeTO.InputFormat?.Trim();
-            
-            if (dateTimeParser.TryParseDateTime(dateTimeTO.DateTime.Trim(), dateTimeTO.InputFormat, out dateTimeResultTO,
+
+            if (dateTimeParser.TryParseDateTime(dateTimeTO.DateTime.Trim(), dateTimeTO.InputFormat, out IDateTimeResultTO dateTimeResultTO,
                 out error))
             {
                 //
@@ -78,8 +76,7 @@ namespace Dev2.Common.DateAndTime
                 if (!string.IsNullOrWhiteSpace(dateTimeTO.TimeModifierType))
                 {
                     //2012.09.27: massimo.guerrera - Added for the new functionality for the time modification
-                    Func<DateTime, int, DateTime> funcToExecute;
-                    if (TimeModifiers.TryGetValue(dateTimeTO.TimeModifierType, out funcToExecute) &&
+                    if (TimeModifiers.TryGetValue(dateTimeTO.TimeModifierType, out Func<DateTime, int, DateTime> funcToExecute) &&
                         funcToExecute != null)
                     {
                         tmpDateTime = funcToExecute(tmpDateTime, dateTimeTO.TimeModifierAmount);
@@ -114,12 +111,11 @@ namespace Dev2.Common.DateAndTime
                     //
                     // Format to output format
                     //
-                    List<IDateTimeFormatPartTO> formatParts;
 
                     //
                     // Get output format parts
                     //
-                    nothingDied = DateTimeParser.TryGetDateTimeFormatParts(outputFormat, out formatParts, out error);
+                    nothingDied = DateTimeParser.TryGetDateTimeFormatParts(outputFormat, out List<IDateTimeFormatPartTO> formatParts, out error);
 
                     if (nothingDied)
                     {
@@ -130,14 +126,13 @@ namespace Dev2.Common.DateAndTime
 
                             if (formatPart.Isliteral)
                             {
-                                result += formatPart.Value;
+                                formattedResult.Append(formatPart.Value);
                             }
                             else
                             {
-                                Func<IDateTimeResultTO, DateTime, string> func;
-                                if (DateTimeFormatParts.TryGetValue(formatPart.Value, out func))
+                                if (DateTimeFormatParts.TryGetValue(formatPart.Value, out Func<IDateTimeResultTO, DateTime, string> func))
                                 {
-                                    result += func(dateTimeResultTO, tmpDateTime);
+                                    formattedResult.Append(func(dateTimeResultTO, tmpDateTime));
                                 }
                                 else
                                 {
@@ -156,6 +151,7 @@ namespace Dev2.Common.DateAndTime
                 nothingDied = false;
             }
 
+            result = formattedResult.ToString();
             return nothingDied;
         }
 

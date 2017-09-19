@@ -252,8 +252,7 @@ namespace Dev2.Collections
             {
                 _version++;
 
-                DictionaryEntry entry;
-                var index = GetIndexAndEntryForKey(key, out entry);
+                var index = GetIndexAndEntryForKey(key, out DictionaryEntry entry);
                 FireEntryAddedNotifications(entry, index);
             }
         }
@@ -269,8 +268,7 @@ namespace Dev2.Collections
 
         bool DoRemoveEntry(TKey key)
         {
-            DictionaryEntry entry;
-            var index = GetIndexAndEntryForKey(key, out entry);
+            var index = GetIndexAndEntryForKey(key, out DictionaryEntry entry);
 
             var result = RemoveEntry(key);
             if(result)
@@ -287,10 +285,9 @@ namespace Dev2.Collections
 
         void DoSetEntry(TKey key, TValue value)
         {
-            DictionaryEntry entry;
-            var index = GetIndexAndEntryForKey(key, out entry);
+            var index = GetIndexAndEntryForKey(key, out DictionaryEntry entry);
 
-            if(SetEntry(key, value))
+            if (SetEntry(key, value))
             {
                 _version++;
 

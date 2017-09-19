@@ -39,10 +39,9 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset
 
         protected override void BuildDataList()
         {
-            List<Tuple<string, string>> variableList;
-            scenarioContext.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
 
-            if(variableList == null)
+            if (variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 scenarioContext.Add("variableList", variableList);
@@ -52,10 +51,8 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset
             BuildShapeAndTestData();
 
             var recordset = scenarioContext.Get<string>("recordset");
-            bool treaNullAsZero;
-            scenarioContext.TryGetValue("treaNullAsZero", out treaNullAsZero);
-            DsfActivityAbstract<string> delete;
-            scenarioContext.TryGetValue("activityMode", out delete);
+            scenarioContext.TryGetValue("treaNullAsZero", out bool treaNullAsZero);
+            scenarioContext.TryGetValue("activityMode", out DsfActivityAbstract<string> delete);
             if (delete != null)
             {
                 delete = new DsfDeleteRecordNullHandlerActivity
@@ -91,10 +88,9 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset
                 var rs = table.Header.ToArray()[0];
                 var field = table.Header.ToArray()[1];
 
-                List<Tuple<string, string>> emptyRecordset;
 
-                bool isAdded = scenarioContext.TryGetValue("rs", out emptyRecordset);
-                if(!isAdded)
+                bool isAdded = scenarioContext.TryGetValue("rs", out List<Tuple<string, string>> emptyRecordset);
+                if (!isAdded)
                 {
                     emptyRecordset = new List<Tuple<string, string>>();
                     scenarioContext.Add("rs", emptyRecordset);
@@ -104,10 +100,9 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset
 
             foreach(TableRow t in tableRows)
             {
-                List<Tuple<string, string>> variableList;
-                scenarioContext.TryGetValue("variableList", out variableList);
+                scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
 
-                if(variableList == null)
+                if (variableList == null)
                 {
                     variableList = new List<Tuple<string, string>>();
                     scenarioContext.Add("variableList", variableList);
@@ -119,9 +114,8 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset
         [Given(@"an index ""(.*)"" exists with a value ""(.*)""")]
         public void GivenAnIndexExistsWithAValue(string variable, string value)
         {
-            List<Tuple<string, string>> variableList;
             value = value.Replace('"', ' ').Trim();
-            scenarioContext.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
 
             if(variableList == null)
             {
@@ -134,9 +128,8 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset
         [Given(@"I have a delete variable ""(.*)"" equal to ""(.*)""")]
         public void GivenIHaveADeleteVariableEqualTo(string variable, string value)
         {
-            List<Tuple<string, string>> variableList;
             value = value.Replace('"', ' ').Trim();
-            scenarioContext.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
 
             if(variableList == null)
             {
@@ -158,12 +151,10 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset
         [Then(@"the delete result should be ""(.*)""")]
         public void ThenTheDeleteResultShouldBe(string expectedResult)
         {
-            string error;
-            string actualValue;
             expectedResult = expectedResult.Replace('"', ' ').Trim();
             var result = scenarioContext.Get<IDSFDataObject>("result");
             GetScalarValueFromEnvironment(result.Environment, ResultVariable,
-                                       out actualValue, out error);
+                                       out string actualValue, out string error);
             //if(string.IsNullOrEmpty(expectedResult))
             //{
             //    expectedResult = null;

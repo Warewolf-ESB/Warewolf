@@ -22,14 +22,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
     {
         public static bool ValueIsNumber(string value)
         {
-            double val;
-            return double.TryParse(value, out val);
+            return double.TryParse(value, out double val);
         }
 
         public static bool ValueIsDate(string value)
         {
-            DateTime date;
-            return DateTime.TryParse(value, out date);
+            return DateTime.TryParse(value, out DateTime date);
         }
 
     

@@ -45,9 +45,8 @@ namespace Dev2.Services.Sql
                     {
                         try
                         {
-                            List<IDbDataParameter> outParameters ;
 
-                            List<IDbDataParameter> parameters = GetProcedureParameters(command, dbName, fullProcedureName, out outParameters);
+                            List<IDbDataParameter> parameters = GetProcedureParameters(command, dbName, fullProcedureName, out List<IDbDataParameter> outParameters);
                             string helpText = FetchHelpTextContinueOnException(fullProcedureName, _connection);
        
                             procedureProcessor(command, parameters, outParameters, helpText, fullProcedureName);
@@ -170,8 +169,7 @@ namespace Dev2.Services.Sql
                     {
                         try
                         {
-                            List<IDbDataParameter> isOut;
-                            List<IDbDataParameter> parameters = GetProcedureParameters(command, dbName, fullProcedureName,out isOut);
+                            List<IDbDataParameter> parameters = GetProcedureParameters(command, dbName, fullProcedureName, out List<IDbDataParameter> isOut);
                             string helpText = FetchHelpTextContinueOnException(fullProcedureName, _connection);
                            
                             procedureProcessor(command, parameters, helpText, fullProcedureName);
@@ -327,8 +325,7 @@ namespace Dev2.Services.Sql
             using (IDbCommand command = _factory.CreateCommand(_connection, CommandType.StoredProcedure,fullProcedureName))
             {
 
-                List<IDbDataParameter> isOut;
-                GetProcedureParameters(command, dbName, fullProcedureName, out isOut);
+                GetProcedureParameters(command, dbName, fullProcedureName, out List<IDbDataParameter> isOut);
                 return isOut.Select(a=>a as MySqlParameter).ToList();
 
             }
@@ -373,8 +370,7 @@ namespace Dev2.Services.Sql
                         {
                             var split = parameterx.Split(' ');
 
-                            MySqlDbType sqlType;
-                            Enum.TryParse(split.Where(a=>a.Trim().Length>0).ToArray()[1], true, out sqlType);
+                            Enum.TryParse(split.Where(a => a.Trim().Length > 0).ToArray()[1], true, out MySqlDbType sqlType);
 
                             var sqlParameter = new MySqlParameter(split.First(a => a.Trim().Length > 0), sqlType) { Direction = direction };
                             if (!isout)

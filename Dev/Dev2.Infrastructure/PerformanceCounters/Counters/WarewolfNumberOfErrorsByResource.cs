@@ -6,9 +6,8 @@ using Dev2.Common.Interfaces.Monitoring;
 
 namespace Dev2.PerformanceCounters.Counters
 {
-    public class WarewolfNumberOfErrorsByResource : IResourcePerformanceCounter
+    public class WarewolfNumberOfErrorsByResource : IResourcePerformanceCounter, IDisposable
     {
-
         private PerformanceCounter _counter;
         private bool _started;
         private readonly WarewolfPerfCounterType _perfCounterType;
@@ -90,6 +89,11 @@ namespace Dev2.PerformanceCounters.Counters
             {
                 _counter.RawValue = 0;
             }
+        }
+
+        public void Dispose()
+        {
+            _counter.Dispose();
         }
 
         #region Implementation of IResourcePerformanceCounter

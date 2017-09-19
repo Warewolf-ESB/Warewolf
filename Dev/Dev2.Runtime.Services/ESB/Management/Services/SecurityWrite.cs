@@ -47,12 +47,10 @@ namespace Dev2.Runtime.ESB.Management.Services
                 throw new InvalidDataException(ErrorResource.EmptyValuesPassed);
             }
 
-            StringBuilder securitySettings;
-            values.TryGetValue("SecuritySettings", out securitySettings);
-            StringBuilder timeoutPeriodString;
-            values.TryGetValue("TimeoutPeriod", out timeoutPeriodString);
+            values.TryGetValue("SecuritySettings", out StringBuilder securitySettings);
+            values.TryGetValue("TimeoutPeriod", out StringBuilder timeoutPeriodString);
 
-            if(securitySettings == null || securitySettings.Length == 0)
+            if (securitySettings == null || securitySettings.Length == 0)
             {
                 throw new InvalidDataException(ErrorResource.EmptySecuritySettingsPassed);
             }

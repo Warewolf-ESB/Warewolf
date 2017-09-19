@@ -51,9 +51,7 @@ namespace ActivityUnitTests.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
             const string expected = "209";
-            string actual;
-            string error;
-            GetScalarValueFromEnvironment(result.Environment, "Result", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "Result", out string actual, out string error);
             // remove test datalist ;)
 
             Assert.AreEqual(expected, actual);
@@ -73,9 +71,7 @@ namespace ActivityUnitTests.ActivityTests
                          );
 
             IDSFDataObject result = ExecuteProcess();
-            string error;
-            IList<string> results;
-            GetRecordSetFieldValueFromDataList(result.Environment, "resCol", "res", out results, out error);
+            GetRecordSetFieldValueFromDataList(result.Environment, "resCol", "res", out IList<string> results, out string error);
             // remove test datalist ;)
 
             Assert.AreEqual("8847", results[0]);
@@ -97,9 +93,7 @@ namespace ActivityUnitTests.ActivityTests
                             );
             IDSFDataObject result = ExecuteProcess();
             const string expected = "209";
-            string actual;
-            string error;
-            GetScalarValueFromEnvironment(result.Environment, "Result", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "Result", out string actual, out string error);
 
             // remove test datalist ;)
 
@@ -123,10 +117,7 @@ namespace ActivityUnitTests.ActivityTests
                          , "[[MyTestResult]]");
 
             IDSFDataObject result = ExecuteProcess();
-
-            string actual;
-            string error;
-            GetScalarValueFromEnvironment(result.Environment, "MyTestResult", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "MyTestResult", out string actual, out string error);
 
             Assert.AreEqual("0", actual);
         }

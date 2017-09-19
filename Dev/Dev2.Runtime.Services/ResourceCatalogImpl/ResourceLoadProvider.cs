@@ -315,12 +315,9 @@ namespace Dev2.Runtime.ResourceCatalogImpl
 
         public IList<Resource> GetResourceList(Guid workspaceId, Dictionary<string, string> filterParams)
         {
-            string resourceName;
-            filterParams.TryGetValue("resourceName", out resourceName);
-            string type;
-            filterParams.TryGetValue("type", out type);
-            string guidCsv;
-            filterParams.TryGetValue("guidCsv", out guidCsv);
+            filterParams.TryGetValue("resourceName", out string resourceName);
+            filterParams.TryGetValue("type", out string type);
+            filterParams.TryGetValue("guidCsv", out string guidCsv);
             var workspaceResources = GetResources(workspaceId);
 
             if (!string.IsNullOrEmpty(guidCsv) || filterParams.ContainsKey(nameof(guidCsv)))
@@ -398,13 +395,12 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             IResource foundResource = null;
             try
             {
-                List<IResource> resources;
-                if(_workspaceResources.TryGetValue(workspaceID, out resources))
+                if (_workspaceResources.TryGetValue(workspaceID, out List<IResource> resources))
                 {
                     foundResource = resources.AsParallel().FirstOrDefault(resource => resource.ResourceID == resourceID);
                 }
 
-                if(foundResource == null && workspaceID != GlobalConstants.ServerWorkspaceID)
+                if (foundResource == null && workspaceID != GlobalConstants.ServerWorkspaceID)
                 {
                     if(_workspaceResources.TryGetValue(GlobalConstants.ServerWorkspaceID, out resources))
                     {
@@ -426,13 +422,12 @@ namespace Dev2.Runtime.ResourceCatalogImpl
         public StringBuilder GetResourceContents(Guid workspaceID, Guid resourceID)
         {
             IResource foundResource = null;
-            List<IResource> resources;
-            if(_workspaceResources.TryGetValue(workspaceID, out resources))
+            if (_workspaceResources.TryGetValue(workspaceID, out List<IResource> resources))
             {
                 foundResource = resources.AsParallel().FirstOrDefault(resource => resource.ResourceID == resourceID);
             }
 
-            if(foundResource == null && workspaceID != GlobalConstants.ServerWorkspaceID)
+            if (foundResource == null && workspaceID != GlobalConstants.ServerWorkspaceID)
             {
                 if(_workspaceResources.TryGetValue(GlobalConstants.ServerWorkspaceID, out resources))
                 {
@@ -543,8 +538,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             }
             else
             {
-                List<DynamicServiceObjectBase> objects;
-                if (!FrequentlyUsedServices.TryGetValue(resource.ResourceName, out objects))
+                if (!FrequentlyUsedServices.TryGetValue(resource.ResourceName, out List<DynamicServiceObjectBase> objects))
                 {
                     objects = GenerateObjectGraph(resource);
                 }
@@ -564,8 +558,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             var guidStrs = guidCsv.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
             foreach (var guidStr in guidStrs)
             {
-                Guid guid;
-                if (Guid.TryParse(guidStr, out guid))
+                if (Guid.TryParse(guidStr, out Guid guid))
                 {
                     guids.Add(guid);
                 }

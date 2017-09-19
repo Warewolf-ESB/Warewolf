@@ -57,8 +57,7 @@ namespace Dev2.Activities.Specs.Toolbox.Scripting.Script
 
         protected override void BuildDataList()
         {
-            List<Tuple<string, string>> variableList;
-            scenarioContext.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
 
             if (variableList == null)
             {
@@ -69,12 +68,9 @@ namespace Dev2.Activities.Specs.Toolbox.Scripting.Script
             variableList.Add(new Tuple<string, string>(ResultVariable, ""));
             BuildShapeAndTestData();
 
-            string scriptToExecute;
-            scenarioContext.TryGetValue("scriptToExecute", out scriptToExecute);
-            enScriptType language;
-            scenarioContext.TryGetValue("language", out language);
-            DsfJavascriptActivity javascriptActivity;
-            scenarioContext.TryGetValue("javascript", out javascriptActivity);
+            scenarioContext.TryGetValue("scriptToExecute", out string scriptToExecute);
+            scenarioContext.TryGetValue("language", out enScriptType language);
+            scenarioContext.TryGetValue("javascript", out DsfJavascriptActivity javascriptActivity);
 
             if (javascriptActivity != null)
             {
@@ -89,8 +85,7 @@ namespace Dev2.Activities.Specs.Toolbox.Scripting.Script
                 return;
             }
 
-            DsfPythonActivity pythonActivity;
-            FeatureContext.Current.TryGetValue("pythonActivity", out pythonActivity);
+            FeatureContext.Current.TryGetValue("pythonActivity", out DsfPythonActivity pythonActivity);
 
             if (pythonActivity != null)
             {
@@ -105,8 +100,7 @@ namespace Dev2.Activities.Specs.Toolbox.Scripting.Script
                 return;
             }
 
-            DsfRubyActivity rubyActivity;
-            FeatureContext.Current.TryGetValue("rubyActivity", out rubyActivity);
+            FeatureContext.Current.TryGetValue("rubyActivity", out DsfRubyActivity rubyActivity);
 
             if (rubyActivity != null)
             {
@@ -138,8 +132,7 @@ namespace Dev2.Activities.Specs.Toolbox.Scripting.Script
         [Given(@"I have a script variable ""(.*)"" with this value ""(.*)""")]
         public void GivenIHaveAScriptVariableWithThisValue(string variable, string value)
         {
-            List<Tuple<string, string>> variableList;
-            scenarioContext.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
 
             if (variableList == null)
             {
@@ -184,11 +177,9 @@ namespace Dev2.Activities.Specs.Toolbox.Scripting.Script
         [Then(@"the script result should be ""(.*)""")]
         public void ThenTheScriptResultShouldBe(string expectedResult)
         {
-            string error;
-            string actualValue;
             expectedResult = expectedResult.Replace('"', ' ').Trim();
             var result = scenarioContext.Get<IDSFDataObject>("result");
-            GetScalarValueFromEnvironment(result.Environment, ResultVariable, out actualValue, out error);
+            GetScalarValueFromEnvironment(result.Environment, ResultVariable, out string actualValue, out string error);
             if (string.IsNullOrEmpty(expectedResult))
             {
                 Assert.IsTrue(string.IsNullOrEmpty(actualValue));

@@ -224,8 +224,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 if (!string.IsNullOrEmpty(OnErrorWorkflow))
                 {
                     var esbChannel = dataObject.EsbChannel;
-                    ErrorResultTO tmpErrors;
-                    esbChannel.ExecuteLogErrorRequest(dataObject, dataObject.WorkspaceID, OnErrorWorkflow, out tmpErrors, update);
+                    esbChannel.ExecuteLogErrorRequest(dataObject, dataObject.WorkspaceID, OnErrorWorkflow, out ErrorResultTO tmpErrors, update);
                     if (tmpErrors != null)
                     {
                         dataObject.Environment.AddError(tmpErrors.MakeDisplayReady());
@@ -252,8 +251,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             var service = ExecutableServiceRepository.Instance.Get(dataObject.WorkspaceID, dataObject.ResourceID);
             if (service != null)
             {
-                Guid parentInstanceID;
-                Guid.TryParse(dataObject.ParentInstanceID, out parentInstanceID);
+                Guid.TryParse(dataObject.ParentInstanceID, out Guid parentInstanceID);
                 var debugState = new DebugState
                 {
                     ID = dataObject.DataListID,
@@ -330,8 +328,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             bool clearErrors = false;
             try
             {
-                Guid remoteID;
-                Guid.TryParse(dataObject.RemoteInvokerID, out remoteID);
+                Guid.TryParse(dataObject.RemoteInvokerID, out Guid remoteID);
 
                 clearErrors = Dispatch(dataObject, stateType, update, startTime, endTime, remoteID);
 
@@ -904,8 +901,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             if (dataObject.IsDebugMode())
             {
                 string errorMessage = string.Empty;
-                Guid remoteID;
-                Guid.TryParse(dataObject.RemoteInvokerID, out remoteID);
+                Guid.TryParse(dataObject.RemoteInvokerID, out Guid remoteID);
                 InitializeDebugState(StateType.Before, dataObject, remoteID, false, errorMessage);
             }
         }
@@ -914,8 +910,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             if (_debugState != null)
             {
-                Guid remoteID;
-                Guid.TryParse(dataObject.RemoteInvokerID, out remoteID);
+                Guid.TryParse(dataObject.RemoteInvokerID, out Guid remoteID);
                 var res = ResourceCatalog.GetResource(GlobalConstants.ServerWorkspaceID, remoteID);
                 string name = remoteID != Guid.Empty ? res != null ? res.ResourceName : "localhost" : "localhost";
                 _debugState.Server = name;
@@ -928,8 +923,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
         protected void InitializeDebugState(StateType stateType, IDSFDataObject dataObject, Guid remoteID, bool hasError, string errorMessage)
         {
-            Guid parentInstanceID;
-            Guid.TryParse(dataObject.ParentInstanceID, out parentInstanceID);
+            Guid.TryParse(dataObject.ParentInstanceID, out Guid parentInstanceID);
             if (stateType != StateType.Duration)
             {
                 UpdateDebugParentID(dataObject);

@@ -401,9 +401,7 @@ namespace Dev2.Data.Util
         /// </summary>
         public static bool IsXml(string data)
         {
-            bool isFragment;
-            bool isHtml;
-            var isXml = XmlHelper.IsXml(data, out isFragment, out isHtml);
+            var isXml = XmlHelper.IsXml(data, out bool isFragment, out bool isHtml);
             return isXml && !isFragment && !isHtml;
         }
 
@@ -412,9 +410,8 @@ namespace Dev2.Data.Util
         /// </summary>
         public static bool IsXml(string data, out bool isFragment)
         {
-            bool isHtml;
 
-            return XmlHelper.IsXml(data, out isFragment, out isHtml) && !isFragment && !isHtml;
+            return XmlHelper.IsXml(data, out isFragment, out bool isHtml) && !isFragment && !isHtml;
         }
 
         public static bool IsJson(string data)
@@ -568,8 +565,7 @@ namespace Dev2.Data.Util
                 if (IsValueRecordset(variable))
                 {
                     var index = ExtractIndexRegionFromRecordset(variable);
-                    int val;
-                    if (!int.TryParse(index, out val))
+                    if (!int.TryParse(index, out int val))
                     {
                         return true;
                     }

@@ -75,8 +75,7 @@ namespace Dev2.Util
 
         private int ParseInt(string s, int defaultValue)
         {
-            int result;
-            return int.TryParse(s, out result) ? result : defaultValue;
+            return int.TryParse(s, out int result) ? result : defaultValue;
         }
     }
 }

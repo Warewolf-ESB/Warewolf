@@ -351,8 +351,7 @@ namespace Dev2.Settings.Scheduler
                     }
                     else
                     {
-                        int val;
-                        if (value.IsWholeNumber(out val))
+                        if (value.IsWholeNumber(out int val))
                         {
                             SelectedTask.NumberOfHistoryToKeep = val;
                             NotifyOfPropertyChange(() => IsDirty);

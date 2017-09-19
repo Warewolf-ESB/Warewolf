@@ -102,8 +102,7 @@ namespace Dev2.Runtime.ESB.Control
                 using (var invoker = new EsbServiceInvoker(this,theWorkspace, request))
                 {
                     // Should return the top level DLID
-                    ErrorResultTO invokeErrors;
-                    resultID = invoker.Invoke(dataObject, out invokeErrors);
+                    resultID = invoker.Invoke(dataObject, out ErrorResultTO invokeErrors);
                     errors.MergeErrors(invokeErrors);
                 }
             }
@@ -291,9 +290,8 @@ namespace Dev2.Runtime.ESB.Control
                     Task.Factory.StartNew(() =>
                     {
                         Dev2Logger.Info("ASYNC EXECUTION USER CONTEXT IS [ " + Thread.CurrentPrincipal.Identity.Name + " ]", dataObject.ExecutionID.ToString());
-                        ErrorResultTO error;
                         clonedDataObject.Environment = shapeDefinitionsToEnvironment;
-                        executionContainer.Execute(out error, update);
+                        executionContainer.Execute(out ErrorResultTO error, update);
                         return clonedDataObject;
                     }).ContinueWith(task =>
                     {

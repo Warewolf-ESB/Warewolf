@@ -709,8 +709,7 @@ namespace Dev2.Studio.Core.Models
 
                 if (columnName == "HelpLink")
                 {
-                    Uri testUri;
-                    if (!Uri.TryCreate(HelpLink, UriKind.Absolute, out testUri))
+                    if (!Uri.TryCreate(HelpLink, UriKind.Absolute, out Uri testUri))
                     {
                         errMsg = "The help link is not in a valid format";
                         AddError(columnName, errMsg);

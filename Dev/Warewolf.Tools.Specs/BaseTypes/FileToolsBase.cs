@@ -42,8 +42,7 @@ namespace Warewolf.Tools.Specs.BaseTypes
         protected void RemovedFilesCreatedForTesting()
         {
             var broker = ActivityIOFactory.CreateOperationsBroker();
-            string destLocation;
-            if (scenarioContext != null && scenarioContext.TryGetValue(CommonSteps.ActualDestinationHolder, out destLocation))
+            if (scenarioContext != null && scenarioContext.TryGetValue(CommonSteps.ActualDestinationHolder, out string destLocation))
             {
                 IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(destLocation,
                     scenarioContext.Get<string>(CommonSteps.DestinationUsernameHolder),
@@ -57,8 +56,7 @@ namespace Warewolf.Tools.Specs.BaseTypes
                 }
             }
 
-            string sourceLocation;
-            if (scenarioContext != null && scenarioContext.TryGetValue(CommonSteps.ActualSourceHolder, out sourceLocation))
+            if (scenarioContext != null && scenarioContext.TryGetValue(CommonSteps.ActualSourceHolder, out string sourceLocation))
             {
                 if (string.IsNullOrEmpty(sourceLocation))
                 {

@@ -129,9 +129,7 @@ namespace Dev2.Activities
             InitializeDebug(dataObject);
             try
             {
-                IWarewolfIterator batchItr;
-                IWarewolfIterator timeoutItr;
-                var parametersIteratorCollection = BuildParametersIteratorCollection(dataObject.Environment, out batchItr, out timeoutItr, update);
+                var parametersIteratorCollection = BuildParametersIteratorCollection(dataObject.Environment, out IWarewolfIterator batchItr, out IWarewolfIterator timeoutItr, update);
 
                 var currentOptions = BuildSqlBulkCopyOptions();
                 var runtimeDatabase = ResourceCatalog.GetResource<DbSource>(dataObject.WorkspaceID, Database.ResourceID);
@@ -385,8 +383,7 @@ namespace Dev2.Activities
                 var timeoutString = parametersIteratorCollection.FetchNextValue(timeoutItr);
                 if(!string.IsNullOrEmpty(timeoutString))
                 {
-                    int parsedValue;
-                    if(int.TryParse(timeoutString, out parsedValue))
+                    if (int.TryParse(timeoutString, out int parsedValue))
                     {
                         timeout = parsedValue;
                     }
@@ -405,8 +402,7 @@ namespace Dev2.Activities
                 var batchSizeString = parametersIteratorCollection.FetchNextValue(batchItr);
                 if(!string.IsNullOrEmpty(batchSizeString))
                 {
-                    int parsedValue;
-                    if(int.TryParse(batchSizeString, out parsedValue))
+                    if (int.TryParse(batchSizeString, out int parsedValue))
                     {
                         batchSize = parsedValue;
                     }

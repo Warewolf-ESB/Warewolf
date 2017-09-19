@@ -43,8 +43,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Decision
         {
             BuildShapeAndTestData();
             var decisionActivity = new DsfFlowDecisionActivity();
-            Dev2DecisionMode mode;
-            scenarioContext.TryGetValue("mode", out mode);
+            scenarioContext.TryGetValue("mode", out Dev2DecisionMode mode);
 
             var decisionModels =
                 scenarioContext.Get<List<Tuple<string, enDecisionType, string, string>>>("decisionModels");
@@ -69,10 +68,9 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Decision
             decisionActivity.ExpressionText = string.Join("", GlobalConstants.InjectedDecisionHandler, "(\"", modelData,
                                                           "\",", GlobalConstants.InjectedDecisionDataListVariable, ")");
 
-            List<Tuple<string, string>> variableList;
-            scenarioContext.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
 
-            if(variableList == null)
+            if (variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 scenarioContext.Add("variableList", variableList);
@@ -99,10 +97,9 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Decision
         [Given(@"a decision variable ""(.*)"" value ""(.*)""")]
         public void GivenADecisionVariableValue(string variable, string value)
         {
-            List<Tuple<string, string>> variableList;
-            scenarioContext.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
 
-            if(variableList == null)
+            if (variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 scenarioContext.Add("variableList", variableList);
@@ -133,10 +130,9 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Decision
         [Given(@"is ""(.*)"" ""(.*)"" ""(.*)""")]
         public void GivenIs(string variable1, string decision, string variable2)
         {
-            List<Tuple<string, enDecisionType, string, string>> decisionModels;
-            scenarioContext.TryGetValue("decisionModels", out decisionModels);
+            scenarioContext.TryGetValue("decisionModels", out List<Tuple<string, enDecisionType, string, string>> decisionModels);
 
-            if(decisionModels == null)
+            if (decisionModels == null)
             {
                 decisionModels = new List<Tuple<string, enDecisionType, string, string>>();
                 scenarioContext.Add("decisionModels", decisionModels);
@@ -151,10 +147,9 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Decision
         [Given(@"I want to check ""(.*)""")]
         public void GivenIWantToCheck(string decision)
         {
-            List<Tuple<string, enDecisionType, string, string>> decisionModels;
-            scenarioContext.TryGetValue("decisionModels", out decisionModels);
+            scenarioContext.TryGetValue("decisionModels", out List<Tuple<string, enDecisionType, string, string>> decisionModels);
 
-            if(decisionModels == null)
+            if (decisionModels == null)
             {
                 decisionModels = new List<Tuple<string, enDecisionType, string, string>>();
                 scenarioContext.Add("decisionModels", decisionModels);
@@ -169,10 +164,9 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Decision
         [Given(@"decide if ""(.*)"" ""(.*)""")]
         public void GivenDecideIf(string variable1, string decision)
         {
-            List<Tuple<string, enDecisionType, string, string>> decisionModels;
-            scenarioContext.TryGetValue("decisionModels", out decisionModels);
+            scenarioContext.TryGetValue("decisionModels", out List<Tuple<string, enDecisionType, string, string>> decisionModels);
 
-            if(decisionModels == null)
+            if (decisionModels == null)
             {
                 decisionModels = new List<Tuple<string, enDecisionType, string, string>>();
                 scenarioContext.Add("decisionModels", decisionModels);
@@ -187,10 +181,9 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Decision
         [Given(@"check if ""(.*)"" ""(.*)"" ""(.*)"" and ""(.*)""")]
         public void GivenCheckIfAnd(string variable1, string decision, string variable2, string variable3)
         {
-            List<Tuple<string, enDecisionType, string, string>> decisionModels;
-            scenarioContext.TryGetValue("decisionModels", out decisionModels);
+            scenarioContext.TryGetValue("decisionModels", out List<Tuple<string, enDecisionType, string, string>> decisionModels);
 
-            if(decisionModels == null)
+            if (decisionModels == null)
             {
                 decisionModels = new List<Tuple<string, enDecisionType, string, string>>();
                 scenarioContext.Add("decisionModels", decisionModels);

@@ -160,8 +160,7 @@ namespace Dev2.Studio.Core.Network
                     relativeUrl += "&wid=" + environmentConnection.WorkspaceID;
                 }
             }
-            Uri url;
-            Uri.TryCreate(environmentConnection.WebServerUri, relativeUrl, out url);
+            Uri.TryCreate(environmentConnection.WebServerUri, relativeUrl, out Uri url);
             return url;
         }
 
@@ -173,8 +172,7 @@ namespace Dev2.Studio.Core.Network
             }
 
             var relativeUrl = string.Format("/internal/{0}", serviceName);
-            Uri url;
-            Uri.TryCreate(connection.WebServerUri, relativeUrl, out url);
+            Uri.TryCreate(connection.WebServerUri, relativeUrl, out Uri url);
             return url;
         }
     }

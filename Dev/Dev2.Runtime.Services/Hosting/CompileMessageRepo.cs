@@ -117,8 +117,7 @@ namespace Dev2.Runtime.Hosting
 
                                     if(listOf != null)
                                     {
-                                        Guid id;
-                                        if(Guid.TryParse(fname, out id))
+                                        if (Guid.TryParse(fname, out Guid id))
                                         {
                                             _messageRepo[id] = listOf;
                                             _allMessages.OnNext(listOf);
@@ -179,12 +178,11 @@ namespace Dev2.Runtime.Hosting
                         var keys = _messageRepo.Keys;
                         foreach(var k in keys)
                         {
-                            IList<ICompileMessageTO> val;
-                            if(_messageRepo.TryGetValue(k, out val))
+                            if (_messageRepo.TryGetValue(k, out IList<ICompileMessageTO> val))
                             {
                                 var pPath = Path.Combine(path, k + ".msg");
                                 BinaryFormatter bf = new BinaryFormatter();
-                                using(Stream s = new FileStream(pPath, FileMode.OpenOrCreate))
+                                using (Stream s = new FileStream(pPath, FileMode.OpenOrCreate))
                                 {
                                     bf.Serialize(s, val);
                                 }
@@ -216,15 +214,14 @@ namespace Dev2.Runtime.Hosting
             }
             lock(Lock)
             {
-                IList<ICompileMessageTO> messages;
-                if(!_messageRepo.TryGetValue(workspaceId, out messages))
+                if (!_messageRepo.TryGetValue(workspaceId, out IList<ICompileMessageTO> messages))
                 {
                     messages = new List<ICompileMessageTO>();
                 }
 
                 // clean up any messages with the same id and add
 
-                for(int i = messages.Count - 1; i >= 0; i--)
+                for (int i = messages.Count - 1; i >= 0; i--)
                 {
                     messages.Remove(messages[i]);
                 }
@@ -257,22 +254,21 @@ namespace Dev2.Runtime.Hosting
 
             lock(Lock)
             {
-                IList<ICompileMessageTO> messages;
-                if(_messageRepo.TryGetValue(workspaceId, out messages))
+                if (_messageRepo.TryGetValue(workspaceId, out IList<ICompileMessageTO> messages))
                 {
                     // Fetch dep list and process ;)
-                    if(deps != null)
+                    if (deps != null)
                     {
-                        foreach(var d in deps)
+                        foreach (var d in deps)
                         {
                             IResourceForTree d1 = d;
                             var candidateMessage = messages.Where(c => c.ServiceID == d1.ResourceID);
                             var compileMessageTos = candidateMessage as IList<ICompileMessageTO> ??
                                                     candidateMessage.ToList();
 
-                            foreach(var msg in compileMessageTos)
+                            foreach (var msg in compileMessageTos)
                             {
-                                if(filter != null)
+                                if (filter != null)
                                 {
                                     // TODO : Apply filter logic ;)
                                 }

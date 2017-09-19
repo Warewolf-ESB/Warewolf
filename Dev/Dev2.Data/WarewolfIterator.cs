@@ -102,22 +102,18 @@ namespace Dev2.Data
             {
                 return null;
             }
-            string cleanExpression;
-            var isCalcEvaluation = DataListUtil.IsCalcEvaluation(warewolfAtomToString, out cleanExpression);
+            var isCalcEvaluation = DataListUtil.IsCalcEvaluation(warewolfAtomToString, out string cleanExpression);
 
             if (isCalcEvaluation)
             {
                 var functionEvaluator = new FunctionEvaluator();
-                string eval;
-                string error;
-                var tryEvaluateFunction = functionEvaluator.TryEvaluateFunction(cleanExpression, out eval, out error);
+                var tryEvaluateFunction = functionEvaluator.TryEvaluateFunction(cleanExpression, out string eval, out string error);
                 warewolfAtomToString = eval;
                 if (eval == cleanExpression.Replace("\"", "") && cleanExpression.Contains("\""))
                 {
                     try
                     {
-                        string eval2;
-                        var b = functionEvaluator.TryEvaluateFunction(cleanExpression.Replace("\"", ""), out eval2, out error);
+                        var b = functionEvaluator.TryEvaluateFunction(cleanExpression.Replace("\"", ""), out string eval2, out error);
                         if (b)
                         {
                             warewolfAtomToString = eval2;

@@ -226,8 +226,7 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"Debug states are cleared")]
         public void GivenDebugStatesAreCleared()
         {
-            List<IDebugState> debugStates;
-            TryGetValue("debugStates", out debugStates);
+            TryGetValue("debugStates", out List<IDebugState> debugStates);
             debugStates?.Clear();
         }
 
@@ -244,10 +243,8 @@ namespace Dev2.Activities.Specs.Composition
         [Then(@"the workflow execution has ""(.*)"" error")]
         public void ThenTheWorkflowExecutionHasError(string hasError)
         {
-            Dictionary<string, Activity> activityList;
-            string parentWorkflowName;
-            TryGetValue("activityList", out activityList);
-            TryGetValue("parentWorkflowName", out parentWorkflowName);
+            TryGetValue("activityList", out Dictionary<string, Activity> activityList);
+            TryGetValue("parentWorkflowName", out string parentWorkflowName);
             var debugStates = Get<List<IDebugState>>("debugStates").ToList();
 
             if (hasError == "AN")
@@ -260,10 +257,8 @@ namespace Dev2.Activities.Specs.Composition
         [Then(@"the ""(.*)"" workflow execution has ""(.*)"" error")]
         public void ThenTheWorkflowExecutionHasError(string workflowName, string hasError)
         {
-            Dictionary<string, Activity> activityList;
-            string parentWorkflowName;
-            TryGetValue("activityList", out activityList);
-            TryGetValue("parentWorkflowName", out parentWorkflowName);
+            TryGetValue("activityList", out Dictionary<string, Activity> activityList);
+            TryGetValue("parentWorkflowName", out string parentWorkflowName);
             var debugStates = Get<List<IDebugState>>("debugStates").ToList();
 
             if (hasError == "AN")
@@ -438,14 +433,10 @@ namespace Dev2.Activities.Specs.Composition
 
         void Append(IDebugState debugState)
         {
-            List<IDebugState> debugStates;
-            List<IDebugState> debugStatesDuration;
-            string workflowName;
-            IServer server;
-            TryGetValue("debugStates", out debugStates);
-            TryGetValue("debugStatesDuration", out debugStatesDuration);
-            TryGetValue("parentWorkflowName", out workflowName);
-            TryGetValue("environment", out server);
+            TryGetValue("debugStates", out List<IDebugState> debugStates);
+            TryGetValue("debugStatesDuration", out List<IDebugState> debugStatesDuration);
+            TryGetValue("parentWorkflowName", out string workflowName);
+            TryGetValue("environment", out IServer server);
             if (debugStatesDuration == null)
             {
                 debugStatesDuration = new List<IDebugState>();
@@ -472,10 +463,8 @@ namespace Dev2.Activities.Specs.Composition
         [Then(@"the ""(.*)"" in step (.*) for ""(.*)"" debug inputs as")]
         public void ThenTheInStepForDebugInputsAs(string toolName, int stepNumber, string forEachName, Table table)
         {
-            Dictionary<string, Activity> activityList;
-            string parentWorkflowName;
-            TryGetValue("activityList", out activityList);
-            TryGetValue("parentWorkflowName", out parentWorkflowName);
+            TryGetValue("activityList", out Dictionary<string, Activity> activityList);
+            TryGetValue("parentWorkflowName", out string parentWorkflowName);
 
             var debugStates = Get<List<IDebugState>>("debugStates").ToList();
             var workflowId = debugStates.First(wf => wf.DisplayName.Equals(forEachName)).ID;
@@ -498,10 +487,8 @@ namespace Dev2.Activities.Specs.Composition
         [Then(@"the ""(.*)"" in '(.*)' in step (.*) for ""(.*)"" debug inputs as")]
         public void ThenTheInInStepForDebugInputsAs(string toolName, string sequenceName, int stepNumber, string forEachName, Table table)
         {
-            Dictionary<string, Activity> activityList;
-            string parentWorkflowName;
-            TryGetValue("activityList", out activityList);
-            TryGetValue("parentWorkflowName", out parentWorkflowName);
+            TryGetValue("activityList", out Dictionary<string, Activity> activityList);
+            TryGetValue("parentWorkflowName", out string parentWorkflowName);
 
             var debugStates = Get<List<IDebugState>>("debugStates").ToList();
             var workflowId = debugStates.First(wf => wf.DisplayName.Equals(forEachName)).ID;
@@ -530,10 +517,8 @@ namespace Dev2.Activities.Specs.Composition
         [Then(@"the dotnetdll ""(.*)"" in '(.*)' in step (.*) for ""(.*)"" debug inputs as")]
         public void ThenTheInInStepForDotNetDebugInputsAs(string toolName, string sequenceName, int stepNumber, string forEachName, Table table)
         {
-            Dictionary<string, Activity> activityList;
-            string parentWorkflowName;
-            TryGetValue("activityList", out activityList);
-            TryGetValue("parentWorkflowName", out parentWorkflowName);
+            TryGetValue("activityList", out Dictionary<string, Activity> activityList);
+            TryGetValue("parentWorkflowName", out string parentWorkflowName);
 
             var debugStates = Get<List<IDebugState>>("debugStates").ToList();
             var workflowId = debugStates.First(wf => wf.DisplayName.Equals(forEachName)).ID;
@@ -579,10 +564,8 @@ namespace Dev2.Activities.Specs.Composition
         [Then(@"the dotnetdll ""(.*)"" in ""(.*)"" in step (.*) for ""(.*)"" debug output as")]
         public void ThenTheDotnetdllInInStepForDebugOutputAs(string toolName, string sequenceName, int stepNumber, string forEachName, Table table)
         {
-            Dictionary<string, Activity> activityList;
-            string parentWorkflowName;
-            TryGetValue("activityList", out activityList);
-            TryGetValue("parentWorkflowName", out parentWorkflowName);
+            TryGetValue("activityList", out Dictionary<string, Activity> activityList);
+            TryGetValue("parentWorkflowName", out string parentWorkflowName);
 
             var debugStates = Get<List<IDebugState>>("debugStates").ToList();
             var workflowId = debugStates.First(wf => wf.DisplayName.Equals(forEachName)).ID;
@@ -627,10 +610,8 @@ namespace Dev2.Activities.Specs.Composition
         [Then(@"the ""(.*)"" in '(.*)' in step (.*) for ""(.*)"" debug outputs as")]
         public void ThenTheInInStepForDebugOutputsAs(string toolName, string sequenceName, int stepNumber, string forEachName, Table table)
         {
-            Dictionary<string, Activity> activityList;
-            string parentWorkflowName;
-            TryGetValue("activityList", out activityList);
-            TryGetValue("parentWorkflowName", out parentWorkflowName);
+            TryGetValue("activityList", out Dictionary<string, Activity> activityList);
+            TryGetValue("parentWorkflowName", out string parentWorkflowName);
 
             var debugStates = Get<List<IDebugState>>("debugStates").ToList();
             var workflowId = debugStates.First(wf => wf.DisplayName.Equals(forEachName)).ID;
@@ -668,10 +649,8 @@ namespace Dev2.Activities.Specs.Composition
         [Then(@"Workflow ""(.*)"" has errors")]
         public void ThenWorkflowHasErrors(string workFlowName, Table table)
         {
-            Dictionary<string, Activity> activityList;
-            string parentWorkflowName;
-            TryGetValue("activityList", out activityList);
-            TryGetValue("parentWorkflowName", out parentWorkflowName);
+            TryGetValue("activityList", out Dictionary<string, Activity> activityList);
+            TryGetValue("parentWorkflowName", out string parentWorkflowName);
 
             var debugStates = Get<List<IDebugState>>("debugStates").ToList();
             var toolSpecificDebug = debugStates.Last(wf => wf.DisplayName.Equals(workFlowName));
@@ -688,10 +667,8 @@ namespace Dev2.Activities.Specs.Composition
         [Then(@"the ""(.*)"" in step (.*) for ""(.*)"" debug outputs as")]
         public void ThenTheInStepForDebugOutputsAs(string toolName, int stepNumber, string forEachName, Table table)
         {
-            Dictionary<string, Activity> activityList;
-            string parentWorkflowName;
-            TryGetValue("activityList", out activityList);
-            TryGetValue("parentWorkflowName", out parentWorkflowName);
+            TryGetValue("activityList", out Dictionary<string, Activity> activityList);
+            TryGetValue("parentWorkflowName", out string parentWorkflowName);
 
             var debugStates = Get<List<IDebugState>>("debugStates").ToList();
             var workflowId = debugStates.First(wf => wf.DisplayName.Equals(forEachName)).ID;
@@ -875,10 +852,8 @@ namespace Dev2.Activities.Specs.Composition
             }
             foreach (var tableRow in mappings.Rows)
             {
-                string output;
-                tableRow.TryGetValue("Output from Service", out output);
-                string toVariable;
-                tableRow.TryGetValue("To Variable", out toVariable);
+                tableRow.TryGetValue("Output from Service", out string output);
+                tableRow.TryGetValue("To Variable", out string toVariable);
                 if (!string.IsNullOrEmpty(output) && !string.IsNullOrEmpty(toVariable))
                 {
                     var inputOutputViewModel = dataMappingViewModel.Outputs.FirstOrDefault(model => model.DisplayName == output);
@@ -899,10 +874,8 @@ namespace Dev2.Activities.Specs.Composition
                     }
                 }
 
-                string input;
-                tableRow.TryGetValue("Input to Service", out input);
-                string fromVariable;
-                tableRow.TryGetValue("From Variable", out fromVariable);
+                tableRow.TryGetValue("Input to Service", out string input);
+                tableRow.TryGetValue("From Variable", out string fromVariable);
 
                 if (!string.IsNullOrEmpty(input) && !string.IsNullOrEmpty(fromVariable))
                 {
@@ -1114,13 +1087,10 @@ namespace Dev2.Activities.Specs.Composition
         [When(@"""(.*)"" is the active environment used to execute ""(.*)""")]
         public void WhenIsTheActiveEnvironmentUsedToExecute(string connectionName, string workflowName)
         {
-            IServer server;
-            IResourceRepository repository;
-            IContextualResourceModel resourceModel;
 
-            TryGetValue(workflowName, out resourceModel);
-            TryGetValue("environment", out server);
-            TryGetValue("resourceRepo", out repository);
+            TryGetValue(workflowName, out IContextualResourceModel resourceModel);
+            TryGetValue("environment", out IServer server);
+            TryGetValue("resourceRepo", out IResourceRepository repository);
 
             ExecuteWorkflow(resourceModel);
         }
@@ -1152,13 +1122,9 @@ namespace Dev2.Activities.Specs.Composition
                     }
                 }
             }
-
-            IContextualResourceModel resourceModel;
-            IServer server;
-            IResourceRepository repository;
-            TryGetValue(workflowName, out resourceModel);
-            TryGetValue("environment", out server);
-            TryGetValue("resourceRepo", out repository);
+            TryGetValue(workflowName, out IContextualResourceModel resourceModel);
+            TryGetValue("environment", out IServer server);
+            TryGetValue("resourceRepo", out IResourceRepository repository);
 
             var currentDl = CurrentDl;
             resourceModel.DataList = currentDl.Replace("root", "DataList");
@@ -1178,10 +1144,8 @@ namespace Dev2.Activities.Specs.Composition
         [Then(@"the ""(.*)"" in WorkFlow ""(.*)"" debug inputs as")]
         public void ThenTheInWorkFlowDebugInputsAs(string toolName, string workflowName, Table table)
         {
-            Dictionary<string, Activity> activityList;
-            string parentWorkflowName;
-            TryGetValue("activityList", out activityList);
-            TryGetValue("parentWorkflowName", out parentWorkflowName);
+            TryGetValue("activityList", out Dictionary<string, Activity> activityList);
+            TryGetValue("parentWorkflowName", out string parentWorkflowName);
             var debugStates = Get<List<IDebugState>>("debugStates").ToList();
             var workflowId = Guid.Empty;
 
@@ -1208,10 +1172,8 @@ namespace Dev2.Activities.Specs.Composition
         [Then(@"the ""(.*)"" has a start and end duration")]
         public void ThenTheHasAStartAndEndDuration(string workflowName)
         {
-            Dictionary<string, Activity> activityList;
-            string parentWorkflowName;
-            TryGetValue("activityList", out activityList);
-            TryGetValue("parentWorkflowName", out parentWorkflowName);
+            TryGetValue("activityList", out Dictionary<string, Activity> activityList);
+            TryGetValue("parentWorkflowName", out string parentWorkflowName);
             var debugStates = Get<List<IDebugState>>("debugStates").ToList();
 
             var end = debugStates.First(wf => wf.Name.Equals("End"));
@@ -1223,10 +1185,8 @@ namespace Dev2.Activities.Specs.Composition
         [When(@"""(.*)"" Duration is less or equal to (.*) seconds")]
         public void ThenDurationIsLessOrEqualToSeconds(string workflowName, int duration)
         {
-            Dictionary<string, Activity> activityList;
-            string parentWorkflowName;
-            TryGetValue("activityList", out activityList);
-            TryGetValue("parentWorkflowName", out parentWorkflowName);
+            TryGetValue("activityList", out Dictionary<string, Activity> activityList);
+            TryGetValue("parentWorkflowName", out string parentWorkflowName);
             var debugStates = Get<List<IDebugState>>("debugStates").ToList();
 
             var end = debugStates.First(wf => wf.Name.Equals("End"));
@@ -1240,10 +1200,8 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" Duration is greater or equal to (.*) seconds")]
         public void ThenDurationIsGreaterOrEqualToSeconds(string workflowName, int duration)
         {
-            Dictionary<string, Activity> activityList;
-            string parentWorkflowName;
-            TryGetValue("activityList", out activityList);
-            TryGetValue("parentWorkflowName", out parentWorkflowName);
+            TryGetValue("activityList", out Dictionary<string, Activity> activityList);
+            TryGetValue("parentWorkflowName", out string parentWorkflowName);
             var debugStates = Get<List<IDebugState>>("debugStates").ToList();
             var end = debugStates.First(wf => wf.Name.Equals("End"));
             Assert.IsTrue(end.Duration.Ticks > 0);
@@ -1257,10 +1215,8 @@ namespace Dev2.Activities.Specs.Composition
         [Then(@"the nested ""(.*)"" in WorkFlow ""(.*)"" debug inputs as")]
         public void ThenTheNestedInWorkFlowDebugInputsAs(string toolName, string workflowName, Table table)
         {
-            Dictionary<string, Activity> activityList;
-            string parentWorkflowName;
-            TryGetValue("activityList", out activityList);
-            TryGetValue("parentWorkflowName", out parentWorkflowName);
+            TryGetValue("activityList", out Dictionary<string, Activity> activityList);
+            TryGetValue("parentWorkflowName", out string parentWorkflowName);
             var debugStates = Get<List<IDebugState>>("debugStates").ToList();
 
             var toolSpecificDebug =
@@ -1274,10 +1230,8 @@ namespace Dev2.Activities.Specs.Composition
         [Then(@"the ""(.*)"" in WorkFlow ""(.*)"" has  ""(.*)"" nested children")]
         public void ThenTheInWorkFlowHasNestedChildren(string toolName, string workflowName, int count)
         {
-            Dictionary<string, Activity> activityList;
-            string parentWorkflowName;
-            TryGetValue("activityList", out activityList);
-            TryGetValue("parentWorkflowName", out parentWorkflowName);
+            TryGetValue("activityList", out Dictionary<string, Activity> activityList);
+            TryGetValue("parentWorkflowName", out string parentWorkflowName);
             var debugStates = Get<List<IDebugState>>("debugStates").ToList();
 
             var id =
@@ -1289,10 +1243,8 @@ namespace Dev2.Activities.Specs.Composition
         [Then(@"each nested debug item for ""(.*)"" in WorkFlow ""(.*)"" contains ""(.*)"" child                              \|")]
         public void ThenEachNestedDebugItemForInWorkFlowContainsChild(string toolName, string workFlowName, int childCount)
         {
-            Dictionary<string, Activity> activityList;
-            string parentWorkflowName;
-            TryGetValue("activityList", out activityList);
-            TryGetValue("parentWorkflowName", out parentWorkflowName);
+            TryGetValue("activityList", out Dictionary<string, Activity> activityList);
+            TryGetValue("parentWorkflowName", out string parentWorkflowName);
             var debugStates = Get<List<IDebugState>>("debugStates").ToList();
 
             var id = debugStates.Where(ds => ds.DisplayName.Equals("DsfActivity")).ToList();
@@ -1303,10 +1255,8 @@ namespace Dev2.Activities.Specs.Composition
         [Then(@"each ""(.*)"" contains debug outputs for ""(.*)"" as")]
         public void ThenEachContainsDebugOutputsForAs(string toolName, string nestedToolName, Table table)
         {
-            Dictionary<string, Activity> activityList;
-            string parentWorkflowName;
-            TryGetValue("activityList", out activityList);
-            TryGetValue("parentWorkflowName", out parentWorkflowName);
+            TryGetValue("activityList", out Dictionary<string, Activity> activityList);
+            TryGetValue("parentWorkflowName", out string parentWorkflowName);
             var debugStates = Get<List<IDebugState>>("debugStates").ToList();
 
             var id = debugStates.Where(ds => ds.DisplayName.Equals("DsfActivity")).ToList();
@@ -1382,10 +1332,8 @@ namespace Dev2.Activities.Specs.Composition
         [Then(@"the ""(.*)"" in Workflow ""(.*)"" has a debug Server Name of """"(.*)""""")]
         public void ThenTheInWorkflowHasADebugServerNameOf(string toolName, string workflowName, string remoteName)
         {
-            Dictionary<string, Activity> activityList;
-            string parentWorkflowName;
-            TryGetValue("activityList", out activityList);
-            TryGetValue("parentWorkflowName", out parentWorkflowName);
+            TryGetValue("activityList", out Dictionary<string, Activity> activityList);
+            TryGetValue("parentWorkflowName", out string parentWorkflowName);
 
             var debugStates = Get<List<IDebugState>>("debugStates").ToList();
             var workflowId = debugStates.First(wf => wf.DisplayName.Equals(workflowName)).ID;
@@ -1412,10 +1360,8 @@ namespace Dev2.Activities.Specs.Composition
         [Then(@"the ""(.*)"" in Workflow ""(.*)"" debug outputs as")]
         public void ThenTheInWorkflowDebugOutputsAs(string toolName, string workflowName, Table table)
         {
-            Dictionary<string, Activity> activityList;
-            string parentWorkflowName;
-            TryGetValue("activityList", out activityList);
-            TryGetValue("parentWorkflowName", out parentWorkflowName);
+            TryGetValue("activityList", out Dictionary<string, Activity> activityList);
+            TryGetValue("parentWorkflowName", out string parentWorkflowName);
 
             var debugStates = Get<List<IDebugState>>("debugStates");
             Guid workflowId = Guid.Empty;
@@ -1467,10 +1413,8 @@ namespace Dev2.Activities.Specs.Composition
         [Then(@"the ""(.*)"" in Workflow ""(.*)"" debug output contains as")]
         public void ThenTheInWorkflowDebugOutputContainsAs(string toolName, string workflowName, Table table)
         {
-            Dictionary<string, Activity> activityList;
-            string parentWorkflowName;
-            TryGetValue("activityList", out activityList);
-            TryGetValue("parentWorkflowName", out parentWorkflowName);
+            TryGetValue("activityList", out Dictionary<string, Activity> activityList);
+            TryGetValue("parentWorkflowName", out string parentWorkflowName);
 
             var debugStates = Get<List<IDebugState>>("debugStates");
             Guid workflowId = Guid.Empty;
@@ -1522,8 +1466,7 @@ namespace Dev2.Activities.Specs.Composition
 
 
             // extract keepIdentity value ;)
-            bool keepIdentityBool;
-            bool.TryParse(keepIdentity, out keepIdentityBool);
+            bool.TryParse(keepIdentity, out bool keepIdentityBool);
 
             // Configure activity ;)
             var dsfSqlBulkInsert = new DsfSqlBulkInsertActivity
@@ -1558,15 +1501,10 @@ namespace Dev2.Activities.Specs.Composition
                 var dataTypeName = row["DataTypeName"];
                 var maxLengthStr = row["MaxLength"];
                 var isAutoIncrementStr = row["IsAutoIncrement"];
-
-                bool isNullable;
-                bool isAutoIncrement;
-                int maxLength;
-                bool.TryParse(isNullableStr, out isNullable);
-                bool.TryParse(isAutoIncrementStr, out isAutoIncrement);
-                int.TryParse(maxLengthStr, out maxLength);
-                SqlDbType dataType;
-                Enum.TryParse(dataTypeName, true, out dataType);
+                bool.TryParse(isNullableStr, out bool isNullable);
+                bool.TryParse(isAutoIncrementStr, out bool isAutoIncrement);
+                int.TryParse(maxLengthStr, out int maxLength);
+                Enum.TryParse(dataTypeName, true, out SqlDbType dataType);
 
                 var mapping = new DataColumnMapping { IndexNumber = pos, InputColumn = inputColumn, OutputColumn = new DbColumn { ColumnName = outputColumn, IsAutoIncrement = isAutoIncrement, IsNullable = isNullable, MaxLength = maxLength, SqlDataType = dataType } };
                 mappings.Add(mapping);
@@ -1589,8 +1527,7 @@ namespace Dev2.Activities.Specs.Composition
             if (resourceXml != null)
             {
                 // extract keepIdentity value ;)
-                bool keepIdentityBool;
-                bool.TryParse(keepIdentity, out keepIdentityBool);
+                bool.TryParse(keepIdentity, out bool keepIdentityBool);
 
                 var dbSource = new DbSource(resourceXml);
                 // Configure activity ;)
@@ -1609,15 +1546,10 @@ namespace Dev2.Activities.Specs.Composition
                     var dataTypeName = row["DataTypeName"];
                     var maxLengthStr = row["MaxLength"];
                     var isAutoIncrementStr = row["IsAutoIncrement"];
-
-                    bool isNullable;
-                    bool isAutoIncrement;
-                    int maxLength;
-                    bool.TryParse(isNullableStr, out isNullable);
-                    bool.TryParse(isAutoIncrementStr, out isAutoIncrement);
-                    int.TryParse(maxLengthStr, out maxLength);
-                    SqlDbType dataType;
-                    Enum.TryParse(dataTypeName, true, out dataType);
+                    bool.TryParse(isNullableStr, out bool isNullable);
+                    bool.TryParse(isAutoIncrementStr, out bool isAutoIncrement);
+                    int.TryParse(maxLengthStr, out int maxLength);
+                    Enum.TryParse(dataTypeName, true, out SqlDbType dataType);
 
                     var mapping = new DataColumnMapping { IndexNumber = pos, InputColumn = inputColumn, OutputColumn = new DbColumn { ColumnName = outputColumn, IsAutoIncrement = isAutoIncrement, IsNullable = isNullable, MaxLength = maxLength, SqlDataType = dataType } };
                     mappings.Add(mapping);
@@ -2429,8 +2361,7 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains a Foreach ""(.*)"" as ""(.*)"" executions ""(.*)""")]
         public void GivenContainsAForeachAsExecutions(string parentName, string activityName, string numberOfExecutions, string executionCount)
         {
-            enForEachType forEachType;
-            Enum.TryParse(numberOfExecutions, true, out forEachType);
+            Enum.TryParse(numberOfExecutions, true, out enForEachType forEachType);
             var forEach = new DsfForEachActivity { DisplayName = activityName, ForEachType = forEachType };
             switch (forEachType)
             {
@@ -2548,11 +2479,8 @@ namespace Dev2.Activities.Specs.Composition
                     }
                 }
             }
-
-            IServer server;
-            IResourceRepository repository;
-            TryGetValue("environment", out server);
-            TryGetValue("resourceRepo", out repository);
+            TryGetValue("environment", out IServer server);
+            TryGetValue("resourceRepo", out IResourceRepository repository);
 
             var currentDl = CurrentDl;
             resourceModel.DataList = currentDl.Replace("root", "DataList");
@@ -2615,8 +2543,7 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"workflow ""(.*)"" is saved ""(.*)"" time")]
         public void WhenWorkflowIsSavedTime(string workflowName, int count)
         {
-            Guid id;
-            TryGetValue("SavedId", out id);
+            TryGetValue("SavedId", out Guid id);
             if (id == Guid.Empty)
             {
                 id = Guid.NewGuid();
@@ -2653,13 +2580,9 @@ namespace Dev2.Activities.Specs.Composition
                     }
                 }
             }
-
-            IContextualResourceModel resourceModel;
-            IServer server;
-            IResourceRepository repository;
-            TryGetValue(workflowName, out resourceModel);
-            TryGetValue("environment", out server);
-            TryGetValue("resourceRepo", out repository);
+            TryGetValue(workflowName, out IContextualResourceModel resourceModel);
+            TryGetValue("environment", out IServer server);
+            TryGetValue("resourceRepo", out IResourceRepository repository);
 
             var currentDl = CurrentDl;
             resourceModel.DataList = currentDl.Replace("root", "DataList");
@@ -2703,13 +2626,9 @@ namespace Dev2.Activities.Specs.Composition
                     flowSteps.Add(flowStep);
                 }
             }
-
-            IContextualResourceModel resourceModel;
-            IServer server;
-            IResourceRepository repository;
-            TryGetValue(workflowName, out resourceModel);
-            TryGetValue("environment", out server);
-            TryGetValue("resourceRepo", out repository);
+            TryGetValue(workflowName, out IContextualResourceModel resourceModel);
+            TryGetValue("environment", out IServer server);
+            TryGetValue("resourceRepo", out IResourceRepository repository);
 
             var currentDl = CurrentDl;
             resourceModel.DataList = currentDl.Replace("root", "DataList");
@@ -2723,12 +2642,9 @@ namespace Dev2.Activities.Specs.Composition
         [Then(@"workflow ""(.*)"" is deleted as cleanup")]
         public void ThenWorkflowIsDeletedAsCleanup(string workflowName)
         {
-            IContextualResourceModel resourceModel;
-            IServer server;
-            IResourceRepository repository;
-            TryGetValue(workflowName, out resourceModel);
-            TryGetValue("environment", out server);
-            TryGetValue("resourceRepo", out repository);
+            TryGetValue(workflowName, out IContextualResourceModel resourceModel);
+            TryGetValue("environment", out IServer server);
+            TryGetValue("resourceRepo", out IResourceRepository repository);
 
             repository.DeleteResourceFromWorkspace(resourceModel);
             repository.DeleteResource(resourceModel);
@@ -2754,14 +2670,10 @@ namespace Dev2.Activities.Specs.Composition
         [Then(@"workflow ""(.*)"" has ""(.*)"" Versions in explorer")]
         public void ThenWorkflowHasVersionsInExplorer(string workflowName, int numberOfVersions)
         {
-            Guid id;
-            TryGetValue("SavedId", out id);
-            IContextualResourceModel resourceModel;
-            IServer server;
-            IResourceRepository repository;
-            TryGetValue(workflowName, out resourceModel);
-            TryGetValue("environment", out server);
-            TryGetValue("resourceRepo", out repository);
+            TryGetValue("SavedId", out Guid id);
+            TryGetValue(workflowName, out IContextualResourceModel resourceModel);
+            TryGetValue("environment", out IServer server);
+            TryGetValue("resourceRepo", out IResourceRepository repository);
             var rep = new Studio.Core.VersionManagerProxy(new CommunicationControllerFactory(), server.Connection);
             var versions = rep.GetVersions(id);
             _scenarioContext["Versions"] = versions;
@@ -2820,8 +2732,7 @@ namespace Dev2.Activities.Specs.Composition
                     value = serialize;
                 }
 
-                List<ActivityDTO> fieldCollection;
-                _scenarioContext.TryGetValue("fieldCollection", out fieldCollection);
+                _scenarioContext.TryGetValue("fieldCollection", out List<ActivityDTO> fieldCollection);
 
                 _commonSteps.AddVariableToVariableList(variable);
 
@@ -2846,8 +2757,7 @@ namespace Dev2.Activities.Specs.Composition
                 var endOfRecordsetName = variable.IndexOf('(');
                 variable = variable.Substring(0, endOfRecordsetName) + "_" + recordsetNameRandomizer.ToString() + variable.Substring(endOfRecordsetName, variable.Length - endOfRecordsetName);
 
-                List<ActivityDTO> fieldCollection;
-                _scenarioContext.TryGetValue("fieldCollection", out fieldCollection);
+                _scenarioContext.TryGetValue("fieldCollection", out List<ActivityDTO> fieldCollection);
 
                 _commonSteps.AddVariableToVariableList(variable);
 
@@ -2872,8 +2782,7 @@ namespace Dev2.Activities.Specs.Composition
                     value = $"!~calculation~!{value}!~~calculation~!";
                 }
 
-                List<ActivityDTO> fieldCollection;
-                _scenarioContext.TryGetValue("fieldCollection", out fieldCollection);
+                _scenarioContext.TryGetValue("fieldCollection", out List<ActivityDTO> fieldCollection);
 
                 _commonSteps.AddVariableToVariableList(variable);
 
@@ -3184,8 +3093,7 @@ namespace Dev2.Activities.Specs.Composition
                     value = $"!~calculation~!{value}!~~calculation~!";
                 }
 
-                List<ActivityDTO> fieldCollection;
-                _scenarioContext.TryGetValue("fieldCollection", out fieldCollection);
+                _scenarioContext.TryGetValue("fieldCollection", out List<ActivityDTO> fieldCollection);
 
                 _commonSteps.AddVariableToVariableList(variable);
 
@@ -3198,14 +3106,10 @@ namespace Dev2.Activities.Specs.Composition
         [When(@"I rollback ""(.*)"" to version ""(.*)""")]
         public void WhenIRollbackToVersion(string workflowName, string version)
         {
-            Guid id;
-            TryGetValue("SavedId", out id);
-            IContextualResourceModel resourceModel;
-            IServer server;
-            IResourceRepository repository;
-            TryGetValue(workflowName, out resourceModel);
-            TryGetValue("environment", out server);
-            TryGetValue("resourceRepo", out repository);
+            TryGetValue("SavedId", out Guid id);
+            TryGetValue(workflowName, out IContextualResourceModel resourceModel);
+            TryGetValue("environment", out IServer server);
+            TryGetValue("resourceRepo", out IResourceRepository repository);
             var rep = new VersionManagerProxy(new CommunicationControllerFactory(), server.Connection);
             rep.RollbackTo(id, version);
         }
@@ -3213,11 +3117,8 @@ namespace Dev2.Activities.Specs.Composition
         [Then(@"the ""(.*)"" in Workflow ""(.*)"" debug outputs does not exist\|")]
         public void ThenTheInWorkflowDebugOutputsDoesNotExist(string workflowName, string version)
         {
-
-            Dictionary<string, Activity> activityList;
-            string parentWorkflowName;
-            TryGetValue("activityList", out activityList);
-            TryGetValue("parentWorkflowName", out parentWorkflowName);
+            TryGetValue("activityList", out Dictionary<string, Activity> activityList);
+            TryGetValue("parentWorkflowName", out string parentWorkflowName);
 
             var debugStates = Get<List<IDebugState>>("debugStates").ToList();
             var workflowId = debugStates.First(wf => wf.DisplayName.Equals(workflowName)).ID;
@@ -3236,12 +3137,9 @@ namespace Dev2.Activities.Specs.Composition
         [When(@"""(.*)"" is executed without saving")]
         public void WhenIsExecutedWithoutSaving(string workflowName)
         {
-            IContextualResourceModel resourceModel;
-            IServer server;
-            IResourceRepository repository;
-            TryGetValue(workflowName, out resourceModel);
-            TryGetValue("environment", out server);
-            TryGetValue("resourceRepo", out repository);
+            TryGetValue(workflowName, out IContextualResourceModel resourceModel);
+            TryGetValue("environment", out IServer server);
+            TryGetValue("resourceRepo", out IResourceRepository repository);
 
 
             var debugStates = Get<List<IDebugState>>("debugStates").ToList();
@@ -3276,8 +3174,7 @@ namespace Dev2.Activities.Specs.Composition
             var controller = new CommunicationControllerFactory().CreateController("LoggingSettingsWriteService");
             var serializer = new Dev2JsonSerializer();
             controller.AddPayloadArgument("LoggingSettings", serializer.SerializeToBuilder(loggingSettingsTo).ToString());
-            IServer server;
-            TryGetValue("environment", out server);
+            TryGetValue("environment", out IServer server);
             controller.ExecuteCommand<StringBuilder>(server.Connection, Guid.Empty);
         }
 

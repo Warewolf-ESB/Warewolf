@@ -347,8 +347,7 @@ namespace Dev2.Runtime
             foreach (var resourceTestDirectory in resourceTestDirectories)
             {
                 var resIdString = _directoryWrapper.GetDirectoryName(resourceTestDirectory);
-                Guid resId;
-                if (Guid.TryParse(resIdString, out resId))
+                if (Guid.TryParse(resIdString, out Guid resId))
                 {
                     Tests.AddOrUpdate(resId, GetTestList(resourceTestDirectory), (id, list) => GetTestList(resourceTestDirectory));
                 }
@@ -385,13 +384,12 @@ namespace Dev2.Runtime
             if (_fileWrapper.Exists(testFilePath))
             {
                 _fileWrapper.Delete(testFilePath);
-                List<IServiceTestModelTO> testList;
-                if (Tests.TryGetValue(resourceID, out testList))
+                if (Tests.TryGetValue(resourceID, out List<IServiceTestModelTO> testList))
                 {
                     var foundTestToDelete = testList.FirstOrDefault(to => to.TestName.Equals(testName, StringComparison.InvariantCultureIgnoreCase));
                     if (foundTestToDelete != null)
                     {
-                        Dev2Logger.Debug("Removing Test: "+testName+Environment.NewLine+Environment.StackTrace, GlobalConstants.WarewolfDebug);
+                        Dev2Logger.Debug("Removing Test: " + testName + Environment.NewLine + Environment.StackTrace, GlobalConstants.WarewolfDebug);
                         testList.Remove(foundTestToDelete);
                     }
                 }
@@ -404,8 +402,7 @@ namespace Dev2.Runtime
             if (_directoryWrapper.Exists(dirPath))
             {
                 _directoryWrapper.Delete(dirPath, true);
-                List<IServiceTestModelTO> removedTests;
-                Tests.TryRemove(resourceId, out removedTests);
+                Tests.TryRemove(resourceId, out List<IServiceTestModelTO> removedTests);
             }
         }
 
@@ -433,8 +430,7 @@ namespace Dev2.Runtime
 
         public IServiceTestModelTO FetchTest(Guid resourceID, string testName)
         {
-            List<IServiceTestModelTO> testList;
-            if (Tests.TryGetValue(resourceID, out testList))
+            if (Tests.TryGetValue(resourceID, out List<IServiceTestModelTO> testList))
             {
                 var foundTestToDelete = testList.FirstOrDefault(to => to.TestName.Equals(testName, StringComparison.InvariantCultureIgnoreCase));
                 if (foundTestToDelete != null)

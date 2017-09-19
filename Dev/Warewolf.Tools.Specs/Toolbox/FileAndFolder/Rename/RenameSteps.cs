@@ -141,11 +141,8 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Rename
         protected override void BuildDataList()
         {
             BuildShapeAndTestData();
-
-            string privateKeyFile;
-            string destPrivateKeyFile;
-            scenarioContext.TryGetValue(CommonSteps.SourcePrivatePublicKeyFile, out privateKeyFile);
-            scenarioContext.TryGetValue(CommonSteps.DestinationPrivateKeyFile, out destPrivateKeyFile);
+            scenarioContext.TryGetValue(CommonSteps.SourcePrivatePublicKeyFile, out string privateKeyFile);
+            scenarioContext.TryGetValue(CommonSteps.DestinationPrivateKeyFile, out string destPrivateKeyFile);
             var rename = new DsfPathRename
             {
                 InputPath = scenarioContext.Get<string>(CommonSteps.SourceHolder),
@@ -173,10 +170,8 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Rename
         [When(@"validating the rename tool")]
         public void WhenValidatingTheRenameTool()
         {
-            string privateKeyFile;
-            string destPrivateKeyFile;
-            scenarioContext.TryGetValue(CommonSteps.SourcePrivatePublicKeyFile, out privateKeyFile);
-            scenarioContext.TryGetValue(CommonSteps.DestinationPrivateKeyFile, out destPrivateKeyFile);
+            scenarioContext.TryGetValue(CommonSteps.SourcePrivatePublicKeyFile, out string privateKeyFile);
+            scenarioContext.TryGetValue(CommonSteps.DestinationPrivateKeyFile, out string destPrivateKeyFile);
 
             DsfPathRename dsfRename = new DsfPathRename
             {

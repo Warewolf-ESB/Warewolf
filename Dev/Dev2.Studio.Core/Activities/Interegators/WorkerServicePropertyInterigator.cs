@@ -52,8 +52,7 @@ namespace Dev2.Studio.Core.Activities.Interegators
                                 {
                                     if (resourceRepository != null && node.Attributes["SourceID"] != null)
                                     {
-                                        Guid sourceId;
-                                        Guid.TryParse( node.Attributes["SourceID"].Value, out sourceId);
+                                        Guid.TryParse(node.Attributes["SourceID"].Value, out Guid sourceId);
                                         activity.FriendlySourceName = resourceRepository.LoadContextualResourceModel(sourceId).DisplayName;
                                     }
                                     else

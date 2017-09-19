@@ -62,10 +62,9 @@ namespace Dev2.Activities.Specs.Toolbox.Data.BaseConversion
         [Given(@"I have a convert variable ""(.*)"" with a value of ""(.*)""")]
         public void GivenIHaveAConvertVariableWithAValueOf(string variable, string value)
         {
-            List<Tuple<string, string>> variableList;
-            scenarioContext.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
 
-            if(variableList == null)
+            if (variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 scenarioContext.Add("variableList", variableList);
@@ -77,10 +76,9 @@ namespace Dev2.Activities.Specs.Toolbox.Data.BaseConversion
         [Given(@"I convert a variable ""(.*)"" from type ""(.*)"" to type ""(.*)""")]
         public void GivenIConvertAVariableFromTypeToType(string variable, string fromType, string toType)
         {
-            List<Tuple<string, string, string>> baseCollection;
-            scenarioContext.TryGetValue("baseCollection", out baseCollection);
+            scenarioContext.TryGetValue("baseCollection", out List<Tuple<string, string, string>> baseCollection);
 
-            if(baseCollection == null)
+            if (baseCollection == null)
             {
                 baseCollection = new List<Tuple<string, string, string>>();
                 scenarioContext.Add("baseCollection", baseCollection);
@@ -100,11 +98,9 @@ namespace Dev2.Activities.Specs.Toolbox.Data.BaseConversion
         [Then(@"the result is ""(.*)""")]
         public void ThenTheResultIs(string value)
         {
-            string error;
-            string actualValue;
             value = value.Replace('"', ' ').Trim();
             var result = scenarioContext.Get<IDSFDataObject>("result");
-            GetScalarValueFromEnvironment(result.Environment, "[[var]]", out actualValue, out error);
+            GetScalarValueFromEnvironment(result.Environment, "[[var]]", out string actualValue, out string error);
             if (string.IsNullOrEmpty(value))
             {
                 Assert.IsTrue(string.IsNullOrEmpty(actualValue));

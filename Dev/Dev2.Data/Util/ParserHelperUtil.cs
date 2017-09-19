@@ -91,8 +91,7 @@ namespace Dev2.Data.Util
 
         public bool CheckValidIndex(IParseTO to, string part, int start, int end)
         {
-            int partAsInt;
-            if (int.TryParse(part, out partAsInt))
+            if (int.TryParse(part, out int partAsInt))
             {
                 if (partAsInt >= 1)
                 {
@@ -120,8 +119,7 @@ namespace Dev2.Data.Util
             }
             else
             {
-                int partAsInt;
-                if (int.TryParse(part, out partAsInt))
+                if (int.TryParse(part, out int partAsInt))
                 {
                     if (partAsInt >= 1)
                     {

@@ -65,15 +65,14 @@ namespace Dev2.Workspaces
                 return;
             }
 
-            enDynamicServiceObjectType serviceType;
-            if(!Enum.TryParse(workspaceItem.ServiceType, out serviceType))
+            if (!Enum.TryParse(workspaceItem.ServiceType, out enDynamicServiceObjectType serviceType))
             {
                 serviceType = enDynamicServiceObjectType.DynamicService;
             }
 
             #region TODO: Fix Map ResourceType from workspaceItem.ServiceType
 
-            switch(serviceType)
+            switch (serviceType)
             {
                 case enDynamicServiceObjectType.BizRule:
                     break;

@@ -238,9 +238,8 @@ namespace Dev2.Studio.Dock
             {
                 foreach(object item in _currentView)
                 {
-                    DependencyObject container;
 
-                    if(_generatedElements.TryGetValue(item, out container))
+                    if (_generatedElements.TryGetValue(item, out DependencyObject container))
                     {
                         yield return container;
                     }
@@ -277,10 +276,9 @@ namespace Dev2.Studio.Dock
                 return false;
             }
 
-            DependencyObject actualContainer;
 
             // get the container we have for the item
-            if(_generatedElements.TryGetValue(item, out actualContainer))
+            if (_generatedElements.TryGetValue(item, out DependencyObject actualContainer))
             {
                 Debug.Assert(ReferenceEquals(actualContainer, container), "There shouldn't be 2 different containers associated with a given item");
                 return ReferenceEquals(actualContainer, container);
@@ -461,9 +459,8 @@ namespace Dev2.Studio.Dock
         #region MoveItem
         private void MoveItem(object item, int oldIndex, int newIndex)
         {
-            DependencyObject container;
 
-            if(_generatedElements.TryGetValue(item, out container))
+            if (_generatedElements.TryGetValue(item, out DependencyObject container))
             {
                 OnItemMoved(container, item, oldIndex, newIndex);
             }
@@ -576,9 +573,8 @@ namespace Dev2.Studio.Dock
                 int index = 0;
                 foreach(object item in _currentView)
                 {
-                    DependencyObject container;
 
-                    if(!_generatedElements.TryGetValue(item, out container))
+                    if (!_generatedElements.TryGetValue(item, out DependencyObject container))
                     {
                         InsertItem(index, item);
                     }
@@ -599,8 +595,7 @@ namespace Dev2.Studio.Dock
         {
             Debug.Assert(_generatedElements.ContainsKey(oldItem));
 
-            DependencyObject container;
-            if(_generatedElements.TryGetValue(oldItem, out container))
+            if (_generatedElements.TryGetValue(oldItem, out DependencyObject container))
             {
                 _generatedElements.Remove(oldItem);
                 OnItemRemovedImpl(container, oldItem);

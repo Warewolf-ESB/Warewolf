@@ -52,8 +52,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             var result = new ExecuteMessage { HasError = false };
-            StringBuilder tmp;
-            values.TryGetValue("Resource", out tmp);
+            values.TryGetValue("Resource", out StringBuilder tmp);
             var serializer = new Dev2JsonSerializer();
             try
             {
@@ -64,11 +63,9 @@ namespace Dev2.Runtime.ESB.Management.Services
                     Dev2Logger.Info("Save Scheduled Resource. Scheduled Resource:" +res, GlobalConstants.WarewolfInfo);
                     using(var model = SchedulerFactory.CreateModel(GlobalConstants.SchedulerFolderId, SecurityWrapper))
                     {
-                        StringBuilder userName;
-                        StringBuilder password;
 
-                        values.TryGetValue("UserName", out userName);
-                        values.TryGetValue("Password", out password);
+                        values.TryGetValue("UserName", out StringBuilder userName);
+                        values.TryGetValue("Password", out StringBuilder password);
                         if(userName == null || password == null)
                         {
                             result.Message.Append(ErrorResource.NoUserNameAndPassword);
@@ -76,8 +73,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                         }
                         else
                         {
-                            StringBuilder previousTask;
-                            values.TryGetValue("PreviousResource", out previousTask);
+                            values.TryGetValue("PreviousResource", out StringBuilder previousTask);
 
                             model.Save(res, userName.ToString(), password.ToString());
                             if(!string.IsNullOrEmpty(previousTask?.ToString()) && previousTask.ToString() != res.Name)

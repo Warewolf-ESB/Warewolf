@@ -42,9 +42,8 @@ namespace Dev2.Runtime.ESB.Management.Services
             try
             {
                 Dev2Logger.Info("Save Wcf Service Source", GlobalConstants.WarewolfInfo);
-                StringBuilder resourceDefinition;
 
-                values.TryGetValue("WcfSource", out resourceDefinition);
+                values.TryGetValue("WcfSource", out StringBuilder resourceDefinition);
 
                 var src = serializer.Deserialize<WcfServiceSourceDefinition>(resourceDefinition);
                 var con = new WcfSource

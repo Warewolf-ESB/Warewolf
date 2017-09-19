@@ -40,10 +40,9 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset.FindRecordIndexMultiple
 
         protected override void BuildDataList()
         {
-            List<Tuple<string, string>> variableList;
-            scenarioContext.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
 
-            if(variableList == null)
+            if (variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 scenarioContext.Add("variableList", variableList);
@@ -52,14 +51,10 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset.FindRecordIndexMultiple
             variableList.Add(new Tuple<string, string>(ResultVariable, ""));
             BuildShapeAndTestData();
 
-            string fieldsToSearch;
-            scenarioContext.TryGetValue("fieldsToSearch", out fieldsToSearch);
-            List<FindRecordsTO> searchList;
-            scenarioContext.TryGetValue("searchList", out searchList);
-            bool requireAllTrue;
-            scenarioContext.TryGetValue("requireAllTrue", out requireAllTrue);
-            bool requireAllFieldsToMatch;
-            scenarioContext.TryGetValue("requireAllFieldsToMatch", out requireAllFieldsToMatch);
+            scenarioContext.TryGetValue("fieldsToSearch", out string fieldsToSearch);
+            scenarioContext.TryGetValue("searchList", out List<FindRecordsTO> searchList);
+            scenarioContext.TryGetValue("requireAllTrue", out bool requireAllTrue);
+            scenarioContext.TryGetValue("requireAllFieldsToMatch", out bool requireAllFieldsToMatch);
 
             var findRecordsMultipleIndex = new DsfFindRecordsMultipleCriteriaActivity
                 {
@@ -69,8 +64,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset.FindRecordIndexMultiple
                     RequireAllFieldsToMatch = requireAllFieldsToMatch,
                     Result = ResultVariable
                 };
-            string updatedResultField;
-            if(scenarioContext.TryGetValue("specifiedResult",out updatedResultField))
+            if (scenarioContext.TryGetValue("specifiedResult", out string updatedResultField))
             {
                 if (!string.IsNullOrEmpty(updatedResultField))
                 {
@@ -101,10 +95,9 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset.FindRecordIndexMultiple
 
             if(tableRows.Count == 1)
             {
-                List<Tuple<string, string>> emptyRecordset;
 
-                bool isAdded = scenarioContext.TryGetValue("rs", out emptyRecordset);
-                if(!isAdded)
+                bool isAdded = scenarioContext.TryGetValue("rs", out List<Tuple<string, string>> emptyRecordset);
+                if (!isAdded)
                 {
                     emptyRecordset = new List<Tuple<string, string>>();
                     scenarioContext.Add("rs", emptyRecordset);
@@ -114,10 +107,9 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset.FindRecordIndexMultiple
 
             foreach(TableRow t in tableRows)
             {
-                List<Tuple<string, string>> variableList;
-                scenarioContext.TryGetValue("variableList", out variableList);
+                scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
 
-                if(variableList == null)
+                if (variableList == null)
                 {
                     variableList = new List<Tuple<string, string>>();
                     scenarioContext.Add("variableList", variableList);
@@ -152,10 +144,9 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset.FindRecordIndexMultiple
                 var rs = table.Header.ToArray()[0];
                 var field = table.Header.ToArray()[1];
 
-                List<Tuple<string, string>> emptyRecordset;
 
-                bool isAdded = scenarioContext.TryGetValue("rs", out emptyRecordset);
-                if(!isAdded)
+                bool isAdded = scenarioContext.TryGetValue("rs", out List<Tuple<string, string>> emptyRecordset);
+                if (!isAdded)
                 {
                     emptyRecordset = new List<Tuple<string, string>>();
                     scenarioContext.Add("rs", emptyRecordset);
@@ -165,10 +156,9 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset.FindRecordIndexMultiple
 
             foreach(TableRow t in tableRows)
             {
-                List<Tuple<string, string>> variableList;
-                scenarioContext.TryGetValue("variableList", out variableList);
+                scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
 
-                if(variableList == null)
+                if (variableList == null)
                 {
                     variableList = new List<Tuple<string, string>>();
                     scenarioContext.Add("variableList", variableList);
@@ -189,9 +179,8 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset.FindRecordIndexMultiple
 
         int GetRowCount()
         {
-            int row;
-            bool rowAdded = scenarioContext.TryGetValue("row", out row);
-            if(rowAdded)
+            bool rowAdded = scenarioContext.TryGetValue("row", out int row);
+            if (rowAdded)
             {
                 scenarioContext.Add("row", row);
             }
@@ -210,10 +199,9 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset.FindRecordIndexMultiple
 
         private List<FindRecordsTO> GetSearchList()
         {
-            List<FindRecordsTO> searchList;
-            scenarioContext.TryGetValue("searchList", out searchList);
+            scenarioContext.TryGetValue("searchList", out List<FindRecordsTO> searchList);
 
-            if(searchList == null)
+            if (searchList == null)
             {
                 searchList = new List<FindRecordsTO>();
                 scenarioContext.Add("searchList", searchList);
@@ -260,9 +248,8 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset.FindRecordIndexMultiple
             }
             else
             {
-                string actualValue;
                 expectedResult = expectedResult.Replace('"', ' ').Trim();
-                GetScalarValueFromEnvironment(result.Environment, ResultVariable,out actualValue,out error);
+                GetScalarValueFromEnvironment(result.Environment, ResultVariable,out string actualValue,out error);
 
                 if(string.IsNullOrEmpty(expectedResult))
                 {

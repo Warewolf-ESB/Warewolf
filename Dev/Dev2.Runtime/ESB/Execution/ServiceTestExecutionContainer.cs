@@ -265,8 +265,7 @@ namespace Dev2.Runtime.ESB.Execution
                     }
                     else if (!DataListUtil.IsValueRecordset(input.Variable))
                     {
-                        string errorMessage;
-                        if (ExecutionEnvironment.IsValidVariableExpression(input.Value, out errorMessage, 0))
+                        if (ExecutionEnvironment.IsValidVariableExpression(input.Value, out string errorMessage, 0))
                         {
                             DataObject.Environment.AllErrors.Add("Cannot use variables as input value.");
                         }
@@ -592,20 +591,10 @@ namespace Dev2.Runtime.ESB.Execution
         {
             var testPassed = test.TestPassed;
 
-            IEnumerable<IServiceTestStep> pendingSteps;
-            IEnumerable<IServiceTestStep> invalidSteps;
-            IEnumerable<IServiceTestStep> failingSteps;
-            IEnumerable<IServiceTestOutput> pendingOutputs;
-            IEnumerable<IServiceTestOutput> invalidOutputs;
-            IList<IServiceTestStep> pendingTestSteps;
-            IList<IServiceTestStep> failingTestSteps;
-            IList<IServiceTestOutput> invalidTestOutputs;
-            IList<IServiceTestOutput> failingTestOutputs;
-
-            var serviceTestSteps = GetStepValues(test, out pendingSteps, out invalidSteps, out failingSteps);
-            var failingOutputs = GetOutputValues(test, out pendingOutputs, out invalidOutputs);
-            var invalidTestSteps = GetSteps(invalidSteps, pendingSteps, failingSteps, out pendingTestSteps, out failingTestSteps);
-            var pendingTestOutputs = GetOutputs(pendingOutputs, invalidOutputs, failingOutputs, out invalidTestOutputs, out failingTestOutputs);
+            var serviceTestSteps = GetStepValues(test, out IEnumerable<IServiceTestStep> pendingSteps, out IEnumerable<IServiceTestStep> invalidSteps, out IEnumerable<IServiceTestStep> failingSteps);
+            var failingOutputs = GetOutputValues(test, out IEnumerable<IServiceTestOutput> pendingOutputs, out IEnumerable<IServiceTestOutput> invalidOutputs);
+            var invalidTestSteps = GetSteps(invalidSteps, pendingSteps, failingSteps, out IList<IServiceTestStep> pendingTestSteps, out IList<IServiceTestStep> failingTestSteps);
+            var pendingTestOutputs = GetOutputs(pendingOutputs, invalidOutputs, failingOutputs, out IList<IServiceTestOutput> invalidTestOutputs, out IList<IServiceTestOutput> failingTestOutputs);
 
             var hasInvalidSteps = invalidTestSteps?.Any() ?? false;
             var hasPendingSteps = pendingTestSteps?.Any() ?? false;

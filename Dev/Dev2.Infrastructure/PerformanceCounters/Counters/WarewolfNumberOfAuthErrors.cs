@@ -2,10 +2,11 @@
 using System.Diagnostics;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Monitoring;
+using System;
 
 namespace Dev2.PerformanceCounters.Counters
 {
-    public class WarewolfNumberOfAuthErrors : IPerformanceCounter
+    public class WarewolfNumberOfAuthErrors : IPerformanceCounter, IDisposable
     {
 
         private PerformanceCounter _counter;
@@ -86,6 +87,11 @@ namespace Dev2.PerformanceCounters.Counters
             {
                 _counter.RawValue = 0;
             }
+        }
+
+        public void Dispose()
+        {
+            _counter.Dispose();
         }
         #endregion
     }

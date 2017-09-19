@@ -68,25 +68,20 @@ namespace Dev2.Settings.Logging
             CurrentEnvironment = currentEnvironment ?? throw new ArgumentNullException(nameof(currentEnvironment));
             GetServerLogFileCommand = new DelegateCommand(OpenServerLogFile);
             GetStudioLogFileCommand = new DelegateCommand(OpenStudioLogFile);
-            LogLevel serverFileLogLevel;
-            LogLevel serverEventLogLevel;
-            if (Enum.TryParse(logging.FileLoggerLogLevel, out serverFileLogLevel))
+            if (Enum.TryParse(logging.FileLoggerLogLevel, out LogLevel serverFileLogLevel))
             {
                 _serverFileLogLevel = serverFileLogLevel;
             }
-            if (Enum.TryParse(logging.EventLogLoggerLogLevel, out serverEventLogLevel))
+            if (Enum.TryParse(logging.EventLogLoggerLogLevel, out LogLevel serverEventLogLevel))
             {
                 _serverEventLogLevel = serverEventLogLevel;
             }
             _serverLogMaxSize = logging.FileLoggerLogSize.ToString(CultureInfo.InvariantCulture);
-
-            LogLevel studioFileLogLevel;
-            LogLevel studioEventLogLevel;
-            if (Enum.TryParse(Dev2Logger.GetFileLogLevel(), out studioFileLogLevel))
+            if (Enum.TryParse(Dev2Logger.GetFileLogLevel(), out LogLevel studioFileLogLevel))
             {
                 _studioFileLogLevel = studioFileLogLevel;
             }
-            if (Enum.TryParse(Dev2Logger.GetEventLogLevel(), out studioEventLogLevel))
+            if (Enum.TryParse(Dev2Logger.GetEventLogLevel(), out LogLevel studioEventLogLevel))
             {
                 _studioEventLogLevel = studioEventLogLevel;
             }
@@ -267,8 +262,7 @@ namespace Dev2.Settings.Logging
                 }
                 else
                 {
-                    int val;
-                    if (value.IsWholeNumber(out val))
+                    if (value.IsWholeNumber(out int val))
                     {
                         IsDirty = !Equals(Item);
                         _serverLogMaxSize = value;
@@ -290,8 +284,7 @@ namespace Dev2.Settings.Logging
                 }
                 else
                 {
-                    int val;
-                    if (value.IsWholeNumber(out val))
+                    if (value.IsWholeNumber(out int val))
                     {
                         IsDirty = !Equals(Item);
                         _studioLogMaxSize = value;

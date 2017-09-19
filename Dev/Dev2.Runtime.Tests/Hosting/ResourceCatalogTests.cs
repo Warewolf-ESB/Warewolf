@@ -149,9 +149,8 @@ namespace Dev2.Tests.Runtime.Hosting
         [TestMethod]
         public void LoadWorkspaceAsyncWithValidWorkspaceIDExpectedReturnsCatalogForWorkspace()
         {
-            List<IResource> resources;
             var workspaceID = Guid.NewGuid();
-            SaveResources(workspaceID, out resources);
+            SaveResources(workspaceID, out List<IResource> resources);
 
             var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
             rc.LoadWorkspace(workspaceID);
@@ -171,9 +170,8 @@ namespace Dev2.Tests.Runtime.Hosting
         [TestMethod]
         public void GetResourceCount_ExpectedReturnsCount()
         {
-            List<IResource> resources;
             var workspaceID = Guid.NewGuid();
-            SaveResources(workspaceID, out resources);
+            SaveResources(workspaceID, out List<IResource> resources);
 
             var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
             rc.LoadWorkspace(workspaceID);
@@ -184,9 +182,8 @@ namespace Dev2.Tests.Runtime.Hosting
         [TestMethod]
         public void Reload_ExpectedReturnsCount()
         {
-            List<IResource> resources;
             var workspaceID = GlobalConstants.ServerWorkspaceID;
-            SaveResources(workspaceID, out resources);
+            SaveResources(workspaceID, out List<IResource> resources);
 
             var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
             rc.Reload();
@@ -709,9 +706,8 @@ namespace Dev2.Tests.Runtime.Hosting
         [TestMethod]
         public void GetResourceWithResourceNameExpectedReturnsResource()
         {
-            List<IResource> resources;
             var workspaceID = Guid.NewGuid();
-            SaveResources(workspaceID, out resources);
+            SaveResources(workspaceID, out List<IResource> resources);
 
             var catalog = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
             foreach (var expected in resources)
@@ -921,9 +917,8 @@ namespace Dev2.Tests.Runtime.Hosting
         [TestMethod]
         public void GetResourceContentsWithExistingResourceExpectedReturnsResourceContents()
         {
-            List<IResource> resources;
             var workspaceID = Guid.NewGuid();
-            SaveResources(workspaceID, out resources);
+            SaveResources(workspaceID, out List<IResource> resources);
 
             var catalog = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
             foreach (var expected in resources)
@@ -967,9 +962,8 @@ namespace Dev2.Tests.Runtime.Hosting
         [TestMethod]
         public void GetResourceContentsWithNonExistentResourceExpectedReturnsEmptyString()
         {
-            List<IResource> resources;
             var workspaceID = Guid.NewGuid();
-            SaveResources(workspaceID, out resources);
+            SaveResources(workspaceID, out List<IResource> resources);
 
             var catalog = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
             var actual = catalog.GetResourceContents(new Resource { ResourceID = Guid.NewGuid(), FilePath = Path.GetRandomFileName() });
@@ -979,9 +973,8 @@ namespace Dev2.Tests.Runtime.Hosting
         [TestMethod]
         public void GetResourceContentsWithNonExistentResourceIDExpectedReturnsEmptyString()
         {
-            List<IResource> resources;
             var workspaceID = Guid.NewGuid();
-            SaveResources(workspaceID, out resources);
+            SaveResources(workspaceID, out List<IResource> resources);
 
             var catalog = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
             var actual = catalog.GetResourceContents(workspaceID, Guid.NewGuid());
@@ -995,13 +988,11 @@ namespace Dev2.Tests.Runtime.Hosting
         [TestMethod]
         public void SyncToWithDeleteIsFalseAndFileDeletedFromSourceExpectedFileNotDeletedInDestination()
         {
-            List<IResource> sourceResources;
             var sourceWorkspaceID = Guid.NewGuid();
-            var sourceWorkspacePath = SaveResources(sourceWorkspaceID, out sourceResources);
+            var sourceWorkspacePath = SaveResources(sourceWorkspaceID, out List<IResource> sourceResources);
 
-            List<IResource> targetResources;
             var targetWorkspaceID = Guid.NewGuid();
-            var targetWorkspacePath = SaveResources(targetWorkspaceID, out targetResources);
+            var targetWorkspacePath = SaveResources(targetWorkspaceID, out List<IResource> targetResources);
 
             var sourceResource = sourceResources[0];
             var targetResource = targetResources.First(r => r.ResourceID == sourceResource.ResourceID);
@@ -1017,13 +1008,11 @@ namespace Dev2.Tests.Runtime.Hosting
         [TestMethod]
         public void SyncToWithOverwriteIsTrueExpectedFileInDestinationOverwritten()
         {
-            List<IResource> sourceResources;
             var sourceWorkspaceID = Guid.NewGuid();
-            var sourceWorkspacePath = SaveResources(sourceWorkspaceID, out sourceResources);
+            var sourceWorkspacePath = SaveResources(sourceWorkspaceID, out List<IResource> sourceResources);
 
-            List<IResource> targetResources;
             var targetWorkspaceID = Guid.NewGuid();
-            var targetWorkspacePath = SaveResources(targetWorkspaceID, out targetResources);
+            var targetWorkspacePath = SaveResources(targetWorkspaceID, out List<IResource> targetResources);
 
             var sourceResource = sourceResources[0];
             var targetResource = targetResources.First(r => r.ResourceID == sourceResource.ResourceID);
@@ -1051,13 +1040,11 @@ namespace Dev2.Tests.Runtime.Hosting
         [TestMethod]
         public void SyncToWithOverwriteIsFalseExpectedFileInDestinationUnchanged()
         {
-            List<IResource> sourceResources;
             var sourceWorkspaceID = Guid.NewGuid();
-            var sourceWorkspacePath = SaveResources(sourceWorkspaceID, out sourceResources, true);
+            var sourceWorkspacePath = SaveResources(sourceWorkspaceID, out List<IResource> sourceResources, true);
 
-            List<IResource> targetResources;
             var targetWorkspaceID = Guid.NewGuid();
-            var targetWorkspacePath = SaveResources(targetWorkspaceID, out targetResources, true);
+            var targetWorkspacePath = SaveResources(targetWorkspaceID, out List<IResource> targetResources, true);
 
             var sourceResource = sourceResources[0];
             var targetResource = targetResources.First(r => r.ResourceID == sourceResource.ResourceID);
@@ -1086,13 +1073,11 @@ namespace Dev2.Tests.Runtime.Hosting
         [TestMethod]
         public void SyncToWithFilesToIgnoreSpecifiedExpectedIgnoredFilesAreNotCopied()
         {
-            List<IResource> sourceResources;
             var sourceWorkspaceID = Guid.NewGuid();
-            var sourceWorkspacePath = SaveResources(sourceWorkspaceID, out sourceResources);
+            var sourceWorkspacePath = SaveResources(sourceWorkspaceID, out List<IResource> sourceResources);
 
-            List<IResource> targetResources;
             var targetWorkspaceID = Guid.NewGuid();
-            var targetWorkspacePath = SaveResources(targetWorkspaceID, out targetResources);
+            var targetWorkspacePath = SaveResources(targetWorkspaceID, out List<IResource> targetResources);
 
             var sourceResource = sourceResources[0];
             var targetResource = targetResources.First(r => r.ResourceID == sourceResource.ResourceID);
@@ -1107,13 +1092,11 @@ namespace Dev2.Tests.Runtime.Hosting
         [TestMethod]
         public void SyncToWithFilesToIgnoreSpecifiedExpectedIgnoredFilesAreNotDeleted()
         {
-            List<IResource> sourceResources;
             var sourceWorkspaceID = Guid.NewGuid();
-            var sourceWorkspacePath = SaveResources(sourceWorkspaceID, out sourceResources);
+            var sourceWorkspacePath = SaveResources(sourceWorkspaceID, out List<IResource> sourceResources);
 
-            List<IResource> targetResources;
             var targetWorkspaceID = Guid.NewGuid();
-            var targetWorkspacePath = SaveResources(targetWorkspaceID, out targetResources);
+            var targetWorkspacePath = SaveResources(targetWorkspaceID, out List<IResource> targetResources);
 
             var sourceResource = sourceResources[0];
             var targetResource = targetResources.First(r => r.ResourceID == sourceResource.ResourceID);
@@ -1129,9 +1112,8 @@ namespace Dev2.Tests.Runtime.Hosting
         [TestMethod]
         public void SyncToWithNonExistingDestinationDirectoryExpectedDestinationDirectoryCreated()
         {
-            List<IResource> sourceResources;
             var sourceWorkspaceID = Guid.NewGuid();
-            var sourceWorkspacePath = SaveResources(sourceWorkspaceID, out sourceResources);
+            var sourceWorkspacePath = SaveResources(sourceWorkspaceID, out List<IResource> sourceResources);
 
             var targetWorkspaceID = Guid.NewGuid();
             var targetWorkspacePath = EnvironmentVariables.GetWorkspacePath(targetWorkspaceID);
@@ -1191,13 +1173,11 @@ namespace Dev2.Tests.Runtime.Hosting
         [TestMethod]
         public void CopyResourceWithNonExistingResourceNameExpectedDoesNotCopyResourceToTarget()
         {
-            List<IResource> sourceResources;
             var sourceWorkspaceID = Guid.NewGuid();
-            SaveResources(sourceWorkspaceID, out sourceResources);
+            SaveResources(sourceWorkspaceID, out List<IResource> sourceResources);
 
-            List<IResource> targetResources;
             var targetWorkspaceID = Guid.NewGuid();
-            SaveResources(targetWorkspaceID, out targetResources);
+            SaveResources(targetWorkspaceID, out List<IResource> targetResources);
 
             var result = new ResourceCatalog().CopyResource(Guid.Empty, sourceWorkspaceID, targetWorkspaceID);
             Assert.IsFalse(result);
@@ -1206,13 +1186,11 @@ namespace Dev2.Tests.Runtime.Hosting
         [TestMethod]
         public void CopyResourceWithNonExistingResourceFilePathExpectedDoesNotCopyResourceToTarget()
         {
-            List<IResource> sourceResources;
             var sourceWorkspaceID = Guid.NewGuid();
-            SaveResources(sourceWorkspaceID, out sourceResources);
+            SaveResources(sourceWorkspaceID, out List<IResource> sourceResources);
 
-            List<IResource> targetResources;
             var targetWorkspaceID = Guid.NewGuid();
-            SaveResources(targetWorkspaceID, out targetResources);
+            SaveResources(targetWorkspaceID, out List<IResource> targetResources);
 
             var sourceResource = sourceResources[0];
             var targetResource = targetResources.First(r => r.ResourceID == sourceResource.ResourceID);
@@ -1292,9 +1270,8 @@ namespace Dev2.Tests.Runtime.Hosting
         [TestMethod]
         public void DeleteResourceWithNonExistingResourceNameExpectedReturnsNoMatch()
         {
-            List<IResource> resources;
             var workspaceID = Guid.NewGuid();
-            SaveResources(workspaceID, out resources);
+            SaveResources(workspaceID, out List<IResource> resources);
 
             var catalog = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
             var result = catalog.DeleteResource(workspaceID, "xxx", "WorkflowService");
@@ -1360,8 +1337,7 @@ namespace Dev2.Tests.Runtime.Hosting
         public void GetDynamicObjectsWithResourceNameExpectedReturnsObjectGraph()
         {
             var workspaceID = Guid.NewGuid();
-            List<IResource> resources;
-            SaveResources(workspaceID, out resources);
+            SaveResources(workspaceID, out List<IResource> resources);
 
             var catalog = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
 
@@ -1376,8 +1352,7 @@ namespace Dev2.Tests.Runtime.Hosting
         public void GetDynamicObjectsWithResourceExpectedReturnsObjectGraph()
         {
             var workspaceID = Guid.NewGuid();
-            List<IResource> resources;
-            SaveResources(workspaceID, out resources);
+            SaveResources(workspaceID, out List<IResource> resources);
 
             var catalog = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
 
@@ -1392,8 +1367,7 @@ namespace Dev2.Tests.Runtime.Hosting
         public void GetDynamicObjectsWithResourcesExpectedReturnsObjectGraphs()
         {
             var workspaceID = Guid.NewGuid();
-            List<IResource> resources;
-            SaveResources(workspaceID, out resources);
+            SaveResources(workspaceID, out List<IResource> resources);
 
             var catalog = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
 

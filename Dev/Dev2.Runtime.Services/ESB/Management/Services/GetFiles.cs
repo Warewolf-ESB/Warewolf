@@ -22,9 +22,8 @@ namespace Dev2.Runtime.ESB.Management.Services
             ExecuteMessage msg = new ExecuteMessage();
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             Dev2Logger.Info("Get Files", GlobalConstants.WarewolfInfo);
-            StringBuilder currentFolder;
 
-            values.TryGetValue("fileListing", out currentFolder);
+            values.TryGetValue("fileListing", out StringBuilder currentFolder);
             if (currentFolder != null)
             {
                 var src = serializer.Deserialize(currentFolder.ToString(), typeof(IFileListing)) as IFileListing;

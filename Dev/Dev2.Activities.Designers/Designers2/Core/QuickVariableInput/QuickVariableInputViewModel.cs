@@ -500,11 +500,9 @@ namespace Dev2.Activities.Designers2.Core.QuickVariableInput
             }
             else
             {
-                int indexToSplitOn;
-                if(!int.TryParse(SplitToken, out indexToSplitOn))
+                if (!int.TryParse(SplitToken, out int indexToSplitOn))
                 {
-                    double doubleToSplitOn;
-                    if(double.TryParse(SplitToken, out doubleToSplitOn))
+                    if (double.TryParse(SplitToken, out double doubleToSplitOn))
                     {
                         yield return new ActionableErrorInfo(doFocused) { ErrorType = ErrorType.Critical, Message = "Please supply a number less then 2,147,483,647 for an Index split" };
                     }
@@ -514,7 +512,7 @@ namespace Dev2.Activities.Designers2.Core.QuickVariableInput
                     }
                 }
 
-                if(indexToSplitOn < 1)
+                if (indexToSplitOn < 1)
                 {
                     yield return new ActionableErrorInfo(doFocused) { ErrorType = ErrorType.Critical, Message = "Please supply a whole positive number for an Index split" };
                 }

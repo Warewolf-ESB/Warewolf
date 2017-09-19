@@ -61,19 +61,17 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.GatherSystemInformation
         [Given(@"I have a variable ""(.*)"" and I selected ""(.*)""")]
         public void GivenIHaveAVariableAndISelected(string variable, string informationType)
         {
-            int row;
 
-            bool isRowAdded = scenarioContext.TryGetValue("row", out row);
-            if(isRowAdded)
+            bool isRowAdded = scenarioContext.TryGetValue("row", out int row);
+            if (isRowAdded)
             {
                 scenarioContext.Add("row", row);
             }
             row++;
 
-            List<Tuple<string, string>> variableList;
-            scenarioContext.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
 
-            if(variableList == null)
+            if (variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 scenarioContext.Add("variableList", variableList);
@@ -84,10 +82,9 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.GatherSystemInformation
                 (enTypeOfSystemInformationToGather)
                 Enum.Parse(typeof(enTypeOfSystemInformationToGather), informationType);
 
-            List<GatherSystemInformationTO> systemInformationCollection;
-            scenarioContext.TryGetValue("systemInformationCollection", out systemInformationCollection);
+            scenarioContext.TryGetValue("systemInformationCollection", out List<GatherSystemInformationTO> systemInformationCollection);
 
-            if(systemInformationCollection == null)
+            if (systemInformationCollection == null)
             {
                 systemInformationCollection = new List<GatherSystemInformationTO>();
                 scenarioContext.Add("systemInformationCollection", systemInformationCollection);
@@ -123,9 +120,8 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.GatherSystemInformation
             }
             else
             {
-                string actualValue;
                 GetScalarValueFromEnvironment(result.Environment, DataListUtil.RemoveLanguageBrackets(variable),
-                                           out actualValue, out error);
+                                           out string actualValue, out error);
                 Verify(type, actualValue, error);
             }
         }

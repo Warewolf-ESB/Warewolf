@@ -48,8 +48,7 @@ namespace Dev2.Runtime.ServiceModel.Data
                 throw new ArgumentNullException(nameof(xml));
             }
 
-            Guid resourceId;
-            if (!Guid.TryParse(xml.AttributeSafe("ID"), out resourceId))
+            if (!Guid.TryParse(xml.AttributeSafe("ID"), out Guid resourceId))
             {
                 // This is here for legacy XML!
                 resourceId = Guid.NewGuid();
@@ -91,8 +90,7 @@ namespace Dev2.Runtime.ServiceModel.Data
                 #endregion
             }
             var isValidStr = xml.AttributeSafe("IsValid");
-            bool isValid;
-            if (bool.TryParse(isValidStr, out isValid))
+            if (bool.TryParse(isValidStr, out bool isValid))
             {
                 IsValid = isValid;
             }
@@ -201,8 +199,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             if (xElement != null)
             {
                 var tmp = xElement.Value;
-                bool isNew;
-                Boolean.TryParse(tmp, out isNew);
+                Boolean.TryParse(tmp, out bool isNew);
                 IsNewResource = isNew;
             }
         }
@@ -231,16 +228,12 @@ namespace Dev2.Runtime.ServiceModel.Data
                 var errorMessageElements = errorMessagesElement.Elements("ErrorMessage");
                 foreach (var errorMessageElement in errorMessageElements)
                 {
-                    FixType fixType;
                     var fixTypeString = errorMessageElement.AttributeSafe("FixType");
-                    Enum.TryParse(fixTypeString, true, out fixType);
-                    ErrorType errorType;
+                    Enum.TryParse(fixTypeString, true, out FixType fixType);
                     var errorTypeString = errorMessageElement.AttributeSafe("ErrorType");
-                    Enum.TryParse(errorTypeString, true, out errorType);
-                    Guid instanceId;
-                    Guid.TryParse(errorMessageElement.AttributeSafe("InstanceID"), out instanceId);
-                    CompileMessageType messageType;
-                    Enum.TryParse(errorMessageElement.AttributeSafe("MessageType"), true, out messageType);
+                    Enum.TryParse(errorTypeString, true, out ErrorType errorType);
+                    Guid.TryParse(errorMessageElement.AttributeSafe("InstanceID"), out Guid instanceId);
+                    Enum.TryParse(errorMessageElement.AttributeSafe("MessageType"), true, out CompileMessageType messageType);
                     Errors.Add(new ErrorInfo
                     {
                         InstanceID = instanceId,
@@ -256,8 +249,7 @@ namespace Dev2.Runtime.ServiceModel.Data
 
         private string GetResourceTypeFromString(string actionTypeStr)
         {
-            enActionType actionType;
-            if (Enum.TryParse(actionTypeStr, out actionType))
+            if (Enum.TryParse(actionTypeStr, out enActionType actionType))
             {
                 switch (actionType)
                 {
@@ -504,10 +496,8 @@ namespace Dev2.Runtime.ServiceModel.Data
                             }
                             var resourceIdAsString = element.AttributeSafe(resourceType == "WorkflowService" ? "ResourceID" : "SourceId");
                             var resourceName = element.AttributeSafe("ServiceName");
-                            Guid uniqueId;
-                            Guid.TryParse(uniqueIdAsString, out uniqueId);
-                            Guid resId;
-                            Guid.TryParse(resourceIdAsString, out resId);
+                            Guid.TryParse(uniqueIdAsString, out Guid uniqueId);
+                            Guid.TryParse(resourceIdAsString, out Guid resId);
                             Dependencies.Add(CreateResourceForTree(resId, uniqueId, resourceName, resourceType));
                             AddRemoteServerDependencies(element);
                         });
@@ -563,8 +553,7 @@ namespace Dev2.Runtime.ServiceModel.Data
                 var resourceName = element.AttributeSafe("ResourceName");
                 var actionTypeStr = element.AttributeSafe("Type");
                 var resourceType = GetResourceTypeFromString(actionTypeStr);
-                Guid resId;
-                Guid.TryParse(resourceIdAsString, out resId);
+                Guid.TryParse(resourceIdAsString, out Guid resId);
                 var resourceForTree = Dependencies.FirstOrDefault(tree => tree.ResourceID == resId);
                 if (resourceForTree == null)
                 {
@@ -594,8 +583,7 @@ namespace Dev2.Runtime.ServiceModel.Data
                 var resourceName = element.AttributeSafe("ResourceName");
                 var actionTypeStr = element.AttributeSafe("Type");
                 var resourceType = GetResourceTypeFromString(actionTypeStr);
-                Guid resId;
-                Guid.TryParse(resourceIdAsString, out resId);
+                Guid.TryParse(resourceIdAsString, out Guid resId);
                 var resourceForTree = Dependencies.FirstOrDefault(tree => tree.ResourceID == resId);
                 if (resourceForTree == null)
                 {
@@ -625,8 +613,7 @@ namespace Dev2.Runtime.ServiceModel.Data
                 var resourceName = element.AttributeSafe("ResourceName");
                 var actionTypeStr = element.AttributeSafe("Type");
                 var resourceType = GetResourceTypeFromString(actionTypeStr);
-                Guid resId;
-                Guid.TryParse(resourceIdAsString, out resId);
+                Guid.TryParse(resourceIdAsString, out Guid resId);
                 var resourceForTree = Dependencies.FirstOrDefault(tree => tree.ResourceID == resId);
                 if (resourceForTree == null)
                 {
@@ -653,10 +640,8 @@ namespace Dev2.Runtime.ServiceModel.Data
             {
                 var resourceIdAsString = element.AttributeSafe("RabbitMQSourceResourceId");
                 var uniqueIdAsString = element.AttributeSafe("UniqueID");
-                Guid uniqueId;
-                Guid.TryParse(uniqueIdAsString, out uniqueId);
-                Guid resId;
-                Guid.TryParse(resourceIdAsString, out resId);
+                Guid.TryParse(uniqueIdAsString, out Guid uniqueId);
+                Guid.TryParse(resourceIdAsString, out Guid resId);
                 var resourceForTree = Dependencies.FirstOrDefault(tree => tree.ResourceID == resId);
                 if (resourceForTree == null)
                 {
@@ -689,10 +674,8 @@ namespace Dev2.Runtime.ServiceModel.Data
                 var resourceIdAsString = element.AttributeSafe("SourceId");
                 var uniqueIdAsString = element.AttributeSafe("UniqueID");
                 var resourceName = element.AttributeSafe("ResourceName");
-                Guid uniqueId;
-                Guid.TryParse(uniqueIdAsString, out uniqueId);
-                Guid resId;
-                Guid.TryParse(resourceIdAsString, out resId);
+                Guid.TryParse(uniqueIdAsString, out Guid uniqueId);
+                Guid.TryParse(resourceIdAsString, out Guid resId);
                 var resourceForTree = Dependencies.FirstOrDefault(tree => tree.ResourceID == resId);
                 if (resourceForTree == null)
                 {
@@ -731,10 +714,8 @@ namespace Dev2.Runtime.ServiceModel.Data
                 var resourceIdAsString = element.AttributeSafe("SharepointServerResourceId");
                 var uniqueIdAsString = element.AttributeSafe("UniqueID");
                 var resourceName = element.AttributeSafe("ResourceName");
-                Guid uniqueId;
-                Guid.TryParse(uniqueIdAsString, out uniqueId);
-                Guid resId;
-                Guid.TryParse(resourceIdAsString, out resId);
+                Guid.TryParse(uniqueIdAsString, out Guid uniqueId);
+                Guid.TryParse(resourceIdAsString, out Guid resId);
                 var resourceForTree = Dependencies.FirstOrDefault(tree => tree.ResourceID == resId);
                 if (resourceForTree == null)
                 {
@@ -746,8 +727,7 @@ namespace Dev2.Runtime.ServiceModel.Data
         private void AddRemoteServerDependencies(XElement element)
         {
             var environmentIdString = element.AttributeSafe("EnvironmentID");
-            Guid environmentId;
-            if (Guid.TryParse(environmentIdString, out environmentId) && environmentId != Guid.Empty)
+            if (Guid.TryParse(environmentIdString, out Guid environmentId) && environmentId != Guid.Empty)
             {
                 if (environmentId == Guid.Empty)
                 {

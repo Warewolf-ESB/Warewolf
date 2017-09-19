@@ -40,10 +40,9 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.DateandTime
 
         protected override void BuildDataList()
         {
-            List<Tuple<string, string>> variableList;
-            scenarioContext.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
 
-            if(variableList == null)
+            if (variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 scenarioContext.Add("variableList", variableList);
@@ -52,19 +51,14 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.DateandTime
             variableList.Add(new Tuple<string, string>(ResultVariable, ""));
             BuildShapeAndTestData();
 
-            string inputDate;
-            scenarioContext.TryGetValue("inputDate", out inputDate);
-            string inputFormat;
-            scenarioContext.TryGetValue("inputFormat", out inputFormat);
-            string outputFormat;
-            scenarioContext.TryGetValue("outputFormat", out outputFormat);
-            string timeModifierType;
-            scenarioContext.TryGetValue("timeModifierType", out timeModifierType);
-            string timeModifierAmount;
-            scenarioContext.TryGetValue("timeModifierAmount", out timeModifierAmount);
+            scenarioContext.TryGetValue("inputDate", out string inputDate);
+            scenarioContext.TryGetValue("inputFormat", out string inputFormat);
+            scenarioContext.TryGetValue("outputFormat", out string outputFormat);
+            scenarioContext.TryGetValue("timeModifierType", out string timeModifierType);
+            scenarioContext.TryGetValue("timeModifierAmount", out string timeModifierAmount);
 
             //Ashley: Windows Server 2008 is too outdated to know GMT was renamed to UTC.
-            if(Environment.OSVersion.ToString() == "Microsoft Windows NT 6.0.6002 Service Pack 2")
+            if (Environment.OSVersion.ToString() == "Microsoft Windows NT 6.0.6002 Service Pack 2")
             {
                 inputDate = inputDate.Replace("(UTC+", "(GMT+").Replace("(UTC-", "(GMT-");
             }
@@ -96,8 +90,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.DateandTime
         [Given(@"I have a Date time variable ""(.*)"" with value ""(.*)""")]
         public void GivenIHaveADateTimeVariableWithValue(string name, string value)
         {
-            List<Tuple<string, string>> variableList;
-            scenarioContext.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
 
             if (variableList == null)
             {
@@ -140,11 +133,9 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.DateandTime
         [Then(@"the datetime result should be a ""(.*)""")]
         public void ThenTheDatetimeResultShouldBeA(string type)
         {
-            string error;
-            string actualValue;
             var result = scenarioContext.Get<IDSFDataObject>("result");
             GetScalarValueFromEnvironment(result.Environment, DataListUtil.RemoveLanguageBrackets(ResultVariable),
-                                       out actualValue, out error);
+                                       out string actualValue, out string error);
             
             TypeConverter converter = TypeDescriptor.GetConverter(Type.GetType(type));
             
@@ -154,12 +145,10 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.DateandTime
         [Then(@"the datetime result should be ""(.*)""")]
         public void ThenTheDatetimeResultShouldBe(string expectedResult)
         {
-            string error;
-            string actualValue;
             var result = scenarioContext.Get<IDSFDataObject>("result");
             expectedResult = expectedResult.Replace('"', ' ').Trim();
             GetScalarValueFromEnvironment(result.Environment, DataListUtil.RemoveLanguageBrackets(ResultVariable),
-                                       out actualValue, out error);
+                                       out string actualValue, out string error);
             if(actualValue != null)
             {
                 //Ashley: Windows Server 2008 is too outdated to know GMT was renamed to UTC.
@@ -211,13 +200,10 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.DateandTime
         [Then(@"the datetime result should contain milliseconds")]
         public void ThenTheDatetimeResultShouldContainMilliseconds()
         {
-
-            string error;
-            string actualValue;
             var result = scenarioContext.Get<IDSFDataObject>("result");
 
             GetScalarValueFromEnvironment(result.Environment, DataListUtil.RemoveLanguageBrackets(ResultVariable),
-                                       out actualValue, out error);
+                                       out string actualValue, out string error);
             Assert.IsTrue(actualValue.Contains("."));
             
 

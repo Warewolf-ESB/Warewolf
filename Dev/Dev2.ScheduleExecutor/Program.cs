@@ -299,8 +299,7 @@ namespace Dev2.ScheduleExecutor
             if (!string.IsNullOrEmpty(result))
             {
                 var data = DataListUtil.AdjustForEncodingIssues(result);
-                bool isFragment;
-                var isXml = DataListUtil.IsXml(data, out isFragment);
+                var isXml = DataListUtil.IsXml(data, out bool isFragment);
                 if (isXml)
                 {
                     var xmlData = XElement.Parse(data);

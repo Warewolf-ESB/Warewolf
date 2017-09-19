@@ -131,9 +131,8 @@ namespace WarewolfCOMIPC
 			RequireReference(dispatch, "dispatch");
 
 			Type result = null;
-			int typeInfoCount;
-			int hr = dispatch.GetTypeInfoCount(out typeInfoCount);
-			if (hr == SOk && typeInfoCount > 0)
+            int hr = dispatch.GetTypeInfoCount(out int typeInfoCount);
+            if (hr == SOk && typeInfoCount > 0)
 			{
 				// Type info isn't usually culture-aware for IDispatch, so we might as well pass
 				// the default locale instead of looking up the current thread's LCID each time

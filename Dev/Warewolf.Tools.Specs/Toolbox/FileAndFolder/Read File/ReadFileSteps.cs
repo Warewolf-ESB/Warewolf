@@ -48,8 +48,7 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Read_File
         {
             BuildShapeAndTestData();
 
-            string privateKeyFile;
-            scenarioContext.TryGetValue(CommonSteps.SourcePrivatePublicKeyFile,out privateKeyFile);
+            scenarioContext.TryGetValue(CommonSteps.SourcePrivatePublicKeyFile, out string privateKeyFile);
             var fileRead = new DsfFileRead
             {
                 InputPath = scenarioContext.Get<string>(CommonSteps.SourceHolder),

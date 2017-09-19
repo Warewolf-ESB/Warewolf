@@ -74,8 +74,7 @@ namespace Dev2.DataList
         /// <returns></returns>
         public static IFindRecsetOptions FindMatch(string expressionType)
         {
-            IFindRecsetOptions result;
-            if(!_options.TryGetValue(expressionType, out result))
+            if (!_options.TryGetValue(expressionType, out IFindRecsetOptions result))
             {
                 return null;
             }

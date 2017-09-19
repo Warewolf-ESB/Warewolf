@@ -19,12 +19,10 @@ using Warewolf.Core;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage.Interfaces;
 
-
-
 namespace Dev2.Activities.DropBox2016.UploadActivity
 {
     [ToolDescriptorInfo("Dropbox", "Upload", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C8C9EA2E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Storage: Dropbox", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Dropbox_Upload")]
-    public class DsfDropBoxUploadActivity : DsfBaseActivity
+    public class DsfDropBoxUploadActivity : DsfBaseActivity, IDisposable
     {
         private IDropboxClientWrapper _clientWrapper;
         private DropboxClient _client;
@@ -35,8 +33,7 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
         protected IDropboxSingleExecutor<IDropboxResult> DropboxSingleExecutor;
 
         public DsfDropBoxUploadActivity()
-        {
-            
+        {            
             DisplayName = "Upload to Dropbox";
             OverWriteMode = true;
         }
@@ -46,16 +43,13 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
         {
             _clientWrapper = clientWrapper;
         }
-
-        
+                
         public OauthSource SelectedSource { get; set; }
-
-        
+                
         [Inputs("Local File Path")]
         [FindMissing]
         public string FromPath { get; set; }
-
-        
+                
         [Inputs("Path in the user's Dropbox")]
         [FindMissing]
         public string ToPath { get; set; }
@@ -84,9 +78,7 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
                 _overWriteMode = !value;
                 _addMode = value;
             }
-        }
-
-        
+        }              
 
         protected virtual DropboxClient GetClient()
         {
@@ -181,6 +173,11 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
            
             return _debugInputs;
 
+        }
+
+        public void Dispose()
+        {
+            _client.Dispose();
         }
     }
 

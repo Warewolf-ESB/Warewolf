@@ -141,8 +141,7 @@ namespace Dev2.Activities
                     bool timeoutSecondsError = false;
                     if (!string.IsNullOrEmpty(TimeOutText))
                     {
-                        int timeoutval;
-                        if (int.TryParse(CommonFunctions.evalResultToString(dataObject.Environment.Eval(TimeOutText,update)), out timeoutval))
+                        if (int.TryParse(CommonFunctions.evalResultToString(dataObject.Environment.Eval(TimeOutText, update)), out int timeoutval))
                         {
                             if (timeoutval < 0)
                             {

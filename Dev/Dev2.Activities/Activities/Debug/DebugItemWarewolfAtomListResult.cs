@@ -140,10 +140,9 @@ namespace Dev2.Activities.Debug
                 else
                 {
                     string indexRegionFromRecordset = DataListUtil.ExtractIndexRegionFromRecordset(displayExpression);
-                    int indexForRecset;
-                    int.TryParse(indexRegionFromRecordset, out indexForRecset);
+                    int.TryParse(indexRegionFromRecordset, out int indexForRecset);
 
-                    if(indexForRecset > 0)
+                    if (indexForRecset > 0)
                     {
                         int indexOfOpenningBracket = displayExpression.IndexOf("(", StringComparison.Ordinal) + 1;
                         string group = displayExpression.Substring(0, indexOfOpenningBracket) + "*" + displayExpression.Substring(indexOfOpenningBracket + indexRegionFromRecordset.Length);
@@ -261,10 +260,9 @@ namespace Dev2.Activities.Debug
                     else
                     {
                         string indexRegionFromRecordset = DataListUtil.ExtractIndexRegionFromRecordset(displayExpression);
-                        int indexForRecset;
-                        int.TryParse(indexRegionFromRecordset, out indexForRecset);
+                        int.TryParse(indexRegionFromRecordset, out int indexForRecset);
 
-                        if(indexForRecset > 0)
+                        if (indexForRecset > 0)
                         {
                             int indexOfOpenningBracket = displayExpression.IndexOf("(", StringComparison.Ordinal) + 1;
                             string group = displayExpression.Substring(0, indexOfOpenningBracket) + "*" + displayExpression.Substring(indexOfOpenningBracket + indexRegionFromRecordset.Length);
@@ -384,10 +382,9 @@ namespace Dev2.Activities.Debug
             else
             {
                 string indexRegionFromRecordset = DataListUtil.ExtractIndexRegionFromRecordset(displayExpression);
-                int indexForRecset;
-                int.TryParse(indexRegionFromRecordset, out indexForRecset);
+                int.TryParse(indexRegionFromRecordset, out int indexForRecset);
 
-                if(indexForRecset > 0)
+                if (indexForRecset > 0)
                 {
                     int indexOfOpenningBracket = displayExpression.IndexOf("(", StringComparison.Ordinal) + 1;
                     string group = displayExpression.Substring(0, indexOfOpenningBracket) + "*" + displayExpression.Substring(indexOfOpenningBracket + indexRegionFromRecordset.Length);

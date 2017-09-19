@@ -19,7 +19,7 @@ using Warewolf.Security.Encryption;
 
 namespace Dev2.Services.Sql
 {
-    internal class DbFactory : IDbFactory
+    internal class DbFactory : IDbFactory, IDisposable
     {
         SqlConnection _sqlConnection;
 
@@ -109,6 +109,11 @@ namespace Dev2.Services.Sql
                 }
                 return dataSet;
             }
+        }
+
+        public void Dispose()
+        {
+            _sqlConnection.Dispose();
         }
 
         #endregion

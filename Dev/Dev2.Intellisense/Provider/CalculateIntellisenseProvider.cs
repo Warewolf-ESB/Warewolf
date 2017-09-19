@@ -142,9 +142,8 @@ namespace Dev2.Studio.InterfaceImplementors
                     return IntellisenseResult;
                 }
 
-                Token[] tokens;
                 var searchText = context.FindTextToSearch();
-                _syntaxTreeBuilderHelper.Build(searchText, true, out tokens);
+                _syntaxTreeBuilderHelper.Build(searchText, true, out Token[] tokens);
                 string sub = string.IsNullOrEmpty(searchText) ? inputText : searchText;
 
                 List<IntellisenseProviderResult> subResults = IntellisenseResult.Where(t => t.Name.StartsWith(sub)).ToList();

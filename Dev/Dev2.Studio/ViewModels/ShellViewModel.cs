@@ -1130,8 +1130,7 @@ namespace Dev2.Studio.ViewModels
                 relativeUrl += "/secure/apis.json";
             }
 
-            Uri url;
-            Uri.TryCreate(webServerUri, relativeUrl, out url);
+            Uri.TryCreate(webServerUri, relativeUrl, out Uri url);
 
             BrowserPopupController.ShowPopup(url.ToString());
         }

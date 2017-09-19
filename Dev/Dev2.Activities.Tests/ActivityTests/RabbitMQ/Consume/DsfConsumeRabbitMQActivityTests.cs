@@ -837,10 +837,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
             privateObject.Invoke("ExecuteTool", dataObj, 0);
             privateObject.Invoke("ExecuteTool", dataObj, 0);
             privateObject.Invoke("ExecuteTool", dataObj, 0);
-            //------------Assert Results-------------------------  
-            IList<string> actualRecset;
-            string error;
-            GetRecordSetFieldValueFromDataList(dataObj.Environment, "msgs", "message", out actualRecset, out error);
+            GetRecordSetFieldValueFromDataList(dataObj.Environment, "msgs", "message", out IList<string> actualRecset, out string error);
             Assert.AreEqual(1, actualRecset.Count);
         }
 
@@ -878,10 +875,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
             privateObject.Invoke("ExecuteTool", dataObj, 0);
             privateObject.Invoke("ExecuteTool", dataObj, 0);
             privateObject.Invoke("ExecuteTool", dataObj, 0);
-            //------------Assert Results-------------------------  
-            IList<string> actualRecset;
-            string error;
-            GetRecordSetFieldValueFromDataList(dataObj.Environment, "msgs", "message", out actualRecset, out error);
+            GetRecordSetFieldValueFromDataList(dataObj.Environment, "msgs", "message", out IList<string> actualRecset, out string error);
             Assert.AreEqual(1, actualRecset.Count);
         }
 

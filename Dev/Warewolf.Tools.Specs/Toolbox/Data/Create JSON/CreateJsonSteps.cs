@@ -30,10 +30,9 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Create_JSON
         [Given(@"I select variable ""(.*)"" with name ""(.*)""")]
         public void GivenISelectVariableWithName(string variable, string name)
         {
-            List<Tuple<string, string>> variableList;
-            scenarioContext.TryGetValue("toList", out variableList);
+            scenarioContext.TryGetValue("toList", out List<Tuple<string, string>> variableList);
 
-            if(variableList == null)
+            if (variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 scenarioContext.Add("toList", variableList);
@@ -59,11 +58,9 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Create_JSON
         [Then(@"the value of ""(.*)"" should be ""(.*)""")]
         public void ThenTheValueOfShouldBe(string resultVariable, string expectedResult)
         {
-            string error;
-            string actualValue;
             var result = scenarioContext.Get<IDSFDataObject>("result");
             GetScalarValueFromEnvironment(result.Environment, DataListUtil.RemoveLanguageBrackets(resultVariable),
-                out actualValue, out error);
+                out string actualValue, out string error);
             if(string.IsNullOrEmpty(expectedResult))
             {
                 Assert.IsTrue(string.IsNullOrEmpty(actualValue));
@@ -77,10 +74,9 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Create_JSON
         [Given(@"I have a variable ""(.*)"" with value ""(.*)""")]
         public void GivenIHaveAVariableWithValue(string variable, string value)
         {
-            List<Tuple<string, string>> variableList;
-            scenarioContext.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
 
-            if(variableList == null)
+            if (variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 scenarioContext.Add("variableList", variableList);
@@ -89,10 +85,9 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Create_JSON
         }
         protected override void BuildDataList()
         {
-            List<Tuple<string, string>> toList;
-            scenarioContext.TryGetValue("toList", out toList);
+            scenarioContext.TryGetValue("toList", out List<Tuple<string, string>> toList);
 
-            if(toList == null)
+            if (toList == null)
             {
                 toList = new List<Tuple<string, string>>();
                 scenarioContext.Add("toList", toList);
@@ -101,8 +96,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Create_JSON
             // toList.Add(new Tuple<string, string>(ResultVariable, ""));
             BuildShapeAndTestData();
 
-            string json;
-            scenarioContext.TryGetValue("JsonString", out json);
+            scenarioContext.TryGetValue("JsonString", out string json);
 
             var jsonTool = new DsfCreateJsonActivity
             {

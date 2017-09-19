@@ -578,8 +578,7 @@ namespace Dev2.Activities.Designers2.Service
                     srcId = workflowXml.ExtractXmlAttributeFromUnsafeXml("SourceID=\"");
                 }
 
-                Guid sourceId;
-                if (Guid.TryParse(srcId, out sourceId))
+                if (Guid.TryParse(srcId, out Guid sourceId))
                 {
                     SourceId = sourceId;
                     var sourceResource = _environment.ResourceRepository.LoadContextualResourceModel(sourceId);
