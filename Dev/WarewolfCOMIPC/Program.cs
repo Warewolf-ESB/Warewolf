@@ -19,7 +19,10 @@ namespace WarewolfCOMIPC
     {
         static void Main(string[] args)
         {
-            if (args.Length < 1) return;
+            if (args.Length < 1)
+            {
+                return;
+            }
 
             string token = args[0];
 

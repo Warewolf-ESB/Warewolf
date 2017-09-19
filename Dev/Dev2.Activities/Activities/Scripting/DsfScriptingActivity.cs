@@ -173,7 +173,9 @@ namespace Dev2.Activities
         private void AddScriptSourcePathsToList()
         {            
             if (!string.IsNullOrEmpty(IncludeFile))
+            {
                 _sources.AddPaths(IncludeFile);
+            }
         }
         
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)

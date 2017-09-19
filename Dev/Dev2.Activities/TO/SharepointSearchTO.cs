@@ -186,7 +186,10 @@ namespace Dev2.TO
             }
             set
             {
-                if (value == null) return;
+                if (value == null)
+                {
+                    return;
+                }
 
                 _fieldName = value;
                 OnPropertyChanged();
@@ -202,8 +205,11 @@ namespace Dev2.TO
             }
             set
             {
-                if(value==null) return;
-                
+                if(value==null)
+                {
+                    return;
+                }
+
                 _internalName = value;
                 OnPropertyChanged();
                 RaiseCanAddRemoveChanged();

@@ -345,7 +345,9 @@ namespace Dev2.Runtime.ESB
         private void MapServiceActionDependencies(ServiceAction serviceAction)
         {
             if(!string.IsNullOrWhiteSpace(serviceAction?.SourceName))
+            {
                 serviceAction.Source = _serviceLocator.FindSourceByName(serviceAction.SourceName, _workspace.ID);
+            }
         }
 
         #endregion

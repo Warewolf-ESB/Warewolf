@@ -971,7 +971,9 @@ namespace Dev2.Studio.ViewModels.Workflow
                             }
 
                             if (explorerItem != null)
+                            {
                                 mvm.DuplicateResource(explorerItem);
+                            }
                         }
                     }
                 }));
@@ -991,7 +993,9 @@ namespace Dev2.Studio.ViewModels.Workflow
                         {
                             var explorerItem = GetSelected(mvm);
                             if (explorerItem != null)
+                            {
                                 mvm.AddDeploySurface(explorerItem.AsList().Union(new[] { explorerItem }));
+                            }
                         }
                     }
                 }));
@@ -1279,11 +1283,15 @@ namespace Dev2.Studio.ViewModels.Workflow
                 var selection = Designer.Context.Items.GetValue<Selection>();
 
                 if (selection?.PrimarySelection == null)
+                {
                     return;
+                }
 
                 if (selection.PrimarySelection.ItemType != typeof(Flowchart) &&
                    selection.SelectedObjects.All(modelItem => modelItem.ItemType != typeof(Flowchart)))
+                {
                     return;
+                }
             }
 
             e.CanExecute = false;
@@ -1416,7 +1424,9 @@ namespace Dev2.Studio.ViewModels.Workflow
                                     decisionFields.AddRange(parts.Select(part => DataListUtil.StripBracketsFromValue(part.Option.DisplayValue)));
                                 }
                                 else
+                                {
                                     decisionFields = decisionFields.Union(GetParsedRegions(getCol, datalistModel)).ToList();
+                                }
                             }
                         }
                     }
@@ -1940,7 +1950,9 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             var designerText = _workflowHelper.SanitizeXaml(xaml);
             if (designerText != null)
+            {
                 _wd.Text = designerText.ToString();
+            }
         }
 
         private void SelectedItemChanged(Selection item)
@@ -2029,7 +2041,10 @@ namespace Dev2.Studio.ViewModels.Workflow
         private bool CheckDataList()
         {
             if (_originalDataList == null)
+            {
                 return true;
+            }
+
             if (ResourceModel.DataList != null)
             {
                 string currentDataList = ResourceModel.DataList.Replace("<DataList>", "").Replace("</DataList>", "");
@@ -2081,9 +2096,9 @@ namespace Dev2.Studio.ViewModels.Workflow
             try
             {
                 if (!string.IsNullOrEmpty(dataList))
-                    
+                {
                     XElement.Parse(dataList);
-                
+                }
             }
             catch (Exception)
             {
@@ -2514,7 +2529,10 @@ namespace Dev2.Studio.ViewModels.Workflow
             if (explorerItem != null)
             {
                 if (explorerItem.Server != null)
+                {
                     envID = explorerItem.Server.EnvironmentID;
+                }
+
                 resourceID = explorerItem.ResourceId;
             }
 

@@ -16,8 +16,10 @@ namespace Dev2.Runtime.DynamicProxy
          
         public DynamicObject(object obj)
         {
-            if (obj == null) 
+            if (obj == null)
+            {
                 throw new ArgumentNullException("obj");
+            }
 
             _obj = obj;
             _objType = obj.GetType();
@@ -26,7 +28,9 @@ namespace Dev2.Runtime.DynamicProxy
         public DynamicObject(Type objType)
         {
             if (objType == null)
+            {
                 throw new ArgumentNullException("objType");
+            }
 
             _objType = objType;
         }

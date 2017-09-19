@@ -499,7 +499,11 @@ namespace Warewolf.Storage.Tests
             var var = EvaluationFunctions.parseLanguageExpressionWithoutUpdate(ChildNameExpression);
             var jsonIdentifierExpression = var as LanguageAST.LanguageExpression.JsonIdentifierExpression;
             var obj = new JArray(ChildNameExpression);
-            if (jsonIdentifierExpression == null) return;
+            if (jsonIdentifierExpression == null)
+            {
+                return;
+            }
+
             var mapItems = new List<string>();
             object[] args = { jsonIdentifierExpression.Item, "", mapItems, obj };
             privateObj.Invoke("BuildIndexMap", args);

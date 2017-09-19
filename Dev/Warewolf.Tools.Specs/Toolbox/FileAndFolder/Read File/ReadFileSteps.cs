@@ -28,7 +28,11 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Read_File
         public ReadFileSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
         {
-            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            if (scenarioContext == null)
+            {
+                throw new ArgumentNullException("scenarioContext");
+            }
+
             this.scenarioContext = scenarioContext;
         }
 
@@ -64,7 +68,9 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Read_File
 
             var viewModel = new ReadFileDesignerViewModel(ModelItemUtils.CreateModelItem(fileRead));
             if (!scenarioContext.ContainsKey("viewModel"))
+            {
                 scenarioContext.Add("viewModel", viewModel);
+            }
         }
     }
 }

@@ -192,7 +192,10 @@ namespace Warewolf.Studio.ViewModels
         void SelectAction(IExplorerItemViewModel ax)
         {
             if (ax.Parent?.ResourceType == @"Folder" || ax.Parent?.ResourceType == @"ServerSource")
+            {
                 ax.Parent.IsFolderChecked = ax.IsResourceChecked;
+            }
+
             _statsArea.Calculate(SelectedItems.ToList());
         }
 
@@ -244,7 +247,9 @@ namespace Warewolf.Studio.ViewModels
             {
                 _preselected = value;
                 if (_loaded && _preselected != null && _preselected.Any())
+                {
                     CheckPreselectedItems(Preselected.First().Server.EnvironmentID);
+                }
             }
         }
 

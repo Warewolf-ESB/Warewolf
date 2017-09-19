@@ -232,7 +232,10 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             set
             {
                 if (_selectedMethod != null)
+                {
                     _selectedMethod.IsObject = value;
+                }
+
                 OnPropertyChanged();
             }
         }

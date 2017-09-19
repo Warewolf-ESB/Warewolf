@@ -45,7 +45,10 @@ namespace Dev2.Runtime.ESB.Management.Services
 
                 var src = serializer.Deserialize<PluginSourceDefinition>(resourceDefinition);
                 if (src.Path.EndsWith("\\"))
+                {
                     src.Path = src.Path.Substring(0, src.Path.LastIndexOf("\\", StringComparison.Ordinal));
+                }
+
                 PluginSource res;
                 var existingSource = ResourceCatalog.Instance.GetResource(GlobalConstants.ServerWorkspaceID, src.Name);
                 if (existingSource != null)

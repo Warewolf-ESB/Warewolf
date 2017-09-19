@@ -35,7 +35,10 @@ namespace Dev2.Studio.Core.AppResources.Converters
             values.ToList().ForEach(o =>
             {
                 var s = o as string;
-                if(s != null) strings.Add(s);
+                if(s != null)
+                {
+                    strings.Add(s);
+                }
             });
 
             bool invert;

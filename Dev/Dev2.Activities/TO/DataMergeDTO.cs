@@ -220,7 +220,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         ruleSet.Add(inputExprRule);
                     }
                     else
+                    {
                         ruleSet.Add(new IsStringEmptyRule(() => InputVariable));
+                    }
+
                     break;
                 case "At":
                     if (MergeType == MergeTypeIndex)

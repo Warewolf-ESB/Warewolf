@@ -120,7 +120,9 @@ namespace Dev2.Activities.Designers.Tests.DataMerge
             var viewModel = new DataMergeDesignerViewModel(CreateModelItem(items));
             var itemsList = viewModel.ModelItemCollection;
             foreach(var i in itemsList)
+            {
                 Assert.AreEqual("True", i.GetProperty("EnablePadding").ToString());
+            }
         }
 
         [TestMethod]
@@ -136,7 +138,9 @@ namespace Dev2.Activities.Designers.Tests.DataMerge
             var viewModel = new DataMergeDesignerViewModel(CreateModelItem(items));
             var itemsList = viewModel.ModelItemCollection;
             foreach(var i in itemsList)
+            {
                 Assert.AreEqual("True", i.GetProperty("EnablePadding").ToString());
+            }
         }
 
         [TestMethod]

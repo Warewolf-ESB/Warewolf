@@ -255,7 +255,10 @@ namespace Dev2.Runtime.Hosting
         public IExplorerItem Find(IExplorerItem item, Guid itemToFind)
         {
             if (item.ResourceId == itemToFind)
+            {
                 return item;
+            }
+
             if (item.Children == null || item.Children.Count == 0)
             {
                 return null;
@@ -267,7 +270,10 @@ namespace Dev2.Runtime.Hosting
         {
 
             if (predicate(item))
+            {
                 return item;
+            }
+
             if (item.Children == null || item.Children.Count == 0)
             {
                 return null;

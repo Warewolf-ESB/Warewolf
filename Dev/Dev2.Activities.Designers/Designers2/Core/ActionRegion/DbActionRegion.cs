@@ -164,7 +164,9 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
                 if (!Equals(value, _selectedAction) && _selectedAction != null)
                 {
                     if (!String.IsNullOrEmpty(_selectedAction.Name))
+                    {
                         StorePreviousValues(_selectedAction.GetIdentifier());
+                    }
 
                     var outputs = Dependants.FirstOrDefault(a => a is IOutputsToolRegion);
                     if (outputs is OutputsRegion region)

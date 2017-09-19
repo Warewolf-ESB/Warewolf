@@ -24,7 +24,11 @@ namespace Dev2.Activities.Specs.Deploy
 
         public DeployFeatureSteps(ScenarioContext scenarioContext)
         {
-            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            if (scenarioContext == null)
+            {
+                throw new ArgumentNullException("scenarioContext");
+            }
+
             _scenarioContext = scenarioContext;
             _commonSteps = new CommonSteps(_scenarioContext);
         }

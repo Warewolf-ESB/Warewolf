@@ -41,7 +41,11 @@ namespace Dev2.Runtime.ESB.Management.Services
             int i = 0, o = 1;
             while ((i = str.IndexOf(ch, i)) != -1)
             {
-                if (o == index) return i;
+                if (o == index)
+                {
+                    return i;
+                }
+
                 o++;
                 i++;
             }

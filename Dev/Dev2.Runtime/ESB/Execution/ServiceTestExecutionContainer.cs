@@ -84,18 +84,25 @@ namespace Dev2.Runtime.ESB.Execution
 
             // Set server ID, only if not set yet - original server;
             if (DataObject.ServerID == Guid.Empty)
+            {
                 DataObject.ServerID = HostSecurityProvider.Instance.ServerID;
+            }
 
             // Set resource ID, only if not set yet - original resource;
             if (DataObject.ResourceID == Guid.Empty && ServiceAction?.Service != null)
+            {
                 DataObject.ResourceID = ServiceAction.Service.ID;
+            }
 
 
             // Travis : Now set Data List
             DataObject.DataList = ServiceAction.DataListSpecification;
             // Set original instance ID, only if not set yet - original resource;
             if (DataObject.OriginalInstanceID == Guid.Empty)
+            {
                 DataObject.OriginalInstanceID = DataObject.DataListID;
+            }
+
             Dev2Logger.Info($"Started Execution for Service Name:{DataObject.ServiceName} Resource Id:{DataObject.ResourceID} Mode:{(DataObject.IsDebug ? "Debug" : "Execute")}", DataObject.ExecutionID.ToString());
             //Set execution origin
             if (!string.IsNullOrWhiteSpace(DataObject.ParentServiceName))
@@ -177,15 +184,20 @@ namespace Dev2.Runtime.ESB.Execution
                 result = ExecuteWf(to, serviceTestModelTo);
             });
             if (DataObject.Environment.Errors != null)
+            {
                 foreach (var err in DataObject.Environment.Errors)
                 {
                     errors.AddError(err, true);
                 }
+            }
+
             if (DataObject.Environment.AllErrors != null)
+            {
                 foreach (var err in DataObject.Environment.AllErrors)
                 {
                     errors.AddError(err, true);
                 }
+            }
 
             Dev2Logger.Info($"Completed Execution for Service Name:{DataObject.ServiceName} Resource Id: {DataObject.ResourceID} Mode:{(DataObject.IsDebug ? "Debug" : "Execute")}", DataObject.ExecutionID.ToString());
 
@@ -333,7 +345,10 @@ namespace Dev2.Runtime.ESB.Execution
                     if (testRunResult != null)
                     {
                         if (test?.Result != null)
+                        {
                             test.Result.DebugForTest = TestDebugMessageRepo.Instance.FetchDebugItems(resourceId, test.TestName);
+                        }
+
                         _request.ExecuteResult = serializer.SerializeToBuilder(testRunResult);
                     }
                 }
@@ -388,7 +403,9 @@ namespace Dev2.Runtime.ESB.Execution
                 }
                 testRunResult.DebugForTest = TestDebugMessageRepo.Instance.FetchDebugItems(resourceId, test.TestName);
                 if (_request != null)
+                {
                     _request.ExecuteResult = serializer.SerializeToBuilder(testRunResult);
+                }
             }
             catch (Exception ex)
             {

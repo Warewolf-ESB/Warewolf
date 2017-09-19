@@ -56,7 +56,10 @@ namespace Dev2.Activities
         {
           
             if (startNode == null)
+            {
                 return null;
+            }
+
             FlowStep step = startNode as FlowStep;
             if (step != null)
             {
@@ -68,13 +71,16 @@ namespace Dev2.Activities
             {
                 FlowDecision node = startNode as FlowDecision;
                 if (node != null)
-
+                {
                     return ParseDecision(node, seenActivities);
+                }
                 else
                 {
                     FlowSwitch<string> @switch = startNode as FlowSwitch<string>;
                     if (@switch != null)
+                    {
                         return ParseSwitch(@switch, seenActivities);
+                    }
                 }
             }
             return null;
@@ -148,9 +154,15 @@ namespace Dev2.Activities
         {
             var action = startNode.Action as IDev2Activity;
             if (action == null)
+            {
                 return null;
+            }
+
             if (seenActivities.Contains(action))
+            {
                 return new List<IDev2Activity> { action};
+            }
+
             if (!seenActivities.Contains(action))
             {
                 seenActivities.Add(action);

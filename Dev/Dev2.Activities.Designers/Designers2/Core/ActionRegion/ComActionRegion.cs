@@ -167,7 +167,9 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
                 if (!Equals(value, _selectedAction) && _selectedAction != null)
                 {
                     if (!string.IsNullOrEmpty(_selectedAction.Method))
+                    {
                         StorePreviousValues(_selectedAction.GetIdentifier());
+                    }
                 }
                 if (Dependants != null)
                 {

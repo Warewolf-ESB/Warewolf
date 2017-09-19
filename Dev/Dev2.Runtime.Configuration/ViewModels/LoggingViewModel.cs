@@ -286,7 +286,10 @@ namespace Dev2.Runtime.Configuration.ViewModels
         private void InitPostWorkflow()
         {
             _runPostWorkflow = LoggingSettings.RunPostWorkflow;
-            if(!RunPostWorkflow) return;
+            if(!RunPostWorkflow)
+            {
+                return;
+            }
 
             var postWorkflow = LoggingSettings.PostWorkflow;
             UpdatePostWorkflow(postWorkflow);

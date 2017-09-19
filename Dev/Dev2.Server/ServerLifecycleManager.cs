@@ -477,7 +477,10 @@ namespace Dev2
         public void Dispose()
         {
             if (_isDisposed)
+            {
                 return;
+            }
+
             _isDisposed = true;
             Dispose(true);
             GC.SuppressFinalize(this);

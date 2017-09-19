@@ -42,7 +42,11 @@ namespace Dev2.Common.Utils
 
         public static string Format(string text)
         {
-            if (String.IsNullOrEmpty(text)) return String.Empty;
+            if (String.IsNullOrEmpty(text))
+            {
+                return String.Empty;
+            }
+
             text = text.Replace(Environment.NewLine, String.Empty).Replace("\t", String.Empty);
 
             var offset = 0;
@@ -50,14 +54,21 @@ namespace Dev2.Common.Utils
             Action<StringBuilder, int> tabs = (sb, pos) => { for (var i = 0; i < pos; i++) { sb.Append("\t"); } };
             Func<string, int, char?> previousNotEmpty = (s, i) =>
             {
-                if (string.IsNullOrEmpty(s) || i <= 0) return null;
+                if (string.IsNullOrEmpty(s) || i <= 0)
+                {
+                    return null;
+                }
 
                 char? prev = null;
 
                 while (i > 0 && prev == null)
                 {
                     prev = s[i - 1];
-                    if (prev.ToString() == " ") prev = null;
+                    if (prev.ToString() == " ")
+                    {
+                        prev = null;
+                    }
+
                     i--;
                 }
 
@@ -65,7 +76,10 @@ namespace Dev2.Common.Utils
             };
             Func<string, int, char?> nextNotEmpty = (s, i) =>
             {
-                if (String.IsNullOrEmpty(s) || i >= (s.Length - 1)) return null;
+                if (String.IsNullOrEmpty(s) || i >= (s.Length - 1))
+                {
+                    return null;
+                }
 
                 char? next = null;
                 i++;
@@ -73,7 +87,10 @@ namespace Dev2.Common.Utils
                 while (i < (s.Length - 1) && next == null)
                 {
                     next = s[i++];
-                    if (next.ToString() == " ") next = null;
+                    if (next.ToString() == " ")
+                    {
+                        next = null;
+                    }
                 }
 
                 return next;
@@ -130,7 +147,9 @@ namespace Dev2.Common.Utils
                     output.Append(chr);
                 }
                 else
+                {
                     output.Append(chr);
+                }
             }
 
             return output.ToString().Trim();

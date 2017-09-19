@@ -230,7 +230,10 @@ namespace Dev2.Studio.Dock
                 var vm = model;
                 pane.Name = vm.WorkSurfaceKey.ToString();
             }
-            else pane.Name = item.ToString();
+            else
+            {
+                pane.Name = item.ToString();
+            }
         }
 
         /// <summary>
@@ -583,7 +586,10 @@ namespace Dev2.Studio.Dock
                     cv.Remove(dataItem);
                     var item = pane.Content as WorkflowDesignerViewModel;
                     if (item?.ResourceModel != null)
+                    {
                         WorkspaceItemRepository.Instance.Remove(item.ResourceModel);
+                    }
+
                     item?.RemoveUnsavedWorkflowName(item.DisplayName);
 
                 }

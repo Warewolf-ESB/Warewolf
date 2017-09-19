@@ -145,7 +145,9 @@ namespace Dev2.TaskScheduler.Wrappers
                 case TaskTriggerType.Logon:
                     var logonTrigger = resource.Instance as LogonTrigger;
                     if (logonTrigger != null)
+                    {
                         trigger = new Dev2LogonTrigger(this, new LogonTrigger {UserId = logonTrigger.UserId});
+                    }
 
                     break;
                 case TaskTriggerType.Monthly:
@@ -173,12 +175,15 @@ namespace Dev2.TaskScheduler.Wrappers
 
                     var sessionStateChangeTrigger = resource.Instance as SessionStateChangeTrigger;
                     if (sessionStateChangeTrigger != null)
+                    {
                         trigger = new Dev2Trigger(this,
                             new SessionStateChangeTrigger
                             {
                                 UserId = sessionStateChangeTrigger.UserId,
                                 StateChange = sessionStateChangeTrigger.StateChange
                             });
+                    }
+
                     break;
                 case TaskTriggerType.Time:
                     var y = serialisedTrigger as TimeTrigger;

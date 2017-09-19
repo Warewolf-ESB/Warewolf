@@ -150,7 +150,9 @@ namespace Dev2.Activities
                                 timeoutSecondsError = true;
                             }
                             else
+                            {
                                 TimeoutSeconds = timeoutval;
+                            }
                         }
                         else
                         {
@@ -178,8 +180,9 @@ namespace Dev2.Activities
                         counter++;
                     }                    
                     else
+                    {
                         throw new ApplicationException("Execution aborted - see error messages.");
-
+                    }
                 }
             }
             catch (Exception e)

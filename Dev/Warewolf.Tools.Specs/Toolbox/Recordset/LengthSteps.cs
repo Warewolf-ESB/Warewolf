@@ -34,7 +34,11 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset
         public LengthSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
         {
-            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            if (scenarioContext == null)
+            {
+                throw new ArgumentNullException("scenarioContext");
+            }
+
             this.scenarioContext = scenarioContext;
         }
 
@@ -84,13 +88,14 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset
             DsfActivityAbstract<string> length;
             scenarioContext.TryGetValue("activityMode", out length);
             if (length != null)
-
+            {
                 length = new DsfRecordsetNullhandlerLengthActivity
                 {
                     RecordsetName = recordset,
                     RecordsLength = ResultVariable,
                     TreatNullAsZero = treaNullAsZero
                 };
+            }
             else
             {
                length = new DsfRecordsetLengthActivity

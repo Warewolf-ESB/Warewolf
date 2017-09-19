@@ -197,7 +197,9 @@ namespace Dev2.Activities.Designers2.Core
             {
                 var lastPopulated = ModelItemCollection?.LastOrDefault(p => !string.IsNullOrWhiteSpace(p.GetProperty("At").ToString()));
                 if (lastPopulated != null)
+                {
                     _initialDto = (TDev2TOFn)lastPopulated.GetCurrentValue();
+                }
             }
             var indexNumber = GetIndexForAdd(overwrite);
 
@@ -225,7 +227,9 @@ namespace Dev2.Activities.Designers2.Core
         {
             var indexNumber = 1;
             if(overwrite)
+            {
                 ModelItemCollection?.Clear();
+            }
             else
             {
                 var lastDto = GetLastDto();
@@ -282,10 +286,15 @@ namespace Dev2.Activities.Designers2.Core
             {
                 var lastIndex = index + 1;
                 if (overwrite)
+                {
                     _initialDto = new TDev2TOFn();
+                }
+
                 AddDto(lastIndex);
                 if (GetType() == typeof(DataMergeDesignerViewModel))
+                {
                     RunValidation(ModelItemCount - 1);
+                }
             }
             UpdateDisplayName();
         }

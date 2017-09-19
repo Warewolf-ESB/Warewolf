@@ -19,7 +19,9 @@ namespace Warewolf.UIBindingTests.Deploy
         public void SetSelecetdItems(IEnumerable<IExplorerTreeItem> items)
         {
             foreach (var explorerTreeItem in items)
+            {
                 SelectedItems.Add(explorerTreeItem);
+            }
         }
 
         public void SetSelecetdItemsForConflicts(IEnumerable<IExplorerTreeItem> items)

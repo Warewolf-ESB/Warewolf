@@ -435,7 +435,10 @@ namespace Warewolf.UIBindingTests.ServerSource
 
             var environmentModel = ServerRepository.Instance.Source;
             if (!environmentModel.IsConnected)
+            {
                 environmentModel.Connect();
+            }
+
             var controllerFactory = new CommunicationControllerFactory();
             var environmentConnection = environmentModel.Connection;
             var manager = new StudioResourceUpdateManager
@@ -502,9 +505,13 @@ namespace Warewolf.UIBindingTests.ServerSource
             var environmentModel = ScenarioContext.Current.Get<IServer>("environmentModel");
             IContextualResourceModel loadContextualResourceModel = environmentModel.ResourceRepository.LoadContextualResourceModel(guid);
             if(ScenarioContext.Current.ContainsKey("resourceModel"))
+            {
                 ScenarioContext.Current["resourceModel"] = loadContextualResourceModel;
+            }
             else
+            {
                 ScenarioContext.Current.Add("resourceModel", loadContextualResourceModel);
+            }
         }
 
         [Then(@"the server source has correct values as")]

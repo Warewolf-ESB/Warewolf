@@ -196,7 +196,10 @@ namespace Dev2.Runtime.Configuration.Tests.ViewModels
             var vm = new LoggingViewModel();
             var commService = new Mock<ICommunicationService>();
             if(descriptors == null)
+            {
                 descriptors = new List<WorkflowDescriptor>();
+            }
+
             commService.Setup(s => s.GetResources(It.IsAny<string>())).Returns(descriptors);
             commService.Setup(s => s.GetDataListInputs(It.IsAny<string>(), It.IsAny<string>())).Returns(new List<DataListVariable>());
             vm.CommunicationService = commService.Object;

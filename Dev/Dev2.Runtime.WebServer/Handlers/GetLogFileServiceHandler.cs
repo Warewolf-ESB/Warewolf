@@ -42,7 +42,10 @@ namespace Dev2.Runtime.WebServer.Handlers
                         string line = file.ReadLine();
 
                         if (buffor.Count >= numberOfLines)
+                        {
                             buffor.Dequeue();
+                        }
+
                         buffor.Enqueue(line);
                     }
                     string[] lastLines = buffor.ToArray();

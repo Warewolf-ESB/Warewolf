@@ -125,7 +125,11 @@ namespace Dev2.Studio.ViewModels
             get { return _explorerViewModel; }
             set
             {
-                if (_explorerViewModel == value) return;
+                if (_explorerViewModel == value)
+                {
+                    return;
+                }
+
                 _explorerViewModel = value;
                 NotifyOfPropertyChange(() => ExplorerViewModel);
             }
@@ -557,7 +561,10 @@ namespace Dev2.Studio.ViewModels
             if (environmentModel != null)
             {
                 if (!isSource)
+                {
                     environmentModel.ResourceRepository.LoadResourceFromWorkspace(resourceId, Guid.Empty);
+                }
+
                 if (server.IsConnected)
                 {
                     if (isSource)
@@ -1441,7 +1448,10 @@ namespace Dev2.Studio.ViewModels
                 }
             }
             if (ToolboxViewModel != null)
+            {
                 ToolboxViewModel.IsVisible = isActiveServerConnected;
+            }
+
             return isActiveServerConnected;
         }
 
@@ -1540,7 +1550,9 @@ namespace Dev2.Studio.ViewModels
                         : new DebugOutputMessage(new List<IDebugState>()));
 
                     if (serviceTestViewModel != null)
+                    {
                         serviceTestViewModel.WorkflowDesignerViewModel.IsTestView = true;
+                    }
                 }
                 NotifyOfPropertyChange(() => SaveCommand);
                 NotifyOfPropertyChange(() => DebugCommand);
@@ -1597,7 +1609,11 @@ namespace Dev2.Studio.ViewModels
             _previousActive = ActiveItem;
             base.ActivateItem(item);
             ActiveItemChanged?.Invoke(item);
-            if (item?.ContextualResourceModel == null) return;
+            if (item?.ContextualResourceModel == null)
+            {
+                return;
+            }
+
             SetActiveServer(item.Environment);
 
         }
@@ -1718,7 +1734,10 @@ namespace Dev2.Studio.ViewModels
 
         protected virtual void AddWorkspaceItems()
         {
-            if (ServerRepository == null) return;
+            if (ServerRepository == null)
+            {
+                return;
+            }
 
             HashSet<IWorkspaceItem> workspaceItemsToRemove = new HashSet<IWorkspaceItem>();
             
@@ -1799,7 +1818,9 @@ namespace Dev2.Studio.ViewModels
         public void PersistTabs(bool isStudioShutdown = false)
         {
             if (isStudioShutdown)
+            {
                 SaveAndShutdown(true);
+            }
             else
             {
                 SaveOnBackgroundTask(false);

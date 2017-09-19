@@ -58,12 +58,16 @@ namespace Warewolf.Studio.Views
             var browser = sender as WebBrowser;
 
             if (browser?.Document == null)
+            {
                 return;
+            }
 
             dynamic document = browser.Document;
 
             if (document.readyState != "complete")
+            {
                 return;
+            }
 
             var title = ((HTMLDocument)WebBrowserHost.Document).title;
             if (title == "Dropbox - 400")

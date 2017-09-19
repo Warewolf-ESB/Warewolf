@@ -57,7 +57,10 @@ namespace Dev2.Runtime.ESB.Management.Services
 
                 IDbSource src = serializer.Deserialize<DbSourceDefinition>(resourceDefinition);
                 if (src.Path.EndsWith("\\"))
+                {
                     src.Path = src.Path.Substring(0, src.Path.LastIndexOf("\\", StringComparison.Ordinal));
+                }
+
                 var res = new DbSource
                 {
                     AuthenticationType = src.AuthenticationType,

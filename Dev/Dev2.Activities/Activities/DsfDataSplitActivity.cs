@@ -442,7 +442,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         try
                         {
                             entry = compiler.EvalAsListOfStrings(t.At, update).FirstOrDefault();
-                            if(entry== null) throw new Exception("null iterator expression");
+                            if(entry== null)
+                            {
+                                throw new Exception("null iterator expression");
+                            }
+
                             string index = entry;
                             int indexNum = Convert.ToInt32(index);
                             if(indexNum > 0)

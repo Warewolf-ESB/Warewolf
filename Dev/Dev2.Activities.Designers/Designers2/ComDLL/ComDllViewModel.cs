@@ -361,9 +361,11 @@ namespace Dev2.Activities.Designers2.ComDLL
                 NamespaceRegion.SomethingChanged += (sender, args) =>
                 {
                     if (args.Errors != null)
+                    {
                         Errors =
                             args.Errors.Select(e => new ActionableErrorInfo { ErrorType = ErrorType.Critical, Message = e } as IActionableErrorInfo)
                                 .ToList();
+                    }
                 };
                 regions.Add(NamespaceRegion);
                 ActionRegion = new ComActionRegion(Model, ModelItem, SourceRegion, NamespaceRegion)
@@ -513,7 +515,9 @@ namespace Dev2.Activities.Designers2.ComDLL
         {
             Errors = new List<IActionableErrorInfo>();
             if (hasError)
+            {
                 Errors = new List<IActionableErrorInfo> { new ActionableErrorInfo(new ErrorInfo { ErrorType = ErrorType.Critical, FixData = "", FixType = FixType.None, Message = exception.Message, StackTrace = exception.StackTrace }, () => { }) };
+            }
         }
 
         public void SetDisplayName(string outputFieldName)

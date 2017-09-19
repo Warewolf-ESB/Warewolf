@@ -31,7 +31,11 @@ namespace Dev2.Activities.Specs.Permissions
 
         public SettingsPermissionsSteps(ScenarioContext scenarioContext)
         {
-            if (scenarioContext == null) throw new ArgumentNullException(nameof(scenarioContext));
+            if (scenarioContext == null)
+            {
+                throw new ArgumentNullException(nameof(scenarioContext));
+            }
+
             this.scenarioContext = scenarioContext;
         }
 
@@ -344,8 +348,9 @@ namespace Dev2.Activities.Specs.Permissions
                 try
                 {
                     if (currentSettings != null)
+                    {
                         server.ResourceRepository.WriteSettings(server, currentSettings);
-
+                    }
                 }
                 finally { server.Disconnect(); }
 

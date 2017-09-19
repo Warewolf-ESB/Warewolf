@@ -148,7 +148,10 @@ namespace Dev2.Activities.DropBox2016.DownloadActivity
                     var validFolder = LocalPathManager.GetFullFileName();
                     var fileExist = LocalPathManager.FileExist();
                     if (fileExist && !OverwriteFile)
+                    {
                         throw new Exception(ErrorResource.DropBoxDestinationFileAlreadyExist);
+                    }
+
                     DropboxFile.WriteAllBytes(validFolder, bytes);
                 }
                 return new List<string> { GlobalConstants.DropBoxSuccess };

@@ -38,7 +38,11 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset.SqlBulkInsert
 
         public SqlBulkInsertSteps(ScenarioContext scenarioContext)
         {
-            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            if (scenarioContext == null)
+            {
+                throw new ArgumentNullException("scenarioContext");
+            }
+
             this.scenarioContext = scenarioContext;
         }
 

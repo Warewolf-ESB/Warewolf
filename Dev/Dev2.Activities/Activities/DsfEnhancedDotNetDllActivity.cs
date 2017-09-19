@@ -152,7 +152,11 @@ namespace Dev2.Activities
                             RegularMethodExecution(appDomain, pluginExecutionDto, dev2MethodInfo, index, update, dataObject);
 
                         }
-                        if (dev2MethodInfo.HasError) break;
+                        if (dev2MethodInfo.HasError)
+                        {
+                            break;
+                        }
+
                         index++;
                      
                     }

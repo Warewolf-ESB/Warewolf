@@ -200,7 +200,10 @@ namespace Dev2.Studio.Core.Specs.IntellisenseSpecs
             var options = provider.GetSuggestions(ScenarioContext.Current["inputText"].ToString(), caretpos, true,filterType);
             var selected = p0.Split(new char[] { ',' });
              if(p0=="" && !options.Any())
-                 return;
+            {
+                return;
+            }
+
             bool all = true;
             foreach(var a in selected)
             {

@@ -44,7 +44,11 @@ namespace Dev2.Intellisense
                 //if(len<=0) 
                     len = lastIndexOfAny < 0 && diff.LastIndexOfAny("[]".ToCharArray()) < 0 ? 0 : originalCaret - ignore;
                 var suffix = originalText.Substring(originalCaret);
-                if (suffix.StartsWith("]]")) suffix = suffix.Substring(2);
+                if (suffix.StartsWith("]]"))
+                {
+                    suffix = suffix.Substring(2);
+                }
+
                 var text = originalText.Substring(0, len) + delimchar + selectedOption + suffix;
                 var car = (originalText.Substring(0, len) + selectedOption).Length + delimchar.Length;
 

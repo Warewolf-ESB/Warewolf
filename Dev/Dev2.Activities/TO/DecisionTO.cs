@@ -348,7 +348,10 @@ namespace Dev2.TO
                     break;
                 case "SearchCriteria":
                     if (string.IsNullOrEmpty(SearchCriteria))
+                    {
                         ruleSet.Add(new IsStringEmptyRule(() => SearchCriteria));
+                    }
+
                     ruleSet.Add(new IsValidExpressionRule(() => SearchCriteria, datalist, "1"));
                     break;
             }

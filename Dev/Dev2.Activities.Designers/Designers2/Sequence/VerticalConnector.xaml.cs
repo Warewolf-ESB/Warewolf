@@ -81,8 +81,11 @@ namespace System.Activities.Core.Presentation
         private void CheckAnimate(DragEventArgs e, string storyboardResourceName)
         {
             if(e.Handled)
+            {
                 return;
-            if(Context != null && !Context.Items.GetValue<ReadOnlyState>().IsReadOnly)
+            }
+
+            if (Context != null && !Context.Items.GetValue<ReadOnlyState>().IsReadOnly)
             {
                 if(DragDropHelper.AllowDrop(e.Data, Context, AllowedItemType))
                 {

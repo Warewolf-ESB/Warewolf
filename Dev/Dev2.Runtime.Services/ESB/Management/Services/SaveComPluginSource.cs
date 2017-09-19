@@ -54,9 +54,14 @@ namespace Dev2.Runtime.ESB.Management.Services
 
                 var src = serializer.Deserialize<ComPluginSourceDefinition>(resourceDefinition);
                 if (src.ResourcePath == null)
+                {
                     src.ResourcePath = string.Empty;
+                }
+
                 if (src.ResourcePath.EndsWith("\\"))
+                {
                     src.ResourcePath = src.ResourcePath.Substring(0, src.ResourcePath.LastIndexOf("\\", StringComparison.Ordinal));
+                }
 
                 ComPluginSource res1;
                 var existingSource = ResourceCat.GetResource(GlobalConstants.ServerWorkspaceID, src.Name);

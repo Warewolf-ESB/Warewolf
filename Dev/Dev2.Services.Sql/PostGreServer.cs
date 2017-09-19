@@ -127,7 +127,10 @@ namespace Dev2.Services.Sql
             finally
             {
                 
-                if (reader != null) reader.Close();
+                if (reader != null)
+                {
+                    reader.Close();
+                }
             }
 
             return result;
@@ -373,7 +376,9 @@ namespace Dev2.Services.Sql
 
                     var isout = direction.ToUpper().Trim().Contains("OUT".Trim());
                     if (direction.ToUpper().Trim().Contains("IN".Trim()))
+                    {
                         isout = false;
+                    }
 
                     if (!isout)
                     {

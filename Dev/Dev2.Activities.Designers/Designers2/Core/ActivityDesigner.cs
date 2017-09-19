@@ -115,7 +115,10 @@ namespace Dev2.Activities.Designers2.Core
             get
             {
                 if (UpdateContentEnabled())
+                {
                     return false;
+                }
+
                 return true;
             }
         }
@@ -166,7 +169,9 @@ namespace Dev2.Activities.Designers2.Core
         protected override void OnKeyDown(KeyEventArgs e)
         {
             if (e.Key == Key.Return)
+            {
                 e.Handled = true;
+            }
         }
 
         protected override void OnPreviewMouseLeftButtonDown(MouseButtonEventArgs e)

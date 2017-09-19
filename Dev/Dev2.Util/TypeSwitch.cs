@@ -29,7 +29,9 @@ namespace Dev2.Studio.Core.Helpers
             if (source == null)
             {
                 if (!cases.ToList().Any(c => c.IsDefault))
+                {
                     throw new Exception(ErrorResource.CannotDoSwitchOnNullType);
+                }
 
                 foreach (CaseInfo entry in cases.Where(entry => entry.IsDefault))
                 {

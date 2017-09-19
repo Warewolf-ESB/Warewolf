@@ -475,7 +475,10 @@ namespace Dev2.Data.Util
             }
             var bomMarkUtf8 = Encoding.UTF8.GetString(Encoding.UTF8.GetPreamble());
             if (trimedData.StartsWith(bomMarkUtf8, StringComparison.OrdinalIgnoreCase))
+            {
                 trimedData = trimedData.Remove(0, bomMarkUtf8.Length);
+            }
+
             trimedData = trimedData.Replace("\0", "");
             return trimedData;
         }

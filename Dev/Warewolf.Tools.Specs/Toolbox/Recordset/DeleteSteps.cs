@@ -29,7 +29,11 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset
         public DeleteSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
         {
-            if (scenarioContext == null) throw new ArgumentNullException(nameof(scenarioContext));
+            if (scenarioContext == null)
+            {
+                throw new ArgumentNullException(nameof(scenarioContext));
+            }
+
             this.scenarioContext = scenarioContext;
         }
 
@@ -53,13 +57,14 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset
             DsfActivityAbstract<string> delete;
             scenarioContext.TryGetValue("activityMode", out delete);
             if (delete != null)
-               
-            delete = new DsfDeleteRecordNullHandlerActivity
+            {
+                delete = new DsfDeleteRecordNullHandlerActivity
             {
                 RecordsetName = recordset,
                 Result = ResultVariable,
                 TreatNullAsZero = treaNullAsZero
             };
+            }
             else
             {
                 delete = new DsfDeleteRecordActivity

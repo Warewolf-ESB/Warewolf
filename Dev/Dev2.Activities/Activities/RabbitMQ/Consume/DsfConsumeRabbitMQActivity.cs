@@ -176,7 +176,10 @@ namespace Dev2.Activities.RabbitMQ.Consume
                     using (Channel = Connection.CreateModel())
                     {
                         if (!string.IsNullOrEmpty(TimeOut))
+                        {
                             _timeOut = int.Parse(TimeOut);
+                        }
+
                         _prefetch = string.IsNullOrEmpty(prefetch) ? (ushort)0 : ushort.Parse(prefetch);
                         if (_prefetch == 0)
                         {
@@ -377,15 +380,19 @@ namespace Dev2.Activities.RabbitMQ.Consume
                 if (DataListUtil.IsValueScalar(Response))
                 {
                     if (_messages != null)
+                    {
                         dataObject.Environment.Assign(Response, _messages.Last(), update);
+                    }
                 }
                 else
                 {
                     if (_messages != null)
+                    {
                         foreach (var message in _messages)
                         {
                             dataObject.Environment.Assign(Response, message, update);
                         }
+                    }
                 }
             }
         }

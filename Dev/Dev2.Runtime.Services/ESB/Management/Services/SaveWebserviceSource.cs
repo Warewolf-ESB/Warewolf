@@ -45,7 +45,10 @@ namespace Dev2.Runtime.ESB.Management.Services
 
                 var src = serializer.Deserialize<WebServiceSourceDefinition>(resourceDefinition);
                 if(src.Path.EndsWith("\\"))
+                {
                     src.Path = src.Path.Substring(0, src.Path.LastIndexOf("\\", StringComparison.Ordinal));
+                }
+
                 var res = new WebSource
                 {
                     AuthenticationType = src.AuthenticationType,

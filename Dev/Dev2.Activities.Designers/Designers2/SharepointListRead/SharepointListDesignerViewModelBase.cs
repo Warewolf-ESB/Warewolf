@@ -362,7 +362,11 @@ namespace Dev2.Activities.Designers2.SharepointListRead
 
             SharepointServers.Remove(SelectSharepointSource);
             SharepointServerResourceId = SelectedSharepointServer.ResourceID;
-            if (_isFileTool) return;
+            if (_isFileTool)
+            {
+                return;
+            }
+
             IsRefreshing = true;
             // Save selection
             var listName = GetListName(SelectedList);
@@ -485,7 +489,9 @@ namespace Dev2.Activities.Designers2.SharepointListRead
             var shellViewModel = CustomContainer.Get<IShellViewModel>();
             var activeServer = shellViewModel.ActiveServer;
             if (activeServer != null)
+            {
                 shellViewModel.OpenResource(SelectedSharepointServer.ResourceID,activeServer.EnvironmentID, activeServer);
+            }
         }
 
 

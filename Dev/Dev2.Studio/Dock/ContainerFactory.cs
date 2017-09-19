@@ -273,7 +273,9 @@ namespace Dev2.Studio.Dock
 
             // if there is no item associated with the container then it cannot be in use
             if(item == DependencyProperty.UnsetValue)
+            {
                 return false;
+            }
 
             DependencyObject actualContainer;
 
@@ -392,7 +394,9 @@ namespace Dev2.Studio.Dock
 
             
             if(item != container)
+            {
                 container.SetValue(FrameworkElement.DataContextProperty, item);
+            }
         }
         #endregion //AttachContainerToItem
 
@@ -419,9 +423,13 @@ namespace Dev2.Studio.Dock
             ContentControl container;
 
             if(IsItemItsOwnContainerImpl(newItem))
+            {
                 container = newItem as ContentControl;
+            }
             else
+            {
                 container = GetContainerForItem(newItem);
+            }
 
             // keep a map between the new item and the element
             _generatedElements[newItem] = container;
@@ -441,7 +449,9 @@ namespace Dev2.Studio.Dock
         private bool IsItemItsOwnContainerImpl(object item)
         {
             if(item is DependencyObject == false)
+            {
                 return false;
+            }
 
             return IsItemItsOwnContainer(item);
         }
@@ -482,7 +492,9 @@ namespace Dev2.Studio.Dock
         private void OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if(_isInitializing)
+            {
                 return;
+            }
 
             // since its a freezable make sure its not frozen
             WritePreamble();
@@ -498,21 +510,32 @@ namespace Dev2.Studio.Dock
                     else
                     {
                         for (int i = 0; i < e.NewItems.Count; i++)
+                        {
                             InsertItem(i + e.NewStartingIndex, e.NewItems[i]);
+                        }
                     }
                     break;
                 case NotifyCollectionChangedAction.Remove:
                     foreach(object newItem in e.OldItems)
+                    {
                         RemoveItem(newItem);
+                    }
+
                     break;
                 case NotifyCollectionChangedAction.Move:
                     MoveItem(e.OldItems[0], e.OldStartingIndex, e.NewStartingIndex);
                     break;
                 case NotifyCollectionChangedAction.Replace:
                     foreach(object newItem in e.OldItems)
+                    {
                         RemoveItem(newItem);
-                    for(int i = 0; i < e.NewItems.Count; i++)
+                    }
+
+                    for (int i = 0; i < e.NewItems.Count; i++)
+                    {
                         InsertItem(i + e.NewStartingIndex, e.NewItems[i]);
+                    }
+
                     break;
                 case NotifyCollectionChangedAction.Reset:
                     ReinitializeElements();
@@ -525,11 +548,15 @@ namespace Dev2.Studio.Dock
         private void ReinitializeElements()
         {
             if(_currentView == null || _currentView.IsEmpty)
+            {
                 ClearItems();
+            }
             else
             {
                 if(IsInitializing)
+                {
                     return;
+                }
 
                 HashSet<object> oldItems = new HashSet<object>(_generatedElements.Keys);
 
@@ -639,9 +666,11 @@ namespace Dev2.Studio.Dock
             Style style = ContainerStyle;
 
             if(null == style && ContainerStyleSelector != null)
+            {
                 style = ContainerStyleSelector.SelectStyle(item, container);
+            }
 
-            if(null != style)
+            if (null != style)
             {
                 container.SetValue(AppliedStyleProperty, KnownBoxes.FalseBox);
                 container.SetValue(FrameworkElement.StyleProperty, style);
@@ -756,7 +785,9 @@ namespace Dev2.Studio.Dock
             Type newType = (Type)newValue;
 
             if(null != newType)
+            {
                 ef.ValidateContainerType(newType);
+            }
 
             return newValue;
         }
@@ -766,13 +797,19 @@ namespace Dev2.Studio.Dock
             Type type = newValue as Type;
 
             if(type == null)
+            {
                 return true;
+            }
 
-            if(type.IsAbstract)
+            if (type.IsAbstract)
+            {
                 throw new ArgumentException("ContainerType must be a non-abstract creatable type.");
+            }
 
-            if(!typeof(DependencyObject).IsAssignableFrom(type))
+            if (!typeof(DependencyObject).IsAssignableFrom(type))
+            {
                 throw new ArgumentException("Element must be a DependencyObject derived type.");
+            }
 
             return true;
         }

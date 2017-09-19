@@ -183,7 +183,10 @@ namespace Unlimited.Framework.Converters.Graph.Poco
                     pathSegment.Item1.IsEnumarable = false;
                 }
 
-                if (pathSegment.Item1.IsEnumarable && pathSegment.Item2) recordsetEncountered = true;
+                if (pathSegment.Item1.IsEnumarable && pathSegment.Item2)
+                {
+                    recordsetEncountered = true;
+                }
             }
 
             path.DisplayPath = string.Join(PocoPath.SeperatorSymbol,

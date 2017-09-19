@@ -36,7 +36,11 @@ namespace Warewolf.Tools.Specs.BaseTypes
 
         public RecordSetBases(ScenarioContext scenarioContext)
         {
-            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            if (scenarioContext == null)
+            {
+                throw new ArgumentNullException("scenarioContext");
+            }
+
             this.scenarioContext = scenarioContext;
             _commonSteps = new CommonSteps(this.scenarioContext);
         }

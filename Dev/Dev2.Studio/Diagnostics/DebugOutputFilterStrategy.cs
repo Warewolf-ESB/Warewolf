@@ -75,31 +75,69 @@ namespace Dev2.Diagnostics
             if(debugState != null)
             {
                 string convertedActivityType = Convert.ToString(_enumToStringConverter.Convert(debugState.ActivityType, null, null, null));
-                if(convertedActivityType.ToLower().Contains(filterText)) return true;
+                if(convertedActivityType.ToLower().Contains(filterText))
+                {
+                    return true;
+                }
 
-                if(debugState.ActivityType.ToString().ToLower().Contains(filterText)) return true;
-                if(debugState.DisplayName != null && debugState.DisplayName.ToLower().Contains(filterText)) return true;
-                if(debugState.ActivityType == ActivityType.Step && debugState.Name != null && debugState.Name.ToLower().Contains(filterText)) return true;
-                if(debugState.ActivityType == ActivityType.Workflow && debugState.Server != null && debugState.Server.ToLower().Contains(filterText)) return true;
-                if(debugState.Version != null && debugState.Version.ToLower().Contains(filterText)) return true;
+                if (debugState.ActivityType.ToString().ToLower().Contains(filterText))
+                {
+                    return true;
+                }
 
-                if(debugState.ActivityType == ActivityType.Step)
+                if (debugState.DisplayName != null && debugState.DisplayName.ToLower().Contains(filterText))
+                {
+                    return true;
+                }
+
+                if (debugState.ActivityType == ActivityType.Step && debugState.Name != null && debugState.Name.ToLower().Contains(filterText))
+                {
+                    return true;
+                }
+
+                if (debugState.ActivityType == ActivityType.Workflow && debugState.Server != null && debugState.Server.ToLower().Contains(filterText))
+                {
+                    return true;
+                }
+
+                if (debugState.Version != null && debugState.Version.ToLower().Contains(filterText))
+                {
+                    return true;
+                }
+
+                if (debugState.ActivityType == ActivityType.Step)
                 {
                     string convertedDuration = Convert.ToString(_timeSpanToStringConverter.Convert(debugState.Duration, null, null, null));
-                    if(convertedDuration.ToLower().Contains(filterText)) return true;
+                    if(convertedDuration.ToLower().Contains(filterText))
+                    {
+                        return true;
+                    }
                 }
 
                 if(debugState.ActivityType == ActivityType.Workflow)
                 {
                     string convertedStartTime = Convert.ToString(_dateTimeToStringConverter.Convert(debugState.StartTime, null, null, null));
-                    if(debugState.StateType == StateType.Before && convertedStartTime.ToLower().Contains(filterText)) return true;
+                    if(debugState.StateType == StateType.Before && convertedStartTime.ToLower().Contains(filterText))
+                    {
+                        return true;
+                    }
 
                     string convertedEndTime = Convert.ToString(_dateTimeToStringConverter.Convert(debugState.EndTime, null, null, null));
-                    if(debugState.StateType == StateType.After && convertedEndTime.ToLower().Contains(filterText)) return true;
+                    if(debugState.StateType == StateType.After && convertedEndTime.ToLower().Contains(filterText))
+                    {
+                        return true;
+                    }
                 }
 
-                if(debugState.Inputs != null && debugState.Inputs.Any(o => o.Contains(filterText))) return true;
-                if(debugState.Outputs != null && debugState.Outputs.Any(o => o.Contains(filterText))) return true;
+                if(debugState.Inputs != null && debugState.Inputs.Any(o => o.Contains(filterText)))
+                {
+                    return true;
+                }
+
+                if (debugState.Outputs != null && debugState.Outputs.Any(o => o.Contains(filterText)))
+                {
+                    return true;
+                }
             }
             else if(content is string && content.ToString().ToLower().Contains(filterText))
             {

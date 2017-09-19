@@ -152,7 +152,10 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
         public WriteMode GetWriteMode()
         {
             if (OverWriteMode)
+            {
                 return WriteMode.Overwrite.Instance;
+            }
+
             return WriteMode.Add.Instance;
         }
 

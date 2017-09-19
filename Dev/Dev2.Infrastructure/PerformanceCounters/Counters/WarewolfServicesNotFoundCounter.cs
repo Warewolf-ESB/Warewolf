@@ -42,8 +42,9 @@ namespace Dev2.PerformanceCounters.Counters
  
     
                 if (IsActive)
-                    _counter.Increment();
-
+            {
+                _counter.Increment();
+            }
         }
 
         public void IncrementBy(long ticks)

@@ -64,9 +64,14 @@ namespace Dev2.Studio.Core
                 throw new ArgumentNullException(nameof(vm));
             }
             if (vm.ResourceType == "Folder")
+            {
                 UpdateManagerProxy.RenameFolder(vm.ResourcePath, vm.ResourcePath?.Replace(vm.ResourceName, newName));
+            }
             else
+            {
                 UpdateManagerProxy.Rename(vm.ResourceId, newName);
+            }
+
             return true;
         }
 

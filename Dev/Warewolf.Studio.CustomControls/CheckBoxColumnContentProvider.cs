@@ -41,7 +41,11 @@ namespace Warewolf.Studio.CustomControls
         protected override FrameworkElement ResolveEditorControl(Cell cell, object editorValue, double availableWidth,
             double availableHeight, Binding editorBinding)
         {
-            if (editorValue != null) _checkBox.IsChecked = (bool)editorValue;
+            if (editorValue != null)
+            {
+                _checkBox.IsChecked = (bool)editorValue;
+            }
+
             return _checkBox;
         }
 

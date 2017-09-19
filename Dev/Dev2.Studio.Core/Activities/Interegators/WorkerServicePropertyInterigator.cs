@@ -57,7 +57,9 @@ namespace Dev2.Studio.Core.Activities.Interegators
                                         activity.FriendlySourceName = resourceRepository.LoadContextualResourceModel(sourceId).DisplayName;
                                     }
                                     else
+                                    {
                                         activity.FriendlySourceName = attr.Value;
+                                    }
                                 }
 
                                 attr = node.Attributes["SourceMethod"];

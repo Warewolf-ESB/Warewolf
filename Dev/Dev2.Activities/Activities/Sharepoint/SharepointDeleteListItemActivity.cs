@@ -126,7 +126,10 @@ namespace Dev2.Activities.Sharepoint
                 {
                     var list = ctx.Web.Lists.GetByTitle(SharepointList);
                     foreach (var item in listItems)
+                    {
                         list.GetItemById(item.Id).DeleteObject();
+                    }
+
                     list.Update();
                     ctx.ExecuteQuery();
                 }
@@ -176,7 +179,11 @@ namespace Dev2.Activities.Sharepoint
 
                 foreach (var varDebug in FilterCriteria)
                 {
-                    if(string.IsNullOrEmpty(varDebug.FieldName)) return;
+                    if(string.IsNullOrEmpty(varDebug.FieldName))
+                    {
+                        return;
+                    }
+
                     var debugItem = new DebugItem();
                     AddDebugItem(new DebugItemStaticDataParams("", _indexCounter.ToString(CultureInfo.InvariantCulture)), debugItem);
                     var fieldName = varDebug.FieldName;

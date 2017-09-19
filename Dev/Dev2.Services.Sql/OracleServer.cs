@@ -460,7 +460,10 @@ namespace Dev2.Services.Sql
 
                 bool isout = GetIsout(InOut);
                 if (isout)
+                {
                     continue;
+                }
+
                 OracleDbType OracleType;
 
                 Enum.TryParse(((string)row["DATA_TYPE"]).Replace(" ", ""), true, out OracleType);

@@ -121,7 +121,10 @@ namespace Dev2.Studio.Controller
             var expressionText = expression.Properties[GlobalConstants.SwitchExpressionTextPropertyText];
             var modelProperty = args.ModelItem.Properties[GlobalConstants.DisplayNamePropertyText];
             if (modelProperty?.Value != null)
+            {
                 _callBackHandler = StartSwitchDropWizard(expression, modelProperty.Value.ToString());
+            }
+
             if (_callBackHandler != null)
             {
                 try
@@ -186,7 +189,10 @@ namespace Dev2.Studio.Controller
         {
             OldSwitchValue = string.Empty;
             if (args.ExpressionText != null)
+            {
                 _callBackHandler = ShowSwitchDragDialog(args.ModelItem, args.ExpressionText);
+            }
+
             if (_callBackHandler != null)
             {
                 try

@@ -123,9 +123,13 @@ namespace Dev2.Common.DateAndTime
             foreach (IDateTimeFormatPartTO part in dotNetFormatParts)
             {
                 if (part.Isliteral)
+                {
                     dev2Format += "'" + part.Value + "'";
+                }
                 else
+                {
                     dev2Format += part.Value;
+                }
             }
             return dev2Format;
         }
