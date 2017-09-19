@@ -61,10 +61,10 @@ namespace Dev2.Integration.Tests.Merge
         public void Initialize_GivenSameResourceModel_ShouldHaveNoDeifferences_Switch()
         {
             //---------------Set up test pack-------------------
-            var helloWorldGuid = "41617daa-509e-40eb-aa76-b0827028721d".ToGuid();
+            var helloWorldGuid = "9e9660d8-1a3c-45ab-a330-673c2343e517".ToGuid();
             var loadContextualResourceModel = _server.Source.ResourceRepository.LoadContextualResourceModel(helloWorldGuid);
             var resourceModel = new ResourceModel(_server.Source) {ID = helloWorldGuid};
-            var xElement = XML.XmlResource.Fetch("SameResource");
+            var xElement = XML.XmlResource.Fetch("SameResourceSwitch");
             var element = xElement.Element("Action");
             Assert.IsNotNull(element);
             var xamlDef = element.ToString(SaveOptions.DisableFormatting);

@@ -38,6 +38,15 @@ namespace Warewolf.MergeParser
                         return modelItem;
                     }
                 }
+                else if (modelItem.ItemType == typeof(FlowSwitch<string>))
+                {
+                    var condition = modelItem.GetProperty("Expression");
+                    var activity = (DsfFlowNodeActivity<string>)condition;
+                    if (activity != null && activity.UniqueID.Equals(uniqueId, StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        return modelItem;
+                    }
+                }
                 else
                 {
                     if (modelItem.GetCurrentValue<FlowStep>().Action is IDev2Activity currentValue &&
@@ -60,6 +69,12 @@ namespace Warewolf.MergeParser
                 {
                     var dev2Activity = modelItem.GetProperty<IDev2Activity>("Condition");
                     discoverActivities.Add(dev2Activity);
+                }
+                else if (modelItem.ItemType == typeof(FlowSwitch<string>))
+                {
+                    var condition = modelItem.GetProperty("Expression");
+                    var activity = (DsfFlowNodeActivity<string>)condition;
+                    discoverActivities.Add(activity);
                 }
                 else
                 {
@@ -117,14 +132,6 @@ namespace Warewolf.MergeParser
             var activityParser = CustomContainer.Get<IActivityParser>();
             return activityParser.Parse(currentDifferences, modelItem);
         }
-        //private IDev2Activity GetActivity(ModelItem modelItem)
-        //{
-        //    if (modelItem.ItemType == typeof(FlowDecision))
-        //    {
-        //        return modelItem.GetProperty<IDev2Activity>("Condition");
-        //    }
-        //    return modelItem.GetProperty<IDev2Activity>("Action");
-        //}
 
         private List<ModelItem> GetNodes(IContextualResourceModel resourceModel)
         {
