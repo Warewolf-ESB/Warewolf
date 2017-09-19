@@ -21,21 +21,6 @@ using Warewolf.Security.Encryption;
 
 namespace Dev2.Services.Sql
 {
-    public static class SqlConExtension
-    {
-        public static void TryOpen(this SqlConnection connection)
-        {
-            try
-            {
-                if (connection.State != ConnectionState.Open)
-                    connection.Open();
-            }
-            catch (Exception e)
-            {
-                Dev2Logger.Error(e, GlobalConstants.WarewolfError);
-            }
-        }
-    }
     public class SqlServer : IDbServer
     {
         public void Dispose()
@@ -44,15 +29,25 @@ namespace Dev2.Services.Sql
             _connection?.Dispose();
         }
 
+        public SqlServer(ISqlConnection connection)
+        {
+            _connection = connection;
+        }
+
+        public SqlServer()
+        {
+
+        }
+
         public bool IsConnected { get; }
         public string ConnectionString { get; }
         private string _connectionString;
-        private SqlConnection _connection;
+        private ISqlConnection _connection;
         private IDbTransaction _transaction;
         public bool Connect(string connectionString)
         {
             _connectionString = connectionString;
-            _connection = new SqlConnection {ConnectionString = _connectionString};
+            _connection = new SqlConnectionWrapper(_connectionString);
 
             try
             {
@@ -61,10 +56,10 @@ namespace Dev2.Services.Sql
             }
             catch (Exception e)
             {
-                Dev2Logger.Error(e,GlobalConstants.WarewolfError);
+                Dev2Logger.Error(e, GlobalConstants.WarewolfError);
                 return false;
             }
-           
+
         }
 
         public void BeginTransaction()
@@ -79,21 +74,51 @@ namespace Dev2.Services.Sql
         {
             if (_transaction != null)
             {
-                _transaction.Rollback();
-                _transaction.Dispose();
+                try
+                {
+                    _transaction.Rollback();
+                    _transaction.Dispose();
+                }
+                catch (Exception e)
+                {
+                    _transaction.Dispose();
+                    _transaction = null;
+                    Dev2Logger.Error(e, GlobalConstants.WarewolfError);
+                }
+
             }
         }
 
+        void TrySetTransaction(IDbTransaction dbTransaction, IDbCommand command)
+        {
+            if (dbTransaction != null && command.Transaction == null)
+            {
+                command.Transaction = dbTransaction;
+            }
+        }
         public DataTable FetchDataTable(IDbCommand command)
         {
             _connection?.TryOpen();
+            TrySetTransaction(_transaction, command);
             using (_connection)
             {
                 if (_connection?.State != ConnectionState.Open)
                 {
-                    _connection = new SqlConnection();
-                    _connection.ConnectionString = _connectionString;
+                    _connection = new SqlConnectionWrapper(_connectionString);
                     _connection.Open();
+                    var dbCommand = _connection.CreateCommand();
+                    TrySetTransaction(_transaction, dbCommand);
+                    dbCommand.CommandText = command.CommandText;
+                    dbCommand.CommandType = command.CommandType;
+                    using (dbCommand)
+                    {
+                        using (var executeReader = dbCommand.ExecuteReader())
+                        {
+                            var dataTable = new DataTable();
+                            dataTable.Load(executeReader);
+                            return dataTable;
+                        }
+                    }
                 }
                 using (command)
                 {
@@ -110,9 +135,10 @@ namespace Dev2.Services.Sql
         public List<string> FetchDatabases()
         {
             const string databaseColumnName = "database_name";
-            var dataTable = _connection.GetSchema("Databases");
-            DataRow[] orderedRows = dataTable.Select("", databaseColumnName);
-            List<string> result = orderedRows.Select(row => (row[databaseColumnName] ?? string.Empty).ToString()).Distinct().ToList();
+
+            var dataTable = _connection?.GetSchema("Databases") ?? new DataTable("Databases");
+            var orderedRows = dataTable.Select("", databaseColumnName);
+            var result = orderedRows.Select(row => (row[databaseColumnName] ?? string.Empty).ToString()).Distinct().ToList();
             return result;
         }
 
@@ -129,7 +155,8 @@ namespace Dev2.Services.Sql
             {
                 string fullProcedureName = GetFullProcedureName(row, procedureDataColumn, procedureSchemaColumn);
                 _connection.TryOpen();
-                var sqlCommand = _connection.CreateCommand() as IDbCommand;
+                var sqlCommand = _connection.CreateCommand();
+                TrySetTransaction(_transaction, sqlCommand);
                 sqlCommand.CommandText = fullProcedureName;
                 sqlCommand.CommandType = CommandType.StoredProcedure;
 
@@ -154,8 +181,9 @@ namespace Dev2.Services.Sql
                                 CreateTVFCommand(fullProcedureName, parameters));
                         }
                     }
-                    catch (Exception)
+                    catch (Exception e)
                     {
+                        Dev2Logger.Error(e, GlobalConstants.WarewolfError);
                         if (!continueOnProcessorException)
                         {
                             throw;
@@ -183,6 +211,7 @@ namespace Dev2.Services.Sql
             {
                 using (var sqlCommand = _connection.CreateCommand())
                 {
+                    TrySetTransaction(_transaction, sqlCommand);
                     sqlCommand.CommandText = commandText;
                     sqlCommand.CommandType = CommandType.Text;
                     return FetchDataTable(sqlCommand);
@@ -287,6 +316,7 @@ namespace Dev2.Services.Sql
         public IDbCommand CreateCommand()
         {
             var sqlCommand = _connection.CreateCommand();
+            TrySetTransaction(_transaction, sqlCommand);
             sqlCommand.CommandTimeout = (int)GlobalConstants.TransactionTimeout.TotalSeconds;
             return sqlCommand;
         }
@@ -296,17 +326,18 @@ namespace Dev2.Services.Sql
         public bool Connect(string connectionString, CommandType commandType, string commandText)
         {
             VerifyArgument.IsNotNull("connectionString", connectionString);
+            VerifyArgument.IsNotNull("commandText", commandText);
             if (connectionString.CanBeDecrypted())
             {
                 connectionString = DpapiWrapper.Decrypt(connectionString);
             }
             connectionString = string.Concat(connectionString, "MultipleActiveResultSets=true;");
-            _connection = new SqlConnection(connectionString);
+            _connection = new SqlConnectionWrapper(connectionString);
 
             _connection.TryOpen();
             _connection.FireInfoMessageEventOnUserErrors = true;
             _connection.StatisticsEnabled = true;
-            _connection.InfoMessage += (sender, args) =>
+            _connection.SetInfoMessage((sender, args) =>
             {
                 Dev2Logger.Debug("SQL Server:" + args.Message + " Source:" + args.Source,
                     GlobalConstants.WarewolfDebug);
@@ -321,7 +352,8 @@ namespace Dev2.Services.Sql
 
                     Dev2Logger.Error("SQL Error:" + errorMessages.ToString(), GlobalConstants.WarewolfError);
                 }
-            };
+            });
+
             _commantText = commandText;
             _commandType = commandType;
 
@@ -336,10 +368,11 @@ namespace Dev2.Services.Sql
             {
                 if (_connection.State != ConnectionState.Open)
                 {
-                    _connection = new SqlConnection(conString);
+                    _connection = new SqlConnectionWrapper(conString);
                 }
                 using (var sqlCommand = _connection.CreateCommand())
                 {
+                    TrySetTransaction(_transaction, sqlCommand);
                     sqlCommand.CommandText = _commantText;
                     sqlCommand.CommandType = _commandType;
                     sqlCommand.CommandTimeout = (int)GlobalConstants.TransactionTimeout.TotalSeconds;

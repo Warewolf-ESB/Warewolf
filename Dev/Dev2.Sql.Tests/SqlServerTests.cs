@@ -882,7 +882,6 @@ namespace Dev2.Sql.Tests
 
         {
             //------------Setup for test--------------------------
-            var factory = new Mock<IDbFactory>();
             var mockCommand = new Mock<IDbCommand>();
             mockCommand.Setup(a => a.ExecuteReader(It.IsAny<CommandBehavior>())).Returns(new Mock<IDataReader>().Object);
             mockCommand.Setup(a => a.CommandText).Returns("Dave.Bob");
@@ -894,17 +893,16 @@ namespace Dev2.Sql.Tests
             dt.Columns.Add("database_name");
             dt.Rows.Add(new object[] { "Bob" });
             dt.Rows.Add(new object[] { "Dave" });
-            factory.Setup(a => a.GetSchema(It.IsAny<IDbConnection>(), "Databases")).Returns(dt);
             var conn = new Mock<IDbConnection>();
             conn.Setup(a => a.State).Returns(ConnectionState.Open);
             conn.Setup(a => a.ConnectionString).Returns("bob");
-            factory.Setup(a => a.CreateConnection(It.IsAny<string>())).Returns(conn.Object);
-            var sqlServer = new SqlServer();
+            var mock = new Mock<ISqlConnection>();
+            var sqlServer = new SqlServer(mock.Object);
             try
             {
                 //------------Execute Test---------------------------
                 sqlServer.Connect("bob", CommandType.StoredProcedure, "select * from ");
-                factory.Verify(a => a.CreateCommand(conn.Object, CommandType.Text, "select * from "));
+                mock.Verify(a => a.CreateCommand());
             }
             finally
             {
