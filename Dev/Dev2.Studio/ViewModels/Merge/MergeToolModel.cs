@@ -72,13 +72,14 @@ namespace Dev2.ViewModels.Merge
                 OnPropertyChanged(() => IsMergeChecked);
             }
         }
+
         public ObservableCollection<IMergeToolModel> Children
         {
-            get { return _children; }
+            get => _children;
             set
             {
                 _children = value;
-                OnPropertyChanged(() => Children);
+                OnPropertyChanged("Children");
             }
         }
     }
