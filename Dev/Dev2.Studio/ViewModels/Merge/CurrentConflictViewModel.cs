@@ -1,6 +1,4 @@
 ﻿using System.Activities.Presentation.Model;
-using Dev2.Studio.Core.Factories;
-using Dev2.Studio.Core.Utils;
 using Dev2.Studio.Factory;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.ViewModels.DataList;
