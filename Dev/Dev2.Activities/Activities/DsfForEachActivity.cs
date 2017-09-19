@@ -44,8 +44,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
     public class DsfForEachActivity : DsfActivityAbstract<bool>
     {
         string _previousParentId;
-        
-        Dev2ActivityIOIteration _inputItr = new Dev2ActivityIOIteration();
+        readonly Dev2ActivityIOIteration _inputItr = new Dev2ActivityIOIteration();
         
         #region Variables
 
@@ -156,14 +155,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         
 #pragma warning disable 169
         
-        private List<bool> _results = new List<bool>();
-        
+        private readonly List<bool> _results = new List<bool>();
+        readonly
+
 #pragma warning restore 169
 
-        // REMOVE : No longer used
+                // REMOVE : No longer used
 #pragma warning disable 169
-        
-        DelegateInArgument<string> _actionArgument = new DelegateInArgument<string>("explicitDataFromParent");
+
+                DelegateInArgument<string> _actionArgument = new DelegateInArgument<string>("explicitDataFromParent");
         
 #pragma warning restore 169
 
@@ -171,8 +171,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         // REMOVE : 2 variables below not used any more.....
 
         
-        private Variable<string> _origInput = new Variable<string>("origInput");
-        private Variable<string> _origOutput = new Variable<string>("origOutput");
+        private readonly Variable<string> _origInput = new Variable<string>("origInput");
+        private readonly Variable<string> _origOutput = new Variable<string>("origOutput");
         
         readonly object _forEachExecutionObject = new object();
         private string _childUniqueID;

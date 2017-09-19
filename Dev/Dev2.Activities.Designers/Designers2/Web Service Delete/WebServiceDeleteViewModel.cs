@@ -281,7 +281,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Delete
         DependencyProperty.Register("WorstError", typeof(ErrorType), typeof(WebServiceDeleteViewModel), new PropertyMetadata(ErrorType.None));
 
         bool _generateOutputsVisible;
-        private IServiceInputBuilder _builder;
+        private readonly IServiceInputBuilder _builder;
 
         public DelegateCommand TestInputCommand { get; set; }
 

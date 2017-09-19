@@ -8,7 +8,7 @@ namespace Warewolf.Studio.CustomControls
 {
     public class CheckBoxColumnContentProvider : ColumnContentProviderBase
     {
-        CheckBox _checkBox;
+        readonly CheckBox _checkBox;
 
         public override void AdjustDisplayElement(Cell cell)
         {
