@@ -7,25 +7,16 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Dev2.Activities;
 using System.Linq;
 using Dev2;
+using Dev2.Utilities;
+using Dev2.Studio.Core.Factories;
+using Dev2.Studio.Interfaces;
 
 namespace Warewolf.MergeParser.Tests
 {
     [TestClass]
     public class ParseServiceForDifferencesTests
     {
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void Constructor_NullMergeHead_ShouldThrowException()
-        {
-            var psd = new ParseServiceForDifferences(null, ModelItemUtils.CreateModelItem());
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void Constructor_NullHead_ShouldThrowException()
-        {
-            var psd = new ParseServiceForDifferences(ModelItemUtils.CreateModelItem(), null);
-        }
+       
 
         [TestMethod]
         public void GetDifferences_WhenSame_ShouldReturnNoConflictItems()
@@ -58,8 +49,11 @@ namespace Warewolf.MergeParser.Tests
                 }
             };
 
-            var psd = new ParseServiceForDifferences(ModelItemUtils.CreateModelItem(chart), ModelItemUtils.CreateModelItem(otherChart));
-            var diffs = psd.GetDifferences();
+            var current = CreateContextualResourceModel(chart);
+            var diff = CreateContextualResourceModel(otherChart);
+
+            var psd = new ParseServiceForDifferences();
+            var diffs = psd.GetDifferences(current,diff);
             Assert.IsNotNull(diffs);
             Assert.AreEqual(2, diffs.Count);
             Assert.IsTrue(diffs.All(d => !d.conflict));
@@ -71,6 +65,22 @@ namespace Warewolf.MergeParser.Tests
             Assert.IsNotNull(dev2Activity1);
             Assert.AreEqual(randomActivityUniqueId, dev2Activity.UniqueID);
             Assert.AreEqual(calculateUniqueId, dev2Activity1.UniqueID);
+        }
+
+        private static IContextualResourceModel CreateContextualResourceModel(Flowchart chart)
+        {
+            var workflowHelper = new WorkflowHelper();
+
+            IContextualResourceModel tempResource = ResourceModelFactory.CreateResourceModel(CustomContainer.Get<IShellViewModel>().ActiveServer, @"WorkflowService",
+              "bob");
+            tempResource.Category = @"Unassigned\" + "bob";
+            tempResource.ResourceName = "bob";
+            tempResource.DisplayName = "bob";
+            tempResource.IsNewWorkflow = true;
+            var builder = workflowHelper.CreateWorkflow("bob");
+            builder.Implementation = chart;
+            tempResource.WorkflowXaml = workflowHelper.GetXamlDefinition(builder);
+            return tempResource;
         }
 
         [TestMethod]
@@ -111,8 +121,11 @@ namespace Warewolf.MergeParser.Tests
                 }
             };
 
-            var psd = new ParseServiceForDifferences(ModelItemUtils.CreateModelItem(chart), ModelItemUtils.CreateModelItem(otherChart));
-            var diffs = psd.GetDifferences();
+            var current = CreateContextualResourceModel(chart);
+            var diff = CreateContextualResourceModel(otherChart);
+
+            var psd = new ParseServiceForDifferences();
+            var diffs = psd.GetDifferences(current, diff);
             Assert.IsNotNull(diffs);
             Assert.AreEqual(2, diffs.Count);
             Assert.IsTrue(diffs.Any(d => d.conflict));

@@ -13,6 +13,7 @@ using Dev2.Studio.Core.Activities.Utils;
 using System;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using System.Activities;
+using Warewolf;
 
 namespace Dev2.ViewModels.Merge
 {
@@ -24,93 +25,87 @@ namespace Dev2.ViewModels.Merge
         public MergeWorkflowViewModel(IContextualResourceModel currentResourceModel, IContextualResourceModel differenceResourceModel)
         {
             #region TO DELETE
-            var assignId = Guid.NewGuid();
-            var foreachId = Guid.NewGuid();
-            var dsfMultiAssignActivity = new DsfMultiAssignActivity()
-            {
-                UniqueID = assignId.ToString(),
-                FieldsCollection = new List<ActivityDTO>()
-                {
-                    new ActivityDTO("a","a",1),
-                    new ActivityDTO("a","a",2)
-                }
-            };
-            var dsfMultiAssignActivity1 = new DsfMultiAssignActivity()
-            {
-                UniqueID = assignId.ToString(),
-                FieldsCollection = new List<ActivityDTO>()
-                {
-                    new ActivityDTO("a","b",1),
-                    new ActivityDTO("a","a",2)
-                }
-            };
-            var dsfForEachActivity = new DsfForEachActivity()
-            {
-                UniqueID = foreachId.ToString(),
-                DataFunc = new ActivityFunc<string, bool>()
-                {
-                    Handler = new DsfDateTimeActivity()
-                }
-            };
-            var dsfForEachActivity1 = new DsfForEachActivity()
-            {
-                UniqueID = foreachId.ToString(),
-                DataFunc = new ActivityFunc<string, bool>()
-                {
-                    Handler = new DsfDateTimeActivity()
-                }
-            };
-            var assignOne = ModelItemUtils.CreateModelItem(dsfMultiAssignActivity);
-            var assign2 = ModelItemUtils.CreateModelItem(dsfMultiAssignActivity1);
-            var forEach = ModelItemUtils.CreateModelItem(dsfForEachActivity);
-            var forEach1 = ModelItemUtils.CreateModelItem(dsfForEachActivity1);
+            //var assignId = Guid.NewGuid();
+            //var foreachId = Guid.NewGuid();
+            //var dsfMultiAssignActivity = new DsfMultiAssignActivity()
+            //{
+            //    UniqueID = assignId.ToString(),
+            //    FieldsCollection = new List<ActivityDTO>()
+            //    {
+            //        new ActivityDTO("a","a",1),
+            //        new ActivityDTO("a","a",2)
+            //    }
+            //};
+            //var dsfMultiAssignActivity1 = new DsfMultiAssignActivity()
+            //{
+            //    UniqueID = assignId.ToString(),
+            //    FieldsCollection = new List<ActivityDTO>()
+            //    {
+            //        new ActivityDTO("a","b",1),
+            //        new ActivityDTO("a","a",2)
+            //    }
+            //};
+            //var dsfForEachActivity = new DsfForEachActivity()
+            //{
+            //    UniqueID = foreachId.ToString(),
+            //    DataFunc = new ActivityFunc<string, bool>()
+            //    {
+            //        Handler = new DsfDateTimeActivity()
+            //    }
+            //};
+            //var dsfForEachActivity1 = new DsfForEachActivity()
+            //{
+            //    UniqueID = foreachId.ToString(),
+            //    DataFunc = new ActivityFunc<string, bool>()
+            //    {
+            //        Handler = new DsfDateTimeActivity()
+            //    }
+            //};
+            //var assignOne = ModelItemUtils.CreateModelItem(dsfMultiAssignActivity);
+            //var assign2 = ModelItemUtils.CreateModelItem(dsfMultiAssignActivity1);
+            //var forEach = ModelItemUtils.CreateModelItem(dsfForEachActivity);
+            //var forEach1 = ModelItemUtils.CreateModelItem(dsfForEachActivity1);
 
-            var currentChanges = new List<ModelItem>()
-            {
-                assignOne,forEach
-            };
-            var differenceChanges = new List<ModelItem>()
-            {
-                assign2,forEach1
-            };
+            //var currentChanges = new List<ModelItem>()
+            //{
+            //    assignOne,forEach
+            //};
+            //var differenceChanges = new List<ModelItem>()
+            //{
+            //    assign2,forEach1
+            //};
             #endregion
-            
-            string newWorflowName = NewWorkflowNames.Instance.GetNext();
+
+            WorkflowDesignerViewModel = new WorkflowDesignerViewModel(currentResourceModel,false);
+
+            var mergeParser = CustomContainer.Get<IParseServiceForDifferences>();
+            var currentChanges = mergeParser.GetDifferences(currentResourceModel, differenceResourceModel);           
             
             Conflicts = new ObservableCollection<CompleteConflict>();
-
-            var newList = differenceChanges.ToList();
 
             foreach (var curr in currentChanges)
             {
                 var conflict = new CompleteConflict();
-                CurrentConflictViewModel = new CurrentConflictViewModel(curr);
+                CurrentConflictViewModel = new CurrentConflictViewModel(curr.current);
                 conflict.CurrentViewModel = CurrentConflictViewModel.MergeToolModel;
 
-                var uniqueId = ModelItemUtils.GetUniqueID(curr);
-                var diff = newList.FirstOrDefault(o => o.Properties["UniqueID"].Value.ToString() == uniqueId.ToString());
-                if (diff != null)
+                var uniqueId = curr.uniqueId;
+                if (curr.conflict)
                 {
-                    DifferenceConflictViewModel = new DifferenceConflictViewModel(diff);
+                    DifferenceConflictViewModel = new DifferenceConflictViewModel(curr.difference);
                     conflict.DiffViewModel = DifferenceConflictViewModel.MergeToolModel;
                 }
                 
                 Conflicts.Add(conflict);
             }
 
-            CurrentConflictViewModel.WorkflowName = newWorflowName;
-            DifferenceConflictViewModel.WorkflowName = newWorflowName;
+            CurrentConflictViewModel.WorkflowName = currentResourceModel.ResourceName;
+            DifferenceConflictViewModel.WorkflowName = differenceResourceModel.ResourceName;
 
             SetServerName(currentResourceModel);
             DisplayName = "Merge Conflicts" + _serverName;
 
-            IContextualResourceModel tempResource = ResourceModelFactory.CreateResourceModel(CustomContainer.Get<IShellViewModel>().ActiveServer, @"WorkflowService",
-                newWorflowName);
-            tempResource.Category = @"Unassigned\" + newWorflowName;
-            tempResource.ResourceName = newWorflowName;
-            tempResource.DisplayName = newWorflowName;
-            tempResource.IsNewWorkflow = true;
-            WorkflowDesignerViewModel = new WorkflowDesignerViewModel(tempResource);
+           
             AddAnItem = new DelegateCommand(o =>
             {
                 //var step = new FlowStep { Action = act };
