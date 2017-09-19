@@ -352,6 +352,9 @@
     <EmbeddedResource Include="Server Test\Workspace\XML\BUG_10638_Result.xml" />
     <EmbeddedResource Include="Server Test\Workspace\XML\Bug_10528_Result.xml" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="XML\SameResourceSwitch.xml" />
+  </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>
