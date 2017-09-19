@@ -73,8 +73,7 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             var region = new DatabaseInputRegion(ModelItemUtils.CreateModelItem(act), dbActionRegion);
             Assert.AreEqual(region.IsEnabled, false);
             Assert.AreEqual(region.Errors.Count, 0);
-            var clone = region.CloneRegion() as DatabaseInputRegion;
-            if (clone != null)
+            if (region.CloneRegion() is DatabaseInputRegion clone)
             {
                 Assert.AreEqual(clone.IsEnabled, false);
                 Assert.AreEqual(clone.Errors.Count, 0);
