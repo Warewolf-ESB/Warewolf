@@ -3,13 +3,9 @@ using System.Activities.Presentation.Model;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Common.Interfaces;
 using Dev2.Studio.Core.Activities.Utils;
-using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.ViewModels.DataList;
 using Microsoft.Practices.Prism.Mvvm;
 using System.Activities.Statements;
-using Unlimited.Applications.BusinessDesignStudio.Activities;
-using Dev2.Data.SystemTemplates.Models;
-using Dev2.Communication;
 
 namespace Dev2.ViewModels.Merge
 {
@@ -29,10 +25,12 @@ namespace Dev2.ViewModels.Merge
             {
                 var instance = Activator.CreateInstance(actual, modelItem.Properties["Action"]?.Value ?? modelItem.Properties["Condition"].Value) as ActivityDesignerViewModel;
                 var dsfActivity = activityType.GetProperty("DisplayName")?.GetValue(currentValue);
-                var mergeToolModel = new MergeToolModel();
-                mergeToolModel.ActivityDesignerViewModel = instance;
-                mergeToolModel.MergeIcon = modelItem.GetImageSourceForTool();
-                mergeToolModel.MergeDescription = dsfActivity?.ToString();
+                var mergeToolModel = new MergeToolModel
+                {
+                    ActivityDesignerViewModel = instance,
+                    MergeIcon = modelItem.GetImageSourceForTool(),
+                    MergeDescription = dsfActivity?.ToString()
+                };
 
                 if (modelItem.ItemType == typeof(FlowDecision))
                 {
@@ -45,7 +43,18 @@ namespace Dev2.ViewModels.Merge
                     {
                         mergeToolModel.Children.Add(AddModelItem(ModelItemUtils.CreateModelItem(act.False)));
                     }
-
+                }
+                if (modelItem.ItemType == typeof(FlowSwitch<string>))
+                {
+                    var act = modelItem.GetCurrentValue<FlowDecision>();
+                    if (act.True != null)
+                    {
+                        mergeToolModel.Children.Add(AddModelItem(ModelItemUtils.CreateModelItem(act.True)));
+                    }
+                    if (act.False != null)
+                    {
+                        mergeToolModel.Children.Add(AddModelItem(ModelItemUtils.CreateModelItem(act.False)));
+                    }
                 }
                 return mergeToolModel;
             }
