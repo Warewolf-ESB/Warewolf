@@ -192,7 +192,6 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         {
             string result;
             const string inputString = "Please Give ' Cake On : 14101988";
-            //2013.06.03: Ashley Lewis for bug 9601 - double escape not triple escape
             const string formatString = "'Please Give '' Cake On : 'ddmmyyyy";
 
             IDateTimeResultTO dateTimeResult;
@@ -217,7 +216,6 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         {
             string result;
             const string inputString = "Please Give ' Cake On : 14101988";
-            //2013.06.03: Ashley Lewis for bug 9601 - double escape not triple escape
             const string formatString = "'Please Give '' Cake On : 'ddmmyyyy";
 
             IDateTimeResultTO dateTimeResult;
@@ -473,8 +471,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
                 Assert.Fail("Incorrect object returned");
             }
         }
-
-        //07.03.2013: Ashley Lewis - PBI 9167: Null input format is now valid
+        
         [TestMethod]
         public void TryParseDateTimeWithInputFormatNULLExpectedDefaultFormatUsed()
         {

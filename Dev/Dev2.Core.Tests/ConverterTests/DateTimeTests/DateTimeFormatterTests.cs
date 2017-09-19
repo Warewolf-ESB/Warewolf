@@ -142,8 +142,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             Assert.IsTrue(result == "1988/10/14");
 
         }
-
-        //2013.02.12: Ashley Lewis - Bug 8725, Task 8840
+        
         [TestMethod]
         public void FormatWithTrailingZerosInOutputExpectedTrailingZerosNotRemoved()
         {
@@ -245,8 +244,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
 
             Assert.AreEqual(expected, result);
         }
-
-        //06.05.2013: Ashley Lewis - Bug 9300
+        
         /// <summary>
         /// Tests that if the input format is null, the formatter assumes current culture default date time formatting and tries invariant culture
         /// </summary>

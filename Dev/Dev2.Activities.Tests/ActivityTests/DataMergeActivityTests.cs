@@ -275,8 +275,7 @@ Wallis0000Buchan
             FixBreaks(ref expected, ref actual);
             Assert.AreEqual(expected, actual);
         }
-
-        //2013.05.31: Ashley Lewis for bug 9485 - merge tool dropping data if index equals length
+        
         [TestMethod]
         public void MergeTwoFieldsInRecordsetsIndexWithIndexEqualToDataLengthExpectedNoDataLoss()
         {

@@ -259,8 +259,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 Assert.Fail("The following errors occurred while retrieving datalist items\r\nerrors:{0}", error);
             }
         }
-
-        //2013.02.12: Ashley Lewis - Bug 8800
+        
         [TestMethod]
         public void ReplaceInAllRecordsetFieldsExpectedTwoReplacesSuccess()
         {

@@ -82,8 +82,7 @@ namespace ActivityUnitTests.ActivityTests
             Assert.AreEqual("9477", results[1]);
             Assert.AreEqual("9090", results[2]);
         }
-
-        //2013.03.11: Ashley Lewis - PBI 9167 Moved to positive tests
+        
         [TestMethod]
         public void Blank_InputFormat_Expected_Error()
         {

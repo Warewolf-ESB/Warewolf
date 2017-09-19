@@ -142,7 +142,6 @@ namespace Dev2.PathOperations
             int result = -1;
             using (src)
             {
-                //2013.05.29: Ashley Lewis for bug 9507 - default destination to source directory when destination is left blank or if it is not a rooted path
                 if (!Path.IsPathRooted(dst.Path))
                 {
                     //get just the directory path to put into

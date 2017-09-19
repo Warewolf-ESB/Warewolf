@@ -113,9 +113,7 @@ namespace Dev2.Core.Tests.Workflows
             workflowInputDataviewModel.LoadWorkflowInputs();
             Assert.IsTrue(workflowInputDataviewModel.WorkflowInputs.Count == 0);
         }
-
-
-        //2013.01.22: Ashley Lewis - Bug 7837 
+        
         [TestMethod]
         public void Save_EmptyDataList_Expected_NoErrors()
         {

@@ -157,8 +157,7 @@ namespace Dev2.Activities
                             allErrors.AddError(errorReader.ReadToEnd());
                             var bytes = Encoding.Default.GetBytes(outputReader.ToString().Trim());
                             string readValue = Encoding.ASCII.GetString(bytes).Replace("?", " ");
-
-                            //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
+                            
                             foreach(var region in DataListCleaningUtils.SplitIntoRegions(CommandResult))
                             {
                                 dataObject.Environment?.Assign(region, readValue, update == 0 ? counter : update);
