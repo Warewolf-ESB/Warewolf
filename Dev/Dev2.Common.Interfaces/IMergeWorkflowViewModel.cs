@@ -24,8 +24,14 @@ namespace Dev2.Common.Interfaces
 
     public class CompleteConflict
     {
+        public CompleteConflict()
+        {
+            Children = new ObservableCollection<CompleteConflict>();
+        }
+
         public IMergeToolModel CurrentViewModel { get; set; }
         public IMergeToolModel DiffViewModel { get; set; }
+        public ObservableCollection<CompleteConflict> Children { get; set; }
     }
 
     public interface IMergeToolModel
@@ -36,6 +42,5 @@ namespace Dev2.Common.Interfaces
         string MergeDescription { get; set; }
         bool IsMergeChecked { get; set; }
         bool IsVariablesChecked { get; set; }
-        ObservableCollection<IMergeToolModel> Children { get; set; }
     }
 }

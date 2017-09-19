@@ -93,11 +93,11 @@ namespace Warewolf.MergeParser
 
         private IDev2Activity GetActivity(ModelItem modelItem)
         {
-                if (modelItem.ItemType == typeof(FlowDecision))
-                {
-                    return modelItem.GetProperty<IDev2Activity>("Condition");
-                }
-                return modelItem.GetProperty<IDev2Activity>("Action");            
+            if (modelItem.ItemType == typeof(FlowDecision))
+            {
+                return modelItem.GetProperty<IDev2Activity>("Condition");
+            }
+            return modelItem.GetProperty<IDev2Activity>("Action");
         }
 
         private List<ModelItem> GetNodes(IContextualResourceModel resourceModel)

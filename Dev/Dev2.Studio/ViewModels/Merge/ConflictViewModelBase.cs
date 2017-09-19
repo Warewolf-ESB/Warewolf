@@ -10,6 +10,7 @@ using System.Activities.Statements;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Dev2.Data.SystemTemplates.Models;
 using Dev2.Communication;
+using System.Collections.ObjectModel;
 
 namespace Dev2.ViewModels.Merge
 {
@@ -17,6 +18,7 @@ namespace Dev2.ViewModels.Merge
     {
         protected ConflictViewModelBase(ModelItem modelItem)
         {
+            Children = new ObservableCollection<IMergeToolModel>();
             MergeToolModel = AddModelItem(modelItem);
         }
 
@@ -33,20 +35,6 @@ namespace Dev2.ViewModels.Merge
                 mergeToolModel.ActivityDesignerViewModel = instance;
                 mergeToolModel.MergeIcon = modelItem.GetImageSourceForTool();
                 mergeToolModel.MergeDescription = dsfActivity?.ToString();
-
-                if (modelItem.ItemType == typeof(FlowDecision))
-                {
-                    var act = modelItem.GetCurrentValue<FlowDecision>();
-                    if (act.True != null)
-                    {
-                        mergeToolModel.Children.Add(AddModelItem(ModelItemUtils.CreateModelItem(act.True)));
-                    }
-                    if (act.False != null)
-                    {
-                        mergeToolModel.Children.Add(AddModelItem(ModelItemUtils.CreateModelItem(act.False)));
-                    }
-
-                }
                 return mergeToolModel;
             }
             return null;
@@ -55,5 +43,6 @@ namespace Dev2.ViewModels.Merge
         public string WorkflowName { get; set; }
         public IMergeToolModel MergeToolModel { get; set; }
         public DataListViewModel DataListViewModel { get; set; }
+        public ObservableCollection<IMergeToolModel> Children { get; set; }
     }
 }

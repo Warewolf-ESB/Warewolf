@@ -9,9 +9,6 @@
 */
 
 using System;
-using System.Activities;
-using System.Activities.Presentation.Model;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
@@ -30,17 +27,11 @@ using FontAwesome.WPF;
 using Infragistics.Windows.DockManager.Events;
 using WinInterop = System.Windows.Interop;
 using Dev2.Studio.Core;
-using Dev2.Studio.Core.Activities.Utils;
-using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.ViewModels.Workflow;
 using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.ViewModels;
 using Dev2.Workspaces;
 using Infragistics.Windows.DockManager;
-using Dev2.ViewModels.Merge;
-using Dev2.Views.Merge;
-using Unlimited.Applications.BusinessDesignStudio.Activities;
-using Application = System.Windows.Application;
 
 namespace Dev2.Studio.Views
 {
