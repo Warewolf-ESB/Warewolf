@@ -51,14 +51,35 @@ namespace Warewolf.MergeParser
             return default;
         }
 
+        private List<IDev2Activity> DiscoverActivities(List<ModelItem> modelItems)
+        {
+            var discoverActivities = new List<IDev2Activity>();
+            foreach (var modelItem in modelItems)
+            {
+                if (modelItem.ItemType == typeof(FlowDecision))
+                {
+                    var dev2Activity = modelItem.GetProperty<IDev2Activity>("Condition");
+                    discoverActivities.Add(dev2Activity);
+                }
+                else
+                {
+                    var currentValue = modelItem.GetProperty<IDev2Activity>("Action");
+                    discoverActivities.Add(currentValue);
+                }
+
+            }
+            return discoverActivities;
+        }
+
         public List<(Guid uniqueId, ModelItem current, ModelItem difference, bool conflict)> GetDifferences(IContextualResourceModel current, IContextualResourceModel difference)
         {
             var conflictList = new List<(Guid uniqueId, ModelItem current, ModelItem difference, bool conflict)>();
             CurrentDifferences = GetNodes(current);
             Differences = GetNodes(difference);
-
-            var mergeHeadActivities = CurrentDifferences.Select(GetActivity).ToList();
-            var headActivities = Differences.Select(GetActivity).ToList();
+            var currenctDifferences = DiscoverActivities(CurrentDifferences);
+            var allDifferencesActivities = DiscoverActivities(Differences);
+            var mergeHeadActivities = CurrentDifferences.Select(item => GetActivity(currenctDifferences, item)).ToList();
+            var headActivities = Differences.Select(modelItem => GetActivity(allDifferencesActivities, modelItem)).ToList();
             var equalItems = mergeHeadActivities.Intersect(headActivities);
             var nodesDifferentInMergeHead = mergeHeadActivities.Except(headActivities);
             var nodesDifferentInHead = headActivities.Except(mergeHeadActivities);
@@ -91,13 +112,11 @@ namespace Warewolf.MergeParser
             return conflictList;
         }
 
-        private IDev2Activity GetActivity(ModelItem modelItem)
+        private IDev2Activity GetActivity(List<IDev2Activity> currentDifferences, ModelItem modelItem)
         {
-                if (modelItem.ItemType == typeof(FlowDecision))
-                {
-                    return modelItem.GetProperty<IDev2Activity>("Condition");
-                }
-                return modelItem.GetProperty<IDev2Activity>("Action");            
+            var activityParser = CustomContainer.Get<IActivityParser>();
+            return activityParser.Parse(currentDifferences, modelItem);
+
         }
 
         private List<ModelItem> GetNodes(IContextualResourceModel resourceModel)
@@ -118,7 +137,9 @@ namespace Warewolf.MergeParser
             }
             wd.Text = xaml.ToString();
             wd.Load();
+
             var modelService = wd.Context.Services.GetService<ModelService>();
+            var modelItems = modelService.Find(modelService.Root, typeof(Flowchart));
             var nodeList = modelService.Find(modelService.Root, typeof(FlowNode)).ToList();
             wd = null;
             return nodeList;

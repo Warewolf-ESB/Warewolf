@@ -1,19 +1,10 @@
-﻿using System.Activities.Presentation.Model;
-using Dev2.Common.Interfaces;
+﻿using Dev2.Common.Interfaces;
 using Microsoft.Practices.Prism.Mvvm;
-using Dev2.Studio.Core.Utils;
 using Dev2.Studio.Interfaces;
-using Dev2.Studio.Core.Factories;
 using Dev2.Studio.ViewModels.Workflow;
 using Dev2.Runtime.Configuration.ViewModels.Base;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;      
-using System.Linq;
-using Dev2.Studio.Core.Activities.Utils;
+using System.Collections.ObjectModel;
 using System;
-using Unlimited.Applications.BusinessDesignStudio.Activities;
-using System.Activities;
-using Warewolf;
 
 namespace Dev2.ViewModels.Merge
 {
@@ -39,7 +30,6 @@ namespace Dev2.ViewModels.Merge
                 {
                     conflict.CurrentViewModel = CurrentConflictViewModel.MergeToolModel;
 
-                    var uniqueId = curr.uniqueId;
                     if (curr.conflict)
                     {
                         DifferenceConflictViewModel = new DifferenceConflictViewModel(curr.difference, differenceResourceModel);
