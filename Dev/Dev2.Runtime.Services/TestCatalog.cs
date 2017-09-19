@@ -367,7 +367,6 @@ namespace Dev2.Runtime
 
         public List<IServiceTestModelTO> FetchAllTests()
         {
-            Load();
             var list = new List<IServiceTestModelTO>();
             if (Tests != null)
             {

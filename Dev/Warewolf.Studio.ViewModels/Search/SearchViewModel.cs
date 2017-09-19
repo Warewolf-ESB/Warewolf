@@ -8,6 +8,12 @@ using System.Linq;
 using Dev2.Studio.Interfaces.Search;
 using Dev2.Common;
 using System;
+using Dev2.Studio.Core;
+using Dev2.Studio.Factory;
+using Dev2.Studio.Interfaces.DataList;
+using System.Collections.Generic;
+using Dev2.Runtime.Configuration.ViewModels.Base;
+using System.Windows;
 
 namespace Dev2.ViewModels.Search
 {
@@ -27,6 +33,7 @@ namespace Dev2.ViewModels.Search
         private string _searchInput;
         private ICommand _searchInputCommand;
         private ObservableCollection<ISearchValue> _searchResults;
+        private bool _isSearching;
 
         public SearchViewModel(IShellViewModel shellViewModel, IEventAggregator aggregator)
             : base(shellViewModel, aggregator, false)
@@ -35,10 +42,15 @@ namespace Dev2.ViewModels.Search
             ConnectControlViewModel.ServerConnected += async (sender, server) => { await ServerConnected(sender, server); };
             ConnectControlViewModel.ServerDisconnected += ServerDisconnected;
             SelectedEnvironment = _environments.FirstOrDefault();
-            RefreshCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() => RefreshEnvironment(SelectedEnvironment.ResourceId));
-            SearchInputCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() => SearchWarewolf());
+            RefreshCommand = new DelegateCommand((o) => RefreshEnvironment(SelectedEnvironment.ResourceId));
+            SearchInputCommand = new DelegateCommand(async (o) => {
+                
+                await SearchWarewolf();
+                });
             SearchResults = new ObservableCollection<ISearchValue>();
             IsAllSelected = true;
+            SelectedEnvironment?.Server?.ResourceRepository?.Load();
+            IsSearching = false;
         }
 
         private void ServerDisconnected(object sender, IServer server)
@@ -64,38 +76,121 @@ namespace Dev2.ViewModels.Search
 
         public event ServerSate ServerStateChanged;
 
-        private void SearchWarewolf()
+        public bool IsSearching
         {
+            get
+            {
+                return _isSearching;
+            }
+            set
+            {
+                _isSearching = value;
+                OnPropertyChanged(() => IsSearching);
+            }
+        }
+
+        private async Task SearchWarewolf()
+        {
+            IsSearching = true;
+            
             var shellViewModel = CustomContainer.Get<IShellViewModel>();
             SearchResults.Clear();
             if (!string.IsNullOrWhiteSpace(SearchInput))
             {
-                if (IsWorkflowNameSelected)
+                await Task.Run(() =>
                 {
-                    var children = SelectedEnvironment.UnfilteredChildren.Flatten(model => model.UnfilteredChildren).Where(model => model.ResourceName.ToLower().Contains(SearchInput.ToLower()) && model.ResourceType != "Folder");
-                    foreach (var child in children)
+                    if (IsWorkflowNameSelected)
                     {
-                        var search = new SearchValue(child.ResourceId, child.ResourceName, child.ResourcePath, "Workflow", child.ResourceName, SelectedEnvironment);
-                        SearchResults.Add(search);
-                    }
-                }
-                if (IsTestNameSelected)
-                {
-                    var loadTests = SelectedEnvironment.Server?.ResourceRepository.LoadResourceTests(Guid.Empty);
-                    if (loadTests != null)
-                    {
-                        var tests = loadTests.Where(model => model.TestName.ToLower().Contains(SearchInput.ToLower()));
-                        foreach (var test in tests)
+                        var children = SelectedEnvironment.UnfilteredChildren.Flatten(model => model.UnfilteredChildren).Where(model => model.ResourceName.ToLower().Contains(SearchInput.ToLower()) && model.ResourceType != "Folder");
+                        foreach (var child in children)
                         {
-                            var resource = SelectedEnvironment.UnfilteredChildren.Flatten(model => model.UnfilteredChildren).FirstOrDefault(model => model.ResourceId == test.ResourceId);
-                            var search = new SearchValue(resource.ResourceId, test.TestName, resource.ResourcePath, "Test", test.TestName, SelectedEnvironment);
-                            SearchResults.Add(search);
+                            var search = new SearchValue(child.ResourceId, child.ResourceName, child.ResourcePath, "Workflow", child.ResourceName, SelectedEnvironment);
+                            Application.Current.Dispatcher.Invoke(delegate
+                            {
+                                SearchResults.Add(search);
+                            });
                         }
                     }
-                }
-                SearchResults.GroupBy(o => o.Type);
+                    if (IsTestNameSelected)
+                    {
+                        var loadTests = SelectedEnvironment.Server?.ResourceRepository.LoadResourceTests(Guid.Empty);
+                        if (loadTests != null)
+                        {
+                            var tests = loadTests.Where(model => model.TestName.ToLower().Contains(SearchInput.ToLower()));
+                            foreach (var test in tests)
+                            {
+                                var resource = SelectedEnvironment.UnfilteredChildren.Flatten(model => model.UnfilteredChildren).FirstOrDefault(model => model.ResourceId == test.ResourceId);
+                                var search = new SearchValue(resource.ResourceId, test.TestName, resource.ResourcePath, "Test", test.TestName, SelectedEnvironment);
+                                Application.Current.Dispatcher.Invoke(delegate
+                                {
+                                    SearchResults.Add(search);
+                                });
+                            }
+                        }
+                    }
+                    if (IsScalarNameSelected || IsRecSetNameSelected || IsObjectNameSelected)
+                    {
+                        var resources = SelectedEnvironment.Server?.ResourceRepository.All();
+                        foreach (var resource in resources)
+                        {
+                            var dtlist = DataListViewModelFactory.CreateDataListViewModel(resource);
+                            if (IsScalarNameSelected)
+                            {
+                                foreach (var scalar in dtlist.ScalarCollection)
+                                {
+                                    if (scalar.Name.ToLower().Contains(SearchInput.ToLower()))
+                                    {
+                                        var resourcePath = resource.GetSavePath() + resource.ResourceName;
+                                        var search = new SearchValue(resource.ID, resource.ResourceName, resourcePath, "Scalar", scalar.Name, SelectedEnvironment);
+                                        Application.Current.Dispatcher.Invoke(delegate
+                                        {
+                                            SearchResults.Add(search);
+                                        });
+                                    }
+                                }
+                            }
+                            if (IsRecSetNameSelected)
+                            {
+                                foreach (var recset in dtlist.RecsetCollection)
+                                {
+                                    if (recset.Name.ToLower().Contains(SearchInput.ToLower()))
+                                    {
+                                        var resourcePath = resource.GetSavePath() + resource.ResourceName;
+                                        var search = new SearchValue(resource.ID, resource.ResourceName, resourcePath, "RecordSet", recset.Name, SelectedEnvironment);
+                                        Application.Current.Dispatcher.Invoke(delegate
+                                        {
+                                            SearchResults.Add(search);
+                                        });
+                                    }
+                                }
+                            }
+                            if (IsObjectNameSelected)
+                            {
+                                foreach (var complexObj in dtlist.ComplexObjectCollection)
+                                {
+                                    if (complexObj.Name.ToLower().Contains(SearchInput.ToLower()))
+                                    {
+                                        var resourcePath = resource.GetSavePath() + resource.ResourceName;
+                                        var search = new SearchValue(resource.ID, resource.ResourceName, resourcePath, "Object", complexObj.Name, SelectedEnvironment);
+                                        Application.Current.Dispatcher.Invoke(delegate
+                                        {
+                                            SearchResults.Add(search);
+                                        });
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    SearchResults.GroupBy(o => o.Type);
+                });
+                
             }
+            IsSearching = false;
         }
+
+        List<IScalarItemModel> ScalarCollection { get; set; }
+        List<IRecordSetItemModel> RecsetCollection { get; set; }
+        List<IComplexObjectItemModel> ComplexObjectCollection { get; set; }
 
         public bool IsAllSelected
         {

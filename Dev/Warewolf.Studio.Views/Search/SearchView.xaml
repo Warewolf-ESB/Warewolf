@@ -7,6 +7,7 @@
         xmlns:views="clr-namespace:Warewolf.Studio.Views"
         xmlns:controls="clr-namespace:Dev2.Activities.Designers2.Core.Controls;assembly=Dev2.Activities.Designers"
         xmlns:fa="http://schemas.fontawesome.io/icons/"
+        xmlns:converters1="clr-namespace:Dev2.CustomControls.Converters;assembly=Dev2.Studio.Core"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
         MouseDown="Window_MouseDown"
@@ -22,6 +23,8 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+            <converters1:BoolToVisibilityConverter x:Key="BoolToVisibilityConverterNegative" TrueValue="Collapsed" FalseValue="Visible"/>
+            <converters1:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
         </ResourceDictionary>
     </Window.Resources>
 
@@ -84,9 +87,20 @@
             </Button>
         </Grid>
 
+        <Grid Grid.Row="3" Visibility="{Binding IsSearching, Converter={StaticResource BoolToVisibilityConverter}}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <views:CircularProgressBar Height="75" Width="75" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        </Grid>
+
+        <Grid Grid.Row="3" Visibility="{Binding IsSearching, Converter={StaticResource BoolToVisibilityConverterNegative}}">
         <!-- SEARCH RESULTS -->
         <controls:Dev2DataGrid x:Name="SearchResults"
-                               Grid.Row="3" 
                                ItemsSource="{Binding SearchResults, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                Style="{StaticResource ActivityMappingDataGridStyle}"
                                Height="Auto"
@@ -146,5 +160,6 @@
                 </DataGridTemplateColumn>
             </DataGrid.Columns>
         </controls:Dev2DataGrid>
+        </Grid>
     </Grid>
 </Window>
