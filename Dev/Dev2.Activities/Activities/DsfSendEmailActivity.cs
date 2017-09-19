@@ -334,7 +334,6 @@ namespace Dev2.Activities
             {
                 expression = Result;
             }
-            //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
             foreach(var region in DataListCleaningUtils.SplitIntoRegions(expression))
             {
                 environment.Assign(region, result, update);

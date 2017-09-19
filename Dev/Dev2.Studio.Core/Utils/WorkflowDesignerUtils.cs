@@ -35,8 +35,6 @@ namespace Dev2.Utils
         /// <returns></returns>
         public IList<string> FormatDsfActivityField(string activityField)
         {
-            //2013.06.10: Ashley Lewis for bug 9306 - handle the case of miss-matched region braces
-
             IList<string> result = new List<string>();
 
             var regions = DataListCleaningUtils.SplitIntoRegionsForFindMissing(activityField);

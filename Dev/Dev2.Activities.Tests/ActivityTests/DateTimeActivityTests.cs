@@ -117,8 +117,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(firstDateTimeExpected, firstResult);
             Assert.AreEqual(secondDateTimeExpected, secondResult);
         }
-
-        //2013.02.12: Ashley Lewis - Bug 8725, Task 8840 DONE
+        
         [TestMethod]
         public void DateTimeAddSplitsExpectedDateTimeReturnedCorrectly()
         {

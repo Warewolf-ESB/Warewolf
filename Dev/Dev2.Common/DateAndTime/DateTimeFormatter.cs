@@ -65,11 +65,9 @@ namespace Dev2.Common.DateAndTime
 
             bool nothingDied = true;
             IDateTimeResultTO dateTimeResultTO;
-
-            //2013.05.06: Ashley Lewis - Bug 9300 - trim should allow null input format
+            
             dateTimeTO.InputFormat = dateTimeTO.InputFormat?.Trim();
-
-            //2013.02.12: Ashley Lewis - Bug 8725, Task 8840 - Added trim to data
+            
             if (dateTimeParser.TryParseDateTime(dateTimeTO.DateTime.Trim(), dateTimeTO.InputFormat, out dateTimeResultTO,
                 out error))
             {
@@ -103,8 +101,6 @@ namespace Dev2.Common.DateAndTime
                         : dateTimeTO.OutputFormat;
                     if (string.IsNullOrWhiteSpace(outputFormat))
                     {
-                        //07.03.2013: Ashley Lewis - Bug 9167 null to default
-
                         string shortPattern = CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern;
                         string longPattern = CultureInfo.CurrentCulture.DateTimeFormat.LongTimePattern;
                         string finalPattern = shortPattern + " " + longPattern;
@@ -317,7 +313,6 @@ namespace Dev2.Common.DateAndTime
 
         private static string Format_sp(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
         {
-            //2013.02.12: Ashley Lewis - Bug 8725, Task 8840 - The "FFF" format has a tenancy to shave trailing zeros off milliseconds
             return dateTime.Millisecond.ToString(CultureInfo.InvariantCulture);
         }
 
