@@ -77,7 +77,7 @@ namespace Dev2.ViewModels.Merge
             #endregion
 
             WorkflowDesignerViewModel = new WorkflowDesignerViewModel(currentResourceModel,false);
-
+            WorkflowDesignerViewModel.CreateBlankWorkflow();
             var mergeParser = CustomContainer.Get<IParseServiceForDifferences>();
             var currentChanges = mergeParser.GetDifferences(currentResourceModel, differenceResourceModel);           
             
@@ -86,13 +86,13 @@ namespace Dev2.ViewModels.Merge
             foreach (var curr in currentChanges)
             {
                 var conflict = new CompleteConflict();
-                CurrentConflictViewModel = new CurrentConflictViewModel(curr.current);
+                CurrentConflictViewModel = new CurrentConflictViewModel(curr.current,currentResourceModel);
                 conflict.CurrentViewModel = CurrentConflictViewModel.MergeToolModel;
 
                 var uniqueId = curr.uniqueId;
                 if (curr.conflict)
                 {
-                    DifferenceConflictViewModel = new DifferenceConflictViewModel(curr.difference);
+                    DifferenceConflictViewModel = new DifferenceConflictViewModel(curr.difference, differenceResourceModel);
                     conflict.DiffViewModel = DifferenceConflictViewModel.MergeToolModel;
                 }
                 

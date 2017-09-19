@@ -2000,8 +2000,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public void CreateBlankWorkflow()
         {
-            CreateDesigner();
-            Dev2Logger.Info($"Could not find {_resourceModel.ResourceName}. Creating a new workflow", "Warewolf Info");
+            CreateDesigner();            
             var activityBuilder = _workflowHelper.CreateWorkflow(_resourceModel.ResourceName);
             _wd.Load(activityBuilder);
             BindToModel();

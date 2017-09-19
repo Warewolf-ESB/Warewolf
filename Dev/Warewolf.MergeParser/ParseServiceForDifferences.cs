@@ -36,7 +36,7 @@ namespace Warewolf.MergeParser
                     var dec = act.Condition as DsfFlowDecisionActivity;
                     if (dec != null && dec.UniqueID.Equals(uniqueId, StringComparison.InvariantCultureIgnoreCase))
                     {
-                        return ModelItemUtils.CreateModelItem(act);
+                        return modelItem;
                     }
                 }
                 else
@@ -44,7 +44,7 @@ namespace Warewolf.MergeParser
                     if (modelItem.GetCurrentValue<FlowStep>().Action is IDev2Activity currentValue &&
                         currentValue.UniqueID.Equals(uniqueId, StringComparison.InvariantCultureIgnoreCase))
                     {
-                        return ModelItemUtils.CreateModelItem(currentValue);
+                        return modelItem;
                     }
                 }
             }
