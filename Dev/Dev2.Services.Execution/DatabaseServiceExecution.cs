@@ -281,7 +281,7 @@ namespace Dev2.Services.Execution
 
                             var dbDataParameters = parameters.Cast<IDbDataParameter>().ToArray();
 
-                            var dataTable = dataSet.FetchDataTable(dbDataParameters, sourceConnectionString);
+                            var dataTable = dataSet.FetchDataTable(sourceConnectionString, dbDataParameters);
 
                             TranslateDataTableToEnvironment(dataTable, DataObj.Environment, update);
                         }

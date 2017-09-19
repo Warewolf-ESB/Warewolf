@@ -50,7 +50,7 @@ namespace Dev2.Sql.Tests
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("SqlServer_Connect")]
-        [ExpectedException(typeof(ArgumentException))]
+        [ExpectedException(typeof(ArgumentNullException))]
 
         public void SqlServer_Connect_ConnectionStringIsInvalid_ThrowsArgumentException()
 
@@ -92,7 +92,7 @@ namespace Dev2.Sql.Tests
                 sqlServer.Dispose();
             }
         }
-        
+
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("SqlServer_FetchDataTable")]
@@ -102,11 +102,12 @@ namespace Dev2.Sql.Tests
 
         {
             //------------Setup for test--------------------------
-            var sqlServer = new SqlServer();
+            var connBuilder = new Mock<IConnectionBuilder>();
+            var sqlServer = new SqlServer(connBuilder.Object);
             try
             {
                 //------------Execute Test---------------------------
-                //sqlServer.FetchDataTable();
+                sqlServer.FetchDataTable("");
 
                 //------------Assert Results-------------------------
             }
@@ -125,7 +126,8 @@ namespace Dev2.Sql.Tests
 
         {
             //------------Setup for test--------------------------
-            var sqlServer = new SqlServer();
+            var conBuilder = new Mock<IConnectionBuilder>();
+            var sqlServer = new SqlServer(conBuilder.Object);
             try
             {
                 //------------Execute Test---------------------------
@@ -175,7 +177,7 @@ namespace Dev2.Sql.Tests
             try
             {
                 //------------Execute Test---------------------------
-                Func<IDbCommand, List<IDbDataParameter>, string,string, bool> procProcessor = (command, list, arg3,a) => false;
+                Func<IDbCommand, List<IDbDataParameter>, string, string, bool> procProcessor = (command, list, arg3, a) => false;
 
                 sqlServer.FetchStoredProcedures(procProcessor, null);
 
@@ -196,31 +198,30 @@ namespace Dev2.Sql.Tests
 
         {
             //------------Setup for test--------------------------
-            var factory = new Mock<IDbFactory>();
+            var factory = new Mock<IConnectionBuilder>();
             var mockCommand = new Mock<IDbCommand>();
-            var mockReader = new Mock<IDataAdapter>();
             var somethingAdded = false;
-            factory.Setup(a => a.CreateCommand(It.IsAny<IDbConnection>(), CommandType.Text, GlobalConstants.SchemaQuery)).Returns(mockCommand.Object);
+           
             DataTable dt = new DataTable();
             dt.Columns.Add("ROUTINE_NAME");
             dt.Columns.Add("ROUTINE_TYPE");
             dt.Columns.Add("SPECIFIC_SCHEMA");
-            factory.Setup(a => a.CreateTable(It.IsAny<IDataAdapter>(), LoadOption.OverwriteChanges)).Returns(dt);
-            var conn = new Mock<IDbConnection>();
+            mockCommand.SetupSequence(command => command.ExecuteReader())
+                .Returns(dt.CreateDataReader())
+                .Returns(new DataTable().CreateDataReader());
+            var conn = new Mock<ISqlConnection>();
+            conn.Setup(a => a.CreateCommand()).Returns(mockCommand.Object);
             conn.Setup(a => a.State).Returns(ConnectionState.Open);
-            var sqlServer = new SqlServer();
+            factory.Setup(builder => builder.BuildConnection(It.IsAny<string>())).Returns(conn.Object);
+            var sqlServer = new SqlServer(factory.Object);
             try
             {
-                PrivateObject pvt = new PrivateObject(sqlServer);
-                pvt.SetField("_connection",conn.Object);
+                sqlServer.Connect("");
                 //------------Execute Test---------------------------
                 Func<IDbCommand, List<IDbDataParameter>, string, string, bool> procProcessor = (command, list, arg3, a) => { somethingAdded = true; return true; };
 
-                 sqlServer.FetchStoredProcedures(procProcessor,procProcessor);
+                sqlServer.FetchStoredProcedures(procProcessor, procProcessor);
                 Assert.IsFalse(somethingAdded);
-
-                
-
                 //------------Assert Results-------------------------
             }
             finally
@@ -237,38 +238,36 @@ namespace Dev2.Sql.Tests
 
         {
             //------------Setup for test--------------------------
-            var factory = new Mock<IDbFactory>();
+            var factory = new Mock<IConnectionBuilder>();
             var mockCommand = new Mock<IDbCommand>();
             var mockReader = new Mock<IDataReader>();
-            var queue = new Queue<DataTable>();
-            
-            mockCommand.Setup(a => a.ExecuteReader(It.IsAny<CommandBehavior>())).Returns(mockReader.Object);
+
+            mockCommand.Setup(a => a.ExecuteReader()).Returns(mockReader.Object);
             mockCommand.Setup(a => a.CommandText).Returns("Dave.Bob");
 
             var helpTextCommand = new Mock<IDbCommand>();
             helpTextCommand.Setup(a => a.ExecuteReader(It.IsAny<CommandBehavior>())).Returns(new Mock<IDataReader>().Object);
             var somethingAdded = false;
             var funcAdded = false;
-            factory.Setup(a => a.CreateCommand(It.IsAny<IDbConnection>(), CommandType.Text, GlobalConstants.SchemaQuery)).Returns(mockCommand.Object);
-            factory.Setup(a => a.CreateCommand(It.IsAny<IDbConnection>(), CommandType.StoredProcedure, "Dave.Bob")).Returns(mockCommand.Object);
-            factory.Setup(a => a.CreateCommand(It.IsAny<IDbConnection>(), CommandType.Text, "sp_helptext 'Dave.Bob'")).Returns(helpTextCommand.Object);
+            //factory.Setup(a => a.CreateCommand(It.IsAny<IDbConnection>(), CommandType.Text, GlobalConstants.SchemaQuery)).Returns(mockCommand.Object);
+            //factory.Setup(a => a.CreateCommand(It.IsAny<IDbConnection>(), CommandType.StoredProcedure, "Dave.Bob")).Returns(mockCommand.Object);
+            //factory.Setup(a => a.CreateCommand(It.IsAny<IDbConnection>(), CommandType.Text, "sp_helptext 'Dave.Bob'")).Returns(helpTextCommand.Object);
             DataTable dt = new DataTable();
             dt.Columns.Add("ROUTINE_NAME");
             dt.Columns.Add("ROUTINE_TYPE");
             dt.Columns.Add("SPECIFIC_SCHEMA");
-            dt.Rows.Add(new object[] { "Bob", "SQL_STORED_PROCEDURE", "Dave" });
-            queue.Enqueue(dt);
+            dt.Rows.Add("Bob", "SQL_STORED_PROCEDURE", "Dave");
 
-            queue.Enqueue(new DataTable()); // no params
-
-            factory.Setup(a => a.CreateTable(It.IsAny<IDataAdapter>(), LoadOption.OverwriteChanges)).Returns(queue.Dequeue);
-            var conn = new Mock<IDbConnection>();
+            mockCommand.SetupSequence(command => command.ExecuteReader())
+                .Returns(dt.CreateDataReader());
+            var conn = new Mock<ISqlConnection>();
             conn.Setup(a => a.State).Returns(ConnectionState.Open);
-            var sqlServer = new SqlServer();
+            conn.Setup(a => a.CreateCommand()).Returns(mockCommand.Object);
+            factory.Setup(builder => builder.BuildConnection(It.IsAny<string>())).Returns(conn.Object);
+            var sqlServer = new SqlServer(factory.Object);
             try
             {
-                PrivateObject pvt = new PrivateObject(sqlServer);
-                pvt.SetField("_connection", conn.Object);
+                sqlServer.Connect("");
                 //------------Execute Test---------------------------
                 Func<IDbCommand, List<IDbDataParameter>, string, string, bool> procProcessor = (command, list, arg3, a) =>
                     {
@@ -301,9 +300,8 @@ namespace Dev2.Sql.Tests
 
         {
             //------------Setup for test--------------------------
-            var factory = new Mock<IDbFactory>();
+            var factory = new Mock<IConnectionBuilder>();
             var mockCommand = new Mock<IDbCommand>();
-            var queue = new Queue<DataTable>();
 
             mockCommand.Setup(a => a.CommandText).Returns("Dave.Bob");
 
@@ -311,26 +309,25 @@ namespace Dev2.Sql.Tests
             helpTextCommand.Setup(a => a.ExecuteReader(It.IsAny<CommandBehavior>())).Returns(new Mock<IDataReader>().Object);
             var somethingAdded = false;
             var funcAdded = false;
-            factory.Setup(a => a.CreateCommand(It.IsAny<IDbConnection>(), CommandType.Text, GlobalConstants.SchemaQuery)).Returns(mockCommand.Object);
-            factory.Setup(a => a.CreateCommand(It.IsAny<IDbConnection>(), CommandType.StoredProcedure, "Dave.Bob")).Returns(mockCommand.Object);
-            factory.Setup(a => a.CreateCommand(It.IsAny<IDbConnection>(), CommandType.Text, "sp_helptext 'Dave.Bob'")).Returns(helpTextCommand.Object);
+            
             DataTable dt = new DataTable();
             dt.Columns.Add("ROUTINE_NAME");
             dt.Columns.Add("ROUTINE_TYPE");
             dt.Columns.Add("SPECIFIC_SCHEMA");
-            dt.Rows.Add(new object[] { "Bob", "SQL_SCALAR_FUNCTION", "Dave" });
-            queue.Enqueue(dt);
+            dt.Rows.Add("Bob", "SQL_SCALAR_FUNCTION", "Dave");
 
-            queue.Enqueue(new DataTable()); // no params
+            mockCommand.SetupSequence(command => command.ExecuteReader())
+                .Returns(dt.CreateDataReader())
+                .Returns(new DataTable().CreateDataReader());
 
-            factory.Setup(a => a.CreateTable(It.IsAny<IDataAdapter>(), LoadOption.OverwriteChanges)).Returns(queue.Dequeue);
-            var conn = new Mock<IDbConnection>();
+            var conn = new Mock<ISqlConnection>();
+            conn.Setup(a => a.CreateCommand()).Returns(mockCommand.Object);
             conn.Setup(a => a.State).Returns(ConnectionState.Open);
-            var sqlServer = new SqlServer();
+            factory.Setup(builder => builder.BuildConnection(It.IsAny<string>())).Returns(conn.Object);
+            var sqlServer = new SqlServer(factory.Object);
             try
             {
-                PrivateObject pvt = new PrivateObject(sqlServer);
-                pvt.SetField("_connection", conn.Object);
+                sqlServer.Connect("");
                 //------------Execute Test---------------------------
                 Func<IDbCommand, List<IDbDataParameter>, string, string, bool> procProcessor = (command, list, arg3, a) =>
                 {
@@ -363,38 +360,28 @@ namespace Dev2.Sql.Tests
 
         {
             //------------Setup for test--------------------------
-            var factory = new Mock<IDbFactory>();
+            var factory = new Mock<IConnectionBuilder>();
             var mockCommand = new Mock<IDbCommand>();
-            var mockReader = new Mock<IDataReader>();
-            var queue = new Queue<DataTable>();
-
-            mockCommand.Setup(a => a.ExecuteReader(It.IsAny<CommandBehavior>())).Returns(mockReader.Object);
-            mockCommand.Setup(a => a.CommandText).Returns("Dave.Bob");
-
-            var helpTextCommand = new Mock<IDbCommand>();
-            helpTextCommand.Setup(a => a.ExecuteReader(It.IsAny<CommandBehavior>())).Returns(new Mock<IDataReader>().Object);
+            mockCommand.SetupAllProperties();
             var somethingAdded = false;
             var funcAdded = false;
-            factory.Setup(a => a.CreateCommand(It.IsAny<IDbConnection>(), CommandType.Text, GlobalConstants.SchemaQuery)).Returns(mockCommand.Object);
-            factory.Setup(a => a.CreateCommand(It.IsAny<IDbConnection>(), CommandType.StoredProcedure, "Dave.Bob")).Returns(mockCommand.Object);
-            factory.Setup(a => a.CreateCommand(It.IsAny<IDbConnection>(), CommandType.Text, "sp_helptext 'Dave.Bob'")).Returns(helpTextCommand.Object);
             DataTable dt = new DataTable();
             dt.Columns.Add("ROUTINE_NAME");
             dt.Columns.Add("ROUTINE_TYPE");
             dt.Columns.Add("SPECIFIC_SCHEMA");
             dt.Rows.Add("Bob", "SQL_TABLE_VALUED_FUNCTION", "Dave");
-            queue.Enqueue(dt);
 
-            queue.Enqueue(new DataTable()); // no params
-
-            factory.Setup(a => a.CreateTable(It.IsAny<IDataAdapter>(), LoadOption.OverwriteChanges)).Returns(queue.Dequeue);
-            var conn = new Mock<IDbConnection>();
+            mockCommand.SetupSequence(command => command.ExecuteReader())
+                .Returns(dt.CreateDataReader())
+                .Returns(new DataTable().CreateDataReader());
+            var conn = new Mock<ISqlConnection>();
+            conn.Setup(a => a.CreateCommand()).Returns(mockCommand.Object);
             conn.Setup(a => a.State).Returns(ConnectionState.Open);
-            var sqlServer = new SqlServer();
+            factory.Setup(builder => builder.BuildConnection("")).Returns(conn.Object);
+            var sqlServer = new SqlServer(factory.Object);
             try
             {
-                PrivateObject pvt = new PrivateObject(sqlServer);
-                pvt.SetField("_connection", conn.Object);
+                sqlServer.Connect("");
                 //------------Execute Test---------------------------
                 Func<IDbCommand, List<IDbDataParameter>, string, string, bool> procProcessor = (command, list, arg3, a) =>
                 {
@@ -402,7 +389,7 @@ namespace Dev2.Sql.Tests
                 };
                 Func<IDbCommand, List<IDbDataParameter>, string, string, bool> funcProcessor = (command, list, arg3, a) =>
                 {
-                    Assert.AreEqual("select * from Dave.Bob()",a);
+                    Assert.AreEqual("select * from Dave.Bob()", a);
                     funcAdded = true;
                     return true;
                 };
@@ -425,25 +412,23 @@ namespace Dev2.Sql.Tests
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("SqlServer_Connect")]
-        
+
         public void SqlServer_FetchStoredProcedures_Connect_VerifyUnderlyingConnectionIsCalled()
 
         {
             //------------Setup for test--------------------------
-            var factory = new Mock<IDbFactory>();
+            var factory = new Mock<IConnectionBuilder>();
             var mockCommand = new Mock<IDbCommand>();
             mockCommand.Setup(a => a.CommandText).Returns("Dave.Bob");
-            var conn = new Mock<IDbConnection>();
-            conn.Setup(a => a.State).Returns(ConnectionState.Open);
-            factory.Setup(a => a.CreateConnection(It.IsAny<string>())).Returns(conn.Object);
-            var sqlServer = new SqlServer();
+            var conn = new Mock<ISqlConnection>();
+            conn.Setup(a => a.State).Returns(ConnectionState.Closed);
+            factory.Setup(a => a.BuildConnection(It.IsAny<string>())).Returns(conn.Object);
+            var sqlServer = new SqlServer(factory.Object);
             try
             {
-                PrivateObject pvt = new PrivateObject(sqlServer);
-                pvt.SetField("_connection", conn.Object);
                 sqlServer.Connect("a");
-                factory.Verify(a => a.CreateConnection(It.IsAny<string>()));
-                conn.Verify(a=>a.Open());
+                factory.Verify(a => a.BuildConnection(It.IsAny<string>()));
+                conn.Verify(a => a.Open());
 
 
 
@@ -460,67 +445,54 @@ namespace Dev2.Sql.Tests
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("SqlServer_BeginTransaction")]
-        
         public void SqlServer_FetchStoredProcedures_BeginTransaction()
-
         {
             //------------Setup for test--------------------------
-            var factory = new Mock<IDbFactory>();
+            var conBuilder = new Mock<IConnectionBuilder>();
             var mockCommand = new Mock<IDbCommand>();
             mockCommand.Setup(a => a.CommandText).Returns("Dave.Bob");
-            var conn = new Mock<IDbConnection>();
+            var conn = new Mock<ISqlConnection>();
             conn.Setup(a => a.State).Returns(ConnectionState.Open);
             var dbTran = new Mock<IDbTransaction>();
-            conn.Setup(a=>a.BeginTransaction()).Returns(dbTran.Object );
-            factory.Setup(a => a.CreateConnection(It.IsAny<string>())).Returns(conn.Object);
-            var sqlServer = new SqlServer();
-            try
-            {
-                PrivateObject pvt = new PrivateObject(sqlServer);
-                pvt.SetField("_connection", conn.Object);
-                sqlServer.Connect("a");
-                sqlServer.BeginTransaction();
-                factory.Verify(a => a.CreateConnection(It.IsAny<string>()));
-                conn.Verify(a => a.Open());
+            conn.Setup(a => a.BeginTransaction()).Returns(dbTran.Object);
+            conBuilder.Setup(builder => builder.BuildConnection(It.IsAny<string>())).Returns(conn.Object);
+            var sqlServer = new SqlServer(conBuilder.Object);
 
+            sqlServer.Connect("a");
+            sqlServer.BeginTransaction();
+            conn.Verify(a => a.Open(), Times.Never);//Connection is open
 
-                conn.Verify(a=>a.BeginTransaction());
+            //------------Assert Results-------------------------
+            conn.Verify(a => a.BeginTransaction());
 
-                //------------Assert Results-------------------------
-            }
-            finally
-            {
-                sqlServer.Dispose();
-            }
         }
 
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("SqlServer_RollbackTransaction")]
-        
+
         public void SqlServer_FetchStoredProcedures_RollbackTransaction()
 
         {
             //------------Setup for test--------------------------
-            var factory = new Mock<IDbFactory>();
+            var factory = new Mock<IConnectionBuilder>();
             var mockCommand = new Mock<IDbCommand>();
             mockCommand.Setup(a => a.CommandText).Returns("Dave.Bob");
-            var conn = new Mock<IDbConnection>();
+            var conn = new Mock<ISqlConnection>();
             conn.Setup(a => a.State).Returns(ConnectionState.Open);
             var dbTran = new Mock<IDbTransaction>();
             conn.Setup(a => a.BeginTransaction()).Returns(dbTran.Object);
-            factory.Setup(a => a.CreateConnection(It.IsAny<string>())).Returns(conn.Object);
-            var sqlServer = new SqlServer();
+            factory.Setup(a => a.BuildConnection(It.IsAny<string>())).Returns(conn.Object);
+            var sqlServer = new SqlServer(factory.Object);
             try
             {
-                PrivateObject pvt = new PrivateObject(sqlServer);
-                pvt.SetField("_connection", conn.Object);
+                
                 sqlServer.Connect("a");
                 sqlServer.BeginTransaction();
                 sqlServer.RollbackTransaction();
-                factory.Verify(a => a.CreateConnection(It.IsAny<string>()));
-                conn.Verify(a => a.Open());
+                factory.Verify(a => a.BuildConnection(It.IsAny<string>()));
+                conn.Verify(a => a.Open(), Times.Never);
 
                 dbTran.Verify(a => a.Rollback());
                 dbTran.Verify(a => a.Dispose());
@@ -543,27 +515,15 @@ namespace Dev2.Sql.Tests
 
         {
             //------------Setup for test--------------------------
-            var factory = new Mock<IDbFactory>();
+            var factory = new Mock<IConnectionBuilder>();
             var mockCommand = new Mock<IDbCommand>();
-            var mockReader = new Mock<IDataReader>();
-            var queue = new Queue<DataTable>();
-            var param = new Mock<IDataParameterCollection>();
-            mockCommand.Setup(a => a.ExecuteReader(It.IsAny<CommandBehavior>())).Returns(mockReader.Object);
-            mockCommand.Setup(a => a.CommandText).Returns("Dave.Bob");
-            mockCommand.Setup(a => a.Parameters).Returns(param.Object);
-            var helpTextCommand = new Mock<IDbCommand>();
-            helpTextCommand.Setup(a => a.ExecuteReader(It.IsAny<CommandBehavior>())).Returns(new Mock<IDataReader>().Object);
-            var somethingAdded = false;
-            var funcAdded = false;
-            factory.Setup(a => a.CreateCommand(It.IsAny<IDbConnection>(), CommandType.Text, GlobalConstants.SchemaQuery)).Returns(mockCommand.Object);
-            factory.Setup(a => a.CreateCommand(It.IsAny<IDbConnection>(), CommandType.StoredProcedure, "Dave.Bob")).Returns(mockCommand.Object);
-            factory.Setup(a => a.CreateCommand(It.IsAny<IDbConnection>(), CommandType.Text, "sp_helptext 'Dave.Bob'")).Returns(helpTextCommand.Object);
             DataTable dt = new DataTable();
 
             dt.Columns.Add("ROUTINE_NAME");
             dt.Columns.Add("ROUTINE_TYPE");
             dt.Columns.Add("SPECIFIC_SCHEMA");
             dt.Rows.Add("Bob", "SQL_TABLE_VALUED_FUNCTION", "Dave");
+            var queue = new Queue<DataTable>();
             queue.Enqueue(dt);
 
             var dtParams = new DataTable();
@@ -572,15 +532,24 @@ namespace Dev2.Sql.Tests
             dtParams.Columns.Add("CHARACTER_MAXIMUM_LENGTH", typeof(int));
             dtParams.Rows.Add("@moo", SqlDbType.VarChar, 25);
             queue.Enqueue(dtParams); // no params
-
-            factory.Setup(a => a.CreateTable(It.IsAny<IDataAdapter>(), It.IsAny<LoadOption>())).Returns(queue.Dequeue);
-            var conn = new Mock<IDbConnection>();
+            
+            var param = new Mock<IDataParameterCollection>();
+            mockCommand.SetupSequence(command => command.ExecuteReader())
+                .Returns(dt.CreateDataReader())
+                .Returns(dtParams.CreateDataReader());
+            mockCommand.Setup(a => a.CommandText).Returns("Dave.Bob");
+            mockCommand.Setup(a => a.Parameters).Returns(param.Object);
+            
+            var somethingAdded = false;
+            var funcAdded = false;
+            var conn = new Mock<ISqlConnection>();
+            conn.Setup(a => a.CreateCommand()).Returns(mockCommand.Object);
             conn.Setup(a => a.State).Returns(ConnectionState.Open);
-            var sqlServer = new SqlServer();
+            factory.Setup(builder => builder.BuildConnection("")).Returns(conn.Object);
+            var sqlServer = new SqlServer(factory.Object);
             try
             {
-                PrivateObject pvt = new PrivateObject(sqlServer);
-                pvt.SetField("_connection", conn.Object);
+                sqlServer.Connect("");
                 //------------Execute Test---------------------------
                 Func<IDbCommand, List<IDbDataParameter>, string, string, bool> procProcessor = (command, list, arg3, a) =>
                 {
@@ -596,9 +565,10 @@ namespace Dev2.Sql.Tests
                 sqlServer.FetchStoredProcedures(procProcessor, funcProcessor);
                 Assert.IsTrue(funcAdded);
                 Assert.IsFalse(somethingAdded);
-                param.Verify(a=>a.Add(It.IsAny<object>()),Times.Once);
-
-
+                param.Verify(a => a.Add(It.IsAny<object>()), Times.Once);
+                mockCommand.VerifySet(command => command.CommandType = CommandType.Text, Times.Exactly(2));
+                mockCommand.VerifySet(command => command.CommandText = GlobalConstants.SchemaQuery);
+                mockCommand.VerifySet(command => command.CommandText = "Dave.Bob");
                 //------------Assert Results-------------------------
             }
             finally
@@ -610,88 +580,85 @@ namespace Dev2.Sql.Tests
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("SqlServer_FetchStoredProcedures")]
-        
+
         public void SqlServer_FetchDatabases_CallsSchemaFunctionWithCorrectyParams()
 
         {
             //------------Setup for test--------------------------
-            var factory = new Mock<IDbFactory>();
+            var factory = new Mock<IConnectionBuilder>();
             var mockCommand = new Mock<IDbCommand>();
-            var mockReader = new Mock<IDataReader>();
-
-
-            mockCommand.Setup(a => a.ExecuteReader(It.IsAny<CommandBehavior>())).Returns(mockReader.Object);
-            mockCommand.Setup(a => a.CommandText).Returns("Dave.Bob");
 
             var helpTextCommand = new Mock<IDbCommand>();
             helpTextCommand.Setup(a => a.ExecuteReader(It.IsAny<CommandBehavior>())).Returns(new Mock<IDataReader>().Object);
             DataTable dt = new DataTable();
             dt.Columns.Add("database_name");
-            dt.Rows.Add(new object[] { "Bob"});
-            dt.Rows.Add(new object[] { "Dave" });
-            factory.Setup(a => a.GetSchema(It.IsAny<IDbConnection>(), "Databases")).Returns(dt);
-            var conn = new Mock<IDbConnection>();
-            conn.Setup(a => a.State).Returns(ConnectionState.Open);
-            var sqlServer = new SqlServer();
-            try
-            {
-                PrivateObject pvt = new PrivateObject(sqlServer);
-                pvt.SetField("_connection", conn.Object);
-                //------------Execute Test---------------------------
-          
-
-                var output =sqlServer.FetchDatabases();
-                Assert.AreEqual("Bob",output[0]);
-                Assert.AreEqual("Dave",output[1] );
-                factory.Verify(a => a.GetSchema(It.IsAny<IDbConnection>(), "Databases"), Times.Once());
-
-
-                //------------Assert Results-------------------------
-            }
-            finally
-            {
-                sqlServer.Dispose();
-            }
-        }
-
-
-        [TestMethod]
-        [Owner("Leon Rajindrapersadh")]
-        [TestCategory("SqlServer_FetchStoredProcedures")]
-        
-        public void SqlServer_FetchDatabases_OnException()
-
-        {
-            //------------Setup for test--------------------------
-            var factory = new Mock<IDbFactory>();
-            var mockCommand = new Mock<IDbCommand>();
-            var mockReader = new Mock<IDataReader>();
-
-
-            mockCommand.Setup(a => a.ExecuteReader(It.IsAny<CommandBehavior>())).Returns(mockReader.Object);
+            dt.Rows.Add("Bob");
+            dt.Rows.Add("Dave");
+            mockCommand.Setup(a => a.ExecuteReader()).Returns(dt.CreateDataReader);
             mockCommand.Setup(a => a.CommandText).Returns("Dave.Bob");
-
-            var helpTextCommand = new Mock<IDbCommand>();
-            helpTextCommand.Setup(a => a.ExecuteReader(It.IsAny<CommandBehavior>())).Throws(new DbEx("There is no text for object "));
-            DataTable dt = new DataTable();
-            dt.Columns.Add("database_name");
-            dt.Rows.Add(new object[] { "Bob" });
-            dt.Rows.Add(new object[] { "Dave" });
-            factory.Setup(a => a.GetSchema(It.IsAny<IDbConnection>(), "Databases")).Returns(dt);
-            var conn = new Mock<IDbConnection>();
+            var conn = new Mock<ISqlConnection>();
+            conn.Setup(a => a.GetSchema( "Databases")).Returns(dt);
             conn.Setup(a => a.State).Returns(ConnectionState.Open);
-            var sqlServer = new SqlServer();
+            factory.Setup(builder => builder.BuildConnection(It.IsAny<string>())).Returns(conn.Object);
+            var sqlServer = new SqlServer(factory.Object);
             try
             {
-                PrivateObject pvt = new PrivateObject(sqlServer);
-                pvt.SetField("_connection", conn.Object);
+                sqlServer.Connect("");
                 //------------Execute Test---------------------------
 
 
                 var output = sqlServer.FetchDatabases();
                 Assert.AreEqual("Bob", output[0]);
                 Assert.AreEqual("Dave", output[1]);
-                factory.Verify(a => a.GetSchema(It.IsAny<IDbConnection>(), "Databases"), Times.Once());
+                conn.Verify(a => a.GetSchema("Databases"), Times.Once());
+
+
+                //------------Assert Results-------------------------
+            }
+            finally
+            {
+                sqlServer.Dispose();
+            }
+        }
+
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("SqlServer_FetchStoredProcedures")]
+
+        public void SqlServer_FetchDatabases_OnException()
+
+        {
+            //------------Setup for test--------------------------
+            var factory = new Mock<IConnectionBuilder>();
+            var mockCommand = new Mock<IDbCommand>();
+
+            var helpTextCommand = new Mock<IDbCommand>();
+            helpTextCommand.Setup(a => a.ExecuteReader(It.IsAny<CommandBehavior>())).Throws(new DbEx("There is no text for object "));
+            DataTable dt = new DataTable();
+            dt.Columns.Add("database_name");
+            dt.Rows.Add("Bob");
+            dt.Rows.Add("Dave");
+            mockCommand.Setup(a => a.ExecuteReader()).Returns(dt.CreateDataReader);
+            mockCommand.Setup(a => a.CommandText).Returns("Dave.Bob");
+            var conn = new Mock<ISqlConnection>();
+            conn.Setup(a => a.GetSchema("Databases")).Returns(dt);
+            conn.SetupSequence(a => a.CreateCommand())
+                .Returns(mockCommand.Object)
+                .Returns(helpTextCommand.Object);
+            conn.Setup(a => a.State).Returns(ConnectionState.Open);
+            factory.Setup(builder => builder.BuildConnection(It.IsAny<string>())).Returns(conn.Object);
+            var sqlServer = new SqlServer(factory.Object);
+            try
+            {
+                sqlServer.Connect("");
+                //------------Execute Test---------------------------
+
+
+                var output = sqlServer.FetchDatabases();
+                Assert.AreEqual("Bob", output[0]);
+                Assert.AreEqual("Dave", output[1]);
+                conn.Verify(a => a.GetSchema("Databases"), Times.Once());
 
 
                 //------------Assert Results-------------------------
@@ -705,45 +672,43 @@ namespace Dev2.Sql.Tests
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("SqlServer_FetchDataTable")]
-        
         public void SqlServer_FetchDataTable_OnException()
 
         {
             //------------Setup for test--------------------------
-            var factory = new Mock<IDbFactory>();
+            var factory = new Mock<IConnectionBuilder>();
             var mockCommand = new Mock<IDbCommand>();
-       
-
-
-            mockCommand.Setup(a => a.ExecuteReader(It.IsAny<CommandBehavior>())).Throws(new DbEx("There is no text for object "));
+            mockCommand.Setup(a => a.ExecuteReader())
+                .Throws(new DbEx("There is no text for object "));
             mockCommand.Setup(a => a.CommandText).Returns("Dave.Bob");
 
             var helpTextCommand = new Mock<IDbCommand>();
-            helpTextCommand.Setup(a => a.ExecuteReader(It.IsAny<CommandBehavior>())).Throws(new DbEx("There is no text for object "));
+            helpTextCommand.Setup(a => a.ExecuteReader(It.IsAny<CommandBehavior>()))
+                .Throws(new DbEx("There is no text for object "));
             DataTable dt = new DataTable();
             dt.Columns.Add("database_name");
-            dt.Rows.Add(new object[] { "Bob" });
-            dt.Rows.Add(new object[] { "Dave" });
-            factory.Setup(a => a.GetSchema(It.IsAny<IDbConnection>(), "Databases")).Returns(dt);
-            var conn = new Mock<IDbConnection>();
+            dt.Rows.Add("Bob");
+            dt.Rows.Add("Dave");
+
+            var conn = new Mock<ISqlConnection>();
+            conn.Setup(a => a.GetSchema("Databases")).Returns(dt);
             conn.Setup(a => a.State).Returns(ConnectionState.Open);
-            var sqlServer = new SqlServer();
+            factory.Setup(builder => builder.BuildConnection(It.IsAny<string>())).Returns(conn.Object);
+            conn.Setup(connection => connection.CreateCommand()).Returns(mockCommand.Object);
+            var sqlServer = new SqlServer(factory.Object);
+
+            //------------Execute Test---------------------------
             try
             {
-                PrivateObject pvt = new PrivateObject(sqlServer);
-                pvt.SetField("_connection", conn.Object);
-                //------------Execute Test---------------------------
-
-
-                sqlServer.FetchDataTable(mockCommand.Object);
-                factory.Verify(a=>a.CreateTable(It.IsAny<IDataAdapter>(),LoadOption.OverwriteChanges));
-               
-
+                sqlServer.Connect("");
+              sqlServer.FetchDataTable(mockCommand.Object);
 
                 //------------Assert Results-------------------------
+               
             }
             finally
             {
+                mockCommand.Verify(a => a.ExecuteReader());
                 sqlServer.Dispose();
             }
         }
@@ -753,7 +718,7 @@ namespace Dev2.Sql.Tests
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("SqlServer_FetchDataTable_addParams")]
-        
+
         public void SqlServer_FetchDataTable_AddParams_VerifyAllAdded()
 
         {
@@ -800,12 +765,12 @@ namespace Dev2.Sql.Tests
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("SqlServer_FetchDataTable_addParams")]
-        
+
         public void SqlServer_FetchDataTable_ConnectionsString()
 
         {
             //------------Setup for test--------------------------
-            var factory = new Mock<IDbFactory>();
+            var factory = new Mock<IConnectionBuilder>();
             var mockCommand = new Mock<IDbCommand>();
             mockCommand.Setup(a => a.ExecuteReader(It.IsAny<CommandBehavior>())).Returns(new Mock<IDataReader>().Object);
             mockCommand.Setup(a => a.CommandText).Returns("Dave.Bob");
@@ -815,21 +780,19 @@ namespace Dev2.Sql.Tests
             helpTextCommand.Setup(a => a.ExecuteReader(It.IsAny<CommandBehavior>())).Returns(new Mock<IDataReader>().Object);
             DataTable dt = new DataTable();
             dt.Columns.Add("database_name");
-            dt.Rows.Add(new object[] { "Bob" });
-            dt.Rows.Add(new object[] { "Dave" });
-            factory.Setup(a => a.GetSchema(It.IsAny<IDbConnection>(), "Databases")).Returns(dt);
-            var conn = new Mock<IDbConnection>();
+            dt.Rows.Add("Bob");
+            dt.Rows.Add("Dave");
+
+            var conn = new Mock<ISqlConnection>();
+            conn.Setup(a => a.GetSchema("Databases")).Returns(dt);
             conn.Setup(a => a.State).Returns(ConnectionState.Open);
-            conn.Setup(a => a.ConnectionString).Returns("bob");
-            var sqlServer = new SqlServer();
+            factory.Setup(builder => builder.BuildConnection("bob")).Returns(conn.Object);
+            var sqlServer = new SqlServer(factory.Object);
             try
             {
-                PrivateObject pvt = new PrivateObject(sqlServer);
-                pvt.SetField("_connection", conn.Object);
-                pvt.SetField("_command", mockCommand.Object);
                 //------------Execute Test---------------------------
-
-                Assert.AreEqual("bob", sqlServer.ConnectionString);
+                sqlServer.Connect("bob");
+                factory.Verify(builder => builder.BuildConnection("bob"));
 
             }
             finally
@@ -841,7 +804,7 @@ namespace Dev2.Sql.Tests
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("SqlServer_FetchDataTable_addParams")]
-        
+
         public void SqlServer_FetchDataTable_ConnectionsStringNull()
 
         {
@@ -856,8 +819,8 @@ namespace Dev2.Sql.Tests
             helpTextCommand.Setup(a => a.ExecuteReader(It.IsAny<CommandBehavior>())).Returns(new Mock<IDataReader>().Object);
             DataTable dt = new DataTable();
             dt.Columns.Add("database_name");
-            dt.Rows.Add(new object[] { "Bob" });
-            dt.Rows.Add(new object[] { "Dave" });
+            dt.Rows.Add("Bob");
+            dt.Rows.Add("Dave");
             factory.Setup(a => a.GetSchema(It.IsAny<IDbConnection>(), "Databases")).Returns(dt);
             var conn = new Mock<IDbConnection>();
             conn.Setup(a => a.State).Returns(ConnectionState.Open);
@@ -865,7 +828,7 @@ namespace Dev2.Sql.Tests
             var sqlServer = new SqlServer();
             try
             {
-              Assert.IsNull( sqlServer.ConnectionString);
+                Assert.IsNull(sqlServer.ConnectionString);
 
             }
             finally
@@ -877,8 +840,8 @@ namespace Dev2.Sql.Tests
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("SqlServer_FetchDataTable_addParams")]
-        
-        public void SqlServer_Connect_SetsCommandType()
+
+        public void SqlServer_Connect_SetsCommandTypeAndCommandType()
 
         {
             //------------Setup for test--------------------------
@@ -891,18 +854,22 @@ namespace Dev2.Sql.Tests
             helpTextCommand.Setup(a => a.ExecuteReader(It.IsAny<CommandBehavior>())).Returns(new Mock<IDataReader>().Object);
             DataTable dt = new DataTable();
             dt.Columns.Add("database_name");
-            dt.Rows.Add(new object[] { "Bob" });
-            dt.Rows.Add(new object[] { "Dave" });
-            var conn = new Mock<IDbConnection>();
+            dt.Rows.Add("Bob");
+            dt.Rows.Add("Dave");
+            var conn = new Mock<ISqlConnection>();
             conn.Setup(a => a.State).Returns(ConnectionState.Open);
-            conn.Setup(a => a.ConnectionString).Returns("bob");
-            var mock = new Mock<ISqlConnection>();
+            var mock = new Mock<IConnectionBuilder>();
+            mock.Setup(builder => builder.BuildConnection(It.IsAny<string>())).Returns(conn.Object);
             var sqlServer = new SqlServer(mock.Object);
             try
             {
                 //------------Execute Test---------------------------
                 sqlServer.Connect("bob", CommandType.StoredProcedure, "select * from ");
-                mock.Verify(a => a.CreateCommand());
+                PrivateObject privateObject = new PrivateObject(sqlServer);
+                var commandText = (string)privateObject.GetField("_commantText");
+                var commandType = (CommandType)privateObject.GetField("_commandType");
+                Assert.AreEqual(commandType, CommandType.Text);
+                Assert.AreEqual("select * from ", commandText);
             }
             finally
             {
@@ -913,12 +880,12 @@ namespace Dev2.Sql.Tests
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("SqlServer_FetchDataTable_addParams")]
-        
+
         public void SqlServer_CreateCommand_CreateCommand()
 
         {
             //------------Setup for test--------------------------
-            var factory = new Mock<IDbFactory>();
+            var factory = new Mock<IConnectionBuilder>();
             var mockCommand = new Mock<IDbCommand>();
             mockCommand.Setup(a => a.ExecuteReader(It.IsAny<CommandBehavior>())).Returns(new Mock<IDataReader>().Object);
             mockCommand.Setup(a => a.CommandText).Returns("Dave.Bob");
@@ -928,21 +895,19 @@ namespace Dev2.Sql.Tests
             helpTextCommand.Setup(a => a.ExecuteReader(It.IsAny<CommandBehavior>())).Returns(new Mock<IDataReader>().Object);
             DataTable dt = new DataTable();
             dt.Columns.Add("database_name");
-            dt.Rows.Add(new object[] { "Bob" });
-            dt.Rows.Add(new object[] { "Dave" });
-            factory.Setup(a => a.GetSchema(It.IsAny<IDbConnection>(), "Databases")).Returns(dt);
-            var conn = new Mock<IDbConnection>();
+            dt.Rows.Add("Bob");
+            dt.Rows.Add("Dave");
+            var conn = new Mock<ISqlConnection>();
+            conn.Setup(a => a.GetSchema("Databases")).Returns(dt);
             conn.Setup(a => a.State).Returns(ConnectionState.Open);
-            conn.Setup(a => a.ConnectionString).Returns("bob");
             conn.Setup(a => a.CreateCommand()).Returns(mockCommand.Object);
-            factory.Setup(a => a.CreateConnection(It.IsAny<string>())).Returns(conn.Object);
-            var sqlServer = new SqlServer();
+            factory.Setup(a => a.BuildConnection(It.IsAny<string>())).Returns(conn.Object);
+            var sqlServer = new SqlServer(factory.Object);
             try
             {
 
-                PrivateObject pvt = new PrivateObject(sqlServer);
-                pvt.SetField("_connection", conn.Object);
                 //------------Execute Test---------------------------
+                sqlServer.Connect("homeString");
                 sqlServer.CreateCommand();
                 conn.Verify(a => a.CreateCommand());
             }
@@ -956,7 +921,7 @@ namespace Dev2.Sql.Tests
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("SqlServer_FetchDataTable_addParams")]
-        
+
         public void SqlServer_FetchDataSet_CallsNestedFactory()
 
         {
@@ -1000,7 +965,7 @@ namespace Dev2.Sql.Tests
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("SqlServer_FetchDataTable_addParams")]
-        
+
         public void SqlServer_FetchDataSet_CallsNestedFactory_ParamsOnly_UsesNestedCommand()
 
         {
@@ -1043,24 +1008,24 @@ namespace Dev2.Sql.Tests
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("SqlServer_IsTableValueFunction")]
-        
+
         public void SqlServer_IsTableValueFunction_InvalidRow()
 
         {
             //------------Setup for test--------------------------
 
-        
-                //------------Execute Test---------------------------
-               Assert.IsFalse(  SqlServer.IsTableValueFunction(null,null));
 
-                //------------Assert Results-------------------------
-       
+            //------------Execute Test---------------------------
+            Assert.IsFalse(SqlServer.IsTableValueFunction(null, null));
+
+            //------------Assert Results-------------------------
+
         }
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("SqlServer_IsFunction")]
 
-        
+
         public void SqlServer_IsFunction_InvalidRow()
 
         {
@@ -1076,7 +1041,7 @@ namespace Dev2.Sql.Tests
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("SqlServer_IsSp")]
-        
+
         public void SqlServer_IsSP_InvalidRow()
 
         {
@@ -1102,6 +1067,7 @@ namespace Dev2.Sql.Tests
 
         {
             //------------Setup for test--------------------------
+
             var sqlServer = new SqlServer();
             try
             {
@@ -1116,8 +1082,8 @@ namespace Dev2.Sql.Tests
             }
         }
     }
-    class DbEx :DbException
+    class DbEx : DbException
     {
-        public DbEx(string message):base(message){}
+        public DbEx(string message) : base(message) { }
     }
 }
