@@ -1647,6 +1647,68 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
+        public void CreateDesigner(bool liteInit = false)
+        {
+            _wd = new WorkflowDesigner();
+
+            if (!liteInit)
+            {
+                SetHashTable();
+                SetDesignerConfigService();
+
+                _wdMeta = new DesignerMetadata();
+                _wdMeta.Register();
+                var builder = new AttributeTableBuilder();
+                foreach (var designerAttribute in ActivityDesignerHelper.DesignerAttributes)
+                {
+                    builder.AddCustomAttributes(designerAttribute.Key, new DesignerAttribute(designerAttribute.Value));
+                }
+
+                MetadataStore.AddAttributeTable(builder.CreateTable());
+
+                _wd.Context.Items.Subscribe<Selection>(OnItemSelected);
+                _wd.Context.Services.Subscribe<ModelService>(ModelServiceSubscribe);
+                _wd.Context.Services.Subscribe<DesignerView>(DesigenrViewSubscribe);
+                _wd.Context.Services.Publish(_designerManagementService);
+
+                _wd.View.Measure(new Size(2000, 2000));
+                _wd.View.PreviewDrop += ViewPreviewDrop;
+                _wd.View.PreviewMouseDown += ViewPreviewMouseDown;
+                //_wd..View.MouseEnter += ViewPreviewMouseWheel;
+                _wd.View.PreviewKeyDown += ViewOnKeyDown;
+                _wd.View.LostFocus += OnViewOnLostFocus;
+
+                //Jurie.Smit 2013/01/03 - Added to disable the deleting of the root flowchart
+                CommandManager.AddPreviewCanExecuteHandler(_wd.View, CanExecuteRoutedEventHandler);
+                _wd.ModelChanged += WdOnModelChanged;
+                _wd.View.Focus();
+
+                int indexOfOpenItem = -1;
+                if (_wd.ContextMenu?.Items != null)
+                {
+                    foreach (var menuItem in _wd.ContextMenu.Items.Cast<object>().OfType<MenuItem>().Where(menuItem => (string)menuItem.Header == "_Open"))
+                    {
+                        indexOfOpenItem = _wd.ContextMenu.Items.IndexOf(menuItem);
+                        break;
+                    }
+                    if (indexOfOpenItem != -1)
+                    {
+                        _wd.ContextMenu.Items.RemoveAt(indexOfOpenItem);
+                    }
+                }
+
+                CommandManager.AddPreviewExecutedHandler(_wd.View, PreviewExecutedRoutedEventHandler);
+
+                Selection.Subscribe(_wd.Context, SelectedItemChanged);                
+                //For Changing the icon of the flowchart.
+                WorkflowDesignerIcons.Activities.Flowchart = Application.Current.TryFindResource("Explorer-WorkflowService-Icon") as DrawingBrush;
+                WorkflowDesignerIcons.Activities.StartNode = Application.Current.TryFindResource("System-StartNode-Icon") as DrawingBrush;
+                SubscribeToDebugSelectionChanged();
+                SetPermission(ResourceModel.UserPermissions);
+                ViewModelUtils.RaiseCanExecuteChanged(_debugOutputViewModel?.AddNewTestCommand);
+                UpdateErrorIconWithCorrectMessage();
+            }
+        }
 
         private void SetHashTable()
         {
@@ -1921,10 +1983,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 if (_resourceModel.ResourceType == ResourceType.WorkflowService)
                 {
                     // log the trace for fetch ;)
-                    Dev2Logger.Info($"Could not find {_resourceModel.ResourceName}. Creating a new workflow", "Warewolf Info");
-                    var activityBuilder = _workflowHelper.CreateWorkflow(_resourceModel.ResourceName);
-                    _wd.Load(activityBuilder);
-                    BindToModel();
+                    CreateBlankWorkflow();
                 }
                 else
                 {
@@ -1937,6 +1996,16 @@ namespace Dev2.Studio.ViewModels.Workflow
                 SetDesignerText(xaml);
                 _wd.Load();
             }
+        }
+
+        public void CreateBlankWorkflow()
+        {
+            CreateDesigner();
+            Dev2Logger.Info($"Could not find {_resourceModel.ResourceName}. Creating a new workflow", "Warewolf Info");
+            var activityBuilder = _workflowHelper.CreateWorkflow(_resourceModel.ResourceName);
+            _wd.Load(activityBuilder);
+            BindToModel();
+            _workflowHelper.EnsureImplementation(_modelService);
         }
 
         private void SetDesignerText(StringBuilder xaml)
@@ -2022,7 +2091,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         private void UpdateErrorIconWithCorrectMessage()
         {
-            var validationIcon = DesignerView.FindChild<Border>(border => border.Name.Equals("validationVisuals", StringComparison.CurrentCultureIgnoreCase));
+            var validationIcon = DesignerView?.FindChild<Border>(border => border.Name.Equals("validationVisuals", StringComparison.CurrentCultureIgnoreCase));
             if (validationIcon != null && validationIcon.Name.Equals("validationVisuals", StringComparison.CurrentCultureIgnoreCase))
             {
                 validationIcon.ToolTip = Warewolf.Studio.Resources.Languages.Tooltips.StartNodeNotConnectedToolTip;
