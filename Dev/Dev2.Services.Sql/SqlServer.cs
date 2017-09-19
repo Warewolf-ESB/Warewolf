@@ -17,6 +17,7 @@ using System.Linq;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Services.Sql;
+using Warewolf.Resource.Errors;
 using Warewolf.Security.Encryption;
 
 namespace Dev2.Services.Sql
@@ -27,14 +28,16 @@ namespace Dev2.Services.Sql
         {
             _transaction?.Dispose();
             _connection?.Dispose();
+            _connection = null;
         }
 
-        public SqlServer(ISqlConnection connection)
+        private readonly IConnectionBuilder _connectionBuilder;
+        public SqlServer(IConnectionBuilder connectionBuilder)
         {
-            _connection = connection;
+            _connectionBuilder = connectionBuilder;
         }
 
-        public SqlServer()
+        public SqlServer() : this(new ConnectionBuilder())
         {
 
         }
@@ -44,10 +47,12 @@ namespace Dev2.Services.Sql
         private string _connectionString;
         private ISqlConnection _connection;
         private IDbTransaction _transaction;
+
+
         public bool Connect(string connectionString)
         {
             _connectionString = connectionString;
-            _connection = new SqlConnectionWrapper(_connectionString);
+            _connection = _connectionBuilder.BuildConnection(_connectionString);
 
             try
             {
@@ -98,13 +103,14 @@ namespace Dev2.Services.Sql
         }
         public DataTable FetchDataTable(IDbCommand command)
         {
+            VerifyArgument.IsNotNull(nameof(command), command);
             _connection?.TryOpen();
             TrySetTransaction(_transaction, command);
             using (_connection)
             {
                 if (_connection?.State != ConnectionState.Open)
                 {
-                    _connection = new SqlConnectionWrapper(_connectionString);
+                    _connection = _connectionBuilder.BuildConnection(_connectionString);
                     _connection.Open();
                     var dbCommand = _connection.CreateCommand();
                     TrySetTransaction(_transaction, dbCommand);
@@ -122,11 +128,18 @@ namespace Dev2.Services.Sql
                 }
                 using (command)
                 {
-                    using (var executeReader = command.ExecuteReader())
+                    try
                     {
-                        var dataTable = new DataTable();
-                        dataTable.Load(executeReader);
-                        return dataTable;
+                        using (var executeReader = command.ExecuteReader())
+                        {
+                            var dataTable = new DataTable();
+                            dataTable.Load(executeReader);
+                            return dataTable;
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        return new DataTable(e.Message);
                     }
                 }
             }
@@ -134,8 +147,8 @@ namespace Dev2.Services.Sql
 
         public List<string> FetchDatabases()
         {
+            if(_connection == null) throw new Exception(ErrorResource.PleaseConnectFirst);
             const string databaseColumnName = "database_name";
-
             var dataTable = _connection?.GetSchema("Databases") ?? new DataTable("Databases");
             var orderedRows = dataTable.Select("", databaseColumnName);
             var result = orderedRows.Select(row => (row[databaseColumnName] ?? string.Empty).ToString()).Distinct().ToList();
@@ -147,13 +160,13 @@ namespace Dev2.Services.Sql
         {
             VerifyArgument.IsNotNull("procedureProcessor", procedureProcessor);
             VerifyArgument.IsNotNull("functionProcessor", functionProcessor);
-            DataTable proceduresDataTable = GetSchema();
-            DataColumn procedureDataColumn = GetDataColumn(proceduresDataTable, "ROUTINE_NAME");
-            DataColumn procedureTypeColumn = GetDataColumn(proceduresDataTable, "ROUTINE_TYPE");
-            DataColumn procedureSchemaColumn = GetDataColumn(proceduresDataTable, "SPECIFIC_SCHEMA");
+            var proceduresDataTable = GetSchema();
+            var procedureDataColumn = GetDataColumn(proceduresDataTable, "ROUTINE_NAME");
+            var procedureTypeColumn = GetDataColumn(proceduresDataTable, "ROUTINE_TYPE");
+            var procedureSchemaColumn = GetDataColumn(proceduresDataTable, "SPECIFIC_SCHEMA");
             foreach (DataRow row in proceduresDataTable.Rows)
             {
-                string fullProcedureName = GetFullProcedureName(row, procedureDataColumn, procedureSchemaColumn);
+                var fullProcedureName = GetFullProcedureName(row, procedureDataColumn, procedureSchemaColumn);
                 _connection.TryOpen();
                 var sqlCommand = _connection.CreateCommand();
                 TrySetTransaction(_transaction, sqlCommand);
@@ -221,7 +234,7 @@ namespace Dev2.Services.Sql
         }
         private static DataColumn GetDataColumn(DataTable dataTable, string columnName)
         {
-            DataColumn dataColumn = dataTable.Columns[columnName];
+            var dataColumn = dataTable.Columns[columnName];
             if (dataColumn == null)
             {
                 throw new Exception($"SQL Server - Unable to load '{columnName}' column of '{dataTable.TableName}'.");
@@ -232,21 +245,21 @@ namespace Dev2.Services.Sql
         private static string GetFullProcedureName(DataRow row, DataColumn procedureDataColumn,
             DataColumn procedureSchemaColumn)
         {
-            string procedureName = row[procedureDataColumn].ToString();
-            string schemaName = row[procedureSchemaColumn].ToString();
+            var procedureName = row[procedureDataColumn].ToString();
+            var schemaName = row[procedureSchemaColumn].ToString();
             return schemaName + "." + procedureName;
         }
 
         private List<IDbDataParameter> GetProcedureParameters(IDbCommand command)
         {
             //Please do not use SqlCommandBuilder.DeriveParameters(command); as it does not handle CLR procedures correctly.
-            string originalCommandText = command.CommandText;
+            var originalCommandText = command.CommandText;
             var parameters = new List<IDbDataParameter>();
-            string[] parts = command.CommandText.Split('.');
+            var parts = command.CommandText.Split('.');
             command.CommandType = CommandType.Text;
             command.CommandText =
                 $"select * from information_schema.parameters where specific_name='{parts[1]}' and specific_schema='{parts[0]}'";
-            DataTable dataTable = FetchDataTable(command);
+            var dataTable = FetchDataTable(command);
             foreach (DataRow row in dataTable.Rows)
             {
                 var parameterName = row["PARAMETER_NAME"] as string;
@@ -255,7 +268,7 @@ namespace Dev2.Services.Sql
                     continue;
                 }
                 Enum.TryParse(row["DATA_TYPE"] as string, true, out SqlDbType sqlType);
-                int maxLength = row["CHARACTER_MAXIMUM_LENGTH"] as int? ?? -1;
+                var maxLength = row["CHARACTER_MAXIMUM_LENGTH"] as int? ?? -1;
                 var sqlParameter = new SqlParameter(parameterName, sqlType, maxLength);
                 command.Parameters.Add(sqlParameter);
                 if (parameterName.ToLower() == "@return_value")
@@ -305,7 +318,7 @@ namespace Dev2.Services.Sql
                 return $"select * from {fullProcedureName}()";
             }
             var sql = new StringBuilder($"select * from {fullProcedureName}(");
-            for (int i = 0; i < parameters.Count; i++)
+            for (var i = 0; i < parameters.Count; i++)
             {
                 sql.Append(parameters[i].ParameterName);
                 sql.Append(i < parameters.Count - 1 ? "," : "");
@@ -315,6 +328,7 @@ namespace Dev2.Services.Sql
         }
         public IDbCommand CreateCommand()
         {
+            if (_connection == null) throw new Exception(ErrorResource.PleaseConnectFirst);
             var sqlCommand = _connection.CreateCommand();
             TrySetTransaction(_transaction, sqlCommand);
             sqlCommand.CommandTimeout = (int)GlobalConstants.TransactionTimeout.TotalSeconds;
@@ -323,6 +337,8 @@ namespace Dev2.Services.Sql
 
         private string _commantText;
         private CommandType _commandType;
+
+
         public bool Connect(string connectionString, CommandType commandType, string commandText)
         {
             VerifyArgument.IsNotNull("connectionString", connectionString);
@@ -332,7 +348,7 @@ namespace Dev2.Services.Sql
                 connectionString = DpapiWrapper.Decrypt(connectionString);
             }
             connectionString = string.Concat(connectionString, "MultipleActiveResultSets=true;");
-            _connection = new SqlConnectionWrapper(connectionString);
+            _connection = _connectionBuilder.BuildConnection(connectionString);
 
             _connection.TryOpen();
             _connection.FireInfoMessageEventOnUserErrors = true;
@@ -354,6 +370,11 @@ namespace Dev2.Services.Sql
                 }
             });
 
+            if (commandText.ToLower().StartsWith("select "))
+            {
+                commandType = CommandType.Text;
+            }
+
             _commantText = commandText;
             _commandType = commandType;
 
@@ -361,14 +382,17 @@ namespace Dev2.Services.Sql
             return true;
         }
 
-        public DataTable FetchDataTable(IDbDataParameter[] dbDataParameters, string conString)
+        public DataTable FetchDataTable(string conString, params IDbDataParameter[] dbDataParameters)
         {
+
+            if (_connection == null) throw new Exception(ErrorResource.PleaseConnectFirst);
             _connection.TryOpen();
+
             using (_connection)
             {
                 if (_connection.State != ConnectionState.Open)
                 {
-                    _connection = new SqlConnectionWrapper(conString);
+                    _connection = _connectionBuilder.BuildConnection(_connectionString);
                 }
                 using (var sqlCommand = _connection.CreateCommand())
                 {
