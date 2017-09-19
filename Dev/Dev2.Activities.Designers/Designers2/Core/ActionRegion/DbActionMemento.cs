@@ -54,6 +54,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             }
             set
             {
+                _errorsHandler = value;
             }
         }
 

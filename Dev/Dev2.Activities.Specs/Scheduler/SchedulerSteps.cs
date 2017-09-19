@@ -185,13 +185,11 @@ namespace Dev2.Activities.Specs.Scheduler
 
         DaysOfTheWeek GetDays(string[] split)
         {
-            DaysOfTheWeek res;
-            Enum.TryParse(split.First(), true, out res);
+            Enum.TryParse(split.First(), true, out DaysOfTheWeek res);
 
             foreach (var s in split.Except(new[] { split.First() }))
             {
-                DaysOfTheWeek day;
-                Enum.TryParse(s, true, out day);
+                Enum.TryParse(s, true, out DaysOfTheWeek day);
                 res &= day;
 
             }

@@ -20,9 +20,8 @@ namespace Dev2.Diagnostics.Debug
                     ds.ParentID = null;
                 }
 
-                IList<IDebugState> list;
                 var key = new Tuple<Guid, Guid>(clientId, sessionId);
-                if (Data.TryGetValue(key, out list))
+                if (Data.TryGetValue(key, out IList<IDebugState> list))
                 {
                     list.Add(ds);
                 }

@@ -16,8 +16,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                 try
                 {
                     var numberOfLinesString = ctx.Request.QueryString.Get("numLines");
-                    int numLines;
-                    if (int.TryParse(numberOfLinesString, out numLines))
+                    if (int.TryParse(numberOfLinesString, out int numLines))
                     {
                         if (numLines > 0)
                         {

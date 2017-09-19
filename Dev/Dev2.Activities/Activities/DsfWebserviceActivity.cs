@@ -29,8 +29,7 @@ namespace Dev2.Activities
             {
                 webserviceExecution.InstanceOutputDefintions = outputs; // set the output mapping for the instance ;)
                 webserviceExecution.InstanceInputDefinitions = inputs;
-                ErrorResultTO invokeErrors;
-                webserviceExecution.Execute(out invokeErrors, update);
+                webserviceExecution.Execute(out ErrorResultTO invokeErrors, update);
                 string err = invokeErrors.MakeDataListReady();
                 if(!string.IsNullOrEmpty(err))
                 {

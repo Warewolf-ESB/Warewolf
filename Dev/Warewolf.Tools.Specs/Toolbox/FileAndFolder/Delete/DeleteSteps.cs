@@ -50,8 +50,7 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Delete
             {
                 BuildShapeAndTestData();
 
-                string privateKeyFile;
-                scenarioContext.TryGetValue(CommonSteps.SourcePrivatePublicKeyFile, out privateKeyFile);
+                scenarioContext.TryGetValue(CommonSteps.SourcePrivatePublicKeyFile, out string privateKeyFile);
                 var delete = new DsfPathDelete
                 {
                     InputPath = scenarioContext.Get<string>(CommonSteps.SourceHolder),

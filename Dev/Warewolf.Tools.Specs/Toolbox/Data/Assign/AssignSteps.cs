@@ -41,8 +41,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Assign
         {
             BuildShapeAndTestData();
 
-            List<ActivityDTO> fieldCollection;
-            scenarioContext.TryGetValue("fieldCollection", out fieldCollection);
+            scenarioContext.TryGetValue("fieldCollection", out List<ActivityDTO> fieldCollection);
 
             var multiAssign = new DsfMultiAssignActivity();
 
@@ -70,11 +69,9 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Assign
                 value = string.Format("!~calculation~!{0}!~~calculation~!", value);
             }
 
-            List<Tuple<string, string>> variableList;
-            scenarioContext.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
 
-            List<ActivityDTO> fieldCollection;
-            scenarioContext.TryGetValue("fieldCollection", out fieldCollection);
+            scenarioContext.TryGetValue("fieldCollection", out List<ActivityDTO> fieldCollection);
 
             if (variableList == null)
             {
@@ -94,8 +91,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Assign
         [Given(@"I have a variable ""(.*)"" with a value of ""(.*)""")]
         public void GivenIHaveAVariableWithAValueOf(string variable, string value)
         {
-            List<Tuple<string, string>> variableList;
-            scenarioContext.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
 
             if (variableList == null)
             {
@@ -118,10 +114,8 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Assign
                 }
                 else
                 {
-                    string actualValue;
-                    string error;
                     GetScalarValueFromEnvironment(result.Environment, variable,
-                        out actualValue, out error);
+                        out string actualValue, out string error);
                 }
                 Assert.Fail("Should have thrown NullReferenceException");
             }
@@ -161,11 +155,9 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Assign
             }
             else
             {
-                string actualValue;
                 value = value.Replace('"', ' ').Trim();
-                string error;
                 GetScalarValueFromEnvironment(result.Environment, variable,
-                                           out actualValue, out error);
+                                           out string actualValue, out string error);
                 actualValue = actualValue.Replace('"', ' ').Trim();
                 Assert.AreEqual(value, actualValue);
             }

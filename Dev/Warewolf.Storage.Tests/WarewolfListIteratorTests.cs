@@ -238,12 +238,9 @@ namespace Warewolf.Storage.Tests
         [Owner("Sanele Mthembu")]
         public void GivenStringTrueIsAssigned_WarewolfListIterator_GetBoolean_ShouldReturnTrue()
         {
-            PrivateObject privateObj;
-            List<IWarewolfIterator> variablesToIterateOn;
-            ValidateInstance(out privateObj, out variablesToIterateOn);
+            ValidateInstance(out PrivateObject privateObj, out List<IWarewolfIterator> variablesToIterateOn);
             _environment.Assign("[[RecSet().a]]", "True", 0);
-            WarewolfListIterator listIterator;
-            if (AssignExpression(out listIterator))
+            if (AssignExpression(out WarewolfListIterator listIterator))
             {
                 return;
             }
@@ -256,12 +253,9 @@ namespace Warewolf.Storage.Tests
         [Owner("Sanele Mthembu")]
         public void WarewolfListIterator_GetChars_ShouldReturn0()
         {
-            PrivateObject privateObj;
-            List<IWarewolfIterator> variablesToIterateOn;
-            ValidateInstance(out privateObj, out variablesToIterateOn);
+            ValidateInstance(out PrivateObject privateObj, out List<IWarewolfIterator> variablesToIterateOn);
             _environment.Assign("[[RecSet().a]]", "SomeValue", 0);
-            WarewolfListIterator listIterator;
-            if (AssignExpression(out listIterator))
+            if (AssignExpression(out WarewolfListIterator listIterator))
             {
                 return;
             }
@@ -274,12 +268,9 @@ namespace Warewolf.Storage.Tests
         [Owner("Sanele Mthembu")]
         public void WarewolfListIterator_GetStrings_ShouldReturnStringValue()
         {
-            PrivateObject privateObj;
-            List<IWarewolfIterator> variablesToIterateOn;
-            ValidateInstance(out privateObj, out variablesToIterateOn);
+            ValidateInstance(out PrivateObject privateObj, out List<IWarewolfIterator> variablesToIterateOn);
             _environment.Assign("[[RecSet().a]]", "SomeValue", 0);
-            WarewolfListIterator listIterator;
-            if (AssignExpression(out listIterator))
+            if (AssignExpression(out WarewolfListIterator listIterator))
             {
                 return;
             }
@@ -293,12 +284,9 @@ namespace Warewolf.Storage.Tests
         [Owner("Sanele Mthembu")]
         public void WarewolfListIterator_GetDateTime_ShouldReturnDateFormat()
         {
-            PrivateObject privateObj;
-            List<IWarewolfIterator> variablesToIterateOn;
-            ValidateInstance(out privateObj, out variablesToIterateOn);
+            ValidateInstance(out PrivateObject privateObj, out List<IWarewolfIterator> variablesToIterateOn);
             _environment.Assign("[[RecSet().a]]", "01/01/2000", 0);
-            WarewolfListIterator listIterator;
-            if (AssignExpression(out listIterator))
+            if (AssignExpression(out WarewolfListIterator listIterator))
             {
                 return;
             }
@@ -312,12 +300,9 @@ namespace Warewolf.Storage.Tests
         [Owner("Sanele Mthembu")]
         public void WarewolfListIterator_GetDataAndGetSchemaTable_ShouldReturnNull()
         {
-            PrivateObject privateObj;
-            List<IWarewolfIterator> variablesToIterateOn;
-            ValidateInstance(out privateObj, out variablesToIterateOn);
+            ValidateInstance(out PrivateObject privateObj, out List<IWarewolfIterator> variablesToIterateOn);
             _environment.Assign("[[RecSet().a]]", "", 0);
-            WarewolfListIterator listIterator;
-            if (AssignExpression(out listIterator))
+            if (AssignExpression(out WarewolfListIterator listIterator))
             {
                 return;
             }
@@ -356,9 +341,7 @@ namespace Warewolf.Storage.Tests
         [Owner("Sanele Mthembu")]
         public void WarewolfListIterator_GetGuid_ShouldReturn0()
         {
-            PrivateObject privateObj;
-            List<IWarewolfIterator> variablesToIterateOn;
-            ValidateInstance(out privateObj, out variablesToIterateOn);
+            ValidateInstance(out PrivateObject privateObj, out List<IWarewolfIterator> variablesToIterateOn);
             _environment.Assign("[[RecSet().a]]", "00d1c07e-7fa7-4127-a85f-3ae9aaa7c6de", 0);
             _expr3 = new WarewolfIterator(_environment.Eval("[[RecSet().a]]", 0));
             _warewolfListIterator.AddVariableToIterateOn(_expr3);
@@ -376,12 +359,9 @@ namespace Warewolf.Storage.Tests
         [Owner("Sanele Mthembu")]
         public void WarewolfListIterator_IDataRecordFunctions_Should()
         {
-            PrivateObject privateObj;
-            List<IWarewolfIterator> variablesToIterateOn;
-            ValidateInstance(out privateObj, out variablesToIterateOn);
+            ValidateInstance(out PrivateObject privateObj, out List<IWarewolfIterator> variablesToIterateOn);
             _environment.Assign("[[RecSet().a]]", "1", 0);
-            WarewolfListIterator listIterator;
-            if (AssignExpression(out listIterator))
+            if (AssignExpression(out WarewolfListIterator listIterator))
             {
                 return;
             }

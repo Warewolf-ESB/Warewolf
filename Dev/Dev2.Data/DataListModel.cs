@@ -111,8 +111,7 @@ namespace Dev2.Data
                             if (recSet != null && shapeRecSet != null)
                             {
                                 // fetch recordset index
-                                int fetchIdx;
-                                int idx = indexCache.TryGetValue(c.Name, out fetchIdx) ? fetchIdx : 1; // recset index
+                                int idx = indexCache.TryGetValue(c.Name, out int fetchIdx) ? fetchIdx : 1; // recset index
                                 // process recordset
                                 var scalars = shapeRecSet.Columns[1];
                                 var colToIoDirection = scalars.ToDictionary(scalar1 => scalar1.Name, scalar1 => scalar1.IODirection);

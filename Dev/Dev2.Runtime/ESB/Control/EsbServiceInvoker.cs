@@ -366,8 +366,7 @@ namespace Dev2.Runtime.ESB
         {
             if (errors.HasErrors() && dataObject.IsDebugMode())
             {
-                Guid parentInstanceId;
-                Guid.TryParse(dataObject.ParentInstanceID, out parentInstanceId);
+                Guid.TryParse(dataObject.ParentInstanceID, out Guid parentInstanceId);
 
                 var debugState = new DebugState
                 {

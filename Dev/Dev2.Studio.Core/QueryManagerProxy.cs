@@ -460,8 +460,7 @@ namespace Dev2.Studio.Core
             comsController.AddPayloadArgument("GetDependsOnMe", "false");
             var res = comsController.ExecuteCommand<List<string>>(Connection, GlobalConstants.ServerWorkspaceID).Where(a =>
             {
-                Guid b;
-                Guid.TryParse(a, out b);
+                Guid.TryParse(a, out Guid b);
                 return b != Guid.Empty;
             });
             var result = res.Select(Guid.Parse).ToList();

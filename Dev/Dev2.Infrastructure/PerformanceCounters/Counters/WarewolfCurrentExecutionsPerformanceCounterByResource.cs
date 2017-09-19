@@ -6,7 +6,7 @@ using Dev2.Common.Interfaces.Monitoring;
 
 namespace Dev2.PerformanceCounters.Counters
 {
-    public class WarewolfCurrentExecutionsPerformanceCounterByResource : IResourcePerformanceCounter
+    public class WarewolfCurrentExecutionsPerformanceCounterByResource : IResourcePerformanceCounter, IDisposable
     {
 
         private PerformanceCounter _counter;
@@ -88,6 +88,11 @@ namespace Dev2.PerformanceCounters.Counters
                         _counter.Decrement();
                     }
             }
+        }
+
+        public void Dispose()
+        {
+            _counter.Dispose();
         }
 
         public string Category => GlobalConstants.WarewolfServices;

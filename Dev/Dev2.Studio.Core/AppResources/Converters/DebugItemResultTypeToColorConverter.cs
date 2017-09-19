@@ -23,8 +23,7 @@ namespace Dev2.Studio.Core.AppResources.Converters
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            DebugItemResultType debugItemResultType;
-            var isDebugItemResultType = Enum.TryParse(value?.ToString(),true,out debugItemResultType);
+            var isDebugItemResultType = Enum.TryParse(value?.ToString(), true, out DebugItemResultType debugItemResultType);
             if (isDebugItemResultType)
             {
                 switch (debugItemResultType)

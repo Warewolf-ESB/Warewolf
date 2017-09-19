@@ -69,7 +69,7 @@ namespace Dev2.Studio
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>
-    public partial class App : IApp
+    public partial class App : IApp, IDisposable
     {
         ShellViewModel _shellViewModel;
         //This is ignored because when starting the studio twice the second one crashes without this line
@@ -105,7 +105,6 @@ namespace Dev2.Studio
         protected override void OnStartup(StartupEventArgs e)
         {
             Tracker.StartStudio();
-            bool createdNew;
 
             Task.Factory.StartNew(() =>
                 {
@@ -114,9 +113,9 @@ namespace Dev2.Studio
                     DirectoryHelper.CleanUp(Path.Combine(GlobalConstants.TempLocation, "Warewolf", "Debug"));
                 });
 
-            
+
             var localprocessGuard = e.Args.Length > 0
-                                        ? new Mutex(true, e.Args[0], out createdNew)
+                                        ? new Mutex(true, e.Args[0], out bool createdNew)
                                         : new Mutex(true, "Warewolf Studio", out createdNew);
 
             if (createdNew)
@@ -354,6 +353,11 @@ namespace Dev2.Studio
             {
                 MessageBox.Show("Fatal Error : " + e.Exception);
             }
+        }
+
+        public void Dispose()
+        {
+            _resetSplashCreated.Dispose();
         }
     }
 }

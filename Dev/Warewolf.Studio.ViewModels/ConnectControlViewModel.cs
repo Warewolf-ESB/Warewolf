@@ -241,10 +241,8 @@ namespace Warewolf.Studio.ViewModels
                 var isConnected = await ConnectOrDisconnect();
                 if (_selectedConnection.IsConnected && isConnected)
                 {
-                    Version sourceVersionNumber;
-                    Version.TryParse(_selectedConnection.GetServerVersion(), out sourceVersionNumber);
-                    Version destVersionNumber;
-                    Version.TryParse(Resources.Languages.Core.CompareCurrentServerVersion, out destVersionNumber);
+                    Version.TryParse(_selectedConnection.GetServerVersion(), out Version sourceVersionNumber);
+                    Version.TryParse(Resources.Languages.Core.CompareCurrentServerVersion, out Version destVersionNumber);
                     if (sourceVersionNumber != null && destVersionNumber != null)
                     {
                         if (sourceVersionNumber < destVersionNumber)

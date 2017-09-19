@@ -77,9 +77,8 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             //------------Execute Test---------------------------
             IDSFDataObject result = ExecuteProcess();
-            string error;
 
-            var col1List = RetrieveAllRecordSetFieldValues(result.Environment, "rs", "col1", out error);
+            var col1List = RetrieveAllRecordSetFieldValues(result.Environment, "rs", "col1", out string error);
             var col2List = RetrieveAllRecordSetFieldValues(result.Environment, "rs", "col2", out error);
             var col3List = RetrieveAllRecordSetFieldValues(result.Environment, "rs", "col3", out error);
             var dataList = RetrieveAllRecordSetFieldValues(result.Environment, "rs", "data", out error);
@@ -124,9 +123,8 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             //------------Execute Test---------------------------
             IDSFDataObject result = ExecuteProcess();
-            string error;
 
-            var col1List = RetrieveAllRecordSetFieldValues(result.Environment, "rs", "col1", out error);
+            var col1List = RetrieveAllRecordSetFieldValues(result.Environment, "rs", "col1", out string error);
             var col2List = RetrieveAllRecordSetFieldValues(result.Environment, "rs", "col2", out error);
             var col3List = RetrieveAllRecordSetFieldValues(result.Environment, "rs", "col3", out error);
             var dataList = RetrieveAllRecordSetFieldValues(result.Environment, "rs", "data", out error);
@@ -155,10 +153,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             _resultsCollection.Add(new DataSplitDTO("[[OutVar1]]", "Index", "15", 1));
             SetupArguments("<root>" + ActivityStrings.DataSplit_preDataList + "</root>", ActivityStrings.DataSplit_preDataList, "", _resultsCollection);
             IDSFDataObject result = ExecuteProcess();
-
-            string actual;
-            string error;
-            GetScalarValueFromEnvironment(result.Environment, "OutVar1", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "OutVar1", out string actual, out string error);
             // remove test datalist ;)
 
             Assert.AreEqual(string.Empty, actual);
@@ -172,9 +167,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             SetupArguments("<root>" + ActivityStrings.DataSplit_preDataList + "</root>", ActivityStrings.DataSplit_preDataList, _source, _resultsCollection);
             IDSFDataObject result = ExecuteProcess();
             const string expected = @"Title|Fname|LNa";
-            string actual;
-            string error;
-            GetScalarValueFromEnvironment(result.Environment, "OutVar1", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "OutVar1", out string actual, out string error);
 
             // remove test datalist ;)
 
@@ -200,9 +193,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             for(int i = 1; i <= 4; i++)
             {
-                string returnVal;
-                string error;
-                GetScalarValueFromEnvironment(result.Environment, "OutVar" + i, out returnVal, out error);
+                GetScalarValueFromEnvironment(result.Environment, "OutVar" + i, out string returnVal, out string error);
                 actual.Add(returnVal.Trim());
             }
             // remove test datalist ;)
@@ -225,15 +216,12 @@ namespace Dev2.Tests.Activities.ActivityTests
             List<string> expected = new List<string> { @"" 
                                                      , @"Branson|0812457"
                                                      };
-            string actualScalar;
-            string error;
-            IList<string> actualRecordSet;
 
-            GetScalarValueFromEnvironment(result.Environment, "OutVar1", out actualScalar, out error);
+            GetScalarValueFromEnvironment(result.Environment, "OutVar1", out string actualScalar, out string error);
 
             Assert.AreEqual("896", actualScalar);
 
-            GetRecordSetFieldValueFromDataList(result.Environment, "recset1", "field1", out actualRecordSet, out error);
+            GetRecordSetFieldValueFromDataList(result.Environment, "recset1", "field1", out IList<string> actualRecordSet, out error);
 
             // remove test datalist ;)
 
@@ -262,9 +250,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                                                      , @"via|0724587310"
                                                      , @"Branson|0812457"};
             List<string> actual = new List<string>();
-            string actualScalar;
-            string error;
-            GetScalarValueFromEnvironment(result.Environment, "OutVar1", out actualScalar, out error);
+            GetScalarValueFromEnvironment(result.Environment, "OutVar1", out string actualScalar, out string error);
             Assert.AreEqual("896", actualScalar);
 
             actual.AddRange(RetrieveAllRecordSetFieldValues(result.Environment, "recset1", "field1", out error));
@@ -290,9 +276,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             IDSFDataObject result = ExecuteProcess();
             const string expected = @"me|TelNo|
 1.Mr";
-            string actual;
-            string error;
-            GetScalarValueFromEnvironment(result.Environment, "OutVar1", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "OutVar1", out string actual, out string error);
             // remove test datalist ;)
             Assert.AreEqual(expected, actual, "Got " + actual + " expected " + expected);
         }
@@ -305,10 +289,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             IDSFDataObject result = ExecuteProcess();
 
             const string expected = "Title|Fname|LNa";
-            string actual;
-            string error;
 
-            GetScalarValueFromEnvironment(result.Environment, "OutVar1", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "OutVar1", out string actual, out string error);
             // remove test datalist ;)
 
             Assert.AreEqual(expected, actual, "Got " + actual + " but expected " + expected);
@@ -325,10 +307,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             IDSFDataObject result = ExecuteProcess();
 
             const string expected = @"Title";
-            string actual;
-            string error;
 
-            GetScalarValueFromEnvironment(result.Environment, "OutVar1", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "OutVar1", out string actual, out string error);
             // remove test datalist ;)
 
             Assert.AreEqual(expected, actual);
@@ -350,10 +330,8 @@ namespace Dev2.Tests.Activities.ActivityTests
 3.Mrs|Jenny|Smith|0762458963
 4.Ms|Kerrin|deSilvia|0724587310
 5.Sir|Richard|Branson|0812457896";
-            string actual;
-            string error;
 
-            GetScalarValueFromEnvironment(result.Environment, "OutVar1", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "OutVar1", out string actual, out string error);
             // remove test datalist ;)
 
             Assert.AreEqual(expected, actual);
@@ -373,10 +351,8 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             List<string> expected = new List<string> { "Test", "source" };
             List<string> actual = new List<string>();
-            string tempActual;
-            string error;
 
-            GetScalarValueFromEnvironment(result.Environment, "OutVar1", out tempActual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "OutVar1", out string tempActual, out string error);
             actual.Add(tempActual);
             GetScalarValueFromEnvironment(result.Environment, "OutVar2", out tempActual, out error);
             actual.Add(tempActual);
@@ -393,9 +369,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             IDSFDataObject result = ExecuteProcess();
 
             const string expected = @"Title|Fname|LName|TelNo|";
-            string actual;
-            string error;
-            GetScalarValueFromEnvironment(result.Environment, "OutVar1", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "OutVar1", out string actual, out string error);
 
             // remove test datalist ;)
 
@@ -413,8 +387,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             IDSFDataObject result = ExecuteProcess();
 
             List<string> expected = new List<string> { "Test", "Data", "To", "Split" };
-            string error;
-            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "recset2", "field2", out error);
+            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "recset2", "field2", out string error);
 
             // remove test datalist ;)
 
@@ -434,10 +407,8 @@ namespace Dev2.Tests.Activities.ActivityTests
 3.Mrs|Jenny|Smith|0762458963
 4.Ms|Kerrin|deSilvia|0724587310
 5.Sir|Richard|Branson|0812457896";
-            string actual;
-            string error;
 
-            GetScalarValueFromEnvironment(result.Environment, "OutVar1", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "OutVar1", out string actual, out string error);
             // remove test datalist ;)
 
             Assert.AreEqual(expected, actual);
@@ -480,8 +451,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
 
-            string error;
-            List<string> actual1 = RetrieveAllRecordSetFieldValues(result.Environment, "recset1", "field1", out error);
+            List<string> actual1 = RetrieveAllRecordSetFieldValues(result.Environment, "recset1", "field1", out string error);
             List<string> actual2 = RetrieveAllRecordSetFieldValues(result.Environment, "recset2", "field2", out error);
 
             // remove test datalist ;)
@@ -517,8 +487,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                                                         @"896"
                                                         
                                                         };
-            string error;
-            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "recset1", "rec1", out error);
+            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "recset1", "rec1", out string error);
             actual.AddRange(RetrieveAllRecordSetFieldValues(result.Environment, "recset1", "field1", out error));
 
             // remove test datalist ;)
@@ -559,8 +528,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                                                     , "5.Sir|Richard|"
                                                     , "Branson|0812457"
                                                     };
-            string error;
-            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "recset1", "field1", out error);
+            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "recset1", "field1", out string error);
 
             // remove test datalist ;)
 
@@ -628,8 +596,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                                                             , "data"
                                                             , "to"
                                                             , "split" };
-            string error;
-            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "recset1", "field1", out error);
+            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "recset1", "field1", out string error);
 
             // remove test datalist ;)
 

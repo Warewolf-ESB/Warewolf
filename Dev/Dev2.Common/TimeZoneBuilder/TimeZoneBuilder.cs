@@ -75,8 +75,7 @@ namespace Dev2.Common.TimeZoneBuilder
             //
             foreach (TimeZoneInfo timeZoneInfo in TimeZoneInfo.GetSystemTimeZones())
             {
-                ITimeZoneTO timeZoneTo;
-                if (!TimeZones.TryGetValue(timeZoneInfo.DisplayName.ToLower(), out timeZoneTo))
+                if (!TimeZones.TryGetValue(timeZoneInfo.DisplayName.ToLower(), out ITimeZoneTO timeZoneTo))
                 {
                     TimeZones.Add(timeZoneInfo.DisplayName.ToLower(),
                         new TimeZoneTO(timeZoneInfo.StandardName, timeZoneInfo.StandardName, timeZoneInfo.DisplayName));

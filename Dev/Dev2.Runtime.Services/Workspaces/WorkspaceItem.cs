@@ -187,21 +187,18 @@ namespace Dev2.Workspaces
         public WorkspaceItem(XElement xml)
         {
             ID = Guid.Parse(GetAttributeValue(xml, "ID"));
-            Guid tryGetWorkspaceId;
-            if (Guid.TryParse(GetAttributeValue(xml, "WorkspaceID"), out tryGetWorkspaceId))
+            if (Guid.TryParse(GetAttributeValue(xml, "WorkspaceID"), out Guid tryGetWorkspaceId))
             {
                 WorkspaceID = tryGetWorkspaceId;
             }
-            Guid tryGetServerId;
-            if (Guid.TryParse(GetAttributeValue(xml, "ServerID"), out tryGetServerId))
+            if (Guid.TryParse(GetAttributeValue(xml, "ServerID"), out Guid tryGetServerId))
             {
                 ServerID = tryGetServerId;
             }
-            Guid envId;
-            if (Guid.TryParse(GetAttributeValue(xml, "EnvironmentID"), out envId))
+            if (Guid.TryParse(GetAttributeValue(xml, "EnvironmentID"), out Guid envId))
             {
                 EnvironmentID = envId;
-            } 
+            }
             ServiceName = GetAttributeValue(xml, "ServiceName");
             bool isWorkflowSaved;
             string attributeValue = GetAttributeValue(xml, "IsWorkflowSaved");
@@ -216,8 +213,7 @@ namespace Dev2.Workspaces
             IsWorkflowSaved = isWorkflowSaved;
             ServiceType = GetAttributeValue(xml, "ServiceType");
 
-            WorkspaceItemAction action;
-            Action = Enum.TryParse(GetAttributeValue(xml, "Action"), true, out action) ? action : WorkspaceItemAction.None;
+            Action = Enum.TryParse(GetAttributeValue(xml, "Action"), true, out WorkspaceItemAction action) ? action : WorkspaceItemAction.None;
         }
 
         /// <summary>

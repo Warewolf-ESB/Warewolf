@@ -48,8 +48,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset
             var data = new XElement("root");
 
             int row = 0;
-            dynamic variableList;
-            scenarioContext.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out dynamic variableList);
 
             if (variableList != null)
             {
@@ -72,12 +71,10 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset
                 DataObject.Environment.CommitAssign();
             }
 
-            string recordSetName;
-            scenarioContext.TryGetValue("recordset", out recordSetName);
+            scenarioContext.TryGetValue("recordset", out string recordSetName);
 
             var recordset = scenarioContext.Get<string>("recordset");
-            bool treaNullAsZero;
-            scenarioContext.TryGetValue("treaNullAsZero", out treaNullAsZero);
+            scenarioContext.TryGetValue("treaNullAsZero", out bool treaNullAsZero);
 
             //var length = new DsfRecordsetNullhandlerLengthActivity
             //{
@@ -85,8 +82,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset
             //    RecordsLength = ResultVariable, 
             //    TreatNullAsZero = treaNullAsZero
             //};
-            DsfActivityAbstract<string> length;
-            scenarioContext.TryGetValue("activityMode", out length);
+            scenarioContext.TryGetValue("activityMode", out DsfActivityAbstract<string> length);
             if (length != null)
             {
                 length = new DsfRecordsetNullhandlerLengthActivity
@@ -123,10 +119,9 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset
             {
                 var rs = table.Header.ToArray()[0];
 
-                List<Tuple<string, string>> emptyRecordset;
 
-                bool isAdded = scenarioContext.TryGetValue("rs", out emptyRecordset);
-                if(!isAdded)
+                bool isAdded = scenarioContext.TryGetValue("rs", out List<Tuple<string, string>> emptyRecordset);
+                if (!isAdded)
                 {
                     emptyRecordset = new List<Tuple<string, string>>();
                     scenarioContext.Add("rs", emptyRecordset);
@@ -136,10 +131,9 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset
 
             foreach(TableRow t in tableRows)
             {
-                List<Tuple<string, string>> variableList;
-                scenarioContext.TryGetValue("variableList", out variableList);
+                scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
 
-                if(variableList == null)
+                if (variableList == null)
                 {
                     variableList = new List<Tuple<string, string>>();
                     scenarioContext.Add("variableList", variableList);

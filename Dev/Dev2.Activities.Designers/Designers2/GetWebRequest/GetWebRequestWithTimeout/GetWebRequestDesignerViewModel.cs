@@ -90,8 +90,7 @@ namespace Dev2.Activities.Designers2.GetWebRequest.GetWebRequestWithTimeout
             }
             if (TimeOutText.Length > 0)
             {
-                int res;
-                if (!int.TryParse(TimeOutText, out res))
+                if (!int.TryParse(TimeOutText, out int res))
                 {
                     if (!DataListUtil.IsValueRecordset(TimeOutText) && !DataListUtil.IsValueScalar(TimeOutText))
                     {
@@ -264,8 +263,7 @@ namespace Dev2.Activities.Designers2.GetWebRequest.GetWebRequestWithTimeout
             }
             else
             {
-                Uri uriResult;
-                var isValid = Uri.TryCreate(urlValue, UriKind.Absolute, out uriResult) &&
+                var isValid = Uri.TryCreate(urlValue, UriKind.Absolute, out Uri uriResult) &&
                               (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
                 if (!isValid)
                 {

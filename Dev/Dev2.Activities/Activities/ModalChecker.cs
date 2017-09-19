@@ -110,10 +110,9 @@ namespace Dev2.Activities
         private int WindowEnum(IntPtr hWnd, int lParam)
         
         {
-            IntPtr processId;
 
-            GetWindowThreadProcessId(hWnd, out processId);
-            if(processId.ToInt32() != _process.Id)
+            GetWindowThreadProcessId(hWnd, out IntPtr processId);
+            if (processId.ToInt32() != _process.Id)
             {
                 return 1;
             }

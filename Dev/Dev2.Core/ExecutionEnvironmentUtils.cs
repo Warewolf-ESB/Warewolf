@@ -48,8 +48,7 @@ namespace Dev2
                         if (jProperty != null)
                         {
                             var propValue = jProperty.Value;
-                            enDev2ColumnArgumentDirection ioDirection;
-                            if (Enum.TryParse(propValue.ToString(), true, out ioDirection))
+                            if (Enum.TryParse(propValue.ToString(), true, out enDev2ColumnArgumentDirection ioDirection))
                             {
                                 if (ioDirection == enDev2ColumnArgumentDirection.Both || ioDirection == requestIODirection)
                                 {
@@ -390,12 +389,9 @@ namespace Dev2
             {
                 throw new ArgumentNullException(nameof(dataList));
             }
-            Uri url;
-            Uri.TryCreate(webServerUrl, UriKind.RelativeOrAbsolute, out url);
-            List<JObject> parameters;
-            bool isScalarInputOnly;
+            Uri.TryCreate(webServerUrl, UriKind.RelativeOrAbsolute, out Uri url);
             var jsonSwaggerInfoObject = BuildJsonSwaggerInfoObject(resource);
-            var definitionObject = GetParametersDefinition(out parameters, dataList, out isScalarInputOnly);
+            var definitionObject = GetParametersDefinition(out List<JObject> parameters, dataList, out bool isScalarInputOnly);
             var parametersForSwagger = isScalarInputOnly ? (JToken)new JArray(parameters) : new JArray(new JObject { { "name", "DataList" }, { "in", "query" }, { "required", true }, { "schema", new JObject { { "$ref", "#/definitions/DataList" } } } });
             var jsonSwaggerPathObject = BuildJsonSwaggerPathObject(url.AbsolutePath, parametersForSwagger);
             var jsonSwaggerResponsesObject = BuildJsonSwaggerResponsesObject();

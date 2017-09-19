@@ -154,14 +154,12 @@ namespace Dev2.Activities.RabbitMQ.Consume
                     return _messages;
                 }
 
-                string queueName;
-                if (!evaluatedValues.TryGetValue("QueueName", out queueName))
+                if (!evaluatedValues.TryGetValue("QueueName", out string queueName))
                 {
                     _messages.Add(ErrorResource.RabbitQueueNameRequired);
                     return _messages;
                 }
-                string prefetch;
-                if (!evaluatedValues.TryGetValue("Prefetch", out prefetch))
+                if (!evaluatedValues.TryGetValue("Prefetch", out string prefetch))
                 {
                     prefetch = string.Empty;
                 }
@@ -228,9 +226,8 @@ namespace Dev2.Activities.RabbitMQ.Consume
                                 {
                                     throw new Exception(string.Format(ErrorResource.RabbitQueueNotFound, queueName));
                                 }
-                                BasicDeliverEventArgs basicDeliverEventArgs;
                                 ulong? tag = null;
-                                while (Consumer.Queue.Dequeue((int)TimeSpan.FromSeconds(_timeOut).TotalMilliseconds, out basicDeliverEventArgs) && _prefetch > msgCount)
+                                while (Consumer.Queue.Dequeue((int)TimeSpan.FromSeconds(_timeOut).TotalMilliseconds, out BasicDeliverEventArgs basicDeliverEventArgs) && _prefetch > msgCount)
                                 {
                                     if (basicDeliverEventArgs == null)
                                     {

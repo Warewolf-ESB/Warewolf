@@ -224,18 +224,12 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset.SqlBulkInsert
         [When(@"the tool is executed")]
         public void WhenTheToolIsExecuted()
         {
-            bool checkConstraints;
-            scenarioContext.TryGetValue("checkConstraints", out checkConstraints);
-            bool keepIdentity;
-            scenarioContext.TryGetValue("keepIdentity", out keepIdentity);
-            bool ignoreBlankRows;
-            scenarioContext.TryGetValue("ignoreBlankRows", out ignoreBlankRows);
-            bool fireTriggers;
-            scenarioContext.TryGetValue("fireTriggers", out fireTriggers);
-            string batchSize;
-            scenarioContext.TryGetValue("batchSize", out batchSize);
-            string timeout;
-            scenarioContext.TryGetValue("timeout", out timeout);
+            scenarioContext.TryGetValue("checkConstraints", out bool checkConstraints);
+            scenarioContext.TryGetValue("keepIdentity", out bool keepIdentity);
+            scenarioContext.TryGetValue("ignoreBlankRows", out bool ignoreBlankRows);
+            scenarioContext.TryGetValue("fireTriggers", out bool fireTriggers);
+            scenarioContext.TryGetValue("batchSize", out string batchSize);
+            scenarioContext.TryGetValue("timeout", out string timeout);
 
             var sqlBulkInsert = scenarioContext.Get<DsfSqlBulkInsertActivity>("activity");
 

@@ -44,9 +44,8 @@ namespace Warewolf.ToolsSpecs.Toolbox.LoopConstructs.Select_And_Apply
                 var obj = table.Header.ToArray()[0];
                 var field = table.Header.ToArray()[1];
 
-                List<Tuple<string, string>> emptyRecordset;
 
-                bool isAdded = scenarioContext.TryGetValue("obj", out emptyRecordset);
+                bool isAdded = scenarioContext.TryGetValue("obj", out List<Tuple<string, string>> emptyRecordset);
                 if (!isAdded)
                 {
                     emptyRecordset = new List<Tuple<string, string>>();
@@ -57,8 +56,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.LoopConstructs.Select_And_Apply
 
             foreach (TableRow tableRow in rows)
             {
-                List<Tuple<string, string>> objList;
-                scenarioContext.TryGetValue("objList", out objList);
+                scenarioContext.TryGetValue("objList", out List<Tuple<string, string>> objList);
 
                 if (objList == null)
                 {
@@ -177,8 +175,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.LoopConstructs.Select_And_Apply
         
         protected override void BuildDataList()
         {
-            List<Tuple<string, string>> variableList;
-            scenarioContext.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
 
             if (variableList == null)
             {
@@ -187,14 +184,12 @@ namespace Warewolf.ToolsSpecs.Toolbox.LoopConstructs.Select_And_Apply
             }
 
             BuildShapeAndTestData();
-            string datasource;
-            if (!scenarioContext.TryGetValue("datasource", out datasource))
+            if (!scenarioContext.TryGetValue("datasource", out string datasource))
             {
                 datasource = string.Empty;
             }
 
-            string alias;
-            if (!scenarioContext.TryGetValue("alias", out alias))
+            if (!scenarioContext.TryGetValue("alias", out string alias))
             {
                 alias = string.Empty;
             }

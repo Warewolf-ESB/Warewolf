@@ -26,12 +26,10 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             //---------------Set up test pack-------------------
             var act = new MySimpleActivity { Input1 = "[[OutVar1]]", Input2 = "[[OutVar2]]", Result = "[[ResultVar]]" };
-            List<DebugItem> inRes;
-            List<DebugItem> outRes;
 
-            
+
             const string dataList = "<ADL><OutVar1/><OutVar2/><ResultVar/></ADL>";
-            
+
             const string dataListWithData = "<ADL>" +
                                             "<OutVar1>TestVal</OutVar1><OutVar2>TestVal2</OutVar2></ADL>";
 
@@ -41,7 +39,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             //---------------Execute Test ----------------------
             var result = CheckActivityDebugInputOutput(act, dataList,
-                dataListWithData, out inRes, out outRes);
+                dataListWithData, out List<DebugItem> inRes, out List<DebugItem> outRes);
 
             // remove test datalist ;)
             //---------------Test Result -----------------------

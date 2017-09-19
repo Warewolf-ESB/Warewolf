@@ -71,10 +71,9 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Switch
         [Given(@"I need to switch on variable ""(.*)"" with the value ""(.*)""")]
         public void GivenINeedToSwitchOnVariableWithTheValue(string variable, string value)
         {
-            List<Tuple<string, string>> variableList;
-            scenarioContext.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
 
-            if(variableList == null)
+            if (variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 scenarioContext.Add("variableList", variableList);
@@ -94,12 +93,10 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Switch
         [Then(@"the variable ""(.*)"" will evaluate to ""(.*)""")]
         public void ThenTheVariableWillEvaluateTo(string variable, string expectedResult)
         {
-            string error;
-            string actualValue;
             expectedResult = expectedResult.Replace('"', ' ').Trim();
             var result = scenarioContext.Get<IDSFDataObject>("result");
             GetScalarValueFromEnvironment(result.Environment, variable,
-                                       out actualValue, out error);
+                                       out string actualValue, out string error);
             Assert.AreEqual(expectedResult, actualValue);
         }
     }

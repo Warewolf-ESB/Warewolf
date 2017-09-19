@@ -98,8 +98,7 @@ namespace Dev2.Settings.Scheduler
             var cancelled = false;
             while ((String.IsNullOrEmpty(_schedulerViewModel.AccountName) || String.IsNullOrEmpty(_schedulerViewModel.Password)) && !cancelled)
             {
-                NetworkCredential cred;
-                CredentialUI.GetCredentialsVistaAndUp(scheduledResource.Name, out cred);
+                CredentialUI.GetCredentialsVistaAndUp(scheduledResource.Name, out NetworkCredential cred);
                 if (cred == null)
                 {
                     cancelled = true;
@@ -131,8 +130,7 @@ namespace Dev2.Settings.Scheduler
                     }
 
                     GetCredentials(_schedulerViewModel.SelectedTask);
-                    string errorMessage;
-                    if (!_schedulerViewModel.ScheduledResourceModel.Save(_schedulerViewModel.SelectedTask, out errorMessage))
+                    if (!_schedulerViewModel.ScheduledResourceModel.Save(_schedulerViewModel.SelectedTask, out string errorMessage))
                     {
                         _schedulerViewModel.ShowSaveErrorDialog(errorMessage);
                         _schedulerViewModel.ShowError(errorMessage);

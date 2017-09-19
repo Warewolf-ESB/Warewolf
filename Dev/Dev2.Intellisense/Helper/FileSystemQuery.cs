@@ -165,8 +165,7 @@ namespace Dev2.Intellisense.Helper
 
         public List<string> GetFilesAndFoldersIncludingNetwork(string searchPath, List<string> queryCollection, char directorySeparatorChar)
         {
-            string sServerFolderShare;
-            if(GetServerFolderShare(searchPath, out sServerFolderShare))
+            if (GetServerFolderShare(searchPath, out string sServerFolderShare))
             {
                 queryCollection.Add(sServerFolderShare);
             }

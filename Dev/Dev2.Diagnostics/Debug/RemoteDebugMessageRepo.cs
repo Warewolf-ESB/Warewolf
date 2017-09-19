@@ -39,16 +39,14 @@ namespace Dev2.Diagnostics.Debug
         /// <param name="ds">The ds.</param>
         public void AddDebugItem(string remoteInvokeID, IDebugState ds)
         {
-            Guid id;
-            Guid.TryParse(remoteInvokeID, out id);
-            if(id != Guid.Empty)
+            Guid.TryParse(remoteInvokeID, out Guid id);
+            if (id != Guid.Empty)
             {
                 lock(Lock)
                 {
-                    IList<IDebugState> list;
-                    if(_data.TryGetValue(id, out list))
+                    if (_data.TryGetValue(id, out IList<IDebugState> list))
                     {
-                        if(list.Contains(ds))
+                        if (list.Contains(ds))
                         {
                             return;
                         }
@@ -74,8 +72,7 @@ namespace Dev2.Diagnostics.Debug
 
             lock(Lock)
             {
-                IList<IDebugState> list;
-                if(_data.TryGetValue(remoteInvokeID, out list))
+                if (_data.TryGetValue(remoteInvokeID, out IList<IDebugState> list))
                 {
                     _data.Remove(remoteInvokeID); // clear out all messages ;)
                     return list;

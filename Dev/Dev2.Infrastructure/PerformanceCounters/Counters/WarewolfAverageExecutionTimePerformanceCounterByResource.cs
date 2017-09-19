@@ -6,7 +6,7 @@ using Dev2.Common.Interfaces.Monitoring;
 
 namespace Dev2.PerformanceCounters.Counters
 {
-    public class WarewolfAverageExecutionTimePerformanceCounterByResource : IResourcePerformanceCounter
+    public class WarewolfAverageExecutionTimePerformanceCounterByResource : IResourcePerformanceCounter, IDisposable
     {
 
         private PerformanceCounter _counter;
@@ -27,10 +27,6 @@ namespace Dev2.PerformanceCounters.Counters
 
         public IList<CounterCreationData> CreationData()
         {
-
-
-
-
             CounterCreationData totalOps = new CounterCreationData
             {
                 CounterName = Name,
@@ -122,6 +118,12 @@ namespace Dev2.PerformanceCounters.Counters
             {
                 _baseCounter.RawValue = 0;
             }
+        }
+
+        public void Dispose()
+        {
+            _counter.Dispose();
+            _baseCounter.Dispose();
         }
         #endregion
 

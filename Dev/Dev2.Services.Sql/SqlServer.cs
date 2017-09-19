@@ -374,8 +374,7 @@ namespace Dev2.Services.Sql
                 {
                     continue;
                 }
-                SqlDbType sqlType;
-                Enum.TryParse(row["DATA_TYPE"] as string, true, out sqlType);
+                Enum.TryParse(row["DATA_TYPE"] as string, true, out SqlDbType sqlType);
                 int maxLength = row["CHARACTER_MAXIMUM_LENGTH"] as int? ?? -1;
                 var sqlParameter = new SqlParameter(parameterName, sqlType, maxLength);
                 command.Parameters.Add(sqlParameter);

@@ -6,7 +6,7 @@ using Dev2.Common.Interfaces.Monitoring;
 
 namespace Dev2.PerformanceCounters.Counters
 {
-    public class WarewolfRequestsPerSecondPerformanceCounterByResource : IResourcePerformanceCounter
+    public class WarewolfRequestsPerSecondPerformanceCounterByResource : IResourcePerformanceCounter, IDisposable
     {
 
         private PerformanceCounter _counter;
@@ -87,6 +87,11 @@ namespace Dev2.PerformanceCounters.Counters
                 CounterType = PerformanceCounterType.RateOfCountsPerSecond32
             };
             return new[] { totalOps };
+        }
+
+        public void Dispose()
+        {
+            _counter.Dispose();
         }
 
         public bool IsActive { get; set; }

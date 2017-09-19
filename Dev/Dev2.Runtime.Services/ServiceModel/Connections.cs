@@ -141,10 +141,8 @@ namespace Dev2.Runtime.ServiceModel
             var serverVersion = fragmentInvoke.Result;
             if (!string.IsNullOrEmpty(serverVersion))
             {
-                Version sourceVersionNumber;
-                Version.TryParse(serverVersion, out sourceVersionNumber);
-                Version destVersionNumber;
-                Version.TryParse("0.0.0.6", out destVersionNumber);
+                Version.TryParse(serverVersion, out Version sourceVersionNumber);
+                Version.TryParse("0.0.0.6", out Version destVersionNumber);
                 if (sourceVersionNumber != null && destVersionNumber != null)
                 {
                     if (sourceVersionNumber < destVersionNumber)

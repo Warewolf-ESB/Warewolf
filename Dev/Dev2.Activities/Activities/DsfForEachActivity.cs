@@ -249,8 +249,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 InitializeDebug(dataObject);
                 try
                 {
-                    ErrorResultTO errors;
-                    ForEachBootstrapTO exePayload = FetchExecutionType(dataObject, dataObject.Environment, out errors, 0);
+                    ForEachBootstrapTO exePayload = FetchExecutionType(dataObject, dataObject.Environment, out ErrorResultTO errors, 0);
 
                     if (errors.HasErrors())
                     {
@@ -266,8 +265,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     dataObject.ParentInstanceID = UniqueID;
 
                     allErrors.MergeErrors(errors);
-                    string error;
-                    ForEachInnerActivityTO innerA = GetInnerActivity(out error);
+                    ForEachInnerActivityTO innerA = GetInnerActivity(out string error);
                     allErrors.AddError(error);
 
                     exePayload.InnerActivity = innerA;
@@ -818,8 +816,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             dataObject.ForEachNestingLevel++;
             try
             {
-                ErrorResultTO errors;
-                ForEachBootstrapTO exePayload = FetchExecutionType(dataObject, dataObject.Environment, out errors, update);
+                ForEachBootstrapTO exePayload = FetchExecutionType(dataObject, dataObject.Environment, out ErrorResultTO errors, update);
 
                 foreach (var err in errors.FetchErrors())
                 {
@@ -827,8 +824,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
                 itr = exePayload.IndexIterator;
 
-                string error;
-                ForEachInnerActivityTO innerA = GetInnerActivity(out error);
+                ForEachInnerActivityTO innerA = GetInnerActivity(out string error);
                 var exeAct = innerA?.InnerActivity;
                 allErrors.AddError(error);
                 if (dataObject.IsDebugMode())

@@ -42,8 +42,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.XPath
         {
             BuildShapeAndTestData();
 
-            string xmlData;
-            scenarioContext.TryGetValue("xmlData", out xmlData);
+            scenarioContext.TryGetValue("xmlData", out string xmlData);
 
             var xPath = new DsfXPathActivity
                 {
@@ -55,8 +54,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.XPath
                     Action = xPath
                 };
 
-            List<Tuple<string, string>> xpathDtos;
-            scenarioContext.TryGetValue("xpathDtos", out xpathDtos);
+            scenarioContext.TryGetValue("xpathDtos", out List<Tuple<string, string>> xpathDtos);
 
             int row = 1;
             foreach(var variable in xpathDtos)
@@ -82,20 +80,18 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.XPath
         [Given(@"I have a variable ""(.*)"" output with xpath ""(.*)""")]
         public void GivenIHaveAVariableOutputWithXpath(string variable, string xpath)
         {
-            List<Tuple<string, string>> xpathDtos;
-            scenarioContext.TryGetValue("xpathDtos", out xpathDtos);
+            scenarioContext.TryGetValue("xpathDtos", out List<Tuple<string, string>> xpathDtos);
 
-            if(xpathDtos == null)
+            if (xpathDtos == null)
             {
                 xpathDtos = new List<Tuple<string, string>>();
                 scenarioContext.Add("xpathDtos", xpathDtos);
             }
             xpathDtos.Add(new Tuple<string, string>(variable, xpath));
 
-            List<Tuple<string, string>> variableList;
-            scenarioContext.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
 
-            if(variableList == null)
+            if (variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 scenarioContext.Add("variableList", variableList);
@@ -105,10 +101,9 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.XPath
         [Given(@"I have this xml ""(.*)"" in a variable '(.*)'")]
         public void GivenIHaveThisXmlInAVariable(string xml, string variable)
         {
-            List<Tuple<string, string>> variableList;
-            scenarioContext.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
 
-            if(variableList == null)
+            if (variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 scenarioContext.Add("variableList", variableList);
@@ -127,11 +122,9 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.XPath
         [Then(@"the variable ""(.*)"" should have a value ""(.*)""")]
         public void ThenTheVariableShouldHaveAValue(string variable, string value)
         {
-            string error;
-            string actualValue;
             var result = scenarioContext.Get<IDSFDataObject>("result");
             GetScalarValueFromEnvironment(result.Environment, DataListUtil.RemoveLanguageBrackets(variable),
-                                       out actualValue, out error);
+                                       out string actualValue, out string error);
             if(string.IsNullOrEmpty(value))
             {
                 Assert.IsTrue(string.IsNullOrEmpty(actualValue));
@@ -148,10 +141,9 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.XPath
             string recordset = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetsOnly, variable);
             string column = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, variable);
 
-            string error;
             var result = scenarioContext.Get<IDSFDataObject>("result");
             List<string> recordSetValues = RetrieveAllRecordSetFieldValues(result.Environment, recordset, column,
-                                                                           out error);
+                                                                           out string error);
             recordSetValues = recordSetValues.Where(i => !string.IsNullOrEmpty(i)).ToList();
 
             List<TableRow> tableRows = table.Rows.ToList();

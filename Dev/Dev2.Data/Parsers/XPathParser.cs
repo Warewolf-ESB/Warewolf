@@ -58,9 +58,8 @@ namespace Dev2.Data.Parsers
 
             try
             {
-                bool isFragment;
                 var useXmlData = DataListUtil.AdjustForEncodingIssues(xmlData);
-                var isXml = DataListUtil.IsXml(useXmlData, out isFragment);
+                var isXml = DataListUtil.IsXml(useXmlData, out bool isFragment);
 
                 if (!isXml && !isFragment)
                 {

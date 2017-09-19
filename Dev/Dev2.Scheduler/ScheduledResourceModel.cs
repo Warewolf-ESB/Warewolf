@@ -196,8 +196,7 @@ namespace Dev2.Scheduler
                 try
                 {
                     var id = split[5];
-                    Guid resourceId;
-                    Guid.TryParse(id, out resourceId);
+                    Guid.TryParse(id, out Guid resourceId);
 
                     var res = new ScheduledResource(arg.Definition.Data,
                                                  arg.Definition.Settings.Enabled ? SchedulerStatus.Enabled : SchedulerStatus.Disabled,

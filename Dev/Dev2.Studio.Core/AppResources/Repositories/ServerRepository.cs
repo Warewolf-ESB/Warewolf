@@ -254,8 +254,7 @@ namespace Dev2.Studio.Core
                         var guids = xml.Descendants("Environment").Select(id => id.Value).ToList();
                         foreach (var guidStr in guids)
                         {
-                            Guid guid;
-                            if (Guid.TryParse(guidStr, out guid))
+                            if (Guid.TryParse(guidStr, out Guid guid))
                             {
                                 result.Add(guid);
                             }
@@ -495,8 +494,7 @@ namespace Dev2.Studio.Core
                         var conStr = xe.AttributeSafe("ConnectionString");
                         Dictionary<string, string> connectionParams = ParseConnectionString(conStr);
 
-                        string tmp;
-                        if (!connectionParams.TryGetValue("AppServerUri", out tmp))
+                        if (!connectionParams.TryGetValue("AppServerUri", out string tmp))
                         {
                             continue;
                         }
@@ -515,8 +513,7 @@ namespace Dev2.Studio.Core
                         {
                             continue;
                         }
-                        int webServerPort;
-                        if (!int.TryParse(tmp, out webServerPort))
+                        if (!int.TryParse(tmp, out int webServerPort))
                         {
                             continue;
                         }
@@ -525,15 +522,12 @@ namespace Dev2.Studio.Core
                         {
                             tmp = "";
                         }
-                        AuthenticationType authenticationType;
-                        if (!Enum.TryParse(tmp, true, out authenticationType))
+                        if (!Enum.TryParse(tmp, true, out AuthenticationType authenticationType))
                         {
                             authenticationType = AuthenticationType.Windows;
                         }
-                        string userName;
-                        connectionParams.TryGetValue("UserName", out userName);
-                        string password;
-                        connectionParams.TryGetValue("Password", out password);
+                        connectionParams.TryGetValue("UserName", out string userName);
+                        connectionParams.TryGetValue("Password", out string password);
                         #endregion
 
                         var environment = CreateEnvironmentModel(env.ID, appServerUri, authenticationType, userName, password, env.DisplayName);

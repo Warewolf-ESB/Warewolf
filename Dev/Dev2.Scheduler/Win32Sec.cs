@@ -155,9 +155,7 @@ public class SecurityWrapper : ISecurityWrapper
         userName = CleanUser(userName);
         var privileges = new LSA_UNICODE_STRING[1];
         privileges[0] = InitLsaString(privilege);
-        IntPtr buffer;
-        ulong count;
-        uint ret = Win32Sec.LsaEnumerateAccountsWithUserRight(lsaHandle, privileges, out buffer, out count);
+        uint ret = Win32Sec.LsaEnumerateAccountsWithUserRight(lsaHandle, privileges, out LSA_HANDLE buffer, out ulong count);
         var Accounts = new List<String>();
 
         if (ret == 0)
@@ -207,9 +205,7 @@ public class SecurityWrapper : ISecurityWrapper
     {
         var privileges = new LSA_UNICODE_STRING[1];
         privileges[0] = InitLsaString("SeBatchLogonRight");
-        IntPtr buffer;
-        ulong count;
-        uint ret = Win32Sec.LsaEnumerateAccountsWithUserRight(lsaHandle, privileges, out buffer, out count);
+        uint ret = Win32Sec.LsaEnumerateAccountsWithUserRight(lsaHandle, privileges, out LSA_HANDLE buffer, out ulong count);
         var accounts = new List<String>();
 
         if (ret == 0)

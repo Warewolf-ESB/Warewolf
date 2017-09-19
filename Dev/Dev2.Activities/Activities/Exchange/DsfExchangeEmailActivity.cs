@@ -161,8 +161,7 @@ namespace Dev2.Activities.Exchange
                 {
                     while (colItr.HasMoreData())
                     {
-                        ErrorResultTO errors;
-                        var result = _emailSender.SendEmail(runtimeSource, colItr, toItr, ccItr, bccItr, subjectItr, bodyItr, attachmentsItr, out errors);
+                        var result = _emailSender.SendEmail(runtimeSource, colItr, toItr, ccItr, bccItr, subjectItr, bodyItr, attachmentsItr, out ErrorResultTO errors);
                         allErrors.MergeErrors(errors);
                         if (!allErrors.HasErrors())
                         {

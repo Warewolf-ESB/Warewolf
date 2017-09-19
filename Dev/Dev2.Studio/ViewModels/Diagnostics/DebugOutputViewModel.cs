@@ -892,8 +892,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
 
         private IDebugTreeViewItemViewModel CreateParentTreeViewItem(IDebugState content, IDebugTreeViewItemViewModel child)
         {
-            IDebugTreeViewItemViewModel parent;
-            if (!_contentItemMap.TryGetValue(content.ParentID.GetValueOrDefault(), out parent))
+            if (!_contentItemMap.TryGetValue(content.ParentID.GetValueOrDefault(), out IDebugTreeViewItemViewModel parent))
             {
                 parent = new DebugStateTreeViewItemViewModel(ServerRepository)
                 {

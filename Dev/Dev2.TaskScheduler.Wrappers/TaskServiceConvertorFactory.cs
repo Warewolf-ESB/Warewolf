@@ -128,10 +128,7 @@ namespace Dev2.TaskScheduler.Wrappers
                     var evt = resource.Instance as EventTrigger;
                     if (evt != null)
                     {
-                        int? eventId;
-                        string source;
-                        string log;
-                        evt.GetBasic(out log, out source, out eventId);
+                        evt.GetBasic(out string log, out string source, out int? eventId);
 
                         trigger = new Dev2EventTrigger(this, new EventTrigger(log, source, eventId));
                     }

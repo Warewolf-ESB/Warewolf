@@ -39,10 +39,9 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Replace
 
         protected override void BuildDataList()
         {
-            List<Tuple<string, string>> variableList;
-            scenarioContext.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
 
-            if(variableList == null)
+            if (variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 scenarioContext.Add("variableList", variableList);
@@ -51,21 +50,17 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Replace
             variableList.Add(new Tuple<string, string>(ResultVariable, ""));
             BuildShapeAndTestData();
 
-            string find;
-            scenarioContext.TryGetValue("find", out find);
-            string replaceWith;
-            scenarioContext.TryGetValue("replaceWith", out replaceWith);
+            scenarioContext.TryGetValue("find", out string find);
+            scenarioContext.TryGetValue("replaceWith", out string replaceWith);
 
-            string resultVar;
-            scenarioContext.TryGetValue("resultVar", out resultVar);
+            scenarioContext.TryGetValue("resultVar", out string resultVar);
 
             if (string.IsNullOrEmpty(resultVar))
             {
                 resultVar = ResultVariable;
             }
 
-            string sentence;
-            if(scenarioContext.TryGetValue("sentence", out sentence))
+            if (scenarioContext.TryGetValue("sentence", out string sentence))
             {
                 _inFields = sentence;
             }
@@ -101,10 +96,9 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Replace
         [Given(@"I have a replace variable ""(.*)"" equal to ""(.*)""")]
         public void GivenIHaveAReplaceVariableEqualTo(string variable, string value)
         {
-            List<Tuple<string, string>> variableList;
-            scenarioContext.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
 
-            if(variableList == null)
+            if (variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 scenarioContext.Add("variableList", variableList);
@@ -135,24 +129,20 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Replace
         [Then(@"the replace result should be ""(.*)""")]
         public void ThenTheReplaceResultShouldBe(string expectedResult)
         {
-            string error;
-            string actualValue;
             expectedResult = expectedResult.Replace('"', ' ').Trim();
             var result = scenarioContext.Get<IDSFDataObject>("result");
             GetScalarValueFromEnvironment(result.Environment, ResultVariable,
-                                       out actualValue, out error);
+                                       out string actualValue, out string error);
             Assert.AreEqual(expectedResult, actualValue);
         }
 
         [Then(@"""(.*)"" should be ""(.*)""")]
         public void ThenShouldBe(string variable, string value)
         {
-            string error;
-            string actualValue;
             value = value.Replace('"', ' ').Trim();
             var result = scenarioContext.Get<IDSFDataObject>("result");
             GetScalarValueFromEnvironment(result.Environment, variable,
-                                       out actualValue, out error);
+                                       out string actualValue, out string error);
             Assert.AreEqual(value, actualValue);
         }
     }

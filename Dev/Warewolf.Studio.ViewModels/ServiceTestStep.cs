@@ -393,8 +393,7 @@ namespace Warewolf.Studio.ViewModels
             if (DataListUtil.GetRecordsetIndexType(varName) == enRecordsetIndexType.Numeric)
             {
                 var extractedIndex = DataListUtil.ExtractIndexRegionFromRecordset(varName);
-                int intIndex;
-                if (int.TryParse(extractedIndex, out intIndex))
+                if (int.TryParse(extractedIndex, out int intIndex))
                 {
                     intIndex++;
                     var blankName = DataListUtil.ReplaceRecordsetIndexWithBlank(varName);

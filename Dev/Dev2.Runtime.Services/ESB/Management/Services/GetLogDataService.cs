@@ -78,9 +78,8 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         private string GetValue(string key, Dictionary<string, StringBuilder> values)
         {
-            StringBuilder value;
             string toReturn = "";
-            if (values.TryGetValue(key, out value))
+            if (values.TryGetValue(key, out StringBuilder value))
             {
                 toReturn = value.ToString();
             }

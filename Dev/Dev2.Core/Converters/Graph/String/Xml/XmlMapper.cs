@@ -51,8 +51,7 @@ namespace Unlimited.Framework.Converters.Graph.String.Xml
             var uniquePaths = new Dictionary<string, IPath>();
             foreach (IPath path in allPaths)
             {
-                IPath tmpPath;
-                if (!uniquePaths.TryGetValue(path.ActualPath, out tmpPath))
+                if (!uniquePaths.TryGetValue(path.ActualPath, out IPath tmpPath))
                 {
                     uniquePaths.Add(path.ActualPath, path);
                 }

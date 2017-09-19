@@ -51,9 +51,8 @@ namespace Gma.DataStructures.StringSearch
                 throw new ArgumentNullException("query");
             }
 
-            ConcurrentTrieNode<TValue> childNode;
             return
-                m_Children.TryGetValue(query[position], out childNode)
+                m_Children.TryGetValue(query[position], out ConcurrentTrieNode<TValue> childNode)
                     ? childNode
                     : null;
         }

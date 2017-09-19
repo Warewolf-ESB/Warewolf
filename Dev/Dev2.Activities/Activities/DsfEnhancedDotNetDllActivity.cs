@@ -278,8 +278,7 @@ namespace Dev2.Activities
         {
             var start = DateTime.Now;
             pluginExecutionDto.ObjectString = ObjectResult;
-            string objString;
-            IDev2MethodInfo result = PluginServiceExecutionFactory.InvokePlugin(appDomain, pluginExecutionDto, dev2MethodInfo, out objString);
+            IDev2MethodInfo result = PluginServiceExecutionFactory.InvokePlugin(appDomain, pluginExecutionDto, dev2MethodInfo, out string objString);
 
             pluginExecutionDto.ObjectString = objString;
             ObjectResult = objString;

@@ -133,9 +133,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         {
                             if (!string.IsNullOrEmpty(t.FieldName))
                             {
-                                string cleanExpression;
                                 var assignValue = new AssignValue(t.FieldName, t.FieldValue);
-                                var isCalcEvaluation = DataListUtil.IsCalcEvaluation(t.FieldValue, out cleanExpression);
+                                var isCalcEvaluation = DataListUtil.IsCalcEvaluation(t.FieldValue, out string cleanExpression);
                                 if (isCalcEvaluation)
                                 {
                                     assignValue = new AssignValue(t.FieldName, cleanExpression);
@@ -237,17 +236,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         private static string PerformCalcForAtom(DataStorage.WarewolfAtom warewolfAtom, FunctionEvaluator functionEvaluator)
         {
             var calcExpression = ExecutionEnvironment.WarewolfAtomToString(warewolfAtom);
-            string exp;
-            DataListUtil.IsCalcEvaluation(calcExpression, out exp);
-            string eval;
-            string error;
-            var res = functionEvaluator.TryEvaluateFunction(exp, out eval, out error);
+            DataListUtil.IsCalcEvaluation(calcExpression, out string exp);
+            var res = functionEvaluator.TryEvaluateFunction(exp, out string eval, out string error);
             if (eval == exp.Replace("\"", "") && exp.Contains("\""))
             {
                 try
                 {
-                    string eval2;
-                    var b = functionEvaluator.TryEvaluateFunction(exp.Replace("\"", ""), out eval2, out error);
+                    var b = functionEvaluator.TryEvaluateFunction(exp.Replace("\"", ""), out string eval2, out error);
                     if (b)
                     {
                         eval = eval2;
@@ -342,8 +337,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     AddDebugItem(new DebugItemWarewolfAtomResult("", assignValue.Value, environment.EvalToExpression(assignValue.Name, update), "", VariableLabelText, NewFieldLabelText, "="), debugItem);
                     return debugItem;
                 }
-                string errorMessage;
-                if (!ExecutionEnvironment.IsValidVariableExpression(assignValue.Name, out errorMessage, update))
+                if (!ExecutionEnvironment.IsValidVariableExpression(assignValue.Name, out string errorMessage, update))
                 {
                     return null;
                 }

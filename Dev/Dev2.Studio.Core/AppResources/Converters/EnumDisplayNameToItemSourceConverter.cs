@@ -38,8 +38,7 @@ namespace Dev2.Studio.Core.AppResources.Converters
                 throw new ArgumentException("Type '" + type.Name + "' is not an enum");
             }
 
-            Tuple<object[], string[]> values;
-            if(!Cache.TryGetValue(type, out values))
+            if (!Cache.TryGetValue(type, out Tuple<object[], string[]> values))
             {
                 FieldInfo[] fieldInfos = type.GetFields()
                     .Where(f => f.IsLiteral)

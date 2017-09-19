@@ -217,12 +217,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                                 allErrors.AddError(ErrorResource.BlankUSINGValue);
                                             }
 
-                                            int atValue;
-                                            if(!Int32.TryParse(at, out atValue) || atValue < 0)
+                                            if (!Int32.TryParse(at, out int atValue) || atValue < 0)
                                             {
                                                 allErrors.AddError(ErrorResource.USINGMustBeARealNumber);
                                             }
-                                            if(pad.Length > 1)
+                                            if (pad.Length > 1)
                                             {
                                                 allErrors.AddError(ErrorResource.PADDINGMustBeSingleCharecter);
                                             }

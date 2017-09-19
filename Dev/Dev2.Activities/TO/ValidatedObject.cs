@@ -43,10 +43,9 @@ namespace Dev2.TO
 
             
             OnPropertyChanged("Errors");
-            
 
-            List<IActionableErrorInfo> errorList;
-            if(Errors.TryGetValue(propertyName, out errorList))
+
+            if (Errors.TryGetValue(propertyName, out List<IActionableErrorInfo> errorList))
             {
                 return errorList.Count == 0;
             }

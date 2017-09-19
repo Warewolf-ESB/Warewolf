@@ -86,8 +86,7 @@ namespace Dev2.Data.Util
             }
             else
             {
-                int convertIntTest;
-                if (Int32.TryParse(idx, out convertIntTest))
+                if (Int32.TryParse(idx, out int convertIntTest))
                 {
                     result = enRecordsetIndexType.Numeric;
                 }

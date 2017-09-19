@@ -106,8 +106,7 @@ namespace Dev2.Activities.Specs.Permissions
             var permissionsStrings = groupRights.Split(new[] { ", " }, StringSplitOptions.RemoveEmptyEntries);
             foreach (var permissionsString in permissionsStrings)
             {
-                SecPermissions permission;
-                if (Enum.TryParse(permissionsString.Replace(" ", ""), true, out permission))
+                if (Enum.TryParse(permissionsString.Replace(" ", ""), true, out SecPermissions permission))
                 {
                     groupPermssions.Permissions |= permission;
                 }
@@ -134,8 +133,7 @@ namespace Dev2.Activities.Specs.Permissions
             var permissionsStrings = groupRights.Split(new[] { ", " }, StringSplitOptions.RemoveEmptyEntries);
             foreach (var permissionsString in permissionsStrings)
             {
-                SecPermissions permission;
-                if (Enum.TryParse(permissionsString.Replace(" ", ""), true, out permission))
+                if (Enum.TryParse(permissionsString.Replace(" ", ""), true, out SecPermissions permission))
                 {
                     groupPermssions.Permissions |= permission;
                 }
@@ -163,8 +161,7 @@ namespace Dev2.Activities.Specs.Permissions
             var permissionsStrings = groupRights.Split(new[] { ", " }, StringSplitOptions.RemoveEmptyEntries);
             foreach (var permissionsString in permissionsStrings)
             {
-                SecPermissions permission;
-                if (Enum.TryParse(permissionsString.Replace(" ", ""), true, out permission))
+                if (Enum.TryParse(permissionsString.Replace(" ", ""), true, out SecPermissions permission))
                 {
                     groupPermssions.Permissions |= permission;
                 }
@@ -247,8 +244,7 @@ namespace Dev2.Activities.Specs.Permissions
             var permissionsStrings = resourcePerms.Split(new[] { ", " }, StringSplitOptions.RemoveEmptyEntries);
             foreach (var permissionsString in permissionsStrings)
             {
-                SecPermissions permission;
-                if (Enum.TryParse(permissionsString.Replace(" ", ""), true, out permission))
+                if (Enum.TryParse(permissionsString.Replace(" ", ""), true, out SecPermissions permission))
                 {
                     resourcePermissions |= permission;
                 }
@@ -268,8 +264,7 @@ namespace Dev2.Activities.Specs.Permissions
             var permissionsStrings = resourcePerms.Split(new[] { ", " }, StringSplitOptions.RemoveEmptyEntries);
             foreach (var permissionsString in permissionsStrings)
             {
-                SecPermissions permission;
-                if (Enum.TryParse(permissionsString.Replace(" ", ""), true, out permission))
+                if (Enum.TryParse(permissionsString.Replace(" ", ""), true, out SecPermissions permission))
                 {
                     resourcePermissions |= permission;
                 }
@@ -296,8 +291,7 @@ namespace Dev2.Activities.Specs.Permissions
             var permissionsStrings = resourceRights.Split(new[] { ", " }, StringSplitOptions.RemoveEmptyEntries);
             foreach (var permissionsString in permissionsStrings)
             {
-                SecPermissions permission;
-                if (Enum.TryParse(permissionsString.Replace(" ", ""), true, out permission))
+                if (Enum.TryParse(permissionsString.Replace(" ", ""), true, out SecPermissions permission))
                 {
                     resourcePermissions |= permission;
                 }
@@ -323,8 +317,7 @@ namespace Dev2.Activities.Specs.Permissions
             var permissionsStrings = resourcePerms.Split(new[] { ", " }, StringSplitOptions.RemoveEmptyEntries);
             foreach (var permissionsString in permissionsStrings)
             {
-                SecPermissions permission;
-                if (Enum.TryParse(permissionsString.Replace(" ", ""), true, out permission))
+                if (Enum.TryParse(permissionsString.Replace(" ", ""), true, out SecPermissions permission))
                 {
                     resourcePermissions |= permission;
                 }
@@ -336,12 +329,9 @@ namespace Dev2.Activities.Specs.Permissions
         [AfterScenario("Security")]
         public void DoCleanUp()
         {
-            IServer currentEnvironment;
-            FeatureContext.Current.TryGetValue("currentEnvironment", out currentEnvironment);
-            IServer server;
-            FeatureContext.Current.TryGetValue("environment", out server);
-            Data.Settings.Settings currentSettings;
-            FeatureContext.Current.TryGetValue("initialSettings", out currentSettings);
+            FeatureContext.Current.TryGetValue("currentEnvironment", out IServer currentEnvironment);
+            FeatureContext.Current.TryGetValue("environment", out IServer server);
+            FeatureContext.Current.TryGetValue("initialSettings", out Data.Settings.Settings currentSettings);
 
             if (server != null)
             {

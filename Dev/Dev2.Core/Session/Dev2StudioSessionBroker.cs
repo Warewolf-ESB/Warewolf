@@ -125,11 +125,10 @@ namespace Dev2.Session
                 else
                 {
                     // no longer relavent, remove it
-                    DebugTO tmp;
 
-                    if (_debugPersistSettings.TryGetValue(to.WorkflowID, out tmp))
+                    if (_debugPersistSettings.TryGetValue(to.WorkflowID, out DebugTO tmp))
                     {
-                         _debugPersistSettings[to.WorkflowID].CleanUp();
+                        _debugPersistSettings[to.WorkflowID].CleanUp();
                         _debugPersistSettings.Remove(to.WorkflowID);
                     }
                 }
@@ -139,9 +138,8 @@ namespace Dev2.Session
                 // build the list
                 foreach (string key in _debugPersistSettings.Keys)
                 {
-                    DebugTO tmp;
 
-                    if (key.Length > 0 && _debugPersistSettings.TryGetValue(key, out tmp))
+                    if (key.Length > 0 && _debugPersistSettings.TryGetValue(key, out DebugTO tmp))
                     {
                         SaveDebugTO that = tmp.CopyToSaveDebugTO();
                         settingList.Add(that);

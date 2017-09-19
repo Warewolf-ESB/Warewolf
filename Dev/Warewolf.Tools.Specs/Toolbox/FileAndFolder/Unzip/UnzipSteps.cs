@@ -199,8 +199,7 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Unzip
             {
                 var e = aggregateException.Flatten();
                 var realError = e.GetBaseException();
-                IList<IActionableErrorInfo> validationErrors;
-                scenarioContext.TryGetValue(CommonSteps.ValidationErrors, out validationErrors);
+                scenarioContext.TryGetValue(CommonSteps.ValidationErrors, out IList<IActionableErrorInfo> validationErrors);
                 if (validationErrors == null)
                 {
                     validationErrors = new List<IActionableErrorInfo>()
@@ -216,8 +215,7 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Unzip
             }
             catch (Exception e)
             {
-                IList<IActionableErrorInfo> validationErrors;
-                scenarioContext.TryGetValue(CommonSteps.ValidationErrors, out validationErrors);
+                scenarioContext.TryGetValue(CommonSteps.ValidationErrors, out IList<IActionableErrorInfo> validationErrors);
                 if (validationErrors == null)
                 {
                     validationErrors = new List<IActionableErrorInfo>()

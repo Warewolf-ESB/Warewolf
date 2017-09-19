@@ -350,8 +350,7 @@ namespace Dev2.Studio.Views
             {
                 var menuExpandedString = elementsByTagNameMenuExpanded[0].InnerXml;
 
-                bool menuExpanded;
-                if (bool.TryParse(menuExpandedString, out menuExpanded))
+                if (bool.TryParse(menuExpandedString, out bool menuExpanded))
                 {
                     shellViewModel.MenuExpanded = menuExpanded;
                 }
@@ -369,8 +368,7 @@ namespace Dev2.Studio.Views
             {
                 var menuPanelOpenString = elementsByTagNameMenuPanelOpen[0].InnerXml;
 
-                bool panelOpen;
-                if (bool.TryParse(menuPanelOpenString, out panelOpen))
+                if (bool.TryParse(menuPanelOpenString, out bool panelOpen))
                 {
                     shellViewModel.MenuViewModel.IsPanelOpen = panelOpen;
                 }
@@ -384,8 +382,7 @@ namespace Dev2.Studio.Views
             {
                 var menuPanelLockedOpenString = elementsByTagNameMenuPanelLockedOpen[0].InnerXml;
 
-                bool panelLockedOpen;
-                if (bool.TryParse(menuPanelLockedOpenString, out panelLockedOpen))
+                if (bool.TryParse(menuPanelLockedOpenString, out bool panelLockedOpen))
                 {
                     shellViewModel.MenuViewModel.IsPanelLockedOpen = panelLockedOpen;
                 }
@@ -778,8 +775,7 @@ namespace Dev2.Studio.Views
                     WindowState = WindowState.Normal;
                     ResizeMode = WindowState == WindowState.Normal ? ResizeMode.CanResize : ResizeMode.CanMinimize;
 
-                    POINT lMousePosition;
-                    GetCursorPos(out lMousePosition);
+                    GetCursorPos(out POINT lMousePosition);
 
                     Left = lMousePosition.x - targetHorizontal;
                     Top = lMousePosition.y - targetVertical;
@@ -789,8 +785,7 @@ namespace Dev2.Studio.Views
                 }
                 if (allowMaximizeState)
                 {
-                    POINT lMousePosition;
-                    GetCursorPos(out lMousePosition);
+                    GetCursorPos(out POINT lMousePosition);
 
                     if (lMousePosition.y <= 0)
                     {

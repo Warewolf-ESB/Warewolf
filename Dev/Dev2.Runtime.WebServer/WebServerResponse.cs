@@ -19,8 +19,7 @@ namespace Dev2.Runtime.WebServer
         public WebServerResponse(HttpResponseMessage response)
         {
             VerifyArgument.IsNotNull("response", response);
-            IEnumerable<string> origins;
-            if (response.RequestMessage?.Headers != null && response.RequestMessage.Headers.TryGetValues("Origin", out origins))
+            if (response.RequestMessage?.Headers != null && response.RequestMessage.Headers.TryGetValues("Origin", out IEnumerable<string> origins))
             {
                 var origin = origins.FirstOrDefault();
                 if (!string.IsNullOrEmpty(origin))

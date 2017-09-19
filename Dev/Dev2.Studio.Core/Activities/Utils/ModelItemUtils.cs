@@ -95,8 +95,7 @@ namespace Dev2.Studio.Core.Activities.Utils
                 {
                     if(typeof(T) == typeof(Guid))
                     {
-                        Guid guid;
-                        Guid.TryParse(value.ToString(), out guid);
+                        Guid.TryParse(value.ToString(), out Guid guid);
                         value = guid;
                     }
                 }
@@ -118,8 +117,7 @@ namespace Dev2.Studio.Core.Activities.Utils
         public static Guid GetUniqueID(ModelItem modelItem)
         {
             var instanceIDStr = GetProperty("UniqueID", modelItem) as string;
-            Guid instanceID;
-            Guid.TryParse(instanceIDStr, out instanceID);
+            Guid.TryParse(instanceIDStr, out Guid instanceID);
             return instanceID;
         }
 

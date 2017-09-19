@@ -53,8 +53,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 string resourceId = null;
                 string dependsOnMeString = null;
                 bool dependsOnMe = false;
-                StringBuilder tmp;
-                values.TryGetValue("ResourceId", out tmp);
+                values.TryGetValue("ResourceId", out StringBuilder tmp);
                 if (tmp != null)
                 {
                     resourceId = tmp.ToString();
@@ -68,8 +67,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                     throw new InvalidDataContractException(ErrorResource.ResourceIdIsNull);
                 }
-                Guid resId;
-                if (!Guid.TryParse(resourceId, out resId))
+                if (!Guid.TryParse(resourceId, out Guid resId))
                 {
                     throw new InvalidDataContractException(ErrorResource.ResourceIdNotAGUID);
                 }

@@ -749,8 +749,7 @@ namespace Dev2.Studio.ViewModels
                 return;
             }
 
-            Action<IContextualResourceModel, IView> editAction;
-            if (_editHandler.TryGetValue(resourceModel.ServerResourceType, out editAction))
+            if (_editHandler.TryGetValue(resourceModel.ServerResourceType, out Action<IContextualResourceModel, IView> editAction))
             {
                 editAction.Invoke(resourceModel, resourceModel.GetView(() => ViewFactoryProvider.GetViewGivenServerResourceType(resourceModel.ServerResourceType)));
             }
@@ -1084,8 +1083,7 @@ namespace Dev2.Studio.ViewModels
         {
             var connection = new Connection(resourceModel.WorkflowXaml.ToXElement());
             string address = null;
-            Uri uri;
-            if (Uri.TryCreate(connection.Address, UriKind.RelativeOrAbsolute, out uri))
+            if (Uri.TryCreate(connection.Address, UriKind.RelativeOrAbsolute, out Uri uri))
             {
                 address = uri.Host;
             }
@@ -1218,8 +1216,7 @@ namespace Dev2.Studio.ViewModels
         private T CreateAndActivateUniqueWorkSurface<T>(WorkSurfaceContext context)
             where T : IWorkSurfaceViewModel
         {
-            T vmr;
-            WorkSurfaceContextViewModel ctx = WorkSurfaceContextFactory.Create(context, out vmr);
+            WorkSurfaceContextViewModel ctx = WorkSurfaceContextFactory.Create(context, out T vmr);
             AddAndActivateWorkSurface(ctx);
             return vmr;
         }

@@ -212,8 +212,7 @@ namespace Dev2.Data.Decision
                     //Remove those record sets and replace them with a new decision for each resolved value
                     foreach(Dev2Decision decision in invalidDecisions)
                     {
-                        ErrorResultTO errors;
-                        dds = ResolveAllRecords(env, dds, decision, effectedCols, out errors, update);
+                        dds = ResolveAllRecords(env, dds, decision, effectedCols, out ErrorResultTO errors, update);
                     }
                 }
 

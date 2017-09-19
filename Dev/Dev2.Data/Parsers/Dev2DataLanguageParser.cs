@@ -667,16 +667,14 @@ namespace Dev2.Data.Parsers
             const string DisplayString = "Recordset";
             if ((!isRecName || parts[1] == string.Empty) && payload.Child == null)
             {
-                IList<IIntellisenseResult> intellisenseResults;
-                if (ValidateName(rawSearch, DisplayString, result, out intellisenseResults))
+                if (ValidateName(rawSearch, DisplayString, result, out IList<IIntellisenseResult> intellisenseResults))
                 {
                     return;
                 }
             }
             else
             {
-                IList<IIntellisenseResult> intellisenseResults;
-                if (ValidateName(search, DisplayString, result, out intellisenseResults))
+                if (ValidateName(search, DisplayString, result, out IList<IIntellisenseResult> intellisenseResults))
                 {
                     return;
                 }

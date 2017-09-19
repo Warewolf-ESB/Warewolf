@@ -74,9 +74,8 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 throw new InvalidDataContractException(ErrorResource.NoParameter);
             }
-            StringBuilder tmp;
-            values.TryGetValue("Directory", out tmp);
-            if(tmp != null)
+                values.TryGetValue("Directory", out StringBuilder tmp);
+                if (tmp != null)
             {
                 directory = tmp.ToString();
             }

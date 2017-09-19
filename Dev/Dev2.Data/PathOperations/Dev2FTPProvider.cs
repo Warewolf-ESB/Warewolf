@@ -141,8 +141,7 @@ namespace Dev2.Data.PathOperations
         }
         string ExtractHostNameFromPath(string path)
         {
-            Uri uriForSftp;
-            if (Uri.TryCreate(path, UriKind.RelativeOrAbsolute, out uriForSftp))
+            if (Uri.TryCreate(path, UriKind.RelativeOrAbsolute, out Uri uriForSftp))
             {
                 try
                 {
@@ -205,8 +204,7 @@ namespace Dev2.Data.PathOperations
 
         string ExtractFileNameFromPath(string path)
         {
-            Uri uriForSftp;
-            if (Uri.TryCreate(path, UriKind.RelativeOrAbsolute, out uriForSftp))
+            if (Uri.TryCreate(path, UriKind.RelativeOrAbsolute, out Uri uriForSftp))
             {
                 try
                 {

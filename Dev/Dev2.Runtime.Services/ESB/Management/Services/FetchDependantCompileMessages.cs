@@ -44,9 +44,8 @@ namespace Dev2.Runtime.ESB.Management.Services
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             var result = new ExecuteMessage { HasError = false };
 
-            StringBuilder tmp;
-            values.TryGetValue("ServiceID", out tmp);
-            if(tmp != null)
+            values.TryGetValue("ServiceID", out StringBuilder tmp);
+            if (tmp != null)
             {
                 serviceId = tmp.ToString();
             }
@@ -65,11 +64,8 @@ namespace Dev2.Runtime.ESB.Management.Services
                 throw new InvalidDataContractException(ErrorResource.NullServiceIDOrWorkspaceID);
             }
 
-            Guid wGuid;
-            Guid sGuid;
-
-            Guid.TryParse(workspaceId, out wGuid);
-            Guid.TryParse(serviceId, out sGuid);
+            Guid.TryParse(workspaceId, out Guid wGuid);
+            Guid.TryParse(serviceId, out Guid sGuid);
 
 
             var thisService = ResourceCatalog.Instance.GetResource(wGuid, sGuid);
