@@ -6,6 +6,7 @@ using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.ViewModels.DataList;
 using Microsoft.Practices.Prism.Mvvm;
 using System.Activities.Statements;
+using System.Collections.ObjectModel;
 
 namespace Dev2.ViewModels.Merge
 {
@@ -57,7 +58,7 @@ namespace Dev2.ViewModels.Merge
                         mergeToolModel.Children.Add(AddModelItem(ModelItemUtils.CreateModelItem(act.False)));
                     }
                 }
-                var mergeToolModel = new MergeToolModel();
+                //var mergeToolModel = new MergeToolModel();
                 mergeToolModel.ActivityDesignerViewModel = instance;
                 mergeToolModel.MergeIcon = modelItem.GetImageSourceForTool();
                 mergeToolModel.MergeDescription = dsfActivity?.ToString();

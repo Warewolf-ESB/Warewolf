@@ -116,15 +116,15 @@ namespace Warewolf.MergeParser
         {
             var activityParser = CustomContainer.Get<IActivityParser>();
             return activityParser.Parse(currentDifferences, modelItem);
-
-        private IDev2Activity GetActivity(ModelItem modelItem)
-        {
-            if (modelItem.ItemType == typeof(FlowDecision))
-            {
-                return modelItem.GetProperty<IDev2Activity>("Condition");
-            }
-            return modelItem.GetProperty<IDev2Activity>("Action");
         }
+        //private IDev2Activity GetActivity(ModelItem modelItem)
+        //{
+        //    if (modelItem.ItemType == typeof(FlowDecision))
+        //    {
+        //        return modelItem.GetProperty<IDev2Activity>("Condition");
+        //    }
+        //    return modelItem.GetProperty<IDev2Activity>("Action");
+        //}
 
         private List<ModelItem> GetNodes(IContextualResourceModel resourceModel)
         {
