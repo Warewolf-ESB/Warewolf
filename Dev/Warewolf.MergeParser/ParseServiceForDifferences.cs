@@ -9,7 +9,6 @@ using System.Activities.Presentation;
 using Dev2;
 using Dev2.Studio.Interfaces;
 using Dev2.Common;
-using Dev2.Activities;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Warewolf.MergeParser
@@ -20,7 +19,7 @@ namespace Warewolf.MergeParser
         readonly ModelItem _currentDifference;
 
         public ParseServiceForDifferences()
-        {                                                                                                
+        {
         }
 
         public List<ModelItem> CurrentDifferences { get; private set; }
@@ -52,16 +51,14 @@ namespace Warewolf.MergeParser
             return default;
         }
 
-
-
-        public List<(Guid uniqueId, ModelItem current, ModelItem difference, bool conflict)> GetDifferences(IContextualResourceModel current,IContextualResourceModel difference)
+        public List<(Guid uniqueId, ModelItem current, ModelItem difference, bool conflict)> GetDifferences(IContextualResourceModel current, IContextualResourceModel difference)
         {
             var conflictList = new List<(Guid uniqueId, ModelItem current, ModelItem difference, bool conflict)>();
             CurrentDifferences = GetNodes(current);
             Differences = GetNodes(difference);
 
-            var mergeHeadActivities = CurrentDifferences.Select(i => i.GetProperty<IDev2Activity>("Action")).ToList();
-            var headActivities = Differences.Select(i => i.GetProperty<IDev2Activity>("Action")).ToList();
+            var mergeHeadActivities = CurrentDifferences.Select(GetActivity).ToList();
+            var headActivities = Differences.Select(GetActivity).ToList();
             var equalItems = mergeHeadActivities.Intersect(headActivities);
             var nodesDifferentInMergeHead = mergeHeadActivities.Except(headActivities);
             var nodesDifferentInHead = headActivities.Except(mergeHeadActivities);
@@ -70,7 +67,10 @@ namespace Warewolf.MergeParser
 
             foreach (var item in equalItems)
             {
-                if (item is null) continue;
+                if (item is null)
+                {
+                    continue;
+                }
                 var currentModelItemUniqueId = GetCurrentModelItemUniqueId(CurrentDifferences, item.UniqueID);
                 var equalItem = (Guid.Parse(item.UniqueID), currentModelItemUniqueId, currentModelItemUniqueId, false);
                 conflictList.Add(equalItem);
@@ -79,14 +79,25 @@ namespace Warewolf.MergeParser
             var differenceGroups = allDifferences.GroupBy(activity => activity.UniqueID);
             foreach (var item in differenceGroups)
             {
-                if (item is null) continue;
+                if (item is null)
+                {
+                    continue;
+                }
                 var currentModelItemUniqueId = GetCurrentModelItemUniqueId(CurrentDifferences, item.Key);
                 var differences = GetCurrentModelItemUniqueId(Differences, item.Key);
                 var diffItem = (Guid.Parse(item.Key), currentModelItemUniqueId, differences, true);
                 conflictList.Add(diffItem);
             }
             return conflictList;
+        }
 
+        private IDev2Activity GetActivity(ModelItem modelItem)
+        {
+                if (modelItem.ItemType == typeof(FlowDecision))
+                {
+                    return modelItem.GetProperty<IDev2Activity>("Condition");
+                }
+                return modelItem.GetProperty<IDev2Activity>("Action");            
         }
 
         private List<ModelItem> GetNodes(IContextualResourceModel resourceModel)
@@ -94,14 +105,11 @@ namespace Warewolf.MergeParser
             var wd = new WorkflowDesigner();
             var xaml = resourceModel.WorkflowXaml;
 
-            if (xaml == null || xaml.Length == 0)
+            var workspace = GlobalConstants.ServerWorkspaceID;
+            var msg = resourceModel.Environment.ResourceRepository.FetchResourceDefinition(resourceModel.Environment, workspace, resourceModel.ID, false);
+            if (msg != null)
             {
-                var workspace = GlobalConstants.ServerWorkspaceID;
-                var msg = resourceModel.Environment.ResourceRepository.FetchResourceDefinition(resourceModel.Environment, workspace, resourceModel.ID, false);
-                if (msg != null)
-                {
-                    xaml = msg.Message;
-                }
+                xaml = msg.Message;
             }
 
             if (xaml == null || xaml.Length == 0)
@@ -115,7 +123,5 @@ namespace Warewolf.MergeParser
             wd = null;
             return nodeList;
         }
-
-
     }
 }

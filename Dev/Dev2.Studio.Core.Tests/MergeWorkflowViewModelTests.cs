@@ -5,26 +5,66 @@ using Dev2.Studio.Interfaces;
 using System.Text;
 using Dev2.Studio.Core.Interfaces;
 using System.Windows;
+using Dev2.Common.Interfaces.Studio.Controller;
+using Unlimited.Applications.BusinessDesignStudio.Activities;
+using System.Collections.Generic;
+using System;
+using System.Activities;
+using Dev2.Studio.Core.Activities.Utils;
+using System.Activities.Presentation.Model;
 
 namespace Dev2.Core.Tests
 {
     [TestClass]
     public class MergeWorkflowViewModelTests
     {
+        Mock<IApplicationAdaptor> _mockApplicationAdapter;
+        Mock<IPopupController> _mockPopupController;
+        Mock<IServer> _mockServer;
+        Mock<IShellViewModel> _mockShellViewModel;
+        Mock<IServerRepository> _mockServerRepository;
+        Mock<IParseServiceForDifferences> _mockParseServiceForDifferences;
+
+        [TestInitialize]
+        public void InitializeTest()
+        {
+            _mockApplicationAdapter = new Mock<IApplicationAdaptor>();
+            _mockPopupController = new Mock<IPopupController>();
+            _mockServer = new Mock<IServer>();
+            _mockShellViewModel = new Mock<IShellViewModel>();
+            _mockServerRepository = new Mock<IServerRepository>();
+            _mockParseServiceForDifferences = new Mock<IParseServiceForDifferences>();
+
+            _mockApplicationAdapter.Setup(a => a.Current).Returns(Application.Current);
+
+            _mockServer.Setup(a => a.GetServerVersion()).Returns("1.0.0.0");
+            _mockShellViewModel.Setup(a => a.ActiveServer).Returns(_mockServer.Object);
+
+            _mockServerRepository.Setup(a => a.ActiveServer).Returns(_mockServer.Object);
+            _mockServerRepository.Setup(a => a.IsLoaded).Returns(true);
+
+            CustomContainer.Register(_mockApplicationAdapter.Object);
+            CustomContainer.Register(_mockPopupController.Object);
+            CustomContainer.Register(_mockServer.Object);
+            CustomContainer.Register(_mockShellViewModel.Object);
+            CustomContainer.Register(_mockServerRepository.Object);
+            CustomContainer.Register(_mockParseServiceForDifferences.Object);
+        }
+
         [TestMethod]
         public void Initialize_GivenIsNewNoEmptyConflicts_ShouldPassThrough()
         {
             //---------------Set up test pack-------------------
-            var applicationAdapterMock = new Mock<IApplicationAdaptor>();
-            applicationAdapterMock.Setup(a => a.Current).Returns(Application.Current);
-            CustomContainer.Register(applicationAdapterMock.Object);
 
-            var mockServer = new Mock<IServer>();
-            var mockshell = new Mock<IShellViewModel>();
-            mockshell.Setup(a => a.ActiveServer).Returns(mockServer.Object);
-            mockServer.Setup(a => a.GetServerVersion()).Returns("1.0.0.0");
-            CustomContainer.Register(mockServer.Object);
-            CustomContainer.Register(mockshell.Object);
+            var assignId = Guid.NewGuid();
+            var foreachId = Guid.NewGuid();
+            List<ModelItem> currentChanges = CreateChanges(ref assignId, ref foreachId);
+
+            List<ModelItem> differenceChanges = CreateChanges(ref assignId, ref foreachId);
+
+            _mockParseServiceForDifferences.Setup(a => a.CurrentDifferences).Returns(currentChanges);
+            _mockParseServiceForDifferences.Setup(a => a.Differences).Returns(differenceChanges);
+
 
             Mock<IContextualResourceModel> currentResourceModel = Dev2MockFactory.SetupResourceModelMock();
             currentResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(WorkflowXAMLForCurrent());
@@ -40,6 +80,34 @@ namespace Dev2.Core.Tests
             //---------------Test Result -----------------------
             Assert.IsNotNull(mergeWorkflowViewModel.CurrentConflictViewModel);
             Assert.IsNotNull(mergeWorkflowViewModel.DifferenceConflictViewModel);
+        }
+
+        private static List<ModelItem> CreateChanges(ref Guid assignId, ref Guid foreachId)
+        {
+            var dsfMultiAssignActivity = new DsfMultiAssignActivity()
+            {
+                UniqueID = assignId.ToString(),
+                FieldsCollection = new List<ActivityDTO>()
+                {
+                    new ActivityDTO("a","a",1),
+                    new ActivityDTO("a","a",2)
+                }
+            };
+            var dsfForEachActivity = new DsfForEachActivity()
+            {
+                UniqueID = foreachId.ToString(),
+                DataFunc = new ActivityFunc<string, bool>()
+                {
+                    Handler = new DsfDateTimeActivity()
+                }
+            };
+            var assignOne = ModelItemUtils.CreateModelItem(dsfMultiAssignActivity);
+            var forEach = ModelItemUtils.CreateModelItem(dsfForEachActivity);
+            var currentChanges = new List<ModelItem>()
+            {
+                assignOne,forEach
+            };
+            return currentChanges;
         }
 
         [TestMethod]
