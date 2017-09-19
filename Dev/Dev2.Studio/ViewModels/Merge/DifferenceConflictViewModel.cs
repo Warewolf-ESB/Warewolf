@@ -10,19 +10,10 @@ namespace Dev2.ViewModels.Merge
 {
     public class DifferenceConflictViewModel : ConflictViewModelBase
     {
-        public DifferenceConflictViewModel(ModelItem modelItem)
+        public DifferenceConflictViewModel(ModelItem modelItem,IContextualResourceModel contextualResource)
             : base(modelItem)
-        {
-            string newWorflowName = NewWorkflowNames.Instance.GetNext();
-            var shellViewModel = CustomContainer.Get<IShellViewModel>();
-            IContextualResourceModel tempResource = ResourceModelFactory.CreateResourceModel(shellViewModel.ActiveServer, @"WorkflowService",
-                newWorflowName);
-            tempResource.Category = @"Unassigned\" + newWorflowName;
-            tempResource.ResourceName = newWorflowName;
-            tempResource.DisplayName = newWorflowName;
-            tempResource.IsNewWorkflow = true;
-
-            DataListViewModel = DataListViewModelFactory.CreateDataListViewModel(tempResource) as DataListViewModel;
+        {          
+            DataListViewModel = DataListViewModelFactory.CreateDataListViewModel(contextualResource) as DataListViewModel;
             DataListViewModel.ViewSortDelete = false;
         }
     }
