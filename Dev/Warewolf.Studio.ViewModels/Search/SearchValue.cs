@@ -32,6 +32,9 @@ namespace Dev2.ViewModels.Search
                 switch (Type)
                 {
                     case "Workflow":
+                    case "Scalar":
+                    case "RecordSet":
+                    case "Object":
                         shellViewModel.OpenResource(ResourceId, selectedEnvironment.ResourceId, selectedEnvironment.Server);
                         break;
                     case "Test":
