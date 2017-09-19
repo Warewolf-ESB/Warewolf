@@ -8,13 +8,15 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Windows.Input;
 
 namespace Dev2.Studio.Interfaces.Search
 {
     public delegate void ServerSate(object sender, IServer server);
-    public interface ISearchViewModel : IExplorerViewModel
+    public interface ISearchViewModel : IExplorerViewModel, INotifyPropertyChanged, IDisposable
     {
         event ServerSate ServerStateChanged;
         bool IsAllSelected { get; set; }

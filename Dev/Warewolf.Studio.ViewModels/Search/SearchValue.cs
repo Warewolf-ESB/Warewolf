@@ -41,6 +41,11 @@ namespace Dev2.ViewModels.Search
             }
         }
 
+        public void Dispose()
+        {
+            
+        }
+
         public Guid ResourceId
         {
             get { return _resourceId; }

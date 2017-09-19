@@ -8,9 +8,12 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
+using System.ComponentModel;
+
 namespace Dev2.Studio.Interfaces.Search
 {
-    public interface ISearchValue
+    public interface ISearchValue: INotifyPropertyChanged, IDisposable
     {
         string Name { get; set; }
         string Path { get; set; }
