@@ -31,9 +31,8 @@ namespace Dev2.Activities.Designers2.Web_Service_Post
 
         void RequestBody_OnSizeChanged(object sender, SizeChangedEventArgs e)
         {
-            var viewModel = DataContext as WebServicePostViewModel;
 
-            if (viewModel != null)
+            if (DataContext is WebServicePostViewModel viewModel)
             {
                 var dataContext = viewModel.InputArea;
                 if (dataContext.IsEnabled)

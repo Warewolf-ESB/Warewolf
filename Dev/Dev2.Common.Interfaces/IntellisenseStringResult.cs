@@ -2,8 +2,8 @@ namespace Dev2.Common.Interfaces
 {
     public class IntellisenseStringResult : IIntellisenseStringResult
     {
-        private string _result;
-        private int _caretPosition;
+        private readonly string _result;
+        private readonly int _caretPosition;
 
         public IntellisenseStringResult(string result, int caretPosition)
         {

@@ -23,6 +23,7 @@ namespace Dev2.Scheduler
         string _password;
         IErrorResultTO _errors;
         bool _isNew;
+        readonly
 #pragma warning disable 414
         bool _isNewItem;
 #pragma warning restore 414

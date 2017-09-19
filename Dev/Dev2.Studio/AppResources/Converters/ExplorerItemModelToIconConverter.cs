@@ -19,7 +19,7 @@ namespace Dev2.AppResources.Converters
 {
     public class ExplorerItemModelToIconConverter : IMultiValueConverter
     {
-        ResourceDictionary _dict;
+        readonly ResourceDictionary _dict;
 
         #region Implementation of IMultiValueConverter
 
