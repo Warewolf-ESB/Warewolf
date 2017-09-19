@@ -167,7 +167,7 @@ namespace Dev2.Sql.Tests
                 //------------Execute Test---------------------------
                 IDbDataParameter[] param = new IDbDataParameter[] { new SqlParameter("a", "a"), new SqlParameter("b", "b") };
 
-                //SqlServer.AddParameters(mockCommand.Object,param);
+                PostgreServer.AddParameters(mockCommand.Object,param);
                 Assert.AreEqual(2,added.Count);
 
 
