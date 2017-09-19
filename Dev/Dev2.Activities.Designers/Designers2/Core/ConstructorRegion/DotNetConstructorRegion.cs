@@ -286,8 +286,7 @@ namespace Dev2.Activities.Designers2.Core.ConstructorRegion
 
         public void RestoreRegion(IToolRegion toRestore)
         {
-            var region = toRestore as DotNetConstructorRegion;
-            if (region != null)
+            if (toRestore is DotNetConstructorRegion region)
             {
                 SelectedConstructor = region.SelectedConstructor;
                 RestoreIfPrevious(region.SelectedConstructor);

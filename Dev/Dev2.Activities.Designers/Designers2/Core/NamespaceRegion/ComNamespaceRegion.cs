@@ -238,8 +238,7 @@ namespace Dev2.Activities.Designers2.Core.NamespaceRegion
 
         public void RestoreRegion(IToolRegion toRestore)
         {
-            var region = toRestore as ComNamespaceRegion;
-            if (region != null)
+            if (toRestore is ComNamespaceRegion region)
             {
                 SelectedNamespace = region.SelectedNamespace;
                 IsEnabled = region.IsEnabled;
