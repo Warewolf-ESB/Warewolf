@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Windows.Media;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Common.Interfaces;
@@ -82,5 +83,7 @@ namespace Dev2.ViewModels.Merge
                 OnPropertyChanged("Children");
             }
         }
+
+        public Guid UniqueId { get; set; }
     }
 }

@@ -20,6 +20,7 @@ namespace Dev2.Common.Interfaces
     {
         string WorkflowName { get; set; }
         IMergeToolModel MergeToolModel { get; set; }
+        ObservableCollection<IMergeToolModel> Children { get; set; }
     }
 
     public class CompleteConflict
@@ -32,6 +33,7 @@ namespace Dev2.Common.Interfaces
         public IMergeToolModel CurrentViewModel { get; set; }
         public IMergeToolModel DiffViewModel { get; set; }
         public ObservableCollection<CompleteConflict> Children { get; set; }
+        public Guid UniqueId { get; set; }
     }
 
     public interface IMergeToolModel
@@ -42,5 +44,7 @@ namespace Dev2.Common.Interfaces
         string MergeDescription { get; set; }
         bool IsMergeChecked { get; set; }
         bool IsVariablesChecked { get; set; }
+        ObservableCollection<IMergeToolModel> Children { get; set; }
+        Guid UniqueId { get; set; }
     }
 }

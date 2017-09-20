@@ -13,6 +13,8 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 using System.Activities;
 using Warewolf;
 using System.Activities.Statements;
+using Dev2.Common;
+using Microsoft.Practices.Prism;
 
 namespace Dev2.ViewModels.Merge
 {
@@ -32,93 +34,68 @@ namespace Dev2.ViewModels.Merge
 
             foreach (var curr in currentChanges)
             {
+                var completeConflicts = Conflicts.Flatten(completeConflict =>
+                    completeConflict.Children ?? new ObservableCollection<CompleteConflict>());
+                if (completeConflicts.Any(p => p.CurrentViewModel?.UniqueId == curr.uniqueId)) continue;
                 var conflict = new CompleteConflict();
                 if (curr.current.ItemType == typeof(FlowDecision))
                 {
+                    CurrentConflictViewModel = new CurrentConflictViewModel(curr.current, currentResourceModel);
+                    if (CurrentConflictViewModel?.MergeToolModel != null)
+                    {
+                        conflict.CurrentViewModel = CurrentConflictViewModel.MergeToolModel;
+
+                        foreach (var child in CurrentConflictViewModel.MergeToolModel.Children)
+                        {
+                            conflict.Children.Add(new CompleteConflict
+                            {
+                                CurrentViewModel = child
+                            });
+                        }
+                    }
+
                     if (curr.conflict)
                     {
-                        CurrentConflictViewModel = new CurrentConflictViewModel(curr.current, currentResourceModel);
-                        if (CurrentConflictViewModel?.MergeToolModel != null)
-                        {
-                            conflict.CurrentViewModel = CurrentConflictViewModel.MergeToolModel;
-                        }
-
                         DifferenceConflictViewModel = new DifferenceConflictViewModel(curr.difference, differenceResourceModel);
                         if (DifferenceConflictViewModel?.MergeToolModel != null)
                         {
                             conflict.DiffViewModel = DifferenceConflictViewModel.MergeToolModel;
                         }
-
-                        var currDec = curr.current.GetCurrentValue<FlowDecision>();
-                        var trueArmConflict = new CompleteConflict();
-                        var falseArmConflict = new CompleteConflict();
-                        
-                        if (currDec.True != null)
+                        foreach (var child in CurrentConflictViewModel.Children)
                         {
-                            
-                            var currentConflictViewModel = new CurrentConflictViewModel(ModelItemUtils.CreateModelItem(currDec.True), currentResourceModel);
-                            if (currentConflictViewModel?.MergeToolModel != null)
+                            conflict.Children.Add(new CompleteConflict()
                             {
-                                trueArmConflict.CurrentViewModel = currentConflictViewModel.MergeToolModel;
-                            }
-                        }
-                        if (currDec.False != null)
-                        {
-                            var currentConflictViewModel = new CurrentConflictViewModel(ModelItemUtils.CreateModelItem(currDec.False), currentResourceModel);
-                            if (currentConflictViewModel?.MergeToolModel != null)
-                            {
-                                falseArmConflict.CurrentViewModel = currentConflictViewModel.MergeToolModel;
-                            }
+                                CurrentViewModel = child
+                            });
                         }
 
-                        var diffDec = curr.difference.GetCurrentValue<FlowDecision>();
-
-                        if (diffDec.True != null)
-                        {
-                            var differenceConflictViewModel = new DifferenceConflictViewModel(ModelItemUtils.CreateModelItem(diffDec.True), currentResourceModel);
-                            if (differenceConflictViewModel?.MergeToolModel != null)
-                            {
-                                trueArmConflict.DiffViewModel = differenceConflictViewModel.MergeToolModel;
-                            }
-                        }
-                        if (diffDec.False != null)
-                        {
-                            var differenceConflictViewModel = new DifferenceConflictViewModel(ModelItemUtils.CreateModelItem(diffDec.False), differenceResourceModel);
-                            if (differenceConflictViewModel?.MergeToolModel != null)
-                            {
-                               falseArmConflict.DiffViewModel =  differenceConflictViewModel.MergeToolModel;
-                            }
-                        }                        
-                        conflict.Children.Add(trueArmConflict);
-                        conflict.Children.Add(falseArmConflict);
-                        Conflicts.Add(conflict);
                     }
-                    
+                    Conflicts.Add(conflict);
                 }
                 else
                 {
+                    CurrentConflictViewModel = new CurrentConflictViewModel(curr.current, currentResourceModel);
+                    if (CurrentConflictViewModel?.MergeToolModel != null)
+                    {
+                        conflict.CurrentViewModel = CurrentConflictViewModel.MergeToolModel;
+                    }
                     if (curr.conflict)
                     {
-                        CurrentConflictViewModel = new CurrentConflictViewModel(curr.current, currentResourceModel);
-                        if (CurrentConflictViewModel?.MergeToolModel != null)
-                        {
-                            conflict.CurrentViewModel = CurrentConflictViewModel.MergeToolModel;
-                        }
-
                         DifferenceConflictViewModel = new DifferenceConflictViewModel(curr.difference, differenceResourceModel);
                         if (DifferenceConflictViewModel?.MergeToolModel != null)
                         {
                             conflict.DiffViewModel = DifferenceConflictViewModel.MergeToolModel;
                         }
-                        Conflicts.Add(conflict);
+
                     }
-                    
+                    Conflicts.Add(conflict);
                 }
-                
             }
 
-            CurrentConflictViewModel.WorkflowName = currentResourceModel.ResourceName;
-            DifferenceConflictViewModel.WorkflowName = differenceResourceModel.ResourceName;
+            if (CurrentConflictViewModel != null)
+                CurrentConflictViewModel.WorkflowName = currentResourceModel.ResourceName;
+            if (DifferenceConflictViewModel != null)
+                DifferenceConflictViewModel.WorkflowName = differenceResourceModel.ResourceName;
 
             SetServerName(currentResourceModel);
             DisplayName = "Merge Conflicts" + _serverName;
