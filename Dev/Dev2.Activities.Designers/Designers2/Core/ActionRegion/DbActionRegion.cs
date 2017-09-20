@@ -169,8 +169,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
                     }
 
                     var outputs = Dependants.FirstOrDefault(a => a is IOutputsToolRegion);
-                    var region = outputs as OutputsRegion;
-                    if (region != null)
+                    if (outputs is OutputsRegion region)
                     {
                         region.Outputs = new ObservableCollection<IServiceOutputMapping>();
                         region.RecordsetName = String.Empty;
@@ -301,8 +300,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
         public void RestoreRegion(IToolRegion toRestore)
         {
-            var region = toRestore as DbActionMemento;
-            if (region != null)
+            if (toRestore is DbActionMemento region)
             {
                 SelectedAction = region.SelectedAction;
                 RestoreIfPrevious(region.SelectedAction);
