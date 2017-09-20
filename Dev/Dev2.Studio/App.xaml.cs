@@ -64,6 +64,7 @@ using System.Globalization;
 using Dev2.Studio.Core.Interfaces;
 using Warewolf.MergeParser;
 using Dev2.Studio.Interfaces;
+using Dev2.Activities;
 
 namespace Dev2.Studio
 
@@ -262,8 +263,8 @@ namespace Dev2.Studio
             CustomContainer.RegisterInstancePerRequestType<IJsonObjectsView>(() => new JsonObjectsView());
             CustomContainer.RegisterInstancePerRequestType<IChooseDLLView>(() => new ChooseDLLView());
             CustomContainer.RegisterInstancePerRequestType<IFileChooserView>(() => new FileChooserView());
-            //CustomContainer.RegisterInstancePerRequestType<ICreateDuplicateResourceView>(() => new CreateDuplicateResourceDialog());
-          
+            CustomContainer.Register<IActivityParser>(new ActivityParser());
+
             var splashViewModel = new SplashViewModel(server, new ExternalProcessExecutor());
 
             var splashPage = new SplashPage { DataContext = splashViewModel };
