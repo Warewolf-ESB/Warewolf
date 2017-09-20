@@ -18,6 +18,8 @@ namespace Dev2.ViewModels.Merge
         private string _displayName;
         private string _serverName;
         private bool _hasMergeStarted;
+        private bool _hasWorkflowNameConflict;
+        private bool _hasVariablesConflict;
 
         public MergeWorkflowViewModel(IContextualResourceModel currentResourceModel, IContextualResourceModel differenceResourceModel)
         {
@@ -142,6 +144,9 @@ namespace Dev2.ViewModels.Merge
                 DifferenceConflictViewModel.WorkflowName = differenceResourceModel.ResourceName;
                 DifferenceConflictViewModel.GetDataList();
             }
+            //HasVariablesConflict = false;
+
+            HasWorkflowNameConflict = CurrentConflictViewModel?.WorkflowName != DifferenceConflictViewModel?.WorkflowName;
 
             SetServerName(currentResourceModel);
             DisplayName = "Merge Conflicts" + _serverName;
@@ -242,6 +247,26 @@ namespace Dev2.ViewModels.Merge
             {
                 _hasMergeStarted = value;
                 OnPropertyChanged(() => HasMergeStarted);
+            }
+        }
+
+        public bool HasWorkflowNameConflict
+        {
+            get => _hasWorkflowNameConflict;
+            set
+            {
+                _hasWorkflowNameConflict = value;
+                OnPropertyChanged(() => HasWorkflowNameConflict);
+            }
+        }
+
+        public bool HasVariablesConflict
+        {
+            get => _hasVariablesConflict;
+            set
+            {
+                _hasVariablesConflict = value;
+                OnPropertyChanged(() => HasVariablesConflict);
             }
         }
 

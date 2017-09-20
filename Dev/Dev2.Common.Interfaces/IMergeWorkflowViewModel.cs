@@ -13,6 +13,8 @@ namespace Dev2.Common.Interfaces
         void Save();
 
         bool HasMergeStarted { get; set; }
+        bool HasWorkflowNameConflict { get; set; }
+        bool HasVariablesConflict { get; set; }
         IConflictViewModel CurrentConflictViewModel { get; set; }
         IConflictViewModel DifferenceConflictViewModel { get; set; }
         ObservableCollection<ICompleteConflict> Conflicts { get; set; }
