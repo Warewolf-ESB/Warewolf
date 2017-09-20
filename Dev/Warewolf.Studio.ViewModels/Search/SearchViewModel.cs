@@ -30,6 +30,8 @@ namespace Dev2.ViewModels.Search
         private bool _isInputVariableSelected;
         private bool _isOutputVariableSelected;
         private bool _isTestNameSelected;
+        private bool _isMatchCaseSelected;
+        private bool _isMatchWholeWordSelected;
         private string _searchInput;
         private ICommand _searchInputCommand;
         private ObservableCollection<ISearchValue> _searchResults;
@@ -180,6 +182,10 @@ namespace Dev2.ViewModels.Search
                                 }
                             }
                         }
+                    }
+                    if (IsToolNameSelected)
+                    {
+
                     }
                     SearchResults.GroupBy(o => o.Type);
                 });
@@ -334,6 +340,30 @@ namespace Dev2.ViewModels.Search
             {
                 _isTestNameSelected = value;
                 OnPropertyChanged(() => IsTestNameSelected);
+            }
+        }
+        public bool IsMatchCaseSelected
+        {
+            get
+            {
+                return _isMatchCaseSelected;
+            }
+            set
+            {
+                _isMatchCaseSelected = value;
+                OnPropertyChanged(() => IsMatchCaseSelected);
+            }
+        }
+        public bool IsMatchWholeWordSelected
+        {
+            get
+            {
+                return _isMatchWholeWordSelected;
+            }
+            set
+            {
+                _isMatchWholeWordSelected = value;
+                OnPropertyChanged(() => IsMatchWholeWordSelected);
             }
         }
         public string SearchInput

@@ -30,6 +30,8 @@ namespace Dev2.Studio.Interfaces.Search
         bool IsInputVariableSelected { get; set; }
         bool IsOutputVariableSelected { get; set; }
         bool IsTestNameSelected { get; set; }
+        bool IsMatchCaseSelected { get; set; }
+        bool IsMatchWholeWordSelected { get; set; }
         string SearchInput { get; set; }
         ICommand SearchInputCommand { get; set; }
         ObservableCollection<ISearchValue> SearchResults { get; set; }
