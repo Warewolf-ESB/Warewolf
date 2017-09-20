@@ -343,7 +343,8 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                     }
 
                     var dotNetNamespaceRegion = sender as DotNetNamespaceRegion;
-                    if (dotNetNamespaceRegion?.Dependants.Single(region => region is OutputsRegion) is OutputsRegion outputsRegion)
+                    var outputsRegion = dotNetNamespaceRegion?.Dependants.Single(region => region is OutputsRegion) as OutputsRegion;
+                    if (outputsRegion != null)
                     {
                         if (dotNetNamespaceRegion.SelectedNamespace != null)
                         {

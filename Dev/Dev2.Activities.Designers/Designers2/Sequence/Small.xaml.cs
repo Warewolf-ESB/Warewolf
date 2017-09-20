@@ -44,7 +44,8 @@ namespace Dev2.Activities.Designers2.Sequence
 
         void DropPoint_OnPreviewDrop(object sender, DragEventArgs e)
         {
-            if (DataContext is SequenceDesignerViewModel viewModel)
+            var viewModel = DataContext as SequenceDesignerViewModel;
+            if(viewModel != null)
             {
                 if (_dropEnabledActivityDesignerUtils != null)
                 {

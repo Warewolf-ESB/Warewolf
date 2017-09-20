@@ -266,6 +266,10 @@ namespace Dev2.Intellisense.Helper
             [MarshalAs(UnmanagedType.LPWStr)]
             public readonly string Remark;
 
+            public readonly int Permissions;
+            public readonly int MaxUsers;
+            public readonly int CurrentUsers;
+
             [MarshalAs(UnmanagedType.LPWStr)]
             public readonly string Path;
 

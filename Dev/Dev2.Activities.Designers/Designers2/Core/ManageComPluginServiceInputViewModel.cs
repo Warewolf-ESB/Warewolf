@@ -35,12 +35,12 @@ namespace Dev2.Activities.Designers2.Core
 {
     public class ManageComPluginServiceInputViewModel : IManageComPluginServiceInputViewModel
     {
-        readonly IGenerateOutputArea _generateOutputArea;
-        readonly IGenerateInputArea _generateInputArea;
+        IGenerateOutputArea _generateOutputArea;
+        IGenerateInputArea _generateInputArea;
         bool _isEnabled;
         bool _pasteResponseAvailable;
-        readonly IComViewModel _viewmodel;
-        readonly IComPluginServiceModel _serverModel;
+        IComViewModel _viewmodel;
+        IComPluginServiceModel _serverModel;
         bool _isGenerateInputsEmptyRows;
         private bool _okSelected;
         private string _testResults;

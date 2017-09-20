@@ -162,8 +162,9 @@ namespace Dev2.Activities.Designers2.Core
 
         static void OnShowHelp(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
+            var vm = d as ActivityDesignerViewModel;
 
-            if (d is ActivityDesignerViewModel vm && (bool)e.NewValue)
+            if(vm != null && (bool)e.NewValue)
             {
                 vm._setInitialFocus?.Invoke();
             }
@@ -267,7 +268,8 @@ namespace Dev2.Activities.Designers2.Core
 
         protected virtual void OnModelItemPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (sender is ModelItem item)
+            var item = sender as ModelItem;
+            if (item != null)
             {
                 switch (e.PropertyName)
                 {

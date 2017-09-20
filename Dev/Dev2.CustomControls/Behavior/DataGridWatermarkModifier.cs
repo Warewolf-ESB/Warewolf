@@ -110,8 +110,6 @@ namespace Dev2.Studio.AppResources.Behaviors
             set { SetValue(WatermarkPropertyNameProperty, value); }
         }
 
-        public INotifyCollectionChanged Observable { get => observable; set => observable = value; }
-
         #endregion WatermarkPropertyNames
 
         #endregion Dependency Properties
@@ -137,8 +135,9 @@ namespace Dev2.Studio.AppResources.Behaviors
                 for (int i = 0; i < dataGridItems.Count; i++)
                 {
                     List<object> list = dataGridItems.SourceCollection.Cast<object>().ToList();
+                    var mi = list[i] as ModelItem;
 
-                    if (list[i] is ModelItem mi)
+                    if (mi != null)
                     {
                         int watermarkIndex = WatermarkIndexes.IndexOf(i);
                         WatermarkSential.IsWatermarkBeingApplied = true;
@@ -155,12 +154,9 @@ namespace Dev2.Studio.AppResources.Behaviors
                             {
                                 pi.SetValue(dataGridItems[i], WatermarkText[i], null);
                             }
-                            else
+                            else if (i == dataGridItems.Count - 1)
                             {
-                                if (i == dataGridItems.Count - 1)
-                                {
-                                    pi.SetValue(dataGridItems[i], "", null);
-                                }
+                                pi.SetValue(dataGridItems[i], "", null);
                             }
                         }
                     }
@@ -177,7 +173,8 @@ namespace Dev2.Studio.AppResources.Behaviors
                 observable.CollectionChanged += observable_CollectionChanged;
             }
 
-            if (AssociatedObject is INotifyPropertyChanged notifyPropertyChangedImplimentor)
+            var notifyPropertyChangedImplimentor = AssociatedObject as INotifyPropertyChanged;
+            if (notifyPropertyChangedImplimentor != null)
             {
                 notifyPropertyChangedImplimentor.PropertyChanged -= notifyPropertyChangedImplimentor_PropertyChanged;
             }
@@ -193,7 +190,8 @@ namespace Dev2.Studio.AppResources.Behaviors
                 observable.CollectionChanged -= observable_CollectionChanged;
             }
 
-            if (AssociatedObject is INotifyPropertyChanged notifyPropertyChangedImplimentor)
+            var notifyPropertyChangedImplimentor = AssociatedObject as INotifyPropertyChanged;
+            if (notifyPropertyChangedImplimentor != null)
             {
                 notifyPropertyChangedImplimentor.PropertyChanged -= notifyPropertyChangedImplimentor_PropertyChanged;
             }

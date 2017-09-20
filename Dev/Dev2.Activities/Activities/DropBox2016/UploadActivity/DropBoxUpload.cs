@@ -17,7 +17,7 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
         private readonly IFilenameValidator _validator;
 
         
-        private readonly WriteMode _writeMode;
+        private WriteMode _writeMode;
 
         private readonly string _dropboxPath;
         private readonly string _fromPath;

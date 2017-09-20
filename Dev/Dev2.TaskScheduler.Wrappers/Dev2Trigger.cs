@@ -28,7 +28,6 @@ namespace Dev2.TaskScheduler.Wrappers
         public void Dispose()
         {
             Instance.Dispose();
-            GC.SuppressFinalize(this);
         }
 
 
