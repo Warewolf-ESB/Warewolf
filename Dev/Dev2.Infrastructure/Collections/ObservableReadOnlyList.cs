@@ -165,6 +165,5 @@ namespace Dev2.Collections
         }
 
         #endregion
-
     }
 }
