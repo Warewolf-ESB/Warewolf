@@ -148,6 +148,7 @@
     <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
+    <Compile Include="Merge\MergeConflictsTests.cs" />
     <Compile Include="RabbitMQSource\RabbitMQSourceTests.cs" />
     <Compile Include="RabbitMQSource\RabbitMQSourceUIMap.cs">
       <DependentUpon>RabbitMQSourceUIMap.uitest</DependentUpon>
@@ -401,6 +402,7 @@
     <None Include="EmailSource\EmailSourceUIMap.uitest" />
     <None Include="ExchangeSource\ExchangeSourceUIMap.uitest" />
     <None Include="Explorer\ExplorerUIMap.uitest" />
+    <None Include="Merge\MergeConflictsUIMap.uitest" />
     <None Include="packages.config" />
     <None Include="RabbitMQSource\RabbitMQSourceUIMap.uitest" />
     <None Include="Scheduler\SchedulerUIMap.uitest" />

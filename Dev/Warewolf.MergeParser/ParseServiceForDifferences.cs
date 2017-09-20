@@ -15,9 +15,6 @@ namespace Warewolf.MergeParser
 {
     public class ParseServiceForDifferences : IParseServiceForDifferences
     {
-        readonly ModelItem _difference;
-        readonly ModelItem _currentDifference;
-
         public ParseServiceForDifferences()
         {
         }
@@ -130,7 +127,7 @@ namespace Warewolf.MergeParser
         private IDev2Activity GetActivity(List<IDev2Activity> currentDifferences, ModelItem modelItem)
         {
             var activityParser = CustomContainer.Get<IActivityParser>();
-            return activityParser.Parse(currentDifferences, modelItem);
+            return activityParser?.Parse(currentDifferences, modelItem);
         }
 
         private List<ModelItem> GetNodes(IContextualResourceModel resourceModel)

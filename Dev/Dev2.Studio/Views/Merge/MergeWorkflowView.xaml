@@ -295,22 +295,23 @@
                                                     </Border>
                                                 </Grid>
                                                 <TreeView Name="MergeDifferenceDee"
-			                                                Grid.Row="1"
-			                                                ItemsSource="{Binding Children, Mode=TwoWay, IsAsync=True}"
-			                                                HorizontalAlignment="Stretch"
-			                                                Focusable="False"
-			                                                HorizontalContentAlignment="Stretch"
-			                                                Style="{StaticResource MergeTreeViewStyle}"
-			                                                Grid.IsSharedSizeScope="True"
-			                                                AutomationProperties.AutomationId="UI_MergeTreeView_AutoID"
-			                                                ScrollViewer.CanContentScroll="True"
-			                                                VirtualizingStackPanel.IsVirtualizing="True"
-			                                                VirtualizingStackPanel.VirtualizationMode="Recycling"
-			                                                VirtualizingStackPanel.ScrollUnit="Pixel"
-			                                                VirtualizingStackPanel.CacheLength="2,1"
-			                                                VirtualizingStackPanel.CacheLengthUnit="Item"
-			                                                VirtualizingStackPanel.IsVirtualizingWhenGrouping="True"
-			                                                VirtualizingStackPanel.IsContainerVirtualizable="True">
+                                                          Grid.Row="1"
+                                                          ItemsSource="{Binding Children, Mode=TwoWay, IsAsync=True}"
+                                                          HorizontalAlignment="Stretch"
+                                                          Focusable="False"
+                                                          HorizontalContentAlignment="Stretch"
+                                                          Style="{StaticResource MergeTreeViewStyle}"
+                                                          Margin="5,0,0,0"
+                                                          Grid.IsSharedSizeScope="True"
+                                                          AutomationProperties.AutomationId="UI_MergeTreeView_AutoID"
+                                                          ScrollViewer.CanContentScroll="True"
+                                                          VirtualizingStackPanel.IsVirtualizing="True"
+                                                          VirtualizingStackPanel.VirtualizationMode="Recycling"
+                                                          VirtualizingStackPanel.ScrollUnit="Pixel"
+                                                          VirtualizingStackPanel.CacheLength="2,1"
+                                                          VirtualizingStackPanel.CacheLengthUnit="Item"
+                                                          VirtualizingStackPanel.IsVirtualizingWhenGrouping="True"
+                                                          VirtualizingStackPanel.IsContainerVirtualizable="True">
                                                 </TreeView>
                                             </Grid>
 
