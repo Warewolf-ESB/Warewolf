@@ -11,6 +11,8 @@ namespace Dev2.Common.Interfaces
         bool IsDirty { get; }
         string DisplayName { get; set; }
         void Save();
+
+        bool HasMergeStarted { get; set; }
         IConflictViewModel CurrentConflictViewModel { get; set; }
         IConflictViewModel DifferenceConflictViewModel { get; set; }
         ObservableCollection<ICompleteConflict> Conflicts { get; set; }
@@ -19,6 +21,8 @@ namespace Dev2.Common.Interfaces
     public interface IConflictViewModel
     {
         string WorkflowName { get; set; }
+        bool IsVariablesChecked { get; set; }
+        bool IsWorkflowNameChecked { get; set; }
         IMergeToolModel MergeToolModel { get; set; }
         void GetDataList();
     }
@@ -37,6 +41,7 @@ namespace Dev2.Common.Interfaces
         ImageSource MergeIcon { get; set; }
         string MergeDescription { get; set; }
         bool IsMergeChecked { get; set; }
-        bool IsVariablesChecked { get; set; }
+        string ParentDescription { get; set; }
+        bool HasParent { get; set; }
     }
 }

@@ -46,6 +46,7 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
@@ -53,20 +54,74 @@
                         <ColumnDefinition Width="50*" SharedSizeGroup="MergeDifferenceColumnWidth"/>
                     </Grid.ColumnDefinitions>
 
-                    <Border x:Name="CurrentWorkflowNameStack" Grid.Row="0" BorderThickness="0,0,1,0" Background="#C1C3C5">
+                    <Border Grid.Row="0" BorderThickness="0,0,1,0" Background="#C1C3C5">
                         <StackPanel  Background="{StaticResource WareWolfMenuBrush}" HorizontalAlignment="Stretch" DataContext="{Binding CurrentConflictViewModel}">
                             <TextBlock Margin="5" Text="{Binding WorkflowName}" Style="{StaticResource SourceHeader}" />
                         </StackPanel>
                     </Border>
-                    <Border x:Name="DifferenceWorkflowNameStack" Grid.Row="0" Grid.Column="1" BorderThickness="1,0,0,0" Background="#C1C3C5">
+                    <Border Grid.Row="0" Grid.Column="1" BorderThickness="1,0,0,0" Background="#C1C3C5">
                         <StackPanel Background="{StaticResource WareWolfMenuBrush}" HorizontalAlignment="Stretch" DataContext="{Binding DifferenceConflictViewModel}">
                             <TextBlock Margin="5" Text="{Binding WorkflowName}" Style="{StaticResource SourceHeader}" />
                         </StackPanel>
                     </Border>
-                    <Grid Grid.Row="1" 
-                          Grid.Column="0" 
-                          Grid.ColumnSpan="2" 
-                          Margin="{StaticResource ElementBorderTop}" >
+
+                    <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" >
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition SharedSizeGroup="MergeCurrentColumnWidth"/>
+                            <ColumnDefinition SharedSizeGroup="MergeCurrentColumnWidth"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Grid Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0" Visibility="{Binding HasMergeStarted}" HorizontalAlignment="Stretch">
+                            <StackPanel HorizontalAlignment="Stretch" Orientation="Horizontal">
+                                <TextBlock Text="To start the Merge process, select a radio button below." 
+                                           HorizontalAlignment="Center"/>
+                            </StackPanel>
+                        </Grid>
+                        
+                        <DockPanel x:Name="MergeCurrentWorkflowDockPanel" 
+                                   Grid.Column="0" 
+                                   Grid.Row="1" 
+                                   LastChildFill="False" 
+                                   DataContext="{Binding CurrentConflictViewModel}">
+                            <StackPanel DockPanel.Dock="Left" Orientation="Horizontal" >
+                                <TextBlock Text="{Binding WorkflowName}" FontWeight="Bold" HorizontalAlignment="Stretch"/>
+                            </StackPanel>
+                            <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+                                <RadioButton x:Name="VariablesCurrentRB" 
+                                             IsChecked="{Binding IsWorkflowNameChecked}" 
+                                             HorizontalAlignment="Right"
+                                             Margin="0,0,5,0"
+                                             GroupName="MergeActivities"
+                                             Style="{StaticResource MergeRadioButtonStyle}">
+                                </RadioButton>
+                            </StackPanel>
+                        </DockPanel>
+
+                        <DockPanel x:Name="MergeDifferenceWorkflowDockPanel" 
+                                   Grid.Column="1" 
+                                   Grid.Row="1" 
+                                   LastChildFill="False" 
+                                   DataContext="{Binding DifferenceConflictViewModel}">
+                            <StackPanel DockPanel.Dock="Left" Orientation="Horizontal" >
+                                <TextBlock Text="{Binding WorkflowName}" FontWeight="Bold" HorizontalAlignment="Stretch"/>
+                            </StackPanel>
+                            <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+                                <RadioButton x:Name="VariablesDifferenceRB" 
+                                             IsChecked="{Binding IsWorkflowNameChecked}" 
+                                             HorizontalAlignment="Right"
+                                             Margin="0,0,5,0"
+                                             GroupName="MergeActivities"
+                                             Style="{StaticResource MergeRadioButtonStyle}">
+                                </RadioButton>
+                            </StackPanel>
+                        </DockPanel>
+                    </Grid>
+                    
+                    <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Margin="{StaticResource ElementBorderTop}" >
                         <Expander x:Name="MergeWorkflowVariables"
                                   Style="{StaticResource MergeExpander}"
                                   AutomationProperties.AutomationId="UI_MergeVariablesExpander_AutoID">
@@ -139,7 +194,7 @@
                         </Expander>
                     </Grid>
 
-                    <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">
+                    <Grid Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2">
                         <TreeView x:Name="MergeDifferenceDataTree"
 			                      Grid.Row="2"
 			                      ItemsSource="{Binding Conflicts, Mode=TwoWay, IsAsync=True}"
@@ -160,7 +215,31 @@
                             <TreeView.Resources>
                                 <HierarchicalDataTemplate  DataType="{x:Type merge:CompleteConflict}">
                                     <Grid Width="{Binding ElementName=MergeDifferenceDataTree, Path=ActualWidth}">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="*"/>
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="50*" />
+                                            <ColumnDefinition Width="50*" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <Border Grid.Row="0" Grid.Column="0" Background="{StaticResource WarewolfPanelGreyBrush}" BorderBrush="#CFD6E1" BorderThickness="0,0,2,0" Margin="0,0,-2,0" DataContext="{Binding CurrentViewModel}">
+                                            <StackPanel DockPanel.Dock="Left" Orientation="Horizontal" Visibility="{Binding HasParent, Converter={StaticResource BoolToVisibilityConverterPositive}}">
+                                                <TextBlock Margin="20,0,0,0" Text="{Binding ParentDescription}" FontWeight="Bold" HorizontalAlignment="Stretch"/>
+                                            </StackPanel>
+                                        </Border>
+
+                                        <Border Grid.Row="0" Grid.Column="1" Background="{StaticResource WarewolfPanelGreyBrush}" BorderBrush="#CFD6E1" BorderThickness="0" Margin="2,0,0,0" DataContext="{Binding DiffViewModel}">
+                                            <StackPanel DockPanel.Dock="Left" Orientation="Horizontal" Visibility="{Binding HasParent, Converter={StaticResource BoolToVisibilityConverterPositive}}">
+                                                <TextBlock Margin="30,0,0,0" Text="{Binding ParentDescription}" FontWeight="Bold" HorizontalAlignment="Stretch"/>
+                                            </StackPanel>
+                                        </Border>
+
                                         <Expander Name="MergeExpander"
+                                                  Grid.Row="1"
+                                                  Grid.Column="0"
+                                                  Grid.ColumnSpan="2"
 							                      Visibility="{Binding IsMergeExpanderEnabled, Converter={StaticResource BoolToVisibilityConverterPositive}}"
 							                      Header="{Binding .}"                                                  
 							                      IsExpanded="{Binding IsExpanded, Mode=TwoWay, Converter={StaticResource ExpanderToBooleanConverter}, ConverterParameter=1}"
@@ -267,6 +346,7 @@
                                                         </Grid>
                                                     </Border>
                                                 </Grid>
+
                                                 <TreeView Name="MergeDifferenceDee"
                                                           Grid.Row="1"
                                                           ItemsSource="{Binding Children, Mode=TwoWay, IsAsync=True}"

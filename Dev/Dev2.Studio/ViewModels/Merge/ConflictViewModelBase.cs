@@ -115,6 +115,8 @@ namespace Dev2.ViewModels.Merge
         }
 
         public string WorkflowName { get; set; }
+        public bool IsVariablesChecked { get; set; }
+        public bool IsWorkflowNameChecked { get; set; }
         public IMergeToolModel MergeToolModel { get; set; }
         public DataListViewModel DataListViewModel { get; set; }
         public ObservableCollection<IMergeToolModel> Children { get; set; }
