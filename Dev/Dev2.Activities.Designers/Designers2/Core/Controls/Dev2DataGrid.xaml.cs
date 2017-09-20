@@ -27,7 +27,7 @@ namespace Dev2.Activities.Designers2.Core.Controls
     public partial class Dev2DataGrid
     {
         readonly Func<Visual, FrameworkElement> _getVisualChild;
-        static int _skipNumber;
+        int _skipNumber;
 
         public Dev2DataGrid()
             : this(GetVisualChild<IntellisenseTextBox>)
@@ -68,9 +68,9 @@ namespace Dev2.Activities.Designers2.Core.Controls
             return null;
         }
 
-        public IInputElement GetFocusElement(DataGridRow row, int inputsToSkip = 0)
+        public IInputElement GetFocusElement(DataGridRow row, int inputsToSkip)
         {
-            return GetVisualChild(row,inputsToSkip);
+            return GetVisualChild(row, inputsToSkip: inputsToSkip);
         }
 
         bool SetFocus(Visual row)
@@ -78,7 +78,7 @@ namespace Dev2.Activities.Designers2.Core.Controls
             // Wait for the UI to be fully rendered BEFORE trying to set the focus
             Dispatcher.BeginInvoke(DispatcherPriority.ContextIdle, new Action(() =>
             {
-                var visualChild = GetVisualChild(row);
+                var visualChild = GetVisualChild(row, 0);
                 if(visualChild != null)
                 {
                     Keyboard.Focus(visualChild);
@@ -87,7 +87,7 @@ namespace Dev2.Activities.Designers2.Core.Controls
             return true;
         }
 
-        FrameworkElement GetVisualChild(Visual row, int inputsToSkip = 0)
+        FrameworkElement GetVisualChild(Visual row, int inputsToSkip)
         {
             _skipNumber = inputsToSkip;
             return row != null ? _getVisualChild(row) : null;
