@@ -1,5 +1,7 @@
 ﻿using System.Activities;
 using System.Collections.Generic;
+using Dev2.Common;
+using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Comparer
 {
@@ -14,26 +16,10 @@ namespace Dev2.Comparer
             var resultAreEqual = argumentComparer.Equals(x.Result, y.Result);
 
             var @equals = string.Equals(x.DisplayName, y.DisplayName);
-            bool sourceIsSame;
-            if (x.Handler == null && y.Handler == null)
-            {
-                sourceIsSame = true;
-            }
+            var handlerActivityIsEqual = CommonEqualityOps.AreObjectsEqualUnSafe(x.Handler, y.Handler);
+           
 
-            else if (x.Handler == null || y.Handler == null)
-            {
-                sourceIsSame = false;
-            }
-            else
-            {
-                sourceIsSame = x.Handler.Equals(y.Handler);
-            }
-            if (!sourceIsSame)
-            {
-                return false;
-            }
-
-            var handlerActivityIsEqual = x.Handler?.Equals(y.Handler) ?? true;//All activities have an implemantation of Equals at this stage :)
+            //var handlerActivityIsEqual = x.Handler?.Equals(y.Handler) ?? true;//All activities have an implemantation of Equals at this stage :)
             return equals && argumentsAreEqual && resultAreEqual && handlerActivityIsEqual;
 
         }

@@ -7,6 +7,7 @@ using System.Linq;
 using Dev2.Studio.Core.Activities.Utils;
 using System.Activities.Presentation;
 using Dev2;
+using Dev2.Activities;
 using Dev2.Studio.Interfaces;
 using Dev2.Common;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -17,8 +18,9 @@ namespace Warewolf.MergeParser
     {
         public ParseServiceForDifferences()
         {
+            CurrentDifferences = new List<ModelItem>();
+            Differences = new List<ModelItem>();
         }
-
         public List<ModelItem> CurrentDifferences { get; private set; }
         public List<ModelItem> Differences { get; private set; }
 
@@ -92,11 +94,38 @@ namespace Warewolf.MergeParser
             var allDifferencesActivities = DiscoverActivities(Differences);
             var mergeHeadActivities = CurrentDifferences.Select(item => GetActivity(currenctDifferences, item)).ToList();
             var headActivities = Differences.Select(modelItem => GetActivity(allDifferencesActivities, modelItem)).ToList();
-            var equalItems = mergeHeadActivities.Intersect(headActivities);
-            var nodesDifferentInMergeHead = mergeHeadActivities.Except(headActivities);
-            var nodesDifferentInHead = headActivities.Except(mergeHeadActivities);
+            List<IDev2Activity> equalItems = new List<IDev2Activity>();
+            foreach (var mergeHeadActivity in mergeHeadActivities)
+            {
+                var singleOrDefault = headActivities.SingleOrDefault(activity => activity.Equals(mergeHeadActivity));
+                if (singleOrDefault != null)
+                    equalItems.Add(singleOrDefault);
+            }
 
-            var allDifferences = nodesDifferentInMergeHead.Union(nodesDifferentInHead);
+            List<IDev2Activity> nodesDifferentInMergeHead = mergeHeadActivities.Except(headActivities, new Dev2ActivityComparer()).ToList();
+            List<IDev2Activity> toRemove = new List<IDev2Activity>();
+            foreach (var differentInMergeHead in nodesDifferentInMergeHead)
+            {
+                if (equalItems.Contains(differentInMergeHead, new Dev2UniqueActivityComparer()))
+                {
+                    toRemove.Add(differentInMergeHead);
+                }
+            }
+
+            nodesDifferentInMergeHead.RemoveAll(activity => toRemove.Exists(dev2Activity => dev2Activity.Equals(activity)));
+
+            var nodesDifferentInHead = headActivities.Except(mergeHeadActivities, new Dev2ActivityComparer()).ToList();
+            List<IDev2Activity> toRemove1 = new List<IDev2Activity>();
+            foreach (var differentInMergeHead in nodesDifferentInHead)
+            {
+                if (equalItems.Contains(differentInMergeHead))
+                {
+                    toRemove1.Add(differentInMergeHead);
+                }
+            }
+            nodesDifferentInHead.RemoveAll(activity => toRemove1.Exists(dev2Activity => dev2Activity.Equals(activity)));
+
+            var allDifferences = nodesDifferentInMergeHead.Union(nodesDifferentInHead, new Dev2ActivityComparer());
 
             foreach (var item in equalItems)
             {
@@ -112,10 +141,6 @@ namespace Warewolf.MergeParser
             var differenceGroups = allDifferences.GroupBy(activity => activity.UniqueID);
             foreach (var item in differenceGroups)
             {
-                if (item is null)
-                {
-                    continue;
-                }
                 var currentModelItemUniqueId = GetCurrentModelItemUniqueId(CurrentDifferences, item.Key);
                 var differences = GetCurrentModelItemUniqueId(Differences, item.Key);
                 var diffItem = (Guid.Parse(item.Key), currentModelItemUniqueId, differences, true);
@@ -126,7 +151,7 @@ namespace Warewolf.MergeParser
 
         private IDev2Activity GetActivity(List<IDev2Activity> currentDifferences, ModelItem modelItem)
         {
-            var activityParser = CustomContainer.Get<IActivityParser>();
+            var activityParser = CustomContainer.Get<IActivityParser>() ?? new ActivityParser();
             return activityParser?.Parse(currentDifferences, modelItem);
         }
 
@@ -150,8 +175,8 @@ namespace Warewolf.MergeParser
             wd.Load();
 
             var modelService = wd.Context.Services.GetService<ModelService>();
-            var modelItems = modelService.Find(modelService.Root, typeof(Flowchart));
             var nodeList = modelService.Find(modelService.Root, typeof(FlowNode)).ToList();
+            // ReSharper disable once RedundantAssignment assuming this is for disposing
             wd = null;
             return nodeList;
         }
