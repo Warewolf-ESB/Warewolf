@@ -20,6 +20,7 @@ namespace Dev2.Common.Interfaces
     {
         string WorkflowName { get; set; }
         IMergeToolModel MergeToolModel { get; set; }
+        ObservableCollection<IMergeToolModel> Children { get; set; }
         void GetDataList();
     }
 
@@ -28,7 +29,7 @@ namespace Dev2.Common.Interfaces
         IMergeToolModel CurrentViewModel { get; set; }
         IMergeToolModel DiffViewModel { get; set; }
         ObservableCollection<ICompleteConflict> Children { get; set; }
-        public Guid UniqueId { get; set; }
+        Guid UniqueId { get; set; }
     }
 
     public interface IMergeToolModel

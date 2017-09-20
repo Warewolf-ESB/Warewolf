@@ -11,6 +11,7 @@ using Dev2.Studio.Interfaces;
 using Dev2.Studio.Factory;
 using Dev2.Common;
 using Caliburn.Micro;
+using Dev2.Common.ExtMethods;
 
 namespace Dev2.ViewModels.Merge
 {
