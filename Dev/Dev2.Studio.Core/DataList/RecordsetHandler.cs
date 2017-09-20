@@ -234,7 +234,7 @@ namespace Dev2.Studio.Core.DataList
             IRecordSetItemModel recset;
             if (xmlNode.Attributes != null)
             {
-                recset = DataListItemModelFactory.CreateRecordSetItemModel(xmlNode.Name, Common.ParseDescription(xmlNode.Attributes[Common.Description]), null, null, false, "", true, true, false, Common.ParseColumnIODirection(xmlNode.Attributes[GlobalConstants.DataListIoColDirection]));
+                recset = DataListItemModelFactory.CreateRecordSetItemModel(xmlNode.Name, Common.ParseDescription(xmlNode.Attributes[Common.Description]), Common.ParseColumnIODirection(xmlNode.Attributes[GlobalConstants.DataListIoColDirection]));
                 if (recset != null)
                 {
                     recset.IsEditable = Common.ParseIsEditable(xmlNode.Attributes[Common.IsEditable]);
@@ -256,7 +256,7 @@ namespace Dev2.Studio.Core.DataList
 
         public void SetRecordSetItemsAsUsed()
         {
-            if (_vm.RecsetCollection.Any(rc => rc.IsUsed == false))
+            if (_vm.RecsetCollection.Any(rc => !rc.IsUsed))
             {
                 foreach (var dataListItemModel in _vm.RecsetCollection)
                 {
@@ -320,7 +320,7 @@ namespace Dev2.Studio.Core.DataList
             {
                 if (item.Children.Count == 0)
                 {
-                    item.Children.Add(DataListItemModelFactory.CreateRecordSetFieldItemModel(string.Empty, string.Empty, item));
+                    item.Children.Add(DataListItemModelFactory.CreateRecordSetFieldItemModel(item));
                 }
                 if (_vm.RecsetCollection.Count > 0)
                 {
@@ -361,7 +361,7 @@ namespace Dev2.Studio.Core.DataList
 
         public void RemoveUnusedRecordSets()
         {
-            var unusedRecordsets = _vm.RecsetCollection.Where(c => c.IsUsed == false).ToList();
+            var unusedRecordsets = _vm.RecsetCollection.Where(c => !c.IsUsed).ToList();
             if (unusedRecordsets.Any())
             {
                 foreach (var dataListItemModel in unusedRecordsets)
@@ -376,7 +376,7 @@ namespace Dev2.Studio.Core.DataList
                     continue;
                 }
 
-                var unusedRecsetChildren = recset.Children.Where(c => c.IsUsed == false).ToList();
+                var unusedRecsetChildren = recset.Children.Where(c => !c.IsUsed).ToList();
                 if (!unusedRecsetChildren.Any())
                 {
                     continue;

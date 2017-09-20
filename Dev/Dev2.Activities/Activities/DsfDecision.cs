@@ -132,7 +132,7 @@ namespace Dev2.Activities
             {
                 if (And)
                 {
-                    if(results.Any(b => b == false))
+                    if(results.Any(b => !b))
                     {
                         resultval = false;
                     }

@@ -328,7 +328,7 @@ namespace Dev2.Studio.Core.DataList
 
         public void RemoveUnusedComplexObjects()
         {
-            var unusedComplexObjects = _vm.ComplexObjectCollection.Where(c => c.IsUsed == false).ToList();
+            var unusedComplexObjects = _vm.ComplexObjectCollection.Where(c => !c.IsUsed).ToList();
             if (unusedComplexObjects.Any())
             {
                 foreach (var dataListItemModel in unusedComplexObjects)

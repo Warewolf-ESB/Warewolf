@@ -222,7 +222,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
         {
             return (sender, args) =>
             {
-                if (args.IsConnected == false)
+                if (!args.IsConnected)
                 {
                     SetDebugStatus(DebugStatus.Finished);
                 }

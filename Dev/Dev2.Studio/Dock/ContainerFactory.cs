@@ -446,7 +446,7 @@ namespace Dev2.Studio.Dock
         #region IsItemItsOwnContainerImpl
         private bool IsItemItsOwnContainerImpl(object item)
         {
-            if(item is DependencyObject == false)
+            if(!(item is DependencyObject))
             {
                 return false;
             }

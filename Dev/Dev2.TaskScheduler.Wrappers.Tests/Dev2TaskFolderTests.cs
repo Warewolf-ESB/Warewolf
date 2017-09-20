@@ -100,7 +100,7 @@ namespace Dev2.TaskScheduler.Wrappers.Test
         [TestCategory("TaskShedulerWrapper_TaskFolder_Exists")]
         public void TaskShedulerWrapper_TaskFolder_Exists()
         {
-            var folder = new Dev2TaskFolder(new TaskServiceConvertorFactory(), _folder))
+            var folder = new Dev2TaskFolder(new TaskServiceConvertorFactory(), _folder);
             Assert.IsTrue(folder.TaskExists("TestTask"));
         }
 

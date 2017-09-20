@@ -414,11 +414,11 @@ namespace Warewolf.Sharepoint
             List list = ctx.Web.Lists.GetByTitle(listName);
             if (editableFieldsOnly)
             {
-                ctx.Load(list.Fields, collection => collection.Where(field => field.Hidden == false && field.ReadOnlyField == false));
+                ctx.Load(list.Fields, collection => collection.Where(field => !field.Hidden && !field.ReadOnlyField));
             }
             else
             {
-                ctx.Load(list.Fields, collection => collection.Where(field => field.Hidden == false));
+                ctx.Load(list.Fields, collection => collection.Where(field => !field.Hidden));
             }
             return list;
         }

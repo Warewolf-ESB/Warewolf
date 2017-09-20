@@ -121,7 +121,7 @@ namespace Dev2.Studio.Core.DataList
 
         public void RemoveUnusedScalars()
         {
-            var unusedScalars = _vm.ScalarCollection.Where(c => c.IsUsed == false).ToList();
+            var unusedScalars = _vm.ScalarCollection.Where(c => !c.IsUsed).ToList();
             if (unusedScalars.Any())
             {
                 foreach (var dataListItemModel in unusedScalars)
