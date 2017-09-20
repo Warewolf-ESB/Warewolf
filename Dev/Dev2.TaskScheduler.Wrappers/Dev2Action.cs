@@ -10,14 +10,15 @@
 
 using Dev2.Common.Interfaces.WindowsTaskScheduler.Wrappers;
 using Microsoft.Win32.TaskScheduler;
+using System;
 
 namespace Dev2.TaskScheduler.Wrappers
 {
     public class Dev2Action : IAction
     {
-        private readonly Action _nativeTnstance;
+        private readonly Microsoft.Win32.TaskScheduler.Action _nativeTnstance;
 
-        public Dev2Action(Action nativeTnstance)
+        public Dev2Action(Microsoft.Win32.TaskScheduler.Action nativeTnstance)
         {
             _nativeTnstance = nativeTnstance;
         }
@@ -42,6 +43,6 @@ namespace Dev2.TaskScheduler.Wrappers
             // Cleanup
         }
 
-        public Action Instance => _nativeTnstance;
+        public Microsoft.Win32.TaskScheduler.Action Instance => _nativeTnstance;
     }
 }

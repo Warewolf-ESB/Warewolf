@@ -19,11 +19,9 @@ namespace Dev2.Studio.Core.Factories
 {
     public static class DataListItemModelFactory
     {
-        
-
-        public static IRecordSetFieldItemModel CreateDataListModel(string displayname, string description, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection = enDev2ColumnArgumentDirection.None, IDataListItemModel parent = null, OptomizedObservableCollection<IDataListItemModel> children = null, bool hasError = false, string errorMessage = "", bool isEditable = true, bool isVisable = true, bool isSelected = false)
+        public static IRecordSetFieldItemModel CreateDataListModel(ItemModel model, string displayname, string description, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection, IDataListItemModel parent, OptomizedObservableCollection<IDataListItemModel> children)
         {
-            var dataListModel = new RecordSetFieldItemModel(displayname,parent as IRecordSetItemModel, dev2ColumnArgumentDirection, description, hasError, errorMessage, isEditable, isVisable, isSelected);
+            var dataListModel = new RecordSetFieldItemModel(displayname, parent as IRecordSetItemModel, dev2ColumnArgumentDirection, description, model.hasError, model.errorMessage, model.isEditable, model.isVisable, model.isSelected);
             if (parent != null && !String.IsNullOrEmpty(displayname))
             {
                 dataListModel.DisplayName = parent.DisplayName + "()." + displayname;
@@ -31,15 +29,7 @@ namespace Dev2.Studio.Core.Factories
             return dataListModel;
         }
 
-        public static IRecordSetFieldItemModel CreateDataListModel(string displayname, string description = "", IRecordSetItemModel parent = null, bool hasError = false, string errorMessage = "", bool isEditable = true, bool isVisable = true, bool isSelected = false, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection = enDev2ColumnArgumentDirection.None)
-        {
-            var dataListModel = new RecordSetFieldItemModel(displayname,parent, dev2ColumnArgumentDirection, description, hasError, errorMessage, isEditable, isVisable, isSelected);
-            if (parent != null && !String.IsNullOrEmpty(displayname))
-            {
-                dataListModel.DisplayName = parent.DisplayName + "()." + displayname;
-            }
-            return dataListModel;
-        }
+        public static IRecordSetFieldItemModel CreateDataListModel(ItemModel model, string displayname) => CreateDataListModel(model, displayname, "", enDev2ColumnArgumentDirection.None, null, null);
 
         public static DataListHeaderItemModel CreateDataListHeaderItem(string displayname)
         {
@@ -47,9 +37,9 @@ namespace Dev2.Studio.Core.Factories
             return dataListHeaderModel;
         }
 
-        public static IRecordSetItemModel CreateRecordSetItemModel(string displayname, string description = "", IDataListItemModel parent = null, OptomizedObservableCollection<IRecordSetFieldItemModel> children = null, bool hasError = false, string errorMessage = "", bool isEditable = true, bool isVisable = true, bool isSelected = false, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection = enDev2ColumnArgumentDirection.None)
+        public static IRecordSetItemModel CreateRecordSetItemModel(ItemModel model, string displayname, string description, IDataListItemModel parent, OptomizedObservableCollection<IRecordSetFieldItemModel> children, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection)
         {
-            IRecordSetItemModel dataListModel = new RecordSetItemModel(displayname, dev2ColumnArgumentDirection, description, parent, children, hasError, errorMessage, isEditable, isVisable, isSelected);
+            IRecordSetItemModel dataListModel = new RecordSetItemModel(displayname, dev2ColumnArgumentDirection, description, parent, children, model.hasError, model.errorMessage, model.isEditable, model.isVisable, model.isSelected);
             if(parent != null && !String.IsNullOrEmpty(displayname))
             {
                 dataListModel.DisplayName = parent.DisplayName + "()." + displayname;
@@ -57,21 +47,26 @@ namespace Dev2.Studio.Core.Factories
             return dataListModel;
         }
 
-        public static IRecordSetFieldItemModel CreateRecordSetFieldItemModel(string displayname, string description = "", IRecordSetItemModel parent = null, bool hasError = false, string errorMessage = "", bool isEditable = true, bool isVisable = true, bool isSelected = false, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection = enDev2ColumnArgumentDirection.None)
+        public static IRecordSetItemModel CreateRecordSetItemModel(ItemModel model, string displayname) => CreateRecordSetItemModel(model, displayname, "", null, null, enDev2ColumnArgumentDirection.None);
+
+        public static IRecordSetFieldItemModel CreateRecordSetFieldItemModel(ItemModel model, string displayname, string description, IRecordSetItemModel parent, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection)
         {
-            IRecordSetFieldItemModel dataListModel = new RecordSetFieldItemModel(displayname, parent, dev2ColumnArgumentDirection, description, hasError, errorMessage, isEditable, isVisable, isSelected);
+            IRecordSetFieldItemModel dataListModel = new RecordSetFieldItemModel(displayname, parent, dev2ColumnArgumentDirection, description, model.hasError, model.errorMessage, model.isEditable, model.isVisable, model.isSelected);
             if (parent != null && !String.IsNullOrEmpty(displayname))
             {
                 dataListModel.DisplayName = parent.DisplayName + "()." + displayname;
             }
             return dataListModel;
         }
-        
-        public static IScalarItemModel CreateScalarItemModel(string displayname, string description = "", enDev2ColumnArgumentDirection dev2ColumnArgumentDirection = enDev2ColumnArgumentDirection.None, IDataListItemModel parent = null, OptomizedObservableCollection<IDataListItemModel> children = null, bool hasError = false, string errorMessage = "", bool isEditable = true, bool isVisable = true, bool isSelected = false)
+
+        public static IRecordSetFieldItemModel CreateRecordSetFieldItemModel(ItemModel model, string displayname) => CreateRecordSetFieldItemModel(model, displayname, "", null, enDev2ColumnArgumentDirection.None);
+
+        public static IScalarItemModel CreateScalarItemModel(ItemModel model, string displayname, string description, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection, IDataListItemModel parent, OptomizedObservableCollection<IDataListItemModel> children)
         {
-            IScalarItemModel dataListModel = new ScalarItemModel(displayname, dev2ColumnArgumentDirection, description, hasError, errorMessage, isEditable, isVisable, isSelected);
+            IScalarItemModel dataListModel = new ScalarItemModel(displayname, dev2ColumnArgumentDirection, description, model.hasError, model.errorMessage, model.isEditable, model.isVisable, model.isSelected);
             return dataListModel;
         }
-        
+
+        public static IScalarItemModel CreateScalarItemModel(ItemModel model, string displayname) => CreateScalarItemModel(model, displayname, "", enDev2ColumnArgumentDirection.None, null, null);
     }
 }
