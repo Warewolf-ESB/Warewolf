@@ -19,6 +19,7 @@ using Dev2.Common;
 using Dev2.Common.Interfaces.Services.Sql;
 using Warewolf.Resource.Errors;
 using Warewolf.Security.Encryption;
+using System.Globalization;
 
 namespace Dev2.Services.Sql
 {
@@ -94,7 +95,7 @@ namespace Dev2.Services.Sql
             }
         }
 
-        void TrySetTransaction(IDbTransaction dbTransaction, IDbCommand command)
+        static void TrySetTransaction(IDbTransaction dbTransaction, IDbCommand command)
         {
             if (dbTransaction != null && command.Transaction == null)
             {
@@ -147,7 +148,10 @@ namespace Dev2.Services.Sql
 
         public List<string> FetchDatabases()
         {
-            if(_connection == null) throw new Exception(ErrorResource.PleaseConnectFirst);
+            if (_connection == null)
+            {
+                throw new Exception(ErrorResource.PleaseConnectFirst);
+            }
             const string databaseColumnName = "database_name";
             var dataTable = _connection?.GetSchema("Databases") ?? new DataTable("Databases");
             var orderedRows = dataTable.Select("", databaseColumnName);
@@ -158,8 +162,8 @@ namespace Dev2.Services.Sql
         public void FetchStoredProcedures(Func<IDbCommand, List<IDbDataParameter>, string, string, bool> procedureProcessor, Func<IDbCommand, List<IDbDataParameter>, string, string, bool> functionProcessor, bool continueOnProcessorException = false,
             string dbName = "")
         {
-            VerifyArgument.IsNotNull("procedureProcessor", procedureProcessor);
-            VerifyArgument.IsNotNull("functionProcessor", functionProcessor);
+            VerifyArgument.IsNotNull(nameof(procedureProcessor), procedureProcessor);
+            VerifyArgument.IsNotNull(nameof(functionProcessor), functionProcessor);
             var proceduresDataTable = GetSchema();
             var procedureDataColumn = GetDataColumn(proceduresDataTable, "ROUTINE_NAME");
             var procedureTypeColumn = GetDataColumn(proceduresDataTable, "ROUTINE_TYPE");
@@ -271,7 +275,7 @@ namespace Dev2.Services.Sql
                 var maxLength = row["CHARACTER_MAXIMUM_LENGTH"] as int? ?? -1;
                 var sqlParameter = new SqlParameter(parameterName, sqlType, maxLength);
                 command.Parameters.Add(sqlParameter);
-                if (parameterName.ToLower() == "@return_value")
+                if (parameterName.ToLower(CultureInfo.InvariantCulture) == "@return_value")
                 {
                     continue;
                 }
@@ -311,7 +315,7 @@ namespace Dev2.Services.Sql
             return row[procedureTypeColumn].ToString().Equals("SQL_TABLE_VALUED_FUNCTION");
         }
 
-        private string CreateTVFCommand(string fullProcedureName, List<IDbDataParameter> parameters)
+        static string CreateTVFCommand(string fullProcedureName, List<IDbDataParameter> parameters)
         {
             if (parameters == null || parameters.Count == 0)
             {
@@ -328,7 +332,10 @@ namespace Dev2.Services.Sql
         }
         public IDbCommand CreateCommand()
         {
-            if (_connection == null) throw new Exception(ErrorResource.PleaseConnectFirst);
+            if (_connection == null)
+            {
+                throw new Exception(ErrorResource.PleaseConnectFirst);
+            }
             var sqlCommand = _connection.CreateCommand();
             TrySetTransaction(_transaction, sqlCommand);
             sqlCommand.CommandTimeout = (int)GlobalConstants.TransactionTimeout.TotalSeconds;
@@ -341,14 +348,15 @@ namespace Dev2.Services.Sql
 
         public bool Connect(string connectionString, CommandType commandType, string commandText)
         {
-            VerifyArgument.IsNotNull("connectionString", connectionString);
-            VerifyArgument.IsNotNull("commandText", commandText);
-            if (connectionString.CanBeDecrypted())
+            VerifyArgument.IsNotNull(nameof(connectionString), connectionString);
+            VerifyArgument.IsNotNull(nameof(commandText), commandText);
+            var connString = connectionString;
+            if (connString.CanBeDecrypted())
             {
-                connectionString = DpapiWrapper.Decrypt(connectionString);
+                connString = DpapiWrapper.Decrypt(connectionString);
             }
-            connectionString = string.Concat(connectionString, "MultipleActiveResultSets=true;");
-            _connection = _connectionBuilder.BuildConnection(connectionString);
+            connString = string.Concat(connString, "MultipleActiveResultSets=true;");
+            _connection = _connectionBuilder.BuildConnection(connString);
 
             _connection.TryOpen();
             _connection.FireInfoMessageEventOnUserErrors = true;
@@ -366,26 +374,29 @@ namespace Dev2.Services.Sql
                                          "Source: " + error.Source + Environment.NewLine +
                                          "Procedure: " + error.Procedure + Environment.NewLine);
 
-                    Dev2Logger.Error("SQL Error:" + errorMessages.ToString(), GlobalConstants.WarewolfError);
+                    Dev2Logger.Error("SQL Error:" + errorMessages, GlobalConstants.WarewolfError);
                 }
             });
-
-            if (commandText.ToLower().StartsWith("select "))
+            var typeOfCommand = commandType;
+            if (commandText.ToLower(CultureInfo.InvariantCulture).StartsWith("select ", StringComparison.Ordinal))
             {
-                commandType = CommandType.Text;
+                typeOfCommand = CommandType.Text;
             }
 
             _commantText = commandText;
-            _commandType = commandType;
+            _commandType = typeOfCommand;
 
 
             return true;
         }
 
-        public DataTable FetchDataTable(string conString, params IDbDataParameter[] dbDataParameters)
+        public DataTable FetchDataTable(params IDbDataParameter[] dbDataParameters)
         {
 
-            if (_connection == null) throw new Exception(ErrorResource.PleaseConnectFirst);
+            if (_connection == null)
+            {
+                throw new Exception(ErrorResource.PleaseConnectFirst);
+            }
             _connection.TryOpen();
 
             using (_connection)
