@@ -149,6 +149,12 @@
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
     <Compile Include="Merge\MergeConflictsTests.cs" />
+    <Compile Include="Merge\MergeConflictsUIMap.cs">
+      <DependentUpon>MergeConflictsUIMap.uitest</DependentUpon>
+    </Compile>
+    <Compile Include="Merge\MergeConflictsUIMap.Designer.cs">
+      <DependentUpon>MergeConflictsUIMap.uitest</DependentUpon>
+    </Compile>
     <Compile Include="RabbitMQSource\RabbitMQSourceTests.cs" />
     <Compile Include="RabbitMQSource\RabbitMQSourceUIMap.cs">
       <DependentUpon>RabbitMQSourceUIMap.uitest</DependentUpon>
