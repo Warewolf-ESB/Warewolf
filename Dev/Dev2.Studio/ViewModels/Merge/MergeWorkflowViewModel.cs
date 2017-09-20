@@ -28,7 +28,7 @@ namespace Dev2.ViewModels.Merge
             var mergeParser = CustomContainer.Get<IParseServiceForDifferences>();
             var currentChanges = mergeParser.GetDifferences(currentResourceModel, differenceResourceModel);
 
-            Conflicts = new ObservableCollection<CompleteConflict>();
+            Conflicts = new ObservableCollection<ICompleteConflict>();
 
             foreach (var curr in currentChanges)
             {
@@ -37,13 +37,13 @@ namespace Dev2.ViewModels.Merge
                 {
                     if (curr.conflict)
                     {
-                        CurrentConflictViewModel = new CurrentConflictViewModel(curr.current, currentResourceModel);
+                        CurrentConflictViewModel = new ConflictViewModel(curr.current, currentResourceModel);
                         if (CurrentConflictViewModel?.MergeToolModel != null)
                         {
                             conflict.CurrentViewModel = CurrentConflictViewModel.MergeToolModel;
                         }
 
-                        DifferenceConflictViewModel = new DifferenceConflictViewModel(curr.difference, differenceResourceModel);
+                        DifferenceConflictViewModel = new ConflictViewModel(curr.difference, differenceResourceModel);
                         if (DifferenceConflictViewModel?.MergeToolModel != null)
                         {
                             conflict.DiffViewModel = DifferenceConflictViewModel.MergeToolModel;
@@ -57,7 +57,7 @@ namespace Dev2.ViewModels.Merge
                         if (currDec.True != null)
                         {
                             
-                            var currentConflictViewModel = new CurrentConflictViewModel(ModelItemUtils.CreateModelItem(currDec.True), currentResourceModel);
+                            var currentConflictViewModel = new ConflictViewModel(ModelItemUtils.CreateModelItem(currDec.True), currentResourceModel);
                             if (currentConflictViewModel?.MergeToolModel != null)
                             {
                                 trueArmConflict.CurrentViewModel = currentConflictViewModel.MergeToolModel;
@@ -65,7 +65,7 @@ namespace Dev2.ViewModels.Merge
                         }
                         if (currDec.False != null)
                         {
-                            var currentConflictViewModel = new CurrentConflictViewModel(ModelItemUtils.CreateModelItem(currDec.False), currentResourceModel);
+                            var currentConflictViewModel = new ConflictViewModel(ModelItemUtils.CreateModelItem(currDec.False), currentResourceModel);
                             if (currentConflictViewModel?.MergeToolModel != null)
                             {
                                 falseArmConflict.CurrentViewModel = currentConflictViewModel.MergeToolModel;
@@ -76,7 +76,7 @@ namespace Dev2.ViewModels.Merge
 
                         if (diffDec.True != null)
                         {
-                            var differenceConflictViewModel = new DifferenceConflictViewModel(ModelItemUtils.CreateModelItem(diffDec.True), currentResourceModel);
+                            var differenceConflictViewModel = new ConflictViewModel(ModelItemUtils.CreateModelItem(diffDec.True), currentResourceModel);
                             if (differenceConflictViewModel?.MergeToolModel != null)
                             {
                                 trueArmConflict.DiffViewModel = differenceConflictViewModel.MergeToolModel;
@@ -84,7 +84,7 @@ namespace Dev2.ViewModels.Merge
                         }
                         if (diffDec.False != null)
                         {
-                            var differenceConflictViewModel = new DifferenceConflictViewModel(ModelItemUtils.CreateModelItem(diffDec.False), differenceResourceModel);
+                            var differenceConflictViewModel = new ConflictViewModel(ModelItemUtils.CreateModelItem(diffDec.False), differenceResourceModel);
                             if (differenceConflictViewModel?.MergeToolModel != null)
                             {
                                falseArmConflict.DiffViewModel =  differenceConflictViewModel.MergeToolModel;
@@ -94,32 +94,31 @@ namespace Dev2.ViewModels.Merge
                         conflict.Children.Add(falseArmConflict);
                         Conflicts.Add(conflict);
                     }
-                    
                 }
                 else
                 {
                     if (curr.conflict)
                     {
-                        CurrentConflictViewModel = new CurrentConflictViewModel(curr.current, currentResourceModel);
+                        CurrentConflictViewModel = new ConflictViewModel(curr.current, currentResourceModel);
                         if (CurrentConflictViewModel?.MergeToolModel != null)
                         {
                             conflict.CurrentViewModel = CurrentConflictViewModel.MergeToolModel;
                         }
 
-                        DifferenceConflictViewModel = new DifferenceConflictViewModel(curr.difference, differenceResourceModel);
+                        DifferenceConflictViewModel = new ConflictViewModel(curr.difference, differenceResourceModel);
                         if (DifferenceConflictViewModel?.MergeToolModel != null)
                         {
                             conflict.DiffViewModel = DifferenceConflictViewModel.MergeToolModel;
                         }
                         Conflicts.Add(conflict);
                     }
-                    
                 }
-                
             }
 
             CurrentConflictViewModel.WorkflowName = currentResourceModel.ResourceName;
+            CurrentConflictViewModel.GetDataList();
             DifferenceConflictViewModel.WorkflowName = differenceResourceModel.ResourceName;
+            DifferenceConflictViewModel.GetDataList();
 
             SetServerName(currentResourceModel);
             DisplayName = "Merge Conflicts" + _serverName;
@@ -133,7 +132,7 @@ namespace Dev2.ViewModels.Merge
             WorkflowDesignerViewModel.CanViewWorkflowLink = false;
         }
 
-        public ObservableCollection<CompleteConflict> Conflicts { get; set; }
+        public ObservableCollection<ICompleteConflict> Conflicts { get; set; }
 
         public System.Windows.Input.ICommand AddAnItem { get; set; }
 
