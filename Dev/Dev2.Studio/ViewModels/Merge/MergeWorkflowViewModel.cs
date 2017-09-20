@@ -3,18 +3,11 @@ using Microsoft.Practices.Prism.Mvvm;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.ViewModels.Workflow;
 using Dev2.Runtime.Configuration.ViewModels.Base;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using Dev2.Studio.Core.Activities.Utils;
-using System.Collections.ObjectModel;
 using System;
-using Unlimited.Applications.BusinessDesignStudio.Activities;
-using System.Activities;
-using Warewolf;
 using System.Activities.Statements;
 using Dev2.Common;
-using Microsoft.Practices.Prism;
 
 namespace Dev2.ViewModels.Merge
 {
@@ -35,12 +28,12 @@ namespace Dev2.ViewModels.Merge
             foreach (var curr in currentChanges)
             {
                 var completeConflicts = Conflicts.Flatten(completeConflict =>
-                    completeConflict.Children ?? new ObservableCollection<CompleteConflict>());
+                    completeConflict.Children ?? new ObservableCollection<ICompleteConflict>());
                 if (completeConflicts.Any(p => p.CurrentViewModel?.UniqueId == curr.uniqueId)) continue;
                 var conflict = new CompleteConflict();
                 if (curr.current.ItemType == typeof(FlowDecision))
                 {
-                    CurrentConflictViewModel = new CurrentConflictViewModel(curr.current, currentResourceModel);
+                    CurrentConflictViewModel = new ConflictViewModel(curr.current, currentResourceModel);
                     if (CurrentConflictViewModel?.MergeToolModel != null)
                     {
                         conflict.CurrentViewModel = CurrentConflictViewModel.MergeToolModel;
@@ -56,7 +49,7 @@ namespace Dev2.ViewModels.Merge
 
                     if (curr.conflict)
                     {
-                        DifferenceConflictViewModel = new DifferenceConflictViewModel(curr.difference, differenceResourceModel);
+                        DifferenceConflictViewModel = new ConflictViewModel(curr.difference, differenceResourceModel);
                         if (DifferenceConflictViewModel?.MergeToolModel != null)
                         {
                             conflict.DiffViewModel = DifferenceConflictViewModel.MergeToolModel;
@@ -74,14 +67,14 @@ namespace Dev2.ViewModels.Merge
                 }
                 else
                 {
-                    CurrentConflictViewModel = new CurrentConflictViewModel(curr.current, currentResourceModel);
+                    CurrentConflictViewModel = new ConflictViewModel(curr.current, currentResourceModel);
                     if (CurrentConflictViewModel?.MergeToolModel != null)
                     {
                         conflict.CurrentViewModel = CurrentConflictViewModel.MergeToolModel;
                     }
                     if (curr.conflict)
                     {
-                        DifferenceConflictViewModel = new DifferenceConflictViewModel(curr.difference, differenceResourceModel);
+                        DifferenceConflictViewModel = new ConflictViewModel(curr.difference, differenceResourceModel);
                         if (DifferenceConflictViewModel?.MergeToolModel != null)
                         {
                             conflict.DiffViewModel = DifferenceConflictViewModel.MergeToolModel;
