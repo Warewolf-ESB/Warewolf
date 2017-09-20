@@ -35,6 +35,8 @@ namespace Dev2.Studio.Core.Factories
             return dataListModel;
         }
 
+        public static IRecordSetFieldItemModel CreateDataListModel(ItemModel model, string displayname, string description, IRecordSetItemModel recordSetItemModel, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection) => CreateDataListModel(model, displayname, description, dev2ColumnArgumentDirection, null, null);
+        public static IRecordSetFieldItemModel CreateDataListModel(string displayname, string description, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection, IRecordSetItemModel recordSetItemModel) => CreateDataListModel(new ItemModel(), displayname, description, dev2ColumnArgumentDirection, null, null);
         public static IRecordSetFieldItemModel CreateDataListModel(string displayname) => CreateDataListModel(new ItemModel(), displayname, "", enDev2ColumnArgumentDirection.None, null, null);
 
         public static IRecordSetItemModel CreateRecordSetItemModel(ItemModel model, string displayname, string description, IDataListItemModel parent, OptomizedObservableCollection<IRecordSetFieldItemModel> children, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection)

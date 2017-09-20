@@ -17,48 +17,12 @@
         public bool IsVisable => isVisable;
 
         public bool IsSelected => isSelected;
-
-        public ItemModel(bool _hasError, string _errorMessage, bool _isEditable, bool _isVisable, bool _isSelected)
+        
+        public ItemModel(bool _isEditable)
         {
-            hasError = _hasError;
-            errorMessage = _errorMessage;
-            isEditable = _isEditable;
-            isVisable = _isVisable;
-            isSelected = _isSelected;
-        }
-
-        public ItemModel(bool _hasError, string _errorMessage, bool _isEditable, bool _isVisable)
-        {
-            hasError = _hasError;
-            errorMessage = _errorMessage;
-            isEditable = _isEditable;
-            isVisable = _isVisable;
-            isSelected = false;
-        }
-
-        public ItemModel(bool _hasError, string _errorMessage, bool _isEditable)
-        {
-            hasError = _hasError;
-            errorMessage = _errorMessage;
-            isEditable = _isEditable;
-            isVisable = true;
-            isSelected = false;
-        }
-
-        public ItemModel(bool _hasError, string _errorMessage)
-        {
-            hasError = _hasError;
-            errorMessage = _errorMessage;
-            isEditable = true;
-            isVisable = true;
-            isSelected = false;
-        }
-
-        public ItemModel(bool _hasError)
-        {
-            hasError = _hasError;
+            hasError = false;
             errorMessage = "";
-            isEditable = true;
+            isEditable = _isEditable;
             isVisable = true;
             isSelected = false;
         }
