@@ -13,25 +13,21 @@ namespace Dev2.Common.Interfaces
         void Save();
         IConflictViewModel CurrentConflictViewModel { get; set; }
         IConflictViewModel DifferenceConflictViewModel { get; set; }
-        ObservableCollection<CompleteConflict> Conflicts { get; set; }
+        ObservableCollection<ICompleteConflict> Conflicts { get; set; }
     }
 
     public interface IConflictViewModel
     {
         string WorkflowName { get; set; }
         IMergeToolModel MergeToolModel { get; set; }
+        void GetDataList();
     }
 
-    public class CompleteConflict
+    public interface ICompleteConflict
     {
-        public CompleteConflict()
-        {
-            Children = new ObservableCollection<CompleteConflict>();
-        }
-
-        public IMergeToolModel CurrentViewModel { get; set; }
-        public IMergeToolModel DiffViewModel { get; set; }
-        public ObservableCollection<CompleteConflict> Children { get; set; }
+        IMergeToolModel CurrentViewModel { get; set; }
+        IMergeToolModel DiffViewModel { get; set; }
+        ObservableCollection<ICompleteConflict> Children { get; set; }
     }
 
     public interface IMergeToolModel
