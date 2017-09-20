@@ -7,16 +7,22 @@ using Dev2.Studio.ViewModels.DataList;
 using Microsoft.Practices.Prism.Mvvm;
 using System.Activities.Statements;
 using System.Collections.ObjectModel;
-using Dev2.Common.ExtMethods;
+using Dev2.Studio.Interfaces;
+using Dev2.Studio.Factory;
+using Dev2.Common;
+using Caliburn.Micro;
 
 namespace Dev2.ViewModels.Merge
 {
-    public abstract class ConflictViewModelBase : BindableBase, IConflictViewModel
+    public class ConflictViewModel : BindableBase, IConflictViewModel
     {
-        protected ConflictViewModelBase(ModelItem modelItem)
+        private IContextualResourceModel _resourceModel;
+
+        public ConflictViewModel(ModelItem modelItem, IContextualResourceModel resourceModel)
         {
             Children = new ObservableCollection<IMergeToolModel>();
             MergeToolModel = AddModelItem(modelItem);
+            _resourceModel = resourceModel;
         }
 
         public IMergeToolModel AddModelItem(ModelItem modelItem)
@@ -70,6 +76,46 @@ namespace Dev2.ViewModels.Merge
                 return mergeToolModel;
             }
             return null;
+        }
+
+        public void GetDataList()
+        {
+            DataListViewModel = DataListViewModelFactory.CreateDataListViewModel(_resourceModel) as DataListViewModel;
+            DataListViewModel.ViewSortDelete = false;
+
+            if (DataListViewModel.ScalarCollection.Count <= 1)
+            {
+                foreach (var scalar in DataListViewModel.ScalarCollection)
+                {
+                    scalar.IsVisible = false;
+                    scalar.IsExpanded = false;
+                    scalar.IsEditable = false;
+                }
+            }
+            if (DataListViewModel.RecsetCollection.Count <= 1)
+            {
+                foreach (var recordset in DataListViewModel.RecsetCollection)
+                {
+                    recordset.IsVisible = false;
+                    recordset.IsExpanded = false;
+                    recordset.IsEditable = false;
+                    foreach (var child in recordset.Children)
+                    {
+                        child.IsVisible = false;
+                        child.IsExpanded = false;
+                        child.IsEditable = false;
+                    }
+                }
+                DataListViewModel.RecsetCollection.Clear();
+            }
+            if (DataListViewModel.ComplexObjectCollection.Count <= 1)
+            {
+                foreach (var complexobject in DataListViewModel.ComplexObjectCollection)
+                {
+                    complexobject.IsVisible = false;
+                    complexobject.Children.Flatten(a => a.Children).Apply(a => a.IsVisible = false);
+                }
+            }
         }
 
         public string WorkflowName { get; set; }

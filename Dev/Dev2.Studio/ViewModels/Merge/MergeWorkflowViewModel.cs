@@ -30,7 +30,7 @@ namespace Dev2.ViewModels.Merge
             var mergeParser = CustomContainer.Get<IParseServiceForDifferences>();
             var currentChanges = mergeParser.GetDifferences(currentResourceModel, differenceResourceModel);
 
-            Conflicts = new ObservableCollection<CompleteConflict>();
+            Conflicts = new ObservableCollection<ICompleteConflict>();
 
             foreach (var curr in currentChanges)
             {
@@ -109,7 +109,7 @@ namespace Dev2.ViewModels.Merge
             WorkflowDesignerViewModel.CanViewWorkflowLink = false;
         }
 
-        public ObservableCollection<CompleteConflict> Conflicts { get; set; }
+        public ObservableCollection<ICompleteConflict> Conflicts { get; set; }
 
         public System.Windows.Input.ICommand AddAnItem { get; set; }
 
