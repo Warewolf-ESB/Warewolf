@@ -58,7 +58,7 @@ namespace Dev2.Integration.Tests.Merge
             var mergeWorkflowViewModel = new MergeWorkflowViewModel(loadContextualResourceModel, resourceModel);
             //---------------Test Result -----------------------
             Assert.IsNotNull(mergeWorkflowViewModel);
-            var completeConflicts = mergeWorkflowViewModel.Conflicts.Flatten(conflict => conflict.Children ?? new ObservableCollection<CompleteConflict>());
+            var completeConflicts = mergeWorkflowViewModel.Conflicts.Flatten(conflict => conflict.Children ?? new ObservableCollection<ICompleteConflict>());
             
         }
 
