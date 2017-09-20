@@ -81,8 +81,7 @@ namespace Dev2.Activities.Designers.Tests.Core
             var region = new DotNetInputRegion(ModelItemUtils.CreateModelItem(act), DotNetActionRegion);
             Assert.AreEqual(region.IsEnabled, false);
             Assert.AreEqual(region.Errors.Count, 0);
-            var clone = region.CloneRegion() as DotNetInputRegion;
-            if (clone != null)
+            if (region.CloneRegion() is DotNetInputRegion clone)
             {
                 Assert.AreEqual(clone.IsEnabled, false);
                 Assert.AreEqual(clone.Errors.Count, 0);

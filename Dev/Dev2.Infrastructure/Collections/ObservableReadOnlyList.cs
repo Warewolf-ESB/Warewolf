@@ -118,7 +118,10 @@ namespace Dev2.Collections
             _list.RemoveAt(index);
         }
 
-        public T this[int index] { get { return _list[index]; } set { _list[index] = value; } }
+        public T this[int index] {
+            get => _list[index];
+            set => _list[index] = value;
+        }
 
         #endregion
 

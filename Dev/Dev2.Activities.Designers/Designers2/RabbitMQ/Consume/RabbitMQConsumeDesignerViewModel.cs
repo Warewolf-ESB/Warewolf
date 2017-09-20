@@ -35,7 +35,7 @@ namespace Dev2.Activities.Designers2.RabbitMQ.Consume
     public class RabbitMQConsumeDesignerViewModel : ActivityDesignerViewModel, INotifyPropertyChanged
     {
         private readonly IRabbitMQSourceModel _model;
-        private IShellViewModel _shellViewModel;
+        private readonly IShellViewModel _shellViewModel;
         public RabbitMQConsumeDesignerViewModel(ModelItem modelItem)
             : base(modelItem)
         {
@@ -76,19 +76,19 @@ namespace Dev2.Activities.Designers2.RabbitMQ.Consume
 
         public RelayCommand EditRabbitMQSourceCommand { get; private set; }
 
-        public bool IsRabbitMQSourceFocused { get { return (bool)GetValue(IsRabbitMQSourceFocusedProperty); } set { SetValue(IsRabbitMQSourceFocusedProperty, value); } }
+        public bool IsRabbitMQSourceFocused { get => (bool)GetValue(IsRabbitMQSourceFocusedProperty); set => SetValue(IsRabbitMQSourceFocusedProperty, value); }
         public static readonly DependencyProperty IsRabbitMQSourceFocusedProperty = DependencyProperty.Register("IsRabbitMQSourceFocused", typeof(bool), typeof(RabbitMQConsumeDesignerViewModel), new PropertyMetadata(default(bool)));
 
-        public bool IsQueueNameFocused { get { return (bool)GetValue(IsQueueNameFocusedProperty); } set { SetValue(IsQueueNameFocusedProperty, value); } }
+        public bool IsQueueNameFocused { get => (bool)GetValue(IsQueueNameFocusedProperty); set => SetValue(IsQueueNameFocusedProperty, value); }
         public static readonly DependencyProperty IsQueueNameFocusedProperty = DependencyProperty.Register("IsQueueNameFocused", typeof(bool), typeof(RabbitMQConsumeDesignerViewModel), new PropertyMetadata(default(bool)));
 
-        public bool IsPrefetchFocused { get { return (bool)GetValue(IsPrefetchFocusedProperty); } set { SetValue(IsPrefetchFocusedProperty, value); } }
+        public bool IsPrefetchFocused { get => (bool)GetValue(IsPrefetchFocusedProperty); set => SetValue(IsPrefetchFocusedProperty, value); }
         public static readonly DependencyProperty IsPrefetchFocusedProperty = DependencyProperty.Register("IsPrefetchFocused", typeof(bool), typeof(RabbitMQConsumeDesignerViewModel), new PropertyMetadata(default(bool)));
 
-        public bool IsResponseFocused { get { return (bool)GetValue(IsResponseFocusedProperty); } set { SetValue(IsResponseFocusedProperty, value); } }
+        public bool IsResponseFocused { get => (bool)GetValue(IsResponseFocusedProperty); set => SetValue(IsResponseFocusedProperty, value); }
         public static readonly DependencyProperty IsResponseFocusedProperty = DependencyProperty.Register("IsResponseFocused", typeof(bool), typeof(RabbitMQConsumeDesignerViewModel), new PropertyMetadata(default(bool)));
 
-        public bool IsTimeOutFocused { get { return (bool)GetValue(IsTimeOutFocusedProperty); } set { SetValue(IsTimeOutFocusedProperty, value); } }
+        public bool IsTimeOutFocused { get => (bool)GetValue(IsTimeOutFocusedProperty); set => SetValue(IsTimeOutFocusedProperty, value); }
         public static readonly DependencyProperty IsTimeOutFocusedProperty = DependencyProperty.Register("IsTimeOutFocused", typeof(bool), typeof(RabbitMQConsumeDesignerViewModel), new PropertyMetadata(default(bool)));
 
         private IRabbitMQServiceSourceDefinition _selectedRabbitMQSource;

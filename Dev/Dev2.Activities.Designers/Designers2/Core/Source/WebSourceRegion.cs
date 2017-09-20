@@ -204,8 +204,7 @@ namespace Dev2.Activities.Designers2.Core.Source
 
         public void RestoreRegion(IToolRegion toRestore)
         {
-            var region = toRestore as WebSourceRegion;
-            if (region != null)
+            if (toRestore is WebSourceRegion region)
             {
                 SelectedSource = region.SelectedSource;
             }
@@ -239,8 +238,7 @@ namespace Dev2.Activities.Designers2.Core.Source
                 if (Dependants != null)
                 {
                     var outputs = Dependants.FirstOrDefault(a => a is IOutputsToolRegion);
-                    var region = outputs as OutputsRegion;
-                    if (region != null)
+                    if (outputs is OutputsRegion region)
                     {
                         region.Outputs = new ObservableCollection<IServiceOutputMapping>();
                         region.RecordsetName = string.Empty;

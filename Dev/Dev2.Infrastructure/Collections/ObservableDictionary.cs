@@ -100,7 +100,10 @@ namespace Dev2.Collections
 
         public Dictionary<TKey, TValue>.KeyCollection Keys => TrueDictionary.Keys;
 
-        public TValue this[TKey key] { get { return (TValue)KeyedEntryCollection[key].Value; } set { DoSetEntry(key, value); } }
+        public TValue this[TKey key] {
+            get => (TValue)KeyedEntryCollection[key].Value;
+            set => DoSetEntry(key, value);
+        }
 
         public Dictionary<TKey, TValue>.ValueCollection Values => TrueDictionary.Values;
 
@@ -381,7 +384,11 @@ namespace Dev2.Collections
 
         ICollection<TValue> IDictionary<TKey, TValue>.Values => Values;
 
-        TValue IDictionary<TKey, TValue>.this[TKey key] { get { return (TValue)KeyedEntryCollection[key].Value; } set { DoSetEntry(key, value); } }
+        TValue IDictionary<TKey, TValue>.this[TKey key]
+        {
+            get => (TValue)KeyedEntryCollection[key].Value;
+            set => DoSetEntry(key, value);
+        }
 
         #endregion IDictionary<TKey, TValue>
 
