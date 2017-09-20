@@ -21,13 +21,13 @@ using Warewolf.Storage.Interfaces;
 
 namespace Dev2.Activities
 {
-    public class DsfDecision : DsfActivityAbstract<string>,IEquatable<DsfDecision>
+    public class DsfDecision : DsfActivityAbstract<string>, IEquatable<DsfDecision>
     {
         public IEnumerable<IDev2Activity> TrueArm { get; set; }
 
         public IEnumerable<IDev2Activity> FalseArm { get; set; }
         public Dev2DecisionStack Conditions { get; set; }
-        
+
         readonly DsfFlowDecisionActivity _inner;
         public DsfDecision(DsfFlowDecisionActivity inner) : this()
         {
@@ -110,7 +110,7 @@ namespace Dev2.Activities
                     {
                         ret.Add(factory.FetchDecisionFunction(a.EvaluationFn).Invoke(new[] { iter.FetchNextValue(c1), iter.FetchNextValue(c2), iter.FetchNextValue(c3) }));
                     }
-                    catch(Exception)
+                    catch (Exception)
                     {
                         if (errorIfNull)
                         {
@@ -128,7 +128,7 @@ namespace Dev2.Activities
             {
                 if (And)
                 {
-                    if(results.Any(b => b == false))
+                    if (results.Any(b => b == false))
                     {
                         resultval = false;
                     }
@@ -139,7 +139,7 @@ namespace Dev2.Activities
                 }
             }
 
-            Result = GetResultString(resultval.ToString(),Conditions);
+            Result = GetResultString(resultval.ToString(), Conditions);
             if (dataObject.IsDebugMode())
             {
                 _debugOutputs = GetDebugOutputs(resultval.ToString());
@@ -192,7 +192,7 @@ namespace Dev2.Activities
                     DispatchDebugState(dataObject, StateType.After, update);
                     _debugOutputs = new List<DebugItem>();
                 }
-            }            
+            }
         }
 
         public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
@@ -278,13 +278,13 @@ namespace Dev2.Activities
             try
             {
                 resultString = GetResultString(theResult, dds);
-                
+
                 itemToAdd.AddRange(new DebugItemStaticDataParams(resultString, "").GetDebugItemResult());
                 result.Add(itemToAdd);
             }
-            
+
             catch (Exception)
-            
+
             {
                 itemToAdd.AddRange(new DebugItemStaticDataParams(resultString, "").GetDebugItemResult());
                 result.Add(itemToAdd);
@@ -294,14 +294,14 @@ namespace Dev2.Activities
             return result;
         }
 
-        private static string GetResultString(string theResult,  Dev2DecisionStack dds)
+        private static string GetResultString(string theResult, Dev2DecisionStack dds)
         {
             var resultString = theResult;
-            if(theResult == "True")
+            if (theResult == "True")
             {
                 resultString = dds.TrueArmText;
             }
-            else if(theResult == "False")
+            else if (theResult == "False")
             {
                 resultString = dds.FalseArmText;
             }
@@ -387,7 +387,7 @@ namespace Dev2.Activities
             {
                 return false;
             }
-            return base.Equals(other)
+            return string.Equals(DisplayName, other.DisplayName)//UniqueId is not usefull since a new instance is created during parsing
                 && string.Equals(Result, other.Result)
                 && And == other.And;
         }
@@ -397,7 +397,7 @@ namespace Dev2.Activities
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
             if (obj.GetType() != this.GetType()) return false;
-            return Equals((DsfDecision) obj);
+            return Equals((DsfDecision)obj);
         }
 
         public override int GetHashCode()
@@ -420,9 +420,9 @@ namespace Dev2.Activities
     {
         private readonly DsfDecision _dsfDecision;
 
-        
-        public TestMockDecisionStep():base("Mock Decision")
-        {            
+
+        public TestMockDecisionStep() : base("Mock Decision")
+        {
         }
 
         public TestMockDecisionStep(DsfDecision dsfDecision)
