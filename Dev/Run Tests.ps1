@@ -330,21 +330,24 @@ function Wait-For-FileUnlock([string]$FilePath) {
 }
 
 function Merge-DotCover-Snapshots($DotCoverSnapshots, [string]$DestinationFilePath, [string]$LogFilePath) {
-    if ($DotCoverSnapshots -ne $null -and $DotCoverSnapshots.Count -gt 1) {
-        $DotCoverSnapshotsString = $DotCoverSnapshots -join "`";`""
-        Copy-On-Write "$LogFilePath.merge.log"
-        Copy-On-Write "$LogFilePath.report.log"
-        Copy-On-Write "$DestinationFilePath.dcvr"
-        Copy-On-Write "$DestinationFilePath.html"
-        &"$DotCoverPath" "merge" "/Source=`"$DotCoverSnapshotsString`"" "/Output=`"$DestinationFilePath.dcvr`"" "/LogFile=`"$LogFilePath.merge.log`""
+    if ($DotCoverSnapshots -ne $null) {
+        if ($DotCoverSnapshots.Count -gt 1) {
+            $DotCoverSnapshotsString = $DotCoverSnapshots -join "`";`""
+            Copy-On-Write "$LogFilePath.merge.log"
+            Copy-On-Write "$LogFilePath.report.log"
+            Copy-On-Write "$DestinationFilePath.dcvr"
+            Copy-On-Write "$DestinationFilePath.html"
+            &"$DotCoverPath" "merge" "/Source=`"$DotCoverSnapshotsString`"" "/Output=`"$DestinationFilePath.dcvr`"" "/LogFile=`"$LogFilePath.merge.log`""
+        }
+        if ($DotCoverSnapshots.Count -eq 1) {
+            $LoneSnapshot = $DotCoverSnapshots[0].FullName
+            if ($DotCoverSnapshots.Count -eq 1 -and (Test-Path "$LoneSnapshot")) {
+                &"$DotCoverPath" "report" "/Source=`"$LoneSnapshot`"" "/Output=`"$DestinationFilePath\DotCover Report.html`"" "/ReportType=HTML" "/LogFile=`"$LogFilePath.report.log`""
+            }
+        }
     }
     if (Test-Path "$DestinationFilePath.dcvr") {
         &"$DotCoverPath" "report" "/Source=`"$DestinationFilePath.dcvr`"" "/Output=`"$DestinationFilePath\DotCover Report.html`"" "/ReportType=HTML" "/LogFile=`"$LogFilePath.report.log`""
-    } else {
-        $LoneSnapshot = $DotCoverSnapshots[0].FullName
-        if ($DotCoverSnapshots.Count -eq 1 -and (Test-Path "$LoneSnapshot")) {
-            &"$DotCoverPath" "report" "/Source=`"$LoneSnapshot`"" "/Output=`"$DestinationFilePath\DotCover Report.html`"" "/ReportType=HTML" "/LogFile=`"$LogFilePath.report.log`""
-        }
     }
 }
 

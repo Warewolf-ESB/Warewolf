@@ -129,7 +129,6 @@ namespace Dev2.Activities.Designers.Tests.WebPostTool
             var human = new Human();
             Dev2JsonSerializer h = new Dev2JsonSerializer();
             var humanString = h.Serialize(human);
-            var person = "\"{title\": \"Person\",\"type\": \"object\"}";
             postViewModel.InputArea.PostData = humanString;
             var newCount = postViewModel.InputArea.Headers.Count;
             //---------------Test Result -----------------------

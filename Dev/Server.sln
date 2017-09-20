@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.16
+VisualStudioVersion = 15.0.26730.15
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Server", "Dev2.Server\Dev2.Server.csproj", "{87AEFD04-29F3-45B6-A7C6-4161F9190876}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -133,6 +133,12 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Data.Interfaces", "Dev2.Data.Interfaces\Dev2.Data.Interfaces.csproj", "{D7189600-3C18-4D35-97A4-8095DE1A4504}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Web", "Dev2.Web2\Dev2.Web.csproj", "{76467C57-4F15-4FD6-90BD-68443ADB838D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SonarQube", "SonarQube", "{7649B9D6-B42F-4B4A-9CB1-239007E544E1}"
+	ProjectSection(SolutionItems) = preProject
+		SonarQube\SolutionBinding.sqconfig = SonarQube\SolutionBinding.sqconfig
+		SonarQube\Warewolf-ESBCSharp.ruleset = SonarQube\Warewolf-ESBCSharp.ruleset
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -568,6 +574,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {290799DE-6594-4D29-BCCA-9FF1BF847CE8}
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Server.vsmdi

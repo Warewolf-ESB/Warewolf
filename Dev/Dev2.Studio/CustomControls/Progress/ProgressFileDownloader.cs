@@ -30,7 +30,7 @@ namespace Dev2.CustomControls.Progress
         private readonly IFile _file;
         private readonly ICryptoProvider _cryptoProvider;
         private readonly Window _owner;
-        private string _tmpFileName = "";
+        private readonly string _tmpFileName = "";
 
         #region Properties
 

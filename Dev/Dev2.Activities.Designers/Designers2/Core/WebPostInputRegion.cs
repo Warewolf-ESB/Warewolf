@@ -147,8 +147,7 @@ namespace Dev2.Activities.Designers2.Core
 
         public void RestoreRegion(IToolRegion toRestore)
         {
-            var region = toRestore as WebPostInputRegionClone;
-            if (region != null)
+            if (toRestore is WebPostInputRegionClone region)
             {
                 IsEnabled = region.IsEnabled;
                 PostData = region.PostData;
@@ -168,7 +167,8 @@ namespace Dev2.Activities.Designers2.Core
                         {
                             _modelItem.SetProperty("Headers",
                                 _headers.Select(a => new NameValue(a.Name, a.Value) as INameValue).ToList());
-                        }) { Name = nameValue.Name, Value = nameValue.Value });
+                        })
+                        { Name = nameValue.Name, Value = nameValue.Value });
                     }
                     Headers.Remove(Headers.First());
                 }
