@@ -62,7 +62,7 @@ namespace Dev2
             };
             var d = new DateTimeParser();
             int count = 0;
-            while (result == false && count < acceptedDateFormats.Count)
+            while (!result && count < acceptedDateFormats.Count)
             {
                 result = d.TryParseDateTime(payload, acceptedDateFormats[count], out IDateTimeResultTO to, out string errorMsg);
                 count++;

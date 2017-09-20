@@ -392,7 +392,7 @@ namespace Dev2.Common.DateAndTime
                    result.DaysOfYear == 0 &&
                    result.Era == null &&
                    result.Hours == 0 &&
-                   result.Is24H == false &&
+!result.Is24H &&
                    result.Milliseconds == 0 &&
                    result.Minutes == 0 &&
                    result.Months == 0 &&
