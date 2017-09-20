@@ -69,4 +69,5 @@ Dev/SonarQube/SolutionBinding.sqconfig
 /DotCoverRunner.xml
 /DotCoverOutput.html
 /Dev/.axoCover/settings.json
-/Dev/.axoCover/runs/run_2017-09-08_09-11-33
+/Dev/.axoCover/reports
+/Dev/.axoCover/runs
