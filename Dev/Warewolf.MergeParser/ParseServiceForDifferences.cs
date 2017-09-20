@@ -115,7 +115,7 @@ namespace Warewolf.MergeParser
         private IDev2Activity GetActivity(List<IDev2Activity> currentDifferences, ModelItem modelItem)
         {
             var activityParser = CustomContainer.Get<IActivityParser>();
-            return activityParser.Parse(currentDifferences, modelItem);
+            return activityParser?.Parse(currentDifferences, modelItem);
         }
         //private IDev2Activity GetActivity(ModelItem modelItem)
         //{
