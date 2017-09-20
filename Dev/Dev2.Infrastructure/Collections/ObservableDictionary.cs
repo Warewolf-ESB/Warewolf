@@ -18,7 +18,6 @@ using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
 using Warewolf.Resource.Errors;
 
-
 namespace Dev2.Collections
 {
     // See http://drwpf.com/blog/2007/09/16/can-i-bind-my-itemscontrol-to-a-dictionary/
