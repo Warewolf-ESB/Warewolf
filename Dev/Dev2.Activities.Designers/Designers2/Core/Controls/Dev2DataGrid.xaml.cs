@@ -28,6 +28,7 @@ namespace Dev2.Activities.Designers2.Core.Controls
     {
         readonly Func<Visual, FrameworkElement> _getVisualChild;
         int _skipNumber;
+        static int _staticSkipNumber;
 
         public Dev2DataGrid()
             : this(GetVisualChild<IntellisenseTextBox>)
@@ -58,12 +59,12 @@ namespace Dev2.Activities.Designers2.Core.Controls
             return false;
         }
 
-        public IInputElement GetFocusElement(int rowIndex, int inputsToSkip=0)
+        public IInputElement GetFocusElement(int rowIndex, int inputsToSkip)
         {
             if(rowIndex >= 0 && rowIndex < Items.Count)
             {
                 var row = GetRow(rowIndex);
-                return GetFocusElement(row,inputsToSkip);
+                return GetFocusElement(row, inputsToSkip);
             }
             return null;
         }
@@ -107,19 +108,18 @@ namespace Dev2.Activities.Designers2.Core.Controls
         {
             var child = default(T);
             var numVisuals = VisualTreeHelper.GetChildrenCount(parent);
-            for (var i = 0; i < numVisuals; i++)
+            var i = 0;
+            while (i < numVisuals && child != null && _staticSkipNumber != 0)
             {
                 var v = (Visual)VisualTreeHelper.GetChild(parent, i);
                 child = v as T ?? GetVisualChild<T>(v);
-                if(child != null)
+                if(child != null && _staticSkipNumber != 0)
                 {
-                    if (_skipNumber == 0)
-                    {
-                        break;
-                    }
-                    _skipNumber--;
+
+                    _staticSkipNumber--;
                     child = null;
-                }                
+                }
+                i++;
             }
             return child;
         }
