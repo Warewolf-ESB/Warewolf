@@ -178,8 +178,7 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
 
         public void RestoreRegion(IToolRegion toRestore)
         {
-            var region = toRestore as WcfInputRegionClone;
-            if (region != null)
+            if (toRestore is WcfInputRegionClone region)
             {
                 Inputs.Clear();
                 if (region.Inputs != null)

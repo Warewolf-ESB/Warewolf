@@ -32,7 +32,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Post
         private IOutputsToolRegion _outputsRegion;
         private IWebPostInputArea _inputArea;
         private ISourceToolRegion<IWebServiceSource> _sourceRegion;
-        private ServiceInputBuilder _builder;
+        private readonly ServiceInputBuilder _builder;
         private IErrorInfo _worstDesignError;
 
         const string DoneText = "Done";

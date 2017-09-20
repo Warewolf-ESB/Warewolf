@@ -559,21 +559,14 @@ namespace Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses
         }
 
         [When(@"I validate and delete the existing resource with ""(.*)""")]
-        public void WhenIValidateAndDeleteTheExistingResourceWith(string filterText)
+        public void WhenIValidateAndDeleteTheExistingResourceWith(string resourceName)
         {
-            MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text = filterText;
+            string resourcePath =  @"\\TST-CI-REMOTE\C$\ProgramData\Warewolf\Resources\" + resourceName;
 
-            if (UIMap.ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem))
+            if (File.Exists(resourcePath))
             {
-                Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem, MouseButtons.Right, ModifierKeys.None, new Point(107, 9));
-
-                Mouse.Click(UIMap.MainStudioWindow.ExplorerContextMenu.Delete, new Point(87, 12));
-                Assert.IsTrue(DialogsUIMap.MessageBoxWindow.Exists, "Message box does not exist");
-                Assert.IsTrue(DialogsUIMap.MessageBoxWindow.YesButton.Exists, "Message box Yes button does not exist");
-
-                Mouse.Click(DialogsUIMap.MessageBoxWindow.YesButton, new Point(32, 5));
+                File.Delete(resourcePath);
             }
-            MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text = string.Empty;
         }
 
         [When(@"I Wait For Explorer Localhost Spinner")]

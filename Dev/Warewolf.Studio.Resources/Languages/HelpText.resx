@@ -457,6 +457,15 @@
   <data name="DatabaseSourceTestConnectionHelp" xml:space="preserve">
     <value>Test the connection to the Database. </value>
   </data>
+    <data name="DecisionHelpDisplayText" xml:space="preserve">
+    <value>On the small view on the design surface, this text will show to help identify what decision is being made and will not affect execution.</value>
+  </data>
+  <data name="DecisionHelpTrueArm" xml:space="preserve">
+    <value>This is the help text of the true arm. It allows you to make your flow easier to comprehend and debug and will not affect execution.</value>
+  </data>
+  <data name="DecisionHelpFalseArm" xml:space="preserve">
+    <value>This is the help text of the false arm. It allows you to make your flow easier to comprehend and debug and will not affect execution.</value>
+  </data>
   <data name="DataListDeleteButtonHelp" xml:space="preserve">
     <value>Safely deletes all variables in the variable list that are not being used.</value>
   </data>
