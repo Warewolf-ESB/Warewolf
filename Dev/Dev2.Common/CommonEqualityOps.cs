@@ -16,6 +16,13 @@ namespace Dev2.Common
 
             return x.Equals(y);
         }
+        public static bool AreObjectsEqualUnSafe<T>(T x, T y)
+        {
+            if (x == null && y == null) return true;
+            if (x == null || y == null) return false;
+
+            return x.Equals(y);
+        }
 
         public static bool PassWordsCompare(string pass1, string pass2)
         {

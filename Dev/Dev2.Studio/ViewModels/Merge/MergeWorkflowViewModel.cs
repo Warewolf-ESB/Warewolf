@@ -52,7 +52,6 @@ namespace Dev2.ViewModels.Merge
                         var currDec = curr.current.GetCurrentValue<FlowDecision>();
                         var trueArmConflict = new CompleteConflict();
                         var falseArmConflict = new CompleteConflict();
-                        var childConflict = new CompleteConflict();
                         
                         if (currDec.True != null)
                         {

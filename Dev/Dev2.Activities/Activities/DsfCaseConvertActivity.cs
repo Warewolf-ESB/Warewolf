@@ -457,8 +457,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            CommonEqualityOps.CollectionEquals(ConvertCollection, other.ConvertCollection, new CaseConvertToComparer());
-            return base.Equals(other) && Equals(ConvertCollection, other.ConvertCollection);
+            var collectionEquals = CommonEqualityOps.CollectionEquals(ConvertCollection, other.ConvertCollection, new CaseConvertToComparer());
+            
+            return base.Equals(other) && collectionEquals;
         }
 
         public override bool Equals(object obj)
