@@ -47,6 +47,7 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
@@ -65,23 +66,17 @@
                         </StackPanel>
                     </Border>
 
-                    <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" >
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="*"/>
-                        </Grid.RowDefinitions>
+                    <StackPanel Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1"  HorizontalAlignment="Stretch" Orientation="Horizontal" Visibility="{Binding HasMergeStarted}">
+                        <TextBlock Text="To start the Merge process, select a radio button below." 
+                                   HorizontalAlignment="Center"/>
+                    </StackPanel>
+
+                    <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Visibility="{Binding HasWorkflowNameConflict, Converter={StaticResource BoolToVisibilityConverterPositive}}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition SharedSizeGroup="MergeCurrentColumnWidth"/>
                             <ColumnDefinition SharedSizeGroup="MergeCurrentColumnWidth"/>
                         </Grid.ColumnDefinitions>
 
-                        <Grid Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0" Visibility="{Binding HasMergeStarted}" HorizontalAlignment="Stretch">
-                            <StackPanel HorizontalAlignment="Stretch" Orientation="Horizontal">
-                                <TextBlock Text="To start the Merge process, select a radio button below." 
-                                           HorizontalAlignment="Center"/>
-                            </StackPanel>
-                        </Grid>
-                        
                         <DockPanel x:Name="MergeCurrentWorkflowDockPanel" 
                                    Grid.Column="0" 
                                    Grid.Row="1" 
@@ -90,7 +85,7 @@
                             <StackPanel DockPanel.Dock="Left" Orientation="Horizontal" >
                                 <TextBlock Text="{Binding WorkflowName}" FontWeight="Bold" HorizontalAlignment="Stretch"/>
                             </StackPanel>
-                            <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+                            <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" >
                                 <RadioButton x:Name="VariablesCurrentRB" 
                                              IsChecked="{Binding IsWorkflowNameChecked}" 
                                              HorizontalAlignment="Right"
@@ -106,10 +101,10 @@
                                    Grid.Row="1" 
                                    LastChildFill="False" 
                                    DataContext="{Binding DifferenceConflictViewModel}">
-                            <StackPanel DockPanel.Dock="Left" Orientation="Horizontal" >
+                            <StackPanel DockPanel.Dock="Left" Orientation="Horizontal">
                                 <TextBlock Text="{Binding WorkflowName}" FontWeight="Bold" HorizontalAlignment="Stretch"/>
                             </StackPanel>
-                            <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+                            <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" >
                                 <RadioButton x:Name="VariablesDifferenceRB" 
                                              IsChecked="{Binding IsWorkflowNameChecked}" 
                                              HorizontalAlignment="Right"
@@ -120,8 +115,8 @@
                             </StackPanel>
                         </DockPanel>
                     </Grid>
-                    
-                    <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Margin="{StaticResource ElementBorderTop}" >
+
+                    <Grid Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Margin="{StaticResource ElementBorderTop}" Visibility="{Binding HasVariablesConflict, Converter={StaticResource BoolToVisibilityConverterPositive}}">
                         <Expander x:Name="MergeWorkflowVariables"
                                   Style="{StaticResource MergeExpander}"
                                   AutomationProperties.AutomationId="UI_MergeVariablesExpander_AutoID">
@@ -194,7 +189,7 @@
                         </Expander>
                     </Grid>
 
-                    <Grid Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2">
+                    <Grid Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2">
                         <TreeView x:Name="MergeDifferenceDataTree"
 			                      Grid.Row="2"
 			                      ItemsSource="{Binding Conflicts, Mode=TwoWay, IsAsync=True}"
