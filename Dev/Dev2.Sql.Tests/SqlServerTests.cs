@@ -91,31 +91,7 @@ namespace Dev2.Sql.Tests
             {
                 sqlServer.Dispose();
             }
-        }
-
-        [TestMethod]
-        [Owner("Trevor Williams-Ros")]
-        [TestCategory("SqlServer_FetchDataTable")]
-        [ExpectedException(typeof(Exception))]
-
-        public void SqlServer_FetchDataTable_ConnectionNotInitialized_ThrowsConnectFirstException()
-
-        {
-            //------------Setup for test--------------------------
-            var connBuilder = new Mock<IConnectionBuilder>();
-            var sqlServer = new SqlServer(connBuilder.Object);
-            try
-            {
-                //------------Execute Test---------------------------
-                sqlServer.FetchDataTable("");
-
-                //------------Assert Results-------------------------
-            }
-            finally
-            {
-                sqlServer.Dispose();
-            }
-        }
+        }                
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
