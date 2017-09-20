@@ -10,7 +10,7 @@ namespace Dev2.Data.Util
 {
     internal class CommonRecordSetUtil : ICommonRecordSetUtil
     {
-        private readonly Dev2DataLanguageParser _dev2DataLanguageParser;
+        private Dev2DataLanguageParser _dev2DataLanguageParser;
         const string EmptyBrackets = "()";
         public CommonRecordSetUtil()
         {

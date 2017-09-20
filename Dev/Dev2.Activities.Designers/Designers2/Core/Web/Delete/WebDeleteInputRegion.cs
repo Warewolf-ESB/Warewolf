@@ -179,7 +179,8 @@ namespace Dev2.Activities.Designers2.Core.Web.Delete
 
         public void RestoreRegion(IToolRegion toRestore)
         {
-            if (toRestore is WebDeleteRegionClone region)
+            var region = toRestore as WebDeleteRegionClone;
+            if (region != null)
             {
                 IsEnabled = region.IsEnabled;
                 QueryString = region.QueryString;
@@ -198,8 +199,7 @@ namespace Dev2.Activities.Designers2.Core.Web.Delete
                         {
                             _modelItem.SetProperty("Headers",
                                 _headers.Select(a => new NameValue(a.Name, a.Value) as INameValue).ToList());
-                        })
-                        { Name = nameValue.Name, Value = nameValue.Value });
+                        }) { Name = nameValue.Name, Value = nameValue.Value });
                     }
                     Headers.Remove(Headers.First());
                 }

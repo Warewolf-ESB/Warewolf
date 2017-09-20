@@ -32,11 +32,11 @@ namespace Dev2.Activities.Designers2.Core.QuickVariableInput
 {
     public class QuickVariableInputViewModel : DependencyObject, IClosable, IValidator, IErrorsSource
     {
-        private const string splitTypeIndex = "Index";
-        private const string splitTypeChars = "Chars";
-        private const string splitTypeNewLine = "New Line";
-        private const string splitTypeSpace = "Space";
-        private const string splitTypeTab = "Tab";
+        public const string SplitTypeIndex = "Index";
+        public const string SplitTypeChars = "Chars";
+        public const string SplitTypeNewLine = "New Line";
+        public const string SplitTypeSpace = "Space";
+        public const string SplitTypeTab = "Tab";
 
         readonly Action<IEnumerable<string>, bool> _addToCollection;
 
@@ -363,10 +363,10 @@ namespace Dev2.Activities.Designers2.Core.QuickVariableInput
 
             var dtb = new Dev2TokenizerBuilder { ToTokenize = stringToSplit };
 
-            switch (splitType)
+            switch(splitType)
             {
                 case "Index":
-                    if (!string.IsNullOrEmpty(at))
+                    if(!string.IsNullOrEmpty(at))
                     {
                         // No need for try..parse as ValidationErrors() function checks this!
                         var indexNum = int.Parse(at);
@@ -383,15 +383,15 @@ namespace Dev2.Activities.Designers2.Core.QuickVariableInput
                     break;
 
                 case "New Line":
-                    if (stringToSplit.Contains("\r\n"))
+                    if(stringToSplit.Contains("\r\n"))
                     {
                         dtb.AddTokenOp("\r\n", false);
                     }
-                    else if (stringToSplit.Contains("\n"))
+                    else if(stringToSplit.Contains("\n"))
                     {
                         dtb.AddTokenOp("\n", false);
                     }
-                    else if (stringToSplit.Contains("\r"))
+                    else if(stringToSplit.Contains("\r"))
                     {
                         dtb.AddTokenOp("\r", false);
                     }
@@ -403,7 +403,7 @@ namespace Dev2.Activities.Designers2.Core.QuickVariableInput
                     break;
 
                 case "Chars":
-                    if (!string.IsNullOrEmpty(at))
+                    if(!string.IsNullOrEmpty(at))
                     {
                         dtb.AddTokenOp(at, false);
                     }
@@ -432,16 +432,6 @@ namespace Dev2.Activities.Designers2.Core.QuickVariableInput
             get { return (bool)GetValue(IsValidProperty); }
             private set { SetValue(IsValidProperty, value); }
         }
-
-        public static string SplitTypeIndex => splitTypeIndex;
-
-        public static string SplitTypeChars => splitTypeChars;
-
-        public static string SplitTypeNewLine => splitTypeNewLine;
-
-        public static string SplitTypeSpace => splitTypeSpace;
-
-        public static string SplitTypeTab => splitTypeTab;
 
         public static readonly DependencyProperty IsValidProperty =
             DependencyProperty.Register("IsValid", typeof(bool), typeof(QuickVariableInputViewModel), new PropertyMetadata(true));

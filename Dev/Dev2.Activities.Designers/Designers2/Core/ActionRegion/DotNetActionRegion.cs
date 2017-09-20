@@ -28,7 +28,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
         readonly Dictionary<string, IList<IToolRegion>> _previousRegions = new Dictionary<string, IList<IToolRegion>>();
         private Action _sourceChangedAction;
         private IPluginAction _selectedAction;
-        private readonly IPluginServiceModel _model;
+        private IPluginServiceModel _model;
         private ICollection<IPluginAction> _actions;
         private bool _isActionEnabled;
         private bool _isRefreshing;
@@ -170,7 +170,8 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
                 if (Dependants != null)
                 {
                     var outputs = Dependants.FirstOrDefault(a => a is IOutputsToolRegion);
-                    if (outputs is OutputsRegion region)
+                    var region = outputs as OutputsRegion;
+                    if (region != null)
                     {
                         region.Outputs = new ObservableCollection<IServiceOutputMapping>();
                         region.RecordsetName = string.Empty;
@@ -287,7 +288,8 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
         public void RestoreRegion(IToolRegion toRestore)
         {
-            if (toRestore is DotNetActionRegion region)
+            var region = toRestore as DotNetActionRegion;
+            if (region != null)
             {
                 SelectedAction = region.SelectedAction;
                 RestoreIfPrevious(region.SelectedAction);

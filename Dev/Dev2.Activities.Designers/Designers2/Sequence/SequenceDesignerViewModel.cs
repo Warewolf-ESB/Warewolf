@@ -87,7 +87,8 @@ namespace Dev2.Activities.Designers2.Sequence
             get
             {
                 var property = ModelItem.GetProperty("Activities");
-                if (property is Collection<Activity> activityNames)
+                var activityNames = property as Collection<Activity>;
+                if (activityNames != null)
                 {
                     var fullListOfNames = activityNames.Select(item => item.DisplayName).ToList();
                     if (fullListOfNames.Count <= 4)
@@ -114,7 +115,8 @@ namespace Dev2.Activities.Designers2.Sequence
                 {
                     return false;
                 }
-                if (explorerItemModel is IExplorerItemViewModel itemModel)
+                IExplorerItemViewModel itemModel = explorerItemModel as IExplorerItemViewModel;
+                if (itemModel != null)
                 {
                     if (itemModel.Server != null)
                         envId = itemModel.Server.EnvironmentID;
@@ -170,7 +172,8 @@ namespace Dev2.Activities.Designers2.Sequence
             if (!string.IsNullOrEmpty(modelItemString))
             {
                 var objectData = dataObject.GetData(modelItemString);
-                if (objectData is List<ModelItem> data && data.Count >= 1)
+                var data = objectData as List<ModelItem>;
+                if (data != null && data.Count >= 1)
                 {
                     foreach (var item in data)
                     {

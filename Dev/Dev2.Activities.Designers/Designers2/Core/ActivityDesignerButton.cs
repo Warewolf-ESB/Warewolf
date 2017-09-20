@@ -86,7 +86,8 @@ namespace Dev2.Activities.Designers2.Core
 
         void DoValidate()
         {
-            if (DataContext is IValidator validator)
+            var validator = DataContext as IValidator;
+            if(validator != null)
             {
                 validator.Validate();
                 IsValid = validator.IsValid;
@@ -95,7 +96,8 @@ namespace Dev2.Activities.Designers2.Core
 
         void DoClose()
         {
-            if (DataContext is IClosable closable)
+            var closable = DataContext as IClosable;
+            if(closable != null)
             {
                 closable.IsClosed = true;
             }

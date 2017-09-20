@@ -472,7 +472,8 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
         public void RestoreRegion(IToolRegion toRestore)
         {
-            if (toRestore is DotNetMethodRegion region)
+            var region = toRestore as DotNetMethodRegion;
+            if (region != null)
             {
                 SelectedMethod = region.SelectedMethod;
                 RestoreIfPrevious(region.SelectedMethod);

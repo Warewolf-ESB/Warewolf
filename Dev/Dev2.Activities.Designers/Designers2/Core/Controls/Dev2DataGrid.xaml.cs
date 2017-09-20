@@ -51,7 +51,8 @@ namespace Dev2.Activities.Designers2.Core.Controls
         public bool SetFocusToInserted(DataGridRow row)
         {
             var modelItem = row.DataContext as ModelItem;
-            if (modelItem?.GetCurrentValue() is IDev2TOFn toFn && toFn.Inserted)
+            var toFn = modelItem?.GetCurrentValue() as IDev2TOFn;
+            if(toFn != null && toFn.Inserted)
             {
                 return SetFocus(row);
             }
