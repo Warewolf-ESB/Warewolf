@@ -135,7 +135,8 @@ namespace Dev2.Activities.Designers2.Decision
 
         public override void UpdateDto(IDev2TOFn dto)
         {
-            if (dto is DecisionTO decto)
+            var decto = dto as DecisionTO;
+            if (decto != null)
             {
                 decto.UpdateDisplayAction = UpdateDecisionDisplayName;
             }

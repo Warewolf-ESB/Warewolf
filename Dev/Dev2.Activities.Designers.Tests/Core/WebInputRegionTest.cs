@@ -65,7 +65,8 @@ namespace Dev2.Activities.Designers.Tests.Core
             var region = new WebGetInputRegion(ModelItemUtils.CreateModelItem(act), srcreg);
             Assert.AreEqual(region.IsEnabled, false);
             Assert.AreEqual(region.Errors.Count, 0);
-            if (region.CloneRegion() is WebGetInputRegion clone)
+            var clone = region.CloneRegion() as WebGetInputRegion;
+            if(clone != null)
             {
                 Assert.AreEqual(clone.IsEnabled, false);
                 Assert.AreEqual(clone.Errors.Count, 0);

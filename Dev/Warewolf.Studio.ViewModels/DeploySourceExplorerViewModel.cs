@@ -22,7 +22,7 @@ namespace Warewolf.Studio.ViewModels
         IEnumerable<IExplorerTreeItem> _preselected;
         private Version _serverVersion;
         private object _serverInformation;
-        private readonly IEnvironmentViewModel _selectedEnv;
+        private IEnvironmentViewModel _selectedEnv;
 
         public DeploySourceExplorerViewModel(IShellViewModel shellViewModel, Microsoft.Practices.Prism.PubSubEvents.IEventAggregator aggregator, IDeployStatsViewerViewModel statsArea, IEnvironmentViewModel selectedEnvironment = null)
         {

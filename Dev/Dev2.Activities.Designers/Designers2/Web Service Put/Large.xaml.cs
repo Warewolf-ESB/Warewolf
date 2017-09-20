@@ -34,8 +34,9 @@ namespace Dev2.Activities.Designers2.Web_Service_Put
         #endregion
         void RequestBody_OnSizeChanged(object sender, SizeChangedEventArgs e)
         {
+            var viewModel = DataContext as WebServicePutViewModel;
 
-            if (DataContext is WebServicePutViewModel viewModel)
+            if (viewModel != null)
             {
                 var dataContext = viewModel.InputArea;
                 if (dataContext.IsEnabled)

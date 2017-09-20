@@ -63,10 +63,6 @@ namespace Dev2.Runtime.Security
             }
         }
 
-        public RSACryptoServiceProvider SystemKey => _systemKey;
-
-        public RSACryptoServiceProvider ServerKey => _serverKey;
-
         #endregion
 
         #region Ctor

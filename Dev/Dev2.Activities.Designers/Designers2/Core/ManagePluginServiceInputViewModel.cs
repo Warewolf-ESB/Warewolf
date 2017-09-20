@@ -35,12 +35,12 @@ namespace Dev2.Activities.Designers2.Core
 {
     public class ManagePluginServiceInputViewModel : IManagePluginServiceInputViewModel
     {
-        readonly IGenerateOutputArea _generateOutputArea;
-        readonly IGenerateInputArea _generateInputArea;
+        IGenerateOutputArea _generateOutputArea;
+        IGenerateInputArea _generateInputArea;
         bool _isEnabled;
         bool _pasteResponseAvailable;
-        readonly IDotNetViewModel _viewmodel;
-        readonly IPluginServiceModel _serverModel;
+        IDotNetViewModel _viewmodel;
+        IPluginServiceModel _serverModel;
         bool _isGenerateInputsEmptyRows;
         private bool _okSelected;
         private string _testResults;

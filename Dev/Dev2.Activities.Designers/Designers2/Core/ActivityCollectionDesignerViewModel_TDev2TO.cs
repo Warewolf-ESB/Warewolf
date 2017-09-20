@@ -40,7 +40,8 @@ namespace Dev2.Activities.Designers2.Core
         where TDev2TOFn : class, IDev2TOFn, IPerformsValidation, new()
     {
         TDev2TOFn _initialDto = new TDev2TOFn();
-        readonly object _syncLock = new object();
+        
+        object _syncLock = new object();
 
         protected ActivityCollectionDesignerViewModel(ModelItem modelItem)
             : base(modelItem)
@@ -93,7 +94,8 @@ namespace Dev2.Activities.Designers2.Core
 
         public override void OnSelectionChanged(ModelItem oldItem, ModelItem newItem)
         {
-            if (oldItem?.GetCurrentValue() is TDev2TOFn dto && dto.CanRemove())
+            var dto = oldItem?.GetCurrentValue() as TDev2TOFn;
+            if (dto != null && dto.CanRemove())
             {
                 // old row is blank so remove
                 if (ModelItemCollection != null)
@@ -402,7 +404,8 @@ namespace Dev2.Activities.Designers2.Core
         {
             ProcessModelItemCollection(startIndex, mi =>
             {
-                if (mi.GetCurrentValue() is TDev2TOFn dto)
+                var dto = mi.GetCurrentValue() as TDev2TOFn;
+                if (dto != null)
                 {
                     AttachEvents(dto);
                 }
@@ -440,7 +443,8 @@ namespace Dev2.Activities.Designers2.Core
 
             ProcessModelItemCollection(0, mi =>
               {
-                  if (mi.GetCurrentValue() is TDev2TOFn dto)
+                  var dto = mi.GetCurrentValue() as TDev2TOFn;
+                  if (dto != null)
                   {
                       CEventHelper.RemoveAllEventHandlers(dto);
                   }

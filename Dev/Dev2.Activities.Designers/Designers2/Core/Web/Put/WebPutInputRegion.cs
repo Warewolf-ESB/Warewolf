@@ -192,7 +192,8 @@ namespace Dev2.Activities.Designers2.Core.Web.Put
 
         public void RestoreRegion(IToolRegion toRestore)
         {
-            if (toRestore is WebPutRegionClone region)
+            var region = toRestore as WebPutRegionClone;
+            if (region != null)
             {
                 IsEnabled = region.IsEnabled;
                 QueryString = region.QueryString;
@@ -211,8 +212,7 @@ namespace Dev2.Activities.Designers2.Core.Web.Put
                         {
                             _modelItem.SetProperty("Headers",
                                 _headers.Select(a => new NameValue(a.Name, a.Value) as INameValue).ToList());
-                        })
-                        { Name = nameValue.Name, Value = nameValue.Value });
+                        }) { Name = nameValue.Name, Value = nameValue.Value });
                     }
                     Headers.Remove(Headers.First());
                 }
