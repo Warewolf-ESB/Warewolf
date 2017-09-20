@@ -21,8 +21,7 @@ using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
 using Dev2.Workspaces;
-
-
+using System.Threading.Tasks;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -79,16 +78,21 @@ namespace Dev2.Runtime.ESB.Management.Services
                     {
                         if (!exeManager.IsRefreshing)
                         {
-                            exeManager.StartRefresh();
-                            ResourceCatalog.Instance.Reload();
-                            exeManager.StopRefresh();
+                            Task.Run(() =>
+                            {
+                                exeManager.StartRefresh();
+                                ResourceCatalog.Instance.Reload();
+                                exeManager.StopRefresh();
+                            }).ContinueWith((o)=>
+                            {
+                                return serializer.SerializeToBuilder(GetExplorerItems(serializer, reloadResourceCatalogue));
+                            });
+                            IExplorerRepositoryResult error = new ExplorerRepositoryResult(ExecStatus.Fail, "Server is currently busy with a Refresh");
+                            return serializer.SerializeToBuilder(error);
                         }                        
                     }
                 }
-                var item = ServerExplorerRepo.Load(GlobalConstants.ServerWorkspaceID, reloadResourceCatalogue);
-                CompressedExecuteMessage message = new CompressedExecuteMessage();
-                message.SetMessage(serializer.Serialize(item));
-                return serializer.SerializeToBuilder(message);
+                return serializer.SerializeToBuilder(GetExplorerItems(serializer, reloadResourceCatalogue));
             }
             catch (Exception e)
             {
@@ -101,6 +105,14 @@ namespace Dev2.Runtime.ESB.Management.Services
                 var exeManager = CustomContainer.Get<IExecutionManager>();
                 exeManager?.StopRefresh();
             }
+        }
+
+        private CompressedExecuteMessage GetExplorerItems(Dev2JsonSerializer serializer, bool reloadResourceCatalogue)
+        {
+            var item = ServerExplorerRepo.Load(GlobalConstants.ServerWorkspaceID, reloadResourceCatalogue);
+            CompressedExecuteMessage message = new CompressedExecuteMessage();
+            message.SetMessage(serializer.Serialize(item));
+            return message;
         }
 
         public DynamicService CreateServiceEntry()
