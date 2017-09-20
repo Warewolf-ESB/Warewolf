@@ -221,7 +221,8 @@ namespace Dev2.Activities.Designers2.Core.Source
 
         public void RestoreRegion(IToolRegion toRestore)
         {
-            if (toRestore is DotNetSourceRegion region)
+            var region = toRestore as DotNetSourceRegion;
+            if (region != null)
             {
                 SelectedSource = region.SelectedSource;
                 IsEnabled = region.IsEnabled;

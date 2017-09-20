@@ -47,7 +47,8 @@ namespace Dev2.Activities.Designers2.CreateJSON
         {
             if (propertyName == "SourceName")
             {
-                if (CurrentModelItem?.GetCurrentValue() is JsonMappingTo dto)
+                var dto = CurrentModelItem?.GetCurrentValue() as JsonMappingTo;
+                if (dto != null)
                 {
                     var destinationWithName = dto.GetDestinationWithName(dto.SourceName);
                     if (String.IsNullOrEmpty(dto.DestinationName))

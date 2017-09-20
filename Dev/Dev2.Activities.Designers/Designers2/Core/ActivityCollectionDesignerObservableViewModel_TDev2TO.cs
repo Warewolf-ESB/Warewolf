@@ -59,13 +59,14 @@ namespace Dev2.Activities.Designers2.Core
 
         public override void OnSelectionChanged(ModelItem oldItem, ModelItem newItem)
         {
-            if (oldItem?.GetCurrentValue() is TDev2TOFn dto && dto.CanRemove())
+            var dto = oldItem?.GetCurrentValue() as TDev2TOFn;
+            if(dto != null && dto.CanRemove())
             {
                 // old row is blank so remove
                 var index = Collection.IndexOf(dto) + 1;
                 RemoveDto(dto, index);
             }
-            if (newItem != null)
+            if(newItem != null)
             {
                 CurrentModelItem = newItem;
             }
@@ -329,7 +330,8 @@ namespace Dev2.Activities.Designers2.Core
         {
             ProcessModelItemCollection(startIndex, mi =>
             {
-                if (mi is TDev2TOFn dto)
+                var dto = mi as TDev2TOFn;
+                if(dto != null)
                 {
                     AttachEvents(dto);
                 }
@@ -364,7 +366,8 @@ namespace Dev2.Activities.Designers2.Core
           
             ProcessModelItemCollection(0, mi =>
             {
-                if (mi is TDev2TOFn dto)
+                var dto = mi as TDev2TOFn;
+                if(dto != null)
                 {
                     CEventHelper.RemoveAllEventHandlers(dto);
                 }

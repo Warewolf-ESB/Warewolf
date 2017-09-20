@@ -54,7 +54,8 @@ namespace Dev2.Activities.Designers.Tests.Core
             var region = new WebPostInputRegion(ModelItemUtils.CreateModelItem(act), srcreg) { PostData = "bob" };
             Assert.AreEqual(region.IsEnabled, false);
             Assert.AreEqual(region.Errors.Count, 0);
-            if (region.CloneRegion() is WebPostInputRegion clone)
+            var clone = region.CloneRegion() as WebPostInputRegion;
+            if (clone != null)
             {
                 Assert.AreEqual(clone.IsEnabled, false);
                 Assert.AreEqual(clone.Errors.Count, 0);

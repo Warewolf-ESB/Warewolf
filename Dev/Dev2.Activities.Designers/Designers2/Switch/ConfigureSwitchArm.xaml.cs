@@ -17,7 +17,8 @@ namespace Dev2.Activities.Designers2.Switch
 
         private void SwitchArmCaseTextbox_OnLoaded(object sender, RoutedEventArgs e)
         {
-            if (sender is IntellisenseTextBox textBox)
+            var textBox = sender as IntellisenseTextBox;
+            if (textBox != null)
             {
                 Keyboard.Focus(textBox.TextBox);
                 textBox.TextBox.SelectAll();

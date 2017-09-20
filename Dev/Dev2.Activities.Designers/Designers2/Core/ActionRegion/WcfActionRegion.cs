@@ -144,7 +144,8 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
                         StorePreviousValues(_selectedAction.GetHashCodeBySource());
                 }
                 var outputs = Dependants.FirstOrDefault(a => a is IOutputsToolRegion);
-                if (outputs is OutputsRegion region)
+                var region = outputs as OutputsRegion;
+                if (region != null)
                 {
                     region.Outputs = new ObservableCollection<IServiceOutputMapping>();
                     region.RecordsetName = String.Empty;
@@ -272,7 +273,8 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
         public void RestoreRegion(IToolRegion toRestore)
         {
-            if (toRestore is WcfActionMemento region)
+            var region = toRestore as WcfActionMemento;
+            if (region != null)
             {
                 SelectedAction = region.SelectedAction;
                 RestoreIfPrevious(region.SelectedAction);

@@ -258,7 +258,8 @@ namespace Dev2
                 return;
             }
 
-            if (e is AggregateException aggregateException)
+            var aggregateException = e as AggregateException;
+            if (aggregateException != null)
             {
                 foreach (Exception child in aggregateException.InnerExceptions)
                 {
@@ -312,7 +313,10 @@ namespace Dev2
         {
             bool serviceExists = false;
             try
-            {                
+            {
+                
+                var controller = new ServiceController(AppSettings.ServiceName);
+                
                 serviceExists = true;
             }
             catch (Exception ex)

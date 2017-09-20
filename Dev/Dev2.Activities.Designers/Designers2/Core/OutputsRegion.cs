@@ -173,7 +173,8 @@ namespace Dev2.Activities.Designers2.Core
 
         public void RestoreRegion(IToolRegion toRestore)
         {
-            if (toRestore is OutputsRegion region)
+            var region = toRestore as OutputsRegion;
+            if (region != null)
             {
                 Outputs = region.Outputs;
                 RecordsetName = region.RecordsetName;
@@ -181,7 +182,7 @@ namespace Dev2.Activities.Designers2.Core
                 ObjectResult = region.ObjectResult;
                 ObjectName = region.ObjectName;
                 IsObject = region.IsObject;
-
+                
                 OnPropertyChanged("IsOutputsEmptyRows");
             }
         }

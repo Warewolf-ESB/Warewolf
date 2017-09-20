@@ -172,7 +172,8 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
                 if (Dependants != null)
                 {
                     var outputs = Dependants.FirstOrDefault(a => a is IOutputsToolRegion);
-                    if (outputs is OutputsRegion region)
+                    var region = outputs as OutputsRegion;
+                    if (region != null)
                     {
                         region.Outputs = new ObservableCollection<IServiceOutputMapping>();
                         region.RecordsetName = string.Empty;
@@ -289,7 +290,8 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
         public void RestoreRegion(IToolRegion toRestore)
         {
-            if (toRestore is ComActionRegion region)
+            var region = toRestore as ComActionRegion;
+            if (region != null)
             {
                 SelectedAction = region.SelectedAction;
                 RestoreIfPrevious(region.SelectedAction);

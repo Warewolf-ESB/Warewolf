@@ -211,7 +211,8 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
 
         public void RestoreRegion(IToolRegion toRestore)
         {
-            if (toRestore is DotNetConstructorInputRegionClone region)
+            var region = toRestore as DotNetConstructorInputRegionClone;
+            if (region != null)
             {
                 Inputs.Clear();
                 if (region.Inputs != null)

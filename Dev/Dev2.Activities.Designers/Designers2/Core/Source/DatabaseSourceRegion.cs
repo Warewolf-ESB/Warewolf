@@ -201,7 +201,8 @@ namespace Dev2.Activities.Designers2.Core.Source
 
         public void RestoreRegion(IToolRegion toRestore)
         {
-            if (toRestore is DatabaseSourceRegion region)
+            var region = toRestore as DatabaseSourceRegion;
+            if (region != null)
             {
                 SelectedSource = region.SelectedSource;
             }

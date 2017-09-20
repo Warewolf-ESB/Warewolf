@@ -182,7 +182,8 @@ namespace Dev2.Activities.Designers2.Core
         void ToggleView(MouseButtonEventArgs eventArgs)
         {
             var originalSource = eventArgs.OriginalSource;
-            if (originalSource is FrameworkElement fe && (fe.TemplatedParent is ToggleButton || fe.TemplatedParent is ActivityDesignerButton))
+            var fe = originalSource as FrameworkElement;
+            if (fe != null && (fe.TemplatedParent is ToggleButton || fe.TemplatedParent is ActivityDesignerButton))
             {
                 return;
             }
@@ -222,7 +223,8 @@ namespace Dev2.Activities.Designers2.Core
         {
             if (!_isSetFocusActionSet)
             {
-                if (DataContext is ActivityDesignerViewModel vm)
+                var vm = DataContext as ActivityDesignerViewModel;
+                if (vm != null)
                 {
                     vm.SetIntialFocusAction(SetInitialiFocus);
                     _isSetFocusActionSet = true;
