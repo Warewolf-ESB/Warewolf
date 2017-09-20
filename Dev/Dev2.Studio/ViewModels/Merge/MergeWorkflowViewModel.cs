@@ -3,16 +3,13 @@ using Microsoft.Practices.Prism.Mvvm;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.ViewModels.Workflow;
 using Dev2.Runtime.Configuration.ViewModels.Base;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
 using Dev2.Studio.Core.Activities.Utils;
-using System.Collections.ObjectModel;
 using System;
-using Unlimited.Applications.BusinessDesignStudio.Activities;
-using System.Activities;
-using Warewolf;
 using System.Activities.Statements;
+using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Dev2.Communication;
+using Dev2.Data.SystemTemplates.Models;
 
 namespace Dev2.ViewModels.Merge
 {
@@ -20,6 +17,7 @@ namespace Dev2.ViewModels.Merge
     {
         private string _displayName;
         private string _serverName;
+        private bool _hasMergeStarted;
 
         public MergeWorkflowViewModel(IContextualResourceModel currentResourceModel, IContextualResourceModel differenceResourceModel)
         {
@@ -52,14 +50,22 @@ namespace Dev2.ViewModels.Merge
                         var currDec = curr.current.GetCurrentValue<FlowDecision>();
                         var trueArmConflict = new CompleteConflict();
                         var falseArmConflict = new CompleteConflict();
-                        
+
+                        var currActivity = (DsfFlowNodeActivity<bool>)currDec.Condition;
+                        var currExpression = currActivity.ExpressionText;
+                        var currEval = Dev2DecisionStack.ExtractModelFromWorkflowPersistedData(currExpression);
+
+                        var ser = new Dev2JsonSerializer();
+                        var currDds = ser.Deserialize<Dev2DecisionStack>(currEval);
+
                         if (currDec.True != null)
                         {
-                            
                             var currentConflictViewModel = new ConflictViewModel(ModelItemUtils.CreateModelItem(currDec.True), currentResourceModel);
                             if (currentConflictViewModel?.MergeToolModel != null)
                             {
                                 trueArmConflict.CurrentViewModel = currentConflictViewModel.MergeToolModel;
+                                trueArmConflict.CurrentViewModel.HasParent = true;
+                                trueArmConflict.CurrentViewModel.ParentDescription = currDds.TrueArmText;
                             }
                         }
                         if (currDec.False != null)
@@ -68,10 +74,18 @@ namespace Dev2.ViewModels.Merge
                             if (currentConflictViewModel?.MergeToolModel != null)
                             {
                                 falseArmConflict.CurrentViewModel = currentConflictViewModel.MergeToolModel;
+                                falseArmConflict.CurrentViewModel.HasParent = true;
+                                falseArmConflict.CurrentViewModel.ParentDescription = currDds.FalseArmText;
                             }
                         }
 
                         var diffDec = curr.difference.GetCurrentValue<FlowDecision>();
+
+                        var diffActivity = (DsfFlowNodeActivity<bool>)diffDec.Condition;
+                        var diffExpression = diffActivity.ExpressionText;
+                        var diffEval = Dev2DecisionStack.ExtractModelFromWorkflowPersistedData(diffExpression);
+
+                        var diffDds = ser.Deserialize<Dev2DecisionStack>(diffEval);
 
                         if (diffDec.True != null)
                         {
@@ -79,6 +93,8 @@ namespace Dev2.ViewModels.Merge
                             if (differenceConflictViewModel?.MergeToolModel != null)
                             {
                                 trueArmConflict.DiffViewModel = differenceConflictViewModel.MergeToolModel;
+                                trueArmConflict.DiffViewModel.HasParent = true;
+                                trueArmConflict.DiffViewModel.ParentDescription = currDds.TrueArmText;
                             }
                         }
                         if (diffDec.False != null)
@@ -86,9 +102,11 @@ namespace Dev2.ViewModels.Merge
                             var differenceConflictViewModel = new ConflictViewModel(ModelItemUtils.CreateModelItem(diffDec.False), differenceResourceModel);
                             if (differenceConflictViewModel?.MergeToolModel != null)
                             {
-                               falseArmConflict.DiffViewModel =  differenceConflictViewModel.MergeToolModel;
+                                falseArmConflict.DiffViewModel = differenceConflictViewModel.MergeToolModel;
+                                falseArmConflict.DiffViewModel.HasParent = true;
+                                falseArmConflict.DiffViewModel.ParentDescription = currDds.FalseArmText;
                             }
-                        }                        
+                        }
                         conflict.Children.Add(trueArmConflict);
                         conflict.Children.Add(falseArmConflict);
                         Conflicts.Add(conflict);
@@ -114,10 +132,16 @@ namespace Dev2.ViewModels.Merge
                 }
             }
 
-            CurrentConflictViewModel.WorkflowName = currentResourceModel.ResourceName;
-            CurrentConflictViewModel.GetDataList();
-            DifferenceConflictViewModel.WorkflowName = differenceResourceModel.ResourceName;
-            DifferenceConflictViewModel.GetDataList();
+            if (CurrentConflictViewModel != null)
+            {
+                CurrentConflictViewModel.WorkflowName = currentResourceModel.ResourceName;
+                CurrentConflictViewModel.GetDataList();
+            }
+            if (DifferenceConflictViewModel != null)
+            {
+                DifferenceConflictViewModel.WorkflowName = differenceResourceModel.ResourceName;
+                DifferenceConflictViewModel.GetDataList();
+            }
 
             SetServerName(currentResourceModel);
             DisplayName = "Merge Conflicts" + _serverName;
@@ -208,6 +232,16 @@ namespace Dev2.ViewModels.Merge
             {
                 _displayName = value;
                 OnPropertyChanged(() => DisplayName);
+            }
+        }
+
+        public bool HasMergeStarted
+        {
+            get => _hasMergeStarted;
+            set
+            {
+                _hasMergeStarted = value;
+                OnPropertyChanged(() => HasMergeStarted);
             }
         }
 
