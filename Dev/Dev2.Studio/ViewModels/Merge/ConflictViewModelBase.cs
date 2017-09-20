@@ -7,6 +7,7 @@ using Dev2.Studio.ViewModels.DataList;
 using Microsoft.Practices.Prism.Mvvm;
 using System.Activities.Statements;
 using System.Collections.ObjectModel;
+using Dev2.Common.ExtMethods;
 
 namespace Dev2.ViewModels.Merge
 {
@@ -31,9 +32,13 @@ namespace Dev2.ViewModels.Merge
                 {
                     ActivityDesignerViewModel = instance,
                     MergeIcon = modelItem.GetImageSourceForTool(),
-                    MergeDescription = dsfActivity?.ToString()
+                    MergeDescription = dsfActivity?.ToString(),
+                  
                 };
-
+                if (currentValue is IDev2Activity a)
+                {
+                    mergeToolModel.UniqueId = a.UniqueID.ToGuid();
+                }
                 if (modelItem.ItemType == typeof(FlowDecision))
                 {
                     var act = modelItem.GetCurrentValue<FlowDecision>();
