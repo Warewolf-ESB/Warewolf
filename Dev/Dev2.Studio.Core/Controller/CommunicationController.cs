@@ -367,9 +367,19 @@ namespace Dev2.Controller
                 }
                 catch (NullReferenceException e)
                 {
-                    Dev2Logger.Debug("fallback to non compressed", e, "Warewolf Debug");
-                    return serializer.Deserialize<T>(payload);
-
+                    var explorerResult = serializer.Deserialize<IExplorerRepositoryResult>(payload);
+                    if (explorerResult == null)
+                    {
+                        Dev2Logger.Debug("fallback to non compressed", e, "Warewolf Debug");
+                        var val = serializer.Deserialize<T>(payload);
+                        return val;
+                    }
+                    if (explorerResult.Status == ExecStatus.Fail)
+                    {
+                        var popupController = CustomContainer.Get<IPopupController>();
+                        popupController?.Show(string.Format(ErrorResource.ServerBusyError, connection.DisplayName), ErrorResource.ServerBusyHeader, MessageBoxButton.OK,
+                                              MessageBoxImage.Warning, "", false, false, true, false, false, false);
+                    }
                 }
             }
             return default(T);
