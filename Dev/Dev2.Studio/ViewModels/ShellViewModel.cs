@@ -453,7 +453,7 @@ namespace Dev2.Studio.ViewModels
             get
             {
                 return _mergeCommand ??
-                       (_mergeCommand = new RelayCommand(param => OpenMergeConflictsView(Guid.Parse("9e9660d8-1a3c-45ab-a330-673c2343e517"), Guid.Parse("9e9660d8-1a3c-45ab-a330-673c2343e517"))));
+                       (_mergeCommand = new RelayCommand(param => OpenMergeConflictsView(Guid.Parse("0bdc3207-ff6b-4c01-a5eb-c7060222f75d"), Guid.Parse("0bdc3207-ff6b-4c01-a5eb-c7060222f75d"))));
             }
         }
 

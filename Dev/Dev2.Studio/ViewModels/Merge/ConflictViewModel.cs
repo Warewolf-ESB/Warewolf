@@ -13,6 +13,7 @@ using Dev2.Studio.Factory;
 using Dev2.Common;
 using Caliburn.Micro;
 using Dev2.Activities;
+using Dev2.Activities.Designers2.Sequence;
 using Dev2.Activities.Designers2.Switch;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
@@ -42,6 +43,10 @@ namespace Dev2.ViewModels.Merge
                 if (actual == typeof(SwitchDesignerViewModel))
                 {
                     instance = Activator.CreateInstance(actual, modelItem, item) as ActivityDesignerViewModel;
+                }
+                else if(actual == typeof(SequenceDesignerViewModel))
+                {
+                    instance = Activator.CreateInstance(actual, modelItem, false) as ActivityDesignerViewModel;
                 }
                 else
                 {
@@ -113,6 +118,17 @@ namespace Dev2.ViewModels.Merge
                         }
                     }
                 }
+                else if (currentValue is DsfSequenceActivity sequence)
+                {
+                    if (sequence.Activities != null)
+                        foreach (var dev2Activity in sequence.Activities)
+                        {
+                            var addModelItem = AddModelItem(ModelItemUtils.CreateModelItem(dev2Activity));
+                            addModelItem.HasParent = true;
+                            addModelItem.ParentDescription = sequence.DisplayName;
+                            mergeToolModel.Children.Add(addModelItem);
+                        }
+                }
                 else
                 {
                     var nextNode = currentValue.NextNodes?.SingleOrDefault();
@@ -130,7 +146,7 @@ namespace Dev2.ViewModels.Merge
                             Children.Add(addModelItem);
                         }
                     }
-                    
+
                 }
                 mergeToolModel.ActivityDesignerViewModel = instance;
                 mergeToolModel.MergeIcon = modelItem.GetImageSourceForTool();
