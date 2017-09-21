@@ -54,7 +54,7 @@ namespace Dev2.Studio.Core.DataList
                             }
                             else
                             {
-                                child.DisplayName = string.Concat(child.Parent.DisplayName, ".", child.DisplayName);
+                                child.DisplayName = string.Concat(child.Parent?.DisplayName, ".", child.DisplayName);
                             }
                             FixCommonNamingProblems(child);
                         }
