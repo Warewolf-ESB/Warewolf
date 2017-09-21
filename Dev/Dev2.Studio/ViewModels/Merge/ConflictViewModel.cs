@@ -115,15 +115,23 @@ namespace Dev2.ViewModels.Merge
                 }
                 else
                 {
-                    var nextNode = currentValue.NextNodes.SingleOrDefault();
+                    var nextNode = currentValue.NextNodes?.SingleOrDefault();
                     if (nextNode != null)
                     {
                         var nextModelItem = ModelItemUtils.CreateModelItem(nextNode);
-                        AddModelItem(nextModelItem);
+                        if (nextNode is DsfSwitch a)
+                        {
+                            var addModelItem = AddModelItem(nextModelItem, a.Switch);
+                            Children.Add(addModelItem);
+                        }
+                        else
+                        {
+                            var addModelItem = AddModelItem(nextModelItem);
+                            Children.Add(addModelItem);
+                        }
                     }
-
+                    
                 }
-                //var mergeToolModel = new MergeToolModel();
                 mergeToolModel.ActivityDesignerViewModel = instance;
                 mergeToolModel.MergeIcon = modelItem.GetImageSourceForTool();
                 mergeToolModel.MergeDescription = dsfActivity?.ToString();
