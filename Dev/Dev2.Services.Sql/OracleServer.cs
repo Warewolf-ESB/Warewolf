@@ -374,7 +374,7 @@ namespace Dev2.Services.Sql
             }
         }
 
-        private static void AddParameters(IDbCommand command, ICollection<IDbDataParameter> parameters)
+        public static void AddParameters(IDbCommand command, ICollection<IDbDataParameter> parameters)
         {
             command.Parameters.Clear();
             if (parameters != null && parameters.Count > 0)
