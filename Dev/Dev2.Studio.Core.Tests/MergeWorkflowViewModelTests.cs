@@ -62,8 +62,8 @@ namespace Dev2.Core.Tests
 
             List<ModelItem> differenceChanges = CreateChanges(ref assignId, ref foreachId);
 
-            _mockParseServiceForDifferences.Setup(a => a.CurrentDifferences).Returns(currentChanges);
-            _mockParseServiceForDifferences.Setup(a => a.Differences).Returns(differenceChanges);
+            //_mockParseServiceForDifferences.Setup(a => a.CurrentDifferences).Returns(currentChanges);
+            //_mockParseServiceForDifferences.Setup(a => a.Differences).Returns(differenceChanges);
 
 
             Mock<IContextualResourceModel> currentResourceModel = Dev2MockFactory.SetupResourceModelMock();

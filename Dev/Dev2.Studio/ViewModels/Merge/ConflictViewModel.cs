@@ -5,7 +5,6 @@ using Dev2.Common.Interfaces;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.ViewModels.DataList;
 using Microsoft.Practices.Prism.Mvvm;
-using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Dev2.Studio.Interfaces;
@@ -14,7 +13,6 @@ using Dev2.Common;
 using Caliburn.Micro;
 using Dev2.Activities;
 using Dev2.Activities.Designers2.Switch;
-using Dev2.Common.ExtMethods;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.ViewModels.Merge
@@ -64,7 +62,10 @@ namespace Dev2.ViewModels.Merge
                         var deTrueArm = de.TrueArm.Flatten(p=>p.NextNodes??new List<IDev2Activity>());
                         foreach (var dev2Activity in deTrueArm)
                         {
-                            mergeToolModel.Children.Add(AddModelItem(ModelItemUtils.CreateModelItem(dev2Activity)));
+                            var addModelItem = AddModelItem(ModelItemUtils.CreateModelItem(dev2Activity));
+                            addModelItem.HasParent = true;
+                            addModelItem.ParentDescription = de.Conditions.TrueArmText;
+                            mergeToolModel.Children.Add(addModelItem);
                         }
                     }
 
@@ -73,7 +74,10 @@ namespace Dev2.ViewModels.Merge
                         var deTrueArm = de.FalseArm.Flatten(p => p.NextNodes ?? new List<IDev2Activity>());
                         foreach (var dev2Activity in deTrueArm)
                         {
-                            mergeToolModel.Children.Add(AddModelItem(ModelItemUtils.CreateModelItem(dev2Activity)));
+                            var addModelItem = AddModelItem(ModelItemUtils.CreateModelItem(dev2Activity));
+                            addModelItem.HasParent = true;
+                            addModelItem.ParentDescription = de.Conditions.FalseArmText;
+                            mergeToolModel.Children.Add(addModelItem);
                         }
                     }
                     //Todo add 'and' and the default arm
@@ -149,6 +153,8 @@ namespace Dev2.ViewModels.Merge
         }
 
         public string WorkflowName { get; set; }
+        public bool IsVariablesChecked { get; set; }
+        public bool IsWorkflowNameChecked { get; set; }
         public IMergeToolModel MergeToolModel { get; set; }
         public DataListViewModel DataListViewModel { get; set; }
         public ObservableCollection<IMergeToolModel> Children { get; set; }
