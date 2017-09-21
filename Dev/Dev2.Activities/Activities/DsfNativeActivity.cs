@@ -569,7 +569,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 serviceTestOutput.Result = new TestRunResult();
             }
             serviceTestOutput.Result.RunTestResult = RunResult.TestInvalid;
-            if (this is DsfSwitch dsfSwitch)
+            var dsfSwitch = this as DsfSwitch;
+            if (dsfSwitch != null)
             {
                 var assertPassed = dsfSwitch.Result == serviceTestOutput.Value;
                 serviceTestOutput.Result.RunTestResult = assertPassed ? RunResult.TestPassed : RunResult.TestFailed;
@@ -600,7 +601,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 serviceTestOutput.Result = new TestRunResult();
             }
             serviceTestOutput.Result.RunTestResult = RunResult.TestInvalid;
-            if (this is DsfDecision dsfDecision)
+            var dsfDecision = this as DsfDecision;
+            if (dsfDecision != null)
             {
                 var assertPassed = dsfDecision.Result == serviceTestOutput.Value;
                 serviceTestOutput.Result.RunTestResult = assertPassed ? RunResult.TestPassed : RunResult.TestFailed;
@@ -717,9 +719,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 serviceTestOutput.Result.RunTestResult = RunResult.TestPending;
             }
-            if (this is DsfSwitch dsfDecision)
+            var dsfSwitch = this as DsfSwitch;
+            if (dsfSwitch != null)
             {
-                var assertPassed = dsfDecision.Result == serviceTestOutput.Value;
+                var assertPassed = dsfSwitch.Result == serviceTestOutput.Value;
                 if (dataObject.ServiceTest != null)
                 {
                     dataObject.ServiceTest.TestPassed = assertPassed;
@@ -737,7 +740,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 serviceTestOutput.Result.RunTestResult = RunResult.TestPending;
             }
-            if (this is DsfDecision dsfDecision)
+            var dsfDecision = this as DsfDecision;
+            if (dsfDecision != null)
             {
                 var assertPassed = dsfDecision.Result == serviceTestOutput.Value;
                 if (dataObject.ServiceTest != null)
