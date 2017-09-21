@@ -1,4 +1,5 @@
-﻿using Dev2.Activities.Designers2.Core;
+﻿using Dev2.Activities;
+using Dev2.Activities.Designers2.Core;
 using Dev2.Studio.ActivityDesigners;
 using Dev2.ViewModels.Merge;
 using System;
@@ -38,7 +39,7 @@ namespace Dev2.CustomControls
                     var namespacePath = "Dev2.Activities.Designers2";
                     var type = vm.ModelItem.ItemType;
 
-                    if (type == typeof(DsfFlowDecisionActivity))
+                    if (type == typeof(DsfDecision))
                     {
                         var inst = Activator.CreateInstance(assemblyFullName, namespacePath + ".Decision.Large");
                         template = inst.Unwrap() as ActivityDesignerTemplate;
@@ -48,7 +49,7 @@ namespace Dev2.CustomControls
                             return TemplateGenerator.CreateDataTemplate(() => template);
                         }
                     }
-                    if (type == typeof(DsfFlowSwitchActivity))
+                    if (type == typeof(DsfSwitch))
                     {
                         var inst = Activator.CreateInstance(assemblyFullName, namespacePath + ".Switch.ConfigureSwitch");
                         template = inst.Unwrap() as ActivityDesignerTemplate;

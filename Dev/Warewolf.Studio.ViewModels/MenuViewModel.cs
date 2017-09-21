@@ -47,7 +47,8 @@ namespace Warewolf.Studio.ViewModels
             OpenSchedulerCommand = _viewModel.SchedulerCommand;
             OpenSettingsCommand = _viewModel.SettingsCommand;
             ExecuteServiceCommand = _viewModel.DebugCommand;
-            StartPageCommand = _viewModel.ShowStartPageCommand;
+            //StartPageCommand = _viewModel.ShowStartPageCommand;
+            StartPageCommand = _viewModel.MergeCommand;
             OnPropertyChanged(() => SaveCommand);
             OnPropertyChanged(() => ExecuteServiceCommand);
             CheckForNewVersion(_viewModel);
