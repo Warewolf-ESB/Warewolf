@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -116,10 +115,7 @@ namespace Dev2.Integration.Tests.Merge
                 {
                     Debug.WriteLine(example.DisplayName + " Has some differences " + e.Message);
                 }
-              
             }
-
-
         }
     }
 }

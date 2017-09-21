@@ -129,6 +129,22 @@ namespace Dev2.ViewModels.Merge
                             addModelItem.ParentDescription = sequence.DisplayName;
                             mergeToolModel.Children.Add(addModelItem);
                         }
+                    var nextNode = sequence.NextNodes?.SingleOrDefault();
+                    if (nextNode != null)
+                    {
+                        var nextModelItem = ModelItemUtils.CreateModelItem(nextNode);
+                        if (nextNode is DsfSwitch a)
+                        {
+                            var addModelItem = AddModelItem(nextModelItem, a.Switch);
+                            Children.Add(addModelItem);
+                        }
+
+                        else
+                        {
+                            var addModelItem = AddModelItem(nextModelItem);
+                            Children.Add(addModelItem);
+                        }
+                    }
                 }
                 else if (currentValue is DsfForEachActivity b)
                 {
@@ -141,6 +157,22 @@ namespace Dev2.ViewModels.Merge
                         addModelItem.HasParent = true;
                         addModelItem.ParentDescription = b.DisplayName;
                         mergeToolModel.Children.Add(addModelItem);
+                    }
+                    var nextNode = b.NextNodes?.SingleOrDefault();
+                    if (nextNode != null)
+                    {
+                        var nextModelItem = ModelItemUtils.CreateModelItem(nextNode);
+                        if (nextNode is DsfSwitch a)
+                        {
+                            var addModelItem = AddModelItem(nextModelItem, a.Switch);
+                            Children.Add(addModelItem);
+                        }
+
+                        else
+                        {
+                            var addModelItem = AddModelItem(nextModelItem);
+                            Children.Add(addModelItem);
+                        }
                     }
                 }
                 else
