@@ -69,6 +69,9 @@ namespace Dev2.Activities.Designers2.Core.Controls
             return null;
         }
 
+        public IInputElement GetFocusElement(int rowIndex) => GetFocusElement(rowIndex, 0);
+        public IInputElement GetFocusElement() => GetFocusElement(0, 0);
+
         public IInputElement GetFocusElement(DataGridRow row, int inputsToSkip)
         {
             return GetVisualChild(row, inputsToSkip: inputsToSkip);
