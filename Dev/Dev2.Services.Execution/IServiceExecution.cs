@@ -25,5 +25,6 @@ namespace Dev2.Services.Execution
         void AfterExecution(ErrorResultTO errors);
 
         void GetSource(Guid sourceId);
+        void SetSourceId(Guid sourceId);
     }
 }
