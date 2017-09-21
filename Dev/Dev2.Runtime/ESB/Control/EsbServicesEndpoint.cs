@@ -246,8 +246,7 @@ namespace Dev2.Runtime.ESB.Control
 
         private static void SetRemoteExecutionDataList(IDSFDataObject dataObject, IEsbExecutionContainer executionContainer, ErrorResultTO errors)
         {
-            var remoteContainer = executionContainer as RemoteWorkflowExecutionContainer;
-            if (remoteContainer != null)
+            if (executionContainer is RemoteWorkflowExecutionContainer remoteContainer)
             {
                 var fetchRemoteResource = remoteContainer.FetchRemoteResource(dataObject.ResourceID, dataObject.ServiceName, dataObject.IsDebugMode());
                 if (fetchRemoteResource != null)
@@ -274,8 +273,7 @@ namespace Dev2.Runtime.ESB.Control
             {
                 if (!isLocal)
                 {
-                    var remoteContainer = executionContainer as RemoteWorkflowExecutionContainer;
-                    if (remoteContainer != null)
+                    if (executionContainer is RemoteWorkflowExecutionContainer remoteContainer)
                     {
                         if (!remoteContainer.ServerIsUp())
                         {

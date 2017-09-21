@@ -76,8 +76,7 @@ namespace Dev2.Runtime.ServiceModel
             }
             catch (Exception ex)
             {
-                var hex = ex.InnerException as HttpClientException;
-                if (hex != null)
+                if (ex.InnerException is HttpClientException hex)
                 {
                     result.IsValid = false;  // This we know how to handle this
                     result.ErrorMessage = Resources.ConnectionError + hex.Response.ReasonPhrase;

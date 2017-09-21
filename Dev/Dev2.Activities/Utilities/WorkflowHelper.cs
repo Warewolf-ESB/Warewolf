@@ -123,8 +123,7 @@ namespace Dev2.Utilities
         public ActivityBuilder EnsureImplementation(ModelService modelService)
         {
             var builder = GetActivityBuilder(modelService);
-            var chart = builder?.Implementation as Flowchart;
-            if(chart != null)
+            if (builder?.Implementation is Flowchart chart)
             {
                 EnsureImplementation(builder, chart);
             }
@@ -187,11 +186,10 @@ namespace Dev2.Utilities
         {
             foreach(var node in chart.Nodes)
             {
-                var fd = node as FlowDecision;
-                if(fd != null)
+                if (node is FlowDecision fd)
                 {
                     var decisionActivity = fd.Condition as DsfFlowDecisionActivity;
-                    if(isServerInvocation)
+                    if (isServerInvocation)
                     {
                         // CompileExpressionsImpl will strip out backslashes!!
                         TryFixExpression(decisionActivity, "\\", "\\\\");

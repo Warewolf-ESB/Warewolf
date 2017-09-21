@@ -349,8 +349,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             if (obj is IFlowNodeActivity)
             {
                 var flowNodeAct = this as IFlowNodeActivity;
-                var other = act as IFlowNodeActivity;
-                if (other != null)
+                if (act is IFlowNodeActivity other)
                 {
                     return UniqueID == act.UniqueID && flowNodeAct.ExpressionText.Equals(other.ExpressionText);
                 }

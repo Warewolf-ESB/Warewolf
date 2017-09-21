@@ -201,15 +201,14 @@ namespace Dev2.Activities.Specs.Scheduler
         [Then(@"the schedule status is ""(.*)""")]
         public void ThenTheScheduleStatusIs(string status)
         {
-            var scheduler = _scenarioContext["Scheduler"] as SchedulerViewModel;
-            if (scheduler != null)
+            if (_scenarioContext["Scheduler"] is SchedulerViewModel scheduler)
             {
                 scheduler.ActiveItem = new TabItem { Header = "History" };
                 Thread.Sleep(12000);
-                
+
                 var scheduledResource = scheduler.SelectedTask;
                 IList<IResourceHistory> x = scheduler.ScheduledResourceModel.CreateHistory(scheduledResource).ToList();
-                
+
 
                 if (status == "Success")
                 {

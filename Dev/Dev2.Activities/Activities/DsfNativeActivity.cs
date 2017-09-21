@@ -491,8 +491,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     var errorMessage = dataObject.Environment.FetchErrors();
                     _debugState.ErrorMessage = errorMessage;
                     _debugState.HasError = true;
-                    var debugError = err as DebugCopyException;
-                    if(debugError != null)
+                    if (err is DebugCopyException debugError)
                     {
                         _debugState.Inputs.Add(debugError.Item);
                     }
@@ -570,8 +569,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 serviceTestOutput.Result = new TestRunResult();
             }
             serviceTestOutput.Result.RunTestResult = RunResult.TestInvalid;
-            var dsfSwitch = this as DsfSwitch;
-            if (dsfSwitch != null)
+            if (this is DsfSwitch dsfSwitch)
             {
                 var assertPassed = dsfSwitch.Result == serviceTestOutput.Value;
                 serviceTestOutput.Result.RunTestResult = assertPassed ? RunResult.TestPassed : RunResult.TestFailed;
@@ -602,8 +600,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 serviceTestOutput.Result = new TestRunResult();
             }
             serviceTestOutput.Result.RunTestResult = RunResult.TestInvalid;
-            var dsfDecision = this as DsfDecision;
-            if (dsfDecision != null)
+            if (this is DsfDecision dsfDecision)
             {
                 var assertPassed = dsfDecision.Result == serviceTestOutput.Value;
                 serviceTestOutput.Result.RunTestResult = assertPassed ? RunResult.TestPassed : RunResult.TestFailed;
@@ -720,11 +717,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 serviceTestOutput.Result.RunTestResult = RunResult.TestPending;
             }
-            var dsfDecision = this as DsfSwitch;
-            if(dsfDecision != null)
+            if (this is DsfSwitch dsfDecision)
             {
                 var assertPassed = dsfDecision.Result == serviceTestOutput.Value;
-                if(dataObject.ServiceTest != null)
+                if (dataObject.ServiceTest != null)
                 {
                     dataObject.ServiceTest.TestPassed = assertPassed;
                     dataObject.ServiceTest.TestFailing = !assertPassed;
@@ -741,11 +737,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 serviceTestOutput.Result.RunTestResult = RunResult.TestPending;
             }
-            var dsfDecision = this as DsfDecision;
-            if(dsfDecision != null)
+            if (this is DsfDecision dsfDecision)
             {
                 var assertPassed = dsfDecision.Result == serviceTestOutput.Value;
-                if(dataObject.ServiceTest != null)
+                if (dataObject.ServiceTest != null)
                 {
                     dataObject.ServiceTest.TestPassed = assertPassed;
                     dataObject.ServiceTest.TestFailing = !assertPassed;

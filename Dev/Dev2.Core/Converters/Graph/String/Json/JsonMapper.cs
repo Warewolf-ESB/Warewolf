@@ -113,13 +113,12 @@ namespace Unlimited.Framework.Converters.Graph.String.Json
                     {
                         if (property.IsEnumerable())
                         {
-                            
-                            var enumerableData = propertyData as IEnumerable;
-                            
 
-                            
-                            if (enumerableData != null)
-                                
+
+
+
+                            if (propertyData is IEnumerable enumerableData)
+
                             {
                                 IEnumerator enumerator = enumerableData.GetEnumerator();
                                 enumerator.Reset();

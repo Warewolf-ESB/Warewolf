@@ -73,8 +73,7 @@ namespace Dev2.Activities
             {
                 if (_evalResult.IsWarewolfAtomResult)
                 {
-                    var atomResult = _evalResult as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
-                    if (atomResult != null)
+                    if (_evalResult is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult atomResult)
                     {
                         var res = atomResult.Item.ToString();
                         DataListUtil.IsCalcEvaluation(res, out string resValue);
@@ -131,8 +130,7 @@ namespace Dev2.Activities
         {
             if (_evalResult.IsWarewolfAtomResult)
             {
-                var scalarResult = _evalResult as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
-                if (scalarResult != null && !scalarResult.Item.IsNothing)
+                if (_evalResult is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult scalarResult && !scalarResult.Item.IsNothing)
                 {
                     var warewolfAtomToString = ExecutionEnvironment.WarewolfAtomToString(scalarResult.Item);
                     if (warewolfAtomToString == _inputVariable && DataListUtil.IsEvaluated(_inputVariable))
@@ -143,25 +141,23 @@ namespace Dev2.Activities
                     {
                         _inputVariable = null;
                     }
-                    return new DebugItemWarewolfAtomResult(warewolfAtomToString, _inputVariable, LabelText,_operand, MockSelected).GetDebugItemResult();
+                    return new DebugItemWarewolfAtomResult(warewolfAtomToString, _inputVariable, LabelText, _operand, MockSelected).GetDebugItemResult();
                 }
             }
             else if (_evalResult.IsWarewolfAtomListresult)
             {
-                var listResult = _evalResult as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
-                if (listResult != null)
+                if (_evalResult is CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult listResult)
                 {
                     return new DebugItemWarewolfAtomListResult(listResult, "", "", _inputVariable, LabelText, "", "=", _isCalculate, MockSelected).GetDebugItemResult();
                 }
             }
             else if (_evalResult.IsWarewolfRecordSetResult)
             {
-                var listResult = _evalResult as CommonFunctions.WarewolfEvalResult.WarewolfRecordSetResult;
-                if (listResult != null)
+                if (_evalResult is CommonFunctions.WarewolfEvalResult.WarewolfRecordSetResult listResult)
                 {
                     return new DebugItemWarewolfRecordset(listResult.Item, _inputVariable, LabelText, "=", MockSelected).GetDebugItemResult();
                 }
-            }
+            } else { return new DebugItemStaticDataParams("", _inputVariable, LabelText, MockSelected).GetDebugItemResult(); }
 
             return new DebugItemStaticDataParams("", _inputVariable, LabelText, MockSelected).GetDebugItemResult();
         }        

@@ -34,8 +34,7 @@ namespace Dev2.Studio.Core.AppResources.Converters
             var strings = new List<string>();
             values.ToList().ForEach(o =>
             {
-                var s = o as string;
-                if(s != null)
+                if (o is string s)
                 {
                     strings.Add(s);
                 }

@@ -35,12 +35,10 @@ namespace Dev2.Studio.Views.DataList
 
         private void NametxtTextChanged(object sender, RoutedEventArgs e)
         {
-            IDataListViewModel vm = DataContext as IDataListViewModel;
-            if(vm != null)
+            if (DataContext is IDataListViewModel vm)
             {
                 TextBox txtbox = sender as TextBox;
-                IDataListItemModel itemThatChanged = txtbox?.DataContext as IDataListItemModel;
-                if (itemThatChanged != null)
+                if (txtbox?.DataContext is IDataListItemModel itemThatChanged)
                 {
                     itemThatChanged.IsExpanded = true;
                 }
@@ -75,11 +73,9 @@ namespace Dev2.Studio.Views.DataList
 
         void DoDataListValidation(object sender)
         {
-            IDataListViewModel vm = DataContext as IDataListViewModel;
-            if(vm != null)
+            if (DataContext is IDataListViewModel vm)
             {
-                TextBox txtbox = sender as TextBox;
-                if(txtbox != null)
+                if (sender is TextBox txtbox)
                 {
                     IDataListItemModel itemThatChanged = txtbox.DataContext as IDataListItemModel;
                     vm.RemoveBlankRows(itemThatChanged);
@@ -99,8 +95,7 @@ namespace Dev2.Studio.Views.DataList
 
         private void WriteToResourceModel()
         {
-            IDataListViewModel vm = DataContext as IDataListViewModel;
-            if (vm != null && !vm.IsSorting)
+            if (DataContext is IDataListViewModel vm && !vm.IsSorting)
             {
                 vm.WriteToResourceModel();
             }

@@ -249,8 +249,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
         public void ScriptingContext_GivenJavaScript_ShouldReturnJavaScriptHandleType()
         {
             var context = new ScriptingEngineRepo();
-            var scriptingContext = context.CreateEngine(enScriptType.Python, new StringScriptSources()) as Dev2PythonContext;
-            if(scriptingContext != null)
+            if (context.CreateEngine(enScriptType.Python, new StringScriptSources()) is Dev2PythonContext scriptingContext)
             {
                 Assert.AreEqual(enScriptType.Python, scriptingContext.HandlesType());
             }
@@ -259,8 +258,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
         public void ScriptingContext_GivenRubyScript_ShouldReturnRubyScriptHandleType()
         {
             var context = new ScriptingEngineRepo();
-            var scriptingContext = context.CreateEngine(enScriptType.Ruby, new StringScriptSources()) as RubyContext;
-            if (scriptingContext != null)
+            if (context.CreateEngine(enScriptType.Ruby, new StringScriptSources()) is RubyContext scriptingContext)
             {
                 Assert.AreEqual(enScriptType.Ruby, scriptingContext.HandlesType());
             }
@@ -283,8 +281,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
         public void ScriptingContext_GivenPythonScript_ShouldReturnPythonScriptHandleType()
         {
             var context = new ScriptingEngineRepo();
-            var scriptingContext = context.CreateEngine(enScriptType.JavaScript, new StringScriptSources()) as JavaScriptContext;
-            if (scriptingContext != null)
+            if (context.CreateEngine(enScriptType.JavaScript, new StringScriptSources()) is JavaScriptContext scriptingContext)
             {
                 Assert.AreEqual(enScriptType.JavaScript, scriptingContext.HandlesType());
             }

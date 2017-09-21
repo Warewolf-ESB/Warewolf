@@ -142,8 +142,7 @@ namespace Dev2.Studio.Core.AppResources.ExtensionMethods
 
             foreach (var child in children)
             {
-                var typedChild = child as T;
-                if((typedChild != null) && predicate.Invoke(typedChild))
+                if ((child is T typedChild) && predicate.Invoke(typedChild))
                 {
                     yield return typedChild;
                 }

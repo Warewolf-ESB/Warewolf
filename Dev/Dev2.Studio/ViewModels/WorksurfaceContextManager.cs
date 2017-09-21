@@ -1360,8 +1360,7 @@ namespace Dev2.Studio.ViewModels
                             return RemoveScheduler(vm, true);
                         }
                     }
-                    var tab = vm as IStudioTab;
-                    if (tab != null)
+                    if (vm is IStudioTab tab)
                     {
                         remove = tab.DoDeactivate(true);
                         if (remove)
@@ -1378,8 +1377,7 @@ namespace Dev2.Studio.ViewModels
 
         private static bool RemoveScheduler(IWorkSurfaceViewModel vm, bool remove)
         {
-            var schedulerViewModel = vm as SchedulerViewModel;
-            if (schedulerViewModel != null)
+            if (vm is SchedulerViewModel schedulerViewModel)
             {
                 remove = schedulerViewModel.DoDeactivate(true);
                 if (remove)
@@ -1392,8 +1390,7 @@ namespace Dev2.Studio.ViewModels
 
         private static bool CloseSettings(IWorkSurfaceViewModel vm, bool remove)
         {
-            var settingsViewModel = vm as SettingsViewModel;
-            if (settingsViewModel != null)
+            if (vm is SettingsViewModel settingsViewModel)
             {
                 remove = settingsViewModel.DoDeactivate(true);
                 if (remove)

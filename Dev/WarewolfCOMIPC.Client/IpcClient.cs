@@ -105,8 +105,7 @@ namespace WarewolfCOMIPC.Client
                     {
 
                         result = serializer.Deserialize(jsonTextReader, typeof(string));
-                        var exception = result as Exception;
-                        if (exception != null)
+                        if (result is Exception exception)
                         {
                             throw exception;
                         }
@@ -129,8 +128,7 @@ namespace WarewolfCOMIPC.Client
                 case Execute.GetMethods:
                     {
                         result = serializer.Deserialize(jsonTextReader, typeof(string));
-                        var exception = result as Exception;
-                        if (exception != null)
+                        if (result is Exception exception)
                         {
                             throw exception;
                         }
@@ -141,8 +139,7 @@ namespace WarewolfCOMIPC.Client
                 case Execute.GetNamespaces:
                     {
                         result = serializer.Deserialize(jsonTextReader, typeof(List<string>));
-                        var exception = result as Exception;
-                        if (exception != null)
+                        if (result is Exception exception)
                         {
                             throw exception;
                         }

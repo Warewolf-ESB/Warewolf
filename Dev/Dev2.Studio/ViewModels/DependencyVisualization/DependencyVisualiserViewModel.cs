@@ -274,8 +274,7 @@ namespace Dev2.Studio.ViewModels.DependencyVisualization
 
         protected override void OnViewLoaded(object view)
         {
-            var loadedView = view as IView;
-            if (loadedView != null)
+            if (view is IView loadedView)
             {
                 base.OnViewLoaded(loadedView);
             }

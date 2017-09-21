@@ -1002,11 +1002,9 @@ namespace Dev2.Activities.Specs.Composition
         {
 
             var activityList = _commonSteps.GetActivityList();
-            var forEachActivity = activityList[forEachName] as DsfForEachActivity;
-            if (forEachActivity != null)
+            if (activityList[forEachName] is DsfForEachActivity forEachActivity)
             {
-                var sequenceActivity = forEachActivity.DataFunc.Handler as DsfSequenceActivity;
-                if (sequenceActivity != null && sequenceActivity.DisplayName == sequenceName)
+                if (forEachActivity.DataFunc.Handler is DsfSequenceActivity sequenceActivity && sequenceActivity.DisplayName == sequenceName)
                 {
                     sequenceActivity.Activities.Add(activity);
                 }

@@ -345,17 +345,16 @@ namespace Dev2.Services.Sql
             DataTable dataTable = FetchDataTable(command);
             foreach (DataRow row in dataTable.Rows)
             {
-                var bytes = row?[0] as byte[];
-                if(bytes != null)
+                if (row?[0] is byte[] bytes)
                 {
                     var parameterName = Encoding.Default.GetString(bytes);
-                    parameterName= Regex.Replace(parameterName, @"(\()([0-z,])+(\))", "");
+                    parameterName = Regex.Replace(parameterName, @"(\()([0-z,])+(\))", "");
                     var parameternames = parameterName.Split(',');
-                    foreach(var parameter in parameternames)
+                    foreach (var parameter in parameternames)
                     {
                         bool isout = false;
                         const ParameterDirection direction = ParameterDirection.Input;
-                        if(parameter.Contains("OUT "))
+                        if (parameter.Contains("OUT "))
                         {
                             isout = true;
                         }
@@ -380,14 +379,14 @@ namespace Dev2.Services.Sql
                             }
                             else
                             {
-                                sqlParameter.Direction = ParameterDirection.Output; 
+                                sqlParameter.Direction = ParameterDirection.Output;
                                 outParams.Add(sqlParameter);
                                 sqlParameter.Value = "@a";
                                 command.Parameters.Add(sqlParameter);
                             }
                             if (parameterName.ToLower() == "@return_value")
                             {
-                            }                       
+                            }
                         }
                     }
                 }

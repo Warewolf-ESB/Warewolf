@@ -286,8 +286,7 @@ namespace Warewolf.Storage
         {
             if (result.IsWarewolfAtomResult)
             {
-                var warewolfAtomResult = result as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
-                if (warewolfAtomResult != null)
+                if (result is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult warewolfAtomResult)
                 {
                     var x = warewolfAtomResult.Item;
                     if (x.IsNothing)
@@ -318,8 +317,7 @@ namespace Warewolf.Storage
                     return string.Join(",", listOfData);
                 }
             }
-            var warewolfAtomListresult = result as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
-            if (warewolfAtomListresult != null)
+            if (result is CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult warewolfAtomListresult)
             {
                 var x = warewolfAtomListresult.Item;
                 StringBuilder res = new StringBuilder();
@@ -389,8 +387,7 @@ namespace Warewolf.Storage
             var exp = EvaluationFunctions.parseLanguageExpression(expression, 0);
             if (exp.IsRecordSetExpression)
             {
-                var rec = exp as LanguageAST.LanguageExpression.RecordSetExpression;
-                if (rec != null)
+                if (exp is LanguageAST.LanguageExpression.RecordSetExpression rec)
                 {
                     return $"[[{rec.Item.Name}(*).{rec.Item.Column}]]";
                 }
@@ -398,8 +395,7 @@ namespace Warewolf.Storage
 
             if (exp.IsRecordSetNameExpression)
             {
-                var rec = exp as LanguageAST.LanguageExpression.RecordSetNameExpression;
-                if (rec != null)
+                if (exp is LanguageAST.LanguageExpression.RecordSetNameExpression rec)
                 {
                     return $"[[{rec.Item.Name}(*)]]";
                 }
@@ -595,13 +591,11 @@ namespace Warewolf.Storage
             }
 
             var jsonIdentifierExpression = var as LanguageAST.LanguageExpression.JsonIdentifierExpression;
-            var nameExpression = jsonIdentifierExpression?.Item as LanguageAST.JsonIdentifierExpression.NameExpression;
-            if (nameExpression != null)
+            if (jsonIdentifierExpression?.Item is LanguageAST.JsonIdentifierExpression.NameExpression nameExpression)
             {
                 return _env.JsonObjects[nameExpression.Item.Name];
             }
-            var arrayExpression = jsonIdentifierExpression?.Item as LanguageAST.JsonIdentifierExpression.IndexNestedNameExpression;
-            if (arrayExpression != null)
+            if (jsonIdentifierExpression?.Item is LanguageAST.JsonIdentifierExpression.IndexNestedNameExpression arrayExpression)
             {
                 return _env.JsonObjects[arrayExpression.Item.ObjectName];
             }
@@ -617,16 +611,14 @@ namespace Warewolf.Storage
 
                 if (var.IsJsonIdentifierExpression)
                 {
-                    var jsonIdentifierExpression = var as LanguageAST.LanguageExpression.JsonIdentifierExpression;
-                    if (jsonIdentifierExpression != null)
+                    if (var is LanguageAST.LanguageExpression.JsonIdentifierExpression jsonIdentifierExpression)
                     {
                         BuildIndexMap(jsonIdentifierExpression.Item, exp, indexMap, null);
                     }
                 }
                 else if (var.IsRecordSetExpression)
                 {
-                    var recSetExpression = var as LanguageAST.LanguageExpression.RecordSetExpression;
-                    if (recSetExpression != null)
+                    if (var is LanguageAST.LanguageExpression.RecordSetExpression recSetExpression)
                     {
                         var indexes = EvalRecordSetIndexes(@"[[" + recSetExpression.Item.Name + @"(*)]]", 0);
                         foreach (var index in indexes)
@@ -644,8 +636,7 @@ namespace Warewolf.Storage
             var jsonIdentifierExpression = var;
             if (jsonIdentifierExpression != null)
             {
-                var nameExpression = jsonIdentifierExpression as LanguageAST.JsonIdentifierExpression.IndexNestedNameExpression;
-                if (nameExpression != null)
+                if (jsonIdentifierExpression is LanguageAST.JsonIdentifierExpression.IndexNestedNameExpression nameExpression)
                 {
                     var objectName = nameExpression.Item.ObjectName;
                     JContainer obj;
@@ -693,8 +684,7 @@ namespace Warewolf.Storage
                 }
                 else
                 {
-                    var nestedNameExpression = jsonIdentifierExpression as LanguageAST.JsonIdentifierExpression.NestedNameExpression;
-                    if (nestedNameExpression != null)
+                    if (jsonIdentifierExpression is LanguageAST.JsonIdentifierExpression.NestedNameExpression nestedNameExpression)
                     {
                         JContainer obj;
                         var objectName = nestedNameExpression.Item.ObjectName;

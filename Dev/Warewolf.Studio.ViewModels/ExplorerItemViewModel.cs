@@ -1630,8 +1630,7 @@ namespace Warewolf.Studio.ViewModels
             IsExpanded = true;
             foreach (var child in Children)
             {
-                var explorerItemViewModel = child as ExplorerItemViewModel;
-                if (explorerItemViewModel != null && explorerItemViewModel.IsVersion)
+                if (child is ExplorerItemViewModel explorerItemViewModel && explorerItemViewModel.IsVersion)
                 {
                     var permissions = Server?.GetPermissions(explorerItemViewModel.ResourceId);
                     if (permissions.HasValue)

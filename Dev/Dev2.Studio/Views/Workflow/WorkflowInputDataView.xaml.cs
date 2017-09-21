@@ -90,8 +90,7 @@ namespace Dev2.Studio.Views.Workflow
 
         private void TextBoxTextChanged(object sender, RoutedEventArgs routedEventArgs)
         {
-            var tb = routedEventArgs.OriginalSource as IntellisenseTextBox;
-            if (tb != null)
+            if (routedEventArgs.OriginalSource is IntellisenseTextBox tb)
             {
                 var dli = tb.DataContext as IDataListItem;
                 var vm = DataContext as WorkflowInputDataViewModel;
@@ -101,13 +100,11 @@ namespace Dev2.Studio.Views.Workflow
 
         private void TabControlSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var ctrl = e.Source as TabControl;
-            if (ctrl != null)
+            if (e.Source is TabControl ctrl)
             {
                 var tabCtrl = ctrl;
                 var tabItem = tabCtrl.SelectedItem as TabItem;
-                var vm = DataContext as WorkflowInputDataViewModel;
-                if (vm != null)
+                if (DataContext is WorkflowInputDataViewModel vm)
                 {
                     vm.IsInError = false;
                     if (tabItem != null && tabItem.Header.ToString() == "XML")
@@ -221,9 +218,8 @@ namespace Dev2.Studio.Views.Workflow
 
         private void MenuItemAddRow(object sender, RoutedEventArgs e)
         {
-            var vm = DataContext as WorkflowInputDataViewModel;
 
-            if (vm != null && vm.AddBlankRow(DataListInputs.ActiveItem as IDataListItem, out int indexToSelect))
+            if (DataContext is WorkflowInputDataViewModel vm && vm.AddBlankRow(DataListInputs.ActiveItem as IDataListItem, out int indexToSelect))
             {
                 DataListInputs.ActiveItem = indexToSelect;
                 Dispatcher.BeginInvoke(new Action(FocusOnAddition), DispatcherPriority.ApplicationIdle);
@@ -249,8 +245,7 @@ namespace Dev2.Studio.Views.Workflow
 
         private void MenuItemDeleteRow(object sender, RoutedEventArgs e)
         {
-            var vm = DataContext as WorkflowInputDataViewModel;
-            if (vm != null && vm.RemoveRow(DataListInputs.ActiveItem as IDataListItem, out int indexToSelect))
+            if (DataContext is WorkflowInputDataViewModel vm && vm.RemoveRow(DataListInputs.ActiveItem as IDataListItem, out int indexToSelect))
             {
                 DataListInputs.ActiveItem = indexToSelect;
             }
@@ -339,8 +334,7 @@ namespace Dev2.Studio.Views.Workflow
                     for (var supplierCounter = 0; supplierCounter < count; ++supplierCounter)
                     {
                         var child = VisualTreeHelper.GetChild(current, supplierCounter);
-                        var item = child as FrameworkElement;
-                        if (item != null)
+                        if (child is FrameworkElement item)
                         {
                             tree.Push(item);
                         }
@@ -359,8 +353,7 @@ namespace Dev2.Studio.Views.Workflow
         private void ExecuteClicked(object sender, RoutedEventArgs e)
         {
             var tabItem = TabItems.SelectedItem as TabItem;
-            var vm = DataContext as WorkflowInputDataViewModel;
-            if (vm != null)
+            if (DataContext is WorkflowInputDataViewModel vm)
             {
                 vm.IsInError = false;
                 if (tabItem != null)
@@ -421,8 +414,7 @@ namespace Dev2.Studio.Views.Workflow
 
         void InsertEmptyRow()
         {
-            var vm = DataContext as WorkflowInputDataViewModel;
-            if (vm != null && vm.AddBlankRow(DataListInputs.ActiveItem as IDataListItem, out int indexToSelect))
+            if (DataContext is WorkflowInputDataViewModel vm && vm.AddBlankRow(DataListInputs.ActiveItem as IDataListItem, out int indexToSelect))
             {
                 DataListInputs.ActiveItem = indexToSelect;
                 Dispatcher.BeginInvoke(new Action(FocusOnAddition), DispatcherPriority.ApplicationIdle);
@@ -430,8 +422,7 @@ namespace Dev2.Studio.Views.Workflow
         }
         void DeleteLastRow()
         {
-            var vm = DataContext as WorkflowInputDataViewModel;
-            if (vm != null && vm.RemoveRow(DataListInputs.ActiveItem as IDataListItem, out int indexToSelect))
+            if (DataContext is WorkflowInputDataViewModel vm && vm.RemoveRow(DataListInputs.ActiveItem as IDataListItem, out int indexToSelect))
             {
                 DataListInputs.ActiveItem = indexToSelect;
             }

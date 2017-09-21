@@ -236,14 +236,12 @@ namespace Dev2.Util
                     return false;
                 }
 
-                var dict = value as IDictionary;
-                if (dict != null)
+                if (value is IDictionary dict)
                 {
                     return dict.Contains(member);
                 }
 
-                var list = value as IList;
-                if (list != null)
+                if (value is IList list)
                 {
                     int index = ParseInt(member, -1);
                     return index >= 0 && index < list.Count;
@@ -259,8 +257,7 @@ namespace Dev2.Util
                     throw new ArgumentException("value");
                 }
 
-                var dict = value as IDictionary;
-                if (dict != null)
+                if (value is IDictionary dict)
                 {
                     return dict[member];
                 }

@@ -967,8 +967,7 @@ namespace Dev2.Activities.Specs.TestFramework
         {
             var serviceTest = GetTestFrameworkFromContext();
             var fieldInfo = typeof(ServiceTestViewModel).GetField("_processExecutor", BindingFlags.NonPublic | BindingFlags.Instance);
-            var specExternalProcessExecutor = fieldInfo?.GetValue(serviceTest) as ISpecExternalProcessExecutor;
-            if (specExternalProcessExecutor != null)
+            if (fieldInfo?.GetValue(serviceTest) is ISpecExternalProcessExecutor specExternalProcessExecutor)
             {
                 var webResult = specExternalProcessExecutor.WebResult;
                 foreach (var result in webResult)
@@ -982,7 +981,7 @@ namespace Dev2.Activities.Specs.TestFramework
                             foreach (var resultPairs in jObject)
                             {
                                 var testObj = resultPairs as JObject;
-                                
+
                                 var testName = testObj.Property("Test Name").Value.ToString();
                                 if (testName != tableRow["Test Name"])
                                 {
@@ -1767,8 +1766,7 @@ namespace Dev2.Activities.Specs.TestFramework
                     {
                         var foundNode = act.Nodes.FirstOrDefault(node =>
                         {
-                            var searchNode = node as FlowDecision;
-                            if (searchNode != null)
+                            if (node is FlowDecision searchNode)
                             {
                                 return searchNode.DisplayName.TrimEnd(' ').Equals(actNameToFind, StringComparison.InvariantCultureIgnoreCase);
                             }
@@ -1810,8 +1808,7 @@ namespace Dev2.Activities.Specs.TestFramework
                     {
                         var foundNode = act.Nodes.FirstOrDefault(node =>
                         {
-                            var searchNode = node as FlowStep;
-                            if (searchNode != null)
+                            if (node is FlowStep searchNode)
                             {
                                 return searchNode.Action.DisplayName.TrimEnd(' ').Equals(actNameToFind, StringComparison.InvariantCultureIgnoreCase);
                             }
@@ -1889,9 +1886,8 @@ namespace Dev2.Activities.Specs.TestFramework
                 {
 
                     bool isCorr;
-                    var node = searchNode as FlowDecision;
-                    
-                    if (node != null)
+
+                    if (searchNode is FlowDecision node)
                     {
                         isCorr = node.DisplayName.TrimEnd(' ').Equals(actNameToFind, StringComparison.InvariantCultureIgnoreCase);
                     }
@@ -1918,8 +1914,7 @@ namespace Dev2.Activities.Specs.TestFramework
                 {
                     dynamic searchNode = flowNode as FlowStep ?? (dynamic)(actStartNode as FlowDecision);
                     bool isCorr;
-                    var node = searchNode as FlowDecision;
-                    if (node != null)
+                    if (searchNode is FlowDecision node)
                     {
                         isCorr = node.DisplayName.TrimEnd(' ').Equals(actNameToFind, StringComparison.InvariantCultureIgnoreCase);
                     }
@@ -1974,9 +1969,8 @@ namespace Dev2.Activities.Specs.TestFramework
                 {
 
                     bool isCorr;
-                    var node = searchNode as FlowSwitch<string>;
-                    
-                    if (node != null)
+
+                    if (searchNode is FlowSwitch<string> node)
                     {
                         isCorr = node.DisplayName.TrimEnd(' ').Equals(actNameToFind, StringComparison.InvariantCultureIgnoreCase);
                     }
@@ -2007,8 +2001,7 @@ namespace Dev2.Activities.Specs.TestFramework
                     {
                         searchNode = flowNode as FlowSwitch<string>;
                     }
-                    var node = searchNode as FlowSwitch<string>;
-                    if (node != null)
+                    if (searchNode is FlowSwitch<string> node)
                     {
                         isCorr = node.DisplayName.TrimEnd(' ').Equals(actNameToFind, StringComparison.InvariantCultureIgnoreCase);
                     }
@@ -2235,8 +2228,7 @@ namespace Dev2.Activities.Specs.TestFramework
                     {
                         var foundNode = act.Nodes.FirstOrDefault(node =>
                         {
-                            var searchNode = node as FlowDecision;
-                            if (searchNode != null)
+                            if (node is FlowDecision searchNode)
                             {
                                 return searchNode.DisplayName.TrimEnd(' ').Equals(actNameToFind, StringComparison.InvariantCultureIgnoreCase);
                             }
@@ -2269,8 +2261,7 @@ namespace Dev2.Activities.Specs.TestFramework
                     {
                         var foundNode = act.Nodes.FirstOrDefault(node =>
                         {
-                            var searchNode = node as FlowStep;
-                            if (searchNode != null)
+                            if (node is FlowStep searchNode)
                             {
                                 return searchNode.Action.DisplayName.TrimEnd(' ').Equals(actNameToFind, StringComparison.InvariantCultureIgnoreCase);
                             }

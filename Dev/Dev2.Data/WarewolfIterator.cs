@@ -31,8 +31,7 @@ namespace Dev2.Data
         {
             if (warewolfEvalResult.IsWarewolfRecordSetResult)
             {
-                var listResult = warewolfEvalResult as CommonFunctions.WarewolfEvalResult.WarewolfRecordSetResult;
-                if (listResult != null)
+                if (warewolfEvalResult is CommonFunctions.WarewolfEvalResult.WarewolfRecordSetResult listResult)
                 {
                     var stringValue = "";
                     foreach (var item in listResult.Item.Data)
@@ -68,8 +67,7 @@ namespace Dev2.Data
         {
             if (warewolfEvalResult.IsWarewolfAtomListresult)
             {
-                var warewolfAtomListresult = warewolfEvalResult as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
-                if (warewolfAtomListresult != null)
+                if (warewolfEvalResult is CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult warewolfAtomListresult)
                 {
                     warewolfAtomListresult.Item.ResetCurrentEnumerator();
                     _listResult = warewolfAtomListresult;

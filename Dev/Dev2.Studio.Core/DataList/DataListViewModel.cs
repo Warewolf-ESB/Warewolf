@@ -586,8 +586,7 @@ namespace Dev2.Studio.ViewModels.DataList
                 return;
             }
 
-            var complexObj = itemToRemove as IComplexObjectItemModel;
-            if (complexObj != null)
+            if (itemToRemove is IComplexObjectItemModel complexObj)
             {
                 var complexObjectItemModels = complexObj.Children;
                 var allChildren = complexObjectItemModels.Flatten(model => model.Children).ToList();

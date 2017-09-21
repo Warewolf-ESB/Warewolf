@@ -28,8 +28,7 @@ namespace Warewolf.Studio.Views
         private void StartDrag()
         {
             _isDragging = true;
-            var temp = ExplorerTree.SelectedItem as ExplorerItemViewModel;
-            if (temp != null)
+            if (ExplorerTree.SelectedItem is ExplorerItemViewModel temp)
             {
                 var dragData = new DataObject();
                 dragData.SetData(DragDropHelper.WorkflowItemTypeNameFormat, temp.ActivityName);
@@ -73,17 +72,15 @@ namespace Warewolf.Studio.Views
 
                         if (!Equals(explorerItemViewModel.Parent, destination.DataContext))
                         {
-                            var dropTarget = destination.DataContext as IExplorerItemViewModel;
 
-                            if (dropTarget != null && dropTarget.IsFolder)
+                            if (destination.DataContext is IExplorerItemViewModel dropTarget && dropTarget.IsFolder)
                             {
-                                var itemViewModel = (IExplorerItemViewModel) explorerItemViewModel;
+                                var itemViewModel = (IExplorerItemViewModel)explorerItemViewModel;
                                 itemViewModel.Move(dropTarget);
                             }
-                            var destEnv = destination.DataContext as IEnvironmentViewModel;
-                            if (destEnv != null)
+                            if (destination.DataContext is IEnvironmentViewModel destEnv)
                             {
-                                var itemViewModel = (IExplorerItemViewModel) explorerItemViewModel;
+                                var itemViewModel = (IExplorerItemViewModel)explorerItemViewModel;
                                 itemViewModel.Move(destEnv);
                             }
                             else
@@ -110,8 +107,7 @@ namespace Warewolf.Studio.Views
             {
                 do
                 {
-                    var anchestor = current as T;
-                    if (anchestor != null)
+                    if (current is T anchestor)
                     {
                         return anchestor;
                     }
@@ -223,8 +219,7 @@ namespace Warewolf.Studio.Views
             if (e.OriginalSource.GetType() == typeof (ScrollViewer))
             {
                 var explorerView = sender as ExplorerView;
-                var singleEnvironmentExplorerViewModel = explorerView?.DataContext as SingleEnvironmentExplorerViewModel;
-                if (singleEnvironmentExplorerViewModel != null)
+                if (explorerView?.DataContext is SingleEnvironmentExplorerViewModel singleEnvironmentExplorerViewModel)
                 {
                     return;
                 }
@@ -247,8 +242,7 @@ namespace Warewolf.Studio.Views
             if (e.Key == Key.Enter || e.Key == Key.Escape || e.Key == Key.Tab)
             {
                 var textBox = sender as TextBox;
-                var explorerItemViewModel = textBox?.DataContext as ExplorerItemViewModel;
-                if (explorerItemViewModel != null)
+                if (textBox?.DataContext is ExplorerItemViewModel explorerItemViewModel)
                 {
                     explorerItemViewModel.ResourceName = textBox.Text;
                 }
@@ -258,8 +252,7 @@ namespace Warewolf.Studio.Views
         private void UIElement_OnLostFocus(object sender, RoutedEventArgs e)
         {
             var textBox = sender as TextBox;
-            var explorerItemViewModel = textBox?.DataContext as ExplorerItemViewModel;
-            if (explorerItemViewModel != null && explorerItemViewModel.IsRenaming)
+            if (textBox?.DataContext is ExplorerItemViewModel explorerItemViewModel && explorerItemViewModel.IsRenaming)
             {
                 explorerItemViewModel.ResourceName = textBox.Text;
             }
@@ -315,11 +308,9 @@ namespace Warewolf.Studio.Views
 
         private void SetSelected(TreeView treeView, object item)
         {
-            var singleEnvironmentExplorerViewModel = treeView?.DataContext as SingleEnvironmentExplorerViewModel;
-            if(singleEnvironmentExplorerViewModel != null)
+            if (treeView?.DataContext is SingleEnvironmentExplorerViewModel singleEnvironmentExplorerViewModel)
             {
-                var explorerItemViewModel = item as IExplorerItemViewModel;
-                if(explorerItemViewModel != null)
+                if (item is IExplorerItemViewModel explorerItemViewModel)
                 {
                     singleEnvironmentExplorerViewModel.SelectedItem = explorerItemViewModel;
                     singleEnvironmentExplorerViewModel.SelectedEnvironment = null;
@@ -335,8 +326,7 @@ namespace Warewolf.Studio.Views
             {
                 var explorerViewModel = DataContext as ExplorerViewModel;
 
-                var explorerItemViewModel = item as IExplorerItemViewModel;
-                if(explorerItemViewModel != null)
+                if (item is IExplorerItemViewModel explorerItemViewModel)
                 {
                     explorerItemViewModel.IsSelected = true;
                     SetActiveServer(explorerItemViewModel.Server);
@@ -347,11 +337,10 @@ namespace Warewolf.Studio.Views
                 }
                 else
                 {
-                    var environmentViewModel = item as IEnvironmentViewModel;
-                    if(environmentViewModel != null)
+                    if (item is IEnvironmentViewModel environmentViewModel)
                     {
                         SetActiveServer(environmentViewModel.Server);
-                        if(explorerViewModel?.ConnectControlViewModel != null)
+                        if (explorerViewModel?.ConnectControlViewModel != null)
                         {
                             explorerViewModel.ConnectControlViewModel.SelectedConnection = environmentViewModel.Server;
                         }
@@ -369,28 +358,24 @@ namespace Warewolf.Studio.Views
         private void ExplorerTree_OnKeyUp(object sender, KeyEventArgs e)
         {
             var treeView = sender as TreeView;
-            var singleEnvironmentExplorerViewModel = treeView?.DataContext as SingleEnvironmentExplorerViewModel;
-            if (singleEnvironmentExplorerViewModel != null)
+            if (treeView?.DataContext is SingleEnvironmentExplorerViewModel singleEnvironmentExplorerViewModel)
             {
                 if (e.Key == Key.F2)
                 {
-                    var expItemViewModel = ExplorerTree.SelectedItem as ExplorerItemViewModel;
-                    if (expItemViewModel != null)
+                    if (ExplorerTree.SelectedItem is ExplorerItemViewModel expItemViewModel)
                     {
                         expItemViewModel.IsRenaming = expItemViewModel.CanRename;
                     }
                 }
                 return;
             }
-            var explorerItemViewModel = ExplorerTree.SelectedItem as ExplorerItemViewModel;
-            if (explorerItemViewModel != null && explorerItemViewModel.IsSelected)
+            if (ExplorerTree.SelectedItem is ExplorerItemViewModel explorerItemViewModel && explorerItemViewModel.IsSelected)
             {
                 ExplorerItemShortcuts(e, explorerItemViewModel);
             }
             else
             {
-                var environmentViewModel = ExplorerTree.SelectedItem as EnvironmentViewModel;
-                if (environmentViewModel != null && environmentViewModel.IsSelected)
+                if (ExplorerTree.SelectedItem is EnvironmentViewModel environmentViewModel && environmentViewModel.IsSelected)
                 {
                     EnvironmentShortcuts(e, environmentViewModel);
                 }
@@ -497,8 +482,7 @@ namespace Warewolf.Studio.Views
                 e.Handled = true;
                 return;
             }
-            var explorerItemViewModel = treeViewItem?.DataContext as ExplorerItemViewModel;
-            if (explorerItemViewModel != null)
+            if (treeViewItem?.DataContext is ExplorerItemViewModel explorerItemViewModel)
             {
                 if (ValidateItemDoubleClick(e, explorerItemViewModel))
                 {

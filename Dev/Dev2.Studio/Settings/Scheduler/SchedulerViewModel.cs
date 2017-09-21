@@ -899,8 +899,7 @@ namespace Dev2.Settings.Scheduler
     {
         public static IServer ToEnvironmentModel(this IServer server)
         {
-            var resource = server as Server;
-            if (resource != null)
+            if (server is Server resource)
             {
                 return resource;
             }

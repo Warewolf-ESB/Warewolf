@@ -594,8 +594,7 @@ namespace Dev2.Activities.Specs.BaseTypes
 
                     return forEachActivity.DataFunc.Handler != null && forEachActivity.DataFunc != null && forEachActivity.DataFunc.Handler as DsfForEachActivity != null;
                 });
-                var forEachParentActivity = findAllForEach.Value as DsfForEachActivity;
-                if (forEachParentActivity != null)
+                if (findAllForEach.Value is DsfForEachActivity forEachParentActivity)
                 {
                     var activityFunc = new ActivityFunc<string, bool> { Handler = activity };
                     DsfForEachActivity foundCorrectParentForEach = null;
@@ -660,20 +659,17 @@ namespace Dev2.Activities.Specs.BaseTypes
 
             try
             {
-                var multipleFilesActivity = act as DsfAbstractMultipleFilesActivity;
-                if (multipleFilesActivity != null)
+                if (act is DsfAbstractMultipleFilesActivity multipleFilesActivity)
                 {
                     return DebugItemResults(multipleFilesActivity, result.Environment);
                 }
 
-                DsfActivityAbstract<string> dsfActivityAbstractString = act as DsfActivityAbstract<string>;
-                if (dsfActivityAbstractString != null)
+                if (act is DsfActivityAbstract<string> dsfActivityAbstractString)
                 {
                     return DebugItemResults(dsfActivityAbstractString, result.Environment);
                 }
 
-                DsfActivityAbstract<bool> dsfActivityAbstractBool = act as DsfActivityAbstract<bool>;
-                if (dsfActivityAbstractBool != null)
+                if (act is DsfActivityAbstract<bool> dsfActivityAbstractBool)
                 {
                     return DebugItemResults(dsfActivityAbstractBool, result.Environment);
                 }

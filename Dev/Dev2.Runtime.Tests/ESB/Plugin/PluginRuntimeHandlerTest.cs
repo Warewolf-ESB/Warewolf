@@ -511,8 +511,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
                 });
 
                 var deserializeToObject = instance.ObjectString.DeserializeToObject(type, new KnownTypesBinder() { KnownTypes = new List<Type>(type.Assembly.ExportedTypes) });
-                var firstOrDefault = deserializeToObject as Human;
-                if (firstOrDefault != null)
+                if (deserializeToObject is Human firstOrDefault)
                 {
 
                     Assert.AreEqual("Jimmy", firstOrDefault.Name);
