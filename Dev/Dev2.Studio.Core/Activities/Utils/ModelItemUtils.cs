@@ -125,22 +125,21 @@ namespace Dev2.Studio.Core.Activities.Utils
         public static Guid GetUniqueID(ModelItem modelItem)
         {
             var instanceIDStr = GetProperty("UniqueID", modelItem) as string;
-            Guid instanceID;
-            Guid.TryParse(instanceIDStr, out instanceID);
+            Guid.TryParse(instanceIDStr, out var instanceID);
             return instanceID;
         }
 
         public static Guid TryGetResourceID(ModelItem modelItem)
         {
-            var resourceIDArg = modelItem.Properties["ResourceID"];
-            if (resourceIDArg != null && resourceIDArg.ComputedValue != null)
+            var resourceIdArg = modelItem.Properties["ResourceID"];
+            if (resourceIdArg != null && resourceIdArg.ComputedValue != null)
             {
-                if (resourceIDArg.ComputedValue is InArgument<Guid>)
+                if (resourceIdArg.ComputedValue is InArgument<Guid> argument)
                 {
-                    var resourceIDStr = (resourceIDArg.ComputedValue as InArgument<Guid>).Expression;
-                    return Guid.Parse(resourceIDStr.ToString());
+                    var resourceIdStr = argument.Expression;
+                    return Guid.Parse(resourceIdStr.ToString());
                 }
-                return (Guid)resourceIDArg.ComputedValue;
+                return (Guid)resourceIdArg.ComputedValue;
             }
             return Guid.Empty;
         }

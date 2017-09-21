@@ -19,71 +19,88 @@ namespace Dev2.Activities
 
         public IDev2Activity Parse(List<IDev2Activity> seenActivities, object step)
         {
-            try
+            var chart = step as Flowchart;
+            if (chart.StartNode == null)
             {
-                if (step is ModelItem modelItem)
-                {
-                    var currentValue = modelItem.GetCurrentValue();
-
-                    if (currentValue is FlowStep start)
-                    {
-                        var tool = ParseTools(start, seenActivities);
-                        return tool.FirstOrDefault();
-                    }
-                    if (currentValue is FlowSwitch<string> switchFlowSwitch)
-                    {
-                        var activity = switchFlowSwitch.Expression as DsfFlowSwitchActivity;
-                        if (activity != null)
-                        {
-                            var val = new StringBuilder(Dev2DecisionStack.ExtractModelFromWorkflowPersistedData(activity.ExpressionText));
-                            Dev2Switch ds = new Dev2Switch { SwitchVariable = val.ToString() };
-                            var swi = new DsfSwitch(activity);
-                            if (!seenActivities.Contains(activity))
-                            {
-                                seenActivities.Add(swi);
-                            }
-                            swi.Switches = switchFlowSwitch.Cases.Select(a => new Tuple<string, IDev2Activity>(a.Key, ParseTools(a.Value, seenActivities).FirstOrDefault())).ToDictionary(a => a.Item1, a => a.Item2);
-                            swi.Default = ParseTools(switchFlowSwitch.Default, seenActivities);
-                            swi.Switch = ds.SwitchVariable;
-
-
-                            return swi;
-                        }
-                    }
-                    if (currentValue is FlowDecision flowdec)
-                    {
-                        var activity = flowdec.Condition as DsfFlowDecisionActivity;
-                        if (activity != null)
-                        {
-                            var rawText = activity.ExpressionText;
-
-                            var activityTextjson = rawText.Substring(rawText.IndexOf("{", StringComparison.Ordinal)).Replace(@""",AmbientDataList)", "").Replace("\"", "!");
-
-                            var activityText = Dev2DecisionStack.FromVBPersitableModelToJSON(activityTextjson);
-                            var decisionStack = JsonConvert.DeserializeObject<Dev2DecisionStack>(activityText);
-                            var dec = new DsfDecision(activity);
-                            if (!seenActivities.Contains(activity))
-                            {
-                                seenActivities.Add(dec);
-                            }
-                            dec.TrueArm = ParseTools(flowdec.True, seenActivities);
-                            dec.FalseArm = ParseTools(flowdec.False, seenActivities);
-                            dec.Conditions = decisionStack;
-                            dec.And = decisionStack.Mode == Dev2DecisionMode.AND;
-
-
-                            return dec;
-                        }
-                    }
-                }
                 return null;
             }
-            catch (InvalidWorkflowException e)
-            {
 
-                Dev2Logger.Error(e, GlobalConstants.WarewolfError);
-                throw;
+            if (chart.StartNode is FlowStep start)
+            {
+                var tool = ParseTools(start, seenActivities);
+                return tool.FirstOrDefault();
             }
+            if (chart.StartNode is FlowSwitch<string> flowstart)
+            {
+                return ParseSwitch(flowstart, seenActivities).FirstOrDefault();
+            }
+            var flowdec = chart.StartNode as FlowDecision;
+            return ParseDecision(flowdec, seenActivities).FirstOrDefault();
+            //try
+            //{
+            //    if (step is ModelItem modelItem)
+            //    {
+            //        var currentValue = modelItem.GetCurrentValue();
+
+            //        if (currentValue is FlowStep start)
+            //        {
+            //            var tool = ParseTools(start, seenActivities);
+            //            return tool.FirstOrDefault();
+            //        }
+            //        if (currentValue is FlowSwitch<string> switchFlowSwitch)
+            //        {
+            //            var activity = switchFlowSwitch.Expression as DsfFlowSwitchActivity;
+            //            if (activity != null)
+            //            {
+            //                var val = new StringBuilder(Dev2DecisionStack.ExtractModelFromWorkflowPersistedData(activity.ExpressionText));
+            //                Dev2Switch ds = new Dev2Switch { SwitchVariable = val.ToString() };
+            //                var swi = new DsfSwitch(activity);
+            //                if (!seenActivities.Contains(activity))
+            //                {
+            //                    seenActivities.Add(swi);
+            //                }
+            //                swi.Switches = switchFlowSwitch.Cases.Select(a => new Tuple<string, IDev2Activity>(a.Key, ParseTools(a.Value, seenActivities).FirstOrDefault())).ToDictionary(a => a.Item1, a => a.Item2);
+            //                swi.Default = ParseTools(switchFlowSwitch.Default, seenActivities);
+            //                swi.Switch = ds.SwitchVariable;
+
+
+            //                return swi;
+            //            }
+            //        }
+            //        if (currentValue is FlowDecision flowdec)
+            //        {
+            //            var activity = flowdec.Condition as DsfFlowDecisionActivity;
+            //            if (activity != null)
+            //            {
+            //                var rawText = activity.ExpressionText;
+
+            //                var activityTextjson = rawText.Substring(rawText.IndexOf("{", StringComparison.Ordinal)).Replace(@""",AmbientDataList)", "").Replace("\"", "!");
+
+            //                var activityText = Dev2DecisionStack.FromVBPersitableModelToJSON(activityTextjson);
+            //                var decisionStack = JsonConvert.DeserializeObject<Dev2DecisionStack>(activityText);
+            //                var dec = new DsfDecision(activity);
+            //                if (!seenActivities.Contains(activity))
+            //                {
+            //                    seenActivities.Add(dec);
+            //                }
+            //                dec.TrueArm = ParseTools(flowdec.True, seenActivities);
+            //                dec.FalseArm = ParseTools(flowdec.False, seenActivities);
+            //                dec.Conditions = decisionStack;
+            //                dec.And = decisionStack.Mode == Dev2DecisionMode.AND;
+
+
+            //                return dec;
+            //            }
+            //        }
+            //    }
+            //    return null;
+            //}
+            //catch (InvalidWorkflowException e)
+            //{
+
+            //    Dev2Logger.Error(e, GlobalConstants.WarewolfError);
+            //    throw;
+            //}
         }
 
         public IDev2Activity Parse(DynamicActivity dynamicActivity, List<IDev2Activity> seenActivities)

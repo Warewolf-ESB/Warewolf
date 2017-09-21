@@ -412,7 +412,7 @@
     <Compile Include="ViewModels\Help\HelpViewWrapper.cs" />
     <Compile Include="ViewModels\MergeViewModel.cs" />
     <Compile Include="ViewModels\Merge\CompleteConflict.cs" />
-    <Compile Include="ViewModels\Merge\ConflictViewModelBase.cs" />
+    <Compile Include="ViewModels\Merge\ConflictViewModel.cs" />
     <Compile Include="ViewModels\Merge\MergeToolModel.cs" />
     <Compile Include="ViewModels\Merge\MergeWorkflowViewModel.cs" />
     <Compile Include="ViewModels\SourceViewModel.cs" />

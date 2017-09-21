@@ -30,304 +30,355 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
     {
         
         #region Properties
-        public UIWarewolfDEV2PIETERTEWindow UIWarewolfDEV2PIETERTEWindow
+        public MainWindow MainWindow
         {
             get
             {
-                if ((this.mUIWarewolfDEV2PIETERTEWindow == null))
+                if ((this.mMainWindow == null))
                 {
-                    this.mUIWarewolfDEV2PIETERTEWindow = new UIWarewolfDEV2PIETERTEWindow();
+                    this.mMainWindow = new MainWindow();
                 }
-                return this.mUIWarewolfDEV2PIETERTEWindow;
+                return this.mMainWindow;
             }
         }
         #endregion
         
         #region Fields
-        private UIWarewolfDEV2PIETERTEWindow mUIWarewolfDEV2PIETERTEWindow;
+        private MainWindow mMainWindow;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class UIWarewolfDEV2PIETERTEWindow : WpfWindow
+    public class MainWindow : WpfWindow
     {
         
-        public UIWarewolfDEV2PIETERTEWindow()
+        public MainWindow()
         {
             #region Search Criteria
-            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf (DEV2\\PIETER.TERBLANCHE)";
             this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
-            this.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
+            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.Name, "Warewolf", PropertyExpressionOperator.Contains));
+            this.WindowTitles.Add("MainWindow");
             #endregion
         }
         
         #region Properties
-        public UIItemCustom UIItemCustom
+        public DockManager DockManager
         {
             get
             {
-                if ((this.mUIItemCustom == null))
+                if ((this.mDockManager == null))
                 {
-                    this.mUIItemCustom = new UIItemCustom(this);
+                    this.mDockManager = new DockManager(this);
                 }
-                return this.mUIItemCustom;
-            }
-        }
-        
-        public UIUI_DataListView_AutoCustom UIUI_DataListView_AutoCustom
-        {
-            get
-            {
-                if ((this.mUIUI_DataListView_AutoCustom == null))
-                {
-                    this.mUIUI_DataListView_AutoCustom = new UIUI_DataListView_AutoCustom(this);
-                }
-                return this.mUIUI_DataListView_AutoCustom;
+                return this.mDockManager;
             }
         }
         #endregion
         
         #region Fields
-        private UIItemCustom mUIItemCustom;
-        
-        private UIUI_DataListView_AutoCustom mUIUI_DataListView_AutoCustom;
+        private DockManager mDockManager;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class UIItemCustom : WpfCustom
+    public class DockManager : WpfCustom
     {
         
-        public UIItemCustom(UITestControl searchLimitContainer) : 
+        public DockManager(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.MergeWorkflowView";
-            this.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.XamDockManager";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "DockManager";
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
         #region Properties
-        public UIScrollViewerPane UIScrollViewerPane
+        public SplitPaneMiddle SplitPaneMiddle
         {
             get
             {
-                if ((this.mUIScrollViewerPane == null))
+                if ((this.mSplitPaneMiddle == null))
                 {
-                    this.mUIScrollViewerPane = new UIScrollViewerPane(this);
+                    this.mSplitPaneMiddle = new SplitPaneMiddle(this);
                 }
-                return this.mUIScrollViewerPane;
+                return this.mSplitPaneMiddle;
             }
         }
         #endregion
         
         #region Fields
-        private UIScrollViewerPane mUIScrollViewerPane;
+        private SplitPaneMiddle mSplitPaneMiddle;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class UIScrollViewerPane : WpfPane
+    public class SplitPaneMiddle : WpfCustom
     {
         
-        public UIScrollViewerPane(UITestControl searchLimitContainer) : 
+        public SplitPaneMiddle(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfPane.PropertyNames.ClassName] = "Uia.ScrollViewer";
-            this.SearchProperties[WpfPane.PropertyNames.AutomationId] = "ScrollViewer";
-            this.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.SplitPane";
+            this.SearchProperties[WpfControl.PropertyNames.Instance] = "2";
+            this.SearchConfigurations.Add(SearchConfiguration.NextSibling);
+            this.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
         #region Properties
-        public WpfRadioButton UIVariablesCurrentRBRadioButton
+        public TabManSplitPane TabManSplitPane
         {
             get
             {
-                if ((this.mUIVariablesCurrentRBRadioButton == null))
+                if ((this.mTabManSplitPane == null))
                 {
-                    this.mUIVariablesCurrentRBRadioButton = new WpfRadioButton(this);
+                    this.mTabManSplitPane = new TabManSplitPane(this);
+                }
+                return this.mTabManSplitPane;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private TabManSplitPane mTabManSplitPane;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class TabManSplitPane : WpfCustom
+    {
+        
+        public TabManSplitPane(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.SplitPane";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UI_SplitPane_AutoID";
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public TabMan TabMan
+        {
+            get
+            {
+                if ((this.mTabMan == null))
+                {
+                    this.mTabMan = new TabMan(this);
+                }
+                return this.mTabMan;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private TabMan mTabMan;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class TabMan : WpfTabList
+    {
+        
+        public TabMan(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTabList.PropertyNames.AutomationId] = "UI_TabManager_AutoID";
+            this.WindowTitles.Add("Warewolf");
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public MergeTab MergeTab
+        {
+            get
+            {
+                if ((this.mMergeTab == null))
+                {
+                    this.mMergeTab = new MergeTab(this);
+                }
+                return this.mMergeTab;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private MergeTab mMergeTab;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class MergeTab : WpfTabPage
+    {
+        
+        public MergeTab(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTabPage.PropertyNames.Name] = "Dev2.ViewModels.MergeViewModel";
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfButton CloseButton
+        {
+            get
+            {
+                if ((this.mCloseButton == null))
+                {
+                    this.mCloseButton = new WpfButton(this);
                     #region Search Criteria
-                    this.mUIVariablesCurrentRBRadioButton.SearchProperties[WpfRadioButton.PropertyNames.AutomationId] = "VariablesCurrentRB";
-                    this.mUIVariablesCurrentRBRadioButton.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
+                    this.mCloseButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "closeBtn";
+                    this.mCloseButton.WindowTitles.Add("Warewolf");
                     #endregion
                 }
-                return this.mUIVariablesCurrentRBRadioButton;
+                return this.mCloseButton;
             }
         }
-        #endregion
         
-        #region Fields
-        private WpfRadioButton mUIVariablesCurrentRBRadioButton;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class UIUI_DataListView_AutoCustom : WpfCustom
-    {
-        
-        public UIUI_DataListView_AutoCustom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.DataListView";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UI_DataListView_AutoID";
-            this.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIUI_VariableTreeView_Tree UIUI_VariableTreeView_Tree
+        public WpfText TabDescription
         {
             get
             {
-                if ((this.mUIUI_VariableTreeView_Tree == null))
+                if ((this.mTabDescription == null))
                 {
-                    this.mUIUI_VariableTreeView_Tree = new UIUI_VariableTreeView_Tree(this);
-                }
-                return this.mUIUI_VariableTreeView_Tree;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIUI_VariableTreeView_Tree mUIUI_VariableTreeView_Tree;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class UIUI_VariableTreeView_Tree : WpfTree
-    {
-        
-        public UIUI_VariableTreeView_Tree(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfTree.PropertyNames.AutomationId] = "UI_VariableTreeView_AutoID";
-            this.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIRecordsetTreeItem UIRecordsetTreeItem
-        {
-            get
-            {
-                if ((this.mUIRecordsetTreeItem == null))
-                {
-                    this.mUIRecordsetTreeItem = new UIRecordsetTreeItem(this);
-                }
-                return this.mUIRecordsetTreeItem;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIRecordsetTreeItem mUIRecordsetTreeItem;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class UIRecordsetTreeItem : WpfTreeItem
-    {
-        
-        public UIRecordsetTreeItem(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Recordset";
-            this.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIItemTreeItem UIItemTreeItem
-        {
-            get
-            {
-                if ((this.mUIItemTreeItem == null))
-                {
-                    this.mUIItemTreeItem = new UIItemTreeItem(this);
-                }
-                return this.mUIItemTreeItem;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIItemTreeItem mUIItemTreeItem;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class UIItemTreeItem : WpfTreeItem
-    {
-        
-        public UIItemTreeItem(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
-            this.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIItemTreeItem1 UIItemTreeItem1
-        {
-            get
-            {
-                if ((this.mUIItemTreeItem1 == null))
-                {
-                    this.mUIItemTreeItem1 = new UIItemTreeItem1(this);
-                }
-                return this.mUIItemTreeItem1;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIItemTreeItem1 mUIItemTreeItem1;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class UIItemTreeItem1 : WpfTreeItem
-    {
-        
-        public UIItemTreeItem1(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
-            this.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfCheckBox UIUI_IsOutputCheckbox_CheckBox
-        {
-            get
-            {
-                if ((this.mUIUI_IsOutputCheckbox_CheckBox == null))
-                {
-                    this.mUIUI_IsOutputCheckbox_CheckBox = new WpfCheckBox(this);
+                    this.mTabDescription = new WpfText(this);
                     #region Search Criteria
-                    this.mUIUI_IsOutputCheckbox_CheckBox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsOutputCheckbox_AutoID";
-                    this.mUIUI_IsOutputCheckbox_CheckBox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mUIUI_IsOutputCheckbox_CheckBox.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
+                    this.mTabDescription.SearchProperties[WpfText.PropertyNames.Name] = "Merge Conflicts";
+                    this.mTabDescription.WindowTitles.Add("Warewolf");
                     #endregion
                 }
-                return this.mUIUI_IsOutputCheckbox_CheckBox;
+                return this.mTabDescription;
+            }
+        }
+        
+        public WorkSurfaceContext WorkSurfaceContext
+        {
+            get
+            {
+                if ((this.mWorkSurfaceContext == null))
+                {
+                    this.mWorkSurfaceContext = new WorkSurfaceContext(this);
+                }
+                return this.mWorkSurfaceContext;
             }
         }
         #endregion
         
         #region Fields
-        private WpfCheckBox mUIUI_IsOutputCheckbox_CheckBox;
+        private WpfButton mCloseButton;
+        
+        private WpfText mTabDescription;
+        
+        private WorkSurfaceContext mWorkSurfaceContext;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class WorkSurfaceContext : WpfCustom
+    {
+        
+        public WorkSurfaceContext(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel";
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public ContentDockManager ContentDockManager
+        {
+            get
+            {
+                if ((this.mContentDockManager == null))
+                {
+                    this.mContentDockManager = new ContentDockManager(this);
+                }
+                return this.mContentDockManager;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private ContentDockManager mContentDockManager;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class ContentDockManager : WpfCustom
+    {
+        
+        public ContentDockManager(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "ContentDockManager";
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public MergeWorkflowView MergeWorkflowView
+        {
+            get
+            {
+                if ((this.mMergeWorkflowView == null))
+                {
+                    this.mMergeWorkflowView = new MergeWorkflowView(this);
+                }
+                return this.mMergeWorkflowView;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private MergeWorkflowView mMergeWorkflowView;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class MergeWorkflowView : WpfCustom
+    {
+        
+        public MergeWorkflowView(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties.Add(new PropertyExpression(WpfControl.PropertyNames.ClassName, "MergeWorkflowView", PropertyExpressionOperator.Contains));
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfPane ScrollViewerPane
+        {
+            get
+            {
+                if ((this.mScrollViewerPane == null))
+                {
+                    this.mScrollViewerPane = new WpfPane(this);
+                    #region Search Criteria
+                    this.mScrollViewerPane.SearchProperties[WpfPane.PropertyNames.AutomationId] = "MergeGridScrollViewer";
+                    this.mScrollViewerPane.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mScrollViewerPane;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfPane mScrollViewerPane;
         #endregion
     }
 }

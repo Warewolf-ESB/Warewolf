@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Security.Policy;
 using Dev2.Activities;
 using Dev2.Activities.Designers2.AggregateCalculate;
 using Dev2.Activities.Designers2.BaseConvert;
@@ -37,7 +35,6 @@ using Dev2.Activities.Designers2.MultiAssign;
 using Dev2.Activities.Designers2.MultiAssignObject;
 using Dev2.Activities.Designers2.MySqlDatabase;
 using Dev2.Activities.Designers2.Net_Dll_Enhanced;
-using Dev2.Activities.Designers2.Net_DLL;
 using Dev2.Activities.Designers2.ODBC;
 using Dev2.Activities.Designers2.Oracle;
 using Dev2.Activities.Designers2.PostgreSql;
@@ -92,6 +89,7 @@ using Dev2.Activities.Sharepoint;
 using Dev2.Activities.WcfEndPoint;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Dev2.Activities.Designers2.Decision;
+using Dev2.Activities.Designers2.Switch;
 
 namespace Dev2
 {
@@ -182,6 +180,7 @@ namespace Dev2
                 { typeof(DsfSelectAndApplyActivity), typeof(SelectAndApplyDesignerViewModel) },
                 { typeof(DsfConsumeRabbitMQActivity), typeof(RabbitMQConsumeDesignerViewModel) },
                 { typeof(DsfFlowDecisionActivity), typeof(DecisionDesignerViewModel) },
+                { typeof(DsfSwitch), typeof(SwitchDesignerViewModel) },
             };
     }
 }
