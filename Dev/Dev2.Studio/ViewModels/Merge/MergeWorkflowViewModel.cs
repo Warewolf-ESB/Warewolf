@@ -31,58 +31,58 @@ namespace Dev2.ViewModels.Merge
                     completeConflict.Children ?? new ObservableCollection<ICompleteConflict>());
                 if (completeConflicts.Any(p => p.CurrentViewModel?.UniqueId == curr.uniqueId)) continue;
                 var conflict = new CompleteConflict();
-                if (curr.current.ItemType == typeof(FlowDecision))
+
+                CurrentConflictViewModel = new ConflictViewModel(curr.current, currentResourceModel);
+                if (CurrentConflictViewModel?.MergeToolModel != null)
                 {
-                    CurrentConflictViewModel = new ConflictViewModel(curr.current, currentResourceModel);
-                    if (CurrentConflictViewModel?.MergeToolModel != null)
+                    conflict.CurrentViewModel = CurrentConflictViewModel.MergeToolModel;
+                    foreach (var child in CurrentConflictViewModel.MergeToolModel.Children)
                     {
-                        conflict.CurrentViewModel = CurrentConflictViewModel.MergeToolModel;
-
-                        foreach (var child in CurrentConflictViewModel.MergeToolModel.Children)
-                        {
-                            conflict.Children.Add(new CompleteConflict
-                            {
-                                CurrentViewModel = child
-                            });
-                        }
+                        BuildChildren(conflict, child);
                     }
-
-                    if (curr.conflict)
-                    {
-                        DifferenceConflictViewModel = new ConflictViewModel(curr.difference, differenceResourceModel);
-                        if (DifferenceConflictViewModel?.MergeToolModel != null)
-                        {
-                            conflict.DiffViewModel = DifferenceConflictViewModel.MergeToolModel;
-                        }
-                        foreach (var child in CurrentConflictViewModel.Children)
-                        {
-                            conflict.Children.Add(new CompleteConflict()
-                            {
-                                CurrentViewModel = child
-                            });
-                        }
-
-                    }
-                    Conflicts.Add(conflict);
                 }
-                else
+
+                if (curr.conflict)
                 {
-                    CurrentConflictViewModel = new ConflictViewModel(curr.current, currentResourceModel);
-                    if (CurrentConflictViewModel?.MergeToolModel != null)
+                    DifferenceConflictViewModel = new ConflictViewModel(curr.difference, differenceResourceModel);
+                    if (DifferenceConflictViewModel?.MergeToolModel != null)
                     {
-                        conflict.CurrentViewModel = CurrentConflictViewModel.MergeToolModel;
-                    }
-                    if (curr.conflict)
-                    {
-                        DifferenceConflictViewModel = new ConflictViewModel(curr.difference, differenceResourceModel);
-                        if (DifferenceConflictViewModel?.MergeToolModel != null)
+                        conflict.DiffViewModel = DifferenceConflictViewModel.MergeToolModel;
+                        foreach (var child in DifferenceConflictViewModel.MergeToolModel.Children)
                         {
-                            conflict.DiffViewModel = DifferenceConflictViewModel.MergeToolModel;
+                            BuildChildren(conflict, child);
                         }
-
                     }
-                    Conflicts.Add(conflict);
+
+
                 }
+                Conflicts.Add(conflict);
+
+                //else
+                //{
+                //    CurrentConflictViewModel = new ConflictViewModel(curr.current, currentResourceModel);
+                //    if (CurrentConflictViewModel?.MergeToolModel != null)
+                //    {
+                //        conflict.CurrentViewModel = CurrentConflictViewModel.MergeToolModel;
+                //        foreach (var child in CurrentConflictViewModel.MergeToolModel.Children)
+                //        {
+                //            BuildChildren(conflict, child);
+                //        }
+                //    }
+                //    if (curr.conflict)
+                //    {
+                //        DifferenceConflictViewModel = new ConflictViewModel(curr.difference, differenceResourceModel);
+                //        if (DifferenceConflictViewModel?.MergeToolModel != null)
+                //        {
+                //            conflict.DiffViewModel = DifferenceConflictViewModel.MergeToolModel;
+                //            foreach (var child in DifferenceConflictViewModel.MergeToolModel.Children)
+                //            {
+                //                BuildChildren(conflict, child);
+                //            }
+                //        }
+                //    }
+                //    Conflicts.Add(conflict);
+                //}
             }
 
             if (CurrentConflictViewModel != null)
@@ -100,6 +100,18 @@ namespace Dev2.ViewModels.Merge
                 //WorkflowDesignerViewModel.AddItem(step);
             });
             WorkflowDesignerViewModel.CanViewWorkflowLink = false;
+        }
+
+        private void BuildChildren(CompleteConflict conflict, IMergeToolModel mergeToolModel)
+        {
+            conflict.Children.Add(new CompleteConflict
+            {
+                CurrentViewModel = mergeToolModel
+            });
+            foreach (var child in mergeToolModel.Children)
+            {
+                BuildChildren(conflict, child);
+            }
         }
 
         public ObservableCollection<ICompleteConflict> Conflicts { get; set; }
