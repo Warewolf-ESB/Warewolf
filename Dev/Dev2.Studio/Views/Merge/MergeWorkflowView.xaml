@@ -27,14 +27,15 @@
     <Grid Margin="{StaticResource ElementBorder}" 
           x:Name="MainGrid" 
           ScrollViewer.HorizontalScrollBarVisibility="Auto"
-          ScrollViewer.VerticalScrollBarVisibility="Auto">
+          ScrollViewer.VerticalScrollBarVisibility="Auto"
+          AutomationProperties.AutomationId="UI_MainGrid_AutoID">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="60*" MinWidth="486"/>
             <ColumnDefinition Width="5"/>
             <ColumnDefinition Width="40*" MinWidth="324"/>
         </Grid.ColumnDefinitions>
-        <Grid Grid.Column="0" HorizontalAlignment="Stretch" >
-            <ScrollViewer x:Name="ScrollViewer" 
+        <Grid x:Name="MergeGridColumn" Grid.Column="0" HorizontalAlignment="Stretch" >
+            <ScrollViewer x:Name="MergeGridScrollViewer" 
                           VerticalScrollBarVisibility="Auto" 
                           HorizontalScrollBarVisibility="Hidden" 
                           CanContentScroll="True"
@@ -42,7 +43,8 @@
                 <Grid x:Name="MergeGrid" 
                       HorizontalAlignment="Stretch" 
                       Width="{Binding ElementName=ScrollViewer, Path=ActualWidth}" 
-                      ScrollViewer.CanContentScroll="True">
+                      ScrollViewer.CanContentScroll="True"
+                      AutomationProperties.AutomationId="UI_MergeGrid_AutoID">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
@@ -55,71 +57,140 @@
                         <ColumnDefinition Width="50*" SharedSizeGroup="MergeDifferenceColumnWidth"/>
                     </Grid.ColumnDefinitions>
 
-                    <Border Grid.Row="0" BorderThickness="0,0,1,0" Background="#C1C3C5">
-                        <StackPanel  Background="{StaticResource WareWolfMenuBrush}" HorizontalAlignment="Stretch" DataContext="{Binding CurrentConflictViewModel}">
-                            <TextBlock Margin="5" Text="{Binding WorkflowName}" Style="{StaticResource SourceHeader}" />
+                    <Border x:Name="CurrentWorkflowHeaderBorder" 
+                            Grid.Row="0" 
+                            BorderThickness="0,0,1,0" 
+                            Background="#C1C3C5" 
+                            AutomationProperties.AutomationId="UI_CurrentWorkflowHeaderBorder_AutoID">
+                        <StackPanel x:Name="CurrentWorkflowHeaderSP" 
+                                    Background="{StaticResource WareWolfMenuBrush}" 
+                                    HorizontalAlignment="Stretch" 
+                                    DataContext="{Binding CurrentConflictViewModel}"
+                                    AutomationProperties.AutomationId="UI_CurrentWorkflowHeaderSP_AutoID">
+                            <TextBlock x:Name="CurrentWorkflowHeaderText" 
+                                       Margin="5" 
+                                       Text="{Binding WorkflowName}" 
+                                       Style="{StaticResource SourceHeader}" 
+                                       AutomationProperties.AutomationId="UI_CurrentWorkflowHeaderText_AutoID"/>
                         </StackPanel>
                     </Border>
-                    <Border Grid.Row="0" Grid.Column="1" BorderThickness="1,0,0,0" Background="#C1C3C5">
-                        <StackPanel Background="{StaticResource WareWolfMenuBrush}" HorizontalAlignment="Stretch" DataContext="{Binding DifferenceConflictViewModel}">
-                            <TextBlock Margin="5" Text="{Binding WorkflowName}" Style="{StaticResource SourceHeader}" />
+                    <Border x:Name="DifferenceWorkflowHeaderBorder" 
+                            Grid.Row="0" 
+                            Grid.Column="1" 
+                            BorderThickness="1,0,0,0" 
+                            Background="#C1C3C5"
+                            AutomationProperties.AutomationId="UI_DifferenceWorkflowHeaderBorder_AutoID">
+                        <StackPanel x:Name="DifferenceWorkflowHeaderSP" 
+                                    Background="{StaticResource WareWolfMenuBrush}" 
+                                    HorizontalAlignment="Stretch" 
+                                    DataContext="{Binding DifferenceConflictViewModel}"
+                                    AutomationProperties.AutomationId="UI_DifferenceWorkflowHeaderSP_AutoID">
+                            <TextBlock x:Name="DifferenceWorkflowHeaderText" 
+                                       Margin="5" 
+                                       Text="{Binding WorkflowName}" 
+                                       Style="{StaticResource SourceHeader}" 
+                                       AutomationProperties.AutomationId="UI_DifferenceWorkflowHeaderText_AutoID"/>
                         </StackPanel>
                     </Border>
 
-                    <StackPanel Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1"  HorizontalAlignment="Stretch" Orientation="Horizontal" Visibility="{Binding HasMergeStarted}">
-                        <TextBlock Text="To start the Merge process, select a radio button below." 
-                                   HorizontalAlignment="Center"/>
+                    <StackPanel x:Name="StartProcessSP" 
+                                Grid.Column="0" 
+                                Grid.ColumnSpan="2" 
+                                Grid.Row="1" 
+                                HorizontalAlignment="Stretch" 
+                                Orientation="Horizontal" 
+                                Visibility="{Binding HasMergeStarted, Converter={StaticResource BoolToVisibilityConverterPositive}}"
+                                AutomationProperties.AutomationId="UI_StartProcessSP_AutoID">
+                        <TextBlock x:Name="StartProcessText" 
+                                   Text="To start the Merge process, select a radio button below." 
+                                   HorizontalAlignment="Center"
+                                   AutomationProperties.AutomationId="UI_StartProcessText_AutoID"/>
                     </StackPanel>
 
-                    <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Visibility="{Binding HasWorkflowNameConflict, Converter={StaticResource BoolToVisibilityConverterPositive}}">
+                    <Grid x:Name="WorkflowConflictGrid" 
+                          Grid.Row="2" 
+                          Grid.Column="0" 
+                          Grid.ColumnSpan="2" 
+                          AutomationProperties.AutomationId="UI_WorkflowConflictGrid_AutoID"
+                          Visibility="{Binding HasWorkflowNameConflict, Converter={StaticResource BoolToVisibilityConverterPositive}}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition SharedSizeGroup="MergeCurrentColumnWidth"/>
                             <ColumnDefinition SharedSizeGroup="MergeCurrentColumnWidth"/>
                         </Grid.ColumnDefinitions>
 
-                        <DockPanel x:Name="MergeCurrentWorkflowDockPanel" 
+                        <DockPanel x:Name="CurrentWorkflowDockPanel" 
                                    Grid.Column="0" 
                                    Grid.Row="1" 
                                    LastChildFill="False" 
+                                   AutomationProperties.AutomationId="UI_CurrentWorkflowDockPanel_AutoID"
                                    DataContext="{Binding CurrentConflictViewModel}">
-                            <StackPanel DockPanel.Dock="Left" Orientation="Horizontal" >
-                                <TextBlock Text="{Binding WorkflowName}" FontWeight="Bold" HorizontalAlignment="Stretch"/>
+                            <StackPanel x:Name="CurrentWorkflowTextSP" 
+                                        DockPanel.Dock="Left" 
+                                        Orientation="Horizontal" 
+                                        AutomationProperties.AutomationId="UI_CurrentWorkflowTextSP_AutoID">
+                                <TextBlock x:Name="CurrentWorkflowText" 
+                                           Text="{Binding WorkflowName}" 
+                                           FontWeight="Bold" 
+                                           HorizontalAlignment="Stretch"
+                                           AutomationProperties.AutomationId="UI_CurrentWorkflowText_AutoID"/>
                             </StackPanel>
-                            <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" >
-                                <RadioButton x:Name="VariablesCurrentRB" 
+                            <StackPanel x:Name="CurrentWorkflowRBSP" 
+                                        DockPanel.Dock="Right" 
+                                        Orientation="Horizontal" 
+                                        AutomationProperties.AutomationId="UI_CurrentWorkflowRBSP_AutoID">
+                                <RadioButton x:Name="CurrentWorkflowRB" 
                                              IsChecked="{Binding IsWorkflowNameChecked}" 
                                              HorizontalAlignment="Right"
                                              Margin="0,0,5,0"
                                              GroupName="MergeActivities"
-                                             Style="{StaticResource MergeRadioButtonStyle}">
-                                </RadioButton>
+                                             Style="{StaticResource MergeRadioButtonStyle}"
+                                             AutomationProperties.AutomationId="UI_CurrentWorkflowRB_AutoID"/>
+
                             </StackPanel>
                         </DockPanel>
 
-                        <DockPanel x:Name="MergeDifferenceWorkflowDockPanel" 
+                        <DockPanel x:Name="DifferenceWorkflowDockPanel" 
                                    Grid.Column="1" 
                                    Grid.Row="1" 
                                    LastChildFill="False" 
-                                   DataContext="{Binding DifferenceConflictViewModel}">
-                            <StackPanel DockPanel.Dock="Left" Orientation="Horizontal">
-                                <TextBlock Text="{Binding WorkflowName}" FontWeight="Bold" HorizontalAlignment="Stretch"/>
+                                   DataContext="{Binding DifferenceConflictViewModel}"
+                                   AutomationProperties.AutomationId="UI_DifferenceWorkflowDockPanel_AutoID">
+                            <StackPanel x:Name="DifferenceWorkflowTextSP" 
+                                        DockPanel.Dock="Left" 
+                                        Orientation="Horizontal"
+                                        AutomationProperties.AutomationId="UI_DifferenceWorkflowTextSP_AutoID">
+                                <TextBlock x:Name="DifferenceWorkflowText" 
+                                           Text="{Binding WorkflowName}" 
+                                           FontWeight="Bold" 
+                                           HorizontalAlignment="Stretch"
+                                           AutomationProperties.AutomationId="UI_DifferenceWorkflowText_AutoID"/>
                             </StackPanel>
-                            <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" >
-                                <RadioButton x:Name="VariablesDifferenceRB" 
+                            <StackPanel x:Name="DifferenceWorkflowRBSP" 
+                                        DockPanel.Dock="Right" 
+                                        Orientation="Horizontal" 
+                                        AutomationProperties.AutomationId="UI_DifferenceWorkflowRBSP_AutoID">
+                                <RadioButton x:Name="DifferenceWorkflowRB" 
                                              IsChecked="{Binding IsWorkflowNameChecked}" 
                                              HorizontalAlignment="Right"
                                              Margin="0,0,5,0"
                                              GroupName="MergeActivities"
-                                             Style="{StaticResource MergeRadioButtonStyle}">
-                                </RadioButton>
+                                             Style="{StaticResource MergeRadioButtonStyle}"
+                                             AutomationProperties.AutomationId="UI_DifferenceWorkflowRB_AutoID"/>
+
                             </StackPanel>
                         </DockPanel>
                     </Grid>
 
-                    <Grid Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Margin="{StaticResource ElementBorderTop}" Visibility="{Binding HasVariablesConflict, Converter={StaticResource BoolToVisibilityConverterPositive}}">
-                        <Expander x:Name="MergeWorkflowVariables"
+                    <Grid x:Name="VariablesGrid" 
+                          Grid.Row="3" 
+                          Grid.Column="0" 
+                          Grid.ColumnSpan="2" 
+                          Margin="{StaticResource ElementBorderTop}" 
+                          AutomationProperties.AutomationId="UI_VariablesGrid_AutoID"
+                          Visibility="{Binding HasVariablesConflict, Converter={StaticResource BoolToVisibilityConverterPositive}}">
+                        <Expander x:Name="VariablesExpander"
                                   Style="{StaticResource MergeExpander}"
-                                  AutomationProperties.AutomationId="UI_MergeVariablesExpander_AutoID">
+                                  AutomationProperties.AutomationId="UI_VariablesExpander_AutoID">
                             <Expander.HeaderTemplate>
                                 <DataTemplate>
                                     <Grid>
@@ -134,63 +205,115 @@
                                             <ColumnDefinition Width="50*" />
                                         </Grid.ColumnDefinitions>
 
-                                        <Border Grid.Column="0" BorderBrush="#CFD6E1" BorderThickness="0,0,2,0" Margin="0,0,7,0">
-                                            <DockPanel x:Name="MergeCurrentDockPanel" LastChildFill="False">
-                                                <StackPanel DockPanel.Dock="Left" Orientation="Horizontal">
-                                                    <TextBlock Text="Variables" FontWeight="Bold" HorizontalAlignment="Stretch"/>
+                                        <Border x:Name="CurrentVariablesHeaderBorder" 
+                                                Grid.Column="0" 
+                                                BorderBrush="#CFD6E1" 
+                                                BorderThickness="0,0,2,0" 
+                                                Margin="0,0,7,0"
+                                                AutomationProperties.AutomationId="UI_CurrentVariablesHeaderBorder_AutoID">
+                                            <DockPanel x:Name="CurrentVariablesDockPanel" 
+                                                       LastChildFill="False"
+                                                       AutomationProperties.AutomationId="UI_CurrentVariablesDockPanel_AutoID">
+                                                <StackPanel x:Name="CurrentVariablesTextSP" 
+                                                            DockPanel.Dock="Left" 
+                                                            Orientation="Horizontal"
+                                                            AutomationProperties.AutomationId="UI_CurrentVariablesTextSP_AutoID">
+                                                    <TextBlock x:Name="CurrentVariablesText" 
+                                                               Text="Variables" 
+                                                               FontWeight="Bold" 
+                                                               HorizontalAlignment="Stretch"
+                                                               AutomationProperties.AutomationId="UI_CurrentVariablesText_AutoID"/>
                                                 </StackPanel>
-                                                <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
-                                                    <RadioButton x:Name="VariablesCurrentRB" 
+                                                <StackPanel x:Name="CurrentVariablesRBSP" 
+                                                            DockPanel.Dock="Right" 
+                                                            Orientation="Horizontal"
+                                                            AutomationProperties.AutomationId="UI_CurrentVariablesRBSP_AutoID">
+                                                    <RadioButton x:Name="CurrentVariablesRB" 
                                                                  IsChecked="{Binding IsVariablesChecked}" 
                                                                  HorizontalAlignment="Right"
                                                                  Margin="0,0,5,0"
-                                                                 GroupName="MergeActivities"
-                                                                 Style="{StaticResource MergeRadioButtonStyle}">
-                                                    </RadioButton>
+                                                                 GroupName="MergeVariables"
+                                                                 Style="{StaticResource MergeRadioButtonStyle}"
+                                                                 AutomationProperties.AutomationId="UI_CurrentVariablesRB_AutoID"/>
+
                                                 </StackPanel>
                                             </DockPanel>
                                         </Border>
 
-                                        <Border Grid.Column="1" BorderBrush="#CFD6E1" BorderThickness="0" Margin="-7,0,0,0">
-                                            <DockPanel x:Name="MergeDifferenceDockPanel" LastChildFill="False">
-                                                <StackPanel DockPanel.Dock="Left" Orientation="Horizontal">
-                                                    <RadioButton x:Name="VariablesDifferenceRB" 
+                                        <Border x:Name="DifferenceVariablesBorder" 
+                                                Grid.Column="1" 
+                                                BorderBrush="#CFD6E1" 
+                                                BorderThickness="0" 
+                                                Margin="-7,0,0,0"
+                                                AutomationProperties.AutomationId="UI_DifferenceVariablesBorder_AutoID">
+                                            <DockPanel x:Name="DifferenceVariablesDockPanel" 
+                                                       LastChildFill="False"
+                                                       AutomationProperties.AutomationId="UI_DifferenceVariablesDockPanel_AutoID">
+                                                <StackPanel x:Name="DifferenceVariablesSP" 
+                                                            DockPanel.Dock="Left" 
+                                                            Orientation="Horizontal"
+                                                            AutomationProperties.AutomationId="UI_DifferenceVariablesSP_AutoID">
+                                                    <RadioButton x:Name="DifferenceVariablesRB" 
                                                                  IsChecked="{Binding IsVariablesChecked}" 
                                                                  HorizontalAlignment="Left"
-                                                                 GroupName="MergeActivities"
+                                                                 GroupName="MergeVariables"
                                                                  Margin="5,0,5,0"
-                                                                 Style="{StaticResource MergeRadioButtonStyle}">
-                                                    </RadioButton>
-                                                    <TextBlock Text="Variables" FontWeight="Bold" HorizontalAlignment="Stretch"/>
+                                                                 Style="{StaticResource MergeRadioButtonStyle}"
+                                                                 AutomationProperties.AutomationId="UI_DifferenceVariablesRB_AutoID"/>
+
+                                                    <TextBlock x:Name="DifferenceVariablesText" 
+                                                               Text="Variables" 
+                                                               FontWeight="Bold" 
+                                                               HorizontalAlignment="Stretch"
+                                                               AutomationProperties.AutomationId="UI_DifferenceVariablesText_AutoID"/>
                                                 </StackPanel>
                                             </DockPanel>
                                         </Border>
                                     </Grid>
                                 </DataTemplate>
                             </Expander.HeaderTemplate>
-                            <Grid Width="{Binding ElementName=MergeWorkflowVariables, Path=ActualWidth}">
+                            <Grid x:Name="VariablesExpanderTemplateGrid" 
+                                  Width="{Binding ElementName=VariablesExpander, Path=ActualWidth}"
+                                  AutomationProperties.AutomationId="UI_VariablesExpanderTemplateGrid_AutoID">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition SharedSizeGroup="MergeCurrentColumnWidth"/>
                                     <ColumnDefinition SharedSizeGroup="MergeDifferenceColumnWidth"/>
                                 </Grid.ColumnDefinitions>
-                                <Border BorderBrush="#CFD6E1" BorderThickness="1,0,1,1" DataContext="{Binding CurrentConflictViewModel}">
-                                    <datalist:DataListView DataContext="{Binding DataListViewModel}" 
+                                <Border x:Name="CurrentVariablesTemplateBorder" 
+                                        BorderBrush="#CFD6E1" 
+                                        BorderThickness="1,0,1,1" 
+                                        DataContext="{Binding CurrentConflictViewModel}"
+                                        AutomationProperties.AutomationId="UI_CurrentVariablesTemplateBorder_AutoID">
+                                    <datalist:DataListView x:Name="CurrentVariablesDataListView" 
+                                                           DataContext="{Binding DataListViewModel}" 
                                                            Margin="0,-10,0,0"
                                                            ScrollViewer.VerticalScrollBarVisibility="Auto"
-                                                           ScrollViewer.HorizontalScrollBarVisibility="Auto"/>
+                                                           ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                                           AutomationProperties.AutomationId="UI_CurrentVariablesDataListView_AutoID"/>
                                 </Border>
-                                <Border Grid.Column="1" BorderBrush="#CFD6E1" BorderThickness="1,0,1,1" DataContext="{Binding DifferenceConflictViewModel}">
-                                    <datalist:DataListView DataContext="{Binding DataListViewModel}" 
+                                <Border x:Name="DifferenceVariablesTemplateBorder" 
+                                        Grid.Column="1" 
+                                        BorderBrush="#CFD6E1" 
+                                        BorderThickness="1,0,1,1" 
+                                        DataContext="{Binding DifferenceConflictViewModel}"
+                                        AutomationProperties.AutomationId="UI_DifferenceVariablesTemplateBorder_AutoID">
+                                    <datalist:DataListView x:Name="DifferenceVariablesDataListView" 
+                                                           DataContext="{Binding DataListViewModel}" 
                                                            Margin="0,-10,0,0"
                                                            ScrollViewer.VerticalScrollBarVisibility="Auto"
-                                                           ScrollViewer.HorizontalScrollBarVisibility="Auto"/>
+                                                           ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                                           AutomationProperties.AutomationId="UI_DifferenceVariablesDataListView_AutoID"/>
                                 </Border>
                             </Grid>
                         </Expander>
                     </Grid>
 
-                    <Grid Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2">
-                        <TreeView x:Name="MergeDifferenceDataTree"
+                    <Grid x:Name="ConflictsGrid" 
+                          Grid.Row="4" 
+                          Grid.Column="0" 
+                          Grid.ColumnSpan="2"
+                          AutomationProperties.AutomationId="UI_ConflictsGrid_AutoID">
+                        <TreeView x:Name="ConflictsTreeView"
 			                      Grid.Row="2"
 			                      ItemsSource="{Binding Conflicts, Mode=TwoWay, IsAsync=True}"
 			                      HorizontalAlignment="Stretch"
@@ -198,7 +321,7 @@
 			                      HorizontalContentAlignment="Stretch"
 			                      Style="{StaticResource MergeTreeViewStyle}"
 			                      Grid.IsSharedSizeScope="True"
-			                      AutomationProperties.AutomationId="UI_MergeTreeView_AutoID"
+			                      AutomationProperties.AutomationId="UI_ConflictsTreeView_AutoID"
 			                      ScrollViewer.CanContentScroll="True"
 			                      VirtualizingStackPanel.IsVirtualizing="True"
 			                      VirtualizingStackPanel.VirtualizationMode="Recycling"
@@ -208,8 +331,10 @@
 			                      VirtualizingStackPanel.IsVirtualizingWhenGrouping="True"
 			                      VirtualizingStackPanel.IsContainerVirtualizable="True">
                             <TreeView.Resources>
-                                <HierarchicalDataTemplate  DataType="{x:Type merge:CompleteConflict}">
-                                    <Grid Width="{Binding ElementName=MergeDifferenceDataTree, Path=ActualWidth}">
+                                <HierarchicalDataTemplate DataType="{x:Type merge:CompleteConflict}">
+                                    <Grid Name="ConflictsTreeViewTemplateGrid" 
+                                          Width="{Binding ElementName=ConflictsTreeView, Path=ActualWidth}"
+                                          AutomationProperties.AutomationId="UI_ConflictsTreeViewTemplateGrid_AutoID">
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="Auto"/>
                                             <RowDefinition Height="*"/>
@@ -219,19 +344,53 @@
                                             <ColumnDefinition Width="50*" />
                                         </Grid.ColumnDefinitions>
 
-                                        <Border Grid.Row="0" Grid.Column="0" Background="{StaticResource WarewolfPanelGreyBrush}" BorderBrush="#CFD6E1" BorderThickness="0,0,2,0" Margin="0,0,-2,0" DataContext="{Binding CurrentViewModel}">
-                                            <StackPanel DockPanel.Dock="Left" Orientation="Horizontal" Visibility="{Binding HasParent, Converter={StaticResource BoolToVisibilityConverterPositive}}">
-                                                <TextBlock Margin="20,0,0,0" Text="{Binding ParentDescription}" FontWeight="Bold" HorizontalAlignment="Stretch"/>
+                                        <Border Name="CurrentParentDescBorder" 
+                                                Grid.Row="0" 
+                                                Grid.Column="0" 
+                                                Background="{StaticResource WarewolfPanelGreyBrush}" 
+                                                BorderBrush="#CFD6E1" 
+                                                BorderThickness="0,0,2,0" 
+                                                Margin="0,0,-2,0" 
+                                                DataContext="{Binding CurrentViewModel}"
+                                                AutomationProperties.AutomationId="UI_CurrentParentDescBorder_AutoID">
+                                            <StackPanel Name="CurrentParentDescSP" 
+                                                        DockPanel.Dock="Left" 
+                                                        Orientation="Horizontal" 
+                                                        AutomationProperties.AutomationId="UI_CurrentParentDescSP_AutoID"
+                                                        Visibility="{Binding HasParent, Converter={StaticResource BoolToVisibilityConverterPositive}}">
+                                                <TextBlock Name="CurrentParentDescText" 
+                                                           Margin="20,0,0,0" 
+                                                           Text="{Binding ParentDescription}" 
+                                                           FontWeight="Bold" 
+                                                           AutomationProperties.AutomationId="UI_CurrentParentDescText_AutoID"
+                                                           HorizontalAlignment="Stretch"/>
                                             </StackPanel>
                                         </Border>
 
-                                        <Border Grid.Row="0" Grid.Column="1" Background="{StaticResource WarewolfPanelGreyBrush}" BorderBrush="#CFD6E1" BorderThickness="0" Margin="2,0,0,0" DataContext="{Binding DiffViewModel}">
-                                            <StackPanel DockPanel.Dock="Left" Orientation="Horizontal" Visibility="{Binding HasParent, Converter={StaticResource BoolToVisibilityConverterPositive}}">
-                                                <TextBlock Margin="30,0,0,0" Text="{Binding ParentDescription}" FontWeight="Bold" HorizontalAlignment="Stretch"/>
+                                        <Border Name="DifferenceParentDescBorder" 
+                                                Grid.Row="0" 
+                                                Grid.Column="1" 
+                                                Background="{StaticResource WarewolfPanelGreyBrush}" 
+                                                BorderBrush="#CFD6E1" 
+                                                BorderThickness="0" 
+                                                Margin="2,0,0,0" 
+                                                DataContext="{Binding DiffViewModel}"
+                                                AutomationProperties.AutomationId="UI_DifferenceParentDescBorder_AutoID">
+                                            <StackPanel Name="DifferenceParentDescSP" 
+                                                        DockPanel.Dock="Left" 
+                                                        Orientation="Horizontal" 
+                                                        AutomationProperties.AutomationId="UI_DifferenceParentDescSP_AutoID"
+                                                        Visibility="{Binding HasParent, Converter={StaticResource BoolToVisibilityConverterPositive}}">
+                                                <TextBlock Name="DifferenceParentDescText" 
+                                                           Margin="30,0,0,0" 
+                                                           Text="{Binding ParentDescription}" 
+                                                           FontWeight="Bold" 
+                                                           AutomationProperties.AutomationId="UI_DifferenceParentDescText_AutoID"
+                                                           HorizontalAlignment="Stretch"/>
                                             </StackPanel>
                                         </Border>
 
-                                        <Expander Name="MergeExpander"
+                                        <Expander Name="TreeViewExpander"
                                                   Grid.Row="1"
                                                   Grid.Column="0"
                                                   Grid.ColumnSpan="2"
@@ -239,7 +398,7 @@
 							                      Header="{Binding .}"                                                  
 							                      IsExpanded="{Binding IsExpanded, Mode=TwoWay, Converter={StaticResource ExpanderToBooleanConverter}, ConverterParameter=1}"
 							                      Style="{StaticResource MergeExpander}"
-							                      AutomationProperties.AutomationId="{Binding StringFormat=UI_MergeExpander_{0}_AutoID, Path=MergeDescription}">
+							                      AutomationProperties.AutomationId="{Binding StringFormat=UI_TreeViewExpander_{0}_AutoID, Path=MergeDescription}">
                                             <Expander.HeaderTemplate>
                                                 <DataTemplate>
                                                     <Grid>
@@ -248,50 +407,92 @@
                                                             <ColumnDefinition Width="50*" />
                                                         </Grid.ColumnDefinitions>
 
-                                                        <Border Grid.Column="0" BorderBrush="#CFD6E1" BorderThickness="0,0,2,0" Margin="0,0,7,0">
-                                                            <DockPanel Name="MergeCurrentDockPanel" LastChildFill="False" DataContext="{Binding CurrentViewModel}">
-                                                                <StackPanel DockPanel.Dock="Left" Orientation="Horizontal">
-                                                                    <Image Source="{Binding MergeIcon}" Margin="5,0,3,0" Height="16" Width="16"/>
-                                                                    <TextBlock Text="{Binding MergeDescription}"
+                                                        <Border Name="TreeViewExpanderCurrentHeaderBorder" 
+                                                                Grid.Column="0" 
+                                                                BorderBrush="#CFD6E1" 
+                                                                BorderThickness="0,0,2,0" 
+                                                                Margin="0,0,7,0"
+                                                                AutomationProperties.AutomationId="UI_TreeViewExpanderCurrentHeaderBorder_AutoID">
+                                                            <DockPanel Name="TreeViewExpanderCurrentHeaderDockPanel" 
+                                                                       LastChildFill="False" 
+                                                                       DataContext="{Binding CurrentViewModel}"
+                                                                       AutomationProperties.AutomationId="UI_TreeViewExpanderCurrentHeaderDockPanel_AutoID">
+                                                                <StackPanel Name="TreeViewExpanderCurrentHeaderSP" 
+                                                                            DockPanel.Dock="Left" 
+                                                                            Orientation="Horizontal"
+                                                                            AutomationProperties.AutomationId="UI_TreeViewExpanderCurrentHeaderSP_AutoID">
+                                                                    <Image Name="TreeViewExpanderCurrentHeaderIcon" 
+                                                                           Source="{Binding MergeIcon}" 
+                                                                           Margin="5,0,3,0" 
+                                                                           Height="16" 
+                                                                           Width="16"
+                                                                           AutomationProperties.AutomationId="UI_TreeViewExpanderCurrentHeaderIcon_AutoID"/>
+                                                                    <TextBlock Name="TreeViewExpanderCurrentHeaderDescText" 
+                                                                               Text="{Binding MergeDescription}"
 												                               ToolTip="{Binding MergeDescription}"
 												                               TextTrimming="CharacterEllipsis"
 												                               FontWeight="Bold"
-												                               HorizontalAlignment="Stretch"/>
+												                               HorizontalAlignment="Stretch"
+                                                                               AutomationProperties.AutomationId="UI_TreeViewExpanderCurrentHeaderDescText_AutoID"/>
                                                                 </StackPanel>
-                                                                <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
-                                                                    <RadioButton Name="MergeCurrentRB" 
+                                                                <StackPanel Name="TreeViewExpanderCurrentHeaderRBSP" 
+                                                                            DockPanel.Dock="Right" 
+                                                                            Orientation="Horizontal"
+                                                                            AutomationProperties.AutomationId="UI_TreeViewExpanderCurrentHeaderRBSP_AutoID">
+                                                                    <RadioButton Name="TreeViewExpanderCurrentHeaderRB" 
                                                                                  IsChecked="{Binding IsMergeChecked}" 
                                                                                  HorizontalAlignment="Right"
                                                                                  Margin="0,0,5,0"
                                                                                  GroupName="MergeActivities"
-                                                                                 Style="{StaticResource MergeRadioButtonStyle}">
-                                                                    </RadioButton>
+                                                                                 Style="{StaticResource MergeRadioButtonStyle}"
+                                                                                 AutomationProperties.AutomationId="UI_TreeViewExpanderCurrentHeaderRB_AutoID"/>
+
                                                                 </StackPanel>
                                                             </DockPanel>
                                                         </Border>
-                                                        <Border Grid.Column="1" BorderBrush="#CFD6E1" BorderThickness="0" Margin="-7,0,0,0">
-                                                            <DockPanel Name="MergeDifferenceDockPanel" LastChildFill="False" DataContext="{Binding DiffViewModel}">
-                                                                <StackPanel DockPanel.Dock="Left" Orientation="Horizontal">
-                                                                    <RadioButton Name="MergeDifferenceRB" 
-                                                                             IsChecked="{Binding IsMergeChecked}" 
-                                                                             HorizontalAlignment="Left"
+                                                        <Border Name="TreeViewExpanderDifferenceHeaderBorder" 
+                                                                Grid.Column="1" 
+                                                                BorderBrush="#CFD6E1" 
+                                                                BorderThickness="0" 
+                                                                Margin="-7,0,0,0"
+                                                                AutomationProperties.AutomationId="UI_TreeViewExpanderDifferenceHeaderBorder_AutoID">
+                                                            <DockPanel Name="TreeViewExpanderDifferenceHeaderDockPanel" 
+                                                                       LastChildFill="False" 
+                                                                       DataContext="{Binding DiffViewModel}"
+                                                                       AutomationProperties.AutomationId="UI_TreeViewExpanderDifferenceHeaderDockPanel_AutoID">
+                                                                <StackPanel Name="TreeViewExpanderDifferenceHeaderSP" 
+                                                                            DockPanel.Dock="Left" 
+                                                                            Orientation="Horizontal"
+                                                                            AutomationProperties.AutomationId="UI_TreeViewExpanderDifferenceHeaderSP_AutoID">
+                                                                    <RadioButton Name="TreeViewExpanderDifferenceHeaderRB" 
+                                                                                 IsChecked="{Binding IsMergeChecked}" 
+                                                                                 HorizontalAlignment="Left"
                                                                                  Margin="5,0,5,0"
-                                                                             GroupName="MergeActivities"
-                                                                             Style="{StaticResource MergeRadioButtonStyle}">
-                                                                    </RadioButton>
-                                                                    <Image Source="{Binding MergeIcon}" Margin="5,0,3,0" Height="16" Width="16"/>
-                                                                    <TextBlock Text="{Binding MergeDescription}"
-												                           ToolTip="{Binding MergeDescription}"
-												                           TextTrimming="CharacterEllipsis"
-												                           FontWeight="Bold"
-												                           HorizontalAlignment="Stretch"/>
+                                                                                 GroupName="MergeActivities"
+                                                                                 Style="{StaticResource MergeRadioButtonStyle}"
+                                                                                 AutomationProperties.AutomationId="UI_TreeViewExpanderDifferenceHeaderRB_AutoID"/>
+
+                                                                    <Image Name="TreeViewExpanderDifferenceHeaderIcon" 
+                                                                           Source="{Binding MergeIcon}" 
+                                                                           Margin="5,0,3,0" 
+                                                                           Height="16" 
+                                                                           Width="16"
+                                                                           AutomationProperties.AutomationId="UI_TreeViewExpanderDifferenceHeaderIcon_AutoID"/>
+                                                                    <TextBlock Name="TreeViewExpanderDifferenceHeaderDescText" 
+                                                                               Text="{Binding MergeDescription}"
+												                               ToolTip="{Binding MergeDescription}"
+												                               TextTrimming="CharacterEllipsis"
+												                               FontWeight="Bold"
+												                               HorizontalAlignment="Stretch"
+                                                                               AutomationProperties.AutomationId="UI_TreeViewExpanderDifferenceHeaderDescText_AutoID"/>
                                                                 </StackPanel>
                                                             </DockPanel>
                                                         </Border>
                                                     </Grid>
                                                 </DataTemplate>
                                             </Expander.HeaderTemplate>
-                                            <Grid>
+                                            <Grid Name="TreeViewExpanderTemplateGrid" 
+                                                  AutomationProperties.AutomationId="UI_TreeViewExpanderTemplateGrid_AutoID">
                                                 <Grid.RowDefinitions>
                                                     <RowDefinition Height="Auto"/>
                                                     <RowDefinition Height="Auto"/>
@@ -301,16 +502,21 @@
                                                         <ColumnDefinition Width="50*" />
                                                         <ColumnDefinition Width="50*" />
                                                     </Grid.ColumnDefinitions>
-                                                    <Border BorderBrush="#CFD6E1" BorderThickness="1,0,1,1" >
-                                                        <Grid Name="MergeCurrentGrid">
+                                                    <Border Name="TreeViewExpanderTemplateCurrentBorder" 
+                                                            BorderBrush="#CFD6E1" 
+                                                            BorderThickness="1,0,1,1" 
+                                                            AutomationProperties.AutomationId="UI_TreeViewExpanderTemplateCurrentBorder_AutoID">
+                                                        <Grid Name="TreeViewExpanderTemplateCurrentContentPresenterGrid"
+                                                              AutomationProperties.AutomationId="UI_TreeViewExpanderTemplateCurrentContentPresenterGrid_AutoID">
                                                             <Grid.RowDefinitions>
                                                                 <RowDefinition Height="*"/>
                                                             </Grid.RowDefinitions>
-                                                            <ContentPresenter Name="MergeCurrentContentPresenter" 
+                                                            <ContentPresenter Name="TreeViewExpanderTemplateCurrentContentPresenter" 
                                                                               Content="{Binding CurrentViewModel}"
 												                              ContentTemplateSelector="{StaticResource ActivitySelector}"
 												                              ScrollViewer.VerticalScrollBarVisibility="Auto"
-												                              ScrollViewer.HorizontalScrollBarVisibility="Auto">
+												                              ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                                                              AutomationProperties.AutomationId="UI_TreeViewExpanderTemplateCurrentContentPresenter_AutoID">
                                                                 <ContentPresenter.Width>
                                                                     <MultiBinding Converter="{StaticResource MergeWidthConverter}">
                                                                         <Binding RelativeSource="{RelativeSource AncestorType={x:Type Grid}}" />
@@ -320,17 +526,23 @@
                                                             </ContentPresenter>
                                                         </Grid>
                                                     </Border>
-                                                    <Border Grid.Column="1" BorderBrush="#CFD6E1" BorderThickness="1,0,1,1" >
-                                                        <Grid Name="MergeDifferenceGrid" >
+                                                    <Border Name="TreeViewExpanderTemplateDifferenceBorder" 
+                                                            Grid.Column="1" 
+                                                            BorderBrush="#CFD6E1" 
+                                                            BorderThickness="1,0,1,1" 
+                                                            AutomationProperties.AutomationId="UI_TreeViewExpanderTemplateDifferenceBorder_AutoID">
+                                                        <Grid Name="TreeViewExpanderTemplateDifferenceContentPresenterGrid" 
+                                                              AutomationProperties.AutomationId="UI_TreeViewExpanderTemplateDifferenceContentPresenterGrid_AutoID">
                                                             <Grid.RowDefinitions>
                                                                 <RowDefinition Height="*"/>
                                                             </Grid.RowDefinitions>
-                                                            <ContentPresenter Grid.Row="1"
-												                          Name="MergeDifferenceContentPresenter" 
-                                                                          Content="{Binding DiffViewModel}"
-												                          ContentTemplateSelector="{StaticResource ActivitySelector}"
-												                          ScrollViewer.VerticalScrollBarVisibility="Auto"
-												                          ScrollViewer.HorizontalScrollBarVisibility="Auto">
+                                                            <ContentPresenter Name="TreeViewExpanderTemplateDifferenceContentPresenter" 
+                                                                              Grid.Row="1"
+                                                                              Content="{Binding DiffViewModel}"
+												                              ContentTemplateSelector="{StaticResource ActivitySelector}"
+												                              ScrollViewer.VerticalScrollBarVisibility="Auto"
+												                              ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                                                              AutomationProperties.AutomationId="UI_TreeViewExpanderTemplateDifferenceContentPresenter_AutoID">
                                                                 <ContentPresenter.Width>
                                                                     <MultiBinding Converter="{StaticResource MergeWidthConverter}">
                                                                         <Binding RelativeSource="{RelativeSource AncestorType={x:Type Grid}}" />
@@ -342,7 +554,7 @@
                                                     </Border>
                                                 </Grid>
 
-                                                <TreeView Name="MergeDifferenceDee"
+                                                <TreeView Name="TreeViewExpanderTemplateChildTreeView"
                                                           Grid.Row="1"
                                                           ItemsSource="{Binding Children, Mode=TwoWay, IsAsync=True}"
                                                           HorizontalAlignment="Stretch"
@@ -350,7 +562,7 @@
                                                           HorizontalContentAlignment="Stretch"
                                                           Style="{StaticResource MergeTreeViewStyle}"
                                                           Grid.IsSharedSizeScope="True"
-                                                          AutomationProperties.AutomationId="UI_MergeTreeView_AutoID"
+                                                          AutomationProperties.AutomationId="UI_TreeViewExpanderTemplateChildTreeView_AutoID"
                                                           ScrollViewer.CanContentScroll="True"
                                                           VirtualizingStackPanel.IsVirtualizing="True"
                                                           VirtualizingStackPanel.VirtualizationMode="Recycling"
@@ -371,22 +583,35 @@
                 </Grid>
             </ScrollViewer>
         </Grid>
-        <GridSplitter Grid.Column="1"
+        <GridSplitter x:Name="GridSplitter"
+                      Grid.Column="1"
                       Background="#C1C3C5"
                       HorizontalAlignment="Center"
                       VerticalAlignment="Stretch"
-                      Width="5" />
-        <Grid Grid.Column="2" x:Name="WorkflowGrid">
+                      Width="5" 
+                      AutomationProperties.AutomationId="UI_GridSplitter_AutoID"/>
+        <Grid x:Name="WorkflowGrid" Grid.Column="2" AutomationProperties.AutomationId="UI_WorkflowGrid_AutoID">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <StackPanel Background="{StaticResource WareWolfMenuBrush}" HorizontalAlignment="Stretch">
-                <TextBlock Margin="5" Text="Merge" Style="{StaticResource SourceHeader}" />
+            <StackPanel x:Name="WorkflowSP" 
+                        Background="{StaticResource WareWolfMenuBrush}" 
+                        HorizontalAlignment="Stretch"
+                        AutomationProperties.AutomationId="UI_WorkflowSP_AutoID">
+                <TextBlock x:Name="WorkflowHeaderText" 
+                           Margin="5" 
+                           Text="Merge" 
+                           Style="{StaticResource SourceHeader}" 
+                           AutomationProperties.AutomationId="UI_WorkflowHeaderText_AutoID"/>
                 <Button Command="{Binding AddAnItem}">Add Something</Button>
             </StackPanel>
-            <Grid Grid.Row="1">
-                <workflow:WorkflowDesignerView DataContext="{Binding WorkflowDesignerViewModel}" />
+            <Grid x:Name="WorkflowDesignerViewGrid" 
+                  Grid.Row="1" 
+                  AutomationProperties.AutomationId="UI_WorkflowDesignerViewGrid_AutoID">
+                <workflow:WorkflowDesignerView x:Name="WorkflowDesignerView" 
+                                               DataContext="{Binding WorkflowDesignerViewModel}" 
+                                               AutomationProperties.AutomationId="UI_WorkflowDesignerView_AutoID"/>
             </Grid>
         </Grid>
     </Grid>
