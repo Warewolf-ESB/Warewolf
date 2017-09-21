@@ -16,6 +16,8 @@ using Dev2.Activities;
 using Dev2.Activities.Designers2.Sequence;
 using Dev2.Activities.Designers2.Service;
 using Dev2.Activities.Designers2.Switch;
+using Dev2.Activities.SelectAndApply;
+using Dev2.Common.ExtMethods;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.ViewModels.Merge
@@ -59,7 +61,8 @@ namespace Dev2.ViewModels.Merge
                 {
                     ActivityDesignerViewModel = instance,
                     MergeIcon = modelItem.GetImageSourceForTool(),
-                    MergeDescription = dsfActivity?.ToString()
+                    MergeDescription = dsfActivity?.ToString(),
+                    UniqueId = currentValue.UniqueID.ToGuid()
                 };
 
                 if (currentValue is DsfDecision de)
@@ -159,6 +162,35 @@ namespace Dev2.ViewModels.Merge
                         mergeToolModel.Children.Add(addModelItem);
                     }
                     var nextNode = b.NextNodes?.SingleOrDefault();
+                    if (nextNode != null)
+                    {
+                        var nextModelItem = ModelItemUtils.CreateModelItem(nextNode);
+                        if (nextNode is DsfSwitch a)
+                        {
+                            var addModelItem = AddModelItem(nextModelItem, a.Switch);
+                            Children.Add(addModelItem);
+                        }
+
+                        else
+                        {
+                            var addModelItem = AddModelItem(nextModelItem);
+                            Children.Add(addModelItem);
+                        }
+                    }
+                }
+                else if (currentValue is DsfSelectAndApplyActivity c)
+                {
+                    var dev2Activity = c.ApplyActivityFunc.Handler as IDev2Activity;
+                    var singleOrDefault = dev2Activity;
+                    if (singleOrDefault != null)
+                    {
+                        var forEachModel = ModelItemUtils.CreateModelItem(singleOrDefault);
+                        var addModelItem = AddModelItem(forEachModel);
+                        addModelItem.HasParent = true;
+                        addModelItem.ParentDescription = c.DisplayName;
+                        mergeToolModel.Children.Add(addModelItem);
+                    }
+                    var nextNode = c.NextNodes?.SingleOrDefault();
                     if (nextNode != null)
                     {
                         var nextModelItem = ModelItemUtils.CreateModelItem(nextNode);

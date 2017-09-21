@@ -8,6 +8,6 @@ namespace Dev2.Studio.Interfaces
     {
       
 
-        List<(Guid uniqueId, ModelItem current, ModelItem difference, bool conflict)> GetDifferences(IContextualResourceModel current, IContextualResourceModel difference);
+        (ModelItem current, ModelItem difference, List<KeyValuePair<Guid, bool>> differenceStore) GetDifferences(IContextualResourceModel current, IContextualResourceModel difference);
     }
 }
