@@ -4,16 +4,9 @@ using Dev2.Studio.Interfaces;
 using Dev2.Studio.ViewModels.Workflow;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using System.Collections.ObjectModel;
-using Dev2.Studio.Core.Activities.Utils;
 using System;
-using System.Activities.Statements;
-using System.Collections.Generic;
 using System.Linq;
-using Dev2.Activities;
 using Dev2.Common;
-using Unlimited.Applications.BusinessDesignStudio.Activities;
-using Dev2.Communication;
-using Dev2.Data.SystemTemplates.Models;
 
 namespace Dev2.ViewModels.Merge
 {
@@ -54,9 +47,7 @@ namespace Dev2.ViewModels.Merge
                 var completeConflicts = Conflicts.Flatten(completeConflict => completeConflict.Children ?? new ObservableCollection<ICompleteConflict>());
                 if (completeConflicts.Any(a => a.UniqueId == curr.uniqueId)) continue;
                 var conflict = new CompleteConflict { UniqueId = curr.uniqueId };
-                //if (curr.current.GetCurrentValue() is DsfDecision dec)
                 {
-                    //if (curr.conflict)
                     {
 
                         CurrentConflictViewModel = new ConflictViewModel(curr.current, currentResourceModel);
@@ -82,101 +73,6 @@ namespace Dev2.ViewModels.Merge
                             }
                         }
 
-
-                        /*if (dec.TrueArm != null)
-                        {
-                            var mergeToolModels = CurrentConflictViewModel.MergeToolModel?.Children?? new ObservableCollection<IMergeToolModel>();
-                            foreach (var mergeToolModel in mergeToolModels)
-                            {
-                                var trueArmConflict = new CompleteConflict();
-                                if (mergeToolModel != null)
-                                {
-                                    trueArmConflict.CurrentViewModel = mergeToolModel;
-                                    trueArmConflict.CurrentViewModel.HasParent = true;
-                                    trueArmConflict.CurrentViewModel.ParentDescription = dec.Conditions.TrueArmText;
-                                    conflict.Children.Add(trueArmConflict);
-                                }
-                              
-                            }
-                        }
-
-                        if (dec.FalseArm != null)
-                        {
-                            var mergeToolModels = CurrentConflictViewModel.MergeToolModel?.Children ?? new ObservableCollection<IMergeToolModel>();
-                            foreach (var mergeToolModel in mergeToolModels)
-                            {
-                                var falseArmConflict = new CompleteConflict();
-                                if (mergeToolModel != null)
-                                {
-                                    falseArmConflict.CurrentViewModel = mergeToolModel;
-                                    falseArmConflict.CurrentViewModel.HasParent = true;
-                                    falseArmConflict.CurrentViewModel.ParentDescription = dec.Conditions.FalseArmText;
-                                    conflict.Children.Add(falseArmConflict);
-                                }
-                               
-                            }
-                        }
-
-                        if (curr.conflict)
-                        {
-                            if (dec.TrueArm != null)
-                            {
-                                var deTrueArm = dec.TrueArm.Flatten(p => p.NextNodes ?? new List<IDev2Activity>());
-                                foreach (var dev2Activity in deTrueArm)
-                                {
-                                    var trueArmConflict = new CompleteConflict();
-                                    var differenceConflictViewModel =
-                                        new ConflictViewModel(ModelItemUtils.CreateModelItem(dev2Activity),
-                                            currentResourceModel);
-                                    if (differenceConflictViewModel?.MergeToolModel != null)
-                                    {
-                                        trueArmConflict.DiffViewModel = differenceConflictViewModel.MergeToolModel;
-                                        trueArmConflict.DiffViewModel.HasParent = true;
-                                        trueArmConflict.DiffViewModel.ParentDescription = dec.Conditions.TrueArmText;
-                                    }
-                                    conflict.Children.Add(trueArmConflict);
-                                }
-                            }
-
-                            if (dec.FalseArm != null)
-                            {
-                                var deTrueArm = dec.FalseArm.Flatten(p => p.NextNodes ?? new List<IDev2Activity>());
-                                foreach (var dev2Activity in deTrueArm)
-                                {
-                                    var falseArmConflict = new CompleteConflict();
-                                    var differenceConflictViewModel =
-                                        new ConflictViewModel(ModelItemUtils.CreateModelItem(dev2Activity),
-                                            differenceResourceModel);
-                                    if (differenceConflictViewModel?.MergeToolModel != null)
-                                    {
-                                        falseArmConflict.DiffViewModel = differenceConflictViewModel.MergeToolModel;
-                                        falseArmConflict.DiffViewModel.HasParent = true;
-                                        falseArmConflict.DiffViewModel.ParentDescription = dec.Conditions.FalseArmText;
-                                    }
-                                    conflict.Children.Add(falseArmConflict);
-                                }
-                            }
-                        }*/
-
-
-                        Conflicts.Add(conflict);
-                    }
-                }
-                //else
-                {
-                    //if (curr.conflict)
-                    {
-                        CurrentConflictViewModel = new ConflictViewModel(curr.current, currentResourceModel);
-                        if (CurrentConflictViewModel?.MergeToolModel != null)
-                        {
-                            conflict.CurrentViewModel = CurrentConflictViewModel.MergeToolModel;
-                        }
-
-                        DifferenceConflictViewModel = new ConflictViewModel(curr.difference, differenceResourceModel);
-                        if (DifferenceConflictViewModel?.MergeToolModel != null)
-                        {
-                            conflict.DiffViewModel = DifferenceConflictViewModel.MergeToolModel;
-                        }
                         Conflicts.Add(conflict);
                     }
                 }
@@ -192,9 +88,7 @@ namespace Dev2.ViewModels.Merge
                 DifferenceConflictViewModel.WorkflowName = differenceResourceModel.ResourceName;
                 DifferenceConflictViewModel.GetDataList();
             }
-            //HasVariablesConflict = false;
             HasVariablesConflict = true;
-            //HasWorkflowNameConflict = CurrentConflictViewModel?.WorkflowName != DifferenceConflictViewModel?.WorkflowName;
             HasWorkflowNameConflict = true;
             SetServerName(currentResourceModel);
             DisplayName = "Merge Conflicts" + _serverName;

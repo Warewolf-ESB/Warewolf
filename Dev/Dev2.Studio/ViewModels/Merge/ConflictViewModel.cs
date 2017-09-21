@@ -7,6 +7,7 @@ using Dev2.Studio.ViewModels.DataList;
 using Microsoft.Practices.Prism.Mvvm;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.Factory;
 using Dev2.Common;
@@ -59,7 +60,7 @@ namespace Dev2.ViewModels.Merge
                 {
                     if (de.TrueArm != null)
                     {
-                        var deTrueArm = de.TrueArm.Flatten(p=>p.NextNodes??new List<IDev2Activity>());
+                        var deTrueArm = de.TrueArm.Flatten(p => p.NextNodes ?? new List<IDev2Activity>());
                         foreach (var dev2Activity in deTrueArm)
                         {
                             var addModelItem = AddModelItem(ModelItemUtils.CreateModelItem(dev2Activity));
@@ -82,23 +83,45 @@ namespace Dev2.ViewModels.Merge
                     }
                     //Todo add 'and' and the default arm
                 }
-                if (currentValue is DsfSwitch switchTool)
+                else if (currentValue is DsfSwitch switchTool)
                 {
                     if (switchTool.Switches != null)
                     {
-                        foreach (var switchToolSwitch in switchTool.Switches)
-                        {
-                            mergeToolModel.Children.Add(AddModelItem(ModelItemUtils.CreateModelItem(switchToolSwitch.Value), switchToolSwitch.Key));
-                        }
+                        var vv = switchTool.Switches.ToDictionary(k => k.Key);
 
+                        foreach (var group in vv)
+                        {
+                            IEnumerable<IDev2Activity> activities = vv.Values.Where(pair => pair.Key == group.Key).Select(k => k.Value);
+                            foreach (var dev2Activity in activities)
+                            {
+                                var addModelItem = AddModelItem(ModelItemUtils.CreateModelItem(dev2Activity));
+                                addModelItem.HasParent = true;
+                                addModelItem.ParentDescription = group.Key;
+                                mergeToolModel.Children.Add(addModelItem);
+                            }
+                        }
                     }
                     if (switchTool.Default != null)
                     {
-                        foreach (var switchToolSwitch in switchTool.Default)
+                        var deTrueArm = switchTool.Default.Flatten(p => p.NextNodes ?? new List<IDev2Activity>());
+                        foreach (var dev2Activity in deTrueArm)
                         {
-                            mergeToolModel.Children.Add(AddModelItem(ModelItemUtils.CreateModelItem(switchToolSwitch)));
+                            var addModelItem = AddModelItem(ModelItemUtils.CreateModelItem(dev2Activity));
+                            addModelItem.HasParent = true;
+                            addModelItem.ParentDescription = "Default";
+                            mergeToolModel.Children.Add(addModelItem);
                         }
                     }
+                }
+                else
+                {
+                    var nextNode = currentValue.NextNodes.SingleOrDefault();
+                    if (nextNode != null)
+                    {
+                        var nextModelItem = ModelItemUtils.CreateModelItem(nextNode);
+                        AddModelItem(nextModelItem);
+                    }
+
                 }
                 //var mergeToolModel = new MergeToolModel();
                 mergeToolModel.ActivityDesignerViewModel = instance;
