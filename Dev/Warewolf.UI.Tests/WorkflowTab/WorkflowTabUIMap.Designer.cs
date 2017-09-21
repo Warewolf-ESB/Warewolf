@@ -30,45 +30,6 @@ namespace Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses
     {
         
         /// <summary>
-        /// AssertMethod1 - Use 'AssertMethod1ExpectedValues' to pass parameters into this method.
-        /// </summary>
-        public void AssertMethod1()
-        {
-            #region Variable Declarations
-            WpfText inputsItem1Text = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.DebugOutputTree.FindRecordIndexTreeItem.InputsItem1Text;
-            #endregion
-
-            // Verify that the 'ControlType' property of '1' label equals 'Text'
-            Assert.AreEqual(this.AssertMethod1ExpectedValues.InputsItem1TextControlType, inputsItem1Text.ControlType.ToString());
-        }
-        
-        /// <summary>
-        /// AssertMethod2 - Use 'AssertMethod2ExpectedValues' to pass parameters into this method.
-        /// </summary>
-        public void AssertMethod2()
-        {
-            #region Variable Declarations
-            WpfText inputsSearchTypeItemText = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.DebugOutputTree.FindRecordIndexTreeItem.InputsSearchTypeItemText;
-            #endregion
-
-            // Verify that the 'ControlType' property of '=' label equals 'Text'
-            Assert.AreEqual(this.AssertMethod2ExpectedValues.InputsSearchTypeItemTextControlType, inputsSearchTypeItemText.ControlType.ToString());
-        }
-        
-        /// <summary>
-        /// AssertMethod3 - Use 'AssertMethod3ExpectedValues' to pass parameters into this method.
-        /// </summary>
-        public void AssertMethod3()
-        {
-            #region Variable Declarations
-            WpfText inputsItem2Text = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.DebugOutputTree.FindRecordIndexTreeItem.InputsItem2Text;
-            #endregion
-
-            // Verify that the 'ControlType' property of '1' label equals 'Text'
-            Assert.AreEqual(this.AssertMethod3ExpectedValues.InputsItem2TextControlType, inputsItem2Text.ControlType.ToString());
-        }
-        
-        /// <summary>
         /// Open_Tools_UI_Map_Designer_To_Flowchart - Use 'Open_Tools_UI_Map_Designer_To_FlowchartParams' to pass parameters into this method.
         /// </summary>
         public void Open_Tools_UI_Map_Designer_To_Flowchart()
@@ -82,42 +43,6 @@ namespace Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses
         }
         
         #region Properties
-        public virtual AssertMethod1ExpectedValues AssertMethod1ExpectedValues
-        {
-            get
-            {
-                if ((this.mAssertMethod1ExpectedValues == null))
-                {
-                    this.mAssertMethod1ExpectedValues = new AssertMethod1ExpectedValues();
-                }
-                return this.mAssertMethod1ExpectedValues;
-            }
-        }
-        
-        public virtual AssertMethod2ExpectedValues AssertMethod2ExpectedValues
-        {
-            get
-            {
-                if ((this.mAssertMethod2ExpectedValues == null))
-                {
-                    this.mAssertMethod2ExpectedValues = new AssertMethod2ExpectedValues();
-                }
-                return this.mAssertMethod2ExpectedValues;
-            }
-        }
-        
-        public virtual AssertMethod3ExpectedValues AssertMethod3ExpectedValues
-        {
-            get
-            {
-                if ((this.mAssertMethod3ExpectedValues == null))
-                {
-                    this.mAssertMethod3ExpectedValues = new AssertMethod3ExpectedValues();
-                }
-                return this.mAssertMethod3ExpectedValues;
-            }
-        }
-        
         public virtual Open_Tools_UI_Map_Designer_To_FlowchartParams Open_Tools_UI_Map_Designer_To_FlowchartParams
         {
             get
@@ -180,12 +105,6 @@ namespace Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses
         #endregion
         
         #region Fields
-        private AssertMethod1ExpectedValues mAssertMethod1ExpectedValues;
-        
-        private AssertMethod2ExpectedValues mAssertMethod2ExpectedValues;
-        
-        private AssertMethod3ExpectedValues mAssertMethod3ExpectedValues;
-        
         private Open_Tools_UI_Map_Designer_To_FlowchartParams mOpen_Tools_UI_Map_Designer_To_FlowchartParams;
         
         private MainStudioWindow mMainStudioWindow;
@@ -195,51 +114,6 @@ namespace Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses
         private UIWpfWindow mUIWpfWindow;
         
         private UIWarewolfDEV2PIETERTEWindow mUIWarewolfDEV2PIETERTEWindow;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'AssertMethod1'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class AssertMethod1ExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'ControlType' property of '1' label equals 'Text'
-        /// </summary>
-        public string InputsItem1TextControlType = "Text";
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'AssertMethod2'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class AssertMethod2ExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'ControlType' property of '=' label equals 'Text'
-        /// </summary>
-        public string InputsSearchTypeItemTextControlType = "Text";
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'AssertMethod3'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class AssertMethod3ExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'ControlType' property of '1' label equals 'Text'
-        /// </summary>
-        public string InputsItem2TextControlType = "Text";
         #endregion
     }
     
