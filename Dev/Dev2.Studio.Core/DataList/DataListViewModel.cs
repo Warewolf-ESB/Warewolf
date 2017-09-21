@@ -468,8 +468,6 @@ namespace Dev2.Studio.ViewModels.DataList
             }
         }
 
-
-
         public void InitializeDataListViewModel(IResourceModel resourceModel)
         {
             Resource = resourceModel;
