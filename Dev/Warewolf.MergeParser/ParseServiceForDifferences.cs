@@ -8,6 +8,7 @@ using Dev2.Studio.Core.Activities.Utils;
 using System.Activities.Presentation;
 using Dev2;
 using Dev2.Activities;
+using Dev2.Activities.SelectAndApply;
 using Dev2.Studio.Interfaces;
 using Dev2.Common;
 using Dev2.Utilities;
@@ -29,7 +30,7 @@ namespace Warewolf.MergeParser
             return default;
         }
 
-        public List<(Guid uniqueId, ModelItem current, ModelItem difference, bool conflict)> GetDifferences(IContextualResourceModel current, IContextualResourceModel difference)
+        public (ModelItem current, ModelItem difference, List<KeyValuePair<Guid, bool>> differenceStore) GetDifferences(IContextualResourceModel current, IContextualResourceModel difference)
         {
             var conflictList = new List<(Guid uniqueId, ModelItem current, ModelItem difference, bool conflict)>();
             CurrentDifferences = GetNodes(current);
@@ -103,10 +104,10 @@ namespace Warewolf.MergeParser
                 var diffItem = (Guid.Parse(item.Key), currentModelItemUniqueId, differences, true);
                 conflictList.Add(diffItem);
             }
-            var valueTuples = new List<(Guid uniqueId, ModelItem current, ModelItem difference, bool conflict)>
-            {
-                (current.ID, ModelItemUtils.CreateModelItem(parsedCurrent),ModelItemUtils.CreateModelItem(parsedDifference), differenceGroups.Any())
-            };
+            var keyValuePairs = conflictList.Select(p => new KeyValuePair<Guid, bool>(p.uniqueId, p.conflict)).ToList();
+            var valueTuples = (ModelItemUtils.CreateModelItem(parsedCurrent), ModelItemUtils.CreateModelItem(parsedDifference), keyValuePairs);
+
+
             return valueTuples;
         }
 
@@ -124,17 +125,17 @@ namespace Warewolf.MergeParser
                 IEnumerable<IDev2Activity> vb;
                 if (roodDecision.TrueArm == null)
                 {
-                    vb= roodDecision.FalseArm;
+                    vb = roodDecision.FalseArm;
                 }
-                else if(roodDecision.FalseArm == null)
+                else if (roodDecision.FalseArm == null)
                 {
-                    vb= roodDecision.TrueArm;
+                    vb = roodDecision.TrueArm;
                 }
                 else
                 {
                     vb = roodDecision.FalseArm.Union(roodDecision.TrueArm);
                 }
-              
+
                 var bbb = vb.Flatten(activity =>
                 {
                     if (activity.NextNodes != null) return activity.NextNodes;
@@ -176,7 +177,12 @@ namespace Warewolf.MergeParser
                 if (activity is DsfForEachActivity c)
                 {
                     var dev2Activity = (c.DataFunc.Handler as IDev2Activity);
-                    return dev2Activity?.NextNodes?? new List<IDev2Activity>();
+                    return dev2Activity?.NextNodes ?? new List<IDev2Activity>();
+                }
+                if (activity is DsfSelectAndApplyActivity d)
+                {
+                    var dev2Activity = (d.ApplyActivityFunc.Handler as IDev2Activity);
+                    return dev2Activity?.NextNodes ?? new List<IDev2Activity>();
                 }
                 return new List<IDev2Activity>();
             });

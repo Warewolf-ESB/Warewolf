@@ -8,6 +8,7 @@ using System;
 using System.Linq;
 using Dev2.Common;
 using Dev2.Common.Common;
+using Dev2.Studio.Core.Activities.Utils;
 
 namespace Dev2.ViewModels.Merge
 {
@@ -26,86 +27,90 @@ namespace Dev2.ViewModels.Merge
             var mergeParser = CustomContainer.Get<IParseServiceForDifferences>();
             var currentChanges = mergeParser.GetDifferences(currentResourceModel, differenceResourceModel);
             Conflicts = new ObservableCollection<ICompleteConflict>();
+            var differenceStore = currentChanges.differenceStore;
+            var currentChart = currentChanges.current;
+            var differenceChart = currentChanges.difference;
 
-            void AddChild(ICompleteConflict parent, IMergeToolModel child)
+            void AddChild(ICompleteConflict parent, IMergeToolModel child, IMergeToolModel childDiff, bool isConfilct)
             {
                 var completeConflict = new CompleteConflict()
                 {
-                    CurrentViewModel = child,
                     UniqueId = child.UniqueId,
-
                 };
+                if (isConfilct)
+                {
+                    completeConflict.DiffViewModel = childDiff;
+                }
+                else
+                {
+                    completeConflict.CurrentViewModel = child;
+                }
                 parent.Children.Add(completeConflict);
                 foreach (var mergeToolModel in child.Children)
                 {
-                    AddChild(completeConflict, mergeToolModel);
+                    var keyValuePair = differenceStore.SingleOrDefault(pair => pair.Key.Equals(mergeToolModel.UniqueId));
+                    var diffModel = childDiff.Children.SingleOrDefault(model => model.UniqueId ==  keyValuePair.Key);
+                    AddChild(completeConflict, mergeToolModel, diffModel, keyValuePair.Value);
+                   
                 }
             }
 
-            foreach (var curr in currentChanges)
+
+
+            var conflict = new CompleteConflict {UniqueId = currentResourceModel.ID};
+            CurrentConflictViewModel = new ConflictViewModel(currentChart, currentResourceModel);
+            DifferenceConflictViewModel = new ConflictViewModel(differenceChart, differenceResourceModel);
+            if (CurrentConflictViewModel?.MergeToolModel != null)
             {
-                var completeConflicts = Conflicts.Flatten(completeConflict => completeConflict.Children ?? new ObservableCollection<ICompleteConflict>());
-                if (completeConflicts.Any(a => a.UniqueId == curr.uniqueId)) continue;
-                var conflict = new CompleteConflict { UniqueId = curr.uniqueId };
-                CurrentConflictViewModel = new ConflictViewModel(curr.current, currentResourceModel);
-                if (CurrentConflictViewModel?.MergeToolModel != null)
-                {
-                    conflict.CurrentViewModel = CurrentConflictViewModel.MergeToolModel;
-                    foreach (var child in CurrentConflictViewModel.MergeToolModel.Children)
-                    {
-                        AddChild(conflict, child);
-                    }
-                }
-                if (CurrentConflictViewModel.Children.Any())
-                {
-                    foreach (var mergeToolModel in CurrentConflictViewModel.Children)
-                    {
-                        var childConflict = new CompleteConflict
-                        {
-                            UniqueId = curr.uniqueId,
-                            CurrentViewModel = mergeToolModel
-                        };
-                        foreach (var child in mergeToolModel.Children)
-                        {
-                            AddChild(childConflict, child);
-                        }
-                        Conflicts.Add(childConflict);
-                    }
-                }
+                conflict.CurrentViewModel = CurrentConflictViewModel.MergeToolModel;
+                var keyValuePair = differenceStore.SingleOrDefault(pair => pair.Key.Equals(CurrentConflictViewModel.MergeToolModel.UniqueId));
+               
 
-                if (curr.conflict)
+                foreach (var child in CurrentConflictViewModel.MergeToolModel.Children)
                 {
-                    DifferenceConflictViewModel = new ConflictViewModel(curr.difference, differenceResourceModel);
-                    if (DifferenceConflictViewModel?.MergeToolModel != null)
+                   
+                    if (keyValuePair.Value)
                     {
-                        conflict.DiffViewModel = DifferenceConflictViewModel.MergeToolModel;
-                        foreach (var child in DifferenceConflictViewModel.MergeToolModel.Children)
+                        if (DifferenceConflictViewModel.MergeToolModel.UniqueId == keyValuePair.Key)
                         {
-                            AddChild(conflict, child);
+                            AddChild(conflict, child, DifferenceConflictViewModel.MergeToolModel, true);
                         }
                     }
-
-                    if (DifferenceConflictViewModel.Children.Any())
+                    else
                     {
-                        foreach (var mergeToolModel in DifferenceConflictViewModel.Children)
-                        {
-                            var childConflict = new CompleteConflict
-                            {
-                                UniqueId = curr.uniqueId,
-                                CurrentViewModel = mergeToolModel
-                            };
-                            foreach (var child in mergeToolModel.Children)
-                            {
-                                AddChild(childConflict, child);
-                            }
-                            Conflicts.Add(childConflict);
-                        }
+                        AddChild(conflict, child,null,false);
                     }
-
+                   
                 }
-
-                Conflicts.Add(conflict);
             }
+
+            if (CurrentConflictViewModel.Children.Any())
+            {
+                foreach (var mergeToolModel in CurrentConflictViewModel.Children)
+                {
+                    var keyValuePair = differenceStore.SingleOrDefault(pair => pair.Key.Equals(mergeToolModel.UniqueId));
+                    var toolModel = DifferenceConflictViewModel?.Children?.SingleOrDefault(model => model.UniqueId == keyValuePair.Key);
+
+                    var childConflict = new CompleteConflict
+                    {
+                        UniqueId = mergeToolModel.UniqueId,
+                        CurrentViewModel = mergeToolModel,
+                        DiffViewModel = toolModel,
+                       
+                    };
+                    foreach (var child in mergeToolModel.Children)
+                    {
+                        var keyValuePairChild = differenceStore.SingleOrDefault(pair => pair.Key.Equals(child.UniqueId));
+                        var toolModelChild = DifferenceConflictViewModel?.Children?.SingleOrDefault(model => model.UniqueId == keyValuePairChild.Key);
+                        AddChild(childConflict, child, toolModelChild, keyValuePairChild.Value);
+                      
+                    }
+                    Conflicts.Add(childConflict);
+
+                }
+            }
+
+            Conflicts.Add(conflict);
 
             if (CurrentConflictViewModel != null)
             {
@@ -130,7 +135,6 @@ namespace Dev2.ViewModels.Merge
             });
             WorkflowDesignerViewModel.CanViewWorkflowLink = false;
             Conflicts = Conflicts.Reverse().ToObservableCollection();
-
         }
 
         public ObservableCollection<ICompleteConflict> Conflicts { get; set; }
