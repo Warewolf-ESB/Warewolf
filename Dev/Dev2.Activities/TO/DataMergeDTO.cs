@@ -16,7 +16,6 @@ using Dev2.Providers.Validation.Rules;
 using Dev2.TO;
 using Dev2.Util;
 using Dev2.Validation;
-using System;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
@@ -244,7 +243,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                     break;
                 default:
-                    throw new ArgumentException("Unrecognized Property Name: " + propertyName);
+                    return ruleSet;
             }
             return ruleSet;
         }
