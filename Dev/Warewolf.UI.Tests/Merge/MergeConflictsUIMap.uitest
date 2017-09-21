@@ -46,143 +46,166 @@
   <Maps>
     <UIMap Id="MergeConflictsUIMap">
       <TopLevelWindows>
-        <TopLevelWindow ControlType="Window" Id="UIWarewolfDEV2PIETERTEWindow" FriendlyName="Warewolf (DEV2\PIETER.TERBLANCHE)" SpecialControlType="None" SessionId="1117956">
+        <TopLevelWindow ControlType="Window" Id="MainWindow" FriendlyName="MainWindow" SpecialControlType="None" SessionId="26612382">
           <TechnologyName>UIA</TechnologyName>
           <WindowTitles>
-            <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+            <WindowTitle>MainWindow</WindowTitle>
           </WindowTitles>
           <AndCondition>
             <PropertyCondition Name="ControlType">Window</PropertyCondition>
-            <PropertyCondition Name="Name">Warewolf (DEV2\PIETER.TERBLANCHE)</PropertyCondition>
             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
             <PropertyCondition Name="ClassName" Operator="Contains">HwndWrapper</PropertyCondition>
+            <PropertyCondition Name="Name" Operator="Contains">Warewolf</PropertyCondition>
           </AndCondition>
           <SupportLevel>0</SupportLevel>
           <Descendants>
-            <UIObject ControlType="Custom" Id="UIItemCustom" FriendlyName="" SpecialControlType="None">
+            <UIObject ControlType="Custom" Id="DockManager" FriendlyName="DockManager" SpecialControlType="None">
               <TechnologyName>UIA</TechnologyName>
               <WindowTitles>
-                <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                <WindowTitle>Warewolf</WindowTitle>
               </WindowTitles>
               <AndCondition>
                 <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                 <PropertyCondition Name="ControlType">Custom</PropertyCondition>
-                <PropertyCondition Name="ClassName">Uia.MergeWorkflowView</PropertyCondition>
+                <PropertyCondition Name="ClassName">Uia.XamDockManager</PropertyCondition>
+                <PropertyCondition Name="AutomationId">DockManager</PropertyCondition>
               </AndCondition>
               <SupportLevel>0</SupportLevel>
               <Descendants>
-                <UIObject ControlType="Pane" Id="UIScrollViewerPane" FriendlyName="ScrollViewer" SpecialControlType="None">
+                <UIObject ControlType="Custom" Id="SplitPaneMiddle" FriendlyName="" SpecialControlType="None">
                   <TechnologyName>UIA</TechnologyName>
                   <WindowTitles>
-                    <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                    <WindowTitle>Warewolf</WindowTitle>
                   </WindowTitles>
+                  <SearchConfigurations>
+                    <SearchConfiguration>NextTo</SearchConfiguration>
+                    <SearchConfiguration>Distinct</SearchConfiguration>
+                  </SearchConfigurations>
                   <AndCondition>
+                    <PropertyCondition Name="ControlType">Custom</PropertyCondition>
                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                    <PropertyCondition Name="ControlType">Pane</PropertyCondition>
-                    <PropertyCondition Name="ClassName">Uia.ScrollViewer</PropertyCondition>
-                    <PropertyCondition Name="AutomationId">ScrollViewer</PropertyCondition>
+                    <PropertyCondition Name="ClassName">Uia.SplitPane</PropertyCondition>
+                    <PropertyCondition Name="Instance">2</PropertyCondition>
                   </AndCondition>
                   <SupportLevel>0</SupportLevel>
                   <Descendants>
-                    <UIObject ControlType="RadioButton" Id="UIVariablesCurrentRBRadioButton" FriendlyName="VariablesCurrentRB" SpecialControlType="None">
+                    <UIObject ControlType="Custom" Id="TabManSplitPane" FriendlyName="SplitPaneMiddle" SpecialControlType="None">
                       <TechnologyName>UIA</TechnologyName>
                       <WindowTitles>
-                        <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                        <WindowTitle>Warewolf</WindowTitle>
                       </WindowTitles>
                       <AndCondition>
+                        <PropertyCondition Name="ControlType">Custom</PropertyCondition>
                         <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                        <PropertyCondition Name="ControlType">RadioButton</PropertyCondition>
-                        <PropertyCondition Name="AutomationId">VariablesCurrentRB</PropertyCondition>
-                      </AndCondition>
-                      <SupportLevel>0</SupportLevel>
-                      <Descendants />
-                    </UIObject>
-                  </Descendants>
-                </UIObject>
-              </Descendants>
-            </UIObject>
-            <UIObject ControlType="Custom" Id="UIUI_DataListView_AutoCustom" FriendlyName="UI_DataListView_AutoID" SpecialControlType="None">
-              <TechnologyName>UIA</TechnologyName>
-              <WindowTitles>
-                <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
-              </WindowTitles>
-              <AndCondition>
-                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                <PropertyCondition Name="ControlType">Custom</PropertyCondition>
-                <PropertyCondition Name="ClassName">Uia.DataListView</PropertyCondition>
-                <PropertyCondition Name="AutomationId">UI_DataListView_AutoID</PropertyCondition>
-              </AndCondition>
-              <SupportLevel>0</SupportLevel>
-              <Descendants>
-                <UIObject ControlType="Tree" Id="UIUI_VariableTreeView_Tree" FriendlyName="UI_VariableTreeView_AutoID" SpecialControlType="None">
-                  <TechnologyName>UIA</TechnologyName>
-                  <WindowTitles>
-                    <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
-                  </WindowTitles>
-                  <AndCondition>
-                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                    <PropertyCondition Name="ControlType">Tree</PropertyCondition>
-                    <PropertyCondition Name="AutomationId">UI_VariableTreeView_AutoID</PropertyCondition>
-                  </AndCondition>
-                  <SupportLevel>0</SupportLevel>
-                  <Descendants>
-                    <UIObject ControlType="TreeItem" Id="UIRecordsetTreeItem" FriendlyName="Recordset" SpecialControlType="None">
-                      <TechnologyName>UIA</TechnologyName>
-                      <WindowTitles>
-                        <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
-                      </WindowTitles>
-                      <SearchConfigurations>
-                        <SearchConfiguration>Expand</SearchConfiguration>
-                      </SearchConfigurations>
-                      <AndCondition>
-                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                        <PropertyCondition Name="ControlType">TreeItem</PropertyCondition>
-                        <PropertyCondition Name="Name">Recordset</PropertyCondition>
+                        <PropertyCondition Name="ClassName">Uia.SplitPane</PropertyCondition>
+                        <PropertyCondition Name="AutomationId">UI_SplitPane_AutoID</PropertyCondition>
                       </AndCondition>
                       <SupportLevel>0</SupportLevel>
                       <Descendants>
-                        <UIObject ControlType="TreeItem" Id="UIItemTreeItem" FriendlyName="" SpecialControlType="None">
+                        <UIObject ControlType="TabList" Id="TabMan" FriendlyName="UI_TabManager_AutoID" SpecialControlType="None">
                           <TechnologyName>UIA</TechnologyName>
                           <WindowTitles>
-                            <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                            <WindowTitle>Warewolf</WindowTitle>
+                            <WindowTitle>Warewolf</WindowTitle>
                           </WindowTitles>
-                          <SearchConfigurations>
-                            <SearchConfiguration>Distinct</SearchConfiguration>
-                            <SearchConfiguration>Expand</SearchConfiguration>
-                          </SearchConfigurations>
                           <AndCondition>
                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                            <PropertyCondition Name="ControlType">TreeItem</PropertyCondition>
+                            <PropertyCondition Name="ControlType">TabList</PropertyCondition>
+                            <PropertyCondition Name="AutomationId">UI_TabManager_AutoID</PropertyCondition>
                           </AndCondition>
                           <SupportLevel>0</SupportLevel>
                           <Descendants>
-                            <UIObject ControlType="TreeItem" Id="UIItemTreeItem1" FriendlyName="" SpecialControlType="None">
+                            <UIObject ControlType="TabPage" Id="MergeTab" FriendlyName="Dev2.ViewModels.MergeViewModel" SpecialControlType="None">
                               <TechnologyName>UIA</TechnologyName>
                               <WindowTitles>
-                                <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                                <WindowTitle>Warewolf</WindowTitle>
                               </WindowTitles>
-                              <SearchConfigurations>
-                                <SearchConfiguration>Distinct</SearchConfiguration>
-                                <SearchConfiguration>Expand</SearchConfiguration>
-                              </SearchConfigurations>
                               <AndCondition>
                                 <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                <PropertyCondition Name="ControlType">TreeItem</PropertyCondition>
+                                <PropertyCondition Name="ControlType">TabPage</PropertyCondition>
+                                <PropertyCondition Name="Name">Dev2.ViewModels.MergeViewModel</PropertyCondition>
                               </AndCondition>
                               <SupportLevel>0</SupportLevel>
                               <Descendants>
-                                <UIObject ControlType="CheckBox" Id="UIUI_IsOutputCheckbox_CheckBox" FriendlyName="UI_IsOutputCheckbox_AutoID" SpecialControlType="None">
+                                <UIObject ControlType="Custom" Id="CloseButton" FriendlyName="closeBtn" SpecialControlType="None">
                                   <TechnologyName>UIA</TechnologyName>
                                   <WindowTitles>
-                                    <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                                    <WindowTitle>Warewolf</WindowTitle>
                                   </WindowTitles>
                                   <AndCondition>
-                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                    <PropertyCondition Name="ControlType">CheckBox</PropertyCondition>
-                                    <PropertyCondition Name="AutomationId">UI_IsOutputCheckbox_AutoID</PropertyCondition>
+                                    <PropertyCondition Name="ControlType">Button</PropertyCondition>
+                                    <PropertyCondition Name="AutomationId">closeBtn</PropertyCondition>
                                   </AndCondition>
                                   <SupportLevel>0</SupportLevel>
                                   <Descendants />
+                                </UIObject>
+                                <UIObject ControlType="Text" Id="TabDescription" FriendlyName="Merge Conflicts" SpecialControlType="None">
+                                  <TechnologyName>UIA</TechnologyName>
+                                  <WindowTitles>
+                                    <WindowTitle>Warewolf</WindowTitle>
+                                  </WindowTitles>
+                                  <AndCondition>
+                                    <PropertyCondition Name="ControlType">Text</PropertyCondition>
+                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                    <PropertyCondition Name="Name">Merge Conflicts</PropertyCondition>
+                                  </AndCondition>
+                                  <SupportLevel>0</SupportLevel>
+                                  <Descendants />
+                                </UIObject>
+                                <UIObject ControlType="Custom" Id="WorkSurfaceContext" FriendlyName="Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceCont..." SpecialControlType="None">
+                                  <TechnologyName>UIA</TechnologyName>
+                                  <WindowTitles>
+                                    <WindowTitle>Warewolf</WindowTitle>
+                                  </WindowTitles>
+                                  <AndCondition>
+                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                    <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                                    <PropertyCondition Name="AutomationId">Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel</PropertyCondition>
+                                  </AndCondition>
+                                  <SupportLevel>0</SupportLevel>
+                                  <Descendants>
+                                    <UIObject ControlType="Custom" Id="ContentDockManager" FriendlyName="ContentDockManager" SpecialControlType="None">
+                                      <TechnologyName>UIA</TechnologyName>
+                                      <WindowTitles>
+                                        <WindowTitle>Warewolf</WindowTitle>
+                                      </WindowTitles>
+                                      <AndCondition>
+                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                        <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                                        <PropertyCondition Name="AutomationId">ContentDockManager</PropertyCondition>
+                                      </AndCondition>
+                                      <SupportLevel>0</SupportLevel>
+                                      <Descendants>
+                                        <UIObject ControlType="Custom" Id="MergeWorkflowView" FriendlyName="MergeWorkflowView" SpecialControlType="None">
+                                          <TechnologyName>UIA</TechnologyName>
+                                          <WindowTitles>
+                                            <WindowTitle>Warewolf</WindowTitle>
+                                          </WindowTitles>
+                                          <AndCondition>
+                                            <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                            <PropertyCondition Name="ClassName" Operator="Contains">MergeWorkflowView</PropertyCondition>
+                                          </AndCondition>
+                                          <SupportLevel>0</SupportLevel>
+                                          <Descendants>
+                                            <UIObject ControlType="Pane" Id="ScrollViewerPane" FriendlyName="scrollViewer" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="ControlType">Pane</PropertyCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                <PropertyCondition Name="AutomationId">MergeGridScrollViewer</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants />
+                                            </UIObject>
+                                          </Descendants>
+                                        </UIObject>
+                                      </Descendants>
+                                    </UIObject>
+                                  </Descendants>
                                 </UIObject>
                               </Descendants>
                             </UIObject>
