@@ -164,7 +164,7 @@ namespace Dev2.ViewModels.Merge
                 }
                 //else
                 {
-                    if (curr.conflict)
+                    //if (curr.conflict)
                     {
                         CurrentConflictViewModel = new ConflictViewModel(curr.current, currentResourceModel);
                         if (CurrentConflictViewModel?.MergeToolModel != null)
@@ -193,9 +193,9 @@ namespace Dev2.ViewModels.Merge
                 DifferenceConflictViewModel.GetDataList();
             }
             //HasVariablesConflict = false;
-
-            HasWorkflowNameConflict = CurrentConflictViewModel?.WorkflowName != DifferenceConflictViewModel?.WorkflowName;
-
+            HasVariablesConflict = true;
+            //HasWorkflowNameConflict = CurrentConflictViewModel?.WorkflowName != DifferenceConflictViewModel?.WorkflowName;
+            HasWorkflowNameConflict = true;
             SetServerName(currentResourceModel);
             DisplayName = "Merge Conflicts" + _serverName;
 
