@@ -15,6 +15,7 @@ namespace Dev2.Integration.Tests.Merge
     {
         readonly IServerRepository _server = ServerRepository.Instance;
         [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
         public void Construct_GivenSameWorkflows_Initialize()
         {
             //---------------Set up test pack-------------------
@@ -31,6 +32,7 @@ namespace Dev2.Integration.Tests.Merge
         }
 
         [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
         public void GetDifferences_GivenSameWorkflows_ReturnsNoConflicts()
         {
             //---------------Set up test pack-------------------
@@ -48,8 +50,6 @@ namespace Dev2.Integration.Tests.Merge
             var parserDifferences = parser.Differences;
             Assert.IsNotNull(parserCurrentDifferences);
             Assert.IsNotNull(parserDifferences);
-            //Assert.AreEqual(0, parserDifferences.Count);
-            //Assert.AreEqual(0, parserDifferences.Count);
             //---------------Execute Test ----------------------
             var valueTuples = parser.GetDifferences(loadContextualResourceModel, resourceModel);
             //---------------Test Result -----------------------
@@ -57,6 +57,7 @@ namespace Dev2.Integration.Tests.Merge
         }
 
         [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
         public void GetDifferences_GivenSameWorkflows_ReturnsNoConflicts_Switch()
         {
             //---------------Set up test pack-------------------
@@ -83,6 +84,7 @@ namespace Dev2.Integration.Tests.Merge
         }
 
         [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
         public void GetDifferences_GivenSameWorkflows_ReturnsNoConflicts_Sequence()
         {
             //---------------Set up test pack-------------------
@@ -108,6 +110,7 @@ namespace Dev2.Integration.Tests.Merge
             Assert.IsTrue(valueTuples.All(tuple => !tuple.conflict));
         }
         [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
         public void GetDifferences_GivenSameWorkflows_ReturnsNoConflicts_ForEach()
         {
             //---------------Set up test pack-------------------
@@ -132,7 +135,9 @@ namespace Dev2.Integration.Tests.Merge
             //---------------Test Result -----------------------
             Assert.IsTrue(valueTuples.All(tuple => !tuple.conflict));
         }
+
         [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
         public void GetDifferences_GivenSameWorkflows_ReturnsNoConflicts_SelectAndApply()
         {
             //---------------Set up test pack-------------------

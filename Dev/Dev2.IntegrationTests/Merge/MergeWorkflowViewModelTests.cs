@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Xml.Linq;
 using Dev2.Activities;
@@ -19,7 +20,9 @@ namespace Dev2.Integration.Tests.Merge
     public class MergeWorkflowViewModelIntergrationTests
     {
         readonly IServerRepository _server = ServerRepository.Instance;
+
         [TestInitialize]
+        [Owner("Nkosinathi Sangweni")]
         public void Init()
         {
             _server.Source.ResourceRepository.ForceLoad();
@@ -38,28 +41,24 @@ namespace Dev2.Integration.Tests.Merge
             CustomContainer.Register(mockServerRepository.Object);
             CustomContainer.Register<IParseServiceForDifferences>(mockParseServiceForDifferences);
         }
+
         [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
         public void Initialize_GivenSameResourceModel_ShouldHaveNoDeifferences_desicion()
         {
             //---------------Set up test pack-------------------
             var helloWorldGuid = "41617daa-509e-40eb-aa76-b0827028721d".ToGuid();
             var loadContextualResourceModel = _server.Source.ResourceRepository.LoadContextualResourceModel(helloWorldGuid);
-            var resourceModel = new ResourceModel(_server.Source) { ID = helloWorldGuid };
-            var xElement = XML.XmlResource.Fetch("SameResource");
-            var element = xElement.Element("Action");
-            Assert.IsNotNull(element);
-            var xamlDef = element.ToString(SaveOptions.DisableFormatting);
-            resourceModel.WorkflowXaml = new StringBuilder(xamlDef);
             //---------------Assert Precondition----------------
+            Assert.IsNotNull(loadContextualResourceModel);
             //---------------Execute Test ----------------------
-            var mergeWorkflowViewModel = new MergeWorkflowViewModel(loadContextualResourceModel, resourceModel);
+            var mergeWorkflowViewModel = new MergeWorkflowViewModel(loadContextualResourceModel, loadContextualResourceModel);
             //---------------Test Result -----------------------
             Assert.IsNotNull(mergeWorkflowViewModel);
-            var conflictsCount = mergeWorkflowViewModel.Conflicts.Count;
-            Assert.AreEqual(3, conflictsCount);
         }
 
         [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
         public void Initialize_GivenSameResourceModel_ShouldHaveNoDeifferences_Switch()
         {
             //---------------Set up test pack-------------------
@@ -76,6 +75,36 @@ namespace Dev2.Integration.Tests.Merge
             var mergeWorkflowViewModel = new MergeWorkflowViewModel(loadContextualResourceModel, resourceModel);
             //---------------Test Result -----------------------
             Assert.IsNotNull(mergeWorkflowViewModel);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void Batch_Compare_All_Examples_Have_No_Differences()
+        {
+            //---------------Set up test pack-------------------
+            var environmentModel = _server.Source;
+            environmentModel.Connect();
+            var resourceRepository = _server.Source.ResourceRepository;
+            
+            resourceRepository.Load();
+            var resourceModels = resourceRepository.All();
+           
+            Assert.IsNotNull(resourceModels);
+            var examples = resourceModels.Where(model => model.GetSavePath().StartsWith("Examples")).ToList();
+
+            foreach (var example in examples)
+            {
+                //---------------Assert Precondition----------------
+                //---------------Execute Test ----------------------
+                var contextualResourceModel = example as IContextualResourceModel;
+                var mergeWorkflowViewModel = new MergeWorkflowViewModel(contextualResourceModel, contextualResourceModel);
+                //---------------Test Result -----------------------
+                Assert.IsNotNull(mergeWorkflowViewModel);
+                var all = mergeWorkflowViewModel.Conflicts.All(conflict => conflict.DiffViewModel == null);
+                Assert.IsTrue(all, example.DisplayName + " Has some differences ");
+            }
+
+
         }
     }
 }

@@ -44,10 +44,6 @@ namespace Dev2.ViewModels.Merge
                 {
                     instance = Activator.CreateInstance(actual, modelItem, item) as ActivityDesignerViewModel;
                 }
-                else if(actual == typeof(SequenceDesignerViewModel))
-                {
-                    instance = Activator.CreateInstance(actual, modelItem, false) as ActivityDesignerViewModel;
-                }
                 else
                 {
                     instance = Activator.CreateInstance(actual, modelItem) as ActivityDesignerViewModel;
