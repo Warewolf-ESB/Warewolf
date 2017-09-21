@@ -509,7 +509,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            var mergeCollsAreEqual = CommonEqualityOps.CollectionEquals(MergeCollection, other.MergeCollection, new DataMergeDTOComparer());
+            var mergeCollsAreEqual = CommonEqualityOps.CollectionEquals(MergeCollection, other.MergeCollection, new DataMergeDtoComparer());
             return base.Equals(other) && string.Equals(Result, other.Result)
                 && mergeCollsAreEqual;
         }
