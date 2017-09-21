@@ -29,48 +29,48 @@ namespace Dev2.ViewModels.Merge
 
         public bool IsMergeExpanderEnabled
         {
-            get { return _isMergeExpanderEnabled; }
+            get => _isMergeExpanderEnabled; 
             set
             {
                 _isMergeExpanderEnabled = value;
-                OnPropertyChanged(() => IsMergeExpanderEnabled);
+                OnPropertyChanged("IsMergeExpanderEnabled");
             }
         }
         public bool IsMergeExpanded
         {
-            get { return _isMergeExpanded; }
+            get => _isMergeExpanded; 
             set
             {
                 _isMergeExpanded = value;
-                OnPropertyChanged(() => IsMergeExpanded);
+                OnPropertyChanged("IsMergeExpanded");
             }
         }
         [JsonIgnore]
         public ImageSource MergeIcon
         {
-            get { return _mergeIcon; }
+            get => _mergeIcon; 
             set
             {
                 _mergeIcon = value;
-                OnPropertyChanged(() => MergeIcon);
+                OnPropertyChanged("MergeIcon");
             }
         }
         public string MergeDescription
         {
-            get { return _mergeDescription; }
+            get => _mergeDescription; 
             set
             {
                 _mergeDescription = value;
-                OnPropertyChanged(() => MergeDescription);
+                OnPropertyChanged("MergeDescription");
             }
         }
         public bool IsMergeChecked
         {
-            get { return _isMergeChecked; }
+            get => _isMergeChecked; 
             set
             {
                 _isMergeChecked = value;
-                OnPropertyChanged(() => IsMergeChecked);
+                OnPropertyChanged("IsMergeChecked");
             }
         }
 
@@ -98,20 +98,20 @@ namespace Dev2.ViewModels.Merge
 
         public string ParentDescription
         {
-            get { return _parentDescription; }
+            get => _parentDescription; 
             set
             {
                 _parentDescription = value;
-                OnPropertyChanged(() => ParentDescription);
+                OnPropertyChanged("ParentDescription");
             }
         }
         public bool HasParent
         {
-            get { return _hasParent; }
+            get => _hasParent; 
             set
             {
                 _hasParent = value;
-                OnPropertyChanged(() => HasParent);
+                OnPropertyChanged("HasParent");
             }
         }
     }
