@@ -289,13 +289,16 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 Dev2DecisionStack dds = DataListUtil.ConvertFromJsonToModel<Dev2DecisionStack>(val);
 
-                if(_theResult.ToString() == "True")
+                if (_theResult.ToString() == "True")
                 {
                     resultString = dds.TrueArmText;
                 }
-                else if(_theResult.ToString() == "False")
+                else
                 {
-                    resultString = dds.FalseArmText;
+                    if (_theResult.ToString() == "False")
+                    {
+                        resultString = dds.FalseArmText;
+                    }
                 }
 
                 itemToAdd.AddRange(new DebugItemStaticDataParams(resultString, "").GetDebugItemResult());

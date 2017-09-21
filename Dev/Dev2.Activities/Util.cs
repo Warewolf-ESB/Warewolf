@@ -9,16 +9,12 @@
 */
 
 using System;
-using System.Diagnostics.CodeAnalysis;
-
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
-
-
     public enum enDev2HTMLType { FORM, PAGETITLE, META, IMAGE, TEXT, MENU }
 
-    public class Util
+    public static class Util
     {
         public static bool ValueIsNumber(string value)
         {

@@ -191,7 +191,10 @@ namespace Warewolf.Studio.ViewModels
                     string variable = res?.Variable?.Replace("[[", "");
                     variable = variable?.Replace("]]", "");
                     var inputsValue = WorkflowDesignerViewModel?.GetWorkflowInputs(variable);
-                    res?.Value = inputsValue;
+                    if (res != null)
+                    {
+                        res.Value = inputsValue;
+                    }
                 }
             }
         }
