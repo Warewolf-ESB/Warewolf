@@ -319,7 +319,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             var method = methodToRun as MethodInfo;
             // When it returns a primitive or string and it is not XML or JSON, make it so ;)
             
-            if ((method != null && method.ReturnType.IsPrimitive || method.ReturnType.FullName == "System.String") && !DataListUtil.IsXml(pluginResult.ToString()) && !DataListUtil.IsJson(pluginResult.ToString()))
+            if ((method != null && (method.ReturnType.IsPrimitive || method.ReturnType.FullName == "System.String")) && !DataListUtil.IsXml(pluginResult.ToString()) && !DataListUtil.IsJson(pluginResult.ToString()))
             {
                 // add our special tags ;)
                 result = $"<{GlobalConstants.PrimitiveReturnValueTag}>{pluginResult}</{GlobalConstants.PrimitiveReturnValueTag}>";

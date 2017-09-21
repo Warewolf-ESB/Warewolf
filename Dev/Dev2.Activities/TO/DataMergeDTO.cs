@@ -244,6 +244,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         ruleSet.Add(new IsSingleCharRule(() => paddingExprRule.ExpressionValue));
                     }
                     break;
+                default:
+                    throw new ArgumentException("Unrecognized Property Name: " + propertyName);
             }
             return ruleSet;
         }

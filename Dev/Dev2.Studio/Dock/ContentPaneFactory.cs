@@ -578,9 +578,9 @@ namespace Dev2.Studio.Dock
             {
                 var cv = CollectionViewSource.GetDefaultView(ItemsSource) as IEditableCollectionView;
 
-                Debug.Assert(null != cv && cv.CanRemove, "The ContentPane is being removed from the XamDockManager but it is still referenced by the source collection and it is not possible to remove it from the source collection.");
+                Debug.Assert(cv != null && cv.CanRemove, "The ContentPane is being removed from the XamDockManager but it is still referenced by the source collection and it is not possible to remove it from the source collection.");
 
-                if(cv.CanRemove)
+                if(cv != null && cv.CanRemove)
                 {
                     var dataItem = GetItemForContainer(pane);
                     cv.Remove(dataItem);
@@ -591,7 +591,6 @@ namespace Dev2.Studio.Dock
                     }
 
                     item?.RemoveUnsavedWorkflowName(item.DisplayName);
-
                 }
             }
         }

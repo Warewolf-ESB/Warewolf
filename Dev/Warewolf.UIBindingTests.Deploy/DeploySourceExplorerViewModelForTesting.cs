@@ -41,14 +41,13 @@ namespace Warewolf.UIBindingTests.Deploy
         /// <summary>
         /// root and all children of selected items
         /// </summary>
-        public override ICollection<IExplorerTreeItem> SelectedItems { get; set; }
+        public new ICollection<IExplorerTreeItem> SelectedItems { get; set; }
 
         #endregion
 
         public DeploySourceExplorerViewModelForTesting(IShellViewModel shellViewModel, Microsoft.Practices.Prism.PubSubEvents.IEventAggregator aggregator, IDeployStatsViewerViewModel statsArea)
             : base(shellViewModel, aggregator, statsArea)
-        {
-            
+        {            
             SelectedItems = new List<IExplorerTreeItem>();
         }
 
