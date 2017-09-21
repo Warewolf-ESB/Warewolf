@@ -14,6 +14,7 @@ using Dev2.Common;
 using Caliburn.Micro;
 using Dev2.Activities;
 using Dev2.Activities.Designers2.Sequence;
+using Dev2.Activities.Designers2.Service;
 using Dev2.Activities.Designers2.Switch;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
@@ -43,6 +44,10 @@ namespace Dev2.ViewModels.Merge
                 if (actual == typeof(SwitchDesignerViewModel))
                 {
                     instance = Activator.CreateInstance(actual, modelItem, item) as ActivityDesignerViewModel;
+                }
+                else if(actual == typeof(ServiceDesignerViewModel))
+                {
+                    instance = Activator.CreateInstance(actual, modelItem, _resourceModel) as ActivityDesignerViewModel;
                 }
                 else
                 {
