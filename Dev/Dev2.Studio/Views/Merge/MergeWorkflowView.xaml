@@ -142,7 +142,7 @@
                                              IsChecked="{Binding IsWorkflowNameChecked}" 
                                              HorizontalAlignment="Right"
                                              Margin="0,0,5,0"
-                                             GroupName="MergeActivities"
+                                             GroupName="MergeWorkflowName"
                                              Style="{StaticResource MergeRadioButtonStyle}"
                                              AutomationProperties.AutomationId="UI_CurrentWorkflowRB_AutoID"/>
 
@@ -173,7 +173,7 @@
                                              IsChecked="{Binding IsWorkflowNameChecked}" 
                                              HorizontalAlignment="Right"
                                              Margin="0,0,5,0"
-                                             GroupName="MergeActivities"
+                                             GroupName="MergeWorkflowName"
                                              Style="{StaticResource MergeRadioButtonStyle}"
                                              AutomationProperties.AutomationId="UI_DifferenceWorkflowRB_AutoID"/>
 
