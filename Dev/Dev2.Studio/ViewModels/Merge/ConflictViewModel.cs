@@ -129,6 +129,19 @@ namespace Dev2.ViewModels.Merge
                             mergeToolModel.Children.Add(addModelItem);
                         }
                 }
+                else if (currentValue is DsfForEachActivity b)
+                {
+                    var dev2Activity = b.DataFunc.Handler as IDev2Activity;
+                    var singleOrDefault = dev2Activity;
+                    if (singleOrDefault != null)
+                    {
+                        var forEachModel = ModelItemUtils.CreateModelItem(singleOrDefault);
+                        var addModelItem = AddModelItem(forEachModel);
+                        addModelItem.HasParent = true;
+                        addModelItem.ParentDescription = b.DisplayName;
+                        mergeToolModel.Children.Add(addModelItem);
+                    }
+                }
                 else
                 {
                     var nextNode = currentValue.NextNodes?.SingleOrDefault();
@@ -140,6 +153,7 @@ namespace Dev2.ViewModels.Merge
                             var addModelItem = AddModelItem(nextModelItem, a.Switch);
                             Children.Add(addModelItem);
                         }
+                       
                         else
                         {
                             var addModelItem = AddModelItem(nextModelItem);

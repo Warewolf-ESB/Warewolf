@@ -11,6 +11,7 @@ using Dev2.Activities;
 using Dev2.Studio.Interfaces;
 using Dev2.Common;
 using Dev2.Utilities;
+using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Warewolf.MergeParser
 {
@@ -171,6 +172,11 @@ namespace Warewolf.MergeParser
                     var vv = b.Switches.ToDictionary(k => k.Key);
                     var activities = vv.Values.Select(k => k.Value);
                     return activities;
+                }
+                if (activity is DsfForEachActivity c)
+                {
+                    var dev2Activity = (c.DataFunc.Handler as IDev2Activity);
+                    return dev2Activity?.NextNodes?? new List<IDev2Activity>();
                 }
                 return new List<IDev2Activity>();
             });
