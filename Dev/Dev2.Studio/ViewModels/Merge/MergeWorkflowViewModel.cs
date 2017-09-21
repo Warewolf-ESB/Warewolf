@@ -7,6 +7,7 @@ using System.Collections.ObjectModel;
 using System;
 using System.Linq;
 using Dev2.Common;
+using Dev2.Common.Common;
 
 namespace Dev2.ViewModels.Merge
 {
@@ -125,6 +126,8 @@ namespace Dev2.ViewModels.Merge
                 //WorkflowDesignerViewModel.AddItem(step);
             });
             WorkflowDesignerViewModel.CanViewWorkflowLink = false;
+            Conflicts = Conflicts.Reverse().ToObservableCollection();
+
         }
 
         public ObservableCollection<ICompleteConflict> Conflicts { get; set; }
