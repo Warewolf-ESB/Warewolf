@@ -28,16 +28,22 @@ namespace Dev2.ViewModels.Merge
 
             void AddChild(ICompleteConflict parent, IMergeToolModel child)
             {
-                var completeConflict = new CompleteConflict()
-                {
-                    CurrentViewModel = child,
-                    UniqueId = child.UniqueId,
-
-                };
+                var completeConflict = new CompleteConflict { UniqueId = child.UniqueId };
+                completeConflict.CurrentViewModel = child;
                 parent.Children.Add(completeConflict);
                 foreach (var mergeToolModel in child.Children)
                 {
                     AddChild(completeConflict, mergeToolModel);
+                }
+            }
+            void AddDiffChild(ICompleteConflict parent, IMergeToolModel child)
+            {
+                var completeConflict = new CompleteConflict { UniqueId = child.UniqueId };
+                completeConflict.DiffViewModel = child;
+                parent.Children.Add(completeConflict);
+                foreach (var mergeToolModel in child.Children)
+                {
+                    AddDiffChild(completeConflict, mergeToolModel);
                 }
             }
 
@@ -59,48 +65,39 @@ namespace Dev2.ViewModels.Merge
                 {
                     foreach (var mergeToolModel in CurrentConflictViewModel.Children)
                     {
-                        var childConflict = new CompleteConflict
-                        {
-                            UniqueId = curr.uniqueId,
-                            CurrentViewModel = mergeToolModel
-                        };
+                        var childConflict = new CompleteConflict { UniqueId = curr.uniqueId };
+                        childConflict.CurrentViewModel = mergeToolModel;
                         foreach (var child in mergeToolModel.Children)
                         {
                             AddChild(childConflict, child);
                         }
-                        Conflicts.Add(childConflict);
+                        conflict.Children.Add(childConflict);
                     }
                 }
 
-                if (curr.conflict)
+                //if (curr.conflict)
+                DifferenceConflictViewModel = new ConflictViewModel(curr.difference, differenceResourceModel);
+                if (DifferenceConflictViewModel?.MergeToolModel != null)
                 {
-                    DifferenceConflictViewModel = new ConflictViewModel(curr.difference, differenceResourceModel);
-                    if (DifferenceConflictViewModel?.MergeToolModel != null)
+                    conflict.DiffViewModel = DifferenceConflictViewModel.MergeToolModel;
+                    foreach (var child in DifferenceConflictViewModel.MergeToolModel.Children)
                     {
-                        conflict.DiffViewModel = DifferenceConflictViewModel.MergeToolModel;
-                        foreach (var child in DifferenceConflictViewModel.MergeToolModel.Children)
-                        {
-                            AddChild(conflict, child);
-                        }
+                        AddDiffChild(conflict, child);
                     }
+                }
 
-                    if (DifferenceConflictViewModel.Children.Any())
+                if (DifferenceConflictViewModel.Children.Any())
+                {
+                    foreach (var mergeToolModel in DifferenceConflictViewModel.Children)
                     {
-                        foreach (var mergeToolModel in DifferenceConflictViewModel.Children)
+                        var childConflict = new CompleteConflict { UniqueId = curr.uniqueId };
+                        childConflict.DiffViewModel = mergeToolModel;
+                        foreach (var child in mergeToolModel.Children)
                         {
-                            var childConflict = new CompleteConflict
-                            {
-                                UniqueId = curr.uniqueId,
-                                CurrentViewModel = mergeToolModel
-                            };
-                            foreach (var child in mergeToolModel.Children)
-                            {
-                                AddChild(childConflict, child);
-                            }
-                            Conflicts.Add(childConflict);
+                            AddDiffChild(childConflict, child);
                         }
+                        Conflicts.Add(childConflict);
                     }
-
                 }
 
                 Conflicts.Add(conflict);
