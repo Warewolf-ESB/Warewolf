@@ -275,30 +275,29 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
                 
 
                     var execute = IpcClient.GetIPCExecutor(_clientStreamWrapper).Invoke(classId.ToGuid(), "", Execute.GetMethods, new ParameterInfoTO[] { });
-                    var ipcMethods = execute as List<MethodInfoTO>;
-                    if (ipcMethods != null)
+                if (execute is List<MethodInfoTO> ipcMethods)
+                {
+
+                    foreach (MethodInfoTO ipcMethod in ipcMethods)
                     {
-
-                        foreach (MethodInfoTO ipcMethod in ipcMethods)
+                        var parameterInfos = ipcMethod.Parameters;
+                        var serviceMethod = new ServiceMethod { Name = ipcMethod.Name };
+                        foreach (var parameterInfo in parameterInfos)
                         {
-                            var parameterInfos = ipcMethod.Parameters;
-                            var serviceMethod = new ServiceMethod { Name = ipcMethod.Name };
-                            foreach (var parameterInfo in parameterInfos)
+                            serviceMethod.Parameters.Add(new MethodParameter
                             {
-                                serviceMethod.Parameters.Add(new MethodParameter
-                                {
-                                    DefaultValue = parameterInfo.DefaultValue?.ToString() ?? string.Empty,
-                                    EmptyToNull = false,
-                                    IsRequired = true,
-                                    Name = parameterInfo.Name,
-                                    TypeName = parameterInfo.TypeName
-                                });
+                                DefaultValue = parameterInfo.DefaultValue?.ToString() ?? string.Empty,
+                                EmptyToNull = false,
+                                IsRequired = true,
+                                Name = parameterInfo.Name,
+                                TypeName = parameterInfo.TypeName
+                            });
 
-                            }
-                            serviceMethodList.Add(serviceMethod);
                         }
+                        serviceMethodList.Add(serviceMethod);
+                    }
 
-                    
+
 
                     orderMethodsList.AddRange(serviceMethodList.OrderBy(method => method.Name));
                     return orderMethodsList;

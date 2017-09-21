@@ -71,8 +71,7 @@ namespace Dev2.TO
                     }
                     if (e.IsWarewolfAtomResult)
                     {
-                        var x = e as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
-                        if (x != null && x.Item.IsDataString)
+                        if (e is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult x && x.Item.IsDataString)
                         {
                             if (((DataStorage.WarewolfAtom.DataString)x.Item).Item == "true")
                             {

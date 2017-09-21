@@ -209,8 +209,7 @@ namespace Dev2.Studio.ViewModels
                 }
                 if (ActiveItem.WorkSurfaceKey.WorkSurfaceContext != WorkSurfaceContext.Workflow)
                 {
-                    var vm = ActiveItem.WorkSurfaceViewModel as IStudioTab;
-                    if (vm != null)
+                    if (ActiveItem.WorkSurfaceViewModel is IStudioTab vm)
                     {
                         return new AuthorizeCommand(AuthorizationContext.Any, o => vm.DoDeactivate(false), o => vm.IsDirty);
                     }
@@ -1535,13 +1534,11 @@ namespace Dev2.Studio.ViewModels
         {
             if (success)
             {
-                var wfItem = item?.WorkSurfaceViewModel as IWorkflowDesignerViewModel;
-                if (wfItem != null)
+                if (item?.WorkSurfaceViewModel is IWorkflowDesignerViewModel wfItem)
                 {
                     _worksurfaceContextManager.AddWorkspaceItem(wfItem.ResourceModel);
                 }
-                var studioTestViewModel = item?.WorkSurfaceViewModel as StudioTestViewModel;
-                if (studioTestViewModel != null)
+                if (item?.WorkSurfaceViewModel is StudioTestViewModel studioTestViewModel)
                 {
                     var serviceTestViewModel = studioTestViewModel.ViewModel as ServiceTestViewModel;
                     EventPublisher.Publish(serviceTestViewModel?.SelectedServiceTest != null
@@ -1889,11 +1886,9 @@ namespace Dev2.Studio.ViewModels
                     }
                     if (vm.WorkSurfaceContext == WorkSurfaceContext.Workflow)
                     {
-                        var workflowDesignerViewModel = vm as WorkflowDesignerViewModel;
-                        if (workflowDesignerViewModel != null)
+                        if (vm is WorkflowDesignerViewModel workflowDesignerViewModel)
                         {
-                            var resourceModel = workflowDesignerViewModel.ResourceModel as IContextualResourceModel;
-                            if (resourceModel != null && !resourceModel.IsWorkflowSaved)
+                            if (workflowDesignerViewModel.ResourceModel is IContextualResourceModel resourceModel && !resourceModel.IsWorkflowSaved)
                             {
                                 closeStudio = CallSaveDialog(closeStudio);
                                 break;
@@ -1902,8 +1897,7 @@ namespace Dev2.Studio.ViewModels
                     }
                     else if (vm.WorkSurfaceContext == WorkSurfaceContext.Settings)
                     {
-                        var settingsViewModel = vm as SettingsViewModel;
-                        if (settingsViewModel != null && settingsViewModel.IsDirty)
+                        if (vm is SettingsViewModel settingsViewModel && settingsViewModel.IsDirty)
                         {
                             closeStudio = CallSaveDialog(closeStudio);
                             break;
@@ -1920,8 +1914,7 @@ namespace Dev2.Studio.ViewModels
                     }
                     else if (vm.GetType().Name == "SourceViewModel`1")
                     {
-                        var serverSourceModel = vm as SourceViewModel<IServerSource>;
-                        if (serverSourceModel != null)
+                        if (vm is SourceViewModel<IServerSource> serverSourceModel)
                         {
                             if (serverSourceModel.IsDirty || serverSourceModel.ViewModel.HasChanged)
                             {
@@ -1929,8 +1922,7 @@ namespace Dev2.Studio.ViewModels
                                 break;
                             }
                         }
-                        var pluginSourceModel = vm as SourceViewModel<IPluginSource>;
-                        if (pluginSourceModel != null)
+                        if (vm is SourceViewModel<IPluginSource> pluginSourceModel)
                         {
                             if (pluginSourceModel.IsDirty || pluginSourceModel.ViewModel.HasChanged)
                             {
@@ -1938,8 +1930,7 @@ namespace Dev2.Studio.ViewModels
                                 break;
                             }
                         }
-                        var wcfServerSourceModel = vm as SourceViewModel<IWcfServerSource>;
-                        if (wcfServerSourceModel != null)
+                        if (vm is SourceViewModel<IWcfServerSource> wcfServerSourceModel)
                         {
                             if (wcfServerSourceModel.IsDirty || wcfServerSourceModel.ViewModel.HasChanged)
                             {
@@ -1947,8 +1938,7 @@ namespace Dev2.Studio.ViewModels
                                 break;
                             }
                         }
-                        var rabbitMqServiceSourceModel = vm as SourceViewModel<IRabbitMQServiceSourceDefinition>;
-                        if (rabbitMqServiceSourceModel != null)
+                        if (vm is SourceViewModel<IRabbitMQServiceSourceDefinition> rabbitMqServiceSourceModel)
                         {
                             if (rabbitMqServiceSourceModel.IsDirty || rabbitMqServiceSourceModel.ViewModel.HasChanged)
                             {
@@ -1956,8 +1946,7 @@ namespace Dev2.Studio.ViewModels
                                 break;
                             }
                         }
-                        var sharepointServerSourceModel = vm as SourceViewModel<ISharepointServerSource>;
-                        if (sharepointServerSourceModel != null)
+                        if (vm is SourceViewModel<ISharepointServerSource> sharepointServerSourceModel)
                         {
                             if (sharepointServerSourceModel.IsDirty || sharepointServerSourceModel.ViewModel.HasChanged)
                             {
@@ -1965,8 +1954,7 @@ namespace Dev2.Studio.ViewModels
                                 break;
                             }
                         }
-                        var oAuthSourceModel = vm as SourceViewModel<IOAuthSource>;
-                        if (oAuthSourceModel != null)
+                        if (vm is SourceViewModel<IOAuthSource> oAuthSourceModel)
                         {
                             if (oAuthSourceModel.IsDirty || oAuthSourceModel.ViewModel.HasChanged)
                             {
@@ -1974,8 +1962,7 @@ namespace Dev2.Studio.ViewModels
                                 break;
                             }
                         }
-                        var exchangeSourceModel = vm as SourceViewModel<IExchangeSource>;
-                        if (exchangeSourceModel != null)
+                        if (vm is SourceViewModel<IExchangeSource> exchangeSourceModel)
                         {
                             if (exchangeSourceModel.IsDirty || exchangeSourceModel.ViewModel.HasChanged)
                             {
@@ -1983,8 +1970,7 @@ namespace Dev2.Studio.ViewModels
                                 break;
                             }
                         }
-                        var comPluginSourceModel = vm as SourceViewModel<IComPluginSource>;
-                        if (comPluginSourceModel != null)
+                        if (vm is SourceViewModel<IComPluginSource> comPluginSourceModel)
                         {
                             if (comPluginSourceModel.IsDirty || comPluginSourceModel.ViewModel.HasChanged)
                             {
@@ -1992,8 +1978,7 @@ namespace Dev2.Studio.ViewModels
                                 break;
                             }
                         }
-                        var webServiceSourceModel = vm as SourceViewModel<IWebServiceSource>;
-                        if (webServiceSourceModel != null)
+                        if (vm is SourceViewModel<IWebServiceSource> webServiceSourceModel)
                         {
                             if (webServiceSourceModel.IsDirty || webServiceSourceModel.ViewModel.HasChanged)
                             {
@@ -2001,8 +1986,7 @@ namespace Dev2.Studio.ViewModels
                                 break;
                             }
                         }
-                        var emailServiceSourceModel = vm as SourceViewModel<IEmailServiceSource>;
-                        if (emailServiceSourceModel != null)
+                        if (vm is SourceViewModel<IEmailServiceSource> emailServiceSourceModel)
                         {
                             if (emailServiceSourceModel.IsDirty || emailServiceSourceModel.ViewModel.HasChanged)
                             {
@@ -2010,8 +1994,7 @@ namespace Dev2.Studio.ViewModels
                                 break;
                             }
                         }
-                        var dbSourceModel = vm as SourceViewModel<IDbSource>;
-                        if (dbSourceModel != null)
+                        if (vm is SourceViewModel<IDbSource> dbSourceModel)
                         {
                             if (dbSourceModel.IsDirty || dbSourceModel.ViewModel.HasChanged)
                             {
@@ -2139,8 +2122,7 @@ namespace Dev2.Studio.ViewModels
             {
                 fileChooserView.ShowView(selectedFiles.ToList());
             }
-            var fileChooser = fileChooserView.DataContext as FileChooser;
-            if (fileChooser != null && fileChooser.Result == MessageBoxResult.OK)
+            if (fileChooserView.DataContext is FileChooser fileChooser && fileChooser.Result == MessageBoxResult.OK)
             {
                 message.SelectedFiles = fileChooser.GetAttachments();
             }

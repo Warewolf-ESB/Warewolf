@@ -914,8 +914,7 @@ namespace Dev2.Runtime.ESB.Execution
                 }
                 else if (foundTestStep.ActivityType == typeof(DsfSequenceActivity).Name)
                 {
-                    var sequenceActivity = resource as DsfSequenceActivity;
-                    if (sequenceActivity != null)
+                    if (resource is DsfSequenceActivity sequenceActivity)
                     {
                         var acts = sequenceActivity.Activities;
                         for (int index = 0; index < acts.Count; index++)
@@ -931,8 +930,7 @@ namespace Dev2.Runtime.ESB.Execution
                 }
                 else if (foundTestStep.ActivityType == typeof(DsfForEachActivity).Name)
                 {
-                    var forEach = resource as DsfForEachActivity;
-                    if (forEach != null)
+                    if (resource is DsfForEachActivity forEach)
                     {
                         if (foundTestStep.Children != null)
                         {
@@ -943,8 +941,7 @@ namespace Dev2.Runtime.ESB.Execution
                 }
                 else if (foundTestStep.ActivityType == typeof(DsfSelectAndApplyActivity).Name)
                 {
-                    var forEach = resource as DsfSelectAndApplyActivity;
-                    if (forEach != null)
+                    if (resource is DsfSelectAndApplyActivity forEach)
                     {
                         if (foundTestStep.Children != null)
                         {

@@ -393,14 +393,13 @@ namespace ActivityUnitTests
                 {
                     return;
                 }
-                var listResult = warewolfEvalResult as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
-                if (listResult != null)
+                if (warewolfEvalResult is CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult listResult)
                 {
-                    foreach(var res in listResult.Item)
+                    foreach (var res in listResult.Item)
                     {
                         result.Add(ExecutionEnvironment.WarewolfAtomToString(res));
                     }
-                }               
+                }
             }
             catch(Exception e)
             {

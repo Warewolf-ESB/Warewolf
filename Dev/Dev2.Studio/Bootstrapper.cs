@@ -94,8 +94,7 @@ namespace Dev2
         {
             if(_serverServiceStartedFromStudio)
             {
-                var app = Application.Current as IApp;
-                if(app != null)
+                if (Application.Current is IApp app)
                 {
                     app.ShouldRestart = true;
                 }

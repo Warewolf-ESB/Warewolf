@@ -76,8 +76,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 var fileChooser = CustomContainer.GetInstancePerRequestType<IFileChooserView>();
                 fileChooser.ShowView(false);
-                var vm = fileChooser.DataContext as FileChooser;
-                if (vm != null && vm.Result == MessageBoxResult.OK)
+                if (fileChooser.DataContext is FileChooser vm && vm.Result == MessageBoxResult.OK)
                 {
                     var selectedFiles = vm.GetAttachments();
                     if (selectedFiles != null && selectedFiles.Count > 0)

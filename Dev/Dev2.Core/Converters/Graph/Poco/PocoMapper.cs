@@ -51,12 +51,11 @@ namespace Unlimited.Framework.Converters.Graph.Poco
                 //
                 // Handle if the poco mapper is used to map to an raw enumerable
                 //
-//                paths.Add(new PocoPath("UnnamedArray"+PocoPath.EnumerableSymbol + PocoPath.SeperatorSymbol,
-//                    "UnnamedArray" + PocoPath.EnumerableSymbol + PocoPath.SeperatorSymbol));
+                //                paths.Add(new PocoPath("UnnamedArray"+PocoPath.EnumerableSymbol + PocoPath.SeperatorSymbol,
+                //                    "UnnamedArray" + PocoPath.EnumerableSymbol + PocoPath.SeperatorSymbol));
 
-                var enumerableData = data as IEnumerable;
 
-                if (enumerableData != null)
+                if (data is IEnumerable enumerableData)
                 {
                     IEnumerator enumerator = enumerableData.GetEnumerator();
                     enumerator.Reset();
@@ -66,7 +65,7 @@ namespace Unlimited.Framework.Converters.Graph.Poco
                         MapData(enumerator.Current, propertyStack, root, paths);
                         propertyStack.Pop();
 
-                        
+
                     }
                 }
             }
@@ -131,17 +130,16 @@ namespace Unlimited.Framework.Converters.Graph.Poco
                 {
                     if(propertyInfo.PropertyType.IsEnumerable())
                     {
-                        var enumerableData = propertyData as IEnumerable;
 
-                        if(enumerableData != null)
+                        if (propertyData is IEnumerable enumerableData)
                         {
-                            propertyStack.Push(new Tuple<string,bool, bool, object>(propertyInfo.Name,propertyInfo.PropertyType.IsEnumerable(), false, data));
+                            propertyStack.Push(new Tuple<string, bool, bool, object>(propertyInfo.Name, propertyInfo.PropertyType.IsEnumerable(), false, data));
                             paths.AddRange(BuildPaths(propertyData, propertyStack, root));
                             propertyStack.Pop();
 
                             IEnumerator enumerator = enumerableData.GetEnumerator();
                             enumerator.Reset();
-                            if(enumerator.MoveNext())
+                            if (enumerator.MoveNext())
                             {
                                 propertyData = enumerator.Current;
 

@@ -530,8 +530,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
         {
             if (resource.ResourceType == "ReservedService")
             {
-                var managementResource = resource as ManagementServiceResource;
-                if (managementResource != null)
+                if (resource is ManagementServiceResource managementResource)
                 {
                     result.Add(managementResource.Service);
                 }

@@ -878,10 +878,9 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                     {
                         foreach(var lineItemLineItem in lineItem.LineItems)
                         {
-                            var line = lineItemLineItem as DebugLineItem;
-                            if (line != null && line.TestStepHasError)
+                            if (lineItemLineItem is DebugLineItem line && line.TestStepHasError)
                             {
-                                theParent.AppendError(line.Value);                                
+                                theParent.AppendError(line.Value);
                             }
                         }
                     }

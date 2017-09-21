@@ -70,12 +70,11 @@ namespace Dev2.Diagnostics
             }
 
             filterText = filterText.ToLower();
-            IDebugState debugState = content as IDebugState;
 
-            if(debugState != null)
+            if (content is IDebugState debugState)
             {
                 string convertedActivityType = Convert.ToString(_enumToStringConverter.Convert(debugState.ActivityType, null, null, null));
-                if(convertedActivityType.ToLower().Contains(filterText))
+                if (convertedActivityType.ToLower().Contains(filterText))
                 {
                     return true;
                 }
@@ -108,28 +107,28 @@ namespace Dev2.Diagnostics
                 if (debugState.ActivityType == ActivityType.Step)
                 {
                     string convertedDuration = Convert.ToString(_timeSpanToStringConverter.Convert(debugState.Duration, null, null, null));
-                    if(convertedDuration.ToLower().Contains(filterText))
+                    if (convertedDuration.ToLower().Contains(filterText))
                     {
                         return true;
                     }
                 }
 
-                if(debugState.ActivityType == ActivityType.Workflow)
+                if (debugState.ActivityType == ActivityType.Workflow)
                 {
                     string convertedStartTime = Convert.ToString(_dateTimeToStringConverter.Convert(debugState.StartTime, null, null, null));
-                    if(debugState.StateType == StateType.Before && convertedStartTime.ToLower().Contains(filterText))
+                    if (debugState.StateType == StateType.Before && convertedStartTime.ToLower().Contains(filterText))
                     {
                         return true;
                     }
 
                     string convertedEndTime = Convert.ToString(_dateTimeToStringConverter.Convert(debugState.EndTime, null, null, null));
-                    if(debugState.StateType == StateType.After && convertedEndTime.ToLower().Contains(filterText))
+                    if (debugState.StateType == StateType.After && convertedEndTime.ToLower().Contains(filterText))
                     {
                         return true;
                     }
                 }
 
-                if(debugState.Inputs != null && debugState.Inputs.Any(o => o.Contains(filterText)))
+                if (debugState.Inputs != null && debugState.Inputs.Any(o => o.Contains(filterText)))
                 {
                     return true;
                 }
@@ -139,7 +138,7 @@ namespace Dev2.Diagnostics
                     return true;
                 }
             }
-            else if(content is string && content.ToString().ToLower().Contains(filterText))
+            else if (content is string && content.ToString().ToLower().Contains(filterText))
             {
                 return true;
             }

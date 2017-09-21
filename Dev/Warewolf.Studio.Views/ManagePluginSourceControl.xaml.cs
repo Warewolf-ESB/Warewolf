@@ -122,8 +122,7 @@ namespace Warewolf.Studio.Views
 
         private void GacAssemblyNameTextBox_OnTextChanged(object sender, RoutedEventArgs e)
         {
-            var intellisenseTextBox = sender as IntellisenseTextBox;
-            if (intellisenseTextBox != null)
+            if (sender is IntellisenseTextBox intellisenseTextBox)
             {
                 if (string.IsNullOrWhiteSpace(intellisenseTextBox.Text))
                 {

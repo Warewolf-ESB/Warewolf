@@ -154,15 +154,13 @@ namespace Dev2.Studio.Core.DataList
 
             }
 
-            var objToProcess = JsonConvert.DeserializeObject(json) as JObject;
-            if (objToProcess != null)
+            if (JsonConvert.DeserializeObject(json) is JObject objToProcess)
             {
                 ProcessObjectForComplexObjectCollection(parentObj, objToProcess);
             }
             else
             {
-                var arrToProcess = JsonConvert.DeserializeObject(json) as JArray;
-                if (arrToProcess != null)
+                if (JsonConvert.DeserializeObject(json) is JArray arrToProcess)
                 {
                     var child = arrToProcess.Children().FirstOrDefault();
                     ProcessObjectForComplexObjectCollection(parentObj, child as JObject);
@@ -202,8 +200,7 @@ namespace Dev2.Studio.Core.DataList
                             continue;
                         }
 
-                        var obj = arrayVal.FirstOrDefault() as JObject;
-                        if (obj != null)
+                        if (arrayVal.FirstOrDefault() is JObject obj)
                         {
                             ProcessObjectForComplexObjectCollection(childObj, obj);
                         }

@@ -28,8 +28,7 @@ namespace Dev2.Security
         public ClientAuthorizationService(ISecurityService securityService, bool isLocalConnection)
             : base(securityService, isLocalConnection)
         {
-            var clientSecurityService = securityService as ClientSecurityService;
-            if(clientSecurityService != null)
+            if (securityService is ClientSecurityService clientSecurityService)
             {
                 _environmentConnection = clientSecurityService.EnvironmentConnection;
             }

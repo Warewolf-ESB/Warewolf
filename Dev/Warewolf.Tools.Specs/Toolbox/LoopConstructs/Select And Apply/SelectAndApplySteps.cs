@@ -135,16 +135,14 @@ namespace Warewolf.ToolsSpecs.Toolbox.LoopConstructs.Select_And_Apply
             var warewolfEvalResult = DataObject.Environment.Eval(item, 0);
             if (warewolfEvalResult.IsWarewolfAtomResult)
             {
-                var result = warewolfEvalResult as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
-                if (result != null)
+                if (warewolfEvalResult is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult result)
                 {
                     Assert.AreEqual(value, result.Item.ToString());
                 }
             }
             else if (warewolfEvalResult.IsWarewolfAtomListresult)
             {
-                var result = warewolfEvalResult as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
-                if (result != null && result.Item.Count == 1)
+                if (warewolfEvalResult is CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult result && result.Item.Count == 1)
                 {
                     var warewolfAtom = result.Item[0];
                     Assert.AreEqual(value, warewolfAtom.ToString());

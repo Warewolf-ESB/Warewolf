@@ -198,10 +198,8 @@ namespace Dev2.Runtime.DynamicProxy
 
             foreach (var importExtension in importer.WsdlImportExtensions)
             {
-                var dcConverter =
-                    importExtension as DataContractSerializerMessageContractImporter;
 
-                if (dcConverter != null)
+                if (importExtension is DataContractSerializerMessageContractImporter dcConverter)
                 {
                     if (options.FormatMode ==
                         DynamicProxyFactoryOptions.FormatModeOptions.XmlSerializer)

@@ -33,8 +33,7 @@ namespace Dev2.Studio.Core.DataList
                 var vars = _variableList.Select(ParseExpression).OrderBy(a => a).Where(a => a.IsScalarExpression);
                 foreach (var var in vars)
                 {
-                    var currentVar = var as LanguageAST.LanguageExpression.ScalarExpression;
-                    if (currentVar != null)
+                    if (var is LanguageAST.LanguageExpression.ScalarExpression currentVar)
                     {
                         string key = DataListUtil.AddBracketsToValueIfNotExist(currentVar.Item);
                         foreach (var permutation in PermuteCapitalizations(key))
@@ -47,8 +46,7 @@ namespace Dev2.Studio.Core.DataList
                 vars = _variableList.Select(ParseExpression).OrderBy(a => a).Where(a => a.IsRecordSetNameExpression);
                 foreach (var var in vars)
                 {
-                    var currentVar = var as LanguageAST.LanguageExpression.RecordSetNameExpression;
-                    if (currentVar != null)
+                    if (var is LanguageAST.LanguageExpression.RecordSetNameExpression currentVar)
                     {
                         var name = DataListUtil.AddBracketsToValueIfNotExist(DataListUtil.MakeValueIntoHighLevelRecordset(currentVar.Item.Name, Equals(currentVar.Item.Index, LanguageAST.Index.Star)));
                         foreach (var permutation in PermuteCapitalizations(name))
@@ -61,8 +59,7 @@ namespace Dev2.Studio.Core.DataList
                 vars = _variableList.Select(ParseExpression).OrderBy(a => a).Where(a => a.IsRecordSetExpression || a.IsRecordSetNameExpression);
                 foreach (var var in vars)
                 {
-                    var currentVar = var as LanguageAST.LanguageExpression.RecordSetExpression;
-                    if (currentVar != null)
+                    if (var is LanguageAST.LanguageExpression.RecordSetExpression currentVar)
                     {
                         var index = "";
                         if (currentVar.Item.Index.IsStar)
@@ -80,8 +77,7 @@ namespace Dev2.Studio.Core.DataList
                 vars = _variableList.Select(ParseExpression).OrderBy(a => a).Where(a => a.IsJsonIdentifierExpression);
                 foreach (var var in vars)
                 {
-                    var jsonIdentifierExpression = var as LanguageAST.LanguageExpression.JsonIdentifierExpression;
-                    if (jsonIdentifierExpression != null)
+                    if (var is LanguageAST.LanguageExpression.JsonIdentifierExpression jsonIdentifierExpression)
                     {
                         AddJsonVariables(jsonIdentifierExpression.Item, null);
                     }
@@ -89,8 +85,7 @@ namespace Dev2.Studio.Core.DataList
                 vars = _variableList.Select(ParseExpression).OrderBy(a => a);
                 foreach (var var in vars)
                 {
-                    var recordSetExpression = var as LanguageAST.LanguageExpression.RecordSetExpression;
-                    if (recordSetExpression != null)
+                    if (var is LanguageAST.LanguageExpression.RecordSetExpression recordSetExpression)
                     {
                         var index = "";
                         if (recordSetExpression.Item.Index.IsStar)
@@ -105,8 +100,7 @@ namespace Dev2.Studio.Core.DataList
                     }
                     else
                     {
-                        var recordSetNameExpression = var as LanguageAST.LanguageExpression.RecordSetNameExpression;
-                        if (recordSetNameExpression != null)
+                        if (var is LanguageAST.LanguageExpression.RecordSetNameExpression recordSetNameExpression)
                         {
                             var name = DataListUtil.AddBracketsToValueIfNotExist(DataListUtil.MakeValueIntoHighLevelRecordset(recordSetNameExpression.Item.Name, Equals(recordSetNameExpression.Item.Index, LanguageAST.Index.Star)));
                             foreach (var permutation in PermuteCapitalizations(name))
@@ -116,8 +110,7 @@ namespace Dev2.Studio.Core.DataList
                         }
                         else
                         {
-                            var scalarExpression = var as LanguageAST.LanguageExpression.ScalarExpression;
-                            if (scalarExpression != null)
+                            if (var is LanguageAST.LanguageExpression.ScalarExpression scalarExpression)
                             {
                                 string key = DataListUtil.AddBracketsToValueIfNotExist(scalarExpression.Item);
                                 foreach (var permutation in PermuteCapitalizations(key))
@@ -150,8 +143,7 @@ namespace Dev2.Studio.Core.DataList
             if (currentVar != null)
             {
 
-                var namedExpression = currentVar as LanguageAST.JsonIdentifierExpression.NameExpression;
-                if (namedExpression != null)
+                if (currentVar is LanguageAST.JsonIdentifierExpression.NameExpression namedExpression)
                 {
                     var name = namedExpression.Item.Name;
                     var objectName = parentName == null ? name : parentName + "." + name;
@@ -167,8 +159,7 @@ namespace Dev2.Studio.Core.DataList
                     return null;
                 }
 
-                var indexNestedExpression = currentVar as LanguageAST.JsonIdentifierExpression.IndexNestedNameExpression;
-                if (indexNestedExpression != null)
+                if (currentVar is LanguageAST.JsonIdentifierExpression.IndexNestedNameExpression indexNestedExpression)
                 {
                     var name = Equals(indexNestedExpression.Item.Index, LanguageAST.Index.Star) ? indexNestedExpression.Item.ObjectName + "(*)" : indexNestedExpression.Item.ObjectName + "()";
                     var objectName = parentName == null ? name : parentName + "." + name;
@@ -184,8 +175,7 @@ namespace Dev2.Studio.Core.DataList
                     return AddJsonVariables(indexNestedExpression.Item.Next, objectName);
                 }
 
-                var nestedNameExpression = currentVar as LanguageAST.JsonIdentifierExpression.NestedNameExpression;
-                if (nestedNameExpression != null)
+                if (currentVar is LanguageAST.JsonIdentifierExpression.NestedNameExpression nestedNameExpression)
                 {
                     var objectName = parentName == null ? nestedNameExpression.Item.ObjectName : parentName + "." + nestedNameExpression.Item.ObjectName;
                     if (!objectName.Contains("@"))

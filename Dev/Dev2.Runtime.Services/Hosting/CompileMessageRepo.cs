@@ -113,9 +113,8 @@ namespace Dev2.Runtime.Hosting
                                 {
                                     object obj = bf.Deserialize(s);
 
-                                    var listOf = obj as IList<ICompileMessageTO>;
 
-                                    if(listOf != null)
+                                    if (obj is IList<ICompileMessageTO> listOf)
                                     {
                                         if (Guid.TryParse(fname, out Guid id))
                                         {

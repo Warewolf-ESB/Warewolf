@@ -98,8 +98,7 @@ namespace Dev2.Data
                             if (!string.IsNullOrEmpty(c.OuterXml))
                             {
                                 var jsonData = JsonConvert.SerializeXNode(XDocument.Parse(c.OuterXml),Newtonsoft.Json.Formatting.None,true);
-                                var obj = JsonConvert.DeserializeObject(jsonData.Replace("@", "")) as JObject;
-                                if(obj != null)
+                                if (JsonConvert.DeserializeObject(jsonData.Replace("@", "")) is JObject obj)
                                 {
                                     var value = obj.ToString();
                                     complexObject.Value = value;

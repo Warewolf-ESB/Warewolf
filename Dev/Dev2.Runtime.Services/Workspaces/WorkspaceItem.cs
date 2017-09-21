@@ -18,6 +18,9 @@ namespace Dev2.Workspaces
     [Serializable]
     public class WorkspaceItem : IWorkspaceItem
     {
+        public static readonly string ServiceServiceType = "DynamicService";
+        public static readonly string SourceServiceType = "Source";
+
         #region Initialization
 
         public WorkspaceItem(Guid workspaceId, Guid serverId,Guid environmentId,Guid resourceId)

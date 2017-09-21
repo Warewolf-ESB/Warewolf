@@ -103,8 +103,7 @@ namespace Dev2.Studio.Core.Network
                 reader.Close();
                 dataStream.Close();
                 response.Close();
-                var responseObj = JsonConvert.DeserializeObject(responseFromServer) as JObject;
-                if (responseObj != null)
+                if (JsonConvert.DeserializeObject(responseFromServer) is JObject responseObj)
                 {
                     var urlToOpen = ((dynamic)responseObj).data.url;
 

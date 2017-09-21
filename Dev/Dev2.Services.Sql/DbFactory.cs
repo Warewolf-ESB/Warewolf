@@ -70,14 +70,13 @@ namespace Dev2.Services.Sql
 
         static DataTable GetSqlServerSchema(IDbConnection connection, string collectionName)
         {
-            var sqlConnection = connection as SqlConnection;
-            if (sqlConnection != null)
+            if (connection is SqlConnection sqlConnection)
             {
                 return sqlConnection.GetSchema(collectionName);
             }
-            
+
             else
-            
+
             {
                 throw new Exception(string.Format(ErrorResource.InvalidSqlConnection, "Sql"));
             }

@@ -345,8 +345,7 @@ namespace Warewolf.Studio.ViewModels
                     {
                         foreach (var serviceTestOutput in StepOutputs)
                         {
-                            var item = serviceTestOutput as ServiceTestOutput;
-                            if (item != null)
+                            if (serviceTestOutput is ServiceTestOutput item)
                             {
                                 if (!item.IsSearchCriteriaEnabled)
                                 {
