@@ -18,6 +18,7 @@ namespace Dev2.ViewModels.Merge
         private ObservableCollection<IMergeToolModel> _children;
         private string _parentDescription;
         private bool _hasParent;
+        private bool _isVariablesChecked;
 
         public MergeToolModel()
         {
@@ -73,6 +74,16 @@ namespace Dev2.ViewModels.Merge
             }
         }
 
+        public bool IsVariablesChecked
+        {
+            get => _isVariablesChecked;
+            set
+            {
+                _isVariablesChecked = value;
+                OnPropertyChanged("IsVariablesChecked");
+            }
+        }
+
         public ObservableCollection<IMergeToolModel> Children
         {
             get => _children;
@@ -82,6 +93,8 @@ namespace Dev2.ViewModels.Merge
                 OnPropertyChanged("Children");
             }
         }
+
+        public Guid UniqueId { get; set; }
 
         public string ParentDescription
         {

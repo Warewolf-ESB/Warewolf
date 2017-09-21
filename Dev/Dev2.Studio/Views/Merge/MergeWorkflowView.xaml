@@ -191,7 +191,6 @@
 
                     <Grid Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2">
                         <TreeView x:Name="MergeDifferenceDataTree"
-			                      Grid.Row="2"
 			                      ItemsSource="{Binding Conflicts, Mode=TwoWay, IsAsync=True}"
 			                      HorizontalAlignment="Stretch"
 			                      Focusable="False"
@@ -350,6 +349,7 @@
                                                           HorizontalContentAlignment="Stretch"
                                                           Style="{StaticResource MergeTreeViewStyle}"
                                                           Grid.IsSharedSizeScope="True"
+                                                          Margin="10,0,0,0"
                                                           AutomationProperties.AutomationId="UI_MergeTreeView_AutoID"
                                                           ScrollViewer.CanContentScroll="True"
                                                           VirtualizingStackPanel.IsVirtualizing="True"
