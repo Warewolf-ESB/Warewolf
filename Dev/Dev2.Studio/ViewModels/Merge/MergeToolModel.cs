@@ -10,20 +10,19 @@ namespace Dev2.ViewModels.Merge
 {
     public class MergeToolModel : BindableBase, IMergeToolModel
     {
-
         private bool _isMergeExpanderEnabled;
         private ImageSource _mergeIcon;
         private bool _isMergeExpanded;
         private string _mergeDescription;
         private bool _isMergeChecked;
         private ObservableCollection<IMergeToolModel> _children;
+        private string _parentDescription;
+        private bool _hasParent;
 
         public MergeToolModel()
         {
             Children = new ObservableCollection<IMergeToolModel>();
         }
-
-        public bool IsVariablesChecked { get; set; }
 
         public ActivityDesignerViewModel ActivityDesignerViewModel { get; set; }
 
@@ -84,6 +83,23 @@ namespace Dev2.ViewModels.Merge
             }
         }
 
-        public Guid UniqueId { get; set; }
+        public string ParentDescription
+        {
+            get { return _parentDescription; }
+            set
+            {
+                _parentDescription = value;
+                OnPropertyChanged(() => ParentDescription);
+            }
+        }
+        public bool HasParent
+        {
+            get { return _hasParent; }
+            set
+            {
+                _hasParent = value;
+                OnPropertyChanged(() => HasParent);
+            }
+        }
     }
 }
