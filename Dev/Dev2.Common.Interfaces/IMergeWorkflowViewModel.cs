@@ -26,6 +26,7 @@ namespace Dev2.Common.Interfaces
         bool IsVariablesChecked { get; set; }
         bool IsWorkflowNameChecked { get; set; }
         IMergeToolModel MergeToolModel { get; set; }
+        ObservableCollection<IMergeToolModel> Children { get; set; }
         void GetDataList();
     }
 
@@ -34,6 +35,7 @@ namespace Dev2.Common.Interfaces
         IMergeToolModel CurrentViewModel { get; set; }
         IMergeToolModel DiffViewModel { get; set; }
         ObservableCollection<ICompleteConflict> Children { get; set; }
+        Guid UniqueId { get; set; }
     }
 
     public interface IMergeToolModel
@@ -43,6 +45,9 @@ namespace Dev2.Common.Interfaces
         ImageSource MergeIcon { get; set; }
         string MergeDescription { get; set; }
         bool IsMergeChecked { get; set; }
+        bool IsVariablesChecked { get; set; }
+        ObservableCollection<IMergeToolModel> Children { get; set; }
+        Guid UniqueId { get; set; }
         string ParentDescription { get; set; }
         bool HasParent { get; set; }
     }

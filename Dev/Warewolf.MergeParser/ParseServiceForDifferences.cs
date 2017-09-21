@@ -10,79 +10,22 @@ using Dev2;
 using Dev2.Activities;
 using Dev2.Studio.Interfaces;
 using Dev2.Common;
-using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Dev2.Utilities;
 
 namespace Warewolf.MergeParser
 {
     public class ParseServiceForDifferences : IParseServiceForDifferences
     {
-        public ParseServiceForDifferences()
-        {
-            CurrentDifferences = new List<ModelItem>();
-            Differences = new List<ModelItem>();
-        }
-        public List<ModelItem> CurrentDifferences { get; private set; }
-        public List<ModelItem> Differences { get; private set; }
+        public (List<ModelItem> nodeList, Flowchart flowchartDiff) CurrentDifferences { get; private set; }
+        public (List<ModelItem> nodeList, Flowchart flowchartDiff) Differences { get; private set; }
 
-        private ModelItem GetCurrentModelItemUniqueId(IEnumerable<ModelItem> items, string uniqueId)
+        private ModelItem GetCurrentModelItemUniqueId(IEnumerable<IDev2Activity> items, IDev2Activity activity)
         {
+            if (activity == null) return default;
             foreach (var modelItem in items)
-            {
-                if (modelItem.ItemType == typeof(FlowDecision))
-                {
-                    var act = modelItem.GetCurrentValue<FlowDecision>();
-                    var dec = act.Condition as DsfFlowDecisionActivity;
-                    if (dec != null && dec.UniqueID.Equals(uniqueId, StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        return modelItem;
-                    }
-                }
-                else if (modelItem.ItemType == typeof(FlowSwitch<string>))
-                {
-                    var condition = modelItem.GetProperty("Expression");
-                    var activity = (DsfFlowNodeActivity<string>)condition;
-                    if (activity != null && activity.UniqueID.Equals(uniqueId, StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        return modelItem;
-                    }
-                }
-                else
-                {
-                    if (modelItem.GetCurrentValue<FlowStep>().Action is IDev2Activity currentValue &&
-                        currentValue.UniqueID.Equals(uniqueId, StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        return modelItem;
-                    }
-                }
-            }
-
+                if (modelItem.UniqueID.Equals(activity.UniqueID))
+                    return ModelItemUtils.CreateModelItem(activity);
             return default;
-        }
-
-        private List<IDev2Activity> DiscoverActivities(List<ModelItem> modelItems)
-        {
-            var discoverActivities = new List<IDev2Activity>();
-            foreach (var modelItem in modelItems)
-            {
-                if (modelItem.ItemType == typeof(FlowDecision))
-                {
-                    var dev2Activity = modelItem.GetProperty<IDev2Activity>("Condition");
-                    discoverActivities.Add(dev2Activity);
-                }
-                else if (modelItem.ItemType == typeof(FlowSwitch<string>))
-                {
-                    var condition = modelItem.GetProperty("Expression");
-                    var activity = (DsfFlowNodeActivity<string>)condition;
-                    discoverActivities.Add(activity);
-                }
-                else
-                {
-                    var currentValue = modelItem.GetProperty<IDev2Activity>("Action");
-                    discoverActivities.Add(currentValue);
-                }
-
-            }
-            return discoverActivities;
         }
 
         public List<(Guid uniqueId, ModelItem current, ModelItem difference, bool conflict)> GetDifferences(IContextualResourceModel current, IContextualResourceModel difference)
@@ -90,20 +33,21 @@ namespace Warewolf.MergeParser
             var conflictList = new List<(Guid uniqueId, ModelItem current, ModelItem difference, bool conflict)>();
             CurrentDifferences = GetNodes(current);
             Differences = GetNodes(difference);
-            var currenctDifferences = DiscoverActivities(CurrentDifferences);
-            var allDifferencesActivities = DiscoverActivities(Differences);
-            var mergeHeadActivities = CurrentDifferences.Select(item => GetActivity(currenctDifferences, item)).ToList();
-            var headActivities = Differences.Select(modelItem => GetActivity(allDifferencesActivities, modelItem)).ToList();
-            List<IDev2Activity> equalItems = new List<IDev2Activity>();
-            foreach (var mergeHeadActivity in mergeHeadActivities)
+            var parsedCurrent = GetActivity(CurrentDifferences.flowchartDiff);
+            var parsedDifference = GetActivity(Differences.flowchartDiff);
+            var equalItems = new List<IDev2Activity>();
+            var flatCurrent = ChartToFlatList(parsedCurrent).ToList();
+            var flatDifference = ChartToFlatList(parsedDifference).ToList();
+            foreach (var mergeHeadActivity in flatCurrent)
             {
-                var singleOrDefault = headActivities.SingleOrDefault(activity => activity.Equals(mergeHeadActivity));
+                var singleOrDefault = flatDifference.SingleOrDefault(activity => activity.Equals(mergeHeadActivity));
                 if (singleOrDefault != null)
                     equalItems.Add(singleOrDefault);
             }
 
-            List<IDev2Activity> nodesDifferentInMergeHead = mergeHeadActivities.Except(headActivities, new Dev2ActivityComparer()).ToList();
-            List<IDev2Activity> toRemove = new List<IDev2Activity>();
+            var nodesDifferentInMergeHead = flatCurrent.Except(flatDifference, new Dev2ActivityComparer()).ToList();
+            var toRemove = new List<IDev2Activity>();
+
             foreach (var differentInMergeHead in nodesDifferentInMergeHead)
             {
                 if (equalItems.Contains(differentInMergeHead, new Dev2UniqueActivityComparer()))
@@ -114,8 +58,8 @@ namespace Warewolf.MergeParser
 
             nodesDifferentInMergeHead.RemoveAll(activity => toRemove.Exists(dev2Activity => dev2Activity.Equals(activity)));
 
-            var nodesDifferentInHead = headActivities.Except(mergeHeadActivities, new Dev2ActivityComparer()).ToList();
-            List<IDev2Activity> toRemove1 = new List<IDev2Activity>();
+            var nodesDifferentInHead = flatDifference.Except(flatCurrent, new Dev2ActivityComparer()).ToList();
+            var toRemove1 = new List<IDev2Activity>();
             foreach (var differentInMergeHead in nodesDifferentInHead)
             {
                 if (equalItems.Contains(differentInMergeHead))
@@ -133,29 +77,96 @@ namespace Warewolf.MergeParser
                 {
                     continue;
                 }
-                var currentModelItemUniqueId = GetCurrentModelItemUniqueId(CurrentDifferences, item.UniqueID);
+                var currentModelItemUniqueId = GetCurrentModelItemUniqueId(flatCurrent, item);
+
                 var equalItem = (Guid.Parse(item.UniqueID), currentModelItemUniqueId, currentModelItemUniqueId, false);
                 conflictList.Add(equalItem);
             }
 
-            var differenceGroups = allDifferences.GroupBy(activity => activity.UniqueID);
+            var differenceGroups = allDifferences.GroupBy(activity => activity.UniqueID).ToList();
             foreach (var item in differenceGroups)
             {
-                var currentModelItemUniqueId = GetCurrentModelItemUniqueId(CurrentDifferences, item.Key);
-                var differences = GetCurrentModelItemUniqueId(Differences, item.Key);
+                IDev2Activity currentActivity = null;
+                using (var enumerator = item.GetEnumerator())
+                {
+                    while (enumerator.MoveNext())
+                    {
+                        if (item.Key.Equals(enumerator.Current?.UniqueID))
+                        {
+                            currentActivity = enumerator.Current;
+                        }
+                    }
+                }
+                var currentModelItemUniqueId = GetCurrentModelItemUniqueId(flatCurrent, currentActivity);
+                var differences = GetCurrentModelItemUniqueId(flatDifference, currentActivity);
                 var diffItem = (Guid.Parse(item.Key), currentModelItemUniqueId, differences, true);
                 conflictList.Add(diffItem);
             }
-            return conflictList;
+            var valueTuples = new List<(Guid uniqueId, ModelItem current, ModelItem difference, bool conflict)>
+            {
+                (current.ID, ModelItemUtils.CreateModelItem(parsedCurrent),ModelItemUtils.CreateModelItem(parsedDifference), differenceGroups.Any())
+            };
+            return valueTuples;
         }
 
-        private IDev2Activity GetActivity(List<IDev2Activity> currentDifferences, ModelItem modelItem)
+        private IDev2Activity GetActivity(Flowchart modelItem)
         {
             var activityParser = CustomContainer.Get<IActivityParser>() ?? new ActivityParser();
-            return activityParser?.Parse(currentDifferences, modelItem);
+            var act = activityParser.Parse(new List<IDev2Activity>(), modelItem);
+            return act;
         }
 
-        private List<ModelItem> GetNodes(IContextualResourceModel resourceModel)
+        private IEnumerable<IDev2Activity> ChartToFlatList(IDev2Activity act)
+        {
+            if (act is DsfDecision roodDecision)
+            {
+                IEnumerable<IDev2Activity> vb;
+                if (roodDecision.TrueArm == null)
+                {
+                    vb= roodDecision.FalseArm;
+                }
+                else if(roodDecision.FalseArm == null)
+                {
+                    vb= roodDecision.TrueArm;
+                }
+                else
+                {
+                    vb = roodDecision.FalseArm.Union(roodDecision.TrueArm);
+                }
+              
+                var bbb = vb.Flatten(activity =>
+                {
+                    if (activity.NextNodes != null) return activity.NextNodes;
+
+                    if (activity is DsfDecision a)
+                    {
+                        if (a.TrueArm == null) return a.FalseArm;
+                        if (a.FalseArm == null) return a.TrueArm;
+                        var activities = a.FalseArm.Union(a.TrueArm);
+                        return activities;
+                    }
+                    return new List<IDev2Activity>();
+                });
+                return bbb.ToList();
+            }
+            var dev2Activities = act.NextNodes.Flatten(activity =>
+            {
+                if (activity.NextNodes != null) return activity.NextNodes;
+
+                if (activity is DsfDecision a)
+                {
+                    if (a.TrueArm == null) return a.FalseArm;
+                    if (a.FalseArm == null) return a.TrueArm;
+                    var activities = a.FalseArm.Union(a.TrueArm);
+                    return activities;
+                }
+                return new List<IDev2Activity>();
+            });
+
+            return dev2Activities;
+        }
+
+        private (List<ModelItem> nodeList, Flowchart flowchartDiff) GetNodes(IContextualResourceModel resourceModel)
         {
             var wd = new WorkflowDesigner();
             var xaml = resourceModel.WorkflowXaml;
@@ -176,9 +187,12 @@ namespace Warewolf.MergeParser
 
             var modelService = wd.Context.Services.GetService<ModelService>();
             var nodeList = modelService.Find(modelService.Root, typeof(FlowNode)).ToList();
+            var workflowHelper = new WorkflowHelper();
+            var flowchartDiff = workflowHelper.EnsureImplementation(modelService).Implementation as Flowchart;
             // ReSharper disable once RedundantAssignment assuming this is for disposing
             wd = null;
-            return nodeList;
+            return (nodeList, flowchartDiff);
         }
+
     }
 }

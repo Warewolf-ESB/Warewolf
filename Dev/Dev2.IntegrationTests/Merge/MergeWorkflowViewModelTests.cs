@@ -1,11 +1,8 @@
-﻿using System.Collections.ObjectModel;
-using System.Linq;
+﻿using System.Linq;
 using System.Text;
 using System.Xml.Linq;
 using Dev2.Activities;
-using Dev2.Common;
 using Dev2.Common.ExtMethods;
-using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
@@ -58,8 +55,8 @@ namespace Dev2.Integration.Tests.Merge
             var mergeWorkflowViewModel = new MergeWorkflowViewModel(loadContextualResourceModel, resourceModel);
             //---------------Test Result -----------------------
             Assert.IsNotNull(mergeWorkflowViewModel);
-            var completeConflicts = mergeWorkflowViewModel.Conflicts.Flatten(conflict => conflict.Children ?? new ObservableCollection<ICompleteConflict>());
-            
+            var conflictsCount = mergeWorkflowViewModel.Conflicts.Count;
+            Assert.AreEqual(3, conflictsCount);
         }
 
         [TestMethod]
