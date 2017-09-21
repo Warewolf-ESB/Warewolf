@@ -3,10 +3,9 @@ using Dev2.Activities.Designers2.Core;
 using Dev2.Studio.ActivityDesigners;
 using Dev2.ViewModels.Merge;
 using System;
-using System.Activities.Presentation.View;
+using System.Runtime.Remoting;
 using System.Windows;
 using System.Windows.Controls;
-using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.CustomControls
 {
@@ -18,11 +17,9 @@ namespace Dev2.CustomControls
             var vm = mergeVM?.ActivityDesignerViewModel;
             if (vm != null)
             {
-                DesignerView parentContentPane = FindDependencyParent.FindParent<DesignerView>(vm.ModelItem.View);
-
                 ActivityDesignerTemplate template;
                 Type designerType;
-                ActivityDesignerHelper.DesignerAttributes.TryGetValue(vm.ModelItem.ItemType, out designerType);
+                ActivityDesignerHelper.DesignerAttributes.TryGetValue(vm.ModelItem?.ItemType, out designerType);
                 if (designerType != null)
                 {
                     var inst = Activator.CreateInstance(designerType.Assembly.FullName, designerType.Namespace + ".Large");
@@ -37,27 +34,26 @@ namespace Dev2.CustomControls
                 {
                     var assemblyFullName = "Dev2.Activities.Designers, Version=0.0.6465.12612, Culture=neutral, PublicKeyToken=null";
                     var namespacePath = "Dev2.Activities.Designers2";
-                    var type = vm.ModelItem.ItemType;
+                    var type = vm.ModelItem?.ItemType;
+                    ObjectHandle instance = null;
 
                     if (type == typeof(DsfDecision))
                     {
-                        var inst = Activator.CreateInstance(assemblyFullName, namespacePath + ".Decision.Large");
-                        template = inst.Unwrap() as ActivityDesignerTemplate;
-                        if (template != null)
-                        {
-                            template.DataContext = vm;
-                            return TemplateGenerator.CreateDataTemplate(() => template);
-                        }
+                        instance = Activator.CreateInstance(assemblyFullName, namespacePath + ".Decision.Large");
                     }
-                    if (type == typeof(DsfSwitch))
+                    else if (type == typeof(DsfSwitch))
                     {
-                        var inst = Activator.CreateInstance(assemblyFullName, namespacePath + ".Switch.ConfigureSwitch");
-                        template = inst.Unwrap() as ActivityDesignerTemplate;
-                        if (template != null)
-                        {
-                            template.DataContext = vm;
-                            return TemplateGenerator.CreateDataTemplate(() => template);
-                        }
+                        instance = Activator.CreateInstance(assemblyFullName, namespacePath + ".Switch.ConfigureSwitch");
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                    template = instance?.Unwrap() as ActivityDesignerTemplate;
+                    if (template != null)
+                    {
+                        template.DataContext = vm;
+                        return TemplateGenerator.CreateDataTemplate(() => template);
                     }
                 }
             }
