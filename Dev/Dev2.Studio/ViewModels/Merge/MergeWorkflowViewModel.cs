@@ -4,10 +4,14 @@ using Dev2.Studio.Interfaces;
 using Dev2.Studio.ViewModels.Workflow;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using System.Collections.ObjectModel;
+using Dev2.Studio.Core.Activities.Utils;
 using System.Linq;
 using System;
 using System.Activities.Statements;
 using Dev2.Common;
+using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Dev2.Communication;
+using Dev2.Data.SystemTemplates.Models;
 
 namespace Dev2.ViewModels.Merge
 {
@@ -15,6 +19,9 @@ namespace Dev2.ViewModels.Merge
     {
         private string _displayName;
         private string _serverName;
+        private bool _hasMergeStarted;
+        private bool _hasWorkflowNameConflict;
+        private bool _hasVariablesConflict;
 
         public MergeWorkflowViewModel(IContextualResourceModel currentResourceModel, IContextualResourceModel differenceResourceModel)
         {
@@ -86,9 +93,18 @@ namespace Dev2.ViewModels.Merge
             }
 
             if (CurrentConflictViewModel != null)
+            {
                 CurrentConflictViewModel.WorkflowName = currentResourceModel.ResourceName;
+                CurrentConflictViewModel.GetDataList();
+            }
             if (DifferenceConflictViewModel != null)
+            {
                 DifferenceConflictViewModel.WorkflowName = differenceResourceModel.ResourceName;
+                DifferenceConflictViewModel.GetDataList();
+            }
+            //HasVariablesConflict = false;
+
+            HasWorkflowNameConflict = CurrentConflictViewModel?.WorkflowName != DifferenceConflictViewModel?.WorkflowName;
 
             SetServerName(currentResourceModel);
             DisplayName = "Merge Conflicts" + _serverName;
@@ -191,6 +207,36 @@ namespace Dev2.ViewModels.Merge
             {
                 _displayName = value;
                 OnPropertyChanged(() => DisplayName);
+            }
+        }
+
+        public bool HasMergeStarted
+        {
+            get => _hasMergeStarted;
+            set
+            {
+                _hasMergeStarted = value;
+                OnPropertyChanged(() => HasMergeStarted);
+            }
+        }
+
+        public bool HasWorkflowNameConflict
+        {
+            get => _hasWorkflowNameConflict;
+            set
+            {
+                _hasWorkflowNameConflict = value;
+                OnPropertyChanged(() => HasWorkflowNameConflict);
+            }
+        }
+
+        public bool HasVariablesConflict
+        {
+            get => _hasVariablesConflict;
+            set
+            {
+                _hasVariablesConflict = value;
+                OnPropertyChanged(() => HasVariablesConflict);
             }
         }
 
