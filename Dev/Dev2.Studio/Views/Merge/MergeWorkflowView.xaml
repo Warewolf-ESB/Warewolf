@@ -352,12 +352,12 @@
                                                 BorderThickness="0,0,2,0" 
                                                 Margin="0,0,-2,0" 
                                                 DataContext="{Binding CurrentViewModel}"
+                                                Visibility="{Binding HasParent, Converter={StaticResource BoolToVisibilityConverterPositive}}"
                                                 AutomationProperties.AutomationId="UI_CurrentParentDescBorder_AutoID">
                                             <StackPanel Name="CurrentParentDescSP" 
                                                         DockPanel.Dock="Left" 
                                                         Orientation="Horizontal" 
-                                                        AutomationProperties.AutomationId="UI_CurrentParentDescSP_AutoID"
-                                                        Visibility="{Binding HasParent, Converter={StaticResource BoolToVisibilityConverterPositive}}">
+                                                        AutomationProperties.AutomationId="UI_CurrentParentDescSP_AutoID">
                                                 <TextBlock Name="CurrentParentDescText" 
                                                            Margin="20,0,0,0" 
                                                            Text="{Binding ParentDescription}" 
@@ -375,12 +375,12 @@
                                                 BorderThickness="0" 
                                                 Margin="2,0,0,0" 
                                                 DataContext="{Binding DiffViewModel}"
+                                                Visibility="{Binding HasParent, Converter={StaticResource BoolToVisibilityConverterPositive}}"
                                                 AutomationProperties.AutomationId="UI_DifferenceParentDescBorder_AutoID">
                                             <StackPanel Name="DifferenceParentDescSP" 
                                                         DockPanel.Dock="Left" 
                                                         Orientation="Horizontal" 
-                                                        AutomationProperties.AutomationId="UI_DifferenceParentDescSP_AutoID"
-                                                        Visibility="{Binding HasParent, Converter={StaticResource BoolToVisibilityConverterPositive}}">
+                                                        AutomationProperties.AutomationId="UI_DifferenceParentDescSP_AutoID">
                                                 <TextBlock Name="DifferenceParentDescText" 
                                                            Margin="30,0,0,0" 
                                                            Text="{Binding ParentDescription}" 
@@ -562,6 +562,7 @@
                                                           HorizontalContentAlignment="Stretch"
                                                           Style="{StaticResource MergeTreeViewStyle}"
                                                           Grid.IsSharedSizeScope="True"
+                                                          Margin="15,0,0,0"
                                                           AutomationProperties.AutomationId="UI_TreeViewExpanderTemplateChildTreeView_AutoID"
                                                           ScrollViewer.CanContentScroll="True"
                                                           VirtualizingStackPanel.IsVirtualizing="True"
