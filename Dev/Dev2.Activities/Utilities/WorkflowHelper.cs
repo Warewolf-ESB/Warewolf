@@ -246,7 +246,6 @@ namespace Dev2.Utilities
                 variables.Add(new Variable<bool> { Name = "HasError" });
                 variables.Add(new Variable<string> { Name = "ExplicitDataList" });
                 variables.Add(new Variable<bool> { Name = "IsValid" });
-                variables.Add(new Variable<Unlimited.Applications.BusinessDesignStudio.Activities.Util> { Name = "t" });
                 variables.Add(new Variable<Dev2DataListDecisionHandler> { Name = "Dev2DecisionHandler" });
             }
             catch(Exception)

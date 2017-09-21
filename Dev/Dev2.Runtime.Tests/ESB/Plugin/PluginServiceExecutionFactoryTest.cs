@@ -184,7 +184,8 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
                 };
                 var result = PluginServiceExecutionFactory.InvokePlugin(args);
                 //------------Assert Results-------------------------
-                if (JsonConvert.DeserializeObject(result.ToString()) is dynamic castResult)
+                var castResult = JsonConvert.DeserializeObject(result.ToString()) as dynamic;
+                if (castResult != null)
                 {
                     StringAssert.Contains(castResult.Name.ToString(), "test data");
                 }
