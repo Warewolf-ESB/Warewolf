@@ -39,13 +39,11 @@ namespace Dev2.ViewModels.Merge
                 {
                     AddChild(completeConflict, mergeToolModel);
                 }
-
             }
 
             foreach (var curr in currentChanges)
             {
-                var completeConflicts = Conflicts.Flatten(completeConflict =>
-                    completeConflict.Children ?? new ObservableCollection<ICompleteConflict>());
+                var completeConflicts = Conflicts.Flatten(completeConflict => completeConflict.Children ?? new ObservableCollection<ICompleteConflict>());
                 if (completeConflicts.Any(a => a.UniqueId == curr.uniqueId)) continue;
                 var conflict = new CompleteConflict { UniqueId = curr.uniqueId };
                 CurrentConflictViewModel = new ConflictViewModel(curr.current, currentResourceModel);
