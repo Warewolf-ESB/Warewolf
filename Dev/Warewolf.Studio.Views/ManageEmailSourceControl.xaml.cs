@@ -52,7 +52,7 @@ namespace Warewolf.Studio.Views
                 case "Password":
                     return PasswordTextBox.Password;
                 case "Enable SSL":
-                    if (EnableSslYes.IsChecked)
+                    if (EnableSslYes.IsChecked.Value)
                     {
                         return "True";
                     }
