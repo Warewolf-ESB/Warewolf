@@ -300,7 +300,6 @@
     <Compile Include="Utils\FindRecordsDisplayUtilTests.cs" />
     <Compile Include="Utils\StringComparer.cs" />
     <Compile Include="Utils\SharepointUtilsTests.cs" />
-    <Compile Include="Utils\UtilTest.cs" />
     <Compile Include="Validation\IsSingleRecordSetRuleTests.cs" />
     <Compile Include="Validation\IsSingleValueRuleTests.cs" />
     <Compile Include="Validation\IsValidCalculateRuleTests.cs" />
