@@ -170,7 +170,7 @@ namespace Warewolf.MergeParser
                 if (activity is DsfSwitch b)
                 {
                     var vv = b.Switches.ToDictionary(k => k.Key);
-                    var activities = vv.Values.Select(k => k.Value);
+                    var activities = vv.Values.Select(k => k.Value).Union(b.Default);
                     return activities;
                 }
                 if (activity is DsfForEachActivity c)
