@@ -149,6 +149,12 @@ namespace Warewolf.MergeParser
                 });
                 return bbb.ToList();
             }
+            if (act is DsfSwitch @switch)
+            {
+                var vv = @switch.Switches.ToDictionary(k => k.Key);
+                var activities = vv.Values.Select(k => k.Value);
+                return activities;
+            }
             var dev2Activities = act.NextNodes.Flatten(activity =>
             {
                 if (activity.NextNodes != null) return activity.NextNodes;
@@ -160,10 +166,16 @@ namespace Warewolf.MergeParser
                     var activities = a.FalseArm.Union(a.TrueArm);
                     return activities;
                 }
+                if (activity is DsfSwitch b)
+                {
+                    var vv = b.Switches.ToDictionary(k => k.Key);
+                    var activities = vv.Values.Select(k => k.Value);
+                    return activities;
+                }
                 return new List<IDev2Activity>();
             });
 
-            return dev2Activities;
+            return dev2Activities.ToList();
         }
 
         private (List<ModelItem> nodeList, Flowchart flowchartDiff) GetNodes(IContextualResourceModel resourceModel)
