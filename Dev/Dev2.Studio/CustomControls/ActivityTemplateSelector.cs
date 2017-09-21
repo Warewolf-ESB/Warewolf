@@ -6,7 +6,6 @@ using System;
 using System.Activities.Presentation.View;
 using System.Windows;
 using System.Windows.Controls;
-using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.CustomControls
 {
@@ -21,8 +20,7 @@ namespace Dev2.CustomControls
                 DesignerView parentContentPane = FindDependencyParent.FindParent<DesignerView>(vm.ModelItem.View);
 
                 ActivityDesignerTemplate template;
-                Type designerType;
-                ActivityDesignerHelper.DesignerAttributes.TryGetValue(vm.ModelItem.ItemType, out designerType);
+                ActivityDesignerHelper.DesignerAttributes.TryGetValue(vm.ModelItem.ItemType, out var designerType);
                 if (designerType != null)
                 {
                     var inst = Activator.CreateInstance(designerType.Assembly.FullName, designerType.Namespace + ".Large");
