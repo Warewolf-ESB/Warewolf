@@ -5,6 +5,7 @@ using Dev2.Providers.Validation.Rules;
 using Dev2.Util;
 using Dev2.Utilities;
 using Dev2.Validation;
+using System;
 
 namespace Dev2.TO
 {
@@ -271,7 +272,7 @@ namespace Dev2.TO
 
         public static string GetStartTagForSearchOption(string searchOption)
         {
-            switch(searchOption)
+            switch (searchOption)
             {
                 case "Begins With":
                     return "<BeginsWith>";
@@ -291,9 +292,11 @@ namespace Dev2.TO
                     return "<Leq>";
                 case "<>":
                     return "<Neq>";
+                default:
+                    return null;
             }
-            return null;
         }
+
         public static string GetEndTagForSearchOption(string searchOption)
         {
             switch (searchOption)
@@ -316,8 +319,9 @@ namespace Dev2.TO
                     return "</Leq>";
                 case "<>":
                     return "</Neq>";
+                default:
+                    return null;
             }
-            return null;
         }
     }
 }

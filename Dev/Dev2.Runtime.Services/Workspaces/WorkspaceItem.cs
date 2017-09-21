@@ -16,13 +16,8 @@ using System.Xml.Linq;
 namespace Dev2.Workspaces
 {
     [Serializable]
-
-    public partial class WorkspaceItem : IWorkspaceItem
-
+    public class WorkspaceItem : IWorkspaceItem
     {
-        public const string ServiceServiceType = "DynamicService";
-        public const string SourceServiceType = "Source";
-
         #region Initialization
 
         public WorkspaceItem(Guid workspaceId, Guid serverId,Guid environmentId,Guid resourceId)

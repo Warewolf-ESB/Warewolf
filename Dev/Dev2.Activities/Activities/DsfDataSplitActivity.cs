@@ -502,6 +502,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             dtb.AddTokenOp(entry, t.Include, escape);
                         }
                         break;
+                    default:
+                        throw new ArgumentException("Unrecognized split type: " + t.SplitType);
                 }
                 _indexCounter++;
             }
@@ -527,14 +529,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         AddDebugItem(new DebugItemStaticDataParams(t.Include ? "Yes" : "No", "Include"), debugItem);
                         break;
                     case "End":
-                        AddDebugItem(new DebugItemStaticDataParams(t.Include ? "Yes" : "No", "Include"), debugItem);
-                        break;
                     case "Space":
-                        AddDebugItem(new DebugItemStaticDataParams(t.Include ? "Yes" : "No", "Include"), debugItem);
-                        break;
                     case "Tab":
-                        AddDebugItem(new DebugItemStaticDataParams(t.Include ? "Yes" : "No", "Include"), debugItem);
-                        break;
                     case "New Line":
                         AddDebugItem(new DebugItemStaticDataParams(t.Include ? "Yes" : "No", "Include"), debugItem);
                         break;
@@ -543,6 +539,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         AddDebugItem(new DebugItemStaticDataParams(t.Include ? "Yes" : "No", "Include"), debugItem);
                         AddDebugItem(new DebugItemStaticDataParams(t.EscapeChar, "Escape"), debugItem);
                         break;
+                    default:
+                        throw new ArgumentException("Unrecognized split type: " + t.SplitType);
                 }
                 _indexCounter++;
                 _debugInputs.Add(debugItem);

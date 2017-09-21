@@ -144,6 +144,8 @@ namespace Dev2.Activities.Sharepoint
                 case SharepointFieldType.Note:
                     returnValue = value.ToString();
                     break;
+                default:
+                    throw new ArgumentException("Unrecognized type: " + type);
             }
             return returnValue;
         }

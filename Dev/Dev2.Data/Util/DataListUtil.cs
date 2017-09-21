@@ -425,6 +425,11 @@ namespace Dev2.Data.Util
             return false;
         }
 
+        public static bool IsXmlOrJson(string data)
+        {
+            return IsJson(data) || IsXml(data);
+        }
+
         public static IList<string> GetAllPossibleExpressionsForFunctionOperations(string expression, IExecutionEnvironment env, out ErrorResultTO errors, int update)
         {
             IList<string> result = new List<string>();

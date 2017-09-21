@@ -23,10 +23,6 @@ using Dev2.Common.Interfaces.Interfaces;
 using Dev2.Studio.Core.Activities.Utils;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
-
-
-//using Dev2.Interfaces;
-
 namespace Dev2.Activities.Designers2.Core
 {
     // -------------------------------------------------------------------------------------------------------------

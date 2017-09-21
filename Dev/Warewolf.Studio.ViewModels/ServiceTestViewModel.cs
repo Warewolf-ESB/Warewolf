@@ -193,7 +193,7 @@ namespace Warewolf.Studio.ViewModels
                     string variable = res?.Variable?.Replace("[[", "");
                     variable = variable?.Replace("]]", "");
                     var inputsValue = WorkflowDesignerViewModel?.GetWorkflowInputs(variable);
-                    res.Value = inputsValue;
+                    res?.Value = inputsValue;
                 }
             }
         }
@@ -312,7 +312,7 @@ namespace Warewolf.Studio.ViewModels
                     var hasOutputs = outputs?.Select(item => item.ResultsList).All(list => list.Count > 0);
                     var debugStateActivityTypeName = debugState.ActivityTypeName;
                     
-                    if (outputs.Count > 0 && hasOutputs.HasValue && hasOutputs.Value)
+                    if (outputs?.Count > 0 && hasOutputs.HasValue && hasOutputs.Value)
                     {
                         AddOutputs(outputs, serviceTestStep);
                     }

@@ -67,9 +67,7 @@ namespace Dev2.Runtime.Hosting
                 return new VersionInfo(DateTime.Now, reason, userName, 1.ToString(CultureInfo.InvariantCulture), oldResource.ResourceID, Guid.NewGuid());
             }
 
-            return oldResource.VersionInfo;
-            
+            return oldResource?.VersionInfo;            
         }
-
     }
 }

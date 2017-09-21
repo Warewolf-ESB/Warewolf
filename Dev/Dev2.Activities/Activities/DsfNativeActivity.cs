@@ -46,27 +46,15 @@ using Warewolf.Resource.Messages;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 
-
-
-
-
-
-
-
-
-
-
-
-
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
-    public abstract class DsfNativeActivity<T> : NativeActivity<T>, IDev2ActivityIOMapping, IDev2Activity, IEquatable<DsfNativeActivity<T>>
+    public abstract class DsfNativeActivity<T> : NativeActivity<T>, IDev2ActivityIOMapping, IEquatable<DsfNativeActivity<T>>
     {
         protected ErrorResultTO errorsTo;
         [GeneralSettings("IsSimulationEnabled")]
         public bool IsSimulationEnabled { get; set; }
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public IDSFDataObject DataObject { get { return null; } set { value = null; } }
+        public IDSFDataObject DataObject { get => null; }
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public IDataListCompiler Compiler { get; set; }
         [JsonIgnore]
@@ -947,13 +935,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             switch (dataObject.RemoteServiceType)
             {
                 case "DbService":
-                    IsService = true;
-                    break;
                 case "PluginService":
-                    IsService = true;
-                    break;
                 case "WebService":
                     IsService = true;
+                    break;
+                default:
+                    IsService = false;
                     break;
             }
 
