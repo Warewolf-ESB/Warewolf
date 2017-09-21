@@ -42,7 +42,7 @@
                           Height="{Binding ElementName=MainGrid, Path=ActualHeight}">
                 <Grid x:Name="MergeGrid" 
                       HorizontalAlignment="Stretch" 
-                      Width="{Binding ElementName=ScrollViewer, Path=ActualWidth}" 
+                      Width="{Binding ElementName=MergeGridScrollViewer, Path=ActualWidth}" 
                       ScrollViewer.CanContentScroll="True"
                       AutomationProperties.AutomationId="UI_MergeGrid_AutoID">
                     <Grid.RowDefinitions>
