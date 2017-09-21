@@ -18,8 +18,7 @@ namespace Dev2.CustomControls
             if (vm != null)
             {
                 ActivityDesignerTemplate template;
-                Type designerType;
-                ActivityDesignerHelper.DesignerAttributes.TryGetValue(vm.ModelItem?.ItemType, out designerType);
+                ActivityDesignerHelper.DesignerAttributes.TryGetValue(vm.ModelItem.ItemType, out var designerType);
                 if (designerType != null)
                 {
                     var inst = Activator.CreateInstance(designerType.Assembly.FullName, designerType.Namespace + ".Large");
