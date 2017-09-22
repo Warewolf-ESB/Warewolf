@@ -23,6 +23,16 @@ namespace Dev2.Activities.Designers2.SelectAndApply
             DropPoint.PreviewDrop += DoDrop;
             _dropEnabledActivityDesignerUtils = new DropEnabledActivityDesignerUtils();
         }
+        public Large(bool isMerge)
+        {
+            InitializeComponent();
+            if (isMerge)
+            {
+                MinHeight = 0;
+                WorkflowItemPresenterGrid.Visibility = Visibility.Collapsed;
+                DropPoint.Item = null;
+            }
+        }
 
         SelectAndApplyDesignerViewModel ViewModel => DataContext as SelectAndApplyDesignerViewModel;
 
