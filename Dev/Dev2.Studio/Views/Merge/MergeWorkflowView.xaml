@@ -99,12 +99,16 @@
                                 Grid.ColumnSpan="2" 
                                 Grid.Row="1" 
                                 HorizontalAlignment="Center" 
+                                Margin="{StaticResource ElementBorderTop}"
+                                Height="50"
                                 Orientation="Horizontal" 
                                 Visibility="{Binding HasMergeStarted, Converter={StaticResource BoolToVisibilityConverterNegative}}"
                                 AutomationProperties.AutomationId="UI_StartProcessSP_AutoID">
                         <TextBlock x:Name="StartProcessText" 
                                    Text="{x:Static languages:Core.MergeConflictsStartProcessText}" 
+                                   Margin="{StaticResource ElementBorderTop}"
                                    HorizontalAlignment="Stretch"
+                                   VerticalAlignment="Top"
                                    AutomationProperties.AutomationId="UI_StartProcessText_AutoID"/>
                     </StackPanel>
 
@@ -112,6 +116,7 @@
                           Grid.Row="2" 
                           Grid.Column="0" 
                           Grid.ColumnSpan="2" 
+                          Margin="{StaticResource ElementBorderTop}"
                           AutomationProperties.AutomationId="UI_WorkflowConflictGrid_AutoID"
                           Visibility="{Binding HasWorkflowNameConflict, Converter={StaticResource BoolToVisibilityConverterPositive}}">
                         <Grid.ColumnDefinitions>
@@ -160,24 +165,18 @@
                                         DockPanel.Dock="Left" 
                                         Orientation="Horizontal"
                                         AutomationProperties.AutomationId="UI_DifferenceWorkflowTextSP_AutoID">
+                                <RadioButton x:Name="DifferenceWorkflowRB" 
+                                             IsChecked="{Binding IsWorkflowNameChecked}" 
+                                             HorizontalAlignment="Right"
+                                             Margin="7,0,5,0"
+                                             GroupName="MergeWorkflowName"
+                                             Style="{StaticResource MergeRadioButtonStyle}"
+                                             AutomationProperties.AutomationId="UI_DifferenceWorkflowRB_AutoID"/>
                                 <TextBlock x:Name="DifferenceWorkflowText" 
                                            Text="{Binding WorkflowName}" 
                                            FontWeight="Bold" 
                                            HorizontalAlignment="Stretch"
                                            AutomationProperties.AutomationId="UI_DifferenceWorkflowText_AutoID"/>
-                            </StackPanel>
-                            <StackPanel x:Name="DifferenceWorkflowRBSP" 
-                                        DockPanel.Dock="Right" 
-                                        Orientation="Horizontal" 
-                                        AutomationProperties.AutomationId="UI_DifferenceWorkflowRBSP_AutoID">
-                                <RadioButton x:Name="DifferenceWorkflowRB" 
-                                             IsChecked="{Binding IsWorkflowNameChecked}" 
-                                             HorizontalAlignment="Right"
-                                             Margin="0,0,5,0"
-                                             GroupName="MergeWorkflowName"
-                                             Style="{StaticResource MergeRadioButtonStyle}"
-                                             AutomationProperties.AutomationId="UI_DifferenceWorkflowRB_AutoID"/>
-
                             </StackPanel>
                         </DockPanel>
                     </Grid>
@@ -444,7 +443,7 @@
                                                                                  IsChecked="{Binding IsMergeChecked}" 
                                                                                  HorizontalAlignment="Right"
                                                                                  Margin="0,0,5,0"
-                                                                                 GroupName="MergeActivities"
+                                                                                 GroupName="{Binding StringFormat=Merge{0}, Path=UniqueId}"
                                                                                  Style="{StaticResource MergeRadioButtonStyle}"
                                                                                  AutomationProperties.AutomationId="UI_TreeViewExpanderCurrentHeaderRB_AutoID"/>
 
@@ -469,7 +468,7 @@
                                                                                  IsChecked="{Binding IsMergeChecked}" 
                                                                                  HorizontalAlignment="Left"
                                                                                  Margin="5,0,5,0"
-                                                                                 GroupName="MergeActivities"
+                                                                                 GroupName="{Binding StringFormat=Merge{0}, Path=UniqueId}"
                                                                                  Style="{StaticResource MergeRadioButtonStyle}"
                                                                                  AutomationProperties.AutomationId="UI_TreeViewExpanderDifferenceHeaderRB_AutoID"/>
 
