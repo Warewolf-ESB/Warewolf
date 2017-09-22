@@ -667,6 +667,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to To start the Merge process, select a radio button below. Once a radio button is selected, the content will be editable..
+        /// </summary>
+        public static string MergeConflictsStartProcessText {
+            get {
+                return ResourceManager.GetString("MergeConflictsStartProcessText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to New MySQL Source.
         /// </summary>
         public static string MySqlSourceNewHeaderLabel {

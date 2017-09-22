@@ -23,6 +23,16 @@ namespace Dev2.Activities.Designers2.Foreach
             DropPoint.PreviewDrop += DoDrop;
             _dropEnabledActivityDesignerUtils = new DropEnabledActivityDesignerUtils();
         }
+        public Large(bool isMerge)
+        {
+            InitializeComponent();
+            if (isMerge)
+            {
+                MinHeight = 0;
+                DropPoint.Visibility = Visibility.Collapsed;
+                DropPoint.Item = null;
+            }
+        }
 
         ForeachDesignerViewModel ViewModel => DataContext as ForeachDesignerViewModel;
 
@@ -52,7 +62,6 @@ namespace Dev2.Activities.Designers2.Foreach
                 e.Effects = DragDropEffects.None;
                 e.Handled = true;
             }
-
         }
 
         protected override IInputElement GetInitialFocusElement()

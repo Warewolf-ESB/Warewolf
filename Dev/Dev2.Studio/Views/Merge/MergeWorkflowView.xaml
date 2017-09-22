@@ -6,6 +6,7 @@
              xmlns:customcontrols="clr-namespace:Dev2.CustomControls"
              xmlns:customcontrols1="clr-namespace:Warewolf.Studio.CustomControls;assembly=Warewolf.Studio.CustomControls"
              xmlns:interfaces="clr-namespace:Dev2.Common.Interfaces;assembly=Dev2.Common.Interfaces"
+             xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
              xmlns:workflow="clr-namespace:Dev2.Studio.Views.Workflow"
              xmlns:datalist="clr-namespace:Dev2.Studio.Views.DataList"
              xmlns:merge="clr-namespace:Dev2.ViewModels.Merge"
@@ -97,13 +98,13 @@
                                 Grid.Column="0" 
                                 Grid.ColumnSpan="2" 
                                 Grid.Row="1" 
-                                HorizontalAlignment="Stretch" 
+                                HorizontalAlignment="Center" 
                                 Orientation="Horizontal" 
-                                Visibility="{Binding HasMergeStarted, Converter={StaticResource BoolToVisibilityConverterPositive}}"
+                                Visibility="{Binding HasMergeStarted, Converter={StaticResource BoolToVisibilityConverterNegative}}"
                                 AutomationProperties.AutomationId="UI_StartProcessSP_AutoID">
                         <TextBlock x:Name="StartProcessText" 
-                                   Text="To start the Merge process, select a radio button below." 
-                                   HorizontalAlignment="Center"
+                                   Text="{x:Static languages:Core.MergeConflictsStartProcessText}" 
+                                   HorizontalAlignment="Stretch"
                                    AutomationProperties.AutomationId="UI_StartProcessText_AutoID"/>
                     </StackPanel>
 
@@ -514,6 +515,7 @@
                                                             <ContentPresenter Name="TreeViewExpanderTemplateCurrentContentPresenter" 
                                                                               Content="{Binding CurrentViewModel}"
 												                              ContentTemplateSelector="{StaticResource ActivitySelector}"
+                                                                              ScrollViewer.CanContentScroll="True"
 												                              ScrollViewer.VerticalScrollBarVisibility="Auto"
 												                              ScrollViewer.HorizontalScrollBarVisibility="Auto"
                                                                               AutomationProperties.AutomationId="UI_TreeViewExpanderTemplateCurrentContentPresenter_AutoID">
@@ -540,6 +542,7 @@
                                                                               Grid.Row="1"
                                                                               Content="{Binding DiffViewModel}"
 												                              ContentTemplateSelector="{StaticResource ActivitySelector}"
+                                                                              ScrollViewer.CanContentScroll="True"
 												                              ScrollViewer.VerticalScrollBarVisibility="Auto"
 												                              ScrollViewer.HorizontalScrollBarVisibility="Auto"
                                                                               AutomationProperties.AutomationId="UI_TreeViewExpanderTemplateDifferenceContentPresenter_AutoID">
