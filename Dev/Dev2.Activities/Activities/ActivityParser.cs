@@ -5,6 +5,7 @@ using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Dev2.Activities.SelectAndApply;
 using Dev2.Common;
 using Dev2.Data.SystemTemplates.Models;
 using Newtonsoft.Json;
@@ -36,71 +37,93 @@ namespace Dev2.Activities
             }
             var flowdec = chart.StartNode as FlowDecision;
             return ParseDecision(flowdec, seenActivities).FirstOrDefault();
-            //try
-            //{
-            //    if (step is ModelItem modelItem)
-            //    {
-            //        var currentValue = modelItem.GetCurrentValue();
+        }
 
-            //        if (currentValue is FlowStep start)
-            //        {
-            //            var tool = ParseTools(start, seenActivities);
-            //            return tool.FirstOrDefault();
-            //        }
-            //        if (currentValue is FlowSwitch<string> switchFlowSwitch)
-            //        {
-            //            var activity = switchFlowSwitch.Expression as DsfFlowSwitchActivity;
-            //            if (activity != null)
-            //            {
-            //                var val = new StringBuilder(Dev2DecisionStack.ExtractModelFromWorkflowPersistedData(activity.ExpressionText));
-            //                Dev2Switch ds = new Dev2Switch { SwitchVariable = val.ToString() };
-            //                var swi = new DsfSwitch(activity);
-            //                if (!seenActivities.Contains(activity))
-            //                {
-            //                    seenActivities.Add(swi);
-            //                }
-            //                swi.Switches = switchFlowSwitch.Cases.Select(a => new Tuple<string, IDev2Activity>(a.Key, ParseTools(a.Value, seenActivities).FirstOrDefault())).ToDictionary(a => a.Item1, a => a.Item2);
-            //                swi.Default = ParseTools(switchFlowSwitch.Default, seenActivities);
-            //                swi.Switch = ds.SwitchVariable;
+        public IEnumerable<IDev2Activity> ParseToLinkedFlatList(IDev2Activity topLevelActivity)
+        {
+            if (topLevelActivity is DsfDecision roodDecision)
+            {
+                IEnumerable<IDev2Activity> vb;
+                if (roodDecision.TrueArm == null)
+                {
+                    vb = roodDecision.FalseArm;
+                }
+                else if (roodDecision.FalseArm == null)
+                {
+                    vb = roodDecision.TrueArm;
+                }
+                else
+                {
+                    vb = roodDecision.FalseArm.Union(roodDecision.TrueArm);
+                }
 
+                var bbb = vb.Flatten(activity =>
+                {
+                    if (activity.NextNodes != null) return activity.NextNodes;
 
-            //                return swi;
-            //            }
-            //        }
-            //        if (currentValue is FlowDecision flowdec)
-            //        {
-            //            var activity = flowdec.Condition as DsfFlowDecisionActivity;
-            //            if (activity != null)
-            //            {
-            //                var rawText = activity.ExpressionText;
+                    if (activity is DsfDecision a)
+                    {
+                        if (a.TrueArm == null) return a.FalseArm;
+                        if (a.FalseArm == null) return a.TrueArm;
+                        var activities = a.FalseArm.Union(a.TrueArm);
+                        return activities;
+                    }
+                    return new List<IDev2Activity>();
+                });
+                return bbb.ToList();
+            }
+            if (topLevelActivity is DsfSwitch @switch)
+            {
+                var vv = @switch.Switches.ToDictionary(k => k.Key);
+                var activities = vv.Values.Select(k => k.Value);
+                return activities;
+            }
+            if (topLevelActivity is DsfForEachActivity f)
+            {
+                var dev2Activity = (f.DataFunc.Handler as IDev2Activity);
+                return dev2Activity?.NextNodes ?? new List<IDev2Activity>();
+            }
+            if (topLevelActivity is DsfSelectAndApplyActivity s)
+            {
+                var dev2Activity = (s.ApplyActivityFunc.Handler as IDev2Activity);
+                return dev2Activity?.NextNodes ?? new List<IDev2Activity>();
+            }
+            var dev2Activities = topLevelActivity.NextNodes.Flatten(activity =>
+            {
+                if (activity.NextNodes != null)
+                    return activity.NextNodes;
 
-            //                var activityTextjson = rawText.Substring(rawText.IndexOf("{", StringComparison.Ordinal)).Replace(@""",AmbientDataList)", "").Replace("\"", "!");
-
-            //                var activityText = Dev2DecisionStack.FromVBPersitableModelToJSON(activityTextjson);
-            //                var decisionStack = JsonConvert.DeserializeObject<Dev2DecisionStack>(activityText);
-            //                var dec = new DsfDecision(activity);
-            //                if (!seenActivities.Contains(activity))
-            //                {
-            //                    seenActivities.Add(dec);
-            //                }
-            //                dec.TrueArm = ParseTools(flowdec.True, seenActivities);
-            //                dec.FalseArm = ParseTools(flowdec.False, seenActivities);
-            //                dec.Conditions = decisionStack;
-            //                dec.And = decisionStack.Mode == Dev2DecisionMode.AND;
-
-
-            //                return dec;
-            //            }
-            //        }
-            //    }
-            //    return null;
-            //}
-            //catch (InvalidWorkflowException e)
-            //{
-
-            //    Dev2Logger.Error(e, GlobalConstants.WarewolfError);
-            //    throw;
-            //}
+                if (activity is DsfDecision a)
+                {
+                    if (a.TrueArm == null) return a.FalseArm;
+                    if (a.FalseArm == null) return a.TrueArm;
+                    var activities = a.FalseArm.Union(a.TrueArm);
+                    return activities;
+                }
+                if (activity is DsfSwitch b)
+                {
+                    var vv = b.Switches.ToDictionary(k => k.Key);
+                    var activities = vv.Values.Select(k => k.Value).Union(b.Default);
+                    return activities;
+                }
+                if (activity is DsfForEachActivity c)
+                {
+                    var dev2Activity = (c.DataFunc.Handler as IDev2Activity);
+                    return dev2Activity?.NextNodes ?? new List<IDev2Activity>();
+                }
+                if (activity is DsfSelectAndApplyActivity d)
+                {
+                    var dev2Activity = (d.ApplyActivityFunc.Handler as IDev2Activity);
+                    return dev2Activity?.NextNodes ?? new List<IDev2Activity>();
+                }
+                return new List<IDev2Activity>();
+            }).ToList();
+            var contains = dev2Activities.Contains(topLevelActivity);
+            if (!contains)
+            {
+                dev2Activities.Add(topLevelActivity);
+            }
+            return dev2Activities;
         }
 
         public IDev2Activity Parse(DynamicActivity dynamicActivity, List<IDev2Activity> seenActivities)
