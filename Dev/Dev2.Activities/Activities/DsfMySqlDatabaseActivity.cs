@@ -38,8 +38,7 @@ namespace Dev2.Activities
                 errors.AddError(ErrorResource.NoActionsInSelectedDB);
                 return;
             }
-            var databaseServiceExecution = ServiceExecution as DatabaseServiceExecution;
-            if(databaseServiceExecution != null)
+            if (ServiceExecution is DatabaseServiceExecution databaseServiceExecution)
             {
                 databaseServiceExecution.Inputs = Inputs.Select(a => new ServiceInput { EmptyIsNull = a.EmptyIsNull, Name = a.Name, RequiredField = a.RequiredField, Value = a.Value, TypeName = a.TypeName } as IServiceInput).ToList();
                 databaseServiceExecution.Outputs = Outputs;
