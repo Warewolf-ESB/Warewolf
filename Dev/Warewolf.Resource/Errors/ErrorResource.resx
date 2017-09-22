@@ -1311,7 +1311,7 @@ Please contact your Windows System Administrator.</value>
     <value>Cannot convert given JSON to target type</value>
   </data>
   <data name="ServerBusyError" xml:space="preserve">
-    <value>{0} is currently busy. Studio will complete loading once the server has completed it's current executions.</value>
+    <value>{0} is currently busy. Please try again later.</value>
   </data>
   <data name="ServerBusyHeader" xml:space="preserve">
     <value>Server is currently busy</value>

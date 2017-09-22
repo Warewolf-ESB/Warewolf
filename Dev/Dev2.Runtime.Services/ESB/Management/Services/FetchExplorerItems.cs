@@ -78,17 +78,9 @@ namespace Dev2.Runtime.ESB.Management.Services
                     {
                         if (!exeManager.IsRefreshing)
                         {
-                            Task.Run(() =>
-                            {
-                                exeManager.StartRefresh();
-                                ResourceCatalog.Instance.Reload();
-                                exeManager.StopRefresh();
-                            }).ContinueWith((o)=>
-                            {
-                                return serializer.SerializeToBuilder(GetExplorerItems(serializer, reloadResourceCatalogue));
-                            });
-                            IExplorerRepositoryResult error = new ExplorerRepositoryResult(ExecStatus.Fail, "Server is currently busy with a Refresh");
-                            return serializer.SerializeToBuilder(error);
+                            exeManager.StartRefresh();
+                            ResourceCatalog.Instance.Reload();
+                            exeManager.StopRefresh();                            
                         }                        
                     }
                 }
