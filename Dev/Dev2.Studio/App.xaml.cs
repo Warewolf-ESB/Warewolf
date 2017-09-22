@@ -257,13 +257,13 @@ namespace Dev2.Studio
             CustomContainer.Register<IEventAggregator>(new EventAggregator());
             CustomContainer.Register<IPopupController>(new PopupController());
             CustomContainer.Register<IAsyncWorker>(new AsyncWorker());
-            CustomContainer.Register<IParseServiceForDifferences>(new ParseServiceForDifferences());
             CustomContainer.Register<IWarewolfWebClient>(new WarewolfWebClient(new WebClient { Credentials = CredentialCache.DefaultCredentials }));
             CustomContainer.RegisterInstancePerRequestType<IRequestServiceNameView>(() => new RequestServiceNameView());
             CustomContainer.RegisterInstancePerRequestType<IJsonObjectsView>(() => new JsonObjectsView());
             CustomContainer.RegisterInstancePerRequestType<IChooseDLLView>(() => new ChooseDLLView());
             CustomContainer.RegisterInstancePerRequestType<IFileChooserView>(() => new FileChooserView());
             CustomContainer.Register<IActivityParser>(new ActivityParser());
+            CustomContainer.Register<IServiceDifferenceParser>(new ServiceDifferenceParser());
 
             var splashViewModel = new SplashViewModel(server, new ExternalProcessExecutor());
 
