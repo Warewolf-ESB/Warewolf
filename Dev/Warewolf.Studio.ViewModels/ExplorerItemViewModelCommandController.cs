@@ -49,7 +49,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 SetActiveStates(_shellViewModel, server);
                 _shellViewModel.OpenMergeConflictsView(item.ResourceId, item.ResourceId);
-                //_shellViewModel.OpenResource(item.ResourceId,server.EnvironmentID, server);
+                _shellViewModel.OpenResource(item.ResourceId,server.EnvironmentID, server);
             }
         }
 

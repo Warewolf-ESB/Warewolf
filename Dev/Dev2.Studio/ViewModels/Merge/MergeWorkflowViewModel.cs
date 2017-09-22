@@ -49,7 +49,7 @@ namespace Dev2.ViewModels.Merge
                 foreach (var mergeToolModel in child.Children)
                 {
                     var keyValuePair = differenceStore.SingleOrDefault(pair => pair.Key.Equals(mergeToolModel.UniqueId));
-                    var diffModel = childDiff.Children.SingleOrDefault(model => model.UniqueId ==  keyValuePair.Key);
+                    var diffModel = childDiff?.Children.SingleOrDefault(model => model.UniqueId ==  keyValuePair.Key);
                     AddChild(completeConflict, mergeToolModel, diffModel, keyValuePair.Value);
                    
                 }
