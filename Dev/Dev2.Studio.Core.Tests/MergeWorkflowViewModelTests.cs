@@ -18,37 +18,32 @@ namespace Dev2.Core.Tests
     [TestClass]
     public class MergeWorkflowViewModelTests
     {
-        Mock<IApplicationAdaptor> _mockApplicationAdapter;
-        Mock<IPopupController> _mockPopupController;
-        Mock<IServer> _mockServer;
-        Mock<IShellViewModel> _mockShellViewModel;
-        Mock<IServerRepository> _mockServerRepository;
-        Mock<IServiceDifferenceParser> _mockParseServiceForDifferences;
+        
 
         [TestInitialize]
         public void InitializeTest()
         {
-            _mockApplicationAdapter = new Mock<IApplicationAdaptor>();
-            _mockPopupController = new Mock<IPopupController>();
-            _mockServer = new Mock<IServer>();
-            _mockShellViewModel = new Mock<IShellViewModel>();
-            _mockServerRepository = new Mock<IServerRepository>();
-            _mockParseServiceForDifferences = new Mock<IServiceDifferenceParser>();
+            var mockApplicationAdapter = new Mock<IApplicationAdaptor>();
+            var mockPopupController = new Mock<IPopupController>();
+            var mockServer = new Mock<IServer>();
+            var mockShellViewModel = new Mock<IShellViewModel>();
+            var mockServerRepository = new Mock<IServerRepository>();
+            var mockParseServiceForDifferences = new Mock<IServiceDifferenceParser>();
 
-            _mockApplicationAdapter.Setup(a => a.Current).Returns(Application.Current);
+            mockApplicationAdapter.Setup(a => a.Current).Returns(Application.Current);
 
-            _mockServer.Setup(a => a.GetServerVersion()).Returns("1.0.0.0");
-            _mockShellViewModel.Setup(a => a.ActiveServer).Returns(_mockServer.Object);
+            mockServer.Setup(a => a.GetServerVersion()).Returns("1.0.0.0");
+            mockShellViewModel.Setup(a => a.ActiveServer).Returns(mockServer.Object);
 
-            _mockServerRepository.Setup(a => a.ActiveServer).Returns(_mockServer.Object);
-            _mockServerRepository.Setup(a => a.IsLoaded).Returns(true);
+            mockServerRepository.Setup(a => a.ActiveServer).Returns(mockServer.Object);
+            mockServerRepository.Setup(a => a.IsLoaded).Returns(true);
 
-            CustomContainer.Register(_mockApplicationAdapter.Object);
-            CustomContainer.Register(_mockPopupController.Object);
-            CustomContainer.Register(_mockServer.Object);
-            CustomContainer.Register(_mockShellViewModel.Object);
-            CustomContainer.Register(_mockServerRepository.Object);
-            CustomContainer.Register(_mockParseServiceForDifferences.Object);
+            CustomContainer.Register(mockApplicationAdapter.Object);
+            CustomContainer.Register(mockPopupController.Object);
+            CustomContainer.Register(mockServer.Object);
+            CustomContainer.Register(mockShellViewModel.Object);
+            CustomContainer.Register(mockServerRepository.Object);
+            CustomContainer.Register(mockParseServiceForDifferences.Object);
         }
 
         [TestMethod]
@@ -59,19 +54,14 @@ namespace Dev2.Core.Tests
             var assignId = Guid.NewGuid();
             var foreachId = Guid.NewGuid();
             List<ModelItem> currentChanges = CreateChanges(ref assignId, ref foreachId);
-
             List<ModelItem> differenceChanges = CreateChanges(ref assignId, ref foreachId);
 
-            //_mockParseServiceForDifferences.Setup(a => a.CurrentDifferences).Returns(currentChanges);
-            //_mockParseServiceForDifferences.Setup(a => a.Differences).Returns(differenceChanges);
-
-
             Mock<IContextualResourceModel> currentResourceModel = Dev2MockFactory.SetupResourceModelMock();
-            currentResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(WorkflowXAMLForCurrent());
+            currentResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(WorkflowXamlForCurrent());
             currentResourceModel.Setup(resModel => resModel.DisplayName).Returns("Hello World");
 
             Mock<IContextualResourceModel> differenceResourceModel = Dev2MockFactory.SetupResourceModelMock();
-            differenceResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(WorkflowXAMLForDifference());
+            differenceResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(WorkflowXamlForDifference());
             differenceResourceModel.Setup(resModel => resModel.DisplayName).Returns("Hello World");
 
             var mergeWorkflowViewModel = new MergeWorkflowViewModel(currentResourceModel.Object, differenceResourceModel.Object);
@@ -126,11 +116,11 @@ namespace Dev2.Core.Tests
             CustomContainer.Register(mockshell.Object);
 
             Mock<IContextualResourceModel> currentResourceModel = Dev2MockFactory.SetupResourceModelMock();
-            currentResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(WorkflowXAMLForCurrent());
+            currentResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(WorkflowXamlForCurrent());
             currentResourceModel.Setup(resModel => resModel.DisplayName).Returns("Hello World");
 
             Mock<IContextualResourceModel> differenceResourceModel = Dev2MockFactory.SetupResourceModelMock();
-            differenceResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(WorkflowXAMLForDifference());
+            differenceResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(WorkflowXamlForDifference());
             differenceResourceModel.Setup(resModel => resModel.DisplayName).Returns("Hello World");
 
             var mergeWorkflowViewModel = new MergeWorkflowViewModel(currentResourceModel.Object, differenceResourceModel.Object);
@@ -162,11 +152,11 @@ namespace Dev2.Core.Tests
             CustomContainer.Register(mockshell.Object);
 
             Mock<IContextualResourceModel> currentResourceModel = Dev2MockFactory.SetupResourceModelMock();
-            currentResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(WorkflowXAMLForCurrent());
+            currentResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(WorkflowXamlForCurrent());
             currentResourceModel.Setup(resModel => resModel.DisplayName).Returns("Hello World");
 
             Mock<IContextualResourceModel> differenceResourceModel = Dev2MockFactory.SetupResourceModelMock();
-            differenceResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(WorkflowXAMLForDifference());
+            differenceResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(WorkflowXamlForDifference());
             differenceResourceModel.Setup(resModel => resModel.DisplayName).Returns("Hello World");
 
             var mergeWorkflowViewModel = new MergeWorkflowViewModel(currentResourceModel.Object, differenceResourceModel.Object);
@@ -179,7 +169,7 @@ namespace Dev2.Core.Tests
         }
 
 
-        public static StringBuilder WorkflowXAMLForCurrent()
+        public static StringBuilder WorkflowXamlForCurrent()
         {
             return new StringBuilder(@"<Activity mc:Ignorable=""sap"" 
     x:Class=""Hello World"" xmlns=""http://schemas.microsoft.com/netfx/2009/xaml/activities"" 
@@ -405,7 +395,7 @@ namespace Dev2.Core.Tests
 </Activity>");
         }
 
-        public static StringBuilder WorkflowXAMLForDifference()
+        public static StringBuilder WorkflowXamlForDifference()
         {
             return new StringBuilder(@"<Activity mc:Ignorable=""sap"" 
     x:Class=""Hello World"" xmlns=""http://schemas.microsoft.com/netfx/2009/xaml/activities"" 

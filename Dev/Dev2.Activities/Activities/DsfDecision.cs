@@ -387,9 +387,10 @@ namespace Dev2.Activities
             {
                 return false;
             }
-            return string.Equals(DisplayName, other.DisplayName)//UniqueId is not usefull since a new instance is created during parsing
+            return string.Equals(DisplayName, other.DisplayName)
                 && string.Equals(Result, other.Result)
-                && And == other.And;
+                && And == other.And
+                && Equals(UniqueID, other.UniqueID);
         }
 
         public override bool Equals(object obj)
