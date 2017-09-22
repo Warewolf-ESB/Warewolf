@@ -27,18 +27,35 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DsfDecision
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void UniqueIDDifferent_EmptyAssigns_IsEqual()
+        public void UniqueIDSame_EmptyAssigns_IsEqual()
         {
             //---------------Set up test pack-------------------
-            var uniqueId = Guid.NewGuid().ToString();
-            var decision = new Dev2.Activities.DsfDecision();
-            var decision1 = new Dev2.Activities.DsfDecision();
+            DsfFlowDecisionActivity decisionActivity = new DsfFlowDecisionActivity();
+            var decision = new Dev2.Activities.DsfDecision(decisionActivity);
+            var decision1 = new Dev2.Activities.DsfDecision(decisionActivity);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(decision);
             //---------------Execute Test ----------------------
             var equals = decision.Equals(decision1);
             //---------------Test Result -----------------------
-            Assert.IsFalse(equals);
+            Assert.IsTrue(equals);//This Id is meaningless
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void UniqueIDDifferent_EmptyAssigns_IsEqual()
+        {
+            //---------------Set up test pack-------------------
+            DsfFlowDecisionActivity decisionActivity = new DsfFlowDecisionActivity();
+            DsfFlowDecisionActivity decisionActivity1 = new DsfFlowDecisionActivity();
+            var decision = new Dev2.Activities.DsfDecision(decisionActivity);
+            var decision1 = new Dev2.Activities.DsfDecision(decisionActivity1);
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(decision);
+            //---------------Execute Test ----------------------
+            var equals = decision.Equals(decision1);
+            //---------------Test Result -----------------------
+            Assert.IsFalse(equals);//This Id is meaningless
         }
 
         [TestMethod]
