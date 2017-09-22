@@ -95,11 +95,7 @@ namespace Dev2.Studio.Core
             var result = comsController.ExecuteCommand<ExecuteMessage>(Connection, Connection.WorkspaceID);
             return result.Message;
         }
-
-        /// <summary>
-        /// Loads the Tree.
-        /// </summary>
-        /// <returns></returns>
+        
         public async Task<IExplorerItem> Load(bool reloadCatalogue = false)
         {
             if (!Connection.IsConnected)
@@ -111,8 +107,26 @@ namespace Dev2.Studio.Core
             var comsController = CommunicationControllerFactory.CreateController("FetchExplorerItemsService");
 
             comsController.AddPayloadArgument("ReloadResourceCatalogue", reloadCatalogue.ToString());
-            var result = await comsController.ExecuteCompressedCommandAsync<IExplorerItem>(Connection, GlobalConstants.ServerWorkspaceID);
-            return result;
+            try
+            {
+                if (Connection.IsLocalHost)
+                {
+                    var result = await comsController.ExecuteCompressedCommandAsync<IExplorerItem>(Connection, GlobalConstants.ServerWorkspaceID);
+                    return result;
+                }
+                else
+                {
+                    var result = await comsController.ExecuteCompressedCommandAsync<IExplorerItem>(Connection, GlobalConstants.ServerWorkspaceID).WithTimeOutAsync(60000);
+                    return result;
+                }
+            }
+            catch (TimeoutException)
+            {
+                var popupController = CustomContainer.Get<IPopupController>();
+                popupController?.Show(string.Format(ErrorResource.ServerBusyError, Connection.DisplayName), ErrorResource.ServerBusyHeader, MessageBoxButton.OK,
+                                      MessageBoxImage.Warning, "", false, false, true, false, false, false);
+            }
+            return new ServerExplorerItem();
         }
 
         #endregion

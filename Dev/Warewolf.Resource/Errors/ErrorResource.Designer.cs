@@ -3042,7 +3042,7 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0} is currently busy. Studio will complete loading once the server has completed it&apos;s current executions..
+        ///   Looks up a localized string similar to {0} is currently busy. Please try again later..
         /// </summary>
         public static string ServerBusyError {
             get {
