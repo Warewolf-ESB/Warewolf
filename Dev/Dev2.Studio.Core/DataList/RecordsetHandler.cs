@@ -43,6 +43,10 @@ namespace Dev2.Studio.Core.DataList
                     while (childrenCount < childrenNum)
                     {
                         IRecordSetFieldItemModel child = recset.Children[childrenCount];
+                        if (child.Parent == null)
+                        {
+                            child.Parent = recset;
+                        }
 
                         if (!string.IsNullOrWhiteSpace(child?.DisplayName))
                         {
@@ -50,11 +54,11 @@ namespace Dev2.Studio.Core.DataList
                             if (indexOfDot > -1)
                             {
                                 string recsetName = child.DisplayName.Substring(0, indexOfDot + 1);
-                                child.DisplayName = child.DisplayName.Replace(recsetName, child.Parent?.DisplayName + ".");
+                                child.DisplayName = child.DisplayName.Replace(recsetName, child.Parent.DisplayName + ".");
                             }
                             else
                             {
-                                child.DisplayName = string.Concat(child.Parent?.DisplayName, ".", child.DisplayName);
+                                child.DisplayName = string.Concat(child.Parent.DisplayName, ".", child.DisplayName);
                             }
                             FixCommonNamingProblems(child);
                         }
