@@ -125,14 +125,12 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
             DropboxSingleExecutor = new DropBoxUpload(writeMode, evaluatedValues["ToPath"], evaluatedValues["FromPath"]);
             _clientWrapper = _clientWrapper ?? new DropboxClientWrapper(GetClient());
             var dropboxExecutionResult = DropboxSingleExecutor.ExecuteTask(_clientWrapper);
-            var dropboxSuccessResult = dropboxExecutionResult as DropboxUploadSuccessResult;
-            if (dropboxSuccessResult != null)
+            if (dropboxExecutionResult is DropboxUploadSuccessResult dropboxSuccessResult)
             {
                 FileMetadata = dropboxSuccessResult.GerFileMetadata();
                 return new List<string> { GlobalConstants.DropBoxSuccess };
             }
-            var dropboxFailureResult = dropboxExecutionResult as DropboxFailureResult;
-            if (dropboxFailureResult != null)
+            if (dropboxExecutionResult is DropboxFailureResult dropboxFailureResult)
             {
                 Exception = dropboxFailureResult.GetException();
             }

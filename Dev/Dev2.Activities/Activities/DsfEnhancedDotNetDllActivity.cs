@@ -314,46 +314,47 @@ namespace Dev2.Activities
 
         private void AssignMethodResult(IPluginAction pluginAction, int update, IDSFDataObject dataObject, DateTime start)
         {
+            var methodResult = pluginAction.MethodResult;
+            var outputVariable = pluginAction.OutputVariable;
+            if (pluginAction.IsObject)
             {
-                var methodResult = pluginAction.MethodResult;
-                var outputVariable = pluginAction.OutputVariable;
-                if (pluginAction.IsObject)
+                var jContainer = JToken.Parse(methodResult) as JContainer
+                                    ?? methodResult.DeserializeToObject();
+                if (!string.IsNullOrEmpty(outputVariable))
                 {
-                    var jContainer = JToken.Parse(methodResult) as JContainer
-                                     ?? methodResult.DeserializeToObject();
-                    if (!string.IsNullOrEmpty(outputVariable))
-                    {
-                        dataObject.Environment.AddToJsonObjects(outputVariable, jContainer);
-                    }
+                    dataObject.Environment.AddToJsonObjects(outputVariable, jContainer);
                 }
-                else
+            }
+            else
+            {
+                if (!pluginAction.IsVoid)
                 {
-                    if (!pluginAction.IsVoid)
+                    JToken jObj = JToken.Parse(methodResult) ?? methodResult.DeserializeToObject();
+                    if (!methodResult.IsJSON() && !pluginAction.IsObject)
                     {
-                        JToken jObj = JToken.Parse(methodResult) ?? methodResult.DeserializeToObject();
-                        if (!methodResult.IsJSON() && !pluginAction.IsObject)
+                        pluginAction.MethodResult = methodResult.TrimEnd('\"').TrimStart('\"');
+                    }
+                    if (jObj != null)
+                    {
+                        if (jObj.IsEnumerableOfPrimitives())
                         {
-                            pluginAction.MethodResult = methodResult.TrimEnd('\"').TrimStart('\"');
-                        }
-                        if (jObj != null)
-                        {
-                            if (jObj.IsEnumerableOfPrimitives())
+                            var values = jObj.Children().Select(token => token.ToString()).ToList();
+                            if (DataListUtil.IsValueScalar(outputVariable))
                             {
-                                var values = jObj.Children().Select(token => token.ToString()).ToList();
-                                if (DataListUtil.IsValueScalar(outputVariable))
+                                var valueString = string.Join(",", values);
+                                dataObject.Environment.Assign(outputVariable, valueString, update);
+                            }
+                            else
+                            {
+                                foreach (var value in values)
                                 {
-                                    var valueString = string.Join(",", values);
-                                    dataObject.Environment.Assign(outputVariable, valueString, update);
-                                }
-                                else
-                                {
-                                    foreach (var value in values)
-                                    {
-                                        dataObject.Environment.Assign(outputVariable, value, update);
-                                    }
+                                    dataObject.Environment.Assign(outputVariable, value, update);
                                 }
                             }
-                            else if (jObj.IsPrimitive())
+                        }
+                        else
+                        {
+                            if (jObj.IsPrimitive())
                             {
                                 var value = jObj.ToString();
                                 if (!value.IsJSON() && !pluginAction.IsObject)
@@ -368,8 +369,8 @@ namespace Dev2.Activities
                         }
                     }
                 }
-                DispatchDebugStateForMethod(pluginAction, dataObject, update, false, start);
             }
+            DispatchDebugStateForMethod(pluginAction, dataObject, update, false, start);
         }
 
         private PluginInvokeArgs BuidlPluginInvokeArgs(int update, IPluginConstructor constructor, INamespaceItem namespaceItem, IDSFDataObject dataObject)
