@@ -53,7 +53,7 @@ namespace Dev2.Integration.Tests.Merge
             //---------------Execute Test ----------------------
             var valueTuples = parser.GetDifferences(loadContextualResourceModel, resourceModel);
             //---------------Test Result -----------------------
-            Assert.IsTrue(valueTuples.All(tuple => !tuple.conflict));
+            Assert.IsTrue(valueTuples.differenceStore.All(tuple => !tuple.Value));
         }
 
         [TestMethod]
@@ -80,7 +80,7 @@ namespace Dev2.Integration.Tests.Merge
             //---------------Execute Test ----------------------
             var valueTuples = parser.GetDifferences(loadContextualResourceModel, resourceModel);
             //---------------Test Result -----------------------
-            Assert.IsTrue(valueTuples.All(tuple => !tuple.conflict));
+            Assert.IsTrue(valueTuples.differenceStore.All(tuple => !tuple.Value));
         }
 
         [TestMethod]
@@ -107,7 +107,7 @@ namespace Dev2.Integration.Tests.Merge
             //---------------Execute Test ----------------------
             var valueTuples = parser.GetDifferences(loadContextualResourceModel, resourceModel);
             //---------------Test Result -----------------------
-            Assert.IsTrue(valueTuples.All(tuple => !tuple.conflict));
+            Assert.IsTrue(valueTuples.differenceStore.All(tuple => !tuple.Value));
         }
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
@@ -133,7 +133,7 @@ namespace Dev2.Integration.Tests.Merge
             //---------------Execute Test ----------------------
             var valueTuples = parser.GetDifferences(loadContextualResourceModel, resourceModel);
             //---------------Test Result -----------------------
-            Assert.IsTrue(valueTuples.All(tuple => !tuple.conflict));
+            Assert.IsTrue(valueTuples.differenceStore.All(tuple => !tuple.Value));
         }
 
         [TestMethod]
@@ -160,7 +160,7 @@ namespace Dev2.Integration.Tests.Merge
             //---------------Execute Test ----------------------
             var valueTuples = parser.GetDifferences(loadContextualResourceModel, resourceModel);
             //---------------Test Result -----------------------
-            Assert.IsTrue(valueTuples.All(tuple => !tuple.conflict));
+            Assert.IsTrue(valueTuples.differenceStore.All(tuple => !tuple.Value));
         }
 
         
