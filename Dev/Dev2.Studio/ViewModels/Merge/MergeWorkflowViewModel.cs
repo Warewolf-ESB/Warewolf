@@ -122,6 +122,7 @@ namespace Dev2.ViewModels.Merge
                 DifferenceConflictViewModel.WorkflowName = differenceResourceModel.ResourceName;
                 DifferenceConflictViewModel.GetDataList();
             }
+            HasMergeStarted = false;
             HasVariablesConflict = true;
             HasWorkflowNameConflict = true;
             SetServerName(currentResourceModel);

@@ -1,5 +1,8 @@
 ﻿using Dev2.Activities;
 using Dev2.Activities.Designers2.Core;
+using Dev2.Activities.Designers2.Foreach;
+using Dev2.Activities.Designers2.SelectAndApply;
+using Dev2.Activities.Designers2.Sequence;
 using Dev2.Studio.ActivityDesigners;
 using Dev2.ViewModels.Merge;
 using System;
@@ -21,12 +24,46 @@ namespace Dev2.CustomControls
                 ActivityDesignerHelper.DesignerAttributes.TryGetValue(vm.ModelItem.ItemType, out var designerType);
                 if (designerType != null)
                 {
-                    var inst = Activator.CreateInstance(designerType.Assembly.FullName, designerType.Namespace + ".Large");
-                    template = inst.Unwrap() as ActivityDesignerTemplate;
-                    if (template != null)
+                    string typeName = designerType.Namespace + ".Large";
+                    if (designerType == typeof(SequenceDesigner))
                     {
-                        template.DataContext = vm;
-                        return TemplateGenerator.CreateDataTemplate(() => template);
+                        var type = typeof(Dev2.Activities.Designers2.Sequence.Large);
+                        var insta = Activator.CreateInstance(type, new object[] { true }) as ActivityDesignerTemplate;
+                        if (insta != null)
+                        {
+                            insta.DataContext = vm;
+                            return TemplateGenerator.CreateDataTemplate(() => insta);
+                        }
+                    }
+                    else if (designerType == typeof(SelectAndApplyDesigner))
+                    {
+                        var type = typeof(Dev2.Activities.Designers2.SelectAndApply.Large);
+                        var insta = Activator.CreateInstance(type, new object[] { true }) as ActivityDesignerTemplate;
+                        if (insta != null)
+                        {
+                            insta.DataContext = vm;
+                            return TemplateGenerator.CreateDataTemplate(() => insta);
+                        }
+                    }
+                    else if (designerType == typeof(ForeachDesigner))
+                    {
+                        var type = typeof(Dev2.Activities.Designers2.Foreach.Large);
+                        var insta = Activator.CreateInstance(type, new object[] { true }) as ActivityDesignerTemplate;
+                        if (insta != null)
+                        {
+                            insta.DataContext = vm;
+                            return TemplateGenerator.CreateDataTemplate(() => insta);
+                        }
+                    }
+                    else
+                    {
+                        var inst = Activator.CreateInstance(designerType.Assembly.FullName, typeName);
+                        template = inst.Unwrap() as ActivityDesignerTemplate;
+                        if (template != null)
+                        {
+                            template.DataContext = vm;
+                            return TemplateGenerator.CreateDataTemplate(() => template);
+                        }
                     }
                 }
                 else

@@ -28,6 +28,16 @@ namespace Dev2.Activities.Designers2.Sequence
             ActivitiesPresenter.PreviewDrop += DoDrop;
             _dropEnabledActivityDesignerUtils = new DropEnabledActivityDesignerUtils();
         }
+        public Large(bool isMerge)
+        {
+            InitializeComponent();
+            if (isMerge)
+            {
+                MinHeight = 0;
+                ActivitiesPresenter.Visibility = Visibility.Collapsed;
+                ActivitiesPresenter.Items = null;
+            }
+        }
 
         SequenceDesignerViewModel ViewModel => DataContext as SequenceDesignerViewModel;
 

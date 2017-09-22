@@ -7,7 +7,6 @@
                        xmlns:sap="clr-namespace:System.Activities.Presentation;assembly=System.Activities.Presentation"
                        xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
                        xmlns:local="clr-namespace:Dev2.Activities.Designers2.Sequence"
-                       xmlns:designers2="clr-namespace:Dev2.Activities.Designers2"
                        xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
                        mc:Ignorable="d"
                        d:DataContext="{d:DesignInstance local:SequenceDesignerViewModel}"
