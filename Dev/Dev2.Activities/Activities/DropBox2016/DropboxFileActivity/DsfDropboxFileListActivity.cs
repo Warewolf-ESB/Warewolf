@@ -113,7 +113,8 @@ namespace Dev2.Activities.DropBox2016.DropboxFileActivity
             var dropboxSingleExecutor = GetDropboxSingleExecutor(dropboxFileRead);
             _dropboxClientWrapper = _dropboxClientWrapper ?? new DropboxClientWrapper(GetDropboxClient());
             var dropboxExecutionResult = dropboxSingleExecutor.ExecuteTask(_dropboxClientWrapper);
-            if (dropboxExecutionResult is DropboxListFolderSuccesResult dropboxSuccessResult)
+            var dropboxSuccessResult = dropboxExecutionResult as DropboxListFolderSuccesResult;
+            if (dropboxSuccessResult != null)
             {
                 var listFolderResult = dropboxSuccessResult.GetListFolderResulResult();
                 var metadatas = listFolderResult.Entries;
@@ -139,7 +140,8 @@ namespace Dev2.Activities.DropBox2016.DropboxFileActivity
 
                 return new List<string> { GlobalConstants.DropBoxSuccess };
             }
-            if (dropboxExecutionResult is DropboxFailureResult dropboxFailureResult)
+            var dropboxFailureResult = dropboxExecutionResult as DropboxFailureResult;
+            if (dropboxFailureResult != null)
             {
                 Exception = dropboxFailureResult.GetException();
             }

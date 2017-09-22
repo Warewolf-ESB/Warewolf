@@ -41,7 +41,8 @@ namespace Dev2.DataList
             {
                 if (!t.IsAbstract && !t.IsInterface)
                 {
-                    if (Activator.CreateInstance(t, true) is IFindRecsetOptions item)
+                    IFindRecsetOptions item = Activator.CreateInstance(t, true) as IFindRecsetOptions;
+                    if (item != null)
                     {
                         _options.Add(item.HandlesType(), item);
                     }

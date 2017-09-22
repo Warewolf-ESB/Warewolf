@@ -310,16 +310,13 @@ namespace Dev2.Activities
         private static string GetResultString(string theResult,  Dev2DecisionStack dds)
         {
             var resultString = theResult;
-            if (theResult == "True")
+            if(theResult == "True")
             {
                 resultString = dds.TrueArmText;
             }
-            else
+            else if(theResult == "False")
             {
-                if (theResult == "False")
-                {
-                    resultString = dds.FalseArmText;
-                }
+                resultString = dds.FalseArmText;
             }
             return resultString;
         }

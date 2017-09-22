@@ -20,19 +20,22 @@ namespace Dev2.Activities
         {
             try
             {
-                if (WorkflowInspectionServices.GetActivities(dynamicActivity).FirstOrDefault() is Flowchart chart)
+                var chart = WorkflowInspectionServices.GetActivities(dynamicActivity).FirstOrDefault() as Flowchart;
+                if (chart != null)
                 {
                     if (chart.StartNode == null)
                     {
                         return null;
                     }
+                    var start = chart.StartNode as FlowStep;
 
-                    if (chart.StartNode is FlowStep start)
+                    if (start != null)
                     {
                         var tool = ParseTools(start, seenActivities);
                         return tool.FirstOrDefault();
                     }
-                    if (chart.StartNode is FlowSwitch<string> flowstart)
+                    var flowstart = chart.StartNode as FlowSwitch<string>;
+                    if (flowstart != null)
                     {
                         return ParseSwitch(flowstart, seenActivities).FirstOrDefault();
                     }
@@ -57,21 +60,24 @@ namespace Dev2.Activities
                 return null;
             }
 
-            if (startNode is FlowStep step)
+            FlowStep step = startNode as FlowStep;
+            if (step != null)
             {
-
+                
                 return ParseFlowStep(step, seenActivities);
-
+                
             }
             else
             {
-                if (startNode is FlowDecision node)
+                FlowDecision node = startNode as FlowDecision;
+                if (node != null)
                 {
                     return ParseDecision(node, seenActivities);
                 }
                 else
                 {
-                    if (startNode is FlowSwitch<string> @switch)
+                    FlowSwitch<string> @switch = startNode as FlowSwitch<string>;
+                    if (@switch != null)
                     {
                         return ParseSwitch(@switch, seenActivities);
                     }
@@ -83,7 +89,8 @@ namespace Dev2.Activities
 
         IEnumerable<IDev2Activity> ParseSwitch(FlowSwitch<string> switchFlowSwitch, List<IDev2Activity> seenActivities)
         {
-            if (switchFlowSwitch.Expression is DsfFlowSwitchActivity activity)
+            var activity = switchFlowSwitch.Expression as DsfFlowSwitchActivity;
+            if (activity != null)
             {
                 if (seenActivities.Contains(activity))
                 {
@@ -91,17 +98,17 @@ namespace Dev2.Activities
                 }
 
                 var val = new StringBuilder(Dev2DecisionStack.ExtractModelFromWorkflowPersistedData(activity.ExpressionText));
-                Dev2Switch ds = new Dev2Switch { SwitchVariable = val.ToString() };
-                var swi = new DsfSwitch(activity);
-                if (!seenActivities.Contains(activity))
-                {
-                    seenActivities.Add(swi);
-                }
+                 Dev2Switch ds = new Dev2Switch { SwitchVariable = val.ToString() };
+                 var swi = new DsfSwitch(activity);
+                 if (!seenActivities.Contains(activity))
+                 {
+                     seenActivities.Add(swi);
+                 }
                 swi.Switches = switchFlowSwitch.Cases.Select(a => new Tuple<string, IDev2Activity>(a.Key, ParseTools(a.Value, seenActivities).FirstOrDefault())).ToDictionary(a => a.Item1, a => a.Item2);
                 swi.Default = ParseTools(switchFlowSwitch.Default, seenActivities);
                 swi.Switch = ds.SwitchVariable;
-
-
+                
+                
                 return new List<IDev2Activity>
                 {  swi
                 };
@@ -112,30 +119,31 @@ namespace Dev2.Activities
 
         IEnumerable<IDev2Activity> ParseDecision(FlowDecision decision, List<IDev2Activity> seenActivities)
         {
-
-            if (decision.Condition is DsfFlowDecisionActivity activity)
+            
+            var activity = decision.Condition as DsfFlowDecisionActivity;
+            if(activity != null)
             {
-                if (seenActivities.Contains(activity))
+                if( seenActivities.Contains(activity))
                 {
-                    return new List<IDev2Activity> { activity };
+                    return new List<IDev2Activity> { activity};
                 }
                 var rawText = activity.ExpressionText;
-
-                var activityTextjson = rawText.Substring(rawText.IndexOf("{", StringComparison.Ordinal)).Replace(@""",AmbientDataList)", "").Replace("\"", "!");
-
+                
+                var activityTextjson = rawText.Substring(rawText.IndexOf("{", StringComparison.Ordinal)).Replace(@""",AmbientDataList)","").Replace("\"","!");
+                
                 var activityText = Dev2DecisionStack.FromVBPersitableModelToJSON(activityTextjson);
-                var decisionStack = JsonConvert.DeserializeObject<Dev2DecisionStack>(activityText);
+                var decisionStack =  JsonConvert.DeserializeObject<Dev2DecisionStack>(activityText);
                 var dec = new DsfDecision(activity);
                 if (!seenActivities.Contains(activity))
                 {
-                    seenActivities.Add(dec);
+                    seenActivities.Add( dec);
                 }
                 dec.TrueArm = ParseTools(decision.True, seenActivities);
                 dec.FalseArm = ParseTools(decision.False, seenActivities);
                 dec.Conditions = decisionStack;
                 dec.And = decisionStack.Mode == Dev2DecisionMode.AND;
-
-
+                
+                
                 return new List<IDev2Activity>
                 { dec};
             }

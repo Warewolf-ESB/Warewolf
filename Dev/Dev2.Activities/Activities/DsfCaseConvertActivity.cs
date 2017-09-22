@@ -160,7 +160,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                         if (evalled.IsWarewolfAtomResult)
                         {
-                            if (evalled is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult warewolfAtomResult)
+                            var warewolfAtomResult = evalled as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
+                            if (warewolfAtomResult != null)
                             {
 
                                 return warewolfAtomResult.Item;
@@ -310,8 +311,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             var modelProperty = modelItem.Properties["DisplayName"];
             if(modelProperty != null)
             {
-                var currentName = modelProperty.ComputedValue as string;
-                if (currentName != null && currentName.Contains("(") && currentName.Contains(")"))
+                string currentName = modelProperty.ComputedValue as string;
+                if(currentName != null && currentName.Contains("(") && currentName.Contains(")"))
                 {
                     currentName = currentName.Remove(currentName.Contains(" (") ? currentName.IndexOf(" (", StringComparison.Ordinal) : currentName.IndexOf("(", StringComparison.Ordinal));
                 }

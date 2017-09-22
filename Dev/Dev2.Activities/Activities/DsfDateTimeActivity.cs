@@ -156,9 +156,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     if (fieldInfo != null)
                     {
                         var val = fieldInfo.GetValue(CultureInfo.CurrentCulture);
-                        if (val is CultureInfo newCul)
+                        var newCul = val as CultureInfo;
+                        if (newCul != null)
                         {
-                            Thread.CurrentThread.CurrentCulture = newCul;
+                            Thread.CurrentThread.CurrentCulture = newCul;      
                         }
                     }
                     var dateTimePattern = string.Format("{0} {1}", Thread.CurrentThread.CurrentCulture.DateTimeFormat.ShortDatePattern, Thread.CurrentThread.CurrentCulture.DateTimeFormat.LongTimePattern);

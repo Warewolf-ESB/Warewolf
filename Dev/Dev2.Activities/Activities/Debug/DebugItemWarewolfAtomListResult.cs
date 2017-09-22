@@ -209,7 +209,8 @@ namespace Dev2.Activities.Debug
         {
             if(_oldValue.IsWarewolfAtomResult)
             {
-                if (_oldValue is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult scalarResult)
+                var scalarResult = _oldValue as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
+                if(scalarResult != null)
                 {
                     results.Add(new DebugItemResult
                     {

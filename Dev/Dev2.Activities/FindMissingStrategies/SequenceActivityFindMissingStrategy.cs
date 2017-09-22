@@ -39,11 +39,13 @@ namespace Dev2.FindMissingStrategies
         {
             List<string> results = new List<string>();
             Dev2FindMissingStrategyFactory stratFac = new Dev2FindMissingStrategyFactory();
-            if (activity is DsfSequenceActivity sequenceActivity)
+            DsfSequenceActivity sequenceActivity = activity as DsfSequenceActivity;
+            if(sequenceActivity != null)
             {
-                foreach (var innerActivity in sequenceActivity.Activities)
+                foreach(var innerActivity in sequenceActivity.Activities)
                 {
-                    if (innerActivity is IDev2Activity dsfActivityAbstractString)
+                    IDev2Activity dsfActivityAbstractString = innerActivity as IDev2Activity;
+                    if(dsfActivityAbstractString != null)
                     {
                         GetResults(dsfActivityAbstractString, stratFac, results);
                     }

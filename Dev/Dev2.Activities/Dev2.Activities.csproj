@@ -396,6 +396,7 @@
     <Compile Include="TO\SharepointSearchTo.cs" />
     <Compile Include="TO\ValidatedObject.cs" />
     <Compile Include="TO\XPathDTO.cs" />
+    <Compile Include="Util.cs" />
     <Compile Include="Utilities\ActivityHelper.cs" />
     <Compile Include="Utilities\FindRecordsDisplayUtil.cs" />
     <Compile Include="Utilities\IWorkflowHelper.cs" />

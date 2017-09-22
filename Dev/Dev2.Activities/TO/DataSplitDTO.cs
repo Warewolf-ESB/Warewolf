@@ -15,7 +15,8 @@ using Dev2.Providers.Validation.Rules;
 using Dev2.TO;
 using Dev2.Util;
 using Dev2.Validation;
-using System;
+
+
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
@@ -198,6 +199,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         ruleSet.Add(new IsValidExpressionRule(() => outputExprRule.ExpressionValue, datalist));
                     }
                     break;
+
                 case "At":
                     switch(SplitType)
                     {
@@ -211,12 +213,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             ruleSet.Add(atCharsExprRule);
                             ruleSet.Add(new IsStringEmptyRule(() => atCharsExprRule.ExpressionValue));
                             break;
-                        default:
-                            throw new ArgumentException("Unrecognized split type: " + SplitType);
                     }
                     break;
-                default:
-                    return ruleSet;
             }
             return ruleSet;
         }

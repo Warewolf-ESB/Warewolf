@@ -37,8 +37,9 @@ namespace Dev2.Activities
                 return;
             }
 
+            var databaseServiceExecution = ServiceExecution as DatabaseServiceExecution;
 
-            if (ServiceExecution is DatabaseServiceExecution databaseServiceExecution)
+            if (databaseServiceExecution != null)
             {
                 databaseServiceExecution.Inputs = Inputs.Select(a => new ServiceInput { EmptyIsNull = a.EmptyIsNull, Name = a.Name, RequiredField = a.RequiredField, Value = a.Value, TypeName = a.TypeName } as IServiceInput).ToList();
                 databaseServiceExecution.Outputs = Outputs;

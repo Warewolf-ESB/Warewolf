@@ -101,14 +101,16 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             var warewolfEvalResult = dataObject.Environment.Eval(RecordsetName.Replace("()", "(*)"), update);
                             if(warewolfEvalResult.IsWarewolfRecordSetResult)
                             {
-                                if (warewolfEvalResult is CommonFunctions.WarewolfEvalResult.WarewolfRecordSetResult recsetResult)
+                                var recsetResult = warewolfEvalResult as CommonFunctions.WarewolfEvalResult.WarewolfRecordSetResult;
+                                if(recsetResult != null)
                                 {
                                     AddDebugInputItem(new DebugItemWarewolfRecordset(recsetResult.Item, RecordsetName, "Recordset", "="));
                                 }
                             }
                             if(warewolfEvalResult.IsWarewolfAtomListresult)
                             {
-                                if (warewolfEvalResult is CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult recsetResult)
+                                var recsetResult = warewolfEvalResult as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
+                                if(recsetResult != null)
                                 {
                                     AddDebugInputItem(new DebugEvalResult(RecordsetName, "Recordset", dataObject.Environment, update));
                                 }
