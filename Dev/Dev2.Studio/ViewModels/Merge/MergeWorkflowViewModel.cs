@@ -24,7 +24,7 @@ namespace Dev2.ViewModels.Merge
         {
             WorkflowDesignerViewModel = new WorkflowDesignerViewModel(currentResourceModel, false);
             WorkflowDesignerViewModel.CreateBlankWorkflow();
-            var mergeParser = CustomContainer.Get<IParseServiceForDifferences>();
+            var mergeParser = CustomContainer.Get<IServiceDifferenceParser>();
             var currentChanges = mergeParser.GetDifferences(currentResourceModel, differenceResourceModel);
             Conflicts = new ObservableCollection<ICompleteConflict>();
             var differenceStore = currentChanges.differenceStore;

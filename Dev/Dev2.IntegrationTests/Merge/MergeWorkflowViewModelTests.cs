@@ -32,7 +32,7 @@ namespace Dev2.Integration.Tests.Merge
             var mockServer = new Mock<IServer>();
             var mockShellViewModel = new Mock<IShellViewModel>();
             var mockServerRepository = new Mock<IServerRepository>();
-            var mockParseServiceForDifferences = new ParseServiceForDifferences();
+            var mockParseServiceForDifferences = new ServiceDifferenceParser();
             mockServerRepository.Setup(a => a.IsLoaded).Returns(true);
             CustomContainer.Register<IActivityParser>(new ActivityParser());
             CustomContainer.Register(mockApplicationAdapter.Object);
@@ -40,7 +40,7 @@ namespace Dev2.Integration.Tests.Merge
             CustomContainer.Register(mockServer.Object);
             CustomContainer.Register(mockShellViewModel.Object);
             CustomContainer.Register(mockServerRepository.Object);
-            CustomContainer.Register<IParseServiceForDifferences>(mockParseServiceForDifferences);
+            CustomContainer.Register<IServiceDifferenceParser>(mockParseServiceForDifferences);
         }
 
         [TestMethod]

@@ -58,7 +58,7 @@ namespace Warewolf.MergeParser.Tests
             var current = CreateContextualResourceModel(chart);
             var diff = CreateContextualResourceModel(otherChart);
 
-            var psd = new ParseServiceForDifferences(activityParser);
+            var psd = new ServiceDifferenceParser(activityParser);
             var diffs = psd.GetDifferences(current, diff);
 
             var currentChart = diffs.current;
@@ -179,7 +179,7 @@ namespace Warewolf.MergeParser.Tests
             var current = CreateContextualResourceModel(chart);
             var diff = CreateContextualResourceModel(otherChart);
 
-            var psd = new ParseServiceForDifferences();
+            var psd = new ServiceDifferenceParser();
             var diffs = psd.GetDifferences(current, diff);
             var currentChart = diffs.current;
             var differenceChart = diffs.difference;
@@ -218,7 +218,7 @@ namespace Warewolf.MergeParser.Tests
         public void Constructor_GivenNullParser_ShouldThrowException()
         {
             //---------------Set up test pack-------------------
-            var psd = new ParseServiceForDifferences();
+            var psd = new ServiceDifferenceParser();
             //---------------Assert Precondition----------------
 
             //---------------Execute Test ----------------------

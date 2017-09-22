@@ -23,7 +23,7 @@ namespace Dev2.Core.Tests
         Mock<IServer> _mockServer;
         Mock<IShellViewModel> _mockShellViewModel;
         Mock<IServerRepository> _mockServerRepository;
-        Mock<IParseServiceForDifferences> _mockParseServiceForDifferences;
+        Mock<IServiceDifferenceParser> _mockParseServiceForDifferences;
 
         [TestInitialize]
         public void InitializeTest()
@@ -33,7 +33,7 @@ namespace Dev2.Core.Tests
             _mockServer = new Mock<IServer>();
             _mockShellViewModel = new Mock<IShellViewModel>();
             _mockServerRepository = new Mock<IServerRepository>();
-            _mockParseServiceForDifferences = new Mock<IParseServiceForDifferences>();
+            _mockParseServiceForDifferences = new Mock<IServiceDifferenceParser>();
 
             _mockApplicationAdapter.Setup(a => a.Current).Returns(Application.Current);
 
