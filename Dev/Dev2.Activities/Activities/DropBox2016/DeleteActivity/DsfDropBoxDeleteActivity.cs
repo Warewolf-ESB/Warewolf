@@ -61,12 +61,14 @@ namespace Dev2.Activities.DropBox2016.DeleteActivity
             DropboxSingleExecutor = new DropboxDelete(evaluatedValues["DeletePath"]);
             _dropboxClientWrapper = _dropboxClientWrapper ?? new DropboxClientWrapper(GetClient());
             var dropboxExecutionResult = DropboxSingleExecutor.ExecuteTask(_dropboxClientWrapper);
-            if (dropboxExecutionResult is DropboxDeleteSuccessResult dropboxSuccessResult)
+            var dropboxSuccessResult = dropboxExecutionResult as DropboxDeleteSuccessResult;
+            if (dropboxSuccessResult != null)
             {
                 dropboxSuccessResult.GerFileMetadata();
                 return new List<string> { GlobalConstants.DropBoxSuccess };
             }
-            if (dropboxExecutionResult is DropboxFailureResult dropboxFailureResult)
+            var dropboxFailureResult = dropboxExecutionResult as DropboxFailureResult;
+            if (dropboxFailureResult != null)
             {
                 Exception = dropboxFailureResult.GetException();
             }

@@ -404,8 +404,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
                 else
                 {
+                    var tmp2 = operationalData.InnerActivity.InnerActivity as DsfActivityAbstract<bool>;
 
-                    if (operationalData.InnerActivity.InnerActivity is DsfActivityAbstract<bool> tmp2 && !(tmp2 is DsfForEachActivity))
+                    if (tmp2 != null && !(tmp2 is DsfForEachActivity))
                     {
                         IList<DsfForEachItem> data = tmp2.GetForEachInputs();
                         IList<Tuple<string, string>> updates = new List<Tuple<string, string>>();
@@ -454,12 +455,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 newOutputs = _inputItr.IterateMapping(newOutputs, idx);
             }
 
-            if (DataFunc.Handler is IDev2ActivityIOMapping dev2ActivityIoMapping)
+            var dev2ActivityIoMapping = DataFunc.Handler as IDev2ActivityIOMapping;
+            if (dev2ActivityIoMapping != null)
             {
                 dev2ActivityIoMapping.InputMapping = newInputs;
             }
 
-            if (DataFunc.Handler is IDev2ActivityIOMapping activityIoMapping)
+            var activityIoMapping = DataFunc.Handler as IDev2ActivityIOMapping;
+            if (activityIoMapping != null)
             {
                 activityIoMapping.OutputMapping = newOutputs;
             }
@@ -575,8 +578,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         private void RestoreHandlerFn()
         {
 
+            var activity = DataFunc.Handler as IDev2ActivityIOMapping;
 
-            if (DataFunc.Handler is IDev2ActivityIOMapping activity)
+            if (activity != null)
             {
 
                 if (operationalData.InnerActivity.OrigCodedInputs != null)
@@ -635,9 +639,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                     else
                     {
+                        var tmp2 = operationalData.InnerActivity.InnerActivity as DsfActivityAbstract<bool>;
 
                         // Restore Inputs ;)
-                        if (operationalData.InnerActivity.InnerActivity is DsfActivityAbstract<bool> tmp2)
+                        if (tmp2 != null)
                         {
                             IList<DsfForEachItem> data = tmp2.GetForEachInputs();
                             IList<Tuple<string, string>> updates = new List<Tuple<string, string>>();

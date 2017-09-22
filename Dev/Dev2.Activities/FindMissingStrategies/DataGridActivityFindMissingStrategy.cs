@@ -47,42 +47,48 @@ namespace Dev2.FindMissingStrategies
 
             if (activityType == typeof(DsfBaseConvertActivity))
             {
-                if (activity is DsfBaseConvertActivity bcAct)
+                DsfBaseConvertActivity bcAct = activity as DsfBaseConvertActivity;
+                if (bcAct != null)
                 {
                     results.AddRange(InternalFindMissing(bcAct.ConvertCollection));
                 }
             }
             else if (activityType == typeof(DsfCaseConvertActivity))
             {
-                if (activity is DsfCaseConvertActivity ccAct)
+                DsfCaseConvertActivity ccAct = activity as DsfCaseConvertActivity;
+                if (ccAct != null)
                 {
                     results.AddRange(InternalFindMissing(ccAct.ConvertCollection));
                 }
             }
             else if (activityType == typeof(DsfMultiAssignActivity))
             {
-                if (activity is DsfMultiAssignActivity maAct)
+                DsfMultiAssignActivity maAct = activity as DsfMultiAssignActivity;
+                if (maAct != null)
                 {
                     results.AddRange(InternalFindMissing(maAct.FieldsCollection));
                 }
             }
             else if (activityType == typeof(DsfMultiAssignObjectActivity))
             {
-                if (activity is DsfMultiAssignObjectActivity maAct)
+                DsfMultiAssignObjectActivity maAct = activity as DsfMultiAssignObjectActivity;
+                if (maAct != null)
                 {
                     results.AddRange(InternalFindMissing(maAct.FieldsCollection));
                 }
             }
             else if (activityType == typeof(DsfGatherSystemInformationActivity))
             {
-                if (activity is DsfGatherSystemInformationActivity maAct)
+                DsfGatherSystemInformationActivity maAct = activity as DsfGatherSystemInformationActivity;
+                if (maAct != null)
                 {
                     results.AddRange(InternalFindMissing(maAct.SystemInformationCollection));
                 }
             }
             else if (activityType == typeof(DsfSqlServerDatabaseActivity))
             {
-                if (activity is DsfSqlServerDatabaseActivity maAct)
+                var maAct = activity as DsfSqlServerDatabaseActivity;
+                if (maAct != null)
                 {
                     if (maAct.Inputs != null)
                     {
@@ -105,7 +111,8 @@ namespace Dev2.FindMissingStrategies
             }
             else if (activityType == typeof(DsfMySqlDatabaseActivity))
             {
-                if (activity is DsfMySqlDatabaseActivity maAct)
+                var maAct = activity as DsfMySqlDatabaseActivity;
+                if (maAct != null)
                 {
                     if (maAct.Inputs != null)
                     {
@@ -128,7 +135,8 @@ namespace Dev2.FindMissingStrategies
             }
             else if (activityType == typeof(DsfPostgreSqlActivity))
             {
-                if (activity is DsfPostgreSqlActivity maAct)
+                var maAct = activity as DsfPostgreSqlActivity;
+                if (maAct != null)
                 {
                     if (maAct.Inputs != null)
                     {
@@ -151,7 +159,8 @@ namespace Dev2.FindMissingStrategies
             }
             else if (activityType == typeof(DsfOracleDatabaseActivity))
             {
-                if (activity is DsfOracleDatabaseActivity maAct)
+                var maAct = activity as DsfOracleDatabaseActivity;
+                if (maAct != null)
                 {
                     if (maAct.Inputs != null)
                     {
@@ -174,7 +183,8 @@ namespace Dev2.FindMissingStrategies
             }
             else if (activityType == typeof(DsfODBCDatabaseActivity))
             {
-                if (activity is DsfODBCDatabaseActivity maAct)
+                var maAct = activity as DsfODBCDatabaseActivity;
+                if (maAct != null)
                 {
                     if (maAct.Inputs != null)
                     {
@@ -201,7 +211,8 @@ namespace Dev2.FindMissingStrategies
             }
             else if (activityType == typeof(DsfWebPostActivity))
             {
-                if (activity is DsfWebPostActivity maAct)
+                var maAct = activity as DsfWebPostActivity;
+                if (maAct != null)
                 {
                     if (maAct.Inputs != null)
                     {
@@ -251,7 +262,8 @@ namespace Dev2.FindMissingStrategies
             }
             else if (activityType == typeof(DsfWebDeleteActivity))
             {
-                if (activity is DsfWebDeleteActivity maAct)
+                var maAct = activity as DsfWebDeleteActivity;
+                if (maAct != null)
                 {
                     if (maAct.Inputs != null)
                     {
@@ -296,7 +308,8 @@ namespace Dev2.FindMissingStrategies
             }
             else if (activityType == typeof(DsfWebPutActivity))
             {
-                if (activity is DsfWebPutActivity maAct)
+                var maAct = activity as DsfWebPutActivity;
+                if (maAct != null)
                 {
                     if (maAct.Inputs != null)
                     {
@@ -345,7 +358,8 @@ namespace Dev2.FindMissingStrategies
             }
             else if (activityType == typeof(DsfWebGetActivity))
             {
-                if (activity is DsfWebGetActivity maAct)
+                var maAct = activity as DsfWebGetActivity;
+                if (maAct != null)
                 {
                     if (maAct.Inputs != null)
                     {
@@ -394,7 +408,8 @@ namespace Dev2.FindMissingStrategies
             }
             else if (activityType == typeof(DsfDotNetDllActivity))
             {
-                if (activity is DsfDotNetDllActivity maAct)
+                var maAct = activity as DsfDotNetDllActivity;
+                if (maAct != null)
                 {
                     if (maAct.Inputs != null)
                     {
@@ -427,7 +442,8 @@ namespace Dev2.FindMissingStrategies
             }
             else if (activityType == typeof(DsfEnhancedDotNetDllActivity))
             {
-                if (activity is DsfEnhancedDotNetDllActivity maAct)
+                var maAct = activity as DsfEnhancedDotNetDllActivity;
+                if (maAct != null)
                 {
                     if (maAct.ConstructorInputs != null)
                     {
@@ -442,7 +458,7 @@ namespace Dev2.FindMissingStrategies
                     {
                         foreach (var pluginAction in maAct.MethodsToRun)
                         {
-                            if (pluginAction?.Inputs != null)
+                            if(pluginAction?.Inputs != null)
                             {
                                 results.AddRange(InternalFindMissing(pluginAction.Inputs));
                             }
@@ -475,7 +491,8 @@ namespace Dev2.FindMissingStrategies
             }
             else if (activityType == typeof(DsfComDllActivity))
             {
-                if (activity is DsfComDllActivity maAct)
+                var maAct = activity as DsfComDllActivity;
+                if (maAct != null)
                 {
                     if (maAct.Inputs != null)
                     {
@@ -508,7 +525,8 @@ namespace Dev2.FindMissingStrategies
             }
             else if (activityType == typeof(DsfWcfEndPointActivity))
             {
-                if (activity is DsfWcfEndPointActivity maAct)
+                var maAct = activity as DsfWcfEndPointActivity;
+                if (maAct != null)
                 {
                     if (maAct.Inputs != null)
                     {

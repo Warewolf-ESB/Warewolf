@@ -131,7 +131,8 @@ namespace Dev2.Activities.DropBox2016.DownloadActivity
             var dropboxSingleExecutor = GetDropboxSingleExecutor(dropBoxDownLoad);
             _dropboxClientWrapper = _dropboxClientWrapper ?? new DropboxClientWrapper(GetClient());
             var dropboxExecutionResult = dropboxSingleExecutor.ExecuteTask(_dropboxClientWrapper);
-            if (dropboxExecutionResult is DropboxDownloadSuccessResult dropboxSuccessResult)
+            var dropboxSuccessResult = dropboxExecutionResult as DropboxDownloadSuccessResult;
+            if (dropboxSuccessResult != null)
             {
                 Response = dropboxSuccessResult.GetDownloadResponse();
                 var bytes = Response.GetContentAsByteArrayAsync().Result;
@@ -149,7 +150,8 @@ namespace Dev2.Activities.DropBox2016.DownloadActivity
                 }
                 return new List<string> { GlobalConstants.DropBoxSuccess };
             }
-            if (dropboxExecutionResult is DropboxFailureResult dropboxFailureResult)
+            var dropboxFailureResult = dropboxExecutionResult as DropboxFailureResult;
+            if (dropboxFailureResult != null)
             {
                 Exception = dropboxFailureResult.GetException();
             }

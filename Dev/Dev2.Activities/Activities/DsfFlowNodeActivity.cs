@@ -289,16 +289,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 Dev2DecisionStack dds = DataListUtil.ConvertFromJsonToModel<Dev2DecisionStack>(val);
 
-                if (_theResult.ToString() == "True")
+                if(_theResult.ToString() == "True")
                 {
                     resultString = dds.TrueArmText;
                 }
-                else
+                else if(_theResult.ToString() == "False")
                 {
-                    if (_theResult.ToString() == "False")
-                    {
-                        resultString = dds.FalseArmText;
-                    }
+                    resultString = dds.FalseArmText;
                 }
 
                 itemToAdd.AddRange(new DebugItemStaticDataParams(resultString, "").GetDebugItemResult());
@@ -352,7 +349,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             if (obj is IFlowNodeActivity)
             {
                 var flowNodeAct = this as IFlowNodeActivity;
-                if (act is IFlowNodeActivity other)
+                var other = act as IFlowNodeActivity;
+                if (other != null)
                 {
                     return UniqueID == act.UniqueID && flowNodeAct.ExpressionText.Equals(other.ExpressionText);
                 }

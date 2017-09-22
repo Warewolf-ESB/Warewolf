@@ -186,43 +186,49 @@ namespace Dev2.Activities.Sharepoint
             var val = sharepointValue;
             if(type == typeof(FieldUserValue))
             {
-                if (sharepointValue is FieldUserValue fieldValue)
+                var fieldValue = sharepointValue as FieldUserValue;
+                if(fieldValue != null)
                 {
                     return fieldValue.LookupValue;
                 }
             }
             else if(type == typeof(FieldLookupValue))
             {
-                if (sharepointValue is FieldLookupValue fieldValue)
+                var fieldValue = sharepointValue as FieldLookupValue;
+                if (fieldValue != null)
                 {
                     return fieldValue.LookupValue;
                 }
             }
             else if (type == typeof(FieldUrlValue))
             {
-                if (sharepointValue is FieldUrlValue fieldValue)
+                var fieldValue = sharepointValue as FieldUrlValue;
+                if (fieldValue != null)
                 {
                     return fieldValue.Url;
                 }
             }
             else if (type == typeof(FieldGeolocationValue))
             {
-                if (sharepointValue is FieldGeolocationValue fieldValue)
+                var fieldValue = sharepointValue as FieldGeolocationValue;
+                if (fieldValue != null)
                 {
-                    return string.Join(",", fieldValue.Longitude, fieldValue.Latitude, fieldValue.Altitude, fieldValue.Measure);
+                    return string.Join(",",fieldValue.Longitude,fieldValue.Latitude,fieldValue.Altitude,fieldValue.Measure);
                 }
             }
             else if (type == typeof(FieldLookupValue[]))
             {
-                if (sharepointValue is FieldLookupValue[] fieldValue)
+                var fieldValue = sharepointValue as FieldLookupValue[];
+                if (fieldValue != null)
                 {
-                    var returnString = string.Join(",", fieldValue.Select(value => value.LookupValue));
+                    var returnString = string.Join(",",fieldValue.Select(value => value.LookupValue));
                     return returnString;
                 }
             }
             else if (type == typeof(FieldUserValue[]))
             {
-                if (sharepointValue is FieldLookupValue[] fieldValue)
+                var fieldValue = sharepointValue as FieldLookupValue[];
+                if (fieldValue != null)
                 {
                     var returnString = string.Join(",", fieldValue.Select(value => value.LookupValue));
                     return returnString;

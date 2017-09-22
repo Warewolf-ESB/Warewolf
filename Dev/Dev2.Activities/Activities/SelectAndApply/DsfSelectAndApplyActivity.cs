@@ -203,7 +203,8 @@ namespace Dev2.Activities.SelectAndApply
                     //Assign the warewolfAtom to Alias using new environment
                     scopedEnvironment.SetDataSource(exp);
 
-                    if (ApplyActivityFunc.Handler is IDev2Activity exeAct)
+                    var exeAct = ApplyActivityFunc.Handler as IDev2Activity;
+                    if (exeAct != null)
                     {
                         _childUniqueID = exeAct.UniqueID;
                         exeAct.Execute(dataObject, 0);
@@ -274,7 +275,8 @@ namespace Dev2.Activities.SelectAndApply
                         {
                             if (data.IsWarewolfAtomResult)
                             {
-                                if (data is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult atom)
+                                var atom = data as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
+                                if (atom != null)
                                 {
                                     AddDebugOutputItem(new DebugItemWarewolfAtomResult(atom.Item.ToString(), expression, ""));
                                 }

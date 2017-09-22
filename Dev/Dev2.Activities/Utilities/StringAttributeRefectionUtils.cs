@@ -15,7 +15,7 @@ using System.Reflection;
 
 namespace Dev2.Utilities
 {
-    public static class StringAttributeRefectionUtils
+    public class StringAttributeRefectionUtils
     {
         public static IEnumerable<PropertyInfo> ExtractAdornedProperties<T>(object objectToReflect)
         {

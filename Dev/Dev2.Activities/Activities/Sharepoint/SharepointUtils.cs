@@ -71,9 +71,10 @@ namespace Dev2.Activities.Sharepoint
                 startSearchTerm+="<Values>";
                 if(warewolfEvalResult.IsWarewolfAtomListresult)
                 {
-                    if (warewolfEvalResult is CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult listResult)
+                    var listResult = warewolfEvalResult as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
+                    if (listResult != null)
                     {
-                        foreach (var warewolfAtom in listResult.Item)
+                        foreach(var warewolfAtom in listResult.Item)
                         {
                             var valueString = warewolfAtom.ToString();
                             if (valueString.Contains(","))
@@ -88,10 +89,10 @@ namespace Dev2.Activities.Sharepoint
                             }
                         }
                     }
-                }
-                else
+                }else
                 {
-                    if (warewolfEvalResult is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult scalarResult)
+                    var scalarResult = warewolfEvalResult as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
+                    if(scalarResult!=null)
                     {
                         var valueString = scalarResult.Item.ToString();
                         if (valueString.Contains(","))
@@ -143,8 +144,6 @@ namespace Dev2.Activities.Sharepoint
                 case SharepointFieldType.Note:
                     returnValue = value.ToString();
                     break;
-                default:
-                    throw new ArgumentException("Unrecognized type: " + type);
             }
             return returnValue;
         }

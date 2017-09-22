@@ -28,7 +28,8 @@ namespace Dev2.Activities
             errors = new ErrorResultTO();
             errors.MergeErrors(execErrors);
 
-            if (ServiceExecution is DatabaseServiceExecution databaseServiceExecution)
+            var databaseServiceExecution = ServiceExecution as DatabaseServiceExecution;
+            if(databaseServiceExecution != null)
             {
                 databaseServiceExecution.InstanceInputDefinitions = inputs; // set the output mapping for the instance ;)
                 databaseServiceExecution.InstanceOutputDefintions = outputs; // set the output mapping for the instance ;)

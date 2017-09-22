@@ -88,7 +88,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 var warewolfListIterator = new WarewolfListIterator();
                 var calc = String.Format(GlobalConstants.AggregateCalculateTextConvertFormat, input);
                 var warewolfEvalResult = dataObject.Environment.Eval(calc, update);
-                if (warewolfEvalResult is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult scalarResult && scalarResult.Item.IsNothing)
+                var scalarResult = warewolfEvalResult as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
+                if(scalarResult != null && scalarResult.Item.IsNothing)
                 {
                     throw new NullValueInVariableException(ErrorResource.VariableInputError, input);
                 }
