@@ -15,8 +15,6 @@
                                xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
                                xmlns:attachedProperties="clr-namespace:Dev2.Activities.AttachedProperties"
                                xmlns:interfaceImplementors="clr-namespace:Dev2.Studio.InterfaceImplementors;assembly=Dev2.Intellisense"
-                               xmlns:provider="clr-namespace:Dev2.Intellisense.Provider;assembly=Dev2.Intellisense"
-                               xmlns:activities="http://schemas.microsoft.com/netfx/2009/xaml/activities"
                                MinWidth="320"
                                MinHeight="240"
                                Height="Auto"
@@ -53,7 +51,6 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
@@ -110,26 +107,33 @@
                                      Target="{Binding}" />
                 </i:Interaction.Behaviors>
             </ui:IntellisenseTextBox>
-            <TextBlock Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" Text="Apply To Selected Data" />
         </Grid>
-        
-        <Border BorderBrush="#CFD6E1" BorderThickness="1" Margin="5,0,5,5" CornerRadius="12" Grid.Row="1">
-            <sap:WorkflowItemPresenter x:Name="DropPoint"
+
+        <Grid Grid.Row="1" x:Name="WorkflowItemPresenterGrid">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Text="Apply To Selected Data" />
+
+            <Border BorderBrush="#CFD6E1" BorderThickness="1" Margin="5,0,5,5" CornerRadius="12" Grid.Row="1">
+                <sap:WorkflowItemPresenter x:Name="DropPoint"
                                        AllowDrop="False"
                                        Margin="3"
                                        HintText="Drop Activity Here"
                                        BorderBrush="Black"
                                        BorderThickness="2"
-                                       Item="{Binding Path=ModelItem.ApplyActivityFunc.Handler, Mode=TwoWay,Converter={StaticResource ModelItemToActivityConverter}}"
+                                       Item="{Binding Path=ModelItem.DataFunc.Handler,Mode=TwoWay,Converter={StaticResource ModelItemToActivityConverter}}"
                                        MinHeight="50"
                                        attachedProperties2:WizardEngineAttachedProperties.DontOpenWizard="True">
-                <AutomationProperties.AutomationId>
-                    <MultiBinding StringFormat="UI_{0}_DropPoint_AutoID">
-                        <Binding Path="ModelItem.AutomationID" />
-                    </MultiBinding>
-                </AutomationProperties.AutomationId>
-            </sap:WorkflowItemPresenter>
-        </Border>
+                    <AutomationProperties.AutomationId>
+                        <MultiBinding StringFormat="UI_{0}_DropPoint_AutoID">
+                            <Binding Path="ModelItem.AutomationID" />
+                        </MultiBinding>
+                    </AutomationProperties.AutomationId>
+                </sap:WorkflowItemPresenter>
+            </Border>
+        </Grid>
         <errors:OnError Grid.Row="2" />
     </Grid>
 </core:ActivityDesignerTemplate>
