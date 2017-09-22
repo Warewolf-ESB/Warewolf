@@ -50,7 +50,7 @@ namespace Dev2.Studio.Core.DataList
                             if (indexOfDot > -1)
                             {
                                 string recsetName = child.DisplayName.Substring(0, indexOfDot + 1);
-                                child.DisplayName = child.DisplayName.Replace(recsetName, child.Parent.DisplayName + ".");
+                                child.DisplayName = child.DisplayName.Replace(recsetName, child.Parent?.DisplayName + ".");
                             }
                             else
                             {
