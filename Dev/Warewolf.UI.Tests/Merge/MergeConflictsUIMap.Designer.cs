@@ -360,17 +360,13 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
         }
         
         #region Properties
-        public WpfPane ScrollViewerPane
+        public ScrollViewerPane ScrollViewerPane
         {
             get
             {
                 if ((this.mScrollViewerPane == null))
                 {
-                    this.mScrollViewerPane = new WpfPane(this);
-                    #region Search Criteria
-                    this.mScrollViewerPane.SearchProperties[WpfPane.PropertyNames.AutomationId] = "MergeGridScrollViewer";
-                    this.mScrollViewerPane.WindowTitles.Add("Warewolf");
-                    #endregion
+                    this.mScrollViewerPane = new ScrollViewerPane(this);
                 }
                 return this.mScrollViewerPane;
             }
@@ -378,7 +374,179 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
         #endregion
         
         #region Fields
-        private WpfPane mScrollViewerPane;
+        private ScrollViewerPane mScrollViewerPane;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class ScrollViewerPane : WpfPane
+    {
+        
+        public ScrollViewerPane(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfPane.PropertyNames.AutomationId] = "MergeGridScrollViewer";
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public VariablesExpander VariablesExpander
+        {
+            get
+            {
+                if ((this.mVariablesExpander == null))
+                {
+                    this.mVariablesExpander = new VariablesExpander(this);
+                }
+                return this.mVariablesExpander;
+            }
+        }
+        
+        public WpfRadioButton RightSelectAndApplyWFRadioButton
+        {
+            get
+            {
+                if ((this.mRightSelectAndApplyWFRadioButton == null))
+                {
+                    this.mRightSelectAndApplyWFRadioButton = new WpfRadioButton(this);
+                    #region Search Criteria
+                    this.mRightSelectAndApplyWFRadioButton.SearchProperties[WpfRadioButton.PropertyNames.AutomationId] = "UI_DifferenceWorkflowRB_AutoID";
+                    this.mRightSelectAndApplyWFRadioButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mRightSelectAndApplyWFRadioButton;
+            }
+        }
+        
+        public WpfRadioButton LeftSelectAndApplyWFRadioButton
+        {
+            get
+            {
+                if ((this.mLeftSelectAndApplyWFRadioButton == null))
+                {
+                    this.mLeftSelectAndApplyWFRadioButton = new WpfRadioButton(this);
+                    #region Search Criteria
+                    this.mLeftSelectAndApplyWFRadioButton.SearchProperties[WpfRadioButton.PropertyNames.AutomationId] = "UI_CurrentWorkflowRB_AutoID";
+                    this.mLeftSelectAndApplyWFRadioButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mLeftSelectAndApplyWFRadioButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private VariablesExpander mVariablesExpander;
+        
+        private WpfRadioButton mRightSelectAndApplyWFRadioButton;
+        
+        private WpfRadioButton mLeftSelectAndApplyWFRadioButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class VariablesExpander : WpfExpander
+    {
+        
+        public VariablesExpander(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfExpander.PropertyNames.AutomationId] = "UI_VariablesExpander_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public VariablesHeader VariablesHeader
+        {
+            get
+            {
+                if ((this.mVariablesHeader == null))
+                {
+                    this.mVariablesHeader = new VariablesHeader(this);
+                }
+                return this.mVariablesHeader;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private VariablesHeader mVariablesHeader;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class VariablesHeader : WpfButton
+    {
+        
+        public VariablesHeader(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfButton.PropertyNames.AutomationId] = "HeaderSite";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfRadioButton LeftVariablesRadio
+        {
+            get
+            {
+                if ((this.mLeftVariablesRadio == null))
+                {
+                    this.mLeftVariablesRadio = new WpfRadioButton(this);
+                    #region Search Criteria
+                    this.mLeftVariablesRadio.SearchProperties[WpfRadioButton.PropertyNames.AutomationId] = "UI_CurrentVariablesRB_AutoID";
+                    this.mLeftVariablesRadio.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mLeftVariablesRadio;
+            }
+        }
+        
+        public WpfText LeftVariablesText
+        {
+            get
+            {
+                if ((this.mLeftVariablesText == null))
+                {
+                    this.mLeftVariablesText = new WpfText(this);
+                    #region Search Criteria
+                    this.mLeftVariablesText.SearchProperties[WpfText.PropertyNames.AutomationId] = "UI_CurrentVariablesText_AutoID";
+                    this.mLeftVariablesText.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mLeftVariablesText;
+            }
+        }
+        
+        public WpfRadioButton DifferenceVariableRadioButton
+        {
+            get
+            {
+                if ((this.mDifferenceVariableRadioButton == null))
+                {
+                    this.mDifferenceVariableRadioButton = new WpfRadioButton(this);
+                    #region Search Criteria
+                    this.mDifferenceVariableRadioButton.SearchProperties[WpfRadioButton.PropertyNames.AutomationId] = "UI_DifferenceVariablesRB_AutoID";
+                    this.mDifferenceVariableRadioButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mDifferenceVariableRadioButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfRadioButton mLeftVariablesRadio;
+        
+        private WpfText mLeftVariablesText;
+        
+        private WpfRadioButton mDifferenceVariableRadioButton;
         #endregion
     }
 }
