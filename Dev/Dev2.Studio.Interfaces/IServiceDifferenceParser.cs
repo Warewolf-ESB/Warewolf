@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Dev2.Studio.Interfaces
 {
-    public interface IParseServiceForDifferences
+    public interface IServiceDifferenceParser
     {
       
 

@@ -19,7 +19,7 @@ namespace Dev2.Integration.Tests.Merge
         public void Construct_GivenSameWorkflows_Initialize()
         {
             //---------------Set up test pack-------------------
-            var parser = new ParseServiceForDifferences();
+            var parser = new ServiceDifferenceParser();
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             var parserCurrentDifferences = parser.CurrentDifferences;
@@ -44,7 +44,7 @@ namespace Dev2.Integration.Tests.Merge
             Assert.IsNotNull(element);
             var xamlDef = element.ToString(SaveOptions.DisableFormatting);
             resourceModel.WorkflowXaml = new StringBuilder(xamlDef);
-            var parser = new ParseServiceForDifferences();
+            var parser = new ServiceDifferenceParser();
             //---------------Assert Precondition----------------
             var parserCurrentDifferences = parser.CurrentDifferences;
             var parserDifferences = parser.Differences;
@@ -69,7 +69,7 @@ namespace Dev2.Integration.Tests.Merge
             Assert.IsNotNull(element);
             var xamlDef = element.ToString(SaveOptions.DisableFormatting);
             resourceModel.WorkflowXaml = new StringBuilder(xamlDef);
-            var parser = new ParseServiceForDifferences();
+            var parser = new ServiceDifferenceParser();
             //---------------Assert Precondition----------------
             var parserCurrentDifferences = parser.CurrentDifferences;
             var parserDifferences = parser.Differences;
@@ -96,7 +96,7 @@ namespace Dev2.Integration.Tests.Merge
             Assert.IsNotNull(element);
             var xamlDef = element.ToString(SaveOptions.DisableFormatting);
             resourceModel.WorkflowXaml = new StringBuilder(xamlDef);
-            var parser = new ParseServiceForDifferences();
+            var parser = new ServiceDifferenceParser();
             //---------------Assert Precondition----------------
             var parserCurrentDifferences = parser.CurrentDifferences;
             var parserDifferences = parser.Differences;
@@ -122,7 +122,7 @@ namespace Dev2.Integration.Tests.Merge
             Assert.IsNotNull(element);
             var xamlDef = element.ToString(SaveOptions.DisableFormatting);
             resourceModel.WorkflowXaml = new StringBuilder(xamlDef);
-            var parser = new ParseServiceForDifferences();
+            var parser = new ServiceDifferenceParser();
             //---------------Assert Precondition----------------
             var parserCurrentDifferences = parser.CurrentDifferences;
             var parserDifferences = parser.Differences;
@@ -149,7 +149,7 @@ namespace Dev2.Integration.Tests.Merge
             Assert.IsNotNull(element);
             var xamlDef = element.ToString(SaveOptions.DisableFormatting);
             resourceModel.WorkflowXaml = new StringBuilder(xamlDef);
-            var parser = new ParseServiceForDifferences();
+            var parser = new ServiceDifferenceParser();
             //---------------Assert Precondition----------------
             var parserCurrentDifferences = parser.CurrentDifferences;
             var parserDifferences = parser.Differences;

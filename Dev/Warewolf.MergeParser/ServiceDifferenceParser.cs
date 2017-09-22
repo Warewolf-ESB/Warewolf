@@ -7,14 +7,13 @@ using System.Linq;
 using Dev2.Studio.Core.Activities.Utils;
 using System.Activities.Presentation;
 using Dev2;
-using Dev2.Activities;
 using Dev2.Studio.Interfaces;
 using Dev2.Common;
 using Dev2.Utilities;
 
 namespace Warewolf.MergeParser
 {
-    public class ParseServiceForDifferences : IParseServiceForDifferences
+    public class ServiceDifferenceParser : IServiceDifferenceParser
     {
         private readonly IActivityParser _activityParser;
         public (List<ModelItem> nodeList, Flowchart flowchartDiff) CurrentDifferences { get; private set; }
@@ -29,12 +28,12 @@ namespace Warewolf.MergeParser
             return default;
         }
 
-        public ParseServiceForDifferences()
+        public ServiceDifferenceParser()
             : this(CustomContainer.Get<IActivityParser>())
         {
 
         }
-        public ParseServiceForDifferences(IActivityParser activityParser)
+        public ServiceDifferenceParser(IActivityParser activityParser)
         {
             VerifyArgument.IsNotNull(nameof(activityParser), activityParser);
             _activityParser = activityParser;
@@ -56,31 +55,8 @@ namespace Warewolf.MergeParser
                 if (singleOrDefault != null)
                     equalItems.Add(singleOrDefault);
             }
-
             var nodesDifferentInMergeHead = flatCurrent.Except(flatDifference, new Dev2ActivityComparer()).ToList();
-          /*  var toRemove = new List<IDev2Activity>();
-
-            foreach (var differentInMergeHead in nodesDifferentInMergeHead)
-            {
-                if (equalItems.Contains(differentInMergeHead, new Dev2ActivityComparer()))
-                {
-                    toRemove.Add(differentInMergeHead);
-                }
-            }
-
-            nodesDifferentInMergeHead.RemoveAll(activity => toRemove.Exists(dev2Activity => dev2Activity.Equals(activity)));*/
-
             var nodesDifferentInHead = flatDifference.Except(flatCurrent, new Dev2ActivityComparer()).ToList();
-           /* var toRemove1 = new List<IDev2Activity>();
-            foreach (var differentInMergeHead in nodesDifferentInHead)
-            {
-                if (equalItems.Contains(differentInMergeHead))
-                {
-                    toRemove1.Add(differentInMergeHead);
-                }
-            }
-            nodesDifferentInHead.RemoveAll(activity => toRemove1.Exists(dev2Activity => dev2Activity.Equals(activity)));*/
-
             var allDifferences = nodesDifferentInMergeHead.Union(nodesDifferentInHead, new Dev2ActivityComparer());
 
             foreach (var item in equalItems)
@@ -114,8 +90,6 @@ namespace Warewolf.MergeParser
             }
             var keyValuePairs = conflictList.Select(p => new KeyValuePair<Guid, bool>(p.uniqueId, p.conflict)).ToList();
             var valueTuples = (ModelItemUtils.CreateModelItem(parsedCurrent), ModelItemUtils.CreateModelItem(parsedDifference), keyValuePairs);
-
-
             return valueTuples;
         }
 
