@@ -238,7 +238,7 @@ namespace Dev2.Studio.Core.DataList
             IRecordSetItemModel recset;
             if (xmlNode.Attributes != null)
             {
-                recset = DataListItemModelFactory.CreateRecordSetItemModel(xmlNode.Name, Common.ParseDescription(xmlNode.Attributes[Common.Description]), Common.ParseColumnIODirection(xmlNode.Attributes[GlobalConstants.DataListIoColDirection]));
+                recset = DataListItemModelFactory.CreateRecordSetItemModel(xmlNode.Name, Common.ParseDescription(xmlNode.Attributes[Common.Description]), dev2ColumnArgumentDirection: Common.ParseColumnIODirection(xmlNode.Attributes[GlobalConstants.DataListIoColDirection]));
                 if (recset != null)
                 {
                     recset.IsEditable = Common.ParseIsEditable(xmlNode.Attributes[Common.IsEditable]);
@@ -324,7 +324,7 @@ namespace Dev2.Studio.Core.DataList
             {
                 if (item.Children.Count == 0)
                 {
-                    item.Children.Add(DataListItemModelFactory.CreateRecordSetFieldItemModel(item));
+                    item.Children.Add(DataListItemModelFactory.CreateRecordSetFieldItemModel(string.Empty, string.Empty, item));
                 }
                 if (_vm.RecsetCollection.Count > 0)
                 {
@@ -407,7 +407,7 @@ namespace Dev2.Studio.Core.DataList
         {
             if (subc.Attributes != null)
             {
-                var child = DataListItemModelFactory.CreateDataListModel(new Models.DataList.ItemModel(Common.ParseIsEditable(subc.Attributes[Common.IsEditable])), subc.Name, Common.ParseDescription(subc.Attributes[Common.Description]), recset, Common.ParseColumnIODirection(subc.Attributes[GlobalConstants.DataListIoColDirection]));
+                var child = DataListItemModelFactory.CreateDataListModel(subc.Name, Common.ParseDescription(subc.Attributes[Common.Description]), recset, false, "", Common.ParseIsEditable(subc.Attributes[Common.IsEditable]), true, false, Common.ParseColumnIODirection(subc.Attributes[GlobalConstants.DataListIoColDirection]));
                 recset.Children.Add(child);
             }
             else

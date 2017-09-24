@@ -92,7 +92,9 @@ namespace Dev2.TaskScheduler.Wrappers.Test
         public void TaskShedulerWrapper_TaskFolder_Valid()
         {
             var folder = new Dev2TaskFolder(new TaskServiceConvertorFactory(), _folder);
-            Assert.AreEqual(1, folder.ValidTasks.Count);
+
+            Assert.AreEqual(folder.ValidTasks.Count,1);
+
         }
 
         [TestMethod]
@@ -114,7 +116,7 @@ namespace Dev2.TaskScheduler.Wrappers.Test
             task.Actions.Add(new ExecAction("b"));
                     folder.RegisterTaskDefinition("newn",
                                                   new Dev2TaskDefinition(new TaskServiceConvertorFactory(), task));
-            Assert.AreEqual(2, folder.ValidTasks.Count);
+            Assert.AreEqual(folder.ValidTasks.Count,2);
 
         }
     }

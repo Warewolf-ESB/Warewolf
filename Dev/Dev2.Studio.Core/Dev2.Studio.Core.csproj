@@ -281,7 +281,6 @@
     <Compile Include="Messages\NewTestFromDebugMessage.cs" />
     <Compile Include="Models\DataList\ComplexObjectItemModel.cs" />
     <Compile Include="Models\DataList\DataListHeaderItemModel.cs" />
-    <Compile Include="Models\DataList\ItemModel.cs" />
     <Compile Include="Models\DataList\RecordSetFieldItemModel.cs" />
     <Compile Include="Models\DataList\RecordSetItemModel.cs" />
     <Compile Include="Models\DataList\ScalarItemModel.cs" />
