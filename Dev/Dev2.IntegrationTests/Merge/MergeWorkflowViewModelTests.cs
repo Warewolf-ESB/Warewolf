@@ -32,7 +32,6 @@ namespace Dev2.Integration.Tests.Merge
             var mockServer = new Mock<IServer>();
             var mockShellViewModel = new Mock<IShellViewModel>();
             var mockServerRepository = new Mock<IServerRepository>();
-            var mockParseServiceForDifferences = new ServiceDifferenceParser();
             mockServerRepository.Setup(a => a.IsLoaded).Returns(true);
             CustomContainer.Register<IActivityParser>(new ActivityParser());
             CustomContainer.Register(mockApplicationAdapter.Object);
@@ -40,6 +39,7 @@ namespace Dev2.Integration.Tests.Merge
             CustomContainer.Register(mockServer.Object);
             CustomContainer.Register(mockShellViewModel.Object);
             CustomContainer.Register(mockServerRepository.Object);
+            var mockParseServiceForDifferences = new ServiceDifferenceParser();
             CustomContainer.Register<IServiceDifferenceParser>(mockParseServiceForDifferences);
         }
 
@@ -100,7 +100,8 @@ namespace Dev2.Integration.Tests.Merge
                 var contextualResourceModel = example as IContextualResourceModel;
                 try
                 {
-                    var mergeWorkflowViewModel = new MergeWorkflowViewModel(contextualResourceModel, contextualResourceModel);
+                    var mergeWorkflowViewModel =
+                        new MergeWorkflowViewModel(contextualResourceModel, contextualResourceModel);
                     //---------------Test Result -----------------------
                     Assert.IsNotNull(mergeWorkflowViewModel);
                     var all = mergeWorkflowViewModel.Conflicts.All(conflict => conflict.DiffViewModel == null);
@@ -108,14 +109,50 @@ namespace Dev2.Integration.Tests.Merge
                         Assert.IsTrue(all);
                     else
                     {
-                        Debug.WriteLine(example.DisplayName + " Has some differences ");
+                        Debug.WriteLine(example.ID + " " + example.DisplayName + " Has some differences ");
                     }
                 }
                 catch (Exception e)
                 {
-                    Debug.WriteLine(example.DisplayName + " Has some differences " + e.Message);
+                    Debug.WriteLine(example.ID + " " + example.DisplayName + " Has some differences " + e.Message);
                 }
             }
         }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void Example_ControlFlowDecision_Have_No_Differences()
+        {
+            //---------------Set up test pack-------------------
+            var environmentModel = _server.Source;
+            environmentModel.Connect();
+            var resourceRepository = _server.Source.ResourceRepository;
+
+            resourceRepository.Load();
+
+
+
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            var contextualResourceModel = resourceRepository.LoadContextualResourceModel("41617daa-509e-40eb-aa76-b0827028721d".ToGuid());
+            try
+            {
+               var mergeWorkflowViewModel = new MergeWorkflowViewModel(contextualResourceModel, contextualResourceModel);
+                //---------------Test Result -----------------------
+                Assert.IsNotNull(mergeWorkflowViewModel);
+                var all = mergeWorkflowViewModel.Conflicts.All(conflict => !conflict.HasConflict);
+                if (all)
+                    Assert.IsTrue(all);
+                else
+                {
+                    Debug.WriteLine(contextualResourceModel.ID + " " + contextualResourceModel.DisplayName + " Has some differences ");
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(contextualResourceModel.ID + " " + contextualResourceModel.DisplayName + " Has some differences " + e.Message);
+            }
+        }
+
     }
 }

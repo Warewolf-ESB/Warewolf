@@ -13,7 +13,6 @@ using Dev2.Studio.Factory;
 using Dev2.Common;
 using Caliburn.Micro;
 using Dev2.Activities;
-using Dev2.Activities.Designers2.Sequence;
 using Dev2.Activities.Designers2.Service;
 using Dev2.Activities.Designers2.Switch;
 using Dev2.Activities.SelectAndApply;
@@ -22,217 +21,20 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.ViewModels.Merge
 {
-    public class ConflictViewModel : BindableBase, IConflictViewModel
+    public  class ConflictModelFactory : BindableBase, IConflictModelFactory
     {
+        private ModelItem _modelItem;
         private readonly IContextualResourceModel _resourceModel;
-
-        public ConflictViewModel(ModelItem modelItem, IContextualResourceModel resourceModel)
+        public IMergeToolModel Model { get; set; }
+        public ConflictModelFactory(ModelItem modelItem, IContextualResourceModel resourceModel)
         {
             Children = new ObservableCollection<IMergeToolModel>();
-            MergeToolModel = AddModelItem(modelItem);
+            _modelItem = modelItem;
             _resourceModel = resourceModel;
         }
 
-        public IMergeToolModel AddModelItem(ModelItem modelItem, string item = "")
+        public ConflictModelFactory()
         {
-
-            var currentValue = modelItem.GetCurrentValue<IDev2Activity>();
-            var activityType = currentValue.GetType();
-            if (activityType == typeof(DsfDecision)) activityType = typeof(DsfFlowDecisionActivity);
-            DesignerAttributeMap.DesignerAttributes.TryGetValue(activityType, out Type actual);
-            if (actual != null)
-            {
-                ActivityDesignerViewModel instance;
-                if (actual == typeof(SwitchDesignerViewModel))
-                {
-                    instance = Activator.CreateInstance(actual, modelItem, item) as ActivityDesignerViewModel;
-                }
-                else if(actual == typeof(ServiceDesignerViewModel))
-                {
-                    instance = Activator.CreateInstance(actual, modelItem, _resourceModel) as ActivityDesignerViewModel;
-                }
-                else
-                {
-                    instance = Activator.CreateInstance(actual, modelItem) as ActivityDesignerViewModel;
-                }
-
-                var dsfActivity = activityType.GetProperty("DisplayName")?.GetValue(currentValue);
-                var mergeToolModel = new MergeToolModel
-                {
-                    ActivityDesignerViewModel = instance,
-                    MergeIcon = modelItem.GetImageSourceForTool(),
-                    MergeDescription = dsfActivity?.ToString(),
-                    UniqueId = currentValue.UniqueID.ToGuid()
-                };
-
-                if (currentValue is DsfDecision de)
-                {
-                    if (de.TrueArm != null)
-                    {
-                        var deTrueArm = de.TrueArm.Flatten(p => p.NextNodes ?? new List<IDev2Activity>());
-                        foreach (var dev2Activity in deTrueArm)
-                        {
-                            var addModelItem = AddModelItem(ModelItemUtils.CreateModelItem(dev2Activity));
-                            addModelItem.HasParent = true;
-                            addModelItem.ParentDescription = de.Conditions.TrueArmText;
-                            mergeToolModel.Children.Add(addModelItem);
-                        }
-                    }
-
-                    if (de.FalseArm != null)
-                    {
-                        var deTrueArm = de.FalseArm.Flatten(p => p.NextNodes ?? new List<IDev2Activity>());
-                        foreach (var dev2Activity in deTrueArm)
-                        {
-                            var addModelItem = AddModelItem(ModelItemUtils.CreateModelItem(dev2Activity));
-                            addModelItem.HasParent = true;
-                            addModelItem.ParentDescription = de.Conditions.FalseArmText;
-                            mergeToolModel.Children.Add(addModelItem);
-                        }
-                    }
-                    //Todo add 'and' and the default arm
-                }
-                else if (currentValue is DsfSwitch switchTool)
-                {
-                    if (switchTool.Switches != null)
-                    {
-                        var vv = switchTool.Switches.ToDictionary(k => k.Key);
-
-                        foreach (var group in vv)
-                        {
-                            IEnumerable<IDev2Activity> activities = vv.Values.Where(pair => pair.Key == group.Key).Select(k => k.Value);
-                            foreach (var dev2Activity in activities)
-                            {
-                                var addModelItem = AddModelItem(ModelItemUtils.CreateModelItem(dev2Activity));
-                                addModelItem.HasParent = true;
-                                addModelItem.ParentDescription = group.Key;
-                                mergeToolModel.Children.Add(addModelItem);
-                            }
-                        }
-                    }
-                    if (switchTool.Default != null)
-                    {
-                        var deTrueArm = switchTool.Default.Flatten(p => p.NextNodes ?? new List<IDev2Activity>());
-                        foreach (var dev2Activity in deTrueArm)
-                        {
-                            var addModelItem = AddModelItem(ModelItemUtils.CreateModelItem(dev2Activity));
-                            addModelItem.HasParent = true;
-                            addModelItem.ParentDescription = "Default";
-                            mergeToolModel.Children.Add(addModelItem);
-                        }
-                    }
-                }
-                else if (currentValue is DsfSequenceActivity sequence)
-                {
-                    if (sequence.Activities != null)
-                        foreach (var dev2Activity in sequence.Activities)
-                        {
-                            var addModelItem = AddModelItem(ModelItemUtils.CreateModelItem(dev2Activity));
-                            addModelItem.HasParent = true;
-                            addModelItem.ParentDescription = sequence.DisplayName;
-                            mergeToolModel.Children.Add(addModelItem);
-                        }
-                    var nextNode = sequence.NextNodes?.SingleOrDefault();
-                    if (nextNode != null)
-                    {
-                        var nextModelItem = ModelItemUtils.CreateModelItem(nextNode);
-                        if (nextNode is DsfSwitch a)
-                        {
-                            var addModelItem = AddModelItem(nextModelItem, a.Switch);
-                            Children.Add(addModelItem);
-                        }
-
-                        else
-                        {
-                            var addModelItem = AddModelItem(nextModelItem);
-                            Children.Add(addModelItem);
-                        }
-                    }
-                }
-                else if (currentValue is DsfForEachActivity b)
-                {
-                    var dev2Activity = b.DataFunc.Handler as IDev2Activity;
-                    var singleOrDefault = dev2Activity;
-                    if (singleOrDefault != null)
-                    {
-                        var forEachModel = ModelItemUtils.CreateModelItem(singleOrDefault);
-                        var addModelItem = AddModelItem(forEachModel);
-                        addModelItem.HasParent = true;
-                        addModelItem.ParentDescription = b.DisplayName;
-                        mergeToolModel.Children.Add(addModelItem);
-                    }
-                    var nextNode = b.NextNodes?.SingleOrDefault();
-                    if (nextNode != null)
-                    {
-                        var nextModelItem = ModelItemUtils.CreateModelItem(nextNode);
-                        if (nextNode is DsfSwitch a)
-                        {
-                            var addModelItem = AddModelItem(nextModelItem, a.Switch);
-                            Children.Add(addModelItem);
-                        }
-
-                        else
-                        {
-                            var addModelItem = AddModelItem(nextModelItem);
-                            Children.Add(addModelItem);
-                        }
-                    }
-                }
-                else if (currentValue is DsfSelectAndApplyActivity c)
-                {
-                    var dev2Activity = c.ApplyActivityFunc.Handler as IDev2Activity;
-                    var singleOrDefault = dev2Activity;
-                    if (singleOrDefault != null)
-                    {
-                        var forEachModel = ModelItemUtils.CreateModelItem(singleOrDefault);
-                        var addModelItem = AddModelItem(forEachModel);
-                        addModelItem.HasParent = true;
-                        addModelItem.ParentDescription = c.DisplayName;
-                        mergeToolModel.Children.Add(addModelItem);
-                    }
-                    var nextNode = c.NextNodes?.SingleOrDefault();
-                    if (nextNode != null)
-                    {
-                        var nextModelItem = ModelItemUtils.CreateModelItem(nextNode);
-                        if (nextNode is DsfSwitch a)
-                        {
-                            var addModelItem = AddModelItem(nextModelItem, a.Switch);
-                            Children.Add(addModelItem);
-                        }
-
-                        else
-                        {
-                            var addModelItem = AddModelItem(nextModelItem);
-                            Children.Add(addModelItem);
-                        }
-                    }
-                }
-                else
-                {
-                    var nextNode = currentValue.NextNodes?.SingleOrDefault();
-                    if (nextNode != null)
-                    {
-                        var nextModelItem = ModelItemUtils.CreateModelItem(nextNode);
-                        if (nextNode is DsfSwitch a)
-                        {
-                            var addModelItem = AddModelItem(nextModelItem, a.Switch);
-                            Children.Add(addModelItem);
-                        }
-                       
-                        else
-                        {
-                            var addModelItem = AddModelItem(nextModelItem);
-                            Children.Add(addModelItem);
-                        }
-                    }
-
-                }
-                mergeToolModel.ActivityDesignerViewModel = instance;
-                mergeToolModel.MergeIcon = modelItem.GetImageSourceForTool();
-                mergeToolModel.MergeDescription = dsfActivity?.ToString();
-                return mergeToolModel;
-            }
-            return null;
         }
 
         public void GetDataList()
@@ -281,8 +83,228 @@ namespace Dev2.ViewModels.Merge
         public string WorkflowName { get; set; }
         public bool IsVariablesChecked { get; set; }
         public bool IsWorkflowNameChecked { get; set; }
-        public IMergeToolModel MergeToolModel { get; set; }
         public DataListViewModel DataListViewModel { get; set; }
         public ObservableCollection<IMergeToolModel> Children { get; set; }
+
+        public IMergeToolModel GetModel(string item = "")
+        {
+            if (_modelItem == default(ModelItem)) return null;
+            var currentValue = _modelItem.GetCurrentValue<IDev2Activity>();
+            var activityType = currentValue.GetType();
+            if (activityType == typeof(DsfDecision)) activityType = typeof(DsfFlowDecisionActivity);
+            DesignerAttributeMap.DesignerAttributes.TryGetValue(activityType, out Type actual);
+            if (actual != null)
+            {
+                ActivityDesignerViewModel instance;
+                if (actual == typeof(SwitchDesignerViewModel))
+                {
+                    instance = Activator.CreateInstance(actual, _modelItem, item) as ActivityDesignerViewModel;
+                }
+                else if (actual == typeof(ServiceDesignerViewModel))
+                {
+                    instance =
+                        Activator.CreateInstance(actual, _modelItem, _resourceModel) as ActivityDesignerViewModel;
+                }
+                else
+                {
+                    instance = Activator.CreateInstance(actual, _modelItem) as ActivityDesignerViewModel;
+                }
+
+                var dsfActivity = activityType.GetProperty("DisplayName")?.GetValue(currentValue);
+                var mergeToolModel = new MergeToolModel
+                {
+                    ActivityDesignerViewModel = instance,
+                    MergeIcon = _modelItem.GetImageSourceForTool(),
+                    MergeDescription = dsfActivity?.ToString(),
+                    UniqueId = currentValue.UniqueID.ToGuid()
+                };
+
+                if (currentValue is DsfDecision de)
+                {
+                    if (de.TrueArm != null)
+                    {
+                        var deTrueArm = de.TrueArm.Flatten(p => p.NextNodes ?? new List<IDev2Activity>());
+                        foreach (var dev2Activity in deTrueArm)
+                        {
+                            _modelItem = ModelItemUtils.CreateModelItem(dev2Activity);
+                            var addModelItem = GetModel();
+                            addModelItem.HasParent = true;
+                            addModelItem.ParentDescription = de.Conditions.TrueArmText;
+                            mergeToolModel.Children.Add(addModelItem);
+                        }
+                    }
+
+                    if (de.FalseArm != null)
+                    {
+                        var deTrueArm = de.FalseArm.Flatten(p => p.NextNodes ?? new List<IDev2Activity>());
+                        foreach (var dev2Activity in deTrueArm)
+                        {
+                            _modelItem = ModelItemUtils.CreateModelItem(dev2Activity);
+                            var addModelItem = GetModel();
+                            addModelItem.HasParent = true;
+                            addModelItem.ParentDescription = de.Conditions.FalseArmText;
+                            mergeToolModel.Children.Add(addModelItem);
+                        }
+                    }
+                    //Todo add 'and' and the default arm
+                }
+                else if (currentValue is DsfSwitch switchTool)
+                {
+                    if (switchTool.Switches != null)
+                    {
+                        var vv = switchTool.Switches.ToDictionary(k => k.Key);
+
+                        foreach (var group in vv)
+                        {
+                            IEnumerable<IDev2Activity> activities =
+                                vv.Values.Where(pair => pair.Key == group.Key).Select(k => k.Value);
+                            foreach (var dev2Activity in activities)
+                            {
+                                _modelItem = ModelItemUtils.CreateModelItem(dev2Activity);
+                                var addModelItem = GetModel();
+                                addModelItem.HasParent = true;
+                                addModelItem.ParentDescription = group.Key;
+                                mergeToolModel.Children.Add(addModelItem);
+                            }
+                        }
+                    }
+                    if (switchTool.Default != null)
+                    {
+                        var deTrueArm = switchTool.Default.Flatten(p => p.NextNodes ?? new List<IDev2Activity>());
+                        foreach (var dev2Activity in deTrueArm)
+                        {
+                            _modelItem = ModelItemUtils.CreateModelItem(dev2Activity);
+                            var addModelItem = GetModel();
+                            addModelItem.HasParent = true;
+                            addModelItem.ParentDescription = "Default";
+                            mergeToolModel.Children.Add(addModelItem);
+                        }
+                    }
+                }
+                else if (currentValue is DsfSequenceActivity sequence)
+                {
+                    if (sequence.Activities != null)
+                        foreach (var dev2Activity in sequence.Activities)
+                        {
+                            _modelItem = ModelItemUtils.CreateModelItem(dev2Activity);
+                            var addModelItem = GetModel();
+                            addModelItem.HasParent = true;
+                            addModelItem.ParentDescription = sequence.DisplayName;
+                            mergeToolModel.Children.Add(addModelItem);
+                        }
+                    var nextNode = sequence.NextNodes?.SingleOrDefault();
+                    if (nextNode != null)
+                    {
+                        var nextModelItem = ModelItemUtils.CreateModelItem(nextNode);
+                        if (nextNode is DsfSwitch a)
+                        {
+                            _modelItem = nextModelItem;
+                            var addModelItem = GetModel(a.Switch);
+                            Children.Add(addModelItem);
+                        }
+
+                        else
+                        {
+                            _modelItem = nextModelItem;
+                            var addModelItem = GetModel();
+                            Children.Add(addModelItem);
+                        }
+                    }
+                }
+                else if (currentValue is DsfForEachActivity b)
+                {
+                    var dev2Activity = b.DataFunc.Handler as IDev2Activity;
+                    var singleOrDefault = dev2Activity;
+                    if (singleOrDefault != null)
+                    {
+                        var forEachModel = ModelItemUtils.CreateModelItem(singleOrDefault);
+                        _modelItem = forEachModel;
+                        var addModelItem = GetModel();
+                        addModelItem.HasParent = true;
+                        addModelItem.ParentDescription = b.DisplayName;
+                        mergeToolModel.Children.Add(addModelItem);
+                    }
+                    var nextNode = b.NextNodes?.SingleOrDefault();
+                    if (nextNode != null)
+                    {
+                        var nextModelItem = ModelItemUtils.CreateModelItem(nextNode);
+                        if (nextNode is DsfSwitch a)
+                        {
+                            _modelItem = nextModelItem;
+                            var addModelItem = GetModel(a.Switch);
+                            Children.Add(addModelItem);
+                        }
+
+                        else
+                        {
+                            _modelItem = nextModelItem;
+                            var addModelItem = GetModel();
+                            Children.Add(addModelItem);
+                        }
+                    }
+                }
+                else if (currentValue is DsfSelectAndApplyActivity c)
+                {
+                    var dev2Activity = c.ApplyActivityFunc.Handler as IDev2Activity;
+                    var singleOrDefault = dev2Activity;
+                    if (singleOrDefault != null)
+                    {
+                        var forEachModel = ModelItemUtils.CreateModelItem(singleOrDefault);
+                        _modelItem = forEachModel;
+                        var addModelItem = GetModel();
+                        addModelItem.HasParent = true;
+                        addModelItem.ParentDescription = c.DisplayName;
+                        mergeToolModel.Children.Add(addModelItem);
+                    }
+                    var nextNode = c.NextNodes?.SingleOrDefault();
+                    if (nextNode != null)
+                    {
+                        var nextModelItem = ModelItemUtils.CreateModelItem(nextNode);
+                        if (nextNode is DsfSwitch a)
+                        {
+                            _modelItem = nextModelItem;
+                            var addModelItem = GetModel(a.Switch);
+                            Children.Add(addModelItem);
+                        }
+
+                        else
+                        {
+                            _modelItem = nextModelItem;
+                            var addModelItem = GetModel();
+                            Children.Add(addModelItem);
+                        }
+                    }
+                }
+                else
+                {
+                    var nextNode = currentValue.NextNodes?.SingleOrDefault();
+                    if (nextNode != null)
+                    {
+                        var nextModelItem = ModelItemUtils.CreateModelItem(nextNode);
+                        if (nextNode is DsfSwitch a)
+                        {
+                            _modelItem = nextModelItem;
+                            var addModelItem = GetModel(a.Switch);
+                            Children.Add(addModelItem);
+                        }
+                        else
+                        {
+                            _modelItem = nextModelItem;
+                            var addModelItem = GetModel();
+                            Children.Add(addModelItem);
+                        }
+                    }
+                }
+                //mergeToolModel.ActivityDesignerViewModel = instance;
+                //mergeToolModel.MergeIcon = _modelItem.GetImageSourceForTool();
+                //mergeToolModel.MergeDescription = dsfActivity?.ToString();
+                return mergeToolModel;
+            }
+            return null;
+        }
+    
+
+
+       
     }
 }

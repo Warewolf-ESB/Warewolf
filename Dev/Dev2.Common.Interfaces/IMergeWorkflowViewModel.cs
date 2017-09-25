@@ -15,19 +15,9 @@ namespace Dev2.Common.Interfaces
         bool HasMergeStarted { get; set; }
         bool HasWorkflowNameConflict { get; set; }
         bool HasVariablesConflict { get; set; }
-        IConflictViewModel CurrentConflictViewModel { get; set; }
-        IConflictViewModel DifferenceConflictViewModel { get; set; }
+        IConflictModelFactory CurrentConflictModel { get; set; }
+        IConflictModelFactory DifferenceConflictModel { get; set; }
         ObservableCollection<ICompleteConflict> Conflicts { get; set; }
-    }
-
-    public interface IConflictViewModel
-    {
-        string WorkflowName { get; set; }
-        bool IsVariablesChecked { get; set; }
-        bool IsWorkflowNameChecked { get; set; }
-        IMergeToolModel MergeToolModel { get; set; }
-        ObservableCollection<IMergeToolModel> Children { get; set; }
-        void GetDataList();
     }
 
     public interface ICompleteConflict
@@ -36,6 +26,7 @@ namespace Dev2.Common.Interfaces
         IMergeToolModel DiffViewModel { get; set; }
         ObservableCollection<ICompleteConflict> Children { get; set; }
         Guid UniqueId { get; set; }
+        bool HasConflict { get; set; }
     }
 
     public interface IMergeToolModel

@@ -227,6 +227,7 @@
     <Compile Include="IComPluginServiceModel.cs" />
     <Compile Include="IComPluginSource.cs" />
     <Compile Include="IComputerName.cs" />
+    <Compile Include="IConflictModelFactory.cs" />
     <Compile Include="IConnection.cs" />
     <Compile Include="IConstructorParameter.cs" />
     <Compile Include="ICreateDuplicateResourceView.cs" />
