@@ -9,12 +9,13 @@ namespace Dev2
             if (x == null && y == null) return true;
             if (x == null || y == null) return false;
 
-            return x.Equals(y);
+            var @equals = x.Equals(y);
+            return @equals;
         }
 
         public int GetHashCode(IDev2Activity obj)
         {
-            return obj.GetHashCode();
+            return 1;
         }
     }
 }

@@ -5,6 +5,7 @@ using Dev2.Studio.ViewModels.Workflow;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using System.Collections.ObjectModel;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Dev2.Common;
 using Dev2.Common.Common;
@@ -27,115 +28,111 @@ namespace Dev2.ViewModels.Merge
             var mergeParser = CustomContainer.Get<IServiceDifferenceParser>();
             var currentChanges = mergeParser.GetDifferences(currentResourceModel, differenceResourceModel);
             Conflicts = new ObservableCollection<ICompleteConflict>();
-            var differenceStore = currentChanges.differenceStore;
-            var currentChart = currentChanges.current;
-            var differenceChart = currentChanges.difference;
 
-            void AddChild(ICompleteConflict parent, IMergeToolModel child, IMergeToolModel childDiff, bool isConfilct)
+
+            foreach (var currentChange in currentChanges)
             {
-                var completeConflict = new CompleteConflict()
-                {
-                    UniqueId = child.UniqueId,
-                };
-                if (isConfilct)
-                {
-                    completeConflict.DiffViewModel = childDiff;
-                }
-                else
-                {
-                    completeConflict.CurrentViewModel = child;
-                }
-                parent.Children.Add(completeConflict);
-                foreach (var mergeToolModel in child.Children)
-                {
-                    var keyValuePair = differenceStore.SingleOrDefault(pair => pair.Key.Equals(mergeToolModel.UniqueId));
-                    var diffModel = childDiff.Children.SingleOrDefault(model => model.UniqueId ==  keyValuePair.Key);
-                    AddChild(completeConflict, mergeToolModel, diffModel, keyValuePair.Value);
-                   
-                }
+                var conflict = new CompleteConflict { UniqueId = currentChange.uniqueId };
+                var factoryA = new ConflictModelFactory(currentChange.current, currentResourceModel);
+                var factoryB = new ConflictModelFactory(currentChange.difference, differenceResourceModel);
+                conflict.CurrentViewModel = factoryA.GetModel();
+                conflict.DiffViewModel = factoryB.GetModel();
+                conflict.HasConflict = currentChange.conflict;
+                AddChildren(conflict, conflict.CurrentViewModel, conflict.DiffViewModel);
+                Conflicts.Add(conflict);
             }
 
+           
+            Conflicts = Conflicts.Reverse().ToObservableCollection();
+            var fisrtConflict = Conflicts.FirstOrDefault();
 
-
-            var conflict = new CompleteConflict {UniqueId = currentResourceModel.ID};
-            CurrentConflictViewModel = new ConflictViewModel(currentChart, currentResourceModel);
-            DifferenceConflictViewModel = new ConflictViewModel(differenceChart, differenceResourceModel);
-            if (CurrentConflictViewModel?.MergeToolModel != null)
+            if (CurrentConflictModel == null)
             {
-                conflict.CurrentViewModel = CurrentConflictViewModel.MergeToolModel;
-                var keyValuePair = differenceStore.SingleOrDefault(pair => pair.Key.Equals(CurrentConflictViewModel.MergeToolModel.UniqueId));
-               
+                CurrentConflictModel = new ConflictModelFactory();
+              
 
-                foreach (var child in CurrentConflictViewModel.MergeToolModel.Children)
+                if (fisrtConflict?.CurrentViewModel != null)
                 {
-                   
-                    if (keyValuePair.Value)
-                    {
-                        if (DifferenceConflictViewModel.MergeToolModel.UniqueId == keyValuePair.Key)
-                        {
-                            AddChild(conflict, child, DifferenceConflictViewModel.MergeToolModel, true);
-                        }
-                    }
-                    else
-                    {
-                        AddChild(conflict, child,null,false);
-                    }
-                   
+                    CurrentConflictModel.Model = fisrtConflict.CurrentViewModel;
                 }
             }
 
-            if (CurrentConflictViewModel.Children.Any())
+            CurrentConflictModel.WorkflowName = currentResourceModel.ResourceName;
+            CurrentConflictModel.GetDataList();
+            if (DifferenceConflictModel == null)
             {
-                foreach (var mergeToolModel in CurrentConflictViewModel.Children)
+                DifferenceConflictModel = new ConflictModelFactory();
+
+                if (fisrtConflict?.DiffViewModel != null)
                 {
-                    var keyValuePair = differenceStore.SingleOrDefault(pair => pair.Key.Equals(mergeToolModel.UniqueId));
-                    var toolModel = DifferenceConflictViewModel?.Children?.SingleOrDefault(model => model.UniqueId == keyValuePair.Key);
-
-                    var childConflict = new CompleteConflict
-                    {
-                        UniqueId = mergeToolModel.UniqueId,
-                        CurrentViewModel = mergeToolModel,
-                        DiffViewModel = toolModel,
-                       
-                    };
-                    foreach (var child in mergeToolModel.Children)
-                    {
-                        var keyValuePairChild = differenceStore.SingleOrDefault(pair => pair.Key.Equals(child.UniqueId));
-                        var toolModelChild = DifferenceConflictViewModel?.Children?.SingleOrDefault(model => model.UniqueId == keyValuePairChild.Key);
-                        AddChild(childConflict, child, toolModelChild, keyValuePairChild.Value);
-                      
-                    }
-                    Conflicts.Add(childConflict);
-
+                    CurrentConflictModel.Model = fisrtConflict.DiffViewModel;
                 }
-            }
 
-            Conflicts.Add(conflict);
-
-            if (CurrentConflictViewModel != null)
-            {
-                CurrentConflictViewModel.WorkflowName = currentResourceModel.ResourceName;
-                CurrentConflictViewModel.GetDataList();
             }
-            if (DifferenceConflictViewModel != null)
-            {
-                DifferenceConflictViewModel.WorkflowName = differenceResourceModel.ResourceName;
-                DifferenceConflictViewModel.GetDataList();
-            }
+            DifferenceConflictModel.WorkflowName = differenceResourceModel.ResourceName;
+            DifferenceConflictModel.GetDataList();
             HasMergeStarted = false;
             HasVariablesConflict = true;
             HasWorkflowNameConflict = true;
             SetServerName(currentResourceModel);
             DisplayName = "Merge Conflicts" + _serverName;
-
-
             AddAnItem = new DelegateCommand(o =>
             {
                 //var step = new FlowStep { Action = act };
                 //WorkflowDesignerViewModel.AddItem(step);
             });
             WorkflowDesignerViewModel.CanViewWorkflowLink = false;
-            Conflicts = Conflicts.Reverse().ToObservableCollection();
+
+        }
+
+        void AddChildren(ICompleteConflict parent, IMergeToolModel currentChild, IMergeToolModel childDiff)
+        {
+            if (currentChild == null && childDiff == null) return;
+            if (currentChild != null && childDiff != null)
+            {
+                var completeConflict = new CompleteConflict();
+                var currentChildChildren = currentChild.Children;
+                var difChildChildren = childDiff.Children;
+                foreach (var currentChildChild in currentChildChildren)
+                {
+                    if (currentChildChild == null) continue;
+                    var childCurrent = GetMergeToolItem(currentChildChildren, currentChildChild.UniqueId);
+                    var childDifferent = GetMergeToolItem(difChildChildren, currentChildChild.UniqueId);
+                    completeConflict.UniqueId = currentChild.UniqueId;
+                    completeConflict.CurrentViewModel = childCurrent;
+                    completeConflict.DiffViewModel = childDifferent;
+                    parent.Children.Add(completeConflict);
+                    AddChildren(completeConflict, childCurrent, childDifferent);
+                }
+            }
+
+            if (childDiff == null)
+            {
+                var difChildChildren = currentChild.Children;
+                var completeConflict = new CompleteConflict();
+                foreach (var diffChild in difChildChildren)
+                {
+                    var model = GetMergeToolItem(difChildChildren, diffChild.UniqueId);
+                    completeConflict.UniqueId = diffChild.UniqueId;
+                    completeConflict.DiffViewModel = model;
+                }
+            }
+            if (currentChild == null)
+            {
+                var difChildChildren = childDiff.Children;
+                var completeConflict = new CompleteConflict();
+                foreach (var diffChild in difChildChildren)
+                {
+                    var model = GetMergeToolItem(difChildChildren, diffChild.UniqueId);
+                    completeConflict.UniqueId = diffChild.UniqueId;
+                    completeConflict.CurrentViewModel = model;
+                }
+            }
+            IMergeToolModel GetMergeToolItem(IEnumerable<IMergeToolModel> collection, Guid uniqueId)
+            {
+                var mergeToolModel = collection.SingleOrDefault(model => model.UniqueId.Equals(uniqueId));
+                return mergeToolModel;
+            }
         }
 
         public ObservableCollection<ICompleteConflict> Conflicts { get; set; }
@@ -144,8 +141,8 @@ namespace Dev2.ViewModels.Merge
 
         public WorkflowDesignerViewModel WorkflowDesignerViewModel { get; set; }
 
-        public IConflictViewModel CurrentConflictViewModel { get; set; }
-        public IConflictViewModel DifferenceConflictViewModel { get; set; }
+        public IConflictModelFactory CurrentConflictModel { get; set; }
+        public IConflictModelFactory DifferenceConflictModel { get; set; }
 
         public void Save()
         {

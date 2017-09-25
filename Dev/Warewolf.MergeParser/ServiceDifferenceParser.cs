@@ -39,22 +39,17 @@ namespace Warewolf.MergeParser
             _activityParser = activityParser;
         }
 
-        public (ModelItem current, ModelItem difference, List<KeyValuePair<Guid, bool>> differenceStore) GetDifferences(IContextualResourceModel current, IContextualResourceModel difference)
+        public List<(Guid uniqueId, ModelItem current, ModelItem difference, bool conflict)> GetDifferences(IContextualResourceModel current, IContextualResourceModel difference)
         {
             var conflictList = new List<(Guid uniqueId, ModelItem current, ModelItem difference, bool conflict)>();
             CurrentDifferences = GetNodes(current);
             Differences = GetNodes(difference);
             var parsedCurrent = GetActivity(CurrentDifferences.flowchartDiff);
             var parsedDifference = GetActivity(Differences.flowchartDiff);
-            var equalItems = new List<IDev2Activity>();
             var flatCurrent = _activityParser.ParseToLinkedFlatList(parsedCurrent).ToList();
             var flatDifference = _activityParser.ParseToLinkedFlatList(parsedDifference).ToList();
-            foreach (var mergeHeadActivity in flatCurrent)
-            {
-                var singleOrDefault = flatDifference.SingleOrDefault(activity => activity.Equals(mergeHeadActivity));
-                if (singleOrDefault != null)
-                    equalItems.Add(singleOrDefault);
-            }
+
+            var equalItems = flatCurrent.Intersect<IDev2Activity>(flatDifference, new Dev2ActivityComparer()).ToList();
             var nodesDifferentInMergeHead = flatCurrent.Except(flatDifference, new Dev2ActivityComparer()).ToList();
             var nodesDifferentInHead = flatDifference.Except(flatCurrent, new Dev2ActivityComparer()).ToList();
             var allDifferences = nodesDifferentInMergeHead.Union(nodesDifferentInHead, new Dev2ActivityComparer());
@@ -71,26 +66,14 @@ namespace Warewolf.MergeParser
                 conflictList.Add(equalItem);
             }
 
-            var differenceGroups = allDifferences.GroupBy(activity => activity.UniqueID).DistinctBy(grouping => grouping.Key).ToList();
-            foreach (var item in differenceGroups)
+            foreach (var item in allDifferences)
             {
-                using (var enumerator = item.GetEnumerator())
-                {
-                    while (enumerator.MoveNext() && !conflictList.Any(tuple => tuple.uniqueId.ToString().Equals(item.Key)))
-                    {
-                        if (item.Key.Equals(enumerator.Current?.UniqueID))
-                        {
-                            var currentModelItemUniqueId = GetCurrentModelItemUniqueId(flatCurrent, enumerator.Current);
-                            var differences = GetCurrentModelItemUniqueId(flatDifference, enumerator.Current);
-                            var diffItem = (Guid.Parse(item.Key), currentModelItemUniqueId, differences, true);
-                            conflictList.Add(diffItem);
-                        }
-                    }
-                }
+                var currentModelItemUniqueId = GetCurrentModelItemUniqueId(flatCurrent, item);
+                var differences = GetCurrentModelItemUniqueId(flatDifference, item);
+                var diffItem = (Guid.Parse(item.UniqueID), currentModelItemUniqueId, differences, true);
+                conflictList.Add(diffItem);
             }
-            var keyValuePairs = conflictList.Select(p => new KeyValuePair<Guid, bool>(p.uniqueId, p.conflict)).ToList();
-            var valueTuples = (ModelItemUtils.CreateModelItem(parsedCurrent), ModelItemUtils.CreateModelItem(parsedDifference), keyValuePairs);
-            return valueTuples;
+            return conflictList;
         }
 
         private IDev2Activity GetActivity(Flowchart modelItem)
