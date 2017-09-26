@@ -101,6 +101,8 @@ namespace ActivityUnitTests
                          new Variable<bool>{Name = "HasError"},
                          new Variable<string>{Name = "ExplicitDataList"},
                          new Variable<bool>{Name = "IsValid"},
+                         //new Variable<UnlimitedObject>{Name = "d"},
+                         new Variable<Util>{ Name = "t"},
                          new Variable<Dev2DataListDecisionHandler>{Name = "Dev2DecisionHandler"}
 
                         }
