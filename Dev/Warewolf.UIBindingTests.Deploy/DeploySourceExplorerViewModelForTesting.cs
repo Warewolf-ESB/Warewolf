@@ -41,7 +41,7 @@ namespace Warewolf.UIBindingTests.Deploy
         /// <summary>
         /// root and all children of selected items
         /// </summary>
-        public new ICollection<IExplorerTreeItem> SelectedItems { get; set; }
+        public override ICollection<IExplorerTreeItem> SelectedItems { get; set; }
 
         #endregion
 
