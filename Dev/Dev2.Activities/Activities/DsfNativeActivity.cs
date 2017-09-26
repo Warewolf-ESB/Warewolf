@@ -46,15 +46,27 @@ using Warewolf.Resource.Messages;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 
+
+
+
+
+
+
+
+
+
+
+
+
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
-    public abstract class DsfNativeActivity<T> : NativeActivity<T>, IDev2ActivityIOMapping, IEquatable<DsfNativeActivity<T>>
+    public abstract class DsfNativeActivity<T> : NativeActivity<T>, IDev2ActivityIOMapping, IDev2Activity, IEquatable<DsfNativeActivity<T>>
     {
         protected ErrorResultTO errorsTo;
         [GeneralSettings("IsSimulationEnabled")]
         public bool IsSimulationEnabled { get; set; }
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public IDSFDataObject DataObject { get => null; }
+        public IDSFDataObject DataObject { get { return null; } set { value = null; } }
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public IDataListCompiler Compiler { get; set; }
         [JsonIgnore]
@@ -491,7 +503,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     var errorMessage = dataObject.Environment.FetchErrors();
                     _debugState.ErrorMessage = errorMessage;
                     _debugState.HasError = true;
-                    if (err is DebugCopyException debugError)
+                    var debugError = err as DebugCopyException;
+                    if(debugError != null)
                     {
                         _debugState.Inputs.Add(debugError.Item);
                     }
@@ -719,11 +732,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 serviceTestOutput.Result.RunTestResult = RunResult.TestPending;
             }
-            var dsfSwitch = this as DsfSwitch;
-            if (dsfSwitch != null)
+            var dsfDecision = this as DsfSwitch;
+            if(dsfDecision != null)
             {
-                var assertPassed = dsfSwitch.Result == serviceTestOutput.Value;
-                if (dataObject.ServiceTest != null)
+                var assertPassed = dsfDecision.Result == serviceTestOutput.Value;
+                if(dataObject.ServiceTest != null)
                 {
                     dataObject.ServiceTest.TestPassed = assertPassed;
                     dataObject.ServiceTest.TestFailing = !assertPassed;
@@ -741,10 +754,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 serviceTestOutput.Result.RunTestResult = RunResult.TestPending;
             }
             var dsfDecision = this as DsfDecision;
-            if (dsfDecision != null)
+            if(dsfDecision != null)
             {
                 var assertPassed = dsfDecision.Result == serviceTestOutput.Value;
-                if (dataObject.ServiceTest != null)
+                if(dataObject.ServiceTest != null)
                 {
                     dataObject.ServiceTest.TestPassed = assertPassed;
                     dataObject.ServiceTest.TestFailing = !assertPassed;
@@ -934,12 +947,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             switch (dataObject.RemoteServiceType)
             {
                 case "DbService":
-                case "PluginService":
-                case "WebService":
                     IsService = true;
                     break;
-                default:
-                    IsService = false;
+                case "PluginService":
+                    IsService = true;
+                    break;
+                case "WebService":
+                    IsService = true;
                     break;
             }
 
