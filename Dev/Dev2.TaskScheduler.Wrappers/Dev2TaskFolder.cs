@@ -9,10 +9,10 @@
 */
 
 using System.Collections.Generic;
-using System;
 using System.Linq;
 using Dev2.Common.Interfaces.WindowsTaskScheduler.Wrappers;
 using Microsoft.Win32.TaskScheduler;
+using System;
 
 namespace Dev2.TaskScheduler.Wrappers
 {
@@ -51,8 +51,6 @@ namespace Dev2.TaskScheduler.Wrappers
             return _taskServiceConvertorFactory.CreateRootFolder(Instance.CreateFolder(subFolderName, sddlForm));
         }
 
-
-
         public void DeleteTask(string Name, bool exceptionOnNotExists = true)
 
 
@@ -70,26 +68,14 @@ namespace Dev2.TaskScheduler.Wrappers
             return _instance.Tasks.Any(a => a.Name == name);
         }
 
-
-
         public IDev2Task RegisterTaskDefinition(string Path, IDev2TaskDefinition definition)
-
-
         {
             return _taskServiceConvertorFactory.CreateTask(Instance.RegisterTaskDefinition(Path, definition.Instance));
         }
 
-
-
         public IDev2Task RegisterTaskDefinition(string Path, IDev2TaskDefinition definition, TaskCreation createType,
-
-
-
             string UserId,
-
-
             string password = null, TaskLogonType LogonType = TaskLogonType.S4U,
-
             string sddl = null)
         {
             return
