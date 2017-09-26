@@ -37,7 +37,7 @@ namespace Dev2.ViewModels.Merge
                 var factoryB = new ConflictModelFactory(currentChange.difference, differenceResourceModel);
                 conflict.CurrentViewModel = factoryA.GetModel();
                 conflict.DiffViewModel = factoryB.GetModel();
-                conflict.HasConflict = currentChange.conflict;
+                conflict.HasConflict = currentChange.hasConflict;
                 AddChildren(conflict, conflict.CurrentViewModel, conflict.DiffViewModel);
                 Conflicts.Add(conflict);
             }
