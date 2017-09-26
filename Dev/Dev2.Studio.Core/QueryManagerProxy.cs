@@ -107,26 +107,28 @@ namespace Dev2.Studio.Core
             var comsController = CommunicationControllerFactory.CreateController("FetchExplorerItemsService");
 
             comsController.AddPayloadArgument("ReloadResourceCatalogue", reloadCatalogue.ToString());
-            try
+
+            if (Connection.IsLocalHost)
             {
-                if (Connection.IsLocalHost)
-                {
-                    var result = await comsController.ExecuteCompressedCommandAsync<IExplorerItem>(Connection, GlobalConstants.ServerWorkspaceID);
-                    return result;
-                }
-                else
-                {
-                    var result = await comsController.ExecuteCompressedCommandAsync<IExplorerItem>(Connection, GlobalConstants.ServerWorkspaceID).WithTimeOutAsync(60000);
-                    return result;
-                }
+                var result = await comsController.ExecuteCompressedCommandAsync<IExplorerItem>(Connection, GlobalConstants.ServerWorkspaceID);
+                return result;
             }
-            catch (TimeoutException)
+            else
             {
-                var popupController = CustomContainer.Get<IPopupController>();
-                popupController?.Show(string.Format(ErrorResource.ServerBusyError, Connection.DisplayName), ErrorResource.ServerBusyHeader, MessageBoxButton.OK,
-                                      MessageBoxImage.Warning, "", false, false, true, false, false, false);
-            }
-            return new ServerExplorerItem();
+
+                var fetchExplorerTask = comsController.ExecuteCompressedCommandAsync<IExplorerItem>(Connection, GlobalConstants.ServerWorkspaceID);
+                var delayTask = Task.Delay(30000).ContinueWith((t) =>
+                {
+                    if (fetchExplorerTask.Status != TaskStatus.RanToCompletion)
+                    {
+                        var popupController = CustomContainer.Get<IPopupController>();
+                        popupController?.Show(string.Format(ErrorResource.ServerBusyError, Connection.DisplayName), ErrorResource.ServerBusyHeader, MessageBoxButton.OK,
+                                              MessageBoxImage.Warning, "", false, false, true, false, false, false);
+                    }
+                },TaskScheduler.FromCurrentSynchronizationContext());
+                var result = await fetchExplorerTask;
+                return result;
+            }                        
         }
 
         #endregion
