@@ -14,7 +14,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
     public enum enDev2HTMLType { FORM, PAGETITLE, META, IMAGE, TEXT, MENU }
 
-    public static class Util
+    public class Util
     {
         public static bool ValueIsNumber(string value)
         {
