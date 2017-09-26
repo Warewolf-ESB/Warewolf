@@ -127,10 +127,7 @@ namespace Dev2.Integration.Tests.Merge
             var environmentModel = _server.Source;
             environmentModel.Connect();
             var resourceRepository = _server.Source.ResourceRepository;
-
             resourceRepository.Load();
-
-
 
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
@@ -153,6 +150,5 @@ namespace Dev2.Integration.Tests.Merge
                 Debug.WriteLine(contextualResourceModel.ID + " " + contextualResourceModel.DisplayName + " Has some differences " + e.Message);
             }
         }
-
     }
 }
