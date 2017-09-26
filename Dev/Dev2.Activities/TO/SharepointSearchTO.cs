@@ -245,8 +245,6 @@ namespace Dev2.TO
                     }
                     ruleSet.Add(new IsValidExpressionRule(() => ValueToMatch, datalist, "1"));
                     break;
-                default:
-                    return ruleSet;
             }
 
             return ruleSet;

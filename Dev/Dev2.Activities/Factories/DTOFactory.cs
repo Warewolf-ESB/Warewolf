@@ -15,80 +15,68 @@ using Dev2.Studio.Core.Helpers;
 using Dev2.TO;
 
 
+
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
+
 {
-    public static class DTOFactory
+    public class DTOFactory
     {
-        public static IDev2TOFn CreateNewDTO(ActivityDTO dto, int index, bool inserted, string initializeWith)
+        public static IDev2TOFn CreateNewDTO(IDev2TOFn dto, int index = 0, bool inserted = false, string initializeWith = "")
         {
-            return new ActivityDTO(initializeWith, "", index, inserted);
-        }
+            IDev2TOFn toReturn = null;
 
-        public static IDev2TOFn CreateNewDTO(DataSplitDTO dto, int index, bool inserted, string initializeWith)
-        {
-            return new DataSplitDTO(initializeWith, dto.SplitType, dto.At, index, false, inserted);
-        }
+            TypeSwitch.Do(dto,
+                
+                TypeSwitch.Case<ActivityDTO>(x => toReturn = new ActivityDTO(initializeWith, "", index, inserted)),
+                
+                TypeSwitch.Case<DataSplitDTO>(x =>
+                {
+                    var dataSplitDto = dto as DataSplitDTO;
+                    if (dataSplitDto != null)
+                    {
+                        toReturn = new DataSplitDTO(initializeWith, dataSplitDto.SplitType, dataSplitDto.At, index, false, inserted);
+                    }
+                }),
+                TypeSwitch.Case<DataMergeDTO>(x =>
+                {
+                    var dataMergeDto = dto as DataMergeDTO;
+                    if (dataMergeDto != null)
+                    {
+                        toReturn = new DataMergeDTO(initializeWith, dataMergeDto.MergeType, dataMergeDto.At, index, dataMergeDto.Padding, dataMergeDto.Alignment, inserted);
+                    }
+                }),
+                TypeSwitch.Case<CaseConvertTO>(x =>
+                {
+                    var caseConvertTO = dto as CaseConvertTO;
+                    if (caseConvertTO != null)
+                    {
+                        toReturn = CaseConverterFactory.CreateCaseConverterTO(initializeWith, caseConvertTO.ConvertType, caseConvertTO.Result, index);
+                    }
+                }),
+                TypeSwitch.Case<BaseConvertTO>(x =>
+                {
+                    var baseConvertTO = dto as BaseConvertTO;
+                    if (baseConvertTO != null)
+                    {
+                        toReturn = new BaseConvertTO(initializeWith, baseConvertTO.FromType, baseConvertTO.ToType, baseConvertTO.ToExpression, index, inserted);
+                    }
+                }),
+                
+                TypeSwitch.Case<GatherSystemInformationTO>(x => toReturn =
+                    new GatherSystemInformationTO(enTypeOfSystemInformationToGather.FullDateTime,
+                        initializeWith, index, inserted)),
+                TypeSwitch.Case<XPathDTO>(x => toReturn = new XPathDTO(initializeWith, "", index, inserted)),
+                TypeSwitch.Case<FindRecordsTO>(() => toReturn = new FindRecordsTO("", "", index, inserted)),
+                TypeSwitch.Case<DecisionTO>(() => toReturn = new DecisionTO(initializeWith, "", "", index, inserted)),
+                TypeSwitch.Case<JsonMappingTo>(() => toReturn = new JsonMappingTo(initializeWith, index, inserted)),
+                TypeSwitch.Case<SharepointSearchTo>(() => toReturn = new SharepointSearchTo(initializeWith, "=", "", index, inserted)),
+                TypeSwitch.Case<SharepointReadListTo>(() => toReturn = new SharepointReadListTo("", initializeWith, "", "")),
+                //REPLACE WITH SHAREPOINT DELETE ACTIVITY
+                //TypeSwitch.Case<SharepointReadListTo>(() => toReturn = new SharepointReadListTo("", initializeWith, "")),
+                TypeSwitch.Case<AssignObjectDTO>(x => toReturn = new AssignObjectDTO(initializeWith, "", index, inserted)),
+            TypeSwitch.Default(() => toReturn = null));
 
-        public static IDev2TOFn CreateNewDTO(DataMergeDTO dto, int index, bool inserted, string initializeWith)
-        {
-            return new DataMergeDTO(initializeWith, dto.MergeType, dto.At, index, dto.Padding, dto.Alignment, inserted);
+            return toReturn;
         }
-
-        public static IDev2TOFn CreateNewDTO(CaseConvertTO dto, int index, bool inserted, string initializeWith)
-        {
-            return CaseConverterFactory.CreateCaseConverterTO(initializeWith, dto.ConvertType, dto.Result, index);
-        }
-
-        public static IDev2TOFn CreateNewDTO(BaseConvertTO dto, int index, bool inserted, string initializeWith)
-        {
-            return new BaseConvertTO(initializeWith, dto.FromType, dto.ToType, dto.ToExpression, index, inserted);
-        }
-
-        public static IDev2TOFn CreateNewDTO(GatherSystemInformationTO dto, int index, bool inserted, string initializeWith)
-        {
-            return new GatherSystemInformationTO(enTypeOfSystemInformationToGather.FullDateTime, initializeWith, index, inserted);
-        }
-
-        public static IDev2TOFn CreateNewDTO(XPathDTO dto, int index, bool inserted, string initializeWith)
-        {
-            return new XPathDTO(initializeWith, "", index, inserted);
-        }
-
-        public static IDev2TOFn CreateNewDTO(FindRecordsTO dto, int index, bool inserted, string initializeWith)
-        {
-            return new FindRecordsTO("", "", index, inserted);
-        }
-
-        public static IDev2TOFn CreateNewDTO(DecisionTO dto, int index, bool inserted, string initializeWith)
-        {
-            return new DecisionTO(initializeWith, "", "", index, inserted);
-        }
-
-        public static IDev2TOFn CreateNewDTO(JsonMappingTo dto, int index, bool inserted, string initializeWith)
-        {
-            return new JsonMappingTo(initializeWith, index, inserted);
-        }
-
-        public static IDev2TOFn CreateNewDTO(SharepointSearchTo dto, int index, bool inserted, string initializeWith)
-        {
-            return new SharepointSearchTo(initializeWith, "=", "", index, inserted);
-        }
-
-        public static IDev2TOFn CreateNewDTO(SharepointReadListTo dto, int index, bool inserted, string initializeWith)
-        {
-            return new SharepointReadListTo("", initializeWith, "", "");
-        }
-
-        public static IDev2TOFn CreateNewDTO(AssignObjectDTO dto, int index, bool inserted, string initializeWith)
-        {
-            return new AssignObjectDTO(initializeWith, "", index, inserted);
-        }
-
-        public static IDev2TOFn CreateNewDTO(IDev2TOFn dto, int index, bool inserted, string initializeWith)
-        {
-            return null;
-        }
-
-        public static IDev2TOFn CreateNewDTO(IDev2TOFn dto) => CreateNewDTO(dto, 0, false, "");
     }
 }
