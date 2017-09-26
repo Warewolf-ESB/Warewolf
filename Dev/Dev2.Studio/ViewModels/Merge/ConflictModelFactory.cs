@@ -21,7 +21,7 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.ViewModels.Merge
 {
-    public  class ConflictModelFactory : BindableBase, IConflictModelFactory
+    public class ConflictModelFactory : BindableBase, IConflictModelFactory
     {
         private ModelItem _modelItem;
         private readonly IContextualResourceModel _resourceModel;
@@ -35,6 +35,7 @@ namespace Dev2.ViewModels.Merge
 
         public ConflictModelFactory()
         {
+            Children = new ObservableCollection<IMergeToolModel>();
         }
 
         public void GetDataList()
@@ -98,7 +99,8 @@ namespace Dev2.ViewModels.Merge
                 ActivityDesignerViewModel instance;
                 if (actual == typeof(SwitchDesignerViewModel))
                 {
-                    instance = Activator.CreateInstance(actual, _modelItem, item) as ActivityDesignerViewModel;
+                    var dsfSwitch = currentValue as DsfSwitch;
+                    instance = Activator.CreateInstance(actual, _modelItem, dsfSwitch?.Switch ?? "") as ActivityDesignerViewModel;
                 }
                 else if (actual == typeof(ServiceDesignerViewModel))
                 {
@@ -152,26 +154,19 @@ namespace Dev2.ViewModels.Merge
                 {
                     if (switchTool.Switches != null)
                     {
-                        var vv = switchTool.Switches.ToDictionary(k => k.Key);
 
-                        foreach (var group in vv)
+                        foreach (var group in switchTool.Switches)
                         {
-                            IEnumerable<IDev2Activity> activities =
-                                vv.Values.Where(pair => pair.Key == group.Key).Select(k => k.Value);
-                            foreach (var dev2Activity in activities)
-                            {
-                                _modelItem = ModelItemUtils.CreateModelItem(dev2Activity);
-                                var addModelItem = GetModel();
-                                addModelItem.HasParent = true;
-                                addModelItem.ParentDescription = group.Key;
-                                mergeToolModel.Children.Add(addModelItem);
-                            }
+                            _modelItem = ModelItemUtils.CreateModelItem(group.Value);
+                            var addModelItem = GetModel();
+                            addModelItem.HasParent = true;
+                            addModelItem.ParentDescription = group.Key;
+                            mergeToolModel.Children.Add(addModelItem);
                         }
                     }
                     if (switchTool.Default != null)
                     {
-                        var deTrueArm = switchTool.Default.Flatten(p => p.NextNodes ?? new List<IDev2Activity>());
-                        foreach (var dev2Activity in deTrueArm)
+                        foreach (var dev2Activity in switchTool.Default)
                         {
                             _modelItem = ModelItemUtils.CreateModelItem(dev2Activity);
                             var addModelItem = GetModel();
@@ -295,16 +290,13 @@ namespace Dev2.ViewModels.Merge
                         }
                     }
                 }
-                //mergeToolModel.ActivityDesignerViewModel = instance;
-                //mergeToolModel.MergeIcon = _modelItem.GetImageSourceForTool();
-                //mergeToolModel.MergeDescription = dsfActivity?.ToString();
                 return mergeToolModel;
             }
             return null;
         }
-    
 
 
-       
+
+
     }
 }
