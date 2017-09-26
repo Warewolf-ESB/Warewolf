@@ -100,7 +100,7 @@ namespace Dev2.Studio.Core
         /// Loads the Tree.
         /// </summary>
         /// <returns></returns>
-        public async Task<IExplorerItem> Load(bool reloadCatalogue = false)
+        public async Task<IExplorerItem> Load(bool reloadCatalogue)
         {
             if (!Connection.IsConnected)
             {

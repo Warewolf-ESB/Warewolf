@@ -100,7 +100,8 @@ namespace Dev2.Runtime.Hosting
         public ITestCatalog TestCatalog { private get; set; }
         public IServerVersionRepository VersionRepository { get; set; }
 
-        public IExplorerItem Load(Guid workSpaceId, bool reload = false)
+        public IExplorerItem Load(Guid workSpaceId) => Load(workSpaceId, false);
+        public IExplorerItem Load(Guid workSpaceId, bool reload)
         {
             if (_root == null || reload)
             {
