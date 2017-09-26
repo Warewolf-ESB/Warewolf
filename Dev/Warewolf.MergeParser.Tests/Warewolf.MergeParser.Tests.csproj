@@ -90,6 +90,10 @@
       <Project>{6007C1F1-CE38-474A-A88C-0C05A77BC415}</Project>
       <Name>Dev2.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Dev2.Data\Dev2.Data.csproj">
+      <Project>{4BD0C970-ECD6-470B-B9EE-17ECFE53E5FB}</Project>
+      <Name>Dev2.Data</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dev2.Infrastructure\Dev2.Infrastructure.csproj">
       <Project>{615eae6d-040c-4364-b708-63dc8755cd4f}</Project>
       <Name>Dev2.Infrastructure</Name>
