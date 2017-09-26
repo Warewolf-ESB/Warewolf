@@ -21,7 +21,7 @@ namespace Dev2.Activities
         public IDev2Activity Parse(List<IDev2Activity> seenActivities, object step)
         {
             var chart = step as Flowchart;
-            if (chart.StartNode == null)
+            if (chart?.StartNode == null)
             {
                 return null;
             }
