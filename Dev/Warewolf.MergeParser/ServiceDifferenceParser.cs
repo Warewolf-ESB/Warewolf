@@ -16,8 +16,8 @@ namespace Warewolf.MergeParser
     public class ServiceDifferenceParser : IServiceDifferenceParser
     {
         private readonly IActivityParser _activityParser;
-        public (List<ModelItem> nodeList, Flowchart flowchartDiff) CurrentDifferences { get; private set; }
-        public (List<ModelItem> nodeList, Flowchart flowchartDiff) Differences { get; private set; }
+        private (List<ModelItem> nodeList, Flowchart flowchartDiff) _currentDifferences;
+        private (List<ModelItem> nodeList, Flowchart flowchartDiff) _differences;
 
         private ModelItem GetCurrentModelItemUniqueId(IEnumerable<IDev2Activity> items, IDev2Activity activity)
         {
@@ -39,17 +39,17 @@ namespace Warewolf.MergeParser
             _activityParser = activityParser;
         }
 
-        public List<(Guid uniqueId, ModelItem current, ModelItem difference, bool conflict)> GetDifferences(IContextualResourceModel current, IContextualResourceModel difference)
+        public List<(Guid uniqueId, ModelItem current, ModelItem difference, bool hasConflict)> GetDifferences(IContextualResourceModel current, IContextualResourceModel difference)
         {
             var conflictList = new List<(Guid uniqueId, ModelItem current, ModelItem difference, bool conflict)>();
-            CurrentDifferences = GetNodes(current);
-            Differences = GetNodes(difference);
-            var parsedCurrent = GetActivity(CurrentDifferences.flowchartDiff);
-            var parsedDifference = GetActivity(Differences.flowchartDiff);
+            _currentDifferences = GetNodes(current);
+            _differences = GetNodes(difference);
+            var parsedCurrent = GetActivity(_currentDifferences.flowchartDiff);
+            var parsedDifference = GetActivity(_differences.flowchartDiff);
             var flatCurrent = _activityParser.ParseToLinkedFlatList(parsedCurrent).ToList();
             var flatDifference = _activityParser.ParseToLinkedFlatList(parsedDifference).ToList();
 
-            var equalItems = flatCurrent.Intersect<IDev2Activity>(flatDifference, new Dev2ActivityComparer()).ToList();
+            var equalItems = flatCurrent.Intersect(flatDifference, new Dev2ActivityComparer()).ToList();
             var nodesDifferentInMergeHead = flatCurrent.Except(flatDifference, new Dev2ActivityComparer()).ToList();
             var nodesDifferentInHead = flatDifference.Except(flatCurrent, new Dev2ActivityComparer()).ToList();
             var allDifferences = nodesDifferentInMergeHead.Union(nodesDifferentInHead, new Dev2ActivityComparer());
