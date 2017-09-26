@@ -43,7 +43,6 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Create_JSON
         [Given(@"a result variable ""(.*)""")]
         public void GivenAResultVariable(string JsonString)
         {
-            //JsonString = JsonString.Replace('"', ' ').Trim();
             scenarioContext.Add("JsonString", JsonString);
         }
 
