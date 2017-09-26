@@ -65,8 +65,8 @@ namespace Warewolf.MergeParser
                 var equalItem = (Guid.Parse(item.UniqueID), currentModelItemUniqueId, currentModelItemUniqueId, false);
                 conflictList.Add(equalItem);
             }
-
-            foreach (var item in allDifferences)
+            var dev2Activities = allDifferences.DistinctBy(activity => activity.UniqueID).ToList();
+            foreach (var item in dev2Activities)
             {
                 var currentModelItemUniqueId = GetCurrentModelItemUniqueId(flatCurrent, item);
                 var differences = GetCurrentModelItemUniqueId(flatDifference, item);
