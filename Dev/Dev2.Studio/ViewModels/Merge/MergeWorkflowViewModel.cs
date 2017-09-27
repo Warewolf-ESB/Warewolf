@@ -58,7 +58,7 @@ namespace Dev2.ViewModels.Merge
                 });
                 conflict.DiffViewModel.SomethingModelToolChanged += SourceOnModelToolChanged;
 
-                conflict.HasConflict = currentChange.conflict;
+                conflict.HasConflict = currentChange.hasConflict;
                 AddChildren(conflict, conflict.CurrentViewModel, conflict.DiffViewModel);
                 Conflicts.Add(conflict);
             }
