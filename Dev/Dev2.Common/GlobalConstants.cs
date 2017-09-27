@@ -211,7 +211,7 @@ namespace Dev2.Common
         public const string NetworkCommunicationErrorTextFormat = "An error occurred while executing the '{0}' command";
 
         //Resource Constants
-        public const string ResourceFileExtension = ".xml";
+        public const string ResourceFileExtension = ".bite";
 
         public const string XMLPrefix = "~XML~";
 

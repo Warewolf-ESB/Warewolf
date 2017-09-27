@@ -215,7 +215,7 @@ namespace Dev2.Workspaces
             lock(_readLock)
             {
                 
-                var filesToIgnore = servicesToIgnore.Select(s => s += ".xml").ToList();
+                var filesToIgnore = servicesToIgnore.Select(s => s += ".bite").ToList();
                 
                 var targetPath = EnvironmentVariables.GetWorkspacePath(workspace.ID);
                 _resourceCatalog.SyncTo(ServerWorkspacePath, targetPath, true, true, filesToIgnore);

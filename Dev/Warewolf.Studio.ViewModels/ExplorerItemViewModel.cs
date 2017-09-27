@@ -1570,7 +1570,7 @@ namespace Warewolf.Studio.ViewModels
                                         ResourceName =
                                             "v." + a.VersionNumber + " " +
                                             a.DateTimeStamp.ToString(CultureInfo.InvariantCulture) + " " +
-                                            a.Reason.Replace(".xml", ""),
+                                            a.Reason.Replace(".xml", "").Replace(".bite", ""),
                                         VersionNumber = a.VersionNumber,
                                         VersionInfo = a,
                                         ResourceId = ResourceId,
