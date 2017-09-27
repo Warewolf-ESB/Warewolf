@@ -4,14 +4,12 @@ using Dev2.Util;
 using System;
 using System.Collections.Generic;
 using Dev2.Common.ExtMethods;
-using Dev2.Controller;
 using Dev2.Data.ServiceModel;
 using Dev2.Network;
 using Dev2.Studio.Core.Models;
 using Dev2.Studio.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
-using Dev2.Studio.Core.InterfaceImplementors;
 using System.Linq;
 
 namespace Dev2.Activities.Specs.Deploy

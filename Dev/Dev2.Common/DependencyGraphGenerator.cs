@@ -11,7 +11,6 @@
 using Dev2.Common.Common;
 using Dev2.Common.DependencyVisualization;
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Windows;
@@ -21,7 +20,7 @@ using Warewolf.Resource.Errors;
 
 namespace Dev2.Common
 {
-  
+
     /// <summary>
     /// Used to generate dependency graphs.
     /// Extracted From View Model ;)

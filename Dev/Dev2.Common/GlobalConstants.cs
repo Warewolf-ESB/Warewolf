@@ -17,7 +17,6 @@ using System.Globalization;
 using System.IO;
 using System.Security.Principal;
 using Warewolf.Resource.Errors;
-using System.Text.RegularExpressions;
 
 namespace Dev2.Common
 {

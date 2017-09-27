@@ -10,7 +10,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 
@@ -19,7 +18,7 @@ namespace Dev2.DataList
     /// <summary>
     /// Class for the "is xml" recordset search option 
     /// </summary>
-    
+
 
     public class RsOpIsXML : AbstractRecsetSearchValidation
     {

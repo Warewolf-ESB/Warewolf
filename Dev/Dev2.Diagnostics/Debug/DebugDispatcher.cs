@@ -11,7 +11,6 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Runtime.Serialization.Formatters;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Newtonsoft.Json;
