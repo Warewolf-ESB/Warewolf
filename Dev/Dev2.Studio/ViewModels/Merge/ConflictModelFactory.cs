@@ -158,6 +158,8 @@ namespace Dev2.ViewModels.Merge
                     MergeDescription = dsfActivity?.ToString(),
                     UniqueId = currentValue.UniqueID.ToGuid()
                 };
+                var flowStep = new FlowStep { Action = currentValue as DsfActivity };
+                mergeToolModel.ActivityType = flowStep;
                 //TODO implement builder pattern
                 switch (currentValue)
                 {
@@ -177,6 +179,7 @@ namespace Dev2.ViewModels.Merge
                         BuildSelectAndApply(selectAndApply, mergeToolModel);
                         break;
                 }
+
 
                 return mergeToolModel;
             }
@@ -313,7 +316,7 @@ namespace Dev2.ViewModels.Merge
             var decisionNode = new FlowDecision(de.GetFlowNode());
             if (de.TrueArm != null)
             {
-                
+
                 var firstOrDefault = de.TrueArm?.FirstOrDefault();
                 var activity = _activityParser.ParseToLinkedFlatList(firstOrDefault);
                 foreach (var dev2Activity in activity)
@@ -339,10 +342,6 @@ namespace Dev2.ViewModels.Merge
                     mergeToolModel.Children.Add(addModelItem);
                 }
 
-                var flowStep = new FlowStep { Action = currentValue as DsfActivity };
-                mergeToolModel.ActivityType = flowStep;
-
-                return mergeToolModel;
             }
         }
 
