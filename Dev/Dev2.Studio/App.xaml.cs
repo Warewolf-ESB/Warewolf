@@ -60,6 +60,10 @@ using Dev2.Util;
 using Dev2.Activities;
 using Microsoft.VisualBasic.ApplicationServices;
 using Dev2.Studio.Core;
+using Dev2.Studio.Interfaces;
+using Dev2.Studio.Core.Interfaces;
+using Warewolf.MergeParser;
+
 namespace Dev2.Studio
 
 {
