@@ -254,6 +254,8 @@ namespace Dev2.ViewModels.Merge
 
         private void BuildSequence(DsfSequenceActivity sequence, MergeToolModel mergeToolModel)
         {
+            var flowSequence = new FlowStep { Action = sequence };
+            mergeToolModel.ActivityType = flowSequence;
             if (sequence.Activities != null)
                 foreach (var dev2Activity in sequence.Activities)
                 {
@@ -285,6 +287,8 @@ namespace Dev2.ViewModels.Merge
 
         private void BuildSwitch(DsfSwitch switchTool, MergeToolModel mergeToolModel)
         {
+            var flowSwitch = new FlowStep { Action = switchTool };
+            mergeToolModel.ActivityType = flowSwitch;
             if (switchTool.Switches != null)
             {
                 foreach (var group in switchTool.Switches)
@@ -319,6 +323,7 @@ namespace Dev2.ViewModels.Merge
 
                 var firstOrDefault = de.TrueArm?.FirstOrDefault();
                 var activity = _activityParser.ParseToLinkedFlatList(firstOrDefault);
+                decisionNode.True = new FlowStep { Action = firstOrDefault as System.Activities.Activity };
                 foreach (var dev2Activity in activity)
                 {
                     _modelItem = ModelItemUtils.CreateModelItem(dev2Activity);
@@ -332,6 +337,7 @@ namespace Dev2.ViewModels.Merge
             if (de.FalseArm != null)
             {
                 var firstOrDefault = de.FalseArm?.FirstOrDefault();
+                decisionNode.False = new FlowStep { Action = firstOrDefault as System.Activities.Activity };
                 var activity = _activityParser.ParseToLinkedFlatList(firstOrDefault);
                 foreach (var dev2Activity in activity)
                 {
@@ -343,6 +349,7 @@ namespace Dev2.ViewModels.Merge
                 }
 
             }
+            mergeToolModel.ActivityType = decisionNode;
         }
 
         public event ConflictModelChanged SomethingConflictModelChanged;
