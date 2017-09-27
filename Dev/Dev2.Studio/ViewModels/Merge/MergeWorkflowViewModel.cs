@@ -5,19 +5,9 @@ using Dev2.Studio.ViewModels.Workflow;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using System.Collections.ObjectModel;
 using System;
-using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
-using Dev2.Activities;
-using Dev2.Common;
-using Dev2.Common.Common;
-using Dev2.Communication;
-using Dev2.Studio.Core.Activities.Utils;
-using System.Activities.Statements;
-using System.Windows;
-using Dev2.Activities;
 
 namespace Dev2.ViewModels.Merge
 {
@@ -34,10 +24,10 @@ namespace Dev2.ViewModels.Merge
             WorkflowDesignerViewModel = new WorkflowDesignerViewModel(currentResourceModel, false);
             WorkflowDesignerViewModel.CreateBlankWorkflow();
             var mergeParser = CustomContainer.Get<IServiceDifferenceParser>();
-            
+
             var currentChanges = mergeParser.GetDifferences(currentResourceModel, differenceResourceModel);
 
-            
+
             Conflicts = new ObservableCollection<ICompleteConflict>();
             foreach (var currentChange in currentChanges)
             {
@@ -70,8 +60,7 @@ namespace Dev2.ViewModels.Merge
                 AddChildren(conflict, conflict.CurrentViewModel, conflict.DiffViewModel);
                 Conflicts.Add(conflict);
             }
-           
-            //Conflicts = Conflicts.Reverse().ToObservableCollection();
+
             var firstConflict = Conflicts.FirstOrDefault();
 
             if (CurrentConflictModel == null)
@@ -119,20 +108,20 @@ namespace Dev2.ViewModels.Merge
             {
                 if (args.IsWorkflowNameChecked)
                 {
-                    
+
                 }
                 else if (args.IsVariablesChecked)
                 {
-                    
+
                 }
             }
             catch (Exception e)
             {
-                
+
             }
             finally
             {
-                
+
             }
         }
 
@@ -142,7 +131,7 @@ namespace Dev2.ViewModels.Merge
             {
                 if (args.IsMergeChecked)
                 {
-                    
+
                 }
             }
             catch (Exception e)
@@ -160,22 +149,32 @@ namespace Dev2.ViewModels.Merge
             if (currentChild == null && childDiff == null) return;
             if (currentChild != null && childDiff != null)
             {
-                
+
                 var currentChildChildren = currentChild.Children;
                 var difChildChildren = childDiff.Children;
-                for (var index = 0; index < currentChildChildren.Count; index++)
+                var count = Math.Max(currentChildChildren.Count, difChildChildren.Count);
+                for (var index = 0; index < count; index++)
                 {
-                    var completeConflict = new CompleteConflict();
-                    var currentChildChild = currentChildChildren[index];
-                    if (currentChildChild == null) continue;
+                    try
+                    {
+                        var completeConflict = new CompleteConflict();
+                        var currentChildChild = currentChildChildren[index];
+                        if (currentChildChild == null) continue;
+                        var childCurrent = GetMergeToolItem(currentChildChildren, currentChildChild.UniqueId);
+                        var childDifferent = GetMergeToolItem(difChildChildren, currentChildChild.UniqueId);
+                        completeConflict.UniqueId = currentChildChild.UniqueId;
+                        completeConflict.CurrentViewModel = childCurrent;
+                        completeConflict.DiffViewModel = childDifferent;
+                        if (parent.Children.Any(conflict => conflict.UniqueId.Equals(currentChild.UniqueId))) continue;
+                        parent.Children.Add(completeConflict);
+                        AddChildren(completeConflict, childCurrent, childDifferent);
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e);
+                        throw;
+                    }
 
-                    var childCurrent = GetMergeToolItem(currentChildChildren, currentChildChild.UniqueId);
-                    var childDifferent = GetMergeToolItem(difChildChildren, currentChildChild.UniqueId);
-                    completeConflict.UniqueId = currentChildChild.UniqueId;
-                    completeConflict.CurrentViewModel = childCurrent;
-                    completeConflict.DiffViewModel = childDifferent;
-                    parent.Children.Add(completeConflict);
-                    AddChildren(completeConflict, childCurrent, childDifferent);
                 }
             }
 
