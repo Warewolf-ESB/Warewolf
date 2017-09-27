@@ -25,14 +25,8 @@ using Dev2.Data.PathOperations.Extension;
 using Ionic.Zip;
 using Warewolf.Resource.Errors;
 
-
-
-
 namespace Dev2.PathOperations
-
-{
-
-    
+{    
     internal class Dev2ActivityIOBroker : IActivityOperationsBroker
     {
         private readonly IFile _fileWrapper;

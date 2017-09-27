@@ -27,13 +27,6 @@ using Newtonsoft.Json;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage.Interfaces;
 
-
-
-
-
-
-
-
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
     public abstract class DsfActivityAbstract<T> : DsfNativeActivity<T>, IActivityTemplateFactory, INotifyPropertyChanged
@@ -60,7 +53,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public string CurrentResult { get; set; }
         [JsonIgnore]
         public InOutArgument<string> ParentInstanceID { get; set; }
-        public IRecordsetScopingObject ScopingObject { get { return null; } set { value = null; } }
+        public IRecordsetScopingObject ScopingObject { get => null; set => value = null; }
 
         #region Ctor
 

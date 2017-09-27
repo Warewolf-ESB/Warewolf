@@ -49,12 +49,12 @@ namespace Dev2.Activities.Designers2.Core.Adorners
         /// </summary>
         public new FrameworkElement AdornedElement => (FrameworkElement)base.AdornedElement;
 
-        public FrameworkElement Content { get { return (FrameworkElement)GetValue(ContentProperty); } set { SetValue(ContentProperty, value); } }
+        public FrameworkElement Content { get => (FrameworkElement)GetValue(ContentProperty); set => SetValue(ContentProperty, value); }
 
         public static readonly DependencyProperty ContentProperty =
             DependencyProperty.Register("Content", typeof(FrameworkElement), typeof(AdornerControl), new PropertyMetadata(null));
 
-        public bool IsAdornerVisible { get { return (bool)GetValue(IsAdornerVisibleProperty); } set { SetValue(IsAdornerVisibleProperty, value); } }
+        public bool IsAdornerVisible { get => (bool)GetValue(IsAdornerVisibleProperty); set => SetValue(IsAdornerVisibleProperty, value); }
 
         public static readonly DependencyProperty IsAdornerVisibleProperty =
             DependencyProperty.Register("IsAdornerVisible", typeof(bool), typeof(AdornerControl), new PropertyMetadata(false, OnIsAdornerVisibleChanged));

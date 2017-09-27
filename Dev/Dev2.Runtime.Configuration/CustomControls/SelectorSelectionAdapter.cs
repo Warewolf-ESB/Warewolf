@@ -28,7 +28,7 @@ namespace System.Windows.Controls
     /// </summary>
     /// <QualityBand>Stable</QualityBand>
     
-    public partial class SelectorSelectionAdapter : ISelectionAdapter
+    public class SelectorSelectionAdapter : ISelectionAdapter
     
     {
         /// <summary>
