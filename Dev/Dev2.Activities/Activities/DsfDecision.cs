@@ -3,6 +3,7 @@ using System.Activities;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Linq.Expressions;
 using Dev2.Activities.Debug;
 using Dev2.Common;
 using Dev2.Common.Common;
@@ -162,6 +163,11 @@ namespace Dev2.Activities
             }
 
             return null;
+        }
+
+        public Activity<bool> GetFlowNode()
+        {
+            return _inner;
         }
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)

@@ -9,6 +9,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Dev2.Common.Common;
 using System.Activities.Statements;
+using System.Windows;
+using Dev2.Activities;
 
 namespace Dev2.ViewModels.Merge
 {
@@ -37,7 +39,10 @@ namespace Dev2.ViewModels.Merge
                 conflict.CurrentViewModel.AddAnItem = new DelegateCommand(o =>
                 {
                     var model = conflict.CurrentViewModel as MergeToolModel;
-                    AddActivity(model);
+                    if (model.IsMergeChecked)
+                    {
+                        AddActivity(model);
+                    }
                 });
                 conflict.CurrentViewModel.SomethingModelToolChanged += SourceOnModelToolChanged;
 
@@ -45,7 +50,10 @@ namespace Dev2.ViewModels.Merge
                 conflict.DiffViewModel.AddAnItem = new DelegateCommand(o =>
                 {
                     var model = conflict.DiffViewModel as MergeToolModel;
-                    AddActivity(model);
+                    if (model.IsMergeChecked)
+                    {
+                        AddActivity(model);
+                    }
                 });
                 conflict.DiffViewModel.SomethingModelToolChanged += SourceOnModelToolChanged;
 
@@ -92,19 +100,8 @@ namespace Dev2.ViewModels.Merge
 
         private void AddActivity(MergeToolModel model)
         {
-            if (model.ActivityType.DisplayName == "Decision")
-            {
-                //WorkflowDesignerViewModel.AddDecisionItem(model.ActivityType);
-            }
-            else if (model.ActivityType.DisplayName == "Switch")
-            {
-
-            }
-            else
-            {
-                var step = new FlowStep { Action = model.ActivityType };
-                WorkflowDesignerViewModel.AddItem(step);
-            }
+            Point point = new Point(300, 200);
+            WorkflowDesignerViewModel.AddItem(model.ActivityType, point);
         }
 
         private void SourceOnConflictModelChanged(object sender, IConflictModelFactory args)

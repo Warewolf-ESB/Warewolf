@@ -6,6 +6,7 @@ using Dev2.Common.Interfaces;
 using Microsoft.Practices.Prism.Mvvm;
 using Newtonsoft.Json;
 using System.Windows.Input;
+using System.Activities.Statements;
 
 namespace Dev2.ViewModels.Merge
 {
@@ -20,7 +21,7 @@ namespace Dev2.ViewModels.Merge
         private string _parentDescription;
         private bool _hasParent;
         private Guid _uniqueId;
-        private System.Activities.Activity _activityType;
+        private FlowNode _activityType;
 
         public MergeToolModel()
         {
@@ -97,7 +98,7 @@ namespace Dev2.ViewModels.Merge
             }
         }
 
-        public System.Activities.Activity ActivityType
+        public FlowNode ActivityType
         {
             get { return _activityType; }
             set

@@ -18,6 +18,7 @@ using Dev2.Activities.Designers2.Switch;
 using Dev2.Activities.SelectAndApply;
 using Dev2.Common.ExtMethods;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+using System.Activities.Statements;
 
 namespace Dev2.ViewModels.Merge
 {
@@ -142,14 +143,17 @@ namespace Dev2.ViewModels.Merge
                     ActivityDesignerViewModel = instance,
                     MergeIcon = _modelItem.GetImageSourceForTool(),
                     MergeDescription = dsfActivity?.ToString(),
-                    ActivityType = currentValue as System.Activities.Activity,
                     UniqueId = currentValue.UniqueID.ToGuid()
                 };
 
                 if (currentValue is DsfDecision de)
                 {
+                    var decisionNode = new FlowDecision(de.GetFlowNode());
+                    
                     if (de.TrueArm != null)
                     {
+                        decisionNode.True = new FlowStep { Action = de.TrueArm.FirstOrDefault() as System.Activities.Activity };
+
                         var deTrueArm = de.TrueArm.Flatten(p => p.NextNodes ?? new List<IDev2Activity>());
                         foreach (var dev2Activity in deTrueArm)
                         {
@@ -163,6 +167,8 @@ namespace Dev2.ViewModels.Merge
 
                     if (de.FalseArm != null)
                     {
+                        decisionNode.False = new FlowStep { Action = de.FalseArm.FirstOrDefault() as System.Activities.Activity };
+
                         var deTrueArm = de.FalseArm.Flatten(p => p.NextNodes ?? new List<IDev2Activity>());
                         foreach (var dev2Activity in deTrueArm)
                         {
@@ -173,10 +179,14 @@ namespace Dev2.ViewModels.Merge
                             mergeToolModel.Children.Add(addModelItem);
                         }
                     }
+                    mergeToolModel.ActivityType = decisionNode;
+
                     //Todo add 'and' and the default arm
                 }
                 else if (currentValue is DsfSwitch switchTool)
                 {
+                    var flowSwitch = new FlowStep { Action = currentValue as DsfSwitch };
+                    mergeToolModel.ActivityType = flowSwitch;
                     if (switchTool.Switches != null)
                     {
                         var vv = switchTool.Switches.ToDictionary(k => k.Key);
@@ -210,6 +220,8 @@ namespace Dev2.ViewModels.Merge
                 }
                 else if (currentValue is DsfSequenceActivity sequence)
                 {
+                    var flowSequence = new FlowStep { Action = currentValue as DsfSequenceActivity };
+                    mergeToolModel.ActivityType = flowSequence;
                     if (sequence.Activities != null)
                         foreach (var dev2Activity in sequence.Activities)
                         {
@@ -240,6 +252,9 @@ namespace Dev2.ViewModels.Merge
                 }
                 else if (currentValue is DsfForEachActivity b)
                 {
+                    var flowForEach = new FlowStep { Action = currentValue as DsfForEachActivity };
+                    mergeToolModel.ActivityType = flowForEach;
+
                     var dev2Activity = b.DataFunc.Handler as IDev2Activity;
                     var singleOrDefault = dev2Activity;
                     if (singleOrDefault != null)
@@ -272,6 +287,9 @@ namespace Dev2.ViewModels.Merge
                 }
                 else if (currentValue is DsfSelectAndApplyActivity c)
                 {
+                    var flowSelectAndApply = new FlowStep { Action = currentValue as DsfSelectAndApplyActivity };
+                    mergeToolModel.ActivityType = flowSelectAndApply;
+
                     var dev2Activity = c.ApplyActivityFunc.Handler as IDev2Activity;
                     var singleOrDefault = dev2Activity;
                     if (singleOrDefault != null)
@@ -302,29 +320,10 @@ namespace Dev2.ViewModels.Merge
                         }
                     }
                 }
-                else
-                {
-                    var nextNode = currentValue.NextNodes?.SingleOrDefault();
-                    if (nextNode != null)
-                    {
-                        var nextModelItem = ModelItemUtils.CreateModelItem(nextNode);
-                        if (nextNode is DsfSwitch a)
-                        {
-                            _modelItem = nextModelItem;
-                            var addModelItem = GetModel(a.Switch);
-                            Children.Add(addModelItem);
-                        }
-                        else
-                        {
-                            _modelItem = nextModelItem;
-                            var addModelItem = GetModel();
-                            Children.Add(addModelItem);
-                        }
-                    }
-                }
-                //mergeToolModel.ActivityDesignerViewModel = instance;
-                //mergeToolModel.MergeIcon = _modelItem.GetImageSourceForTool();
-                //mergeToolModel.MergeDescription = dsfActivity?.ToString();
+
+                var flowStep = new FlowStep { Action = currentValue as DsfActivity };
+                mergeToolModel.ActivityType = flowStep;
+
                 return mergeToolModel;
             }
             return null;
