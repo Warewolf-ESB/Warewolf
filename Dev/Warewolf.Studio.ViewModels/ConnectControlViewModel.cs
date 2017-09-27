@@ -17,7 +17,6 @@ using System.Windows.Input;
 using Dev2;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio.Controller;
-using Dev2.Studio.Core;
 using Dev2.Studio.Interfaces;
 using Microsoft.Practices.Prism;
 using Microsoft.Practices.Prism.Commands;

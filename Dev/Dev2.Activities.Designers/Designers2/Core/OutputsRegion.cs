@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using Dev2.Common;
@@ -25,7 +24,7 @@ using Warewolf.Storage;
 
 namespace Dev2.Activities.Designers2.Core
 {
-    
+
     public class OutputsRegion : IOutputsToolRegion
     {
         private readonly ModelItem _modelItem;

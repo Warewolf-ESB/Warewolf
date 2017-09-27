@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using Dev2.Activities.DropBox2016;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -8,7 +7,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016
 {
 
 
-    
+
     public static class Files
     {
         public static readonly string PathEmpty = String.Empty;

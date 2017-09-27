@@ -13,7 +13,6 @@ using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Controller;
 using Dev2.Dialogs;
 using Dev2.Runtime.Configuration.ViewModels.Base;
-using Dev2.Studio.Core;
 using Dev2.Studio.Enums;
 using Dev2.Studio.Interfaces;
 using Newtonsoft.Json;

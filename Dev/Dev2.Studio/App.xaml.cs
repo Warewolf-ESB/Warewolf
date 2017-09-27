@@ -60,7 +60,6 @@ using Warewolf.Studio.Views;
 using Dev2.Studio.Diagnostics;
 using Dev2.Studio.ViewModels;
 using Dev2.Util;
-using System.Globalization;
 
 
 namespace Dev2.Studio

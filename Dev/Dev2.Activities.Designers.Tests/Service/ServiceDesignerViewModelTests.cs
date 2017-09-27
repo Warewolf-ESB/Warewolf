@@ -47,8 +47,6 @@ using Moq;
 using Moq.Language.Flow;
 using Moq.Protected;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
-using Dev2.Common.Interfaces;
-using Dev2.Studio.Core.Views;
 
 
 namespace Dev2.Activities.Designers.Tests.Service

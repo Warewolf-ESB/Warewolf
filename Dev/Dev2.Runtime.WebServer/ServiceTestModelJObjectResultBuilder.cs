@@ -11,7 +11,6 @@
 using System;
 using Dev2.Common.Interfaces;
 using Newtonsoft.Json.Linq;
-using System.Xml.Linq;
 
 namespace Dev2.Runtime.WebServer
 {
