@@ -21,7 +21,7 @@ namespace Warewolf.MergeParser.Tests
     {
 
         [TestMethod]
-        public void GetDifferences_WhenSame_ShouldReturnNoConflictItems()
+        public void GetDifferences_WhenSame_ShouldReturnNohasConflictItems()
         {
             var activityParser = new ActivityParser();
             var shellView = new Mock<IShellViewModel>();
@@ -65,7 +65,7 @@ namespace Warewolf.MergeParser.Tests
             var diffs = psd.GetDifferences(current, diff);
 
             Assert.AreEqual(2, diffs.Count);
-            Assert.IsTrue(diffs.All(d => !d.conflict));
+            Assert.IsTrue(diffs.All(d => !d.hasConflict));
             Assert.AreEqual(randomActivityUniqueId, diffs[1].uniqueId.ToString());
             Assert.AreEqual(calculateUniqueId, diffs[0].uniqueId.ToString());
 
@@ -138,7 +138,7 @@ namespace Warewolf.MergeParser.Tests
             CustomContainer.DeRegister<IShellViewModel>();
         }
         [TestMethod]
-        public void GetDifferences_WhenDifferent_ShouldReturnConflictItems()
+        public void GetDifferences_WhenDifferent_ShouldReturnhasConflictItems()
         {
             var activityParser = new ActivityParser();
             var shellView = new Mock<IShellViewModel>();
@@ -189,7 +189,7 @@ namespace Warewolf.MergeParser.Tests
             var diffs = psd.GetDifferences(current, diff);
 
             Assert.AreEqual(2, diffs.Count);
-            Assert.IsTrue(diffs.Any(d => d.conflict));
+            Assert.IsTrue(diffs.Any(d => d.hasConflict));
             Assert.AreEqual(randomActivityUniqueId, diffs[1].uniqueId.ToString());
             Assert.AreEqual(calculateUniqueId, diffs[0].uniqueId.ToString());
 
@@ -285,7 +285,7 @@ namespace Warewolf.MergeParser.Tests
             var diffs = psd.GetDifferences(current, diff);
 
             Assert.AreEqual(3, diffs.Count);
-            Assert.IsTrue(diffs.Any(d => d.conflict));
+            Assert.IsTrue(diffs.Any(d => d.hasConflict));
             Assert.AreEqual(randomActivityUniqueId, diffs[1].uniqueId.ToString());
             Assert.AreEqual(calculateUniqueId, diffs[0].uniqueId.ToString());
 
@@ -374,9 +374,9 @@ namespace Warewolf.MergeParser.Tests
             var diffs = psd.GetDifferences(current, diff);
 
             Assert.AreEqual(3, diffs.Count);
-            Assert.IsTrue(diffs.Any(d => d.conflict));
-            Assert.AreEqual(randomActivityUniqueId, diffs[1].uniqueId.ToString());
-            Assert.AreEqual(calculateUniqueId, diffs[0].uniqueId.ToString());
+            Assert.IsTrue(diffs.Any(d => d.hasConflict));
+            Assert.AreEqual(randomActivityUniqueId, diffs[0].uniqueId.ToString());
+            Assert.AreEqual(calculateUniqueId, diffs[1].uniqueId.ToString());
 
 
             ////First Node chart
@@ -484,7 +484,7 @@ namespace Warewolf.MergeParser.Tests
             var diffs = psd.GetDifferences(current, diff);
 
             Assert.AreEqual(5, diffs.Count);
-            Assert.IsTrue(diffs.Any(d => d.conflict));
+            Assert.IsTrue(diffs.Any(d => d.hasConflict));
             Assert.AreEqual(randomActivityUniqueId, diffs[1].uniqueId.ToString());
             Assert.AreEqual(calculateUniqueId, diffs[0].uniqueId.ToString());
 
@@ -586,7 +586,7 @@ namespace Warewolf.MergeParser.Tests
             var diffs = psd.GetDifferences(current, diff);
 
             Assert.AreEqual(1, diffs.Count);
-            Assert.IsTrue(diffs.Any(d => d.conflict));
+            Assert.IsTrue(diffs.Any(d => d.hasConflict));
             Assert.AreEqual(assignId, diffs[0].uniqueId.ToString());
 
 

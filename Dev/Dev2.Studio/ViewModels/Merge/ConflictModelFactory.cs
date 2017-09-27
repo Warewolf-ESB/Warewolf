@@ -39,6 +39,7 @@ namespace Dev2.ViewModels.Merge
 
         public ConflictModelFactory()
         {
+            Children = new ObservableCollection<IMergeToolModel>();
         }
 
         public void GetDataList()
@@ -126,7 +127,8 @@ namespace Dev2.ViewModels.Merge
                 ActivityDesignerViewModel instance;
                 if (actual == typeof(SwitchDesignerViewModel))
                 {
-                    instance = Activator.CreateInstance(actual, _modelItem, item) as ActivityDesignerViewModel;
+                    var dsfSwitch = currentValue as DsfSwitch;
+                    instance = Activator.CreateInstance(actual, _modelItem, dsfSwitch?.Switch ?? "") as ActivityDesignerViewModel;
                 }
                 else if (actual == typeof(ServiceDesignerViewModel))
                 {
@@ -145,17 +147,16 @@ namespace Dev2.ViewModels.Merge
                     MergeDescription = dsfActivity?.ToString(),
                     UniqueId = currentValue.UniqueID.ToGuid()
                 };
-
+                var activityParser = CustomContainer.Get<IActivityParser>();
                 if (currentValue is DsfDecision de)
                 {
                     var decisionNode = new FlowDecision(de.GetFlowNode());
                     
                     if (de.TrueArm != null)
                     {
-                        decisionNode.True = new FlowStep { Action = de.TrueArm.FirstOrDefault() as System.Activities.Activity };
-
-                        var deTrueArm = de.TrueArm.Flatten(p => p.NextNodes ?? new List<IDev2Activity>());
-                        foreach (var dev2Activity in deTrueArm)
+                        var firstOrDefault = de.TrueArm?.FirstOrDefault();
+                        var activity = activityParser.ParseToLinkedFlatList(firstOrDefault);
+                        foreach (var dev2Activity in activity)
                         {
                             _modelItem = ModelItemUtils.CreateModelItem(dev2Activity);
                             var addModelItem = GetModel();
@@ -167,10 +168,9 @@ namespace Dev2.ViewModels.Merge
 
                     if (de.FalseArm != null)
                     {
-                        decisionNode.False = new FlowStep { Action = de.FalseArm.FirstOrDefault() as System.Activities.Activity };
-
-                        var deTrueArm = de.FalseArm.Flatten(p => p.NextNodes ?? new List<IDev2Activity>());
-                        foreach (var dev2Activity in deTrueArm)
+                        var firstOrDefault = de.FalseArm?.FirstOrDefault();
+                        var activity = activityParser.ParseToLinkedFlatList(firstOrDefault);
+                        foreach (var dev2Activity in activity)
                         {
                             _modelItem = ModelItemUtils.CreateModelItem(dev2Activity);
                             var addModelItem = GetModel();
@@ -189,31 +189,25 @@ namespace Dev2.ViewModels.Merge
                     mergeToolModel.ActivityType = flowSwitch;
                     if (switchTool.Switches != null)
                     {
-                        var vv = switchTool.Switches.ToDictionary(k => k.Key);
-
-                        foreach (var group in vv)
+                        foreach (var group in switchTool.Switches)
                         {
-                            IEnumerable<IDev2Activity> activities =
-                                vv.Values.Where(pair => pair.Key == group.Key).Select(k => k.Value);
-                            foreach (var dev2Activity in activities)
-                            {
-                                _modelItem = ModelItemUtils.CreateModelItem(dev2Activity);
-                                var addModelItem = GetModel();
-                                addModelItem.HasParent = true;
-                                addModelItem.ParentDescription = group.Key;
-                                mergeToolModel.Children.Add(addModelItem);
-                            }
+                            _modelItem = ModelItemUtils.CreateModelItem(group.Value);
+                            var addModelItem = GetModel(group.Key);
+                            addModelItem.HasParent = true;
+                            //addModelItem.ParentDescription = group.Key;
+                            addModelItem.MergeDescription = group.Key;
+                            mergeToolModel.Children.Add(addModelItem);
                         }
                     }
                     if (switchTool.Default != null)
                     {
-                        var deTrueArm = switchTool.Default.Flatten(p => p.NextNodes ?? new List<IDev2Activity>());
-                        foreach (var dev2Activity in deTrueArm)
+                        foreach (var dev2Activity in switchTool.Default)
                         {
                             _modelItem = ModelItemUtils.CreateModelItem(dev2Activity);
                             var addModelItem = GetModel();
                             addModelItem.HasParent = true;
                             addModelItem.ParentDescription = "Default";
+                            addModelItem.MergeDescription = "Default";
                             mergeToolModel.Children.Add(addModelItem);
                         }
                     }

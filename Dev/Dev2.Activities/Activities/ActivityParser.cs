@@ -20,22 +20,19 @@ namespace Dev2.Activities
 
         public IDev2Activity Parse(List<IDev2Activity> seenActivities, object step)
         {
-            var chart = step as Flowchart;
-            if (chart?.StartNode == null)
-            {
-                return null;
-            }
+            var modelItem = step as ModelItem;
+            var currentValue = modelItem.GetCurrentValue();
 
-            if (chart.StartNode is FlowStep start)
+            if (currentValue is FlowStep start)
             {
                 var tool = ParseTools(start, seenActivities);
                 return tool.FirstOrDefault();
             }
-            if (chart.StartNode is FlowSwitch<string> flowstart)
+            if (currentValue is FlowSwitch<string> flowstart)
             {
                 return ParseSwitch(flowstart, seenActivities).FirstOrDefault();
             }
-            var flowdec = chart.StartNode as FlowDecision;
+            var flowdec = currentValue as FlowDecision;
             return ParseDecision(flowdec, seenActivities).FirstOrDefault();
         }
 
@@ -69,7 +66,12 @@ namespace Dev2.Activities
                         return activities;
                     }
                     return new List<IDev2Activity>();
-                });
+                }).ToList();
+                var hasDecision = bbb.Contains(topLevelActivity);
+                if (!hasDecision)
+                {
+                    bbb.Add(topLevelActivity);
+                }
                 return bbb.ToList();
             }
             if (topLevelActivity is DsfSwitch @switch)
@@ -117,7 +119,7 @@ namespace Dev2.Activities
                     return dev2Activity?.NextNodes ?? new List<IDev2Activity>();
                 }
                 return new List<IDev2Activity>();
-            }).ToList()??new List<IDev2Activity>();
+            }).ToList()?? new List<IDev2Activity>();
             var contains = dev2Activities.Contains(topLevelActivity);
             if (!contains)
             {
