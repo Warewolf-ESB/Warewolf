@@ -89,14 +89,14 @@ namespace Dev2.DynamicServices.Test
                 Directory.CreateDirectory(serverServicesPath);
 
                 var xml = XmlResource.Fetch(ServiceName);
-                xml.Save(Path.Combine(_servicesPath, ServiceName + ".xml"));
-                xml.Save(Path.Combine(servicesVersionControlPath, ServiceName + ".V" + VersionNo + ".xml"));
-                xml.Save(Path.Combine(serverServicesPath, ServiceName + ".xml"));
+                xml.Save(Path.Combine(_servicesPath, ServiceName + ".bite"));
+                xml.Save(Path.Combine(servicesVersionControlPath, ServiceName + ".V" + VersionNo + ".bite"));
+                xml.Save(Path.Combine(serverServicesPath, ServiceName + ".bite"));
 
                 xml = XmlResource.Fetch(ServiceNameUnsigned);
-                xml.Save(Path.Combine(_servicesPath, ServiceNameUnsigned + ".xml"));
-                xml.Save(Path.Combine(servicesVersionControlPath, ServiceNameUnsigned + ".V" + VersionNo + ".xml"));
-                xml.Save(Path.Combine(serverServicesPath, ServiceNameUnsigned + ".xml"));
+                xml.Save(Path.Combine(_servicesPath, ServiceNameUnsigned + ".bite"));
+                xml.Save(Path.Combine(servicesVersionControlPath, ServiceNameUnsigned + ".V" + VersionNo + ".bite"));
+                xml.Save(Path.Combine(serverServicesPath, ServiceNameUnsigned + ".bite"));
 
                 _testServiceDefinition = xml.ToString();
 
@@ -113,22 +113,22 @@ namespace Dev2.DynamicServices.Test
                 Directory.CreateDirectory(serverSourcesPath);
 
                 xml = XmlResource.Fetch(SourceName);
-                xml.Save(Path.Combine(_sourcesPath, SourceName + ".xml"));
-                xml.Save(Path.Combine(sourcesVersionControlPath, SourceName + ".V" + VersionNo + ".xml"));
-                xml.Save(Path.Combine(serverSourcesPath, SourceName + ".xml"));
+                xml.Save(Path.Combine(_sourcesPath, SourceName + ".bite"));
+                xml.Save(Path.Combine(sourcesVersionControlPath, SourceName + ".V" + VersionNo + ".bite"));
+                xml.Save(Path.Combine(serverSourcesPath, SourceName + ".bite"));
 
                 _testSourceDefinition = xml.ToString();
 
                 xml = XmlResource.Fetch(ServerConnection1Name);
-                xml.Save(Path.Combine(_sourcesPath, ServerConnection1ResourceName + ".xml"));
-                xml.Save(Path.Combine(_sourcesPath, ServerConnection1ResourceName + ".xml"));
-                xml.Save(Path.Combine(sourcesVersionControlPath, ServerConnection1ResourceName + ".V" + VersionNo + ".xml"));
-                xml.Save(Path.Combine(serverSourcesPath, ServerConnection1ResourceName + ".xml"));
+                xml.Save(Path.Combine(_sourcesPath, ServerConnection1ResourceName + ".bite"));
+                xml.Save(Path.Combine(_sourcesPath, ServerConnection1ResourceName + ".bite"));
+                xml.Save(Path.Combine(sourcesVersionControlPath, ServerConnection1ResourceName + ".V" + VersionNo + ".bite"));
+                xml.Save(Path.Combine(serverSourcesPath, ServerConnection1ResourceName + ".bite"));
 
                 xml = XmlResource.Fetch(ServerConnection2Name);
-                xml.Save(Path.Combine(_sourcesPath, ServerConnection2ResourceName + ".xml"));
-                xml.Save(Path.Combine(sourcesVersionControlPath, ServerConnection2ResourceName + ".V" + VersionNo + ".xml"));
-                xml.Save(Path.Combine(serverSourcesPath, ServerConnection2ResourceName + ".xml"));
+                xml.Save(Path.Combine(_sourcesPath, ServerConnection2ResourceName + ".bite"));
+                xml.Save(Path.Combine(sourcesVersionControlPath, ServerConnection2ResourceName + ".V" + VersionNo + ".bite"));
+                xml.Save(Path.Combine(serverSourcesPath, ServerConnection2ResourceName + ".bite"));
 
                 #endregion
 
@@ -378,7 +378,7 @@ namespace Dev2.DynamicServices.Test
             // This invokes SaveResources under the hood.
             host.AddResources(resources, "Domain Admins");
 
-            var signedXml = File.ReadAllText(Path.Combine(_servicesPath, ServiceName + ".xml"));
+            var signedXml = File.ReadAllText(Path.Combine(_servicesPath, ServiceName + ".bite"));
             var isValid = HostSecurityProvider.Instance.VerifyXml(signedXml);
 
             Assert.IsTrue(isValid);
@@ -393,8 +393,8 @@ namespace Dev2.DynamicServices.Test
             // This invokes SaveResources under the hood.
             host.AddResources(resources, "Domain Admins");
 
-            //var xml = File.ReadAllText(Path.Combine(_sourcesPath, SourceName + ".xml"));
-            var xml = XElement.Load(Path.Combine(_sourcesPath, SourceName + ".xml"));
+            //var xml = File.ReadAllText(Path.Combine(_sourcesPath, SourceName + ".bite"));
+            var xml = XElement.Load(Path.Combine(_sourcesPath, SourceName + ".bite"));
             var attr = xml.Attributes("ID").ToList();
 
             Assert.AreEqual(1, attr.Count);

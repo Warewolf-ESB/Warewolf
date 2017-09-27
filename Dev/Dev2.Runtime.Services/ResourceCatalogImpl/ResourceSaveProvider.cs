@@ -378,7 +378,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             }
             var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
             var directoryName = Path.Combine(workspacePath, savedPath);
-            var resourceFilePath = Path.Combine(directoryName, resource.ResourceName + ".xml");
+            var resourceFilePath = Path.Combine(directoryName, resource.ResourceName + ".bite");
             resource.FilePath = resourceFilePath;
             return directoryName;
         }
