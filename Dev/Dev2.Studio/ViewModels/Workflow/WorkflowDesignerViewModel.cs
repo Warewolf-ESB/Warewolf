@@ -2908,15 +2908,15 @@ namespace Dev2.Studio.ViewModels.Workflow
             resourceModel.IsWorkflowSaved = true;
         }
 
-        public void AddItem(FlowStep step)
+        public void AddDecisionItem(FlowDecision decision)
         {
             ModelItem root = _wd.Context.Services.GetService<ModelService>().Root;
             var chart = _wd.Context.Services.GetService<ModelService>().Find(root, typeof(Flowchart)).FirstOrDefault();
 
             if (chart.Properties["StartNode"].ComputedValue == null)
             {
-                chart.Properties["Nodes"].Collection.Add(step);
-                chart.Properties["StartNode"].SetValue(step);
+                chart.Properties["Nodes"].Collection.Add(decision);
+                chart.Properties["StartNode"].SetValue(decision);
 
             }
             else
@@ -2926,8 +2926,46 @@ namespace Dev2.Studio.ViewModels.Workflow
                 //Point p = new Point(300, 200);
                 //service.RemoveViewState(temp,"ShapeLocation");
                 //service.StoreViewState(temp,"ShapeLocation", p);
-                chart.Properties["Nodes"].Collection.Add(step);
-                temp.Properties["Next"].SetValue(step);
+                chart.Properties["Nodes"].Collection.Add(decision);
+                temp.Properties["Next"].SetValue(decision);
+
+            }
+        }
+
+        public void AddItem(FlowStep step)
+        {
+            ModelItem root = _wd.Context.Services.GetService<ModelService>().Root;
+            var chart = _wd.Context.Services.GetService<ModelService>().Find(root, typeof(Flowchart)).FirstOrDefault();
+
+            if (chart.Properties["StartNode"].ComputedValue == null)
+            {
+                if (chart.Properties["Nodes"].Collection != null || chart.Properties["Nodes"].Collection.Count > 0)
+                {
+                    var foundStep = chart.Properties["Nodes"].Collection.FirstOrDefault(a => a.Properties["UniqueID"].Value.ToString() == step.Action.Id.ToString());
+                    if (foundStep == null)
+                    {
+                        chart.Properties["Nodes"].Collection.Add(step);
+                        chart.Properties["StartNode"].SetValue(step);
+                    }
+                }
+                else
+                {
+                    chart.Properties["Nodes"].Collection.Add(step);
+                    chart.Properties["StartNode"].SetValue(step);
+                }
+            }
+            else
+            {
+                ViewStateService service = _wd.Context.Services.GetService<ViewStateService>();
+                ModelItem temp = chart.Properties["Nodes"].Collection[0];
+                //Point p = new Point(300, 200);
+                //service.RemoveViewState(temp,"ShapeLocation");
+                //service.StoreViewState(temp,"ShapeLocation", p);
+                if (!chart.Properties["Nodes"].Collection.Contains(step))
+                {
+                    chart.Properties["Nodes"].Collection.Add(step);
+                    temp.Properties["Next"].SetValue(step);
+                }
 
             }
         }

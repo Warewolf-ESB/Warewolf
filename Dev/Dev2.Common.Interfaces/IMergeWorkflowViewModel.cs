@@ -20,6 +20,9 @@ namespace Dev2.Common.Interfaces
         ObservableCollection<ICompleteConflict> Conflicts { get; set; }
     }
 
+    public delegate void ConflictModelChanged(object sender, IConflictModelFactory args);
+    public delegate void ModelToolChanged(object sender, IMergeToolModel args);
+
     public interface ICompleteConflict
     {
         IMergeToolModel CurrentViewModel { get; set; }
@@ -36,10 +39,11 @@ namespace Dev2.Common.Interfaces
         ImageSource MergeIcon { get; set; }
         string MergeDescription { get; set; }
         bool IsMergeChecked { get; set; }
-        bool IsVariablesChecked { get; set; }
         ObservableCollection<IMergeToolModel> Children { get; set; }
         Guid UniqueId { get; set; }
         string ParentDescription { get; set; }
         bool HasParent { get; set; }
+        event ModelToolChanged SomethingModelToolChanged;
+        System.Windows.Input.ICommand AddAnItem { get; set; }
     }
 }

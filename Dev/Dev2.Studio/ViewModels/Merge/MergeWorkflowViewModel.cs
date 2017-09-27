@@ -7,9 +7,8 @@ using System.Collections.ObjectModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Dev2.Common;
 using Dev2.Common.Common;
-using Dev2.Studio.Core.Activities.Utils;
+using System.Activities.Statements;
 
 namespace Dev2.ViewModels.Merge
 {
@@ -29,31 +28,41 @@ namespace Dev2.ViewModels.Merge
             var currentChanges = mergeParser.GetDifferences(currentResourceModel, differenceResourceModel);
             Conflicts = new ObservableCollection<ICompleteConflict>();
 
-
             foreach (var currentChange in currentChanges)
             {
                 var conflict = new CompleteConflict { UniqueId = currentChange.uniqueId };
                 var factoryA = new ConflictModelFactory(currentChange.current, currentResourceModel);
                 var factoryB = new ConflictModelFactory(currentChange.difference, differenceResourceModel);
                 conflict.CurrentViewModel = factoryA.GetModel();
+                conflict.CurrentViewModel.AddAnItem = new DelegateCommand(o =>
+                {
+                    var model = conflict.CurrentViewModel as MergeToolModel;
+                    AddActivity(model);
+                });
+                conflict.CurrentViewModel.SomethingModelToolChanged += SourceOnModelToolChanged;
+
                 conflict.DiffViewModel = factoryB.GetModel();
+                conflict.DiffViewModel.AddAnItem = new DelegateCommand(o =>
+                {
+                    var model = conflict.DiffViewModel as MergeToolModel;
+                    AddActivity(model);
+                });
+                conflict.DiffViewModel.SomethingModelToolChanged += SourceOnModelToolChanged;
+
                 conflict.HasConflict = currentChange.conflict;
                 AddChildren(conflict, conflict.CurrentViewModel, conflict.DiffViewModel);
                 Conflicts.Add(conflict);
             }
-
            
             Conflicts = Conflicts.Reverse().ToObservableCollection();
-            var fisrtConflict = Conflicts.FirstOrDefault();
+            var firstConflict = Conflicts.FirstOrDefault();
 
             if (CurrentConflictModel == null)
             {
                 CurrentConflictModel = new ConflictModelFactory();
-              
-
-                if (fisrtConflict?.CurrentViewModel != null)
+                if (firstConflict?.CurrentViewModel != null)
                 {
-                    CurrentConflictModel.Model = fisrtConflict.CurrentViewModel;
+                    CurrentConflictModel.Model = firstConflict.CurrentViewModel;
                 }
             }
 
@@ -62,12 +71,10 @@ namespace Dev2.ViewModels.Merge
             if (DifferenceConflictModel == null)
             {
                 DifferenceConflictModel = new ConflictModelFactory();
-
-                if (fisrtConflict?.DiffViewModel != null)
+                if (firstConflict?.DiffViewModel != null)
                 {
-                    CurrentConflictModel.Model = fisrtConflict.DiffViewModel;
+                    DifferenceConflictModel.Model = firstConflict.DiffViewModel;
                 }
-
             }
             DifferenceConflictModel.WorkflowName = differenceResourceModel.ResourceName;
             DifferenceConflictModel.GetDataList();
@@ -75,14 +82,71 @@ namespace Dev2.ViewModels.Merge
             HasVariablesConflict = true;
             HasWorkflowNameConflict = true;
             SetServerName(currentResourceModel);
-            DisplayName = "Merge Conflicts" + _serverName;
-            AddAnItem = new DelegateCommand(o =>
-            {
-                //var step = new FlowStep { Action = act };
-                //WorkflowDesignerViewModel.AddItem(step);
-            });
+            DisplayName = "Merge" + _serverName;
+
             WorkflowDesignerViewModel.CanViewWorkflowLink = false;
 
+            CurrentConflictModel.SomethingConflictModelChanged += SourceOnConflictModelChanged;
+            DifferenceConflictModel.SomethingConflictModelChanged += SourceOnConflictModelChanged;
+        }
+
+        private void AddActivity(MergeToolModel model)
+        {
+            if (model.ActivityType.DisplayName == "Decision")
+            {
+                //WorkflowDesignerViewModel.AddDecisionItem(model.ActivityType);
+            }
+            else if (model.ActivityType.DisplayName == "Switch")
+            {
+
+            }
+            else
+            {
+                var step = new FlowStep { Action = model.ActivityType };
+                WorkflowDesignerViewModel.AddItem(step);
+            }
+        }
+
+        private void SourceOnConflictModelChanged(object sender, IConflictModelFactory args)
+        {
+            try
+            {
+                if (args.IsWorkflowNameChecked)
+                {
+                    
+                }
+                else if (args.IsVariablesChecked)
+                {
+                    
+                }
+            }
+            catch (Exception e)
+            {
+                
+            }
+            finally
+            {
+                
+            }
+        }
+
+        private void SourceOnModelToolChanged(object sender, IMergeToolModel args)
+        {
+            try
+            {
+                if (args.IsMergeChecked)
+                {
+                    
+                }
+            }
+            catch (Exception e)
+            {
+
+            }
+            finally
+            {
+
+            }
         }
 
         void AddChildren(ICompleteConflict parent, IMergeToolModel currentChild, IMergeToolModel childDiff)
