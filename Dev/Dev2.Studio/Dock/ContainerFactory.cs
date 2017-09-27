@@ -420,14 +420,7 @@ namespace Dev2.Studio.Dock
             // create the element and associate it with the new item
             ContentControl container;
 
-            if(IsItemItsOwnContainerImpl(newItem))
-            {
-                container = newItem as ContentControl;
-            }
-            else
-            {
-                container = GetContainerForItem(newItem);
-            }
+            container = IsItemItsOwnContainerImpl(newItem) ? newItem as ContentControl : GetContainerForItem(newItem);
 
             // keep a map between the new item and the element
             _generatedElements[newItem] = container;

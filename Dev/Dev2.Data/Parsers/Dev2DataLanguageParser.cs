@@ -886,14 +886,7 @@ namespace Dev2.Data.Parsers
             }
             else if (match == search && isRs)
             {
-                if (rawSearch.Contains(DataListUtil.RecordsetIndexOpeningBracket) && rawSearch.Contains(DataListUtil.RecordsetIndexClosingBracket))
-                {
-                    emptyOk = RecordsetMatch(payload, addCompleteParts, result, rawSearch, search, emptyOk, parts, t1);
-                }
-                else
-                {
-                    emptyOk = ProcessForChild(payload, refParts, result, search, t1);
-                }
+                emptyOk = rawSearch.Contains(DataListUtil.RecordsetIndexOpeningBracket) && rawSearch.Contains(DataListUtil.RecordsetIndexClosingBracket) ? RecordsetMatch(payload, addCompleteParts, result, rawSearch, search, emptyOk, parts, t1) : ProcessForChild(payload, refParts, result, search, t1);
             }
             else if (match == search && !isRs)
             {

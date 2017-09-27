@@ -368,16 +368,9 @@ namespace Dev2.Services.Execution
             {
                 foreach (var parameter in Inputs)
                 {
-                    if (parameter.EmptyIsNull &&
+                    sqlParameters.Add(parameter.EmptyIsNull &&
                         (parameter.Value == null ||
-                         string.Compare(parameter.Value, string.Empty, StringComparison.InvariantCultureIgnoreCase) == 0))
-                    {
-                        sqlParameters.Add(new SqlParameter($"@{parameter.Name}", DBNull.Value));
-                    }
-                    else
-                    {
-                        sqlParameters.Add(new SqlParameter($"@{parameter.Name}", parameter.Value));
-                    }
+                         string.Compare(parameter.Value, string.Empty, StringComparison.InvariantCultureIgnoreCase) == 0) ? new SqlParameter($"@{parameter.Name}", DBNull.Value) : new SqlParameter($"@{parameter.Name}", parameter.Value));
                 }
             }
             return sqlParameters;
@@ -392,16 +385,9 @@ namespace Dev2.Services.Execution
                 foreach (var parameter in methodParameters)
                 {
                     var parameterName = parameter.Name.Replace("`", "");
-                    if (parameter.EmptyIsNull &&
+                    sqlParameters.Add(parameter.EmptyIsNull &&
                         (parameter.Value == null ||
-                         string.Compare(parameter.Value, string.Empty, StringComparison.InvariantCultureIgnoreCase) == 0))
-                    {
-                        sqlParameters.Add(new MySqlParameter($"@{parameterName}", DBNull.Value));
-                    }
-                    else
-                    {
-                        sqlParameters.Add(new MySqlParameter($"@{parameterName}", parameter.Value));
-                    }
+                         string.Compare(parameter.Value, string.Empty, StringComparison.InvariantCultureIgnoreCase) == 0) ? new MySqlParameter($"@{parameterName}", DBNull.Value) : new MySqlParameter($"@{parameterName}", parameter.Value));
                 }
             }
             return sqlParameters;
@@ -552,16 +538,9 @@ namespace Dev2.Services.Execution
             {
                 foreach (var parameter in methodParameters)
                 {
-                    if (parameter.EmptyIsNull &&
+                    sqlParameters.Add(parameter.EmptyIsNull &&
                         (parameter.Value == null ||
-                         string.Compare(parameter.Value, string.Empty, StringComparison.InvariantCultureIgnoreCase) == 0))
-                    {
-                        sqlParameters.Add(new OdbcParameter($"@{parameter.Name}", DBNull.Value));
-                    }
-                    else
-                    {
-                        sqlParameters.Add(new OdbcParameter($"@{parameter.Name}", parameter.Value));
-                    }
+                         string.Compare(parameter.Value, string.Empty, StringComparison.InvariantCultureIgnoreCase) == 0) ? new OdbcParameter($"@{parameter.Name}", DBNull.Value) : new OdbcParameter($"@{parameter.Name}", parameter.Value));
                 }
             }
             return sqlParameters;
@@ -632,17 +611,10 @@ namespace Dev2.Services.Execution
                 {
                     if (!string.IsNullOrEmpty(parameter.Name))
                     {
-                        if (parameter.EmptyIsNull &&
+                        sqlParameters.Add(parameter.EmptyIsNull &&
                             (parameter.Value == null ||
                              string.Compare(parameter.Value, string.Empty, StringComparison.InvariantCultureIgnoreCase) ==
-                             0))
-                        {
-                            sqlParameters.Add(new NpgsqlParameter($"@{parameter.Name}", DBNull.Value));
-                        }
-                        else
-                        {
-                            sqlParameters.Add(new NpgsqlParameter($"@{parameter.Name}", parameter.Value));
-                        }
+                             0) ? new NpgsqlParameter($"@{parameter.Name}", DBNull.Value) : new NpgsqlParameter($"@{parameter.Name}", parameter.Value));
                     }
                 }
             }

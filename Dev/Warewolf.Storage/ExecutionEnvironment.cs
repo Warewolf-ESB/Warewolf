@@ -695,14 +695,7 @@ namespace Warewolf.Storage
                         else
                         {
                             var props = container.FirstOrDefault(token => token.Type == JTokenType.Property && ((JProperty)token).Name == objectName);
-                            if (props != null)
-                            {
-                                obj = props.First as JContainer;
-                            }
-                            else
-                            {
-                                obj = container;
-                            }
+                            obj = props != null ? props.First as JContainer : container;
                         }
                         BuildIndexMap(nestedNameExpression.Item.Next, exp, indexMap, obj);
                     }

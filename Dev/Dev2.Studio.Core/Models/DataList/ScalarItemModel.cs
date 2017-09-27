@@ -51,14 +51,7 @@ namespace Dev2.Studio.Core.Models.DataList
 
         public void Filter(string searchText)
         {
-            if (!string.IsNullOrEmpty(searchText))
-            {
-                IsVisible = !string.IsNullOrEmpty(DisplayName) && DisplayName.ToLower().Contains(searchText.ToLower());
-            }
-            else
-            {
-                IsVisible = true;
-            }
+            IsVisible = !string.IsNullOrEmpty(searchText) ? !string.IsNullOrEmpty(DisplayName) && DisplayName.ToLower().Contains(searchText.ToLower()) : true;
         }
 
         #endregion

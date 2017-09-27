@@ -155,14 +155,7 @@ namespace Dev2.Studio.Core.Models.DataList
                         itemModel.Filter(searchText);
                     }
                 }
-                if (_children != null && _children.Any(model => model.IsVisible))
-                {
-                    IsVisible = true;
-                }
-                else
-                {
-                    IsVisible = !string.IsNullOrEmpty(DisplayName) && DisplayName.ToLower().Contains(searchText.ToLower());
-                }
+                IsVisible = _children != null && _children.Any(model => model.IsVisible) ? true : !string.IsNullOrEmpty(DisplayName) && DisplayName.ToLower().Contains(searchText.ToLower());
             }
             else
             {

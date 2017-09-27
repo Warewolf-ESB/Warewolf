@@ -52,7 +52,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         /// <returns></returns>
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            if(values == null)
+            if (values == null)
             {
                 throw new InvalidDataContractException(ErrorResource.NoParameter);
             }
@@ -65,26 +65,26 @@ namespace Dev2.Runtime.ESB.Management.Services
                 database = tmp.ToString();
             }
             values.TryGetValue("TableName", out tmp);
-            if(tmp != null)
+            if (tmp != null)
             {
                 tableName = tmp.ToString();
             }
 
             values.TryGetValue("Schema", out tmp);
-            if(tmp != null)
+            if (tmp != null)
             {
                 schema = tmp.ToString();
             }
 
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
 
-            if(string.IsNullOrEmpty(database))
+            if (string.IsNullOrEmpty(database))
             {
                 var res = new DbColumnList("No database set.");
                 Dev2Logger.Debug("No database set.", GlobalConstants.WarewolfDebug);
                 return serializer.SerializeToBuilder(res);
             }
-            if(string.IsNullOrEmpty(tableName))
+            if (string.IsNullOrEmpty(tableName))
             {
                 var res = new DbColumnList("No table name set.");
                 Dev2Logger.Debug("No table name set.", GlobalConstants.WarewolfDebug);
@@ -156,38 +156,6 @@ namespace Dev2.Runtime.ESB.Management.Services
                             break;
                         }
 
-                    case enSourceType.SqlDatabase:
-                        break;
-                    case enSourceType.PostgreSQL:
-                        break;
-                    case enSourceType.WebService:
-                        break;
-                    case enSourceType.DynamicService:
-                        break;
-                    case enSourceType.ManagementDynamicService:
-                        break;
-                    case enSourceType.PluginSource:
-                        break;
-                    case enSourceType.Unknown:
-                        break;
-                    case enSourceType.Dev2Server:
-                        break;
-                    case enSourceType.EmailSource:
-                        break;
-                    case enSourceType.WebSource:
-                        break;
-                    case enSourceType.OauthSource:
-                        break;
-                    case enSourceType.SharepointServerSource:
-                        break;
-                    case enSourceType.RabbitMQSource:
-                        break;
-                    case enSourceType.ExchangeSource:
-                        break;
-                    case enSourceType.WcfSource:
-                        break;
-                    case enSourceType.ComPluginSource:
-                        break;
                     default:
                         {
                             using (var connection = new SqlConnection(runtTimedbSource.ConnectionString))
@@ -217,9 +185,9 @@ namespace Dev2.Runtime.ESB.Management.Services
 
                 var dbColumns = new DbColumnList();
 
-                if(columnInfo != null)
+                if (columnInfo != null)
                 {
-                    foreach(DataRow row in columnInfo.Rows)
+                    foreach (DataRow row in columnInfo.Rows)
                     {
                         var columnName = row["ColumnName"] as string;
                         var isNullable = row["AllowDBNull"] is bool && (bool)row["AllowDBNull"];

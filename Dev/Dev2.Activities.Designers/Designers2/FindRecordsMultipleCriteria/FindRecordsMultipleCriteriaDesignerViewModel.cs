@@ -81,14 +81,7 @@ namespace Dev2.Activities.Designers2.FindRecordsMultipleCriteria
 
             var searchType = mi.GetProperty("SearchType") as string;
 
-            if(searchType == "Is Between" || searchType == "Not Between")
-            {
-                mi.SetProperty("IsSearchCriteriaVisible", false);
-            }
-            else
-            {
-                mi.SetProperty("IsSearchCriteriaVisible", true);
-            }
+            mi.SetProperty("IsSearchCriteriaVisible", searchType == "Is Between" || searchType == "Not Between" ? false : true);
 
             var requiresCriteria = _requiresSearchCriteria.Contains(searchType);
             mi.SetProperty("IsSearchCriteriaEnabled", requiresCriteria);

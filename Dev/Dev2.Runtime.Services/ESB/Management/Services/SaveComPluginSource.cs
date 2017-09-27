@@ -63,21 +63,14 @@ namespace Dev2.Runtime.ESB.Management.Services
 
                 ComPluginSource res1;
                 var existingSource = ResourceCat.GetResource(GlobalConstants.ServerWorkspaceID, src.Name);
-                if (existingSource != null)
+                res1 = existingSource != null ? existingSource as ComPluginSource : new ComPluginSource
                 {
-                    res1 = existingSource as ComPluginSource;
-                }
-                else
-                {
-                    res1 = new ComPluginSource
-                    {
-                        ResourceID = src.Id,
-                        ClsId = src.ClsId,
-                        Is32Bit = src.Is32Bit,
-                        ComName = src.SelectedDll.Name,
-                        ResourceName = src.ResourceName
-                    };
-                }
+                    ResourceID = src.Id,
+                    ClsId = src.ClsId,
+                    Is32Bit = src.Is32Bit,
+                    ComName = src.SelectedDll.Name,
+                    ResourceName = src.ResourceName
+                };
 
 
 

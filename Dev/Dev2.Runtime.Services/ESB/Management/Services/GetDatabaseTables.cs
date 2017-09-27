@@ -63,7 +63,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
 
-            if(values == null)
+            if (values == null)
             {
                 throw new InvalidDataContractException(ErrorResource.NoParameter);
             }
@@ -74,7 +74,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 database = tmp.ToString();
             }
 
-            if(string.IsNullOrEmpty(database))
+            if (string.IsNullOrEmpty(database))
             {
                 var res = new DbTableList("No database set.");
                 Dev2Logger.Debug("No database set.", GlobalConstants.WarewolfDebug);
@@ -87,24 +87,24 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 dbSource = serializer.Deserialize<DbSource>(database);
 
-                if(dbSource.ResourceID != Guid.Empty)
+                if (dbSource.ResourceID != Guid.Empty)
                 {
                     runtimeDbSource = ResourceCatalog.Instance.GetResource<DbSource>(theWorkspace.ID, dbSource.ResourceID);
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Dev2Logger.Error(e, GlobalConstants.WarewolfError);
                 var res = new DbTableList("Invalid JSON data for Database parameter. Exception: {0}", e.Message);
                 return serializer.SerializeToBuilder(res);
             }
-            if(runtimeDbSource == null)
+            if (runtimeDbSource == null)
             {
                 var res = new DbTableList("Invalid Database source");
                 Dev2Logger.Debug("Invalid Database source", GlobalConstants.WarewolfDebug);
                 return serializer.SerializeToBuilder(res);
             }
-            if(string.IsNullOrEmpty(runtimeDbSource.DatabaseName) || string.IsNullOrEmpty(runtimeDbSource.Server))
+            if (string.IsNullOrEmpty(runtimeDbSource.DatabaseName) || string.IsNullOrEmpty(runtimeDbSource.Server))
             {
                 var res = new DbTableList("Invalid database sent {0}.", database);
                 Dev2Logger.Debug($"Invalid database sent {database}.", GlobalConstants.WarewolfDebug);
@@ -128,43 +128,6 @@ namespace Dev2.Runtime.ESB.Management.Services
                             }
                             break;
                         }
-
-                    case enSourceType.MySqlDatabase:
-                        break;
-                    case enSourceType.ODBC:
-                        break;
-                    case enSourceType.Oracle:
-                        break;
-                    case enSourceType.PostgreSQL:
-                        break;
-                    case enSourceType.WebService:
-                        break;
-                    case enSourceType.DynamicService:
-                        break;
-                    case enSourceType.ManagementDynamicService:
-                        break;
-                    case enSourceType.PluginSource:
-                        break;
-                    case enSourceType.Unknown:
-                        break;
-                    case enSourceType.Dev2Server:
-                        break;
-                    case enSourceType.EmailSource:
-                        break;
-                    case enSourceType.WebSource:
-                        break;
-                    case enSourceType.OauthSource:
-                        break;
-                    case enSourceType.SharepointServerSource:
-                        break;
-                    case enSourceType.RabbitMQSource:
-                        break;
-                    case enSourceType.ExchangeSource:
-                        break;
-                    case enSourceType.WcfSource:
-                        break;
-                    case enSourceType.ComPluginSource:
-                        break;
                     default:
                         {
                             using (var connection = new MySqlConnection(dbSource.ConnectionString))
@@ -178,26 +141,26 @@ namespace Dev2.Runtime.ESB.Management.Services
 
                 if (columnInfo != null)
                 {
-                    foreach(DataRow row in columnInfo.Rows)
+                    foreach (DataRow row in columnInfo.Rows)
                     {
                         var tableName = row["TABLE_NAME"] as string;
                         var schema = row["TABLE_SCHEMA"] as string;
                         tableName = '[' + tableName + ']';
                         var dbTable = tables.Items.Find(table => table.TableName == tableName && table.Schema == schema);
-                        if(dbTable == null)
+                        if (dbTable == null)
                         {
                             dbTable = new DbTable { Schema = schema, TableName = tableName, Columns = new List<IDbColumn>() };
                             tables.Items.Add(dbTable);
                         }
                     }
                 }
-                if(tables.Items.Count == 0)
+                if (tables.Items.Count == 0)
                 {
                     tables.HasErrors = true;
                     const string ErrorFormat = "The login provided in the database source uses {0} and most probably does not have permissions to perform the following query: "
                                           + "\r\n\r\n{1}SELECT * FROM INFORMATION_SCHEMA.TABLES;{2}";
 
-                    if(dbSource.AuthenticationType == AuthenticationType.User)
+                    if (dbSource.AuthenticationType == AuthenticationType.User)
                     {
                         tables.Errors = string.Format(ErrorFormat,
                             "SQL Authentication (User: '" + dbSource.UserID + "')",

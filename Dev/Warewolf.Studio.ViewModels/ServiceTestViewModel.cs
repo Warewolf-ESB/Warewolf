@@ -1806,14 +1806,7 @@ namespace Warewolf.Studio.ViewModels
         {
             if (SelectedServiceTest != null)
             {
-                if (SelectedServiceTest.NewTest)
-                {
-                    SelectedServiceTest.DuplicateTestTooltip = Resources.Languages.Tooltips.ServiceTestNewTestDisabledDuplicateSelectedTestTooltip;
-                }
-                else
-                {
-                    SelectedServiceTest.DuplicateTestTooltip = CanDuplicateTest ? Resources.Languages.Tooltips.ServiceTestDuplicateSelectedTestTooltip : Resources.Languages.Tooltips.ServiceTestDisabledDuplicateSelectedTestTooltip;
-                }
+                SelectedServiceTest.DuplicateTestTooltip = SelectedServiceTest.NewTest ? Resources.Languages.Tooltips.ServiceTestNewTestDisabledDuplicateSelectedTestTooltip : CanDuplicateTest ? Resources.Languages.Tooltips.ServiceTestDuplicateSelectedTestTooltip : Resources.Languages.Tooltips.ServiceTestDisabledDuplicateSelectedTestTooltip;
             }
         }
 

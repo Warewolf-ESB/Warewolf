@@ -35,14 +35,7 @@ namespace Dev2.Common.DateAndTime
         {
             string lowerValue = value.ToString(CultureInfo.InvariantCulture).ToLower();
 
-            if (lowerValue == "pm" || lowerValue == "p.m" || lowerValue == "p.m.")
-            {
-                dateTimeResultTo.AmPm = DateTimeAmPm.pm;
-            }
-            else
-            {
-                dateTimeResultTo.AmPm = DateTimeAmPm.am;
-            }
+            dateTimeResultTo.AmPm = lowerValue == "pm" || lowerValue == "p.m" || lowerValue == "p.m." ? DateTimeAmPm.pm : DateTimeAmPm.am;
         }
 
         public void AssignMilliseconds(IDateTimeResultTO dateTimeResultTo, bool assignAsTime, IConvertible value)

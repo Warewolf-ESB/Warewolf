@@ -62,14 +62,7 @@ namespace Unlimited.Framework.Converters.Graph.Poco
         public override IPathSegment CreatePathSegment(string pathSegmentString)
         {
             PocoPathSegment pathSegment;
-            if (pathSegmentString.EndsWith(EnumerableSymbol))
-            {
-                pathSegment = new PocoPathSegment(pathSegmentString.TrimEnd(EnumerableSymbol.ToArray()), true);
-            }
-            else
-            {
-                pathSegment = new PocoPathSegment(pathSegmentString, false);
-            }
+            pathSegment = pathSegmentString.EndsWith(EnumerableSymbol) ? new PocoPathSegment(pathSegmentString.TrimEnd(EnumerableSymbol.ToArray()), true) : new PocoPathSegment(pathSegmentString, false);
             return pathSegment;
         }
 

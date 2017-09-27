@@ -46,10 +46,8 @@ namespace Dev2.Studio.Interfaces.Enums
                 case ResourceType.Source:
                     return WorkSurfaceContext.SourceManager;
                 case ResourceType.Unknown:
+                default:
                     return WorkSurfaceContext.Unknown;
-                case ResourceType.Server:
-                    break;
-                default: return WorkSurfaceContext.Unknown;
             }
         }
 

@@ -301,14 +301,7 @@ namespace Dev2.Studio.ViewModels.DataList
             DefaultValue = defaultValue;
             EmptyToNull = emptyToNull;
 
-            if(RecordSetName == string.Empty)
-            {
-                DisplayName = Name;
-            }
-            else
-            {
-                DisplayName = RecordSetName + "(*)." + Name;
-            }
+            DisplayName = RecordSetName == string.Empty ? Name : RecordSetName + "(*)." + Name;
             ViewComplexObjectsCommand = new RelayCommand(item =>
             {
                 ViewJsonObjects();

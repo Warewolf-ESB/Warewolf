@@ -768,14 +768,7 @@ namespace Dev2.PathOperations
                 {
                     string tempFileName;
 
-                    if (src.PathIs(src.IOPath) == enPathType.Directory || Dev2ActivityIOPathUtils.IsStarWildCard(src.IOPath.Path))
-                    {
-                        tempFileName = ZipDirectoryToALocalTempFile(src, args);
-                    }
-                    else
-                    {
-                        tempFileName = ZipFileToALocalTempFile(src, args);
-                    }
+                    tempFileName = src.PathIs(src.IOPath) == enPathType.Directory || Dev2ActivityIOPathUtils.IsStarWildCard(src.IOPath.Path) ? ZipDirectoryToALocalTempFile(src, args) : ZipFileToALocalTempFile(src, args);
 
                     return TransferTempZipFileToDestination(src, dst, args, tempFileName);
                 });

@@ -458,15 +458,7 @@ namespace Dev2.DynamicServices
             DatalistOutMergeID = datalistOutMergeId;
 
 
-            if (Enum.TryParse(ExtractValue(xe, "DatalistOutMergeType"), true, out enDataListMergeTypes datalistOutMergeType))
-
-            {
-                DatalistOutMergeType = datalistOutMergeType;
-            }
-            else
-            {
-                DatalistOutMergeType = enDataListMergeTypes.Intersection;
-            }
+            DatalistOutMergeType = Enum.TryParse(ExtractValue(xe, "DatalistOutMergeType"), true, out enDataListMergeTypes datalistOutMergeType) ? datalistOutMergeType : enDataListMergeTypes.Intersection;
 
             DatalistOutMergeDepth = Enum.TryParse(ExtractValue(xe, "DatalistOutMergeDepth"), true,
                 out enTranslationDepth datalistOutMergeDepth)

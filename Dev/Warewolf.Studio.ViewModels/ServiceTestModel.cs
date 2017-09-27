@@ -470,14 +470,7 @@ namespace Warewolf.Studio.ViewModels
 
         private void SetDisplayName(bool isDirty)
         {
-            if(isDirty)
-            {
-                NameForDisplay = TestName + " *";
-            }
-            else
-            {
-                NameForDisplay = TestName;
-            }
+            NameForDisplay = isDirty ? TestName + " *" : TestName;
         }
 
         public bool UserAuthenticationSelected => AuthenticationType == AuthenticationType.User;

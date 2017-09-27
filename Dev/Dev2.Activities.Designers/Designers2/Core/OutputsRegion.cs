@@ -62,14 +62,7 @@ namespace Dev2.Activities.Designers2.Core
             ObjectResult = _modelItem.GetProperty<string>("ObjectResult");
             ObjectName = _modelItem.GetProperty<string>("ObjectName");
             IsObjectOutputUsed = isObjectOutputUsed;
-            if (!IsObject)
-            {
-                IsOutputsEmptyRows = Outputs.Count == 0;
-            }
-            else
-            {
-                IsOutputsEmptyRows = !string.IsNullOrWhiteSpace(ObjectResult);
-            }
+            IsOutputsEmptyRows = !IsObject ? Outputs.Count == 0 : !string.IsNullOrWhiteSpace(ObjectResult);
             _shellViewModel = CustomContainer.Get<IShellViewModel>();
           
         }
@@ -215,14 +208,7 @@ namespace Dev2.Activities.Designers2.Core
                 {
                     _outputs = value;
                     _modelItem.SetProperty("Outputs", value.ToList());
-                    if (!IsObject)
-                    {
-                        IsOutputsEmptyRows = Outputs.Count == 0;
-                    }
-                    else
-                    {
-                        IsOutputsEmptyRows = !string.IsNullOrWhiteSpace(ObjectResult);
-                    }
+                    IsOutputsEmptyRows = !IsObject ? Outputs.Count == 0 : !string.IsNullOrWhiteSpace(ObjectResult);
                     OnPropertyChanged();
                 }
                 else

@@ -139,14 +139,7 @@ namespace Dev2.Activities
             }
             catch (Exception e) when (e is NullReferenceException || e is RuntimeBinderException)
             {
-                if (e.GetType() == typeof(NullReferenceException) || e.GetType() == typeof(RuntimeBinderException))
-                {
-                    allErrors.AddError(ErrorResource.ScriptingErrorReturningValue);
-                }
-                else
-                {
-                    allErrors.AddError(e.Message.Replace(" for main:Object", string.Empty));
-                }
+                allErrors.AddError(e.GetType() == typeof(NullReferenceException) || e.GetType() == typeof(RuntimeBinderException) ? ErrorResource.ScriptingErrorReturningValue : e.Message.Replace(" for main:Object", string.Empty));
             }
             finally
             {

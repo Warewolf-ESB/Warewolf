@@ -98,14 +98,7 @@ namespace Dev2.Data.ServiceModel
 
             if(result?.IndexOf("dsf", StringComparison.Ordinal) < 0)
             {
-                if(result.EndsWith("/"))
-                {
-                    result += "dsf";
-                }
-                else
-                {
-                    result += "/dsf";
-                }
+                result += result.EndsWith("/") ? "dsf" : "/dsf";
 
             }
 

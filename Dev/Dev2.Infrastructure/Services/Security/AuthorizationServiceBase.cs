@@ -164,20 +164,11 @@ namespace Dev2.Services.Security
 
         protected void DumpPermissionsOnError(IPrincipal principal)
         {
-            
-            if(principal.Identity != null)
-            
-            {
-                Dev2Logger.Error("PERM DUMP FOR [ " + principal.Identity.Name + " ]", GlobalConstants.WarewolfError);
-            }
-            else
-            
-            {
-                Dev2Logger.Error("PERM DUMP FOR [ NULL USER ]", GlobalConstants.WarewolfError);
-            }
-            
 
-            foreach(var perm in _securityService.Permissions)
+            Dev2Logger.Error(principal.Identity != null ? "PERM DUMP FOR [ " + principal.Identity.Name + " ]" : "PERM DUMP FOR [ NULL USER ]", GlobalConstants.WarewolfError);
+
+
+            foreach (var perm in _securityService.Permissions)
             {
                 Dev2Logger.Error("PERM -> " + perm.WindowsGroup, GlobalConstants.WarewolfError);
                 Dev2Logger.Error("IS USER IN IT [ " + principal.IsInRole(perm.WindowsGroup) + " ]", GlobalConstants.WarewolfError);

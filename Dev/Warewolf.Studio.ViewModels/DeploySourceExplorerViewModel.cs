@@ -335,7 +335,7 @@ namespace Warewolf.Studio.ViewModels
         {
             localhostEnvironment.Connect();
             await localhostEnvironment.Load(true, true);
-            var selectedEnvironment = SelectedEnvironment == null ? _selectedEnv : SelectedEnvironment;
+            var selectedEnvironment = SelectedEnvironment ?? _selectedEnv;
             if (selectedEnvironment?.DisplayName == localhostEnvironment.DisplayName)
             {
                 AfterLoad(localhostEnvironment.Server.EnvironmentID);
