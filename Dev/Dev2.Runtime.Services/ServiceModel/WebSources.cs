@@ -44,7 +44,7 @@ namespace Dev2.Runtime.ServiceModel
             }
         }
         // POST: Service/WebSources/Get
-    
+
         public WebSource Get(string resourceId, Guid workspaceId, Guid dataListId)
         {
             var result = new WebSource();
@@ -65,7 +65,7 @@ namespace Dev2.Runtime.ServiceModel
         }
 
         // POST: Service/WebSources/Test
-    
+
         public ValidationResult Test(string args, Guid workspaceId, Guid dataListId)
         {
             try
@@ -148,36 +148,18 @@ namespace Dev2.Runtime.ServiceModel
             return $"{source.Address}{relativeUri}";
         }
 
-    
+
         public static byte[] Execute(WebSource source, WebRequestMethod method, string relativeUri, byte[] data, bool throwError, out ErrorResultTO errors, string[] headers = null)
         {
             CreateWebClient(source, headers);
             return Execute(source.Client, GetAddress(source, relativeUri), method, data, out errors);
         }
-        
+
         static byte[] Execute(WebClient client, string address, WebRequestMethod method, byte[] data, out ErrorResultTO errors)
-            
+
         {
             errors = new ErrorResultTO();
-            switch (method)
-            {
-                case WebRequestMethod.Get:
-                    return client.DownloadData(address);
-                case WebRequestMethod.Head:
-                    break;
-                case WebRequestMethod.Post:
-                    break;
-                case WebRequestMethod.Put:
-                    break;
-                case WebRequestMethod.Delete:
-                    break;
-                case WebRequestMethod.Trace:
-                    break;
-                case WebRequestMethod.Options:
-                    break;
-                default:
-                    return client.UploadData(address, method.ToString().ToUpperInvariant(), data);
-            }
+            return method == WebRequestMethod.Get ? client.DownloadData(address) : client.UploadData(address, method.ToString().ToUpperInvariant(), data);
         }
 
         static string Execute(WebClient client, string address, WebRequestMethod method, string data, bool throwError, out ErrorResultTO errors)
@@ -185,25 +167,7 @@ namespace Dev2.Runtime.ServiceModel
             errors = new ErrorResultTO();
             try
             {
-                switch (method)
-                {
-                    case WebRequestMethod.Get:
-                        return client.DownloadString(address);
-                    case WebRequestMethod.Head:
-                        break;
-                    case WebRequestMethod.Post:
-                        break;
-                    case WebRequestMethod.Put:
-                        break;
-                    case WebRequestMethod.Delete:
-                        break;
-                    case WebRequestMethod.Trace:
-                        break;
-                    case WebRequestMethod.Options:
-                        break;
-                    default:
-                        return client.UploadString(address, method.ToString().ToUpperInvariant(), data);
-                }
+                return method == WebRequestMethod.Get ? client.DownloadString(address) : client.UploadString(address, method.ToString().ToUpperInvariant(), data);
             }
             catch (Exception e)
             {
@@ -221,7 +185,7 @@ namespace Dev2.Runtime.ServiceModel
 
             return string.Empty;
         }
-        
+
 
         public static void CreateWebClient(WebSource source, IEnumerable<string> headers)
         {

@@ -174,14 +174,7 @@ namespace Warewolf.Studio.ViewModels
                             {
                                 if (currentItem.Server.CanDeployFrom && explorerItemViewModel.Server.CanDeployTo)
                                 {
-                                    if (!IsSourceAndDestinationSameServer(currentItem, explorerItemViewModel))
-                                    {
-                                        currentItem.CanDeploy = explorerItemViewModel.CanContribute;
-                                    }
-                                    else
-                                    {
-                                        currentItem.CanDeploy = true;
-                                    }
+                                    currentItem.CanDeploy = !IsSourceAndDestinationSameServer(currentItem, explorerItemViewModel) ? explorerItemViewModel.CanContribute : true;
                                 }
                             }
                             else

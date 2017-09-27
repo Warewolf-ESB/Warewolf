@@ -97,14 +97,7 @@ namespace Dev2.Studio.Core
                 if (env == null)
                 {
                     var environmentModels = _serverRepository.LookupEnvironments(_serverRepository.ActiveServer);
-                    if (environmentModels != null)
-                    {
-                        env = environmentModels.FirstOrDefault(e => e.EnvironmentID == envId) ?? _serverRepository.ActiveServer;
-                    }
-                    else
-                    {
-                        env = _serverRepository.Source;
-                    }
+                    env = environmentModels != null ? environmentModels.FirstOrDefault(e => e.EnvironmentID == envId) ?? _serverRepository.ActiveServer : _serverRepository.Source;
                 }
                 if (Equals(env, _serverRepository.Source))
                 {

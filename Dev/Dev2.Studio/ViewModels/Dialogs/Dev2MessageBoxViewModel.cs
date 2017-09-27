@@ -226,14 +226,7 @@ namespace Dev2.Studio.ViewModels.Dialogs
 
             // Check if there an option for the key
             Tuple<bool, MessageBoxResult> result;
-            if (_dontShowAgainOptions != null && _dontShowAgainOptions.TryGetValue(dontShowAgainKey, out MessageBoxResult tmp))
-            {
-                result = new Tuple<bool, MessageBoxResult>(true, tmp);
-            }
-            else
-            {
-                result = new Tuple<bool, MessageBoxResult>(false, MessageBoxResult.None);
-            }
+            result = _dontShowAgainOptions != null && _dontShowAgainOptions.TryGetValue(dontShowAgainKey, out MessageBoxResult tmp) ? new Tuple<bool, MessageBoxResult>(true, tmp) : new Tuple<bool, MessageBoxResult>(false, MessageBoxResult.None);
 
             return result;
         }

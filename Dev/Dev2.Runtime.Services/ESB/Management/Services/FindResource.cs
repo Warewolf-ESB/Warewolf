@@ -65,15 +65,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 }
            
                 List<Resource> resources;
-                if (resourceId == null || resourceId == "*")
-                {
-                    
-                    resources = ResourceCatalog.Instance.GetResourceList(theWorkspace.ID, new Dictionary<string, string> { { "resourceName", resourceName }, { "type", type } }).ToList();
-                }
-                else
-                {
-                    resources = ResourceCatalog.Instance.GetResourceList(theWorkspace.ID, new Dictionary<string, string> { { "guidCsv", resourceId }, { "type", type } }).ToList();
-                }
+                resources = resourceId == null || resourceId == "*" ? ResourceCatalog.Instance.GetResourceList(theWorkspace.ID, new Dictionary<string, string> { { "resourceName", resourceName }, { "type", type } }).ToList() : ResourceCatalog.Instance.GetResourceList(theWorkspace.ID, new Dictionary<string, string> { { "guidCsv", resourceId }, { "type", type } }).ToList();
                 Dev2Logger.Info("Find Resource. ResourceName: " + resourceName, GlobalConstants.WarewolfInfo);
 
 

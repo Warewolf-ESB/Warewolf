@@ -871,14 +871,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     if (testResult.RunTestResult == RunResult.TestPassed)
                     {
                         msg = Messages.Test_PassedResult;
-                        if (opt.ArgumentCount > 2)
-                        {
-                            msg += ": " + output.Variable + " " + output.AssertOp + " " + output.From +" and "+output.To;
-                        }
-                        else
-                        {
-                            msg += ": " + output.Variable + " " + output.AssertOp + " " + output.Value;
-                        }
+                        msg += opt.ArgumentCount > 2 ? ": " + output.Variable + " " + output.AssertOp + " " + output.From + " and " + output.To : ": " + output.Variable + " " + output.AssertOp + " " + output.Value;
                     }
                     var hasError = testResult.RunTestResult == RunResult.TestFailed;
                     AddDebugAssertResultItem(new DebugItemServiceTestStaticDataParams(msg, hasError));

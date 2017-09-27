@@ -197,14 +197,7 @@ namespace Dev2.Studio.ViewModels.DependencyVisualization
                 var seenResource = new List<Guid>();
                 var acc = new List<ExplorerItemNodeViewModel>();
                 GetItems(new List<IDependencyVisualizationNode> { graph.Nodes.FirstOrDefault() }, null, acc, seenResource);
-                if (acc.Count == 0 || acc.LastOrDefault() == null)
-                {
-                    AllNodes = new ObservableCollection<IExplorerItemNodeViewModel>();
-                }
-                else
-                {
-                    AllNodes = new ObservableCollection<IExplorerItemNodeViewModel>(acc.Last().AsNodeList());
-                }
+                AllNodes = acc.Count == 0 || acc.LastOrDefault() == null ? new ObservableCollection<IExplorerItemNodeViewModel>() : new ObservableCollection<IExplorerItemNodeViewModel>(acc.Last().AsNodeList());
             }
         }
 

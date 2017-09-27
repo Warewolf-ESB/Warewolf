@@ -70,14 +70,7 @@ namespace Dev2.Runtime.Security
             var user = Common.Utilities.OrginalExecutingUser ?? ClaimsPrincipal.Current;
 
             Tuple<string, string, AuthorizationContext> requestKey = new Tuple<string, string,AuthorizationContext>(user.Identity.Name, resource,context);
-            if (_cachedRequests.TryGetValue(requestKey, out Tuple<bool, DateTime> authorizedRequest) && DateTime.Now.Subtract(authorizedRequest.Item2) < _timeOutPeriod)
-            {
-                authorized = authorizedRequest.Item1;
-            }
-            else
-            {
-                authorized = IsAuthorized(user, context, resource);
-            }
+            authorized = _cachedRequests.TryGetValue(requestKey, out Tuple<bool, DateTime> authorizedRequest) && DateTime.Now.Subtract(authorizedRequest.Item2) < _timeOutPeriod ? authorizedRequest.Item1 : IsAuthorized(user, context, resource);
 
             if (!authorized)
             {
@@ -106,14 +99,7 @@ namespace Dev2.Runtime.Security
         {
             VerifyArgument.IsNotNull("request", request);
             bool authorized;
-            if (_cachedRequests.TryGetValue(request.Key, out Tuple<bool, DateTime> authorizedRequest) && DateTime.Now.Subtract(authorizedRequest.Item2) < _timeOutPeriod)
-            {
-                authorized = authorizedRequest.Item1;
-            }
-            else
-            {
-                authorized = IsAuthorizedImpl(request);
-            }
+            authorized = _cachedRequests.TryGetValue(request.Key, out Tuple<bool, DateTime> authorizedRequest) && DateTime.Now.Subtract(authorizedRequest.Item2) < _timeOutPeriod ? authorizedRequest.Item1 : IsAuthorizedImpl(request);
 
             if (!authorized && (request.RequestType == WebServerRequestType.HubConnect || request.RequestType == WebServerRequestType.EsbFetchExecutePayloadFragment))
             {

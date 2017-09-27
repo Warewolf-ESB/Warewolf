@@ -471,14 +471,7 @@ namespace Dev2.Runtime.Hosting
             }
             if (itemToMove.IsFolder)
             {
-                if (!string.IsNullOrWhiteSpace(itemToMove.ResourcePath))
-                {
-                    itemToMove.ResourcePath = newPath + "\\" + itemToMove.DisplayName;
-                }
-                else
-                {
-                    itemToMove.ResourcePath = itemToMove.ResourcePath.Replace(itemToMove.ResourcePath, newPath);
-                }
+                itemToMove.ResourcePath = !string.IsNullOrWhiteSpace(itemToMove.ResourcePath) ? newPath + "\\" + itemToMove.DisplayName : itemToMove.ResourcePath.Replace(itemToMove.ResourcePath, newPath);
                 if (itemToMove.Children != null && itemToMove.Children.Count > 0)
                 {
                     itemToMove.Children.ForEach(item => MoveChildren(item, itemToMove.ResourcePath));

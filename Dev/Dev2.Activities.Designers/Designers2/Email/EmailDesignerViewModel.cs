@@ -258,14 +258,7 @@ namespace Dev2.Activities.Designers2.Email
             if(DataListUtil.IsFullyEvaluated(FromAccount))
             {
                 var errorMessage = "Variable " + FromAccount + " cannot be used while testing.";
-                if(string.IsNullOrEmpty(postResult))
-                {
-                    postResult += errorMessage;
-                }
-                else
-                {
-                    postResult += Environment.NewLine + errorMessage;
-                }
+                postResult += string.IsNullOrEmpty(postResult) ? errorMessage : Environment.NewLine + errorMessage;
                 hasVariable = true;
             }
             if(hasVariable)

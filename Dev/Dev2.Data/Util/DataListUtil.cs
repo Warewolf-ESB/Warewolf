@@ -301,14 +301,7 @@ namespace Dev2.Data.Util
         {
             string result;
 
-            if (!value.Contains(ClosingSquareBrackets))
-            {
-                result = !value.Contains(OpeningSquareBrackets) ? string.Concat(OpeningSquareBrackets, value, ClosingSquareBrackets) : string.Concat(value, ClosingSquareBrackets);
-            }
-            else
-            {
-                result = value;
-            }
+            result = !value.Contains(ClosingSquareBrackets) ? !value.Contains(OpeningSquareBrackets) ? string.Concat(OpeningSquareBrackets, value, ClosingSquareBrackets) : string.Concat(value, ClosingSquareBrackets) : value;
 
             return result;
         }
@@ -612,14 +605,7 @@ namespace Dev2.Data.Util
             XmlAttribute ioDirectionAttribute = tmpNode.Attributes[GlobalConstants.DataListIoColDirection];
 
             enDev2ColumnArgumentDirection ioDirection;
-            if (ioDirectionAttribute != null)
-            {
-                ioDirection = (enDev2ColumnArgumentDirection)Dev2EnumConverter.GetEnumFromStringDiscription(ioDirectionAttribute.Value, typeof(enDev2ColumnArgumentDirection));
-            }
-            else
-            {
-                ioDirection = enDev2ColumnArgumentDirection.Both;
-            }
+            ioDirection = ioDirectionAttribute != null ? (enDev2ColumnArgumentDirection)Dev2EnumConverter.GetEnumFromStringDiscription(ioDirectionAttribute.Value, typeof(enDev2ColumnArgumentDirection)) : enDev2ColumnArgumentDirection.Both;
             return ioDirection;
         }
 

@@ -489,11 +489,11 @@ namespace Dev2.Studio.ViewModels
 
             ExplorerViewModel = explorer ?? new ExplorerViewModel(this, CustomContainer.Get<Microsoft.Practices.Prism.PubSubEvents.IEventAggregator>(), true);
 
-            
+
             AddWorkspaceItems();
             ShowStartPage();
             DisplayName = @"Warewolf" + $" ({ClaimsPrincipal.Current.Identity.Name})".ToUpperInvariant();
-            
+
 
         }
 
@@ -1071,48 +1071,6 @@ namespace Dev2.Studio.ViewModels
                     return enSourceType.Oracle;
                 case WorkSurfaceContext.OdbcSource:
                     return enSourceType.ODBC;
-                case WorkSurfaceContext.Unknown:
-                    break;
-                case WorkSurfaceContext.Workflow:
-                    break;
-                case WorkSurfaceContext.Service:
-                    break;
-                case WorkSurfaceContext.SourceManager:
-                    break;
-                case WorkSurfaceContext.Scheduler:
-                    break;
-                case WorkSurfaceContext.Settings:
-                    break;
-                case WorkSurfaceContext.DependencyVisualiser:
-                    break;
-                case WorkSurfaceContext.DeployViewer:
-                    break;
-                case WorkSurfaceContext.StartPage:
-                    break;
-                case WorkSurfaceContext.Help:
-                    break;
-                case WorkSurfaceContext.EmailSource:
-                    break;
-                case WorkSurfaceContext.ServerSource:
-                    break;
-                case WorkSurfaceContext.OAuthSource:
-                    break;
-                case WorkSurfaceContext.WebSource:
-                    break;
-                case WorkSurfaceContext.PluginSource:
-                    break;
-                case WorkSurfaceContext.ComPluginSource:
-                    break;
-                case WorkSurfaceContext.SharepointServerSource:
-                    break;
-                case WorkSurfaceContext.Exchange:
-                    break;
-                case WorkSurfaceContext.RabbitMQSource:
-                    break;
-                case WorkSurfaceContext.WcfSource:
-                    break;
-                case WorkSurfaceContext.ServiceTestsViewer:
-                    break;
                 default:
                     return enSourceType.Unknown;
             }
@@ -1351,7 +1309,7 @@ namespace Dev2.Studio.ViewModels
             Task<IRequestServiceNameViewModel> saveViewModel = _worksurfaceContextManager.GetSaveViewModel(resourcePath, Warewolf.Studio.Resources.Languages.Core.ServerSourceNewHeaderLabel);
             var key = (WorkSurfaceKey)WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.ServerSource);
             key.ServerID = ActiveServer.ServerID;
-            
+
             var manageNewServerSourceModel = new ManageNewServerSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveServer.Name);
             var manageNewServerViewModel = new ManageNewServerViewModel(manageNewServerSourceModel, saveViewModel, new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), _asyncWorker, new ExternalProcessExecutor()) { SelectedGuid = key.ResourceID.Value };
             var workSurfaceViewModel = new SourceViewModel<IServerSource>(EventPublisher, manageNewServerViewModel, PopupProvider, new ManageServerControl(), ActiveServer);
@@ -1778,9 +1736,9 @@ namespace Dev2.Studio.ViewModels
             }
 
             HashSet<IWorkspaceItem> workspaceItemsToRemove = new HashSet<IWorkspaceItem>();
-            
+
             for (int i = 0; i < _getWorkspaceItemRepository().WorkspaceItems.Count; i++)
-            
+
             {
                 //
                 // Get the environment for the workspace item

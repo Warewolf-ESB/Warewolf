@@ -41,14 +41,7 @@ namespace Dev2.Studio.Core.Factories
                 IContextualResourceModel resource = CreateResourceModel(environment);
                 resource.ResourceName = string.Empty;
                 resource.ID = Guid.NewGuid();
-                if(environment.AuthorizationService != null)
-                {
-                    resource.UserPermissions = environment.AuthorizationService.GetResourcePermissions(resource.ID);
-                }
-                else
-                {
-                    resource.UserPermissions = Permissions.Contribute;
-                }
+                resource.UserPermissions = environment.AuthorizationService != null ? environment.AuthorizationService.GetResourcePermissions(resource.ID) : Permissions.Contribute;
 
                 switch (resourceType)
                 {
