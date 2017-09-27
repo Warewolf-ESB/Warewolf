@@ -142,6 +142,7 @@ namespace Dev2.Activities.Designers2.Service
             {
                 switch (result)
                 {
+                    default:
                     case ConnectResult.Success:
                         break;
                     case ConnectResult.ConnectFailed:
@@ -162,8 +163,6 @@ namespace Dev2.Activities.Designers2.Service
                                 : @"Server login failed. This service will only execute when the login permissions issues have been resolved."
                         });
                         _serviceDesignerViewModel.MappingManager.UpdateLastValidationMemo(memo);
-                        break;
-                    default:
                         break;
                 }
             });
@@ -230,11 +229,8 @@ namespace Dev2.Activities.Designers2.Service
 
                     break;
                 case FixType.None:
-                    break;
                 case FixType.Delete:
-                    break;
                 case FixType.InvalidPermissions:
-                    break;
                 default:
                     break;
             }
