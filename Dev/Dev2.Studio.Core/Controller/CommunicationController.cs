@@ -367,9 +367,10 @@ namespace Dev2.Controller
                 }
                 catch (NullReferenceException e)
                 {
-                    Dev2Logger.Debug("fallback to non compressed", e, "Warewolf Debug");
-                    return serializer.Deserialize<T>(payload);
 
+                    Dev2Logger.Debug("fallback to non compressed", e, "Warewolf Debug");
+                    var val = serializer.Deserialize<T>(payload);
+                    return val;
                 }
             }
             return default(T);
