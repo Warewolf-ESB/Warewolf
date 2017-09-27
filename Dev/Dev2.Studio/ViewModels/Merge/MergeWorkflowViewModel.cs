@@ -49,7 +49,6 @@ namespace Dev2.ViewModels.Merge
                 Conflicts.Add(conflict);
             }
 
-            Conflicts = Conflicts.Reverse().ToObservableCollection();
             var fisrtConflict = Conflicts.FirstOrDefault();
 
             if (CurrentConflictModel == null)
@@ -99,7 +98,6 @@ namespace Dev2.ViewModels.Merge
                 var completeConflict = new CompleteConflict();
                 var currentChildChildren = currentChild.Children;
                 var difChildChildren = childDiff.Children;
-                var enumerable = currentChildChildren.Select(model => model.UniqueId).ToList();
                 foreach (var currentChildChild in currentChildChildren)
                 {
                     if (currentChildChild == null) continue;

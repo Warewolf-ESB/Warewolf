@@ -375,8 +375,8 @@ namespace Warewolf.MergeParser.Tests
 
             Assert.AreEqual(3, diffs.Count);
             Assert.IsTrue(diffs.Any(d => d.hasConflict));
-            Assert.AreEqual(randomActivityUniqueId, diffs[1].uniqueId.ToString());
-            Assert.AreEqual(calculateUniqueId, diffs[0].uniqueId.ToString());
+            Assert.AreEqual(randomActivityUniqueId, diffs[0].uniqueId.ToString());
+            Assert.AreEqual(calculateUniqueId, diffs[1].uniqueId.ToString());
 
 
             ////First Node chart
