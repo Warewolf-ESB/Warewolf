@@ -117,7 +117,7 @@ namespace Dev2.Studio.Core
             {
 
                 var fetchExplorerTask = comsController.ExecuteCompressedCommandAsync<IExplorerItem>(Connection, GlobalConstants.ServerWorkspaceID);
-                var delayTask = Task.Delay(30000).ContinueWith((t) =>
+                var delayTask = Task.Delay(60000).ContinueWith((t) =>
                 {
                     if (fetchExplorerTask.Status != TaskStatus.RanToCompletion)
                     {
