@@ -57,7 +57,7 @@ namespace Dev2.Common.Interfaces
         string TestResults { get; set; }
         bool OkSelected { get; set; }
         ICommand PasteResponseCommand { get; }
-        IGenerateOutputArea OutputArea { get; set; }
+        IGenerateOutputArea OutputArea { get; }
         IOutputDescription Description { get; set; }
         IGenerateInputArea InputArea { get; set; }
         bool PasteResponseVisible { get; set; }
