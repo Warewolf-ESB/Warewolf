@@ -21,7 +21,7 @@ namespace Dev2.Activities
         public IDev2Activity Parse(List<IDev2Activity> seenActivities, object step)
         {
             var chart = step as Flowchart;
-            if (chart.StartNode == null)
+            if (chart?.StartNode == null)
             {
                 return null;
             }
@@ -88,7 +88,7 @@ namespace Dev2.Activities
                 var dev2Activity = (s.ApplyActivityFunc.Handler as IDev2Activity);
                 return dev2Activity?.NextNodes ?? new List<IDev2Activity>();
             }
-            var dev2Activities = topLevelActivity.NextNodes.Flatten(activity =>
+            var dev2Activities = topLevelActivity.NextNodes?.Flatten(activity =>
             {
                 if (activity.NextNodes != null)
                     return activity.NextNodes;
@@ -117,7 +117,7 @@ namespace Dev2.Activities
                     return dev2Activity?.NextNodes ?? new List<IDev2Activity>();
                 }
                 return new List<IDev2Activity>();
-            }).ToList();
+            }).ToList()??new List<IDev2Activity>();
             var contains = dev2Activities.Contains(topLevelActivity);
             if (!contains)
             {
