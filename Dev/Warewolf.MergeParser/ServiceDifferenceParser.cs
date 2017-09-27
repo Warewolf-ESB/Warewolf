@@ -58,13 +58,13 @@ namespace Warewolf.MergeParser
             {
                 foreach (var tool in group.Switches)
                 {
-                    var currentArmTree = _activityParser.FlattenNextNodesExclusive(tool.Value);
+                    var currentArmTree = _activityParser.FlattenNextNodesInclusive(tool.Value);
                     var enumerable = currentArmTree.Select(activity => activity.UniqueID);
                     children.AddRange(enumerable);
                 }
                 foreach (var tool in group.Default)
                 {
-                    var currentArmTree = _activityParser.FlattenNextNodesExclusive(tool);
+                    var currentArmTree = _activityParser.FlattenNextNodesInclusive(tool);
                     var enumerable = currentArmTree.Select(activity => activity.UniqueID);
                     children.AddRange(enumerable);
                 }

@@ -128,13 +128,17 @@ namespace Dev2.Activities
             return dev2Activities;
         }
 
-        public IEnumerable<IDev2Activity> FlattenNextNodesExclusive(IDev2Activity decision)
+        public IEnumerable<IDev2Activity> FlattenNextNodesInclusive(IDev2Activity decision)
         {
             switch (decision)
             {
                 case DsfDecision a:
                     {
-                        return a.TrueArm?.Flatten(activity => activity.NextNodes ?? new List<IDev2Activity>());
+                        return new List<IDev2Activity>() { a };
+                    }
+                case DsfSwitch b:
+                    {
+                        return new List<IDev2Activity>() { b };
                     }
                 default:
                     {
@@ -143,20 +147,7 @@ namespace Dev2.Activities
                     }
             }
         }
-
-        public IEnumerable<IDev2Activity> ParseFalseArmToFlatList(IDev2Activity decision)
-        {
-            switch (decision)
-            {
-                case DsfDecision a:
-                    return a.FalseArm?.Flatten(activity => activity.NextNodes ?? new List<IDev2Activity>());
-                default:
-                {
-                    var truArmToFlatList = ActivityToFlatList(decision);
-                    return truArmToFlatList;
-                }
-            }
-        }
+       
 
         private static List<IDev2Activity> ActivityToFlatList(IDev2Activity decision)
         {
