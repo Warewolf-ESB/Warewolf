@@ -132,8 +132,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities.Value_Objects
                     listLocalIndexIterator.IndexList = listOfIndex;
                     IndexIterator = listLocalIndexIterator;
                     break;
-                case enForEachType.NumOfExecution:
-                    break;
                 default:
 
                     if (numberOfExecutes != null && numberOfExecutes.Contains("(*)"))
