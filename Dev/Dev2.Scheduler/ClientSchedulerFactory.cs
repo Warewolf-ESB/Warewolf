@@ -36,7 +36,6 @@ namespace Dev2.Scheduler
         {
             return new ScheduleTrigger(state, trigger, _service, _serviceConvertorFactory);
         }
-
     
         public IScheduleTrigger CreateTrigger(Trigger trigger)
         {
@@ -65,7 +64,7 @@ namespace Dev2.Scheduler
                 case TaskTriggerType.Weekly:
                     return new ScheduleTrigger(TaskState.Ready, new Dev2WeeklyTrigger(_serviceConvertorFactory, trigger), _service, _serviceConvertorFactory);
                 case TaskTriggerType.Custom:
-                    break;
+                    return null;
                 default:
                     return new ScheduleTrigger(TaskState.Ready, new Dev2Trigger(_serviceConvertorFactory, trigger), _service, _serviceConvertorFactory);
 
