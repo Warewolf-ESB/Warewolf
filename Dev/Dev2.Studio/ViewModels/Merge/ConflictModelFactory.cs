@@ -293,63 +293,72 @@ namespace Dev2.ViewModels.Merge
             {
                 foreach (var group in switchTool.Switches)
                 {
-                    _modelItem = ModelItemUtils.CreateModelItem(@group.Value);
-                    var addModelItem = GetModel(@group.Key);
-                    addModelItem.HasParent = true;
-                    //addModelItem.ParentDescription = group.Key;
-                    addModelItem.MergeDescription = @group.Key;
-                    mergeToolModel.Children.Add(addModelItem);
+                    var currentArmTree = _activityParser.FlattenNextNodesExclusive(group.Value);
+                    foreach (var dev2Activity in currentArmTree)
+                    {
+                        _modelItem = ModelItemUtils.CreateModelItem(dev2Activity);
+                        var addModelItem = GetModel(group.Key);
+                        addModelItem.HasParent = true;
+                        addModelItem.ParentDescription = "Case: "+ group.Key;
+                        mergeToolModel.Children.Add(addModelItem);
+                    }
                 }
             }
             if (switchTool.Default != null)
             {
                 foreach (var dev2Activity in switchTool.Default)
                 {
-                    _modelItem = ModelItemUtils.CreateModelItem(dev2Activity);
-                    var addModelItem = GetModel();
-                    addModelItem.HasParent = true;
-                    addModelItem.ParentDescription = "Default";
-                    addModelItem.MergeDescription = "Default";
-                    mergeToolModel.Children.Add(addModelItem);
+                    var currentArmTree = _activityParser.FlattenNextNodesExclusive(dev2Activity);
+                    foreach (var activity in currentArmTree)
+                    {
+                        _modelItem = ModelItemUtils.CreateModelItem(activity);
+                        var addModelItem = GetModel();
+                        addModelItem.HasParent = true;
+                        addModelItem.ParentDescription = "Default";
+                        mergeToolModel.Children.Add(addModelItem);
+                    }
                 }
             }
         }
 
-        private void BuildDecision(DsfDecision de, MergeToolModel mergeToolModel)
+        private void BuildDecision(DsfDecision de, MergeToolModel parentDecision)
         {
             var decisionNode = new FlowDecision(de.GetFlowNode());
+
             if (de.TrueArm != null)
             {
 
                 var firstOrDefault = de.TrueArm?.FirstOrDefault();
-                var activity = _activityParser.ParseToLinkedFlatList(firstOrDefault);
+                var truArmToFlatList = _activityParser.FlattenNextNodesExclusive(firstOrDefault);
                 decisionNode.True = new FlowStep { Action = firstOrDefault as System.Activities.Activity };
-                //foreach (var dev2Activity in activity)
-                //{
-                    _modelItem = ModelItemUtils.CreateModelItem(firstOrDefault);
+                
+                foreach (var dev2Activity in truArmToFlatList)
+                {
+                    _modelItem = ModelItemUtils.CreateModelItem(dev2Activity);
                     var addModelItem = GetModel();
                     addModelItem.HasParent = true;
                     addModelItem.ParentDescription = de.Conditions.TrueArmText;
-                    mergeToolModel.Children.Add(addModelItem);
-                //}
+                    parentDecision.Children.Add(addModelItem);
+                }
             }
 
             if (de.FalseArm != null)
             {
                 var firstOrDefault = de.FalseArm?.FirstOrDefault();
                 decisionNode.False = new FlowStep { Action = firstOrDefault as System.Activities.Activity };
-                var activity = _activityParser.ParseToLinkedFlatList(firstOrDefault);
-                //foreach (var dev2Activity in activity)
-                //{
-                    _modelItem = ModelItemUtils.CreateModelItem(firstOrDefault);
+                var falseArmToFlatList = _activityParser.ParseFalseArmToFlatList(firstOrDefault);
+                foreach (var dev2Activity in falseArmToFlatList)
+                {
+                    _modelItem = ModelItemUtils.CreateModelItem(dev2Activity);
                     var addModelItem = GetModel();
                     addModelItem.HasParent = true;
                     addModelItem.ParentDescription = de.Conditions.FalseArmText;
-                    mergeToolModel.Children.Add(addModelItem);
-                //}
+                    parentDecision.Children.Add(addModelItem);
+                }
 
             }
-            mergeToolModel.ActivityType = decisionNode;
+
+            parentDecision.ActivityType = decisionNode;
         }
 
         public event ConflictModelChanged SomethingConflictModelChanged;

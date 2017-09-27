@@ -53,13 +53,22 @@ namespace Warewolf.MergeParser
                 children.AddRange(list);
             }
             var switches = dev2Activities.Where(tuple => tuple is DsfSwitch).Cast<DsfSwitch>();
-            foreach (var switchTool in switches)
-            {
-                var enumerable = switchTool.Switches?.Select(pair => pair.Value).ToList()??new List<IDev2Activity>();
-                var switchChildrenIds = enumerable.Flatten(a => a.NextNodes ?? new List<IDev2Activity>()).Select(activity => activity.UniqueID);
-                children.AddRange(switchChildrenIds);
-            }
 
+            foreach (var group in switches)
+            {
+                foreach (var tool in group.Switches)
+                {
+                    var currentArmTree = _activityParser.FlattenNextNodesExclusive(tool.Value);
+                    var enumerable = currentArmTree.Select(activity => activity.UniqueID);
+                    children.AddRange(enumerable);
+                }
+                foreach (var tool in group.Default)
+                {
+                    var currentArmTree = _activityParser.FlattenNextNodesExclusive(tool);
+                    var enumerable = currentArmTree.Select(activity => activity.UniqueID);
+                    children.AddRange(enumerable);
+                }
+            }
             dev2Activities.RemoveAll(activity => children.Any(s => s.Equals(activity.UniqueID, StringComparison.InvariantCultureIgnoreCase)));
         }
 

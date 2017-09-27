@@ -1,5 +1,5 @@
 
-<Service ID="b91d16a5-a4db-4392-aab2-284896debbd3" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="SelectAndApplyExample" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.0.6471.25412">
+<Service ID="b91d16a5-a4db-4392-aab2-284896debbd3" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="SelectAndApplyExample" ResourceType="WorkflowService" IsValid="false" ServerVersion="2.0.1.37">
   <DisplayName>SelectAndApplyExample</DisplayName>
   <Category>
   </Category>

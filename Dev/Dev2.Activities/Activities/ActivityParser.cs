@@ -21,8 +21,8 @@ namespace Dev2.Activities
         public IDev2Activity Parse(List<IDev2Activity> seenActivities, object step)
         {
             var modelItem = step as ModelItem;
-            var currentValue = modelItem.GetCurrentValue();
-
+            var currentValue = modelItem?.GetCurrentValue();
+            if (currentValue is null) return default;
             if (currentValue is FlowStep start)
             {
                 var tool = ParseTools(start, seenActivities);
@@ -119,13 +119,56 @@ namespace Dev2.Activities
                     return dev2Activity?.NextNodes ?? new List<IDev2Activity>();
                 }
                 return new List<IDev2Activity>();
-            }).ToList()?? new List<IDev2Activity>();
+            }).ToList() ?? new List<IDev2Activity>();
             var contains = dev2Activities.Contains(topLevelActivity);
             if (!contains)
             {
                 dev2Activities.Add(topLevelActivity);
             }
             return dev2Activities;
+        }
+
+        public IEnumerable<IDev2Activity> FlattenNextNodesExclusive(IDev2Activity decision)
+        {
+            switch (decision)
+            {
+                case DsfDecision a:
+                    {
+                        return a.TrueArm?.Flatten(activity => activity.NextNodes ?? new List<IDev2Activity>());
+                    }
+                default:
+                    {
+                        var truArmToFlatList = ActivityToFlatList(decision);
+                        return truArmToFlatList;
+                    }
+            }
+        }
+
+        public IEnumerable<IDev2Activity> ParseFalseArmToFlatList(IDev2Activity decision)
+        {
+            switch (decision)
+            {
+                case DsfDecision a:
+                    return a.FalseArm?.Flatten(activity => activity.NextNodes ?? new List<IDev2Activity>());
+                default:
+                {
+                    var truArmToFlatList = ActivityToFlatList(decision);
+                    return truArmToFlatList;
+                }
+            }
+        }
+
+        private static List<IDev2Activity> ActivityToFlatList(IDev2Activity decision)
+        {
+            var truArmToFlatList =
+                decision.NextNodes?.Flatten(activity => activity.NextNodes ?? new List<IDev2Activity>()).ToList() ??
+                new List<IDev2Activity>();
+            var contains = truArmToFlatList.Contains(decision);
+            if (!contains)
+            {
+                truArmToFlatList.Add(decision);
+            }
+            return truArmToFlatList;
         }
 
         public IDev2Activity Parse(DynamicActivity dynamicActivity, List<IDev2Activity> seenActivities)
