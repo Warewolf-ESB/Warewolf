@@ -283,6 +283,7 @@
                                         BorderBrush="#CFD6E1" 
                                         BorderThickness="1,0,1,1" 
                                         DataContext="{Binding CurrentConflictModel}"
+                                        Visibility="{Binding HasConflict, Converter={StaticResource BoolToVisibilityConverterPositive}}"
                                         AutomationProperties.AutomationId="UI_CurrentVariablesTemplateBorder_AutoID">
                                     <datalist:DataListView x:Name="CurrentVariablesDataListView" 
                                                            DataContext="{Binding DataListViewModel}" 
@@ -296,6 +297,7 @@
                                         BorderBrush="#CFD6E1" 
                                         BorderThickness="1,0,1,1" 
                                         DataContext="{Binding DifferenceConflictModel}"
+                                        Visibility="{Binding HasConflict, Converter={StaticResource BoolToVisibilityConverterPositive}}"
                                         AutomationProperties.AutomationId="UI_DifferenceVariablesTemplateBorder_AutoID">
                                     <datalist:DataListView x:Name="DifferenceVariablesDataListView" 
                                                            DataContext="{Binding DataListViewModel}" 
@@ -412,10 +414,11 @@
                                                                 BorderBrush="#CFD6E1" 
                                                                 BorderThickness="0,0,2,0" 
                                                                 Margin="0,0,7,0"
+                                                                DataContext="{Binding CurrentViewModel}"
+                                                                Visibility="{Binding HasConflict, Converter={StaticResource BoolToVisibilityConverterPositive}}"
                                                                 AutomationProperties.AutomationId="UI_TreeViewExpanderCurrentHeaderBorder_AutoID">
                                                             <DockPanel Name="TreeViewExpanderCurrentHeaderDockPanel" 
                                                                        LastChildFill="False" 
-                                                                       DataContext="{Binding CurrentViewModel}"
                                                                        AutomationProperties.AutomationId="UI_TreeViewExpanderCurrentHeaderDockPanel_AutoID">
                                                                 <StackPanel Name="TreeViewExpanderCurrentHeaderSP" 
                                                                             DockPanel.Dock="Left" 
@@ -441,6 +444,7 @@
                                                                             AutomationProperties.AutomationId="UI_TreeViewExpanderCurrentHeaderRBSP_AutoID">
                                                                     <RadioButton Name="TreeViewExpanderCurrentHeaderRB" 
                                                                                  IsChecked="{Binding IsMergeChecked}" 
+                                                                                 Command="{Binding AddAnItem}"
                                                                                  HorizontalAlignment="Right"
                                                                                  Margin="0,0,5,0"
                                                                                  GroupName="{Binding StringFormat=Merge{0}, Path=UniqueId}"
@@ -455,10 +459,11 @@
                                                                 BorderBrush="#CFD6E1" 
                                                                 BorderThickness="0" 
                                                                 Margin="-7,0,0,0"
+                                                                DataContext="{Binding DiffViewModel}"
+                                                                Visibility="{Binding HasConflict, Converter={StaticResource BoolToVisibilityConverterPositive}}"
                                                                 AutomationProperties.AutomationId="UI_TreeViewExpanderDifferenceHeaderBorder_AutoID">
                                                             <DockPanel Name="TreeViewExpanderDifferenceHeaderDockPanel" 
                                                                        LastChildFill="False" 
-                                                                       DataContext="{Binding DiffViewModel}"
                                                                        AutomationProperties.AutomationId="UI_TreeViewExpanderDifferenceHeaderDockPanel_AutoID">
                                                                 <StackPanel Name="TreeViewExpanderDifferenceHeaderSP" 
                                                                             DockPanel.Dock="Left" 
@@ -466,6 +471,7 @@
                                                                             AutomationProperties.AutomationId="UI_TreeViewExpanderDifferenceHeaderSP_AutoID">
                                                                     <RadioButton Name="TreeViewExpanderDifferenceHeaderRB" 
                                                                                  IsChecked="{Binding IsMergeChecked}" 
+                                                                                 Command="{Binding AddAnItem}"
                                                                                  HorizontalAlignment="Left"
                                                                                  Margin="5,0,5,0"
                                                                                  GroupName="{Binding StringFormat=Merge{0}, Path=UniqueId}"
@@ -607,7 +613,6 @@
                            Text="Merge" 
                            Style="{StaticResource SourceHeader}" 
                            AutomationProperties.AutomationId="UI_WorkflowHeaderText_AutoID"/>
-                <Button Command="{Binding AddAnItem}">Add Something</Button>
             </StackPanel>
             <Grid x:Name="WorkflowDesignerViewGrid" 
                   Grid.Row="1" 

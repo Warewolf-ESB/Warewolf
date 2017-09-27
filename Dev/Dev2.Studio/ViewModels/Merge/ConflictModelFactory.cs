@@ -25,6 +25,9 @@ namespace Dev2.ViewModels.Merge
     {
         private ModelItem _modelItem;
         private readonly IContextualResourceModel _resourceModel;
+        private bool _isWorkflowNameChecked;
+        private bool _isVariablesChecked;
+
         public IMergeToolModel Model { get; set; }
         public ConflictModelFactory(ModelItem modelItem, IContextualResourceModel resourceModel)
         {
@@ -82,8 +85,32 @@ namespace Dev2.ViewModels.Merge
         }
 
         public string WorkflowName { get; set; }
-        public bool IsVariablesChecked { get; set; }
-        public bool IsWorkflowNameChecked { get; set; }
+        public bool IsVariablesChecked
+        {
+            get
+            {
+                return _isVariablesChecked;
+            }
+            set
+            {
+                _isVariablesChecked = value;
+                OnPropertyChanged(() => IsVariablesChecked);
+                SomethingConflictModelChanged?.Invoke(this, this);
+            }
+        }
+        public bool IsWorkflowNameChecked
+        {
+            get
+            {
+                return _isWorkflowNameChecked;
+            }
+            set
+            {
+                _isWorkflowNameChecked = value;
+                OnPropertyChanged(() => IsWorkflowNameChecked);
+                SomethingConflictModelChanged?.Invoke(this, this);
+            }
+        }
         public DataListViewModel DataListViewModel { get; set; }
         public ObservableCollection<IMergeToolModel> Children { get; set; }
 
@@ -104,8 +131,7 @@ namespace Dev2.ViewModels.Merge
                 }
                 else if (actual == typeof(ServiceDesignerViewModel))
                 {
-                    instance =
-                        Activator.CreateInstance(actual, _modelItem, _resourceModel) as ActivityDesignerViewModel;
+                    instance = Activator.CreateInstance(actual, _modelItem, _resourceModel) as ActivityDesignerViewModel;
                 }
                 else
                 {
@@ -117,7 +143,8 @@ namespace Dev2.ViewModels.Merge
                 {
                     ActivityDesignerViewModel = instance,
                     MergeIcon = _modelItem.GetImageSourceForTool(),
-                    MergeDescription = currentValue is DsfSwitch ? "" : dsfActivity?.ToString(),
+                    MergeDescription = dsfActivity?.ToString(),
+                    ActivityType = currentValue as System.Activities.Activity,
                     UniqueId = currentValue.UniqueID.ToGuid()
                 };
                 var activityParser = CustomContainer.Get<IActivityParser>();
@@ -278,8 +305,6 @@ namespace Dev2.ViewModels.Merge
             return null;
         }
 
-
-
-
+        public event ConflictModelChanged SomethingConflictModelChanged;
     }
 }
