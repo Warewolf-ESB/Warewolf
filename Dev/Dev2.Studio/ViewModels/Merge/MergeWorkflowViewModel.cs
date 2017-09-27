@@ -71,7 +71,7 @@ namespace Dev2.ViewModels.Merge
                 Conflicts.Add(conflict);
             }
            
-            Conflicts = Conflicts.Reverse().ToObservableCollection();
+            //Conflicts = Conflicts.Reverse().ToObservableCollection();
             var firstConflict = Conflicts.FirstOrDefault();
 
             if (CurrentConflictModel == null)
