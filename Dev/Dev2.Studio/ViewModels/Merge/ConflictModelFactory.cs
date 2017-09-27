@@ -293,7 +293,7 @@ namespace Dev2.ViewModels.Merge
             {
                 foreach (var group in switchTool.Switches)
                 {
-                    var currentArmTree = _activityParser.FlattenNextNodesExclusive(group.Value);
+                    var currentArmTree = _activityParser.FlattenNextNodesInclusive(group.Value);
                     foreach (var dev2Activity in currentArmTree)
                     {
                         _modelItem = ModelItemUtils.CreateModelItem(dev2Activity);
@@ -308,7 +308,7 @@ namespace Dev2.ViewModels.Merge
             {
                 foreach (var dev2Activity in switchTool.Default)
                 {
-                    var currentArmTree = _activityParser.FlattenNextNodesExclusive(dev2Activity);
+                    var currentArmTree = _activityParser.FlattenNextNodesInclusive(dev2Activity);
                     foreach (var activity in currentArmTree)
                     {
                         _modelItem = ModelItemUtils.CreateModelItem(activity);
@@ -329,7 +329,7 @@ namespace Dev2.ViewModels.Merge
             {
 
                 var firstOrDefault = de.TrueArm?.FirstOrDefault();
-                var truArmToFlatList = _activityParser.FlattenNextNodesExclusive(firstOrDefault);
+                var truArmToFlatList = _activityParser.FlattenNextNodesInclusive(firstOrDefault);
                 decisionNode.True = new FlowStep { Action = firstOrDefault as System.Activities.Activity };
                 
                 foreach (var dev2Activity in truArmToFlatList)
@@ -346,7 +346,7 @@ namespace Dev2.ViewModels.Merge
             {
                 var firstOrDefault = de.FalseArm?.FirstOrDefault();
                 decisionNode.False = new FlowStep { Action = firstOrDefault as System.Activities.Activity };
-                var falseArmToFlatList = _activityParser.ParseFalseArmToFlatList(firstOrDefault);
+                var falseArmToFlatList = _activityParser.FlattenNextNodesInclusive(firstOrDefault);
                 foreach (var dev2Activity in falseArmToFlatList)
                 {
                     _modelItem = ModelItemUtils.CreateModelItem(dev2Activity);
