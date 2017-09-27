@@ -2908,52 +2908,34 @@ namespace Dev2.Studio.ViewModels.Workflow
             resourceModel.IsWorkflowSaved = true;
         }
 
-        public void AddDecisionItem(FlowDecision decision)
-        {
-            ModelItem root = _wd.Context.Services.GetService<ModelService>().Root;
-            var chart = _wd.Context.Services.GetService<ModelService>().Find(root, typeof(Flowchart)).FirstOrDefault();
-
-            if (chart.Properties["StartNode"].ComputedValue == null)
-            {
-                chart.Properties["Nodes"].Collection.Add(decision);
-                chart.Properties["StartNode"].SetValue(decision);
-
-            }
-            else
-            {
-                ViewStateService service = _wd.Context.Services.GetService<ViewStateService>();
-                ModelItem temp = chart.Properties["Nodes"].Collection[0];
-                //Point p = new Point(300, 200);
-                //service.RemoveViewState(temp,"ShapeLocation");
-                //service.StoreViewState(temp,"ShapeLocation", p);
-                chart.Properties["Nodes"].Collection.Add(decision);
-                temp.Properties["Next"].SetValue(decision);
-
-            }
-        }
-
         public void AddItem(FlowNode step, Point point)
         {
             ModelItem root = _wd.Context.Services.GetService<ModelService>().Root;
             var chart = _wd.Context.Services.GetService<ModelService>().Find(root, typeof(Flowchart)).FirstOrDefault();
 
-            if (chart.Properties["StartNode"].ComputedValue == null)
+            var nodes = chart.Properties["Nodes"].Collection as ModelItemCollection;
+            var startNode = chart.Properties["StartNode"];
+
+            if (startNode.ComputedValue == null)
             {
-                chart.Properties["Nodes"].Collection.Add(step);
-                chart.Properties["StartNode"].SetValue(step);
+                if (nodes == null || nodes.Count < 1)
+                {
+                    nodes.Add(step);
+                }
+                nodes.Add(step);
+                startNode.SetValue(step);
             }
             else
             {
                 ViewStateService service = _wd.Context.Services.GetService<ViewStateService>();
-                ModelItem temp = chart.Properties["Nodes"].Collection[0];
+                ModelItem temp = nodes[0];
                 service.RemoveViewState(temp,"ShapeLocation");
                 service.StoreViewState(temp,"ShapeLocation", point);
-                if (!chart.Properties["Nodes"].Collection.Contains(step))
+                if (!nodes.Contains(step))
                 {
-                    chart.Properties["Nodes"].Collection.Add(step);
+                    nodes.Add(step);
                     temp.Properties["Next"].SetValue(step);
                 }
-
             }
         }
 
