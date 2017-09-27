@@ -155,6 +155,7 @@ namespace Dev2.ViewModels.Merge
                     if (de.TrueArm != null)
                     {
                         var firstOrDefault = de.TrueArm?.FirstOrDefault();
+                        decisionNode.True = new FlowStep { Action = firstOrDefault as System.Activities.Activity };
                         var activity = activityParser.ParseToLinkedFlatList(firstOrDefault);
                         foreach (var dev2Activity in activity)
                         {
@@ -169,6 +170,7 @@ namespace Dev2.ViewModels.Merge
                     if (de.FalseArm != null)
                     {
                         var firstOrDefault = de.FalseArm?.FirstOrDefault();
+                        decisionNode.False = new FlowStep { Action = firstOrDefault as System.Activities.Activity };
                         var activity = activityParser.ParseToLinkedFlatList(firstOrDefault);
                         foreach (var dev2Activity in activity)
                         {
