@@ -117,16 +117,17 @@ namespace Dev2.ViewModels.Merge
                 {
                     ActivityDesignerViewModel = instance,
                     MergeIcon = _modelItem.GetImageSourceForTool(),
-                    MergeDescription = dsfActivity?.ToString(),
+                    MergeDescription = currentValue is DsfSwitch ? "" : dsfActivity?.ToString(),
                     UniqueId = currentValue.UniqueID.ToGuid()
                 };
-
+                var activityParser = CustomContainer.Get<IActivityParser>();
                 if (currentValue is DsfDecision de)
                 {
                     if (de.TrueArm != null)
                     {
-                        var deTrueArm = de.TrueArm.Flatten(p => p.NextNodes ?? new List<IDev2Activity>());
-                        foreach (var dev2Activity in deTrueArm)
+                        var firstOrDefault = de.TrueArm?.FirstOrDefault();
+                        var activity = activityParser.ParseToLinkedFlatList(firstOrDefault);
+                        foreach (var dev2Activity in activity)
                         {
                             _modelItem = ModelItemUtils.CreateModelItem(dev2Activity);
                             var addModelItem = GetModel();
@@ -138,8 +139,9 @@ namespace Dev2.ViewModels.Merge
 
                     if (de.FalseArm != null)
                     {
-                        var deTrueArm = de.FalseArm.Flatten(p => p.NextNodes ?? new List<IDev2Activity>());
-                        foreach (var dev2Activity in deTrueArm)
+                        var firstOrDefault = de.FalseArm?.FirstOrDefault();
+                        var activity = activityParser.ParseToLinkedFlatList(firstOrDefault);
+                        foreach (var dev2Activity in activity)
                         {
                             _modelItem = ModelItemUtils.CreateModelItem(dev2Activity);
                             var addModelItem = GetModel();
@@ -154,13 +156,13 @@ namespace Dev2.ViewModels.Merge
                 {
                     if (switchTool.Switches != null)
                     {
-
                         foreach (var group in switchTool.Switches)
                         {
                             _modelItem = ModelItemUtils.CreateModelItem(group.Value);
-                            var addModelItem = GetModel();
+                            var addModelItem = GetModel(group.Key);
                             addModelItem.HasParent = true;
-                            addModelItem.ParentDescription = group.Key;
+                            //addModelItem.ParentDescription = group.Key;
+                            addModelItem.MergeDescription = group.Key;
                             mergeToolModel.Children.Add(addModelItem);
                         }
                     }
@@ -172,6 +174,7 @@ namespace Dev2.ViewModels.Merge
                             var addModelItem = GetModel();
                             addModelItem.HasParent = true;
                             addModelItem.ParentDescription = "Default";
+                            addModelItem.MergeDescription = "Default";
                             mergeToolModel.Children.Add(addModelItem);
                         }
                     }
@@ -262,26 +265,6 @@ namespace Dev2.ViewModels.Merge
                             Children.Add(addModelItem);
                         }
 
-                        else
-                        {
-                            _modelItem = nextModelItem;
-                            var addModelItem = GetModel();
-                            Children.Add(addModelItem);
-                        }
-                    }
-                }
-                else
-                {
-                    var nextNode = currentValue.NextNodes?.SingleOrDefault();
-                    if (nextNode != null)
-                    {
-                        var nextModelItem = ModelItemUtils.CreateModelItem(nextNode);
-                        if (nextNode is DsfSwitch a)
-                        {
-                            _modelItem = nextModelItem;
-                            var addModelItem = GetModel(a.Switch);
-                            Children.Add(addModelItem);
-                        }
                         else
                         {
                             _modelItem = nextModelItem;
