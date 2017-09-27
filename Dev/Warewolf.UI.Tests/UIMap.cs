@@ -163,7 +163,7 @@ namespace Warewolf.UI.Tests
         {
             control.WaitForControlCondition((uicontrol) =>
             {
-                var point = new Point();
+                Point point;
                 return !uicontrol.TryGetClickablePoint(out point);
             }, searchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString()));
         }

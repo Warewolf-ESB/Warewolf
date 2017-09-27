@@ -286,7 +286,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Execute Test---------------------------
             catalog.SaveResource(workspaceID, resource, "");
             //------------Assert Results-------------------------
-            xml = XElement.Load(Path.Combine(path, resource.ResourceName + ".xml"));
+            xml = XElement.Load(Path.Combine(path, resource.ResourceName + ".bite"));
             Assert.IsNotNull(xml);
             var idAttr = xml.Attributes("ID").ToList();
             Assert.AreEqual(1, idAttr.Count);
@@ -408,7 +408,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Execute Test---------------------------
             catalog.SaveResource(workspaceID, resource, "");
             //------------Assert Results-------------------------
-            xml = XElement.Load(Path.Combine(path, resource.ResourceName + ".xml"));
+            xml = XElement.Load(Path.Combine(path, resource.ResourceName + ".bite"));
             Assert.IsNotNull(xml);
             var idAttr = xml.Attributes("ID").ToList();
             Assert.AreEqual(1, idAttr.Count);
@@ -434,7 +434,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Execute Test---------------------------
             catalog.SaveResource(workspaceID, resource, resourcePath);
             //------------Assert Results-------------------------
-            xml = XElement.Load(path + "\\" + resourceName + ".xml");
+            xml = XElement.Load(path + "\\" + resourceName + ".bite");
             Assert.IsNotNull(xml);
             var idAttr = xml.Attributes("ID").ToList();
             Assert.AreEqual(1, idAttr.Count);
@@ -535,7 +535,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Execute Test---------------------------
             catalog.SaveResource(workspaceID, resource1, resourcePath1, "", "");
             //------------Assert Results-------------------------
-            xml = XElement.Load(path + "\\" + resourceName + ".xml");
+            xml = XElement.Load(path + "\\" + resourceName + ".bite");
             Assert.IsNotNull(xml);
             var idAttr = xml.Attributes("ID").ToList();
             Assert.AreEqual(1, idAttr.Count);
@@ -565,7 +565,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var resourceCatalogResult = catalog.SaveResource(workspaceID, resource1, resourcePath, "", "");
             //------------Assert Results-------------------------
             Assert.AreEqual(ExecStatus.DuplicateMatch, resourceCatalogResult.Status);
-            xml = XElement.Load(path + "\\CitiesDatabase" + ".xml");
+            xml = XElement.Load(path + "\\CitiesDatabase" + ".bite");
             Assert.IsNotNull(xml);
             var idAttr = xml.Attributes("ID").ToList();
             Assert.AreEqual(1, idAttr.Count);
@@ -588,7 +588,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var catalog = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
             catalog.SaveResource(workspaceID, resource, "");
 
-            xml = XElement.Load(Path.Combine(path, "CitiesDatabase" + ".xml"));
+            xml = XElement.Load(Path.Combine(path, "CitiesDatabase" + ".bite"));
             var attr = xml.Attributes("ID").ToList();
 
             Assert.AreEqual(1, attr.Count);
@@ -627,7 +627,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var catalog = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
             catalog.SaveResource(workspaceID, resource1, "");
 
-            var path = Path.Combine(workspacePath, "TestSource" + ".xml");
+            var path = Path.Combine(workspacePath, "TestSource" + ".bite");
             var attributes = File.GetAttributes(path);
             if ((attributes & FileAttributes.ReadOnly) != FileAttributes.ReadOnly)
             {
@@ -2274,7 +2274,7 @@ namespace Dev2.Tests.Runtime.Hosting
                     }
                     var res = new Resource(xml);
                     var resourceDirectory = resourcesPath + "\\";
-                    res.FilePath = resourceDirectory + res.ResourceName + ".xml";
+                    res.FilePath = resourceDirectory + res.ResourceName + ".bite";
                     FileInfo f = new FileInfo(res.FilePath);
                     if (f.Directory != null && !f.Directory.Exists)
                     {
@@ -2293,7 +2293,7 @@ namespace Dev2.Tests.Runtime.Hosting
                         }
                         File.WriteAllText(
                             Path.Combine(resourcesPath,
-                                $"VersionControl\\{resourceName}.V{versionNo}.xml"),
+                                $"VersionControl\\{resourceName}.V{versionNo}.bite"),
                             contents, Encoding.UTF8);
                     }
                     result.Add(res);

@@ -194,7 +194,7 @@ namespace Dev2.Runtime.WebServer
             }
             if (localResource == null)
             {
-                var stringDynaResourceId = serviceName.Replace(".xml", "").Replace(".json", "");
+                var stringDynaResourceId = serviceName.Replace(".xml", "").Replace(".bite", "").Replace(".json", "");
                 if (Guid.TryParse(stringDynaResourceId, out resourceID))
                 {
                     localResource = catalog.GetResource(dataObject.WorkspaceID, resourceID);
