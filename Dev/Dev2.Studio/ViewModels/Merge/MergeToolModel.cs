@@ -5,6 +5,7 @@ using Dev2.Activities.Designers2.Core;
 using Dev2.Common.Interfaces;
 using Microsoft.Practices.Prism.Mvvm;
 using Newtonsoft.Json;
+using System.Windows.Input;
 
 namespace Dev2.ViewModels.Merge
 {
@@ -18,7 +19,8 @@ namespace Dev2.ViewModels.Merge
         private ObservableCollection<IMergeToolModel> _children;
         private string _parentDescription;
         private bool _hasParent;
-        private bool _isVariablesChecked;
+        private Guid _uniqueId;
+        private System.Activities.Activity _activityType;
 
         public MergeToolModel()
         {
@@ -29,61 +31,52 @@ namespace Dev2.ViewModels.Merge
 
         public bool IsMergeExpanderEnabled
         {
-            get => _isMergeExpanderEnabled; 
+            get => _isMergeExpanderEnabled;
             set
             {
                 _isMergeExpanderEnabled = value;
-                OnPropertyChanged("IsMergeExpanderEnabled");
+                OnPropertyChanged(() => IsMergeExpanderEnabled);
             }
         }
         public bool IsMergeExpanded
         {
-            get => _isMergeExpanded; 
+            get => _isMergeExpanded;
             set
             {
                 _isMergeExpanded = value;
-                OnPropertyChanged("IsMergeExpanded");
+                OnPropertyChanged(() => IsMergeExpanded);
             }
         }
         [JsonIgnore]
         public ImageSource MergeIcon
         {
-            get => _mergeIcon; 
+            get => _mergeIcon;
             set
             {
                 _mergeIcon = value;
-                OnPropertyChanged("MergeIcon");
+                OnPropertyChanged(() => MergeIcon);
             }
         }
         public string MergeDescription
         {
-            get => _mergeDescription; 
+            get => _mergeDescription;
             set
             {
                 _mergeDescription = value;
-                OnPropertyChanged("MergeDescription");
+                OnPropertyChanged(() => MergeDescription);
             }
         }
         public bool IsMergeChecked
         {
-            get => _isMergeChecked; 
+            get => _isMergeChecked;
             set
             {
                 _isMergeChecked = value;
-                OnPropertyChanged("IsMergeChecked");
+                IsMergeExpanderEnabled = _isMergeChecked;
+                OnPropertyChanged(() => IsMergeChecked);
+                SomethingModelToolChanged?.Invoke(this, this);
             }
         }
-
-        public bool IsVariablesChecked
-        {
-            get => _isVariablesChecked;
-            set
-            {
-                _isVariablesChecked = value;
-                OnPropertyChanged("IsVariablesChecked");
-            }
-        }
-
         public ObservableCollection<IMergeToolModel> Children
         {
             get => _children;
@@ -94,11 +87,29 @@ namespace Dev2.ViewModels.Merge
             }
         }
 
-        public Guid UniqueId { get; set; }
+        public Guid UniqueId
+        {
+            get { return _uniqueId; }
+            set
+            {
+                _uniqueId = value;
+                OnPropertyChanged(() => UniqueId);
+            }
+        }
+
+        public System.Activities.Activity ActivityType
+        {
+            get { return _activityType; }
+            set
+            {
+                _activityType = value;
+                OnPropertyChanged(() => ActivityType);
+            }
+        }
 
         public string ParentDescription
         {
-            get => _parentDescription; 
+            get => _parentDescription;
             set
             {
                 _parentDescription = value;
@@ -107,12 +118,16 @@ namespace Dev2.ViewModels.Merge
         }
         public bool HasParent
         {
-            get => _hasParent; 
+            get => _hasParent;
             set
             {
                 _hasParent = value;
                 OnPropertyChanged("HasParent");
             }
         }
+
+        public ICommand AddAnItem { get; set; }
+
+        public event ModelToolChanged SomethingModelToolChanged;
     }
 }
