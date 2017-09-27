@@ -65,7 +65,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         [GeneralSettings("IsSimulationEnabled")]
         public bool IsSimulationEnabled { get; set; }
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public IDSFDataObject DataObject { get { return null; } set { value = null; } }
+        public IDSFDataObject DataObject { get => null; set => value = null; }
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public IDataListCompiler Compiler { get; set; }
         [JsonIgnore]

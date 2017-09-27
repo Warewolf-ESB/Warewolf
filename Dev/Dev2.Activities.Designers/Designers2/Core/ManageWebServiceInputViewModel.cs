@@ -413,9 +413,6 @@ namespace Dev2.Activities.Designers2.Core
             {
                 return _generateOutputArea;
             }
-            set
-            {
-            }
         }
         public IOutputDescription Description { get; set; }
 

@@ -14,8 +14,6 @@ using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.Practices.Prism;
 using Warewolf.Core;
 
-
-
 namespace Dev2.Activities.Designers2.Core.InputRegion
 {
     public sealed class DatabaseInputRegion : IDatabaseInputRegion
@@ -32,7 +30,6 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
         {
             ToolRegionName = "DatabaseInputRegion";
         }
-
 
         public DatabaseInputRegion(ModelItem modelItem, IActionToolRegion<IDbAction> action)
             : this(new ActionInputDatatalistMapper())
@@ -77,7 +74,6 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
             }
         }
 
-
         private void ItemPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             _modelItem.SetProperty("Inputs", Inputs);
@@ -98,8 +94,7 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
                 }
             }
         }
-
-        
+                
         public DatabaseInputRegion(IActionInputDatatalistMapper datatalistMapper)
         {
             _datatalistMapper = datatalistMapper;
@@ -110,7 +105,6 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
             try
             {
                 Errors.Clear();
-
                 
                 UpdateOnActionSelection();
                 

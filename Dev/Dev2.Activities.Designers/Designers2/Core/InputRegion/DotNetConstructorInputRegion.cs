@@ -17,11 +17,6 @@ using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.Practices.Prism;
 using Warewolf.Core;
 
-
-
-
-
-
 namespace Dev2.Activities.Designers2.Core.InputRegion
 {
     public class DotNetConstructorInputRegion : IDotNetConstructorInputRegion
@@ -33,7 +28,6 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
         private bool _isInputsEmptyRows;
         private readonly IActionInputDatatalistMapper _datatalistMapper;
         private RelayCommand _viewObjectResult;
-
         
         public DotNetConstructorInputRegion()
         {
