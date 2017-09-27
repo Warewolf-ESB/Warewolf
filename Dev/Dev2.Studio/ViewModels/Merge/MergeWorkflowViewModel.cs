@@ -43,6 +43,17 @@ namespace Dev2.ViewModels.Merge
                         AddActivity(model);
                     }
                 });
+                foreach (var conf in conflict.CurrentViewModel.Children)
+                {
+                    conf.AddAnItem = new DelegateCommand(o =>
+                    {
+                        var model = conf as MergeToolModel;
+                        if (model.IsMergeChecked)
+                        {
+                            AddActivity(model);
+                        }
+                    });
+                }
                 conflict.CurrentViewModel.SomethingModelToolChanged += SourceOnModelToolChanged;
 
                 conflict.DiffViewModel = factoryB.GetModel();
@@ -54,6 +65,17 @@ namespace Dev2.ViewModels.Merge
                         AddActivity(model);
                     }
                 });
+                foreach (var conf in conflict.DiffViewModel.Children)
+                {
+                    conf.AddAnItem = new DelegateCommand(o =>
+                    {
+                        var model = conf as MergeToolModel;
+                        if (model.IsMergeChecked)
+                        {
+                            AddActivity(model);
+                        }
+                    });
+                }
                 conflict.DiffViewModel.SomethingModelToolChanged += SourceOnModelToolChanged;
 
                 conflict.HasConflict = currentChange.hasConflict;
