@@ -509,8 +509,8 @@ namespace Dev2.Runtime.Hosting
                 newResourcePath = itemToMove.ResourcePath.Replace(itemToMove.ResourcePath, newPath);
             }
             var resource = ResourceCatalogue.GetResource(workSpaceId, itemToMove.ResourceId);
-            var source = $"{DirectoryStructureFromPath(resource.GetResourcePath(GlobalConstants.ServerWorkspaceID))}.xml";
-            var destination = $"{DirectoryStructureFromPath(newResourcePath)+"\\"+resource.ResourceName+".xml"}";
+            var source = $"{DirectoryStructureFromPath(resource.GetResourcePath(GlobalConstants.ServerWorkspaceID))}.bite";
+            var destination = $"{DirectoryStructureFromPath(newResourcePath)+"\\"+resource.ResourceName+".bite"}";
             if (_file.Exists(source))
             {
                 _file.Move(source, destination);

@@ -32,26 +32,27 @@ namespace Dev2.Runtime.Hosting
     /// <summary>
     /// Transfer FileStream and ResourcePath together
     /// </summary>
-    
+
     internal class ResourceBuilderTO
-    
+
     {
         internal string FilePath;
         internal FileStream FileStream;
     }
 
-    
+
     /// <summary>
     /// Used to build up the resource catalog ;)
     /// </summary>
     public class ResourceCatalogBuilder
-    {        
+    {
         private readonly List<IResource> _resources = new List<IResource>();
         private readonly HashSet<Guid> _addedResources = new HashSet<Guid>();
         private readonly IResourceUpgrader _resourceUpgrader;
         private readonly List<DuplicateResource> _duplicateResources = new List<DuplicateResource>();
         private readonly object _addLock = new object();
-        
+        List<string> _biteFiles = new List<string>();
+
 
         public ResourceCatalogBuilder(IResourceUpgrader resourceUpgrader)
         {
@@ -64,48 +65,35 @@ namespace Dev2.Runtime.Hosting
 
         public IList<IResource> ResourceList => _resources;
         public List<DuplicateResource> DuplicateResources => _duplicateResources;
-        
+
 
         public void BuildCatalogFromWorkspace(string workspacePath, params string[] folders)
         {
-            if(string.IsNullOrEmpty(workspacePath))
+            if (string.IsNullOrEmpty(workspacePath))
                 throw new ArgumentNullException("workspacePath");
-            if(folders == null)
+            if (folders == null)
                 throw new ArgumentNullException("folders");
-            if(folders.Length == 0 || !Directory.Exists(workspacePath))
+            if (folders.Length == 0 || !Directory.Exists(workspacePath))
                 return;
 
             var streams = new List<ResourceBuilderTO>();
-
+            UpdateFileExtensions(workspacePath, folders);
             try
             {
-
-                foreach (var path in folders.Where(f => !string.IsNullOrEmpty(f) && !f.EndsWith("VersionControl")).Select(f => Path.Combine(workspacePath, f)))
+                foreach (var file in _biteFiles)
                 {
-                    if (!Directory.Exists(path))
+                    FileAttributes fa = File.GetAttributes(file);
+
+                    if ((fa & FileAttributes.ReadOnly) == FileAttributes.ReadOnly)
                     {
-                        continue;
+                        Dev2Logger.Info("Removed READONLY Flag from [ " + file + " ]", GlobalConstants.WarewolfInfo);
+                        File.SetAttributes(file, FileAttributes.Normal);
                     }
 
-                    var files = Directory.GetFiles(path, "*.xml");
-                    foreach (var file in files)
-                    {
-
-                        FileAttributes fa = File.GetAttributes(file);
-
-                        if ((fa & FileAttributes.ReadOnly) == FileAttributes.ReadOnly)
-                        {
-                            Dev2Logger.Info("Removed READONLY Flag from [ " + file + " ]", GlobalConstants.WarewolfInfo);
-                            File.SetAttributes(file, FileAttributes.Normal);
-                        }
-
-                        // Use the FileStream class, which has an option that causes asynchronous I/O to occur at the operating system level.  
-                        // In many cases, this will avoid blocking a ThreadPool thread.  
-                        var sourceStream = new FileStream(file, FileMode.Open, FileAccess.Read, FileShare.ReadWrite, 4096, true);
-                        streams.Add(new ResourceBuilderTO { FilePath = file, FileStream = sourceStream });
-
-                    }
+                    var sourceStream = new FileStream(file, FileMode.Open, FileAccess.Read, FileShare.ReadWrite, 4096, true);
+                    streams.Add(new ResourceBuilderTO { FilePath = file, FileStream = sourceStream });
                 }
+
 
                 // Use the parallel task library to process file system ;)
                 IList<Type> allTypes = new List<Type>();
@@ -138,10 +126,10 @@ namespace Dev2.Runtime.Hosting
                     {
                         Dev2Logger.Error("Resource [ " + currentItem.FilePath + " ] caused " + e.Message, GlobalConstants.WarewolfError);
                     }
-                                      
+
                     StringBuilder result = xml?.ToStringBuilder();
 
-                    var isValid = result!=null && HostSecurityProvider.Instance.VerifyXml(result);
+                    var isValid = result != null && HostSecurityProvider.Instance.VerifyXml(result);
                     if (isValid)
                     {
                         //TODO: Remove this after V1 is released. All will be updated.
@@ -266,7 +254,35 @@ namespace Dev2.Runtime.Hosting
                     stream.FileStream.Close();
                 }
             }
-        }        
+        }
+
+        private void UpdateFileExtensions(string workspacePath, string[] folders)
+        {
+            foreach (var path in folders.Where(f => !string.IsNullOrEmpty(f)).Select(f => Path.Combine(workspacePath, f)))
+            {
+                if (!Directory.Exists(path))
+                {
+                    continue;
+                }
+                var files = DirectoryHelper.GetFilesByExtensions(path, ".xml", ".bite");
+                foreach (var file in files)
+                {
+                    if (file.EndsWith(".xml"))
+                    {
+                        var updatedFile = Path.ChangeExtension(file, ".bite");
+                        File.Move(file, updatedFile);
+                        if (!path.EndsWith("VersionControl"))
+                        {
+                            _biteFiles.Add(updatedFile);
+                        }
+                    }
+                    else
+                    {
+                        _biteFiles.Add(file);
+                    }
+                }
+            }
+        }
 
         /// <summary>
         /// Adds the resource.
@@ -274,7 +290,7 @@ namespace Dev2.Runtime.Hosting
         /// <param name="res">The res.</param>
         /// <param name="filePath">The file path.</param>
         private void AddResource(IResource res, string filePath)
-        {            
+        {
             if (!_addedResources.Contains(res.ResourceID))
             {
                 _resources.Add(res);
@@ -285,7 +301,7 @@ namespace Dev2.Runtime.Hosting
                 var dupRes = _resources.Find(c => c.ResourceID == res.ResourceID);
                 if (dupRes != null)
                 {
-                    CreateDupResource(dupRes,filePath);
+                    CreateDupResource(dupRes, filePath);
                     Dev2Logger.Debug(
                         string.Format(ErrorResource.ResourceAlreadyLoaded,
                             res.ResourceName, filePath, dupRes.FilePath), GlobalConstants.WarewolfDebug);

@@ -151,7 +151,7 @@ namespace Dev2.Runtime.Hosting
             var parts = name.Split('_');
             if (parts.Length != 4)
                 throw new Exception(ErrorResource.InvalidVersion);
-            return $"v.{parts[1]}  {new DateTime(long.Parse(parts[2]))}  {parts[3].Replace(".xml", "")}";
+            return $"v.{parts[1]}  {new DateTime(long.Parse(parts[2]))}  {parts[3].Replace(".xml", "").Replace(".bite", "")}";
         }
 
         static string GetDirectoryFromResource(string resourcePath)
@@ -228,7 +228,7 @@ namespace Dev2.Runtime.Hosting
                         var fileName = $"{old.VersionInfo.VersionId}_{old.VersionInfo.VersionNumber}_{GetDateString(old.VersionInfo.DateTimeStamp)}_{reason}.xml";
                         if (!_file.Exists(Path.Combine(folderPath, fileName))) //todo: remove this and stop save on workspace
                         {
-                            var sourceFile = Path.Combine(GetFolderFromResource(old.GetResourcePath(workSpaceId)), old.ResourceName) + ".xml";
+                            var sourceFile = Path.Combine(GetFolderFromResource(old.GetResourcePath(workSpaceId)), old.ResourceName) + ".bite";
                             if (_file.Exists(sourceFile))
                             {
                                 _file.Copy(sourceFile, Path.Combine(folderPath, fileName));
