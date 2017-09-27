@@ -236,7 +236,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void DsfDateTimeActivity_AddDays_ShouldNotChangeAMtoPMValues()
         {
             //------------Setup for test--------------------------
-            const string Expected = "2017/10/20 12:00:00.0 AM";
+            var expected = new DateTime(2017, 10, 20, 0, 0, 0, 0).ToString(CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern + " hh:mm:ss.f tt");
             const string currDL = @"<root><MyTestResult></MyTestResult></root>";
             SetupArguments(currDL
                          , currDL
@@ -252,7 +252,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             string error;
             GetScalarValueFromEnvironment(result.Environment, "[[MyTestResult]]", out actual, out error);
             //------------Assert Results-------------------------
-            Assert.AreEqual(Expected, actual);
+            Assert.AreEqual(expected, actual);
         }
         [TestMethod]
         [Owner("Hagashen Naidu")]
@@ -260,7 +260,8 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void DsfDateTimeActivity_AddDays_ShouldNotChangePMtoAMValues()
         {
             //------------Setup for test--------------------------
-            const string Expected = "2017/10/20 12:00:00.0 PM";
+            var dateTimeVal = new DateTime(2017, 10, 20, 0, 0, 0, 0).ToString(CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern + " hh:mm:ss.f tt");
+            var expected = dateTimeVal.Replace("AM","PM");
             const string currDL = @"<root><MyTestResult></MyTestResult></root>";
             SetupArguments(currDL
                          , currDL
@@ -276,7 +277,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             string error;
             GetScalarValueFromEnvironment(result.Environment, "[[MyTestResult]]", out actual, out error);
             //------------Assert Results-------------------------
-            Assert.AreEqual(Expected, actual);
+            Assert.AreEqual(expected, actual);
         }
 
         #region Private Test Methods

@@ -324,50 +324,57 @@ namespace Dev2.Common.DateAndTime
             {
                 case 0:
                     inputFormat =
-                        TranslateDotNetToDev2Format(
-                            CultureInfo.CurrentUICulture.DateTimeFormat.FullDateTimePattern, out error);
+                       TranslateDotNetToDev2Format(
+                           CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern + " " +
+                           CultureInfo.CurrentCulture.DateTimeFormat.LongTimePattern, out error);
                     break;
 
                 case 1:
                     inputFormat =
                         TranslateDotNetToDev2Format(
-                            CultureInfo.InvariantCulture.DateTimeFormat.FullDateTimePattern, out error);
+                            CultureInfo.CurrentUICulture.DateTimeFormat.FullDateTimePattern, out error);
                     break;
 
                 case 2:
+                    inputFormat =
+                        TranslateDotNetToDev2Format(
+                            CultureInfo.InvariantCulture.DateTimeFormat.FullDateTimePattern, out error);
+                    break;
+
+                case 3:
                     inputFormat =
                         TranslateDotNetToDev2Format(
                             CultureInfo.InvariantCulture.DateTimeFormat.ShortDatePattern + " " +
                             CultureInfo.InvariantCulture.DateTimeFormat.LongTimePattern, out error);
                     break;
 
-                case 3:
+                case 4:
                     inputFormat =
                         TranslateDotNetToDev2Format(
                             new CultureInfo("en-ZA").DateTimeFormat.FullDateTimePattern, out error);
                     break;
 
-                case 4:
+                case 5:
                     inputFormat =
                         TranslateDotNetToDev2Format(
                             new CultureInfo("en-ZA").DateTimeFormat.ShortDatePattern + " " +
                             new CultureInfo("en-ZA").DateTimeFormat.LongTimePattern, out error);
                     break;
 
-                case 5:
+                case 6:
                     inputFormat =
                         TranslateDotNetToDev2Format(
                             new CultureInfo("en-US").DateTimeFormat.FullDateTimePattern, out error);
                     break;
 
-                case 6:
+                case 7:
                     inputFormat =
                         TranslateDotNetToDev2Format(
                             new CultureInfo("en-US").DateTimeFormat.ShortDatePattern + " " +
                             new CultureInfo("en-US").DateTimeFormat.LongTimePattern, out error);
                     break;
 
-                case 7:
+                case 8:
                     string shortPattern = CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern;
                     string longPattern = CultureInfo.CurrentCulture.DateTimeFormat.LongTimePattern;
                     string finalPattern = shortPattern + " " + longPattern;
