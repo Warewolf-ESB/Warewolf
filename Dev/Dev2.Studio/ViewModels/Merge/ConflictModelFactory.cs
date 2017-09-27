@@ -311,8 +311,9 @@ namespace Dev2.ViewModels.Merge
         private void BuildDecision(DsfDecision de, MergeToolModel mergeToolModel)
         {
             var decisionNode = new FlowDecision(de.GetFlowNode());
-                if (de.TrueArm != null)
+            if (de.TrueArm != null)
             {
+                
                 var firstOrDefault = de.TrueArm?.FirstOrDefault();
                 var activity = _activityParser.ParseToLinkedFlatList(firstOrDefault);
                 foreach (var dev2Activity in activity)
