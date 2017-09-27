@@ -510,6 +510,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         }
 
         public IResourceModel HydrateResourceModel(SerializableResource data, Guid serverId) => HydrateResourceModel(data, serverId, false, false, false);
+        public IResourceModel HydrateResourceModel(SerializableResource data, Guid serverId, bool forced) => HydrateResourceModel(data, serverId, forced, false, false);
         public IResourceModel HydrateResourceModel(SerializableResource data, Guid serverId, bool forced, bool fetchXaml, bool prepairForDeployment)
         {
             if (!_server.Connection.IsConnected)
