@@ -160,16 +160,18 @@ namespace Dev2.ViewModels.Merge
             if (currentChild == null && childDiff == null) return;
             if (currentChild != null && childDiff != null)
             {
-                var completeConflict = new CompleteConflict();
+                
                 var currentChildChildren = currentChild.Children;
                 var difChildChildren = childDiff.Children;
-                foreach (var currentChildChild in currentChildChildren)
+                for (var index = 0; index < currentChildChildren.Count; index++)
                 {
+                    var completeConflict = new CompleteConflict();
+                    var currentChildChild = currentChildChildren[index];
                     if (currentChildChild == null) continue;
 
                     var childCurrent = GetMergeToolItem(currentChildChildren, currentChildChild.UniqueId);
                     var childDifferent = GetMergeToolItem(difChildChildren, currentChildChild.UniqueId);
-                    completeConflict.UniqueId = currentChild.UniqueId;
+                    completeConflict.UniqueId = currentChildChild.UniqueId;
                     completeConflict.CurrentViewModel = childCurrent;
                     completeConflict.DiffViewModel = childDifferent;
                     parent.Children.Add(completeConflict);
