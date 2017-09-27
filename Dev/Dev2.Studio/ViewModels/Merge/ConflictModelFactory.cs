@@ -324,14 +324,14 @@ namespace Dev2.ViewModels.Merge
                 var firstOrDefault = de.TrueArm?.FirstOrDefault();
                 var activity = _activityParser.ParseToLinkedFlatList(firstOrDefault);
                 decisionNode.True = new FlowStep { Action = firstOrDefault as System.Activities.Activity };
-                foreach (var dev2Activity in activity)
-                {
-                    _modelItem = ModelItemUtils.CreateModelItem(dev2Activity);
+                //foreach (var dev2Activity in activity)
+                //{
+                    _modelItem = ModelItemUtils.CreateModelItem(firstOrDefault);
                     var addModelItem = GetModel();
                     addModelItem.HasParent = true;
                     addModelItem.ParentDescription = de.Conditions.TrueArmText;
                     mergeToolModel.Children.Add(addModelItem);
-                }
+                //}
             }
 
             if (de.FalseArm != null)
@@ -339,14 +339,14 @@ namespace Dev2.ViewModels.Merge
                 var firstOrDefault = de.FalseArm?.FirstOrDefault();
                 decisionNode.False = new FlowStep { Action = firstOrDefault as System.Activities.Activity };
                 var activity = _activityParser.ParseToLinkedFlatList(firstOrDefault);
-                foreach (var dev2Activity in activity)
-                {
-                    _modelItem = ModelItemUtils.CreateModelItem(dev2Activity);
+                //foreach (var dev2Activity in activity)
+                //{
+                    _modelItem = ModelItemUtils.CreateModelItem(firstOrDefault);
                     var addModelItem = GetModel();
                     addModelItem.HasParent = true;
                     addModelItem.ParentDescription = de.Conditions.FalseArmText;
                     mergeToolModel.Children.Add(addModelItem);
-                }
+                //}
 
             }
             mergeToolModel.ActivityType = decisionNode;
