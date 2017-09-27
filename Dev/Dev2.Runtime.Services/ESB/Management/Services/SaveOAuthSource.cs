@@ -77,6 +77,8 @@ namespace Dev2.Runtime.ESB.Management.Services
                             ResourceName = src.ResourceName
                         };
                         break;
+                    default:
+                        break;
                 }
 
                 ResourceCatalog.Instance.SaveResource(GlobalConstants.ServerWorkspaceID, res, savePath?.ToString());

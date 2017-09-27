@@ -75,9 +75,9 @@ namespace Dev2.Dialogs
             environmentViewModel.Connect();
 
             await environmentViewModel.LoadDialog("");
-            switch(_activityType)
+            switch (_activityType)
             {
-                case enDsfActivityType.Workflow :
+                case enDsfActivityType.Workflow:
                     environmentViewModel.Filter(a => a.IsFolder || a.IsService);
                     break;
                 case enDsfActivityType.Source:
@@ -86,7 +86,10 @@ namespace Dev2.Dialogs
                 case enDsfActivityType.Service:
                     environmentViewModel.Filter(a => a.IsFolder || a.IsService);
                     break;
-                
+                case enDsfActivityType.All:
+                    break;
+                default:
+                    break;
             }
             environmentViewModel.SelectAction = a => SelectedResource = a;
             return this;

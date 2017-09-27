@@ -163,7 +163,18 @@ namespace Dev2.Runtime.ServiceModel
             {
                 case WebRequestMethod.Get:
                     return client.DownloadData(address);
-
+                case WebRequestMethod.Head:
+                    break;
+                case WebRequestMethod.Post:
+                    break;
+                case WebRequestMethod.Put:
+                    break;
+                case WebRequestMethod.Delete:
+                    break;
+                case WebRequestMethod.Trace:
+                    break;
+                case WebRequestMethod.Options:
+                    break;
                 default:
                     return client.UploadData(address, method.ToString().ToUpperInvariant(), data);
             }
@@ -178,6 +189,18 @@ namespace Dev2.Runtime.ServiceModel
                 {
                     case WebRequestMethod.Get:
                         return client.DownloadString(address);
+                    case WebRequestMethod.Head:
+                        break;
+                    case WebRequestMethod.Post:
+                        break;
+                    case WebRequestMethod.Put:
+                        break;
+                    case WebRequestMethod.Delete:
+                        break;
+                    case WebRequestMethod.Trace:
+                        break;
+                    case WebRequestMethod.Options:
+                        break;
                     default:
                         return client.UploadString(address, method.ToString().ToUpperInvariant(), data);
                 }

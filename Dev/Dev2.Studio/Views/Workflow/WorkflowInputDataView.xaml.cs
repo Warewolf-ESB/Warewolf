@@ -135,6 +135,10 @@ namespace Dev2.Studio.Views.Workflow
                                     vm.ShowInvalidDataPopupMessage();
                                 }
                                 break;
+                            case InputTab.Xml:
+                                break;
+                            default:
+                                break;
                         }
                         _currentTab = InputTab.Xml;
                     }
@@ -162,6 +166,10 @@ namespace Dev2.Studio.Views.Workflow
                                         vm.ShowInvalidDataPopupMessage();
                                     }
                                 }
+                                break;
+                            case InputTab.Json:
+                                break;
+                            default:
                                 break;
                         }
                         if (!string.IsNullOrEmpty(vm.JsonData))

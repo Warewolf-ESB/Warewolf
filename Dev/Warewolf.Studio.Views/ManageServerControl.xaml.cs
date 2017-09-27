@@ -71,7 +71,7 @@ namespace Warewolf.Studio.Views
 
         public void SetAuthenticationType(AuthenticationType authenticationType)
         {
-            switch(authenticationType)
+            switch (authenticationType)
             {
                 case AuthenticationType.Windows:
                     WindowsRadioButton.IsChecked = true;
@@ -81,6 +81,8 @@ namespace Warewolf.Studio.Views
                     break;
                 case AuthenticationType.Public:
                     PublicRadioButton.IsChecked = true;
+                    break;
+                case AuthenticationType.Anonymous:
                     break;
                 default:
                     WindowsRadioButton.IsChecked = true;
@@ -162,6 +164,8 @@ namespace Warewolf.Studio.Views
                     return viewModel != null && viewModel.OkCommand.CanExecute(null);
                 case "Test":
                     return TestConnectionButton.Command.CanExecute(null);
+                default:
+                    break;
             }
             return false;
         }

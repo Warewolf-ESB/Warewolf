@@ -244,7 +244,7 @@ namespace Dev2.Studio.ViewModels.Dialogs
         {
             // Claculate the appropriate default result
             var defaultResult = MessageBoxResult.OK;
-            switch(button)
+            switch (button)
             {
                 case MessageBoxButton.OK:
                 case MessageBoxButton.OKCancel:
@@ -253,6 +253,8 @@ namespace Dev2.Studio.ViewModels.Dialogs
                 case MessageBoxButton.YesNo:
                 case MessageBoxButton.YesNoCancel:
                     defaultResult = MessageBoxResult.Yes;
+                    break;
+                default:
                     break;
             }
 

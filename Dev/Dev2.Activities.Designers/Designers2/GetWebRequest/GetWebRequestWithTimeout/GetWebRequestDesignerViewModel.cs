@@ -130,6 +130,8 @@ namespace Dev2.Activities.Designers2.GetWebRequest.GetWebRequestWithTimeout
                 case "Headers":
                     ExtractVariables();
                     break;
+                default:
+                    break;
             }
         }
 

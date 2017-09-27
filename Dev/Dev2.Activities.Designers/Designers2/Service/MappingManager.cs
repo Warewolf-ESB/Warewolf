@@ -109,6 +109,8 @@ namespace Dev2.Activities.Designers2.Service
                 case "Value":
                     SetOuputs();
                     break;
+                default:
+                    break;
             }
         }
 

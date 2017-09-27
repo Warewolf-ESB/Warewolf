@@ -163,6 +163,8 @@ namespace Dev2.Studio.Core
                 case "IsSelected":
                     NotifySelectionChanged();
                     break;
+                default:
+                    break;
             }
         }
 

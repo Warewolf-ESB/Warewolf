@@ -892,6 +892,8 @@ namespace Warewolf.UIBindingTests.WorkflowDesigner
                     Assert.AreEqual(2, viewModel.BringIntoViewHitCount); // 2 because we had to add something first!
                     Assert.AreEqual(1, viewModel.SelectedDebugModelItems.Count);
                     break;
+                default:
+                    break;
             }
 
             foreach (var modelItem in selection.SelectedObjects)

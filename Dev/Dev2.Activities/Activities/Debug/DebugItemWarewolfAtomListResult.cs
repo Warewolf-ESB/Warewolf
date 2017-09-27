@@ -126,9 +126,12 @@ namespace Dev2.Activities.Debug
                         {
                             displayExpression += _variable.Replace(DataListUtil.ReplaceRecordsetIndexWithStar(displayExpression), "");
                         }
-                        else if (DataListUtil.GetRecordsetIndexType(_variable) == enRecordsetIndexType.Blank)
+                        else
                         {
-                            displayExpression += _variable.Replace(DataListUtil.ReplaceRecordsetIndexWithBlank(displayExpression), "");
+                            if (DataListUtil.GetRecordsetIndexType(_variable) == enRecordsetIndexType.Blank)
+                            {
+                                displayExpression += _variable.Replace(DataListUtil.ReplaceRecordsetIndexWithBlank(displayExpression), "");
+                            }
                         }
                     }
                     else

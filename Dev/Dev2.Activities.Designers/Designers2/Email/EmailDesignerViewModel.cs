@@ -447,7 +447,7 @@ namespace Dev2.Activities.Designers2.Email
         {
             var ruleSet = new RuleSet();
 
-            switch(propertyName)
+            switch (propertyName)
             {
                 case "EmailSource":
                     ruleSet.Add(new IsNullRule(() => EmailSource));
@@ -485,6 +485,8 @@ namespace Dev2.Activities.Designers2.Email
                     break;
                 case "SubjectAndBody":
                     ruleSet.Add(new HasAtLeastOneRule(() => Subject, () => Body));
+                    break;
+                default:
                     break;
             }
             return ruleSet;

@@ -368,7 +368,54 @@ namespace Warewolf.Sharepoint
                         sharepointFieldTo.MinValue = numberField.MinimumValue;
                     }
                     break;
-
+                case FieldType.Lookup:
+                    break;
+                case FieldType.URL:
+                    break;
+                case FieldType.Computed:
+                    break;
+                case FieldType.Threading:
+                    break;
+                case FieldType.Guid:
+                    break;
+                case FieldType.MultiChoice:
+                    break;
+                case FieldType.GridChoice:
+                    break;
+                case FieldType.Calculated:
+                    break;
+                case FieldType.File:
+                    break;
+                case FieldType.Attachments:
+                    break;
+                case FieldType.User:
+                    break;
+                case FieldType.Recurrence:
+                    break;
+                case FieldType.CrossProjectLink:
+                    break;
+                case FieldType.ModStat:
+                    break;
+                case FieldType.Error:
+                    break;
+                case FieldType.ContentTypeId:
+                    break;
+                case FieldType.PageSeparator:
+                    break;
+                case FieldType.ThreadIndex:
+                    break;
+                case FieldType.WorkflowStatus:
+                    break;
+                case FieldType.AllDayEvent:
+                    break;
+                case FieldType.WorkflowEventType:
+                    break;
+                case FieldType.Geolocation:
+                    break;
+                case FieldType.OutcomeChoice:
+                    break;
+                case FieldType.MaxItems:
+                    break;
                 default:
                     sharepointFieldTo.Type = SharepointFieldType.Text;
                     break;

@@ -198,6 +198,35 @@ namespace Dev2.Runtime.ServiceModel
                             dbService.Recordset.Name = @"Unnamed";
                             return dbService.Recordset;
                         }
+
+                    case enSourceType.WebService:
+                        break;
+                    case enSourceType.DynamicService:
+                        break;
+                    case enSourceType.ManagementDynamicService:
+                        break;
+                    case enSourceType.PluginSource:
+                        break;
+                    case enSourceType.Unknown:
+                        break;
+                    case enSourceType.Dev2Server:
+                        break;
+                    case enSourceType.EmailSource:
+                        break;
+                    case enSourceType.WebSource:
+                        break;
+                    case enSourceType.OauthSource:
+                        break;
+                    case enSourceType.SharepointServerSource:
+                        break;
+                    case enSourceType.RabbitMQSource:
+                        break;
+                    case enSourceType.ExchangeSource:
+                        break;
+                    case enSourceType.WcfSource:
+                        break;
+                    case enSourceType.ComPluginSource:
+                        break;
                     default: return null;
 
                 }
@@ -392,6 +421,39 @@ namespace Dev2.Runtime.ServiceModel
                         var broker = new OracleDatabaseBroker();
                         return broker.GetServiceMethods(dbSource);
                     }
+
+                case enSourceType.SqlDatabase:
+                    break;
+                case enSourceType.ODBC:
+                    break;
+                case enSourceType.WebService:
+                    break;
+                case enSourceType.DynamicService:
+                    break;
+                case enSourceType.ManagementDynamicService:
+                    break;
+                case enSourceType.PluginSource:
+                    break;
+                case enSourceType.Unknown:
+                    break;
+                case enSourceType.Dev2Server:
+                    break;
+                case enSourceType.EmailSource:
+                    break;
+                case enSourceType.WebSource:
+                    break;
+                case enSourceType.OauthSource:
+                    break;
+                case enSourceType.SharepointServerSource:
+                    break;
+                case enSourceType.RabbitMQSource:
+                    break;
+                case enSourceType.ExchangeSource:
+                    break;
+                case enSourceType.WcfSource:
+                    break;
+                case enSourceType.ComPluginSource:
+                    break;
                 default:
                     {
                         var broker = CreateDatabaseBroker();

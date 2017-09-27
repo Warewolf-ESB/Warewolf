@@ -42,12 +42,14 @@ namespace Dev2.Data.Util
             {
                 return text;
             }
-            switch(scrubType)
+            switch (scrubType)
             {
                 case ScrubType.Xml:
                     return ScrubXml(text);
                 case ScrubType.JSon:
                     return ScrubJson(text);
+                default:
+                    break;
             }
             return text;
         }

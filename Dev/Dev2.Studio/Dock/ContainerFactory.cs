@@ -496,7 +496,7 @@ namespace Dev2.Studio.Dock
             // since its a freezable make sure its not frozen
             WritePreamble();
 
-            switch(e.Action)
+            switch (e.Action)
             {
                 case NotifyCollectionChangedAction.Add:
                     //Count should always be 1, but add the else in case of some inconsistant adding
@@ -513,7 +513,7 @@ namespace Dev2.Studio.Dock
                     }
                     break;
                 case NotifyCollectionChangedAction.Remove:
-                    foreach(object newItem in e.OldItems)
+                    foreach (object newItem in e.OldItems)
                     {
                         RemoveItem(newItem);
                     }
@@ -523,7 +523,7 @@ namespace Dev2.Studio.Dock
                     MoveItem(e.OldItems[0], e.OldStartingIndex, e.NewStartingIndex);
                     break;
                 case NotifyCollectionChangedAction.Replace:
-                    foreach(object newItem in e.OldItems)
+                    foreach (object newItem in e.OldItems)
                     {
                         RemoveItem(newItem);
                     }
@@ -536,6 +536,8 @@ namespace Dev2.Studio.Dock
                     break;
                 case NotifyCollectionChangedAction.Reset:
                     ReinitializeElements();
+                    break;
+                default:
                     break;
             }
         }

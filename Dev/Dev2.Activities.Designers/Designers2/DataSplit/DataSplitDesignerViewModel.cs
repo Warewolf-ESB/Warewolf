@@ -83,7 +83,7 @@ namespace Dev2.Activities.Designers2.DataSplit
 
             var mi = ModelItemCollection[index];
             var splitType = mi.GetProperty("SplitType") as string;
-            switch(splitType)
+            switch (splitType)
             {
                 case DataSplitDTO.SplitTypeIndex:
                     mi.SetProperty("IsEscapeCharEnabled", false);
@@ -114,6 +114,8 @@ namespace Dev2.Activities.Designers2.DataSplit
                     mi.SetProperty("EscapeChar", string.Empty);
                     mi.SetProperty("EnableAt", false);
                     mi.SetProperty("At", string.Empty);
+                    break;
+                default:
                     break;
             }
         }
@@ -157,7 +159,7 @@ namespace Dev2.Activities.Designers2.DataSplit
         {
             var ruleSet = new RuleSet();
 
-            switch(propertyName)
+            switch (propertyName)
             {
                 case "SourceString":
                     if (!string.IsNullOrEmpty(SourceString) && !string.IsNullOrWhiteSpace(SourceString))
@@ -170,6 +172,8 @@ namespace Dev2.Activities.Designers2.DataSplit
                         ruleSet.Add(new IsStringEmptyOrWhiteSpaceRule(() => SourceString));
                     }
 
+                    break;
+                default:
                     break;
             }
             return ruleSet;

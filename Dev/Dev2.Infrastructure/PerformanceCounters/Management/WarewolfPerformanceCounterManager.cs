@@ -89,6 +89,10 @@ namespace Dev2.PerformanceCounters.Management
                     case WarewolfPerfCounterType.RequestsPerSecond:
                         counter = new WarewolfRequestsPerSecondPerformanceCounterByResource(resourceId, name);
                         break;
+                    case WarewolfPerfCounterType.ServicesNotFound:
+                        break;
+                    case WarewolfPerfCounterType.NotAuthorisedErrors:
+                        break;
                     default:
                         return new EmptyCounter();
                 }

@@ -91,7 +91,7 @@ namespace Dev2.Runtime.ServiceModel.Data
         public static Type ConvertSqlDbType(SqlDbType sqlDbType)
         {
             // http://msdn.microsoft.com/en-us/library/system.data.sqldbtype.aspx
-            switch(sqlDbType)
+            switch (sqlDbType)
             {
                 case SqlDbType.BigInt:
                     return typeof(long);
@@ -155,6 +155,8 @@ namespace Dev2.Runtime.ServiceModel.Data
                     return typeof(DateTime);
                 case SqlDbType.DateTimeOffset:
                     return typeof(DateTimeOffset);
+                default:
+                    break;
             }
 
             return typeof(object);

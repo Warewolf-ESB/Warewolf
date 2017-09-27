@@ -277,6 +277,8 @@ namespace Dev2.Activities.Designers2.Core
                     case "IsPrimarySelection":
 
                         break;
+                    default:
+                        break;
                 }
             }
         }

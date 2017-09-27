@@ -65,6 +65,8 @@ namespace Dev2.Scheduler
                     return new ScheduleTrigger(TaskState.Ready, new Dev2TimeTrigger(_serviceConvertorFactory, trigger as TimeTrigger), _service, _serviceConvertorFactory);
                 case TaskTriggerType.Weekly:
                     return new ScheduleTrigger(TaskState.Ready, new Dev2WeeklyTrigger(_serviceConvertorFactory, trigger), _service, _serviceConvertorFactory);
+                case TaskTriggerType.Custom:
+                    break;
                 default:
                     return new ScheduleTrigger(TaskState.Ready, new Dev2Trigger(_serviceConvertorFactory, trigger), _service, _serviceConvertorFactory);
 
