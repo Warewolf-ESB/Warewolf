@@ -127,32 +127,32 @@ namespace Dev2.Integration.Tests.Merge
             var environmentModel = _server.Source;
             environmentModel.Connect();
             var resourceRepository = _server.Source.ResourceRepository;
-
             resourceRepository.Load();
-
-
 
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            var contextualResourceModel = resourceRepository.LoadContextualResourceModel("41617daa-509e-40eb-aa76-b0827028721d".ToGuid());
-            try
-            {
-               var mergeWorkflowViewModel = new MergeWorkflowViewModel(contextualResourceModel, contextualResourceModel);
-                //---------------Test Result -----------------------
-                Assert.IsNotNull(mergeWorkflowViewModel);
-                var all = mergeWorkflowViewModel.Conflicts.All(conflict => !conflict.HasConflict);
-                if (all)
-                    Assert.IsTrue(all);
-                else
-                {
-                    Debug.WriteLine(contextualResourceModel.ID + " " + contextualResourceModel.DisplayName + " Has some differences ");
-                }
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(contextualResourceModel.ID + " " + contextualResourceModel.DisplayName + " Has some differences " + e.Message);
-            }
-        }
+            var contextualResourceModel =
+                resourceRepository.LoadContextualResourceModel("41617daa-509e-40eb-aa76-b0827028721d".ToGuid());
+            var mergeWorkflowViewModel = new MergeWorkflowViewModel(contextualResourceModel, contextualResourceModel);
+            //---------------Test Result -----------------------
+            Assert.IsNotNull(mergeWorkflowViewModel);
 
+            var all = mergeWorkflowViewModel.Conflicts.All(conflict => !conflict.HasConflict);
+            Assert.IsTrue(all);
+            var conflictsCount = mergeWorkflowViewModel.Conflicts.Count;
+            Assert.AreEqual(3, conflictsCount);
+            var completeConflict1 = mergeWorkflowViewModel.Conflicts[0];
+            Assert.IsTrue(!completeConflict1.CurrentViewModel.Children.Any());
+            Assert.AreEqual("Use the Decision tool to:", completeConflict1.CurrentViewModel.MergeDescription);
+            var completeConflict2 = mergeWorkflowViewModel.Conflicts[1];
+            Assert.IsTrue(!completeConflict2.CurrentViewModel.Children.Any());
+            Assert.AreEqual("EXAMPLE 1 - Basic Usage", completeConflict2.CurrentViewModel.MergeDescription);
+            var completeConflict3 = mergeWorkflowViewModel.Conflicts[2];
+            Assert.IsTrue(completeConflict3.CurrentViewModel.Children.Any());
+            Assert.AreEqual("Is True?", completeConflict3.CurrentViewModel.MergeDescription);
+
+
+
+        }
     }
 }

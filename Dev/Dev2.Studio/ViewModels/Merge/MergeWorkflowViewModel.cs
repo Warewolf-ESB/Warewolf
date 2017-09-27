@@ -5,9 +5,16 @@ using Dev2.Studio.ViewModels.Workflow;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using System.Collections.ObjectModel;
 using System;
+using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using System.Windows;
+using Dev2.Activities;
+using Dev2.Common;
 using Dev2.Common.Common;
+using Dev2.Communication;
+using Dev2.Studio.Core.Activities.Utils;
 using System.Activities.Statements;
 using System.Windows;
 using Dev2.Activities;
@@ -27,9 +34,11 @@ namespace Dev2.ViewModels.Merge
             WorkflowDesignerViewModel = new WorkflowDesignerViewModel(currentResourceModel, false);
             WorkflowDesignerViewModel.CreateBlankWorkflow();
             var mergeParser = CustomContainer.Get<IServiceDifferenceParser>();
+            
             var currentChanges = mergeParser.GetDifferences(currentResourceModel, differenceResourceModel);
-            Conflicts = new ObservableCollection<ICompleteConflict>();
 
+            
+            Conflicts = new ObservableCollection<ICompleteConflict>();
             foreach (var currentChange in currentChanges)
             {
                 var conflict = new CompleteConflict { UniqueId = currentChange.uniqueId };
@@ -57,7 +66,7 @@ namespace Dev2.ViewModels.Merge
                 });
                 conflict.DiffViewModel.SomethingModelToolChanged += SourceOnModelToolChanged;
 
-                conflict.HasConflict = currentChange.conflict;
+                conflict.HasConflict = currentChange.hasConflict;
                 AddChildren(conflict, conflict.CurrentViewModel, conflict.DiffViewModel);
                 Conflicts.Add(conflict);
             }
@@ -157,6 +166,7 @@ namespace Dev2.ViewModels.Merge
                 foreach (var currentChildChild in currentChildChildren)
                 {
                     if (currentChildChild == null) continue;
+
                     var childCurrent = GetMergeToolItem(currentChildChildren, currentChildChild.UniqueId);
                     var childDifferent = GetMergeToolItem(difChildChildren, currentChildChild.UniqueId);
                     completeConflict.UniqueId = currentChild.UniqueId;
@@ -191,7 +201,7 @@ namespace Dev2.ViewModels.Merge
             }
             IMergeToolModel GetMergeToolItem(IEnumerable<IMergeToolModel> collection, Guid uniqueId)
             {
-                var mergeToolModel = collection.SingleOrDefault(model => model.UniqueId.Equals(uniqueId));
+                var mergeToolModel = collection.FirstOrDefault(model => model.UniqueId.Equals(uniqueId));//
                 return mergeToolModel;
             }
         }
