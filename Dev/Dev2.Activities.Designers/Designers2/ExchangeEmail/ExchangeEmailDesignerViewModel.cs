@@ -398,6 +398,8 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
                 case "SubjectAndBody":
                     ruleSet.Add(new HasAtLeastOneRule(() => Subject, () => Body));
                     break;
+                default:
+                    break;
             }
             return ruleSet;
         }

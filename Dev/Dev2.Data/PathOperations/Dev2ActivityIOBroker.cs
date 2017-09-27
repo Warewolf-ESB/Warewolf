@@ -102,6 +102,8 @@ namespace Dev2.PathOperations
                                 _common.AppendToTemp(s, tmp);
                             }
                             break;
+                        case WriteType.Overwrite:
+                            break;
                         default:
                             WriteDataToFile(args, tmp);
                             break;
@@ -126,6 +128,8 @@ namespace Dev2.PathOperations
                                     _common.AppendToTemp(s, tmp);
                                     result = MoveTmpFileToDestination(dst, tmp, result);
                                 }
+                                break;
+                            case WriteType.Overwrite:
                                 break;
                             default:
                                 WriteDataToFile(args, tmp);

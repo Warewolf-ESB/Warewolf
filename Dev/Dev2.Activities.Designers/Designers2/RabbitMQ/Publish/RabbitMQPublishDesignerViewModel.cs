@@ -215,6 +215,8 @@ namespace Dev2.Activities.Designers2.RabbitMQ.Publish
                 case "Message":
                     ruleSet.Add(new IsStringEmptyOrWhiteSpaceRule(() => Message));
                     break;
+                default:
+                    break;
             }
             return ruleSet;
         }

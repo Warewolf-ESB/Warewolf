@@ -639,7 +639,7 @@ namespace Dev2.Services.Sql
 
         private static int GetSizeForType(OracleDbType dbType)
         {
-            switch(dbType)
+            switch (dbType)
             {
                 case OracleDbType.BFile:
                 case OracleDbType.Blob:
@@ -673,7 +673,7 @@ namespace Dev2.Services.Sql
                 case OracleDbType.NVarchar2:
                     return 3000;
                 case OracleDbType.Raw:
-                    break;                
+                    break;
                 case OracleDbType.Single:
                     break;
                 case OracleDbType.TimeStamp:
@@ -687,10 +687,12 @@ namespace Dev2.Services.Sql
                     break;
                 case OracleDbType.BinaryFloat:
                     break;
+                case OracleDbType.RefCursor:
+                    break;
                 default:
                     return 4000;
             }
-            
+
             return 4000;
         }
 
@@ -768,6 +770,6 @@ namespace Dev2.Services.Sql
                 _disposed = true;
             }
         }
-        
+
     }
 }

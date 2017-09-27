@@ -163,6 +163,8 @@ namespace Dev2.Activities.Designers2.Service
                         });
                         _serviceDesignerViewModel.MappingManager.UpdateLastValidationMemo(memo);
                         break;
+                    default:
+                        break;
                 }
             });
         }
@@ -226,6 +228,14 @@ namespace Dev2.Activities.Designers2.Service
                         }
                     }
 
+                    break;
+                case FixType.None:
+                    break;
+                case FixType.Delete:
+                    break;
+                case FixType.InvalidPermissions:
+                    break;
+                default:
                     break;
             }
         }

@@ -685,6 +685,8 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
                 case "InputColumn":
                     ruleSet.Add(new IsValidExpressionRule(() => datalist, GetDatalistString(), "1"));
                     break;
+                default:
+                    break;
             }
             return ruleSet;
         }

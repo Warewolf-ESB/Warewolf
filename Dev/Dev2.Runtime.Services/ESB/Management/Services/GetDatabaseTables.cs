@@ -116,30 +116,67 @@ namespace Dev2.Runtime.ESB.Management.Services
                 Dev2Logger.Info("Get Database Tables. " + dbSource.DatabaseName, GlobalConstants.WarewolfInfo);
                 var tables = new DbTableList();
                 DataTable columnInfo;
-                switch(dbSource.ServerType)
+                switch (dbSource.ServerType)
                 {
 
-                     case enSourceType.SqlDatabase:
-                    {
-                        using (var connection = new SqlConnection(dbSource.ConnectionString))
+                    case enSourceType.SqlDatabase:
                         {
-                            connection.Open();
-                            columnInfo = connection.GetSchema("Tables");
+                            using (var connection = new SqlConnection(dbSource.ConnectionString))
+                            {
+                                connection.Open();
+                                columnInfo = connection.GetSchema("Tables");
+                            }
+                            break;
                         }
+
+                    case enSourceType.MySqlDatabase:
                         break;
-                    }
+                    case enSourceType.ODBC:
+                        break;
+                    case enSourceType.Oracle:
+                        break;
+                    case enSourceType.PostgreSQL:
+                        break;
+                    case enSourceType.WebService:
+                        break;
+                    case enSourceType.DynamicService:
+                        break;
+                    case enSourceType.ManagementDynamicService:
+                        break;
+                    case enSourceType.PluginSource:
+                        break;
+                    case enSourceType.Unknown:
+                        break;
+                    case enSourceType.Dev2Server:
+                        break;
+                    case enSourceType.EmailSource:
+                        break;
+                    case enSourceType.WebSource:
+                        break;
+                    case enSourceType.OauthSource:
+                        break;
+                    case enSourceType.SharepointServerSource:
+                        break;
+                    case enSourceType.RabbitMQSource:
+                        break;
+                    case enSourceType.ExchangeSource:
+                        break;
+                    case enSourceType.WcfSource:
+                        break;
+                    case enSourceType.ComPluginSource:
+                        break;
                     default:
-                    {
-                        using (var connection = new MySqlConnection(dbSource.ConnectionString))
                         {
-                            connection.Open();
-                            columnInfo = connection.GetSchema("Tables");
+                            using (var connection = new MySqlConnection(dbSource.ConnectionString))
+                            {
+                                connection.Open();
+                                columnInfo = connection.GetSchema("Tables");
+                            }
+                            break;
                         }
-                        break;
-                    }
                 }
-       
-                if(columnInfo != null)
+
+                if (columnInfo != null)
                 {
                     foreach(DataRow row in columnInfo.Rows)
                     {
@@ -174,7 +211,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 }
                 return serializer.SerializeToBuilder(tables);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 var tables = new DbTableList(ex);
                 return serializer.SerializeToBuilder(tables);

@@ -175,6 +175,8 @@ namespace Dev2
                     break;
                 case "FieldValue":
                     break;
+                default:
+                    break;
             }
             return Validate(propertyName, ruleSet);
         }
@@ -208,7 +210,7 @@ namespace Dev2
         
         public string Error { get; private set; }
 
-        
+
 
         #endregion
     }

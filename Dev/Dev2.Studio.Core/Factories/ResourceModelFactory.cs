@@ -50,7 +50,7 @@ namespace Dev2.Studio.Core.Factories
                     resource.UserPermissions = Permissions.Contribute;
                 }
 
-                switch(resourceType)
+                switch (resourceType)
                 {
                     case "Service":
                         resource.ResourceType = ResourceType.Service;
@@ -160,10 +160,12 @@ namespace Dev2.Studio.Core.Factories
                         resource.ResourceName = resourceName;
                         resource.ID = Guid.Empty;
                         break;
+                    default:
+                        break;
                 }
                 return resource;
             }
-            catch(SystemException exception)
+            catch (SystemException exception)
             {
                 HelperUtils.ShowTrustRelationshipError(exception);
             }

@@ -59,12 +59,12 @@ namespace Dev2.Activities.Designers2.XPath
         {
             var ruleSet = new RuleSet();
 
-            switch(propertyName)
+            switch (propertyName)
             {
                 case "SourceString":
                     ruleSet.Add(new IsStringEmptyOrWhiteSpaceRule(() => SourceString));
 
-                    if(!string.IsNullOrEmpty(SourceString) && !DataListUtil.IsEvaluated(SourceString))
+                    if (!string.IsNullOrEmpty(SourceString) && !DataListUtil.IsEvaluated(SourceString))
                     {
                         ruleSet.Add(new IsValidXmlRule(() => SourceString));
                     }
@@ -72,6 +72,8 @@ namespace Dev2.Activities.Designers2.XPath
                     var outputExprRule = new IsValidExpressionRule(() => SourceString, GetDatalistString(), "1");
                     ruleSet.Add(outputExprRule);
 
+                    break;
+                default:
                     break;
             }
             return ruleSet;

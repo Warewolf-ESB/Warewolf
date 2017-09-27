@@ -94,6 +94,8 @@ namespace Warewolf.Studio.Views
                     BindingExpression gac = GacAssemblyNameTextBox.GetBindingExpression(TextBlock.TextProperty);
                     gac?.UpdateSource();
                     break;
+                default:
+                    break;
             }
         }
 
@@ -116,6 +118,8 @@ namespace Warewolf.Studio.Views
                     return ConfigFileButton.IsEnabled;
                 case "GacAssemblyNameButton":
                     return GacAssemblyNameButton.IsEnabled;
+                default:
+                    break;
             }
             return false;
         }

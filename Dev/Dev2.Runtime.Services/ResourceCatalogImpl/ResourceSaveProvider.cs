@@ -220,6 +220,28 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                 case enActionType.Workflow:
                     messages.AddRange(smc.Compile(resource.ResourceID, ServerCompileMessageType.WorkflowMappingChangeRule, beforeAction.ResourceDefinition, contents));
                     break;
+                case enActionType.BizRule:
+                    break;
+                case enActionType.InvokeStoredProc:
+                    break;
+                case enActionType.InvokeWebService:
+                    break;
+                case enActionType.InvokeDynamicService:
+                    break;
+                case enActionType.InvokeManagementDynamicService:
+                    break;
+                case enActionType.InvokeServiceMethod:
+                    break;
+                case enActionType.Plugin:
+                    break;
+                case enActionType.ComPlugin:
+                    break;
+                case enActionType.Switch:
+                    break;
+                case enActionType.Unknown:
+                    break;
+                case enActionType.RemoteService:
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }

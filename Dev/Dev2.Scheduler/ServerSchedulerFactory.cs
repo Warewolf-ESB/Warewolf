@@ -73,7 +73,7 @@ namespace Dev2.Scheduler
 
         public IScheduleTrigger CreateTrigger(Trigger trigger)
         {
-            switch(trigger.TriggerType)
+            switch (trigger.TriggerType)
             {
                 case TaskTriggerType.Boot:
                     return new ScheduleTrigger(TaskState.Ready, new Dev2BootTrigger(ConvertorFactory, trigger as BootTrigger), TaskService, ConvertorFactory);
@@ -97,13 +97,15 @@ namespace Dev2.Scheduler
                     return new ScheduleTrigger(TaskState.Ready, new Dev2TimeTrigger(ConvertorFactory, trigger as TimeTrigger), TaskService, ConvertorFactory);
                 case TaskTriggerType.Weekly:
                     return new ScheduleTrigger(TaskState.Ready, new Dev2WeeklyTrigger(ConvertorFactory, trigger), TaskService, ConvertorFactory);
+                case TaskTriggerType.Custom:
+                    break;
                 default:
                     return new ScheduleTrigger(TaskState.Ready, new Dev2Trigger(ConvertorFactory, trigger), TaskService, ConvertorFactory);
 
             }
         }
 
-    
+
         public IScheduledResource CreateResource(string name, SchedulerStatus status, Trigger trigger,
                                                  string workflowName,string resourceId)
         {

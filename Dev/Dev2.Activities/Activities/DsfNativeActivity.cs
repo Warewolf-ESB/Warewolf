@@ -955,6 +955,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 case "WebService":
                     IsService = true;
                     break;
+                default:
+                    break;
             }
 
             var type = GetType();
@@ -981,7 +983,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 ErrorMessage = errorMessage,
                 EnvironmentID = dataObject.DebugEnvironmentId,
                 SessionID = dataObject.DebugSessionID
-            };                  
+            };
         }
 
         public virtual void UpdateDebugParentID(IDSFDataObject dataObject)

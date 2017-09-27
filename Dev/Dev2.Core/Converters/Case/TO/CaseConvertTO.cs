@@ -216,6 +216,8 @@ namespace Dev2
                     break;
                 case "FieldValue":
                     break;
+                default:
+                    break;
             }
             return Validate(propertyName, ruleSet);
         }

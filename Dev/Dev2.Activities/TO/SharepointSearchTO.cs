@@ -233,17 +233,19 @@ namespace Dev2.TO
             switch (propertyName)
             {
                 case "FieldName":
-                    if(FieldName.Length == 0)
+                    if (FieldName.Length == 0)
                     {
                         ruleSet.Add(new IsStringEmptyRule(() => FieldName));
                     }
                     break;
                 case "ValueToMatch":
-                    if(ValueToMatch.Length == 0)
+                    if (ValueToMatch.Length == 0)
                     {
                         ruleSet.Add(new IsStringEmptyRule(() => ValueToMatch));
                     }
                     ruleSet.Add(new IsValidExpressionRule(() => ValueToMatch, datalist, "1"));
+                    break;
+                default:
                     break;
             }
 

@@ -205,6 +205,8 @@ namespace Warewolf.UIBindingTests.PluginSource
                 case "Disabled":
                     Assert.IsFalse(viewModel.CanSelectConfigFiles);
                     break;
+                default:
+                    break;
             }
         }
 
@@ -219,6 +221,8 @@ namespace Warewolf.UIBindingTests.PluginSource
                     break;
                 case "Disabled":
                     Assert.IsFalse(viewModel.CanSelectConfigFiles);
+                    break;
+                default:
                     break;
             }
         }
@@ -244,6 +248,8 @@ namespace Warewolf.UIBindingTests.PluginSource
                     viewModel.GACAssemblyName = input;
                     assemblyNameOnViewModel = viewModel.GACAssemblyName;
                     break;
+                default:
+                    break;
             }
 
             sourceControl.SetTextBoxValue(controlName, input);
@@ -265,6 +271,8 @@ namespace Warewolf.UIBindingTests.PluginSource
                     break;
                 case "GacAssemblyName":
                     Assert.AreEqual(assemblyName, viewModel.GACAssemblyName);
+                    break;
+                default:
                     break;
             }
         }

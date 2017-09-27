@@ -99,24 +99,24 @@ namespace Dev2.Runtime.ESB.Management.Services
                 switch (dbSource.ServerType)
                 {
                     case enSourceType.MySqlDatabase:
-                    {
-                        using (var connection = new MySqlConnection(runtTimedbSource.ConnectionString))
                         {
-                            // Connect to the database then retrieve the schema information.
-                            connection.Open();
-                            var sql = @"select  * from  " + tableName.Trim('"').Replace("[","").Replace("]","") + " Limit 1 ";
-
-                                                     using (var sqlcmd = new MySqlCommand(sql, connection))
+                            using (var connection = new MySqlConnection(runtTimedbSource.ConnectionString))
                             {
-                                // force it closed so we just get the proper schema ;)
-                                using (var sdr = sqlcmd.ExecuteReader(CommandBehavior.CloseConnection))
+                                // Connect to the database then retrieve the schema information.
+                                connection.Open();
+                                var sql = @"select  * from  " + tableName.Trim('"').Replace("[", "").Replace("]", "") + " Limit 1 ";
+
+                                using (var sqlcmd = new MySqlCommand(sql, connection))
                                 {
-                                    columnInfo = sdr.GetSchemaTable();
+                                    // force it closed so we just get the proper schema ;)
+                                    using (var sdr = sqlcmd.ExecuteReader(CommandBehavior.CloseConnection))
+                                    {
+                                        columnInfo = sdr.GetSchemaTable();
+                                    }
                                 }
                             }
+                            break;
                         }
-                        break;
-                    }
                     case enSourceType.Oracle:
                         {
                             using (var connection = new OracleConnection(runtTimedbSource.ConnectionString))
@@ -156,6 +156,38 @@ namespace Dev2.Runtime.ESB.Management.Services
                             break;
                         }
 
+                    case enSourceType.SqlDatabase:
+                        break;
+                    case enSourceType.PostgreSQL:
+                        break;
+                    case enSourceType.WebService:
+                        break;
+                    case enSourceType.DynamicService:
+                        break;
+                    case enSourceType.ManagementDynamicService:
+                        break;
+                    case enSourceType.PluginSource:
+                        break;
+                    case enSourceType.Unknown:
+                        break;
+                    case enSourceType.Dev2Server:
+                        break;
+                    case enSourceType.EmailSource:
+                        break;
+                    case enSourceType.WebSource:
+                        break;
+                    case enSourceType.OauthSource:
+                        break;
+                    case enSourceType.SharepointServerSource:
+                        break;
+                    case enSourceType.RabbitMQSource:
+                        break;
+                    case enSourceType.ExchangeSource:
+                        break;
+                    case enSourceType.WcfSource:
+                        break;
+                    case enSourceType.ComPluginSource:
+                        break;
                     default:
                         {
                             using (var connection = new SqlConnection(runtTimedbSource.ConnectionString))
@@ -207,7 +239,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 }
                 return serializer.SerializeToBuilder(dbColumns);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
                 var res = new DbColumnList(ex);

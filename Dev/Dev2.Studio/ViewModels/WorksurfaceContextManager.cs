@@ -723,6 +723,12 @@ namespace Dev2.Studio.ViewModels
 
                     NewWorkflowNames.Instance.Remove(workflowVm.ResourceModel.ResourceName);
                     return true;
+                case MessageBoxResult.None:
+                    break;
+                case MessageBoxResult.OK:
+                    break;
+                case MessageBoxResult.Cancel:
+                    break;
                 default:
                     return false;
             }
@@ -1422,6 +1428,12 @@ namespace Dev2.Studio.ViewModels
                             break;
                         case MessageBoxResult.Cancel:
                             return false;
+                        case MessageBoxResult.None:
+                            break;
+                        case MessageBoxResult.Yes:
+                            break;
+                        case MessageBoxResult.No:
+                            break;
                         default:
                             return false;
                     }

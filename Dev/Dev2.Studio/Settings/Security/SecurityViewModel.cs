@@ -470,6 +470,8 @@ namespace Dev2.Settings.Security
                         IsServerHelpVisible = false;
                         HelpText = Warewolf.Studio.Resources.Languages.HelpText.SettingsSecurityResourceHelpResource;
                         break;
+                    default:
+                        break;
                 }
             }
             finally

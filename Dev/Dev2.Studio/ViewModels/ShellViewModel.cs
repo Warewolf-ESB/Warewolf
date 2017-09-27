@@ -1071,6 +1071,48 @@ namespace Dev2.Studio.ViewModels
                     return enSourceType.Oracle;
                 case WorkSurfaceContext.OdbcSource:
                     return enSourceType.ODBC;
+                case WorkSurfaceContext.Unknown:
+                    break;
+                case WorkSurfaceContext.Workflow:
+                    break;
+                case WorkSurfaceContext.Service:
+                    break;
+                case WorkSurfaceContext.SourceManager:
+                    break;
+                case WorkSurfaceContext.Scheduler:
+                    break;
+                case WorkSurfaceContext.Settings:
+                    break;
+                case WorkSurfaceContext.DependencyVisualiser:
+                    break;
+                case WorkSurfaceContext.DeployViewer:
+                    break;
+                case WorkSurfaceContext.StartPage:
+                    break;
+                case WorkSurfaceContext.Help:
+                    break;
+                case WorkSurfaceContext.EmailSource:
+                    break;
+                case WorkSurfaceContext.ServerSource:
+                    break;
+                case WorkSurfaceContext.OAuthSource:
+                    break;
+                case WorkSurfaceContext.WebSource:
+                    break;
+                case WorkSurfaceContext.PluginSource:
+                    break;
+                case WorkSurfaceContext.ComPluginSource:
+                    break;
+                case WorkSurfaceContext.SharepointServerSource:
+                    break;
+                case WorkSurfaceContext.Exchange:
+                    break;
+                case WorkSurfaceContext.RabbitMQSource:
+                    break;
+                case WorkSurfaceContext.WcfSource:
+                    break;
+                case WorkSurfaceContext.ServiceTestsViewer:
+                    break;
                 default:
                     return enSourceType.Unknown;
             }

@@ -832,6 +832,12 @@ namespace Dev2.Settings.Scheduler
                             return false;
                         case MessageBoxResult.No:
                             return true;
+                        case MessageBoxResult.OK:
+                            break;
+                        case MessageBoxResult.Yes:
+                            break;
+                        default:
+                            break;
                     }
                     return SchedulerTaskManager.SaveTasks();
                 }

@@ -247,6 +247,8 @@ namespace Dev2.Core.Tests.Settings
                     case "Error":
                         _errorChange = true;
                         break;
+                    default:
+                        break;
                 }
             };
 
@@ -281,6 +283,8 @@ namespace Dev2.Core.Tests.Settings
                         break;
                     case "Error":
                         _errorChange = true;
+                        break;
+                    default:
                         break;
                 }
             };
@@ -741,6 +745,8 @@ namespace Dev2.Core.Tests.Settings
                     case "TaskList":
                         _taskListChanged = true;
                         break;
+                    default:
+                        break;
                 }
             };
 
@@ -897,6 +903,8 @@ namespace Dev2.Core.Tests.Settings
                 {
                     case "Name":
                         _nameChanged = true;
+                        break;
+                    default:
                         break;
                 }
             };
@@ -1154,6 +1162,8 @@ namespace Dev2.Core.Tests.Settings
                     case "SelectedHistory":
                         _selectedHistoryChange = true;
                         break;
+                    default:
+                        break;
                 }
             };
             //------------Execute Test---------------------------
@@ -1245,6 +1255,8 @@ namespace Dev2.Core.Tests.Settings
                         break;
                     case "SelectedHistory":
                         _selectedHistoryChange = true;
+                        break;
+                    default:
                         break;
                 }
             };
@@ -1606,6 +1618,8 @@ namespace Dev2.Core.Tests.Settings
                   case "History":
                       _historyChange = true;
                       break;
+                  default:
+                      break;
               }
           };
 
@@ -1747,6 +1761,8 @@ namespace Dev2.Core.Tests.Settings
                     case "TriggerText":
                         _triggerTextChange = true;
                         break;
+                    default:
+                        break;
                 }
             };
 
@@ -1827,6 +1843,8 @@ namespace Dev2.Core.Tests.Settings
                         break;
                     case "WorkflowName":
                         _workflowNameChange = true;
+                        break;
+                    default:
                         break;
                 }
             };

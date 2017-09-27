@@ -380,6 +380,8 @@ namespace Dev2.Common.DateAndTime
                     }
                     inputFormat = TranslateDotNetToDev2Format(finalPattern, out error);
                     break;
+                default:
+                    break;
             }
             return inputFormat;
         }

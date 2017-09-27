@@ -148,7 +148,7 @@ namespace Dev2.Activities.Designers2.FindRecordsMultipleCriteria
         {
             var ruleSet = new RuleSet();
 
-            switch(propertyName)
+            switch (propertyName)
             {
                 case "FieldsToSearch":
                     ruleSet.Add(new IsStringEmptyOrWhiteSpaceRule(() => FieldsToSearch));
@@ -160,7 +160,9 @@ namespace Dev2.Activities.Designers2.FindRecordsMultipleCriteria
 
                 case "Result":
                     ruleSet.Add(new IsStringEmptyOrWhiteSpaceRule(() => Result));
-                    ruleSet.Add(new IsValidExpressionRule(() => Result, GetDatalistString(),"1"));
+                    ruleSet.Add(new IsValidExpressionRule(() => Result, GetDatalistString(), "1"));
+                    break;
+                default:
                     break;
             }
             return ruleSet;

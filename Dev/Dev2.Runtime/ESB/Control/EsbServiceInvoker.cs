@@ -337,6 +337,24 @@ namespace Dev2.Runtime.ESB
                     case enActionType.RemoteService:
                         result = new RemoteWorkflowExecutionContainer(serviceAction, dataObj, null, _esbChannel);
                         break;
+                    case enActionType.BizRule:
+                        break;
+                    case enActionType.InvokeStoredProc:
+                        break;
+                    case enActionType.InvokeDynamicService:
+                        break;
+                    case enActionType.InvokeServiceMethod:
+                        break;
+                    case enActionType.Plugin:
+                        break;
+                    case enActionType.ComPlugin:
+                        break;
+                    case enActionType.Switch:
+                        break;
+                    case enActionType.Unknown:
+                        break;
+                    default:
+                        break;
                 }
             }
             return result;

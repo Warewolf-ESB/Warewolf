@@ -54,7 +54,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         void Init()
         {
-            switch(ActivityType)
+            switch (ActivityType)
             {
                 case enDsfActivityType.Workflow:
                     ImageSource = "Workflow-32";
@@ -63,6 +63,10 @@ namespace Dev2.Studio.ViewModels.Workflow
                 case enDsfActivityType.Service:
                     ImageSource = "ToolService-32";
                     Title = "Select A Data Connector";
+                    break;
+                case enDsfActivityType.All:
+                    break;
+                case enDsfActivityType.Source:
                     break;
                 default:
                     ImageSource = "ExplorerWarewolfConnection-32";
