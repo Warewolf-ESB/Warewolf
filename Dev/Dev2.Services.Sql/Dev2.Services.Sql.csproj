@@ -75,7 +75,10 @@
 	  <Visible>False</Visible>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <Compile Include="ConnectionBuilder.cs" />
     <Compile Include="DbFactory.cs" />
+    <Compile Include="IConnectionBuilder.cs" />
+    <Compile Include="ISqlConnection.cs" />
     <Compile Include="MySqlDbFactory.cs" />
     <Compile Include="MySqlServer.cs" />
     <Compile Include="ODBCFactory.cs" />
@@ -84,6 +87,8 @@
     <Compile Include="OracleSqlFactory.cs" />
     <Compile Include="PostgreFactory.cs" />
     <Compile Include="PostgreServer.cs" />
+    <Compile Include="SqlConExtension.cs" />
+    <Compile Include="SqlConnectionWrapper.cs" />
     <Compile Include="SqlServer.cs" />
   </ItemGroup>
   <ItemGroup>

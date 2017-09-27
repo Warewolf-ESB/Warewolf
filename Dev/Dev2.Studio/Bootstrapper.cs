@@ -71,19 +71,19 @@ namespace Dev2
         #endregion
 
         #region Overrides
-
+        ShellViewModel _mainViewModel;
         protected override void Configure()
         {
             CustomContainer.Register<IWindowManager>(new WindowManager());
             CustomContainer.Register<IPopupController>(new PopupController());
-            var mainViewModel = new ShellViewModel();
-            CustomContainer.Register<IShellViewModel>(mainViewModel);
-            CustomContainer.Register<IShellViewModel>(mainViewModel);
+            _mainViewModel = new ShellViewModel();
+            CustomContainer.Register<IShellViewModel>(_mainViewModel);
+            CustomContainer.Register<IShellViewModel>(_mainViewModel);
             CustomContainer.Register<IWindowsServiceManager>(new WindowsServiceManager());
-            var conn = new ServerProxy("http://localHost:3142",CredentialCache.DefaultNetworkCredentials, new AsyncWorker());
+            var conn = new ServerProxy("http://localHost:3142", CredentialCache.DefaultNetworkCredentials, new AsyncWorker());
             conn.Connect(Guid.NewGuid());
             CustomContainer.Register<Microsoft.Practices.Prism.PubSubEvents.IEventAggregator>(new Microsoft.Practices.Prism.PubSubEvents.EventAggregator());
-            
+
             ClassRoutedEventHandlers.RegisterEvents();
         }
 
@@ -92,10 +92,10 @@ namespace Dev2
 
         protected override void OnExit(object sender, EventArgs e)
         {
-            if(_serverServiceStartedFromStudio)
+            if (_serverServiceStartedFromStudio)
             {
                 var app = Application.Current as IApp;
-                if(app != null)
+                if (app != null)
                 {
                     app.ShouldRestart = true;
                 }
@@ -109,28 +109,28 @@ namespace Dev2
         protected override void OnStartup(object sender, StartupEventArgs e)
         {
 
-            
-            
-            
+
+
+
             bool start = true;
-            
-            
-            
+
+
+
 #if !DEBUG
             start = CheckWindowsService();
 #endif
 
-            
-            if(start)
+
+            if (start)
             {
                 base.OnStartup(sender, e);
             }
             else
-            
+
             {
                 Application.Shutdown();
             }
-            
+
         }
 
         #region Overrides of BootstrapperBase
@@ -149,23 +149,23 @@ namespace Dev2
         /*
          * You must be in Release config to see the only reference to this function. - Ashley
          */
-        
+
         private bool CheckWindowsService()
         {
             IWindowsServiceManager windowsServiceManager = CustomContainer.Get<IWindowsServiceManager>();
             IPopupController popup = CustomContainer.Get<IPopupController>();
             ServerServiceConfiguration ssc = new ServerServiceConfiguration(windowsServiceManager, popup);
 
-            if(ssc.DoesServiceExist())
+            if (ssc.DoesServiceExist())
             {
-                if(ssc.IsServiceRunning())
+                if (ssc.IsServiceRunning())
                 {
                     return true;
                 }
 
-                if(ssc.PromptUserToStartService())
+                if (ssc.PromptUserToStartService())
                 {
-                    if(ssc.StartService())
+                    if (ssc.StartService())
                     {
                         _serverServiceStartedFromStudio = true;
                         return true;
@@ -180,17 +180,17 @@ namespace Dev2
         {
             var sysUri = new Uri(AppDomain.CurrentDomain.BaseDirectory);
 
-            if(IsLocal(sysUri)) return;
+            if (IsLocal(sysUri)) return;
 
             var popup = new PopupController
-                {
-                    Header = "Load Error",
-                    Description = 
+            {
+                Header = "Load Error",
+                Description =
                         $@"The Design Studio could not be launched from a network location.
                                                     {Environment
                             .NewLine}Please install the application on your local machine",
-                    Buttons = MessageBoxButton.OK
-                };
+                Buttons = MessageBoxButton.OK
+            };
 
             popup.Show();
 
@@ -199,17 +199,17 @@ namespace Dev2
 
         private bool IsLocal(Uri sysUri)
         {
-            if(IsUnc(sysUri))
+            if (IsUnc(sysUri))
             {
                 return false;
             }
 
-            if(!IsUnc(sysUri))
+            if (!IsUnc(sysUri))
             {
                 var currentLocation = new DriveInfo(sysUri.AbsolutePath);
                 DriveInfo[] drives = DriveInfo.GetDrives();
                 IEnumerable<DriveInfo> info = drives.Where(c => c.DriveType == DriveType.Network);
-                if(info.Any(c => c.RootDirectory.Name == currentLocation.RootDirectory.Name))
+                if (info.Any(c => c.RootDirectory.Name == currentLocation.RootDirectory.Name))
                 {
                     return false;
                 }

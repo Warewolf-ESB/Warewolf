@@ -160,7 +160,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             {
                 return ResourceName;
             }
-            return FilePath?.Replace(EnvironmentVariables.GetWorkspacePath(workspaceID) + "\\", "").Replace(".xml", "") ?? "";
+            return FilePath?.Replace(EnvironmentVariables.GetWorkspacePath(workspaceID) + "\\", "").Replace(".xml", "").Replace(".bite", "") ?? "";
         }
 
         public string GetSavePath()

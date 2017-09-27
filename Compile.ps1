@@ -37,7 +37,11 @@ if (!(Test-Path "$MSBuildPath" -ErrorAction SilentlyContinue)) {
     if ($GetvswhereCommand) {
         $VswherePath = $GetvswhereCommand.Path
     } else {
-        Write-Host vswhere.exe not found. Download from: https://github.com/Microsoft/vswhere/releases
+        if (Test-Path "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe") {
+            $VswherePath = "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe"
+        } else {
+            Write-Host vswhere.exe not found. Download from: https://github.com/Microsoft/vswhere/releases
+        }
     }
 	$MSBuildPath = &$VswherePath -latest -requires Microsoft.Component.MSBuild -version 15.0
     $StartKey = "installationPath: "
@@ -60,13 +64,13 @@ if (!(Test-Path "$MSBuildPath" -ErrorAction SilentlyContinue)) {
 }
 
 #Find NuGet
-if ("$NuGetPath" -eq "" -or !(Test-Path "$NuGetPath" -ErrorAction SilentlyContinue)) {
+if ("$NuGet" -eq "" -or !(Test-Path "$NuGet" -ErrorAction SilentlyContinue)) {
     $NuGetCommand = Get-Command NuGet -ErrorAction SilentlyContinue
     if ($NuGetCommand) {
-        $NuGetPath = $NuGetCommand.Path
+        $NuGet = $NuGetCommand.Path
     }
 }
-if ("$NuGetPath" -eq "" -or !(Test-Path "$NuGetPath" -ErrorAction SilentlyContinue)) {
+if ("$NuGet" -eq "" -or !(Test-Path "$NuGet" -ErrorAction SilentlyContinue)) {
 	Write-Host NuGet not found. Download from: https://dist.nuget.org/win-x86-commandline/latest/nuget.exe to: c:\windows\nuget.exe. If you do not have permission to create c:\windows\nuget.exe use the -NuGet switch.
     sleep 10
     exit 1
@@ -236,7 +240,7 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
             } else {
                 $OutputProperty = ""
             }
-            &"$NuGetPath" "restore" "$SolutionFile"
+            &"$NuGet" "restore" "$SolutionFile"
             &"$MSBuildPath" "$SolutionFile" "/p:Platform=`"Any CPU`";Configuration=`"$Config`"" "/maxcpucount" $OutputProperty $Target
             if ($LASTEXITCODE -ne 0) {
 				Write-Host Build failed. Check your pending changes. If you do not have any pending changes then you can try running 'dev\scorched get.bat' before retrying. Compiling Warewolf requires at at least MSBuild 15.0, download from: https://aka.ms/vs/15/release/vs_buildtools.exe and FSharp 4.0, download from http://download.microsoft.com/download/9/1/2/9122D406-F1E3-4880-A66D-D6C65E8B1545/FSharp_Bundle.exe
