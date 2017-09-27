@@ -35,11 +35,7 @@ namespace Warewolf.Studio.ViewModels
 
         public MenuViewModel(IShellViewModel mainViewModel)
         {
-            if (mainViewModel == null)
-            {
-                throw new ArgumentNullException(nameof(mainViewModel));
-            }
-            _viewModel = mainViewModel;
+            _viewModel = mainViewModel ?? throw new ArgumentNullException(nameof(mainViewModel));
             _isOverLock = false;
             NewServiceCommand = _viewModel.NewServiceCommand;
             DeployCommand = _viewModel.DeployCommand;
@@ -47,8 +43,7 @@ namespace Warewolf.Studio.ViewModels
             OpenSchedulerCommand = _viewModel.SchedulerCommand;
             OpenSettingsCommand = _viewModel.SettingsCommand;
             ExecuteServiceCommand = _viewModel.DebugCommand;
-            //StartPageCommand = _viewModel.ShowStartPageCommand;
-            StartPageCommand = _viewModel.MergeCommand;
+            StartPageCommand = _viewModel.ShowStartPageCommand;
             OnPropertyChanged(() => SaveCommand);
             OnPropertyChanged(() => ExecuteServiceCommand);
             CheckForNewVersion(_viewModel);
