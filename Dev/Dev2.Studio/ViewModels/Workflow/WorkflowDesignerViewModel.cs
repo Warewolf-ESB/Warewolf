@@ -2913,28 +2913,31 @@ namespace Dev2.Studio.ViewModels.Workflow
             ModelItem root = _wd.Context.Services.GetService<ModelService>().Root;
             var chart = _wd.Context.Services.GetService<ModelService>().Find(root, typeof(Flowchart)).FirstOrDefault();
 
-            var nodes = chart.Properties["Nodes"].Collection as ModelItemCollection;
-            var startNode = chart.Properties["StartNode"];
+            if (chart != null)
+            {
+                var nodes = chart.Properties["Nodes"]?.Collection;
+                var startNode = chart.Properties["StartNode"];
 
-            if (startNode.ComputedValue == null)
-            {
-                if (nodes == null || nodes.Count < 1)
+                if (startNode?.ComputedValue == null)
                 {
+                    if (nodes == null || nodes.Count < 1)
+                    {
+                        nodes.Add(step);
+                    }
                     nodes.Add(step);
+                    startNode.SetValue(step);
                 }
-                nodes.Add(step);
-                startNode.SetValue(step);
-            }
-            else
-            {
-                ViewStateService service = _wd.Context.Services.GetService<ViewStateService>();
-                ModelItem temp = nodes[0];
-                service.RemoveViewState(temp,"ShapeLocation");
-                service.StoreViewState(temp,"ShapeLocation", point);
-                if (!nodes.Contains(step))
+                else
                 {
-                    nodes.Add(step);
-                    temp.Properties["Next"].SetValue(step);
+                    ViewStateService service = _wd.Context.Services.GetService<ViewStateService>();
+                    ModelItem temp = nodes[0];
+                    service.RemoveViewState(temp,"ShapeLocation");
+                    service.StoreViewState(temp,"ShapeLocation", point);
+                    if (!nodes.Contains(step))
+                    {
+                        nodes.Add(step);
+                        temp.Properties["Next"].SetValue(step);
+                    }
                 }
             }
         }

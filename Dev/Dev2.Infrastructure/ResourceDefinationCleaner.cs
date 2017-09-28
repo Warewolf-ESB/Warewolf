@@ -1,121 +1,45 @@
-/*
-*  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
-*  Some rights reserved.
-*  Visit our website for more information <http://warewolf.io/>
-*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
-*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
-*/
-
-using System;
-using System.Linq;
+﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.RegularExpressions;
 using Dev2.Common;
 using Dev2.Common.Common;
-using Dev2.Common.Interfaces.Core.DynamicServices;
-using Dev2.Communication;
-using Dev2.DynamicServices;
-using Dev2.DynamicServices.Objects;
-using Dev2.Runtime.Hosting;
-using Dev2.Runtime.ServiceModel.Data;
-using Dev2.Util;
-using Dev2.Workspaces;
+using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Infrastructure.Communication;
 using Dev2.Common.Utils;
-using System.Text.RegularExpressions;
-using Dev2.Common.Interfaces.Enums;
+using Dev2.Communication;
 using Warewolf.Resource.Errors;
 using Warewolf.Security.Encryption;
 
-
-
-
-namespace Dev2.Runtime.ESB.Management.Services
+namespace Dev2
 {
-    /// <summary>
-    /// Fetch a service body definition
-    /// </summary>
-    public class FetchResourceDefinition : IEsbManagementEndpoint
+    public class ResourceDefinationCleaner : IResourceDefinationCleaner
     {
-        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
+        public StringBuilder GetResourceDefinition( bool prepairForDeployment, Guid resourceId, StringBuilder contents)
         {
-            StringBuilder tmp;
-            requestArgs.TryGetValue("ResourceID", out tmp);
-            if (tmp != null)
-            {
-                Guid resourceId;
-                if (Guid.TryParse(tmp.ToString(), out resourceId))
-                {
-                    return resourceId;
-                }
-            }
-
-            return Guid.Empty;
-        }
-
-        public AuthorizationContext GetAuthorizationContextForService()
-        {
-            return AuthorizationContext.View;
-        }
-
-        public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
-        {
+            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            ExecuteMessage res = new ExecuteMessage();
             try
             {
-                string serviceId = null;
-                bool prepairForDeployment = false;
-                StringBuilder tmp;
-                values.TryGetValue(@"ResourceID", out tmp);
-
-                if (tmp != null)
+                if (!contents.IsNullOrEmpty())
                 {
-                    serviceId = tmp.ToString();
-                }
-
-                values.TryGetValue(@"PrepairForDeployment", out tmp);
-
-                if (tmp != null)
-                {
-                    prepairForDeployment = bool.Parse(tmp.ToString());
-                }
-
-                Guid resourceId;
-                Guid.TryParse(serviceId, out resourceId);
-
-                Dev2Logger.Info($"Fetch Resource definition. ResourceId: {resourceId}", GlobalConstants.WarewolfInfo);
-                ResourceDefinationCleaner resourceDefinationCleaner = new ResourceDefinationCleaner();
-                var result = ResourceCatalog.Instance.GetResourceContents(theWorkspace.ID, resourceId);
-                var resourceDefinition = resourceDefinationCleaner.GetResourceDefinition(prepairForDeployment, resourceId, result);
-
-                return resourceDefinition;
-            }
-            catch (Exception err)
-            {
-                Dev2Logger.Error(err, GlobalConstants.WarewolfError);
-                throw;
-            }
-        }
-
-        public StringBuilder GetResourceDefinition(IWorkspace theWorkspace, Dev2JsonSerializer serializer, ExecuteMessage res, bool prepairForDeployment, Guid resourceId)
-        {
-            try
-            {
-
-                var result = ResourceCatalog.Instance.GetResourceContents(theWorkspace.ID, resourceId);
-                if (!result.IsNullOrEmpty())
-                {
-                    var tempResource = new Resource(result.ToXElement());
-                    var resource = tempResource;
-
-                    if (resource.ResourceType == @"DbSource")
+                    var assembly = Assembly.Load("Dev2.Data");
+                    var instance = assembly.CreateInstance("Resource", true, BindingFlags.Default, null, new object[] { contents.ToXElement() },
+                        CultureInfo.CurrentCulture, new object[] { });
+                    
+                     var resource = (IResource)instance;
+                    if (resource != null && resource.ResourceType == @"DbSource")
                     {
-                        res.Message.Append(result);
+                        res.Message.Append(contents);
                     }
                     else
                     {
-                        DoWorkflowServiceMessage(result, res);
+                        DoWorkflowServiceMessage(contents, res);
                     }
                 }
             }
@@ -151,7 +75,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             return serializer.SerializeToBuilder(res);
         }
 
-        private static void DoWorkflowServiceMessage(StringBuilder result, ExecuteMessage res)
+        private static void DoWorkflowServiceMessage(StringBuilder result, IExecuteMessage res)
         {
             var startIdx = result.IndexOf(GlobalConstants.PayloadStart, 0, false);
 
@@ -243,21 +167,5 @@ namespace Dev2.Runtime.ESB.Management.Services
             output.Append(xml);
             return output;
         }
-
-        public DynamicService CreateServiceEntry()
-        {
-            var serviceAction = new ServiceAction { Name = HandlesType(), SourceMethod = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService };
-
-            var serviceEntry = new DynamicService { Name = HandlesType(), DataListSpecification = new StringBuilder("<DataList><ResourceID ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>") };
-            serviceEntry.Actions.Add(serviceAction);
-
-            return serviceEntry;
-        }
-
-        public string HandlesType()
-        {
-            return @"FetchResourceDefinitionService";
-        }
-
     }
 }

@@ -28,6 +28,11 @@ namespace Dev2.Common
 
     public static class GlobalConstants
     {
+        public const string PayloadStart = @"<XamlDefinition>";
+        public const string PayloadEnd = @"</XamlDefinition>";
+        public const string AltPayloadStart = @"<Actions>";
+        public const string AltPayloadEnd = @"</Actions>";
+
         static GlobalConstants()
         {
             SystemEvents.TimeChanged += (sender, args) =>
@@ -643,9 +648,9 @@ where pn.nspname = 'public';
             try
             {
                 var stringParam = (string)paramaTer;
-                if (string.IsNullOrEmpty(stringParam))
+                if (String.IsNullOrEmpty(stringParam))
                 {
-                    throw new ArgumentNullException(name, string.Format(ErrorResource.NoValueProvided, name));
+                    throw new ArgumentNullException(name, String.Format(ErrorResource.NoValueProvided, name));
                 }
             }
             catch (ArgumentNullException)
@@ -656,17 +661,9 @@ where pn.nspname = 'public';
             {
                 if (paramaTer == null)
                 {
-                    throw new ArgumentNullException(name, string.Format(ErrorResource.NoValueProvided, name));
+                    throw new ArgumentNullException(name, String.Format(ErrorResource.NoValueProvided, name));
                 }
             }
         }
-
-
-
-
-
-
-
-
     }
 }
