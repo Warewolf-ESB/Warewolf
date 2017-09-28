@@ -12,7 +12,10 @@ using Dev2.Studio.Interfaces;
 using Dev2.Common;
 using Dev2.Utilities;
 using System.Activities.Presentation.View;
+using System.Text;
 using System.Windows;
+using Dev2.Common.Interfaces;
+using Dev2.Communication;
 
 namespace Warewolf.MergeParser
 {
@@ -126,10 +129,21 @@ namespace Warewolf.MergeParser
             var xaml = resourceModel.WorkflowXaml;
 
             var workspace = GlobalConstants.ServerWorkspaceID;
-            var msg = resourceModel.Environment.ResourceRepository.FetchResourceDefinition(resourceModel.Environment, workspace, resourceModel.ID, false);
-            if (msg != null)
+            if (xaml == default(StringBuilder) || xaml.Length == 0)
             {
-                xaml = msg.Message;
+                var msg = resourceModel.Environment.ResourceRepository.FetchResourceDefinition(resourceModel.Environment, workspace, resourceModel.ID, true);
+                if (msg != null)
+                {
+                    xaml = msg.Message;
+                }
+            }
+            else
+            {
+                IResourceDefinationCleaner resourceDefinationCleaner = new ResourceDefinationCleaner();
+                Dev2JsonSerializer se = new Dev2JsonSerializer();
+                var a = resourceDefinationCleaner.GetResourceDefinition(true, resourceModel.ID, resourceModel.WorkflowXaml);
+                var executeMessage = se.Deserialize<ExecuteMessage>(a);
+                xaml = executeMessage.Message;
             }
 
             if (xaml == null || xaml.Length == 0)
