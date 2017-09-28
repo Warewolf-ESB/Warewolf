@@ -184,12 +184,56 @@ namespace Dev2.Integration.Tests.Merge
             AsserthildrenHasChild(single.Children, "Incorrect");
             AsserthildrenHasChild(single.Children, "Correct Result");
         }
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void Example_ControlSwitchDecision_Have_No_Differences()
+        {
+            //---------------Set up test pack-------------------
+            var environmentModel = _server.Source;
+            environmentModel.Connect();
+            var resourceRepository = _server.Source.ResourceRepository;
+            resourceRepository.Load();
+
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            var contextualResourceModel =
+                resourceRepository.LoadContextualResourceModel("9e9660d8-1a3c-45ab-a330-673c2343e517".ToGuid());
+            var mergeWorkflowViewModel = new MergeWorkflowViewModel(contextualResourceModel, contextualResourceModel);
+            //---------------Test Result -----------------------
+            Assert.IsNotNull(mergeWorkflowViewModel);
+
+            var all = mergeWorkflowViewModel.Conflicts.All(conflict => !conflict.HasConflict);
+            Assert.IsTrue(all);
+            var conflictsCount = mergeWorkflowViewModel.Conflicts.Count;
+            Assert.AreEqual(5, conflictsCount);
+            var completeConflict1 = mergeWorkflowViewModel.Conflicts[0];
+            Assert.IsTrue(!completeConflict1.CurrentViewModel.Children.Any());
+            Assert.AreEqual("Use the Switch tool to:", completeConflict1.CurrentViewModel.MergeDescription);
+            var completeConflict2 = mergeWorkflowViewModel.Conflicts[1];
+            Assert.IsTrue(!completeConflict2.CurrentViewModel.Children.Any());
+            Assert.AreEqual("EXAMPLE 1 - Basic Usage", completeConflict2.CurrentViewModel.MergeDescription);
+            var completeConflict3 = mergeWorkflowViewModel.Conflicts[2];
+            Assert.IsTrue(completeConflict3.CurrentViewModel.Children.Any());
+            Assert.AreEqual("[[DiceRollValue]]", completeConflict3.CurrentViewModel.MergeDescription);
+            var childrenCount = completeConflict3.CurrentViewModel.Children.Count;
+            Assert.AreEqual(7, childrenCount);
+            var mergeToolModels = completeConflict3.CurrentViewModel.Children;
+            AsserthildrenHasChild(mergeToolModels, "Incorrect",6);
+            AsserthildrenHasChild(mergeToolModels, "Correct",1);
+           
+        }
 
         private void AsserthildrenHasChild(ObservableCollection<IMergeToolModel> children, string description)
         {
             var count = children.Count(model =>
                 model.MergeDescription.Equals(description, StringComparison.Ordinal));
             Assert.AreEqual(1, count);
+        }
+        private void AsserthildrenHasChild(ObservableCollection<IMergeToolModel> children, string description, int numberOfChildren)
+        {
+            var count = children.Count(model =>
+                model.MergeDescription.Equals(description, StringComparison.Ordinal));
+            Assert.AreEqual(numberOfChildren, count);
         }
     }
 }
