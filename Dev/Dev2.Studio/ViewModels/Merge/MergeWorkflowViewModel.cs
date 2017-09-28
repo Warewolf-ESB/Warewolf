@@ -32,15 +32,15 @@ namespace Dev2.ViewModels.Merge
             foreach (var currentChange in currentChanges)
             {
                 var conflict = new CompleteConflict { UniqueId = currentChange.uniqueId };
-                var factoryA = new ConflictModelFactory(currentChange.current, currentResourceModel);
-                var factoryB = new ConflictModelFactory(currentChange.difference, differenceResourceModel);
+                var factoryA = new ConflictModelFactory(currentChange.Item2.modelItem, currentResourceModel);
+                var factoryB = new ConflictModelFactory(currentChange.Item3.modelItem, differenceResourceModel);
                 conflict.CurrentViewModel = factoryA.GetModel();
                 conflict.CurrentViewModel.AddAnItem = new DelegateCommand(o =>
                 {
                     var model = conflict.CurrentViewModel as MergeToolModel;
                     if (model.IsMergeChecked)
                     {
-                        AddActivity(model);
+                        AddActivity(model, currentChange.Item2.point);
                     }
                 });
                 foreach (var conf in conflict.CurrentViewModel.Children)
@@ -50,7 +50,7 @@ namespace Dev2.ViewModels.Merge
                         var model = conf as MergeToolModel;
                         if (model.IsMergeChecked)
                         {
-                            AddActivity(model);
+                            AddActivity(model, currentChange.Item2.point);
                         }
                     });
                 }
@@ -62,7 +62,7 @@ namespace Dev2.ViewModels.Merge
                     var model = conflict.DiffViewModel as MergeToolModel;
                     if (model.IsMergeChecked)
                     {
-                        AddActivity(model);
+                        AddActivity(model, currentChange.Item3.point);
                     }
                 });
                 foreach (var conf in conflict.DiffViewModel.Children)
@@ -72,7 +72,7 @@ namespace Dev2.ViewModels.Merge
                         var model = conf as MergeToolModel;
                         if (model.IsMergeChecked)
                         {
-                            AddActivity(model);
+                            AddActivity(model, currentChange.Item3.point);
                         }
                     });
                 }
@@ -118,9 +118,8 @@ namespace Dev2.ViewModels.Merge
             DifferenceConflictModel.SomethingConflictModelChanged += SourceOnConflictModelChanged;
         }
 
-        private void AddActivity(MergeToolModel model)
+        private void AddActivity(MergeToolModel model, Point point)
         {
-            Point point = new Point(300, 200);
             WorkflowDesignerViewModel.AddItem(model.ActivityType, point);
         }
 
