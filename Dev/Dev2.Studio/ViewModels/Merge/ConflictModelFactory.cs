@@ -151,6 +151,10 @@ namespace Dev2.ViewModels.Merge
                 {
                     dsfActivity = decision.Conditions.DisplayText;
                 }
+                if (currentValue is DsfSwitch switchActivity)
+                {
+                    dsfActivity = switchActivity.Switch;
+                }
                 var mergeToolModel = new MergeToolModel
                 {
                     ActivityDesignerViewModel = instance,
