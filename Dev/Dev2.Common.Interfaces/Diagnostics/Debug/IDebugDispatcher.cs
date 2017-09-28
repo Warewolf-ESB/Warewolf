@@ -34,7 +34,8 @@ namespace Dev2.Common.Interfaces.Diagnostics.Debug
         /// <param name="workspaceId">The workspace ID to be queried.</param>
         /// <returns>The <see cref="IDebugWriter" /> with the specified ID, or <code>null</code> if not found.</returns>
         IDebugWriter Get(Guid workspaceId);
-
+        void Write(IDebugState debugState);
+        void Write(IDebugState debugState, bool isTestExecution, bool isDebugFromWeb, string testName);
         void Write(IDebugState debugState, bool isTestExecution, bool isDebugFromWeb, string testName, bool isRemoteInvoke, string remoteInvokerId,
             string parentInstanceId, IList<IDebugState> remoteDebugItems);
     }
