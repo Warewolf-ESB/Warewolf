@@ -33,8 +33,8 @@ namespace Dev2.ViewModels.Merge
             foreach (var currentChange in currentChanges)
             {
                 var conflict = new CompleteConflict { UniqueId = currentChange.uniqueId };
-                var factoryA = new ConflictModelFactory(currentChange.Item2.modelItem, currentResourceModel);
-                var factoryB = new ConflictModelFactory(currentChange.Item3.modelItem, differenceResourceModel);
+                var factoryA = new ConflictModelFactory(currentChange.currentTool.modelItem, currentResourceModel);
+                var factoryB = new ConflictModelFactory(currentChange.differenceTool.modelItem, differenceResourceModel);
                 conflict.CurrentViewModel = factoryA.GetModel();
                 conflict.CurrentViewModel.AddAnItem = new DelegateCommand(o =>
                 {
