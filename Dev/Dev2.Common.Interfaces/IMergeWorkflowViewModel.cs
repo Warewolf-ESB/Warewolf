@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Windows;
 using System.Windows.Media;
 
 namespace Dev2.Common.Interfaces
@@ -19,6 +20,7 @@ namespace Dev2.Common.Interfaces
         IConflictModelFactory DifferenceConflictModel { get; set; }
         ObservableCollection<ICompleteConflict> Conflicts { get; set; }
         bool IsVariablesEnabled { get; set; }
+        bool IsMergeExpanderEnabled { get; set; }
     }
 
     public delegate void ConflictModelChanged(object sender, IConflictModelFactory args);
@@ -31,12 +33,12 @@ namespace Dev2.Common.Interfaces
         ObservableCollection<ICompleteConflict> Children { get; set; }
         Guid UniqueId { get; set; }
         bool HasConflict { get; set; }
+        bool IsMergeExpanderEnabled { get; set; }
+        bool IsMergeExpanded { get; set; }
     }
 
     public interface IMergeToolModel
     {
-        bool IsMergeExpanderEnabled { get; set; }
-        bool IsMergeExpanded { get; set; }
         ImageSource MergeIcon { get; set; }
         string MergeDescription { get; set; }
         bool IsMergeChecked { get; set; }
@@ -45,6 +47,6 @@ namespace Dev2.Common.Interfaces
         string ParentDescription { get; set; }
         bool HasParent { get; set; }
         event ModelToolChanged SomethingModelToolChanged;
-        System.Windows.Input.ICommand AddAnItem { get; set; }
+        Point Location { get; set; }
     }
 }

@@ -150,7 +150,6 @@
                                              GroupName="MergeWorkflowName"
                                              Style="{StaticResource MergeRadioButtonStyle}"
                                              AutomationProperties.AutomationId="UI_CurrentWorkflowRB_AutoID"/>
-
                             </StackPanel>
                         </DockPanel>
 
@@ -189,6 +188,7 @@
                           Visibility="{Binding HasVariablesConflict, Converter={StaticResource BoolToVisibilityConverterPositive}}">
                         <Expander x:Name="VariablesExpander"
                                   Style="{StaticResource MergeExpander}"
+                                  Header="{Binding .}"
                                   AutomationProperties.AutomationId="UI_VariablesExpander_AutoID">
                             <Expander.HeaderTemplate>
                                 <DataTemplate>
@@ -275,6 +275,9 @@
                             <Grid x:Name="VariablesExpanderTemplateGrid" 
                                   Width="{Binding ElementName=VariablesExpander, Path=ActualWidth}"
                                   AutomationProperties.AutomationId="UI_VariablesExpanderTemplateGrid_AutoID">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition SharedSizeGroup="MergeCurrentColumnWidth"/>
                                     <ColumnDefinition SharedSizeGroup="MergeDifferenceColumnWidth"/>
@@ -283,7 +286,6 @@
                                         BorderBrush="#CFD6E1" 
                                         BorderThickness="1,0,1,1" 
                                         DataContext="{Binding CurrentConflictModel}"
-                                        Visibility="{Binding HasConflict, Converter={StaticResource BoolToVisibilityConverterPositive}}"
                                         AutomationProperties.AutomationId="UI_CurrentVariablesTemplateBorder_AutoID">
                                     <datalist:DataListView x:Name="CurrentVariablesDataListView" 
                                                            DataContext="{Binding DataListViewModel}" 
@@ -297,7 +299,6 @@
                                         BorderBrush="#CFD6E1" 
                                         BorderThickness="1,0,1,1" 
                                         DataContext="{Binding DifferenceConflictModel}"
-                                        Visibility="{Binding HasConflict, Converter={StaticResource BoolToVisibilityConverterPositive}}"
                                         AutomationProperties.AutomationId="UI_DifferenceVariablesTemplateBorder_AutoID">
                                     <datalist:DataListView x:Name="DifferenceVariablesDataListView" 
                                                            DataContext="{Binding DataListViewModel}" 
@@ -313,6 +314,7 @@
                     <Grid x:Name="ConflictsGrid" 
                           Grid.Row="4" 
                           Grid.Column="0" 
+                          IsEnabled="{Binding IsMergeExpanderEnabled}"
                           Grid.ColumnSpan="2"
                           AutomationProperties.AutomationId="UI_ConflictsGrid_AutoID">
                         <TreeView x:Name="ConflictsTreeView"
@@ -395,9 +397,9 @@
                                                   Grid.Row="1"
                                                   Grid.Column="0"
                                                   Grid.ColumnSpan="2"
-							                      Visibility="{Binding IsMergeExpanderEnabled, Converter={StaticResource BoolToVisibilityConverterPositive}}"
-							                      Header="{Binding .}"                                                  
-							                      IsExpanded="{Binding IsExpanded, Mode=TwoWay, Converter={StaticResource ExpanderToBooleanConverter}, ConverterParameter=1}"
+							                      Visibility="{Binding HasConflict, Converter={StaticResource BoolToVisibilityConverterPositive}}"
+							                      Header="{Binding .}"
+							                      IsExpanded="{Binding IsMergeExpanded}"
 							                      Style="{StaticResource MergeExpander}"
 							                      AutomationProperties.AutomationId="{Binding StringFormat=UI_TreeViewExpander_{0}_AutoID, Path=MergeDescription}">
                                             <Expander.HeaderTemplate>
@@ -414,7 +416,6 @@
                                                                 BorderThickness="0,0,2,0" 
                                                                 Margin="0,0,7,0"
                                                                 DataContext="{Binding CurrentViewModel}"
-                                                                Visibility="{Binding HasConflict, Converter={StaticResource BoolToVisibilityConverterPositive}}"
                                                                 AutomationProperties.AutomationId="UI_TreeViewExpanderCurrentHeaderBorder_AutoID">
                                                             <DockPanel Name="TreeViewExpanderCurrentHeaderDockPanel" 
                                                                        LastChildFill="False" 
@@ -459,7 +460,6 @@
                                                                 BorderThickness="0" 
                                                                 Margin="-7,0,0,0"
                                                                 DataContext="{Binding DiffViewModel}"
-                                                                Visibility="{Binding HasConflict, Converter={StaticResource BoolToVisibilityConverterPositive}}"
                                                                 AutomationProperties.AutomationId="UI_TreeViewExpanderDifferenceHeaderBorder_AutoID">
                                                             <DockPanel Name="TreeViewExpanderDifferenceHeaderDockPanel" 
                                                                        LastChildFill="False" 
