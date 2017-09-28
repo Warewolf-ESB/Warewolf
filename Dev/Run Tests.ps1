@@ -603,13 +603,17 @@ function Start-Server([string]$ServerPath,[string]$ResourcesType) {
 }
 
 function Start-my.warewolf.io {
-    if ($ServerPath -eq "" -or !(Test-Path $ServerPath)) {
-        $ServerPath = Find-Warewolf-Server-Exe
+    $WebsPath = ""
+    if (Test-Path "$TestsPath\_PublishedWebsites\Dev2.Web") {
+        $WebsPath = "$TestsPath\_PublishedWebsites\Dev2.Web"
+    } else {
+        if ($ServerPath -eq "" -or !(Test-Path $ServerPath)) {
+            $ServerPath = Find-Warewolf-Server-Exe
+        }
+        $WebsPath = (Get-Item $ServerPath).Directory.FullName + "\_PublishedWebsites\Dev2.Web"
     }
-    $ServerFolderPath = (Get-Item $ServerPath).Directory.FullName
     Cleanup-ServerStudio
-    if (Test-Path "$ServerFolderPath\_PublishedWebsites\Dev2.Web") {
-        $WebsPath = "$ServerFolderPath\_PublishedWebsites\Dev2.Web"
+    if (Test-Path $WebsPath) {
         $IISExpressPath = "C:\Program Files (x86)\IIS Express\iisexpress.exe"
         if (!(Test-Path $IISExpressPath)) {
             Write-Warning "my.warewolf.io cannot be hosted. $IISExpressPath not found."
@@ -618,7 +622,7 @@ function Start-my.warewolf.io {
             Write-Host my.warewolf.io has started.
         }
     } else {
-        Write-Warning "my.warewolf.io cannot be hosted. Webs not found at $ServerFolderPath\_PublishedWebsites\Dev2.Web"
+        Write-Warning "my.warewolf.io cannot be hosted. Webs not found at $TestsPath\_PublishedWebsites\Dev2.Web or at $ServerFolderPath\_PublishedWebsites\Dev2.Web"
     }
 }
 
