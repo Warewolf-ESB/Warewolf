@@ -48,7 +48,7 @@ namespace Dev2.Common.Interfaces
 
         void SetItem(IServiceTestModel model);
         IServiceTestModel Clone();
-        IServiceTestStep AddTestStep(string activityUniqueId, string activityDisplayName, string activityTypeName, ObservableCollection<IServiceTestOutput> serviceTestOutputs, StepType stepType = StepType.Assert);
+        IServiceTestStep AddTestStep(string activityUniqueId, string activityDisplayName, string activityTypeName, ObservableCollection<IServiceTestOutput> serviceTestOutputs, StepType stepType);
     }
 
     public interface IServiceTestInput
