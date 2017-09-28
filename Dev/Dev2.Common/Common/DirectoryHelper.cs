@@ -9,6 +9,7 @@
 */
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using Warewolf.Resource.Errors;
 
@@ -16,6 +17,30 @@ namespace Dev2.Common.Common
 {
     public static class DirectoryHelper
     {
+
+        /// <summary>
+        /// This needs to be remove at Version 3.0
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="extensions"></param>
+        /// <returns></returns>
+        public static IEnumerable<string> GetFilesByExtensions(string path, params string[] extensions)
+        {
+            DirectoryInfo dir = new DirectoryInfo(path);
+            if (extensions == null)
+                throw new ArgumentNullException("extensions");
+            List<string> files = new List<string>();
+            foreach (string ext in extensions)
+            {
+                var fyles = Directory.GetFiles(path, string.Format("*{0}", ext));
+                foreach (var item in fyles)
+                {
+                    files.Add(item);
+                }
+            }
+            return files;
+        }
+
         public static void Copy(string sourceDirName, string destDirName, bool copySubDirs)
         {
             var dir = new DirectoryInfo(sourceDirName);

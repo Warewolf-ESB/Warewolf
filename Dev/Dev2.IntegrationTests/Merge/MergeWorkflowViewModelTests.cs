@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
 using Dev2.Activities;
 using Dev2.Common.ExtMethods;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
@@ -149,10 +152,44 @@ namespace Dev2.Integration.Tests.Merge
             Assert.AreEqual("EXAMPLE 1 - Basic Usage", completeConflict2.CurrentViewModel.MergeDescription);
             var completeConflict3 = mergeWorkflowViewModel.Conflicts[2];
             Assert.IsTrue(completeConflict3.CurrentViewModel.Children.Any());
-            Assert.AreEqual("Is True?", completeConflict3.CurrentViewModel.MergeDescription);
+            Assert.AreEqual("Decision", completeConflict3.CurrentViewModel.MergeDescription);
+            var childrenCount = completeConflict3.CurrentViewModel.Children.Count;
+            Assert.AreEqual(4, childrenCount);
 
 
+            var mergeToolModel = completeConflict3.CurrentViewModel.Children.Single(model => model.MergeDescription == "Over 18");
+            Assert.AreEqual(4, mergeToolModel.Children.Count);
+            AsserthildrenHasChild(mergeToolModel.Children, "Correct Result");
+            AsserthildrenHasChild(mergeToolModel.Children, "Incorrect Result");
+            AsserthildrenHasChild(mergeToolModel.Children, "EXAMPLE 3 - Error Checking");
+            AsserthildrenHasChild(mergeToolModel.Children, "Was there an error?");
 
+            var toolModel = mergeToolModel.Children.Single(model => model.MergeDescription == "Was there an error?");
+            var count = toolModel.Children.Count;
+            Assert.AreEqual(5, count);
+            AsserthildrenHasChild(toolModel.Children, "Correct Result");
+            AsserthildrenHasChild(toolModel.Children, "Incorrect Result");
+            AsserthildrenHasChild(toolModel.Children, "EXAMPLE 4 - Recordsets");
+            AsserthildrenHasChild(toolModel.Children, "Assign (3)");
+            AsserthildrenHasChild(toolModel.Children, "If [[rec(*).set]] Is Numeric");
+
+
+             var single = toolModel.Children.Single(model => model.MergeDescription == "If [[rec(*).set]] Is Numeric");
+            var childCount = single.Children.Count;
+            Assert.AreEqual(2, childCount);
+            var trueArmTools = single.Children.Count(model => model.ParentDescription == "All are numeric");
+            var falseArmTools = single.Children.Count(model => model.ParentDescription == "Not all numeric");
+            Assert.AreEqual(1, trueArmTools);
+            Assert.AreEqual(1, falseArmTools);
+            AsserthildrenHasChild(single.Children, "Incorrect");
+            AsserthildrenHasChild(single.Children, "Correct Result");
+        }
+
+        private void AsserthildrenHasChild(ObservableCollection<IMergeToolModel> children, string description)
+        {
+            var count = children.Count(model =>
+                model.MergeDescription.Equals(description, StringComparison.Ordinal));
+            Assert.AreEqual(1, count);
         }
     }
 }

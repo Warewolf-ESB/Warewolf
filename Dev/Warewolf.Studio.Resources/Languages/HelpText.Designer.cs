@@ -875,6 +875,33 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to On the small view on the design surface, this text will show to help identify what decision is being made and will not affect execution..
+        /// </summary>
+        public static string DecisionHelpDisplayText {
+            get {
+                return ResourceManager.GetString("DecisionHelpDisplayText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This is the help text of the false arm. It allows you to make your flow easier to comprehend and debug and will not affect execution..
+        /// </summary>
+        public static string DecisionHelpFalseArm {
+            get {
+                return ResourceManager.GetString("DecisionHelpFalseArm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This is the help text of the true arm. It allows you to make your flow easier to comprehend and debug and will not affect execution..
+        /// </summary>
+        public static string DecisionHelpTrueArm {
+            get {
+                return ResourceManager.GetString("DecisionHelpTrueArm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Any variable and/or data goes in here.	To Delete a file or folder, put the full path and file or folder name to delete in here.	You can use File System, URI, SFTP, FTP or FTPS format.	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string DeleteHelpFileFolder {
