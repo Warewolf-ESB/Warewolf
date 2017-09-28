@@ -2908,38 +2908,93 @@ namespace Dev2.Studio.ViewModels.Workflow
             resourceModel.IsWorkflowSaved = true;
         }
 
-        public void AddItem(FlowNode step, Point point)
+        public void AddItem(IMergeToolModel model)
         {
             ModelItem root = _wd.Context.Services.GetService<ModelService>().Root;
             var chart = _wd.Context.Services.GetService<ModelService>().Find(root, typeof(Flowchart)).FirstOrDefault();
-
+            
             if (chart != null)
             {
                 var nodes = chart.Properties["Nodes"]?.Collection;
-                var startNode = chart.Properties["StartNode"];
-
-                if (startNode?.ComputedValue == null)
+                if (nodes == null)
                 {
-                    if (nodes == null || nodes.Count < 1)
-                    {
-                        nodes.Add(step);
-                    }
-                    nodes.Add(step);
-                    startNode.SetValue(step);
+                    return;
                 }
-                else
+                var startNode = chart.Properties["StartNode"];
+                if (startNode == null)
                 {
-                    ViewStateService service = _wd.Context.Services.GetService<ViewStateService>();
-                    ModelItem temp = nodes[0];
-                    service.RemoveViewState(temp,"ShapeLocation");
-                    service.StoreViewState(temp,"ShapeLocation", point);
-                    if (!nodes.Contains(step))
-                    {
-                        nodes.Add(step);
-                        temp.Properties["Next"].SetValue(step);
-                    }
+                    return;
+                }
+                var modelActivityType = model.ActivityType;
+                switch (modelActivityType)
+                {
+                    case FlowDecision flowDecision:
+
+                        var decTrue = flowDecision.True;
+                        var decFalse = flowDecision.False;
+                        
+                        AddFlowNode(nodes, decTrue);
+                        AddFlowNode(nodes, decFalse);
+                        AddFlowNode(nodes, flowDecision);
+
+                        SetShapeLocation(flowDecision);
+                        SetShapeLocation(decTrue);
+                        SetShapeLocation(decFalse);
+
+                        if (startNode.ComputedValue == null)
+                        {
+                            startNode.SetValue(flowDecision);
+                        }
+
+                        break;
+                    case FlowSwitch<string> flowSwitch:
+
+                        AddFlowNode(nodes, flowSwitch.Default);
+                        SetShapeLocation(flowSwitch.Default);
+                        foreach (var flowSwitchCase in flowSwitch.Cases)
+                        {
+                            AddFlowNode(nodes, flowSwitchCase.Value);
+                            SetShapeLocation(flowSwitchCase.Value);
+                        }
+
+                        if (startNode.ComputedValue == null)
+                        {
+                            startNode.SetValue(flowSwitch);
+                        }
+
+                        break;
+                    default:
+
+                        AddFlowNode(nodes, modelActivityType);
+                        SetShapeLocation(modelActivityType);
+
+                        if (startNode.ComputedValue == null)
+                        {
+                            startNode.SetValue(modelActivityType);
+                        }
+
+                        break;
                 }
             }
+        }
+
+        private void AddFlowNode(ModelItemCollection nodes, FlowNode flowNode)
+        {
+            if (flowNode != null)
+            {
+                nodes.Add(flowNode);
+            }
+        }
+
+        private void SetShapeLocation(FlowNode flowNode)
+        {
+            ViewStateService service = _wd.Context.Services.GetService<ViewStateService>();
+            var mergeParser = CustomContainer.Get<IServiceDifferenceParser>();
+            var modelItem = ModelItemUtils.CreateModelItem(flowNode);
+            
+            var pointForTool = mergeParser.GetPointForTool(flowNode);
+            service.RemoveViewState(modelItem, "ShapeLocation");
+            service.StoreViewState(modelItem, "ShapeLocation", pointForTool);
         }
 
         #region Implementation of IWorkflowDesignerViewModel

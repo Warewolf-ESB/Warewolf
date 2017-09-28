@@ -19,15 +19,15 @@ namespace Warewolf.MergeParser
     public class ServiceDifferenceParser : IServiceDifferenceParser
     {
         private readonly IActivityParser _activityParser;
-        private (List<(ModelItem modelItem, Point point)> nodeList, Flowchart flowchartDiff) _currentDifferences;
-        private (List<(ModelItem modelItem, Point point)> nodeList, Flowchart flowchartDiff) _differences;
+        private (List<ModelItem> nodeList, Flowchart flowchartDiff) _currentDifferences;
+        private (List<ModelItem> nodeList, Flowchart flowchartDiff) _differences;
 
-        private (ModelItem activity, Point point) GetCurrentModelItemUniqueId(IEnumerable<(Point point, IDev2Activity activity)> items, IDev2Activity activity)
+        private ModelItem GetCurrentModelItemUniqueId(IEnumerable<IDev2Activity> items, IDev2Activity activity)
         {
             if (activity == null) return default;
-            foreach ((Point point, IDev2Activity activity) item in items)
-                if (item.activity.UniqueID.Equals(activity.UniqueID))
-                    return ( ModelItemUtils.CreateModelItem(item.activity), item.point);
+            foreach (var modelItem in items)
+                if (modelItem.UniqueID.Equals(activity.UniqueID))
+                    return ModelItemUtils.CreateModelItem(modelItem);
             return default;
         }
 
@@ -42,7 +42,7 @@ namespace Warewolf.MergeParser
             _activityParser = activityParser;
         }
 
-        void CleanUpForDecisionAdSwitch(List<IDev2Activity> dev2Activities)
+        void CleanUpForDecisionAndSwitch(List<IDev2Activity> dev2Activities)
         {
             List<string> children = new List<string>();
             var decisions = dev2Activities.Where(tuple => tuple is DsfDecision).Cast<DsfDecision>();
@@ -74,31 +74,28 @@ namespace Warewolf.MergeParser
             dev2Activities.RemoveAll(activity => children.Any(s => s.Equals(activity.UniqueID, StringComparison.InvariantCultureIgnoreCase)));
         }
 
-        public List<(Guid uniqueId, (ModelItem modelItem, Point point), (ModelItem modelItem, Point point), bool hasConflict)> GetDifferences(IContextualResourceModel current, IContextualResourceModel difference)
+        public List<(Guid uniqueId, ModelItem current, ModelItem difference, bool hasConflict)> GetDifferences(IContextualResourceModel current, IContextualResourceModel difference)
         {
-            var conflictList = new List<(Guid uniqueId, (ModelItem modelItem, Point point), (ModelItem modelItem, Point point), bool hasConflict)>();
+            var conflictList = new List<(Guid uniqueId, ModelItem current, ModelItem difference, bool conflict)>();
             _currentDifferences = GetNodes(current);
             _differences = GetNodes(difference);
-            var allCurentItems = new List<(Point point, IDev2Activity activity)>();
-            var allRemoteItems = new List<(Point point, IDev2Activity activity)>();
-            foreach (var node in _currentDifferences.nodeList)
+            var allCurentItems = new List<IDev2Activity>();
+            var allRemoteItems = new List<IDev2Activity>();
+            foreach (var modelItem in _currentDifferences.nodeList)
             {
-                var dev2Activity1 = _activityParser.Parse(new List<IDev2Activity>(), node.modelItem);
-                allCurentItems.Add((node.point, dev2Activity1));
+                var dev2Activity1 = _activityParser.Parse(new List<IDev2Activity>(), modelItem);
+                allCurentItems.Add(dev2Activity1);
             }
-            var currentList=allCurentItems.Select(p => p.activity).ToList();
-            CleanUpForDecisionAdSwitch(currentList);
-            foreach (var node in _differences.nodeList)
+            CleanUpForDecisionAndSwitch(allCurentItems);
+            foreach (var modelItem in _differences.nodeList)
             {
-                var dev2Activity1 = _activityParser.Parse(new List<IDev2Activity>(), node.modelItem);
-                allRemoteItems.Add((node.point, dev2Activity1));
+                var dev2Activity1 = _activityParser.Parse(new List<IDev2Activity>(), modelItem);
+                allRemoteItems.Add(dev2Activity1);
             }
-            var remoteList = allRemoteItems.Select(p => p.activity).ToList();
-            CleanUpForDecisionAdSwitch(remoteList);
-           
-            var equalItems = currentList.Intersect(remoteList, new Dev2ActivityComparer()).ToList();
-            var nodesDifferentInMergeHead = currentList.Except(remoteList, new Dev2ActivityComparer()).ToList();
-            var nodesDifferentInHead = remoteList.Except(currentList, new Dev2ActivityComparer()).ToList();
+            CleanUpForDecisionAndSwitch(allRemoteItems);
+            var equalItems = allCurentItems.Intersect(allRemoteItems, new Dev2ActivityComparer()).ToList();
+            var nodesDifferentInMergeHead = allCurentItems.Except(allRemoteItems, new Dev2ActivityComparer()).ToList();
+            var nodesDifferentInHead = allRemoteItems.Except(allCurentItems, new Dev2ActivityComparer()).ToList();
             var allDifferences = nodesDifferentInMergeHead.Union(nodesDifferentInHead, new Dev2ActivityComparer());
 
             foreach (var item in equalItems)
@@ -115,15 +112,15 @@ namespace Warewolf.MergeParser
             var dev2Activities = allDifferences.DistinctBy(activity => activity.UniqueID).ToList();
             foreach (var item in dev2Activities)
             {
-                var currentModelItemUniqueId = GetCurrentModelItemUniqueId(allRemoteItems, item);
-                var differences = GetCurrentModelItemUniqueId(allCurentItems, item);
+                var currentModelItemUniqueId = GetCurrentModelItemUniqueId(allCurentItems, item);
+                var differences = GetCurrentModelItemUniqueId(allRemoteItems, item);
                 var diffItem = (Guid.Parse(item.UniqueID), currentModelItemUniqueId, differences, true);
                 conflictList.Add(diffItem);
             }
             return conflictList;
         }
 
-        private (List<(ModelItem modelItem, Point point)> nodeList, Flowchart flowchartDiff) GetNodes(IContextualResourceModel resourceModel)
+        private (List<ModelItem> nodeList, Flowchart flowchartDiff) GetNodes(IContextualResourceModel resourceModel)
         {
             var wd = new WorkflowDesigner();
             var xaml = resourceModel.WorkflowXaml;
@@ -144,13 +141,48 @@ namespace Warewolf.MergeParser
 
             var modelService = wd.Context.Services.GetService<ModelService>();
             var nodeList = modelService.Find(modelService.Root, typeof(FlowNode)).ToList();
-            var locationList = nodeList.Select(node => (node, GetShapeLocation(wd, node))).ToList();
+            ShapeLocationList = nodeList.Select(node => (node.GetCurrentValue<FlowNode>(), GetShapeLocation(wd, node))).ToList();
 
             var workflowHelper = new WorkflowHelper();
             var flowchartDiff = workflowHelper.EnsureImplementation(modelService).Implementation as Flowchart;
             // ReSharper disable once RedundantAssignment assuming this is for disposing
             wd = null;
-            return (locationList, flowchartDiff);
+            return (nodeList, flowchartDiff);
+        }
+
+        private List<(FlowNode node, Point point)> ShapeLocationList { get; set; }
+
+        public Point GetPointForTool(FlowNode flowNode)
+        {
+            var flowNodeDisplayName = GetFlowNodeDisplayName(flowNode);
+
+            foreach (var valueTuple in ShapeLocationList)
+            {
+                var displayName = GetFlowNodeDisplayName(valueTuple.node);
+                if (flowNodeDisplayName.Equals(displayName))
+                {
+                    return valueTuple.point;
+                }
+            }
+            return new Point();
+        }
+
+        private static string GetFlowNodeDisplayName(FlowNode node)
+        {
+            var displayName = string.Empty;
+            switch (node)
+            {
+                case FlowDecision flowDecision:
+                    displayName = flowDecision.DisplayName;
+                    break;
+                case FlowSwitch<string> flowSwitch:
+                    displayName = flowSwitch.DisplayName;
+                    break;
+                case FlowStep flowStep:
+                    displayName = flowStep.Action.DisplayName;
+                    break;
+            }
+            return displayName;
         }
 
         private static Point GetShapeLocation(WorkflowDesigner wd, ModelItem modelItem)
