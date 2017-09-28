@@ -2993,7 +2993,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             var modelItem = ModelItemUtils.CreateModelItem(flowNode);
             
             var pointForTool = mergeParser.GetPointForTool(flowNode);
-            service.RemoveViewState(modelItem, "ShapeLocation");
+            //service.RemoveViewState(modelItem, "ShapeLocation");
             service.StoreViewState(modelItem, "ShapeLocation", pointForTool);
         }
 

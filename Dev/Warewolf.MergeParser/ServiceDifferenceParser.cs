@@ -12,10 +12,7 @@ using Dev2.Studio.Interfaces;
 using Dev2.Common;
 using Dev2.Utilities;
 using System.Activities.Presentation.View;
-using System.Text;
 using System.Windows;
-using Dev2.Common.Interfaces;
-using Dev2.Communication;
 
 namespace Warewolf.MergeParser
 {
@@ -45,7 +42,7 @@ namespace Warewolf.MergeParser
             _activityParser = activityParser;
         }
 
-        void CleanUpForDecisionAndSwitch(List<IDev2Activity> dev2Activities)
+        void CleanUpForDecisionAdSwitch(List<IDev2Activity> dev2Activities)
         {
             List<string> children = new List<string>();
             var decisions = dev2Activities.Where(tuple => tuple is DsfDecision).Cast<DsfDecision>();
@@ -84,18 +81,18 @@ namespace Warewolf.MergeParser
             _differences = GetNodes(difference);
             var allCurentItems = new List<IDev2Activity>();
             var allRemoteItems = new List<IDev2Activity>();
-            foreach (var modelItem in _currentDifferences.nodeList)
+            foreach (var node in _currentDifferences.nodeList)
             {
-                var dev2Activity1 = _activityParser.Parse(new List<IDev2Activity>(), modelItem);
+                var dev2Activity1 = _activityParser.Parse(new List<IDev2Activity>(), node);
                 allCurentItems.Add(dev2Activity1);
             }
-            CleanUpForDecisionAndSwitch(allCurentItems);
-            foreach (var modelItem in _differences.nodeList)
+            CleanUpForDecisionAdSwitch(allCurentItems);
+            foreach (var node in _differences.nodeList)
             {
-                var dev2Activity1 = _activityParser.Parse(new List<IDev2Activity>(), modelItem);
+                var dev2Activity1 = _activityParser.Parse(new List<IDev2Activity>(), node);
                 allRemoteItems.Add(dev2Activity1);
             }
-            CleanUpForDecisionAndSwitch(allRemoteItems);
+            CleanUpForDecisionAdSwitch(allRemoteItems);
             var equalItems = allCurentItems.Intersect(allRemoteItems, new Dev2ActivityComparer()).ToList();
             var nodesDifferentInMergeHead = allCurentItems.Except(allRemoteItems, new Dev2ActivityComparer()).ToList();
             var nodesDifferentInHead = allRemoteItems.Except(allCurentItems, new Dev2ActivityComparer()).ToList();
@@ -115,8 +112,8 @@ namespace Warewolf.MergeParser
             var dev2Activities = allDifferences.DistinctBy(activity => activity.UniqueID).ToList();
             foreach (var item in dev2Activities)
             {
-                var currentModelItemUniqueId = GetCurrentModelItemUniqueId(allCurentItems, item);
-                var differences = GetCurrentModelItemUniqueId(allRemoteItems, item);
+                var currentModelItemUniqueId = GetCurrentModelItemUniqueId(allRemoteItems, item);
+                var differences = GetCurrentModelItemUniqueId(allCurentItems, item);
                 var diffItem = (Guid.Parse(item.UniqueID), currentModelItemUniqueId, differences, true);
                 conflictList.Add(diffItem);
             }
@@ -129,21 +126,10 @@ namespace Warewolf.MergeParser
             var xaml = resourceModel.WorkflowXaml;
 
             var workspace = GlobalConstants.ServerWorkspaceID;
-            if (xaml == default(StringBuilder) || xaml.Length == 0)
+            var msg = resourceModel.Environment.ResourceRepository.FetchResourceDefinition(resourceModel.Environment, workspace, resourceModel.ID, false);
+            if (msg != null)
             {
-                var msg = resourceModel.Environment.ResourceRepository.FetchResourceDefinition(resourceModel.Environment, workspace, resourceModel.ID, true);
-                if (msg != null)
-                {
-                    xaml = msg.Message;
-                }
-            }
-            else
-            {
-                IResourceDefinationCleaner resourceDefinationCleaner = new ResourceDefinationCleaner();
-                Dev2JsonSerializer se = new Dev2JsonSerializer();
-                var a = resourceDefinationCleaner.GetResourceDefinition(true, resourceModel.ID, resourceModel.WorkflowXaml);
-                var executeMessage = se.Deserialize<ExecuteMessage>(a);
-                xaml = executeMessage.Message;
+                xaml = msg.Message;
             }
 
             if (xaml == null || xaml.Length == 0)
