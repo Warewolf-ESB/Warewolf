@@ -267,18 +267,16 @@ namespace Dev2.Runtime.Hosting
                 var files = DirectoryHelper.GetFilesByExtensions(path, ".xml", ".bite");
                 foreach (var file in files)
                 {
+                    var updatedFile = string.Empty;
                     if (file.EndsWith(".xml"))
                     {
-                        var updatedFile = Path.ChangeExtension(file, ".bite");
+                        updatedFile = Path.ChangeExtension(file, ".bite");
                         File.Move(file, updatedFile);
-                        if (!path.EndsWith("VersionControl"))
-                        {
-                            _biteFiles.Add(updatedFile);
-                        }
                     }
-                    else
+                    if (!path.EndsWith("VersionControl"))
                     {
-                        _biteFiles.Add(file);
+                        if (string.IsNullOrEmpty(updatedFile)) { _biteFiles.Add(file); }
+                        else { _biteFiles.Add(updatedFile); }
                     }
                 }
             }
