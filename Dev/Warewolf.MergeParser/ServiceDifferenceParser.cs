@@ -80,8 +80,8 @@ namespace Warewolf.MergeParser
         public List<(Guid uniqueId, (ModelItem modelItem, Point point) currentTool, (ModelItem modelItem, Point point) differenceTool, bool hasConflict)> GetDifferences(IContextualResourceModel current, IContextualResourceModel difference)
         {
             var conflictList = new List<(Guid uniqueId, (ModelItem modelItem, Point point), (ModelItem modelItem, Point point), bool hasConflict)>();
-            _currentDifferences = GetNodes(current);
-            _differences = GetNodes(difference);
+            _currentDifferences = GetNodes(current, true);
+            _differences = GetNodes(difference, false);
             var allCurentItems = new List<(Point point, IDev2Activity activity)>();
             var allRemoteItems = new List<(Point point, IDev2Activity activity)>();
             foreach (var node in _currentDifferences.nodeList)
@@ -126,13 +126,13 @@ namespace Warewolf.MergeParser
             return conflictList;
         }
 
-        private (List<(ModelItem modelItem, Point point)> nodeList, Flowchart flowchartDiff) GetNodes(IContextualResourceModel resourceModel)
+        private (List<(ModelItem modelItem, Point point)> nodeList, Flowchart flowchartDiff) GetNodes(IContextualResourceModel resourceModel, bool loadFromServer)
         {
             var wd = new WorkflowDesigner();
             var xaml = resourceModel.WorkflowXaml;
 
             var workspace = GlobalConstants.ServerWorkspaceID;
-            if (xaml == default(StringBuilder) || xaml.Length == 0)
+            if (loadFromServer)
             {
                 var msg = resourceModel.Environment.ResourceRepository.FetchResourceDefinition(resourceModel.Environment, workspace, resourceModel.ID, true);
                 if (msg != null)
