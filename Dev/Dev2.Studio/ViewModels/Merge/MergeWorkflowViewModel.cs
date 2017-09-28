@@ -23,7 +23,6 @@ namespace Dev2.ViewModels.Merge
         {
             WorkflowDesignerViewModel = new WorkflowDesignerViewModel(currentResourceModel, false);
             WorkflowDesignerViewModel.CreateBlankWorkflow();
-            WorkflowDesignerViewModel.DesignerView.IsEnabled = false;
             var mergeParser = CustomContainer.Get<IServiceDifferenceParser>();
 
             var currentChanges = mergeParser.GetDifferences(currentResourceModel, differenceResourceModel);
@@ -32,8 +31,8 @@ namespace Dev2.ViewModels.Merge
             foreach (var currentChange in currentChanges)
             {
                 var conflict = new CompleteConflict { UniqueId = currentChange.uniqueId };
-                var factoryA = new ConflictModelFactory(currentChange.Item2, currentResourceModel);
-                var factoryB = new ConflictModelFactory(currentChange.Item3, differenceResourceModel);
+                var factoryA = new ConflictModelFactory(currentChange.current, currentResourceModel);
+                var factoryB = new ConflictModelFactory(currentChange.difference, differenceResourceModel);
                 conflict.CurrentViewModel = factoryA.GetModel();
                 conflict.CurrentViewModel.SomethingModelToolChanged += SourceOnModelToolChanged;
                 foreach (var child in conflict.CurrentViewModel.Children)
@@ -97,9 +96,9 @@ namespace Dev2.ViewModels.Merge
             WorkflowDesignerViewModel.CanViewWorkflowLink = false;
         }
 
-        private void AddActivity(MergeToolModel model)
+        private void AddActivity(IMergeToolModel model)
         {
-            WorkflowDesignerViewModel.AddItem(model.ActivityType, model.Location);
+            WorkflowDesignerViewModel.AddItem(model);
         }
 
         private void SourceOnConflictModelChanged(object sender, IConflictModelFactory args)
@@ -127,21 +126,14 @@ namespace Dev2.ViewModels.Merge
         {
             try
             {
-                if (!args.IsMergeChecked)
+                var mergeToolModel = args as MergeToolModel;
+                if (mergeToolModel != null && !mergeToolModel.IsMergeChecked)
                 {
                     return;
                 }
                 
                 HasMergeStarted = true;
-                AddActivity(args as MergeToolModel);
-                if (args.Children.Count > 0)
-                {
-                    foreach (var child in args.Children)
-                    {
-                        child.IsMergeChecked = true;
-                        AddActivity(child as MergeToolModel);
-                    }
-                }
+                AddActivity(mergeToolModel);
             }
             catch (Exception)
             {

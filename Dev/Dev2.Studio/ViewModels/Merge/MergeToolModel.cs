@@ -6,7 +6,6 @@ using Dev2.Common.Interfaces;
 using Microsoft.Practices.Prism.Mvvm;
 using Newtonsoft.Json;
 using System.Activities.Statements;
-using System.Windows;
 
 namespace Dev2.ViewModels.Merge
 {
@@ -20,7 +19,6 @@ namespace Dev2.ViewModels.Merge
         private bool _hasParent;
         private Guid _uniqueId;
         private FlowNode _activityType;
-        private Point _location;
 
         public MergeToolModel()
         {
@@ -75,16 +73,6 @@ namespace Dev2.ViewModels.Merge
             {
                 _uniqueId = value;
                 OnPropertyChanged(() => UniqueId);
-            }
-        }
-
-        public Point Location
-        {
-            get => _location;
-            set
-            {
-                _location = value;
-                OnPropertyChanged(() => Location);
             }
         }
 
