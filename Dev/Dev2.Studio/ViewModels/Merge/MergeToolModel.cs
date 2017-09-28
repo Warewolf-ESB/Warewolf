@@ -5,16 +5,14 @@ using Dev2.Activities.Designers2.Core;
 using Dev2.Common.Interfaces;
 using Microsoft.Practices.Prism.Mvvm;
 using Newtonsoft.Json;
-using System.Windows.Input;
 using System.Activities.Statements;
+using System.Windows;
 
 namespace Dev2.ViewModels.Merge
 {
     public class MergeToolModel : BindableBase, IMergeToolModel
     {
-        private bool _isMergeExpanderEnabled;
         private ImageSource _mergeIcon;
-        private bool _isMergeExpanded;
         private string _mergeDescription;
         private bool _isMergeChecked;
         private ObservableCollection<IMergeToolModel> _children;
@@ -22,6 +20,7 @@ namespace Dev2.ViewModels.Merge
         private bool _hasParent;
         private Guid _uniqueId;
         private FlowNode _activityType;
+        private Point _location;
 
         public MergeToolModel()
         {
@@ -30,24 +29,6 @@ namespace Dev2.ViewModels.Merge
 
         public ActivityDesignerViewModel ActivityDesignerViewModel { get; set; }
 
-        public bool IsMergeExpanderEnabled
-        {
-            get => _isMergeExpanderEnabled;
-            set
-            {
-                _isMergeExpanderEnabled = value;
-                OnPropertyChanged(() => IsMergeExpanderEnabled);
-            }
-        }
-        public bool IsMergeExpanded
-        {
-            get => _isMergeExpanded;
-            set
-            {
-                _isMergeExpanded = value;
-                OnPropertyChanged(() => IsMergeExpanded);
-            }
-        }
         [JsonIgnore]
         public ImageSource MergeIcon
         {
@@ -73,7 +54,6 @@ namespace Dev2.ViewModels.Merge
             set
             {
                 _isMergeChecked = value;
-                IsMergeExpanderEnabled = _isMergeChecked;
                 OnPropertyChanged(() => IsMergeChecked);
                 SomethingModelToolChanged?.Invoke(this, this);
             }
@@ -95,6 +75,16 @@ namespace Dev2.ViewModels.Merge
             {
                 _uniqueId = value;
                 OnPropertyChanged(() => UniqueId);
+            }
+        }
+
+        public Point Location
+        {
+            get => _location;
+            set
+            {
+                _location = value;
+                OnPropertyChanged(() => Location);
             }
         }
 
@@ -126,8 +116,6 @@ namespace Dev2.ViewModels.Merge
                 OnPropertyChanged("HasParent");
             }
         }
-
-        public ICommand AddAnItem { get; set; }
 
         public event ModelToolChanged SomethingModelToolChanged;
     }
