@@ -194,18 +194,18 @@ namespace Dev2.Integration.Tests.Merge
            
             ////First Node chart
             var valueTuple = diffs[0];
-            var dev2Activity = valueTuple.currentTool.modelItem.GetCurrentValue<IDev2Activity>();
-            var dev2Activity1 = valueTuple.differenceTool.modelItem.GetCurrentValue<IDev2Activity>();
+            var dev2Activity = valueTuple.current.GetCurrentValue<IDev2Activity>();
+            var dev2Activity1 = valueTuple.difference.GetCurrentValue<IDev2Activity>();
             Assert.IsNotNull(dev2Activity);
             Assert.IsNotNull(dev2Activity1);
             Assert.AreEqual(dev2Activity.UniqueID, dev2Activity1.UniqueID);
-            Assert.AreEqual(typeof(DsfDecision), valueTuple.currentTool.modelItem.ItemType);
-            Assert.AreEqual(typeof(DsfDecision), valueTuple.differenceTool.modelItem.ItemType);
+            Assert.AreEqual(typeof(DsfDecision), valueTuple.current.ItemType);
+            Assert.AreEqual(typeof(DsfDecision), valueTuple.difference.ItemType);
 
             //Second chart
             var valueTuple1 = diffs[1];
-            var dev2ActivityD = valueTuple1.Item2.modelItem.GetCurrentValue<IDev2Activity>();
-            var dev2Activity1D = valueTuple1.Item3.modelItem.GetCurrentValue<IDev2Activity>();
+            var dev2ActivityD = valueTuple1.current.GetCurrentValue<IDev2Activity>();
+            var dev2Activity1D = valueTuple1.difference.GetCurrentValue<IDev2Activity>();
             Assert.IsNotNull(dev2ActivityD);
             Assert.IsNotNull(dev2Activity1D);
             Assert.AreEqual(calculateUniqueId, dev2ActivityD.UniqueID);
@@ -214,8 +214,8 @@ namespace Dev2.Integration.Tests.Merge
             //Third node
             //difference chart
             var valueTuple2 = diffs[2];
-            var dev3Activity1D = valueTuple2.Item3.modelItem.GetCurrentValue<IDev2Activity>();
-            Assert.IsNull(valueTuple2.Item2.modelItem);
+            var dev3Activity1D = valueTuple2.difference.GetCurrentValue<IDev2Activity>();
+            Assert.IsNull(valueTuple2.current);
             Assert.IsNotNull(dev3Activity1D);
             //Assert.AreEqual(baseCOnvertId, dev3Activity1D.UniqueID);
         }
