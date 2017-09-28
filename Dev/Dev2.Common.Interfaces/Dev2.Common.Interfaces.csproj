@@ -324,6 +324,7 @@
     <Compile Include="IRabbitMQServiceSourceDefinition.cs" />
     <Compile Include="IRelayCommand.cs" />
     <Compile Include="IRequestServiceNameView.cs" />
+    <Compile Include="IResourceDefinationCleaner.cs" />
     <Compile Include="IResourceHolder.cs" />
     <Compile Include="IResourceSource.cs" />
     <Compile Include="IServer.cs" />

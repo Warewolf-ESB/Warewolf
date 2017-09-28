@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -6,13 +7,20 @@ using System.Linq;
 using System.Text;
 using System.Xml.Linq;
 using Dev2.Activities;
+using Dev2.Common;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio.Controller;
+using Dev2.Communication;
+using Dev2.Data.ServiceModel;
+using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Core;
+using Dev2.Studio.Core.AppResources.Repositories;
+using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Models;
 using Dev2.Studio.Interfaces;
+using Dev2.Utilities;
 using Dev2.ViewModels.Merge;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -39,7 +47,7 @@ namespace Dev2.Integration.Tests.Merge
             CustomContainer.Register<IActivityParser>(new ActivityParser());
             CustomContainer.Register(mockApplicationAdapter.Object);
             CustomContainer.Register(mockPopupController.Object);
-            CustomContainer.Register(mockServer.Object);
+            CustomContainer.Register(_server);
             CustomContainer.Register(mockShellViewModel.Object);
             CustomContainer.Register(mockServerRepository.Object);
             var mockParseServiceForDifferences = new ServiceDifferenceParser();
@@ -174,7 +182,7 @@ namespace Dev2.Integration.Tests.Merge
             AsserthildrenHasChild(toolModel.Children, "If [[rec(*).set]] Is Numeric");
 
 
-             var single = toolModel.Children.Single(model => model.MergeDescription == "If [[rec(*).set]] Is Numeric");
+            var single = toolModel.Children.Single(model => model.MergeDescription == "If [[rec(*).set]] Is Numeric");
             var childCount = single.Children.Count;
             Assert.AreEqual(2, childCount);
             var trueArmTools = single.Children.Count(model => model.ParentDescription == "All are numeric");
@@ -219,9 +227,9 @@ namespace Dev2.Integration.Tests.Merge
             var childrenCount = completeConflict3.CurrentViewModel.Children.Count;
             Assert.AreEqual(7, childrenCount);
             var mergeToolModels = completeConflict3.CurrentViewModel.Children;
-            AsserthildrenHasChild(mergeToolModels, "Incorrect",6);
-            AsserthildrenHasChild(mergeToolModels, "Correct",1);
-           
+            AsserthildrenHasChild(mergeToolModels, "Incorrect", 6);
+            AsserthildrenHasChild(mergeToolModels, "Correct", 1);
+
         }
 
         [TestMethod]
@@ -258,7 +266,7 @@ namespace Dev2.Integration.Tests.Merge
             var completeConflict3 = mergeWorkflowViewModel.Conflicts[2];
             Assert.IsFalse(completeConflict3.CurrentViewModel.Children.Any());
             Assert.AreEqual("Comment", completeConflict3.CurrentViewModel.MergeDescription);
-           
+
             var completeConflict4 = mergeWorkflowViewModel.Conflicts[3];
             Assert.IsTrue(completeConflict4.CurrentViewModel.Children.Any());
             Assert.AreEqual("Organize Customers", completeConflict4.CurrentViewModel.MergeDescription);
@@ -318,7 +326,7 @@ namespace Dev2.Integration.Tests.Merge
             var completeConflict3 = mergeWorkflowViewModel.Conflicts[2];
             Assert.IsFalse(completeConflict3.CurrentViewModel.Children.Any());
             Assert.AreEqual("Comment", completeConflict3.CurrentViewModel.MergeDescription);
-            
+
 
             var completeConflict4 = mergeWorkflowViewModel.Conflicts[3];
             Assert.IsTrue(!completeConflict4.CurrentViewModel.Children.Any());
@@ -357,6 +365,83 @@ namespace Dev2.Integration.Tests.Merge
             Assert.AreEqual(1, childrenCount2);
             AsserthildrenHasChild(completeConflict7.CurrentViewModel.Children, "Random");
         }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void SimpleNestedDecision_Differences_TreeHierachyIsCorrect()
+        {
+            //---------------Set up test pack-------------------
+            var environmentModel = _server.Source;
+            environmentModel.Connect();
+            var resourceRepository = _server.Source.ResourceRepository;
+            resourceRepository.Load();
+
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            var contextualResourceModel = resourceRepository.LoadContextualResourceModel("49800850-BDF1-4248-93D0-DCD7E5F8B9CA".ToGuid());
+            var resourceModel = TestHelper.CreateContextualResourceModel("Decision.SimpleNestedDecision");
+
+            var mergeWorkflowViewModel = new MergeWorkflowViewModel(contextualResourceModel, resourceModel);
+            //---------------Test Result -----------------------
+            Assert.IsNotNull(mergeWorkflowViewModel);
+
+            var all = mergeWorkflowViewModel.Conflicts.All(conflict => !conflict.HasConflict);
+            Assert.IsTrue(all);
+            var conflictsCount = mergeWorkflowViewModel.Conflicts.Count;
+            Assert.AreEqual(10, conflictsCount);
+
+            var completeConflict1 = mergeWorkflowViewModel.Conflicts[0];
+            Assert.IsTrue(!completeConflict1.CurrentViewModel.Children.Any());
+            Assert.AreEqual("Use the For Each tool to:", completeConflict1.CurrentViewModel.MergeDescription);
+
+            var completeConflict2 = mergeWorkflowViewModel.Conflicts[1];
+            Assert.IsTrue(!completeConflict2.CurrentViewModel.Children.Any());
+            Assert.AreEqual("EXAMPLE 1 - No. of Executions", completeConflict2.CurrentViewModel.MergeDescription);
+
+            var completeConflict3 = mergeWorkflowViewModel.Conflicts[2];
+            Assert.IsFalse(completeConflict3.CurrentViewModel.Children.Any());
+            Assert.AreEqual("Comment", completeConflict3.CurrentViewModel.MergeDescription);
+
+
+            var completeConflict4 = mergeWorkflowViewModel.Conflicts[3];
+            Assert.IsTrue(!completeConflict4.CurrentViewModel.Children.Any());
+            Assert.AreEqual("EXAMPLE 2 - * in Range", completeConflict4.CurrentViewModel.MergeDescription);
+
+            var completeConflict5 = mergeWorkflowViewModel.Conflicts[4];
+            Assert.IsTrue(completeConflict5.CurrentViewModel.Children.Any());
+            Assert.AreEqual("For Each", completeConflict5.CurrentViewModel.MergeDescription);
+            var childrenCount = completeConflict5.CurrentViewModel.Children.Count;
+            Assert.AreEqual(1, childrenCount);
+            AsserthildrenHasChild(completeConflict5.CurrentViewModel.Children, "Random");
+
+            var completeConflict = mergeWorkflowViewModel.Conflicts[5];
+            Assert.IsFalse(completeConflict.CurrentViewModel.Children.Any());
+            Assert.AreEqual("Comment", completeConflict.CurrentViewModel.MergeDescription);
+
+            var completeConflict10 = mergeWorkflowViewModel.Conflicts[6];
+            Assert.IsFalse(completeConflict10.CurrentViewModel.Children.Any());
+            Assert.AreEqual("Comment", completeConflict10.CurrentViewModel.MergeDescription);
+
+            var completeConflict11 = mergeWorkflowViewModel.Conflicts[7];
+            Assert.IsFalse(completeConflict11.CurrentViewModel.Children.Any());
+            Assert.AreEqual("EXAMPLE 3 - * in CSV", completeConflict11.CurrentViewModel.MergeDescription);
+
+            var completeConflict6 = mergeWorkflowViewModel.Conflicts[8];
+            Assert.IsTrue(completeConflict6.CurrentViewModel.Children.Any());
+            Assert.AreEqual("For Each", completeConflict6.CurrentViewModel.MergeDescription);
+            var childrenCount1 = completeConflict6.CurrentViewModel.Children.Count;
+            Assert.AreEqual(1, childrenCount1);
+            AsserthildrenHasChild(completeConflict6.CurrentViewModel.Children, "Random");
+
+            var completeConflict7 = mergeWorkflowViewModel.Conflicts[9];
+            Assert.IsTrue(completeConflict7.CurrentViewModel.Children.Any());
+            Assert.AreEqual("For Each", completeConflict7.CurrentViewModel.MergeDescription);
+            var childrenCount2 = completeConflict7.CurrentViewModel.Children.Count;
+            Assert.AreEqual(1, childrenCount2);
+            AsserthildrenHasChild(completeConflict7.CurrentViewModel.Children, "Random");
+        }
+
+
 
         private void AsserthildrenHasChild(ObservableCollection<IMergeToolModel> children, string description)
         {

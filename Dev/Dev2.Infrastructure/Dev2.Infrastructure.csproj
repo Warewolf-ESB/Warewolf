@@ -154,6 +154,7 @@
     <Compile Include="Providers\Validation\Rules\IsStringEmptyRule.cs" />
     <Compile Include="Providers\Validation\Rules\IsNullRule.cs" />
     <Compile Include="Providers\Validation\Rules\ScalarsNotAllowedRule.cs" />
+    <Compile Include="ResourceDefinationCleaner.cs" />
     <Compile Include="ServerCompileMessageType.cs" />
     <Compile Include="Services\DesignValidationService.cs" />
     <Compile Include="Services\IDesignValidationService.cs" />
