@@ -52,17 +52,18 @@ namespace Dev2.Runtime.ESB
 
         private readonly ConcurrentDictionary<Guid, ServiceAction> _cache = new ConcurrentDictionary<Guid, ServiceAction>();
 
-        // 2012.10.17 - 5782: TWR - Changed to work off the workspace host and made read only
-
         #region Constructors
 
-        public EsbServiceInvoker(IEsbChannel esbChannel, IWorkspace workspace, EsbExecuteRequest request = null)
+        public EsbServiceInvoker(IEsbChannel esbChannel, IWorkspace workspace)
+            : this(esbChannel, workspace, null)
+        {
+        }
+
+        public EsbServiceInvoker(IEsbChannel esbChannel, IWorkspace workspace, EsbExecuteRequest request)
             : this(new ServiceLocator())
         {
             _esbChannel = esbChannel;
-
-
-            // 2012.10.17 - 5782: TWR - Added workspace parameter
+            
             _workspace = workspace;
 
             _request = request;

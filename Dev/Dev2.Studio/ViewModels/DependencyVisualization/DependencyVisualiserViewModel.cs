@@ -57,7 +57,12 @@ namespace Dev2.Studio.ViewModels.DependencyVisualization
             _popupController = new PopupController();
         }
 
-        public DependencyVisualiserViewModel(DependencyVisualiserView view, IServer server, bool getDependsOnMe = false)
+        public DependencyVisualiserViewModel(DependencyVisualiserView view, IServer server)
+            : this(view, server, false)
+        {
+        }
+
+        public DependencyVisualiserViewModel(DependencyVisualiserView view, IServer server, bool getDependsOnMe)
             : base(EventPublishers.Aggregator)
         {
             _view = view;

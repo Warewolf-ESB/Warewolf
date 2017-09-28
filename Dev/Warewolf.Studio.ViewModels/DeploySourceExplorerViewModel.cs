@@ -24,7 +24,12 @@ namespace Warewolf.Studio.ViewModels
         private object _serverInformation;
         private readonly IEnvironmentViewModel _selectedEnv;
 
-        public DeploySourceExplorerViewModel(IShellViewModel shellViewModel, Microsoft.Practices.Prism.PubSubEvents.IEventAggregator aggregator, IDeployStatsViewerViewModel statsArea, IEnvironmentViewModel selectedEnvironment = null)
+        public DeploySourceExplorerViewModel(IShellViewModel shellViewModel, Microsoft.Practices.Prism.PubSubEvents.IEventAggregator aggregator, IDeployStatsViewerViewModel statsArea)
+            :this(shellViewModel, aggregator, statsArea, null)
+        {
+        }
+
+        public DeploySourceExplorerViewModel(IShellViewModel shellViewModel, Microsoft.Practices.Prism.PubSubEvents.IEventAggregator aggregator, IDeployStatsViewerViewModel statsArea, IEnvironmentViewModel selectedEnvironment)
         {
             if (shellViewModel == null)
             {

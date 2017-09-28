@@ -20,17 +20,20 @@ using Microsoft.Practices.Prism;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 
-
-
 namespace Dev2.Activities.Designers2.Core
 {
-
     public class OutputsRegion : IOutputsToolRegion
     {
         private readonly ModelItem _modelItem;
         private bool _isEnabled;
         private ICollection<IServiceOutputMapping> _outputs;
-        public OutputsRegion(ModelItem modelItem, bool isObjectOutputUsed = false)
+
+        public OutputsRegion(ModelItem modelItem)
+            : this(modelItem, false)
+        {
+        }
+
+        public OutputsRegion(ModelItem modelItem, bool isObjectOutputUsed)
         {
             ToolRegionName = "OutputsRegion";
             Dependants = new List<IToolRegion>();

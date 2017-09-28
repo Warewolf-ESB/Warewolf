@@ -226,7 +226,7 @@ namespace Dev2.Tests.Runtime.WF
             }
             //---------------Test Result -----------------------
         } 
-        //DispatchDebugState(IDSFDataObject dataObject, StateType stateType, bool hasErrors, string existingErrors, out ErrorResultTO errors, DateTime? workflowStartTime = null, bool interrogateInputs = false, bool interrogateOutputs = false, bool durationVisible=true)
+        
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void DispatchDebugState_GivenValidParamsAndIntergoateInputs_ShouldWriteUsingDebugDispactcher()
@@ -248,16 +248,13 @@ namespace Dev2.Tests.Runtime.WF
             //---------------Execute Test ----------------------
             try
             {
-
-                wfApplicationUtils.DispatchDebugState(mockObj.Object, StateType.Start, false, string.Empty, out ErrorResultTO error, DateTime.Now, true);
+                wfApplicationUtils.DispatchDebugState(mockObj.Object, StateType.Start, false, string.Empty, out ErrorResultTO error, DateTime.Now, true, true);
                 var state = debugState;
                 debugDispatcher.Verify(dispatcher => dispatcher.Write(state, It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IList<IDebugState>>()));
-
             }
             catch (Exception ex)
             {
                 Assert.Fail(ex.Message);
-
             }
             //---------------Test Result -----------------------
         }
