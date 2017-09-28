@@ -10,6 +10,7 @@
 
 using System;
 using System.Text;
+using Dev2.Common;
 using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

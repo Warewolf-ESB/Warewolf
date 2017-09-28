@@ -115,6 +115,7 @@
     </None>
     <Compile Include="AssemblyWrapper.cs" />
     <Compile Include="CommonEqualityOps.cs" />
+    <Compile Include="Dev2XamlCleaner.cs" />
     <Compile Include="EqualityFactory.cs" />
     <Compile Include="DependencyVisualization\DependencyVisualizationNode.cs" />
     <Compile Include="DebugStateTreeBuilder.cs" />

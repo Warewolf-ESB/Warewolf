@@ -300,6 +300,7 @@
     <Compile Include="CustomControls\ActivityTemplateSelector.cs" />
     <Compile Include="CustomControls\TemplateGenerator.cs" />
     <Compile Include="DesignerAttributeMap.cs" />
+    <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" Condition="!Exists('..\AssemblyCommonInfo.cs')" />
     <None Include="..\Run Tests.ps1">
       <Visible>False</Visible>

@@ -66,36 +66,36 @@ namespace Warewolf.MergeParser.Tests
 
             Assert.AreEqual(2, diffs.Count);
             Assert.IsTrue(diffs.All(d => !d.hasConflict));
-            Assert.AreEqual(randomActivityUniqueId, diffs[1].uniqueId.ToString());
-            Assert.AreEqual(calculateUniqueId, diffs[0].uniqueId.ToString());
+            Assert.AreEqual(calculateUniqueId, diffs[1].uniqueId.ToString());
+            Assert.AreEqual(randomActivityUniqueId, diffs[0].uniqueId.ToString());
 
             var tupleDifference = diffs[0];
-            var currentChart = tupleDifference.current;
-            var differenceChart = tupleDifference.difference;
+            var currentChart = tupleDifference.Item2;
+            var differenceChart = tupleDifference.Item3;
             Assert.IsNotNull(diffs);
 
             //First Node
-            var dev2Activity = currentChart.GetCurrentValue<IDev2Activity>();
-            var dev2Activity1 = differenceChart.GetCurrentValue<IDev2Activity>();
+            var dev2Activity = currentChart.modelItem.GetCurrentValue<IDev2Activity>();
+            var dev2Activity1 = differenceChart.modelItem.GetCurrentValue<IDev2Activity>();
             Assert.IsNotNull(dev2Activity);
             Assert.IsNotNull(dev2Activity1);
-            Assert.AreEqual(calculateUniqueId, dev2Activity.UniqueID);
-            Assert.AreEqual(calculateUniqueId, dev2Activity1.UniqueID);
+            Assert.AreEqual(randomActivityUniqueId, dev2Activity.UniqueID);
+            Assert.AreEqual(randomActivityUniqueId, dev2Activity1.UniqueID);
 
 
 
             //Second Node
             var tupleDifference1 = diffs[1];
-            var currentChart1 = tupleDifference1.current;
-            var differenceChart1 = tupleDifference1.difference;
+            var currentChart1 = tupleDifference1.Item2;
+            var differenceChart1 = tupleDifference1.Item3;
             Assert.IsNotNull(diffs);
 
-            var dev2ActivityD = currentChart1.GetCurrentValue<IDev2Activity>();
-            var dev2Activity1D = differenceChart1.GetCurrentValue<IDev2Activity>();
+            var dev2ActivityD = currentChart1.modelItem.GetCurrentValue<IDev2Activity>();
+            var dev2Activity1D = differenceChart1.modelItem.GetCurrentValue<IDev2Activity>();
             Assert.IsNotNull(dev2ActivityD);
             Assert.IsNotNull(dev2Activity1D);
-            Assert.AreEqual(randomActivityUniqueId, dev2ActivityD.UniqueID);
-            Assert.AreEqual(randomActivityUniqueId, dev2Activity1D.UniqueID);
+            Assert.AreEqual(calculateUniqueId, dev2ActivityD.UniqueID);
+            Assert.AreEqual(calculateUniqueId, dev2Activity1D.UniqueID);
 
         }
 
@@ -196,8 +196,8 @@ namespace Warewolf.MergeParser.Tests
 
             ////First Node chart
             var valueTuple = diffs[0];
-            var dev2Activity = valueTuple.current.GetCurrentValue<IDev2Activity>();
-            var dev2Activity1 = valueTuple.difference.GetCurrentValue<IDev2Activity>();
+            var dev2Activity = valueTuple.Item2.modelItem.GetCurrentValue<IDev2Activity>();
+            var dev2Activity1 = valueTuple.Item3.modelItem.GetCurrentValue<IDev2Activity>();
             Assert.IsNotNull(dev2Activity);
             Assert.IsNotNull(dev2Activity1);
             Assert.AreEqual(calculateUniqueId, dev2Activity1.UniqueID);
@@ -205,8 +205,8 @@ namespace Warewolf.MergeParser.Tests
 
             //difference chart
             var valueTuple1 = diffs[1];
-            var dev2ActivityD = valueTuple1.current.GetCurrentValue<IDev2Activity>();
-            var dev2Activity1D = valueTuple1.difference.GetCurrentValue<IDev2Activity>();
+            var dev2ActivityD = valueTuple1.Item2.modelItem.GetCurrentValue<IDev2Activity>();
+            var dev2Activity1D = valueTuple1.Item3.modelItem.GetCurrentValue<IDev2Activity>();
             Assert.IsNotNull(dev2ActivityD);
             Assert.IsNotNull(dev2Activity1D);
             Assert.AreEqual(randomActivityUniqueId, dev2ActivityD.UniqueID);
@@ -286,33 +286,33 @@ namespace Warewolf.MergeParser.Tests
 
             Assert.AreEqual(3, diffs.Count);
             Assert.IsTrue(diffs.Any(d => d.hasConflict));
-            Assert.AreEqual(randomActivityUniqueId, diffs[1].uniqueId.ToString());
-            Assert.AreEqual(calculateUniqueId, diffs[0].uniqueId.ToString());
+            Assert.AreEqual(calculateUniqueId, diffs[1].uniqueId.ToString());
+            Assert.AreEqual(randomActivityUniqueId, diffs[0].uniqueId.ToString());
 
 
             ////First Node chart
             var valueTuple = diffs[0];
-            var dev2Activity = valueTuple.current.GetCurrentValue<IDev2Activity>();
-            var dev2Activity1 = valueTuple.difference.GetCurrentValue<IDev2Activity>();
+            var dev2Activity = valueTuple.Item2.modelItem.GetCurrentValue<IDev2Activity>();
+            var dev2Activity1 = valueTuple.Item3.modelItem.GetCurrentValue<IDev2Activity>();
             Assert.IsNotNull(dev2Activity);
             Assert.IsNotNull(dev2Activity1);
-            Assert.AreEqual(calculateUniqueId, dev2Activity1.UniqueID);
-            Assert.AreEqual(calculateUniqueId, dev2Activity.UniqueID);
+            Assert.AreEqual(randomActivityUniqueId, dev2Activity1.UniqueID);
+            Assert.AreEqual(randomActivityUniqueId, dev2Activity.UniqueID);
 
             //Second chart
             var valueTuple1 = diffs[1];
-            var dev2ActivityD = valueTuple1.current.GetCurrentValue<IDev2Activity>();
-            var dev2Activity1D = valueTuple1.difference.GetCurrentValue<IDev2Activity>();
+            var dev2ActivityD = valueTuple1.Item2.modelItem.GetCurrentValue<IDev2Activity>();
+            var dev2Activity1D = valueTuple1.Item3.modelItem.GetCurrentValue<IDev2Activity>();
             Assert.IsNotNull(dev2ActivityD);
             Assert.IsNotNull(dev2Activity1D);
-            Assert.AreEqual(randomActivityUniqueId, dev2ActivityD.UniqueID);
-            Assert.AreEqual(randomActivityUniqueId, dev2Activity1D.UniqueID);
+            Assert.AreEqual(calculateUniqueId, dev2ActivityD.UniqueID);
+            Assert.AreEqual(calculateUniqueId, dev2Activity1D.UniqueID);
 
             //Third node
             //difference chart
             var valueTuple2 = diffs[2];
-            var dev3Activity1D = valueTuple2.difference.GetCurrentValue<IDev2Activity>();
-            Assert.IsNull(valueTuple2.current);
+            var dev3Activity1D = valueTuple2.Item2.modelItem.GetCurrentValue<IDev2Activity>();
+            Assert.IsNull(valueTuple2.Item3.modelItem);
             Assert.IsNotNull(dev3Activity1D);
             Assert.AreEqual(baseCOnvertId, dev3Activity1D.UniqueID);
         }
@@ -381,27 +381,27 @@ namespace Warewolf.MergeParser.Tests
 
             ////First Node chart
             var valueTuple = diffs[0];
-            var dev2Activity = valueTuple.current.GetCurrentValue<IDev2Activity>();
-            var dev2Activity1 = valueTuple.difference.GetCurrentValue<IDev2Activity>();
+            var dev2Activity = valueTuple.Item2.modelItem.GetCurrentValue<IDev2Activity>();
+            var dev2Activity1 = valueTuple.Item3.modelItem.GetCurrentValue<IDev2Activity>();
             Assert.IsNotNull(dev2Activity);
             Assert.IsNotNull(dev2Activity1);
-            Assert.AreEqual(calculateUniqueId, dev2Activity1.UniqueID);
-            Assert.AreEqual(calculateUniqueId, dev2Activity.UniqueID);
+            Assert.AreEqual(randomActivityUniqueId, dev2Activity1.UniqueID);
+            Assert.AreEqual(randomActivityUniqueId, dev2Activity.UniqueID);
 
             //Second chart
             var valueTuple1 = diffs[1];
-            var dev2ActivityD = valueTuple1.current.GetCurrentValue<IDev2Activity>();
-            var dev2Activity1D = valueTuple1.difference.GetCurrentValue<IDev2Activity>();
+            var dev2ActivityD = valueTuple1.Item2.modelItem.GetCurrentValue<IDev2Activity>();
+            var dev2Activity1D = valueTuple1.Item3.modelItem.GetCurrentValue<IDev2Activity>();
             Assert.IsNotNull(dev2ActivityD);
             Assert.IsNotNull(dev2Activity1D);
-            Assert.AreEqual(randomActivityUniqueId, dev2ActivityD.UniqueID);
-            Assert.AreEqual(randomActivityUniqueId, dev2Activity1D.UniqueID);
+            Assert.AreEqual(calculateUniqueId, dev2ActivityD.UniqueID);
+            Assert.AreEqual(calculateUniqueId, dev2Activity1D.UniqueID);
 
             //Third node
             //difference chart
             var valueTuple2 = diffs[2];
-            var dev3Activity1D = valueTuple2.current.GetCurrentValue<IDev2Activity>();
-            Assert.IsNull(valueTuple2.difference);
+            var dev3Activity1D = valueTuple2.Item3.modelItem.GetCurrentValue<IDev2Activity>();
+            Assert.IsNull(valueTuple2.Item2.modelItem);
             Assert.IsNotNull(dev3Activity1D);
             Assert.AreEqual(baseCOnvertId, dev3Activity1D.UniqueID);
         }
@@ -483,50 +483,37 @@ namespace Warewolf.MergeParser.Tests
             var psd = new ServiceDifferenceParser();
             var diffs = psd.GetDifferences(current, diff);
 
-            Assert.AreEqual(5, diffs.Count);
+            Assert.AreEqual(3, diffs.Count);
             Assert.IsTrue(diffs.Any(d => d.hasConflict));
-            Assert.AreEqual(randomActivityUniqueId, diffs[1].uniqueId.ToString());
-            Assert.AreEqual(calculateUniqueId, diffs[0].uniqueId.ToString());
+            Assert.AreEqual(randomActivityUniqueId, diffs[0].uniqueId.ToString());
+            Assert.AreEqual(calculateUniqueId, diffs[1].uniqueId.ToString());
 
 
             ////First Node chart
             var valueTuple = diffs[0];
-            var dev2Activity = valueTuple.current.GetCurrentValue<IDev2Activity>();
-            var dev2Activity1 = valueTuple.difference.GetCurrentValue<IDev2Activity>();
+            var dev2Activity = valueTuple.Item2.modelItem.GetCurrentValue<IDev2Activity>();
+            var dev2Activity1 = valueTuple.Item3.modelItem.GetCurrentValue<IDev2Activity>();
             Assert.IsNotNull(dev2Activity);
             Assert.IsNotNull(dev2Activity1);
-            Assert.AreEqual(calculateUniqueId, dev2Activity1.UniqueID);
-            Assert.AreEqual(calculateUniqueId, dev2Activity.UniqueID);
+            Assert.AreEqual(randomActivityUniqueId, dev2Activity1.UniqueID);
+            Assert.AreEqual(randomActivityUniqueId, dev2Activity.UniqueID);
 
             //Second chart
             var valueTuple1 = diffs[1];
-            var dev2ActivityD = valueTuple1.current.GetCurrentValue<IDev2Activity>();
-            var dev2Activity1D = valueTuple1.difference.GetCurrentValue<IDev2Activity>();
+            var dev2ActivityD = valueTuple1.Item2.modelItem.GetCurrentValue<IDev2Activity>();
+            var dev2Activity1D = valueTuple1.Item3.modelItem.GetCurrentValue<IDev2Activity>();
             Assert.IsNotNull(dev2ActivityD);
             Assert.IsNotNull(dev2Activity1D);
-            Assert.AreEqual(randomActivityUniqueId, dev2ActivityD.UniqueID);
-            Assert.AreEqual(randomActivityUniqueId, dev2Activity1D.UniqueID);
+            Assert.AreEqual(calculateUniqueId, dev2ActivityD.UniqueID);
+            Assert.AreEqual(calculateUniqueId, dev2Activity1D.UniqueID);
 
             //Third node
             var valueTuple2 = diffs[2];
-            var dev3Activity1D = valueTuple2.current.GetCurrentValue<IDev2Activity>();
-            Assert.IsNull(valueTuple2.difference);
+            var dev3Activity1D = valueTuple2.Item3.modelItem.GetCurrentValue<IDev2Activity>();
+            Assert.IsNull(valueTuple2.Item2.modelItem);
             Assert.IsNotNull(dev3Activity1D);
             Assert.AreNotEqual(Guid.Empty.ToString(), dev3Activity1D.UniqueID);
 
-            //Fourth node
-            var valueTuple3 = diffs[3];
-            var dev4Activity1D = valueTuple3.current.GetCurrentValue<IDev2Activity>();
-            Assert.IsNull(valueTuple3.difference);
-            Assert.IsNotNull(dev4Activity1D);
-            Assert.AreNotEqual(Guid.Empty.ToString(), dev4Activity1D.UniqueID);
-
-            //Third node
-            var valueTuple4 = diffs[4];
-            var dev5Activity1D = valueTuple4.current.GetCurrentValue<IDev2Activity>();
-            Assert.IsNull(valueTuple4.difference);
-            Assert.IsNotNull(dev3Activity1D);
-            Assert.AreNotEqual(Guid.Empty.ToString(), dev5Activity1D.UniqueID);
         }
 
         [TestMethod]
@@ -592,8 +579,8 @@ namespace Warewolf.MergeParser.Tests
 
             ////First Node chart
             var valueTuple = diffs[0];
-            var dev2Activity = valueTuple.current.GetCurrentValue<IDev2Activity>();
-            var dev2Activity1 = valueTuple.difference.GetCurrentValue<IDev2Activity>();
+            var dev2Activity = valueTuple.Item2.modelItem.GetCurrentValue<IDev2Activity>();
+            var dev2Activity1 = valueTuple.Item3.modelItem.GetCurrentValue<IDev2Activity>();
             Assert.IsNotNull(dev2Activity);
             Assert.IsNotNull(dev2Activity1);
             Assert.AreEqual(assignId, dev2Activity1.UniqueID);
