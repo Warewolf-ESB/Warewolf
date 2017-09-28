@@ -18,6 +18,7 @@ namespace Dev2.ViewModels.Merge
         private bool _hasMergeStarted;
         private bool _hasWorkflowNameConflict;
         private bool _hasVariablesConflict;
+        private bool _isVariablesEnabled;
 
         public MergeWorkflowViewModel(IContextualResourceModel currentResourceModel, IContextualResourceModel differenceResourceModel)
         {
@@ -37,8 +38,7 @@ namespace Dev2.ViewModels.Merge
                 conflict.CurrentViewModel = factoryA.GetModel();
                 conflict.CurrentViewModel.AddAnItem = new DelegateCommand(o =>
                 {
-                    var model = conflict.CurrentViewModel as MergeToolModel;
-                    if (model.IsMergeChecked)
+                    if (conflict.CurrentViewModel is MergeToolModel model && model.IsMergeChecked)
                     {
                         AddActivity(model, currentChange.Item2.point);
                     }
@@ -47,8 +47,7 @@ namespace Dev2.ViewModels.Merge
                 {
                     conf.AddAnItem = new DelegateCommand(o =>
                     {
-                        var model = conf as MergeToolModel;
-                        if (model.IsMergeChecked)
+                        if (conf is MergeToolModel model && model.IsMergeChecked)
                         {
                             AddActivity(model, currentChange.Item2.point);
                         }
@@ -59,8 +58,7 @@ namespace Dev2.ViewModels.Merge
                 conflict.DiffViewModel = factoryB.GetModel();
                 conflict.DiffViewModel.AddAnItem = new DelegateCommand(o =>
                 {
-                    var model = conflict.DiffViewModel as MergeToolModel;
-                    if (model.IsMergeChecked)
+                    if (conflict.DiffViewModel is MergeToolModel model && model.IsMergeChecked)
                     {
                         AddActivity(model, currentChange.Item3.point);
                     }
@@ -69,8 +67,7 @@ namespace Dev2.ViewModels.Merge
                 {
                     conf.AddAnItem = new DelegateCommand(o =>
                     {
-                        var model = conf as MergeToolModel;
-                        if (model.IsMergeChecked)
+                        if (conf is MergeToolModel model && model.IsMergeChecked)
                         {
                             AddActivity(model, currentChange.Item3.point);
                         }
@@ -94,7 +91,8 @@ namespace Dev2.ViewModels.Merge
                 }
             }
 
-            CurrentConflictModel.WorkflowName = currentResourceModel.ResourceName;
+            var currResourceName = currentResourceModel.ResourceName;
+            CurrentConflictModel.WorkflowName = currResourceName;
             CurrentConflictModel.GetDataList();
             if (DifferenceConflictModel == null)
             {
@@ -104,11 +102,16 @@ namespace Dev2.ViewModels.Merge
                     DifferenceConflictModel.Model = firstConflict.DiffViewModel;
                 }
             }
-            DifferenceConflictModel.WorkflowName = differenceResourceModel.ResourceName;
+            var diffResourceName = differenceResourceModel.ResourceName;
+            DifferenceConflictModel.WorkflowName = diffResourceName;
             DifferenceConflictModel.GetDataList();
+
             HasMergeStarted = false;
-            HasVariablesConflict = true;
-            HasWorkflowNameConflict = true;
+            IsVariablesEnabled = false;
+            HasVariablesConflict = true; //MATCH DATALISTS
+            HasWorkflowNameConflict = currResourceName != diffResourceName;
+            IsVariablesEnabled = !HasWorkflowNameConflict;
+
             SetServerName(currentResourceModel);
             DisplayName = "Merge" + _serverName;
 
@@ -129,20 +132,17 @@ namespace Dev2.ViewModels.Merge
             {
                 if (args.IsWorkflowNameChecked)
                 {
-
+                    HasMergeStarted = true;
+                    IsVariablesEnabled = true;
                 }
                 else if (args.IsVariablesChecked)
                 {
-
+                    HasMergeStarted = true;
                 }
             }
             catch (Exception e)
             {
-
-            }
-            finally
-            {
-
+                // ignored
             }
         }
 
@@ -152,16 +152,12 @@ namespace Dev2.ViewModels.Merge
             {
                 if (args.IsMergeChecked)
                 {
-
+                    HasMergeStarted = true;
                 }
             }
             catch (Exception e)
             {
-
-            }
-            finally
-            {
-
+                // ignored
             }
         }
 
@@ -335,6 +331,16 @@ namespace Dev2.ViewModels.Merge
             {
                 _hasVariablesConflict = value;
                 OnPropertyChanged(() => HasVariablesConflict);
+            }
+        }
+
+        public bool IsVariablesEnabled
+        {
+            get => _isVariablesEnabled;
+            set
+            {
+                _isVariablesEnabled = value;
+                OnPropertyChanged(() => IsVariablesEnabled);
             }
         }
 

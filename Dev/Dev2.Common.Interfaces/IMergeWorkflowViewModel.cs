@@ -18,6 +18,7 @@ namespace Dev2.Common.Interfaces
         IConflictModelFactory CurrentConflictModel { get; set; }
         IConflictModelFactory DifferenceConflictModel { get; set; }
         ObservableCollection<ICompleteConflict> Conflicts { get; set; }
+        bool IsVariablesEnabled { get; set; }
     }
 
     public delegate void ConflictModelChanged(object sender, IConflictModelFactory args);

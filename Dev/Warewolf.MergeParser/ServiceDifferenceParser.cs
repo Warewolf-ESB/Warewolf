@@ -143,13 +143,7 @@ namespace Warewolf.MergeParser
 
             var modelService = wd.Context.Services.GetService<ModelService>();
             var nodeList = modelService.Find(modelService.Root, typeof(FlowNode)).ToList();
-            var locationList = new List<(ModelItem modelItem, Point point)>();
-
-            foreach (var node in nodeList)
-            {
-                var equalItem = (node, GetShapeLocation(wd, node));
-                locationList.Add(equalItem);
-            }
+            var locationList = nodeList.Select(node => (node, GetShapeLocation(wd, node))).ToList();
 
             var workflowHelper = new WorkflowHelper();
             var flowchartDiff = workflowHelper.EnsureImplementation(modelService).Implementation as Flowchart;
@@ -158,10 +152,10 @@ namespace Warewolf.MergeParser
             return (locationList, flowchartDiff);
         }
 
-        public Point GetShapeLocation(WorkflowDesigner _wd, ModelItem modelItem)
+        private static Point GetShapeLocation(WorkflowDesigner wd, ModelItem modelItem)
         {
-            Point shapeLocation = new Point();
-            var viewStateService = _wd.Context.Services.GetService<ViewStateService>();
+            var shapeLocation = new Point();
+            var viewStateService = wd.Context.Services.GetService<ViewStateService>();
             var viewState = viewStateService?.RetrieveAllViewState(modelItem);
             if (viewState != null)
             {
