@@ -16,7 +16,12 @@ namespace Dev2.Runtime.WebServer.Responses
     {
         readonly HttpStatusCode _statusCode;
 
-        public StatusResponseWriter(HttpStatusCode statusCode = HttpStatusCode.NoContent)
+        public StatusResponseWriter()
+        {
+            _statusCode = HttpStatusCode.NoContent;
+        }
+
+        public StatusResponseWriter(HttpStatusCode statusCode)
         {
             _statusCode = statusCode;
         }
