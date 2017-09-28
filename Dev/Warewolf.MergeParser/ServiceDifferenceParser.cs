@@ -25,9 +25,9 @@ namespace Warewolf.MergeParser
         private (ModelItem activity, Point point) GetCurrentModelItemUniqueId(IEnumerable<(Point point, IDev2Activity activity)> items, IDev2Activity activity)
         {
             if (activity == null) return default;
-            foreach ((Point point, IDev2Activity activity) modelItem in items)
-                if (modelItem.activity.UniqueID.Equals(activity.UniqueID))
-                    return ( ModelItemUtils.CreateModelItem(modelItem.activity), modelItem.point);
+            foreach ((Point point, IDev2Activity activity) item in items)
+                if (item.activity.UniqueID.Equals(activity.UniqueID))
+                    return ( ModelItemUtils.CreateModelItem(item.activity), item.point);
             return default;
         }
 
@@ -76,7 +76,7 @@ namespace Warewolf.MergeParser
 
         public List<(Guid uniqueId, (ModelItem modelItem, Point point), (ModelItem modelItem, Point point), bool hasConflict)> GetDifferences(IContextualResourceModel current, IContextualResourceModel difference)
         {
-            var conflictList = new List<(Guid uniqueId, (ModelItem, Point), (ModelItem, Point), bool hasConflict)>();
+            var conflictList = new List<(Guid uniqueId, (ModelItem modelItem, Point point), (ModelItem modelItem, Point point), bool hasConflict)>();
             _currentDifferences = GetNodes(current);
             _differences = GetNodes(difference);
             var allCurentItems = new List<(Point point, IDev2Activity activity)>();
