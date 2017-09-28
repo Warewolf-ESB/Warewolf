@@ -63,6 +63,7 @@ using Dev2.Common.Interfaces.Enums;
 using Dev2.Data.ServiceModel;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.Enums;
+using System.IO;
 
 namespace Dev2.Studio.ViewModels
 {
@@ -165,6 +166,18 @@ namespace Dev2.Studio.ViewModels
                 }
             }
         }
+
+        internal void LoadWorkflow(string e)
+        {
+            if (!File.Exists(e)) { return; }
+            ActiveServer.ResourceRepository.Load();
+            string fileName = string.Empty;
+            fileName = Path.GetFileNameWithoutExtension(e);
+            var singleResource = ActiveServer.ResourceRepository.FindSingle(p => p.ResourceName == fileName);
+            OpenResource(singleResource.ID, ActiveServer.EnvironmentID, ActiveServer);
+        }
+
+
 
         public IBrowserPopupController BrowserPopupController { get; }
 
@@ -488,11 +501,11 @@ namespace Dev2.Studio.ViewModels
 
             ExplorerViewModel = explorer ?? new ExplorerViewModel(this, CustomContainer.Get<Microsoft.Practices.Prism.PubSubEvents.IEventAggregator>(), true);
 
-            
+
             AddWorkspaceItems();
             ShowStartPage();
             DisplayName = @"Warewolf" + $" ({ClaimsPrincipal.Current.Identity.Name})".ToUpperInvariant();
-            
+
 
         }
 
@@ -1326,7 +1339,7 @@ namespace Dev2.Studio.ViewModels
             Task<IRequestServiceNameViewModel> saveViewModel = _worksurfaceContextManager.GetSaveViewModel(resourcePath, Warewolf.Studio.Resources.Languages.Core.ServerSourceNewHeaderLabel);
             var key = (WorkSurfaceKey)WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.ServerSource);
             key.ServerID = ActiveServer.ServerID;
-            
+
             var manageNewServerSourceModel = new ManageNewServerSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveServer.Name);
             var manageNewServerViewModel = new ManageNewServerViewModel(manageNewServerSourceModel, saveViewModel, new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), _asyncWorker, new ExternalProcessExecutor()) { SelectedGuid = key.ResourceID.Value };
             var workSurfaceViewModel = new SourceViewModel<IServerSource>(EventPublisher, manageNewServerViewModel, PopupProvider, new ManageServerControl(), ActiveServer);
@@ -1743,9 +1756,9 @@ namespace Dev2.Studio.ViewModels
             if (ServerRepository == null) return;
 
             HashSet<IWorkspaceItem> workspaceItemsToRemove = new HashSet<IWorkspaceItem>();
-            
+
             for (int i = 0; i < _getWorkspaceItemRepository().WorkspaceItems.Count; i++)
-            
+
             {
                 //
                 // Get the environment for the workspace item

@@ -62,6 +62,7 @@
     </Compile>
     <Compile Include="Load Tests.cs" />
     <Compile Include="Merge\ParseServiceForDifferencesTests.cs" />
+    <Compile Include="XML\MergeRemote\XmlResource.cs" />
     <Compile Include="XML\XmlResource.cs" />
     <None Include="..\Run Tests.ps1">
       <Visible>False</Visible>
@@ -376,6 +377,11 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="XML\SelectAndApplyExample.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="XML\MergeRemote\Decision\SimpleNestedDecision.xml" />
+    <Content Include="XML\MergeRemote\Hello World.xml" />
+    <Content Include="XML\MergeRemote\Switch\SimpleNestedSwitch.xml" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
