@@ -603,7 +603,11 @@ function Start-Server([string]$ServerPath,[string]$ResourcesType) {
 }
 
 function Start-my.warewolf.io {
-    $WebsPath = $TestsPath + "\_PublishedWebsites\Dev2.Web"
+    if ($TestsPath.EndsWith("\")) {
+        $WebsPath = $TestsPath + "_PublishedWebsites\Dev2.Web"
+    } else {
+        $WebsPath = $TestsPath + "\_PublishedWebsites\Dev2.Web"
+    }
     Write-Host Starting my.warewolf.io from $WebsPath
     if (!(Test-Path $WebsPath)) {
         Write-Warning "Webs not found at $WebsPath. Attempting to find the webs that was deployed to the server directory."
