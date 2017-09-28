@@ -603,10 +603,9 @@ function Start-Server([string]$ServerPath,[string]$ResourcesType) {
 }
 
 function Start-my.warewolf.io {
-    $WebsPath = ""
-    if (Test-Path "$TestsPath\_PublishedWebsites\Dev2.Web") {
-        $WebsPath = "$TestsPath\_PublishedWebsites\Dev2.Web"
-    } else {
+    $WebsPath = $TestsPath + "\_PublishedWebsites\Dev2.Web"
+    if (!(Test-Path $WebsPath)) {
+        Write-Warning "Webs not found at $WebsPath. Attempting to find the webs that was deployed to the server directory."
         if ($ServerPath -eq "" -or !(Test-Path $ServerPath)) {
             $ServerPath = Find-Warewolf-Server-Exe
         }
