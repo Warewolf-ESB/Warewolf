@@ -90,7 +90,7 @@ namespace Dev2.ViewModels.Merge
 
         public Guid UniqueId
         {
-            get { return _uniqueId; }
+            get => _uniqueId;
             set
             {
                 _uniqueId = value;
@@ -100,7 +100,7 @@ namespace Dev2.ViewModels.Merge
 
         public FlowNode ActivityType
         {
-            get { return _activityType; }
+            get => _activityType;
             set
             {
                 _activityType = value;

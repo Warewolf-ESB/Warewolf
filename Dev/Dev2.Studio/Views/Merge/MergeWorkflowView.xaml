@@ -63,7 +63,7 @@
                             BorderThickness="0,0,1,0" 
                             Background="#C1C3C5" 
                             AutomationProperties.AutomationId="UI_CurrentWorkflowHeaderBorder_AutoID">
-                        <StackPanel x:Name="CurrentWorkflowHeaderSP" 
+                        <StackPanel x:Name="CurrentWorkflowHeaderSp" 
                                     Background="{StaticResource WareWolfMenuBrush}" 
                                     HorizontalAlignment="Stretch" 
                                     DataContext="{Binding CurrentConflictModel}"
@@ -94,7 +94,7 @@
                         </StackPanel>
                     </Border>
 
-                    <StackPanel x:Name="StartProcessSP" 
+                    <StackPanel x:Name="StartProcessSp" 
                                 Grid.Column="0" 
                                 Grid.ColumnSpan="2" 
                                 Grid.Row="1" 
@@ -126,11 +126,10 @@
 
                         <DockPanel x:Name="CurrentWorkflowDockPanel" 
                                    Grid.Column="0" 
-                                   Grid.Row="1" 
                                    LastChildFill="False" 
                                    AutomationProperties.AutomationId="UI_CurrentWorkflowDockPanel_AutoID"
                                    DataContext="{Binding CurrentConflictModel}">
-                            <StackPanel x:Name="CurrentWorkflowTextSP" 
+                            <StackPanel x:Name="CurrentWorkflowTextSp" 
                                         DockPanel.Dock="Left" 
                                         Orientation="Horizontal" 
                                         AutomationProperties.AutomationId="UI_CurrentWorkflowTextSP_AutoID">
@@ -140,11 +139,11 @@
                                            HorizontalAlignment="Stretch"
                                            AutomationProperties.AutomationId="UI_CurrentWorkflowText_AutoID"/>
                             </StackPanel>
-                            <StackPanel x:Name="CurrentWorkflowRBSP" 
+                            <StackPanel x:Name="CurrentWorkflowRbsp" 
                                         DockPanel.Dock="Right" 
                                         Orientation="Horizontal" 
                                         AutomationProperties.AutomationId="UI_CurrentWorkflowRBSP_AutoID">
-                                <RadioButton x:Name="CurrentWorkflowRB" 
+                                <RadioButton x:Name="CurrentWorkflowRb" 
                                              IsChecked="{Binding IsWorkflowNameChecked}" 
                                              HorizontalAlignment="Right"
                                              Margin="0,0,5,0"
@@ -157,15 +156,14 @@
 
                         <DockPanel x:Name="DifferenceWorkflowDockPanel" 
                                    Grid.Column="1" 
-                                   Grid.Row="1" 
                                    LastChildFill="False" 
                                    DataContext="{Binding DifferenceConflictModel}"
                                    AutomationProperties.AutomationId="UI_DifferenceWorkflowDockPanel_AutoID">
-                            <StackPanel x:Name="DifferenceWorkflowTextSP" 
+                            <StackPanel x:Name="DifferenceWorkflowTextSp" 
                                         DockPanel.Dock="Left" 
                                         Orientation="Horizontal"
                                         AutomationProperties.AutomationId="UI_DifferenceWorkflowTextSP_AutoID">
-                                <RadioButton x:Name="DifferenceWorkflowRB" 
+                                <RadioButton x:Name="DifferenceWorkflowRb" 
                                              IsChecked="{Binding IsWorkflowNameChecked}" 
                                              HorizontalAlignment="Right"
                                              Margin="7,0,5,0"
@@ -187,6 +185,7 @@
                           Grid.ColumnSpan="2" 
                           Margin="{StaticResource ElementBorderTop}" 
                           AutomationProperties.AutomationId="UI_VariablesGrid_AutoID"
+                          IsEnabled="{Binding IsVariablesEnabled}"
                           Visibility="{Binding HasVariablesConflict, Converter={StaticResource BoolToVisibilityConverterPositive}}">
                         <Expander x:Name="VariablesExpander"
                                   Style="{StaticResource MergeExpander}"
@@ -210,6 +209,7 @@
                                                 BorderBrush="#CFD6E1" 
                                                 BorderThickness="0,0,2,0" 
                                                 Margin="0,0,7,0"
+                                                DataContext="{Binding CurrentConflictModel}"
                                                 AutomationProperties.AutomationId="UI_CurrentVariablesHeaderBorder_AutoID">
                                             <DockPanel x:Name="CurrentVariablesDockPanel" 
                                                        LastChildFill="False"
@@ -245,6 +245,7 @@
                                                 BorderBrush="#CFD6E1" 
                                                 BorderThickness="0" 
                                                 Margin="-7,0,0,0"
+                                                DataContext="{Binding DifferenceConflictModel}"
                                                 AutomationProperties.AutomationId="UI_DifferenceVariablesBorder_AutoID">
                                             <DockPanel x:Name="DifferenceVariablesDockPanel" 
                                                        LastChildFill="False"
@@ -260,7 +261,6 @@
                                                                  Margin="5,0,5,0"
                                                                  Style="{StaticResource MergeRadioButtonStyle}"
                                                                  AutomationProperties.AutomationId="UI_DifferenceVariablesRB_AutoID"/>
-
                                                     <TextBlock x:Name="DifferenceVariablesText" 
                                                                Text="Variables" 
                                                                FontWeight="Bold" 
@@ -316,7 +316,6 @@
                           Grid.ColumnSpan="2"
                           AutomationProperties.AutomationId="UI_ConflictsGrid_AutoID">
                         <TreeView x:Name="ConflictsTreeView"
-			                      Grid.Row="2"
 			                      ItemsSource="{Binding Conflicts, Mode=TwoWay, IsAsync=True}"
 			                      HorizontalAlignment="Stretch"
 			                      Focusable="False"
@@ -544,7 +543,6 @@
                                                                 <RowDefinition Height="*"/>
                                                             </Grid.RowDefinitions>
                                                             <ContentPresenter Name="TreeViewExpanderTemplateDifferenceContentPresenter" 
-                                                                              Grid.Row="1"
                                                                               Content="{Binding DiffViewModel}"
 												                              ContentTemplateSelector="{StaticResource ActivitySelector}"
                                                                               ScrollViewer.CanContentScroll="True"
@@ -604,7 +602,7 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <StackPanel x:Name="WorkflowSP" 
+            <StackPanel x:Name="WorkflowSp" 
                         Background="{StaticResource WareWolfMenuBrush}" 
                         HorizontalAlignment="Stretch"
                         AutomationProperties.AutomationId="UI_WorkflowSP_AutoID">

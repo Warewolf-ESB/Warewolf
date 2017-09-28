@@ -5,13 +5,10 @@ using Dev2.Common.Interfaces;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.ViewModels.DataList;
 using Microsoft.Practices.Prism.Mvvm;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.Factory;
-using Dev2.Common;
-using Caliburn.Micro;
 using Dev2.Activities;
 using Dev2.Activities.Designers2.Service;
 using Dev2.Activities.Designers2.Switch;
@@ -51,53 +48,50 @@ namespace Dev2.ViewModels.Merge
         public void GetDataList()
         {
             DataListViewModel = DataListViewModelFactory.CreateDataListViewModel(_resourceModel) as DataListViewModel;
-            if (DataListViewModel != null)
-            {
-                DataListViewModel.ViewSortDelete = false;
+            //if (DataListViewModel != null)
+            //{
+            //    DataListViewModel.ViewSortDelete = false;
 
-                if (DataListViewModel.ScalarCollection.Count <= 1)
-                {
-                    foreach (var scalar in DataListViewModel.ScalarCollection)
-                    {
-                        scalar.IsVisible = false;
-                        scalar.IsExpanded = false;
-                        scalar.IsEditable = false;
-                    }
-                }
-                if (DataListViewModel.RecsetCollection.Count <= 1)
-                {
-                    foreach (var recordset in DataListViewModel.RecsetCollection)
-                    {
-                        recordset.IsVisible = false;
-                        recordset.IsExpanded = false;
-                        recordset.IsEditable = false;
-                        foreach (var child in recordset.Children)
-                        {
-                            child.IsVisible = false;
-                            child.IsExpanded = false;
-                            child.IsEditable = false;
-                        }
-                    }
-                    DataListViewModel.RecsetCollection.Clear();
-                }
-                if (DataListViewModel.ComplexObjectCollection.Count <= 1)
-                {
-                    foreach (var complexobject in DataListViewModel.ComplexObjectCollection)
-                    {
-                        complexobject.IsVisible = false;
-                        complexobject.Children.Flatten(a => a.Children).Apply(a => a.IsVisible = false);
-                    }
-                }
-            }
+            //    if (DataListViewModel.ScalarCollection.Count <= 1)
+            //    {
+            //        foreach (var scalar in DataListViewModel.ScalarCollection)
+            //        {
+            //            scalar.IsVisible = false;
+            //            scalar.IsExpanded = false;
+            //            scalar.IsEditable = false;
+            //        }
+            //    }
+            //    if (DataListViewModel.RecsetCollection.Count <= 1)
+            //    {
+            //        foreach (var recordset in DataListViewModel.RecsetCollection)
+            //        {
+            //            recordset.IsVisible = false;
+            //            recordset.IsExpanded = false;
+            //            recordset.IsEditable = false;
+            //            foreach (var child in recordset.Children)
+            //            {
+            //                child.IsVisible = false;
+            //                child.IsExpanded = false;
+            //                child.IsEditable = false;
+            //            }
+            //        }
+            //        DataListViewModel.RecsetCollection.Clear();
+            //    }
+            //    if (DataListViewModel.ComplexObjectCollection.Count <= 1)
+            //    {
+            //        foreach (var complexobject in DataListViewModel.ComplexObjectCollection)
+            //        {
+            //            complexobject.IsVisible = false;
+            //            complexobject.Children.Flatten(a => a.Children).Apply(a => a.IsVisible = false);
+            //        }
+            //    }
+            //}
         }
 
         public string WorkflowName { get; set; }
         public bool IsVariablesChecked
         {
-            get
-            {
-                return _isVariablesChecked;
-            }
+            get => _isVariablesChecked;
             set
             {
                 _isVariablesChecked = value;
@@ -107,10 +101,7 @@ namespace Dev2.ViewModels.Merge
         }
         public bool IsWorkflowNameChecked
         {
-            get
-            {
-                return _isWorkflowNameChecked;
-            }
+            get => _isWorkflowNameChecked;
             set
             {
                 _isWorkflowNameChecked = value;
