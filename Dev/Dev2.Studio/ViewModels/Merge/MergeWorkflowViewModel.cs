@@ -2,12 +2,10 @@
 using Microsoft.Practices.Prism.Mvvm;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.ViewModels.Workflow;
-using Dev2.Runtime.Configuration.ViewModels.Base;
 using System.Collections.ObjectModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Windows;
 
 namespace Dev2.ViewModels.Merge
 {
@@ -19,69 +17,48 @@ namespace Dev2.ViewModels.Merge
         private bool _hasWorkflowNameConflict;
         private bool _hasVariablesConflict;
         private bool _isVariablesEnabled;
+        private bool _isMergeExpanderEnabled;
 
         public MergeWorkflowViewModel(IContextualResourceModel currentResourceModel, IContextualResourceModel differenceResourceModel)
         {
             WorkflowDesignerViewModel = new WorkflowDesignerViewModel(currentResourceModel, false);
             WorkflowDesignerViewModel.CreateBlankWorkflow();
+            WorkflowDesignerViewModel.DesignerView.IsEnabled = false;
             var mergeParser = CustomContainer.Get<IServiceDifferenceParser>();
 
             var currentChanges = mergeParser.GetDifferences(currentResourceModel, differenceResourceModel);
-
 
             Conflicts = new ObservableCollection<ICompleteConflict>();
             foreach (var currentChange in currentChanges)
             {
                 var conflict = new CompleteConflict { UniqueId = currentChange.uniqueId };
-                var factoryA = new ConflictModelFactory(currentChange.Item2.modelItem, currentResourceModel);
-                var factoryB = new ConflictModelFactory(currentChange.Item3.modelItem, differenceResourceModel);
+                var factoryA = new ConflictModelFactory(currentChange.Item2, currentResourceModel);
+                var factoryB = new ConflictModelFactory(currentChange.Item3, differenceResourceModel);
                 conflict.CurrentViewModel = factoryA.GetModel();
-                conflict.CurrentViewModel.AddAnItem = new DelegateCommand(o =>
-                {
-                    if (conflict.CurrentViewModel is MergeToolModel model && model.IsMergeChecked)
-                    {
-                        AddActivity(model, currentChange.Item2.point);
-                    }
-                });
-                foreach (var conf in conflict.CurrentViewModel.Children)
-                {
-                    conf.AddAnItem = new DelegateCommand(o =>
-                    {
-                        if (conf is MergeToolModel model && model.IsMergeChecked)
-                        {
-                            AddActivity(model, currentChange.Item2.point);
-                        }
-                    });
-                }
                 conflict.CurrentViewModel.SomethingModelToolChanged += SourceOnModelToolChanged;
+                foreach (var child in conflict.CurrentViewModel.Children)
+                {
+                    child.SomethingModelToolChanged += SourceOnModelToolChanged;
+                }
 
                 conflict.DiffViewModel = factoryB.GetModel();
-                conflict.DiffViewModel.AddAnItem = new DelegateCommand(o =>
-                {
-                    if (conflict.DiffViewModel is MergeToolModel model && model.IsMergeChecked)
-                    {
-                        AddActivity(model, currentChange.Item3.point);
-                    }
-                });
-                foreach (var conf in conflict.DiffViewModel.Children)
-                {
-                    conf.AddAnItem = new DelegateCommand(o =>
-                    {
-                        if (conf is MergeToolModel model && model.IsMergeChecked)
-                        {
-                            AddActivity(model, currentChange.Item3.point);
-                        }
-                    });
-                }
                 conflict.DiffViewModel.SomethingModelToolChanged += SourceOnModelToolChanged;
+                foreach (var child in conflict.DiffViewModel.Children)
+                {
+                    child.SomethingModelToolChanged += SourceOnModelToolChanged;
+                }
 
-                conflict.HasConflict = currentChange.hasConflict;
+                //conflict.HasConflict = currentChange.hasConflict;
+                conflict.HasConflict = true;
+                conflict.IsMergeExpanded = false;
+                conflict.IsMergeExpanderEnabled = false;
                 AddChildren(conflict, conflict.CurrentViewModel, conflict.DiffViewModel);
                 Conflicts.Add(conflict);
             }
 
             var firstConflict = Conflicts.FirstOrDefault();
 
+            var currResourceName = currentResourceModel.ResourceName;
             if (CurrentConflictModel == null)
             {
                 CurrentConflictModel = new ConflictModelFactory();
@@ -89,41 +66,40 @@ namespace Dev2.ViewModels.Merge
                 {
                     CurrentConflictModel.Model = firstConflict.CurrentViewModel;
                 }
+                CurrentConflictModel.WorkflowName = currResourceName;
+                CurrentConflictModel.GetDataList();
+                CurrentConflictModel.SomethingConflictModelChanged += SourceOnConflictModelChanged;
             }
 
-            var currResourceName = currentResourceModel.ResourceName;
-            CurrentConflictModel.WorkflowName = currResourceName;
-            CurrentConflictModel.GetDataList();
+            var diffResourceName = differenceResourceModel.ResourceName;
             if (DifferenceConflictModel == null)
             {
                 DifferenceConflictModel = new ConflictModelFactory();
+                
                 if (firstConflict?.DiffViewModel != null)
                 {
                     DifferenceConflictModel.Model = firstConflict.DiffViewModel;
                 }
+                DifferenceConflictModel.WorkflowName = diffResourceName;
+                DifferenceConflictModel.GetDataList();
+                DifferenceConflictModel.SomethingConflictModelChanged += SourceOnConflictModelChanged;
             }
-            var diffResourceName = differenceResourceModel.ResourceName;
-            DifferenceConflictModel.WorkflowName = diffResourceName;
-            DifferenceConflictModel.GetDataList();
-
+            
             HasMergeStarted = false;
-            IsVariablesEnabled = false;
             HasVariablesConflict = true; //MATCH DATALISTS
             HasWorkflowNameConflict = currResourceName != diffResourceName;
             IsVariablesEnabled = !HasWorkflowNameConflict;
+            IsMergeExpanderEnabled = !IsVariablesEnabled;
 
             SetServerName(currentResourceModel);
             DisplayName = "Merge" + _serverName;
 
             WorkflowDesignerViewModel.CanViewWorkflowLink = false;
-
-            CurrentConflictModel.SomethingConflictModelChanged += SourceOnConflictModelChanged;
-            DifferenceConflictModel.SomethingConflictModelChanged += SourceOnConflictModelChanged;
         }
 
-        private void AddActivity(MergeToolModel model, Point point)
+        private void AddActivity(MergeToolModel model)
         {
-            WorkflowDesignerViewModel.AddItem(model.ActivityType, point);
+            WorkflowDesignerViewModel.AddItem(model.ActivityType, model.Location);
         }
 
         private void SourceOnConflictModelChanged(object sender, IConflictModelFactory args)
@@ -133,14 +109,15 @@ namespace Dev2.ViewModels.Merge
                 if (args.IsWorkflowNameChecked)
                 {
                     HasMergeStarted = true;
-                    IsVariablesEnabled = true;
+                    IsVariablesEnabled = HasVariablesConflict;
                 }
                 else if (args.IsVariablesChecked)
                 {
                     HasMergeStarted = true;
+                    IsMergeExpanderEnabled = true;
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 // ignored
             }
@@ -150,12 +127,23 @@ namespace Dev2.ViewModels.Merge
         {
             try
             {
-                if (args.IsMergeChecked)
+                if (!args.IsMergeChecked)
                 {
-                    HasMergeStarted = true;
+                    return;
+                }
+                
+                HasMergeStarted = true;
+                AddActivity(args as MergeToolModel);
+                if (args.Children.Count > 0)
+                {
+                    foreach (var child in args.Children)
+                    {
+                        child.IsMergeChecked = true;
+                        AddActivity(child as MergeToolModel);
+                    }
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 // ignored
             }
@@ -163,10 +151,13 @@ namespace Dev2.ViewModels.Merge
 
         void AddChildren(ICompleteConflict parent, IMergeToolModel currentChild, IMergeToolModel childDiff)
         {
-            if (currentChild == null && childDiff == null) return;
+            if (currentChild == null && childDiff == null)
+            {
+                return;
+            }
+
             if (currentChild != null && childDiff != null)
             {
-
                 var currentChildChildren = currentChild.Children;
                 var difChildChildren = childDiff.Children;
                 var count = Math.Max(currentChildChildren.Count, difChildChildren.Count);
@@ -176,13 +167,21 @@ namespace Dev2.ViewModels.Merge
                     {
                         var completeConflict = new CompleteConflict();
                         var currentChildChild = currentChildChildren[index];
-                        if (currentChildChild == null) continue;
+                        if (currentChildChild == null)
+                        {
+                            continue;
+                        }
+
                         var childCurrent = GetMergeToolItem(currentChildChildren, currentChildChild.UniqueId);
                         var childDifferent = GetMergeToolItem(difChildChildren, currentChildChild.UniqueId);
                         completeConflict.UniqueId = currentChildChild.UniqueId;
                         completeConflict.CurrentViewModel = childCurrent;
                         completeConflict.DiffViewModel = childDifferent;
-                        if (parent.Children.Any(conflict => conflict.UniqueId.Equals(currentChild.UniqueId))) continue;
+                        if (parent.Children.Any(conflict => conflict.UniqueId.Equals(currentChild.UniqueId)))
+                        {
+                            continue;
+                        }
+                        completeConflict.HasConflict = true;
                         parent.Children.Add(completeConflict);
                         AddChildren(completeConflict, childCurrent, childDifferent);
                     }
@@ -191,7 +190,6 @@ namespace Dev2.ViewModels.Merge
                         Console.WriteLine(e);
                         throw;
                     }
-
                 }
             }
 
@@ -341,6 +339,16 @@ namespace Dev2.ViewModels.Merge
             {
                 _isVariablesEnabled = value;
                 OnPropertyChanged(() => IsVariablesEnabled);
+            }
+        }
+
+        public bool IsMergeExpanderEnabled
+        {
+            get => _isMergeExpanderEnabled;
+            set
+            {
+                _isMergeExpanderEnabled = value;
+                OnPropertyChanged(() => IsMergeExpanderEnabled);
             }
         }
 

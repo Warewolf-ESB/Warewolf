@@ -1425,7 +1425,8 @@
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsEnabled" Value="false">
-                            <Setter TargetName="Bd" Property="Background" Value="{StaticResource DisabledVisualElement}" />
+                            <Setter TargetName="Bd" Property="Margin" Value="4,0,0,0" />
+                            <Setter TargetName="Bd" Property="Background" Value="{StaticResource TreeViewBackgroundTransparentBrush}" />
                         </Trigger>
                         <Trigger Property="VirtualizingPanel.IsVirtualizing" Value="true">
                             <Setter TargetName="_tv_scrollviewer_" Property="CanContentScroll" Value="true" />
@@ -1595,7 +1596,7 @@
                         <Rectangle x:Name="DisabledVisualElement"
                                    Grid.Column="1"
                                    Grid.ColumnSpan="2"
-                                   Fill="{StaticResource DisabledVisualElement}"
+                                   Fill="{StaticResource TreeViewBackgroundTransparentBrush}"
                                    Visibility="Collapsed" />
                         <ItemsPresenter x:Name="ItemsHost"
                                         Grid.Row="1"
