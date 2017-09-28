@@ -84,7 +84,8 @@ namespace Dev2.Diagnostics.Debug
             _shutdownRequested = true;
         }
 
-        public void Write(IDebugState debugState, bool isTestExecution,bool isDebugFromWeb, string testName, bool isRemoteInvoke = false, string remoteInvokerId = null, string parentInstanceId = null, IList<IDebugState> remoteDebugItems = null)
+        public void Write(IDebugState debugState)=>Write(debugState, false, false, "", false, null, null, null);
+        public void Write(IDebugState debugState, bool isTestExecution, bool isDebugFromWeb, string testName, bool isRemoteInvoke, string remoteInvokerId, string parentInstanceId, IList<IDebugState> remoteDebugItems)
         {
             if (debugState == null)
             {

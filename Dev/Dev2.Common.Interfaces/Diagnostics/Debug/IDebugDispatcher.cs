@@ -35,7 +35,7 @@ namespace Dev2.Common.Interfaces.Diagnostics.Debug
         /// <returns>The <see cref="IDebugWriter" /> with the specified ID, or <code>null</code> if not found.</returns>
         IDebugWriter Get(Guid workspaceId);
 
-        void Write(IDebugState debugState, bool isTestExecution = false, bool isDebugFromWeb = false, string testName = "", bool isRemoteInvoke = false, string remoteInvokerId = null,
-            string parentInstanceId = null, IList<IDebugState> remoteDebugItems = null);
+        void Write(IDebugState debugState, bool isTestExecution, bool isDebugFromWeb, string testName, bool isRemoteInvoke, string remoteInvokerId,
+            string parentInstanceId, IList<IDebugState> remoteDebugItems);
     }
 }
