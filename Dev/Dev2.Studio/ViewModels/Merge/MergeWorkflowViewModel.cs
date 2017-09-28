@@ -32,8 +32,8 @@ namespace Dev2.ViewModels.Merge
             foreach (var currentChange in currentChanges)
             {
                 var conflict = new CompleteConflict { UniqueId = currentChange.uniqueId };
-                var factoryA = new ConflictModelFactory(currentChange.Item2.modelItem, currentResourceModel);
-                var factoryB = new ConflictModelFactory(currentChange.Item3.modelItem, differenceResourceModel);
+                var factoryA = new ConflictModelFactory(currentChange.currentTool, currentResourceModel);
+                var factoryB = new ConflictModelFactory(currentChange.differenceTool, differenceResourceModel);
                 conflict.CurrentViewModel = factoryA.GetModel();
                 conflict.CurrentViewModel.SomethingModelToolChanged += SourceOnModelToolChanged;
                 foreach (var child in conflict.CurrentViewModel.Children)
