@@ -126,7 +126,7 @@ namespace Dev2.ViewModels.Merge
         {
             if (_modelItem == default(ModelItem)) return null;
             var currentValue = _modelItem.GetCurrentValue<IDev2Activity>();
-            var activityType = currentValue.GetType();
+            var activityType = currentValue?.GetType();
             if (activityType == typeof(DsfDecision)) activityType = typeof(DsfFlowDecisionActivity);
             DesignerAttributeMap.DesignerAttributes.TryGetValue(activityType, out Type actual);
             if (actual != null)
