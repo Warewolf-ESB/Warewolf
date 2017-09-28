@@ -93,8 +93,9 @@ namespace Warewolf.MergeParser
                 var dev2Activity1 = _activityParser.Parse(new List<IDev2Activity>(), node.modelItem);
                 allRemoteItems.Add((node.point, dev2Activity1));
             }
-            CleanUpForDecisionAdSwitch(allRemoteItems.Select(p=>p.activity).ToList());
             var remoteList = allRemoteItems.Select(p => p.activity).ToList();
+            CleanUpForDecisionAdSwitch(remoteList);
+           
             var equalItems = currentList.Intersect(remoteList, new Dev2ActivityComparer()).ToList();
             var nodesDifferentInMergeHead = currentList.Except(remoteList, new Dev2ActivityComparer()).ToList();
             var nodesDifferentInHead = remoteList.Except(currentList, new Dev2ActivityComparer()).ToList();
