@@ -75,7 +75,7 @@ namespace Dev2.ViewModels.Merge
             if (DifferenceConflictModel == null)
             {
                 DifferenceConflictModel = new ConflictModelFactory();
-                
+
                 if (firstConflict?.DiffViewModel != null)
                 {
                     DifferenceConflictModel.Model = firstConflict.DiffViewModel;
@@ -84,7 +84,7 @@ namespace Dev2.ViewModels.Merge
                 DifferenceConflictModel.GetDataList();
                 DifferenceConflictModel.SomethingConflictModelChanged += SourceOnConflictModelChanged;
             }
-            
+
             HasMergeStarted = false;
             HasVariablesConflict = true; //MATCH DATALISTS
             HasWorkflowNameConflict = currResourceName != diffResourceName;
@@ -131,7 +131,7 @@ namespace Dev2.ViewModels.Merge
                 {
                     return;
                 }
-                
+
                 HasMergeStarted = true;
                 AddActivity(args as MergeToolModel);
                 if (args.Children.Count > 0)
@@ -161,11 +161,14 @@ namespace Dev2.ViewModels.Merge
                 var currentChildChildren = currentChild.Children;
                 var difChildChildren = childDiff.Children;
                 var count = Math.Max(currentChildChildren.Count, difChildChildren.Count);
+                ObservableCollection<IMergeToolModel> remoteCopy = new ObservableCollection<IMergeToolModel>();
+                remoteCopy = difChildChildren;
                 for (var index = 0; index < count; index++)
                 {
+                    var completeConflict = new CompleteConflict();
                     try
                     {
-                        var completeConflict = new CompleteConflict();
+                     
                         var currentChildChild = currentChildChildren[index];
                         if (currentChildChild == null)
                         {
@@ -174,6 +177,7 @@ namespace Dev2.ViewModels.Merge
 
                         var childCurrent = GetMergeToolItem(currentChildChildren, currentChildChild.UniqueId);
                         var childDifferent = GetMergeToolItem(difChildChildren, currentChildChild.UniqueId);
+                        remoteCopy.Remove(childDifferent);
                         completeConflict.UniqueId = currentChildChild.UniqueId;
                         completeConflict.CurrentViewModel = childCurrent;
                         completeConflict.DiffViewModel = childDifferent;
@@ -185,10 +189,24 @@ namespace Dev2.ViewModels.Merge
                         parent.Children.Add(completeConflict);
                         AddChildren(completeConflict, childCurrent, childDifferent);
                     }
-                    catch (Exception e)
+                    catch (ArgumentOutOfRangeException)
                     {
-                        Console.WriteLine(e);
-                        throw;
+                        if (difChildChildren.Count > currentChildChildren.Count)
+                        {
+                            foreach (var mergeToolModel in remoteCopy)
+                            {
+                                completeConflict.UniqueId = mergeToolModel.UniqueId;
+                                completeConflict.CurrentViewModel = null;
+                                completeConflict.DiffViewModel = mergeToolModel;
+                                if (parent.Children.Any(conflict => conflict.UniqueId.Equals(currentChild.UniqueId)))
+                                {
+                                    continue;
+                                }
+                                completeConflict.HasConflict = true;
+                                parent.Children.Add(completeConflict);
+                                AddChildren(completeConflict, null, mergeToolModel);
+                            }
+                        }
                     }
                 }
             }
