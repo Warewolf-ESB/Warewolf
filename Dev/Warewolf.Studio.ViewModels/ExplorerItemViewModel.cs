@@ -701,7 +701,8 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public void SetPermission(Permissions permission, bool isDeploy = false)
+        public void SetPermission(Permissions permission) => SetPermission(permission, false);
+        public void SetPermission(Permissions permission, bool isDeploy)
         {
             SetNonePermissions();
 

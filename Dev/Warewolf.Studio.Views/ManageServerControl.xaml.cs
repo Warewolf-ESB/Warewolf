@@ -32,7 +32,8 @@ namespace Warewolf.Studio.Views
             }
         }
 
-        public void EnterServerName(string serverName, bool add = false)
+        public void EnterServerName(string serverName) => EnterServerName(serverName, false);
+        public void EnterServerName(string serverName, bool add)
         {
             try
             {

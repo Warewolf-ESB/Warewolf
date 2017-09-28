@@ -8,10 +8,6 @@ using Dev2.Common;
 using Dev2.Common.Interfaces.Services.Sql;
 using Oracle.ManagedDataAccess.Client;
 
-
-
-
-
 namespace Dev2.Services.Sql
 {
     public sealed class OracleServer : IDbServer
@@ -22,7 +18,6 @@ namespace Dev2.Services.Sql
         private IDbTransaction _transaction;
         private string _owner;
         private readonly bool _isTesting;
-
         
         public OracleServer(IDbFactory factory, IDbCommand command, IDbTransaction transaction)
         {
@@ -53,16 +48,16 @@ namespace Dev2.Services.Sql
         }
         public string ConnectionString => _connection?.ConnectionString;
 
-        public void FetchStoredProcedures(Func<IDbCommand, List<IDbDataParameter>, List<IDbDataParameter>, string, string, bool> procedureProcessor, Func<IDbCommand, List<IDbDataParameter>, List<IDbDataParameter>, string, string, bool> functionProcessor, bool continueOnProcessorException = false, string dbName = "")
+        public void FetchStoredProcedures(Func<IDbCommand, List<IDbDataParameter>, List<IDbDataParameter>, string, string, bool> procedureProcessor, Func<IDbCommand, List<IDbDataParameter>, List<IDbDataParameter>, string, string, bool> functionProcessor) => FetchStoredProcedures(procedureProcessor, functionProcessor, false, "");
+
+        public void FetchStoredProcedures(Func<IDbCommand, List<IDbDataParameter>, List<IDbDataParameter>, string, string, bool> procedureProcessor, Func<IDbCommand, List<IDbDataParameter>, List<IDbDataParameter>, string, string, bool> functionProcessor, bool continueOnProcessorException, string dbName)
         {
             VerifyArgument.IsNotNull("procedureProcessor", procedureProcessor);
             VerifyArgument.IsNotNull("functionProcessor", functionProcessor);
             VerifyConnection();
             _owner = dbName;
             DataTable proceduresDataTable = GetSchema(_connection);
-
-            // ROUTINE_CATALOG - ROUTINE_SCHEMA ,SPECIFIC_SCHEMA
-
+            
             foreach (DataRow row in proceduresDataTable.Rows)
             {
                 var type = row["ROUTINE_TYPE"];
@@ -175,20 +170,20 @@ namespace Dev2.Services.Sql
             }
             return FetchDataTable(_command);
         }
-        
+
+        public void FetchStoredProcedures(Func<IDbCommand, List<IDbDataParameter>, string, string, bool> procedureProcessor,
+            Func<IDbCommand, List<IDbDataParameter>, string, string, bool> functionProcessor) => FetchStoredProcedures(procedureProcessor, functionProcessor, false, "");
 
         public void FetchStoredProcedures(Func<IDbCommand, List<IDbDataParameter>, string, string, bool> procedureProcessor,
             Func<IDbCommand, List<IDbDataParameter>, string, string, bool> functionProcessor,
-            bool continueOnProcessorException = false, string dbName = "")
+            bool continueOnProcessorException, string dbName)
         {
             VerifyArgument.IsNotNull("procedureProcessor", procedureProcessor);
             VerifyArgument.IsNotNull("functionProcessor", functionProcessor);
             VerifyConnection();
             _owner = dbName;
             DataTable proceduresDataTable = GetSchema(_connection);
-
-            // ROUTINE_CATALOG - ROUTINE_SCHEMA ,SPECIFIC_SCHEMA
-
+            
             foreach (DataRow row in proceduresDataTable.Rows)//Procedure 2
             {
                 string fullProcedureName = row["NAME"].ToString();

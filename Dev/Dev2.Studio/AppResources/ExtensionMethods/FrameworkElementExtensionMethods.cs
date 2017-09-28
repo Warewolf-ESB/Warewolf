@@ -22,7 +22,8 @@ namespace Dev2.Studio.AppResources.ExtensionMethods
         /// <param name="frameworkElement">The framework element.</param>
         /// <param name="name">The name of the element.</param>
         /// <param name="partialMatch">Indicates if a partial name match should be performed</param>
-        public static FrameworkElement FindNameAcrossNamescopes(this FrameworkElement frameworkElement, string name, bool partialMatch = false)
+        public static FrameworkElement FindNameAcrossNamescopes(this FrameworkElement frameworkElement, string name) => frameworkElement.FindNameAcrossNamescopes(name, false);
+        public static FrameworkElement FindNameAcrossNamescopes(this FrameworkElement frameworkElement, string name, bool partialMatch)
         {
             return FindNameAcrossNamescopesImpl(frameworkElement, name, partialMatch);
         }

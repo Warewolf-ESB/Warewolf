@@ -33,8 +33,13 @@ namespace Dev2.Runtime.ESB.Execution
     public class InternalServiceContainer : EsbExecutionContainer
     {
         private readonly IEsbManagementServiceLocator _managementServiceLocator;
-        
-        public InternalServiceContainer(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel, EsbExecuteRequest request, IEsbManagementServiceLocator managementServiceLocator = null)
+
+        public InternalServiceContainer(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel, EsbExecuteRequest request)
+            : this(sa, dataObj, theWorkspace, esbChannel, request, null)
+        {
+        }
+
+        public InternalServiceContainer(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel, EsbExecuteRequest request, IEsbManagementServiceLocator managementServiceLocator)
             : base(sa, dataObj, theWorkspace, esbChannel, request)
         {
             

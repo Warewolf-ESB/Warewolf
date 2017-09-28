@@ -62,20 +62,19 @@ namespace Warewolf.Studio.ViewModels
         private IWorkflowDesignerViewModel _workflowDesignerViewModel;
 
         private static readonly IEnumerable<Type> Types = AppDomain.CurrentDomain.GetAssemblies().SelectMany(x => x.GetTypes());
-
-
-        public ServiceTestViewModel(IContextualResourceModel resourceModel, IAsyncWorker asyncWorker, IEventAggregator eventPublisher, IExternalProcessExecutor processExecutor, IWorkflowDesignerViewModel workflowDesignerViewModel, IMessage msg = null)
+        
+        public ServiceTestViewModel(IContextualResourceModel resourceModel, IAsyncWorker asyncWorker, IEventAggregator eventPublisher, IExternalProcessExecutor processExecutor, IWorkflowDesignerViewModel workflowDesignerViewModel) 
+            : this(resourceModel, asyncWorker, eventPublisher, processExecutor, workflowDesignerViewModel, null)
         {
 
-            if (resourceModel == null)
-            {
-                throw new ArgumentNullException(nameof(resourceModel));
-            }
+        }
 
+        public ServiceTestViewModel(IContextualResourceModel resourceModel, IAsyncWorker asyncWorker, IEventAggregator eventPublisher, IExternalProcessExecutor processExecutor, IWorkflowDesignerViewModel workflowDesignerViewModel, IMessage msg)
+        {
             _processExecutor = processExecutor;
             AsyncWorker = asyncWorker;
             EventPublisher = eventPublisher;
-            ResourceModel = resourceModel;
+            ResourceModel = resourceModel ?? throw new ArgumentNullException(nameof(resourceModel));
             ResourceModel.Environment.IsConnectedChanged += (sender, args) =>
             {
                 ViewModelUtils.RaiseCanExecuteChanged(DeleteTestCommand);

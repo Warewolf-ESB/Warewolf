@@ -503,7 +503,8 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// <summary>
         /// Used to transform the WorkflowInputs into XML
         /// </summary>
-        public void SetXmlData(bool includeBlank = false)
+        public void SetXmlData() => SetXmlData(false);
+        public void SetXmlData(bool includeBlank)
         {
             var dataListObject = new JObject();
             var objects = WorkflowInputs.Where(item => item.IsObject);

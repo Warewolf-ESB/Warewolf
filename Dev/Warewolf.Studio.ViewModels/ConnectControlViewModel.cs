@@ -40,8 +40,25 @@ namespace Warewolf.Studio.ViewModels
         private readonly ObservableCollection<IServer> _existingServers;
         public IPopupController PopupController { get; set; }
         private readonly IServerRepository _serverRepository;
-        public ConnectControlViewModel(IServer server, IEventAggregator aggregator, ObservableCollection<IServer> servers = null)
+
+        public ConnectControlViewModel(IServer server, IEventAggregator aggregator) 
+            : this(server, aggregator, null, null)
         {
+        }
+
+        public ConnectControlViewModel(IServer server, IEventAggregator aggregator, ObservableCollection<IServer> servers)
+            : this(server, aggregator, null, servers)
+        {
+        }
+
+        public ConnectControlViewModel(IServer server, IEventAggregator aggregator, IPopupController popupController)
+            : this(server, aggregator, popupController, null)
+        {
+        }
+
+        public ConnectControlViewModel(IServer server, IEventAggregator aggregator, IPopupController popupController, ObservableCollection<IServer> servers)
+        {
+            PopupController = popupController;
             if (aggregator == null)
             {
                 throw new ArgumentNullException(nameof(aggregator));
@@ -57,14 +74,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 Server.UpdateRepository.ServerSaved += UpdateRepositoryOnServerSaved;
             }
-            ShouldUpdateActiveEnvironment = false;
-          
-        }
-
-        public ConnectControlViewModel(IServer server, IEventAggregator aggregator, IPopupController popupController, ObservableCollection<IServer> servers = null)
-            : this(server, aggregator, servers)
-        {
-            PopupController = popupController;
+            ShouldUpdateActiveEnvironment = false;          
         }
 
         public bool ShouldUpdateActiveEnvironment { get; set; }
