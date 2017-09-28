@@ -124,7 +124,7 @@ namespace Dev2.Integration.Tests.Merge
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void Example_ControlFlowDecision_Have_No_Differences()
+        public void Example_ControlFlowDecision_Have_No_Differences_TreeHierachyIsCorrect()
         {
             //---------------Set up test pack-------------------
             var environmentModel = _server.Source;
@@ -184,9 +184,10 @@ namespace Dev2.Integration.Tests.Merge
             AsserthildrenHasChild(single.Children, "Incorrect");
             AsserthildrenHasChild(single.Children, "Correct Result");
         }
+
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void Example_ControlSwitchDecision_Have_No_Differences()
+        public void Example_ControlFlowSwitch_Have_No_Differences_TreeHierachyIsCorrect()
         {
             //---------------Set up test pack-------------------
             var environmentModel = _server.Source;
@@ -221,6 +222,66 @@ namespace Dev2.Integration.Tests.Merge
             AsserthildrenHasChild(mergeToolModels, "Incorrect",6);
             AsserthildrenHasChild(mergeToolModels, "Correct",1);
            
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void Example_ControlFlowSequence_Have_No_Differences_TreeHierachyIsCorrect()
+        {
+            //---------------Set up test pack-------------------
+            var environmentModel = _server.Source;
+            environmentModel.Connect();
+            var resourceRepository = _server.Source.ResourceRepository;
+            resourceRepository.Load();
+
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            var contextualResourceModel =
+                resourceRepository.LoadContextualResourceModel("0bdc3207-ff6b-4c01-a5eb-c7060222f75d".ToGuid());
+            var mergeWorkflowViewModel = new MergeWorkflowViewModel(contextualResourceModel, contextualResourceModel);
+            //---------------Test Result -----------------------
+            Assert.IsNotNull(mergeWorkflowViewModel);
+
+            var all = mergeWorkflowViewModel.Conflicts.All(conflict => !conflict.HasConflict);
+            Assert.IsTrue(all);
+            var conflictsCount = mergeWorkflowViewModel.Conflicts.Count;
+            Assert.AreEqual(8, conflictsCount);
+
+            var completeConflict1 = mergeWorkflowViewModel.Conflicts[0];
+            Assert.IsTrue(!completeConflict1.CurrentViewModel.Children.Any());
+            Assert.AreEqual("Use the Sequence tool to:", completeConflict1.CurrentViewModel.MergeDescription);
+
+            var completeConflict2 = mergeWorkflowViewModel.Conflicts[1];
+            Assert.IsTrue(!completeConflict2.CurrentViewModel.Children.Any());
+            Assert.AreEqual("EXAMPLE 1 - Basic Usage", completeConflict2.CurrentViewModel.MergeDescription);
+
+            var completeConflict3 = mergeWorkflowViewModel.Conflicts[2];
+            Assert.IsFalse(completeConflict3.CurrentViewModel.Children.Any());
+            Assert.AreEqual("Comment", completeConflict3.CurrentViewModel.MergeDescription);
+           
+            var completeConflict4 = mergeWorkflowViewModel.Conflicts[3];
+            Assert.IsTrue(completeConflict4.CurrentViewModel.Children.Any());
+            Assert.AreEqual("Organize Customers", completeConflict4.CurrentViewModel.MergeDescription);
+            var childrenCount = completeConflict4.CurrentViewModel.Children.Count;
+            Assert.AreEqual(3, childrenCount);
+            AsserthildrenHasChild(completeConflict4.CurrentViewModel.Children, "Split Names (3)");
+            AsserthildrenHasChild(completeConflict4.CurrentViewModel.Children, "Find Only Unique Names");
+            AsserthildrenHasChild(completeConflict4.CurrentViewModel.Children, "Sort Names Alphabetically");
+
+            var completeConflict5 = mergeWorkflowViewModel.Conflicts[4];
+            Assert.IsFalse(completeConflict5.CurrentViewModel.Children.Any());
+            Assert.AreEqual("EXAMPLE 2 - Advanced Usage", completeConflict5.CurrentViewModel.MergeDescription);
+
+
+            var completeConflict6 = mergeWorkflowViewModel.Conflicts[5];
+            Assert.IsTrue(completeConflict6.CurrentViewModel.Children.Any());
+            Assert.AreEqual("For Each", completeConflict6.CurrentViewModel.MergeDescription);
+            var childrenCount5 = completeConflict6.CurrentViewModel.Children.Count;
+            Assert.AreEqual(1, childrenCount5);
+            var mergeToolModel = completeConflict6.CurrentViewModel.Children.Single();
+            Assert.AreEqual(2, mergeToolModel.Children.Count);
+            AsserthildrenHasChild(mergeToolModel.Children, "Convert Case To Title Case (2)");
+            AsserthildrenHasChild(mergeToolModel.Children, "Create New Email Addresses (3)");
         }
 
         private void AsserthildrenHasChild(ObservableCollection<IMergeToolModel> children, string description)
