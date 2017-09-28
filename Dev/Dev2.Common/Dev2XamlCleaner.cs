@@ -11,7 +11,7 @@
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace Dev2.Util
+namespace Dev2.Common
 {
     /// <summary>
     ///     Used to clean the XAML def upon changes

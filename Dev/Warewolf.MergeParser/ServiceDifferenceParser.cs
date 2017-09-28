@@ -12,7 +12,10 @@ using Dev2.Studio.Interfaces;
 using Dev2.Common;
 using Dev2.Utilities;
 using System.Activities.Presentation.View;
+using System.Text;
 using System.Windows;
+using Dev2.Common.Interfaces;
+using Dev2.Communication;
 
 namespace Warewolf.MergeParser
 {
@@ -27,7 +30,7 @@ namespace Warewolf.MergeParser
             if (activity == null) return default;
             foreach ((Point point, IDev2Activity activity) item in items)
                 if (item.activity.UniqueID.Equals(activity.UniqueID))
-                    return ( ModelItemUtils.CreateModelItem(item.activity), item.point);
+                    return (ModelItemUtils.CreateModelItem(item.activity), item.point);
             return default;
         }
 
@@ -74,7 +77,7 @@ namespace Warewolf.MergeParser
             dev2Activities.RemoveAll(activity => children.Any(s => s.Equals(activity.UniqueID, StringComparison.InvariantCultureIgnoreCase)));
         }
 
-        public List<(Guid uniqueId, (ModelItem modelItem, Point point), (ModelItem modelItem, Point point), bool hasConflict)> GetDifferences(IContextualResourceModel current, IContextualResourceModel difference)
+        public List<(Guid uniqueId, (ModelItem modelItem, Point point) currentTool, (ModelItem modelItem, Point point) differenceTool, bool hasConflict)> GetDifferences(IContextualResourceModel current, IContextualResourceModel difference)
         {
             var conflictList = new List<(Guid uniqueId, (ModelItem modelItem, Point point), (ModelItem modelItem, Point point), bool hasConflict)>();
             _currentDifferences = GetNodes(current);
@@ -86,7 +89,7 @@ namespace Warewolf.MergeParser
                 var dev2Activity1 = _activityParser.Parse(new List<IDev2Activity>(), node.modelItem);
                 allCurentItems.Add((node.point, dev2Activity1));
             }
-            var currentList=allCurentItems.Select(p => p.activity).ToList();
+            var currentList = allCurentItems.Select(p => p.activity).ToList();
             CleanUpForDecisionAdSwitch(currentList);
             foreach (var node in _differences.nodeList)
             {
@@ -95,7 +98,7 @@ namespace Warewolf.MergeParser
             }
             var remoteList = allRemoteItems.Select(p => p.activity).ToList();
             CleanUpForDecisionAdSwitch(remoteList);
-           
+
             var equalItems = currentList.Intersect(remoteList, new Dev2ActivityComparer()).ToList();
             var nodesDifferentInMergeHead = currentList.Except(remoteList, new Dev2ActivityComparer()).ToList();
             var nodesDifferentInHead = remoteList.Except(currentList, new Dev2ActivityComparer()).ToList();
@@ -129,10 +132,21 @@ namespace Warewolf.MergeParser
             var xaml = resourceModel.WorkflowXaml;
 
             var workspace = GlobalConstants.ServerWorkspaceID;
-            var msg = resourceModel.Environment.ResourceRepository.FetchResourceDefinition(resourceModel.Environment, workspace, resourceModel.ID, false);
-            if (msg != null)
+            if (xaml == default(StringBuilder) || xaml.Length == 0)
             {
-                xaml = msg.Message;
+                var msg = resourceModel.Environment.ResourceRepository.FetchResourceDefinition(resourceModel.Environment, workspace, resourceModel.ID, true);
+                if (msg != null)
+                {
+                    xaml = msg.Message;
+                }
+            }
+            else
+            {
+                IResourceDefinationCleaner resourceDefinationCleaner = new ResourceDefinationCleaner();
+                Dev2JsonSerializer se = new Dev2JsonSerializer();
+                var a = resourceDefinationCleaner.GetResourceDefinition(true, resourceModel.ID, resourceModel.WorkflowXaml);
+                var executeMessage = se.Deserialize<ExecuteMessage>(a);
+                xaml = executeMessage.Message;
             }
 
             if (xaml == null || xaml.Length == 0)

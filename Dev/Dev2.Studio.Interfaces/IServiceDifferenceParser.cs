@@ -7,6 +7,6 @@ namespace Dev2.Studio.Interfaces
 {
     public interface IServiceDifferenceParser
     {
-        List<(Guid uniqueId, (ModelItem modelItem, Point point), (ModelItem modelItem, Point point), bool hasConflict)> GetDifferences(IContextualResourceModel current, IContextualResourceModel difference);
+        List<(Guid uniqueId, (ModelItem modelItem, Point point) currentTool, (ModelItem modelItem, Point point) differenceTool, bool hasConflict)> GetDifferences(IContextualResourceModel current, IContextualResourceModel difference);
     }
 }
