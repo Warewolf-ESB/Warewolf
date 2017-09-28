@@ -51,7 +51,7 @@ namespace Dev2.Runtime.Hosting
         private readonly IResourceUpgrader _resourceUpgrader;
         private readonly List<DuplicateResource> _duplicateResources = new List<DuplicateResource>();
         private readonly object _addLock = new object();
-        List<string> _biteFiles = new List<string>();
+        List<string> _convertToBiteExtension = new List<string>();
 
 
         public ResourceCatalogBuilder(IResourceUpgrader resourceUpgrader)
@@ -77,23 +77,36 @@ namespace Dev2.Runtime.Hosting
                 return;
 
             var streams = new List<ResourceBuilderTO>();
-            UpdateFileExtensions(workspacePath, folders);
+
             try
             {
-                foreach (var file in _biteFiles)
-                {
-                    FileAttributes fa = File.GetAttributes(file);
 
-                    if ((fa & FileAttributes.ReadOnly) == FileAttributes.ReadOnly)
+                foreach (var path in folders.Where(f => !string.IsNullOrEmpty(f) && !f.EndsWith("VersionControl")).Select(f => Path.Combine(workspacePath, f)))
+                {
+                    if (!Directory.Exists(path))
                     {
-                        Dev2Logger.Info("Removed READONLY Flag from [ " + file + " ]", GlobalConstants.WarewolfInfo);
-                        File.SetAttributes(file, FileAttributes.Normal);
+                        continue;
                     }
 
-                    var sourceStream = new FileStream(file, FileMode.Open, FileAccess.Read, FileShare.ReadWrite, 4096, true);
-                    streams.Add(new ResourceBuilderTO { FilePath = file, FileStream = sourceStream });
-                }
+                    var files = DirectoryHelper.GetFilesByExtensions(path, ".xml", ".bite");
+                    foreach (var file in files)
+                    {
 
+                        FileAttributes fa = File.GetAttributes(file);
+
+                        if ((fa & FileAttributes.ReadOnly) == FileAttributes.ReadOnly)
+                        {
+                            Dev2Logger.Info("Removed READONLY Flag from [ " + file + " ]", GlobalConstants.WarewolfInfo);
+                            File.SetAttributes(file, FileAttributes.Normal);
+                        }
+
+                        // Use the FileStream class, which has an option that causes asynchronous I/O to occur at the operating system level.  
+                        // In many cases, this will avoid blocking a ThreadPool thread.  
+                        var sourceStream = new FileStream(file, FileMode.Open, FileAccess.Read, FileShare.ReadWrite, 4096, true);
+                        streams.Add(new ResourceBuilderTO { FilePath = file, FileStream = sourceStream });
+
+                    }
+                }
 
                 // Use the parallel task library to process file system ;)
                 IList<Type> allTypes = new List<Type>();
@@ -130,11 +143,12 @@ namespace Dev2.Runtime.Hosting
                     StringBuilder result = xml?.ToStringBuilder();
 
                     var isValid = result != null && HostSecurityProvider.Instance.VerifyXml(result);
+                    var typeName = xml.AttributeSafe("Type");
                     if (isValid)
                     {
                         //TODO: Remove this after V1 is released. All will be updated.
                         #region old typing to be removed after V1
-                        var typeName = xml.AttributeSafe("Type");
+                        if (!IsWarewolfResource(xml)) { return; }
                         if (typeName == "Unknown")
                         {
                             var servertype = xml.AttributeSafe("ResourceType");
@@ -253,33 +267,33 @@ namespace Dev2.Runtime.Hosting
                 {
                     stream.FileStream.Close();
                 }
+                foreach (var item in _convertToBiteExtension)
+                {
+                    var updatedFile = String.Empty;
+                    if (item.EndsWith(".xml"))
+                    {
+                        updatedFile = Path.ChangeExtension(item, ".bite");
+                        File.Move(item, updatedFile);
+                    }
+                }
             }
         }
 
-        private void UpdateFileExtensions(string workspacePath, string[] folders)
+        private bool IsWarewolfResource(XElement xml)
         {
-            foreach (var path in folders.Where(f => !string.IsNullOrEmpty(f)).Select(f => Path.Combine(workspacePath, f)))
+            var resourceType = xml.AttributeSafe("ResourceType");
+            var type = xml.AttributeSafe("Type");
+            var action = xml.Descendants("Action").FirstOrDefault();
+            var actionResourceType = action?.AttributeSafe("ResourceType");
+            var actionType = action?.AttributeSafe("Type");
+            if (string.IsNullOrEmpty(resourceType)
+                && string.IsNullOrEmpty(type)
+                && string.IsNullOrEmpty(actionResourceType)
+                && string.IsNullOrEmpty(actionType))
             {
-                if (!Directory.Exists(path))
-                {
-                    continue;
-                }
-                var files = DirectoryHelper.GetFilesByExtensions(path, ".xml", ".bite");
-                foreach (var file in files)
-                {
-                    var updatedFile = string.Empty;
-                    if (file.EndsWith(".xml"))
-                    {
-                        updatedFile = Path.ChangeExtension(file, ".bite");
-                        File.Move(file, updatedFile);
-                    }
-                    if (!path.EndsWith("VersionControl"))
-                    {
-                        if (string.IsNullOrEmpty(updatedFile)) { _biteFiles.Add(file); }
-                        else { _biteFiles.Add(updatedFile); }
-                    }
-                }
+                return false;
             }
+            return true;
         }
 
         /// <summary>
@@ -293,6 +307,10 @@ namespace Dev2.Runtime.Hosting
             {
                 _resources.Add(res);
                 _addedResources.Add(res.ResourceID);
+                if (res.FilePath.EndsWith(".xml"))
+                {
+                    _convertToBiteExtension.Add(res.FilePath);
+                }
             }
             else
             {
