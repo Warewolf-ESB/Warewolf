@@ -6,6 +6,7 @@ using Dev2.Activities;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Studio.Core;
+using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Models;
 using Dev2.Studio.Interfaces;
@@ -165,6 +166,58 @@ namespace Dev2.Integration.Tests.Merge
             var valueTuples = parser.GetDifferences(loadContextualResourceModel, resourceModel);
             //---------------Test Result -----------------------
             Assert.IsTrue(valueTuples.All(tuple => !tuple.hasConflict));
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void GetDifferences_WhenFlatToolAddedOnLocal_ShouldNullOnRemoteChart()
+        {
+            var activityParser = new ActivityParser();
+            var shellView = new Mock<IShellViewModel>();
+            var serverMock = new Mock<IServer>();
+            shellView.Setup(model => model.ActiveServer).Returns(serverMock.Object);
+            CustomContainer.Register(shellView.Object);
+            CustomContainer.Register<IActivityParser>(activityParser);
+
+            var randomActivityUniqueId = Guid.NewGuid().ToString();
+            var calculateUniqueId = Guid.NewGuid().ToString();
+          
+            var helloWorldGuid = "49800850-BDF1-4248-93D0-DCD7E5F8B9CA".ToGuid();
+            var loadContextualResourceModel = _server.Source.ResourceRepository.LoadContextualResourceModel(helloWorldGuid);
+            var diff = TestHelper.CreateContextualResourceModel("Decision.SimpleNestedDecision");
+
+            var psd = new ServiceDifferenceParser();
+            var diffs = psd.GetDifferences(loadContextualResourceModel, diff);
+
+            Assert.AreEqual(1, diffs.Count);
+            Assert.IsTrue(diffs.Any(d => d.hasConflict));
+           
+            ////First Node chart
+            var valueTuple = diffs[0];
+            var dev2Activity = valueTuple.currentTool.modelItem.GetCurrentValue<IDev2Activity>();
+            var dev2Activity1 = valueTuple.differenceTool.modelItem.GetCurrentValue<IDev2Activity>();
+            Assert.IsNotNull(dev2Activity);
+            Assert.IsNotNull(dev2Activity1);
+            Assert.AreEqual(dev2Activity.UniqueID, dev2Activity1.UniqueID);
+            Assert.AreEqual(typeof(DsfDecision), valueTuple.currentTool.modelItem.ItemType);
+            Assert.AreEqual(typeof(DsfDecision), valueTuple.differenceTool.modelItem.ItemType);
+
+            //Second chart
+            var valueTuple1 = diffs[1];
+            var dev2ActivityD = valueTuple1.Item2.modelItem.GetCurrentValue<IDev2Activity>();
+            var dev2Activity1D = valueTuple1.Item3.modelItem.GetCurrentValue<IDev2Activity>();
+            Assert.IsNotNull(dev2ActivityD);
+            Assert.IsNotNull(dev2Activity1D);
+            Assert.AreEqual(calculateUniqueId, dev2ActivityD.UniqueID);
+            Assert.AreEqual(calculateUniqueId, dev2Activity1D.UniqueID);
+
+            //Third node
+            //difference chart
+            var valueTuple2 = diffs[2];
+            var dev3Activity1D = valueTuple2.Item3.modelItem.GetCurrentValue<IDev2Activity>();
+            Assert.IsNull(valueTuple2.Item2.modelItem);
+            Assert.IsNotNull(dev3Activity1D);
+            //Assert.AreEqual(baseCOnvertId, dev3Activity1D.UniqueID);
         }
 
 

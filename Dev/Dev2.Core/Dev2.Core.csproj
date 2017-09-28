@@ -227,7 +227,6 @@
     <Compile Include="Simulation\SimulationKey.cs" />
     <Compile Include="Simulation\SimulationRepository.cs" />
     <Compile Include="Util\Dev2ActivityIOIteration.cs" />
-    <Compile Include="Util\Dev2XamlCleaner.cs" />
     <Compile Include="Util\FindMissingAttribute.cs" />
     <Compile Include="Web\WebServiceInvoker.cs" />
     <Compile Include="DynamicServices\Objects\DynamicService.cs" />

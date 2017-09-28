@@ -1,5 +1,4 @@
-
-<Service ID="1f9ae8e3-d86f-4d25-9d64-a34d9601ee1f" Version="1.0" ServerID="8a56ee56-d760-48b3-b33b-bf79d28b3441" Name="SimpleNestedDecision" ResourceType="WorkflowService" IsValid="false" ServerVersion="2.0.2.21">
+<Service ID="49800850-BDF1-4248-93D0-DCD7E5F8B9CA" Version="1.0" ServerID="8a56ee56-d760-48b3-b33b-bf79d28b3441" Name="SimpleNestedDecision" ResourceType="WorkflowService" IsValid="false" ServerVersion="2.0.2.21">
   <DisplayName>SimpleNestedDecision</DisplayName>
   <Category>Merge\Decision\SimpleNestedDecision</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
