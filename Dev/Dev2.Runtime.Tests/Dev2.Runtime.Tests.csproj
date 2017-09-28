@@ -693,6 +693,7 @@
     <EmbeddedResource Include="XML\OauthSource.xml" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="XML\fileThatsNotWarewolfResource.xml" />
     <EmbeddedResource Include="XML\Sharepoint Connectors Testing.xml" />
     <EmbeddedResource Include="XML\SharePoint Test Server.xml" />
     <EmbeddedResource Include="XML\delete.xml" />
@@ -718,6 +719,8 @@
     <Content Include="TextFiles\TextFile2.txt" />
     <Content Include="TextFiles\TextFile1.txt" />
     <EmbeddedResource Include="XML\DebugPayload.xml" />
+    <EmbeddedResource Include="XML\testingExtension.xml" />
+    <EmbeddedResource Include="XML\WarewolfResourceFile.xml" />
     <Content Include="XML\GenDev.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

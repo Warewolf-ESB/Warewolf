@@ -267,15 +267,17 @@ namespace Dev2.Runtime.Hosting
                 {
                     stream.FileStream.Close();
                 }
-                foreach (var item in _convertToBiteExtension)
-                {
-                    var updatedFile = String.Empty;
-                    if (item.EndsWith(".xml"))
-                    {
-                        updatedFile = Path.ChangeExtension(item, ".bite");
-                        File.Move(item, updatedFile);
-                    }
-                }
+                UpdateExtensions(_convertToBiteExtension);
+            }
+        }
+
+        private void UpdateExtensions(List<string> extensionsToUpdateToBite)
+        {
+            foreach (var item in extensionsToUpdateToBite)
+            {
+                var updatedFile = String.Empty;
+                updatedFile = Path.ChangeExtension(item, ".bite");
+                File.Move(item, updatedFile);
             }
         }
 
