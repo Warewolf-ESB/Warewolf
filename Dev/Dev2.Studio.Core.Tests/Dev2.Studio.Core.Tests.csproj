@@ -216,6 +216,7 @@
     <Compile Include="ConnectionHelpers\ConnectControlSingletonTests.cs" />
     <Compile Include="Controller\CommunicationControllerTests.cs" />
     <Compile Include="CustomContainerTests.cs" />
+    <Compile Include="DataListViewModelEqualityTests.cs" />
     <Compile Include="DependencyVisualiserViewModelTests.cs" />
     <Compile Include="DependencyGraph\CircularDependencyTests.cs" />
     <Compile Include="DependencyGraph\GraphTests.cs" />

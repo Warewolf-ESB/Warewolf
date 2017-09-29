@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Activities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Dev2.Studio.Core.Activities.Utils;
 using System.Activities.Statements;
@@ -61,7 +60,7 @@ namespace Warewolf.MergeParser.Tests
             var current = CreateContextualResourceModel(chart);
             var diff = CreateContextualResourceModel(otherChart);
 
-            var psd = new ServiceDifferenceParser(activityParser);
+            var psd = new ServiceDifferenceParser(activityParser, new ResourceDefinationCleaner());
             var diffs = psd.GetDifferences(current, diff);
 
             Assert.AreEqual(2, diffs.Count);
