@@ -29,11 +29,11 @@ namespace Dev2
                 if (!contents.IsNullOrEmpty())
                 {
                     var assembly = Assembly.Load("Dev2.Data");
-                    var instance = assembly.CreateInstance("Resource", true, BindingFlags.Default, null, new object[] { contents.ToXElement() },
-                        CultureInfo.CurrentCulture, new object[] { });
+                    var type = assembly.GetType("Dev2.Runtime.ServiceModel.Data.Resource");
+                    var instance = Activator.CreateInstance(type, contents.ToXElement());
                     
                      var resource = (IResource)instance;
-                    if (resource != null && resource.ResourceType == @"DbSource")
+                    if (resource.ResourceType == @"DbSource")
                     {
                         res.Message.Append(contents);
                     }

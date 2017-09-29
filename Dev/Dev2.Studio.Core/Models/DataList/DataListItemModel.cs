@@ -350,5 +350,52 @@ namespace Dev2.Studio.Core.Models.DataList
         }
 
         #endregion Overrides of Object
+
+        public bool Equals(IDataListItemModel other)
+        {
+            return string.Equals(Description, other.Description)
+                && HasError == other.HasError
+                && string.Equals(ErrorMessage, other.ErrorMessage)
+                && IsEditable == other.IsEditable
+                && IsVisible == other.IsVisible
+                && IsSelected == other.IsSelected 
+                && IsUsed == other.IsUsed
+                && AllowNotes == other.AllowNotes 
+                && IsComplexObject == other.IsComplexObject
+                && string.Equals(DisplayName, other.DisplayName) 
+                && ColumnIODirection == other.ColumnIODirection   
+                && string.Equals(Name, other.Name)
+                && Equals(IsBlank, other.IsBlank)
+                && Equals(Output, other.Output)
+                && Equals(Input, other.Input);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((DataListItemModel) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = (Description != null ? Description.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ HasError.GetHashCode();
+                hashCode = (hashCode * 397) ^ (ErrorMessage != null ? ErrorMessage.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ IsEditable.GetHashCode();
+                hashCode = (hashCode * 397) ^ IsVisible.GetHashCode();
+                hashCode = (hashCode * 397) ^ IsSelected.GetHashCode();
+                hashCode = (hashCode * 397) ^ IsUsed.GetHashCode();
+                hashCode = (hashCode * 397) ^ AllowNotes.GetHashCode();
+                hashCode = (hashCode * 397) ^ IsComplexObject.GetHashCode();
+                hashCode = (hashCode * 397) ^ (DisplayName != null ? DisplayName.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (int)ColumnIODirection;
+                hashCode = (hashCode * 397) ^ (Name != null ? Name.GetHashCode() : 0);
+                return hashCode;
+            }
+        }
     }
 }

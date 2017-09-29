@@ -2,6 +2,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Data;
 using Dev2.Data.Interfaces.Enums;
@@ -19,7 +20,7 @@ namespace Dev2.Studio.Core.Models.DataList
         private bool _isArray;
         private string _searchText;
 
-        public ComplexObjectItemModel(string displayname, IComplexObjectItemModel parent = null, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection = enDev2ColumnArgumentDirection.None, string description = "", OptomizedObservableCollection<IComplexObjectItemModel> children = null, bool hasError = false, string errorMessage = "", bool isEditable = true, bool isVisible = true, bool isSelected = false, bool isExpanded = true) 
+        public ComplexObjectItemModel(string displayname, IComplexObjectItemModel parent = null, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection = enDev2ColumnArgumentDirection.None, string description = "", OptomizedObservableCollection<IComplexObjectItemModel> children = null, bool hasError = false, string errorMessage = "", bool isEditable = true, bool isVisible = true, bool isSelected = false, bool isExpanded = true)
             : base(displayname, dev2ColumnArgumentDirection, description, hasError, errorMessage, isEditable, isVisible, isSelected, isExpanded)
         {
             Children = children;
@@ -126,7 +127,7 @@ namespace Dev2.Studio.Core.Models.DataList
                 {
                     AppendObjectOpenChar(jsonString);
                 }
-                jsonString.Append("\"" + DisplayName.TrimEnd('(',')') + "\"");
+                jsonString.Append("\"" + DisplayName.TrimEnd('(', ')') + "\"");
                 jsonString.Append(":");
                 if (Children.Count > 0)
                 {
@@ -181,7 +182,7 @@ namespace Dev2.Studio.Core.Models.DataList
 
         private void AppendCloseArrayChar(StringBuilder jsonString)
         {
-            if(IsArray)
+            if (IsArray)
             {
                 jsonString.Append("]");
             }
@@ -194,7 +195,7 @@ namespace Dev2.Studio.Core.Models.DataList
 
         private void AppendOpenArrayChar(StringBuilder jsonString)
         {
-            if(IsArray)
+            if (IsArray)
             {
                 jsonString.Append("[");
             }
@@ -207,15 +208,15 @@ namespace Dev2.Studio.Core.Models.DataList
 
         private void BuildJsonForChildren(StringBuilder jsonString)
         {
-            for(int index = 0; index < Children.Count; index++)
+            for (int index = 0; index < Children.Count; index++)
             {
                 var complexObjectItemModel = Children[index];
                 jsonString.Append(complexObjectItemModel.GetJson());
-                if(complexObjectItemModel.Children.Count == 0)
+                if (complexObjectItemModel.Children.Count == 0)
                 {
                     jsonString.Append("\"\"");
                 }
-                if(index != Children.Count - 1)
+                if (index != Children.Count - 1)
                 {
                     jsonString.Append(",");
                 }
@@ -226,7 +227,7 @@ namespace Dev2.Studio.Core.Models.DataList
 
         public override string ValidateName(string name)
         {
-            var nameToCheck  = name.Replace("@", "");
+            var nameToCheck = name.Replace("@", "");
             var isArray = name.EndsWith("()");
             Dev2DataLanguageParser parser = new Dev2DataLanguageParser();
             if (!string.IsNullOrEmpty(nameToCheck))
@@ -275,5 +276,25 @@ namespace Dev2.Studio.Core.Models.DataList
         }
 
         #endregion
+
+        public bool Equals(IComplexObjectItemModel other)
+        {
+            var equals = Equals(IsArray, other.IsArray) && CommonEqualityOps.AreObjectsEqual(Parent, other.Parent);
+            var collectionEquals = CommonEqualityOps.CollectionEquals(Children, other.Children, new ComplexObjectItemModelComparer());
+            return base.Equals(other) && equals && collectionEquals;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((IComplexObjectItemModel)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return 1;
+        }
     }
 }
