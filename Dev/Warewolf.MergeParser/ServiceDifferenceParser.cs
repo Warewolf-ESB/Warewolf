@@ -19,8 +19,8 @@ namespace Warewolf.MergeParser
     public class ServiceDifferenceParser : IServiceDifferenceParser
     {
         private readonly IActivityParser _activityParser;
-        private (List<ModelItem> nodeList, Flowchart flowchartDiff) _currentDifferences;
-        private (List<ModelItem> nodeList, Flowchart flowchartDiff) _differences;
+        private (List<ModelItem> nodeList, Flowchart flowchartDiff, WorkflowDesigner wd) _currentDifferences;
+        private (List<ModelItem> nodeList, Flowchart flowchartDiff, WorkflowDesigner wd) _differences;
 
         private ModelItem GetCurrentModelItemUniqueId(IEnumerable<IDev2Activity> items, IDev2Activity activity)
         {
@@ -40,6 +40,7 @@ namespace Warewolf.MergeParser
         {
             VerifyArgument.IsNotNull(nameof(activityParser), activityParser);
             _activityParser = activityParser;
+            ShapeLocationList = new List<(IDev2Activity activity, Point point)>();
         }
 
         void CleanUpForDecisionAdSwitch(List<IDev2Activity> dev2Activities)
@@ -84,12 +85,16 @@ namespace Warewolf.MergeParser
             foreach (var node in _currentDifferences.nodeList)
             {
                 var dev2Activity1 = _activityParser.Parse(new List<IDev2Activity>(), node);
+                var shapeLocation = GetShapeLocation(_currentDifferences.wd, node);
+                ShapeLocationList.Add((dev2Activity1, shapeLocation));
                 allCurentItems.Add(dev2Activity1);
             }
             CleanUpForDecisionAdSwitch(allCurentItems);
             foreach (var node in _differences.nodeList)
             {
                 var dev2Activity1 = _activityParser.Parse(new List<IDev2Activity>(), node);
+                var shapeLocation = GetShapeLocation(_differences.wd, node);
+                ShapeLocationList.Add((dev2Activity1, shapeLocation));
                 allRemoteItems.Add(dev2Activity1);
             }
             CleanUpForDecisionAdSwitch(allRemoteItems);
@@ -120,7 +125,7 @@ namespace Warewolf.MergeParser
             return conflictList;
         }
 
-        private (List<ModelItem> nodeList, Flowchart flowchartDiff) GetNodes(IContextualResourceModel resourceModel)
+        private (List<ModelItem> nodeList, Flowchart flowchartDiff, WorkflowDesigner wd) GetNodes(IContextualResourceModel resourceModel)
         {
             var wd = new WorkflowDesigner();
             var xaml = resourceModel.WorkflowXaml;
@@ -141,48 +146,19 @@ namespace Warewolf.MergeParser
 
             var modelService = wd.Context.Services.GetService<ModelService>();
             var nodeList = modelService.Find(modelService.Root, typeof(FlowNode)).ToList();
-            ShapeLocationList = nodeList.Select(node => (node.GetCurrentValue<FlowNode>(), GetShapeLocation(wd, node))).ToList();
 
             var workflowHelper = new WorkflowHelper();
             var flowchartDiff = workflowHelper.EnsureImplementation(modelService).Implementation as Flowchart;
             // ReSharper disable once RedundantAssignment assuming this is for disposing
-            wd = null;
-            return (nodeList, flowchartDiff);
+            return (nodeList, flowchartDiff, wd);
         }
 
-        private List<(FlowNode node, Point point)> ShapeLocationList { get; set; }
+        private List<(IDev2Activity activity, Point point)> ShapeLocationList { get; set; }
 
-        public Point GetPointForTool(FlowNode flowNode)
+        public Point GetPointForTool(IDev2Activity activity)
         {
-            var flowNodeDisplayName = GetFlowNodeDisplayName(flowNode);
-
-            foreach (var valueTuple in ShapeLocationList)
-            {
-                var displayName = GetFlowNodeDisplayName(valueTuple.node);
-                if (flowNodeDisplayName.Equals(displayName))
-                {
-                    return valueTuple.point;
-                }
-            }
-            return new Point();
-        }
-
-        private static string GetFlowNodeDisplayName(FlowNode node)
-        {
-            var displayName = string.Empty;
-            switch (node)
-            {
-                case FlowDecision flowDecision:
-                    displayName = flowDecision.DisplayName;
-                    break;
-                case FlowSwitch<string> flowSwitch:
-                    displayName = flowSwitch.DisplayName;
-                    break;
-                case FlowStep flowStep:
-                    displayName = flowStep.Action.DisplayName;
-                    break;
-            }
-            return displayName;
+            var point = ShapeLocationList.FirstOrDefault(a => a.activity.UniqueID == activity.UniqueID).point;
+            return point;
         }
 
         private static Point GetShapeLocation(WorkflowDesigner wd, ModelItem modelItem)
@@ -196,6 +172,11 @@ namespace Warewolf.MergeParser
             }
 
             return shapeLocation;
+        }
+
+        public void Dispose()
+        {
+            ShapeLocationList = new List<(IDev2Activity activity, Point point)>();
         }
     }
 }

@@ -19,6 +19,7 @@ namespace Dev2.ViewModels.Merge
         private bool _hasParent;
         private Guid _uniqueId;
         private FlowNode _activityType;
+        private IMergeToolModel _parent;
 
         public MergeToolModel()
         {
@@ -56,6 +57,17 @@ namespace Dev2.ViewModels.Merge
                 SomethingModelToolChanged?.Invoke(this, this);
             }
         }
+
+        public IMergeToolModel Parent
+        {
+            get => _parent;
+            set
+            {
+                _parent = value;
+                OnPropertyChanged(() => Parent);
+            }
+        }
+
         public ObservableCollection<IMergeToolModel> Children
         {
             get => _children;
