@@ -255,7 +255,6 @@ namespace Dev2.Activities.Specs.TestFramework
 
         private static void AddVariables(string variableName, DataListViewModel datalistViewModel, enDev2ColumnArgumentDirection ioDirection)
         {
-
             if (DataListUtil.IsValueScalar(variableName))
             {
                 var scalarName = DataListUtil.RemoveLanguageBrackets(variableName);
@@ -287,6 +286,7 @@ namespace Dev2.Activities.Specs.TestFramework
                 }
             }
         }
+
         [Given(@"""(.*)"" Tests as")]
         public void GivenTestsAs(string workFlowName, Table table)
         {
