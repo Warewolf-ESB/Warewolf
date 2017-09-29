@@ -212,7 +212,7 @@ namespace Warewolf.Studio.ViewModels
 
                 Unknown = items.Count(a => a.ResourceType == @"Unknown" || string.IsNullOrEmpty(a.ResourceType));
 
-                if (_destination.SelectedEnvironment != null)
+                if (_destination.SelectedEnvironment != null && _destination.SelectedEnvironment.UnfilteredChildren != null)
                 {
                     var explorerItemViewModels = _destination.SelectedEnvironment.UnfilteredChildren.Flatten(model => model.UnfilteredChildren?? new ObservableCollection<IExplorerItemViewModel>());
                     var explorerTreeItems = explorerItemViewModels as IExplorerItemViewModel[] ?? explorerItemViewModels.ToArray();

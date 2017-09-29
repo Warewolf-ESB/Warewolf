@@ -20,6 +20,11 @@ namespace Dev2.Studio.Core.Models.DataList
         {
         }
 
+        public RecordSetFieldItemModel(string displayname, IRecordSetItemModel parent, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection)
+            : this(displayname, parent, dev2ColumnArgumentDirection, "", false, "", true, true, false, true)
+        {
+        }
+
         public RecordSetFieldItemModel(string displayname, IRecordSetItemModel parent, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection, string description, bool hasError, string errorMessage, bool isEditable, bool isVisible, bool isSelected)
             : this(displayname, parent, dev2ColumnArgumentDirection, description, hasError, errorMessage, isEditable, isVisible, isSelected, true)
         {
