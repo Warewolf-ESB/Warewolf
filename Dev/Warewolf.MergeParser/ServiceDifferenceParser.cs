@@ -84,7 +84,7 @@ namespace Warewolf.MergeParser
         {
             var conflictList = new List<(Guid uniqueId, ModelItem current, ModelItem difference, bool conflict)>();
             _currentDifferences = GetNodes(current,true);
-            _differences = GetNodes(difference, false);
+            _differences = GetNodes(difference, true);
             var allCurentItems = new List<IDev2Activity>();
             var allRemoteItems = new List<IDev2Activity>();
             foreach (var node in _currentDifferences.nodeList)

@@ -265,6 +265,15 @@ namespace Warewolf.Studio.ViewModels
             return child;
         }
 
+        public void MergeVersionCommand(Guid resourceId, string versionNumber, IServer server)
+        {
+            SetActiveStates(_shellViewModel, server);
+
+            // OPEN VIEW WITH VERSION NUMBER
+
+            _shellViewModel.OpenMergeConflictsView(resourceId, resourceId, server);
+        }
+
         internal void ViewApisJsonCommand(string resourcePath, Uri webServerUri)
         {
             _shellViewModel.ViewApisJson(resourcePath, webServerUri);
