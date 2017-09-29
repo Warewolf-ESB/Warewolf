@@ -10,6 +10,7 @@
              xmlns:workflow="clr-namespace:Dev2.Studio.Views.Workflow"
              xmlns:datalist="clr-namespace:Dev2.Studio.Views.DataList"
              xmlns:merge="clr-namespace:Dev2.ViewModels.Merge"
+             xmlns:ig="http://schemas.infragistics.com/xaml"
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance interfaces:IMergeWorkflowViewModel}"
              d:DesignHeight="300" d:DesignWidth="300">
@@ -615,9 +616,14 @@
             <Grid x:Name="WorkflowDesignerViewGrid" 
                   Grid.Row="1" 
                   AutomationProperties.AutomationId="UI_WorkflowDesignerViewGrid_AutoID">
-                <workflow:WorkflowDesignerView x:Name="WorkflowDesignerView" 
-                                               DataContext="{Binding WorkflowDesignerViewModel}" 
-                                               AutomationProperties.AutomationId="UI_WorkflowDesignerView_AutoID"/>
+                <ContentControl x:Name="WorkflowDesignerView"
+                                Content="{Binding WorkflowDesignerViewModel.DesignerView}"
+                                AllowDrop="False"
+                                AutomationProperties.AutomationId="{Binding WorkflowDesignerViewModel.DesignerText}">
+                    <ig:DragDropManager.DropTarget >
+                        <ig:DropTarget IsDropTarget="False" />
+                    </ig:DragDropManager.DropTarget>
+                </ContentControl>
             </Grid>
         </Grid>
     </Grid>

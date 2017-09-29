@@ -191,8 +191,8 @@ namespace Dev2.Integration.Tests.Merge
            
             ////First Node chart
             var valueTuple = diffs[0];
-            var dev2Activity = valueTuple.currentTool.modelItem.GetCurrentValue<IDev2Activity>();
-            var dev2Activity1 = valueTuple.differenceTool.modelItem.GetCurrentValue<IDev2Activity>();
+            var dev2Activity = valueTuple.current.GetCurrentValue<IDev2Activity>();
+            var dev2Activity1 = valueTuple.difference.GetCurrentValue<IDev2Activity>();
             Assert.IsNotNull(dev2Activity);
             Assert.IsNotNull(dev2Activity1);
             Assert.AreEqual(dev2Activity.UniqueID, dev2Activity1.UniqueID);

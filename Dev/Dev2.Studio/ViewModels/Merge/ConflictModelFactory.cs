@@ -16,7 +16,6 @@ using Dev2.Activities.SelectAndApply;
 using Dev2.Common.ExtMethods;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using System.Activities.Statements;
-using System.Windows;
 using Caliburn.Micro;
 using Dev2.Common;
 using Dev2.Studio.Interfaces.DataList;
@@ -26,17 +25,17 @@ namespace Dev2.ViewModels.Merge
     public class ConflictModelFactory : BindableBase, IConflictModelFactory
     {
         private readonly IActivityParser _activityParser;
-        private (ModelItem modelItem, Point point) _modelTuple;
+        private ModelItem _modelItem;
         private readonly IContextualResourceModel _resourceModel;
         private bool _isWorkflowNameChecked;
         private bool _isVariablesChecked;
 
         public IMergeToolModel Model { get; set; }
-        public ConflictModelFactory((ModelItem modelItem, Point point) modelTuple, IContextualResourceModel resourceModel)
+        public ConflictModelFactory(ModelItem modelItem, IContextualResourceModel resourceModel)
             : this(CustomContainer.Get<IActivityParser>())
         {
             Children = new ObservableCollection<IMergeToolModel>();
-            _modelTuple = modelTuple;
+            _modelItem = modelItem;
             _resourceModel = resourceModel;
         }
 
@@ -119,10 +118,18 @@ namespace Dev2.ViewModels.Merge
 
         public IMergeToolModel GetModel(string item = "")
         {
-            if (_modelTuple.modelItem == default(ModelItem)) return null;
-            var currentValue = _modelTuple.modelItem.GetCurrentValue<IDev2Activity>();
+            if (_modelItem == default(ModelItem))
+            {
+                return null;
+            }
+
+            var currentValue = _modelItem.GetCurrentValue<IDev2Activity>();
             var activityType = currentValue?.GetType();
-            if (activityType == typeof(DsfDecision)) activityType = typeof(DsfFlowDecisionActivity);
+            if (activityType == typeof(DsfDecision))
+            {
+                activityType = typeof(DsfFlowDecisionActivity);
+            }
+
             DesignerAttributeMap.DesignerAttributes.TryGetValue(activityType, out Type actual);
             if (actual != null)
             {
@@ -130,15 +137,15 @@ namespace Dev2.ViewModels.Merge
                 if (actual == typeof(SwitchDesignerViewModel))
                 {
                     var dsfSwitch = currentValue as DsfSwitch;
-                    instance = Activator.CreateInstance(actual, _modelTuple.modelItem, dsfSwitch?.Switch ?? "") as ActivityDesignerViewModel;
+                    instance = Activator.CreateInstance(actual, _modelItem, dsfSwitch?.Switch ?? "") as ActivityDesignerViewModel;
                 }
                 else if (actual == typeof(ServiceDesignerViewModel))
                 {
-                    instance = Activator.CreateInstance(actual, _modelTuple.modelItem, _resourceModel) as ActivityDesignerViewModel;
+                    instance = Activator.CreateInstance(actual, _modelItem, _resourceModel) as ActivityDesignerViewModel;
                 }
                 else
                 {
-                    instance = Activator.CreateInstance(actual, _modelTuple.modelItem) as ActivityDesignerViewModel;
+                    instance = Activator.CreateInstance(actual, _modelItem) as ActivityDesignerViewModel;
                 }
 
                 var dsfActivity = activityType.GetProperty("DisplayName")?.GetValue(currentValue);
@@ -153,10 +160,9 @@ namespace Dev2.ViewModels.Merge
                 var mergeToolModel = new MergeToolModel
                 {
                     ActivityDesignerViewModel = instance,
-                    MergeIcon = _modelTuple.modelItem.GetImageSourceForTool(),
+                    MergeIcon = _modelItem.GetImageSourceForTool(),
                     MergeDescription = dsfActivity?.ToString(),
-                    UniqueId = currentValue.UniqueID.ToGuid(),
-                    Location = _modelTuple.point
+                    UniqueId = currentValue.UniqueID.ToGuid()
                 };
 
                 //TODO implement builder pattern
@@ -195,9 +201,10 @@ namespace Dev2.ViewModels.Merge
             if (singleOrDefault != null)
             {
                 var forEachModel = ModelItemUtils.CreateModelItem(singleOrDefault);
-                _modelTuple.modelItem = forEachModel;
+                _modelItem = forEachModel;
                 var addModelItem = GetModel();
                 addModelItem.HasParent = true;
+                addModelItem.Parent = mergeToolModel;
                 addModelItem.ParentDescription = c.DisplayName;
                 mergeToolModel.Children.Add(addModelItem);
             }
@@ -207,14 +214,14 @@ namespace Dev2.ViewModels.Merge
                 var nextModelItem = ModelItemUtils.CreateModelItem(nextNode);
                 if (nextNode is DsfSwitch a)
                 {
-                    _modelTuple.modelItem = nextModelItem;
+                    _modelItem = nextModelItem;
                     var addModelItem = GetModel(a.Switch);
                     Children.Add(addModelItem);
                 }
 
                 else
                 {
-                    _modelTuple.modelItem = nextModelItem;
+                    _modelItem = nextModelItem;
                     var addModelItem = GetModel();
                     Children.Add(addModelItem);
                 }
@@ -228,9 +235,10 @@ namespace Dev2.ViewModels.Merge
             if (singleOrDefault != null)
             {
                 var forEachModel = ModelItemUtils.CreateModelItem(singleOrDefault);
-                _modelTuple.modelItem = forEachModel;
+                _modelItem = forEachModel;
                 var addModelItem = GetModel();
                 addModelItem.HasParent = true;
+                addModelItem.Parent = mergeToolModel;
                 addModelItem.ParentDescription = b.DisplayName;
                 mergeToolModel.Children.Add(addModelItem);
             }
@@ -240,14 +248,14 @@ namespace Dev2.ViewModels.Merge
                 var nextModelItem = ModelItemUtils.CreateModelItem(nextNode);
                 if (nextNode is DsfSwitch a)
                 {
-                    _modelTuple.modelItem = nextModelItem;
+                    _modelItem = nextModelItem;
                     var addModelItem = GetModel(a.Switch);
                     Children.Add(addModelItem);
                 }
 
                 else
                 {
-                    _modelTuple.modelItem = nextModelItem;
+                    _modelItem = nextModelItem;
                     var addModelItem = GetModel();
                     Children.Add(addModelItem);
                 }
@@ -261,9 +269,10 @@ namespace Dev2.ViewModels.Merge
             if (sequence.Activities != null)
                 foreach (var dev2Activity in sequence.Activities)
                 {
-                    _modelTuple.modelItem = ModelItemUtils.CreateModelItem(dev2Activity);
+                    _modelItem = ModelItemUtils.CreateModelItem(dev2Activity);
                     var addModelItem = GetModel();
                     addModelItem.HasParent = true;
+                    addModelItem.Parent = mergeToolModel;
                     addModelItem.ParentDescription = sequence.DisplayName;
                     mergeToolModel.Children.Add(addModelItem);
                 }
@@ -273,14 +282,14 @@ namespace Dev2.ViewModels.Merge
                 var nextModelItem = ModelItemUtils.CreateModelItem(nextNode);
                 if (nextNode is DsfSwitch a)
                 {
-                    _modelTuple.modelItem = nextModelItem;
+                    _modelItem = nextModelItem;
                     var addModelItem = GetModel(a.Switch);
                     Children.Add(addModelItem);
                 }
 
                 else
                 {
-                    _modelTuple.modelItem = nextModelItem;
+                    _modelItem = nextModelItem;
                     var addModelItem = GetModel();
                     Children.Add(addModelItem);
                 }
@@ -298,9 +307,10 @@ namespace Dev2.ViewModels.Merge
                     var currentArmTree = _activityParser.FlattenNextNodesInclusive(group.Value);
                     foreach (var dev2Activity in currentArmTree)
                     {
-                        _modelTuple.modelItem = ModelItemUtils.CreateModelItem(dev2Activity);
+                        _modelItem = ModelItemUtils.CreateModelItem(dev2Activity);
                         var addModelItem = GetModel(group.Key);
                         addModelItem.HasParent = true;
+                        addModelItem.Parent = mergeToolModel;
                         addModelItem.ParentDescription = "Case: " + group.Key;
                         mergeToolModel.Children.Add(addModelItem);
                     }
@@ -313,9 +323,10 @@ namespace Dev2.ViewModels.Merge
                     var currentArmTree = _activityParser.FlattenNextNodesInclusive(dev2Activity);
                     foreach (var activity in currentArmTree)
                     {
-                        _modelTuple.modelItem = ModelItemUtils.CreateModelItem(activity);
+                        _modelItem = ModelItemUtils.CreateModelItem(activity);
                         var addModelItem = GetModel();
                         addModelItem.HasParent = true;
+                        addModelItem.Parent = mergeToolModel;
                         addModelItem.ParentDescription = "Default";
                         mergeToolModel.Children.Add(addModelItem);
                     }
@@ -323,7 +334,7 @@ namespace Dev2.ViewModels.Merge
             }
         }
 
-        private void BuildDecision(DsfDecision de, MergeToolModel parentDecision)
+        private void BuildDecision(DsfDecision de, MergeToolModel mergeToolModel)
         {
             var decisionNode = new FlowDecision(de.GetFlowNode());
 
@@ -335,11 +346,12 @@ namespace Dev2.ViewModels.Merge
 
                 foreach (var dev2Activity in truArmToFlatList)
                 {
-                    _modelTuple.modelItem = ModelItemUtils.CreateModelItem(dev2Activity);
+                    _modelItem = ModelItemUtils.CreateModelItem(dev2Activity);
                     var addModelItem = GetModel();
                     addModelItem.HasParent = true;
+                    addModelItem.Parent = mergeToolModel;
                     addModelItem.ParentDescription = de.Conditions.TrueArmText;
-                    parentDecision.Children.Add(addModelItem);
+                    mergeToolModel.Children.Add(addModelItem);
                 }
             }
 
@@ -350,15 +362,15 @@ namespace Dev2.ViewModels.Merge
                 var falseArmToFlatList = _activityParser.FlattenNextNodesInclusive(firstOrDefault);
                 foreach (var dev2Activity in falseArmToFlatList)
                 {
-                    _modelTuple.modelItem = ModelItemUtils.CreateModelItem(dev2Activity);
+                    _modelItem = ModelItemUtils.CreateModelItem(dev2Activity);
                     var addModelItem = GetModel();
                     addModelItem.HasParent = true;
                     addModelItem.ParentDescription = de.Conditions.FalseArmText;
-                    parentDecision.Children.Add(addModelItem);
+                    mergeToolModel.Children.Add(addModelItem);
                 }
             }
 
-            parentDecision.ActivityType = decisionNode;
+            mergeToolModel.ActivityType = decisionNode;
         }
 
         public event ConflictModelChanged SomethingConflictModelChanged;

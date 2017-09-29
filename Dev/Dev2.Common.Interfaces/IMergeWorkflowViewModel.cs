@@ -1,7 +1,7 @@
 ﻿using System;
+using System.Activities.Statements;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Windows;
 using System.Windows.Media;
 
 namespace Dev2.Common.Interfaces
@@ -42,11 +42,12 @@ namespace Dev2.Common.Interfaces
         ImageSource MergeIcon { get; set; }
         string MergeDescription { get; set; }
         bool IsMergeChecked { get; set; }
+        IMergeToolModel Parent { get; set; }
         ObservableCollection<IMergeToolModel> Children { get; set; }
         Guid UniqueId { get; set; }
         string ParentDescription { get; set; }
         bool HasParent { get; set; }
         event ModelToolChanged SomethingModelToolChanged;
-        Point Location { get; set; }
+        FlowNode ActivityType { get; set; }
     }
 }

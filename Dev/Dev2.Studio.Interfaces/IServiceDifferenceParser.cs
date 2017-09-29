@@ -5,8 +5,9 @@ using System.Windows;
 
 namespace Dev2.Studio.Interfaces
 {
-    public interface IServiceDifferenceParser
+    public interface IServiceDifferenceParser : IDisposable
     {
-        List<(Guid uniqueId, (ModelItem modelItem, Point point) currentTool, (ModelItem modelItem, Point point) differenceTool, bool hasConflict)> GetDifferences(IContextualResourceModel current, IContextualResourceModel difference);
+        List<(Guid uniqueId, ModelItem current, ModelItem difference, bool hasConflict)> GetDifferences(IContextualResourceModel current, IContextualResourceModel difference);
+        Point GetPointForTool(IDev2Activity activity);
     }
 }
