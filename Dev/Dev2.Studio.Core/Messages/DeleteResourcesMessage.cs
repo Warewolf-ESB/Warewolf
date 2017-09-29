@@ -17,7 +17,12 @@ namespace Dev2.Studio.Core.Messages
 {
     public class DeleteResourcesMessage : IMessage
     {
-        public DeleteResourcesMessage(ICollection<IContextualResourceModel> resourceModels, string folderName, bool showDialog = true, Action actionToDoOnDelete = null)
+        public DeleteResourcesMessage(ICollection<IContextualResourceModel> resourceModels, string folderName)
+            : this(resourceModels, folderName, true, null)
+        {
+        }
+
+        public DeleteResourcesMessage(ICollection<IContextualResourceModel> resourceModels, string folderName, bool showDialog, Action actionToDoOnDelete)
         {
             FolderName = folderName;
             ActionToDoOnDelete = actionToDoOnDelete;

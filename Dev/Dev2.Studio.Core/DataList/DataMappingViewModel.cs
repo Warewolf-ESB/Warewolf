@@ -43,9 +43,14 @@ namespace Dev2.Studio.ViewModels.DataList
         #endregion Imports
 
         #region Ctor
-        public DataMappingViewModel(IWebActivity activity, NotifyCollectionChangedEventHandler mappingCollectionChangedEventHandler = null)
-        {
 
+        public DataMappingViewModel(IWebActivity activity)
+            : this(activity, null)
+        {
+        }
+
+        public DataMappingViewModel(IWebActivity activity, NotifyCollectionChangedEventHandler mappingCollectionChangedEventHandler)
+        {
             _activity = activity;
             Inputs = new ObservableCollection<IInputOutputViewModel>();
             Outputs = new ObservableCollection<IInputOutputViewModel>();
@@ -57,6 +62,7 @@ namespace Dev2.Studio.ViewModels.DataList
             }
             Initialize(_activity);
         }
+
         #endregion Ctor
 
         #region Initialize
