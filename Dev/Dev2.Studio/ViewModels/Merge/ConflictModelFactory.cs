@@ -19,6 +19,7 @@ using System.Activities.Statements;
 using System.Windows;
 using Caliburn.Micro;
 using Dev2.Common;
+using Dev2.Studio.Interfaces.DataList;
 
 namespace Dev2.ViewModels.Merge
 {
@@ -50,7 +51,7 @@ namespace Dev2.ViewModels.Merge
 
         public void GetDataList()
         {
-            DataListViewModel = DataListViewModelFactory.CreateDataListViewModel(_resourceModel) as DataListViewModel;
+            DataListViewModel = DataListViewModelFactory.CreateDataListViewModel(_resourceModel);
             if (DataListViewModel != null)
             {
                 DataListViewModel.ViewSortDelete = false;
@@ -112,7 +113,7 @@ namespace Dev2.ViewModels.Merge
                 SomethingConflictModelChanged?.Invoke(this, this);
             }
         }
-        public DataListViewModel DataListViewModel { get; set; }
+        public IDataListViewModel DataListViewModel { get; set; }
         public ObservableCollection<IMergeToolModel> Children { get; set; }
 
 

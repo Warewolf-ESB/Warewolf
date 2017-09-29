@@ -8,11 +8,12 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
 using Dev2.Data.Interfaces.Enums;
 
 namespace Dev2.Studio.Interfaces.DataList
 {
-    public interface IDataListItemModel
+    public interface IDataListItemModel : IEquatable<IDataListItemModel>
     {
         string DisplayName { get; set; }
         string Description { get; set; }
@@ -30,7 +31,7 @@ namespace Dev2.Studio.Interfaces.DataList
         enDev2ColumnArgumentDirection ColumnIODirection { get; set; }
         bool IsBlank { get; }
         void SetError(string errorMessage);
-        void RemoveError();        
+        void RemoveError();
         string Name { get; set; }
     }
 }

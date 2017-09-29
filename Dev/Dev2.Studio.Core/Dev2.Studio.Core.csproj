@@ -185,6 +185,9 @@
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
     <Compile Include="ApplicationAdaptor.cs" />
+    <Compile Include="Equality\ComplexObjectItemModelComparer.cs" />
+    <Compile Include="Equality\DataListItemModelComparer.cs" />
+    <Compile Include="Equality\DataListViewModelComparer.cs" />
     <Compile Include="Interfaces\IApplicationAdaptor.cs" />
     <Compile Include="IViewFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" Condition="!Exists('..\AssemblyCommonInfo.cs')" />
@@ -348,6 +351,7 @@
     <Compile Include="Network\WebServer.cs" />
     <Compile Include="ProxyBase.cs" />
     <Compile Include="QueryManagerProxy.cs" />
+    <Compile Include="Equality\RecordSetItemModelComparer.cs" />
     <Compile Include="Security\ClientAuthorizationService.cs" />
     <Compile Include="Security\ClientSecurityService.cs" />
     <Compile Include="Security\AuthorizeCommand.cs" />

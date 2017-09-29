@@ -36,6 +36,7 @@ using System.Text;
 using System.Windows.Input;
 using System.Xml;
 using Dev2.Data.TO;
+using Dev2.Studio.Core.Equality;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.DataList;
 using Warewolf.Resource.Errors;
@@ -664,7 +665,7 @@ namespace Dev2.Studio.ViewModels.DataList
             CheckDataListItemsForDuplicates(DataList);
         }
 
-        
+
         private void CheckDataListItemsForDuplicates(IEnumerable<IDataListItemModel> itemsToCheck)
         {
             List<IGrouping<string, IDataListItemModel>> duplicates = itemsToCheck.ToLookup(x => x.DisplayName).ToList();
@@ -887,7 +888,7 @@ namespace Dev2.Studio.ViewModels.DataList
             _scalarHandler.AddScalars(c);
         }
 
-        
+
 
         private const string RootTag = "DataList";
         private const string Description = "Description";
@@ -988,7 +989,7 @@ namespace Dev2.Studio.ViewModels.DataList
 
             if (DataList != null)
             {
-                
+
                 missingWorkflowParts.AddRange(_missingDataList.MissingScalars(partsToVerify, excludeUnusedItems));
                 missingWorkflowParts.AddRange(_missingDataList.MissingRecordsets(partsToVerify, excludeUnusedItems));
             }
@@ -1059,6 +1060,34 @@ namespace Dev2.Studio.ViewModels.DataList
         private static string BuildErrorMessage(IDataListItemModel model)
         {
             return DataListUtil.AddBracketsToValueIfNotExist(model.DisplayName) + " : " + model.ErrorMessage;
+        }
+
+        public bool Equals(IDataListViewModel other)
+        {
+            var recordSetsAreEqual = CommonEqualityOps.CollectionEquals(RecsetCollection, other.RecsetCollection, new DataListItemModelComparer());
+            var scalasAreEqual = CommonEqualityOps.CollectionEquals(ScalarCollection, other.ScalarCollection, new DataListItemModelComparer());
+            var objectsAreEqual = CommonEqualityOps.CollectionEquals(ComplexObjectCollection, other.ComplexObjectCollection, new DataListItemModelComparer());
+
+            return recordSetsAreEqual && scalasAreEqual && objectsAreEqual;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((DataListViewModel)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = (ScalarCollection != null ? ScalarCollection.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (RecsetCollection != null ? RecsetCollection.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (ComplexObjectCollection != null ? ComplexObjectCollection.GetHashCode() : 0);
+                return hashCode;
+            }
         }
     }
 }
