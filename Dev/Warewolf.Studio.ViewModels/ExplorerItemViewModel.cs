@@ -271,7 +271,14 @@ namespace Warewolf.Studio.ViewModels
             });
             MergeCommand = new DelegateCommand(o =>
             {
-                _explorerItemViewModelCommandController.MergeCommand(ResourceId, Server);
+                if (IsVersion)
+                {
+                    _explorerItemViewModelCommandController.MergeVersionCommand(ResourceId, VersionNumber, Server);
+                }
+                else
+                {
+                    _explorerItemViewModelCommandController.MergeCommand(ResourceId, Server);
+                }
             });
             ViewApisJsonCommand = new DelegateCommand(o =>
             {
@@ -1520,6 +1527,7 @@ namespace Warewolf.Studio.ViewModels
                                         VersionInfo = a,
                                         ResourceId = ResourceId,
                                         IsVersion = true,
+                                        IsMergeVisible = true,
                                         CanEdit = false,
                                         CanCreateWorkflowService = false,
                                         ShowContextMenu = true,
