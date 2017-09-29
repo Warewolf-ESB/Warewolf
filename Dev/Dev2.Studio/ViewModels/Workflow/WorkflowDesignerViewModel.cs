@@ -257,6 +257,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             CanRunAllTests = false;
             CanDuplicate = false;
             CanDeploy = false;
+            CanMerge = false;
             CanShowDependencies = false;
             CanViewSwagger = false;
             CanCopyUrl = false;
@@ -272,6 +273,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             CanRunAllTests = !ResourceModel.IsNewWorkflow;
             CanDuplicate = !ResourceModel.IsNewWorkflow;
             CanDeploy = !ResourceModel.IsNewWorkflow;
+            CanMerge = !ResourceModel.IsNewWorkflow;
             CanShowDependencies = !ResourceModel.IsNewWorkflow;
             CanViewSwagger = !ResourceModel.IsNewWorkflow;
             CanCopyUrl = !ResourceModel.IsNewWorkflow;
@@ -287,6 +289,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             CanRunAllTests = !ResourceModel.IsNewWorkflow;
             CanDuplicate = !ResourceModel.IsNewWorkflow;
             CanDeploy = !ResourceModel.IsNewWorkflow;
+            CanMerge = !ResourceModel.IsNewWorkflow;
             CanShowDependencies = !ResourceModel.IsNewWorkflow;
             CanViewSwagger = !ResourceModel.IsNewWorkflow;
             CanCopyUrl = !ResourceModel.IsNewWorkflow;
