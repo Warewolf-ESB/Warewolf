@@ -364,7 +364,9 @@ namespace Dev2.Studio.Core.Models
 
         }
 
-        public async Task<IExplorerItem> LoadExplorer(bool reloadCatalogue = false)
+        public async Task<IExplorerItem> LoadExplorer() => await LoadExplorer(false).ConfigureAwait(true);
+
+        public async Task<IExplorerItem> LoadExplorer(bool reloadCatalogue)
         {
             var result = await ProxyLayer.LoadExplorer(reloadCatalogue);
             HasLoaded = true;

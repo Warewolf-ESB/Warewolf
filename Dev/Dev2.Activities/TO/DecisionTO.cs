@@ -51,7 +51,17 @@ namespace Dev2.TO
         {
         }
 
-        public DecisionTO(string matchValue, string searchCriteria, string searchType, int indexNum, bool inserted = false, string from = "", string to = "", Action<DecisionTO> updateDisplayAction = null, Action<DecisionTO> delectAction = null)
+        public DecisionTO(string matchValue, string searchCriteria, string searchType, int indexNum)
+            : this(matchValue, searchCriteria, searchType, indexNum, false, "", "", null, null)
+        {
+        }
+
+        public DecisionTO(string matchValue, string searchCriteria, string searchType, int indexNum, bool inserted)
+            : this(matchValue, searchCriteria, searchType, indexNum, inserted, "", "", null, null)
+        {
+        }
+
+        public DecisionTO(string matchValue, string searchCriteria, string searchType, int indexNum, bool inserted, string from, string to, Action<DecisionTO> updateDisplayAction, Action<DecisionTO> delectAction)
         {
             UpdateDisplayAction = updateDisplayAction??(a=>{});
             Inserted = inserted;

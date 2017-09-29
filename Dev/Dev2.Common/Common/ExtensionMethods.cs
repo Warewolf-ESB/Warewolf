@@ -401,17 +401,11 @@ namespace Dev2.Common.Common
 
         #endregion StringBuilder Methods
 
-        /// <summary>
-        ///     Extracts the XML attribute from unsafe XML.
-        /// </summary>
-        /// <param name="sb">The sb.</param>
-        /// <param name="searchTagStart">The search tag start.</param>
-        /// <param name="searchTagEnd">The search tag end.</param>
-        /// <returns></returns>
+        public static string ExtractXmlAttributeFromUnsafeXml(this StringBuilder sb, string searchTagStart) => sb.ExtractXmlAttributeFromUnsafeXml(searchTagStart, "\"");
+        
         public static string ExtractXmlAttributeFromUnsafeXml(this StringBuilder sb, string searchTagStart,
-            string searchTagEnd = "\"")
+            string searchTagEnd)
         {
-            // 10 chars long
             int startIndex = sb.IndexOf(searchTagStart, 0, false);
             if (startIndex < 0)
             {
@@ -426,9 +420,9 @@ namespace Dev2.Common.Common
             return sb.Substring(startIndex, length);
         }
 
-        // -- End StringBuilder Methods
+        public static string AttributeSafe(this XElement elem, string name) => elem.AttributeSafe(name, false);
 
-        public static string AttributeSafe(this XElement elem, string name, bool returnsNull = false)
+        public static string AttributeSafe(this XElement elem, string name, bool returnsNull)
         {
             XAttribute attr = elem.Attribute(name);
             if (string.IsNullOrEmpty(attr?.Value))
