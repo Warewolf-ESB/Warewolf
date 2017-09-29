@@ -2908,7 +2908,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             resourceModel.IsWorkflowSaved = true;
         }
 
-        public void AddItem(FlowNode step, Point point)
+        public void RemoveItem(IMergeToolModel model)
         {
             ModelItem root = _wd.Context.Services.GetService<ModelService>().Root;
             var chart = _wd.Context.Services.GetService<ModelService>().Find(root, typeof(Flowchart)).FirstOrDefault();
@@ -2916,30 +2916,146 @@ namespace Dev2.Studio.ViewModels.Workflow
             if (chart != null)
             {
                 var nodes = chart.Properties["Nodes"]?.Collection;
-                var startNode = chart.Properties["StartNode"];
-
-                if (startNode?.ComputedValue == null)
+                if (nodes == null)
                 {
-                    if (nodes == null || nodes.Count < 1)
-                    {
-                        nodes.Add(step);
-                    }
-                    nodes.Add(step);
-                    startNode.SetValue(step);
+                    return;
                 }
-                else
+                var modelActivityType = model.ActivityType;
+                switch (modelActivityType)
                 {
-                    ViewStateService service = _wd.Context.Services.GetService<ViewStateService>();
-                    ModelItem temp = nodes[0];
-                    service.RemoveViewState(temp,"ShapeLocation");
-                    service.StoreViewState(temp,"ShapeLocation", point);
-                    if (!nodes.Contains(step))
-                    {
-                        nodes.Add(step);
-                        temp.Properties["Next"].SetValue(step);
-                    }
+                    case FlowDecision flowDecision:
+
+                        var decTrue = flowDecision.True;
+                        var decFalse = flowDecision.False;
+
+                        RemoveFlowNode(nodes, decTrue);
+                        RemoveFlowNode(nodes, decFalse);
+                        RemoveFlowNode(nodes, flowDecision);
+
+                        break;
+                    case FlowSwitch<string> flowSwitch:
+
+                        RemoveFlowNode(nodes, flowSwitch.Default);
+                        foreach (var flowSwitchCase in flowSwitch.Cases)
+                        {
+                            RemoveFlowNode(nodes, flowSwitchCase.Value);
+                        }
+
+                        break;
+                    default:
+
+                        RemoveFlowNode(nodes, modelActivityType);
+
+                        break;
                 }
             }
+        }
+
+        private void RemoveFlowNode(ModelItemCollection nodes, FlowNode flowNode)
+        {
+            if (flowNode != null)
+            {
+                if (nodes.Contains(flowNode))
+                {
+                    nodes.Remove(flowNode);
+                }
+            }
+        }
+
+        public void AddItem(IMergeToolModel model)
+        {
+            ModelItem root = _wd.Context.Services.GetService<ModelService>().Root;
+            var chart = _wd.Context.Services.GetService<ModelService>().Find(root, typeof(Flowchart)).FirstOrDefault();
+            
+            if (chart != null)
+            {
+                var nodes = chart.Properties["Nodes"]?.Collection;
+                if (nodes == null)
+                {
+                    return;
+                }
+                var startNode = chart.Properties["StartNode"];
+                if (startNode == null)
+                {
+                    return;
+                }
+                var modelActivityType = model.ActivityType;
+                switch (modelActivityType)
+                {
+                    case FlowDecision flowDecision:
+
+                        var dev2ActivityDec = flowDecision.Condition as IDev2Activity;
+                        var decTrue = flowDecision.True as FlowStep;
+                        var decFalse = flowDecision.False as FlowStep;
+
+                        var dev2TrueActivity = decTrue?.Action as IDev2Activity;
+                        var dev2FalseActivity = decFalse?.Action as IDev2Activity;
+
+                        AddFlowNode(nodes, dev2TrueActivity, flowDecision.True);
+                        AddFlowNode(nodes, dev2FalseActivity, flowDecision.False);
+                        AddFlowNode(nodes, dev2ActivityDec, flowDecision);
+
+                        if (startNode.ComputedValue == null)
+                        {
+                            startNode.SetValue(flowDecision);
+                        }
+
+                        break;
+                    case FlowSwitch<string> flowSwitch:
+
+                        if (flowSwitch.Expression is IDev2Activity dev2ActivitySwitch)
+                        {
+                            AddFlowNode(nodes, dev2ActivitySwitch, flowSwitch.Default);
+                        
+                            foreach (var flowSwitchCase in dev2ActivitySwitch.NextNodes)
+                            {
+                                AddFlowNode(nodes, flowSwitchCase, null);
+                            }
+                        }
+
+                        if (startNode.ComputedValue == null)
+                        {
+                            startNode.SetValue(flowSwitch);
+                        }
+
+                        break;
+                    default:
+
+                        var flowStep = modelActivityType as FlowStep;
+                        var dev2Activity = flowStep?.Action as IDev2Activity;
+                        AddFlowNode(nodes, dev2Activity, modelActivityType);
+
+                        if (startNode.ComputedValue == null)
+                        {
+                            startNode.SetValue(modelActivityType);
+                        }
+
+                        break;
+                }
+            }
+        }
+
+        private void AddFlowNode(ModelItemCollection nodes, IDev2Activity activity, FlowNode flowNode)
+        {
+            if (flowNode != null)
+            {
+                if (!nodes.Contains(flowNode))
+                {
+                    SetShapeLocation(activity, flowNode);
+                    nodes.Add(flowNode);
+                }
+            }
+        }
+
+        private void SetShapeLocation(IDev2Activity activity, FlowNode flowNode)
+        {
+            ViewStateService service = _wd.Context.Services.GetService<ViewStateService>();
+            var mergeParser = CustomContainer.Get<IServiceDifferenceParser>();
+            var modelItem = ModelItemUtils.CreateModelItem(flowNode);
+            
+            var pointForTool = mergeParser.GetPointForTool(activity);
+            service.RemoveViewState(modelItem, "ShapeLocation");
+            service.StoreViewState(modelItem, "ShapeLocation", pointForTool);
         }
 
         #region Implementation of IWorkflowDesignerViewModel
