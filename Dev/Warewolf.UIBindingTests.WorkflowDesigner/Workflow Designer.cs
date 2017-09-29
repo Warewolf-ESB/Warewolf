@@ -948,8 +948,8 @@ namespace Warewolf.UIBindingTests.WorkflowDesigner
 
             var dataListViewModel = WorkflowDesignerUnitTest.CreateDataListViewModel(mockResourceModel, eventAggregator);
             var dataListItems = new OptomizedObservableCollection<IScalarItemModel>();
-            var dataListItem = new ScalarItemModel("scalar1", enDev2ColumnArgumentDirection.Input, string.Empty);
-            var secondDataListItem = new ScalarItemModel("scalar2", enDev2ColumnArgumentDirection.Input, string.Empty);
+            var dataListItem = new ScalarItemModel("scalar1", enDev2ColumnArgumentDirection.Input);
+            var secondDataListItem = new ScalarItemModel("scalar2", enDev2ColumnArgumentDirection.Input);
 
             dataListItems.Add(dataListItem);
             dataListItems.Add(secondDataListItem);
