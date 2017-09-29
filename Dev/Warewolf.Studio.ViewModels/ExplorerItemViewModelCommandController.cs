@@ -48,12 +48,11 @@ namespace Warewolf.Studio.ViewModels
             else
             {
                 SetActiveStates(_shellViewModel, server);
-                _shellViewModel.OpenMergeConflictsView(item.ResourceId, item.ResourceId);
                 _shellViewModel.OpenResource(item.ResourceId,server.EnvironmentID, server);
             }
         }
 
-        public void OpenVersionCommand(Guid resourceId, IVersionInfo versionInfo)
+        private void OpenVersionCommand(Guid resourceId, IVersionInfo versionInfo)
         {
             _shellViewModel.OpenVersion(resourceId, versionInfo);
         }
@@ -274,6 +273,12 @@ namespace Warewolf.Studio.ViewModels
         public void ViewSwaggerCommand(Guid resourceId, IServer server)
         {
             _shellViewModel.ViewSwagger(resourceId, server);
+        }
+
+        public void MergeCommand(Guid resourceId, IServer server)
+        {
+            SetActiveStates(_shellViewModel, server);
+            _shellViewModel.OpenMergeConflictsView(resourceId, resourceId, server);
         }
 
         public void CreateTest(Guid resourceId)

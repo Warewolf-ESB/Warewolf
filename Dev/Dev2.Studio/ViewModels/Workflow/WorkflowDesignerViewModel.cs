@@ -86,12 +86,6 @@ using Dev2.Workspaces;
 using Newtonsoft.Json;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Studio.ViewModels;
-using System.Activities.Statements;
-
-
-
-
-
 
 
 namespace Dev2.Studio.ViewModels.Workflow
@@ -384,7 +378,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public bool CanDeploy
         {
-            get { return _canDeploy; }
+            get => _canDeploy;
             set
             {
                 _canDeploy = value;
@@ -400,6 +394,24 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
+        public bool CanMerge
+        {
+            get => _canMerge;
+            set
+            {
+                _canMerge = value;
+                if (ResourceModel.IsNewWorkflow)
+                {
+                    MergeTooltip = Warewolf.Studio.Resources.Languages.Tooltips.DisabledToolTip;
+                }
+                else
+                {
+                    MergeTooltip = _canDeploy ? Warewolf.Studio.Resources.Languages.Tooltips.ViewMergeTooltip : Warewolf.Studio.Resources.Languages.Tooltips.NoPermissionsToolTip;
+                }
+                OnPropertyChanged("CanMerge");
+            }
+        }
+
         public string DeployTooltip
         {
             get { return _deployTooltip; }
@@ -407,6 +419,16 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 _deployTooltip = value;
                 OnPropertyChanged("DeployTooltip");
+            }
+        }
+
+        public string MergeTooltip
+        {
+            get => _mergeTooltip;
+            set
+            {
+                _mergeTooltip = value;
+                OnPropertyChanged("MergeTooltip");
             }
         }
 
@@ -995,6 +1017,27 @@ namespace Dev2.Studio.ViewModels.Workflow
                             var explorerItem = GetSelected(mvm);
                             if (explorerItem != null)
                                 mvm.AddDeploySurface(explorerItem.AsList().Union(new[] { explorerItem }));
+                        }
+                    }
+                }));
+            }
+        }
+
+        public ICommand MergeCommand
+        {
+            get
+            {
+                return _mergeCommand ?? (_mergeCommand = new DelegateCommand(param =>
+                {
+                    // OPEN WINDOW TO SELECT RESOURCE TO MERGE WITH
+
+                    if (Application.Current != null && Application.Current.Dispatcher != null && Application.Current.Dispatcher.CheckAccess() && Application.Current.MainWindow != null)
+                    {
+                        var mvm = Application.Current.MainWindow.DataContext as ShellViewModel;
+                        if (mvm?.ActiveItem != null)
+                        {
+                            var resourceId = mvm.ActiveItem.ContextualResourceModel.ID;
+                            mvm.OpenMergeConflictsView(resourceId, resourceId, mvm.ActiveServer);
                         }
                     }
                 }));
@@ -2529,6 +2572,9 @@ namespace Dev2.Studio.ViewModels.Workflow
         private ModelItem _selectedItem;
         private IEnumerable<ModelItem> _modelItems;
         private IEnumerable<ModelItem> _activityCollection;
+        private ICommand _mergeCommand;
+        private bool _canMerge;
+        private string _mergeTooltip;
 
         /// <summary>
         /// Models the service model changed.
