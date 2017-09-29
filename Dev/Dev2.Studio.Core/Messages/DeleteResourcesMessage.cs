@@ -22,6 +22,11 @@ namespace Dev2.Studio.Core.Messages
         {
         }
 
+        public DeleteResourcesMessage(ICollection<IContextualResourceModel> resourceModels, string folderName, bool showDialog)
+            : this(resourceModels, folderName, showDialog, null)
+        {
+        }
+
         public DeleteResourcesMessage(ICollection<IContextualResourceModel> resourceModels, string folderName, bool showDialog, Action actionToDoOnDelete)
         {
             FolderName = folderName;
