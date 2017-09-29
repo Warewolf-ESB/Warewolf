@@ -77,7 +77,12 @@ namespace Dev2.TO
 
         public Action<DecisionTO> DeleteAction { get; set; }
 
-        public DecisionTO(Dev2Decision a, int ind, Action<DecisionTO> updateDisplayAction = null,Action<DecisionTO> deleteAction = null)
+        public DecisionTO(Dev2Decision a, int ind)
+            : this(a, ind, null, null)
+        {
+        }
+
+        public DecisionTO(Dev2Decision a, int ind, Action<DecisionTO> updateDisplayAction, Action<DecisionTO> deleteAction)
         {
             UpdateDisplayAction = updateDisplayAction ?? (x => { });
             _isInitializing = true;
