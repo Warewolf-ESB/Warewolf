@@ -20,6 +20,11 @@ namespace Dev2.Studio.Core.Models.DataList
         {
         }
 
+        public RecordSetItemModel(string displayname, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection, string description, IDataListItemModel parent, OptomizedObservableCollection<IRecordSetFieldItemModel> children, bool hasError, string errorMessage, bool isEditable, bool isVisible)
+            : this(displayname, dev2ColumnArgumentDirection, description, parent, children, hasError, errorMessage, isEditable, isVisible, false, true)
+        {
+        }
+
         public RecordSetItemModel(string displayname, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection, string description, IDataListItemModel parent, OptomizedObservableCollection<IRecordSetFieldItemModel> children, bool hasError, string errorMessage, bool isEditable, bool isVisible, bool isSelected)
             : this(displayname, dev2ColumnArgumentDirection, description, parent, children, hasError, errorMessage, isEditable, isVisible, isSelected, true)
         {
