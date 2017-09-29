@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Dev2.Common;
 
 namespace Dev2.ViewModels.Merge
 {
@@ -86,7 +87,8 @@ namespace Dev2.ViewModels.Merge
             }
 
             HasMergeStarted = false;
-            HasVariablesConflict = true; //MATCH DATALISTS
+            
+            HasVariablesConflict = CommonEqualityOps.AreObjectsEqual(((ConflictModelFactory)CurrentConflictModel).DataListViewModel, ((ConflictModelFactory)DifferenceConflictModel).DataListViewModel); //MATCH DATALISTS
             HasWorkflowNameConflict = currResourceName != diffResourceName;
             IsVariablesEnabled = !HasWorkflowNameConflict;
             IsMergeExpanderEnabled = !IsVariablesEnabled;
