@@ -6,11 +6,14 @@ using System.Collections.ObjectModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Caliburn.Micro;
+using Dev2.Common;
 
 namespace Dev2.ViewModels.Merge
 {
     public class MergeWorkflowViewModel : BindableBase, IMergeWorkflowViewModel
     {
+        private readonly IServiceDifferenceParser _serviceDifferenceParser;
         private string _displayName;
         private string _serverName;
         private bool _hasMergeStarted;
@@ -20,12 +23,12 @@ namespace Dev2.ViewModels.Merge
         private bool _isMergeExpanderEnabled;
 
         public MergeWorkflowViewModel(IContextualResourceModel currentResourceModel, IContextualResourceModel differenceResourceModel)
+            : this(CustomContainer.Get<IServiceDifferenceParser>())
         {
             WorkflowDesignerViewModel = new WorkflowDesignerViewModel(currentResourceModel, false);
             WorkflowDesignerViewModel.CreateBlankWorkflow();
-            var mergeParser = CustomContainer.Get<IServiceDifferenceParser>();
 
-            var currentChanges = mergeParser.GetDifferences(currentResourceModel, differenceResourceModel);
+            var currentChanges = _serviceDifferenceParser.GetDifferences(currentResourceModel, differenceResourceModel);
 
             Conflicts = new ObservableCollection<ICompleteConflict>();
             foreach (var currentChange in currentChanges)
@@ -96,8 +99,14 @@ namespace Dev2.ViewModels.Merge
             WorkflowDesignerViewModel.CanViewWorkflowLink = false;
         }
 
+        public MergeWorkflowViewModel(IServiceDifferenceParser serviceDifferenceParser)
+        {
+            _serviceDifferenceParser = serviceDifferenceParser;
+        }
+
         private void AddActivity(IMergeToolModel model)
         {
+            WorkflowDesignerViewModel.RemoveItem(model);
             WorkflowDesignerViewModel.AddItem(model);
         }
 
@@ -126,14 +135,25 @@ namespace Dev2.ViewModels.Merge
         {
             try
             {
-                var mergeToolModel = args as MergeToolModel;
-                if (mergeToolModel != null && !mergeToolModel.IsMergeChecked)
+                
+                if (!(args is MergeToolModel mergeToolModel) || !mergeToolModel.IsMergeChecked)
+                {
+                    return;
+                }
+
+                if (mergeToolModel.Parent != null && mergeToolModel.Parent.IsMergeChecked)
+                {
+                    return;
+                }
+
+                HasMergeStarted = true;
+                AddActivity(mergeToolModel);
+                if (mergeToolModel.Children.Count < 1)
                 {
                     return;
                 }
                 
-                HasMergeStarted = true;
-                AddActivity(mergeToolModel);
+                mergeToolModel.Children.Flatten(a => a.Children).Apply(a => a.IsMergeChecked = true);
             }
             catch (Exception)
             {
@@ -346,7 +366,7 @@ namespace Dev2.ViewModels.Merge
 
         public void Dispose()
         {
-
+            _serviceDifferenceParser?.Dispose();
         }
 
         public void UpdateHelpDescriptor(string helpText)

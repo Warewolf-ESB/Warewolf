@@ -203,6 +203,7 @@ namespace Dev2.ViewModels.Merge
                 _modelItem = forEachModel;
                 var addModelItem = GetModel();
                 addModelItem.HasParent = true;
+                addModelItem.Parent = mergeToolModel;
                 addModelItem.ParentDescription = c.DisplayName;
                 mergeToolModel.Children.Add(addModelItem);
             }
@@ -236,6 +237,7 @@ namespace Dev2.ViewModels.Merge
                 _modelItem = forEachModel;
                 var addModelItem = GetModel();
                 addModelItem.HasParent = true;
+                addModelItem.Parent = mergeToolModel;
                 addModelItem.ParentDescription = b.DisplayName;
                 mergeToolModel.Children.Add(addModelItem);
             }
@@ -269,6 +271,7 @@ namespace Dev2.ViewModels.Merge
                     _modelItem = ModelItemUtils.CreateModelItem(dev2Activity);
                     var addModelItem = GetModel();
                     addModelItem.HasParent = true;
+                    addModelItem.Parent = mergeToolModel;
                     addModelItem.ParentDescription = sequence.DisplayName;
                     mergeToolModel.Children.Add(addModelItem);
                 }
@@ -306,6 +309,7 @@ namespace Dev2.ViewModels.Merge
                         _modelItem = ModelItemUtils.CreateModelItem(dev2Activity);
                         var addModelItem = GetModel(group.Key);
                         addModelItem.HasParent = true;
+                        addModelItem.Parent = mergeToolModel;
                         addModelItem.ParentDescription = "Case: " + group.Key;
                         mergeToolModel.Children.Add(addModelItem);
                     }
@@ -321,6 +325,7 @@ namespace Dev2.ViewModels.Merge
                         _modelItem = ModelItemUtils.CreateModelItem(activity);
                         var addModelItem = GetModel();
                         addModelItem.HasParent = true;
+                        addModelItem.Parent = mergeToolModel;
                         addModelItem.ParentDescription = "Default";
                         mergeToolModel.Children.Add(addModelItem);
                     }
@@ -328,7 +333,7 @@ namespace Dev2.ViewModels.Merge
             }
         }
 
-        private void BuildDecision(DsfDecision de, MergeToolModel parentDecision)
+        private void BuildDecision(DsfDecision de, MergeToolModel mergeToolModel)
         {
             var decisionNode = new FlowDecision(de.GetFlowNode());
 
@@ -343,8 +348,9 @@ namespace Dev2.ViewModels.Merge
                     _modelItem = ModelItemUtils.CreateModelItem(dev2Activity);
                     var addModelItem = GetModel();
                     addModelItem.HasParent = true;
+                    addModelItem.Parent = mergeToolModel;
                     addModelItem.ParentDescription = de.Conditions.TrueArmText;
-                    parentDecision.Children.Add(addModelItem);
+                    mergeToolModel.Children.Add(addModelItem);
                 }
             }
 
@@ -359,11 +365,11 @@ namespace Dev2.ViewModels.Merge
                     var addModelItem = GetModel();
                     addModelItem.HasParent = true;
                     addModelItem.ParentDescription = de.Conditions.FalseArmText;
-                    parentDecision.Children.Add(addModelItem);
+                    mergeToolModel.Children.Add(addModelItem);
                 }
             }
 
-            parentDecision.ActivityType = decisionNode;
+            mergeToolModel.ActivityType = decisionNode;
         }
 
         public event ConflictModelChanged SomethingConflictModelChanged;

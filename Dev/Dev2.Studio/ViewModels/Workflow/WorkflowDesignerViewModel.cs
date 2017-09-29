@@ -2908,6 +2908,60 @@ namespace Dev2.Studio.ViewModels.Workflow
             resourceModel.IsWorkflowSaved = true;
         }
 
+        public void RemoveItem(IMergeToolModel model)
+        {
+            ModelItem root = _wd.Context.Services.GetService<ModelService>().Root;
+            var chart = _wd.Context.Services.GetService<ModelService>().Find(root, typeof(Flowchart)).FirstOrDefault();
+
+            if (chart != null)
+            {
+                var nodes = chart.Properties["Nodes"]?.Collection;
+                if (nodes == null)
+                {
+                    return;
+                }
+                var modelActivityType = model.ActivityType;
+                switch (modelActivityType)
+                {
+                    case FlowDecision flowDecision:
+
+                        var decTrue = flowDecision.True;
+                        var decFalse = flowDecision.False;
+
+                        RemoveFlowNode(nodes, decTrue);
+                        RemoveFlowNode(nodes, decFalse);
+                        RemoveFlowNode(nodes, flowDecision);
+
+                        break;
+                    case FlowSwitch<string> flowSwitch:
+
+                        RemoveFlowNode(nodes, flowSwitch.Default);
+                        foreach (var flowSwitchCase in flowSwitch.Cases)
+                        {
+                            RemoveFlowNode(nodes, flowSwitchCase.Value);
+                        }
+
+                        break;
+                    default:
+
+                        RemoveFlowNode(nodes, modelActivityType);
+
+                        break;
+                }
+            }
+        }
+
+        private void RemoveFlowNode(ModelItemCollection nodes, FlowNode flowNode)
+        {
+            if (flowNode != null)
+            {
+                if (nodes.Contains(flowNode))
+                {
+                    nodes.Remove(flowNode);
+                }
+            }
+        }
+
         public void AddItem(IMergeToolModel model)
         {
             ModelItem root = _wd.Context.Services.GetService<ModelService>().Root;
@@ -2930,16 +2984,16 @@ namespace Dev2.Studio.ViewModels.Workflow
                 {
                     case FlowDecision flowDecision:
 
-                        var decTrue = flowDecision.True;
-                        var decFalse = flowDecision.False;
-                        
-                        AddFlowNode(nodes, decTrue);
-                        AddFlowNode(nodes, decFalse);
-                        AddFlowNode(nodes, flowDecision);
+                        var dev2ActivityDec = flowDecision.Condition as IDev2Activity;
+                        var decTrue = flowDecision.True as FlowStep;
+                        var decFalse = flowDecision.False as FlowStep;
 
-                        SetShapeLocation(flowDecision);
-                        SetShapeLocation(decTrue);
-                        SetShapeLocation(decFalse);
+                        var dev2TrueActivity = decTrue?.Action as IDev2Activity;
+                        var dev2FalseActivity = decFalse?.Action as IDev2Activity;
+
+                        AddFlowNode(nodes, dev2TrueActivity, flowDecision.True);
+                        AddFlowNode(nodes, dev2FalseActivity, flowDecision.False);
+                        AddFlowNode(nodes, dev2ActivityDec, flowDecision);
 
                         if (startNode.ComputedValue == null)
                         {
@@ -2949,12 +3003,14 @@ namespace Dev2.Studio.ViewModels.Workflow
                         break;
                     case FlowSwitch<string> flowSwitch:
 
-                        AddFlowNode(nodes, flowSwitch.Default);
-                        SetShapeLocation(flowSwitch.Default);
-                        foreach (var flowSwitchCase in flowSwitch.Cases)
+                        if (flowSwitch.Expression is IDev2Activity dev2ActivitySwitch)
                         {
-                            AddFlowNode(nodes, flowSwitchCase.Value);
-                            SetShapeLocation(flowSwitchCase.Value);
+                            AddFlowNode(nodes, dev2ActivitySwitch, flowSwitch.Default);
+                        
+                            foreach (var flowSwitchCase in dev2ActivitySwitch.NextNodes)
+                            {
+                                AddFlowNode(nodes, flowSwitchCase, null);
+                            }
                         }
 
                         if (startNode.ComputedValue == null)
@@ -2965,8 +3021,9 @@ namespace Dev2.Studio.ViewModels.Workflow
                         break;
                     default:
 
-                        AddFlowNode(nodes, modelActivityType);
-                        SetShapeLocation(modelActivityType);
+                        var flowStep = modelActivityType as FlowStep;
+                        var dev2Activity = flowStep?.Action as IDev2Activity;
+                        AddFlowNode(nodes, dev2Activity, modelActivityType);
 
                         if (startNode.ComputedValue == null)
                         {
@@ -2978,22 +3035,26 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-        private void AddFlowNode(ModelItemCollection nodes, FlowNode flowNode)
+        private void AddFlowNode(ModelItemCollection nodes, IDev2Activity activity, FlowNode flowNode)
         {
             if (flowNode != null)
             {
-                nodes.Add(flowNode);
+                if (!nodes.Contains(flowNode))
+                {
+                    SetShapeLocation(activity, flowNode);
+                    nodes.Add(flowNode);
+                }
             }
         }
 
-        private void SetShapeLocation(FlowNode flowNode)
+        private void SetShapeLocation(IDev2Activity activity, FlowNode flowNode)
         {
             ViewStateService service = _wd.Context.Services.GetService<ViewStateService>();
             var mergeParser = CustomContainer.Get<IServiceDifferenceParser>();
             var modelItem = ModelItemUtils.CreateModelItem(flowNode);
             
-            var pointForTool = mergeParser.GetPointForTool(flowNode);
-            //service.RemoveViewState(modelItem, "ShapeLocation");
+            var pointForTool = mergeParser.GetPointForTool(activity);
+            service.RemoveViewState(modelItem, "ShapeLocation");
             service.StoreViewState(modelItem, "ShapeLocation", pointForTool);
         }
 
