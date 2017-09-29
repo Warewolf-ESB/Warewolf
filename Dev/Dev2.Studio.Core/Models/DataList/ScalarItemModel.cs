@@ -12,6 +12,11 @@ namespace Dev2.Studio.Core.Models.DataList
         {
         }
 
+        public ScalarItemModel(string displayname, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection)
+            : this(displayname, dev2ColumnArgumentDirection, "", false, "", true, true, false, true)
+        {
+        }
+
         public ScalarItemModel(string displayname, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection, string description, bool hasError, string errorMessage, bool isEditable, bool isVisible, bool isSelected)
             : this(displayname, dev2ColumnArgumentDirection, description, hasError, errorMessage, isEditable, isVisible, isSelected, true)
         {
