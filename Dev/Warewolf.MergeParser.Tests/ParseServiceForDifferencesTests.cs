@@ -311,8 +311,8 @@ namespace Warewolf.MergeParser.Tests
             //Third node
             //difference chart
             var valueTuple2 = diffs[2];
-            var dev3Activity1D = valueTuple2.Item3.GetCurrentValue<IDev2Activity>();
-            Assert.IsNull(valueTuple2.Item2);
+            var dev3Activity1D = valueTuple2.Item2.GetCurrentValue<IDev2Activity>();
+            Assert.IsNull(valueTuple2.Item3);
             Assert.IsNotNull(dev3Activity1D);
             Assert.AreEqual(baseCOnvertId, dev3Activity1D.UniqueID);
         }
@@ -400,8 +400,8 @@ namespace Warewolf.MergeParser.Tests
             //Third node
             //difference chart
             var valueTuple2 = diffs[2];
-            var dev3Activity1D = valueTuple2.Item2.GetCurrentValue<IDev2Activity>();
-            Assert.IsNull(valueTuple2.Item3);
+            var dev3Activity1D = valueTuple2.Item3.GetCurrentValue<IDev2Activity>();
+            Assert.IsNull(valueTuple2.Item2);
             Assert.IsNotNull(dev3Activity1D);
             Assert.AreEqual(baseCOnvertId, dev3Activity1D.UniqueID);
         }
@@ -509,8 +509,8 @@ namespace Warewolf.MergeParser.Tests
 
             //Third node
             var valueTuple2 = diffs[2];
-            var dev3Activity1D = valueTuple2.Item2.GetCurrentValue<IDev2Activity>();
-            Assert.IsNull(valueTuple2.Item3);
+            var dev3Activity1D = valueTuple2.Item3.GetCurrentValue<IDev2Activity>();
+            Assert.IsNull(valueTuple2.Item2);
             Assert.IsNotNull(dev3Activity1D);
             Assert.AreNotEqual(Guid.Empty.ToString(), dev3Activity1D.UniqueID);
 
