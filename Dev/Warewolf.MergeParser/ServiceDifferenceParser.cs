@@ -13,12 +13,15 @@ using Dev2.Common;
 using Dev2.Utilities;
 using System.Activities.Presentation.View;
 using System.Windows;
+using Dev2.Common.Interfaces;
+using Dev2.Communication;
 
 namespace Warewolf.MergeParser
 {
     public class ServiceDifferenceParser : IServiceDifferenceParser
     {
         private readonly IActivityParser _activityParser;
+        private readonly IResourceDefinationCleaner _definationCleaner;
         private (List<ModelItem> nodeList, Flowchart flowchartDiff, WorkflowDesigner wd) _currentDifferences;
         private (List<ModelItem> nodeList, Flowchart flowchartDiff, WorkflowDesigner wd) _differences;
 
@@ -32,14 +35,16 @@ namespace Warewolf.MergeParser
         }
 
         public ServiceDifferenceParser()
-            : this(CustomContainer.Get<IActivityParser>())
+            : this(CustomContainer.Get<IActivityParser>(), new ResourceDefinationCleaner())
         {
 
         }
-        public ServiceDifferenceParser(IActivityParser activityParser)
+        public ServiceDifferenceParser(IActivityParser activityParser, IResourceDefinationCleaner definationCleaner)
         {
             VerifyArgument.IsNotNull(nameof(activityParser), activityParser);
+            VerifyArgument.IsNotNull(nameof(definationCleaner), definationCleaner);
             _activityParser = activityParser;
+            _definationCleaner = definationCleaner;
             ShapeLocationList = new List<(IDev2Activity activity, Point point)>();
         }
 
@@ -141,9 +146,8 @@ namespace Warewolf.MergeParser
             }
             else
             {
-                IResourceDefinationCleaner resourceDefinationCleaner = new ResourceDefinationCleaner();
                 Dev2JsonSerializer se = new Dev2JsonSerializer();
-                var a = resourceDefinationCleaner.GetResourceDefinition(true, resourceModel.ID, resourceModel.WorkflowXaml);
+                var a = _definationCleaner.GetResourceDefinition(true, resourceModel.ID, resourceModel.WorkflowXaml);
                 var executeMessage = se.Deserialize<ExecuteMessage>(a);
                 xaml = executeMessage.Message;
             }
