@@ -46,7 +46,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
         }
 
-        public ActivityDTO(string fieldName, string fieldValue, int indexNumber, bool inserted = false)
+        public ActivityDTO(string fieldName, string fieldValue, int indexNumber)
+            : this(fieldName, fieldValue, indexNumber, false)
+        {
+        }
+
+        public ActivityDTO(string fieldName, string fieldValue, int indexNumber, bool inserted)
         {
             Inserted = inserted;
             FieldName = fieldName;
