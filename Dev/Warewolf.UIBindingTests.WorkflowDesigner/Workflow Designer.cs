@@ -961,37 +961,40 @@ namespace Warewolf.UIBindingTests.WorkflowDesigner
             workflowDesigner.PopUp = mockPopUp.Object;
 
             Assert.IsFalse(workflowDesigner.CanCopyUrl);
-            Assert.AreEqual(Warewolf.Studio.Resources.Languages.Tooltips.NoPermissionsToolTip, workflowDesigner.CopyUrlTooltip);
+            Assert.AreEqual(Studio.Resources.Languages.Tooltips.NoPermissionsToolTip, workflowDesigner.CopyUrlTooltip);
 
             Assert.IsFalse(workflowDesigner.CanViewSwagger);
-            Assert.AreEqual(Warewolf.Studio.Resources.Languages.Tooltips.NoPermissionsToolTip, workflowDesigner.ViewSwaggerTooltip);
+            Assert.AreEqual(Studio.Resources.Languages.Tooltips.NoPermissionsToolTip, workflowDesigner.ViewSwaggerTooltip);
 
             Assert.IsFalse(workflowDesigner.CanShowDependencies);
-            Assert.AreEqual(Warewolf.Studio.Resources.Languages.Tooltips.NoPermissionsToolTip, workflowDesigner.ShowDependenciesTooltip);
+            Assert.AreEqual(Studio.Resources.Languages.Tooltips.NoPermissionsToolTip, workflowDesigner.ShowDependenciesTooltip);
 
             Assert.IsFalse(workflowDesigner.CanDeploy);
-            Assert.AreEqual(Warewolf.Studio.Resources.Languages.Tooltips.NoPermissionsToolTip, workflowDesigner.DeployTooltip);
+            Assert.AreEqual(Studio.Resources.Languages.Tooltips.NoPermissionsToolTip, workflowDesigner.DeployTooltip);
+
+            Assert.IsFalse(workflowDesigner.CanMerge);
+            Assert.AreEqual(Studio.Resources.Languages.Tooltips.NoPermissionsToolTip, workflowDesigner.MergeTooltip);
 
             Assert.IsFalse(workflowDesigner.CanDuplicate);
-            Assert.AreEqual(Warewolf.Studio.Resources.Languages.Tooltips.NoPermissionsToolTip, workflowDesigner.DuplicateTooltip);
+            Assert.AreEqual(Studio.Resources.Languages.Tooltips.NoPermissionsToolTip, workflowDesigner.DuplicateTooltip);
 
             Assert.IsFalse(workflowDesigner.CanRunAllTests);
-            Assert.AreEqual(Warewolf.Studio.Resources.Languages.Tooltips.NoPermissionsToolTip, workflowDesigner.RunAllTestsTooltip);
+            Assert.AreEqual(Studio.Resources.Languages.Tooltips.NoPermissionsToolTip, workflowDesigner.RunAllTestsTooltip);
 
             Assert.IsFalse(workflowDesigner.CanCreateTest);
-            Assert.AreEqual(Warewolf.Studio.Resources.Languages.Tooltips.NoPermissionsToolTip, workflowDesigner.CreateTestTooltip);
+            Assert.AreEqual(Studio.Resources.Languages.Tooltips.NoPermissionsToolTip, workflowDesigner.CreateTestTooltip);
 
             Assert.IsFalse(workflowDesigner.CanCreateSchedule);
-            Assert.AreEqual(Warewolf.Studio.Resources.Languages.Tooltips.NoPermissionsToolTip, workflowDesigner.ScheduleTooltip);
+            Assert.AreEqual(Studio.Resources.Languages.Tooltips.NoPermissionsToolTip, workflowDesigner.ScheduleTooltip);
 
             Assert.IsFalse(workflowDesigner.CanDebugBrowser);
-            Assert.AreEqual(Warewolf.Studio.Resources.Languages.Tooltips.NoPermissionsToolTip, workflowDesigner.DebugBrowserTooltip);
+            Assert.AreEqual(Studio.Resources.Languages.Tooltips.NoPermissionsToolTip, workflowDesigner.DebugBrowserTooltip);
 
             Assert.IsFalse(workflowDesigner.CanDebugStudio);
-            Assert.AreEqual(Warewolf.Studio.Resources.Languages.Tooltips.NoPermissionsToolTip, workflowDesigner.DebugStudioTooltip);
+            Assert.AreEqual(Studio.Resources.Languages.Tooltips.NoPermissionsToolTip, workflowDesigner.DebugStudioTooltip);
 
             Assert.IsFalse(workflowDesigner.CanDebugInputs);
-            Assert.AreEqual(Warewolf.Studio.Resources.Languages.Tooltips.NoPermissionsToolTip, workflowDesigner.DebugInputsTooltip);
+            Assert.AreEqual(Studio.Resources.Languages.Tooltips.NoPermissionsToolTip, workflowDesigner.DebugInputsTooltip);
 
             Assert.IsTrue(dataListViewModel.ScalarCollection[0].IsUsed);
             Assert.IsTrue(dataListViewModel.ScalarCollection[1].IsUsed);

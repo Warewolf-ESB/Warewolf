@@ -888,6 +888,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(Resources.Languages.Tooltips.DeployToolTip, _target.DeployTooltip);
             Assert.AreEqual(Resources.Languages.Tooltips.DependenciesToolTip, _target.DependenciesTooltip);
             Assert.AreEqual(Resources.Languages.Tooltips.NoPermissionsToolTip, _target.ViewSwaggerTooltip);
+            Assert.AreEqual(Resources.Languages.Tooltips.NoPermissionsToolTip, _target.MergeTooltip);
             Assert.AreEqual(Resources.Languages.Tooltips.NoPermissionsToolTip, _target.ViewApisJsonTooltip);
             Assert.AreEqual(Resources.Languages.Tooltips.ShowHideVersionsTooltip, _target.ShowHideVersionsTooltip);
             Assert.AreEqual(Resources.Languages.Tooltips.NoPermissionsToolTip, _target.RollbackTooltip);
@@ -2047,6 +2048,37 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(_target.IsFolder);
             Assert.IsFalse(_target.CanViewSwagger);
             Assert.IsTrue(_target.CanViewApisJson);
+        }
+
+        [TestMethod]
+        public void TestCanViewMergeIsVisible()
+        {
+            //arrange
+            _target.ResourceType = "WorkflowService";
+            _target.CanView = true;
+            _target.IsService = true;
+            _target.IsSource = false;
+
+            //act
+
+            //assert
+            Assert.IsTrue(_target.IsService);
+            Assert.IsTrue(_target.CanMerge);
+        }
+
+        [TestMethod]
+        public void TestCanViewMergeIsNotVisible()
+        {
+            //arrange
+            _target.ResourceType = "Folder";
+            _target.CanView = true;
+            _target.IsService = false;
+            _target.IsFolder = true;
+            //act
+
+            //assert
+            Assert.IsTrue(_target.IsFolder);
+            Assert.IsFalse(_target.CanMerge);
         }
 
         [TestMethod]
