@@ -233,7 +233,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DataMerge
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        public void Equals_Given_Different_ResultsCollection_Is_Not_Equal()
+        public void Equals_Given_Same_ResultsCollection_Object_Is_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -262,7 +262,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DataMerge
             //---------------Execute Test ----------------------
             var @equals = activity1.Equals(activity);
             //---------------Test Result -----------------------
-            Assert.IsFalse(@equals);
+            Assert.IsTrue(@equals);
         }
     }
 }
