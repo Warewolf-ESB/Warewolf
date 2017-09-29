@@ -449,7 +449,7 @@ securityWrapper
             mockFolder.Verify(
                 a =>
                 a.RegisterTaskDefinition("henry", task.Object, TaskCreation.CreateOrUpdate, "user", "pwd",
-                                         TaskLogonType.InteractiveTokenOrPassword, null));
+                                         TaskLogonType.InteractiveTokenOrPassword));
         }
 
 
@@ -554,7 +554,7 @@ securityWrapper
             mockFolder.Verify(
                 a =>
                 a.RegisterTaskDefinition("henry", task.Object, TaskCreation.CreateOrUpdate, "user", "pwd",
-                                         TaskLogonType.InteractiveTokenOrPassword, null));
+                                         TaskLogonType.InteractiveTokenOrPassword));
             task.Verify(a => a.AddTrigger(It.IsAny<ITrigger>()));
         }
 
