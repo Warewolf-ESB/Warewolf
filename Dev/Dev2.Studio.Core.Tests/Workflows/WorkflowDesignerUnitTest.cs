@@ -74,8 +74,8 @@ namespace Dev2.Core.Tests.Workflows
 
             var dataListViewModel = CreateDataListViewModel(mockResourceModel, eventAggregator);
             var dataListItems = new OptomizedObservableCollection<IScalarItemModel>();
-            var dataListItem = new ScalarItemModel("scalar1", enDev2ColumnArgumentDirection.Input, string.Empty);
-            var secondDataListItem = new ScalarItemModel("scalar2", enDev2ColumnArgumentDirection.Input, string.Empty);
+            var dataListItem = new ScalarItemModel("scalar1", enDev2ColumnArgumentDirection.Input);
+            var secondDataListItem = new ScalarItemModel("scalar2", enDev2ColumnArgumentDirection.Input);
 
             dataListItems.Add(dataListItem);
             dataListItems.Add(secondDataListItem);
@@ -102,8 +102,8 @@ namespace Dev2.Core.Tests.Workflows
 
             var dataListViewModel = CreateDataListViewModel(mockResourceModel, eventAggregator);
             var dataListItems = new OptomizedObservableCollection<IScalarItemModel>();
-            var dataListItem = new ScalarItemModel("scalar1", enDev2ColumnArgumentDirection.Input, string.Empty);
-            var secondDataListItem = new ScalarItemModel("scalar2", enDev2ColumnArgumentDirection.Input, string.Empty);
+            var dataListItem = new ScalarItemModel("scalar1", enDev2ColumnArgumentDirection.Input);
+            var secondDataListItem = new ScalarItemModel("scalar2", enDev2ColumnArgumentDirection.Input);
 
             dataListItems.Add(dataListItem);
             dataListItems.Add(secondDataListItem);
@@ -114,14 +114,14 @@ namespace Dev2.Core.Tests.Workflows
             dataListItems.ToList().ForEach(dataListViewModel.ScalarCollection.Add);
             dataListViewModel.RecsetCollection.Clear();
             WorkflowDesignerViewModel workflowDesigner = CreateWorkflowDesignerViewModel(eventAggregator, mockResourceModel.Object, null, false);
-            var dataListItem3 = new ScalarItemModel("scalar8", enDev2ColumnArgumentDirection.Input, string.Empty);
+            var dataListItem3 = new ScalarItemModel("scalar8", enDev2ColumnArgumentDirection.Input);
 
             dataListItems.Add(dataListItem3);
-            Thread.Sleep(3000);
+            Thread.Sleep(2000);
             workflowDesigner.Dispose();
             Assert.AreEqual(6, dataListViewModel.ScalarCollection.Count);
-
         }
+
         [TestMethod]
         public void SetModelToCleanAndExpectThatNoItemsWillBeAdded()
         {
@@ -132,9 +132,9 @@ namespace Dev2.Core.Tests.Workflows
 
             var dataListViewModel = CreateDataListViewModel(mockResourceModel, eventAggregator);
             var dataListItems = new OptomizedObservableCollection<IScalarItemModel>();
-            var dataListItem = new ScalarItemModel("scalar1", enDev2ColumnArgumentDirection.Input, string.Empty);
-            var secondDataListItem = new ScalarItemModel("scalar2", enDev2ColumnArgumentDirection.Input, string.Empty);
-            var dataListItem3 = new ScalarItemModel("scalar8", enDev2ColumnArgumentDirection.Input, string.Empty);
+            var dataListItem = new ScalarItemModel("scalar1", enDev2ColumnArgumentDirection.Input);
+            var secondDataListItem = new ScalarItemModel("scalar2", enDev2ColumnArgumentDirection.Input);
+            var dataListItem3 = new ScalarItemModel("scalar8", enDev2ColumnArgumentDirection.Input);
 
             dataListItems.Add(dataListItem);
             dataListItems.Add(secondDataListItem);
