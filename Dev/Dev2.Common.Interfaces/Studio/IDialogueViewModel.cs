@@ -28,9 +28,8 @@ namespace Dev2.Common.Interfaces.Studio
         string HyperlinkText { get; }
         Visibility HyperlinkVisibility { get; }
         ICommand OkCommand { get; }
-        //event ClosedOperationEventHandler OnOkClick;
-    
-        void SetupDialogue(string title, string description, string imageSourceuri, string descriptionTitleText, string hyperlink = null, string linkText = null);
+        void SetupDialogue(string title, string description, string imageSourceuri, string descriptionTitleText);
+        void SetupDialogue(string title, string description, string imageSourceuri, string descriptionTitleText, string hyperlink, string linkText);
 
     }
 }

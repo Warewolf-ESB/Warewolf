@@ -83,7 +83,9 @@ namespace Dev2.Studio.ViewModels.Administration
             Process.Start(new Uri(Hyperlink).AbsoluteUri);
         }
 
-        public void SetupDialogue(string title, string description, string imageSourceuri, string descriptionTitleText, string hyperlink = null, string linkText = null)
+        public void SetupDialogue(string title, string description, string imageSourceuri, string descriptionTitleText) => SetupDialogue(title, description, imageSourceuri, descriptionTitleText, null, null);
+
+        public void SetupDialogue(string title, string description, string imageSourceuri, string descriptionTitleText, string hyperlink, string linkText)
         {
             SetTitle(title);
             SetDescription(description);

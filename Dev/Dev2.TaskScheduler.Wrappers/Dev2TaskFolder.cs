@@ -45,13 +45,16 @@ namespace Dev2.TaskScheduler.Wrappers
 
         public ITaskCollection Tasks => _taskServiceConvertorFactory.CreateTaskCollection(Instance.Tasks);
 
+        public ITaskFolder CreateFolder(string subFolderName) => CreateFolder(subFolderName, null);
 
-        public ITaskFolder CreateFolder(string subFolderName, string sddlForm = null)
+        public ITaskFolder CreateFolder(string subFolderName, string sddlForm)
         {
             return _taskServiceConvertorFactory.CreateRootFolder(Instance.CreateFolder(subFolderName, sddlForm));
         }
 
-        public void DeleteTask(string Name, bool exceptionOnNotExists = true)
+        public void DeleteTask(string Name) => DeleteTask(Name, true);
+
+        public void DeleteTask(string Name, bool exceptionOnNotExists)
 
 
         {
@@ -72,6 +75,9 @@ namespace Dev2.TaskScheduler.Wrappers
         {
             return _taskServiceConvertorFactory.CreateTask(Instance.RegisterTaskDefinition(Path, definition.Instance));
         }
+
+        public IDev2Task RegisterTaskDefinition(string Path, IDev2TaskDefinition definition, TaskCreation createType,
+            string UserId) => RegisterTaskDefinition(Path, definition, createType, UserId, null, TaskLogonType.S4U, null);
 
         public IDev2Task RegisterTaskDefinition(string Path, IDev2TaskDefinition definition, TaskCreation createType,
             string UserId,
