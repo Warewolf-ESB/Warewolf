@@ -56,7 +56,20 @@ namespace Dev2.Integration.Tests.Merge
         public void Construct_GivenSameWorkflows_Initialize()
         {
             //---------------Set up test pack-------------------
-            var parser = new ServiceDifferenceParser(null);
+            var parser = new ServiceDifferenceParser(null, new ResourceDefinationCleaner());
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            //---------------Test Result -----------------------
+
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void Construct_GivenSameWorkflows_Initialize_NullCleaner()
+        {
+            //---------------Set up test pack-------------------
+            var parser = new ServiceDifferenceParser(new ActivityParser(), null);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             //---------------Test Result -----------------------
@@ -196,8 +209,8 @@ namespace Dev2.Integration.Tests.Merge
             Assert.IsNotNull(dev2Activity);
             Assert.IsNotNull(dev2Activity1);
             Assert.AreEqual(dev2Activity.UniqueID, dev2Activity1.UniqueID);
-            Assert.AreEqual(typeof(DsfDecision), valueTuple.currentTool.modelItem.ItemType);
-            Assert.AreEqual(typeof(DsfDecision), valueTuple.differenceTool.modelItem.ItemType);
+            Assert.AreEqual(typeof(DsfDecision), valueTuple.current.ItemType);
+            Assert.AreEqual(typeof(DsfDecision), valueTuple.difference.ItemType);
         }
     }
 }
