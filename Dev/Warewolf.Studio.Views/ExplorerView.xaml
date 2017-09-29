@@ -673,6 +673,20 @@
 								                      Visibility="{Binding IsRunAllTestsVisible, Converter={StaticResource BoolToVisibilityConverter}}">
                                             </MenuItem>
 
+                                            <MenuItem Name="MergeItem"
+								                      Command="{Binding MergeCommand}"
+								                      CommandParameter="{Binding Path=Data}"
+								                      InputGestureText="[Ctrl+M]"
+								                      Header="Merge"
+                                                      Style="{StaticResource MenuItemStyle}"
+								                      IsEnabled="{Binding CanMerge}"
+								                      ToolTip="{Binding MergeTooltip}"
+                                                      Visibility="{Binding IsMergeVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                <MenuItem.Icon>
+                                                    <Image Style="{StaticResource MergeIcon}"/>
+                                                </MenuItem.Icon>
+                                            </MenuItem>
+                                            
                                             <MenuItem Name="DeployItem"
 								                      Command="{Binding DeployCommand}"
 								                      CommandParameter="{Binding Path=Data}"

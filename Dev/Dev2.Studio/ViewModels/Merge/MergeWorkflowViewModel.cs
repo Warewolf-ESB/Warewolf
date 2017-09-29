@@ -21,6 +21,7 @@ namespace Dev2.ViewModels.Merge
         private bool _hasVariablesConflict;
         private bool _isVariablesEnabled;
         private bool _isMergeExpanderEnabled;
+        private bool _dirty;
 
         public MergeWorkflowViewModel(IContextualResourceModel currentResourceModel, IContextualResourceModel differenceResourceModel)
             : this(CustomContainer.Get<IServiceDifferenceParser>())
@@ -95,6 +96,7 @@ namespace Dev2.ViewModels.Merge
 
             SetServerName(currentResourceModel);
             DisplayName = "Merge" + _serverName;
+            CanSave = false;
 
             WorkflowDesignerViewModel.CanViewWorkflowLink = false;
         }
@@ -124,6 +126,7 @@ namespace Dev2.ViewModels.Merge
                     HasMergeStarted = true;
                     IsMergeExpanderEnabled = true;
                 }
+                OnPropertyChanged(() => IsDirty);
             }
             catch (Exception)
             {
@@ -154,6 +157,7 @@ namespace Dev2.ViewModels.Merge
                 }
                 
                 mergeToolModel.Children.Flatten(a => a.Children).Apply(a => a.IsMergeChecked = true);
+                OnPropertyChanged(() => IsDirty);
             }
             catch (Exception)
             {
@@ -236,8 +240,6 @@ namespace Dev2.ViewModels.Merge
 
         public ObservableCollection<ICompleteConflict> Conflicts { get; set; }
 
-        public System.Windows.Input.ICommand AddAnItem { get; set; }
-
         public WorkflowDesignerViewModel WorkflowDesignerViewModel { get; set; }
 
         public IConflictModelFactory CurrentConflictModel { get; set; }
@@ -283,13 +285,40 @@ namespace Dev2.ViewModels.Merge
             {
                 try
                 {
-                    return true;
+                    _dirty = ValidWorkflowName();
+                    if (!_dirty)
+                    {
+                        _dirty = ValidVariables();
+                    }
+                    if (!_dirty)
+                    {
+                        var completeConflicts = Conflicts.Flatten(conflict => conflict.Children);
+                        _dirty = completeConflicts.Any(conflict => conflict.IsMergeExpanded);
+                    }
+
+                    CanSave = _dirty;
+                    SetDisplayName(_dirty);
+                    return _dirty;
                 }
                 catch (Exception)
                 {
                     return false;
                 }
             }
+        }
+
+        private bool ValidWorkflowName()
+        {
+            var isWorkflowNameChecked = CurrentConflictModel != null && CurrentConflictModel.IsWorkflowNameChecked;
+            var workflowNameChecked = DifferenceConflictModel != null && DifferenceConflictModel.IsWorkflowNameChecked;
+            return isWorkflowNameChecked || workflowNameChecked;
+        }
+
+        private bool ValidVariables()
+        {
+            var isVariablesChecked = CurrentConflictModel != null && CurrentConflictModel.IsVariablesChecked;
+            var variablesChecked = DifferenceConflictModel != null && DifferenceConflictModel.IsVariablesChecked;
+            return isVariablesChecked || variablesChecked;
         }
 
         private void SetServerName(IContextualResourceModel resourceModel)

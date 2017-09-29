@@ -106,6 +106,17 @@
                     </MenuItem.Icon>
                 </MenuItem>
 
+                <MenuItem Name="Merge"
+                          Command="{Binding MergeCommand}"
+                          Header="Merge"
+                          IsEnabled="{Binding CanMerge}"
+                          Style="{StaticResource MenuItemStyle}"
+                          ToolTip="{Binding MergeTooltip}">
+                    <MenuItem.Icon>
+                        <Image Style="{StaticResource MergeIcon}"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                
                 <MenuItem Name="Deploy"
                           Command="{Binding DeployCommand}"
                           Header="Deploy"
