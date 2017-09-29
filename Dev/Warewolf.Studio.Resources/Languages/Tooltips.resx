@@ -218,6 +218,9 @@ Returns the response text of the web get request.</value>
   <data name="ViewSwaggerToolTip" xml:space="preserve">
     <value>View Swagger source for the current resource</value>
   </data>
+  <data name="ViewMergeTooltip" xml:space="preserve">
+    <value>Select between two resources to merge</value>
+  </data>
   <data name="ViewJsonObjectTooltip" xml:space="preserve">
     <value>Click to see the JSON representation of this object.</value>
   </data>

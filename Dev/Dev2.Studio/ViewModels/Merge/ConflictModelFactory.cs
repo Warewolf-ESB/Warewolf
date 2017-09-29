@@ -218,7 +218,6 @@ namespace Dev2.ViewModels.Merge
                     var addModelItem = GetModel(a.Switch);
                     Children.Add(addModelItem);
                 }
-
                 else
                 {
                     _modelItem = nextModelItem;
@@ -252,7 +251,6 @@ namespace Dev2.ViewModels.Merge
                     var addModelItem = GetModel(a.Switch);
                     Children.Add(addModelItem);
                 }
-
                 else
                 {
                     _modelItem = nextModelItem;

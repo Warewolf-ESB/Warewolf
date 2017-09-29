@@ -1,13 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Dev2.Common.Interfaces.Security;
-
-
-
 
 namespace Dev2.Studio.Interfaces
 {
@@ -22,6 +18,7 @@ namespace Dev2.Studio.Interfaces
         bool CanShowDependencies { get; set; }
         bool IsVersion { get; set; }
         bool CanViewSwagger { get; set; }
+        bool CanMerge { get; set; }
         bool CanDuplicate { get; set; }
         bool CanCreateTest { get; set; }
 
@@ -33,6 +30,7 @@ namespace Dev2.Studio.Interfaces
 
 
         ICommand ViewSwaggerCommand { get; set; }
+        ICommand MergeCommand { get; set; }
         ICommand OpenCommand { get; set; }
         ICommand DeleteVersionCommand { get; set; }
         ICommand ShowDependenciesCommand { get; set; }

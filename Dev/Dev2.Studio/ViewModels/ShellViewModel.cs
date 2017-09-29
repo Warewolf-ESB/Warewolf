@@ -466,7 +466,13 @@ namespace Dev2.Studio.ViewModels
             get
             {
                 return _mergeCommand ??
-                       (_mergeCommand = new RelayCommand(param => OpenMergeConflictsView(Guid.Parse("ea916fa6-76ca-4243-841c-74fa18dd8c14"), Guid.Parse("ea916fa6-76ca-4243-841c-74fa18dd8c14"))));
+                       (_mergeCommand = new RelayCommand(param =>
+                       {
+                           // OPEN WINDOW TO SELECT RESOURCE TO MERGE WITH
+
+                           var resourceId = Guid.Parse("ea916fa6-76ca-4243-841c-74fa18dd8c14");
+                           OpenMergeConflictsView(resourceId, resourceId, ActiveServer);
+                       }));
             }
         }
 
@@ -697,9 +703,9 @@ namespace Dev2.Studio.ViewModels
             ExplorerViewModel.IsRefreshing = refresh;
         }
 
-        public void OpenMergeConflictsView(Guid currentResourceId, Guid differenceResourceId)
+        public void OpenMergeConflictsView(Guid currentResourceId, Guid differenceResourceId, IServer server)
         {
-            var environmentModel = ServerRepository.Get(ActiveServer.EnvironmentID);
+            var environmentModel = ServerRepository.Get(server.EnvironmentID);
             if (environmentModel != null)
             {
                 var currentResourceModel = environmentModel.ResourceRepository.LoadContextualResourceModel(currentResourceId);
