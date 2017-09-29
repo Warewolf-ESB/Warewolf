@@ -21,9 +21,6 @@ using Dev2.Common.Interfaces.WindowsTaskScheduler.Wrappers;
 using Dev2.Communication;
 using Microsoft.Win32.TaskScheduler;
 
-
-
-
 namespace Dev2.Scheduler
 {
     public class ScheduledResourceModel : IScheduledResourceModel
@@ -37,9 +34,9 @@ namespace Dev2.Scheduler
         private IFileHelper _fileHelper;
         private IDirectoryHelper _folderHelper;
         private readonly IDictionary<int, string> _taskStates;
-#pragma warning disable 169
+#pragma warning disable S1144
         private int _argCount;
-#pragma warning restore 169
+#pragma warning restore S1144
         private readonly Func<IScheduledResource, string> _pathResolve;
         private const string Sebatchlogonright = "SeBatchLogonRight";
         private const char NameSeperator = ':';
