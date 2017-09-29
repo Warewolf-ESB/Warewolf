@@ -81,7 +81,11 @@ namespace Dev2.TaskScheduler.Wrappers
 
         public IDev2Task RegisterTaskDefinition(string Path, IDev2TaskDefinition definition, TaskCreation createType,
             string UserId,
-            string password = null, TaskLogonType LogonType = TaskLogonType.S4U,
+            string password, TaskLogonType LogonType) => RegisterTaskDefinition(Path, definition, createType, UserId, password, LogonType, null);
+
+        public IDev2Task RegisterTaskDefinition(string Path, IDev2TaskDefinition definition, TaskCreation createType,
+            string UserId,
+            string password, TaskLogonType LogonType,
             string sddl = null)
         {
             return

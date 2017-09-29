@@ -33,6 +33,9 @@ namespace Dev2.Common.Interfaces.WindowsTaskScheduler.Wrappers
 
         IDev2Task RegisterTaskDefinition(string Path, IDev2TaskDefinition definition, TaskCreation createType, string UserId);
 
+        IDev2Task RegisterTaskDefinition(string Path, IDev2TaskDefinition definition, TaskCreation createType, string UserId,
+            string password, TaskLogonType LogonType);
+
         IDev2Task RegisterTaskDefinition(string Path, IDev2TaskDefinition definition, TaskCreation createType, string UserId, 
             string password, TaskLogonType LogonType, string sddl);
 
