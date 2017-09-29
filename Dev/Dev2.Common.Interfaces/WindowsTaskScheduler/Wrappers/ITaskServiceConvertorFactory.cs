@@ -44,6 +44,8 @@ namespace Dev2.Common.Interfaces.WindowsTaskScheduler.Wrappers
 
         IExecAction CreateExecAction(string path);
 
+        IExecAction CreateExecAction(string path, string arguments);
+
         IExecAction CreateExecAction(string path, string arguments, string workingDirectory);
 
         IExecAction CreateExecAction(IAction act);
