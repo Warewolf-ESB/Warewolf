@@ -5,9 +5,8 @@ using Dev2.Common;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Common.Interfaces.Versioning;
 using Dev2.Studio.Interfaces;
-
-
-
+using Dev2.Instrumentation;
+using Dev2.Instrumentation.Factory;
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -15,11 +14,12 @@ namespace Warewolf.Studio.ViewModels
     {
         private static IShellViewModel _shellViewModel;
         static IPopupController _popupController;
-
+        private IApplicationTracker _applicationTracker;
         public ExplorerItemViewModelCommandController(IShellViewModel shellViewModel, IPopupController popupController)
         {
             _shellViewModel = shellViewModel;
             _popupController = popupController;
+            _applicationTracker = ApplicationTrackerFactory.GetApplicationTrackerProvider();
         }
         public void RollbackCommand(IExplorerRepository explorerRepository, IExplorerTreeItem parent, Guid resourceId, string versionNumber)
         {
@@ -37,6 +37,9 @@ namespace Warewolf.Studio.ViewModels
         internal void OpenCommand(ExplorerItemViewModel item, IServer server)
         {
             Dev2Logger.Info("Open resource: " + item.ResourceName + " - ResourceId: " + item.ResourceId, "Warewolf Info");
+            _applicationTracker.TrackCustomEvent(ApplicationTrackerConstants.TrackerEventGroup.MainMenuClicked, ApplicationTrackerConstants.TrackerEventName.HelloWorldClicked, item.ResourceName);
+
+
             if (item.IsFolder)
             {
                 item.IsExpanded = !item.IsExpanded;

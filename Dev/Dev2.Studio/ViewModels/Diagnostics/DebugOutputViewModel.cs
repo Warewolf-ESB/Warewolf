@@ -36,9 +36,8 @@ using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Interfaces;
 using DelegateCommand = Dev2.Runtime.Configuration.ViewModels.Base.DelegateCommand;
-
-
-
+using Dev2.Instrumentation;
+using Dev2.Instrumentation.Factory;
 
 namespace Dev2.Studio.ViewModels.Diagnostics
 
@@ -90,12 +89,14 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         bool _continueDebugDispatch;
         bool _dispatchLastDebugState;
         private string _addNewTestTooltip;
-
+        private IApplicationTracker _applicationTracker;
         public DebugOutputViewModel(IEventPublisher serverEventPublisher, IServerRepository serverRepository, IDebugOutputFilterStrategy debugOutputFilterStrategy, IContextualResourceModel contextualResourceModel = null)
         {
             VerifyArgument.IsNotNull("serverEventPublisher", serverEventPublisher);
             VerifyArgument.IsNotNull("environmentRepository", serverRepository);
             VerifyArgument.IsNotNull("debugOutputFilterStrategy", debugOutputFilterStrategy);
+
+            _applicationTracker = ApplicationTrackerFactory.GetApplicationTrackerProvider();
             _serverRepository = serverRepository;
             _debugOutputFilterStrategy = debugOutputFilterStrategy;
             if (contextualResourceModel != null)
@@ -123,6 +124,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
 
         private void AddNewTest(IEventAggregator eventPublisher)
         {
+            _applicationTracker.TrackApplicationEvent(ApplicationTrackerConstants.TrackerEventName.CreateNewTestClicked);
             var newTestFromDebugMessage = new NewTestFromDebugMessage
             {
                 ResourceID = ResourceID,

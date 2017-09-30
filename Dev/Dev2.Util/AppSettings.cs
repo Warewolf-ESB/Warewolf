@@ -30,5 +30,45 @@ namespace Dev2.Util
             }
         }
         public static string ServicesAddress => LocalHost + "/wwwroot/services/Service/Resources/{0}";
+
+        public static string ConfigFilePath
+        {
+            get
+            {
+                return ConfigurationManager.AppSettings["ConfigFilePath"];
+            }
+        }
+
+        public static string ProductID
+        {
+
+            get
+            {
+                return ConfigurationManager.AppSettings["ProductID"];
+            }
+        }
+
+        public static string AppName
+        {
+            get
+            {
+                return ConfigurationManager.AppSettings["AppName"];
+            }
+        }
+        public static string ProductUrl
+        {
+            get
+            {
+                return ConfigurationManager.AppSettings["ProductUrl"];
+            }
+        }
+        public static string AesHexKey
+        {
+            get
+            {
+                return ConfigurationManager.AppSettings["AesHexKey"];
+            }
+        }
+
     }
 }

@@ -22,10 +22,8 @@ using Dev2.Services.Security;
 using Dev2.Studio.Interfaces;
 using Microsoft.Practices.Prism.Mvvm;
 using Dev2.Common;
-
-
-
-
+using Dev2.Instrumentation;
+using Dev2.Instrumentation.Factory;
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -40,12 +38,13 @@ namespace Warewolf.Studio.ViewModels
         private object[] _selectedDataItems;
         bool _fromActivityDrop;
         bool _allowDrag;
-
+        private IApplicationTracker _applicationTracker;
         protected ExplorerViewModelBase()
         {
             RefreshCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(async () => await Refresh(true));
             ClearSearchTextCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() => SearchText = "");
             CreateFolderCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(CreateFolder);
+            _applicationTracker = ApplicationTrackerFactory.GetApplicationTrackerProvider();
         }
 
         private void CreateFolder()
@@ -234,6 +233,7 @@ namespace Warewolf.Studio.ViewModels
         {
             if (Environments != null)
             {
+                _applicationTracker.TrackCustomEvent(ApplicationTrackerConstants.TrackerEventGroup.ExplorerSearch, ApplicationTrackerConstants.TrackerEventName.ExplorerSearch, filter);
                 foreach (var environmentViewModel in Environments)
                 {
                     environmentViewModel.Filter(filter);

@@ -47,7 +47,11 @@ namespace Warewolf.Studio.ViewModels
             {
                 throw new ArgumentNullException(nameof(aggregator));
             }
-            Server = server ?? throw new ArgumentNullException(nameof(server));
+            if (server == null)
+            {
+                throw new ArgumentNullException(nameof(server));
+            }
+            Server = server;
             _existingServers = servers;
             _serverRepository = CustomContainer.Get<IServerRepository>();
             LoadServers();

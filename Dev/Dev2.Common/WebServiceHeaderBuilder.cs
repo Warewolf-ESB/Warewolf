@@ -41,12 +41,14 @@ namespace Dev2.Common
             }
             else
             {
-                bool ExistingHeaders(INameValue value) => value.Name.Equals(jsonHeader.Name, StringComparison.InvariantCultureIgnoreCase) &&
-                                                          value.Value.Equals(jsonHeader.Value, StringComparison.InvariantCultureIgnoreCase);
+                
 
                 var emptyHeader = region.Headers.FirstOrDefault(value => string.IsNullOrEmpty(value.Name) && string.IsNullOrEmpty(value.Value));
                 region.Headers.Remove(emptyHeader);
-                if (!region.Headers.Any(ExistingHeaders))
+                if (!region.Headers.Any((value)=> {
+                    return value.Name.Equals(jsonHeader.Name, StringComparison.InvariantCultureIgnoreCase) &&
+                                                             value.Value.Equals(jsonHeader.Value, StringComparison.InvariantCultureIgnoreCase);
+                }))
                 {
                     region.Headers.Add(jsonHeader);
                 }

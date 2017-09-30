@@ -99,7 +99,7 @@ namespace Dev2.Tests {
         ///	&lt;HelpLink/&gt;
         ///	&lt;UnitTestTargetWorkflowService/&gt;
         ///	&lt;DataList&gt;
-        ///		&lt;test Description=&quot;&quot; IsEditable=&quot;True&quot; ColumnIO [rest of string was truncated]&quot;;.
+        ///		&lt;test Description=&quot;&quot; IsEditable=&quot;True&quot; ColumnIODirection=&quot; [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string XamlLoaderBadNamespace {
             get {

@@ -205,7 +205,8 @@ namespace Dev2.Tests.Activities {
         ///		&lt;LastName&gt;Smit&lt;/LastName&gt;
         ///	&lt;/Customers&gt;
         ///	&lt;Customers&gt;
-        ///		&lt;FirstName&gt;Brendon [rest of string was truncated]&quot;;.
+        ///		&lt;FirstName&gt;Brendon&lt;/FirstName&gt;
+        ///		&lt;LastNa [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string DataMergeDataListWithData {
             get {
@@ -356,7 +357,8 @@ namespace Dev2.Tests.Activities {
         ///		&lt;DOB&gt;1981/10/01&lt;/DOB&gt;
         ///	&lt;/Customers&gt;
         ///	&lt;Customers&gt;
-        ///		&lt;FirstNa [rest of string was truncated]&quot;;.
+        ///		&lt;FirstName&gt;Jurie&lt;/FirstName&gt;
+        ///	 [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string DebugDataListWithData {
             get {
@@ -603,7 +605,8 @@ namespace Dev2.Tests.Activities {
         ///		&lt;field2&gt;f2r6&lt;/field2&gt;		
         ///	&lt;/recset1&gt;
         ///	&lt;Customers&gt;
-        ///		&lt;FirstName&gt;Barney&lt;/FirstN [rest of string was truncated]&quot;;.
+        ///		&lt;FirstName&gt;Barney&lt;/FirstName&gt;
+        ///		&lt;LastName&gt;Buchan&lt;/L [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string IndexDataListWithData {
             get {
@@ -638,7 +641,8 @@ namespace Dev2.Tests.Activities {
         ///		&lt;field2&gt;f2r6&lt;/field2&gt;		
         ///	&lt;/recset1&gt;
         ///	&lt;Customers&gt;
-        ///		&lt;FirstName&gt;Barney&lt;/FirstN [rest of string was truncated]&quot;;.
+        ///		&lt;FirstName&gt;Barney&lt;/FirstName&gt;
+        ///		&lt;LastName&gt;Buchan&lt;/L [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string IndexDataListWithDataAndThreeRecordsets {
             get {
@@ -719,7 +723,9 @@ namespace Dev2.Tests.Activities {
         ///    &lt;display /&gt;
         ///  &lt;/cRec&gt;
         ///  &lt;cRec&gt;
-        ///    &lt;op [rest of string was truncated]&quot;;.
+        ///    &lt;opt&gt;Value9&lt;/opt&gt;
+        ///    &lt;display /&gt;
+        ///  &lt; [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string MultiAssignStarDataListWithScalar {
             get {
@@ -762,7 +768,9 @@ namespace Dev2.Tests.Activities {
         ///    &lt;display /&gt;
         ///  &lt;/cRec&gt;
         ///  &lt;cRec&gt;
-        ///    &lt;op [rest of string was truncated]&quot;;.
+        ///    &lt;opt&gt;Value9&lt;/opt&gt;
+        ///    &lt;display /&gt;
+        ///  &lt; [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string MutiAssignStarDataList {
             get {
@@ -891,7 +899,9 @@ namespace Dev2.Tests.Activities {
         ///		&lt;field2&gt;-40&lt;/field2&gt;
         ///	&lt;/recset2&gt;
         ///	&lt;recset2&gt;
-        ///		&lt;fi [rest of string was truncated]&quot;;.
+        ///		&lt;field2&gt;-50&lt;/field2&gt;	
+        ///	&lt;/recset2&gt;		
+        /// [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string RandomActivityDataListWithData {
             get {
@@ -976,7 +986,8 @@ namespace Dev2.Tests.Activities {
         ///		&lt;field2&gt;f2r6&lt;/field2&gt;		
         ///	&lt;/recset1&gt;
         ///	&lt;Customers&gt;
-        ///		&lt;FirstName&gt;Barney&lt;/First [rest of string was truncated]&quot;;.
+        ///		&lt;FirstName&gt;Barney&lt;/FirstName&gt;
+        ///		&lt;LastName&gt;Buchan&lt;/ [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string ReplaceDataListWithData {
             get {
@@ -1070,7 +1081,8 @@ namespace Dev2.Tests.Activities {
         ///		&lt;recset&gt;
         ///        &lt;Id&gt;10&lt;/Id&gt;
         ///        &lt;Tel&gt;082&lt;/Tel&gt;
-        ///		 [rest of string was truncated]&quot;;.
+        ///		&lt;Name&gt;Y&lt;/Name&gt;
+        ///        [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string SortDataList {
             get {

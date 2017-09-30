@@ -11,6 +11,9 @@ using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
 using Warewolf.Studio.Core;
 
+using Dev2.Instrumentation;
+using Dev2.Instrumentation.Factory;
+
 namespace Warewolf.Studio.ViewModels.ToolBox
 {
     public class ToolboxViewModel : BindableBase, IToolboxViewModel, IDisposable, IUpdatesHelp
@@ -23,9 +26,11 @@ namespace Warewolf.Studio.ViewModels.ToolBox
         private string _searchTerm;
         private ObservableCollection<IToolDescriptorViewModel> _backedUpTools;
         private bool _isVisible;
-
+        public IApplicationTracker _applicationTracker;
         public ToolboxViewModel(IToolboxModel localModel, IToolboxModel remoteModel)
         {
+            // applicationAnalytics = ApplicationAnalyticFactory.GetApplicationAnalyticsProvider("revulytics");
+            _applicationTracker = ApplicationTrackerFactory.GetApplicationTrackerProvider();
             VerifyArgument.AreNotNull(new Dictionary<string, object> { { "localModel", localModel }, { "remoteModel", remoteModel } });
             _localModel = localModel;
             _remoteModel = remoteModel;
@@ -130,6 +135,7 @@ namespace Warewolf.Studio.ViewModels.ToolBox
                     OnPropertyChanged("SearchTerm");
                     if (!string.IsNullOrWhiteSpace(value))
                     {
+                       
                         FilterItems(value.ToLowerInvariant());
                     }
                     else
@@ -142,6 +148,8 @@ namespace Warewolf.Studio.ViewModels.ToolBox
 
         private void FilterItems(string filterText)
         {
+            //     applicationAnalytics.CustomEventTracking("Warewolf studio", "ToolBox Search", filterText);
+            _applicationTracker.TrackCustomEvent(ApplicationTrackerConstants.TrackerEventGroup.ToolBoxSearch,ApplicationTrackerConstants.TrackerEventName.ToolSearch,filterText);
             var searchWords = filterText.ToLower().Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
             var results = _backedUpTools.Where(i =>
@@ -187,6 +195,7 @@ namespace Warewolf.Studio.ViewModels.ToolBox
 
         public void UpdateHelpDescriptor(string helpText)
         {
+            _applicationTracker.TrackCustomEvent(ApplicationTrackerConstants.TrackerEventGroup.Help,ApplicationTrackerConstants.TrackerEventName.HelpClicked,helpText);
             var mainViewModel = CustomContainer.Get<IShellViewModel>();
             mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
         }

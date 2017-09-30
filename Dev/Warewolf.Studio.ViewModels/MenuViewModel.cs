@@ -17,7 +17,8 @@ using Dev2.Studio.Interfaces;
 using FontAwesome.WPF;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
-
+using Dev2.Instrumentation;
+using Dev2.Instrumentation.Factory;
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -32,13 +33,14 @@ namespace Warewolf.Studio.ViewModels
         ICommand _executeServiceCommand;
         FontAwesomeIcon _debugIcon;
         bool _isProcessing;
-
+        public IApplicationTracker _applicationTracker;
         public MenuViewModel(IShellViewModel mainViewModel)
         {
             if (mainViewModel == null)
             {
                 throw new ArgumentNullException(nameof(mainViewModel));
             }
+            _applicationTracker = ApplicationTrackerFactory.GetApplicationTrackerProvider();
             _viewModel = mainViewModel;
             _isOverLock = false;
             NewServiceCommand = _viewModel.NewServiceCommand;
@@ -54,6 +56,7 @@ namespace Warewolf.Studio.ViewModels
             CheckForNewVersionCommand = new DelegateCommand(_viewModel.DisplayDialogForNewVersion);
             SupportCommand = new DelegateCommand(() =>
             {
+                _applicationTracker.TrackApplicationEvent(ApplicationTrackerConstants.TrackerEventName.HelpClicked);
                 Process.Start(Resources.Languages.HelpText.WarewolfHelpURL);
             });
 

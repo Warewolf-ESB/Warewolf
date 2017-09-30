@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>WarewolfLanguageParser</RootNamespace>
     <AssemblyName>WarewolfLanguageParser</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <Name>WarewolfLanguageParser</Name>
     <TargetFSharpCoreVersion>4.3.0.0</TargetFSharpCoreVersion>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>

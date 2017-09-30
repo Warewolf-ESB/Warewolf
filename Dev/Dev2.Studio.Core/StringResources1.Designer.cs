@@ -627,7 +627,7 @@ namespace Dev2.Studio.Core {
         ///&lt;xamDockManager version=&quot;12.1.20121.2107&quot;&gt;
         ///  &lt;contentPanes&gt;
         ///    &lt;contentPane name=&quot;OutputPane&quot; location=&quot;DockedRight&quot; lastFloatingSize=&quot;1000,200&quot; lastFloatingWindowRect=&quot;625,541,1016,234&quot; lastFloatingLocation=&quot;625,541&quot; lastActivatedTime=&quot;2013-06-10T07:30:08.998685Z&quot; /&gt;
-        ///    &lt;contentPane name=&quot;Variables&quot; location=&quot;DockedRight&quot; lastFloatingSize=&quot;300,706&quot; lastFloatingWindowRect=&quot;1475,482,316,740&quot; lastFloatingLocation=&quot;1475,482&quot; lastActivatedTime=&quot;2013-06-10T07:30:02.88 [rest of string was truncated]&quot;;.
+        ///    &lt;contentPane name=&quot;Variables&quot; location=&quot;DockedRight&quot; lastFloatingSize=&quot;300,706&quot; lastFloatingWindowRect=&quot;1475,482,316,740&quot; lastFloatingLocation=&quot;1475,482&quot; lastActivatedTime=&quot;2013-06-10T07:30:02.882685 [rest of string was truncated]&quot;;.
         /// </summary>
         public static string XmlOriginalLayout {
             get {
@@ -649,7 +649,7 @@ namespace Dev2.Studio.Core {
         ///			&lt;Input Name=&quot;number&quot; Source=&quot;&quot; DefaultValue=&quot;&quot;/&gt;
         ///		&lt;/Inputs&gt;
         ///		&lt;Outputs&gt;
-        ///			&lt;Output Name=&quot;vehicleVin&quot; [rest of string was truncated]&quot;;.
+        ///			&lt;Output Name=&quot;vehicleVin&quot; MapsTo=&quot;VIN&quot; [rest of string was truncated]&quot;;.
         /// </summary>
         public static string xmlServiceDefinition {
             get {

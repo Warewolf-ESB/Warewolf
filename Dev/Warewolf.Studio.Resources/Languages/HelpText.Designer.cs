@@ -659,7 +659,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// <summary>
         ///   Looks up a localized string similar to If there is an occurrence or an item being split on, that should not be split on, it will be preceded with this character. e.g., a comma separated file might have a comma in a name, so don’t split on it if it is preceded by \ or some other characters.	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;&lt;br/&gt;
         ///&lt;table border=&apos;1px solid black&apos;&gt;
-        ///&lt;tr&gt;&lt;th border=&apos;1px solid black&apos;&gt;Escape Sequence&lt;/th&gt;&lt;th border= [rest of string was truncated]&quot;;.
+        ///&lt;tr&gt;&lt;th border=&apos;1px solid black&apos;&gt;Escape Sequence&lt;/th&gt;&lt;th border=&apos;1 [rest of string was truncated]&quot;;.
         /// </summary>
         public static string DataSplitHelpEscape {
             get {

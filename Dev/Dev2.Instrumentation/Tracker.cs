@@ -54,10 +54,10 @@ namespace Dev2.Instrumentation
         /// </summary>
         public static void StartStudio()
         {
-#if ! DEBUG
+
             // RELEASE
             Start("2386158962", "http://94687.tbnet1.com");
-#endif
+
         }
 
         

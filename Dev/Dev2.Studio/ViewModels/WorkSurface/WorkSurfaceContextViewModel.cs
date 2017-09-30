@@ -38,11 +38,7 @@ using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.DataList;
 using Dev2.Studio.Interfaces.Enums;
 using Warewolf.Studio.ViewModels;
-
-
-
-
-
+using Dev2.Instrumentation;
 
 namespace Dev2.Studio.ViewModels.WorkSurface
 {
@@ -77,7 +73,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
         private readonly Action<IContextualResourceModel, bool, System.Action> _saveDialogAction;
         private IStudioCompileMessageRepoFactory _studioCompileMessageRepoFactory;
         private IResourceChangeHandlerFactory _resourceChangeHandlerFactory;
-
+        public IApplicationTracker _applicationTracker;
         #endregion private fields
 
         #region public properties
@@ -406,6 +402,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
         public void Debug(IContextualResourceModel resourceModel, bool isDebug)
         {
+            _applicationTracker.TrackApplicationEvent(ApplicationTrackerConstants.TrackerEventName.DebugClicked);
             if (resourceModel?.Environment == null || !resourceModel.Environment.IsConnected)
             {
                 return;

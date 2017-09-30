@@ -61,7 +61,9 @@ using Dev2.Studio.Diagnostics;
 using Dev2.Studio.ViewModels;
 using Dev2.Util;
 using System.Globalization;
-
+using Dev2.Instrumentation.Factory;
+using System.Security.Claims;
+using Dev2.Studio.Utils;
 
 namespace Dev2.Studio
 
@@ -81,13 +83,16 @@ namespace Dev2.Studio
         
         private AppExceptionHandler _appExceptionHandler;
         private bool _hasShutdownStarted;
-
+        // public ApplicationAnalyticFactory applicationAnalyticFactory;
+        public IApplicationTracker _applicationTracker;
         public App()
         {
             // PrincipalPolicy must be set to WindowsPrincipal to check roles.
             AppDomain.CurrentDomain.SetPrincipalPolicy(PrincipalPolicy.WindowsPrincipal);
             _hasShutdownStarted = false;
             ShouldRestart = false;
+
+            _applicationTracker = ApplicationTrackerFactory.GetApplicationTrackerProvider();
 
             try
             {
@@ -104,7 +109,12 @@ namespace Dev2.Studio
         [PrincipalPermission(SecurityAction.Demand)]  // Principal must be authenticated
         protected override void OnStartup(StartupEventArgs e)
         {
-            Tracker.StartStudio();
+
+            //  Tracker.StartStudio();
+            //applicationAnalytics.CreateConfigAndStartAnalytics();
+
+            
+            _applicationTracker.EnableAppplicationTracker(VersionInfo.FetchVersionInfo(), @"Warewolf" + $" ({ClaimsPrincipal.Current.Identity.Name})".ToUpperInvariant());
             bool createdNew;
 
             Task.Factory.StartNew(() =>
@@ -148,6 +158,7 @@ namespace Dev2.Studio
         private Thread _splashThread;
         protected void InitializeShell(StartupEventArgs e)
         {
+           
             _resetSplashCreated = new ManualResetEvent(false);
 
             _splashThread = new Thread(ShowSplash);
@@ -276,8 +287,10 @@ namespace Dev2.Studio
 
         protected override void OnExit(ExitEventArgs e)
         {
-            Tracker.Stop();
+            // Tracker.Stop();
+            _applicationTracker.DisableAppplicationTracker();
 
+            // applicationAnalytics.StopTracking();
             // this is already handled ;)
             _shellViewModel?.PersistTabs(true);
             ProgressFileDownloader.PerformCleanup(new DirectoryWrapper(), GlobalConstants.VersionDownloadPath, new FileWrapper());
@@ -293,6 +306,8 @@ namespace Dev2.Studio
             {
                 // Best effort ;)
             }
+
+
 
             ForceShutdown();
         }

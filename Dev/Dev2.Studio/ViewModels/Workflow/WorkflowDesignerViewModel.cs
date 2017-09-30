@@ -86,12 +86,8 @@ using Dev2.Workspaces;
 using Newtonsoft.Json;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Studio.ViewModels;
-
-
-
-
-
-
+using Dev2.Instrumentation;
+using Dev2.Instrumentation.Factory;
 
 namespace Dev2.Studio.ViewModels.Workflow
 
@@ -130,7 +126,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         MethodInfo _virtualizedContainerServicePopulateAllMethod;
 
         readonly StudioSubscriptionService<DebugSelectionChangedEventArgs> _debugSelectionChangedService = new StudioSubscriptionService<DebugSelectionChangedEventArgs>();
-
+        private IApplicationTracker _applicationTracker;
         #endregion
 
         #region Constructor
@@ -211,6 +207,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             DataListViewModel = DataListViewModelFactory.CreateDataListViewModel(_resourceModel);
             DebugOutputViewModel = new DebugOutputViewModel(_resourceModel.Environment.Connection.ServerEvents, CustomContainer.Get<IServerRepository>(), new DebugOutputFilterStrategy(), ResourceModel);
             _firstWorkflowChange = true;
+            _applicationTracker = ApplicationTrackerFactory.GetApplicationTrackerProvider();
         }
 
         public void SetPermission(Permissions permission)
@@ -806,7 +803,9 @@ namespace Dev2.Studio.ViewModels.Workflow
                 {
                     if (!string.IsNullOrEmpty(_workflowLink))
                     {
+                        _applicationTracker.TrackApplicationEvent(ApplicationTrackerConstants.TrackerEventName.LinkURLClicked);
                         SaveToWorkspace();
+
                         if (_workflowInputDataViewModel.WorkflowInputCount == 0)
                         {
                             PopUp.ShowNoInputsSelectedWhenClickLink();
@@ -2328,13 +2327,17 @@ namespace Dev2.Studio.ViewModels.Workflow
                 if (DataObject != null)
                 {
                     IsItemDragged.Instance.IsDragged = true;
+                    _applicationTracker.TrackCustomEvent(ApplicationTrackerConstants.TrackerEventGroup.DragOnDesignSurface, ApplicationTrackerConstants.TrackerEventName.ItemDragged, "Type : Warewolf.Studio.ViewModels.ExplorerItemViewModel"+" Activity :"+ DataObject.ActivityName);
                 }
 
                 var isWorkflow = dataObject.GetData("WorkflowItemTypeNameFormat") as string;
                 if (isWorkflow != null)
                 {
+
                     handled = WorkflowDropFromResourceToolboxItem(dataObject, isWorkflow, true, false);
                     ApplyIsDraggedInstance(isWorkflow);
+                    _applicationTracker.TrackCustomEvent(ApplicationTrackerConstants.TrackerEventGroup.DragOnDesignSurface, ApplicationTrackerConstants.TrackerEventName.ItemDragged, "Type: WorkflowItemTypeNameFormat " +isWorkflow);
+
                 }
                 else
                 {
@@ -2360,7 +2363,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         [ExcludeFromCodeCoverage]
         private bool WorkflowDropFromResourceToolboxItem(IDataObject dataObject, string isWorkflow, bool dropOccured, bool handled)
         {
-            var activityType = ResourcePickerDialog.DetermineDropActivityType(isWorkflow);
+                var activityType = ResourcePickerDialog.DetermineDropActivityType(isWorkflow);
             if (IsTestView)
             {
                 return true;

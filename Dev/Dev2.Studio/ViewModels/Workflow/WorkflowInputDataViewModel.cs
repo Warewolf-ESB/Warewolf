@@ -34,8 +34,7 @@ using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Threading;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-
-
+using Dev2.Instrumentation.Factory;
 
 namespace Dev2.Studio.ViewModels.Workflow
 
@@ -55,7 +54,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         bool _canDebug;
         readonly IPopupController _popupController;
         private RelayCommand _cancelCommand;
-
+        public IApplicationTracker _applicationTracker;
         #endregion Fields
 
         public event Action DebugExecutionStart;
@@ -69,13 +68,15 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         void OnDebugExecutionStart()
         {
-            Tracker.TrackEvent(TrackerEventGroup.Workflows, TrackerEventName.DebugClicked);
+            //Tracker.TrackEvent(TrackerEventGroup.Workflows, TrackerEventName.DebugClicked);
+            _applicationTracker.TrackApplicationEvent(ApplicationTrackerConstants.TrackerEventName.F6Debug);
             var handler = DebugExecutionStart;
             handler?.Invoke();
         }
 
         public WorkflowInputDataViewModel(IServiceDebugInfoModel input, Guid sessionId)
         {
+            _applicationTracker = ApplicationTrackerFactory.GetApplicationTrackerProvider();
             VerifyArgument.IsNotNull(@"input", input);
             CanDebug = true;
             CanViewInBrowser = true;
@@ -313,7 +314,8 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             if (!IsInError)
             {
-                Tracker.TrackEvent(TrackerEventGroup.Workflows, TrackerEventName.ViewInBrowserClicked);
+                //Tracker.TrackEvent(TrackerEventGroup.Workflows, TrackerEventName.ViewInBrowserClicked);
+                _applicationTracker.TrackApplicationEvent(ApplicationTrackerConstants.TrackerEventName.ViewInBrowserClicked);
                 DoSaveActions();
                 string payload = BuildWebPayLoad();
                 SendViewInBrowserRequest(payload);

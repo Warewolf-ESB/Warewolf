@@ -152,7 +152,7 @@ namespace Dev2.Core.Tests {
         ///			&lt;Input Name=&quot;number&quot; Source=&quot;&quot; DefaultValue=&quot;&quot;/&gt;
         ///		&lt;/Inputs&gt;
         ///		&lt;Outputs&gt;
-        ///			&lt;Output Name=&quot;vehicleVin&quot; [rest of string was truncated]&quot;;.
+        ///			&lt;Output Name=&quot;vehicleVin&quot; MapsTo=&quot;VIN&quot; [rest of string was truncated]&quot;;.
         /// </summary>
         public static string xmlServiceDefinition {
             get {

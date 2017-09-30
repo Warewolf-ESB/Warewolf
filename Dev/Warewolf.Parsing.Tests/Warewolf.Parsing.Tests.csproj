@@ -42,6 +42,15 @@
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Dev2.Common">
+      <HintPath>..\Dev2.Common\bin\Debug\Dev2.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Dev2.Common.Interfaces">
+      <HintPath>..\Dev2.Common\bin\Debug\Dev2.Common.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="Dev2.Infrastructure">
+      <HintPath>..\Dev2.Infrastructure\bin\Debug\Dev2.Infrastructure.dll</HintPath>
+    </Reference>
     <Reference Include="FSharp.Core, Version=4.3.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\packages\FSharp.Core.3.0.0.2\lib\net40\FSharp.Core.dll</HintPath>
@@ -64,6 +73,18 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="Warewolf.Storage">
+      <HintPath>..\Warewolf.Storage\bin\Debug\Warewolf.Storage.dll</HintPath>
+    </Reference>
+    <Reference Include="Warewolf.Storage.Interfaces">
+      <HintPath>..\Warewolf.Storage.Interfaces\bin\Debug\Warewolf.Storage.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="WarewolfLanguageParser">
+      <HintPath>..\WarewolfLanguageParser\bin\Debug\WarewolfLanguageParser.dll</HintPath>
+    </Reference>
+    <Reference Include="WarewolfParserInterop">
+      <HintPath>..\WarewolfLanguageParser\bin\Debug\WarewolfParserInterop.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssignTests.cs" />
@@ -87,36 +108,6 @@
     <Compile Include="AssignJsonTests.cs" />
     <Compile Include="TestPublicFunctions.cs" />
     <Compile Include="TestUpdate.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">
-      <Project>{13c0c6e9-7dc3-4dc3-8535-031c263cee0b}</Project>
-      <Name>Dev2.Common.Interfaces</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Dev2.Common\Dev2.Common.csproj">
-      <Project>{84405fdf-0ff8-49a2-8925-8a4aeba8104a}</Project>
-      <Name>Dev2.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Dev2.Infrastructure\Dev2.Infrastructure.csproj">
-      <Project>{615eae6d-040c-4364-b708-63dc8755cd4f}</Project>
-      <Name>Dev2.Infrastructure</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Warewolf.Storage.Interfaces\Warewolf.Storage.Interfaces.csproj">
-      <Project>{61A15557-1D18-4C69-88EB-31BF49B7FB50}</Project>
-      <Name>Warewolf.Storage.Interfaces</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Warewolf.Storage\Warewolf.Storage.csproj">
-      <Project>{b3d070e0-11c1-4c1c-81a5-e680c1494945}</Project>
-      <Name>Warewolf.Storage</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\WarewolfLanguageParser\WarewolfLanguageParser.fsproj">
-      <Project>{e0f7c709-a61b-4829-a659-d7780052326a}</Project>
-      <Name>WarewolfLanguageParser</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\WarewolfParserInterop\WarewolfParserInterop.csproj">
-      <Project>{6eb59eee-4e16-4f29-b1b0-715e56e9139d}</Project>
-      <Name>WarewolfParserInterop</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

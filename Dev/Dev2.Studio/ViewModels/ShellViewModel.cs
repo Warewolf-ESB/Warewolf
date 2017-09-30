@@ -63,11 +63,8 @@ using Dev2.Common.Interfaces.Enums;
 using Dev2.Data.ServiceModel;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.Enums;
-
-
-
-
-
+using Dev2.Instrumentation;
+using Dev2.Instrumentation.Factory;
 
 namespace Dev2.Studio.ViewModels
 {
@@ -117,6 +114,7 @@ namespace Dev2.Studio.ViewModels
 
         private IServerRepository ServerRepository { get; }
 
+    
 
         public bool CloseCurrent { get; private set; }
 
@@ -171,6 +169,8 @@ namespace Dev2.Studio.ViewModels
         }
 
         public IBrowserPopupController BrowserPopupController { get; }
+
+        public IApplicationTracker _applicationTracker;
 
         public void OnActiveServerChanged()
         {
@@ -457,6 +457,9 @@ namespace Dev2.Studio.ViewModels
 
         public IVersionChecker Version { get; }
 
+      
+        //public IApplicationTracker _applicationTracker;
+
         [ExcludeFromCodeCoverage]
         public ShellViewModel()
             : this(EventPublishers.Aggregator, new AsyncWorker(), CustomContainer.Get<IServerRepository>(), new VersionChecker(), new ViewFactory())
@@ -468,7 +471,14 @@ namespace Dev2.Studio.ViewModels
             IPopupController popupController = null, IExplorerViewModel explorer = null)
             : base(eventPublisher)
         {
+
+
+            // applicationAnalytics = ApplicationAnalyticFactory.GetApplicationAnalyticsProvider("revulytics");
+            _applicationTracker = ApplicationTrackerFactory.GetApplicationTrackerProvider();
             Version = versionChecker ?? throw new ArgumentNullException(nameof(versionChecker));
+           
+         
+
             VerifyArgument.IsNotNull(@"asyncWorker", asyncWorker);
             _asyncWorker = asyncWorker;
             _factory = factory;
@@ -490,7 +500,13 @@ namespace Dev2.Studio.ViewModels
             AddWorkspaceItems();
             ShowStartPage();
             DisplayName = @"Warewolf" + $" ({ClaimsPrincipal.Current.Identity.Name})".ToUpperInvariant();
-            
+            //if (Version != null && versionChecker.Current != null)
+            //{
+            //    applicationAnalytics.SetProductVersion(Version.Current.ToString());
+            //}
+           // applicationAnalytics.CustomEventTracking("WareWolf.Dev2.Studio","ShellLoad", DisplayName);
+
+
 
         }
 
@@ -649,11 +665,16 @@ namespace Dev2.Studio.ViewModels
         public void DebugStudio(Guid resourceId, Guid environmentId)
         {
             var environmentModel = ServerRepository.Get(environmentId);
+
+
             var contextualResourceModel = environmentModel?.ResourceRepository.LoadContextualResourceModel(resourceId);
+
             if (contextualResourceModel != null)
             {
+             //   applicationAnalytics.CustomEventTracking("WareWolf.Dev2.Studio", "DebugStudio", "server id:" + environmentId);
                 _worksurfaceContextManager.DisplayResourceWizard(contextualResourceModel);
                 QuickDebugCommand.Execute(contextualResourceModel);
+                
             }
         }
 
@@ -664,6 +685,7 @@ namespace Dev2.Studio.ViewModels
 
         public void BrowserDebug(Guid resourceId, IServer server)
         {
+           // applicationAnalytics.CustomEventTracking("WareWolf.Dev2.Studio", "BrowserDebug", "server id:"+ server.EnvironmentID);
             OpenBrowser(resourceId, server.EnvironmentID);
         }
         public void OpenBrowser(Guid resourceId, Guid environmentId)
@@ -1296,6 +1318,7 @@ namespace Dev2.Studio.ViewModels
 
         public void NewService(string resourcePath)
         {
+            _applicationTracker.TrackApplicationEvent(ApplicationTrackerConstants.TrackerEventName.NewServiceClicked);
             _worksurfaceContextManager.NewService(resourcePath);
         }
 
@@ -1394,6 +1417,8 @@ namespace Dev2.Studio.ViewModels
 
         public void AddDeploySurface(IEnumerable<IExplorerTreeItem> items)
         {
+
+            _applicationTracker.TrackApplicationEvent(ApplicationTrackerConstants.TrackerEventName.DeployClicked);
             _worksurfaceContextManager.AddDeploySurface(items);
         }
 
@@ -1404,6 +1429,7 @@ namespace Dev2.Studio.ViewModels
 
         public async void ShowStartPage()
         {
+            _applicationTracker.TrackApplicationEvent(ApplicationTrackerConstants.TrackerEventName.StartPageClicked);
             WorkSurfaceContextViewModel workSurfaceContextViewModel = Items.FirstOrDefault(c => c.WorkSurfaceViewModel.DisplayName == "Start Page" && c.WorkSurfaceViewModel.GetType() == typeof(HelpViewModel));
             if (workSurfaceContextViewModel == null)
             {
@@ -1714,7 +1740,8 @@ namespace Dev2.Studio.ViewModels
             _getWorkspaceItemRepository().Write();
         }
 
-        readonly Func<IWorkspaceItemRepository> _getWorkspaceItemRepository = () => WorkspaceItemRepository.Instance;
+        readonly Func<IWorkspaceItemRepository> _getWorkspaceItemRepository = () => 
+        WorkspaceItemRepository.Instance;
 
         protected virtual void AddWorkspaceItems()
         {
@@ -2041,6 +2068,7 @@ namespace Dev2.Studio.ViewModels
 
         public void DisplayDialogForNewVersion()
         {
+            _applicationTracker.TrackApplicationEvent(ApplicationTrackerConstants.TrackerEventName.UpgradeVersion);
             BrowserPopupController.ShowPopup(Warewolf.Studio.Resources.Languages.Core.WarewolfLatestDownloadUrl);
         }
 

@@ -44,9 +44,7 @@ using Microsoft.Practices.Prism.Mvvm;
 using ServiceStack.Net30.Collections.Concurrent;
 using Warewolf.Studio.ViewModels;
 using Warewolf.Studio.Views;
-
-
-
+using Dev2.Instrumentation.Factory;
 
 namespace Dev2.Studio.ViewModels
 {
@@ -139,11 +137,14 @@ namespace Dev2.Studio.ViewModels
         private readonly bool _createDesigners;
         private readonly Func<IContextualResourceModel, bool, IWorkSurfaceContextViewModel> _getWorkSurfaceContextViewModel = (resourceModel, createDesigner) => WorkSurfaceContextFactory.CreateResourceViewModel(resourceModel, createDesigner);
 
+        public IApplicationTracker _applicationTracker;
+
         public WorksurfaceContextManager(bool createDesigners, ShellViewModel shellViewModel)
         {
             _createDesigners = createDesigners;
             _shellViewModel = shellViewModel;
             SetUpEditHandlers();
+            _applicationTracker = ApplicationTrackerFactory.GetApplicationTrackerProvider();
         }
 
         public WorksurfaceContextManager(bool createDesigners, ShellViewModel shellViewModel, IServerRepository repository, IViewFactory factory)
@@ -1144,11 +1145,15 @@ namespace Dev2.Studio.ViewModels
 
         public void AddSettingsWorkSurface()
         {
+            _applicationTracker.TrackApplicationEvent(ApplicationTrackerConstants.TrackerEventName.SettingsClicked);
+
             ActivateOrCreateUniqueWorkSurface<SettingsViewModel>(WorkSurfaceContext.Settings);
         }
 
         public void AddSchedulerWorkSurface()
         {
+            _applicationTracker.TrackApplicationEvent(ApplicationTrackerConstants.TrackerEventName.TaskClicked);
+
             ActivateOrCreateUniqueWorkSurface<SchedulerViewModel>(WorkSurfaceContext.Scheduler);
         }
 

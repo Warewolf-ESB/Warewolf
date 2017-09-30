@@ -40,8 +40,8 @@ using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.DataList;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage;
-
-
+using Dev2.Instrumentation;
+using Dev2.Instrumentation.Factory;
 
 namespace Dev2.Studio.ViewModels.DataList
 {
@@ -64,7 +64,7 @@ namespace Dev2.Studio.ViewModels.DataList
 
         private readonly IMissingDataList _missingDataList;
         private readonly IPartIsUsed _partIsUsed;
-
+        private IApplicationTracker _applicationTracker;
 
 
         public bool CanSortItems => HasItems();
@@ -94,7 +94,11 @@ namespace Dev2.Studio.ViewModels.DataList
         }
 
         private void FilterCollection(string searchText)
+
         {
+            _applicationTracker.TrackCustomEvent(ApplicationTrackerConstants.TrackerEventGroup.VariablesSearch, ApplicationTrackerConstants.TrackerEventName.VariableSearch, searchText);
+
+
             if (_scalarCollection != null && _scalarCollection.Count > 1)
             {
                 for (int index = _scalarCollection.Count - 1; index >= 0; index--)
@@ -284,6 +288,7 @@ namespace Dev2.Studio.ViewModels.DataList
             _scalarHandler = new ScalarHandler(this);
             _recordsetHandler = new RecordsetHandler(this);
             _helper = new DataListViewModelHelper(this);
+            _applicationTracker = ApplicationTrackerFactory.GetApplicationTrackerProvider();
         }
 
         public IJsonObjectsView JsonObjectsView => CustomContainer.GetInstancePerRequestType<IJsonObjectsView>();
@@ -962,11 +967,23 @@ namespace Dev2.Studio.ViewModels.DataList
         {
             if (resourceModel != Resource) return;
             if (listOfUnused != null && listOfUnused.Count != 0)
+            {
                 SetIsUsedDataListItems(listOfUnused, false);
+                string[] unusedVariables = listOfUnused.Select(u => "Field : " + u.Field + " Display Name : " + u.DisplayValue).ToList().ToArray();
+
+                _applicationTracker.TrackCustomEvent(ApplicationTrackerConstants.TrackerEventGroup.VariablesUsed, ApplicationTrackerConstants.TrackerEventName.UnUsedVariables, string.Join(",", unusedVariables));
+
+            }
             else
                 UpdateDataListItemsAsUsed();
             if (listOfUsed != null && listOfUsed.Count > 0)
+            {
+              string[] usedVariables=  listOfUsed.Select(u => "Field : "+ u.Field + " Display Name : "+ u.DisplayValue).ToList().ToArray();
+
+                _applicationTracker.TrackCustomEvent(ApplicationTrackerConstants.TrackerEventGroup.VariablesUsed, ApplicationTrackerConstants.TrackerEventName.UsedVariables, string.Join(",", usedVariables));
+
                 SetIsUsedDataListItems(listOfUsed, true);
+            }
         }
 
         private void UpdateDataListItemsAsUsed()

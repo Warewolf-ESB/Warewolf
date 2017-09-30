@@ -22,6 +22,8 @@ using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
 using Warewolf.Resource.Errors;
 using Dev2.ConnectionHelpers;
+using Dev2.Instrumentation;
+using Dev2.Instrumentation.Factory;
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -41,7 +43,7 @@ namespace Warewolf.Studio.ViewModels
         private bool _fixReferences;
         MessageBoxResult ViewResult { get; set; }
         private IServerRepository _serverRepository;
-
+        private IApplicationTracker _applicationTracker;
         public RequestServiceNameViewModel()
         {
         }
@@ -68,7 +70,7 @@ namespace Warewolf.Studio.ViewModels
                 var shellViewModel = CustomContainer.Get<IShellViewModel>();
                 _serverRepository.ActiveServer = shellViewModel?.ActiveServer;
             }
-
+            _applicationTracker = ApplicationTrackerFactory.GetApplicationTrackerProvider();
             return this;
         }
 
@@ -246,8 +248,12 @@ namespace Warewolf.Studio.ViewModels
                 path = path.TrimStart('\\') + "\\";
             }
             _resourceName = new ResourceName(path, Name);
+
+
             ViewResult = MessageBoxResult.OK;
             _view.RequestClose();
+            _applicationTracker.TrackCustomEvent(ApplicationTrackerConstants.TrackerEventGroup.TabsOpened, ApplicationTrackerConstants.TrackerEventGroup.TabsOpened, "Path:" +path + " Name: "+Name);
+
         }
 
         private string Path

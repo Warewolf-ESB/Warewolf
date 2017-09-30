@@ -15,7 +15,8 @@ using Dev2.Common.Interfaces;
 using Dev2.Studio.Interfaces.DataList;
 using Dev2.Studio.ViewModels.WorkSurface;
 using Microsoft.Practices.Prism.Mvvm;
-
+using Dev2.Instrumentation;
+using Dev2.Instrumentation.Factory;
 
 namespace Dev2.Studio.Views.DataList
 {
@@ -24,10 +25,11 @@ namespace Dev2.Studio.Views.DataList
     /// </summary>
     public partial class DataListView : IView,ICheckControlEnabledView
     {
-
+        private IApplicationTracker _applicationTracker;
         public DataListView()
         {
             InitializeComponent();
+            _applicationTracker = ApplicationTrackerFactory.GetApplicationTrackerProvider();
             KeyboardNavigation.SetTabNavigation(ScalarExplorer, KeyboardNavigationMode.Cycle);
         }
 
@@ -55,6 +57,7 @@ namespace Dev2.Studio.Views.DataList
             {
                 return;
             }
+            _applicationTracker.TrackApplicationEvent(ApplicationTrackerConstants.TrackerEventName.VariablesInputClicked);
             WriteToResourceModel();
         }
 
@@ -65,6 +68,7 @@ namespace Dev2.Studio.Views.DataList
             {
                 return;
             }
+            _applicationTracker.TrackApplicationEvent(ApplicationTrackerConstants.TrackerEventName.VariablesOutputClicked);
             WriteToResourceModel();
         }
 

@@ -42,7 +42,7 @@ namespace Dev2.Studio.Views
         private bool _isLocked;
         readonly string _savedLayout;
         private static ShellView _this;
-
+      
         #region Constructor
 
         public static ShellView GetInstance()
@@ -426,6 +426,7 @@ namespace Dev2.Studio.Views
             }
             GetFilePath();
             SaveLayout(shellViewModel);
+           // applicationAnalytics.StopTracking();
         }
 
         private void SaveLayout(ShellViewModel shellViewModel)

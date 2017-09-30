@@ -75,7 +75,9 @@ namespace Dev2.Tests.Properties {
         ///		&lt;Validator Type=&quot;Required&quot; /&gt;
         ///	&lt;/Input&gt;
         ///	&lt;Input Name=&quot;Subject&quot; Source=&quot;subject&quot;&gt;
-        ///		&lt;Validator Type=&quot;Required&quot; / [rest of string was truncated]&quot;;.
+        ///		&lt;Validator Type=&quot;Required&quot; /&gt;
+        ///	&lt;/Input&gt;
+        ///	&lt; [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string inputMappingRequiredRegion {
             get {
@@ -158,7 +160,7 @@ namespace Dev2.Tests.Properties {
         ///   Looks up a localized string similar to AB-CD-DE-FG-HI AB-CD-DE-FG-HI AB-CD-DE-FG-HI AB-CD-DE-FG-HI AB-CD-DE-FG-HI AB-CD-DE-FG-HI AB-CD-DE-FG-HI AB-CD-DE-FG-HI AB-CD-DE-FG-HI AB-CD-DE-FG-HI AB-CD-DE-FG-HI 
         ///AB-CD-DE-FG-HI AB-CD-DE-FG-HI AB-CD-DE-FG-HI AB-CD-DE-FG-HI AB-CD-DE-FG-HI AB-CD-DE-FG-HI AB-CD-DE-FG-HI AB-CD-DE-FG-HI AB-CD-DE-FG-HI AB-CD-DE-FG-HI AB-CD-DE-FG-HI 
         ///AB-CD-DE-FG-HI AB-CD-DE-FG-HI AB-CD-DE-FG-HI AB-CD-DE-FG-HI AB-CD-DE-FG-HI AB-CD-DE-FG-HI AB-CD-DE-FG-HI AB-CD-DE-FG-HI AB-CD-DE-FG-HI AB-CD-DE-FG-HI AB-CD-DE-FG-HI 
-        ///AB-CD-DE-FG [rest of string was truncated]&quot;;.
+        ///AB-CD-DE-FG-HI [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string tokenizerBase {
             get {
