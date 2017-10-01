@@ -39,6 +39,7 @@ using Dev2.Studio.Interfaces.DataList;
 using Dev2.Studio.Interfaces.Enums;
 using Warewolf.Studio.ViewModels;
 using Dev2.Instrumentation;
+using Dev2.Instrumentation.Factory;
 
 namespace Dev2.Studio.ViewModels.WorkSurface
 {
@@ -187,6 +188,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             
             _popupController = popupController;
             _saveDialogAction = saveDialogAction;
+            _applicationTracker = ApplicationTrackerFactory.GetApplicationTrackerProvider();
         }
 
         private void UpdateForWorkflowChange()
@@ -474,6 +476,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
         public void QuickViewInBrowser()
         {
+            _applicationTracker.TrackApplicationEvent(ApplicationTrackerConstants.TrackerEventName.F7Browser);
             if (!ContextualResourceModel.IsWorkflowSaved)
             {
                 var successfuleSave = Save(ContextualResourceModel, true);
@@ -494,6 +497,8 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
         public void QuickDebug()
         {
+
+            _applicationTracker.TrackApplicationEvent(ApplicationTrackerConstants.TrackerEventName.F6Debug);
             if (DebugOutputViewModel.IsProcessing)
             {
                 StopExecution();

@@ -88,6 +88,12 @@ namespace Dev2.Studio.Views.DataList
                     IDataListItemModel itemThatChanged = txtbox.DataContext as IDataListItemModel;
                     vm.RemoveBlankRows(itemThatChanged);
                     vm.ValidateNames(itemThatChanged);
+                    // code to log errors to revulytics
+                    if (vm.HasErrors && vm.DataListErrorMessage.Length!=0)
+                    {
+                        _applicationTracker.TrackCustomEvent(ApplicationTrackerConstants.TrackerEventGroup.VariablesUsed, ApplicationTrackerConstants.TrackerEventName.RedBracketsSyntax, vm.DataListErrorMessage);
+
+                    }
                 }
             }
         }
