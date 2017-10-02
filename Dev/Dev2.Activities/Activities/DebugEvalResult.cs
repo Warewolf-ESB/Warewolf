@@ -36,6 +36,16 @@ namespace Dev2.Activities
         {
         }
 
+        public DebugEvalResult(string inputVariable, string label, IExecutionEnvironment environment, int update, bool isDataMerge)
+            : this(inputVariable, label, environment, update, isDataMerge, false, false)
+        {
+        }
+
+        public DebugEvalResult(string inputVariable, string label, IExecutionEnvironment environment, int update, bool isDataMerge, bool isCalculate)
+            : this(inputVariable, label, environment, update, isDataMerge, isCalculate, false)
+        {
+        }
+
         public DebugEvalResult(string inputVariable, string label, IExecutionEnvironment environment, int update, bool isDataMerge, bool isCalculate, bool mockSelected)
         {
             _inputVariable = inputVariable?.Trim();
