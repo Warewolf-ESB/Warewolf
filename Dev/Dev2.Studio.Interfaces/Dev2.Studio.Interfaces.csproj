@@ -95,6 +95,7 @@
     <Compile Include="Enums\WorkSurfaceContext.cs" />
     <Compile Include="IAuthorizeCommand.cs" />
     <Compile Include="IComplexObjectHandler.cs" />
+    <Compile Include="IConflictNode.cs" />
     <Compile Include="IConnectControlViewModel.cs" />
     <Compile Include="IContextualResourceModel.cs" />
     <Compile Include="IDataListViewModelHelper.cs" />

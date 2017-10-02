@@ -25,6 +25,7 @@ using Dev2.ViewModels.Merge;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Warewolf.MergeParser;
+using Dev2.Util;
 
 namespace Dev2.Integration.Tests.Merge
 {
@@ -37,6 +38,7 @@ namespace Dev2.Integration.Tests.Merge
         [Owner("Nkosinathi Sangweni")]
         public void Init()
         {
+            AppSettings.LocalHost = "http://localhost:1245";
             _server.Source.ResourceRepository.ForceLoad();
             var mockApplicationAdapter = new Mock<IApplicationAdaptor>();
             var mockPopupController = new Mock<IPopupController>();
@@ -64,7 +66,7 @@ namespace Dev2.Integration.Tests.Merge
             //---------------Assert Precondition----------------
             Assert.IsNotNull(loadContextualResourceModel);
             //---------------Execute Test ----------------------
-            var mergeWorkflowViewModel = new MergeWorkflowViewModel(loadContextualResourceModel, loadContextualResourceModel);
+            var mergeWorkflowViewModel = new MergeWorkflowViewModel(loadContextualResourceModel, loadContextualResourceModel, true);
             //---------------Test Result -----------------------
             Assert.IsNotNull(mergeWorkflowViewModel);
         }
@@ -84,7 +86,7 @@ namespace Dev2.Integration.Tests.Merge
             resourceModel.WorkflowXaml = new StringBuilder(xamlDef);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            var mergeWorkflowViewModel = new MergeWorkflowViewModel(loadContextualResourceModel, resourceModel);
+            var mergeWorkflowViewModel = new MergeWorkflowViewModel(loadContextualResourceModel, resourceModel, true);
             //---------------Test Result -----------------------
             Assert.IsNotNull(mergeWorkflowViewModel);
         }
@@ -112,7 +114,7 @@ namespace Dev2.Integration.Tests.Merge
                 try
                 {
                     var mergeWorkflowViewModel =
-                        new MergeWorkflowViewModel(contextualResourceModel, contextualResourceModel);
+                        new MergeWorkflowViewModel(contextualResourceModel, contextualResourceModel, true);
                     //---------------Test Result -----------------------
                     Assert.IsNotNull(mergeWorkflowViewModel);
                     var all = mergeWorkflowViewModel.Conflicts.All(conflict => conflict.DiffViewModel == null);
@@ -144,7 +146,7 @@ namespace Dev2.Integration.Tests.Merge
             //---------------Execute Test ----------------------
             var contextualResourceModel =
                 resourceRepository.LoadContextualResourceModel("41617daa-509e-40eb-aa76-b0827028721d".ToGuid());
-            var mergeWorkflowViewModel = new MergeWorkflowViewModel(contextualResourceModel, contextualResourceModel);
+            var mergeWorkflowViewModel = new MergeWorkflowViewModel(contextualResourceModel, contextualResourceModel, true);
             //---------------Test Result -----------------------
             Assert.IsNotNull(mergeWorkflowViewModel);
 
@@ -207,7 +209,7 @@ namespace Dev2.Integration.Tests.Merge
             //---------------Execute Test ----------------------
             var contextualResourceModel =
                 resourceRepository.LoadContextualResourceModel("9e9660d8-1a3c-45ab-a330-673c2343e517".ToGuid());
-            var mergeWorkflowViewModel = new MergeWorkflowViewModel(contextualResourceModel, contextualResourceModel);
+            var mergeWorkflowViewModel = new MergeWorkflowViewModel(contextualResourceModel, contextualResourceModel, true);
             //---------------Test Result -----------------------
             Assert.IsNotNull(mergeWorkflowViewModel);
 
@@ -246,7 +248,7 @@ namespace Dev2.Integration.Tests.Merge
             //---------------Execute Test ----------------------
             var contextualResourceModel =
                 resourceRepository.LoadContextualResourceModel("0bdc3207-ff6b-4c01-a5eb-c7060222f75d".ToGuid());
-            var mergeWorkflowViewModel = new MergeWorkflowViewModel(contextualResourceModel, contextualResourceModel);
+            var mergeWorkflowViewModel = new MergeWorkflowViewModel(contextualResourceModel, contextualResourceModel, true);
             //---------------Test Result -----------------------
             Assert.IsNotNull(mergeWorkflowViewModel);
 
@@ -306,7 +308,7 @@ namespace Dev2.Integration.Tests.Merge
             //---------------Execute Test ----------------------
             var contextualResourceModel =
                 resourceRepository.LoadContextualResourceModel("8ba79b49-226e-4c67-a732-4657fd0edb6b".ToGuid());
-            var mergeWorkflowViewModel = new MergeWorkflowViewModel(contextualResourceModel, contextualResourceModel);
+            var mergeWorkflowViewModel = new MergeWorkflowViewModel(contextualResourceModel, contextualResourceModel, true);
             //---------------Test Result -----------------------
             Assert.IsNotNull(mergeWorkflowViewModel);
 
@@ -381,12 +383,12 @@ namespace Dev2.Integration.Tests.Merge
             var contextualResourceModel = resourceRepository.LoadContextualResourceModel("49800850-BDF1-4248-93D0-DCD7E5F8B9CA".ToGuid());
             var resourceModel = TestHelper.CreateContextualResourceModel("Decision.SimpleNestedDecision");
 
-            var mergeWorkflowViewModel = new MergeWorkflowViewModel(contextualResourceModel, resourceModel);
+            var mergeWorkflowViewModel = new MergeWorkflowViewModel(contextualResourceModel, resourceModel, false);
             //---------------Test Result -----------------------
             Assert.IsNotNull(mergeWorkflowViewModel);
 
-            var all = mergeWorkflowViewModel.Conflicts.All(conflict => !conflict.HasConflict);
-            Assert.IsTrue(all);
+            var all = mergeWorkflowViewModel.Conflicts.Count(conflict => !conflict.HasConflict);
+            Assert.AreEqual(1, all);
             var conflictsCount = mergeWorkflowViewModel.Conflicts.Count;
             Assert.AreEqual(10, conflictsCount);
 

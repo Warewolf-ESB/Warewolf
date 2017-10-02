@@ -312,7 +312,7 @@ namespace Dev2.Studio.ViewModels
 
         public void ViewMergeConflictsService(IContextualResourceModel currentResourceModel, IContextualResourceModel differenceResourceModel, IWorkSurfaceKey workSurfaceKey = null)
         {
-            var mergeViewModel = new MergeWorkflowViewModel(currentResourceModel, differenceResourceModel);
+            var mergeViewModel = new MergeWorkflowViewModel(currentResourceModel, differenceResourceModel, false);//if this is merge between two server versions then we pass false
             var vm = new MergeViewModel(_shellViewModel.EventPublisher, mergeViewModel, _shellViewModel.PopupProvider, new MergeWorkflowView());
             workSurfaceKey = TryGetOrCreateWorkSurfaceKey(workSurfaceKey, WorkSurfaceContext.MergeConflicts, currentResourceModel.ID);
             var key = workSurfaceKey as WorkSurfaceKey;
