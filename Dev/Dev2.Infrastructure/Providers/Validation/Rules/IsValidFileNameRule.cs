@@ -20,7 +20,12 @@ namespace Dev2.Providers.Validation.Rules
         static readonly char[] InvalidFileNameChars = Path.GetInvalidFileNameChars();
         static readonly char[] InvalidPathChars = Path.GetInvalidPathChars();
 
-        public IsValidFileNameRule(Func<string> getValue, char splitToken = ';')
+        public IsValidFileNameRule(Func<string> getValue)
+            : this(getValue, ';')
+        {
+        }
+
+        public IsValidFileNameRule(Func<string> getValue, char splitToken)
             : base(getValue, "file name", splitToken)
         {
         }
