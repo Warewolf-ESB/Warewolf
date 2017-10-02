@@ -706,6 +706,9 @@ Returns the output of the script, if any.</value>
   <data name="SaveButtonTooltip" xml:space="preserve">
     <value>Save the Resource</value>
   </data>
+  <data name="MergeButtonTooltip" xml:space="preserve">
+    <value>Merge the Service</value>
+  </data>
   <data name="RunAllTestsToolTip" xml:space="preserve">
     <value>Run all tests in browser for this resource</value>
   </data>

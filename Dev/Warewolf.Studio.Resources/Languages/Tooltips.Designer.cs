@@ -2726,6 +2726,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Merge the Service.
+        /// </summary>
+        public static string MergeButtonTooltip {
+            get {
+                return ResourceManager.GetString("MergeButtonTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Any variable and/or data goes in here.
         ///Put the full path of the destination you are moving to here.
         ///You can use File System, URI, SFTP, FTP or FTPS format..
