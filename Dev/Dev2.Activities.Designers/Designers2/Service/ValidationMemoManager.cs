@@ -35,9 +35,14 @@ namespace Dev2.Activities.Designers2.Service
         public ObservableCollection<IErrorInfo> DesignValidationErrors { get; set; }
         public ErrorType WorstError
         {
-            get { return (ErrorType)_serviceDesignerViewModel.GetValue(ServiceDesignerViewModel.WorstErrorProperty); }
-            private set {
-                _serviceDesignerViewModel.SetValue(ServiceDesignerViewModel.WorstErrorProperty, value); }
+            get
+            {
+                return (ErrorType)_serviceDesignerViewModel.GetValue(ServiceDesignerViewModel.WorstErrorProperty);
+            }
+            private set
+            {
+                _serviceDesignerViewModel.SetValue(ServiceDesignerViewModel.WorstErrorProperty, value);
+            }
         }
         public IErrorInfo WorstDesignError
         {
