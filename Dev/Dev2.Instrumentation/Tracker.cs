@@ -96,26 +96,18 @@ namespace Dev2.Instrumentation
 #endif
         }
 
-        /// <summary>
-        /// Track events being used from within your application
-        /// </summary>
-        /// <param name="eventGroup">The text by which to group your event. If the length of this string and the 'eventName' parameter is greater than 40 it will be truncated. Also ';' (semicolons) and '|' (pipeline) are not to be used inside this parameter.</param>
-        /// <param name="eventName">The text used to describe the feature. If the length of this string and the 'eventGroup' parameter is greater than 40 it will be truncated. Also ';' (semicolons) and '|' (pipeline) are not to be used inside this parameter.</param>
-        /// <param name="eventValue">An optional value which is related to your event and you would like to store.</param>
-        public static void TrackEvent(TrackerEventGroup eventGroup, TrackerEventName eventName, string eventValue = null)
+        public static void TrackEvent(TrackerEventGroup eventGroup, TrackerEventName eventName) => TrackEvent(eventGroup, eventName, null);
+
+        public static void TrackEvent(TrackerEventGroup eventGroup, TrackerEventName eventName, string eventValue)
         {
 #if ! DEBUG
             TrackEvent(eventGroup, eventName.ToString(), eventValue);
 #endif
         }
 
-        /// <summary>
-        /// Track events being used from within your application
-        /// </summary>
-        /// <param name="eventGroup">The text by which to group your event. If the length of this string and the 'eventName' parameter is greater than 40 it will be truncated. Also ';' (semicolons) and '|' (pipeline) are not to be used inside this parameter.</param>
-        /// <param name="customText">The text used to describe the feature. If the length of this string and the 'eventGroup' parameter is greater than 40 it will be truncated. Also ';' (semicolons) and '|' (pipeline) are not to be used inside this parameter.</param>
-        /// <param name="eventValue">An optional value which is related to your event and you would like to store.</param>
-        public static void TrackEvent(TrackerEventGroup eventGroup, string customText, string eventValue = "")
+        public static void TrackEvent(TrackerEventGroup eventGroup, string customText) => TrackEvent(eventGroup, customText, "");
+
+        public static void TrackEvent(TrackerEventGroup eventGroup, string customText, string eventValue)
         {
 #if ! DEBUG
             if (AppSettings.CollectUsageStats)
@@ -125,12 +117,6 @@ namespace Dev2.Instrumentation
 #endif
         }
 
-        /// <summary>
-        /// Tracks and logs exceptions from within your code.
-        /// </summary>
-        /// <param name="className">The class name from which the error originated. If the length of the string is greater than 50 it will be truncated.</param>
-        /// <param name="methodName">The method name from which the error originated. If the length of the string is greater than 50 it will be truncated.</param>
-        /// <param name="ex">The handled exception.</param>
         public static void TrackException(string className, string methodName, Exception ex)
         {
             if (AppSettings.CollectUsageStats)
@@ -143,11 +129,11 @@ namespace Dev2.Instrumentation
 
         }
 
-        static void Perform(Func<GenericReturn> action, bool async = false)
+        static void Perform(Func<GenericReturn> action, bool performAsync = false)
         {
             try
             {
-                if (async)
+                if (performAsync)
                 {
                     Task.Run(action).ContinueWith(t => WriteError(t.Result));
                 }
@@ -156,10 +142,8 @@ namespace Dev2.Instrumentation
                     var result = action();
                     WriteError(result);
                 }
-            }
-            
-            catch
-            
+            }            
+            catch            
             {
                 // this is a tracker issue ;(
             }
