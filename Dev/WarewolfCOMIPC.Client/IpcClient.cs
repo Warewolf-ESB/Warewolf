@@ -46,11 +46,9 @@ namespace WarewolfCOMIPC.Client
             _pipeWrapper = clientStreamWrapper;
         }
 
+        public static IpcClient GetIPCExecutor() => GetIPCExecutor(null);
 
-        /// <summary>
-        /// Gets the instance.
-        /// </summary>
-        public static IpcClient GetIPCExecutor(INamedPipeClientStreamWrapper clientStreamWrapper = null)
+        public static IpcClient GetIPCExecutor(INamedPipeClientStreamWrapper clientStreamWrapper)
         {
             if (clientStreamWrapper != null)
             {

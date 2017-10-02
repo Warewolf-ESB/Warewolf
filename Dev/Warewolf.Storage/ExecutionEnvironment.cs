@@ -35,7 +35,11 @@ namespace Warewolf.Storage
             AllErrors = new HashSet<string>();
         }
 
-        public CommonFunctions.WarewolfEvalResult Eval(string exp, int update, bool throwsifnotexists = false, bool shouldEscape = false)
+        public CommonFunctions.WarewolfEvalResult Eval(string exp, int update) => Eval(exp, update, false, false);
+
+        public CommonFunctions.WarewolfEvalResult Eval(string exp, int update, bool throwsifnotexists) => Eval(exp, update, throwsifnotexists, false);
+
+        public CommonFunctions.WarewolfEvalResult Eval(string exp, int update, bool throwsifnotexists, bool shouldEscape)
         {
             try
             {
@@ -56,7 +60,9 @@ namespace Warewolf.Storage
             }
         }
 
-        public CommonFunctions.WarewolfEvalResult EvalForJson(string exp, bool shouldEscape = false)
+        public CommonFunctions.WarewolfEvalResult EvalForJson(string exp) => EvalForJson(exp, false);
+
+        public CommonFunctions.WarewolfEvalResult EvalForJson(string exp, bool shouldEscape)
         {
             if (string.IsNullOrEmpty(exp))
             {
@@ -409,7 +415,9 @@ namespace Warewolf.Storage
             return expression;
         }
 
-        public IEnumerable<DataStorage.WarewolfAtom> EvalAsList(string expression, int update, bool throwsifnotexists = false)
+        public IEnumerable<DataStorage.WarewolfAtom> EvalAsList(string expression, int update) => EvalAsList(expression, update, false);
+
+        public IEnumerable<DataStorage.WarewolfAtom> EvalAsList(string expression, int update, bool throwsifnotexists)
         {
             var result = Eval(expression, update, throwsifnotexists);
             if (result.IsWarewolfAtomResult)

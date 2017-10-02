@@ -289,14 +289,7 @@ namespace Dev2.Data.Util
 
             return result;
         }
-
-
-
-        /// <summary>
-        /// Adds [[ ]] to a variable if they are not present already
-        /// </summary>
-        /// <param name="value">The value.</param>
-        /// <returns></returns>
+        
         public static string AddBracketsToValueIfNotExist(string value)
         {
             string result;
@@ -306,35 +299,13 @@ namespace Dev2.Data.Util
             return result;
         }
 
-        /// <summary>
-        /// Adds () to the end of the value
-        /// </summary>
-        /// <param name="value">The value.</param>
-        /// <param name="starNotation">if set to <c>true</c> [star notation].</param>
-        /// <returns></returns>
-        public static string MakeValueIntoHighLevelRecordset(string value, bool starNotation = false) => RecSetCommon.MakeValueIntoHighLevelRecordset(value, starNotation);
-
-        /// <summary>
-        /// Used to extract an index in the recordset notation
-        /// </summary>
-        /// <param name="rs">The rs.</param>
-        /// <returns></returns>
+        public static string MakeValueIntoHighLevelRecordset(string value) => RecSetCommon.MakeValueIntoHighLevelRecordset(value, false);
+        public static string MakeValueIntoHighLevelRecordset(string value, bool starNotation) => RecSetCommon.MakeValueIntoHighLevelRecordset(value, starNotation);
+        
         public static string ExtractIndexRegionFromRecordset(string rs) => RecSetCommon.ExtractIndexRegionFromRecordset(rs);
-
-        /// <summary>
-        /// Determines if recordset has a star index
-        /// </summary>
-        /// <param name="rs"></param>
-        /// <returns></returns>
+        
         public static bool IsStarIndex(string rs) => RecSetCommon.IsStarIndex(rs);
-
-        /// <summary>
-        /// Is the expression evaluated
-        /// </summary>  
-        /// <param name="payload">The payload.</param>
-        /// <returns>
-        ///   <c>true</c> if the specified payload is evaluated; otherwise, <c>false</c>.
-        /// </returns>
+        
         public static bool IsFullyEvaluated(string payload)
         {
             bool result = payload != null && payload.IndexOf(OpeningSquareBrackets, StringComparison.Ordinal) >= 0
@@ -493,16 +464,8 @@ namespace Dev2.Data.Util
         /// <returns></returns>
         public static string CreateRecordsetDisplayValue(string recsetName, string colName, string indexNum) => RecSetCommon.CreateRecordsetDisplayValue(recsetName, colName, indexNum);
 
-        /// <summary>
-        /// Upserts the tokens.
-        /// </summary>
-        /// <param name="target">The target.</param>
-        /// <param name="tokenizer">The tokenizer.</param>
-        /// <param name="tokenPrefix">The token prefix.</param>
-        /// <param name="tokenSuffix">The token suffix.</param>
-        /// <param name="removeEmptyEntries">if set to <c>true</c> [remove empty entries].</param>
-        /// <exception cref="System.ArgumentNullException">target</exception>
-        public static void UpsertTokens(Collection<ObservablePair<string, string>> target, IDev2Tokenizer tokenizer, string tokenPrefix = null, string tokenSuffix = null, bool removeEmptyEntries = true)
+        public static void UpsertTokens(Collection<ObservablePair<string, string>> target, IDev2Tokenizer tokenizer) => UpsertTokens(target, tokenizer, null, null, true);
+        public static void UpsertTokens(Collection<ObservablePair<string, string>> target, IDev2Tokenizer tokenizer, string tokenPrefix, string tokenSuffix, bool removeEmptyEntries)
         {
             if (target == null)
             {
