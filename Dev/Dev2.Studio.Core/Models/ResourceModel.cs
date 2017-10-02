@@ -528,8 +528,9 @@ namespace Dev2.Studio.Core.Models
 
         public string ConnectionString { get; set; }
 
+        public StringBuilder ToServiceDefinition() => ToServiceDefinition(false);
 
-        public StringBuilder ToServiceDefinition(bool prepairForDeployment = false)
+        public StringBuilder ToServiceDefinition(bool prepairForDeployment)
         {
             StringBuilder result = new StringBuilder();
 

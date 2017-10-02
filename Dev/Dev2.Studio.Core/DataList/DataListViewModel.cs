@@ -1012,14 +1012,9 @@ namespace Dev2.Studio.ViewModels.DataList
             _recordsetHandler.SetRecordSetItemsAsUsed();
         }
 
+        public List<IDataListVerifyPart> MissingWorkflowItems(IList<IDataListVerifyPart> partsToVerify) => MissingWorkflowItems(partsToVerify, false);
 
-        /// <summary>
-        /// Finds the missing workflow data regions.
-        /// </summary>
-        /// <param name="partsToVerify">The parts to verify.</param>
-        /// <param name="excludeUnusedItems"></param>
-        /// <returns></returns>
-        public List<IDataListVerifyPart> MissingWorkflowItems(IList<IDataListVerifyPart> partsToVerify, bool excludeUnusedItems = false)
+        public List<IDataListVerifyPart> MissingWorkflowItems(IList<IDataListVerifyPart> partsToVerify, bool excludeUnusedItems)
         {
             var missingWorkflowParts = new List<IDataListVerifyPart>();
 

@@ -193,7 +193,9 @@ namespace Dev2.Network
             _wrappedConnection.Disconnect();
         }
 
-        public void Verify(Action<ConnectResult> callback, bool wait = true)
+        public void Verify(Action<ConnectResult> callback) => Verify(callback, true);
+
+        public void Verify(Action<ConnectResult> callback, bool wait)
         {
             _wrappedConnection.Verify(callback,wait);
         }
