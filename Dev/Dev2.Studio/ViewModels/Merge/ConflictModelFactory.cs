@@ -162,7 +162,8 @@ namespace Dev2.ViewModels.Merge
                     ActivityDesignerViewModel = instance,
                     MergeIcon = _modelItem.GetImageSourceForTool(),
                     MergeDescription = dsfActivity?.ToString(),
-                    UniqueId = currentValue.UniqueID.ToGuid()
+                    UniqueId = currentValue.UniqueID.ToGuid(),
+                    
                 };
 
                 //TODO implement builder pattern

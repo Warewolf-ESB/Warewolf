@@ -204,13 +204,13 @@ namespace Dev2.Integration.Tests.Merge
            
             ////First Node chart
             var valueTuple = diffs[0];
-            var dev2Activity = valueTuple.current.GetCurrentValue<IDev2Activity>();
-            var dev2Activity1 = valueTuple.difference.GetCurrentValue<IDev2Activity>();
+            var dev2Activity = valueTuple.currentNode.CurrentActivity.GetCurrentValue<IDev2Activity>();
+            var dev2Activity1 = valueTuple.differenceNode.CurrentActivity.GetCurrentValue<IDev2Activity>();
             Assert.IsNotNull(dev2Activity);
             Assert.IsNotNull(dev2Activity1);
             Assert.AreEqual(dev2Activity.UniqueID, dev2Activity1.UniqueID);
-            Assert.AreEqual(typeof(DsfDecision), valueTuple.current.ItemType);
-            Assert.AreEqual(typeof(DsfDecision), valueTuple.difference.ItemType);
+            Assert.AreEqual(typeof(DsfDecision), valueTuple.currentNode.CurrentActivity.ItemType);
+            Assert.AreEqual(typeof(DsfDecision), valueTuple.differenceNode.CurrentActivity.ItemType);
         }
     }
 }

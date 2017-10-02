@@ -36,9 +36,11 @@ namespace Dev2.ViewModels.Merge
             foreach (var currentChange in currentChanges)
             {
                 var conflict = new CompleteConflict { UniqueId = currentChange.uniqueId };
-                var factoryA = new ConflictModelFactory(currentChange.current, currentResourceModel);
-                var factoryB = new ConflictModelFactory(currentChange.difference, differenceResourceModel);
+                var factoryA = new ConflictModelFactory(currentChange.currentNode.CurrentActivity, currentResourceModel);
+                var factoryB = new ConflictModelFactory(currentChange.differenceNode.CurrentActivity, differenceResourceModel);
                 conflict.CurrentViewModel = factoryA.GetModel();
+                conflict.CurrentViewModel.FlowNode = currentChange.currentNode.CurrentFlowStep;
+                conflict.CurrentViewModel.NodeLocation = currentChange.currentNode.NodeLocation;
                 conflict.CurrentViewModel.SomethingModelToolChanged += SourceOnModelToolChanged;
                 foreach (var child in conflict.CurrentViewModel.Children)
                 {
@@ -46,6 +48,8 @@ namespace Dev2.ViewModels.Merge
                 }
 
                 conflict.DiffViewModel = factoryB.GetModel();
+                conflict.DiffViewModel.FlowNode = currentChange.differenceNode.CurrentFlowStep;
+                conflict.DiffViewModel.NodeLocation = currentChange.differenceNode.NodeLocation;
                 conflict.DiffViewModel.SomethingModelToolChanged += SourceOnModelToolChanged;
                 foreach (var child in conflict.DiffViewModel.Children)
                 {
@@ -53,7 +57,7 @@ namespace Dev2.ViewModels.Merge
                 }
 
                 conflict.HasConflict = currentChange.hasConflict;
-                //conflict.HasConflict = true;//Tests failing will b resolved once this is removed
+                conflict.HasConflict = true;//Tests failing will b resolved once this is removed
                 conflict.IsMergeExpanded = false;
                 conflict.IsMergeExpanderEnabled = false;
                 AddChildren(conflict, conflict.CurrentViewModel, conflict.DiffViewModel);
@@ -90,8 +94,9 @@ namespace Dev2.ViewModels.Merge
             }
 
             HasMergeStarted = false;
-            
-            HasVariablesConflict = !CommonEqualityOps.AreObjectsEqual(((ConflictModelFactory)CurrentConflictModel).DataListViewModel, ((ConflictModelFactory)DifferenceConflictModel).DataListViewModel); //MATCH DATALISTS
+
+            //HasVariablesConflict = !CommonEqualityOps.AreObjectsEqual(((ConflictModelFactory)CurrentConflictModel).DataListViewModel, ((ConflictModelFactory)DifferenceConflictModel).DataListViewModel); //MATCH DATALISTS
+            HasVariablesConflict = true;
             HasWorkflowNameConflict = currResourceName != diffResourceName;
             IsVariablesEnabled = !HasWorkflowNameConflict;
             IsMergeExpanderEnabled = !IsVariablesEnabled;
@@ -103,7 +108,7 @@ namespace Dev2.ViewModels.Merge
             WorkflowDesignerViewModel.CanViewWorkflowLink = false;
         }
 
-       
+
 
 
 
@@ -114,10 +119,14 @@ namespace Dev2.ViewModels.Merge
 
         private void AddActivity(IMergeToolModel model)
         {
+           
             WorkflowDesignerViewModel.RemoveItem(model);
-            WorkflowDesignerViewModel.AddItem(model);
+            WorkflowDesignerViewModel.AddItem(_previousParent,model);
+            _previousParent = model;
         }
 
+
+        private IMergeToolModel _previousParent;
         private void SourceOnConflictModelChanged(object sender, IConflictModelFactory args)
         {
             try
@@ -144,7 +153,7 @@ namespace Dev2.ViewModels.Merge
         {
             try
             {
-                
+
                 if (!(args is MergeToolModel mergeToolModel) || !mergeToolModel.IsMergeChecked)
                 {
                     return;
@@ -161,13 +170,14 @@ namespace Dev2.ViewModels.Merge
                 {
                     return;
                 }
-                
+
                 mergeToolModel.Children.Flatten(a => a.Children).Apply(a => a.IsMergeChecked = true);
                 OnPropertyChanged(() => IsDirty);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 // ignored
+                Dev2Logger.Error(ex, ex.Message);
             }
         }
 
@@ -190,7 +200,7 @@ namespace Dev2.ViewModels.Merge
                     var completeConflict = new CompleteConflict();
                     try
                     {
-                     
+
                         var currentChildChild = currentChildChildren[index];
                         if (currentChildChild == null)
                         {
@@ -419,7 +429,7 @@ namespace Dev2.ViewModels.Merge
 
         public void Dispose()
         {
-            _serviceDifferenceParser?.Dispose();
+
         }
 
         public void UpdateHelpDescriptor(string helpText)
