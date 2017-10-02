@@ -282,6 +282,7 @@
     <Compile Include="IManageWcfSourceViewModel.cs" />
     <Compile Include="IManageWebserviceSourceViewModel.cs" />
     <Compile Include="IMenuView.cs" />
+    <Compile Include="IMergeView.cs" />
     <Compile Include="IMergeWorkflowViewModel.cs" />
     <Compile Include="IMethodParameter.cs" />
     <Compile Include="INamespaceItem.cs" />

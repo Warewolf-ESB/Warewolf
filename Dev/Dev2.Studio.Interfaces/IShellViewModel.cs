@@ -123,5 +123,6 @@ namespace Dev2.Studio.Interfaces
         IWorkflowDesignerViewModel CreateNewDesigner(IContextualResourceModel resourceModel);
         void OpenCurrentVersion(Guid resourceId, Guid environmentId);
         IWorkflowDesignerViewModel GetWorkflowDesigner();
+        void OpenMergeDialogView(IExplorerItemViewModel currentResource);
     }
 }

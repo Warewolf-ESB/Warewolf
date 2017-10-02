@@ -106,6 +106,7 @@
     <Compile Include="IDesignerManagementService.cs" />
     <Compile Include="IEnvironmentConnection.cs" />
     <Compile Include="IEnvironmentEditedArgs.cs" />
+    <Compile Include="IMergeServiceViewModel.cs" />
     <Compile Include="IServiceDifferenceParser.cs" />
     <Compile Include="IServer.cs" />
     <Compile Include="IServerRepository.cs" />

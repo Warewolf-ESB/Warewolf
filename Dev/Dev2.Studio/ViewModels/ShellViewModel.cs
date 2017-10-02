@@ -703,6 +703,18 @@ namespace Dev2.Studio.ViewModels
             ExplorerViewModel.IsRefreshing = refresh;
         }
 
+        public void OpenMergeDialogView(IExplorerItemViewModel currentResource)
+        {
+            var mergeServiceViewModel = new MergeServiceViewModel(this, new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), currentResource.ResourceName, new MergeSelectionView());
+            var result = mergeServiceViewModel.ShowMergeDialog();
+            if (result == MessageBoxResult.OK)
+            {
+                var differentResource = mergeServiceViewModel.SelectedMergeItem;
+                OpenMergeConflictsView(currentResource.ResourceId, differentResource.ResourceId, differentResource.Server);
+            }
+        }
+
+
         public void OpenMergeConflictsView(Guid currentResourceId, Guid differenceResourceId, IServer server)
         {
             var environmentModel = ServerRepository.Get(server.EnvironmentID);
