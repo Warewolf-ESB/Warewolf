@@ -206,7 +206,11 @@ namespace Dev2.Studio.ViewModels.DataList
 
         private void AddItemPropertyChangeEvent(NotifyCollectionChangedEventArgs args)
         {
-            if (args.NewItems == null) return;
+            if (args.NewItems == null)
+            {
+                return;
+            }
+
             foreach (INotifyPropertyChanged item in args.NewItems)
             {
                 if (item != null)
@@ -218,7 +222,11 @@ namespace Dev2.Studio.ViewModels.DataList
 
         private void RemoveItemPropertyChangeEvent(NotifyCollectionChangedEventArgs args)
         {
-            if (args.OldItems == null) return;
+            if (args.OldItems == null)
+            {
+                return;
+            }
+
             foreach (INotifyPropertyChanged item in args.OldItems)
             {
                 if (item != null)
@@ -439,7 +447,9 @@ namespace Dev2.Studio.ViewModels.DataList
             _recordsetHandler.RemoveBlankRecordsetFields();
             _complexObjectHandler.RemoveBlankComplexObjects();
             if (parts.Count > 0)
+            {
                 AddBlankRow(null);
+            }
 
             UpdateIntellisenseList();
 
@@ -458,15 +468,15 @@ namespace Dev2.Studio.ViewModels.DataList
             }
         }
 
-
-
         public void InitializeDataListViewModel(IResourceModel resourceModel)
         {
             Resource = resourceModel;
-            if (Resource == null) return;
+            if (Resource == null)
+            {
+                return;
+            }
 
-            string errorString;
-            CreateListsOfIDataListItemModelToBindTo(out errorString);
+            CreateListsOfIDataListItemModelToBindTo(out string errorString);
             if (!string.IsNullOrEmpty(errorString))
             {
                 throw new Exception(errorString);
@@ -548,7 +558,10 @@ namespace Dev2.Studio.ViewModels.DataList
 
         public void RemoveBlankRows(IDataListItemModel item)
         {
-            if (item == null) return;
+            if (item == null)
+            {
+                return;
+            }
 
             if (!(item is IRecordSetItemModel) && item is IScalarItemModel)
             {
@@ -567,10 +580,11 @@ namespace Dev2.Studio.ViewModels.DataList
         public void RemoveDataListItem(IDataListItemModel itemToRemove)
         {
             if (itemToRemove == null)
+            {
                 return;
+            }
 
-            var complexObj = itemToRemove as IComplexObjectItemModel;
-            if (complexObj != null)
+            if (itemToRemove is IComplexObjectItemModel complexObj)
             {
                 var complexObjectItemModels = complexObj.Children;
                 var allChildren = complexObjectItemModels.Flatten(model => model.Children).ToList();
@@ -640,7 +654,9 @@ namespace Dev2.Studio.ViewModels.DataList
         public void ValidateNames(IDataListItemModel item)
         {
             if (item == null)
+            {
                 return;
+            }
 
             if (item is IRecordSetItemModel)
             {
@@ -780,7 +796,9 @@ namespace Dev2.Studio.ViewModels.DataList
                 try
                 {
                     if (!string.IsNullOrEmpty(Resource.DataList))
+                    {
                         ConvertDataListStringToCollections(Resource.DataList);
+                    }
                 }
                 catch (Exception)
                 {
@@ -852,11 +870,19 @@ namespace Dev2.Studio.ViewModels.DataList
             {
                 var xDoc = new XmlDocument();
                 xDoc.LoadXml(dataList);
-                if (xDoc.DocumentElement == null) return;
+                if (xDoc.DocumentElement == null)
+                {
+                    return;
+                }
+
                 var children = xDoc.DocumentElement.ChildNodes;
                 foreach (XmlNode child in children)
                 {
-                    if (DataListUtil.IsSystemTag(child.Name)) continue;
+                    if (DataListUtil.IsSystemTag(child.Name))
+                    {
+                        continue;
+                    }
+
                     if (IsJsonAttribute(child))
                     {
                         _complexObjectHandler.AddComplexObjectFromXmlNode(child, null);
@@ -960,13 +986,24 @@ namespace Dev2.Studio.ViewModels.DataList
 
         private void ShowUnusedDataListVariables(IResourceModel resourceModel, IList<IDataListVerifyPart> listOfUnused, IList<IDataListVerifyPart> listOfUsed)
         {
-            if (resourceModel != Resource) return;
+            if (resourceModel != Resource)
+            {
+                return;
+            }
+
             if (listOfUnused != null && listOfUnused.Count != 0)
+            {
                 SetIsUsedDataListItems(listOfUnused, false);
+            }
             else
+            {
                 UpdateDataListItemsAsUsed();
+            }
+
             if (listOfUsed != null && listOfUsed.Count > 0)
+            {
                 SetIsUsedDataListItems(listOfUsed, true);
+            }
         }
 
         private void UpdateDataListItemsAsUsed()
@@ -1016,7 +1053,11 @@ namespace Dev2.Studio.ViewModels.DataList
 
             ViewModelUtils.RaiseCanExecuteChanged(DeleteCommand);
 
-            if (resourceModel != Resource) return new List<IDataListVerifyPart>();
+            if (resourceModel != Resource)
+            {
+                return new List<IDataListVerifyPart>();
+            }
+
             AddMissingDataListItems(filteredDataListParts);
             return filteredDataListParts;
         }
@@ -1025,11 +1066,14 @@ namespace Dev2.Studio.ViewModels.DataList
         {
             get
             {
-                if (!HasErrors) return "";
+                if (!HasErrors)
+                {
+                    return "";
+                }
+
                 var allErrorMessages = RecsetCollection.Select(model =>
                 {
-                    string errorMessage;
-                    if (_recordsetHandler.BuildRecordSetErrorMessages(model, out errorMessage))
+                    if (_recordsetHandler.BuildRecordSetErrorMessages(model, out string errorMessage))
                     {
                         return errorMessage;
                     }

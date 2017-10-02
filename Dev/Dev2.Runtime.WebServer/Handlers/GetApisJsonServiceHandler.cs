@@ -33,8 +33,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                 throw new ArgumentNullException("ctx");
             }
             var basePath = ctx.Request.BoundVariables["path"];
-            bool isPublic;
-            if (!bool.TryParse(ctx.Request.BoundVariables["isPublic"], out isPublic))
+            if (!bool.TryParse(ctx.Request.BoundVariables["isPublic"], out bool isPublic))
             {
                 isPublic = false;
             }

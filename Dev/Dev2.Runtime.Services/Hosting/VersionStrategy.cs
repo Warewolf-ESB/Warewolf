@@ -33,15 +33,17 @@ namespace Dev2.Runtime.Hosting
             else if (reason == "Rename")
             {
                 if (oldResource.VersionInfo != null)
+                {
                     return new VersionInfo(DateTime.Now, reason, userName, oldResource.VersionInfo.VersionNumber, oldResource.ResourceID, oldResource.VersionInfo.VersionId);
-
+                }
             }
 
             else
             {
                 if(oldResource.VersionInfo != null)
-                return new VersionInfo(DateTime.Now, reason, userName, (1 + int.Parse(oldResource.VersionInfo.VersionNumber)).ToString(CultureInfo.InvariantCulture), oldResource.ResourceID, oldResource.VersionInfo.VersionId);
-         
+                {
+                    return new VersionInfo(DateTime.Now, reason, userName, (1 + int.Parse(oldResource.VersionInfo.VersionNumber)).ToString(CultureInfo.InvariantCulture), oldResource.ResourceID, oldResource.VersionInfo.VersionId);
+                }
             }
             return new VersionInfo(DateTime.Now, reason, userName, "1", newResource.ResourceID, Guid.NewGuid());
         }
@@ -51,23 +53,21 @@ namespace Dev2.Runtime.Hosting
         public IVersionInfo GetCurrentVersion(IResource newResource, IVersionInfo oldresource, string userName, string reason)
         {
             if (oldresource == null)
+            {
                 return new VersionInfo(DateTime.Now, reason, userName, 1.ToString(CultureInfo.InvariantCulture), newResource.ResourceID, Guid.NewGuid());
+            }
 
-
-            
             return new VersionInfo(DateTime.Now, reason, userName, (1 + int.Parse(oldresource.VersionNumber)).ToString(CultureInfo.InvariantCulture), oldresource.ResourceId, oldresource.VersionId);
         }
 
         public IVersionInfo GetCurrentVersion(IResource newResource, IResource oldResource, string userName, string reason)
         {
             if (oldResource != null && oldResource.VersionInfo == null)
+            {
                 return new VersionInfo(DateTime.Now, reason, userName, 1.ToString(CultureInfo.InvariantCulture), oldResource.ResourceID, Guid.NewGuid());
+            }
 
-
-            
-            return oldResource.VersionInfo;
-            
+            return oldResource?.VersionInfo;            
         }
-
     }
 }

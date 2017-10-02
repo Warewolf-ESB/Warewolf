@@ -179,7 +179,6 @@ namespace Dev2.Runtime.WebServer.Handlers
             dataObject.ExecutingUser = ExecutingUser;
             if (!dataObject.Environment.HasErrors())
             {
-                ErrorResultTO errors;
 
                 if (ExecutingUser == null)
                 {
@@ -215,7 +214,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                             }
                         }
 
-                        channel.ExecuteRequest(dataObject, request, workspaceId, out errors);
+                        channel.ExecuteRequest(dataObject, request, workspaceId, out ErrorResultTO errors);
                     });
 
                     t.Start();

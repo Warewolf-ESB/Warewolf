@@ -351,21 +351,28 @@ namespace Warewolf.Studio.ViewModels
 
             var windowsGroupPermission = _environmentViewModel.Server?.Permissions?[0];
             if (windowsGroupPermission != null)
+            {
                 _environmentViewModel.SetPropertiesForDialogFromPermissions(windowsGroupPermission);
+            }
 
             var permissions = _environmentViewModel.Server?.GetPermissions(_environmentViewModel.ResourceId);
             if (permissions != null)
             {
                 if (_environmentViewModel.Children != null)
+                {
                     foreach (var explorerItemViewModel in _environmentViewModel.Children.Flatten(model => model.Children))
                     {
                         explorerItemViewModel.SetPermissions((Permissions)permissions);
                     }
+                }
             }
 
             var mainViewModel = CustomContainer.Get<IShellViewModel>();
             if (mainViewModel?.ExplorerViewModel != null)
+            {
                 mainViewModel.ExplorerViewModel.SearchText = string.Empty;
+            }
+
             return ViewResult;
         }
 

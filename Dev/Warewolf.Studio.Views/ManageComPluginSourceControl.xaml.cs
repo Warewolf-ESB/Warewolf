@@ -60,8 +60,7 @@ namespace Warewolf.Studio.Views
             var xamDataTreeNodes = TreeUtils.Descendants(ExplorerTree.Nodes.ToArray());
             return xamDataTreeNodes.FirstOrDefault(node =>
             {
-                var item = node.Data as IDllListingModel;
-                if (item != null)
+                if (node.Data is IDllListingModel item)
                 {
                     if (item.Name.ToLowerInvariant().Contains(itemName.ToLowerInvariant()))
                     {

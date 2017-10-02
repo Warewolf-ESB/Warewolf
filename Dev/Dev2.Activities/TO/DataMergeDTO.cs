@@ -17,19 +17,13 @@ using Dev2.TO;
 using Dev2.Util;
 using Dev2.Validation;
 
-
-
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
-
-{
-    
-    public class DataMergeDTO : ValidatedObject, IDev2TOFn
-    
+{    
+    public class DataMergeDTO : ValidatedObject, IDev2TOFn    
     {
         public const string MergeTypeIndex = "Index";
         public const string MergeTypeChars = "Chars";
         public const string MergeTypeNone = "None";
-
         public const string AlignmentLeft = "Left";
 
         #region Fields
@@ -220,7 +214,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         ruleSet.Add(inputExprRule);
                     }
                     else
+                    {
                         ruleSet.Add(new IsStringEmptyRule(() => InputVariable));
+                    }
+
                     break;
                 case "At":
                     if (MergeType == MergeTypeIndex)
@@ -241,6 +238,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         ruleSet.Add(new IsSingleCharRule(() => paddingExprRule.ExpressionValue));
                     }
                     break;
+                default:
+                    return ruleSet;
             }
             return ruleSet;
         }

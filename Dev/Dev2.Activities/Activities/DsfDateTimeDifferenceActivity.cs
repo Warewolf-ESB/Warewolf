@@ -177,12 +177,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         OutputType);
                     //Create a DateTimeComparer using the DateTimeConverterFactory
                     IDateTimeComparer comparer = DateTimeConverterFactory.CreateComparer();
-                    //Call the TryComparer method on the DateTimeComparer and pass it the IDateTimeDiffTO created from the ConvertToDateTimeDiffTO Method                
-                    string result;
-                    string error;
                     string expression = Result;
 
-                    if(comparer.TryCompare(transObj, out result, out error))
+                    if (comparer.TryCompare(transObj, out string result, out string error))
                     {
                         if (DataListUtil.IsValueRecordset(Result) &&
                            DataListUtil.GetRecordsetIndexType(Result) == enRecordsetIndexType.Star)

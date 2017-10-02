@@ -312,9 +312,8 @@ namespace Dev2.Tests.Runtime.ESB.ComPlugin
             CreateComPluginSource();
             //------------Execute Test-------------------------- -
             var isolated = new ComPluginRuntimeHandler();
-            string outString;
             var args = new ComPluginInvokeArgs { ClsId = adodbConnectionClassId, Fullname = svc.Namespace, Method = "InvalidName", Parameters = svc.Method.Parameters };
-            var run = isolated.Test(args, out outString);
+            var run = isolated.Test(args, out string outString);
             Assert.IsNotNull(run);
             Assert.IsNull(outString);
 
@@ -335,9 +334,8 @@ namespace Dev2.Tests.Runtime.ESB.ComPlugin
             mock.Setup(wrapper => wrapper.GetInternalStream()).Returns(memoryStream);
             //------------Execute Test-------------------------- -
             var isolated = new ComPluginRuntimeHandler(mock.Object);
-            string outString;
             var args = new ComPluginInvokeArgs { ClsId = adodbConnectionClassId, Fullname = svc.Namespace, Method = "ToString", Parameters = svc.Method.Parameters, Is32Bit = true };
-            var run = isolated.Test(args, out outString);
+            var run = isolated.Test(args, out string outString);
             Assert.IsNotNull(run);
             Assert.IsNotNull(outString);
 

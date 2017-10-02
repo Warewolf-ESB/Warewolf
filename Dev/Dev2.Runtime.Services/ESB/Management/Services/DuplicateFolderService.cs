@@ -43,15 +43,10 @@ namespace Dev2.Runtime.ESB.Management.Services
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
-
-            StringBuilder newResourceName;
-            StringBuilder fixRefs;
-            StringBuilder sourcePath;
-            StringBuilder destinationPath;
-            values.TryGetValue("NewResourceName", out newResourceName);
-            values.TryGetValue("FixRefs", out fixRefs);
-            values.TryGetValue("sourcePath", out sourcePath);
-            values.TryGetValue("destinationPath", out destinationPath);
+            values.TryGetValue("NewResourceName", out StringBuilder newResourceName);
+            values.TryGetValue("FixRefs", out StringBuilder fixRefs);
+            values.TryGetValue("sourcePath", out StringBuilder sourcePath);
+            values.TryGetValue("destinationPath", out StringBuilder destinationPath);
 
             if (!string.IsNullOrEmpty(newResourceName?.ToString()))
             {

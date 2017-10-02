@@ -546,8 +546,7 @@ where pn.nspname = 'public';
         {
             if (Resultscache.ContainsKey(resourceId))
             {
-                TextExpressionCompilerResults val;
-                bool removed = Resultscache.TryRemove(resourceId, out val);
+                bool removed = Resultscache.TryRemove(resourceId, out TextExpressionCompilerResults val);
                 if (!removed)
                 {
                     Resultscache.TryRemove(resourceId, out val);

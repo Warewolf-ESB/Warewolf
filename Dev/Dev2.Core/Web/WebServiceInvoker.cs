@@ -66,7 +66,9 @@ namespace Dev2.DynamicServices
         {
             // make sure xml describes a valid wsdl
             if (!ServiceDescription.CanRead(xmlreader))
+            {
                 throw new Exception(ErrorResource.WebServiceDescriptionInvalid);
+            }
 
             // parse wsdl
             ServiceDescription serviceDescription = ServiceDescription.Read(xmlreader);
@@ -134,7 +136,9 @@ namespace Dev2.DynamicServices
         private Assembly BuildAssemblyFromWSDL(Uri webServiceUri)
         {
             if (String.IsNullOrEmpty(webServiceUri.ToString()))
+            {
                 throw new Exception(ErrorResource.WebServiceNotFound);
+            }
 
             using (var xmlreader = new XmlTextReader(webServiceUri + "?wsdl"))
             {

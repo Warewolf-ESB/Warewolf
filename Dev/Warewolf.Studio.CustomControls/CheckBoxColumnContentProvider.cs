@@ -8,7 +8,7 @@ namespace Warewolf.Studio.CustomControls
 {
     public class CheckBoxColumnContentProvider : ColumnContentProviderBase
     {
-        CheckBox _checkBox;
+        readonly CheckBox _checkBox;
 
         public override void AdjustDisplayElement(Cell cell)
         {
@@ -41,7 +41,11 @@ namespace Warewolf.Studio.CustomControls
         protected override FrameworkElement ResolveEditorControl(Cell cell, object editorValue, double availableWidth,
             double availableHeight, Binding editorBinding)
         {
-            if (editorValue != null) _checkBox.IsChecked = (bool)editorValue;
+            if (editorValue != null)
+            {
+                _checkBox.IsChecked = (bool)editorValue;
+            }
+
             return _checkBox;
         }
 

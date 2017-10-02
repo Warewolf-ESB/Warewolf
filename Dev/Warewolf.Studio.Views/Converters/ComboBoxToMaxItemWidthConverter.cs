@@ -26,7 +26,9 @@ namespace Warewolf.Studio.Views.Converters
             {
                 ComboBoxItem cbItem = (ComboBoxItem)cb.ItemContainerGenerator.ContainerFromItem(item);
                 if (cbItem.ActualWidth > maxWidth)
+                {
                     maxWidth = cbItem.ActualWidth;
+                }
             }
             return maxWidth;
         }
@@ -52,7 +54,9 @@ namespace Warewolf.Studio.Views.Converters
                 }
                 ComboEditorItem cbItem = first;
                 if (cbItem?.ComboEditor.ActualWidth > maxWidth)
+                {
                     maxWidth = cbItem.ComboEditor.ActualWidth;
+                }
             }
             return maxWidth;
         }

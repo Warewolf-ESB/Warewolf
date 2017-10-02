@@ -46,15 +46,12 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
             const string expected = @"1";
-            string actual;
-            string error;
-            GetScalarValueFromEnvironment(result.Environment, "res", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "res", out string actual, out string error);
 
-            if(string.IsNullOrEmpty(error))
+            if (string.IsNullOrEmpty(error))
             {
                 Assert.AreEqual(expected, actual);
-                string replacedRes;
-                GetScalarValueFromEnvironment(result.Environment, "SpecialChar", out replacedRes, out error);
+                GetScalarValueFromEnvironment(result.Environment, "SpecialChar", out string replacedRes, out error);
                 // remove test datalist ;)
 
                 Assert.AreEqual("It Worked", replacedRes);
@@ -73,16 +70,13 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
             const string expected = @"2";
-            string actual;
 
-            string error;
-            GetScalarValueFromEnvironment(result.Environment, "res", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "res", out string actual, out string error);
 
-            if(string.IsNullOrEmpty(error))
+            if (string.IsNullOrEmpty(error))
             {
                 Assert.AreEqual(expected, actual);
-                IList<string> dataListItems;
-                GetRecordSetFieldValueFromDataList(result.Environment, "recset1", "field1", out dataListItems, out error);
+                GetRecordSetFieldValueFromDataList(result.Environment, "recset1", "field1", out IList<string> dataListItems, out error);
                 Assert.AreEqual("Wallis", dataListItems[0]);
                 GetRecordSetFieldValueFromDataList(result.Environment, "Customers", "FirstName", out dataListItems, out error);
                 // remove test datalist ;)
@@ -102,15 +96,12 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
             const string expected = @"2";
-            string actual;
-            string error;
 
-            GetScalarValueFromEnvironment(result.Environment, "res", out actual, out error);
-            if(string.IsNullOrEmpty(error))
+            GetScalarValueFromEnvironment(result.Environment, "res", out string actual, out string error);
+            if (string.IsNullOrEmpty(error))
             {
                 Assert.AreEqual(expected, actual);
-                IList<string> dataListItems;
-                GetRecordSetFieldValueFromDataList(result.Environment, "recset1", "field1", out dataListItems, out error);
+                GetRecordSetFieldValueFromDataList(result.Environment, "recset1", "field1", out IList<string> dataListItems, out error);
                 Assert.AreEqual("Wallis", dataListItems[0]);
                 GetRecordSetFieldValueFromDataList(result.Environment, "Customers", "FirstName", out dataListItems, out error);
                 Assert.AreEqual("Wallis", dataListItems[0]);
@@ -131,12 +122,10 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
             const string expected = @"1";
-            string actual;
 
-            string error;
 
-            GetScalarValueFromEnvironment(result.Environment, "res", out actual, out error);
-            if(string.IsNullOrEmpty(error))
+            GetScalarValueFromEnvironment(result.Environment, "res", out string actual, out string error);
+            if (string.IsNullOrEmpty(error))
             {
                 Assert.AreEqual(expected, actual);
                 GetScalarValueFromEnvironment(result.Environment, "CompanyName", out actual, out error);
@@ -158,10 +147,8 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
             const string expected = @"0";
-            string actual;
-            string error;
-            GetScalarValueFromEnvironment(result.Environment, "res", out actual, out error);
-            if(string.IsNullOrEmpty(error))
+            GetScalarValueFromEnvironment(result.Environment, "res", out string actual, out string error);
+            if (string.IsNullOrEmpty(error))
             {
                 Assert.AreEqual(expected, actual);
                 GetScalarValueFromEnvironment(result.Environment, "CompanyName", out actual, out error);
@@ -182,14 +169,11 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
             const string expected = @"1";
-            string actual;
-            string error;
-            GetScalarValueFromEnvironment(result.Environment, "res", out actual, out error);
-            if(string.IsNullOrEmpty(error))
+            GetScalarValueFromEnvironment(result.Environment, "res", out string actual, out string error);
+            if (string.IsNullOrEmpty(error))
             {
                 Assert.AreEqual(expected, actual);
-                IList<string> dataListItems;
-                GetRecordSetFieldValueFromDataList(result.Environment, "recset1", "field1", out dataListItems, out error);
+                GetRecordSetFieldValueFromDataList(result.Environment, "recset1", "field1", out IList<string> dataListItems, out error);
                 Assert.AreEqual("barney", dataListItems[0]);
                 GetRecordSetFieldValueFromDataList(result.Environment, "Customers", "FirstName", out dataListItems, out error);
 
@@ -211,14 +195,11 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
             const string expected = @"1";
-            string actual;
-            string error;
-            GetScalarValueFromEnvironment(result.Environment, "res", out actual, out error);
-            if(string.IsNullOrEmpty(error))
+            GetScalarValueFromEnvironment(result.Environment, "res", out string actual, out string error);
+            if (string.IsNullOrEmpty(error))
             {
                 Assert.AreEqual(expected, actual);
-                IList<string> dataListItems;
-                GetRecordSetFieldValueFromDataList(result.Environment, "recset1", "field1", out dataListItems, out error);
+                GetRecordSetFieldValueFromDataList(result.Environment, "recset1", "field1", out IList<string> dataListItems, out error);
                 Assert.AreEqual("Wallis", dataListItems[0]);
                 GetRecordSetFieldValueFromDataList(result.Environment, "Customers", "FirstName", out dataListItems, out error);
 
@@ -240,11 +221,9 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
             const string expected = @"1";
-            string actual;
-            string error;
-            GetScalarValueFromEnvironment(result.Environment, "Res", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "Res", out string actual, out string error);
 
-            if(string.IsNullOrEmpty(error))
+            if (string.IsNullOrEmpty(error))
             {
                 Assert.AreEqual(expected, actual);
                 GetScalarValueFromEnvironment(result.Environment, "Thing", out actual, out error);
@@ -259,8 +238,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 Assert.Fail("The following errors occurred while retrieving datalist items\r\nerrors:{0}", error);
             }
         }
-
-        //2013.02.12: Ashley Lewis - Bug 8800
+        
         [TestMethod]
         public void ReplaceInAllRecordsetFieldsExpectedTwoReplacesSuccess()
         {
@@ -268,15 +246,12 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
             const string expected = @"2";
-            string actual;
 
-            string error;
-            GetScalarValueFromEnvironment(result.Environment, "res", out actual, out error);
-            if(string.IsNullOrEmpty(error))
+            GetScalarValueFromEnvironment(result.Environment, "res", out string actual, out string error);
+            if (string.IsNullOrEmpty(error))
             {
                 Assert.AreEqual(expected, actual);
-                IList<string> dataListItems;
-                GetRecordSetFieldValueFromDataList(result.Environment, "recset1", "field1", out dataListItems, out error);
+                GetRecordSetFieldValueFromDataList(result.Environment, "recset1", "field1", out IList<string> dataListItems, out error);
                 Assert.AreEqual("Wallis", dataListItems[0]);
                 GetRecordSetFieldValueFromDataList(result.Environment, "recset1", "field2", out dataListItems, out error);
                 // remove test datalist ;)
@@ -301,11 +276,9 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
             const string expected = @"Please insert only variables into Fields To Search";
-            string actual;
-            string error;
-            GetScalarValueFromEnvironment(result.Environment, GlobalConstants.ErrorPayload, out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, GlobalConstants.ErrorPayload, out string actual, out string error);
             // remove test datalist ;)
-            if(string.IsNullOrEmpty(error))
+            if (string.IsNullOrEmpty(error))
             {
                 Assert.AreEqual(expected, actual);
             }
@@ -322,13 +295,11 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
             const string expected = @"Recordset index [ -1 ] is not greater than zero";
-            string actual;
-            string error;
-            GetScalarValueFromEnvironment(result.Environment, GlobalConstants.ErrorPayload, out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, GlobalConstants.ErrorPayload, out string actual, out string error);
 
             // remove test datalist ;)
 
-            if(string.IsNullOrEmpty(error))
+            if (string.IsNullOrEmpty(error))
             {
                 Assert.AreEqual(expected, actual);
             }
@@ -345,12 +316,10 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
             const string expected = @"Recordset index [ 0 ] is not greater than zero";
-            string actual;
-            string error;
-            GetScalarValueFromEnvironment(result.Environment, GlobalConstants.ErrorPayload, out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, GlobalConstants.ErrorPayload, out string actual, out string error);
             // remove test datalist ;)
 
-            if(string.IsNullOrEmpty(error))
+            if (string.IsNullOrEmpty(error))
             {
                 Assert.AreEqual(expected, actual);
             }

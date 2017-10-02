@@ -38,7 +38,10 @@ namespace Dev2.Runtime.ESB.Control
         public DynamicService FindService(string serviceName, Guid workspaceID)
         {
             if(string.IsNullOrEmpty(serviceName))
+            {
                 throw new InvalidDataException(ErrorResource.ServiceIsNull);
+            }
+
             var res = _resourceCatalog.GetResource(workspaceID, serviceName);
             DynamicService ret = null;
             if (res != null)
@@ -66,7 +69,10 @@ namespace Dev2.Runtime.ESB.Control
         public DynamicService FindService(Guid serviceID, Guid workspaceID)
         {
             if(serviceID == Guid.Empty)
+            {
                 throw new InvalidDataException(ErrorResource.ServiceIsNull);
+            }
+
             var firstOrDefault = ServiceActionRepo.Instance.ReadCache(serviceID);
                         
             if (firstOrDefault == null)
@@ -99,7 +105,10 @@ namespace Dev2.Runtime.ESB.Control
         public Source FindSourceByName(string sourceName, Guid workspaceID)
         {
             if (string.IsNullOrEmpty(sourceName))
+            {
                 throw new InvalidDataException(ErrorResource.ServiceIsNull);
+            }
+
             return _resourceCatalog.GetDynamicObjects<Source>(workspaceID, sourceName).FirstOrDefault();
         }
 

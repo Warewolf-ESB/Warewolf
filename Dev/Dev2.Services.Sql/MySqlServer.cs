@@ -45,9 +45,8 @@ namespace Dev2.Services.Sql
                     {
                         try
                         {
-                            List<IDbDataParameter> outParameters ;
 
-                            List<IDbDataParameter> parameters = GetProcedureParameters(command, dbName, fullProcedureName, out outParameters);
+                            List<IDbDataParameter> parameters = GetProcedureParameters(command, dbName, fullProcedureName, out List<IDbDataParameter> outParameters);
                             string helpText = FetchHelpTextContinueOnException(fullProcedureName, _connection);
        
                             procedureProcessor(command, parameters, outParameters, helpText, fullProcedureName);
@@ -170,8 +169,7 @@ namespace Dev2.Services.Sql
                     {
                         try
                         {
-                            List<IDbDataParameter> isOut;
-                            List<IDbDataParameter> parameters = GetProcedureParameters(command, dbName, fullProcedureName,out isOut);
+                            List<IDbDataParameter> parameters = GetProcedureParameters(command, dbName, fullProcedureName, out List<IDbDataParameter> isOut);
                             string helpText = FetchHelpTextContinueOnException(fullProcedureName, _connection);
                            
                             procedureProcessor(command, parameters, helpText, fullProcedureName);
@@ -327,8 +325,7 @@ namespace Dev2.Services.Sql
             using (IDbCommand command = _factory.CreateCommand(_connection, CommandType.StoredProcedure,fullProcedureName))
             {
 
-                List<IDbDataParameter> isOut;
-                GetProcedureParameters(command, dbName, fullProcedureName, out isOut);
+                GetProcedureParameters(command, dbName, fullProcedureName, out List<IDbDataParameter> isOut);
                 return isOut.Select(a=>a as MySqlParameter).ToList();
 
             }
@@ -348,27 +345,31 @@ namespace Dev2.Services.Sql
             DataTable dataTable = FetchDataTable(command);
             foreach (DataRow row in dataTable.Rows)
             {
-                var bytes = row?[0] as byte[];
-                if(bytes != null)
+                if (row?[0] is byte[] bytes)
                 {
                     var parameterName = Encoding.Default.GetString(bytes);
-                    parameterName= Regex.Replace(parameterName, @"(\()([0-z,])+(\))", "");
+                    parameterName = Regex.Replace(parameterName, @"(\()([0-z,])+(\))", "");
                     var parameternames = parameterName.Split(',');
-                    foreach(var parameter in parameternames)
+                    foreach (var parameter in parameternames)
                     {
                         bool isout = false;
                         const ParameterDirection direction = ParameterDirection.Input;
-                        if(parameter.Contains("OUT "))
+                        if (parameter.Contains("OUT "))
+                        {
                             isout = true;
+                        }
+
                         if (parameter.Contains("INOUT"))
+                        {
                             isout = false;
+                        }
+
                         var parameterx = parameter.Replace("IN ", "").Replace("OUT ", "");
                         if (!String.IsNullOrEmpty(parameterName))
                         {
                             var split = parameterx.Split(' ');
 
-                            MySqlDbType sqlType;
-                            Enum.TryParse(split.Where(a=>a.Trim().Length>0).ToArray()[1], true, out sqlType);
+                            Enum.TryParse(split.Where(a => a.Trim().Length > 0).ToArray()[1], true, out MySqlDbType sqlType);
 
                             var sqlParameter = new MySqlParameter(split.First(a => a.Trim().Length > 0), sqlType) { Direction = direction };
                             if (!isout)
@@ -378,14 +379,14 @@ namespace Dev2.Services.Sql
                             }
                             else
                             {
-                                sqlParameter.Direction = ParameterDirection.Output; 
+                                sqlParameter.Direction = ParameterDirection.Output;
                                 outParams.Add(sqlParameter);
                                 sqlParameter.Value = "@a";
                                 command.Parameters.Add(sqlParameter);
                             }
                             if (parameterName.ToLower() == "@return_value")
                             {
-                            }                       
+                            }
                         }
                     }
                 }

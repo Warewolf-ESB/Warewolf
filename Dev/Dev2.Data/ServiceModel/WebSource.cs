@@ -83,8 +83,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             UserName = properties["UserName"];
             Password = properties["Password"];
 
-            AuthenticationType authType;
-            AuthenticationType = Enum.TryParse(properties["AuthenticationType"], true, out authType) ? authType : AuthenticationType.Windows;
+            AuthenticationType = Enum.TryParse(properties["AuthenticationType"], true, out AuthenticationType authType) ? authType : AuthenticationType.Windows;
         }
 
         #endregion

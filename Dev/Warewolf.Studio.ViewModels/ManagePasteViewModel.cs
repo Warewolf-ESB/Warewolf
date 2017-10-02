@@ -6,7 +6,7 @@ namespace Warewolf.Studio.ViewModels
 {
     public class ManagePasteViewModel : BindableBase
     {
-        string _originalText;
+        readonly string _originalText;
         readonly Action _action;
         DelegateCommand _saveCommand;
         DelegateCommand _cancelCommand;

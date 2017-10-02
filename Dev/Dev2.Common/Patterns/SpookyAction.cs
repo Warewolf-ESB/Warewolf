@@ -57,8 +57,7 @@ namespace Dev2.Common
         /// <returns></returns>
         public TReflect FindMatch(THandle typeOf)
         {
-            TReflect result;
-            if (!_options.TryGetValue(typeOf, out result))
+            if (!_options.TryGetValue(typeOf, out TReflect result))
             {
                 lock (_options)
                 {

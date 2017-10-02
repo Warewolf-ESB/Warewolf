@@ -25,8 +25,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             ResourceType = typeof(ComPluginSource).Name;
 
             ClsId = xml.AttributeSafe("ClsId");
-            bool is32Bit;
-            bool.TryParse(xml.AttributeSafe("Is32Bit"),out is32Bit);
+            bool.TryParse(xml.AttributeSafe("Is32Bit"), out bool is32Bit);
             Is32Bit = is32Bit;
             ComName = xml.AttributeSafe("ComName");
         }

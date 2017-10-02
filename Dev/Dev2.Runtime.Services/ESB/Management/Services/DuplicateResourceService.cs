@@ -22,12 +22,10 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
         {
-            StringBuilder tmp;
-            requestArgs.TryGetValue("ResourceID", out tmp);
+            requestArgs.TryGetValue("ResourceID", out StringBuilder tmp);
             if (tmp != null)
             {
-                Guid resourceId;
-                if (Guid.TryParse(tmp.ToString(), out resourceId))
+                if (Guid.TryParse(tmp.ToString(), out Guid resourceId))
                 {
                     return resourceId;
                 }
@@ -56,18 +54,13 @@ namespace Dev2.Runtime.ESB.Management.Services
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
-
-            StringBuilder tmp;
-            StringBuilder newResourceName;
-            StringBuilder destinationPath;
-            values.TryGetValue("ResourceID", out tmp);
-            values.TryGetValue("NewResourceName", out newResourceName);
-            values.TryGetValue("destinationPath", out destinationPath);
+            values.TryGetValue("ResourceID", out StringBuilder tmp);
+            values.TryGetValue("NewResourceName", out StringBuilder newResourceName);
+            values.TryGetValue("destinationPath", out StringBuilder destinationPath);
 
             if (tmp != null)
             {
-                Guid resourceId;
-                if (Guid.TryParse(tmp.ToString(), out resourceId))
+                if (Guid.TryParse(tmp.ToString(), out Guid resourceId))
                 {
                     if (!string.IsNullOrEmpty(newResourceName?.ToString()))
                     {

@@ -25,7 +25,10 @@ namespace Dev2.Activities.DropBox2016.DeleteActivity
         {
             _validator.Validate();
             if (!dropboxPath.StartsWith(@"/"))
+            {
                 dropboxPath = string.Concat(@"/", dropboxPath);
+            }
+
             _dropboxPath = dropboxPath;
             InitializeCertPinning();
         }

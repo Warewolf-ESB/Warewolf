@@ -229,7 +229,9 @@ namespace Dev2.Runtime.WebServer.Controllers
             {
                 var requestUri = Request.RequestUri;
                 if (requestUri.ToString().EndsWith("/.tests", StringComparison.InvariantCultureIgnoreCase) || requestUri.ToString().EndsWith("/.tests.trx", StringComparison.InvariantCultureIgnoreCase))
+                {
                     return ExecuteFolderTests(requestUri.ToString(), false);
+                }
             }
             return ExecuteWorkflow(__name__, false);
         }
@@ -244,7 +246,9 @@ namespace Dev2.Runtime.WebServer.Controllers
             {
                 var requestUri = Request.RequestUri;
                 if (requestUri.ToString().EndsWith("/.tests", StringComparison.InvariantCultureIgnoreCase) || requestUri.ToString().EndsWith("/.tests.trx", StringComparison.InvariantCultureIgnoreCase))
+                {
                     return ExecuteFolderTests(requestUri.ToString(), true);
+                }
             }
             return ExecuteWorkflow(__name__, true);
         }

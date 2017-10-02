@@ -30,12 +30,10 @@ namespace Dev2.Runtime.ESB.Management.Services
     {
         public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
         {
-            StringBuilder tmp;
-            requestArgs.TryGetValue("itemToMove", out tmp);
+            requestArgs.TryGetValue("itemToMove", out StringBuilder tmp);
             if (tmp != null)
             {
-                Guid resourceId;
-                if (Guid.TryParse(tmp.ToString(), out resourceId))
+                if (Guid.TryParse(tmp.ToString(), out Guid resourceId))
                 {
                     return resourceId;
                 }
@@ -62,22 +60,19 @@ namespace Dev2.Runtime.ESB.Management.Services
             var serializer = new Dev2JsonSerializer();
             try
             {
-                StringBuilder itemToBeRenamedPath;
                 if (values == null)
                 {
                     throw new ArgumentNullException("values");
                 }
-                StringBuilder itemToBeRenamed;
-                StringBuilder newPath;
-                if (!values.TryGetValue("itemToMove", out itemToBeRenamed))
+                if (!values.TryGetValue("itemToMove", out StringBuilder itemToBeRenamed))
                 {
                     throw new ArgumentException(string.Format(ErrorResource.ValueNotSupplied, "itemToMove"));
                 }
-                if (!values.TryGetValue("newPath", out newPath))
+                if (!values.TryGetValue("newPath", out StringBuilder newPath))
                 {
                     throw new ArgumentException(string.Format(ErrorResource.ValueNotSupplied, "newName"));
                 }
-                if (!values.TryGetValue("itemToBeRenamedPath", out itemToBeRenamedPath))
+                if (!values.TryGetValue("itemToBeRenamedPath", out StringBuilder itemToBeRenamedPath))
                 {
                     throw new ArgumentException(string.Format(ErrorResource.ValueNotSupplied, "newName"));
                 }

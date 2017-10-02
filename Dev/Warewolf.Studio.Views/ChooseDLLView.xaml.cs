@@ -36,7 +36,9 @@ namespace Warewolf.Studio.Views
         private void ChooseDLLView_OnMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ChangedButton == MouseButton.Left)
+            {
                 DragMove();
+            }
         }
     }
 }

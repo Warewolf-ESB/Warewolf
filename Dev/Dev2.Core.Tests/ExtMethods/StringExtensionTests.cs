@@ -67,8 +67,7 @@ namespace Dev2.Tests.ExtMethods
         public void StringExtension_IsNumeric_StringIsNegativeNumericWithAPeriod_True()
         {
             //------------Execute Test---------------------------
-            decimal val;
-            var result = "-123.142".IsNumeric(out val);
+            var result = "-123.142".IsNumeric(out decimal val);
             //------------Assert Results-------------------------
             Assert.IsTrue(result);
         }

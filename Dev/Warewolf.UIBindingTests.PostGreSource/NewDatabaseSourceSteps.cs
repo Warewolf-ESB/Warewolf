@@ -106,8 +106,7 @@ namespace Warewolf.UIBindingTests.PostGreSource
             FeatureContext.Current["dbsrc"] = dbsrc;
             var mockEventAggregator = new Mock<IEventAggregator>();
             var viewModel = new ManagePostgreSqlSourceViewModel(upd, mockEventAggregator.Object, dbsrc, new SynchronousAsyncWorker());
-            var manageDatabaseSourceViewModel = manageDatabaseSourceControl.DataContext as ManagePostgreSqlSourceViewModel;
-            if (manageDatabaseSourceViewModel != null)
+            if (manageDatabaseSourceControl.DataContext is ManagePostgreSqlSourceViewModel manageDatabaseSourceViewModel)
             {
                 Utils.ResetViewModel<ManagePostgreSqlSourceViewModel, IDbSource>(viewModel, manageDatabaseSourceViewModel);
             }
@@ -154,8 +153,7 @@ namespace Warewolf.UIBindingTests.PostGreSource
 
             var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
 
-            var manageDatabaseSourceViewModel = manageDatabaseSourceControl.DataContext as ManagePostgreSqlSourceViewModel;
-            if (manageDatabaseSourceViewModel != null)
+            if (manageDatabaseSourceControl.DataContext is ManagePostgreSqlSourceViewModel manageDatabaseSourceViewModel)
             {
                 Assert.AreEqual(manageDatabaseSourceViewModel.AuthenticationType, (AuthenticationType)authp);
             }
@@ -457,8 +455,7 @@ namespace Warewolf.UIBindingTests.PostGreSource
             var viewModel = new ManagePostgreSqlSourceViewModel(mockUpdateManager.Object, task, mockEventAggregator.Object,
                 new SynchronousAsyncWorker());
             var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
-            var manageDatabaseSourceViewModel = manageDatabaseSourceControl.DataContext as ManagePostgreSqlSourceViewModel;
-            if (manageDatabaseSourceViewModel != null)
+            if (manageDatabaseSourceControl.DataContext is ManagePostgreSqlSourceViewModel manageDatabaseSourceViewModel)
             {
                 Utils.ResetViewModel<ManagePostgreSqlSourceViewModel, IDbSource>(viewModel, manageDatabaseSourceViewModel);
                 manageDatabaseSourceViewModel.DatabaseName = null;

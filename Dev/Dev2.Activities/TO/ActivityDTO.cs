@@ -250,6 +250,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 case "FieldValueAndCalculate":
                     ruleSet.Add(new ComposableRule<string>(new IsValidExpressionRule(() => FieldValue, datalist, "1")).Or(new IsValidCalculateRule(() => FieldValue)));
                     break;
+                default:
+                    throw new ArgumentException("Unrecognized Property Name: " + propertyName);
             }
             return ruleSet;
         }

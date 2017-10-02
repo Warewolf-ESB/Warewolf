@@ -107,7 +107,11 @@ namespace Dev2.Activities.Designers2.Core.Web.Put
 
         private void AddItemPropertyChangeEvent(NotifyCollectionChangedEventArgs args)
         {
-            if (args.NewItems == null) return;
+            if (args.NewItems == null)
+            {
+                return;
+            }
+
             foreach (INotifyPropertyChanged item in args.NewItems)
             {
                 if (item != null)
@@ -124,7 +128,11 @@ namespace Dev2.Activities.Designers2.Core.Web.Put
 
         private void RemoveItemPropertyChangeEvent(NotifyCollectionChangedEventArgs args)
         {
-            if (args.OldItems == null) return;
+            if (args.OldItems == null)
+            {
+                return;
+            }
+
             foreach (INotifyPropertyChanged item in args.OldItems)
             {
                 if (item != null)
@@ -184,8 +192,7 @@ namespace Dev2.Activities.Designers2.Core.Web.Put
 
         public void RestoreRegion(IToolRegion toRestore)
         {
-            var region = toRestore as WebPutRegionClone;
-            if (region != null)
+            if (toRestore is WebPutRegionClone region)
             {
                 IsEnabled = region.IsEnabled;
                 QueryString = region.QueryString;
@@ -204,7 +211,8 @@ namespace Dev2.Activities.Designers2.Core.Web.Put
                         {
                             _modelItem.SetProperty("Headers",
                                 _headers.Select(a => new NameValue(a.Name, a.Value) as INameValue).ToList());
-                        }) { Name = nameValue.Name, Value = nameValue.Value });
+                        })
+                        { Name = nameValue.Name, Value = nameValue.Value });
                     }
                     Headers.Remove(Headers.First());
                 }

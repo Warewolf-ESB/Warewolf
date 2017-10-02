@@ -47,9 +47,8 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
 
                 Dev2Logger.Info("Test Web Connection Service", GlobalConstants.WarewolfInfo);
-                StringBuilder resourceDefinition;
 
-                values.TryGetValue("WebService", out resourceDefinition);
+                values.TryGetValue("WebService", out StringBuilder resourceDefinition);
 
                 IWebService src = serializer.Deserialize<IWebService>(resourceDefinition);
                 

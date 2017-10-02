@@ -61,9 +61,8 @@ namespace Dev2.Services.Sql
                     {
                         try
                         {
-                            List<IDbDataParameter> outParameters;
 
-                            var parameters = GetProcedureParameters(command, fullProcedureName, out outParameters);
+                            var parameters = GetProcedureParameters(command, fullProcedureName, out List<IDbDataParameter> outParameters);
                             var helpText = FetchHelpTextContinueOnException(fullProcedureName, _connection);
 
                             procedureProcessor(command, parameters, outParameters, helpText, fullProcedureName);
@@ -127,7 +126,10 @@ namespace Dev2.Services.Sql
             finally
             {
                 
-                if (reader != null) reader.Close();
+                if (reader != null)
+                {
+                    reader.Close();
+                }
             }
 
             return result;
@@ -183,8 +185,7 @@ namespace Dev2.Services.Sql
                     {
                         try
                         {
-                            List<IDbDataParameter> isOut;
-                            var parameters = GetProcedureParameters(command, fullProcedureName, out isOut);
+                            var parameters = GetProcedureParameters(command, fullProcedureName, out List<IDbDataParameter> isOut);
                             var helpText = FetchHelpTextContinueOnException(fullProcedureName, _connection);
 
                             procedureProcessor(command, parameters, helpText, fullProcedureName);
@@ -335,8 +336,7 @@ namespace Dev2.Services.Sql
         {
             using (var command = _factory.CreateCommand(_connection, CommandType.StoredProcedure, fullProcedureName))
             {
-                List<IDbDataParameter> isOut;
-                GetProcedureParameters(command, fullProcedureName, out isOut);
+                GetProcedureParameters(command, fullProcedureName, out List<IDbDataParameter> isOut);
                 return isOut.Select(a => a as NpgsqlParameter).ToList();
             }
         }
@@ -365,15 +365,16 @@ namespace Dev2.Services.Sql
                     var datatype = row[1].ToString();
                     var direction = row[2].ToString();
 
-                    NpgsqlDbType sqlType;
 
-                    Enum.TryParse(datatype, true, out sqlType);
+                    Enum.TryParse(datatype, true, out NpgsqlDbType sqlType);
 
                     var sqlParameter = new NpgsqlParameter(value, sqlType);
 
                     var isout = direction.ToUpper().Trim().Contains("OUT".Trim());
                     if (direction.ToUpper().Trim().Contains("IN".Trim()))
+                    {
                         isout = false;
+                    }
 
                     if (!isout)
                     {

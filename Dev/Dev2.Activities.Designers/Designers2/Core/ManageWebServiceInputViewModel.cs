@@ -33,18 +33,18 @@ namespace Dev2.Activities.Designers2.Core
         private IWebService _model;
         bool _pasteResponseVisible;
         bool _pasteResponseAvailable;
-        IGenerateOutputArea _generateOutputArea;
-        IGenerateInputArea _generateInputArea;
+        readonly IGenerateOutputArea _generateOutputArea;
+        readonly IGenerateInputArea _generateInputArea;
         bool _isEnabled;
-        IWebServiceBaseViewModel _viewmodel;
-        IWebServiceModel _serverModel;
+        readonly IWebServiceBaseViewModel _viewmodel;
+        readonly IWebServiceModel _serverModel;
         bool _isGenerateInputsEmptyRows;
         private RecordsetList _recordsetList;
         private bool _outputCountExpandAllowed;
         private bool _inputCountExpandAllowed;
         private bool _testPassed;
         private bool _testFailed;
-        private IWebServiceHeaderBuilder _serviceHeaderBuilder;
+        private readonly IWebServiceHeaderBuilder _serviceHeaderBuilder;
 
         public ManageWebServiceInputViewModel(IWebServiceHeaderBuilder serviceHeaderBuilder)
         {

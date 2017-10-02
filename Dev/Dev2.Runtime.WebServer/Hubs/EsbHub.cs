@@ -176,8 +176,7 @@ namespace Dev2.Runtime.WebServer.Hubs
         {
             try
             {
-                string value;
-                if (ResourceAffectedMessagesCache.TryGetValue(resourceId, out value))
+                if (ResourceAffectedMessagesCache.TryGetValue(resourceId, out string value))
                 {
                     var task = new Task<string>(() => value);
                     ResourceAffectedMessagesCache.Remove(resourceId);
@@ -303,8 +302,7 @@ namespace Dev2.Runtime.WebServer.Hubs
                 {
                     try
                     {
-                        StringBuilder sb;
-                        if (!MessageCache.TryGetValue(messageId, out sb))
+                        if (!MessageCache.TryGetValue(messageId, out StringBuilder sb))
                         {
                             sb = new StringBuilder();
                             MessageCache.TryAdd(messageId, sb);

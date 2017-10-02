@@ -36,9 +36,8 @@ namespace Dev2.Core.Tests.ConverterTests
 
             dynamic modelItem = ModelItemUtils.CreateModelItem(multiAssign);
 
-            ModelItemCollection collection = modelItem.FieldsCollection as ModelItemCollection;
             //------------Execute Test---------------------------
-            if(collection != null)
+            if (modelItem.FieldsCollection is ModelItemCollection collection)
             {
                 var result = converter.Convert(collection[1], typeof(int), null, CultureInfo.CurrentCulture);
 
@@ -66,9 +65,8 @@ namespace Dev2.Core.Tests.ConverterTests
 
             dynamic modelItem = ModelItemUtils.CreateModelItem(multiAssign);
 
-            ModelItemCollection collection = modelItem.FieldsCollection as ModelItemCollection;
             //------------Execute Test---------------------------
-            if(collection != null)
+            if (modelItem.FieldsCollection is ModelItemCollection collection)
             {
                 var result = converter.Convert(modelItemThatdoesntExist, typeof(int), null, CultureInfo.CurrentCulture);
 

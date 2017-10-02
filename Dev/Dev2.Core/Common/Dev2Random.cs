@@ -54,15 +54,20 @@ namespace Dev2.Common
             Random rand = GetRandom(ref seed);
             string result;
             if (powerOfTen != 1)
+            {
                 result = (rand.NextDouble() * (to - from) + from).ToString(CultureInfo.InvariantCulture);
+            }
             //result = ((double)(rand.Next((int)(from * powerOfTen), (int)((to * powerOfTen) > 0 ? (to * powerOfTen + 1) : (to * powerOfTen)))) / (double)powerOfTen).ToString(CultureInfo.InvariantCulture);
             else
             {
                 if (IsInIntRange(from) && IsInIntRange(to))
+                {
                     result = rand.Next((int)from, (int)(to > 0 ? to + 1 : to)).ToString(CultureInfo.InvariantCulture);
+                }
                 else
+                {
                     result = Math.Round(rand.NextDouble() * (to - @from) + @from).ToString(CultureInfo.InvariantCulture);
-
+                }
             }
             if (result == double.PositiveInfinity.ToString(CultureInfo.InvariantCulture))
             {
@@ -98,7 +103,11 @@ namespace Dev2.Common
             uint places = 0;
             
             
-            for (; x * Math.Pow(10, places) % 1 != 0; places++) ;
+            for (; x * Math.Pow(10, places) % 1 != 0; places++)
+            {
+                ;
+            }
+
             return places;
         }
         private string GenerateLetters(int length, ref int seed)

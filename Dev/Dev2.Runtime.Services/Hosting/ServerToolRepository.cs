@@ -40,7 +40,10 @@ namespace Dev2.Runtime.Hosting
         {
 
             if (arg.GetCustomAttributes().Any(a => a is ToolDescriptorInfo))
+            {
                 return GetDescriptorFromAttribute(arg);
+            }
+
             return GetDescriptorLegacy(arg);
         }
 

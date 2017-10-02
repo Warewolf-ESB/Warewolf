@@ -35,7 +35,7 @@ using Warewolf.Storage.Interfaces;
 
 namespace Dev2.Services.Execution
 {
-    public class DatabaseServiceExecution : ServiceExecutionAbstract<DbService, DbSource>
+    public class DatabaseServiceExecution : ServiceExecutionAbstract<DbService, DbSource>, IDisposable
     {
         public DatabaseServiceExecution(IDSFDataObject dataObj)
             : base(dataObj, true)
@@ -617,7 +617,10 @@ namespace Dev2.Services.Execution
             }
             return sqlParameters;
         }
-    }
 
-
+        public void Dispose()
+        {
+            _sqlServer.Dispose();
+        }
+    }    
 }

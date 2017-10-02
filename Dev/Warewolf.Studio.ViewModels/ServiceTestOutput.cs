@@ -43,7 +43,10 @@ namespace Warewolf.Studio.ViewModels
         public ServiceTestOutput(string variable, string value, string from, string to)
         {
             if (variable == null)
+            {
                 throw new ArgumentNullException(nameof(variable));
+            }
+
             Variable = variable;
             Value = value;
             From = from;

@@ -61,8 +61,12 @@ namespace Dev2.Development.Languages.Scripting
         private void AddScriptToContext(ScriptEngine pyEng, ScriptScope scope)
         {
             if(_sources?.GetFileScriptSources() != null)
-                foreach(var fileScriptSource in _sources.GetFileScriptSources())
+            {
+                foreach (var fileScriptSource in _sources.GetFileScriptSources())
+                {
                     pyEng.Execute(fileScriptSource.GetReader().ReadToEnd(), scope);
+                }
+            }
         }
 
         public enScriptType HandlesType()
