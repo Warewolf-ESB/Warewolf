@@ -16,17 +16,29 @@ namespace Dev2.Studio.Interfaces
 {
     public interface IShellViewModelEdit
     {
+        void EditSqlServerResource(IDbSource selectedSource);
         void EditSqlServerResource(IDbSource selectedSource, IWorkSurfaceKey key);
+        void EditMySqlResource(IDbSource selectedSource);
         void EditMySqlResource(IDbSource selectedSource, IWorkSurfaceKey key);
+        void EditPostgreSqlResource(IDbSource selectedSource);
         void EditPostgreSqlResource(IDbSource selectedSource, IWorkSurfaceKey key);
+        void EditOracleResource(IDbSource selectedSource);
         void EditOracleResource(IDbSource selectedSource, IWorkSurfaceKey key);
+        void EditOdbcResource(IDbSource selectedSource);
         void EditOdbcResource(IDbSource selectedSource, IWorkSurfaceKey key);
+        void EditResource(IPluginSource selectedSource);
         void EditResource(IPluginSource selectedSource, IWorkSurfaceKey key);
+        void EditResource(IWebServiceSource selectedSource);
         void EditResource(IWebServiceSource selectedSource, IWorkSurfaceKey key);
+        void EditResource(IEmailServiceSource selectedSource);
         void EditResource(IEmailServiceSource selectedSource, IWorkSurfaceKey key);
+        void EditResource(IExchangeSource selectedSource);
         void EditResource(IExchangeSource selectedSource, IWorkSurfaceKey key);
+        void EditResource(IRabbitMQServiceSourceDefinition selectedSource);
         void EditResource(IRabbitMQServiceSourceDefinition selectedSource, IWorkSurfaceKey key);
+        void EditResource(IWcfServerSource selectedSource);
         void EditResource(IWcfServerSource selectedSource, IWorkSurfaceKey key);
+        void EditResource(IComPluginSource selectedSource);
         void EditResource(IComPluginSource selectedSource, IWorkSurfaceKey key);
     }
 
