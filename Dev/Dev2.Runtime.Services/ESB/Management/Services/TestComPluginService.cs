@@ -39,9 +39,8 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
 
                 Dev2Logger.Info("Test ComPlugin Service", GlobalConstants.WarewolfInfo);
-                StringBuilder resourceDefinition;
 
-                values.TryGetValue("ComPluginService", out resourceDefinition);
+                values.TryGetValue("ComPluginService", out StringBuilder resourceDefinition);
                 IComPluginService src = serializer.Deserialize<IComPluginService>(resourceDefinition);
 
                 
@@ -57,8 +56,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     Source = pluginsrc
                 };
 
-                string serializedResult;
-                var result = _pluginServices.Value.Test(serializer.SerializeToBuilder(res).ToString(), out serializedResult);
+                var result = _pluginServices.Value.Test(serializer.SerializeToBuilder(res).ToString(), out string serializedResult);
 
                 if (serializedResult.StartsWith("Exception: "))
                 {

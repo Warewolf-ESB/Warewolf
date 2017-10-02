@@ -27,7 +27,11 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Copy
         public CopySteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
         {
-            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            if (scenarioContext == null)
+            {
+                throw new ArgumentNullException("scenarioContext");
+            }
+
             this.scenarioContext = scenarioContext;
         }
 

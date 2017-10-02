@@ -19,7 +19,10 @@ namespace WarewolfCOMIPC
     {
         static void Main(string[] args)
         {
-            if (args.Length < 1) return;
+            if (args.Length < 1)
+            {
+                return;
+            }
 
             string token = args[0];
 
@@ -252,11 +255,10 @@ namespace WarewolfCOMIPC
         private static void BuildObjectType(Type type, ParameterInfoTO methodParameter, object[] valuedTypeList, int index)
         {
             var obj = Activator.CreateInstance(type);
-            var anonymousType = JsonConvert.DeserializeObject(methodParameter.DefaultValue.ToString()) as JObject;
-            if(anonymousType != null)
+            if (JsonConvert.DeserializeObject(methodParameter.DefaultValue.ToString()) is JObject anonymousType)
             {
                 var props = anonymousType.Properties().ToList();
-                foreach(var prop in props)
+                foreach (var prop in props)
                 {
                     var valueForProp = prop.Value.ToString();
                     type.InvokeMember(prop.Name, BindingFlags.Instance | BindingFlags.SetProperty | BindingFlags.Public, null, obj, new object[] { valueForProp });

@@ -37,7 +37,9 @@ namespace Dev2.Studio.AppResources.ExtensionMethods
             foreach(char c in str)
             {
                                 if(!toExclude.Contains(c))
-                                        sb.Append(c);
+                {
+                    sb.Append(c);
+                }
             }
             return sb.ToString();
         }

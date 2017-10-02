@@ -42,7 +42,7 @@ namespace Dev2.Studio.Core.AppResources.Converters
                 }
             }
 
-            if(boolValues.Any(c => c == false))
+            if(boolValues.Any(c => !c))
             {
                 return Visibility.Collapsed;
             }

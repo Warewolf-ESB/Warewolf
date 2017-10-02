@@ -185,8 +185,7 @@ namespace Dev2.Controller
         {
             if (message != null)
             {
-                bool containsAuthorization;
-                var s = ContainsAuthorizationError(message.Message.ToString(), out containsAuthorization);
+                var s = ContainsAuthorizationError(message.Message.ToString(), out bool containsAuthorization);
                 if (containsAuthorization)
                 {
                     ShowAuthorizationErrorPopup(s);

@@ -13,7 +13,11 @@ namespace Warewolf.Core
         public ToolDescriptor(Guid id, IWarewolfType designer, IWarewolfType activity, string name, string icon, Version version, bool isSupported, string category, ToolType toolType, string iconUri, string filterTag,string toolTip, string helpText)
         
         {
-            if (id == Guid.Empty) throw new ArgumentNullException("id", "empty guids not allowed fo tools");
+            if (id == Guid.Empty)
+            {
+                throw new ArgumentNullException("id", "empty guids not allowed fo tools");
+            }
+
             VerifyArgument.AreNotNull(new Dictionary<string, object> { { "id", id }, { "designer", designer }, { "activity", activity }, { "name", name }, { "icon", icon }, { "version", version }, { "category", category }, { iconUri, "iconUri" }, { filterTag, "filterTag" } });
             ToolType = toolType;
             Category = category;

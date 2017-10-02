@@ -904,8 +904,7 @@ namespace Dev2.Core.Tests.IntellisenseProvider
             var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
             Assert.AreEqual(0, getResults.Count);
         }
-
-        //2013.04.16: Ashley Lewis - for Bug 6103
+        
         [TestMethod]
         public void GetIntellisenseResultsWithInRecSetIndexAndWithFieldAndWithClosingSquareBraceExpectedNoResults()
         {
@@ -935,8 +934,7 @@ namespace Dev2.Core.Tests.IntellisenseProvider
 
             Assert.AreEqual(0, getResults.Count);
         }
-
-        //2013.04.22: Ashley Lewis - for Bug 6103 QA Feedback
+        
         [TestMethod]
         public void GetIntellisenseResultsWithOpenRegionAndInRecSetIndexAndWithFieldExpectedAllResults()
         {
@@ -961,8 +959,6 @@ namespace Dev2.Core.Tests.IntellisenseProvider
             Assert.IsTrue(getResults.Any(a => a.ToString() == "[[State]]"));
         }
 
-  
-        //2013.05.29: Ashley Lewis for bug 9472 - RecorsetsOnly filter tests
         [TestMethod]
         public void PerformResultInsertionWithRecordsetFilterAndNoRegionExpectedCompleteResult()
         {
@@ -1293,8 +1289,7 @@ namespace Dev2.Core.Tests.IntellisenseProvider
 
             Assert.AreEqual("[[recset().field]]", new DefaultIntellisenseProvider().PerformResultInsertion("[[recset().field]]", context));
         }
-
-        //2013.01.24: Ashley Lewis - Bug 8105
+        
         [TestMethod]
         
         public void PerformResultInsertion_With_PartialField_AndRegion_Expected_ResultReplacesText()
@@ -1655,8 +1650,7 @@ namespace Dev2.Core.Tests.IntellisenseProvider
 
             Assert.AreEqual(exprected, actual);
         }
-
-        //Bug 8736
+        
         [TestMethod]
         public void PerformResultInsertionWithPartialRecordsetExpectedResultInsertsText()
         {
@@ -1673,8 +1667,7 @@ namespace Dev2.Core.Tests.IntellisenseProvider
 
             Assert.AreEqual(exprected, actual);
         }
-
-        //2013.06.24: Ashley Lewis for bug 8760 - inserting a recset from results after a scalar
+        
         [TestMethod]
         public void PerformResultInsertionWithPartialRecordsetFieldAfterScalarExpectedCompleteResult()
         {
@@ -1691,6 +1684,7 @@ namespace Dev2.Core.Tests.IntellisenseProvider
             string actual = defaultIntellisenseProvider.PerformResultInsertion("[[rec().field]]", intellisenseProviderContext);
             Assert.AreEqual(exprected, actual, "Inserting a recordset after a scalar from intellisense results performs an incorrect insertion");
         }
+
         [TestMethod]
         public void PerformResultInsertionWithRecordsetAfterScalarExpectedCompleteResult()
         {

@@ -76,8 +76,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 var fileChooser = CustomContainer.GetInstancePerRequestType<IFileChooserView>();
                 fileChooser.ShowView(false);
-                var vm = fileChooser.DataContext as FileChooser;
-                if (vm != null && vm.Result == MessageBoxResult.OK)
+                if (fileChooser.DataContext is FileChooser vm && vm.Result == MessageBoxResult.OK)
                 {
                     var selectedFiles = vm.GetAttachments();
                     if (selectedFiles != null && selectedFiles.Count > 0)
@@ -284,7 +283,10 @@ namespace Warewolf.Studio.ViewModels
                     src.Path = RequestServiceNameViewModel.ResourceName.Path ?? RequestServiceNameViewModel.ResourceName.Name;
                     Save(src);
                     if (RequestServiceNameViewModel.SingleEnvironmentExplorerViewModel != null)
+                    {
                         AfterSave(RequestServiceNameViewModel.SingleEnvironmentExplorerViewModel.Environments[0].ResourceId, src.Id);
+                    }
+
                     Path = src.Path;
                     _pluginSource = src;
                     ToItem();

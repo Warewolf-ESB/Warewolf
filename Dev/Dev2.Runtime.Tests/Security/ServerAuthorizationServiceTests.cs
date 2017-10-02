@@ -476,8 +476,7 @@ namespace Dev2.Tests.Runtime.Security
 
             if (!isServer && !string.IsNullOrEmpty(authorizationRequest.Resource))
             {
-                Guid resourceID;
-                if (Guid.TryParse(authorizationRequest.Resource, out resourceID))
+                if (Guid.TryParse(authorizationRequest.Resource, out Guid resourceID))
                 {
                     configPermission.ResourceID = resourceID;
                     configPermission.ResourceName = "TestCategory\\";

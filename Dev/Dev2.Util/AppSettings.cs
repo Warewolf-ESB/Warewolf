@@ -24,8 +24,7 @@ namespace Dev2.Util
         {
             get
             {
-                bool collectUsageStats;
-                Boolean.TryParse(ConfigurationManager.AppSettings["CollectUsageStats"], out collectUsageStats);
+                Boolean.TryParse(ConfigurationManager.AppSettings["CollectUsageStats"], out bool collectUsageStats);
                 return collectUsageStats;
             }
         }

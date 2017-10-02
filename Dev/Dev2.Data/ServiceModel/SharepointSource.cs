@@ -52,13 +52,11 @@ namespace Dev2.Data.ServiceModel
             UserName = properties["UserName"];
             Password = properties["Password"];
             var isSharepointSourceValue = xml.AttributeSafe("IsSharepointOnline");
-            bool isSharepointSource;
-            if (bool.TryParse(isSharepointSourceValue, out isSharepointSource))
+            if (bool.TryParse(isSharepointSourceValue, out bool isSharepointSource))
             {
                 IsSharepointOnline = isSharepointSource;
             }
-            AuthenticationType authType;
-            AuthenticationType = Enum.TryParse(properties["AuthenticationType"], true, out authType) ? authType : AuthenticationType.Windows;
+            AuthenticationType = Enum.TryParse(properties["AuthenticationType"], true, out AuthenticationType authType) ? authType : AuthenticationType.Windows;
         }
 
         /// <summary>
@@ -135,8 +133,7 @@ namespace Dev2.Data.ServiceModel
         public string TestConnection()
         {
             var helper = CreateSharepointHelper();
-            bool isSharepointOnline;
-            var testConnection = helper.TestConnection(out isSharepointOnline);
+            var testConnection = helper.TestConnection(out bool isSharepointOnline);
             IsSharepointOnline = isSharepointOnline;
             return testConnection;
         }

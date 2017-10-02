@@ -109,9 +109,7 @@ namespace Dev2.Data.Util
 
                 if (result.Contains("<") && result.Contains(">"))
                 {
-                    bool isFragment;
-                    bool isHtml;
-                    var isXml = IsXml(result, out isFragment, out isHtml);
+                    var isXml = IsXml(result, out bool isFragment, out bool isHtml);
                     if (!(isXml && !isFragment && !isHtml))
                     {
                         // We need to replace DataList if present ;)

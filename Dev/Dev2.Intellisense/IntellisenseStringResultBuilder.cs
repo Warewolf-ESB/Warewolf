@@ -6,7 +6,6 @@ namespace Dev2.Intellisense
     public class IntellisenseStringResultBuilder : IIntellisenseStringResultBuilder
     {
         readonly char[] _tokenisers = "!#$%^&*()_+_+{}|:\"?><`~<>?:'{}| ".ToCharArray();
-        readonly char[] _tokeniserswithbrackets = "!@#$%^&*()_+_+{}|:\"?><`~<>?:'{}| ".ToCharArray();
         #region Implementation of IIntellisenseStringResultBuilder
 
         public IIntellisenseStringResult Build(string selectedOption, int originalCaret, string originalText, string editorText)
@@ -45,7 +44,11 @@ namespace Dev2.Intellisense
                 //if(len<=0) 
                     len = lastIndexOfAny < 0 && diff.LastIndexOfAny("[]".ToCharArray()) < 0 ? 0 : originalCaret - ignore;
                 var suffix = originalText.Substring(originalCaret);
-                if (suffix.StartsWith("]]")) suffix = suffix.Substring(2);
+                if (suffix.StartsWith("]]"))
+                {
+                    suffix = suffix.Substring(2);
+                }
+
                 var text = originalText.Substring(0, len) + delimchar + selectedOption + suffix;
                 var car = (originalText.Substring(0, len) + selectedOption).Length + delimchar.Length;
 

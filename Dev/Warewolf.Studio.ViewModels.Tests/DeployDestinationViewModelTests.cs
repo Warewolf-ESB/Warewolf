@@ -117,9 +117,9 @@ namespace Warewolf.Studio.ViewModels.Tests
             _target.PropertyChanged += (s, e) =>
             {
                 if (e.PropertyName == "DeployTests")
+                {
                     wasCalled = true;
-
-
+                }
             };
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------

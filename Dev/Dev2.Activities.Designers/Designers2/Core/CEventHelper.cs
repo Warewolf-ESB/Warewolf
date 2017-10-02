@@ -26,7 +26,9 @@ namespace Dev2.Activities.Designers2.Core
         static IEnumerable<FieldInfo> GetTypeEventFields(Type t)
         {
             if (DicEventFieldInfos.ContainsKey(t))
+            {
                 return DicEventFieldInfos[t];
+            }
 
             List<FieldInfo> lst = new List<FieldInfo>();
             BuildEventFields(t, lst);
@@ -65,7 +67,9 @@ namespace Dev2.Activities.Designers2.Core
 
 
                 if (obj == null)
+                {
                     return;
+                }
 
                 Type t = obj.GetType();
                 IEnumerable<FieldInfo> eventFields = GetTypeEventFields(t);
@@ -85,11 +89,12 @@ namespace Dev2.Activities.Designers2.Core
                         if (ei != null)
                         {
                             object val = fi.GetValue(obj);
-                            Delegate mdel = val as Delegate;
-                            if (mdel != null)
+                            if (val is Delegate mdel)
                             {
                                 foreach (Delegate del in mdel.GetInvocationList())
+                                {
                                     ei.RemoveEventHandler(obj, del);
+                                }
                             }
                         }
                     }

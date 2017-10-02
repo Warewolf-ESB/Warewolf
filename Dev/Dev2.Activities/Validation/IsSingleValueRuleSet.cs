@@ -36,7 +36,10 @@ namespace Dev2.Validation
             {
                 var regions = DataListCleaningUtils.SplitIntoRegions(exp);
                 if (regions.Count > 1)
+                {
                     return CreatError();
+                }
+
                 return null;
             }
             return null;
@@ -49,7 +52,9 @@ namespace Dev2.Validation
             var rule = new IsSingleValueRule(() => value);
             var single = rule.Check();
             if (single != null)
+            {
                 errors.AddError(single.Message);
+            }
         }
     }
 }

@@ -113,8 +113,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             where T : IResource, new()
         {
 
-            Guid sourceId;
-            Guid.TryParse(action.AttributeSafe("SourceID"), out sourceId);
+            Guid.TryParse(action.AttributeSafe("SourceID"), out Guid sourceId);
             var result = new T
             {
                 ResourceID = sourceId,
@@ -137,7 +136,6 @@ namespace Dev2.Runtime.ServiceModel.Data
                     continue;
                 }
                 XElement validator;
-                bool emptyToNull;
                 var typeName = input.AttributeSafe("NativeType", true);
 
                 Type tmpType = string.IsNullOrEmpty(typeName) ? typeof(object) : TypeExtensions.GetTypeFromSimpleName(typeName);
@@ -146,7 +144,7 @@ namespace Dev2.Runtime.ServiceModel.Data
                 result.Parameters.Add(new MethodParameter
                 {
                     Name = input.AttributeSafe("Name"),
-                    EmptyToNull = bool.TryParse(input.AttributeSafe("EmptyToNull"), out emptyToNull) && emptyToNull,
+                    EmptyToNull = bool.TryParse(input.AttributeSafe("EmptyToNull"), out bool emptyToNull) && emptyToNull,
                     IsRequired = (validator = input.Element("Validator")) != null && validator.AttributeSafe("Type").Equals("Required", StringComparison.InvariantCultureIgnoreCase),
                     DefaultValue = input.AttributeSafe("DefaultValue"),
                     TypeName = tmpType.FullName

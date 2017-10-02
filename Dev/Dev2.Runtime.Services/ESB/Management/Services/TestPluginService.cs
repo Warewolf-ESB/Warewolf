@@ -57,9 +57,8 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
 
                 Dev2Logger.Info("Test Plugin Service", GlobalConstants.WarewolfInfo);
-                StringBuilder resourceDefinition;
 
-                values.TryGetValue("PluginService", out resourceDefinition);
+                values.TryGetValue("PluginService", out StringBuilder resourceDefinition);
                 IPluginService src = serializer.Deserialize<IPluginService>(resourceDefinition);
 
 
@@ -76,8 +75,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     Source = pluginsrc
                 };
 
-                string serializedResult;
-                var result = PluginServices.Test(serializer.SerializeToBuilder(res).ToString(),out serializedResult);
+                var result = PluginServices.Test(serializer.SerializeToBuilder(res).ToString(), out string serializedResult);
                 msg.HasError = false;
                 msg.Message = serializer.SerializeToBuilder(new RecordsetListWrapper{Description = result.Description,RecordsetList = result,SerializedResult = serializedResult});
             }

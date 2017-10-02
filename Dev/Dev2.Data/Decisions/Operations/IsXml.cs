@@ -23,8 +23,7 @@ namespace Dev2.Data.Decisions.Operations
         public bool Invoke(string[] cols)
         {
             var data = DataListUtil.AdjustForEncodingIssues(cols[0]);
-            bool isFragment;
-            var isXml = DataListUtil.IsXml(data, out isFragment);
+            var isXml = DataListUtil.IsXml(data, out bool isFragment);
             return isXml || isFragment;
         }
     }

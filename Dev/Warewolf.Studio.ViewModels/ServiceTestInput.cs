@@ -20,7 +20,10 @@ namespace Warewolf.Studio.ViewModels
         public ServiceTestInput(string variableName, string value)
         {
             if (variableName == null)
+            {
                 throw new ArgumentNullException(nameof(variableName));
+            }
+
             EmptyIsNull = false;
             Variable = variableName;
             Value = value;

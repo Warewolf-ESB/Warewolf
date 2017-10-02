@@ -102,8 +102,7 @@ namespace Dev2.Runtime.ESB.Control
                 using (var invoker = new EsbServiceInvoker(this,theWorkspace, request))
                 {
                     // Should return the top level DLID
-                    ErrorResultTO invokeErrors;
-                    resultID = invoker.Invoke(dataObject, out invokeErrors);
+                    resultID = invoker.Invoke(dataObject, out ErrorResultTO invokeErrors);
                     errors.MergeErrors(invokeErrors);
                 }
             }
@@ -247,8 +246,7 @@ namespace Dev2.Runtime.ESB.Control
 
         private static void SetRemoteExecutionDataList(IDSFDataObject dataObject, IEsbExecutionContainer executionContainer, ErrorResultTO errors)
         {
-            var remoteContainer = executionContainer as RemoteWorkflowExecutionContainer;
-            if (remoteContainer != null)
+            if (executionContainer is RemoteWorkflowExecutionContainer remoteContainer)
             {
                 var fetchRemoteResource = remoteContainer.FetchRemoteResource(dataObject.ResourceID, dataObject.ServiceName, dataObject.IsDebugMode());
                 if (fetchRemoteResource != null)
@@ -275,8 +273,7 @@ namespace Dev2.Runtime.ESB.Control
             {
                 if (!isLocal)
                 {
-                    var remoteContainer = executionContainer as RemoteWorkflowExecutionContainer;
-                    if (remoteContainer != null)
+                    if (executionContainer is RemoteWorkflowExecutionContainer remoteContainer)
                     {
                         if (!remoteContainer.ServerIsUp())
                         {
@@ -291,9 +288,8 @@ namespace Dev2.Runtime.ESB.Control
                     Task.Factory.StartNew(() =>
                     {
                         Dev2Logger.Info("ASYNC EXECUTION USER CONTEXT IS [ " + Thread.CurrentPrincipal.Identity.Name + " ]", dataObject.ExecutionID.ToString());
-                        ErrorResultTO error;
                         clonedDataObject.Environment = shapeDefinitionsToEnvironment;
-                        executionContainer.Execute(out error, update);
+                        executionContainer.Execute(out ErrorResultTO error, update);
                         return clonedDataObject;
                     }).ContinueWith(task =>
                     {

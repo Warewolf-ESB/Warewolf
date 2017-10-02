@@ -67,13 +67,19 @@ namespace Dev2.Studio.Dock
         internal bool CanApply(DependencyObject container, object item)
         {
             if(TargetProperty == null || Binding == null)
+            {
                 return false;
+            }
 
-            if(container != null && TargetContainerType != null && !TargetContainerType.IsAssignableFrom(container.GetType()))
+            if (container != null && TargetContainerType != null && !TargetContainerType.IsAssignableFrom(container.GetType()))
+            {
                 return false;
+            }
 
-            if(item != null && SourceType != null && !SourceType.IsAssignableFrom(item.GetType()))
+            if (item != null && SourceType != null && !SourceType.IsAssignableFrom(item.GetType()))
+            {
                 return false;
+            }
 
             return true;
         }

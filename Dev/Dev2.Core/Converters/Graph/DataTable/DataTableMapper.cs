@@ -21,9 +21,8 @@ namespace Dev2.Converters.Graph.DataTable
         {
             VerifyArgument.IsNotNull("data", data);
 
-            var tmp = data as System.Data.DataTable;
 
-            if (tmp != null)
+            if (data is System.Data.DataTable tmp)
             {
                 string tblName = tmp.TableName;
 
@@ -31,9 +30,9 @@ namespace Dev2.Converters.Graph.DataTable
 
                 var result = new List<IPath>();
 
-                
+
                 foreach (DataColumn col in cols)
-                    
+
                 {
                     string colName = col.ColumnName;
                     result.Add(new DataTablePath(tblName, colName));

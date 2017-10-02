@@ -30,7 +30,11 @@ namespace Dev2.Common.Utils
                 Regex regex = transform.SearchRegex;
                 int[] groupNumbers = transform.GroupNumbers;
                 MatchCollection matches = regex.Matches(initial);
-                if (matches.Count == 0) continue;
+                if (matches.Count == 0)
+                {
+                    continue;
+                }
+
                 StringBuilder encrypted = new StringBuilder();
                 foreach (Match match in matches)
                 {

@@ -74,10 +74,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             IDSFDataObject result = ExecuteProcess();
 
             const string expected = "790";
-            string actual;
-            string error;
 
-            GetScalarValueFromEnvironment(result.Environment, "res", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "res", out string actual, out string error);
 
             // remove test datalist ;)
 
@@ -91,11 +89,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                            "[[resRecordSet().number]]", "[[recordSet(*).number]]", enRoundingType.Normal, "", "");
             IDSFDataObject result = ExecuteProcess();
 
-            //string expected = "790";
-            IList<string> actual;
-            string error;
-
-            GetRecordSetFieldValueFromDataList(result.Environment, "resRecordSet", "number", out actual, out error);
+            GetRecordSetFieldValueFromDataList(result.Environment, "resRecordSet", "number", out IList<string> actual, out string error);
 
             // remove test datalist ;)
             var actualVals = actual.Where(s => !string.IsNullOrEmpty(s)).ToList();
@@ -112,10 +106,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             IDSFDataObject result = ExecuteProcess();
 
             const string expected = "123.1";
-            string actual;
-            string error;
 
-            GetScalarValueFromEnvironment(result.Environment, "res", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "res", out string actual, out string error);
 
             Assert.AreEqual(expected, actual);
         }
@@ -128,10 +120,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             IDSFDataObject result = ExecuteProcess();
 
             const string expected = "123.000";
-            string actual;
-            string error;
 
-            GetScalarValueFromEnvironment(result.Environment, "res", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "res", out string actual, out string error);
 
             // remove test datalist ;)
 
@@ -146,13 +136,10 @@ namespace Dev2.Tests.Activities.ActivityTests
             IDSFDataObject result = ExecuteProcess();
 
             const string expected = "123.123";
-            string actual;
-            string error;
-            string systemError;
 
-            GetScalarValueFromEnvironment(result.Environment, GlobalConstants.ErrorPayload, out systemError, out error);
+            GetScalarValueFromEnvironment(result.Environment, GlobalConstants.ErrorPayload, out string systemError, out string error);
 
-            GetScalarValueFromEnvironment(result.Environment, "res", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "res", out string actual, out error);
 
             // remove test datalist ;)
 

@@ -36,3 +36,4 @@ using System.Runtime.CompilerServices;
 [assembly: InternalsVisibleTo("Dev2.Studio.Core.Tests")]
 [assembly: InternalsVisibleTo("Dev2.Core.Tests")]
 [assembly: InternalsVisibleTo("Dev2.Integration.Tests")]
+[assembly: InternalsVisibleTo("Dev2.TaskScheduler.Wrappers")]

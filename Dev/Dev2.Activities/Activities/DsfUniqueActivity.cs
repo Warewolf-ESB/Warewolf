@@ -174,7 +174,10 @@ namespace Dev2.Activities
                             var res = new DebugEvalResult(dataObject.Environment.ToStar(field), "", dataObject.Environment, update);
 
                             if (!hasErrors)
-                            AddDebugOutputItem(new DebugItemStaticDataParams("","",i.ToString(CultureInfo.InvariantCulture)));
+                            {
+                                AddDebugOutputItem(new DebugItemStaticDataParams("","",i.ToString(CultureInfo.InvariantCulture)));
+                            }
+
                             AddDebugOutputItem(res);
                         }
                         catch(Exception)

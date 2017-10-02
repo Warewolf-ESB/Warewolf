@@ -56,10 +56,9 @@ namespace Dev2.Runtime.ESB.Management.Services
             try
             {
                 Dev2Logger.Info("Save Resource Service", GlobalConstants.WarewolfInfo);
-                StringBuilder resourceDefinition;
 
 
-                values.TryGetValue("DbService", out resourceDefinition);
+                values.TryGetValue("DbService", out StringBuilder resourceDefinition);
 
                 IDatabaseService service = serializer.Deserialize<DatabaseService>(resourceDefinition);
                 

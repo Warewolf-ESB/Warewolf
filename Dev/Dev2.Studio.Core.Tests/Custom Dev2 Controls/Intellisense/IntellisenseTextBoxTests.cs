@@ -705,7 +705,10 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
             base.IsDropDownOpen = true;
             FilterType = enIntellisensePartType.JsonObject;
             if(e == null)
+            {
                 throw new ArgumentNullException(nameof(e));
+            }
+
             base.OnKeyDown(e);
         }
    

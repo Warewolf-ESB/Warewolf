@@ -40,8 +40,7 @@ namespace Dev2.Data.Decisions.Operations
                 {
                     try
                     {
-                        DateTime dt;
-                        if (DateTime.TryParse(c, out dt))
+                        if (DateTime.TryParse(c, out DateTime dt))
                         {
                             dtVal[pos] = dt;
                             isDateTimeCompare = true;

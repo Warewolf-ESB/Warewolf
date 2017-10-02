@@ -155,9 +155,8 @@ namespace Dev2.Activities.Designers2.Foreach
                 if(!String.IsNullOrEmpty(modelItemString))
                 {
                     var objectData = dataObject.GetData(modelItemString);
-                    var data = objectData as List<ModelItem>;
 
-                    if(data != null && data.Count > 1)
+                    if (objectData is List<ModelItem> data && data.Count > 1)
                     {
                         return true;
                     }

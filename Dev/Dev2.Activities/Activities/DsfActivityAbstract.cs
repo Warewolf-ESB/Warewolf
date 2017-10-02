@@ -126,8 +126,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             if (value != null)
             {
-                Guid rootID;
-                Guid.TryParse(value.ToString(), out rootID);
+                Guid.TryParse(value.ToString(), out Guid rootID);
 
                 if (executionID == rootID)
                 {

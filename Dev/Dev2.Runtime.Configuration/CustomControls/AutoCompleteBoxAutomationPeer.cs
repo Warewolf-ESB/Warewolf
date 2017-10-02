@@ -267,11 +267,10 @@ namespace System.Windows.Automation.Peers
         IRawElementProviderSimple[] ISelectionProvider.GetSelection()
         {
             object selectedItem = OwnerAutoCompleteBox.SelectionAdapter?.SelectedItem;
-            UIElement uie = selectedItem as UIElement;
-            if(uie != null)
+            if (selectedItem is UIElement uie)
             {
                 AutomationPeer peer = CreatePeerForElement(uie);
-                if(peer != null)
+                if (peer != null)
                 {
                     return new[] { ProviderFromPeer(peer) };
                 }

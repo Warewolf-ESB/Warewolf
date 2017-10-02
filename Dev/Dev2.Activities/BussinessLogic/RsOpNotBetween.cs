@@ -41,16 +41,13 @@ namespace Dev2.BussinessLogic
                 var fromval = iterator.FetchNextValue(@from);
                 var toVal = iterator.FetchNextValue(to);
 
-                DateTime fromDt;
-                if (DateTime.TryParse(fromval, out fromDt))
+                if (DateTime.TryParse(fromval, out DateTime fromDt))
                 {
-                    DateTime toDt;
-                    if (!DateTime.TryParse(toVal, out toDt))
+                    if (!DateTime.TryParse(toVal, out DateTime toDt))
                     {
                         throw new InvalidDataException(ErrorResource.IsBetweenDataTypeMismatch);
                     }
-                    DateTime recDateTime;
-                    if (DateTime.TryParse(a.ToString(), out recDateTime))
+                    if (DateTime.TryParse(a.ToString(), out DateTime recDateTime))
                     {
                         if (recDateTime > fromDt && recDateTime < toDt)
                         {
@@ -58,16 +55,13 @@ namespace Dev2.BussinessLogic
                         }
                     }
                 }
-                double fromNum;
-                if (double.TryParse(fromval, out fromNum))
+                if (double.TryParse(fromval, out double fromNum))
                 {
-                    double toNum;
-                    if (!double.TryParse(toVal, out toNum))
+                    if (!double.TryParse(toVal, out double toNum))
                     {
                         return false;
                     }
-                    double recNum;
-                    if (!double.TryParse(a.ToString(), out recNum))
+                    if (!double.TryParse(a.ToString(), out double recNum))
                     {
                         continue;
                     }

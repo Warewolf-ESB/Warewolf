@@ -25,8 +25,7 @@ namespace Dev2.Webs.Callbacks
         {
             try
             {
-                Uri theUri;
-                Uri.TryCreate(uri, UriKind.RelativeOrAbsolute, out theUri);
+                Uri.TryCreate(uri, UriKind.RelativeOrAbsolute, out Uri theUri);
                 using (var client = new WebClient())
                 {
                     await client.OpenReadTaskAsync(uri);

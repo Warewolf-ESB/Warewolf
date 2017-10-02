@@ -274,7 +274,11 @@ namespace Warewolf.Studio.ViewModels
             }
             set
             {
-                if (value == null) return;
+                if (value == null)
+                {
+                    return;
+                }
+
                 _selectedDll = value;
                 OnPropertyChanged(() => SelectedDll);
                 if (SelectedDll != null)
@@ -391,7 +395,10 @@ namespace Warewolf.Studio.ViewModels
                     src.Is32Bit = SelectedDll.Is32Bit;
                     Save(src);
                     if (RequestServiceNameViewModel.SingleEnvironmentExplorerViewModel != null)
+                    {
                         AfterSave(RequestServiceNameViewModel.SingleEnvironmentExplorerViewModel.Environments[0].ResourceId, src.Id);
+                    }
+
                     Path = src.ResourcePath;
                     src.Is32Bit = SelectedDll.Is32Bit;
                     _pluginSource = src;

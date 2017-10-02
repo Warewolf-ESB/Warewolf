@@ -68,8 +68,7 @@ namespace Dev2.MathOperations
 
         public void CreateCustomFunction(string functionName, List<string> args, List<string> argumentDescriptions, string description, Func<double[], double> function, IDev2CalculationManager calcManager)
         {
-            CustomCalculationFunction calcFunction;
-            if (CreateCustomFunction(functionName, function, out calcFunction))
+            if (CreateCustomFunction(functionName, function, out CustomCalculationFunction calcFunction))
             {
                 if (calcManager != null)
                 {

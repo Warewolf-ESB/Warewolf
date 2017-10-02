@@ -48,10 +48,9 @@ namespace Dev2.Activities.Designers2.CommandLine
 
             Action onError = () => IsCommandFileNameFocused = true;
 
-            string commandValue;
-            errors.AddError(CommandFileName.TryParseVariables(out commandValue, onError));
+            errors.AddError(CommandFileName.TryParseVariables(out string commandValue, onError));
 
-            if(string.IsNullOrWhiteSpace(commandValue))
+            if (string.IsNullOrWhiteSpace(commandValue))
             {
                 errors.Add(new ActionableErrorInfo(onError) { ErrorType = ErrorType.Critical, Message = string.Format(ErrorResource.PropertyMusHaveAValue, "Command") });
             }

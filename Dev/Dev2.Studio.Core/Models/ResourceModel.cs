@@ -644,7 +644,11 @@ namespace Dev2.Studio.Core.Models
 
         List<XElement> WriteErrors()
         {
-            if (Errors == null || Errors.Count == 0) return null;
+            if (Errors == null || Errors.Count == 0)
+            {
+                return null;
+            }
+
             var errorElements = new List<XElement>();
             foreach (var errorInfo in Errors)
             {
@@ -705,8 +709,7 @@ namespace Dev2.Studio.Core.Models
 
                 if (columnName == "HelpLink")
                 {
-                    Uri testUri;
-                    if (!Uri.TryCreate(HelpLink, UriKind.Absolute, out testUri))
+                    if (!Uri.TryCreate(HelpLink, UriKind.Absolute, out Uri testUri))
                     {
                         errMsg = "The help link is not in a valid format";
                         AddError(columnName, errMsg);

@@ -53,10 +53,14 @@ namespace Dev2.Runtime.DynamicProxy
         public DynamicProxyFactory(string wsdlUri, DynamicProxyFactoryOptions options)
         {
             if (wsdlUri == null)
+            {
                 throw new ArgumentNullException("wsdlUri");
+            }
 
             if (options == null)
+            {
                 throw new ArgumentNullException("options");
+            }
 
             this.wsdlUri = wsdlUri;
             this.options = options;
@@ -87,10 +91,13 @@ namespace Dev2.Runtime.DynamicProxy
 
             var results = new Collection<MetadataSection>();
             if (disco.Documents.Values != null)
+            {
                 foreach (var document in disco.Documents.Values)
                 {
                     AddDocumentToResults(document, results);
                 }
+            }
+
             metadataCollection = results;
         }
 
@@ -191,16 +198,18 @@ namespace Dev2.Runtime.DynamicProxy
 
             foreach (var importExtension in importer.WsdlImportExtensions)
             {
-                var dcConverter =
-                    importExtension as DataContractSerializerMessageContractImporter;
 
-                if (dcConverter != null)
+                if (importExtension is DataContractSerializerMessageContractImporter dcConverter)
                 {
                     if (options.FormatMode ==
                         DynamicProxyFactoryOptions.FormatModeOptions.XmlSerializer)
+                    {
                         dcConverter.Enabled = false;
+                    }
                     else
+                    {
                         dcConverter.Enabled = true;
+                    }
                 }
 
             }
@@ -296,7 +305,9 @@ namespace Dev2.Runtime.DynamicProxy
 
             // use the modified proxy code, if code modifier is set.
             if (options.CodeModifier != null)
+            {
                 proxyCode = options.CodeModifier(proxyCode);
+            }
         }
 
         void AddAssemblyReference(Assembly referencedAssembly,
@@ -328,9 +339,11 @@ namespace Dev2.Runtime.DynamicProxy
             }
 
             if (matchingEndpoint == null)
+            {
                 throw new ArgumentException(string.Format(
                     Constants.ErrorMessages.EndpointNotFound,
                     contractName, contractNamespace));
+            }
 
             return matchingEndpoint;
         }
@@ -379,31 +392,43 @@ namespace Dev2.Runtime.DynamicProxy
             foreach (var type in allTypes)
             {
                 // Is it an interface?
-                if (!type.IsInterface) continue;
+                if (!type.IsInterface)
+                {
+                    continue;
+                }
 
                 // Is it marked with ServiceContract attribute?
                 var attrs = type.GetCustomAttributes(
                     typeof(ServiceContractAttribute), false);
-                if ((attrs == null) || (attrs.Length == 0)) continue;
+                if ((attrs == null) || (attrs.Length == 0))
+                {
+                    continue;
+                }
 
                 // is it the required service contract?
                 var scAttr = (ServiceContractAttribute)attrs[0];
                 var cName = GetContractName(type, scAttr.Name, scAttr.Namespace);
 
                 if (string.Compare(cName.Name, contractName, true) != 0)
+                {
                     continue;
+                }
 
                 if (string.Compare(cName.Namespace, contractNamespace,
                             true) != 0)
+                {
                     continue;
+                }
 
                 contractType = type;
                 break;
             }
 
             if (contractType == null)
+            {
                 throw new ArgumentException(
                     Constants.ErrorMessages.UnknownContract);
+            }
 
             return contractType;
         }
@@ -450,9 +475,11 @@ namespace Dev2.Runtime.DynamicProxy
             }
 
             if (proxyType == null)
+            {
                 throw new DynamicProxyException(string.Format(
                             Constants.ErrorMessages.ProxyTypeNotFound,
                             contractType.FullName));
+            }
 
             return proxyType;
         }
@@ -498,9 +525,13 @@ namespace Dev2.Runtime.DynamicProxy
                 foreach (var error in importErrors)
                 {
                     if (error.IsWarning)
+                    {
                         importErrStr.AppendLine("Warning : " + error.Message);
+                    }
                     else
+                    {
                         importErrStr.AppendLine("Error : " + error.Message);
+                    }
                 }
 
                 return importErrStr.ToString();
@@ -514,7 +545,9 @@ namespace Dev2.Runtime.DynamicProxy
             {
                 var builder = new StringBuilder();
                 foreach (var error in compilerErrors)
+                {
                     builder.AppendLine(error.ToString());
+                }
 
                 return builder.ToString();
             }
@@ -524,11 +557,16 @@ namespace Dev2.Runtime.DynamicProxy
         private static IEnumerable<CompilerError> ToEnumerable(
                 CompilerErrorCollection collection)
         {
-            if (collection == null) return null;
+            if (collection == null)
+            {
+                return null;
+            }
 
             var errorList = new List<CompilerError>();
             foreach (CompilerError error in collection)
+            {
                 errorList.Add(error);
+            }
 
             return errorList;
         }

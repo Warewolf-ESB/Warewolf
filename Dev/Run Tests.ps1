@@ -603,22 +603,31 @@ function Start-Server([string]$ServerPath,[string]$ResourcesType) {
 }
 
 function Start-my.warewolf.io {
-    if ($ServerPath -eq "" -or !(Test-Path $ServerPath)) {
-        $ServerPath = Find-Warewolf-Server-Exe
+    if ($TestsPath.EndsWith("\")) {
+        $WebsPath = $TestsPath + "_PublishedWebsites\Dev2.Web"
+    } else {
+        $WebsPath = $TestsPath + "\_PublishedWebsites\Dev2.Web"
     }
-    $ServerFolderPath = (Get-Item $ServerPath).Directory.FullName
+    Write-Host Starting my.warewolf.io from $WebsPath
+    if (!(Test-Path $WebsPath)) {
+        Write-Warning "Webs not found at $WebsPath. Attempting to find the webs that was deployed to the server directory."
+        if ($ServerPath -eq "" -or !(Test-Path $ServerPath)) {
+            $ServerPath = Find-Warewolf-Server-Exe
+        }
+        $WebsPath = (Get-Item $ServerPath).Directory.FullName + "\_PublishedWebsites\Dev2.Web"
+    }
     Cleanup-ServerStudio
-    if (Test-Path "$ServerFolderPath\_PublishedWebsites\Dev2.Web") {
-        $WebsPath = "$ServerFolderPath\_PublishedWebsites\Dev2.Web"
+    if (Test-Path $WebsPath) {
         $IISExpressPath = "C:\Program Files (x86)\IIS Express\iisexpress.exe"
         if (!(Test-Path $IISExpressPath)) {
             Write-Warning "my.warewolf.io cannot be hosted. $IISExpressPath not found."
         } else {
+            Write-Host `"$IISExpressPath`" /path:`"$WebsPath`" /port:18405 /trace:error
             Start-Process -FilePath $IISExpressPath -ArgumentList "/path:`"$WebsPath`" /port:18405 /trace:error" -NoNewWindow -PassThru -RedirectStandardOutput "$env:programdata\Warewolf\Server Log\my.warewolf.io.log" -RedirectStandardError "$env:programdata\Warewolf\Server Log\my.warewolf.io.errors.log"
             Write-Host my.warewolf.io has started.
         }
     } else {
-        Write-Warning "my.warewolf.io cannot be hosted. Webs not found at $ServerFolderPath\_PublishedWebsites\Dev2.Web"
+        Write-Warning "my.warewolf.io cannot be hosted. Webs not found at $TestsPath\_PublishedWebsites\Dev2.Web or at $ServerFolderPath\_PublishedWebsites\Dev2.Web"
     }
 }
 
