@@ -403,8 +403,7 @@ namespace Dev2.Runtime.Hosting
 
         public void RemoveFromResourceActivityCache(Guid workspaceID, IResource resource)
         {
-            IResourceActivityCache parser;
-            if (_parsers != null && _parsers.TryGetValue(workspaceID, out parser))
+            if (_parsers != null && _parsers.TryGetValue(workspaceID, out IResourceActivityCache parser))
             {
                 if (resource != null)
                 {

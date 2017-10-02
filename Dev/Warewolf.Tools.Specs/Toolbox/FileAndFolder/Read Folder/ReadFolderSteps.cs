@@ -28,7 +28,11 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Read_Folder
         public ReadFolderSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
         {
-            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            if (scenarioContext == null)
+            {
+                throw new ArgumentNullException("scenarioContext");
+            }
+
             this.scenarioContext = scenarioContext;
         }
 
@@ -90,7 +94,9 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Read_Folder
             scenarioContext.Add("activity", folderRead);
             var viewModel = new ReadFolderDesignerViewModel(ModelItemUtils.CreateModelItem(folderRead));
             if (!scenarioContext.ContainsKey("viewModel"))
+            {
                 scenarioContext.Add("viewModel", viewModel);
+            }
         }
     }
 }

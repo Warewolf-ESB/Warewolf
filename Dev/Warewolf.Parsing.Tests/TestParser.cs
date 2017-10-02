@@ -19,8 +19,7 @@ namespace WarewolfParsingTest
         {
             var ast = EvaluationFunctions.parseLanguageExpression("[[a]]", 0);
             Assert.IsTrue(ast.IsScalarExpression);
-            var astval = ast as LanguageAST.LanguageExpression.ScalarExpression;
-            if (astval != null)
+            if (ast is LanguageAST.LanguageExpression.ScalarExpression astval)
             {
                 Assert.AreEqual(astval.Item, "a");
             }
@@ -35,8 +34,7 @@ namespace WarewolfParsingTest
         {
             var ast = EvaluationFunctions.parseLanguageExpression("[[rec().a]]", 0);
             Assert.IsTrue(ast.IsRecordSetExpression);
-            var astval = ast as LanguageAST.LanguageExpression.RecordSetExpression;
-            if (astval != null)
+            if (ast is LanguageAST.LanguageExpression.RecordSetExpression astval)
             {
                 Assert.AreEqual(astval.Item.Name, "rec");
                 Assert.AreEqual(astval.Item.Column, "a");
@@ -53,8 +51,7 @@ namespace WarewolfParsingTest
         {
             var ast = EvaluationFunctions.parseLanguageExpression("[[rec(*).a]]", 0);
             Assert.IsTrue(ast.IsRecordSetExpression);
-            var astval = ast as LanguageAST.LanguageExpression.RecordSetExpression;
-            if (astval != null)
+            if (ast is LanguageAST.LanguageExpression.RecordSetExpression astval)
             {
                 Assert.AreEqual(astval.Item.Name, "rec");
                 Assert.AreEqual(astval.Item.Column, "a");
@@ -71,8 +68,7 @@ namespace WarewolfParsingTest
         {
             var ast = EvaluationFunctions.parseLanguageExpression("[[rec(*)]]", 0);
             Assert.IsTrue(ast.IsRecordSetNameExpression);
-            var astval = ast as LanguageAST.LanguageExpression.RecordSetNameExpression;
-            if (astval != null)
+            if (ast is LanguageAST.LanguageExpression.RecordSetNameExpression astval)
             {
                 Assert.AreEqual(astval.Item.Name, "rec");
                 Assert.AreEqual(astval.Item.Index, LanguageAST.Index.Star);
@@ -88,8 +84,7 @@ namespace WarewolfParsingTest
         {
             var ast = EvaluationFunctions.parseLanguageExpression("[[rec()]]", 0);
             Assert.IsTrue(ast.IsRecordSetNameExpression);
-            var astval = ast as LanguageAST.LanguageExpression.RecordSetNameExpression;
-            if (astval != null)
+            if (ast is LanguageAST.LanguageExpression.RecordSetNameExpression astval)
             {
                 Assert.AreEqual(astval.Item.Name, "rec");
                 Assert.AreEqual(astval.Item.Index, LanguageAST.Index.Last);
@@ -198,8 +193,7 @@ namespace WarewolfParsingTest
 
             var ast = EvaluationFunctions.parseLanguageExpression("[[[[a]]]]", 0);
             Assert.IsTrue(ast.IsComplexExpression);
-            var astval = ast as LanguageAST.LanguageExpression.ComplexExpression;
-            if (astval != null)
+            if (ast is LanguageAST.LanguageExpression.ComplexExpression astval)
             {
                 Assert.IsNotNull(astval);
                 var data = astval.Item.ToArray();
@@ -222,8 +216,7 @@ namespace WarewolfParsingTest
 
             var ast = EvaluationFunctions.parseLanguageExpression("[[[[[[a]]]]]]", 0);
             Assert.IsTrue(ast.IsComplexExpression);
-            var astval = ast as LanguageAST.LanguageExpression.ComplexExpression;
-            if (astval != null)
+            if (ast is LanguageAST.LanguageExpression.ComplexExpression astval)
             {
                 Assert.IsNotNull(astval);
                 var data = astval.Item.ToArray();
@@ -248,8 +241,7 @@ namespace WarewolfParsingTest
 
             var ast = EvaluationFunctions.parseLanguageExpression("[[[[[[rec(1).a]]]]]]", 0);
             Assert.IsTrue(ast.IsComplexExpression);
-            var astval = ast as LanguageAST.LanguageExpression.ComplexExpression;
-            if (astval != null)
+            if (ast is LanguageAST.LanguageExpression.ComplexExpression astval)
             {
                 Assert.IsNotNull(astval);
                 var data = astval.Item.ToArray();
@@ -362,8 +354,7 @@ namespace WarewolfParsingTest
             Assert.IsTrue(ast.IsWarewolfAtomResult);
             var x = ast as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
             Assert.IsTrue(x != null && x.Item.IsInt);
-            var val = x.Item as DataStorage.WarewolfAtom.Int;
-            if (val != null)
+            if (x.Item is DataStorage.WarewolfAtom.Int val)
             {
                 Assert.AreEqual(2344, val.Item);
             }

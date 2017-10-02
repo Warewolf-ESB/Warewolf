@@ -117,8 +117,7 @@ namespace Dev2.Integration.Tests.Server_Refresh
             var permissionsStrings = groupRights.Split(new[] { ", " }, StringSplitOptions.RemoveEmptyEntries);
             foreach (var permissionsString in permissionsStrings)
             {
-                Permissions permission;
-                if (Enum.TryParse(permissionsString.Replace(" ", ""), true, out permission))
+                if (Enum.TryParse(permissionsString.Replace(" ", ""), true, out Permissions permission))
                 {
                     groupPermssions.Permissions |= permission;
                 }

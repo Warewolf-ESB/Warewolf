@@ -33,12 +33,10 @@ namespace Dev2.Validation
         {
             var value = GetValue();
 
-            string calculationExpression;
-            if (DataListUtil.IsCalcEvaluation(value, out calculationExpression))
+            if (DataListUtil.IsCalcEvaluation(value, out string calculationExpression))
             {
                 value = calculationExpression;
-                Token[] tokens;
-                _syntaxBuilder.Build(value, false, out tokens);
+                _syntaxBuilder.Build(value, false, out Token[] tokens);
 
                 if (_syntaxBuilder.EventLog != null && _syntaxBuilder.HasEventLogs)
                 {
@@ -46,7 +44,7 @@ namespace Dev2.Validation
                     return new ActionableErrorInfo(DoError) { Message = "Syntax Error An error occurred while parsing { " + value + " } It appears to be malformed" };
                 }
             }
-            
+
             return null;
         }
     }

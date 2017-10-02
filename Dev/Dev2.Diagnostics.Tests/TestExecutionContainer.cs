@@ -81,13 +81,12 @@ namespace Dev2.Diagnostics.Test
         public void PerfmonContainer_Ctor_WrappedMethods()
         {
             var cont = new Cont();
-            ErrorResultTO err;
 
             //------------Setup for test--------------------------
             var perfmonContainer = new PerfmonExecutionContainer(cont);
 
             //------------Execute Test---------------------------
-            perfmonContainer.Execute(out err, 3);
+            perfmonContainer.Execute(out ErrorResultTO err, 3);
             //------------Assert Results-------------------------
             Assert.AreEqual(1, cont.CallCount);
             Assert.AreEqual(perfmonContainer.InstanceInputDefinition, "bob");

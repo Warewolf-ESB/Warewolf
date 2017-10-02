@@ -105,7 +105,7 @@ namespace Dev2.Studio.InterfaceImplementors
             }
             else if (!InLiteralRegion(context.InputText, context.CaretPosition))
             {
-                var filteredResults = IntellisenseResults.Where(i => i.Option.DisplayValue.ToLower().StartsWith(searchText.ToLower()));
+                var filteredResults = IntellisenseResults.Where(i => i.Option.DisplayValue.ToLower(System.Globalization.CultureInfo.CurrentCulture).StartsWith(searchText.ToLower(System.Globalization.CultureInfo.CurrentCulture)));
                 results.AddRange(filteredResults);
             }
             return results;

@@ -334,14 +334,16 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                 NamespaceRegion.SomethingChanged += (sender, args) =>
                 {
                     if (args.Errors != null)
+                    {
                         Errors = args.Errors.Select(e => new ActionableErrorInfo
                         {
                             ErrorType = ErrorType.Critical,
                             Message = e
                         } as IActionableErrorInfo).ToList();
+                    }
+
                     var dotNetNamespaceRegion = sender as DotNetNamespaceRegion;
-                    var outputsRegion = dotNetNamespaceRegion?.Dependants.Single(region => region is OutputsRegion) as OutputsRegion;
-                    if (outputsRegion != null)
+                    if (dotNetNamespaceRegion?.Dependants.Single(region => region is OutputsRegion) is OutputsRegion outputsRegion)
                     {
                         if (dotNetNamespaceRegion.SelectedNamespace != null)
                         {
@@ -526,7 +528,11 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
         }
         private void AddItemPropertyChangeEvent(NotifyCollectionChangedEventArgs args)
         {
-            if (args.NewItems == null) return;
+            if (args.NewItems == null)
+            {
+                return;
+            }
+
             foreach (INotifyPropertyChanged item in args.NewItems)
             {
                 if (item != null)
@@ -544,7 +550,11 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
 
         private void RemoveItemPropertyChangeEvent(NotifyCollectionChangedEventArgs args)
         {
-            if (args.OldItems == null) return;
+            if (args.OldItems == null)
+            {
+                return;
+            }
+
             foreach (INotifyPropertyChanged item in args.OldItems)
             {
                 if (item != null)
@@ -695,6 +705,7 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
         {
             Errors = new List<IActionableErrorInfo>();
             if (hasError)
+            {
                 Errors = new List<IActionableErrorInfo>
                 {
                     new ActionableErrorInfo(new ErrorInfo
@@ -706,6 +717,7 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                         StackTrace = exception.StackTrace
                     }, () => { })
                 };
+            }
         }
 
         public void SetDisplayName(string outputFieldName)

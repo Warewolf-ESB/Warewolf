@@ -987,7 +987,9 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
             // log the trace for fetch ;)
             if (result != null)
+            {
                 Dev2Logger.Debug($"Fetched Definition For {resourceModelId} From Workspace {workspaceId}", "Warewolf Debug");
+            }
 
             return result;
         }
@@ -1010,7 +1012,9 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
             // log the trace for fetch ;)
             if (result != null)
+            {
                 Dev2Logger.Debug($"Fetched Definition For {resourceModelId} From Workspace {workspaceId}", "Warewolf Debug");
+            }
 
             return result;
         }
@@ -1033,7 +1037,9 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
             // log the trace for fetch ;)
             if (result != null)
+            {
                 Dev2Logger.Debug($"Fetched Definition For {resourceModelId} From Workspace {workspaceId}", "Warewolf Debug");
+            }
 
             return result;
         }

@@ -31,8 +31,7 @@ namespace Dev2.Runtime.WebServer
                 if (loc > 0)
                 {
                     var typeOf = serviceName.Substring(loc + 1);
-                    EmitionTypes myType;
-                    if (Enum.TryParse(typeOf.ToUpper(), out myType))
+                    if (Enum.TryParse(typeOf.ToUpper(), out EmitionTypes myType))
                     {
                         dataObject.ReturnType = myType;
                     }
@@ -170,9 +169,8 @@ namespace Dev2.Runtime.WebServer
         public static void SetResourceNameAndId(this IDSFDataObject dataObject, IResourceCatalog catalog, string serviceName, out IResource resource)
         {
             IResource localResource = null;
-            Guid resourceID;
 
-            if (Guid.TryParse(serviceName, out resourceID))
+            if (Guid.TryParse(serviceName, out Guid resourceID))
             {
                 localResource = catalog.GetResource(dataObject.WorkspaceID, resourceID);
                 if (localResource != null)

@@ -46,8 +46,7 @@ namespace Dev2.Runtime.ESB.Execution
             errors = new ErrorResultTO();
             _databaseServiceExecution.BeforeExecution(errors);
 
-            var databaseServiceExecution = _databaseServiceExecution as DatabaseServiceExecution;
-            if(databaseServiceExecution != null)
+            if (_databaseServiceExecution is DatabaseServiceExecution databaseServiceExecution)
             {
                 databaseServiceExecution.InstanceInputDefinitions = InstanceInputDefinition;
                 databaseServiceExecution.InstanceOutputDefintions = InstanceOutputDefinition;

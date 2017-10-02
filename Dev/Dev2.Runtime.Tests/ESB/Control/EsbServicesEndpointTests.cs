@@ -182,8 +182,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             //---------------Assert Precondition----------------
             Assert.IsNotNull(esbServicesEndpoint);
             //---------------Execute Test ----------------------
-            ErrorResultTO err;
-            esbServicesEndpoint.ExecuteSubRequest(dataObj.Object, Guid.NewGuid(), "", "", out err, 1, true);
+            esbServicesEndpoint.ExecuteSubRequest(dataObj.Object, Guid.NewGuid(), "", "", out ErrorResultTO err, 1, true);
 
             //---------------Test Result -----------------------
             dataObj.Verify(o => o.IsRemoteWorkflow(), Times.Once);
@@ -214,8 +213,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             Assert.IsNotNull(esbServicesEndpoint);
             //---------------Execute Test ----------------------
 
-            ErrorResultTO err;
-            esbServicesEndpoint.ExecuteSubRequest(dataObj.Object, Guid.NewGuid(), "", "", out err, 1, true);
+            esbServicesEndpoint.ExecuteSubRequest(dataObj.Object, Guid.NewGuid(), "", "", out ErrorResultTO err, 1, true);
 
             //---------------Test Result -----------------------
             dataObj.Verify(o => o.IsRemoteWorkflow(), Times.Once);
@@ -243,8 +241,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             //---------------Execute Test ----------------------
             try
             {
-                ErrorResultTO err;
-                esbServicesEndpoint.ExecuteLogErrorRequest(dataObj.Object, It.IsAny<Guid>(), "http://example.com/", out err, 1);
+                esbServicesEndpoint.ExecuteLogErrorRequest(dataObj.Object, It.IsAny<Guid>(), "http://example.com/", out ErrorResultTO err, 1);
             }
             catch (Exception ex)
             {

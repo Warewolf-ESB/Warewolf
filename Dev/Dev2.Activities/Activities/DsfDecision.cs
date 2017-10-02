@@ -132,7 +132,7 @@ namespace Dev2.Activities
             {
                 if (And)
                 {
-                    if(results.Any(b => b == false))
+                    if(results.Any(b => !b))
                     {
                         resultval = false;
                     }
@@ -219,8 +219,7 @@ namespace Dev2.Activities
             try
             {
                 Dev2DecisionStack dds = Conditions;
-                ErrorResultTO error;
-                string userModel = dds.GenerateUserFriendlyModel(env, dds.Mode, out error);
+                string userModel = dds.GenerateUserFriendlyModel(env, dds.Mode, out ErrorResultTO error);
                 allErrors.MergeErrors(error);
 
                 foreach (Dev2Decision dev2Decision in dds.TheStack)
@@ -311,13 +310,16 @@ namespace Dev2.Activities
         private static string GetResultString(string theResult,  Dev2DecisionStack dds)
         {
             var resultString = theResult;
-            if(theResult == "True")
+            if (theResult == "True")
             {
                 resultString = dds.TrueArmText;
             }
-            else if(theResult == "False")
+            else
             {
-                resultString = dds.FalseArmText;
+                if (theResult == "False")
+                {
+                    resultString = dds.FalseArmText;
+                }
             }
             return resultString;
         }

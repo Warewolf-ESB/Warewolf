@@ -25,7 +25,10 @@ namespace Dev2.Activities.DropBox2016
         public string CreateValidFolder()
         {
             if (DirectoryExists())
+            {
                 return GetDirectoryName();
+            }
+
             var directoryInfo = Directory.CreateDirectory(GetDirectoryName());
             return directoryInfo.FullName;
         }

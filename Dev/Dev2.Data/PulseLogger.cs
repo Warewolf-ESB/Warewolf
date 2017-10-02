@@ -17,7 +17,7 @@ using Dev2.Instrumentation;
 
 namespace Dev2.Data
 {
-    public class PulseLogger : IPulseLogger
+    public class PulseLogger : IPulseLogger, IDisposable
     {
         readonly Timer _timer;
 
@@ -25,8 +25,7 @@ namespace Dev2.Data
         {
             Interval = intervalMs;
             _timer = new Timer(Interval);
-            _timer.Elapsed += _timer_Elapsed;
-       
+            _timer.Elapsed += _timer_Elapsed;       
         }
 
         void _timer_Elapsed(object sender, ElapsedEventArgs e)
@@ -66,6 +65,11 @@ namespace Dev2.Data
                 return false;
             }
             
+        }
+
+        public void Dispose()
+        {
+            _timer.Dispose();
         }
 
         public double Interval { get; private set; }

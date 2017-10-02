@@ -340,8 +340,7 @@ namespace Dev2.Data.Tests.Parsers
             Dev2DataLanguageParseError error = new Dev2DataLanguageParseError("Error", 1, 5, enIntellisenseErrorCode.SyntaxError);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            var invoke = privateObject.Invoke("AddErrorToResults", true, "rec().Name", error, false) as IntellisenseResult;
-            if (invoke != null)
+            if (privateObject.Invoke("AddErrorToResults", true, "rec().Name", error, false) is IntellisenseResult invoke)
             {
                 Assert.AreEqual(5, invoke.EndIndex);
                 Assert.AreEqual(enIntellisenseErrorCode.SyntaxError, invoke.ErrorCode);
@@ -366,8 +365,7 @@ namespace Dev2.Data.Tests.Parsers
             Dev2DataLanguageParseError error = new Dev2DataLanguageParseError("Error", 1, 5, enIntellisenseErrorCode.SyntaxError);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            var invoke = privateObject.Invoke("AddErrorToResults", false, "rec().Name", error, false) as IntellisenseResult;
-            if (invoke != null)
+            if (privateObject.Invoke("AddErrorToResults", false, "rec().Name", error, false) is IntellisenseResult invoke)
             {
                 //---------------Test Result -----------------------
                 Assert.AreEqual(5, invoke.EndIndex);

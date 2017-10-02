@@ -36,7 +36,10 @@ namespace Dev2.TaskScheduler.Wrappers
             get
             {
                 if(_nativeObject.ActivityId != null)
+                {
                     return _nativeObject.ActivityId.Value.ToString();
+                }
+
                 return "";
             }
         }

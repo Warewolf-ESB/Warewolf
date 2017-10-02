@@ -15,7 +15,7 @@ using Microsoft.Win32.TaskScheduler;
 
 namespace Dev2.Common.Interfaces.WindowsTaskScheduler.Wrappers
 {
-    public interface ITaskFolder : IDisposable, IWrappedObject<TaskFolder>
+    public interface ITaskFolder : IWrappedObject<TaskFolder>
     {
         /// <summary>
         ///     Gets the name that is used to identify the folder that contains a task.

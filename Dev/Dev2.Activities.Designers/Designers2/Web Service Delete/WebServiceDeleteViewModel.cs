@@ -281,7 +281,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Delete
         DependencyProperty.Register("WorstError", typeof(ErrorType), typeof(WebServiceDeleteViewModel), new PropertyMetadata(ErrorType.None));
 
         bool _generateOutputsVisible;
-        private IServiceInputBuilder _builder;
+        private readonly IServiceInputBuilder _builder;
 
         public DelegateCommand TestInputCommand { get; set; }
 
@@ -408,7 +408,9 @@ namespace Dev2.Activities.Designers2.Web_Service_Delete
         {
             Errors = new List<IActionableErrorInfo>();
             if (hasError)
+            {
                 Errors = new List<IActionableErrorInfo> { new ActionableErrorInfo(new ErrorInfo() { ErrorType = ErrorType.Critical, FixData = "", FixType = FixType.None, Message = exception.Message, StackTrace = exception.StackTrace }, () => { }) };
+            }
         }
 
         public void ValidateTestComplete()

@@ -120,7 +120,10 @@ namespace Warewolf.Core
                 return false;
             }
             if (obj.GetHashCode() != GetHashCode())
+            {
                 return false;
+            }
+
             bool eq = true;
             var other = obj as WebServiceDefinition;
             var headers = Headers;
@@ -186,7 +189,10 @@ namespace Warewolf.Core
         {
             bool eq = true;
             if (otherHeaders == null && headers == null)
+            {
                 return true;
+            }
+
             if (otherHeaders != null && headers != null)
             {
                 if (otherHeaders.Count == headers.Count)

@@ -124,8 +124,7 @@ namespace Dev2.Runtime.Hosting
 
                 var typeOf = xe.AttributeSafe("ResourceType");
 
-                enSourceType sourceType;
-                src.Type = !Enum.TryParse(typeOf, out sourceType) ? enSourceType.Unknown : sourceType;
+                src.Type = !Enum.TryParse(typeOf, out enSourceType sourceType) ? enSourceType.Unknown : sourceType;
 
                 src.ConnectionString = xe.AttributeSafe("ConnectionString");
                 var tmpUri = xe.AttributeSafe("Uri");
@@ -162,9 +161,8 @@ namespace Dev2.Runtime.Hosting
                     ServiceAction sa = new ServiceAction { Name = action.AttributeSafe("Name"), ResourceDefinition = serviceData };
 
                     // Set service action ;)
-                    enActionType actionType;
                     var typeOf = action.AttributeSafe("Type");
-                    if(Enum.TryParse(typeOf, out actionType))
+                    if (Enum.TryParse(typeOf, out enActionType actionType))
                     {
                         sa.ActionType = actionType;
                     }
@@ -201,8 +199,7 @@ namespace Dev2.Runtime.Hosting
                     {
                         if(sa.ActionType == enActionType.InvokeStoredProc)
                         {
-                            int timeout;
-                            Int32.TryParse(action.AttributeSafe("CommandTimeout"), out timeout);
+                            Int32.TryParse(action.AttributeSafe("CommandTimeout"), out int timeout);
                             sa.CommandTimeout = timeout;
                         }
 
@@ -221,8 +218,7 @@ namespace Dev2.Runtime.Hosting
 
                             foreach(var inputItem in inputCollection)
                             {
-                                bool emptyToNull;
-                                bool.TryParse(inputItem.AttributeSafe("EmptyToNull"), out emptyToNull);
+                                bool.TryParse(inputItem.AttributeSafe("EmptyToNull"), out bool emptyToNull);
 
                                 ServiceActionInput sai = new ServiceActionInput
                                 {
@@ -244,8 +240,7 @@ namespace Dev2.Runtime.Hosting
                                 {
                                     Validator v = new Validator();
 
-                                    enValidationType validatorType;
-                                    v.ValidatorType = !Enum.TryParse(validator.AttributeSafe("Type"), out validatorType) ? enValidationType.Required : validatorType;
+                                    v.ValidatorType = !Enum.TryParse(validator.AttributeSafe("Type"), out enValidationType validatorType) ? enValidationType.Required : validatorType;
 
                                     sai.Validators.Add(v);
                                 }

@@ -11,8 +11,7 @@ namespace Dev2.Activities.Designers2.Core
         {
             try
             {
-                var xamDataTreeNodeControl = values[0] as XamDataTreeNodeControl;
-                if (xamDataTreeNodeControl != null)
+                if (values[0] is XamDataTreeNodeControl xamDataTreeNodeControl)
                 {
                     return (double)values[1] - xamDataTreeNodeControl.Node.Manager.Level * 21 - 35;
                 }

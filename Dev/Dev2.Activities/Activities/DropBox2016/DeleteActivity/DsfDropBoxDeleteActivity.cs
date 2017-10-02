@@ -15,14 +15,10 @@ using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
 using Warewolf.Resource.Errors;
 
-
-
-
-
 namespace Dev2.Activities.DropBox2016.DeleteActivity
 {
     [ToolDescriptorInfo("Dropbox", "Delete", ToolType.Native, "8AC94835-0A28-4166-A53A-D7B07730C135", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Storage: Dropbox", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Dropbox_Delete")]
-    public class DsfDropBoxDeleteActivity : DsfBaseActivity
+    public class DsfDropBoxDeleteActivity : DsfBaseActivity, IDisposable
     {
         private DropboxClient _client;
         protected Exception Exception;
@@ -65,19 +61,22 @@ namespace Dev2.Activities.DropBox2016.DeleteActivity
             DropboxSingleExecutor = new DropboxDelete(evaluatedValues["DeletePath"]);
             _dropboxClientWrapper = _dropboxClientWrapper ?? new DropboxClientWrapper(GetClient());
             var dropboxExecutionResult = DropboxSingleExecutor.ExecuteTask(_dropboxClientWrapper);
-            var dropboxSuccessResult = dropboxExecutionResult as DropboxDeleteSuccessResult;
-            if (dropboxSuccessResult != null)
+            if (dropboxExecutionResult is DropboxDeleteSuccessResult dropboxSuccessResult)
             {
                 dropboxSuccessResult.GerFileMetadata();
                 return new List<string> { GlobalConstants.DropBoxSuccess };
             }
-            var dropboxFailureResult = dropboxExecutionResult as DropboxFailureResult;
-            if (dropboxFailureResult != null)
+            if (dropboxExecutionResult is DropboxFailureResult dropboxFailureResult)
             {
                 Exception = dropboxFailureResult.GetException();
             }
             var executionError = Exception.InnerException?.Message ?? Exception.Message;
             throw new Exception(executionError);
+        }
+
+        public void Dispose()
+        {
+            _client.Dispose();
         }
 
         #region Overrides of DsfNativeActivity<string>

@@ -115,7 +115,10 @@ namespace Dev2.Activities.Designers2.Core
             get
             {
                 if (UpdateContentEnabled())
+                {
                     return false;
+                }
+
                 return true;
             }
         }
@@ -166,7 +169,9 @@ namespace Dev2.Activities.Designers2.Core
         protected override void OnKeyDown(KeyEventArgs e)
         {
             if (e.Key == Key.Return)
+            {
                 e.Handled = true;
+            }
         }
 
         protected override void OnPreviewMouseLeftButtonDown(MouseButtonEventArgs e)
@@ -182,8 +187,7 @@ namespace Dev2.Activities.Designers2.Core
         void ToggleView(MouseButtonEventArgs eventArgs)
         {
             var originalSource = eventArgs.OriginalSource;
-            var fe = originalSource as FrameworkElement;
-            if (fe != null && (fe.TemplatedParent is ToggleButton || fe.TemplatedParent is ActivityDesignerButton))
+            if (originalSource is FrameworkElement fe && (fe.TemplatedParent is ToggleButton || fe.TemplatedParent is ActivityDesignerButton))
             {
                 return;
             }
@@ -223,8 +227,7 @@ namespace Dev2.Activities.Designers2.Core
         {
             if (!_isSetFocusActionSet)
             {
-                var vm = DataContext as ActivityDesignerViewModel;
-                if (vm != null)
+                if (DataContext is ActivityDesignerViewModel vm)
                 {
                     vm.SetIntialFocusAction(SetInitialiFocus);
                     _isSetFocusActionSet = true;

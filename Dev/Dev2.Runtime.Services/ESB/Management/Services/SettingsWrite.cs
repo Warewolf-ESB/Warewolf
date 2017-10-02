@@ -43,9 +43,8 @@ namespace Dev2.Runtime.ESB.Management.Services
                 throw new InvalidDataException(ErrorResource.EmptyValuesPassed);
             }
 
-            StringBuilder settingsJson;
-            values.TryGetValue("Settings", out settingsJson);
-            if(settingsJson == null || settingsJson.Length == 0)
+            values.TryGetValue("Settings", out StringBuilder settingsJson);
+            if (settingsJson == null || settingsJson.Length == 0)
             {
                 throw new InvalidDataException("Error: Unable to parse values.");
             }

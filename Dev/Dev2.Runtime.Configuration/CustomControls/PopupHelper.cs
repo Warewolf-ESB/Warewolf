@@ -137,12 +137,7 @@ namespace System.Windows.Controls
  || OutsidePopupCanvas == null
 #endif
  || Application.Current == null
-#if SILVERLIGHT
- || Application.Current.Host == null
-                || Application.Current.Host.Content == null
-#endif
-                
- || false)
+)
             
             {
                 return;

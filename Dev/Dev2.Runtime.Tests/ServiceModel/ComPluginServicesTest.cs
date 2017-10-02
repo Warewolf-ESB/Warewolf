@@ -190,8 +190,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             //------------Execute Test---------------------------
             try
             {
-                string serializedResult;
-                pluginServices.Test(serviceDef, out serializedResult);
+                pluginServices.Test(serviceDef, out string serializedResult);
             }
             catch(Exception e)
             {
@@ -210,8 +209,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             //------------Setup for test--------------------------
             var services = new ComPluginServicesMock();
             //------------Execute Test---------------------------
-            string serializedResult;
-            var result = services.Test(null, out serializedResult);
+            var result = services.Test(null, out string serializedResult);
             //------------Assert Results-------------------------
             Assert.IsTrue(result[0].HasErrors);
         }
@@ -222,8 +220,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             //------------Setup for test--------------------------
             var services = new ComPluginServicesMock();
             //------------Execute Test---------------------------
-            string serializedResult;
-            var result = services.Test("xxx", out serializedResult);
+            var result = services.Test("xxx", out string serializedResult);
             //------------Assert Results-------------------------
             Assert.IsTrue(result[0].HasErrors);
         }

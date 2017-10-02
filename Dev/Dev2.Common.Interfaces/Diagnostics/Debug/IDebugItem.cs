@@ -18,7 +18,8 @@ namespace Dev2.Common.Interfaces.Diagnostics.Debug
     {
         List<IDebugItemResult> ResultsList { get; set; }
         bool Contains(string filterText);
-        void Add(IDebugItemResult itemToAdd, bool isDeserialize = false);
+        void Add(IDebugItemResult itemToAdd, bool isDeserialize);
+        void Add(IDebugItemResult itemToAdd);
         void AddRange(List<IDebugItemResult> itemsToAdd);
         IList<IDebugItemResult> FetchResultsList();
         void FlushStringBuilder();

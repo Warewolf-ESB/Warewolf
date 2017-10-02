@@ -34,9 +34,8 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             ExecuteMessage msg = new ExecuteMessage { HasError = false };
 
-            StringBuilder tmp;
-            values.TryGetValue("ResourcePath", out tmp);
-            if(tmp != null)
+            values.TryGetValue("ResourcePath", out StringBuilder tmp);
+            if (tmp != null)
             {
                 filePath = tmp.ToString();
             }

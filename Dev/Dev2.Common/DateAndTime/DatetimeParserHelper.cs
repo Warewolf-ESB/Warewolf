@@ -12,8 +12,7 @@ namespace Dev2.Common.DateAndTime
         {
             bool nothingDied = true;
 
-            int numericData;
-            if (int.TryParse(data, NumberStyles.None, null, out numericData))
+            if (int.TryParse(data, NumberStyles.None, null, out int numericData))
             {
                 if (!treatAsTime)
                 {
@@ -32,8 +31,7 @@ namespace Dev2.Common.DateAndTime
         {
             bool nothingDied = true;
 
-            int numericData;
-            if (int.TryParse(data, NumberStyles.None, null, out numericData) && numericData >= 1 && numericData <= 365)
+            if (int.TryParse(data, NumberStyles.None, null, out int numericData) && numericData >= 1 && numericData <= 365)
             {
                 //nothing to do since nothignDied is already true
             }
@@ -49,8 +47,7 @@ namespace Dev2.Common.DateAndTime
         {
             bool nothingDied = true;
 
-            int numericData;
-            if (int.TryParse(data, NumberStyles.None, null, out numericData))
+            if (int.TryParse(data, NumberStyles.None, null, out int numericData))
             {
                 if (!treatAsTime)
                 {
@@ -84,8 +81,7 @@ namespace Dev2.Common.DateAndTime
         {
             bool nothingDied = true;
 
-            int numericData;
-            if (int.TryParse(data, NumberStyles.None, null, out numericData))
+            if (int.TryParse(data, NumberStyles.None, null, out int numericData))
             {
                 if (!treatAsTime)
                 {
@@ -104,8 +100,7 @@ namespace Dev2.Common.DateAndTime
         {
             bool nothingDied = true;
 
-            int numericData;
-            if (int.TryParse(data, NumberStyles.None, null, out numericData))
+            if (int.TryParse(data, NumberStyles.None, null, out int numericData))
             {
                 if (!treatAsTime)
                 {
@@ -124,8 +119,7 @@ namespace Dev2.Common.DateAndTime
         {
             bool nothingDied = true;
 
-            int numericData;
-            if (int.TryParse(data, NumberStyles.None, null, out numericData))
+            if (int.TryParse(data, NumberStyles.None, null, out int numericData))
             {
                 if (!treatAsTime)
                 {
@@ -144,8 +138,7 @@ namespace Dev2.Common.DateAndTime
         {
             bool nothingDied = true;
 
-            int numericData;
-            if (data.Length == 2 && int.TryParse(data, out numericData))
+            if (data.Length == 2 && int.TryParse(data, out int numericData))
             {
                 if (!treatAsTime)
                 {
@@ -164,8 +157,7 @@ namespace Dev2.Common.DateAndTime
         {
             bool nothingDied = true;
 
-            int numericData;
-            if (int.TryParse(data, NumberStyles.None, null, out numericData))
+            if (int.TryParse(data, NumberStyles.None, null, out int numericData))
             {
                 if (!treatAsTime)
                 {
@@ -184,8 +176,7 @@ namespace Dev2.Common.DateAndTime
         {
             bool nothingDied = true;
 
-            int numericData;
-            if (int.TryParse(data, NumberStyles.None, null, out numericData))
+            if (int.TryParse(data, NumberStyles.None, null, out int numericData))
             {
                 if (!treatAsTime)
                 {
@@ -204,8 +195,7 @@ namespace Dev2.Common.DateAndTime
         {
             bool nothingDied = true;
 
-            int numericData;
-            if (int.TryParse(data, NumberStyles.None, null, out numericData))
+            if (int.TryParse(data, NumberStyles.None, null, out int numericData))
             {
                 if (!treatAsTime)
                 {

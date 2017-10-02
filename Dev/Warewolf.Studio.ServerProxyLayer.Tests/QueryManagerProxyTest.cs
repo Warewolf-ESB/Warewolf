@@ -439,7 +439,7 @@ namespace Warewolf.Studio.ServerProxyLayer.Test
             env.Setup(a => a.IsConnected).Returns(true);
             comms.Setup(a => a.CreateController("FetchExplorerItemsService")).Returns(controller.Object);
             var queryManagerProxy = new QueryManagerProxy(comms.Object, env.Object);
-            controller.Setup(a => a.ExecuteCompressedCommandAsync<IExplorerItem>(env.Object, It.IsAny<Guid>())).Returns(Task.Delay(40000).ContinueWith(t => new Mock<IExplorerItem>().Object));
+            controller.Setup(a => a.ExecuteCompressedCommandAsync<IExplorerItem>(env.Object, It.IsAny<Guid>())).Returns(Task.Delay(70000).ContinueWith(t => new Mock<IExplorerItem>().Object));
             var mockPopupController = new Mock<IPopupController>();
             mockPopupController.Setup(popup => popup.Show(It.IsAny<string>(), It.IsAny<string>(), MessageBoxButton.OK, MessageBoxImage.Warning, "", false, false, true, false, false, false)).Returns(MessageBoxResult.OK);
             CustomContainer.Register(mockPopupController.Object);
@@ -466,7 +466,7 @@ namespace Warewolf.Studio.ServerProxyLayer.Test
             env.Setup(e => e.IsLocalHost).Returns(true);
             comms.Setup(a => a.CreateController("FetchExplorerItemsService")).Returns(controller.Object);
             var queryManagerProxy = new QueryManagerProxy(comms.Object, env.Object);
-            controller.Setup(a => a.ExecuteCompressedCommandAsync<IExplorerItem>(env.Object, It.IsAny<Guid>())).Returns(Task.Delay(40000).ContinueWith(t => new Mock<IExplorerItem>().Object));
+            controller.Setup(a => a.ExecuteCompressedCommandAsync<IExplorerItem>(env.Object, It.IsAny<Guid>())).Returns(Task.Delay(70000).ContinueWith(t => new Mock<IExplorerItem>().Object));
             var mockPopupController = new Mock<IPopupController>();
             mockPopupController.Setup(popup => popup.Show(It.IsAny<string>(), It.IsAny<string>(), MessageBoxButton.OK, MessageBoxImage.Warning, "", false, false, true, false, false, false)).Returns(MessageBoxResult.OK);
             CustomContainer.Register(mockPopupController.Object);

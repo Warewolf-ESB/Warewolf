@@ -51,7 +51,10 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
             inputs.AddRange(serviceInputs);
             Inputs = inputs;
             if (inputsFromModel == null)
+            {
                 UpdateOnActionSelection();
+            }
+
             IsEnabled = action?.SelectedAction != null;
         }
 
@@ -69,7 +72,11 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
 
         private void AddItemPropertyChangeEvent(NotifyCollectionChangedEventArgs args)
         {
-            if (args.NewItems == null) return;
+            if (args.NewItems == null)
+            {
+                return;
+            }
+
             foreach (INotifyPropertyChanged item in args.NewItems)
             {
                 if (item != null)
@@ -86,7 +93,11 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
 
         private void RemoveItemPropertyChangeEvent(NotifyCollectionChangedEventArgs args)
         {
-            if (args.OldItems == null) return;
+            if (args.OldItems == null)
+            {
+                return;
+            }
+
             foreach (INotifyPropertyChanged item in args.OldItems)
             {
                 if (item != null)
@@ -185,8 +196,7 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
 
         public void RestoreRegion(IToolRegion toRestore)
         {
-            var region = toRestore as DotNetInputRegionClone;
-            if (region != null)
+            if (toRestore is DotNetInputRegionClone region)
             {
                 Inputs.Clear();
                 if (region.Inputs != null)

@@ -111,9 +111,11 @@ namespace Dev2.Runtime.WebServer.Handlers
             dataObject.SetEmitionType(serviceName, headers);
             dataObject.SetupForTestExecution(webRequest, serviceName, headers);
             if (dataObject.ServiceName == null)
+            {
                 dataObject.ServiceName = serviceName;
-            IResource resource;
-            dataObject.SetResourceNameAndId(_resourceCatalog, serviceName, out resource);
+            }
+
+            dataObject.SetResourceNameAndId(_resourceCatalog, serviceName, out IResource resource);
             dataObject.SetTestResourceIds(_resourceCatalog, webRequest, serviceName);
             dataObject.WebUrl = webRequest.WebServerUrl;
             var serializer = new Dev2JsonSerializer();

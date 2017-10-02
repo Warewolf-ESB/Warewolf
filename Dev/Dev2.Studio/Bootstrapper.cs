@@ -94,8 +94,7 @@ namespace Dev2
         {
             if(_serverServiceStartedFromStudio)
             {
-                var app = Application.Current as IApp;
-                if(app != null)
+                if (Application.Current is IApp app)
                 {
                     app.ShouldRestart = true;
                 }
@@ -180,7 +179,10 @@ namespace Dev2
         {
             var sysUri = new Uri(AppDomain.CurrentDomain.BaseDirectory);
 
-            if(IsLocal(sysUri)) return;
+            if(IsLocal(sysUri))
+            {
+                return;
+            }
 
             var popup = new PopupController
                 {

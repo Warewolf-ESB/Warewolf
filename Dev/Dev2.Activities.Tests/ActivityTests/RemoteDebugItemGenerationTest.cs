@@ -68,16 +68,13 @@ namespace Dev2.Tests.Activities.ActivityTests
             res.Setup(a => a.ResourceName).Returns("bob");
             cat.Setup(a => a.GetResource(Guid.Empty, It.IsAny<Guid>())).Returns(res.Object);
             act.ResourceCatalog = cat.Object;
-            List<DebugItem> inRes;
-            List<DebugItem> outRes;
 
             var obj = CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
-                                                                ActivityStrings.DebugDataListWithData, out inRes, out outRes, true);
+                                                                ActivityStrings.DebugDataListWithData, out List<DebugItem> inRes, out List<DebugItem> outRes, true);
 
             IDSFDataObject dObj = obj as IDSFDataObject;
-            Guid id;
             Assert.IsNotNull(dObj);
-            Guid.TryParse(dObj.RemoteInvokerID, out id);
+            Guid.TryParse(dObj.RemoteInvokerID, out Guid id);
             var msgs = RemoteDebugMessageRepo.Instance.FetchDebugItems(id);
             // remove test datalist ;)
             Assert.AreEqual(1, msgs.Count);
@@ -93,16 +90,12 @@ namespace Dev2.Tests.Activities.ActivityTests
             cat.Setup(a => a.GetResource(Guid.Empty, It.IsAny<Guid>())).Returns(res.Object);
             act.ResourceCatalog = cat.Object;
 
-            List<DebugItem> inRes;
-            List<DebugItem> outRes;
-
             var obj = CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
-                                                                ActivityStrings.DebugDataListWithData, out inRes, out outRes, true);
+                                                                ActivityStrings.DebugDataListWithData, out List<DebugItem> inRes, out List<DebugItem> outRes, true);
 
             IDSFDataObject dObj = obj as IDSFDataObject;
             Assert.IsNotNull(dObj);
-            Guid id;
-            Guid.TryParse(dObj.RemoteInvokerID, out id);
+            Guid.TryParse(dObj.RemoteInvokerID, out Guid id);
             var msgs = RemoteDebugMessageRepo.Instance.FetchDebugItems(id);
             var serialiser = new Dev2JsonSerializer();
             var tmp = serialiser.SerializeToBuilder(msgs);
@@ -124,16 +117,13 @@ namespace Dev2.Tests.Activities.ActivityTests
             res.Setup(a => a.ResourceName).Returns("bob");
             cat.Setup(a => a.GetResource(Guid.Empty, It.IsAny<Guid>())).Returns(res.Object);
             act.ResourceCatalog = cat.Object;
-            List<DebugItem> inRes;
-            List<DebugItem> outRes;
 
             var obj = CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
-                                                                ActivityStrings.DebugDataListWithData, out inRes, out outRes, true);
+                                                                ActivityStrings.DebugDataListWithData, out List<DebugItem> inRes, out List<DebugItem> outRes, true);
 
             IDSFDataObject dObj = obj as IDSFDataObject;
             Assert.IsNotNull(dObj);
-            Guid id;
-            Guid.TryParse(dObj.RemoteInvokerID, out id);
+            Guid.TryParse(dObj.RemoteInvokerID, out Guid id);
 
             FetchRemoteDebugMessages frm = new FetchRemoteDebugMessages();
 

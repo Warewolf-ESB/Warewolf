@@ -96,7 +96,7 @@ namespace Dev2.Studio.Core
             return result.Message;
         }
         
-        public async Task<IExplorerItem> Load(bool reloadCatalogue = false)
+        public async Task<IExplorerItem> Load(bool reloadCatalogue)
         {
             if (!Connection.IsConnected)
             {
@@ -117,7 +117,7 @@ namespace Dev2.Studio.Core
             {
 
                 var fetchExplorerTask = comsController.ExecuteCompressedCommandAsync<IExplorerItem>(Connection, GlobalConstants.ServerWorkspaceID);
-                var delayTask = Task.Delay(30000).ContinueWith((t) =>
+                var delayTask = Task.Delay(60000).ContinueWith((t) =>
                 {
                     if (fetchExplorerTask.Status != TaskStatus.RanToCompletion)
                     {
@@ -474,8 +474,7 @@ namespace Dev2.Studio.Core
             comsController.AddPayloadArgument("GetDependsOnMe", "false");
             var res = comsController.ExecuteCommand<List<string>>(Connection, GlobalConstants.ServerWorkspaceID).Where(a =>
             {
-                Guid b;
-                Guid.TryParse(a, out b);
+                Guid.TryParse(a, out Guid b);
                 return b != Guid.Empty;
             });
             var result = res.Select(Guid.Parse).ToList();
