@@ -30,7 +30,8 @@ namespace Dev2.Activities.Specs.Deploy
         public static void FeatureSetup(Microsoft.VisualStudio.TestTools.UnitTesting.TestContext testContext)
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner(null, 0);
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Deploy Feature", "In order to schedule workflows\r\n\tAs a Warewolf user\r\n\tI want to setup schedules", ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Deploy Feature", "In order to schedule workflows\r\n\tAs a Warewolf user\r\n\tI want to setup schedules", ProgrammingLanguage.CSharp, new string[] {
+                        "Deploy"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -70,26 +71,27 @@ namespace Dev2.Activities.Specs.Deploy
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Deploy a renamed resource to localhost")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Deploy Feature")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Deploy")]
         public virtual void DeployARenamedResourceToLocalhost()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Deploy a renamed resource to localhost", ((string[])(null)));
-#line 6
-this.ScenarioSetup(scenarioInfo);
 #line 7
-testRunner.Given("I am Connected to remote server \"tst-ci-remote\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 8
-testRunner.And("I reload the destination resources", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+testRunner.Given("I am Connected to remote server \"tst-ci-remote\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 9
-testRunner.And("the destination resource is \"RenamedWorkFlowToDeploy\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 10
-testRunner.And("I select resource \"OriginalWorkFlowName\" from source server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 11
-testRunner.And("And the localhost resource is \"OriginalWorkFlowName\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 12
-testRunner.When("I Deploy resource to remote", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 13
 testRunner.And("I reload the destination resources", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 10
+testRunner.And("the destination resource is \"RenamedWorkFlowToDeploy\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 11
+testRunner.And("I select resource \"OriginalWorkFlowName\" from source server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 12
+testRunner.And("And the localhost resource is \"OriginalWorkFlowName\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 13
+testRunner.When("I Deploy resource to remote", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 14
+testRunner.And("I reload the destination resources", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 15
 testRunner.Then("the destination resource is \"OriginalWorkFlowName\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
