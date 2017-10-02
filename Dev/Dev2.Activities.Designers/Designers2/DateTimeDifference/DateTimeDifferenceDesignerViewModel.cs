@@ -14,6 +14,7 @@ using System.Windows;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Common.DateAndTime;
 using Dev2.Studio.Interfaces;
+using System.Globalization;
 
 namespace Dev2.Activities.Designers2.DateTimeDifference
 {
@@ -26,6 +27,13 @@ namespace Dev2.Activities.Designers2.DateTimeDifference
             SelectedOutputType = string.IsNullOrEmpty(OutputType) ? OutputTypes[0] : OutputType;
             AddTitleBarLargeToggle();
             HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Utility_Date_Time_Diff;
+
+            var defaultFormat = CultureInfo.CurrentUICulture.DateTimeFormat.ShortDatePattern + " " + CultureInfo.CurrentUICulture.DateTimeFormat.ShortTimePattern;
+            if (string.IsNullOrEmpty(InputFormat))
+            {
+                InputFormat = defaultFormat;
+
+            }            
         }
 
         public List<string> OutputTypes { get; private set; }
@@ -47,8 +55,8 @@ namespace Dev2.Activities.Designers2.DateTimeDifference
         }
 
         // DO NOT bind to these properties - these are here for convenience only!!!
-        string OutputType { set { SetProperty(value); } get { return GetProperty<string>(); } }
-
+        string OutputType { set => SetProperty(value);  get { return GetProperty<string>(); } }
+        string InputFormat { set => SetProperty(value); get { return GetProperty<string>(); } }
         public override void Validate()
         {
         }

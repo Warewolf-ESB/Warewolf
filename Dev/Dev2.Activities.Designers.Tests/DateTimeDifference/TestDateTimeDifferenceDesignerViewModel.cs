@@ -20,6 +20,8 @@ namespace Dev2.Activities.Designers.Tests.DateTimeDifference
         {
         }
 
+        public string InputFormat { set { SetProperty(value); } get { return GetProperty<string>(); } }
+
         public string OutputType { get { return GetProperty<string>(); } set { SetProperty(value); } }
     }
 }

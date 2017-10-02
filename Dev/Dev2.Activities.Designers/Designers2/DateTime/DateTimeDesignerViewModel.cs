@@ -15,6 +15,7 @@ using Dev2.Activities.Designers2.Core;
 using Dev2.Common;
 using Dev2.Common.DateAndTime;
 using Dev2.Studio.Interfaces;
+using System.Globalization;
 
 namespace Dev2.Activities.Designers2.DateTime
 {
@@ -27,6 +28,16 @@ namespace Dev2.Activities.Designers2.DateTime
             SelectedTimeModifierType = string.IsNullOrEmpty(TimeModifierType) ? TimeModifierTypes[0] : TimeModifierType;
             AddTitleBarLargeToggle();
             HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Utility_Date_Time;
+            var defaultFormat = CultureInfo.CurrentUICulture.DateTimeFormat.ShortDatePattern + " " + CultureInfo.CurrentUICulture.DateTimeFormat.ShortTimePattern;
+            if (string.IsNullOrEmpty(InputFormat))
+            {
+                InputFormat = defaultFormat;
+                
+            }
+            if (string.IsNullOrEmpty(OutputFormat))
+            {
+                OutputFormat = defaultFormat;
+            }
         }
 
         public List<string> TimeModifierTypes { get; private set; }
@@ -55,8 +66,10 @@ namespace Dev2.Activities.Designers2.DateTime
         }
 
         // DO NOT bind to these properties - these are here for convenience only!!!
-        string TimeModifierType { set { SetProperty(value);} get {return  GetProperty<string>();} }
+        string TimeModifierType { set => SetProperty(value); get {return  GetProperty<string>();} }
         string TimeModifierAmountDisplay { set { SetProperty(value); } }
+        string InputFormat { set => SetProperty(value);  get { return GetProperty<string>(); } }
+        string OutputFormat { set => SetProperty(value);  get { return GetProperty<string>(); } }
 
         public override void Validate()
         {
