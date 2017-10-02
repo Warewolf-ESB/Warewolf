@@ -17,10 +17,12 @@ namespace Warewolf.Sharepoint
         private string UserName { get; set; }
         private string Password { get; set; }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="T:System.Object"/> class.
-        /// </summary>
-        public SharepointHelper(string server, string userName="", string password="", bool isSharepointOnline=false)
+        public SharepointHelper(string server)
+            : this(server, "", "", false)
+        {
+        }
+        
+        public SharepointHelper(string server, string userName, string password, bool isSharepointOnline)
         {
             Server = server;
             UserName = userName;
@@ -226,7 +228,8 @@ namespace Warewolf.Sharepoint
             return "Success";
         }
 
-        public string DownLoadFile(string serverPath, string localPath, bool overwrite = false)
+        public string DownLoadFile(string serverPath, string localPath) => DownLoadFile(serverPath, localPath, false);
+        public string DownLoadFile(string serverPath, string localPath, bool overwrite)
         {
             var fileName = Path.GetFileName(localPath);
 

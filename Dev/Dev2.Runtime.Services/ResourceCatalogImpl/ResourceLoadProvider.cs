@@ -207,7 +207,9 @@ namespace Dev2.Runtime.ResourceCatalogImpl
         }
 
 
-        public List<TServiceType> GetDynamicObjects<TServiceType>(Guid workspaceID, string resourceName, bool useContains = false) where TServiceType : DynamicServiceObjectBase
+        public List<TServiceType> GetDynamicObjects<TServiceType>(Guid workspaceID, string resourceName) where TServiceType : DynamicServiceObjectBase=> GetDynamicObjects<TServiceType>(workspaceID, resourceName, false);
+
+        public List<TServiceType> GetDynamicObjects<TServiceType>(Guid workspaceID, string resourceName, bool useContains) where TServiceType : DynamicServiceObjectBase
         {
             if (string.IsNullOrEmpty(resourceName))
             {
@@ -350,8 +352,11 @@ namespace Dev2.Runtime.ResourceCatalogImpl
         {
             return GetResources(workspaceID).Count;
         }
-        
-        public IResource GetResource(Guid workspaceID, string resourceName, string resourceType = "Unknown", string version = null)
+
+        public IResource GetResource(Guid workspaceID, string resourceName) => GetResource(workspaceID, resourceName, "Unknown", null);
+
+
+        public IResource GetResource(Guid workspaceID, string resourceName, string resourceType, string version)
         {
             if (string.IsNullOrEmpty(resourceName))
             {

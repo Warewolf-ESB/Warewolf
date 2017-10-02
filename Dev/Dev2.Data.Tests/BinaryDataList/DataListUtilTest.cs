@@ -458,7 +458,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             var target = new Collection<ObservablePair<string, string>>();
 
             //------------Execute Test---------------------------
-            DataListUtil.UpsertTokens(target, tokenizer.Object, "prefix");
+            DataListUtil.UpsertTokens(target, tokenizer.Object, "prefix", null, true);
 
             //------------Assert Results-------------------------
             Assert.AreEqual(TokenCount, target.Count);
@@ -488,7 +488,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             var target = new Collection<ObservablePair<string, string>>();
 
             //------------Execute Test---------------------------
-            DataListUtil.UpsertTokens(target, tokenizer.Object, "prefix", "suffix");
+            DataListUtil.UpsertTokens(target, tokenizer.Object, "prefix", "suffix", true);
 
             //------------Assert Results-------------------------
             Assert.AreEqual(TokenCount, target.Count);
@@ -561,7 +561,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             var target = new Collection<ObservablePair<string, string>>();
 
             //------------Execute Test---------------------------
-            DataListUtil.UpsertTokens(target, tokenizer.Object, "rs(*).", "a");
+            DataListUtil.UpsertTokens(target, tokenizer.Object, "rs(*).", "a", true);
 
             //------------Assert Results-------------------------
             const int ExpectedCount = TokenCount - 2;

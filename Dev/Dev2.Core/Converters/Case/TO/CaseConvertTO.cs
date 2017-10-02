@@ -37,8 +37,13 @@ namespace Dev2
             Errors = new Dictionary<string, List<IActionableErrorInfo>>();
         }
 
+        public CaseConvertTO(string stringToConvert, string convertType, string result, int indexNumber)
+            : this(stringToConvert, convertType, result, indexNumber, false)
+        {
+        }
+
         public CaseConvertTO(string stringToConvert, string convertType, string result, int indexNumber,
-            bool inserted = false)
+            bool inserted)
         {
             Inserted = inserted;
             StringToConvert = stringToConvert;

@@ -37,7 +37,13 @@ namespace Dev2
         }
 
         public GatherSystemInformationTO(enTypeOfSystemInformationToGather enTypeOfSystemInformation, string result,
-            int indexNumber, bool inserted = false)
+            int indexNumber)
+            : this(enTypeOfSystemInformation, result, indexNumber, false)
+        {
+        }
+
+        public GatherSystemInformationTO(enTypeOfSystemInformationToGather enTypeOfSystemInformation, string result,
+            int indexNumber, bool inserted)
         {
             Inserted = inserted;
             EnTypeOfSystemInformation = enTypeOfSystemInformation;

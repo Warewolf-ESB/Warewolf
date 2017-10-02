@@ -54,7 +54,12 @@ namespace Dev2.DynamicServices
             _environments = new ConcurrentStack<IExecutionEnvironment>();
         }
 
-        public DsfDataObject(string xmldata, Guid dataListId, string rawPayload = "")
+        public DsfDataObject(string xmldata, Guid dataListId)
+            : this(xmldata, dataListId, "")
+        {
+        }
+
+        public DsfDataObject(string xmldata, Guid dataListId, string rawPayload)
         {
             Environment = new ExecutionEnvironment();
             _environments = new ConcurrentStack<IExecutionEnvironment>();
