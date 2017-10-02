@@ -323,6 +323,7 @@ namespace Dev2.Runtime.Hosting
                     Dev2Logger.Debug(
                         string.Format(ErrorResource.ResourceAlreadyLoaded,
                             res.ResourceName, filePath, dupRes.FilePath), GlobalConstants.WarewolfDebug);
+                    _convertToBiteExtension.Add(filePath);
                 }
                 else
                 {
