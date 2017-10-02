@@ -1,0 +1,131 @@
+﻿<Window x:Class="Warewolf.Studio.Views.MergeSelectionView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
+        xmlns:views="clr-namespace:Warewolf.Studio.Views"
+        xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
+        xmlns:viewModels="clr-namespace:Warewolf.Studio.ViewModels;assembly=Warewolf.Studio.ViewModels"
+        Width="700"
+        Height="420"
+        Style="{StaticResource WindowBorderlessStyle}"
+        FocusManager.IsFocusScope="True"
+        WindowStartupLocation="CenterScreen"
+        ShowInTaskbar="True" 
+        Title="MergeDialogView"
+        mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance viewModels:MergeServiceViewModel}">
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <luna:SharedResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" 
+                    Grid.Column="0" 
+                    Background="{StaticResource WareWolfMenuBrush}" 
+                    HorizontalAlignment="Stretch" 
+                    Orientation="Horizontal">
+            <TextBlock Margin="5" 
+                       Text="Merge" 
+                       Style="{StaticResource SourceHeader}"></TextBlock>
+        </StackPanel>
+
+        <Grid Grid.Row="1" >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="30" />
+                <RowDefinition Height="30" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <views:ConnectControl Grid.Row="0"
+                                  DataContext="{Binding MergeConnectControlViewModel}"
+                                  Margin="3,3,3,0"
+                                  ConnectButtonAutomationID="UI_SourceConnectServerbtn_AutoID"
+                                  EditButtonAutomationID="UI_SourceServerEditbtn_AutoID"
+                                  ServerComboBoxAutomationID="UI_SourceServercbx_AutoID" 
+                                  x:Name="SourceConnectControl" />
+
+            <DockPanel Grid.Row="1"
+                       HorizontalAlignment="Stretch"
+                       VerticalAlignment="Top"
+                       Background="Transparent">
+                <!--  EMBEDDED CLIENT PANEL  -->
+                <views:ExplorerView HorizontalAlignment="Stretch"
+                                    VerticalAlignment="Stretch"
+                                    HorizontalContentAlignment="Stretch"
+                                    VerticalContentAlignment="Stretch"
+                                    Margin="-3,-4,-3,0"
+                                    x:Name="ExplorerView" />
+            </DockPanel>
+            <Grid Grid.Row="2"
+                  HorizontalAlignment="Stretch"
+                  VerticalAlignment="Stretch" >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0"
+                           Grid.Row="0"
+                           HorizontalAlignment="Right"
+                           VerticalAlignment="Center"
+                           x:Name="SelectedResourceTextBox"
+                           FontSize="14"
+                           FontWeight="Bold"
+                           Margin="{StaticResource ElementBorderRight}" 
+                           Text="{Binding SelectedResource, UpdateSourceTrigger=PropertyChanged}" />
+
+                <TextBlock Grid.Column="1" 
+                           Margin="{StaticResource ControlBorderRight}" 
+                           HorizontalAlignment="Left" 
+                           VerticalAlignment="Center"
+                           Text="merge with">
+
+                </TextBlock>
+                <TextBlock Grid.Column="2"
+                           HorizontalAlignment="Stretch"
+                           VerticalAlignment="Center"
+                           x:Name="ResourceToMergeTextBox"
+                           FontSize="14"
+                           FontWeight="Bold"
+                           Margin="{StaticResource ElementBorderRight}" 
+                           Text="{Binding ResourceToMerge, UpdateSourceTrigger=PropertyChanged}" />
+            </Grid>
+            <DockPanel Grid.Row="3"
+                       HorizontalAlignment="Right" VerticalAlignment="Center"
+                       Margin="0,0,1,0" >
+
+                <Button x:Name="MergeButton"
+                    Width="60"
+                    Command="{Binding MergeCommand}"
+                    Margin="{StaticResource ControlBorderBottomRight}"
+                    Content="Merge"
+                    Style="{StaticResource ButtonStyle}"
+                    ToolTip="{x:Static languages:Tooltips.MergeButtonTooltip}"/>
+
+                <Button x:Name="CancelButton"
+                        Width="60"
+                        Command="{Binding Path=CancelCommand}"
+                        Content="Cancel"
+                        Margin="{StaticResource ControlBorderBottomRight}"
+                        Style="{StaticResource ButtonStyle}"
+                        ToolTip="{x:Static languages:Tooltips.CancelButtonTooltip}"/>
+            </DockPanel>
+        </Grid>
+    </Grid>
+</Window>

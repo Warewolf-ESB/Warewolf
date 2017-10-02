@@ -265,15 +265,6 @@ namespace Warewolf.Studio.ViewModels
             return child;
         }
 
-        public void MergeVersionCommand(Guid resourceId, string versionNumber, IServer server)
-        {
-            SetActiveStates(_shellViewModel, server);
-
-            // OPEN VIEW WITH VERSION NUMBER
-
-            _shellViewModel.OpenMergeConflictsView(resourceId, resourceId, server);
-        }
-
         internal void ViewApisJsonCommand(string resourcePath, Uri webServerUri)
         {
             _shellViewModel.ViewApisJson(resourcePath, webServerUri);
@@ -284,10 +275,10 @@ namespace Warewolf.Studio.ViewModels
             _shellViewModel.ViewSwagger(resourceId, server);
         }
 
-        public void MergeCommand(Guid resourceId, IServer server)
+        public void MergeCommand(IExplorerItemViewModel explorerItemViewModel, IServer server)
         {
             SetActiveStates(_shellViewModel, server);
-            _shellViewModel.OpenMergeConflictsView(resourceId, resourceId, server);
+            _shellViewModel.OpenMergeDialogView(explorerItemViewModel);
         }
 
         public void CreateTest(Guid resourceId)
