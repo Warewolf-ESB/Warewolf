@@ -353,11 +353,16 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
         public override string TestService(IWebService inputValues)
         {
             if (IsTextResponse)
+            {
                 return new Dev2JsonSerializer().Serialize("dora");
+            }
+
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             var svc = new WebService();
             if (!HasRecError)
+            {
                 svc.Recordsets = new RecordsetList() { new Recordset() { HasErrors = false, Fields = new List<RecordsetField> { new RecordsetField() { Alias = "bob", Name = "the", RecordsetAlias = "dd", Path = new XmlPath() } } } };
+            }
             else
             {
                 svc.Recordsets = new RecordsetList() { new Recordset() { HasErrors = true, ErrorMessage = "bobthebuilder", Fields = new List<RecordsetField> { new RecordsetField() { Alias = "bob", Name = "the", RecordsetAlias = "dd", Path = new XmlPath() } } } };
@@ -400,11 +405,16 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
         public virtual string TestService(IWebService inputValues)
         {
             if (IsTextResponse)
+            {
                 return new Dev2JsonSerializer().Serialize("dora");
+            }
+
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             var svc = new WebService();
             if (!HasRecError)
+            {
                 svc.Recordsets = new RecordsetList() { new Recordset() { HasErrors = false, Fields = new List<RecordsetField> { new RecordsetField() { Alias = "bob", Name = "the", RecordsetAlias = "dd", Path = new XmlPath() } } } };
+            }
             else
             {
                 svc.Recordsets = new RecordsetList() { new Recordset() { HasErrors = true, ErrorMessage = "bobthebuilder", Fields = new List<RecordsetField> { new RecordsetField() { Alias = "bob", Name = "the", RecordsetAlias = "dd", Path = new XmlPath() } } } };

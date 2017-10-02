@@ -166,7 +166,10 @@ namespace Dev2.Activities.Designers2.DataSplit
                         ruleSet.Add(inputExprRule);
                     }
                     else
+                    {
                         ruleSet.Add(new IsStringEmptyOrWhiteSpaceRule(() => SourceString));
+                    }
+
                     break;
             }
             return ruleSet;

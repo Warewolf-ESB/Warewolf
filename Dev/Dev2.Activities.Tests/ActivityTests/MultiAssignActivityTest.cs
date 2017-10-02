@@ -53,9 +53,8 @@ namespace Dev2.Tests.Activities.ActivityTests
                           , fieldCollection);
             IDSFDataObject result = ExecuteProcess();
 
-            string error;
             const string expected = "Value1";
-            string actual = RetrieveAllRecordSetFieldValues(result.Environment, "gRec", "opt", out error).FirstOrDefault();
+            string actual = RetrieveAllRecordSetFieldValues(result.Environment, "gRec", "opt", out string error).FirstOrDefault();
 
             // remove test datalist
 
@@ -101,8 +100,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             IDSFDataObject result = ExecuteProcess();
 
             const string expected = "Value1";
-            string error;
-            string actual = RetrieveAllRecordSetFieldValues(result.Environment, "cRec", "opt", out error).First();
+            string actual = RetrieveAllRecordSetFieldValues(result.Environment, "cRec", "opt", out string error).First();
 
             // remove test datalist
 
@@ -124,8 +122,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             IDSFDataObject result = ExecuteProcess();
 
             const string expected = "display1";
-            string error;
-            List<string> vals = RetrieveAllRecordSetFieldValues(result.Environment, "cRec", "display", out error);
+            List<string> vals = RetrieveAllRecordSetFieldValues(result.Environment, "cRec", "display", out string error);
             string actual = vals[0];
 
             // remove test datalist
@@ -146,8 +143,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                           , data, fieldCollection);
             IDSFDataObject result = ExecuteProcess();
             const string expected = "Value1";
-            string error;
-            string actual = RetrieveAllRecordSetFieldValues(result.Environment, "cRec", "opt", out error).First();
+            string actual = RetrieveAllRecordSetFieldValues(result.Environment, "cRec", "opt", out string error).First();
 
             // remove test datalist
 
@@ -169,9 +165,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             IDSFDataObject result = ExecuteProcess();
             const string expected = "display1";
 
-            string error;
 
-            IList<string> vals = RetrieveAllRecordSetFieldValues(result.Environment, "cRec", "display", out error);
+            IList<string> vals = RetrieveAllRecordSetFieldValues(result.Environment, "cRec", "display", out string error);
             string actual = vals[0];
 
             // remove test datalist
@@ -198,8 +193,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                           , data, fieldCollection);
             IDSFDataObject result = ExecuteProcess();
             const string expected = "Value2";
-            string error;
-            string actual = RetrieveAllRecordSetFieldValues(result.Environment, "cRec", "opt", out error).First();
+            string actual = RetrieveAllRecordSetFieldValues(result.Environment, "cRec", "opt", out string error).First();
 
             // remove test datalist
 
@@ -219,9 +213,8 @@ namespace Dev2.Tests.Activities.ActivityTests
                           , fieldCollection);
             IDSFDataObject result = ExecuteProcess();
             const string expected = "display1";
-            string error;
 
-            List<string> vals = RetrieveAllRecordSetFieldValues(result.Environment, "cRec", "display", out error);
+            List<string> vals = RetrieveAllRecordSetFieldValues(result.Environment, "cRec", "display", out string error);
             string actual = vals[0];
 
             // remove test datalist
@@ -242,9 +235,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                           , fieldCollection);
             IDSFDataObject result = ExecuteProcess();
             const string expected = "bob";
-            string actual;
-            string error;
-            GetScalarValueFromEnvironment(result.Environment, "testName1", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "testName1", out string actual, out string error);
 
             // remove test datalist
 
@@ -264,10 +255,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                          , fieldCollection);
 
             IDSFDataObject result = ExecuteProcess();
-
-            string actual;
-            string error;
-            GetScalarValueFromEnvironment(result.Environment, "testValue1", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "testValue1", out string actual, out string error);
 
             // remove test datalist
 
@@ -288,10 +276,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                          , fieldCollection);
 
             IDSFDataObject result = ExecuteProcess();
-
-            string actual;
-            string error;
-            GetScalarValueFromEnvironment(result.Environment, "testValue1", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "testValue1", out string actual, out string error);
 
             // remove test datalist
 
@@ -312,9 +297,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
             const string expected = "testValue@#";
-            string actual;
-            string error;
-            GetScalarValueFromEnvironment(result.Environment, "testValue1", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "testValue1", out string actual, out string error);
 
             // remove test datalist
 
@@ -335,8 +318,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             IDSFDataObject result = ExecuteProcess();
 
             const string expected = "testRecValue1";
-            string error;
-            string actual = RetrieveAllRecordSetFieldValues(result.Environment, "testRecSet1", "testRec1", out error).First();
+            string actual = RetrieveAllRecordSetFieldValues(result.Environment, "testRecSet1", "testRec1", out string error).First();
 
             // remove test datalist
 
@@ -357,8 +339,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             IDSFDataObject result = ExecuteProcess();
 
             List<string> expected = new List<string> {  "testRecValue1" };
-            string error;
-            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "testRecSet1", "testRec1", out error);
+            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "testRecSet1", "testRec1", out string error);
 
             // remove test datalist
 
@@ -379,8 +360,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             IDSFDataObject result = ExecuteProcess();
 
             const string expected = "testRecValue1";
-            string error;
-            string actual = RetrieveAllRecordSetFieldValues(result.Environment, "testRecSet1", "testRec1", out error).First();
+            string actual = RetrieveAllRecordSetFieldValues(result.Environment, "testRecSet1", "testRec1", out string error).First();
 
             // remove test datalist
 
@@ -406,8 +386,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             IDSFDataObject result = ExecuteProcess();
 
             const string expected = "abc123";
-            string error;
-            string actual = RetrieveAllRecordSetFieldValues(result.Environment, "recset", "a", out error).First();
+            string actual = RetrieveAllRecordSetFieldValues(result.Environment, "recset", "a", out string error).First();
 
             // remove test datalist
 
@@ -431,8 +410,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                           , @"<root></root>"
                           , fieldCollection);
             IDSFDataObject result = ExecuteProcess();
-            string error;
-            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "cRec", "opt", out error);
+            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "cRec", "opt", out string error);
 
             // remove test datalist
 
@@ -458,9 +436,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             IDSFDataObject result = ExecuteProcess();
 
             const string expected = null;
-            string error;
-            string actual;
-            GetScalarValueFromEnvironment(result.Environment, "scalar", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "scalar", out string actual, out string error);
 
             // remove test datalist
 
@@ -485,8 +461,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             IDSFDataObject result = ExecuteProcess();
 
             List<string> expected = new List<string> { "0", "1" };
-            string error;
-            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "cRec", "opt", out error);
+            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "cRec", "opt", out string error);
 
             // remove test datalist ;)
 
@@ -512,8 +487,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             IDSFDataObject result = ExecuteProcess();
 
             List<string> expected = new List<string>();
-            string error;
-            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "cRec", "opt", out error);
+            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "cRec", "opt", out string error);
 
             // remove test datalist ;)
 
@@ -537,9 +511,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             IDSFDataObject result = ExecuteProcess();
 
             const string expected = "variable";
-            string error;
-            string actual;
-            GetScalarValueFromEnvironment(result.Environment, "var", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "var", out string actual, out string error);
 
             // remove test datalist ;)
 
@@ -562,9 +534,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             IDSFDataObject result = ExecuteProcess();
 
             const string expected = "variablevariable";
-            string error;
-            string actual;
-            GetScalarValueFromEnvironment(result.Environment, "var", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "var", out string actual, out string error);
 
             // remove test datalist ;)
 
@@ -610,8 +580,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                                                     , "Value8"
                                                     , "Value9"
                                                     , "Value10" };
-            string error;
-            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "gRec", "opt", out error);
+            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "gRec", "opt", out string error);
 
             // remove test datalist ;)
 
@@ -642,8 +611,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                           , fieldCollection);
 
             IDSFDataObject result = ExecuteProcess();
-            string error;
-            IList<string> data = RetrieveAllRecordSetFieldValues(result.Environment, "gRec", "opt", out error);
+            IList<string> data = RetrieveAllRecordSetFieldValues(result.Environment, "gRec", "opt", out string error);
 
             // remove test datalist ;)
 
@@ -676,8 +644,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
 
-            string error;
-            IList<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "gRec", "opt", out error);
+            IList<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "gRec", "opt", out string error);
 
             // remove test datalist ;)
 
@@ -717,8 +684,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                                                     , "Value2"
                                                     , "Value2"
                                                     , "Value2" };
-            string error;
-            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "gRec", "opt", out error);
+            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "gRec", "opt", out string error);
 
             // remove test datalist ;)
 
@@ -751,8 +717,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             IDSFDataObject result = ExecuteProcess();
 
             const string expected = "Value1";
-            string error;
-            string actual = RetrieveAllRecordSetFieldValues(result.Environment, "gRec", "opt", out error)[1];
+            string actual = RetrieveAllRecordSetFieldValues(result.Environment, "gRec", "opt", out string error)[1];
 
             // remove test datalist ;)
 
@@ -782,9 +747,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             IDSFDataObject result = ExecuteProcess();
 
             const string expected = "Value10";
-            string error;
-            string actual;
-            GetScalarValueFromEnvironment(result.Environment, "testScalar", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "testScalar", out string actual, out string error);
 
             // remove test datalist ;)
 
@@ -827,8 +790,7 @@ namespace Dev2.Tests.Activities.ActivityTests
               , ActivityStrings.MultiAssignStarDataListWithScalar
               , fieldCollection);
             IDSFDataObject result = ExecuteProcess();
-            string error;
-            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "gRec", "opt", out error);
+            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "gRec", "opt", out string error);
 
             // remove test datalist ;)
             Assert.AreEqual("some value \"testData\" another", actual[1]);
@@ -852,9 +814,7 @@ namespace Dev2.Tests.Activities.ActivityTests
               , ActivityStrings.MultiAssignStarDataListWithScalar
               , fieldCollection);
             IDSFDataObject result = ExecuteProcess();
-            string error;
-            string actual;
-            GetScalarValueFromEnvironment(result.Environment, "testScalar", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "testScalar", out string actual, out string error);
 
             // remove test datalist ;)
             Assert.AreEqual("some value \"testData\" another", actual);
@@ -877,10 +837,8 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
             const string expected = DsfMultiAssignActivity.CalculateTextConvertPrefix + "sum(5,10)";
-            string actual;
-            string error;
 
-            GetScalarValueFromEnvironment(result.Environment, "Variable", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "Variable", out string actual, out string error);
 
             // remove test datalist ;)
 
@@ -900,10 +858,8 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
             const string expected = "sum(5)" + DsfMultiAssignActivity.CalculateTextConvertSuffix;
-            string actual;
-            string error;
 
-            GetScalarValueFromEnvironment(result.Environment, "Variable", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "Variable", out string actual, out string error);
 
             // remove test datalist ;)
 
@@ -924,10 +880,8 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
             const string expected = "5";
-            string actual;
-            string error;
 
-            GetScalarValueFromEnvironment(result.Environment, "Variable", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "Variable", out string actual, out string error);
 
 
             // remove test datalist ;)

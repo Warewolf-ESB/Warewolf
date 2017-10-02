@@ -81,8 +81,7 @@ namespace Dev2.Runtime.Security
             }
 
             SystemKey = CreateKey(settings["SystemKey"]);
-            Guid serverID;
-            if(Guid.TryParse(settings["ServerID"], out serverID) && serverID != Guid.Empty)
+            if (Guid.TryParse(settings["ServerID"], out Guid serverID) && serverID != Guid.Empty)
             {
                 ServerID = serverID;
                 ServerKey = CreateKey(settings["ServerKey"]);
@@ -105,7 +104,7 @@ namespace Dev2.Runtime.Security
 
                 SaveConfig(newSettings);
 
-                if(shouldProtectConfig)
+                if (shouldProtectConfig)
                 {
                     ProtectConfig();
                 }

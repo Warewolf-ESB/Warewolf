@@ -107,7 +107,11 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             if (resourceName != null)
             {
                 var resourceContents = ResourceContents<T>(workspaceID, resourceName);
-                if (resourceContents == null || resourceContents.Length == 0) return null;
+                if (resourceContents == null || resourceContents.Length == 0)
+                {
+                    return null;
+                }
+
                 return GetResource<T>(resourceContents);
             }
             return null;
@@ -253,7 +257,10 @@ namespace Dev2.Runtime.ResourceCatalogImpl
 
         public List<Guid> GetDependants(Guid workspaceID, Guid? resourceId)
         {
-            if (resourceId == null) throw new ArgumentNullException(nameof(resourceId), ErrorResource.NoResourceName);
+            if (resourceId == null)
+            {
+                throw new ArgumentNullException(nameof(resourceId), ErrorResource.NoResourceName);
+            }
 
             var resources = GetResources(workspaceID);
             var dependants = new List<Guid>();
@@ -308,12 +315,9 @@ namespace Dev2.Runtime.ResourceCatalogImpl
 
         public IList<Resource> GetResourceList(Guid workspaceId, Dictionary<string, string> filterParams)
         {
-            string resourceName;
-            filterParams.TryGetValue("resourceName", out resourceName);
-            string type;
-            filterParams.TryGetValue("type", out type);
-            string guidCsv;
-            filterParams.TryGetValue("guidCsv", out guidCsv);
+            filterParams.TryGetValue("resourceName", out string resourceName);
+            filterParams.TryGetValue("type", out string type);
+            filterParams.TryGetValue("guidCsv", out string guidCsv);
             var workspaceResources = GetResources(workspaceId);
 
             if (!string.IsNullOrEmpty(guidCsv) || filterParams.ContainsKey(nameof(guidCsv)))
@@ -391,13 +395,12 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             IResource foundResource = null;
             try
             {
-                List<IResource> resources;
-                if(_workspaceResources.TryGetValue(workspaceID, out resources))
+                if (_workspaceResources.TryGetValue(workspaceID, out List<IResource> resources))
                 {
                     foundResource = resources.AsParallel().FirstOrDefault(resource => resource.ResourceID == resourceID);
                 }
 
-                if(foundResource == null && workspaceID != GlobalConstants.ServerWorkspaceID)
+                if (foundResource == null && workspaceID != GlobalConstants.ServerWorkspaceID)
                 {
                     if(_workspaceResources.TryGetValue(GlobalConstants.ServerWorkspaceID, out resources))
                     {
@@ -419,13 +422,12 @@ namespace Dev2.Runtime.ResourceCatalogImpl
         public StringBuilder GetResourceContents(Guid workspaceID, Guid resourceID)
         {
             IResource foundResource = null;
-            List<IResource> resources;
-            if(_workspaceResources.TryGetValue(workspaceID, out resources))
+            if (_workspaceResources.TryGetValue(workspaceID, out List<IResource> resources))
             {
                 foundResource = resources.AsParallel().FirstOrDefault(resource => resource.ResourceID == resourceID);
             }
 
-            if(foundResource == null && workspaceID != GlobalConstants.ServerWorkspaceID)
+            if (foundResource == null && workspaceID != GlobalConstants.ServerWorkspaceID)
             {
                 if(_workspaceResources.TryGetValue(GlobalConstants.ServerWorkspaceID, out resources))
                 {
@@ -515,7 +517,10 @@ namespace Dev2.Runtime.ResourceCatalogImpl
         private static T GetResource<T>(StringBuilder resourceContents) where T : Resource, new()
         {
             if (resourceContents == null)
+            {
                 return default(T);
+            }
+
             var elm = resourceContents.ToXElement();
             object[] args = { elm };
             return (T)Activator.CreateInstance(typeof(T), args);
@@ -525,16 +530,14 @@ namespace Dev2.Runtime.ResourceCatalogImpl
         {
             if (resource.ResourceType == "ReservedService")
             {
-                var managementResource = resource as ManagementServiceResource;
-                if (managementResource != null)
+                if (resource is ManagementServiceResource managementResource)
                 {
                     result.Add(managementResource.Service);
                 }
             }
             else
             {
-                List<DynamicServiceObjectBase> objects;
-                if (!FrequentlyUsedServices.TryGetValue(resource.ResourceName, out objects))
+                if (!FrequentlyUsedServices.TryGetValue(resource.ResourceName, out List<DynamicServiceObjectBase> objects))
                 {
                     objects = GenerateObjectGraph(resource);
                 }
@@ -554,8 +557,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             var guidStrs = guidCsv.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
             foreach (var guidStr in guidStrs)
             {
-                Guid guid;
-                if (Guid.TryParse(guidStr, out guid))
+                if (Guid.TryParse(guidStr, out Guid guid))
                 {
                     guids.Add(guid);
                 }

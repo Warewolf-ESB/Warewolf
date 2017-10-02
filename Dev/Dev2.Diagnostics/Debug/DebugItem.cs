@@ -88,7 +88,8 @@ namespace Dev2.Diagnostics
 
         #region Public Methods
 
-        public void Add(IDebugItemResult itemToAdd, bool isDeserialize = false)
+        public void Add(IDebugItemResult itemToAdd) => Add(itemToAdd, false);
+        public void Add(IDebugItemResult itemToAdd, bool isDeserialize)
         {
             if(!string.IsNullOrWhiteSpace(itemToAdd.GroupName) && itemToAdd.GroupIndex > MaxItemDispatchCount)
             {

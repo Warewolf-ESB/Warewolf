@@ -15,9 +15,8 @@ namespace Dev2.Diagnostics.Debug
         {
             lock (Lock)
             {
-                IList<IDebugState> list;
                 var key = new Tuple<Guid, Guid>(clientId, sessionId);
-                if (Data.TryGetValue(key, out list))
+                if (Data.TryGetValue(key, out IList<IDebugState> list))
                 {
                     list.Add(ds);
                 }
@@ -35,8 +34,7 @@ namespace Dev2.Diagnostics.Debug
             lock (Lock)
             {
                 var key = new Tuple<Guid, Guid>(clientId, sessionId);
-                IList<IDebugState> list;
-                if (Data.TryGetValue(key, out list))
+                if (Data.TryGetValue(key, out IList<IDebugState> list))
                 {
                     Data.Remove(key);
                     return list;

@@ -62,12 +62,13 @@ namespace Dev2.Activities
                         webClient.UploadStringCompleted += (sender, args) => asyncCallback(args.Result);
                         webClient.UploadStringAsync(uri, data);
                         break;
+                    default:
+                        return string.Empty;
                 }
             }
             return string.Empty;
         }
-
-        // TODO: factor out the guts of this and the default timout method above with a private method taking a WebClient object
+        
         public string ExecuteRequest(int timeoutMilliseconds, string method, string url, string data, List<Tuple<string, string>> headers = null, Action<string> asyncCallback = null)
         {
             using (var webClient = new WebClientWithTimeout(timeoutMilliseconds))
@@ -102,6 +103,8 @@ namespace Dev2.Activities
                         webClient.UploadStringCompleted += (sender, args) => asyncCallback(args.Result);
                         webClient.UploadStringAsync(uri, data);
                         break;
+                    default:
+                        throw new ArgumentException("Unrecognized request method: " + method);
                 }
             }
             return string.Empty;

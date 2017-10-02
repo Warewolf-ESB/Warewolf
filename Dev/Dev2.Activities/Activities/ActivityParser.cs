@@ -20,22 +20,19 @@ namespace Dev2.Activities
         {
             try
             {
-                var chart = WorkflowInspectionServices.GetActivities(dynamicActivity).FirstOrDefault() as Flowchart;
-                if (chart != null)
+                if (WorkflowInspectionServices.GetActivities(dynamicActivity).FirstOrDefault() is Flowchart chart)
                 {
                     if (chart.StartNode == null)
                     {
                         return null;
                     }
-                    var start = chart.StartNode as FlowStep;
 
-                    if (start != null)
+                    if (chart.StartNode is FlowStep start)
                     {
                         var tool = ParseTools(start, seenActivities);
                         return tool.FirstOrDefault();
                     }
-                    var flowstart = chart.StartNode as FlowSwitch<string>;
-                    if (flowstart != null)
+                    if (chart.StartNode is FlowSwitch<string> flowstart)
                     {
                         return ParseSwitch(flowstart, seenActivities).FirstOrDefault();
                     }
@@ -56,25 +53,28 @@ namespace Dev2.Activities
         {
           
             if (startNode == null)
-                return null;
-            FlowStep step = startNode as FlowStep;
-            if (step != null)
             {
-                
+                return null;
+            }
+
+            if (startNode is FlowStep step)
+            {
+
                 return ParseFlowStep(step, seenActivities);
-                
+
             }
             else
             {
-                FlowDecision node = startNode as FlowDecision;
-                if (node != null)
-
+                if (startNode is FlowDecision node)
+                {
                     return ParseDecision(node, seenActivities);
+                }
                 else
                 {
-                    FlowSwitch<string> @switch = startNode as FlowSwitch<string>;
-                    if (@switch != null)
+                    if (startNode is FlowSwitch<string> @switch)
+                    {
                         return ParseSwitch(@switch, seenActivities);
+                    }
                 }
             }
             return null;
@@ -83,8 +83,7 @@ namespace Dev2.Activities
 
         IEnumerable<IDev2Activity> ParseSwitch(FlowSwitch<string> switchFlowSwitch, List<IDev2Activity> seenActivities)
         {
-            var activity = switchFlowSwitch.Expression as DsfFlowSwitchActivity;
-            if (activity != null)
+            if (switchFlowSwitch.Expression is DsfFlowSwitchActivity activity)
             {
                 if (seenActivities.Contains(activity))
                 {
@@ -92,17 +91,17 @@ namespace Dev2.Activities
                 }
 
                 var val = new StringBuilder(Dev2DecisionStack.ExtractModelFromWorkflowPersistedData(activity.ExpressionText));
-                 Dev2Switch ds = new Dev2Switch { SwitchVariable = val.ToString() };
-                 var swi = new DsfSwitch(activity);
-                 if (!seenActivities.Contains(activity))
-                 {
-                     seenActivities.Add(swi);
-                 }
+                Dev2Switch ds = new Dev2Switch { SwitchVariable = val.ToString() };
+                var swi = new DsfSwitch(activity);
+                if (!seenActivities.Contains(activity))
+                {
+                    seenActivities.Add(swi);
+                }
                 swi.Switches = switchFlowSwitch.Cases.Select(a => new Tuple<string, IDev2Activity>(a.Key, ParseTools(a.Value, seenActivities).FirstOrDefault())).ToDictionary(a => a.Item1, a => a.Item2);
                 swi.Default = ParseTools(switchFlowSwitch.Default, seenActivities);
                 swi.Switch = ds.SwitchVariable;
-                
-                
+
+
                 return new List<IDev2Activity>
                 {  swi
                 };
@@ -113,31 +112,30 @@ namespace Dev2.Activities
 
         IEnumerable<IDev2Activity> ParseDecision(FlowDecision decision, List<IDev2Activity> seenActivities)
         {
-            
-            var activity = decision.Condition as DsfFlowDecisionActivity;
-            if(activity != null)
+
+            if (decision.Condition is DsfFlowDecisionActivity activity)
             {
-                if( seenActivities.Contains(activity))
+                if (seenActivities.Contains(activity))
                 {
-                    return new List<IDev2Activity> { activity};
+                    return new List<IDev2Activity> { activity };
                 }
                 var rawText = activity.ExpressionText;
-                
-                var activityTextjson = rawText.Substring(rawText.IndexOf("{", StringComparison.Ordinal)).Replace(@""",AmbientDataList)","").Replace("\"","!");
-                
+
+                var activityTextjson = rawText.Substring(rawText.IndexOf("{", StringComparison.Ordinal)).Replace(@""",AmbientDataList)", "").Replace("\"", "!");
+
                 var activityText = Dev2DecisionStack.FromVBPersitableModelToJSON(activityTextjson);
-                var decisionStack =  JsonConvert.DeserializeObject<Dev2DecisionStack>(activityText);
+                var decisionStack = JsonConvert.DeserializeObject<Dev2DecisionStack>(activityText);
                 var dec = new DsfDecision(activity);
                 if (!seenActivities.Contains(activity))
                 {
-                    seenActivities.Add( dec);
+                    seenActivities.Add(dec);
                 }
                 dec.TrueArm = ParseTools(decision.True, seenActivities);
                 dec.FalseArm = ParseTools(decision.False, seenActivities);
                 dec.Conditions = decisionStack;
                 dec.And = decisionStack.Mode == Dev2DecisionMode.AND;
-                
-                
+
+
                 return new List<IDev2Activity>
                 { dec};
             }
@@ -148,9 +146,15 @@ namespace Dev2.Activities
         {
             var action = startNode.Action as IDev2Activity;
             if (action == null)
+            {
                 return null;
+            }
+
             if (seenActivities.Contains(action))
+            {
                 return new List<IDev2Activity> { action};
+            }
+
             if (!seenActivities.Contains(action))
             {
                 seenActivities.Add(action);

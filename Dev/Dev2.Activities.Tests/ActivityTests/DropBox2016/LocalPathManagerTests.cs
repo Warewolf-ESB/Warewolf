@@ -20,9 +20,14 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016
         public void MyTestCleanup()
         {
             if(File.Exists(ValidFileName))
+            {
                 File.Delete(ValidFileName);
+            }
+
             if (File.Exists(InValidFileName))
+            {
                 File.Delete(InValidFileName);
+            }
         }
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]

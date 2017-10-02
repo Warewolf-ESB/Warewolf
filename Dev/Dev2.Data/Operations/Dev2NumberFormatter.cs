@@ -99,11 +99,9 @@ namespace Dev2.Data.Operations
         private string Round(IFormatNumberTO formatNumberTO)
 
         {
-            string error;
-            string result;
-            _functionEvaluator.TryEvaluateFunction(BuildRoundingExpression(formatNumberTO), out result, out error);
+            _functionEvaluator.TryEvaluateFunction(BuildRoundingExpression(formatNumberTO), out string result, out string error);
 
-            if(!string.IsNullOrWhiteSpace(error))
+            if (!string.IsNullOrWhiteSpace(error))
             {
                 throw new InvalidOperationException(error);
             }
@@ -113,8 +111,7 @@ namespace Dev2.Data.Operations
 
         private decimal Parse(string numberString)
         {
-            decimal number;
-            if(!numberString.IsNumeric(out number))
+            if (!numberString.IsNumeric(out decimal number))
             {
                 throw new InvalidOperationException(string.Format(ErrorResource.ErrorWhileFormattingANumber, numberString));
             }

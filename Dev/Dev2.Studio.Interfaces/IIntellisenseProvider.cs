@@ -77,8 +77,12 @@ namespace Dev2.Studio.Interfaces
             {
                 List<string> args = new List<string>(_arguments);
                 for (int i = args.Count - 1; i >= 0; i--)
+                {
                     if (String.IsNullOrEmpty(args[i]))
+                    {
                         args.RemoveAt(i);
+                    }
+                }
 
                 _arguments = args.ToArray();
             }

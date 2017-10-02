@@ -175,10 +175,9 @@ namespace Dev2.Tests.Runtime.WF
             mockObj.Setup(o => o.Environment).Returns(envMock.Object);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            ErrorResultTO error;
             try
             {
-                wfApplicationUtils.DispatchDebugState(mockObj.Object, StateType.Start, false, string.Empty, out error);
+                wfApplicationUtils.DispatchDebugState(mockObj.Object, StateType.Start, false, string.Empty, out ErrorResultTO error);
             }
             catch (Exception ex)
             {
@@ -209,11 +208,10 @@ namespace Dev2.Tests.Runtime.WF
             privateObject.SetField("_getDebugDispatcher", mock.Object);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            ErrorResultTO error;
             try
             {
-               
-                wfApplicationUtils.DispatchDebugState(mockObj.Object, StateType.Start, false, string.Empty, out error);
+
+                wfApplicationUtils.DispatchDebugState(mockObj.Object, StateType.Start, false, string.Empty, out ErrorResultTO error);
                 var state = debugState;
                 debugDispatcher.Verify(dispatcher => dispatcher.Write(state, It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IList<IDebugState>>()));
 
@@ -249,14 +247,13 @@ namespace Dev2.Tests.Runtime.WF
             privateObject.SetField("_getDebugDispatcher", mock.Object);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            ErrorResultTO error;
             try
             {
-               
-                wfApplicationUtils.DispatchDebugState(mockObj.Object, StateType.Start, false, string.Empty, out error, DateTime.Now, true);
+
+                wfApplicationUtils.DispatchDebugState(mockObj.Object, StateType.Start, false, string.Empty, out ErrorResultTO error, DateTime.Now, true);
                 var state = debugState;
                 debugDispatcher.Verify(dispatcher => dispatcher.Write(state, It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IList<IDebugState>>()));
-                
+
             }
             catch (Exception ex)
             {
@@ -296,11 +293,10 @@ namespace Dev2.Tests.Runtime.WF
             privateObject.SetField("_lazyCat", catLog.Object);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            ErrorResultTO error;
             try
             {
-               
-                wfApplicationUtils.DispatchDebugState(mockObj.Object, StateType.Start, false, string.Empty, out error, DateTime.Now,false,true);
+
+                wfApplicationUtils.DispatchDebugState(mockObj.Object, StateType.Start, false, string.Empty, out ErrorResultTO error, DateTime.Now, false, true);
                 var state = debugState;
                 debugDispatcher.Verify(dispatcher => dispatcher.Write(state, It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IList<IDebugState>>()));
                 catLog.Verify(catalog => catalog.GetResource(It.IsAny<Guid>(), It.IsAny<Guid>()));

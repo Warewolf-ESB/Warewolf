@@ -35,9 +35,8 @@ namespace Dev2.Runtime.ESB.Management.Services
             ExecuteMessage msg = new ExecuteMessage();
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             Dev2Logger.Info("Get Dll Listings", GlobalConstants.WarewolfInfo);
-            StringBuilder dllListing;
 
-            values.TryGetValue("currentDllListing", out dllListing);
+            values.TryGetValue("currentDllListing", out StringBuilder dllListing);
             if (dllListing != null)
             {
                 var src = serializer.Deserialize(dllListing.ToString(), typeof(IFileListing)) as IFileListing;
@@ -104,7 +103,9 @@ namespace Dev2.Runtime.ESB.Management.Services
             else
             {
                 if(src.IsDirectory)
-                completeList = GetChildrenForDllListing(new DirectoryInfo(src.FullName));
+                {
+                    completeList = GetChildrenForDllListing(new DirectoryInfo(src.FullName));
+                }
             }
             return completeList;
         }

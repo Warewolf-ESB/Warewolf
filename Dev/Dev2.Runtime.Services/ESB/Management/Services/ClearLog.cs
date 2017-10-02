@@ -31,9 +31,8 @@ namespace Dev2.Runtime.ESB.Management.Services
             StringBuilder msg = new StringBuilder();
             string directory = null;
 
-            StringBuilder tmp;
-            values.TryGetValue("Directory", out tmp);
-            if(tmp != null)
+            values.TryGetValue("Directory", out StringBuilder tmp);
+            if (tmp != null)
             {
                 directory = tmp.ToString();
             }

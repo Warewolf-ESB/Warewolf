@@ -44,8 +44,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
     public class DsfForEachActivity : DsfActivityAbstract<bool>
     {
         string _previousParentId;
-        
-        Dev2ActivityIOIteration _inputItr = new Dev2ActivityIOIteration();
+        readonly Dev2ActivityIOIteration _inputItr = new Dev2ActivityIOIteration();
         
         #region Variables
 
@@ -156,14 +155,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         
 #pragma warning disable 169
         
-        private List<bool> _results = new List<bool>();
-        
+        private readonly List<bool> _results = new List<bool>();
+        readonly
+
 #pragma warning restore 169
 
-        // REMOVE : No longer used
+                // REMOVE : No longer used
 #pragma warning disable 169
-        
-        DelegateInArgument<string> _actionArgument = new DelegateInArgument<string>("explicitDataFromParent");
+
+                DelegateInArgument<string> _actionArgument = new DelegateInArgument<string>("explicitDataFromParent");
         
 #pragma warning restore 169
 
@@ -171,8 +171,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         // REMOVE : 2 variables below not used any more.....
 
         
-        private Variable<string> _origInput = new Variable<string>("origInput");
-        private Variable<string> _origOutput = new Variable<string>("origOutput");
+        private readonly Variable<string> _origInput = new Variable<string>("origInput");
+        private readonly Variable<string> _origOutput = new Variable<string>("origOutput");
         
         readonly object _forEachExecutionObject = new object();
         private string _childUniqueID;
@@ -249,8 +249,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 InitializeDebug(dataObject);
                 try
                 {
-                    ErrorResultTO errors;
-                    ForEachBootstrapTO exePayload = FetchExecutionType(dataObject, dataObject.Environment, out errors, 0);
+                    ForEachBootstrapTO exePayload = FetchExecutionType(dataObject, dataObject.Environment, out ErrorResultTO errors, 0);
 
                     if (errors.HasErrors())
                     {
@@ -266,8 +265,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     dataObject.ParentInstanceID = UniqueID;
 
                     allErrors.MergeErrors(errors);
-                    string error;
-                    ForEachInnerActivityTO innerA = GetInnerActivity(out error);
+                    ForEachInnerActivityTO innerA = GetInnerActivity(out string error);
                     allErrors.AddError(error);
 
                     exePayload.InnerActivity = innerA;
@@ -406,9 +404,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
                 else
                 {
-                    var tmp2 = operationalData.InnerActivity.InnerActivity as DsfActivityAbstract<bool>;
 
-                    if (tmp2 != null && !(tmp2 is DsfForEachActivity))
+                    if (operationalData.InnerActivity.InnerActivity is DsfActivityAbstract<bool> tmp2 && !(tmp2 is DsfForEachActivity))
                     {
                         IList<DsfForEachItem> data = tmp2.GetForEachInputs();
                         IList<Tuple<string, string>> updates = new List<Tuple<string, string>>();
@@ -457,14 +454,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 newOutputs = _inputItr.IterateMapping(newOutputs, idx);
             }
 
-            var dev2ActivityIoMapping = DataFunc.Handler as IDev2ActivityIOMapping;
-            if (dev2ActivityIoMapping != null)
+            if (DataFunc.Handler is IDev2ActivityIOMapping dev2ActivityIoMapping)
             {
                 dev2ActivityIoMapping.InputMapping = newInputs;
             }
 
-            var activityIoMapping = DataFunc.Handler as IDev2ActivityIOMapping;
-            if (activityIoMapping != null)
+            if (DataFunc.Handler is IDev2ActivityIOMapping activityIoMapping)
             {
                 activityIoMapping.OutputMapping = newOutputs;
             }
@@ -580,9 +575,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         private void RestoreHandlerFn()
         {
 
-            var activity = DataFunc.Handler as IDev2ActivityIOMapping;
 
-            if (activity != null)
+            if (DataFunc.Handler is IDev2ActivityIOMapping activity)
             {
 
                 if (operationalData.InnerActivity.OrigCodedInputs != null)
@@ -641,10 +635,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                     else
                     {
-                        var tmp2 = operationalData.InnerActivity.InnerActivity as DsfActivityAbstract<bool>;
 
                         // Restore Inputs ;)
-                        if (tmp2 != null)
+                        if (operationalData.InnerActivity.InnerActivity is DsfActivityAbstract<bool> tmp2)
                         {
                             IList<DsfForEachItem> data = tmp2.GetForEachInputs();
                             IList<Tuple<string, string>> updates = new List<Tuple<string, string>>();
@@ -818,8 +811,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             dataObject.ForEachNestingLevel++;
             try
             {
-                ErrorResultTO errors;
-                ForEachBootstrapTO exePayload = FetchExecutionType(dataObject, dataObject.Environment, out errors, update);
+                ForEachBootstrapTO exePayload = FetchExecutionType(dataObject, dataObject.Environment, out ErrorResultTO errors, update);
 
                 foreach (var err in errors.FetchErrors())
                 {
@@ -827,8 +819,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
                 itr = exePayload.IndexIterator;
 
-                string error;
-                ForEachInnerActivityTO innerA = GetInnerActivity(out error);
+                ForEachInnerActivityTO innerA = GetInnerActivity(out string error);
                 var exeAct = innerA?.InnerActivity;
                 allErrors.AddError(error);
                 if (dataObject.IsDebugMode())

@@ -420,7 +420,10 @@ namespace Dev2.Activities.Designers.Tests.SqlServer
         public DataTable TestService(IDatabaseService inputValues)
         {
             if(ThrowsTestError)
+            {
                 throw new Exception("bob");
+            }
+
             if (HasRecError)
             {
                 return null;
@@ -521,7 +524,10 @@ namespace Dev2.Activities.Designers.Tests.SqlServer
         public DataTable TestService(IDatabaseService inputValues)
         {
             if (ThrowsTestError)
+            {
                 throw new Exception("bob");
+            }
+
             if (HasRecError)
             {
                 return null;

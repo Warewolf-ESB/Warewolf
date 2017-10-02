@@ -96,11 +96,10 @@ namespace Dev2.PathOperations
                 try
                 {
                     // handle UNC path
-                    SafeTokenHandle safeTokenHandle;
 
                     string user = ExtractUserName(path);
                     string domain = ExtractDomain(path);
-                    bool loginOk = LogonUser(user, domain, path.Password, LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT, out safeTokenHandle);
+                    bool loginOk = LogonUser(user, domain, path.Password, LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT, out SafeTokenHandle safeTokenHandle);
 
 
                     if (loginOk)
@@ -142,7 +141,6 @@ namespace Dev2.PathOperations
             int result = -1;
             using (src)
             {
-                //2013.05.29: Ashley Lewis for bug 9507 - default destination to source directory when destination is left blank or if it is not a rooted path
                 if (!Path.IsPathRooted(dst.Path))
                 {
                     //get just the directory path to put into
@@ -168,8 +166,7 @@ namespace Dev2.PathOperations
                         else
                         {
                             // handle UNC path
-                            SafeTokenHandle safeTokenHandle;
-                            bool loginOk = LogonUser(ExtractUserName(dst), ExtractDomain(dst), dst.Password, LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT, out safeTokenHandle);
+                            bool loginOk = LogonUser(ExtractUserName(dst), ExtractDomain(dst), dst.Password, LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT, out SafeTokenHandle safeTokenHandle);
 
 
                             if (loginOk)
@@ -223,8 +220,7 @@ namespace Dev2.PathOperations
                 else
                 {
                     // handle UNC path
-                    SafeTokenHandle safeTokenHandle;
-                    bool loginOk = LogonUser(ExtractUserName(src), ExtractDomain(src), src.Password, LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT, out safeTokenHandle);
+                    bool loginOk = LogonUser(ExtractUserName(src), ExtractDomain(src), src.Password, LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT, out SafeTokenHandle safeTokenHandle);
 
                     if (loginOk)
                     {
@@ -281,8 +277,7 @@ namespace Dev2.PathOperations
                 try
                 {
                     // handle UNC path
-                    SafeTokenHandle safeTokenHandle;
-                    bool loginOk = LogonUser(ExtractUserName(dst), ExtractDomain(dst), dst.Password, LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT, out safeTokenHandle);
+                    bool loginOk = LogonUser(ExtractUserName(dst), ExtractDomain(dst), dst.Password, LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT, out SafeTokenHandle safeTokenHandle);
 
 
                     if (loginOk)
@@ -340,95 +335,110 @@ namespace Dev2.PathOperations
                 }
                 else
                 {
-                    try
+                    result = CreateDirectoryWithAuthAndOverwrite(dst);
+                }
+            }
+            else
+            {
+                if (!args.Overwrite && !DirectoryExist(dst))
+                {
+                    if (!RequiresAuth(dst))
                     {
-                        // handle UNC path
-                        SafeTokenHandle safeTokenHandle;
-                        bool loginOk = LogonUser(ExtractUserName(dst), ExtractDomain(dst), dst.Password, LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT, out safeTokenHandle);
-
-
-                        if (loginOk)
-                        {
-                            using (safeTokenHandle)
-                            {
-
-                                WindowsIdentity newID = new WindowsIdentity(safeTokenHandle.DangerousGetHandle());
-                                using (WindowsImpersonationContext impersonatedUser = newID.Impersonate())
-                                {
-                                    // Do the operation here
-
-                                    if (DirectoryExist(dst))
-                                    {
-                                        Delete(dst);
-                                    }
-                                    Directory.CreateDirectory(dst.Path);
-                                    result = true;
-
-                                    // remove impersonation now
-                                    impersonatedUser.Undo();
-                                }
-                            }
-                        }
-                        else
-                        {
-                            // login failed, oh no!
-                            throw new Exception(string.Format(ErrorResource.FailedToAuthenticateUser, dst.Username, dst.Path));
-                        }
+                        Directory.CreateDirectory(dst.Path);
+                        result = true;
                     }
-                    catch (Exception ex)
+                    else
                     {
-                        Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
-                        throw;
+                        result = CreateDirectoryWithAuthAndNoOverwrite(dst);
                     }
                 }
             }
-            else if (!args.Overwrite && !DirectoryExist(dst))
+
+            return result;
+        }
+
+        private bool CreateDirectoryWithAuthAndNoOverwrite(IActivityIOPath dst)
+        {
+            bool result;
+            try
             {
-                if (!RequiresAuth(dst))
+                // handle UNC path
+                bool loginOk = LogonUser(ExtractUserName(dst), ExtractDomain(dst), dst.Password, LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT, out SafeTokenHandle safeTokenHandle);
+
+                if (loginOk)
                 {
-                    Directory.CreateDirectory(dst.Path);
-                    result = true;
+                    using (safeTokenHandle)
+                    {
+
+                        WindowsIdentity newID = new WindowsIdentity(safeTokenHandle.DangerousGetHandle());
+                        using (WindowsImpersonationContext impersonatedUser = newID.Impersonate())
+                        {
+                            // Do the operation here
+
+                            Directory.CreateDirectory(dst.Path);
+                            result = true;
+
+                            // remove impersonation now
+                            impersonatedUser.Undo();
+                        }
+                        newID.Dispose();
+                    }
                 }
                 else
                 {
+                    // login failed
+                    throw new Exception(string.Format(ErrorResource.FailedToAuthenticateUser, dst.Username, dst.Path));
+                }
+            }
+            catch (Exception ex)
+            {
+                Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
+                throw;
+            }
 
-                    try
+            return result;
+        }
+
+        private bool CreateDirectoryWithAuthAndOverwrite(IActivityIOPath dst)
+        {
+            bool result;
+            try
+            {
+                // handle UNC path
+                bool loginOk = LogonUser(ExtractUserName(dst), ExtractDomain(dst), dst.Password, LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT, out SafeTokenHandle safeTokenHandle);
+                
+                if (loginOk)
+                {
+                    using (safeTokenHandle)
                     {
-                        // handle UNC path
-                        SafeTokenHandle safeTokenHandle;
-                        bool loginOk = LogonUser(ExtractUserName(dst), ExtractDomain(dst), dst.Password, LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT, out safeTokenHandle);
 
-                        if (loginOk)
+                        WindowsIdentity newID = new WindowsIdentity(safeTokenHandle.DangerousGetHandle());
+                        using (WindowsImpersonationContext impersonatedUser = newID.Impersonate())
                         {
-                            using (safeTokenHandle)
+                            // Do the operation here
+
+                            if (DirectoryExist(dst))
                             {
-
-                                WindowsIdentity newID = new WindowsIdentity(safeTokenHandle.DangerousGetHandle());
-                                using (WindowsImpersonationContext impersonatedUser = newID.Impersonate())
-                                {
-                                    // Do the operation here
-
-                                    Directory.CreateDirectory(dst.Path);
-                                    result = true;
-
-                                    // remove impersonation now
-                                    impersonatedUser.Undo();
-                                }
-                                newID.Dispose();
+                                Delete(dst);
                             }
+                            Directory.CreateDirectory(dst.Path);
+                            result = true;
+
+                            // remove impersonation now
+                            impersonatedUser.Undo();
                         }
-                        else
-                        {
-                            // login failed
-                            throw new Exception(string.Format(ErrorResource.FailedToAuthenticateUser, dst.Username, dst.Path));
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
-                        throw;
                     }
                 }
+                else
+                {
+                    // login failed, oh no!
+                    throw new Exception(string.Format(ErrorResource.FailedToAuthenticateUser, dst.Username, dst.Path));
+                }
+            }
+            catch (Exception ex)
+            {
+                Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
+                throw;
             }
 
             return result;
@@ -622,8 +632,7 @@ namespace Dev2.PathOperations
                 try
                 {
                     // handle UNC path
-                    SafeTokenHandle safeTokenHandle;
-                    bool loginOk = LogonUser(ExtractUserName(src), ExtractDomain(src), src.Password, LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT, out safeTokenHandle);
+                    bool loginOk = LogonUser(ExtractUserName(src), ExtractDomain(src), src.Password, LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT, out SafeTokenHandle safeTokenHandle);
 
                     if (loginOk)
                     {

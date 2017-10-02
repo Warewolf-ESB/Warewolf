@@ -95,8 +95,7 @@ namespace Dev2.Core.Tests.Settings
             mockEnvironmentModel.Setup(model => model.Connection).Returns(mockConnection.Object);
             var clientScheduledResourceModel = new ClientScheduledResourceModel(mockEnvironmentModel.Object, () => { });
             //------------Execute Test---------------------------
-            string errorMessage;
-            var saved = clientScheduledResourceModel.Save(scheduledResourceForTest, out errorMessage);
+            var saved = clientScheduledResourceModel.Save(scheduledResourceForTest, out string errorMessage);
             //------------Assert Results-------------------------
             mockConnection.Verify(connection => connection.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>()), Times.Once());
             Assert.IsTrue(saved);
@@ -124,8 +123,7 @@ namespace Dev2.Core.Tests.Settings
             mockEnvironmentModel.Setup(model => model.Connection).Returns(mockConnection.Object);
             var clientScheduledResourceModel = new ClientScheduledResourceModel(mockEnvironmentModel.Object, () => { });
             //------------Execute Test---------------------------
-            string errorMessage;
-            var saved = clientScheduledResourceModel.Save(scheduledResourceForTest, out errorMessage);
+            var saved = clientScheduledResourceModel.Save(scheduledResourceForTest, out string errorMessage);
             //------------Assert Results-------------------------
             mockConnection.Verify(connection => connection.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>()), Times.Once());
             Assert.IsFalse(saved);

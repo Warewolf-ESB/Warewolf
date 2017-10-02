@@ -63,8 +63,7 @@ namespace Dev2.Runtime.WebServer.Security
 
         static WebServerRequestType ParseRequestType(string source, string actionName)
         {
-            WebServerRequestType requestType;
-            Enum.TryParse(source + actionName, true, out requestType);
+            Enum.TryParse(source + actionName, true, out WebServerRequestType requestType);
             return requestType;
         }
     }

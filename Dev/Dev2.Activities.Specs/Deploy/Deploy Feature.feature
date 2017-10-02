@@ -12,4 +12,3 @@ And And the localhost resource is "OriginalWorkFlowName"
 When I Deploy resource to remote
 And I reload the destination resources
 Then the destination resource is "OriginalWorkFlowName"
-Then RollBack

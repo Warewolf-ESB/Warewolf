@@ -155,8 +155,9 @@ namespace Dev2.Core.Tests
                     wasGetDependsOnOtherCalled = true;
                     var visualiserViewModel = (DependencyVisualiserViewModel)sender;
                     if (visualiserViewModel.GetDependsOnOther)
+                    {
                         wasGetDependsOnMeCalled = true;
-
+                    }
                 }
             };
             //---------------Assert Precondition----------------

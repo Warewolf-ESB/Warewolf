@@ -133,8 +133,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
                 else if (data.IsWarewolfAtomResult)
                 {
-                    var atomData = data as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
-                    if (atomData != null && atomData.Item.IsNothing)
+                    if (data is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult atomData && atomData.Item.IsNothing)
                     {
                         AddDebugOutputItem(new DebugItemStaticDataParams("", SortField, "", "="));
                     }
@@ -155,8 +154,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             else if (data.IsWarewolfAtomResult)
             {
-                var atomData = data as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
-                if (atomData != null && atomData.Item.IsNothing)
+                if (data is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult atomData && atomData.Item.IsNothing)
                 {
                     AddDebugInputItem(new DebugItemStaticDataParams("", expression, labelText, "="));
                     AddDebugInputItem(new DebugItemStaticDataParams(SelectedSort, "Sort Order"));

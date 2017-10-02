@@ -38,8 +38,7 @@ namespace Dev2.Studio.Core.AppResources.Converters
         {
             if(value != null)
             {
-                int intVal;
-                if(int.TryParse(value.ToString(), out intVal))
+                if (int.TryParse(value.ToString(), out int intVal))
                 {
                     return intVal;
                 }

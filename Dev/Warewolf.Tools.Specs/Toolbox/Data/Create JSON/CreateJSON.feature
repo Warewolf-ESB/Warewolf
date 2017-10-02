@@ -160,7 +160,7 @@ Scenario Outline: Multiple Recordset Variable
 	|                     |
 	| [[json]] = <result> |
 Examples: 
-	|  type | valueA | valueB | result                 |
+	|  type         | valueA | valueB | result                     |
 	| Character     | c      | 3      | {"a":["c"],"b":[3]}        |
 	| Integer       | 2      | a      | {"a":[2],"b":["a"]}        |
 	| Decimal       | 5.6    | World  | {"a":[5.6],"b":["World"]}  |

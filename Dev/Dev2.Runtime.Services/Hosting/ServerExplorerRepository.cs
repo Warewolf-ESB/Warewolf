@@ -100,7 +100,8 @@ namespace Dev2.Runtime.Hosting
         public ITestCatalog TestCatalog { private get; set; }
         public IServerVersionRepository VersionRepository { get; set; }
 
-        public IExplorerItem Load(Guid workSpaceId, bool reload = false)
+        public IExplorerItem Load(Guid workSpaceId) => Load(workSpaceId, false);
+        public IExplorerItem Load(Guid workSpaceId, bool reload)
         {
             if (_root == null || reload)
             {
@@ -255,7 +256,10 @@ namespace Dev2.Runtime.Hosting
         public IExplorerItem Find(IExplorerItem item, Guid itemToFind)
         {
             if (item.ResourceId == itemToFind)
+            {
                 return item;
+            }
+
             if (item.Children == null || item.Children.Count == 0)
             {
                 return null;
@@ -267,7 +271,10 @@ namespace Dev2.Runtime.Hosting
         {
 
             if (predicate(item))
+            {
                 return item;
+            }
+
             if (item.Children == null || item.Children.Count == 0)
             {
                 return null;

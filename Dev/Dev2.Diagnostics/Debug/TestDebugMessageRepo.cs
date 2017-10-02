@@ -26,9 +26,8 @@ namespace Dev2.Diagnostics.Debug
             {
                 lock(Lock)
                 {
-                    IList<IDebugState> list;
-                    var key = new Tuple<Guid, string>(resourceID,testName);
-                    if(_data.TryGetValue(key, out list))
+                    var key = new Tuple<Guid, string>(resourceID, testName);
+                    if (_data.TryGetValue(key, out IList<IDebugState> list))
                     {
                         if (list.Contains(ds))
                         {
@@ -56,8 +55,7 @@ namespace Dev2.Diagnostics.Debug
             lock(Lock)
             {
                 var key = new Tuple<Guid, string>(resourceId, testName);
-                IList<IDebugState> list;
-                if(_data.TryGetValue(key, out list))
+                if (_data.TryGetValue(key, out IList<IDebugState> list))
                 {
                     _data.Remove(key);
                     return list;
@@ -73,8 +71,7 @@ namespace Dev2.Diagnostics.Debug
             lock (Lock)
             {
                 var key = new Tuple<Guid, string>(resourceId, testName);
-                IList<IDebugState> list;
-                if (_data.TryGetValue(key, out list))
+                if (_data.TryGetValue(key, out IList<IDebugState> list))
                 {
                     return list;
                 }

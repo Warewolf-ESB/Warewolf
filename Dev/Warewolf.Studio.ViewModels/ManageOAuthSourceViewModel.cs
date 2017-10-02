@@ -420,7 +420,10 @@ namespace Warewolf.Studio.ViewModels
                         src.ResourcePath = requestServiceNameViewModel.ResourceName.Path ?? requestServiceNameViewModel.ResourceName.Name;
                         Save(src);
                         if (requestServiceNameViewModel.SingleEnvironmentExplorerViewModel != null)
+                        {
                             AfterSave(requestServiceNameViewModel.SingleEnvironmentExplorerViewModel.Environments[0].ResourceId, src.ResourceID);
+                        }
+
                         _oAuthSource = src;
                         Path = _oAuthSource.ResourcePath;
                         SetupHeaderTextFromExisting();
@@ -468,6 +471,7 @@ namespace Warewolf.Studio.ViewModels
         private IOAuthSource ToSource()
         {
             if (_oAuthSource == null)
+            {
                 return new DropBoxSource
                 {
                     AppKey = AppKey,
@@ -475,7 +479,7 @@ namespace Warewolf.Studio.ViewModels
                     ResourceID = _oAuthSource?.ResourceID ?? Guid.NewGuid()
                 }
             ;
-            
+            }
             else
             {
                 _oAuthSource.AppKey = AppKey;

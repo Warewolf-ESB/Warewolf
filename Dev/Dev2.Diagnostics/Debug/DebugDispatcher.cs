@@ -66,8 +66,7 @@ namespace Dev2.Diagnostics.Debug
         /// <param name="workspaceId">The ID of workspace to be removed.</param>
         public void Remove(Guid workspaceId)
         {
-            IDebugWriter writer;
-            _writers.TryRemove(workspaceId, out writer);
+            _writers.TryRemove(workspaceId, out IDebugWriter writer);
         }
 
         /// <summary>
@@ -77,8 +76,7 @@ namespace Dev2.Diagnostics.Debug
         /// <returns>The <see cref="IDebugWriter"/> with the specified ID, or <code>null</code> if not found.</returns>
         public IDebugWriter Get(Guid workspaceId)
         {
-            IDebugWriter writer;
-            _writers.TryGetValue(workspaceId, out writer);
+            _writers.TryGetValue(workspaceId, out IDebugWriter writer);
             return writer;
         }
 
@@ -114,15 +112,13 @@ namespace Dev2.Diagnostics.Debug
 
             if (remoteDebugItems != null)
             {
-                Guid parentId;
-                Guid.TryParse(parentInstanceId, out parentId);
+                Guid.TryParse(parentInstanceId, out Guid parentId);
                 foreach (var item in remoteDebugItems)
                 {
                     item.WorkspaceID = debugState.WorkspaceID;
                     item.OriginatingResourceID = debugState.OriginatingResourceID;
                     item.ClientID = debugState.ClientID;
-                    Guid remoteEnvironmentId;
-                    if (Guid.TryParse(remoteInvokerId, out remoteEnvironmentId))
+                    if (Guid.TryParse(remoteInvokerId, out Guid remoteEnvironmentId))
                     {
                         item.EnvironmentID = remoteEnvironmentId;
                     }

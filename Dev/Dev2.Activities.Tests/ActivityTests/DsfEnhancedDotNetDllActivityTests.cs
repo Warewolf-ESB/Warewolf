@@ -55,8 +55,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("DotNet DLL Connector", activity.Type.Expression.ToString());
             Assert.AreEqual("DotNet DLL", activity.DisplayName);
             //---------------Execute Test ----------------------
-            ErrorResultTO err;
-            activity.ExecuteMock(esbChannel.Object, mock.Object, string.Empty, string.Empty, out err);
+            activity.ExecuteMock(esbChannel.Object, mock.Object, string.Empty, string.Empty, out ErrorResultTO err);
             //---------------Test Result -----------------------
             Assert.AreEqual(1, err.FetchErrors().Count);
         }
@@ -82,8 +81,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("DotNet DLL Connector", activity.Type.Expression.ToString());
             Assert.AreEqual("DotNet DLL", activity.DisplayName);
             //---------------Execute Test ----------------------
-            ErrorResultTO err;
-            activity.ExecuteMock(esbChannel.Object, mock.Object, string.Empty, string.Empty, out err);
+            activity.ExecuteMock(esbChannel.Object, mock.Object, string.Empty, string.Empty, out ErrorResultTO err);
             //---------------Test Result -----------------------
             Assert.AreEqual(1, err.FetchErrors().Count);
         }
@@ -122,8 +120,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("DotNet DLL Connector", activity.Type.Expression.ToString());
             Assert.AreEqual("DotNet DLL", activity.DisplayName);
             //---------------Execute Test ----------------------
-            ErrorResultTO err;
-            activity.ExecuteMock(esbChannel.Object, mock.Object, string.Empty, string.Empty, out err);
+            activity.ExecuteMock(esbChannel.Object, mock.Object, string.Empty, string.Empty, out ErrorResultTO err);
             //---------------Test Result -----------------------
             Assert.AreEqual(0, err.FetchErrors().Count);
         }
@@ -171,8 +168,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("DotNet DLL", activity.DisplayName);
             Assert.IsNotNull(activity.ConstructorInputs);
             //---------------Execute Test ----------------------
-            ErrorResultTO err;
-            activity.ExecuteMock(esbChannel.Object, mock.Object, string.Empty, string.Empty, out err);
+            activity.ExecuteMock(esbChannel.Object, mock.Object, string.Empty, string.Empty, out ErrorResultTO err);
             //---------------Test Result -----------------------
             env.Verify(environment => environment.EvalForJson("[[@name]]", It.IsAny<bool>()));
             Assert.AreEqual(0, activity.MethodsToRun.Count);
@@ -242,8 +238,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("DotNet DLL", activity.DisplayName);
             Assert.IsNotNull(activity.ConstructorInputs);
             //---------------Execute Test ----------------------
-            ErrorResultTO err;
-            activity.ExecuteMock(esbChannel.Object, mock.Object, string.Empty, string.Empty, out err);
+            activity.ExecuteMock(esbChannel.Object, mock.Object, string.Empty, string.Empty, out ErrorResultTO err);
             //---------------Test Result -----------------------
             var fieldInfo = typeof(DsfEnhancedDotNetDllActivity).GetField("_childStatesToDispatch", BindingFlags.NonPublic | BindingFlags.Instance);
             Assert.IsNotNull(fieldInfo);
@@ -318,8 +313,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("DotNet DLL", activity.DisplayName);
             Assert.IsNotNull(activity.ConstructorInputs);
             //---------------Execute Test ----------------------
-            ErrorResultTO err;
-            activity.ExecuteMock(esbChannel.Object, mock.Object, string.Empty, string.Empty, out err);
+            activity.ExecuteMock(esbChannel.Object, mock.Object, string.Empty, string.Empty, out ErrorResultTO err);
             //---------------Test Result -----------------------
             Assert.AreEqual(0, err.FetchErrors().Count);
             var methodResult = activity.MethodsToRun.Single().MethodResult;
@@ -389,8 +383,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("DotNet DLL", activity.DisplayName);
             Assert.IsNotNull(activity.ConstructorInputs);
             //---------------Execute Test ----------------------
-            ErrorResultTO err;
-            activity.ExecuteMock(esbChannel.Object, mock.Object, string.Empty, string.Empty, out err);
+            activity.ExecuteMock(esbChannel.Object, mock.Object, string.Empty, string.Empty, out ErrorResultTO err);
             //---------------Test Result -----------------------
             var methodResult = activity.MethodsToRun.Single().MethodResult;
             Assert.AreEqual("", methodResult);
@@ -437,9 +430,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.IsNotNull(activity.ConstructorInputs);
             Assert.IsNull(activity.Constructor);
             //---------------Execute Test ----------------------
-            ErrorResultTO err;
 
-            activity.ExecuteMock(esbChannel.Object, mock.Object, string.Empty, string.Empty, out err);
+            activity.ExecuteMock(esbChannel.Object, mock.Object, string.Empty, string.Empty, out ErrorResultTO err);
             //---------------Test Result -----------------------
             Assert.IsNotNull(activity.Constructor);
             Assert.IsNotNull(activity.ConstructorInputs);
@@ -487,8 +479,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("DotNet DLL Connector", activity.Type.Expression.ToString());
             Assert.AreEqual("DotNet DLL", activity.DisplayName);
             //---------------Execute Test ----------------------
-            ErrorResultTO err;
-            activity.ExecuteMock(esbChannel.Object, mock.Object, string.Empty, string.Empty, out err);
+            activity.ExecuteMock(esbChannel.Object, mock.Object, string.Empty, string.Empty, out ErrorResultTO err);
             //---------------Test Result -----------------------
             Assert.AreEqual(0, err.FetchErrors().Count);
         }
@@ -533,9 +524,8 @@ namespace Dev2.Tests.Activities.ActivityTests
                 }
             };
             //---------------Assert Precondition----------------
-            ErrorResultTO err;
             var dsfDataObject = mock.Object;
-            activity.ExecuteMock(esbChannel.Object, dsfDataObject, string.Empty, string.Empty, out err);
+            activity.ExecuteMock(esbChannel.Object, dsfDataObject, string.Empty, string.Empty, out ErrorResultTO err);
             //---------------Test Result -----------------------
             Assert.AreEqual(0, err.FetchErrors().Count);
             var jContainer = dsfDataObject.Environment.EvalJContainer("[[@Foods()]]");
@@ -587,9 +577,8 @@ namespace Dev2.Tests.Activities.ActivityTests
                 }
             };
             //---------------Assert Precondition----------------
-            ErrorResultTO err;
             var dsfDataObject = mock.Object;
-            activity.ExecuteMock(esbChannel.Object, dsfDataObject, string.Empty, string.Empty, out err);
+            activity.ExecuteMock(esbChannel.Object, dsfDataObject, string.Empty, string.Empty, out ErrorResultTO err);
             //---------------Test Result -----------------------
             Assert.AreEqual(0, err.FetchErrors().Count);
             var jContainer = dsfDataObject.Environment.EvalAsList("[[Food(*).Name]]", 0).ToList();
@@ -639,9 +628,8 @@ namespace Dev2.Tests.Activities.ActivityTests
                 }
             };
             //---------------Assert Precondition----------------
-            ErrorResultTO err;
             var dsfDataObject = mock.Object;
-            activity.ExecuteMock(esbChannel.Object, dsfDataObject, string.Empty, string.Empty, out err);
+            activity.ExecuteMock(esbChannel.Object, dsfDataObject, string.Empty, string.Empty, out ErrorResultTO err);
             //---------------Test Result -----------------------
             Assert.AreEqual(0, err.FetchErrors().Count);
             var jContainer = dsfDataObject.Environment.Eval("[[Foods]]", 0) as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
@@ -700,8 +688,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("DotNet DLL Connector", activity.Type.Expression.ToString());
             Assert.AreEqual("DotNet DLL", activity.DisplayName);
             //---------------Execute Test ----------------------
-            ErrorResultTO err;
-            activity.ExecuteMock(esbChannel.Object, mock.Object, string.Empty, string.Empty, out err);
+            activity.ExecuteMock(esbChannel.Object, mock.Object, string.Empty, string.Empty, out ErrorResultTO err);
             //---------------Test Result -----------------------
             Assert.AreEqual(0, err.FetchErrors().Count);
             var methodResult = activity.MethodsToRun.Single().MethodResult;
@@ -771,8 +758,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("DotNet DLL Connector", activity.Type.Expression.ToString());
             Assert.AreEqual("DotNet DLL", activity.DisplayName);
             //---------------Execute Test ----------------------
-            ErrorResultTO err;
-            activity.ExecuteMock(esbChannel.Object, mock.Object, string.Empty, string.Empty, out err);
+            activity.ExecuteMock(esbChannel.Object, mock.Object, string.Empty, string.Empty, out ErrorResultTO err);
             //---------------Test Result -----------------------
             Assert.AreEqual(0, err.FetchErrors().Count);
             var methodResult = activity.MethodsToRun.Single().MethodResult;
@@ -1223,8 +1209,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            ErrorResultTO err;
-            activity.ExecuteMock(esbChannel.Object, mock.Object, string.Empty, string.Empty, out err);
+            activity.ExecuteMock(esbChannel.Object, mock.Object, string.Empty, string.Empty, out ErrorResultTO err);
             //---------------Test Result -----------------------
 
             Assert.AreEqual(1, err.FetchErrors().Count);

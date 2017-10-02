@@ -82,8 +82,7 @@ namespace Dev2.DynamicServices.Test
             {
                 XElement testWorkspaceItemXml = XmlResource.Fetch("WorkspaceItem");
 
-                Guid workspaceID;
-                var repositoryInstance = SetupRepo(out workspaceID);
+                var repositoryInstance = SetupRepo(out Guid workspaceID);
 
                 var workspace = repositoryInstance.Get(workspaceID);
 
@@ -116,8 +115,7 @@ namespace Dev2.DynamicServices.Test
                 workspaceItem.Setup(m => m.ID).Returns(_serviceID);
                 workspaceItem.Setup(m => m.ServiceType).Returns(ServiceType.ToString);
 
-                Guid workspaceID;
-                var repositoryInstance = SetupRepo(out workspaceID);
+                var repositoryInstance = SetupRepo(out Guid workspaceID);
 
                 var workspace = repositoryInstance.Get(GlobalConstants.ServerWorkspaceID);
 
@@ -177,8 +175,7 @@ namespace Dev2.DynamicServices.Test
         public void DeleteDecreasesItemCountByOne()
         {
             // this will add           
-            Guid workspaceID;
-            var repositoryInstance = SetupRepo(out workspaceID);
+            var repositoryInstance = SetupRepo(out Guid workspaceID);
             var workspace = repositoryInstance.Get(workspaceID);
 
             var expected = repositoryInstance.Count - 1;
@@ -190,8 +187,7 @@ namespace Dev2.DynamicServices.Test
         [TestMethod]
         public void DeleteNullItemExpectedNoOperationPerformed()
         {
-            Guid workspaceID;
-            var repositoryInstance = SetupRepo(out workspaceID);
+            var repositoryInstance = SetupRepo(out Guid workspaceID);
             var expected = repositoryInstance.Count;
             repositoryInstance.Delete(null);
             Assert.AreEqual(expected, repositoryInstance.Count);
@@ -204,8 +200,7 @@ namespace Dev2.DynamicServices.Test
         [TestMethod]
         public void SaveWithNewWorkspaceIncreasesItemCountByOne()
         {
-            Guid workspaceID;
-            var repositoryInstance = SetupRepo(out workspaceID);
+            var repositoryInstance = SetupRepo(out Guid workspaceID);
             var expected = repositoryInstance.Count + 1;
             Guid myGuid = Guid.NewGuid();
             var workspace = new Workspace(myGuid);
@@ -216,8 +211,7 @@ namespace Dev2.DynamicServices.Test
         [TestMethod]
         public void SaveWithNullWorkspaceIncreasesItemCountByOne()
         {
-            Guid workspaceID;
-            var repositoryInstance = SetupRepo(out workspaceID);
+            var repositoryInstance = SetupRepo(out Guid workspaceID);
             var expected = repositoryInstance.Count;
             repositoryInstance.Save(null);
             Assert.AreEqual(expected, repositoryInstance.Count);
@@ -253,16 +247,14 @@ namespace Dev2.DynamicServices.Test
         [TestMethod]
         public void ServerWorkspaceCreatedAfterInstantiation()
         {
-            Guid workspaceID;
-            var repositoryInstance = SetupRepo(out workspaceID);
+            var repositoryInstance = SetupRepo(out Guid workspaceID);
             Assert.IsNotNull(repositoryInstance.ServerWorkspace);
         }
 
         [TestMethod]
         public void ServerWorkspaceCreatedWithServerWorkspaceID()
         {
-            Guid workspaceID;
-            var repositoryInstance = SetupRepo(out workspaceID);
+            var repositoryInstance = SetupRepo(out Guid workspaceID);
             Assert.AreEqual(WorkspaceRepository.ServerWorkspaceID, repositoryInstance.ServerWorkspace.ID);
         }
 
@@ -273,8 +265,7 @@ namespace Dev2.DynamicServices.Test
         [TestMethod]
         public void GetWithEmptyGuidReturnsServerWorkspace()
         {
-            Guid workspaceID;
-            var repositoryInstance = SetupRepo(out workspaceID);
+            var repositoryInstance = SetupRepo(out Guid workspaceID);
             var result = repositoryInstance.Get(Guid.Empty);
             Assert.AreSame(repositoryInstance.ServerWorkspace, result);
         }
@@ -282,8 +273,7 @@ namespace Dev2.DynamicServices.Test
         [TestMethod]
         public void GetWithServerWorkspaceIDReturnsServerWorkspace()
         {
-            Guid workspaceID;
-            var repositoryInstance = SetupRepo(out workspaceID);
+            var repositoryInstance = SetupRepo(out Guid workspaceID);
             var result = repositoryInstance.Get(WorkspaceRepository.ServerWorkspaceID);
             Assert.AreSame(repositoryInstance.ServerWorkspace, result);
         }
@@ -291,8 +281,7 @@ namespace Dev2.DynamicServices.Test
         [TestMethod]
         public void GetWithNewWorkspaceIDIncreasesItemCountByOne()
         {
-            Guid workspaceID;
-            var repositoryInstance = SetupRepo(out workspaceID);
+            var repositoryInstance = SetupRepo(out Guid workspaceID);
             var expected = repositoryInstance.Count + 1;
             repositoryInstance.Get(Guid.NewGuid());
             Assert.AreEqual(expected, repositoryInstance.Count);
@@ -301,8 +290,7 @@ namespace Dev2.DynamicServices.Test
         [TestMethod]
         public void GetWithForceReloadsWorkspace()
         {
-            Guid workspaceID;
-            var repositoryInstance = SetupRepo(out workspaceID);
+            var repositoryInstance = SetupRepo(out Guid workspaceID);
             var previous = repositoryInstance.ServerWorkspace;
             var result = repositoryInstance.Get(WorkspaceRepository.ServerWorkspaceID, true);
             Assert.AreNotSame(previous, result);
@@ -314,9 +302,8 @@ namespace Dev2.DynamicServices.Test
         {
             var repo = new WorkspaceRepository();
             workspaceID = Guid.NewGuid();
-             List<IResource> resources;
-             ResourceCatalogTests.SaveResources(Guid.Empty, null, true, true, new string[0], new[] { "Calculate_RecordSet_Subtract" }, out resources, new Guid[0], new[] { Guid.NewGuid() });
-             ResourceCatalogTests.SaveResources(workspaceID, null, true, true, new string[0], new[] { "Calculate_RecordSet_Subtract" }, out resources, new Guid[0], new[] { Guid.NewGuid() });
+            ResourceCatalogTests.SaveResources(Guid.Empty, null, true, true, new string[0], new[] { "Calculate_RecordSet_Subtract" }, out List<IResource> resources, new Guid[0], new[] { Guid.NewGuid() });
+            ResourceCatalogTests.SaveResources(workspaceID, null, true, true, new string[0], new[] { "Calculate_RecordSet_Subtract" }, out resources, new Guid[0], new[] { Guid.NewGuid() });
 
             // Force reload of server workspace from _currentTestDir
             ResourceCatalog.Instance.LoadWorkspace(GlobalConstants.ServerWorkspaceID);

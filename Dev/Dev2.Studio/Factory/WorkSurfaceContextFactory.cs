@@ -71,7 +71,10 @@ namespace Dev2.Studio.Factory
                 }
             }
             if (vm is SchedulerViewModel || vm is SettingsViewModel)
+            {
                 key = WorkSurfaceKeyFactory.CreateEnvKey(workSurfaceContext, CustomContainer.Get<IShellViewModel>().ActiveServer.EnvironmentID) as WorkSurfaceKey;
+            }
+
             return CreateWorkSurfaceContextViewModel(vm, workSurfaceContext, key);
         }
 
@@ -83,7 +86,10 @@ namespace Dev2.Studio.Factory
             var context = new WorkSurfaceContextViewModel(key, vm);
            
             if (!(vm is SchedulerViewModel)&& !(vm is SettingsViewModel))
+            {
                 vm.DisplayName = workSurfaceContext.GetDescription();
+            }
+
             vm.WorkSurfaceContext = workSurfaceContext;
             return context;
         }

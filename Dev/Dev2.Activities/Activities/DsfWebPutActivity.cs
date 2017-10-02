@@ -30,7 +30,10 @@ namespace Dev2.Activities
         
         public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
         {
-            if (env == null) return _debugInputs;
+            if (env == null)
+            {
+                return _debugInputs;
+            }
 
             DebugItem debugItem = new DebugItem();
 

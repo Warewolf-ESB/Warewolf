@@ -88,8 +88,7 @@ namespace Dev2.Activities.Designers.Tests.Core
             var region = new WcfInputRegion(ModelItemUtils.CreateModelItem(act), WcfActionRegion);
             Assert.AreEqual(region.IsEnabled, false);
             Assert.AreEqual(region.Errors.Count, 0);
-            var clone = region.CloneRegion() as WcfInputRegion;
-            if (clone != null)
+            if (region.CloneRegion() is WcfInputRegion clone)
             {
                 Assert.AreEqual(clone.IsEnabled, false);
                 Assert.AreEqual(clone.Errors.Count, 0);
