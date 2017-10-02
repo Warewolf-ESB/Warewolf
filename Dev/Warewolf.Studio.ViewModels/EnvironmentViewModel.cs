@@ -1101,6 +1101,8 @@ namespace Warewolf.Studio.ViewModels
 
         public async Task<bool> Load() => await Load(false, false);
 
+        public async Task<bool> Load(bool isDeploy) => await Load(isDeploy, false);
+
         public async Task<bool> Load(bool isDeploy, bool reloadCatalogue)
         {
             if (!IsLoading || isDeploy)

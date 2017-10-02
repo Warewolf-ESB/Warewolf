@@ -56,6 +56,8 @@ namespace Dev2.Studio.Interfaces
 
         Task<bool> Load();
 
+        Task<bool> Load(bool isDeploy);
+
         Task<bool> Load(bool isDeploy, bool reloadCatalogue);
 
         Task<bool> LoadDialog(string selectedId);

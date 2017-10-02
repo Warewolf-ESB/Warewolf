@@ -297,9 +297,9 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        async Task<bool> ServerConnected(object _, IServer server)
+        async Task<bool> ServerConnected(IServer server)
         {
-            var isCreated = await CreateNewEnvironment(server);
+            var isCreated = await CreateNewEnvironment(server).ConfigureAwait(false);
             return isCreated;
         }
 
@@ -315,7 +315,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 var environmentModel = CreateEnvironmentFromServer(server, _shellViewModel);
                 _environments.Add(environmentModel);
-                isLoaded = await environmentModel.Load(IsDeploy);
+                isLoaded = await environmentModel.Load(IsDeploy).ConfigureAwait(false);
                 OnPropertyChanged(() => Environments);
                 _statsArea.Calculate(environmentModel.AsList().Select(model => model as IExplorerTreeItem).ToList());
             }
@@ -339,7 +339,7 @@ namespace Warewolf.Studio.ViewModels
         protected virtual async void LoadEnvironment(IEnvironmentViewModel localhostEnvironment)
         {
             localhostEnvironment.Connect();
-            await localhostEnvironment.Load(true, true);
+            await localhostEnvironment.Load(true, true).ConfigureAwait(false);
             var selectedEnvironment = SelectedEnvironment ?? _selectedEnv;
             if (selectedEnvironment?.DisplayName == localhostEnvironment.DisplayName)
             {
