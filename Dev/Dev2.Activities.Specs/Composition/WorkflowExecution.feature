@@ -1781,8 +1781,8 @@ Scenario Outline: Testing Length with two variables in Result field
 	  |                |
 	  |                |
 Examples: 
-      | No    | Variable       |
-      | 1     | [[length]][[a]] |
+      | No | Variable               |
+      | 1  | [[length]][[a]]        |
       | 2  | [[a]]*]]               |
       | 3  | [[var@]]               |
       | 4  | [[var]]00]]            |
