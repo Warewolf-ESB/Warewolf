@@ -4,12 +4,14 @@ using Dev2.Util;
 using System;
 using System.Collections.Generic;
 using Dev2.Common.ExtMethods;
+using Dev2.Controller;
 using Dev2.Data.ServiceModel;
 using Dev2.Network;
 using Dev2.Studio.Core.Models;
 using Dev2.Studio.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
+using Dev2.Studio.Core.InterfaceImplementors;
 using System.Linq;
 
 namespace Dev2.Activities.Specs.Deploy
@@ -19,20 +21,16 @@ namespace Dev2.Activities.Specs.Deploy
     {
         private static ScenarioContext _scenarioContext;
         private readonly CommonSteps _commonSteps;
-        private Guid _resourceId = Guid.Parse("fbc83b75-194a-4b10-b50c-b548dd20b408");
 
         public DeployFeatureSteps(ScenarioContext scenarioContext)
         {
-            _scenarioContext = scenarioContext ?? throw new ArgumentNullException("scenarioContext");
-            _commonSteps = new CommonSteps(_scenarioContext);
-        }
+            if (scenarioContext == null)
+            {
+                throw new ArgumentNullException("scenarioContext");
+            }
 
-        [BeforeScenario]
-        public void RollBack()
-        {
-            var destinationServer = ScenarioContext.Current.Get<IServer>("destinationServer");
-            var previousVersions = destinationServer.ProxyLayer.GetVersions(_resourceId);
-            destinationServer.ProxyLayer.Rollback(_resourceId, previousVersions.First().VersionNumber);
+            _scenarioContext = scenarioContext;
+            _commonSteps = new CommonSteps(_scenarioContext);
         }
 
         [Given(@"I am Connected to remote server ""(.*)""")]
@@ -54,8 +52,9 @@ namespace Dev2.Activities.Specs.Deploy
         [Then(@"And the destination resource is ""(.*)""")]
         public void ThenAndTheLocalhostResourceIs(string p0)
         {
+            var resourceId = Guid.Parse("fbc83b75-194a-4b10-b50c-b548dd20b408");
             var remoteServer = ScenarioContext.Current.Get<IServer>("destinationServer");
-            var loadContextualResourceModel = remoteServer.ResourceRepository.LoadContextualResourceModel(_resourceId);
+            var loadContextualResourceModel = remoteServer.ResourceRepository.LoadContextualResourceModel(resourceId);
             Assert.AreEqual(p0, loadContextualResourceModel.DisplayName, "Expected Resource to be " + p0 + " on load for ci-remote");
         }
 
@@ -63,7 +62,7 @@ namespace Dev2.Activities.Specs.Deploy
         public void GivenISelectResourceFromSourceServer(string p0)
         {
             var loaclHost = ScenarioContext.Current.Get<IServer>("sourceServer");
-            IContextualResourceModel loadContextualResourceModel = loaclHost.ResourceRepository.LoadContextualResourceModel(_resourceId);
+            IContextualResourceModel loadContextualResourceModel = loaclHost.ResourceRepository.LoadContextualResourceModel("fbc83b75-194a-4b10-b50c-b548dd20b408".ToGuid());
             Assert.IsNotNull(loadContextualResourceModel, p0 + "does not exist on the local machine " + Environment.MachineName);
             ScenarioContext.Current.Add("localResource", loadContextualResourceModel);
         }
@@ -72,7 +71,7 @@ namespace Dev2.Activities.Specs.Deploy
         public void GivenAndTheLocalhostResourceIs(string p0)
         {
             var loaclHost = ScenarioContext.Current.Get<IServer>("sourceServer");
-            var loadContextualResourceModel = loaclHost.ResourceRepository.LoadContextualResourceModel(_resourceId);
+            var loadContextualResourceModel = loaclHost.ResourceRepository.LoadContextualResourceModel("fbc83b75-194a-4b10-b50c-b548dd20b408".ToGuid());
             Assert.AreEqual(p0, loadContextualResourceModel.DisplayName, "Expected Resource to be " + p0 + " on load for localhost");
             Assert.AreEqual(p0, loadContextualResourceModel.ResourceName, "Expected Resource to be " + p0 + " on load for localhost");
         }
@@ -89,7 +88,7 @@ namespace Dev2.Activities.Specs.Deploy
                 UserName = remoteServer.Connection.UserName,
                 Password = remoteServer.Connection.Password
             };
-            localhost.UpdateRepository.Deploy(new List<Guid>() { _resourceId }, false, destConnection);
+            localhost.UpdateRepository.Deploy(new List<Guid>() { new Guid("fbc83b75-194a-4b10-b50c-b548dd20b408") }, false, destConnection);
         }
 
         [Given(@"I reload the destination resources")]
@@ -98,7 +97,7 @@ namespace Dev2.Activities.Specs.Deploy
         public void WhenIReloadTheRemoteServerResources()
         {
             var remoteServer = ScenarioContext.Current.Get<IServer>("destinationServer");
-            var loadContextualResourceModel = remoteServer.ResourceRepository.LoadContextualResourceModel(_resourceId);
+            var loadContextualResourceModel = remoteServer.ResourceRepository.LoadContextualResourceModel("fbc83b75-194a-4b10-b50c-b548dd20b408".ToGuid());
             ScenarioContext.Current["serverResource"] = loadContextualResourceModel;
         }
 
@@ -108,10 +107,22 @@ namespace Dev2.Activities.Specs.Deploy
         [When(@"the destination resource is ""(.*)""")]
         public void ThenDestinationResourceIs(string p0)
         {
+            var resourceId = Guid.Parse("fbc83b75-194a-4b10-b50c-b548dd20b408");
             var destinationServer = ScenarioContext.Current.Get<IServer>("destinationServer");
-            var loadContextualResourceModel = destinationServer.ResourceRepository.LoadContextualResourceModel(_resourceId);
+            var loadContextualResourceModel = destinationServer.ResourceRepository.LoadContextualResourceModel("fbc83b75-194a-4b10-b50c-b548dd20b408".ToGuid());
             Assert.AreEqual(p0, loadContextualResourceModel.DisplayName, "Failed to Update DisplayName after deploy");
             Assert.AreEqual(p0, loadContextualResourceModel.ResourceName, "Failed to Update ResourceName after deploy");
+        }
+
+        [Given(@"RollBack")]
+        [When(@"RollBack")]
+        [Then(@"RollBack")]
+        public void RollBack()
+        {
+            var resourceId = Guid.Parse("fbc83b75-194a-4b10-b50c-b548dd20b408");
+            var destinationServer = ScenarioContext.Current.Get<IServer>("destinationServer");
+            var previousVersions = destinationServer.ProxyLayer.GetVersions(resourceId);
+            destinationServer.ProxyLayer.Rollback(resourceId, previousVersions.First().VersionNumber);
         }
     }
 }
