@@ -12,11 +12,43 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Dev2.Common
 {
     public static class Utilities
     {
+        public async static Task<T> WithTimeOutAsync<T>(this Task<T> executingTask,int timeout)
+        {
+            using (CancellationTokenSource tokenSource = new CancellationTokenSource())
+            {
+                var token = tokenSource.Token;
+
+                if (executingTask == await Task.WhenAny(executingTask, Task.Delay(timeout, token)))
+                {
+                    tokenSource.Cancel();
+                    return await executingTask;
+                }
+                throw new TimeoutException($"Operation did not finish in {timeout} ms");
+            }
+        }
+
+        public async static Task<T> WithTimeOutAsync<T>(this Task<T> executingTask, TimeSpan timeout)
+        {
+            using (CancellationTokenSource tokenSource = new CancellationTokenSource())
+            {
+                var token = tokenSource.Token;
+
+                if (executingTask == await Task.WhenAny(executingTask, Task.Delay(timeout, token)))
+                {
+                    tokenSource.Cancel();
+                    return await executingTask;
+                }
+                throw new TimeoutException($"Operation did not finish in {timeout} ms");
+            }
+        }
+
         public static IEnumerable<T> Flatten<T>(this IEnumerable<T> e, Func<T, IEnumerable<T>> f)
         {
             var second = e as IList<T> ?? e.ToList();
