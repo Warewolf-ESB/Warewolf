@@ -41,7 +41,9 @@ namespace Dev2.Runtime.ResourceCatalogImpl
 
         #region Implementation of IResourceSaveProvider
 
-        public ResourceCatalogResult SaveResource(Guid workspaceID, StringBuilder resourceXml, string savedPath, string reason = "", string user = "")
+        public ResourceCatalogResult SaveResource(Guid workspaceID, StringBuilder resourceXml, string savedPath) => SaveResource(workspaceID, resourceXml, savedPath, "", "");
+
+        public ResourceCatalogResult SaveResource(Guid workspaceID, StringBuilder resourceXml, string savedPath, string reason, string user)
         {
             try
             {
