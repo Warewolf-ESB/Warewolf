@@ -11,7 +11,12 @@ namespace Dev2.Activities.Debug
     {
         readonly string _operand;
 
-        public DebugItemServiceTestStaticDataParams(string value, bool hasError = false, bool mockSelected = false)
+        public DebugItemServiceTestStaticDataParams(string value)
+            : this(value, false, false)
+        {
+        }
+
+        public DebugItemServiceTestStaticDataParams(string value, bool hasError, bool mockSelected)
         {
             Value = value;
             Type = DebugItemResultType.Value;
@@ -20,7 +25,12 @@ namespace Dev2.Activities.Debug
             MockSelected = mockSelected;
         }
 
-        public DebugItemServiceTestStaticDataParams(string value, string variable, bool mockSelected = false)
+        public DebugItemServiceTestStaticDataParams(string value, string variable)
+            : this(value, variable, false)
+        {
+        }
+
+        public DebugItemServiceTestStaticDataParams(string value, string variable, bool mockSelected)
         {
             Value = value;
             Variable = variable;
@@ -28,7 +38,12 @@ namespace Dev2.Activities.Debug
             MockSelected = mockSelected;
         }
 
-        public DebugItemServiceTestStaticDataParams(string value, string variable, string operand, bool mockSelected = false)
+        public DebugItemServiceTestStaticDataParams(string value, string variable, string operand)
+            : this(value, variable, operand, false)
+        {
+        }
+
+        public DebugItemServiceTestStaticDataParams(string value, string variable, string operand, bool mockSelected)
         {
             Value = value;
             _operand = operand;

@@ -44,7 +44,12 @@ namespace Dev2.Runtime.Security
             }
         }
 
-        public HostSecureConfig(NameValueCollection settings, bool shouldProtectConfig = true)
+        public HostSecureConfig(NameValueCollection settings)
+            : this(settings, true)
+        {
+        }
+
+        public HostSecureConfig(NameValueCollection settings, bool shouldProtectConfig)
         {
             Initialize(settings, shouldProtectConfig);
         }

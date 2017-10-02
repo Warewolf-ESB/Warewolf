@@ -47,6 +47,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
         }
 
+        public FindRecordsTO(string searchCriteria, string searchType, int indexNum, bool inserted)
+            : this(searchCriteria, searchType, indexNum, inserted, "", "")
+        {
+        }
+
         public FindRecordsTO(string searchCriteria, string searchType, int indexNum, bool inserted, string from, string to)
         {
             Inserted = inserted;

@@ -18,7 +18,12 @@ namespace Dev2.Activities.Debug
     {
         readonly string _operand;
 
-        public DebugItemStaticDataParams(string value, string labelText, bool mockSelected = false)
+        public DebugItemStaticDataParams(string value, string labelText)
+            : this(value, labelText, false)
+        {
+        }
+
+        public DebugItemStaticDataParams(string value, string labelText, bool mockSelected)
         {
             Value = value;
             LabelText = labelText;
@@ -26,7 +31,12 @@ namespace Dev2.Activities.Debug
             MockSelected = mockSelected;
         }
 
-        public DebugItemStaticDataParams(string value, string variable, string labelText, bool mockSelected = false)
+        public DebugItemStaticDataParams(string value, string variable, string labelText)
+            : this(value, variable, labelText, false)
+        {
+        }
+
+        public DebugItemStaticDataParams(string value, string variable, string labelText, bool mockSelected)
         {
             Value = value;
             LabelText = labelText;
@@ -35,7 +45,12 @@ namespace Dev2.Activities.Debug
             MockSelected = mockSelected;
         }
 
-        public DebugItemStaticDataParams(string value, string variable, string labelText, string operand, bool mockSelected = false)
+        public DebugItemStaticDataParams(string value, string variable, string labelText, string operand)
+            : this(value, variable, labelText, operand, false)
+        {
+        }
+
+        public DebugItemStaticDataParams(string value, string variable, string labelText, string operand, bool mockSelected)
         {
             Value = value;
             LabelText = labelText;
