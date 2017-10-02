@@ -18,7 +18,7 @@ namespace Dev2.Core.Tests
     [TestClass]
     public class MergeWorkflowViewModelTests
     {
-        
+
 
         [TestInitialize]
         public void InitializeTest()
@@ -64,7 +64,7 @@ namespace Dev2.Core.Tests
             differenceResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(WorkflowXamlForDifference());
             differenceResourceModel.Setup(resModel => resModel.DisplayName).Returns("Hello World");
 
-            var mergeWorkflowViewModel = new MergeWorkflowViewModel(currentResourceModel.Object, differenceResourceModel.Object);
+            var mergeWorkflowViewModel = new MergeWorkflowViewModel(currentResourceModel.Object, differenceResourceModel.Object, true);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             //---------------Test Result -----------------------
@@ -123,7 +123,7 @@ namespace Dev2.Core.Tests
             differenceResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(WorkflowXamlForDifference());
             differenceResourceModel.Setup(resModel => resModel.DisplayName).Returns("Hello World");
 
-            var mergeWorkflowViewModel = new MergeWorkflowViewModel(currentResourceModel.Object, differenceResourceModel.Object);
+            var mergeWorkflowViewModel = new MergeWorkflowViewModel(currentResourceModel.Object, differenceResourceModel.Object,true);
             //---------------Assert Precondition----------------
             Assert.AreNotSame(currentResourceModel, differenceResourceModel);
             //---------------Execute Test ----------------------
@@ -159,7 +159,7 @@ namespace Dev2.Core.Tests
             differenceResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(WorkflowXamlForDifference());
             differenceResourceModel.Setup(resModel => resModel.DisplayName).Returns("Hello World");
 
-            var mergeWorkflowViewModel = new MergeWorkflowViewModel(currentResourceModel.Object, differenceResourceModel.Object);
+            var mergeWorkflowViewModel = new MergeWorkflowViewModel(currentResourceModel.Object, differenceResourceModel.Object, true);
             //---------------Assert Precondition----------------
             Assert.AreNotSame(currentResourceModel, differenceResourceModel);
             //---------------Execute Test ----------------------
