@@ -16,6 +16,11 @@ namespace Dev2.Activities.Debug
         {
         }
 
+        public DebugItemServiceTestStaticDataParams(string value, bool hasError)
+            : this(value, hasError, false)
+        {
+        }
+
         public DebugItemServiceTestStaticDataParams(string value, bool hasError, bool mockSelected)
         {
             Value = value;
