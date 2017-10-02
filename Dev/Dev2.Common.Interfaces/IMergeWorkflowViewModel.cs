@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Activities.Presentation.Model;
 using System.Activities.Statements;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Windows;
 using System.Windows.Media;
 
 namespace Dev2.Common.Interfaces
@@ -49,5 +51,7 @@ namespace Dev2.Common.Interfaces
         bool HasParent { get; set; }
         event ModelToolChanged SomethingModelToolChanged;
         FlowNode ActivityType { get; set; }
+        ModelItem FlowNode { get; set; }
+        Point NodeLocation { get; set; }
     }
 }
