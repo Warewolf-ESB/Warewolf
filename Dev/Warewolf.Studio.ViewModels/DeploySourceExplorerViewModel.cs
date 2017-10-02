@@ -47,7 +47,7 @@ namespace Warewolf.Studio.ViewModels
             ConnectControlViewModel = new ConnectControlViewModel(_shellViewModel.LocalhostServer, aggregator, _shellViewModel.ExplorerViewModel.ConnectControlViewModel.Servers);
 
             ShowConnectControl = true;
-            ConnectControlViewModel.ServerConnected += async (sender, server) => { await ServerConnected(sender, server); };
+            ConnectControlViewModel.ServerConnected += async (sender, server) => { await ServerConnected(server).ConfigureAwait(false); };
             ConnectControlViewModel.ServerDisconnected += ServerDisconnected;
             _statsArea = statsArea;
             foreach (var environmentViewModel in _environments)
