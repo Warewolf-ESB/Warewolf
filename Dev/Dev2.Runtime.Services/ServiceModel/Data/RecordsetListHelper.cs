@@ -22,6 +22,8 @@ namespace Dev2.Runtime.ServiceModel.Data
 
         public static RecordsetList ToRecordsetList(this IOutputDescription outputDescription) => outputDescription.ToRecordsetList(null, "");
 
+        public static RecordsetList ToRecordsetList(this IOutputDescription outputDescription, RecordsetList currentList) => outputDescription.ToRecordsetList(currentList, "");
+
         public static RecordsetList ToRecordsetList(this IOutputDescription outputDescription, RecordsetList currentList, string defaultFieldName)
         {
             if(outputDescription?.DataSourceShapes == null || outputDescription.DataSourceShapes.Count == 0)

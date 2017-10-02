@@ -365,7 +365,13 @@ namespace Dev2.Runtime.Hosting
 
         #region SyncTo
 
-        public void SyncTo(string sourceWorkspacePath, string targetWorkspacePath, bool overwrite = true, bool delete = true, IList<string> filesToIgnore = null) => _catalogPluginContainer.SyncProvider.SyncTo(sourceWorkspacePath, targetWorkspacePath, overwrite, delete, filesToIgnore);
+        public void SyncTo(string sourceWorkspacePath, string targetWorkspacePath) =>_catalogPluginContainer.SyncProvider.SyncTo(sourceWorkspacePath, targetWorkspacePath, true, true, null);
+
+        public void SyncTo(string sourceWorkspacePath, string targetWorkspacePath, bool overwrite) => _catalogPluginContainer.SyncProvider.SyncTo(sourceWorkspacePath, targetWorkspacePath, overwrite, true, null);
+
+        public void SyncTo(string sourceWorkspacePath, string targetWorkspacePath, bool overwrite, bool delete) => _catalogPluginContainer.SyncProvider.SyncTo(sourceWorkspacePath, targetWorkspacePath, overwrite, delete, null);
+
+        public void SyncTo(string sourceWorkspacePath, string targetWorkspacePath, bool overwrite, bool delete, IList<string> filesToIgnore) => _catalogPluginContainer.SyncProvider.SyncTo(sourceWorkspacePath, targetWorkspacePath, overwrite, delete, filesToIgnore);
 
         #endregion
 
