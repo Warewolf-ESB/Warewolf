@@ -416,7 +416,6 @@ namespace Dev2.Activities.RabbitMQ.Consume
                 int hashCode = base.GetHashCode();
                 hashCode = (hashCode * 397) ^ (_messages != null ? _messages.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (Result != null ? Result.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ Prefetch.GetHashCode();
                 hashCode = (hashCode * 397) ^ _timeOut;
                 hashCode = (hashCode * 397) ^ IsObject.GetHashCode();
                 hashCode = (hashCode * 397) ^ (ObjectName != null ? ObjectName.GetHashCode() : 0);
