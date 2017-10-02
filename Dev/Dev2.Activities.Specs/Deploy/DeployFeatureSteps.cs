@@ -38,7 +38,10 @@ namespace Dev2.Activities.Specs.Deploy
             };
             ScenarioContext.Current.Add("destinationServer", remoteServer);
             var previousVersions = remoteServer.ProxyLayer.GetVersions(_resourceId);
-            remoteServer.ProxyLayer.Rollback(_resourceId, previousVersions.First().VersionNumber);
+            if (previousVersions != null && previousVersions.Count > 0)
+            {
+                remoteServer.ProxyLayer.Rollback(_resourceId, previousVersions.First().VersionNumber);
+            }
         }
 
         [Given(@"I am Connected to remote server ""(.*)""")]
