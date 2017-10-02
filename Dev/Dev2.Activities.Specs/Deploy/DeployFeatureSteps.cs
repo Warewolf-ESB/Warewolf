@@ -38,7 +38,7 @@ namespace Dev2.Activities.Specs.Deploy
             };
             ScenarioContext.Current.Add("destinationServer", remoteServer);
             var previousVersions = remoteServer.ProxyLayer.GetVersions(_resourceId);
-            if (previousVersions != null)
+            if (previousVersions != null && previousVersions.Count > 0w)
             {
                 remoteServer.ProxyLayer.Rollback(_resourceId, previousVersions.First().VersionNumber);
             }
