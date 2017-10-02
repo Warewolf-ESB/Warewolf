@@ -15,7 +15,6 @@ using System.Activities.Presentation.View;
 using System.Windows;
 using Dev2.Common.Interfaces;
 using Dev2.Communication;
-using Dev2.Common.ExtMethods;
 
 namespace Warewolf.MergeParser
 {
@@ -79,6 +78,11 @@ namespace Warewolf.MergeParser
             }
             dev2Activities.RemoveAll(activity => children.Any(s => s.Equals(activity.UniqueID, StringComparison.InvariantCultureIgnoreCase)));
         }
+        Stack<ModelItem> _flowNodes = new Stack<ModelItem>();
+        public Stack<ModelItem> GetAllNodes()
+        {
+            return _flowNodes;
+        }
 
         public List<(Guid uniqueId, IConflictNode currentNode, IConflictNode differenceNode, bool hasConflict)> GetDifferences(IContextualResourceModel current, IContextualResourceModel difference, bool loadworkflowFromServer = true)
         {
@@ -86,6 +90,7 @@ namespace Warewolf.MergeParser
             _currentDifferences = GetNodes(current, true);
             _differences = GetNodes(difference, /*loadworkflowFromServer*/true);
 
+            
             var allCurentItems = new List<(IDev2Activity, IConflictNode)>();
             var allRemoteItems = new List<(IDev2Activity, IConflictNode)>();
             foreach (var node in _currentDifferences.nodeList)
@@ -98,7 +103,10 @@ namespace Warewolf.MergeParser
                     CurrentFlowStep = node,
                     NodeLocation=shapeLocation,                    
                 };
+                
                 allCurentItems.Add((dev2Activity1, conflictNode));
+                if (node.ItemType == typeof(FlowDecision) || node.ItemType == typeof(FlowSwitch<string>)) continue;
+                _flowNodes.Push(node);
             }
 
             List<IDev2Activity> currentActivities = allCurentItems.Select(p => p.Item1).ToList();
@@ -107,8 +115,17 @@ namespace Warewolf.MergeParser
             {
                 var dev2Activity1 = _activityParser.Parse(new List<IDev2Activity>(), node);
                 var shapeLocation = GetShapeLocation(_differences.wd, node);
-                
-                allRemoteItems.Add((dev2Activity1, new ConflictNode()));
+              
+                ConflictNode conflictNode = new ConflictNode()
+                {
+                    CurrentActivity = ModelItemUtils.CreateModelItem(dev2Activity1),
+                    CurrentFlowStep = node,
+                    NodeLocation = shapeLocation,
+                    
+                };
+                allRemoteItems.Add((dev2Activity1, conflictNode));
+                if (node.ItemType == typeof(FlowDecision) || node.ItemType == typeof(FlowSwitch<string>)) continue;
+                _flowNodes.Push(node);
             }
             List<IDev2Activity> differenceActivities = allRemoteItems.Select(p => p.Item1).ToList();
             CleanUpForDecisionAdSwitch(differenceActivities);
