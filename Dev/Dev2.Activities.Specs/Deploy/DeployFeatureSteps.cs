@@ -27,27 +27,27 @@ namespace Dev2.Activities.Specs.Deploy
             _commonSteps = new CommonSteps(_scenarioContext);
         }
 
-        [BeforeScenario]
+        [BeforeScenario("Deploy")]
         public void RollBack()
         {
-            var destinationServer = ScenarioContext.Current.Get<IServer>("destinationServer");
-            var previousVersions = destinationServer.ProxyLayer.GetVersions(_resourceId);
-            destinationServer.ProxyLayer.Rollback(_resourceId, previousVersions.First().VersionNumber);
+            var formattableString = $"http://tst-ci-remote:3142";
+            AppSettings.LocalHost = $"http://{Environment.MachineName}:3142";
+            IServer remoteServer = new Server(new Guid(), new ServerProxy(new Uri(formattableString)))
+            {
+                Name = "tst-ci-remote"
+            };
+            ScenarioContext.Current.Add("destinationServer", remoteServer);
+            var previousVersions = remoteServer.ProxyLayer.GetVersions(_resourceId);
+            remoteServer.ProxyLayer.Rollback(_resourceId, previousVersions.First().VersionNumber);
         }
 
         [Given(@"I am Connected to remote server ""(.*)""")]
         public void GivenIAmConnectedToServer(string connectinName)
         {
-            var formattableString = $"http://{connectinName}:3142";
-            AppSettings.LocalHost = $"http://{Environment.MachineName}:3142";
-            IServer remoteServer = new Server(new Guid(), new ServerProxy(new Uri(formattableString)))
-            {
-                Name = connectinName
-            };
             var localhost = ServerRepository.Instance.Source;
-            ScenarioContext.Current.Add("destinationServer", remoteServer);
             ScenarioContext.Current.Add("sourceServer", localhost);
             localhost.Connect();
+            var remoteServer = ScenarioContext.Current.Get<IServer>("destinationServer");
             remoteServer.Connect();
         }
 

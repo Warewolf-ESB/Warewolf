@@ -1,4 +1,5 @@
-﻿Feature: Deploy Feature
+﻿@Deploy
+Feature: Deploy Feature
 In order to schedule workflows
 	As a Warewolf user
 	I want to setup schedules
