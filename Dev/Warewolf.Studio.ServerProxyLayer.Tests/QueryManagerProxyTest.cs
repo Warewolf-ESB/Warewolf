@@ -444,11 +444,10 @@ namespace Warewolf.Studio.ServerProxyLayer.Test
             mockPopupController.Setup(popup => popup.Show(It.IsAny<string>(), It.IsAny<string>(), MessageBoxButton.OK, MessageBoxImage.Warning, "", false, false, true, false, false, false)).Returns(MessageBoxResult.OK);
             CustomContainer.Register(mockPopupController.Object);
             //------------Execute Test---------------------------
-            var item = queryManagerProxy.Load().Result;
+            var item = queryManagerProxy.Load(false).Result;
             //------------Assert Results-------------------------
             Assert.IsNotNull(item);
             mockPopupController.Verify(popup => popup.Show(It.IsAny<string>(), It.IsAny<string>(), MessageBoxButton.OK, MessageBoxImage.Warning, "", false, false, true, false, false, false), Times.AtLeastOnce);
-
         }
 
         [TestMethod]
@@ -471,7 +470,7 @@ namespace Warewolf.Studio.ServerProxyLayer.Test
             mockPopupController.Setup(popup => popup.Show(It.IsAny<string>(), It.IsAny<string>(), MessageBoxButton.OK, MessageBoxImage.Warning, "", false, false, true, false, false, false)).Returns(MessageBoxResult.OK);
             CustomContainer.Register(mockPopupController.Object);
             //------------Execute Test---------------------------
-            var item = queryManagerProxy.Load().Result;
+            var item = queryManagerProxy.Load(false).Result;
             //------------Assert Results-------------------------
             Assert.IsNotNull(item);
             mockPopupController.Verify(popup => popup.Show(It.IsAny<string>(), It.IsAny<string>(), MessageBoxButton.OK, MessageBoxImage.Warning, "", false, false, true, false, false, false), Times.Never);
