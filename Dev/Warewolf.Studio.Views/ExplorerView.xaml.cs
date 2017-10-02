@@ -315,25 +315,37 @@ namespace Warewolf.Studio.Views
                     singleEnvironmentExplorerViewModel.SelectedItem = null;
                 }
             }
+            else if (treeView?.DataContext is MergeServiceViewModel mergeServiceViewModel)
+            {
+                if (item is IExplorerItemViewModel explorerItemViewModel)
+                {
+                    if (explorerItemViewModel.IsService)
+                    {
+                        mergeServiceViewModel.SelectedMergeItem = explorerItemViewModel;
+                    }
+                }
+            }
             else
             {
                 var explorerViewModel = DataContext as ExplorerViewModel;
 
-                if(item is IExplorerItemViewModel explorerItemViewModel)
+                switch (item)
                 {
-                    explorerItemViewModel.IsSelected = true;
-                    SetActiveServer(explorerItemViewModel.Server);
-                    if (explorerViewModel?.ConnectControlViewModel != null)
-                        explorerViewModel.ConnectControlViewModel.SelectedConnection = explorerItemViewModel.Server;
-                }
-                else
-                {
-                    if(item is IEnvironmentViewModel environmentViewModel)
-                    {
+                    case IExplorerItemViewModel explorerItemViewModel:
+                        explorerItemViewModel.IsSelected = true;
+                        SetActiveServer(explorerItemViewModel.Server);
+                        if (explorerViewModel?.ConnectControlViewModel != null)
+                        {
+                            explorerViewModel.ConnectControlViewModel.SelectedConnection = explorerItemViewModel.Server;
+                        }
+                        break;
+                    case IEnvironmentViewModel environmentViewModel:
                         SetActiveServer(environmentViewModel.Server);
                         if(explorerViewModel?.ConnectControlViewModel != null)
+                        {
                             explorerViewModel.ConnectControlViewModel.SelectedConnection = environmentViewModel.Server;
-                    }
+                        }
+                        break;
                 }
             }
         }
