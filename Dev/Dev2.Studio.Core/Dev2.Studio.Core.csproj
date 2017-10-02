@@ -178,11 +178,10 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
+    <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
     <Compile Include="IViewFactory.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" Condition="!Exists('..\AssemblyCommonInfo.cs')" />
     <None Include="..\Run Tests.ps1">
       <Visible>False</Visible>
       <Link>Run Tests.ps1</Link>
@@ -354,8 +353,6 @@
     <Compile Include="Services\Events\StudioSubscriptionService.cs" />
     <Compile Include="Services\IWindowsServiceManager.cs" />
     <Compile Include="Services\ServerServiceConfiguration.cs" />
-    <Compile Include="Services\System\ISystemInfoService.cs" />
-    <Compile Include="Services\System\SystemInfoService.cs" />
     <Compile Include="Services\WindowsServiceManager.cs" />
     <Compile Include="StringResources.Designer.cs">
       <DependentUpon>StringResources.resx</DependentUpon>
@@ -471,13 +468,13 @@
       <Project>{1990550D-EA6F-4DAC-9B5E-8571E86923ED}</Project>
       <Name>Dev2.Util</Name>
     </ProjectReference>
+    <ProjectReference Include="..\TrieNet\TrieNet.csproj">
+      <Project>{17125877-2cf0-42b2-89d3-418e40bde5d0}</Project>
+      <Name>TrieNet</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Warewolf.Security\Warewolf.Security.csproj">
       <Project>{CA5E9373-46FE-41B9-AB2E-BD637F48B456}</Project>
       <Name>Warewolf.Security</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Trie\Gma.DataStructures.StringSearch\Gma.DataStructures.StringSearch.csproj">
-      <Project>{17125877-2cf0-42b2-89d3-418e40bde5d0}</Project>
-      <Name>Gma.DataStructures.StringSearch</Name>
     </ProjectReference>
     <ProjectReference Include="..\Warewolf.Resource\Warewolf.Resource.csproj">
       <Project>{dff93ecb-fdd1-405e-ae02-9f4bc7571c1b}</Project>

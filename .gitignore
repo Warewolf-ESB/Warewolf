@@ -63,8 +63,11 @@ Dev/SonarQube/SolutionBinding.sqconfig
 /Dev/RunWarewolfServiceTests.sln
 
 ####################################################################################
-# DotCover
+# Coverage
 ####################################################################################
 /DotCoverOutput/**
 /DotCoverRunner.xml
 /DotCoverOutput.html
+/Dev/.axoCover/settings.json
+/Dev/.axoCover/reports
+/Dev/.axoCover/runs

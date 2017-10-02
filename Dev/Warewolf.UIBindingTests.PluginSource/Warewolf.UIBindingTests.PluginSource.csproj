@@ -94,7 +94,7 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="PluginSourceSteps.cs" />
-    <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
+    <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
     <None Include="..\Run Tests.ps1">

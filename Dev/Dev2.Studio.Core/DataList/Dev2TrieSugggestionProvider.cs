@@ -36,7 +36,11 @@ namespace Dev2.Studio.Core.DataList
                     var currentVar = var as LanguageAST.LanguageExpression.ScalarExpression;
                     if (currentVar != null)
                     {
-                        PatriciaTrieScalars.Add(DataListUtil.AddBracketsToValueIfNotExist(currentVar.Item), DataListUtil.AddBracketsToValueIfNotExist(currentVar.Item));
+                        string key = DataListUtil.AddBracketsToValueIfNotExist(currentVar.Item);
+                        foreach (var permutation in PermuteCapitalizations(key))
+                        {
+                            PatriciaTrieScalars.Add(permutation, DataListUtil.AddBracketsToValueIfNotExist(currentVar.Item));
+                        }
                     }
                 }
                 PatriciaTrieRecsets = new SuffixTrie<string>(1);
@@ -47,7 +51,10 @@ namespace Dev2.Studio.Core.DataList
                     if (currentVar != null)
                     {
                         var name = DataListUtil.AddBracketsToValueIfNotExist(DataListUtil.MakeValueIntoHighLevelRecordset(currentVar.Item.Name, Equals(currentVar.Item.Index, LanguageAST.Index.Star)));
-                        PatriciaTrieRecsets.Add(name, name);
+                        foreach (var permutation in PermuteCapitalizations(name))
+                        {
+                            PatriciaTrieRecsets.Add(permutation, name);
+                        }
                     }
                 }
                 PatriciaTrieRecsetsFields = new SuffixTrie<string>(1);
@@ -63,7 +70,10 @@ namespace Dev2.Studio.Core.DataList
                             index = "*";
                         }
                         var name = DataListUtil.AddBracketsToValueIfNotExist(DataListUtil.CreateRecordsetDisplayValue(currentVar.Item.Name, currentVar.Item.Column, index));
-                        PatriciaTrieRecsetsFields.Add(name, name);
+                        foreach (var permutation in PermuteCapitalizations(name))
+                        {
+                            PatriciaTrieRecsetsFields.Add(permutation, name);
+                        }
                     }
                 }
                 PatriciaTrieJsonObjects = new SuffixTrie<string>(1);
@@ -88,7 +98,10 @@ namespace Dev2.Studio.Core.DataList
                             index = "*";
                         }
                         var name = DataListUtil.AddBracketsToValueIfNotExist(DataListUtil.CreateRecordsetDisplayValue(recordSetExpression.Item.Name, recordSetExpression.Item.Column, index));
-                        PatriciaTrie.Add(name, name);
+                        foreach (var permutation in PermuteCapitalizations(name))
+                        {
+                            PatriciaTrie.Add(permutation, name);
+                        }
                     }
                     else
                     {
@@ -96,14 +109,21 @@ namespace Dev2.Studio.Core.DataList
                         if (recordSetNameExpression != null)
                         {
                             var name = DataListUtil.AddBracketsToValueIfNotExist(DataListUtil.MakeValueIntoHighLevelRecordset(recordSetNameExpression.Item.Name, Equals(recordSetNameExpression.Item.Index, LanguageAST.Index.Star)));
-                            PatriciaTrie.Add(name, name);
+                            foreach (var permutation in PermuteCapitalizations(name))
+                            {
+                                PatriciaTrie.Add(permutation, name);
+                            }
                         }
                         else
                         {
                             var scalarExpression = var as LanguageAST.LanguageExpression.ScalarExpression;
                             if (scalarExpression != null)
                             {
-                                PatriciaTrie.Add(DataListUtil.AddBracketsToValueIfNotExist(scalarExpression.Item), DataListUtil.AddBracketsToValueIfNotExist(scalarExpression.Item));
+                                string key = DataListUtil.AddBracketsToValueIfNotExist(scalarExpression.Item);
+                                foreach (var permutation in PermuteCapitalizations(key))
+                                {
+                                    PatriciaTrie.Add(permutation, DataListUtil.AddBracketsToValueIfNotExist(scalarExpression.Item));
+                                }
                             }
                         }
                     }
@@ -139,7 +159,11 @@ namespace Dev2.Studio.Core.DataList
                     {
                         objectName = "@" + objectName;
                     }
-                    PatriciaTrieJsonObjects.Add(DataListUtil.AddBracketsToValueIfNotExist(objectName), DataListUtil.AddBracketsToValueIfNotExist(objectName));
+                    string key = DataListUtil.AddBracketsToValueIfNotExist(objectName);
+                    foreach (var permutation in PermuteCapitalizations(key))
+                    {
+                        PatriciaTrieJsonObjects.Add(permutation, DataListUtil.AddBracketsToValueIfNotExist(objectName));
+                    }
                     return null;
                 }
 
@@ -152,7 +176,11 @@ namespace Dev2.Studio.Core.DataList
                     {
                         objectName = "@" + objectName;
                     }
-                    PatriciaTrieJsonObjects.Add(DataListUtil.AddBracketsToValueIfNotExist(objectName), DataListUtil.AddBracketsToValueIfNotExist(objectName));
+                    string key = DataListUtil.AddBracketsToValueIfNotExist(objectName);
+                    foreach (var permutation in PermuteCapitalizations(key))
+                    {
+                        PatriciaTrieJsonObjects.Add(permutation, DataListUtil.AddBracketsToValueIfNotExist(objectName));
+                    }
                     return AddJsonVariables(indexNestedExpression.Item.Next, objectName);
                 }
 
@@ -164,7 +192,11 @@ namespace Dev2.Studio.Core.DataList
                     {
                         objectName = "@" + objectName;
                     }
-                    PatriciaTrieJsonObjects.Add(DataListUtil.AddBracketsToValueIfNotExist(objectName), DataListUtil.AddBracketsToValueIfNotExist(objectName));
+                    string key = DataListUtil.AddBracketsToValueIfNotExist(objectName);
+                    foreach (var permutation in PermuteCapitalizations(key))
+                    {
+                        PatriciaTrieJsonObjects.Add(permutation, DataListUtil.AddBracketsToValueIfNotExist(objectName));
+                    }
                     var next = nestedNameExpression.Item.Next;
                     return AddJsonVariables(next, objectName);
                 }
@@ -233,8 +265,30 @@ namespace Dev2.Studio.Core.DataList
             {
                 return new string[0];
             }
-            var suggestions = trie.Retrieve(filter);
-            return suggestions;
+            return trie.Retrieve(filter);
+        }
+
+        private List<string> PermuteCapitalizations(string key)
+        {
+            var suffixes = new List<string>();
+            suffixes.Add(key);
+            suffixes.Add(key.ToLower());
+            suffixes.Add(key.ToUpper());
+            suffixes.Add(TitleCase(key));
+            suffixes.Add(ReverseCase(key));
+            return suffixes;
+        }
+
+        string TitleCase(string input)
+        {
+            return input?[0].ToString().ToUpper() + input?.Substring(1).ToLower();
+        }
+
+        string ReverseCase(string input)
+        {
+            var array = input?.Select(c => char.IsLetter(c) ? (char.IsUpper(c) ? char.ToLower(c) : char.ToUpper(c)) : c).ToArray();
+            string reversedCase = new string(array);
+            return reversedCase;
         }
 
         #endregion Implementation of ISuggestionProvider

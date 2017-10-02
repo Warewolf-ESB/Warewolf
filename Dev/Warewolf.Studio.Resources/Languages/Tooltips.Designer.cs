@@ -921,6 +921,33 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Will appear on the small view..
+        /// </summary>
+        public static string DecisionToolTipDisplayText {
+            get {
+                return ResourceManager.GetString("DecisionToolTipDisplayText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Will appear on the design surface to help understand the flow.
+        /// </summary>
+        public static string DecisionToolTipFalseArm {
+            get {
+                return ResourceManager.GetString("DecisionToolTipFalseArm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Will appear on the design surface to help understand the flow..
+        /// </summary>
+        public static string DecisionToolTipTrueArm {
+            get {
+                return ResourceManager.GetString("DecisionToolTipTrueArm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Delete the folder and its resources.
         /// </summary>
         public static string DeleteFolderTooltip {

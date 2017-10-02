@@ -159,7 +159,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
+    <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
     <None Include="..\Run Tests.ps1">
@@ -173,10 +173,6 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="SharedResourceDictionary.cs" />
-    <Compile Include="Theme.cs" />
-    <Compile Include="XamGrid\ContextMenuOpeningEventArgs.cs" />
-    <Compile Include="XamGrid\ContextMenuSettings.cs" />
-    <Compile Include="XamGrid\XamGridEx.cs" />
     <Resource Include="Images\Filter.png" />
     <Resource Include="Images\FilterClearButton.png" />
     <Resource Include="Images\MagnifyingGlass.png" />

@@ -137,8 +137,8 @@ $JobSpecs["Web Sources UI Tests"]				= "Warewolf.UI.Tests", "Web Sources"
 $JobSpecs["Workflow Mocking Tests UI Tests"]	= "Warewolf.UI.Tests", "Workflow Mocking Tests"
 $JobSpecs["Workflow Testing UI Tests"]			= "Warewolf.UI.Tests", "Workflow Testing"
 
-$UnitTestJobNames = "Other Unit Tests,COMIPC Unit Tests,Studio View Models Unit Tests,Activity Designers Unit Tests,Activities Unit Tests,Scripting Tools Specs,Storage Tools Specs,Utility Tools Specs,ControlFlow Tools Specs,Data Tools Specs,Database Tools Specs,Email Tools Specs,File And Folder Copy Tool Specs,File And Folder Create Tool Specs,File And Folder Delete Tool Specs,File And Folder Move Tool Specs,Folder Read Tool Specs,File Read Tool Specs,File And Folder Rename Tool Specs,Unzip Tool Specs,Write File Tool Specs,Zip Tool Specs,FileAndFolder Tools Specs,LoopConstructs Tools Specs,Recordset Tools Specs,Resources Tools Specs,UI Binding Tests,Runtime Unit Tests,Studio Core Unit Tests"
-$ServerTestJobNames = "Other Specs,Subworkflow Execution Specs,Workflow Execution Specs,Integration Tests,Other Activities Specs,Execution Logging Web UI Tests,No Warewolf Server Web UI Tests"
+$UnitTestJobNames = "Other Unit Tests,COMIPC Unit Tests,Studio View Models Unit Tests,Activity Designers Unit Tests,Activities Unit Tests,UI Binding Tests,Runtime Unit Tests,Studio Core Unit Tests"
+$ServerTestJobNames = "Other Specs,Subworkflow Execution Specs,Workflow Execution Specs,Integration Tests,Other Activities Specs,Execution Logging Web UI Tests,No Warewolf Server Web UI Tests,Scripting Tools Specs,Storage Tools Specs,Utility Tools Specs,ControlFlow Tools Specs,Data Tools Specs,Database Tools Specs,Email Tools Specs,File And Folder Copy Tool Specs,File And Folder Create Tool Specs,File And Folder Delete Tool Specs,File And Folder Move Tool Specs,Folder Read Tool Specs,File Read Tool Specs,File And Folder Rename Tool Specs,Unzip Tool Specs,Write File Tool Specs,Zip Tool Specs,FileAndFolder Tools Specs,LoopConstructs Tools Specs,Recordset Tools Specs,Resources Tools Specs"
 $ReleaseResourcesJobNames = "Example Workflow Execution Specs,Conflicting Contribute View And Execute Permissions Security Specs,Conflicting Execute Permissions Security Specs,Conflicting View And Execute Permissions Security Specs,Conflicting View Permissions Security Specs,No Conflicting Permissions Security Specs,Overlapping User Groups Permissions Security Specs,Resource Permissions Security Specs,Server Permissions Security Specs"
 $UITestJobNames = "Other UI Tests,Other UI Specs,Assign Tool UI Tests,Control Flow Tools UI Tests,Database Sources UI Tests,Database Tools UI Tests,Data Tools UI Tests,DB Connector UI Specs,Debug Input UI Tests,Default Layout UI Tests,Dependency Graph UI Tests,Deploy UI Specs,Deploy UI Tests,DotNet Connector Mocking UI Tests,DotNet Connector Tool UI Tests,Dropbox Tools UI Tests,Email Tools UI Tests,Explorer UI Specs,Explorer UI Tests,File Tools UI Tests,Hello World Mocking UI Tests,HTTP Tools UI Tests,Plugin Sources UI Tests,Recordset Tools UI Tests,Resource Tools UI Tests,Save Dialog UI Specs,Save Dialog UI Tests,Server Sources UI Tests,Settings UI Tests,Sharepoint Tools UI Tests,Shortcut Keys UI Tests,Source Wizards UI Tests,Tabs And Panes UI Tests,Tools UI Tests,Utility Tools UI Tests,Variables UI Tests,Web Connector UI Specs,Web Sources UI Tests,Workflow Mocking Tests UI Tests,Workflow Testing UI Tests"
 
@@ -225,12 +225,12 @@ function Copy-On-Write([string]$FilePath) {
     if (Test-Path $FilePath) {
         $num = 1
         $FileExtention = (Get-Item $FilePath -ErrorAction Stop).Extension
-        $FilePathWithoutExtention = $FilePath.Substring(0, $FilePath.LastIndexOf('.'))
-        while(Test-Path "$FilePathWithoutExtention.$num$FileExtention")
+        $FilePathWithoutExtention = $FilePath.Substring(0, $FilePath.LastIndexOf('.')+1)
+        while(Test-Path "$FilePathWithoutExtention$num$FileExtention")
         {
             $num += 1
         }
-        $FilePath | Move-Item -Destination "$FilePathWithoutExtention.$num$FileExtention"
+        $FilePath | Move-Item -Destination "$FilePathWithoutExtention$num$FileExtention"
     }
 }
 
@@ -314,23 +314,40 @@ function Cleanup-ServerStudio([bool]$Force=$true) {
     Move-File-To-TestResults "$env:PROGRAMDATA\Warewolf\Tests" "Server Service Tests $JobName"
 }
 
-function Merge-DotCover-Snapshots($DotCoverSnapshots, [string]$DestinationFilePath, [string]$LogFilePath) {
-	Copy-On-Write "$DestinationFilePath"
-    Copy-On-Write "$LogFilePath"
-    if ($DotCoverSnapshots -ne $null -and $DotCoverSnapshots.Count -gt 1) {
-        if ($DotCoverSnapshots -ne $null -and $DotCoverSnapshots.Count -gt 5) {
-            $DotCoverSnapshotsString = $DotCoverSnapshots[0] + "`";`"" + $DotCoverSnapshots[1]
-            &"$DotCoverPath" "merge" "/Source=`"$DotCoverSnapshotsString`"" "/Output=`"$DestinationFilePath`"" "/LogFile=`"$LogFilePath`""
-            foreach ($DotCoverSnapshot in $DotCoverSnapshots[2..($DotCoverSnapshots.Count-2)]) {
-                $DotCoverSnapshotsString = $DestinationFilePath + "`";`"" + $DotCoverSnapshot
-                &"$DotCoverPath" "merge" "/Source=`"$DotCoverSnapshotsString`"" "/Output=`"$DestinationFilePath`"" "/LogFile=`"$LogFilePath`""
-            }
-        } else {
-            $DotCoverSnapshotsString = $DotCoverSnapshots -join "`";`""
-            &"$DotCoverPath" "merge" "/Source=`"$DotCoverSnapshotsString`"" "/Output=`"$DestinationFilePath`"" "/LogFile=`"$LogFilePath`""
+function Wait-For-FileUnlock([string]$FilePath) {
+    $locked = $true
+    $RetryCount = 0
+    while($locked -and $RetryCount -lt 12) {
+        $RetryCount++
+        try {
+            [IO.File]::OpenWrite($FilePath).close()
+            $locked = $false
+        } catch {
+            Sleep 10
         }
-    } else {
-        Write-Warning Cannot merge $DotCoverSnapshots
+    }
+    return $locked
+}
+
+function Merge-DotCover-Snapshots($DotCoverSnapshots, [string]$DestinationFilePath, [string]$LogFilePath) {
+    if ($DotCoverSnapshots -ne $null) {
+        if ($DotCoverSnapshots.Count -gt 1) {
+            $DotCoverSnapshotsString = $DotCoverSnapshots -join "`";`""
+            Copy-On-Write "$LogFilePath.merge.log"
+            Copy-On-Write "$LogFilePath.report.log"
+            Copy-On-Write "$DestinationFilePath.dcvr"
+            Copy-On-Write "$DestinationFilePath.html"
+            &"$DotCoverPath" "merge" "/Source=`"$DotCoverSnapshotsString`"" "/Output=`"$DestinationFilePath.dcvr`"" "/LogFile=`"$LogFilePath.merge.log`""
+        }
+        if ($DotCoverSnapshots.Count -eq 1) {
+            $LoneSnapshot = $DotCoverSnapshots[0].FullName
+            if ($DotCoverSnapshots.Count -eq 1 -and (Test-Path "$LoneSnapshot")) {
+                &"$DotCoverPath" "report" "/Source=`"$LoneSnapshot`"" "/Output=`"$DestinationFilePath\DotCover Report.html`"" "/ReportType=HTML" "/LogFile=`"$LogFilePath.report.log`""
+            }
+        }
+    }
+    if (Test-Path "$DestinationFilePath.dcvr") {
+        &"$DotCoverPath" "report" "/Source=`"$DestinationFilePath.dcvr`"" "/Output=`"$DestinationFilePath\DotCover Report.html`"" "/ReportType=HTML" "/LogFile=`"$LogFilePath.report.log`""
     }
 }
 
@@ -340,40 +357,43 @@ function Move-Artifacts-To-TestResults([bool]$DotCover, [bool]$Server, [bool]$St
         Write-Host Moved loose TRX files from VS install directory into TestResults.
     }
 
-    # Write failing tests playlist.
-    Write-Host Writing all test failures in `"$TestsResultsPath`" to a playlist file
+    if (!($Cleanup.IsPresent)) {
+        # Write failing tests playlist.
+        Write-Host Writing all test failures in `"$TestsResultsPath`" to a playlist file
 
-    $PlayList = "<Playlist Version=`"1.0`">"
-    Get-ChildItem "$TestsResultsPath" -Filter *.trx | `
-    Foreach-Object{
-        $FullTRXFilePath = $_.FullName
-	    [xml]$trxContent = Get-Content "$FullTRXFilePath"
-	    if ($trxContent.TestRun.Results.UnitTestResult.count -gt 0) {
-	        foreach($TestResult in $trxContent.TestRun.Results.UnitTestResult) {
-		        if ($TestResult.outcome -eq "Failed") {
-		            if ($trxContent.TestRun.TestDefinitions.UnitTest.TestMethod.count -gt 0) {
-		                foreach($TestDefinition in $trxContent.TestRun.TestDefinitions.UnitTest.TestMethod) {
-			                if ($TestDefinition.name -eq $TestResult.testName) {
-				                $PlayList += "<Add Test=`"" + $TestDefinition.className + "." + $TestDefinition.name + "`" />"
-			                }
+        $PlayList = "<Playlist Version=`"1.0`">"
+        Get-ChildItem "$TestsResultsPath" -Filter *.trx | `
+        Foreach-Object{
+            $FullTRXFilePath = $_.FullName
+	        [xml]$trxContent = Get-Content "$FullTRXFilePath"
+	        if ($trxContent.TestRun.Results.UnitTestResult.count -gt 0) {
+	            foreach($TestResult in $trxContent.TestRun.Results.UnitTestResult) {
+		            if ($TestResult.outcome -eq "Failed") {
+		                if ($trxContent.TestRun.TestDefinitions.UnitTest.TestMethod.count -gt 0) {
+		                    foreach($TestDefinition in $trxContent.TestRun.TestDefinitions.UnitTest.TestMethod) {
+			                    if ($TestDefinition.name -eq $TestResult.testName) {
+				                    $PlayList += "<Add Test=`"" + $TestDefinition.className + "." + $TestDefinition.name + "`" />"
+			                    }
+		                    }
+                        } else {
+			                Write-Host Error parsing TestRun.TestDefinitions.UnitTest.TestMethod from trx file at $_.FullName
+			                Continue
 		                }
-                    } else {
-			            Write-Host Error parsing TestRun.TestDefinitions.UnitTest.TestMethod from trx file at $_.FullName
-			            Continue
 		            }
-		        }
-	        }
-	    } elseif ($trxContent.TestRun.Results.UnitTestResult.outcome -eq "Failed") {
-            $PlayList += "<Add Test=`"" + $trxContent.TestRun.TestDefinitions.UnitTest.TestMethod.className + "." + $trxContent.TestRun.TestDefinitions.UnitTest.TestMethod.name + "`" />"
-        } elseif ($trxContent.TestRun.Results.UnitTestResult -eq $null) {
-		    Write-Host Error parsing TestRun.Results.UnitTestResult from trx file at $_.FullName
+	            }
+	        } elseif ($trxContent.TestRun.Results.UnitTestResult.outcome -eq "Failed") {
+                $PlayList += "<Add Test=`"" + $trxContent.TestRun.TestDefinitions.UnitTest.TestMethod.className + "." + $trxContent.TestRun.TestDefinitions.UnitTest.TestMethod.name + "`" />"
+            } elseif ($trxContent.TestRun.Results.UnitTestResult -eq $null) {
+		        Write-Host Error parsing TestRun.Results.UnitTestResult from trx file at $_.FullName
+            }
         }
+        $PlayList += "</Playlist>"
+        $OutPlaylistPath = $TestsResultsPath + "\" + $JobName + " Failures.playlist"
+        Copy-On-Write $OutPlaylistPath
+        $PlayList | Out-File -LiteralPath $OutPlaylistPath -Encoding utf8 -Force
+        Write-Host Playlist file written to `"$OutPlaylistPath`".
     }
-    $PlayList += "</Playlist>"
-    $OutPlaylistPath = $TestsResultsPath + "\" + $JobName + " Failures.playlist"
-    Copy-On-Write $OutPlaylistPath
-    $PlayList | Out-File -LiteralPath $OutPlaylistPath -Encoding utf8 -Force
-    Write-Host Playlist file written to `"$OutPlaylistPath`".
+
     if ($Server) {
         Move-File-To-TestResults "$env:ProgramData\Warewolf\Server Log\wareWolf-Server.log" "$JobName Server.log"
         Move-File-To-TestResults "$env:ProgramData\Warewolf\Server Log\my.warewolf.io.log" "$JobName my.warewolf.io Server.log"
@@ -387,17 +407,7 @@ function Move-Artifacts-To-TestResults([bool]$DotCover, [bool]$Server, [bool]$St
         while (!(Test-Path $ServerSnapshot) -and $Timeout++ -lt 10) {
             sleep 10
         }
-        $locked = $true
-        $RetryCount = 0
-        while($locked -and $RetryCount -lt 12) {
-            $RetryCount++
-            try {
-                [IO.File]::OpenWrite($ServerSnapshot).close()
-                $locked = $false
-            } catch {
-                Sleep 10
-            }
-        }
+        $locked = Wait-For-FileUnlock $ServerSnapshot
         if (!($locked)) {
             Write-Host Moving Server coverage snapshot file from $ServerSnapshot to $TestsResultsPath\$JobName Server DotCover.dcvr
             Move-File-To-TestResults $ServerSnapshot "$JobName Server DotCover.dcvr"
@@ -421,17 +431,7 @@ function Move-Artifacts-To-TestResults([bool]$DotCover, [bool]$Server, [bool]$St
             sleep 10
         }
         if (Test-Path $StudioSnapshot) {
-            $locked = $true
-            $RetryCount = 0
-            while($locked -and $RetryCount -lt 12) {
-                $RetryCount++
-                try {
-                    [IO.File]::OpenWrite($StudioSnapshot).close()
-                    $locked = $false
-                } catch {
-                    Sleep 10
-                }
-            }
+            $locked = Wait-For-FileUnlock $StudioSnapshot
             if (!($locked)) {
                 Write-Host Moving Studio coverage snapshot file from $StudioSnapshot to $TestsResultsPath\$JobName Studio DotCover.dcvr
                 Move-Item $StudioSnapshot "$TestsResultsPath\$JobName Studio DotCover.dcvr" -force
@@ -446,7 +446,7 @@ function Move-Artifacts-To-TestResults([bool]$DotCover, [bool]$Server, [bool]$St
         }
     }
     if ($Server -and $Studio -and $DotCover) {
-        Merge-DotCover-Snapshots @("$TestsResultsPath\$JobName Server DotCover.dcvr", "$TestsResultsPath\$JobName Studio DotCover.dcvr") "$TestsResultsPath\$JobName Merged Server and Studio DotCover.dcvr" "$TestsResultsPath\ServerAndStudioDotCoverSnapshotMerge.log"
+        Merge-DotCover-Snapshots @("$TestsResultsPath\$JobName Server DotCover.dcvr", "$TestsResultsPath\$JobName Studio DotCover.dcvr") "$TestsResultsPath\$JobName Merged Server and Studio DotCover" "$TestsResultsPath\ServerAndStudioDotCoverSnapshot"
     }
     if ($RecordScreen.IsPresent) {
         Move-ScreenRecordings-To-TestResults
@@ -603,22 +603,31 @@ function Start-Server([string]$ServerPath,[string]$ResourcesType) {
 }
 
 function Start-my.warewolf.io {
-    if ($ServerPath -eq "" -or !(Test-Path $ServerPath)) {
-        $ServerPath = Find-Warewolf-Server-Exe
+    if ($TestsPath.EndsWith("\")) {
+        $WebsPath = $TestsPath + "_PublishedWebsites\Dev2.Web"
+    } else {
+        $WebsPath = $TestsPath + "\_PublishedWebsites\Dev2.Web"
     }
-    $ServerFolderPath = (Get-Item $ServerPath).Directory.FullName
+    Write-Host Starting my.warewolf.io from $WebsPath
+    if (!(Test-Path $WebsPath)) {
+        Write-Warning "Webs not found at $WebsPath. Attempting to find the webs that was deployed to the server directory."
+        if ($ServerPath -eq "" -or !(Test-Path $ServerPath)) {
+            $ServerPath = Find-Warewolf-Server-Exe
+        }
+        $WebsPath = (Get-Item $ServerPath).Directory.FullName + "\_PublishedWebsites\Dev2.Web"
+    }
     Cleanup-ServerStudio
-    if (Test-Path "$ServerFolderPath\_PublishedWebsites\Dev2.Web") {
-        $WebsPath = "$ServerFolderPath\_PublishedWebsites\Dev2.Web"
+    if (Test-Path $WebsPath) {
         $IISExpressPath = "C:\Program Files (x86)\IIS Express\iisexpress.exe"
         if (!(Test-Path $IISExpressPath)) {
             Write-Warning "my.warewolf.io cannot be hosted. $IISExpressPath not found."
         } else {
-            Start-Process -FilePath $IISExpressPath -ArgumentList "/path:`"$WebsPath`" /port:18405" -NoNewWindow -PassThru -RedirectStandardOutput "$env:programdata\Warewolf\Server Log\my.warewolf.io.log" -RedirectStandardError "$env:programdata\Warewolf\Server Log\my.warewolf.io.errors.log"
+            Write-Host `"$IISExpressPath`" /path:`"$WebsPath`" /port:18405 /trace:error
+            Start-Process -FilePath $IISExpressPath -ArgumentList "/path:`"$WebsPath`" /port:18405 /trace:error" -NoNewWindow -PassThru -RedirectStandardOutput "$env:programdata\Warewolf\Server Log\my.warewolf.io.log" -RedirectStandardError "$env:programdata\Warewolf\Server Log\my.warewolf.io.errors.log"
             Write-Host my.warewolf.io has started.
         }
     } else {
-        Write-Warning "my.warewolf.io cannot be hosted. Webs not found at $ServerFolderPath\_PublishedWebsites\Dev2.Web"
+        Write-Warning "my.warewolf.io cannot be hosted. Webs not found at $TestsPath\_PublishedWebsites\Dev2.Web or at $ServerFolderPath\_PublishedWebsites\Dev2.Web"
     }
 }
 
@@ -753,7 +762,7 @@ function Resolve-Test-Assembly-File-Specs([string]$TestAssemblyFileSpecs) {
 $JobNames = @()
 $JobAssemblySpecs = @()
 $JobCategories = @()
-if ($JobName -ne $null -and $JobName -ne "") {
+if ($JobName -ne $null -and $JobName -ne "" -and $MergeDotCoverSnapshotsInDirectory -eq "" -and $Cleanup.IsPresent -eq $false) {
     foreach ($Job in $JobName.Split(",")) {
         $Job = $Job.TrimEnd("1234567890 ")
         if ($JobSpecs.ContainsKey($Job)) {
@@ -934,7 +943,10 @@ if ($TotalNumberOfJobsToRun -gt 0) {
                     }
                 }
             } else {
-                $TestList = " /Tests:" + $TestList
+                $TestCategories = ""
+                if (!($TestList.StartsWith(" /Tests:"))) {
+                    $TestList = " /Tests:" + $TestList
+                }
             }
             if($RecordScreen.IsPresent) {
                 $TestSettings =  " /Settings:`"" + $TestSettingsFile + "`""
@@ -976,8 +988,11 @@ if ($TotalNumberOfJobsToRun -gt 0) {
                     }
                 }
             } else {
-                $TestNames = $TestList.Split(",") -join " /test:"
-                $TestList = " /test:" + $TestNames
+                $TestCategories = ""
+                if (!($TestList.StartsWith(" /test:"))) {
+                    $TestNames = $TestList.Split(",") -join " /test:"
+                    $TestList = " /test:" + $TestNames
+                }
             }
             $FullArgsList = $TestAssembliesList + " /resultsfile:`"" + $TestResultsFile + "`"" + $TestList + $TestSettings + $TestCategories
 
@@ -1046,6 +1061,9 @@ if ($TotalNumberOfJobsToRun -gt 0) {
             Move-Artifacts-To-TestResults $ApplyDotCover ($StartServer.IsPresent -or $StartStudio.IsPresent) $StartStudio.IsPresent
         }
     }
+    if ($ApplyDotCover) {
+        Invoke-Expression -Command ("&'$PSCommandPath' -JobName '$JobName' -MergeDotCoverSnapshotsInDirectory '$TestsResultsPath' -DotCoverPath '$DotCoverPath'")
+    }
 }
 
 if ($AssemblyFileVersionsTest.IsPresent) {
@@ -1068,7 +1086,7 @@ if ($AssemblyFileVersionsTest.IsPresent) {
 		    }
 
             # Check for invalid.
-            if ($ReadVersion.StartsWith("0.0.") -or $ReadVersion.EndsWith(".0") -or ($LastReadVersion -ne $ReadVersion -and $LastReadVersion -ne "0.0.0.0")) {
+            if ($ReadVersion.StartsWith("0.0.") -or ($LastReadVersion -ne $ReadVersion -and $LastReadVersion -ne "0.0.0.0")) {
 			    $getFullPath = $file.FullName
 	            Write-Host ERROR! Invalid version! $getFullPath $ReadVersion $LastReadVersion
 	            throw "ERROR! `"$getFullPath $ReadVersion`" is either an invalid version or not equal to `"$LastReadVersion`". All Warewolf assembly versions in `"$TestsPath`" must conform and cannot start with 0.0. or end with .0"
@@ -1268,7 +1286,12 @@ if ($RunWarewolfServiceTests.IsPresent) {
 
 if ($MergeDotCoverSnapshotsInDirectory -ne "") {
     $DotCoverSnapshots = Get-ChildItem $MergeDotCoverSnapshotsInDirectory\*.dcvr -Recurse
-    Merge-DotCover-Snapshots $DotCoverSnapshots "$TestsPath\Merged DotCover Snapshots.dcvr" "$TestsPath\DotCover Snapshot Merge.log"
+    if ($JobName -eq "") {
+        $JobName = "DotCover"
+    }
+    $MergedSnapshotFileName = $JobName.Split(",")[0]
+    $MergedSnapshotFileName = "Merged $MergedSnapshotFileName Snapshots"
+    Merge-DotCover-Snapshots $DotCoverSnapshots "$MergeDotCoverSnapshotsInDirectory\$MergedSnapshotFileName" "$MergeDotCoverSnapshotsInDirectory\DotCover"
 }
 
 if ($Cleanup.IsPresent) {

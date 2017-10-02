@@ -190,7 +190,7 @@
     <Compile Include="MenuViewModel.cs" />
     <Compile Include="ManagePasteViewModel.cs" />
     <Compile Include="MessageBoxViewModel.cs" />
-    <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
+    <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
     <None Include="..\Run Tests.ps1">
