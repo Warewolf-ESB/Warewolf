@@ -80,8 +80,7 @@ Scenario: Cancel Deploy Returns to Deploy Tab
 	And I Click Deploy Tab Destination Server Combobox
 	And I Click Deploy Tab Destination Server Remote Connection Intergration Item
 	Then Deploy Button Is Enabled
-	When I Click Deploy Tab Deploy Button And Cancel
-	Then The Deploy Tab is visible
+	When I Click Deploy Tab Deploy Button
 
 Scenario: Deploy Conflicting Resource With Resource In A Different Path
 	Given The Warewolf Studio is running

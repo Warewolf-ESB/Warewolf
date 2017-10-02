@@ -23,7 +23,6 @@ using Dev2.Services.Sql;
 using MySql.Data.MySqlClient;
 using Oracle.ManagedDataAccess.Client;
 using System.Data.Odbc;
-using System.Linq;
 using Dev2.Common.Interfaces.Data.TO;
 using Dev2.Common.Interfaces.Services.Sql;
 using Dev2.Data.Interfaces.Enums;
@@ -43,7 +42,7 @@ namespace Dev2.Services.Execution
             _sqlServer = new SqlServer();
         }
 
-        private IDbServer _sqlServer;
+        private IDbServer _sqlServer; 
         public string ProcedureName { private get; set; }
 
         private void SetupSqlServer(IErrorResultTO errors)
@@ -132,31 +131,18 @@ namespace Dev2.Services.Execution
             }
         }
 
-
+        
         protected override object ExecuteService(int update, out ErrorResultTO errors, IOutputFormatter formater = null)
         {
             errors = new ErrorResultTO();
             var invokeErrors = new ErrorResultTO();
-            if (Source == null)
-            {
-                GetSource(SourceId);
-            }
             switch (Source.ServerType)
             {
                 case enSourceType.SqlDatabase:
                     {
-                        try
-                        {
-                            SqlExecution(invokeErrors, update, Source.ConnectionString);
-                            ErrorResult.MergeErrors(invokeErrors);
-                            return Guid.NewGuid();
-                        }
-                        catch (Exception e)
-                        {
-                            Dev2Logger.Error(e, DataObj.ExecutionID.ToString());
-                            return Guid.NewGuid();
-                        }
-
+                        SqlExecution(invokeErrors, update);
+                        ErrorResult.MergeErrors(invokeErrors);
+                        return Guid.NewGuid();
                     }
                 case enSourceType.MySqlDatabase:
                     {
@@ -196,108 +182,84 @@ namespace Dev2.Services.Execution
                 if (executeService.Rows != null)
                 {
 
-                    try
+                    var rowIdx = 1;
+                    foreach (DataRow row in executeService.Rows)
                     {
-                        var rowIdx = 1;
-                        foreach (DataRow row in executeService.Rows)
+                        foreach (var serviceOutputMapping in Outputs)
                         {
-                            foreach (var serviceOutputMapping in Outputs)
+
+                            if (!string.IsNullOrEmpty(serviceOutputMapping.MappedTo))
                             {
-                                if (!string.IsNullOrEmpty(serviceOutputMapping?.MappedTo))
+                                var rsType = DataListUtil.GetRecordsetIndexType(serviceOutputMapping.MappedTo);
+                                var rowIndex = DataListUtil.ExtractIndexRegionFromRecordset(serviceOutputMapping.MappedTo);
+                                var rs = serviceOutputMapping.RecordSetName;
+
+                                if(environment.HasRecordSet(rs))
                                 {
-                                    var rsType = DataListUtil.GetRecordsetIndexType(serviceOutputMapping.MappedTo);
-                                    var rowIndex = DataListUtil.ExtractIndexRegionFromRecordset(serviceOutputMapping.MappedTo);
-                                    var rs = serviceOutputMapping.RecordSetName;
-
-                                    if (!string.IsNullOrEmpty(rs) && environment.HasRecordSet(rs))
+                                    if(started)
                                     {
-                                        if (started)
-                                        {
-                                            rowIdx = environment.GetLength(rs) + 1;
-                                            started = false;
-                                        }
-                                    }
-                                    else
-                                    {
-
-                                        try
-                                        {
-                                            environment.AssignDataShape(serviceOutputMapping.MappedTo);
-                                        }
-                                        catch (Exception e)
-                                        {
-                                            Dev2Logger.Error(e, GlobalConstants.WarewolfError);
-                                        }
-                                    }
-                                    if (rsType == enRecordsetIndexType.Star && started)
-                                    {
-                                        rowIdx = 1;
+                                        rowIdx = environment.GetLength(rs) + 1;
                                         started = false;
                                     }
-                                    if (rsType == enRecordsetIndexType.Numeric)
-                                    {
-                                        rowIdx = int.Parse(rowIndex);
-                                    }
-                                    if (!executeService.Columns.Contains(serviceOutputMapping.MappedFrom))
-                                    {
-                                        continue;
-                                    }
-                                    var value = row[serviceOutputMapping.MappedFrom];
-                                    if (update != 0)
-                                    {
-                                        rowIdx = update;
-                                    }
-                                    var displayExpression = DataListUtil.ReplaceRecordsetBlankWithIndex(DataListUtil.AddBracketsToValueIfNotExist(serviceOutputMapping.MappedTo), rowIdx);
-                                    if (rsType == enRecordsetIndexType.Star)
-                                    {
-                                        displayExpression = DataListUtil.ReplaceStarWithFixedIndex(displayExpression, rowIdx);
-                                    }
-                                    environment.Assign(displayExpression, value.ToString(), update);
                                 }
-                            }
-                            rowIdx++;
+                                else
+                                {
+                                    environment.AssignDataShape(serviceOutputMapping.MappedTo);
+                                }
+                                if(rsType == enRecordsetIndexType.Star && started)
+                                {
+                                    rowIdx = 1;
+                                    started = false;
+                                }
+                                if(rsType == enRecordsetIndexType.Numeric)
+                                {
+                                    rowIdx = int.Parse(rowIndex);
+                                }
+                                if(!executeService.Columns.Contains(serviceOutputMapping.MappedFrom))
+                                {
+                                    continue;
+                                }
+                                var value = row[serviceOutputMapping.MappedFrom];
+                                if(update != 0)
+                                {
+                                    rowIdx = update;
+                                }
+                                var displayExpression = DataListUtil.ReplaceRecordsetBlankWithIndex(DataListUtil.AddBracketsToValueIfNotExist(serviceOutputMapping.MappedTo), rowIdx);
+                                if(rsType == enRecordsetIndexType.Star)
+                                {
+                                    displayExpression = DataListUtil.ReplaceStarWithFixedIndex(displayExpression, rowIdx);
+                                }
+                                environment.Assign(displayExpression, value.ToString(), update);
+                            }                            
                         }
-                    }
-                    catch (Exception e)
-                    {
-                        Dev2Logger.Error(e, GlobalConstants.WarewolfError);
+                        rowIdx++;
                     }
                 }
             }
         }
-        private void SqlExecution(ErrorResultTO errors, int update, string sourceConnectionString)
+
+        private void SqlExecution(ErrorResultTO errors, int update)
         {
             try
             {
                 if (_sqlServer != null)
                 {
-
                     var parameters = GetSqlParameters();
                     if (parameters != null)
                     {
-                        var dataSet = (SqlServer)_sqlServer;
-                        using (dataSet)
+                        
+                        using (var dataSet = ((SqlServer)_sqlServer).FetchDataTable(parameters.ToArray()))
+                        
                         {
-
-                            var dbDataParameters = parameters.Cast<IDbDataParameter>().ToArray();
-
-                            var dataTable = dataSet.FetchDataTable(dbDataParameters);
-
-                            TranslateDataTableToEnvironment(dataTable, DataObj.Environment, update);
+                            TranslateDataTableToEnvironment(dataSet, DataObj.Environment, update);
                         }
-
-
                     }
                 }
             }
             catch (Exception ex)
             {
                 Dev2Logger.Error("SQL Error:", ex, GlobalConstants.WarewolfError);
-                errors.AddError($"SQL Error: {ex.StackTrace}");
-            }
-            finally
-            {
-                _sqlServer?.Dispose();
+                errors.AddError($"SQL Error: {ex.Message}");
             }
         }
 
@@ -312,9 +274,9 @@ namespace Dev2.Services.Execution
 
                     if (parameters != null)
                     {
-
+                        
                         using (var dataSet = server.FetchDataTable(parameters.ToArray(), server.GetProcedureOutParams(ProcedureName, Source.DatabaseName)))
-
+                        
                         {
                             TranslateDataTableToEnvironment(dataSet, DataObj.Environment, update);
                             return true;
@@ -360,7 +322,7 @@ namespace Dev2.Services.Execution
             {
                 foreach (var parameter in methodParameters)
                 {
-                    var parameterName = parameter.Name.Replace("`", "");
+                    var parameterName = parameter.Name.Replace("`","");
                     if (parameter.EmptyIsNull &&
                         (parameter.Value == null ||
                          string.Compare(parameter.Value, string.Empty, StringComparison.InvariantCultureIgnoreCase) == 0))
@@ -415,9 +377,9 @@ namespace Dev2.Services.Execution
 
                     if (parameters != null)
                     {
-
+                        
                         using (var dataSet = server.FetchDataTable(parameters.ToArray(), server.GetProcedureOutParams(ProcedureName, Source.DatabaseName)))
-
+                        
                         {
                             TranslateDataTableToEnvironment(dataSet, DataObj.Environment, update);
                             return true;
@@ -446,7 +408,7 @@ namespace Dev2.Services.Execution
                          string.Compare(parameter.Value, string.Empty, StringComparison.InvariantCultureIgnoreCase) == 0))
                     {
                         dbDataParameter.Value = DBNull.Value;
-                    }
+                    }                    
                     sqlParameters.Add(dbDataParameter);
 
                 }
@@ -493,9 +455,9 @@ namespace Dev2.Services.Execution
 
                     if (parameters != null)
                     {
-
+                        
                         using (var dataSet = server.FetchDataTable())
-
+                        
                         {
                             TranslateDataTableToEnvironment(dataSet, DataObj.Environment, update);
                             return true;
@@ -574,9 +536,9 @@ namespace Dev2.Services.Execution
 
                     if (parameters != null)
                     {
-
+                        
                         using (var dataSet = server.FetchDataTable(parameters.ToArray(), server.GetProcedureOutParams(ProcedureName)))
-
+                        
                         {
                             TranslateDataTableToEnvironment(dataSet, DataObj.Environment, update);
                             return true;
@@ -619,5 +581,5 @@ namespace Dev2.Services.Execution
         }
     }
 
-
+    
 }

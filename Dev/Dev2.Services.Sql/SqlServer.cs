@@ -13,64 +13,41 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Services.Sql;
 using Warewolf.Resource.Errors;
-using Warewolf.Security.Encryption;
-using System.Globalization;
 
 namespace Dev2.Services.Sql
 {
     public class SqlServer : IDbServer
     {
-        public void Dispose()
-        {
-            _transaction?.Dispose();
-            _connection?.Dispose();
-            _connection = null;
-        }
-
-        private readonly IConnectionBuilder _connectionBuilder;
-        public SqlServer(IConnectionBuilder connectionBuilder)
-        {
-            _connectionBuilder = connectionBuilder;
-        }
-
-        public SqlServer() : this(new ConnectionBuilder())
-        {
-
-        }
-
-        public bool IsConnected { get; }
-        public string ConnectionString { get; }
-        private string _connectionString;
-        private ISqlConnection _connection;
+        private readonly IDbFactory _factory;
+        private IDbCommand _command;
+        private IDbConnection _connection;
         private IDbTransaction _transaction;
 
+        public bool IsConnected => _connection != null && _connection.State == ConnectionState.Open;
 
-        public bool Connect(string connectionString)
+        public string ConnectionString => _connection?.ConnectionString;
+
+        public void FetchStoredProcedures(Func<IDbCommand, List<IDbDataParameter>, List<IDbDataParameter>, string, string, bool> procedureProcessor, Func<IDbCommand, List<IDbDataParameter>, List<IDbDataParameter>, string, string, bool> functionProcessor, bool continueOnProcessorException = false, string dbName = "")
         {
-            _connectionString = connectionString;
-            _connection = _connectionBuilder.BuildConnection(_connectionString);
+        }
 
-            try
-            {
-                _connection.TryOpen();
-                return true;
-            }
-            catch (Exception e)
-            {
-                Dev2Logger.Error(e, GlobalConstants.WarewolfError);
-                return false;
-            }
-
+        public IDbCommand CreateCommand()
+        {
+            VerifyConnection();
+            IDbCommand command = _connection.CreateCommand();
+            command.Transaction = _transaction;
+            return command;
         }
 
         public void BeginTransaction()
         {
-            if (_connection.State == ConnectionState.Open)
+            if (IsConnected)
             {
                 _transaction = _connection.BeginTransaction();
             }
@@ -80,168 +57,292 @@ namespace Dev2.Services.Sql
         {
             if (_transaction != null)
             {
-                try
-                {
-                    _transaction.Rollback();
-                    _transaction.Dispose();
-                }
-                catch (Exception e)
-                {
-                    _transaction.Dispose();
-                    _transaction = null;
-                    Dev2Logger.Error(e, GlobalConstants.WarewolfError);
-                }
+                _transaction.Rollback();
+                _transaction.Dispose();
+                _transaction = null;
+            }
+        }
+        #region FetchDataSet
 
-            }
+    
+        public DataSet FetchDataSet(params SqlParameter[] parameters)
+        {
+            VerifyConnection();
+            return FetchDataSet(_command, parameters);
         }
 
-        static void TrySetTransaction(IDbTransaction dbTransaction, IDbCommand command)
+        public DataSet FetchDataSet(IDbCommand command, params SqlParameter[] parameters)
         {
-            if (dbTransaction != null && command.Transaction == null)
-            {
-                command.Transaction = dbTransaction;
-            }
+            VerifyArgument.IsNotNull("command", command);
+            AddParameters(command, parameters);
+            return _factory.FetchDataSet(command);
         }
-        public DataTable FetchDataTable(IDbCommand command)
-        {
-            VerifyArgument.IsNotNull(nameof(command), command);
-            _connection?.TryOpen();
-            TrySetTransaction(_transaction, command);
-            using (_connection)
-            {
-                if (_connection?.State != ConnectionState.Open)
-                {
-                    _connection = _connectionBuilder.BuildConnection(_connectionString);
-                    _connection.Open();
-                    var dbCommand = _connection.CreateCommand();
-                    TrySetTransaction(_transaction, dbCommand);
-                    dbCommand.CommandText = command.CommandText;
-                    dbCommand.CommandType = command.CommandType;
-                    using (dbCommand)
-                    {
-                        using (var executeReader = dbCommand.ExecuteReader())
-                        {
-                            var dataTable = new DataTable();
-                            dataTable.Load(executeReader);
-                            return dataTable;
-                        }
-                    }
-                }
-                using (command)
-                {
-                    try
-                    {
-                        using (var executeReader = command.ExecuteReader())
-                        {
-                            var dataTable = new DataTable();
-                            dataTable.Load(executeReader);
-                            return dataTable;
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        return new DataTable(e.Message);
-                    }
-                }
-            }
-        }
+
+        #endregion
+
+
+        #region FetchDatabases
 
         public List<string> FetchDatabases()
         {
-            if (_connection == null)
-            {
-                throw new Exception(ErrorResource.PleaseConnectFirst);
-            }
-            const string databaseColumnName = "database_name";
-            var dataTable = _connection?.GetSchema("Databases") ?? new DataTable("Databases");
-            var orderedRows = dataTable.Select("", databaseColumnName);
-            var result = orderedRows.Select(row => (row[databaseColumnName] ?? string.Empty).ToString()).Distinct().ToList();
+            VerifyConnection();
+
+            const string DatabaseColumnName = "database_name";
+
+            DataTable databases = GetSchemaFromConnection(_connection, "Databases");
+
+            // 2013.07.10 - BUG 9933 - AL - sort database list
+            DataRow[] orderedRows = databases.Select("", DatabaseColumnName);
+
+            List<string> result =
+                orderedRows.Select(row => (row[DatabaseColumnName] ?? string.Empty).ToString()).Distinct().ToList();
+
             return result;
         }
 
-        public void FetchStoredProcedures(Func<IDbCommand, List<IDbDataParameter>, string, string, bool> procedureProcessor, Func<IDbCommand, List<IDbDataParameter>, string, string, bool> functionProcessor, bool continueOnProcessorException = false,
-            string dbName = "")
+        #endregion
+
+        #region FetchDataTable
+
+        public DataTable FetchDataTable(IDbCommand command)
         {
-            VerifyArgument.IsNotNull(nameof(procedureProcessor), procedureProcessor);
-            VerifyArgument.IsNotNull(nameof(functionProcessor), functionProcessor);
-            var proceduresDataTable = GetSchema();
-            var procedureDataColumn = GetDataColumn(proceduresDataTable, "ROUTINE_NAME");
-            var procedureTypeColumn = GetDataColumn(proceduresDataTable, "ROUTINE_TYPE");
-            var procedureSchemaColumn = GetDataColumn(proceduresDataTable, "SPECIFIC_SCHEMA");
+            VerifyArgument.IsNotNull("command", command);
+
+            return ExecuteReader(command, CommandBehavior.SchemaOnly & CommandBehavior.KeyInfo,
+                reader => _factory.CreateTable(reader, LoadOption.OverwriteChanges));
+        }
+
+        public DataTable FetchDataTable(params IDbDataParameter[] parameters)
+        {
+            VerifyConnection();
+            AddParameters(_command, parameters);
+            return FetchDataTable(_command);
+        }
+
+        #endregion
+
+        #region FetchStoredProcedures
+
+        public void FetchStoredProcedures(
+            Func<IDbCommand, List<IDbDataParameter>, string, string, bool> procedureProcessor,
+            Func<IDbCommand, List<IDbDataParameter>, string, string, bool> functionProcessor,
+            bool continueOnProcessorException = false,string dbName = "")
+        {
+            VerifyArgument.IsNotNull("procedureProcessor", procedureProcessor);
+            VerifyArgument.IsNotNull("functionProcessor", functionProcessor);
+            VerifyConnection();
+
+            DataTable proceduresDataTable = GetSchema(_connection);
+            DataColumn procedureDataColumn = GetDataColumn(proceduresDataTable, "ROUTINE_NAME");
+            DataColumn procedureTypeColumn = GetDataColumn(proceduresDataTable, "ROUTINE_TYPE");
+            DataColumn procedureSchemaColumn = GetDataColumn(proceduresDataTable, "SPECIFIC_SCHEMA");
+                // ROUTINE_CATALOG - ROUTINE_SCHEMA ,SPECIFIC_SCHEMA
+
             foreach (DataRow row in proceduresDataTable.Rows)
             {
-                var fullProcedureName = GetFullProcedureName(row, procedureDataColumn, procedureSchemaColumn);
-                _connection.TryOpen();
-                var sqlCommand = _connection.CreateCommand();
-                TrySetTransaction(_transaction, sqlCommand);
-                sqlCommand.CommandText = fullProcedureName;
-                sqlCommand.CommandType = CommandType.StoredProcedure;
 
-                using (sqlCommand)
+                string fullProcedureName = GetFullProcedureName(row, procedureDataColumn, procedureSchemaColumn);
+
+                using (
+                    IDbCommand command = _factory.CreateCommand(_connection, CommandType.StoredProcedure,
+                        fullProcedureName))
                 {
                     try
                     {
-                        var parameters = GetProcedureParameters(sqlCommand);
-                        const string helpText = "";
+                        List<IDbDataParameter> parameters = GetProcedureParameters(command);
+
+                        //string helpText = FetchHelpTextContinueOnException(fullProcedureName, _connection);
+                        const string HelpText = "";
 
                         if (IsStoredProcedure(row, procedureTypeColumn))
                         {
-                            procedureProcessor(sqlCommand, parameters, helpText, fullProcedureName);
+                            procedureProcessor(command, parameters, HelpText, fullProcedureName);
                         }
                         else if (IsFunction(row, procedureTypeColumn))
                         {
-                            functionProcessor(sqlCommand, parameters, helpText, fullProcedureName);
+                            functionProcessor(command, parameters, HelpText, fullProcedureName);
                         }
                         else if (IsTableValueFunction(row, procedureTypeColumn))
                         {
-                            functionProcessor(sqlCommand, parameters, helpText,
+                            functionProcessor(command, parameters, HelpText,
                                 CreateTVFCommand(fullProcedureName, parameters));
                         }
                     }
-                    catch (Exception e)
+                    catch (Exception)
                     {
-                        Dev2Logger.Error(e, GlobalConstants.WarewolfError);
                         if (!continueOnProcessorException)
                         {
                             throw;
                         }
                     }
                 }
-
             }
         }
 
-        public void FetchStoredProcedures(
-            Func<IDbCommand, List<IDbDataParameter>, List<IDbDataParameter>, string, string, bool> procedureProcessor
-            , Func<IDbCommand, List<IDbDataParameter>, List<IDbDataParameter>, string, string, bool> functionProcessor
-            , bool continueOnProcessorException = false,
-            string dbName = "")
+        
+        private string CreateTVFCommand(string fullProcedureName, List<IDbDataParameter> parameters)
+    
         {
-
-
-        }
-        private DataTable GetSchema()
-        {
-            const string commandText = GlobalConstants.SchemaQuery;
-            _connection.TryOpen();
-            using (_connection)
+            if (parameters == null || parameters.Count == 0)
             {
-                using (var sqlCommand = _connection.CreateCommand())
-                {
-                    TrySetTransaction(_transaction, sqlCommand);
-                    sqlCommand.CommandText = commandText;
-                    sqlCommand.CommandType = CommandType.Text;
-                    return FetchDataTable(sqlCommand);
-                }
+                return string.Format("select * from {0}()", fullProcedureName);
+            }
+            var sql = new StringBuilder(string.Format("select * from {0}(", fullProcedureName));
+            for (int i = 0; i < parameters.Count; i++)
+            {
+                sql.Append(parameters[i].ParameterName);
+                sql.Append(i < parameters.Count - 1 ? "," : "");
+            }
+            sql.Append(")");
+            return sql.ToString();
+        }
 
+        private string FetchHelpTextContinueOnException(string fullProcedureName, IDbConnection con)
+        {
+            string helpText;
+
+            try
+            {
+                helpText = GetHelpText(con, fullProcedureName);
+            }
+            catch (Exception e)
+            {
+                helpText = "Could not fetch because of : " + e.Message;
+            }
+
+            return helpText;
+        }
+
+        #endregion
+
+        #region VerifyConnection
+
+        private void VerifyConnection()
+        {
+            if (!IsConnected)
+            {
+                throw new Exception(ErrorResource.PleaseConnectFirst);
             }
         }
+
+        #endregion
+
+        #region Connect
+
+        public bool Connect(string connectionString)
+        {
+            _connection = _factory.CreateConnection(connectionString);
+            _connection.Open();
+            return true;
+        }
+
+        public bool Connect(string connectionString, CommandType commandType, string commandText)
+        {
+            _connection = _factory.CreateConnection(connectionString);
+
+            VerifyArgument.IsNotNull("commandText", commandText);
+            if (commandText.ToLower().StartsWith("select "))
+            {
+                commandType = CommandType.Text;
+            }
+
+            _command = _factory.CreateCommand(_connection, commandType, commandText);
+
+            _connection.Open();
+            return true;
+        }
+
+        #endregion
+
+        private static T ExecuteReader<T>(IDbCommand command, CommandBehavior commandBehavior,
+            Func<IDataAdapter, T> handler)
+        {
+            try
+            {
+                var da = new SqlDataAdapter(command as SqlCommand);
+                using (da)
+                {
+                    return handler(da);
+                }
+            }
+            catch (DbException e)
+            {
+                if (e.Message.Contains("There is no text for object "))
+                {
+                    var exceptionDataTable = new DataTable("Error");
+                    exceptionDataTable.Columns.Add("ErrorText");
+                    exceptionDataTable.LoadDataRow(new object[] {e.Message}, true);
+                    return handler(new SqlDataAdapter());
+                }
+                throw;
+            }
+        }
+
+
+        public static void AddParameters(IDbCommand command, ICollection<IDbDataParameter> parameters)
+        {
+            command.Parameters.Clear();
+            if (parameters != null && parameters.Count > 0)
+            {
+                foreach (IDbDataParameter parameter in parameters)
+                {
+                    command.Parameters.Add(parameter);
+                }
+            }
+        }
+
+        private DataTable GetSchema(IDbConnection connection)
+        {
+            const string CommandText = GlobalConstants.SchemaQuery;
+            using (IDbCommand command = _factory.CreateCommand(connection, CommandType.Text, CommandText))
+            {
+                return FetchDataTable(command);
+            }
+        }
+
+        private DataTable GetSchemaFromConnection(IDbConnection connection, string collectionName)
+        {
+            return _factory.GetSchema(connection, collectionName); //todo: fix this
+        }
+
+        private string GetHelpText(IDbConnection connection, string objectName)
+        {
+            using (
+                IDbCommand command = _factory.CreateCommand(connection, CommandType.Text,
+                    string.Format("sp_helptext '{0}'", objectName)))
+            {
+                return ExecuteReader(command, CommandBehavior.SchemaOnly & CommandBehavior.KeyInfo,
+                    delegate(IDataAdapter reader)
+                    {
+                        var sb = new StringBuilder();
+                        DataSet ds = new DataSet(); //conn is opened by dataadapter
+                        reader.Fill(ds);
+                        var t = ds.Tables[0];
+                        var dataTableReader = t.CreateDataReader();
+                        while (dataTableReader.Read())
+                        {
+                            object value = dataTableReader.GetValue(0);
+                            if (value != null)
+                            {
+                                sb.Append(value);
+                            }
+                        }
+                        if (sb.Length == 0)
+                        {
+                            throw new WarewolfDbException(string.Format(ErrorResource.NoTextForObject, objectName));
+                        }
+                        return sb.ToString();
+                    });
+            }
+        }
+
         private static DataColumn GetDataColumn(DataTable dataTable, string columnName)
         {
-            var dataColumn = dataTable.Columns[columnName];
+            DataColumn dataColumn = dataTable.Columns[columnName];
             if (dataColumn == null)
             {
-                throw new Exception($"SQL Server - Unable to load '{columnName}' column of '{dataTable.TableName}'.");
+                throw new Exception(string.Format("SQL Server - Unable to load '{0}' column of '{1}'.", columnName,
+                    dataTable.TableName));
             }
             return dataColumn;
         }
@@ -249,21 +350,23 @@ namespace Dev2.Services.Sql
         private static string GetFullProcedureName(DataRow row, DataColumn procedureDataColumn,
             DataColumn procedureSchemaColumn)
         {
-            var procedureName = row[procedureDataColumn].ToString();
-            var schemaName = row[procedureSchemaColumn].ToString();
+            string procedureName = row[procedureDataColumn].ToString();
+            string schemaName = row[procedureSchemaColumn].ToString();
             return schemaName + "." + procedureName;
         }
 
         private List<IDbDataParameter> GetProcedureParameters(IDbCommand command)
         {
             //Please do not use SqlCommandBuilder.DeriveParameters(command); as it does not handle CLR procedures correctly.
-            var originalCommandText = command.CommandText;
+            string originalCommandText = command.CommandText;
             var parameters = new List<IDbDataParameter>();
-            var parts = command.CommandText.Split('.');
+            string[] parts = command.CommandText.Split('.');
             command.CommandType = CommandType.Text;
             command.CommandText =
-                $"select * from information_schema.parameters where specific_name='{parts[1]}' and specific_schema='{parts[0]}'";
-            var dataTable = FetchDataTable(command);
+                string.Format(
+                    "select * from information_schema.parameters where specific_name='{0}' and specific_schema='{1}'",
+                    parts[1], parts[0]);
+            DataTable dataTable = FetchDataTable(command);
             foreach (DataRow row in dataTable.Rows)
             {
                 var parameterName = row["PARAMETER_NAME"] as string;
@@ -271,11 +374,12 @@ namespace Dev2.Services.Sql
                 {
                     continue;
                 }
-                Enum.TryParse(row["DATA_TYPE"] as string, true, out SqlDbType sqlType);
-                var maxLength = row["CHARACTER_MAXIMUM_LENGTH"] as int? ?? -1;
+                SqlDbType sqlType;
+                Enum.TryParse(row["DATA_TYPE"] as string, true, out sqlType);
+                int maxLength = row["CHARACTER_MAXIMUM_LENGTH"] as int? ?? -1;
                 var sqlParameter = new SqlParameter(parameterName, sqlType, maxLength);
                 command.Parameters.Add(sqlParameter);
-                if (parameterName.ToLower(CultureInfo.InvariantCulture) == "@return_value")
+                if (parameterName.ToLower() == "@return_value")
                 {
                     continue;
                 }
@@ -315,116 +419,89 @@ namespace Dev2.Services.Sql
             return row[procedureTypeColumn].ToString().Equals("SQL_TABLE_VALUED_FUNCTION");
         }
 
-        static string CreateTVFCommand(string fullProcedureName, List<IDbDataParameter> parameters)
+        #region IDisposable
+
+        private bool _disposed;
+
+        public SqlServer()
         {
-            if (parameters == null || parameters.Count == 0)
-            {
-                return $"select * from {fullProcedureName}()";
-            }
-            var sql = new StringBuilder($"select * from {fullProcedureName}(");
-            for (var i = 0; i < parameters.Count; i++)
-            {
-                sql.Append(parameters[i].ParameterName);
-                sql.Append(i < parameters.Count - 1 ? "," : "");
-            }
-            sql.Append(")");
-            return sql.ToString();
-        }
-        public IDbCommand CreateCommand()
-        {
-            if (_connection == null)
-            {
-                throw new Exception(ErrorResource.PleaseConnectFirst);
-            }
-            var sqlCommand = _connection.CreateCommand();
-            TrySetTransaction(_transaction, sqlCommand);
-            sqlCommand.CommandTimeout = (int)GlobalConstants.TransactionTimeout.TotalSeconds;
-            return sqlCommand;
+            _factory = new DbFactory();
         }
 
-        private string _commantText;
-        private CommandType _commandType;
-
-
-        public bool Connect(string connectionString, CommandType commandType, string commandText)
+        public SqlServer(IDbFactory dbFactory)
         {
-            VerifyArgument.IsNotNull(nameof(connectionString), connectionString);
-            VerifyArgument.IsNotNull(nameof(commandText), commandText);
-            var connString = connectionString;
-            if (connString.CanBeDecrypted())
-            {
-                connString = DpapiWrapper.Decrypt(connectionString);
-            }
-            connString = string.Concat(connString, "MultipleActiveResultSets=true;");
-            _connection = _connectionBuilder.BuildConnection(connString);
-
-            _connection.TryOpen();
-            _connection.FireInfoMessageEventOnUserErrors = true;
-            _connection.StatisticsEnabled = true;
-            _connection.SetInfoMessage((sender, args) =>
-            {
-                Dev2Logger.Debug("SQL Server:" + args.Message + " Source:" + args.Source,
-                    GlobalConstants.WarewolfDebug);
-                foreach (SqlError error in args.Errors)
-                {
-                    var errorMessages = new StringBuilder();
-                    errorMessages.Append("Index #" + error.Number + Environment.NewLine +
-                                         "Message: " + error.Message + Environment.NewLine +
-                                         "LineNumber: " + error.LineNumber + Environment.NewLine +
-                                         "Source: " + error.Source + Environment.NewLine +
-                                         "Procedure: " + error.Procedure + Environment.NewLine);
-
-                    Dev2Logger.Error("SQL Error:" + errorMessages, GlobalConstants.WarewolfError);
-                }
-            });
-            var typeOfCommand = commandType;
-            if (commandText.ToLower(CultureInfo.InvariantCulture).StartsWith("select ", StringComparison.Ordinal))
-            {
-                typeOfCommand = CommandType.Text;
-            }
-
-            _commantText = commandText;
-            _commandType = typeOfCommand;
-
-
-            return true;
+            _factory = dbFactory;
         }
 
-        public DataTable FetchDataTable(params IDbDataParameter[] dbDataParameters)
+        // Implement IDisposable. 
+        // Do not make this method virtual. 
+        // A derived class should not be able to override this method. 
+        public void Dispose()
         {
+            Dispose(true);
+            // This object will be cleaned up by the Dispose method. 
+            // Therefore, you should call GC.SupressFinalize to 
+            // take this object off the finalization queue 
+            // and prevent finalization code for this object 
+            // from executing a second time.
+            GC.SuppressFinalize(this);
+        }
 
-            if (_connection == null)
-            {
-                throw new Exception(ErrorResource.PleaseConnectFirst);
-            }
-            _connection.TryOpen();
+        ~SqlServer()
+        {
+            // Do not re-create Dispose clean-up code here. 
+            // Calling Dispose(false) is optimal in terms of 
+            // readability and maintainability.
+            Dispose(false);
+        }
 
-            using (_connection)
+        // Dispose(bool disposing) executes in two distinct scenarios. 
+        // If disposing equals true, the method has been called directly 
+        // or indirectly by a user's code. Managed and unmanaged resources 
+        // can be disposed. 
+        // If disposing equals false, the method has been called by the 
+        // runtime from inside the finalizer and you should not reference 
+        // other objects. Only unmanaged resources can be disposed. 
+        protected virtual void Dispose(bool disposing)
+        {
+            // Check to see if Dispose has already been called. 
+            if (!_disposed)
             {
-                if (_connection.State != ConnectionState.Open)
+                // If disposing equals true, dispose all managed 
+                // and unmanaged resources. 
+                if (disposing)
                 {
-                    _connection = _connectionBuilder.BuildConnection(_connectionString);
-                }
-                using (var sqlCommand = _connection.CreateCommand())
-                {
-                    TrySetTransaction(_transaction, sqlCommand);
-                    sqlCommand.CommandText = _commantText;
-                    sqlCommand.CommandType = _commandType;
-                    sqlCommand.CommandTimeout = (int)GlobalConstants.TransactionTimeout.TotalSeconds;
-                    foreach (var dbDataParameter in dbDataParameters)
+                    // Dispose managed resources.
+                    _transaction?.Dispose();
+
+                    _command?.Dispose();
+
+                    if (_connection != null)
                     {
-                        sqlCommand.Parameters.Add(dbDataParameter);
+                        if (_connection.State != ConnectionState.Closed)
+                        {
+                            _connection.Close();
+                        }
+                        _connection.Dispose();
                     }
-                    return FetchDataTable(sqlCommand);
                 }
-            }
 
+                // Call the appropriate methods to clean up 
+                // unmanaged resources here. 
+                // If disposing is false, 
+                // only the following code is executed.
+
+                // Note disposing has been done.
+                _disposed = true;
+            }
         }
+
+        #endregion
     }
 
     public class WarewolfDbException : DbException
     {
-        public WarewolfDbException(string message) : base(message)
+        public WarewolfDbException(string message):base(message)
         {
         }
     }

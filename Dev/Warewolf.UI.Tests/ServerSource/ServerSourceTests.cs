@@ -87,7 +87,7 @@ namespace Warewolf.UI.Tests.ServerSource
             const string newName = "DuplicatedCodedUITestServerSource";
             WorkflowTabUIMap.Enter_Duplicate_workflow_name(newName);
             DialogsUIMap.Click_Duplicate_From_Duplicate_Dialog();
-            UIMap.WaitForSpinner(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
+            ExplorerUIMap.WaitForExplorerFirstRemoteServerSpinner();
             ExplorerUIMap.Filter_Explorer(newName);
             Assert.AreEqual(newName, ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ItemEdit.Text, "First Item is not the same as Filtered input.");
             ExplorerUIMap.Click_Explorer_Remote_Server_Dropdown_List();

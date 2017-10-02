@@ -28,7 +28,7 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </core:ActivityDesignerTemplate.Resources>
-
+    
     <core:ActivityDesignerTemplate.RightButtons>
         <core:ActivityDesignerButton x:Name="DoneButton"
                                      Content="Done"
@@ -325,9 +325,9 @@
                         Text="{Binding DisplayText,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         attachedProperties:FocusSetter.IsFocused="{Binding IsDisplayTextFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Result_AutoID}"
-                        ToolTip="{x:Static languages:Tooltips.DecisionToolTipDisplayText}">
+                        ToolTip="{x:Static languages:Tooltips.FindToolTipResult}">
                     <i:Interaction.Behaviors>
-                        <core1:HelpSetter Text="{x:Static languages:HelpText.DecisionHelpDisplayText}" DataContext="{Binding}" />
+                        <core1:HelpSetter Text="{x:Static languages:HelpText.FindHelpResult}" DataContext="{Binding}" />
                         <errors:ErrorsSetter Source="{Binding}"
                                              SourcePropertyName="DisplayText"
                                              SourcePropertyValue="{Binding DisplayText, UpdateSourceTrigger=PropertyChanged}"
@@ -349,9 +349,9 @@
                         Text="{Binding TrueArmText,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         attachedProperties:FocusSetter.IsFocused="{Binding IsTrueArmFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Result_AutoID}"
-                        ToolTip="{x:Static languages:Tooltips.DecisionToolTipTrueArm}">
+                        ToolTip="{x:Static languages:Tooltips.FindToolTipResult}">
                     <i:Interaction.Behaviors>
-                        <core1:HelpSetter Text="{x:Static languages:HelpText.DecisionHelpTrueArm}" DataContext="{Binding}" />
+                        <core1:HelpSetter Text="{x:Static languages:HelpText.FindHelpResult}" DataContext="{Binding}" />
                         <errors:ErrorsSetter Source="{Binding}"
                                              SourcePropertyName="TrueArmText"
                                              SourcePropertyValue="{Binding TrueArmText, UpdateSourceTrigger=PropertyChanged}"
@@ -373,9 +373,9 @@
                         Text="{Binding FalseArmText,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         attachedProperties:FocusSetter.IsFocused="{Binding IsFalseArmFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Result_AutoID}"
-                        ToolTip="{x:Static languages:Tooltips.DecisionToolTipFalseArm}">
+                        ToolTip="{x:Static languages:Tooltips.FindToolTipResult}">
                     <i:Interaction.Behaviors>
-                        <core1:HelpSetter Text="{x:Static languages:HelpText.DecisionHelpFalseArm}" DataContext="{Binding}" />
+                        <core1:HelpSetter Text="{x:Static languages:HelpText.FindHelpResult}" DataContext="{Binding}" />
                         <errors:ErrorsSetter Source="{Binding}"
                                              SourcePropertyName="FalseArmText"
                                              SourcePropertyValue="{Binding FalseArmText, UpdateSourceTrigger=PropertyChanged}"

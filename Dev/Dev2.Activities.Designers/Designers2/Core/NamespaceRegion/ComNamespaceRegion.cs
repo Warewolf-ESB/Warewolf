@@ -115,7 +115,7 @@ namespace Dev2.Activities.Designers2.Core.NamespaceRegion
             }
             finally
             {
-               // OnSomethingChanged(this);
+                OnSomethingChanged(this);
             }
         }
 

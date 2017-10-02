@@ -45,7 +45,7 @@
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="..\AssemblyCommonInfo.cs">
+    <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
     <None Include="..\Run Tests.ps1">
@@ -53,7 +53,6 @@
       <Link>Run Tests.ps1</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <Compile Include="ActivityUtils.cs" />
     <Compile Include="BrowserDebug\BrowserDebugSteps.cs" />
     <Compile Include="BrowserDebug\BrowserDebug.feature.cs">
       <AutoGen>True</AutoGen>
@@ -75,12 +74,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>WorkflowExecution.feature</DependentUpon>
     </Compile>
-    <Compile Include="Deploy\Deploy Feature.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Deploy Feature.feature</DependentUpon>
-    </Compile>
-    <Compile Include="Deploy\DeployFeatureSteps.cs" />
     <Compile Include="Dev2LocalSecurityWrapper.cs" />
     <Compile Include="ISpecExternalProcessExecutor.cs" />
     <Compile Include="Sources\ServerSource.feature.cs">
@@ -338,10 +331,6 @@
     <None Include="Composition\WorkflowExecution.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>WorkflowExecution.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Deploy\Deploy Feature.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>Deploy Feature.feature.cs</LastGenOutput>
     </None>
     <None Include="packages.config">
       <SubType>Designer</SubType>

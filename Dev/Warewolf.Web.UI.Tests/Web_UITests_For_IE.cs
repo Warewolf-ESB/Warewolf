@@ -68,7 +68,7 @@ namespace Warewolf.Web.UI.Tests
         [DeploymentItem(@"IEDriverServer.exe")]
         [DeploymentItem(@"WebDriverProfiles", @"WebDriverProfiles")]
         [TestCategory("NoWarewolfServer")]
-        public void InternetExplorer_NoWarewolfServer_UITest()
+        public void InternetExplorer_NoWarewolfServer_ClickRefresh_UITest()
         {
             Assert.IsTrue(driver.KillServerIfRunning(), GlobalConstants.LocalWarewolfServerExpectedDownError);
             driver.GoToUrl();

@@ -5,16 +5,23 @@ using System.Threading;
 namespace Dev2.Runtime.ESB.Execution
 {
     public class ExecutionManager : IExecutionManager
-    {       
+    {
+        static readonly Lazy<ExecutionManager> LazyCat = new Lazy<ExecutionManager>(() =>
+        {
+            var c = new ExecutionManager();
+            return c;
+        }, LazyThreadSafetyMode.PublicationOnly);
+
         bool _isRefreshing;
-        int _currentExecutions;        
-        static ManualResetEvent EventPulse = new ManualResetEvent(false);
-        static readonly object _executionLock = new object();
-        public ExecutionManager()
+        int _currentExecutions;
+        readonly List<ManualResetEvent> _waitHandles = new List<ManualResetEvent>();
+
+        ExecutionManager()
         {
             _isRefreshing = false;
             _currentExecutions = 0;          
         }
+        public static ExecutionManager Instance => LazyCat.Value;
 
         public void StartRefresh()
         {
@@ -28,19 +35,19 @@ namespace Dev2.Runtime.ESB.Execution
                 Thread.Sleep(1);
             }
         }
-
-        public void Wait()
-        {
-            EventPulse.WaitOne();
-        }
         public void StopRefresh()
         {
-            EventPulse.Set();
+            foreach(var autoResetEvent in _waitHandles)
+            {
+                autoResetEvent.Set();
+            }
+            _waitHandles.Clear();
             _isRefreshing = false;
         }
         public void AddExecution()
         {
-            Interlocked.Increment(ref _currentExecutions);
+            _currentExecutions++;
+
         }
 
         public bool IsRefreshing => _isRefreshing;
@@ -49,8 +56,13 @@ namespace Dev2.Runtime.ESB.Execution
         {
             if (_currentExecutions > 0)
             {
-                Interlocked.Decrement(ref _currentExecutions);
+                _currentExecutions--;
             }
-        }        
+        }
+
+        public void AddWait(ManualResetEvent eventPulse)
+        {
+            _waitHandles.Add(eventPulse);
+        }
     }
 }

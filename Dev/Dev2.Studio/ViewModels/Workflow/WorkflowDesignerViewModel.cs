@@ -753,6 +753,9 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public StringBuilder ServiceDefinition { get { return _workflowHelper.SerializeWorkflow(ModelService); } set { } }
 
+
+        public bool IsStartNodeErrorMessageSet { get; set; }
+
         #endregion
 
         #region Commands
@@ -803,7 +806,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 {
                     if (!string.IsNullOrEmpty(_workflowLink))
                     {
-                        _applicationTracker.TrackApplicationEvent(ApplicationTrackerConstants.TrackerEventName.LinkURLClicked);
+                        _applicationTracker.TrackApplicationEvent(ApplicationTrackerConstants.TrackerEventName.LinkUrlClicked);
                         SaveToWorkspace();
 
                         if (_workflowInputDataViewModel.WorkflowInputCount == 0)
@@ -2022,6 +2025,11 @@ namespace Dev2.Studio.ViewModels.Workflow
             if (validationIcon != null && validationIcon.Name.Equals("validationVisuals", StringComparison.CurrentCultureIgnoreCase))
             {
                 validationIcon.ToolTip = Warewolf.Studio.Resources.Languages.Tooltips.StartNodeNotConnectedToolTip;
+                if (!IsStartNodeErrorMessageSet)
+                {
+                    IsStartNodeErrorMessageSet = true;
+                    _applicationTracker.TrackApplicationEvent(ApplicationTrackerConstants.TrackerEventName.StartNodeNotConnected);
+                }
             }
         }
 
@@ -2483,6 +2491,11 @@ namespace Dev2.Studio.ViewModels.Workflow
                 }
                 if (e.ModelChangeInfo.PropertyName == "StartNode")
                 {
+                    if (e.ModelChangeInfo.OldValue!=null)
+                    {
+                     // incase of delete it will have old value then log
+                        IsStartNodeErrorMessageSet = false;
+                    }
                     return;
                 }
 
@@ -2499,6 +2512,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 PerformAddItems(e.ModelChangeInfo.Value);
             }
+            
 
             if (e.ModelChangeInfo != null && e.ModelChangeInfo.ModelChangeType == ModelChangeType.PropertyChanged 
                 && (e.ModelChangeInfo.Value?.Source?.ComputedValue?.GetType() == typeof(DsfFlowDecisionActivity)

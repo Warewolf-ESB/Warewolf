@@ -94,7 +94,7 @@ type WarewolfEnvironment =
 let rec tryParseAtom (data : string) = 
     let mutable value = 0
     if data = "0" then Int(0)
-    else if data.StartsWith("0") || data.StartsWith("+") || data.EndsWith("\n") || data.EndsWith("\r") || data.EndsWith("\r\n") ||data.EndsWith(" ") then DataString data
+    else if data.StartsWith("0") || data.StartsWith("+") || data.EndsWith("\n") || data.EndsWith("\r") || data.EndsWith("\r\n") then DataString data
     else 
         let success = System.Int32.TryParse(data, &value)
         if success then Int value

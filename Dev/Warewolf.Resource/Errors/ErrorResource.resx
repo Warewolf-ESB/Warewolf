@@ -1310,10 +1310,4 @@ Please contact your Windows System Administrator.</value>
   <data name="JSONIncompatibleConversionError" xml:space="preserve">
     <value>Cannot convert given JSON to target type</value>
   </data>
-  <data name="ServerBusyError" xml:space="preserve">
-    <value>{0} is currently busy. Please try again later.</value>
-  </data>
-  <data name="ServerBusyHeader" xml:space="preserve">
-    <value>Server is currently busy</value>
-  </data>
 </root>

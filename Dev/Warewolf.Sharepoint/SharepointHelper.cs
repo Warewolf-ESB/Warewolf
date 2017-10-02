@@ -20,7 +20,7 @@ namespace Warewolf.Sharepoint
         /// <summary>
         /// Initializes a new instance of the <see cref="T:System.Object"/> class.
         /// </summary>
-        public SharepointHelper(string server, string userName="", string password="", bool isSharepointOnline=false)
+        public SharepointHelper(string server, string userName, string password, bool isSharepointOnline)
         {
             Server = server;
             UserName = userName;

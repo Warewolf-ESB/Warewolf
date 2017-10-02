@@ -387,7 +387,7 @@ namespace Warewolf.Studio.ViewModels
                         if (result == MessageBoxResult.Yes)
                         {
                             await Connect(connection);
-                        }                                                 
+                        }
                         else
                         {
                             ServerDisconnected?.Invoke(this, connection);

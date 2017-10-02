@@ -492,30 +492,6 @@ namespace Dev2.Tests.Runtime.Hosting
         }
 
         [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        [TestCategory("ResourceCatalog_SaveResource")]
-        public void SaveResource_WithSameResourcePath_ExpectedNotDeleteOfExisting_ReasonDeploy()
-        {
-            //------------Setup for test--------------------------
-            var workspaceID = Guid.NewGuid();
-            const string resourcePath = "MyTest\\Folder1\\CitiesDatabase";
-            const string resourceName = "CitiesDatabase";
-            var xml = XmlResource.Fetch(resourceName);
-            var resource = new DbSource(xml);
-            var catalog = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
-            //------------Execute Test---------------------------
-            var resource2 = new DbSource(xml) { ResourceID = resource.ResourceID };
-            catalog.SaveResource(workspaceID, resource, resourcePath, GlobalConstants.SaveReasonForDeploy, "");
-            var pathToDelete = resource.FilePath;
-            resource2.FilePath = resource.FilePath.Replace("Folder1", "Foldler1");
-            resource2.ResourceName = "CitiesDatabase";
-            Assert.IsTrue(File.Exists(pathToDelete));
-            catalog.SaveResource(workspaceID, resource2, "MyTest\\FOLDER1\\CitiesDatabase", "", "");
-            //------------Assert Results-------------------------
-            Assert.IsTrue(File.Exists(pathToDelete));
-        }
-
-        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("ResourceCatalog_SaveResource")]
         public void SaveResource_WithSameResourceNameDifferentResourcePath_ExpectedSavedInCorrectFolder()

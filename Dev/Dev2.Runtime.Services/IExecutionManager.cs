@@ -14,6 +14,6 @@ namespace Dev2.Runtime
 
         void CompleteExecution();
 
-        void Wait();        
+        void AddWait(ManualResetEvent eventPulse);
     }
 }

@@ -64,7 +64,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
 
                     StringBuilder result = xml.ToStringBuilder();
 
-                    return CompileAndSave(workspaceID, resource, result, savedPath, reason);
+                    return CompileAndSave(workspaceID, resource, result, savedPath);
                 }
             }
             catch (Exception err)
@@ -93,7 +93,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                 GlobalConstants.InvalidateCache(resource.ResourceID);
                 savedPath = Common.SanitizePath(savedPath);
                 var result = resource.ToStringBuilder();
-                return CompileAndSave(workspaceID, resource, result, savedPath, reason);
+                return CompileAndSave(workspaceID, resource, result, savedPath);
             }
         }
 
@@ -108,17 +108,17 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             return saveResult;
         }
 
-        internal ResourceCatalogResult SaveImpl(Guid workspaceID, IResource resource, StringBuilder contents, bool overwriteExisting, string savedPath = "", string reason = "")
+        internal ResourceCatalogResult SaveImpl(Guid workspaceID, IResource resource, StringBuilder contents, bool overwriteExisting, string savedPath = "")
         {
             ResourceCatalogResult saveResult = null;
-            Dev2.Common.Utilities.PerformActionInsideImpersonatedContext(Dev2.Common.Utilities.ServerUser, () => { PerformSaveResult(out saveResult, workspaceID, resource, contents, overwriteExisting, savedPath, reason); });
+            Dev2.Common.Utilities.PerformActionInsideImpersonatedContext(Dev2.Common.Utilities.ServerUser, () => { PerformSaveResult(out saveResult, workspaceID, resource, contents, overwriteExisting, savedPath); });
             return saveResult;
         }
 
         #endregion
 
         #region Private Methods
-        private ResourceCatalogResult CompileAndSave(Guid workspaceID, IResource resource, StringBuilder contents, string savedPath = "", string reason = "")
+        private ResourceCatalogResult CompileAndSave(Guid workspaceID, IResource resource, StringBuilder contents, string savedPath = "")
         {
             // Find the service before edits ;)
             DynamicService beforeService = _resourceCatalog.GetDynamicObjects<DynamicService>(workspaceID, resource.ResourceID).FirstOrDefault();
@@ -127,14 +127,9 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             if (beforeService != null)
             {
                 beforeAction = beforeService.Actions.FirstOrDefault();
-                if (reason?.Equals(GlobalConstants.SaveReasonForDeploy) ?? false)
-                {
-                    beforeService.DisplayName = resource.ResourceName;
-                    beforeService.Name = resource.ResourceName;
-                }
             }
 
-            var result = ((ResourceCatalog)_resourceCatalog).SaveImpl(workspaceID, resource, contents, true, savedPath, reason);
+            var result = ((ResourceCatalog)_resourceCatalog).SaveImpl(workspaceID, resource, contents, true, savedPath);
 
             if (result.Status == ExecStatus.Success)
             {
@@ -296,7 +291,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             return updated;
         }
 
-        private void PerformSaveResult(out ResourceCatalogResult saveResult, Guid workspaceID, IResource resource, StringBuilder contents, bool overwriteExisting, string savedPath, string reason = "")
+        private void PerformSaveResult(out ResourceCatalogResult saveResult, Guid workspaceID, IResource resource, StringBuilder contents, bool overwriteExisting, string savedPath)
         {
             var fileManager = new TxFileManager();
             using (TransactionScope tx = new TransactionScope())
@@ -316,22 +311,20 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                         if (res.ResourceName != resource.ResourceName) // Renamed while open
                         {
                             var resourceXml = contents.ToXElement();
-                            if (!reason?.Equals(GlobalConstants.SaveReasonForDeploy) ?? true)
+                            resourceXml.SetAttributeValue("Name", res.ResourceName);
+                            resourceXml.SetElementValue("DisplayName", res.ResourceName);
+                            var actionElement = resourceXml.Element("Action");
+                            var xamlElement = actionElement?.Element("XamlDefinition");
+                            if (xamlElement != null)
                             {
-                                resourceXml.SetAttributeValue("Name", res.ResourceName);
-                                resourceXml.SetElementValue("DisplayName", res.ResourceName);
-                                var actionElement = resourceXml.Element("Action");
-                                var xamlElement = actionElement?.Element("XamlDefinition");
-                                if (xamlElement != null)
-                                {
-                                    var xamlContent = xamlElement.Value;
-                                    xamlElement.Value = xamlContent.
-                                        Replace("x:Class=\"" + resource.ResourceName + "\"", "x:Class=\"" + res.ResourceName + "\"")
-                                        .Replace("Flowchart DisplayName=\"" + resource.ResourceName + "\"", "Flowchart DisplayName=\"" + res.ResourceName + "\"");
-                                }
-                                resource.ResourceName = res.ResourceName;
-                                contents = resourceXml.ToStringBuilder();
+                                var xamlContent = xamlElement.Value;
+                                xamlElement.Value = xamlContent.
+                                    Replace("x:Class=\"" + resource.ResourceName + "\"", "x:Class=\"" + res.ResourceName + "\"")
+                                    .Replace("Flowchart DisplayName=\""+ resource.ResourceName + "\"", "Flowchart DisplayName=\"" + res.ResourceName + "\"");
                             }
+                            resource.ResourceName = res.ResourceName;
+                            contents = resourceXml.ToStringBuilder();
+                            
                         }
                     }
                     var directoryName = SetResourceFilePath(workspaceID, resource, ref savedPath);
@@ -368,11 +361,11 @@ namespace Dev2.Runtime.ResourceCatalogImpl
 
         public string SetResourceFilePath(Guid workspaceID, IResource resource, ref string savedPath)
         {
-            if (savedPath.EndsWith("\\"))
+            if(savedPath.EndsWith("\\"))
             {
                 savedPath = savedPath.TrimEnd('\\');
             }
-            if (savedPath.StartsWith("\\"))
+            if(savedPath.StartsWith("\\"))
             {
                 savedPath = savedPath.TrimStart('\\');
             }

@@ -68,7 +68,7 @@ namespace Warewolf.Web.UI.Tests
         [DeploymentItem(@"geckodriver.exe")]
         [DeploymentItem(@"WebDriverProfiles", @"WebDriverProfiles")]
         [TestCategory("NoWarewolfServer")]
-        public void Firefox_NoWarewolfServer_UITest()
+        public void Firefox_NoWarewolfServer_ClickRefresh_UITest()
         {
             Assert.IsTrue(driver.KillServerIfRunning(), GlobalConstants.LocalWarewolfServerExpectedDownError);
             driver.GoToUrl();

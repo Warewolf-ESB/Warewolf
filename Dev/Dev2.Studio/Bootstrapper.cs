@@ -24,6 +24,7 @@ using Dev2.Studio;
 using Dev2.Studio.Controller;
 using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.Core.Services;
+using Dev2.Studio.Core.Services.System;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.ViewModels;
 using Dev2.Threading;
@@ -75,6 +76,7 @@ namespace Dev2
         protected override void Configure()
         {
             CustomContainer.Register<IWindowManager>(new WindowManager());
+            CustomContainer.Register<ISystemInfoService>(new SystemInfoService());
             CustomContainer.Register<IPopupController>(new PopupController());
             var mainViewModel = new ShellViewModel();
             CustomContainer.Register<IShellViewModel>(mainViewModel);
@@ -147,7 +149,10 @@ namespace Dev2
         #region Private Methods
 
         /*
-         * You must be in Release config to see the only reference to this function. - Ashley
+         * DELETE THIS METHOD AND LOOSE A VERY IMPORTANT PART OF YOU ;)
+         * 
+         * IT IS REQUIRED FOR UPDATES IN RELEASE MODE ;)
+         * REMOVING IT MEANS IT IS NOT POSSIBLE TO BUILD AN INSTALLER ;)
          */
         
         private bool CheckWindowsService()

@@ -50,7 +50,7 @@
     <Compile Include="IDev2IpcClient.cs" />
     <Compile Include="INamedPipeClientStreamWrapper.cs" />
     <Compile Include="IpcClient.cs" />
-    <Compile Include="..\AssemblyCommonInfo.cs">
+    <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
     <Compile Include="NamedPipeClientStreamWrapper.cs" />

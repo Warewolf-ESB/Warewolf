@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using Dev2.Common;
@@ -16,10 +17,10 @@ using Dev2.Runtime.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Workspaces;
 using Warewolf.Core;
-using Task = System.Threading.Tasks.Task;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
+
     public class FetchComPluginActions : IEsbManagementEndpoint
     {
         public string HandlesType()
@@ -34,7 +35,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 var pluginSource = serializer.Deserialize<ComPluginSourceDefinition>(values["source"]);
                 var ns = serializer.Deserialize<INamespaceItem>(values["namespace"]);
-
+                
                 ComPluginServices services = new ComPluginServices();
                 var src = ResourceCatalog.Instance.GetResource<ComPluginSource>(GlobalConstants.ServerWorkspaceID, pluginSource.Id);
                 //src.AssemblyName = ns.FullName;
@@ -47,24 +48,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                     svc.Source = src;
                 }
-
-
-                var serviceMethodList = new ServiceMethodList();
-                var task = Task.Run(() =>
-                {
-                    return serviceMethodList = services.Methods(svc, Guid.Empty, Guid.Empty);
-                });
-                try
-                {
-                    var timeoutAfter = task.TimeoutAfter(TimeSpan.FromSeconds(3));
-                    serviceMethodList = timeoutAfter.Result;
-                }
-                catch (Exception e)
-                {
-                    Dev2Logger.Error(e, GlobalConstants.WarewolfError);
-                }
-
-
+                var serviceMethodList = services.Methods(svc, Guid.Empty, Guid.Empty);
                 var methods = serviceMethodList.Select(a => new PluginAction
                 {
                     FullName = ns?.FullName,
@@ -104,7 +88,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             try
             {
                 var cleanTypeName = Type.GetType(typeName);
-
+                
                 return $"{name} ({cleanTypeName.Name})";
             }
             catch (Exception)

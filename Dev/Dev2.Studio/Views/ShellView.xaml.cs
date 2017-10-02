@@ -235,35 +235,35 @@ namespace Dev2.Studio.Views
                         mainViewModel.SetActiveServer(localhostServer.EnvironmentID);
                         mainViewModel.SetActiveServer(localhostServer);
                     }
-                }
 
-                var explorerViewModel = mainViewModel.ExplorerViewModel;
-                if (explorerViewModel != null)
-                {
-                    explorerViewModel.SearchText = string.Empty;
+                    var explorerViewModel = mainViewModel.ExplorerViewModel;
 
-                    if (explorerViewModel.ConnectControlViewModel != null)
+                    if (explorerViewModel != null)
                     {
-                        foreach (var server in explorerViewModel.ConnectControlViewModel.Servers)
+                        explorerViewModel.SearchText = string.Empty;
+
+                        if (explorerViewModel.ConnectControlViewModel != null)
                         {
-                            if (server != null && server.DisplayName != localhostServer.DisplayName && server.IsConnected)
+                            foreach (var server in explorerViewModel.ConnectControlViewModel.Servers)
                             {
-                                server.Disconnect();
+                                if (server != null && server.DisplayName != localhostServer.DisplayName && server.IsConnected)
+                                {
+                                    server.Disconnect();
+                                }
+                            }
+                        }
+
+                        var environmentViewModels = explorerViewModel.Environments;
+                        if (environmentViewModels?.Count > 1)
+                        {
+                            for (var i = 0; i < environmentViewModels.Count - 1; i++)
+                            {
+                                var remoteEnvironment = environmentViewModels.FirstOrDefault(model => model.ResourceId != Guid.Empty);
+                                environmentViewModels.Remove(remoteEnvironment);
                             }
                         }
                     }
-
-                    var environmentViewModels = explorerViewModel.Environments;
-                    if (environmentViewModels?.Count > 1)
-                    {
-                        for (var i = 0; i < environmentViewModels.Count - 1; i++)
-                        {
-                            var remoteEnvironment = environmentViewModels.FirstOrDefault(model => model.ResourceId != Guid.Empty);
-                            environmentViewModels.Remove(remoteEnvironment);
-                        }
-                    }
                 }
-
                 if (mainViewModel.ToolboxViewModel != null)
                 {
                     mainViewModel.ToolboxViewModel.SearchTerm = string.Empty;

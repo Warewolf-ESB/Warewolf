@@ -15,7 +15,6 @@ using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Runtime.ServiceModel.Esb.Brokers;
-using Dev2.Services.Sql;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Integration.Tests.Services.Sql
@@ -176,7 +175,7 @@ namespace Dev2.Integration.Tests.Services.Sql
         [TestMethod]
         [Owner("Massimo.Guerrera")]
         [TestCategory("SqlDatabaseBroker_TestService")]
-        [ExpectedException(typeof(WarewolfDbException))]
+        [ExpectedException(typeof(SqlException))]
         
         public void SqlDatabaseBroker_TestService_SqlUserWithInvalidUsername_ReturnsInvalidResult()
 

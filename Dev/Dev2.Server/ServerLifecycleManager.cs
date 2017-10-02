@@ -553,7 +553,7 @@ namespace Dev2
             CustomContainer.Register<IActivityParser>(new ActivityParser());
             Write("Loading resource activity cache...  ");
             catalog.LoadServerActivityCache();
-            CustomContainer.Register<IExecutionManager>(new ExecutionManager());
+            CustomContainer.Register<IExecutionManager>(ExecutionManager.Instance);
             WriteLine("done.");            
             SetStarted();
         }

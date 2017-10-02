@@ -24,6 +24,16 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
+<!--        <Dev2:ConnectControl Grid.Row="0" Grid.ColumnSpan="2"-->
+<!--                                    Margin="10,10,10,5"-->
+<!--                                    LabelText="Server :  " -->
+<!--                                    ServerChangedCommand="{Binding SourceServerChangedCommand}"-->
+<!--                                    NewButtonAutomationID="UI_SourceNewServerbtn_AutoID"-->
+<!--                                    EditButtonAutomationID="UI_SourceServerEditbtn_AutoID"-->
+<!--                                    ServerComboBoxAutomationID="UI_SourceServercbx_AutoID"-->
+<!--                                    Context="{Binding Context}"-->
+<!--                                    SelectedServer="{Binding SelectedServer, Mode=TwoWay}"/>-->
+        
         <Label Grid.Row="1" Grid.Column="0" 
                 Margin="5" HorizontalAlignment="Left"
                 Content="Type :"/>

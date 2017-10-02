@@ -35,7 +35,7 @@
             public const string F7Browser = "View in Browser(F7)";
             public const string SettingsClicked = "Settings Clicked";
             public const string HelpClicked = "Help Clicked";
-            public const string LinkURLClicked = "Link(URL) Clicked";
+            public const string LinkUrlClicked = "Link(URL) Clicked";
             public const string StartPageClicked = "Start Page";
             public const string UpgradeVersion = "Upgrade to New Version Clicked";
             public const string VariablesInputClicked = "Variables - Input Clicked ";
@@ -58,6 +58,7 @@
             public const string UnUsedVariables = "Un used Variables";
 
             public const string ItemDragged = "Item Dragged";
+            public const string StartNodeNotConnected = "Start not connnected in workflow";
         }
 
     }

@@ -162,7 +162,7 @@ namespace Dev2.Tests.Runtime.Services
             var message = serializer.Deserialize<CompressedExecuteMessage>(execute);
             Assert.AreEqual(serializer.Deserialize<IExplorerItem>(message.GetDecompressedMessage()).ResourceId, item.ResourceId);
             exeManager.Verify(manager => manager.StartRefresh(),Times.Once);
-            exeManager.Verify(manager => manager.StopRefresh(),Times.AtLeastOnce());
+            exeManager.Verify(manager => manager.StopRefresh(),Times.Once);
             CustomContainer.DeRegister<IExecutionManager>();
         }
         

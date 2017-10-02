@@ -1,0 +1,62 @@
+﻿<Window x:Class="Dev2.ViewModels.Dialogs.Dev2MessageBoxWithCustomButtons"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Dev2MessageBoxWithCustomButtonsViewModel" Height="300" Width="300" MinHeight="155" MaxWidth="470" MinWidth="154"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="SingleBorderWindow"
+        ShowInTaskbar="False" Topmost="True"
+        ResizeMode="NoResize" SizeToContent="WidthAndHeight"
+        TextOptions.TextFormattingMode="Display" TextOptions.TextRenderingMode="ClearType" UseLayoutRounding="True"
+        x:ClassModifier="internal"
+        Icon="..\..\Images\ToolSystemInformation-32.png">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" Background="White" MinHeight="69">
+            <DockPanel>
+                <Image Name="Image_MessageBox" Width="32" Height="32" HorizontalAlignment="Left" DockPanel.Dock="Left" Margin="30,0,0,0" Visibility="Collapsed"/>
+                <TextBlock x:Name="TextBlock_Message" TextWrapping="Wrap" MaxWidth="500" Width="Auto"
+                       VerticalAlignment="Center" Margin="12,20,41,15" />
+            </DockPanel>
+        </Grid>
+        <Grid Grid.Row="1" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" MinHeight="49">
+            <DockPanel Margin="5,0">
+
+                <!-- Cancel Button -->
+                <Button Name="Button_Cancel" MinWidth="88" MaxWidth="160" Height="26" Margin="5,0" HorizontalAlignment="Right" Visibility="Collapsed" IsCancel="True"
+                        AutomationProperties.AutomationId="UI_CancelButton_AutoID"
+                        DockPanel.Dock="Right" Click="ButtonCancelClick">
+                    <Label Name="Label_Cancel" Padding="0" Margin="10,0">_Cancel</Label>
+                </Button>
+                <!-- End Cancel Button -->
+
+                <!-- No Button -->
+                <Button Name="Button_No" MinWidth="88" MaxWidth="160" Height="26" Margin="5,0" HorizontalAlignment="Right" Visibility="Collapsed"
+                        AutomationProperties.AutomationId="UI_NoButton_AutoID"
+                        DockPanel.Dock="Right" Click="ButtonNoClick">
+                    <Label Name="Label_No" Padding="0" Margin="10,0">_No</Label>
+                </Button>
+                <!-- End No Button -->
+
+                <!-- Yes Button -->
+                <Button Name="Button_Yes" MinWidth="88" MaxWidth="160" Height="26" Margin="35,0,5,0" HorizontalAlignment="Right" Visibility="Collapsed"
+                        AutomationProperties.AutomationId="UI_YesButton_AutoID"
+                        DockPanel.Dock="Right" Click="ButtonYesClick">
+                    <Label Name="Label_Yes" Padding="0" Margin="10,0">_Yes</Label>
+                </Button>
+                <!-- End Yes Button -->
+
+                <!-- OK Button -->
+                <Button Name="Button_OK" MinWidth="88" MaxWidth="160" Margin="35,0,5,0" HorizontalAlignment="Right" Height="26"
+                        AutomationProperties.AutomationId="UI_OKButton_AutoID"
+                        Click="ButtonOkClick">
+                    <Label Name="Label_Ok" Padding="0" Margin="10,0">_OK</Label>
+                </Button>
+                <!-- End OK Button -->
+
+            </DockPanel>
+        </Grid>
+    </Grid>
+</Window>

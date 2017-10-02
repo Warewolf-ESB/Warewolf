@@ -1,4 +1,5 @@
-﻿using Dev2.Util;
+﻿using Dev2.Common;
+using Dev2.Util;
 using RUISDK_5_1_0;
 using System;
 using System.Collections.Generic;
@@ -16,7 +17,7 @@ namespace Dev2.Instrumentation
     {
         // current instance of the Revuulytics
         private static RevulyticsTracker _revulyticsTrackerInstance;
-        RUISDK _ruiSDK;
+        RUISDK _ruiSdk;
 
         string _sdkFilePath;
 
@@ -36,9 +37,9 @@ namespace Dev2.Instrumentation
 
         bool _reachOutOnAutoSync = true;
 
-        string _username { get; set; }
-        string _productVersion { get; set; }
-        private static object syncLock = new object();
+        string Username { get; set; }
+        string ProductVersion { get; set; }
+        private static object _syncLock = new object();
 
 
         // private object AppSettings;
@@ -61,7 +62,7 @@ namespace Dev2.Instrumentation
 
             if (_revulyticsTrackerInstance == null)
             {
-                lock (syncLock)
+                lock (_syncLock)
                 {
                     if (_revulyticsTrackerInstance == null)
                     {
@@ -75,10 +76,10 @@ namespace Dev2.Instrumentation
         }
         public void DisableAppplicationTracker()
         {
-            RUIResult stopSessionResult = _ruiSDK.StopSession(this._username);
+            RUIResult stopSessionResult = _ruiSdk.StopSession(this.Username);
             WriteError(stopSessionResult);
 
-            RUIResult result= _ruiSDK.StopSDK(10);
+            RUIResult result= _ruiSdk.StopSDK(10);
             WriteError(result);
             //  throw new NotImplementedException();
         }
@@ -87,17 +88,17 @@ namespace Dev2.Instrumentation
         {
             // throw new NotImplementedException();
 
-            this._productVersion = productVersion;
-            this._username = username;
+            this.ProductVersion = productVersion;
+            this.Username = username;
 
             RUIResult result = CreateRevulyticsConfig();
 
             WriteError(result);
 
-            RUIResult versionResult = _ruiSDK.SetProductVersion(this._productVersion);
+            RUIResult versionResult = _ruiSdk.SetProductVersion(this.ProductVersion);
             WriteError(versionResult);
 
-            RUIResult startSessionResult = _ruiSDK.StartSession(this._username);
+            RUIResult startSessionResult = _ruiSdk.StartSession(this.Username);
             WriteError(startSessionResult);
         }
         /// <summary>
@@ -107,30 +108,29 @@ namespace Dev2.Instrumentation
         //* Conditioning: Trimmed to a maximum of 128 UTF8 characters.
         //* Validation: eventCategory can be empty; eventName cannot be empty.
         /// </summary>
-        /// <param name="actions"></param>
+        /// <param name="eventName"></param>
         public void TrackApplicationEvent(string eventName)
         {
-            RUIResult result = _ruiSDK.TrackEventText(ApplicationTrackerConstants.TrackerEventGroup.MainMenuClicked, eventName, eventName, this._username);
+            RUIResult result = _ruiSdk.TrackEventText(ApplicationTrackerConstants.TrackerEventGroup.MainMenuClicked, eventName, eventName, this.Username);
 
             WriteError(result);
         }
 
         public void TrackCustomEvent(string eventCategory, string eventName, string customValues)
         {
-            RUIResult result = _ruiSDK.TrackEventText(eventCategory, eventName, customValues, this._username);
+            RUIResult result = _ruiSdk.TrackEventText(eventCategory, eventName, customValues, this.Username);
 
            WriteError(result);
         }
 
         private RUIResult CreateRevulyticsConfig()
         {
-            RUIResult result;
-            _ruiSDK = new RUISDK(true, this._sdkFilePath);
-            result = _ruiSDK.CreateConfig(_configFilePath, _productId, _appName, _productUrl, _protocol, _aesHexKey, _multiSessionEnabled, _reachOutOnAutoSync);
+            _ruiSdk = new RUISDK(true, this._sdkFilePath);
+            var result = _ruiSdk.CreateConfig(_configFilePath, _productId, _appName, _productUrl, _protocol, _aesHexKey, _multiSessionEnabled, _reachOutOnAutoSync);
 
             if (result == RUIResult.ok)
             {
-                result = _ruiSDK.StartSDK();
+                result = _ruiSdk.StartSDK();
             }
 
             return result;
@@ -141,8 +141,10 @@ namespace Dev2.Instrumentation
         {
             if (result != RUIResult.ok)
             {
-                var format = string.Format("{0} :: Tracker Error -> {1}", DateTime.Now.ToString("g"), result);
-              //  Trace.WriteLine(format);
+                var errormMessage = string.Format("{0} :: Tracker Error -> {1}", DateTime.Now.ToString("g"), result);
+                //  Trace.WriteLine(format);
+
+                Dev2Logger.Error(errormMessage, "Revulytics sdk error");
             }
         }
 
