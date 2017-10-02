@@ -15,9 +15,8 @@ namespace Dev2.Runtime.Interfaces
         ResourceCatalogResult SaveResource(Guid workspaceID, IResource resource, string savedPath, string reason, string user);
         Action<IResource> ResourceSaved { get; set; }
         Action<Guid, IList<ICompileMessageTO>> SendResourceMessages { get; set; }
-
-        ResourceCatalogResult SaveResource(Guid workspaceID, IResource resource, StringBuilder contents, string savedPath, string reason = "", string user = "");
-
+        ResourceCatalogResult SaveResource(Guid workspaceID, IResource resource, StringBuilder contents, string savedPath);
+        ResourceCatalogResult SaveResource(Guid workspaceID, IResource resource, StringBuilder contents, string savedPath, string reason, string user);
         string SetResourceFilePath(Guid workspaceID, IResource resource, ref string savedPath);
     }
 }
