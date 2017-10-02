@@ -1099,7 +1099,9 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public async Task<bool> Load(bool isDeploy = false, bool reloadCatalogue = false)
+        public async Task<bool> Load() => await Load(false, false);
+
+        public async Task<bool> Load(bool isDeploy, bool reloadCatalogue)
         {
             if (!IsLoading || isDeploy)
             {
@@ -1169,7 +1171,9 @@ namespace Warewolf.Studio.ViewModels
 
         public bool IsLoading { get; set; }
 
-        public async Task<bool> LoadDialog(string selectedPath, bool isDeploy = false, bool reloadCatalogue = false)
+        public async Task<bool> LoadDialog(string selectedPath) => await LoadDialog(selectedPath, false, false).ConfigureAwait(false);
+
+        public async Task<bool> LoadDialog(string selectedPath, bool isDeploy, bool reloadCatalogue)
         {
             if (IsConnected && Server.IsConnected)
             {

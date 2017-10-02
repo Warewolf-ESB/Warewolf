@@ -86,7 +86,9 @@ namespace Dev2.Security
             }
         }
 
-        public void UpdateContext(IServer environment, IContextualResourceModel resourceModel = null)
+        public void UpdateContext(IServer environment) => UpdateContext(environment, null);
+
+        public void UpdateContext(IServer environment, IContextualResourceModel resourceModel)
         {
             // MUST set ResourceID first as setting AuthorizationService triggers IsAuthorized() query
             if(resourceModel != null)

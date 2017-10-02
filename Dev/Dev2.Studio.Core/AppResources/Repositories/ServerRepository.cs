@@ -442,17 +442,9 @@ namespace Dev2.Studio.Core
 
         #region LookupEnvironments
 
-        /// <summary>
-        /// Lookups the environments.
-        /// <remarks>
-        /// If <paramref name="environmentGuids"/> is <code>null</code> or empty then this returns all <see cref="enSourceType.Dev2Server"/> sources.
-        /// </remarks>
-        /// </summary>
-        /// <param name="defaultEnvironment">The default environment.</param>
-        /// <param name="environmentGuids">The environment guids to be queried; may be null.</param>
-        /// <returns></returns>
-        /// <exception cref="System.ArgumentNullException">defaultEnvironment</exception>
-        public IList<IServer> LookupEnvironments(IServer defaultEnvironment, IList<string> environmentGuids = null)
+        public IList<IServer> LookupEnvironments(IServer defaultEnvironment) => LookupEnvironments(defaultEnvironment, null);
+
+        public IList<IServer> LookupEnvironments(IServer defaultEnvironment, IList<string> environmentGuids)
         {
             if (defaultEnvironment == null)
             {

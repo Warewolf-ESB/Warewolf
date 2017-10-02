@@ -624,90 +624,49 @@ namespace Dev2.Network
                                 UpdateIsAuthorized(false);
                                 throw new NotConnectedException();
                             case HttpStatusCode.Continue:
-                                break;
                             case HttpStatusCode.SwitchingProtocols:
-                                break;
                             case HttpStatusCode.OK:
-                                break;
                             case HttpStatusCode.Created:
-                                break;
                             case HttpStatusCode.Accepted:
-                                break;
                             case HttpStatusCode.NonAuthoritativeInformation:
-                                break;
                             case HttpStatusCode.NoContent:
-                                break;
                             case HttpStatusCode.ResetContent:
-                                break;
                             case HttpStatusCode.PartialContent:
-                                break;
                             case HttpStatusCode.MultipleChoices:
-                                break;
                             case HttpStatusCode.MovedPermanently:
-                                break;
                             case HttpStatusCode.Found:
-                                break;
                             case HttpStatusCode.SeeOther:
-                                break;
                             case HttpStatusCode.NotModified:
-                                break;
                             case HttpStatusCode.UseProxy:
-                                break;
                             case HttpStatusCode.Unused:
-                                break;
                             case HttpStatusCode.TemporaryRedirect:
-                                break;
                             case HttpStatusCode.BadRequest:
-                                break;
                             case HttpStatusCode.PaymentRequired:
-                                break;
                             case HttpStatusCode.NotFound:
-                                break;
                             case HttpStatusCode.MethodNotAllowed:
-                                break;
                             case HttpStatusCode.NotAcceptable:
-                                break;
                             case HttpStatusCode.ProxyAuthenticationRequired:
-                                break;
                             case HttpStatusCode.RequestTimeout:
-                                break;
                             case HttpStatusCode.Conflict:
-                                break;
                             case HttpStatusCode.Gone:
-                                break;
                             case HttpStatusCode.LengthRequired:
-                                break;
                             case HttpStatusCode.PreconditionFailed:
-                                break;
                             case HttpStatusCode.RequestEntityTooLarge:
-                                break;
                             case HttpStatusCode.RequestUriTooLong:
-                                break;
                             case HttpStatusCode.UnsupportedMediaType:
-                                break;
                             case HttpStatusCode.RequestedRangeNotSatisfiable:
-                                break;
                             case HttpStatusCode.ExpectationFailed:
-                                break;
                             case HttpStatusCode.UpgradeRequired:
-                                break;
                             case HttpStatusCode.InternalServerError:
-                                break;
                             case HttpStatusCode.NotImplemented:
-                                break;
                             case HttpStatusCode.BadGateway:
-                                break;
                             case HttpStatusCode.ServiceUnavailable:
-                                break;
                             case HttpStatusCode.GatewayTimeout:
-                                break;
                             case HttpStatusCode.HttpVersionNotSupported:
-                                break;
                             default:
-                                break;
+                                throw new NotConnectedException();
                         }
                     }
-                    throw new NotConnectedException();
                 });
             }
             catch (Exception e)
@@ -716,7 +675,9 @@ namespace Dev2.Network
             }
         }
 
-        public void Verify(Action<ConnectResult> callback, bool wait = true)
+        public void Verify(Action<ConnectResult> callback) => Verify(callback, true);
+
+        public void Verify(Action<ConnectResult> callback, bool wait)
         {
             if (IsConnected)
             {

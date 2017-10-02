@@ -54,9 +54,13 @@ namespace Dev2.Studio.Interfaces
         Action SelectAll { get; set; }
         ObservableCollection<IExplorerItemViewModel> UnfilteredChildren { get; set; }
 
-        Task<bool> Load(bool isDeploy = false,bool reloadCatalogue = false);
+        Task<bool> Load();
 
-        Task<bool> LoadDialog(string selectedId, bool b = false, bool reloadCatalogue = false);
+        Task<bool> Load(bool isDeploy, bool reloadCatalogue);
+
+        Task<bool> LoadDialog(string selectedId);
+
+        Task<bool> LoadDialog(string selectedId, bool b, bool reloadCatalogue);
 
         Task<bool> LoadDialog(Guid selectedPath);
         IExplorerTreeItem FindByPath(string path);

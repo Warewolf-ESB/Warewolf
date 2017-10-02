@@ -679,8 +679,9 @@ namespace Warewolf.Studio.ViewModels
             _explorerItemViewModelCommandController.DeleteCommand(Parent, _explorerRepository, this, _popupController, Server);
         }
 
+        public void SetPermissions(Permissions explorerItemPermissions) => SetPermissions(explorerItemPermissions, false);
 
-        public void SetPermissions(Permissions explorerItemPermissions, bool isDeploy = false)
+        public void SetPermissions(Permissions explorerItemPermissions, bool isDeploy)
         {
 
             SetPermission(explorerItemPermissions, isDeploy);
