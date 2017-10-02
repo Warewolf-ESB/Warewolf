@@ -225,7 +225,7 @@ namespace Dev2.Runtime.Hosting
                         old.VersionInfo = _versionStrategy.GetCurrentVersion(resource, versions?.VersionInfo, userName, reason);
                         var folderPath = GetVersionFolderFromResource(old.GetResourcePath(workSpaceId));
 
-                        var fileName = $"{old.VersionInfo.VersionId}_{old.VersionInfo.VersionNumber}_{GetDateString(old.VersionInfo.DateTimeStamp)}_{reason}.xml";
+                        var fileName = $"{old.VersionInfo.VersionId}_{old.VersionInfo.VersionNumber}_{GetDateString(old.VersionInfo.DateTimeStamp)}_{reason}.bite";
                         if (!_file.Exists(Path.Combine(folderPath, fileName))) //todo: remove this and stop save on workspace
                         {
                             var sourceFile = Path.Combine(GetFolderFromResource(old.GetResourcePath(workSpaceId)), old.ResourceName) + ".bite";

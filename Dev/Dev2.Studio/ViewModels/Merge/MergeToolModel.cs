@@ -6,6 +6,8 @@ using Dev2.Common.Interfaces;
 using Microsoft.Practices.Prism.Mvvm;
 using Newtonsoft.Json;
 using System.Activities.Statements;
+using System.Activities.Presentation.Model;
+using System.Windows;
 
 namespace Dev2.ViewModels.Merge
 {
@@ -116,6 +118,9 @@ namespace Dev2.ViewModels.Merge
                 OnPropertyChanged("HasParent");
             }
         }
+
+        public ModelItem FlowNode { get; set; }
+        public Point NodeLocation { get; set; }
 
         public event ModelToolChanged SomethingModelToolChanged;
     }

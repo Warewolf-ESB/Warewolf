@@ -17,7 +17,7 @@ namespace Dev2.Common.Common
 {
     public static class DirectoryHelper
     {
-
+        
         /// <summary>
         /// This needs to be remove at Version 3.0
         /// </summary>
@@ -29,16 +29,16 @@ namespace Dev2.Common.Common
             DirectoryInfo dir = new DirectoryInfo(path);
             if (extensions == null)
                 throw new ArgumentNullException("extensions");
-            List<string> files = new List<string>();
+            List<string> _files = new List<string>();
             foreach (string ext in extensions)
             {
                 var fyles = Directory.GetFiles(path, string.Format("*{0}", ext));
                 foreach (var item in fyles)
                 {
-                    files.Add(item);
+                    _files.Add(item);
                 }
             }
-            return files;
+            return _files;
         }
 
         public static void Copy(string sourceDirName, string destDirName, bool copySubDirs)
