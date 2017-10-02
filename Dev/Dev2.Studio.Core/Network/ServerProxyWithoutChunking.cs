@@ -667,6 +667,7 @@ namespace Dev2.Network
                                 throw new NotConnectedException();
                         }
                     }
+                    return false;
                 });
             }
             catch (Exception e)
