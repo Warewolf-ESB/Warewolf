@@ -86,7 +86,7 @@ using Dev2.Workspaces;
 using Newtonsoft.Json;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Studio.ViewModels;
-
+using Dev2.Activities;
 
 namespace Dev2.Studio.ViewModels.Workflow
 
@@ -3020,6 +3020,13 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 var modelActivityType = model.ActivityType;
                 var nodes = chart.Properties["Nodes"]?.Collection;
+                var parswer = CustomContainer.Get<IServiceDifferenceParser>();
+                var nodesExisting = parswer.GetAllNodes();
+
+                foreach (var item in nodesExisting)
+                {
+                    nodes.Add(item.GetCurrentValue())
+;                }
                 if (nodes == null)
                 {
                     return;
@@ -3027,20 +3034,16 @@ namespace Dev2.Studio.ViewModels.Workflow
                 var startNode = chart.Properties["StartNode"];
                 if (startNode == null || startNode.ComputedValue == null)
                 {
+                    FlowNode value = model.FlowNode.GetCurrentValue<FlowNode>();
                     var flowStep = modelActivityType as FlowStep;
                     var dev2Activity = flowStep?.Action as IDev2Activity;
-                    AddFlowNode(nodes, dev2Activity, modelActivityType);
+                    AddFlowNode(nodes, dev2Activity, value, model.NodeLocation);
 
                     if (startNode.ComputedValue == null)
-                    {
-                        startNode.SetValue(modelActivityType);
+                    {                       
+                        startNode.SetValue(value);
                     }
-
-                    var bb = model.FlowNode as ModelItem;
-                    var nxt = bb.Properties["Next"].ComputedValue as FlowNode;
-
-                    var bn = ModelItemUtils.CreateModelItem(nxt);
-                    bb.SetProperty("Next", nxt);
+                 
                 }
                 else
                 {
@@ -3056,36 +3059,34 @@ namespace Dev2.Studio.ViewModels.Workflow
 
 
                     });
-                    AddFlowNode(nodes, dev2Activity, modelActivityType);
+                    AddFlowNode(nodes, dev2Activity, modelActivityType, model.NodeLocation);
                     if (parentNode != null)
                     {
                         parentNode.Properties["Next"].SetValue(flowStep);
                     }
                 }
-            }
+            }//At the end of the merge we need to clean up all the unused nodes
         }
 
-        private void AddFlowNode(ModelItemCollection nodes, IDev2Activity activity, FlowNode flowNode)
+        private void AddFlowNode(ModelItemCollection nodes, IDev2Activity activity, FlowNode flowNode, Point point)
         {
             if (flowNode != null)
             {
                 if (!nodes.Contains(flowNode))
                 {
-                    SetShapeLocation(activity, flowNode);
+                    SetShapeLocation(flowNode, point);
                     nodes.Add(flowNode);
                 }
             }
         }
 
-        private void SetShapeLocation(IDev2Activity activity, FlowNode flowNode)
+        private void SetShapeLocation(FlowNode flowNode, Point location)
         {
             ViewStateService service = _wd.Context.Services.GetService<ViewStateService>();
-            var mergeParser = CustomContainer.Get<IServiceDifferenceParser>();
             var modelItem = ModelItemUtils.CreateModelItem(flowNode);
 
-            var pointForTool = new Point();
             service.RemoveViewState(modelItem, "ShapeLocation");
-            service.StoreViewState(modelItem, "ShapeLocation", pointForTool);
+            service.StoreViewState(modelItem, "ShapeLocation", location);
         }
 
         #region Implementation of IWorkflowDesignerViewModel
