@@ -125,7 +125,8 @@ namespace Dev2.Runtime.ServiceModel
             }
         }
 
-        public static string Execute(WebSource source, WebRequestMethod method, string relativeUri, string data, bool throwError, out ErrorResultTO errors, string[] headers = null)
+        public static string Execute(WebSource source, WebRequestMethod method, string relativeUri, string data, bool throwError, out ErrorResultTO errors) => Execute(source, method, relativeUri, data, throwError, out errors, null);
+        public static string Execute(WebSource source, WebRequestMethod method, string relativeUri, string data, bool throwError, out ErrorResultTO errors, string[] headers)
         {
             CreateWebClient(source, headers);
             return Execute(source.Client, GetAddress(source, relativeUri), method, data, throwError, out errors);
@@ -148,8 +149,8 @@ namespace Dev2.Runtime.ServiceModel
             return $"{source.Address}{relativeUri}";
         }
 
-
-        public static byte[] Execute(WebSource source, WebRequestMethod method, string relativeUri, byte[] data, bool throwError, out ErrorResultTO errors, string[] headers = null)
+        public static byte[] Execute(WebSource source, WebRequestMethod method, string relativeUri, byte[] data, bool throwError, out ErrorResultTO errors) => Execute(source, method, relativeUri, data, throwError, out errors, null);
+        public static byte[] Execute(WebSource source, WebRequestMethod method, string relativeUri, byte[] data, bool throwError, out ErrorResultTO errors, string[] headers)
         {
             CreateWebClient(source, headers);
             return Execute(source.Client, GetAddress(source, relativeUri), method, data, out errors);

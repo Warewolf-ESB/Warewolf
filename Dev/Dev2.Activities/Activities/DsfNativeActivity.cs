@@ -322,7 +322,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return DebugItem.EmptyList;
         }
 
-        public void DispatchDebugState(IDSFDataObject dataObject, StateType stateType, int update, DateTime? startTime = null, DateTime? endTime = null, bool decision = false)
+        public void DispatchDebugState(IDSFDataObject dataObject, StateType stateType, int update) => DispatchDebugState(dataObject, stateType, update, null, null, false);
+
+        public void DispatchDebugState(IDSFDataObject dataObject, StateType stateType, int update, DateTime? startTime, DateTime? endTime, bool decision)
         {
             bool clearErrors = false;
             try
