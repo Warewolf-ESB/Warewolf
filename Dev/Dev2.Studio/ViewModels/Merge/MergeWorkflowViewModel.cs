@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Caliburn.Micro;
 using Dev2.Common;
+using System.Text;
 
 namespace Dev2.ViewModels.Merge
 {
@@ -23,13 +24,13 @@ namespace Dev2.ViewModels.Merge
         private bool _isMergeExpanderEnabled;
         private bool _dirty;
 
-        public MergeWorkflowViewModel(IContextualResourceModel currentResourceModel, IContextualResourceModel differenceResourceModel)
+        public MergeWorkflowViewModel(IContextualResourceModel currentResourceModel, IContextualResourceModel differenceResourceModel, bool isGitMerge)
             : this(CustomContainer.Get<IServiceDifferenceParser>())
         {
             WorkflowDesignerViewModel = new WorkflowDesignerViewModel(currentResourceModel, false);
             WorkflowDesignerViewModel.CreateBlankWorkflow();
 
-            var currentChanges = _serviceDifferenceParser.GetDifferences(currentResourceModel, differenceResourceModel);
+            var currentChanges = _serviceDifferenceParser.GetDifferences(currentResourceModel, differenceResourceModel, isGitMerge);
 
             Conflicts = new ObservableCollection<ICompleteConflict>();
             foreach (var currentChange in currentChanges)
@@ -51,8 +52,8 @@ namespace Dev2.ViewModels.Merge
                     child.SomethingModelToolChanged += SourceOnModelToolChanged;
                 }
 
-                //conflict.HasConflict = currentChange.hasConflict;
-                conflict.HasConflict = true;
+                conflict.HasConflict = currentChange.hasConflict;
+                //conflict.HasConflict = true;//Tests failing will b resolved once this is removed
                 conflict.IsMergeExpanded = false;
                 conflict.IsMergeExpanderEnabled = false;
                 AddChildren(conflict, conflict.CurrentViewModel, conflict.DiffViewModel);
@@ -90,7 +91,7 @@ namespace Dev2.ViewModels.Merge
 
             HasMergeStarted = false;
             
-            HasVariablesConflict = CommonEqualityOps.AreObjectsEqual(((ConflictModelFactory)CurrentConflictModel).DataListViewModel, ((ConflictModelFactory)DifferenceConflictModel).DataListViewModel); //MATCH DATALISTS
+            HasVariablesConflict = !CommonEqualityOps.AreObjectsEqual(((ConflictModelFactory)CurrentConflictModel).DataListViewModel, ((ConflictModelFactory)DifferenceConflictModel).DataListViewModel); //MATCH DATALISTS
             HasWorkflowNameConflict = currResourceName != diffResourceName;
             IsVariablesEnabled = !HasWorkflowNameConflict;
             IsMergeExpanderEnabled = !IsVariablesEnabled;
@@ -101,6 +102,10 @@ namespace Dev2.ViewModels.Merge
 
             WorkflowDesignerViewModel.CanViewWorkflowLink = false;
         }
+
+       
+
+
 
         public MergeWorkflowViewModel(IServiceDifferenceParser serviceDifferenceParser)
         {
@@ -208,7 +213,7 @@ namespace Dev2.ViewModels.Merge
                     }
                     catch (ArgumentOutOfRangeException)
                     {
-                        if (difChildChildren.Count > currentChildChildren.Count)
+                        if (difChildChildren.Any())
                         {
                             foreach (var mergeToolModel in remoteCopy)
                             {

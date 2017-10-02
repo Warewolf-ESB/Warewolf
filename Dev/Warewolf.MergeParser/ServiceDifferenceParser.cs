@@ -80,11 +80,11 @@ namespace Warewolf.MergeParser
             dev2Activities.RemoveAll(activity => children.Any(s => s.Equals(activity.UniqueID, StringComparison.InvariantCultureIgnoreCase)));
         }
 
-        public List<(Guid uniqueId, ModelItem current, ModelItem difference, bool hasConflict)> GetDifferences(IContextualResourceModel current, IContextualResourceModel difference)
+        public List<(Guid uniqueId, ModelItem current, ModelItem difference, bool hasConflict)> GetDifferences(IContextualResourceModel current, IContextualResourceModel difference, bool loadworkflowFromServer = true)
         {
             var conflictList = new List<(Guid uniqueId, ModelItem current, ModelItem difference, bool conflict)>();
-            _currentDifferences = GetNodes(current,true);
-            _differences = GetNodes(difference, true);
+            _currentDifferences = GetNodes(current, true);
+            _differences = GetNodes(difference, loadworkflowFromServer);
             var allCurentItems = new List<IDev2Activity>();
             var allRemoteItems = new List<IDev2Activity>();
             foreach (var node in _currentDifferences.nodeList)
