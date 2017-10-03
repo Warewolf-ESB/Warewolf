@@ -270,9 +270,7 @@ namespace Dev2.Studio.ViewModels.Dialogs
             if (caption != "Duplicated Resources")
             {
                 urlsFound = new List<string>();
-            }
-
-            
+            }            
 
             var msgBoxView = new MessageBoxView
             {
