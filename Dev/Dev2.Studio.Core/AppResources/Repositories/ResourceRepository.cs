@@ -594,8 +594,6 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             return null;
         }
 
-
-
         public Func<string, ICommunicationController> GetCommunicationController = serviveName => new CommunicationController { ServiceName = serviveName };
 
         private ExecuteMessage SaveResource(IServer targetEnvironment, StringBuilder resourceDefinition, Guid workspaceId, string savePath)
