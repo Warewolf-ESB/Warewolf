@@ -15,6 +15,7 @@ using System.Activities.Presentation.View;
 using System.Windows;
 using Dev2.Common.Interfaces;
 using Dev2.Communication;
+using System.Collections.Concurrent;
 
 namespace Warewolf.MergeParser
 {
@@ -78,19 +79,22 @@ namespace Warewolf.MergeParser
             }
             dev2Activities.RemoveAll(activity => children.Any(s => s.Equals(activity.UniqueID, StringComparison.InvariantCultureIgnoreCase)));
         }
-        Stack<ModelItem> _flowNodes = new Stack<ModelItem>();
-        public Stack<ModelItem> GetAllNodes()
+        ConcurrentDictionary<string, (ModelItem leftItem, ModelItem rightItem)> _flowNodes = new ConcurrentDictionary<string, (ModelItem leftItem, ModelItem rightItem)>(StringComparer.Ordinal);
+        public ConcurrentDictionary<string, (ModelItem leftItem, ModelItem rightItem)> GetAllNodes()
         {
             return _flowNodes;
         }
 
+        
+
         public List<(Guid uniqueId, IConflictNode currentNode, IConflictNode differenceNode, bool hasConflict)> GetDifferences(IContextualResourceModel current, IContextualResourceModel difference, bool loadworkflowFromServer = true)
         {
-            var conflictList =new List<(Guid uniqueId, IConflictNode currentNode, IConflictNode differenceNode, bool hasConflict)>();
+            _flowNodes = new ConcurrentDictionary<string, (ModelItem leftItem, ModelItem rightItem)>();
+            var conflictList = new List<(Guid uniqueId, IConflictNode currentNode, IConflictNode differenceNode, bool hasConflict)>();
             _currentDifferences = GetNodes(current, true);
             _differences = GetNodes(difference, /*loadworkflowFromServer*/true);
 
-            
+
             var allCurentItems = new List<(IDev2Activity, IConflictNode)>();
             var allRemoteItems = new List<(IDev2Activity, IConflictNode)>();
             foreach (var node in _currentDifferences.nodeList)
@@ -101,12 +105,12 @@ namespace Warewolf.MergeParser
                 {
                     CurrentActivity = ModelItemUtils.CreateModelItem(dev2Activity1),
                     CurrentFlowStep = node,
-                    NodeLocation=shapeLocation,                    
+                    NodeLocation = shapeLocation,
                 };
-                
+
                 allCurentItems.Add((dev2Activity1, conflictNode));
-                if (node.ItemType == typeof(FlowDecision) || node.ItemType == typeof(FlowSwitch<string>)) continue;
-                _flowNodes.Push(node);
+
+                _flowNodes.TryAdd(dev2Activity1.UniqueID, (node, default(ModelItem)));
             }
 
             List<IDev2Activity> currentActivities = allCurentItems.Select(p => p.Item1).ToList();
@@ -115,17 +119,22 @@ namespace Warewolf.MergeParser
             {
                 var dev2Activity1 = _activityParser.Parse(new List<IDev2Activity>(), node);
                 var shapeLocation = GetShapeLocation(_differences.wd, node);
-              
+
                 ConflictNode conflictNode = new ConflictNode()
                 {
                     CurrentActivity = ModelItemUtils.CreateModelItem(dev2Activity1),
                     CurrentFlowStep = node,
                     NodeLocation = shapeLocation,
-                    
+
                 };
                 allRemoteItems.Add((dev2Activity1, conflictNode));
-                if (node.ItemType == typeof(FlowDecision) || node.ItemType == typeof(FlowSwitch<string>)) continue;
-                _flowNodes.Push(node);
+                if (_flowNodes.ContainsKey(dev2Activity1.UniqueID))
+                {
+                    var rightItem = _flowNodes[dev2Activity1.UniqueID];
+                    rightItem.rightItem = node;
+                    _flowNodes[dev2Activity1.UniqueID] = rightItem;
+                }
+
             }
             List<IDev2Activity> differenceActivities = allRemoteItems.Select(p => p.Item1).ToList();
             CleanUpForDecisionAdSwitch(differenceActivities);
@@ -141,7 +150,7 @@ namespace Warewolf.MergeParser
                     continue;
                 }
                 var currentModelItemUniqueId = GetCurrentModelItemUniqueId(allCurentItems, item);
-                var equalItem = (Guid.Parse(item.UniqueID), currentModelItemUniqueId, currentModelItemUniqueId, false);                
+                var equalItem = (Guid.Parse(item.UniqueID), currentModelItemUniqueId, currentModelItemUniqueId, false);
                 conflictList.Add(equalItem);
 
             }
@@ -150,7 +159,7 @@ namespace Warewolf.MergeParser
             {
                 var currentModelItemUniqueId = GetCurrentModelItemUniqueId(allRemoteItems, item);
                 var differences = GetCurrentModelItemUniqueId(allCurentItems, item);
-                var diffItem = (Guid.Parse(item.UniqueID), currentModelItemUniqueId, differences, true);                
+                var diffItem = (Guid.Parse(item.UniqueID), currentModelItemUniqueId, differences, true);
                 conflictList.Add(diffItem);
             }
             return conflictList;
@@ -192,8 +201,8 @@ namespace Warewolf.MergeParser
             var flowchartDiff = workflowHelper.EnsureImplementation(modelService).Implementation as Flowchart;
             // ReSharper disable once RedundantAssignment assuming this is for disposing
             return (nodeList, flowchartDiff, wd);
-        }    
-               
+        }
+
 
         private static Point GetShapeLocation(WorkflowDesigner wd, ModelItem modelItem)
         {
@@ -206,6 +215,6 @@ namespace Warewolf.MergeParser
             }
 
             return shapeLocation;
-        }        
+        }
     }
 }

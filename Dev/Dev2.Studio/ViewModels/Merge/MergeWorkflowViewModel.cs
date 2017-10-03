@@ -8,6 +8,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Caliburn.Micro;
 using Dev2.Common;
+using System.Text;
+using System.Activities.Presentation.Model;
 
 namespace Dev2.ViewModels.Merge
 {
@@ -118,10 +120,11 @@ namespace Dev2.ViewModels.Merge
 
         private void AddActivity(IMergeToolModel model)
         {
-           
+
             WorkflowDesignerViewModel.RemoveItem(model);
-            WorkflowDesignerViewModel.AddItem(_previousParent,model);
+            WorkflowDesignerViewModel.AddItem(_previousParent, model);
             _previousParent = model;
+            WorkflowDesignerViewModel.BringMergeToView(model.FlowNode);
         }
 
 
@@ -170,7 +173,7 @@ namespace Dev2.ViewModels.Merge
                     return;
                 }
 
-                mergeToolModel.Children.Flatten(a => a.Children).Apply(a => a.IsMergeChecked = true);
+                //mergeToolModel.Children.Flatten(a => a.Children).Apply(a => a.IsMergeChecked = true);
                 OnPropertyChanged(() => IsDirty);
             }
             catch (Exception ex)
@@ -182,6 +185,7 @@ namespace Dev2.ViewModels.Merge
 
         void AddChildren(ICompleteConflict parent, IMergeToolModel currentChild, IMergeToolModel childDiff)
         {
+            var childNodes = _serviceDifferenceParser.GetAllNodes();
             if (currentChild == null && childDiff == null)
             {
                 return;
@@ -212,6 +216,11 @@ namespace Dev2.ViewModels.Merge
                         completeConflict.UniqueId = currentChildChild.UniqueId;
                         completeConflict.CurrentViewModel = childCurrent;
                         completeConflict.DiffViewModel = childDifferent;
+                        if (childNodes.TryGetValue(currentChildChild.UniqueId.ToString(), out (ModelItem leftItem, ModelItem rightItem) item))
+                        {
+                            completeConflict.DiffViewModel.FlowNode = item.rightItem;
+                            completeConflict.CurrentViewModel.FlowNode = item.leftItem;
+                        };
                         if (parent.Children.Any(conflict => conflict.UniqueId.Equals(currentChild.UniqueId)))
                         {
                             continue;
@@ -229,6 +238,11 @@ namespace Dev2.ViewModels.Merge
                                 completeConflict.UniqueId = mergeToolModel.UniqueId;
                                 completeConflict.CurrentViewModel = null;
                                 completeConflict.DiffViewModel = mergeToolModel;
+                                if (childNodes.TryGetValue(mergeToolModel.UniqueId.ToString(), out (ModelItem leftItem, ModelItem rightItem) item))
+                                {
+                                    completeConflict.DiffViewModel.FlowNode = item.rightItem;
+                                    completeConflict.CurrentViewModel.FlowNode = item.leftItem;
+                                };
                                 if (parent.Children.Any(conflict => conflict.UniqueId.Equals(currentChild.UniqueId)))
                                 {
                                     continue;
@@ -251,6 +265,10 @@ namespace Dev2.ViewModels.Merge
                     var model = GetMergeToolItem(difChildChildren, diffChild.UniqueId);
                     completeConflict.UniqueId = diffChild.UniqueId;
                     completeConflict.DiffViewModel = model;
+                    if (childNodes.TryGetValue(model.UniqueId.ToString(), out (ModelItem leftItem, ModelItem rightItem) item))
+                    {
+                        completeConflict.DiffViewModel.FlowNode = item.rightItem;
+                    };
                 }
             }
             if (currentChild == null)
@@ -262,6 +280,10 @@ namespace Dev2.ViewModels.Merge
                     var model = GetMergeToolItem(difChildChildren, diffChild.UniqueId);
                     completeConflict.UniqueId = diffChild.UniqueId;
                     completeConflict.CurrentViewModel = model;
+                    if (childNodes.TryGetValue(model.UniqueId.ToString(), out (ModelItem leftItem, ModelItem rightItem) item))
+                    {
+                        completeConflict.CurrentViewModel.FlowNode = item.leftItem;
+                    };
                 }
             }
             IMergeToolModel GetMergeToolItem(IEnumerable<IMergeToolModel> collection, Guid uniqueId)
