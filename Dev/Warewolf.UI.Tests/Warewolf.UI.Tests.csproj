@@ -148,6 +148,13 @@
     <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
+    <Compile Include="MergeDialog\MergeDialogTests.cs" />
+    <Compile Include="MergeDialog\MergeDialogUIMap.cs">
+      <DependentUpon>MergeDialogUIMap.uitest</DependentUpon>
+    </Compile>
+    <Compile Include="MergeDialog\MergeDialogUIMap.Designer.cs">
+      <DependentUpon>MergeDialogUIMap.uitest</DependentUpon>
+    </Compile>
     <Compile Include="Merge\MergeConflictsTests.cs" />
     <Compile Include="Merge\MergeConflictsUIMap.cs">
       <DependentUpon>MergeConflictsUIMap.uitest</DependentUpon>
@@ -407,6 +414,7 @@
     <None Include="EmailSource\EmailSourceUIMap.uitest" />
     <None Include="ExchangeSource\ExchangeSourceUIMap.uitest" />
     <None Include="Explorer\ExplorerUIMap.uitest" />
+    <None Include="MergeDialog\MergeDialogUIMap.uitest" />
     <None Include="Merge\MergeConflictsUIMap.uitest" />
     <None Include="packages.config" />
     <None Include="RabbitMQSource\RabbitMQSourceUIMap.uitest" />
@@ -433,6 +441,7 @@
     <None Include="WorkflowTab\Tools\Utility\UtilityToolsUIMap.uitest" />
     <None Include="WorkflowTab\WorkflowTabUIMap.uitest" />
   </ItemGroup>
+  <ItemGroup />
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>
