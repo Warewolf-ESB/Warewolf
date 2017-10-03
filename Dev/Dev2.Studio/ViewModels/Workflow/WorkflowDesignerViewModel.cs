@@ -3086,7 +3086,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                     var hasDecionsNodes = _allNodes.TryGetValue(item.UniqueId.ToString(), out (ModelItem leftItem, ModelItem rightItem) childtoolPar);
                     if (hasDecionsNodes)
                     {
-                        if (childtoolPar.leftItem.GetCurrentValue() == item.FlowNode.GetCurrentValue())
+                        if (childtoolPar.leftItem?.GetCurrentValue() == item.FlowNode.GetCurrentValue())
                         {
                             var a = childtoolPar.leftItem.GetCurrentValue();
                             if (!nodes.Contains(a))
@@ -3096,7 +3096,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
                             }
                         }
-                        else if (childtoolPar.rightItem.GetCurrentValue() == item.FlowNode.GetCurrentValue())
+                        else if (childtoolPar.rightItem?.GetCurrentValue() == item.FlowNode.GetCurrentValue())
                         {
                             var b = childtoolPar.leftItem.GetCurrentValue();
                             if (!nodes.Contains(b))
