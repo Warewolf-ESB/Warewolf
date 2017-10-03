@@ -350,13 +350,6 @@ namespace Dev2.Activities.Designers.Tests.Service
 
         #endregion
 
-        #region Design Validation Service
-
-
-
-
-        #endregion
-
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("ServiceDesignerViewModel_InitializeResourceModel")]
@@ -2738,7 +2731,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             resourceRepository = new Mock<IResourceRepository>();
             resourceRepository.Setup(repository => repository.LoadContextualResourceModel(It.IsAny<Guid>())).Returns(model.Object);
             var mockEnvironmentRepository = new Mock<IServerRepository>();
-            mockEnvironmentRepository.Setup(e => e.LookupEnvironments(It.IsAny<IServer>(), null)).Returns(new List<IServer> { environmentModel });
+            mockEnvironmentRepository.Setup(e => e.LookupEnvironments(It.IsAny<IServer>())).Returns(new List<IServer> { environmentModel });
             
             new ServerRepository(mockEnvironmentRepository.Object);
             
