@@ -344,7 +344,7 @@ namespace Dev2.Activities.Designers2.Core
         void Dispose(bool disposing)
         {
             if (!_isDisposed)
-            {.
+            {
                 _isDisposed = true;
             }
         }
