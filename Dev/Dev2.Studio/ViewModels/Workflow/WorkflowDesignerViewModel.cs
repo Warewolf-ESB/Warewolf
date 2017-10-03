@@ -3038,7 +3038,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 }
             }
 
-            NewMethod(model, nodes);
+            AddNodesForChildren(model, nodes);
 
             if (chart != null)
             {
@@ -3075,9 +3075,9 @@ namespace Dev2.Studio.ViewModels.Workflow
             }//At the end of the merge we need to clean up all the unused nodes
         }
 
-        private void NewMethod(IMergeToolModel model, ModelItemCollection nodes)
+        private void AddNodesForChildren(IMergeToolModel model, ModelItemCollection nodes)
         {
-            if (model.ActivityType is FlowDecision || model.ActivityType is FlowSwitch<string>)
+            if (model.Children.Any())
             {
                 model.Children.Reverse();
 
@@ -3090,13 +3090,20 @@ namespace Dev2.Studio.ViewModels.Workflow
                         {
                             var a = childtoolPar.leftItem.GetCurrentValue();
                             if (!nodes.Contains(a))
+                            {
+                                AddNodesForChildren(item, nodes);
                                 nodes.Add(a);
+
+                            }
                         }
                         else if (childtoolPar.rightItem.GetCurrentValue() == item.FlowNode.GetCurrentValue())
                         {
                             var b = childtoolPar.leftItem.GetCurrentValue();
                             if (!nodes.Contains(b))
+                            {
+                                AddNodesForChildren(item, nodes);
                                 nodes.Add(b);
+                            }
                         }
                     }
                 }
@@ -3113,7 +3120,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 var act = step?.Action as IDev2Activity;
                 var parentFlowStep = parent.ActivityType as FlowStep;
                 var parentId1 = parentFlowStep?.Action as IDev2Activity;
-                return act?.UniqueID == parentId1.UniqueID; //TODO: Set the Parent Correctly and this will work
+                return act?.UniqueID == parentId1.UniqueID; 
 
 
             });
@@ -3132,7 +3139,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 else
                 {
                     parentNode.Properties["Next"].SetValue(flowNode);
-                  
+
                 }
                 //BringIntoView(model.FlowNode);
             }
