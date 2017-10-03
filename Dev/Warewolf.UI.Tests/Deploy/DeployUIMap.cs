@@ -313,7 +313,7 @@ namespace Warewolf.UI.Tests.Deploy.DeployUIMapClasses
                 {
                     successful = true;
                 }
-                if (UIMap.ControlExistsNow(DialogsUIMap.MessageBoxWindow.OKButton))
+                if (DialogsUIMap.MessageBoxWindow.OKButton.Exists)
                 {
                     Mouse.Click(DialogsUIMap.MessageBoxWindow.OKButton);
                 }
