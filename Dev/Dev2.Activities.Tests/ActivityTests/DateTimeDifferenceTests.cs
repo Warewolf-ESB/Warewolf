@@ -16,7 +16,7 @@ using Dev2.Interfaces;
 using Dev2.Tests.Activities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
-
+using Dev2.Common;
 
 namespace ActivityUnitTests.ActivityTests
 
@@ -85,8 +85,8 @@ namespace ActivityUnitTests.ActivityTests
             SetupArguments(
                               "<root>" + ActivityStrings.DateTimeDiff_DataListShape + "</root>"
                             , ActivityStrings.DateTimeDiff_DataListShape
-                            , DateTime.Now.ToString(CultureInfo.InvariantCulture)
-                            , DateTime.Now.AddDays(209).ToString(CultureInfo.InvariantCulture)
+                            , DateTime.Now.ToString(GlobalConstants.Dev2DotNetDefaultDateTimeFormat)
+                            , DateTime.Now.AddDays(209).ToString(GlobalConstants.Dev2DotNetDefaultDateTimeFormat)
                             , ""
                             , "Days"
                             , "[[Result]]"
