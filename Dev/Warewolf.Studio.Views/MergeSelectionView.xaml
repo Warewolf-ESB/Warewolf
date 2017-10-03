@@ -64,13 +64,15 @@
                        HorizontalAlignment="Stretch"
                        VerticalAlignment="Top"
                        Background="Transparent">
-                <!--  EMBEDDED CLIENT PANEL  -->
-                <views:ExplorerView HorizontalAlignment="Stretch"
-                                    VerticalAlignment="Stretch"
-                                    HorizontalContentAlignment="Stretch"
-                                    VerticalContentAlignment="Stretch"
-                                    Margin="-3,-4,-3,0"
-                                    x:Name="ExplorerView" />
+                <Border BorderThickness="0,0,0,1" BorderBrush="#C1C3C5" >
+                    <!--  EMBEDDED CLIENT PANEL  -->
+                    <views:ExplorerView HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Stretch"
+                                        HorizontalContentAlignment="Stretch"
+                                        VerticalContentAlignment="Stretch"
+                                        Margin="-2,-4,-3,0"
+                                        x:Name="ExplorerView" />
+                </Border>
             </DockPanel>
             <Grid Grid.Row="2"
                   HorizontalAlignment="Stretch"
