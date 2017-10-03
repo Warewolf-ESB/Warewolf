@@ -897,6 +897,16 @@ namespace Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses
             Assert.IsTrue(WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.Exists, "Workflow service tests tab is not open after clicking Tests context menu item in the explorer context menu.");
         }
 
+        [Given(@"I Open Explorer First Item Merge With Context Menu")]
+        [When(@"I Open Explorer First Item Merge With Context Menu")]
+        [Then(@"I Open Explorer First Item Merge With Context Menu")]
+        public void Open_ExplorerFirstItemMerge_With_ExplorerContextMenu()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, MouseButtons.Right, ModifierKeys.None, new Point(107, 9));
+            Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.Merge.Exists, "View tests does not exist in explorer context menu.");
+            Mouse.Click(UIMap.MainStudioWindow.ExplorerContextMenu.Merge);
+        }
+
         [Given(@"I Open Explorer First Item Version History From Explorer Context Menu")]
         [When(@"I Open Explorer First Item Version History From Explorer Context Menu")]
         [Then(@"I Open Explorer First Item Version History From Explorer Context Menu")]
