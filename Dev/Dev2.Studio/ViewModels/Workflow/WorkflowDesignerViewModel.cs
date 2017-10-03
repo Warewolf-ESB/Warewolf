@@ -1039,8 +1039,17 @@ namespace Dev2.Studio.ViewModels.Workflow
                         var mvm = Application.Current.MainWindow.DataContext as ShellViewModel;
                         if (mvm?.ActiveItem != null)
                         {
-                            var resourceId = mvm.ActiveItem.ContextualResourceModel.ID;
-                            mvm.OpenMergeConflictsView(resourceId, resourceId, mvm.ActiveServer);
+                            IExplorerItemViewModel explorerItem = null;
+                            var environmentViewModels = mvm.ExplorerViewModel.Environments.Where(a => a.ResourceId == mvm.ActiveServer.EnvironmentID);
+                            foreach (var environmentViewModel in environmentViewModels)
+                            {
+                                explorerItem = environmentViewModel.Children.Flatten(model => model.Children).FirstOrDefault(c => c.ResourceId == mvm.ActiveItem.ContextualResourceModel.ID);
+                            }
+
+                            if (explorerItem != null)
+                            {
+                                mvm.OpenMergeDialogView(explorerItem);
+                            }
                         }
                     }
                 }));

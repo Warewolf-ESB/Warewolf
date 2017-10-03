@@ -1,9 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using Dev2;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Explorer;
+using Dev2.Common.Interfaces.Infrastructure.Events;
+using Dev2.ConnectionHelpers;
+using Dev2.Core.Tests.Environments;
 using Dev2.Studio.Interfaces;
 using Microsoft.Practices.Prism.PubSubEvents;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -44,9 +49,46 @@ namespace Warewolf.Studio.ViewModels.Tests
             _eventAggregatorMock = new Mock<IEventAggregator>();
             _mergeView = new Mock<IMergeView>();
 
+            var serverProvider = new Mock<IEnvironmentModelProvider>();
+            var environmentModels = new List<IServer>
+            {
+                new TestServer(new Mock<Caliburn.Micro.IEventAggregator>().Object, Guid.NewGuid(), CreateConnection(true).Object, new Mock<IResourceRepository>().Object, false),
+                new TestServer(new Mock<Caliburn.Micro.IEventAggregator>().Object, Guid.NewGuid(), CreateConnection(false).Object, new Mock<IResourceRepository>().Object, false)
+            };
+            var environmentRepository = new Mock<IServerRepository>();
+            environmentRepository.Setup(e => e.All()).Returns(environmentModels);
+            serverProvider.Setup(s => s.Load()).Returns(environmentModels);
+            serverProvider.Setup(s => s.ReloadServers()).Returns(environmentModels);
+            IConnectControlSingleton connectControlSingleton = new ConnectControlSingleton(serverProvider.Object, environmentRepository.Object);
+            //------------Execute Test---------------------------
+            CustomContainer.Register(environmentRepository.Object);
+            CustomContainer.Register(connectControlSingleton);
+            
+
             _target = new MergeServiceViewModel(_shellViewModelMock.Object, _eventAggregatorMock.Object, "Selected Service", _mergeView.Object, _selectedEnvironment.Object);
         }
 
+        static Mock<IEnvironmentConnection> CreateConnection(bool isConnected)
+        {
+            var conn = new Mock<IEnvironmentConnection>();
+            conn.Setup(c => c.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
+            conn.Setup(connection => connection.WebServerUri).Returns(new Uri("http://localhost:3142"));
+            conn.Setup(connection => connection.AppServerUri).Returns(new Uri("http://localhost:3142/dsf"));
+            conn.Setup(c => c.IsConnected).Returns(isConnected);
+            conn.Setup(connection => connection.DisplayName).Returns("localhost");
+            return conn;
+        }
+
+        [TestMethod]
+        public void TestEnvironments()
+        {
+            //arrange
+            //act
+            var env = _target.Environments;
+
+            //assert
+            Assert.IsNotNull(env);
+        }
 
         [TestMethod]
         public void TestSelectedEnvironmentChanged()
@@ -68,6 +110,11 @@ namespace Warewolf.Studio.ViewModels.Tests
             explorerItemViewModelMock.SetupGet(it => it.Children).Returns(new ObservableCollection<IExplorerItemViewModel>());
             env.AddChild(explorerItemViewModelMock.Object);
             env.ResourceId = serverId;
+
+            var explorerItemViewModels = new ObservableCollection<IExplorerItemViewModel> { explorerItemViewModelMock.Object };
+            environmentViewModelMock.Setup(e => e.Children).Returns(explorerItemViewModels);
+            environmentViewModelMock.Setup(e => e.AsList()).Returns(explorerItemViewModels);
+
             var environmentViewModels = _target.Environments.Union(new[] { environmentViewModelMock.Object }).ToList();
             _target.Environments = new ObservableCollection<IEnvironmentViewModel>(environmentViewModels);
 
@@ -86,7 +133,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             explorerItemViewModelMock.VerifySet(it => it.CanDrop = false);
             explorerItemViewModelMock.VerifySet(it => it.CanDrag = false);
         }
-
 
         [TestMethod]
         public async Task TestOtherServerСonnect()
