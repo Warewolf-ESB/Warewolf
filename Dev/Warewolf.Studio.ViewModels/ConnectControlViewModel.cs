@@ -24,9 +24,8 @@ using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
 using Microsoft.Practices.Prism.PubSubEvents;
 using Warewolf.Resource.Errors;
-
-
-
+using Dev2.Instrumentation;
+using Dev2.Instrumentation.Factory;
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -41,6 +40,7 @@ namespace Warewolf.Studio.ViewModels
         private readonly ObservableCollection<IServer> _existingServers;
         public IPopupController PopupController { get; set; }
         private readonly IServerRepository _serverRepository;
+        private IApplicationTracker _applicationTracker;
         public ConnectControlViewModel(IServer server, IEventAggregator aggregator, ObservableCollection<IServer> servers = null)
         {
             if (aggregator == null)
@@ -63,7 +63,7 @@ namespace Warewolf.Studio.ViewModels
                 Server.UpdateRepository.ServerSaved += UpdateRepositoryOnServerSaved;
             }
             ShouldUpdateActiveEnvironment = false;
-          
+            _applicationTracker = ApplicationTrackerFactory.GetApplicationTrackerProvider();
         }
 
         public ConnectControlViewModel(IServer server, IEventAggregator aggregator, IPopupController popupController, ObservableCollection<IServer> servers = null)
@@ -318,6 +318,8 @@ namespace Warewolf.Studio.ViewModels
 
         private void NewServer()
         {
+
+            _applicationTracker.TrackApplicationEvent(ApplicationTrackerConstants.TrackerEventName.NewRemoteServerClicked);
             var mainViewModel = CustomContainer.Get<IShellViewModel>();
             if (mainViewModel != null && ShouldUpdateActiveEnvironment)
             {

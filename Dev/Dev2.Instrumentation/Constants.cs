@@ -14,8 +14,7 @@
             public const string ToolBoxSearch = "Tool Box Search";
             public const string ExplorerSearch = "Explorer Search";
             public const string VariablesSearch = "Variables Search";
-            public const string VariablesUsed = "Variables Used";
-        
+            public const string VariablesUsed = "Variables Used";        
             public const string Exception = "Exception";
             public const string Help = "Help";
             public const string DragOnDesignSurface = "Drag On Design Surface";
@@ -58,7 +57,7 @@
             public const string UnUsedVariables = "Un used Variables";
 
             public const string ItemDragged = "Item Dragged";
-            public const string StartNodeNotConnected = "Start not connnected in workflow";
+            public const string StartNodeNotConnected = "Start node not connnected in workflow";
         }
 
     }
