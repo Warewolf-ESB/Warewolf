@@ -158,15 +158,6 @@ namespace Dev2.Studio.ViewModels.Administration
 
         #endregion Private Methods
 
-        #region Events
-
-        //event ClosedOperationEventHandler IDialogueViewModel.OnOkClick {
-        //    add { this.OnOkClick += value; }
-        //    remove { this.OnOkClick -= value; }
-        //}
-
-        #endregion Events
-
         #region IDisposable Implementaton
 
         public void Dispose()

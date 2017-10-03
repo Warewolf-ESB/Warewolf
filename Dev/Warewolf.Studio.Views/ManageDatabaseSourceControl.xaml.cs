@@ -10,9 +10,6 @@ using Warewolf.Studio.ViewModels;
 
 namespace Warewolf.Studio.Views
 {
-    /// <summary>
-    /// Interaction logic for ManageDatabaseSourceControl.xaml
-    /// </summary>
     public partial class ManageDatabaseSourceControl : IManageDatabaseSourceView, ICheckControlEnabledView
     {
         public ManageDatabaseSourceControl()
@@ -83,19 +80,6 @@ namespace Warewolf.Studio.Views
             }
             catch (Exception)
             {
-                //Stupid exception when running from tests
-            }
-        }
-
-        public void SelectType(string type)
-        {
-            try
-            {
-                //ServerTypeComboBox.SelectedItem = type;
-            }
-            catch (Exception)
-            {
-                //Stupid exception when running from tests
             }
         }
 

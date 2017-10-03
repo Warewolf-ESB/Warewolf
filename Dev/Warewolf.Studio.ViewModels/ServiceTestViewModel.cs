@@ -1965,7 +1965,6 @@ namespace Warewolf.Studio.ViewModels
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
-                // MarkTestsAsDirty(true);
             }
             finally
             {

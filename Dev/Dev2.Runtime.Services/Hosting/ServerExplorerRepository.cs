@@ -230,7 +230,6 @@ namespace Dev2.Runtime.Hosting
 
         public IExplorerItem Find(Guid id)
         {
-            //var items = Load(Guid.Empty);
             if (_root == null)
             {
                 Load(Guid.Empty,true);
@@ -240,7 +239,6 @@ namespace Dev2.Runtime.Hosting
 
         public IExplorerItem Find(Func<IExplorerItem, bool> predicate)
         {
-            //var items = Load(Guid.Empty);
             if (_root == null)
             {
                 Load(Guid.Empty, true);

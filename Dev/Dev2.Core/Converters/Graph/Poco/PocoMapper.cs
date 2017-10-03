@@ -48,13 +48,6 @@ namespace Unlimited.Framework.Converters.Graph.Poco
 
             if (propertyStack.Count == 0 && data.GetType().IsEnumerable())
             {
-                //
-                // Handle if the poco mapper is used to map to an raw enumerable
-                //
-                //                paths.Add(new PocoPath("UnnamedArray"+PocoPath.EnumerableSymbol + PocoPath.SeperatorSymbol,
-                //                    "UnnamedArray" + PocoPath.EnumerableSymbol + PocoPath.SeperatorSymbol));
-
-
                 if (data is IEnumerable enumerableData)
                 {
                     IEnumerator enumerator = enumerableData.GetEnumerator();
@@ -72,9 +65,6 @@ namespace Unlimited.Framework.Converters.Graph.Poco
 
             if (propertyStack.Count == 0 && data.GetType().IsPrimitive())
             {
-                //
-                // Handle if the poco mapper is used to map to a raw primitive
-                //
                 paths.Add(new PocoPath(PocoPath.SeperatorSymbol, PocoPath.SeperatorSymbol, PocoPath.SeperatorSymbol,
                     data.ToString()));
             }

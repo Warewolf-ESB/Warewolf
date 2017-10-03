@@ -17,14 +17,10 @@ namespace Dev2.Activities.SqlBulkInsert
            
         }
 
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
         public void Dispose()
         {
             if(_sbc != null)
             {
-             //   _sbc.();
             }
         }
 
@@ -36,19 +32,15 @@ namespace Dev2.Activities.SqlBulkInsert
             }
             var filename = Path.GetTempFileName();
             try
-            {
-
-         
-           _sbc.Connection.Open();
+            {         
+                _sbc.Connection.Open();
            
-             WriteDataTable(dt, File.CreateText(filename));
-             _sbc.LineTerminator = Environment.NewLine;
-            _sbc.FileName = filename;
-            _sbc.Local = true;
-            var res =_sbc.Load();
-
-         
-            return res>0;
+                 WriteDataTable(dt, File.CreateText(filename));
+                 _sbc.LineTerminator = Environment.NewLine;
+                _sbc.FileName = filename;
+                _sbc.Local = true;
+                var res =_sbc.Load();         
+                return res>0;
             }
             finally 
             {

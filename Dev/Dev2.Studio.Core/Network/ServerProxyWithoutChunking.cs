@@ -724,22 +724,15 @@ namespace Dev2.Network
 
         void OnMemoReceived(string objString)
         {
-            // DO NOT use publish as memo is of type object 
-            // and hence won't find the correct subscriptions
-
             var obj = _serializer.Deserialize<DesignValidationMemo>(objString);
             ServerEvents.PublishObject(obj);
         }
 
         void OnPermissionsMemoReceived(string objString)
         {
-            // DO NOT use publish as memo is of type object 
-            // and hence won't find the correct subscriptions
             var obj = _serializer.Deserialize<PermissionsModifiedMemo>(objString);
             try
             {
-                // When we connect against group A with Administrator perms, and we remove all permissions, a 403 will be thrown. 
-                // Handle it more gracefully ;)
                 RaisePermissionsModified(obj.ModifiedPermissions);
             }
             catch (Exception e)
@@ -754,10 +747,6 @@ namespace Dev2.Network
         void OnItemAddedMessageReceived(string obj)
         {
             var serverExplorerItem = _serializer.Deserialize<ServerExplorerItem>(obj);
-            if (serverExplorerItem.ServerId == ServerID)
-            {
-                //  return;
-            }
             serverExplorerItem.ServerId = ID;
             ItemAddedMessageAction?.Invoke(serverExplorerItem);
         }

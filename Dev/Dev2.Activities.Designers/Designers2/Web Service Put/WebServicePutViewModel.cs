@@ -193,8 +193,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Put
 
             LabelWidth = 46;
             ButtonDisplayValue = DoneText;
-
-            //ShowLarge = true;
+            
             ThumbVisibility = Visibility.Visible;
             ShowExampleWorkflowLink = Visibility.Collapsed;
 
