@@ -10,6 +10,7 @@ using Caliburn.Micro;
 using Dev2.Common;
 using System.Text;
 using System.Activities.Presentation.Model;
+using System.Activities.Statements;
 
 namespace Dev2.ViewModels.Merge
 {
@@ -210,17 +211,33 @@ namespace Dev2.ViewModels.Merge
                             continue;
                         }
 
+                        var isSwitch = currentChildChild.ActivityType.GetType() == typeof(FlowSwitch<string>);
+
+
                         var childCurrent = GetMergeToolItem(currentChildChildren, currentChildChild.UniqueId);
                         var childDifferent = GetMergeToolItem(difChildChildren, currentChildChild.UniqueId);
+                        if (childNodes.TryGetValue(currentChildChild.UniqueId.ToString(), out (ModelItem leftItem, ModelItem rightItem) item))
+                        {
+
+
+                            var local1 = currentChildChildren.Where(p => p.UniqueId == currentChildChild.UniqueId);
+                            foreach (var c in local1)
+                            {
+                                c.FlowNode = item.leftItem;
+                            }
+                            var local2 = difChildChildren.Where(p => p.UniqueId == currentChildChild.UniqueId);
+                            foreach (var c in local2)
+                            {
+                                c.FlowNode = item.leftItem;
+                            }
+
+
+                        };
                         remoteCopy.Remove(childDifferent);
                         completeConflict.UniqueId = currentChildChild.UniqueId;
                         completeConflict.CurrentViewModel = childCurrent;
                         completeConflict.DiffViewModel = childDifferent;
-                        if (childNodes.TryGetValue(currentChildChild.UniqueId.ToString(), out (ModelItem leftItem, ModelItem rightItem) item))
-                        {
-                            completeConflict.DiffViewModel.FlowNode = item.rightItem;
-                            completeConflict.CurrentViewModel.FlowNode = item.leftItem;
-                        };
+                       
                         if (parent.Children.Any(conflict => conflict.UniqueId.Equals(currentChild.UniqueId)))
                         {
                             continue;
