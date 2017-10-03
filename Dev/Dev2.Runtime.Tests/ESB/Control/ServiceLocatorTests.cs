@@ -151,7 +151,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             var resourceId = Guid.NewGuid();
             res.Setup(resource => resource.ResourceID).Returns(resourceId);
             recCat.Setup(catalog => catalog.GetDynamicObjects<DynamicService>(Guid.Empty, "service", false)).Returns(new List<DynamicService>() { new DynamicService() });
-            recCat.Setup(catalog => catalog.GetResource(Guid.Empty, "service","Unknown",null)).Returns(res.Object);
+            recCat.Setup(catalog => catalog.GetResource(Guid.Empty, "service", "Unknown", "")).Returns(res.Object);
             ServiceActionRepo.Instance.AddToCache(resourceId,new DynamicService());
             var locator = new ServiceLocator();
             var privateObject = new PrivateObject(locator);
@@ -314,7 +314,6 @@ namespace Dev2.Tests.Runtime.ESB.Control
         public void FindSourceByName_GivenServiceName_ShouldReturnsCorreclty_serviceID()
         {
             //---------------Set up test pack-------------------
-            //GetDynamicObjects<DynamicService>(workspaceID, serviceName).FirstOrDefault();
             var recCat = new Mock<IResourceCatalog>();
             const string resourceName = "SourceName";
             recCat.Setup(catalog => catalog.GetDynamicObjects<Source>(Guid.Empty, resourceName,false)).Returns(new List<Source>() {new Source()  });
