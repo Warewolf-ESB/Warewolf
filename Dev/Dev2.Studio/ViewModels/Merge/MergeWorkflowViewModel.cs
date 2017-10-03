@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Caliburn.Micro;
 using Dev2.Common;
-using System.Text;
 
 namespace Dev2.ViewModels.Merge
 {
