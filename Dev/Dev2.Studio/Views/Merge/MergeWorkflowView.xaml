@@ -315,7 +315,6 @@
                     <Grid x:Name="ConflictsGrid" 
                           Grid.Row="4" 
                           Grid.Column="0" 
-                          IsEnabled="{Binding IsMergeExpanderEnabled}"
                           Grid.ColumnSpan="2"
                           AutomationProperties.AutomationId="UI_ConflictsGrid_AutoID">
                         <TreeView x:Name="ConflictsTreeView"
@@ -417,6 +416,7 @@
                                                                 BorderThickness="0,0,2,0" 
                                                                 Margin="0,0,7,0"
                                                                 DataContext="{Binding CurrentViewModel}"
+                                                                IsEnabled="{Binding IsMergeEnabled}"
                                                                 AutomationProperties.AutomationId="UI_TreeViewExpanderCurrentHeaderBorder_AutoID">
                                                             <DockPanel Name="TreeViewExpanderCurrentHeaderDockPanel" 
                                                                        LastChildFill="False" 
@@ -461,6 +461,7 @@
                                                                 BorderThickness="0" 
                                                                 Margin="-7,0,0,0"
                                                                 DataContext="{Binding DiffViewModel}"
+                                                                IsEnabled="{Binding IsMergeEnabled}"
                                                                 AutomationProperties.AutomationId="UI_TreeViewExpanderDifferenceHeaderBorder_AutoID">
                                                             <DockPanel Name="TreeViewExpanderDifferenceHeaderDockPanel" 
                                                                        LastChildFill="False" 
@@ -519,6 +520,7 @@
                                                             </Grid.RowDefinitions>
                                                             <ContentPresenter Name="TreeViewExpanderTemplateCurrentContentPresenter" 
                                                                               Content="{Binding CurrentViewModel}"
+                                                                              IsEnabled="{Binding IsMergeEnabled}"
 												                              ContentTemplateSelector="{StaticResource ActivitySelector}"
                                                                               ScrollViewer.CanContentScroll="True"
 												                              ScrollViewer.VerticalScrollBarVisibility="Auto"
@@ -545,6 +547,7 @@
                                                             </Grid.RowDefinitions>
                                                             <ContentPresenter Name="TreeViewExpanderTemplateDifferenceContentPresenter" 
                                                                               Content="{Binding DiffViewModel}"
+                                                                              IsEnabled="{Binding IsMergeEnabled}"
 												                              ContentTemplateSelector="{StaticResource ActivitySelector}"
                                                                               ScrollViewer.CanContentScroll="True"
 												                              ScrollViewer.VerticalScrollBarVisibility="Auto"

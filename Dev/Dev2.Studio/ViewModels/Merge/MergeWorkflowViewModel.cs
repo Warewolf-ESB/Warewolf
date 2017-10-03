@@ -6,10 +6,9 @@ using System.Collections.ObjectModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Caliburn.Micro;
 using Dev2.Common;
-using System.Text;
 using System.Activities.Presentation.Model;
+using Caliburn.Micro;
 
 namespace Dev2.ViewModels.Merge
 {
@@ -138,11 +137,9 @@ namespace Dev2.ViewModels.Merge
                     HasMergeStarted = true;
                     IsVariablesEnabled = HasVariablesConflict;
                 }
-                else if (args.IsVariablesChecked)
-                {
-                    HasMergeStarted = true;
-                    IsMergeExpanderEnabled = true;
-                }
+                HasMergeStarted = args.IsVariablesChecked;
+                IsMergeExpanderEnabled = args.IsVariablesChecked;
+                args.Model.IsMergeEnabled = args.IsVariablesChecked;
                 OnPropertyChanged(() => IsDirty);
             }
             catch (Exception)
@@ -155,7 +152,6 @@ namespace Dev2.ViewModels.Merge
         {
             try
             {
-
                 if (!(args is MergeToolModel mergeToolModel) || !mergeToolModel.IsMergeChecked)
                 {
                     return;
@@ -168,12 +164,6 @@ namespace Dev2.ViewModels.Merge
 
                 HasMergeStarted = true;
                 AddActivity(mergeToolModel);
-                if (mergeToolModel.Children.Count < 1)
-                {
-                    return;
-                }
-
-                //mergeToolModel.Children.Flatten(a => a.Children).Apply(a => a.IsMergeChecked = true);
                 OnPropertyChanged(() => IsDirty);
             }
             catch (Exception ex)

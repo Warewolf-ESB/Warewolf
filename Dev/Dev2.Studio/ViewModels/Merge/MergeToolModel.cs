@@ -8,6 +8,8 @@ using Newtonsoft.Json;
 using System.Activities.Statements;
 using System.Activities.Presentation.Model;
 using System.Windows;
+using Caliburn.Micro;
+using Dev2.Common;
 
 namespace Dev2.ViewModels.Merge
 {
@@ -16,6 +18,7 @@ namespace Dev2.ViewModels.Merge
         private ImageSource _mergeIcon;
         private string _mergeDescription;
         private bool _isMergeChecked;
+        private bool _isMergeEnabled;
         private ObservableCollection<IMergeToolModel> _children;
         private string _parentDescription;
         private bool _hasParent;
@@ -57,6 +60,21 @@ namespace Dev2.ViewModels.Merge
                 _isMergeChecked = value;
                 OnPropertyChanged(() => IsMergeChecked);
                 SomethingModelToolChanged?.Invoke(this, this);
+                if (Parent == null)
+                {
+                    Children?.Flatten(a => a.Children).Apply(a => a.IsMergeEnabled = true);
+                    Children?.Flatten(a => a.Children).Apply(a => a.IsMergeChecked = true);
+                }
+            }
+        }
+
+        public bool IsMergeEnabled
+        {
+            get => _isMergeEnabled;
+            set
+            {
+                _isMergeEnabled = value;
+                OnPropertyChanged(() => IsMergeEnabled);
             }
         }
 
