@@ -317,11 +317,14 @@ namespace Warewolf.UI.Tests.Deploy.DeployUIMapClasses
                 {
                     Mouse.Click(DialogsUIMap.MessageBoxWindow.OKButton);
                 }
+                else
+                {
+                    Playback.Wait(1000);
+                }
                 if (successful)
                 {
                     break;
                 }
-                Playback.Wait(1000);
             }
             Assert.IsTrue(successful, "Deploy failed.");
         }
