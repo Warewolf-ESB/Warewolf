@@ -447,12 +447,12 @@ where pn.nspname = 'public';
 
         // Date Time
 
-        public static readonly string LongTimePattern = CultureInfo.CurrentCulture.DateTimeFormat.LongTimePattern;
+        public static readonly string LongTimePattern = CultureInfo.InvariantCulture.DateTimeFormat.LongTimePattern;
 
-        public static readonly string ShortDateTimePattern = CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern;
+        public static readonly string ShortDateTimePattern = CultureInfo.InvariantCulture.DateTimeFormat.ShortDatePattern;
         public static readonly string Dev2DotNetDefaultDateTimeFormat = ShortDateTimePattern + " " + LongTimePattern;
         public static readonly string Dev2CustomDefaultDateTimeFormat = "d MM yyyy 24h:min.ss sp";
-        public const string GlobalDefaultNowFormat = "yyyy/MM/dd hh:mm:ss.fff tt";
+        public static string GlobalDefaultNowFormat = CultureInfo.InvariantCulture.DateTimeFormat.SortableDateTimePattern;
 
         // Query Network Computer Names
         public static readonly int NetworkComputerNameQueryFreq = 900000;

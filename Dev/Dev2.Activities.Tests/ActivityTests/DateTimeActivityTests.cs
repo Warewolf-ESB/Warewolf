@@ -17,7 +17,7 @@ using ActivityUnitTests;
 using Dev2.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
-
+using Dev2.Common;
 
 namespace Dev2.Tests.Activities.ActivityTests
 {
@@ -218,7 +218,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void DsfDateTimeActivity_AddDays_ShouldNotChangeAMtoPMValues()
         {
             //------------Setup for test--------------------------
-            var expected = new DateTime(2017, 10, 20, 0, 0, 0, 0).ToString(CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern + " hh:mm:ss.f tt");
+            var expected = new DateTime(2017, 10, 20, 0, 0, 0, 0).ToString(GlobalConstants.Dev2DotNetDefaultDateTimeFormat);
             const string currDL = @"<root><MyTestResult></MyTestResult></root>";
             SetupArguments(currDL
                          , currDL

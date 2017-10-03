@@ -15,7 +15,6 @@ using Dev2.Activities.Designers2.Core;
 using Dev2.Common;
 using Dev2.Common.DateAndTime;
 using Dev2.Studio.Interfaces;
-using System.Globalization;
 
 namespace Dev2.Activities.Designers2.DateTime
 {
@@ -28,15 +27,14 @@ namespace Dev2.Activities.Designers2.DateTime
             SelectedTimeModifierType = string.IsNullOrEmpty(TimeModifierType) ? TimeModifierTypes[0] : TimeModifierType;
             AddTitleBarLargeToggle();
             HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Utility_Date_Time;
-            var defaultFormat = CultureInfo.CurrentUICulture.DateTimeFormat.ShortDatePattern + " " + CultureInfo.CurrentUICulture.DateTimeFormat.LongTimePattern;
             if (string.IsNullOrEmpty(InputFormat))
             {
-                InputFormat = defaultFormat;
+                InputFormat = GlobalConstants.Dev2DotNetDefaultDateTimeFormat;
                 
             }
             if (string.IsNullOrEmpty(OutputFormat))
             {
-                OutputFormat = defaultFormat;
+                OutputFormat = GlobalConstants.Dev2DotNetDefaultDateTimeFormat;
             }
         }
 

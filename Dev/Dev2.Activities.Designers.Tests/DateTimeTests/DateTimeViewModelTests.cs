@@ -19,6 +19,7 @@ using Moq.Protected;
 using Dev2.Studio.Core.Activities.Utils;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using System.Globalization;
+using Dev2.Common;
 
 namespace Dev2.Activities.Designers.Tests.DateTimeTests
 {
@@ -89,7 +90,7 @@ namespace Dev2.Activities.Designers.Tests.DateTimeTests
         {
             var modelItem = CreateModelItem();
             var viewModel = new DateTimeDesignerViewModel(modelItem);
-            var expectedDefaultFormat = CultureInfo.CurrentUICulture.DateTimeFormat.ShortDatePattern + " " + CultureInfo.CurrentUICulture.DateTimeFormat.LongTimePattern;
+            var expectedDefaultFormat = GlobalConstants.Dev2DotNetDefaultDateTimeFormat;
             var po = new PrivateObject(viewModel);
             Assert.AreEqual(expectedDefaultFormat, po.GetProperty("InputFormat"));
         }
@@ -110,7 +111,7 @@ namespace Dev2.Activities.Designers.Tests.DateTimeTests
         {
             var modelItem = CreateModelItem();
             var viewModel = new DateTimeDesignerViewModel(modelItem);
-            var expectedDefaultFormat = CultureInfo.CurrentUICulture.DateTimeFormat.ShortDatePattern + " " + CultureInfo.CurrentUICulture.DateTimeFormat.LongTimePattern;
+            var expectedDefaultFormat = GlobalConstants.Dev2DotNetDefaultDateTimeFormat;
             var po = new PrivateObject(viewModel);
             Assert.AreEqual(expectedDefaultFormat, po.GetProperty("OutputFormat"));
         }
