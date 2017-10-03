@@ -91,16 +91,6 @@ namespace Warewolf.Studio.ViewModels
                     IsLoading = false;
                     actionToPerform?.Invoke();
                 });
-            }, () =>
-            {
-
-            }, exception =>
-            {
-                //if (exception.InnerException != null)
-                //{
-                //    exception = exception.InnerException;
-                //}
-                //TestMessage = exception.Message;
             });
         }
 

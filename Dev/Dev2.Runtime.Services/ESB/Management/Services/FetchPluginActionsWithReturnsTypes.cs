@@ -59,7 +59,6 @@ namespace Dev2.Runtime.ESB.Management.Services
                 
                 PluginServices services = new PluginServices();
                 var src = Resources.GetResource<PluginSource>(GlobalConstants.ServerWorkspaceID, pluginSource.Id);
-                //src.AssemblyName = ns.FullName;
                 if (ns != null)
                 {
                     PluginService svc = new PluginService { Namespace = ns.FullName, Source = src };

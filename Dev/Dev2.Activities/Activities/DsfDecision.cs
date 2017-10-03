@@ -345,7 +345,6 @@ namespace Dev2.Activities
                     {
                         expressiomToStringValue = "";
                     }
-                    // EvaluateExpressiomToStringValue(expression, decisionMode, dataList);
                     userModel = userModel.Replace(expression, expressiomToStringValue);
                     debugResult = new DebugItemWarewolfAtomResult(expressiomToStringValue, expression, "");
                 }

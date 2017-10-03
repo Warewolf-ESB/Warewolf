@@ -211,9 +211,7 @@ namespace Dev2.Common.DateAndTime
 
             return nothingDied;
         }
-        /// <summary>
-        ///     Parses the given data using the specified format
-        /// </summary>
+
         private bool TryParse(string data, string inputFormat, bool parseAsTime, out IDateTimeResultTO result,
             out string error)
         {

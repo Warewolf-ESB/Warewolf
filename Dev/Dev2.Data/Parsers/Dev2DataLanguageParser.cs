@@ -332,20 +332,19 @@ namespace Dev2.Data.Parsers
                 currentNode.Payload = region.ToString();
             }
 
-            // add last tree to list
             if (!result.Contains(root))
             {
                 result.Add(root);
             }
 
-            if (root.HangingOpen && addCompleteParts) //we have an open region but we evaluating for closed regions
+            if (root.HangingOpen && addCompleteParts)
             {
                 throw new Dev2DataLanguageParseError(ErrorResource.InvalidCloseRegion, 0, payload.Length, enIntellisenseErrorCode.SyntaxError);
             }
             return result;
         }
 
-        private static IParseTO ParseTO(IParseTO currentNode, int i, IList<IParseTO> result, ref IParseTO root, ref bool openRegion) //=> _parserHelper.ParseTO(currentNode, i, result, ref root, ref openRegion);
+        private static IParseTO ParseTO(IParseTO currentNode, int i, IList<IParseTO> result, ref IParseTO root, ref bool openRegion)
         {
             if (currentNode == root && !root.HangingOpen)
             {

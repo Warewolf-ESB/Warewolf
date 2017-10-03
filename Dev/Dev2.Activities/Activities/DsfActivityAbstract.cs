@@ -167,8 +167,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         protected IWarewolfIterator CreateDataListEvaluateIterator(string expression, IExecutionEnvironment executionEnvironment, int update)
         {
             var evalled = executionEnvironment.Eval(expression, update);
-            //            if(ExecutionEnvironment.IsNothing(evalled))
-            //                throw  new Exception("Invalid variable: "+expression);
             var expressionIterator = new WarewolfIterator(evalled);
             return expressionIterator;
         }

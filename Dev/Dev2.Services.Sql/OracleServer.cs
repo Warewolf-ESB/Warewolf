@@ -605,22 +605,6 @@ namespace Dev2.Services.Sql
             }
             return OracleType;
         }
-        /*    private static OracleDbType GetOracleDbType(object o)
-            {
-                if (o is string) return OracleDbType.Varchar2;
-                if (o is DateTime) return OracleDbType.Date;
-                if (o is long) return OracleDbType.Int64;
-                if (o is int) return OracleDbType.Int32;
-                if (o is short) return OracleDbType.Int16;
-                if (o is sbyte) return OracleDbType.Byte;
-                if (o is byte) return OracleDbType.Int16;
-                if (o is decimal) return OracleDbType.Decimal;
-                if (o is float) return OracleDbType.Single;
-                if (o is double) return OracleDbType.Double;
-                if (o is byte[]) return OracleDbType.Blob;
-
-                return OracleDbType.Varchar2;
-            }*/
 
         private bool GetIsout(string InOut)
         {

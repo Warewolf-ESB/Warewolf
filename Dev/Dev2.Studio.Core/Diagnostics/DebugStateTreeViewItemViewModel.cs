@@ -75,16 +75,10 @@ namespace Dev2.Studio.Core
         
         protected override void Initialize(IDebugState content)
         {
-            //            _inputs.Clear();
-            //            _outputs.Clear();
-            //            _assertResultList.Clear();
-
             if (content == null)
             {
                 return;
             }
-
-            // Multiple when creating - so that we show the path of the execution when debugging
             SelectionType = ActivitySelectionType.Add;
             IsSelected = content.ActivityType != ActivityType.Workflow;
 
@@ -101,7 +95,6 @@ namespace Dev2.Studio.Core
                 }
                 if (Equals(env, _serverRepository.Source))
                 {
-                    // We have an unknown remote server ;)
                     content.Server = "Unknown Remote Server";
                 }
                 else

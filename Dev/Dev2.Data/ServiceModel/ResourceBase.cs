@@ -351,14 +351,7 @@ namespace Dev2.Runtime.ServiceModel.Data
         {
             return JsonConvert.SerializeObject(this);
         }
-
-        /// <summary>
-        /// Indicates whether the current object is equal to another object of the same type.
-        /// </summary>
-        /// <returns>
-        /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
-        /// </returns>
-        /// <param name="other">An object to compare with this object.</param>
+        
         public bool Equals(IResource other)
         {
             if (ReferenceEquals(null, other))
@@ -369,16 +362,9 @@ namespace Dev2.Runtime.ServiceModel.Data
             {
                 return true;
             }
-            return ResourceID.Equals(other.ResourceID); //&& Version.Equals(other.Version);
+            return ResourceID.Equals(other.ResourceID);
         }
-
-        /// <summary>
-        /// Determines whether the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>.
-        /// </summary>
-        /// <returns>
-        /// true if the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>; otherwise, false.
-        /// </returns>
-        /// <param name="obj">The <see cref="T:System.Object"/> to compare with the current <see cref="T:System.Object"/>. </param>
+        
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj))
@@ -395,13 +381,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             }
             return Equals((IResource)obj);
         }
-
-        /// <summary>
-        /// Serves as a hash function for a particular type. 
-        /// </summary>
-        /// <returns>
-        /// A hash code for the current <see cref="T:System.Object"/>.
-        /// </returns>
+        
         public override int GetHashCode()
         {
             unchecked
@@ -419,13 +399,7 @@ namespace Dev2.Runtime.ServiceModel.Data
         {
             return !Equals(left, right);
         }
-
-        /// <summary>
-        /// If this instance <see cref="IsUpgraded"/> then sets the ID, Version, Name and ResourceType attributes on the given XML.
-        /// </summary>
-        /// <param name="xml">The XML to be upgraded.</param>
-        /// <param name="resource"></param>
-        /// <returns>The XML with the additional attributes set.</returns>
+        
         public XElement UpgradeXml(XElement xml, IResource resource)
         {
             if (IsUpgraded)
@@ -547,9 +521,8 @@ namespace Dev2.Runtime.ServiceModel.Data
                 case "DsfWebGetActivity":
                     return "WebService";
                 default:
-                    break;
+                    return "Unknown";
             }
-            return "Unknown";
         }
 
         private void AddDatabaseSourcesForSqlBulkInsertTool(XElement elementToUse)
@@ -578,8 +551,7 @@ namespace Dev2.Runtime.ServiceModel.Data
                 {
                     Dependencies.Add(CreateResourceForTree(resId, Guid.Empty, resourceName, resourceType));
                 }
-            }
-           
+            }           
         }
 
         private void AddEmailSources(XElement elementToUse)
