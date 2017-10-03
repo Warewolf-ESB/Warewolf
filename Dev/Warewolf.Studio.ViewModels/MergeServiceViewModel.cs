@@ -219,7 +219,7 @@ namespace Warewolf.Studio.ViewModels
 
         IEnvironmentViewModel CreateEnvironmentFromServer(IServer server, IShellViewModel shellViewModel)
         {
-            return new EnvironmentViewModel(server, shellViewModel, true);
+            return new EnvironmentViewModel(server, shellViewModel);
         }
 
         public MessageBoxResult ShowMergeDialog()
