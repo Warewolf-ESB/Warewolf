@@ -368,27 +368,47 @@ namespace Dev2.Settings.Perfcounters
                 {
                     serverPermissionCompare = false;
                 }
-                if (!serverPermissionCompare) continue;
+                if (!serverPermissionCompare)
+                {
+                    continue;
+                }
+
                 if (ServerCounters[i].ConcurrentRequests != serverCounters[i].ConcurrentRequests)
                 {
                     serverPermissionCompare = false;
                 }
-                if (!serverPermissionCompare) continue;
+                if (!serverPermissionCompare)
+                {
+                    continue;
+                }
+
                 if (ServerCounters[i].RequestPerSecond != serverCounters[i].RequestPerSecond)
                 {
                     serverPermissionCompare = false;
                 }
-                if (!serverPermissionCompare) continue;
+                if (!serverPermissionCompare)
+                {
+                    continue;
+                }
+
                 if (ServerCounters[i].TotalErrors != serverCounters[i].TotalErrors)
                 {
                     serverPermissionCompare = false;
                 }
-                if (!serverPermissionCompare) continue;
+                if (!serverPermissionCompare)
+                {
+                    continue;
+                }
+
                 if (ServerCounters[i].WorkFlowsNotFound != serverCounters[i].WorkFlowsNotFound)
                 {
                     serverPermissionCompare = false;
                 }
-                if (!serverPermissionCompare) continue;
+                if (!serverPermissionCompare)
+                {
+                    continue;
+                }
+
                 if (ServerCounters[i].NotAuthorisedErrors != serverCounters[i].NotAuthorisedErrors)
                 {
                     serverPermissionCompare = false;
@@ -417,27 +437,47 @@ namespace Dev2.Settings.Perfcounters
                 {
                     resourcePermissionCompare = false;
                 }
-                if (!resourcePermissionCompare) continue;
+                if (!resourcePermissionCompare)
+                {
+                    continue;
+                }
+
                 if (ResourceCounters[i].AverageExecutionTime != resourceCounters[i].AverageExecutionTime)
                 {
                     resourcePermissionCompare = false;
                 }
-                if (!resourcePermissionCompare) continue;
+                if (!resourcePermissionCompare)
+                {
+                    continue;
+                }
+
                 if (ResourceCounters[i].ConcurrentRequests != resourceCounters[i].ConcurrentRequests)
                 {
                     resourcePermissionCompare = false;
                 }
-                if (!resourcePermissionCompare) continue;
+                if (!resourcePermissionCompare)
+                {
+                    continue;
+                }
+
                 if (ResourceCounters[i].RequestPerSecond != resourceCounters[i].RequestPerSecond)
                 {
                     resourcePermissionCompare = false;
                 }
-                if (!resourcePermissionCompare) continue;
+                if (!resourcePermissionCompare)
+                {
+                    continue;
+                }
+
                 if (ResourceCounters[i].TotalErrors != resourceCounters[i].TotalErrors)
                 {
                     resourcePermissionCompare = false;
                 }
-                if (!resourcePermissionCompare) continue;
+                if (!resourcePermissionCompare)
+                {
+                    continue;
+                }
+
                 if (ResourceCounters[i].IsDeleted != resourceCounters[i].IsDeleted)
                 {
                     resourcePermissionCompare = false;

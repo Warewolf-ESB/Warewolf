@@ -24,7 +24,7 @@ namespace Dev2.Common.Interfaces
         IExecuteMessage FetchDependants(Guid resourceId);
     
         StringBuilder FetchResourceXaml(Guid resourceId);
-        Task<IExplorerItem> Load(bool reloadCatalogue = false);
+        Task<IExplorerItem> Load(bool reloadCatalogue);
         IList<IToolDescriptor> FetchTools();
         IList<IExchangeSource> FetchExchangeSources();
         IList<string> GetComputerNames();

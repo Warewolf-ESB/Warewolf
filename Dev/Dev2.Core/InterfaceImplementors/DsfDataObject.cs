@@ -92,12 +92,10 @@ namespace Dev2.DynamicServices
                     }
                     IsDebug = isDebug;
 
-                    Guid debugSessionId;
-                    Guid.TryParse(ExtractValue(xe, "DebugSessionID"), out debugSessionId);
+                    Guid.TryParse(ExtractValue(xe, "DebugSessionID"), out Guid debugSessionId);
                     DebugSessionID = debugSessionId;
 
-                    Guid environmentId;
-                    if (Guid.TryParse(ExtractValue(xe, "EnvironmentID"), out environmentId))
+                    if (Guid.TryParse(ExtractValue(xe, "EnvironmentID"), out Guid environmentId))
                     {
                         EnvironmentID = environmentId;
                         DebugEnvironmentId = environmentId;
@@ -114,12 +112,10 @@ namespace Dev2.DynamicServices
                     ParentServiceName = ExtractValue(xe, "ParentServiceName");
                     _parentWorkflowInstanceId = ExtractValue(xe, "ParentWorkflowInstanceId");
 
-                    Guid executionCallbackId;
-                    Guid.TryParse(ExtractValue(xe, "ExecutionCallbackID"), out executionCallbackId);
+                    Guid.TryParse(ExtractValue(xe, "ExecutionCallbackID"), out Guid executionCallbackId);
                     ExecutionCallbackID = executionCallbackId;
 
-                    Guid bookmarkExecutionCallbackId;
-                    Guid.TryParse(ExtractValue(xe, "BookmarkExecutionCallbackID"), out bookmarkExecutionCallbackId);
+                    Guid.TryParse(ExtractValue(xe, "BookmarkExecutionCallbackID"), out Guid bookmarkExecutionCallbackId);
                     BookmarkExecutionCallbackID = bookmarkExecutionCallbackId;
 
                     if (BookmarkExecutionCallbackID == Guid.Empty && ExecutionCallbackID != Guid.Empty)
@@ -127,20 +123,17 @@ namespace Dev2.DynamicServices
                         BookmarkExecutionCallbackID = ExecutionCallbackID;
                     }
 
-                    Guid parentInstanceId;
-                    Guid.TryParse(ExtractValue(xe, "BookmarkExecutionCallbackID"), out parentInstanceId);
+                    Guid.TryParse(ExtractValue(xe, "BookmarkExecutionCallbackID"), out Guid parentInstanceId);
 
                     ParentInstanceID = ExtractValue(xe, "ParentInstanceID");
 
-                    int numberOfSteps;
-                    Int32.TryParse(ExtractValue(xe, "NumberOfSteps"), out numberOfSteps);
+                    Int32.TryParse(ExtractValue(xe, "NumberOfSteps"), out int numberOfSteps);
                     NumberOfSteps = numberOfSteps;
 
                     CurrentBookmarkName = ExtractValue(xe, "CurrentBookmarkName");
 
-                    Guid instId;
 
-                    if (Guid.TryParse(ExtractValue(xe, "WorkflowInstanceId"), out instId))
+                    if (Guid.TryParse(ExtractValue(xe, "WorkflowInstanceId"), out Guid instId))
                     {
                         WorkflowInstanceId = instId;
                     }
@@ -156,8 +149,7 @@ namespace Dev2.DynamicServices
                     DataListID = dataListId;
 
                     // set the IsDataListScoped flag ;)
-                    bool isScoped;
-                    bool.TryParse(ExtractValue(xe, "IsDataListScoped"), out isScoped);
+                    bool.TryParse(ExtractValue(xe, "IsDataListScoped"), out bool isScoped);
                     IsDataListScoped = isScoped;
 
                     // Set incoming service name ;)
@@ -217,10 +209,11 @@ namespace Dev2.DynamicServices
 
         public void PopEnvironment()
         {
-            IExecutionEnvironment localEnv;
-            var tryPop = _environments.TryPop(out localEnv);
+            var tryPop = _environments.TryPop(out IExecutionEnvironment localEnv);
             if (tryPop)
+            {
                 Environment = localEnv;
+            }
         }
 
         public void PushEnvironment(IExecutionEnvironment env)
@@ -461,14 +454,12 @@ namespace Dev2.DynamicServices
 
         private void ExtractOutMergeDataFromRequest(XElement xe)
         {
-            Guid datalistOutMergeId;
-            Guid.TryParse(ExtractValue(xe, "DatalistOutMergeID"), out datalistOutMergeId);
+            Guid.TryParse(ExtractValue(xe, "DatalistOutMergeID"), out Guid datalistOutMergeId);
             DatalistOutMergeID = datalistOutMergeId;
 
-            enDataListMergeTypes datalistOutMergeType;
-            
-            if (Enum.TryParse(ExtractValue(xe, "DatalistOutMergeType"), true, out datalistOutMergeType))
-            
+
+            if (Enum.TryParse(ExtractValue(xe, "DatalistOutMergeType"), true, out enDataListMergeTypes datalistOutMergeType))
+
             {
                 DatalistOutMergeType = datalistOutMergeType;
             }
@@ -477,33 +468,28 @@ namespace Dev2.DynamicServices
                 DatalistOutMergeType = enDataListMergeTypes.Intersection;
             }
 
-            enTranslationDepth datalistOutMergeDepth;
             DatalistOutMergeDepth = Enum.TryParse(ExtractValue(xe, "DatalistOutMergeDepth"), true,
-                out datalistOutMergeDepth)
+                out enTranslationDepth datalistOutMergeDepth)
                 ? datalistOutMergeDepth
                 : enTranslationDepth.Data_With_Blank_OverWrite;
 
-            DataListMergeFrequency datalistOutMergeFrequency;
             DatalistOutMergeFrequency = Enum.TryParse(ExtractValue(xe, "DatalistOutMergeFrequency"), true,
-                out datalistOutMergeFrequency)
+                out DataListMergeFrequency datalistOutMergeFrequency)
                 ? datalistOutMergeFrequency
                 : DataListMergeFrequency.OnCompletion;
         }
 
         private void ExtractInMergeDataFromRequest(XElement xe)
         {
-            Guid datalistInMergeId;
-            Guid.TryParse(ExtractValue(xe, "DatalistInMergeID"), out datalistInMergeId);
+            Guid.TryParse(ExtractValue(xe, "DatalistInMergeID"), out Guid datalistInMergeId);
             DatalistInMergeID = datalistInMergeId;
 
-            enDataListMergeTypes datalistInMergeType;
-            DatalistInMergeType = Enum.TryParse(ExtractValue(xe, "DatalistInMergeType"), true, out datalistInMergeType)
+            DatalistInMergeType = Enum.TryParse(ExtractValue(xe, "DatalistInMergeType"), true, out enDataListMergeTypes datalistInMergeType)
                 ? datalistInMergeType
                 : enDataListMergeTypes.Intersection;
 
-            enTranslationDepth datalistInMergeDepth;
             DatalistInMergeDepth = Enum.TryParse(ExtractValue(xe, "DatalistInMergeDepth"), true,
-                out datalistInMergeDepth)
+                out enTranslationDepth datalistInMergeDepth)
                 ? datalistInMergeDepth
                 : enTranslationDepth.Data_With_Blank_OverWrite;
         }

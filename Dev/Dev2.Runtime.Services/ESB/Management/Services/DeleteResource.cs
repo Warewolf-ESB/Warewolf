@@ -47,12 +47,10 @@ namespace Dev2.Runtime.ESB.Management.Services
         IResourceCatalog MyResourceCatalog => _resourceCatalog ?? ResourceCatalog.Instance;
         public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
         {
-            StringBuilder tmp;
-            requestArgs.TryGetValue("ResourceID", out tmp);
+            requestArgs.TryGetValue("ResourceID", out StringBuilder tmp);
             if (tmp != null)
             {
-                Guid resourceId;
-                if (Guid.TryParse(tmp.ToString(), out resourceId))
+                if (Guid.TryParse(tmp.ToString(), out Guid resourceId))
                 {
                     return resourceId;
                 }
@@ -73,8 +71,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 string type = null;
 
-                StringBuilder tmp;
-                values.TryGetValue("ResourceID", out tmp);
+                values.TryGetValue("ResourceID", out StringBuilder tmp);
                 Guid resourceId = Guid.Empty;
                 if (tmp != null)
                 {

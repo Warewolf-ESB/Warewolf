@@ -176,8 +176,12 @@ namespace Unlimited.UnitTest.Framework.Parsing
             int present = 0;
 
             for(int i = 0; i < grammer.Tokenizer.Handlers.Count; i++)
-                if(grammer.Tokenizer.Handlers[i] is UnaryTokenizationHandler<Token, TokenKind>)
+            {
+                if (grammer.Tokenizer.Handlers[i] is UnaryTokenizationHandler<Token, TokenKind>)
+                {
                     present++;
+                }
+            }
 
             Assert.AreEqual(1, present);
         }

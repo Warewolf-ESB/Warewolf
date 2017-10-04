@@ -108,8 +108,7 @@ namespace Warewolf.UIBindingTests.SqlDatabaseSource
             FeatureContext.Current["dbsrc"] = dbsrc;
             var mockEventAggregator = new Mock<IEventAggregator>();
             var viewModel = new ManageSqlServerSourceViewModel(upd, mockEventAggregator.Object, dbsrc, new SynchronousAsyncWorker());
-            var manageDatabaseSourceViewModel = manageDatabaseSourceControl.DataContext as ManageSqlServerSourceViewModel;
-            if (manageDatabaseSourceViewModel != null)
+            if (manageDatabaseSourceControl.DataContext is ManageSqlServerSourceViewModel manageDatabaseSourceViewModel)
             {
                 Utils.ResetViewModel<ManageSqlServerSourceViewModel, IDbSource>(viewModel, manageDatabaseSourceViewModel);
             }
@@ -156,8 +155,7 @@ namespace Warewolf.UIBindingTests.SqlDatabaseSource
 
             var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
 
-            var manageDatabaseSourceViewModel = manageDatabaseSourceControl.DataContext as ManageSqlServerSourceViewModel;
-            if (manageDatabaseSourceViewModel != null)
+            if (manageDatabaseSourceControl.DataContext is ManageSqlServerSourceViewModel manageDatabaseSourceViewModel)
             {
                 Assert.AreEqual(manageDatabaseSourceViewModel.AuthenticationType, (AuthenticationType)authp);
             }
@@ -450,8 +448,7 @@ namespace Warewolf.UIBindingTests.SqlDatabaseSource
             var viewModel = new ManageSqlServerSourceViewModel(mockUpdateManager.Object, task, mockEventAggregator.Object,
                 new SynchronousAsyncWorker());
             var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
-            var manageDatabaseSourceViewModel = manageDatabaseSourceControl.DataContext as ManageSqlServerSourceViewModel;
-            if (manageDatabaseSourceViewModel != null)
+            if (manageDatabaseSourceControl.DataContext is ManageSqlServerSourceViewModel manageDatabaseSourceViewModel)
             {
                 Utils.ResetViewModel<ManageSqlServerSourceViewModel, IDbSource>(viewModel, manageDatabaseSourceViewModel);
                 manageDatabaseSourceViewModel.DatabaseName = null;

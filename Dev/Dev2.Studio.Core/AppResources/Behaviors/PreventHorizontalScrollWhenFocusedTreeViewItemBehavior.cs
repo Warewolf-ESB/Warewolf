@@ -33,7 +33,9 @@ namespace Dev2.Studio.Core.AppResources.Behaviors
         protected override void OnDetaching()
         {
             if(_treeViewItem != null)
+            {
                 _treeViewItem.RequestBringIntoView -= AssociatedObject_RequestBringIntoView;
+            }
         }
 
         void AssociatedObject_RequestBringIntoView(object sender, RequestBringIntoViewEventArgs e)

@@ -39,9 +39,8 @@ namespace Dev2.Runtime.ESB.Management.Services
             try
             {
                 Dev2Logger.Info("Save Resource Service", GlobalConstants.WarewolfInfo);
-                StringBuilder resourceDefinition;
 
-                values.TryGetValue("EmailServiceSource", out resourceDefinition);
+                values.TryGetValue("EmailServiceSource", out StringBuilder resourceDefinition);
 
                 IEmailServiceSource src = serializer.Deserialize<EmailServiceSourceDefinition>(resourceDefinition);
                 EmailSource con = new EmailSource

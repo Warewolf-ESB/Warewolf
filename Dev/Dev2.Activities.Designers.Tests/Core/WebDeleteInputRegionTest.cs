@@ -65,8 +65,7 @@ namespace Dev2.Activities.Designers.Tests.Core
             var region = new WebDeleteInputRegion(ModelItemUtils.CreateModelItem(act), srcreg);
             Assert.AreEqual(region.IsEnabled, false);
             Assert.AreEqual(region.Errors.Count, 0);
-            var clone = region.CloneRegion() as WebDeleteInputRegion;
-            if(clone != null)
+            if (region.CloneRegion() is WebDeleteInputRegion clone)
             {
                 Assert.AreEqual(clone.IsEnabled, false);
                 Assert.AreEqual(clone.Errors.Count, 0);

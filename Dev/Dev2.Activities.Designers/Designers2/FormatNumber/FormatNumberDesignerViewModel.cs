@@ -50,10 +50,9 @@ namespace Dev2.Activities.Designers2.FormatNumber
             var viewModel = (FormatNumberDesignerViewModel)d;
             var value = e.NewValue as string;
 
-            enRoundingType roundingType;
-            if(Enum.TryParse(value, out roundingType))
+            if (Enum.TryParse(value, out enRoundingType roundingType))
             {
-                if(roundingType == enRoundingType.None)
+                if (roundingType == enRoundingType.None)
                 {
                     viewModel.RoundingDecimalPlaces = string.Empty;
                     viewModel.IsRoundingEnabled = false;

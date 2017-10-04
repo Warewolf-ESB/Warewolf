@@ -90,14 +90,12 @@ namespace Dev2.Tests.Activities.ActivityTests
             {
                 Action = activity
             };
-            string actual;
-            string error;
             TestData = "<root><Result /></root>";
             //------------Execute Test---------------------------
             var result = ExecuteProcess();
             //------------Assert Results-------------------------
 
-            GetScalarValueFromEnvironment(result.Environment, "Result", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "Result", out string actual, out string error);
             Assert.AreEqual("This is output from the user", actual, "Executing an exe with execute commandline activity did not return the expected output.");
         }
 
@@ -151,8 +149,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             {
                 Action = activity
             };
-            string actual;
-            string error;
             TestData = "<root><OutVar1 /></root>";
             //------------Execute Test---------------------------
             var result = ExecuteProcess();
@@ -162,7 +158,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             {
                 Assert.Fail(fetchErrors);
             }
-            GetScalarValueFromEnvironment(result.Environment, "OutVar1", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "OutVar1", out string actual, out string error);
 
             // remove test datalist ;)
 
@@ -231,8 +227,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             {
                 Action = activity
             };
-            string actual;
-            string error;
             TestData = "<root><OutVar1 /></root>";
             //------------Execute Test---------------------------
             var result = ExecuteProcess();
@@ -242,7 +236,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             {
                 Assert.Fail(fetchErrors);
             }
-            GetScalarValueFromEnvironment(result.Environment, "OutVar1", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "OutVar1", out string actual, out string error);
 
             // remove test datalist ;)
 
@@ -267,8 +261,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             {
                 Action = activity
             };
-            string actual;
-            string error;
             TestData = "<root><OutVar1 /></root>";
             //------------Execute Test---------------------------
             var result = ExecuteProcess();
@@ -278,7 +270,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             {
                 Assert.Fail(fetchErrors);
             }
-            GetScalarValueFromEnvironment(result.Environment, "OutVar1", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "OutVar1", out string actual, out string error);
 
             // remove test datalist ;)
 
@@ -351,14 +343,12 @@ namespace Dev2.Tests.Activities.ActivityTests
             {
                 Action = activity
             };
-            string actual;
-            string error;
             TestData = "<root><OutVar1 /></root>";
             //------------Execute Test---------------------------
             var result = ExecuteProcess();
             //------------Assert Results-------------------------
             Assert.IsTrue(result.Environment.HasErrors());
-            GetScalarValueFromEnvironment(result.Environment, "OutVar1", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "OutVar1", out string actual, out string error);
             Assert.IsNull(actual);
             var fetchErrors = DataObject.Environment.FetchErrors();
             // remove test datalist ;)
@@ -384,13 +374,12 @@ namespace Dev2.Tests.Activities.ActivityTests
                 Action = activity
             };
             var expected = new List<string> { "This is output from the user" };
-            string error;
             CurrentDl = "<ADL><recset1><field1/></recset1></ADL>";
             TestData = "<root></root>";
             //------------Execute Test---------------------------
             var result = ExecuteProcess();
             //------------Assert Results-------------------------
-            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "recset1", "field1", out error);
+            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "recset1", "field1", out string error);
             // remove test datalist ;)
 
             var actualArray = actual.ToArray();
@@ -420,13 +409,12 @@ namespace Dev2.Tests.Activities.ActivityTests
                 Action = activity
             };
             var expected = new List<string> { "This is output from the user" };
-            string error;
             CurrentDl = "<ADL><recset1><field1/></recset1></ADL>";
             TestData = "<root></root>";
             //------------Execute Test---------------------------
             var result = ExecuteProcess();
             //------------Assert Results-------------------------
-            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "recset1", "field1", out error);
+            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "recset1", "field1", out string error);
 
             // remove test datalist ;)
 
@@ -454,11 +442,10 @@ namespace Dev2.Tests.Activities.ActivityTests
             activity.CommandResult = "[[recset1(1).field1]]";
             SetUpForExecution(activity, "<root></root>", "<ADL><recset1><field1/></recset1></ADL>");
             var expected = new List<string> { "This is output from the user" };
-            string error;
             //------------Execute Test---------------------------
             var result = ExecuteProcess();
             //------------Assert Results-------------------------
-            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "recset1", "field1", out error);
+            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "recset1", "field1", out string error);
 
             // remove test datalist ;)
 
@@ -489,11 +476,10 @@ namespace Dev2.Tests.Activities.ActivityTests
             var testData = "<root><recset1><rec1>" + command1 + "</rec1></recset1><recset1><rec1>" + command2 + "</rec1></recset1></root>";
             SetUpForExecution(activity, testData, "<ADL><recset1><rec1></rec1></recset1><recset2><field1></field1></recset2></ADL>");
             var expected = new List<string> { "This is output from the user", "This is a different output from the user" };
-            string error;
             //------------Execute Test---------------------------
             var result = ExecuteProcess();
             //------------Assert Results-------------------------
-            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "recset2", "field1", out error);
+            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "recset2", "field1", out string error);
 
             var actualArray = actual.ToArray();
             actual.Clear();
@@ -518,12 +504,10 @@ namespace Dev2.Tests.Activities.ActivityTests
             var testData = "<root><recset1><rec1>" + command1 + "</rec1></recset1><recset1><rec1>" + command2 + "</rec1></recset1></root>";
             SetUpForExecution(activity, testData, "<ADL><recset1><rec1></rec1></recset1><OutVar1/></ADL>");
             const string Expected = "This is a different output from the user";
-            string error;
-            string actual;
             //------------Execute Test---------------------------
             var result = ExecuteProcess();
             //------------Assert Results-------------------------
-            GetScalarValueFromEnvironment(result.Environment, "OutVar1", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "OutVar1", out string actual, out string error);
 
             StringAssert.Contains(actual, Expected);
         }

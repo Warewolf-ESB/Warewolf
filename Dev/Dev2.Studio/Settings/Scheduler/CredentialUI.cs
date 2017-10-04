@@ -56,16 +56,14 @@ namespace Dev2.Settings.Scheduler
             };
             credui.cbSize = Marshal.SizeOf(credui);
             uint authPackage = 0;
-            IntPtr outCredBuffer;
-            uint outCredSize;
             bool save = false;
             int result = CredUIPromptForWindowsCredentials(ref credui,
                 0,
                 ref authPackage,
                 IntPtr.Zero,
                 0,
-                out outCredBuffer,
-                out outCredSize,
+                out IntPtr outCredBuffer,
+                out uint outCredSize,
                 ref save,
                 1 /* Generic */);
 

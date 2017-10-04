@@ -263,13 +263,12 @@ namespace Dev2.Activities
         private double GetFromValue(string fromValue, out ErrorResultTO errors)
         {
             errors = new ErrorResultTO();
-            double fromNum;
             if (string.IsNullOrEmpty(fromValue))
             {
                 errors.AddError(ErrorResource.IntegerOrDecimaExpectedForStart);
                 return -1;
             }
-            if (!double.TryParse(fromValue, out fromNum))
+            if (!double.TryParse(fromValue, out double fromNum))
             {
                 errors.AddError(string.Format(ErrorResource.IntegerOrDecimaExpectedForStart + " from {0} to {1}.", double.MinValue, double.MaxValue));
                 return -1;
@@ -280,13 +279,12 @@ namespace Dev2.Activities
         private double GetToValue(string toValue, out ErrorResultTO errors)
         {
             errors = new ErrorResultTO();
-            double toNum;
             if (string.IsNullOrEmpty(toValue))
             {
                 errors.AddError(ErrorResource.IntegerOrDecimaExpectedForEnd);
                 return -1;
             }
-            if (!double.TryParse(toValue, out toNum))
+            if (!double.TryParse(toValue, out double toNum))
             {
                 errors.AddError(string.Format(ErrorResource.IntegerOrDecimaExpectedForEnd + " from {0} to {1}.", double.MinValue, double.MaxValue));
                 return -1;
@@ -297,14 +295,13 @@ namespace Dev2.Activities
         private int GetLengthValue(string lengthValue, out ErrorResultTO errors)
         {
             errors = new ErrorResultTO();
-            int lengthNum;
             if (string.IsNullOrEmpty(lengthValue))
             {
                 errors.AddError(string.Format(ErrorResource.PositiveIntegerRequired, "Length."));
                 return -1;
             }
 
-            if (!int.TryParse(lengthValue, out lengthNum))
+            if (!int.TryParse(lengthValue, out int lengthNum))
             {
                 errors.AddError(string.Format(ErrorResource.EnsureValueIsInteger, "Length"));
                 return -1;

@@ -20,7 +20,10 @@ namespace Dev2.Util
         public bool HasMember(object value, string member)
         {
             if (value is JObject)
+            {
                 return (value as JObject).Properties().Any(property => property.Name == member);
+            }
+
             if (value is JArray)
             {
                 int index = ParseInt(member, -1);
@@ -63,15 +66,16 @@ namespace Dev2.Util
         public bool IsPrimitive(object value)
         {
             if (value == null)
+            {
                 throw new ArgumentNullException("value");
+            }
 
             return !(value is JObject) && !(value is JArray);
         }
 
         private int ParseInt(string s, int defaultValue)
         {
-            int result;
-            return int.TryParse(s, out result) ? result : defaultValue;
+            return int.TryParse(s, out int result) ? result : defaultValue;
         }
     }
 }

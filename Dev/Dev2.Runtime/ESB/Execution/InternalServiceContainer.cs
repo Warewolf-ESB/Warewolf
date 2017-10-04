@@ -51,8 +51,7 @@ namespace Dev2.Runtime.ESB.Execution
                     var warewolfEvalResult = dataObj.Environment.Eval(DataListUtil.AddBracketsToValueIfNotExist(input),0);
                     if(warewolfEvalResult.IsWarewolfAtomResult)
                     {
-                        var scalarResult = warewolfEvalResult as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
-                        if(scalarResult != null && !scalarResult.Item.IsNothing)
+                        if (warewolfEvalResult is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult scalarResult && !scalarResult.Item.IsNothing)
                         {
                             request.Args.Add(input, new StringBuilder(scalarResult.Item.ToString()));
                         }

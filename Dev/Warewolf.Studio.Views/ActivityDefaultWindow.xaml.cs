@@ -29,7 +29,9 @@ namespace Warewolf.Studio.Views
         void WindowBorderLess_OnMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (Mouse.LeftButton == MouseButtonState.Pressed)
+            {
                 DragMove();
+            }
         }
 
         void WindowBorderLess_OnClosed(object sender, EventArgs e)
@@ -52,8 +54,7 @@ namespace Warewolf.Studio.Views
             }
             else
             {
-                var dataContext = content.DataContext as DecisionDesignerViewModel;
-                if (dataContext != null)
+                if (content.DataContext is DecisionDesignerViewModel dataContext)
                 {
                     dataContext.Validate();
                     if (dataContext.Errors != null)
@@ -74,9 +75,8 @@ namespace Warewolf.Studio.Views
         private bool ValidateSwitchCase(bool valid)
         {
             var configureSwitchArm = ControlContentPresenter.Content as ConfigureSwitchArm;
-            var switchDesignerViewModel = configureSwitchArm?.DataContext as SwitchDesignerViewModel;
 
-            if (switchDesignerViewModel != null)
+            if (configureSwitchArm?.DataContext is SwitchDesignerViewModel switchDesignerViewModel)
             {
                 if (string.IsNullOrWhiteSpace(switchDesignerViewModel.SwitchExpression))
                 {

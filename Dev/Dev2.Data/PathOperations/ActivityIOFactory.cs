@@ -68,7 +68,9 @@ namespace Dev2.PathOperations
                 // Default to file system
                 type = enActivityIOPathType.FileSystem;
                 if (!Path.IsPathRooted(path))
+                {
                     throw new IOException(ErrorResource.InvalidPath);
+                }
             }
 
             return new Dev2ActivityIOPath(type, path, user, pass, isNotCertVerifiable, privateKeyFile);

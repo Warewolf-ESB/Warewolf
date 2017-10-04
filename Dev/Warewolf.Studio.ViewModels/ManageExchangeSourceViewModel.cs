@@ -122,7 +122,10 @@ namespace Warewolf.Studio.ViewModels
         public bool CanTest()
         {
             if (Testing)
+            {
                 return false;
+            }
+
             if (string.IsNullOrEmpty(AutoDiscoverUrl) && string.IsNullOrEmpty(UserName) && string.IsNullOrEmpty(Password))
             {
                 return false;
@@ -172,7 +175,10 @@ namespace Warewolf.Studio.ViewModels
                     src.Path = requestServiceNameViewModel.ResourceName.Path ?? requestServiceNameViewModel.ResourceName.Name;
                     Save(src);
                     if (requestServiceNameViewModel.SingleEnvironmentExplorerViewModel != null)
+                    {
                         AfterSave(requestServiceNameViewModel.SingleEnvironmentExplorerViewModel.Environments[0].ResourceId, src.ResourceID);
+                    }
+
                     Item = src;
                     _emailServiceSource = src;
                     ResourceName = _emailServiceSource.ResourceName;
@@ -342,6 +348,7 @@ namespace Warewolf.Studio.ViewModels
             t.ContinueWith(a => Application.Current?.Dispatcher.Invoke(() =>
             {
                 if (!_token.IsCancellationRequested)
+                {
                     switch (t.Status)
                     {
                         case TaskStatus.Faulted:
@@ -361,6 +368,7 @@ namespace Warewolf.Studio.ViewModels
                                 break;
                             }
                     }
+                }
             }));
             t.Start();
         }

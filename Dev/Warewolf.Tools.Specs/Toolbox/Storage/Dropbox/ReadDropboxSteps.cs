@@ -27,7 +27,11 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
 
         public ReadDropboxSteps(ScenarioContext scenarioContext)
         {
-            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            if (scenarioContext == null)
+            {
+                throw new ArgumentNullException("scenarioContext");
+            }
+
             this.scenarioContext = scenarioContext;
         }
 
@@ -169,7 +173,9 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
         public void ThenTheReadDropboxSourceWindowIsOpened(string sourceName)
         {
             if (sourceName == "Drop")
+            {
                 Assert.IsTrue(GetViewModel().SelectedSource.ResourceName == sourceName);
+            }
         }
 
         [Then(@"Readlist Local File equals ""(.*)""")]

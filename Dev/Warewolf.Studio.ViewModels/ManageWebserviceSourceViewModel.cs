@@ -173,7 +173,10 @@ namespace Warewolf.Studio.ViewModels
         public bool CanTest()
         {
             if (Testing)
+            {
                 return false;
+            }
+
             if (string.IsNullOrEmpty(HostName))
             {
                 return false;
@@ -242,7 +245,10 @@ namespace Warewolf.Studio.ViewModels
                     src.Path = RequestServiceNameViewModel.ResourceName.Path ?? RequestServiceNameViewModel.ResourceName.Name;
                     Save(src);
                     if (RequestServiceNameViewModel.SingleEnvironmentExplorerViewModel != null)
+                    {
                         AfterSave(RequestServiceNameViewModel.SingleEnvironmentExplorerViewModel.Environments[0].ResourceId, src.Id);
+                    }
+
                     Item = src;
                     _webServiceSource = src;
                     SetupHeaderTextFromExisting();
@@ -321,6 +327,7 @@ namespace Warewolf.Studio.ViewModels
         IWebServiceSource ToSource()
         {
             if (_webServiceSource == null)
+            {
                 return new WebServiceSourceDefinition
                 {
                     AuthenticationType = AuthenticationType,
@@ -332,7 +339,7 @@ namespace Warewolf.Studio.ViewModels
                     Id = _webServiceSource?.Id ?? SelectedGuid
                 }
             ;
-            
+            }
             else
             {
                 _webServiceSource.AuthenticationType = AuthenticationType;

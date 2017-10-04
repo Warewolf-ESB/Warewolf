@@ -38,11 +38,9 @@ namespace Dev2.Tests.MathOperationTest
         public void TryEvaluateFunction_LiteralsPassedToFunction_EvaluationReturnsCorrectly()
         {
             const string expression = @"Sum(10, 10)";
-            string result;
-            string error;
 
             _eval = MathOpsFactory.CreateFunctionEvaluator();
-            bool hasSuceeded = _eval.TryEvaluateFunction(expression, out result, out error);
+            bool hasSuceeded = _eval.TryEvaluateFunction(expression, out string result, out string error);
             if(hasSuceeded)
             {
                 Assert.AreEqual(result, "20");
@@ -61,11 +59,9 @@ namespace Dev2.Tests.MathOperationTest
         public void TryEvaluateFunction_InvalidExpression_ErrorPopulatedAndReturned()
         {
             const string expression = @"Sum(10, 10,asdasd)";
-            string result;
-            string error;
 
             _eval = MathOpsFactory.CreateFunctionEvaluator();
-            bool hasSuceeded = _eval.TryEvaluateFunction(expression, out result, out error);
+            bool hasSuceeded = _eval.TryEvaluateFunction(expression, out string result, out string error);
             if(!hasSuceeded)
             {
                 Assert.IsTrue(error.Length > 0);
@@ -84,12 +80,10 @@ namespace Dev2.Tests.MathOperationTest
         public void TryEvaluateFunction_NoExpression_ErrorPopulatedAndReturnedWithErrorDetailingProblem()
         {
             const string expression = @"(10, 10,asdasd)";
-            string result;
-            string error;
 
 
-            bool hasSuceeded = _eval.TryEvaluateFunction(expression, out result, out error);
-            if(!hasSuceeded)
+            bool hasSuceeded = _eval.TryEvaluateFunction(expression, out string result, out string error);
+            if (!hasSuceeded)
             {
                 Assert.IsTrue(error.Length > 0);
             }
@@ -108,12 +102,9 @@ namespace Dev2.Tests.MathOperationTest
         {
             const string expression = @"10 + 10 - 10";
 
-            string result;
-            string error;
+            bool hasSucceeded = _eval.TryEvaluateFunction(expression, out string result, out string error);
 
-            bool hasSucceeded = _eval.TryEvaluateFunction(expression, out result, out error);
-
-            if(hasSucceeded)
+            if (hasSucceeded)
             {
                 Assert.AreEqual("10", result);
             }
@@ -127,12 +118,10 @@ namespace Dev2.Tests.MathOperationTest
         public void TryEvaluateFunction_MixedUnaryAndFunctions_Expected_EvaluationSucessful()
         {
             const string expression = @"Average(10 + 10, 20*2, 30/2)";
-            string result;
-            string error;
 
-            bool hasSucceeded = _eval.TryEvaluateFunction(expression, out result, out error);
+            bool hasSucceeded = _eval.TryEvaluateFunction(expression, out string result, out string error);
 
-            if(hasSucceeded)
+            if (hasSucceeded)
             {
                 Assert.AreEqual("25", result);
             }
@@ -150,12 +139,10 @@ namespace Dev2.Tests.MathOperationTest
         public void TryEvaluateFunction_FunctionDoesNotExist_Expected_ErrorResponseStatingFunctionNotExist()
         {
             const string expression = @"thisDoesNotExist(12,1234,567)";
-            string result;
-            string error;
 
-            bool hasSucceeded = _eval.TryEvaluateFunction(expression, out result, out error);
+            bool hasSucceeded = _eval.TryEvaluateFunction(expression, out string result, out string error);
 
-            if(!hasSucceeded)
+            if (!hasSucceeded)
             {
                 Assert.IsTrue(error.Contains("Invalid function 'thisDoesNotExist'"));
             }
@@ -173,13 +160,11 @@ namespace Dev2.Tests.MathOperationTest
         {
             DateTime date = new DateTime(2012, 2, 2);
             const string expression = @"Date(2012,2,2)";
-            string actual;
             string expected = date.ToShortDateString();
-            string error;
 
-            bool hasSucceeded = _eval.TryEvaluateFunction(expression, out actual, out error);
+            bool hasSucceeded = _eval.TryEvaluateFunction(expression, out string actual, out string error);
 
-            if(hasSucceeded)
+            if (hasSucceeded)
             {
                 Assert.IsTrue(actual.StartsWith(expected));
             }
@@ -197,12 +182,10 @@ namespace Dev2.Tests.MathOperationTest
         public void TryEvaluateFunction_YearFunction_Expected_EvaluationOfDateCorrect()
         {
             const string expression = @"Year(""1989/02/01"")";
-            string result;
-            string error;
 
-            bool hasSucceeded = _eval.TryEvaluateFunction(expression, out result, out error);
+            bool hasSucceeded = _eval.TryEvaluateFunction(expression, out string result, out string error);
 
-            if(hasSucceeded)
+            if (hasSucceeded)
             {
                 Assert.AreEqual("1989", result);
             }
@@ -220,12 +203,10 @@ namespace Dev2.Tests.MathOperationTest
         public void TryEvaluateFunction_ImSqrt_Expected_EvaluatioReturnsCorrectResult()
         {
             const string expression = @"Imsqrt(-1)";
-            string result;
-            string error;
 
-            bool hasSucceeded = _eval.TryEvaluateFunction(expression, out result, out error);
+            bool hasSucceeded = _eval.TryEvaluateFunction(expression, out string result, out string error);
 
-            if(hasSucceeded)
+            if (hasSucceeded)
             {
                 Assert.AreEqual("6.12303176911189E-17+i", result);
             }
@@ -243,12 +224,10 @@ namespace Dev2.Tests.MathOperationTest
         public void TryEvaluateFunction_Oct2Dec_Expected_EvaluationReturnsCorrectResult()
         {
             const string expression = @"Oct2Dec(764)";
-            string result;
-            string error;
 
-            bool hasSucceeded = _eval.TryEvaluateFunction(expression, out result, out error);
+            bool hasSucceeded = _eval.TryEvaluateFunction(expression, out string result, out string error);
 
-            if(hasSucceeded)
+            if (hasSucceeded)
             {
                 Assert.AreEqual("500", result);
             }
@@ -263,12 +242,10 @@ namespace Dev2.Tests.MathOperationTest
         public void TryEvaluateFunction_ComplexCalculation_Expected_EvaluatioReturnsCorrectResult()
         {
             const string expression = @"Sum(Average(Abs(-100), Min(10,20,2,30,200)), Max(200,300,400)) + 250";
-            string result;
-            string error;
 
-            bool hasSucceeded = _eval.TryEvaluateFunction(expression, out result, out error);
+            bool hasSucceeded = _eval.TryEvaluateFunction(expression, out string result, out string error);
 
-            if(hasSucceeded)
+            if (hasSucceeded)
             {
                 Assert.AreEqual("701", result);
             }

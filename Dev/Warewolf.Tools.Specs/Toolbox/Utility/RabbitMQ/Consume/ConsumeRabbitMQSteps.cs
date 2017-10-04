@@ -22,7 +22,11 @@ namespace Warewolf.ToolsSpecs.Toolbox.RabbitMQ.Consum
 
         public ConsumeRabbitMQSteps(ScenarioContext scenarioContext)
         {
-            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            if (scenarioContext == null)
+            {
+                throw new ArgumentNullException("scenarioContext");
+            }
+
             this.scenarioContext = scenarioContext;
         }
 

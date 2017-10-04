@@ -44,8 +44,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
         {
             _existingResource = false;
-            StringBuilder resourceDefinition;
-            requestArgs.TryGetValue("ResourceDefinition", out resourceDefinition);
+            requestArgs.TryGetValue("ResourceDefinition", out StringBuilder resourceDefinition);
             if (resourceDefinition != null && resourceDefinition.Length != 0)
             {
                 var xml = resourceDefinition.ToXElement();
@@ -79,8 +78,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             else
             {
-                StringBuilder destinationEnvironment;
-                values.TryGetValue("destinationEnvironmentId", out destinationEnvironment);
+                values.TryGetValue("destinationEnvironmentId", out StringBuilder destinationEnvironment);
 
                 if (destinationEnvironment == null)
                 {
@@ -107,8 +105,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 var proxy = Connections.CreateHubProxy(destination);
                 var roles = new StringBuilder("*");
-                StringBuilder deployTests;
-                values.TryGetValue("deployTests", out deployTests); 
+                values.TryGetValue("deployTests", out StringBuilder deployTests);
 
                 if (deployTests == null)
                 {
@@ -124,8 +121,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         private void ShouldExecuteDeploy(Dictionary<string, StringBuilder> values, List<DeployResult> toReturn, Dev2JsonSerializer serializer, IHubProxy proxy, StringBuilder roles, StringBuilder deployTests)
         {
             bool doTestDeploy = bool.Parse(deployTests.ToString());
-            StringBuilder resourceIDsToDeploy;
-            values.TryGetValue("resourceIDsToDeploy", out resourceIDsToDeploy);
+            values.TryGetValue("resourceIDsToDeploy", out StringBuilder resourceIDsToDeploy);
             var idsToDeploy = new List<Guid>();
             idsToDeploy.AddRange(serializer.Deserialize<List<Guid>>(resourceIDsToDeploy));
             if (idsToDeploy.Any())

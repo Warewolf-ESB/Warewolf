@@ -25,7 +25,10 @@ namespace Warewolf.Studio.Core
             if (Application.Current != null && Application.Current.MainWindow != null)
             {
                 if (!Application.Current.Dispatcher.CheckAccess())
+                {
                     return;
+                }
+
                 Application.Current.MainWindow.Effect = null;
                 var content = Application.Current.MainWindow.Content as Grid;
                 content?.Children.Remove(blackoutGrid);

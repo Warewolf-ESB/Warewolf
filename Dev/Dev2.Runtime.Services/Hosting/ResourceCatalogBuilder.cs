@@ -70,11 +70,19 @@ namespace Dev2.Runtime.Hosting
         public void BuildCatalogFromWorkspace(string workspacePath, params string[] folders)
         {
             if (string.IsNullOrEmpty(workspacePath))
+            {
                 throw new ArgumentNullException("workspacePath");
+            }
+
             if (folders == null)
+            {
                 throw new ArgumentNullException("folders");
+            }
+
             if (folders.Length == 0 || !Directory.Exists(workspacePath))
+            {
                 return;
+            }
 
             var streams = new List<ResourceBuilderTO>();
 
@@ -345,7 +353,9 @@ namespace Dev2.Runtime.Hosting
                     {
                         var firstDup = _duplicateResources.First(p => p.ResourceId == dupRes.ResourceID);
                         if (!firstDup.ResourcePath.Contains(filePath))
+                        {
                             firstDup.ResourcePath.Add(filePath);
+                        }
                     }
                     var duplicatePaths = filePath == dupRes.FilePath ? string.Empty : filePath;
                     var resourcePaths = new List<string> { dupRes.FilePath };

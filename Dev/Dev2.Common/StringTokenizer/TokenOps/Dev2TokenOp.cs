@@ -42,7 +42,7 @@ namespace Dev2.Common
 
         public bool CanUseEnumerator(bool isReversed)
         {
-            return isReversed != true && _tokenParts.Length == 1;
+            return !isReversed && _tokenParts.Length == 1;
         }
 
         public string ExecuteOperation(char[] candidate, int startIdx, bool isReversed)

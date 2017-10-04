@@ -47,9 +47,8 @@ namespace Dev2.DataList
         /// <returns></returns>
         internal string FetchMatch(string token,string recset)
         {
-            string result;
 
-            RecordsetColumnsToName.TryGetValue(new Tuple<string, string>(token,recset), out result);
+            RecordsetColumnsToName.TryGetValue(new Tuple<string, string>(token, recset), out string result);
 
             return result;
         }

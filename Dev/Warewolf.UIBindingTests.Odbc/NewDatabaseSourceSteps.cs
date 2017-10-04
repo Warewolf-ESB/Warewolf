@@ -116,8 +116,7 @@ namespace Warewolf.UIBindingTests.Odbc
             FeatureContext.Current["dbsrc"] = dbsrc;
             var mockEventAggregator = new Mock<IEventAggregator>();
             var viewModel = new ManageOdbcSourceViewModel(upd, mockEventAggregator.Object, dbsrc, new SynchronousAsyncWorker());
-            var manageDatabaseSourceViewModel = manageDatabaseSourceControl.DataContext as ManageOdbcSourceViewModel;
-            if (manageDatabaseSourceViewModel != null)
+            if (manageDatabaseSourceControl.DataContext is ManageOdbcSourceViewModel manageDatabaseSourceViewModel)
             {
                 Utils.ResetViewModel<ManageOdbcSourceViewModel, IDbSource>(viewModel, manageDatabaseSourceViewModel);
             }
@@ -281,8 +280,7 @@ namespace Warewolf.UIBindingTests.Odbc
                 var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
                 if (manageDatabaseSourceControl != null)
                 {
-                    var manageDatabaseSourceViewModel = manageDatabaseSourceControl.DataContext as ManageOdbcSourceViewModel;
-                    if (manageDatabaseSourceViewModel != null)
+                    if (manageDatabaseSourceControl.DataContext is ManageOdbcSourceViewModel manageDatabaseSourceViewModel)
                     {
                         Utils.ResetViewModel<ManageOdbcSourceViewModel, IDbSource>(viewModel, manageDatabaseSourceViewModel);
                         manageDatabaseSourceViewModel.DatabaseName = null;

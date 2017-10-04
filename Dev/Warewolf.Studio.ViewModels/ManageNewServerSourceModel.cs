@@ -60,8 +60,7 @@ namespace Warewolf.Studio.ViewModels
             
             var connection = new Connection(xaml.ToXElement());
             string address = null;
-            Uri uri;
-            if (Uri.TryCreate(connection.Address, UriKind.RelativeOrAbsolute, out uri))
+            if (Uri.TryCreate(connection.Address, UriKind.RelativeOrAbsolute, out Uri uri))
             {
                 address = uri.Host;
             }

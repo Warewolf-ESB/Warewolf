@@ -31,7 +31,9 @@ namespace Warewolf.Studio.Models.Help
         public void Dispose()
         {
             if(_token!=null)
-            _aggregator.GetEvent<HelpChangedEvent>().Unsubscribe(_token);
+            {
+                _aggregator.GetEvent<HelpChangedEvent>().Unsubscribe(_token);
+            }
         }
     }
 }

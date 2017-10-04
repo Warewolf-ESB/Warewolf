@@ -39,7 +39,11 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
         public SequenceSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
         {
-            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            if (scenarioContext == null)
+            {
+                throw new ArgumentNullException("scenarioContext");
+            }
+
             this.scenarioContext = scenarioContext;
             _commonSteps = new CommonSteps(this.scenarioContext);
         }
@@ -77,8 +81,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
                     value = string.Format("!~calculation~!{0}!~~calculation~!", value);
                 }
 
-                List<ActivityDTO> fieldCollection;
-                scenarioContext.TryGetValue("fieldCollection", out fieldCollection);
+                scenarioContext.TryGetValue("fieldCollection", out List<ActivityDTO> fieldCollection);
 
                 _commonSteps.AddVariableToVariableList(variable);
 
@@ -480,13 +483,11 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
             {
                 Action = sequence
             };
-            string errorVariable;
-            scenarioContext.TryGetValue("errorVariable", out errorVariable);
+            scenarioContext.TryGetValue("errorVariable", out string errorVariable);
 
-            string webserviceToCall;
-            scenarioContext.TryGetValue("webserviceToCall", out webserviceToCall);
+            scenarioContext.TryGetValue("webserviceToCall", out string webserviceToCall);
 
-            if(!string.IsNullOrEmpty(errorVariable))
+            if (!string.IsNullOrEmpty(errorVariable))
             {
                 sequence.OnErrorVariable = errorVariable;
             }
@@ -530,9 +531,8 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
 
         void CheckDebugStates(IEnumerable<IDebugState> debugStates)
         {
-            DsfSequenceActivity sequence;
-            scenarioContext.TryGetValue("activity", out sequence);
-            if(sequence != null)
+            scenarioContext.TryGetValue("activity", out DsfSequenceActivity sequence);
+            if (sequence != null)
             {
                 var innerActivitiesDebugStates = debugStates.Where(state => state.ParentID.GetValueOrDefault().ToString() == sequence.UniqueID.ToString());
                 var count = innerActivitiesDebugStates.Count();
@@ -544,8 +544,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
 
         DsfSequenceActivity SetupSequence()
         {
-            DsfSequenceActivity sequence;
-            scenarioContext.TryGetValue("activity", out sequence);
+            scenarioContext.TryGetValue("activity", out DsfSequenceActivity sequence);
             return sequence;
         }
 
@@ -562,8 +561,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
         public void GivenIHaveAForEachAsExecutions(string activityName, string forEachType, string numberOfExecutions)
         {
             DsfForEachActivity forEachActivity = new DsfForEachActivity { DisplayName = activityName };
-            enForEachType typeOfForEach;
-            Enum.TryParse(forEachType, out typeOfForEach);
+            Enum.TryParse(forEachType, out enForEachType typeOfForEach);
 
             forEachActivity.ForEachType = typeOfForEach;
             forEachActivity.NumOfExections = numberOfExecutions;
@@ -576,8 +574,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
         {
             BuildDataList();
 
-            DsfForEachActivity forEachActivity;
-            scenarioContext.TryGetValue(activityName, out forEachActivity);
+            scenarioContext.TryGetValue(activityName, out DsfForEachActivity forEachActivity);
 
             var sequence = SetupSequence();
             var activityFunc = new ActivityFunc<string, bool> { Handler = sequence };
@@ -590,10 +587,9 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
 
             PerformExecution();
 
-            List<IDebugState> debugStates;
-            scenarioContext.TryGetValue("DebugStates", out debugStates);
+            scenarioContext.TryGetValue("DebugStates", out List<IDebugState> debugStates);
 
-            if(debugStates.Count > 0)
+            if (debugStates.Count > 0)
             {
                 var sequenceDebugState = debugStates.Where(state => state.DisplayName == sequence.DisplayName);
                 var debugStateOfSequence = sequenceDebugState as IDebugState[] ?? sequenceDebugState.ToArray();
@@ -601,8 +597,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
                 Assert.IsTrue(debugStateOfSequence.All(state => state.ParentID.GetValueOrDefault().ToString() == forEachActivity.UniqueID));
             }
 
-            Dictionary<string, Activity> activityList;
-            scenarioContext.TryGetValue("activityList", out activityList);
+            scenarioContext.TryGetValue("activityList", out Dictionary<string, Activity> activityList);
             activityList.Add(activityName, forEachActivity);
         }
 
@@ -610,10 +605,8 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
         [Then(@"the ""(.*)"" debug inputs as")]
         public void ThenDebugInputsAs(string toolName, Table table)
         {
-            Dictionary<string, Activity> activityList;
-            scenarioContext.TryGetValue("activityList", out activityList);
-            DsfSequenceActivity sequence;
-            scenarioContext.TryGetValue("activity", out sequence);
+            scenarioContext.TryGetValue("activityList", out Dictionary<string, Activity> activityList);
+            scenarioContext.TryGetValue("activity", out DsfSequenceActivity sequence);
             var sequenceActivity = sequence.Activities.ToList().FirstOrDefault(activity => activity.DisplayName == toolName) ?? activityList[toolName];
             var actualDebugItems = GetDebugInputItemResults(sequenceActivity);
             _commonSteps.ThenTheDebugInputsAs(table, actualDebugItems);
@@ -622,10 +615,8 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
         [Then(@"the ""(.*)"" debug outputs as")]
         public void ThenDebugOutputsAs(string toolName, Table table)
         {
-            Dictionary<string, Activity> activityList;
-            scenarioContext.TryGetValue("activityList", out activityList);
-            DsfSequenceActivity sequence;
-            scenarioContext.TryGetValue("activity", out sequence);
+            scenarioContext.TryGetValue("activityList", out Dictionary<string, Activity> activityList);
+            scenarioContext.TryGetValue("activity", out DsfSequenceActivity sequence);
             var sequenceActivity = sequence.Activities.ToList().FirstOrDefault(activity => activity.DisplayName == toolName) ?? activityList[toolName];
             var actualDebugItems = GetDebugOutputItemResults(sequenceActivity);
             _commonSteps.ThenTheDebugOutputAs(table, actualDebugItems);
