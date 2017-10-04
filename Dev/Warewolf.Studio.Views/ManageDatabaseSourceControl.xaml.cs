@@ -7,6 +7,7 @@ using System.Windows.Input;
 using Dev2.Common.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
 using Warewolf.Studio.ViewModels;
+using Dev2.Common;
 
 namespace Warewolf.Studio.Views
 {
@@ -78,8 +79,9 @@ namespace Warewolf.Studio.Views
             {
                 EnterServerName(serverName);
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                Dev2Logger.Warn(e.Message, "Warewolf Warn");
             }
         }
 

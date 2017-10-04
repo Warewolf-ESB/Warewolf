@@ -245,10 +245,8 @@ namespace Dev2.Activities.Designers2.Core
             {
                 return _generateInputArea;
             }
-            set
-            {
-            }
         }
+
         public string TestResults
         {
             get
@@ -381,11 +379,8 @@ namespace Dev2.Activities.Designers2.Core
             {
                 return Application.Current.TryFindResource("Explorer-WebService-White") as DrawingImage;
             }
-            set
-            {
-
-            }
         }
+
         public ICommand CloseCommand { get; private set; }
         public ICommand OkCommand { get; private set; }
         public Action CloseAction { get; set; }

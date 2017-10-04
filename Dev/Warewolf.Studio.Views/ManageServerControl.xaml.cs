@@ -7,6 +7,7 @@ using Dev2.Common.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.Practices.Prism.Mvvm;
 using Warewolf.Studio.ViewModels;
+using Dev2.Common;
 
 namespace Warewolf.Studio.Views
 {
@@ -102,11 +103,10 @@ namespace Warewolf.Studio.Views
                     ProtocolItems.DataContext = DataContext;                    
                 }
                 ProtocolItems.SelectedItem = protocol;
-            }
-            
-            catch
+            }            
+            catch (Exception e)
             {
-
+                Dev2Logger.Warn(e.Message, "Warewolf Warn");
             }
         }
 
@@ -117,9 +117,9 @@ namespace Warewolf.Studio.Views
                 PortTextBox.Text = port;
             }
             
-            catch
+            catch (Exception e)
             {
-
+                Dev2Logger.Warn(e.Message, "Warewolf Warn");
             }
         }
 
