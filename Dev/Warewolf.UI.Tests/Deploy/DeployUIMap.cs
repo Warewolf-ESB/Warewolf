@@ -312,6 +312,7 @@ namespace Warewolf.UI.Tests.Deploy.DeployUIMapClasses
                 if (DialogsUIMap.MessageBoxWindow.Exists)
                 {
                     successful = UIMap.ControlExistsNow(DialogsUIMap.MessageBoxWindow.ResourcesDeployedSucText);
+                    DialogsUIMap.MessageBoxWindow.OKButton.WaitForControlReady(60000);
                     Mouse.Click(DialogsUIMap.MessageBoxWindow.OKButton);
                 }
                 else
