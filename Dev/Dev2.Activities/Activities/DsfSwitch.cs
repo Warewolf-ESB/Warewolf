@@ -16,7 +16,7 @@ namespace Dev2.Activities
 {
     public class DsfSwitch : DsfActivityAbstract<string>
     {
-        public DsfFlowSwitchActivity Inner;
+        readonly DsfFlowSwitchActivity Inner;
 
         public DsfSwitch(DsfFlowSwitchActivity inner)
       : base("Switch")

@@ -16,8 +16,7 @@ namespace Dev2.Activities.Designers2.WriteFile
 {
     public class WriteFileDesignerViewModel : FileActivityDesignerViewModel
     {
-
-        public ModelItem Modelitem;
+        readonly ModelItem Modelitem;
 
         public WriteFileDesignerViewModel(ModelItem modelItem)
             : base(modelItem, string.Empty, "File Name")

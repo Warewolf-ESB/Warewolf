@@ -35,7 +35,7 @@ namespace Dev2.Studio.Core.Messages
             ResourceModels = resourceModels;
         }
 
-        public ICollection<IContextualResourceModel> ResourceModels;
+        readonly ICollection<IContextualResourceModel> ResourceModels;
 
         public string FolderName { get; set; }
         public Action ActionToDoOnDelete { get; set; }

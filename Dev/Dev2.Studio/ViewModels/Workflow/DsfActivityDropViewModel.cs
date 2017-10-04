@@ -152,7 +152,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         #region Methods
 
-        public Func<IServerRepository> GetEnvironmentRepository = () => ServerRepository.Instance;
+        readonly Func<IServerRepository> GetEnvironmentRepository = () => ServerRepository.Instance;
         
         public void Okay()
         {

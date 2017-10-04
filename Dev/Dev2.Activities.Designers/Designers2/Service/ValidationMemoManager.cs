@@ -16,7 +16,7 @@ namespace Dev2.Activities.Designers2.Service
     public class ValidationMemoManager : IDisposable
     {
         private readonly ServiceDesignerViewModel _serviceDesignerViewModel;
-        public readonly string SourceNotFoundMessage = Warewolf.Studio.Resources.Languages.Core.ServiceDesignerSourceNotFound;
+        readonly string SourceNotFoundMessage = Warewolf.Studio.Resources.Languages.Core.ServiceDesignerSourceNotFound;
         public static readonly ErrorInfo NoError = new ErrorInfo
         {
             ErrorType = ErrorType.None,

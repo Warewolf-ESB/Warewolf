@@ -28,7 +28,7 @@ namespace Dev2.Studio.ViewModels.DataList
 
         private IWebActivity _activity;
 
-        public bool _isInitialLoad;
+        private bool _isInitialLoad;
 
         private string _activityName;
         private string _xmlOutput;

@@ -53,7 +53,7 @@ namespace Dev2.Activities.Designers2.Email
         readonly IAsyncWorker _asyncWorker;
 
         bool _isInitializing;
-        public Func<string> GetDatalistString = () => DataListSingleton.ActiveDataList.Resource.DataList;
+        readonly Func<string> GetDatalistString = () => DataListSingleton.ActiveDataList.Resource.DataList;
 
         public EmailDesignerViewModel(ModelItem modelItem)
             : this(modelItem, new AsyncWorker(), ServerRepository.Instance.ActiveServer, EventPublishers.Aggregator)
