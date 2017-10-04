@@ -20,9 +20,8 @@ namespace Dev2.Utilities
         {
             InitDictionary();
 
-            string value;
 
-            if(!_changedOptions.TryGetValue(key, out value))
+            if (!_changedOptions.TryGetValue(key, out string value))
             {
                 value = key;
             }

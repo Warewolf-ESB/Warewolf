@@ -26,7 +26,7 @@ using Warewolf.Storage.Interfaces;
 namespace Dev2.Activities.DropBox2016.DownloadActivity
 {
     [ToolDescriptorInfo("Dropbox", "Download", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090D8C8EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Storage: Dropbox", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Dropbox_Download")]
-    public class DsfDropBoxDownloadActivity : DsfBaseActivity,IEquatable<DsfDropBoxDownloadActivity>
+    public class DsfDropBoxDownloadActivity : DsfBaseActivity, IDisposable,IEquatable<DsfDropBoxDownloadActivity>
     {
         public DsfDropBoxDownloadActivity()
         {
@@ -71,11 +71,9 @@ namespace Dev2.Activities.DropBox2016.DownloadActivity
         {
             return _localPathManager;
         }
-
-        
+                
         public OauthSource SelectedSource { get; set; }
-
-        
+                
         [Inputs("Path in the user's Dropbox")]
         [FindMissing]
         public string ToPath { get; set; }
@@ -86,9 +84,7 @@ namespace Dev2.Activities.DropBox2016.DownloadActivity
         [Inputs("Local File Path")]
         [FindMissing]
         public string FromPath { get; set; }
-
         
-
         protected DropboxClient GetClient()
         {
             if (_client != null)
@@ -146,7 +142,10 @@ namespace Dev2.Activities.DropBox2016.DownloadActivity
                     var validFolder = LocalPathManager.GetFullFileName();
                     var fileExist = LocalPathManager.FileExist();
                     if (fileExist && !OverwriteFile)
+                    {
                         throw new Exception(ErrorResource.DropBoxDestinationFileAlreadyExist);
+                    }
+
                     DropboxFile.WriteAllBytes(validFolder, bytes);
                 }
                 return new List<string> { GlobalConstants.DropBoxSuccess };
@@ -212,6 +211,10 @@ namespace Dev2.Activities.DropBox2016.DownloadActivity
                 hashCode = (hashCode * 397) ^ (FromPath != null ? FromPath.GetHashCode() : 0);
                 return hashCode;
             }
+        }
+        public void Dispose()
+        {
+            _client.Dispose();
         }
     }
 

@@ -16,7 +16,7 @@ using Dev2.TO;
 using Dev2.Util;
 using Dev2.Utilities;
 using Dev2.Validation;
-
+using System;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
@@ -237,6 +237,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
      
                     ruleSet.Add(new IsValidExpressionRule(() => SearchCriteria, datalist, "1"));
                     break;
+                default:
+                    throw new ArgumentException("Unrecognized Property Name: " + propertyName);
             }
 
             return ruleSet;

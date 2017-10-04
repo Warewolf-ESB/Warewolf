@@ -98,8 +98,7 @@ namespace Dev2.Settings.Scheduler
             var cancelled = false;
             while ((String.IsNullOrEmpty(_schedulerViewModel.AccountName) || String.IsNullOrEmpty(_schedulerViewModel.Password)) && !cancelled)
             {
-                NetworkCredential cred;
-                CredentialUI.GetCredentialsVistaAndUp(scheduledResource.Name, out cred);
+                CredentialUI.GetCredentialsVistaAndUp(scheduledResource.Name, out NetworkCredential cred);
                 if (cred == null)
                 {
                     cancelled = true;
@@ -126,11 +125,12 @@ namespace Dev2.Settings.Scheduler
                 if (authService != null && authService.IsAuthorized(AuthorizationContext.Administrator, null))
                 {
                     if (!ValidateSelectedTask())
+                    {
                         return false;
+                    }
 
                     GetCredentials(_schedulerViewModel.SelectedTask);
-                    string errorMessage;
-                    if (!_schedulerViewModel.ScheduledResourceModel.Save(_schedulerViewModel.SelectedTask, out errorMessage))
+                    if (!_schedulerViewModel.ScheduledResourceModel.Save(_schedulerViewModel.SelectedTask, out string errorMessage))
                     {
                         _schedulerViewModel.ShowSaveErrorDialog(errorMessage);
                         _schedulerViewModel.ShowError(errorMessage);
@@ -163,7 +163,11 @@ namespace Dev2.Settings.Scheduler
 
         private bool ValidateSelectedTask()
         {
-            if (!_schedulerViewModel.SelectedTask.IsDirty) return true;
+            if (!_schedulerViewModel.SelectedTask.IsDirty)
+            {
+                return true;
+            }
+
             if (_schedulerViewModel.HasErrors && !_schedulerViewModel.Error.StartsWith(Core.SchedulerSaveErrorPrefix))
             {
                 _schedulerViewModel.ShowSaveErrorDialog(_schedulerViewModel.Error);
@@ -171,7 +175,11 @@ namespace Dev2.Settings.Scheduler
             }
 
             var oldName = _schedulerViewModel.SelectedTask?.OldName;
-            if (oldName == null) return true;
+            if (oldName == null)
+            {
+                return true;
+            }
+
             if (oldName != _schedulerViewModel.SelectedTask.Name && !oldName.Contains(Core.SchedulerNewTaskName) && !_schedulerViewModel.SelectedTask.IsNew)
             {
                 var showNameChangedConflict = _schedulerViewModel.PopupController.ShowNameChangedConflict(oldName, _schedulerViewModel.SelectedTask.Name);
@@ -303,7 +311,9 @@ namespace Dev2.Settings.Scheduler
                     {
                         GetResourcePickerDialog.Wait();
                         if (!GetResourcePickerDialog.IsFaulted)
+                        {
                             CurrentResourcePickerDialog = GetResourcePickerDialog.Result;
+                        }
                     }
                 }
 

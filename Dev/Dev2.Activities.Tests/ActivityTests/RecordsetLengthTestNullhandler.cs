@@ -42,9 +42,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
             const string expected = @"5";
-            string actual;
-            string error;
-            GetScalarValueFromEnvironment(result.Environment, "TestCountvar", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "TestCountvar", out string actual, out string error);
 
             // remove test datalist ;)
 
@@ -63,9 +61,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             IDSFDataObject result = ExecuteProcess();
 
             const string expected = "5";
-            IList<string> actual;
-            string error;
-            GetRecordSetFieldValueFromDataList(result.Environment, "recset1", "field1", out actual, out error);
+            GetRecordSetFieldValueFromDataList(result.Environment, "recset1", "field1", out IList<string> actual, out string error);
             string actualSet = actual.First(c => !string.IsNullOrEmpty(c));
 
             // remove test datalist ;)
@@ -104,9 +100,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             IDSFDataObject result = ExecuteProcess();
             //---------------Test Result -----------------------
             const string Expected = "0";
-            string actual;
-            string error;
-            GetScalarValueFromEnvironment(result.Environment, "res", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "res", out string actual, out string error);
             Assert.AreEqual(Expected, actual);
         }
 
@@ -122,9 +116,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             IDSFDataObject result = ExecuteProcess();
             //---------------Test Result -----------------------
             const string Expected = "";
-            string actual;
-            string error;
-            GetScalarValueFromEnvironment(result.Environment, "res", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "res", out string actual, out string error);
             Assert.AreEqual(Expected, actual);
         }
 

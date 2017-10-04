@@ -51,8 +51,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 string guidCsv = string.Empty;
                 string type = null;
 
-                StringBuilder tmp;
-                values.TryGetValue("GuidCsv", out tmp);
+                values.TryGetValue("GuidCsv", out StringBuilder tmp);
                 if (tmp != null)
                 {
                     guidCsv = tmp.ToString();

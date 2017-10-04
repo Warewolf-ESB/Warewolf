@@ -30,7 +30,9 @@ namespace Dev2.Tests.Runtime.Hosting
         public static IEnumerable<Mock<T>> GenerateMockEnumerable<T>(int count) where T : class
         {
             for (int i = 0; i < count; i++)
+            {
                 yield return new Mock<T>();
+            }
         }
 
 

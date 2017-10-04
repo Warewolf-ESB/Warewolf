@@ -141,8 +141,7 @@ namespace Dev2.Data.PathOperations
         }
         string ExtractHostNameFromPath(string path)
         {
-            Uri uriForSftp;
-            if (Uri.TryCreate(path, UriKind.RelativeOrAbsolute, out uriForSftp))
+            if (Uri.TryCreate(path, UriKind.RelativeOrAbsolute, out Uri uriForSftp))
             {
                 try
                 {
@@ -161,7 +160,10 @@ namespace Dev2.Data.PathOperations
 
             var hostName = ExtractHostNameFromPath(path.Path);
             if (hostName.ToLower().StartsWith(@"localhost"))
+            {
                 hostName = hostName.Replace(@"localhost", @"127.0.0.1");
+            }
+
             var methods = new List<AuthenticationMethod> { new PasswordAuthenticationMethod(path.Username, path.Password) };
 
             if (!string.IsNullOrEmpty(path.PrivateKeyFile))
@@ -202,8 +204,7 @@ namespace Dev2.Data.PathOperations
 
         string ExtractFileNameFromPath(string path)
         {
-            Uri uriForSftp;
-            if (Uri.TryCreate(path, UriKind.RelativeOrAbsolute, out uriForSftp))
+            if (Uri.TryCreate(path, UriKind.RelativeOrAbsolute, out Uri uriForSftp))
             {
                 try
                 {

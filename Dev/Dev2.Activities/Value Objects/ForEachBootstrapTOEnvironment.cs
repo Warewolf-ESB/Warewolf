@@ -163,8 +163,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities.Value_Objects
             {
                 if(!string.IsNullOrEmpty(splitString))
                 {
-                    int index;
-                    if(int.TryParse(splitString, out index))
+                    if (int.TryParse(splitString, out int index))
                     {
                         result.Add(index);
                     }

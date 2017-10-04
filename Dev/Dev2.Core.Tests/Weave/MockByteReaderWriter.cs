@@ -27,6 +27,13 @@ namespace Dev2.Tests.Weave
         public void Dispose()
         {
             _values.Clear();
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            // Cleanup
         }
 
         #endregion

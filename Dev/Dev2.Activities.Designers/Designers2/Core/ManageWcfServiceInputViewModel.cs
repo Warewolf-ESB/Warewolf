@@ -25,12 +25,12 @@ namespace Dev2.Activities.Designers2.Core
 {
     public class ManageWcfServiceInputViewModel : IManageWcfServiceInputViewModel
     {
-        private IGenerateOutputArea _generateOutputArea;
-        private IGenerateInputArea _generateInputArea;
+        private readonly IGenerateOutputArea _generateOutputArea;
+        private readonly IGenerateInputArea _generateInputArea;
         private bool _isEnabled;
         private bool _pasteResponseAvailable;
-        private IWcfEndPointViewModel _viewmodel;
-        private IWcfServiceModel _serviceModel;
+        private readonly IWcfEndPointViewModel _viewmodel;
+        private readonly IWcfServiceModel _serviceModel;
         private bool _isGenerateInputsEmptyRows;
         private bool _okSelected;
         private string _testResults;

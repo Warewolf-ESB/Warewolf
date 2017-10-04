@@ -20,18 +20,20 @@ namespace Dev2.Activities.Specs.Toolbox.Data.AssignObject
 
         public AssignObjectSteps(ScenarioContext scenarioContext)
         {
-            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            if (scenarioContext == null)
+            {
+                throw new ArgumentNullException("scenarioContext");
+            }
+
             this.scenarioContext = scenarioContext;
         }
 
         [Given(@"I assign the string ""(.*)"" to a json object ""(.*)""")]
         public void GivenIAssignTheStringAToAJsonObject(string value, string variable)
         {
-            List<Tuple<string, string>> variableList;
-            scenarioContext.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
 
-            List<AssignObjectDTO> fieldCollection;
-            scenarioContext.TryGetValue("fieldCollection", out fieldCollection);
+            scenarioContext.TryGetValue("fieldCollection", out List<AssignObjectDTO> fieldCollection);
 
             if (variableList == null)
             {
@@ -59,11 +61,9 @@ namespace Dev2.Activities.Specs.Toolbox.Data.AssignObject
                 value = string.Format("!~calculation~!{0}!~~calculation~!", value);
             }
 
-            List<Tuple<string, string>> variableList;
-            scenarioContext.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
 
-            List<AssignObjectDTO> fieldCollection;
-            scenarioContext.TryGetValue("fieldCollection", out fieldCollection);
+            scenarioContext.TryGetValue("fieldCollection", out List<AssignObjectDTO> fieldCollection);
 
             if (variableList == null)
             {
@@ -134,11 +134,9 @@ namespace Dev2.Activities.Specs.Toolbox.Data.AssignObject
             }
             else
             {
-                string actualValue;
                 value = value.Replace('"', ' ').Trim();
-                string error;
                 GetScalarValueFromEnvironment(result.Environment, variable,
-                                           out actualValue, out error);
+                                           out string actualValue, out string error);
                 actualValue = actualValue.Replace('"', ' ').Trim();
                 Assert.AreEqual(value, actualValue);
             }
@@ -155,11 +153,9 @@ namespace Dev2.Activities.Specs.Toolbox.Data.AssignObject
                 value = string.Format("!~calculation~!{0}!~~calculation~!", value);
             }
 
-            List<Tuple<string, string>> variableList;
-            scenarioContext.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
 
-            List<AssignObjectDTO> fieldCollection;
-            scenarioContext.TryGetValue("fieldCollection", out fieldCollection);
+            scenarioContext.TryGetValue("fieldCollection", out List<AssignObjectDTO> fieldCollection);
 
             if (variableList == null)
             {
@@ -187,11 +183,9 @@ namespace Dev2.Activities.Specs.Toolbox.Data.AssignObject
                 value = string.Format("!~calculation~!{0}!~~calculation~!", value);
             }
 
-            List<Tuple<string, string>> variableList;
-            scenarioContext.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
 
-            List<AssignObjectDTO> fieldCollection;
-            scenarioContext.TryGetValue("fieldCollection", out fieldCollection);
+            scenarioContext.TryGetValue("fieldCollection", out List<AssignObjectDTO> fieldCollection);
 
             if (variableList == null)
             {
@@ -219,11 +213,9 @@ namespace Dev2.Activities.Specs.Toolbox.Data.AssignObject
                 value = string.Format("!~calculation~!{0}!~~calculation~!", value);
             }
 
-            List<Tuple<string, string>> variableList;
-            scenarioContext.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
 
-            List<AssignObjectDTO> fieldCollection;
-            scenarioContext.TryGetValue("fieldCollection", out fieldCollection);
+            scenarioContext.TryGetValue("fieldCollection", out List<AssignObjectDTO> fieldCollection);
 
             if (variableList == null)
             {
@@ -244,8 +236,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.AssignObject
         {
             BuildShapeAndTestData();
 
-            List<AssignObjectDTO> fieldCollection;
-            scenarioContext.TryGetValue("fieldCollection", out fieldCollection);
+            scenarioContext.TryGetValue("fieldCollection", out List<AssignObjectDTO> fieldCollection);
 
             var multiAssign = new DsfMultiAssignObjectActivity();
 
@@ -268,8 +259,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.AssignObject
 
             
             int row = 0;
-            dynamic variableList;
-            scenarioContext.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out dynamic variableList);
 
             if (variableList != null)
             {
@@ -291,8 +281,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.AssignObject
                 }
             }
 
-            List<Tuple<string, string>> emptyRecordset;
-            bool isAdded = scenarioContext.TryGetValue("rs", out emptyRecordset);
+            bool isAdded = scenarioContext.TryGetValue("rs", out List<Tuple<string, string>> emptyRecordset);
             if (isAdded)
             {
                 foreach (Tuple<string, string> emptyRecord in emptyRecordset)

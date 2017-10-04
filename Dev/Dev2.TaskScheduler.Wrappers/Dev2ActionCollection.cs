@@ -50,8 +50,14 @@ namespace Dev2.TaskScheduler.Wrappers
         public void Dispose()
         {
             Instance.Dispose();
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
+        protected virtual void Dispose(bool disposing)
+        {
+            // Cleanup
+        }
 
         public ActionCollection Instance => _nativeInstance;
 

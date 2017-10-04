@@ -401,9 +401,7 @@ namespace Dev2.Data.Util
         /// </summary>
         public static bool IsXml(string data)
         {
-            bool isFragment;
-            bool isHtml;
-            var isXml = XmlHelper.IsXml(data, out isFragment, out isHtml);
+            var isXml = XmlHelper.IsXml(data, out bool isFragment, out bool isHtml);
             return isXml && !isFragment && !isHtml;
         }
 
@@ -412,9 +410,8 @@ namespace Dev2.Data.Util
         /// </summary>
         public static bool IsXml(string data, out bool isFragment)
         {
-            bool isHtml;
 
-            return XmlHelper.IsXml(data, out isFragment, out isHtml) && !isFragment && !isHtml;
+            return XmlHelper.IsXml(data, out isFragment, out bool isHtml) && !isFragment && !isHtml;
         }
 
         public static bool IsJson(string data)
@@ -426,6 +423,11 @@ namespace Dev2.Data.Util
             }
 
             return false;
+        }
+
+        public static bool IsXmlOrJson(string data)
+        {
+            return IsJson(data) || IsXml(data);
         }
 
         public static IList<string> GetAllPossibleExpressionsForFunctionOperations(string expression, IExecutionEnvironment env, out ErrorResultTO errors, int update)
@@ -475,7 +477,10 @@ namespace Dev2.Data.Util
             }
             var bomMarkUtf8 = Encoding.UTF8.GetString(Encoding.UTF8.GetPreamble());
             if (trimedData.StartsWith(bomMarkUtf8, StringComparison.OrdinalIgnoreCase))
+            {
                 trimedData = trimedData.Remove(0, bomMarkUtf8.Length);
+            }
+
             trimedData = trimedData.Replace("\0", "");
             return trimedData;
         }
@@ -565,8 +570,7 @@ namespace Dev2.Data.Util
                 if (IsValueRecordset(variable))
                 {
                     var index = ExtractIndexRegionFromRecordset(variable);
-                    int val;
-                    if (!int.TryParse(index, out val))
+                    if (!int.TryParse(index, out int val))
                     {
                         return true;
                     }

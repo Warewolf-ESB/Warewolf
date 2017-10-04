@@ -51,8 +51,7 @@ namespace Unlimited.Framework.Converters.Graph
 
         public static IInterrogator CreateInteregator(Type dataType)
         {
-            IInterrogator interrogatror;
-            return Interrogators.TryGetValue(dataType, out interrogatror) ? interrogatror : DefaultInterrogator;
+            return Interrogators.TryGetValue(dataType, out IInterrogator interrogatror) ? interrogatror : DefaultInterrogator;
         }
 
         #endregion Methods

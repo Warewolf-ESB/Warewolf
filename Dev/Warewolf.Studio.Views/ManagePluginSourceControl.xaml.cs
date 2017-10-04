@@ -122,18 +122,21 @@ namespace Warewolf.Studio.Views
 
         private void GacAssemblyNameTextBox_OnTextChanged(object sender, RoutedEventArgs e)
         {
-            var intellisenseTextBox = sender as IntellisenseTextBox;
-            if (intellisenseTextBox != null)
+            if (sender is IntellisenseTextBox intellisenseTextBox)
             {
                 if (string.IsNullOrWhiteSpace(intellisenseTextBox.Text))
                 {
                     if (Application.Current != null)
+                    {
                         intellisenseTextBox.Style = Application.Current.TryFindResource("AutoCompleteBoxStyle") as Style;
+                    }
                 }
                 else
                 {
                     if (Application.Current != null)
+                    {
                         intellisenseTextBox.Style = Application.Current.TryFindResource("DisabledAutoCompleteBoxStyle") as Style;
+                    }
                 }
             }
         }

@@ -74,8 +74,7 @@ namespace Dev2.Activities
         {
             foreach(var activity in Activities)
             {
-                var innerActivity = activity as DsfActivityAbstract<string>;
-                if(innerActivity != null)
+                if (activity is DsfActivityAbstract<string> innerActivity)
                 {
                     innerActivity.UpdateForEachInputs(updates);
                 }
@@ -86,8 +85,7 @@ namespace Dev2.Activities
         {
             foreach(var activity in Activities)
             {
-                var innerActivity = activity as DsfActivityAbstract<string>;
-                if(innerActivity != null)
+                if (activity is DsfActivityAbstract<string> innerActivity)
                 {
                     innerActivity.UpdateForEachOutputs(updates);
                 }
@@ -100,8 +98,7 @@ namespace Dev2.Activities
 
             foreach(var activity in Activities)
             {
-                var innerActivity = activity as DsfActivityAbstract<string>;
-                if(innerActivity != null)
+                if (activity is DsfActivityAbstract<string> innerActivity)
                 {
                     forEachInputs.AddRange(innerActivity.GetForEachInputs());
                 }
@@ -116,8 +113,7 @@ namespace Dev2.Activities
 
             foreach(var activity in Activities)
             {
-                var innerActivity = activity as DsfActivityAbstract<string>;
-                if(innerActivity != null)
+                if (activity is DsfActivityAbstract<string> innerActivity)
                 {
                     forEachOutputs.AddRange(innerActivity.GetForEachOutputs());
                 }
@@ -202,8 +198,7 @@ namespace Dev2.Activities
             var serviceTestSteps = serviceTestStep?.Children;
             foreach (var dsfActivity in Activities)
             {
-                var act = dsfActivity as IDev2Activity;
-                if (act != null)
+                if (dsfActivity is IDev2Activity act)
                 {
                     act.Execute(dataObject, update);
                     if (dataObject.IsServiceTestExecution)
@@ -211,8 +206,7 @@ namespace Dev2.Activities
                         var contentId = Guid.Parse(act.UniqueID);
                         if (dsfActivity.GetType().Name == "DsfActivity")
                         {
-                            var newAct = dsfActivity as DsfActivity;
-                            if (newAct != null)
+                            if (dsfActivity is DsfActivity newAct)
                             {
                                 contentId = newAct.GetWorkSurfaceMappingId();
                             }

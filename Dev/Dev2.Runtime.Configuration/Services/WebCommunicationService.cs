@@ -13,10 +13,11 @@ using System.Linq;
 using System.Net;
 using Dev2.Runtime.Configuration.ComponentModel;
 using Newtonsoft.Json;
+using System;
 
 namespace Dev2.Runtime.Configuration.Services
 {
-    public class WebCommunicationService : ICommunicationService
+    public class WebCommunicationService : ICommunicationService, IDisposable
     {
         private readonly WebClient _webClient;
 
@@ -37,6 +38,11 @@ namespace Dev2.Runtime.Configuration.Services
         {
             var datalistJSON = _webClient.UploadString(uri, resourceID);
             return JsonConvert.DeserializeObject<IEnumerable<DataListVariable>>(datalistJSON);
+        }
+
+        public void Dispose()
+        {
+            _webClient.Dispose();
         }
     }
 }

@@ -37,9 +37,6 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             var act = new DsfCommentActivity { Text = "SomeText" };
 
-            List<DebugItem> inRes;
-            List<DebugItem> outRes;
-
             const string dataList = "<ADL><recset1><field1/><field2/><field3/></recset1><recset2><id/><value/></recset2><OutVar1/></ADL>";
             const string dataListWithData = "<ADL>" +
                                             "<recset1>" +
@@ -60,7 +57,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                                             "<OutVar1/></ADL>";
 
             var result = CheckActivityDebugInputOutput(act, dataList,
-                dataListWithData, out inRes, out outRes);
+                dataListWithData, out List<DebugItem> inRes, out List<DebugItem> outRes);
 
             // remove test datalist ;)
 

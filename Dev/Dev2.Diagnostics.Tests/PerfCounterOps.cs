@@ -109,8 +109,7 @@ namespace Dev2.Diagnostics.Test
             Assert.AreEqual(innerCounter.RawValue, 0);
             counter.IncrementBy(3);
             Assert.AreEqual(innerCounter.RawValue, 3);
-            var resourcePerformanceCounter = counter as IResourcePerformanceCounter;
-            if (resourcePerformanceCounter != null)
+            if (counter is IResourcePerformanceCounter resourcePerformanceCounter)
             {
                 Assert.AreEqual(guid, resourcePerformanceCounter.ResourceId);
             }
@@ -162,8 +161,7 @@ namespace Dev2.Diagnostics.Test
             Assert.AreEqual(innerCounter.RawValue, 0);
             counter.IncrementBy(3);
             Assert.AreEqual(innerCounter.RawValue, 3);
-            var resourcePerformanceCounter = counter as IResourcePerformanceCounter;
-            if(resourcePerformanceCounter != null)
+            if (counter is IResourcePerformanceCounter resourcePerformanceCounter)
             {
                 Assert.AreEqual(guid, resourcePerformanceCounter.ResourceId);
             }
@@ -237,8 +235,7 @@ namespace Dev2.Diagnostics.Test
             Assert.AreEqual(innerCounter.RawValue, 0);
             counter.IncrementBy(3);
             Assert.AreEqual(innerCounter.RawValue, 3);
-            var resourcePerformanceCounter = counter as IResourcePerformanceCounter;
-            if (resourcePerformanceCounter != null)
+            if (counter is IResourcePerformanceCounter resourcePerformanceCounter)
             {
                 Assert.AreEqual(guid, resourcePerformanceCounter.ResourceId);
             }
@@ -359,8 +356,7 @@ namespace Dev2.Diagnostics.Test
             counter.IncrementBy(3);
             Assert.AreEqual(innerCounter.RawValue, 3);
             Assert.AreEqual(innerBase.RawValue, 1);
-            var resourcePerformanceCounter = counter as IResourcePerformanceCounter;
-            if (resourcePerformanceCounter != null)
+            if (counter is IResourcePerformanceCounter resourcePerformanceCounter)
             {
                 Assert.AreEqual(guid, resourcePerformanceCounter.ResourceId);
             }

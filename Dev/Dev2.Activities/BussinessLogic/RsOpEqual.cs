@@ -26,7 +26,10 @@ namespace Dev2.DataList
         public override Func<DataStorage.WarewolfAtom, bool> CreateFunc(IEnumerable<DataStorage.WarewolfAtom> values, IEnumerable<DataStorage.WarewolfAtom> warewolfAtoms, IEnumerable<DataStorage.WarewolfAtom> to, bool all)
         {
             if (all)
+            {
                 return a => values.All(x => DataStorage.CompareAtoms(a,x)==0);
+            }
+
             return a => values.Any(x =>  DataStorage.CompareAtoms(a, x) == 0);
 
         }

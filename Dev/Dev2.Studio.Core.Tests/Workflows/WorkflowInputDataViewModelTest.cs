@@ -113,9 +113,7 @@ namespace Dev2.Core.Tests.Workflows
             workflowInputDataviewModel.LoadWorkflowInputs();
             Assert.IsTrue(workflowInputDataviewModel.WorkflowInputs.Count == 0);
         }
-
-
-        //2013.01.22: Ashley Lewis - Bug 7837 
+        
         [TestMethod]
         public void Save_EmptyDataList_Expected_NoErrors()
         {
@@ -276,8 +274,7 @@ namespace Dev2.Core.Tests.Workflows
             var inputs = workflowInputDataViewModel.WorkflowInputs;
             Assert.AreEqual(1, inputs.Count);
             inputs[0].Value = "1"; // trick it into thinking this happened from the UI ;)
-            int indexToSelect;
-            workflowInputDataViewModel.AddBlankRow(inputs[0],out indexToSelect);
+            workflowInputDataViewModel.AddBlankRow(inputs[0], out int indexToSelect);
 
 
             //------------Assert Results-------------------------
@@ -315,8 +312,7 @@ namespace Dev2.Core.Tests.Workflows
             var inputs = workflowInputDataViewModel.WorkflowInputs;
             Assert.AreEqual(1, inputs.Count);
             inputs[0].Value = "1"; // trick it into thinking this happened from the UI ;)
-            int indexToSelect;
-            workflowInputDataViewModel.AddBlankRow(inputs[0], out indexToSelect);
+            workflowInputDataViewModel.AddBlankRow(inputs[0], out int indexToSelect);
 
             //------------Execute Test---------------------------
             workflowInputDataViewModel.RemoveRow(inputs[0], out indexToSelect);
@@ -359,8 +355,7 @@ namespace Dev2.Core.Tests.Workflows
             var inputs = workflowInputDataViewModel.WorkflowInputs;
             Assert.AreEqual(1, inputs.Count);
             inputs[0].Value = "1"; // trick it into thinking this happened from the UI ;)
-            int indexToSelect;
-            workflowInputDataViewModel.AddBlankRow(inputs[0], out indexToSelect);
+            workflowInputDataViewModel.AddBlankRow(inputs[0], out int indexToSelect);
 
             //------------Execute Test---------------------------
             var dataListItem = workflowInputDataViewModel.GetNextRow(inputs[0]);
@@ -399,8 +394,7 @@ namespace Dev2.Core.Tests.Workflows
             var inputs = workflowInputDataViewModel.WorkflowInputs;
             Assert.AreEqual(1, inputs.Count);
             inputs[0].Value = "1"; // trick it into thinking this happened from the UI ;)
-            int indexToSelect;
-            workflowInputDataViewModel.AddBlankRow(inputs[0], out indexToSelect);
+            workflowInputDataViewModel.AddBlankRow(inputs[0], out int indexToSelect);
 
             //------------Execute Test---------------------------
             var dataListItem = workflowInputDataViewModel.GetPreviousRow(inputs[1]);

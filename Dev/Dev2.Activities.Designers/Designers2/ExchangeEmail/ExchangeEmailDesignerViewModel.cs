@@ -209,8 +209,11 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
         public void TestEmailAccount()
         {
 
-            if (Errors != null && Errors.Count > 0)return;
-           
+            if (Errors != null && Errors.Count > 0)
+            {
+                return;
+            }
+
             Testing = true;
             StatusMessage = string.Empty;
 

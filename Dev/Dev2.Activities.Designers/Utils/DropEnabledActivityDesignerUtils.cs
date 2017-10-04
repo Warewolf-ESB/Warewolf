@@ -36,10 +36,9 @@ namespace Dev2.Activities.Utils
             if(!string.IsNullOrEmpty(modelItemString))
             {
                 var innnerObjectData = data.GetData(modelItemString);
-                var modelList = innnerObjectData as List<ModelItem>;
-                if(modelList != null && modelList.Count > 1)
+                if (innnerObjectData is List<ModelItem> modelList && modelList.Count > 1)
                 {
-                    if(modelList.FirstOrDefault(c => c.ItemType == typeof(FlowDecision) || c.ItemType == typeof(FlowSwitch<string>)) != null)
+                    if (modelList.FirstOrDefault(c => c.ItemType == typeof(FlowDecision) || c.ItemType == typeof(FlowSwitch<string>)) != null)
                     {
                         return false;
                     }

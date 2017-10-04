@@ -55,12 +55,7 @@ namespace Dev2.Tests.Runtime.WebServer
         [TestCategory("WebServerContext_Constructor")]
         public void WebServerContext_Constructor_PropertiesInitialized()
         {
-            //------------Setup for test--------------------------       
-            string content;
-            NameValueCollection boundVars;
-            NameValueCollection queryStr;
-            NameValueCollection headers;
-            var request = WebServerRequestTests.CreateHttpRequest(out content, out boundVars, out queryStr, out headers);
+            var request = WebServerRequestTests.CreateHttpRequest(out string content, out NameValueCollection boundVars, out NameValueCollection queryStr, out NameValueCollection headers);
 
             //------------Execute Test---------------------------
             var context = new WebServerContext(request, boundVars);

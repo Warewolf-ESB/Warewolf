@@ -25,7 +25,10 @@ namespace Dev2.DataList
         public override Func<DataStorage.WarewolfAtom, bool> CreateFunc(IEnumerable<DataStorage.WarewolfAtom> values, IEnumerable<DataStorage.WarewolfAtom> warewolfAtoms, IEnumerable<DataStorage.WarewolfAtom> to, bool all)
         {
             if (all)
+            {
                 return a => values.All(x => a.ToString().ToLower(CultureInfo.InvariantCulture).StartsWith(x.ToString().ToLower(CultureInfo.InvariantCulture)));
+            }
+
             return a => values.Any(x => a.ToString().ToLower(CultureInfo.InvariantCulture).StartsWith(x.ToString().ToLower(CultureInfo.InvariantCulture)));
         }
         public override string HandlesType()

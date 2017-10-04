@@ -18,7 +18,6 @@ using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
 using Warewolf.Resource.Errors;
 
-
 namespace Dev2.Collections
 {
     // See http://drwpf.com/blog/2007/09/16/can-i-bind-my-itemscontrol-to-a-dictionary/
@@ -100,7 +99,10 @@ namespace Dev2.Collections
 
         public Dictionary<TKey, TValue>.KeyCollection Keys => TrueDictionary.Keys;
 
-        public TValue this[TKey key] { get { return (TValue)KeyedEntryCollection[key].Value; } set { DoSetEntry(key, value); } }
+        public TValue this[TKey key] {
+            get => (TValue)KeyedEntryCollection[key].Value;
+            set => DoSetEntry(key, value);
+        }
 
         public Dictionary<TKey, TValue>.ValueCollection Values => TrueDictionary.Values;
 
@@ -252,8 +254,7 @@ namespace Dev2.Collections
             {
                 _version++;
 
-                DictionaryEntry entry;
-                var index = GetIndexAndEntryForKey(key, out entry);
+                var index = GetIndexAndEntryForKey(key, out DictionaryEntry entry);
                 FireEntryAddedNotifications(entry, index);
             }
         }
@@ -269,8 +270,7 @@ namespace Dev2.Collections
 
         bool DoRemoveEntry(TKey key)
         {
-            DictionaryEntry entry;
-            var index = GetIndexAndEntryForKey(key, out entry);
+            var index = GetIndexAndEntryForKey(key, out DictionaryEntry entry);
 
             var result = RemoveEntry(key);
             if(result)
@@ -287,10 +287,9 @@ namespace Dev2.Collections
 
         void DoSetEntry(TKey key, TValue value)
         {
-            DictionaryEntry entry;
-            var index = GetIndexAndEntryForKey(key, out entry);
+            var index = GetIndexAndEntryForKey(key, out DictionaryEntry entry);
 
-            if(SetEntry(key, value))
+            if (SetEntry(key, value))
             {
                 _version++;
 
@@ -384,7 +383,11 @@ namespace Dev2.Collections
 
         ICollection<TValue> IDictionary<TKey, TValue>.Values => Values;
 
-        TValue IDictionary<TKey, TValue>.this[TKey key] { get { return (TValue)KeyedEntryCollection[key].Value; } set { DoSetEntry(key, value); } }
+        TValue IDictionary<TKey, TValue>.this[TKey key]
+        {
+            get => (TValue)KeyedEntryCollection[key].Value;
+            set => DoSetEntry(key, value);
+        }
 
         #endregion IDictionary<TKey, TValue>
 

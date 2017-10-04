@@ -1,9 +1,10 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.IO.Pipes;
 
 namespace WarewolfCOMIPC.Client
 {
-    public class NamedPipeClientStreamWrapper : INamedPipeClientStreamWrapper
+    public class NamedPipeClientStreamWrapper : INamedPipeClientStreamWrapper, IDisposable
     {
         readonly NamedPipeClientStream _pipeClientStream;
         public NamedPipeClientStreamWrapper(string v, string token, PipeDirection inOut)

@@ -79,11 +79,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             //------------Execute Test---------------------------
             IDSFDataObject result = ExecuteProcess();
-
-            //------------Assert Results-------------------------
-            string actual;
-            string error;
-            GetScalarValueFromEnvironment(result.Environment, "OutVar1", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "OutVar1", out string actual, out string error);
             // remove test datalist ;)
 
             Assert.AreEqual("", actual);
@@ -97,10 +93,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             const string dataSplitPreDataList = "<ADL><xmlData/><recset1><field1/></recset1><recset2><field2/></recset2><OutVar1/><OutVar2/><OutVar3/><OutVar4/><OutVar5/></ADL>";
             SetupArguments("<root>" + dataSplitPreDataList + "</root>", dataSplitPreDataList, "", _resultsCollection);
             IDSFDataObject result = ExecuteProcess();
-
-            string actual;
-            string error;
-            GetScalarValueFromEnvironment(result.Environment, "OutVar1", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "OutVar1", out string actual, out string error);
             // remove test datalist ;)
 
             Assert.AreEqual("", actual);
@@ -113,13 +106,11 @@ namespace Dev2.Tests.Activities.ActivityTests
             SetUpActivityArguments();
             IDSFDataObject result = ExecuteProcess();
             const string Expected = "<method name=\"CreateForm\" signature=\"Unlimited.Applications.WebServer.Responses.CommunicationResponseWriter(object, string, string)\" />";
-            string actual;
-            string error;
-            GetScalarValueFromEnvironment(result.Environment, "OutVar1", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "OutVar1", out string actual, out string error);
 
             // remove test datalist ;)
 
-            if(string.IsNullOrEmpty(error))
+            if (string.IsNullOrEmpty(error))
             {
                 Assert.AreEqual(Expected, actual, "Got " + actual + " expected " + Expected);
             }
@@ -138,12 +129,10 @@ namespace Dev2.Tests.Activities.ActivityTests
             SetupArguments("<root>" + dataSplitPreDataListWithData + "</root>", dataSplitPreDataList, Source, _resultsCollection);
             IDSFDataObject result = ExecuteProcess();
             const string expected = "<method name=\"CreateForm\" signature=\"Unlimited.Applications.WebServer.Responses.CommunicationResponseWriter(object, string, string)\" />";
-            string actual;
-            string error;
-            GetScalarValueFromEnvironment(result.Environment, "OutVar1", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "OutVar1", out string actual, out string error);
             // remove test datalist ;)
 
-            if(string.IsNullOrEmpty(error))
+            if (string.IsNullOrEmpty(error))
             {
                 Assert.AreEqual(expected, actual, "Got " + actual + " expected " + expected);
             }
@@ -170,9 +159,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             for(int i = 1; i <= 2; i++)
             {
-                string returnVal;
-                string error;
-                GetScalarValueFromEnvironment(result.Environment, "OutVar" + i, out returnVal, out error);
+                GetScalarValueFromEnvironment(result.Environment, "OutVar" + i, out string returnVal, out string error);
 
                 actual.Add(returnVal.Trim());
             }
@@ -199,9 +186,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             for(int i = 1; i <= 1; i++)
             {
-                string returnVal;
-                string error;
-                GetScalarValueFromEnvironment(result.Environment, "OutVar" + i, out returnVal, out error);
+                GetScalarValueFromEnvironment(result.Environment, "OutVar" + i, out string returnVal, out string error);
                 actual.Add(returnVal.Trim());
             }
 
@@ -222,8 +207,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             IDSFDataObject result = ExecuteProcess();
 
             List<string> expected = new List<string> { "void(object)", "void(object)", "void(Dev2.DynamicServices.IDynamicServiceObject, object)", "void(CommandLine.Text.HelpText)", "string()", "Unlimited.Applications.WebServer.Responses.CommunicationResponseWriter(object, string, string)" };
-            string error;
-            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "recset1", "field1", out error);
+            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "recset1", "field1", out string error);
             // remove test datalist ;)
 
             ActivityUnitTests.Utils.StringComparer comparer = new ActivityUnitTests.Utils.StringComparer();
@@ -244,15 +228,12 @@ namespace Dev2.Tests.Activities.ActivityTests
             List<string> expected = new List<string> { @"" 
                 , "Unlimited.Applications.WebServer.Responses.CommunicationResponseWriter(object, string, string)"
             };
-            string actualScalar;
-            string error;
-            IList<string> actualRecordSet;
 
-            GetScalarValueFromEnvironment(result.Environment, "OutVar1", out actualScalar, out error);
+            GetScalarValueFromEnvironment(result.Environment, "OutVar1", out string actualScalar, out string error);
 
             Assert.AreEqual("CreateForm", actualScalar);
 
-            GetRecordSetFieldValueFromDataList(result.Environment, "recset1", "field1", out actualRecordSet, out error);
+            GetRecordSetFieldValueFromDataList(result.Environment, "recset1", "field1", out IList<string> actualRecordSet, out error);
 
             // remove test datalist ;)
 
@@ -280,9 +261,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                                                          "string()","Unlimited.Applications.WebServer.Responses.CommunicationResponseWriter(object, string, string)"
                                 };
             List<string> actual = new List<string>();
-            string actualScalar;
-            string error;
-            GetScalarValueFromEnvironment(result.Environment, "OutVar1", out actualScalar, out error);
+            GetScalarValueFromEnvironment(result.Environment, "OutVar1", out string actualScalar, out string error);
 
 
             Assert.AreEqual("CreateForm", actualScalar);
@@ -314,8 +293,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                                                     "string()","Unlimited.Applications.WebServer.Responses.CommunicationResponseWriter(object, string, string)"
                                                         
             };
-            string error;
-            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "recset1", "rec1", out error);
+            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "recset1", "rec1", out string error);
             actual.AddRange(RetrieveAllRecordSetFieldValues(result.Environment, "recset1", "field1", out error));
 
             // remove test datalist ;)
@@ -342,8 +320,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                                                         "void(Dev2.DynamicServices.IDynamicServiceObject, object)","void(CommandLine.Text.HelpText)",
                                                         "string()","Unlimited.Applications.WebServer.Responses.CommunicationResponseWriter(object, string, string)"
                                 };
-            string error;
-            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "recset1", "field1", out error);
+            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "recset1", "field1", out string error);
 
             // remove test datalist ;)
 
@@ -393,14 +370,13 @@ namespace Dev2.Tests.Activities.ActivityTests
                                                         "void(Dev2.DynamicServices.IDynamicServiceObject, object)","void(CommandLine.Text.HelpText)",
                                                         "string()","Unlimited.Applications.WebServer.Responses.CommunicationResponseWriter(object, string, string)"
                                 };
-            string error;
 
-            for(int i = 1; i < 4; i++)
+            for (int i = 1; i < 4; i++)
             {
                 act.Execute(dataObject, i);
             }
 
-            List<string> actual = RetrieveAllRecordSetFieldValues(dataObject.Environment, "recset1", "field1", out error);
+            List<string> actual = RetrieveAllRecordSetFieldValues(dataObject.Environment, "recset1", "field1", out string error);
             Assert.IsNotNull(actual);
             Assert.AreEqual(3,actual.Count);
             Assert.AreEqual("Unlimited.Applications.WebServer.Responses.CommunicationResponseWriter(object, string, string)", actual[0]);
@@ -421,8 +397,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             //exe
             IDSFDataObject result = ExecuteProcess();
-            string error;
-            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "recset1", "field1", out error);
+            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "recset1", "field1", out string error);
 
             // remove test datalist ;)
 
