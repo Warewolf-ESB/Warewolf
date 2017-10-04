@@ -286,9 +286,11 @@ namespace Dev2.Services.Security
                 {
                     isInRole = principal.IsInRole(windowsGroup);
                 }
+            }            
+            catch (Exception e)
+            {
+                Dev2Logger.Warn(e.Message, "Warewolf Warn");
             }
-            
-            catch { }
             
             
             return isInRole || p.IsBuiltInGuestsForExecution;
