@@ -59,7 +59,7 @@ namespace Dev2.Common.Interfaces
         ICommand PasteResponseCommand { get; }
         IGenerateOutputArea OutputArea { get; }
         IOutputDescription Description { get; set; }
-        IGenerateInputArea InputArea { get; set; }
+        IGenerateInputArea InputArea { get; }
         bool PasteResponseVisible { get; set; }
         bool PasteResponseAvailable { get; }
         bool OutputCountExpandAllowed { get; set; }
