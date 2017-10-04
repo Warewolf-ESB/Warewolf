@@ -307,7 +307,7 @@ namespace Warewolf.UI.Tests.Deploy.DeployUIMapClasses
         {
             var timeout = 60;
             var successful = false;
-            while (timeout-- > 0 and !successful)
+            while (timeout-- > 0 && !successful)
             {
                 if (DialogsUIMap.MessageBoxWindow.Exists)
                 {
