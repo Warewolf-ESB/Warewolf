@@ -25,12 +25,10 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
         {
-            StringBuilder tmp;
-            requestArgs.TryGetValue("resourceID", out tmp);
+            requestArgs.TryGetValue("resourceID", out StringBuilder tmp);
             if (tmp != null)
             {
-                Guid resourceId;
-                if (Guid.TryParse(tmp.ToString(), out resourceId))
+                if (Guid.TryParse(tmp.ToString(), out Guid resourceId))
                 {
                     return resourceId;
                 }
@@ -51,19 +49,16 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 Dev2Logger.Info("Delete Test Service", GlobalConstants.WarewolfInfo);
 
-                StringBuilder resourceIdString;
-                values.TryGetValue("resourceID", out resourceIdString);
+                values.TryGetValue("resourceID", out StringBuilder resourceIdString);
                 if (resourceIdString == null)
                 {
                     throw new InvalidDataContractException("resourceID is missing");
                 }
-                Guid resourceId;
-                if (!Guid.TryParse(resourceIdString.ToString(), out resourceId))
+                if (!Guid.TryParse(resourceIdString.ToString(), out Guid resourceId))
                 {
                     throw new InvalidDataContractException("resourceID is not a valid GUID.");
                 }
-                StringBuilder testName;
-                values.TryGetValue("testName", out testName);
+                values.TryGetValue("testName", out StringBuilder testName);
                 if (string.IsNullOrEmpty(testName?.ToString()))
                 {
                     throw new InvalidDataContractException("testName is missing");

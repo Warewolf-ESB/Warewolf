@@ -108,7 +108,10 @@ namespace Dev2.Core.Tests
             var countBefore = contentItems.Count;
             Assert.IsTrue(countBefore > 0);
             foreach (var contentItem in contentItems)
+            {
                 Assert.AreEqual(default(DateTime), contentItem.EndTime);
+            }
+
             var content = new Mock<IDebugState>();
             content.SetupProperty(state => state.StateType, StateType.None);
             content.SetupProperty(state => state.EndTime, endTime);
@@ -387,7 +390,10 @@ namespace Dev2.Core.Tests
             var countBefore = contentItems.Count;
             Assert.IsTrue(countBefore > 0);
             foreach (var contentItem in contentItems)
+            {
                 Assert.AreEqual(default(DateTime), contentItem.EndTime);
+            }
+
             var content = new Mock<IDebugState>();
             content.SetupProperty(state => state.StateType, StateType.Duration);
             content.SetupProperty(state => state.EndTime, endTime);

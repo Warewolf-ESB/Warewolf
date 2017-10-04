@@ -49,8 +49,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 string resourceName = null;
                 string type = null;
                 string resourceId = null;
-                StringBuilder tmp;
-                values.TryGetValue("ResourceName", out tmp);
+                values.TryGetValue("ResourceName", out StringBuilder tmp);
                 if (tmp != null)
                 {
                     resourceName = tmp.ToString();

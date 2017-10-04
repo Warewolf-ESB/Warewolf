@@ -24,10 +24,9 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
         public void VariableUtils_TryParseVariables_InputValueIsNullOrEmpty_NoErrors()
         {
             //------------Setup for test--------------------------
-            string outputValue;
 
             //------------Execute Test---------------------------
-            var error = VariableUtils.TryParseVariables(null, out outputValue, () => { });
+            var error = VariableUtils.TryParseVariables(null, out string outputValue, () => { });
 
             //------------Assert Results-------------------------
             Assert.IsNull(error);
@@ -39,10 +38,9 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
         public void VariableUtils_TryParseVariables_InputValueIsInvalidExpression_HasErrors()
         {
             //------------Setup for test--------------------------
-            string outputValue;
 
             //------------Execute Test---------------------------
-            var error = "a]]".TryParseVariables(out outputValue, () => { });
+            var error = "a]]".TryParseVariables(out string outputValue, () => { });
 
             //------------Assert Results-------------------------
             Assert.IsNotNull(error);
@@ -55,11 +53,10 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
         public void VariableUtils_TryParseVariables_InputValueIsValidExpressionAndNoInputs_UsesVariableValueAndHasNoErrors()
         {
             //------------Setup for test--------------------------
-            string outputValue;
             string variableValue = "xxx";
 
             //------------Execute Test---------------------------
-            var error = "[[a]]".TryParseVariables(out outputValue, () => { }, variableValue: variableValue);
+            var error = "[[a]]".TryParseVariables(out string outputValue, () => { }, variableValue: variableValue);
 
             //------------Assert Results-------------------------
             Assert.IsNull(error);
@@ -72,14 +69,13 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
         public void VariableUtils_TryParseVariables_InputValueIsValidExpressionAndHasInputs_UsesInputsValueAndHasNoErrors()
         {
             //------------Setup for test--------------------------
-            string outputValue;
             string variableValue = "xxx";
 
             var inputs = new ObservableCollection<ObservablePair<string, string>>();
             inputs.Add(new ObservablePair<string, string>("[[a]]", variableValue));
 
             //------------Execute Test---------------------------
-            var error = "[[a]]".TryParseVariables(out outputValue, () => { }, variableValue: "a", inputs: inputs);
+            var error = "[[a]]".TryParseVariables(out string outputValue, () => { }, variableValue: "a", inputs: inputs);
 
             //------------Assert Results-------------------------
             Assert.IsNull(error);

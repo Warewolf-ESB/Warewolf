@@ -40,9 +40,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
             const string expected = "somevalue";
-            string actual;
-            string error;
-            GetScalarValueFromEnvironment(result.Environment, "@test.value1", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "@test.value1", out string actual, out string error);
 
             Assert.AreEqual(expected, actual);
         }
@@ -78,11 +76,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             IDSFDataObject result = ExecuteProcess();
             string expected1 = "Iris";
             string expected2 = "30";
-            string actual1;
-            string actual2;
-            string error;
-            GetScalarValueFromEnvironment(result.Environment, "@test.Name", out actual1, out error);
-            GetScalarValueFromEnvironment(result.Environment, "@test.Age", out actual2, out error);
+            GetScalarValueFromEnvironment(result.Environment, "@test.Name", out string actual1, out string error);
+            GetScalarValueFromEnvironment(result.Environment, "@test.Age", out string actual2, out error);
 
             Assert.AreEqual(expected1, actual1);
             Assert.AreEqual(expected2, actual2);
@@ -103,9 +98,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
             const string expected = "somevalue@#";
-            string actual;
-            string error;
-            GetScalarValueFromEnvironment(result.Environment, "@test.value1", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "@test.value1", out string actual, out string error);
 
             Assert.AreEqual(expected, actual);
         }
@@ -126,9 +119,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
             const string expected = "somevalue2";
-            string actual;
-            string error;
-            GetScalarValueFromEnvironment(result.Environment, "@test.value1", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "@test.value1", out string actual, out string error);
 
             Assert.AreEqual(expected, actual);
         }
@@ -151,12 +142,10 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
             const string expected1 = "somevalue1", expected2 = "somevalue2", expected3 = "somevalue3", expected4 = "somevalue4";
-            string actual1, actual2, actual3, actual4;
-            string error;
-            GetScalarValueFromEnvironment(result.Environment, "@test.value1", out actual1, out error);
-            GetScalarValueFromEnvironment(result.Environment, "@test.value2", out actual2, out error);
-            GetScalarValueFromEnvironment(result.Environment, "@test.value3", out actual3, out error);
-            GetScalarValueFromEnvironment(result.Environment, "@test.value4", out actual4, out error);
+            GetScalarValueFromEnvironment(result.Environment, "@test.value1", out string actual1, out string error);
+            GetScalarValueFromEnvironment(result.Environment, "@test.value2", out string actual2, out error);
+            GetScalarValueFromEnvironment(result.Environment, "@test.value3", out string actual3, out error);
+            GetScalarValueFromEnvironment(result.Environment, "@test.value4", out string actual4, out error);
 
             Assert.AreEqual(expected1, actual1);
             Assert.AreEqual(expected2, actual2);
@@ -178,10 +167,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                          , fieldCollection);
 
             IDSFDataObject result = ExecuteProcess();
-
-            string actual;
-            string error;
-            GetScalarValueFromEnvironment(result.Environment, "@test.value", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "@test.value", out string actual, out string error);
 
             Assert.IsTrue(actual == string.Empty);
         }
@@ -237,9 +223,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
             const string expected = "somevalue";
-            string actual;
-            string error;
-            GetScalarValueFromEnvironment(result.Environment, "@test.value1.value2.value3.value4", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "@test.value1.value2.value3.value4", out string actual, out string error);
 
             Assert.AreEqual(expected, actual);
         }
@@ -259,9 +243,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
             const string expected = "7";
-            string actual;
-            string error;
-            GetScalarValueFromEnvironment(result.Environment, "@test.value1", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "@test.value1", out string actual, out string error);
 
             Assert.AreEqual(expected, actual);
         }
@@ -286,9 +268,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
             const string expected = "7";
-            string actual;
-            string error;
-            GetScalarValueFromEnvironment(result.Environment, "@test.total1", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "@test.total1", out string actual, out string error);
 
             Assert.AreEqual(expected, actual);
         }
@@ -311,12 +291,10 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
             const string expected1 = "somevalue1", expected2 = "somevalue2", expected3 = "somevalue3", expected4 = "somevalue4";
-            string actual1, actual2, actual3, actual4;
-            string error;
-            GetScalarValueFromEnvironment(result.Environment, "@test.value(1)", out actual1, out error);
-            GetScalarValueFromEnvironment(result.Environment, "@test.value(2)", out actual2, out error);
-            GetScalarValueFromEnvironment(result.Environment, "@test.value(3)", out actual3, out error);
-            GetScalarValueFromEnvironment(result.Environment, "@test.value(4)", out actual4, out error);
+            GetScalarValueFromEnvironment(result.Environment, "@test.value(1)", out string actual1, out string error);
+            GetScalarValueFromEnvironment(result.Environment, "@test.value(2)", out string actual2, out error);
+            GetScalarValueFromEnvironment(result.Environment, "@test.value(3)", out string actual3, out error);
+            GetScalarValueFromEnvironment(result.Environment, "@test.value(4)", out string actual4, out error);
 
             Assert.AreEqual(expected1, actual1);
             Assert.AreEqual(expected2, actual2);
@@ -343,9 +321,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
             const string expected = "4";
-            string actual;
-            string error;
-            GetScalarValueFromEnvironment(result.Environment, "@test.total1", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "@test.total1", out string actual, out string error);
 
             Assert.AreEqual(expected, actual);
         }
@@ -374,9 +350,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
             const string expected = "Bob";
-            string actual;
-            string error;
-            GetScalarValueFromEnvironment(result.Environment, "@Pet.Owner(1).Name", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "@Pet.Owner(1).Name", out string actual, out string error);
             Assert.AreEqual(expected, actual);
             GetScalarValueFromEnvironment(result.Environment, "@Pet.Owner(1).Tel(1).Name", out actual, out error);
             Assert.AreEqual("Home", actual);

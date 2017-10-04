@@ -199,7 +199,11 @@ namespace Dev2.Activities.Sharepoint
 
                 foreach (var varDebug in FilterCriteria)
                 {
-                    if (string.IsNullOrEmpty(varDebug.FieldName)) return;
+                    if (string.IsNullOrEmpty(varDebug.FieldName))
+                    {
+                        return;
+                    }
+
                     DebugItem debugItem = new DebugItem();
                     AddDebugItem(new DebugItemStaticDataParams("", _indexCounter.ToString(CultureInfo.InvariantCulture)), debugItem);
                     var fieldName = varDebug.FieldName;

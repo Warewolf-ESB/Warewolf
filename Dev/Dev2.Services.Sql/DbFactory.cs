@@ -19,7 +19,7 @@ using Warewolf.Security.Encryption;
 
 namespace Dev2.Services.Sql
 {
-    internal class DbFactory : IDbFactory
+    internal class DbFactory : IDbFactory, IDisposable
     {
         SqlConnection _sqlConnection;
 
@@ -70,14 +70,13 @@ namespace Dev2.Services.Sql
 
         static DataTable GetSqlServerSchema(IDbConnection connection, string collectionName)
         {
-            var sqlConnection = connection as SqlConnection;
-            if (sqlConnection != null)
+            if (connection is SqlConnection sqlConnection)
             {
                 return sqlConnection.GetSchema(collectionName);
             }
-            
+
             else
-            
+
             {
                 throw new Exception(string.Format(ErrorResource.InvalidSqlConnection, "Sql"));
             }
@@ -97,7 +96,10 @@ namespace Dev2.Services.Sql
         public DataSet FetchDataSet(IDbCommand command)
         {
             if (!(command is SqlCommand))
+            {
                 throw new Exception(string.Format(ErrorResource.InvalidCommand, "DBCommand"));
+            }
+
             using (var dataSet = new DataSet())
             {
                 using (var adapter = new SqlDataAdapter(command as SqlCommand))
@@ -106,6 +108,11 @@ namespace Dev2.Services.Sql
                 }
                 return dataSet;
             }
+        }
+
+        public void Dispose()
+        {
+            _sqlConnection.Dispose();
         }
 
         #endregion

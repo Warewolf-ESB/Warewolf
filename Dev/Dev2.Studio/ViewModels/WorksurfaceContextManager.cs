@@ -759,8 +759,7 @@ namespace Dev2.Studio.ViewModels
                 return;
             }
 
-            Action<IContextualResourceModel, IView> editAction;
-            if (_editHandler.TryGetValue(resourceModel.ServerResourceType, out editAction))
+            if (_editHandler.TryGetValue(resourceModel.ServerResourceType, out Action<IContextualResourceModel, IView> editAction))
             {
                 editAction.Invoke(resourceModel, resourceModel.GetView(() => ViewFactoryProvider.GetViewGivenServerResourceType(resourceModel.ServerResourceType)));
             }
@@ -1094,8 +1093,7 @@ namespace Dev2.Studio.ViewModels
         {
             var connection = new Connection(resourceModel.WorkflowXaml.ToXElement());
             string address = null;
-            Uri uri;
-            if (Uri.TryCreate(connection.Address, UriKind.RelativeOrAbsolute, out uri))
+            if (Uri.TryCreate(connection.Address, UriKind.RelativeOrAbsolute, out Uri uri))
             {
                 address = uri.Host;
             }
@@ -1148,7 +1146,11 @@ namespace Dev2.Studio.ViewModels
 
         public void AddReverseDependencyVisualizerWorkSurface(IContextualResourceModel resource)
         {
-            if (resource == null) return;
+            if (resource == null)
+            {
+                return;
+            }
+
             ShowDependencies(true, resource, ActiveServer);
         }
 
@@ -1224,8 +1226,7 @@ namespace Dev2.Studio.ViewModels
         private T CreateAndActivateUniqueWorkSurface<T>(WorkSurfaceContext context)
             where T : IWorkSurfaceViewModel
         {
-            T vmr;
-            WorkSurfaceContextViewModel ctx = WorkSurfaceContextFactory.Create(context, out vmr);
+            WorkSurfaceContextViewModel ctx = WorkSurfaceContextFactory.Create(context, out T vmr);
             AddAndActivateWorkSurface(ctx);
             return vmr;
         }
@@ -1369,8 +1370,7 @@ namespace Dev2.Studio.ViewModels
                             return RemoveScheduler(vm, true);
                         }
                     }
-                    var tab = vm as IStudioTab;
-                    if (tab != null)
+                    if (vm is IStudioTab tab)
                     {
                         remove = tab.DoDeactivate(true);
                         if (remove)
@@ -1387,8 +1387,7 @@ namespace Dev2.Studio.ViewModels
 
         private static bool RemoveScheduler(IWorkSurfaceViewModel vm, bool remove)
         {
-            var schedulerViewModel = vm as SchedulerViewModel;
-            if (schedulerViewModel != null)
+            if (vm is SchedulerViewModel schedulerViewModel)
             {
                 remove = schedulerViewModel.DoDeactivate(true);
                 if (remove)
@@ -1401,8 +1400,7 @@ namespace Dev2.Studio.ViewModels
 
         private static bool CloseSettings(IWorkSurfaceViewModel vm, bool remove)
         {
-            var settingsViewModel = vm as SettingsViewModel;
-            if (settingsViewModel != null)
+            if (vm is SettingsViewModel settingsViewModel)
             {
                 remove = settingsViewModel.DoDeactivate(true);
                 if (remove)
@@ -1439,7 +1437,10 @@ namespace Dev2.Studio.ViewModels
                     }
                 }
                 if (dontPrompt)
+                {
                     remove = true;
+                }
+
                 if (!remove)
                 {
                     remove = ShowRemovePopup(workflowVm);
@@ -1455,7 +1456,10 @@ namespace Dev2.Studio.ViewModels
                     _shellViewModel.Items.Remove(context);
                     workflowVm.Dispose();
                     if (_shellViewModel.PreviousActive != null && _shellViewModel.PreviousActive.WorkSurfaceViewModel == vm)
+                    {
                         _shellViewModel.PreviousActive = null;
+                    }
+
                     if (e != null)
                     {
                         e.Cancel = true;

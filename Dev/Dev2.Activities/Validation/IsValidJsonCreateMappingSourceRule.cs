@@ -48,7 +48,10 @@ namespace Dev2.Validation
             var to = GetValue.Invoke();
             ErrorText = JsonMappingCompoundTo.IsValidJsonMappingInput(to.SourceName, to.DestinationName);
             if (string.IsNullOrEmpty(ErrorText))
+            {
                 return null;
+            }
+
             return new ActionableErrorInfo
             {
                 ErrorType = ErrorType.Critical,

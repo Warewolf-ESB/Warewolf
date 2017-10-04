@@ -16,9 +16,21 @@ namespace Dev2.Data
         /// <param name="x">The first object of type <paramref name="x"/> to compare.</param><param name="y">The second object of type <paramref name="y"/> to compare.</param>
         public bool Equals(IScalar x, IScalar y)
         {
-            if (x == null) return false;
-            if (y == null) return false;
-            if (x.Name == null && y.Name == null) return true;
+            if (x == null)
+            {
+                return false;
+            }
+
+            if (y == null)
+            {
+                return false;
+            }
+
+            if (x.Name == null && y.Name == null)
+            {
+                return true;
+            }
+
             if (x.Name != null)
             {
                 return x.Name.Equals(y.Name, StringComparison.OrdinalIgnoreCase);

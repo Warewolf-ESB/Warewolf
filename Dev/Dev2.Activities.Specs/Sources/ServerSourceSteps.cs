@@ -34,8 +34,7 @@ namespace Dev2.Activities.Specs.Sources
 
             var address = table.Rows[0]["Address"];
             var authenticationType = table.Rows[0]["AuthenticationType"];
-            AuthenticationType result;
-            Enum.TryParse(authenticationType, true, out result);
+            Enum.TryParse(authenticationType, true, out AuthenticationType result);
 
             IServerSource serverSource = new ServerSource()
             {

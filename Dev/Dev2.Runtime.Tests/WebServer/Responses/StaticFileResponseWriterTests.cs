@@ -53,12 +53,7 @@ namespace Dev2.Tests.Runtime.WebServer.Responses
         [TestCategory("StaticFileResponseWriter_Write")]
         public void StaticFileResponseWriter_Write_WebServerContext_WritesContent()
         {
-            //------------Setup for test--------------------------
-            string content;
-            NameValueCollection boundVars;
-            NameValueCollection queryStr;
-            NameValueCollection headers;
-            var request = WebServerRequestTests.CreateHttpRequest(out content, out boundVars, out queryStr, out headers);
+            var request = WebServerRequestTests.CreateHttpRequest(out string content, out NameValueCollection boundVars, out NameValueCollection queryStr, out NameValueCollection headers);
 
             var context = new WebServerContext(request, boundVars);
 

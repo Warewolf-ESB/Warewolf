@@ -83,8 +83,7 @@ namespace Dev2.Studio.Core
 
         private string GetPropertyValue(object modelItemObject, string propertyName)
         {
-            var modelItem = modelItemObject as ModelItem;
-            if(modelItem != null && modelItem.Properties[propertyName] != null)
+            if (modelItemObject is ModelItem modelItem && modelItem.Properties[propertyName] != null)
             {
                 return modelItem.Properties[propertyName].ComputedValue == null
                            ? string.Empty
@@ -95,8 +94,7 @@ namespace Dev2.Studio.Core
 
         private void SetPropertyValue(object modelItemObject, string propertyName, object value)
         {
-            var modelItem = modelItemObject as ModelItem;
-            if(modelItem != null && modelItem.Properties[propertyName] != null)
+            if (modelItemObject is ModelItem modelItem && modelItem.Properties[propertyName] != null)
             {
                 modelItem.Properties[propertyName].SetValue(value);
             }

@@ -61,9 +61,8 @@ namespace Dev2.UI
                 return;
             }
 
-            var text = dataObjectPastingEventArgs.SourceDataObject.GetData(DataFormats.Text) as string;
 
-            if (text != null && text.Contains("\t"))
+            if (dataObjectPastingEventArgs.SourceDataObject.GetData(DataFormats.Text) is string text && text.Contains("\t"))
             {
                 var args = new RoutedEventArgs(TabInsertedEvent, this);
                 RaiseEvent(args);
@@ -75,8 +74,7 @@ namespace Dev2.UI
         protected override void OnPreviewMouseLeftButtonDown(MouseButtonEventArgs e)
         {
             base.OnPreviewMouseLeftButtonDown(e);
-            var originalSource = e.OriginalSource as TextBlock;
-            if (originalSource != null)
+            if (e.OriginalSource is TextBlock originalSource)
             {
                 InsertItem(originalSource.Text, true);
             }
@@ -161,12 +159,11 @@ namespace Dev2.UI
             object appendText = null;
             if(SelectionAdapter != null && (selectedItem = SelectionAdapter.SelectedItem) != null)
             {
-                var verifyPart = selectedItem as IDataListVerifyPart;
-                if(verifyPart != null)
+                if (selectedItem is IDataListVerifyPart verifyPart)
                 {
                     appendText = verifyPart.DisplayValue;
                 }
-                else if(SelectionAdapter.SelectedItem is IntellisenseProviderResult)
+                else if (SelectionAdapter.SelectedItem is IntellisenseProviderResult)
                 {
                     appendText = (IntellisenseProviderResult)SelectionAdapter.SelectedItem;
                 }
@@ -257,8 +254,7 @@ namespace Dev2.UI
 
         private IIntellisenseProvider PerformInsertFromDropDown(object item, IIntellisenseProvider currentProvider, ref string appendText, ref bool isInsert)
         {
-            var intellisenseProviderResult = item as IntellisenseProviderResult;
-            if(intellisenseProviderResult != null)
+            if (item is IntellisenseProviderResult intellisenseProviderResult)
             {
                 currentProvider = intellisenseProviderResult.Provider;
             }
@@ -267,14 +263,13 @@ namespace Dev2.UI
 
             if(SelectionAdapter != null)
             {
-                var verifyPart = selectedItem as IDataListVerifyPart;
-                if(verifyPart != null)
+                if (selectedItem is IDataListVerifyPart verifyPart)
                 {
                     appendText = verifyPart.DisplayValue;
                 }
                 else
                 {
-                    if(selectedItem != null)
+                    if (selectedItem != null)
                     {
                         appendText = selectedItem.ToString();
                     }
@@ -326,7 +321,10 @@ namespace Dev2.UI
         protected void EnsureErrorStatus()
         {
             var currentText = Text;
-            if (string.IsNullOrEmpty(currentText)) return;
+            if (string.IsNullOrEmpty(currentText))
+            {
+                return;
+            }
 
             if (AllowMultipleVariables)
             {
@@ -724,7 +722,9 @@ namespace Dev2.UI
         protected virtual void OnAllowMultilinePasteChanged(bool oldValue, bool newValue)
         {
             if(TextBox != null)
+            {
                 TextBox.AcceptsReturn = newValue;
+            }
         }
 
         public static readonly DependencyProperty AllowUserCalculateModeProperty =

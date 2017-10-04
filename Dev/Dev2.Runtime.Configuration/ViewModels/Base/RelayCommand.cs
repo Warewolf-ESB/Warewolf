@@ -84,7 +84,9 @@ namespace Dev2.Runtime.Configuration.ViewModels.Base
         public RelayCommand(Action<T> execute, Predicate<T> canExecute)
         {
             if(execute == null)
+            {
                 throw new ArgumentNullException("execute");
+            }
 
             _execute = execute;
             _canExecute = canExecute;

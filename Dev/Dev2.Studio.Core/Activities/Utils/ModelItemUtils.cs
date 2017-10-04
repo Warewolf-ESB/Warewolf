@@ -87,8 +87,7 @@ namespace Dev2.Studio.Core.Activities.Utils
             {
                 if (modelProperty.PropertyType == typeof(InArgument<T>))
                 {
-                    var arg = modelProperty.ComputedValue as InArgument<T>;
-                    if (arg != null)
+                    if (modelProperty.ComputedValue is InArgument<T> arg)
                     {
                         value = arg.Expression.ToString();
                     }
@@ -102,8 +101,7 @@ namespace Dev2.Studio.Core.Activities.Utils
                 {
                     if (typeof(T) == typeof(Guid))
                     {
-                        Guid guid;
-                        Guid.TryParse(value.ToString(), out guid);
+                        Guid.TryParse(value.ToString(), out Guid guid);
                         value = guid;
                     }
                 }

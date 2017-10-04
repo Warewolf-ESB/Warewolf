@@ -41,7 +41,11 @@ namespace Dev2.Runtime.ESB.Management.Services
             int i = 0, o = 1;
             while ((i = str.IndexOf(ch, i)) != -1)
             {
-                if (o == index) return i;
+                if (o == index)
+                {
+                    return i;
+                }
+
                 o++;
                 i++;
             }
@@ -54,9 +58,8 @@ namespace Dev2.Runtime.ESB.Management.Services
             try
             {
                 Dev2Logger.Info("Save Resource Service",GlobalConstants.WarewolfInfo);
-                StringBuilder resourceDefinition;
 
-                values.TryGetValue("ServerSource", out resourceDefinition);
+                values.TryGetValue("ServerSource", out StringBuilder resourceDefinition);
 
                 IServerSource src = serializer.Deserialize<ServerSource>(resourceDefinition);
                 Connection con = new Connection();

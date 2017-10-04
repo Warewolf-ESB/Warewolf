@@ -48,9 +48,8 @@ namespace Dev2.Runtime.ESB.Management.Services
             string resourceID = null;
             string resourceType = null;
 
-            StringBuilder tmp;
-            values.TryGetValue("ResourceID", out tmp);
-            if(tmp != null)
+            values.TryGetValue("ResourceID", out StringBuilder tmp);
+            if (tmp != null)
             {
                 resourceID = tmp.ToString();
             }
@@ -93,8 +92,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                         default:
                             throw new Exception("Unexpected resource type '" + resourceType + "'.");
                     }
-                    Guid getID;
-                    if(resourceID != null && Guid.TryParse(resourceID, out getID))
+                    if (resourceID != null && Guid.TryParse(resourceID, out Guid getID))
                     {
                         //
                         // Copy the file from the server workspace into the current workspace

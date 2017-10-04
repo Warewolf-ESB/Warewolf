@@ -113,13 +113,12 @@ namespace Unlimited.Framework.Converters.Graph.String.Json
                     {
                         if (property.IsEnumerable())
                         {
-                            
-                            var enumerableData = propertyData as IEnumerable;
-                            
 
-                            
-                            if (enumerableData != null)
-                                
+
+
+
+                            if (propertyData is IEnumerable enumerableData)
+
                             {
                                 IEnumerator enumerator = enumerableData.GetEnumerator();
                                 enumerator.Reset();
@@ -170,7 +169,10 @@ namespace Unlimited.Framework.Converters.Graph.String.Json
                     pathSegment.Item1.IsEnumarable = false;
                 }
 
-                if (pathSegment.Item1.IsEnumarable && pathSegment.Item2) recordsetEncountered = true;
+                if (pathSegment.Item1.IsEnumarable && pathSegment.Item2)
+                {
+                    recordsetEncountered = true;
+                }
             }
 
             path.DisplayPath = string.Join(JsonPath.SeperatorSymbol,

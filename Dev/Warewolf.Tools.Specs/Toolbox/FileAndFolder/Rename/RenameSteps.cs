@@ -39,7 +39,11 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Rename
         public RenameSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
         {
-            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            if (scenarioContext == null)
+            {
+                throw new ArgumentNullException("scenarioContext");
+            }
+
             this.scenarioContext = scenarioContext;
         }
 
@@ -137,11 +141,8 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Rename
         protected override void BuildDataList()
         {
             BuildShapeAndTestData();
-
-            string privateKeyFile;
-            string destPrivateKeyFile;
-            scenarioContext.TryGetValue(CommonSteps.SourcePrivatePublicKeyFile, out privateKeyFile);
-            scenarioContext.TryGetValue(CommonSteps.DestinationPrivateKeyFile, out destPrivateKeyFile);
+            scenarioContext.TryGetValue(CommonSteps.SourcePrivatePublicKeyFile, out string privateKeyFile);
+            scenarioContext.TryGetValue(CommonSteps.DestinationPrivateKeyFile, out string destPrivateKeyFile);
             var rename = new DsfPathRename
             {
                 InputPath = scenarioContext.Get<string>(CommonSteps.SourceHolder),
@@ -161,16 +162,16 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Rename
                 Action = rename
             };
             if (!scenarioContext.ContainsKey("activity"))
+            {
                 scenarioContext.Add("activity", rename);
+            }
         }
 
         [When(@"validating the rename tool")]
         public void WhenValidatingTheRenameTool()
         {
-            string privateKeyFile;
-            string destPrivateKeyFile;
-            scenarioContext.TryGetValue(CommonSteps.SourcePrivatePublicKeyFile, out privateKeyFile);
-            scenarioContext.TryGetValue(CommonSteps.DestinationPrivateKeyFile, out destPrivateKeyFile);
+            scenarioContext.TryGetValue(CommonSteps.SourcePrivatePublicKeyFile, out string privateKeyFile);
+            scenarioContext.TryGetValue(CommonSteps.DestinationPrivateKeyFile, out string destPrivateKeyFile);
 
             DsfPathRename dsfRename = new DsfPathRename
             {
@@ -186,12 +187,17 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Rename
                 DestinationPrivateKeyFile = destPrivateKeyFile
             };
             if (!scenarioContext.ContainsKey("activity"))
+            {
                 scenarioContext.Add("activity", dsfRename);
+            }
+
             dsfRename.PerformValidation();
 
             var viewModel = new RenameDesignerViewModel(ModelItemUtils.CreateModelItem(dsfRename));
             if (!scenarioContext.ContainsKey("viewModel"))
+            {
                 scenarioContext.Add("viewModel", viewModel);
+            }
         }
     }
 }

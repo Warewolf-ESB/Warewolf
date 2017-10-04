@@ -53,14 +53,20 @@ namespace Dev2.TaskScheduler.Wrappers
             {
                 return false;
             }
-            if (Actions.First().ActionType != TaskActionType.Execute) return false;
+            if (Actions.First().ActionType != TaskActionType.Execute)
+            {
+                return false;
+            }
+
             IExecAction action = _taskServiceConvertorFactory.CreateExecAction(Actions.First());
             if (action.Arguments != null)
             {
                 List<string> output =
                     action.Arguments.Split('"').Where(a => !String.IsNullOrEmpty(a.Trim())).ToList();
                 if (output.Count >3 || output.Count < 2 || !output.All(a => a.Contains(":")))
+                {
                     return false;
+                }
             }
 
 
@@ -88,6 +94,13 @@ namespace Dev2.TaskScheduler.Wrappers
         public void Dispose()
         {
             _taskDefinition.Dispose();
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            // Cleanup
         }
 
         public TaskDefinition Instance => _taskDefinition;

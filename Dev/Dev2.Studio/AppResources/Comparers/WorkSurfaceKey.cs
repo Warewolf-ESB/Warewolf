@@ -38,11 +38,20 @@ namespace Dev2.Studio.AppResources.Comparers
             var sb = new StringBuilder();
             sb.AppendFormat("Context_{0}_", WorkSurfaceContext);
             if (ServerID.HasValue)
+            {
                 sb.AppendFormat("ServerID_{0}_", ServerID);
+            }
+
             if (ResourceID.HasValue)
+            {
                 sb.AppendFormat("ResourceID_{0}_", ResourceID);
+            }
+
             if (EnvironmentID.HasValue)
+            {
                 sb.AppendFormat("EnvironmentID_{0}_", EnvironmentID);
+            }
+
             var returnString = sb.ToString().Replace('-', '_');
             return returnString;
         }

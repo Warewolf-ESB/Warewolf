@@ -72,8 +72,7 @@ namespace Dev2.Core.Tests.Utils
 
             Assert.AreEqual(1, result.Count, "Strange behaviors parsing normal regions, I was expecting 1 result");
         }
-
-        //2013.06.10: Ashley Lewis for bug 9306 - Format DsfActivity handles mismatched region braces better
+        
         [TestMethod]
         public void CanFormatDsfActivityFieldWithMissmatchedRegionBracesExpectedNotParsed()
         {

@@ -36,7 +36,11 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Unzip
         public UnzipSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
         {
-            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            if (scenarioContext == null)
+            {
+                throw new ArgumentNullException("scenarioContext");
+            }
+
             this.scenarioContext = scenarioContext;
         }
 
@@ -123,7 +127,10 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Unzip
             };
             var dsfUnZip = scenarioContext.ContainsKey("activity");
             if (dsfUnZip)
+            {
                 scenarioContext.Remove("activity");
+            }
+
             scenarioContext.Add("activity", unzip);
         }
 
@@ -135,7 +142,10 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Unzip
         private void RunwithRetry(int retrycount)
         {
             if (retrycount == 0)
+            {
                 return;
+            }
+
             const int TimeOut = 300000;
 
             var cancel = new CancellationTokenSource();
@@ -170,7 +180,10 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Unzip
 
                 string resourceName = "Warewolf.Tools.Specs.Toolbox.FileAndFolder.Unzip.Test.zip";
                 if (scenarioContext.ContainsKey("WhenTheUnzipFileToolIsExecutedWithASingleFile"))
+                {
                     resourceName = "TestFile.zip";
+                }
+
                 Assembly assembly = Assembly.GetExecutingAssembly();
                 List<string> filesToCleanup = new List<string>();
                 using (Stream stream = assembly.GetManifestResourceStream(resourceName))
@@ -186,8 +199,7 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Unzip
             {
                 var e = aggregateException.Flatten();
                 var realError = e.GetBaseException();
-                IList<IActionableErrorInfo> validationErrors;
-                scenarioContext.TryGetValue(CommonSteps.ValidationErrors, out validationErrors);
+                scenarioContext.TryGetValue(CommonSteps.ValidationErrors, out IList<IActionableErrorInfo> validationErrors);
                 if (validationErrors == null)
                 {
                     validationErrors = new List<IActionableErrorInfo>()
@@ -196,13 +208,14 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Unzip
     };
                     var containsKey = scenarioContext.ContainsKey(CommonSteps.ValidationErrors);
                     if (!containsKey)
+                    {
                         scenarioContext.Add(CommonSteps.ValidationErrors, validationErrors);
+                    }
                 }
             }
             catch (Exception e)
             {
-                IList<IActionableErrorInfo> validationErrors;
-                scenarioContext.TryGetValue(CommonSteps.ValidationErrors, out validationErrors);
+                scenarioContext.TryGetValue(CommonSteps.ValidationErrors, out IList<IActionableErrorInfo> validationErrors);
                 if (validationErrors == null)
                 {
                     validationErrors = new List<IActionableErrorInfo>()
@@ -211,7 +224,9 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Unzip
                     };
                     var containsKey = scenarioContext.ContainsKey(CommonSteps.ValidationErrors);
                     if (!containsKey)
+                    {
                         scenarioContext.Add(CommonSteps.ValidationErrors, validationErrors);
+                    }
                 }
             }
         }

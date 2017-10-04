@@ -357,40 +357,43 @@ function Move-Artifacts-To-TestResults([bool]$DotCover, [bool]$Server, [bool]$St
         Write-Host Moved loose TRX files from VS install directory into TestResults.
     }
 
-    # Write failing tests playlist.
-    Write-Host Writing all test failures in `"$TestsResultsPath`" to a playlist file
+    if (!($Cleanup.IsPresent)) {
+        # Write failing tests playlist.
+        Write-Host Writing all test failures in `"$TestsResultsPath`" to a playlist file
 
-    $PlayList = "<Playlist Version=`"1.0`">"
-    Get-ChildItem "$TestsResultsPath" -Filter *.trx | `
-    Foreach-Object{
-        $FullTRXFilePath = $_.FullName
-	    [xml]$trxContent = Get-Content "$FullTRXFilePath"
-	    if ($trxContent.TestRun.Results.UnitTestResult.count -gt 0) {
-	        foreach($TestResult in $trxContent.TestRun.Results.UnitTestResult) {
-		        if ($TestResult.outcome -eq "Failed") {
-		            if ($trxContent.TestRun.TestDefinitions.UnitTest.TestMethod.count -gt 0) {
-		                foreach($TestDefinition in $trxContent.TestRun.TestDefinitions.UnitTest.TestMethod) {
-			                if ($TestDefinition.name -eq $TestResult.testName) {
-				                $PlayList += "<Add Test=`"" + $TestDefinition.className + "." + $TestDefinition.name + "`" />"
-			                }
+        $PlayList = "<Playlist Version=`"1.0`">"
+        Get-ChildItem "$TestsResultsPath" -Filter *.trx | `
+        Foreach-Object{
+            $FullTRXFilePath = $_.FullName
+	        [xml]$trxContent = Get-Content "$FullTRXFilePath"
+	        if ($trxContent.TestRun.Results.UnitTestResult.count -gt 0) {
+	            foreach($TestResult in $trxContent.TestRun.Results.UnitTestResult) {
+		            if ($TestResult.outcome -eq "Failed") {
+		                if ($trxContent.TestRun.TestDefinitions.UnitTest.TestMethod.count -gt 0) {
+		                    foreach($TestDefinition in $trxContent.TestRun.TestDefinitions.UnitTest.TestMethod) {
+			                    if ($TestDefinition.name -eq $TestResult.testName) {
+				                    $PlayList += "<Add Test=`"" + $TestDefinition.className + "." + $TestDefinition.name + "`" />"
+			                    }
+		                    }
+                        } else {
+			                Write-Host Error parsing TestRun.TestDefinitions.UnitTest.TestMethod from trx file at $_.FullName
+			                Continue
 		                }
-                    } else {
-			            Write-Host Error parsing TestRun.TestDefinitions.UnitTest.TestMethod from trx file at $_.FullName
-			            Continue
 		            }
-		        }
-	        }
-	    } elseif ($trxContent.TestRun.Results.UnitTestResult.outcome -eq "Failed") {
-            $PlayList += "<Add Test=`"" + $trxContent.TestRun.TestDefinitions.UnitTest.TestMethod.className + "." + $trxContent.TestRun.TestDefinitions.UnitTest.TestMethod.name + "`" />"
-        } elseif ($trxContent.TestRun.Results.UnitTestResult -eq $null) {
-		    Write-Host Error parsing TestRun.Results.UnitTestResult from trx file at $_.FullName
+	            }
+	        } elseif ($trxContent.TestRun.Results.UnitTestResult.outcome -eq "Failed") {
+                $PlayList += "<Add Test=`"" + $trxContent.TestRun.TestDefinitions.UnitTest.TestMethod.className + "." + $trxContent.TestRun.TestDefinitions.UnitTest.TestMethod.name + "`" />"
+            } elseif ($trxContent.TestRun.Results.UnitTestResult -eq $null) {
+		        Write-Host Error parsing TestRun.Results.UnitTestResult from trx file at $_.FullName
+            }
         }
+        $PlayList += "</Playlist>"
+        $OutPlaylistPath = $TestsResultsPath + "\" + $JobName + " Failures.playlist"
+        Copy-On-Write $OutPlaylistPath
+        $PlayList | Out-File -LiteralPath $OutPlaylistPath -Encoding utf8 -Force
+        Write-Host Playlist file written to `"$OutPlaylistPath`".
     }
-    $PlayList += "</Playlist>"
-    $OutPlaylistPath = $TestsResultsPath + "\" + $JobName + " Failures.playlist"
-    Copy-On-Write $OutPlaylistPath
-    $PlayList | Out-File -LiteralPath $OutPlaylistPath -Encoding utf8 -Force
-    Write-Host Playlist file written to `"$OutPlaylistPath`".
+
     if ($Server) {
         Move-File-To-TestResults "$env:ProgramData\Warewolf\Server Log\wareWolf-Server.log" "$JobName Server.log"
         Move-File-To-TestResults "$env:ProgramData\Warewolf\Server Log\my.warewolf.io.log" "$JobName my.warewolf.io Server.log"
@@ -404,7 +407,7 @@ function Move-Artifacts-To-TestResults([bool]$DotCover, [bool]$Server, [bool]$St
         while (!(Test-Path $ServerSnapshot) -and $Timeout++ -lt 10) {
             sleep 10
         }
-        $locked = Wait-For_FileUnlock $ServerSnapshot
+        $locked = Wait-For-FileUnlock $ServerSnapshot
         if (!($locked)) {
             Write-Host Moving Server coverage snapshot file from $ServerSnapshot to $TestsResultsPath\$JobName Server DotCover.dcvr
             Move-File-To-TestResults $ServerSnapshot "$JobName Server DotCover.dcvr"
@@ -600,22 +603,31 @@ function Start-Server([string]$ServerPath,[string]$ResourcesType) {
 }
 
 function Start-my.warewolf.io {
-    if ($ServerPath -eq "" -or !(Test-Path $ServerPath)) {
-        $ServerPath = Find-Warewolf-Server-Exe
+    if ($TestsPath.EndsWith("\")) {
+        $WebsPath = $TestsPath + "_PublishedWebsites\Dev2.Web"
+    } else {
+        $WebsPath = $TestsPath + "\_PublishedWebsites\Dev2.Web"
     }
-    $ServerFolderPath = (Get-Item $ServerPath).Directory.FullName
+    Write-Host Starting my.warewolf.io from $WebsPath
+    if (!(Test-Path $WebsPath)) {
+        Write-Warning "Webs not found at $WebsPath. Attempting to find the webs that was deployed to the server directory."
+        if ($ServerPath -eq "" -or !(Test-Path $ServerPath)) {
+            $ServerPath = Find-Warewolf-Server-Exe
+        }
+        $WebsPath = (Get-Item $ServerPath).Directory.FullName + "\_PublishedWebsites\Dev2.Web"
+    }
     Cleanup-ServerStudio
-    if (Test-Path "$ServerFolderPath\_PublishedWebsites\Dev2.Web") {
-        $WebsPath = "$ServerFolderPath\_PublishedWebsites\Dev2.Web"
+    if (Test-Path $WebsPath) {
         $IISExpressPath = "C:\Program Files (x86)\IIS Express\iisexpress.exe"
         if (!(Test-Path $IISExpressPath)) {
             Write-Warning "my.warewolf.io cannot be hosted. $IISExpressPath not found."
         } else {
-            Start-Process -FilePath $IISExpressPath -ArgumentList "/path:`"$WebsPath`" /port:18405" -NoNewWindow -PassThru -RedirectStandardOutput "$env:programdata\Warewolf\Server Log\my.warewolf.io.log" -RedirectStandardError "$env:programdata\Warewolf\Server Log\my.warewolf.io.errors.log"
+            Write-Host `"$IISExpressPath`" /path:`"$WebsPath`" /port:18405 /trace:error
+            Start-Process -FilePath $IISExpressPath -ArgumentList "/path:`"$WebsPath`" /port:18405 /trace:error" -NoNewWindow -PassThru -RedirectStandardOutput "$env:programdata\Warewolf\Server Log\my.warewolf.io.log" -RedirectStandardError "$env:programdata\Warewolf\Server Log\my.warewolf.io.errors.log"
             Write-Host my.warewolf.io has started.
         }
     } else {
-        Write-Warning "my.warewolf.io cannot be hosted. Webs not found at $ServerFolderPath\_PublishedWebsites\Dev2.Web"
+        Write-Warning "my.warewolf.io cannot be hosted. Webs not found at $TestsPath\_PublishedWebsites\Dev2.Web or at $ServerFolderPath\_PublishedWebsites\Dev2.Web"
     }
 }
 
@@ -750,7 +762,7 @@ function Resolve-Test-Assembly-File-Specs([string]$TestAssemblyFileSpecs) {
 $JobNames = @()
 $JobAssemblySpecs = @()
 $JobCategories = @()
-if ($JobName -ne $null -and $JobName -ne "" -and $MergeDotCoverSnapshotsInDirectory -eq "") {
+if ($JobName -ne $null -and $JobName -ne "" -and $MergeDotCoverSnapshotsInDirectory -eq "" -and $Cleanup.IsPresent -eq $false) {
     foreach ($Job in $JobName.Split(",")) {
         $Job = $Job.TrimEnd("1234567890 ")
         if ($JobSpecs.ContainsKey($Job)) {

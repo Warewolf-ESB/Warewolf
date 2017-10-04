@@ -36,7 +36,11 @@ namespace Warewolf.Tools.Specs.BaseTypes
 
         public RecordSetBases(ScenarioContext scenarioContext)
         {
-            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            if (scenarioContext == null)
+            {
+                throw new ArgumentNullException("scenarioContext");
+            }
+
             this.scenarioContext = scenarioContext;
             _commonSteps = new CommonSteps(this.scenarioContext);
         }
@@ -65,9 +69,8 @@ namespace Warewolf.Tools.Specs.BaseTypes
             DataListSingleton.SetDataList(dataListViewModel);
             
             int row = 0;
-            dynamic variableList;
-            scenarioContext.TryGetValue("variableList", out variableList);
-            if(variableList != null)
+            scenarioContext.TryGetValue("variableList", out dynamic variableList);
+            if (variableList != null)
             {
                 try
                 {
@@ -129,8 +132,7 @@ namespace Warewolf.Tools.Specs.BaseTypes
                 }
             }
 
-            List<Tuple<string, string>> emptyRecordset;
-            bool isAdded = scenarioContext.TryGetValue("rs", out emptyRecordset);
+            bool isAdded = scenarioContext.TryGetValue("rs", out List<Tuple<string, string>> emptyRecordset);
             if (isAdded)
             {
                 foreach (Tuple<string, string> emptyRecord in emptyRecordset)
@@ -139,8 +141,7 @@ namespace Warewolf.Tools.Specs.BaseTypes
                 }
             }
 
-            dynamic objList;
-            scenarioContext.TryGetValue("objList", out objList);
+            scenarioContext.TryGetValue("objList", out dynamic objList);
             if (objList != null)
             {
                 try

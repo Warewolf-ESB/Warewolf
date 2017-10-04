@@ -24,7 +24,7 @@ namespace Dev2.PathOperations
     /// </summary>
     /// <typeparam name="TKey">The type of the key.</typeparam>
     /// <typeparam name="TItem">The type of the item.</typeparam>
-    public class FileRepository<TKey, TItem> : IRepository<TKey, TItem>
+    public class FileRepository<TKey, TItem> : IRepository<TKey, TItem>, IDisposable
         where TItem : class, IRepositoryItem<TKey>
     {
         private readonly string _fileExtension;
@@ -168,6 +168,11 @@ namespace Dev2.PathOperations
         /// <param name="item">The item that was read.</param>
         protected virtual void OnAfterGet(TItem item)
         {
+        }
+
+        public void Dispose()
+        {
+            _fileLock.Dispose();
         }
 
         #endregion

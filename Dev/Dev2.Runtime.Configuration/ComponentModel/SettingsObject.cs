@@ -135,9 +135,8 @@ namespace Dev2.Runtime.Configuration.ComponentModel
                 object[] attributes = property.GetCustomAttributes(typeof(SettingsObjectAttribute), true);
                 if(attributes.Length > 0)
                 {
-                    SettingsObjectAttribute settingsObjectAttribute = attributes[0] as SettingsObjectAttribute;
                     // Add settings object to graph
-                    if(settingsObjectAttribute != null)
+                    if (attributes[0] is SettingsObjectAttribute settingsObjectAttribute)
                     {
                         graph.Add(new SettingsObject(value, settingsObjectAttribute.View, settingsObjectAttribute.ViewModel));
                     }

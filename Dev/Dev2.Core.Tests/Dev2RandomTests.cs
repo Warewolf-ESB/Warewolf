@@ -61,16 +61,14 @@ namespace Dev2.Tests
         [TestMethod]
         public void GenerateNumsWithFromIsGreaterThanToExpectedValidNumber()
         {
-            int res;
-            int.TryParse(_dev2Random.GetRandom(enRandomType.Numbers, -1, 100, 5), out res);
+            int.TryParse(_dev2Random.GetRandom(enRandomType.Numbers, -1, 100, 5), out int res);
             Assert.IsTrue(res >= 5 && res <= 100, "Did not generate the right random number.");
         }
 
         [TestMethod]
         public void GenerateNumsWithFromIsGreaterThanToExpectedValidNumberForZeroFrom()
         {
-            int res;
-            int.TryParse(_dev2Random.GetRandom(enRandomType.Numbers, -1, 0, 5), out res);
+            int.TryParse(_dev2Random.GetRandom(enRandomType.Numbers, -1, 0, 5), out int res);
             Assert.IsTrue(res >= 0 && res <= 5, "Did not generate the right random number.");
         }
 
@@ -78,16 +76,14 @@ namespace Dev2.Tests
         public void GenerateWithGuidExpectedValidGuid()
         {
             var result = _dev2Random.GetRandom(enRandomType.Guid, -1, -1, -1);
-            Guid tryParse;
-            Assert.IsTrue(Guid.TryParse(result, out tryParse), "Did not generate a valid guid");
+            Assert.IsTrue(Guid.TryParse(result, out Guid tryParse), "Did not generate a valid guid");
             Assert.AreNotEqual(Guid.Empty, tryParse, "Generated an empty Guid");
         }
 
         [TestMethod]
         public void GenerateNumsWithFromIsGreaterThanToExpectedValidNumbersWithDecimalRange()
         {
-            double res;
-            double.TryParse(_dev2Random.GetRandom(enRandomType.Numbers, -1, 0.01, 0.1), out res);
+            double.TryParse(_dev2Random.GetRandom(enRandomType.Numbers, -1, 0.01, 0.1), out double res);
             Assert.IsTrue(res >= 0.01 && res <= 0.1, "Did not generate the right random number.");
         }
 

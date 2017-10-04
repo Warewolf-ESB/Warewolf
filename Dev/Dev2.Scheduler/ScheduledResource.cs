@@ -49,7 +49,10 @@ namespace Dev2.Scheduler
             _status = status;
             Name = history.First();
             if(history.Length == 2)
+            {
                 NumberOfHistoryToKeep = int.Parse(history[1]);
+            }
+
             IsDirty = false;
             _errors = new ErrorResultTO();
             if(!String.IsNullOrEmpty(resourceId) )

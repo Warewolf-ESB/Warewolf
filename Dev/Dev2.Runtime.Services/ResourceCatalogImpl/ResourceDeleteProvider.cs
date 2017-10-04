@@ -128,11 +128,13 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             IResource resource = resources.FirstOrDefault();
 
             if (workspaceID == Guid.Empty && deleteVersions)
+            {
                 if (resource != null)
                 {
                     var explorerItems = _serverVersionRepository.GetVersions(resource.ResourceID);
                     explorerItems?.ForEach(a => _serverVersionRepository.DeleteVersion(resource.ResourceID, a.VersionInfo.VersionNumber, resource.GetResourcePath(workspaceID)));
                 }
+            }
 
             workspaceResources.Remove(resource);
             if (resource != null && _dev2FileWrapper.Exists(resource.FilePath))

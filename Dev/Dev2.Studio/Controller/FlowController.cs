@@ -121,7 +121,10 @@ namespace Dev2.Studio.Controller
             var expressionText = expression.Properties[GlobalConstants.SwitchExpressionTextPropertyText];
             var modelProperty = args.ModelItem.Properties[GlobalConstants.DisplayNamePropertyText];
             if (modelProperty?.Value != null)
+            {
                 _callBackHandler = StartSwitchDropWizard(expression, modelProperty.Value.ToString());
+            }
+
             if (_callBackHandler != null)
             {
                 try
@@ -186,7 +189,10 @@ namespace Dev2.Studio.Controller
         {
             OldSwitchValue = string.Empty;
             if (args.ExpressionText != null)
+            {
                 _callBackHandler = ShowSwitchDragDialog(args.ModelItem, args.ExpressionText);
+            }
+
             if (_callBackHandler != null)
             {
                 try
@@ -257,8 +263,7 @@ namespace Dev2.Studio.Controller
                     if (ds != null)
                     {
                         var validExpression = true;
-                        var flowSwitch = switchVal?.ComputedValue as System.Activities.Statements.FlowSwitch<string>;
-                        if (flowSwitch != null)
+                        if (switchVal?.ComputedValue is System.Activities.Statements.FlowSwitch<string> flowSwitch)
                         {
                             if (flowSwitch.Cases.Any(flowNode => flowNode.Key == ds.SwitchExpression))
                             {
@@ -419,8 +424,7 @@ namespace Dev2.Studio.Controller
                 var isCopyPaste = isNew && !string.IsNullOrEmpty(activity.ExpressionText);
                 if (result == null || isCopyPaste)
                 {
-                    var act = activity as IDev2Activity;
-                    if (act != null)
+                    if (activity is IDev2Activity act)
                     {
                         act.UniqueID = Guid.NewGuid().ToString();
                     }

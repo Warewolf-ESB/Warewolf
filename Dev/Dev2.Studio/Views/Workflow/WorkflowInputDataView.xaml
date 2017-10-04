@@ -17,7 +17,6 @@
         KeyUp="WorkflowInputDataView_OnKeyUp"
         Closed="WorkflowInputDataView_OnClosed"
         PreviewKeyDown="WorkflowInputDataView_OnPreviewKeyDown"
-        LostKeyboardFocus="WorkflowInputDataView_OnLostKeyboardFocus"
         WindowStartupLocation="CenterOwner"
         cal:Message.Attach="[Event Closed] = [Action ViewClosed]"
         FocusManager.FocusedElement="{Binding ElementName=DataListInputs}"

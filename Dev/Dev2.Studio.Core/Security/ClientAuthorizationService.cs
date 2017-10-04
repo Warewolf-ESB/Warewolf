@@ -28,8 +28,7 @@ namespace Dev2.Security
         public ClientAuthorizationService(ISecurityService securityService, bool isLocalConnection)
             : base(securityService, isLocalConnection)
         {
-            var clientSecurityService = securityService as ClientSecurityService;
-            if(clientSecurityService != null)
+            if (securityService is ClientSecurityService clientSecurityService)
             {
                 _environmentConnection = clientSecurityService.EnvironmentConnection;
             }
@@ -52,8 +51,7 @@ namespace Dev2.Security
             {
                 serverOnlyPermissions= serverOnlyPermissions.Where(permission => permission.IsBuiltInGuests);
             }
-            Guid resourceId;
-            if (Guid.TryParse(resource, out resourceId))
+            if (Guid.TryParse(resource, out Guid resourceId))
             {
                 if (resourceId == Guid.Empty)
                 {

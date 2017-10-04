@@ -47,14 +47,19 @@ namespace Dev2.Data.Parsers
         public IEnumerable<string> ExecuteXPath(string xmlData, string xPath)
         {
             if (string.IsNullOrEmpty(xmlData))
+            {
                 throw new ArgumentNullException(nameof(xmlData));
+            }
+
             if (string.IsNullOrEmpty(xPath))
+            {
                 throw new ArgumentNullException(nameof(xPath));
+            }
+
             try
             {
-                bool isFragment;
                 var useXmlData = DataListUtil.AdjustForEncodingIssues(xmlData);
-                var isXml = DataListUtil.IsXml(useXmlData, out isFragment);
+                var isXml = DataListUtil.IsXml(useXmlData, out bool isFragment);
 
                 if (!isXml && !isFragment)
                 {
@@ -122,14 +127,13 @@ namespace Dev2.Data.Parsers
             while (list.MoveNext())
             {
                 var current = list.Current;
-                var realElm = current as XdmNode;
-                if(realElm != null)
+                if (current is XdmNode realElm)
                 {
-                    if(realElm.NodeKind == XmlNodeType.Attribute)
+                    if (realElm.NodeKind == XmlNodeType.Attribute)
                     {
                         stringList.Add(realElm.StringValue);
                     }
-                    else if(realElm.NodeKind == XmlNodeType.Element)
+                    else if (realElm.NodeKind == XmlNodeType.Element)
 
                     {
                         var xElement = XElement.Parse(current.ToString());

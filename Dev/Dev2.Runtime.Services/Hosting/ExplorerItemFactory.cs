@@ -42,12 +42,18 @@ namespace Dev2.Runtime.Hosting
             var duplicateList = new List<string>();
             var resourceList = Catalogue.GetDuplicateResources();
             if (resourceList == null ||resourceList.Count <= 0)
-                return new List<string>();            
+            {
+                return new List<string>();
+            }
+
             foreach (var duplicateResource in resourceList)
             {
                 var res = new StringBuilder();
                 foreach (var path in duplicateResource.ResourcePath)
+                {
                     res.AppendLine(path);
+                }
+
                 var format = string.Format("Resource: {0}"+ Environment.NewLine + "{1}", duplicateResource.ResourceName, res);
                 duplicateList.Add(format);
             }

@@ -29,7 +29,8 @@ namespace Dev2.Data.TO
         /// </summary>
         /// <param name="msg">The MSG.</param>
         /// <param name="checkForDuplicates"></param>
-        public void AddError(string msg, bool checkForDuplicates = false)
+        public void AddError(string msg) => AddError(msg, false);
+        public void AddError(string msg, bool checkForDuplicates)
         {
             if(!string.IsNullOrEmpty(msg))
             {

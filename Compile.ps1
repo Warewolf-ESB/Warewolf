@@ -25,6 +25,11 @@ if ($Target -ne "") {
 	$Target = "/t:" + $Target
 }
 
+#find script
+if ("$PSScriptRoot" -eq "" -or $PSScriptRoot -eq $null) {
+    $PSScriptRoot = Split-Path $MyInvocation.MyCommand.Path -Parent
+}
+
 #Find Compiler
 if (!(Test-Path "$MSBuildPath" -ErrorAction SilentlyContinue)) {
     $GetMSBuildCommand = Get-Command MSBuild -ErrorAction SilentlyContinue

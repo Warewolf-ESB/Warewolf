@@ -43,9 +43,14 @@ namespace Dev2.Studio.Core
             comsController.AddPayloadArgument("ServerSource", serialiser.SerializeToBuilder(resource));
             var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
             if (output == null)
+            {
                 throw new WarewolfSaveException(ErrorResource.UnableToContactServer, null);
+            }
+
             if (output.HasError)
+            {
                 throw new WarewolfSaveException(output.Message.ToString(), null);
+            }
         }
 
         /// <summary>
@@ -61,9 +66,14 @@ namespace Dev2.Studio.Core
             comsController.AddPayloadArgument("ServerSource", serialiser.SerializeToBuilder(resource));
             var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
             if (output == null)
+            {
                 throw new WarewolfTestException(ErrorResource.UnableToContactServer, null);
+            }
+
             if (output.HasError)
+            {
                 throw new WarewolfTestException(output.Message.ToString(), null);
+            }
         }
 
         /// <summary>
@@ -80,9 +90,15 @@ namespace Dev2.Studio.Core
             comsController.AddPayloadArgument("DbSource", serialiser.SerializeToBuilder(resource));
             var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
             if (output == null)
+            {
                 throw new WarewolfTestException(ErrorResource.UnableToContactServer, null);
+            }
+
             if (output.HasError)
+            {
                 throw new WarewolfTestException(output.Message.ToString(), null);
+            }
+
             return serialiser.Deserialize<List<string>>(output.Message);
         }
 
@@ -95,7 +111,9 @@ namespace Dev2.Studio.Core
             comsController.AddPayloadArgument("DbSource", serialiser.SerializeToBuilder(toDbSource));
             var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
             if (output.HasError)
+            {
                 throw new WarewolfSaveException(output.Message.ToString(), null);
+            }
         }
 
         /// <exception cref="WarewolfSaveException">Thrown when saving the Database service fails.</exception>
@@ -107,7 +125,9 @@ namespace Dev2.Studio.Core
             comsController.AddPayloadArgument("DbService", serialiser.SerializeToBuilder(dbService));
             var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
             if (output.HasError)
+            {
                 throw new WarewolfSaveException(output.Message.ToString(), null);
+            }
         }
 
         /// <exception cref="WarewolfTestException">Unable to contact Server</exception>
@@ -119,9 +139,15 @@ namespace Dev2.Studio.Core
             comsController.AddPayloadArgument("DbService", serialiser.SerializeToBuilder(service));
             var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
             if (output == null)
+            {
                 throw new WarewolfTestException(ErrorResource.UnableToContactServer, null);
+            }
+
             if (output.HasError)
+            {
                 throw new WarewolfTestException(output.Message.ToString(), null);
+            }
+
             return serialiser.Deserialize<DataTable>(output.Message);
         }
 
@@ -134,7 +160,9 @@ namespace Dev2.Studio.Core
             comsController.AddPayloadArgument("WebserviceSource", serialiser.SerializeToBuilder(resource));
             var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
             if (output.HasError)
+            {
                 throw new WarewolfSaveException(output.Message.ToString(), null);
+            }
         }
 
         /// <exception cref="WarewolfTestException">Unable to contact Server</exception>
@@ -146,9 +174,14 @@ namespace Dev2.Studio.Core
             comsController.AddPayloadArgument("WebserviceSource", serialiser.SerializeToBuilder(resource));
             var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
             if (output == null)
+            {
                 throw new WarewolfTestException(ErrorResource.UnableToContactServer, null);
+            }
+
             if (output.HasError)
+            {
                 throw new WarewolfTestException(output.Message.ToString(), null);
+            }
         }
 
         public void SaveSharePointServiceSource(ISharepointServerSource resource, Guid serverWorkspaceID)
@@ -159,7 +192,9 @@ namespace Dev2.Studio.Core
             comsController.AddPayloadArgument("SharepointServer", serialiser.SerializeToBuilder(resource));
             var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
             if (output.HasError)
+            {
                 throw new WarewolfSaveException(output.Message.ToString(), null);
+            }
         }
 
         public void TestConnection(ISharepointServerSource resource)
@@ -197,9 +232,15 @@ namespace Dev2.Studio.Core
             comsController.AddPayloadArgument("WebService", serialiser.SerializeToBuilder(service));
             var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
             if (output == null)
+            {
                 throw new WarewolfTestException(ErrorResource.UnableToContactServer, null);
+            }
+
             if (output.HasError)
+            {
                 throw new WarewolfTestException(output.Message.ToString(), null);
+            }
+
             return output.Message.ToString();
         }
 
@@ -212,7 +253,9 @@ namespace Dev2.Studio.Core
             comsController.AddPayloadArgument("Webservice", serialiser.SerializeToBuilder(model));
             var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
             if (output.HasError)
+            {
                 throw new WarewolfSaveException(output.Message.ToString(), null);
+            }
         }
 
         public void SavePluginSource(IPluginSource source, Guid serverWorkspaceID)
@@ -223,7 +266,9 @@ namespace Dev2.Studio.Core
             comsController.AddPayloadArgument("PluginSource", serialiser.SerializeToBuilder(source));
             var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
             if (output.HasError)
+            {
                 throw new WarewolfSaveException(output.Message.ToString(), null);
+            }
         }
 
 
@@ -235,7 +280,9 @@ namespace Dev2.Studio.Core
             comsController.AddPayloadArgument("ComPluginSource", serialiser.SerializeToBuilder(source));
             var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
             if (output.HasError)
+            {
                 throw new WarewolfSaveException(output.Message.ToString(), null);
+            }
         }
 
         public void SaveOAuthSource(IOAuthSource source, Guid serverWorkspaceID)
@@ -246,7 +293,9 @@ namespace Dev2.Studio.Core
             comsController.AddPayloadArgument("OAuthSource", serialiser.SerializeToBuilder(source));
             var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
             if (output.HasError)
+            {
                 throw new WarewolfSaveException(output.Message.ToString(), null);
+            }
         }
 
         public string TestPluginService(IPluginService plugin)
@@ -257,9 +306,15 @@ namespace Dev2.Studio.Core
             comsController.AddPayloadArgument("PluginService", serialiser.SerializeToBuilder(plugin));
             var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
             if (output == null)
+            {
                 throw new WarewolfTestException(ErrorResource.UnableToContactServer, null);
+            }
+
             if (output.HasError)
+            {
                 throw new WarewolfTestException(output.Message.ToString(), null);
+            }
+
             return output.Message.ToString();
         }
 
@@ -272,9 +327,15 @@ namespace Dev2.Studio.Core
             comsController.AddPayloadArgument("ComPluginService", serialiser.SerializeToBuilder(plugin));
             var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
             if (output == null)
+            {
                 throw new WarewolfTestException(ErrorResource.UnableToContactServer, null);
+            }
+
             if (output.HasError)
+            {
                 throw new WarewolfTestException(output.Message.ToString(), null);
+            }
+
             return output.Message.ToString();
         }
 
@@ -286,9 +347,15 @@ namespace Dev2.Studio.Core
             comsController.AddPayloadArgument("EmailServiceSource", serialiser.SerializeToBuilder(emailServiceSource));
             var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
             if (output == null)
+            {
                 throw new WarewolfTestException(ErrorResource.UnableToContactServer, null);
+            }
+
             if (output.HasError)
+            {
                 throw new WarewolfTestException(output.Message.ToString(), null);
+            }
+
             return output.Message.ToString();
         }
 
@@ -300,9 +367,15 @@ namespace Dev2.Studio.Core
             comsController.AddPayloadArgument("ExchangeSource", serialiser.SerializeToBuilder(emailServiceSource));
             var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
             if (output == null)
+            {
                 throw new WarewolfTestException(ErrorResource.UnableToContactServer, null);
+            }
+
             if (output.HasError)
+            {
                 throw new WarewolfTestException(output.Message.ToString(), null);
+            }
+
             return output.Message.ToString();
         }
 
@@ -331,7 +404,9 @@ namespace Dev2.Studio.Core
             comsController.AddPayloadArgument("ExchangeSource", serialiser.SerializeToBuilder(model));
             var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
             if (output.HasError)
+            {
                 throw new WarewolfSaveException(output.Message.ToString(), null);
+            }
         }
 
         public void SaveRabbitMQServiceSource(IRabbitMQServiceSourceDefinition rabbitMqServiceSource, Guid serverWorkspaceID)
@@ -342,7 +417,9 @@ namespace Dev2.Studio.Core
             comsController.AddPayloadArgument("RabbitMQServiceSource", serialiser.SerializeToBuilder(rabbitMqServiceSource));
             var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
             if (output.HasError)
+            {
                 throw new WarewolfSaveException(output.Message.ToString(), null);
+            }
         }
 
 
@@ -354,9 +431,15 @@ namespace Dev2.Studio.Core
             comsController.AddPayloadArgument("RabbitMQServiceSource", serialiser.SerializeToBuilder(rabbitMqServiceSource));
             var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
             if (output == null)
+            {
                 throw new WarewolfTestException(ErrorResource.UnableToContactServer, null);
+            }
+
             if (output.HasError)
+            {
                 throw new WarewolfTestException(output.Message.ToString(), null);
+            }
+
             return output.Message.ToString();
         }
 
@@ -368,7 +451,9 @@ namespace Dev2.Studio.Core
             comsController.AddPayloadArgument("WcfSource", serialiser.SerializeToBuilder(model));
             var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
             if (output.HasError)
+            {
                 throw new WarewolfSaveException(output.Message.ToString(), null);
+            }
         }
 
         public string TestWcfServiceSource(IWcfServerSource wcfServerSource)
@@ -379,9 +464,15 @@ namespace Dev2.Studio.Core
             comsController.AddPayloadArgument("WcfSource", serialiser.SerializeToBuilder(wcfServerSource));
             var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
             if (output == null)
+            {
                 throw new WarewolfTestException(ErrorResource.UnableToContactServer, null);
+            }
+
             if (output.HasError)
+            {
                 throw new WarewolfTestException(output.Message.ToString(), null);
+            }
+
             return output.Message.ToString();
         }
 
@@ -393,9 +484,15 @@ namespace Dev2.Studio.Core
             comsController.AddPayloadArgument("wcfService", serialiser.SerializeToBuilder(wcfService));
             var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
             if (output == null)
+            {
                 throw new WarewolfTestException(ErrorResource.UnableToContactServer, null);
+            }
+
             if (output.HasError)
+            {
                 throw new WarewolfTestException(output.Message.ToString(), null);
+            }
+
             return output.Message.ToString();
         }
 
