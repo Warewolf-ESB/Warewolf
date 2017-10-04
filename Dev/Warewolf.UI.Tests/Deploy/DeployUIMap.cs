@@ -19,7 +19,7 @@ namespace Warewolf.UI.Tests.Deploy.DeployUIMapClasses
         [Then(@"Destination Remote Server Is Connected")]
         public void ThenDestinationRemoteServerIsConnected()
         {
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DestinationServerConectControl.Combobox.ConnectedRemoteConnectionText.Exists, "Remote Server is Disconnected");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DestinationServerConectControl.Combobox.RemoteConnectionIntegrationText.Exists, "Remote Server is Disconnected");
         }
 
         [Then(@"The deploy validation message is ""(.*)""")]
@@ -90,7 +90,7 @@ namespace Warewolf.UI.Tests.Deploy.DeployUIMapClasses
             UIMap.WaitForSpinner(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerExplorer.ExplorerTree.LocalHost.Spinner);
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerConectControl.Combobox.ToggleButton);
             Mouse.Click(UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration);
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerConectControl.Combobox.ConnectedRemoteConnectionText.Exists, "Selected source server in deploy is not Remote Connection Integration (Connected).");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerConectControl.Combobox.RemoteConnectionIntegrationText.Exists, "Selected source server in deploy is not Remote Connection Integration (Connected).");
         }
 
         [When(@"I Select LocalhostConnected From Deploy Tab Source Server Combobox")]
@@ -121,7 +121,7 @@ namespace Warewolf.UI.Tests.Deploy.DeployUIMapClasses
             UIMap.WaitForSpinner(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerExplorer.ExplorerTree.LocalHost.Spinner);
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerConectControl.Combobox.ToggleButton, new Point(230, 9));
             Mouse.Click(UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.Text, new Point(226, 13));
-            Assert.AreEqual("Remote Connection Integration (Connected)", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerConectControl.Combobox.ConnectedRemoteConnectionText.DisplayText, "Selected source server in deploy is not Remote Connection Integration (Connected).");
+            Assert.AreEqual("Remote Connection Integration (Connected)", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerConectControl.Combobox.RemoteConnectionIntegrationText.DisplayText, "Selected source server in deploy is not Remote Connection Integration (Connected).");
         }
 
         [Given(@"I Select RemoteConnectionIntegration \(Connected\) From Deploy Tab Destination Server Combobox")]
@@ -131,18 +131,16 @@ namespace Warewolf.UI.Tests.Deploy.DeployUIMapClasses
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DestinationServerConectControl.Combobox.ToggleButton, new Point(230, 9));
             Mouse.Click(MainStudioWindow.DeployDestinationRemoteConnection.ConnectedRemoteServer);
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DestinationServerConectControl.Combobox.ConnectedRemoteConnectionText.Exists, "Selected destination server in deploy is not Remote Connection Integration (Connected).");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DestinationServerConectControl.Combobox.RemoteConnectionIntegrationText.Exists, "Selected destination server in deploy is not Remote Connection Integration (Connected).");
         }
-
-        [Given(@"I Select RemoteConnectionIntegration From Deploy Tab Destination Server Combobox")]
+        
         [When(@"I Select RemoteConnectionIntegration From Deploy Tab Destination Server Combobox")]
-        [Then(@"I Select RemoteConnectionIntegration From Deploy Tab Destination Server Combobox")]
         public void Select_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_Combobox()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DestinationServerConectControl.Combobox.ToggleButton, new Point(230, 9));
             Assert.IsTrue(UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.Exists, "Remote Connection Integration option does not exist in Destination server combobox.");
             Mouse.Click(UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.Text, new Point(226, 13));
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DestinationServerConectControl.Combobox.ConnectedRemoteConnectionText.Exists, "Selected destination server in deploy is not Remote Connection Integration (Connected).");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DestinationServerConectControl.Combobox.RemoteConnectionIntegrationText.Exists, "Selected destination server in deploy is not Remote Connection Integration.");
         }
 
         [When(@"I Select LocalhostConnected From Deploy Tab Destination Server Combobox")]

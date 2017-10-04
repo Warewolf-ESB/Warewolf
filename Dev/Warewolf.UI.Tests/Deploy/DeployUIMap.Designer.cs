@@ -760,27 +760,11 @@ namespace Warewolf.UI.Tests.Deploy.DeployUIMapClasses
                 {
                     this.mRemoteConnectionIntegrationText = new WpfText(this);
                     #region Search Criteria
-                    this.mRemoteConnectionIntegrationText.SearchProperties[WpfText.PropertyNames.Name] = "Remote Connection Integration";
+                    this.mRemoteConnectionIntegrationText.SearchProperties.Add(new PropertyExpression(WpfText.PropertyNames.Name, "Remote Connection Integration", PropertyExpressionOperator.Contains));
                     this.mRemoteConnectionIntegrationText.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mRemoteConnectionIntegrationText;
-            }
-        }
-        
-        public WpfText ConnectedRemoteConnectionText
-        {
-            get
-            {
-                if ((this.mConnectedRemoteConnectionText == null))
-                {
-                    this.mConnectedRemoteConnectionText = new WpfText(this);
-                    #region Search Criteria
-                    this.mConnectedRemoteConnectionText.SearchProperties[WpfText.PropertyNames.Name] = "Remote Connection Integration (Connected)";
-                    this.mConnectedRemoteConnectionText.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mConnectedRemoteConnectionText;
             }
         }
         
@@ -805,8 +789,6 @@ namespace Warewolf.UI.Tests.Deploy.DeployUIMapClasses
         private WpfButton mToggleButton;
         
         private WpfText mRemoteConnectionIntegrationText;
-        
-        private WpfText mConnectedRemoteConnectionText;
         
         private WpfText mConnectedLocalhostText;
         #endregion

@@ -257,22 +257,9 @@
                                                         <WindowTitle>Warewolf</WindowTitle>
                                                       </WindowTitles>
                                                       <AndCondition>
-                                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                         <PropertyCondition Name="ControlType">Text</PropertyCondition>
-                                                        <PropertyCondition Name="Name">Remote Connection Integration</PropertyCondition>
-                                                      </AndCondition>
-                                                      <SupportLevel>0</SupportLevel>
-                                                      <Descendants />
-                                                    </UIObject>
-                                                    <UIObject ControlType="Text" Id="ConnectedRemoteConnectionText" FriendlyName="Remote Connection Integration (Connected)" SpecialControlType="None">
-                                                      <TechnologyName>UIA</TechnologyName>
-                                                      <WindowTitles>
-                                                        <WindowTitle>Warewolf</WindowTitle>
-                                                      </WindowTitles>
-                                                      <AndCondition>
                                                         <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                        <PropertyCondition Name="ControlType">Text</PropertyCondition>
-                                                        <PropertyCondition Name="Name">Remote Connection Integration (Connected)</PropertyCondition>
+                                                        <PropertyCondition Name="Name" Operator="Contains">Remote Connection Integration</PropertyCondition>
                                                       </AndCondition>
                                                       <SupportLevel>0</SupportLevel>
                                                       <Descendants />
