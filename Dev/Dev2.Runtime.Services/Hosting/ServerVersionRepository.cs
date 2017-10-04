@@ -93,8 +93,10 @@ namespace Dev2.Runtime.Hosting
             var files = _directory.GetFiles(path).Where(a => a.Contains(resource.VersionInfo.VersionId.ToString()));
             var versionPath = Path.Combine(ServerExplorerRepository.DirectoryStructureFromPath(newPath), "VersionControl");
             if (!_directory.Exists(versionPath))
+            {
                 _directory.CreateIfNotExists(versionPath);
-            
+            }
+
             IEnumerable<string> enumerable = files as IList<string> ?? files.ToList();
             
             enumerable.ForEach(a => _file.Move(a, Path.Combine(versionPath, Path.GetFileName(a))));
@@ -106,7 +108,9 @@ namespace Dev2.Runtime.Hosting
             var path = GetVersionFolderFromResource(resourcePath);
             var files = _directory.GetFiles(path).FirstOrDefault(a => a.Contains(string.Format("{0}_{1}_", resource.VersionInfo.VersionId.ToString(), version.VersionNumber)));
             if (string.IsNullOrEmpty(files))
+            {
                 throw new VersionNotFoundException("Version Does not exist");
+            }
 
             return new StringBuilder(_file.ReadAllText(files));
         }
@@ -141,7 +145,10 @@ namespace Dev2.Runtime.Hosting
             var name = new FileInfo(path).Name;
             var parts = name.Split('_');
             if (parts.Length != 4)
+            {
                 throw new Exception(ErrorResource.InvalidVersion);
+            }
+
             return new VersionInfo(new DateTime(long.Parse(parts[2])), parts[3], "", parts[1], resourceId, Guid.Parse(parts[0]));
         }
 
@@ -150,14 +157,20 @@ namespace Dev2.Runtime.Hosting
             var name = new FileInfo(path).Name;
             var parts = name.Split('_');
             if (parts.Length != 4)
+            {
                 throw new Exception(ErrorResource.InvalidVersion);
-            return $"v.{parts[1]}  {new DateTime(long.Parse(parts[2]))}  {parts[3].Replace(".xml", "").Replace(".bite", "")}";
+            }
+
+            return $"v.{parts[1]}  {new DateTime(long.Parse(parts[2]))}  {parts[3].Replace(".xml", "")}";
         }
 
         static string GetDirectoryFromResource(string resourcePath)
         {
             if (resourcePath.Contains("\\"))
+            {
                 return resourcePath.Substring(0, resourcePath.LastIndexOf('\\'));
+            }
+
             return "";
         }
 
@@ -173,7 +186,10 @@ namespace Dev2.Runtime.Hosting
             var savePath = res.GetSavePath();
             _catalogue.SaveResource(Guid.Empty, xml.ToStringBuilder(), savePath, "Rollback", "WorkflowService");
             if (oldResource.ResourceName != res.ResourceName)
+            {
                 _catalogue.GetResource(Guid.Empty, res.ResourceID).ResourceName = oldResource.ResourceName;
+            }
+
             return new RollbackResult { DisplayName = oldResource.ResourceName, VersionHistory = GetVersions(resourceId) };
         }
 
@@ -214,7 +230,9 @@ namespace Dev2.Runtime.Hosting
             if (workSpaceId == Guid.Empty)
             {
                 if (string.IsNullOrEmpty(userName))
+                {
                     userName = Thread.CurrentPrincipal.Identity.Name;
+                }
 
                 lock (LockObject)
                 {

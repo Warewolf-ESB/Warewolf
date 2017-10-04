@@ -66,7 +66,9 @@ namespace Dev2.Common.DependencyVisualization
             {
                 
                 if (value == _locationX)
+                {
                     return;
+                }
 
                 _locationX = value;
 
@@ -81,7 +83,9 @@ namespace Dev2.Common.DependencyVisualization
             {
                 
                 if (value == _locationY)
+                {
                     return;
+                }
 
                 _locationY = value;
 
@@ -125,7 +129,9 @@ namespace Dev2.Common.DependencyVisualization
         public List<ICircularDependency> FindCircularDependencies()
         {
             if (NodeDependencies.Count == 0)
+            {
                 return null;
+            }
 
             var circularDependencies = new List<ICircularDependency>();
 
@@ -146,7 +152,9 @@ namespace Dev2.Common.DependencyVisualization
                     {
                         bool visited = stack.Any(info => info.Node == current.Node);
                         if (!visited)
+                        {
                             stack.Push(current);
+                        }
                     }
                 }
                 else

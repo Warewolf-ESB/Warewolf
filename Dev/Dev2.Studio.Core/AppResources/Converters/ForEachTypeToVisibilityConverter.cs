@@ -31,10 +31,9 @@ namespace Dev2.Studio.Core.AppResources.Converters
 
             var enumValue = Dev2EnumConverter.GetEnumFromStringDiscription(value as string, typeof(enForEachType));
 
-            enForEachType visibleEnumValue;
-            Enum.TryParse((string)parameter, out visibleEnumValue);
+            Enum.TryParse((string)parameter, out enForEachType visibleEnumValue);
 
-            if(visibleEnumValue.Equals(enumValue))
+            if (visibleEnumValue.Equals(enumValue))
             {
                 return Visibility.Visible;
             }

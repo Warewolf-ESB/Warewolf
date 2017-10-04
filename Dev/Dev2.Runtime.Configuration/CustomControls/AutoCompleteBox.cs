@@ -1484,7 +1484,9 @@ namespace System.Windows.Controls
             // Creating the view here ensures that View is always != null
             ClearView();
             if (Application.Current != null)
+            {
                 Style = Application.Current.TryFindResource("AutoCompleteBoxStyle") as Style;
+            }
         }
 
         /// <summary>
@@ -1528,8 +1530,7 @@ namespace System.Windows.Controls
 
             // Set the template parts. Individual part setters remove and add 
             // any event handlers.
-            Popup popup = GetTemplateChild(ElementPopup) as Popup;
-            if(popup != null)
+            if (GetTemplateChild(ElementPopup) is Popup popup)
             {
                 DropDownPopup = new PopupHelper(this, popup) { MaxDropDownHeight = MaxDropDownHeight };
                 DropDownPopup.AfterOnApplyTemplate();
@@ -1769,8 +1770,7 @@ namespace System.Windows.Controls
                 if(parent == null)
                 {
                     // Try the logical parent.
-                    FrameworkElement element = focused as FrameworkElement;
-                    if(element != null)
+                    if (focused is FrameworkElement element)
                     {
                         parent = element.Parent;
                     }
@@ -1851,14 +1851,13 @@ namespace System.Windows.Controls
         protected virtual ISelectionAdapter GetSelectionAdapterPart()
         {
             ISelectionAdapter adapter = null;
-            Selector selector = GetTemplateChild(ElementSelector) as Selector;
-            if(selector != null)
+            if (GetTemplateChild(ElementSelector) is Selector selector)
             {
                 // Check if it is already an IItemsSelector
-                
+
                 adapter = selector as ISelectionAdapter ?? new SelectorSelectionAdapter(selector);
             }
-            
+
             return adapter ?? GetTemplateChild(ElementSelectionAdapter) as ISelectionAdapter;
         }
 
@@ -2539,16 +2538,14 @@ namespace System.Windows.Controls
         private void OnItemsSourceChanged(IEnumerable oldValue, IEnumerable newValue)
         {
             // Remove handler for oldValue.CollectionChanged (if present)
-            INotifyCollectionChanged oldValueINotifyCollectionChanged = oldValue as INotifyCollectionChanged;
-            if(null != oldValueINotifyCollectionChanged && null != _collectionChangedWeakEventListener)
+            if (oldValue is INotifyCollectionChanged oldValueINotifyCollectionChanged && null != _collectionChangedWeakEventListener)
             {
                 _collectionChangedWeakEventListener.Detach();
                 _collectionChangedWeakEventListener = null;
             }
 
             // Add handler for newValue.CollectionChanged (if possible)
-            INotifyCollectionChanged newValueINotifyCollectionChanged = newValue as INotifyCollectionChanged;
-            if(null != newValueINotifyCollectionChanged)
+            if (newValue is INotifyCollectionChanged newValueINotifyCollectionChanged)
             {
                 _collectionChangedWeakEventListener = new WeakEventListener<AutoCompleteBox, object, NotifyCollectionChangedEventArgs>(this) { OnEventAction = (instance, source, eventArgs) => instance.ItemsSourceCollectionChanged(eventArgs), OnDetachAction = weakEventListener => newValueINotifyCollectionChanged.CollectionChanged -= weakEventListener.OnEvent };
                 newValueINotifyCollectionChanged.CollectionChanged += _collectionChangedWeakEventListener.OnEvent;

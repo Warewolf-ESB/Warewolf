@@ -30,10 +30,21 @@ namespace Gma.DataStructures.StringSearch
 
         public StringPartition(string origin, int startIndex, int partitionLength)
         {
-            if (origin == null) throw new ArgumentNullException("origin");
-            if (startIndex < 0) throw new ArgumentOutOfRangeException("startIndex", "The value must be non negative.");
+            if (origin == null)
+            {
+                throw new ArgumentNullException("origin");
+            }
+
+            if (startIndex < 0)
+            {
+                throw new ArgumentOutOfRangeException("startIndex", "The value must be non negative.");
+            }
+
             if (partitionLength < 0)
+            {
                 throw new ArgumentOutOfRangeException("partitionLength", "The value must be non negative.");
+            }
+
             m_Origin = string.Intern(origin);
             m_StartIndex = startIndex;
             int availableLength = m_Origin.Length - startIndex;
@@ -75,7 +86,11 @@ namespace Gma.DataStructures.StringSearch
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
             return obj is StringPartition && Equals((StringPartition) obj);
         }
 

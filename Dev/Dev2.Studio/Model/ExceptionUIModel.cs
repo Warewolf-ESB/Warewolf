@@ -24,7 +24,10 @@ namespace Dev2.Studio.Model
             }
             set
             {
-                if(_exception == value) return;
+                if(_exception == value)
+                {
+                    return;
+                }
 
                 _exception = value;
                 NotifyOfPropertyChange(() => Exception);
@@ -40,7 +43,10 @@ namespace Dev2.Studio.Model
             }
             set
             {
-                if(_message == value) return;
+                if(_message == value)
+                {
+                    return;
+                }
 
                 _message = value;
                 NotifyOfPropertyChange(() => Message);

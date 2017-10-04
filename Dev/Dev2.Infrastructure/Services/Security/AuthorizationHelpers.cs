@@ -89,8 +89,7 @@ namespace Dev2.Services.Security
                 return true;
             }
 
-            Guid resourceId;
-            if(Guid.TryParse(resource, out resourceId))
+            if (Guid.TryParse(resource, out Guid resourceId))
             {
                 return permission.ResourceID == resourceId;
             }

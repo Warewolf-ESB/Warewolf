@@ -43,9 +43,6 @@ namespace Dev2.Core.Tests.Workspaces
         [TestMethod]
         public void WorkspaceItemRepositoryWorkspaceItemsExpectedInvokesReadFirstTime()
         {
-            string resourceName;
-            Guid workspaceID;
-            Guid serverID;
 
             var mockConn = new Mock<IEnvironmentConnection>();
             mockConn.Setup(c => c.IsConnected).Returns(true);
@@ -55,7 +52,7 @@ namespace Dev2.Core.Tests.Workspaces
             var payload = JsonConvert.SerializeObject(msg);
             mockConn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder(payload)).Verifiable();
 
-            var model = CreateModel(ResourceType.Service, mockConn, out resourceName, out workspaceID, out serverID);
+            var model = CreateModel(ResourceType.Service, mockConn, out string resourceName, out Guid workspaceID, out Guid serverID);
 
             var repositoryPath = GetUniqueRepositoryPath();
 
@@ -81,9 +78,6 @@ namespace Dev2.Core.Tests.Workspaces
         [Owner("Huggs")]
         public void WorkspaceItemRepository_UnitTest_UpdateWorkspaceItemIsWorkflowSaved_ExpectSetsWorkspaceItemIsWorkflowSavedFalse()
         {
-            string resourceName;
-            Guid workspaceID;
-            Guid serverID;
 
 
             var mockConn = new Mock<IEnvironmentConnection>();
@@ -93,7 +87,7 @@ namespace Dev2.Core.Tests.Workspaces
             var payload = JsonConvert.SerializeObject(msg);
             mockConn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder(payload)).Verifiable();
 
-            var model = CreateModel(ResourceType.Service, mockConn, out resourceName, out workspaceID, out serverID);
+            var model = CreateModel(ResourceType.Service, mockConn, out string resourceName, out Guid workspaceID, out Guid serverID);
 
             model.Setup(resourceModel => resourceModel.IsWorkflowSaved).Returns(true);
             var repositoryPath = GetUniqueRepositoryPath();
@@ -135,9 +129,6 @@ namespace Dev2.Core.Tests.Workspaces
         [TestMethod]
         public void WorkspaceItemRepositoryAddWorkspaceItemWithExistingModelExpectedDoesNothing()
         {
-            string resourceName;
-            Guid workspaceID;
-            Guid serverID;
 
 
 
@@ -148,7 +139,7 @@ namespace Dev2.Core.Tests.Workspaces
             var payload = JsonConvert.SerializeObject(msg);
             mockConn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder(payload)).Verifiable();
 
-            var model = CreateModel(ResourceType.Service, mockConn, out resourceName, out workspaceID, out serverID);
+            var model = CreateModel(ResourceType.Service, mockConn, out string resourceName, out Guid workspaceID, out Guid serverID);
 
 
             var repository = new WorkspaceItemRepository(GetUniqueRepositoryPath());
@@ -163,9 +154,6 @@ namespace Dev2.Core.Tests.Workspaces
         [TestMethod]
         public void WorkspaceItemRepositoryAddWorkspaceItemWithNewModelExpectedAddsAndAssignsWorkspaceID()
         {
-            string resourceName;
-            Guid workspaceID;
-            Guid serverID;
 
 
             var mockConn = new Mock<IEnvironmentConnection>();
@@ -175,7 +163,7 @@ namespace Dev2.Core.Tests.Workspaces
             var payload = JsonConvert.SerializeObject(msg);
             mockConn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder(payload)).Verifiable();
 
-            var model = CreateModel(ResourceType.Service, mockConn, out resourceName, out workspaceID, out serverID);
+            var model = CreateModel(ResourceType.Service, mockConn, out string resourceName, out Guid workspaceID, out Guid serverID);
 
             var repository = new WorkspaceItemRepository(GetUniqueRepositoryPath());
             repository.AddWorkspaceItem(model.Object);
@@ -187,9 +175,6 @@ namespace Dev2.Core.Tests.Workspaces
         [TestMethod]
         public void WorkspaceItemRepositoryAddWorkspaceItemWithNewModelExpectedAddsAndAssignsServerID()
         {
-            string resourceName;
-            Guid workspaceID;
-            Guid serverID;
 
 
             var mockConn = new Mock<IEnvironmentConnection>();
@@ -199,7 +184,7 @@ namespace Dev2.Core.Tests.Workspaces
             var payload = JsonConvert.SerializeObject(msg);
             mockConn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder(payload)).Verifiable();
 
-            var model = CreateModel(ResourceType.Service, mockConn, out resourceName, out workspaceID, out serverID);
+            var model = CreateModel(ResourceType.Service, mockConn, out string resourceName, out Guid workspaceID, out Guid serverID);
 
             var repository = new WorkspaceItemRepository(GetUniqueRepositoryPath());
             repository.AddWorkspaceItem(model.Object);
@@ -211,9 +196,6 @@ namespace Dev2.Core.Tests.Workspaces
         [TestMethod]
         public void WorkspaceItemRepositoryAddWorkspaceItemWithNewModelExpectedAddsAndAssignsServiceName()
         {
-            string resourceName;
-            Guid workspaceID;
-            Guid serverID;
 
 
             var mockConn = new Mock<IEnvironmentConnection>();
@@ -223,7 +205,7 @@ namespace Dev2.Core.Tests.Workspaces
             var payload = JsonConvert.SerializeObject(msg);
             mockConn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder(payload)).Verifiable();
 
-            var model = CreateModel(ResourceType.Service, mockConn, out resourceName, out workspaceID, out serverID);
+            var model = CreateModel(ResourceType.Service, mockConn, out string resourceName, out Guid workspaceID, out Guid serverID);
 
             var repository = new WorkspaceItemRepository(GetUniqueRepositoryPath());
             repository.AddWorkspaceItem(model.Object);
@@ -235,9 +217,6 @@ namespace Dev2.Core.Tests.Workspaces
         [TestMethod]
         public void WorkspaceItemRepositoryAddWorkspaceItemWithNewServiceModelExpectedAddsAndAssignsServiceServiceType()
         {
-            string resourceName;
-            Guid workspaceID;
-            Guid serverID;
 
             var mockConn = new Mock<IEnvironmentConnection>();
             mockConn.Setup(c => c.IsConnected).Returns(true);
@@ -246,7 +225,7 @@ namespace Dev2.Core.Tests.Workspaces
             var payload = JsonConvert.SerializeObject(msg);
             mockConn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder(payload)).Verifiable();
 
-            var model = CreateModel(ResourceType.Service, mockConn, out resourceName, out workspaceID, out serverID);
+            var model = CreateModel(ResourceType.Service, mockConn, out string resourceName, out Guid workspaceID, out Guid serverID);
 
             var repository = new WorkspaceItemRepository(GetUniqueRepositoryPath());
             repository.AddWorkspaceItem(model.Object);
@@ -258,9 +237,6 @@ namespace Dev2.Core.Tests.Workspaces
         [TestMethod]
         public void WorkspaceItemRepositoryAddWorkspaceItemWithNewSourceModelExpectedAddsAndAssignsSourceServiceType()
         {
-            string resourceName;
-            Guid workspaceID;
-            Guid serverID;
 
             var mockConn = new Mock<IEnvironmentConnection>();
             mockConn.Setup(c => c.IsConnected).Returns(true);
@@ -269,7 +245,7 @@ namespace Dev2.Core.Tests.Workspaces
             var payload = JsonConvert.SerializeObject(msg);
             mockConn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder(payload)).Verifiable();
 
-            var model = CreateModel(ResourceType.Source, mockConn, out resourceName, out workspaceID, out serverID);
+            var model = CreateModel(ResourceType.Source, mockConn, out string resourceName, out Guid workspaceID, out Guid serverID);
 
             var repository = new WorkspaceItemRepository(GetUniqueRepositoryPath());
             repository.AddWorkspaceItem(model.Object);
@@ -281,9 +257,6 @@ namespace Dev2.Core.Tests.Workspaces
         [TestMethod]
         public void WorkspaceItemRepositoryAddWorkspaceItemWithNewModelExpectedInvokesWrite()
         {
-            string resourceName;
-            Guid workspaceID;
-            Guid serverID;
 
 
             var mockConn = new Mock<IEnvironmentConnection>();
@@ -293,7 +266,7 @@ namespace Dev2.Core.Tests.Workspaces
             var payload = JsonConvert.SerializeObject(msg);
             mockConn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder(payload)).Verifiable();
 
-            var model = CreateModel(ResourceType.Service, mockConn, out resourceName, out workspaceID, out serverID);
+            var model = CreateModel(ResourceType.Service, mockConn, out string resourceName, out Guid workspaceID, out Guid serverID);
 
             var repositoryPath = GetUniqueRepositoryPath();
             Assert.IsFalse(File.Exists(repositoryPath));
@@ -349,9 +322,6 @@ namespace Dev2.Core.Tests.Workspaces
         [TestMethod]
         public void WorkspaceItemRepositoryUpdateWorkspaceItemWithNonExistingModelExpectedDoesNothing()
         {
-            string resourceName;
-            Guid workspaceID;
-            Guid serverID;
 
             var mockConn = new Mock<IEnvironmentConnection>();
             mockConn.Setup(c => c.IsConnected).Returns(true);
@@ -360,7 +330,7 @@ namespace Dev2.Core.Tests.Workspaces
             var payload = JsonConvert.SerializeObject(msg);
             mockConn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder(payload)).Verifiable();
 
-            var model = CreateModel(ResourceType.Service, mockConn, out resourceName, out workspaceID, out serverID);
+            var model = CreateModel(ResourceType.Service, mockConn, out string resourceName, out Guid workspaceID, out Guid serverID);
 
             var repository = new WorkspaceItemRepository(GetUniqueRepositoryPath());
 
@@ -372,9 +342,6 @@ namespace Dev2.Core.Tests.Workspaces
         public void WorkspaceItemRepositoryUpdateWorkspaceItemWithExistingModelExpectedInvokesExecuteCommand()
         {
             const string ExpectedResult = "Workspace item updated";
-            string resourceName;
-            Guid workspaceID;
-            Guid serverID;
 
             var mockConn = new Mock<IEnvironmentConnection>();
             mockConn.Setup(c => c.IsConnected).Returns(true);
@@ -383,7 +350,7 @@ namespace Dev2.Core.Tests.Workspaces
             var payload = JsonConvert.SerializeObject(msg);
             mockConn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder(payload)).Verifiable();
 
-            var model = CreateModel(ResourceType.Service, mockConn, out resourceName, out workspaceID, out serverID);
+            var model = CreateModel(ResourceType.Service, mockConn, out string resourceName, out Guid workspaceID, out Guid serverID);
 
             #region Setup ImportService - GRRR!
 
@@ -405,9 +372,6 @@ namespace Dev2.Core.Tests.Workspaces
         [TestMethod]
         public void WorkspaceItemRepositoryRemoveWithNonExistingModelExpectedDoesNothing()
         {
-            string resourceName;
-            Guid workspaceID;
-            Guid serverID;
 
             var mockConn = new Mock<IEnvironmentConnection>();
             mockConn.Setup(c => c.IsConnected).Returns(true);
@@ -416,7 +380,7 @@ namespace Dev2.Core.Tests.Workspaces
             var payload = JsonConvert.SerializeObject(msg);
             mockConn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder(payload)).Verifiable();
 
-            var model = CreateModel(ResourceType.Service, mockConn, out resourceName, out workspaceID, out serverID);
+            var model = CreateModel(ResourceType.Service, mockConn, out string resourceName, out Guid workspaceID, out Guid serverID);
 
             var repository = new WorkspaceItemRepository(GetUniqueRepositoryPath());
             repository.AddWorkspaceItem(model.Object);
@@ -431,9 +395,6 @@ namespace Dev2.Core.Tests.Workspaces
         [TestMethod]
         public void WorkspaceItemRepositoryRemoveWithExistingModelExpectedRemovesItem()
         {
-            string resourceName;
-            Guid workspaceID;
-            Guid serverID;
 
             var mockConn = new Mock<IEnvironmentConnection>();
             mockConn.Setup(c => c.IsConnected).Returns(true);
@@ -443,7 +404,7 @@ namespace Dev2.Core.Tests.Workspaces
             mockConn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder(payload)).Verifiable();
             var mockResourceRepo = new Mock<IResourceRepository>();
             mockResourceRepo.Setup(resourceRepository => resourceRepository.DeleteResourceFromWorkspaceAsync(It.IsAny<IContextualResourceModel>()));
-            var model = CreateModel(ResourceType.Service, mockConn, out resourceName, out workspaceID, out serverID, mockResourceRepo);
+            var model = CreateModel(ResourceType.Service, mockConn, out string resourceName, out Guid workspaceID, out Guid serverID, mockResourceRepo);
 
             var repository = new WorkspaceItemRepository(GetUniqueRepositoryPath());
             repository.AddWorkspaceItem(model.Object);
@@ -457,9 +418,6 @@ namespace Dev2.Core.Tests.Workspaces
         [TestMethod]
         public void WorkspaceItemRepositoryRemoveWithExistingModelExpectedInvokesWrite()
         {
-            string resourceName;
-            Guid workspaceID;
-            Guid serverID;
 
             var mockConn = new Mock<IEnvironmentConnection>();
             mockConn.Setup(c => c.IsConnected).Returns(true);
@@ -469,7 +427,7 @@ namespace Dev2.Core.Tests.Workspaces
             mockConn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder(payload)).Verifiable();
             var mockResourceRepo = new Mock<IResourceRepository>();
             mockResourceRepo.Setup(resourceRepository => resourceRepository.DeleteResourceFromWorkspaceAsync(It.IsAny<IContextualResourceModel>()));
-            var model = CreateModel(ResourceType.Service, mockConn, out resourceName, out workspaceID, out serverID, mockResourceRepo);
+            var model = CreateModel(ResourceType.Service, mockConn, out string resourceName, out Guid workspaceID, out Guid serverID, mockResourceRepo);
 
             var repositoryPath = GetUniqueRepositoryPath();
             Assert.IsFalse(File.Exists(repositoryPath));

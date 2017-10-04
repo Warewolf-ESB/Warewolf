@@ -24,7 +24,11 @@ namespace Gma.DataStructures.StringSearch
 
         public virtual void Add(string key, TValue value)
         {
-            if (key == null) throw new ArgumentNullException("key");
+            if (key == null)
+            {
+                throw new ArgumentNullException("key");
+            }
+
             Add(new StringPartition(key), value);
         }
 

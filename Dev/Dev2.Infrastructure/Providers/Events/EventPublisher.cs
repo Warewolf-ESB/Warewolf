@@ -33,8 +33,7 @@ namespace Dev2.Providers.Events
         public bool RemoveEvent<TEvent>()
             where TEvent : class, new()
         {
-            object value;
-            return _subjects.TryRemove(typeof(TEvent), out value);
+            return _subjects.TryRemove(typeof(TEvent), out object value);
         }
 
         public IObservable<TEvent> GetEvent<TEvent>()
@@ -54,8 +53,7 @@ namespace Dev2.Providers.Events
         {
             VerifyArgument.IsNotNull("sampleEvent", sampleEvent);
 
-            object subject;
-            if(_subjects.TryGetValue(typeof(TEvent), out subject))
+            if (_subjects.TryGetValue(typeof(TEvent), out object subject))
             {
                 ((ISubject<TEvent>)subject).OnNext(sampleEvent);
             }

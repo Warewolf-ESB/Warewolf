@@ -129,8 +129,7 @@ namespace Dev2.Diagnostics
             reader.MoveToContent();
 
             GroupName = reader.GetAttribute("GroupName");
-            int idx;
-            int.TryParse(reader.GetAttribute("GroupIndex"), out idx);
+            int.TryParse(reader.GetAttribute("GroupIndex"), out int idx);
             GroupIndex = idx;
 
             while(reader.Read())
@@ -138,8 +137,7 @@ namespace Dev2.Diagnostics
                 if(reader.IsStartElement("Type"))
                 {
                     var result = reader.ReadElementString("Type");
-                    DebugItemResultType type;
-                    Enum.TryParse(result, out type);
+                    Enum.TryParse(result, out DebugItemResultType type);
                     Type = type;
                 }
 
@@ -170,22 +168,19 @@ namespace Dev2.Diagnostics
 
                 if (reader.IsStartElement("HasError"))
                 {
-                    bool hasError;
-                    bool.TryParse(reader.ReadElementString("HasError"), out hasError);
+                    bool.TryParse(reader.ReadElementString("HasError"), out bool hasError);
                     HasError = hasError;
                 }
 
                 if (reader.IsStartElement("TestStepHasError"))
                 {
-                    bool testStepHasError;
-                    bool.TryParse(reader.ReadElementString("TestStepHasError"), out testStepHasError);
+                    bool.TryParse(reader.ReadElementString("TestStepHasError"), out bool testStepHasError);
                     TestStepHasError = testStepHasError;
                 }
 
                 if (reader.IsStartElement("MockSelected"))
                 {
-                    bool mockSelected;
-                    bool.TryParse(reader.ReadElementString("MockSelected"), out mockSelected);
+                    bool.TryParse(reader.ReadElementString("MockSelected"), out bool mockSelected);
                     MockSelected = mockSelected;
                 }
 

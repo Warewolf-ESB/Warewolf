@@ -46,7 +46,9 @@ namespace Warewolf.Core
                 return true;
             }
             if (GetHashCode() == other.GetHashCode())
+            {
                 return true;
+            }
 
             bool inputseq;
             if(Inputs != null&& other.Inputs != null)

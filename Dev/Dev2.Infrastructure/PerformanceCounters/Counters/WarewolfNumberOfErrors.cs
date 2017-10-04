@@ -2,10 +2,11 @@
 using System.Diagnostics;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Monitoring;
+using System;
 
 namespace Dev2.PerformanceCounters.Counters
 {
-    public class WarewolfNumberOfErrors : IPerformanceCounter
+    public class WarewolfNumberOfErrors : IPerformanceCounter, IDisposable
     {
 
         private PerformanceCounter _counter;
@@ -47,16 +48,18 @@ namespace Dev2.PerformanceCounters.Counters
         {
 
                 if (IsActive)
-                    _counter.Increment();
-       
+            {
+                _counter.Increment();
+            }
         }
 
         public void IncrementBy(long ticks)
         {
 
             if(IsActive)
+            {
                 _counter.IncrementBy(ticks);
-
+            }
         }
 
         public void Setup()
@@ -77,9 +80,14 @@ namespace Dev2.PerformanceCounters.Counters
         {
 
             if (IsActive)
+            {
+                _counter.Decrement();
+            }
+        }
 
-                    _counter.Decrement();
-
+        public void Dispose()
+        {
+            _counter.Dispose();
         }
 
         public string Category => "Warewolf";

@@ -74,8 +74,7 @@ namespace Dev2.Studio.Core.CustomControls
 
         private void SubscribeDeactivation(object source)
         {
-            var sourceScreen = source as IScreen;
-            if(sourceScreen != null)
+            if (source is IScreen sourceScreen)
             {
                 sourceScreen.Deactivated += SourceScreenDeactivated;
             }

@@ -25,10 +25,9 @@ namespace Dev2.Data.Operations
         {
             enIndexFinderOccurrence occurrence = enIndexFinderOccurrence.FirstOccurrence;
             enIndexFinderDirection dir = enIndexFinderDirection.LeftToRight;
-            int startIdx;
             #region Set the enums according to the strings
 
-            switch(firstOccurrence)
+            switch (firstOccurrence)
             {
                 case "First Occurrence":
                     occurrence = enIndexFinderOccurrence.FirstOccurrence;
@@ -43,7 +42,7 @@ namespace Dev2.Data.Operations
                     break;
             }
 
-            switch(direction)
+            switch (direction)
             {
                 case "Left to Right":
                     dir = enIndexFinderDirection.LeftToRight;
@@ -55,7 +54,7 @@ namespace Dev2.Data.Operations
             }
 
             startIndex = !string.IsNullOrWhiteSpace(startIndex) ? startIndex : "0";
-            if(!int.TryParse(startIndex, out startIdx))
+            if(!int.TryParse(startIndex, out int startIdx))
             {
                 throw new Exception(ErrorResource.StartIndexNotANumber);
             }

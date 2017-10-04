@@ -123,10 +123,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 </ADL>";
             TestData = "<root>" + data + "</root>";
             IDSFDataObject result = ExecuteProcess();
-
-            IList<string> actual;
-            string error;
-            GetRecordSetFieldValueFromDataList(result.Environment, "Result", "res", out actual, out error);
+            GetRecordSetFieldValueFromDataList(result.Environment, "Result", "res", out IList<string> actual, out string error);
 
             Assert.AreEqual(1, actual.Count);
             Assert.AreEqual("-1", actual[0]);
@@ -198,10 +195,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             CurrentDl = "<DL><Recset><Field1/><Field2/><Field3/></Recset><Result><res/></Result></DL>";
             TestData = "<root>" + data + "</root>";
             IDSFDataObject result = ExecuteProcess();
-
-            IList<string> actual;
-            string error;
-            GetRecordSetFieldValueFromDataList(result.Environment, "Result", "res", out actual, out error);
+            GetRecordSetFieldValueFromDataList(result.Environment, "Result", "res", out IList<string> actual, out string error);
 
             Assert.AreEqual(1, actual.Count);
             Assert.AreEqual("-1", actual[0]);

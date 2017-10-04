@@ -56,9 +56,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             _mergeCollection.Add(new DataMergeDTO("[[CompanyTelNo]]", "None", "", 2, "", "Left"));
             SetupArguments(ActivityStrings.DataMergeDataListWithData, ActivityStrings.DataMergeDataListShape, "[[res]]", _mergeCollection);
             IDSFDataObject result = ExecuteProcess();
-            string actual;
-            string error;
-            GetScalarValueFromEnvironment(result.Environment, "res", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "res", out string actual, out string error);
 
             // remove test datalist ;)
 
@@ -71,10 +69,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             _mergeCollection.Add(new DataMergeDTO("[[Customers(*).FirstName]]", "Chars", ",", 1, "", "Left"));
             SetupArguments(ActivityStrings.DataMergeDataListWithData, ActivityStrings.DataMergeDataListShape, "[[res]]", _mergeCollection);
             IDSFDataObject result = ExecuteProcess();
-
-            string actual;
-            string error;
-            GetScalarValueFromEnvironment(result.Environment, "res", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "res", out string actual, out string error);
             // remove test datalist ;)
 
             Assert.AreEqual("Wallis,Barney,Trevor,Travis,Jurie,Brendon,Massimo,Ashley,Sashen,Wallis,", actual);
@@ -88,10 +83,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             _mergeCollection.Add(new DataMergeDTO("[[Customers(*).FirstName]]", "Chars", "s", 1, "", "Left"));
             SetupArguments(ActivityStrings.DataMergeDataListWithData, ActivityStrings.DataMergeDataListShape, "[[res]]", _mergeCollection);
             IDSFDataObject result = ExecuteProcess();
-
-            string actual;
-            string error;
-            GetScalarValueFromEnvironment(result.Environment, "res", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "res", out string actual, out string error);
             // remove test datalist ;)
 
             Assert.AreEqual("WallissBarneysTrevorsTravissJuriesBrendonsMassimosAshleysSashensWalliss", actual);
@@ -104,10 +96,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             _mergeCollection.Add(new DataMergeDTO("[[CompanyName]]", "Chars", ".", 2, "", "Left"));
             SetupArguments(ActivityStrings.DataMergeDataListWithData, ActivityStrings.DataMergeDataListShape, "[[res]]", _mergeCollection);
             IDSFDataObject result = ExecuteProcess();
-
-            string actual;
-            string error;
-            GetScalarValueFromEnvironment(result.Environment, "res", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "res", out string actual, out string error);
             // remove test datalist ;)
 
             Assert.AreEqual("Travis works at Dev2.", actual);
@@ -120,10 +109,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             _mergeCollection.Add(new DataMergeDTO("[[TelNumbers(*).number]]", "Chars", ".", 2, "", "Left"));
             SetupArguments(ActivityStrings.DataMergeDataListWithData, ActivityStrings.DataMergeDataListShape, "[[res]]", _mergeCollection);
             IDSFDataObject result = ExecuteProcess();
-
-            string actual;
-            string error;
-            GetScalarValueFromEnvironment(result.Environment, "res", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "res", out string actual, out string error);
             // remove test datalist ;)
 
             Assert.AreEqual("Wallis's phone number is 0811452368.Barney's phone number is 0821452368.Trevor's phone number is 0831452368.Travis's phone number is 0841452368.Jurie's phone number is 0851452368.Brendon's phone number is 0861452368.Massimo's phone number is 0871452368.Ashley's phone number is 0881452368.Sashen's phone number is 0891452368.Wallis's phone number is 0801452368.", actual);
@@ -140,13 +126,10 @@ namespace Dev2.Tests.Activities.ActivityTests
             _mergeCollection.Add(new DataMergeDTO("[[Customers(*).LastName]]", "New Line", "", 2, "", "Left"));
             SetupArguments(ActivityStrings.DataMergeDataListWithData, ActivityStrings.DataMergeDataListShape, "[[res]]", _mergeCollection);
             IDSFDataObject result = ExecuteProcess();
-
-            string actual;
-            string error;
-            GetScalarValueFromEnvironment(result.Environment, @"res", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, @"res", out string actual, out string error);
             // remove test datalist ;)
 
-             string expected = @"Wallis,Buchan
+            string expected = @"Wallis,Buchan
 Barney,Buchan
 Trevor,Williams-Ros
 Travis,Frisigner
@@ -172,10 +155,7 @@ Wallis,Buchan
             _mergeCollection.Add(new DataMergeDTO("[[Customers(*).LastName]]", "Tab", "", 2, "", "Left"));
             SetupArguments(ActivityStrings.DataMergeDataListWithData, ActivityStrings.DataMergeDataListShape, "[[res]]", _mergeCollection);
             IDSFDataObject result = ExecuteProcess();
-
-            string actual;
-            string error;
-            GetScalarValueFromEnvironment(result.Environment, "res", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "res", out string actual, out string error);
             // remove test datalist ;)
 
             Assert.AreEqual(@"Wallis,Buchan	Barney,Buchan	Trevor,Williams-Ros	Travis,Frisigner	Jurie,Smit	Brendon,Page	Massimo,Guerrera	Ashley,Lewis	Sashen,Naidoo	Wallis,Buchan	", actual);
@@ -192,13 +172,10 @@ Wallis,Buchan
             _mergeCollection.Add(new DataMergeDTO("[[Customers(*).LastName]]", "New Line", "", 2, "", "Left"));
             SetupArguments(ActivityStrings.DataMergeDataListWithData, ActivityStrings.DataMergeDataListShape, "[[res]]", _mergeCollection);
             IDSFDataObject result = ExecuteProcess();
-
-            string actual;
-            string error;
-            GetScalarValueFromEnvironment(result.Environment, "res", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "res", out string actual, out string error);
             // remove test datalist ;)
 
-             string expected = @"WBuchan
+            string expected = @"WBuchan
 BBuchan
 TWilliams-Ros
 TFrisigner
@@ -221,10 +198,7 @@ WBuchan
             _mergeCollection.Add(new DataMergeDTO("[[Customers(*).LastName]]", "New Line", "", 2, "", "Left"));
             SetupArguments(ActivityStrings.DataMergeDataListWithData, ActivityStrings.DataMergeDataListShape, "[[res]]", _mergeCollection);
             IDSFDataObject result = ExecuteProcess();
-
-            string actual;
-            string error;
-            GetScalarValueFromEnvironment(result.Environment, "res", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "res", out string actual, out string error);
             // remove test datalist ;)
 
             string expected = @"Wallis0000Buchan
@@ -254,13 +228,10 @@ Wallis0000Buchan
             _mergeCollection.Add(new DataMergeDTO("[[Customers(*).LastName]]", "New Line", "", 2, "", "Left"));
             SetupArguments(ActivityStrings.DataMergeDataListWithData, ActivityStrings.DataMergeDataListShape, "[[res]]", _mergeCollection);
             IDSFDataObject result = ExecuteProcess();
-
-            string actual;
-            string error;
-            GetScalarValueFromEnvironment(result.Environment, "res", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "res", out string actual, out string error);
             // remove test datalist ;)
 
-             string expected = @"0000WallisBuchan
+            string expected = @"0000WallisBuchan
 0000BarneyBuchan
 0000TrevorWilliams-Ros
 0000TravisFrisigner
@@ -275,8 +246,7 @@ Wallis0000Buchan
             FixBreaks(ref expected, ref actual);
             Assert.AreEqual(expected, actual);
         }
-
-        //2013.05.31: Ashley Lewis for bug 9485 - merge tool dropping data if index equals length
+        
         [TestMethod]
         public void MergeTwoFieldsInRecordsetsIndexWithIndexEqualToDataLengthExpectedNoDataLoss()
         {
@@ -284,13 +254,10 @@ Wallis0000Buchan
             _mergeCollection.Add(new DataMergeDTO("[[Customers(*).LastName]]", "New Line", "", 2, "", "Left"));
             SetupArguments(ActivityStrings.DataMergeDataListWithData, ActivityStrings.DataMergeDataListShape, "[[res]]", _mergeCollection);
             IDSFDataObject result = ExecuteProcess();
-
-            string actual;
-            string error;
-            GetScalarValueFromEnvironment(result.Environment, "res", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "res", out string actual, out string error);
             // remove test datalist ;)
 
-             string expected = "WallisBuchan\nBarneyBuchan\nTrevorWilliams-Ros\nTravisFrisigner\nJurie Smit\nBrendoPage\nMassimGuerrera\nAshleyLewis\nSashenNaidoo\nWallisBuchan\n";
+            string expected = "WallisBuchan\nBarneyBuchan\nTrevorWilliams-Ros\nTravisFrisigner\nJurie Smit\nBrendoPage\nMassimGuerrera\nAshleyLewis\nSashenNaidoo\nWallisBuchan\n";
 
             FixBreaks(ref expected, ref actual);
             Assert.AreEqual(expected, actual);

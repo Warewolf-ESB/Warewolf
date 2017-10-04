@@ -174,8 +174,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             try
             {
                 Dev2DecisionStack dds = DataListUtil.ConvertFromJsonToModel<Dev2DecisionStack>(val);
-                ErrorResultTO error;
-                string userModel = dds.GenerateUserFriendlyModel(env, dds.Mode, out error);
+                string userModel = dds.GenerateUserFriendlyModel(env, dds.Mode, out ErrorResultTO error);
                 allErrors.MergeErrors(error);
 
                 foreach (Dev2Decision dev2Decision in dds.TheStack)
@@ -290,13 +289,16 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 Dev2DecisionStack dds = DataListUtil.ConvertFromJsonToModel<Dev2DecisionStack>(val);
 
-                if(_theResult.ToString() == "True")
+                if (_theResult.ToString() == "True")
                 {
                     resultString = dds.TrueArmText;
                 }
-                else if(_theResult.ToString() == "False")
+                else
                 {
-                    resultString = dds.FalseArmText;
+                    if (_theResult.ToString() == "False")
+                    {
+                        resultString = dds.FalseArmText;
+                    }
                 }
 
                 itemToAdd.AddRange(new DebugItemStaticDataParams(resultString, "").GetDebugItemResult());

@@ -186,9 +186,8 @@ namespace Unlimited.Framework.Converters.Graph.String.Json
             else if (validPaths.Count == 1 &&
                      validPaths[0].ActualPath == JsonPath.EnumerableSymbol + JsonPath.SeperatorSymbol)
             {
-                var enumerableData = Data as IEnumerable;
 
-                if (enumerableData != null)
+                if (Data is IEnumerable enumerableData)
                 {
                     IEnumerator enumerator = enumerableData.GetEnumerator();
                     enumerator.Reset();
@@ -298,8 +297,7 @@ namespace Unlimited.Framework.Converters.Graph.String.Json
                     else
                     {
                         bool isPrimitiveArray = false;
-                        var jObject = data as JObject;
-                        if (jObject != null)
+                        if (data is JObject jObject)
                         {
                             JProperty property = jObject.Property(pathSegment.ActualSegment);
                             isPrimitiveArray = property.IsEnumerableOfPrimitives();
@@ -376,8 +374,7 @@ namespace Unlimited.Framework.Converters.Graph.String.Json
                 returnVal = property.Value as JArray;
             }
 
-            var jArray = data as JArray;
-            if(jArray != null)
+            if (data is JArray jArray)
             {
                 returnVal = jArray;
             }

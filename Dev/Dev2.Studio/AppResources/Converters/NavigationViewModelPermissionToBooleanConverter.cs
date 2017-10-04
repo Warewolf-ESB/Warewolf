@@ -48,8 +48,7 @@ namespace Dev2.Studio.AppResources.Converters
                 return DefaultValue;
             }
 
-            Permissions requiredPermission;
-            Enum.TryParse(parameter as string, true, out requiredPermission);
+            Enum.TryParse(parameter as string, true, out Permissions requiredPermission);
 
             return userPermissions.Value.HasFlag(requiredPermission);
         }

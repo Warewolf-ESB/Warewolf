@@ -35,7 +35,11 @@ namespace Dev2.DataList.Contract
         /// <exception cref="System.ArgumentException">formatName cannot be null or empty string.</exception>
         public static DataListFormat CreateFormat(string formatName, EmitionTypes publicFormatName = EmitionTypes.XML, string headerType = "")
         {
-            if(String.IsNullOrEmpty(formatName)) throw new ArgumentException(ErrorResource.FormatNameCannotBeNull);
+            if(String.IsNullOrEmpty(formatName))
+            {
+                throw new ArgumentException(ErrorResource.FormatNameCannotBeNull);
+            }
+
             DataListFormat format;
 
             lock(FormatLock)

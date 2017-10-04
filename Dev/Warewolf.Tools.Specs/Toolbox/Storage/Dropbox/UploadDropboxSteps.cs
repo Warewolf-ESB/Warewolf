@@ -30,7 +30,11 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
         public UploadDropboxSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
         {
-            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            if (scenarioContext == null)
+            {
+                throw new ArgumentNullException("scenarioContext");
+            }
+
             this.scenarioContext = scenarioContext;
         }
 
@@ -180,7 +184,9 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
         public void ThenTheDropboxSourceWindowIsOpened(string sourceName)
         {
             if(sourceName == "Drop")
+            {
                 Assert.IsTrue(GetViewModel().SelectedSource.ResourceName == sourceName);
+            }
         }
         [Then(@"Edit is Enabled")]
         public void ThenEditIsEnabled()

@@ -1000,7 +1000,9 @@ namespace Dev2.Studio.ViewModels.Workflow
                             }
 
                             if (explorerItem != null)
+                            {
                                 mvm.DuplicateResource(explorerItem);
+                            }
                         }
                     }
                 }));
@@ -1020,7 +1022,9 @@ namespace Dev2.Studio.ViewModels.Workflow
                         {
                             var explorerItem = GetSelected(mvm);
                             if (explorerItem != null)
+                            {
                                 mvm.AddDeploySurface(explorerItem.AsList().Union(new[] { explorerItem }));
+                            }
                         }
                     }
                 }));
@@ -1217,8 +1221,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         private void InitialiseWithAction(ModelProperty modelProperty1)
         {
-            var droppedActivity = modelProperty1?.ComputedValue as DsfActivity;
-            if (droppedActivity != null)
+            if (modelProperty1?.ComputedValue is DsfActivity droppedActivity)
             {
                 if (!string.IsNullOrEmpty(droppedActivity.ServiceName))
                 {
@@ -1235,9 +1238,8 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             if (DataObject != null)
             {
-                var viewModel = DataObject as ExplorerItemViewModel;
 
-                if (viewModel != null)
+                if (DataObject is ExplorerItemViewModel viewModel)
                 {
                     var serverRepository = CustomContainer.Get<IServerRepository>();
                     IServer server = serverRepository.FindSingle(c => c.EnvironmentID == viewModel.Server.EnvironmentID);
@@ -1338,11 +1340,15 @@ namespace Dev2.Studio.ViewModels.Workflow
                 var selection = Designer.Context.Items.GetValue<Selection>();
 
                 if (selection?.PrimarySelection == null)
+                {
                     return;
+                }
 
                 if (selection.PrimarySelection.ItemType != typeof(Flowchart) &&
                    selection.SelectedObjects.All(modelItem => modelItem.ItemType != typeof(Flowchart)))
+                {
                     return;
+                }
             }
 
             e.CanExecute = false;
@@ -1475,7 +1481,9 @@ namespace Dev2.Studio.ViewModels.Workflow
                                     decisionFields.AddRange(parts.Select(part => DataListUtil.StripBracketsFromValue(part.Option.DisplayValue)));
                                 }
                                 else
+                                {
                                     decisionFields = decisionFields.Union(GetParsedRegions(getCol, datalistModel)).ToList();
+                                }
                             }
                         }
                     }
@@ -1603,9 +1611,8 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// <returns></returns>
         public bool NotifyItemSelected(object primarySelection)
         {
-            var selectedItem = primarySelection as ModelItem;
 
-            if (selectedItem != null)
+            if (primarySelection is ModelItem selectedItem)
             {
                 if (selectedItem.ItemType == typeof(DsfForEachActivity))
                 {
@@ -1997,8 +2004,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         protected virtual void BringIntoView(ModelItem selectedModelItem)
         {
-            var view = selectedModelItem.View as FrameworkElement;
-            if (view != null && view.IsVisible)
+            if (selectedModelItem.View is FrameworkElement view && view.IsVisible)
             {
                 BringIntoView(view);
                 return;
@@ -2070,7 +2076,9 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             var designerText = _workflowHelper.SanitizeXaml(xaml);
             if (designerText != null)
+            {
                 _wd.Text = designerText.ToString();
+            }
         }
 
         private void SelectedItemChanged(Selection item)
@@ -2159,7 +2167,10 @@ namespace Dev2.Studio.ViewModels.Workflow
         private bool CheckDataList()
         {
             if (_originalDataList == null)
+            {
                 return true;
+            }
+
             if (ResourceModel.DataList != null)
             {
                 string currentDataList = ResourceModel.DataList.Replace("<DataList>", "").Replace("</DataList>", "");
@@ -2211,9 +2222,9 @@ namespace Dev2.Studio.ViewModels.Workflow
             try
             {
                 if (!string.IsNullOrEmpty(dataList))
-
+                {
                     XElement.Parse(dataList);
-
+                }
             }
             catch (Exception)
             {
@@ -2328,8 +2339,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 return true;
             }
 
-            var dp2 = dp as TextBlock;
-            if (dp2 != null && dp2.DataContext.GetType().Name.Contains("FlowchartDesigner"))
+            if (dp is TextBlock dp2 && dp2.DataContext.GetType().Name.Contains("FlowchartDesigner"))
             {
                 var selectedModelItem = _modelService.Find(_modelService.Root, typeof(Flowchart)).FirstOrDefault();
                 if (selectedModelItem != null)
@@ -2460,8 +2470,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                     IsItemDragged.Instance.IsDragged = true;
                 }
 
-                var isWorkflow = dataObject.GetData("WorkflowItemTypeNameFormat") as string;
-                if (isWorkflow != null)
+                if (dataObject.GetData("WorkflowItemTypeNameFormat") is string isWorkflow)
                 {
                     handled = WorkflowDropFromResourceToolboxItem(dataObject, isWorkflow, true, false);
                     ApplyIsDraggedInstance(isWorkflow);
@@ -2643,11 +2652,13 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             Guid? envID = null;
             Guid? resourceID = null;
-            var explorerItem = DataObject as IExplorerItemViewModel;
-            if (explorerItem != null)
+            if (DataObject is IExplorerItemViewModel explorerItem)
             {
                 if (explorerItem.Server != null)
+                {
                     envID = explorerItem.Server.EnvironmentID;
+                }
+
                 resourceID = explorerItem.ResourceId;
             }
 
@@ -3157,6 +3168,11 @@ namespace Dev2.Studio.ViewModels.Workflow
         private void AddStartNode(IMergeToolModel model, FlowNode modelActivityType, ModelItemCollection nodes, ModelProperty startNode)
         {
             var flowNode = model.FlowNode.GetCurrentValue<FlowStep>();
+
+            if (flowNode == null)
+            {
+                return;
+            }
 
             flowNode.Next = null;
             if (startNode.ComputedValue == null)

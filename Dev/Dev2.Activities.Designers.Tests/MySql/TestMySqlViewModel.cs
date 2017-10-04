@@ -388,7 +388,10 @@ namespace Dev2.Activities.Designers.Tests.MySql
         public DataTable TestService(IDatabaseService inputValues)
         {
             if (ThrowsTestError)
+            {
                 throw new Exception("bob");
+            }
+
             if (HasRecError)
             {
                 return null;

@@ -300,18 +300,27 @@ namespace Warewolf.UI.Tests.Deploy.DeployUIMapClasses
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DeployButton);
             DialogsUIMap.MessageBoxWindow.WaitForControlExist(60000);
+            WaitForDeploySuccess();
+        }
+
+        void WaitForDeploySuccess()
+        {
+            var timeout = 300;
             var successful = false;
-            while (UIMap.ControlExistsNow(DialogsUIMap.MessageBoxWindow))
+            while (timeout-- > 0)
             {
-                if (UIMap.ControlExistsNow(DialogsUIMap.MessageBoxWindow.ResourcesDeployedSucText))
+                if (DialogsUIMap.MessageBoxWindow.OKButton.Exists)
                 {
-                    successful = true;
+                    successful = UIMap.ControlExistsNow(DialogsUIMap.MessageBoxWindow.ResourcesDeployedSucText);
+                    Mouse.Click(DialogsUIMap.MessageBoxWindow.OKButton);
                 }
-                Mouse.Click(DialogsUIMap.MessageBoxWindow.OKButton);
-                if (!successful)
+                else
                 {
-                    Playback.Wait(10000);
-                    DialogsUIMap.MessageBoxWindow.WaitForControlExist(60000);
+                    Playback.Wait(1000);
+                }
+                if (successful)
+                {
+                    break;
                 }
             }
             Assert.IsTrue(successful, "Deploy failed.");

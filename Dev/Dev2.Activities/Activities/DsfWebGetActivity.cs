@@ -101,7 +101,9 @@ namespace Dev2.Activities
             foreach(var nameValue in head)
             {
                 if(!String.IsNullOrEmpty( nameValue.Name) && !String.IsNullOrEmpty( nameValue.Value))
-                webclient.Headers.Add(nameValue.Name,nameValue.Value);
+                {
+                    webclient.Headers.Add(nameValue.Name,nameValue.Value);
+                }
             }
 
             if (source.AuthenticationType == AuthenticationType.User)

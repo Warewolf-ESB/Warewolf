@@ -272,7 +272,9 @@ namespace Dev2.Activities.SelectAndApply
                             if (data.IsWarewolfAtomResult)
                             {
                                 if (data is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult atom)
+                                {
                                     AddDebugOutputItem(new DebugItemWarewolfAtomResult(atom.Item.ToString(), expression, ""));
+                                }
                             }
                         }
                     }

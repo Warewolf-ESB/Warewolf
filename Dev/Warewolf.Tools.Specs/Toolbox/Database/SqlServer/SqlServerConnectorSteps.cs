@@ -347,7 +347,9 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         public void ThenRecordsetNameEquals(string recsetName)
         {
             if(!string.IsNullOrEmpty(recsetName))
+            {
                 Assert.AreEqual<string>(recsetName, GetViewModel().OutputsRegion.RecordsetName);
+            }
         }
 
         [Given(@"I have a workflow ""(.*)""")]
@@ -440,7 +442,9 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         {
             var viewModel = GetViewModel().ErrorRegion.Errors;
             if (table != null && viewModel.Count > 0)
+            {
                 Assert.IsTrue(table.Rows[0].Values.ToString() == p0);
+            }
         }
 
         [Then(@"the workflow containing the Sql Server connector has ""(.*)"" execution error")]

@@ -448,7 +448,9 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             set
             {
                 if (value == _searchText)
+                {
                     return;
+                }
 
                 _searchText = value;
                 NotifyOfPropertyChange(() => SearchText);
@@ -466,7 +468,9 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             set
             {
                 if (_showDebugStatus == value)
+                {
                     return;
+                }
 
                 _showDebugStatus = value;
                 NotifyOfPropertyChange(() => ShowDebugStatus);
@@ -479,7 +483,10 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         /// <param name="content">The content.</param>
         public virtual void Append(IDebugState content)
         {
-            if (_outputViewModelUtil.ContenIsNotValid(content)) return;
+            if (_outputViewModelUtil.ContenIsNotValid(content))
+            {
+                return;
+            }
 
             IsDebugStateLastStep(content);
 
@@ -499,14 +506,21 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             }
 
             if (_outputViewModelUtil.QueuePending(content, _pendingItems, IsProcessing))
+            {
                 return;
+            }
+
             AddItemToTree(content);
             
         }
 
         private void IsDebugStateLastStep(IDebugState content)
         {
-            if ((DebugStatus != DebugStatus.Stopping && DebugStatus != DebugStatus.Finished) || content.StateType == StateType.Message) return;
+            if ((DebugStatus != DebugStatus.Stopping && DebugStatus != DebugStatus.Finished) || content.StateType == StateType.Message)
+            {
+                return;
+            }
+
             if (content.StateType != StateType.End && !IsTestView)
             {
                 _lastStep = content;
@@ -523,7 +537,9 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         public void OpenMoreLink(IDebugLineItem item)
         {
             if (_outputViewModelUtil.IsItemMoreLinkValid(item) && CanOpenMoreLink(item))
+            {
                 CreatProcessController(item);
+            }
         }
 
         public bool CanOpenMoreLink(IDebugLineItem item)
@@ -693,12 +709,17 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         public void AddItemToTree(IDebugState content)
         {
             if (_contentItems.Any(a => a.DisconnectedID == content.DisconnectedID))
+            {
                 return;
+            }
+
             if (content.StateType == StateType.Duration)
             {
                 var item = _contentItems.FirstOrDefault(a => a.WorkSurfaceMappingId == content.WorkSurfaceMappingId);
                 if (item != null)
+                {
                     item.EndTime = content.EndTime;
+                }
             }
             else
             {
@@ -710,7 +731,10 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                     if (remoteEnvironmentModel != null)
                     {
                         if (content.Server == "localhost")
+                        {
                             content.Server = remoteEnvironmentModel.Name;
+                        }
+
                         if (!remoteEnvironmentModel.IsConnected)
                         {
                             remoteEnvironmentModel.Connect();
@@ -785,7 +809,10 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                 return;
             }
 
-            if (AddTreeViewItemToRootItems(content)) return;
+            if (AddTreeViewItemToRootItems(content))
+            {
+                return;
+            }
 
             if (content.IsFinalStep())
             {
@@ -817,7 +844,10 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                 else
                 {
                     var parent = CreateParentTreeViewItem(content, child);
-                    if (AddErrorToParent(content, child, parent)) return true;
+                    if (AddErrorToParent(content, child, parent))
+                    {
+                        return true;
+                    }
                 }
             }
             return false;
@@ -825,10 +855,16 @@ namespace Dev2.Studio.ViewModels.Diagnostics
 
         private bool AddErrorToParent(IDebugState content, IDebugTreeViewItemViewModel child, IDebugTreeViewItemViewModel parent)
         {
-            if (!child.HasError.GetValueOrDefault(false)) return false;
+            if (!child.HasError.GetValueOrDefault(false))
+            {
+                return false;
+            }
+
             var theParent = parent as DebugStateTreeViewItemViewModel;
             if (theParent == null)
+            {
                 return true;
+            }
 
             theParent.AppendError(content.ErrorMessage);
             theParent.HasError = true;
@@ -842,10 +878,9 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                     {
                         foreach(var lineItemLineItem in lineItem.LineItems)
                         {
-                            var line = lineItemLineItem as DebugLineItem;
-                            if (line != null && line.TestStepHasError)
+                            if (lineItemLineItem is DebugLineItem line && line.TestStepHasError)
                             {
-                                theParent.AppendError(line.Value);                                
+                                theParent.AppendError(line.Value);
                             }
                         }
                     }
@@ -856,8 +891,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
 
         private IDebugTreeViewItemViewModel CreateParentTreeViewItem(IDebugState content, IDebugTreeViewItemViewModel child)
         {
-            IDebugTreeViewItemViewModel parent;
-            if (!_contentItemMap.TryGetValue(content.ParentID.GetValueOrDefault(), out parent))
+            if (!_contentItemMap.TryGetValue(content.ParentID.GetValueOrDefault(), out IDebugTreeViewItemViewModel parent))
             {
                 parent = new DebugStateTreeViewItemViewModel(ServerRepository)
                 {

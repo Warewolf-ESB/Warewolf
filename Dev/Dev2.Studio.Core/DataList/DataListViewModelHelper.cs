@@ -40,10 +40,17 @@ namespace Dev2.Studio.Core.DataList
         public bool IsJsonAttribute(XmlNode child)
         {
             var jsonAttribute = false;
-            if (child.Attributes == null) return false;
+            if (child.Attributes == null)
+            {
+                return false;
+            }
+
             var xmlAttribute = child.Attributes["IsJson"];
             if (xmlAttribute != null)
+            {
                 bool.TryParse(xmlAttribute.Value, out jsonAttribute);
+            }
+
             return jsonAttribute;
         }
         private const string Description = "Description";

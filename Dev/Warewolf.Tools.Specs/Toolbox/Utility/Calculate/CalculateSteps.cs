@@ -30,7 +30,11 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Calculate
         public CalculateSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
         {
-            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            if (scenarioContext == null)
+            {
+                throw new ArgumentNullException("scenarioContext");
+            }
+
             this.scenarioContext = scenarioContext;
         }
 
@@ -41,26 +45,23 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Calculate
 
         private void BuildInternal(bool isAggregate)
         {
-            List<Tuple<string, string>> variableList;
-            scenarioContext.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
 
-            if(variableList == null)
+            if (variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 scenarioContext.Add("variableList", variableList);
             }
 
             var resultVariable = ResultVariable;
-            string resVar;
-            if(scenarioContext.TryGetValue("resVar", out resVar))
+            if (scenarioContext.TryGetValue("resVar", out string resVar))
             {
                 resultVariable = resVar;
             }
             variableList.Add(new Tuple<string, string>(resultVariable, ""));
             BuildShapeAndTestData();
 
-            string formula;
-            scenarioContext.TryGetValue("formula", out formula);
+            scenarioContext.TryGetValue("formula", out string formula);
             if (isAggregate)
             {
                 var calculate = new DsfAggregateCalculateActivity
@@ -115,8 +116,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Calculate
         [Given(@"I have a calculate variable ""(.*)"" equal to ""(.*)""")]
         public void GivenIHaveACalculateVariableEqualTo(string variable, string value)
         {
-            List<Tuple<string, string>> variableList;
-            scenarioContext.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
 
             if (variableList == null)
             {
@@ -133,8 +133,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Calculate
             List<TableRow> tableRows = table.Rows.ToList();
             for (int i = 0; i < tableRows.Count; i++)
             {
-                List<Tuple<string, string>> variableList;
-                scenarioContext.TryGetValue("variableList", out variableList);
+                scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
 
                 if (variableList == null)
                 {
@@ -148,12 +147,10 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Calculate
         [Then(@"the calculate result should be ""(.*)""")]
         public void ThenTheCalculateResultShouldBe(string expectedResult)
         {
-            string error;
-            string actualValue;
             expectedResult = expectedResult.Replace('"', ' ').Trim();
             var result = scenarioContext.Get<IDSFDataObject>("result");
             GetScalarValueFromEnvironment(result.Environment, DataListUtil.RemoveLanguageBrackets(ResultVariable),
-                                       out actualValue, out error);
+                                       out string actualValue, out string error);
 
             if (expectedResult == "[Now]")
             {
@@ -169,8 +166,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Calculate
             }
             if (expectedResult == "[Int]")
             {
-                int outval;
-                Assert.IsTrue(int.TryParse(actualValue, out outval));
+                Assert.IsTrue(int.TryParse(actualValue, out int outval));
                 return;
             }
             if (string.IsNullOrEmpty(expectedResult))

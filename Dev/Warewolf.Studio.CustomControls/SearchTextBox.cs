@@ -96,8 +96,8 @@ namespace Warewolf.Studio.CustomControls {
 
         static void OnSearchEventTimeDelayChanged(
             DependencyObject o, DependencyPropertyChangedEventArgs e) {
-            SearchTextBox stb = o as SearchTextBox;
-            if (stb != null) {
+            if (o is SearchTextBox stb)
+            {
                 stb._searchEventDelayTimer.Interval = ((Duration)e.NewValue).TimeSpan;
                 stb._searchEventDelayTimer.Stop();
             }

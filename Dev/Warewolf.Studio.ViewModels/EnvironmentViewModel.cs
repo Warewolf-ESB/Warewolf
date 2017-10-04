@@ -256,7 +256,9 @@ namespace Warewolf.Studio.ViewModels
             CanViewApisJson = true;
             CanViewExecutionLogging = true;
             if (ForcedRefresh)
+            {
                 ForcedRefresh = true;
+            }
         }
 
         private async Task Refresh()
@@ -282,6 +284,7 @@ namespace Warewolf.Studio.ViewModels
         {
             int total = 0;
             if (Children != null)
+            {
                 foreach (var explorerItemModel in Children)
                 {
                     if (!explorerItemModel.IsResourceVersion && explorerItemModel.ResourceType != "Message")
@@ -296,6 +299,8 @@ namespace Warewolf.Studio.ViewModels
                         }
                     }
                 }
+            }
+
             return total;
         }
 
@@ -1289,7 +1294,11 @@ namespace Warewolf.Studio.ViewModels
         public void CreateExplorerItemsSync(IList<IExplorerItem> explorerItems, IServer server, IExplorerTreeItem parent, bool isDialog = false, bool isDeploy = false)
 
         {
-            if (explorerItems == null) return;
+            if (explorerItems == null)
+            {
+                return;
+            }
+
             var explorerItemModels = CreateExplorerItemModels(explorerItems, server, parent, isDialog, isDeploy);
             if (parent != null)
             {
@@ -1417,18 +1426,36 @@ namespace Warewolf.Studio.ViewModels
         public void Dispose()
         {
             if (Children != null)
+            {
                 foreach (var explorerItemViewModel in _children)
                 {
                     explorerItemViewModel?.Dispose();
                 }
+            }
         }
 
         public bool Equals(IExplorerTreeItem x, IExplorerTreeItem y)
         {
-            if (ReferenceEquals(x, y)) return true;
-            if (ReferenceEquals(x, null)) return false;
-            if (ReferenceEquals(y, null)) return false;
-            if (x.GetType() != y.GetType()) return false;
+            if (ReferenceEquals(x, y))
+            {
+                return true;
+            }
+
+            if (ReferenceEquals(x, null))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(y, null))
+            {
+                return false;
+            }
+
+            if (x.GetType() != y.GetType())
+            {
+                return false;
+            }
+
             return string.Equals(x.ResourcePath, y.ResourcePath) && x.ResourceId.Equals(y.ResourceId);
         }
 

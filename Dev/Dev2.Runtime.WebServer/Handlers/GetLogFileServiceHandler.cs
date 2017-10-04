@@ -16,8 +16,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                 try
                 {
                     var numberOfLinesString = ctx.Request.QueryString.Get("numLines");
-                    int numLines;
-                    if (int.TryParse(numberOfLinesString, out numLines))
+                    if (int.TryParse(numberOfLinesString, out int numLines))
                     {
                         if (numLines > 0)
                         {
@@ -42,7 +41,10 @@ namespace Dev2.Runtime.WebServer.Handlers
                         string line = file.ReadLine();
 
                         if (buffor.Count >= numberOfLines)
+                        {
                             buffor.Dequeue();
+                        }
+
                         buffor.Enqueue(line);
                     }
                     string[] lastLines = buffor.ToArray();

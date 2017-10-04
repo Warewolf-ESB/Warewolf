@@ -40,8 +40,7 @@ namespace Warewolf.Studio.Views
 
         private void Hyperlink_OnRequestNavigate(object sender, RequestNavigateEventArgs e)
         {
-            var resourcePath = sender as Hyperlink;
-            if (resourcePath != null)
+            if (sender is Hyperlink resourcePath)
             {
                 var listStrLineElements = resourcePath.NavigateUri.OriginalString.Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries).ToList();
 
@@ -85,9 +84,8 @@ namespace Warewolf.Studio.Views
 
                     foreach (var window in windowCollection)
                     {
-                        var window1 = window as Window;
 
-                        if (window1 != null && window1.Name != "MainViewWindow")
+                        if (window is Window window1 && window1.Name != "MainViewWindow")
                         {
                             window1.Close();
                         }
@@ -122,8 +120,7 @@ namespace Warewolf.Studio.Views
 
         private void BtnDeleteAll_OnClick(object sender, RoutedEventArgs e)
         {
-            var messageBoxViewModel = DataContext as MessageBoxViewModel;
-            if (messageBoxViewModel != null)
+            if (DataContext is MessageBoxViewModel messageBoxViewModel)
             {
                 messageBoxViewModel.IsDeleteAnywaySelected = true;
             }

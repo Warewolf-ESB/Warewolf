@@ -26,7 +26,11 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Create
         public CreateSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
         {
-            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            if (scenarioContext == null)
+            {
+                throw new ArgumentNullException("scenarioContext");
+            }
+
             this.scenarioContext = scenarioContext;
         }
 
@@ -44,8 +48,7 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Create
         {
             BuildShapeAndTestData();
 
-            string privateKeyFile;
-            scenarioContext.TryGetValue(CommonSteps.DestinationPrivateKeyFile,out privateKeyFile);
+            scenarioContext.TryGetValue(CommonSteps.DestinationPrivateKeyFile, out string privateKeyFile);
             var create = new DsfPathCreate
             {
                 OutputPath = scenarioContext.Get<string>(CommonSteps.DestinationHolder),

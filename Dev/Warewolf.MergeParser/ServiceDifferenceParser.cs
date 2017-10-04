@@ -23,8 +23,9 @@ namespace Warewolf.MergeParser
     {
         private readonly IActivityParser _activityParser;
         private readonly IResourceDefinationCleaner _definationCleaner;
-        private (List<ModelItem> nodeList, Flowchart flowchartDiff, WorkflowDesigner wd) _currentDifferences;
-        private (List<ModelItem> nodeList, Flowchart flowchartDiff, WorkflowDesigner wd) _differences;
+        private (List<ModelItem> allNodes, List<ModelItem> nodeList, Flowchart flowchartDiff, WorkflowDesigner wd) _currentDifferences;
+        private (List<ModelItem> allNodes, List<ModelItem> nodeList, Flowchart flowchartDiff, WorkflowDesigner wd) _differences;
+        ConcurrentDictionary<string, (ModelItem leftItem, ModelItem rightItem)> _flowNodes = new ConcurrentDictionary<string, (ModelItem leftItem, ModelItem rightItem)>(StringComparer.OrdinalIgnoreCase);
 
         private IConflictNode GetCurrentModelItemUniqueId(List<(IDev2Activity, IConflictNode)> items, IDev2Activity activity)
         {
@@ -79,13 +80,13 @@ namespace Warewolf.MergeParser
             }
             dev2Activities.RemoveAll(activity => children.Any(s => s.Equals(activity.UniqueID, StringComparison.InvariantCultureIgnoreCase)));
         }
-        ConcurrentDictionary<string, (ModelItem leftItem, ModelItem rightItem)> _flowNodes = new ConcurrentDictionary<string, (ModelItem leftItem, ModelItem rightItem)>(StringComparer.Ordinal);
+
         public ConcurrentDictionary<string, (ModelItem leftItem, ModelItem rightItem)> GetAllNodes()
         {
             return _flowNodes;
         }
 
-        
+
 
         public List<(Guid uniqueId, IConflictNode currentNode, IConflictNode differenceNode, bool hasConflict)> GetDifferences(IContextualResourceModel current, IContextualResourceModel difference, bool loadworkflowFromServer = true)
         {
@@ -108,9 +109,28 @@ namespace Warewolf.MergeParser
                     NodeLocation = shapeLocation,
                 };
 
-                allCurentItems.Add((dev2Activity1, conflictNode));
+                allCurentItems.Add((dev2Activity1, conflictNode));             
+            }
 
+            foreach (var node in _currentDifferences.allNodes)
+            {
+                var dev2Activity1 = _activityParser.Parse(new List<IDev2Activity>(), node);
                 _flowNodes.TryAdd(dev2Activity1.UniqueID, (node, default(ModelItem)));
+            }
+
+            foreach (var node in _differences.allNodes)
+            {
+                var dev2Activity1 = _activityParser.Parse(new List<IDev2Activity>(), node);
+                if (_flowNodes.ContainsKey(dev2Activity1.UniqueID))
+                {
+                    var rightItem = _flowNodes[dev2Activity1.UniqueID];
+                    rightItem.rightItem = node;
+                    _flowNodes[dev2Activity1.UniqueID] = rightItem;
+                }
+                else
+                {
+                    _flowNodes.TryAdd(dev2Activity1.UniqueID, (default(ModelItem), node));
+                }
             }
 
             List<IDev2Activity> currentActivities = allCurentItems.Select(p => p.Item1).ToList();
@@ -127,13 +147,7 @@ namespace Warewolf.MergeParser
                     NodeLocation = shapeLocation,
 
                 };
-                allRemoteItems.Add((dev2Activity1, conflictNode));
-                if (_flowNodes.ContainsKey(dev2Activity1.UniqueID))
-                {
-                    var rightItem = _flowNodes[dev2Activity1.UniqueID];
-                    rightItem.rightItem = node;
-                    _flowNodes[dev2Activity1.UniqueID] = rightItem;
-                }
+                allRemoteItems.Add((dev2Activity1, conflictNode));             
 
             }
             List<IDev2Activity> differenceActivities = allRemoteItems.Select(p => p.Item1).ToList();
@@ -165,7 +179,26 @@ namespace Warewolf.MergeParser
             return conflictList;
         }
 
-        private (List<ModelItem> nodeList, Flowchart flowchartDiff, WorkflowDesigner wd) GetNodes(IContextualResourceModel resourceModel, bool loadFromServer)
+
+        private List<ModelItem> BuildNodeList(ModelItem startNode)
+        {
+            if (startNode == null)
+            {
+                return new List<ModelItem>();
+            }
+            List<ModelItem> orderedNodes = new List<ModelItem>();
+            var step = startNode.GetCurrentValue<FlowStep>();
+            orderedNodes.Add(startNode);
+            while (step != null && step.Next != null)
+            {
+                var next = ModelItemUtils.CreateModelItem(step.Next);
+                orderedNodes.Add(next);
+                step = step.Next as FlowStep;
+            }
+
+            return orderedNodes;
+        }
+        private (List<ModelItem> allNodes, List<ModelItem> nodeList, Flowchart flowchartDiff, WorkflowDesigner wd) GetNodes(IContextualResourceModel resourceModel, bool loadFromServer)
         {
             var wd = new WorkflowDesigner();
             var xaml = resourceModel.WorkflowXaml;
@@ -195,13 +228,16 @@ namespace Warewolf.MergeParser
             wd.Load();
 
             var modelService = wd.Context.Services.GetService<ModelService>();
-            var nodeList = modelService.Find(modelService.Root, typeof(FlowNode)).ToList();
 
             var workflowHelper = new WorkflowHelper();
             var flowchartDiff = workflowHelper.EnsureImplementation(modelService).Implementation as Flowchart;
-            // ReSharper disable once RedundantAssignment assuming this is for disposing
-            return (nodeList, flowchartDiff, wd);
+            var allNodes = modelService.Find(modelService.Root, typeof(FlowNode)).ToList();
+            var startNode = ModelItemUtils.CreateModelItem(flowchartDiff.StartNode);
+            var orderedList = BuildNodeList(startNode);
+            //var unconnected = nodeList.Select(p => p.GetCurrentValue()).Except(orderedList.Select(p => p.GetCurrentValue())); After this code add these to the ordered list 
+            return (allNodes, orderedList, flowchartDiff, wd);
         }
+
 
 
         private static Point GetShapeLocation(WorkflowDesigner wd, ModelItem modelItem)

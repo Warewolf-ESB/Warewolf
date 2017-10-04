@@ -22,7 +22,7 @@ namespace Dev2.Activities.Designers2.BaseConvert
 
         protected override IInputElement GetInitialFocusElement()
         {
-            return DataGrid.GetFocusElement(0);
+            return DataGrid.GetFocusElement();
         }
     }
 }

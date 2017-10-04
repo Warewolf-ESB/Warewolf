@@ -17,12 +17,16 @@ using System.Windows.Input;
 using Dev2;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio.Controller;
+using Dev2.Studio.Core;
 using Dev2.Studio.Interfaces;
 using Microsoft.Practices.Prism;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
 using Microsoft.Practices.Prism.PubSubEvents;
 using Warewolf.Resource.Errors;
+
+
+
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -237,8 +241,8 @@ namespace Warewolf.Studio.ViewModels
                 var isConnected = await ConnectOrDisconnect();
                 if (_selectedConnection.IsConnected && isConnected)
                 {
-                    Version.TryParse(_selectedConnection.GetServerVersion(), out var sourceVersionNumber);
-                    Version.TryParse(Resources.Languages.Core.CompareCurrentServerVersion, out var destVersionNumber);
+                    Version.TryParse(_selectedConnection.GetServerVersion(), out Version sourceVersionNumber);
+                    Version.TryParse(Resources.Languages.Core.CompareCurrentServerVersion, out Version destVersionNumber);
                     if (sourceVersionNumber != null && destVersionNumber != null)
                     {
                         if (sourceVersionNumber < destVersionNumber)
@@ -258,7 +262,10 @@ namespace Warewolf.Studio.ViewModels
         private IServer Server { get; set; }
         public ObservableCollection<IServer> Servers
         {
-            get => _servers;
+            get
+            {
+                return _servers;
+            }
             private set
             {
                 _servers = value;
@@ -267,7 +274,10 @@ namespace Warewolf.Studio.ViewModels
         }
         public IServer SelectedConnection
         {
-            get => _selectedConnection;
+            get
+            {
+                return _selectedConnection;
+            }
             set
             {
                 if (value != null && !Equals(_selectedConnection, value))
@@ -275,6 +285,7 @@ namespace Warewolf.Studio.ViewModels
                     _selectedConnection = value;
                     if (value.EnvironmentID != Guid.Empty && !value.IsConnected)
                     {
+
                         var isConnected = CheckVersionConflict();
                     }
                     SetActiveEnvironment();
@@ -315,7 +326,10 @@ namespace Warewolf.Studio.ViewModels
         public ICommand NewConnectionCommand { get; private set; }
         public bool IsConnected
         {
-            get => _isConnected;
+            get
+            {
+                return _isConnected;
+            }
             private set
             {
                 _isConnected = value;
@@ -324,7 +338,10 @@ namespace Warewolf.Studio.ViewModels
         }
         public bool IsConnecting
         {
-            get => _isConnecting;
+            get
+            {
+                return _isConnecting;
+            }
             private set
             {
                 _isConnecting = value;
@@ -333,7 +350,10 @@ namespace Warewolf.Studio.ViewModels
         }
         public bool IsLoading
         {
-            get => _isLoading;
+            get
+            {
+                return _isLoading;
+            }
             set
             {
                 _isLoading = value;
@@ -361,7 +381,7 @@ namespace Warewolf.Studio.ViewModels
                         if (result == MessageBoxResult.Yes)
                         {
                             await Connect(connection);
-                        }
+                        }                                                 
                         else
                         {
                             ServerDisconnected?.Invoke(this, connection);

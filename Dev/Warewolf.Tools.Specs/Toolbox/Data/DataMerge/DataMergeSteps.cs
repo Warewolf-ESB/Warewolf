@@ -29,16 +29,19 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataMerge
         public DataMergeSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
         {
-            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            if (scenarioContext == null)
+            {
+                throw new ArgumentNullException("scenarioContext");
+            }
+
             this.scenarioContext = scenarioContext;
         }
 
         protected override void BuildDataList()
         {
-            List<Tuple<string, string>> variableList;
-            scenarioContext.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
 
-            if(variableList == null)
+            if (variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 scenarioContext.Add("variableList", variableList);
@@ -49,8 +52,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataMerge
 
             var dataMerge = new DsfDataMergeActivity { Result = ResultVariable };
 
-            List<Tuple<string, string, string, string, string>> mergeCollection;
-            scenarioContext.TryGetValue("mergeCollection", out mergeCollection);
+            scenarioContext.TryGetValue("mergeCollection", out List<Tuple<string, string, string, string, string>> mergeCollection);
 
             int row = 1;
             foreach(var variable in mergeCollection)
@@ -72,10 +74,9 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataMerge
         [Given(@"a merge variable ""(.*)"" equal to ""(.*)""")]
         public void GivenAMergeVariableEqualTo(string variable, string value)
         {
-            List<Tuple<string, string>> variableList;
-            scenarioContext.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
 
-            if(variableList == null)
+            if (variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 scenarioContext.Add("variableList", variableList);
@@ -91,10 +92,9 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataMerge
                                                                                 string stringAt, string padding,
                                                                                 string alignment)
         {
-            List<Tuple<string, string, string, string, string>> mergeCollection;
-            scenarioContext.TryGetValue("mergeCollection", out mergeCollection);
+            scenarioContext.TryGetValue("mergeCollection", out List<Tuple<string, string, string, string, string>> mergeCollection);
 
-            if(mergeCollection == null)
+            if (mergeCollection == null)
             {
                 mergeCollection = new List<Tuple<string, string, string, string, string>>();
                 scenarioContext.Add("mergeCollection", mergeCollection);
@@ -114,10 +114,9 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataMerge
                 var rs = table.Header.ToArray()[0];
                 var field = table.Header.ToArray()[1];
 
-                List<Tuple<string, string>> emptyRecordset;
 
-                bool isAdded = scenarioContext.TryGetValue("rs", out emptyRecordset);
-                if(!isAdded)
+                bool isAdded = scenarioContext.TryGetValue("rs", out List<Tuple<string, string>> emptyRecordset);
+                if (!isAdded)
                 {
                     emptyRecordset = new List<Tuple<string, string>>();
                     scenarioContext.Add("rs", emptyRecordset);
@@ -127,10 +126,9 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataMerge
 
             foreach(TableRow record in records)
             {
-                List<Tuple<string, string>> variableList;
-                scenarioContext.TryGetValue("variableList", out variableList);
+                scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
 
-                if(variableList == null)
+                if (variableList == null)
                 {
                     variableList = new List<Tuple<string, string>>();
                     scenarioContext.Add("variableList", variableList);
@@ -150,12 +148,9 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataMerge
         [Then(@"the merged result is ""(.*)""")]
         public void ThenTheMergedResultIs(string value)
         {
-
-            string error;
-            string actualValue;
             var result = scenarioContext.Get<IDSFDataObject>("result");
             GetScalarValueFromEnvironment(result.Environment, ResultVariable,
-                                       out actualValue, out error);
+                                       out string actualValue, out string error);
             FixBreaks(ref value, ref actualValue);
             if (string.IsNullOrEmpty(value))
             {
@@ -179,11 +174,9 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataMerge
                                                 fileName);
             var readFile = ReadFile(resourceName);
             string value = readFile;
-            string error;
-            string actualValue;
             var result = scenarioContext.Get<IDSFDataObject>("result");
             GetScalarValueFromEnvironment(result.Environment, ResultVariable,
-                                       out actualValue, out error);
+                                       out string actualValue, out string error);
             FixBreaks(ref value, ref actualValue);
             Assert.AreEqual(value, actualValue);
         }

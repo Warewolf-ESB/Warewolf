@@ -27,10 +27,9 @@ namespace Dev2.Runtime.ESB.Management.Services
                 throw new InvalidDataException(ErrorResource.EmptyValuesPassed);
             }
 
-            StringBuilder loggingSettingsBuilder;
-            values.TryGetValue("LoggingSettings", out loggingSettingsBuilder);
+            values.TryGetValue("LoggingSettings", out StringBuilder loggingSettingsBuilder);
 
-            if(loggingSettingsBuilder == null || loggingSettingsBuilder.Length == 0)
+            if (loggingSettingsBuilder == null || loggingSettingsBuilder.Length == 0)
             {
                 throw new InvalidDataException(ErrorResource.EmptyLoggingSettingsPassed);
             }

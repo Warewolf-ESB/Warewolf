@@ -615,42 +615,74 @@ namespace Dev2.Settings.Security
                 {
                     serverPermissionCompare = false;
                 }
-                if (!serverPermissionCompare) continue;
+                if (!serverPermissionCompare)
+                {
+                    continue;
+                }
+
                 if (ServerPermissions[i].WindowsGroup != serverPermissions[i].WindowsGroup)
                 {
                     serverPermissionCompare = false;
                 }
-                if (!serverPermissionCompare) continue;
+                if (!serverPermissionCompare)
+                {
+                    continue;
+                }
+
                 if (ServerPermissions[i].DeployTo != serverPermissions[i].DeployTo)
                 {
                     serverPermissionCompare = false;
                 }
-                if (!serverPermissionCompare) continue;
+                if (!serverPermissionCompare)
+                {
+                    continue;
+                }
+
                 if (ServerPermissions[i].DeployFrom != serverPermissions[i].DeployFrom)
                 {
                     serverPermissionCompare = false;
                 }
-                if (!serverPermissionCompare) continue;
+                if (!serverPermissionCompare)
+                {
+                    continue;
+                }
+
                 if (ServerPermissions[i].Administrator != serverPermissions[i].Administrator)
                 {
                     serverPermissionCompare = false;
                 }
-                if (!serverPermissionCompare) continue;
+                if (!serverPermissionCompare)
+                {
+                    continue;
+                }
+
                 if (ServerPermissions[i].View != serverPermissions[i].View)
                 {
                     serverPermissionCompare = false;
                 }
-                if (!serverPermissionCompare) continue;
+                if (!serverPermissionCompare)
+                {
+                    continue;
+                }
+
                 if (ServerPermissions[i].Execute != serverPermissions[i].Execute)
                 {
                     serverPermissionCompare = false;
                 }
-                if (!serverPermissionCompare) continue;
+                if (!serverPermissionCompare)
+                {
+                    continue;
+                }
+
                 if (ServerPermissions[i].Contribute != serverPermissions[i].Contribute)
                 {
                     serverPermissionCompare = false;
                 }
-                if (!serverPermissionCompare) continue;
+                if (!serverPermissionCompare)
+                {
+                    continue;
+                }
+
                 if (ServerPermissions[i].IsDeleted != serverPermissions[i].IsDeleted)
                 {
                     serverPermissionCompare = false;
@@ -675,42 +707,74 @@ namespace Dev2.Settings.Security
                 {
                     resourcePermissionCompare = false;
                 }
-                if (!resourcePermissionCompare) continue;
+                if (!resourcePermissionCompare)
+                {
+                    continue;
+                }
+
                 if (ResourcePermissions[i].WindowsGroup != resourcePermissions[i].WindowsGroup)
                 {
                     resourcePermissionCompare = false;
                 }
-                if (!resourcePermissionCompare) continue;
+                if (!resourcePermissionCompare)
+                {
+                    continue;
+                }
+
                 if (ResourcePermissions[i].DeployTo != resourcePermissions[i].DeployTo)
                 {
                     resourcePermissionCompare = false;
                 }
-                if (!resourcePermissionCompare) continue;
+                if (!resourcePermissionCompare)
+                {
+                    continue;
+                }
+
                 if (ResourcePermissions[i].DeployFrom != resourcePermissions[i].DeployFrom)
                 {
                     resourcePermissionCompare = false;
                 }
-                if (!resourcePermissionCompare) continue;
+                if (!resourcePermissionCompare)
+                {
+                    continue;
+                }
+
                 if (ResourcePermissions[i].Administrator != resourcePermissions[i].Administrator)
                 {
                     resourcePermissionCompare = false;
                 }
-                if (!resourcePermissionCompare) continue;
+                if (!resourcePermissionCompare)
+                {
+                    continue;
+                }
+
                 if (ResourcePermissions[i].View != resourcePermissions[i].View)
                 {
                     resourcePermissionCompare = false;
                 }
-                if (!resourcePermissionCompare) continue;
+                if (!resourcePermissionCompare)
+                {
+                    continue;
+                }
+
                 if (ResourcePermissions[i].Execute != resourcePermissions[i].Execute)
                 {
                     resourcePermissionCompare = false;
                 }
-                if (!resourcePermissionCompare) continue;
+                if (!resourcePermissionCompare)
+                {
+                    continue;
+                }
+
                 if (ResourcePermissions[i].Contribute != resourcePermissions[i].Contribute)
                 {
                     resourcePermissionCompare = false;
                 }
-                if (!resourcePermissionCompare) continue;
+                if (!resourcePermissionCompare)
+                {
+                    continue;
+                }
+
                 if (ResourcePermissions[i].IsDeleted != resourcePermissions[i].IsDeleted)
                 {
                     resourcePermissionCompare = false;

@@ -48,7 +48,9 @@ namespace Dev2.Intellisense.Provider
             int caretPosition = context.CaretPosition;  
 
             if (caretPosition < 0 || caretPosition>inputText.Length)
+            {
                 return string.Empty;
+            }
 
             var regions = inputText.Split(' '); // we can safely do this because the default provider handles the language features
 

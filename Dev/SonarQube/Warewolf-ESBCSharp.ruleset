@@ -4,7 +4,7 @@
     <Rule Id="S100" Action="Warning" />
     <Rule Id="S1006" Action="Warning" />
     <Rule Id="S101" Action="Warning" />
-    <Rule Id="S103" Action="Warning" />
+    <Rule Id="S103" Action="None" />
     <Rule Id="S104" Action="Warning" />
     <Rule Id="S105" Action="Warning" />
     <Rule Id="S1066" Action="Warning" />
@@ -17,7 +17,7 @@
     <Rule Id="S1116" Action="Warning" />
     <Rule Id="S1117" Action="Warning" />
     <Rule Id="S1118" Action="Warning" />
-    <Rule Id="S112" Action="Warning" />
+    <Rule Id="S112" Action="None" />
     <Rule Id="S1121" Action="Warning" />
     <Rule Id="S1125" Action="Warning" />
     <Rule Id="S1134" Action="Warning" />
@@ -28,7 +28,7 @@
     <Rule Id="S1163" Action="Warning" />
     <Rule Id="S1172" Action="Warning" />
     <Rule Id="S1185" Action="Warning" />
-    <Rule Id="S1186" Action="Warning" />
+    <Rule Id="S1186" Action="None" />
     <Rule Id="S1206" Action="None" />
     <Rule Id="S121" Action="Warning" />
     <Rule Id="S1210" Action="Warning" />
@@ -47,7 +47,7 @@
     <Rule Id="S134" Action="Warning" />
     <Rule Id="S1449" Action="Warning" />
     <Rule Id="S1450" Action="Warning" />
-    <Rule Id="S1451" Action="Warning" />
+    <Rule Id="S1451" Action="None" />
     <Rule Id="S1479" Action="Warning" />
     <Rule Id="S1481" Action="Warning" />
     <Rule Id="S1541" Action="Warning" />
@@ -132,14 +132,14 @@
     <Rule Id="S2952" Action="Warning" />
     <Rule Id="S2953" Action="Warning" />
     <Rule Id="S2955" Action="Warning" />
-    <Rule Id="S2971" Action="Warning" />
+    <Rule Id="S2971" Action="None" />
     <Rule Id="S2995" Action="Warning" />
     <Rule Id="S2996" Action="Warning" />
     <Rule Id="S2997" Action="Warning" />
     <Rule Id="S3005" Action="Warning" />
     <Rule Id="S3010" Action="Warning" />
     <Rule Id="S3052" Action="Warning" />
-    <Rule Id="S3168" Action="Warning" />
+    <Rule Id="S3168" Action="None" />
     <Rule Id="S3169" Action="Warning" />
     <Rule Id="S3172" Action="Warning" />
     <Rule Id="S3215" Action="Warning" />

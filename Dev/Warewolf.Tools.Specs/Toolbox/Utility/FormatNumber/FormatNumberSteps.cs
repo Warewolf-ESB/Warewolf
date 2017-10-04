@@ -28,38 +28,36 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.FormatNumber
         public FormatNumberSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
         {
-            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            if (scenarioContext == null)
+            {
+                throw new ArgumentNullException("scenarioContext");
+            }
+
             this.scenarioContext = scenarioContext;
         }
 
         protected override void BuildDataList()
         {
-            List<Tuple<string, string>> variableList;
-            scenarioContext.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
 
-            if(variableList == null)
+            if (variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 scenarioContext.Add("variableList", variableList);
             }
 
             var resultVariable = ResultVariable;
-            string resVar;
-            if (scenarioContext.TryGetValue("resVar", out resVar))
+            if (scenarioContext.TryGetValue("resVar", out string resVar))
             {
                 resultVariable = resVar;
             }
             variableList.Add(new Tuple<string, string>(resultVariable, ""));
             BuildShapeAndTestData();
 
-            string number;
-            scenarioContext.TryGetValue("number", out number);
-            string roundingType;
-            scenarioContext.TryGetValue("rounding", out roundingType);
-            string roundingDecimalPlaces;
-            scenarioContext.TryGetValue("to", out roundingDecimalPlaces);
-            string decimalToShow;
-            scenarioContext.TryGetValue("decimalToShow", out decimalToShow);
+            scenarioContext.TryGetValue("number", out string number);
+            scenarioContext.TryGetValue("rounding", out string roundingType);
+            scenarioContext.TryGetValue("to", out string roundingDecimalPlaces);
+            scenarioContext.TryGetValue("decimalToShow", out string decimalToShow);
 
             var numberFormat = new DsfNumberFormatActivity
                 {
@@ -105,10 +103,9 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.FormatNumber
         [Given(@"I have a formatnumber variable ""(.*)"" equal to (.*)")]
         public void GivenIHaveAFormatnumberVariableEqualTo(string variable, string value)
         {
-            List<Tuple<string, string>> variableList;
             value = value.Replace('"', ' ').Trim();
             variable = variable.Replace('"', ' ').Trim();
-            scenarioContext.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
 
             if(variableList == null)
             {
@@ -129,12 +126,10 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.FormatNumber
         [Then(@"the result (.*) will be returned")]
         public void ThenTheResultWillBeReturned(string expectedResult)
         {
-            string error;
-            string actualValue;
             expectedResult = expectedResult.Replace('"', ' ').Trim();
             var result = scenarioContext.Get<IDSFDataObject>("result");
             GetScalarValueFromEnvironment(result.Environment, DataListUtil.RemoveLanguageBrackets(ResultVariable),
-                                       out actualValue, out error);
+                                       out string actualValue, out string error);
             if(string.IsNullOrEmpty(expectedResult))
             {
                 Assert.IsTrue(string.IsNullOrEmpty(actualValue));

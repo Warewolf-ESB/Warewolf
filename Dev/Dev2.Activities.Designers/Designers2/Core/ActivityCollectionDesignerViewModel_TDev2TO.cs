@@ -23,10 +23,6 @@ using Dev2.Common.Interfaces.Interfaces;
 using Dev2.Studio.Core.Activities.Utils;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
-
-
-//using Dev2.Interfaces;
-
 namespace Dev2.Activities.Designers2.Core
 {
     // -------------------------------------------------------------------------------------------------------------
@@ -40,8 +36,7 @@ namespace Dev2.Activities.Designers2.Core
         where TDev2TOFn : class, IDev2TOFn, IPerformsValidation, new()
     {
         TDev2TOFn _initialDto = new TDev2TOFn();
-        
-        object _syncLock = new object();
+        readonly object _syncLock = new object();
 
         protected ActivityCollectionDesignerViewModel(ModelItem modelItem)
             : base(modelItem)
@@ -94,8 +89,7 @@ namespace Dev2.Activities.Designers2.Core
 
         public override void OnSelectionChanged(ModelItem oldItem, ModelItem newItem)
         {
-            var dto = oldItem?.GetCurrentValue() as TDev2TOFn;
-            if (dto != null && dto.CanRemove())
+            if (oldItem?.GetCurrentValue() is TDev2TOFn dto && dto.CanRemove())
             {
                 // old row is blank so remove
                 if (ModelItemCollection != null)
@@ -199,7 +193,9 @@ namespace Dev2.Activities.Designers2.Core
             {
                 var lastPopulated = ModelItemCollection?.LastOrDefault(p => !string.IsNullOrWhiteSpace(p.GetProperty("At").ToString()));
                 if (lastPopulated != null)
+                {
                     _initialDto = (TDev2TOFn)lastPopulated.GetCurrentValue();
+                }
             }
             var indexNumber = GetIndexForAdd(overwrite);
 
@@ -227,7 +223,9 @@ namespace Dev2.Activities.Designers2.Core
         {
             var indexNumber = 1;
             if(overwrite)
+            {
                 ModelItemCollection?.Clear();
+            }
             else
             {
                 var lastDto = GetLastDto();
@@ -284,10 +282,15 @@ namespace Dev2.Activities.Designers2.Core
             {
                 var lastIndex = index + 1;
                 if (overwrite)
+                {
                     _initialDto = new TDev2TOFn();
+                }
+
                 AddDto(lastIndex);
                 if (GetType() == typeof(DataMergeDesignerViewModel))
+                {
                     RunValidation(ModelItemCount - 1);
+                }
             }
             UpdateDisplayName();
         }
@@ -395,8 +398,7 @@ namespace Dev2.Activities.Designers2.Core
         {
             ProcessModelItemCollection(startIndex, mi =>
             {
-                var dto = mi.GetCurrentValue() as TDev2TOFn;
-                if (dto != null)
+                if (mi.GetCurrentValue() is TDev2TOFn dto)
                 {
                     AttachEvents(dto);
                 }
@@ -434,8 +436,7 @@ namespace Dev2.Activities.Designers2.Core
 
             ProcessModelItemCollection(0, mi =>
               {
-                  var dto = mi.GetCurrentValue() as TDev2TOFn;
-                  if (dto != null)
+                  if (mi.GetCurrentValue() is TDev2TOFn dto)
                   {
                       CEventHelper.RemoveAllEventHandlers(dto);
                   }

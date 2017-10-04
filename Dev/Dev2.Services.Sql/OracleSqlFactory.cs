@@ -39,7 +39,9 @@ namespace Dev2.Services.Sql
         DataTable GetOracleServerSchema(IDbConnection connection)
         {
             if (!(connection is OracleConnection))
+            {
                 throw new Exception(string.Format(ErrorResource.InvalidSqlConnection, "Oracle"));
+            }
 
             return ((OracleConnection)connection).GetSchema();
         }
@@ -55,7 +57,10 @@ namespace Dev2.Services.Sql
         public DataSet FetchDataSet(IDbCommand command)
         {
             if (!(command is OracleCommand))
+            {
                 throw new Exception(string.Format(ErrorResource.InvalidCommand, "OracleCommand"));
+            }
+
             using (var dataSet = new DataSet())
             {
                 using (var adapter = new OracleDataAdapter(command as OracleCommand))

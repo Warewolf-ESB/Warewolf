@@ -561,8 +561,7 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
             var batchSize = BatchSize;
             if (!IsVariable(batchSize))
             {
-                int value;
-                if (!int.TryParse(batchSize, out value) || value < 0)
+                if (!int.TryParse(batchSize, out int value) || value < 0)
                 {
                     yield return new ActionableErrorInfo(() => IsBatchSizeFocused = true) { ErrorType = ErrorType.Critical, Message = ActivityResources.BatchsizeMustBeNumberMsg };
                 }
@@ -571,8 +570,7 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
             var timeout = Timeout;
             if (!IsVariable(timeout))
             {
-                int value;
-                if (!int.TryParse(timeout, out value) || value < 0)
+                if (!int.TryParse(timeout, out int value) || value < 0)
                 {
                     yield return new ActionableErrorInfo(() => IsTimeoutFocused = true) { ErrorType = ErrorType.Critical, Message = ActivityResources.TimeoutMustBeNumberMsg };
                 }
@@ -653,7 +651,9 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
                     List<IActionableErrorInfo> rs = GetRuleSet("InputColumn", inputColumn).ValidateRules("'Input Data or [[Variable]]'", () => ModelItem.SetProperty("IsMappingFieldFocused", true));
 
                     foreach(var looperror in rs)
+                    {
                         yield return looperror;
+                    }
                 }
 
 
