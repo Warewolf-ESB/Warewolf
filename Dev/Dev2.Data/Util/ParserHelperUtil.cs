@@ -93,10 +93,7 @@ namespace Dev2.Data.Util
         {
             if (int.TryParse(part, out int partAsInt))
             {
-                if (partAsInt >= 1)
-                {
-                }
-                else
+                if (partAsInt < 1)
                 {
                     throw new Dev2DataLanguageParseError("Recordset index [ " + part + " ] is not greater than zero", to.StartIndex + start, to.EndIndex + end, enIntellisenseErrorCode.NonPositiveRecordsetIndex);
                 }
@@ -114,17 +111,11 @@ namespace Dev2.Data.Util
             start += 1;
             string part = raw.Substring(start, raw.Length - (start + 1));
 
-            if (part.Contains(DataListUtil.OpeningSquareBrackets) || part == "*")
-            {
-            }
-            else
+            if (!part.Contains(DataListUtil.OpeningSquareBrackets) && part != "*")
             {
                 if (int.TryParse(part, out int partAsInt))
                 {
-                    if (partAsInt >= 1)
-                    {
-                    }
-                    else
+                    if (partAsInt < 1)
                     {
                         throw new Dev2DataLanguageParseError(string.Format(ErrorResource.RecordsetIndexNotGreaterThanZero, part), to.StartIndex + start, to.EndIndex + end, enIntellisenseErrorCode.NonPositiveRecordsetIndex);
                     }

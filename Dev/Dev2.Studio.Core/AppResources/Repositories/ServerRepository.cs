@@ -259,9 +259,11 @@ namespace Dev2.Studio.Core
                                 result.Add(guid);
                             }
                         }
+                    }                    
+                    catch (Exception e)
+                    {
+                        Dev2Logger.Warn(e.Message, "Warewolf Warn");
                     }
-                    
-                    catch { }
                     
                 }
 
