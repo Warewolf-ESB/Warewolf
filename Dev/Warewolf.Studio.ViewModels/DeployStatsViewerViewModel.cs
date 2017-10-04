@@ -185,7 +185,9 @@ namespace Warewolf.Studio.ViewModels
                                 }
                             }
                             else
+                            {
                                 currentItem.CanDeploy = true;
+                            }
                         }
                     }
                 }

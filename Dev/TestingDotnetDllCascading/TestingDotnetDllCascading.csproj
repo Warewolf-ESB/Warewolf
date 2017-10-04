@@ -12,6 +12,7 @@
     <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
+    <SonarQubeExclude>True</SonarQubeExclude>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -51,9 +52,9 @@
     </Compile>
     <Compile Include="Person.cs" />
     <Compile Include="Human.cs" />
-	<None Include="..\Run Tests.ps1">
+    <None Include="..\Run Tests.ps1">
       <Link>Run Tests.ps1</Link>
-	  <Visible>False</Visible>
+      <Visible>False</Visible>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <Compile Include="HelloWolrd.cs" />

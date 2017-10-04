@@ -616,8 +616,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     DebugItem itemToAdd = new DebugItem();
                     if (tmpEntry.IsWarewolfAtomResult)
                     {
-                        var warewolfAtomResult = tmpEntry as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
-                        if (warewolfAtomResult != null)
+                        if (tmpEntry is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult warewolfAtomResult)
                         {
                             var variableName = serviceInput.Value;
                             if (DataListUtil.IsEvaluated(variableName))
@@ -633,8 +632,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                     else
                     {
-                        var warewolfAtomListResult = tmpEntry as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
-                        if (warewolfAtomListResult != null)
+                        if (tmpEntry is CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult warewolfAtomListResult)
                         {
                             var variableName = serviceInput.Value;
                             if (DataListUtil.IsValueRecordset(variableName))
@@ -669,8 +667,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     if (tmpEntry.IsWarewolfAtomResult)
                     {
 
-                        var warewolfAtomResult = tmpEntry as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
-                        if (warewolfAtomResult != null)
+                        if (tmpEntry is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult warewolfAtomResult)
                         {
                             var variableName = dev2Definition.Name;
                             if (!string.IsNullOrEmpty(dev2Definition.RecordSetName))
@@ -684,8 +681,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     else
                     {
 
-                        var warewolfAtomListResult = tmpEntry as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
-                        if (warewolfAtomListResult != null)
+                        if (tmpEntry is CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult warewolfAtomListResult)
                         {
                             var variableName = dev2Definition.Name;
                             if (!string.IsNullOrEmpty(dev2Definition.RecordSetName))

@@ -351,8 +351,7 @@ namespace Dev2.Settings.Scheduler
                     }
                     else
                     {
-                        int val;
-                        if (value.IsWholeNumber(out val))
+                        if (value.IsWholeNumber(out int val))
                         {
                             SelectedTask.NumberOfHistoryToKeep = val;
                             NotifyOfPropertyChange(() => IsDirty);
@@ -545,7 +544,10 @@ namespace Dev2.Settings.Scheduler
             private set
             {
                 if (_selectedTask != null)
+                {
                     _selectedTask.Errors = value;
+                }
+
                 NotifyOfPropertyChange(() => Errors);
             }
         }
@@ -636,7 +638,11 @@ namespace Dev2.Settings.Scheduler
                        (_deleteCommand = new DelegateCommand(param =>
                        {
                            var taskToBeDeleted = param as IScheduledResource;
-                           if (taskToBeDeleted == null) return;
+                           if (taskToBeDeleted == null)
+                           {
+                               return;
+                           }
+
                            SelectedTask = taskToBeDeleted;
                            SchedulerTaskManager.DeleteTask();
                        }));
@@ -831,7 +837,10 @@ namespace Dev2.Settings.Scheduler
                 }
             }
             if (SelectedTask != null && !showMessage)
+            {
                 return SchedulerTaskManager.SaveTasks();
+            }
+
             return true;
         }
 
@@ -849,7 +858,10 @@ namespace Dev2.Settings.Scheduler
             set
             {
                 if (value == _helpText)
+                {
                     return;
+                }
+
                 _helpText = value;
                 NotifyOfPropertyChange(() => HelpText);
             }
@@ -887,8 +899,7 @@ namespace Dev2.Settings.Scheduler
     {
         public static IServer ToEnvironmentModel(this IServer server)
         {
-            var resource = server as Server;
-            if (resource != null)
+            if (server is Server resource)
             {
                 return resource;
             }

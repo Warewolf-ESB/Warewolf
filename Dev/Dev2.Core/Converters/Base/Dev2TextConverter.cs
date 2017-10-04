@@ -29,7 +29,6 @@ namespace Dev2.Converters
 
         public bool IsType(string payload)
         {
-            //2013.02.13: Ashley Lewis - Bug 8725, Task 8836
             return true;
         }
 

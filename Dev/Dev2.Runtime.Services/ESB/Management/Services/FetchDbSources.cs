@@ -43,8 +43,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             
             List<DbSourceDefinition> list = Resources.GetResourceList<DbSource>(GlobalConstants.ServerWorkspaceID).Select(a =>
             {
-                var res = a as DbSource;
-                if (res != null)
+                if (a is DbSource res)
                 {
                     return new DbSourceDefinition
                     {

@@ -52,7 +52,7 @@ namespace Unlimited.UnitTest.Framework.Parsing
         {
             IList<IDev2Definition> inputs = DataListFactory.CreateInputParser().Parse(TestStrings.inputsWithEmptyToNullFalse);
 
-            Assert.IsTrue(inputs.Count == 2 && inputs[0].EmptyToNull == false);
+            Assert.IsTrue(inputs.Count == 2 && !inputs[0].EmptyToNull);
         }
 
         // Sashen Added : PBI 5779
@@ -61,7 +61,7 @@ namespace Unlimited.UnitTest.Framework.Parsing
         {
             IList<IDev2Definition> inputs = DataListFactory.CreateInputParser().Parse(TestStrings.inputsWithEmptyToNullNotInXML);
 
-            Assert.IsTrue(inputs.Count == 2 && inputs[0].EmptyToNull == false);
+            Assert.IsTrue(inputs.Count == 2 && !inputs[0].EmptyToNull);
         }
 
         [TestMethod]

@@ -131,9 +131,7 @@ namespace Dev2.Activities
             InitializeDebug(dataObject);
             try
             {
-                IWarewolfIterator batchItr;
-                IWarewolfIterator timeoutItr;
-                var parametersIteratorCollection = BuildParametersIteratorCollection(dataObject.Environment, out batchItr, out timeoutItr, update);
+                var parametersIteratorCollection = BuildParametersIteratorCollection(dataObject.Environment, out IWarewolfIterator batchItr, out IWarewolfIterator timeoutItr, update);
 
                 var currentOptions = BuildSqlBulkCopyOptions();
                 var runtimeDatabase = ResourceCatalog.GetResource<DbSource>(dataObject.WorkspaceID, Database.ResourceID);
@@ -247,7 +245,10 @@ namespace Dev2.Activities
             MySqlBulkLoader sqlBulkCopy = new MySqlBulkLoader(new MySqlConnection(runtimeDatabase.ConnectionString));
             TableName = TableName.Replace("[", "").Replace("]", "");
             if (TableName.Contains("."))
+            {
                 TableName = TableName.Substring(TableName.IndexOf(".", StringComparison.Ordinal)+1);
+            }
+
             if (string.IsNullOrEmpty(BatchSize) && string.IsNullOrEmpty(Timeout))
             {
                 sqlBulkCopy = new MySqlBulkLoader(new MySqlConnection(runtimeDatabase.ConnectionString)) { TableName = TableName, FieldTerminator = ",", LineTerminator = "\n" };
@@ -384,8 +385,7 @@ namespace Dev2.Activities
                 var timeoutString = parametersIteratorCollection.FetchNextValue(timeoutItr);
                 if(!string.IsNullOrEmpty(timeoutString))
                 {
-                    int parsedValue;
-                    if(int.TryParse(timeoutString, out parsedValue))
+                    if (int.TryParse(timeoutString, out int parsedValue))
                     {
                         timeout = parsedValue;
                     }
@@ -404,8 +404,7 @@ namespace Dev2.Activities
                 var batchSizeString = parametersIteratorCollection.FetchNextValue(batchItr);
                 if(!string.IsNullOrEmpty(batchSizeString))
                 {
-                    int parsedValue;
-                    if(int.TryParse(batchSizeString, out parsedValue))
+                    if (int.TryParse(batchSizeString, out int parsedValue))
                     {
                         batchSize = parsedValue;
                     }
@@ -483,8 +482,12 @@ namespace Dev2.Activities
                 {
                     errorsResultTo.AddError(ErrorResource.InvalidRecordset + row.InputColumn);
                 }
-                if(string.IsNullOrEmpty(row.InputColumn)) continue;
-                if(dataObject.IsDebugMode())
+                if(string.IsNullOrEmpty(row.InputColumn))
+                {
+                    continue;
+                }
+
+                if (dataObject.IsDebugMode())
                 {
                     AddDebugInputItem(row.InputColumn, row.OutputColumn.ColumnName, dataObject.Environment, row.OutputColumn.DataTypeName, indexCounter, update);
                     indexCounter++;
@@ -545,7 +548,11 @@ namespace Dev2.Activities
 
         DataTable BuildDataTableToInsert()
         {
-            if(InputMappings == null) return null;
+            if(InputMappings == null)
+            {
+                return null;
+            }
+
             var dataTableToInsert = new DataTable();
    
             foreach(var dataColumnMapping in InputMappings)
@@ -607,7 +614,11 @@ namespace Dev2.Activities
         }
         DataTable BuildDataTableToInsertMySql()
         {
-            if (InputMappings == null) return null;
+            if (InputMappings == null)
+            {
+                return null;
+            }
+
             var dataTableToInsert = new DataTable();
             foreach (var dataColumnMapping in InputMappings)
             {

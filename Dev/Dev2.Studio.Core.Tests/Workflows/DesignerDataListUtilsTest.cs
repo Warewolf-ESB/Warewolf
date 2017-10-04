@@ -131,7 +131,10 @@ namespace Dev2.Core.Tests.Workflows
             //------------Setup for test--------------------------
             var unique = new Dictionary<IDataListVerifyPart, string>();
             foreach(var variable in variables)
+            {
                 WorkflowDesignerDataPartUtils.BuildDataPart(variable, unique, true);
+            }
+
             Assert.AreEqual(10, unique.Count);
         }
         

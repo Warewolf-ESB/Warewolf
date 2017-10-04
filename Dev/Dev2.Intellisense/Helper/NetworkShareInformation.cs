@@ -161,12 +161,10 @@ namespace Dev2.Intellisense.Helper
 
             try
             {
-                int entriesRead;
-                int totalEntries;
                 int nRet = NetShareEnum(server, level, out pBuffer, -1,
-                    out entriesRead, out totalEntries, ref hResume);
+                    out int entriesRead, out int totalEntries, ref hResume);
 
-                if(ErrorAccessDenied == nRet)
+                if (ErrorAccessDenied == nRet)
                 {
                     level = 1;
                     nRet = NetShareEnum(server, level, out pBuffer, -1,
@@ -267,10 +265,6 @@ namespace Dev2.Intellisense.Helper
 
             [MarshalAs(UnmanagedType.LPWStr)]
             public readonly string Remark;
-
-            public readonly int Permissions;
-            public readonly int MaxUsers;
-            public readonly int CurrentUsers;
 
             [MarshalAs(UnmanagedType.LPWStr)]
             public readonly string Path;

@@ -60,25 +60,26 @@ namespace Warewolf.Studio.Views
             {
                 if (_canDrag)
                 {
-                    if (e.Data.GetDataPresent(typeof (ExplorerItemViewModel)))
+                    if (e.Data.GetDataPresent(typeof(ExplorerItemViewModel)))
                     {
-                        if (!(e.Data.GetData(typeof (ExplorerItemViewModel)) is ExplorerItemViewModel explorerItemViewModel))
+                        if (!(e.Data.GetData(typeof(ExplorerItemViewModel)) is ExplorerItemViewModel explorerItemViewModel))
                         {
                             e.Handled = true;
                             return;
                         }
-                        var destination = FindAncestor<TreeViewItem>((DependencyObject) e.OriginalSource);
+                        var destination = FindAncestor<TreeViewItem>((DependencyObject)e.OriginalSource);
 
                         if (!Equals(explorerItemViewModel.Parent, destination.DataContext))
                         {
+
                             if (destination.DataContext is IExplorerItemViewModel dropTarget && dropTarget.IsFolder)
                             {
-                                var itemViewModel = (IExplorerItemViewModel) explorerItemViewModel;
+                                var itemViewModel = (IExplorerItemViewModel)explorerItemViewModel;
                                 itemViewModel.Move(dropTarget);
                             }
                             if (destination.DataContext is IEnvironmentViewModel destEnv)
                             {
-                                var itemViewModel = (IExplorerItemViewModel) explorerItemViewModel;
+                                var itemViewModel = (IExplorerItemViewModel)explorerItemViewModel;
                                 itemViewModel.Move(destEnv);
                             }
                             else
@@ -211,10 +212,10 @@ namespace Warewolf.Studio.Views
             _isDragging = false;
             _canDrag = false;
 
-            if (e.OriginalSource.GetType() == typeof (ScrollViewer))
+            if (e.OriginalSource.GetType() == typeof(ScrollViewer))
             {
                 var explorerView = sender as ExplorerView;
-                if (explorerView?.DataContext is SingleEnvironmentExplorerViewModel)
+                if (explorerView?.DataContext is SingleEnvironmentExplorerViewModel singleEnvironmentExplorerViewModel)
                 {
                     return;
                 }
@@ -243,7 +244,7 @@ namespace Warewolf.Studio.Views
                 }
             }
         }
-        
+
         private void UIElement_OnLostFocus(object sender, RoutedEventArgs e)
         {
             var textBox = sender as TextBox;
@@ -266,7 +267,7 @@ namespace Warewolf.Studio.Views
             TreeViewItem treeViewItem = FindAncestor<TreeViewItem>((DependencyObject)e.OriginalSource);
             if (treeViewItem != null)
             {
-                SetSelected(treeView,treeViewItem.DataContext);
+                SetSelected(treeView, treeViewItem.DataContext);
             }
             _isDragging = false;
             _canDrag = false;
@@ -301,9 +302,9 @@ namespace Warewolf.Studio.Views
 
         private void SetSelected(TreeView treeView, object item)
         {
-            if(treeView?.DataContext is SingleEnvironmentExplorerViewModel singleEnvironmentExplorerViewModel)
+            if (treeView?.DataContext is SingleEnvironmentExplorerViewModel singleEnvironmentExplorerViewModel)
             {
-                if(item is IExplorerItemViewModel explorerItemViewModel)
+                if (item is IExplorerItemViewModel explorerItemViewModel)
                 {
                     singleEnvironmentExplorerViewModel.SelectedItem = explorerItemViewModel;
                     singleEnvironmentExplorerViewModel.SelectedEnvironment = null;
@@ -329,23 +330,27 @@ namespace Warewolf.Studio.Views
             {
                 var explorerViewModel = DataContext as ExplorerViewModel;
 
-                switch (item)
+                if (item is IExplorerItemViewModel explorerItemViewModel)
                 {
-                    case IExplorerItemViewModel explorerItemViewModel:
-                        explorerItemViewModel.IsSelected = true;
-                        SetActiveServer(explorerItemViewModel.Server);
+                    explorerItemViewModel.IsSelected = true;
+                    SetActiveServer(explorerItemViewModel.Server);
+                    if (explorerViewModel?.ConnectControlViewModel != null)
+                    {
+                        explorerViewModel.ConnectControlViewModel.SelectedConnection = explorerItemViewModel.Server;
+                    }
+                }
+                else
+                {
+                    if (item is IEnvironmentViewModel environmentViewModel)
+                    {
+                        SetActiveServer(environmentViewModel.Server);
                         if (explorerViewModel?.ConnectControlViewModel != null)
                         {
-                            explorerViewModel.ConnectControlViewModel.SelectedConnection = explorerItemViewModel.Server;
+                            {
+                                explorerViewModel.ConnectControlViewModel.SelectedConnection = environmentViewModel.Server;
+                            }
                         }
-                        break;
-                    case IEnvironmentViewModel environmentViewModel:
-                        SetActiveServer(environmentViewModel.Server);
-                        if(explorerViewModel?.ConnectControlViewModel != null)
-                        {
-                            explorerViewModel.ConnectControlViewModel.SelectedConnection = environmentViewModel.Server;
-                        }
-                        break;
+                    }
                 }
             }
         }
@@ -359,7 +364,7 @@ namespace Warewolf.Studio.Views
         private void ExplorerTree_OnKeyUp(object sender, KeyEventArgs e)
         {
             var treeView = sender as TreeView;
-            if (treeView?.DataContext is SingleEnvironmentExplorerViewModel)
+            if (treeView?.DataContext is SingleEnvironmentExplorerViewModel singleEnvironmentExplorerViewModel)
             {
                 if (e.Key == Key.F2)
                 {
@@ -530,3 +535,5 @@ namespace Warewolf.Studio.Views
         }
     }
 }
+
+    

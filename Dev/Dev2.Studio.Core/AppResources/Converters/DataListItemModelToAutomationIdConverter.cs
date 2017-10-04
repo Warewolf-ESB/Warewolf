@@ -24,17 +24,16 @@ namespace Dev2.Studio.Core.AppResources.Converters
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            DataListItemModel itemModel = value as DataListItemModel;
 
-            if(itemModel != null)
+            if (value is DataListItemModel itemModel)
             {
-                if(itemModel is IRecordSetItemModel)
+                if (itemModel is IRecordSetItemModel)
                 {
                     return string.IsNullOrEmpty(itemModel.DisplayName)
                         ? string.Concat(AutoIdPrefix, "NewRecordSet", AutoIdSufix)
                         : string.Concat(AutoIdPrefix, "RecordSet_", itemModel.DisplayName, AutoIdSufix);
                 }
-                if(itemModel is IScalarItemModel)
+                if (itemModel is IScalarItemModel)
                 {
                     return string.IsNullOrEmpty(itemModel.DisplayName)
                         ? string.Concat(AutoIdPrefix, "NewField", AutoIdSufix)

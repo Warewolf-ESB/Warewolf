@@ -9,11 +9,11 @@ using Dev2.Services;
 using Warewolf.Resource.Errors;
 using Dev2.Common.Interfaces.Studio.Core;
 using Dev2.Studio.Interfaces;
-
+using System;
 
 namespace Dev2.Activities.Designers2.Service
 {
-    public class ValidationMemoManager
+    public class ValidationMemoManager : IDisposable
     {
         private readonly ServiceDesignerViewModel _serviceDesignerViewModel;
         public readonly string SourceNotFoundMessage = Warewolf.Studio.Resources.Languages.Core.ServiceDesignerSourceNotFound;
@@ -275,6 +275,11 @@ namespace Dev2.Activities.Designers2.Service
                 _serviceDesignerViewModel.RootModel.AddError(error);
             }
             UpdateWorstError();
+        }
+
+        public void Dispose()
+        {
+            _validationService.Dispose();
         }
     }
 }

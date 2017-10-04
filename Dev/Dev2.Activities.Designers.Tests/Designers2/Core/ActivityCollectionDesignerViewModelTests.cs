@@ -98,8 +98,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
                 var dto1 = (ActivityDTO)mic[j].GetCurrentValue();
                 var expectedIndexNumber = j + 1;
                 Assert.AreEqual(j == 3 - 1, dto1.CanRemove());
-                ActivityDTO expectedDto;
-                if(expectedItemsByIndexNumber.TryGetValue(expectedIndexNumber, out expectedDto))
+                if (expectedItemsByIndexNumber.TryGetValue(expectedIndexNumber, out ActivityDTO expectedDto))
                 {
                     Assert.AreSame(expectedDto, dto1);
                 }
@@ -1148,8 +1147,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
 
                 if(expectedItemsByIndexNumber != null)
                 {
-                    ActivityDTO expectedDTO;
-                    if(expectedItemsByIndexNumber.TryGetValue(expectedIndexNumber, out expectedDTO))
+                    if (expectedItemsByIndexNumber.TryGetValue(expectedIndexNumber, out ActivityDTO expectedDTO))
                     {
                         Assert.AreSame(expectedDTO, dto);
                     }

@@ -25,7 +25,7 @@ namespace Warewolf.Studio.Core
         private int _currentProgress;
         bool _isSelected;
         bool _isExpanderVisible;
-        bool _isCom;
+        readonly bool _isCom;
 
         public DllListingModel(IManagePluginSourceModel updateManager, IFileListing dllListing)
         {

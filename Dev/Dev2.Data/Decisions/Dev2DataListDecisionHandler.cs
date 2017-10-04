@@ -159,7 +159,6 @@ namespace Dev2.Data.Decision
 
             if(payload.StartsWith("{\"TheStack\":[{") || payload.StartsWith("{'TheStack':[{"))
             {
-                //2013.05.06: Ashley Lewis for PBI 9460 - handle record-sets with stars in their index by resolving them
                 var dds = DataListUtil.ConvertFromJsonToModel<Dev2DecisionStack>(new StringBuilder(payload));
 
                 if(dds.TheStack != null)
@@ -213,8 +212,7 @@ namespace Dev2.Data.Decision
                     //Remove those record sets and replace them with a new decision for each resolved value
                     foreach(Dev2Decision decision in invalidDecisions)
                     {
-                        ErrorResultTO errors;
-                        dds = ResolveAllRecords(env, dds, decision, effectedCols, out errors, update);
+                        dds = ResolveAllRecords(env, dds, decision, effectedCols, out ErrorResultTO errors, update);
                     }
                 }
 

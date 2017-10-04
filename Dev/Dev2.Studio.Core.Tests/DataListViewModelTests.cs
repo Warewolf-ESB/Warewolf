@@ -74,26 +74,8 @@ namespace Dev2.Core.Tests
         }
 
         #endregion Initialize
-
-        // It would be very useful to have a sort of test Designer to generate XAML, it's apparently         
-
+ 
         #region AddMode Missing Tests
-
-        //[TestMethod]
-        //public void AddMissingDataListItems_AddScalars_ExpectedAddDataListItems()
-        //{
-        //    Setup();
-        //    IList<IDataListVerifyPart> parts = new List<IDataListVerifyPart>();
-
-        //    var part = new Mock<IDataListVerifyPart>();
-        //    part.Setup(c => c.Field).Returns("Province");
-        //    part.Setup(c => c.Description).Returns("A state in a republic");
-        //    part.Setup(c => c.IsScalar).Returns(true);
-        //    parts.Add(part.Object);
-
-        //    _dataListViewModel.AddMissingDataListItems(parts, false);
-        //    Assert.IsFalse(_dataListViewModel.DataList[_dataListViewModel.DataList.Count - 3].CanHaveMutipleRows);
-        //}
 
         [TestMethod]
         public void AddMissingDataListItems_AddRecordSet_ExpectedNewRecordSetCreatedonRootNode()

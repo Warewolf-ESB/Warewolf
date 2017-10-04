@@ -2,10 +2,11 @@
 using System.Diagnostics;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Monitoring;
+using System;
 
 namespace Dev2.PerformanceCounters.Counters
 {
-    public class WarewolfAverageExecutionTimePerformanceCounter : IPerformanceCounter
+    public class WarewolfAverageExecutionTimePerformanceCounter : IPerformanceCounter, IDisposable
     {
 
         private PerformanceCounter _counter;
@@ -112,6 +113,12 @@ namespace Dev2.PerformanceCounters.Counters
                     _baseCounter.Decrement();
 
             }
+        }
+
+        public void Dispose()
+        {
+            _counter.Dispose();
+            _baseCounter.Dispose();
         }
 
         public string Category => "Warewolf";

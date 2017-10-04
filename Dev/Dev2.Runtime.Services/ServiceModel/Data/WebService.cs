@@ -78,8 +78,7 @@ namespace Dev2.Runtime.ServiceModel.Data
 
             RequestUrl = action.AttributeSafe("RequestUrl");
             JsonPath = action.AttributeSafe("JsonPath");
-            WebRequestMethod requestMethod;
-            RequestMethod = Enum.TryParse(action.AttributeSafe("RequestMethod"), true, out requestMethod) ? requestMethod : WebRequestMethod.Get;
+            RequestMethod = Enum.TryParse(action.AttributeSafe("RequestMethod"), true, out WebRequestMethod requestMethod) ? requestMethod : WebRequestMethod.Get;
             RequestHeaders = action.ElementSafe("RequestHeaders");
             RequestBody = action.ElementSafe("RequestBody");
 

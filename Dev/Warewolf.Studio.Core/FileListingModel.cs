@@ -32,7 +32,7 @@ namespace Warewolf.Studio.Core
         bool _isSelected;
         bool _isExpanderVisible;
         bool _isChecked;
-        Action _selectedAction;
+        readonly Action _selectedAction;
         private bool _useIsSelected;
 
         public FileListingModel(IFileChooserModel model, IFileListing file, Action selected, bool useIsSelected = false)
@@ -272,7 +272,10 @@ namespace Warewolf.Studio.Core
         {
             var canAdd = UseIsSelected ? IsSelected : IsChecked;
             if (canAdd)
+            {
                 acc.Add(FullName);
+            }
+
             if (Children != null)
             {
                 foreach (var dllListingModel in Children)

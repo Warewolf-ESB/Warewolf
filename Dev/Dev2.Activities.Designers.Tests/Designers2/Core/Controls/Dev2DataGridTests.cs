@@ -70,7 +70,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core.Controls
             var dataGridRow = new DataGridRow();
 
             //------------Execute Test---------------------------
-            var result = dataGrid.GetFocusElement(dataGridRow);
+            var result = dataGrid.GetFocusElement(dataGridRow, 0);
 
             //------------Assert Results-------------------------
             Assert.AreSame(element, result);
@@ -86,7 +86,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core.Controls
             var dataGrid = new Dev2DataGrid(r => element) { ItemsSource = CreateModelItemCollection(3, false, false, false) };
 
             //------------Execute Test---------------------------
-            var result = dataGrid.GetFocusElement(null);
+            var result = dataGrid.GetFocusElement(null, 0);
 
             //------------Assert Results-------------------------
             Assert.IsNull(result);

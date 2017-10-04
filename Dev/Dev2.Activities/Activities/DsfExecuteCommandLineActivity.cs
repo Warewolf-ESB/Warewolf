@@ -40,7 +40,7 @@ using Warewolf.Storage.Interfaces;
 namespace Dev2.Activities
 {
     [ToolDescriptorInfo("Scripting-CMDScript", "CMD Script", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Scripting", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Scripting_CMD_Script")]
-    public class DsfExecuteCommandLineActivity : DsfActivityAbstract<string>,IEquatable<DsfExecuteCommandLineActivity>
+    public class DsfExecuteCommandLineActivity : DsfActivityAbstract<string>,IEquatable<DsfExecuteCommandLineActivity>, IDisposable
     {
         #region Fields
 
@@ -146,10 +146,7 @@ namespace Dev2.Activities
                             {
                                 throw new Exception(ErrorResource.EmptyScript);
                             }
-
-                            StreamReader errorReader;
-                            StringBuilder outputReader;
-                            if(!ExecuteProcess(val, exeToken, out errorReader, out outputReader))
+                            if (!ExecuteProcess(val, exeToken, out StreamReader errorReader, out StringBuilder outputReader))
                             {
                                 return;
                             }
@@ -157,8 +154,7 @@ namespace Dev2.Activities
                             allErrors.AddError(errorReader.ReadToEnd());
                             var bytes = Encoding.Default.GetBytes(outputReader.ToString().Trim());
                             string readValue = Encoding.ASCII.GetString(bytes).Replace("?", " ");
-
-                            //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
+                            
                             foreach(var region in DataListCleaningUtils.SplitIntoRegions(CommandResult))
                             {
                                 dataObject.Environment?.Assign(region, readValue, update == 0 ? counter : update);
@@ -190,7 +186,9 @@ namespace Dev2.Activities
                     File.Delete(_fullPath);
                     string tmpFile = _fullPath.Replace(".bat", "");
                     if (File.Exists(tmpFile))
+                    {
                         File.Delete(tmpFile);
+                    }
                 }
                 // Handle Errors    
                 var hasErrors = allErrors.HasErrors();
@@ -320,9 +318,17 @@ namespace Dev2.Activities
 
         ProcessStartInfo CreateProcessStartInfo(string val)
         {
-            if(val.StartsWith("cmd")) throw new ArgumentException(ErrorResource.CannotExecuteCMDFromTool);
-            if(val.StartsWith("explorer")) throw new ArgumentException(ErrorResource.CannotExecuteExplorerFromTool);
-            if(val.Contains("explorer"))
+            if(val.StartsWith("cmd"))
+            {
+                throw new ArgumentException(ErrorResource.CannotExecuteCMDFromTool);
+            }
+
+            if (val.StartsWith("explorer"))
+            {
+                throw new ArgumentException(ErrorResource.CannotExecuteExplorerFromTool);
+            }
+
+            if (val.Contains("explorer"))
             {
                 var directoryName = Path.GetFullPath(val);
                 {
@@ -485,6 +491,11 @@ namespace Dev2.Activities
         public override IList<DsfForEachItem> GetForEachOutputs()
         {
             return GetForEachItems(CommandResult);
+        }
+
+        public void Dispose()
+        {
+            ((IDisposable)_process).Dispose();
         }
 
         #endregion

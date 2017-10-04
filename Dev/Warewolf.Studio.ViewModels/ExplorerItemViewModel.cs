@@ -36,10 +36,26 @@ namespace Warewolf.Studio.ViewModels
     {
         public bool Equals(IExplorerTreeItem x, IExplorerTreeItem y)
         {
-            if (ReferenceEquals(x, y)) return true;
-            if (ReferenceEquals(x, null)) return false;
-            if (ReferenceEquals(y, null)) return false;
-            if (x.GetType() != y.GetType()) return false;
+            if (ReferenceEquals(x, y))
+            {
+                return true;
+            }
+
+            if (ReferenceEquals(x, null))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(y, null))
+            {
+                return false;
+            }
+
+            if (x.GetType() != y.GetType())
+            {
+                return false;
+            }
+
             return string.Equals(x.ResourcePath, y.ResourcePath) && x.ResourceId.Equals(y.ResourceId);
         }
 
@@ -238,7 +254,10 @@ namespace Warewolf.Studio.ViewModels
             IsVersion = false;
             CanShowServerVersion = false;
             if (ForcedRefresh)
+            {
                 ForcedRefresh = true;
+            }
+
             SetupCommands();
 
             _candrop = true;
@@ -1097,7 +1116,9 @@ namespace Warewolf.Studio.ViewModels
                         Children.Apply(a => a.IsResourceChecked = isResourceChecked ?? false);
                         _isResource = isResourceChecked ?? false;
                         if (Parent.IsFolder)
+                        {
                             Parent.IsFolderChecked = isResourceChecked;
+                        }
                     }
                 }
                 else
@@ -1167,7 +1188,9 @@ namespace Warewolf.Studio.ViewModels
                     if (!_isResource.HasValue || _isResource.Value)
                     {
                         if (Parent.IsFolder)
+                        {
                             Parent.IsFolderChecked = _isResource;
+                        }
                     }
                 }
                 OnPropertyChanged(() => IsResourceChecked);
@@ -1553,8 +1576,7 @@ namespace Warewolf.Studio.ViewModels
             IsExpanded = true;
             foreach (var child in Children)
             {
-                var explorerItemViewModel = child as ExplorerItemViewModel;
-                if (explorerItemViewModel != null && explorerItemViewModel.IsVersion)
+                if (child is ExplorerItemViewModel explorerItemViewModel && explorerItemViewModel.IsVersion)
                 {
                     var permissions = Server?.GetPermissions(explorerItemViewModel.ResourceId);
                     if (permissions.HasValue)
@@ -1787,7 +1809,9 @@ namespace Warewolf.Studio.ViewModels
             else
             {
                 if (IsFolder)
+                {
                     IsExpanded = false;
+                }
             }
         }
 
@@ -1808,10 +1832,12 @@ namespace Warewolf.Studio.ViewModels
         public void Dispose()
         {
             if (Children != null)
+            {
                 foreach (var explorerItemViewModel in Children)
                 {
                     explorerItemViewModel?.Dispose();
                 }
+            }
         }
 
         public bool IsDependenciesVisible

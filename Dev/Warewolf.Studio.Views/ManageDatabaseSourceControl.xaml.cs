@@ -61,8 +61,7 @@ namespace Warewolf.Studio.Views
         {
             try
             {
-                var viewModelBase = DataContext as DatabaseSourceViewModelBase;
-                if(viewModelBase != null)
+                if (DataContext is DatabaseSourceViewModelBase viewModelBase)
                 {
                     viewModelBase.DatabaseName = databaseName;
                 }
@@ -125,8 +124,7 @@ namespace Warewolf.Studio.Views
 
         public void EnterUserName(string userName)
         {
-            var viewModel = DataContext as DatabaseSourceViewModelBase;
-            if(viewModel != null)
+            if (DataContext is DatabaseSourceViewModelBase viewModel)
             {
                 viewModel.UserName = userName;
             }
@@ -135,8 +133,7 @@ namespace Warewolf.Studio.Views
 
         public void EnterPassword(string password)
         {
-            var viewModel = DataContext as DatabaseSourceViewModelBase;
-            if (viewModel != null)
+            if (DataContext is DatabaseSourceViewModelBase viewModel)
             {
                 viewModel.Password = password;
             }

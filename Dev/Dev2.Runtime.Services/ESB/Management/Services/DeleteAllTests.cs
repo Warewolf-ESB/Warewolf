@@ -31,8 +31,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             Dev2JsonSerializer jsonSerializer = new Dev2JsonSerializer();
             try
             {
-                StringBuilder excludeTests;
-                values.TryGetValue("excludeList", out excludeTests);
+                values.TryGetValue("excludeList", out StringBuilder excludeTests);
                 var testsToLive = jsonSerializer.Deserialize<List<string>>(excludeTests);
                 TestCatalog.DeleteAllTests(testsToLive.Select(a => a.ToUpper()).ToList());
                 result.SetMessage("Test reload succesful");
@@ -62,14 +61,12 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
         {
-            StringBuilder tmp;
-            requestArgs.TryGetValue("resourceID", out tmp);
+            requestArgs.TryGetValue("resourceID", out StringBuilder tmp);
             if (tmp == null)
             {
                 return Guid.Empty;
             }
-            Guid resourceId;
-            return Guid.TryParse(tmp.ToString(), out resourceId) ? resourceId : Guid.Empty;
+            return Guid.TryParse(tmp.ToString(), out Guid resourceId) ? resourceId : Guid.Empty;
         }
 
         public AuthorizationContext GetAuthorizationContextForService()

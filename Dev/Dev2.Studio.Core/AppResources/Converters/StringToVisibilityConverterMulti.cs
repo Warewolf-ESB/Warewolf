@@ -23,9 +23,8 @@ namespace Dev2.Studio.Core.AppResources.Converters
         {
             var isVisible = values.Cast<string>().Aggregate(false, (current, theValue) => !current && !string.IsNullOrEmpty(theValue));
 
-            bool invert;
             var invertStr = parameter as string;
-            bool.TryParse(invertStr, out invert);
+            bool.TryParse(invertStr, out bool invert);
             if(invert)
             {
                 isVisible = !isVisible;

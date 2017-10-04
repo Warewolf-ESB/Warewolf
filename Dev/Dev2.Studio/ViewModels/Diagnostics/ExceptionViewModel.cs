@@ -130,7 +130,10 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             }
             set
             {
-                if (_stackTrace == value) return;
+                if (_stackTrace == value)
+                {
+                    return;
+                }
 
                 _stackTrace = value;
                 NotifyOfPropertyChange(() => StackTrace);
@@ -145,7 +148,10 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             }
             set
             {
-                if (_serverLogFile == value) return;
+                if (_serverLogFile == value)
+                {
+                    return;
+                }
 
                 _serverLogFile = value;
                 NotifyOfPropertyChange(() => ServerLogFile);
@@ -160,7 +166,10 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             }
             set
             {
-                if (_studioLogFile == value) return;
+                if (_studioLogFile == value)
+                {
+                    return;
+                }
 
                 _studioLogFile = value;
                 NotifyOfPropertyChange(() => StudioLogFile);
@@ -295,6 +304,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             WebClient client = new WebClient { Credentials = activeEnvironment.Connection.HubConnection.Credentials };
             var managementServiceUri = WebServer.GetInternalServiceUri("getlogfile?numLines=10", activeEnvironment.Connection);
             var serverLogFile = await client.DownloadStringTaskAsync(managementServiceUri);
+            client.Dispose();
             return serverLogFile;
         }
 

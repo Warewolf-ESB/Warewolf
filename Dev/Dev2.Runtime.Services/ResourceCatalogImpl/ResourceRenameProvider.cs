@@ -202,7 +202,10 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                     var xaml = actionElement.Element("XamlDefinition");
                     var newNameWithPath = newName;
                     if (oldName.IndexOf('\\') > 0)
+                    {
                         newNameWithPath = oldName.Substring(0, 1 + oldName.LastIndexOf("\\", StringComparison.Ordinal)) + newName;
+                    }
+
                     xaml?.SetValue(xaml.Value
                         .Replace("DisplayName=\"" + oldName, "DisplayName=\"" + newNameWithPath)
                         .Replace("ServiceName=\"" + oldName, "ServiceName=\"" + newName)

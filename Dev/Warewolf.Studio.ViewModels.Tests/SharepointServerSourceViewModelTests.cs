@@ -235,7 +235,11 @@ namespace Warewolf.Studio.ViewModels.Tests
                         task = Task.Factory.StartNew(
                             () =>
                             {
-                                while (!token.IsCancellationRequested) ;
+                                while (!token.IsCancellationRequested)
+                                {
+                                    ;
+                                }
+
                                 isCancelled = true;
                             });
                     });

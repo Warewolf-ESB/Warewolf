@@ -799,8 +799,7 @@ namespace Warewolf.UIBindingTests.WorkflowDesigner
             {
                 if (prevNode != null)
                 {
-                    var flowStep = prevNode as FlowStep;
-                    if (flowStep != null)
+                    if (prevNode is FlowStep flowStep)
                     {
                         flowStep.Next = node;
                     }

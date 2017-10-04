@@ -90,7 +90,9 @@ namespace Warewolf.Studio.Views
         private void RequestServiceNameView_OnMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ChangedButton == MouseButton.Left)
+            {
                 DragMove();
+            }
         }
 
         private void ExplorerView_OnKeyUp(object sender, KeyEventArgs e)

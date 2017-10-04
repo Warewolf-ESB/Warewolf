@@ -51,10 +51,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
             const string Expected = "1978/07/23 03:30 PM";
-
-            string actual;
-            string error;
-            GetScalarValueFromEnvironment(result.Environment, "MyTestResult", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "MyTestResult", out string actual, out string error);
 
             // remove test datalist ;)
 
@@ -77,10 +74,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
             const string expected = "2012/11/28 02:12:41 AM";
-
-            string actual;
-            string error;
-            GetScalarValueFromEnvironment(result.Environment, "MyTestResult", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "MyTestResult", out string actual, out string error);
 
             // remove test datalist ;)
 
@@ -107,9 +101,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             string firstDateTimeExpected = firstDateTime.ToString("yyyy/MM/dd hh:mm:ss tt");
             DateTime secondDateTime = DateTime.Parse("2012/12/27 04:12:41 PM").AddHours(10);
             string secondDateTimeExpected = secondDateTime.ToString("yyyy/MM/dd hh:mm:ss tt");
-            IList<string> actual;
-            string error;
-            GetRecordSetFieldValueFromDataList(result.Environment, "MyDateRecordSet", "Date", out actual, out error);
+            GetRecordSetFieldValueFromDataList(result.Environment, "MyDateRecordSet", "Date", out IList<string> actual, out string error);
             // remove test datalist ;)
             var firstResult = actual[2];
             var secondResult = actual[3];
@@ -117,8 +109,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(firstDateTimeExpected, firstResult);
             Assert.AreEqual(secondDateTimeExpected, secondResult);
         }
-
-        //2013.02.12: Ashley Lewis - Bug 8725, Task 8840 DONE
+        
         [TestMethod]
         public void DateTimeAddSplitsExpectedDateTimeReturnedCorrectly()
         {
@@ -134,10 +125,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
 
-            string actual;
-            string error;
-
-            GetScalarValueFromEnvironment(result.Environment, "MyTestResult", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "MyTestResult", out string actual, out string error);
             // remove test datalist ;)
 
             const string expected = "2013/02/07 08:38:57.280 PM";
@@ -164,10 +152,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                          , "[[MyTestResult]]");
 
             IDSFDataObject result = ExecuteProcess();
-
-            string actual;
-            string error;
-            GetScalarValueFromEnvironment(result.Environment, "MyTestResult", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "MyTestResult", out string actual, out string error);
             DateTime actualdt = DateTime.Parse(actual);
             var timeSpan = actualdt - now;
 
@@ -192,11 +177,8 @@ namespace Dev2.Tests.Activities.ActivityTests
                          , "[[MyTestResult]]");
 
             IDSFDataObject result = ExecuteProcess();
-
-            string actual;
-            string error;
-            GetScalarValueFromEnvironment(result.Environment, "MyTestResult", out actual, out error);
-            if(actual == "0")
+            GetScalarValueFromEnvironment(result.Environment, "MyTestResult", out string actual, out string error);
+            if (actual == "0")
             {
                 Thread.Sleep(11);
 
@@ -228,6 +210,55 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Assert Results-------------------------
             Assert.AreEqual(1, outputs.Count);
             Assert.AreEqual("[[dt]]", outputs[0]);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfDateTimeActivity_GetOutputs")]
+        public void DsfDateTimeActivity_AddDays_ShouldNotChangeAMtoPMValues()
+        {
+            //------------Setup for test--------------------------
+            const string Expected = "2017/10/20 12:00:00.0 AM";
+            const string currDL = @"<root><MyTestResult></MyTestResult></root>";
+            SetupArguments(currDL
+                         , currDL
+                         , "10/25/2017 12:00:00 AM"
+                         , ""
+                         , ""
+                         , "Days"
+                         , -5
+                         , "[[MyTestResult]]");
+            //------------Execute Test---------------------------
+            var result = ExecuteProcess();
+            string actual;
+            string error;
+            GetScalarValueFromEnvironment(result.Environment, "[[MyTestResult]]", out actual, out error);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(Expected, actual);
+        }
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfDateTimeActivity_GetOutputs")]
+        public void DsfDateTimeActivity_AddDays_ShouldNotChangePMtoAMValues()
+        {
+            //------------Setup for test--------------------------
+            const string Expected = "2017/10/20 12:00:00.0 PM";
+            const string currDL = @"<root><MyTestResult></MyTestResult></root>";
+            SetupArguments(currDL
+                         , currDL
+                         , "10/25/2017 12:00:00 PM"
+                         , ""
+                         , ""
+                         , "Days"
+                         , -5
+                         , "[[MyTestResult]]");
+            //------------Execute Test---------------------------
+            var result = ExecuteProcess();
+            string actual;
+            string error;
+            GetScalarValueFromEnvironment(result.Environment, "[[MyTestResult]]", out actual, out error);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(Expected, actual);
         }
 
         #region Private Test Methods

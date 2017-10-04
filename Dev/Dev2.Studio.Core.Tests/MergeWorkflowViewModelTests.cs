@@ -1,5 +1,4 @@
-﻿using Dev2.ViewModels.Merge;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Dev2.Studio.Interfaces;
 using System.Text;
@@ -12,6 +11,7 @@ using System;
 using System.Activities;
 using Dev2.Studio.Core.Activities.Utils;
 using System.Activities.Presentation.Model;
+using Dev2.ViewModels.Merge;
 
 namespace Dev2.Core.Tests
 {
