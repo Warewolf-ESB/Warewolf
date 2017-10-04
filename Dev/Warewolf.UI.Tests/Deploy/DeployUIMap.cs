@@ -309,7 +309,7 @@ namespace Warewolf.UI.Tests.Deploy.DeployUIMapClasses
             var successful = false;
             while (timeout-- > 0)
             {
-                if (DialogsUIMap.MessageBoxWindow.OKButton.Exists)
+                if (DialogsUIMap.MessageBoxWindow.Exists)
                 {
                     successful = UIMap.ControlExistsNow(DialogsUIMap.MessageBoxWindow.ResourcesDeployedSucText);
                     Mouse.Click(DialogsUIMap.MessageBoxWindow.OKButton);
