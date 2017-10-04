@@ -3158,6 +3158,11 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             var flowNode = model.FlowNode.GetCurrentValue<FlowStep>();
 
+            if (flowNode == null)
+            {
+                return;
+            }
+
             flowNode.Next = null;
             if (startNode.ComputedValue == null)
             {
