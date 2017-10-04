@@ -45,6 +45,13 @@ namespace Dev2.TaskScheduler.Wrappers
         void IDisposable.Dispose()
         {
             Instance.Dispose();
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            // Cleanup
         }
 
         public ITrigger Add(ITrigger unboundTrigger)

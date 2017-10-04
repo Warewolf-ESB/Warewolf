@@ -71,7 +71,11 @@ namespace Warewolf.Storage.Tests
             var variablesToIterateOn = privateObj.GetField("_variablesToIterateOn") as List<IWarewolfIterator>;
             Assert.IsNotNull(variablesToIterateOn);
             var listIterator = _warewolfListIterator as WarewolfListIterator;
-            if (listIterator == null) return;
+            if (listIterator == null)
+            {
+                return;
+            }
+
             var fetchNextValue = listIterator.FetchNextValue(0);
             Assert.AreEqual("Success", fetchNextValue);
         }
@@ -111,7 +115,11 @@ namespace Warewolf.Storage.Tests
             var variablesToIterateOn = privateObj.GetField("_variablesToIterateOn") as List<IWarewolfIterator>;
             Assert.IsNotNull(variablesToIterateOn);
             var listIterator = _warewolfListIterator as WarewolfListIterator;
-            if (listIterator == null) return;
+            if (listIterator == null)
+            {
+                return;
+            }
+
             Assert.AreEqual(2, listIterator.FieldCount);
             var read = listIterator.Read();
             Assert.IsTrue(read);
@@ -126,7 +134,11 @@ namespace Warewolf.Storage.Tests
             var variablesToIterateOn = privateObj.GetField("_variablesToIterateOn") as List<IWarewolfIterator>;
             Assert.IsNotNull(variablesToIterateOn);
             var listIterator = _warewolfListIterator as WarewolfListIterator;
-            if (listIterator == null) return;
+            if (listIterator == null)
+            {
+                return;
+            }
+
             Assert.IsFalse(listIterator.IsClosed);
             var nextResult = listIterator.NextResult();
             Assert.IsFalse(nextResult);
@@ -153,7 +165,11 @@ namespace Warewolf.Storage.Tests
             var variablesToIterateOn = privateObj.GetField("_variablesToIterateOn") as List<IWarewolfIterator>;
             Assert.IsNotNull(variablesToIterateOn);
             var listIterator = _warewolfListIterator as WarewolfListIterator;
-            if (listIterator == null) return;
+            if (listIterator == null)
+            {
+                return;
+            }
+
             var count = privateObj.GetField("_count");
             Assert.AreEqual(count, listIterator.Depth);
             var dataTypeName = listIterator.GetName(0);
@@ -169,7 +185,11 @@ namespace Warewolf.Storage.Tests
             var variablesToIterateOn = privateObj.GetField("_variablesToIterateOn") as List<IWarewolfIterator>;
             Assert.IsNotNull(variablesToIterateOn);
             var listIterator = _warewolfListIterator as WarewolfListIterator;
-            if (listIterator == null) return;
+            if (listIterator == null)
+            {
+                return;
+            }
+
             var dataTypeName = listIterator.GetDataTypeName(0);
             Assert.AreEqual("String", dataTypeName);
         }
@@ -183,7 +203,11 @@ namespace Warewolf.Storage.Tests
             var variablesToIterateOn = privateObj.GetField("_variablesToIterateOn") as List<IWarewolfIterator>;
             Assert.IsNotNull(variablesToIterateOn);
             var listIterator = _warewolfListIterator as WarewolfListIterator;
-            if (listIterator == null) return;
+            if (listIterator == null)
+            {
+                return;
+            }
+
             var fieldType = listIterator.GetFieldType(0);
             Assert.AreEqual(typeof(string), fieldType);
         }
@@ -198,7 +222,11 @@ namespace Warewolf.Storage.Tests
             var variablesToIterateOn = privateObj.GetField("_variablesToIterateOn") as List<IWarewolfIterator>;
             Assert.IsNotNull(variablesToIterateOn);
             var listIterator = _warewolfListIterator as WarewolfListIterator;
-            if (listIterator == null) return;
+            if (listIterator == null)
+            {
+                return;
+            }
+
             listIterator.Names = names;
             listIterator.Types = variablesToIterateOn.Select(iterator => iterator.GetType()).ToList();
             var ordinal = listIterator.GetOrdinal(Result);
@@ -210,12 +238,13 @@ namespace Warewolf.Storage.Tests
         [Owner("Sanele Mthembu")]
         public void GivenStringTrueIsAssigned_WarewolfListIterator_GetBoolean_ShouldReturnTrue()
         {
-            PrivateObject privateObj;
-            List<IWarewolfIterator> variablesToIterateOn;
-            ValidateInstance(out privateObj, out variablesToIterateOn);
+            ValidateInstance(out PrivateObject privateObj, out List<IWarewolfIterator> variablesToIterateOn);
             _environment.Assign("[[RecSet().a]]", "True", 0);
-            WarewolfListIterator listIterator;
-            if (AssignExpression(out listIterator)) return;
+            if (AssignExpression(out WarewolfListIterator listIterator))
+            {
+                return;
+            }
+
             var boolean = listIterator.GetBoolean(2);
             Assert.IsTrue(boolean);
         }
@@ -224,12 +253,13 @@ namespace Warewolf.Storage.Tests
         [Owner("Sanele Mthembu")]
         public void WarewolfListIterator_GetChars_ShouldReturn0()
         {
-            PrivateObject privateObj;
-            List<IWarewolfIterator> variablesToIterateOn;
-            ValidateInstance(out privateObj, out variablesToIterateOn);
+            ValidateInstance(out PrivateObject privateObj, out List<IWarewolfIterator> variablesToIterateOn);
             _environment.Assign("[[RecSet().a]]", "SomeValue", 0);
-            WarewolfListIterator listIterator;
-            if (AssignExpression(out listIterator)) return;
+            if (AssignExpression(out WarewolfListIterator listIterator))
+            {
+                return;
+            }
+
             var chars = listIterator.GetChars(It.IsAny<int>(), It.IsAny<long>(), It.IsAny<char[]>(), It.IsAny<int>(), It.IsAny<int>());
             Assert.AreEqual(0, chars);
         }
@@ -238,12 +268,13 @@ namespace Warewolf.Storage.Tests
         [Owner("Sanele Mthembu")]
         public void WarewolfListIterator_GetStrings_ShouldReturnStringValue()
         {
-            PrivateObject privateObj;
-            List<IWarewolfIterator> variablesToIterateOn;
-            ValidateInstance(out privateObj, out variablesToIterateOn);
+            ValidateInstance(out PrivateObject privateObj, out List<IWarewolfIterator> variablesToIterateOn);
             _environment.Assign("[[RecSet().a]]", "SomeValue", 0);
-            WarewolfListIterator listIterator;
-            if (AssignExpression(out listIterator)) return;
+            if (AssignExpression(out WarewolfListIterator listIterator))
+            {
+                return;
+            }
+
             var strig = listIterator.GetString(2);
             Assert.AreEqual("SomeValue", strig);
         }
@@ -253,12 +284,13 @@ namespace Warewolf.Storage.Tests
         [Owner("Sanele Mthembu")]
         public void WarewolfListIterator_GetDateTime_ShouldReturnDateFormat()
         {
-            PrivateObject privateObj;
-            List<IWarewolfIterator> variablesToIterateOn;
-            ValidateInstance(out privateObj, out variablesToIterateOn);
+            ValidateInstance(out PrivateObject privateObj, out List<IWarewolfIterator> variablesToIterateOn);
             _environment.Assign("[[RecSet().a]]", "01/01/2000", 0);
-            WarewolfListIterator listIterator;
-            if (AssignExpression(out listIterator)) return;
+            if (AssignExpression(out WarewolfListIterator listIterator))
+            {
+                return;
+            }
+
             var toDate = Convert.ToDateTime("01/01/2000");
             var dateTime = listIterator.GetDateTime(2);
             Assert.AreEqual(toDate, dateTime);
@@ -268,12 +300,13 @@ namespace Warewolf.Storage.Tests
         [Owner("Sanele Mthembu")]
         public void WarewolfListIterator_GetDataAndGetSchemaTable_ShouldReturnNull()
         {
-            PrivateObject privateObj;
-            List<IWarewolfIterator> variablesToIterateOn;
-            ValidateInstance(out privateObj, out variablesToIterateOn);
+            ValidateInstance(out PrivateObject privateObj, out List<IWarewolfIterator> variablesToIterateOn);
             _environment.Assign("[[RecSet().a]]", "", 0);
-            WarewolfListIterator listIterator;
-            if (AssignExpression(out listIterator)) return;
+            if (AssignExpression(out WarewolfListIterator listIterator))
+            {
+                return;
+            }
+
             var dataReader = listIterator.GetData(2);
             Assert.IsNull(dataReader);
             var schemaTable = listIterator.GetSchemaTable();
@@ -287,7 +320,11 @@ namespace Warewolf.Storage.Tests
             _expr3 = new WarewolfIterator(_environment.Eval("[[RecSet().a]]", 0));
             _warewolfListIterator.AddVariableToIterateOn(_expr3);
             listIterator = _warewolfListIterator as WarewolfListIterator;
-            if (listIterator == null) return true;
+            if (listIterator == null)
+            {
+                return true;
+            }
+
             Assert.AreEqual(0, listIterator.RecordsAffected);            
             return false;
         }
@@ -304,14 +341,16 @@ namespace Warewolf.Storage.Tests
         [Owner("Sanele Mthembu")]
         public void WarewolfListIterator_GetGuid_ShouldReturn0()
         {
-            PrivateObject privateObj;
-            List<IWarewolfIterator> variablesToIterateOn;
-            ValidateInstance(out privateObj, out variablesToIterateOn);
+            ValidateInstance(out PrivateObject privateObj, out List<IWarewolfIterator> variablesToIterateOn);
             _environment.Assign("[[RecSet().a]]", "00d1c07e-7fa7-4127-a85f-3ae9aaa7c6de", 0);
             _expr3 = new WarewolfIterator(_environment.Eval("[[RecSet().a]]", 0));
             _warewolfListIterator.AddVariableToIterateOn(_expr3);
             var listIterator = _warewolfListIterator as WarewolfListIterator;
-            if (listIterator == null) return;
+            if (listIterator == null)
+            {
+                return;
+            }
+
             var guid = listIterator.GetGuid(2);
             Assert.IsNotNull(guid);
         }
@@ -320,12 +359,12 @@ namespace Warewolf.Storage.Tests
         [Owner("Sanele Mthembu")]
         public void WarewolfListIterator_IDataRecordFunctions_Should()
         {
-            PrivateObject privateObj;
-            List<IWarewolfIterator> variablesToIterateOn;
-            ValidateInstance(out privateObj, out variablesToIterateOn);
+            ValidateInstance(out PrivateObject privateObj, out List<IWarewolfIterator> variablesToIterateOn);
             _environment.Assign("[[RecSet().a]]", "1", 0);
-            WarewolfListIterator listIterator;
-            if (AssignExpression(out listIterator)) return;
+            if (AssignExpression(out WarewolfListIterator listIterator))
+            {
+                return;
+            }
 
             var bytes = listIterator.GetBytes(It.IsAny<int>(), It.IsAny<long>(), It.IsAny<byte[]>(), It.IsAny<int>(),
                 It.IsAny<int>());

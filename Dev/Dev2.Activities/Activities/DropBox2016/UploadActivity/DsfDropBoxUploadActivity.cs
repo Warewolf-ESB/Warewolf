@@ -20,12 +20,10 @@ using Warewolf.Core;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage.Interfaces;
 
-
-
 namespace Dev2.Activities.DropBox2016.UploadActivity
 {
     [ToolDescriptorInfo("Dropbox", "Upload", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C8C9EA2E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Storage: Dropbox", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Dropbox_Upload")]
-    public class DsfDropBoxUploadActivity : DsfBaseActivity,IEquatable<DsfDropBoxUploadActivity>
+    public class DsfDropBoxUploadActivity : DsfBaseActivity,IEquatable<DsfDropBoxUploadActivity>, IDisposable
     {
         private IDropboxClientWrapper _clientWrapper;
         private DropboxClient _client;
@@ -36,8 +34,7 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
         protected IDropboxSingleExecutor<IDropboxResult> DropboxSingleExecutor;
 
         public DsfDropBoxUploadActivity()
-        {
-            
+        {            
             DisplayName = "Upload to Dropbox";
             OverWriteMode = true;
         }
@@ -47,16 +44,13 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
         {
             _clientWrapper = clientWrapper;
         }
-
-        
+                
         public OauthSource SelectedSource { get; set; }
-
-        
+                
         [Inputs("Local File Path")]
         [FindMissing]
         public string FromPath { get; set; }
-
-        
+                
         [Inputs("Path in the user's Dropbox")]
         [FindMissing]
         public string ToPath { get; set; }
@@ -85,9 +79,7 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
                 _overWriteMode = !value;
                 _addMode = value;
             }
-        }
-
-        
+        }              
 
         protected virtual DropboxClient GetClient()
         {
@@ -134,14 +126,12 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
             DropboxSingleExecutor = new DropBoxUpload(writeMode, evaluatedValues["ToPath"], evaluatedValues["FromPath"]);
             _clientWrapper = _clientWrapper ?? new DropboxClientWrapper(GetClient());
             var dropboxExecutionResult = DropboxSingleExecutor.ExecuteTask(_clientWrapper);
-            var dropboxSuccessResult = dropboxExecutionResult as DropboxUploadSuccessResult;
-            if (dropboxSuccessResult != null)
+            if (dropboxExecutionResult is DropboxUploadSuccessResult dropboxSuccessResult)
             {
                 FileMetadata = dropboxSuccessResult.GerFileMetadata();
                 return new List<string> { GlobalConstants.DropBoxSuccess };
             }
-            var dropboxFailureResult = dropboxExecutionResult as DropboxFailureResult;
-            if (dropboxFailureResult != null)
+            if (dropboxExecutionResult is DropboxFailureResult dropboxFailureResult)
             {
                 Exception = dropboxFailureResult.GetException();
             }
@@ -153,7 +143,10 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
         public WriteMode GetWriteMode()
         {
             if (OverWriteMode)
+            {
                 return WriteMode.Overwrite.Instance;
+            }
+
             return WriteMode.Add.Instance;
         }
 
@@ -215,6 +208,11 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
                 hashCode = (hashCode * 397) ^ AddMode.GetHashCode();
                 return hashCode;
             }
+        }
+
+        public void Dispose()
+        {
+            _client.Dispose();
         }
     }
 

@@ -10,6 +10,12 @@ namespace Dev2.Studio.Core.Models.DataList
     {
         private IRecordSetItemModel _parent;
 
+        public RecordSetFieldItemModel(string displayname, IRecordSetItemModel parent)
+            : base(displayname, enDev2ColumnArgumentDirection.None, "", false, "", true, true, false, true)
+        {
+            Parent = parent;
+        }
+
         public RecordSetFieldItemModel(string displayname, IRecordSetItemModel parent, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection = enDev2ColumnArgumentDirection.None, string description = "", bool hasError = false, string errorMessage = "", bool isEditable = true, bool isVisible = true, bool isSelected = false, bool isExpanded = true) 
             : base(displayname, dev2ColumnArgumentDirection, description, hasError, errorMessage, isEditable, isVisible, isSelected, isExpanded)
         {

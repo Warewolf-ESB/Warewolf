@@ -40,14 +40,20 @@ namespace Dev2.Studio.Dock
         public static void BindPath(DependencyObject container, object item, string path, DependencyProperty targetProperty)
         {
             if(string.IsNullOrEmpty(path))
+            {
                 return;
+            }
 
             Binding b = new Binding();
 
             if(IsXmlNode(item))
+            {
                 b.XPath = path;
+            }
             else
+            {
                 b.Path = new PropertyPath(path);
+            }
 
             BindingOperations.SetBinding(container, targetProperty, b);
         }

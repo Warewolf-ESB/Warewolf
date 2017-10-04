@@ -97,14 +97,11 @@ namespace Dev2.Runtime.ServiceModel.Data
             UserName = properties["UserName"];
             Password = properties["Password"];
 
-            int port;
-            Port = Int32.TryParse(properties["Port"], out port) ? port : DefaultPort;
+            Port = Int32.TryParse(properties["Port"], out int port) ? port : DefaultPort;
 
-            bool enableSsl;
-            EnableSsl = bool.TryParse(properties["EnableSsl"], out enableSsl) && enableSsl;
+            EnableSsl = bool.TryParse(properties["EnableSsl"], out bool enableSsl) && enableSsl;
 
-            int timeout;
-            Timeout = Int32.TryParse(properties["Timeout"], out timeout) ? timeout : DefaultTimeout;
+            Timeout = Int32.TryParse(properties["Timeout"], out int timeout) ? timeout : DefaultTimeout;
         }
 
         public void Send(MailMessage mailMessage)

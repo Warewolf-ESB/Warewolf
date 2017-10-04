@@ -48,8 +48,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
 
 
-                StringBuilder tmp;
-                values.TryGetValue("Resource", out tmp);
+                values.TryGetValue("Resource", out StringBuilder tmp);
                 var serializer = new Dev2JsonSerializer();
 
                 if (tmp != null)

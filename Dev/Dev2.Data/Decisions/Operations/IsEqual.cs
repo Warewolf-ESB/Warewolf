@@ -18,11 +18,10 @@ namespace Dev2.Data.Decisions.Operations
         {
             if(!string.IsNullOrEmpty(cols[0]))
             {
-                decimal[] tryGetNumber;
-                var isString = DecisionUtils.IsNumericComparison(cols, out tryGetNumber);
+                var isString = DecisionUtils.IsNumericComparison(cols, out decimal[] tryGetNumber);
 
                 //either int compare
-                if(!isString)
+                if (!isString)
                 {
                     return tryGetNumber[0].CompareTo(tryGetNumber[1]) == 0;
                 }

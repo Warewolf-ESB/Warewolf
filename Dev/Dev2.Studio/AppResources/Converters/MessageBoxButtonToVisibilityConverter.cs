@@ -26,14 +26,12 @@ namespace Dev2.Studio.AppResources.Converters
                 return Binding.DoNothing;
             }
 
-            MessageBoxResult buttonType;
-            if (!Enum.TryParse(parameter.ToString(), true, out buttonType))
+            if (!Enum.TryParse(parameter.ToString(), true, out MessageBoxResult buttonType))
             {
                 return Binding.DoNothing;
             }
 
-            MessageBoxButton messageBoxButton;
-            if (!Enum.TryParse(value.ToString(), true, out messageBoxButton))
+            if (!Enum.TryParse(value.ToString(), true, out MessageBoxButton messageBoxButton))
             {
                 return Binding.DoNothing;
             }

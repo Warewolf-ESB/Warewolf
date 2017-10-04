@@ -3042,6 +3042,24 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} is currently busy. Please try again later..
+        /// </summary>
+        public static string ServerBusyError {
+            get {
+                return ResourceManager.GetString("ServerBusyError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Server is currently busy.
+        /// </summary>
+        public static string ServerBusyHeader {
+            get {
+                return ResourceManager.GetString("ServerBusyHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Server connection has dropped during execution of command..
         /// </summary>
         public static string ServerconnectionDropped {

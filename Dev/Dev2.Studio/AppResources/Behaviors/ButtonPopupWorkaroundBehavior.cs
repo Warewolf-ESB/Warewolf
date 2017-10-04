@@ -111,7 +111,7 @@ namespace Dev2.Studio.AppResources.Behaviors
         /// <param name="e">The <see cref="System.Windows.Input.MouseButtonEventArgs" /> instance containing the event data.</param>
         private void AssociatedObject_PreviewMouseUp(object sender, MouseButtonEventArgs e)
         {
-            if(_isButtonDown == false)
+            if(!_isButtonDown)
             {
                 IsInWorkaroundState = true;
             }

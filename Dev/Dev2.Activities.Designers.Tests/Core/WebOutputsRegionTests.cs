@@ -153,7 +153,9 @@ namespace Dev2.Activities.Designers.Tests.Core
             serviceOutputMapping.PropertyChanged += (sender, args) =>
             {
                 if (args.PropertyName == "MappedFrom")
+                {
                     outPutsChanged = true;
+                }
             };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(outputsRegion.Outputs);
@@ -180,7 +182,9 @@ namespace Dev2.Activities.Designers.Tests.Core
             serviceOutputMapping.PropertyChanged += (sender, args) =>
             {
                 if (args.PropertyName == "MappedFrom")
+                {
                     outPutsChanged = true;
+                }
             };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(outputsRegion.Outputs);

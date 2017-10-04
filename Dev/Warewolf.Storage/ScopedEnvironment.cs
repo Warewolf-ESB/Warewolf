@@ -152,8 +152,7 @@ namespace Warewolf.Storage
                 var res = _inner.Eval(s, 0);
                 if (res.IsWarewolfAtomResult)
                 {
-                    var atom = res as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
-                    if (atom != null)
+                    if (res is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult atom)
                     {
                         var resClause = clause.Invoke(atom.Item);
                         _inner.AssignJson(new AssignValue(s, resClause.ToString()), 0);

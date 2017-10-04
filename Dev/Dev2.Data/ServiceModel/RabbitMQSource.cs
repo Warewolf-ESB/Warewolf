@@ -68,8 +68,7 @@ namespace Dev2.Data.ServiceModel
             UserName = properties["UserName"];
             Password = properties["Password"];
 
-            int port;
-            Port = Int32.TryParse(properties["Port"], out port) ? port : DefaultPort;
+            Port = Int32.TryParse(properties["Port"], out int port) ? port : DefaultPort;
             VirtualHost = !string.IsNullOrWhiteSpace(properties["VirtualHost"]) ? properties["VirtualHost"] : DefaultVirtualHost;
         }
 

@@ -171,9 +171,7 @@ namespace ActivityUnitTests.ActivityTest
             var result = ExecuteProcess();
             //------------Assert Results-------------------------
             mock.Verify(sender => sender.ExecuteRequest(activity.Method, Url, It.IsAny<List<Tuple<string, string>>>(), It.IsAny<int>()), Times.Never());
-            string actual;
-            string error;
-            GetScalarValueFromEnvironment(result.Environment, "Res", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "Res", out string actual, out string error);
             Assert.AreNotEqual(ExpectedResult, actual);
             Assert.IsNotNull(error);
         }
@@ -201,9 +199,7 @@ namespace ActivityUnitTests.ActivityTest
             var result = ExecuteProcess();
             //------------Assert Results-------------------------
             mock.Verify(sender => sender.ExecuteRequest(activity.Method, Url, It.IsAny<List<Tuple<string, string>>>(), It.IsAny<int>()), Times.Once());
-            string actual;
-            string error;
-            GetScalarValueFromEnvironment(result.Environment, "Res", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "Res", out string actual, out string error);
             Assert.AreEqual(ExpectedResult, actual);
         }
 

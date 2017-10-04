@@ -152,8 +152,7 @@ namespace Dev2.Activities.Designers2.Core
             fileActivityRuleSet.Add(isValidExpressionRule);
             errors.AddRange(fileActivityRuleSet.ValidateRules(label, onError));
 
-            string pathValue;
-            path.TryParseVariables(out pathValue, onError, variableValue: ValidUriSchemes[0] + "://temp");
+            path.TryParseVariables(out string pathValue, onError, variableValue: ValidUriSchemes[0] + "://temp");
 
             if (errors.Count == 0)
             {

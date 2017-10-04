@@ -37,9 +37,8 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
 
                 Dev2Logger.Info("Test WebserviceSource", GlobalConstants.WarewolfInfo);
-                StringBuilder resourceDefinition;
 
-                values.TryGetValue("WebserviceSource", out resourceDefinition);
+                values.TryGetValue("WebserviceSource", out StringBuilder resourceDefinition);
 
                 var src = serializer.Deserialize<WebServiceSourceDefinition>(resourceDefinition);
                 var con = new WebSources();

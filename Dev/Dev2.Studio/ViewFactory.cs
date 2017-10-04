@@ -36,8 +36,7 @@ namespace Dev2
 
         public IView GetViewGivenServerResourceType(string resourceModel)
         {
-            Func<IView> funcView;
-            if (_viewMap.TryGetValue(resourceModel, out funcView))
+            if (_viewMap.TryGetValue(resourceModel, out Func<IView> funcView))
             {
                 return funcView.Invoke();
             }

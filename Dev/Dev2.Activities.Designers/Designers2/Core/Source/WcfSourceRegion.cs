@@ -197,8 +197,7 @@ namespace Dev2.Activities.Designers2.Core.Source
 
         public void RestoreRegion(IToolRegion toRestore)
         {
-            var region = toRestore as WcfSourceRegion;
-            if (region != null)
+            if (toRestore is WcfSourceRegion region)
             {
                 SelectedSource = region.SelectedSource;
             }

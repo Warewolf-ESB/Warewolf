@@ -39,7 +39,11 @@ namespace Dev2.Activities
 
         public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
         {
-            if (env == null) return _debugInputs;
+            if (env == null)
+            {
+                return _debugInputs;
+            }
+
             base.GetDebugInputs(env, update);
 
             IEnumerable<NameValue> head = null;
@@ -51,7 +55,9 @@ namespace Dev2.Activities
             var url = ResourceCatalog.GetResource<WebSource>(Guid.Empty, SourceId);
             string headerString=string.Empty;
             if (head != null)
+            {
                 headerString = string.Join(" ", head.Select(a => a.Name + " : " + a.Value));
+            }
 
             DebugItem debugItem = new DebugItem();
             AddDebugItem(new DebugItemStaticDataParams("", "URL"), debugItem);
@@ -132,7 +138,9 @@ namespace Dev2.Activities
                 foreach (var nameValue in head)
                 {
                     if (!String.IsNullOrEmpty(nameValue.Name) && !String.IsNullOrEmpty(nameValue.Value))
+                    {
                         webclient.Headers.Add(nameValue.Name, nameValue.Value);
+                    }
                 }
             }
 

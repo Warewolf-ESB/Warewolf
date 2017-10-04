@@ -219,7 +219,10 @@ namespace Dev2.DynamicServices.Objects
                         result = new PooledServiceActivity(_generation, activity);
                     }
                 }
-                else result = _workflowPool.Dequeue();
+                else
+                {
+                    result = _workflowPool.Dequeue();
+                }
             }
 
             return result;

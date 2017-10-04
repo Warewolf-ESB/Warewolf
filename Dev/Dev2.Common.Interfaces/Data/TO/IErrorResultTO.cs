@@ -18,8 +18,9 @@ namespace Dev2.Common.Interfaces.Data.TO
         ///     Adds the error.
         /// </summary>
         /// <param name="msg">The MSG.</param>
-        /// <param name="checkForDuplicates"></param>
-        void AddError(string msg, bool checkForDuplicates = false);
+        /// <param name="checkForDuplicates" default="false"></param>
+        void AddError(string msg, bool checkForDuplicates);
+        void AddError(string msg);
 
         /// <summary>
         ///     Remove the error from the list

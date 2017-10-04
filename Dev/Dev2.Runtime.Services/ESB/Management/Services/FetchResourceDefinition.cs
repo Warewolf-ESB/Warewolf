@@ -41,12 +41,10 @@ namespace Dev2.Runtime.ESB.Management.Services
     {
         public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
         {
-            StringBuilder tmp;
-            requestArgs.TryGetValue("ResourceID", out tmp);
+            requestArgs.TryGetValue("ResourceID", out StringBuilder tmp);
             if (tmp != null)
             {
-                Guid resourceId;
-                if (Guid.TryParse(tmp.ToString(), out resourceId))
+                if (Guid.TryParse(tmp.ToString(), out Guid resourceId))
                 {
                     return resourceId;
                 }
@@ -66,8 +64,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 string serviceId = null;
                 bool prepairForDeployment = false;
-                StringBuilder tmp;
-                values.TryGetValue(@"ResourceID", out tmp);
+                values.TryGetValue(@"ResourceID", out StringBuilder tmp);
 
                 if (tmp != null)
                 {
@@ -81,8 +78,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     prepairForDeployment = bool.Parse(tmp.ToString());
                 }
 
-                Guid resourceId;
-                Guid.TryParse(serviceId, out resourceId);
+                Guid.TryParse(serviceId, out Guid resourceId);
 
                 Dev2Logger.Info($"Fetch Resource definition. ResourceId: {resourceId}", GlobalConstants.WarewolfInfo);
                 ResourceDefinationCleaner resourceDefinationCleaner = new ResourceDefinationCleaner();

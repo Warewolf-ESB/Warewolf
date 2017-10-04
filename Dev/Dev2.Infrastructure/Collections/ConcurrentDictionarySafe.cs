@@ -23,8 +23,7 @@ namespace Dev2.Collections
         {
             get
             {
-                TValue result;
-                TryGetValue(key, out result);
+                TryGetValue(key, out TValue result);
                 return result;
             }
             set { base[key] = value; }

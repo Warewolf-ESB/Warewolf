@@ -31,7 +31,11 @@ namespace Gma.DataStructures.StringSearch
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
             return obj is SplitResult && Equals((SplitResult) obj);
         }
 

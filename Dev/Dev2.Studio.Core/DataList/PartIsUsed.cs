@@ -47,7 +47,11 @@ namespace Dev2.Studio.Core.DataList
 
         private static void ProcessFoundRecordSets(IDataListVerifyPart part, IRecordSetItemModel recsetToRemove, bool isUsed)
         {
-            if (recsetToRemove == null) return;
+            if (recsetToRemove == null)
+            {
+                return;
+            }
+
             if (string.IsNullOrEmpty(part.Field))
             {
                 recsetToRemove.IsUsed = isUsed;

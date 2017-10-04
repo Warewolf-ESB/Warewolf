@@ -28,8 +28,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
 
         public static IDev2MethodInfo InvokePlugin(Isolated<PluginRuntimeHandler> appDomain, PluginExecutionDto dto,IDev2MethodInfo dev2MethodInfo,out string objString)
         {
-            string objectString;
-            var invokePlugin = appDomain.Value.Run(dev2MethodInfo,dto,out objectString);
+            var invokePlugin = appDomain.Value.Run(dev2MethodInfo, dto, out string objectString);
             objString = objectString;
             return invokePlugin;
         }

@@ -21,9 +21,8 @@ namespace Dev2.Data.Decisions.Operations
 
         public bool Invoke(string[] cols)
         {
-            DateTime date;
 
-            return DateTime.TryParse(cols[0], out date);
+            return DateTime.TryParse(cols[0], out DateTime date);
         }
     }
 }

@@ -30,7 +30,11 @@ namespace Dev2.Activities.Specs.Toolbox.Resources.Web
 
         public PostWebConnectorToolSteps(ScenarioContext scenarioContext)
         {
-            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            if (scenarioContext == null)
+            {
+                throw new ArgumentNullException("scenarioContext");
+            }
+
             this.scenarioContext = scenarioContext;
         }
 
@@ -395,7 +399,9 @@ namespace Dev2.Activities.Specs.Toolbox.Resources.Web
             if (table.Rows.Count == 0)
             {
                 if (vm.OutputsRegion.Outputs != null)
+                {
                     Assert.AreEqual<int>(vm.OutputsRegion.Outputs.Count, 0);
+                }
             }
             else
             {

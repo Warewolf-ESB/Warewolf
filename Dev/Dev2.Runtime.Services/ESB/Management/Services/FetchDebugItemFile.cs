@@ -53,9 +53,8 @@ namespace Dev2.Runtime.ESB.Management.Services
                 throw new InvalidDataContractException(ErrorResource.valuesAreMissing);
             }
 
-            StringBuilder tmp;
-            values.TryGetValue("DebugItemFilePath", out tmp);
-            if(tmp == null || tmp.Length == 0)
+                values.TryGetValue("DebugItemFilePath", out StringBuilder tmp);
+                if (tmp == null || tmp.Length == 0)
             {
                 Dev2Logger.Debug("DebugItemFilePath is missing", GlobalConstants.WarewolfDebug);
                 throw new InvalidDataContractException(string.Format(ErrorResource.PropertyMusHaveAValue, "DebugItemFilePath "));

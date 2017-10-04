@@ -41,7 +41,11 @@ namespace Dev2.CustomControls.Converters
 
         public override object ProvideValue(IServiceProvider serviceProvider)
         {
-            if (_converter == null) _converter = new RowToIndexConverter();
+            if (_converter == null)
+            {
+                _converter = new RowToIndexConverter();
+            }
+
             return _converter;
         }
     }

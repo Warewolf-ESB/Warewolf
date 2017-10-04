@@ -23,9 +23,15 @@ namespace Dev2.Activities
         public static Boolean IsWaitingForUserInput(Process process)
         {
             if(process == null)
+            {
                 throw new Exception(ErrorResource.NoProcessFound);
+            }
             // for thread safety
-            if(process.HasExited) return false;
+            if (process.HasExited)
+            {
+                return false;
+            }
+
             ModalChecker checker = new ModalChecker(process);
             return checker.WaitingForUserInput;
         }
@@ -104,11 +110,13 @@ namespace Dev2.Activities
         private int WindowEnum(IntPtr hWnd, int lParam)
         
         {
-            IntPtr processId;
 
-            GetWindowThreadProcessId(hWnd, out processId);
-            if(processId.ToInt32() != _process.Id)
+            GetWindowThreadProcessId(hWnd, out IntPtr processId);
+            if (processId.ToInt32() != _process.Id)
+            {
                 return 1;
+            }
+
             uint style = GetWindowLong(hWnd, GWL_EXSTYLE);
             if((style & WS_EX_DLGMODALFRAME) != 0)
             {

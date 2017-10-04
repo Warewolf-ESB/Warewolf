@@ -132,22 +132,30 @@ namespace Dev2.ViewModels.Workflow
            var replaceAtSign = removeBrace.Replace("@", "");
            var intellisenseResult = dataLanguageParser.ValidateName(string.IsNullOrEmpty(replaceAtSign) ? dataPartFieldData : replaceAtSign, "");
            if (intellisenseResult == null)
+            {
                 isValid = true;
+            }
             else
             {
                 var indexOfAtSign = dataPartFieldData.IndexOf("@", StringComparison.Ordinal);
                 if (dataPartFieldData.Contains("@") && (indexOfAtSign == 0) && (indexOfAtSign + 1 >= dataPartFieldData.Length))
                 {
                     if (!intellisenseResult.Message.Contains("invalid char"))
+                    {
                         if (char.IsLetter(dataPartFieldData[1]))
+                        {
                             isValid = true;
+                        }
+                    }
                 }
 
                 if (dataPartFieldData.Contains('.'))
                 {
                     var fields = dataPartFieldData.Replace("@", "").Split('.');
                     if(fields.All(p => !string.IsNullOrEmpty(p) && char.IsLetter(p[0])))
+                    {
                         isValid = true;
+                    }
                 }
             }
             return isValid;

@@ -65,9 +65,8 @@ namespace Warewolf.Studio.Views
         }
         private void ToggleButton_OnChecked(object sender, RoutedEventArgs e)
         {
-            var control = sender as ToggleButton;
 
-            if (control != null)
+            if (sender is ToggleButton control)
             {
                 RefreshCommands(e);
             }
@@ -82,8 +81,7 @@ namespace Warewolf.Studio.Views
 
         private void SelectedTestCheckBox_OnPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            var cb = sender as CheckBox;
-            if (cb != null)
+            if (sender is CheckBox cb)
             {
                 var item = cb.DataContext;
                 TestsListbox.SelectedItem = item;
@@ -92,8 +90,7 @@ namespace Warewolf.Studio.Views
 
         private void SelectedTestRunTestButton_OnPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            var btn = sender as Button;
-            if (btn != null)
+            if (sender is Button btn)
             {
                 var item = btn.DataContext;
                 TestsListbox.SelectedItem = item;
@@ -118,11 +115,13 @@ namespace Warewolf.Studio.Views
         {
             var textBox = sender as IntellisenseTextBox;
             if (textBox != null)
-                RefreshCommands(e);
-            if(textBox == null)
             {
-                var box = sender as TextBox;
-                if (box != null)
+                RefreshCommands(e);
+            }
+
+            if (textBox == null)
+            {
+                if (sender is TextBox box)
                 {
                     RefreshCommands(e);
                 }

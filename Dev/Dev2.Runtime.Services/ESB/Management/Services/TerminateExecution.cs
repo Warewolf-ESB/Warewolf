@@ -31,9 +31,8 @@ namespace Dev2.Runtime.ESB.Management
         {
             string resourceIdString = null;
 
-            StringBuilder tmp;
-            values.TryGetValue("ResourceID", out tmp);
-            
+            values.TryGetValue("ResourceID", out StringBuilder tmp);
+
             if (tmp != null)
             {
                 resourceIdString = tmp.ToString();
@@ -46,9 +45,8 @@ namespace Dev2.Runtime.ESB.Management
 
             var res = new ExecuteMessage { HasError = false };
 
-            Guid resourceId;
-            var hasResourceId = Guid.TryParse(resourceIdString, out resourceId);
-            if(!hasResourceId)
+            var hasResourceId = Guid.TryParse(resourceIdString, out Guid resourceId);
+            if (!hasResourceId)
             {
                 res.SetMessage(Resources.CompilerError_TerminationFailed);
                 res.HasError = true;

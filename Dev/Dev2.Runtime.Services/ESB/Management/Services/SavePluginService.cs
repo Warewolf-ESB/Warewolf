@@ -53,10 +53,9 @@ namespace Dev2.Runtime.ESB.Management.Services
             try
             {
                 Dev2Logger.Info("Save Plugin Service", GlobalConstants.WarewolfInfo);
-                StringBuilder resourceDefinition;
 
 
-                values.TryGetValue("PluginService", out resourceDefinition);
+                values.TryGetValue("PluginService", out StringBuilder resourceDefinition);
 
                 IPluginService serviceDef = serializer.Deserialize<IPluginService>(resourceDefinition);
                 

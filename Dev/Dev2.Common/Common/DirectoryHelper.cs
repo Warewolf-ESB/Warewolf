@@ -89,9 +89,8 @@ namespace Dev2.Common.Common
         {
             CheckIfDeleteIsValid(fsi);
             fsi.Attributes = FileAttributes.Normal;
-            var di = fsi as DirectoryInfo;
 
-            if (di != null)
+            if (fsi is DirectoryInfo di)
             {
                 foreach (FileSystemInfo dirInfo in di.GetFileSystemInfos())
                 {
