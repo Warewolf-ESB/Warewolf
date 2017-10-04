@@ -12,7 +12,7 @@ namespace Dev2.Common.Interfaces
         ICollection<IServiceInput> Inputs { get; set; }
         string TestResults { get; set; }
         bool OkSelected { get; set; }
-        IGenerateOutputArea OutputArea { get; set; }
+        IGenerateOutputArea OutputArea { get; }
         IOutputDescription Description { get; set; }
         IGenerateInputArea InputArea { get; }
         bool PasteResponseVisible { get; set; }
