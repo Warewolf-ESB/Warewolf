@@ -81,7 +81,10 @@ namespace Dev2.Data.Parsers
                         _expressionCache.TryAdd(expression, result);
                     }
                     
-                    catch { }
+                    catch (Exception e)
+                    {
+                        Dev2Logger.Warn(e.Message, "Warewolf Warn");
+                    }
                 }
 
                 return result;
@@ -125,7 +128,10 @@ namespace Dev2.Data.Parsers
                         _payloadCache.TryAdd(key, result);
                     }
                     
-                    catch { }
+                    catch (Exception e)
+                    {
+                        Dev2Logger.Warn(e.Message, "Warewolf Warn");
+                    }
                 }
 
                 return result;

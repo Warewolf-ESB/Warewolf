@@ -313,7 +313,6 @@ namespace Dev2.Services.Security
                     ad.Children.SchemaFilter.Add("group");
                     foreach (DirectoryEntry dChildEntry in ad.Children)
                     {
-
                         if (dChildEntry.Name == WindowsGroupPermission.BuiltInAdministratorsText || dChildEntry.Name == windowsBuiltInRole || dChildEntry.Name=="Administrators" || dChildEntry.Name=="BUILTIN\\Administrators")
                         {
                             var members = dChildEntry.Invoke("Members");
