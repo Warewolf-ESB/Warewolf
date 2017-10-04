@@ -384,9 +384,6 @@ namespace Dev2.Services.Sql
                                 sqlParameter.Value = "@a";
                                 command.Parameters.Add(sqlParameter);
                             }
-                            if (parameterName.ToLower() == "@return_value")
-                            {
-                            }
                         }
                     }
                 }

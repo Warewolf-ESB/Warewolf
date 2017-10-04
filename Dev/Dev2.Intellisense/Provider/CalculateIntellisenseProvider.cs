@@ -52,9 +52,6 @@ namespace Dev2.Studio.InterfaceImplementors
             {
                 return false;
             }
-            set
-            {
-            }
         }
 
         public bool HandlesResultInsertion
@@ -62,9 +59,6 @@ namespace Dev2.Studio.InterfaceImplementors
             get
             {
                 return false;
-            }
-            set
-            {
             }
         }
         #endregion

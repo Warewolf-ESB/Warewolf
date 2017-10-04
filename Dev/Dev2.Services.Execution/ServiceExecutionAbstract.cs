@@ -412,10 +412,6 @@ namespace Dev2.Services.Execution
                 catch (Exception e)
                 {
                     Dev2Logger.Error(e.Message, e, GlobalConstants.WarewolfError);
-                    // if use passed in empty input they only wanted the shape ;)
-                    if (input.Length > 0)
-                    {
-                    }
                 }
             }
         }

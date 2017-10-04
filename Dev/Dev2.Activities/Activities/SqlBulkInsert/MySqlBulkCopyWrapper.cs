@@ -10,18 +10,26 @@ namespace Dev2.Activities.SqlBulkInsert
     {
         #region Implementation of IDisposable
 
+        private bool disposedValue; // To detect redundant calls
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                disposedValue = true;
+            }
+        }
+        public void Dispose()
+        {
+            Dispose(true);
+        }
+
+        #endregion
+
         private readonly MySqlBulkLoader _sbc;
         public MySqlBulkCopyWrapper(MySqlBulkLoader copyTool)
         {
-            _sbc = copyTool;
-           
-        }
-
-        public void Dispose()
-        {
-            if(_sbc != null)
-            {
-            }
+            _sbc = copyTool;           
         }
 
         public bool WriteToServer(DataTable dt)
@@ -68,7 +76,5 @@ namespace Dev2.Activities.SqlBulkInsert
         {
             return value;
         }
-
-        #endregion
     }
 }

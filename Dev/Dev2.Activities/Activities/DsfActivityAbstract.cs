@@ -96,20 +96,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             return this;
         }
-
-        /// <summary>
-        /// Resumed the specified context.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <param name="bookmark">The bookmark.</param>
-        /// <param name="value">The value.</param>
-        /// <exception cref="System.Exception">
-        /// Parent and Child DataList IDs are the same, aborting resumption!
-        /// or
-        /// Fatal Error : Cannot merge resumed data
-        /// or
-        /// Fatal Error : Cannot locate Root DataList for resumption!
-        /// </exception>
+        
         public virtual void Resumed(NativeActivityContext context, Bookmark bookmark, object value)
         {
 
@@ -125,23 +112,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     throw new Exception(ErrorResource.SameParentAndChildDataListId);
                 }
-
-                try
+                if (errorResultTO.HasErrors())
                 {
-
-
-                }
-                finally
-                {
-                    // At resumption this is the root dl entry ;)
-
-                    // Handle Errors
-                    if (errorResultTO.HasErrors())
-                    {
-                        DisplayAndWriteError("Resumption", errorResultTO);
-                        var errorString = errorResultTO.MakeDataListReady();
-                        myDO.Environment.AddError(errorString);
-                    }
+                    DisplayAndWriteError("Resumption", errorResultTO);
+                    var errorString = errorResultTO.MakeDataListReady();
+                    myDO.Environment.AddError(errorString);
                 }
             }
             else

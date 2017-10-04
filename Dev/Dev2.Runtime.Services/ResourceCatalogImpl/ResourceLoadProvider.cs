@@ -40,19 +40,16 @@ namespace Dev2.Runtime.ResourceCatalogImpl
         public ResourceLoadProvider(ConcurrentDictionary<Guid, List<IResource>> workspaceResources, IEnumerable<DynamicService> managementServices = null)
             : this(new FileWrapper())
         {
-            // MUST load management services BEFORE server workspace!!
             try
             {
                 _perfCounter = CustomContainer.Get<IWarewolfPerformanceCounterLocater>().GetCounter("Count of requests for workflows which don't exist");
-
             }
-            
-            catch (Exception)
+
+            catch (Exception e)
             {
-
-
+                Dev2Logger.Warn(e.Message, "Warewolf Warn");
             }
-            if (managementServices != null)
+                if (managementServices != null)
             {
                 foreach (var service in managementServices)
                 {
