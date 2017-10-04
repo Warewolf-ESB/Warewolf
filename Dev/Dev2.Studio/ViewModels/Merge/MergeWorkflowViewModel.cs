@@ -196,7 +196,17 @@ namespace Dev2.ViewModels.Merge
             {
                 currIndex = Conflicts.IndexOf(completeConflict) + 1;
             }
-            var nextCurrConflict = Conflicts[currIndex];
+            ICompleteConflict nextCurrConflict;
+            try
+            {
+                nextCurrConflict = Conflicts[currIndex];
+            }
+            catch (IndexOutOfRangeException)
+            {
+
+                nextCurrConflict = Conflicts.LastOrDefault();
+            }
+
             if (nextCurrConflict == null)
             {
                 return;
@@ -267,7 +277,7 @@ namespace Dev2.ViewModels.Merge
                         completeConflict.UniqueId = currentChildChild.UniqueId;
                         completeConflict.CurrentViewModel = childCurrent;
                         completeConflict.DiffViewModel = childDifferent;
-                       
+
                         if (parent.Children.Any(conflict => conflict.UniqueId.Equals(currentChild.UniqueId)))
                         {
                             continue;
