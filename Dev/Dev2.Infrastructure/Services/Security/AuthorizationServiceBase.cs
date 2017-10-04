@@ -311,9 +311,11 @@ namespace Dev2.Services.Security
                     // THIS TRY-CATCH IS HERE TO AVOID THE EXPLORER NOT LOADING ANYTHING WHEN THE DOMAIN CANNOT BE CONTACTED!
                     isInRole = principal.IsInRole(windowsGroup);
                 }
+            }            
+            catch (Exception e)
+            {
+                Dev2Logger.Warn(e.Message, "Warewolf Warn");
             }
-            
-            catch { }
             
             
             return isInRole || p.IsBuiltInGuestsForExecution;
