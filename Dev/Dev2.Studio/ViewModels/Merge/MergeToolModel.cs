@@ -62,7 +62,6 @@ namespace Dev2.ViewModels.Merge
                 SomethingModelToolChanged?.Invoke(this, this);
                 if (Parent == null)
                 {
-                    Children?.Flatten(a => a.Children).Apply(a => a.IsMergeEnabled = true);
                     Children?.Flatten(a => a.Children).Apply(a => a.IsMergeChecked = true);
                 }
             }

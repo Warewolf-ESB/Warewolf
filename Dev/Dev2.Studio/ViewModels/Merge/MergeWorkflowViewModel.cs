@@ -8,8 +8,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Dev2.Common;
 using System.Activities.Presentation.Model;
-using Caliburn.Micro;
 using System.Activities.Statements;
+using Caliburn.Micro;
 
 namespace Dev2.ViewModels.Merge
 {
@@ -120,7 +120,6 @@ namespace Dev2.ViewModels.Merge
 
         private void AddActivity(IMergeToolModel model)
         {
-
             WorkflowDesignerViewModel.RemoveItem(model);
             WorkflowDesignerViewModel.AddItem(_previousParent, model);
             _previousParent = model;
@@ -133,14 +132,15 @@ namespace Dev2.ViewModels.Merge
         {
             try
             {
-                if (args.IsWorkflowNameChecked)
-                {
-                    HasMergeStarted = true;
-                    IsVariablesEnabled = HasVariablesConflict;
-                }
-                HasMergeStarted = args.IsVariablesChecked;
-                IsMergeExpanderEnabled = args.IsVariablesChecked;
-                args.Model.IsMergeEnabled = args.IsVariablesChecked;
+                var argsIsVariablesChecked = args.IsVariablesChecked;
+
+                HasMergeStarted = args.IsWorkflowNameChecked || argsIsVariablesChecked;
+                IsVariablesEnabled = HasVariablesConflict;
+
+                IsMergeExpanderEnabled = argsIsVariablesChecked;
+                Conflicts[0].DiffViewModel.IsMergeEnabled = argsIsVariablesChecked;
+                Conflicts[0].CurrentViewModel.IsMergeEnabled = argsIsVariablesChecked;
+
                 OnPropertyChanged(() => IsDirty);
             }
             catch (Exception)
@@ -153,24 +153,64 @@ namespace Dev2.ViewModels.Merge
         {
             try
             {
-                if (!(args is MergeToolModel mergeToolModel) || !mergeToolModel.IsMergeChecked)
+                if (!args.IsMergeChecked)
+                {
+                    return;
+                }
+                if (args.Parent != null && args.Parent.IsMergeChecked)
                 {
                     return;
                 }
 
-                if (mergeToolModel.Parent != null && mergeToolModel.Parent.IsMergeChecked)
-                {
-                    return;
-                }
-
+                UpdateNextEnabledState(args);
                 HasMergeStarted = true;
-                AddActivity(mergeToolModel);
+                AddActivity(args);
                 OnPropertyChanged(() => IsDirty);
             }
             catch (Exception ex)
             {
                 // ignored
                 Dev2Logger.Error(ex, ex.Message);
+            }
+        }
+
+        private void UpdateNextEnabledState(IMergeToolModel args)
+        {
+            if (Conflicts == null)
+            {
+                return;
+            }
+
+            var argsUniqueId = args.UniqueId;
+            var completeConflict = Conflicts.FirstOrDefault(conflict => conflict.CurrentViewModel.UniqueId == argsUniqueId || conflict.DiffViewModel.UniqueId == argsUniqueId);
+            if (completeConflict == null)
+            {
+                return;
+            }
+
+            completeConflict.Children?.Flatten(a => a.Children).Apply(a => a.CurrentViewModel.IsMergeEnabled = true);
+            completeConflict.Children?.Flatten(a => a.Children).Apply(a => a.DiffViewModel.IsMergeEnabled = true);
+
+            var currIndex = 0;
+            if (Conflicts.Count > 1)
+            {
+                currIndex = Conflicts.IndexOf(completeConflict) + 1;
+            }
+            var nextCurrConflict = Conflicts[currIndex];
+            if (nextCurrConflict == null)
+            {
+                return;
+            }
+
+            if (nextCurrConflict.CurrentViewModel != null)
+            {
+                nextCurrConflict.CurrentViewModel.IsMergeEnabled = true;
+                nextCurrConflict.CurrentViewModel.Children?.Flatten(a => a.Children).Apply(a => a.IsMergeEnabled = true);
+            }
+            if (nextCurrConflict.DiffViewModel != null)
+            {
+                nextCurrConflict.DiffViewModel.IsMergeEnabled = true;
+                nextCurrConflict.DiffViewModel.Children?.Flatten(a => a.Children).Apply(a => a.IsMergeEnabled = true);
             }
         }
 

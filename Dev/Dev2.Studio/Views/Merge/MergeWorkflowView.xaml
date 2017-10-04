@@ -7,7 +7,6 @@
              xmlns:customcontrols1="clr-namespace:Warewolf.Studio.CustomControls;assembly=Warewolf.Studio.CustomControls"
              xmlns:interfaces="clr-namespace:Dev2.Common.Interfaces;assembly=Dev2.Common.Interfaces"
              xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
-             xmlns:workflow="clr-namespace:Dev2.Studio.Views.Workflow"
              xmlns:datalist="clr-namespace:Dev2.Studio.Views.DataList"
              xmlns:merge="clr-namespace:Dev2.ViewModels.Merge"
              xmlns:ig="http://schemas.infragistics.com/xaml"
