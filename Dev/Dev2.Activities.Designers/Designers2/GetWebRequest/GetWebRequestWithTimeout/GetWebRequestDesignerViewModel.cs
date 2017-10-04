@@ -281,7 +281,7 @@ namespace Dev2.Activities.Designers2.GetWebRequest.GetWebRequestWithTimeout
             }
         }
 
-        public Func<string, string, List<Tuple<string, string>>, string> WebInvoke = (method, url, headers) =>
+        readonly Func<string, string, List<Tuple<string, string>>, string> WebInvoke = (method, url, headers) =>
             {
                 var webInvoker = new WebRequestInvoker();
                 return webInvoker.ExecuteRequest(method, url, headers);

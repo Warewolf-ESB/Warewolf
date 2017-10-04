@@ -27,7 +27,7 @@ namespace Dev2.Studio.ViewModels.Administration
 
         #region Members
 
-        public ClosedOperationEventHandler OnOkClick;
+        readonly ClosedOperationEventHandler OnOkClick;
         private ICommand _okClicked;
         private ICommand _hyperLink;
         private ImageSource _imageSource;

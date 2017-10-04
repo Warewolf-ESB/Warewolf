@@ -22,15 +22,13 @@ using Warewolf.Resource.Errors;
 
 namespace Dev2.Services.Security
 {
-
-
     public abstract class AuthorizationServiceBase : DisposableObject, IAuthorizationService
     {
 
         protected readonly ISecurityService _securityService;
         readonly bool _isLocalConnection;
 
-        public Func<bool> AreAdministratorsMembersOfWarewolfAdministrators;
+        readonly Func<bool> AreAdministratorsMembersOfWarewolfAdministrators;
 
         protected AuthorizationServiceBase(ISecurityService securityService, bool isLocalConnection)
         {

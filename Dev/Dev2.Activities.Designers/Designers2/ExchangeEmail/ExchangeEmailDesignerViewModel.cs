@@ -329,7 +329,7 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
             Errors = result.Count == 0 ? null : result;
         }
 
-        public Func<string> GetDatalistString = () => DataListSingleton.ActiveDataList.Resource.DataList;
+        readonly Func<string> GetDatalistString = () => DataListSingleton.ActiveDataList.Resource.DataList;
 
         IEnumerable<IActionableErrorInfo> ValidateThis()
         {
