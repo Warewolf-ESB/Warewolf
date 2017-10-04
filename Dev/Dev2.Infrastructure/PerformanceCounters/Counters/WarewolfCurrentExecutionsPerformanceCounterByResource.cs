@@ -6,7 +6,7 @@ using Dev2.Common.Interfaces.Monitoring;
 
 namespace Dev2.PerformanceCounters.Counters
 {
-    public class WarewolfCurrentExecutionsPerformanceCounterByResource : IResourcePerformanceCounter
+    public class WarewolfCurrentExecutionsPerformanceCounterByResource : IResourcePerformanceCounter, IDisposable
     {
 
         private PerformanceCounter _counter;
@@ -51,8 +51,9 @@ namespace Dev2.PerformanceCounters.Counters
         {
 
                 if (IsActive)
-                    _counter.Increment();
-
+            {
+                _counter.Increment();
+            }
         }
 
         public void IncrementBy(long ticks)
@@ -80,12 +81,18 @@ namespace Dev2.PerformanceCounters.Counters
         {
 
             if (IsActive)
-               if (_counter.RawValue > 0)
+            {
+                if (_counter.RawValue > 0)
                     {
                           
                         _counter.Decrement();
                     }
+            }
+        }
 
+        public void Dispose()
+        {
+            _counter.Dispose();
         }
 
         public string Category => GlobalConstants.WarewolfServices;

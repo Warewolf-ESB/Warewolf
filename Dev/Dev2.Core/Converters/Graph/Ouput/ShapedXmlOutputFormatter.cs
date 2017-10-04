@@ -212,15 +212,14 @@ namespace Unlimited.Framework.Converters.Graph.Ouput
                 if (!string.IsNullOrWhiteSpace(path.OutputExpression))
                 {
                     string key = GetOutputDescriptionKey(path.OutputExpression);
-                    IList<IPath> dataSourceShapePaths;
 
-                    if (groupedPaths.TryGetValue(key, out dataSourceShapePaths))
+                    if (groupedPaths.TryGetValue(key, out IList<IPath> dataSourceShapePaths))
                     {
                         dataSourceShapePaths.Add(path);
                     }
                     else
                     {
-                        dataSourceShapePaths = new List<IPath> {path};
+                        dataSourceShapePaths = new List<IPath> { path };
                         groupedPaths.Add(key, dataSourceShapePaths);
                     }
                 }

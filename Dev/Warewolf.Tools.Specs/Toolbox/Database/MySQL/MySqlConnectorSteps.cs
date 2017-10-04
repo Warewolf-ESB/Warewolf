@@ -165,7 +165,9 @@ namespace Warewolf.ToolsSpecs.Toolbox.Resources.MySQL
                 serviceModel.Setup(model => model.GetActions(It.IsAny<IDbSource>())).Returns(new List<IDbAction> { _someAction });
             }
             if (GetViewModel().ActionRegion.SelectedAction == null)
+            {
                 GetViewModel().ActionRegion.SelectedAction = _someAction;
+            }
         }
 
         [Then(@"Input is Not enabled for mysql connector tool")]
@@ -207,7 +209,9 @@ namespace Warewolf.ToolsSpecs.Toolbox.Resources.MySQL
             var viewModel = GetViewModel();
             var onlyAction = viewModel.ActionRegion.SelectedAction.Inputs.FirstOrDefault();
             if (onlyAction != null)
+            {
                 Assert.AreEqual(p0, onlyAction.Name);
+            }
         }
 
         [Then(@"I click validate on mysql connector tool")]
@@ -236,7 +240,9 @@ namespace Warewolf.ToolsSpecs.Toolbox.Resources.MySQL
             SetupOutpuRegions();
             var outputResults = viewModel.OutputsRegion.Outputs.FirstOrDefault();
             if (outputResults != null)
+            {
                 Assert.AreEqual("SomeRecordSet", outputResults.RecordSetName);
+            }
         }
 
         private void SetupOutpuRegions()
@@ -268,8 +274,10 @@ namespace Warewolf.ToolsSpecs.Toolbox.Resources.MySQL
         {
             var viewModel = GetViewModel();
             var outputMapping = viewModel.OutputsRegion.Outputs.FirstOrDefault();
-            if (outputMapping != null)            
+            if (outputMapping != null)
+            {
                 Assert.AreEqual(p0, outputMapping.RecordSetName);
+            }
         }
         
         [Given(@"I open an existing mysql connector tool")]
@@ -372,7 +380,9 @@ namespace Warewolf.ToolsSpecs.Toolbox.Resources.MySQL
             Assert.IsTrue(viewModel.ActionRegion.IsEnabled);
             var onlyAction = viewModel.ActionRegion.SelectedAction.Inputs.FirstOrDefault();
             if (onlyAction != null)
+            {
                 Assert.AreEqual(p0, onlyAction.Name);
+            }
         }
 
         [Given(@"Inputs are ""(.*)"" for mysql connector tool")]
@@ -383,7 +393,9 @@ namespace Warewolf.ToolsSpecs.Toolbox.Resources.MySQL
             Assert.IsTrue(viewModel.ActionRegion.IsEnabled);
             var onlyAction = viewModel.ActionRegion.SelectedAction.Inputs.FirstOrDefault();
             if (onlyAction != null)
+            {
                 Assert.AreEqual(p0, onlyAction.Name);
+            }
         }
 
         [Then(@"The outputs appear as ""(.*)"" on mysql connector tool")]
@@ -394,7 +406,9 @@ namespace Warewolf.ToolsSpecs.Toolbox.Resources.MySQL
             SetupOutpuRegions();
             var outputResults = viewModel.OutputsRegion.Outputs.FirstOrDefault();
             if (outputResults != null)
+            {
                 Assert.AreEqual("SomeRecordSet", outputResults.RecordSetName);
+            }
         }
         
         [When(@"I select ""(.*)"" Action for mysql connector tool")]
@@ -411,7 +425,9 @@ namespace Warewolf.ToolsSpecs.Toolbox.Resources.MySQL
             //SetupOutpuRegions();
             var outputResults = viewModel.OutputsRegion.Outputs.FirstOrDefault();
             if (outputResults != null)
+            {
                 Assert.AreEqual("SomeRecordSet", outputResults.RecordSetName);
+            }
         }
 
         [Then(@"Action on mysql connector tool is null")]

@@ -34,13 +34,14 @@ namespace Dev2.Studio.Core.AppResources.Converters
             var strings = new List<string>();
             values.ToList().ForEach(o =>
             {
-                var s = o as string;
-                if(s != null) strings.Add(s);
+                if (o is string s)
+                {
+                    strings.Add(s);
+                }
             });
 
-            bool invert;
             var invertStr = parameter as string;
-            bool.TryParse(invertStr, out invert);
+            bool.TryParse(invertStr, out bool invert);
 
             var result = strings.Any(string.IsNullOrEmpty) ? Visibility.Collapsed : Visibility.Visible;
 

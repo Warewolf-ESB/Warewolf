@@ -123,8 +123,7 @@ namespace Dev2.Common
             var h = (Hierarchy)LogManager.GetRepository();
             var rootLogger = h.Root;
 
-            var appender = rootLogger?.GetAppender("EventLogLogger") as EventLogAppender;
-            if (appender != null && appender.Threshold != null)
+            if (rootLogger?.GetAppender("EventLogLogger") is EventLogAppender appender && appender.Threshold != null)
             {
                 return appender.Threshold.DisplayName;
             }
@@ -135,8 +134,7 @@ namespace Dev2.Common
         {
             var h = (Hierarchy)LogManager.GetRepository();
             var rootLogger = h.Root;
-            var appender = rootLogger.GetAppender("LogFileAppender") as RollingFileAppender;
-            if (appender != null)
+            if (rootLogger.GetAppender("LogFileAppender") is RollingFileAppender appender)
             {
                 var logSize = appender.MaxFileSize / 1024 / 1024;
                 return (int)Math.Round((decimal)logSize, 0);

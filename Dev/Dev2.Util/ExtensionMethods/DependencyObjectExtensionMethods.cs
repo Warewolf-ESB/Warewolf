@@ -27,7 +27,9 @@ namespace Dev2.Studio.AppResources.ExtensionMethods
                 if (depth > 0)
                 {
                     foreach (DependencyObject descendent in Descendents(child, --depth))
+                    {
                         yield return descendent;
+                    }
                 }
             }
         }

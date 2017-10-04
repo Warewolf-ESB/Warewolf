@@ -21,10 +21,6 @@ namespace Dev2.DataList.Contract
 {
     public class DataListCleaningUtils
     {
-
-        
-
-        //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
         public static List<string> SplitIntoRegions(string result)
         {
             if(!String.IsNullOrEmpty(result))

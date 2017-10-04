@@ -24,7 +24,9 @@ namespace Dev2.Studio.Core.Views
         void JsonObjectsView_OnMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (Mouse.LeftButton == MouseButtonState.Pressed)
+            {
                 DragMove();
+            }
         }
 
         void JsonObjectsView_OnClosed(object sender, EventArgs e)

@@ -51,10 +51,9 @@ namespace Dev2.Runtime.ESB.Management.Services
             try
             {
                 Dev2Logger.Info("Save Resource Service", GlobalConstants.WarewolfInfo);
-                StringBuilder resourceDefinition;
 
 
-                values.TryGetValue("Webservice", out resourceDefinition);
+                values.TryGetValue("Webservice", out StringBuilder resourceDefinition);
 
                 var src = serializer.Deserialize<IWebService>(resourceDefinition);
                 

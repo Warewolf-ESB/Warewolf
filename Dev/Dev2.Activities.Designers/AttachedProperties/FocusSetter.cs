@@ -44,8 +44,7 @@ namespace Dev2.Activities.AttachedProperties
         {
             var fe = (FrameworkElement)d;
             var isFocused = e.NewValue is Boolean && (bool)e.NewValue;
-            var autoCompleteBox = fe as AutoCompleteBox;
-            if (autoCompleteBox != null)
+            if (fe is AutoCompleteBox autoCompleteBox)
             {
                 if (isFocused)
                 {
@@ -58,7 +57,7 @@ namespace Dev2.Activities.AttachedProperties
                 return;
             }
 
-            if(e.OldValue == null)
+            if (e.OldValue == null)
             {
                 fe.GotFocus += FrameworkElementGotFocus;
                 fe.LostFocus += FrameworkElementLostFocus;

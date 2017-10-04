@@ -114,10 +114,9 @@ namespace Dev2.Studio.ViewModels.Administration
             }
             else
             {
-                Uri imageUri;
-                bool validUri = Uri.TryCreate(imageSource, UriKind.RelativeOrAbsolute, out imageUri);
+                bool validUri = Uri.TryCreate(imageSource, UriKind.RelativeOrAbsolute, out Uri imageUri);
 
-                if(validUri)
+                if (validUri)
                 {
 
                     // Once initialized, the image must be released so that it is usable by other resources

@@ -51,11 +51,10 @@ namespace Dev2.Common.DateAndTime
             result = "";
             //Creation of parser to get the DateTime Objects
             IDateTimeParser dateTimeParser = DateTimeConverterFactory.CreateParser();
-            IDateTimeResultTO tmpRes;
 
             //try create the first DateTime object
             bool noErrorOccured = dateTimeParser.TryParseDateTime(dateTimeDiffTo.Input1, dateTimeDiffTo.InputFormat,
-                out tmpRes, out error);
+                out IDateTimeResultTO tmpRes, out error);
             if (noErrorOccured)
             {
                 //Set the first DateTime object
@@ -71,8 +70,7 @@ namespace Dev2.Common.DateAndTime
                 _input2 = tmpRes.ToDateTime();
 
                 //Try get the function according to what the OutputType is
-                Func<DateTime, DateTime, double> returnedFunc;
-                noErrorOccured = OutputFormats.TryGetValue(dateTimeDiffTo.OutputType, out returnedFunc);
+                noErrorOccured = OutputFormats.TryGetValue(dateTimeDiffTo.OutputType, out Func<DateTime, DateTime, double> returnedFunc);
 
                 if (returnedFunc != null)
                 {

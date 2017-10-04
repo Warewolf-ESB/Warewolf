@@ -34,7 +34,11 @@ namespace Dev2.Scheduler
         public ITrigger Trigger
         {
             get { return GetTriggerFromXml(NativeXML); }
-            set { if (value != null) NativeXML = SetXmlFromTrigger(value); }
+            set { if (value != null)
+                {
+                    NativeXML = SetXmlFromTrigger(value);
+                }
+            }
         }
 
         private string SetXmlFromTrigger(ITrigger value)

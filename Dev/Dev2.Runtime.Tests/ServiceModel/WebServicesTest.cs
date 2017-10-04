@@ -428,8 +428,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             _requestResponse = "{\"results\" : [{\"address_components\": [{\"long_name\" :\"Address:\",\"short_name\" :\"Address:\",\"types\" : [\"point_of_interest\",\"establishment\" ]}]}],\"status\" : \"OK\"}";
             service.RequestResponse = _requestResponse;
             //------------Execute Test---------------------------
-            ErrorResultTO errors;
-            WebServices.ExecuteRequest(service, false, out errors, DummyWebExecute);
+            WebServices.ExecuteRequest(service, false, out ErrorResultTO errors, DummyWebExecute);
             //------------Assert Results-------------------------
             Assert.AreEqual("[{\"address_components\":[{\"long_name\":\"Address:\",\"short_name\":\"Address:\",\"types\":[\"point_of_interest\",\"establishment\"]}]}]", service.JsonPathResult);
         }
@@ -449,8 +448,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             service.Method.Parameters.Add(new MethodParameter { Name = "test3", Value = "val3" });
 
             //------------Execute Test---------------------------
-            ErrorResultTO errors;
-            WebServices.ExecuteRequest(service, false, out errors, DummyWebExecute);
+            WebServices.ExecuteRequest(service, false, out ErrorResultTO errors, DummyWebExecute);
             //------------Assert Results-------------------------
             Assert.AreEqual("Accept:val1", _requestHeadersEvaluated[0]);
             Assert.AreEqual("val2", _requestBodyEvaluated);

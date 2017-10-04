@@ -54,9 +54,8 @@ namespace Dev2.Runtime.ESB.Management.Services
                 throw new InvalidDataContractException(ErrorResource.NoParameter);
             }
             string serializedSource = null;
-            StringBuilder tmp;
             ExecuteMessage msg = new ExecuteMessage();
-            values.TryGetValue("SharepointServer", out tmp);
+            values.TryGetValue("SharepointServer", out StringBuilder tmp);
             if(tmp != null)
             {
                 serializedSource = tmp.ToString();

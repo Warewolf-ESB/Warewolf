@@ -31,8 +31,7 @@ namespace WarewolfParsingTest
 
             var data = GetFromEnv(environment);
             Assert.IsTrue(data.JsonObjects.ContainsKey("Person"));
-            var obj = data.JsonObjects["Person"] as JObject;
-            if (obj != null)
+            if (data.JsonObjects["Person"] is JObject obj)
             {
                 Assert.AreEqual(obj.ToString(), "{\r\n  \"Name\": \"John\"\r\n}");
             }
@@ -284,8 +283,7 @@ namespace WarewolfParsingTest
             //------------Assert Results-------------------------
             var data = GetFromEnv(environment);
             Assert.IsTrue(data.JsonObjects.ContainsKey("Person"));
-            var obj = data.JsonObjects["Person"] as JObject;
-            if (obj != null)
+            if (data.JsonObjects["Person"] is JObject obj)
             {
                 Assert.AreEqual(obj.ToString(), "{\r\n  \"Name\": \"John\",\r\n  \"Children\": [\r\n    {\r\n      \"Name\": \"Mary\"\r\n    }\r\n  ]\r\n}");
             }
@@ -311,8 +309,7 @@ namespace WarewolfParsingTest
             //------------Assert Results-------------------------
             var data = GetFromEnv(environment);
             Assert.IsTrue(data.JsonObjects.ContainsKey("Person"));
-            var obj = data.JsonObjects["Person"] as JObject;
-            if (obj != null)
+            if (data.JsonObjects["Person"] is JObject obj)
             {
                 Assert.AreEqual(obj.ToString(), "{\r\n  \"Name\": \"John\",\r\n  \"Children\": [\r\n    {\r\n      \"Name\": \"Mary\"\r\n    },\r\n    {\r\n      \"Name\": \"Joe\"\r\n    }\r\n  ]\r\n}");
             }
@@ -337,8 +334,7 @@ namespace WarewolfParsingTest
             //------------Assert Results-------------------------
             var data = GetFromEnv(environment);
             Assert.IsTrue(data.JsonObjects.ContainsKey("Person"));
-            var obj = data.JsonObjects["Person"] as JObject;
-            if (obj != null)
+            if (data.JsonObjects["Person"] is JObject obj)
             {
                 Assert.AreEqual(obj.ToString(), "{\r\n  \"Name\": \"John\",\r\n  \"Children\": [\r\n    {\r\n      \"Name\": \"Mary\"\r\n    },\r\n    {\r\n      \"Name\": \"Moe\"\r\n    }\r\n  ]\r\n}");
             }
@@ -364,8 +360,7 @@ namespace WarewolfParsingTest
             //------------Assert Results-------------------------
             var data = GetFromEnv(environment);
             Assert.IsTrue(data.JsonObjects.ContainsKey("Person"));
-            var obj = data.JsonObjects["Person"] as JObject;
-            if (obj != null)
+            if (data.JsonObjects["Person"] is JObject obj)
             {
                 Assert.AreEqual(obj.ToString(), "{\r\n  \"Name\": \"John\",\r\n  \"Children\": [\r\n    {\r\n      \"Name\": \"Moe\"\r\n    },\r\n    {\r\n      \"Name\": \"Moe\"\r\n    }\r\n  ]\r\n}");
             }

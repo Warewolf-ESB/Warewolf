@@ -30,9 +30,15 @@ namespace Dev2.Studio.Core.DataList
         {
             var complexObjectItemModels = _vm.ComplexObjectCollection.Where(model => string.IsNullOrEmpty(model.DisplayName));
             var objectItemModels = complexObjectItemModels as IList<IComplexObjectItemModel> ?? complexObjectItemModels.ToList();
-            if (objectItemModels.Count <= 1) return;
+            if (objectItemModels.Count <= 1)
+            {
+                return;
+            }
+
             for (var i = objectItemModels.Count; i > 0; i--)
+            {
                 _vm.ComplexObjectCollection.Remove(objectItemModels[i - 1]);
+            }
         }
 
         public void AddComplexObject(IDataListVerifyPart part)
@@ -43,11 +49,16 @@ namespace Dev2.Studio.Core.DataList
             {
                 var path = paths[index];
                 if (string.IsNullOrEmpty(path) || char.IsNumber(path[0]))
+                {
                     return;
+                }
+
                 path = DataListUtil.ReplaceRecordsetIndexWithBlank(path);
                 var pathToMatch = path.Replace("@", "");
                 if (string.IsNullOrEmpty(pathToMatch) || pathToMatch == "()")
+                {
                     return;
+                }
 
                 var isArray = DataListUtil.IsArray(ref path);
 
@@ -56,13 +67,21 @@ namespace Dev2.Studio.Core.DataList
                     itemModel =
                         _vm.ComplexObjectCollection.FirstOrDefault(
                             model => model.DisplayName == pathToMatch && model.IsArray == isArray);
-                    if (itemModel != null) continue;
+                    if (itemModel != null)
+                    {
+                        continue;
+                    }
+
                     itemModel = new ComplexObjectItemModel(path) { IsArray = isArray };
                     _vm.ComplexObjectCollection.Add(itemModel);
                 }
                 else
                 {
-                    if (index == 0) continue;
+                    if (index == 0)
+                    {
+                        continue;
+                    }
+
                     var item =
                         itemModel.Children.FirstOrDefault(
                             model => model.DisplayName == pathToMatch && model.IsArray == isArray);
@@ -83,7 +102,11 @@ namespace Dev2.Studio.Core.DataList
             var accList = new List<string>();
             foreach (var dataListItemModel in complexObjectItemModels)
             {
-                if (string.IsNullOrEmpty(dataListItemModel.Name)) continue;
+                if (string.IsNullOrEmpty(dataListItemModel.Name))
+                {
+                    continue;
+                }
+
                 var rec = "[[" + dataListItemModel.Name + "]]";
                 accList.Add(rec);
                 accList.AddRange(RefreshJsonObjects(dataListItemModel.Children.ToList()));
@@ -113,7 +136,10 @@ namespace Dev2.Studio.Core.DataList
         public void GenerateComplexObjectFromJson(string parentObjectName, string json)
         {
             if (parentObjectName.Contains("."))
+            {
                 parentObjectName = parentObjectName.Split('.')[0];
+            }
+
             var parentObj = _vm.ComplexObjectCollection.FirstOrDefault(model => model.Name == parentObjectName);
             if (parentObj == null)
             {
@@ -128,15 +154,13 @@ namespace Dev2.Studio.Core.DataList
 
             }
 
-            var objToProcess = JsonConvert.DeserializeObject(json) as JObject;
-            if (objToProcess != null)
+            if (JsonConvert.DeserializeObject(json) is JObject objToProcess)
             {
                 ProcessObjectForComplexObjectCollection(parentObj, objToProcess);
             }
             else
             {
-                var arrToProcess = JsonConvert.DeserializeObject(json) as JArray;
-                if (arrToProcess != null)
+                if (JsonConvert.DeserializeObject(json) is JArray arrToProcess)
                 {
                     var child = arrToProcess.Children().FirstOrDefault();
                     ProcessObjectForComplexObjectCollection(parentObj, child as JObject);
@@ -160,15 +184,26 @@ namespace Dev2.Studio.Core.DataList
                         parentObj.Children.Add(childObj);
                     }
                     if (property.Value.IsObject())
+                    {
                         ProcessObjectForComplexObjectCollection(childObj, property.Value as JObject);
+                    }
                     else
                     {
-                        if (!property.Value.IsEnumerable()) continue;
+                        if (!property.Value.IsEnumerable())
+                        {
+                            continue;
+                        }
+
                         var arrayVal = property.Value as JArray;
-                        if (arrayVal == null) continue;
-                        var obj = arrayVal.FirstOrDefault() as JObject;
-                        if (obj != null)
+                        if (arrayVal == null)
+                        {
+                            continue;
+                        }
+
+                        if (arrayVal.FirstOrDefault() is JObject obj)
+                        {
                             ProcessObjectForComplexObjectCollection(childObj, obj);
+                        }
                     }
                 }
             }
@@ -290,7 +325,7 @@ namespace Dev2.Studio.Core.DataList
 
         public void RemoveUnusedComplexObjects()
         {
-            var unusedComplexObjects = _vm.ComplexObjectCollection.Where(c => c.IsUsed == false).ToList();
+            var unusedComplexObjects = _vm.ComplexObjectCollection.Where(c => !c.IsUsed).ToList();
             if (unusedComplexObjects.Any())
             {
                 foreach (var dataListItemModel in unusedComplexObjects)

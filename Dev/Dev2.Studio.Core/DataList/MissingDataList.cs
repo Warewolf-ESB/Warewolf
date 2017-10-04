@@ -38,10 +38,15 @@ namespace Dev2.Studio.Core.DataList
                         dataListItem.IsEditable)
                     {
                         if (excludeUnusedItems && !dataListItem.IsUsed)
+                        {
                             continue;
+                        }
+
                         AddMissingWorkFlowRecordsetPart(missingWorkflowParts, dataListItem);
                         foreach (var child in dataListItem.Children.Where(p => !string.IsNullOrEmpty(p.DisplayName)))
+                        {
                             AddMissingWorkFlowRecordsetPart(missingWorkflowParts, dataListItem, child);
+                        }
                     }
                     else
                     {
@@ -57,7 +62,10 @@ namespace Dev2.Studio.Core.DataList
                 {
                     // skip it if unused and exclude is on ;)
                     if (excludeUnusedItems && !dataListItem.IsUsed)
+                    {
                         continue;
+                    }
+
                     missingWorkflowParts.Add(
                         IntellisenseFactory.CreateDataListValidationScalarPart(dataListItem.DisplayName,
                             dataListItem.Description));

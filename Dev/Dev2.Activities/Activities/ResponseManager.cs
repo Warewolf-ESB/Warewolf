@@ -137,8 +137,7 @@ namespace Dev2.Activities
                     var dev2Definitions = recSetName as IDev2Definition[] ?? recSetName.ToArray();
                     if (dev2Definitions.Length != 0)
                     {
-                        int fetchIdx;
-                        var idx = indexCache.TryGetValue(c.Name, out fetchIdx) ? fetchIdx : 1;
+                        var idx = indexCache.TryGetValue(c.Name, out int fetchIdx) ? fetchIdx : 1;
                         var nl = c.ChildNodes;
                         foreach (XmlNode subc in nl)
                         {

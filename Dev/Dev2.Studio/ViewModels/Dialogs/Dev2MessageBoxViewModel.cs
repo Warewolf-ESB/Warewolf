@@ -227,8 +227,7 @@ namespace Dev2.Studio.ViewModels.Dialogs
 
             // Check if there an option for the key
             Tuple<bool, MessageBoxResult> result;
-            MessageBoxResult tmp;
-            if(_dontShowAgainOptions != null && _dontShowAgainOptions.TryGetValue(dontShowAgainKey, out tmp))
+            if (_dontShowAgainOptions != null && _dontShowAgainOptions.TryGetValue(dontShowAgainKey, out MessageBoxResult tmp))
             {
                 result = new Tuple<bool, MessageBoxResult>(true, tmp);
             }
@@ -277,9 +276,7 @@ namespace Dev2.Studio.ViewModels.Dialogs
             if (caption != "Duplicated Resources")
             {
                 urlsFound = new List<string>();
-            }
-
-            
+            }            
 
             var msgBoxView = new MessageBoxView
             {

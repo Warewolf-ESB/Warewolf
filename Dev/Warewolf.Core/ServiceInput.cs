@@ -162,7 +162,11 @@ namespace Warewolf.Core
             get
             {
                 var type = ShortTypeName == null ? "" : "(" + ShortTypeName + ")";
-                if (string.IsNullOrEmpty(Name)) return "";
+                if (string.IsNullOrEmpty(Name))
+                {
+                    return "";
+                }
+
                 var fullName = Name + type;
                 return fullName;
             }

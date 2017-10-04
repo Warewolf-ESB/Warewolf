@@ -45,8 +45,7 @@ namespace Dev2.Communication
                 throw new ArgumentNullException("receipt");
             }
 
-            string result;
-            if(!_resultCache.TryRemove(receipt.ToKey(), out result))
+            if (!_resultCache.TryRemove(receipt.ToKey(), out string result))
             {
                 result = string.Empty;
             }

@@ -17,8 +17,16 @@ namespace Warewolf.Studio.ViewModels
 
         public SplashViewModel(IServer server, IExternalProcessExecutor externalProcessExecutor)
         {
-            if (server == null) throw new ArgumentNullException(nameof(server));
-            if (externalProcessExecutor == null) throw new ArgumentNullException(nameof(externalProcessExecutor));
+            if (server == null)
+            {
+                throw new ArgumentNullException(nameof(server));
+            }
+
+            if (externalProcessExecutor == null)
+            {
+                throw new ArgumentNullException(nameof(externalProcessExecutor));
+            }
+
             Server = server;
             ExternalProcessExecutor = externalProcessExecutor;
 

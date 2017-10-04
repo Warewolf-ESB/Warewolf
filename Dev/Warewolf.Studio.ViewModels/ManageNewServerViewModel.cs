@@ -132,7 +132,10 @@ namespace Warewolf.Studio.ViewModels
             int portIndex = GetSpecifiedIndexOf(source.Address, ':', 2);
             var ports = source.Address.Substring(portIndex + 1).Split('/');
             if (ports.Any())
+            {
                 SelectedPort = ports[0];
+            }
+
             Address = source.Address;
             Password = source.Password;
             Header = ResourceName;
@@ -143,7 +146,11 @@ namespace Warewolf.Studio.ViewModels
             int i = 0, o = 1;
             while ((i = str.IndexOf(ch, i)) != -1)
             {
-                if (o == index) return i;
+                if (o == index)
+                {
+                    return i;
+                }
+
                 o++;
                 i++;
             }
@@ -254,7 +261,10 @@ namespace Warewolf.Studio.ViewModels
                         src.ResourcePath = requestServiceNameViewModel.ResourceName.Path ?? requestServiceNameViewModel.ResourceName.Name;
                         Save(src);
                         if (requestServiceNameViewModel.SingleEnvironmentExplorerViewModel != null)
+                        {
                             AfterSave(requestServiceNameViewModel.SingleEnvironmentExplorerViewModel.Environments[0].ResourceId, src.ID);
+                        }
+
                         Item = src;
                         _serverSource = src;
                         SetupHeaderTextFromExisting();
@@ -319,6 +329,7 @@ namespace Warewolf.Studio.ViewModels
         IServerSource ToSource()
         {
             if (_serverSource == null)
+            {
                 return new ServerSource
                 {
                     Address = GetAddressName(),
@@ -329,7 +340,7 @@ namespace Warewolf.Studio.ViewModels
                     ID = _serverSource?.ID ?? SelectedGuid
                 }
             ;
-            
+            }
             else
             {
                 _serverSource.AuthenticationType = AuthenticationType;
@@ -343,7 +354,10 @@ namespace Warewolf.Studio.ViewModels
         public bool CanTest()
         {
             if (Testing)
+            {
                 return false;
+            }
+
             if (string.IsNullOrEmpty(Address))
             {
                 return false;

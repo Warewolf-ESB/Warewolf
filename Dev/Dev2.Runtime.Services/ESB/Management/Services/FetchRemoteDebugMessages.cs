@@ -49,9 +49,8 @@ namespace Dev2.Runtime.ESB.Management.Services
             string invokerId = null;
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
 
-            StringBuilder tmp;
-            values.TryGetValue("InvokerID", out tmp);
-            if(tmp != null)
+                values.TryGetValue("InvokerID", out StringBuilder tmp);
+                if (tmp != null)
             {
                 invokerId = tmp.ToString();
             }
@@ -61,11 +60,10 @@ namespace Dev2.Runtime.ESB.Management.Services
                 throw new InvalidDataContractException(ErrorResource.NullServiceIDOrWorkspaceID);
             }
 
-            Guid iGuid;
-            // RemoteDebugMessageRepo
-            Guid.TryParse(invokerId, out iGuid);
+                // RemoteDebugMessageRepo
+                Guid.TryParse(invokerId, out Guid iGuid);
 
-            if(iGuid != Guid.Empty)
+                if (iGuid != Guid.Empty)
             {
                 var items = RemoteDebugMessageRepo.Instance.FetchDebugItems(iGuid);
 

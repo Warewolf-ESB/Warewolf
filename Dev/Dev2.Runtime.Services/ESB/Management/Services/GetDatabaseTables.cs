@@ -68,9 +68,8 @@ namespace Dev2.Runtime.ESB.Management.Services
                 throw new InvalidDataContractException(ErrorResource.NoParameter);
             }
             string database = null;
-            StringBuilder tmp;
-            values.TryGetValue("Database", out tmp);
-            if(tmp != null)
+            values.TryGetValue("Database", out StringBuilder tmp);
+            if (tmp != null)
             {
                 database = tmp.ToString();
             }

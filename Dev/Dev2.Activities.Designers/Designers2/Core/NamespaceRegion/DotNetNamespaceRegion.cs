@@ -28,7 +28,7 @@ namespace Dev2.Activities.Designers2.Core.NamespaceRegion
 
         private Action _sourceChangedNamespace;
         private INamespaceItem _selectedNamespace;
-        private IPluginServiceModel _model;
+        private readonly IPluginServiceModel _model;
         private ICollection<INamespaceItem> _namespaces;
         private bool _isRefreshing;
         private double _labelWidth;
@@ -253,8 +253,7 @@ namespace Dev2.Activities.Designers2.Core.NamespaceRegion
 
         public void RestoreRegion(IToolRegion toRestore)
         {
-            var region = toRestore as DotNetNamespaceRegion;
-            if (region != null)
+            if (toRestore is DotNetNamespaceRegion region)
             {
                 SelectedNamespace = region.SelectedNamespace;
                 IsEnabled = region.IsEnabled;

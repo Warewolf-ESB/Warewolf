@@ -178,10 +178,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 
             }
 
-            string dataListWithData;
-            string dataListShape;
-
-            CreateDataListWithRecsetAndCreateShape(fileNames, "FileNames", "Name", out dataListShape, out dataListWithData);
+            CreateDataListWithRecsetAndCreateShape(fileNames, "FileNames", "Name", out string dataListShape, out string dataListWithData);
 
             var activityOperationBrokerMock = new ActivityOperationBrokerMock();
 
@@ -197,11 +194,8 @@ namespace Dev2.Tests.Activities.ActivityTests
                     GetOperationBroker = () => activityOperationBrokerMock
                 };
 
-            List<DebugItem> inRes;
-            List<DebugItem> outRes;
-
             CheckPathOperationActivityDebugInputOutput(act, dataListShape,
-                                                                dataListWithData, out inRes, out outRes);
+                                                                dataListWithData, out List<DebugItem> inRes, out List<DebugItem> outRes);
 
             Assert.AreEqual(activityOperationBrokerMock.Destination.IOPath.Password, "destPWord");
             Assert.AreEqual(activityOperationBrokerMock.Destination.IOPath.Username, "destUName");

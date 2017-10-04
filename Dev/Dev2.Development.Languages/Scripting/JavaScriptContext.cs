@@ -44,9 +44,15 @@ namespace Dev2.Development.Languages.Scripting
 
         public void AddScriptSourcesToContext()
         {
-            if (_jsContext == null) return;
+            if (_jsContext == null)
+            {
+                return;
+            }
+
             foreach (var scriptSource in ScriptSources())
+            {
                 _jsContext.Evaluate(scriptSource);
+            }
         }
     }
 }

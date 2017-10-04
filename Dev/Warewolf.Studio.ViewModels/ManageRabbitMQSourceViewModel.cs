@@ -188,7 +188,10 @@ namespace Warewolf.Studio.ViewModels
                         source.ResourcePath = requestServiceNameViewModel.ResourceName.Path ?? requestServiceNameViewModel.ResourceName.Name;
                         Save(source);
                         if (requestServiceNameViewModel.SingleEnvironmentExplorerViewModel != null)
+                        {
                             AfterSave(requestServiceNameViewModel.SingleEnvironmentExplorerViewModel.Environments[0].ResourceId, source.ResourceID);
+                        }
+
                         Item = source;
                         _rabbitMQServiceSource = source;
                         SetupHeaderTextFromExisting();

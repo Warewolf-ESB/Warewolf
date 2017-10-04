@@ -42,7 +42,9 @@ namespace Dev2.Common.Interfaces
                 return true;
             }
             if (GetHashCode() == other.GetHashCode())
+            {
                 return true;
+            }
 
             return string.Equals(Method, other.Method);
         }

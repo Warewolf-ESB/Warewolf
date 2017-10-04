@@ -286,8 +286,7 @@ namespace Unlimited.Framework.Converters.Graph.String.Xml
                 IndexedPathSegmentTreeNode<string> indexedPathSegmentTreeNode =
                     rootIndexedValueTreeNode[list.Select(p => p.ActualSegment).ToList()];
 
-                var element = indexedPathSegmentTreeNode.CurrentValue as XElement;
-                if (element != null)
+                if (indexedPathSegmentTreeNode.CurrentValue is XElement element)
                 {
                     results[path].Add(element.Value);
                 }

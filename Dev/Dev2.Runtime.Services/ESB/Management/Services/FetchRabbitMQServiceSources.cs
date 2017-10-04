@@ -53,8 +53,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             
             List<IRabbitMQServiceSourceDefinition> list = Resources.GetResourceList<RabbitMQSource>(GlobalConstants.ServerWorkspaceID).Select(a =>
             {
-                var res = a as RabbitMQSource;
-                if (res != null)
+                if (a is RabbitMQSource res)
                 {
                     return new RabbitMQServiceSourceDefinition
                     {

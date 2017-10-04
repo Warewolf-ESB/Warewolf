@@ -22,7 +22,9 @@ namespace Dev2.Common
         {
             var keyValuePair = new KeyValuePair<Type, Type>(typeof(TFrom), typeof(TTo));
             if (!Maps.ContainsKey(keyValuePair))
+            {
                 Maps.Add(keyValuePair, mapFunc);
+            }
         }
 
         /// <summary>
@@ -39,7 +41,9 @@ namespace Dev2.Common
             where TMapTo : class
         {
             if (mapFrom == null)
+            {
                 throw new ArgumentNullException(nameof(mapFrom));
+            }
 
             var key = new KeyValuePair<Type, Type>(typeof(TMapFrom), typeof(TMapTo));
 
@@ -51,12 +55,16 @@ namespace Dev2.Common
             var tFrom = mapFrom.GetType();
 
             if (mapTo == null)
+            {
                 mapTo = Activator.CreateInstance<TMapTo>();
+            }
 
             var tTo = mapTo.GetType();
             var hasMap = Maps.Any(m => m.Key.Equals(key));
             if (!hasMap)
+            {
                 throw new ArgumentException($"No mapping exists from {tFrom.Name} to {tTo.Name}");
+            }
 
             var mapToProperties = tTo.GetProperties().Where(info => !ignoreList.Contains(info.Name));
             var mapFromProperties = tFrom.GetProperties().Where(info => !ignoreList.Contains(info.Name));
@@ -81,19 +89,30 @@ namespace Dev2.Common
             foreach (var prop in equalProps)
             {
                 if (prop.FromProperty.PropertyType.Name != prop.ToProperty.PropertyType.Name)
+                {
                     continue;
+                }
+
                 var fromValue = prop.FromProperty.GetValue(mapFrom, null);
                 if (prop.ToProperty.CanWrite)
+                {
                     prop.ToProperty.SetValue(mapTo, fromValue, null);
+                }
             }
             if (mapFields)
+            {
                 foreach (var field in equalFields)
                 {
                     if (field.FromField.FieldType.Name != field.ToField.FieldType.Name)
+                    {
                         continue;
+                    }
+
                     var fieldValue = field.FromField.GetValue(mapFrom);
                     field.ToField.SetValue(mapTo, fieldValue);
                 }
+            }
+
             map?.Invoke(mapFrom, mapTo);
         }
 

@@ -12,7 +12,11 @@ namespace Dev2.Common
         public void BuildHeader(IHeaderRegion region, string content)
         {
             var hasEmptyHeaders = region.Headers?.Any(value => !string.IsNullOrEmpty(value.Name)) ?? false;
-            if (hasEmptyHeaders) return;
+            if (hasEmptyHeaders)
+            {
+                return;
+            }
+
             var isValidJson = content?.IsValidJson() ?? false;
             if (isValidJson)
             {

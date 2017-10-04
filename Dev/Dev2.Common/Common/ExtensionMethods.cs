@@ -303,7 +303,11 @@ namespace Dev2.Common.Common
         /// <returns></returns>
         public static int IndexOf(this StringBuilder sb, string value, int startIndex, bool ignoreCase)
         {
-            if (value == null) return -1;
+            if (value == null)
+            {
+                return -1;
+            }
+
             int index;
             int length = value.Length;
             int maxSearchLength = sb.Length - length + 1;
@@ -460,14 +464,21 @@ namespace Dev2.Common.Common
         public static ObservableCollection<T> ToObservableCollection<T>(this IEnumerable<T> enumerable)
         {
             if (enumerable == null)
+            {
                 return new ObservableCollection<T>();
+            }
+
             var col = new ObservableCollection<T>(enumerable);
             return col;
         }
 
         public static bool IsValidXml(this string content)
         {
-            if (string.IsNullOrEmpty(content) || !content.TrimStart().StartsWith("<")) return false;
+            if (string.IsNullOrEmpty(content) || !content.TrimStart().StartsWith("<"))
+            {
+                return false;
+            }
+
             try
             {
                 

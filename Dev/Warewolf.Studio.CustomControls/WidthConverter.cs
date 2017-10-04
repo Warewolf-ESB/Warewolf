@@ -16,8 +16,7 @@ namespace Warewolf.Studio.CustomControls
 
             try
             {
-                var xamDataTreeNodeControl = values[0] as XamDataTreeNodeControl;
-                if(xamDataTreeNodeControl != null)
+                if (values[0] is XamDataTreeNodeControl xamDataTreeNodeControl)
                 {
                     return (double)values[1] - xamDataTreeNodeControl.Node.Manager.Level * 21 - 62;
                 }
@@ -41,8 +40,7 @@ namespace Warewolf.Studio.CustomControls
 
             try
             {
-                var xamDataTreeNodeControl = values[0] as TreeViewItem;
-                if (xamDataTreeNodeControl != null)
+                if (values[0] is TreeViewItem xamDataTreeNodeControl)
                 {
                     return xamDataTreeNodeControl.ActualWidth - 22;
                 }
@@ -65,8 +63,7 @@ namespace Warewolf.Studio.CustomControls
         {
             try
             {
-                var expander = values[0] as Expander;
-                if (expander != null)
+                if (values[0] is Expander expander)
                 {
                     return expander.ActualWidth - 80;
                 }

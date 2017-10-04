@@ -180,7 +180,10 @@ namespace Dev2
         {
             var sysUri = new Uri(AppDomain.CurrentDomain.BaseDirectory);
 
-            if (IsLocal(sysUri)) return;
+            if(IsLocal(sysUri))
+            {
+                return;
+            }
 
             var popup = new PopupController
             {

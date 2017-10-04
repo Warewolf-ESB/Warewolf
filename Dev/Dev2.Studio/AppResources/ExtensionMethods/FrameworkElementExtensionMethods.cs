@@ -39,8 +39,7 @@ namespace Dev2.Studio.AppResources.ExtensionMethods
             {
                 DependencyObject child = VisualTreeHelper.GetChild(dp, i);
 
-                FrameworkElement feChild = child as FrameworkElement;
-                if(feChild != null && (feChild.Name == name || partialMatch && feChild.Name.Contains(name)))
+                if (child is FrameworkElement feChild && (feChild.Name == name || partialMatch && feChild.Name.Contains(name)))
                 {
                     return feChild;
                 }

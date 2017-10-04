@@ -256,8 +256,7 @@ namespace Dev2.Activities
                 {
                     while(colItr.HasMoreData())
                     {
-                        ErrorResultTO errors;
-                        var result = SendEmail(runtimeSource, colItr, fromAccountItr, passwordItr, toItr, ccItr, bccItr, subjectItr, bodyItr, attachmentsItr, out errors);
+                        var result = SendEmail(runtimeSource, colItr, fromAccountItr, passwordItr, toItr, ccItr, bccItr, subjectItr, bodyItr, attachmentsItr, out ErrorResultTO errors);
                         allErrors.MergeErrors(errors);
                         if(!allErrors.HasErrors())
                         {
@@ -335,7 +334,6 @@ namespace Dev2.Activities
             {
                 expression = Result;
             }
-            //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
             foreach(var region in DataListCleaningUtils.SplitIntoRegions(expression))
             {
                 environment.Assign(region, result, update);
@@ -358,8 +356,7 @@ namespace Dev2.Activities
             var bodyValue = colItr.FetchNextValue(bodyItr);
             var attachmentsValue = colItr.FetchNextValue(attachmentsItr);
             MailMessage mailMessage = new MailMessage { IsBodyHtml = IsHtml };
-            MailPriority priority;
-            if(Enum.TryParse(Priority.ToString(), true, out priority))
+            if (Enum.TryParse(Priority.ToString(), true, out MailPriority priority))
             {
                 mailMessage.Priority = priority;
             }
