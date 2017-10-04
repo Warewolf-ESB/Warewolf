@@ -51,7 +51,9 @@ namespace Dev2.Services.Sql
         public DataSet FetchDataSet(IDbCommand command)
         {
             if (!(command is NpgsqlCommand))
+            {
                 throw new Exception(string.Format(ErrorResource.InvalidCommand, "PostgreCommand"));
+            }
 
             using (var dataset = new DataSet())
             {

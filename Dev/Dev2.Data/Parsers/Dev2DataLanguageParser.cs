@@ -75,12 +75,14 @@ namespace Dev2.Data.Parsers
 
                 IList<IIntellisenseResult> result = PartsGeneration(expression, dataListParts, true);
                 if (result != null && canCache && result.All(a => a.Type != enIntellisenseResultType.Error))
+                {
                     try
                     {
                         _expressionCache.TryAdd(expression, result);
                     }
                     
                     catch { }
+                }
 
                 return result;
             }, _expressionCache);
@@ -117,12 +119,15 @@ namespace Dev2.Data.Parsers
                 }
                 IList<IIntellisenseResult> result = PartsGeneration(payload, parts, addCompleteParts, isFromIntellisense, additionalParts);
                 if (result != null && result.Count > 0 && result.All(a => a.Type != enIntellisenseResultType.Error))
+                {
                     try
                     {
                         _payloadCache.TryAdd(key, result);
                     }
                     
                     catch { }
+                }
+
                 return result;
             }, _payloadCache);
 
@@ -489,7 +494,11 @@ namespace Dev2.Data.Parsers
                         }
                         else
                         {
-                            if (!match.Contains(search)) continue;
+                            if (!match.Contains(search))
+                            {
+                                continue;
+                            }
+
                             AddFoundItems(payload, t, result);
                         }
                     }
@@ -658,16 +667,14 @@ namespace Dev2.Data.Parsers
             const string DisplayString = "Recordset";
             if ((!isRecName || parts[1] == string.Empty) && payload.Child == null)
             {
-                IList<IIntellisenseResult> intellisenseResults;
-                if (ValidateName(rawSearch, DisplayString, result, out intellisenseResults))
+                if (ValidateName(rawSearch, DisplayString, result, out IList<IIntellisenseResult> intellisenseResults))
                 {
                     return;
                 }
             }
             else
             {
-                IList<IIntellisenseResult> intellisenseResults;
-                if (ValidateName(search, DisplayString, result, out intellisenseResults))
+                if (ValidateName(search, DisplayString, result, out IList<IIntellisenseResult> intellisenseResults))
                 {
                     return;
                 }
@@ -719,7 +726,9 @@ namespace Dev2.Data.Parsers
             else if (recordsetPart.Children != null && recordsetPart.Children.Count > 0)
             {
                 if (ProcessFieldsForRecordSet(payload, addCompleteParts, result, parts, out search, out emptyOk, display, recordsetPart, partName))
+                {
                     return search;
+                }
             }
 
             if (result.Count == 0 && !emptyOk)
@@ -744,12 +753,16 @@ namespace Dev2.Data.Parsers
                     if (!isRecName)
                     {
                         if (ScalarMatch(result, isRs, rawSearch))
+                        {
                             return;
+                        }
                     }
                     else
                     {
                         if (RecordsetMatch(result, rawSearch, search))
+                        {
                             return;
+                        }
                     }
                 }
                 if ((rawSearch.Contains(DataListUtil.RecordsetIndexOpeningBracket) && IsValidIndex(payload)) || !rawSearch.Contains(DataListUtil.RecordsetIndexOpeningBracket))
@@ -823,7 +836,9 @@ namespace Dev2.Data.Parsers
             }
             // add error
             if (additionalParts == null)
+            {
                 result.Add(!display.Contains(' ') ? IntellisenseFactory.CreateErrorResult(payload.StartIndex, payload.EndIndex, part, " [[" + display + "]] does not exist in your variable list", code, !payload.HangingOpen) : IntellisenseFactory.CreateErrorResult(payload.StartIndex, payload.EndIndex, part, " [[" + display + "]] contains a space, this is an invalid character for a variable name", code, !payload.HangingOpen));
+            }
             else if (!additionalParts.Select(a => a.Name).Contains(display))
             {
                 result.Add(!display.Contains(' ') ? IntellisenseFactory.CreateErrorResult(payload.StartIndex, payload.EndIndex, part, " [[" + display + "]] does not exist in your variable list", code, !payload.HangingOpen) : IntellisenseFactory.CreateErrorResult(payload.StartIndex, payload.EndIndex, part, " [[" + display + "]] contains a space, this is an invalid character for a variable name", code, !payload.HangingOpen));

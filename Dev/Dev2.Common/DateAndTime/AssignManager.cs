@@ -26,8 +26,7 @@ namespace Dev2.Common.DateAndTime
         {
             string lowerValue = value.ToString(CultureInfo.InvariantCulture).ToLower();
 
-            ITimeZoneTO timeZoneTo;
-            if (_timeZoneTos.TryGetValue(lowerValue, out timeZoneTo))
+            if (_timeZoneTos.TryGetValue(lowerValue, out ITimeZoneTO timeZoneTo))
             {
                 dateTimeResultTo.TimeZone = timeZoneTo;
             }

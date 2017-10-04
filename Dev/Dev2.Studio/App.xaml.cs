@@ -70,7 +70,7 @@ namespace Dev2.Studio
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>
-    public partial class App : System.Windows.Application, IApp
+    public partial class App : System.Windows.Application, IApp, IDisposable
     {
         ShellViewModel _shellViewModel;
         //This is ignored because when starting the studio twice the second one crashes without this line
@@ -106,7 +106,6 @@ namespace Dev2.Studio
         protected override void OnStartup(System.Windows.StartupEventArgs e)
         {
             Tracker.StartStudio();
-            bool createdNew;
 
             Task.Factory.StartNew(() =>
             {
@@ -376,6 +375,11 @@ namespace Dev2.Studio
             {
                 MessageBox.Show("Fatal Error : " + e.Exception);
             }
+        }
+
+        public void Dispose()
+        {
+            _resetSplashCreated.Dispose();
         }
     }
 

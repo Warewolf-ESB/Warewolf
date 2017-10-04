@@ -88,8 +88,7 @@ namespace Dev2.Runtime.ServiceModel
             {
                 throw new ArgumentNullException(nameof(dbService));
             }
-            var source = dbService.Source as DbSource;
-            if (source != null)
+            if (dbService.Source is DbSource source)
             {
                 switch (source.ServerType)
                 {
@@ -178,7 +177,7 @@ namespace Dev2.Runtime.ServiceModel
                             ServiceMappingHelper smh = new ServiceMappingHelper();
 
                             smh.MapDbOutputs(outputDescription, ref dbService, addFields);
-                            
+
                             return dbService.Recordset;
                         }
                     case enSourceType.ODBC:

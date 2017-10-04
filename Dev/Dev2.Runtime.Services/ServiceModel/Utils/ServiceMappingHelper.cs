@@ -51,7 +51,9 @@ namespace Dev2.Runtime.ServiceModel.Utils
                 {
                     name = name.Remove(0, idx + 2);
                     if (name.StartsWith("."))
+                    {
                         name = name.Substring(1);
+                    }
                 }
 
                 var field = new RecordsetField { Name = name, Alias = string.IsNullOrEmpty(path.OutputExpression) ? alias : path.OutputExpression, Path = path };

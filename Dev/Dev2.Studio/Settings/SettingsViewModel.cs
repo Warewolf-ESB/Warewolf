@@ -517,7 +517,10 @@ namespace Dev2.Settings
                 }
             }
             else
+            {
                 return SaveSettings();
+            }
+
             return true;
         }
 

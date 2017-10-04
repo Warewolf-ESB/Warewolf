@@ -34,12 +34,16 @@ namespace Dev2.Studio.Core.Models.DataList
         private bool _isExpanded = true;
         protected enDev2ColumnArgumentDirection _columnIODir = enDev2ColumnArgumentDirection.None;
         private string _name;
-        
+
         #endregion Fields
 
         #region Ctor
-        
-        public DataListItemModel(string displayname, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection = enDev2ColumnArgumentDirection.None, string description = "", bool hasError = false, string errorMessage = "", bool isEditable = true, bool isVisible = true, bool isSelected = false, bool isExpanded = true)
+
+        public DataListItemModel(string displayname): this(displayname, enDev2ColumnArgumentDirection.None, "", false, "", true, true, false, true)
+        {
+        }
+
+        public DataListItemModel(string displayname, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection, string description, bool hasError, string errorMessage, bool isEditable, bool isVisible, bool isSelected, bool isExpanded)
         {
             Description = description;
             HasError = hasError;

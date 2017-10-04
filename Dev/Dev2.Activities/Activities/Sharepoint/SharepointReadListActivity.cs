@@ -187,40 +187,35 @@ namespace Dev2.Activities.Sharepoint
             var val = sharepointValue;
             if (type == typeof(FieldUserValue))
             {
-                var fieldValue = sharepointValue as FieldUserValue;
-                if (fieldValue != null)
+                if (sharepointValue is FieldUserValue fieldValue)
                 {
                     return fieldValue.LookupValue;
                 }
             }
             else if (type == typeof(FieldLookupValue))
             {
-                var fieldValue = sharepointValue as FieldLookupValue;
-                if (fieldValue != null)
+                if (sharepointValue is FieldLookupValue fieldValue)
                 {
                     return fieldValue.LookupValue;
                 }
             }
             else if (type == typeof(FieldUrlValue))
             {
-                var fieldValue = sharepointValue as FieldUrlValue;
-                if (fieldValue != null)
+                if (sharepointValue is FieldUrlValue fieldValue)
                 {
                     return fieldValue.Url;
                 }
             }
             else if (type == typeof(FieldGeolocationValue))
             {
-                var fieldValue = sharepointValue as FieldGeolocationValue;
-                if (fieldValue != null)
+                if (sharepointValue is FieldGeolocationValue fieldValue)
                 {
                     return string.Join(",", fieldValue.Longitude, fieldValue.Latitude, fieldValue.Altitude, fieldValue.Measure);
                 }
             }
             else if (type == typeof(FieldLookupValue[]))
             {
-                var fieldValue = sharepointValue as FieldLookupValue[];
-                if (fieldValue != null)
+                if (sharepointValue is FieldLookupValue[] fieldValue)
                 {
                     var returnString = string.Join(",", fieldValue.Select(value => value.LookupValue));
                     return returnString;
@@ -228,8 +223,7 @@ namespace Dev2.Activities.Sharepoint
             }
             else if (type == typeof(FieldUserValue[]))
             {
-                var fieldValue = sharepointValue as FieldLookupValue[];
-                if (fieldValue != null)
+                if (sharepointValue is FieldLookupValue[] fieldValue)
                 {
                     var returnString = string.Join(",", fieldValue.Select(value => value.LookupValue));
                     return returnString;
@@ -278,7 +272,11 @@ namespace Dev2.Activities.Sharepoint
 
                 foreach (var varDebug in FilterCriteria)
                 {
-                    if (string.IsNullOrEmpty(varDebug.FieldName)) return;
+                    if (string.IsNullOrEmpty(varDebug.FieldName))
+                    {
+                        return;
+                    }
+
                     DebugItem debugItem = new DebugItem();
                     AddDebugItem(new DebugItemStaticDataParams("", _indexCounter.ToString(CultureInfo.InvariantCulture)), debugItem);
                     var fieldName = varDebug.FieldName;

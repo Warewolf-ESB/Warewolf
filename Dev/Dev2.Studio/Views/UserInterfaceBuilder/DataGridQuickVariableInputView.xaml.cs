@@ -105,10 +105,9 @@ namespace Dev2.Studio.Views.UserInterfaceBuilder
 
         void TextBoxBase_OnTextChanged(object sender, TextChangedEventArgs e)
         {
-            TextBox tb = sender as TextBox;
-            if(tb != null)
+            if (sender is TextBox tb)
             {
-                if(string.IsNullOrWhiteSpace(TxtVariableList.Text))
+                if (string.IsNullOrWhiteSpace(TxtVariableList.Text))
                 {
                     QuickVariableInputAddBtn.IsEnabled = false;
                     QuickVariableInputPreviewBtn.IsEnabled = false;

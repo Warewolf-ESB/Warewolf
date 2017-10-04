@@ -357,7 +357,11 @@ namespace Dev2.Tests.ConverterTests.GraphTests
             {
                 for (int innerCount = 0; innerCount < testData.EnumerableData[outerCount].EnumerableData.Count; innerCount++)
                 {
-                    if (outerCount == testData.EnumerableData.Count - 1 && innerCount == testData.EnumerableData[outerCount].EnumerableData.Count - 1) separator = "";
+                    if (outerCount == testData.EnumerableData.Count - 1 && innerCount == testData.EnumerableData[outerCount].EnumerableData.Count - 1)
+                    {
+                        separator = "";
+                    }
+
                     if (outerCount < testData.EnumerableData.Count)
                     {
                         tmpExpected += testData.EnumerableData[outerCount].Name + separator;

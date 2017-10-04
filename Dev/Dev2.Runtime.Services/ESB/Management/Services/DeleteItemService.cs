@@ -41,8 +41,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             if (requestArgs != null)
             {
-                StringBuilder itemBeingDeleted;
-                if (requestArgs.TryGetValue("itemToDelete", out itemBeingDeleted))
+                if (requestArgs.TryGetValue("itemToDelete", out StringBuilder itemBeingDeleted))
                 {
 
                     if (itemBeingDeleted != null)
@@ -73,9 +72,8 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                     throw new ArgumentNullException(nameof(values));
                 }
-                StringBuilder itemBeingDeleted;
                 StringBuilder pathBeingDeleted = null;
-                if (!values.TryGetValue("itemToDelete", out itemBeingDeleted))
+                if (!values.TryGetValue("itemToDelete", out StringBuilder itemBeingDeleted))
                 {
                     if (!values.TryGetValue("folderToDelete", out pathBeingDeleted))
                     {

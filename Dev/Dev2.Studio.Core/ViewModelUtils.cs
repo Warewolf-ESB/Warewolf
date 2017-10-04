@@ -32,17 +32,16 @@ namespace Dev2
             
                 if (typeOfCommand == typeof(Microsoft.Practices.Prism.Commands.DelegateCommand))
                 {
-                    var command = commandForCanExecuteChange as Microsoft.Practices.Prism.Commands.DelegateCommand;
-                    if (command != null)
+                    if (commandForCanExecuteChange is Microsoft.Practices.Prism.Commands.DelegateCommand command)
                     {
-                        if(Application.Current != null)
+                        if (Application.Current != null)
                         {
-                            if(Application.Current.Dispatcher != null)
+                            if (Application.Current.Dispatcher != null)
                             {
-                                Application.Current.Dispatcher.BeginInvoke( new Action(() =>
-                                {
-                                    command.RaiseCanExecuteChanged();
-                                }));
+                                Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+                               {
+                                   command.RaiseCanExecuteChanged();
+                               }));
                             }
                         }
 
@@ -51,8 +50,7 @@ namespace Dev2
                 }
                 if (typeOfCommand.BaseType == typeof(Microsoft.Practices.Prism.Commands.DelegateCommandBase))
                 {
-                    var command = commandForCanExecuteChange as Microsoft.Practices.Prism.Commands.DelegateCommandBase;
-                    if (command != null)
+                    if (commandForCanExecuteChange is Microsoft.Practices.Prism.Commands.DelegateCommandBase command)
                     {
                         command.RaiseCanExecuteChanged();
                         return;
@@ -60,8 +58,7 @@ namespace Dev2
                 }
                 if (typeOfCommand == typeof(RelayCommand))
                 {
-                    var command = commandForCanExecuteChange as RelayCommand;
-                    if (command != null)
+                    if (commandForCanExecuteChange is RelayCommand command)
                     {
                         command.RaiseCanExecuteChanged();
                         return;

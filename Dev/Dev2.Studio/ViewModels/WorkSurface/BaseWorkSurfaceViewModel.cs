@@ -33,7 +33,9 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             set
             {
                 if(_workSurfaceContext == value)
+                {
                     return;
+                }
 
                 _workSurfaceContext = value;
                 NotifyOfPropertyChange(() => WorkSurfaceContext);

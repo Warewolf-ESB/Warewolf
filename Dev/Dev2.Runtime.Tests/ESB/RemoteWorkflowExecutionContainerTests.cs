@@ -70,8 +70,7 @@ namespace Dev2.Tests.Runtime.ESB
 
             var container = CreateExecutionContainer(resourceCatalog.Object);
 
-            ErrorResultTO errors;
-            container.Execute(out errors, 0);
+            container.Execute(out ErrorResultTO errors, 0);
 
             Assert.AreEqual("Service not found", errors.MakeDisplayReady(), "Execute did not return an error for a non-existent resource catalog connection.");
         }

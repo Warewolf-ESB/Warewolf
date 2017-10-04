@@ -13,8 +13,6 @@ using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
 
-
-
 namespace Dev2.CustomControls.Converters
 {
     public class BoolToVisibilityConverter : IValueConverter

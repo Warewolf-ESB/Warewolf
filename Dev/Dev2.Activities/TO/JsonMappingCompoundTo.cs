@@ -71,8 +71,7 @@ namespace Dev2.TO
                     }
                     if (e.IsWarewolfAtomResult)
                     {
-                        var x = e as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
-                        if (x != null && x.Item.IsDataString)
+                        if (e is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult x && x.Item.IsDataString)
                         {
                             if (((DataStorage.WarewolfAtom.DataString)x.Item).Item == "true")
                             {
@@ -287,8 +286,15 @@ namespace Dev2.TO
 
         public static string IsValidJsonMappingInput(string sourceName, string destinationName)
         {
-            if (string.IsNullOrEmpty(sourceName)) return ErrorResource.SupplySourceName;
-            if (string.IsNullOrEmpty(destinationName)) return ErrorResource.SupplyDestinationName;
+            if (string.IsNullOrEmpty(sourceName))
+            {
+                return ErrorResource.SupplySourceName;
+            }
+
+            if (string.IsNullOrEmpty(destinationName))
+            {
+                return ErrorResource.SupplyDestinationName;
+            }
 
             return ValidateInput(sourceName);
 

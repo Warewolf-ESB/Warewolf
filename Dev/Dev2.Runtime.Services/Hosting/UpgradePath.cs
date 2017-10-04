@@ -36,8 +36,10 @@ namespace Dev2.Runtime.Hosting
         private Version GetVersionFromXML(XElement resource)
         {
             if (resource.Attribute("ServerVersion") == null)
+            {
                 return new Version();
-            
+            }
+
             return Version.Parse(resource.Attribute("ServerVersion").Value);
         }
         public IResourceUpgrade Upgrade { get; }

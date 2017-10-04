@@ -100,8 +100,7 @@ namespace Warewolf.Studio.CustomControls
                 for (int i = 0; i < VisualTreeHelper.GetChildrenCount(depObj); i++)
                 {
                     DependencyObject child = VisualTreeHelper.GetChild(depObj, i);
-                    var visualChild = child as T;
-                    if (visualChild != null)
+                    if (child is T visualChild)
                     {
                         return visualChild;
                     }

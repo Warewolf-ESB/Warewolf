@@ -22,9 +22,8 @@ namespace Dev2.Studio.Core.AppResources.Converters
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             var theValue = value as string;
-            bool invert;
             var invertStr = parameter as string;
-            bool.TryParse(invertStr, out invert);
+            bool.TryParse(invertStr, out bool invert);
 
             var result = string.IsNullOrEmpty(theValue) ? Visibility.Collapsed : Visibility.Visible;
             if(invert)

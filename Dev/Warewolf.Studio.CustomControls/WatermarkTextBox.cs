@@ -113,8 +113,7 @@ namespace Warewolf.Studio.CustomControls
 
         private static void ItemsChanged(object sender, ItemsChangedEventArgs e)
         {
-            ItemsControl control;
-            if (itemsControls.TryGetValue(sender, out control))
+            if (itemsControls.TryGetValue(sender, out ItemsControl control))
             {
                 if (ShouldShowWatermark(control))
                 {

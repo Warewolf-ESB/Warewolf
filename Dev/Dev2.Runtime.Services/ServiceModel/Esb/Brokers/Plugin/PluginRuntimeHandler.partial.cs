@@ -54,15 +54,13 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
         /// <returns></returns>
         public object Run(PluginInvokeArgs setupInfo)
         {
-            Assembly loadedAssembly;
             _assemblyLocation = setupInfo.AssemblyLocation;
             AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
-            if (!_assemblyLoader.TryLoadAssembly(setupInfo.AssemblyLocation, setupInfo.AssemblyName, out loadedAssembly))
+            if (!_assemblyLoader.TryLoadAssembly(setupInfo.AssemblyLocation, setupInfo.AssemblyName, out Assembly loadedAssembly))
             {
                 return null;
             }
-            object pluginResult;
-            var methodToRun = ExecutePlugin(setupInfo, loadedAssembly, out pluginResult);
+            var methodToRun = ExecutePlugin(setupInfo, loadedAssembly, out object pluginResult);
             AppDomain.CurrentDomain.AssemblyResolve -= CurrentDomain_AssemblyResolve;
             var formater = setupInfo.OutputFormatter;
             if (formater != null)
@@ -80,16 +78,14 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
         {
             try
             {
-                Assembly loadedAssembly;
                 jsonResult = null;
                 _assemblyLocation = setupInfo.AssemblyLocation;
                 AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
-                if (!_assemblyLoader.TryLoadAssembly(setupInfo.AssemblyLocation, setupInfo.AssemblyName, out loadedAssembly))
+                if (!_assemblyLoader.TryLoadAssembly(setupInfo.AssemblyLocation, setupInfo.AssemblyName, out Assembly loadedAssembly))
                 {
                     return null;
                 }
-                object pluginResult;
-                var methodToRun = ExecutePlugin(setupInfo, loadedAssembly, out pluginResult);
+                var methodToRun = ExecutePlugin(setupInfo, loadedAssembly, out object pluginResult);
 
                 AppDomain.CurrentDomain.AssemblyResolve -= CurrentDomain_AssemblyResolve;
                 // do formating here to avoid object serialization issues ;)
@@ -123,6 +119,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             var type = loadedAssembly.GetType(setupInfo.Fullname);
             var valuedTypeList = new List<object>();
             if (setupInfo.Parameters != null)
+            {
                 foreach (var methodParameter in setupInfo.Parameters)
                 {
                     try
@@ -138,6 +135,8 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                         valuedTypeList.Add(methodParameter.Value);
                     }
                 }
+            }
+
             var methodToRun = type.GetMethod(setupInfo.Method, typeList.ToArray());
             if (methodToRun == null && typeList.Count == 0)
             {
@@ -186,9 +185,8 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
         {
             try
             {
-                Assembly loadedAssembly;
                 List<string> namespaces = new List<string>();
-                if (_assemblyLoader.TryLoadAssembly(assemblyLocation, assemblyName, out loadedAssembly))
+                if (_assemblyLoader.TryLoadAssembly(assemblyLocation, assemblyName, out Assembly loadedAssembly))
                 {
                     // ensure we flush out the rubbish that GAC brings ;)
                     namespaces = loadedAssembly.GetTypes()
@@ -218,9 +216,8 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
         {
             try
             {
-                Assembly loadedAssembly;
                 var namespaces = new List<KeyValuePair<string, string>>();
-                if (_assemblyLoader.TryLoadAssembly(assemblyLocation, assemblyName, out loadedAssembly))
+                if (_assemblyLoader.TryLoadAssembly(assemblyLocation, assemblyName, out Assembly loadedAssembly))
                 {
                     // ensure we flush out the rubbish that GAC brings ;)
                     var types = loadedAssembly.GetTypes();
@@ -250,9 +247,8 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
         /// <returns></returns>
         public ServiceMethodList ListMethods(string assemblyLocation, string assemblyName, string fullName)
         {
-            Assembly assembly;
             var serviceMethodList = new ServiceMethodList();
-            if (_assemblyLoader.TryLoadAssembly(assemblyLocation, assemblyName, out assembly))
+            if (_assemblyLoader.TryLoadAssembly(assemblyLocation, assemblyName, out Assembly assembly))
             {
                 var type = assembly.GetType(fullName);
                 var methodInfos = type.GetMethods();
@@ -320,10 +316,9 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
         private object AdjustPluginResult(object pluginResult, MethodBase methodToRun)
         {
             object result = pluginResult;
-            var method = methodToRun as MethodInfo;
             // When it returns a primitive or string and it is not XML or JSON, make it so ;)
-            
-            if ((method != null && method.ReturnType.IsPrimitive || method.ReturnType.FullName == "System.String") && !DataListUtil.IsXml(pluginResult.ToString()) && !DataListUtil.IsJson(pluginResult.ToString()))
+
+            if ((methodToRun is MethodInfo method && (method.ReturnType.IsPrimitive || method.ReturnType.FullName == "System.String")) && !DataListUtil.IsXml(pluginResult.ToString()) && !DataListUtil.IsJson(pluginResult.ToString()))
             {
                 // add our special tags ;)
                 result = $"<{GlobalConstants.PrimitiveReturnValueTag}>{pluginResult}</{GlobalConstants.PrimitiveReturnValueTag}>";
@@ -407,6 +402,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             var typeList = new List<Type>();
             
             if (parameters != null)
+            {
                 foreach (var methodParameter in parameters)
                 {
                     Type type;
@@ -422,6 +418,8 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
 
                     typeList.Add(type);
                 }
+            }
+
             return typeList;
         }
     }

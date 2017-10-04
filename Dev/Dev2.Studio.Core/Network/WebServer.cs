@@ -103,8 +103,7 @@ namespace Dev2.Studio.Core.Network
                 reader.Close();
                 dataStream.Close();
                 response.Close();
-                var responseObj = JsonConvert.DeserializeObject(responseFromServer) as JObject;
-                if (responseObj != null)
+                if (JsonConvert.DeserializeObject(responseFromServer) is JObject responseObj)
                 {
                     var urlToOpen = ((dynamic)responseObj).data.url;
 
@@ -160,8 +159,7 @@ namespace Dev2.Studio.Core.Network
                     relativeUrl += "&wid=" + environmentConnection.WorkspaceID;
                 }
             }
-            Uri url;
-            Uri.TryCreate(environmentConnection.WebServerUri, relativeUrl, out url);
+            Uri.TryCreate(environmentConnection.WebServerUri, relativeUrl, out Uri url);
             return url;
         }
 
@@ -173,8 +171,7 @@ namespace Dev2.Studio.Core.Network
             }
 
             var relativeUrl = string.Format("/internal/{0}", serviceName);
-            Uri url;
-            Uri.TryCreate(connection.WebServerUri, relativeUrl, out url);
+            Uri.TryCreate(connection.WebServerUri, relativeUrl, out Uri url);
             return url;
         }
     }

@@ -149,7 +149,10 @@ namespace Warewolf.Studio.ViewModels
                                 foreach (var serviceTestStep in serviceTestSteps)
                                 {
                                     var resServiceTestStep = serviceTestStep as ServiceTestStep;
-                                    if (resServiceTestStep == null) continue;
+                                    if (resServiceTestStep == null)
+                                    {
+                                        continue;
+                                    }
 
                                     UpdateTestStepResult(resServiceTestStep, resTestStep);
 

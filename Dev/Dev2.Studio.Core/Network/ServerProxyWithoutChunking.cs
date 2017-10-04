@@ -258,8 +258,7 @@ namespace Dev2.Network
                 aex.Handle(ex =>
                 {
                     Dev2Logger.Error(this, aex, "Warewolf Error");
-                    var hex = ex as HttpClientException;
-                    if (hex != null)
+                    if (ex is HttpClientException hex)
                     {
                         switch (hex.Response.StatusCode)
                         {
@@ -326,10 +325,12 @@ namespace Dev2.Network
                 aex.Handle(ex =>
                 {
                     if (ex.Message.Contains("1.4"))
+                    {
                         throw new FallbackException();
+                    }
+
                     Dev2Logger.Error(this, aex, "Warewolf Error");
-                    var hex = ex as HttpClientException;
-                    if (hex != null)
+                    if (ex is HttpClientException hex)
                     {
                         switch (hex.Response.StatusCode)
                         {
@@ -448,8 +449,7 @@ namespace Dev2.Network
                 aex.Handle(ex =>
                 {
                     Dev2Logger.Error(this, aex, "Warewolf Error");
-                    var hex = ex as HttpClientException;
-                    if (hex != null)
+                    if (ex is HttpClientException hex)
                     {
                         switch (hex.Response.StatusCode)
                         {

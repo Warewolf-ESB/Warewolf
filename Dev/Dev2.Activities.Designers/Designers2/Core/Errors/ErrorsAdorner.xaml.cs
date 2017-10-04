@@ -42,8 +42,7 @@ namespace Dev2.Activities.Designers2.Core.Errors
         private void Hyperlink_OnClick(object sender, RoutedEventArgs e)
         {
             var hyperlink = sender as Hyperlink;
-            var actionableErrorInfo = hyperlink?.DataContext as ActionableErrorInfo;
-            if (actionableErrorInfo != null)
+            if (hyperlink?.DataContext is ActionableErrorInfo actionableErrorInfo)
             {
                 Clipboard.SetText(actionableErrorInfo.Message);
             }

@@ -43,8 +43,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             
             List<ComPluginSourceDefinition> list = Resources.GetResourceList<ComPluginSource>(GlobalConstants.ServerWorkspaceID).Select(a =>
             {
-                var res = a as ComPluginSource;
-                if (res != null)
+                if (a is ComPluginSource res)
                 {
                     return new ComPluginSourceDefinition
                     {

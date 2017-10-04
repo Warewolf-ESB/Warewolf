@@ -345,20 +345,7 @@ namespace Dev2.Tests.ConverterTests.Base
 
             broker.Convert(payload);
         }
-
-        //2013.02.13: Ashley Lewis - Bug 8725, Task 8836 - anything at all can be converted as if it where text, no exceptions!
-        //[TestMethod]
-        //[ExpectedException(typeof(BaseTypeException))]
-        //public void Format_MisMatch_Text_Expect_Exception()
-        //{
-        //    IBaseConverter to = fac.CreateConverter(enDev2BaseConvertType.Hex);
-        //    IBaseConverter from = fac.CreateConverter(enDev2BaseConvertType.Text);
-        //    IBaseConversionBroker broker = fac.CreateBroker(from, to);
-
-        //    string payload = "0x746869732069732061206c696e65206f6620746578742c20686f7720646f65732074686174206d616b6520796f75206665656c";
-
-        //    string result = broker.Convert(payload);
-        //}
+        
         #endregion
 
 

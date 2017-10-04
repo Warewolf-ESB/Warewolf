@@ -42,20 +42,17 @@ namespace Dev2.Runtime.ESB.Management.Services
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
 
-            StringBuilder itemXml;
             string isLocal = string.Empty;
 
-            StringBuilder tmp;
-            values.TryGetValue("ItemXml", out itemXml);
-            values.TryGetValue("IsLocalSave", out tmp);
+            values.TryGetValue("ItemXml", out StringBuilder itemXml);
+            values.TryGetValue("IsLocalSave", out StringBuilder tmp);
             if (tmp != null)
             {
                 isLocal = tmp.ToString();
             }
 
-            bool isLocalSave;
 
-            bool.TryParse(isLocal, out isLocalSave);
+            bool.TryParse(isLocal, out bool isLocalSave);
 
             var res = new ExecuteMessage { HasError = false};
 

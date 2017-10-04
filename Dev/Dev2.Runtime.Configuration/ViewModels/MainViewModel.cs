@@ -49,7 +49,10 @@ namespace Dev2.Runtime.Configuration.ViewModels
             Errors = new ObservableCollection<string>();
             ClearErrors();
 
-            if(!SetConfiguration(configurationXml)) return;
+            if(!SetConfiguration(configurationXml))
+            {
+                return;
+            }
 
             SaveCallback = saveCallback;
             CancelCallback = cancelCallback;

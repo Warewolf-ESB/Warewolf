@@ -72,7 +72,9 @@ namespace Warewolf.Studio.ViewModels
             else
             {
                 if(FilterByType)
+                {
                     Environments.First().Filter(a => a.ResourceType == "Folder" || a.ResourceType == "WorkflowService");
+                }
             }
         }
     }

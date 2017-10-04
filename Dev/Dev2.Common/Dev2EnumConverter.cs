@@ -36,16 +36,21 @@ namespace Dev2.Common.Interfaces.Enums.Enums
         public static string ConvertEnumValueToString(Enum value)
         {
             Type type = value.GetType();
-            if (!type.IsEnum) throw new InvalidOperationException(ErrorResource.ExpectedEnumerationTypeParameter);
+            if (!type.IsEnum)
+            {
+                throw new InvalidOperationException(ErrorResource.ExpectedEnumerationTypeParameter);
+            }
 
             return value.GetDescription();
         }
 
         public static object GetEnumFromStringDiscription(string discription, Type type)
         {
-            if (!type.IsEnum) throw new InvalidOperationException(ErrorResource.ExpectedEnumerationTypeParameter);
+            if (!type.IsEnum)
+            {
+                throw new InvalidOperationException(ErrorResource.ExpectedEnumerationTypeParameter);
+            }
 
-            
             foreach (object value in Enum.GetValues(type))
             
             {
