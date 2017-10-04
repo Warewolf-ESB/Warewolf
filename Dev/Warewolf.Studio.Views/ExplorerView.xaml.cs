@@ -60,14 +60,14 @@ namespace Warewolf.Studio.Views
             {
                 if (_canDrag)
                 {
-                    if (e.Data.GetDataPresent(typeof (ExplorerItemViewModel)))
+                    if (e.Data.GetDataPresent(typeof(ExplorerItemViewModel)))
                     {
-                        if (!(e.Data.GetData(typeof (ExplorerItemViewModel)) is ExplorerItemViewModel explorerItemViewModel))
+                        if (!(e.Data.GetData(typeof(ExplorerItemViewModel)) is ExplorerItemViewModel explorerItemViewModel))
                         {
                             e.Handled = true;
                             return;
                         }
-                        var destination = FindAncestor<TreeViewItem>((DependencyObject) e.OriginalSource);
+                        var destination = FindAncestor<TreeViewItem>((DependencyObject)e.OriginalSource);
 
                         if (!Equals(explorerItemViewModel.Parent, destination.DataContext))
                         {
@@ -212,7 +212,7 @@ namespace Warewolf.Studio.Views
             _isDragging = false;
             _canDrag = false;
 
-            if (e.OriginalSource.GetType() == typeof (ScrollViewer))
+            if (e.OriginalSource.GetType() == typeof(ScrollViewer))
             {
                 var explorerView = sender as ExplorerView;
                 if (explorerView?.DataContext is SingleEnvironmentExplorerViewModel singleEnvironmentExplorerViewModel)
@@ -244,7 +244,7 @@ namespace Warewolf.Studio.Views
                 }
             }
         }
-        
+
         private void UIElement_OnLostFocus(object sender, RoutedEventArgs e)
         {
             var textBox = sender as TextBox;
@@ -267,7 +267,7 @@ namespace Warewolf.Studio.Views
             TreeViewItem treeViewItem = FindAncestor<TreeViewItem>((DependencyObject)e.OriginalSource);
             if (treeViewItem != null)
             {
-                SetSelected(treeView,treeViewItem.DataContext);
+                SetSelected(treeView, treeViewItem.DataContext);
             }
             _isDragging = false;
             _canDrag = false;
@@ -346,8 +346,9 @@ namespace Warewolf.Studio.Views
                         SetActiveServer(environmentViewModel.Server);
                         if (explorerViewModel?.ConnectControlViewModel != null)
                         {
-                        {
-                            explorerViewModel.ConnectControlViewModel.SelectedConnection = environmentViewModel.Server;
+                            {
+                                explorerViewModel.ConnectControlViewModel.SelectedConnection = environmentViewModel.Server;
+                            }
                         }
                     }
                 }
@@ -534,3 +535,5 @@ namespace Warewolf.Studio.Views
         }
     }
 }
+
+    

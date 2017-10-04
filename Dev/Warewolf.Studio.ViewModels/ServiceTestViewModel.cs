@@ -1312,7 +1312,7 @@ namespace Warewolf.Studio.ViewModels
 
                 if (outputs != null && outputs.Count > 0)
                 {
-                    if (ServiceTestStepWithOutputs(activityUniqueID, activityDisplayName, outputs, type, item, out IServiceTestStep serviceTestStep))
+                    if (ServiceTestStepWithOutputs(activityUniqueId, activityDisplayName, outputs, type, item, out IServiceTestStep serviceTestStep))
                     {
                         return serviceTestStep;
                     }

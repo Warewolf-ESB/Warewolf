@@ -114,6 +114,7 @@ namespace Dev2.Studio
                 DirectoryHelper.CleanUp(Path.Combine(GlobalConstants.TempLocation, "Warewolf", "Debug"));
             });
 
+            bool createdNew;
             var localprocessGuard = new Mutex(true, "Warewolf Studio", out createdNew);
 
             if (createdNew)
