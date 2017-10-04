@@ -201,9 +201,8 @@ namespace Dev2.ViewModels.Merge
             {
                 nextCurrConflict = Conflicts[currIndex];
             }
-            catch (IndexOutOfRangeException)
+            catch (ArgumentOutOfRangeException)
             {
-
                 nextCurrConflict = Conflicts.LastOrDefault();
             }
 
