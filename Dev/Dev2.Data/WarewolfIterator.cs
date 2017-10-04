@@ -121,7 +121,7 @@ namespace Dev2.Data
                     catch (Exception err)
                     {
 
-                        Dev2Logger.Warn(err, "Warewolf Warning");
+                        Dev2Logger.Warn(err, "Warewolf Warn");
                     }
                 }
                 if (!tryEvaluateFunction)
