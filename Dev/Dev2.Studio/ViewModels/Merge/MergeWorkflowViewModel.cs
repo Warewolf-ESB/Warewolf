@@ -22,7 +22,6 @@ namespace Dev2.ViewModels.Merge
         private bool _hasVariablesConflict;
         private bool _isVariablesEnabled;
         private bool _isMergeExpanderEnabled;
-        private bool _dirty;
 
         public MergeWorkflowViewModel(IContextualResourceModel currentResourceModel, IContextualResourceModel differenceResourceModel, bool isGitMerge)
             : this(CustomContainer.Get<IServiceDifferenceParser>())
@@ -97,7 +96,8 @@ namespace Dev2.ViewModels.Merge
 
             //HasVariablesConflict = !CommonEqualityOps.AreObjectsEqual(((ConflictModelFactory)CurrentConflictModel).DataListViewModel, ((ConflictModelFactory)DifferenceConflictModel).DataListViewModel); //MATCH DATALISTS
             HasVariablesConflict = true;
-            HasWorkflowNameConflict = currResourceName != diffResourceName;
+            //HasWorkflowNameConflict = currResourceName != diffResourceName;
+            HasWorkflowNameConflict = true;
             IsVariablesEnabled = !HasWorkflowNameConflict;
             IsMergeExpanderEnabled = !IsVariablesEnabled;
 
@@ -118,11 +118,7 @@ namespace Dev2.ViewModels.Merge
             WorkflowDesignerViewModel.RemoveItem(model);
             WorkflowDesignerViewModel.AddItem(_previousParent, model);
             _previousParent = model;
-            //if (model is MergeToolModel mergeToolModel)
-            //{
-            //    //var dataTemplate = ActivityTemplateSelector.GetSelectedDataTemplate(mergeToolModel.ActivityDesignerViewModel);
-            //    //WorkflowDesignerViewModel.BringMergeToView(dataTemplate);
-            //}
+            WorkflowDesignerViewModel.SelectedItem = model.FlowNode;
         }
 
         private IMergeToolModel _previousParent;
@@ -138,8 +134,6 @@ namespace Dev2.ViewModels.Merge
                 IsMergeExpanderEnabled = argsIsVariablesChecked;
                 Conflicts[0].DiffViewModel.IsMergeEnabled = argsIsVariablesChecked;
                 Conflicts[0].CurrentViewModel.IsMergeEnabled = argsIsVariablesChecked;
-
-                OnPropertyChanged(() => IsDirty);
             }
             catch (Exception ex)
             {
@@ -163,7 +157,6 @@ namespace Dev2.ViewModels.Merge
                 UpdateNextEnabledState(args);
                 HasMergeStarted = true;
                 AddActivity(args);
-                OnPropertyChanged(() => IsDirty);
             }
             catch (Exception ex)
             {
@@ -350,7 +343,10 @@ namespace Dev2.ViewModels.Merge
         {
             try
             {
-                Save();
+                //var shellViewModel = CustomContainer.Get<IShellViewModel>();
+                //shellViewModel?.SaveCommand.Execute(WorkflowDesignerViewModel);
+
+                HasMergeStarted = false;
             }
             catch (Exception ex)
             {
@@ -358,8 +354,7 @@ namespace Dev2.ViewModels.Merge
             }
             finally
             {
-                var isDirty = IsDirty;
-                SetDisplayName(isDirty);
+                SetDisplayName(IsDirty);
             }
         }
 
@@ -380,48 +375,7 @@ namespace Dev2.ViewModels.Merge
 
         public bool CanSave { get; set; }
 
-        public bool IsDirty
-        {
-            get
-            {
-                try
-                {
-                    _dirty = ValidWorkflowName();
-                    if (!_dirty)
-                    {
-                        _dirty = ValidVariables();
-                    }
-                    if (!_dirty)
-                    {
-                        var completeConflicts = Conflicts.Flatten(conflict => conflict.Children);
-                        _dirty = completeConflicts.Any(conflict => conflict.IsMergeExpanded);
-                    }
-
-                    CanSave = _dirty;
-                    SetDisplayName(_dirty);
-                    return _dirty;
-                }
-                catch (Exception ex)
-                {
-                    Dev2Logger.Error(ex, ex.Message);
-                    return false;
-                }
-            }
-        }
-
-        private bool ValidWorkflowName()
-        {
-            var isWorkflowNameChecked = CurrentConflictModel != null && CurrentConflictModel.IsWorkflowNameChecked;
-            var workflowNameChecked = DifferenceConflictModel != null && DifferenceConflictModel.IsWorkflowNameChecked;
-            return isWorkflowNameChecked || workflowNameChecked;
-        }
-
-        private bool ValidVariables()
-        {
-            var isVariablesChecked = CurrentConflictModel != null && CurrentConflictModel.IsVariablesChecked;
-            var variablesChecked = DifferenceConflictModel != null && DifferenceConflictModel.IsVariablesChecked;
-            return isVariablesChecked || variablesChecked;
-        }
+        public bool IsDirty => HasMergeStarted;
 
         private void SetServerName(IContextualResourceModel resourceModel)
         {
@@ -448,6 +402,11 @@ namespace Dev2.ViewModels.Merge
             set
             {
                 _hasMergeStarted = value;
+                CanSave = _hasMergeStarted;
+                if (_hasMergeStarted)
+                {
+                    SetDisplayName(_hasMergeStarted);
+                }
                 OnPropertyChanged(() => HasMergeStarted);
             }
         }
