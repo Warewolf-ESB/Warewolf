@@ -314,7 +314,7 @@ namespace Dev2.Util
                 Debug.Assert(output != null);
 
                 _output = output;
-                _eval = eval ?? NullEval;
+                _eval = eval;
                 _system = valueSystem ?? DefaultValueSystem;
             }
 
@@ -447,11 +447,6 @@ namespace Dev2.Util
             private object Index(object obj, string member)
             {
                 return _system.GetMemberValue(obj, member);
-            }
-
-            private static object NullEval()
-            {
-                return null;
             }
 
             private delegate void WalkCallback(object member, string loc, string expr, object value, string path);
