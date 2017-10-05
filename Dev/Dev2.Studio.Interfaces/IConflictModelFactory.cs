@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
+using Dev2.Common.Interfaces;
 
-namespace Dev2.Common.Interfaces
+namespace Dev2.Studio.Interfaces
 {
     public interface IConflictModelFactory
     {

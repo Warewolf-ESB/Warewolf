@@ -2985,7 +2985,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public void RemoveItem(IMergeToolModel model)
         {
-            ModelItem root = _wd.Context.Services.GetService<ModelService>().Root;
+            var root = _wd.Context.Services.GetService<ModelService>().Root;
             var chart = _wd.Context.Services.GetService<ModelService>().Find(root, typeof(Flowchart)).FirstOrDefault();
 
             if (chart != null)
@@ -3040,14 +3040,22 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public void AddItem(IMergeToolModel parent, IMergeToolModel model)
         {
-            ModelItem root = _wd.Context.Services.GetService<ModelService>().Root;
+            var root = _wd.Context.Services.GetService<ModelService>().Root;
             var chart = _wd.Context.Services.GetService<ModelService>().Find(root, typeof(Flowchart)).FirstOrDefault();
+            if (chart == null)
+            {
+                return;
+            }
             var parswer = CustomContainer.Get<IServiceDifferenceParser>();
             _allNodes = parswer.GetAllNodes();
-            var nodes = chart.Properties["Nodes"]?.Collection;
+            var nodes = chart?.Properties["Nodes"]?.Collection;
 
+            if (nodes == null)
+            {
+                return;
+            }
             var hasNodes = _allNodes.TryGetValue(model.UniqueId.ToString(), out (ModelItem leftItem, ModelItem rightItem) toolPar);
-            ModelItem nodeToAdd = default(ModelItem);
+            var nodeToAdd = default(ModelItem);
             if (hasNodes)
             {
                 if (toolPar.leftItem.GetCurrentValue() == model.FlowNode.GetCurrentValue())
@@ -3061,40 +3069,33 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
 
             AddNodesForChildren(model, nodes);
-
-            if (chart != null)
+            var modelActivityType = model.ActivityType;
+            var step = nodeToAdd?.GetCurrentValue();
+            switch (step)
             {
-                var modelActivityType = model.ActivityType;
-                var step = nodeToAdd?.GetCurrentValue();
-                switch (step)
-                {
-                    case FlowStep normalStep:
-                        normalStep.Next = null;
-                        if (!nodes.Contains(normalStep))
-                            nodes.Add(normalStep);
-                        break;
-                    case FlowDecision normalDecision:
-                        if (!nodes.Contains(normalDecision))
-                            nodes.Add(normalDecision);
-                        break;
-                    case FlowSwitch<string> normalSwitch:
-                        nodes.Add(normalSwitch);
-                        break;
-                    default:
-                        break;
-                }
+                case FlowStep normalStep:
+                    normalStep.Next = null;
+                    if (!nodes.Contains(normalStep))
+                        nodes.Add(normalStep);
+                    break;
+                case FlowDecision normalDecision:
+                    if (!nodes.Contains(normalDecision))
+                        nodes.Add(normalDecision);
+                    break;
+                case FlowSwitch<string> normalSwitch:
+                    nodes.Add(normalSwitch);
+                    break;
+            }
 
-                var startNode = chart.Properties["StartNode"];
-                if (startNode == null || startNode.ComputedValue == null)
-                {
-                    AddStartNode(model, modelActivityType, nodes, startNode);
-
-                }
-                else
-                {
-                    AddNextNode(parent, model, modelActivityType, nodes);
-                }
-            }//At the end of the merge we need to clean up all the unused nodes
+            var startNode = chart.Properties["StartNode"];
+            if (startNode == null || startNode.ComputedValue == null)
+            {
+                AddStartNode(model, modelActivityType, nodes, startNode);
+            }
+            else
+            {
+                AddNextNode(parent, model, modelActivityType, nodes);
+            }
         }
 
         private void AddNodesForChildren(IMergeToolModel model, ModelItemCollection nodes)
@@ -3115,7 +3116,6 @@ namespace Dev2.Studio.ViewModels.Workflow
                             {
                                 AddNodesForChildren(item, nodes);
                                 nodes.Add(a);
-
                             }
                         }
                         else if (childtoolPar.rightItem?.GetCurrentValue() == item.FlowNode.GetCurrentValue())
@@ -3130,7 +3130,6 @@ namespace Dev2.Studio.ViewModels.Workflow
                     }
                 }
                 model.Children.Reverse();
-
             }
         }
 
@@ -3144,7 +3143,6 @@ namespace Dev2.Studio.ViewModels.Workflow
                 var parentId1 = parentFlowStep?.Action as IDev2Activity;
                 return act?.UniqueID == parentId1.UniqueID; 
 
-
             });
             var flowNode = model.FlowNode.GetCurrentValue<FlowStep>();
             if (flowNode != null)
@@ -3154,15 +3152,9 @@ namespace Dev2.Studio.ViewModels.Workflow
 
             if (parentNode != null)
             {
-                if (flowNode == null)
-                {
-                    parentNode.Properties["Next"].SetValue(model.FlowNode.GetCurrentValue());
-                }
-                else
-                {
-                    parentNode.Properties["Next"].SetValue(flowNode);
-
-                }
+                parentNode.Properties["Next"]?.SetValue(flowNode ?? model.FlowNode.GetCurrentValue());
+                SelectedItem = model.FlowNode;
+                //OnItemSelected(Sele);
                 //BringIntoView(model.FlowNode);
             }
         }
@@ -3180,6 +3172,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             if (startNode.ComputedValue == null)
             {
                 startNode.SetValue(flowNode);
+                SelectedItem = model.FlowNode;
                 //BringIntoView(model.FlowNode);
             }
         }

@@ -1168,6 +1168,8 @@ namespace Dev2.Core.Tests
         public bool IsTestView { get; set; }
         public ModelItem SelectedItem { get; set; }
 
+        public bool CanViewWorkflowLink { get; set; }
+
         public void UpdateWorkflowLink(string newLink)
         {
         }
@@ -1198,6 +1200,21 @@ namespace Dev2.Core.Tests
         }
 
         public string GetWorkflowInputs(string field)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void CreateBlankWorkflow()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void RemoveItem(IMergeToolModel model)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void AddItem(IMergeToolModel parent, IMergeToolModel model)
         {
             throw new NotImplementedException();
         }
