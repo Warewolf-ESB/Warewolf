@@ -191,6 +191,7 @@ using System.Runtime.CompilerServices;
 [assembly: InternalsVisibleTo("Dev2.Integration.Tests")]
 [assembly: InternalsVisibleTo("Dev2.TaskScheduler.Wrappers")]
 [assembly: InternalsVisibleTo("Dev2.Infrastructure.Tests")]
+[assembly: InternalsVisibleTo("Warewolf.UIBindingTests.ComDll")]
 "@
     Write-Host $CSharpVersionFileContents
     $CSharpVersionFileContents | Out-File -LiteralPath $CSharpVersionFile -Encoding utf8 -Force
