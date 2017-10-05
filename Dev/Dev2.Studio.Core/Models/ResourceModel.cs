@@ -104,10 +104,7 @@ namespace Dev2.Studio.Core.Models
 
         public bool IsValid
         {
-            get
-            {
-                return _isValid;
-            }
+            get => _isValid;
             set
             {
                 _isValid = value;
@@ -120,10 +117,7 @@ namespace Dev2.Studio.Core.Models
 
         public bool IsWorkflowSaved
         {
-            get
-            {
-                return _isWorkflowSaved;
-            }
+            get => _isWorkflowSaved;
             set
             {
                 _isWorkflowSaved = value;
@@ -133,7 +127,7 @@ namespace Dev2.Studio.Core.Models
 
         public IServer Environment
         {
-            get { return _environment; }
+            get => _environment;
             private set
             {
                 _environment = value;
@@ -155,7 +149,7 @@ namespace Dev2.Studio.Core.Models
 
         public bool IsDatabaseService
         {
-            get { return _isDatabaseService; }
+            get => _isDatabaseService;
             set
             {
                 _isDatabaseService = value;
@@ -165,7 +159,7 @@ namespace Dev2.Studio.Core.Models
 
         public bool IsPluginService
         {
-            get { return _isPluginService; }
+            get => _isPluginService;
             set
             {
                 _isPluginService = value;
@@ -175,7 +169,7 @@ namespace Dev2.Studio.Core.Models
 
         public bool IsResourceService
         {
-            get { return _isResourceService; }
+            get => _isResourceService;
             set
             {
                 _isResourceService = value;
@@ -185,7 +179,7 @@ namespace Dev2.Studio.Core.Models
 
         public Guid ID
         {
-            get { return _id; }
+            get => _id;
             set
             {
                 _id = value;
@@ -195,7 +189,7 @@ namespace Dev2.Studio.Core.Models
 
         public Permissions UserPermissions
         {
-            get { return _userPermissions; }
+            get => _userPermissions;
             set
             {
                 if (value == _userPermissions)
@@ -214,7 +208,7 @@ namespace Dev2.Studio.Core.Models
 
         public Version Version
         {
-            get { return _version; }
+            get => _version;
             set
             {
                 _version = value;
@@ -224,7 +218,7 @@ namespace Dev2.Studio.Core.Models
 
         public bool AllowCategoryEditing
         {
-            get { return _allowCategoryEditing; }
+            get => _allowCategoryEditing;
             set
             {
                 _allowCategoryEditing = value;
@@ -235,7 +229,7 @@ namespace Dev2.Studio.Core.Models
         [Required(ErrorMessage = @"Please enter a name for this resource")]
         public string ResourceName
         {
-            get { return _resourceName; }
+            get => _resourceName;
             set
             {
                 _resourceName = value.Trim();
@@ -264,7 +258,7 @@ namespace Dev2.Studio.Core.Models
 
         public string UnitTestTargetWorkflowService
         {
-            get { return _unitTestTargetWorkflowService; }
+            get => _unitTestTargetWorkflowService;
             set
             {
                 _unitTestTargetWorkflowService = value;
@@ -276,7 +270,7 @@ namespace Dev2.Studio.Core.Models
 
         public string DataList
         {
-            get { return _dataList; }
+            get => _dataList;
             set
             {
                 if (value != _dataList)
@@ -291,7 +285,7 @@ namespace Dev2.Studio.Core.Models
 
         public ResourceType ResourceType
         {
-            get { return _resourceType; }
+            get => _resourceType;
             set
             {
                 _resourceType = value;
@@ -302,7 +296,7 @@ namespace Dev2.Studio.Core.Models
         [Required(ErrorMessage = @"Please enter a Category for this resource")]
         public string Category
         {
-            get { return _category; }
+            get => _category;
             set
             {
                 _category = value;
@@ -312,7 +306,7 @@ namespace Dev2.Studio.Core.Models
 
         public string Tags
         {
-            get { return _tags; }
+            get => _tags;
             set
             {
                 _tags = value;
@@ -323,7 +317,7 @@ namespace Dev2.Studio.Core.Models
         [Required(ErrorMessage = @"Please enter the Comment for this resource")]
         public string Comment
         {
-            get { return _comment; }
+            get => _comment;
             set
             {
                 _comment = value;
@@ -333,10 +327,7 @@ namespace Dev2.Studio.Core.Models
 
         public StringBuilder WorkflowXaml
         {
-            get
-            {
-                return _workflowXaml;
-            }
+            get => _workflowXaml;
             set
             {
                 _workflowXaml = value;
@@ -350,7 +341,7 @@ namespace Dev2.Studio.Core.Models
 
         public string DataTags
         {
-            get { return _dataTags; }
+            get => _dataTags;
             set
             {
                 _dataTags = value;
@@ -361,7 +352,7 @@ namespace Dev2.Studio.Core.Models
         [Required(ErrorMessage = @"Please enter a valid help link")]
         public string HelpLink
         {
-            get { return _helpLink; }
+            get => _helpLink;
             set
             {
                 _helpLink = value;
@@ -371,7 +362,7 @@ namespace Dev2.Studio.Core.Models
 
         public bool IsDebugMode
         {
-            get { return _isDebugMode; }
+            get => _isDebugMode;
             set
             {
                 _isDebugMode = value;
@@ -385,10 +376,7 @@ namespace Dev2.Studio.Core.Models
 
         public IVersionInfo VersionInfo
         {
-            get
-            {
-                return _versionInfo;
-            }
+            get => _versionInfo;
             set
             {
                 if (Equals(value, _versionInfo))

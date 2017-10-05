@@ -1,6 +1,5 @@
 ﻿using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core.Help;
-using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Studio.Core;
 using Dev2.Studio.Interfaces;
