@@ -93,7 +93,7 @@ namespace Warewolf.MergeParser
             _flowNodes = new ConcurrentDictionary<string, (ModelItem leftItem, ModelItem rightItem)>();
             var conflictList = new List<(Guid uniqueId, IConflictNode currentNode, IConflictNode differenceNode, bool hasConflict)>();
            var  currentDifferences = GetNodes(current, true);
-            var remotedifferences = GetNodes(difference, /*loadworkflowFromServer*/true);
+            var remotedifferences = GetNodes(difference, loadworkflowFromServer);
 
 
             var allCurentItems = new List<(IDev2Activity, IConflictNode)>();
@@ -164,15 +164,16 @@ namespace Warewolf.MergeParser
                     continue;
                 }
                 var currentModelItemUniqueId = GetCurrentModelItemUniqueId(allCurentItems, item);
-                var equalItem = (Guid.Parse(item.UniqueID), currentModelItemUniqueId, currentModelItemUniqueId, false);
+                var differences = GetCurrentModelItemUniqueId(allRemoteItems, item);
+                var equalItem = (Guid.Parse(item.UniqueID), currentModelItemUniqueId, differences, false);
                 conflictList.Add(equalItem);
 
             }
             var dev2Activities = allDifferences.DistinctBy(activity => activity.UniqueID).ToList();
             foreach (var item in dev2Activities)
             {
-                var currentModelItemUniqueId = GetCurrentModelItemUniqueId(allRemoteItems, item);
-                var differences = GetCurrentModelItemUniqueId(allCurentItems, item);
+                var currentModelItemUniqueId = GetCurrentModelItemUniqueId(allCurentItems, item);
+                var differences = GetCurrentModelItemUniqueId(allRemoteItems, item);
                 var diffItem = (Guid.Parse(item.UniqueID), currentModelItemUniqueId, differences, true);
                 conflictList.Add(diffItem);
             }
