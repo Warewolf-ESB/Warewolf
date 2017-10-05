@@ -39,56 +39,35 @@ namespace Dev2.Instrumentation
         /// </summary>
         public static void StartServer()
         {
-#if ! DEBUG
-            // RELEASE
-            
-                Start("2386158864", "http://40589.tbnet1.com");
-                TBApp.StartAutoSync(true);
-            
+#if !DEBUG
+            Start("2386158864", "http://40589.tbnet1.com");
+            TBApp.StartAutoSync(true);            
 #endif
         }
-
-        /// <summary>
-        /// This signals that Studio has started. 
-        /// This should be placed before calling any other <see cref="Tracker"/> method.
-        /// </summary>
+        
         public static void StartStudio()
         {
-#if ! DEBUG
-            // RELEASE
+#if !DEBUG
             Start("2386158962", "http://94687.tbnet1.com");
 #endif
         }
 
-        
-        static void Start(string productId, string callHomeUrl)
-        
+#if !DEBUG
+        static void Start(string productId, string callHomeUrl)        
         {
-
             Perform(() =>
             {
                 var location = Assembly.GetExecutingAssembly().Location;
                 var filePath = Path.GetDirectoryName(location);
-#if ! DEBUG && ! TEST
                 var fvi = VersionInfo.FetchVersionInfo();
                 var productVersion = fvi;
-#else
-                
-                var productVersion = "0.0.9999.0";
-                
-#endif
                 TBConfig.SetFilePath(filePath);
                 TBConfig.CreateConfig(callHomeUrl, productId, productVersion, productVersion, false);
                 return TBApp.Start();
             });
-            
         }
+#endif
 
-        /// <summary>
-        /// This method should be called when your application is exiting. 
-        /// It will signal <see cref="Tracker"/> to log the event and to attempt to Sync with the Servers.  
-        /// After calling this Method, <see cref="Tracker.Start"/> must be called again to start using <see cref="Tracker"/>.
-        /// </summary>
         public static void Stop()
         {
 #if ! DEBUG

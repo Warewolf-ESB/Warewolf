@@ -144,8 +144,8 @@ namespace Dev2
         #endregion Public Methods
 
         #region Private Methods
-        
-#pragma warning disable S1144 // You must be in Release config to see the only reference to this function.
+
+#if !DEBUG
         private bool CheckWindowsService()
         {
             IWindowsServiceManager windowsServiceManager = CustomContainer.Get<IWindowsServiceManager>();
@@ -171,7 +171,7 @@ namespace Dev2
 
             return false;
         }
-#pragma warning restore S1144
+#endif
 
         private void CheckPath()
         {
@@ -226,6 +226,6 @@ namespace Dev2
             return sysUri.IsUnc;
         }
 
-        #endregion Private Methods
+#endregion Private Methods
     }
 }

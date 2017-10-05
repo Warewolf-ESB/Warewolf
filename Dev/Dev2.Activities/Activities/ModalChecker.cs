@@ -15,7 +15,6 @@ using System.Text;
 using Warewolf.Resource.Errors;
 
 
-
 namespace Dev2.Activities
 {
     public class ModalChecker
@@ -26,7 +25,6 @@ namespace Dev2.Activities
             {
                 throw new Exception(ErrorResource.NoProcessFound);
             }
-            // for thread safety
             if (process.HasExited)
             {
                 return false;
@@ -72,13 +70,7 @@ namespace Dev2.Activities
             _process = process;
             _waiting = false;
         }
-
-        /// <summary>
-        /// Gets a value indicating whether [waiting for user input].
-        /// </summary>
-        /// <value>
-        /// <c>true</c> if [waiting for user input]; otherwise, <c>false</c>.
-        /// </value>
+        
         private Boolean WaitingForUserInput
         {
             get
@@ -102,13 +94,9 @@ namespace Dev2.Activities
                 return true;
             }
             return false;
-
-        }
-
-        
+        }        
         
         private int WindowEnum(IntPtr hWnd, int lParam)
-        
         {
 
             GetWindowThreadProcessId(hWnd, out IntPtr processId);
