@@ -295,7 +295,7 @@ namespace Dev2.Runtime.Hosting
                 updatedFile = Path.ChangeExtension(item, ".bite");
                 if (File.Exists(updatedFile) && File.Exists(item))
                 {
-                    File.Delete(item);
+                    File.Delete(updatedFile);
                 }
                 else
                 {
