@@ -58,7 +58,7 @@ namespace Dev2.Threading
             return task;
         }
 
-        readonly List<Exception> Exceptions = new List<Exception>();
+        internal readonly List<Exception> Exceptions = new List<Exception>();
 
         public Task Start(Action backgroundAction, Action uiAction, CancellationTokenSource cancellationTokenSource, Action<Exception> onError)
         {
@@ -82,15 +82,7 @@ namespace Dev2.Threading
             task.RunSynchronously();
             return task;
         }
-
-        /// <summary>
-        /// Starts the specified background action and continues with the UI action 
-        /// on the thread this was invoked from (typically the UI thread).
-        /// </summary>
-        /// <param name="backgroundAction">The background action.</param>
-        /// <returns></returns>
-        /// <author>Trevor.Williams-Ros</author>
-        /// <date>2013/08/08</date>
+        
         public Task Start(Action backgroundAction)
         {
             var task = new Task(backgroundAction.Invoke);
