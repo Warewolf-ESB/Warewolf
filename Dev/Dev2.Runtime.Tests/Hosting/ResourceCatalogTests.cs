@@ -3371,7 +3371,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        public void ResourceCatalog_UnitTest_UpdateExtensions_Given_WW_Resource_Updates_The_Extension()
+        public void ResourceCatalog_UnitTest_Save_Resource_Saves_In_Bite_Extension()
         {
             //------------Setup for test--------------------------
             var rcBuilder = new ResourceCatalogBuilder();
@@ -3384,9 +3384,27 @@ namespace Dev2.Tests.Runtime.Hosting
             var paths = new List<string>() { resourceSaved.First().FilePath };
             var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
             var result = rc.GetResources(workspaceID);
-            privateObject.Invoke("UpdateExtensions", paths);
             //------------Assert Precondition-----------------
-            var expectedFile = Path.ChangeExtension(resourceSaved.First().FilePath, ".bite");
+            var expectedFile = resourceSaved.First().FilePath;
+            Assert.IsTrue(File.Exists(expectedFile));
+            File.Delete(expectedFile);
+        }
+
+        [TestMethod]
+        [Owner("Sanele Mthembu")]
+        public void ResourceCatalog_UnitTest_UpdateExtensions_Given_WW_Resource_Updates_The_Extension()
+        {
+            //------------Setup for test--------------------------
+            var sourcesPath = EnvironmentVariables.GetWorkspacePath(GlobalConstants.ServerWorkspaceID);
+            var rcBuilder = new ResourceCatalogBuilder();
+            PrivateObject privateObject = new PrivateObject(rcBuilder);
+            var xml = XmlResource.Fetch("fileThatsNotWarewolfResource");
+            var filePath = sourcesPath + "\\" + "fileThatsNotWarewolfResource.xml";
+            var filePathToUpdate = new List<string> { sourcesPath + "\\" + "fileThatsNotWarewolfResource.xml" };
+            File.WriteAllText(filePath, xml.ToString());
+            privateObject.Invoke("UpdateExtensions", filePathToUpdate);
+            //------------Assert Precondition-----------------
+            var expectedFile = Path.ChangeExtension(filePath, ".bite");
             Assert.IsTrue(File.Exists(expectedFile));
             File.Delete(expectedFile);
         }
