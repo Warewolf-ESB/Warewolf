@@ -268,21 +268,19 @@ namespace Dev2.Data.Util
             string raw = to.Payload;
             int start = raw.IndexOf(DataListUtil.RecordsetIndexOpeningBracket, StringComparison.Ordinal);
             int end = raw.LastIndexOf(DataListUtil.RecordsetIndexClosingBracket, StringComparison.Ordinal);
-
-            // no index
+            
             if (end - start == 1)
             {
                 result = true;
             }
             else if (start > 0 && end < 0 && (raw.Length - 1 == start))
-            { // another no index case
+            {
                 result = true;
             }
             else
             {
                 if (start > 0 && end < 0)
                 {
-                    // we have index, just no )
                     string part = raw.Substring(start + 1, raw.Length - (start + 1));
 
                     result = part.Contains(DataListUtil.OpeningSquareBrackets) || CheckValidIndex(to, part, start, end);
@@ -294,7 +292,6 @@ namespace Dev2.Data.Util
                 }
                 else if (start > 0 && end > start)
                 {
-                    // we have index with ( and )
                     result = CheckCurrentIndex(to, start, raw, end);
                 }
             }
