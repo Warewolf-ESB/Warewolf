@@ -242,7 +242,7 @@ namespace Dev2.Data.Tests.Parsers
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void CheckValidIndex_ValivIndex_ShouldMarkAsValid()
+        public void CheckValidIndex_ValidIndex_ShouldMarkAsValid()
         {
             var parser = new ParserHelperUtil();
             var valid = parser.CheckValidIndex(new ParseTO() { }, "1", 1, 2);
