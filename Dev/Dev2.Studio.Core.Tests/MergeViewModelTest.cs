@@ -1,10 +1,15 @@
-﻿using System.Windows;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq.Expressions;
+using System.Text;
+using System.Windows;
 using Caliburn.Micro;
-using Dev2.Common.Interfaces.Help;
 using Dev2.Common.Interfaces.Infrastructure.Events;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Studio.Core;
 using Dev2.Studio.Interfaces;
+using Dev2.Studio.Interfaces.Enums;
 using Dev2.ViewModels;
 using Dev2.ViewModels.Merge;
 using Microsoft.Practices.Prism.Mvvm;
@@ -16,45 +21,108 @@ namespace Dev2.Core.Tests
     [TestClass]
     public class MergeViewModelTest
     {
+        private const string ResourceName = "MergeResource";
+        private const string DisplayName = "Merge";
+        private const string ServiceDefinition = "<x/>";
+        private static Mock<IServer> _environmentModel;
+        private static readonly Guid ServerId = Guid.NewGuid();
+        private static readonly Guid FirstResourceId = Guid.NewGuid();
+        private static Mock<IContextualResourceModel> _firstResource;
+        private static Mock<IResourceRepository> _resourceRepo;
+        private static IServerRepository _serverRepo;
+        private static Mock<IPopupController> _popupController;
+        private static Mock<IShellViewModel> _shellViewModel;
+        private static Mock<IEventAggregator> _eventAggregator;
+        private static Mock<IServiceDifferenceParser> _mockParseServiceForDifferences;
+
+        private static Mock<IContextualResourceModel> CreateResource(ResourceType resourceType)
+        {
+            var result = new Mock<IContextualResourceModel>();
+
+            result.Setup(c => c.ResourceName).Returns(ResourceName);
+            result.Setup(c => c.ResourceType).Returns(resourceType);
+            result.Setup(c => c.DisplayName).Returns(DisplayName);
+            result.Setup(c => c.WorkflowXaml).Returns(new StringBuilder(ServiceDefinition));
+            result.Setup(c => c.Category).Returns("Testing");
+            result.Setup(c => c.Environment).Returns(_environmentModel.Object);
+            result.Setup(c => c.ServerID).Returns(ServerId);
+            result.Setup(c => c.ID).Returns(FirstResourceId);
+
+            return result;
+        }
+
+        static void CreateEnvironmentModel()
+        {
+            _environmentModel = CreateMockEnvironment();
+            _resourceRepo = new Mock<IResourceRepository>();
+
+            _firstResource = CreateResource(ResourceType.WorkflowService);
+            var coll = new Collection<IResourceModel> { _firstResource.Object };
+            _resourceRepo.Setup(c => c.All()).Returns(coll);
+
+
+            _environmentModel.Setup(m => m.ResourceRepository).Returns(_resourceRepo.Object);
+        }
+
+        private static IServerRepository GetEnvironmentRepository()
+        {
+            var models = new List<IServer> { _environmentModel.Object };
+            var mock = new Mock<IServerRepository>();
+            mock.Setup(s => s.All()).Returns(models);
+            mock.Setup(s => s.IsLoaded).Returns(true);
+            mock.Setup(repository => repository.Source).Returns(_environmentModel.Object);
+            mock.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IServer, bool>>>())).Returns(_environmentModel.Object);
+            _serverRepo = mock.Object;
+            return _serverRepo;
+        }
+
+        private static Mock<IServer> CreateMockEnvironment(params string[] sources)
+        {
+            var rand = new Random();
+            var connection = CreateMockConnection(rand, sources);
+
+            var env = new Mock<IServer>();
+            env.Setup(e => e.Connection).Returns(connection.Object);
+            env.Setup(e => e.IsConnected).Returns(true);
+            env.Setup(e => e.EnvironmentID).Returns(Guid.NewGuid());
+
+            env.Setup(e => e.Name).Returns($"Server_{rand.Next(1, 100)}");
+
+            return env;
+        }
+
+        private static Mock<IEnvironmentConnection> CreateMockConnection(Random rand, params string[] sources)
+        {
+            var connection = new Mock<IEnvironmentConnection>();
+            connection.Setup(c => c.ServerID).Returns(new Guid());
+            connection.Setup(c => c.AppServerUri).Returns(new Uri($"http://127.0.0.{rand.Next(1, 100)}:{rand.Next(1, 100)}/dsf"));
+            connection.Setup(c => c.WebServerUri).Returns(new Uri($"http://127.0.0.{rand.Next(1, 100)}:{rand.Next(1, 100)}"));
+            connection.Setup(c => c.IsConnected).Returns(true);
+            connection.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder($"<XmlData>{string.Join("\n", sources)}</XmlData>"));
+            connection.Setup(c => c.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
+
+            return connection;
+        }
+
         [TestInitialize]
         public void Init()
         {
             var newServerRepo = new Mock<IServerRepository>();
+
+            CreateEnvironmentModel();
+            _serverRepo = GetEnvironmentRepository();
+            _popupController = new Mock<IPopupController>();
+            _eventAggregator = new Mock<IEventAggregator>();
+
+            _mockParseServiceForDifferences = new Mock<IServiceDifferenceParser>();
+
+            _shellViewModel = new Mock<IShellViewModel>();
+            _shellViewModel.Setup(model => model.HelpViewModel.UpdateHelpText(It.IsAny<string>()));
+
             CustomContainer.Register(newServerRepo.Object);
-        }
-
-        [TestMethod]
-        [Owner("Pieter Terblanche")]
-        [TestCategory("WorkSurfaceContextViewModel_Constructor")]
-        public void WorkSurfaceContextViewModel_Constructor_ValidArguments_DebugOutputViewModelNotNull()
-        {
-            //------------Setup for test--------------------------
-            var mockWorkSurfaceViewModel = new Mock<IWorkflowDesignerViewModel>();
-            var mockedConn = new Mock<IEnvironmentConnection>();
-            mockedConn.Setup(conn => conn.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
-            var mockEnvironmentModel = new Mock<IServer>();
-            mockEnvironmentModel.Setup(model => model.Connection).Returns(mockedConn.Object);
-            mockEnvironmentModel.Setup(e => e.Name).Returns("My Env");
-            var environmentModel = mockEnvironmentModel.Object;
-            mockWorkSurfaceViewModel.Setup(model => model.Server).Returns(environmentModel);
-            //------------Execute Test---------------------------
-            CustomContainer.Register(new Mock<IPopupController>().Object);
-            var eventAggregator = new Mock<IEventAggregator>();
-            var resourceModel = new Mock<IContextualResourceModel>();
-            resourceModel.Setup(model => model.IsWorkflowSaved).Returns(true);
-            mockWorkSurfaceViewModel.Setup(model => model.ResourceModel).Returns(resourceModel.Object);
-            var viewModel = new Mock<IMergeWorkflowViewModel>();
-            viewModel.Setup(model => model.WorkflowDesignerViewModel).Returns(mockWorkSurfaceViewModel.Object);
-            var vm = new MergeViewModel(eventAggregator.Object, viewModel.Object, new Mock<IPopupController>().Object, null);
-
-            //------------Assert Results-------------------------
-            Assert.IsNotNull(vm);
-            Assert.IsFalse(vm.HasVariables);
-            Assert.IsTrue(vm.HasDebugOutput);
-            Assert.IsNull(vm.DisplayName);
-            Assert.AreEqual("MergeConflicts", vm.ResourceType);
-            Assert.IsNull(vm.HelpText);
-            Assert.IsFalse(vm.IsDirty);
+            CustomContainer.Register(_shellViewModel.Object);
+            CustomContainer.Register(_popupController.Object);
+            CustomContainer.Register(_mockParseServiceForDifferences.Object);
         }
 
         [TestMethod]
@@ -63,28 +131,27 @@ namespace Dev2.Core.Tests
         public void MergeViewModel_GetView_ReturnsIView_NotNull()
         {
             //------------Setup for test--------------------------
+            _firstResource = CreateResource(ResourceType.WorkflowService);
+
             var mockWorkSurfaceViewModel = new Mock<IWorkflowDesignerViewModel>();
-            var mockedConn = new Mock<IEnvironmentConnection>();
-            mockedConn.Setup(conn => conn.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
-            var mockEnvironmentModel = new Mock<IServer>();
-            mockEnvironmentModel.Setup(model => model.Connection).Returns(mockedConn.Object);
-            mockEnvironmentModel.Setup(e => e.Name).Returns("My Env");
-            var environmentModel = mockEnvironmentModel.Object;
-            mockWorkSurfaceViewModel.Setup(model => model.Server).Returns(environmentModel);
+            mockWorkSurfaceViewModel.Setup(model => model.Server).Returns(_environmentModel.Object);
+            mockWorkSurfaceViewModel.Setup(model => model.ResourceModel).Returns(_firstResource.Object);
+
+            var mock = new Mock<List<(Guid uniqueId, IConflictNode currentNode, IConflictNode differenceNode, bool hasConflict)>>();
+
+            _mockParseServiceForDifferences.Setup(parser =>
+                parser.GetDifferences(It.IsAny<IContextualResourceModel>(), It.IsAny<IContextualResourceModel>(),
+                    false)).Returns(mock.Object);
 
             //------------Execute Test---------------------------
-            CustomContainer.Register(new Mock<IPopupController>().Object);
-            var eventAggregator = new Mock<IEventAggregator>();
-            var resourceModel = new Mock<IContextualResourceModel>();
-            resourceModel.Setup(model => model.IsWorkflowSaved).Returns(true);
-            mockWorkSurfaceViewModel.Setup(model => model.ResourceModel).Returns(resourceModel.Object);
+
             var viewModel = new Mock<IMergeWorkflowViewModel>();
             viewModel.Setup(model => model.WorkflowDesignerViewModel).Returns(mockWorkSurfaceViewModel.Object);
-            var vm = new MergeViewModel(eventAggregator.Object, viewModel.Object, new Mock<IPopupController>().Object, new Mock<IView>().Object);
+            var vm = new MergeViewModel(_eventAggregator.Object, viewModel.Object, new Mock<IPopupController>().Object, new Mock<IView>().Object);
 
             Assert.IsNotNull(vm);
             Assert.IsFalse(vm.HasVariables);
-            Assert.IsTrue(vm.HasDebugOutput);
+            Assert.IsFalse(vm.HasDebugOutput);
             Assert.IsNull(vm.DisplayName);
             Assert.AreEqual("MergeConflicts", vm.ResourceType);
             Assert.IsNull(vm.HelpText);
@@ -102,31 +169,27 @@ namespace Dev2.Core.Tests
         public void MergeViewModel_DoDeactivate_CanSave_ExpectedFalse()
         {
             //------------Setup for test--------------------------
+            _firstResource = CreateResource(ResourceType.WorkflowService);
+
             var mockWorkSurfaceViewModel = new Mock<IWorkflowDesignerViewModel>();
-            var mockedConn = new Mock<IEnvironmentConnection>();
-            mockedConn.Setup(conn => conn.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
-            var mockEnvironmentModel = new Mock<IServer>();
-            mockEnvironmentModel.Setup(model => model.Connection).Returns(mockedConn.Object);
-            mockEnvironmentModel.Setup(e => e.Name).Returns("My Env");
-            var environmentModel = mockEnvironmentModel.Object;
-            mockWorkSurfaceViewModel.Setup(model => model.Server).Returns(environmentModel);
+            mockWorkSurfaceViewModel.Setup(model => model.Server).Returns(_environmentModel.Object);
+            mockWorkSurfaceViewModel.Setup(model => model.ResourceModel).Returns(_firstResource.Object);
+
+            var mock = new Mock<List<(Guid uniqueId, IConflictNode currentNode, IConflictNode differenceNode, bool hasConflict)>>();
+
+            _mockParseServiceForDifferences.Setup(parser =>
+                parser.GetDifferences(It.IsAny<IContextualResourceModel>(), It.IsAny<IContextualResourceModel>(),
+                    false)).Returns(mock.Object);
 
             //------------Execute Test---------------------------
-            var mvm = new Mock<IShellViewModel>();
-            mvm.Setup(model => model.HelpViewModel.UpdateHelpText(It.IsAny<string>()));
-            CustomContainer.Register(mvm.Object);
-            CustomContainer.Register(new Mock<IPopupController>().Object);
-            var eventAggregator = new Mock<IEventAggregator>();
-            var resourceModel = new Mock<IContextualResourceModel>();
-            resourceModel.Setup(model => model.IsWorkflowSaved).Returns(true);
-            mockWorkSurfaceViewModel.Setup(model => model.ResourceModel).Returns(resourceModel.Object);
+
             var viewModel = new Mock<IMergeWorkflowViewModel>();
             viewModel.Setup(model => model.WorkflowDesignerViewModel).Returns(mockWorkSurfaceViewModel.Object);
-            var vm = new MergeViewModel(eventAggregator.Object, viewModel.Object, new Mock<IPopupController>().Object, new Mock<IView>().Object);
+            var vm = new MergeViewModel(_eventAggregator.Object, viewModel.Object, new Mock<IPopupController>().Object, new Mock<IView>().Object);
 
             Assert.IsNotNull(vm);
             Assert.IsFalse(vm.HasVariables);
-            Assert.IsTrue(vm.HasDebugOutput);
+            Assert.IsFalse(vm.HasDebugOutput);
             Assert.IsNull(vm.DisplayName);
             Assert.AreEqual("MergeConflicts", vm.ResourceType);
             Assert.IsNull(vm.HelpText);
@@ -134,12 +197,7 @@ namespace Dev2.Core.Tests
 
             vm.HelpText = string.Empty;
 
-            var env = new Mock<IServer>();
-            var con = new Mock<IEnvironmentConnection>();
-            resourceModel.Setup(model => model.Environment).Returns(env.Object);
-            resourceModel.Setup(model => model.Environment.Connection).Returns(con.Object);
-            resourceModel.Setup(model => model.Environment.Connection.IsConnected).Returns(true);
-            var mergeWorkflowViewModel = new MergeWorkflowViewModel(resourceModel.Object, resourceModel.Object, false);
+            var mergeWorkflowViewModel = new MergeWorkflowViewModel(_firstResource.Object, _firstResource.Object, false);
 
             vm.ViewModel = mergeWorkflowViewModel;
 
@@ -147,10 +205,10 @@ namespace Dev2.Core.Tests
 
             //------------Assert Results-------------------------
 
-            Assert.IsTrue(vm.IsDirty);
+            Assert.IsFalse(vm.IsDirty);
             Assert.AreEqual(string.Empty, vm.HelpText);
             Assert.IsTrue(expectedValue);
-            mvm.Verify(model => model.HelpViewModel.UpdateHelpText(It.IsAny<string>()));
+            _shellViewModel.Verify(model => model.HelpViewModel.UpdateHelpText(It.IsAny<string>()));
         }
 
         [TestMethod]
@@ -159,28 +217,27 @@ namespace Dev2.Core.Tests
         public void MergeViewModel_OnDispose_ViewModel_Dispose()
         {
             //------------Setup for test--------------------------
+            _firstResource = CreateResource(ResourceType.WorkflowService);
+
             var mockWorkSurfaceViewModel = new Mock<IWorkflowDesignerViewModel>();
-            var mockedConn = new Mock<IEnvironmentConnection>();
-            mockedConn.Setup(conn => conn.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
-            var mockEnvironmentModel = new Mock<IServer>();
-            mockEnvironmentModel.Setup(model => model.Connection).Returns(mockedConn.Object);
-            mockEnvironmentModel.Setup(e => e.Name).Returns("My Env");
-            var environmentModel = mockEnvironmentModel.Object;
-            mockWorkSurfaceViewModel.Setup(model => model.Server).Returns(environmentModel);
+            mockWorkSurfaceViewModel.Setup(model => model.Server).Returns(_environmentModel.Object);
+            mockWorkSurfaceViewModel.Setup(model => model.ResourceModel).Returns(_firstResource.Object);
+
+            var mock = new Mock<List<(Guid uniqueId, IConflictNode currentNode, IConflictNode differenceNode, bool hasConflict)>>();
+
+            _mockParseServiceForDifferences.Setup(parser =>
+                parser.GetDifferences(It.IsAny<IContextualResourceModel>(), It.IsAny<IContextualResourceModel>(),
+                    false)).Returns(mock.Object);
 
             //------------Execute Test---------------------------
-            CustomContainer.Register(new Mock<IPopupController>().Object);
-            var eventAggregator = new Mock<IEventAggregator>();
-            var resourceModel = new Mock<IContextualResourceModel>();
-            resourceModel.Setup(model => model.IsWorkflowSaved).Returns(true);
-            mockWorkSurfaceViewModel.Setup(model => model.ResourceModel).Returns(resourceModel.Object);
+
             var viewModel = new Mock<IMergeWorkflowViewModel>();
             viewModel.Setup(model => model.WorkflowDesignerViewModel).Returns(mockWorkSurfaceViewModel.Object);
-            var vm = new MergeViewModel(eventAggregator.Object, viewModel.Object, new Mock<IPopupController>().Object, new Mock<IView>().Object);
+            var vm = new MergeViewModel(_eventAggregator.Object, viewModel.Object, new Mock<IPopupController>().Object, new Mock<IView>().Object);
 
             Assert.IsNotNull(vm);
             Assert.IsFalse(vm.HasVariables);
-            Assert.IsTrue(vm.HasDebugOutput);
+            Assert.IsFalse(vm.HasDebugOutput);
             Assert.IsNull(vm.DisplayName);
             Assert.AreEqual("MergeConflicts", vm.ResourceType);
             Assert.IsNull(vm.HelpText);
@@ -197,43 +254,26 @@ namespace Dev2.Core.Tests
         public void MergeViewModel_PropertyChanged_ViewModel_IsTrue()
         {
             //------------Setup for test--------------------------
+            _firstResource = CreateResource(ResourceType.WorkflowService);
+
             var mockWorkSurfaceViewModel = new Mock<IWorkflowDesignerViewModel>();
-            var mockedConn = new Mock<IEnvironmentConnection>();
-            mockedConn.Setup(conn => conn.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
-            var mockEnvironmentModel = new Mock<IServer>();
-            mockEnvironmentModel.Setup(model => model.Connection).Returns(mockedConn.Object);
-            mockEnvironmentModel.Setup(e => e.Name).Returns("My Env");
-            var environmentModel = mockEnvironmentModel.Object;
-            mockWorkSurfaceViewModel.Setup(model => model.Server).Returns(environmentModel);
+            mockWorkSurfaceViewModel.Setup(model => model.Server).Returns(_environmentModel.Object);
+            mockWorkSurfaceViewModel.Setup(model => model.ResourceModel).Returns(_firstResource.Object);
+
+            var mock = new Mock<List<(Guid uniqueId, IConflictNode currentNode, IConflictNode differenceNode, bool hasConflict)>>();
+
+            _mockParseServiceForDifferences.Setup(parser =>
+                parser.GetDifferences(It.IsAny<IContextualResourceModel>(), It.IsAny<IContextualResourceModel>(),
+                    false)).Returns(mock.Object);
 
             //------------Execute Test---------------------------
-            CustomContainer.Register(new Mock<IPopupController>().Object);
-            var mockMainViewModel = new Mock<IShellViewModel>();
-            mockMainViewModel.Setup(model => model.HelpViewModel).Returns(new Mock<IHelpWindowViewModel>().Object);
-            CustomContainer.Register(mockMainViewModel.Object);
-            var eventAggregator = new Mock<IEventAggregator>();
-            var resourceModel = new Mock<IContextualResourceModel>();
-            resourceModel.Setup(model => model.IsWorkflowSaved).Returns(true);
-            mockWorkSurfaceViewModel.Setup(model => model.ResourceModel).Returns(resourceModel.Object);
+
             var viewModel = new Mock<IMergeWorkflowViewModel>();
             viewModel.Setup(model => model.WorkflowDesignerViewModel).Returns(mockWorkSurfaceViewModel.Object);
+            var vm = new MergeViewModel(_eventAggregator.Object, viewModel.Object, new Mock<IPopupController>().Object, new Mock<IView>().Object);
 
-            var env = new Mock<IServer>();
-            var con = new Mock<IEnvironmentConnection>();
-            resourceModel.Setup(model => model.Environment).Returns(env.Object);
-            resourceModel.Setup(model => model.Environment.Connection).Returns(con.Object);
-            resourceModel.Setup(model => model.Environment.Connection.IsConnected).Returns(true);
-            var mergeWorkflowViewModel = new MergeWorkflowViewModel(resourceModel.Object, resourceModel.Object, false);
-
-            var vm = new MergeViewModel(eventAggregator.Object, mergeWorkflowViewModel, new Mock<IPopupController>().Object, new Mock<IView>().Object);
-
-            Assert.IsNotNull(vm);
-            Assert.IsFalse(vm.HasVariables);
-            Assert.IsTrue(vm.HasDebugOutput);
-            Assert.AreEqual("Merge *", vm.DisplayName);
-            Assert.AreEqual("MergeConflicts", vm.ResourceType);
-            Assert.IsNull(vm.HelpText);
-            Assert.IsTrue(vm.IsDirty);
+            var mergeWorkflowViewModel = new MergeWorkflowViewModel(_firstResource.Object, _firstResource.Object, false);
+            mergeWorkflowViewModel.HasMergeStarted = true;
 
             vm.ViewModel = mergeWorkflowViewModel;
 
@@ -246,10 +286,13 @@ namespace Dev2.Core.Tests
                 }
             };
 
-            //---------------Assert Precondition----------------
-            //---------------Execute Test ----------------------
-            //---------------Test Result -----------------------
-            Assert.IsTrue(wasCalled);
+            Assert.IsNotNull(vm);
+            Assert.IsFalse(vm.HasVariables);
+            Assert.IsFalse(vm.HasDebugOutput);
+            Assert.AreEqual(mergeWorkflowViewModel.DisplayName, vm.DisplayName);
+            Assert.AreEqual("MergeConflicts", vm.ResourceType);
+            Assert.IsNull(vm.HelpText);
+            Assert.IsTrue(vm.IsDirty);
         }
 
 
@@ -259,14 +302,17 @@ namespace Dev2.Core.Tests
         public void MergeViewModel_DoDeactivate_CanSave_ExpectedTrue()
         {
             //------------Setup for test--------------------------
+            _firstResource = CreateResource(ResourceType.WorkflowService);
+
             var mockWorkSurfaceViewModel = new Mock<IWorkflowDesignerViewModel>();
-            var mockedConn = new Mock<IEnvironmentConnection>();
-            mockedConn.Setup(conn => conn.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
-            var mockEnvironmentModel = new Mock<IServer>();
-            mockEnvironmentModel.Setup(model => model.Connection).Returns(mockedConn.Object);
-            mockEnvironmentModel.Setup(e => e.Name).Returns("My Env");
-            var environmentModel = mockEnvironmentModel.Object;
-            mockWorkSurfaceViewModel.Setup(model => model.Server).Returns(environmentModel);
+            mockWorkSurfaceViewModel.Setup(model => model.Server).Returns(_environmentModel.Object);
+            mockWorkSurfaceViewModel.Setup(model => model.ResourceModel).Returns(_firstResource.Object);
+
+            var mock = new Mock<List<(Guid uniqueId, IConflictNode currentNode, IConflictNode differenceNode, bool hasConflict)>>();
+
+            _mockParseServiceForDifferences.Setup(parser =>
+                parser.GetDifferences(It.IsAny<IContextualResourceModel>(), It.IsAny<IContextualResourceModel>(),
+                    false)).Returns(mock.Object);
 
             //------------Execute Test---------------------------
             var popupController = new Mock<IPopupController>();
@@ -275,28 +321,20 @@ namespace Dev2.Core.Tests
                         MessageBoxButton.YesNoCancel,
                         MessageBoxImage.Information, "", false, false, true, false, false, false)).Verifiable();
 
-            var eventAggregator = new Mock<IEventAggregator>();
-            var resourceModel = new Mock<IContextualResourceModel>();
-            resourceModel.Setup(model => model.IsWorkflowSaved).Returns(true);
-            mockWorkSurfaceViewModel.Setup(model => model.ResourceModel).Returns(resourceModel.Object);
             var viewModel = new Mock<IMergeWorkflowViewModel>();
             viewModel.Setup(model => model.WorkflowDesignerViewModel).Returns(mockWorkSurfaceViewModel.Object);
-            var vm = new MergeViewModel(eventAggregator.Object, viewModel.Object, popupController.Object, new Mock<IView>().Object);
+            var vm = new MergeViewModel(_eventAggregator.Object, viewModel.Object, popupController.Object, new Mock<IView>().Object);
 
             Assert.IsNotNull(vm);
             Assert.IsFalse(vm.HasVariables);
-            Assert.IsTrue(vm.HasDebugOutput);
+            Assert.IsFalse(vm.HasDebugOutput);
             Assert.IsNull(vm.DisplayName);
             Assert.AreEqual("MergeConflicts", vm.ResourceType);
             Assert.IsNull(vm.HelpText);
             Assert.IsFalse(vm.IsDirty);
-
-            var env = new Mock<IServer>();
-            var con = new Mock<IEnvironmentConnection>();
-            resourceModel.Setup(model => model.Environment).Returns(env.Object);
-            resourceModel.Setup(model => model.Environment.Connection).Returns(con.Object);
-            resourceModel.Setup(model => model.Environment.Connection.IsConnected).Returns(true);
-            var mergeWorkflowViewModel = new MergeWorkflowViewModel(resourceModel.Object, resourceModel.Object, false);
+            
+            var mergeWorkflowViewModel = new MergeWorkflowViewModel(_firstResource.Object, _firstResource.Object, false);
+            mergeWorkflowViewModel.HasMergeStarted = true;
 
             vm.ViewModel = mergeWorkflowViewModel;
 
@@ -316,14 +354,17 @@ namespace Dev2.Core.Tests
         public void MergeViewModel_DoDeactivate_CanSave_MessageBoxYes()
         {
             //------------Setup for test--------------------------
+            _firstResource = CreateResource(ResourceType.WorkflowService);
+
             var mockWorkSurfaceViewModel = new Mock<IWorkflowDesignerViewModel>();
-            var mockedConn = new Mock<IEnvironmentConnection>();
-            mockedConn.Setup(conn => conn.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
-            var mockEnvironmentModel = new Mock<IServer>();
-            mockEnvironmentModel.Setup(model => model.Connection).Returns(mockedConn.Object);
-            mockEnvironmentModel.Setup(e => e.Name).Returns("My Env");
-            var environmentModel = mockEnvironmentModel.Object;
-            mockWorkSurfaceViewModel.Setup(model => model.Server).Returns(environmentModel);
+            mockWorkSurfaceViewModel.Setup(model => model.Server).Returns(_environmentModel.Object);
+            mockWorkSurfaceViewModel.Setup(model => model.ResourceModel).Returns(_firstResource.Object);
+
+            var mock = new Mock<List<(Guid uniqueId, IConflictNode currentNode, IConflictNode differenceNode, bool hasConflict)>>();
+
+            _mockParseServiceForDifferences.Setup(parser =>
+                parser.GetDifferences(It.IsAny<IContextualResourceModel>(), It.IsAny<IContextualResourceModel>(),
+                    false)).Returns(mock.Object);
 
             //------------Execute Test---------------------------
 
@@ -331,29 +372,20 @@ namespace Dev2.Core.Tests
             popupController.Setup(controller => controller.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), MessageBoxImage.Information, "", false, false, true, false, false, false)).Returns(MessageBoxResult.Yes);
             CustomContainer.Register(popupController.Object);
 
-            var eventAggregator = new Mock<IEventAggregator>();
-            var resourceModel = new Mock<IContextualResourceModel>();
-            resourceModel.Setup(model => model.IsWorkflowSaved).Returns(true);
-            mockWorkSurfaceViewModel.Setup(model => model.ResourceModel).Returns(resourceModel.Object);
             var viewModel = new Mock<IMergeWorkflowViewModel>();
             viewModel.Setup(model => model.WorkflowDesignerViewModel).Returns(mockWorkSurfaceViewModel.Object);
-            var vm = new MergeViewModel(eventAggregator.Object, viewModel.Object, popupController.Object, new Mock<IView>().Object);
+            var vm = new MergeViewModel(_eventAggregator.Object, viewModel.Object, popupController.Object, new Mock<IView>().Object);
 
             Assert.IsNotNull(vm);
             Assert.IsFalse(vm.HasVariables);
-            Assert.IsTrue(vm.HasDebugOutput);
+            Assert.IsFalse(vm.HasDebugOutput);
             Assert.IsNull(vm.DisplayName);
             Assert.AreEqual("MergeConflicts", vm.ResourceType);
             Assert.IsNull(vm.HelpText);
             Assert.IsFalse(vm.IsDirty);
 
-            var env = new Mock<IServer>();
-            var con = new Mock<IEnvironmentConnection>();
-            resourceModel.Setup(model => model.Environment).Returns(env.Object);
-            resourceModel.Setup(model => model.Environment.Connection).Returns(con.Object);
-            resourceModel.Setup(model => model.Environment.Connection.IsConnected).Returns(true);
-            var mergeWorkflowViewModel = new MergeWorkflowViewModel(resourceModel.Object, resourceModel.Object, false);
-
+            var mergeWorkflowViewModel = new MergeWorkflowViewModel(_firstResource.Object, _firstResource.Object, false);
+            mergeWorkflowViewModel.HasMergeStarted = true;
             mergeWorkflowViewModel.DisplayName = "Merge";
 
             vm.ViewModel = mergeWorkflowViewModel;
@@ -362,7 +394,7 @@ namespace Dev2.Core.Tests
 
             //------------Assert Results-------------------------
 
-            Assert.IsTrue(vm.IsDirty);
+            Assert.IsFalse(vm.IsDirty);
             Assert.IsNull(vm.HelpText);
         }
 
@@ -372,44 +404,37 @@ namespace Dev2.Core.Tests
         public void MergeViewModel_DoDeactivate_CanSave_MessageBoxNo()
         {
             //------------Setup for test--------------------------
+            _firstResource = CreateResource(ResourceType.WorkflowService);
+
             var mockWorkSurfaceViewModel = new Mock<IWorkflowDesignerViewModel>();
-            var mockedConn = new Mock<IEnvironmentConnection>();
-            mockedConn.Setup(conn => conn.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
-            var mockEnvironmentModel = new Mock<IServer>();
-            mockEnvironmentModel.Setup(model => model.Connection).Returns(mockedConn.Object);
-            mockEnvironmentModel.Setup(e => e.Name).Returns("My Env");
-            var environmentModel = mockEnvironmentModel.Object;
-            mockWorkSurfaceViewModel.Setup(model => model.Server).Returns(environmentModel);
+            mockWorkSurfaceViewModel.Setup(model => model.Server).Returns(_environmentModel.Object);
+            mockWorkSurfaceViewModel.Setup(model => model.ResourceModel).Returns(_firstResource.Object);
+
+            var mock = new Mock<List<(Guid uniqueId, IConflictNode currentNode, IConflictNode differenceNode, bool hasConflict)>>();
+
+            _mockParseServiceForDifferences.Setup(parser =>
+                parser.GetDifferences(It.IsAny<IContextualResourceModel>(), It.IsAny<IContextualResourceModel>(),
+                    false)).Returns(mock.Object);
 
             //------------Execute Test---------------------------
 
-            var popupController = new Mock<IPopupController>();
-            popupController.Setup(controller => controller.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), MessageBoxImage.Information, "", false, false, true, false, false, false)).Returns(MessageBoxResult.No);
-            CustomContainer.Register(popupController.Object);
-
-            var eventAggregator = new Mock<IEventAggregator>();
-            var resourceModel = new Mock<IContextualResourceModel>();
-            resourceModel.Setup(model => model.IsWorkflowSaved).Returns(true);
-            mockWorkSurfaceViewModel.Setup(model => model.ResourceModel).Returns(resourceModel.Object);
+            _popupController.Setup(controller => controller.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), MessageBoxImage.Information, "", false, false, true, false, false, false)).Returns(MessageBoxResult.No);
+            CustomContainer.Register(_popupController.Object);
+            
             var viewModel = new Mock<IMergeWorkflowViewModel>();
             viewModel.Setup(model => model.WorkflowDesignerViewModel).Returns(mockWorkSurfaceViewModel.Object);
-            var vm = new MergeViewModel(eventAggregator.Object, viewModel.Object, popupController.Object, new Mock<IView>().Object);
+            var vm = new MergeViewModel(_eventAggregator.Object, viewModel.Object, _popupController.Object, new Mock<IView>().Object);
 
             Assert.IsNotNull(vm);
             Assert.IsFalse(vm.HasVariables);
-            Assert.IsTrue(vm.HasDebugOutput);
+            Assert.IsFalse(vm.HasDebugOutput);
             Assert.IsNull(vm.DisplayName);
             Assert.AreEqual("MergeConflicts", vm.ResourceType);
             Assert.IsNull(vm.HelpText);
             Assert.IsFalse(vm.IsDirty);
 
-            var env = new Mock<IServer>();
-            var con = new Mock<IEnvironmentConnection>();
-            resourceModel.Setup(model => model.Environment).Returns(env.Object);
-            resourceModel.Setup(model => model.Environment.Connection).Returns(con.Object);
-            resourceModel.Setup(model => model.Environment.Connection.IsConnected).Returns(true);
-            var mergeWorkflowViewModel = new MergeWorkflowViewModel(resourceModel.Object, resourceModel.Object, false);
-
+            var mergeWorkflowViewModel = new MergeWorkflowViewModel(_firstResource.Object, _firstResource.Object, false);
+            mergeWorkflowViewModel.HasMergeStarted = true;
             mergeWorkflowViewModel.DisplayName = "Merge";
 
             vm.ViewModel = mergeWorkflowViewModel;

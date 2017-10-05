@@ -3048,7 +3048,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
             var parswer = CustomContainer.Get<IServiceDifferenceParser>();
             _allNodes = parswer.GetAllNodes();
-            var nodes = chart?.Properties["Nodes"]?.Collection;
+            var nodes = chart.Properties["Nodes"]?.Collection;
 
             if (nodes == null)
             {
@@ -3153,9 +3153,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             if (parentNode != null)
             {
                 parentNode.Properties["Next"]?.SetValue(flowNode ?? model.FlowNode.GetCurrentValue());
-                SelectedItem = model.FlowNode;
-                //OnItemSelected(Sele);
-                //BringIntoView(model.FlowNode);
+                Selection.Select(_wd.Context, model.FlowNode);
             }
         }
 
@@ -3172,8 +3170,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             if (startNode.ComputedValue == null)
             {
                 startNode.SetValue(flowNode);
-                SelectedItem = model.FlowNode;
-                //BringIntoView(model.FlowNode);
+                Selection.Select(_wd.Context, model.FlowNode);
             }
         }
 
