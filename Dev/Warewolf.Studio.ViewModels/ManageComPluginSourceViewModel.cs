@@ -503,7 +503,7 @@ namespace Warewolf.Studio.ViewModels
         
         void Dispose(bool disposing)
         {
-            if (!_isDisposed)
+            if (!_isDisposed && !disposing)
             {
                 _isDisposed = true;
             }

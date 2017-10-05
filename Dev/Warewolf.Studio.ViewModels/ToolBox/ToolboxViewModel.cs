@@ -166,21 +166,19 @@ namespace Warewolf.Studio.ViewModels.ToolBox
 
         #region Implementation of IDisposable
 
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
         public void Dispose()
         {
             Dispose(true);
             GC.SuppressFinalize(this);
         }
-
-        
-        void Dispose(bool disposing)
-        
+                
+        void Dispose(bool disposing)        
         {
-            _localModel.OnserverDisconnected -= _localModel_OnserverDisconnected;
-            _remoteModel.OnserverDisconnected -= _remoteModel_OnserverDisconnected;
+            if (!disposing)
+            {
+                _localModel.OnserverDisconnected -= _localModel_OnserverDisconnected;
+                _remoteModel.OnserverDisconnected -= _remoteModel_OnserverDisconnected;
+            }
         }
 
         #endregion

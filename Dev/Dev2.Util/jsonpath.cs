@@ -449,7 +449,7 @@ namespace Dev2.Util
                 return _system.GetMemberValue(obj, member);
             }
 
-            private static object NullEval(string expr, object value, string context)
+            private static object NullEval()
             {
                 return null;
             }

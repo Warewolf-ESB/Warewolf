@@ -97,7 +97,7 @@ namespace Unlimited.Framework.Converters.Graph.Poco
 
                 if(propertyData != null)
                 {
-                    paths.Add(BuildPath(propertyStack, propertyInfo.Name,propertyInfo.PropertyType.IsEnumerable(), root));
+                    paths.Add(BuildPath(propertyStack, propertyInfo.Name, propertyInfo.PropertyType.IsEnumerable()));
                 }
             }
 
@@ -113,14 +113,12 @@ namespace Unlimited.Framework.Converters.Graph.Poco
                 {
                     Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
                     propertyData = null;
-                    //TODO When an exception is encountered stop discovery for this path and write to log
                 }
 
                 if(propertyData != null)
                 {
                     if(propertyInfo.PropertyType.IsEnumerable())
                     {
-
                         if (propertyData is IEnumerable enumerableData)
                         {
                             propertyStack.Push(new Tuple<string, bool, bool, object>(propertyInfo.Name, propertyInfo.PropertyType.IsEnumerable(), false, data));
@@ -149,8 +147,7 @@ namespace Unlimited.Framework.Converters.Graph.Poco
             }
         }
 
-        private IPath BuildPath(Stack<Tuple<string,bool, bool, object>> propertyStack, string name,bool isEnumerable,
-            object root)
+        private IPath BuildPath(Stack<Tuple<string,bool, bool, object>> propertyStack, string name, bool isEnumerable)
         {
             var path = new PocoPath();
 
@@ -190,8 +187,8 @@ namespace Unlimited.Framework.Converters.Graph.Poco
                 path.DisplayPath += PocoPath.SeperatorSymbol;
             }
 
-            path.ActualPath += path.CreatePathSegment(name,isEnumerable).ToString();
-            path.DisplayPath += path.CreatePathSegment(name, isEnumerable).ToString();
+            path.ActualPath += path.CreatePathSegment(name,isEnumerable);
+            path.DisplayPath += path.CreatePathSegment(name, isEnumerable);
 
             return path;
         }
