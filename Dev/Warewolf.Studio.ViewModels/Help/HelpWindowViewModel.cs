@@ -102,9 +102,6 @@ namespace Warewolf.Studio.ViewModels.Help
 
         #region Implementation of IDisposable
 
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
         public void Dispose()
         {
             Dispose(true);
@@ -114,7 +111,10 @@ namespace Warewolf.Studio.ViewModels.Help
         
         void Dispose(bool disposing)
         {
-            HelpModel.OnHelpTextReceived -= OnHelpTextReceived;
+            if (!disposing)
+            {
+                HelpModel.OnHelpTextReceived -= OnHelpTextReceived;
+            }
         }
 
         #endregion

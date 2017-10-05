@@ -392,7 +392,11 @@ namespace Warewolf.Studio.ViewModels
                 }
                 return null;
             }
-            set { _requestServiceNameViewModel = new Task<IRequestServiceNameViewModel>(() => value); _requestServiceNameViewModel.Start(); }
+            set
+            {
+                _requestServiceNameViewModel = new Task<IRequestServiceNameViewModel>(() => value);
+                _requestServiceNameViewModel.Start();
+            }
         }
 
         public ICommand OkCommand { get; set; }
@@ -417,7 +421,7 @@ namespace Warewolf.Studio.ViewModels
         
         void Dispose(bool disposing)
         {
-            if (!_isDisposed)
+            if (!_isDisposed && !disposing)
             {
                 _isDisposed = true;
             }
