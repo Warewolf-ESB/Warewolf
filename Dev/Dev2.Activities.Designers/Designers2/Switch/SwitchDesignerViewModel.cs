@@ -166,7 +166,7 @@ namespace Dev2.Activities.Designers2.Switch
             }
         }
 
-        readonly bool ValidExpression;
+        private bool ValidExpression;
 
         public override void UpdateHelpDescriptor(string helpText)
         {
