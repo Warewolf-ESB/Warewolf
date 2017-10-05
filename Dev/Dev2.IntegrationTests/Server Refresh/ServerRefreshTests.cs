@@ -18,7 +18,7 @@ namespace Dev2.Integration.Tests.Server_Refresh
     [TestClass]
     public class ServerRefreshTests
     {
-        const string PassResult = @"C:\ProgramData\Warewolf\Resources\PassResult.xml";
+        const string PassResult = @"C:\ProgramData\Warewolf\Resources\PassResult.bite";
         [TestMethod]
         public void Run_a_workflow_to_test_server_refresh()
         {

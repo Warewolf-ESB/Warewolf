@@ -1,6 +1,8 @@
 ﻿using System.Collections.ObjectModel;
+using Dev2.Common.Interfaces;
+using Dev2.Studio.Interfaces.DataList;
 
-namespace Dev2.Common.Interfaces
+namespace Dev2.Studio.Interfaces
 {
     public interface IConflictModelFactory
     {
@@ -10,6 +12,7 @@ namespace Dev2.Common.Interfaces
         ObservableCollection<IMergeToolModel> Children { get; set; }
         IMergeToolModel GetModel(string switchName = "");
         IMergeToolModel Model { get; set; }
+        IDataListViewModel DataListViewModel { get; set; }
         void GetDataList();
         event ConflictModelChanged SomethingConflictModelChanged;
     }

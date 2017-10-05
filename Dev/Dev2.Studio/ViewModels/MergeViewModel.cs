@@ -1,6 +1,5 @@
 ﻿using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core.Help;
-using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Studio.Core;
 using Dev2.Studio.Interfaces;
@@ -60,8 +59,7 @@ namespace Dev2.ViewModels
         [ExcludeFromCodeCoverage]
         protected override void OnViewLoaded(object view)
         {
-            var loadedView = view as IView;
-            if (loadedView != null)
+            if (view is IView loadedView)
             {
                 loadedView.DataContext = ViewModel;
                 base.OnViewLoaded(loadedView);

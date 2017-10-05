@@ -15,6 +15,7 @@ using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows;
+using Dev2.Common.Interfaces;
 
 namespace Dev2.Studio.Interfaces
 {
@@ -30,6 +31,7 @@ namespace Dev2.Studio.Interfaces
         ModelItem SelectedItem { get; set; }
         bool WorkspaceSave { get; }
         Action WorkflowChanged { get; set; }
+        bool CanViewWorkflowLink { get; set; }
 
         void UpdateWorkflowLink(string newLink);
         void Dispose();
@@ -39,5 +41,8 @@ namespace Dev2.Studio.Interfaces
         ModelItem GetModelItem(Guid workSurfaceMappingId, Guid parentID);
 
         string GetWorkflowInputs(string field);
+        void CreateBlankWorkflow();
+        void RemoveItem(IMergeToolModel model);
+        void AddItem(IMergeToolModel parent, IMergeToolModel model);
     }
 }

@@ -2013,9 +2013,11 @@ namespace Dev2.Studio.ViewModels.Workflow
             var onAfterPopulateAll = new System.Action(() => BringIntoView(selectedModelItem.View as FrameworkElement));
             _virtualizedContainerServicePopulateAllMethod?.Invoke(_virtualizedContainerService, new object[] { onAfterPopulateAll });
         }
-        public void BringMergeToView(ModelItem selectedModelItem)
+        public void BringMergeToView(DataTemplate selectedDataTemplate)
         {
-            BringIntoView(selectedModelItem);
+            var dependencyObject = selectedDataTemplate.LoadContent();
+            var frameworkElement = dependencyObject as FrameworkElement;
+            BringIntoView(frameworkElement);
         }
         private static void BringIntoView(FrameworkElement view)
         {
@@ -2983,7 +2985,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public void RemoveItem(IMergeToolModel model)
         {
-            ModelItem root = _wd.Context.Services.GetService<ModelService>().Root;
+            var root = _wd.Context.Services.GetService<ModelService>().Root;
             var chart = _wd.Context.Services.GetService<ModelService>().Find(root, typeof(Flowchart)).FirstOrDefault();
 
             if (chart != null)
@@ -3038,14 +3040,22 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public void AddItem(IMergeToolModel parent, IMergeToolModel model)
         {
-            ModelItem root = _wd.Context.Services.GetService<ModelService>().Root;
+            var root = _wd.Context.Services.GetService<ModelService>().Root;
             var chart = _wd.Context.Services.GetService<ModelService>().Find(root, typeof(Flowchart)).FirstOrDefault();
+            if (chart == null)
+            {
+                return;
+            }
             var parswer = CustomContainer.Get<IServiceDifferenceParser>();
             _allNodes = parswer.GetAllNodes();
             var nodes = chart.Properties["Nodes"]?.Collection;
 
+            if (nodes == null)
+            {
+                return;
+            }
             var hasNodes = _allNodes.TryGetValue(model.UniqueId.ToString(), out (ModelItem leftItem, ModelItem rightItem) toolPar);
-            ModelItem nodeToAdd = default(ModelItem);
+            var nodeToAdd = default(ModelItem);
             if (hasNodes)
             {
                 if (toolPar.leftItem.GetCurrentValue() == model.FlowNode.GetCurrentValue())
@@ -3112,7 +3122,6 @@ namespace Dev2.Studio.ViewModels.Workflow
                             {
                                 AddNodesForChildren(item, nodes);
                                 nodes.Add(a);
-
                             }
                         }
                         else if (childtoolPar.rightItem?.GetCurrentValue() == item.FlowNode.GetCurrentValue())
@@ -3127,7 +3136,6 @@ namespace Dev2.Studio.ViewModels.Workflow
                     }
                 }
                 model.Children.Reverse();
-
             }
         }
 
@@ -3141,7 +3149,6 @@ namespace Dev2.Studio.ViewModels.Workflow
                 var parentId1 = parentFlowStep?.Action as IDev2Activity;
                 return act?.UniqueID == parentId1.UniqueID; 
 
-
             });
          
 
@@ -3150,10 +3157,12 @@ namespace Dev2.Studio.ViewModels.Workflow
                 if (flowNode == null)
                 {
                     parentNode.Properties["Next"].SetValue(model.FlowNode.GetCurrentValue());
+                    Selection.Select(_wd.Context, model.FlowNode.GetCurrentValue());
                 }
                 else
                 {
                     parentNode.Properties["Next"].SetValue(flowNode);
+                    Selection.Select(_wd.Context, flowNode);
 
                 }
             }
@@ -3170,6 +3179,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             if (startNode.ComputedValue == null)
             {
                 startNode.SetValue(flowNode);
+                Selection.Select(_wd.Context, model.FlowNode);
             }
         }
 
