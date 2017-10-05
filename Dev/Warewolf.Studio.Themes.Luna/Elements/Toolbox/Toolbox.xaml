@@ -727,6 +727,50 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+    <Style x:Key="MergeExpanderDownHeaderStyle" TargetType="{x:Type ToggleButton}">
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="FontWeight" Value="Normal" />
+        <Setter Property="FontStyle" Value="Normal" />
+        <Setter Property="FontStretch" Value="Normal" />
+        <Setter Property="FontSize" Value="{StaticResource FontSize-Medium}" />
+        <Setter Property="FontFamily" Value="{StaticResource DefaultFontFamily}" />
+        <Setter Property="Margin" Value="0" />
+        <Setter Property="MinWidth" Value="0" />
+        <Setter Property="Height" Value="20" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ToggleButton}">
+                    <Border Padding="{TemplateBinding Padding}">
+                        <Grid Background="{StaticResource WarewolfPanelGreyBrush}" SnapsToDevicePixels="False">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="15"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <fa:FontAwesome Grid.Column="0" x:Name="iconExpand" Icon="CaretRight" VerticalAlignment="Center" FontSize="14" Visibility="Visible"/>
+                            <fa:FontAwesome Grid.Column="0" x:Name="iconCollapse" Icon="CaretDown" VerticalAlignment="Center" FontSize="14" Visibility="Collapsed"/>
+                            <ContentPresenter Grid.Column="1" x:Name="headerContent" HorizontalAlignment="Stretch" Margin="3,0,0,0" RecognizesAccessKey="True" SnapsToDevicePixels="True" VerticalAlignment="Center"/>
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsChecked" Value="true">
+                            <Setter Property="Visibility"  TargetName="iconExpand" Value="Collapsed"/>
+                            <Setter Property="Visibility"  TargetName="iconCollapse" Value="Visible"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Foreground"  TargetName="iconExpand" Value="{StaticResource WareWolfOrangeBrush}"/>
+                            <Setter Property="Foreground"  TargetName="iconCollapse" Value="{StaticResource WareWolfOrangeBrush}"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Visibility" TargetName="iconExpand" Value="Collapsed"/>
+                            <Setter Property="Visibility" TargetName="iconCollapse" Value="Collapsed"/>
+                            <Setter Property="Margin" TargetName="headerContent" Value="4,0,0,0"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
     <Style x:Key="MergeExpander" TargetType="{x:Type Expander}">
         <Setter Property="Foreground" Value="{StaticResource WareWolfBlackBrush}"/>
         <Setter Property="Background" Value="{StaticResource WareWolfWhiteBrush}"/>
@@ -758,7 +802,7 @@
                                           IsChecked="{Binding IsExpanded, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" 
                                           MinHeight="0" 
                                           Padding="{TemplateBinding Padding}" 
-                                          Style="{StaticResource ServiceTestExpanderDownHeaderStyle}" 
+                                          Style="{StaticResource MergeExpanderDownHeaderStyle}" 
                                           VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
                             <ContentPresenter x:Name="ExpandSite" 
                                               DockPanel.Dock="Bottom" 
