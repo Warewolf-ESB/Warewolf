@@ -12,9 +12,7 @@ using Dev2.Data.TO;
 using Dev2.DataList.Contract;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-
-
-
+using Dev2.Data.Util;
 
 namespace Dev2.Data.Tests.Parsers
 {
@@ -214,44 +212,41 @@ namespace Dev2.Data.Tests.Parsers
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void CheckValidIndex_GivenNwegetiveIndex_ShouldThrowError()
+        public void CheckValidIndex_GivenNwegetiveIndex_ShouldThrow_InvalidCharacterError()
         {
-            //---------------Set up test pack-------------------
-            var parser = new Dev2DataLanguageParser();
-            PrivateObject privateObject = new PrivateObject(parser);
-            //CheckValidIndex(ParseTO to, string part, int start, int end)
-            var parseTO = new ParseTO() { };
-            //---------------Assert Precondition----------------
-            //---------------Execute Test ----------------------
+            var parser = new ParserHelperUtil();
             try
             {
-                privateObject.Invoke("CheckValidIndex", parseTO, "a", 1, 2);
+                parser.CheckValidIndex(new ParseTO() { }, "a", 1, 2);
             }
             catch (Exception ex)
             {
                 Assert.AreEqual("Recordset index (a) contains invalid character(s)", ex.InnerException.Message);
-                try
-                {
-                    privateObject.Invoke("CheckValidIndex", parseTO, "-1", 1, 2);
-                }
-                catch (Exception ex1)
-                {
-                    Assert.AreEqual("Recordset index [ -1 ] is not greater than zero", ex1.InnerException.Message);
-                    try
-                    {
-                        //---------------Test Result -----------------------
-                        var valid = privateObject.Invoke("CheckValidIndex", parseTO, "1", 1, 2);
-                        Assert.IsTrue(bool.Parse(valid.ToString()));
-                    }
-                    catch (Exception ex2)
-                    {
-                        Assert.Fail(ex2.Message);
-                    }
-
-                }
             }
+        }
 
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void CheckValidIndex_GivenNwegetiveIndex_ShouldThrow_TooHighError()
+        {
+            var parser = new ParserHelperUtil();
+            try
+            {
+                parser.CheckValidIndex(new ParseTO() { }, "-1", 1, 2);
+            }
+            catch (Exception ex1)
+            {
+                Assert.AreEqual("Recordset index [ -1 ] is not greater than zero", ex1.InnerException.Message);
+            }
+        }
 
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void CheckValidIndex_ValivIndex_ShouldMarkAsValid()
+        {
+            var parser = new ParserHelperUtil();
+            var valid = parser.CheckValidIndex(new ParseTO() { }, "1", 1, 2);
+            Assert.IsTrue(valid, "Valid recordset index marked as invalid.");
         }
 
         [TestMethod]

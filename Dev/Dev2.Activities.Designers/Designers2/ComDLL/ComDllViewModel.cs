@@ -31,9 +31,6 @@ using Dev2.Studio.Interfaces;
 using Microsoft.Practices.Prism.Commands;
 using Warewolf.Core;
 
-
-
-
 namespace Dev2.Activities.Designers2.ComDLL
 {
     public class ComDllViewModel : CustomToolWithRegionBase, IComViewModel
@@ -217,8 +214,9 @@ namespace Dev2.Activities.Designers2.ComDLL
             WorstDesignError = worstError[0];
         }
 
-        IErrorInfo WorstDesignError
+        internal IErrorInfo WorstDesignError
         {
+            get { return _worstDesignError; }
             set
             {
                 if (_worstDesignError != value)

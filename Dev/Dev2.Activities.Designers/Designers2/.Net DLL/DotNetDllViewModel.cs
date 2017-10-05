@@ -216,8 +216,9 @@ namespace Dev2.Activities.Designers2.Net_DLL
             WorstDesignError = worstError[0];
         }
 
-        IErrorInfo WorstDesignError
+        internal IErrorInfo WorstDesignError
         {
+            get { return _worstDesignError; }
             set
             {
                 if (_worstDesignError != value)
