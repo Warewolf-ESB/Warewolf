@@ -10,8 +10,9 @@
              xmlns:datalist="clr-namespace:Dev2.Studio.Views.DataList"
              xmlns:merge="clr-namespace:Dev2.ViewModels.Merge"
              xmlns:ig="http://schemas.infragistics.com/xaml"
+             xmlns:interfaces1="clr-namespace:Dev2.Studio.Interfaces;assembly=Dev2.Studio.Interfaces"
              mc:Ignorable="d" 
-             d:DataContext="{d:DesignInstance interfaces:IMergeWorkflowViewModel}"
+             d:DataContext="{d:DesignInstance interfaces1:IMergeWorkflowViewModel}"
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>
         <ResourceDictionary>

@@ -9,8 +9,6 @@ using System.Linq;
 using Dev2.Common;
 using System.Activities.Presentation.Model;
 using Caliburn.Micro;
-using Dev2.CustomControls;
-using Dev2.Studio.ActivityDesigners;
 
 namespace Dev2.ViewModels.Merge
 {
@@ -120,11 +118,11 @@ namespace Dev2.ViewModels.Merge
             WorkflowDesignerViewModel.RemoveItem(model);
             WorkflowDesignerViewModel.AddItem(_previousParent, model);
             _previousParent = model;
-            if (model is MergeToolModel mergeToolModel)
-            {
-                var dataTemplate = ActivityTemplateSelector.GetSelectedDataTemplate(mergeToolModel.ActivityDesignerViewModel);
-                WorkflowDesignerViewModel.BringMergeToView(dataTemplate);
-            }
+            //if (model is MergeToolModel mergeToolModel)
+            //{
+            //    //var dataTemplate = ActivityTemplateSelector.GetSelectedDataTemplate(mergeToolModel.ActivityDesignerViewModel);
+            //    //WorkflowDesignerViewModel.BringMergeToView(dataTemplate);
+            //}
         }
 
         private IMergeToolModel _previousParent;
@@ -343,7 +341,7 @@ namespace Dev2.ViewModels.Merge
 
         public ObservableCollection<ICompleteConflict> Conflicts { get; set; }
 
-        public WorkflowDesignerViewModel WorkflowDesignerViewModel { get; set; }
+        public IWorkflowDesignerViewModel WorkflowDesignerViewModel { get; set; }
 
         public IConflictModelFactory CurrentConflictModel { get; set; }
         public IConflictModelFactory DifferenceConflictModel { get; set; }

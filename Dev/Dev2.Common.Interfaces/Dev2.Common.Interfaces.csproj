@@ -232,7 +232,6 @@
     <Compile Include="IComPluginServiceModel.cs" />
     <Compile Include="IComPluginSource.cs" />
     <Compile Include="IComputerName.cs" />
-    <Compile Include="IConflictModelFactory.cs" />
     <Compile Include="IConnection.cs" />
     <Compile Include="IConstructorParameter.cs" />
     <Compile Include="ICreateDuplicateResourceView.cs" />
@@ -287,7 +286,7 @@
     <Compile Include="IManageWebserviceSourceViewModel.cs" />
     <Compile Include="IMenuView.cs" />
     <Compile Include="IMergeView.cs" />
-    <Compile Include="IMergeWorkflowViewModel.cs" />
+    <Compile Include="IMergeToolModel.cs" />
     <Compile Include="IMethodParameter.cs" />
     <Compile Include="INamespaceItem.cs" />
     <Compile Include="INetworkStateChangedEventArgs.cs" />
