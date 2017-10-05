@@ -26,6 +26,7 @@ namespace Dev2.ViewModels.Merge
         private readonly IActivityParser _activityParser;
         private ModelItem _modelItem;
         private readonly IContextualResourceModel _resourceModel;
+        private IContextualResourceModel _childResourceModel;
         private bool _isWorkflowNameChecked;
         private bool _isVariablesChecked;
 
@@ -37,6 +38,7 @@ namespace Dev2.ViewModels.Merge
             _modelItem = modelItem;
             _resourceModel = resourceModel;
         }
+
 
         public ConflictModelFactory(IActivityParser activityParser)
         {
@@ -140,10 +142,14 @@ namespace Dev2.ViewModels.Merge
                 }
                 else if (actual == typeof(ServiceDesignerViewModel))
                 {
-                    instance = Activator.CreateInstance(actual, _modelItem, _resourceModel) as ActivityDesignerViewModel;
+                    var resourceID = ModelItemUtils.TryGetResourceID(_modelItem);
+                    _childResourceModel = _resourceModel.Environment.ResourceRepository.LoadContextualResourceModel(resourceID);
+                    instance = Activator.CreateInstance(actual, _modelItem, _childResourceModel) as ActivityDesignerViewModel;
                 }
                 else
                 {
+                    var resourceID = ModelItemUtils.TryGetResourceID(_modelItem);
+                    _childResourceModel = _resourceModel.Environment.ResourceRepository.LoadContextualResourceModel(resourceID);
                     instance = Activator.CreateInstance(actual, _modelItem) as ActivityDesignerViewModel;
                 }
 
@@ -162,7 +168,7 @@ namespace Dev2.ViewModels.Merge
                     MergeIcon = _modelItem.GetImageSourceForTool(),
                     MergeDescription = dsfActivity?.ToString(),
                     UniqueId = currentValue.UniqueID.ToGuid(),
-                    
+
                 };
 
                 //TODO implement builder pattern
