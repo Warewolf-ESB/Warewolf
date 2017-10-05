@@ -2013,9 +2013,11 @@ namespace Dev2.Studio.ViewModels.Workflow
             var onAfterPopulateAll = new System.Action(() => BringIntoView(selectedModelItem.View as FrameworkElement));
             _virtualizedContainerServicePopulateAllMethod?.Invoke(_virtualizedContainerService, new object[] { onAfterPopulateAll });
         }
-        public void BringMergeToView(ModelItem selectedModelItem)
+        public void BringMergeToView(DataTemplate selectedDataTemplate)
         {
-            BringIntoView(selectedModelItem);
+            var dependencyObject = selectedDataTemplate.LoadContent();
+            var frameworkElement = dependencyObject as FrameworkElement;
+            BringIntoView(frameworkElement);
         }
         private static void BringIntoView(FrameworkElement view)
         {

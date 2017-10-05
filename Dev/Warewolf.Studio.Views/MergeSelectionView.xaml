@@ -64,61 +64,61 @@
                        HorizontalAlignment="Stretch"
                        VerticalAlignment="Top"
                        Background="Transparent">
-                <Border BorderThickness="0,0,0,1" BorderBrush="#C1C3C5" >
-                    <!--  EMBEDDED CLIENT PANEL  -->
-                    <views:ExplorerView HorizontalAlignment="Stretch"
-                                        VerticalAlignment="Stretch"
-                                        HorizontalContentAlignment="Stretch"
-                                        VerticalContentAlignment="Stretch"
-                                        Margin="-2,-4,-3,0"
-                                        x:Name="ExplorerView" />
-                </Border>
+
+                <!--  EMBEDDED CLIENT PANEL  -->
+                <views:ExplorerView HorizontalAlignment="Stretch"
+                                    VerticalAlignment="Stretch"
+                                    HorizontalContentAlignment="Stretch"
+                                    VerticalContentAlignment="Stretch"
+                                    Margin="-2,-4,-3,0"
+                                    x:Name="ExplorerView" />
+
             </DockPanel>
-            <Grid Grid.Row="2"
-                  HorizontalAlignment="Stretch"
-                  VerticalAlignment="Stretch" >
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <TextBlock Grid.Column="0"
-                           Grid.Row="0"
-                           HorizontalAlignment="Right"
-                           VerticalAlignment="Center"
-                           x:Name="SelectedResourceTextBox"
-                           FontSize="14"
-                           FontWeight="Bold"
-                           Margin="{StaticResource ElementBorderRight}" 
-                           Text="{Binding SelectedResource, UpdateSourceTrigger=PropertyChanged}" />
+            <Border Grid.Row="2" BorderThickness="0,1,0,0" BorderBrush="#C1C3C5" >
+                <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0"
+                               Grid.Row="0"
+                               HorizontalAlignment="Right"
+                               VerticalAlignment="Center"
+                               x:Name="SelectedResourceTextBox"
+                               FontSize="14"
+                               FontWeight="Bold"
+                               Margin="{StaticResource ElementBorderRight}" 
+                               Text="{Binding SelectedResource, UpdateSourceTrigger=PropertyChanged}" />
 
-                <TextBlock Grid.Column="1" 
-                           Margin="{StaticResource ControlBorderRight}" 
-                           HorizontalAlignment="Left" 
-                           VerticalAlignment="Center"
-                           Text="merge with">
+                    <TextBlock Grid.Column="1" 
+                               Margin="{StaticResource ControlBorderRight}" 
+                               HorizontalAlignment="Left" 
+                               VerticalAlignment="Center"
+                               Text="merge with">
 
-                </TextBlock>
-                <TextBlock Grid.Column="2"
-                           HorizontalAlignment="Stretch"
-                           VerticalAlignment="Center"
-                           x:Name="ResourceToMergeTextBox"
-                           FontSize="14"
-                           FontWeight="Bold"
-                           Margin="{StaticResource ElementBorderRight}" 
-                           Text="{Binding ResourceToMerge, UpdateSourceTrigger=PropertyChanged}" />
-            </Grid>
+                    </TextBlock>
+                    <TextBlock Grid.Column="2"
+                               HorizontalAlignment="Stretch"
+                               VerticalAlignment="Center"
+                               x:Name="ResourceToMergeTextBox"
+                               FontSize="14"
+                               FontWeight="Bold"
+                               Margin="{StaticResource ElementBorderRight}" 
+                               Text="{Binding ResourceToMerge, UpdateSourceTrigger=PropertyChanged}" />
+                </Grid>
+            </Border>
             <DockPanel Grid.Row="3"
                        HorizontalAlignment="Right" VerticalAlignment="Center"
                        Margin="0,0,1,0" >
 
                 <Button x:Name="MergeButton"
-                    Width="60"
-                    Command="{Binding MergeCommand}"
-                    Margin="{StaticResource ControlBorderBottomRight}"
-                    Content="Merge"
-                    Style="{StaticResource ButtonStyle}"
-                    ToolTip="{x:Static languages:Tooltips.MergeButtonTooltip}"/>
+                        Width="60"
+                        Command="{Binding MergeCommand}"
+                        Margin="{StaticResource ControlBorderBottomRight}"
+                        Content="Merge"
+                        Style="{StaticResource ButtonStyle}"
+                        ToolTip="{x:Static languages:Tooltips.MergeButtonTooltip}"/>
 
                 <Button x:Name="CancelButton"
                         Width="60"

@@ -60,10 +60,7 @@ namespace Dev2.ViewModels.Merge
                 _isMergeChecked = value;
                 OnPropertyChanged(() => IsMergeChecked);
                 SomethingModelToolChanged?.Invoke(this, this);
-                if (Parent == null)
-                {
-                    Children?.Flatten(a => a.Children).Apply(a => a.IsMergeChecked = true);
-                }
+                Children?.Flatten(a => a.Children).Apply(a => a.IsMergeChecked = true);
             }
         }
 
