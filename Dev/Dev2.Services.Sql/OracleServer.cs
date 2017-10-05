@@ -152,8 +152,7 @@ namespace Dev2.Services.Sql
         {
             VerifyArgument.IsNotNull("command", command);
 
-            return ExecuteReader(command, CommandBehavior.SchemaOnly & CommandBehavior.KeyInfo,
-                reader => _factory.CreateTable(reader, LoadOption.OverwriteChanges));
+            return ExecuteReader(command, reader => _factory.CreateTable(reader, LoadOption.OverwriteChanges));
         }
 
         public DataTable FetchDataTable(IDbDataParameter[] parameters, IEnumerable<IDbDataParameter> outparameters)
@@ -295,7 +294,7 @@ namespace Dev2.Services.Sql
             }
         }
         
-        private static T ExecuteReader<T>(IDbCommand command, CommandBehavior commandBehavior, Func<IDataAdapter, T> handler)
+        private static T ExecuteReader<T>(IDbCommand command, Func<IDataAdapter, T> handler)
         {
             try
             {
@@ -403,7 +402,7 @@ namespace Dev2.Services.Sql
             using (IDbCommand command = _factory.CreateCommand(connection, CommandType.Text,
                 $"SELECT text FROM all_source WHERE name='{objectName}' ORDER BY line"))
             {                
-                return ExecuteReader(command, CommandBehavior.SchemaOnly & CommandBehavior.KeyInfo, GetStringBuilder);
+                return ExecuteReader(command, GetStringBuilder);
             }
         }
 

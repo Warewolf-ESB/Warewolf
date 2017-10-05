@@ -174,7 +174,7 @@ namespace Warewolf.Studio.ViewModels.ToolBox
                 
         void Dispose(bool disposing)        
         {
-            if (!disposing)
+            if (disposing)
             {
                 _localModel.OnserverDisconnected -= _localModel_OnserverDisconnected;
                 _remoteModel.OnserverDisconnected -= _remoteModel_OnserverDisconnected;
