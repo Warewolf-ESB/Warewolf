@@ -199,7 +199,15 @@ namespace Dev2.Runtime.Hosting
                         {
                             resource = new Resource(xml);
                         }
-                        resource.FilePath = currentItem.FilePath;
+                        if (currentItem.FilePath.EndsWith(".xml"))
+                        {
+                            _convertToBiteExtension.Add(currentItem.FilePath);
+                            resource.FilePath = currentItem.FilePath.Replace(".xml", ".bite");
+                        }
+                        else
+                        {
+                            resource.FilePath = currentItem.FilePath;
+                        }
                         xml = _resourceUpgrader.UpgradeResource(xml, Assembly.GetExecutingAssembly().GetName().Version, a =>
                         {
 
@@ -324,10 +332,10 @@ namespace Dev2.Runtime.Hosting
             {
                 _resources.Add(res);
                 _addedResources.Add(res.ResourceID);
-                if (res.FilePath.EndsWith(".xml"))
-                {
-                    _convertToBiteExtension.Add(res.FilePath);
-                }
+                //if (res.FilePath.EndsWith(".xml"))
+                //{
+                //    _convertToBiteExtension.Add(res.FilePath);
+                //}
             }
             else
             {
@@ -338,10 +346,10 @@ namespace Dev2.Runtime.Hosting
                     Dev2Logger.Debug(
                         string.Format(ErrorResource.ResourceAlreadyLoaded,
                             res.ResourceName, filePath, dupRes.FilePath), GlobalConstants.WarewolfDebug);
-                    if (res.FilePath.EndsWith(".xml"))
-                    {
-                        _convertToBiteExtension.Add(res.FilePath);
-                    }
+                    //if (res.FilePath.EndsWith(".xml"))
+                    //{
+                    //    _convertToBiteExtension.Add(res.FilePath);
+                    //}
                 }
                 else
                 {
