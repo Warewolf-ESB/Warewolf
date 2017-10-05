@@ -3,7 +3,6 @@ using System.Activities.Presentation.Model;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Common.Interfaces;
 using Dev2.Studio.Core.Activities.Utils;
-using Dev2.Studio.ViewModels.DataList;
 using Microsoft.Practices.Prism.Mvvm;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -195,7 +194,7 @@ namespace Dev2.ViewModels.Merge
             return null;
         }
 
-        private void BuildSelectAndApply(DsfSelectAndApplyActivity c, MergeToolModel mergeToolModel)
+        private void BuildSelectAndApply(DsfSelectAndApplyActivity c, IMergeToolModel mergeToolModel)
         {
             var dev2Activity = c.ApplyActivityFunc.Handler as IDev2Activity;
             var singleOrDefault = dev2Activity;
@@ -228,7 +227,7 @@ namespace Dev2.ViewModels.Merge
             }
         }
 
-        private void BuildForEach(DsfForEachActivity b, MergeToolModel mergeToolModel)
+        private void BuildForEach(DsfForEachActivity b, IMergeToolModel mergeToolModel)
         {
             var dev2Activity = b.DataFunc.Handler as IDev2Activity;
             var singleOrDefault = dev2Activity;
@@ -261,11 +260,12 @@ namespace Dev2.ViewModels.Merge
             }
         }
 
-        private void BuildSequence(DsfSequenceActivity sequence, MergeToolModel mergeToolModel)
+        private void BuildSequence(DsfSequenceActivity sequence, IMergeToolModel mergeToolModel)
         {
             var flowSequence = new FlowStep { Action = sequence };
             mergeToolModel.ActivityType = flowSequence;
             if (sequence.Activities != null)
+            {
                 foreach (var dev2Activity in sequence.Activities)
                 {
                     _modelItem = ModelItemUtils.CreateModelItem(dev2Activity);
@@ -275,6 +275,8 @@ namespace Dev2.ViewModels.Merge
                     addModelItem.ParentDescription = sequence.DisplayName;
                     mergeToolModel.Children.Add(addModelItem);
                 }
+            }
+
             var nextNode = sequence.NextNodes?.SingleOrDefault();
             if (nextNode != null)
             {
@@ -295,7 +297,7 @@ namespace Dev2.ViewModels.Merge
             }
         }
 
-        private void BuildSwitch(DsfSwitch switchTool, MergeToolModel mergeToolModel)
+        private void BuildSwitch(DsfSwitch switchTool, IMergeToolModel mergeToolModel)
         {
             var flowSwitch = new FlowSwitch<string>();
             mergeToolModel.ActivityType = flowSwitch;
@@ -333,7 +335,7 @@ namespace Dev2.ViewModels.Merge
             }
         }
 
-        private void BuildDecision(DsfDecision de, MergeToolModel mergeToolModel)
+        private void BuildDecision(DsfDecision de, IMergeToolModel mergeToolModel)
         {
             var decisionNode = new FlowDecision(de.GetFlowNode());
 

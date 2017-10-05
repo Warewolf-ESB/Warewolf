@@ -8,8 +8,9 @@ using System.Collections.Generic;
 using System.Linq;
 using Dev2.Common;
 using System.Activities.Presentation.Model;
-using System.Activities.Statements;
 using Caliburn.Micro;
+using Dev2.CustomControls;
+using Dev2.Studio.ActivityDesigners;
 
 namespace Dev2.ViewModels.Merge
 {
@@ -109,10 +110,6 @@ namespace Dev2.ViewModels.Merge
             WorkflowDesignerViewModel.CanViewWorkflowLink = false;
         }
 
-
-
-
-
         public MergeWorkflowViewModel(IServiceDifferenceParser serviceDifferenceParser)
         {
             _serviceDifferenceParser = serviceDifferenceParser;
@@ -123,9 +120,12 @@ namespace Dev2.ViewModels.Merge
             WorkflowDesignerViewModel.RemoveItem(model);
             WorkflowDesignerViewModel.AddItem(_previousParent, model);
             _previousParent = model;
-            WorkflowDesignerViewModel.BringMergeToView(model.FlowNode);
+            if (model is MergeToolModel mergeToolModel)
+            {
+                var dataTemplate = ActivityTemplateSelector.GetSelectedDataTemplate(mergeToolModel.ActivityDesignerViewModel);
+                WorkflowDesignerViewModel.BringMergeToView(dataTemplate);
+            }
         }
-
 
         private IMergeToolModel _previousParent;
         private void SourceOnConflictModelChanged(object sender, IConflictModelFactory args)
@@ -143,9 +143,9 @@ namespace Dev2.ViewModels.Merge
 
                 OnPropertyChanged(() => IsDirty);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                // ignored
+                Dev2Logger.Error(ex, ex.Message);
             }
         }
 
@@ -169,7 +169,6 @@ namespace Dev2.ViewModels.Merge
             }
             catch (Exception ex)
             {
-                // ignored
                 Dev2Logger.Error(ex, ex.Message);
             }
         }
@@ -250,15 +249,10 @@ namespace Dev2.ViewModels.Merge
                             continue;
                         }
 
-                        var isSwitch = currentChildChild.ActivityType.GetType() == typeof(FlowSwitch<string>);
-
-
                         var childCurrent = GetMergeToolItem(currentChildChildren, currentChildChild.UniqueId);
                         var childDifferent = GetMergeToolItem(difChildChildren, currentChildChild.UniqueId);
                         if (childNodes.TryGetValue(currentChildChild.UniqueId.ToString(), out (ModelItem leftItem, ModelItem rightItem) item))
                         {
-
-
                             var local1 = currentChildChildren.Where(p => p.UniqueId == currentChildChild.UniqueId);
                             foreach (var c in local1)
                             {
@@ -269,9 +263,7 @@ namespace Dev2.ViewModels.Merge
                             {
                                 c.FlowNode = item.leftItem;
                             }
-
-
-                        };
+                        }
                         remoteCopy.Remove(childDifferent);
                         completeConflict.UniqueId = currentChildChild.UniqueId;
                         completeConflict.CurrentViewModel = childCurrent;
@@ -298,7 +290,7 @@ namespace Dev2.ViewModels.Merge
                                 {
                                     completeConflict.DiffViewModel.FlowNode = item.rightItem;
                                     completeConflict.CurrentViewModel.FlowNode = item.leftItem;
-                                };
+                                }
                                 if (parent.Children.Any(conflict => conflict.UniqueId.Equals(currentChild.UniqueId)))
                                 {
                                     continue;
@@ -324,7 +316,7 @@ namespace Dev2.ViewModels.Merge
                     if (childNodes.TryGetValue(model.UniqueId.ToString(), out (ModelItem leftItem, ModelItem rightItem) item))
                     {
                         completeConflict.DiffViewModel.FlowNode = item.rightItem;
-                    };
+                    }
                 }
             }
             if (currentChild == null)
@@ -339,12 +331,12 @@ namespace Dev2.ViewModels.Merge
                     if (childNodes.TryGetValue(model.UniqueId.ToString(), out (ModelItem leftItem, ModelItem rightItem) item))
                     {
                         completeConflict.CurrentViewModel.FlowNode = item.leftItem;
-                    };
+                    }
                 }
             }
             IMergeToolModel GetMergeToolItem(IEnumerable<IMergeToolModel> collection, Guid uniqueId)
             {
-                var mergeToolModel = collection.FirstOrDefault(model => model.UniqueId.Equals(uniqueId));//
+                var mergeToolModel = collection.FirstOrDefault(model => model.UniqueId.Equals(uniqueId));
                 return mergeToolModel;
             }
         }
@@ -364,7 +356,7 @@ namespace Dev2.ViewModels.Merge
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex);
+                Dev2Logger.Error(ex, ex.Message);
             }
             finally
             {
@@ -411,8 +403,9 @@ namespace Dev2.ViewModels.Merge
                     SetDisplayName(_dirty);
                     return _dirty;
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    Dev2Logger.Error(ex, ex.Message);
                     return false;
                 }
             }
@@ -434,11 +427,8 @@ namespace Dev2.ViewModels.Merge
 
         private void SetServerName(IContextualResourceModel resourceModel)
         {
-            if (resourceModel.Environment == null || resourceModel.Environment.IsLocalHost)
-            {
-                _serverName = string.Empty;
-            }
-            else if (!resourceModel.Environment.IsLocalHost)
+            _serverName = string.Empty;
+            if (resourceModel.Environment != null && !resourceModel.Environment.IsLocalHost)
             {
                 _serverName = " - " + resourceModel.Environment.Name;
             }
