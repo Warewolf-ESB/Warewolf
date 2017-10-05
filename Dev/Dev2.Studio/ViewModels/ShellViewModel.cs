@@ -711,7 +711,7 @@ namespace Dev2.Studio.ViewModels
 
         public void OpenMergeDialogView(IExplorerItemViewModel currentResource)
         {
-            var mergeServiceViewModel = new MergeServiceViewModel(this, new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), currentResource.ResourceName, new MergeSelectionView());
+            var mergeServiceViewModel = new MergeServiceViewModel(this, new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), currentResource, new MergeSelectionView());
             var result = mergeServiceViewModel.ShowMergeDialog();
             if (result == MessageBoxResult.OK)
             {
