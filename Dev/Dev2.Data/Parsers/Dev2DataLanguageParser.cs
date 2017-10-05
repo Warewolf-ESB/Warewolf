@@ -1050,37 +1050,10 @@ namespace Dev2.Data.Parsers
 
         public IIntellisenseResult ValidateName(string name, string displayString) => _parserHelper.ValidateName(name, displayString);
        
-        /// <summary>
-        /// Adds the error to results.
-        /// </summary>
-        /// <param name="isRs">if set to <c>true</c> [is RS].</param>
-        /// <param name="part">The part.</param>
-        /// <param name="e">The e.</param>
-        /// <param name="isOpen">if set to <c>true</c> [is open].</param>
-        /// <returns></returns>
         private IIntellisenseResult AddErrorToResults(bool isRs, string part, Dev2DataLanguageParseError e, bool isOpen) => _parserHelper.AddErrorToResults(isRs, part, e, isOpen);
-
-
-        /// <summary>
-        /// Determines whether [is valid index] [the specified to].
-        /// </summary>
-        /// <param name="to">To.</param>
-        /// <returns>
-        ///   <c>true</c> if [is valid index] [the specified to]; otherwise, <c>false</c>.
-        /// </returns>
-        /// <exception cref="Dev2DataLanguageParseError">
-        /// Recordset index [  + part +  ] is not greater than zero
-        /// or
-        /// or
-        /// Recordset index [  + part +  ] is not greater than zero
-        /// or
-        /// </exception>
+                
         private bool IsValidIndex(IParseTO to) => _parserHelper.IsValidIndex(to);
 
-        
-        private bool CheckValidIndex(ParseTO to, string part, int start, int end) => _parserHelper.CheckValidIndex(to, part, start, end);
-        
-        private bool CheckCurrentIndex(ParseTO to, int start, string raw, int end) => _parserHelper.CheckCurrentIndex(to, start, raw, end);
         #endregion
     }
 }

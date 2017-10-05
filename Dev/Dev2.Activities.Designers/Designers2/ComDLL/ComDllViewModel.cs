@@ -219,8 +219,6 @@ namespace Dev2.Activities.Designers2.ComDLL
 
         IErrorInfo WorstDesignError
         {
-            
-            get { return _worstDesignError; }
             set
             {
                 if (_worstDesignError != value)

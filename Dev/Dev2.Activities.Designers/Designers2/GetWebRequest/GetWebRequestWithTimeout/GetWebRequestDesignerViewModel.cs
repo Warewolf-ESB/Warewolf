@@ -112,13 +112,7 @@ namespace Dev2.Activities.Designers2.GetWebRequest.GetWebRequestWithTimeout
             }
         }
 
-        private string TimeOutText
-        {
-            get { return GetProperty<string>(); }
-            
-            set { SetProperty(value); }
-            
-        }
+        private string TimeOutText => GetProperty<string>();
 
         #region Overrides of ActivityDesignerViewModel
 
