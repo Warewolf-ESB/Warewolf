@@ -96,7 +96,9 @@
     <Compile Include="Enums\ResourceType.cs" />
     <Compile Include="Enums\WorkSurfaceContext.cs" />
     <Compile Include="IAuthorizeCommand.cs" />
+    <Compile Include="ICompleteConflict.cs" />
     <Compile Include="IComplexObjectHandler.cs" />
+    <Compile Include="IConflictModelFactory.cs" />
     <Compile Include="IConflictNode.cs" />
     <Compile Include="IConnectControlViewModel.cs" />
     <Compile Include="IContextualResourceModel.cs" />
@@ -110,6 +112,7 @@
     <Compile Include="IEnvironmentConnection.cs" />
     <Compile Include="IEnvironmentEditedArgs.cs" />
     <Compile Include="IMergeServiceViewModel.cs" />
+    <Compile Include="IMergeWorkflowViewModel.cs" />
     <Compile Include="IServiceDifferenceParser.cs" />
     <Compile Include="IServer.cs" />
     <Compile Include="IServerRepository.cs" />

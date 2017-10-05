@@ -1,6 +1,7 @@
 ﻿using System;
 using Dev2.Common.Interfaces;
 using System.Collections.ObjectModel;
+using Dev2.Studio.Interfaces;
 using Microsoft.Practices.Prism.Mvvm;
 
 namespace Dev2.ViewModels.Merge

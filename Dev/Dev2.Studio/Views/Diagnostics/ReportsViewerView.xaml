@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:Dev2="clr-namespace:Dev2.UI" xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro"
+             xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro"
              xmlns:customControls="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls"
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:behavior="clr-namespace:Dev2.CustomControls.Behavior;assembly=Dev2.CustomControls"

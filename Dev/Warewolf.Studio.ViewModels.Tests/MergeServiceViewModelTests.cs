@@ -63,9 +63,17 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Execute Test---------------------------
             CustomContainer.Register(environmentRepository.Object);
             CustomContainer.Register(connectControlSingleton);
-            
 
-            _target = new MergeServiceViewModel(_shellViewModelMock.Object, _eventAggregatorMock.Object, "Selected Service", _mergeView.Object, _selectedEnvironment.Object);
+            var resourceId = Guid.NewGuid();
+
+            var explorerItemViewModelMock = new Mock<IExplorerItemViewModel>();
+            explorerItemViewModelMock.SetupGet(it => it.IsVisible).Returns(true);
+            explorerItemViewModelMock.SetupGet(it => it.ResourceType).Returns("WorkflowService");
+            explorerItemViewModelMock.SetupGet(it => it.ResourceName).Returns("Selected Service");
+            explorerItemViewModelMock.SetupGet(it => it.ResourceId).Returns(resourceId);
+
+
+            _target = new MergeServiceViewModel(_shellViewModelMock.Object, _eventAggregatorMock.Object, explorerItemViewModelMock.Object, _mergeView.Object, _selectedEnvironment.Object);
         }
 
         static Mock<IEnvironmentConnection> CreateConnection(bool isConnected)

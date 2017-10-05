@@ -18,7 +18,7 @@ namespace Dev2.Studio.Interfaces
     {
         MessageBoxResult ShowMergeDialog();
 
-        string SelectedResource { get; set; }
+        IExplorerItemViewModel SelectedResource { get; set; }
         string ResourceToMerge { get; set; }
         ICommand MergeCommand { get; set; }
         ICommand CancelCommand { get; }

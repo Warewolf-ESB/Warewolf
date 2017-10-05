@@ -16,84 +16,69 @@ namespace Dev2.CustomControls
     {
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
-            var mergeVM = item as MergeToolModel;
-            var vm = mergeVM?.ActivityDesignerViewModel;
-            if (vm != null)
-            {
-                ActivityDesignerTemplate template;
-                ActivityDesignerHelper.DesignerAttributes.TryGetValue(vm.ModelItem.ItemType, out var designerType);
-                if (designerType != null)
-                {
-                    string typeName = designerType.Namespace + ".Large";
-                    if (designerType == typeof(SequenceDesigner))
-                    {
-                        var type = typeof(Dev2.Activities.Designers2.Sequence.Large);
-                        var insta = Activator.CreateInstance(type, new object[] { true }) as ActivityDesignerTemplate;
-                        if (insta != null)
-                        {
-                            insta.DataContext = vm;
-                            return TemplateGenerator.CreateDataTemplate(() => insta);
-                        }
-                    }
-                    else if (designerType == typeof(SelectAndApplyDesigner))
-                    {
-                        var type = typeof(Dev2.Activities.Designers2.SelectAndApply.Large);
-                        var insta = Activator.CreateInstance(type, new object[] { true }) as ActivityDesignerTemplate;
-                        if (insta != null)
-                        {
-                            insta.DataContext = vm;
-                            return TemplateGenerator.CreateDataTemplate(() => insta);
-                        }
-                    }
-                    else if (designerType == typeof(ForeachDesigner))
-                    {
-                        var type = typeof(Dev2.Activities.Designers2.Foreach.Large);
-                        var insta = Activator.CreateInstance(type, new object[] { true }) as ActivityDesignerTemplate;
-                        if (insta != null)
-                        {
-                            insta.DataContext = vm;
-                            return TemplateGenerator.CreateDataTemplate(() => insta);
-                        }
-                    }
-                    else
-                    {
-                        var inst = Activator.CreateInstance(designerType.Assembly.FullName, typeName);
-                        template = inst.Unwrap() as ActivityDesignerTemplate;
-                        if (template != null)
-                        {
-                            template.DataContext = vm;
-                            return TemplateGenerator.CreateDataTemplate(() => template);
-                        }
-                    }
-                }
-                else
-                {
-                    var assemblyFullName = "Dev2.Activities.Designers, Version=0.0.6465.12612, Culture=neutral, PublicKeyToken=null";
-                    var namespacePath = "Dev2.Activities.Designers2";
-                    var type = vm.ModelItem?.ItemType;
-                    ObjectHandle instance = null;
+            var mergeVm = item as MergeToolModel;
+            var vm = mergeVm?.ActivityDesignerViewModel;
+            return vm == null ? null : GetDataTemplate(vm);
+        }
 
-                    if (type == typeof(DsfDecision))
-                    {
-                        instance = Activator.CreateInstance(assemblyFullName, namespacePath + ".Decision.Large");
-                    }
-                    else if (type == typeof(DsfSwitch))
-                    {
-                        instance = Activator.CreateInstance(assemblyFullName, namespacePath + ".Switch.ConfigureSwitch");
-                    }
-                    else
-                    {
-                        return null;
-                    }
-                    template = instance?.Unwrap() as ActivityDesignerTemplate;
-                    if (template != null)
-                    {
-                        template.DataContext = vm;
-                        return TemplateGenerator.CreateDataTemplate(() => template);
-                    }
-                }
+        public static DataTemplate GetSelectedDataTemplate(ActivityDesignerViewModel vm)
+        {
+            return GetDataTemplate(vm);
+        }
+
+        private static DataTemplate GetDataTemplate(ActivityDesignerViewModel vm)
+        {
+            ActivityDesignerHelper.DesignerAttributes.TryGetValue(vm.ModelItem.ItemType, out var designerType);
+            var instance = designerType != null ? GetAlteredView(designerType) : ReturnDecisionSwitchTypes(vm);
+
+            if (!(instance?.Unwrap() is ActivityDesignerTemplate template))
+            {
+                return null;
             }
-            return null;
+
+            template.DataContext = vm;
+            return TemplateGenerator.CreateDataTemplate(() => template);
+        }
+
+        private static ObjectHandle ReturnDecisionSwitchTypes(ActivityDesignerViewModel vm)
+        {
+            const string assemblyFullName = "Dev2.Activities.Designers, Version=0.0.6465.12612, Culture=neutral, PublicKeyToken=null";
+            const string namespacePath = "Dev2.Activities.Designers2";
+            var typeName = string.Empty;
+            if (vm.ModelItem?.ItemType == typeof(DsfDecision))
+            {
+                typeName = namespacePath + ".Decision.Large";
+            }
+            if (vm.ModelItem?.ItemType == typeof(DsfSwitch))
+            {
+                typeName = namespacePath + ".Switch.ConfigureSwitch";
+            }
+            return Activator.CreateInstance(assemblyFullName, typeName);
+        }
+
+        private static ObjectHandle GetAlteredView(Type designerType)
+        {
+            var alterView = false;
+            Type type = null;
+            if (designerType == typeof(SequenceDesigner))
+            {
+                alterView = true;
+                type = typeof(Activities.Designers2.Sequence.Large);
+            }
+            if (!alterView && designerType == typeof(SelectAndApplyDesigner))
+            {
+                alterView = true;
+                type = typeof(Activities.Designers2.SelectAndApply.Large);
+            }
+            if (!alterView && designerType == typeof(ForeachDesigner))
+            {
+                type = typeof(Activities.Designers2.Foreach.Large);
+            }
+            var instance = type != null
+                ? (ObjectHandle) Activator.CreateInstance(type, new object[] {true})
+                : Activator.CreateInstance(designerType.Assembly.FullName, designerType.Namespace + ".Large");
+
+            return instance;
         }
     }
 }

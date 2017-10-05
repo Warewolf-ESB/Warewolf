@@ -16,14 +16,14 @@ namespace Warewolf.Studio.ViewModels
     {
         private readonly IMergeView _view;
         readonly IShellViewModel _shellViewModel;
-        private string _selectedResource;
+        private IExplorerItemViewModel _selectedResource;
         private string _resourceToMerge;
         private IExplorerItemViewModel _selectMergeItem;
         private readonly IEnvironmentViewModel _selectedEnv;
         private IConnectControlViewModel _mergeConnectControlViewModel;
 
 
-        public MergeServiceViewModel(IShellViewModel shellViewModel, Microsoft.Practices.Prism.PubSubEvents.IEventAggregator aggregator, string selectedResource, IMergeView mergeView, IEnvironmentViewModel selectedEnvironment = null)
+        public MergeServiceViewModel(IShellViewModel shellViewModel, Microsoft.Practices.Prism.PubSubEvents.IEventAggregator aggregator, IExplorerItemViewModel selectedResource, IMergeView mergeView, IEnvironmentViewModel selectedEnvironment = null)
         {
             if (shellViewModel == null)
             {
@@ -39,16 +39,15 @@ namespace Warewolf.Studio.ViewModels
 
             LoadEnvironment(localhostEnvironment);
 
-            ConnectControlViewModel = new ConnectControlViewModel(_shellViewModel.LocalhostServer, aggregator, _shellViewModel.ExplorerViewModel.ConnectControlViewModel.Servers);
+            MergeConnectControlViewModel = new ConnectControlViewModel(_shellViewModel.LocalhostServer, aggregator, _shellViewModel.ExplorerViewModel.ConnectControlViewModel.Servers);
 
             ShowConnectControl = true;
-            MergeConnectControlViewModel = ConnectControlViewModel;
             MergeConnectControlViewModel.ServerConnected += async (sender, server) => { await ServerConnected(server); };
             MergeConnectControlViewModel.ServerDisconnected += ServerDisconnected;
 
-            if (ConnectControlViewModel.SelectedConnection != null)
+            if (MergeConnectControlViewModel.SelectedConnection != null)
             {
-                UpdateItemForMerge(ConnectControlViewModel.SelectedConnection.EnvironmentID);
+                UpdateItemForMerge(MergeConnectControlViewModel.SelectedConnection.EnvironmentID);
             }
             ShowConnectControl = false;
             IsRefreshing = false;
@@ -62,18 +61,20 @@ namespace Warewolf.Studio.ViewModels
             };
         }
 
-        private bool CanMerge() => SelectedMergeItem != null;
+        private bool CanMerge() => SelectedMergeItem != null && SelectedMergeItem.ResourceId == SelectedResource.ResourceId;
 
         private void Merge()
         {
             _view?.RequestClose();
             ViewResult = MessageBoxResult.OK;
+            MergeConnectControlViewModel = null;
         }
 
         private void Cancel()
         {
             _view?.RequestClose();
             ViewResult = MessageBoxResult.Cancel;
+            MergeConnectControlViewModel = null;
         }
 
         MessageBoxResult ViewResult { get; set; }
@@ -230,7 +231,7 @@ namespace Warewolf.Studio.ViewModels
             return ViewResult;
         }
 
-        public string SelectedResource  
+        public IExplorerItemViewModel SelectedResource  
         {
             get => _selectedResource;
             set

@@ -132,10 +132,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
         public IWorkSurfaceViewModel WorkSurfaceViewModel
         {
-            get
-            {
-                return _workSurfaceViewModel;
-            }
+            get => _workSurfaceViewModel;
             set
             {
                 if (_workSurfaceViewModel == value)
@@ -280,11 +277,8 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
         public IContextualResourceModel ContextualResourceModel
         {
-            get
-            {
-                return _contextualResourceModel;
-            }
-            private set
+            get => _contextualResourceModel;
+            set
             {
                 _contextualResourceModel = value;
                 OnContextualResourceModelChanged();
