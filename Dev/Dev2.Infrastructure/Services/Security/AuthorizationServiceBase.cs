@@ -28,7 +28,7 @@ namespace Dev2.Services.Security
         protected readonly ISecurityService _securityService;
         readonly bool _isLocalConnection;
 
-        readonly Func<bool> AreAdministratorsMembersOfWarewolfAdministrators;
+        internal Func<bool> AreAdministratorsMembersOfWarewolfAdministrators;
 
         protected AuthorizationServiceBase(ISecurityService securityService, bool isLocalConnection)
         {
@@ -136,6 +136,8 @@ namespace Dev2.Services.Security
         }
 
         public ISecurityService SecurityService => _securityService;
+
+        public Func<bool> AreAdministratorsMembersOfWarewolfAdministrators1 => AreAdministratorsMembersOfWarewolfAdministrators;
 
         public abstract bool IsAuthorized(AuthorizationContext context, string resource);
         public abstract bool IsAuthorized(IAuthorizationRequest request);
@@ -266,7 +268,7 @@ namespace Dev2.Services.Security
                             else
                             {
 
-                                if(AreAdministratorsMembersOfWarewolfAdministrators.Invoke())
+                                if(AreAdministratorsMembersOfWarewolfAdministrators1.Invoke())
                                 {
                                     isInRole = principal.IsInRole(sid.Value);
                                 }

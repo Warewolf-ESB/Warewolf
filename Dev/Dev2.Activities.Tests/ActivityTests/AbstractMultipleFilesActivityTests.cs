@@ -18,18 +18,10 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Tests.Activities.ActivityTests
 {
-    [TestClass]
-    
+    [TestClass]    
     public class AbstractMultipleFilesActivityTests : BaseActivityUnitTest
     {
-
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
         public TestContext TestContext { get; set; }
-
-
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
