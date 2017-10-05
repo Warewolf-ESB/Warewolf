@@ -180,7 +180,7 @@ namespace Dev2.Activities.PathOperations
         protected abstract void MoveRemainingIterators();
 
         [JsonIgnore]
-        readonly Func<IActivityOperationsBroker> GetOperationBroker = () => ActivityIOFactory.CreateOperationsBroker();
+        internal Func<IActivityOperationsBroker> GetOperationBroker = () => ActivityIOFactory.CreateOperationsBroker();
         string _destPassword;
 
         #region Properties

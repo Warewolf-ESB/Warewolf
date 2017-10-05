@@ -116,7 +116,9 @@ namespace Dev2.Activities.Designers2.Switch
                 return dev2Switch;
             }
         }
-        
+
+        public bool ValidExpression { get => validExpression; set => validExpression = value; }
+
         public override void Validate()
         {
             ValidExpression = true;
@@ -166,7 +168,7 @@ namespace Dev2.Activities.Designers2.Switch
             }
         }
 
-        private bool ValidExpression;
+        private bool validExpression;
 
         public override void UpdateHelpDescriptor(string helpText)
         {

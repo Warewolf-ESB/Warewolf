@@ -36,7 +36,7 @@ namespace Dev2.Activities.RabbitMQ.Consume
     [ToolDescriptorInfo("RabbitMq", "RabbitMQ Consume", ToolType.Native, "406ea660-64cf-4c82-b6f0-42d48172a799", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Utility", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Utility_Rabbit_MQ_Consume")]
     public class DsfConsumeRabbitMQActivity : DsfBaseActivity
     {
-        private List<string> _messages;
+        internal List<string> _messages;
         private string _result = "Success";
         private ushort _prefetch;
         private int _timeOut;
