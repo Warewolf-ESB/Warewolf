@@ -3062,7 +3062,6 @@ namespace Dev2.Studio.ViewModels.Workflow
 
             if (chart != null)
             {
-                var modelActivityType = model.ActivityType;
                 var step = nodeToAdd?.GetCurrentValue();
                 switch (step)
                 {
@@ -3085,12 +3084,12 @@ namespace Dev2.Studio.ViewModels.Workflow
                 var startNode = chart.Properties["StartNode"];
                 if (startNode == null || startNode.ComputedValue == null)
                 {
-                    AddStartNode(model, modelActivityType, nodes, startNode);
+                    AddStartNode(nodeToAdd.GetCurrentValue<FlowNode>(), nodes, startNode);
 
                 }
                 else
                 {
-                    AddNextNode(parent, model, modelActivityType, nodes);
+                    AddNextNode(parent, model, nodes, nodeToAdd.GetCurrentValue<FlowNode>());
                 }
             }//At the end of the merge we need to clean up all the unused nodes
         }
@@ -3132,7 +3131,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-        private void AddNextNode(IMergeToolModel parent, IMergeToolModel model, FlowNode modelActivityType, ModelItemCollection nodes)
+        private void AddNextNode(IMergeToolModel parent, IMergeToolModel model, ModelItemCollection nodes, FlowNode flowNode)
         {
             var parentNode = nodes.FirstOrDefault(t =>
             {
@@ -3144,11 +3143,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
 
             });
-            var flowNode = model.FlowNode.GetCurrentValue<FlowStep>();
-            if (flowNode != null)
-            {
-                flowNode.Next = null;
-            }
+         
 
             if (parentNode != null)
             {
@@ -3161,24 +3156,20 @@ namespace Dev2.Studio.ViewModels.Workflow
                     parentNode.Properties["Next"].SetValue(flowNode);
 
                 }
-                //BringIntoView(model.FlowNode);
             }
         }
 
-        private void AddStartNode(IMergeToolModel model, FlowNode modelActivityType, ModelItemCollection nodes, ModelProperty startNode)
+        private void AddStartNode(FlowNode flowNode, ModelItemCollection nodes, ModelProperty startNode)
         {
-            var flowNode = model.FlowNode.GetCurrentValue<FlowStep>();
 
             if (flowNode == null)
             {
                 return;
             }
 
-            flowNode.Next = null;
             if (startNode.ComputedValue == null)
             {
                 startNode.SetValue(flowNode);
-                //BringIntoView(model.FlowNode);
             }
         }
 
