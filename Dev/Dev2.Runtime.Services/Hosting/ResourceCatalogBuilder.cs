@@ -285,7 +285,14 @@ namespace Dev2.Runtime.Hosting
             {
                 var updatedFile = String.Empty;
                 updatedFile = Path.ChangeExtension(item, ".bite");
-                File.Move(item, updatedFile);
+                if (File.Exists(updatedFile) && File.Exists(item))
+                {
+                    File.Delete(item);
+                }
+                else
+                {
+                    File.Move(item, updatedFile);
+                }
             }
         }
 
@@ -331,7 +338,10 @@ namespace Dev2.Runtime.Hosting
                     Dev2Logger.Debug(
                         string.Format(ErrorResource.ResourceAlreadyLoaded,
                             res.ResourceName, filePath, dupRes.FilePath), GlobalConstants.WarewolfDebug);
-                    _convertToBiteExtension.Add(filePath);
+                    if (res.FilePath.EndsWith(".xml"))
+                    {
+                        _convertToBiteExtension.Add(res.FilePath);
+                    }
                 }
                 else
                 {

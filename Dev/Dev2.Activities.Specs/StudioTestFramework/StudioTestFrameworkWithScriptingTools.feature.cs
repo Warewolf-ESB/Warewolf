@@ -423,8 +423,8 @@ this.FeatureBackground();
                         "Result"});
             table14.AddRow(new string[] {
                         "SharePoint Test Server",
-                        "C:\\ProgramData\\Warewolf\\Resources\\Hello World.xml",
-                        "e.xml",
+                        "C:\\ProgramData\\Warewolf\\Resources\\Hello World.bite",
+                        "e.bite",
                         "[[Result]]"});
 #line 123
    testRunner.And("\"ShapointCopyFileTestWF\" contains SharepointUploadFile \"TestSharePUploadFile\" as", ((string)(null)), table14, "And ");
@@ -437,8 +437,8 @@ this.FeatureBackground();
                         "Result"});
             table15.AddRow(new string[] {
                         "SharePoint Test Server",
-                        "e.xml",
-                        "f.xml",
+                        "e.bite",
+                        "f.bite",
                         "true",
                         "[[copyResult]]"});
 #line 126
@@ -479,7 +479,7 @@ this.FeatureBackground();
 #line 143
  testRunner.Then("workflow \"ShapointCopyFileTestWF\" is deleted as cleanup", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 144
- testRunner.Then("the file \"e.xml\" is deleted from the Sharepoint server as cleanup", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the file \"e.bite\" is deleted from the Sharepoint server as cleanup", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -735,8 +735,8 @@ this.FeatureBackground();
                         "Result"});
             table24.AddRow(new string[] {
                         "SharePoint Test Server",
-                        "C:\\ProgramData\\Warewolf\\Resources\\Hello World.xml",
-                        "Hello World.xml",
+                        "C:\\ProgramData\\Warewolf\\Resources\\Hello World.bite",
+                        "Hello World.bite",
                         "[[Uploaded]]"});
 #line 225
  testRunner.And("\"ShapointUploadFileTestWF\" contains SharepointUploadFile \"TestSharePUploadFile\" a" +
@@ -750,8 +750,8 @@ this.FeatureBackground();
                         "Result"});
             table25.AddRow(new string[] {
                         "SharePoint Test Server",
-                        "Hello World.xml",
-                        "C:\\ProgramData\\Warewolf\\Resources\\DownloadedFromSharepoint\\Hello World.xml",
+                        "Hello World.bite",
+                        "C:\\ProgramData\\Warewolf\\Resources\\DownloadedFromSharepoint\\Hello World.bite",
                         "True",
                         "[[Downloaded]]"});
 #line 228
@@ -793,7 +793,7 @@ this.FeatureBackground();
 #line 245
  testRunner.Then("workflow \"ShapointDownloadFileTestWF\" is deleted as cleanup", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 246
- testRunner.Then("the file \"Hello World.xml\" is deleted from the Sharepoint server as cleanup", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the file \"Hello World.bite\" is deleted from the Sharepoint server as cleanup", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -819,8 +819,8 @@ this.FeatureBackground();
                         "Result"});
             table27.AddRow(new string[] {
                         "SharePoint Test Server",
-                        "C:\\ProgramData\\Warewolf\\Resources\\Hello World.xml",
-                        "a.xml",
+                        "C:\\ProgramData\\Warewolf\\Resources\\Hello World.bite",
+                        "a.bite",
                         "[[Result]]"});
 #line 250
  testRunner.And("\"ShapointUploadFileTestWF\" contains SharepointUploadFile \"TestSharePUploadFile\" a" +
@@ -861,7 +861,7 @@ this.FeatureBackground();
 #line 267
  testRunner.Then("workflow \"ShapointUploadFileTestWF\" is deleted as cleanup", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 268
- testRunner.Then("the file \"a.xml\" is deleted from the Sharepoint server as cleanup", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the file \"a.bite\" is deleted from the Sharepoint server as cleanup", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -887,8 +887,8 @@ this.FeatureBackground();
                         "Result"});
             table29.AddRow(new string[] {
                         "SharePoint Test Server",
-                        "C:\\ProgramData\\Warewolf\\Resources\\Hello World.xml",
-                        "B.xml",
+                        "C:\\ProgramData\\Warewolf\\Resources\\Hello World.bite",
+                        "B.bite",
                         "[[Result]]"});
 #line 272
  testRunner.And("\"ShapointMoveFileTestWF\" contains SharepointUploadFile \"TestSharePUploadFile\" as", ((string)(null)), table29, "And ");
@@ -901,8 +901,8 @@ this.FeatureBackground();
                         "Result"});
             table30.AddRow(new string[] {
                         "SharePoint Test Server",
-                        "B.xml",
-                        "c.xml",
+                        "B.bite",
+                        "c.bite",
                         "true",
                         "[[MoveResult]]"});
 #line 275
