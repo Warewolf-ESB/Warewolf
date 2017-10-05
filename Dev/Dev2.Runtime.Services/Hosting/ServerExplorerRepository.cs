@@ -518,11 +518,6 @@ namespace Dev2.Runtime.Hosting
             return new ExplorerRepositoryResult(result.Status, result.Message);
         }
 
-        void MoveVersions(IExplorerItem itemToMove, string newPath)
-        {
-            VersionRepository.MoveVersions(itemToMove.ResourceId, newPath, itemToMove.ResourcePath);
-        }
-
         public static string DirectoryStructureFromPath(string path)
         {
             return Path.Combine(EnvironmentVariables.ResourcePath, path);

@@ -8,10 +8,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
-
-
-
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -108,6 +104,7 @@ namespace Dev2.Instrumentation
 
         }
 
+#if !DEBUG
         static void Perform(Func<GenericReturn> action, bool performAsync = false)
         {
             try
@@ -122,12 +119,14 @@ namespace Dev2.Instrumentation
                     WriteError(result);
                 }
             }            
-            catch            
+            catch (Exception e)
             {
-                // this is a tracker issue ;(
+                WriteError(e.Message);
             }
         }
+#endif
 
+#if !DEBUG
         static void WriteError(GenericReturn result)
         {
             if(result != GenericReturn.OK)
@@ -136,10 +135,11 @@ namespace Dev2.Instrumentation
                 Trace.WriteLine(format);
             }
         }
+#endif
 
         public static void OverriddenTrackEvent(TrackerEventGroup eventGroup, TrackerEventName executed, string eventValue)
         {
-#if ! DEBUG
+#if !DEBUG
             Perform(() => TBApp.EventTrackTxt(eventGroup.ToString(), executed.ToString(), eventValue, null));
 #endif
         }

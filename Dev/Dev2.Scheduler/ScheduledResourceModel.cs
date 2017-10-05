@@ -34,9 +34,6 @@ namespace Dev2.Scheduler
         private IFileHelper _fileHelper;
         private IDirectoryHelper _folderHelper;
         private readonly IDictionary<int, string> _taskStates;
-#pragma warning disable S1144
-        private int _argCount;
-#pragma warning restore S1144
         private readonly Func<IScheduledResource, string> _pathResolve;
         private const string Sebatchlogonright = "SeBatchLogonRight";
         private const char NameSeperator = ':';

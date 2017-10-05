@@ -259,17 +259,6 @@ namespace Dev2.Network
             }
         }
 
-        
-        void UpdateIsAuthorized(bool isAuthorized)
-            
-        {
-            if (IsAuthorized != isAuthorized)
-            {
-                _wrappedConnection.IsAuthorized = isAuthorized;
-                RaisePermissionsChanged();
-            }
-        }
-
         protected void OnNetworkStateChanged(NetworkStateEventArgs e)
         {
             var handler = NetworkStateChanged;
