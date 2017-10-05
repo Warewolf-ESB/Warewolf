@@ -253,30 +253,6 @@ namespace Dev2.Activities.Designers.Tests.DotNetDll
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("DotNetDllViewModel_SetDisplayName")]
-        public void DotNetDllViewModel_UpdateWorstDesignError()
-        {
-            //------------Setup for test--------------------------
-            var mockShellViewModel = new Mock<IShellViewModel>();
-            mockShellViewModel.Setup(model => model.ActiveServer).Returns(new ServerForTesting(new Mock<IExplorerRepository>()));
-            CustomContainer.Register(mockShellViewModel.Object);
-            var ps = SetupEmptyMockSource();
-            //------------Execute Test---------------------------
-
-            var vm = new DotNetDllViewModel(CreateModelItemWithValues(), ps.Object);
-            vm.DesignValidationErrors.Add(new ErrorInfo() { Message = "bob error", ErrorType = ErrorType.Critical });
-            PrivateObject p = new PrivateObject(vm);
-            p.Invoke("UpdateWorstError");
-            var inf = p.GetProperty("WorstDesignError") as ErrorInfo;
-            //------------Assert Results-------------------------
-
-            Assert.IsNotNull(inf);
-            Assert.AreEqual("bob error", inf.Message);
-        }
-
-
-        [TestMethod]
-        [Owner("Leon Rajindrapersadh")]
-        [TestCategory("DotNetDllViewModel_SetDisplayName")]
         public void DotNetDllViewModel_Test()
         {
             //------------Setup for test--------------------------
@@ -285,13 +261,8 @@ namespace Dev2.Activities.Designers.Tests.DotNetDll
             CustomContainer.Register(mockShellViewModel.Object);
             var ps = SetupEmptyMockSource();
             //------------Execute Test---------------------------
-
             var vm = new DotNetDllViewModel(CreateModelItemWithValues(), ps.Object);
             vm.TestProcedure();
-            //------------Assert Results-------------------------
-
-
-
         }
 
         [TestMethod]
