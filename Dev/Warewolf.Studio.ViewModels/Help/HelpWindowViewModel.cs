@@ -111,7 +111,7 @@ namespace Warewolf.Studio.ViewModels.Help
         
         void Dispose(bool disposing)
         {
-            if (!disposing)
+            if (disposing)
             {
                 HelpModel.OnHelpTextReceived -= OnHelpTextReceived;
             }
