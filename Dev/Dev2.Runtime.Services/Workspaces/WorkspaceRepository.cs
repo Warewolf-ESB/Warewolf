@@ -197,19 +197,12 @@ namespace Dev2.Workspaces
         #endregion
 
         #region GetLatest
-
-        /// <summary>
-        /// Overwrites this workspace with the server versions except for those provided.
-        /// </summary>
-        /// <param name="workspace">The workspace to be queried.</param>
-        /// <param name="servicesToIgnore">The services being to be ignored.</param>
+        
         public void GetLatest(IWorkspace workspace, IList<string> servicesToIgnore)
         {
             lock(_readLock)
-            {
-                
-                var filesToIgnore = servicesToIgnore.Select(s => s += ".xml").ToList();
-                
+            {                
+                var filesToIgnore = servicesToIgnore.Select(s => s + ".xml").ToList();                
                 var targetPath = EnvironmentVariables.GetWorkspacePath(workspace.ID);
                 _resourceCatalog.SyncTo(ServerWorkspacePath, targetPath, true, true, filesToIgnore);
             }

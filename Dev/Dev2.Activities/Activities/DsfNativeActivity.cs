@@ -48,13 +48,11 @@ using Warewolf.Storage.Interfaces;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
-    public abstract class DsfNativeActivity<T> : NativeActivity<T>, IDev2ActivityIOMapping, IDev2Activity, IEquatable<DsfNativeActivity<T>>
+    public abstract class DsfNativeActivity<T> : NativeActivity<T>, IDev2ActivityIOMapping, IEquatable<DsfNativeActivity<T>>
     {
         protected ErrorResultTO errorsTo;
         [GeneralSettings("IsSimulationEnabled")]
         public bool IsSimulationEnabled { get; set; }
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public IDSFDataObject DataObject { get => null; set => value = null; }
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public IDataListCompiler Compiler { get; set; }
         [JsonIgnore]
@@ -263,17 +261,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-
         protected virtual void OnBeforeExecute(NativeActivityContext context)
         {
         }
-
-        /// <summary>
-        /// When overridden runs the activity's execution logic 
-        /// </summary>
-        /// <param name="context">The context to be used.</param>
+        
         protected abstract void OnExecute(NativeActivityContext context);
-
 
         protected void OnExecutedCompleted(NativeActivityContext context)
         {
@@ -290,7 +282,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
 
             dataObject.NumberOfSteps = dataObject.NumberOfSteps + 1;
-
         }
 
         public abstract void UpdateForEachInputs(IList<Tuple<string, string>> updates);
@@ -338,7 +329,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         _debugState.ActivityType = ActivityType.Service;
                     }
                 }
-
                 DebugCleanUp(dataObject, stateType);
             }
             finally
@@ -362,7 +352,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 _debugState.ClientID = dataObject.ClientID;
                 _debugState.OriginatingResourceID = dataObject.ResourceID;
                 _debugState.SourceResourceID = dataObject.SourceResourceID;
-                DispatchDebugState(_debugState,dataObject);
+                DispatchDebugState(_debugState, dataObject);
                 if (stateType == StateType.After)
                 {
                     _debugState = null;
@@ -411,11 +401,16 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {               
                 if (stateType != StateType.Before)
                 {
+                    DateTime? timeNow;
                     if (endTime == null)
                     {
-                        endTime = DateTime.Now;
+                        timeNow = DateTime.Now;
                     }
-                    _debugState.EndTime = endTime.Value;
+                    else
+                    {
+                        timeNow = endTime;
+                    }
+                    _debugState.EndTime = timeNow.Value;
                 }
 
                 _debugState.NumberOfSteps = IsWorkflow ? dataObject.NumberOfSteps : 0;
@@ -554,7 +549,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             var testRunResults = res as IList<TestRunResult> ?? res.ToList();
             var testPassed = testRunResults.All(result => result.RunTestResult == RunResult.TestPassed || result.RunTestResult==RunResult.None);
             var serviceTestFailureMessage = string.Join("", testRunResults.Select(result => result.Message));
-
             UpdateStepWithFinalResult(dataObject, stepToBeAsserted, testPassed, testRunResults, serviceTestFailureMessage);
         }
 
@@ -927,16 +921,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 name = "localhost";
             }
 
-            switch (dataObject.RemoteServiceType)
-            {
-                case "DbService":
-                case "PluginService":
-                case "WebService":
-                    IsService = true;
-                    break;
-                default:
-                    break;
-            }
+            IsService = (
+                dataObject.RemoteServiceType == "DbService" ||
+                dataObject.RemoteServiceType == "PluginService" ||
+                dataObject.RemoteServiceType == "WebService");
 
             var type = GetType();
             string typeName = type.Name;
@@ -1094,13 +1082,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             return _debugState;
         }
-
     
         public Guid GetWorkSurfaceMappingId()
         {
             return WorkSurfaceMappingId;
         }
-
     
         public virtual IList<IActionableErrorInfo> PerformValidation()
         {
