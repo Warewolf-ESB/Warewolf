@@ -229,6 +229,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="Dev2.Runtime.WebServer.ruleset" />
     <None Include="packages.config" />
   </ItemGroup>

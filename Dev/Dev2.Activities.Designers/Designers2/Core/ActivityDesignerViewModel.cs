@@ -335,7 +335,7 @@ namespace Dev2.Activities.Designers2.Core
             DesignerView parentContentPane = FindDependencyParent.FindParent<DesignerView>(ModelItem.View);
             var dataContext = parentContentPane?.DataContext;
             var isSelectedOrMouseOver = IsSelectedOrMouseOver;
-            if (dataContext != null && dataContext.GetType().Name == "ServiceTestViewModel")
+            if (dataContext != null && (dataContext.GetType().Name == "ServiceTestViewModel" || dataContext.GetType().Name == "MergeWorkflowViewModel"))
             {
                 TitleBarTogglesVisibility = Visibility.Collapsed;
             }

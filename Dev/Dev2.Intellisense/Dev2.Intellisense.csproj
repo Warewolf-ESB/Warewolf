@@ -136,6 +136,7 @@
     <Compile Include="Provider\DefaultIntellisenseProvider.cs" />
     <Compile Include="Provider\FileSystemIntellisenseProvider.cs" />
     <Compile Include="Provider\ProviderExtensions.cs" />
+    <None Include="app.config" />
     <None Include="Dev2.Intellisense.ruleset" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
