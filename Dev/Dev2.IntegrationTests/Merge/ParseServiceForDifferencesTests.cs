@@ -16,6 +16,7 @@ using Warewolf.MergeParser;
 
 namespace Dev2.Integration.Tests.Merge
 {
+    [Ignore("Nathi to fix the Resource for all merge tests")]
     [TestClass]
     public class ParseServiceForDifferencesTests
     {
