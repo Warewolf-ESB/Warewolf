@@ -126,12 +126,16 @@ namespace Dev2.ViewModels.Merge
 
             var currentValue = _modelItem.GetCurrentValue<IDev2Activity>();
             var activityType = currentValue?.GetType();
+            if (activityType == null)
+            {
+                return null;
+            }
             if (activityType == typeof(DsfDecision))
             {
                 activityType = typeof(DsfFlowDecisionActivity);
             }
 
-            DesignerAttributeMap.DesignerAttributes.TryGetValue(activityType, out Type actual);
+            DesignerAttributeMap.DesignerAttributes.TryGetValue(activityType, out var actual);
             if (actual != null)
             {
                 ActivityDesignerViewModel instance;
@@ -142,14 +146,14 @@ namespace Dev2.ViewModels.Merge
                 }
                 else if (actual == typeof(ServiceDesignerViewModel))
                 {
-                    var resourceID = ModelItemUtils.TryGetResourceID(_modelItem);
-                    _childResourceModel = _resourceModel.Environment.ResourceRepository.LoadContextualResourceModel(resourceID);
+                    var resourceId = ModelItemUtils.TryGetResourceID(_modelItem);
+                    _childResourceModel = _resourceModel.Environment.ResourceRepository.LoadContextualResourceModel(resourceId);
                     instance = Activator.CreateInstance(actual, _modelItem, _childResourceModel) as ActivityDesignerViewModel;
                 }
                 else
                 {
-                    var resourceID = ModelItemUtils.TryGetResourceID(_modelItem);
-                    _childResourceModel = _resourceModel.Environment.ResourceRepository.LoadContextualResourceModel(resourceID);
+                    var resourceId = ModelItemUtils.TryGetResourceID(_modelItem);
+                    _childResourceModel = _resourceModel.Environment.ResourceRepository.LoadContextualResourceModel(resourceId);
                     instance = Activator.CreateInstance(actual, _modelItem) as ActivityDesignerViewModel;
                 }
 

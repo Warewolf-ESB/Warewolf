@@ -22,12 +22,15 @@ namespace Dev2.ViewModels.Merge
         private bool _hasVariablesConflict;
         private bool _isVariablesEnabled;
         private bool _isMergeExpanderEnabled;
+        private readonly IContextualResourceModel _resourceModel;
 
         public MergeWorkflowViewModel(IContextualResourceModel currentResourceModel, IContextualResourceModel differenceResourceModel, bool isGitMerge)
             : this(CustomContainer.Get<IServiceDifferenceParser>())
         {
             WorkflowDesignerViewModel = new WorkflowDesignerViewModel(currentResourceModel, false);
             WorkflowDesignerViewModel.CreateBlankWorkflow();
+
+            _resourceModel = currentResourceModel;
 
             var currentChanges = _serviceDifferenceParser.GetDifferences(currentResourceModel, differenceResourceModel, isGitMerge);
 
@@ -122,13 +125,17 @@ namespace Dev2.ViewModels.Merge
         }
 
         private IMergeToolModel _previousParent;
+
         private void SourceOnConflictModelChanged(object sender, IConflictModelFactory args)
         {
             try
             {
                 var argsIsVariablesChecked = args.IsVariablesChecked;
 
-                HasMergeStarted = args.IsWorkflowNameChecked || argsIsVariablesChecked;
+                if (!HasMergeStarted)
+                {
+                    HasMergeStarted = args.IsWorkflowNameChecked || argsIsVariablesChecked;
+                }
                 IsVariablesEnabled = HasVariablesConflict;
 
                 IsMergeExpanderEnabled = argsIsVariablesChecked;
@@ -155,7 +162,10 @@ namespace Dev2.ViewModels.Merge
                 }
 
                 UpdateNextEnabledState(args);
-                HasMergeStarted = true;
+                if (!HasMergeStarted)
+                {
+                    HasMergeStarted = true;
+                }
                 AddActivity(args);
             }
             catch (Exception ex)
@@ -233,7 +243,6 @@ namespace Dev2.ViewModels.Merge
                     var completeConflict = new CompleteConflict();
                     try
                     {
-
                         var currentChildChild = currentChildChildren[index];
                         if (currentChildChild == null)
                         {
@@ -343,10 +352,14 @@ namespace Dev2.ViewModels.Merge
         {
             try
             {
-                //var shellViewModel = CustomContainer.Get<IShellViewModel>();
-                //shellViewModel?.SaveCommand.Execute(WorkflowDesignerViewModel);
-
-                HasMergeStarted = false;
+                if (HasWorkflowNameConflict)
+                {
+                    var resourceName = CurrentConflictModel.IsWorkflowNameChecked ? CurrentConflictModel.WorkflowName : DifferenceConflictModel.WorkflowName;
+                    _resourceModel.Environment.ExplorerRepository.UpdateManagerProxy.Rename(_resourceModel.ID, resourceName);
+                }
+                _resourceModel.DataList = CurrentConflictModel.IsVariablesChecked ? CurrentConflictModel.DataListViewModel.WriteToResourceModel() : DifferenceConflictModel.DataListViewModel.WriteToResourceModel();
+                _resourceModel.WorkflowXaml = WorkflowDesignerViewModel.ServiceDefinition;
+                _resourceModel.Environment.ResourceRepository.Save(_resourceModel);
             }
             catch (Exception ex)
             {

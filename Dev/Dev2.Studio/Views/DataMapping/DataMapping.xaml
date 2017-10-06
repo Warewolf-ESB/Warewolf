@@ -1,7 +1,7 @@
 ﻿<UserControl x:Class="Unlimited.Applications.BusinessDesignStudio.Views.DataMapping"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:Dev2="clr-namespace:Dev2.UI" xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense" x:Name="root">
+        xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense" x:Name="root">
 
     <Grid Name="MainGrid">        
         <Grid.RowDefinitions>
