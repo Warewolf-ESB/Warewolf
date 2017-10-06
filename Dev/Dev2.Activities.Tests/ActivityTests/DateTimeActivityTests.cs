@@ -218,11 +218,13 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void DsfDateTimeActivity_AddDays_ShouldNotChangeAMtoPMValues()
         {
             //------------Setup for test--------------------------
-            var expected = new DateTime(2017, 10, 20, 0, 0, 0, 0).ToString(GlobalConstants.Dev2DotNetDefaultDateTimeFormat);
+            var dateTimeVal = new DateTime(2017, 10, 20, 0, 0, 0).ToString(GlobalConstants.Dev2DotNetDefaultDateTimeFormat);
+            var currentDateTimeVal = new DateTime(2017, 10, 25, 0, 0, 0).ToString(GlobalConstants.Dev2DotNetDefaultDateTimeFormat);
+            var expected = dateTimeVal;
             const string currDL = @"<root><MyTestResult></MyTestResult></root>";
             SetupArguments(currDL
                          , currDL
-                         , "10/25/2017 12:00:00 AM"
+                         , currentDateTimeVal
                          , ""
                          , ""
                          , "Days"
@@ -234,33 +236,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             string error;
             GetScalarValueFromEnvironment(result.Environment, "[[MyTestResult]]", out actual, out error);
             //------------Assert Results-------------------------
-            Assert.AreEqual(expected, actual);
+            Assert.AreEqual(expected, actual.Replace(".0",""));
         }
-        [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("DsfDateTimeActivity_GetOutputs")]
-        public void DsfDateTimeActivity_AddDays_ShouldNotChangePMtoAMValues()
-        {
-            //------------Setup for test--------------------------
-            var dateTimeVal = new DateTime(2017, 10, 20, 0, 0, 0, 0).ToString(CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern + " hh:mm:ss.f tt");
-            var expected = dateTimeVal.Replace("AM","PM");
-            const string currDL = @"<root><MyTestResult></MyTestResult></root>";
-            SetupArguments(currDL
-                         , currDL
-                         , "10/25/2017 12:00:00 PM"
-                         , ""
-                         , ""
-                         , "Days"
-                         , -5
-                         , "[[MyTestResult]]");
-            //------------Execute Test---------------------------
-            var result = ExecuteProcess();
-            string actual;
-            string error;
-            GetScalarValueFromEnvironment(result.Environment, "[[MyTestResult]]", out actual, out error);
-            //------------Assert Results-------------------------
-            Assert.AreEqual(expected, actual);
-        }
+        
 
         #region Private Test Methods
 

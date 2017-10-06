@@ -230,7 +230,7 @@ namespace Dev2.Common.DateAndTime
             error = "";
             if (string.IsNullOrWhiteSpace(data))
             {
-                data = DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToLongTimeString();
+                data = DateTime.Now.ToString(GlobalConstants.Dev2DotNetDefaultDateTimeFormat);
             }
 
             if (string.IsNullOrWhiteSpace(inputFormat))
