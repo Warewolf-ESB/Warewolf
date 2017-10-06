@@ -53,7 +53,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public string CurrentResult { get; set; }
         [JsonIgnore]
         public InOutArgument<string> ParentInstanceID { get; set; }
-        public IRecordsetScopingObject ScopingObject { get => null; set => value = null; }
 
         #region Ctor
 
@@ -62,15 +61,24 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
         }
 
-        protected DsfActivityAbstract(string displayName, bool isAsync = false)
+        protected DsfActivityAbstract(string displayName)
+            : this(displayName, DebugDispatcher.Instance, false)
+        {
+        }
+
+        protected DsfActivityAbstract(string displayName, bool isAsync)
             : this(displayName, DebugDispatcher.Instance, isAsync)
         {
         }
 
-        protected DsfActivityAbstract(string displayName, IDebugDispatcher debugDispatcher, bool isAsync = false)
+        protected DsfActivityAbstract(string displayName, IDebugDispatcher debugDispatcher)
+            : this(displayName, debugDispatcher, false)
+        {
+        }
+
+        protected DsfActivityAbstract(string displayName, IDebugDispatcher debugDispatcher, bool isAsync)
             : base(isAsync, displayName, debugDispatcher)
         {
-
             AmbientDataList = new InOutArgument<List<string>>();
             ParentInstanceID = new InOutArgument<string>();
 
@@ -99,7 +107,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         
         public virtual void Resumed(NativeActivityContext context, Bookmark bookmark, object value)
         {
-
             IDSFDataObject myDO = context.GetExtension<IDSFDataObject>();
             ErrorResultTO errorResultTO = new ErrorResultTO();
             Guid executionID = myDO.DataListID;
@@ -135,8 +142,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
         #endregion INotifyPropertyChnaged
-
-
+        
         #region Protected Methods
 
         protected IWarewolfIterator CreateDataListEvaluateIterator(string expression, IExecutionEnvironment executionEnvironment, int update)
