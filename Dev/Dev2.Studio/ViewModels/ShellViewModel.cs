@@ -474,7 +474,7 @@ namespace Dev2.Studio.ViewModels
                            // OPEN WINDOW TO SELECT RESOURCE TO MERGE WITH
 
                            var resourceId = Guid.Parse("ea916fa6-76ca-4243-841c-74fa18dd8c14");
-                           OpenMergeConflictsView(resourceId, resourceId, ActiveServer);
+                           OpenMergeConflictsView(ActiveItem as IExplorerItemViewModel, resourceId, ActiveServer);
                        }));
             }
         }
@@ -716,18 +716,22 @@ namespace Dev2.Studio.ViewModels
             if (result == MessageBoxResult.OK)
             {
                 var differentResource = mergeServiceViewModel.SelectedMergeItem;
-                OpenMergeConflictsView(currentResource.ResourceId, differentResource.ResourceId, differentResource.Server);
+                
+                OpenMergeConflictsView(currentResource, differentResource.ResourceId, differentResource.Server);
             }
         }
 
 
-        public void OpenMergeConflictsView(Guid currentResourceId, Guid differenceResourceId, IServer server)
+        public void OpenMergeConflictsView(IExplorerItemViewModel currentResource, Guid differenceResourceId, IServer server)
         {
-            var environmentModel = ServerRepository.Get(server.EnvironmentID);
-            if (environmentModel != null)
+            
+            var localHost = ((ExplorerItemViewModel)currentResource).Server;
+            if (localHost != null)
             {
-                var currentResourceModel = environmentModel.ResourceRepository.LoadContextualResourceModel(currentResourceId);
-                var differenceResourceModel = environmentModel.ResourceRepository.LoadContextualResourceModel(differenceResourceId);
+
+             var currentResourceModel=   localHost.ResourceRepository.LoadContextualResourceModel(currentResource.ResourceId);
+                //var currentResourceModel = environmentModel.ResourceRepository.LoadContextualResourceModel(currentResourceId);
+                var differenceResourceModel = server.ResourceRepository.LoadContextualResourceModel(differenceResourceId);
 
                 var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.MergeConflicts);
                 if (currentResourceModel != null && differenceResourceModel != null)
@@ -736,7 +740,7 @@ namespace Dev2.Studio.ViewModels
                     workSurfaceKey.ResourceID = currentResourceModel.ID;
                     workSurfaceKey.ServerID = currentResourceModel.ServerID;
 
-                    _worksurfaceContextManager.ViewMergeConflictsService(currentResourceModel, differenceResourceModel, workSurfaceKey);
+                    _worksurfaceContextManager.ViewMergeConflictsService(currentResourceModel, differenceResourceModel, true, workSurfaceKey);
                 }
             }
         }

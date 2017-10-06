@@ -120,7 +120,7 @@ namespace Dev2.Studio.ViewModels
         void AddAndActivateWorkSurface(WorkSurfaceContextViewModel context);
         void AddWorkSurface(IWorkSurfaceObject obj);
         bool CloseWorkSurfaceContext(WorkSurfaceContextViewModel context, PaneClosingEventArgs e, bool dontPrompt = false);
-        void ViewMergeConflictsService(IContextualResourceModel currentResourceModel, IContextualResourceModel differenceResourceModel, IWorkSurfaceKey workSurfaceKey = null);
+        void ViewMergeConflictsService(IContextualResourceModel currentResourceModel, IContextualResourceModel differenceResourceModel, bool loadFromServer, IWorkSurfaceKey workSurfaceKey = null);
         void ViewTestsForService(IContextualResourceModel resourceModel, IWorkSurfaceKey workSurfaceKey = null);
         void RunAllTestsForService(IContextualResourceModel resourceModel);
         WorkSurfaceContextViewModel EditResource<T>(IWorkSurfaceKey workSurfaceKey, SourceViewModel<T> viewModel) where T : IEquatable<T>;
@@ -310,9 +310,9 @@ namespace Dev2.Studio.ViewModels
             return workSurfaceKey;
         }
 
-        public void ViewMergeConflictsService(IContextualResourceModel currentResourceModel, IContextualResourceModel differenceResourceModel, IWorkSurfaceKey workSurfaceKey = null)
+        public void ViewMergeConflictsService(IContextualResourceModel currentResourceModel, IContextualResourceModel differenceResourceModel,bool loadFromServer, IWorkSurfaceKey workSurfaceKey = null)
         {
-            var mergeViewModel = new MergeWorkflowViewModel(currentResourceModel, differenceResourceModel, false);//if this is merge between two server versions then we pass false
+            var mergeViewModel = new MergeWorkflowViewModel(currentResourceModel, differenceResourceModel, loadFromServer);//if this is merge between two server versions then we pass false
             var vm = new MergeViewModel(_shellViewModel.EventPublisher, mergeViewModel, _shellViewModel.PopupProvider, new MergeWorkflowView());
             workSurfaceKey = TryGetOrCreateWorkSurfaceKey(workSurfaceKey, WorkSurfaceContext.MergeConflicts, currentResourceModel.ID);
             var key = workSurfaceKey as WorkSurfaceKey;
