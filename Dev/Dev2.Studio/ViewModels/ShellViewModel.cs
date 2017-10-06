@@ -716,7 +716,7 @@ namespace Dev2.Studio.ViewModels
             if (result == MessageBoxResult.OK)
             {
                 var differentResource = mergeServiceViewModel.SelectedMergeItem;
-                
+
                 OpenMergeConflictsView(currentResource, differentResource.ResourceId, differentResource.Server);
             }
         }
@@ -724,12 +724,12 @@ namespace Dev2.Studio.ViewModels
 
         public void OpenMergeConflictsView(IExplorerItemViewModel currentResource, Guid differenceResourceId, IServer server)
         {
-            
+
             var localHost = ((ExplorerItemViewModel)currentResource).Server;
             if (localHost != null)
             {
 
-             var currentResourceModel=   localHost.ResourceRepository.LoadContextualResourceModel(currentResource.ResourceId);
+                var currentResourceModel = localHost.ResourceRepository.LoadContextualResourceModel(currentResource.ResourceId);
                 //var currentResourceModel = environmentModel.ResourceRepository.LoadContextualResourceModel(currentResourceId);
                 var differenceResourceModel = server.ResourceRepository.LoadContextualResourceModel(differenceResourceId);
 
@@ -744,6 +744,20 @@ namespace Dev2.Studio.ViewModels
                 }
             }
         }
+
+        public void OpenMergeConflictsView(IContextualResourceModel currentResourceModel, IContextualResourceModel differenceResourceModel, bool loadFromServer)
+        {
+            var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.MergeConflicts);
+            if (currentResourceModel != null && differenceResourceModel != null)
+            {
+                workSurfaceKey.EnvironmentID = currentResourceModel.Environment.EnvironmentID;
+                workSurfaceKey.ResourceID = currentResourceModel.ID;
+                workSurfaceKey.ServerID = currentResourceModel.ServerID;
+
+                _worksurfaceContextManager.ViewMergeConflictsService(currentResourceModel, differenceResourceModel, loadFromServer, workSurfaceKey);
+            }
+        }
+
 
         public void OpenCurrentVersion(Guid resourceId, Guid environmentId)
         {
