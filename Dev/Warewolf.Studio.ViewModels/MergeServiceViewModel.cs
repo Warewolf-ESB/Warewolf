@@ -42,7 +42,9 @@ namespace Warewolf.Studio.ViewModels
             MergeConnectControlViewModel = new ConnectControlViewModel(_shellViewModel.LocalhostServer, aggregator, _shellViewModel.ExplorerViewModel.ConnectControlViewModel.Servers);
 
             ShowConnectControl = true;
-            MergeConnectControlViewModel.ServerConnected += async (sender, server) => { await ServerConnected(server); };
+            MergeConnectControlViewModel.CanEditServer = false;
+            MergeConnectControlViewModel.CanCreateServer = false;
+            MergeConnectControlViewModel.ServerConnected += async (sender, server) => { await ServerConnected(server).ConfigureAwait(false); };
             MergeConnectControlViewModel.ServerDisconnected += ServerDisconnected;
 
             if (MergeConnectControlViewModel.SelectedConnection != null)
@@ -57,7 +59,7 @@ namespace Warewolf.Studio.ViewModels
 
             MergeConnectControlViewModel.SelectedEnvironmentChanged += async (sender, id) =>
             {
-                await MergeExplorerViewModelSelectedEnvironmentChanged(sender, id);
+                await MergeExplorerViewModelSelectedEnvironmentChanged(sender, id).ConfigureAwait(false);
             };
         }
 
@@ -109,20 +111,9 @@ namespace Warewolf.Studio.ViewModels
             var connectControlViewModel = sender as ConnectControlViewModel;
             if (connectControlViewModel?.SelectedConnection.IsConnected != null && connectControlViewModel.SelectedConnection.IsConnected && _environments.Any(p => p.ResourceId != connectControlViewModel.SelectedConnection.EnvironmentID))
             {
-                var task = Task.Run(async () => { await CreateNewEnvironment(connectControlViewModel.SelectedConnection); });
-                task.Wait();
+                await CreateNewEnvironment(connectControlViewModel.SelectedConnection).ConfigureAwait(false);
             }
-            if (_environments.Count == _shellViewModel?.ExplorerViewModel?.Environments?.Count)
-            {
-                UpdateItemForMerge(environmentId);
-            }
-            else
-            {
-                var environmentViewModel = _shellViewModel?.ExplorerViewModel?.Environments?.FirstOrDefault(
-                                               model => model.ResourceId == environmentId) ?? _environments.FirstOrDefault(p => p.ResourceId == environmentId);
-
-                await CreateNewEnvironment(environmentViewModel?.Server);
-            }
+            UpdateItemForMerge(environmentId);
         }
 
         private void UpdateItemForMerge(Guid environmentId)
@@ -162,7 +153,7 @@ namespace Warewolf.Studio.ViewModels
 
         async Task<bool> ServerConnected(IServer server)
         {
-            var isCreated = await CreateNewEnvironment(server);
+            var isCreated = await CreateNewEnvironment(server).ConfigureAwait(false);
             return isCreated;
         }
 
@@ -178,7 +169,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 var environmentModel = CreateEnvironmentFromServer(server, _shellViewModel);
                 _environments.Add(environmentModel);
-                isLoaded = await environmentModel.Load();
+                isLoaded = await environmentModel.Load().ConfigureAwait(false);
                 OnPropertyChanged(() => Environments);
             }
             return isLoaded;
@@ -197,7 +188,7 @@ namespace Warewolf.Studio.ViewModels
         protected virtual async void LoadEnvironment(IEnvironmentViewModel localhostEnvironment)
         {
             localhostEnvironment.Connect();
-            await localhostEnvironment.Load(false, true);
+            await localhostEnvironment.Load(false, true).ConfigureAwait(false);
             var selectedEnvironment = SelectedEnvironment ?? _selectedEnv;
             if (selectedEnvironment?.DisplayName == localhostEnvironment.DisplayName)
             {

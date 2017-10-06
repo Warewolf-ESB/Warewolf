@@ -89,6 +89,17 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsNotNull(connectControlViewModel);
         }
 
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void TestConnectControlViewModelExpectedProperties()
+        {
+            //act
+            var connectControlViewModel = new ConnectControlViewModel(null, _eventAggregatorMock.Object);
+            Assert.IsNotNull(connectControlViewModel);
+            Assert.IsTrue(connectControlViewModel.CanEditServer);
+            Assert.IsTrue(connectControlViewModel.CanCreateServer);
+        }
+
         #endregion Test construction
 
         #region Test commands
