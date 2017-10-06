@@ -341,14 +341,14 @@ namespace Dev2.Workspaces
 
         string GetFileName(Guid workspaceID)
         {
-            return Path.Combine(EnvironmentVariables.WorkspacePath, workspaceID + ".uws");
+            return Path.Combine(EnvironmentVariables.WorkspacePath, workspaceID + ".xml");
         }
 
         #endregion
 
         static string GetUserMapFileName()
         {
-            return Path.Combine(EnvironmentVariables.WorkspacePath, "workspaces.uws");
+            return Path.Combine(EnvironmentVariables.WorkspacePath, "workspaces.xml");
         }
 
         static ConcurrentDictionary<string, Guid> ReadUserMap()
