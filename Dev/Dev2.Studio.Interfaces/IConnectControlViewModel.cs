@@ -22,6 +22,8 @@ namespace Dev2.Studio.Interfaces
         EventHandler<IServer> ServerHasDisconnected { get; set; }
          EventHandler<IServer> ServerReConnected { get; set; }
         bool ShouldUpdateActiveEnvironment { get; set; }
+        bool CanEditServer { get; set; }
+        bool CanCreateServer { get; set; }
 
         Task<bool> Connect(IServer connection);
         event SelectedServerChanged SelectedEnvironmentChanged;

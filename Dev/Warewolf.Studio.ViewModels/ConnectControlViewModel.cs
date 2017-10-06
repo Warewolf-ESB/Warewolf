@@ -17,16 +17,12 @@ using System.Windows.Input;
 using Dev2;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio.Controller;
-using Dev2.Studio.Core;
 using Dev2.Studio.Interfaces;
 using Microsoft.Practices.Prism;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
 using Microsoft.Practices.Prism.PubSubEvents;
 using Warewolf.Resource.Errors;
-
-
-
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -41,6 +37,9 @@ namespace Warewolf.Studio.ViewModels
         private readonly ObservableCollection<IServer> _existingServers;
         public IPopupController PopupController { get; set; }
         private readonly IServerRepository _serverRepository;
+        private bool _canEditServer;
+        private bool _canCreateServer;
+
         public ConnectControlViewModel(IServer server, IEventAggregator aggregator, ObservableCollection<IServer> servers = null)
         {
             if (aggregator == null)
@@ -59,7 +58,8 @@ namespace Warewolf.Studio.ViewModels
                 Server.UpdateRepository.ServerSaved += UpdateRepositoryOnServerSaved;
             }
             ShouldUpdateActiveEnvironment = false;
-          
+            CanEditServer = true;
+            CanCreateServer = true;
         }
 
         public ConnectControlViewModel(IServer server, IEventAggregator aggregator, IPopupController popupController, ObservableCollection<IServer> servers = null)
@@ -69,6 +69,26 @@ namespace Warewolf.Studio.ViewModels
         }
 
         public bool ShouldUpdateActiveEnvironment { get; set; }
+
+        public bool CanEditServer
+        {
+            get => _canEditServer;
+            set
+            {
+                _canEditServer = value;
+                OnPropertyChanged(() => CanEditServer);
+            }
+        }
+
+        public bool CanCreateServer
+        {
+            get => _canCreateServer;
+            set
+            {
+                _canCreateServer = value;
+                OnPropertyChanged(() => CanEditServer);
+            }
+        }
 
         private bool CanExecuteMethod()
         {
@@ -262,10 +282,7 @@ namespace Warewolf.Studio.ViewModels
         private IServer Server { get; set; }
         public ObservableCollection<IServer> Servers
         {
-            get
-            {
-                return _servers;
-            }
+            get => _servers;
             private set
             {
                 _servers = value;
@@ -274,10 +291,7 @@ namespace Warewolf.Studio.ViewModels
         }
         public IServer SelectedConnection
         {
-            get
-            {
-                return _selectedConnection;
-            }
+            get => _selectedConnection;
             set
             {
                 if (value != null && !Equals(_selectedConnection, value))
@@ -326,10 +340,7 @@ namespace Warewolf.Studio.ViewModels
         public ICommand NewConnectionCommand { get; private set; }
         public bool IsConnected
         {
-            get
-            {
-                return _isConnected;
-            }
+            get => _isConnected;
             private set
             {
                 _isConnected = value;
@@ -338,10 +349,7 @@ namespace Warewolf.Studio.ViewModels
         }
         public bool IsConnecting
         {
-            get
-            {
-                return _isConnecting;
-            }
+            get => _isConnecting;
             private set
             {
                 _isConnecting = value;
@@ -350,10 +358,7 @@ namespace Warewolf.Studio.ViewModels
         }
         public bool IsLoading
         {
-            get
-            {
-                return _isLoading;
-            }
+            get => _isLoading;
             set
             {
                 _isLoading = value;
@@ -363,47 +368,48 @@ namespace Warewolf.Studio.ViewModels
 
         public async Task<bool> Connect(IServer connection)
         {
-            if (connection != null)
+            if (connection == null)
             {
-                try
+                return false;
+            }
+
+            try
+            {
+                var connected = await connection.ConnectAsync();
+                if (connected && connection.IsConnected)
                 {
-                    var connected = await connection.ConnectAsync();
-                    if (connected && connection.IsConnected)
+                    if (ShouldUpdateActiveEnvironment)
                     {
-                        if (ShouldUpdateActiveEnvironment)
-                        {
-                            SetActiveServer(connection);
-                        }
+                        SetActiveServer(connection);
                     }
+                }
+                else
+                {
+                    var result = PopupController?.ShowConnectionTimeoutConfirmation(connection.DisplayName);
+                    if (result == MessageBoxResult.Yes)
+                    {
+                        await Connect(connection);
+                    }                                                 
                     else
                     {
-                        var result = PopupController?.ShowConnectionTimeoutConfirmation(connection.DisplayName);
-                        if (result == MessageBoxResult.Yes)
-                        {
-                            await Connect(connection);
-                        }                                                 
-                        else
-                        {
-                            ServerDisconnected?.Invoke(this, connection);
-                        }
-                    }
-                    OnPropertyChanged(() => connection.IsConnected);
-                    if (ServerConnected != null && connected && connection.IsConnected)
-                    {
-                        ServerConnected(this, connection);
-                        if (ShouldUpdateActiveEnvironment)
-                        {
-                            SetActiveServer(connection);
-                        }
+                        ServerDisconnected?.Invoke(this, connection);
                     }
                 }
-                catch (Exception)
+                OnPropertyChanged(() => connection.IsConnected);
+                if (ServerConnected != null && connected && connection.IsConnected)
                 {
-                    return false;
+                    ServerConnected(this, connection);
+                    if (ShouldUpdateActiveEnvironment)
+                    {
+                        SetActiveServer(connection);
+                    }
                 }
-                return true;
             }
-            return false;
+            catch (Exception)
+            {
+                return false;
+            }
+            return true;
         }
 
         private static void SetActiveServer(IServer connection)

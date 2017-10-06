@@ -89,7 +89,7 @@
                                FontSize="14"
                                FontWeight="Bold"
                                Margin="{StaticResource ElementBorderRight}" 
-                               Text="{Binding SelectedResource, UpdateSourceTrigger=PropertyChanged}" />
+                               Text="{Binding SelectedResource.ResourceName, UpdateSourceTrigger=PropertyChanged}" />
 
                     <TextBlock Grid.Column="1" 
                                Margin="{StaticResource ControlBorderRight}" 

@@ -99,6 +99,14 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
+        public void TestConstructorExpectedProperties()
+        {
+            Assert.IsNotNull(_target.MergeConnectControlViewModel);
+            Assert.IsFalse(_target.MergeConnectControlViewModel.CanEditServer);
+            Assert.IsFalse(_target.MergeConnectControlViewModel.CanCreateServer);
+        }
+
+        [TestMethod]
         public void TestSelectedEnvironmentChanged()
         {
             //arrange
