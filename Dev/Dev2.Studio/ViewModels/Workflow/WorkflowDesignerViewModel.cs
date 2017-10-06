@@ -88,6 +88,7 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Studio.ViewModels;
 using Dev2.Activities;
 using System.Collections.Concurrent;
+using Dev2.ViewModels.Merge;
 
 namespace Dev2.Studio.ViewModels.Workflow
 
@@ -1801,7 +1802,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         [ExcludeFromCodeCoverage] //This method is used to prevent the drill down on the designer
         private static void ViewOnKeyDown(object sender, KeyEventArgs e)
         {
-            var _sender = sender as Grid;
+            var grid = sender as Grid;
             if (e.OriginalSource != null)
             {
                 var origSource = e.OriginalSource.GetType();
@@ -1812,7 +1813,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                         e.Handled = true;
                     }
                 }
-                if (e.Key == Key.Delete && (_sender.DataContext.GetType() == typeof(ServiceTestViewModel)))
+                if (e.Key == Key.Delete && (grid?.DataContext.GetType() == typeof(ServiceTestViewModel) || grid?.DataContext.GetType() == typeof(MergeWorkflowViewModel)))
                 {
                     e.Handled = true;
                 }

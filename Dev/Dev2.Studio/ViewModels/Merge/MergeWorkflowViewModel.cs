@@ -86,6 +86,7 @@ namespace Dev2.ViewModels.Merge
             CanSave = false;
 
             WorkflowDesignerViewModel.CanViewWorkflowLink = false;
+            WorkflowDesignerViewModel.IsTestView = true;
         }
 
         private void BuildConflicts(IContextualResourceModel currentResourceModel, IContextualResourceModel differenceResourceModel, List<(Guid uniqueId, IConflictNode currentNode, IConflictNode differenceNode, bool hasConflict)> currentChanges)
