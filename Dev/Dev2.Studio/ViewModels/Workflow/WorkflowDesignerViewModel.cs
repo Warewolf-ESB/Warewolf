@@ -3069,33 +3069,39 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
 
             AddNodesForChildren(model, nodes);
-            var modelActivityType = model.ActivityType;
-            var step = nodeToAdd?.GetCurrentValue();
-            switch (step)
-            {
-                case FlowStep normalStep:
-                    normalStep.Next = null;
-                    if (!nodes.Contains(normalStep))
-                        nodes.Add(normalStep);
-                    break;
-                case FlowDecision normalDecision:
-                    if (!nodes.Contains(normalDecision))
-                        nodes.Add(normalDecision);
-                    break;
-                case FlowSwitch<string> normalSwitch:
-                    nodes.Add(normalSwitch);
-                    break;
-            }
 
-            var startNode = chart.Properties["StartNode"];
-            if (startNode == null || startNode.ComputedValue == null)
+            if (chart != null)
             {
-                AddStartNode(model, modelActivityType, nodes, startNode);
-            }
-            else
-            {
-                AddNextNode(parent, model, modelActivityType, nodes);
-            }
+                var step = nodeToAdd?.GetCurrentValue();
+                switch (step)
+                {
+                    case FlowStep normalStep:
+                        normalStep.Next = null;
+                        if (!nodes.Contains(normalStep))
+                            nodes.Add(normalStep);
+                        break;
+                    case FlowDecision normalDecision:
+                        if (!nodes.Contains(normalDecision))
+                            nodes.Add(normalDecision);
+                        break;
+                    case FlowSwitch<string> normalSwitch:
+                        nodes.Add(normalSwitch);
+                        break;
+                    default:
+                        break;
+                }
+
+                var startNode = chart.Properties["StartNode"];
+                if (startNode == null || startNode.ComputedValue == null)
+                {
+                    AddStartNode(nodeToAdd.GetCurrentValue<FlowNode>(), nodes, startNode);
+
+                }
+                else
+                {
+                    AddNextNode(parent, model, nodes, nodeToAdd.GetCurrentValue<FlowNode>());
+                }
+            }//At the end of the merge we need to clean up all the unused nodes
         }
 
         private void AddNodesForChildren(IMergeToolModel model, ModelItemCollection nodes)
@@ -3133,7 +3139,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-        private void AddNextNode(IMergeToolModel parent, IMergeToolModel model, FlowNode modelActivityType, ModelItemCollection nodes)
+        private void AddNextNode(IMergeToolModel parent, IMergeToolModel model, ModelItemCollection nodes, FlowNode flowNode)
         {
             var parentNode = nodes.FirstOrDefault(t =>
             {
@@ -3144,33 +3150,36 @@ namespace Dev2.Studio.ViewModels.Workflow
                 return act?.UniqueID == parentId1.UniqueID; 
 
             });
-            var flowNode = model.FlowNode.GetCurrentValue<FlowStep>();
-            if (flowNode != null)
-            {
-                flowNode.Next = null;
-            }
+         
 
             if (parentNode != null)
             {
-                parentNode.Properties["Next"]?.SetValue(flowNode ?? model.FlowNode.GetCurrentValue());
-                Selection.Select(_wd.Context, model.FlowNode);
+                if (flowNode == null)
+                {
+                    parentNode.Properties["Next"].SetValue(model.FlowNode.GetCurrentValue());
+                    Selection.Select(_wd.Context, model.FlowNode);
+                }
+                else
+                {
+                    parentNode.Properties["Next"].SetValue(flowNode);
+                    Selection.Select(_wd.Context, ModelItemUtils.CreateModelItem(flowNode));
+
+                }
             }
         }
 
-        private void AddStartNode(IMergeToolModel model, FlowNode modelActivityType, ModelItemCollection nodes, ModelProperty startNode)
+        private void AddStartNode(FlowNode flowNode, ModelItemCollection nodes, ModelProperty startNode)
         {
-            var flowNode = model.FlowNode.GetCurrentValue<FlowStep>();
 
             if (flowNode == null)
             {
                 return;
             }
 
-            flowNode.Next = null;
             if (startNode.ComputedValue == null)
             {
                 startNode.SetValue(flowNode);
-                Selection.Select(_wd.Context, model.FlowNode);
+                Selection.Select(_wd.Context, ModelItemUtils.CreateModelItem(flowNode));
             }
         }
 
