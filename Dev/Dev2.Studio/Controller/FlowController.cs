@@ -169,7 +169,7 @@ namespace Dev2.Studio.Controller
             var dataContext1 = parentContentPane?.DataContext;
             if (dataContext1 != null)
             {
-                if (dataContext1.GetType().Name == "ServiceTestViewModel")
+                if (dataContext1.GetType().Name == "ServiceTestViewModel" || dataContext1.GetType().Name == "MergeWorkflowViewModel")
                 {
                     window.SetEnableDoneButtonState(false);
                 }
@@ -356,7 +356,7 @@ namespace Dev2.Studio.Controller
             var dataContext1 = parentContentPane?.DataContext;
             if (dataContext1 != null)
             {
-                if (dataContext1.GetType().Name == "ServiceTestViewModel")
+                if (dataContext1.GetType().Name == "ServiceTestViewModel" || dataContext.GetType().Name == "MergeWorkflowViewModel")
                 {
                     window.SetEnableDoneButtonState(false);
                 }
