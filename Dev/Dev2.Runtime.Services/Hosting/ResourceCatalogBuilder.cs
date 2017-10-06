@@ -296,6 +296,7 @@ namespace Dev2.Runtime.Hosting
                 if (File.Exists(updatedFile) && File.Exists(item))
                 {
                     File.Delete(updatedFile);
+                    File.Move(item, updatedFile);
                 }
                 else
                 {
@@ -332,10 +333,6 @@ namespace Dev2.Runtime.Hosting
             {
                 _resources.Add(res);
                 _addedResources.Add(res.ResourceID);
-                //if (res.FilePath.EndsWith(".xml"))
-                //{
-                //    _convertToBiteExtension.Add(res.FilePath);
-                //}
             }
             else
             {
@@ -346,10 +343,6 @@ namespace Dev2.Runtime.Hosting
                     Dev2Logger.Debug(
                         string.Format(ErrorResource.ResourceAlreadyLoaded,
                             res.ResourceName, filePath, dupRes.FilePath), GlobalConstants.WarewolfDebug);
-                    //if (res.FilePath.EndsWith(".xml"))
-                    //{
-                    //    _convertToBiteExtension.Add(res.FilePath);
-                    //}
                 }
                 else
                 {
