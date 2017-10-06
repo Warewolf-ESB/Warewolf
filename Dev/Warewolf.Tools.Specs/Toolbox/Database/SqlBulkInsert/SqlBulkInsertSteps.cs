@@ -149,12 +149,12 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset.SqlBulkInsert
             using (var connection = new SqlConnection(dbSource.ConnectionString))
             {
                 connection.Open();
-                var q = "drop table SqlBulkInsertSpecFlowTestTableForeign_for_" + scenarioContext.ScenarioInfo.Title.Replace(' ', '_') + "_" + tableNameUniqueNameGuid;           
+                var q = "drop table SqlBulkInsertSpecFlowTestTable_for_" + scenarioContext.ScenarioInfo.Title.Replace(' ', '_') + "_" + tableNameUniqueNameGuid;
                 using (var cmd = new SqlCommand(q, connection))
                 {
                     cmd.ExecuteNonQuery();
                 }
-                q = "drop table SqlBulkInsertSpecFlowTestTable_for_" + scenarioContext.ScenarioInfo.Title.Replace(' ', '_') + "_" + tableNameUniqueNameGuid;
+                q = "drop table SqlBulkInsertSpecFlowTestTableForeign_for_" + scenarioContext.ScenarioInfo.Title.Replace(' ', '_') + "_" + tableNameUniqueNameGuid;           
                 using (var cmd = new SqlCommand(q, connection))
                 {
                     cmd.ExecuteNonQuery();
