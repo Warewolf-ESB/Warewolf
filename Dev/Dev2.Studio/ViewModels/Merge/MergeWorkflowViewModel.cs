@@ -35,7 +35,7 @@ namespace Dev2.ViewModels.Merge
 
             _resourceModel = currentResourceModel;
 
-            var currentChanges = _serviceDifferenceParser.GetDifferences(currentResourceModel, differenceResourceModel, isGitMerge);
+            var currentChanges = _serviceDifferenceParser.GetDifferences(currentResourceModel, differenceResourceModel, loadworkflowFromServer);
 
             Conflicts = new ObservableCollection<ICompleteConflict>();
             BuildConflicts(currentResourceModel, differenceResourceModel, currentChanges);
