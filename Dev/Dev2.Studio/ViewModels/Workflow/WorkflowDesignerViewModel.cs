@@ -3157,12 +3157,12 @@ namespace Dev2.Studio.ViewModels.Workflow
                 if (flowNode == null)
                 {
                     parentNode.Properties["Next"].SetValue(model.FlowNode.GetCurrentValue());
-                    Selection.Select(_wd.Context, model.FlowNode.GetCurrentValue());
+                    Selection.Select(_wd.Context, model.FlowNode);
                 }
                 else
                 {
                     parentNode.Properties["Next"].SetValue(flowNode);
-                    Selection.Select(_wd.Context, flowNode);
+                    Selection.Select(_wd.Context, ModelItemUtils.CreateModelItem(flowNode));
 
                 }
             }
@@ -3179,7 +3179,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             if (startNode.ComputedValue == null)
             {
                 startNode.SetValue(flowNode);
-                Selection.Select(_wd.Context, model.FlowNode);
+                Selection.Select(_wd.Context, ModelItemUtils.CreateModelItem(flowNode));
             }
         }
 
