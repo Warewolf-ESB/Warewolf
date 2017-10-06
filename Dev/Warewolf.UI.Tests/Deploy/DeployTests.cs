@@ -52,7 +52,7 @@ namespace Warewolf.UI.Tests
         }
 
         [TestMethod]
-        [TestCategory("Deploy")]
+        [TestCategory("Deploy Hello World")]
         public void Deploy_Hello_World()
         {
             DeployUIMap.Select_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_Combobox();
@@ -60,7 +60,7 @@ namespace Warewolf.UI.Tests
         }
 
         [TestMethod]
-        [TestCategory("Deploy")]
+        [TestCategory("Deploy Select Dependencies")]
         public void Deploy_DotnetWorkFlowForTesttingSelectAllDependencies_HasSourceSelected()
         {
             const string Source = "DotnetWorkflowForTesting";
@@ -82,6 +82,37 @@ namespace Warewolf.UI.Tests
             DeployUIMap.Click_Deploy_Tab_Source_Server_Edit_Button();
             ServerSourceUIMap.Click_Close_Server_Source_Wizard_Tab_Button();
             Assert.IsTrue(DeployUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerConectControl.Combobox.RemoteConnectionIntegrationText.Exists, "Selected source server in deploy is not Remote Connection Integration (Connected).");
+        }
+
+        [TestMethod]
+        [TestCategory("Deploy")]
+        public void Deploy_Button_Is_Enabling_When_Selecting_Resource_In_Source_Side()
+        {
+            DeployUIMap.Select_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_Combobox();
+            DeployUIMap.ThenDeployButtonIsEnabled("false");
+            DeployUIMap.WhenISelectFromTheSourceTab("Hello world");
+            DeployUIMap.ThenDeployButtonIsEnabled("true");
+        }
+
+        [TestMethod]
+        [TestCategory("Deploy Filtering")]
+        public void Filtering_And_Clearing_Filter_On_Source_Side()
+        {
+            DeployUIMap.Select_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_Combobox();
+            DeployUIMap.WhenIFilterForOnTheSourceFilter("Hello World");
+            DeployUIMap.WhenIFilterForOnTheSourceFilter("");
+            DeployUIMap.ThenDeployButtonIsEnabled("false");
+        }
+
+        [TestMethod]
+        [TestCategory("Deploy Filtering")]
+        public void Deploying_With_Filter_Enabled()
+        {
+            DeployUIMap.Select_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_Combobox();
+            DeployUIMap.WhenIFilterForOnTheSourceFilter("Hello World");
+            DeployUIMap.WhenResourcesIsVisibleOnTheTree();
+            DeployUIMap.WhenISelectFromTheSourceTab("Hello world");
+            DeployUIMap.ThenIClickDeployButton();
         }
 
         #region Additional test attributes
