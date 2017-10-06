@@ -133,11 +133,14 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset.SqlBulkInsert
             }
         }
 
-        [AfterScenario("Import data into Table Batch size is 1")]
+        [AfterScenario("Database")]
         public void DeleteTestItem()
         {
-            var tableNameUniqueNameGuid = ScenarioContext.Current.Get<string>("tableNameUniqueNameGuid");
-            DeleteIsolatedSQLTable(tableNameUniqueNameGuid);
+            if (scenarioContext.ScenarioInfo.Title.Replace(' ', '_') == "Import_data_into_Table_Batch_size_is_1")
+            {
+                var tableNameUniqueNameGuid = ScenarioContext.Current.Get<string>("tableNameUniqueNameGuid");
+                DeleteIsolatedSQLTable(tableNameUniqueNameGuid);
+            }
         }
 
         private void DeleteIsolatedSQLTable(string tableNameUniqueNameGuid)
