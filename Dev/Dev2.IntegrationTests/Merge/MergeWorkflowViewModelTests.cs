@@ -20,6 +20,7 @@ using Dev2.Util;
 
 namespace Dev2.Integration.Tests.Merge
 {
+    [Ignore("Nathi is working on the Resources")]
     [TestClass]
     public class MergeWorkflowViewModelIntergrationTests
     {

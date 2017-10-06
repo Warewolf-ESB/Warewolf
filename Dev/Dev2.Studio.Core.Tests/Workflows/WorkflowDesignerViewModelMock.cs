@@ -38,8 +38,7 @@ namespace Dev2.Core.Tests.Workflows
                 new Mock<IPopupController>().Object,
                 new SynchronousAsyncWorker(), processExecutor,
                 createDesigner, false)
-        {
-            _moq.SetupAllProperties();
+        {            
             _wd = _moq.Object;
         }
 
@@ -68,8 +67,7 @@ namespace Dev2.Core.Tests.Workflows
                 new Mock<IEventAggregator>().Object,
                 resource, workflowHelper,
                 popupController, new SynchronousAsyncWorker(), processExecutor, createDesigner, false)
-        {
-            _moq.SetupAllProperties();
+        {            
             _wd = _moq.Object;
         }
 
