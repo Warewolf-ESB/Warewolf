@@ -63,6 +63,13 @@ using Dev2.Studio.Core;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.Core.Interfaces;
 using Warewolf.MergeParser;
+using Dev2.Studio.Core.Models;
+using Dev2.Data.ServiceModel;
+using System.Xml.Linq;
+using Dev2.Runtime.ServiceModel.Data;
+using System.Xml.Serialization;
+using Dev2.Runtime.ESB.Management.Services;
+using Dev2.Factory;
 
 namespace Dev2.Studio
 
@@ -82,8 +89,11 @@ namespace Dev2.Studio
 
         private AppExceptionHandler _appExceptionHandler;
         private bool _hasShutdownStarted;
-
-        public App()
+        public App(IMergeFactory mergeFactory)
+        {
+            this.mergeFactory = mergeFactory;
+        }
+        public App() : this(new MergeFactory())
         {
             // PrincipalPolicy must be set to WindowsPrincipal to check roles.
             AppDomain.CurrentDomain.SetPrincipalPolicy(PrincipalPolicy.WindowsPrincipal);
@@ -145,6 +155,8 @@ namespace Dev2.Studio
 
         private ManualResetEvent _resetSplashCreated;
         private Thread _splashThread;
+        private readonly IMergeFactory mergeFactory;
+
         protected void InitializeShell(System.Windows.StartupEventArgs e)
         {
             _resetSplashCreated = new ManualResetEvent(false);
@@ -191,7 +203,16 @@ namespace Dev2.Studio
         {
             foreach (var item in e.Args)
             {
-                _shellViewModel.LoadWorkflow(item.Replace("\"", ""));
+                if (item.Contains("-merge"))
+                {
+                    mergeFactory.OpenMergeWindow(_shellViewModel, item);
+
+                }
+                else
+                {
+                    _shellViewModel.LoadWorkflow(item.Replace("\"", ""));
+                }
+
             }
         }
 

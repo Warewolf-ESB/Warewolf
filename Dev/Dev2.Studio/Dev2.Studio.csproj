@@ -300,6 +300,8 @@
     <Compile Include="CustomControls\ActivityTemplateSelector.cs" />
     <Compile Include="CustomControls\TemplateGenerator.cs" />
     <Compile Include="DesignerAttributeMap.cs" />
+    <Compile Include="Factory\IMergeFactory.cs" />
+    <Compile Include="Factory\MergeFactory.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" Condition="!Exists('..\AssemblyCommonInfo.cs')" />
     <None Include="..\Run Tests.ps1">

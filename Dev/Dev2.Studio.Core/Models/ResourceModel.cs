@@ -75,6 +75,7 @@ namespace Dev2.Studio.Core.Models
 
         #region Constructors
 
+        public ResourceModel() { }
         public ResourceModel(IServer environment)
             : this(environment, EventPublishers.Aggregator)
         {

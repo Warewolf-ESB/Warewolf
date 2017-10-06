@@ -63,6 +63,7 @@
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
     <Compile Include="Load Tests.cs" />
+    <Compile Include="Merge\MergeFactoryTests.cs" />
     <Compile Include="Merge\ParseServiceForDifferencesTests.cs" />
     <Compile Include="Merge\TestHelper.cs" />
     <Compile Include="XML\MergeRemote\XmlResource.cs" />
@@ -370,7 +371,9 @@
     <EmbeddedResource Include="XML\SameResourceSwitch.xml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="XML\SameResourceSequence.xml" />
+    <EmbeddedResource Include="XML\SameResourceSequence.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="XML\SameResourceForEach.xml" />
