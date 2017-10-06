@@ -98,6 +98,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsNotNull(env);
         }
 
+        [Ignore("Implement: CanExecute, CanEdit, CanView, ShowContextMenu, AllowResourceCheck, CanDrop, CanDrag")]
         [TestMethod]
         public void TestSelectedEnvironmentChanged()
         {
