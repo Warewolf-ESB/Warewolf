@@ -212,7 +212,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         #endregion Test properties
 
         #region Test methods
-
+        [Ignore("Implement: CanExecute, CanEdit, CanView, ShowContextMenu, AllowResourceCheck, CanDrop, CanDrag")]
         [TestMethod]
         public void TestSelectedEnvironmentChanged()
         {
