@@ -39,9 +39,9 @@
             public const string UpgradeVersion = "Upgrade to New Version Clicked";
             public const string VariablesInputClicked = "Variables - Input Clicked ";
             public const string VariablesOutputClicked = "Variables - Output Clicked";
-            public const string HelloWorldClicked = "Hello World Clicked";
+            public const string HelloWorldClicked = "Hello World";
             public const string WarewolfStoreClicked = "Warewolf Store Clicked";
-            public const string ExamplesClicked = "Examples Clicked";
+            public const string ExamplesClicked = "Examples";
             public const string NewRemoteServerClicked = "New Remote Server Clicked";       
          
             public const string SharedResourcesServerClicked = "Shared Resources Server Clicked";

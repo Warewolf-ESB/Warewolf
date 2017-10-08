@@ -13,7 +13,7 @@ using Trackerbird.Tracker;
 namespace Dev2.Instrumentation
 {
 
-    class RevulyticsTracker : IApplicationTracker
+ public class RevulyticsTracker : IApplicationTracker
     {
         // current instance of the Revuulytics
         private static RevulyticsTracker _revulyticsTrackerInstance;

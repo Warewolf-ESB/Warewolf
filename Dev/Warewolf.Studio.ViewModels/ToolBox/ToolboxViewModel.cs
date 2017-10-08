@@ -29,7 +29,7 @@ namespace Warewolf.Studio.ViewModels.ToolBox
         public IApplicationTracker _applicationTracker;
         public ToolboxViewModel(IToolboxModel localModel, IToolboxModel remoteModel)
         {
-            // applicationAnalytics = ApplicationAnalyticFactory.GetApplicationAnalyticsProvider("revulytics");
+            
             _applicationTracker = ApplicationTrackerFactory.GetApplicationTrackerProvider();
             VerifyArgument.AreNotNull(new Dictionary<string, object> { { "localModel", localModel }, { "remoteModel", remoteModel } });
             _localModel = localModel;

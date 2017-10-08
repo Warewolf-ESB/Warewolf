@@ -1078,6 +1078,15 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             var mi = addedItem;
             var computedValue = mi.Content?.ComputedValue;
+
+            //Track added items when dragged on design surface
+            if (computedValue!=null && computedValue.ToString()!= ": DsfActivity")
+            {
+                _applicationTracker.TrackCustomEvent(ApplicationTrackerConstants.TrackerEventGroup.DragOnDesignSurface, ApplicationTrackerConstants.TrackerEventName.ItemDragged,computedValue.ToString());
+            }
+
+
+
             if (computedValue == null && (mi.ItemType == typeof (DsfFlowDecisionActivity) ||
                                           mi.ItemType == typeof (DsfFlowSwitchActivity)))
             {
@@ -1161,6 +1170,8 @@ namespace Dev2.Studio.ViewModels.Workflow
         private void InitialiseWithAction(ModelProperty modelProperty1)
         {
             var droppedActivity = modelProperty1?.ComputedValue as DsfActivity;
+
+         
             if (droppedActivity != null)
             {
                 if (!string.IsNullOrEmpty(droppedActivity.ServiceName))
@@ -1191,6 +1202,25 @@ namespace Dev2.Studio.ViewModels.Workflow
                     {
                         DsfActivity d = DsfActivityFactory.CreateDsfActivity(theResource, droppedActivity, true, serverRepository, _resourceModel.Environment.IsLocalHostCheck());
 
+                        if (theResource.DisplayName=="Hello World")
+                        {
+                            //track hello world dragged
+                            _applicationTracker.TrackCustomEvent(ApplicationTrackerConstants.TrackerEventGroup.MainMenuClicked, ApplicationTrackerConstants.TrackerEventName.HelloWorldClicked, theResource.DisplayName);
+
+                        }
+                        else if(theResource.Category!=null && theResource.Category.StartsWith("Examples"))
+                        {
+                            //track examples actitvity dragged
+                            _applicationTracker.TrackCustomEvent(ApplicationTrackerConstants.TrackerEventGroup.DragOnDesignSurface, ApplicationTrackerConstants.TrackerEventName.ExamplesClicked, theResource.DisplayName);
+
+                        }
+                        else
+                        {
+                            // other than above 
+                            _applicationTracker.TrackCustomEvent(ApplicationTrackerConstants.TrackerEventGroup.DragOnDesignSurface, ApplicationTrackerConstants.TrackerEventName.ItemDragged, theResource.DisplayName);
+
+                        }
+
                         UpdateForRemote(d, theResource);
                     }
                 }
@@ -1215,10 +1245,13 @@ namespace Dev2.Studio.ViewModels.Workflow
             DsfActivity activity = droppedActivity;
             IContextualResourceModel resource = _resourceModel.Environment.ResourceRepository.FindSingle(
                 c => c.Category == activity.ServiceName) as IContextualResourceModel;
+
             IServerRepository serverRepository = CustomContainer.Get<IServerRepository>();
             droppedActivity = DsfActivityFactory.CreateDsfActivity(resource, droppedActivity, false, serverRepository, _resourceModel.Environment.IsLocalHostCheck());
             WorkflowDesignerUtils.CheckIfRemoteWorkflowAndSetProperties(droppedActivity, resource, serverRepository.ActiveServer);
             modelProperty1.SetValue(droppedActivity);
+
+            _applicationTracker.TrackCustomEvent(ApplicationTrackerConstants.TrackerEventGroup.DragOnDesignSurface, ApplicationTrackerConstants.TrackerEventName.ItemDragged, resource.DisplayName);
         }
 
         private void InitializeFlowSwitch(ModelItem mi)
@@ -2335,7 +2368,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 if (DataObject != null)
                 {
                     IsItemDragged.Instance.IsDragged = true;
-                    _applicationTracker.TrackCustomEvent(ApplicationTrackerConstants.TrackerEventGroup.DragOnDesignSurface, ApplicationTrackerConstants.TrackerEventName.ItemDragged, "Type : Warewolf.Studio.ViewModels.ExplorerItemViewModel"+" Activity :"+ DataObject.ActivityName);
+                   
                 }
 
                 var isWorkflow = dataObject.GetData("WorkflowItemTypeNameFormat") as string;
@@ -2344,8 +2377,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
                     handled = WorkflowDropFromResourceToolboxItem(dataObject, isWorkflow, true, false);
                     ApplyIsDraggedInstance(isWorkflow);
-                    _applicationTracker.TrackCustomEvent(ApplicationTrackerConstants.TrackerEventGroup.DragOnDesignSurface, ApplicationTrackerConstants.TrackerEventName.ItemDragged, "Type: WorkflowItemTypeNameFormat " +isWorkflow);
-
+                   
                 }
                 else
                 {
