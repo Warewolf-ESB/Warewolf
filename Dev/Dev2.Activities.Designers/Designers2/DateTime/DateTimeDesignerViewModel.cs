@@ -40,8 +40,6 @@ namespace Dev2.Activities.Designers2.DateTime
 
         public List<string> TimeModifierTypes { get; private set; }
 
-        public string Dev2DefaultDateTime => GlobalConstants.Dev2CustomDefaultDateTimeFormat;
-
         public string SelectedTimeModifierType
         {
             get { return (string)GetValue(SelectedTimeModifierTypeProperty); }
