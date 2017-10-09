@@ -116,7 +116,7 @@ namespace Warewolf.UI.Tests
         }
 
         [TestMethod]
-        [TestCategory("Deploy From Remote")]
+        [TestCategory("Deploy from Remote")]
         public void Deploy_From_RemoteConnection()
         {
             DeployUIMap.Select_RemoteConnectionIntegration_From_Deploy_Tab_Source_Server_Combobox();
