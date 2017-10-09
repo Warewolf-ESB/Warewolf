@@ -1,4 +1,5 @@
-﻿<Service ID="a3ad09e1-a058-4dc1-af6a-b4d856dc0e52" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Loop Constructs - For Each" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.0.6018.22513">
+
+<Service ID="a3ad09e1-a058-4dc1-af6a-b4d856dc0e52" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Loop Constructs - For Each" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.0.6018.22513">
   <DisplayName>SameResourceForEach</DisplayName>
   <Category>MergeCurrent\SameResourceForEach</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
