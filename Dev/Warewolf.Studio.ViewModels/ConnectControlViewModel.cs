@@ -237,11 +237,9 @@ namespace Warewolf.Studio.ViewModels
             {
                 IsConnecting = true;
                 IsConnected = false;
-                IsLoading = true;
                 isConnected = await Connect(_selectedConnection);
                 IsConnected = _selectedConnection.IsConnected;
                 IsConnecting = false;
-                IsLoading = false;
                 SetActiveEnvironment();
             }
             return isConnected;
@@ -251,7 +249,6 @@ namespace Warewolf.Studio.ViewModels
         {
             try
             {
-                IsLoading = true;
                 IsConnecting = true;
                 var isConnected = await ConnectOrDisconnect();
                 if (_selectedConnection.IsConnected && isConnected)

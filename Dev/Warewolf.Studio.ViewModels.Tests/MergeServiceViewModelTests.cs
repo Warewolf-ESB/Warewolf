@@ -7,12 +7,14 @@ using Dev2;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Infrastructure.Events;
+using Dev2.Common.Interfaces.Versioning;
 using Dev2.ConnectionHelpers;
 using Dev2.Core.Tests.Environments;
 using Dev2.Studio.Interfaces;
-using Microsoft.Practices.Prism.PubSubEvents;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Warewolf.Studio.Core;
+using IEventAggregator = Microsoft.Practices.Prism.PubSubEvents.IEventAggregator;
 
 namespace Warewolf.Studio.ViewModels.Tests
 {
@@ -31,21 +33,37 @@ namespace Warewolf.Studio.ViewModels.Tests
         [TestInitialize]
         public void TestInitialize()
         {
-            _selectedEnvironment = new Mock<IEnvironmentViewModel>();
-            _selectedEnvironment.Setup(p => p.DisplayName).Returns("someResName");
-            _shellViewModelMock = new Mock<IShellViewModel>();
-            var mockExplorerViewModel = new Mock<IExplorerViewModel>();
-            _shellViewModelMock.Setup(model => model.ExplorerViewModel).Returns(mockExplorerViewModel.Object);
-            _shellViewModelMock.Setup(model => model.ExplorerViewModel.ConnectControlViewModel).Returns(new Mock<IConnectControlViewModel>().Object);
             _serverMock = new Mock<IServer>();
             _serverMock.Setup(server => server.GetServerVersion()).Returns("1.1.2");
-            _studioUpdateManagerMock = new Mock<IStudioUpdateManager>();
+
+            var explorerRepositoryMock = new Mock<IExplorerRepository>();
+            explorerRepositoryMock.Setup(it => it.GetVersions(It.IsAny<Guid>())).Returns(new List<IVersionInfo>());
+            _serverMock.SetupGet(it => it.ExplorerRepository).Returns(explorerRepositoryMock.Object);
+
             _explorerItemMock = new Mock<IExplorerItem>();
             _explorerItemMock.SetupGet(it => it.Children).Returns(new ObservableCollection<IExplorerItem>());
             _serverMock.Setup(it => it.LoadExplorer(false)).ReturnsAsync(_explorerItemMock.Object);
+
+            _studioUpdateManagerMock = new Mock<IStudioUpdateManager>();
             _serverMock.SetupGet(it => it.UpdateRepository).Returns(_studioUpdateManagerMock.Object);
             _serverMock.SetupGet(it => it.DisplayName).Returns("someResName");
+
+            _selectedEnvironment = new Mock<IEnvironmentViewModel>();
+            _selectedEnvironment.Setup(p => p.DisplayName).Returns("someResName");
+            _selectedEnvironment.Setup(model => model.Children).Returns(new AsyncObservableCollection<IExplorerItemViewModel>());
+
+            var mockConnectControl = new Mock<IConnectControlViewModel>();
+            mockConnectControl.Setup(model => model.Servers).Returns(new AsyncObservableCollection<IServer> { _serverMock.Object });
+
+            var mockExplorerViewModel = new Mock<IExplorerViewModel>();
+            mockExplorerViewModel.Setup(model => model.Environments).Returns(new AsyncObservableCollection<IEnvironmentViewModel> { _selectedEnvironment.Object });
+            mockExplorerViewModel.Setup(model => model.ConnectControlViewModel).Returns(mockConnectControl.Object);
+
+            _shellViewModelMock = new Mock<IShellViewModel>();
+            _shellViewModelMock.Setup(model => model.ExplorerViewModel).Returns(mockExplorerViewModel.Object);
             _shellViewModelMock.SetupGet(it => it.LocalhostServer).Returns(_serverMock.Object);
+            _shellViewModelMock.SetupGet(it => it.ExplorerViewModel).Returns(mockExplorerViewModel.Object);
+
             _eventAggregatorMock = new Mock<IEventAggregator>();
             _mergeView = new Mock<IMergeView>();
 
@@ -71,9 +89,10 @@ namespace Warewolf.Studio.ViewModels.Tests
             explorerItemViewModelMock.SetupGet(it => it.ResourceType).Returns("WorkflowService");
             explorerItemViewModelMock.SetupGet(it => it.ResourceName).Returns("Selected Service");
             explorerItemViewModelMock.SetupGet(it => it.ResourceId).Returns(resourceId);
+            explorerItemViewModelMock.Setup(model => model.Server).Returns(_serverMock.Object);
 
 
-            _target = new MergeServiceViewModel(_shellViewModelMock.Object, _eventAggregatorMock.Object, explorerItemViewModelMock.Object, _mergeView.Object, _selectedEnvironment.Object);
+            _target = new MergeServiceViewModel(_shellViewModelMock.Object, _eventAggregatorMock.Object, explorerItemViewModelMock.Object, _mergeView.Object, _serverMock.Object);
         }
 
         static Mock<IEnvironmentConnection> CreateConnection(bool isConnected)
@@ -98,7 +117,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsNotNull(env);
         }
 
-        [Ignore("Implement: CanExecute, CanEdit, CanView, ShowContextMenu, AllowResourceCheck, CanDrop, CanDrag")]
+        
         [TestMethod]
         public void TestConstructorExpectedProperties()
         {
@@ -145,8 +164,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _target.MergeConnectControlViewModel.SelectedConnection = serverMock.Object;
 
             //assert
-
-            explorerItemViewModelMock.VerifySet(it => it.ShowContextMenu = false);
+            Assert.AreEqual(0, _target.MergeResourceVersions.Count);
         }
 
         [TestMethod]
