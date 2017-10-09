@@ -8,18 +8,18 @@ Scenario: Select All resources to deploy
 	And I Select RemoteConnectionIntegration From Deploy Tab Destination Server Combobox
 	And I filter for "DateTime" on the source filter
 	And I Select localhost from the source tab 
-	And Deploy Button is enabled  "true"
+	Then Deploy Button is enabled  "true"
 
 Scenario: Deploy is enabled when I change server after validation thrown
 	Given The Warewolf Studio is running
 	When I Click Deploy Ribbon Button
 	And I Select LocalhostConnected From Deploy Tab Destination Server Combobox
 	And I filter for "Hello world" on the source filter
-	And Deploy Button is enabled  "false"
-	And The deploy validation message is "Source and Destination cannot be the same."
+	Then Deploy Button is enabled  "false"
+	When The deploy validation message is "Source and Destination cannot be the same."
 	And I Select RemoteConnectionIntegration From Deploy Tab Destination Server Combobox
 	And I Select "Hello world" from the source tab 
-	And Deploy Button is enabled  "true"
+	Then Deploy Button is enabled  "true"
 
 Scenario: Cancel Deploy Returns to Deploy Tab
 	Given The Warewolf Studio is running
