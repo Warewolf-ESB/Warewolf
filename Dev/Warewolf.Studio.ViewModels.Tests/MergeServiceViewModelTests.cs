@@ -118,37 +118,35 @@ namespace Warewolf.Studio.ViewModels.Tests
             serverMock.SetupGet(it => it.DisplayName).Returns("newServerName");
             environmentViewModelMock.SetupGet(it => it.IsVisible).Returns(true);
             environmentViewModelMock.SetupGet(it => it.Server).Returns(serverMock.Object);
+            environmentViewModelMock.SetupGet(it => it.Server.EnvironmentID).Returns(serverId);
             var env = _target.Environments.First();
             var explorerItemViewModelMock = new Mock<IExplorerItemViewModel>();
             explorerItemViewModelMock.SetupGet(it => it.IsVisible).Returns(true);
             explorerItemViewModelMock.SetupGet(it => it.ResourceType).Returns("Dev2Server");
             explorerItemViewModelMock.SetupGet(it => it.ResourceName).Returns("newServerName");
             explorerItemViewModelMock.SetupGet(it => it.ResourceId).Returns(serverId);
+            explorerItemViewModelMock.SetupGet(it => it.ShowContextMenu).Returns(false);
             explorerItemViewModelMock.SetupGet(it => it.Children).Returns(new ObservableCollection<IExplorerItemViewModel>());
             env.AddChild(explorerItemViewModelMock.Object);
             env.ResourceId = serverId;
+            env.Server = serverMock.Object;
 
             var explorerItemViewModels = new ObservableCollection<IExplorerItemViewModel> { explorerItemViewModelMock.Object };
             environmentViewModelMock.Setup(e => e.Children).Returns(explorerItemViewModels);
             environmentViewModelMock.Setup(e => e.AsList()).Returns(explorerItemViewModels);
 
-            var environmentViewModels = _target.Environments.Union(new[] { environmentViewModelMock.Object }).ToList();
-            _target.Environments = new ObservableCollection<IEnvironmentViewModel>(environmentViewModels);
-
-            _shellViewModelMock.Setup(model => model.ExplorerViewModel.Environments).Returns(_target.Environments);
+            _target.Environments = new ObservableCollection<IEnvironmentViewModel>
+            {
+                env,
+                environmentViewModelMock.Object
+            };
 
             //act
             _target.MergeConnectControlViewModel.SelectedConnection = serverMock.Object;
 
             //assert
 
-            explorerItemViewModelMock.VerifySet(it => it.CanExecute = false);
-            explorerItemViewModelMock.VerifySet(it => it.CanEdit = false);
-            explorerItemViewModelMock.VerifySet(it => it.CanView = false);
-            explorerItemViewModelMock.VerifySet(it => it.ShowContextMenu = true);
-            explorerItemViewModelMock.VerifySet(it => it.AllowResourceCheck = true);
-            explorerItemViewModelMock.VerifySet(it => it.CanDrop = false);
-            explorerItemViewModelMock.VerifySet(it => it.CanDrag = false);
+            explorerItemViewModelMock.VerifySet(it => it.ShowContextMenu = false);
         }
 
         [TestMethod]
