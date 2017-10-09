@@ -220,7 +220,11 @@ namespace Dev2.Runtime.Hosting
             var parentItem = Find(item => item.ResourcePath.ToLowerInvariant().TrimEnd('\\') == resource.GetSavePath().ToLowerInvariant().TrimEnd('\\'));
             if (parentItem != null)
             {
-                var newExplorerItem = ExplorerItemFactory.CreateResourceItem(resource, GlobalConstants.ServerWorkspaceID); 
+                var newExplorerItem = ExplorerItemFactory.CreateResourceItem(resource, GlobalConstants.ServerWorkspaceID);
+                if (parentItem.Children == null)
+                {
+                    parentItem.Children = new List<IExplorerItem>();
+                }
                 parentItem.Children.Add(newExplorerItem);
                 newExplorerItem.Parent = parentItem;
                 return newExplorerItem;
