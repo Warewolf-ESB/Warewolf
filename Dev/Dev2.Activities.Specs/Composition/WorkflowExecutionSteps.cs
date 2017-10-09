@@ -245,8 +245,7 @@ namespace Dev2.Activities.Specs.Composition
         {
             TryGetValue("activityList", out Dictionary<string, Activity> activityList);
             TryGetValue("parentWorkflowName", out string parentWorkflowName);
-            var debugStates = Get<List<IDebugState>>("debugStates").ToList();
-
+            var debugStates = Get<List<IDebugState>>("debugStates").ToList();            
             if (hasError == "AN")
             {
                 var hasErrorState = debugStates.FirstOrDefault(state => state.HasError);
@@ -1096,6 +1095,7 @@ namespace Dev2.Activities.Specs.Composition
         [When(@"""(.*)"" is executed")]
         public void WhenIsExecuted(string workflowName)
         {
+            Get<List<IDebugState>>("debugStates").Clear();
             BuildDataList();
 
             var activityList = _commonSteps.GetActivityList();

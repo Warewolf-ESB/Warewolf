@@ -16,7 +16,6 @@ using Warewolf.MergeParser;
 
 namespace Dev2.Integration.Tests.Merge
 {
-    [Ignore("Nathi to fix the Resource for all merge tests")]
     [TestClass]
     public class ParseServiceForDifferencesTests
     {
@@ -82,10 +81,10 @@ namespace Dev2.Integration.Tests.Merge
         public void GetDifferences_GivenSameWorkflows_ReturnsNoConflicts()
         {
             //---------------Set up test pack-------------------
-            var helloWorldGuid = "41617daa-509e-40eb-aa76-b0827028721d".ToGuid();
-            var loadContextualResourceModel = _server.Source.ResourceRepository.LoadContextualResourceModel(helloWorldGuid);
-            var resourceModel = new ResourceModel(_server.Source) { ID = helloWorldGuid };
-            var xElement = XML.XmlResource.Fetch("SameResource");
+            var resourceId = "c4971c6e-0f16-48a1-9043-c77f7cb694db".ToGuid();
+            var loadContextualResourceModel = _server.Source.ResourceRepository.LoadContextualResourceModel(resourceId);
+            var resourceModel = new ResourceModel(_server.Source) { ID = resourceId };
+            var xElement = XML.XmlResource.Fetch("SameResourceDecision");
             var element = xElement.Element("Action");
             Assert.IsNotNull(element);
             var xamlDef = element.ToString(SaveOptions.DisableFormatting);
@@ -103,9 +102,9 @@ namespace Dev2.Integration.Tests.Merge
         public void GetDifferences_GivenSameWorkflows_ReturnsNoConflicts_Switch()
         {
             //---------------Set up test pack-------------------
-            var helloWorldGuid = "41617daa-509e-40eb-aa76-b0827028721d".ToGuid();
-            var loadContextualResourceModel = _server.Source.ResourceRepository.LoadContextualResourceModel(helloWorldGuid);
-            var resourceModel = new ResourceModel(_server.Source) { ID = helloWorldGuid };
+            var resourceId = "6dcdd72f-c4ba-484d-9806-8134d8eb2447".ToGuid();
+            var loadContextualResourceModel = _server.Source.ResourceRepository.LoadContextualResourceModel(resourceId);
+            var resourceModel = new ResourceModel(_server.Source) { ID = resourceId };
             var xElement = XML.XmlResource.Fetch("SameResourceSwitch");
             var element = xElement.Element("Action");
             Assert.IsNotNull(element);
@@ -124,9 +123,9 @@ namespace Dev2.Integration.Tests.Merge
         public void GetDifferences_GivenSameWorkflows_ReturnsNoConflicts_Sequence()
         {
             //---------------Set up test pack-------------------
-            var helloWorldGuid = "0bdc3207-ff6b-4c01-a5eb-c7060222f75d".ToGuid();
-            var loadContextualResourceModel = _server.Source.ResourceRepository.LoadContextualResourceModel(helloWorldGuid);
-            var resourceModel = new ResourceModel(_server.Source) { ID = helloWorldGuid };
+            var resourceId = "1b0e0881-9869-4b71-b853-e0c752c38678".ToGuid();
+            var loadContextualResourceModel = _server.Source.ResourceRepository.LoadContextualResourceModel(resourceId);
+            var resourceModel = new ResourceModel(_server.Source) { ID = resourceId };
             var xElement = XML.XmlResource.Fetch("SameResourceSequence");
             var element = xElement.Element("Action");
             Assert.IsNotNull(element);
@@ -144,9 +143,9 @@ namespace Dev2.Integration.Tests.Merge
         public void GetDifferences_GivenSameWorkflows_ReturnsNoConflicts_ForEach()
         {
             //---------------Set up test pack-------------------
-            var helloWorldGuid = "8ba79b49-226e-4c67-a732-4657fd0edb6b".ToGuid();
-            var loadContextualResourceModel = _server.Source.ResourceRepository.LoadContextualResourceModel(helloWorldGuid);
-            var resourceModel = new ResourceModel(_server.Source) { ID = helloWorldGuid };
+            var resourceId = "a3ad09e1-a058-4dc1-af6a-b4d856dc0e52".ToGuid();
+            var loadContextualResourceModel = _server.Source.ResourceRepository.LoadContextualResourceModel(resourceId);
+            var resourceModel = new ResourceModel(_server.Source) { ID = resourceId };
             var xElement = XML.XmlResource.Fetch("SameResourceForEach");
             var element = xElement.Element("Action");
             Assert.IsNotNull(element);
@@ -166,9 +165,9 @@ namespace Dev2.Integration.Tests.Merge
         public void GetDifferences_GivenSameWorkflows_ReturnsNoConflicts_SelectAndApply()
         {
             //---------------Set up test pack-------------------
-            var helloWorldGuid = "b91d16a5-a4db-4392-aab2-284896debbd3".ToGuid();
-            var loadContextualResourceModel = _server.Source.ResourceRepository.LoadContextualResourceModel(helloWorldGuid);
-            var resourceModel = new ResourceModel(_server.Source) { ID = helloWorldGuid };
+            var resourceId = "b91d16a5-a4db-4392-aab2-284896debbd3".ToGuid();
+            var loadContextualResourceModel = _server.Source.ResourceRepository.LoadContextualResourceModel(resourceId);
+            var resourceModel = new ResourceModel(_server.Source) { ID = resourceId };
             var xElement = XML.XmlResource.Fetch("SelectAndApplyExample");
             var element = xElement.Element("Action");
             Assert.IsNotNull(element);
@@ -193,8 +192,8 @@ namespace Dev2.Integration.Tests.Merge
             CustomContainer.Register(shellView.Object);
             CustomContainer.Register<IActivityParser>(activityParser);
           
-            var helloWorldGuid = "49800850-BDF1-4248-93D0-DCD7E5F8B9CA".ToGuid();
-            var loadContextualResourceModel = _server.Source.ResourceRepository.LoadContextualResourceModel(helloWorldGuid);
+            var resourceId = "e748cfa6-65e1-4882-86e4-5cc42c3356eb".ToGuid();
+            var loadContextualResourceModel = _server.Source.ResourceRepository.LoadContextualResourceModel(resourceId);
             var diff = TestHelper.CreateContextualResourceModel("Decision.SimpleNestedDecision");
 
             var psd = new ServiceDifferenceParser();
