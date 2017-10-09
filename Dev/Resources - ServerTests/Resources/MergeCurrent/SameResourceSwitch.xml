@@ -1,4 +1,4 @@
-﻿<Service ID="6dcdd72f-c4ba-484d-9806-8134d8eb2447" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Control Flow - Switch" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.0.6144.12088">
+<Service ID="6dcdd72f-c4ba-484d-9806-8134d8eb2447" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Control Flow - Switch" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.0.6144.12088">
   <DisplayName>SameResourceSwitch</DisplayName>
   <Category>Examples\SameResourceSwitch</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
