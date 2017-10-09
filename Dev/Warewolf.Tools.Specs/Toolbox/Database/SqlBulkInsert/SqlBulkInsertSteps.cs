@@ -133,11 +133,14 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset.SqlBulkInsert
             }
         }
 
-        [AfterScenario("Import data into Table Batch size is 1")]
+        [AfterScenario("Database")]
         public void DeleteTestItem()
         {
-            var tableNameUniqueNameGuid = ScenarioContext.Current.Get<string>("tableNameUniqueNameGuid");
-            DeleteIsolatedSQLTable(tableNameUniqueNameGuid);
+            if (scenarioContext.ScenarioInfo.Title.Replace(' ', '_') == "Import_data_into_Table_Batch_size_is_1")
+            {
+                var tableNameUniqueNameGuid = ScenarioContext.Current.Get<string>("tableNameUniqueNameGuid");
+                DeleteIsolatedSQLTable(tableNameUniqueNameGuid);
+            }
         }
 
         private void DeleteIsolatedSQLTable(string tableNameUniqueNameGuid)
@@ -146,12 +149,12 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset.SqlBulkInsert
             using (var connection = new SqlConnection(dbSource.ConnectionString))
             {
                 connection.Open();
-                var q = "drop table SqlBulkInsertSpecFlowTestTableForeign_for_" + scenarioContext.ScenarioInfo.Title.Replace(' ', '_') + "_" + tableNameUniqueNameGuid;           
+                var q = "drop table SqlBulkInsertSpecFlowTestTable_for_" + scenarioContext.ScenarioInfo.Title.Replace(' ', '_') + "_" + tableNameUniqueNameGuid;
                 using (var cmd = new SqlCommand(q, connection))
                 {
                     cmd.ExecuteNonQuery();
                 }
-                q = "drop table SqlBulkInsertSpecFlowTestTable_for_" + scenarioContext.ScenarioInfo.Title.Replace(' ', '_') + "_" + tableNameUniqueNameGuid;
+                q = "drop table SqlBulkInsertSpecFlowTestTableForeign_for_" + scenarioContext.ScenarioInfo.Title.Replace(' ', '_') + "_" + tableNameUniqueNameGuid;           
                 using (var cmd = new SqlCommand(q, connection))
                 {
                     cmd.ExecuteNonQuery();

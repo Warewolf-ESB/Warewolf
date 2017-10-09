@@ -28,13 +28,13 @@ Scenario: Opening Workflow local and remote using right click
    And I RightClick Explorer First Remote Server First Item
    And I Select Open From Explorer Context Menu
    Then Remote "Hello World - Remote Connection Integration" is open
-   Then I RightClick Explorer Localhost First Item
+   When I RightClick Explorer Localhost First Item
    And I Select Open From Explorer Context Menu
    Then Local "Hello World" is open
 
  Scenario: Deleting a Resource localhost
    Given The Warewolf Studio is running
-   And I Filter the Explorer with "LocalWorkflowWithRemoteSubworkflowToDelete"
+   When I Filter the Explorer with "LocalWorkflowWithRemoteSubworkflowToDelete"
    And I RightClick Explorer Localhost First Item
    And I Select Delete From Explorer Context Menu
    When I Click MessageBox Yes
