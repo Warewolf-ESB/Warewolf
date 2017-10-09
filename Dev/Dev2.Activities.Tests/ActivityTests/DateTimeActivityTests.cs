@@ -159,37 +159,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.IsTrue(timeSpan.TotalMilliseconds >= 9000, timeSpan.TotalMilliseconds + " is not >= 9000");
         }
 
-        [TestMethod]
-        [TestCategory("DateTimeUnitTest")]
-        [Owner("Massimo Guerrera")]
         
-        public void DateTime_DateTimeUnitTest_ExecuteWithBlankInputAndSplitSecondsOutput_OutputNotZero()
-
-        {
-            const string currDL = @"<root><MyTestResult></MyTestResult></root>";
-            SetupArguments(currDL
-                         , currDL
-                         , ""
-                         , ""
-                         , "sp"
-                         , "Seconds"
-                         , 10
-                         , "[[MyTestResult]]");
-
-            IDSFDataObject result = ExecuteProcess();
-            GetScalarValueFromEnvironment(result.Environment, "MyTestResult", out string actual, out string error);
-            if (actual == "0")
-            {
-                Thread.Sleep(11);
-
-                result = ExecuteProcess();
-
-                GetScalarValueFromEnvironment(result.Environment, "MyTestResult", out actual, out error);
-
-                Assert.IsTrue(actual != "0");
-            }
-            Assert.IsTrue(actual != "0");
-        }
         #endregion DateTime Tests
 
 
