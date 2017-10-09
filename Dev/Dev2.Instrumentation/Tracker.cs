@@ -23,16 +23,8 @@ using Dev2.Studio.Utils;
 namespace Dev2.Instrumentation
 {
     // see http://docs.trackerbird.com/NET/
-
-    /// <summary>
-    /// Tracks feature and event usage.
-    /// </summary>
     public static class Tracker
     {
-        /// <summary>
-        /// This signals that Server has started. 
-        /// This should be placed before calling any other <see cref="Tracker"/> method.
-        /// </summary>
         public static void StartServer()
         {
 #if !DEBUG
@@ -72,7 +64,6 @@ namespace Dev2.Instrumentation
         }
 
         public static void TrackEvent(TrackerEventGroup eventGroup, TrackerEventName eventName) => TrackEvent(eventGroup, eventName, null);
-
         public static void TrackEvent(TrackerEventGroup eventGroup, TrackerEventName eventName, string eventValue)
         {
 #if ! DEBUG
@@ -81,7 +72,6 @@ namespace Dev2.Instrumentation
         }
 
         public static void TrackEvent(TrackerEventGroup eventGroup, string customText) => TrackEvent(eventGroup, customText, "");
-
         public static void TrackEvent(TrackerEventGroup eventGroup, string customText, string eventValue)
         {
 #if ! DEBUG
@@ -121,7 +111,7 @@ namespace Dev2.Instrumentation
             }            
             catch (Exception e)
             {
-                WriteError(e.Message);
+                Trace.WriteLine(e.Message);
             }
         }
 #endif
