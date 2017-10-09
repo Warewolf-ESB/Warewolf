@@ -177,8 +177,7 @@ namespace Dev2.Studio
         }
 
         private static void CreateDummyWorkflowDesignerForCaching()
-        {
-            
+        {            
             var workflowDesigner = new WorkflowDesigner();
             workflowDesigner.PropertyInspectorFontAndColorData = XamlServices.Save(ActivityDesignerHelper.GetDesignerHashTable());
             var designerConfigService = workflowDesigner.Context.Services.GetService<DesignerConfigurationService>();
@@ -215,7 +214,6 @@ namespace Dev2.Studio
             });
             var activityBuilder = new WorkflowHelper().CreateWorkflow("DummyWF");
             workflowDesigner.Load(activityBuilder);
-            workflowDesigner = null;
         }
 
         private async void CheckForDuplicateResources()
