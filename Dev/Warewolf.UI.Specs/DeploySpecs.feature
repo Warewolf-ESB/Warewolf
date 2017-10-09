@@ -54,6 +54,6 @@ Scenario: Deploy From RemoteConnection
 	Given The Warewolf Studio is running
 	When I Click Deploy Ribbon Button
     And I Select RemoteConnectionIntegration From Deploy Tab Source Server Combobox
-    And Resources is visible on the tree
-	And I Select "Hello World" from the source tab 
+    Given Resources is visible on the tree
+	When I Select "Hello World" from the source tab 
 	And I Click Deploy button
