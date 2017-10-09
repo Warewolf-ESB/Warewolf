@@ -49,7 +49,7 @@ namespace Dev2.Factory
                         remoteResource.DataList = resource.DataList.ToString();
                         remoteResource.ID = new Guid(resourceId);
                         remoteResource.WorkflowXaml = serviceXml.Element("Service").Element("Action").ToString(SaveOptions.DisableFormatting).ToStringBuilder();
-                        shellViewModel.OpenMergeConflictsView(localResource, remoteResource, true);
+                        shellViewModel.OpenMergeConflictsView(localResource, remoteResource, false);
                     }
                 }
             }
