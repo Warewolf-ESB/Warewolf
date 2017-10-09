@@ -90,6 +90,7 @@
       <DependentUpon>DependencyGraphUIMap.uitest</DependentUpon>
     </Compile>
     <Compile Include="DependencyGraph\ShowDependencyTests.cs" />
+    <Compile Include="Deploy\Deploy From Explorer.cs" />
     <Compile Include="Deploy\DeployTests.cs" />
     <Compile Include="Deploy\DeployUIMap.cs">
       <DependentUpon>DeployUIMap.uitest</DependentUpon>
