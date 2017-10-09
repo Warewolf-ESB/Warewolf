@@ -43,6 +43,7 @@ namespace Warewolf.Studio.ViewModels
         private IApplicationTracker _applicationTracker;
         public ConnectControlViewModel(IServer server, IEventAggregator aggregator, ObservableCollection<IServer> servers = null)
         {
+
             if (aggregator == null)
             {
                 throw new ArgumentNullException(nameof(aggregator));
@@ -51,6 +52,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 throw new ArgumentNullException(nameof(server));
             }
+            _applicationTracker = ApplicationTrackerFactory.GetApplicationTrackerProvider();
             Server = server;
             _existingServers = servers;
             _serverRepository = CustomContainer.Get<IServerRepository>();
@@ -63,7 +65,7 @@ namespace Warewolf.Studio.ViewModels
                 Server.UpdateRepository.ServerSaved += UpdateRepositoryOnServerSaved;
             }
             ShouldUpdateActiveEnvironment = false;
-            _applicationTracker = ApplicationTrackerFactory.GetApplicationTrackerProvider();
+          
         }
 
         public ConnectControlViewModel(IServer server, IEventAggregator aggregator, IPopupController popupController, ObservableCollection<IServer> servers = null)
@@ -293,6 +295,12 @@ namespace Warewolf.Studio.ViewModels
                     {
 
                         var isConnected = CheckVersionConflict();
+                    }
+
+                    // revulytics log if ware wolf store selected
+                    if (!value.DisplayName.StartsWith("localhost"))
+                    {
+                        _applicationTracker.TrackApplicationEvent(ApplicationTrackerConstants.TrackerEventName.WarewolfStoreClicked);
                     }
                     SetActiveEnvironment();
                     OnPropertyChanged(() => SelectedConnection);

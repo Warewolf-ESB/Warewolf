@@ -37,8 +37,13 @@ namespace Warewolf.Studio.ViewModels
         internal void OpenCommand(ExplorerItemViewModel item, IServer server)
         {
             Dev2Logger.Info("Open resource: " + item.ResourceName + " - ResourceId: " + item.ResourceId, "Warewolf Info");
-            _applicationTracker.TrackCustomEvent(ApplicationTrackerConstants.TrackerEventGroup.MainMenuClicked, ApplicationTrackerConstants.TrackerEventName.HelloWorldClicked, item.ResourceName);
 
+            if (item.ResourceName== "Shared Resources Server")
+            {
+                _applicationTracker.TrackCustomEvent(ApplicationTrackerConstants.TrackerEventGroup.MainMenuClicked, ApplicationTrackerConstants.TrackerEventName.SharedResourcesServerClicked, item.ResourceName);
+
+
+            }
 
             if (item.IsFolder)
             {
