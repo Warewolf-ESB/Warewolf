@@ -19,7 +19,7 @@ namespace Warewolf.UI.Tests.Deploy.DeployUIMapClasses
         [Then(@"Destination Remote Server Is Connected")]
         public void ThenDestinationRemoteServerIsConnected()
         {
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DestinationServerConectControl.Combobox.ConnectedRemoteConnectionText.Exists, "Remote Server is Disconnected");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DestinationServerConectControl.Combobox.RemoteConnectionIntegrationText.Exists, "Remote Server is Disconnected");
         }
 
         [Then(@"The deploy validation message is ""(.*)""")]
@@ -90,7 +90,7 @@ namespace Warewolf.UI.Tests.Deploy.DeployUIMapClasses
             UIMap.WaitForSpinner(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerExplorer.ExplorerTree.LocalHost.Spinner);
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerConectControl.Combobox.ToggleButton);
             Mouse.Click(UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration);
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerConectControl.Combobox.ConnectedRemoteConnectionText.Exists, "Selected source server in deploy is not Remote Connection Integration (Connected).");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerConectControl.Combobox.RemoteConnectionIntegrationText.Exists, "Selected source server in deploy is not Remote Connection Integration (Connected).");
         }
 
         [When(@"I Select LocalhostConnected From Deploy Tab Source Server Combobox")]
@@ -121,7 +121,7 @@ namespace Warewolf.UI.Tests.Deploy.DeployUIMapClasses
             UIMap.WaitForSpinner(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerExplorer.ExplorerTree.LocalHost.Spinner);
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerConectControl.Combobox.ToggleButton, new Point(230, 9));
             Mouse.Click(UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.Text, new Point(226, 13));
-            Assert.AreEqual("Remote Connection Integration (Connected)", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerConectControl.Combobox.ConnectedRemoteConnectionText.DisplayText, "Selected source server in deploy is not Remote Connection Integration (Connected).");
+            Assert.AreEqual("Remote Connection Integration (Connected)", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerConectControl.Combobox.RemoteConnectionIntegrationText.DisplayText, "Selected source server in deploy is not Remote Connection Integration (Connected).");
         }
 
         [Given(@"I Select RemoteConnectionIntegration \(Connected\) From Deploy Tab Destination Server Combobox")]
@@ -131,18 +131,16 @@ namespace Warewolf.UI.Tests.Deploy.DeployUIMapClasses
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DestinationServerConectControl.Combobox.ToggleButton, new Point(230, 9));
             Mouse.Click(MainStudioWindow.DeployDestinationRemoteConnection.ConnectedRemoteServer);
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DestinationServerConectControl.Combobox.ConnectedRemoteConnectionText.Exists, "Selected destination server in deploy is not Remote Connection Integration (Connected).");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DestinationServerConectControl.Combobox.RemoteConnectionIntegrationText.Exists, "Selected destination server in deploy is not Remote Connection Integration (Connected).");
         }
-
-        [Given(@"I Select RemoteConnectionIntegration From Deploy Tab Destination Server Combobox")]
+        
         [When(@"I Select RemoteConnectionIntegration From Deploy Tab Destination Server Combobox")]
-        [Then(@"I Select RemoteConnectionIntegration From Deploy Tab Destination Server Combobox")]
         public void Select_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_Combobox()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DestinationServerConectControl.Combobox.ToggleButton, new Point(230, 9));
             Assert.IsTrue(UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.Exists, "Remote Connection Integration option does not exist in Destination server combobox.");
             Mouse.Click(UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.Text, new Point(226, 13));
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DestinationServerConectControl.Combobox.ConnectedRemoteConnectionText.Exists, "Selected destination server in deploy is not Remote Connection Integration (Connected).");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DestinationServerConectControl.Combobox.RemoteConnectionIntegrationText.Exists, "Selected destination server in deploy is not Remote Connection Integration.");
         }
 
         [When(@"I Select LocalhostConnected From Deploy Tab Destination Server Combobox")]
@@ -152,10 +150,8 @@ namespace Warewolf.UI.Tests.Deploy.DeployUIMapClasses
             Assert.IsTrue(UIMap.MainStudioWindow.ComboboxListItemAsLocalhost.Exists, "Remote Connection Integration option does not exist in Destination server combobox.");
             Mouse.Click(UIMap.MainStudioWindow.ComboboxListItemAsLocalhost, new Point(226, 13));
         }
-
-        [Given(@"I Enter ""(.*)"" Into Deploy Source Filter")]
+        
         [When(@"I Enter ""(.*)"" Into Deploy Source Filter")]
-        [Then(@"I Enter ""(.*)"" Into Deploy Source Filter")]
         public void Enter_DeployViewOnly_Into_Deploy_Source_Filter(string SearchTextboxText)
         {
             UIMap.WaitForSpinner(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerExplorer.ExplorerTree.LocalHost.Spinner);
@@ -240,7 +236,7 @@ namespace Warewolf.UI.Tests.Deploy.DeployUIMapClasses
             Click_Deploy_Tab_Deploy_Button();
         }
 
-        [When(@"Resources is visible on the tree")]
+        [Given(@"Resources is visible on the tree")]
         [Then(@"Resources is visible on the tree")]
         public void WhenResourcesIsVisibleOnTheTree()
         {
@@ -248,10 +244,8 @@ namespace Warewolf.UI.Tests.Deploy.DeployUIMapClasses
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerExplorer.ExplorerTree.SourceServerName.FirstExplorerTreeItem.Exists, "No items in the explorer after filtering with the name of a service that does exist and waiting for 1 minute (60000ms).");
         }
 
-
-        [Then(@"Deploy Button is enabled  ""(.*)""")]
-        [When(@"Deploy Button is enabled  ""(.*)""")]
         [Given(@"Deploy Button is enabled  ""(.*)""")]
+        [Then(@"Deploy Button is enabled  ""(.*)""")]
         public void ThenDeployButtonIsEnabled(string enabled)
         {
             var isEnabled = bool.Parse(enabled);
@@ -305,23 +299,19 @@ namespace Warewolf.UI.Tests.Deploy.DeployUIMapClasses
 
         void WaitForDeploySuccess()
         {
-            var timeout = 300;
+            var timeout = 60;
             var successful = false;
-            while (timeout-- > 0)
+            while (timeout-- > 0 && !successful)
             {
                 if (DialogsUIMap.MessageBoxWindow.Exists)
                 {
-                    successful = UIMap.ControlExistsNow(DialogsUIMap.MessageBoxWindow.ResourcesDeployedSucText);
                     DialogsUIMap.MessageBoxWindow.OKButton.WaitForControlReady(60000);
+                    successful = UIMap.ControlExistsNow(DialogsUIMap.MessageBoxWindow.ResourcesDeployedSucText);
                     Mouse.Click(DialogsUIMap.MessageBoxWindow.OKButton);
                 }
                 else
                 {
                     Playback.Wait(1000);
-                }
-                if (successful)
-                {
-                    break;
                 }
             }
             Assert.IsTrue(successful, "Deploy failed.");
@@ -335,8 +325,6 @@ namespace Warewolf.UI.Tests.Deploy.DeployUIMapClasses
         }
 
         [When(@"I Select ""(.*)"" from the source tab")]
-        [Then(@"I Select ""(.*)"" from the source tab")]
-        [Given(@"I Select ""(.*)"" from the source tab")]
         public void WhenISelectFromTheSourceTab(string ServiceName)
         {
             Enter_DeployViewOnly_Into_Deploy_Source_Filter(ServiceName);
@@ -344,8 +332,6 @@ namespace Warewolf.UI.Tests.Deploy.DeployUIMapClasses
         }
 
         [When(@"I filter for ""(.*)"" on the source filter")]
-        [Then(@"I filter for ""(.*)"" on the source filter")]
-        [Given(@"I filter for ""(.*)"" on the source filter")]
         public void WhenIFilterForOnTheSourceFilter(string ServiceName)
         {
             Enter_DeployViewOnly_Into_Deploy_Source_Filter(ServiceName);
