@@ -115,6 +115,16 @@ namespace Warewolf.UI.Tests
             DeployUIMap.ThenIClickDeployButton();
         }
 
+        [TestMethod]
+        [TestCategory("Deploy From Remote")]
+        public void Deploy_From_RemoteConnection()
+        {
+            DeployUIMap.Select_RemoteConnectionIntegration_From_Deploy_Tab_Source_Server_Combobox();
+            DeployUIMap.WhenResourcesIsVisibleOnTheTree();
+            DeployUIMap.WhenISelectFromTheSourceTab("Hello World");
+            DeployUIMap.ThenIClickDeployButton();
+        }
+
         #region Additional test attributes
 
         [TestInitialize]
@@ -214,6 +224,7 @@ namespace Warewolf.UI.Tests
         }
 
         private ServerSourceUIMap _ServerSourceUIMap;
+
         #endregion
     }
 }
