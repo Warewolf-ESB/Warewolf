@@ -37,15 +37,15 @@
                     HorizontalAlignment="Stretch" 
                     Orientation="Horizontal">
             <TextBlock Margin="5" 
-                       Text="Merge" 
+                       Text="Merge Versions" 
                        Style="{StaticResource SourceHeader}"></TextBlock>
         </StackPanel>
 
         <Grid Grid.Row="1" >
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
-                <RowDefinition Height="30" />
                 <RowDefinition Height="30" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
@@ -60,30 +60,15 @@
                                   ServerComboBoxAutomationID="UI_SourceServercbx_AutoID" 
                                   x:Name="SourceConnectControl" />
 
-            <DockPanel Grid.Row="1"
-                       HorizontalAlignment="Stretch"
-                       VerticalAlignment="Top"
-                       Background="Transparent">
-
-                <!--  EMBEDDED CLIENT PANEL  -->
-                <views:ExplorerView HorizontalAlignment="Stretch"
-                                    VerticalAlignment="Stretch"
-                                    HorizontalContentAlignment="Stretch"
-                                    VerticalContentAlignment="Stretch"
-                                    Margin="-2,-4,-3,0"
-                                    x:Name="ExplorerView" />
-
-            </DockPanel>
-            <Border Grid.Row="2" BorderThickness="0,1,0,0" BorderBrush="#C1C3C5" >
+            <!--<Border Grid.Row="1" BorderThickness="1" Margin="3,3,3,0"  BorderBrush="#C1C3C5" >
                 <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
+                    
                     <TextBlock Grid.Column="0"
-                               Grid.Row="0"
-                               HorizontalAlignment="Right"
+                               HorizontalAlignment="Left"
                                VerticalAlignment="Center"
                                x:Name="SelectedResourceTextBox"
                                FontSize="14"
@@ -91,23 +76,32 @@
                                Margin="{StaticResource ElementBorderRight}" 
                                Text="{Binding SelectedResource.ResourceName, UpdateSourceTrigger=PropertyChanged}" />
 
-                    <TextBlock Grid.Column="1" 
+                    <TextBlock Grid.Column="1"
                                Margin="{StaticResource ControlBorderRight}" 
                                HorizontalAlignment="Left" 
                                VerticalAlignment="Center"
-                               Text="merge with">
-
-                    </TextBlock>
-                    <TextBlock Grid.Column="2"
-                               HorizontalAlignment="Stretch"
-                               VerticalAlignment="Center"
-                               x:Name="ResourceToMergeTextBox"
-                               FontSize="14"
-                               FontWeight="Bold"
-                               Margin="{StaticResource ElementBorderRight}" 
-                               Text="{Binding ResourceToMerge, UpdateSourceTrigger=PropertyChanged}" />
+                               Text="merge with" />
                 </Grid>
-            </Border>
+            </Border>-->
+
+            <DockPanel Grid.Row="2"
+                       HorizontalAlignment="Stretch"
+                       VerticalAlignment="Top"
+                       Background="Transparent">
+
+                <ListBox x:Name="MergeResourceVersionList" Margin="3" ItemsSource="{Binding MergeResourceVersions}" SelectedItem="{Binding SelectedMergeItem}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <Label Content="{Binding Parent.ResourceName}" />
+                                <Label Content="{Binding ResourceName}" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+
+            </DockPanel>
+            
             <DockPanel Grid.Row="3"
                        HorizontalAlignment="Right" VerticalAlignment="Center"
                        Margin="0,0,1,0" >

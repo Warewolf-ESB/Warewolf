@@ -1522,44 +1522,41 @@ namespace Warewolf.Studio.ViewModels
                 VersionHeader = !value ? "Show Version History" : "Hide Version History";
                 if (value)
                 {
-                    var versionInfos = _explorerRepository.GetVersions(ResourceId);
-                    if (versionInfos.Count <= 0)
+                    var versionInfos = GetVersionHistory();
+                    if (versionInfos == null)
                     {
-                        _areVersionsVisible = false;
-                        VersionHeader = "Show Version History";
+                        return;
                     }
-                    else
+                    _children =
+                        new ObservableCollection<IExplorerItemViewModel>(
+                            versionInfos.Select(
+                                a => new VersionViewModel(Server, this, null, _shellViewModel, _popupController)
+                                {
+                                    ResourceName =
+                                        "v." + a.VersionNumber + " " +
+                                        a.DateTimeStamp.ToString(CultureInfo.InvariantCulture) + " " +
+                                        a.Reason.Replace(".xml", "").Replace(".bite", ""),
+                                    VersionNumber = a.VersionNumber,
+                                    VersionInfo = a,
+                                    ResourceId = ResourceId,
+                                    IsVersion = true,
+                                    IsMergeVisible = true,
+                                    CanEdit = false,
+                                    CanCreateWorkflowService = false,
+                                    ShowContextMenu = true,
+                                    CanCreateSource = false,
+                                    IsResourceVersion = true,
+                                    AllowResourceCheck = false,
+                                    IsResourceChecked = false,
+                                    CanDelete = CanDelete,
+                                    ResourceType = "Version"
+                                }
+                            ));
+
+                    OnPropertyChanged(() => Children);
+                    if (Children.Count > 0)
                     {
-                        _children =
-                            new ObservableCollection<IExplorerItemViewModel>(
-                                versionInfos.Select(
-                                    a => new VersionViewModel(Server, this, null, _shellViewModel, _popupController)
-                                    {
-                                        ResourceName =
-                                            "v." + a.VersionNumber + " " +
-                                            a.DateTimeStamp.ToString(CultureInfo.InvariantCulture) + " " +
-                                            a.Reason.Replace(".xml", "").Replace(".bite", ""),
-                                        VersionNumber = a.VersionNumber,
-                                        VersionInfo = a,
-                                        ResourceId = ResourceId,
-                                        IsVersion = true,
-                                        IsMergeVisible = true,
-                                        CanEdit = false,
-                                        CanCreateWorkflowService = false,
-                                        ShowContextMenu = true,
-                                        CanCreateSource = false,
-                                        IsResourceVersion = true,
-                                        AllowResourceCheck = false,
-                                        IsResourceChecked = false,
-                                        CanDelete = CanDelete,
-                                        ResourceType = "Version"
-                                    }
-                                    ));
-                        OnPropertyChanged(() => Children);
-                        if (Children.Count > 0)
-                        {
-                            UpdateResourceVersions();
-                        }
+                        UpdateResourceVersions();
                     }
                 }
                 else
@@ -1569,6 +1566,19 @@ namespace Warewolf.Studio.ViewModels
                 }
                 OnPropertyChanged(() => AreVersionsVisible);
             }
+        }
+
+        private ICollection<IVersionInfo> GetVersionHistory()
+        {
+            var versionInfos = _explorerRepository.GetVersions(ResourceId);
+            if (versionInfos?.Count <= 0)
+            {
+                _areVersionsVisible = false;
+                VersionHeader = "Show Version History";
+                return null;
+            }
+            
+            return versionInfos;
         }
 
         private void UpdateResourceVersions()
@@ -1882,7 +1892,7 @@ namespace Warewolf.Studio.ViewModels
 
         public bool IsMergeVisible
         {
-            get => _isMergeVisible && !IsSaveDialog;
+            get => _isMergeVisible && !IsSaveDialog && GetVersionHistory() != null;
             set
             {
                 _isMergeVisible = value;
