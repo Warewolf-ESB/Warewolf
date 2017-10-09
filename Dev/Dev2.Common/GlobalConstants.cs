@@ -451,7 +451,6 @@ where pn.nspname = 'public';
 
         public static readonly string ShortDateTimePattern = CultureInfo.InvariantCulture.DateTimeFormat.ShortDatePattern;
         public static readonly string Dev2DotNetDefaultDateTimeFormat = ShortDateTimePattern + " " + LongTimePattern;
-        public static readonly string Dev2CustomDefaultDateTimeFormat = "d MM yyyy 24h:min.ss sp";
         public static string GlobalDefaultNowFormat = CultureInfo.InvariantCulture.DateTimeFormat.SortableDateTimePattern;
 
         // Query Network Computer Names

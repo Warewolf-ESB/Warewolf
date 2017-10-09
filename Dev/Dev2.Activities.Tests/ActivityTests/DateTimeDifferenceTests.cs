@@ -98,30 +98,7 @@ namespace ActivityUnitTests.ActivityTests
             // remove test datalist ;)
 
             Assert.AreEqual(expected, actual);
-        }
-
-        [TestMethod]
-        [TestCategory("DateTimeDifferenceUnitTest")]
-        [Owner("Massimo Guerrera")]
-        
-        public void DateTimeDifference_DateTimeDifferenceUnitTest_ExecuteWithBlankInput_DateTimeNowIsUsed()
-
-        {
-            const string currDL = @"<root><MyTestResult></MyTestResult></root>";
-            SetupArguments(currDL
-                         , currDL
-                         , ""
-                         , ""
-                         , ""
-                         , "Seconds"
-                         , "[[MyTestResult]]");
-
-            IDSFDataObject result = ExecuteProcess();
-            GetScalarValueFromEnvironment(result.Environment, "MyTestResult", out string actual, out string error);
-
-            Assert.AreEqual("0", actual);
-        }
-
+        }              
         #endregion Positive Test Cases
 
         #region Error Test Cases
