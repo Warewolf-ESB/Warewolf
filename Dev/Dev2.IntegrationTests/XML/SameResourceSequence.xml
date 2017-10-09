@@ -1,6 +1,6 @@
-﻿<Service ID="222fbb42-db66-49a7-8e9a-e63802063ff4" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Control Flow - Sequence" ResourceType="WorkflowService" IsValid="true" Category="EXAMPLES" ServerVersion="0.4.2.2">
-  <DisplayName>Control Flow - Sequence</DisplayName>
-  <Category>EXAMPLES\Control Flow - Sequence</Category>
+﻿<Service ID="1b0e0881-9869-4b71-b853-e0c752c38678" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Control Flow - Sequence" ResourceType="WorkflowService" IsValid="true" Category="EXAMPLES" ServerVersion="0.4.2.2">
+  <DisplayName>SameResourceSequence</DisplayName>
+  <Category>MergeCurrent\SameResourceSequence</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
   <AuthorRoles>
   </AuthorRoles>

@@ -20,7 +20,6 @@ using Dev2.Util;
 
 namespace Dev2.Integration.Tests.Merge
 {
-    [Ignore("Nathi is working on the Resources")]
     [TestClass]
     public class MergeWorkflowViewModelIntergrationTests
     {
@@ -68,9 +67,9 @@ namespace Dev2.Integration.Tests.Merge
         public void Initialize_GivenSameResourceModel_ShouldHaveNoDeifferences_Switch()
         {
             //---------------Set up test pack-------------------
-            var helloWorldGuid = "9e9660d8-1a3c-45ab-a330-673c2343e517".ToGuid();
-            var loadContextualResourceModel = _server.Source.ResourceRepository.LoadContextualResourceModel(helloWorldGuid);
-            var resourceModel = new ResourceModel(_server.Source) { ID = helloWorldGuid };
+            var resourceId = "6dcdd72f-c4ba-484d-9806-8134d8eb2447".ToGuid();
+            var loadContextualResourceModel = _server.Source.ResourceRepository.LoadContextualResourceModel(resourceId);
+            var resourceModel = new ResourceModel(_server.Source) { ID = resourceId };
             var xElement = XML.XmlResource.Fetch("SameResourceSwitch");
             var element = xElement.Element("Action");
             Assert.IsNotNull(element);
@@ -239,7 +238,7 @@ namespace Dev2.Integration.Tests.Merge
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             var contextualResourceModel =
-                resourceRepository.LoadContextualResourceModel("0bdc3207-ff6b-4c01-a5eb-c7060222f75d".ToGuid());
+                resourceRepository.LoadContextualResourceModel("1b0e0881-9869-4b71-b853-e0c752c38678".ToGuid());
             var mergeWorkflowViewModel = new MergeWorkflowViewModel(contextualResourceModel, contextualResourceModel, true);
             //---------------Test Result -----------------------
             Assert.IsNotNull(mergeWorkflowViewModel);
@@ -299,7 +298,7 @@ namespace Dev2.Integration.Tests.Merge
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             var contextualResourceModel =
-                resourceRepository.LoadContextualResourceModel("8ba79b49-226e-4c67-a732-4657fd0edb6b".ToGuid());
+                resourceRepository.LoadContextualResourceModel("a3ad09e1-a058-4dc1-af6a-b4d856dc0e52".ToGuid());
             var mergeWorkflowViewModel = new MergeWorkflowViewModel(contextualResourceModel, contextualResourceModel, true);
             //---------------Test Result -----------------------
             Assert.IsNotNull(mergeWorkflowViewModel);
@@ -372,7 +371,7 @@ namespace Dev2.Integration.Tests.Merge
 
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            var contextualResourceModel = resourceRepository.LoadContextualResourceModel("49800850-BDF1-4248-93D0-DCD7E5F8B9CA".ToGuid());
+            var contextualResourceModel = resourceRepository.LoadContextualResourceModel("e748cfa6-65e1-4882-86e4-5cc42c3356eb".ToGuid());
             var resourceModel = TestHelper.CreateContextualResourceModel("Decision.SimpleNestedDecision");
 
             var mergeWorkflowViewModel = new MergeWorkflowViewModel(contextualResourceModel, resourceModel, false);
