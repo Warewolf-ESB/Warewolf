@@ -124,16 +124,7 @@ namespace Warewolf.Studio.ViewModels
                 environmentViewModel.IsVisible = true;
                 SelectedEnvironment = environmentViewModel;
                 environmentViewModel.ShowContextMenu = false;
-                environmentViewModel.AsList().Apply(a =>
-                {
-                    a.CanExecute = false;
-                    a.CanEdit = false;
-                    a.CanView = false;
-                    a.ShowContextMenu = true;
-                    a.AllowResourceCheck = false;
-                    a.CanDrop = false;
-                    a.CanDrag = false;
-                });
+                environmentViewModel.AsList().Apply(a => a.ShowContextMenu = false);
             }
             if (SelectedEnvironment != null)
             {
