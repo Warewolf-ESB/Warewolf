@@ -17,7 +17,7 @@ namespace Dev2.Activities
 {
     public class DsfSwitch : DsfActivityAbstract<string>,IEquatable<DsfSwitch>
     {
-        internal readonly DsfFlowSwitchActivity Inner;
+        public DsfFlowSwitchActivity Inner;
 
         public DsfSwitch(DsfFlowSwitchActivity inner)
       : base("Switch")

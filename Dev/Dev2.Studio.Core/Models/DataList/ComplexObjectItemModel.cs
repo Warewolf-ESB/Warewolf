@@ -35,7 +35,7 @@ namespace Dev2.Studio.Core.Models.DataList
         {
         }
 
-        public ComplexObjectItemModel(string displayname, IComplexObjectItemModel parent, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection, string description, OptomizedObservableCollection<IComplexObjectItemModel> children, bool hasError, string errorMessage, bool isEditable, bool isVisible, bool isSelected, bool isExpanded) 
+        //public ComplexObjectItemModel(string displayname, IComplexObjectItemModel parent, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection, string description, OptomizedObservableCollection<IComplexObjectItemModel> children, bool hasError, string errorMessage, bool isEditable, bool isVisible, bool isSelected, bool isExpanded) 
         public ComplexObjectItemModel(string displayname, IComplexObjectItemModel parent = null, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection = enDev2ColumnArgumentDirection.None, string description = "", OptomizedObservableCollection<IComplexObjectItemModel> children = null, bool hasError = false, string errorMessage = "", bool isEditable = true, bool isVisible = true, bool isSelected = false, bool isExpanded = true)
             : base(displayname, dev2ColumnArgumentDirection, description, hasError, errorMessage, isEditable, isVisible, isSelected, isExpanded)
         {

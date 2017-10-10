@@ -6,7 +6,7 @@ namespace Dev2.Runtime.ESB.Execution
     {       
         bool _isRefreshing;
         int _currentExecutions;        
-        static ManualResetEvent EventPulse = new ManualResetEvent(false);
+        static ManualResetEvent _eventPulse = new ManualResetEvent(false);
         public ExecutionManager()
         {
             _isRefreshing = false;

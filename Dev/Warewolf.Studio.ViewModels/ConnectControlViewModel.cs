@@ -24,6 +24,9 @@ using Microsoft.Practices.Prism.Mvvm;
 using Microsoft.Practices.Prism.PubSubEvents;
 using Warewolf.Resource.Errors;
 
+
+
+
 namespace Warewolf.Studio.ViewModels
 {
     public class ConnectControlViewModel : BindableBase, IConnectControlViewModel, IUpdatesHelp
@@ -37,8 +40,10 @@ namespace Warewolf.Studio.ViewModels
         private readonly ObservableCollection<IServer> _existingServers;
         public IPopupController PopupController { get; set; }
         private readonly IServerRepository _serverRepository;
+        private bool _canEditServer;
+        private bool _canCreateServer;
 
-        public ConnectControlViewModel(IServer server, IEventAggregator aggregator) 
+        public ConnectControlViewModel(IServer server, IEventAggregator aggregator)
             : this(server, aggregator, null, null)
         {
         }
@@ -54,10 +59,6 @@ namespace Warewolf.Studio.ViewModels
         }
 
         public ConnectControlViewModel(IServer server, IEventAggregator aggregator, IPopupController popupController, ObservableCollection<IServer> servers)
-        private bool _canEditServer;
-        private bool _canCreateServer;
-
-        public ConnectControlViewModel(IServer server, IEventAggregator aggregator, ObservableCollection<IServer> servers = null)
         {
             PopupController = popupController;
             if (aggregator == null)
@@ -78,13 +79,6 @@ namespace Warewolf.Studio.ViewModels
             ShouldUpdateActiveEnvironment = false;
             CanEditServer = true;
             CanCreateServer = true;
-        }
-
-        public ConnectControlViewModel(IServer server, IEventAggregator aggregator, IPopupController popupController, ObservableCollection<IServer> servers = null)
-            : this(server, aggregator, servers)
-        {
-            PopupController = popupController;
-            ShouldUpdateActiveEnvironment = false;          
         }
 
         public bool ShouldUpdateActiveEnvironment { get; set; }
@@ -400,7 +394,7 @@ namespace Warewolf.Studio.ViewModels
                     if (result == MessageBoxResult.Yes)
                     {
                         await Connect(connection);
-                    }                                                 
+                    }
                     else
                     {
                         ServerDisconnected?.Invoke(this, connection);
