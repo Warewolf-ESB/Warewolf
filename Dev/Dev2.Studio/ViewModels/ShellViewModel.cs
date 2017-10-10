@@ -721,48 +721,24 @@ namespace Dev2.Studio.ViewModels
             if (result == MessageBoxResult.OK)
             {
                 var differentResource = mergeServiceViewModel.SelectedMergeItem as VersionViewModel;
-
+                
+                var resourceVersion = differentResource.ToContextualResourceModel(ActiveServer, differentResource.ResourceId);
+                var resourceModel = ActiveServer?.ResourceRepository.LoadContextualResourceModel(differentResource.ResourceId);
                 if (differentResource != null)
                 {
-                    var workflowXaml = ActiveServer?.ProxyLayer?.GetVersion(differentResource.VersionInfo, differentResource.ResourceId);
-                    if (workflowXaml != null)
+                    var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.MergeConflicts);
+                    if (resourceModel != null && resourceVersion != null)
                     {
-                        var resourceModel = ActiveServer?.ResourceRepository.LoadContextualResourceModel(differentResource.ResourceId);
-                        var xamlElement = XElement.Parse(workflowXaml.ToString());
-                        var dataList = xamlElement.Element(@"DataList");
-                        var dataListString = string.Empty;
-                        if (dataList != null)
-                        {
-                            dataListString = dataList.ToString();
-                        }
-                        var action = xamlElement.Element(@"Action");
-                        
-                        var xamlString = string.Empty;
-                        var xaml = action?.Element(@"XamlDefinition");
-                        if (xaml != null)
-                        {
-                            xamlString = xaml.Value;
-                        }
-                        var resourceVersion = new ResourceModel(ActiveServer, EventPublishers.Aggregator)
-                        {
-                            ResourceType = resourceModel.ResourceType,
-                            ResourceName = currentResource.ResourceName,
-                            WorkflowXaml = new StringBuilder(xamlString),
-                            UserPermissions = Permissions.Contribute,
-                            DataList = dataListString,
-                            IsVersionResource = true,
-                            ID = Guid.NewGuid()
-                        };
-                        var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.MergeConflicts);
+                        workSurfaceKey.EnvironmentID = resourceModel.Environment.EnvironmentID;
+                        workSurfaceKey.ResourceID = resourceModel.ID;
+                        workSurfaceKey.ServerID = resourceModel.ServerID;
                         _worksurfaceContextManager.ViewMergeConflictsService(resourceModel, resourceVersion, false, workSurfaceKey);
-                    }
+                    }                        
                 }
                 else
                 {
                     OpenMergeConflictsView(currentResource, differentResource.ResourceId, differentResource.Server);
                 }
-
-
             }
         }
 
