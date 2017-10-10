@@ -17,15 +17,20 @@ namespace Dev2.Runtime.ResourceCatalogImpl
         {
             _resourceCatalog = resourceCatalog;
         }
+
         #region Implementation of IResourceCopyProvider
 
-        public bool CopyResource(Guid resourceID, Guid sourceWorkspaceID, Guid targetWorkspaceID, string userRoles = null)
+        public bool CopyResource(Guid resourceID, Guid sourceWorkspaceID, Guid targetWorkspaceID) => CopyResource(resourceID, sourceWorkspaceID, targetWorkspaceID, null);
+
+        public bool CopyResource(Guid resourceID, Guid sourceWorkspaceID, Guid targetWorkspaceID, string userRoles)
         {
             var resource = _resourceCatalog.GetResource(sourceWorkspaceID, resourceID);
             return CopyResource(resource, targetWorkspaceID, userRoles);
         }
 
-        public bool CopyResource(IResource resource, Guid targetWorkspaceID, string userRoles = null)
+        public bool CopyResource(IResource resource, Guid targetWorkspaceID) => CopyResource(resource, targetWorkspaceID, null);
+
+        public bool CopyResource(IResource resource, Guid targetWorkspaceID, string userRoles)
         {
             if (resource != null)
             {

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading;
+﻿using System.Threading;
 
 namespace Dev2.Runtime.ESB.Execution
 {
@@ -8,8 +6,7 @@ namespace Dev2.Runtime.ESB.Execution
     {       
         bool _isRefreshing;
         int _currentExecutions;        
-        static ManualResetEvent _eventPulse = new ManualResetEvent(false);
-        static readonly object _executionLock = new object();
+        static ManualResetEvent EventPulse = new ManualResetEvent(false);
         public ExecutionManager()
         {
             _isRefreshing = false;

@@ -51,7 +51,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             _isEscapeCharEnabled = true;
         }
 
-        public DataSplitDTO(string outputVariable, string splitType, string at, int indexNum, bool include = false, bool inserted = false)
+        public DataSplitDTO(string outputVariable, string splitType, string at, int indexNum)
+            : this(outputVariable, splitType, at, indexNum, false, false)
+        {
+        }
+
+        public DataSplitDTO(string outputVariable, string splitType, string at, int indexNum, bool include, bool inserted)
         {
             Inserted = inserted;
             OutputVariable = outputVariable;
@@ -59,14 +64,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             At = string.IsNullOrEmpty(at) ? string.Empty : at;
             IndexNumber = indexNum;
             Include = include;
-            if(splitType == "Index" || splitType == "Chars")
-            {
-                _enableAt = true;
-            }
-            else
-            {
-                _enableAt = false;
-            }
+            _enableAt = splitType == "Index" || splitType == "Chars";
             _isEscapeCharEnabled = true;
             OutList = new List<string>();
         }

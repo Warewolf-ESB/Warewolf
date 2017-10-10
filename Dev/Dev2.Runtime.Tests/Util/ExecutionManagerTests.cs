@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Threading;
+﻿using System.Threading;
 using Dev2.Runtime.ESB.Execution;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

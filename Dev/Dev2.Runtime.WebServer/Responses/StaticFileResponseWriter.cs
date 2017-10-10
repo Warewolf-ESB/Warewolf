@@ -20,7 +20,16 @@ namespace Dev2.Runtime.WebServer.Responses
         readonly MediaTypeHeaderValue _contentType;
         readonly int _chunkSize;
 
-        public StaticFileResponseWriter(string file, string contentType, int chunkSize = 1024)
+        public StaticFileResponseWriter(string file, string contentType)
+        {
+            VerifyArgument.IsNotNull("file", file);
+            VerifyArgument.IsNotNull("contentType", contentType);
+            _file = file;
+            _contentType = MediaTypeHeaderValue.Parse(contentType);
+            _chunkSize = 1024;
+        }
+
+        public StaticFileResponseWriter(string file, string contentType, int chunkSize)
         {
             VerifyArgument.IsNotNull("file", file);
             VerifyArgument.IsNotNull("contentType", contentType);
@@ -33,7 +42,6 @@ namespace Dev2.Runtime.WebServer.Responses
         {
             var stream = new HttpFileStream(OpenFileStream, context.ResponseMessage, _contentType, _chunkSize);
             stream.Write();
-
         }
 
         protected virtual Stream OpenFileStream()

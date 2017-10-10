@@ -53,6 +53,8 @@ namespace Dev2.Studio.AppResources.Converters
                         return CustomIcons.Question;
                     case MessageBoxImage.Warning:
                         return CustomIcons.Warning;
+                    default:
+                        break;
                 }
             }
             return BitmapSourceFromIcon(icon);

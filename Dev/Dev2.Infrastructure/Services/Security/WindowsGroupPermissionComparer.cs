@@ -96,6 +96,8 @@ namespace Dev2.Services.Security
                     return px.DeployFrom.CompareTo(py.DeployFrom);
                 case "Administrator":
                     return px.Administrator.CompareTo(py.Administrator);
+                default:
+                    break;
             }
             return 0;
         }

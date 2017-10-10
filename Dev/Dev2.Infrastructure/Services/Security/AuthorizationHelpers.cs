@@ -17,7 +17,9 @@ namespace Dev2.Services.Security
 {
     public static class AuthorizationHelpers
     {
-        public static string ToReason(this AuthorizationContext value, bool isAuthorized = false)
+        public static string ToReason(this AuthorizationContext value) => value.ToReason(false);
+
+        public static string ToReason(this AuthorizationContext value, bool isAuthorized)
         {
             //
             // MUST return null and NOT empty string as the result is used as TargetNullValue in bindings!
@@ -93,8 +95,7 @@ namespace Dev2.Services.Security
             {
                 return permission.ResourceID == resourceId;
             }
-
-            // ResourceName is in the format: {categoryName}\{resourceName}
+            
             resource = resource?.Replace('/', '\\');
             if(string.IsNullOrEmpty(resource))
             {

@@ -12,9 +12,6 @@ using Warewolf.Studio.Core;
 
 namespace Warewolf.Studio.Views
 {
-    /// <summary>
-    /// Interaction logic for ActivityDefaultWindow.xaml
-    /// </summary>
     public partial class ActivityDefaultWindow
     {
         readonly Grid _blackoutGrid = new Grid();

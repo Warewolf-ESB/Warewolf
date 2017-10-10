@@ -37,7 +37,7 @@ namespace Dev2.Studio.Interfaces.Enums
     {
         public static WorkSurfaceContext ToWorkSurfaceContext(this ResourceType resourceType)
         {
-            switch(resourceType)
+            switch (resourceType)
             {
                 case ResourceType.WorkflowService:
                     return WorkSurfaceContext.Workflow;
@@ -46,8 +46,8 @@ namespace Dev2.Studio.Interfaces.Enums
                 case ResourceType.Source:
                     return WorkSurfaceContext.SourceManager;
                 case ResourceType.Unknown:
+                default:
                     return WorkSurfaceContext.Unknown;
-                default: return WorkSurfaceContext.Unknown;
             }
         }
 

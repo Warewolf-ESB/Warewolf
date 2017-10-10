@@ -137,6 +137,8 @@ namespace Dev2.Studio.Views
                         handled = true;
                     }
                     break;
+                default:
+                    break;
             }
             return (IntPtr)0;
         }
@@ -693,6 +695,11 @@ namespace Dev2.Studio.Views
                         WindowState = WindowState.Normal;
                         break;
                     }
+
+                case WindowState.Minimized:
+                    break;
+                default:
+                    break;
             }
         }
 

@@ -89,7 +89,7 @@ namespace Dev2.Data.Operations
             switch(mergeType)
             {
                 case "Index":
-                    switch(align)
+                    switch (align)
                     {
                         case "Left":
                             mergeAlignment = enMergeAlignment.Left;
@@ -97,6 +97,8 @@ namespace Dev2.Data.Operations
 
                         case "Right":
                             mergeAlignment = enMergeAlignment.Right;
+                            break;
+                        default:
                             break;
                     }
                     mergingType = enMergeType.Index;

@@ -13,8 +13,6 @@ using System.Collections.Generic;
 using System.Dynamic;
 using Dev2.Common.Interfaces.Communication;
 using Dev2.Common.Interfaces.Infrastructure.SharedModels;
-using Dev2.Communication;
-using Dev2.Data.ServiceModel.Messages;
 using Dev2.Explorer;
 using Dev2.Runtime.WebServer.Hubs;
 using Microsoft.AspNet.SignalR.Hubs;

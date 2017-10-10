@@ -173,7 +173,7 @@ namespace Dev2.Activities.Specs.Toolbox.LoopConstructs.ForEach
         {
             var forEachType = (enForEachType)Enum.Parse(typeof(enForEachType), foreachType);
             scenarioContext.Add("foreachType", forEachType);
-            switch(forEachType)
+            switch (forEachType)
             {
                 case enForEachType.NumOfExecution:
                     scenarioContext.Add("numberAs", recordSet);
@@ -187,6 +187,8 @@ namespace Dev2.Activities.Specs.Toolbox.LoopConstructs.ForEach
                     break;
                 case enForEachType.InRecordset:
                     scenarioContext.Add("recordset", recordSet);
+                    break;
+                default:
                     break;
             }
         }

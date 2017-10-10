@@ -6,7 +6,6 @@ using Dev2.Providers.Validation.Rules;
 using Dev2.Util;
 using Dev2.Utilities;
 using Dev2.Validation;
-using System;
 
 namespace Dev2.TO
 {
@@ -31,7 +30,17 @@ namespace Dev2.TO
         {
         }
 
-        public SharepointSearchTo(string fieldName, string searchType, string valueToMatch, int indexNum, bool inserted = false, string from = "", string to = "")
+        public SharepointSearchTo(string fieldName, string searchType, string valueToMatch, int indexNum)
+            : this(fieldName, searchType, valueToMatch, indexNum, false, "", "")
+        {
+        }
+
+        public SharepointSearchTo(string fieldName, string searchType, string valueToMatch, int indexNum, bool inserted)
+            : this(fieldName, searchType, valueToMatch, indexNum, inserted, "", "")
+        {
+        }
+
+        public SharepointSearchTo(string fieldName,string searchType, string valueToMatch, int indexNum, bool inserted, string from, string to)
         {
             FieldName = fieldName;
             Inserted = inserted;
@@ -238,17 +247,17 @@ namespace Dev2.TO
                     {
                         ruleSet.Add(new IsStringEmptyRule(() => FieldName));
                     }
-                    break;
+                    return ruleSet;
                 case "ValueToMatch":
                     if (ValueToMatch.Length == 0)
                     {
                         ruleSet.Add(new IsStringEmptyRule(() => ValueToMatch));
                     }
                     ruleSet.Add(new IsValidExpressionRule(() => ValueToMatch, datalist, "1"));
-                    break;
+                    return ruleSet;
+                default:
+                    return ruleSet;
             }
-
-            return ruleSet;
         }
 
         public bool Equals(SharepointSearchTo other)

@@ -25,14 +25,7 @@ namespace Dev2.Common.DateAndTime.TO
             IsNumeric = isNumeric;
             ActualValue = actualValue;
             AssignAction = assignAction;
-            if (resultLength == -1)
-            {
-                ResultLength = Length;
-            }
-            else
-            {
-                ResultLength = resultLength;
-            }
+            ResultLength = resultLength == -1 ? Length : resultLength;
         }
 
         #endregion Constructor

@@ -465,7 +465,7 @@ namespace Dev2.Tests.Runtime.Hosting
                 , Permissions.Administrator, "bob"
                 );
             factory.Setup(a => a.CreateRootExplorerItem(It.IsAny<string>(), It.IsAny<Guid>())).Returns(explorerItem);
-            catalogue.Setup(a => a.DeleteResource(It.IsAny<Guid>(), guid, "DbSource", true)).Returns(new ResourceCatalogResult { Message = "bob", Status = ExecStatus.DuplicateMatch });
+            catalogue.Setup(a => a.DeleteResource(It.IsAny<Guid>(), guid, "DbSource")).Returns(new ResourceCatalogResult { Message = "bob", Status = ExecStatus.DuplicateMatch });
             var sync = new Mock<IExplorerRepositorySync>();
             var serverExplorerRepository = new ServerExplorerRepository(catalogue.Object, factory.Object, dir.Object, sync.Object, new Mock<IServerVersionRepository>().Object, new FileWrapper(), testCatalogue.Object);
 
@@ -474,7 +474,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Assert Results-------------------------
             Assert.AreEqual(result.Message, "bob");
             Assert.AreEqual(result.Status, ExecStatus.DuplicateMatch);
-            catalogue.Verify(a => a.DeleteResource(It.IsAny<Guid>(), guid, "DbSource", true));
+            catalogue.Verify(a => a.DeleteResource(It.IsAny<Guid>(), guid, "DbSource"));
         }
 
         [TestMethod]
@@ -496,7 +496,7 @@ namespace Dev2.Tests.Runtime.Hosting
                 , Permissions.Administrator, "bob"
                 );
             factory.Setup(a => a.CreateRootExplorerItem(It.IsAny<string>(), It.IsAny<Guid>())).Returns(explorerItem);
-            catalogue.Setup(a => a.DeleteResource(It.IsAny<Guid>(), guid, "DbSource", true)).Returns(new ResourceCatalogResult { Message = "bob", Status = ExecStatus.DuplicateMatch });
+            catalogue.Setup(a => a.DeleteResource(It.IsAny<Guid>(), guid, "DbSource")).Returns(new ResourceCatalogResult { Message = "bob", Status = ExecStatus.DuplicateMatch });
             testCatalogue.Setup(catalog => catalog.DeleteAllTests(It.IsAny<Guid>())).Verifiable();
             var sync = new Mock<IExplorerRepositorySync>();
             var serverExplorerRepository = new ServerExplorerRepository(catalogue.Object, factory.Object, dir.Object, sync.Object, new Mock<IServerVersionRepository>().Object, new FileWrapper(), testCatalogue.Object);
@@ -506,7 +506,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Assert Results-------------------------
             Assert.AreEqual(result.Message, "bob");
             Assert.AreEqual(result.Status, ExecStatus.DuplicateMatch);
-            catalogue.Verify(a => a.DeleteResource(It.IsAny<Guid>(), guid, "DbSource", true));
+            catalogue.Verify(a => a.DeleteResource(It.IsAny<Guid>(), guid, "DbSource"));
             testCatalogue.Verify(catalog => catalog.DeleteAllTests(It.IsAny<Guid>()), Times.Once);
         }
         [TestMethod]

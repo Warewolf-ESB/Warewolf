@@ -35,7 +35,12 @@ namespace Warewolf.Studio.Core
         readonly Action _selectedAction;
         private bool _useIsSelected;
 
-        public FileListingModel(IFileChooserModel model, IFileListing file, Action selected, bool useIsSelected = false)
+        public FileListingModel(IFileChooserModel model, IFileListing file, Action selected)
+            : this(model, file, selected,false)
+        {
+        }
+
+        public FileListingModel(IFileChooserModel model, IFileListing file, Action selected, bool useIsSelected)
         {
             _model = model;
             _selectedAction = selected;

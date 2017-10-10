@@ -17,10 +17,12 @@ namespace Warewolf.Sharepoint
         private string UserName { get; set; }
         private string Password { get; set; }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="T:System.Object"/> class.
-        /// </summary>
-        public SharepointHelper(string server, string userName="", string password="", bool isSharepointOnline=false)
+        public SharepointHelper(string server)
+            : this(server, "", "", false)
+        {
+        }
+        
+        public SharepointHelper(string server, string userName, string password, bool isSharepointOnline)
         {
             Server = server;
             UserName = userName;
@@ -226,7 +228,8 @@ namespace Warewolf.Sharepoint
             return "Success";
         }
 
-        public string DownLoadFile(string serverPath, string localPath, bool overwrite = false)
+        public string DownLoadFile(string serverPath, string localPath) => DownLoadFile(serverPath, localPath, false);
+        public string DownLoadFile(string serverPath, string localPath, bool overwrite)
         {
             var fileName = Path.GetFileName(localPath);
 
@@ -368,7 +371,54 @@ namespace Warewolf.Sharepoint
                         sharepointFieldTo.MinValue = numberField.MinimumValue;
                     }
                     break;
-
+                case FieldType.Lookup:
+                    break;
+                case FieldType.URL:
+                    break;
+                case FieldType.Computed:
+                    break;
+                case FieldType.Threading:
+                    break;
+                case FieldType.Guid:
+                    break;
+                case FieldType.MultiChoice:
+                    break;
+                case FieldType.GridChoice:
+                    break;
+                case FieldType.Calculated:
+                    break;
+                case FieldType.File:
+                    break;
+                case FieldType.Attachments:
+                    break;
+                case FieldType.User:
+                    break;
+                case FieldType.Recurrence:
+                    break;
+                case FieldType.CrossProjectLink:
+                    break;
+                case FieldType.ModStat:
+                    break;
+                case FieldType.Error:
+                    break;
+                case FieldType.ContentTypeId:
+                    break;
+                case FieldType.PageSeparator:
+                    break;
+                case FieldType.ThreadIndex:
+                    break;
+                case FieldType.WorkflowStatus:
+                    break;
+                case FieldType.AllDayEvent:
+                    break;
+                case FieldType.WorkflowEventType:
+                    break;
+                case FieldType.Geolocation:
+                    break;
+                case FieldType.OutcomeChoice:
+                    break;
+                case FieldType.MaxItems:
+                    break;
                 default:
                     sharepointFieldTo.Type = SharepointFieldType.Text;
                     break;

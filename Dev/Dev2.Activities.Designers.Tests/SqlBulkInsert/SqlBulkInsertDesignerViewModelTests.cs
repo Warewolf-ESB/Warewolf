@@ -1253,6 +1253,8 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
                             case 3:
                                 columns.Add(new DbColumn { ColumnName = dbName + "_Column_" + j + "_" + k, SqlDataType = SqlDbType.Float });
                                 break;
+                            default:
+                                break;
                         }
                     }
 

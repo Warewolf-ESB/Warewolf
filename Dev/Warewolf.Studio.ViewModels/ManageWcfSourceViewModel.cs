@@ -180,6 +180,21 @@ namespace Warewolf.Studio.ViewModels
                                 Testing = false;
                                 break;
                             }
+
+                        case TaskStatus.Created:
+                            break;
+                        case TaskStatus.WaitingForActivation:
+                            break;
+                        case TaskStatus.WaitingToRun:
+                            break;
+                        case TaskStatus.Running:
+                            break;
+                        case TaskStatus.WaitingForChildrenToComplete:
+                            break;
+                        case TaskStatus.Canceled:
+                            break;
+                        default:
+                            break;
                     }
                 }
             }));

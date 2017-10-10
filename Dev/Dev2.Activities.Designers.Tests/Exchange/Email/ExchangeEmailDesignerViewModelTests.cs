@@ -108,8 +108,7 @@ namespace Dev2.Activities.Designers.Tests.Exchange.Email
         {
            
             var testEmailDesignerViewModel = new TestExchangeEmailDesignerViewModel(modelItem, model, eve)
-            {
-              
+            {              
                 GetDatalistString = () =>
                 {
                     const string trueString = "True";

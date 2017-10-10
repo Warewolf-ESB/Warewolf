@@ -134,6 +134,12 @@ namespace Dev2.ViewModels
                         case MessageBoxResult.Yes:
                             ViewModel.Save();
                             break;
+                        case MessageBoxResult.None:
+                            break;
+                        case MessageBoxResult.OK:
+                            break;
+                        case MessageBoxResult.Cancel:
+                            break;
                         default:
                             return false;
                     }
@@ -145,6 +151,14 @@ namespace Dev2.ViewModels
                     {
                         case MessageBoxResult.No:
                             return true;
+                        case MessageBoxResult.None:
+                            break;
+                        case MessageBoxResult.OK:
+                            break;
+                        case MessageBoxResult.Cancel:
+                            break;
+                        case MessageBoxResult.Yes:
+                            break;
                         default:
                             return false;
                     }

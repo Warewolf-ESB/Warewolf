@@ -53,7 +53,8 @@ namespace Dev2.Webs.Callbacks
 
         public ILayoutObjectViewModel SelectedLayoutObject => null;
 
-        public virtual void Save(string value, IServer server, bool closeBrowserWindow = true)
+        public virtual void Save(string value, IServer server) => Save(value, server, true);
+        public virtual void Save(string value, IServer server, bool closeBrowserWindow)
         {
             if(closeBrowserWindow)
             {
