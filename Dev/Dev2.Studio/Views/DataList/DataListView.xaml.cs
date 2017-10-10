@@ -122,8 +122,10 @@ namespace Dev2.Studio.Views.DataList
                     return SortButton.Command.CanExecute(null);
                 case "Variables":
                     return ScalarExplorer.IsEnabled;
+                default:
+                    break;
             }
-            
+
             return false;
         }
 

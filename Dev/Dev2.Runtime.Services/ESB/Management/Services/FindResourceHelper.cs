@@ -72,16 +72,6 @@ namespace Dev2.Runtime.ESB.Management.Services
             };
         }
 
-        private IAuthorizationService AuthorizationService
-        {
-            get
-            {
-                return _authorizationService ?? (_authorizationService = ServerAuthorizationService.Instance);
-            }
-            set
-            {
-                _authorizationService = value;
-            }
-        }
+        private IAuthorizationService AuthorizationService => _authorizationService ?? (_authorizationService = ServerAuthorizationService.Instance);
     }
 }

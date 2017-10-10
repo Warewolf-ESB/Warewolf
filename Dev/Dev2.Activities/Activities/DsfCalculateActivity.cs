@@ -151,7 +151,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         private void AddDebugInputItem(IExecutionEnvironment environment,int update)
         {
-            AddDebugInputItem(new DebugEvalResult(Expression, "fx =", environment, update,false,true));
+            AddDebugInputItem(new DebugEvalResult(Expression, "fx =", environment, update, false, true));
         }
 
         private void AddDebugOutputItem(string expression, IExecutionEnvironment environment, int update)

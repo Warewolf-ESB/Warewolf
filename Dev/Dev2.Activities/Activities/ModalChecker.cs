@@ -15,7 +15,6 @@ using System.Text;
 using Warewolf.Resource.Errors;
 
 
-
 namespace Dev2.Activities
 {
     public class ModalChecker
@@ -26,7 +25,6 @@ namespace Dev2.Activities
             {
                 throw new Exception(ErrorResource.NoProcessFound);
             }
-            // for thread safety
             if (process.HasExited)
             {
                 return false;
@@ -72,18 +70,12 @@ namespace Dev2.Activities
             _process = process;
             _waiting = false;
         }
-
-        /// <summary>
-        /// Gets a value indicating whether [waiting for user input].
-        /// </summary>
-        /// <value>
-        /// <c>true</c> if [waiting for user input]; otherwise, <c>false</c>.
-        /// </value>
+        
         private Boolean WaitingForUserInput
         {
             get
             {
-                WindowEnum(_process.MainWindowHandle, 0);
+                WindowEnum(_process.MainWindowHandle);
                 if(!_waiting)
                 {
                     _waiting = ThreadWindows(_process.MainWindowHandle);
@@ -102,15 +94,10 @@ namespace Dev2.Activities
                 return true;
             }
             return false;
-
-        }
-
+        }        
         
-        
-        private int WindowEnum(IntPtr hWnd, int lParam)
-        
+        private int WindowEnum(IntPtr hWnd)
         {
-
             GetWindowThreadProcessId(hWnd, out IntPtr processId);
             if (processId.ToInt32() != _process.Id)
             {
@@ -121,7 +108,7 @@ namespace Dev2.Activities
             if((style & WS_EX_DLGMODALFRAME) != 0)
             {
                 _waiting = true;
-                return 0; // stop searching further
+                return 0;
             }
             return 1;
         }

@@ -37,7 +37,6 @@ namespace Dev2.Runtime.ESB.Management.Services
 
                 ComPluginServices services = new ComPluginServices();
                 var src = ResourceCatalog.Instance.GetResource<ComPluginSource>(GlobalConstants.ServerWorkspaceID, pluginSource.Id);
-                //src.AssemblyName = ns.FullName;
                 ComPluginService svc = new ComPluginService();
                 if (ns != null)
                 {

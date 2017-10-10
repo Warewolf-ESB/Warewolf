@@ -62,6 +62,8 @@ namespace Dev2.Studio.Interfaces
 
         void ShowDependencies();
 
-        void SetPermissions(Permissions explorerItemPermissions, bool isDeploy = false);
+        void SetPermissions(Permissions explorerItemPermissions);
+
+        void SetPermissions(Permissions explorerItemPermissions, bool isDeploy);
     }
 }

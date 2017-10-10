@@ -29,7 +29,13 @@ namespace Dev2.Validation
             }
         }
 
-        public static IActionableErrorInfo TryParseVariables(this string inputValue, out string outputValue, Action onError, string labelText = null, string variableValue = "a", ObservableCollection<ObservablePair<string, string>> inputs = null)
+        public static IActionableErrorInfo TryParseVariables(this string inputValue, out string outputValue, Action onError)=>inputValue.TryParseVariables(out outputValue, onError, null, "a", null);
+
+        public static IActionableErrorInfo TryParseVariables(this string inputValue, out string outputValue, Action onError, string variableValue) => inputValue.TryParseVariables(out outputValue, onError, null, variableValue, null);
+
+        public static IActionableErrorInfo TryParseVariables(this string inputValue, out string outputValue, Action onError, string variableValue, string labelText) => inputValue.TryParseVariables(out outputValue, onError, labelText, variableValue, null);
+
+        public static IActionableErrorInfo TryParseVariables(this string inputValue, out string outputValue, Action onError, string labelText, string variableValue, ObservableCollection<ObservablePair<string, string>> inputs)
         {
             outputValue = inputValue;
 

@@ -8,7 +8,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System.Diagnostics.CodeAnalysis;
 using Dev2.Common.Interfaces.Scheduler.Interfaces;
 using Dev2.Common.Interfaces.WindowsTaskScheduler.Wrappers;
 using Dev2.TaskScheduler.Wrappers;
@@ -37,7 +36,6 @@ namespace Dev2.Scheduler
         {
             return new ScheduleTrigger(state, trigger, _service, _serviceConvertorFactory);
         }
-
     
         public IScheduleTrigger CreateTrigger(Trigger trigger)
         {
@@ -65,6 +63,8 @@ namespace Dev2.Scheduler
                     return new ScheduleTrigger(TaskState.Ready, new Dev2TimeTrigger(_serviceConvertorFactory, trigger as TimeTrigger), _service, _serviceConvertorFactory);
                 case TaskTriggerType.Weekly:
                     return new ScheduleTrigger(TaskState.Ready, new Dev2WeeklyTrigger(_serviceConvertorFactory, trigger), _service, _serviceConvertorFactory);
+                case TaskTriggerType.Custom:
+                    return null;
                 default:
                     return new ScheduleTrigger(TaskState.Ready, new Dev2Trigger(_serviceConvertorFactory, trigger), _service, _serviceConvertorFactory);
 

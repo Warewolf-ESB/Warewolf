@@ -41,6 +41,8 @@ namespace Warewolf.Studio.Views
                     return TestConnectionButton.Command.CanExecute(null);
                 case "TestQuery":
                     return TestDefault.IsEnabled;
+                default:
+                    break;
             }
             return false;
         }

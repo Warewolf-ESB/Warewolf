@@ -318,7 +318,7 @@ namespace Dev2.Tests.Activities
                 Result = new TestRunResult { RunTestResult = RunResult.TestPassed }
             };
             var warewolfAtoms = new List<DataStorage.WarewolfAtom> { DataStorage.WarewolfAtom.NewDataString(serviceTestOutputTO.Value) };
-            mockEnv.Setup(environment => environment.EvalAsList(It.IsAny<string>(), 0, false)).Returns(warewolfAtoms);
+            mockEnv.Setup(environment => environment.EvalAsList(It.IsAny<string>(), 0)).Returns(warewolfAtoms);
             mockDataObject.Setup(o => o.Environment).Returns(mockEnv.Object);
             var dsfDataObject = mockDataObject.Object;
             serviceTestOutputs.Add(serviceTestOutputTO);
@@ -354,7 +354,7 @@ namespace Dev2.Tests.Activities
                 Result = new TestRunResult { RunTestResult = RunResult.TestPassed }
             };
             var warewolfAtoms = new List<DataStorage.WarewolfAtom> { DataStorage.WarewolfAtom.NewDataString("8") };
-            mockEnv.Setup(environment => environment.EvalAsList(It.IsAny<string>(), 0, false)).Returns(warewolfAtoms);
+            mockEnv.Setup(environment => environment.EvalAsList(It.IsAny<string>(), 0)).Returns(warewolfAtoms);
             mockDataObject.Setup(o => o.Environment).Returns(mockEnv.Object);
             var dsfDataObject = mockDataObject.Object;
             serviceTestOutputs.Add(serviceTestOutputTO);
@@ -391,7 +391,7 @@ namespace Dev2.Tests.Activities
                 Result = new TestRunResult { RunTestResult = RunResult.TestPassed }
             };
             var warewolfAtoms = new List<DataStorage.WarewolfAtom> { DataStorage.WarewolfAtom.NewDataString(serviceTestOutputTO.Value) };
-            mockEnv.Setup(environment => environment.EvalAsList(It.IsAny<string>(), 0, false)).Returns(warewolfAtoms);
+            mockEnv.Setup(environment => environment.EvalAsList(It.IsAny<string>(), 0)).Returns(warewolfAtoms);
             mockDataObject.Setup(o => o.Environment).Returns(mockEnv.Object);
             var dsfDataObject = mockDataObject.Object;
             serviceTestOutputs.Add(serviceTestOutputTO);
@@ -496,7 +496,7 @@ namespace Dev2.Tests.Activities
                 Result = new TestRunResult { RunTestResult = RunResult.TestPassed }
             };
             var warewolfAtoms = new List<DataStorage.WarewolfAtom> { DataStorage.WarewolfAtom.NewDataString(serviceTestOutputTO.Value) };
-            mockEnv.Setup(environment => environment.EvalAsList(It.IsAny<string>(), 0, false)).Returns(warewolfAtoms);
+            mockEnv.Setup(environment => environment.EvalAsList(It.IsAny<string>(), 0)).Returns(warewolfAtoms);
             mockDataObject.Setup(o => o.Environment).Returns(mockEnv.Object);
             var dsfDataObject = mockDataObject.Object;
             serviceTestOutputs.Add(serviceTestOutputTO);

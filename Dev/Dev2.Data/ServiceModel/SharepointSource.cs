@@ -110,7 +110,9 @@ namespace Dev2.Data.ServiceModel
             return sharepointHelper.LoadLists();
         }
 
-        public List<ISharepointFieldTo> LoadFieldsForList(string listName, bool editableFieldsOnly = false)
+        public List<ISharepointFieldTo> LoadFieldsForList(string listName) => LoadFieldsForList(listName, false);
+
+        public List<ISharepointFieldTo> LoadFieldsForList(string listName, bool editableFieldsOnly)
         {
             var sharepointHelper = CreateSharepointHelper();
             return sharepointHelper.LoadFieldsForList(listName, editableFieldsOnly);

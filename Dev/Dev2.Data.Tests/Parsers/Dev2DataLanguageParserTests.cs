@@ -12,9 +12,7 @@ using Dev2.Data.TO;
 using Dev2.DataList.Contract;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-
-
-
+using Dev2.Data.Util;
 
 namespace Dev2.Data.Tests.Parsers
 {
@@ -126,19 +124,15 @@ namespace Dev2.Data.Tests.Parsers
         [Owner("Nkosinathi Sangweni")]
         public void ParseDataLanguageForIntellisense_GivenRecordSetsFilter_ShouldExecutesCorreclty()
         {
-            //---------------Set up test pack-------------------
             var parser = new Dev2DataLanguageParser();
             const string trueString = "True";
             const string noneString = "None";
             var datalist = string.Format("<DataList><var Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><a Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><rec Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" ><set Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /></rec></DataList>", trueString, noneString);
-            //---------------Assert Precondition----------------
 
-            //---------------Execute Test ----------------------
             object obj = new object();
             lock (obj)
             {
                 var expressionIntoParts = parser.ParseDataLanguageForIntellisense("[[a]]", datalist, false, new IntellisenseFilterOpsTO() { FilterType = enIntellisensePartType.RecordsetsOnly });
-                //---------------Test Result -----------------------
             }
 
         }
@@ -147,21 +141,15 @@ namespace Dev2.Data.Tests.Parsers
         [Owner("Nkosinathi Sangweni")]
         public void ParseDataLanguageForIntellisense_GivenFuncThrowsException_ShouldCatchAndLogException()
         {
-            //---------------Set up test pack-------------------
             var parser = new Dev2DataLanguageParser();
             const string trueString = "True";
             const string noneString = "None";
             var datalist = string.Format("<DataList><var Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><a Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><rec Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" ><set Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /></rec></DataList>", trueString, noneString);
             var mock = new Mock<IIntellisenseFilterOpsTO>();
             mock.SetupGet(to => to.FilterType).Throws(new Exception("Error"));
-            //---------------Assert Precondition----------------
-
-            //---------------Execute Test ----------------------
             try
             {
-
                 parser.ParseDataLanguageForIntellisense("[[a]]", datalist, false, mock.Object);
-                //---------------Test Result -----------------------
             }
             catch (Exception ex)
             {
@@ -214,76 +202,80 @@ namespace Dev2.Data.Tests.Parsers
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void CheckValidIndex_GivenNwegetiveIndex_ShouldThrowError()
+        public void CheckValidIndex_GivenNegetiveIndex_ShouldThrow_InvalidCharacterError()
         {
-            //---------------Set up test pack-------------------
-            var parser = new Dev2DataLanguageParser();
-            PrivateObject privateObject = new PrivateObject(parser);
-            //CheckValidIndex(ParseTO to, string part, int start, int end)
-            var parseTO = new ParseTO() { };
-            //---------------Assert Precondition----------------
-            //---------------Execute Test ----------------------
+            var parser = new ParserHelperUtil();
             try
             {
-                privateObject.Invoke("CheckValidIndex", parseTO, "a", 1, 2);
+                parser.CheckValidIndex(new ParseTO() { }, "a", 1, 2);
             }
             catch (Exception ex)
             {
-                Assert.AreEqual("Recordset index (a) contains invalid character(s)", ex.InnerException.Message);
-                try
-                {
-                    privateObject.Invoke("CheckValidIndex", parseTO, "-1", 1, 2);
-                }
-                catch (Exception ex1)
-                {
-                    Assert.AreEqual("Recordset index [ -1 ] is not greater than zero", ex1.InnerException.Message);
-                    try
-                    {
-                        //---------------Test Result -----------------------
-                        var valid = privateObject.Invoke("CheckValidIndex", parseTO, "1", 1, 2);
-                        Assert.IsTrue(bool.Parse(valid.ToString()));
-                    }
-                    catch (Exception ex2)
-                    {
-                        Assert.Fail(ex2.Message);
-                    }
-
-                }
+                Assert.AreEqual("Recordset index (a) contains invalid character(s)", ex.Message);
             }
-
-
         }
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void CheckCurrentIndex_GivenInvalid_ShouldThrowValidException()
+        public void CheckValidIndex_GivenNegetiveIndex_ShouldThrow_TooHighError()
         {
-            //---------------Set up test pack-------------------
-            var parser = new Dev2DataLanguageParser();
-            PrivateObject privateObject = new PrivateObject(parser);
-            //  CheckCurrentIndex(ParseTO to, int start, string raw, int end)
-            var parseTO = new ParseTO() { };
-            //---------------Assert Precondition----------------
-            //---------------Execute Test ----------------------
+            var parser = new ParserHelperUtil();
             try
             {
-                privateObject.Invoke("CheckCurrentIndex", parseTO, 0, "rec(a).name", "a".Length);
+                parser.CheckValidIndex(new ParseTO() { }, "-1", 1, 2);
             }
             catch (Exception ex)
             {
-                //---------------Test Result -----------------------
-                Assert.AreEqual("Recordset index (ec(a).nam) contains invalid character(s)", ex.InnerException.Message);
-                try
-                {
-                    privateObject.Invoke("CheckCurrentIndex", parseTO, 3, "rec(-1)", "rec(-1)".Length);
-                }
-                catch (Exception ex1)
-                {
-                    Assert.AreEqual("Recordset index -1 is not greater than zero", ex1.InnerException.Message);
-                    var invoke = privateObject.Invoke("CheckCurrentIndex", parseTO, 3, "rec(1)", "rec(1)".Length);
-                    Assert.IsTrue(bool.Parse(invoke.ToString()));
-                }
+                Assert.AreEqual("Recordset index [ -1 ] is not greater than zero", ex.Message);
             }
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void CheckValidIndex_ValidIndex_ShouldMarkAsValid()
+        {
+            var parser = new ParserHelperUtil();
+            var valid = parser.CheckValidIndex(new ParseTO() { }, "1", 1, 2);
+            Assert.IsTrue(valid, "Valid recordset index marked as invalid.");
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void CheckCurrentIndex_GivenInvalid_ShouldThrow_InvalidCharException()
+        {
+            var parser = new ParserHelperUtil();
+            try
+            {
+                parser.CheckCurrentIndex(new ParseTO() { }, 0, "rec(a).name", "a".Length);
+            }
+            catch (Exception ex)
+            {
+                Assert.AreEqual("Recordset index (ec(a).nam) contains invalid character(s)", ex.Message);
+            }
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void CheckCurrentIndex_GivenInvalid_ShouldThrow_LessThanZeroException()
+        {
+            var parser = new ParserHelperUtil();
+            try
+            {
+                parser.CheckCurrentIndex(new ParseTO() { }, 3, "rec(-1)", "rec(-1)".Length);
+            }
+            catch (Exception ex)
+            {
+                Assert.AreEqual("Recordset index -1 is not greater than zero", ex.Message);
+            }
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void CheckCurrentIndex_GivenPositiveIndex_ShouldMarkAsValid()
+        {
+            var parser = new ParserHelperUtil();
+            var invoke = parser.CheckCurrentIndex(new ParseTO() { }, 3, "rec(1)", "rec(1)".Length);
+            Assert.IsTrue(invoke, "Positive recordset index marked as invalid.");
         }
 
         [TestMethod]
@@ -291,10 +283,8 @@ namespace Dev2.Data.Tests.Parsers
         public void IsValidIndex_GivenInvalidIndex_ShouldThrowException()
         {
             //---------------Set up test pack-------------------
-            //IsValidIndex(ParseTO to)
             var parser = new Dev2DataLanguageParser();
             PrivateObject privateObject = new PrivateObject(parser);
-            //  CheckCurrentIndex(ParseTO to, int start, string raw, int end)
             var parseTO = new ParseTO() { Payload = "rec(-1)", EndIndex = "rec(-1)".Length, StartIndex = 3 };
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
@@ -405,7 +395,7 @@ namespace Dev2.Data.Tests.Parsers
                 invoke = false;
             }
             //---------------Test Result -----------------------
-            Assert.IsTrue(invoke);//, "Cannot invoke new Dev2DataLanguageParser PrivateObject.");
+            Assert.IsTrue(invoke);
         }
 
         [TestMethod]
@@ -413,7 +403,6 @@ namespace Dev2.Data.Tests.Parsers
         public void ProcessForOnlyOpenRegion_GivenValidationArgsAndHasChildrenAndISRecordSet_ShouldProcessCorrectly()
         {
             //---------------Set up test pack-------------------
-            //ProcessForOnlyOpenRegion(ParseTO payload, IEnumerable<IDev2DataLanguageIntellisensePart> refParts, IList<IIntellisenseResult> result)
             var parser = new Dev2DataLanguageParser();
             var privateObject = new PrivateObject(parser);
             var refParts = new List<IDev2DataLanguageIntellisensePart>();

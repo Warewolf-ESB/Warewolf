@@ -101,13 +101,7 @@ namespace Dev2
         private static string ConvertToAllFirstUpper(string stringToConvert)
         {
             TextInfo txInfo = CultureInfo.CurrentCulture.TextInfo;
-
-            string str = txInfo.ToTitleCase(stringToConvert);
-
-            //Juries Bug 8725
-            //var reg = new Regex(@"[0-9]+\w{1}", RegexOptions.Compiled | RegexOptions.Multiline);
-
-            //return reg.Replace(str, s => s.Value.ToLower());
+            string str = txInfo.ToTitleCase(stringToConvert);            
             return str;
         }
 

@@ -10,10 +10,10 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using Infragistics.Calculations.CalcManager;
 
-namespace Dev2.MathOperations {
+namespace Dev2.MathOperations
+{
     public interface IFunction {
         string FunctionName { get; }
         IList<string> arguments { get; }

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Core;
@@ -50,19 +49,12 @@ namespace Dev2.Runtime.ESB.Management.Services
 
                 PluginSource res;
                 var existingSource = ResourceCatalog.Instance.GetResource(GlobalConstants.ServerWorkspaceID, src.Name);
-                if (existingSource != null)
+                res = existingSource != null ? existingSource as PluginSource : new PluginSource
                 {
-                    res = existingSource as PluginSource;
-                }
-                else
-                {
-                    res = new PluginSource
-                    {
-                        ResourceID = src.Id,
-                        ConfigFilePath = src.ConfigFilePath,
-                        ResourceName = src.Name
-                    };
-                }
+                    ResourceID = src.Id,
+                    ConfigFilePath = src.ConfigFilePath,
+                    ResourceName = src.Name
+                };
                 Debug.Assert(res != null, "res != null");
                 if (!string.IsNullOrEmpty(src.FileSystemAssemblyName))
                 {                    

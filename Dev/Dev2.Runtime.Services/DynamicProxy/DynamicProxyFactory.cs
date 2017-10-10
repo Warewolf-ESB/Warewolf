@@ -201,15 +201,8 @@ namespace Dev2.Runtime.DynamicProxy
 
                 if (importExtension is DataContractSerializerMessageContractImporter dcConverter)
                 {
-                    if (options.FormatMode ==
-                        DynamicProxyFactoryOptions.FormatModeOptions.XmlSerializer)
-                    {
-                        dcConverter.Enabled = false;
-                    }
-                    else
-                    {
-                        dcConverter.Enabled = true;
-                    }
+                    dcConverter.Enabled = options.FormatMode ==
+                        DynamicProxyFactoryOptions.FormatModeOptions.XmlSerializer ? false : true;
                 }
 
             }
@@ -442,14 +435,7 @@ namespace Dev2.Runtime.DynamicProxy
                 name = contractType.Name;
             }
 
-            if (ns == null)
-            {
-                ns = DefaultNamespace;
-            }
-            else
-            {
-                ns = Uri.EscapeUriString(ns);
-            }
+            ns = ns == null ? DefaultNamespace : Uri.EscapeUriString(ns);
 
             return new XmlQualifiedName(name, ns);
         }
@@ -524,14 +510,7 @@ namespace Dev2.Runtime.DynamicProxy
 
                 foreach (var error in importErrors)
                 {
-                    if (error.IsWarning)
-                    {
-                        importErrStr.AppendLine("Warning : " + error.Message);
-                    }
-                    else
-                    {
-                        importErrStr.AppendLine("Error : " + error.Message);
-                    }
+                    importErrStr.AppendLine(error.IsWarning ? "Warning : " + error.Message : "Error : " + error.Message);
                 }
 
                 return importErrStr.ToString();

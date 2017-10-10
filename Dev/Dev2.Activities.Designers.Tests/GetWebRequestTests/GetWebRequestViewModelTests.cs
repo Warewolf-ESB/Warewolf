@@ -197,7 +197,7 @@ namespace Dev2.Activities.Designers.Tests.GetWebRequestTests
             var propertyCollection = new Mock<ModelPropertyCollection>();
 
             var url = new Mock<ModelProperty>();
-            url.SetupProperty(p => p.ComputedValue, "http://www.google.com"); // start "tracking" sets/gets to this property
+            url.SetupProperty(p => p.ComputedValue, "http://www.google.com");
             properties.Add("Url", url);
             propertyCollection.Protected().Setup<ModelProperty>("Find", "Url", true).Returns(url.Object);
 
@@ -224,7 +224,7 @@ namespace Dev2.Activities.Designers.Tests.GetWebRequestTests
             var propertyCollection = new Mock<ModelPropertyCollection>();
 
             var url = new Mock<ModelProperty>();
-            url.SetupProperty(p => p.ComputedValue, "www.google.com"); // start "tracking" sets/gets to this property
+            url.SetupProperty(p => p.ComputedValue, "www.google.com");
             properties.Add("Url", url);
             propertyCollection.Protected().Setup<ModelProperty>("Find", "Url", true).Returns(url.Object);
 

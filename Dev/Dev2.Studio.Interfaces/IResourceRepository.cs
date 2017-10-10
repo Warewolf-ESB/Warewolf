@@ -12,7 +12,6 @@ using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Communication;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Dev2.Common.Interfaces;
@@ -58,7 +57,9 @@ namespace Dev2.Studio.Interfaces
         ICollection<IResourceModel> All();
     
         ICollection<IResourceModel> Find(Expression<Func<IResourceModel, bool>> expression);
-        IResourceModel FindSingle(Expression<Func<IResourceModel, bool>> expression, bool fetchDefinition = false, bool prepairForDeployment = false);
+        IResourceModel FindSingle(Expression<Func<IResourceModel, bool>> expression);
+        IResourceModel FindSingle(Expression<Func<IResourceModel, bool>> expression, bool fetchDefinition);
+        IResourceModel FindSingle(Expression<Func<IResourceModel, bool>> expression, bool fetchDefinition, bool prepairForDeployment);
         ExecuteMessage Save(IResourceModel instanceObj);
         void Load();
         ExecuteMessage DeleteResourceFromWorkspace(IResourceModel resource);

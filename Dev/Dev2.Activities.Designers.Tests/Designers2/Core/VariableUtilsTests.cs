@@ -75,7 +75,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
             inputs.Add(new ObservablePair<string, string>("[[a]]", variableValue));
 
             //------------Execute Test---------------------------
-            var error = "[[a]]".TryParseVariables(out string outputValue, () => { }, variableValue: "a", inputs: inputs);
+            var error = "[[a]]".TryParseVariables(out string outputValue, () => { }, "a", null, inputs);
 
             //------------Assert Results-------------------------
             Assert.IsNull(error);

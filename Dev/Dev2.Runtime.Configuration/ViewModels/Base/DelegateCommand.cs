@@ -9,7 +9,6 @@
 */
 
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Windows.Input;
 
 namespace Dev2.Runtime.Configuration.ViewModels.Base

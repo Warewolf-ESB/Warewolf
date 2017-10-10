@@ -28,8 +28,6 @@ namespace Dev2.Activities
                     itrs.Add(paramIterator);
                 }
             }
-            
-            return;
         }
     }
 }

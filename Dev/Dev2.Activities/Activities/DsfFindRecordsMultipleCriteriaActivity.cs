@@ -156,25 +156,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         {
                             tovalue = env.EvalAsList(to.To, update);
                         }
-                        if (func == null)
-                        {
-                            func = CreateFuncFromOperator(to.SearchType, right, @from, tovalue);
-                        }
-                        else
-                        {
-                            func = RequireAllTrue ? CombineFuncAnd(func, to.SearchType, right, @from, tovalue) : CombineFuncOr(func, to.SearchType, right, @from, tovalue);
-                        }
+                        func = func == null ? CreateFuncFromOperator(to.SearchType, right, @from, tovalue) : RequireAllTrue ? CombineFuncAnd(func, to.SearchType, right, @from, tovalue) : CombineFuncOr(func, to.SearchType, right, @from, tovalue);
                     }
                     var output = env.EvalWhere(dataObject.Environment.ToStar(searchvar), func, update);
 
-                    if (RequireAllFieldsToMatch && hasEvaled)
-                    {
-                        results = results.Intersect(output).ToList();
-                    }
-                    else
-                    {
-                        results = results.Union(output).ToList();
-                    }
+                    results = RequireAllFieldsToMatch && hasEvaled ? results.Intersect(output).ToList() : results.Union(output).ToList();
                     hasEvaled = true;
                 }
                 if (!results.Any())

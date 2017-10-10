@@ -38,7 +38,8 @@ namespace Dev2.Studio.Factory
         /// <author>jurie.smit</author>
         /// <date>2013/01/15</date>
         /// <param name="isCritical">Will append the critical error text to the message if true</param>
-        public static ExceptionUiModel Create(Exception exception, bool isCritical = false)
+        public static ExceptionUiModel Create(Exception exception) => Create(exception, false);
+        public static ExceptionUiModel Create(Exception exception, bool isCritical)
         {
             ExceptionUiModel uiModel;
             if (isCritical)
@@ -58,17 +59,10 @@ namespace Dev2.Studio.Factory
 
             return uiModel;
         }
-
-        /// <summary>
-        /// Creates the string value (recursively).
-        /// </summary>
-        /// <param name="exception">The exception.</param>
-        /// <param name="builder">The builder to use - null if not recursive.</param>
-        /// <param name="critical"></param>
-        /// <returns></returns>
-        /// <author>jurie.smit</author>
-        /// <date>2013/01/15</date>
-        public static StringBuilder CreateStringValue(Exception exception, StringBuilder builder = null, bool critical = false)
+        
+        public static StringBuilder CreateStringValue(Exception exception) => CreateStringValue(exception, null, false);
+        public static StringBuilder CreateStringValue(Exception exception, StringBuilder builder) => CreateStringValue(exception, builder, false);
+        public static StringBuilder CreateStringValue(Exception exception, StringBuilder builder, bool critical)
         {
             var appendStackTrace = false;
             if (builder == null)
@@ -93,9 +87,7 @@ namespace Dev2.Studio.Factory
             {
                 builder.AppendLine("StackTrace:");
                 builder.AppendLine(exception.StackTrace);
-
-                // 14th Feb 2013
-                // Added by Michael to assist with debugging
+                
                 string fullStackTrace = Environment.NewLine + Environment.NewLine + "Additional Trace Info" + Environment.NewLine + Environment.NewLine;
                 StackTrace theStackTrace = new StackTrace();
                 for (int j = theStackTrace.FrameCount - 1; j >= 0; j--)
@@ -126,7 +118,8 @@ namespace Dev2.Studio.Factory
         /// <author>
         /// Jurie.smit
         /// </author>
-        public static async Task<IExceptionViewModel> CreateViewModel(Exception e, IServer server, ErrorSeverity isCritical = ErrorSeverity.Default)
+        public static async Task<IExceptionViewModel> CreateViewModel(Exception e, IServer server) => await CreateViewModel(e, server, ErrorSeverity.Default);
+        public static async Task<IExceptionViewModel> CreateViewModel(Exception e, IServer server, ErrorSeverity isCritical)
         {
             // PBI 9598 - 2013.06.10 - TWR : added environmentModel parameter
             var vm = new ExceptionViewModel(new AsyncWorker())

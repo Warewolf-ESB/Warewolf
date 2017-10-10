@@ -153,16 +153,11 @@ namespace Dev2.Workspaces
 
         #region Get
 
-        /// <summary>
-        /// Gets the <see cref="IWorkspace" /> with the specified ID from storage if it does not exist in the repository.
-        /// </summary>
-        /// <param name="workspaceID">The workdspace ID to be queried.</param>
-        /// <param name="force"><code>true</code> if the workspace should be re-read even it is found; <code>false</code> otherwise.</param>
-        /// <param name="loadResources"><code>true</code> if resources should be loaded; <code>false</code> otherwise.</param>
-        /// <returns>
-        /// The <see cref="IWorkspace" /> with the specified ID, or <code>null</code> if not found.
-        /// </returns>
-        public IWorkspace Get(Guid workspaceID, bool force = false, bool loadResources = true)
+        public IWorkspace Get(Guid workspaceID) => Get(workspaceID, false, true);
+
+        public IWorkspace Get(Guid workspaceID, bool force) => Get(workspaceID, force, true);
+
+        public IWorkspace Get(Guid workspaceID, bool force, bool loadResources)
         {
             lock(_readLock)
             {
@@ -202,12 +197,7 @@ namespace Dev2.Workspaces
         #endregion
 
         #region GetLatest
-
-        /// <summary>
-        /// Overwrites this workspace with the server versions except for those provided.
-        /// </summary>
-        /// <param name="workspace">The workspace to be queried.</param>
-        /// <param name="servicesToIgnore">The services being to be ignored.</param>
+        
         public void GetLatest(IWorkspace workspace, IList<string> servicesToIgnore)
         {
             lock(_readLock)

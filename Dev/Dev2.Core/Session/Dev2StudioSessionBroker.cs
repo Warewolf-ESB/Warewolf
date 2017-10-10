@@ -71,16 +71,9 @@ namespace Dev2.Session
             }
 
 
-            if (to.DataList != null)
-            {
-                to.DataListHash = to.DataList.GetHashCode(); // set incoming DL hash
-            }
-            else
-            {
-                to.DataListHash = -1; // default value
-            }
+            to.DataListHash = to.DataList != null ? to.DataList.GetHashCode() : -1;
 
-            lock(SettingsLock)
+            lock (SettingsLock)
             {
                 if (_debugPersistSettings.TryGetValue(to.WorkflowID, out tmp))
                 {
@@ -171,14 +164,7 @@ namespace Dev2.Session
                         _rootPath = baseDir;
                     }
 
-                    if (_rootPath.EndsWith("\\"))
-                    {
-                        _debugPersistPath = _rootPath + SavePath;
-                    }
-                    else
-                    {
-                        _debugPersistPath = _rootPath + "\\" + SavePath;
-                    }
+                    _debugPersistPath = _rootPath.EndsWith("\\") ? _rootPath + SavePath : _rootPath + "\\" + SavePath;
 
                     _debugPath = ActivityIOFactory.CreatePathFromString(_debugPersistPath, "", "");
                     _debugOptsEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(_debugPath);

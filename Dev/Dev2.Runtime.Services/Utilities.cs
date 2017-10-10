@@ -9,18 +9,17 @@
 */
 
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
 namespace Dev2.Runtime
 {
-
     public static class Utilities
     {
         #region GenerateString
 
-    
-        public static string GenerateString(this Random random, int length, string prefix = "")
+        public static string GenerateString(this Random random, int length) => random.GenerateString(length, "");
+
+        public static string GenerateString(this Random random, int length, string prefix)
         {
             var modulo = length / 3;
             var builder = new StringBuilder(prefix);
@@ -37,6 +36,5 @@ namespace Dev2.Runtime
         }
 
         #endregion
-
     }
 }
