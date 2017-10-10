@@ -14,6 +14,8 @@ namespace Dev2.Studio.Core
                 case NetworkState.Connecting: _state = ConnectionNetworkState.Connecting; break;
                 case NetworkState.Offline: _state = ConnectionNetworkState.Disconnected; break;
                 case NetworkState.Online: _state = ConnectionNetworkState.Connected; break;
+                default:
+                    break;
             }
 
         }

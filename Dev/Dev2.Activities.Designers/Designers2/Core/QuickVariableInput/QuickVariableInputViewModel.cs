@@ -408,6 +408,8 @@ namespace Dev2.Activities.Designers2.Core.QuickVariableInput
                         dtb.AddTokenOp(at, false);
                     }
                     break;
+                default:
+                    break;
             }
 
 
@@ -459,24 +461,26 @@ namespace Dev2.Activities.Designers2.Core.QuickVariableInput
                 yield return new ActionableErrorInfo(doFocused) { ErrorType = ErrorType.Critical, Message = ErrorResource.VariableListStringRequired };
             }
 
-            switch(SplitType)
+            switch (SplitType)
             {
                 case "Index":
-                    foreach(var error in ValidationErrorsForIndexSplit())
+                    foreach (var error in ValidationErrorsForIndexSplit())
                     {
                         yield return error;
                     }
                     break;
 
                 case "Chars":
-                    foreach(var error in ValidationErrorsForCharsSplit())
+                    foreach (var error in ValidationErrorsForCharsSplit())
                     {
                         yield return error;
                     }
                     break;
+                default:
+                    break;
             }
 
-            if(!string.IsNullOrEmpty(Prefix) && !IsValidRecordsetPrefix(Prefix))
+            if (!string.IsNullOrEmpty(Prefix) && !IsValidRecordsetPrefix(Prefix))
             {
                 var doFocused = new Action(() => { IsPrefixFocused = true; });
                 yield return new ActionableErrorInfo(doFocused) { ErrorType = ErrorType.Critical, Message = "Prefix contains invalid characters" };

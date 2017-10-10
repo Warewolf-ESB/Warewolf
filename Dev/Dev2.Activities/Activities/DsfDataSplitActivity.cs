@@ -272,10 +272,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                             debugDictionary.Add(outputVarTo);
                                         }
                                     }
-                                    if(pos == end)
-                                    {
-                                    }
-                                    else
+                                    if(pos != end)
                                     {
                                         pos++;
                                     }

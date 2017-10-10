@@ -128,6 +128,8 @@ namespace Dev2.Common.ExtMethods
                 case "guid":
                     parsedTypeName = "System.Guid";
                     break;
+                default:
+                    break;
             }
 
             if (parsedTypeName != null)

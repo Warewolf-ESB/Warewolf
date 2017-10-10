@@ -117,7 +117,9 @@ namespace Dev2.Studio.Core.Network
             }
         }
 
-        public static Uri GetWorkflowUri(IContextualResourceModel resourceModel, string xmlData, UrlType urlType, bool addworkflowId = true)
+        public static Uri GetWorkflowUri(IContextualResourceModel resourceModel, string xmlData, UrlType urlType) => GetWorkflowUri(resourceModel, xmlData, urlType, true);
+
+        public static Uri GetWorkflowUri(IContextualResourceModel resourceModel, string xmlData, UrlType urlType, bool addworkflowId)
         {
             if (resourceModel?.Environment?.Connection == null || !resourceModel.Environment.IsConnected)
             {

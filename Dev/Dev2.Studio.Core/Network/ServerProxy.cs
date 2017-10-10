@@ -193,7 +193,9 @@ namespace Dev2.Network
             _wrappedConnection.Disconnect();
         }
 
-        public void Verify(Action<ConnectResult> callback, bool wait = true)
+        public void Verify(Action<ConnectResult> callback) => Verify(callback, true);
+
+        public void Verify(Action<ConnectResult> callback, bool wait)
         {
             _wrappedConnection.Verify(callback,wait);
         }
@@ -254,17 +256,6 @@ namespace Dev2.Network
             {
                 Dev2Logger.Debug("Permissions Modified: "+args, "Warewolf Debug");
                 PermissionsModified(this, args);
-            }
-        }
-
-        
-        void UpdateIsAuthorized(bool isAuthorized)
-            
-        {
-            if (IsAuthorized != isAuthorized)
-            {
-                _wrappedConnection.IsAuthorized = isAuthorized;
-                RaisePermissionsChanged();
             }
         }
 

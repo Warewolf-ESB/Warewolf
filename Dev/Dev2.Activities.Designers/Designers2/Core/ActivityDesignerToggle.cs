@@ -21,7 +21,8 @@ namespace Dev2.Activities.Designers2.Core
 {
     public class ActivityDesignerToggle : DependencyObject
     {
-        public static ActivityDesignerToggle Create(string collapseImageSourceUri, string collapseToolTip, string expandImageSourceUri, string expandToolTip, string automationID, DependencyObject target, DependencyProperty dp, bool autoReset = false)
+        public static ActivityDesignerToggle Create(string collapseImageSourceUri, string collapseToolTip, string expandImageSourceUri, string expandToolTip, string automationID, DependencyObject target, DependencyProperty dp) => Create(collapseImageSourceUri, collapseToolTip, expandImageSourceUri, expandToolTip, automationID, target, dp, false);
+        public static ActivityDesignerToggle Create(string collapseImageSourceUri, string collapseToolTip, string expandImageSourceUri, string expandToolTip, string automationID, DependencyObject target, DependencyProperty dp, bool autoReset)
         {
             var toggle = new ActivityDesignerToggle
             {
@@ -47,7 +48,9 @@ namespace Dev2.Activities.Designers2.Core
             return toggle;
         }
 
-        public static ActivityDesignerToggle Create(string collapseImageSourceUri, string collapseToolTip, string expandImageSourceUri, string expandToolTip, string automationID, bool autoReset = false)
+        public static ActivityDesignerToggle Create(string collapseImageSourceUri, string collapseToolTip, string expandImageSourceUri, string expandToolTip, string automationID) => Create(collapseImageSourceUri, collapseToolTip, expandImageSourceUri, expandToolTip, automationID, false);
+
+        public static ActivityDesignerToggle Create(string collapseImageSourceUri, string collapseToolTip, string expandImageSourceUri, string expandToolTip, string automationID, bool autoReset)
         {
             var toggle = new ActivityDesignerToggle
             {

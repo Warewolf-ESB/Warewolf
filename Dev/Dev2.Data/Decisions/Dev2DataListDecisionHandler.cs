@@ -12,7 +12,6 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Data;
-using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Common;
@@ -46,22 +45,10 @@ namespace Dev2.Data.Decision
             _environments.Remove(id);
         }
 
-
-        // Guid dlID
-        /// <summary>
-        /// Executes the decision stack.
-        /// </summary>
-        /// <param name="decisionDataPayload">The decision data payload.</param>
-        /// <param name="oldAmbientData">The old ambient data.</param>
-        /// <param name="update"></param>
-        /// <returns></returns>
-        /// <exception cref="System.Data.InvalidExpressionException">Could not evaluate decision data - No decision function found for [  + typeOf + ]</exception>
-    
         public bool ExecuteDecisionStack(string decisionDataPayload, IList<string> oldAmbientData,int update)
         {
 
             Guid dlId = FetchDataListID(oldAmbientData);
-//            if(dlId == GlobalConstants.NullDataListID) throw new InvalidExpressionException("Could not evaluate decision data - no DataList ID sent!");
             string newDecisionData = Dev2DecisionStack.FromVBPersitableModelToJSON(decisionDataPayload);
             var dds = EvaluateRegion(newDecisionData, dlId, update);
 

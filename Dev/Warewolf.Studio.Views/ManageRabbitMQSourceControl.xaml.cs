@@ -39,6 +39,8 @@ namespace Warewolf.Studio.Views
                     return PasswordTextBox.Password;
                 case "Virtual Host":
                     return VirtualHostTextBox.Text;
+                default:
+                    break;
             }
             return String.Empty;
         }
@@ -52,6 +54,8 @@ namespace Warewolf.Studio.Views
                 case "Save":
                     var viewModel = DataContext as ManageRabbitMQSourceViewModel;
                     return viewModel != null && viewModel.OkCommand.CanExecute(null);
+                default:
+                    break;
             }
             return false;
         }

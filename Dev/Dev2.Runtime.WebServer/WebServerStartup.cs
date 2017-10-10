@@ -9,7 +9,6 @@
 */
 
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using System.Web.Http;
 using Dev2.Common;

@@ -44,6 +44,8 @@ namespace Dev2.Activities.Designers2.Core
                 case 1:
                     AddDto(2);
                     break;
+                default:
+                    break;
             }
 
             AddBlankRow();
@@ -90,10 +92,7 @@ namespace Dev2.Activities.Designers2.Core
         {
             var result = new List<IActionableErrorInfo>();
             result.AddRange(ValidateThis());
-
             ProcessModelItemCollection(0, mi => result.AddRange(ValidateCollectionItem(mi)));
-
-            //Errors = result.Count == 0 ? 0 : result;
             Errors = result.Count == 0 ? null : result;
         }
 

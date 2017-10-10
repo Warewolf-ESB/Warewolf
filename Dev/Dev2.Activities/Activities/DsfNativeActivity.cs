@@ -12,7 +12,6 @@ using System;
 using System.Activities;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using Dev2;
@@ -47,17 +46,6 @@ using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 
 
-
-
-
-
-
-
-
-
-
-
-
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
     public abstract class DsfNativeActivity<T> : NativeActivity<T>, IDev2ActivityIOMapping, IDev2Activity, IEquatable<DsfNativeActivity<T>>
@@ -66,7 +54,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         [GeneralSettings("IsSimulationEnabled")]
         public bool IsSimulationEnabled { get; set; }
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public IDSFDataObject DataObject { get { return null; } set { value = null; } }
+        public IDSFDataObject DataObject { get => null; set => value = null; }
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public IDataListCompiler Compiler { get; set; }
         [JsonIgnore]
@@ -81,9 +69,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public SimulationMode SimulationMode { get; set; }
         public string ScenarioID { get; set; }
         protected Guid WorkSurfaceMappingId { get; set; }
-        /// <summary>
-        /// UniqueID is the InstanceID and MUST be a guid.
-        /// </summary>
         public string UniqueID { get; set; }
         [FindMissing]
         public string OnErrorVariable { get; set; }
@@ -146,8 +131,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             metadata.AddImplementationVariable(DataListExecutionID);
             metadata.AddDefaultExtensionProvider(() => new WorkflowInstanceInfo());
         }
-
-
 
         protected override void Execute(NativeActivityContext context)
         {
@@ -323,7 +306,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return DebugItem.EmptyList;
         }
 
-        public void DispatchDebugState(IDSFDataObject dataObject, StateType stateType, int update, DateTime? startTime = null, DateTime? endTime = null, bool decision = false)
+        public void DispatchDebugState(IDSFDataObject dataObject, StateType stateType, int update) => DispatchDebugState(dataObject, stateType, update, null, null, false);
+
+        public void DispatchDebugState(IDSFDataObject dataObject, StateType stateType, int update, DateTime? startTime) => DispatchDebugState(dataObject, stateType, update, startTime, null, false);
+
+        public void DispatchDebugState(IDSFDataObject dataObject, StateType stateType, int update, DateTime? startTime, DateTime? endTime) => DispatchDebugState(dataObject, stateType, update, startTime, endTime, false);
+
+        public void DispatchDebugState(IDSFDataObject dataObject, StateType stateType, int update, DateTime? startTime, DateTime? endTime, bool decision)
         {
             bool clearErrors = false;
             try
@@ -766,7 +755,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
             }
         }
-
        
         private static void SetPassResult(IDSFDataObject dataObject, bool assertPassed, IServiceTestOutput serviceTestOutput, IServiceTestStep stepToBeAsserted)
         {
@@ -872,14 +860,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     if (testResult.RunTestResult == RunResult.TestPassed)
                     {
                         msg = Messages.Test_PassedResult;
-                        if (opt.ArgumentCount > 2)
-                        {
-                            msg += ": " + output.Variable + " " + output.AssertOp + " " + output.From +" and "+output.To;
-                        }
-                        else
-                        {
-                            msg += ": " + output.Variable + " " + output.AssertOp + " " + output.Value;
-                        }
+                        msg += opt.ArgumentCount > 2 ? ": " + output.Variable + " " + output.AssertOp + " " + output.From + " and " + output.To : ": " + output.Variable + " " + output.AssertOp + " " + output.Value;
                     }
                     var hasError = testResult.RunTestResult == RunResult.TestFailed;
                     AddDebugAssertResultItem(new DebugItemServiceTestStaticDataParams(msg, hasError));
@@ -917,10 +898,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             DispatchDebugState(dataObject, before, update);
         }
+
         protected string GetServerName()
         {
             return _debugState?.Server;
         }
+
         protected void InitializeDebugState(StateType stateType, IDSFDataObject dataObject, Guid remoteID, bool hasError, string errorMessage)
         {
             Guid.TryParse(dataObject.ParentInstanceID, out Guid parentInstanceID);
@@ -947,13 +930,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             switch (dataObject.RemoteServiceType)
             {
                 case "DbService":
-                    IsService = true;
-                    break;
                 case "PluginService":
-                    IsService = true;
-                    break;
                 case "WebService":
                     IsService = true;
+                    break;
+                default:
                     break;
             }
 
@@ -981,7 +962,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 ErrorMessage = errorMessage,
                 EnvironmentID = dataObject.DebugEnvironmentId,
                 SessionID = dataObject.DebugSessionID
-            };                  
+            };
         }
 
         public virtual void UpdateDebugParentID(IDSFDataObject dataObject)
@@ -1026,7 +1007,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         Value = s
                     }).ToList();
         }
-
 
         public virtual enFindMissingType GetFindMissingType()
         {
@@ -1109,7 +1089,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 Dev2Logger.Error(e, GlobalConstants.WarewolfError);
             }
         }
-
     
         public IDebugState GetDebugState()
         {
@@ -1127,14 +1106,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             return new List<IActionableErrorInfo>();
         }
-
-        /// <summary>
-        /// Indicates whether the current object is equal to another object of the same type.
-        /// </summary>
-        /// <returns>
-        /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
-        /// </returns>
-        /// <param name="other">An object to compare with this object.</param>
+        
         public bool Equals(DsfNativeActivity<T> other)
         {
             if (ReferenceEquals(null, other))
@@ -1147,14 +1119,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             return string.Equals(UniqueID, other.UniqueID);
         }
-
-        /// <summary>
-        /// Determines whether the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>.
-        /// </summary>
-        /// <returns>
-        /// true if the specified object  is equal to the current object; otherwise, false.
-        /// </returns>
-        /// <param name="obj">The object to compare with the current object. </param>
+        
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj))
@@ -1171,13 +1136,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             return Equals((DsfNativeActivity<T>)obj);
         }
-
-        /// <summary>
-        /// Serves as a hash function for a particular type. 
-        /// </summary>
-        /// <returns>
-        /// A hash code for the current <see cref="T:System.Object"/>.
-        /// </returns>
+        
         public override int GetHashCode()
         {
             return UniqueID?.GetHashCode() ?? 0;

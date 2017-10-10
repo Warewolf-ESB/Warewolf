@@ -391,10 +391,6 @@ namespace Dev2.Activities.Designers.Tests.FindRecordsMultipleCriteria
 
             StringAssert.Contains(viewModel.Errors[4].Message, Warewolf.Resource.Errors.ErrorResource.FindRecordsToNotNullErrorTest);
             Verify_IsFocused(dtoModelItem6, viewModel.Errors[4].Do, "IsToFocused");
-
-
-
-
         }
         
         static void SetDataListString(FindRecordsMultipleCriteriaDesignerViewModel viewModel)

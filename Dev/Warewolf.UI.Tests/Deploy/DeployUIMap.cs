@@ -150,10 +150,8 @@ namespace Warewolf.UI.Tests.Deploy.DeployUIMapClasses
             Assert.IsTrue(UIMap.MainStudioWindow.ComboboxListItemAsLocalhost.Exists, "Remote Connection Integration option does not exist in Destination server combobox.");
             Mouse.Click(UIMap.MainStudioWindow.ComboboxListItemAsLocalhost, new Point(226, 13));
         }
-
-        [Given(@"I Enter ""(.*)"" Into Deploy Source Filter")]
+        
         [When(@"I Enter ""(.*)"" Into Deploy Source Filter")]
-        [Then(@"I Enter ""(.*)"" Into Deploy Source Filter")]
         public void Enter_DeployViewOnly_Into_Deploy_Source_Filter(string SearchTextboxText)
         {
             UIMap.WaitForSpinner(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerExplorer.ExplorerTree.LocalHost.Spinner);
@@ -238,7 +236,7 @@ namespace Warewolf.UI.Tests.Deploy.DeployUIMapClasses
             Click_Deploy_Tab_Deploy_Button();
         }
 
-        [When(@"Resources is visible on the tree")]
+        [Given(@"Resources is visible on the tree")]
         [Then(@"Resources is visible on the tree")]
         public void WhenResourcesIsVisibleOnTheTree()
         {
@@ -246,10 +244,8 @@ namespace Warewolf.UI.Tests.Deploy.DeployUIMapClasses
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerExplorer.ExplorerTree.SourceServerName.FirstExplorerTreeItem.Exists, "No items in the explorer after filtering with the name of a service that does exist and waiting for 1 minute (60000ms).");
         }
 
-
-        [Then(@"Deploy Button is enabled  ""(.*)""")]
-        [When(@"Deploy Button is enabled  ""(.*)""")]
         [Given(@"Deploy Button is enabled  ""(.*)""")]
+        [Then(@"Deploy Button is enabled  ""(.*)""")]
         public void ThenDeployButtonIsEnabled(string enabled)
         {
             var isEnabled = bool.Parse(enabled);
@@ -329,8 +325,6 @@ namespace Warewolf.UI.Tests.Deploy.DeployUIMapClasses
         }
 
         [When(@"I Select ""(.*)"" from the source tab")]
-        [Then(@"I Select ""(.*)"" from the source tab")]
-        [Given(@"I Select ""(.*)"" from the source tab")]
         public void WhenISelectFromTheSourceTab(string ServiceName)
         {
             Enter_DeployViewOnly_Into_Deploy_Source_Filter(ServiceName);
@@ -338,8 +332,6 @@ namespace Warewolf.UI.Tests.Deploy.DeployUIMapClasses
         }
 
         [When(@"I filter for ""(.*)"" on the source filter")]
-        [Then(@"I filter for ""(.*)"" on the source filter")]
-        [Given(@"I filter for ""(.*)"" on the source filter")]
         public void WhenIFilterForOnTheSourceFilter(string ServiceName)
         {
             Enter_DeployViewOnly_Into_Deploy_Source_Filter(ServiceName);

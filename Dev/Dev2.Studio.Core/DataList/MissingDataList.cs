@@ -90,17 +90,9 @@ namespace Dev2.Studio.Core.DataList
         {
             if (dataListItem.IsEditable)
             {
-                if (child != null)
-                {
-                    missingWorkflowParts.Add(
-                        IntellisenseFactory.CreateDataListValidationRecordsetPart(dataListItem.DisplayName,
-                            child.DisplayName, child.Description));
-                }
-                else
-                {
-                    missingWorkflowParts.Add(IntellisenseFactory.CreateDataListValidationRecordsetPart(dataListItem.DisplayName,
+                missingWorkflowParts.Add(child != null ? IntellisenseFactory.CreateDataListValidationRecordsetPart(dataListItem.DisplayName,
+                            child.DisplayName, child.Description) : IntellisenseFactory.CreateDataListValidationRecordsetPart(dataListItem.DisplayName,
                                     string.Empty, dataListItem.Description));
-                }
             }
         }
     }

@@ -24,7 +24,6 @@ using Dev2.Data.TO;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.Interfaces;
-using Dev2.Runtime;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Unlimited.Framework.Converters.Graph;
@@ -413,10 +412,6 @@ namespace Dev2.Services.Execution
                 catch (Exception e)
                 {
                     Dev2Logger.Error(e.Message, e, GlobalConstants.WarewolfError);
-                    // if use passed in empty input they only wanted the shape ;)
-                    if (input.Length > 0)
-                    {
-                    }
                 }
             }
         }

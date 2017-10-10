@@ -145,7 +145,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var human = new Human("Micky", "Mouse", new Food());
             var humanString = DataListUtil.ConvertModelToJson(human).ToString();
             var newWarewolfAtomResult = CommonFunctions.WarewolfEvalResult.NewWarewolfAtomResult(DataStorage.WarewolfAtom.NewDataString(humanString));
-            env.Setup(environment => environment.EvalForJson(It.IsAny<string>(), It.IsAny<bool>()))
+            env.Setup(environment => environment.EvalForJson(It.IsAny<string>()))
                 .Returns(newWarewolfAtomResult);
             mock.SetupGet(o => o.EsbChannel).Returns(esbChannel.Object);
 
@@ -170,7 +170,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //---------------Execute Test ----------------------
             activity.ExecuteMock(esbChannel.Object, mock.Object, string.Empty, string.Empty, out ErrorResultTO err);
             //---------------Test Result -----------------------
-            env.Verify(environment => environment.EvalForJson("[[@name]]", It.IsAny<bool>()));
+            env.Verify(environment => environment.EvalForJson("[[@name]]"));
             Assert.AreEqual(0, activity.MethodsToRun.Count);
         }
 
@@ -194,7 +194,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var human = new Human("Micky", "Mouse", new Food());
             var humanString = DataListUtil.ConvertModelToJson(human).ToString();
             var newWarewolfAtomResult = CommonFunctions.WarewolfEvalResult.NewWarewolfAtomResult(DataStorage.WarewolfAtom.NewDataString(humanString));
-            env.Setup(environment => environment.EvalForJson("[[@name]]", It.IsAny<bool>()))
+            env.Setup(environment => environment.EvalForJson("[[@name]]"))
                 .Returns(newWarewolfAtomResult);
 
             mock.SetupGet(o => o.EsbChannel).Returns(esbChannel.Object);
@@ -269,7 +269,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var human = new Human("Micky", "Mouse", new Food());
             var humanString = DataListUtil.ConvertModelToJson(human).ToString();
             var newWarewolfAtomResult = CommonFunctions.WarewolfEvalResult.NewWarewolfAtomResult(DataStorage.WarewolfAtom.NewDataString(humanString));
-            env.Setup(environment => environment.EvalForJson("[[@name]]", It.IsAny<bool>()))
+            env.Setup(environment => environment.EvalForJson("[[@name]]"))
                 .Returns(newWarewolfAtomResult);
 
             mock.SetupGet(o => o.EsbChannel).Returns(esbChannel.Object);
@@ -339,7 +339,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var human = new Human("Micky", "Mouse", new Food());
             var humanString = DataListUtil.ConvertModelToJson(human).ToString();
             var newWarewolfAtomResult = CommonFunctions.WarewolfEvalResult.NewWarewolfAtomResult(DataStorage.WarewolfAtom.NewDataString(humanString));
-            env.Setup(environment => environment.EvalForJson("[[@name]]", It.IsAny<bool>()))
+            env.Setup(environment => environment.EvalForJson("[[@name]]"))
                 .Returns(newWarewolfAtomResult);
 
             mock.SetupGet(o => o.EsbChannel).Returns(esbChannel.Object);
@@ -660,7 +660,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var humanString = DataListUtil.ConvertModelToJson(human).ToString();
             var newWarewolfAtomResult = CommonFunctions.WarewolfEvalResult
                 .NewWarewolfAtomResult(DataStorage.WarewolfAtom.NewDataString(humanString));
-            executionEnv.Setup(environment => environment.EvalForJson(It.IsAny<string>(), It.IsAny<bool>()))
+            executionEnv.Setup(environment => environment.EvalForJson(It.IsAny<string>()))
                .Returns(newWarewolfAtomResult);
             mock.SetupGet(o => o.EsbChannel).Returns(esbChannel.Object);
             mock.Setup(o => o.Environment).Returns(executionEnv.Object);
@@ -718,7 +718,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var humanString = DataListUtil.ConvertModelToJson(human).ToString();
             var newWarewolfAtomResult = CommonFunctions.WarewolfEvalResult
                 .NewWarewolfAtomResult(DataStorage.WarewolfAtom.NewDataString(humanString));
-            executionEnv.Setup(environment => environment.EvalForJson(It.IsAny<string>(), It.IsAny<bool>()))
+            executionEnv.Setup(environment => environment.EvalForJson(It.IsAny<string>()))
                .Returns(newWarewolfAtomResult);
             var johnResult = CommonFunctions.WarewolfEvalResult
                 .NewWarewolfAtomResult(DataStorage.WarewolfAtom.NewDataString("John"));
@@ -778,6 +778,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //---------------Test Result -----------------------
             Assert.AreEqual(enFindMissingType.DataGridActivity, activity.GetFindMissingType());
         }
+
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void BuildConstructorInputs_GivenConstructor_ShouldConstructorDebug()
@@ -798,7 +799,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                .Returns(newWarewolfAtomResult);
             var johnResult = CommonFunctions.WarewolfEvalResult
                 .NewWarewolfAtomResult(DataStorage.WarewolfAtom.NewDataString("John"));
-            executionEnv.Setup(environment => environment.Eval(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<bool>(), It.IsAny<bool>()))
+            executionEnv.Setup(environment => environment.Eval(It.IsAny<string>(), It.IsAny<int>()))
                 .Returns(johnResult);
             mock.SetupGet(o => o.EsbChannel).Returns(esbChannel.Object);
             mock.Setup(o => o.Environment).Returns(executionEnv.Object);
@@ -866,7 +867,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                .Returns(newWarewolfAtomResult);
             var johnResult = CommonFunctions.WarewolfEvalResult
                 .NewWarewolfAtomResult(DataStorage.WarewolfAtom.NewDataString(humanString));
-            executionEnv.Setup(environment => environment.Eval(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<bool>(), It.IsAny<bool>()))
+            executionEnv.Setup(environment => environment.Eval(It.IsAny<string>(), It.IsAny<int>()))
                 .Returns(johnResult);
             mock.SetupGet(o => o.EsbChannel).Returns(esbChannel.Object);
             mock.Setup(o => o.Environment).Returns(executionEnv.Object);
@@ -933,7 +934,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                .Returns(newWarewolfAtomResult);
             var johnResult = CommonFunctions.WarewolfEvalResult
                 .NewWarewolfAtomResult(DataStorage.WarewolfAtom.NewDataString("John"));
-            executionEnv.Setup(environment => environment.Eval(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<bool>(), It.IsAny<bool>()))
+            executionEnv.Setup(environment => environment.Eval(It.IsAny<string>(), It.IsAny<int>()))
                 .Returns(johnResult);
             mock.SetupGet(o => o.EsbChannel).Returns(esbChannel.Object);
             mock.Setup(o => o.Environment).Returns(executionEnv.Object);
@@ -1004,7 +1005,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                .Returns(newWarewolfAtomResult);
             var johnResult = CommonFunctions.WarewolfEvalResult
                 .NewWarewolfAtomResult(DataStorage.WarewolfAtom.NewDataString("John"));
-            executionEnv.Setup(environment => environment.Eval(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<bool>(), It.IsAny<bool>()))
+            executionEnv.Setup(environment => environment.Eval(It.IsAny<string>(), It.IsAny<int>()))
                 .Returns(johnResult);
             mock.SetupGet(o => o.EsbChannel).Returns(esbChannel.Object);
             mock.Setup(o => o.Environment).Returns(executionEnv.Object);
@@ -1161,7 +1162,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var foodJson = food.SerializeToJsonString(new KnownTypesBinder() { KnownTypes = new List<Type>() { typeof(Food) } });
             var newWarewolfAtomResult = CommonFunctions.WarewolfEvalResult
                 .NewWarewolfAtomResult(DataStorage.WarewolfAtom.NewDataString(foodJson));
-            executionEnv.Setup(environment => environment.EvalForJson(It.IsAny<string>(), It.IsAny<bool>()))
+            executionEnv.Setup(environment => environment.EvalForJson(It.IsAny<string>()))
                .Returns(newWarewolfAtomResult);
             var johnResult = CommonFunctions.WarewolfEvalResult
                 .NewWarewolfAtomResult(DataStorage.WarewolfAtom.NewDataString("John"));

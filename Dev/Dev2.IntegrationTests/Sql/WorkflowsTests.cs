@@ -8,14 +8,9 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System.IO;
 using System.Net;
-using System.Text;
-using Dev2.Activities;
-using Dev2.Common;
 using Dev2.Integration.Tests.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace Dev2.Integration.Tests.Sql

@@ -92,14 +92,7 @@ namespace Dev2.Runtime.ServiceModel
                 else
                 {
                     var msg = ex.Message;
-                    if (msg.IndexOf(Resources.ConnectionError, StringComparison.Ordinal) >= 0 || msg.IndexOf("Invalid URI:", StringComparison.Ordinal) >= 0)
-                    {
-                        result.ErrorMessage = ex.Message;
-                    }
-                    else
-                    {
-                        result.ErrorMessage = Resources.ConnectionError + ex.Message;
-                    }
+                    result.ErrorMessage = msg.IndexOf(Resources.ConnectionError, StringComparison.Ordinal) >= 0 || msg.IndexOf("Invalid URI:", StringComparison.Ordinal) >= 0 ? ex.Message : Resources.ConnectionError + ex.Message;
                 }
             }
 

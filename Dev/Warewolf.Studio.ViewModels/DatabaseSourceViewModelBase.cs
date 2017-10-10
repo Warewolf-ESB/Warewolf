@@ -432,9 +432,6 @@ namespace Warewolf.Studio.ViewModels
 
         private void SetupHeaderTextFromExisting()
         {
-            if (_warewolfserverName != null)
-            {
-            }
             HeaderText = (DbSource == null ? ResourceName : DbSource.Name).Trim();
 
             Header = DbSource == null ? ResourceName : DbSource.Name;

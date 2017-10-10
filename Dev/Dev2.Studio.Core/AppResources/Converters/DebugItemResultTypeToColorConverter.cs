@@ -33,7 +33,8 @@ namespace Dev2.Studio.Core.AppResources.Converters
 
                     case DebugItemResultType.Value:
                         return Application.Current.Resources["DebugItemValueBrush"];
-
+                    case DebugItemResultType.Label:
+                        break;
                     default: // DebugItemResultType.Label:
                         return Application.Current.Resources["DebugItemLabelBrush"];
                 }

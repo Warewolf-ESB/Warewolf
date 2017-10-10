@@ -16,12 +16,15 @@ using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.ServiceModel.Data
 {
-    // BUG 9626 - 2013.06.11 - TWR : refactored
     public static class RecordsetListHelper
     {
         #region ToRecordsetList
 
-        public static RecordsetList ToRecordsetList(this IOutputDescription outputDescription, RecordsetList currentList = null, string defaultFieldName = "")
+        public static RecordsetList ToRecordsetList(this IOutputDescription outputDescription) => outputDescription.ToRecordsetList(null, "");
+
+        public static RecordsetList ToRecordsetList(this IOutputDescription outputDescription, RecordsetList currentList) => outputDescription.ToRecordsetList(currentList, "");
+
+        public static RecordsetList ToRecordsetList(this IOutputDescription outputDescription, RecordsetList currentList, string defaultFieldName)
         {
             if(outputDescription?.DataSourceShapes == null || outputDescription.DataSourceShapes.Count == 0)
             {

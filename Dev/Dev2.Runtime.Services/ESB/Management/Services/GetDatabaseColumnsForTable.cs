@@ -52,7 +52,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         /// <returns></returns>
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            if(values == null)
+            if (values == null)
             {
                 throw new InvalidDataContractException(ErrorResource.NoParameter);
             }
@@ -65,26 +65,26 @@ namespace Dev2.Runtime.ESB.Management.Services
                 database = tmp.ToString();
             }
             values.TryGetValue("TableName", out tmp);
-            if(tmp != null)
+            if (tmp != null)
             {
                 tableName = tmp.ToString();
             }
 
             values.TryGetValue("Schema", out tmp);
-            if(tmp != null)
+            if (tmp != null)
             {
                 schema = tmp.ToString();
             }
 
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
 
-            if(string.IsNullOrEmpty(database))
+            if (string.IsNullOrEmpty(database))
             {
                 var res = new DbColumnList("No database set.");
                 Dev2Logger.Debug("No database set.", GlobalConstants.WarewolfDebug);
                 return serializer.SerializeToBuilder(res);
             }
-            if(string.IsNullOrEmpty(tableName))
+            if (string.IsNullOrEmpty(tableName))
             {
                 var res = new DbColumnList("No table name set.");
                 Dev2Logger.Debug("No table name set.", GlobalConstants.WarewolfDebug);
@@ -99,24 +99,24 @@ namespace Dev2.Runtime.ESB.Management.Services
                 switch (dbSource.ServerType)
                 {
                     case enSourceType.MySqlDatabase:
-                    {
-                        using (var connection = new MySqlConnection(runtTimedbSource.ConnectionString))
                         {
-                            // Connect to the database then retrieve the schema information.
-                            connection.Open();
-                            var sql = @"select  * from  " + tableName.Trim('"').Replace("[","").Replace("]","") + " Limit 1 ";
-
-                                                     using (var sqlcmd = new MySqlCommand(sql, connection))
+                            using (var connection = new MySqlConnection(runtTimedbSource.ConnectionString))
                             {
-                                // force it closed so we just get the proper schema ;)
-                                using (var sdr = sqlcmd.ExecuteReader(CommandBehavior.CloseConnection))
+                                // Connect to the database then retrieve the schema information.
+                                connection.Open();
+                                var sql = @"select  * from  " + tableName.Trim('"').Replace("[", "").Replace("]", "") + " Limit 1 ";
+
+                                using (var sqlcmd = new MySqlCommand(sql, connection))
                                 {
-                                    columnInfo = sdr.GetSchemaTable();
+                                    // force it closed so we just get the proper schema ;)
+                                    using (var sdr = sqlcmd.ExecuteReader(CommandBehavior.CloseConnection))
+                                    {
+                                        columnInfo = sdr.GetSchemaTable();
+                                    }
                                 }
                             }
+                            break;
                         }
-                        break;
-                    }
                     case enSourceType.Oracle:
                         {
                             using (var connection = new OracleConnection(runtTimedbSource.ConnectionString))
@@ -185,9 +185,9 @@ namespace Dev2.Runtime.ESB.Management.Services
 
                 var dbColumns = new DbColumnList();
 
-                if(columnInfo != null)
+                if (columnInfo != null)
                 {
-                    foreach(DataRow row in columnInfo.Rows)
+                    foreach (DataRow row in columnInfo.Rows)
                     {
                         var columnName = row["ColumnName"] as string;
                         var isNullable = row["AllowDBNull"] is bool && (bool)row["AllowDBNull"];
@@ -207,7 +207,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 }
                 return serializer.SerializeToBuilder(dbColumns);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
                 var res = new DbColumnList(ex);

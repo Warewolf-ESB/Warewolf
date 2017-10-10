@@ -31,24 +31,15 @@ using Warewolf.Resource.Errors;
 using Warewolf.Storage.Interfaces;
 
 
-
-
-
-
-
-
-
-
-
 namespace Dev2.Activities.RabbitMQ.Consume
 {
     [ToolDescriptorInfo("RabbitMq", "RabbitMQ Consume", ToolType.Native, "406ea660-64cf-4c82-b6f0-42d48172a799", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Utility", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Utility_Rabbit_MQ_Consume")]
     public class DsfConsumeRabbitMQActivity : DsfBaseActivity
     {
-        public List<string> _messages;
-        public string _result = "Success";
-        public ushort _prefetch;
-        public int _timeOut;
+        internal List<string> _messages;
+        private string _result = "Success";
+        private ushort _prefetch;
+        private int _timeOut;
         public bool IsObject { get; set; }
         [FindMissing]
         public string ObjectName { get; set; }

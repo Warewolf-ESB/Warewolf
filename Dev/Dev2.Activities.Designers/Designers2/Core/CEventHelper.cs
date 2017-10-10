@@ -8,6 +8,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using Dev2.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,8 +22,7 @@ namespace Dev2.Activities.Designers2.Core
         static readonly Dictionary<Type, List<FieldInfo>> DicEventFieldInfos = new Dictionary<Type, List<FieldInfo>>();
 
         static BindingFlags AllBindings => BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static;
-
-        //--------------------------------------------------------------------------------
+        
         static IEnumerable<FieldInfo> GetTypeEventFields(Type t)
         {
             if (DicEventFieldInfos.ContainsKey(t))
@@ -35,8 +35,7 @@ namespace Dev2.Activities.Designers2.Core
             DicEventFieldInfos.Add(t, lst);
             return lst;
         }
-
-        //--------------------------------------------------------------------------------
+        
         static void BuildEventFields(Type t, List<FieldInfo> lst)
         {
             // Type.GetEvent(s) gets all Events for the type AND it's ancestors
@@ -52,20 +51,13 @@ namespace Dev2.Activities.Designers2.Core
                          select dt.GetField(ei.Name, AllBindings)
                          into fi where fi != null select fi);
         }
-
-
-
-        //--------------------------------------------------------------------------------
+        
         public static void RemoveAllEventHandlers(object obj) { RemoveEventHandler(obj, ""); }
-
-        //--------------------------------------------------------------------------------
+        
         public static void RemoveEventHandler(object obj, string eventName)
         {
             try
             {
-
-
-
                 if (obj == null)
                 {
                     return;
@@ -78,11 +70,7 @@ namespace Dev2.Activities.Designers2.Core
                 {
                     // After hours and hours of research and trial and error, it turns out that
                     // STATIC Events have to be treated differently from INSTANCE Events...
-                    if (fi.IsStatic)
-                    {
-
-                    }
-                    else
+                    if (!fi.IsStatic)
                     {
                         // INSTANCE EVENT
                         var ei = t.GetEvent(fi.Name, AllBindings);
@@ -99,13 +87,10 @@ namespace Dev2.Activities.Designers2.Core
                         }
                     }
                 }
-            }
-                
-            catch
-                
+            }                
+            catch (Exception e)
             {
-
-
+                Dev2Logger.Warn(e.Message, "Warewolf Warn");
             }
         }
 

@@ -115,6 +115,8 @@ namespace Warewolf.Testing
             return new List<IResource>();
         }
 
+        public Task<IExplorerItem> LoadExplorer() => LoadExplorer(false);
+
         public Task<IExplorerItem> LoadExplorer(bool reloadCatalogue=false)
         {
             return Task.FromResult(CreateExplorerItems());

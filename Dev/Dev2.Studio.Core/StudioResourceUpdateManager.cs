@@ -36,7 +36,8 @@ namespace Dev2.Studio.Core
             UpdateManagerProxy = new UpdateProxy(controllerFactory, environmentConnection);
         }
 
-        public void FireServerSaved(Guid savedServerID, bool isDeleted = false)
+        public void FireServerSaved(Guid savedServerID) => FireServerSaved(savedServerID, false);
+        public void FireServerSaved(Guid savedServerID, bool isDeleted)
         {
             if (ServerSaved != null)
             {

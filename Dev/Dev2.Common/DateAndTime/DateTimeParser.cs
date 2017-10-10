@@ -121,14 +121,7 @@ namespace Dev2.Common.DateAndTime
             string dev2Format = "";
             foreach (IDateTimeFormatPartTO part in dotNetFormatParts)
             {
-                if (part.Isliteral)
-                {
-                    dev2Format += "'" + part.Value + "'";
-                }
-                else
-                {
-                    dev2Format += part.Value;
-                }
+                dev2Format += part.Isliteral ? "'" + part.Value + "'" : part.Value;
             }
             return dev2Format;
         }
@@ -218,9 +211,7 @@ namespace Dev2.Common.DateAndTime
 
             return nothingDied;
         }
-        /// <summary>
-        ///     Parses the given data using the specified format
-        /// </summary>
+
         private bool TryParse(string data, string inputFormat, bool parseAsTime, out IDateTimeResultTO result,
             out string error)
         {

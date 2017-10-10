@@ -37,7 +37,13 @@ namespace Dev2
         }
 
         public GatherSystemInformationTO(enTypeOfSystemInformationToGather enTypeOfSystemInformation, string result,
-            int indexNumber, bool inserted = false)
+            int indexNumber)
+            : this(enTypeOfSystemInformation, result, indexNumber, false)
+        {
+        }
+
+        public GatherSystemInformationTO(enTypeOfSystemInformationToGather enTypeOfSystemInformation, string result,
+            int indexNumber, bool inserted)
         {
             Inserted = inserted;
             EnTypeOfSystemInformation = enTypeOfSystemInformation;
@@ -175,6 +181,8 @@ namespace Dev2
                     break;
                 case "FieldValue":
                     break;
+                default:
+                    break;
             }
             return Validate(propertyName, ruleSet);
         }
@@ -208,7 +216,7 @@ namespace Dev2
         
         public string Error { get; private set; }
 
-        
+
 
         #endregion
     }

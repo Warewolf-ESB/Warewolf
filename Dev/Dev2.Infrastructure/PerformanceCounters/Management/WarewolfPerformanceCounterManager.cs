@@ -1,17 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Monitoring;
 using Dev2.PerformanceCounters.Counters;
 
-
-
 namespace Dev2.PerformanceCounters.Management
 {
-    
-
     public class WarewolfPerformanceCounterManager : IWarewolfPerformanceCounterLocater,IPerformanceCounterFactory,IPerformanceCounterRepository
     {
         private IList<IPerformanceCounter> _counters;
@@ -74,7 +69,7 @@ namespace Dev2.PerformanceCounters.Management
         {
             if (GetCounter(resourceId, type) == EmptyCounter)
             {
-                IResourcePerformanceCounter counter;
+                IResourcePerformanceCounter counter = new EmptyCounter();
                 switch (type)
                 {
                     case WarewolfPerfCounterType.ExecutionErrors:
@@ -89,8 +84,11 @@ namespace Dev2.PerformanceCounters.Management
                     case WarewolfPerfCounterType.RequestsPerSecond:
                         counter = new WarewolfRequestsPerSecondPerformanceCounterByResource(resourceId, name);
                         break;
+                    case WarewolfPerfCounterType.ServicesNotFound:
+                    case WarewolfPerfCounterType.NotAuthorisedErrors:
+                        break;
                     default:
-                        return new EmptyCounter();
+                        return counter;
                 }
 
                 _resourceCounters.Add(counter);

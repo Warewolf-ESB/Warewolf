@@ -17,14 +17,16 @@ namespace Dev2.Studio.Core.ViewModels.Base
     public class BaseConductor<T> : Conductor<T>.Collection.OneActive, IDisposable
         where T : IScreen
     {
-        public readonly IEventAggregator EventPublisher;
+        private readonly IEventAggregator _eventPublisher;
         private bool _disposed;
+
+        public IEventAggregator EventPublisher => _eventPublisher;
 
         protected BaseConductor(IEventAggregator eventPublisher)
         {
             VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
-            EventPublisher = eventPublisher;
-            EventPublisher.Subscribe(this);
+            _eventPublisher = eventPublisher;
+            _eventPublisher.Subscribe(this);
         }
 
         protected virtual void Dispose(bool disposing)

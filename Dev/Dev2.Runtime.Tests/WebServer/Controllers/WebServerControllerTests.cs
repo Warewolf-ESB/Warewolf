@@ -209,6 +209,64 @@ namespace Dev2.Tests.Runtime.WebServer.Controllers
                 case WebServerRequestType.WebGetView:
                     controller.GetView(WebSite, url);
                     break;
+                case WebServerRequestType.Unknown:
+                    break;
+                case WebServerRequestType.WebGetDecisions:
+                    break;
+                case WebServerRequestType.WebGetDialogs:
+                    break;
+                case WebServerRequestType.WebGetServices:
+                    break;
+                case WebServerRequestType.WebGetSources:
+                    break;
+                case WebServerRequestType.WebGetSwitch:
+                    break;
+                case WebServerRequestType.WebGet:
+                    break;
+                case WebServerRequestType.WebInvokeService:
+                    break;
+                case WebServerRequestType.WebExecuteService:
+                    break;
+                case WebServerRequestType.WebExecuteSecureWorkflow:
+                    break;
+                case WebServerRequestType.WebExecutePublicWorkflow:
+                    break;
+                case WebServerRequestType.WebExecuteGetLogFile:
+                    break;
+                case WebServerRequestType.WebExecuteGetRootLevelApisJson:
+                    break;
+                case WebServerRequestType.WebExecuteGetApisJsonForFolder:
+                    break;
+                case WebServerRequestType.WebBookmarkWorkflow:
+                    break;
+                case WebServerRequestType.HubConnect:
+                    break;
+                case WebServerRequestType.EsbOnConnected:
+                    break;
+                case WebServerRequestType.EsbOnDisconnected:
+                    break;
+                case WebServerRequestType.EsbOnReconnected:
+                    break;
+                case WebServerRequestType.EsbAddDebugWriter:
+                    break;
+                case WebServerRequestType.EsbFetchExecutePayloadFragment:
+                    break;
+                case WebServerRequestType.EsbExecuteCommand:
+                    break;
+                case WebServerRequestType.EsbAddItemMessage:
+                    break;
+                case WebServerRequestType.EsbSendMemo:
+                    break;
+                case WebServerRequestType.EsbFetchResourcesAffectedMemo:
+                    break;
+                case WebServerRequestType.EsbSendDebugState:
+                    break;
+                case WebServerRequestType.EsbWrite:
+                    break;
+                case WebServerRequestType.ResourcesSendMemo:
+                    break;
+                case WebServerRequestType.WebExecuteInternalService:
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException("requestType");
             }

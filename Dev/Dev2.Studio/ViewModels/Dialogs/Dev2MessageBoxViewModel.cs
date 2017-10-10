@@ -10,7 +10,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Windows;
 using System.Xml.Linq;
@@ -227,14 +226,7 @@ namespace Dev2.Studio.ViewModels.Dialogs
 
             // Check if there an option for the key
             Tuple<bool, MessageBoxResult> result;
-            if (_dontShowAgainOptions != null && _dontShowAgainOptions.TryGetValue(dontShowAgainKey, out MessageBoxResult tmp))
-            {
-                result = new Tuple<bool, MessageBoxResult>(true, tmp);
-            }
-            else
-            {
-                result = new Tuple<bool, MessageBoxResult>(false, MessageBoxResult.None);
-            }
+            result = _dontShowAgainOptions != null && _dontShowAgainOptions.TryGetValue(dontShowAgainKey, out MessageBoxResult tmp) ? new Tuple<bool, MessageBoxResult>(true, tmp) : new Tuple<bool, MessageBoxResult>(false, MessageBoxResult.None);
 
             return result;
         }
@@ -244,7 +236,7 @@ namespace Dev2.Studio.ViewModels.Dialogs
         {
             // Claculate the appropriate default result
             var defaultResult = MessageBoxResult.OK;
-            switch(button)
+            switch (button)
             {
                 case MessageBoxButton.OK:
                 case MessageBoxButton.OKCancel:
@@ -253,6 +245,8 @@ namespace Dev2.Studio.ViewModels.Dialogs
                 case MessageBoxButton.YesNo:
                 case MessageBoxButton.YesNoCancel:
                     defaultResult = MessageBoxResult.Yes;
+                    break;
+                default:
                     break;
             }
 

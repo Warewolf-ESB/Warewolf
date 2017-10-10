@@ -11,7 +11,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Dev2.Common.Interfaces.Explorer;
@@ -55,9 +54,15 @@ namespace Dev2.Studio.Interfaces
         Action SelectAll { get; set; }
         ObservableCollection<IExplorerItemViewModel> UnfilteredChildren { get; set; }
 
-        Task<bool> Load(bool isDeploy = false,bool reloadCatalogue = false);
+        Task<bool> Load();
 
-        Task<bool> LoadDialog(string selectedId, bool b = false, bool reloadCatalogue = false);
+        Task<bool> Load(bool isDeploy);
+
+        Task<bool> Load(bool isDeploy, bool reloadCatalogue);
+
+        Task<bool> LoadDialog(string selectedId);
+
+        Task<bool> LoadDialog(string selectedId, bool b, bool reloadCatalogue);
 
         Task<bool> LoadDialog(Guid selectedPath);
         IExplorerTreeItem FindByPath(string path);

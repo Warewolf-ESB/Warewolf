@@ -37,9 +37,9 @@ namespace Dev2.Activities.Designers2.ReadFolder
             ValidateInputPath();
         }
 
-        bool IsFilesAndFoldersSelected { set { SetProperty(value); } get { return GetProperty<bool>(); } }
-        bool IsFoldersSelected { set { SetProperty(value); } get { return GetProperty<bool>(); } }
-        bool IsFilesSelected { set { SetProperty(value); } get { return GetProperty<bool>(); } }
+        bool IsFilesAndFoldersSelected => GetProperty<bool>();
+        bool IsFoldersSelected => GetProperty<bool>();
+        bool IsFilesSelected { set => SetProperty(value); get => GetProperty<bool>(); }
 
         public override void UpdateHelpDescriptor(string helpText)
         {

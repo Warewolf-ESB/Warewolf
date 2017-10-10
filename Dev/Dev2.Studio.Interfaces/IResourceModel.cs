@@ -44,7 +44,8 @@ namespace Dev2.Studio.Interfaces
         List<string> TagList { get; }
         string Tags { get; set; }
         string this[string columnName] { get; }
-        StringBuilder ToServiceDefinition(bool prepairForDeployment = false);
+        StringBuilder ToServiceDefinition();
+        StringBuilder ToServiceDefinition(bool prepairForDeployment);
         string UnitTestTargetWorkflowService { get; set; }
         string DataList { get; set; }
         bool IsDatabaseService { get; set; }
