@@ -17,12 +17,17 @@ namespace Dev2.Studio.Core.Messages
     {
         IEnumerable<string> _selectedFiles;
 
-        public FileChooserMessage(IEnumerable<string> selectedFiles = null)
+        public FileChooserMessage()
+            : this(null)
+        {
+        }
+
+        public FileChooserMessage(IEnumerable<string> selectedFiles)
         {
             _selectedFiles = selectedFiles;
         }
 
-        public IEnumerable<string> SelectedFiles { get { return _selectedFiles; } set { OnPropertyChanged(ref _selectedFiles, value); } }
+        public IEnumerable<string> SelectedFiles { get => _selectedFiles; set => OnPropertyChanged(ref _selectedFiles, value); }
         public string Filter { get; set; }
     }
 }

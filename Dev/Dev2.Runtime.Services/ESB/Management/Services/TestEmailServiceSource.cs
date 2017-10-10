@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Net.Mail;
 using System.Text;
 using Dev2.Common;
@@ -61,8 +60,6 @@ namespace Dev2.Runtime.ESB.Management.Services
                     msg.HasError = false;
                     msg.Message = new StringBuilder( e.Message);
                     return serializer.SerializeToBuilder(msg);
-                    //msg.HasError = true;
-                    //msg.Message = new StringBuilder(e.Message);
                 }
             }
             catch (Exception err)

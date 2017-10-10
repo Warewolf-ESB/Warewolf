@@ -244,14 +244,7 @@ namespace Unlimited.Framework.Converters.Graph.Ouput
 
             string key;
 
-            if (parts[0].Option.IsScalar)
-            {
-                key = parts[0].Option.Field;
-            }
-            else
-            {
-                key = parts[0].Option.Recordset + "()";
-            }
+            key = parts[0].Option.IsScalar ? parts[0].Option.Field : parts[0].Option.Recordset + "()";
 
             return key;
         }

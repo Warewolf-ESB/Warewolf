@@ -387,10 +387,6 @@ namespace Dev2.Activities.Designers2.Core
             {
                 return _generateOutputArea;
             }
-            set
-            {
-                
-            }
         }
         public IOutputDescription Description { get; set; }
         public IGenerateInputArea InputArea
@@ -398,10 +394,6 @@ namespace Dev2.Activities.Designers2.Core
             get
             {
                 return _generateInputArea;
-            }
-            set
-            {
-                
             }
         }
         public bool PasteResponseVisible

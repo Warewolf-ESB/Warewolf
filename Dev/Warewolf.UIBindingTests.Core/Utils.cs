@@ -5,7 +5,6 @@ using Dev2.Common.Interfaces;
 using Microsoft.Practices.Prism.Mvvm;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
-using Warewolf.Studio.Themes.Luna;
 using Warewolf.Studio.ViewModels;
 
 

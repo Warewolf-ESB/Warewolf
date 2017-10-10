@@ -10,7 +10,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -34,32 +33,19 @@ namespace Dev2.PathOperations
 
         private static IList<Type> _endPoints;
         private static readonly object EndPointsLock = new object();
-        // used to check what type services what
         private static IList<IActivityIOOperationsEndPoint> _referenceCheckers;
 
-        /// <summary>
-        /// Return an IActivityIOPath based upont the path string
-        /// </summary>
-        /// <param name="path">The path.</param>
-        /// <param name="user">The user.</param>
-        /// <param name="pass">The pass.</param>
-        /// <param name="privateKeyFile">If private key file is required. This is the path</param>
-        /// <returns></returns>
-        public static IActivityIOPath CreatePathFromString(string path, string user, string pass, string privateKeyFile = "")
+        public static IActivityIOPath CreatePathFromString(string path, string user, string pass) => CreatePathFromString(path, user, pass, "");
+
+
+        public static IActivityIOPath CreatePathFromString(string path, string user, string pass, string privateKeyFile)
         {
             return CreatePathFromString(path, user, pass, false, privateKeyFile);
         }
 
-        /// <summary>
-        /// Return an IActivityIOPath based upont the path string
-        /// </summary>
-        /// <param name="path">The path.</param>
-        /// <param name="user">The user.</param>
-        /// <param name="pass">The pass.</param>
-        /// <param name="isNotCertVerifiable">if set to <c>true</c> [is not cert verifiable].</param>
-        /// <param name="privateKeyFile">If private key file is required. This is the path</param>
-        /// <returns></returns>
-        public static IActivityIOPath CreatePathFromString(string path, string user, string pass, bool isNotCertVerifiable, string privateKeyFile = "")
+        public static IActivityIOPath CreatePathFromString(string path, string user, string pass, bool isNotCertVerifiable) => CreatePathFromString(path, user, pass, isNotCertVerifiable, "");
+        
+        public static IActivityIOPath CreatePathFromString(string path, string user, string pass, bool isNotCertVerifiable, string privateKeyFile)
         {
             VerifyArgument.IsNotNull("path", path);
             enActivityIOPathType type = Dev2ActivityIOPathUtils.ExtractPathType(path);
@@ -76,25 +62,13 @@ namespace Dev2.PathOperations
             return new Dev2ActivityIOPath(type, path, user, pass, isNotCertVerifiable, privateKeyFile);
         }
 
+        public static IActivityIOPath CreatePathFromString(string path, bool isNotCertVerifiable) => CreatePathFromString(path, isNotCertVerifiable, "");
 
-        /// <summary>
-        /// Return an IActivityIOPath based upont the path string
-        /// </summary>
-        /// <param name="path"></param>
-        /// <param name="isNotCertVerifiable"></param>
-        /// <param name="privateKeyFile">If private key file is required. This is the path</param>
-        /// <returns></returns>
-    
-        public static IActivityIOPath CreatePathFromString(string path, bool isNotCertVerifiable, string privateKeyFile = "")
+        public static IActivityIOPath CreatePathFromString(string path, bool isNotCertVerifiable, string privateKeyFile)
         {
             return CreatePathFromString(path, string.Empty, string.Empty, isNotCertVerifiable, privateKeyFile);
         }
-
-        /// <summary>
-        /// Return the appropriate operation end point based upon the IOPath type
-        /// </summary>
-        /// <param name="target"></param>
-        /// <returns></returns>
+        
         public static IActivityIOOperationsEndPoint CreateOperationEndPointFromIOPath(IActivityIOPath target)
         {
             lock(EndPointsLock)
@@ -145,47 +119,29 @@ namespace Dev2.PathOperations
             return result;
         }
 
-        /// <summary>
-        /// Create an operations broker object
-        /// </summary>
-        /// <returns></returns>
         public static IActivityOperationsBroker CreateOperationsBroker()
         {
             return new Dev2ActivityIOBroker();
-        } 
-        /// <summary>
-        /// Create an operations broker object
-        /// </summary>
-        /// <returns></returns>
+        }
     
         public static IActivityOperationsBroker CreateOperationsBroker(IFile file, ICommon common)
         {
             return new Dev2ActivityIOBroker(file, common);
         }
-
-        /// <summary>
-        /// Create an PutRawOperationTo object
-        /// </summary>
-        /// <returns></returns>
+        
         public static Dev2PutRawOperationTO CreatePutRawOperationTO(WriteType writeType, string contents)
         {
             return new Dev2PutRawOperationTO(writeType, contents);
         }
-
-        /// <summary>
-        /// Create an UnZipOperationTO object
-        /// </summary>
-        /// <returns></returns>
+        
         public static Dev2UnZipOperationTO CreateUnzipTO(string passwd, bool overwrite)
         {
             return new Dev2UnZipOperationTO(passwd, overwrite);
         }
 
-        /// <summary>
-        /// Create an ZipOperationTO object
-        /// </summary>
-        /// <returns></returns>
-        public static Dev2ZipOperationTO CreateZipTO(string ratio, string passwd, string name, bool overwrite = false)
+        public static Dev2ZipOperationTO CreateZipTO(string ratio, string passwd, string name) => CreateZipTO(ratio, passwd, name, false);
+
+        public static Dev2ZipOperationTO CreateZipTO(string ratio, string passwd, string name, bool overwrite)
         {
             return new Dev2ZipOperationTO(ratio, passwd, name, overwrite);
         }

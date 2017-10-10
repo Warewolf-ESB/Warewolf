@@ -180,16 +180,9 @@ namespace Dev2.Activities
         {
 
             SqlBulkCopy sqlBulkCopy;
-            if(string.IsNullOrEmpty(BatchSize) && string.IsNullOrEmpty(Timeout))
-            {
-                sqlBulkCopy = new SqlBulkCopy(runtimeDatabase.ConnectionString, currentOptions) { DestinationTableName = TableName };
-            }
-            else
-            {
-                sqlBulkCopy = SetupSqlBulkCopy(batchItr, parametersIteratorCollection, timeoutItr, runtimeDatabase, currentOptions);
-            }
-            
-            if(sqlBulkCopy != null)
+            sqlBulkCopy = string.IsNullOrEmpty(BatchSize) && string.IsNullOrEmpty(Timeout) ? new SqlBulkCopy(runtimeDatabase.ConnectionString, currentOptions) { DestinationTableName = TableName } : SetupSqlBulkCopy(batchItr, parametersIteratorCollection, timeoutItr, runtimeDatabase, currentOptions);
+
+            if (sqlBulkCopy != null)
             {
                 var dataTableToInsert = BuildDataTableToInsert();
                

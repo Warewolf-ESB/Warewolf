@@ -1,6 +1,4 @@
-﻿using System.Threading;
-
-namespace Dev2.Runtime
+﻿namespace Dev2.Runtime
 {
     public interface IExecutionManager
     {

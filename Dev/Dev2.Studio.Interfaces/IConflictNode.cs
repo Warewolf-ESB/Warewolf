@@ -11,5 +11,6 @@ namespace Dev2.Studio.Interfaces
         ModelItem CurrentFlowStep { get; set; }
         bool HasConflict { get; set; }
         Point NodeLocation { get; set; }
+        int TreeIndex { get; set; }
     }
 }

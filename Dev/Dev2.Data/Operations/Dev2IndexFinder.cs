@@ -40,6 +40,8 @@ namespace Dev2.Data.Operations
                 case "All Occurrences":
                     occurrence = enIndexFinderOccurrence.AllOccurrences;
                     break;
+                default:
+                    break;
             }
 
             switch (direction)
@@ -50,6 +52,8 @@ namespace Dev2.Data.Operations
 
                 case "Right to Left":
                     dir = enIndexFinderDirection.RightToLeft;
+                    break;
+                default:
                     break;
             }
 
@@ -77,16 +81,9 @@ namespace Dev2.Data.Operations
                 int firstIndex = stringToSearchIn.IndexOf(charsToSearchFor, startIndex, comparisonType);
                 int lastIndex = stringToSearchIn.LastIndexOf(charsToSearchFor, stringToSearchIn.Length - 1, comparisonType);
 
-                if(direction == enIndexFinderDirection.RightToLeft)
-                {
-                    result = RightToLeftIndexSearch(occurrence, firstIndex, lastIndex, stringToSearchIn, charsToSearchFor,
+                result = direction == enIndexFinderDirection.RightToLeft ? RightToLeftIndexSearch(occurrence, firstIndex, lastIndex, stringToSearchIn, charsToSearchFor,
+                                                    comparisonType) : LeftToRightIndexSearch(occurrence, firstIndex, lastIndex, stringToSearchIn, charsToSearchFor,
                                                     comparisonType);
-                }
-                else
-                {
-                    result = LeftToRightIndexSearch(occurrence, firstIndex, lastIndex, stringToSearchIn, charsToSearchFor,
-                                                    comparisonType);
-                }
 
                 #endregion
             }

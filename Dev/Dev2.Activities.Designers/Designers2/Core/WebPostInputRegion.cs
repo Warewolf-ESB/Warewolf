@@ -128,14 +128,12 @@ namespace Dev2.Activities.Designers2.Core
 
         public IToolRegion CloneRegion()
         {
-            //var ser = new Dev2JsonSerializer();
-            //return ser.Deserialize<IToolRegion>(ser.SerializeToBuilder(this));
             var headers2 = new ObservableCollection<INameValue>();
             foreach (var nameValue in Headers)
             {
                 headers2.Add(new NameValue(nameValue.Name, nameValue.Value));
             }
-            return new WebPostInputRegionClone()
+            return new WebPostInputRegionClone
             {
                 Headers = headers2,
                 PostData = PostData,

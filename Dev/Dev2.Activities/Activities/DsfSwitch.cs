@@ -11,6 +11,7 @@ using Dev2.Interfaces;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Storage.Interfaces;
 using Dev2.Comparer;
+using Dev2.Common;
 
 namespace Dev2.Activities
 {
@@ -143,11 +144,9 @@ namespace Dev2.Activities
                     }
                 }
             }
-            
-            catch
-            
+            catch (Exception e)
             {
-
+                Dev2Logger.Warn(e.Message, "Warewolf Warn");
             }
         }
 
@@ -170,11 +169,10 @@ namespace Dev2.Activities
                     }
                 }
             }
-            
-            catch
-            
-            {
 
+            catch (Exception e)
+            {
+                Dev2Logger.Warn(e.Message, "Warewolf Warn");
             }
         }
 

@@ -159,8 +159,10 @@ namespace Dev2.Services.Sql
             return result;
         }
 
-        public void FetchStoredProcedures(Func<IDbCommand, List<IDbDataParameter>, string, string, bool> procedureProcessor, Func<IDbCommand, List<IDbDataParameter>, string, string, bool> functionProcessor, bool continueOnProcessorException = false,
-            string dbName = "")
+        public void FetchStoredProcedures(Func<IDbCommand, List<IDbDataParameter>, string, string, bool> procedureProcessor, Func<IDbCommand, List<IDbDataParameter>, string, string, bool> functionProcessor) => FetchStoredProcedures(procedureProcessor, functionProcessor, false, "");
+
+        public void FetchStoredProcedures(Func<IDbCommand, List<IDbDataParameter>, string, string, bool> procedureProcessor, Func<IDbCommand, List<IDbDataParameter>, string, string, bool> functionProcessor, bool continueOnProcessorException,
+            string dbName)
         {
             VerifyArgument.IsNotNull(nameof(procedureProcessor), procedureProcessor);
             VerifyArgument.IsNotNull(nameof(functionProcessor), functionProcessor);
@@ -212,14 +214,17 @@ namespace Dev2.Services.Sql
         }
 
         public void FetchStoredProcedures(
-            Func<IDbCommand, List<IDbDataParameter>, List<IDbDataParameter>, string, string, bool> procedureProcessor
-            , Func<IDbCommand, List<IDbDataParameter>, List<IDbDataParameter>, string, string, bool> functionProcessor
-            , bool continueOnProcessorException = false,
-            string dbName = "")
+            Func<IDbCommand, List<IDbDataParameter>, List<IDbDataParameter>, string, string, bool> procedureProcessor,
+            Func<IDbCommand, List<IDbDataParameter>, List<IDbDataParameter>, string, string, bool> functionProcessor) => FetchStoredProcedures(procedureProcessor, functionProcessor, false, "");
+
+
+        public void FetchStoredProcedures(
+            Func<IDbCommand, List<IDbDataParameter>, List<IDbDataParameter>, string, string, bool> procedureProcessor, 
+            Func<IDbCommand, List<IDbDataParameter>, List<IDbDataParameter>, string, string, bool> functionProcessor, 
+            bool continueOnProcessorException, string dbName)
         {
-
-
         }
+
         private DataTable GetSchema()
         {
             const string commandText = GlobalConstants.SchemaQuery;

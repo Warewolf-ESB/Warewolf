@@ -494,9 +494,9 @@ namespace Dev2.Core.Tests.Workflows
             rm.Setup(r => r.ID).Returns(_resourceID);
             rm.Setup(r => r.DataList).Returns(Shape);
             var mockDataListViewModel = new Mock<IDataListViewModel>();
-            var personObject = new ComplexObjectItemModel("Person",null,enDev2ColumnArgumentDirection.Input);
-            personObject.Children.Add(new ComplexObjectItemModel("Age",personObject,enDev2ColumnArgumentDirection.Input));
-            personObject.Children.Add(new ComplexObjectItemModel("Name",personObject,enDev2ColumnArgumentDirection.Input));
+            var personObject = new ComplexObjectItemModel("Person", null, enDev2ColumnArgumentDirection.Input);
+            personObject.Children.Add(new ComplexObjectItemModel("Age", personObject, enDev2ColumnArgumentDirection.Input));
+            personObject.Children.Add(new ComplexObjectItemModel("Name", personObject, enDev2ColumnArgumentDirection.Input));
             var complexObjectItemModels = new ObservableCollection<IComplexObjectItemModel> { personObject};
             mockDataListViewModel.Setup(model => model.ComplexObjectCollection).Returns(complexObjectItemModels);
             DataListSingleton.SetDataList(mockDataListViewModel.Object);

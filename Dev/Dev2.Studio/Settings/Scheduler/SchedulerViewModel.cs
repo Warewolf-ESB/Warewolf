@@ -37,7 +37,6 @@ using Dev2.Providers.Events;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Services.Events;
 using Dev2.Studio.Controller;
-using Dev2.Studio.Core;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Models;
 using Dev2.Studio.Interfaces;
@@ -89,7 +88,12 @@ namespace Dev2.Settings.Scheduler
         {
         }
 
-        public SchedulerViewModel(IEventAggregator eventPublisher, DirectoryObjectPickerDialog directoryObjectPicker, IPopupController popupController, IAsyncWorker asyncWorker, IServer server, Func<IServer, IServer> toEnvironmentModel, Task<IResourcePickerDialog> getResourcePicker = null)
+        public SchedulerViewModel(IEventAggregator eventPublisher, DirectoryObjectPickerDialog directoryObjectPicker, IPopupController popupController, IAsyncWorker asyncWorker, IServer server, Func<IServer, IServer> toEnvironmentModel)
+            : this(eventPublisher, directoryObjectPicker, popupController, asyncWorker, server, toEnvironmentModel, null)
+        {
+        }
+
+        public SchedulerViewModel(IEventAggregator eventPublisher, DirectoryObjectPickerDialog directoryObjectPicker, IPopupController popupController, IAsyncWorker asyncWorker, IServer server, Func<IServer, IServer> toEnvironmentModel, Task<IResourcePickerDialog> getResourcePicker)
             : base(eventPublisher)
         {
             SchedulerTaskManager = new SchedulerTaskManager(this, getResourcePicker);
@@ -832,6 +836,12 @@ namespace Dev2.Settings.Scheduler
                             return false;
                         case MessageBoxResult.No:
                             return true;
+                        case MessageBoxResult.OK:
+                            break;
+                        case MessageBoxResult.Yes:
+                            break;
+                        default:
+                            break;
                     }
                     return SchedulerTaskManager.SaveTasks();
                 }

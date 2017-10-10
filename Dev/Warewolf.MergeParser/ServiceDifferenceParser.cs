@@ -16,6 +16,7 @@ using System.Windows;
 using Dev2.Common.Interfaces;
 using Dev2.Communication;
 using System.Collections.Concurrent;
+using System.Text;
 
 namespace Warewolf.MergeParser
 {
@@ -92,13 +93,14 @@ namespace Warewolf.MergeParser
         {
             _flowNodes = new ConcurrentDictionary<string, (ModelItem leftItem, ModelItem rightItem)>();
             var conflictList = new List<(Guid uniqueId, IConflictNode currentNode, IConflictNode differenceNode, bool hasConflict)>();
-           var  currentDifferences = GetNodes(current, true);
+            var currentDifferences = GetNodes(current, true);
             var remotedifferences = GetNodes(difference, loadworkflowFromServer);
 
 
             var allCurentItems = new List<(IDev2Activity, IConflictNode)>();
             var allRemoteItems = new List<(IDev2Activity, IConflictNode)>();
-            foreach (var node in currentDifferences.nodeList)
+            int treeIndex = 1;
+            foreach (var node in currentDifferences.orderedNodeList)
             {
                 var dev2Activity1 = _activityParser.Parse(new List<IDev2Activity>(), node);
                 var shapeLocation = GetShapeLocation(currentDifferences.wd, node);
@@ -107,9 +109,10 @@ namespace Warewolf.MergeParser
                     CurrentActivity = ModelItemUtils.CreateModelItem(dev2Activity1),
                     CurrentFlowStep = node,
                     NodeLocation = shapeLocation,
+                    TreeIndex = treeIndex
                 };
-
-                allCurentItems.Add((dev2Activity1, conflictNode));             
+                treeIndex++;
+                allCurentItems.Add((dev2Activity1, conflictNode));
             }
 
             foreach (var node in currentDifferences.allNodes)
@@ -135,7 +138,7 @@ namespace Warewolf.MergeParser
 
             List<IDev2Activity> currentActivities = allCurentItems.Select(p => p.Item1).ToList();
             CleanUpForDecisionAdSwitch(currentActivities);
-            foreach (var node in remotedifferences.nodeList)
+            foreach (var node in remotedifferences.orderedNodeList)
             {
                 var dev2Activity1 = _activityParser.Parse(new List<IDev2Activity>(), node);
                 var shapeLocation = GetShapeLocation(remotedifferences.wd, node);
@@ -147,7 +150,7 @@ namespace Warewolf.MergeParser
                     NodeLocation = shapeLocation,
 
                 };
-                allRemoteItems.Add((dev2Activity1, conflictNode));             
+                allRemoteItems.Add((dev2Activity1, conflictNode));
 
             }
             List<IDev2Activity> differenceActivities = allRemoteItems.Select(p => p.Item1).ToList();
@@ -177,7 +180,8 @@ namespace Warewolf.MergeParser
                 var diffItem = (Guid.Parse(item.UniqueID), currentModelItemUniqueId, differences, true);
                 conflictList.Add(diffItem);
             }
-            return conflictList;
+            var orderedNodes = conflictList.OrderBy(t => t.currentNode?.TreeIndex ?? t.differenceNode?.TreeIndex);
+            return orderedNodes.ToList();
         }
 
 
@@ -199,15 +203,15 @@ namespace Warewolf.MergeParser
 
             return orderedNodes;
         }
-        private (List<ModelItem> allNodes, List<ModelItem> nodeList, Flowchart flowchartDiff, WorkflowDesigner wd) GetNodes(IContextualResourceModel resourceModel, bool loadFromServer)
+        private (List<ModelItem> allNodes, List<ModelItem> orderedNodeList, Flowchart flowchartDiff, WorkflowDesigner wd) GetNodes(IContextualResourceModel resourceModel, bool loadFromServer)
         {
             var wd = new WorkflowDesigner();
-            var xaml = resourceModel.WorkflowXaml;
-
+            var xaml = resourceModel.IsVersionResource ? resourceModel.Environment?.ProxyLayer?.GetVersion(resourceModel.VersionInfo, resourceModel.ID) : resourceModel.WorkflowXaml;
+            
             var workspace = GlobalConstants.ServerWorkspaceID;
             if (loadFromServer)
             {
-                var msg = resourceModel.Environment.ResourceRepository.FetchResourceDefinition(resourceModel.Environment, workspace, resourceModel.ID, true);
+                var msg = resourceModel.Environment?.ResourceRepository.FetchResourceDefinition(resourceModel.Environment, workspace, resourceModel.ID, true);
                 if (msg != null)
                 {
                     xaml = msg.Message;

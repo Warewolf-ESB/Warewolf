@@ -49,12 +49,12 @@ namespace Dev2.Activities.Designers2.Core.Adorners
         /// </summary>
         public new FrameworkElement AdornedElement => (FrameworkElement)base.AdornedElement;
 
-        public FrameworkElement Content { get { return (FrameworkElement)GetValue(ContentProperty); } set { SetValue(ContentProperty, value); } }
+        public FrameworkElement Content { get => (FrameworkElement)GetValue(ContentProperty); set => SetValue(ContentProperty, value); }
 
         public static readonly DependencyProperty ContentProperty =
             DependencyProperty.Register("Content", typeof(FrameworkElement), typeof(AdornerControl), new PropertyMetadata(null));
 
-        public bool IsAdornerVisible { get { return (bool)GetValue(IsAdornerVisibleProperty); } set { SetValue(IsAdornerVisibleProperty, value); } }
+        public bool IsAdornerVisible { get => (bool)GetValue(IsAdornerVisibleProperty); set => SetValue(IsAdornerVisibleProperty, value); }
 
         public static readonly DependencyProperty IsAdornerVisibleProperty =
             DependencyProperty.Register("IsAdornerVisible", typeof(bool), typeof(AdornerControl), new PropertyMetadata(false, OnIsAdornerVisibleChanged));
@@ -109,7 +109,7 @@ namespace Dev2.Activities.Designers2.Core.Adorners
         {
             var adornedWidth = AdornedElement.ActualWidth;
             var adornerWidth = Content.DesiredSize.Width;
-            switch(Content.HorizontalAlignment)
+            switch (Content.HorizontalAlignment)
             {
                 case HorizontalAlignment.Left:
                     return -adornerWidth + OffsetX;
@@ -123,6 +123,8 @@ namespace Dev2.Activities.Designers2.Core.Adorners
 
                 case HorizontalAlignment.Stretch:
                     return 0.0;
+                default:
+                    break;
             }
             return 0.0;
         }
@@ -131,7 +133,7 @@ namespace Dev2.Activities.Designers2.Core.Adorners
         {
             var adornedHeight = AdornedElement.ActualHeight;
             var adornerHeight = Content.DesiredSize.Height;
-            switch(Content.VerticalAlignment)
+            switch (Content.VerticalAlignment)
             {
                 case VerticalAlignment.Top:
                     return OffsetY;
@@ -145,6 +147,8 @@ namespace Dev2.Activities.Designers2.Core.Adorners
 
                 case VerticalAlignment.Stretch:
                     return 0.0;
+                default:
+                    break;
             }
             return 0.0;
         }
@@ -156,7 +160,7 @@ namespace Dev2.Activities.Designers2.Core.Adorners
                 return Content.DesiredSize.Width;
             }
 
-            switch(Content.HorizontalAlignment)
+            switch (Content.HorizontalAlignment)
             {
                 case HorizontalAlignment.Left:
                 case HorizontalAlignment.Right:
@@ -164,6 +168,8 @@ namespace Dev2.Activities.Designers2.Core.Adorners
                     return Content.DesiredSize.Width;
                 case HorizontalAlignment.Stretch:
                     return AdornedElement.ActualWidth;
+                default:
+                    break;
             }
 
             return 0.0;
@@ -177,7 +183,7 @@ namespace Dev2.Activities.Designers2.Core.Adorners
                 return height;
             }
 
-            switch(Content.VerticalAlignment)
+            switch (Content.VerticalAlignment)
             {
                 case VerticalAlignment.Top:
                 case VerticalAlignment.Bottom:
@@ -185,6 +191,8 @@ namespace Dev2.Activities.Designers2.Core.Adorners
                     return height;
                 case VerticalAlignment.Stretch:
                     return AdornedElement.ActualHeight;
+                default:
+                    break;
             }
             return 0.0;
         }

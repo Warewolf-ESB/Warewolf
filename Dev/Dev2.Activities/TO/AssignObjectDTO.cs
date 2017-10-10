@@ -32,7 +32,12 @@ namespace Dev2.TO
         {
         }
 
-        public AssignObjectDTO(string fieldName, string fieldValue, int indexNumber, bool inserted = false)
+        public AssignObjectDTO(string fieldName, string fieldValue, int indexNumber)
+            : this(fieldName, fieldValue, indexNumber, false)
+        {
+        }
+
+        public AssignObjectDTO(string fieldName, string fieldValue, int indexNumber, bool inserted)
         {
             _fieldName = fieldName;
             _fieldValue = fieldValue;

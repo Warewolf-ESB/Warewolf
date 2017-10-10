@@ -217,8 +217,7 @@ namespace Dev2.Studio
         }
 
         private static void CreateDummyWorkflowDesignerForCaching()
-        {
-
+        {            
             var workflowDesigner = new WorkflowDesigner();
             workflowDesigner.PropertyInspectorFontAndColorData = XamlServices.Save(ActivityDesignerHelper.GetDesignerHashTable());
             var designerConfigService = workflowDesigner.Context.Services.GetService<DesignerConfigurationService>();
@@ -255,7 +254,6 @@ namespace Dev2.Studio
             });
             var activityBuilder = new WorkflowHelper().CreateWorkflow("DummyWF");
             workflowDesigner.Load(activityBuilder);
-            workflowDesigner = null;
         }
 
         private async void CheckForDuplicateResources()
@@ -272,7 +270,6 @@ namespace Dev2.Studio
 
         private void ShowSplash()
         {
-            // Create the window 
             var repository = ServerRepository.Instance;
             var server = repository.Source;
             server.Connect();
@@ -308,10 +305,8 @@ namespace Dev2.Studio
 
             var splashPage = new SplashPage { DataContext = splashViewModel };
             SplashView = splashPage;
-            // Show it 
             SplashView.Show(false);
-
-            // Now that the window is created, allow the rest of the startup to run 
+            
             _resetSplashCreated?.Set();
             splashViewModel.ShowServerVersion();
             Dispatcher.Run();

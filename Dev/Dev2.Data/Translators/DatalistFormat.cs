@@ -22,18 +22,8 @@ namespace Dev2.DataList.Contract
         private static readonly object FormatLock = new object();
         private static readonly Dictionary<string, DataListFormat> ExistingFormats = new Dictionary<string, DataListFormat>(StringComparer.Ordinal);
 
-        /// <summary>
-        /// Gets the DatalistFormat instance that represents the given <paramref name="formatName" />, or creates a new one if a DatalistFormat instance
-        /// does not exist for the given <paramref name="formatName" />.
-        /// </summary>
-        /// <param name="formatName">The display name of the datalist format.</param>
-        /// <param name="publicFormatName">Name of the public format.</param>
-        /// <param name="headerType">Type of the header.</param>
-        /// <returns>
-        /// An instance of the DatalistFormat type that is unique to the given <paramref name="formatName" />
-        /// </returns>
-        /// <exception cref="System.ArgumentException">formatName cannot be null or empty string.</exception>
-        public static DataListFormat CreateFormat(string formatName, EmitionTypes publicFormatName = EmitionTypes.XML, string headerType = "")
+        public static DataListFormat CreateFormat(string formatName) => CreateFormat(formatName, EmitionTypes.XML, "");
+        public static DataListFormat CreateFormat(string formatName, EmitionTypes publicFormatName, string headerType)
         {
             if(String.IsNullOrEmpty(formatName))
             {

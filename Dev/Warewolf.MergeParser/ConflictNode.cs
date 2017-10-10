@@ -10,5 +10,6 @@ namespace Warewolf.MergeParser
         public ModelItem CurrentFlowStep { get; set; }
         public bool HasConflict { get; set; }
         public Point NodeLocation { get; set; }
+        public int TreeIndex { get; set; }
     }
 }

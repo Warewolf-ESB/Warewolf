@@ -131,9 +131,8 @@ namespace Dev2.Services.Execution
                 DestroySqlServer();
             }
         }
-
-
-        protected override object ExecuteService(int update, out ErrorResultTO errors, IOutputFormatter formater = null)
+        
+        protected override object ExecuteService(int update, out ErrorResultTO errors, IOutputFormatter formater)
         {
             errors = new ErrorResultTO();
             var invokeErrors = new ErrorResultTO();
@@ -147,7 +146,7 @@ namespace Dev2.Services.Execution
                     {
                         try
                         {
-                            SqlExecution(invokeErrors, update, Source.ConnectionString);
+                            SqlExecution(invokeErrors, update);
                             ErrorResult.MergeErrors(invokeErrors);
                             return Guid.NewGuid();
                         }
@@ -184,6 +183,37 @@ namespace Dev2.Services.Execution
                         ErrorResult.MergeErrors(invokeErrors);
                         return result;
                     }
+
+                case enSourceType.WebService:
+                    break;
+                case enSourceType.DynamicService:
+                    break;
+                case enSourceType.ManagementDynamicService:
+                    break;
+                case enSourceType.PluginSource:
+                    break;
+                case enSourceType.Unknown:
+                    break;
+                case enSourceType.Dev2Server:
+                    break;
+                case enSourceType.EmailSource:
+                    break;
+                case enSourceType.WebSource:
+                    break;
+                case enSourceType.OauthSource:
+                    break;
+                case enSourceType.SharepointServerSource:
+                    break;
+                case enSourceType.RabbitMQSource:
+                    break;
+                case enSourceType.ExchangeSource:
+                    break;
+                case enSourceType.WcfSource:
+                    break;
+                case enSourceType.ComPluginSource:
+                    break;
+                default:
+                    break;
             }
             return null;
         }
@@ -265,7 +295,7 @@ namespace Dev2.Services.Execution
                 }
             }
         }
-        private void SqlExecution(ErrorResultTO errors, int update, string sourceConnectionString)
+        private void SqlExecution(ErrorResultTO errors, int update)
         {
             try
             {
@@ -337,16 +367,9 @@ namespace Dev2.Services.Execution
             {
                 foreach (var parameter in Inputs)
                 {
-                    if (parameter.EmptyIsNull &&
+                    sqlParameters.Add(parameter.EmptyIsNull &&
                         (parameter.Value == null ||
-                         string.Compare(parameter.Value, string.Empty, StringComparison.InvariantCultureIgnoreCase) == 0))
-                    {
-                        sqlParameters.Add(new SqlParameter($"@{parameter.Name}", DBNull.Value));
-                    }
-                    else
-                    {
-                        sqlParameters.Add(new SqlParameter($"@{parameter.Name}", parameter.Value));
-                    }
+                         string.Compare(parameter.Value, string.Empty, StringComparison.InvariantCultureIgnoreCase) == 0) ? new SqlParameter($"@{parameter.Name}", DBNull.Value) : new SqlParameter($"@{parameter.Name}", parameter.Value));
                 }
             }
             return sqlParameters;
@@ -361,16 +384,9 @@ namespace Dev2.Services.Execution
                 foreach (var parameter in methodParameters)
                 {
                     var parameterName = parameter.Name.Replace("`", "");
-                    if (parameter.EmptyIsNull &&
+                    sqlParameters.Add(parameter.EmptyIsNull &&
                         (parameter.Value == null ||
-                         string.Compare(parameter.Value, string.Empty, StringComparison.InvariantCultureIgnoreCase) == 0))
-                    {
-                        sqlParameters.Add(new MySqlParameter($"@{parameterName}", DBNull.Value));
-                    }
-                    else
-                    {
-                        sqlParameters.Add(new MySqlParameter($"@{parameterName}", parameter.Value));
-                    }
+                         string.Compare(parameter.Value, string.Empty, StringComparison.InvariantCultureIgnoreCase) == 0) ? new MySqlParameter($"@{parameterName}", DBNull.Value) : new MySqlParameter($"@{parameterName}", parameter.Value));
                 }
             }
             return sqlParameters;
@@ -521,16 +537,9 @@ namespace Dev2.Services.Execution
             {
                 foreach (var parameter in methodParameters)
                 {
-                    if (parameter.EmptyIsNull &&
+                    sqlParameters.Add(parameter.EmptyIsNull &&
                         (parameter.Value == null ||
-                         string.Compare(parameter.Value, string.Empty, StringComparison.InvariantCultureIgnoreCase) == 0))
-                    {
-                        sqlParameters.Add(new OdbcParameter($"@{parameter.Name}", DBNull.Value));
-                    }
-                    else
-                    {
-                        sqlParameters.Add(new OdbcParameter($"@{parameter.Name}", parameter.Value));
-                    }
+                         string.Compare(parameter.Value, string.Empty, StringComparison.InvariantCultureIgnoreCase) == 0) ? new OdbcParameter($"@{parameter.Name}", DBNull.Value) : new OdbcParameter($"@{parameter.Name}", parameter.Value));
                 }
             }
             return sqlParameters;
@@ -601,17 +610,10 @@ namespace Dev2.Services.Execution
                 {
                     if (!string.IsNullOrEmpty(parameter.Name))
                     {
-                        if (parameter.EmptyIsNull &&
+                        sqlParameters.Add(parameter.EmptyIsNull &&
                             (parameter.Value == null ||
                              string.Compare(parameter.Value, string.Empty, StringComparison.InvariantCultureIgnoreCase) ==
-                             0))
-                        {
-                            sqlParameters.Add(new NpgsqlParameter($"@{parameter.Name}", DBNull.Value));
-                        }
-                        else
-                        {
-                            sqlParameters.Add(new NpgsqlParameter($"@{parameter.Name}", parameter.Value));
-                        }
+                             0) ? new NpgsqlParameter($"@{parameter.Name}", DBNull.Value) : new NpgsqlParameter($"@{parameter.Name}", parameter.Value));
                     }
                 }
             }
@@ -622,5 +624,5 @@ namespace Dev2.Services.Execution
         {
             _sqlServer.Dispose();
         }
-    }    
+    }
 }

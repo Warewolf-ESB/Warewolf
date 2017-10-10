@@ -16,18 +16,30 @@ namespace Dev2.Studio.Interfaces
 {
     public interface IShellViewModelEdit
     {
-        void EditSqlServerResource(IDbSource selectedSource, IWorkSurfaceKey key = null);
-        void EditMySqlResource(IDbSource selectedSource, IWorkSurfaceKey key = null);
-        void EditPostgreSqlResource(IDbSource selectedSource, IWorkSurfaceKey key = null);
-        void EditOracleResource(IDbSource selectedSource, IWorkSurfaceKey key = null);
-        void EditOdbcResource(IDbSource selectedSource, IWorkSurfaceKey key = null);
-        void EditResource(IPluginSource selectedSource, IWorkSurfaceKey key = null);
-        void EditResource(IWebServiceSource selectedSource, IWorkSurfaceKey key = null);
-        void EditResource(IEmailServiceSource selectedSource, IWorkSurfaceKey key = null);
-        void EditResource(IExchangeSource selectedSource, IWorkSurfaceKey key = null);
-        void EditResource(IRabbitMQServiceSourceDefinition selectedSource, IWorkSurfaceKey key = null);
-        void EditResource(IWcfServerSource selectedSource, IWorkSurfaceKey key = null);
-        void EditResource(IComPluginSource selectedSource, IWorkSurfaceKey key = null);
+        void EditSqlServerResource(IDbSource selectedSource);
+        void EditSqlServerResource(IDbSource selectedSource, IWorkSurfaceKey key);
+        void EditMySqlResource(IDbSource selectedSource);
+        void EditMySqlResource(IDbSource selectedSource, IWorkSurfaceKey key);
+        void EditPostgreSqlResource(IDbSource selectedSource);
+        void EditPostgreSqlResource(IDbSource selectedSource, IWorkSurfaceKey key);
+        void EditOracleResource(IDbSource selectedSource);
+        void EditOracleResource(IDbSource selectedSource, IWorkSurfaceKey key);
+        void EditOdbcResource(IDbSource selectedSource);
+        void EditOdbcResource(IDbSource selectedSource, IWorkSurfaceKey key);
+        void EditResource(IPluginSource selectedSource);
+        void EditResource(IPluginSource selectedSource, IWorkSurfaceKey key);
+        void EditResource(IWebServiceSource selectedSource);
+        void EditResource(IWebServiceSource selectedSource, IWorkSurfaceKey key);
+        void EditResource(IEmailServiceSource selectedSource);
+        void EditResource(IEmailServiceSource selectedSource, IWorkSurfaceKey key);
+        void EditResource(IExchangeSource selectedSource);
+        void EditResource(IExchangeSource selectedSource, IWorkSurfaceKey key);
+        void EditResource(IRabbitMQServiceSourceDefinition selectedSource);
+        void EditResource(IRabbitMQServiceSourceDefinition selectedSource, IWorkSurfaceKey key);
+        void EditResource(IWcfServerSource selectedSource);
+        void EditResource(IWcfServerSource selectedSource, IWorkSurfaceKey key);
+        void EditResource(IComPluginSource selectedSource);
+        void EditResource(IComPluginSource selectedSource, IWorkSurfaceKey key);
     }
 
     public interface IShellViewModelNew
@@ -69,9 +81,9 @@ namespace Dev2.Studio.Interfaces
         void AddDeploySurface(IEnumerable<IExplorerTreeItem> items);
         void OpenResource(Guid resourceId, Guid environmentId, IServer activeServer);
         void OpenMergeConflictsView(IExplorerItemViewModel currentResource, Guid differenceResourceId, IServer server);
-       void OpenMergeConflictsView(IContextualResourceModel currentResourceModel, IContextualResourceModel differenceResourceModel, bool loadFromServer);
+        void OpenMergeConflictsView(IContextualResourceModel currentResourceModel, IContextualResourceModel differenceResourceModel, bool loadFromServer);
         void CloseResource(Guid resourceId, Guid environmentId);
-        void UpdateCurrentDataListWithObjectFromJson(string parentObjectName,string json);
+        void UpdateCurrentDataListWithObjectFromJson(string parentObjectName, string json);
         void ViewSwagger(Guid resourceId, IServer server);
         void ViewApisJson(string resourcePath, Uri webServerUri);
         void CreateTest(Guid resourceId);

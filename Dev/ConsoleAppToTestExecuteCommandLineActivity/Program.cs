@@ -36,6 +36,8 @@ namespace ConsoleAppToTestExecuteCommandLineActivity
                     Console.WriteLine("This is error");
                     Console.Error.Write("The console errored.");
                     return;
+                default:
+                    break;
             }
         }
     }

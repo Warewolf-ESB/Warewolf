@@ -88,7 +88,6 @@ using Warewolf.Tools.Specs.BaseTypes;
 using Dev2.Data.Interfaces.Enums;
 using TestingDotnetDllCascading;
 using Warewolf.Sharepoint;
-using Dev2.Runtime.Hosting;
 
 namespace Dev2.Activities.Specs.Composition
 {
@@ -732,6 +731,8 @@ namespace Dev2.Activities.Specs.Composition
                         case "postgresql database":
                             updatedActivity = ActivityUtils.GetDsfPostgreSqlActivity((DsfDatabaseActivity)activity, service, source);
                             break;
+                        default:
+                            break;
                     }
                     _commonSteps.AddActivityToActivityList(wf, serviceName, updatedActivity);
                 }
@@ -929,6 +930,8 @@ namespace Dev2.Activities.Specs.Composition
                     break;
                 case "workflow":
                     activity = new DsfWorkflowActivity();
+                    break;
+                default:
                     break;
             }
             return activity;
@@ -2369,6 +2372,12 @@ namespace Dev2.Activities.Specs.Composition
                 case enForEachType.InRecordset:
                     forEach.Recordset = executionCount;
                     break;
+                case enForEachType.InRange:
+                    break;
+                case enForEachType.InCSV:
+                    break;
+                default:
+                    break;
             }
             _commonSteps.AddActivityToActivityList(parentName, activityName, forEach);
             _scenarioContext.Add(activityName, forEach);
@@ -2904,6 +2913,8 @@ namespace Dev2.Activities.Specs.Composition
                     break;
                 case "All":
                     listActivity.IsFilesAndFoldersSelected = true;
+                    break;
+                default:
                     break;
             }
             var b = bool.Parse(loadSubFolders);

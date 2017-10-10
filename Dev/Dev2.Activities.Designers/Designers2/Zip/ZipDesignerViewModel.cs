@@ -58,8 +58,7 @@ namespace Dev2.Activities.Designers2.Zip
                 viewModel.CompressionRatio = enumValue.ToString();
             }
         }
-
-        // This MUST be the enum.ToString()!!!
+        
         string CompressionRatio
         {
             set { SetProperty(value); }
@@ -76,7 +75,7 @@ namespace Dev2.Activities.Designers2.Zip
             ValidateArchivePassword(password, "Archive Password");
         }
 
-        string ArchivePassword { set { SetProperty(value); } get { return GetProperty<string>(); } }
+        string ArchivePassword { get { return GetProperty<string>(); } }
 
         public override void UpdateHelpDescriptor(string helpText)
         {

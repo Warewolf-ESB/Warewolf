@@ -146,6 +146,38 @@ namespace Dev2.DynamicServices
                 case enSourceType.Unknown:
                     WriteCompileError(Resources.CompilerError_InvalidSourceType);
                     break;
+                case enSourceType.MySqlDatabase:
+                    break;
+                case enSourceType.ODBC:
+                    break;
+                case enSourceType.Oracle:
+                    break;
+                case enSourceType.PostgreSQL:
+                    break;
+                case enSourceType.DynamicService:
+                    break;
+                case enSourceType.ManagementDynamicService:
+                    break;
+                case enSourceType.Dev2Server:
+                    break;
+                case enSourceType.EmailSource:
+                    break;
+                case enSourceType.WebSource:
+                    break;
+                case enSourceType.OauthSource:
+                    break;
+                case enSourceType.SharepointServerSource:
+                    break;
+                case enSourceType.RabbitMQSource:
+                    break;
+                case enSourceType.ExchangeSource:
+                    break;
+                case enSourceType.WcfSource:
+                    break;
+                case enSourceType.ComPluginSource:
+                    break;
+                default:
+                    break;
             }
 
             return IsCompiled;

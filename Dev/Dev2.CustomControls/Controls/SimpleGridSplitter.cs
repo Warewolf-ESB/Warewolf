@@ -98,6 +98,8 @@ namespace Dev2.CustomControls
                 case Orientation.Vertical:
                     ResizeRows(e.VerticalChange);
                     break;
+                default:
+                    break;
             }
         }
 
@@ -118,6 +120,8 @@ namespace Dev2.CustomControls
                         _thumb.Cursor = Cursors.ScrollNS;
                     }
 
+                    break;
+                default:
                     break;
             }
         }

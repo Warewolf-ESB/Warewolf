@@ -64,6 +64,11 @@ using Dev2.Data.ServiceModel;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.Enums;
 using System.IO;
+using System.Xml.Linq;
+using System.Text;
+using Dev2.Common.Interfaces.Security;
+using Dev2.Common.Common;
+using Dev2.Runtime.ServiceModel.Data;
 
 namespace Dev2.Studio.ViewModels
 {
@@ -715,9 +720,49 @@ namespace Dev2.Studio.ViewModels
             var result = mergeServiceViewModel.ShowMergeDialog();
             if (result == MessageBoxResult.OK)
             {
-                var differentResource = mergeServiceViewModel.SelectedMergeItem;
+                var differentResource = mergeServiceViewModel.SelectedMergeItem as VersionViewModel;
 
-                OpenMergeConflictsView(currentResource, differentResource.ResourceId, differentResource.Server);
+                if (differentResource != null)
+                {
+                    var workflowXaml = ActiveServer?.ProxyLayer?.GetVersion(differentResource.VersionInfo, differentResource.ResourceId);
+                    if (workflowXaml != null)
+                    {
+                        var resourceModel = ActiveServer?.ResourceRepository.LoadContextualResourceModel(differentResource.ResourceId);
+                        var xamlElement = XElement.Parse(workflowXaml.ToString());
+                        var dataList = xamlElement.Element(@"DataList");
+                        var dataListString = string.Empty;
+                        if (dataList != null)
+                        {
+                            dataListString = dataList.ToString();
+                        }
+                        var action = xamlElement.Element(@"Action");
+                        
+                        var xamlString = string.Empty;
+                        var xaml = action?.Element(@"XamlDefinition");
+                        if (xaml != null)
+                        {
+                            xamlString = xaml.Value;
+                        }
+                        var resourceVersion = new ResourceModel(ActiveServer, EventPublishers.Aggregator)
+                        {
+                            ResourceType = resourceModel.ResourceType,
+                            ResourceName = currentResource.ResourceName,
+                            WorkflowXaml = new StringBuilder(xamlString),
+                            UserPermissions = Permissions.Contribute,
+                            DataList = dataListString,
+                            IsVersionResource = true,
+                            ID = Guid.NewGuid()
+                        };
+                        var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.MergeConflicts);
+                        _worksurfaceContextManager.ViewMergeConflictsService(resourceModel, resourceVersion, false, workSurfaceKey);
+                    }
+                }
+                else
+                {
+                    OpenMergeConflictsView(currentResource, differentResource.ResourceId, differentResource.Server);
+                }
+
+
             }
         }
 
@@ -728,9 +773,7 @@ namespace Dev2.Studio.ViewModels
             var localHost = ((ExplorerItemViewModel)currentResource).Server;
             if (localHost != null)
             {
-
                 var currentResourceModel = localHost.ResourceRepository.LoadContextualResourceModel(currentResource.ResourceId);
-                //var currentResourceModel = environmentModel.ResourceRepository.LoadContextualResourceModel(currentResourceId);
                 var differenceResourceModel = server.ResourceRepository.LoadContextualResourceModel(differenceResourceId);
 
                 var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.MergeConflicts);
@@ -1290,43 +1333,54 @@ namespace Dev2.Studio.ViewModels
             environmentModel.ResourceRepository.DeployResources(sourceEnvironmentModel, environmentModel, dto);
             ServerAuthorizationService.Instance.GetResourcePermissions(dto.ResourceModels.First().ID);
             ExplorerViewModel.RefreshEnvironment(destinationEnvironmentId);
-
         }
 
         public void ShowPopup(IPopupMessage popupMessage)
         {
-            PopupProvider.Show(popupMessage.Description, popupMessage.Header, popupMessage.Buttons, MessageBoxImage.Error, @"", false, true, false, false, false, false);
+            PopupProvider.Show(popupMessage.Description, popupMessage.Header, popupMessage.Buttons, MessageBoxImage.Error, "", false, true, false, false, false, false);
         }
 
-        public void EditSqlServerResource(IDbSource selectedSourceDefinition, IWorkSurfaceKey workSurfaceKey = null)
+        public void EditSqlServerResource(IDbSource selectedSourceDefinition) => EditSqlServerResource(selectedSourceDefinition, null);
+
+        public void EditSqlServerResource(IDbSource selectedSourceDefinition, IWorkSurfaceKey workSurfaceKey)
         {
             workSurfaceKey = _worksurfaceContextManager.TryGetOrCreateWorkSurfaceKey(workSurfaceKey, WorkSurfaceContext.SqlServerSource, selectedSourceDefinition.Id);
             ProcessDBSource(ProcessSQLDBSource(selectedSourceDefinition), workSurfaceKey as WorkSurfaceKey);
         }
 
-        public void EditMySqlResource(IDbSource selectedSourceDefinition, IWorkSurfaceKey workSurfaceKey = null)
+        public void EditMySqlResource(IDbSource selectedSourceDefinition) => EditMySqlResource(selectedSourceDefinition, null);
+
+        public void EditMySqlResource(IDbSource selectedSourceDefinition, IWorkSurfaceKey workSurfaceKey)
         {
             workSurfaceKey = _worksurfaceContextManager.TryGetOrCreateWorkSurfaceKey(workSurfaceKey, WorkSurfaceContext.MySqlSource, selectedSourceDefinition.Id);
             ProcessDBSource(ProcessMySQLDBSource(selectedSourceDefinition), workSurfaceKey as WorkSurfaceKey);
         }
 
-        public void EditPostgreSqlResource(IDbSource selectedSourceDefinition, IWorkSurfaceKey workSurfaceKey = null)
+        public void EditPostgreSqlResource(IDbSource selectedSourceDefinition) => EditPostgreSqlResource(selectedSourceDefinition, null);
+
+        public void EditPostgreSqlResource(IDbSource selectedSourceDefinition, IWorkSurfaceKey workSurfaceKey)
         {
             workSurfaceKey = _worksurfaceContextManager.TryGetOrCreateWorkSurfaceKey(workSurfaceKey, WorkSurfaceContext.PostgreSqlSource, selectedSourceDefinition.Id);
             ProcessDBSource(ProcessPostgreSQLDBSource(selectedSourceDefinition), workSurfaceKey as WorkSurfaceKey);
         }
 
-        public void EditOracleResource(IDbSource selectedSourceDefinition, IWorkSurfaceKey workSurfaceKey = null)
+        public void EditOracleResource(IDbSource selectedSourceDefinition) => EditOracleResource(selectedSourceDefinition, null);
+
+        public void EditOracleResource(IDbSource selectedSourceDefinition, IWorkSurfaceKey workSurfaceKey)
         {
             workSurfaceKey = _worksurfaceContextManager.TryGetOrCreateWorkSurfaceKey(workSurfaceKey, WorkSurfaceContext.OracleSource, selectedSourceDefinition.Id);
             ProcessDBSource(ProcessOracleDBSource(selectedSourceDefinition), workSurfaceKey as WorkSurfaceKey);
         }
 
-        public void EditOdbcResource(IDbSource selectedSourceDefinition, IWorkSurfaceKey workSurfaceKey = null)
+        public void EditOdbcResource(IDbSource selectedSourceDefinition) => EditOdbcResource(selectedSourceDefinition, null);
+
+        public void EditOdbcResource(IDbSource selectedSourceDefinition, IWorkSurfaceKey workSurfaceKey)
         {
             workSurfaceKey = _worksurfaceContextManager.TryGetOrCreateWorkSurfaceKey(workSurfaceKey, WorkSurfaceContext.OdbcSource, selectedSourceDefinition.Id);
             ProcessDBSource(ProcessODBCDBSource(selectedSourceDefinition), workSurfaceKey as WorkSurfaceKey);
         }
+
+        public void EditResource(IPluginSource selectedSource) => EditResource(selectedSource, null);
 
         public void EditResource(IPluginSource selectedSource, IWorkSurfaceKey workSurfaceKey = null)
         {
@@ -1334,11 +1388,15 @@ namespace Dev2.Studio.ViewModels
             _worksurfaceContextManager.EditResource(selectedSource, view, workSurfaceKey);
         }
 
+        public void EditResource(IWebServiceSource selectedSource) => EditResource(selectedSource, null);
+
         public void EditResource(IWebServiceSource selectedSource, IWorkSurfaceKey workSurfaceKey = null)
         {
             var view = _factory.GetViewGivenServerResourceType("WebSource");
             _worksurfaceContextManager.EditResource(selectedSource, view, workSurfaceKey);
         }
+
+        public void EditResource(IEmailServiceSource selectedSource) => EditResource(selectedSource, null);
 
         public void EditResource(IEmailServiceSource selectedSource, IWorkSurfaceKey workSurfaceKey = null)
         {
@@ -1346,11 +1404,15 @@ namespace Dev2.Studio.ViewModels
             _worksurfaceContextManager.EditResource(selectedSource, view, workSurfaceKey);
         }
 
+        public void EditResource(IExchangeSource selectedSource) => EditResource(selectedSource, null);
+
         public void EditResource(IExchangeSource selectedSource, IWorkSurfaceKey workSurfaceKey = null)
         {
             var view = _factory.GetViewGivenServerResourceType("ExchangeSource");
             _worksurfaceContextManager.EditResource(selectedSource, view, workSurfaceKey);
         }
+
+        public void EditResource(IRabbitMQServiceSourceDefinition selectedSource) => EditResource(selectedSource, null);
 
         public void EditResource(IRabbitMQServiceSourceDefinition selectedSource, IWorkSurfaceKey workSurfaceKey = null)
         {
@@ -1358,11 +1420,15 @@ namespace Dev2.Studio.ViewModels
             _worksurfaceContextManager.EditResource(selectedSource, view, workSurfaceKey);
         }
 
+        public void EditResource(IWcfServerSource selectedSource) => EditResource(selectedSource, null);
+
         public void EditResource(IWcfServerSource selectedSource, IWorkSurfaceKey workSurfaceKey = null)
         {
             var view = _factory.GetViewGivenServerResourceType("WcfSource");
             _worksurfaceContextManager.EditResource(selectedSource, view, workSurfaceKey);
         }
+
+        public void EditResource(IComPluginSource selectedSource) => EditResource(selectedSource, null);
 
         public void EditResource(IComPluginSource selectedSource, IWorkSurfaceKey workSurfaceKey = null)
         {

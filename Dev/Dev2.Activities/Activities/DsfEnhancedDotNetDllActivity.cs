@@ -165,14 +165,7 @@ namespace Dev2.Activities
             }
             catch (Exception e)
             {
-                if (e.Message.Contains("Cannot convert given JSON to target type"))
-                {
-                    errors.AddError(ErrorResource.JSONIncompatibleConversionError + Environment.NewLine + e.Message);
-                }
-                else
-                {
-                    errors.AddError(e.Message);
-                }
+                errors.AddError(e.Message.Contains("Cannot convert given JSON to target type") ? ErrorResource.JSONIncompatibleConversionError + Environment.NewLine + e.Message : e.Message);
             }
         }
 
