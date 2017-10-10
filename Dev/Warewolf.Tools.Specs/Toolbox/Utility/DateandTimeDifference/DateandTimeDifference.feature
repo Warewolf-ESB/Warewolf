@@ -328,8 +328,8 @@ Scenario: Calculate the number of split seconds
 
 #Bug 12330
 Scenario: Calculate the number of split seconds by using default date format
-	Given I have a first date "2014/01/06 08:00:01.00" 
-	And I have a second date "2014/01/06 08:00:01.68" 
+	Given I have a first date "01/06/2014 08:00:01.00" 
+	And I have a second date "01/06/2014 08:00:01.68" 
 	And the date format as ""
 	And I selected output in "Split Secs" 	
 	When the datetime difference tool is executed
@@ -358,8 +358,8 @@ Scenario: Calculate the number of weeks
 	| [[result]] = 3 |
 
 Scenario: Calculate the number of weeks by using default format
-	Given I have a first date "2014/01/06 08:00:01.00" 
-	And I have a second date "2014/01/30 08:00:01.06" 
+	Given I have a first date "01/06/2014 08:00:01.00" 
+	And I have a second date "01/30/2014 08:00:01.06" 
 	And the date format as ""
 	And I selected output in "Weeks" 	
 	When the datetime difference tool is executed
@@ -373,8 +373,8 @@ Scenario: Calculate the number of weeks by using default format
 	| [[result]] = 3 |
 
 Scenario: Calculate the number of hours by using default format
-	Given I have a first date "2014/01/06 08:00:01.00" 
-	And I have a second date "2014/01/30 08:00:01.06" 
+	Given I have a first date "01/06/2014 08:00:01.00" 
+	And I have a second date "01/30/2014 08:00:01.06" 
 	And the date format as ""
 	And I selected output in "Hours" 	
 	When the datetime difference tool is executed
@@ -388,8 +388,8 @@ Scenario: Calculate the number of hours by using default format
 	| [[result]] = 576 |
 
 Scenario: Calculate the number of Minutes by using default format
-	Given I have a first date "2014/01/06 08:00:01.00" 
-	And I have a second date "2014/01/30 08:00:01.68" 
+	Given I have a first date "01/06/2014 08:00:01.00" 
+	And I have a second date "01/30/2014 08:00:01.68" 
 	And the date format as ""
 	And I selected output in "Minutes" 	
 	When the datetime difference tool is executed
@@ -403,8 +403,8 @@ Scenario: Calculate the number of Minutes by using default format
 	| [[result]] = 34560 |
 
 Scenario: Calculate the number of Seconds by using default format
-	Given I have a first date "2014/01/06 08:00:01.00" 
-	And I have a second date "2014/01/30 08:00:01.68" 
+	Given I have a first date "01/06/2014 08:00:01.00" 
+	And I have a second date "01/30/2014 08:00:01.68" 
 	And the date format as ""
 	And I selected output in "Seconds" 	
 	When the datetime difference tool is executed
@@ -418,8 +418,8 @@ Scenario: Calculate the number of Seconds by using default format
 	| [[result]] = 2073600 |
 
 Scenario: Calculate the number of Days by using default format
-	Given I have a first date "2014/01/06 08:00:01.00" 
-	And I have a second date "2014/01/30 08:00:01.68" 
+	Given I have a first date "01/06/2014 08:00:01.00" 
+	And I have a second date "01/30/2014 08:00:01.68" 
 	And the date format as ""
 	And I selected output in "Days" 	
 	When the datetime difference tool is executed
@@ -433,8 +433,8 @@ Scenario: Calculate the number of Days by using default format
 	| [[result]] = 24 |
 
 Scenario: Calculate the number of Months by using default format
-	Given I have a first date "2011/08/06 08:00:01.00" 
-	And I have a second date "2014/01/30 08:00:01.68" 
+	Given I have a first date "08/06/2011 08:00:01.00" 
+	And I have a second date "01/30/2014 08:00:01.68" 
 	And the date format as ""
 	And I selected output in "Months" 	
 	When the datetime difference tool is executed

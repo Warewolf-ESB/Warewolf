@@ -78,13 +78,13 @@ namespace Dev2.Settings.Security
 
         public SecurityViewModel(SecuritySettingsTO securitySettings, DirectoryObjectPickerDialog directoryObjectPicker, IWin32Window parentWindow, IServer environment, Func<IResourcePickerDialog> createfunc)
         {
-            _resourcePicker = createfunc();
             VerifyArgument.IsNotNull(@"directoryObjectPicker", directoryObjectPicker);
             VerifyArgument.IsNotNull(@"parentWindow", parentWindow);
             VerifyArgument.IsNotNull(@"environment", environment);
 
             _environment = environment;
             _parentWindow = parentWindow;
+            _resourcePicker = (createfunc ?? CreateResourcePickerDialog)();
             _directoryObjectPicker = directoryObjectPicker;
             _directoryObjectPicker.AllowedObjectTypes = ObjectTypes.BuiltInGroups | ObjectTypes.Groups;
             _directoryObjectPicker.DefaultObjectTypes = ObjectTypes.Groups;
