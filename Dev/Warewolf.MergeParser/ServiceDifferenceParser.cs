@@ -16,6 +16,7 @@ using System.Windows;
 using Dev2.Common.Interfaces;
 using Dev2.Communication;
 using System.Collections.Concurrent;
+using System.Text;
 
 namespace Warewolf.MergeParser
 {
@@ -202,12 +203,12 @@ namespace Warewolf.MergeParser
         private (List<ModelItem> allNodes, List<ModelItem> nodeList, Flowchart flowchartDiff, WorkflowDesigner wd) GetNodes(IContextualResourceModel resourceModel, bool loadFromServer)
         {
             var wd = new WorkflowDesigner();
-            var xaml = resourceModel.WorkflowXaml;
-
+            var xaml = resourceModel.IsVersionResource ? resourceModel.Environment?.ProxyLayer?.GetVersion(resourceModel.VersionInfo, resourceModel.ID) : resourceModel.WorkflowXaml;
+            
             var workspace = GlobalConstants.ServerWorkspaceID;
             if (loadFromServer)
             {
-                var msg = resourceModel.Environment.ResourceRepository.FetchResourceDefinition(resourceModel.Environment, workspace, resourceModel.ID, true);
+                var msg = resourceModel.Environment?.ResourceRepository.FetchResourceDefinition(resourceModel.Environment, workspace, resourceModel.ID, true);
                 if (msg != null)
                 {
                     xaml = msg.Message;

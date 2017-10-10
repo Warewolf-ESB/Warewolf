@@ -60,41 +60,42 @@
                                   ServerComboBoxAutomationID="UI_SourceServercbx_AutoID" 
                                   x:Name="SourceConnectControl" />
 
-            <!--<Border Grid.Row="1" BorderThickness="1" Margin="3,3,3,0"  BorderBrush="#C1C3C5" >
-                <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
+            <Grid Grid.Row="1" Margin="{StaticResource ControlBorderTop}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
                     
-                    <TextBlock Grid.Column="0"
-                               HorizontalAlignment="Left"
-                               VerticalAlignment="Center"
-                               x:Name="SelectedResourceTextBox"
-                               FontSize="14"
-                               FontWeight="Bold"
-                               Margin="{StaticResource ElementBorderRight}" 
-                               Text="{Binding SelectedResource.ResourceName, UpdateSourceTrigger=PropertyChanged}" />
+                <TextBlock Grid.Column="0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            x:Name="SelectedResourceTextBox"
+                            FontSize="14"
+                            FontWeight="Bold"
+                            Margin="{StaticResource ControlBorderLeft}" 
+                            Text="{Binding ResourceToMerge, UpdateSourceTrigger=PropertyChanged}" />
 
-                    <TextBlock Grid.Column="1"
-                               Margin="{StaticResource ControlBorderRight}" 
-                               HorizontalAlignment="Left" 
-                               VerticalAlignment="Center"
-                               Text="merge with" />
-                </Grid>
-            </Border>-->
+                <TextBlock Grid.Column="1"
+                            Margin="{StaticResource ControlBorderLeft}" 
+                            HorizontalAlignment="Left" 
+                            VerticalAlignment="Center"
+                            Text="merge with" />
+            </Grid>
 
             <DockPanel Grid.Row="2"
                        HorizontalAlignment="Stretch"
                        VerticalAlignment="Top"
                        Background="Transparent">
 
-                <ListBox x:Name="MergeResourceVersionList" Margin="3" ItemsSource="{Binding MergeResourceVersions}" SelectedItem="{Binding SelectedMergeItem}">
+                <ListBox x:Name="MergeResourceVersionList" 
+                         Style="{StaticResource RadioButtonList}" 
+                         ItemsSource="{Binding MergeResourceVersions}" 
+                         SelectedItem="{Binding SelectedMergeItem}">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
-                                <Label Content="{Binding Parent.ResourceName}" />
-                                <Label Content="{Binding ResourceName}" />
+                                <Label Content="Current" Visibility="{Binding IsVersion, Converter={StaticResource BoolToVisibilityConverterNegative}}" />
+                                <Label Content="{Binding ResourceName}" Visibility="{Binding IsVersion, Converter={StaticResource BoolToVisibilityConverterPositive}}" />
                             </StackPanel>
                         </DataTemplate>
                     </ListBox.ItemTemplate>

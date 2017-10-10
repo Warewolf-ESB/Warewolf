@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Dev2.Common.Interfaces.Security;
+using Dev2.Common.Interfaces.Versioning;
 
 namespace Dev2.Studio.Interfaces
 {
@@ -45,6 +46,7 @@ namespace Dev2.Studio.Interfaces
         bool CanViewRunAllTests { get; set; }
         bool CanContribute { get; set; }
         ObservableCollection<IExplorerItemViewModel> UnfilteredChildren { get; set; }
+        IVersionInfo VersionInfo { get; set; }
 
         IEnumerable<IExplorerItemViewModel> AsList();
 
