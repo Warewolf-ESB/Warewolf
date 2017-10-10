@@ -313,6 +313,8 @@ namespace Dev2.Diagnostics.Debug
                         return ExecutionOrigin.GetDescription();
                     case ExecutionOrigin.Workflow:
                         return $"{ExecutionOrigin.GetDescription()} - {ExecutionOriginDescription}";
+                    default:
+                        break;
                 }
 
                 return string.Empty;

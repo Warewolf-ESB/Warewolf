@@ -25,7 +25,8 @@ namespace Dev2.Studio.Factory
 {
     public static class WorkSurfaceContextFactory
     {
-        public static WorkSurfaceContextViewModel CreateResourceViewModel(IContextualResourceModel resourceModel, bool createDesigner = true)
+        public static WorkSurfaceContextViewModel CreateResourceViewModel(IContextualResourceModel resourceModel) => CreateResourceViewModel(resourceModel, true);
+        public static WorkSurfaceContextViewModel CreateResourceViewModel(IContextualResourceModel resourceModel, bool createDesigner)
         {
             var key = WorkSurfaceKeyFactory.CreateKey(resourceModel);
 
@@ -37,15 +38,7 @@ namespace Dev2.Studio.Factory
                 };
 
             return contextVm;
-        }       
-
-        //public static WorkSurfaceContextViewModel CreateSingleEnvironmentDeployViewModel(object input)
-        //{
-        //    var vm = DeployViewModelFactory.GetDeployViewModel(CustomContainer.Get<IEventAggregator>(),CustomContainer.Get<IShellViewModel>(),new List<IExplorerTreeItem>());
-       
-        //    var context = CreateUniqueWorkSurfaceContextViewModel(vm, WorkSurfaceContext.DeployResources);
-        //    return context;
-        //}
+        }
 
 
         /// <summary>

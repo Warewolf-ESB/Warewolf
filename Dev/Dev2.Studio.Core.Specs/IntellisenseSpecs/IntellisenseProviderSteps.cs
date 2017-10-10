@@ -127,7 +127,7 @@ namespace Dev2.Studio.Core.Specs.IntellisenseSpecs
         {
             IIntellisenseProvider provider = new DefaultIntellisenseProvider();
 
-            switch(providerName.Trim())
+            switch (providerName.Trim())
             {
                 case "Calculate":
                     provider = new CalculateIntellisenseProvider();
@@ -139,6 +139,8 @@ namespace Dev2.Studio.Core.Specs.IntellisenseSpecs
                     break;
                 case "DateTime":
                     provider = new DateTimeIntellisenseProvider();
+                    break;
+                default:
                     break;
             }
 

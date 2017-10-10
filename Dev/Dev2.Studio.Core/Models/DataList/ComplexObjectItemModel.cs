@@ -20,6 +20,22 @@ namespace Dev2.Studio.Core.Models.DataList
         private bool _isArray;
         private string _searchText;
 
+        public ComplexObjectItemModel(string displayname)
+            : this(displayname, null, enDev2ColumnArgumentDirection.None, "", null, false, "", true, true, false, true)
+        {
+        }
+
+        public ComplexObjectItemModel(string displayname, IComplexObjectItemModel parent)
+            : this(displayname, parent, enDev2ColumnArgumentDirection.None, "", null, false, "", true, true, false, true)
+        {
+        }
+
+        public ComplexObjectItemModel(string displayname, IComplexObjectItemModel parent, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection)
+            : this(displayname, parent, dev2ColumnArgumentDirection, "", null, false, "", true, true, false, true)
+        {
+        }
+
+        public ComplexObjectItemModel(string displayname, IComplexObjectItemModel parent, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection, string description, OptomizedObservableCollection<IComplexObjectItemModel> children, bool hasError, string errorMessage, bool isEditable, bool isVisible, bool isSelected, bool isExpanded) 
         public ComplexObjectItemModel(string displayname, IComplexObjectItemModel parent = null, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection = enDev2ColumnArgumentDirection.None, string description = "", OptomizedObservableCollection<IComplexObjectItemModel> children = null, bool hasError = false, string errorMessage = "", bool isEditable = true, bool isVisible = true, bool isSelected = false, bool isExpanded = true)
             : base(displayname, dev2ColumnArgumentDirection, description, hasError, errorMessage, isEditable, isVisible, isSelected, isExpanded)
         {
@@ -156,14 +172,7 @@ namespace Dev2.Studio.Core.Models.DataList
                         itemModel.Filter(searchText);
                     }
                 }
-                if (_children != null && _children.Any(model => model.IsVisible))
-                {
-                    IsVisible = true;
-                }
-                else
-                {
-                    IsVisible = !string.IsNullOrEmpty(DisplayName) && DisplayName.ToLower().Contains(searchText.ToLower());
-                }
+                IsVisible = _children != null && _children.Any(model => model.IsVisible) ? true : !string.IsNullOrEmpty(DisplayName) && DisplayName.ToLower().Contains(searchText.ToLower());
             }
             else
             {

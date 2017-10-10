@@ -48,9 +48,7 @@ using Moq;
 using Newtonsoft.Json;
 using Unlimited.Framework.Converters.Graph.Ouput;
 using Warewolf.ResourceManagement;
-
-
-
+using System.Collections.Concurrent;
 
 namespace Dev2.Tests.Runtime.Hosting
 {
@@ -59,7 +57,7 @@ namespace Dev2.Tests.Runtime.Hosting
     {
         // Change this if you change the number of resources saved by SaveResources()
         const int SaveResourceCount = 6;
-        static readonly object syncRoot = new object();
+        static readonly object SyncRoot = new object();
 
         static string _testDir;
 
@@ -2172,7 +2170,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
         public static string SaveResources(Guid workspaceID, string versionNo, bool injectID, bool signXml, string[] sources, string[] services, out List<IResource> resources, Guid[] sourceIDs, Guid[] serviceIDs, bool loadws = false)
         {
-            lock (syncRoot)
+            lock (SyncRoot)
             {
 
                 var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
@@ -2217,7 +2215,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
         static IEnumerable<IResource> SaveResources(string resourcesPath, string versionNo, bool injectID, bool signXml, IEnumerable<string> resourceNames, Guid[] resourceIDs, bool createWorDef = false)
         {
-            lock (syncRoot)
+            lock (SyncRoot)
             {
                 var result = new List<IResource>();
                 int count = 0;
@@ -2866,10 +2864,12 @@ namespace Dev2.Tests.Runtime.Hosting
             var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
             rc.LoadWorkspaceViaBuilder(workspacePath, false, "Workflows");
 
-            Dictionary<Guid, IResourceActivityCache> _parsers = new Dictionary<Guid, IResourceActivityCache>();
+            ConcurrentDictionary<Guid, IResourceActivityCache> _parsers = new ConcurrentDictionary<Guid, IResourceActivityCache>();
             var mock = new Mock<IResourceActivityCache>();
 
-            _parsers.Add(workspaceID, mock.Object);
+            _parsers.AddOrUpdate(workspaceID, mock.Object,(key,cache)=> {
+                return cache;
+            });
             const string propertyName = "_parsers";
             FieldInfo fieldInfo = typeof(ResourceCatalog).GetField(propertyName, BindingFlags.NonPublic | BindingFlags.Static);
             fieldInfo?.SetValue(rc, _parsers);
@@ -2903,7 +2903,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
             rc.LoadWorkspaceViaBuilder(workspacePath, false, "Workflows");
 
-            Dictionary<Guid, IResourceActivityCache> _parsers = new Dictionary<Guid, IResourceActivityCache>();
+            ConcurrentDictionary<Guid, IResourceActivityCache> _parsers = new ConcurrentDictionary<Guid, IResourceActivityCache>();
 
             const string propertyName = "_parsers";
             FieldInfo fieldInfo = typeof(ResourceCatalog).GetField(propertyName, BindingFlags.NonPublic | BindingFlags.Static);
@@ -2940,7 +2940,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
             rc.LoadWorkspaceViaBuilder(workspacePath, false, "Workflows");
 
-            Dictionary<Guid, IResourceActivityCache> _parsers = new Dictionary<Guid, IResourceActivityCache>();
+            ConcurrentDictionary<Guid, IResourceActivityCache> _parsers = new ConcurrentDictionary<Guid, IResourceActivityCache>();
 
             const string propertyName = "_parsers";
             FieldInfo fieldInfo = typeof(ResourceCatalog).GetField(propertyName, BindingFlags.NonPublic | BindingFlags.Static);
@@ -2971,7 +2971,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
             rc.LoadWorkspaceViaBuilder(workspacePath, false, "Workflows");
 
-            Dictionary<Guid, IResourceActivityCache> _parsers = new Dictionary<Guid, IResourceActivityCache>();
+            ConcurrentDictionary<Guid, IResourceActivityCache> _parsers = new ConcurrentDictionary<Guid, IResourceActivityCache>();
 
             const string propertyName = "_parsers";
             FieldInfo fieldInfo = typeof(ResourceCatalog).GetField(propertyName, BindingFlags.NonPublic | BindingFlags.Static);
@@ -3004,7 +3004,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
             rc.LoadWorkspaceViaBuilder(workspacePath, false, "Workflows");
 
-            Dictionary<Guid, IResourceActivityCache> _parsers = new Dictionary<Guid, IResourceActivityCache>();
+            ConcurrentDictionary<Guid, IResourceActivityCache> _parsers = new ConcurrentDictionary<Guid, IResourceActivityCache>();
 
             const string propertyName = "_parsers";
             FieldInfo fieldInfo = typeof(ResourceCatalog).GetField(propertyName, BindingFlags.NonPublic | BindingFlags.Static);

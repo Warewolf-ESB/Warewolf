@@ -10,32 +10,28 @@ using System.Linq;
 using System.Text;
 using Warewolf.Resource.Errors;
 
-
 namespace Dev2.Services.Sql
 {
     public class PostgreServer : IDbServer
     {
-        
-
         private readonly IDbFactory _factory;
         private IDbCommand _command;
         private IDbConnection _connection;
         private IDbTransaction _transaction;
 
         public bool IsConnected
-        {
-            
+        {   
             get { return _connection != null && _connection.State == ConnectionState.Open; }
         }
 
         public string ConnectionString
-        {
-            
-            
+        {   
             get { return _connection == null ? null : _connection.ConnectionString; }
         }
 
-        public void FetchStoredProcedures(Func<IDbCommand, List<IDbDataParameter>, List<IDbDataParameter>, string, string, bool> procedureProcessor, Func<IDbCommand, List<IDbDataParameter>, List<IDbDataParameter>, string, string, bool> functionProcessor, bool continueOnProcessorException = false, string dbName = "")
+        public void FetchStoredProcedures(Func<IDbCommand, List<IDbDataParameter>, List<IDbDataParameter>, string, string, bool> procedureProcessor, Func<IDbCommand, List<IDbDataParameter>, List<IDbDataParameter>, string, string, bool> functionProcessor) => FetchStoredProcedures(procedureProcessor, functionProcessor, false, "");
+
+        public void FetchStoredProcedures(Func<IDbCommand, List<IDbDataParameter>, List<IDbDataParameter>, string, string, bool> procedureProcessor, Func<IDbCommand, List<IDbDataParameter>, List<IDbDataParameter>, string, string, bool> functionProcessor, bool continueOnProcessorException, string dbName)
         {
             VerifyArgument.IsNotNull("procedureProcessor", procedureProcessor);
             VerifyArgument.IsNotNull("functionProcessor", functionProcessor);
@@ -143,8 +139,7 @@ namespace Dev2.Services.Sql
         {
             VerifyArgument.IsNotNull("command", command);
 
-            return ExecuteReader(command, CommandBehavior.SchemaOnly & CommandBehavior.KeyInfo,
-                reader => _factory.CreateTable(reader, LoadOption.OverwriteChanges));
+            return ExecuteReader(command, reader => _factory.CreateTable(reader, LoadOption.OverwriteChanges));
         }
 
         public DataTable FetchDataTable(IDbDataParameter[] parameters, IEnumerable<IDbDataParameter> outparameters)
@@ -164,8 +159,12 @@ namespace Dev2.Services.Sql
 
         public void FetchStoredProcedures(
             Func<IDbCommand, List<IDbDataParameter>, string, string, bool> procedureProcessor,
+            Func<IDbCommand, List<IDbDataParameter>, string, string, bool> functionProcessor) => FetchStoredProcedures(procedureProcessor, functionProcessor, false, "");
+
+        public void FetchStoredProcedures(
+            Func<IDbCommand, List<IDbDataParameter>, string, string, bool> procedureProcessor,
             Func<IDbCommand, List<IDbDataParameter>, string, string, bool> functionProcessor,
-            bool continueOnProcessorException = false, string dbName = "")
+            bool continueOnProcessorException, string dbName)
         {
             VerifyArgument.IsNotNull("procedureProcessor", procedureProcessor);
             VerifyArgument.IsNotNull("functionProcessor", functionProcessor);
@@ -259,8 +258,7 @@ namespace Dev2.Services.Sql
 
         #endregion Connect
 
-        private static T ExecuteReader<T>(IDbCommand command, CommandBehavior commandBehavior,
-            Func<IDataAdapter, T> handler)
+        private static T ExecuteReader<T>(IDbCommand command, Func<IDataAdapter, T> handler)
         {
             try
             {
@@ -311,8 +309,7 @@ namespace Dev2.Services.Sql
                     
                     string.Format("SHOW CREATE PROCEDURE {0} ", objectName)))
             {
-                return ExecuteReader(command, CommandBehavior.SchemaOnly & CommandBehavior.KeyInfo,
-                    delegate (IDataAdapter reader)
+                return ExecuteReader(command, delegate (IDataAdapter reader)
                     {
                         var sb = new StringBuilder();
                         DataSet ds = new DataSet(); //conn is opened by dataadapter

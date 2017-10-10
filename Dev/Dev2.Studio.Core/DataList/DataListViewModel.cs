@@ -43,12 +43,10 @@ using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 
 
-
 namespace Dev2.Studio.ViewModels.DataList
 {
     public class DataListViewModel : BaseViewModel, IDataListViewModel, IUpdatesHelp
     {
-
         private readonly IComplexObjectHandler _complexObjectHandler;
         private readonly IScalarHandler _scalarHandler;
         private readonly IRecordsetHandler _recordsetHandler;
@@ -66,13 +64,11 @@ namespace Dev2.Studio.ViewModels.DataList
         private readonly IMissingDataList _missingDataList;
         private readonly IPartIsUsed _partIsUsed;
 
-
-
         public bool CanSortItems => HasItems();
 
         public ObservableCollection<DataListHeaderItemModel> BaseCollection
         {
-            get { return _baseCollection; }
+            get => _baseCollection;
             set
             {
                 _baseCollection = value;
@@ -82,7 +78,7 @@ namespace Dev2.Studio.ViewModels.DataList
 
         public string SearchText
         {
-            get { return _searchText; }
+            get => _searchText;
             set
             {
                 if (!string.Equals(_searchText, value, StringComparison.InvariantCultureIgnoreCase))
@@ -127,7 +123,7 @@ namespace Dev2.Studio.ViewModels.DataList
 
         public bool ViewSortDelete
         {
-            get { return _viewSortDelete; }
+            get => _viewSortDelete;
             set
             {
                 _viewSortDelete = value;
@@ -154,8 +150,6 @@ namespace Dev2.Studio.ViewModels.DataList
                 return hasErrors;
             }
         }
-
-
 
         public ObservableCollection<IScalarItemModel> ScalarCollection
         {
@@ -274,8 +268,7 @@ namespace Dev2.Studio.ViewModels.DataList
 
         private bool _toggleSortOrder = true;
         private ObservableCollection<IComplexObjectItemModel> _complexObjectCollection;
-
-
+        
         public DataListViewModel()
             : this(EventPublishers.Aggregator)
         {
@@ -320,9 +313,7 @@ namespace Dev2.Studio.ViewModels.DataList
             var item = itemx as IDataListItemModel;
             return item != null && !item.IsUsed;
         }
-
-
-
+        
         public ICommand ClearSearchTextCommand { get; private set; }
 
         public RelayCommand SortCommand
@@ -440,9 +431,7 @@ namespace Dev2.Studio.ViewModels.DataList
                     }
                 }
             }
-
             _recordsetHandler.AddMissingTempRecordSetList(tmpRecsetList);
-
             _scalarHandler.RemoveBlankScalars();
             _recordsetHandler.RemoveBlankRecordsets();
             _recordsetHandler.RemoveBlankRecordsetFields();
@@ -451,9 +440,7 @@ namespace Dev2.Studio.ViewModels.DataList
             {
                 AddBlankRow(null);
             }
-
             UpdateIntellisenseList();
-
             WriteToResourceModel();
         }
 
@@ -674,8 +661,6 @@ namespace Dev2.Studio.ViewModels.DataList
             }
         }
 
-
-
         private void ValidateScalar()
         {
             CheckDataListItemsForDuplicates(DataList);
@@ -748,16 +733,9 @@ namespace Dev2.Studio.ViewModels.DataList
             }
             return false;
         }
-
-        /// <summary>
-        ///     Creates the full data list.
-        /// </summary>
-        /// <returns></returns>
+        
         private OptomizedObservableCollection<IDataListItemModel> CreateFullDataList() => _helper.CreateFullDataList();
-
-        /// <summary>
-        ///     Sorts the items.
-        /// </summary>
+        
         private void SortItems()
         {
             try
@@ -782,12 +760,7 @@ namespace Dev2.Studio.ViewModels.DataList
         }
 
         public bool IsSorting { get; set; }
-
-        /// <summary>
-        ///     Creates the list of data list item view model to bind to.
-        /// </summary>
-        /// <param name="errorString">The error string.</param>
-        /// <returns></returns>
+        
         public void CreateListsOfIDataListItemModelToBindTo(out string errorString)
         {
             errorString = string.Empty;
@@ -912,7 +885,7 @@ namespace Dev2.Studio.ViewModels.DataList
         private void AddScalars(XmlNode c)
         {
             _scalarHandler.AddScalars(c);
-        }
+        }        
 
 
 
@@ -965,15 +938,7 @@ namespace Dev2.Studio.ViewModels.DataList
         {
             _helper.AddItemToBuilder(result, item);
         }
-
-        /// <summary>
-        /// Determines whether this instance has items in either calar or recset collection.
-        /// </summary>
-        /// <returns>
-        ///   <c>true</c> if this instance has items; otherwise, <c>false</c>.
-        /// </returns>
-        /// <author>Jurie.smit</author>
-        /// <date>2013/06/25</date>
+        
         private bool HasItems()
         {
             return (ScalarCollection != null && ScalarCollection.Count > 1) || (RecsetCollection != null && RecsetCollection.Count > 1) || (ComplexObjectCollection != null && ComplexObjectCollection.Count >= 1);
@@ -1013,20 +978,14 @@ namespace Dev2.Studio.ViewModels.DataList
             _recordsetHandler.SetRecordSetItemsAsUsed();
         }
 
+        public List<IDataListVerifyPart> MissingWorkflowItems(IList<IDataListVerifyPart> partsToVerify) => MissingWorkflowItems(partsToVerify, false);
 
-        /// <summary>
-        /// Finds the missing workflow data regions.
-        /// </summary>
-        /// <param name="partsToVerify">The parts to verify.</param>
-        /// <param name="excludeUnusedItems"></param>
-        /// <returns></returns>
-        public List<IDataListVerifyPart> MissingWorkflowItems(IList<IDataListVerifyPart> partsToVerify, bool excludeUnusedItems = false)
+        public List<IDataListVerifyPart> MissingWorkflowItems(IList<IDataListVerifyPart> partsToVerify, bool excludeUnusedItems)
         {
             var missingWorkflowParts = new List<IDataListVerifyPart>();
 
             if (DataList != null)
-            {
-
+            {                
                 missingWorkflowParts.AddRange(_missingDataList.MissingScalars(partsToVerify, excludeUnusedItems));
                 missingWorkflowParts.AddRange(_missingDataList.MissingRecordsets(partsToVerify, excludeUnusedItems));
             }
@@ -1051,14 +1010,11 @@ namespace Dev2.Studio.ViewModels.DataList
             IList<IDataListVerifyPart> removeParts = MissingWorkflowItems(workflowFields);
             var filteredDataListParts = MissingDataListParts(workflowFields);
             ShowUnusedDataListVariables(resourceModel, removeParts, workflowFields);
-
             ViewModelUtils.RaiseCanExecuteChanged(DeleteCommand);
-
             if (resourceModel != Resource)
             {
                 return new List<IDataListVerifyPart>();
             }
-
             AddMissingDataListItems(filteredDataListParts);
             return filteredDataListParts;
         }
@@ -1086,20 +1042,14 @@ namespace Dev2.Studio.ViewModels.DataList
                 });
 
                 var errorMessages = allErrorMessages as IList<string> ?? allErrorMessages.ToList();
-                string.Join(Environment.NewLine, errorMessages.Where(s => !string.IsNullOrEmpty(s)));
-
                 allErrorMessages = errorMessages.Union(ScalarCollection.Select(model => model.HasError ? BuildErrorMessage(model) : null));
-
                 allErrorMessages = allErrorMessages.Union(ComplexObjectCollection.Flatten(model => model.Children).Select(model => model.HasError ? BuildErrorMessage(model) : null));
-
                 var completeErrorMessage = Environment.NewLine + string.Join(Environment.NewLine, allErrorMessages.Where(s => !string.IsNullOrEmpty(s)));
-
                 return completeErrorMessage;
             }
         }
 
         public ISuggestionProvider Provider { get; set; }
-
 
         private static string BuildErrorMessage(IDataListItemModel model)
         {

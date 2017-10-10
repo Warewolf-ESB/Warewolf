@@ -40,13 +40,18 @@ namespace Dev2.Settings.Perfcounters
                     current = new PerformanceCountersByResource { ResourceId = resourcePerformanceCounter.ResourceId, CounterName = resourcePerformanceCounter.CategoryInstanceName };
                     res.Add(current);
                 }
-                switch(resourcePerformanceCounter.PerfCounterType)
+                switch (resourcePerformanceCounter.PerfCounterType)
                 {
                     case WarewolfPerfCounterType.AverageExecutionTime: current.AverageExecutionTime = true; break;
                     case WarewolfPerfCounterType.ExecutionErrors: current.TotalErrors = true; break;
                     case WarewolfPerfCounterType.ConcurrentRequests: current.ConcurrentRequests = true; break;
                     case WarewolfPerfCounterType.RequestsPerSecond: current.RequestPerSecond = true; break;
-
+                    case WarewolfPerfCounterType.ServicesNotFound:
+                        break;
+                    case WarewolfPerfCounterType.NotAuthorisedErrors:
+                        break;
+                    default:
+                        break;
                 }
             }
 
@@ -170,6 +175,8 @@ namespace Dev2.Settings.Perfcounters
                     break;
                 case "TotalErrors":
                     result = px.TotalErrors.CompareTo(py.RequestPerSecond);
+                    break;
+                default:
                     break;
             }
             return _direction * result;

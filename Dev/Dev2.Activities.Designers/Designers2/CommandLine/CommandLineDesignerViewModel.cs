@@ -34,7 +34,7 @@ namespace Dev2.Activities.Designers2.CommandLine
 
         public List<KeyValuePair<ProcessPriorityClass, string>> CommandPriorities { get; private set; }
 
-        public bool IsCommandFileNameFocused { get { return (bool)GetValue(IsCommandFileNameFocusedProperty); } set { SetValue(IsCommandFileNameFocusedProperty, value); } }
+        public bool IsCommandFileNameFocused { get => (bool)GetValue(IsCommandFileNameFocusedProperty); set { SetValue(IsCommandFileNameFocusedProperty, value); } }
 
         public static readonly DependencyProperty IsCommandFileNameFocusedProperty =
             DependencyProperty.Register("IsCommandFileNameFocused", typeof(bool), typeof(CommandLineDesignerViewModel), new PropertyMetadata(false));

@@ -65,14 +65,7 @@ namespace Dev2.Common.DateAndTime
         internal static int GetDayOfWeekInt(DayOfWeek dayOfWeek)
         {
             int val;
-            if (dayOfWeek == DayOfWeek.Sunday)
-            {
-                val = 7;
-            }
-            else
-            {
-                val = (int)dayOfWeek;
-            }
+            val = dayOfWeek == DayOfWeek.Sunday ? 7 : (int)dayOfWeek;
 
             return val;
         }

@@ -47,8 +47,6 @@ using Moq;
 using Moq.Language.Flow;
 using Moq.Protected;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
-using Dev2.Common.Interfaces;
-using Dev2.Studio.Core.Views;
 
 
 namespace Dev2.Activities.Designers.Tests.Service
@@ -349,13 +347,6 @@ namespace Dev2.Activities.Designers.Tests.Service
 
             Assert.IsTrue(vm.Properties.Count == 3);
         }
-
-        #endregion
-
-        #region Design Validation Service
-
-
-
 
         #endregion
 
@@ -2740,7 +2731,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             resourceRepository = new Mock<IResourceRepository>();
             resourceRepository.Setup(repository => repository.LoadContextualResourceModel(It.IsAny<Guid>())).Returns(model.Object);
             var mockEnvironmentRepository = new Mock<IServerRepository>();
-            mockEnvironmentRepository.Setup(e => e.LookupEnvironments(It.IsAny<IServer>(), null)).Returns(new List<IServer> { environmentModel });
+            mockEnvironmentRepository.Setup(e => e.LookupEnvironments(It.IsAny<IServer>())).Returns(new List<IServer> { environmentModel });
             
             new ServerRepository(mockEnvironmentRepository.Object);
             

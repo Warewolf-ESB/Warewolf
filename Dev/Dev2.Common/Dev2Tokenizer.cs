@@ -54,14 +54,7 @@ namespace Dev2.Common
             _opPointer = 0;
             _hasMoreOps = true;
 
-            if (!_isReversed)
-            {
-                _startIdx = 0;
-            }
-            else
-            {
-                _startIdx = _tokenParts.Length - 1;
-            }
+            _startIdx = !_isReversed ? 0 : _tokenParts.Length - 1;
         }
 
         #region Private Method
@@ -117,14 +110,7 @@ namespace Dev2.Common
         {
             bool result;
 
-            if (!_isReversed)
-            {
-                result = _startIdx < _masterLen;
-            }
-            else
-            {
-                result = _startIdx >= 0;
-            }
+            result = !_isReversed ? _startIdx < _masterLen : _startIdx >= 0;
 
             return result;
         }

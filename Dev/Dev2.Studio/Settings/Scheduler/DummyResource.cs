@@ -245,10 +245,6 @@ namespace Dev2.Scheduler
             {
                 return true;
             }
-            set
-            {
-
-            }
         }
         public string NameForDisplay { get; private set; }
 

@@ -30,26 +30,15 @@ using Infragistics.Windows.DockManager.Events;
 
 namespace Dev2.Studio.Dock
 {
-    /// <summary>
-    /// Class used to generate ContentPane instances based on a given source collection of items (<see cref="ContainerFactoryBase.ItemsSource"/>).
-    /// </summary>
     public class ContentPaneFactory : ContainerFactory
     {
-
         private DependencyObject _target;
-
 
         static ContentPaneFactory()
         {
             ContainerTypeProperty.OverrideMetadata(typeof(ContentPaneFactory), new FrameworkPropertyMetadata(typeof(ContentPane)));
         }
-
-
-        /// <summary>
-        /// Used to clear any settings applied to a container in the <see cref="PrepareContainerForItem"/>
-        /// </summary>
-        /// <param name="container">The container element </param>
-        /// <param name="item">The item from the source collection</param>
+        
         protected override void ClearContainerForItem(DependencyObject container, object item)
         {
             if (container is ContentPane pane)
@@ -60,45 +49,21 @@ namespace Dev2.Studio.Dock
 
             base.ClearContainerForItem(container, item);
         }
-
-        /// <summary>
-        /// Invoked when an element for an item has been generated.
-        /// </summary>
-        /// <param name="item">The underlying item for which the element has been generated</param>
-        /// <param name="container">The element that was generated</param>
-        /// <param name="index">The index at which the item existed</param>
+        
         protected sealed override void OnItemInserted(DependencyObject container, object item, int index)
         {
             AddPane((ContentPane)container);
         }
-
-        /// <summary>
-        /// Invoked when an item has been moved in the source collection.
-        /// </summary>
-        /// <param name="item">The item that was moved</param>
-        /// <param name="container">The associated element</param>
-        /// <param name="oldIndex">The old index</param>
-        /// <param name="newIndex">The new index</param>
+        
         protected sealed override void OnItemMoved(DependencyObject container, object item, int oldIndex, int newIndex)
         {
         }
-
-
-        /// <summary>
-        /// Invoked when an element created for an item has been removed
-        /// </summary>
-        /// <param name="oldItem">The item associated with the element that was removed</param>
-        /// <param name="container">The element that has been removed</param>
+        
         protected sealed override void OnItemRemoved(DependencyObject container, object oldItem)
         {
             RemovePane((ContentPane)container);
         }
-
-        /// <summary>
-        /// Used to initialize a container for a given item.
-        /// </summary>
-        /// <param name="container">The container element </param>
-        /// <param name="item">The item from the source collection</param>
+        
         protected override void PrepareContainerForItem(DependencyObject container, object item)
         {
              BindingHelper.BindPath(container, item, HeaderPath, HeaderedContentControl.HeaderProperty);
@@ -110,19 +75,15 @@ namespace Dev2.Studio.Dock
             ContentPane pane = container as ContentPane;
 
             SetTabName(pane, item);
-
-            //Aded to prevent tab from stealing focus from adorners
-            //FocusManager.SetIsFocusScope(pane, false);
+            
             if(pane != null)
             {
                 pane.PreviewLostKeyboardFocus += pane_PreviewLostKeyboardFocus;
                 pane.PreviewGotKeyboardFocus += pane_PreviewLostKeyboardFocus;
                 pane.PreviewMouseDown+=PaneOnPreviewMouseDown;
-                // always hook the closed
                 pane.Closed += OnPaneClosed;
                 pane.Closing += OnPaneClosing;
-
-                //Juries attach to events when viewmodel is closed/deactivated to close view.
+                
                 if (item is WorkSurfaceContextViewModel model)
                 {
                     var vm = model;
@@ -133,8 +94,7 @@ namespace Dev2.Studio.Dock
                 if (RemoveItemOnClose)
                 {
                     IEditableCollectionView cv = CollectionViewSource.GetDefaultView(ItemsSource) as IEditableCollectionView;
-
-                    // set the pane to be removed from the dockmanager
+                    
                     pane.CloseAction = PaneCloseAction.RemovePane;
 
                     if(null == cv || !cv.CanRemove)
@@ -213,8 +173,7 @@ namespace Dev2.Studio.Dock
                 }
             }
         }
-
-        //Juries TODO improve (remove typing tied to contentfactory)
+        
         private void SetTabName(ContentPane pane, object item)
         {
             if (item is WorkSurfaceContextViewModel model)
@@ -227,11 +186,7 @@ namespace Dev2.Studio.Dock
                 pane.Name = item.ToString();
             }
         }
-
-        /// <summary>
-        /// Invoked when the <see cref="ContainerFactory.ContainerType"/> is about to be changed to determine if the specified type is allowed.
-        /// </summary>
-        /// <param name="elementType">The new element type</param>
+        
         protected sealed override void ValidateContainerType(Type elementType)
         {
             if(!typeof(ContentPane).IsAssignableFrom(elementType))
@@ -240,17 +195,9 @@ namespace Dev2.Studio.Dock
             }
             base.ValidateContainerType(elementType);
         }
-
-        /// <summary>
-        /// Identifies the <see cref="ContentPath"/> dependency property
-        /// </summary>
         public static readonly DependencyProperty ContentPathProperty = DependencyProperty.Register("ContentPath",
             typeof(string), typeof(ContentPaneFactory), new FrameworkPropertyMetadata(null));
-
-        /// <summary>
-        /// Returns or sets the path to the property on the underlying item that should be used to provide the Content for the ContentPane.
-        /// </summary>
-        /// <seealso cref="ContentPathProperty"/>
+        
         [Description("Returns or sets the path to the property on the underlying item that should be used to provide the Content for the ContentPane.")]
         [Category("Behavior")]
         [Bindable(true)]
@@ -265,17 +212,10 @@ namespace Dev2.Studio.Dock
                 SetValue(ContentPathProperty, value);
             }
         }
-
-        /// <summary>
-        /// Identifies the <see cref="HeaderPath"/> dependency property
-        /// </summary>
+        
         public static readonly DependencyProperty HeaderPathProperty = DependencyProperty.Register("HeaderPath",
             typeof(string), typeof(ContentPaneFactory), new FrameworkPropertyMetadata(null));
-
-        /// <summary>
-        /// Returns or sets the path to the property on the underlying item that should be used to provide the Header for the ContentPane.
-        /// </summary>
-        /// <seealso cref="HeaderPathProperty"/>
+        
         [Description("Returns or sets the path to the property on the underlying item that should be used to provide the Header for the ContentPane.")]
         [Category("Behavior")]
         [Bindable(true)]
@@ -290,18 +230,12 @@ namespace Dev2.Studio.Dock
                 SetValue(HeaderPathProperty, value);
             }
         }
-
-        /// <summary>
-        /// PaneFactory Attached Dependency Property
-        /// </summary>
+        
         public static readonly DependencyProperty PaneFactoryProperty =
             DependencyProperty.RegisterAttached("PaneFactory", typeof(ContentPaneFactory), typeof(ContentPaneFactory),
                 new FrameworkPropertyMetadata(null,
                     OnPaneFactoryChanged));
-
-        /// <summary>
-        /// Returns the object that creates ContentPane instances based on the items in the associated <see cref="ContainerFactoryBase.ItemsSource"/>
-        /// </summary>
+        
         [AttachedPropertyBrowsableForType(typeof(DocumentContentHost))]
         [AttachedPropertyBrowsableForType(typeof(TabGroupPane))]
         [AttachedPropertyBrowsableForType(typeof(SplitPane))]
@@ -309,10 +243,7 @@ namespace Dev2.Studio.Dock
         {
             return (ContentPaneFactory)d.GetValue(PaneFactoryProperty);
         }
-
-        /// <summary>
-        /// Sets the object that will create ContentPane instances based on the items in the associate <see cref="ContainerFactoryBase.ItemsSource"/>
-        /// </summary>
+        
         public static void SetPaneFactory(DependencyObject d, ContentPaneFactory value)
         {
             d.SetValue(PaneFactoryProperty, value);
@@ -353,17 +284,10 @@ namespace Dev2.Studio.Dock
                 }
             }
         }
-
-        /// <summary>
-        /// Identifies the <see cref="RemoveItemOnClose"/> dependency property
-        /// </summary>
+        
         public static readonly DependencyProperty RemoveItemOnCloseProperty = DependencyProperty.Register("RemoveItemOnClose",
             typeof(bool), typeof(ContentPaneFactory), new FrameworkPropertyMetadata(KnownBoxes.TrueBox));
-
-        /// <summary>
-        /// Returns or sets a boolean indicating whether to remove the item when the pane was closed.
-        /// </summary>
-        /// <seealso cref="RemoveItemOnCloseProperty"/>
+        
         [Description("Returns or sets a boolean indicating whether to remove the item when the pane was closed.")]
         [Category("Behavior")]
         [Bindable(true)]
@@ -378,17 +302,10 @@ namespace Dev2.Studio.Dock
                 SetValue(RemoveItemOnCloseProperty, value);
             }
         }
-
-        /// <summary>
-        /// Identifies the <see cref="TabHeaderPath"/> dependency property
-        /// </summary>
+        
         public static readonly DependencyProperty TabHeaderPathProperty = DependencyProperty.Register("TabHeaderPath",
             typeof(string), typeof(ContentPaneFactory), new FrameworkPropertyMetadata(null));
-
-        /// <summary>
-        /// Returns or sets the path to the property on the underlying item that should be used to provide the TabHeader for the ContentPane.
-        /// </summary>
-        /// <seealso cref="TabHeaderPathProperty"/>
+        
         [Description("Returns or sets the path to the property on the underlying item that should be used to provide the TabHeader for the ContentPane.")]
         [Category("Behavior")]
         [Bindable(true)]
@@ -404,10 +321,6 @@ namespace Dev2.Studio.Dock
             }
         }
         
-        /// <summary>
-        /// Invoked when a new <see cref="ContentPane"/> has been created and needs to be added to the appropriate target collection.
-        /// </summary>
-        /// <param name="pane">The pane that was created and needs to be added to the appropriate collection</param>
         protected virtual void AddPane(ContentPane pane)
         {
             if (_target is DocumentContentHost host)
@@ -460,8 +373,7 @@ namespace Dev2.Studio.Dock
                 }
             }
         }
-
-
+        
         private ContentPane GetSiblingDocument()
         {
             DocumentContentHost dch = _target as DocumentContentHost;
@@ -540,11 +452,7 @@ namespace Dev2.Studio.Dock
             vm.TryClose();
             if (vm.Parent is ShellViewModel mainVm)
             {
-                if (mainVm.CloseCurrent)
-                {
-                    //vm.Dispose();
-                }
-                else
+                if (!mainVm.CloseCurrent)
                 {
                     e.Cancel = true;
                 }
@@ -554,10 +462,6 @@ namespace Dev2.Studio.Dock
 
         private void OnPaneClosed(object sender, PaneClosedEventArgs e)
         {
-
-            // if the pane was closed because it was removed from the source collection
-            // then we don't want to do anything. however if it is remove pane then 
-            // we want to try and remove it from the source collection
             if (sender is ContentPane pane && IsContainerInUse(pane) && pane.CloseAction == PaneCloseAction.RemovePane)
             {
                 var cv = CollectionViewSource.GetDefaultView(ItemsSource) as IEditableCollectionView;
@@ -589,14 +493,9 @@ namespace Dev2.Studio.Dock
             var args = new InitializeContentPaneEventArgs(pane) { RoutedEvent = InitializeContentPaneEvent };
             UiElementHelper.RaiseEvent(_target, args);
         }
-
-        /// <summary>
-        /// Invoked when a ContentPane for a given item is being removed.
-        /// </summary>
-        /// <param name="cp">The pane being removed</param>
+        
         protected virtual void RemovePane(ContentPane cp)
         {
-            // we need to temporarily change the close action while we close it
             DependencyProperty closeProp = ContentPane.CloseActionProperty;
             if(cp == null)
             {
@@ -607,8 +506,7 @@ namespace Dev2.Studio.Dock
             BindingExpressionBase oldExpression = cp.GetBindingExpression(closeProp);
 
             cp.CloseAction = PaneCloseAction.RemovePane;
-
-            // restore the original close action
+            
             if(oldExpression != null)
             {
                 cp.SetBinding(closeProp, oldExpression.ParentBindingBase);
@@ -623,40 +521,22 @@ namespace Dev2.Studio.Dock
             }
             cp.PreviewMouseDown -= PaneOnPreviewMouseDown;
         }
-
-
-
-        /// <summary>
-        /// InitializeContentPane Attached Routed Event
-        /// </summary>
+        
         public static readonly RoutedEvent InitializeContentPaneEvent = EventManager.RegisterRoutedEvent("InitializeContentPane",
             RoutingStrategy.Direct, typeof(EventHandler<InitializeContentPaneEventArgs>), typeof(ContentPaneFactory));
 
 
     }
-
-    /// <summary>
-    /// Event arguments for the <see cref="ContentPaneFactory.InitializeContentPaneEvent"/>
-    /// </summary>
+    
     public class InitializeContentPaneEventArgs : RoutedEventArgs
     {
-
         readonly ContentPane _pane;
-
-        /// <summary>
-        /// Initializes a new <see cref="InitializeContentPaneEventArgs"/>
-        /// </summary>
-        /// <param name="pane">The pane being initialized</param>
+        
         public InitializeContentPaneEventArgs(ContentPane pane)
         {
             _pane = pane ?? throw new ArgumentNullException(nameof(pane));
         }
-
-        /// <summary>
-        /// Returns the pane being initialized
-        /// </summary>
-        
+                
         public ContentPane Pane => _pane;
-
     }
 }

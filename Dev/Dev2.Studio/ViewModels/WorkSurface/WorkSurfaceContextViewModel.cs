@@ -532,7 +532,8 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             SaveDialogHelper.ShowNewWorkflowSaveDialog(resourceModel, null, addToTabManager);
         }
 
-        public bool Save(bool isLocalSave = false, bool isStudioShutdown = false)
+        public bool Save() => Save(false, false);
+        public bool Save(bool isLocalSave, bool isStudioShutdown)
         {
             var saveResult = Save(ContextualResourceModel, isLocalSave);
             WorkSurfaceViewModel?.NotifyOfPropertyChange("DisplayName");

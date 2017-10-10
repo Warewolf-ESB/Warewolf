@@ -22,7 +22,7 @@ namespace Dev2.Activities.Designers2.CreateJSON
 {
     public class CreateJsonDesignerViewModel : ActivityCollectionDesignerViewModel<JsonMappingTo>
     {
-        public Func<string> GetDatalistString = () => DataListSingleton.ActiveDataList.Resource.DataList;
+        readonly Func<string> GetDatalistString = () => DataListSingleton.ActiveDataList.Resource.DataList;
         public CreateJsonDesignerViewModel(ModelItem modelItem)
             : base(modelItem)
         {

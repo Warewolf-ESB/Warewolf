@@ -24,7 +24,7 @@ namespace Dev2.Activities.Designers2.Core
     {
         public static void SetZIndex(this FrameworkElement element, ZIndexPosition position)
         {
-            switch(position)
+            switch (position)
             {
                 case ZIndexPosition.Front:
                     Panel.SetZIndex(element, Int32.MaxValue);
@@ -32,6 +32,8 @@ namespace Dev2.Activities.Designers2.Core
 
                 case ZIndexPosition.Back:
                     Panel.SetZIndex(element, Int32.MinValue);
+                    break;
+                default:
                     break;
             }
         }

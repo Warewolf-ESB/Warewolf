@@ -10,7 +10,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
@@ -384,6 +383,8 @@ namespace Dev2.Core.Tests
                         Assert.AreEqual(2, model.Errors.Count);
                         Assert.AreEqual(0, model.FixedErrors.Count);
                         break;
+                    default:
+                        break;
                 }
             };
 
@@ -433,6 +434,8 @@ namespace Dev2.Core.Tests
 
                         Assert.AreEqual(1, model.Errors.Count);
                         Assert.AreEqual(0, model.FixedErrors.Count);
+                        break;
+                    default:
                         break;
                 }
             };

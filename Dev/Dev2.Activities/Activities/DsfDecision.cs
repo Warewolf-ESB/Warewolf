@@ -19,6 +19,7 @@ using Newtonsoft.Json;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
+using Dev2.Common;
 
 namespace Dev2.Activities
 {
@@ -243,9 +244,9 @@ namespace Dev2.Activities
                 AddDebugItem(new DebugItemStaticDataParams(dds.Mode == Dev2DecisionMode.AND ? "YES" : "NO", "Require all decisions to be true"), itemToAdd);
                 result.Add(itemToAdd);
             }
-            catch (JsonSerializationException)
+            catch (JsonSerializationException e)
             {
-
+                Dev2Logger.Warn(e.Message, "Warewolf Warn");
             }
             catch (Exception e)
             {
@@ -337,7 +338,6 @@ namespace Dev2.Activities
                     {
                         expressiomToStringValue = "";
                     }
-                    // EvaluateExpressiomToStringValue(expression, decisionMode, dataList);
                     userModel = userModel.Replace(expression, expressiomToStringValue);
                     debugResult = new DebugItemWarewolfAtomResult(expressiomToStringValue, expression, "");
                 }

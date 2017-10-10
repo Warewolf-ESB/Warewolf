@@ -15,9 +15,7 @@ using System.Linq.Expressions;
 using Dev2.Common.Interfaces.Core;
 using TechTalk.SpecFlow;
 using Warewolf.Core;
-using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Studio.Interfaces;
-using Warewolf.Tools.Specs.Toolbox.Database;
 
 namespace Dev2.Activities.Specs.Toolbox.Resources
 {

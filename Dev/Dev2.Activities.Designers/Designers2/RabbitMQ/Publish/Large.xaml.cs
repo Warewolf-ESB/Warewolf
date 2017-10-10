@@ -17,25 +17,11 @@ namespace Dev2.Activities.Designers2.RabbitMQ.Publish
         public Large()
         {
             InitializeComponent();
-            Loaded += OnLoaded;
         }
-
-        RabbitMQPublishDesignerViewModel ViewModel => DataContext as RabbitMQPublishDesignerViewModel;
 
         protected override IInputElement GetInitialFocusElement()
         {
             return InitialFocusElement;
-        }
-
-        //public string ThePassword { get { return ThePasswordBox.Password; } set { ThePasswordBox.Password = value; } }
-
-        void OnLoaded(object sender, RoutedEventArgs routedEventArgs)
-        {
-            //var viewModel = ViewModel;
-            //if(viewModel != null)
-            //{
-            //    ThePassword = viewModel.Password;
-            //}
         }
     }
 }

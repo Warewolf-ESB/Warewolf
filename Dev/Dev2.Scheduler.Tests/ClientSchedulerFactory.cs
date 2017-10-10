@@ -50,8 +50,5 @@ namespace Dev2.Scheduler.Test
             trig = _fact.CreateTrigger(new WeeklyTrigger());
             Assert.AreEqual(trig.Trigger.TriggerType, TaskTriggerType.Weekly);
         }
-
-
-
     }
 }

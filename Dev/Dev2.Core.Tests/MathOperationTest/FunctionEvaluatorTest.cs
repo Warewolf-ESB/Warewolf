@@ -12,7 +12,7 @@ using System;
 using Dev2.Data.MathOperations;
 using Dev2.MathOperations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-
+using Dev2.Common;
 
 namespace Dev2.Tests.MathOperationTest
 {
@@ -160,7 +160,7 @@ namespace Dev2.Tests.MathOperationTest
         {
             DateTime date = new DateTime(2012, 2, 2);
             const string expression = @"Date(2012,2,2)";
-            string expected = date.ToShortDateString();
+            string expected = date.ToString(GlobalConstants.Dev2DotNetDefaultDateTimeFormat);
 
             bool hasSucceeded = _eval.TryEvaluateFunction(expression, out string actual, out string error);
 

@@ -108,13 +108,15 @@ namespace Warewolf.Studio.Views
 
         public bool GetControlEnabled(string controlName)
         {
-            switch(controlName)
+            switch (controlName)
             {
                 case "Save":
                     var viewModel = DataContext as ManageComPluginSourceViewModel;
                     return viewModel != null && viewModel.OkCommand.CanExecute(null);
                 case "Filter":
                     return SearchTextBox.IsEnabled;
+                default:
+                    break;
             }
             return false;
         }
@@ -129,7 +131,7 @@ namespace Warewolf.Studio.Views
             var count = ExplorerTree.Nodes.Count;
         }
 
-       
-        
+
+
     }
 }

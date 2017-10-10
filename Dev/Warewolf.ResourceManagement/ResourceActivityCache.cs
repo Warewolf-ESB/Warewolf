@@ -15,9 +15,11 @@ namespace Warewolf.ResourceManagement
         {
             _activityParser = activityParser;
             _cache = cache;
-        }        
+        }
 
-        public IDev2Activity Parse(DynamicActivity activity,Guid resourceIdGuid,bool failOnException=false)
+        public IDev2Activity Parse(DynamicActivity activity, Guid resourceIdGuid) => Parse(activity, resourceIdGuid, false);
+
+        public IDev2Activity Parse(DynamicActivity activity, Guid resourceIdGuid, bool failOnException)
         {
             if(HasActivityInCache(resourceIdGuid))
             {
