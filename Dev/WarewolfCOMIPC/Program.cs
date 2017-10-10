@@ -10,12 +10,9 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using WarewolfCOMIPC.Client;
 
-
-
 namespace WarewolfCOMIPC
 {
-    
-    class Program
+    static class Program
     {
         static void Main(string[] args)
         {
@@ -25,8 +22,7 @@ namespace WarewolfCOMIPC
             }
 
             string token = args[0];
-
-            // Create new named pipe with token from client
+            
             Console.WriteLine("Starting Server Pipe Stream");
             using (var pipe = new NamedPipeServerStream(token, PipeDirection.InOut, 253, PipeTransmissionMode.Message))
             {
@@ -38,10 +34,6 @@ namespace WarewolfCOMIPC
 
         private static void AcceptMessagesFromPipe(NamedPipeServerStream pipe)
         {
-
-
-            // Receive CallData from client
-            //var formatter = new BinaryFormatter();
             Console.WriteLine("IpcClient Connected to Server Pipe Stream");
             var serializer = new JsonSerializer();
             var sr = new StreamReader(pipe);
@@ -54,7 +46,6 @@ namespace WarewolfCOMIPC
             catch 
             {
                 callData = null;
-                //
             }
             if (callData != null)
             {
@@ -193,7 +184,6 @@ namespace WarewolfCOMIPC
                     {
                         var type = Type.GetTypeFromCLSID(data.CLSID, true);
                         var loadedAssembly = type.Assembly;
-                        // ensure we flush out the rubbish that GAC brings ;)
                         var namespaces = loadedAssembly.GetTypes()
                             .Select(t => t.FullName)
                             .Distinct()
