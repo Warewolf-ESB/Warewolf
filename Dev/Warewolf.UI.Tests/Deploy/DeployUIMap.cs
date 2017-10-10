@@ -9,6 +9,7 @@ using TechTalk.SpecFlow;
 using Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses;
 using Warewolf.UI.Tests.WorkflowServiceTesting.WorkflowServiceTestingUIMapClasses;
 using Warewolf.UI.Tests.DialogsUIMapClasses;
+using Microsoft.VisualStudio.TestTools.UITest.Extension;
 
 namespace Warewolf.UI.Tests.Deploy.DeployUIMapClasses
 {
@@ -307,7 +308,14 @@ namespace Warewolf.UI.Tests.Deploy.DeployUIMapClasses
                 {
                     DialogsUIMap.MessageBoxWindow.OKButton.WaitForControlReady(60000);
                     successful = UIMap.ControlExistsNow(DialogsUIMap.MessageBoxWindow.ResourcesDeployedSucText);
-                    Mouse.Click(DialogsUIMap.MessageBoxWindow.OKButton);
+                    try
+                    {
+                        Mouse.Click(DialogsUIMap.MessageBoxWindow.OKButton);
+                    }
+                    catch (UITestControlNotAvailableException e)
+                    {
+                        Console.WriteLine(e.Message);
+                    }
                 }
                 else
                 {
