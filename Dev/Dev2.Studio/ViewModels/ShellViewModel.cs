@@ -720,13 +720,11 @@ namespace Dev2.Studio.ViewModels
             var result = mergeServiceViewModel.ShowMergeDialog();
             if (result == MessageBoxResult.OK)
             {
-                var differentResource = mergeServiceViewModel.SelectedMergeItem as VersionViewModel;
-                
-                var resourceVersion = differentResource.ToContextualResourceModel(ActiveServer, differentResource.ResourceId);
-                var resourceModel = ActiveServer?.ResourceRepository.LoadContextualResourceModel(differentResource.ResourceId);
-                if (differentResource != null)
                 if (mergeServiceViewModel.SelectedMergeItem is VersionViewModel differentResource)
                 {
+                    var resourceVersion = differentResource.ToContextualResourceModel(ActiveServer, differentResource.ResourceId);
+                    var resourceModel = ActiveServer?.ResourceRepository.LoadContextualResourceModel(differentResource.ResourceId);
+
                     var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.MergeConflicts);
                     if (resourceModel != null && resourceVersion != null)
                     {
