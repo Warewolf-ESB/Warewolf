@@ -64,15 +64,8 @@ namespace Dev2.MathOperations
                     {
                         if(value.IsDateTime)
                         {
-                            DateTime dateTime = value.ToDateTime();
-                            string shortPattern = CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern;
-                            string longPattern = CultureInfo.CurrentCulture.DateTimeFormat.LongTimePattern;
-                            string finalPattern = shortPattern + " " + longPattern;
-                            if(finalPattern.Contains("ss"))
-                            {
-                                finalPattern = finalPattern.Insert(finalPattern.IndexOf("ss", StringComparison.Ordinal) + 2, ".fff");
-                            }
-                            evaluation = dateTime.ToString(finalPattern);
+                            DateTime dateTime = value.ToDateTime();                            
+                            evaluation = dateTime.ToString(GlobalConstants.Dev2DotNetDefaultDateTimeFormat);
                         }
                         else
                         {

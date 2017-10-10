@@ -100,7 +100,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.FileAndFolder.Write_File
             var appendTop = false;
             var appendBottom = false;
 
-            switch(readtype)
+            switch (readtype)
             {
                 case "Overwrite":
                     overwrite = true;
@@ -110,6 +110,8 @@ namespace Warewolf.ToolsSpecs.Toolbox.FileAndFolder.Write_File
                     break;
                 case "Append Bottom":
                     appendBottom = true;
+                    break;
+                default:
                     break;
             }
 

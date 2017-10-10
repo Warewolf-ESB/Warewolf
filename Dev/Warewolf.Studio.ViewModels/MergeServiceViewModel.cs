@@ -33,6 +33,9 @@ namespace Warewolf.Studio.ViewModels
             localhostEnvironment.Children = shellViewModel.ExplorerViewModel?.Environments[0].Children;
             _shellViewModel = shellViewModel;
             _selectedResource = selectedResource;
+
+            ResourceToMerge = _selectedResource.IsVersion ? _selectedResource.Parent.ResourceName : _selectedResource.ResourceName;
+
             _view = mergeView;
 
             Environments = new ObservableCollection<IEnvironmentViewModel> { localhostEnvironment };
@@ -42,7 +45,7 @@ namespace Warewolf.Studio.ViewModels
                 SelectedConnection = selectedServer
             };
 
-            LoadVersions(selectedResource, selectedResource.Server);
+            LoadVersions(selectedResource.Server);
             ShowConnectControl = true;
             MergeConnectControlViewModel.CanEditServer = false;
             MergeConnectControlViewModel.CanCreateServer = false;
@@ -61,20 +64,33 @@ namespace Warewolf.Studio.ViewModels
             };
         }
 
-        private void LoadVersions(IExplorerItemViewModel selectedResource, IServer server)
+        private void LoadVersions(IServer server)
         {
             MergeResourceVersions = new ObservableCollection<IExplorerItemViewModel>();
-            var versionInfos = server.ExplorerRepository.GetVersions(selectedResource.ResourceId);
+            var versionInfos = server.ExplorerRepository.GetVersions(_selectedResource.ResourceId);
             if (versionInfos.Count <= 0)
             {
                 return;
             }
-            var popupController = CustomContainer.Get<IPopupController>();
 
+            if (_selectedResource.IsVersion)
+            {
+                var versionInfo = _selectedResource.VersionInfo;
+                versionInfos = versionInfos.Where(info => versionInfo != null && info.VersionId == versionInfo.VersionId && info.VersionNumber != versionInfo.VersionNumber).ToList();
+
+                if (versionInfos.Count <= 0)
+                {
+                    return;
+                }
+
+                var explorerItemViewModel = _selectedResource.Parent as IExplorerItemViewModel;
+                MergeResourceVersions.Add(explorerItemViewModel);
+            }
+            
             var children =
                 new ObservableCollection<IExplorerItemViewModel>(
                     versionInfos.Select(
-                        a => new VersionViewModel(server, selectedResource, null, _shellViewModel, popupController)
+                        a => new VersionViewModel(server, _selectedResource, null, _shellViewModel, CustomContainer.Get<IPopupController>())
                         {
                             ResourceName =
                                 "v." + a.VersionNumber + " " +
@@ -82,16 +98,8 @@ namespace Warewolf.Studio.ViewModels
                                 a.Reason.Replace(".xml", "").Replace(".bite", ""),
                             VersionNumber = a.VersionNumber,
                             VersionInfo = a,
-                            ResourceId = selectedResource.ResourceId,
+                            ResourceId = _selectedResource.ResourceId,
                             IsVersion = true,
-                            IsMergeVisible = true,
-                            CanEdit = false,
-                            CanCreateWorkflowService = false,
-                            ShowContextMenu = true,
-                            CanCreateSource = false,
-                            IsResourceVersion = true,
-                            AllowResourceCheck = false,
-                            IsResourceChecked = false,
                             ResourceType = "Version"
                         }));
 
@@ -137,7 +145,6 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _selectMergeItem = value;
-                ResourceToMerge = _selectMergeItem.ResourceName;
                 OnPropertyChanged(() => SelectedMergeItem);
                 ViewModelUtils.RaiseCanExecuteChanged(MergeCommand);
             }
@@ -150,7 +157,7 @@ namespace Warewolf.Studio.ViewModels
             if (selectedConnection != null && selectedConnection.IsConnected && _environments.Any(p => p.ResourceId != selectedConnection.EnvironmentID))
             {
                 await CreateNewEnvironment(selectedConnection).ConfigureAwait(false);
-                LoadVersions(_selectedResource, selectedConnection);
+                LoadVersions(selectedConnection);
             }
         }
 
@@ -187,7 +194,7 @@ namespace Warewolf.Studio.ViewModels
         async Task<bool> ServerConnected(IServer server)
         {
             var isCreated = await CreateNewEnvironment(server).ConfigureAwait(false);
-            LoadVersions(_selectedResource, server);
+            LoadVersions(server);
             return isCreated;
         }
 

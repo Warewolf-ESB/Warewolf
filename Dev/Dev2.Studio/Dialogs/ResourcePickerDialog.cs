@@ -75,18 +75,19 @@ namespace Dev2.Dialogs
             environmentViewModel.Connect();
 
             await environmentViewModel.LoadDialog("");
-            switch(_activityType)
+            switch (_activityType)
             {
-                case enDsfActivityType.Workflow :
+                case enDsfActivityType.Workflow:
+                case enDsfActivityType.Service:
                     environmentViewModel.Filter(a => a.IsFolder || a.IsService);
                     break;
                 case enDsfActivityType.Source:
                     environmentViewModel.Filter(a => a.IsFolder || a.IsSource);
                     break;
-                case enDsfActivityType.Service:
-                    environmentViewModel.Filter(a => a.IsFolder || a.IsService);
+                case enDsfActivityType.All:
                     break;
-                
+                default:
+                    break;
             }
             environmentViewModel.SelectAction = a => SelectedResource = a;
             return this;
@@ -104,7 +105,8 @@ namespace Dev2.Dialogs
             }
         }
 
-        public bool ShowDialog(IServer server = null)
+        public bool ShowDialog() => ShowDialog(null);
+        public bool ShowDialog(IServer server)
         {
             _server = server;
             return ShowDialog(out DsfActivityDropViewModel dropViewModel);
@@ -116,19 +118,13 @@ namespace Dev2.Dialogs
         }
 
         public bool ShowDialog(out DsfActivityDropViewModel dropViewModel)
-        {
-            //if(SingleEnvironmentExplorerViewModel != null)
-            //todo:expand
-            
+        {            
             dropViewModel = new DsfActivityDropViewModel(SingleEnvironmentExplorerViewModel, _activityType);
          
             var selected = SelectedResource;
             if (SelectedResource != null && selected != null)
             {
-              
-               // environmentModel.ResourceRepository.FindSingle(c => c.ID == resourceId, true) as IContextualResourceModel;
-                dropViewModel.SelectedResourceModel = _server.ResourceRepository.FindSingle(c => c.ID == selected.ResourceId, true) as IContextualResourceModel;
-    
+                dropViewModel.SelectedResourceModel = _server.ResourceRepository.FindSingle(c => c.ID == selected.ResourceId, true) as IContextualResourceModel;    
             }
             var dropWindow = CreateDialog(dropViewModel);
             dropWindow.ShowDialog();

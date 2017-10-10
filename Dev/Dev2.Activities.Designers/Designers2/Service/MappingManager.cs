@@ -105,14 +105,17 @@ namespace Dev2.Activities.Designers2.Service
                 case "MapsTo":
                     SetInputs();
                     break;
-
                 case "Value":
                     SetOuputs();
+                    break;
+                default:
                     break;
             }
         }
 
-        public void UpdateLastValidationMemo(DesignValidationMemo memo, bool checkSource = true)
+        public void UpdateLastValidationMemo(DesignValidationMemo memo) => UpdateLastValidationMemo(memo, true);
+
+        public void UpdateLastValidationMemo(DesignValidationMemo memo, bool checkSource)
         {
             _serviceDesignerViewModel.ValidationMemoManager.LastValidationMemo = memo;
 

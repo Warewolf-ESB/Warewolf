@@ -473,7 +473,6 @@ namespace Dev2.Tests.Runtime.ESB.Control
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        [DeploymentItem("Dev2.Core.resources.dll")]
         public void Invoke_GivenNullServiceNameAndEmptyId_ShouldAddErrors()
         {
             //---------------Set up test pack-------------------

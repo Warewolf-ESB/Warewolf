@@ -20,7 +20,6 @@ using Warewolf.Core;
 using Warewolf.Resource.Errors;
 
 
-
 namespace Dev2.Activities.Designers2.Core
 {
     public class ManageWcfServiceInputViewModel : IManageWcfServiceInputViewModel
@@ -382,9 +381,6 @@ namespace Dev2.Activities.Designers2.Core
             {
                 return _generateOutputArea;
             }
-            set
-            {
-            }
         }
 
         public IOutputDescription Description { get; set; }
@@ -394,9 +390,6 @@ namespace Dev2.Activities.Designers2.Core
             get
             {
                 return _generateInputArea;
-            }
-            set
-            {
             }
         }
 

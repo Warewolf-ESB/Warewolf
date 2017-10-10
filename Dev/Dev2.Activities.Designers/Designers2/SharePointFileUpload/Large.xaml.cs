@@ -17,7 +17,6 @@ namespace Dev2.Activities.Designers2.SharePointFileUpload
         public Large()
         {
             InitializeComponent();
-            //DataGrid = LargeDataGrid;
         }
 
         protected override IInputElement GetInitialFocusElement()

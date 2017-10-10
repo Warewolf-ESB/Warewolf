@@ -233,14 +233,14 @@ namespace Dev2.Runtime.Configuration.ViewModels
 
         private void ConfigurationPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            switch(e.PropertyName)
+            switch (e.PropertyName)
             {
                 case "HasChanges":
                     CommandManager.InvalidateRequerySuggested();
                     SaveCommand.RaiseCanExecuteChanged();
                     CancelCommand.RaiseCanExecuteChanged();
                     ClearErrorsCommand.RaiseCanExecuteChanged();
-                    if(Configuration.HasChanges)
+                    if (Configuration.HasChanges)
                     {
                         SaveSuccess = false;
                     }
@@ -250,6 +250,8 @@ namespace Dev2.Runtime.Configuration.ViewModels
                     SaveCommand.RaiseCanExecuteChanged();
                     CancelCommand.RaiseCanExecuteChanged();
                     ClearErrorsCommand.RaiseCanExecuteChanged();
+                    break;
+                default:
                     break;
             }
         }

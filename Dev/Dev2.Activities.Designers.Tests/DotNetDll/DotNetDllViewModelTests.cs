@@ -21,8 +21,6 @@ using Warewolf.Core;
 using Warewolf.Testing;
 
 
-
-
 namespace Dev2.Activities.Designers.Tests.DotNetDll
 {
     [TestClass]
@@ -266,7 +264,7 @@ namespace Dev2.Activities.Designers.Tests.DotNetDll
             vm.DesignValidationErrors.Add(new ErrorInfo() { Message = "bob error", ErrorType = ErrorType.Critical });
             PrivateObject p = new PrivateObject(vm);
             p.Invoke("UpdateWorstError");
-            var inf = p.GetProperty("WorstDesignError") as ErrorInfo;
+            var inf = vm.WorstDesignError as ErrorInfo;
             //------------Assert Results-------------------------
 
             Assert.IsNotNull(inf);

@@ -30,14 +30,16 @@ namespace Dev2.Runtime.Interfaces
         string GetResourcePath(Guid workspaceID,Guid id);
         IList<IResource> GetResourceList<T>(Guid workspaceId) where T : Resource, new();
         IList<Resource> GetResourceList(Guid workspaceId, Dictionary<string, string> filterParams);
-        List<TServiceType> GetDynamicObjects<TServiceType>(Guid workspaceID, string resourceName, bool useContains = false) where TServiceType : DynamicServiceObjectBase;
+        List<TServiceType> GetDynamicObjects<TServiceType>(Guid workspaceID, string resourceName) where TServiceType : DynamicServiceObjectBase;
+        List<TServiceType> GetDynamicObjects<TServiceType>(Guid workspaceID, string resourceName, bool useContains) where TServiceType : DynamicServiceObjectBase;
         List<DynamicServiceObjectBase> GetDynamicObjects(IResource resource);
         List<DynamicServiceObjectBase> GetDynamicObjects(IEnumerable<IResource> resources);
         List<Guid> GetDependants(Guid workspaceID, Guid? resourceId);
         List<ResourceForTree> GetDependentsAsResourceForTrees(Guid workspaceID, Guid resourceId);
         IList<IResource> GetResourceList(Guid workspaceId);
         int GetResourceCount(Guid workspaceID);
-        IResource GetResource(Guid workspaceID, string resourceName, string resourceType = "Unknown", string version = null);
+        IResource GetResource(Guid workspaceID, string resourceName);
+        IResource GetResource(Guid workspaceID, string resourceName, string resourceType, string version);
         IResource GetResource(Guid workspaceID, Guid resourceID);
         StringBuilder GetResourceContents(Guid workspaceID, Guid resourceID);
         StringBuilder GetResourceContents(IResource resource);

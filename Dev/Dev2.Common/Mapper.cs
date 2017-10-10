@@ -8,15 +8,16 @@ namespace Dev2.Common
     //http://stackoverflow.com/questions/286294/object-to-object-mapper
     public class Mapper
     {
-
         private static readonly Dictionary<KeyValuePair<Type, Type>, object> Maps = new Dictionary<KeyValuePair<Type, Type>, object>();
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <typeparam name="TFrom"></typeparam>
-        /// <typeparam name="TTo"></typeparam>
-        /// <param name="mapFunc"></param>
-        public static void AddMap<TFrom, TTo>(Action<TFrom, TTo> mapFunc = null)
+
+        public static void AddMap<TFrom, TTo>()
+            where TFrom : class
+            where TTo : class
+        {
+            AddMap<TFrom, TTo>(null);
+        }
+
+        public static void AddMap<TFrom, TTo>(Action<TFrom, TTo> mapFunc)
             where TFrom : class
             where TTo : class
         {
@@ -27,16 +28,14 @@ namespace Dev2.Common
             }
         }
 
-        /// <summary>
-        /// Maps property from obj1 to obj2 with an option to map fields or exclude some properties
-        /// </summary>
-        /// <typeparam name="TMapFrom"></typeparam>
-        /// <typeparam name="TMapTo"></typeparam>
-        /// <param name="mapFrom"></param>
-        /// <param name="mapTo"></param>
-        /// <param name="mapFields"></param>
-        /// <param name="ignoreList"></param>
-        public static void Map<TMapFrom, TMapTo>(TMapFrom mapFrom, TMapTo mapTo, bool mapFields = true, params string[] ignoreList)
+        public static void Map<TMapFrom, TMapTo>(TMapFrom mapFrom, TMapTo mapTo, params string[] ignoreList)
+            where TMapFrom : class
+            where TMapTo : class
+        {
+            Map(mapFrom, mapTo, true, ignoreList);
+        }
+
+        public static void Map<TMapFrom, TMapTo>(TMapFrom mapFrom, TMapTo mapTo, bool mapFields, params string[] ignoreList)
             where TMapFrom : class
             where TMapTo : class
         {
@@ -114,8 +113,6 @@ namespace Dev2.Common
             }
 
             map?.Invoke(mapFrom, mapTo);
-        }
-
-      
+        }      
     }
 }

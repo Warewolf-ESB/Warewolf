@@ -16,8 +16,8 @@ namespace Dev2.Dialogs
     public interface IResourcePickerDialog
     {
         IExplorerTreeItem SelectedResource { get; set; }
-        bool ShowDialog(IServer server = null);
-
+        bool ShowDialog();
+        bool ShowDialog(IServer server);
         void SelectResource(Guid id);
     }
 }

@@ -299,14 +299,7 @@ namespace Dev2.Data.Util
             else
             {
                 IDataListVerifyPart part;
-                if (t1.Name.Contains('(') && t1.Name.Contains(')'))
-                {
-                    part = IntellisenseFactory.CreateDataListValidationRecordsetPart(string.Empty, t1.Name, true);
-                }
-                else
-                {
-                    part = IntellisenseFactory.CreateDataListValidationScalarPart(t1.Name, t1.Description);
-                }
+                part = t1.Name.Contains('(') && t1.Name.Contains(')') ? IntellisenseFactory.CreateDataListValidationRecordsetPart(string.Empty, t1.Name, true) : IntellisenseFactory.CreateDataListValidationScalarPart(t1.Name, t1.Description);
 
                 result.Add(IntellisenseFactory.CreateSelectableResult(payload.StartIndex, payload.EndIndex, part, part.Description));
             }
@@ -317,15 +310,7 @@ namespace Dev2.Data.Util
             // only process if it is an open region
             // we need to add all children
             string idx;
-            if (!payload.IsLeaf && !payload.Child.HangingOpen)
-            {
-                idx = DataListUtil.OpeningSquareBrackets + payload.Child.Payload + DataListUtil.ClosingSquareBrackets;
-            }
-            else
-            {
-                // we need to extract the index
-                idx = DataListUtil.ExtractIndexRegionFromRecordset(rawSearch);
-            }
+            idx = !payload.IsLeaf && !payload.Child.HangingOpen ? DataListUtil.OpeningSquareBrackets + payload.Child.Payload + DataListUtil.ClosingSquareBrackets : DataListUtil.ExtractIndexRegionFromRecordset(rawSearch);
             // add general closed recordset
             string rsName = search;
             if (idx == string.Empty)

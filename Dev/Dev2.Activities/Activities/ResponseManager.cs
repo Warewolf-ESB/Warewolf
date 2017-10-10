@@ -24,8 +24,8 @@ namespace Dev2.Activities
         public string ObjectName { get; set; }
         public IOutputDescription OutputDescription { get; set; }
         public ICollection<IServiceOutputMapping> Outputs { get; set; }
-
-        public void PushResponseIntoEnvironment(string input, int update, IDSFDataObject dataObj, bool formatResult = true)
+        public void PushResponseIntoEnvironment(string input, int update, IDSFDataObject dataObj) => PushResponseIntoEnvironment(input, update, dataObj, true);
+        public void PushResponseIntoEnvironment(string input, int update, IDSFDataObject dataObj, bool formatResult)
         {
             if (dataObj == null)
             {
@@ -126,7 +126,9 @@ namespace Dev2.Activities
             return innerXml;
         }
 
-        public void TryConvert(XmlNodeList children, IList<IDev2Definition> outputDefs, IDictionary<string, int> indexCache, int update, IDSFDataObject dataObj, int level = 0)
+        public void TryConvert(XmlNodeList children, IList<IDev2Definition> outputDefs, IDictionary<string, int> indexCache, int update, IDSFDataObject dataObj) => TryConvert(children, outputDefs, indexCache, update, dataObj, 0);
+
+        public void TryConvert(XmlNodeList children, IList<IDev2Definition> outputDefs, IDictionary<string, int> indexCache, int update, IDSFDataObject dataObj, int level)
         {
             foreach (XmlNode c in children)
             {

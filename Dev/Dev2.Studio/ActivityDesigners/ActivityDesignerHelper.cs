@@ -234,7 +234,8 @@ namespace Dev2.Studio.ActivityDesigners
             return _hashTable;
         }
 
-        public static void AddDesignerAttributes(WorkflowDesignerViewModel workflowVm, bool liteInit = false)
+        public static void AddDesignerAttributes(WorkflowDesignerViewModel workflowVm) => AddDesignerAttributes(workflowVm, false);
+        public static void AddDesignerAttributes(WorkflowDesignerViewModel workflowVm, bool liteInit)
         {
             workflowVm.InitializeDesigner(DesignerAttributes, liteInit);
         }

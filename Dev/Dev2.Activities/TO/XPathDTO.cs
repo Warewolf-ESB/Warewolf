@@ -29,10 +29,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public XPathDTO()
         {
-
         }
 
-        public XPathDTO(string outputVariable, string xPath, int indexNum, bool inserted = false)
+        public XPathDTO(string outputVariable, string xPath, int indexNum)
+            : this(outputVariable, xPath, indexNum, false)
+        {
+        }
+
+        public XPathDTO(string outputVariable, string xPath, int indexNum, bool inserted)
         {
             Inserted = inserted;
             OutputVariable = outputVariable;

@@ -72,14 +72,7 @@ namespace Unlimited.Framework.Converters.Graph.String.Json
         public override IPathSegment CreatePathSegment(string pathSegmentString)
         {
             JsonPathSegment pathSegment;
-            if (pathSegmentString.EndsWith(EnumerableSymbol))
-            {
-                pathSegment = new JsonPathSegment(pathSegmentString.TrimEnd(EnumerableSymbol.ToArray()), true);
-            }
-            else
-            {
-                pathSegment = new JsonPathSegment(pathSegmentString, false);
-            }
+            pathSegment = pathSegmentString.EndsWith(EnumerableSymbol) ? new JsonPathSegment(pathSegmentString.TrimEnd(EnumerableSymbol.ToArray()), true) : new JsonPathSegment(pathSegmentString, false);
             return pathSegment;
         }
 

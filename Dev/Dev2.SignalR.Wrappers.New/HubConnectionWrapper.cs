@@ -70,6 +70,7 @@ namespace Dev2.SignalR.Wrappers.New
             }
             remove
             {
+                throw new NotImplementedException();
             }
         }
 

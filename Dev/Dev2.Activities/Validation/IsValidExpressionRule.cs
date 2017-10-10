@@ -29,8 +29,18 @@ namespace Dev2.Validation
         
         readonly string _datalist;
         string _outputValue;
+        
+        public IsValidExpressionRule(Func<string> getValue, string datalist)
+            : this(getValue, datalist, "a", null)
+        {
+        }
 
-        public IsValidExpressionRule(Func<string> getValue, string datalist, string variableValue = "a", ObservableCollection<ObservablePair<string, string>> inputs = null)
+        public IsValidExpressionRule(Func<string> getValue, string datalist, string variableValue)
+            : this(getValue, datalist, variableValue, null)
+        {
+        }
+
+        public IsValidExpressionRule(Func<string> getValue, string datalist, string variableValue, ObservableCollection<ObservablePair<string, string>> inputs)
             : base(getValue)
         {
             _variableValue = variableValue;

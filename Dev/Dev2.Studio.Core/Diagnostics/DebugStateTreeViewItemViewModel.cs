@@ -75,16 +75,10 @@ namespace Dev2.Studio.Core
         
         protected override void Initialize(IDebugState content)
         {
-            //            _inputs.Clear();
-            //            _outputs.Clear();
-            //            _assertResultList.Clear();
-
             if (content == null)
             {
                 return;
             }
-
-            // Multiple when creating - so that we show the path of the execution when debugging
             SelectionType = ActivitySelectionType.Add;
             IsSelected = content.ActivityType != ActivityType.Workflow;
 
@@ -97,18 +91,10 @@ namespace Dev2.Studio.Core
                 if (env == null)
                 {
                     var environmentModels = _serverRepository.LookupEnvironments(_serverRepository.ActiveServer);
-                    if (environmentModels != null)
-                    {
-                        env = environmentModels.FirstOrDefault(e => e.EnvironmentID == envId) ?? _serverRepository.ActiveServer;
-                    }
-                    else
-                    {
-                        env = _serverRepository.Source;
-                    }
+                    env = environmentModels != null ? environmentModels.FirstOrDefault(e => e.EnvironmentID == envId) ?? _serverRepository.ActiveServer : _serverRepository.Source;
                 }
                 if (Equals(env, _serverRepository.Source))
                 {
-                    // We have an unknown remote server ;)
                     content.Server = "Unknown Remote Server";
                 }
                 else
@@ -162,6 +148,8 @@ namespace Dev2.Studio.Core
             {
                 case "IsSelected":
                     NotifySelectionChanged();
+                    break;
+                default:
                     break;
             }
         }

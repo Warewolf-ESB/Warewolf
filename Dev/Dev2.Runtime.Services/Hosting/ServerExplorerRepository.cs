@@ -220,7 +220,11 @@ namespace Dev2.Runtime.Hosting
             var parentItem = Find(item => item.ResourcePath.ToLowerInvariant().TrimEnd('\\') == resource.GetSavePath().ToLowerInvariant().TrimEnd('\\'));
             if (parentItem != null)
             {
-                var newExplorerItem = ExplorerItemFactory.CreateResourceItem(resource, GlobalConstants.ServerWorkspaceID); 
+                var newExplorerItem = ExplorerItemFactory.CreateResourceItem(resource, GlobalConstants.ServerWorkspaceID);
+                if (parentItem.Children == null)
+                {
+                    parentItem.Children = new List<IExplorerItem>();
+                }
                 parentItem.Children.Add(newExplorerItem);
                 newExplorerItem.Parent = parentItem;
                 return newExplorerItem;
@@ -230,7 +234,6 @@ namespace Dev2.Runtime.Hosting
 
         public IExplorerItem Find(Guid id)
         {
-            //var items = Load(Guid.Empty);
             if (_root == null)
             {
                 Load(Guid.Empty,true);
@@ -240,7 +243,6 @@ namespace Dev2.Runtime.Hosting
 
         public IExplorerItem Find(Func<IExplorerItem, bool> predicate)
         {
-            //var items = Load(Guid.Empty);
             if (_root == null)
             {
                 Load(Guid.Empty, true);
@@ -471,14 +473,7 @@ namespace Dev2.Runtime.Hosting
             }
             if (itemToMove.IsFolder)
             {
-                if (!string.IsNullOrWhiteSpace(itemToMove.ResourcePath))
-                {
-                    itemToMove.ResourcePath = newPath + "\\" + itemToMove.DisplayName;
-                }
-                else
-                {
-                    itemToMove.ResourcePath = itemToMove.ResourcePath.Replace(itemToMove.ResourcePath, newPath);
-                }
+                itemToMove.ResourcePath = !string.IsNullOrWhiteSpace(itemToMove.ResourcePath) ? newPath + "\\" + itemToMove.DisplayName : itemToMove.ResourcePath.Replace(itemToMove.ResourcePath, newPath);
                 if (itemToMove.Children != null && itemToMove.Children.Count > 0)
                 {
                     itemToMove.Children.ForEach(item => MoveChildren(item, itemToMove.ResourcePath));
@@ -525,11 +520,6 @@ namespace Dev2.Runtime.Hosting
             ResourceCatalogResult result = ResourceCatalogue.RenameCategory(workSpaceId, resource.GetSavePath(), newResourcePath, new List<IResource> { resource });
             itemToMove.ResourcePath = newResourcePath;
             return new ExplorerRepositoryResult(result.Status, result.Message);
-        }
-
-        void MoveVersions(IExplorerItem itemToMove, string newPath)
-        {
-            VersionRepository.MoveVersions(itemToMove.ResourceId, newPath, itemToMove.ResourcePath);
         }
 
         public static string DirectoryStructureFromPath(string path)

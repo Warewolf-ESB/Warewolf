@@ -17,9 +17,15 @@ namespace Dev2.Runtime.WebServer.Responses.Streams
 {
     public class HttpFileStream : HttpPushContentStream
     {
-        readonly Func<Stream> _openInputStream;    
+        readonly Func<Stream> _openInputStream;
+        public HttpFileStream(Func<Stream> openInputStream, HttpResponseMessage response, MediaTypeHeaderValue contentType)
+            : base(response, contentType, DefaultChunkSize)
+        {
+            VerifyArgument.IsNotNull("openInputStream", openInputStream);
+            _openInputStream = openInputStream;
+        }
 
-        public HttpFileStream(Func<Stream> openInputStream, HttpResponseMessage response, MediaTypeHeaderValue contentType, int chunkSize = DefaultChunkSize)
+        public HttpFileStream(Func<Stream> openInputStream, HttpResponseMessage response, MediaTypeHeaderValue contentType, int chunkSize)
             : base(response, contentType, chunkSize)
         {
             VerifyArgument.IsNotNull("openInputStream", openInputStream);

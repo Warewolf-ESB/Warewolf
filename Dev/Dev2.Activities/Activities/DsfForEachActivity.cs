@@ -134,43 +134,17 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
         
-        
-        
-        public Variable test { get; set; }
-        
+        public Variable test { get; set; }        
 
         public ActivityFunc<string, bool> DataFunc { get; set; }
-
         
-        public bool FailOnFirstError { get; set; }
-        
+        public bool FailOnFirstError { get; set; }        
         
         
         public string ElementName { private set; get; }
         
         
         public string PreservedDataList { private set; get; }
-        
-        
-
-        
-#pragma warning disable 169
-        
-        private readonly List<bool> _results = new List<bool>();
-        readonly
-
-#pragma warning restore 169
-
-                // REMOVE : No longer used
-#pragma warning disable 169
-
-                DelegateInArgument<string> _actionArgument = new DelegateInArgument<string>("explicitDataFromParent");
-        
-#pragma warning restore 169
-
-        // used to avoid IO mapping adjustment issues ;)
-        // REMOVE : 2 variables below not used any more.....
-
         
         private readonly Variable<string> _origInput = new Variable<string>("origInput");
         private readonly Variable<string> _origOutput = new Variable<string>("origOutput");

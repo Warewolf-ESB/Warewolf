@@ -38,11 +38,7 @@ namespace Dev2.Intellisense
                     ignore = originalCaret - lastIndexOfAny;
 
                 }
-                //var x =lastIndexOfAny < 0 && diff.LastIndexOf("[[") < 0 ? 0 : originalCaret - ignore;
-                //var y = lastIndexOfAny < 0 && diff.LastIndexOf("]]") < 0 ? 0 : originalCaret - ignore;
-                //len = Math.Max(x, y);
-                //if(len<=0) 
-                    len = lastIndexOfAny < 0 && diff.LastIndexOfAny("[]".ToCharArray()) < 0 ? 0 : originalCaret - ignore;
+                len = lastIndexOfAny < 0 && diff.LastIndexOfAny("[]".ToCharArray()) < 0 ? 0 : originalCaret - ignore;
                 var suffix = originalText.Substring(originalCaret);
                 if (suffix.StartsWith("]]"))
                 {
@@ -54,8 +50,6 @@ namespace Dev2.Intellisense
 
                 return new IntellisenseStringResult(text, car);
             }
-
-
         }
 
         #endregion

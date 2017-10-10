@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using Dev2.Common;
@@ -21,17 +20,20 @@ using Microsoft.Practices.Prism;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 
-
-
 namespace Dev2.Activities.Designers2.Core
 {
-    
     public class OutputsRegion : IOutputsToolRegion
     {
         private readonly ModelItem _modelItem;
         private bool _isEnabled;
         private ICollection<IServiceOutputMapping> _outputs;
-        public OutputsRegion(ModelItem modelItem, bool isObjectOutputUsed = false)
+
+        public OutputsRegion(ModelItem modelItem)
+            : this(modelItem, false)
+        {
+        }
+
+        public OutputsRegion(ModelItem modelItem, bool isObjectOutputUsed)
         {
             ToolRegionName = "OutputsRegion";
             Dependants = new List<IToolRegion>();
@@ -63,14 +65,7 @@ namespace Dev2.Activities.Designers2.Core
             ObjectResult = _modelItem.GetProperty<string>("ObjectResult");
             ObjectName = _modelItem.GetProperty<string>("ObjectName");
             IsObjectOutputUsed = isObjectOutputUsed;
-            if (!IsObject)
-            {
-                IsOutputsEmptyRows = Outputs.Count == 0;
-            }
-            else
-            {
-                IsOutputsEmptyRows = !string.IsNullOrWhiteSpace(ObjectResult);
-            }
+            IsOutputsEmptyRows = !IsObject ? Outputs.Count == 0 : !string.IsNullOrWhiteSpace(ObjectResult);
             _shellViewModel = CustomContainer.Get<IShellViewModel>();
           
         }
@@ -216,14 +211,7 @@ namespace Dev2.Activities.Designers2.Core
                 {
                     _outputs = value;
                     _modelItem.SetProperty("Outputs", value.ToList());
-                    if (!IsObject)
-                    {
-                        IsOutputsEmptyRows = Outputs.Count == 0;
-                    }
-                    else
-                    {
-                        IsOutputsEmptyRows = !string.IsNullOrWhiteSpace(ObjectResult);
-                    }
+                    IsOutputsEmptyRows = !IsObject ? Outputs.Count == 0 : !string.IsNullOrWhiteSpace(ObjectResult);
                     OnPropertyChanged();
                 }
                 else
