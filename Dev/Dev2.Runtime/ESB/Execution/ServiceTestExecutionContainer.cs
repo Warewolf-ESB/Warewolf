@@ -68,7 +68,7 @@ namespace Dev2.Runtime.ESB.Execution
 
         protected ITestCatalog TstCatalog { get; set; }
         protected IResourceCatalog ResourceCat { get; set; }
-        
+
         public override Guid Execute(out ErrorResultTO errors, int update)
         {
             errors = new ErrorResultTO();
@@ -78,122 +78,123 @@ namespace Dev2.Runtime.ESB.Execution
 
 
             Dev2Logger.Debug("Entered Wf Container", DataObject.ExecutionID.ToString());
-            
+
             DataObject.ServiceName = ServiceAction.ServiceName;
-            
+
             if (DataObject.ServerID == Guid.Empty)
             {
                 DataObject.ServerID = HostSecurityProvider.Instance.ServerID;
             }
-            
+
             if (DataObject.ResourceID == Guid.Empty && ServiceAction?.Service != null)
             {
                 DataObject.ResourceID = ServiceAction.Service.ID;
 
-                
-            DataObject.DataList = ServiceAction.DataListSpecification;
-            if (DataObject.OriginalInstanceID == Guid.Empty)
-            {
-                DataObject.OriginalInstanceID = DataObject.DataListID;
-            }
 
-            Dev2Logger.Info($"Started Execution for Service Name:{DataObject.ServiceName} Resource Id:{DataObject.ResourceID} Mode:{(DataObject.IsDebug ? "Debug" : "Execute")}", DataObject.ExecutionID.ToString());
-            if (!string.IsNullOrWhiteSpace(DataObject.ParentServiceName))
-            {
-                DataObject.ExecutionOrigin = ExecutionOrigin.Workflow;
-                DataObject.ExecutionOriginDescription = DataObject.ParentServiceName;
-            }
-            else if (DataObject.IsDebug)
-            {
-                DataObject.ExecutionOrigin = ExecutionOrigin.Debug;
-            }
-            else
-            {
-                DataObject.ExecutionOrigin = ExecutionOrigin.External;
-            }
-
-            ErrorResultTO to = errors;
-            var serviceTestModelTo = testCatalog.FetchTest(DataObject.ResourceID, DataObject.TestName);
-            if (serviceTestModelTo == null)
-            {
-                testCatalog.Load();
-                serviceTestModelTo = testCatalog.FetchTest(DataObject.ResourceID, DataObject.TestName);
-            }
-            if (serviceTestModelTo == null)
-            {
-
-                Dev2JsonSerializer serializer = new Dev2JsonSerializer();
-                var testRunResult = new ServiceTestModelTO
+                DataObject.DataList = ServiceAction.DataListSpecification;
+                if (DataObject.OriginalInstanceID == Guid.Empty)
                 {
-                    Result = new TestRunResult
+                    DataObject.OriginalInstanceID = DataObject.DataListID;
+                }
+
+                Dev2Logger.Info($"Started Execution for Service Name:{DataObject.ServiceName} Resource Id:{DataObject.ResourceID} Mode:{(DataObject.IsDebug ? "Debug" : "Execute")}", DataObject.ExecutionID.ToString());
+                if (!string.IsNullOrWhiteSpace(DataObject.ParentServiceName))
+                {
+                    DataObject.ExecutionOrigin = ExecutionOrigin.Workflow;
+                    DataObject.ExecutionOriginDescription = DataObject.ParentServiceName;
+                }
+                else if (DataObject.IsDebug)
+                {
+                    DataObject.ExecutionOrigin = ExecutionOrigin.Debug;
+                }
+                else
+                {
+                    DataObject.ExecutionOrigin = ExecutionOrigin.External;
+                }
+
+                ErrorResultTO to = errors;
+                var serviceTestModelTo = testCatalog.FetchTest(DataObject.ResourceID, DataObject.TestName);
+                if (serviceTestModelTo == null)
+                {
+                    testCatalog.Load();
+                    serviceTestModelTo = testCatalog.FetchTest(DataObject.ResourceID, DataObject.TestName);
+                }
+                if (serviceTestModelTo == null)
+                {
+
+                    Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+                    var testRunResult = new ServiceTestModelTO
                     {
-                        TestName = DataObject.TestName,
-                        RunTestResult = RunResult.TestInvalid,
-                        Message = $"Test {DataObject.TestName} for Resource {DataObject.ServiceName} ID {DataObject.ResourceID}, has been deleted."
+                        Result = new TestRunResult
+                        {
+                            TestName = DataObject.TestName,
+                            RunTestResult = RunResult.TestInvalid,
+                            Message = $"Test {DataObject.TestName} for Resource {DataObject.ServiceName} ID {DataObject.ResourceID}, has been deleted."
+                        }
+                    };
+                    Dev2Logger.Error($"Test {DataObject.TestName} for Resource {DataObject.ServiceName} ID {DataObject.ResourceID}, has been deleted.", DataObject.ExecutionID.ToString());
+                    _request.ExecuteResult = serializer.SerializeToBuilder(testRunResult);
+                    return Guid.NewGuid();
+                }
+
+                if (serviceTestModelTo.AuthenticationType == AuthenticationType.User)
+                {
+                    if (_impersonator == null)
+                    {
+                        _impersonator = new Impersonator();
                     }
-                };
-                Dev2Logger.Error($"Test {DataObject.TestName} for Resource {DataObject.ServiceName} ID {DataObject.ResourceID}, has been deleted.", DataObject.ExecutionID.ToString());
-                _request.ExecuteResult = serializer.SerializeToBuilder(testRunResult);
-                return Guid.NewGuid();
-            }
+                    var userName = serviceTestModelTo.UserName;
+                    var domain = "";
+                    if (userName.Contains("\\"))
+                    {
+                        var slashIndex = userName.IndexOf("\\", StringComparison.InvariantCultureIgnoreCase);
+                        domain = userName.Substring(0, slashIndex);
+                        userName = userName.Substring(slashIndex + 1);
+                    }
+                    else if (userName.Contains("@"))
+                    {
+                        var atIndex = userName.IndexOf("@", StringComparison.InvariantCultureIgnoreCase);
+                        userName = userName.Substring(0, atIndex);
+                        domain = userName.Substring(atIndex + 1);
+                    }
+                    var hasImpersonated = _impersonator.ImpersonateForceDecrypt(userName, domain, serviceTestModelTo.Password);
+                    if (!hasImpersonated)
+                    {
+                        var resource = ResourceCat.GetResource(GlobalConstants.ServerWorkspaceID, DataObject.ResourceID);
+                        var testNotauthorizedmsg = string.Format(Warewolf.Resource.Messages.Messages.Test_NotAuthorizedMsg, resource?.ResourceName);
+                        DataObject.Environment.AllErrors.Add(testNotauthorizedmsg);
+                        DataObject.StopExecution = true;
+                    }
+                }
+                else if (serviceTestModelTo.AuthenticationType == AuthenticationType.Public)
+                {
+                    Thread.CurrentPrincipal = GlobalConstants.GenericPrincipal;
+                }
+                var userPrinciple = Thread.CurrentPrincipal;
+                Common.Utilities.PerformActionInsideImpersonatedContext(userPrinciple, () =>
+                {
+                    result = ExecuteWf(to, serviceTestModelTo);
+                });
+                if (DataObject.Environment.Errors != null)
+                {
+                    foreach (var err in DataObject.Environment.Errors)
+                    {
+                        errors.AddError(err, true);
+                    }
+                }
 
-            if (serviceTestModelTo.AuthenticationType == AuthenticationType.User)
-            {
-                if (_impersonator == null)
+                if (DataObject.Environment.AllErrors != null)
                 {
-                    _impersonator = new Impersonator();
+                    foreach (var err in DataObject.Environment.AllErrors)
+                    {
+                        errors.AddError(err, true);
+                    }
                 }
-                var userName = serviceTestModelTo.UserName;
-                var domain = "";
-                if (userName.Contains("\\"))
-                {
-                    var slashIndex = userName.IndexOf("\\", StringComparison.InvariantCultureIgnoreCase);
-                    domain = userName.Substring(0, slashIndex);
-                    userName = userName.Substring(slashIndex + 1);
-                }
-                else if (userName.Contains("@"))
-                {
-                    var atIndex = userName.IndexOf("@", StringComparison.InvariantCultureIgnoreCase);
-                    userName = userName.Substring(0, atIndex);
-                    domain = userName.Substring(atIndex + 1);
-                }
-                var hasImpersonated = _impersonator.ImpersonateForceDecrypt(userName, domain, serviceTestModelTo.Password);
-                if (!hasImpersonated)
-                {
-                    var resource = ResourceCat.GetResource(GlobalConstants.ServerWorkspaceID, DataObject.ResourceID);
-                    var testNotauthorizedmsg = string.Format(Warewolf.Resource.Messages.Messages.Test_NotAuthorizedMsg, resource?.ResourceName);
-                    DataObject.Environment.AllErrors.Add(testNotauthorizedmsg);
-                    DataObject.StopExecution = true;
-                }
-            }
-            else if (serviceTestModelTo.AuthenticationType == AuthenticationType.Public)
-            {
-                Thread.CurrentPrincipal = GlobalConstants.GenericPrincipal;
-            }
-            var userPrinciple = Thread.CurrentPrincipal;
-            Common.Utilities.PerformActionInsideImpersonatedContext(userPrinciple, () =>
-            {
-                result = ExecuteWf(to, serviceTestModelTo);
-            });
-            if (DataObject.Environment.Errors != null)
-            {
-                foreach (var err in DataObject.Environment.Errors)
-                {
-                    errors.AddError(err, true);
-                }
-            }
 
-            if (DataObject.Environment.AllErrors != null)
-            {
-                foreach (var err in DataObject.Environment.AllErrors)
-                {
-                    errors.AddError(err, true);
-                }
+                Dev2Logger.Info($"Completed Execution for Service Name:{DataObject.ServiceName} Resource Id: {DataObject.ResourceID} Mode:{(DataObject.IsDebug ? "Debug" : "Execute")}", DataObject.ExecutionID.ToString());
+
+                return result;
             }
-
-            Dev2Logger.Info($"Completed Execution for Service Name:{DataObject.ServiceName} Resource Id: {DataObject.ResourceID} Mode:{(DataObject.IsDebug ? "Debug" : "Execute")}", DataObject.ExecutionID.ToString());
-
-            return result;
         }
 
 
