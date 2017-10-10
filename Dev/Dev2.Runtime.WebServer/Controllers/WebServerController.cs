@@ -205,7 +205,7 @@ namespace Dev2.Runtime.WebServer.Controllers
                 : ProcessRequest<WebGetRequestHandler>(requestVariables);
         }
 
-        private HttpResponseMessage ExecuteFolderTests(string __url__, bool isPublic)
+        public HttpResponseMessage ExecuteFolderTests(string __url__, bool isPublic)
         {
 
             var requestVariables = new NameValueCollection

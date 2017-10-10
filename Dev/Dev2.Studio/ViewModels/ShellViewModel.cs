@@ -1172,6 +1172,10 @@ namespace Dev2.Studio.ViewModels
             {
                 _worksurfaceContextManager.RunAllTestsForService(contextualResourceModel);
             }
+            else
+            {
+                throw new NotImplementedException("Cannot run all tests in folder: '" + resourceId + "'");
+            }
         }
 
         public void CloseResourceTestView(Guid resourceId, Guid serverId, Guid environmentId)

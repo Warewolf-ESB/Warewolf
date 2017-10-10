@@ -85,7 +85,7 @@ namespace Dev2.Runtime.WebServer
             }
             else
             {
-                if (dataObject.ReturnType == Web.EmitionTypes.TEST)
+                if (dataObject.ReturnType == EmitionTypes.TEST)
                 {
                     formatter = dataObject.RunSingleTestBatchAndReturnJSON(userPrinciple, workspaceGuid, serializer, formatter,
                         serviceName, testCatalog, ref executePayload);
