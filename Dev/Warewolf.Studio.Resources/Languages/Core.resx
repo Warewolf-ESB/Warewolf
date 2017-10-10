@@ -553,6 +553,6 @@ Please contact your Warewolf System Administrator.</value>
 Please note that tabs are fully supported at runtime, in variables and when reading from files.</value>
   </data>
   <data name="MergeConflictsStartProcessText" xml:space="preserve">
-    <value>To start the Merge process, select a radio button below. Once a radio button is selected, the content will be editable.</value>
+    <value>To start the Merge process, select a radio button below.</value>
   </data>
 </root>

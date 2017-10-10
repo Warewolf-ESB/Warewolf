@@ -717,18 +717,17 @@ namespace Dev2.Studio.ViewModels
             {
                 var differentResource = mergeServiceViewModel.SelectedMergeItem;
 
-                OpenMergeConflictsView(currentResource, differentResource.ResourceId, differentResource.Server);
+                OpenMergeConflictsView(currentResource, differentResource.ResourceId, differentResource.Server, true);
             }
         }
 
 
-        public void OpenMergeConflictsView(IExplorerItemViewModel currentResource, Guid differenceResourceId, IServer server)
+        public void OpenMergeConflictsView(IExplorerItemViewModel currentResource, Guid differenceResourceId, IServer server, bool isVersion = false)
         {
 
             var localHost = ((ExplorerItemViewModel)currentResource).Server;
             if (localHost != null)
             {
-
                 var currentResourceModel = localHost.ResourceRepository.LoadContextualResourceModel(currentResource.ResourceId);
                 //var currentResourceModel = environmentModel.ResourceRepository.LoadContextualResourceModel(currentResourceId);
                 var differenceResourceModel = server.ResourceRepository.LoadContextualResourceModel(differenceResourceId);
@@ -736,6 +735,7 @@ namespace Dev2.Studio.ViewModels
                 var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.MergeConflicts);
                 if (currentResourceModel != null && differenceResourceModel != null)
                 {
+                    differenceResourceModel.IsVersionResource = isVersion;
                     workSurfaceKey.EnvironmentID = currentResourceModel.Environment.EnvironmentID;
                     workSurfaceKey.ResourceID = currentResourceModel.ID;
                     workSurfaceKey.ServerID = currentResourceModel.ServerID;

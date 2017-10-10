@@ -68,7 +68,7 @@ namespace Dev2.Studio.Interfaces
         void DeployResources(Guid sourceEnvironmentId, Guid destinationEnvironmentId, IList<Guid> resources, bool deployTests);
         void AddDeploySurface(IEnumerable<IExplorerTreeItem> items);
         void OpenResource(Guid resourceId, Guid environmentId, IServer activeServer);
-        void OpenMergeConflictsView(IExplorerItemViewModel currentResource, Guid differenceResourceId, IServer server);
+        void OpenMergeConflictsView(IExplorerItemViewModel currentResource, Guid differenceResourceId, IServer server, bool isVersion = false);
        void OpenMergeConflictsView(IContextualResourceModel currentResourceModel, IContextualResourceModel differenceResourceModel, bool loadFromServer);
         void CloseResource(Guid resourceId, Guid environmentId);
         void UpdateCurrentDataListWithObjectFromJson(string parentObjectName,string json);

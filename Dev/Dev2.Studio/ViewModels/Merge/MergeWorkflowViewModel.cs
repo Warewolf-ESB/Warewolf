@@ -17,15 +17,12 @@ namespace Dev2.ViewModels.Merge
     {
         private readonly IServiceDifferenceParser _serviceDifferenceParser;
         private string _displayName;
-        private string _serverName;
         private bool _hasMergeStarted;
         private bool _hasWorkflowNameConflict;
         private bool _hasVariablesConflict;
         private bool _isVariablesEnabled;
         private bool _isMergeExpanderEnabled;
         private readonly IContextualResourceModel _resourceModel;
-
-
 
         public MergeWorkflowViewModel(IContextualResourceModel currentResourceModel, IContextualResourceModel differenceResourceModel, bool loadworkflowFromServer)
         : this(CustomContainer.Get<IServiceDifferenceParser>())
@@ -45,7 +42,7 @@ namespace Dev2.ViewModels.Merge
 
         private void SetupBindings(IContextualResourceModel currentResourceModel, IContextualResourceModel differenceResourceModel, ICompleteConflict firstConflict)
         {
-            var currResourceName = currentResourceModel.ResourceName;
+            var currResourceName = currentResourceModel.Environment.DisplayName;
             if (CurrentConflictModel == null)
             {
                 CurrentConflictModel = new ConflictModelFactory();
@@ -58,7 +55,7 @@ namespace Dev2.ViewModels.Merge
                 CurrentConflictModel.SomethingConflictModelChanged += SourceOnConflictModelChanged;
             }
 
-            var diffResourceName = differenceResourceModel.ResourceName;
+            var diffResourceName = differenceResourceModel.Environment.DisplayName;
             if (DifferenceConflictModel == null)
             {
                 DifferenceConflictModel = new ConflictModelFactory();
@@ -81,8 +78,7 @@ namespace Dev2.ViewModels.Merge
             IsVariablesEnabled = !HasWorkflowNameConflict;
             IsMergeExpanderEnabled = !IsVariablesEnabled;
 
-            SetServerName(currentResourceModel);
-            DisplayName = "Merge" + _serverName;
+            DisplayName = "Merge";
             CanSave = false;
 
             WorkflowDesignerViewModel.CanViewWorkflowLink = false;
@@ -94,11 +90,9 @@ namespace Dev2.ViewModels.Merge
             foreach (var currentChange in currentChanges)
             {
                 var conflict = new CompleteConflict { UniqueId = currentChange.uniqueId };
-                ConflictModelFactory factoryA;
-                ConflictModelFactory factoryB;
                 if (currentChange.currentNode != null)
                 {
-                    factoryA = new ConflictModelFactory(currentChange.currentNode?.CurrentActivity, currentResourceModel);
+                    var factoryA = new ConflictModelFactory(currentChange.currentNode.CurrentActivity, currentResourceModel);
                     conflict.CurrentViewModel = factoryA.GetModel();
                     conflict.CurrentViewModel.FlowNode = currentChange.currentNode.CurrentFlowStep;
                     conflict.CurrentViewModel.NodeLocation = currentChange.currentNode.NodeLocation;
@@ -111,7 +105,7 @@ namespace Dev2.ViewModels.Merge
 
                 if (currentChange.differenceNode != null)
                 {
-                    factoryB = new ConflictModelFactory(currentChange.differenceNode.CurrentActivity, differenceResourceModel);
+                    var factoryB = new ConflictModelFactory(currentChange.differenceNode.CurrentActivity, differenceResourceModel);
                     conflict.DiffViewModel = factoryB.GetModel();
                     conflict.DiffViewModel.FlowNode = currentChange.differenceNode.CurrentFlowStep;
                     conflict.DiffViewModel.NodeLocation = currentChange.differenceNode.NodeLocation;
@@ -121,9 +115,6 @@ namespace Dev2.ViewModels.Merge
                         child.SomethingModelToolChanged += SourceOnModelToolChanged;
                     }
                 }
-
-
-
 
                 conflict.HasConflict = currentChange.hasConflict;
                 conflict.HasConflict = true;//Tests failing will b resolved once this is removed
@@ -214,7 +205,6 @@ namespace Dev2.ViewModels.Merge
             completeConflict.Children?.Flatten(a => a.Children ?? new ObservableCollection<ICompleteConflict>())
                 .Apply(a =>
                 {
-
                     if (a?.CurrentViewModel != null)
                     {
                         a.CurrentViewModel.IsMergeEnabled = true;
@@ -277,7 +267,7 @@ namespace Dev2.ViewModels.Merge
                 ObservableCollection<IMergeToolModel> remoteCopy = new ObservableCollection<IMergeToolModel>();
                 var copy = difChildChildren.ToArray().Clone();
                 var arracyCopy = copy as IMergeToolModel[];
-                remoteCopy = arracyCopy.ToList().ToObservableCollection();
+                remoteCopy = arracyCopy?.ToList().ToObservableCollection();
                 for (var index = 0; index < count; index++)
                 {
                     var completeConflict = new CompleteConflict();
@@ -428,15 +418,6 @@ namespace Dev2.ViewModels.Merge
         public bool CanSave { get; set; }
 
         public bool IsDirty => HasMergeStarted;
-
-        private void SetServerName(IContextualResourceModel resourceModel)
-        {
-            _serverName = string.Empty;
-            if (resourceModel.Environment != null && !resourceModel.Environment.IsLocalHost)
-            {
-                _serverName = " - " + resourceModel.Environment.Name;
-            }
-        }
 
         public string DisplayName
         {
