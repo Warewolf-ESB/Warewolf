@@ -294,35 +294,29 @@ namespace Warewolf.UI.Tests.Deploy.DeployUIMapClasses
         public void Click_Deploy_Tab_Deploy_Button()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DeployButton);
-            DialogsUIMap.MessageBoxWindow.WaitForControlExist(60000);
             WaitForDeploySuccess();
         }
 
         void WaitForDeploySuccess()
         {
-            var timeout = 60;
-            var successful = false;
-            while (timeout-- > 0 && !successful)
+            var successful = TryWaitForADeployMessageDialog();
+            if (!successful)
             {
-                if (DialogsUIMap.MessageBoxWindow.Exists)
+                successful = TryWaitForADeployMessageDialog();
+                if (!successful)
                 {
-                    DialogsUIMap.MessageBoxWindow.OKButton.WaitForControlReady(60000);
-                    successful = UIMap.ControlExistsNow(DialogsUIMap.MessageBoxWindow.ResourcesDeployedSucText);
-                    try
-                    {
-                        Mouse.Click(DialogsUIMap.MessageBoxWindow.OKButton);
-                    }
-                    catch (UITestControlNotAvailableException e)
-                    {
-                        Console.WriteLine(e.Message);
-                    }
-                }
-                else
-                {
-                    Playback.Wait(1000);
+                    successful = TryWaitForADeployMessageDialog();
                 }
             }
             Assert.IsTrue(successful, "Deploy failed.");
+        }
+
+        bool TryWaitForADeployMessageDialog()
+        {
+            DialogsUIMap.MessageBoxWindow.OKButton.WaitForControlExist(60000);
+            var successful = UIMap.ControlExistsNow(DialogsUIMap.MessageBoxWindow.ResourcesDeployedSucText);
+            Mouse.Click(DialogsUIMap.MessageBoxWindow.OKButton);
+            return successful;
         }
 
         [When(@"I Click Deploy Tab Deploy Button And Cancel")]
