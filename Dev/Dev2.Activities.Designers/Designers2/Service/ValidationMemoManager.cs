@@ -9,14 +9,14 @@ using Dev2.Services;
 using Warewolf.Resource.Errors;
 using Dev2.Common.Interfaces.Studio.Core;
 using Dev2.Studio.Interfaces;
-
+using System;
 
 namespace Dev2.Activities.Designers2.Service
 {
-    public class ValidationMemoManager
+    public class ValidationMemoManager : IDisposable
     {
         private readonly ServiceDesignerViewModel _serviceDesignerViewModel;
-        public readonly string SourceNotFoundMessage = Warewolf.Studio.Resources.Languages.Core.ServiceDesignerSourceNotFound;
+        internal readonly string SourceNotFoundMessage = Warewolf.Studio.Resources.Languages.Core.ServiceDesignerSourceNotFound;
         public static readonly ErrorInfo NoError = new ErrorInfo
         {
             ErrorType = ErrorType.None,
@@ -35,9 +35,14 @@ namespace Dev2.Activities.Designers2.Service
         public ObservableCollection<IErrorInfo> DesignValidationErrors { get; set; }
         public ErrorType WorstError
         {
-            get { return (ErrorType)_serviceDesignerViewModel.GetValue(ServiceDesignerViewModel.WorstErrorProperty); }
-            private set {
-                _serviceDesignerViewModel.SetValue(ServiceDesignerViewModel.WorstErrorProperty, value); }
+            get
+            {
+                return (ErrorType)_serviceDesignerViewModel.GetValue(ServiceDesignerViewModel.WorstErrorProperty);
+            }
+            private set
+            {
+                _serviceDesignerViewModel.SetValue(ServiceDesignerViewModel.WorstErrorProperty, value);
+            }
         }
         public IErrorInfo WorstDesignError
         {
@@ -142,6 +147,7 @@ namespace Dev2.Activities.Designers2.Service
             {
                 switch (result)
                 {
+                    default:
                     case ConnectResult.Success:
                         break;
                     case ConnectResult.ConnectFailed:
@@ -227,6 +233,11 @@ namespace Dev2.Activities.Designers2.Service
                     }
 
                     break;
+                case FixType.None:
+                case FixType.Delete:
+                case FixType.InvalidPermissions:
+                default:
+                    break;
             }
         }
 
@@ -275,6 +286,11 @@ namespace Dev2.Activities.Designers2.Service
                 _serviceDesignerViewModel.RootModel.AddError(error);
             }
             UpdateWorstError();
+        }
+
+        public void Dispose()
+        {
+            _validationService.Dispose();
         }
     }
 }

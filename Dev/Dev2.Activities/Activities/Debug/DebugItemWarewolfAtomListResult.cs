@@ -8,9 +8,6 @@ using Dev2.Data.Util;
 using Dev2.Diagnostics;
 using Warewolf.Storage;
 
-
-
-
 namespace Dev2.Activities.Debug
 {
     public class DebugItemWarewolfAtomListResult : DebugOutputBase
@@ -28,7 +25,12 @@ namespace Dev2.Activities.Debug
         readonly string _newValue;
         private readonly bool _mockSelected;
 
-        public DebugItemWarewolfAtomListResult(CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult warewolfAtomListresult, CommonFunctions.WarewolfEvalResult oldResult, string assignedToVariableName, string variable, string leftLabelText, string rightLabelText, string operand,bool isCalculate = false, bool mockSelected = false)
+        public DebugItemWarewolfAtomListResult(CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult warewolfAtomListresult, CommonFunctions.WarewolfEvalResult oldResult, string assignedToVariableName, string variable, string leftLabelText, string rightLabelText, string operand)
+            : this(warewolfAtomListresult, oldResult, assignedToVariableName, variable, leftLabelText, rightLabelText, operand, false, false)
+        {
+        }
+
+        public DebugItemWarewolfAtomListResult(CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult warewolfAtomListresult, CommonFunctions.WarewolfEvalResult oldResult, string assignedToVariableName, string variable, string leftLabelText, string rightLabelText, string operand, bool isCalculate, bool mockSelected)
         {
             _labelText = "";
             _operand = operand;
@@ -43,7 +45,12 @@ namespace Dev2.Activities.Debug
             _mockSelected = mockSelected;
         }
 
-        public DebugItemWarewolfAtomListResult(CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult warewolfAtomListresult, string newValue, string assignedToVariableName, string variable, string leftLabelText, string rightLabelText, string operand,bool isCalculate=false, bool mockSelected = false)
+        public DebugItemWarewolfAtomListResult(CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult warewolfAtomListresult, string newValue, string assignedToVariableName, string variable, string leftLabelText, string rightLabelText, string operand)
+            : this(warewolfAtomListresult, newValue, assignedToVariableName, variable, leftLabelText, rightLabelText, operand, false, false)
+        {
+        }
+
+        public DebugItemWarewolfAtomListResult(CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult warewolfAtomListresult, string newValue, string assignedToVariableName, string variable, string leftLabelText, string rightLabelText, string operand, bool isCalculate, bool mockSelected)
         {
             _labelText = "";
             _operand = operand;
@@ -126,9 +133,12 @@ namespace Dev2.Activities.Debug
                         {
                             displayExpression += _variable.Replace(DataListUtil.ReplaceRecordsetIndexWithStar(displayExpression), "");
                         }
-                        else if (DataListUtil.GetRecordsetIndexType(_variable) == enRecordsetIndexType.Blank)
+                        else
                         {
-                            displayExpression += _variable.Replace(DataListUtil.ReplaceRecordsetIndexWithBlank(displayExpression), "");
+                            if (DataListUtil.GetRecordsetIndexType(_variable) == enRecordsetIndexType.Blank)
+                            {
+                                displayExpression += _variable.Replace(DataListUtil.ReplaceRecordsetIndexWithBlank(displayExpression), "");
+                            }
                         }
                     }
                     else
@@ -140,10 +150,9 @@ namespace Dev2.Activities.Debug
                 else
                 {
                     string indexRegionFromRecordset = DataListUtil.ExtractIndexRegionFromRecordset(displayExpression);
-                    int indexForRecset;
-                    int.TryParse(indexRegionFromRecordset, out indexForRecset);
+                    int.TryParse(indexRegionFromRecordset, out int indexForRecset);
 
-                    if(indexForRecset > 0)
+                    if (indexForRecset > 0)
                     {
                         int indexOfOpenningBracket = displayExpression.IndexOf("(", StringComparison.Ordinal) + 1;
                         string group = displayExpression.Substring(0, indexOfOpenningBracket) + "*" + displayExpression.Substring(indexOfOpenningBracket + indexRegionFromRecordset.Length);
@@ -210,8 +219,7 @@ namespace Dev2.Activities.Debug
         {
             if(_oldValue.IsWarewolfAtomResult)
             {
-                var scalarResult = _oldValue as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
-                if(scalarResult != null)
+                if (_oldValue is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult scalarResult)
                 {
                     results.Add(new DebugItemResult
                     {
@@ -261,10 +269,9 @@ namespace Dev2.Activities.Debug
                     else
                     {
                         string indexRegionFromRecordset = DataListUtil.ExtractIndexRegionFromRecordset(displayExpression);
-                        int indexForRecset;
-                        int.TryParse(indexRegionFromRecordset, out indexForRecset);
+                        int.TryParse(indexRegionFromRecordset, out int indexForRecset);
 
-                        if(indexForRecset > 0)
+                        if (indexForRecset > 0)
                         {
                             int indexOfOpenningBracket = displayExpression.IndexOf("(", StringComparison.Ordinal) + 1;
                             string group = displayExpression.Substring(0, indexOfOpenningBracket) + "*" + displayExpression.Substring(indexOfOpenningBracket + indexRegionFromRecordset.Length);
@@ -366,7 +373,8 @@ namespace Dev2.Activities.Debug
 
         private string GetGroupName(string displayExpression, string rawExpression, ref int grpIdx, ref string item, ref string groupName)
         {
-            if(displayExpression.Contains("().") || displayExpression.Contains("(*)."))
+            string expr = displayExpression;
+            if (displayExpression.Contains("().") || displayExpression.Contains("(*)."))
             {
                 grpIdx++;
                 string index = grpIdx.ToString(CultureInfo.InvariantCulture);
@@ -376,26 +384,22 @@ namespace Dev2.Activities.Debug
                     item = "";
                 }
                 groupName = rawExpression.Replace(".WarewolfPositionColumn", "");
-                
-                displayExpression = DataListUtil.AddBracketsToValueIfNotExist(DataListUtil.CreateRecordsetDisplayValue(DataListUtil.ExtractRecordsetNameFromValue(_variable), DataListUtil.ExtractFieldNameFromValue(_variable), index)).Replace(".WarewolfPositionColumn", "");
-                ;
-                
+                expr = DataListUtil.AddBracketsToValueIfNotExist(DataListUtil.CreateRecordsetDisplayValue(DataListUtil.ExtractRecordsetNameFromValue(_variable), DataListUtil.ExtractFieldNameFromValue(_variable), index)).Replace(".WarewolfPositionColumn", "");
             }
             else
             {
-                string indexRegionFromRecordset = DataListUtil.ExtractIndexRegionFromRecordset(displayExpression);
-                int indexForRecset;
-                int.TryParse(indexRegionFromRecordset, out indexForRecset);
+                string indexRegionFromRecordset = DataListUtil.ExtractIndexRegionFromRecordset(expr);
+                int.TryParse(indexRegionFromRecordset, out int indexForRecset);
 
-                if(indexForRecset > 0)
+                if (indexForRecset > 0)
                 {
-                    int indexOfOpenningBracket = displayExpression.IndexOf("(", StringComparison.Ordinal) + 1;
-                    string group = displayExpression.Substring(0, indexOfOpenningBracket) + "*" + displayExpression.Substring(indexOfOpenningBracket + indexRegionFromRecordset.Length);
+                    int indexOfOpenningBracket = expr.IndexOf("(", StringComparison.Ordinal) + 1;
+                    string group = expr.Substring(0, indexOfOpenningBracket) + "*" + expr.Substring(indexOfOpenningBracket + indexRegionFromRecordset.Length);
                     grpIdx++;
                     groupName = @group;
                 }
             }
-            return displayExpression;
+            return expr;
         }
     }
 }

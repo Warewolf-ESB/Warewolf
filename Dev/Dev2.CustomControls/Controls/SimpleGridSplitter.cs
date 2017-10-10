@@ -55,7 +55,9 @@ namespace Dev2.CustomControls
                 _containingGrid = Parent as Grid;
 
                 if (_containingGrid == null)
+                {
                     throw new InvalidOperationException(ErrorResource.GridsplitterOnlyWorksInGrids);
+                }
             }
 
             SetCursor();
@@ -96,6 +98,8 @@ namespace Dev2.CustomControls
                 case Orientation.Vertical:
                     ResizeRows(e.VerticalChange);
                     break;
+                default:
+                    break;
             }
         }
 
@@ -104,10 +108,20 @@ namespace Dev2.CustomControls
             switch (Orientation)
             {
                 case Orientation.Horizontal:
-                    if (_thumb != null) _thumb.Cursor = Cursors.ScrollWE;
+                    if (_thumb != null)
+                    {
+                        _thumb.Cursor = Cursors.ScrollWE;
+                    }
+
                     break;
                 case Orientation.Vertical:
-                    if (_thumb != null) _thumb.Cursor = Cursors.ScrollNS;
+                    if (_thumb != null)
+                    {
+                        _thumb.Cursor = Cursors.ScrollNS;
+                    }
+
+                    break;
+                default:
                     break;
             }
         }
@@ -115,16 +129,29 @@ namespace Dev2.CustomControls
         private void ResizeRows(double delta)
         {
             //if no change just return
-            if (delta.CompareTo(0D) == 0) return;
+            if (delta.CompareTo(0D) == 0)
+            {
+                return;
+            }
 
             //Only works when the grid has at least 3 rows
             int containingGridRows = _containingGrid.RowDefinitions.Count;
-            if (containingGridRows < 3) return;
+            if (containingGridRows < 3)
+            {
+                return;
+            }
 
             int row = Grid.GetRow(this);
 
-            if (row < 1) return; //Do nothing if in top row - introduce ResizeBehavior
-            if (row == containingGridRows - 1) return; //Do nothing if in last row - introduce ResizeBehavior
+            if (row < 1)
+            {
+                return; //Do nothing if in top row - introduce ResizeBehavior
+            }
+
+            if (row == containingGridRows - 1)
+            {
+                return; //Do nothing if in last row - introduce ResizeBehavior
+            }
 
             int upperRow = row - 1;
             int lowerRow = row + 1;
@@ -136,7 +163,9 @@ namespace Dev2.CustomControls
             ScrollViewer lowerScrollViewer = GetScrollViewer(_containingGrid, lowerRow);
 
             if (upperScrollViewer != null)
+            {
                 isUpperContentMaxed = upperScrollViewer.ExtentHeight.CompareTo(upperScrollViewer.ViewportHeight) == 0;
+            }
             else
             {
                 ScrollBar upperScrollBar = GetScrollBar(_containingGrid, upperRow);
@@ -144,15 +173,24 @@ namespace Dev2.CustomControls
             }
 
             if (lowerScrollViewer != null)
+            {
                 isLowerContentMaxed = lowerScrollViewer.ExtentHeight.CompareTo(lowerScrollViewer.ViewportHeight) == 0;
+            }
             else
             {
                 ScrollBar lowerScrollBar = GetScrollBar(_containingGrid, lowerRow);
                 isLowerContentMaxed = lowerScrollBar.Visibility == Visibility.Collapsed;
             }
 
-            if (delta < 0 && isLowerContentMaxed) return;
-            if (delta > 0 && isUpperContentMaxed) return;
+            if (delta < 0 && isLowerContentMaxed)
+            {
+                return;
+            }
+
+            if (delta > 0 && isUpperContentMaxed)
+            {
+                return;
+            }
 
             RowDefinition upperRowDefinition = _containingGrid.RowDefinitions[upperRow];
             RowDefinition lowerRowDefinition = _containingGrid.RowDefinitions[lowerRow];
@@ -205,10 +243,14 @@ namespace Dev2.CustomControls
         private double AdjustDelta(double actualHeight, double minHeight, double maxHeight, int multiplier, double delta)
         {
             if (actualHeight + multiplier*delta > maxHeight)
+            {
                 delta = multiplier*Math.Max(0, maxHeight - actualHeight);
+            }
 
             if (actualHeight + multiplier*delta < minHeight)
+            {
                 delta = multiplier*Math.Min(0, minHeight - actualHeight);
+            }
 
             return delta;
         }

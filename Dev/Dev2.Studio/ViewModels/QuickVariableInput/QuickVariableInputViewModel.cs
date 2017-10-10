@@ -385,8 +385,7 @@ namespace Dev2.ViewModels.QuickVariableInput
                 case "Index":
                     if (!string.IsNullOrEmpty(at))
                     {
-                        int indexNum;
-                        if (int.TryParse(at, out indexNum) && indexNum > 0)
+                        if (int.TryParse(at, out int indexNum) && indexNum > 0)
                         {
                             dtb.AddIndexOp(indexNum);
                         }
@@ -422,6 +421,8 @@ namespace Dev2.ViewModels.QuickVariableInput
                         dtb.AddTokenOp(at, false);
                     }
                     break;
+                default:
+                    break;
             }
 
 
@@ -434,16 +435,14 @@ namespace Dev2.ViewModels.QuickVariableInput
 
             if (SplitType == "Index")
             {
-                int indexToSplitOn;
                 if (!SplitToken.IsWholeNumber())
                 {
                     _errorColletion.Add(new KeyValuePair<ErrorType, string>(ErrorType.Critical, "Please supply a whole positive number for an Index split"));
                     return false;
                 }
-                if (!int.TryParse(SplitToken, out indexToSplitOn))
+                if (!int.TryParse(SplitToken, out int indexToSplitOn))
                 {
-                    double doubleToSplitOn;
-                    _errorColletion.Add(double.TryParse(SplitToken, out doubleToSplitOn) ? new KeyValuePair<ErrorType, string>(ErrorType.Critical, "Please supply a number less then 2,147,483,647 for an Index split") : new KeyValuePair<ErrorType, string>(ErrorType.Critical, "Please supply a whole positive number for an Index split"));
+                    _errorColletion.Add(double.TryParse(SplitToken, out double doubleToSplitOn) ? new KeyValuePair<ErrorType, string>(ErrorType.Critical, "Please supply a number less then 2,147,483,647 for an Index split") : new KeyValuePair<ErrorType, string>(ErrorType.Critical, "Please supply a whole positive number for an Index split"));
                     return false;
                 }
 

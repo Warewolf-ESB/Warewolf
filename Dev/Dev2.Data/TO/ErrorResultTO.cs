@@ -29,7 +29,8 @@ namespace Dev2.Data.TO
         /// </summary>
         /// <param name="msg">The MSG.</param>
         /// <param name="checkForDuplicates"></param>
-        public void AddError(string msg, bool checkForDuplicates = false)
+        public void AddError(string msg) => AddError(msg, false);
+        public void AddError(string msg, bool checkForDuplicates)
         {
             if(!string.IsNullOrEmpty(msg))
             {
@@ -116,7 +117,8 @@ namespace Dev2.Data.TO
         /// Makes the error collection data list insert ready.
         /// </summary>
         /// <returns></returns>
-        public string MakeDataListReady(bool asXml = true)
+        public string MakeDataListReady() => MakeDataListReady(true);
+        public string MakeDataListReady(bool asXml)
         {
             StringBuilder result = new StringBuilder();
 

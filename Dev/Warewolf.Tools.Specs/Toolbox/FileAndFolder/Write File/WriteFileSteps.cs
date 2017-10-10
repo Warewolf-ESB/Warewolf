@@ -33,7 +33,11 @@ namespace Warewolf.ToolsSpecs.Toolbox.FileAndFolder.Write_File
         public WriteFileSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
         {
-            if (scenarioContext == null) throw new ArgumentNullException(nameof(scenarioContext));
+            if (scenarioContext == null)
+            {
+                throw new ArgumentNullException(nameof(scenarioContext));
+            }
+
             this._scenarioContext = scenarioContext;
         }
 
@@ -96,7 +100,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.FileAndFolder.Write_File
             var appendTop = false;
             var appendBottom = false;
 
-            switch(readtype)
+            switch (readtype)
             {
                 case "Overwrite":
                     overwrite = true;
@@ -106,6 +110,8 @@ namespace Warewolf.ToolsSpecs.Toolbox.FileAndFolder.Write_File
                     break;
                 case "Append Bottom":
                     appendBottom = true;
+                    break;
+                default:
                     break;
             }
 
@@ -131,7 +137,9 @@ namespace Warewolf.ToolsSpecs.Toolbox.FileAndFolder.Write_File
 
             var viewModel = new WriteFileDesignerViewModel(ModelItemUtils.CreateModelItem(fileWrite));
             if (!_scenarioContext.ContainsKey("viewModel"))
+            {
                 _scenarioContext.Add("viewModel", viewModel);
+            }
         }
     }
 }

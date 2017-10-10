@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Runtime.Serialization;
 using System.Text;
 using Dev2.Common;
@@ -48,9 +47,8 @@ namespace Dev2.Runtime.ESB.Management.Services
             string serializedSource = null;
             string listName = null;
             string editableOnly = null;
-            StringBuilder tmp;
-            values.TryGetValue("SharepointServer", out tmp);
-            if(tmp != null)
+            values.TryGetValue("SharepointServer", out StringBuilder tmp);
+            if (tmp != null)
             {
                 serializedSource = tmp.ToString();
             }

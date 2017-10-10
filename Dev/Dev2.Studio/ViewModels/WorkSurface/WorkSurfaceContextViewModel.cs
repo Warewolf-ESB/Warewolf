@@ -97,8 +97,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
         {
             get
             {
-                var workflowDesignerViewModel = WorkSurfaceViewModel as WorkflowDesignerViewModel;
-                if (workflowDesignerViewModel != null)
+                if (WorkSurfaceViewModel is WorkflowDesignerViewModel workflowDesignerViewModel)
                 {
                     return workflowDesignerViewModel.DebugOutputViewModel;
                 }
@@ -113,8 +112,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
         {
             get
             {
-                var workflowDesignerViewModel = WorkSurfaceViewModel as WorkflowDesignerViewModel;
-                if (workflowDesignerViewModel != null)
+                if (WorkSurfaceViewModel is WorkflowDesignerViewModel workflowDesignerViewModel)
                 {
                     return workflowDesignerViewModel.DataListViewModel;
                 }
@@ -177,8 +175,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
             _windowManager = CustomContainer.Get<IWindowManager>();
 
-            var model = WorkSurfaceViewModel as IWorkflowDesignerViewModel;
-            if (model != null)
+            if (WorkSurfaceViewModel is IWorkflowDesignerViewModel model)
             {
                 model.WorkflowChanged += UpdateForWorkflowChange;
                 _server = model.Server;
@@ -188,7 +185,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
                     _server.Connection.ReceivedResourceAffectedMessage += OnReceivedResourceAffectedMessage;
                 }
             }
-            
+
             _popupController = popupController;
             _saveDialogAction = saveDialogAction;
         }
@@ -222,7 +219,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
         {
             return (sender, args) =>
             {
-                if (args.IsConnected == false)
+                if (!args.IsConnected)
                 {
                     SetDebugStatus(DebugStatus.Finished);
                 }
@@ -541,7 +538,8 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             SaveDialogHelper.ShowNewWorkflowSaveDialog(resourceModel, null, addToTabManager);
         }
 
-        public bool Save(bool isLocalSave = false, bool isStudioShutdown = false)
+        public bool Save() => Save(false, false);
+        public bool Save(bool isLocalSave, bool isStudioShutdown)
         {
             var saveResult = Save(ContextualResourceModel, isLocalSave);
             WorkSurfaceViewModel?.NotifyOfPropertyChange("DisplayName");
@@ -562,8 +560,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
         public void FindMissing()
         {
-            WorkflowDesignerViewModel model = WorkSurfaceViewModel as WorkflowDesignerViewModel;
-            if (model != null)
+            if (WorkSurfaceViewModel is WorkflowDesignerViewModel model)
             {
                 var vm = model;
                 vm.AddMissingWithNoPopUpAndFindUnusedDataListItems();
@@ -721,8 +718,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             }
 
             DebugOutputViewModel?.Dispose();
-            var model = DataListViewModel as SimpleBaseViewModel;
-            if (model != null)
+            if (DataListViewModel is SimpleBaseViewModel model)
             {
                 DataListViewModel.Parent = null;
                 model.Dispose();

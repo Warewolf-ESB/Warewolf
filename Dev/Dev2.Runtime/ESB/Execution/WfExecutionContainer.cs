@@ -29,7 +29,7 @@ namespace Dev2.Runtime.ESB.Execution
 {
     public class WfExecutionContainer : EsbExecutionContainer
     {
-        private static readonly ManualResetEvent EventPulse = new ManualResetEvent(false);
+        
 
         public WfExecutionContainer(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel)
             : base(sa, dataObj, theWorkspace, esbChannel)
@@ -173,45 +173,53 @@ namespace Dev2.Runtime.ESB.Execution
 
         static void EvalInner(IDSFDataObject dsfDataObject, IDev2Activity resource, int update)
         {
-            var exe = CustomContainer.Get<IExecutionManager>();
-            if (exe != null)
+            try
             {
-                if (!exe.IsRefreshing || dsfDataObject.IsSubExecution)
+                var exe = CustomContainer.Get<IExecutionManager>();
+                Dev2Logger.Debug("Got Execution Manager", GlobalConstants.WarewolfDebug);
+                if (exe != null)
                 {
-                    exe.AddExecution();
-                }
-                else
-                {
-                    exe.AddWait(EventPulse);
-                    EventPulse.WaitOne();
-                }
-            }
-            if (resource == null)
-            {
-                throw new InvalidOperationException(GlobalConstants.NoStartNodeError);
-            }
-            WorkflowExecutionWatcher.HasAWorkflowBeenExecuted = true;
-            var next = resource.Execute(dsfDataObject, update);
-            while (next != null)
-            {
-                if (!dsfDataObject.StopExecution)
-                {
-                    next = next.Execute(dsfDataObject, update);
-                    if (dsfDataObject.Environment.Errors.Count > 0)
+                    if (!exe.IsRefreshing || dsfDataObject.IsSubExecution)
                     {
-                        foreach (var e in dsfDataObject.Environment.Errors)
-                        {
-                            dsfDataObject.Environment.AllErrors.Add(e);
-                        }
+                        Dev2Logger.Debug("Adding Execution to Execution Manager", GlobalConstants.WarewolfDebug);
+                        exe.AddExecution();
+                        Dev2Logger.Debug("Added Execution to Execution Manager", GlobalConstants.WarewolfDebug);
+                    }
+                    else
+                    {
+                        Dev2Logger.Debug("Waiting", GlobalConstants.WarewolfDebug);
+                        exe.Wait();
+                        Dev2Logger.Debug("Continued Execution", GlobalConstants.WarewolfDebug);
 
                     }
                 }
-                else
+                if (resource == null)
                 {
-                    break;
+                    throw new InvalidOperationException(GlobalConstants.NoStartNodeError);
                 }
+                WorkflowExecutionWatcher.HasAWorkflowBeenExecuted = true;
+                Dev2Logger.Debug("Starting Execute", GlobalConstants.WarewolfDebug);
+                var next = resource.Execute(dsfDataObject, update);
+                Dev2Logger.Debug("Executed first node", GlobalConstants.WarewolfDebug);
+                while (next != null)
+                {
+                    if (!dsfDataObject.StopExecution)
+                    {
+                        next = next.Execute(dsfDataObject, update);
+                        dsfDataObject.Environment.AllErrors.UnionWith(dsfDataObject.Environment?.Errors);                                                
+                    }
+                    else
+                    {
+                        next = null;
+                    }
+                }
+                
             }
-            exe?.CompleteExecution();
+            finally
+            {
+                var exe = CustomContainer.Get<IExecutionManager>();
+                exe?.CompleteExecution();
+            }
         }
     }
 }

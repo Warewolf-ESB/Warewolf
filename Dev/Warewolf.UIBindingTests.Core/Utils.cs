@@ -5,7 +5,6 @@ using Dev2.Common.Interfaces;
 using Microsoft.Practices.Prism.Mvvm;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
-using Warewolf.Studio.Themes.Luna;
 using Warewolf.Studio.ViewModels;
 
 
@@ -51,7 +50,6 @@ namespace Warewolf.UIBindingTests.Core
 
         public static void SetupResourceDictionary()
         {
-            new LunaTheme();
             Application app = Application.Current ?? new Application();
             ResourceDictionary themeDictionary = new ResourceDictionary { Source = new Uri("pack://application:,,,/Warewolf.Studio.Themes.Luna;component/Theme.xaml", UriKind.RelativeOrAbsolute) };
             foreach(var resourceDictionary in themeDictionary.MergedDictionaries)
@@ -80,7 +78,6 @@ namespace Warewolf.UIBindingTests.Core
 
         public static void SetupResourceDictionaryActivities()
         {
-            new LunaTheme();
             Application app = Application.Current ?? new Application();
             ResourceDictionary themeDictionary = new ResourceDictionary { Source = new Uri("pack://application:,,,/Warewolf.Studio.Themes.Luna;component/Theme.xaml", UriKind.RelativeOrAbsolute) };
             app.Resources.MergedDictionaries.Add(themeDictionary);

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Threading;
+﻿using System.Threading;
 using Dev2.Runtime.ESB.Execution;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -20,7 +17,7 @@ namespace Dev2.Tests.Runtime.Util
 
 
             //------------Execute Test---------------------------
-            var executionManager = ExecutionManager.Instance;
+            var executionManager =  new ExecutionManager();
             //------------Assert Results-------------------------
             Assert.IsNotNull(executionManager);
             Assert.IsFalse(executionManager.IsRefreshing);
@@ -28,7 +25,7 @@ namespace Dev2.Tests.Runtime.Util
 
         public static ExecutionManager GetConstructedExecutionManager()
         {
-            return (ExecutionManager)Activator.CreateInstance(typeof(ExecutionManager), true);
+            return new ExecutionManager();
         }
 
         [TestMethod]
@@ -95,25 +92,7 @@ namespace Dev2.Tests.Runtime.Util
             //------------Assert Results-------------------------
             Assert.AreEqual(0, updatedCurrentExecutionsValue);
         }
-
-        [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("ExecutionManager_AddWaitHandle")]
-        public void ExecutionManager_AddWaitHandle_ShouldAddToWaitHandles()
-        {
-            //------------Setup for test--------------------------
-            var executionManager = GetConstructedExecutionManager();
-            PrivateObject p = new PrivateObject(executionManager);
-            var autoResetEvent = new ManualResetEvent(false);
-            //------------Execute Test---------------------------
-            executionManager.AddWait(autoResetEvent);
-            //------------Assert Results-------------------------
-            var waitHandles = p.GetFieldOrProperty("_waitHandles") as List<ManualResetEvent>;
-            Assert.IsNotNull(waitHandles);
-            Assert.AreEqual(1,waitHandles.Count);
-            Assert.AreEqual(autoResetEvent,waitHandles[0]);
-        }
-
+        
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("ExecutionManager_StopExecution")]
@@ -122,12 +101,10 @@ namespace Dev2.Tests.Runtime.Util
             //------------Setup for test--------------------------
             var executionManager = GetConstructedExecutionManager();
             PrivateObject p = new PrivateObject(executionManager);
-            var autoResetEvent = new ManualResetEvent(false);
-            executionManager.AddWait(autoResetEvent);
             var _threadTracker = false;
             var t = new Thread(()=>
             {
-                autoResetEvent.WaitOne();
+                executionManager.Wait();
                 _threadTracker = true;
             });
             t.Start();
@@ -135,9 +112,6 @@ namespace Dev2.Tests.Runtime.Util
             executionManager.StopRefresh();
             Thread.Sleep(1000);
             //------------Assert Results-------------------------
-            var waitHandles = p.GetFieldOrProperty("_waitHandles") as List<ManualResetEvent>;
-            Assert.IsNotNull(waitHandles);
-            Assert.AreEqual(0, waitHandles.Count);
             Assert.IsTrue(_threadTracker);
         }
     }

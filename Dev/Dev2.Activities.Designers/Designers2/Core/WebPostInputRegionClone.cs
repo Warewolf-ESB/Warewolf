@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using Dev2.Activities.Annotations;
+using Dev2.Common.Annotations;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.ToolBase;
 

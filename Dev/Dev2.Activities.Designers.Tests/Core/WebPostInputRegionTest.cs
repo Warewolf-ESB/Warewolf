@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.Core.Source;
@@ -54,8 +53,7 @@ namespace Dev2.Activities.Designers.Tests.Core
             var region = new WebPostInputRegion(ModelItemUtils.CreateModelItem(act), srcreg) { PostData = "bob" };
             Assert.AreEqual(region.IsEnabled, false);
             Assert.AreEqual(region.Errors.Count, 0);
-            var clone = region.CloneRegion() as WebPostInputRegion;
-            if (clone != null)
+            if (region.CloneRegion() is WebPostInputRegion clone)
             {
                 Assert.AreEqual(clone.IsEnabled, false);
                 Assert.AreEqual(clone.Errors.Count, 0);

@@ -51,14 +51,14 @@
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\Debug\</OutputPath>
     <PlatformTarget>AnyCPU</PlatformTarget>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>Dev2.Studio.ruleset</CodeAnalysisRuleSet>
     <DefineConstants>DEBUG</DefineConstants>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
     <OutputPath>bin\Release\</OutputPath>
     <PlatformTarget>AnyCPU</PlatformTarget>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>Dev2.Studio.ruleset</CodeAnalysisRuleSet>
     <DefineConstants>DEBUG</DefineConstants>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
   </PropertyGroup>
@@ -294,10 +294,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
+    <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
-    <Compile Include="Properties\AssemblyInfo.cs" Condition="!Exists('..\AssemblyCommonInfo.cs')" />
     <None Include="..\Run Tests.ps1">
       <Visible>False</Visible>
       <Link>Run Tests.ps1</Link>
@@ -364,7 +363,6 @@
       <DependentUpon>ProgressDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="CustomControls\Progress\ProgressFileDownloader.cs" />
-    <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Settings\Logging\EnumHelper.cs" />
     <Compile Include="Settings\Logging\ILogSettings.cs" />
     <Compile Include="Settings\Logging\LoggingView.xaml.cs">
@@ -416,9 +414,6 @@
     <Compile Include="Views\DependencyVisualization\DependencyVisualiserView.xaml.cs">
       <DependentUpon>DependencyVisualiserView.xaml</DependentUpon>
       <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Views\Dialog\Dev2MessageBoxWithCustomButtons.xaml.cs">
-      <DependentUpon>Dev2MessageBoxWithCustomButtons.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\Help\HelpViewModel.cs" />
     <Compile Include="ViewModels\Workflow\WorkflowInputDataViewModel.cs" />
@@ -487,9 +482,6 @@
     </Compile>
     <Compile Include="Views\Help\FeedbackView.xaml.cs">
       <DependentUpon>FeedbackView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\UIAutomation\AutomationIdCreaterView.xaml.cs">
-      <DependentUpon>AutomationIdCreaterView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Administration\DialogueView.xaml.cs">
       <DependentUpon>DialogueView.xaml</DependentUpon>
@@ -620,10 +612,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Dialog\Dev2MessageBoxWithCustomButtons.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\Diagnostics\ReportsViewerView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -657,10 +645,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Help\FeedbackView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\UIAutomation\AutomationIdCreaterView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -742,8 +726,10 @@
     <None Include="Achitecture\EnvironmentRepositoryRelationships.cd" />
     <None Include="App.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </None>
     <None Include="app.manifest" />
+    <None Include="Dev2.Studio.ruleset" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
@@ -941,7 +927,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Views\Dialogs\" />
+    <Analyzer Include="..\packages\SonarAnalyzer.CSharp.5.11.0.1761\analyzers\Google.Protobuf.dll" />
+    <Analyzer Include="..\packages\SonarAnalyzer.CSharp.5.11.0.1761\analyzers\SonarAnalyzer.CSharp.dll" />
+    <Analyzer Include="..\packages\SonarAnalyzer.CSharp.5.11.0.1761\analyzers\SonarAnalyzer.dll" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Help\PageNotAvailable.htm">

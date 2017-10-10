@@ -9,7 +9,6 @@ using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Workspaces;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using Dev2.Common.Interfaces.Enums;
@@ -42,9 +41,8 @@ namespace Dev2.Runtime.ESB.Management.Services
             try
             {
                 Dev2Logger.Info("Test Wcf Service", GlobalConstants.WarewolfInfo);
-                StringBuilder resourceDefinition;
 
-                values.TryGetValue("wcfService", out resourceDefinition);
+                values.TryGetValue("wcfService", out StringBuilder resourceDefinition);
                 IWcfService service = serializer.Deserialize<IWcfService>(resourceDefinition);
 
                 var source = ResourceCatalog.Instance.GetResource<WcfSource>(GlobalConstants.ServerWorkspaceID, service.Source.Id);

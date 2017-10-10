@@ -15,7 +15,6 @@ using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Runtime.Interfaces;
 using Dev2.Studio.Interfaces;
-using Warewolf.Storage.Interfaces;
 
 namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
 {
@@ -26,7 +25,11 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
 
         public DeleteDropboxSteps(ScenarioContext scenarioContext)
         {
-            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            if (scenarioContext == null)
+            {
+                throw new ArgumentNullException("scenarioContext");
+            }
+
             this.scenarioContext = scenarioContext;
         }
 
@@ -132,7 +135,9 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
         public void ThenTheDeleteDropboxSourceWindowIsOpened(string sourceName)
         {
             if (sourceName == "Drop")
+            {
                 Assert.IsTrue(GetViewModel().SelectedSource.ResourceName == sourceName);
+            }
         }
 
         [When(@"I change Delete source from ""(.*)"" to ""(.*)""")]

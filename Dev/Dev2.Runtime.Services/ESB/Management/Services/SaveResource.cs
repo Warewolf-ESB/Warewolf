@@ -10,7 +10,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Runtime.Serialization;
 using System.Text;
 using Dev2.Common;
@@ -37,8 +36,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             if (requestArgs != null && requestArgs.Count > 0)
             {
-                StringBuilder resourceDefinition;
-                requestArgs.TryGetValue("ResourceXml", out resourceDefinition);
+                requestArgs.TryGetValue("ResourceXml", out StringBuilder resourceDefinition);
                 if (resourceDefinition != null && resourceDefinition.Length > 0)
                 {
                     Dev2JsonSerializer serializer = new Dev2JsonSerializer();
@@ -65,24 +63,20 @@ namespace Dev2.Runtime.ESB.Management.Services
             try
             {
                 Dev2Logger.Info("Save Resource Service", GlobalConstants.WarewolfInfo);
-                StringBuilder resourceDefinition;
 
                 string workspaceIdString = string.Empty;
-                StringBuilder savePathValue;
-                values.TryGetValue("savePath", out savePathValue);
+                values.TryGetValue("savePath", out StringBuilder savePathValue);
                 if (savePathValue == null)
                 {
                     throw new InvalidDataContractException("SavePath is missing");
                 }
-                values.TryGetValue("ResourceXml", out resourceDefinition);
-                StringBuilder tmp;
-                values.TryGetValue("WorkspaceID", out tmp);
+                values.TryGetValue("ResourceXml", out StringBuilder resourceDefinition);
+                values.TryGetValue("WorkspaceID", out StringBuilder tmp);
                 if (tmp != null)
                 {
                     workspaceIdString = tmp.ToString();
                 }
-                Guid workspaceId;
-                if (!Guid.TryParse(workspaceIdString, out workspaceId))
+                if (!Guid.TryParse(workspaceIdString, out Guid workspaceId))
                 {
                     workspaceId = theWorkspace.ID;
                 }

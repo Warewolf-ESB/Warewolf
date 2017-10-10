@@ -9,7 +9,6 @@
 */
 
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Net;
 using System.Reflection;
@@ -131,7 +130,11 @@ namespace Dev2.Studio.Core.Helpers
         {
             var location = Assembly.GetExecutingAssembly().Location;
             var directory = Path.GetDirectoryName(location);
-            if(directory == null) return null;
+            if(directory == null)
+            {
+                return null;
+            }
+
             var path = Path.Combine(directory, uri);
             return path;
         }

@@ -1,6 +1,4 @@
-﻿using System.Threading;
-
-namespace Dev2.Runtime
+﻿namespace Dev2.Runtime
 {
     public interface IExecutionManager
     {
@@ -14,6 +12,6 @@ namespace Dev2.Runtime
 
         void CompleteExecution();
 
-        void AddWait(ManualResetEvent eventPulse);
+        void Wait();        
     }
 }

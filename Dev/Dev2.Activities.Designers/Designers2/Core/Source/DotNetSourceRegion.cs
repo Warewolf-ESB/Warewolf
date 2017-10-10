@@ -12,7 +12,6 @@ using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.Practices.Prism.Commands;
 
 
-
 namespace Dev2.Activities.Designers2.Core.Source
 {
     public class DotNetSourceRegion : ISourceToolRegion<IPluginSource>
@@ -21,8 +20,6 @@ namespace Dev2.Activities.Designers2.Core.Source
         private IPluginSource _selectedSource;
         private ICollection<IPluginSource> _sources;
         private readonly ModelItem _modelItem;
-        
-        readonly Dictionary<Guid, IList<IToolRegion>> _previousRegions = new Dictionary<Guid, IList<IToolRegion>>();
         private Guid _sourceId;
         private Action _sourceChangedAction;
         private double _labelWidth;
@@ -221,8 +218,7 @@ namespace Dev2.Activities.Designers2.Core.Source
 
         public void RestoreRegion(IToolRegion toRestore)
         {
-            var region = toRestore as DotNetSourceRegion;
-            if (region != null)
+            if (toRestore is DotNetSourceRegion region)
             {
                 SelectedSource = region.SelectedSource;
                 IsEnabled = region.IsEnabled;

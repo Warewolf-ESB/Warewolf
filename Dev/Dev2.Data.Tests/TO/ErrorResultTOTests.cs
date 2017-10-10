@@ -85,11 +85,18 @@ namespace Dev2.Data.Tests.TO
             Assert.AreEqual(0, errors.Count);
             errorResultTo.AddError("SomeError");
             errors = prObj.GetField("_errorList") as IList<string>;
-            if (errors != null) Assert.AreEqual(1, errors.Count);
+            if (errors != null)
+            {
+                Assert.AreEqual(1, errors.Count);
+            }
+
             var merge = new ErrorResultTO();
             merge.AddError("Error to merge");
             errorResultTo.MergeErrors(merge);
-            if (errors != null) Assert.AreEqual(2, errors.Count);
+            if (errors != null)
+            {
+                Assert.AreEqual(2, errors.Count);
+            }
         }
 
         [TestMethod]
@@ -104,9 +111,16 @@ namespace Dev2.Data.Tests.TO
             Assert.AreEqual(0, errors.Count);
             errorResultTo.AddError("SomeError");
             errors = prObj.GetField("_errorList") as IList<string>;
-            if (errors != null) Assert.AreEqual(1, errors.Count);
+            if (errors != null)
+            {
+                Assert.AreEqual(1, errors.Count);
+            }
+
             errorResultTo.RemoveError("SomeError");
-            if (errors != null) Assert.AreEqual(0, errors.Count);
+            if (errors != null)
+            {
+                Assert.AreEqual(0, errors.Count);
+            }
         }
         [TestMethod]
         [Owner("Hagashen Naidu")]
@@ -121,9 +135,16 @@ namespace Dev2.Data.Tests.TO
             errorResultTo.AddError("SomeError");
             errorResultTo.AddError("AnotherError");
             errors = prObj.GetField("_errorList") as IList<string>;
-            if (errors != null) Assert.AreEqual(2, errors.Count);
+            if (errors != null)
+            {
+                Assert.AreEqual(2, errors.Count);
+            }
+
             errorResultTo.ClearErrors();
-            if (errors != null) Assert.AreEqual(0, errors.Count);
+            if (errors != null)
+            {
+                Assert.AreEqual(0, errors.Count);
+            }
         }
 
         [TestMethod]
@@ -142,7 +163,11 @@ namespace Dev2.Data.Tests.TO
             errorResultTo.AddError("SomeError");
             errorResultTo.AddError("AnotherError");
             errors = prObj.GetField("_errorList") as IList<string>;
-            if (errors != null) Assert.AreEqual(2, errors.Count);
+            if (errors != null)
+            {
+                Assert.AreEqual(2, errors.Count);
+            }
+
             var makeDisplayReady = errorResultTo.MakeDisplayReady();            
             Assert.AreEqual(result.ToString(), makeDisplayReady);
         }
@@ -160,7 +185,11 @@ namespace Dev2.Data.Tests.TO
             errorResultTo.AddError("SomeError");
             errorResultTo.AddError("AnotherError");
             errors = prObj.GetField("_errorList") as IList<string>;
-            if (errors != null) Assert.AreEqual(2, errors.Count);
+            if (errors != null)
+            {
+                Assert.AreEqual(2, errors.Count);
+            }
+
             var makeDisplayReady = errorResultTo.MakeDataListReady();            
             Assert.AreEqual(result, makeDisplayReady);
         }

@@ -11,7 +11,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -290,59 +289,23 @@ namespace Dev2.Data.Util
 
             return result;
         }
-
-
-
-        /// <summary>
-        /// Adds [[ ]] to a variable if they are not present already
-        /// </summary>
-        /// <param name="value">The value.</param>
-        /// <returns></returns>
+        
         public static string AddBracketsToValueIfNotExist(string value)
         {
             string result;
 
-            if (!value.Contains(ClosingSquareBrackets))
-            {
-                result = !value.Contains(OpeningSquareBrackets) ? string.Concat(OpeningSquareBrackets, value, ClosingSquareBrackets) : string.Concat(value, ClosingSquareBrackets);
-            }
-            else
-            {
-                result = value;
-            }
+            result = !value.Contains(ClosingSquareBrackets) ? !value.Contains(OpeningSquareBrackets) ? string.Concat(OpeningSquareBrackets, value, ClosingSquareBrackets) : string.Concat(value, ClosingSquareBrackets) : value;
 
             return result;
         }
 
-        /// <summary>
-        /// Adds () to the end of the value
-        /// </summary>
-        /// <param name="value">The value.</param>
-        /// <param name="starNotation">if set to <c>true</c> [star notation].</param>
-        /// <returns></returns>
-        public static string MakeValueIntoHighLevelRecordset(string value, bool starNotation = false) => RecSetCommon.MakeValueIntoHighLevelRecordset(value, starNotation);
-
-        /// <summary>
-        /// Used to extract an index in the recordset notation
-        /// </summary>
-        /// <param name="rs">The rs.</param>
-        /// <returns></returns>
+        public static string MakeValueIntoHighLevelRecordset(string value) => RecSetCommon.MakeValueIntoHighLevelRecordset(value, false);
+        public static string MakeValueIntoHighLevelRecordset(string value, bool starNotation) => RecSetCommon.MakeValueIntoHighLevelRecordset(value, starNotation);
+        
         public static string ExtractIndexRegionFromRecordset(string rs) => RecSetCommon.ExtractIndexRegionFromRecordset(rs);
-
-        /// <summary>
-        /// Determines if recordset has a star index
-        /// </summary>
-        /// <param name="rs"></param>
-        /// <returns></returns>
+        
         public static bool IsStarIndex(string rs) => RecSetCommon.IsStarIndex(rs);
-
-        /// <summary>
-        /// Is the expression evaluated
-        /// </summary>  
-        /// <param name="payload">The payload.</param>
-        /// <returns>
-        ///   <c>true</c> if the specified payload is evaluated; otherwise, <c>false</c>.
-        /// </returns>
+        
         public static bool IsFullyEvaluated(string payload)
         {
             bool result = payload != null && payload.IndexOf(OpeningSquareBrackets, StringComparison.Ordinal) >= 0
@@ -401,9 +364,7 @@ namespace Dev2.Data.Util
         /// </summary>
         public static bool IsXml(string data)
         {
-            bool isFragment;
-            bool isHtml;
-            var isXml = XmlHelper.IsXml(data, out isFragment, out isHtml);
+            var isXml = XmlHelper.IsXml(data, out bool isFragment, out bool isHtml);
             return isXml && !isFragment && !isHtml;
         }
 
@@ -412,9 +373,8 @@ namespace Dev2.Data.Util
         /// </summary>
         public static bool IsXml(string data, out bool isFragment)
         {
-            bool isHtml;
 
-            return XmlHelper.IsXml(data, out isFragment, out isHtml) && !isFragment && !isHtml;
+            return XmlHelper.IsXml(data, out isFragment, out bool isHtml) && !isFragment && !isHtml;
         }
 
         public static bool IsJson(string data)
@@ -426,6 +386,11 @@ namespace Dev2.Data.Util
             }
 
             return false;
+        }
+
+        public static bool IsXmlOrJson(string data)
+        {
+            return IsJson(data) || IsXml(data);
         }
 
         public static IList<string> GetAllPossibleExpressionsForFunctionOperations(string expression, IExecutionEnvironment env, out ErrorResultTO errors, int update)
@@ -475,7 +440,10 @@ namespace Dev2.Data.Util
             }
             var bomMarkUtf8 = Encoding.UTF8.GetString(Encoding.UTF8.GetPreamble());
             if (trimedData.StartsWith(bomMarkUtf8, StringComparison.OrdinalIgnoreCase))
+            {
                 trimedData = trimedData.Remove(0, bomMarkUtf8.Length);
+            }
+
             trimedData = trimedData.Replace("\0", "");
             return trimedData;
         }
@@ -496,16 +464,8 @@ namespace Dev2.Data.Util
         /// <returns></returns>
         public static string CreateRecordsetDisplayValue(string recsetName, string colName, string indexNum) => RecSetCommon.CreateRecordsetDisplayValue(recsetName, colName, indexNum);
 
-        /// <summary>
-        /// Upserts the tokens.
-        /// </summary>
-        /// <param name="target">The target.</param>
-        /// <param name="tokenizer">The tokenizer.</param>
-        /// <param name="tokenPrefix">The token prefix.</param>
-        /// <param name="tokenSuffix">The token suffix.</param>
-        /// <param name="removeEmptyEntries">if set to <c>true</c> [remove empty entries].</param>
-        /// <exception cref="System.ArgumentNullException">target</exception>
-        public static void UpsertTokens(Collection<ObservablePair<string, string>> target, IDev2Tokenizer tokenizer, string tokenPrefix = null, string tokenSuffix = null, bool removeEmptyEntries = true)
+        public static void UpsertTokens(Collection<ObservablePair<string, string>> target, IDev2Tokenizer tokenizer) => UpsertTokens(target, tokenizer, null, null, true);
+        public static void UpsertTokens(Collection<ObservablePair<string, string>> target, IDev2Tokenizer tokenizer, string tokenPrefix, string tokenSuffix, bool removeEmptyEntries)
         {
             if (target == null)
             {
@@ -565,8 +525,7 @@ namespace Dev2.Data.Util
                 if (IsValueRecordset(variable))
                 {
                     var index = ExtractIndexRegionFromRecordset(variable);
-                    int val;
-                    if (!int.TryParse(index, out val))
+                    if (!int.TryParse(index, out int val))
                     {
                         return true;
                     }
@@ -609,14 +568,7 @@ namespace Dev2.Data.Util
             XmlAttribute ioDirectionAttribute = tmpNode.Attributes[GlobalConstants.DataListIoColDirection];
 
             enDev2ColumnArgumentDirection ioDirection;
-            if (ioDirectionAttribute != null)
-            {
-                ioDirection = (enDev2ColumnArgumentDirection)Dev2EnumConverter.GetEnumFromStringDiscription(ioDirectionAttribute.Value, typeof(enDev2ColumnArgumentDirection));
-            }
-            else
-            {
-                ioDirection = enDev2ColumnArgumentDirection.Both;
-            }
+            ioDirection = ioDirectionAttribute != null ? (enDev2ColumnArgumentDirection)Dev2EnumConverter.GetEnumFromStringDiscription(ioDirectionAttribute.Value, typeof(enDev2ColumnArgumentDirection)) : enDev2ColumnArgumentDirection.Both;
             return ioDirection;
         }
 

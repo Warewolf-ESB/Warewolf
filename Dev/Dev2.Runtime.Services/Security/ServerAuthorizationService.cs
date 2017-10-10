@@ -70,15 +70,7 @@ namespace Dev2.Runtime.Security
             var user = Common.Utilities.OrginalExecutingUser ?? ClaimsPrincipal.Current;
 
             Tuple<string, string, AuthorizationContext> requestKey = new Tuple<string, string,AuthorizationContext>(user.Identity.Name, resource,context);
-            Tuple<bool, DateTime> authorizedRequest;
-            if (_cachedRequests.TryGetValue(requestKey, out authorizedRequest) && DateTime.Now.Subtract(authorizedRequest.Item2) < _timeOutPeriod)
-            {
-                authorized = authorizedRequest.Item1;
-            }
-            else
-            {
-                authorized = IsAuthorized(user, context, resource);
-            }
+            authorized = _cachedRequests.TryGetValue(requestKey, out Tuple<bool, DateTime> authorizedRequest) && DateTime.Now.Subtract(authorizedRequest.Item2) < _timeOutPeriod ? authorizedRequest.Item1 : IsAuthorized(user, context, resource);
 
             if (!authorized)
             {
@@ -107,15 +99,7 @@ namespace Dev2.Runtime.Security
         {
             VerifyArgument.IsNotNull("request", request);
             bool authorized;
-            Tuple<bool, DateTime> authorizedRequest;
-            if (_cachedRequests.TryGetValue(request.Key, out authorizedRequest) && DateTime.Now.Subtract(authorizedRequest.Item2) < _timeOutPeriod)
-            {
-                authorized = authorizedRequest.Item1;
-            }
-            else
-            {
-                authorized = IsAuthorizedImpl(request);
-            }
+            authorized = _cachedRequests.TryGetValue(request.Key, out Tuple<bool, DateTime> authorizedRequest) && DateTime.Now.Subtract(authorizedRequest.Item2) < _timeOutPeriod ? authorizedRequest.Item1 : IsAuthorizedImpl(request);
 
             if (!authorized && (request.RequestType == WebServerRequestType.HubConnect || request.RequestType == WebServerRequestType.EsbFetchExecutePayloadFragment))
             {
@@ -192,6 +176,16 @@ namespace Dev2.Runtime.Security
                 case WebServerRequestType.WebExecuteGetApisJsonForFolder:
                     result = IsAuthorizedToConnect(request.User);
                     break;
+                case WebServerRequestType.Unknown:
+                    break;
+                case WebServerRequestType.EsbOnDisconnected:
+                    break;
+                case WebServerRequestType.EsbOnReconnected:
+                    break;
+                case WebServerRequestType.EsbAddItemMessage:
+                    break;
+                default:
+                    break;
             }
 
             if (!result)
@@ -228,6 +222,68 @@ namespace Dev2.Runtime.Security
 
                     case WebServerRequestType.WebExecuteInternalService:
                         resource = GetWebExecuteName(request.Url.AbsolutePath);
+                        break;
+                    case WebServerRequestType.Unknown:
+                        break;
+                    case WebServerRequestType.WebGetDecisions:
+                        break;
+                    case WebServerRequestType.WebGetDialogs:
+                        break;
+                    case WebServerRequestType.WebGetServices:
+                        break;
+                    case WebServerRequestType.WebGetSources:
+                        break;
+                    case WebServerRequestType.WebGetSwitch:
+                        break;
+                    case WebServerRequestType.WebGet:
+                        break;
+                    case WebServerRequestType.WebGetContent:
+                        break;
+                    case WebServerRequestType.WebGetImage:
+                        break;
+                    case WebServerRequestType.WebGetScript:
+                        break;
+                    case WebServerRequestType.WebGetView:
+                        break;
+                    case WebServerRequestType.WebInvokeService:
+                        break;
+                    case WebServerRequestType.WebExecuteSecureWorkflow:
+                        break;
+                    case WebServerRequestType.WebExecutePublicWorkflow:
+                        break;
+                    case WebServerRequestType.WebExecuteGetLogFile:
+                        break;
+                    case WebServerRequestType.WebExecuteGetRootLevelApisJson:
+                        break;
+                    case WebServerRequestType.WebExecuteGetApisJsonForFolder:
+                        break;
+                    case WebServerRequestType.HubConnect:
+                        break;
+                    case WebServerRequestType.EsbOnConnected:
+                        break;
+                    case WebServerRequestType.EsbOnDisconnected:
+                        break;
+                    case WebServerRequestType.EsbOnReconnected:
+                        break;
+                    case WebServerRequestType.EsbAddDebugWriter:
+                        break;
+                    case WebServerRequestType.EsbFetchExecutePayloadFragment:
+                        break;
+                    case WebServerRequestType.EsbExecuteCommand:
+                        break;
+                    case WebServerRequestType.EsbAddItemMessage:
+                        break;
+                    case WebServerRequestType.EsbSendMemo:
+                        break;
+                    case WebServerRequestType.EsbFetchResourcesAffectedMemo:
+                        break;
+                    case WebServerRequestType.EsbSendDebugState:
+                        break;
+                    case WebServerRequestType.EsbWrite:
+                        break;
+                    case WebServerRequestType.ResourcesSendMemo:
+                        break;
+                    default:
                         break;
                 }
             }

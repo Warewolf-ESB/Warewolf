@@ -13,12 +13,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using Dev2.Common;
-using Dev2.Common.Interfaces;
-using Dev2.Data.TO;
 using Dev2.Runtime.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 
 namespace Dev2.Tests.Runtime.ServiceModel
 {

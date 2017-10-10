@@ -125,9 +125,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 var counter = 1;
                 while (colItr.HasMoreData())
                 {
-                    int decimalPlacesToShowValue;
                     var tmpDecimalPlacesToShow = colItr.FetchNextValue(decimalPlacesToShowIterator);
-                    var adjustDecimalPlaces = tmpDecimalPlacesToShow.IsRealNumber(out decimalPlacesToShowValue);
+                    var adjustDecimalPlaces = tmpDecimalPlacesToShow.IsRealNumber(out int decimalPlacesToShowValue);
                     if (!string.IsNullOrEmpty(tmpDecimalPlacesToShow) && !adjustDecimalPlaces)
                     {
                         throw new Exception(ErrorResource.DecimalsNotValid);

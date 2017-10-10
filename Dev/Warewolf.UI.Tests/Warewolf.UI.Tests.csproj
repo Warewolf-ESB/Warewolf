@@ -12,7 +12,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Warewolf.UI.Tests</RootNamespace>
     <AssemblyName>Warewolf.UI.Tests</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -90,6 +90,7 @@
       <DependentUpon>DependencyGraphUIMap.uitest</DependentUpon>
     </Compile>
     <Compile Include="DependencyGraph\ShowDependencyTests.cs" />
+    <Compile Include="Deploy\Deploy From Explorer.cs" />
     <Compile Include="Deploy\DeployTests.cs" />
     <Compile Include="Deploy\DeployUIMap.cs">
       <DependentUpon>DeployUIMap.uitest</DependentUpon>
@@ -145,7 +146,9 @@
     <Compile Include="Explorer\Refresh.cs" />
     <Compile Include="Explorer\Rename.cs" />
     <Compile Include="Explorer\VersionHistory.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="..\AssemblyCommonInfo.cs">
+      <Link>Properties\AssemblyCommonInfo.cs</Link>
+    </Compile>
     <Compile Include="RabbitMQSource\RabbitMQSourceTests.cs" />
     <Compile Include="RabbitMQSource\RabbitMQSourceUIMap.cs">
       <DependentUpon>RabbitMQSourceUIMap.uitest</DependentUpon>
@@ -208,7 +211,6 @@
     <Compile Include="WebSource\WebSourceUIMap.Designer.cs">
       <DependentUpon>WebSourceUIMap.uitest</DependentUpon>
     </Compile>
-    <Compile Include="WorkflowServiceTesting\ComDllTestingTests.cs" />
     <Compile Include="WorkflowServiceTesting\DotnetTestingTests.cs" />
     <Compile Include="WorkflowServiceTesting\HelloWorldTestFrameworkMockingTests.cs" />
     <Compile Include="WorkflowServiceTesting\TestFrameworkMockingTests.cs" />

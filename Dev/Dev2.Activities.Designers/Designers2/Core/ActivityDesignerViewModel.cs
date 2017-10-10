@@ -162,9 +162,8 @@ namespace Dev2.Activities.Designers2.Core
 
         static void OnShowHelp(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var vm = d as ActivityDesignerViewModel;
 
-            if(vm != null && (bool)e.NewValue)
+            if (d is ActivityDesignerViewModel vm && (bool)e.NewValue)
             {
                 vm._setInitialFocus?.Invoke();
             }
@@ -268,8 +267,7 @@ namespace Dev2.Activities.Designers2.Core
 
         protected virtual void OnModelItemPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            var item = sender as ModelItem;
-            if (item != null)
+            if (sender is ModelItem item)
             {
                 switch (e.PropertyName)
                 {
@@ -278,6 +276,8 @@ namespace Dev2.Activities.Designers2.Core
                         break;
                     case "IsPrimarySelection":
 
+                        break;
+                    default:
                         break;
                 }
             }
@@ -308,10 +308,6 @@ namespace Dev2.Activities.Designers2.Core
                 if(isChecked)
                 {
                     ActivityDesignerToggle activityDesignerToggle = TitleBarToggles.FirstOrDefault(c => c.AutomationID == "HelpToggle");
-                    if(activityDesignerToggle == null)
-                    {
-                        //AddTitleBarHelpToggle();
-                    }
                 }
                 else
                 {
@@ -348,7 +344,7 @@ namespace Dev2.Activities.Designers2.Core
             }
         }
 
-        protected string DisplayName { get { return GetProperty<string>(); } set { SetProperty(value); } }
+        protected string DisplayName { get => GetProperty<string>(); set => SetProperty(value); }
 
         #region Get/SetProperty
 

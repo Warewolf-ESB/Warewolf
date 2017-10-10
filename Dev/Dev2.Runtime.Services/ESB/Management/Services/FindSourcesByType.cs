@@ -10,7 +10,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
@@ -34,8 +33,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             try
             {
                 string type = null;
-                StringBuilder tmp;
-                values.TryGetValue("Type", out tmp);
+                values.TryGetValue("Type", out StringBuilder tmp);
                 if (tmp != null)
                 {
                     type = tmp.ToString();
@@ -48,8 +46,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     
                 }
                 Dev2Logger.Info("Find Sources By Type. " + type, GlobalConstants.WarewolfInfo);
-                enSourceType sourceType;
-                if (Enum.TryParse(type, true, out sourceType))
+                if (Enum.TryParse(type, true, out enSourceType sourceType))
                 {
                     var result = ResourceCatalog.Instance.GetModels(theWorkspace.ID, sourceType);
                     if (result != null)

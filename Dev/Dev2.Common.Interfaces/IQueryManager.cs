@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using System.Threading.Tasks;
 using Dev2.Common.Interfaces.DB;
@@ -24,7 +23,7 @@ namespace Dev2.Common.Interfaces
         IExecuteMessage FetchDependants(Guid resourceId);
     
         StringBuilder FetchResourceXaml(Guid resourceId);
-        Task<IExplorerItem> Load(bool reloadCatalogue = false);
+        Task<IExplorerItem> Load(bool reloadCatalogue);
         IList<IToolDescriptor> FetchTools();
         IList<IExchangeSource> FetchExchangeSources();
         IList<string> GetComputerNames();

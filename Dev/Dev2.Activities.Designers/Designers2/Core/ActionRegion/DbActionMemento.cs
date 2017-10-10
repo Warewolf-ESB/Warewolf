@@ -12,7 +12,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using Dev2.Common.Interfaces.DB;
@@ -23,6 +22,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
     public class DbActionMemento : IActionToolRegion<IDbAction>
     {
         private IDbAction _selectedAction;
+        private EventHandler<List<string>> _errorsHandler;
 
         #region Implementation of INotifyPropertyChanged
 
@@ -54,6 +54,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             }
             set
             {
+                _errorsHandler = value;
             }
         }
 

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
@@ -35,7 +35,21 @@ namespace Dev2.Runtime.ESB.Management.Services
                 
                 ComPluginServices services = new ComPluginServices();
                 var src = ResourceCatalog.Instance.GetResource<ComPluginSource>(GlobalConstants.ServerWorkspaceID, dbSource.Id);
-                var methods = services.Namespaces(src, Guid.Empty, Guid.Empty).Select(a => a as INamespaceItem).ToList();
+                var methods = new List<INamespaceItem>();
+                var task = Task.Run(() =>
+                {
+                    return methods = services.Namespaces(src, Guid.Empty, Guid.Empty).Select(a => a as INamespaceItem).ToList();
+                });
+                try
+                {
+                    var timeoutAfter = task.TimeoutAfter(TimeSpan.FromSeconds(3));
+                    methods = timeoutAfter.Result;
+                }
+                catch (Exception e)
+                {
+                    Dev2Logger.Error(e, GlobalConstants.WarewolfError);
+                }
+             
                 return serializer.SerializeToBuilder(new ExecuteMessage()
                 {
                     HasError = false,

@@ -17,7 +17,6 @@ using System.Windows.Input;
 using Dev2;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio.Controller;
-using Dev2.Studio.Core;
 using Dev2.Studio.Interfaces;
 using Microsoft.Practices.Prism;
 using Microsoft.Practices.Prism.Commands;
@@ -41,8 +40,25 @@ namespace Warewolf.Studio.ViewModels
         private readonly ObservableCollection<IServer> _existingServers;
         public IPopupController PopupController { get; set; }
         private readonly IServerRepository _serverRepository;
-        public ConnectControlViewModel(IServer server, IEventAggregator aggregator, ObservableCollection<IServer> servers = null)
+
+        public ConnectControlViewModel(IServer server, IEventAggregator aggregator) 
+            : this(server, aggregator, null, null)
         {
+        }
+
+        public ConnectControlViewModel(IServer server, IEventAggregator aggregator, ObservableCollection<IServer> servers)
+            : this(server, aggregator, null, servers)
+        {
+        }
+
+        public ConnectControlViewModel(IServer server, IEventAggregator aggregator, IPopupController popupController)
+            : this(server, aggregator, popupController, null)
+        {
+        }
+
+        public ConnectControlViewModel(IServer server, IEventAggregator aggregator, IPopupController popupController, ObservableCollection<IServer> servers)
+        {
+            PopupController = popupController;
             if (aggregator == null)
             {
                 throw new ArgumentNullException(nameof(aggregator));
@@ -58,14 +74,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 Server.UpdateRepository.ServerSaved += UpdateRepositoryOnServerSaved;
             }
-            ShouldUpdateActiveEnvironment = false;
-          
-        }
-
-        public ConnectControlViewModel(IServer server, IEventAggregator aggregator, IPopupController popupController, ObservableCollection<IServer> servers = null)
-            : this(server, aggregator, servers)
-        {
-            PopupController = popupController;
+            ShouldUpdateActiveEnvironment = false;          
         }
 
         public bool ShouldUpdateActiveEnvironment { get; set; }
@@ -113,11 +122,6 @@ namespace Warewolf.Studio.ViewModels
             updatedServer.NetworkStateChanged += OnServerOnNetworkStateChanged;
             Servers.Insert(idx, updatedServer);
             SelectedConnection = shellViewModel?.LocalhostServer;
-
-            //if (!updatedServer.IsConnected && !updatedServer.IsLocalHost)
-            //{
-            //    updatedServer.DisplayName?.Replace("(Connected)", "");
-            //}
         }
 
         public void LoadServers()
@@ -241,10 +245,8 @@ namespace Warewolf.Studio.ViewModels
                 var isConnected = await ConnectOrDisconnect();
                 if (_selectedConnection.IsConnected && isConnected)
                 {
-                    Version sourceVersionNumber;
-                    Version.TryParse(_selectedConnection.GetServerVersion(), out sourceVersionNumber);
-                    Version destVersionNumber;
-                    Version.TryParse(Resources.Languages.Core.CompareCurrentServerVersion, out destVersionNumber);
+                    Version.TryParse(_selectedConnection.GetServerVersion(), out Version sourceVersionNumber);
+                    Version.TryParse(Resources.Languages.Core.CompareCurrentServerVersion, out Version destVersionNumber);
                     if (sourceVersionNumber != null && destVersionNumber != null)
                     {
                         if (sourceVersionNumber < destVersionNumber)
@@ -383,7 +385,7 @@ namespace Warewolf.Studio.ViewModels
                         if (result == MessageBoxResult.Yes)
                         {
                             await Connect(connection);
-                        }
+                        }                                                 
                         else
                         {
                             ServerDisconnected?.Invoke(this, connection);

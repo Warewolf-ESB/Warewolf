@@ -143,7 +143,10 @@ namespace Warewolf.Studio.ViewModels
         public bool CanTest()
         {
             if (Testing)
+            {
                 return false;
+            }
+
             if (string.IsNullOrEmpty(HostName) && string.IsNullOrEmpty(UserName) && string.IsNullOrEmpty(Password))
             {
                 return false;
@@ -196,7 +199,10 @@ namespace Warewolf.Studio.ViewModels
                         src.Path = requestServiceNameViewModel.ResourceName.Path ?? requestServiceNameViewModel.ResourceName.Name;
                         Save(src);
                         if (requestServiceNameViewModel.SingleEnvironmentExplorerViewModel != null)
+                        {
                             AfterSave(requestServiceNameViewModel.SingleEnvironmentExplorerViewModel.Environments[0].ResourceId, src.Id);
+                        }
+
                         Item = src;
                         _emailServiceSource = src;
                         ResourceName = _emailServiceSource.ResourceName;
@@ -483,6 +489,7 @@ namespace Warewolf.Studio.ViewModels
             t.ContinueWith(a => Application.Current?.Dispatcher?.Invoke(() =>
             {
                 if (!_token.IsCancellationRequested)
+                {
                     switch (t.Status)
                     {
                         case TaskStatus.Faulted:
@@ -501,7 +508,23 @@ namespace Warewolf.Studio.ViewModels
                                 TestPassed = true;
                                 break;
                             }
+
+                        case TaskStatus.Created:
+                            break;
+                        case TaskStatus.WaitingForActivation:
+                            break;
+                        case TaskStatus.WaitingToRun:
+                            break;
+                        case TaskStatus.Running:
+                            break;
+                        case TaskStatus.WaitingForChildrenToComplete:
+                            break;
+                        case TaskStatus.Canceled:
+                            break;
+                        default:
+                            break;
                     }
+                }
             }));
             t.Start();
         }
@@ -536,6 +559,7 @@ namespace Warewolf.Studio.ViewModels
         IEmailServiceSource ToSource()
         {
             if (_emailServiceSource == null)
+            {
                 return new EmailServiceSourceDefinition
                 {
                     HostName = HostName,
@@ -549,7 +573,7 @@ namespace Warewolf.Studio.ViewModels
                     Id = _emailServiceSource?.Id ?? Guid.NewGuid()
                 }
             ;
-            
+            }
             else
             {
                 _emailServiceSource.HostName = HostName;

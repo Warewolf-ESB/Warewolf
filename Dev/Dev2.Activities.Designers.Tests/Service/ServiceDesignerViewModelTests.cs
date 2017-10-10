@@ -47,8 +47,6 @@ using Moq;
 using Moq.Language.Flow;
 using Moq.Protected;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
-using Dev2.Common.Interfaces;
-using Dev2.Studio.Core.Views;
 
 
 namespace Dev2.Activities.Designers.Tests.Service
@@ -352,24 +350,12 @@ namespace Dev2.Activities.Designers.Tests.Service
 
         #endregion
 
-        #region Design Validation Service
-
-
-
-
-        #endregion
-
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("ServiceDesignerViewModel_InitializeResourceModel")]
         public void ServiceDesignerViewModel_InitializeResourceModel_ServiceTypeHasSourceAndIsInvalidXml_NoErrorMessageAdded()
         {
-            //------------Setup for test--------------------------
-            Guid instanceID;
-            Mock<IServer> environment;
-            Mock<IContextualResourceModel> resourceModel;
-            Guid sourceID;
-            var mockRepo = SetupForSourceCheck(out instanceID, out environment, out resourceModel, out sourceID, true);
+            var mockRepo = SetupForSourceCheck(out Guid instanceID, out Mock<IServer> environment, out Mock<IContextualResourceModel> resourceModel, out Guid sourceID, true);
             mockRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns((IResourceModel)null);
             mockRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), true, false)).Returns(resourceModel.Object);
             mockRepo.Setup(repository => repository.LoadContextualResourceModel(It.IsAny<Guid>())).Returns(resourceModel.Object);
@@ -1020,12 +1006,7 @@ namespace Dev2.Activities.Designers.Tests.Service
         [TestCategory("ServiceDesignerViewModel_InitializeResourceModel")]
         public void ServiceDesignerViewModel_InitializeResourceModel_ServiceTypeHasSource_NoErrorMessageAdded()
         {
-            //------------Setup for test--------------------------
-            Guid instanceID;
-            Mock<IServer> environment;
-            Mock<IContextualResourceModel> resourceModel;
-            Guid sourceID;
-            var mockRepo = SetupForSourceCheck(out instanceID, out environment, out resourceModel, out sourceID);
+            var mockRepo = SetupForSourceCheck(out Guid instanceID, out Mock<IServer> environment, out Mock<IContextualResourceModel> resourceModel, out Guid sourceID);
 
             mockRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(new Mock<IResourceModel>().Object);
             mockRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), true, false)).Returns(resourceModel.Object);
@@ -2694,8 +2675,7 @@ namespace Dev2.Activities.Designers.Tests.Service
 
         static Mock<IContextualResourceModel> CreateResourceModel(Guid resourceID, bool resourceRepositoryReturnsNull, Mock<IContextualResourceModel> contextualResourceModel, params IErrorInfo[] resourceErrors)
         {
-            Mock<IResourceRepository> resourceRepository;
-            Mock<IContextualResourceModel> resourceModel = CreateResourceModel(resourceID, out resourceRepository, resourceErrors);
+            Mock<IContextualResourceModel> resourceModel = CreateResourceModel(resourceID, out Mock<IResourceRepository> resourceRepository, resourceErrors);
             resourceRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), true, false)).Returns(resourceRepositoryReturnsNull ? null : resourceModel.Object);
             if (resourceRepositoryReturnsNull)
             {
@@ -2751,7 +2731,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             resourceRepository = new Mock<IResourceRepository>();
             resourceRepository.Setup(repository => repository.LoadContextualResourceModel(It.IsAny<Guid>())).Returns(model.Object);
             var mockEnvironmentRepository = new Mock<IServerRepository>();
-            mockEnvironmentRepository.Setup(e => e.LookupEnvironments(It.IsAny<IServer>(), null)).Returns(new List<IServer> { environmentModel });
+            mockEnvironmentRepository.Setup(e => e.LookupEnvironments(It.IsAny<IServer>())).Returns(new List<IServer> { environmentModel });
             
             new ServerRepository(mockEnvironmentRepository.Object);
             

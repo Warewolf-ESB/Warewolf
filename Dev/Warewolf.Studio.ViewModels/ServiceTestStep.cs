@@ -102,7 +102,6 @@ namespace Warewolf.Studio.ViewModels
                     }
                     SetControlFlowValues(value);
                 }
-                //AddNewEmptyRow();
                 OnPropertyChanged(() => StepOutputs);
                 IsTestStepExpanded = StepOutputs?.Count > 0;
                 IsTestStepExpanderEnabled = StepOutputs?.Count > 0;
@@ -131,7 +130,11 @@ namespace Warewolf.Studio.ViewModels
 
         private void SetControlFlowValues(ObservableCollection<IServiceTestOutput> value)
         {
-            if (ActivityType != "DsfDecision" && ActivityType != "DsfSwitch") return;
+            if (ActivityType != "DsfDecision" && ActivityType != "DsfSwitch")
+            {
+                return;
+            }
+
             foreach (var testOutput in value.OfType<ServiceTestOutput>())
             {
                 testOutput.AssertOps = new ObservableCollection<string> { "=" };
@@ -316,11 +319,13 @@ namespace Warewolf.Studio.ViewModels
                 {
                     Type = StepType.Assert;
                     if (StepOutputs != null)
+                    {
                         foreach (var serviceTestOutput in StepOutputs)
                         {
                             var item = serviceTestOutput as ServiceTestOutput;
                             item?.OnSearchTypeChanged();
                         }
+                    }
                 }
                 OnPropertyChanged(() => AssertSelected);
             }
@@ -336,10 +341,10 @@ namespace Warewolf.Studio.ViewModels
                 {
                     Type = StepType.Mock;
                     if (StepOutputs != null)
+                    {
                         foreach (var serviceTestOutput in StepOutputs)
                         {
-                            var item = serviceTestOutput as ServiceTestOutput;
-                            if (item != null)
+                            if (serviceTestOutput is ServiceTestOutput item)
                             {
                                 if (!item.IsSearchCriteriaEnabled)
                                 {
@@ -352,6 +357,7 @@ namespace Warewolf.Studio.ViewModels
                                 }
                             }
                         }
+                    }
                 }
                 OnPropertyChanged(() => MockSelected);
             }
@@ -385,8 +391,7 @@ namespace Warewolf.Studio.ViewModels
             if (DataListUtil.GetRecordsetIndexType(varName) == enRecordsetIndexType.Numeric)
             {
                 var extractedIndex = DataListUtil.ExtractIndexRegionFromRecordset(varName);
-                int intIndex;
-                if (int.TryParse(extractedIndex, out intIndex))
+                if (int.TryParse(extractedIndex, out int intIndex))
                 {
                     intIndex++;
                     var blankName = DataListUtil.ReplaceRecordsetIndexWithBlank(varName);

@@ -127,7 +127,7 @@ namespace Dev2.Studio.Core.Specs.IntellisenseSpecs
         {
             IIntellisenseProvider provider = new DefaultIntellisenseProvider();
 
-            switch(providerName.Trim())
+            switch (providerName.Trim())
             {
                 case "Calculate":
                     provider = new CalculateIntellisenseProvider();
@@ -139,6 +139,8 @@ namespace Dev2.Studio.Core.Specs.IntellisenseSpecs
                     break;
                 case "DateTime":
                     provider = new DateTimeIntellisenseProvider();
+                    break;
+                default:
                     break;
             }
 
@@ -200,7 +202,10 @@ namespace Dev2.Studio.Core.Specs.IntellisenseSpecs
             var options = provider.GetSuggestions(ScenarioContext.Current["inputText"].ToString(), caretpos, true,filterType);
             var selected = p0.Split(new char[] { ',' });
              if(p0=="" && !options.Any())
-                 return;
+            {
+                return;
+            }
+
             bool all = true;
             foreach(var a in selected)
             {
@@ -256,11 +261,10 @@ namespace Dev2.Studio.Core.Specs.IntellisenseSpecs
         {
             var context = ScenarioContext.Current.Get<IntellisenseProviderContext>("context");
             string result;
-            bool isFileProvider;
 
-            if(ScenarioContext.Current.TryGetValue("isFileProvider", out isFileProvider))
+            if (ScenarioContext.Current.TryGetValue("isFileProvider", out bool isFileProvider))
             {
-                if(DataListUtil.IsEvaluated(option) || string.IsNullOrEmpty(option))
+                if (DataListUtil.IsEvaluated(option) || string.IsNullOrEmpty(option))
                 {
                     result = new DefaultIntellisenseProvider().PerformResultInsertion(option, context);
                 }

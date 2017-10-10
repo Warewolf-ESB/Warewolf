@@ -40,7 +40,9 @@ namespace Dev2.Studio.Core
             AdminManagerProxy = new AdminManagerProxy(controllerFactory, environmentConnection);
         }
 
-        public async Task<IExplorerItem> LoadExplorer(bool reloadCatalogue = false)
+        public async Task<IExplorerItem> LoadExplorer() => await LoadExplorer(false).ConfigureAwait(false);
+
+        public async Task<IExplorerItem> LoadExplorer(bool reloadCatalogue)
         {
             var explorerItems = await QueryManagerProxy.Load(reloadCatalogue);
             return explorerItems;
@@ -64,9 +66,14 @@ namespace Dev2.Studio.Core
                 throw new ArgumentNullException(nameof(vm));
             }
             if (vm.ResourceType == "Folder")
+            {
                 UpdateManagerProxy.RenameFolder(vm.ResourcePath, vm.ResourcePath?.Replace(vm.ResourceName, newName));
+            }
             else
+            {
                 UpdateManagerProxy.Rename(vm.ResourceId, newName);
+            }
+
             return true;
         }
 

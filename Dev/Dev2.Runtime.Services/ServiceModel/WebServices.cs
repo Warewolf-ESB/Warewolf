@@ -10,7 +10,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -85,8 +84,7 @@ namespace Dev2.Runtime.ServiceModel
 
                 if (string.IsNullOrEmpty(service.RequestResponse))
                 {
-                    ErrorResultTO errors;
-                    ExecuteRequest(service, true, out errors, _webExecute);
+                    ExecuteRequest(service, true, out ErrorResultTO errors, _webExecute);
                     ((WebSource)service.Source).DisposeClient();
                 }
 
@@ -206,8 +204,7 @@ namespace Dev2.Runtime.ServiceModel
         {
             if (string.IsNullOrEmpty(service.RequestResponse))
             {
-                ErrorResultTO errors;
-                ExecuteRequest(service, true, out errors, _webExecute);
+                ExecuteRequest(service, true, out ErrorResultTO errors, _webExecute);
                 ((WebSource)service.Source).DisposeClient();
             }
 

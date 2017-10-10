@@ -8,14 +8,10 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
-using System.ComponentModel;
 using System.Windows;
-using Dev2.Activities.Designers2.Core.Controls;
 
 namespace Dev2.Activities.Designers2.Web_Service_Put
 {
-    // Interaction logic for Large.xaml
     public partial class Large
     {
         public Large()
@@ -32,21 +28,6 @@ namespace Dev2.Activities.Designers2.Web_Service_Put
         }
 
         #endregion
-        void RequestBody_OnSizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            var viewModel = DataContext as WebServicePutViewModel;
-
-            if (viewModel != null)
-            {
-                var dataContext = viewModel.InputArea;
-                if (dataContext.IsEnabled)
-                {
-                    //MinHeight = dataContext.MinHeight + 25;
-                    //MaxHeight += e.NewSize.Height;
-                    //Height = MinHeight;
-                }
-            }
-        }
 
         private void AutoCompleteBox_OnTextChanged(object sender, RoutedEventArgs e)
         {

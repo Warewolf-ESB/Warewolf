@@ -7,12 +7,10 @@ using System.Windows.Input;
 using Dev2.Common.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
 using Warewolf.Studio.ViewModels;
+using Dev2.Common;
 
 namespace Warewolf.Studio.Views
 {
-    /// <summary>
-    /// Interaction logic for ManageDatabaseSourceControl.xaml
-    /// </summary>
     public partial class ManageDatabaseSourceControl : IManageDatabaseSourceView, ICheckControlEnabledView
     {
         public ManageDatabaseSourceControl()
@@ -41,6 +39,8 @@ namespace Warewolf.Studio.Views
                     return viewModel != null && viewModel.OkCommand.CanExecute(null);
                 case "Test Connection":
                     return TestConnectionButton.Command.CanExecute(null);
+                default:
+                    break;
             }
             return false;
         }
@@ -61,8 +61,7 @@ namespace Warewolf.Studio.Views
         {
             try
             {
-                var viewModelBase = DataContext as DatabaseSourceViewModelBase;
-                if(viewModelBase != null)
+                if (DataContext is DatabaseSourceViewModelBase viewModelBase)
                 {
                     viewModelBase.DatabaseName = databaseName;
                 }
@@ -80,21 +79,9 @@ namespace Warewolf.Studio.Views
             {
                 EnterServerName(serverName);
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                //Stupid exception when running from tests
-            }
-        }
-
-        public void SelectType(string type)
-        {
-            try
-            {
-                //ServerTypeComboBox.SelectedItem = type;
-            }
-            catch (Exception)
-            {
-                //Stupid exception when running from tests
+                Dev2Logger.Warn(e.Message, "Warewolf Warn");
             }
         }
 
@@ -125,8 +112,7 @@ namespace Warewolf.Studio.Views
 
         public void EnterUserName(string userName)
         {
-            var viewModel = DataContext as DatabaseSourceViewModelBase;
-            if(viewModel != null)
+            if (DataContext is DatabaseSourceViewModelBase viewModel)
             {
                 viewModel.UserName = userName;
             }
@@ -135,8 +121,7 @@ namespace Warewolf.Studio.Views
 
         public void EnterPassword(string password)
         {
-            var viewModel = DataContext as DatabaseSourceViewModelBase;
-            if (viewModel != null)
+            if (DataContext is DatabaseSourceViewModelBase viewModel)
             {
                 viewModel.Password = password;
             }

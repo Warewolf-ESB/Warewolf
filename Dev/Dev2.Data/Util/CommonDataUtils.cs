@@ -248,16 +248,14 @@ namespace Dev2.Data.Util
                         var result = outerEnvironment.Eval(dev2Definition.RawValue, update);
                         if (result.IsWarewolfAtomListresult)
                         {
-                            var data = result as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
-                            if (data != null && data.Item.Any())
+                            if (result is CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult data && data.Item.Any())
                             {
                                 env.AssignWithFrame(new AssignValue(DataListUtil.AddBracketsToValueIfNotExist(dev2Definition.Name), ExecutionEnvironment.WarewolfAtomToString(data.Item.Last())), 0);
                             }
                         }
                         else
                         {
-                            var data = result as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
-                            if (data != null)
+                            if (result is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult data)
                             {
                                 env.AssignWithFrame(new AssignValue(DataListUtil.AddBracketsToValueIfNotExist(dev2Definition.Name), ExecutionEnvironment.WarewolfAtomToString(data.Item)), 0);
                             }
@@ -372,7 +370,11 @@ namespace Dev2.Data.Util
                             for (int q = 0; q < childNl.Count; q++)
                             {
                                 var xmlNode = childNl[q];
-                                if (xmlNode == null) continue;
+                                if (xmlNode == null)
+                                {
+                                    continue;
+                                }
+
                                 var fieldIoDirection = DataListUtil.GetDev2ColumnArgumentDirection(xmlNode);
                                 if (DataListUtil.CheckIODirection(dev2ColumnArgumentDirection, fieldIoDirection))
                                 {
@@ -402,8 +404,7 @@ namespace Dev2.Data.Util
 
             if (isObjectAttribute != null)
             {
-                bool isObject;
-                if (bool.TryParse(isObjectAttribute.Value, out isObject))
+                if (bool.TryParse(isObjectAttribute.Value, out bool isObject))
                 {
                     return isObject;
                 }
@@ -417,8 +418,7 @@ namespace Dev2.Data.Util
 
             if (isObjectAttribute != null)
             {
-                bool isArray;
-                if (bool.TryParse(isObjectAttribute.Value, out isArray))
+                if (bool.TryParse(isObjectAttribute.Value, out bool isArray))
                 {
                     return isArray;
                 }
@@ -496,16 +496,14 @@ namespace Dev2.Data.Util
 
         private void ScalarAtomList(CommonFunctions.WarewolfEvalResult warewolfEvalResult, IExecutionEnvironment env, IDev2Definition dev2Definition)
         {
-            var data = warewolfEvalResult as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
-            if (data != null && data.Item.Any())
+            if (warewolfEvalResult is CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult data && data.Item.Any())
             {
                 env.AssignWithFrame(new AssignValue("[[" + dev2Definition.Name + "]]", ExecutionEnvironment.WarewolfAtomToString(data.Item.Last())), 0);
             }
         }
         private void ScalarAtom(CommonFunctions.WarewolfEvalResult warewolfEvalResult, IExecutionEnvironment env, IDev2Definition dev2Definition)
         {
-            var data = warewolfEvalResult as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
-            if (data != null)
+            if (warewolfEvalResult is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult data)
             {
                 env.AssignWithFrame(new AssignValue("[[" + dev2Definition.Name + "]]", ExecutionEnvironment.WarewolfAtomToString(data.Item)), 0);
             }

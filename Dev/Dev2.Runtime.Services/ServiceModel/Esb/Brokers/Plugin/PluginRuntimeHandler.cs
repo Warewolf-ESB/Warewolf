@@ -35,10 +35,11 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
         public PluginExecutionDto CreateInstance(PluginInvokeArgs setupInfo)
         {
             VerifyArgument.IsNotNull("setupInfo", setupInfo);
-            Assembly loadedAssembly;
-            var tryLoadAssembly = _assemblyLoader.TryLoadAssembly(setupInfo.AssemblyLocation, setupInfo.AssemblyName, out loadedAssembly);
+            var tryLoadAssembly = _assemblyLoader.TryLoadAssembly(setupInfo.AssemblyLocation, setupInfo.AssemblyName, out Assembly loadedAssembly);
             if (!tryLoadAssembly)
+            {
                 throw new Exception(setupInfo.AssemblyName + "Not found");
+            }
 
             var constructorArgs = new List<object>();
             var type = loadedAssembly.GetType(setupInfo.Fullname);
@@ -107,10 +108,12 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             try
             {
                 var args = dto.Args;
-                Assembly loadedAssembly;
-                var tryLoadAssembly = _assemblyLoader.TryLoadAssembly(args.AssemblyLocation, args.AssemblyName, out loadedAssembly);
+                var tryLoadAssembly = _assemblyLoader.TryLoadAssembly(args.AssemblyLocation, args.AssemblyName, out Assembly loadedAssembly);
                 if (!tryLoadAssembly)
+                {
                     throw new Exception(args.AssemblyName + "Not found");
+                }
+
                 ExecutePlugin(dto, args, loadedAssembly, dev2MethodInfo);
                 objectString = dto.ObjectString;
                 return dev2MethodInfo;
@@ -234,7 +237,10 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                 try
                 {
                     type = Type.GetType(typeName);
-                    if (type == null) throw new TypeLoadException();
+                    if (type == null)
+                    {
+                        throw new TypeLoadException();
+                    }
                 }
                 catch (Exception)
                 {
@@ -283,9 +289,8 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
         /// <returns></returns>
         public ServiceConstructorList ListConstructors(string assemblyLocation, string assemblyName, string fullName)
         {
-            Assembly assembly;
             var serviceMethodList = new ServiceConstructorList();
-            if (_assemblyLoader.TryLoadAssembly(assemblyLocation, assemblyName, out assembly))
+            if (_assemblyLoader.TryLoadAssembly(assemblyLocation, assemblyName, out Assembly assembly))
             {
                 var type = assembly.GetType(fullName);
                 var constructors = type.GetConstructors();
@@ -325,9 +330,8 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
         /// <returns></returns>
         public ServiceMethodList ListMethodsWithReturns(string assemblyLocation, string assemblyName, string fullName)
         {
-            Assembly assembly;
             var serviceMethodList = new ServiceMethodList();
-            if (_assemblyLoader.TryLoadAssembly(assemblyLocation, assemblyName, out assembly))
+            if (_assemblyLoader.TryLoadAssembly(assemblyLocation, assemblyName, out Assembly assembly))
             {
                 var type = assembly.GetType(fullName);
                 var methodInfos = type.GetMethods();

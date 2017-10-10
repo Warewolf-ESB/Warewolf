@@ -22,7 +22,7 @@ namespace Dev2.Activities.Designers2.CreateJSON
 {
     public class CreateJsonDesignerViewModel : ActivityCollectionDesignerViewModel<JsonMappingTo>
     {
-        public Func<string> GetDatalistString = () => DataListSingleton.ActiveDataList.Resource.DataList;
+        readonly Func<string> GetDatalistString = () => DataListSingleton.ActiveDataList.Resource.DataList;
         public CreateJsonDesignerViewModel(ModelItem modelItem)
             : base(modelItem)
         {
@@ -47,8 +47,7 @@ namespace Dev2.Activities.Designers2.CreateJSON
         {
             if (propertyName == "SourceName")
             {
-                var dto = CurrentModelItem?.GetCurrentValue() as JsonMappingTo;
-                if (dto != null)
+                if (CurrentModelItem?.GetCurrentValue() is JsonMappingTo dto)
                 {
                     var destinationWithName = dto.GetDestinationWithName(dto.SourceName);
                     if (String.IsNullOrEmpty(dto.DestinationName))

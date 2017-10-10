@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
@@ -40,9 +39,8 @@ namespace Dev2.Runtime.ESB.Management.Services
             try
             {
                 Dev2Logger.Info("Save Email Service Source", GlobalConstants.WarewolfInfo);
-                StringBuilder resourceDefinition;
 
-                values.TryGetValue("EmailServiceSource", out resourceDefinition);
+                values.TryGetValue("EmailServiceSource", out StringBuilder resourceDefinition);
 
                 IEmailServiceSource src = serializer.Deserialize<IEmailServiceSource>(resourceDefinition);
                 EmailSource con = new EmailSource

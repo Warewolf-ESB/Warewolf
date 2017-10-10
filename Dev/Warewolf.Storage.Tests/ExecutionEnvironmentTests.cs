@@ -134,6 +134,26 @@ namespace Warewolf.Storage.Tests
         }
 
         [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("ExecutionEnvironment_EvalAsList")]
+        public void ExecutionEnvironment_EvalAsList_WhenRecSet_ShouldReturnListOfAllValues_PadLeft()
+        {
+            //------------Setup for test--------------------------
+            _environment.Assign("[[rec(1).a]]", "27     ", 0);
+            _environment.Assign("[[rec(1).b]]", "bob    ", 0);
+            _environment.Assign("[[rec(2).a]]", "31 ", 0);
+            _environment.Assign("[[rec(2).b]]", "mary", 0);
+            //------------Execute Test---------------------------
+            var list = _environment.EvalAsList("[[rec(*)]]", 0).ToList();
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(list);
+            Assert.AreEqual("27     ", list[0].ToString());
+            Assert.AreEqual("31 ", list[1].ToString());
+            Assert.AreEqual("bob    ", list[2].ToString());
+            Assert.AreEqual("mary", list[3].ToString());
+        }
+        
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("ExecutionEnvironment_EvalAsList")]
         public void ExecutionEnvironment_EvalAsListOfString_WhenRecSet_ShouldReturnListOfAllValues()
@@ -307,8 +327,7 @@ namespace Warewolf.Storage.Tests
         public void GivenValidExpression_ExecutionEnvironmentIsValidVariableExpression_ShouldReturnTrue()
         {
             Assert.IsNotNull(_environment);
-            string message;
-            var isValidVariableExpression = ExecutionEnvironment.IsValidVariableExpression(VariableA, out message, 0);
+            var isValidVariableExpression = ExecutionEnvironment.IsValidVariableExpression(VariableA, out string message, 0);
             Assert.IsTrue(isValidVariableExpression);
         }
 
@@ -317,9 +336,8 @@ namespace Warewolf.Storage.Tests
         public void GivenInValidExpressionOrEmptyString_ExecutionEnvironmentIsValidVariableExpression_ShouldReturnFalse()
         {
             Assert.IsNotNull(_environment);
-            string message;
             //Given Invalid Scalar
-            var isValidVariableExpression = ExecutionEnvironment.IsValidVariableExpression(InvalidScalar, out message, 0);
+            var isValidVariableExpression = ExecutionEnvironment.IsValidVariableExpression(InvalidScalar, out string message, 0);
             Assert.IsFalse(isValidVariableExpression);
             //Given Empty Strign
             isValidVariableExpression = ExecutionEnvironment.IsValidVariableExpression(string.Empty, out message, 0);
@@ -479,7 +497,11 @@ namespace Warewolf.Storage.Tests
             var var = EvaluationFunctions.parseLanguageExpressionWithoutUpdate(ChildNameExpression);
             var jsonIdentifierExpression = var as LanguageAST.LanguageExpression.JsonIdentifierExpression;
             var obj = new JArray(ChildNameExpression);
-            if (jsonIdentifierExpression == null) return;
+            if (jsonIdentifierExpression == null)
+            {
+                return;
+            }
+
             var mapItems = new List<string>();
             object[] args = { jsonIdentifierExpression.Item, "", mapItems, obj };
             privateObj.Invoke("BuildIndexMap", args);

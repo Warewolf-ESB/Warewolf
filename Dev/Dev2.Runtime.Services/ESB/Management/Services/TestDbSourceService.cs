@@ -10,7 +10,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Core;
@@ -60,9 +59,8 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
 
                 Dev2Logger.Info("Test DB Connection Service", GlobalConstants.WarewolfInfo);
-                StringBuilder resourceDefinition;
 
-                values.TryGetValue("DbSource", out resourceDefinition);
+                values.TryGetValue("DbSource", out StringBuilder resourceDefinition);
 
                 IDbSource src = serializer.Deserialize<DbSourceDefinition>(resourceDefinition);
                 DatabaseValidationResult result = null;

@@ -9,7 +9,6 @@ using Dev2.Runtime.Hosting;
 using Dev2.Workspaces;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using Dev2.Common.Interfaces.Enums;
 
@@ -38,10 +37,9 @@ namespace Dev2.Runtime.ESB.Management.Services
             try
             {
                 Dev2Logger.Info("Save RabbitMQ Service Source", GlobalConstants.WarewolfInfo);
-                StringBuilder resourceDefinition;
                 msg.HasError = false;
 
-                values.TryGetValue("RabbitMQServiceSource", out resourceDefinition);
+                values.TryGetValue("RabbitMQServiceSource", out StringBuilder resourceDefinition);
 
                 RabbitMQServiceSourceDefinition rabbitMQServiceSourceDefinition = serializer.Deserialize<RabbitMQServiceSourceDefinition>(resourceDefinition);
                 if (rabbitMQServiceSourceDefinition.ResourcePath.EndsWith("\\"))

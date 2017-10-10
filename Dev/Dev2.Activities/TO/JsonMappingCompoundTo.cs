@@ -71,8 +71,7 @@ namespace Dev2.TO
                     }
                     if (e.IsWarewolfAtomResult)
                     {
-                        var x = e as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
-                        if (x != null && x.Item.IsDataString)
+                        if (e is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult x && x.Item.IsDataString)
                         {
                             if (((DataStorage.WarewolfAtom.DataString)x.Item).Item == "true")
                             {
@@ -126,23 +125,13 @@ namespace Dev2.TO
             }
             else
             {
-                if (FsInteropFunctions.ParseLanguageExpression(Compound.SourceName,0).IsRecordSetNameExpression)
-                {
-                    Evaluations = new List<JsonMappingEvaluated> { new JsonMappingEvaluated(env1, Compound.SourceName) };
-                }
-                else
-                {
-                    // we know this is a comma seperated list of expressions
-                    Evaluations =
-                        
-                        ((LanguageAST.LanguageExpression.ComplexExpression)FsInteropFunctions.ParseLanguageExpression(Compound.SourceName,0))
+                Evaluations = FsInteropFunctions.ParseLanguageExpression(Compound.SourceName, 0).IsRecordSetNameExpression ? new List<JsonMappingEvaluated> { new JsonMappingEvaluated(env1, Compound.SourceName) } : ((LanguageAST.LanguageExpression.ComplexExpression)FsInteropFunctions.ParseLanguageExpression(Compound.SourceName, 0))
                             .Item
                             .Where(x => !x.IsWarewolfAtomExpression)
                             .Select(FsInteropFunctions.LanguageExpressionToString)
                             .Select(x =>
                                 new JsonMappingEvaluated(env1, x))
                             .ToList();
-                }         
             }
         }
 
@@ -287,8 +276,15 @@ namespace Dev2.TO
 
         public static string IsValidJsonMappingInput(string sourceName, string destinationName)
         {
-            if (string.IsNullOrEmpty(sourceName)) return ErrorResource.SupplySourceName;
-            if (string.IsNullOrEmpty(destinationName)) return ErrorResource.SupplyDestinationName;
+            if (string.IsNullOrEmpty(sourceName))
+            {
+                return ErrorResource.SupplySourceName;
+            }
+
+            if (string.IsNullOrEmpty(destinationName))
+            {
+                return ErrorResource.SupplyDestinationName;
+            }
 
             return ValidateInput(sourceName);
 

@@ -81,8 +81,7 @@ namespace Dev2.Activities.Designers.Tests.Core
             var region = new DotNetInputRegion(ModelItemUtils.CreateModelItem(act), DotNetActionRegion);
             Assert.AreEqual(region.IsEnabled, false);
             Assert.AreEqual(region.Errors.Count, 0);
-            var clone = region.CloneRegion() as DotNetInputRegion;
-            if (clone != null)
+            if (region.CloneRegion() is DotNetInputRegion clone)
             {
                 Assert.AreEqual(clone.IsEnabled, false);
                 Assert.AreEqual(clone.Errors.Count, 0);
@@ -183,8 +182,8 @@ namespace Dev2.Activities.Designers.Tests.Core
 
             var dataListViewModel = CreateDataListViewModel(mockResourceModel, eventAggregator.Object);
             var dataListItems = new OptomizedObservableCollection<IScalarItemModel>();
-            var dataListItem = new ScalarItemModel("scalar1", enDev2ColumnArgumentDirection.Input, string.Empty);
-            var secondDataListItem = new ScalarItemModel("scalar2", enDev2ColumnArgumentDirection.Input, string.Empty);
+            var dataListItem = new ScalarItemModel("scalar1", enDev2ColumnArgumentDirection.Input);
+            var secondDataListItem = new ScalarItemModel("scalar2", enDev2ColumnArgumentDirection.Input);
 
             dataListItems.Add(dataListItem);
             dataListItems.Add(secondDataListItem);
@@ -225,8 +224,8 @@ namespace Dev2.Activities.Designers.Tests.Core
 
             var dataListViewModel = CreateDataListViewModel(mockResourceModel, eventAggregator.Object);
             var dataListItems = new OptomizedObservableCollection<IScalarItemModel>();
-            var dataListItem = new ScalarItemModel("scalar1", enDev2ColumnArgumentDirection.Input, string.Empty);
-            var secondDataListItem = new ScalarItemModel("scalar2", enDev2ColumnArgumentDirection.Input, string.Empty);
+            var dataListItem = new ScalarItemModel("scalar1", enDev2ColumnArgumentDirection.Input);
+            var secondDataListItem = new ScalarItemModel("scalar2", enDev2ColumnArgumentDirection.Input);
 
             dataListItems.Add(dataListItem);
             dataListItems.Add(secondDataListItem);
@@ -270,8 +269,8 @@ namespace Dev2.Activities.Designers.Tests.Core
 
             var dataListViewModel = CreateDataListViewModel(mockResourceModel, eventAggregator.Object);
             var dataListItems = new OptomizedObservableCollection<IScalarItemModel>();
-            var dataListItem = new ScalarItemModel("scalar1", enDev2ColumnArgumentDirection.Input, string.Empty);
-            var secondDataListItem = new ScalarItemModel("scalar2", enDev2ColumnArgumentDirection.Input, string.Empty);
+            var dataListItem = new ScalarItemModel("scalar1", enDev2ColumnArgumentDirection.Input);
+            var secondDataListItem = new ScalarItemModel("scalar2", enDev2ColumnArgumentDirection.Input);
 
             dataListItems.Add(dataListItem);
             dataListItems.Add(secondDataListItem);

@@ -12,7 +12,6 @@ using System.Windows;
 
 namespace Dev2.Activities.Designers2.Web_Service_Post
 {
-    // Interaction logic for Large.xaml
     public partial class Large
     {
         public Large()
@@ -28,21 +27,5 @@ namespace Dev2.Activities.Designers2.Web_Service_Post
         }
 
         #endregion
-
-        void RequestBody_OnSizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            var viewModel = DataContext as WebServicePostViewModel;
-
-            if (viewModel != null)
-            {
-                var dataContext = viewModel.InputArea;
-                if (dataContext.IsEnabled)
-                {
-                    //MinHeight = dataContext.MinHeight + 25;
-                    //MaxHeight += e.NewSize.Height;
-                    //Height = MinHeight;
-                }
-            }
-        }
     }
 }

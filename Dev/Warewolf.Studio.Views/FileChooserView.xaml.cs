@@ -74,20 +74,20 @@ namespace Warewolf.Studio.Views
         private void ManageEmailAttachmentView_OnMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ChangedButton == MouseButton.Left)
+            {
                 DragMove();
+            }
         }
 
         private void DrivesDataTree_OnSelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            var newValueModel = e.NewValue as IFileListingModel;
-            if (newValueModel != null && !newValueModel.IsDirectory)
+            if (e.NewValue is IFileListingModel newValueModel && !newValueModel.IsDirectory)
             {
                 newValueModel.IsSelected = true;
                 DriveNameIntellisenseTextBox.Text = newValueModel.FullName;
             }
 
-            var oldValueModel = e.OldValue as IFileListingModel;
-            if (oldValueModel != null)
+            if (e.OldValue is IFileListingModel oldValueModel)
             {
                 oldValueModel.IsSelected = false;
             }
@@ -99,8 +99,7 @@ namespace Warewolf.Studio.Views
             {
                 var selection = e.AddedItems[0];
 
-                var fileChooser = DataContext as FileChooser;
-                if (fileChooser != null)
+                if (DataContext is FileChooser fileChooser)
                 {
                     fileChooser.SelectedDriveName = selection.ToString();
                 }

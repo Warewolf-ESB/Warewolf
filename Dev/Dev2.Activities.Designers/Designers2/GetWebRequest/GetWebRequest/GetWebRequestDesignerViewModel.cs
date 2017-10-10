@@ -100,6 +100,8 @@ namespace Dev2.Activities.Designers2.GetWebRequest
                 case "Headers":
                     ExtractVariables();
                     break;
+                default:
+                    break;
             }
         }
 
@@ -229,8 +231,7 @@ namespace Dev2.Activities.Designers2.GetWebRequest
             }
             else
             {
-                Uri uriResult;
-                var isValid = Uri.TryCreate(urlValue, UriKind.Absolute, out uriResult) &&
+                var isValid = Uri.TryCreate(urlValue, UriKind.Absolute, out Uri uriResult) &&
                               (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
                 if (!isValid)
                 {
@@ -246,7 +247,7 @@ namespace Dev2.Activities.Designers2.GetWebRequest
             }
         }
 
-        public Func<string, string, List<Tuple<string, string>>, string> WebInvoke = (method, url, headers) =>
+        readonly Func<string, string, List<Tuple<string, string>>, string> WebInvoke = (method, url, headers) =>
             {
                 var webInvoker = new WebRequestInvoker();
                 return webInvoker.ExecuteRequest(method, url, headers);

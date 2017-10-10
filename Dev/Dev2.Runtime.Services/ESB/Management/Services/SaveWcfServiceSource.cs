@@ -10,7 +10,6 @@ using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Workspaces;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Runtime.Interfaces;
@@ -42,9 +41,8 @@ namespace Dev2.Runtime.ESB.Management.Services
             try
             {
                 Dev2Logger.Info("Save Wcf Service Source", GlobalConstants.WarewolfInfo);
-                StringBuilder resourceDefinition;
 
-                values.TryGetValue("WcfSource", out resourceDefinition);
+                values.TryGetValue("WcfSource", out StringBuilder resourceDefinition);
 
                 var src = serializer.Deserialize<WcfServiceSourceDefinition>(resourceDefinition);
                 var con = new WcfSource

@@ -100,7 +100,9 @@ namespace Dev2.Activities.Designers.Tests.Core.DotNet
             dotNetMethodRegion.PropertyChanged += (sender, args) =>
             {
                 if (args.PropertyName == "IsVoid")
+                {
                     wasCalled = true;
+                }
             };
             //---------------Test Result -----------------------
             dotNetMethodRegion.SelectedMethod = new PluginAction();
@@ -133,7 +135,9 @@ namespace Dev2.Activities.Designers.Tests.Core.DotNet
             dotNetMethodRegion.PropertyChanged += (sender, args) =>
             {
                 if (args.PropertyName == "Method")
+                {
                     wasCalled = true;
+                }
             };
             //---------------Test Result -----------------------
             dotNetMethodRegion.SelectedMethod = new PluginAction();
@@ -166,7 +170,9 @@ namespace Dev2.Activities.Designers.Tests.Core.DotNet
             dotNetMethodRegion.PropertyChanged += (sender, args) =>
             {
                 if (args.PropertyName == "RecordsetName")
+                {
                     wasCalled = true;
+                }
             };
             //---------------Test Result -----------------------
             dotNetMethodRegion.SelectedMethod = new PluginAction();
@@ -199,7 +205,9 @@ namespace Dev2.Activities.Designers.Tests.Core.DotNet
             dotNetMethodRegion.PropertyChanged += (sender, args) =>
             {
                 if (args.PropertyName == "IsObject")
+                {
                     wasCalled = true;
+                }
             };
             //---------------Test Result -----------------------
             dotNetMethodRegion.SelectedMethod = new PluginAction();
@@ -232,7 +240,9 @@ namespace Dev2.Activities.Designers.Tests.Core.DotNet
             dotNetMethodRegion.PropertyChanged += (sender, args) =>
             {
                 if (args.PropertyName == "ObjectName")
+                {
                     wasCalled = true;
+                }
             };
             //---------------Test Result -----------------------
             dotNetMethodRegion.SelectedMethod = new PluginAction();
@@ -265,7 +275,9 @@ namespace Dev2.Activities.Designers.Tests.Core.DotNet
             dotNetMethodRegion.PropertyChanged += (sender, args) =>
             {
                 if (args.PropertyName == "ObjectResult")
+                {
                     wasCalled = true;
+                }
             };
             //---------------Test Result -----------------------
             dotNetMethodRegion.SelectedMethod = new PluginAction();
@@ -298,7 +310,9 @@ namespace Dev2.Activities.Designers.Tests.Core.DotNet
             dotNetMethodRegion.PropertyChanged += (sender, args) =>
             {
                 if (args.PropertyName == "Inputs")
+                {
                     wasCalled = true;
+                }
             };
             //---------------Test Result -----------------------
             dotNetMethodRegion.SelectedMethod = new PluginAction();
@@ -331,7 +345,9 @@ namespace Dev2.Activities.Designers.Tests.Core.DotNet
             dotNetMethodRegion.PropertyChanged += (sender, args) =>
             {
                 if (args.PropertyName == "IsInputsEmptyRows")
+                {
                     wasCalled = true;
+                }
             };
             //---------------Test Result -----------------------
             dotNetMethodRegion.SelectedMethod = new PluginAction() { Method = "A" };
@@ -365,7 +381,9 @@ namespace Dev2.Activities.Designers.Tests.Core.DotNet
             dotNetMethodRegion.PropertyChanged += (sender, args) =>
             {
                 if (args.PropertyName == "IsVoid")
+                {
                     wasCalled = true;
+                }
             };
             //---------------Test Result -----------------------
             dotNetMethodRegion.IsVoid = true;
@@ -401,7 +419,9 @@ namespace Dev2.Activities.Designers.Tests.Core.DotNet
             dotNetMethodRegion.PropertyChanged += (sender, args) =>
             {
                 if (args.PropertyName == "RecordsetName")
+                {
                     wasCalled = true;
+                }
             };
             //---------------Test Result -----------------------
             dotNetMethodRegion.RecordsetName = "g";
@@ -440,7 +460,9 @@ namespace Dev2.Activities.Designers.Tests.Core.DotNet
             dotNetMethodRegion.PropertyChanged += (sender, args) =>
             {
                 if (args.PropertyName == "IsObject")
+                {
                     wasCalled = true;
+                }
             };
             //---------------Test Result -----------------------
             dotNetMethodRegion.IsObject = true;
@@ -477,7 +499,9 @@ namespace Dev2.Activities.Designers.Tests.Core.DotNet
             dotNetMethodRegion.PropertyChanged += (sender, args) =>
             {
                 if (args.PropertyName == "ObjectName")
+                {
                     wasCalled = true;
+                }
             };
             //---------------Test Result -----------------------
             dotNetMethodRegion.IsObject = true;
@@ -517,7 +541,9 @@ namespace Dev2.Activities.Designers.Tests.Core.DotNet
             dotNetMethodRegion.PropertyChanged += (sender, args) =>
             {
                 if (args.PropertyName == "ObjectName")
+                {
                     wasCalled = true;
+                }
             };
             //---------------Test Result -----------------------
             dotNetMethodRegion.IsObject = true;
@@ -559,9 +585,14 @@ namespace Dev2.Activities.Designers.Tests.Core.DotNet
             dotNetMethodRegion.PropertyChanged += (sender, args) =>
             {
                 if (args.PropertyName == "Inputs")
+                {
                     wasCalled = true;
+                }
+
                 if (args.PropertyName == "IsInputsEmptyRows")
+                {
                     wasInputsEmptyCalled = true;
+                }
             };
             //---------------Test Result -----------------------
             dotNetMethodRegion.IsObject = true;
@@ -601,7 +632,9 @@ namespace Dev2.Activities.Designers.Tests.Core.DotNet
             dotNetMethodRegion.PropertyChanged += (sender, args) =>
             {
                 if (args.PropertyName == "ObjectResult")
+                {
                     wasCalled = true;
+                }
             };
             //---------------Test Result -----------------------
             dotNetMethodRegion.ObjectResult = "ObjectResult";
@@ -635,7 +668,9 @@ namespace Dev2.Activities.Designers.Tests.Core.DotNet
             dotNetMethodRegion.PropertyChanged += (sender, args) =>
             {
                 if (args.PropertyName == "IsMethodExpanded")
+                {
                     wasCalled = true;
+                }
             };
             //---------------Test Result -----------------------
             dotNetMethodRegion.IsMethodExpanded = true;
@@ -669,7 +704,9 @@ namespace Dev2.Activities.Designers.Tests.Core.DotNet
             dotNetMethodRegion.PropertyChanged += (sender, args) =>
             {
                 if (args.PropertyName == "IsRefreshing")
+                {
                     wasCalled = true;
+                }
             };
             //---------------Test Result -----------------------
             dotNetMethodRegion.IsRefreshing = true;

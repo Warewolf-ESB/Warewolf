@@ -33,7 +33,12 @@ namespace Dev2.Data.Binary_Objects
 
         private IndexList() { }
 
-        public IndexList(HashSet<int> gaps, int maxValue, int minValue = 1)
+        public IndexList(HashSet<int> gaps, int maxValue)
+            : this(gaps, maxValue, 1)
+        {
+        }
+
+        public IndexList(HashSet<int> gaps, int maxValue, int minValue)
         {
             if(gaps == null)
             {

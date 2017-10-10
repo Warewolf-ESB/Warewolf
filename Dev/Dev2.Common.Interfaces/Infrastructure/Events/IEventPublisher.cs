@@ -9,7 +9,6 @@
 */
 
 using System;
-using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Common.Interfaces.Infrastructure.Events
 {

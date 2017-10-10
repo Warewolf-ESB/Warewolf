@@ -113,10 +113,6 @@ namespace Dev2.Activities.Designers2.Core.NamespaceRegion
 
 
             }
-            finally
-            {
-                OnSomethingChanged(this);
-            }
         }
 
         private void UpdateBasedOnSource()
@@ -238,8 +234,7 @@ namespace Dev2.Activities.Designers2.Core.NamespaceRegion
 
         public void RestoreRegion(IToolRegion toRestore)
         {
-            var region = toRestore as ComNamespaceRegion;
-            if (region != null)
+            if (toRestore is ComNamespaceRegion region)
             {
                 SelectedNamespace = region.SelectedNamespace;
                 IsEnabled = region.IsEnabled;
@@ -258,12 +253,9 @@ namespace Dev2.Activities.Designers2.Core.NamespaceRegion
 
         private void SetSelectedNamespace(INamespaceItem value)
         {
-            //if (value != null)
-            //{
-                _selectedNamespace = value;
-                SavedNamespace = value;
-                Namespace = value;
-            //}
+            _selectedNamespace = value;
+            SavedNamespace = value;
+            Namespace = value;
             OnPropertyChanged("SelectedNamespace");
         }
 

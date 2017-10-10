@@ -139,7 +139,9 @@ namespace Warewolf.UIBindingTests.Deploy
                 shell.Setup(a => a.LocalhostServer).Returns(server.Object);
                 shell.Setup(a => a.ActiveServer).Returns(mock.Object);
                 if (!ScenarioContext.Current.ContainsKey(destinationServerString))
+                {
                     ScenarioContext.Current.Add(destinationServerString, mock);
+                }
             }
 
             shell.Setup(a => a.DeployResources(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<IList<Guid>>(), It.IsAny<bool>())).Callback(() =>

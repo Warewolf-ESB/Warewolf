@@ -444,13 +444,12 @@ securityWrapper
             _mockService.Setup(a => a.GetFolder("WareWolf")).Returns(mockFolder.Object);
             var resource = new Mock<IScheduledResource>();
             resource.Setup(a => a.Name).Returns("Dora");
-            string errorMessage;
             //run test
-            model.Save(resourceToSave.Object, out errorMessage);
+            model.Save(resourceToSave.Object, out string errorMessage);
             mockFolder.Verify(
                 a =>
                 a.RegisterTaskDefinition("henry", task.Object, TaskCreation.CreateOrUpdate, "user", "pwd",
-                                         TaskLogonType.InteractiveTokenOrPassword, null));
+                                         TaskLogonType.InteractiveTokenOrPassword));
         }
 
 
@@ -470,8 +469,7 @@ securityWrapper
                 a => a.IsWindowsAuthorised(It.IsAny<string>(), It.IsAny<string>()))
                     .Returns(false);
             //run test
-            string errorMessage;
-            model.Save(resourceToSave.Object, out errorMessage);
+            model.Save(resourceToSave.Object, out string errorMessage);
             Assert.AreEqual(Warewolf.Resource.Errors.ErrorResource.ScheduledResourceLogOnAsBatchErrorTest, errorMessage);
         }
 
@@ -493,8 +491,7 @@ securityWrapper
                     .Returns(false);
             resourceToSave.Setup(a => a.WorkflowName).Returns("bob");
             //run test
-            string errorMessage;
-            model.Save(resourceToSave.Object, out errorMessage);
+            model.Save(resourceToSave.Object, out string errorMessage);
             Assert.AreEqual(Warewolf.Resource.Errors.ErrorResource.ScheduledResourceInvalidUserPermissionErrorTest, errorMessage);
         }
 
@@ -515,8 +512,7 @@ securityWrapper
                     .Returns(true);
             resourceToSave.Setup(a => a.Name).Returns("bob?");
             //run test
-            string errorMessage;
-            model.Save(resourceToSave.Object, out errorMessage);
+            model.Save(resourceToSave.Object, out string errorMessage);
             Assert.AreEqual("The task name may not contain the following characters \\/:*?\"<>| .", errorMessage);
 
         }
@@ -558,7 +554,7 @@ securityWrapper
             mockFolder.Verify(
                 a =>
                 a.RegisterTaskDefinition("henry", task.Object, TaskCreation.CreateOrUpdate, "user", "pwd",
-                                         TaskLogonType.InteractiveTokenOrPassword, null));
+                                         TaskLogonType.InteractiveTokenOrPassword));
             task.Verify(a => a.AddTrigger(It.IsAny<ITrigger>()));
         }
 

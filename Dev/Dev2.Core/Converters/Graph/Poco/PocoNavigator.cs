@@ -175,9 +175,8 @@ namespace Unlimited.Framework.Converters.Graph.Poco
             else if (validPaths.Count == 1 &&
                      validPaths[0].ActualPath == PocoPath.EnumerableSymbol + PocoPath.SeperatorSymbol)
             {
-                var enumerableData = Data as IEnumerable;
 
-                if (enumerableData != null)
+                if (Data is IEnumerable enumerableData)
                 {
                     IEnumerator enumerator = enumerableData.GetEnumerator();
                     enumerator.Reset();
@@ -242,12 +241,6 @@ namespace Unlimited.Framework.Converters.Graph.Poco
                         {
                             returnData.AddRange(SelectEnumberable(pathSegments.Skip(i + 1).ToList(), enumerator.Current));
                         }
-                    }
-                    else
-                    {
-                        
-                        currentData = null;
-                        
                     }
 
                     return returnData;

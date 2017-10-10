@@ -16,7 +16,7 @@ using Dev2.TO;
 using Dev2.Util;
 using Dev2.Utilities;
 using Dev2.Validation;
-
+using System;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
@@ -39,10 +39,20 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             : this("Match On", "Equal", 0)
         {
         }
-
-        // TODO: Remove WhereOptionList property - DO NOT USE FOR BINDING, USE VIEWMODEL PROPERTY INSTEAD!
+        
         public IList<string> WhereOptionList { get; set; }
-        public FindRecordsTO(string searchCriteria, string searchType, int indexNum, bool inserted = false, string from = "", string to = "")
+
+        public FindRecordsTO(string searchCriteria, string searchType, int indexNum)
+            : this(searchCriteria, searchType, indexNum, false, "", "")
+        {
+        }
+
+        public FindRecordsTO(string searchCriteria, string searchType, int indexNum, bool inserted)
+            : this(searchCriteria, searchType, indexNum, inserted, "", "")
+        {
+        }
+
+        public FindRecordsTO(string searchCriteria, string searchType, int indexNum, bool inserted, string from, string to)
         {
             Inserted = inserted;
             SearchCriteria = searchCriteria;
@@ -237,6 +247,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
      
                     ruleSet.Add(new IsValidExpressionRule(() => SearchCriteria, datalist, "1"));
                     break;
+                default:
+                    throw new ArgumentException("Unrecognized Property Name: " + propertyName);
             }
 
             return ruleSet;

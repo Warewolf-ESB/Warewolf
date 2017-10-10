@@ -11,10 +11,8 @@ using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ServerProxyLayer;
-using Dev2.Studio.Core;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Interfaces;
-using Dev2.Studio.Interfaces.DataList;
 using Dev2.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -347,7 +345,9 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         public void ThenRecordsetNameEquals(string recsetName)
         {
             if(!string.IsNullOrEmpty(recsetName))
+            {
                 Assert.AreEqual<string>(recsetName, GetViewModel().OutputsRegion.RecordsetName);
+            }
         }
 
         [Given(@"I have a workflow ""(.*)""")]
@@ -440,7 +440,9 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         {
             var viewModel = GetViewModel().ErrorRegion.Errors;
             if (table != null && viewModel.Count > 0)
+            {
                 Assert.IsTrue(table.Rows[0].Values.ToString() == p0);
+            }
         }
 
         [Then(@"the workflow containing the Sql Server connector has ""(.*)"" execution error")]

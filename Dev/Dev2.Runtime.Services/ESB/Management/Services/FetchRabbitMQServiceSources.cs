@@ -20,7 +20,6 @@ using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
 using Dev2.Workspaces;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using Dev2.Common.Interfaces.Enums;
@@ -53,8 +52,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             
             List<IRabbitMQServiceSourceDefinition> list = Resources.GetResourceList<RabbitMQSource>(GlobalConstants.ServerWorkspaceID).Select(a =>
             {
-                var res = a as RabbitMQSource;
-                if (res != null)
+                if (a is RabbitMQSource res)
                 {
                     return new RabbitMQServiceSourceDefinition
                     {

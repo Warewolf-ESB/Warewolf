@@ -102,7 +102,6 @@ public class SecurityWrapper : ISecurityWrapper
     private const uint STATUS_ACCESS_DENIED = 0xc0000022;
     private const uint STATUS_INSUFFICIENT_RESOURCES = 0xc000009a;
     private const uint STATUS_NO_MEMORY = 0xc0000017;
-    private const uint STATUS_NO_MORE_ENTRIES = 0xc000001A;
     private const uint ERROR_NO_MORE_ITEMS = 2147483674;
     private const uint ERROR_PRIVILEGE_DOES_NOT_EXIST = 3221225568;
     private LSA_HANDLE lsaHandle;
@@ -155,9 +154,7 @@ public class SecurityWrapper : ISecurityWrapper
         userName = CleanUser(userName);
         var privileges = new LSA_UNICODE_STRING[1];
         privileges[0] = InitLsaString(privilege);
-        IntPtr buffer;
-        ulong count;
-        uint ret = Win32Sec.LsaEnumerateAccountsWithUserRight(lsaHandle, privileges, out buffer, out count);
+        uint ret = Win32Sec.LsaEnumerateAccountsWithUserRight(lsaHandle, privileges, out LSA_HANDLE buffer, out ulong count);
         var Accounts = new List<String>();
 
         if (ret == 0)
@@ -207,9 +204,7 @@ public class SecurityWrapper : ISecurityWrapper
     {
         var privileges = new LSA_UNICODE_STRING[1];
         privileges[0] = InitLsaString("SeBatchLogonRight");
-        IntPtr buffer;
-        ulong count;
-        uint ret = Win32Sec.LsaEnumerateAccountsWithUserRight(lsaHandle, privileges, out buffer, out count);
+        uint ret = Win32Sec.LsaEnumerateAccountsWithUserRight(lsaHandle, privileges, out LSA_HANDLE buffer, out ulong count);
         var accounts = new List<String>();
 
         if (ret == 0)
@@ -274,7 +269,10 @@ public class SecurityWrapper : ISecurityWrapper
     private static string CleanUser(string userName)
     {
         if (userName.Contains("\\"))
+        {
             userName = userName.Split('\\').Last();
+        }
+
         return userName;
     }
 
@@ -303,7 +301,11 @@ public class SecurityWrapper : ISecurityWrapper
     /// <param name="ReturnValue">The return value from the a Win32 method call</param>
     private void TestReturnValue(uint ReturnValue)
     {
-        if (ReturnValue == 0) return;
+        if (ReturnValue == 0)
+        {
+            return;
+        }
+
         if (ReturnValue == ERROR_PRIVILEGE_DOES_NOT_EXIST)
         {
             return;
@@ -353,7 +355,11 @@ public class SecurityWrapper : ISecurityWrapper
     /// <param name="Value"></param>
     private static LSA_UNICODE_STRING InitLsaString(string Value)
     {
-        if (Value.Length > 0x7ffe) throw new ArgumentException(ErrorResource.StringTooLong);
+        if (Value.Length > 0x7ffe)
+        {
+            throw new ArgumentException(ErrorResource.StringTooLong);
+        }
+
         var lus = new LSA_UNICODE_STRING { Buffer = Value, Length = (ushort)(Value.Length * sizeof(char)) };
         lus.MaximumLength = (ushort)(lus.Length + sizeof(char));
         return lus;

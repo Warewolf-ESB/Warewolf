@@ -82,14 +82,7 @@ namespace Unlimited.Framework.Converters.Graph.String.Xml
         public override IPathSegment CreatePathSegment(string pathSegmentString)
         {
             XmlPathSegment xmlPathSegment;
-            if (pathSegmentString.EndsWith(EnumerableSymbol))
-            {
-                xmlPathSegment = new XmlPathSegment(pathSegmentString.TrimEnd(EnumerableSymbol.ToArray()), true);
-            }
-            else
-            {
-                xmlPathSegment = new XmlPathSegment(pathSegmentString, false);
-            }
+            xmlPathSegment = pathSegmentString.EndsWith(EnumerableSymbol) ? new XmlPathSegment(pathSegmentString.TrimEnd(EnumerableSymbol.ToArray()), true) : new XmlPathSegment(pathSegmentString, false);
             return xmlPathSegment;
         }
 

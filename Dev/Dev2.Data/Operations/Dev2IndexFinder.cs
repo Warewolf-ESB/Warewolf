@@ -25,10 +25,9 @@ namespace Dev2.Data.Operations
         {
             enIndexFinderOccurrence occurrence = enIndexFinderOccurrence.FirstOccurrence;
             enIndexFinderDirection dir = enIndexFinderDirection.LeftToRight;
-            int startIdx;
             #region Set the enums according to the strings
 
-            switch(firstOccurrence)
+            switch (firstOccurrence)
             {
                 case "First Occurrence":
                     occurrence = enIndexFinderOccurrence.FirstOccurrence;
@@ -41,9 +40,11 @@ namespace Dev2.Data.Operations
                 case "All Occurrences":
                     occurrence = enIndexFinderOccurrence.AllOccurrences;
                     break;
+                default:
+                    break;
             }
 
-            switch(direction)
+            switch (direction)
             {
                 case "Left to Right":
                     dir = enIndexFinderDirection.LeftToRight;
@@ -52,10 +53,12 @@ namespace Dev2.Data.Operations
                 case "Right to Left":
                     dir = enIndexFinderDirection.RightToLeft;
                     break;
+                default:
+                    break;
             }
 
             startIndex = !string.IsNullOrWhiteSpace(startIndex) ? startIndex : "0";
-            if(!int.TryParse(startIndex, out startIdx))
+            if(!int.TryParse(startIndex, out int startIdx))
             {
                 throw new Exception(ErrorResource.StartIndexNotANumber);
             }
@@ -78,16 +81,9 @@ namespace Dev2.Data.Operations
                 int firstIndex = stringToSearchIn.IndexOf(charsToSearchFor, startIndex, comparisonType);
                 int lastIndex = stringToSearchIn.LastIndexOf(charsToSearchFor, stringToSearchIn.Length - 1, comparisonType);
 
-                if(direction == enIndexFinderDirection.RightToLeft)
-                {
-                    result = RightToLeftIndexSearch(occurrence, firstIndex, lastIndex, stringToSearchIn, charsToSearchFor,
+                result = direction == enIndexFinderDirection.RightToLeft ? RightToLeftIndexSearch(occurrence, firstIndex, lastIndex, stringToSearchIn, charsToSearchFor,
+                                                    comparisonType) : LeftToRightIndexSearch(occurrence, firstIndex, lastIndex, stringToSearchIn, charsToSearchFor,
                                                     comparisonType);
-                }
-                else
-                {
-                    result = LeftToRightIndexSearch(occurrence, firstIndex, lastIndex, stringToSearchIn, charsToSearchFor,
-                                                    comparisonType);
-                }
 
                 #endregion
             }

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Xml.Linq;
 using Dev2.Activities.Designers.Tests.WebGetTool;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.Web_Service_Post;
@@ -13,12 +12,10 @@ using Dev2.Common.Interfaces.Help;
 using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Common.Interfaces.WebService;
 using Dev2.Communication;
-using Dev2.Data.Util;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Newtonsoft.Json;
 using TestingDotnetDllCascading;
 using Warewolf.Core;
 using Warewolf.Studio.ViewModels;
@@ -352,7 +349,6 @@ namespace Dev2.Activities.Designers.Tests.WebPutTool
             var human = new Human();
             Dev2JsonSerializer h = new Dev2JsonSerializer();
             var humanString = h.Serialize(human);
-            var person = "\"{title\": \"Person\",\"type\": \"object\"}";
             postViewModel.InputArea.PutData = humanString;
             var newCount = postViewModel.InputArea.Headers.Count;
             //---------------Test Result -----------------------

@@ -57,7 +57,12 @@ namespace Dev2.Studio.ViewModels.DependencyVisualization
             _popupController = new PopupController();
         }
 
-        public DependencyVisualiserViewModel(DependencyVisualiserView view, IServer server, bool getDependsOnMe = false)
+        public DependencyVisualiserViewModel(DependencyVisualiserView view, IServer server)
+            : this(view, server, false)
+        {
+        }
+
+        public DependencyVisualiserViewModel(DependencyVisualiserView view, IServer server, bool getDependsOnMe)
             : base(EventPublishers.Aggregator)
         {
             _view = view;
@@ -112,13 +117,18 @@ namespace Dev2.Studio.ViewModels.DependencyVisualization
             }
             set
             {
-                if (_resourceModel == value) return;
+                if (_resourceModel == value)
+                {
+                    return;
+                }
 
                 _resourceModel = value;
                 BuildGraphs();
                 NotifyOfPropertyChange(() => ResourceModel);
                 if (value != null)
+                {
                     NotifyOfPropertyChange(() => DisplayName);
+                }
             }
         }
 
@@ -192,14 +202,7 @@ namespace Dev2.Studio.ViewModels.DependencyVisualization
                 var seenResource = new List<Guid>();
                 var acc = new List<ExplorerItemNodeViewModel>();
                 GetItems(new List<IDependencyVisualizationNode> { graph.Nodes.FirstOrDefault() }, null, acc, seenResource);
-                if (acc.Count == 0 || acc.LastOrDefault() == null)
-                {
-                    AllNodes = new ObservableCollection<IExplorerItemNodeViewModel>();
-                }
-                else
-                {
-                    AllNodes = new ObservableCollection<IExplorerItemNodeViewModel>(acc.Last().AsNodeList());
-                }
+                AllNodes = acc.Count == 0 || acc.LastOrDefault() == null ? new ObservableCollection<IExplorerItemNodeViewModel>() : new ObservableCollection<IExplorerItemNodeViewModel>(acc.Last().AsNodeList());
             }
         }
 
@@ -269,8 +272,7 @@ namespace Dev2.Studio.ViewModels.DependencyVisualization
 
         protected override void OnViewLoaded(object view)
         {
-            var loadedView = view as IView;
-            if (loadedView != null)
+            if (view is IView loadedView)
             {
                 base.OnViewLoaded(loadedView);
             }

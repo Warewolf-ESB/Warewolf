@@ -37,7 +37,6 @@ using Dev2.Providers.Events;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Services.Events;
 using Dev2.Studio.Controller;
-using Dev2.Studio.Core;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Models;
 using Dev2.Studio.Interfaces;
@@ -89,7 +88,12 @@ namespace Dev2.Settings.Scheduler
         {
         }
 
-        public SchedulerViewModel(IEventAggregator eventPublisher, DirectoryObjectPickerDialog directoryObjectPicker, IPopupController popupController, IAsyncWorker asyncWorker, IServer server, Func<IServer, IServer> toEnvironmentModel, Task<IResourcePickerDialog> getResourcePicker = null)
+        public SchedulerViewModel(IEventAggregator eventPublisher, DirectoryObjectPickerDialog directoryObjectPicker, IPopupController popupController, IAsyncWorker asyncWorker, IServer server, Func<IServer, IServer> toEnvironmentModel)
+            : this(eventPublisher, directoryObjectPicker, popupController, asyncWorker, server, toEnvironmentModel, null)
+        {
+        }
+
+        public SchedulerViewModel(IEventAggregator eventPublisher, DirectoryObjectPickerDialog directoryObjectPicker, IPopupController popupController, IAsyncWorker asyncWorker, IServer server, Func<IServer, IServer> toEnvironmentModel, Task<IResourcePickerDialog> getResourcePicker)
             : base(eventPublisher)
         {
             SchedulerTaskManager = new SchedulerTaskManager(this, getResourcePicker);
@@ -351,8 +355,7 @@ namespace Dev2.Settings.Scheduler
                     }
                     else
                     {
-                        int val;
-                        if (value.IsWholeNumber(out val))
+                        if (value.IsWholeNumber(out int val))
                         {
                             SelectedTask.NumberOfHistoryToKeep = val;
                             NotifyOfPropertyChange(() => IsDirty);
@@ -545,7 +548,10 @@ namespace Dev2.Settings.Scheduler
             private set
             {
                 if (_selectedTask != null)
+                {
                     _selectedTask.Errors = value;
+                }
+
                 NotifyOfPropertyChange(() => Errors);
             }
         }
@@ -636,7 +642,11 @@ namespace Dev2.Settings.Scheduler
                        (_deleteCommand = new DelegateCommand(param =>
                        {
                            var taskToBeDeleted = param as IScheduledResource;
-                           if (taskToBeDeleted == null) return;
+                           if (taskToBeDeleted == null)
+                           {
+                               return;
+                           }
+
                            SelectedTask = taskToBeDeleted;
                            SchedulerTaskManager.DeleteTask();
                        }));
@@ -826,12 +836,21 @@ namespace Dev2.Settings.Scheduler
                             return false;
                         case MessageBoxResult.No:
                             return true;
+                        case MessageBoxResult.OK:
+                            break;
+                        case MessageBoxResult.Yes:
+                            break;
+                        default:
+                            break;
                     }
                     return SchedulerTaskManager.SaveTasks();
                 }
             }
             if (SelectedTask != null && !showMessage)
+            {
                 return SchedulerTaskManager.SaveTasks();
+            }
+
             return true;
         }
 
@@ -849,7 +868,10 @@ namespace Dev2.Settings.Scheduler
             set
             {
                 if (value == _helpText)
+                {
                     return;
+                }
+
                 _helpText = value;
                 NotifyOfPropertyChange(() => HelpText);
             }
@@ -887,8 +909,7 @@ namespace Dev2.Settings.Scheduler
     {
         public static IServer ToEnvironmentModel(this IServer server)
         {
-            var resource = server as Server;
-            if (resource != null)
+            if (server is Server resource)
             {
                 return resource;
             }

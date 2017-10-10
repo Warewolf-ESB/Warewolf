@@ -34,7 +34,7 @@ namespace Dev2.Activities.Designers2.CommandLine
 
         public List<KeyValuePair<ProcessPriorityClass, string>> CommandPriorities { get; private set; }
 
-        public bool IsCommandFileNameFocused { get { return (bool)GetValue(IsCommandFileNameFocusedProperty); } set { SetValue(IsCommandFileNameFocusedProperty, value); } }
+        public bool IsCommandFileNameFocused { get => (bool)GetValue(IsCommandFileNameFocusedProperty); set { SetValue(IsCommandFileNameFocusedProperty, value); } }
 
         public static readonly DependencyProperty IsCommandFileNameFocusedProperty =
             DependencyProperty.Register("IsCommandFileNameFocused", typeof(bool), typeof(CommandLineDesignerViewModel), new PropertyMetadata(false));
@@ -48,10 +48,9 @@ namespace Dev2.Activities.Designers2.CommandLine
 
             Action onError = () => IsCommandFileNameFocused = true;
 
-            string commandValue;
-            errors.AddError(CommandFileName.TryParseVariables(out commandValue, onError));
+            errors.AddError(CommandFileName.TryParseVariables(out string commandValue, onError));
 
-            if(string.IsNullOrWhiteSpace(commandValue))
+            if (string.IsNullOrWhiteSpace(commandValue))
             {
                 errors.Add(new ActionableErrorInfo(onError) { ErrorType = ErrorType.Critical, Message = string.Format(ErrorResource.PropertyMusHaveAValue, "Command") });
             }

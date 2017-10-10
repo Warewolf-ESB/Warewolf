@@ -23,8 +23,7 @@ namespace Dev2.Studio.Core.AppResources.Converters
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            DebugItemResultType debugItemResultType;
-            var isDebugItemResultType = Enum.TryParse(value?.ToString(),true,out debugItemResultType);
+            var isDebugItemResultType = Enum.TryParse(value?.ToString(), true, out DebugItemResultType debugItemResultType);
             if (isDebugItemResultType)
             {
                 switch (debugItemResultType)
@@ -34,7 +33,8 @@ namespace Dev2.Studio.Core.AppResources.Converters
 
                     case DebugItemResultType.Value:
                         return Application.Current.Resources["DebugItemValueBrush"];
-
+                    case DebugItemResultType.Label:
+                        break;
                     default: // DebugItemResultType.Label:
                         return Application.Current.Resources["DebugItemLabelBrush"];
                 }

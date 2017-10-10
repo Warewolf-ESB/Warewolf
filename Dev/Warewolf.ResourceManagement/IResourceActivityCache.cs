@@ -8,7 +8,9 @@ namespace Warewolf.ResourceManagement
     {
         void AddToCache(Guid resourceID, DynamicActivity activity);
 
-        IDev2Activity Parse(DynamicActivity activity, Guid resourceIdGuid,bool failOnError=false);
+        IDev2Activity Parse(DynamicActivity activity, Guid resourceIdGuid);
+
+        IDev2Activity Parse(DynamicActivity activity, Guid resourceIdGuid, bool failOnError);
 
         void RemoveFromCache(Guid resourceID);
 

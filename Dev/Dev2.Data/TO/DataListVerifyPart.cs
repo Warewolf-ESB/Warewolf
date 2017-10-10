@@ -56,14 +56,7 @@ namespace Dev2.DataList.Contract
                 if(recordset.Contains("[") && recordset.Contains("]"))
                 {
                     int start = recordset.IndexOf("(", StringComparison.Ordinal);
-                    if(start != -1)
-                    {
-                        Recordset = recordset.Substring(0, start);
-                    }
-                    else
-                    {
-                        Recordset = recordset.Replace("[", "").Replace("]", "");
-                    }
+                    Recordset = start != -1 ? recordset.Substring(0, start) : recordset.Replace("[", "").Replace("]", "");
                 }
             }
 
@@ -73,28 +66,14 @@ namespace Dev2.DataList.Contract
 
             if(useRaw)
             {
-                if(field.Length > 0)
-                {
-                    DisplayValue = "[[" + recordset + field + "]]";
-                }
-                else
-                {
-                    DisplayValue = "[[" + field + "]]";
-                }
+                DisplayValue = field.Length > 0 ? "[[" + recordset + field + "]]" : "[[" + field + "]]";
             }
             else
             {
                 if(string.IsNullOrEmpty(Recordset))
                 {
                     Recordset = string.Empty;
-                    if(field.Contains("(") && !field.Contains(")"))
-                    {
-                        DisplayValue = "[[" + field;
-                    }
-                    else
-                    {
-                        DisplayValue = "[[" + field + "]]";
-                    }
+                    DisplayValue = field.Contains("(") && !field.Contains(")") ? "[[" + field : "[[" + field + "]]";
                 }
                 else
                 {

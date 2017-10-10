@@ -1,6 +1,5 @@
 ﻿using Dev2.Common;
 using Dev2.Web2.Models.ExecutionLogging;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Web.Http.Cors;

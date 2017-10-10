@@ -36,9 +36,15 @@ namespace Dev2.Validation
             {
                 var regions = DataListCleaningUtils.SplitIntoRegions(exp);
                 if (regions.Count > 1)
+                {
                     return CreatError();
+                }
+
                 if (regions.Count == 1 && !DataListUtil.IsValueRecordsetWithFields(regions[0]))
-                    return CreatError(); 
+                {
+                    return CreatError();
+                }
+
                 return null;
             }
             return null;

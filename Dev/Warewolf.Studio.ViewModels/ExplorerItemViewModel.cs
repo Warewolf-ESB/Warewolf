@@ -24,7 +24,6 @@ using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Common.Interfaces.Versioning;
 using Dev2.Runtime.Configuration.ViewModels.Base;
-using Dev2.Studio.Core;
 using Dev2.Studio.Interfaces;
 using Microsoft.Practices.Prism.Mvvm;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -44,10 +43,26 @@ namespace Warewolf.Studio.ViewModels
     {
         public bool Equals(IExplorerTreeItem x, IExplorerTreeItem y)
         {
-            if (ReferenceEquals(x, y)) return true;
-            if (ReferenceEquals(x, null)) return false;
-            if (ReferenceEquals(y, null)) return false;
-            if (x.GetType() != y.GetType()) return false;
+            if (ReferenceEquals(x, y))
+            {
+                return true;
+            }
+
+            if (ReferenceEquals(x, null))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(y, null))
+            {
+                return false;
+            }
+
+            if (x.GetType() != y.GetType())
+            {
+                return false;
+            }
+
             return string.Equals(x.ResourcePath, y.ResourcePath) && x.ResourceId.Equals(y.ResourceId);
         }
 
@@ -243,7 +258,10 @@ namespace Warewolf.Studio.ViewModels
             IsVersion = false;
             CanShowServerVersion = false;
             if (ForcedRefresh)
+            {
                 ForcedRefresh = true;
+            }
+
             SetupCommands();
 
             _candrop = true;
@@ -661,8 +679,9 @@ namespace Warewolf.Studio.ViewModels
             _explorerItemViewModelCommandController.DeleteCommand(Parent, _explorerRepository, this, _popupController, Server);
         }
 
+        public void SetPermissions(Permissions explorerItemPermissions) => SetPermissions(explorerItemPermissions, false);
 
-        public void SetPermissions(Permissions explorerItemPermissions, bool isDeploy = false)
+        public void SetPermissions(Permissions explorerItemPermissions, bool isDeploy)
         {
 
             SetPermission(explorerItemPermissions, isDeploy);
@@ -683,7 +702,8 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public void SetPermission(Permissions permission, bool isDeploy = false)
+        public void SetPermission(Permissions permission) => SetPermission(permission, false);
+        public void SetPermission(Permissions permission, bool isDeploy)
         {
             SetNonePermissions();
 
@@ -1116,7 +1136,9 @@ namespace Warewolf.Studio.ViewModels
                         Children.Apply(a => a.IsResourceChecked = isResourceChecked ?? false);
                         _isResource = isResourceChecked ?? false;
                         if (Parent.IsFolder)
+                        {
                             Parent.IsFolderChecked = isResourceChecked;
+                        }
                     }
                 }
                 else
@@ -1124,14 +1146,7 @@ namespace Warewolf.Studio.ViewModels
                     IsResourceCheckedEnabled = CanDeploy;
                     _isResource = isResourceChecked.HasValue && !IsFolder && isResourceChecked.Value;
                 }
-                if (isResourceChecked != null && (bool)isResourceChecked)
-                {
-                    IsSelected = true;
-                }
-                else
-                {
-                    IsSelected = false;
-                }
+                IsSelected = isResourceChecked != null && (bool)isResourceChecked ? true : false;
                 SelectAction?.Invoke(this);
                 OnPropertyChanged(() => IsResourceChecked);
             }
@@ -1189,7 +1204,9 @@ namespace Warewolf.Studio.ViewModels
                     if (!_isResource.HasValue || _isResource.Value)
                     {
                         if (Parent.IsFolder)
+                        {
                             Parent.IsFolderChecked = _isResource;
+                        }
                     }
                 }
                 OnPropertyChanged(() => IsResourceChecked);
@@ -1285,14 +1302,7 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _canRename = value;
-                if (_isFolder)
-                {
-                    RenameTooltip = _canRename ? Resources.Languages.Tooltips.RenameFolderTooltip : Resources.Languages.Tooltips.NoPermissionsToolTip;
-                }
-                else
-                {
-                    RenameTooltip = _canRename ? Resources.Languages.Tooltips.RenameItemTooltip : Resources.Languages.Tooltips.NoPermissionsToolTip;
-                }
+                RenameTooltip = _isFolder ? _canRename ? Resources.Languages.Tooltips.RenameFolderTooltip : Resources.Languages.Tooltips.NoPermissionsToolTip : _canRename ? Resources.Languages.Tooltips.RenameItemTooltip : Resources.Languages.Tooltips.NoPermissionsToolTip;
                 OnPropertyChanged(() => CanRename);
             }
         }
@@ -1349,14 +1359,7 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _canDelete = value;
-                if (_isFolder)
-                {
-                    DeleteTooltip = _canDelete ? Resources.Languages.Tooltips.DeleteFolderTooltip : Resources.Languages.Tooltips.NoPermissionsToolTip;
-                }
-                else
-                {
-                    DeleteTooltip = _canDelete ? Resources.Languages.Tooltips.DeleteItemTooltip : Resources.Languages.Tooltips.NoPermissionsToolTip;
-                }
+                DeleteTooltip = _isFolder ? _canDelete ? Resources.Languages.Tooltips.DeleteFolderTooltip : Resources.Languages.Tooltips.NoPermissionsToolTip : _canDelete ? Resources.Languages.Tooltips.DeleteItemTooltip : Resources.Languages.Tooltips.NoPermissionsToolTip;
 
                 OnPropertyChanged(() => CanDelete);
             }
@@ -1607,8 +1610,7 @@ namespace Warewolf.Studio.ViewModels
             IsExpanded = true;
             foreach (var child in Children)
             {
-                var explorerItemViewModel = child as ExplorerItemViewModel;
-                if (explorerItemViewModel != null && explorerItemViewModel.IsVersion)
+                if (child is ExplorerItemViewModel explorerItemViewModel && explorerItemViewModel.IsVersion)
                 {
                     var permissions = Server?.GetPermissions(explorerItemViewModel.ResourceId);
                     if (permissions.HasValue)
@@ -1856,7 +1858,9 @@ namespace Warewolf.Studio.ViewModels
             else
             {
                 if (IsFolder)
+                {
                     IsExpanded = false;
+                }
             }
         }
 
@@ -1880,10 +1884,12 @@ namespace Warewolf.Studio.ViewModels
         public void Dispose()
         {
             if (Children != null)
+            {
                 foreach (var explorerItemViewModel in Children)
                 {
                     explorerItemViewModel?.Dispose();
                 }
+            }
         }
 
         public bool IsDependenciesVisible

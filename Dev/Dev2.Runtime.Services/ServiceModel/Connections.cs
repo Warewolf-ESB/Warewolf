@@ -76,8 +76,7 @@ namespace Dev2.Runtime.ServiceModel
             }
             catch (Exception ex)
             {
-                var hex = ex.InnerException as HttpClientException;
-                if (hex != null)
+                if (ex.InnerException is HttpClientException hex)
                 {
                     result.IsValid = false;  // This we know how to handle this
                     result.ErrorMessage = Resources.ConnectionError + hex.Response.ReasonPhrase;
@@ -93,14 +92,7 @@ namespace Dev2.Runtime.ServiceModel
                 else
                 {
                     var msg = ex.Message;
-                    if (msg.IndexOf(Resources.ConnectionError, StringComparison.Ordinal) >= 0 || msg.IndexOf("Invalid URI:", StringComparison.Ordinal) >= 0)
-                    {
-                        result.ErrorMessage = ex.Message;
-                    }
-                    else
-                    {
-                        result.ErrorMessage = Resources.ConnectionError + ex.Message;
-                    }
+                    result.ErrorMessage = msg.IndexOf(Resources.ConnectionError, StringComparison.Ordinal) >= 0 || msg.IndexOf("Invalid URI:", StringComparison.Ordinal) >= 0 ? ex.Message : Resources.ConnectionError + ex.Message;
                 }
             }
 
@@ -141,10 +133,8 @@ namespace Dev2.Runtime.ServiceModel
             var serverVersion = fragmentInvoke.Result;
             if (!string.IsNullOrEmpty(serverVersion))
             {
-                Version sourceVersionNumber;
-                Version.TryParse(serverVersion, out sourceVersionNumber);
-                Version destVersionNumber;
-                Version.TryParse("0.0.0.6", out destVersionNumber);
+                Version.TryParse(serverVersion, out Version sourceVersionNumber);
+                Version.TryParse("0.0.0.6", out Version destVersionNumber);
                 if (sourceVersionNumber != null && destVersionNumber != null)
                 {
                     if (sourceVersionNumber < destVersionNumber)

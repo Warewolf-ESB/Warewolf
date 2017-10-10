@@ -9,7 +9,6 @@
 */
 
 using System;
-using System.Diagnostics.CodeAnalysis;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Hosting;
 
@@ -18,8 +17,9 @@ namespace Dev2.Common.Interfaces.Infrastructure
     public interface IExplorerResourceRepository
     {
 
-        IExplorerItem Load(Guid workSpaceId, bool reload = false);
-    
+        IExplorerItem Load(Guid workSpaceId, bool reload);
+        IExplorerItem Load(Guid workSpaceId);
+
         IExplorerItem Load(string type, Guid workSpaceId);
         IExplorerRepositoryResult RenameItem(IExplorerItem itemToRename, string newName, Guid workSpaceId);
         IExplorerRepositoryResult RenameFolder(string path, string newName, Guid workSpaceId);

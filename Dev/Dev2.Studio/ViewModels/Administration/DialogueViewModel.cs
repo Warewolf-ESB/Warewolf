@@ -27,7 +27,7 @@ namespace Dev2.Studio.ViewModels.Administration
 
         #region Members
 
-        public ClosedOperationEventHandler OnOkClick;
+        readonly ClosedOperationEventHandler OnOkClick;
         private ICommand _okClicked;
         private ICommand _hyperLink;
         private ImageSource _imageSource;
@@ -83,7 +83,9 @@ namespace Dev2.Studio.ViewModels.Administration
             Process.Start(new Uri(Hyperlink).AbsoluteUri);
         }
 
-        public void SetupDialogue(string title, string description, string imageSourceuri, string descriptionTitleText, string hyperlink = null, string linkText = null)
+        public void SetupDialogue(string title, string description, string imageSourceuri, string descriptionTitleText) => SetupDialogue(title, description, imageSourceuri, descriptionTitleText, null, null);
+
+        public void SetupDialogue(string title, string description, string imageSourceuri, string descriptionTitleText, string hyperlink, string linkText)
         {
             SetTitle(title);
             SetDescription(description);
@@ -114,10 +116,9 @@ namespace Dev2.Studio.ViewModels.Administration
             }
             else
             {
-                Uri imageUri;
-                bool validUri = Uri.TryCreate(imageSource, UriKind.RelativeOrAbsolute, out imageUri);
+                bool validUri = Uri.TryCreate(imageSource, UriKind.RelativeOrAbsolute, out Uri imageUri);
 
-                if(validUri)
+                if (validUri)
                 {
 
                     // Once initialized, the image must be released so that it is usable by other resources
@@ -156,15 +157,6 @@ namespace Dev2.Studio.ViewModels.Administration
         }
 
         #endregion Private Methods
-
-        #region Events
-
-        //event ClosedOperationEventHandler IDialogueViewModel.OnOkClick {
-        //    add { this.OnOkClick += value; }
-        //    remove { this.OnOkClick -= value; }
-        //}
-
-        #endregion Events
 
         #region IDisposable Implementaton
 

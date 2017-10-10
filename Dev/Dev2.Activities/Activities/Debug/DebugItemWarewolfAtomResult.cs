@@ -17,7 +17,12 @@ namespace Dev2.Activities.Debug
         readonly string _assignFromVariable;
         private readonly bool _mockSelected;
 
-        public DebugItemWarewolfAtomResult(string value, string variable, string leftLabel, bool mockSelected = false)
+        public DebugItemWarewolfAtomResult(string value, string variable, string leftLabel)
+            : this(value, variable, leftLabel, false)
+        {
+        }
+
+        public DebugItemWarewolfAtomResult(string value, string variable, string leftLabel, bool mockSelected)
         {
             _value = value;
             _leftLabel = leftLabel;
@@ -32,14 +37,26 @@ namespace Dev2.Activities.Debug
 
         }
 
-        public DebugItemWarewolfAtomResult(string value, string variable, string leftLabel, string operand, bool mockSelected = false)
+        public DebugItemWarewolfAtomResult(string value, string variable, string leftLabel, string operand)
+            : this(value, variable, leftLabel, operand, false)
+        {
+        }
+
+        public DebugItemWarewolfAtomResult(string value, string variable, string leftLabel, string operand, bool mockSelected)
             :this(value, variable, leftLabel, mockSelected)
         {
             if(operand != null)
+            {
                 _operand = operand;
+            }
         }
 
-        public DebugItemWarewolfAtomResult(string value, string newValue, string variable, string assignFromVariable, string leftLabel, string rightLabel, string operand, bool mockSelected = false)
+        public DebugItemWarewolfAtomResult(string value, string newValue, string variable, string assignFromVariable, string leftLabel, string rightLabel, string operand)
+            : this(value, newValue, variable, assignFromVariable, leftLabel, rightLabel, operand, false)
+        {
+        }
+
+        public DebugItemWarewolfAtomResult(string value, string newValue, string variable, string assignFromVariable, string leftLabel, string rightLabel, string operand, bool mockSelected)
         {
             _value = value;
             _newValue = newValue;

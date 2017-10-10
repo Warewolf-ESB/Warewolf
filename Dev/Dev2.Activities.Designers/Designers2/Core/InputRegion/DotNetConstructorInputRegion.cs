@@ -17,11 +17,6 @@ using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.Practices.Prism;
 using Warewolf.Core;
 
-
-
-
-
-
 namespace Dev2.Activities.Designers2.Core.InputRegion
 {
     public class DotNetConstructorInputRegion : IDotNetConstructorInputRegion
@@ -33,7 +28,6 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
         private bool _isInputsEmptyRows;
         private readonly IActionInputDatatalistMapper _datatalistMapper;
         private RelayCommand _viewObjectResult;
-
         
         public DotNetConstructorInputRegion()
         {
@@ -56,7 +50,10 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
             Inputs = inputs;
             IsInputsEmptyRows = Inputs.Count == 0;
             if (inputsFromModel == null)
+            {
                 UpdateOnActionSelection();
+            }
+
             IsEnabled = action?.SelectedConstructor != null;
         }
 
@@ -74,7 +71,11 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
 
         private void AddItemPropertyChangeEvent(NotifyCollectionChangedEventArgs args)
         {
-            if (args.NewItems == null) return;
+            if (args.NewItems == null)
+            {
+                return;
+            }
+
             foreach (INotifyPropertyChanged item in args.NewItems)
             {
                 if (item != null)
@@ -91,7 +92,11 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
 
         private void RemoveItemPropertyChangeEvent(NotifyCollectionChangedEventArgs args)
         {
-            if (args.OldItems == null) return;
+            if (args.OldItems == null)
+            {
+                return;
+            }
+
             foreach (INotifyPropertyChanged item in args.OldItems)
             {
                 if (item != null)
@@ -211,8 +216,7 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
 
         public void RestoreRegion(IToolRegion toRestore)
         {
-            var region = toRestore as DotNetConstructorInputRegionClone;
-            if (region != null)
+            if (toRestore is DotNetConstructorInputRegionClone region)
             {
                 Inputs.Clear();
                 if (region.Inputs != null)

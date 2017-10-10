@@ -415,7 +415,10 @@ namespace Warewolf.Studio.ViewModels
         public bool CanTest()
         {
             if (Testing)
+            {
                 return false;
+            }
+
             if (ServerName != null && string.IsNullOrEmpty(ServerName.Name))
             {
                 return false;
@@ -429,9 +432,6 @@ namespace Warewolf.Studio.ViewModels
 
         private void SetupHeaderTextFromExisting()
         {
-            if (_warewolfserverName != null)
-            {
-            }
             HeaderText = (DbSource == null ? ResourceName : DbSource.Name).Trim();
 
             Header = DbSource == null ? ResourceName : DbSource.Name;

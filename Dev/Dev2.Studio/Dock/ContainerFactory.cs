@@ -238,9 +238,8 @@ namespace Dev2.Studio.Dock
             {
                 foreach(object item in _currentView)
                 {
-                    DependencyObject container;
 
-                    if(_generatedElements.TryGetValue(item, out container))
+                    if (_generatedElements.TryGetValue(item, out DependencyObject container))
                     {
                         yield return container;
                     }
@@ -273,12 +272,13 @@ namespace Dev2.Studio.Dock
 
             // if there is no item associated with the container then it cannot be in use
             if(item == DependencyProperty.UnsetValue)
+            {
                 return false;
+            }
 
-            DependencyObject actualContainer;
 
             // get the container we have for the item
-            if(_generatedElements.TryGetValue(item, out actualContainer))
+            if (_generatedElements.TryGetValue(item, out DependencyObject actualContainer))
             {
                 Debug.Assert(ReferenceEquals(actualContainer, container), "There shouldn't be 2 different containers associated with a given item");
                 return ReferenceEquals(actualContainer, container);
@@ -392,7 +392,9 @@ namespace Dev2.Studio.Dock
 
             
             if(item != container)
+            {
                 container.SetValue(FrameworkElement.DataContextProperty, item);
+            }
         }
         #endregion //AttachContainerToItem
 
@@ -418,10 +420,7 @@ namespace Dev2.Studio.Dock
             // create the element and associate it with the new item
             ContentControl container;
 
-            if(IsItemItsOwnContainerImpl(newItem))
-                container = newItem as ContentControl;
-            else
-                container = GetContainerForItem(newItem);
+            container = IsItemItsOwnContainerImpl(newItem) ? newItem as ContentControl : GetContainerForItem(newItem);
 
             // keep a map between the new item and the element
             _generatedElements[newItem] = container;
@@ -440,8 +439,10 @@ namespace Dev2.Studio.Dock
         #region IsItemItsOwnContainerImpl
         private bool IsItemItsOwnContainerImpl(object item)
         {
-            if(item is DependencyObject == false)
+            if(!(item is DependencyObject))
+            {
                 return false;
+            }
 
             return IsItemItsOwnContainer(item);
         }
@@ -451,9 +452,8 @@ namespace Dev2.Studio.Dock
         #region MoveItem
         private void MoveItem(object item, int oldIndex, int newIndex)
         {
-            DependencyObject container;
 
-            if(_generatedElements.TryGetValue(item, out container))
+            if (_generatedElements.TryGetValue(item, out DependencyObject container))
             {
                 OnItemMoved(container, item, oldIndex, newIndex);
             }
@@ -482,12 +482,14 @@ namespace Dev2.Studio.Dock
         private void OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if(_isInitializing)
+            {
                 return;
+            }
 
             // since its a freezable make sure its not frozen
             WritePreamble();
 
-            switch(e.Action)
+            switch (e.Action)
             {
                 case NotifyCollectionChangedAction.Add:
                     //Count should always be 1, but add the else in case of some inconsistant adding
@@ -498,24 +500,37 @@ namespace Dev2.Studio.Dock
                     else
                     {
                         for (int i = 0; i < e.NewItems.Count; i++)
+                        {
                             InsertItem(i + e.NewStartingIndex, e.NewItems[i]);
+                        }
                     }
                     break;
                 case NotifyCollectionChangedAction.Remove:
-                    foreach(object newItem in e.OldItems)
+                    foreach (object newItem in e.OldItems)
+                    {
                         RemoveItem(newItem);
+                    }
+
                     break;
                 case NotifyCollectionChangedAction.Move:
                     MoveItem(e.OldItems[0], e.OldStartingIndex, e.NewStartingIndex);
                     break;
                 case NotifyCollectionChangedAction.Replace:
-                    foreach(object newItem in e.OldItems)
+                    foreach (object newItem in e.OldItems)
+                    {
                         RemoveItem(newItem);
-                    for(int i = 0; i < e.NewItems.Count; i++)
+                    }
+
+                    for (int i = 0; i < e.NewItems.Count; i++)
+                    {
                         InsertItem(i + e.NewStartingIndex, e.NewItems[i]);
+                    }
+
                     break;
                 case NotifyCollectionChangedAction.Reset:
                     ReinitializeElements();
+                    break;
+                default:
                     break;
             }
         }
@@ -525,11 +540,15 @@ namespace Dev2.Studio.Dock
         private void ReinitializeElements()
         {
             if(_currentView == null || _currentView.IsEmpty)
+            {
                 ClearItems();
+            }
             else
             {
                 if(IsInitializing)
+                {
                     return;
+                }
 
                 HashSet<object> oldItems = new HashSet<object>(_generatedElements.Keys);
 
@@ -549,9 +568,8 @@ namespace Dev2.Studio.Dock
                 int index = 0;
                 foreach(object item in _currentView)
                 {
-                    DependencyObject container;
 
-                    if(!_generatedElements.TryGetValue(item, out container))
+                    if (!_generatedElements.TryGetValue(item, out DependencyObject container))
                     {
                         InsertItem(index, item);
                     }
@@ -572,8 +590,7 @@ namespace Dev2.Studio.Dock
         {
             Debug.Assert(_generatedElements.ContainsKey(oldItem));
 
-            DependencyObject container;
-            if(_generatedElements.TryGetValue(oldItem, out container))
+            if (_generatedElements.TryGetValue(oldItem, out DependencyObject container))
             {
                 _generatedElements.Remove(oldItem);
                 OnItemRemovedImpl(container, oldItem);
@@ -639,9 +656,11 @@ namespace Dev2.Studio.Dock
             Style style = ContainerStyle;
 
             if(null == style && ContainerStyleSelector != null)
+            {
                 style = ContainerStyleSelector.SelectStyle(item, container);
+            }
 
-            if(null != style)
+            if (null != style)
             {
                 container.SetValue(AppliedStyleProperty, KnownBoxes.FalseBox);
                 container.SetValue(FrameworkElement.StyleProperty, style);
@@ -756,7 +775,9 @@ namespace Dev2.Studio.Dock
             Type newType = (Type)newValue;
 
             if(null != newType)
+            {
                 ef.ValidateContainerType(newType);
+            }
 
             return newValue;
         }
@@ -766,13 +787,19 @@ namespace Dev2.Studio.Dock
             Type type = newValue as Type;
 
             if(type == null)
+            {
                 return true;
+            }
 
-            if(type.IsAbstract)
+            if (type.IsAbstract)
+            {
                 throw new ArgumentException("ContainerType must be a non-abstract creatable type.");
+            }
 
-            if(!typeof(DependencyObject).IsAssignableFrom(type))
+            if (!typeof(DependencyObject).IsAssignableFrom(type))
+            {
                 throw new ArgumentException("Element must be a DependencyObject derived type.");
+            }
 
             return true;
         }

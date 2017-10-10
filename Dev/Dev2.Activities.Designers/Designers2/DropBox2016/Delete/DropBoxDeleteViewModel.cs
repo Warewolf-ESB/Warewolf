@@ -2,7 +2,6 @@
 using System.Activities.Presentation.Model;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using Dev2.Activities.Designers2.Core;
@@ -131,7 +130,9 @@ namespace Dev2.Activities.Designers2.DropBox2016.Delete
             var shellViewModel = CustomContainer.Get<IShellViewModel>();
             var activeServer = shellViewModel.ActiveServer;
             if (activeServer != null)
+            {
                 shellViewModel.OpenResource(SelectedSource.ResourceID, activeServer.EnvironmentID, activeServer);
+            }
         }
 
         public void CreateOAuthSource()

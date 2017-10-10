@@ -138,6 +138,8 @@ namespace Dev2.Studio.Views
                         handled = true;
                     }
                     break;
+                default:
+                    break;
             }
             return (IntPtr)0;
         }
@@ -221,8 +223,7 @@ namespace Dev2.Studio.Views
 
         public void ResetToStartupView()
         {
-            var mainViewModel = DataContext as ShellViewModel;
-            if (mainViewModel != null)
+            if (DataContext is ShellViewModel mainViewModel)
             {
                 ClearWindowCollection(mainViewModel);
                 ClearTabItems(mainViewModel);
@@ -235,35 +236,35 @@ namespace Dev2.Studio.Views
                         mainViewModel.SetActiveServer(localhostServer.EnvironmentID);
                         mainViewModel.SetActiveServer(localhostServer);
                     }
+                }
 
-                    var explorerViewModel = mainViewModel.ExplorerViewModel;
+                var explorerViewModel = mainViewModel.ExplorerViewModel;
+                if (explorerViewModel != null)
+                {
+                    explorerViewModel.SearchText = string.Empty;
 
-                    if (explorerViewModel != null)
+                    if (explorerViewModel.ConnectControlViewModel != null)
                     {
-                        explorerViewModel.SearchText = string.Empty;
-
-                        if (explorerViewModel.ConnectControlViewModel != null)
+                        foreach (var server in explorerViewModel.ConnectControlViewModel.Servers)
                         {
-                            foreach (var server in explorerViewModel.ConnectControlViewModel.Servers)
+                            if (server != null && server.DisplayName != localhostServer.DisplayName && server.IsConnected)
                             {
-                                if (server != null && server.DisplayName != localhostServer.DisplayName && server.IsConnected)
-                                {
-                                    server.Disconnect();
-                                }
-                            }
-                        }
-
-                        var environmentViewModels = explorerViewModel.Environments;
-                        if (environmentViewModels?.Count > 1)
-                        {
-                            for (var i = 0; i < environmentViewModels.Count - 1; i++)
-                            {
-                                var remoteEnvironment = environmentViewModels.FirstOrDefault(model => model.ResourceId != Guid.Empty);
-                                environmentViewModels.Remove(remoteEnvironment);
+                                server.Disconnect();
                             }
                         }
                     }
+
+                    var environmentViewModels = explorerViewModel.Environments;
+                    if (environmentViewModels?.Count > 1)
+                    {
+                        for (var i = 0; i < environmentViewModels.Count - 1; i++)
+                        {
+                            var remoteEnvironment = environmentViewModels.FirstOrDefault(model => model.ResourceId != Guid.Empty);
+                            environmentViewModels.Remove(remoteEnvironment);
+                        }
+                    }
                 }
+
                 if (mainViewModel.ToolboxViewModel != null)
                 {
                     mainViewModel.ToolboxViewModel.SearchTerm = string.Empty;
@@ -289,9 +290,8 @@ namespace Dev2.Studio.Views
             var windowCollection = System.Windows.Application.Current.Windows;
             foreach (var window in windowCollection)
             {
-                var window1 = window as Window;
 
-                if (window1 != null && window1.Name != "MainViewWindow")
+                if (window is Window window1 && window1.Name != "MainViewWindow")
                 {
                     if (window1.GetType().Name == "ToolWindowHostWindow")
                     {
@@ -332,8 +332,7 @@ namespace Dev2.Studio.Views
             {
                 xmlDocument.LoadXml(_savedLayout);
             }
-            ShellViewModel shellViewModel = DataContext as ShellViewModel;
-            if (shellViewModel != null)
+            if (DataContext is ShellViewModel shellViewModel)
             {
                 SetMenuExpanded(xmlDocument, shellViewModel);
                 SetMenuPanelOpen(xmlDocument, shellViewModel);
@@ -350,8 +349,7 @@ namespace Dev2.Studio.Views
             {
                 var menuExpandedString = elementsByTagNameMenuExpanded[0].InnerXml;
 
-                bool menuExpanded;
-                if (bool.TryParse(menuExpandedString, out menuExpanded))
+                if (bool.TryParse(menuExpandedString, out bool menuExpanded))
                 {
                     shellViewModel.MenuExpanded = menuExpanded;
                 }
@@ -369,8 +367,7 @@ namespace Dev2.Studio.Views
             {
                 var menuPanelOpenString = elementsByTagNameMenuPanelOpen[0].InnerXml;
 
-                bool panelOpen;
-                if (bool.TryParse(menuPanelOpenString, out panelOpen))
+                if (bool.TryParse(menuPanelOpenString, out bool panelOpen))
                 {
                     shellViewModel.MenuViewModel.IsPanelOpen = panelOpen;
                 }
@@ -384,8 +381,7 @@ namespace Dev2.Studio.Views
             {
                 var menuPanelLockedOpenString = elementsByTagNameMenuPanelLockedOpen[0].InnerXml;
 
-                bool panelLockedOpen;
-                if (bool.TryParse(menuPanelLockedOpenString, out panelLockedOpen))
+                if (bool.TryParse(menuPanelLockedOpenString, out bool panelLockedOpen))
                 {
                     shellViewModel.MenuViewModel.IsPanelLockedOpen = panelLockedOpen;
                 }
@@ -457,8 +453,7 @@ namespace Dev2.Studio.Views
 
         private void SlidingMenuPane_OnSizeChanged(object sender, SizeChangedEventArgs e)
         {
-            var vm = DataContext as ShellViewModel;
-            if (vm != null)
+            if (DataContext is ShellViewModel vm)
             {
                 vm.MenuPanelWidth = e.NewSize.Width;
             }
@@ -470,8 +465,7 @@ namespace Dev2.Studio.Views
             {
                 var window = e.Window;
                 var resourceDictionary = System.Windows.Application.Current.Resources;
-                var style = resourceDictionary["WarewolfToolWindow"] as Style;
-                if (style != null)
+                if (resourceDictionary["WarewolfToolWindow"] is Style style)
                 {
                     window.UseOSNonClientArea = false;
                     window.Style = style;
@@ -553,14 +547,12 @@ namespace Dev2.Studio.Views
         {
             try
             {
-                ShellViewModel shellViewModel = DataContext as ShellViewModel;
-                if (shellViewModel != null)
+                if (DataContext is ShellViewModel shellViewModel)
                 {
                     var paneToolWindow = sender as PaneToolWindow;
                     if (paneToolWindow?.Pane?.Panes.Count > 0)
                     {
-                        var contentPane = paneToolWindow.Pane.Panes[0] as ContentPane;
-                        if (contentPane != null)
+                        if (paneToolWindow.Pane.Panes[0] is ContentPane contentPane)
                         {
                             var workSurfaceContextViewModel = contentPane.DataContext as WorkSurfaceContextViewModel;
                             shellViewModel.ActivateItem(workSurfaceContextViewModel);
@@ -635,8 +627,7 @@ namespace Dev2.Studio.Views
 
         private void DoAnimateOpenTitleBar()
         {
-            var storyboard = Resources["AnimateOpenTitleBorder"] as Storyboard;
-            if (storyboard != null)
+            if (Resources["AnimateOpenTitleBorder"] is Storyboard storyboard)
             {
                 var titleBar = GetTemplateChild("PART_TITLEBAR");
                 storyboard.SetValue(Storyboard.TargetProperty, titleBar);
@@ -658,8 +649,7 @@ namespace Dev2.Studio.Views
 
         private void DoAnimateCloseTitle()
         {
-            var storyboard = Resources["AnimateCloseTitleBorder"] as Storyboard;
-            if (storyboard != null)
+            if (Resources["AnimateCloseTitleBorder"] is Storyboard storyboard)
             {
                 var titleBar = GetTemplateChild("PART_TITLEBAR");
                 storyboard.SetValue(Storyboard.TargetProperty, titleBar);
@@ -701,6 +691,11 @@ namespace Dev2.Studio.Views
                         WindowState = WindowState.Normal;
                         break;
                     }
+
+                case WindowState.Minimized:
+                    break;
+                default:
+                    break;
             }
         }
 
@@ -778,8 +773,7 @@ namespace Dev2.Studio.Views
                     WindowState = WindowState.Normal;
                     ResizeMode = WindowState == WindowState.Normal ? ResizeMode.CanResize : ResizeMode.CanMinimize;
 
-                    POINT lMousePosition;
-                    GetCursorPos(out lMousePosition);
+                    GetCursorPos(out POINT lMousePosition);
 
                     Left = lMousePosition.x - targetHorizontal;
                     Top = lMousePosition.y - targetVertical;
@@ -789,8 +783,7 @@ namespace Dev2.Studio.Views
                 }
                 if (allowMaximizeState)
                 {
-                    POINT lMousePosition;
-                    GetCursorPos(out lMousePosition);
+                    GetCursorPos(out POINT lMousePosition);
 
                     if (lMousePosition.y <= 0)
                     {
@@ -810,8 +803,7 @@ namespace Dev2.Studio.Views
             {
                 var tabGroupPane = e.Panes[0].Parent as TabGroupPane;
                 var splitPane = tabGroupPane?.Parent as SplitPane;
-                var paneToolWindow = splitPane?.Parent as PaneToolWindow;
-                if (paneToolWindow != null)
+                if (splitPane?.Parent is PaneToolWindow paneToolWindow)
                 {
                     if (string.IsNullOrWhiteSpace(paneToolWindow.Title))
                     {

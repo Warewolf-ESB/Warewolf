@@ -8,7 +8,6 @@ Scenario: Drag on Remote Subworkflow from Explorer and Execute it
 	Given The Warewolf Studio is running
 	When I Create New Workflow using shortcut
 	And I Connect To Remote Server
-	And I Wait For Explorer First Remote Server Spinner
 	And I Filter the Explorer with "GenericResource"
 	And I Drag Explorer Remote GenericResource Onto Workflow Design Surface
 	And I Save With Ribbon Button And Dialog As "LocalGenericResourceWithRemoteSubworkflow"
@@ -19,25 +18,23 @@ Scenario: Drag on Remote Subworkflow from Explorer and Execute it
 Scenario: Opening and Editing Workflow from Explorer Remote
 	Given The Warewolf Studio is running
 	When I Connect To Remote Server
-	And I Wait For Explorer First Remote Server Spinner
 	And I Filter the Explorer with "Hello World"
 	When I open "Hello World" in Remote Connection Integration
 	
 Scenario: Opening Workflow local and remote using right click
    Given The Warewolf Studio is running
    When I Connect To Remote Server
-   And I Wait For Explorer First Remote Server Spinner
    And I Filter the Explorer with "Hello World"
    And I RightClick Explorer First Remote Server First Item
    And I Select Open From Explorer Context Menu
    Then Remote "Hello World - Remote Connection Integration" is open
-   Then I RightClick Explorer Localhost First Item
+   When I RightClick Explorer Localhost First Item
    And I Select Open From Explorer Context Menu
    Then Local "Hello World" is open
 
  Scenario: Deleting a Resource localhost
    Given The Warewolf Studio is running
-   And I Filter the Explorer with "LocalWorkflowWithRemoteSubworkflowToDelete"
+   When I Filter the Explorer with "LocalWorkflowWithRemoteSubworkflowToDelete"
    And I RightClick Explorer Localhost First Item
    And I Select Delete From Explorer Context Menu
    When I Click MessageBox Yes
@@ -58,7 +55,6 @@ Scenario: Opening Workflow local and remote using right click
  Scenario: Deleting a Resource Remote
    Given The Warewolf Studio is running
    When I Connect To Remote Server
-   And I Wait For Explorer First Remote Server Spinner
    And I Click New Workflow Ribbon Button
    And I validate and delete the existing resource with "LocalWorkflowWithRemoteSubworkflowToDelete"
    And I Filter the Explorer with "GenericResource"

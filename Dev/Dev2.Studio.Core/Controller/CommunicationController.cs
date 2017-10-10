@@ -185,8 +185,7 @@ namespace Dev2.Controller
         {
             if (message != null)
             {
-                bool containsAuthorization;
-                var s = ContainsAuthorizationError(message.Message.ToString(), out containsAuthorization);
+                var s = ContainsAuthorizationError(message.Message.ToString(), out bool containsAuthorization);
                 if (containsAuthorization)
                 {
                     ShowAuthorizationErrorPopup(s);
@@ -367,9 +366,10 @@ namespace Dev2.Controller
                 }
                 catch (NullReferenceException e)
                 {
-                    Dev2Logger.Debug("fallback to non compressed", e, "Warewolf Debug");
-                    return serializer.Deserialize<T>(payload);
 
+                    Dev2Logger.Debug("fallback to non compressed", e, "Warewolf Debug");
+                    var val = serializer.Deserialize<T>(payload);
+                    return val;
                 }
             }
             return default(T);

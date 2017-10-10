@@ -25,7 +25,8 @@ namespace Dev2.Studio.Factory
 {
     public static class WorkSurfaceContextFactory
     {
-        public static WorkSurfaceContextViewModel CreateResourceViewModel(IContextualResourceModel resourceModel, bool createDesigner = true)
+        public static WorkSurfaceContextViewModel CreateResourceViewModel(IContextualResourceModel resourceModel) => CreateResourceViewModel(resourceModel, true);
+        public static WorkSurfaceContextViewModel CreateResourceViewModel(IContextualResourceModel resourceModel, bool createDesigner)
         {
             var key = WorkSurfaceKeyFactory.CreateKey(resourceModel);
 
@@ -37,15 +38,7 @@ namespace Dev2.Studio.Factory
                 };
 
             return contextVm;
-        }       
-
-        //public static WorkSurfaceContextViewModel CreateSingleEnvironmentDeployViewModel(object input)
-        //{
-        //    var vm = DeployViewModelFactory.GetDeployViewModel(CustomContainer.Get<IEventAggregator>(),CustomContainer.Get<IShellViewModel>(),new List<IExplorerTreeItem>());
-       
-        //    var context = CreateUniqueWorkSurfaceContextViewModel(vm, WorkSurfaceContext.DeployResources);
-        //    return context;
-        //}
+        }
 
 
         /// <summary>
@@ -71,7 +64,10 @@ namespace Dev2.Studio.Factory
                 }
             }
             if (vm is SchedulerViewModel || vm is SettingsViewModel)
+            {
                 key = WorkSurfaceKeyFactory.CreateEnvKey(workSurfaceContext, CustomContainer.Get<IShellViewModel>().ActiveServer.EnvironmentID) as WorkSurfaceKey;
+            }
+
             return CreateWorkSurfaceContextViewModel(vm, workSurfaceContext, key);
         }
 
@@ -83,7 +79,10 @@ namespace Dev2.Studio.Factory
             var context = new WorkSurfaceContextViewModel(key, vm);
            
             if (!(vm is SchedulerViewModel)&& !(vm is SettingsViewModel))
+            {
                 vm.DisplayName = workSurfaceContext.GetDescription();
+            }
+
             vm.WorkSurfaceContext = workSurfaceContext;
             return context;
         }

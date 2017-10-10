@@ -27,20 +27,19 @@ namespace Dev2.Common.DateAndTime
 
         public static int ProcessInsideLiteral(List<IDateTimeFormatPartTO> formatParts, ref string error, char currentChar, char[] formatArray, int count, int forwardLookupLength, ref string currentValue, ref DateTimeParser.LiteralRegionStates literalRegionState)
         {
-            string tmpForwardLookupResult;
-            if(currentChar == DateTimeParser.DateLiteralCharacter &&
-               CheckForDoubleEscapedLiteralCharacter(formatArray, count, out tmpForwardLookupResult, out error))
+            if (currentChar == DateTimeParser.DateLiteralCharacter &&
+               CheckForDoubleEscapedLiteralCharacter(formatArray, count, out string tmpForwardLookupResult, out error))
             {
                 forwardLookupLength = tmpForwardLookupResult.Length;
                 currentValue += currentChar;
             }
-            else if(currentChar == DateTimeParser.DateLiteralCharacter)
+            else if (currentChar == DateTimeParser.DateLiteralCharacter)
             {
                 literalRegionState = DateTimeParser.LiteralRegionStates.OutsideLiteralRegion;
                 formatParts.Add(new DateTimeFormatPartTO(currentValue, true, ""));
                 currentValue = "";
             }
-            else if(currentChar == EscapeCharacter)
+            else if (currentChar == EscapeCharacter)
             {
                 literalRegionState = DateTimeParser.LiteralRegionStates.InsideLiteralRegionWithEscape;
             }
@@ -68,26 +67,24 @@ namespace Dev2.Common.DateAndTime
 
         public static int ProcessInsideInferredLiteral(Dictionary<char, List<int>> dateTimeFormatForwardLookups, Dictionary<string, List<IDateTimeFormatPartOptionTO>> dateTimeFormatPartOptions, List<IDateTimeFormatPartTO> formatParts, ref string error, char currentChar, char[] formatArray, int count, int forwardLookupLength, ref string currentValue, ref DateTimeParser.LiteralRegionStates literalRegionState)
         {
-            string tmpCurrentValue;
-            string tmpForwardLookupResult;
-            if(currentChar == DateTimeParser.DateLiteralCharacter &&
-               CheckForDoubleEscapedLiteralCharacter(formatArray, count, out tmpForwardLookupResult, out error))
+            if (currentChar == DateTimeParser.DateLiteralCharacter &&
+               CheckForDoubleEscapedLiteralCharacter(formatArray, count, out string tmpForwardLookupResult, out error))
             {
                 forwardLookupLength = tmpForwardLookupResult.Length;
                 currentValue += currentChar;
             }
-            else if(currentChar == DateTimeParser.DateLiteralCharacter)
+            else if (currentChar == DateTimeParser.DateLiteralCharacter)
             {
                 literalRegionState = DateTimeParser.LiteralRegionStates.InsideLiteralRegion;
                 formatParts.Add(new DateTimeFormatPartTO(currentValue, true, ""));
                 currentValue = "";
             }
-            else if(currentChar == EscapeCharacter)
+            else if (currentChar == EscapeCharacter)
             {
                 literalRegionState = DateTimeParser.LiteralRegionStates.InsideInferredLiteralRegionWithEscape;
             }
-            else if(TryGetDateTimeFormatPart(formatArray, count, currentChar, dateTimeFormatForwardLookups,
-                dateTimeFormatPartOptions, out tmpCurrentValue, out error))
+            else if (TryGetDateTimeFormatPart(formatArray, count, currentChar, dateTimeFormatForwardLookups,
+                dateTimeFormatPartOptions, out string tmpCurrentValue, out error))
             {
                 literalRegionState = DateTimeParser.LiteralRegionStates.OutsideLiteralRegion;
                 forwardLookupLength = tmpCurrentValue.Length;
@@ -105,18 +102,17 @@ namespace Dev2.Common.DateAndTime
 
         public static int ProcessOutsideLiteral(Dictionary<char, List<int>> dateTimeFormatForwardLookups, Dictionary<string, List<IDateTimeFormatPartOptionTO>> dateTimeFormatPartOptions, List<IDateTimeFormatPartTO> formatParts, ref string error, char currentChar, char[] formatArray, int count, int forwardLookupLength, ref DateTimeParser.LiteralRegionStates literalRegionState, ref string currentValue)
         {
-            string tmpForwardLookupResult;
-            if(currentChar == DateTimeParser.DateLiteralCharacter && CheckForDoubleEscapedLiteralCharacter(formatArray, count, out tmpForwardLookupResult, out error))
+            if (currentChar == DateTimeParser.DateLiteralCharacter && CheckForDoubleEscapedLiteralCharacter(formatArray, count, out string tmpForwardLookupResult, out error))
             {
                 forwardLookupLength = tmpForwardLookupResult.Length;
                 literalRegionState = DateTimeParser.LiteralRegionStates.InsideInferredLiteralRegion;
                 currentValue += currentChar;
             }
-            else if(currentChar == DateTimeParser.DateLiteralCharacter)
+            else if (currentChar == DateTimeParser.DateLiteralCharacter)
             {
                 literalRegionState = DateTimeParser.LiteralRegionStates.InsideLiteralRegion;
             }
-            else if(TryGetDateTimeFormatPart(formatArray, count, currentChar, dateTimeFormatForwardLookups,
+            else if (TryGetDateTimeFormatPart(formatArray, count, currentChar, dateTimeFormatForwardLookups,
                 dateTimeFormatPartOptions, out currentValue, out error))
             {
                 forwardLookupLength = currentValue.Length;
@@ -158,8 +154,7 @@ namespace Dev2.Common.DateAndTime
             error = "";
             result = "";
 
-            List<int> lookupLengths;
-            if (dateTimeFormatForwardLookups.TryGetValue(forwardLookupIndex, out lookupLengths))
+            if (dateTimeFormatForwardLookups.TryGetValue(forwardLookupIndex, out List<int> lookupLengths))
             {
                 //
                 // Perform all forward lookups
@@ -173,8 +168,7 @@ namespace Dev2.Common.DateAndTime
                     //
                     // Check if forward lookup result is a known date time format part
                     //
-                    List<IDateTimeFormatPartOptionTO> tmp;
-                    if (dateTimeFormatPartOptions.TryGetValue(lookupResults[count], out tmp))
+                    if (dateTimeFormatPartOptions.TryGetValue(lookupResults[count], out List<IDateTimeFormatPartOptionTO> tmp))
                     {
                         result = lookupResults[count];
                         count = lookupResults.Count;

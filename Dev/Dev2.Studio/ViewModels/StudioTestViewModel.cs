@@ -66,8 +66,7 @@ namespace Dev2.ViewModels
         [ExcludeFromCodeCoverage]
         protected override void OnViewLoaded(object view)
         {
-            var loadedView = view as IView;
-            if (loadedView != null)
+            if (view is IView loadedView)
             {
                 loadedView.DataContext = ViewModel;
                 base.OnViewLoaded(loadedView);
@@ -150,6 +149,10 @@ namespace Dev2.ViewModels
                             {
                                 ViewModel.Save();
                             }
+                            break;
+                        case MessageBoxResult.OK:
+                            break;
+                        default:
                             break;
                     }
                 }

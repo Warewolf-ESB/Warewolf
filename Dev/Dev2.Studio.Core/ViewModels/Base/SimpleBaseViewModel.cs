@@ -34,7 +34,9 @@ namespace Dev2.Studio.Core.ViewModels.Base
             set
             {
                 if(_validationController == value)
+                {
                     return;
+                }
 
                 _validationController = value;
                 NotifyOfPropertyChange(() => ValidationController);

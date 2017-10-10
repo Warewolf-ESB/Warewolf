@@ -173,7 +173,7 @@ namespace Warewolf.Web.UI.Tests
         {
             try
             {
-                WebDriverWait wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(5));
+                WebDriverWait wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(30));
                 wait.Until(ExpectedConditions.ElementIsVisible(By.Id("executionList")));
                 return true;
             }

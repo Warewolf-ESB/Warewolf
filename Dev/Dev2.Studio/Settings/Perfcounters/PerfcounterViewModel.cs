@@ -13,7 +13,6 @@ using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Controller;
 using Dev2.Dialogs;
 using Dev2.Runtime.Configuration.ViewModels.Base;
-using Dev2.Studio.Core;
 using Dev2.Studio.Enums;
 using Dev2.Studio.Interfaces;
 using Newtonsoft.Json;
@@ -35,7 +34,7 @@ namespace Dev2.Settings.Perfcounters
         private ObservableCollection<IPerformanceCountersByResource> _resourceCounters;
 
         internal PerfcounterViewModel(IPerformanceCounterTo counters, IServer environment)
-            : this(counters, environment,null)
+            : this(counters, environment, null)
         {
         }
 
@@ -68,7 +67,7 @@ namespace Dev2.Settings.Perfcounters
             return env;
         }
 
-        public PerfcounterViewModel(IPerformanceCounterTo counters, IServer environment, Func<IResourcePickerDialog> createfunc = null)
+        public PerfcounterViewModel(IPerformanceCounterTo counters, IServer environment, Func<IResourcePickerDialog> createfunc)
         {
             VerifyArgument.IsNotNull("counters", counters);
             VerifyArgument.IsNotNull("environment", environment);
@@ -80,7 +79,6 @@ namespace Dev2.Settings.Perfcounters
             ServerCounters = new ObservableCollection<IPerformanceCountersByMachine>();
             ResourceCounters = new ObservableCollection<IPerformanceCountersByResource>();
             InitializeTos(counters);
-
         }
 
         [JsonIgnore]
@@ -368,27 +366,47 @@ namespace Dev2.Settings.Perfcounters
                 {
                     serverPermissionCompare = false;
                 }
-                if (!serverPermissionCompare) continue;
+                if (!serverPermissionCompare)
+                {
+                    continue;
+                }
+
                 if (ServerCounters[i].ConcurrentRequests != serverCounters[i].ConcurrentRequests)
                 {
                     serverPermissionCompare = false;
                 }
-                if (!serverPermissionCompare) continue;
+                if (!serverPermissionCompare)
+                {
+                    continue;
+                }
+
                 if (ServerCounters[i].RequestPerSecond != serverCounters[i].RequestPerSecond)
                 {
                     serverPermissionCompare = false;
                 }
-                if (!serverPermissionCompare) continue;
+                if (!serverPermissionCompare)
+                {
+                    continue;
+                }
+
                 if (ServerCounters[i].TotalErrors != serverCounters[i].TotalErrors)
                 {
                     serverPermissionCompare = false;
                 }
-                if (!serverPermissionCompare) continue;
+                if (!serverPermissionCompare)
+                {
+                    continue;
+                }
+
                 if (ServerCounters[i].WorkFlowsNotFound != serverCounters[i].WorkFlowsNotFound)
                 {
                     serverPermissionCompare = false;
                 }
-                if (!serverPermissionCompare) continue;
+                if (!serverPermissionCompare)
+                {
+                    continue;
+                }
+
                 if (ServerCounters[i].NotAuthorisedErrors != serverCounters[i].NotAuthorisedErrors)
                 {
                     serverPermissionCompare = false;
@@ -417,27 +435,47 @@ namespace Dev2.Settings.Perfcounters
                 {
                     resourcePermissionCompare = false;
                 }
-                if (!resourcePermissionCompare) continue;
+                if (!resourcePermissionCompare)
+                {
+                    continue;
+                }
+
                 if (ResourceCounters[i].AverageExecutionTime != resourceCounters[i].AverageExecutionTime)
                 {
                     resourcePermissionCompare = false;
                 }
-                if (!resourcePermissionCompare) continue;
+                if (!resourcePermissionCompare)
+                {
+                    continue;
+                }
+
                 if (ResourceCounters[i].ConcurrentRequests != resourceCounters[i].ConcurrentRequests)
                 {
                     resourcePermissionCompare = false;
                 }
-                if (!resourcePermissionCompare) continue;
+                if (!resourcePermissionCompare)
+                {
+                    continue;
+                }
+
                 if (ResourceCounters[i].RequestPerSecond != resourceCounters[i].RequestPerSecond)
                 {
                     resourcePermissionCompare = false;
                 }
-                if (!resourcePermissionCompare) continue;
+                if (!resourcePermissionCompare)
+                {
+                    continue;
+                }
+
                 if (ResourceCounters[i].TotalErrors != resourceCounters[i].TotalErrors)
                 {
                     resourcePermissionCompare = false;
                 }
-                if (!resourcePermissionCompare) continue;
+                if (!resourcePermissionCompare)
+                {
+                    continue;
+                }
+
                 if (ResourceCounters[i].IsDeleted != resourceCounters[i].IsDeleted)
                 {
                     resourcePermissionCompare = false;

@@ -57,8 +57,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 if(t.Item1 == Overwrite.ToString())
                 {
-                    bool tmpOverwrite;
-                    bool.TryParse(t.Item2, out tmpOverwrite);
+                    bool.TryParse(t.Item2, out bool tmpOverwrite);
                     Overwrite = tmpOverwrite;
                 }
 

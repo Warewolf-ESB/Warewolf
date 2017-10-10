@@ -11,35 +11,22 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reactive.Subjects;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Timers;
 using Dev2.Common;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Infrastructure.SharedModels;
-using Dev2.Data.ServiceModel.Messages;
 
 namespace Dev2.Runtime.Hosting
 {
-    /// <summary>
-    /// Used to store compile time message ;)
-    /// </summary>
     public class CompileMessageRepo : IDisposable
     {
-        // used for storing message about resources ;) 
         readonly IDictionary<Guid, IList<ICompileMessageTO>> _messageRepo = new Dictionary<Guid, IList<ICompileMessageTO>>();
         static Subject<IList<ICompileMessageTO>> _allMessages = new Subject<IList<ICompileMessageTO>>();
         private static readonly object Lock = new object();
         private static bool _changes;
-        private static readonly Timer PersistTimer = new Timer(1000 * 5); // wait 5 seconds to fire ;)
-
-        /// <summary>
-        /// Gets or sets the persistence path.
-        /// </summary>
-        /// <value>
-        /// The persistence path.
-        /// </value>
+        private static readonly Timer PersistTimer = new Timer(1000 * 5);
+        
         public string PersistencePath { get; private set; }
 
         private static CompileMessageRepo _instance;
@@ -50,7 +37,12 @@ namespace Dev2.Runtime.Hosting
         {
         }
 
-        public CompileMessageRepo(string persistPath, bool activateBackgroundWorker = true)
+        public CompileMessageRepo(string persistPath)
+            : this(persistPath, true)
+        {
+        }
+
+        public CompileMessageRepo(string persistPath, bool activateBackgroundWorker)
         {
             if(persistPath != null)
             {
@@ -113,12 +105,10 @@ namespace Dev2.Runtime.Hosting
                                 {
                                     object obj = bf.Deserialize(s);
 
-                                    var listOf = obj as IList<ICompileMessageTO>;
 
-                                    if(listOf != null)
+                                    if (obj is IList<ICompileMessageTO> listOf)
                                     {
-                                        Guid id;
-                                        if(Guid.TryParse(fname, out id))
+                                        if (Guid.TryParse(fname, out Guid id))
                                         {
                                             _messageRepo[id] = listOf;
                                             _allMessages.OnNext(listOf);
@@ -179,12 +169,11 @@ namespace Dev2.Runtime.Hosting
                         var keys = _messageRepo.Keys;
                         foreach(var k in keys)
                         {
-                            IList<ICompileMessageTO> val;
-                            if(_messageRepo.TryGetValue(k, out val))
+                            if (_messageRepo.TryGetValue(k, out IList<ICompileMessageTO> val))
                             {
                                 var pPath = Path.Combine(path, k + ".msg");
                                 BinaryFormatter bf = new BinaryFormatter();
-                                using(Stream s = new FileStream(pPath, FileMode.OpenOrCreate))
+                                using (Stream s = new FileStream(pPath, FileMode.OpenOrCreate))
                                 {
                                     bf.Serialize(s, val);
                                 }
@@ -216,15 +205,14 @@ namespace Dev2.Runtime.Hosting
             }
             lock(Lock)
             {
-                IList<ICompileMessageTO> messages;
-                if(!_messageRepo.TryGetValue(workspaceId, out messages))
+                if (!_messageRepo.TryGetValue(workspaceId, out IList<ICompileMessageTO> messages))
                 {
                     messages = new List<ICompileMessageTO>();
                 }
 
                 // clean up any messages with the same id and add
 
-                for(int i = messages.Count - 1; i >= 0; i--)
+                for (int i = messages.Count - 1; i >= 0; i--)
                 {
                     messages.Remove(messages[i]);
                 }
@@ -241,55 +229,6 @@ namespace Dev2.Runtime.Hosting
             }
 
             return true;
-        }
-
-        /// <summary>
-        /// Fetches the messages.
-        /// </summary>
-        /// <param name="workspaceId">The workspace ID.</param>
-        /// <param name="serviceId">The service ID.</param>
-        /// <param name="deps">The deps.</param>
-        /// <param name="filter">The filter.</param>
-        /// <returns></returns>
-        public CompileMessageList FetchMessages(Guid workspaceId, Guid serviceId, IList<IResourceForTree> deps, CompileMessageType[] filter = null)
-        {
-            IList<ICompileMessageTO> result = new List<ICompileMessageTO>();
-
-            lock(Lock)
-            {
-                IList<ICompileMessageTO> messages;
-                if(_messageRepo.TryGetValue(workspaceId, out messages))
-                {
-                    // Fetch dep list and process ;)
-                    if(deps != null)
-                    {
-                        foreach(var d in deps)
-                        {
-                            IResourceForTree d1 = d;
-                            var candidateMessage = messages.Where(c => c.ServiceID == d1.ResourceID);
-                            var compileMessageTos = candidateMessage as IList<ICompileMessageTO> ??
-                                                    candidateMessage.ToList();
-
-                            foreach(var msg in compileMessageTos)
-                            {
-                                if(filter != null)
-                                {
-                                    // TODO : Apply filter logic ;)
-                                }
-                                else
-                                {
-                                    // Adjust unique id for return so design surface understands where message goes ;)
-                                    var tmpMsg = msg.Clone();
-                                    tmpMsg.UniqueID = d1.UniqueID;
-                                    result.Add(tmpMsg);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            return new CompileMessageList { MessageList = result, ServiceID = serviceId };
         }
         
         public IObservable<IList<ICompileMessageTO>> AllMessages => _allMessages;

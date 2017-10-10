@@ -76,11 +76,9 @@ namespace Dev2.Studio.Views.Workflow
                 return false;
             }
 
-            IWorkflowDesignerViewModel workflowDesignerViewModel = _workflowDesignerView.DataContext as IWorkflowDesignerViewModel;
-            if (workflowDesignerViewModel != null)
+            if (_workflowDesignerView.DataContext is IWorkflowDesignerViewModel workflowDesignerViewModel)
             {
-                var explorerItemViewModel = objectData as ExplorerItemViewModel;
-                if (explorerItemViewModel != null)
+                if (objectData is ExplorerItemViewModel explorerItemViewModel)
                 {
                     if (workflowDesignerViewModel.Server.EnvironmentID != explorerItemViewModel.Server.EnvironmentID && !explorerItemViewModel.IsService)
                     {
@@ -96,7 +94,7 @@ namespace Dev2.Studio.Views.Workflow
                     {
                         return true;
                     }
-                    
+
                     if (explorerItemViewModel.CanExecute && explorerItemViewModel.CanView && explorerItemViewModel.IsService && !explorerItemViewModel.IsSource)
                     {
                         return false;

@@ -23,32 +23,15 @@ namespace Dev2.Validation
         {
         }
 
-        /*
-        protected override bool IsValid(JsonMappingTo item)
-        {
-            try
-            {
-                if (string.IsNullOrEmpty(JsonMappingCompoundTo.IsValidJsonMappingInput(
-                    item.SourceName,
-                    item.DestinationName)))
-                    return true;
-
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-
-            return true;
-        }
-         * */
-
         public override IActionableErrorInfo Check()
         {
             var to = GetValue.Invoke();
             ErrorText = JsonMappingCompoundTo.IsValidJsonMappingInput(to.SourceName, to.DestinationName);
             if (string.IsNullOrEmpty(ErrorText))
+            {
                 return null;
+            }
+
             return new ActionableErrorInfo
             {
                 ErrorType = ErrorType.Critical,

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Core;
@@ -39,13 +38,15 @@ namespace Dev2.Runtime.ESB.Management.Services
             try
             {
                 Dev2Logger.Info("Save Webservice Source", GlobalConstants.WarewolfInfo);
-                StringBuilder resourceDefinition;
 
-                values.TryGetValue("WebserviceSource", out resourceDefinition);
+                values.TryGetValue("WebserviceSource", out StringBuilder resourceDefinition);
 
                 var src = serializer.Deserialize<WebServiceSourceDefinition>(resourceDefinition);
                 if(src.Path.EndsWith("\\"))
+                {
                     src.Path = src.Path.Substring(0, src.Path.LastIndexOf("\\", StringComparison.Ordinal));
+                }
+
                 var res = new WebSource
                 {
                     AuthenticationType = src.AuthenticationType,

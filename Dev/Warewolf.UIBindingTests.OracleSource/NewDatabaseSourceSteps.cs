@@ -108,8 +108,7 @@ namespace Warewolf.UIBindingTests.OracleSource
             FeatureContext.Current["dbsrc"] = dbsrc;
             var mockEventAggregator = new Mock<IEventAggregator>();
             var viewModel = new ManageOracleSourceViewModel(upd, mockEventAggregator.Object, dbsrc, new SynchronousAsyncWorker());
-            var manageDatabaseSourceViewModel = manageDatabaseSourceControl.DataContext as ManageOracleSourceViewModel;
-            if (manageDatabaseSourceViewModel != null)
+            if (manageDatabaseSourceControl.DataContext is ManageOracleSourceViewModel manageDatabaseSourceViewModel)
             {
                 Utils.ResetViewModel<ManageOracleSourceViewModel, IDbSource>(viewModel, manageDatabaseSourceViewModel);
             }
@@ -143,8 +142,7 @@ namespace Warewolf.UIBindingTests.OracleSource
 
             var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
 
-            var manageDatabaseSourceViewModel = manageDatabaseSourceControl.DataContext as ManageOracleSourceViewModel;
-            if (manageDatabaseSourceViewModel != null)
+            if (manageDatabaseSourceControl.DataContext is ManageOracleSourceViewModel manageDatabaseSourceViewModel)
             {
                 Assert.AreEqual(manageDatabaseSourceViewModel.AuthenticationType, (AuthenticationType)authp);
             }
@@ -402,13 +400,12 @@ namespace Warewolf.UIBindingTests.OracleSource
             var viewModel = new ManageOracleSourceViewModel(mockUpdateManager.Object, task, mockEventAggregator.Object,
                 new SynchronousAsyncWorker());
             var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
-            var manageDatabaseSourceViewModel = manageDatabaseSourceControl.DataContext as ManageOracleSourceViewModel;
-            if (manageDatabaseSourceViewModel != null)
+            if (manageDatabaseSourceControl.DataContext is ManageOracleSourceViewModel manageDatabaseSourceViewModel)
             {
                 Utils.ResetViewModel<ManageOracleSourceViewModel, IDbSource>(viewModel, manageDatabaseSourceViewModel);
                 manageDatabaseSourceViewModel.DatabaseName = null;
             }
-            
+
         }
 
         [AfterScenario("OracleDbSource")]

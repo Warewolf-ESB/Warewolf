@@ -10,7 +10,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
@@ -48,9 +47,8 @@ namespace Dev2.Runtime.ESB.Management.Services
             string resourceID = null;
             string resourceType = null;
 
-            StringBuilder tmp;
-            values.TryGetValue("ResourceID", out tmp);
-            if(tmp != null)
+            values.TryGetValue("ResourceID", out StringBuilder tmp);
+            if (tmp != null)
             {
                 resourceID = tmp.ToString();
             }
@@ -93,32 +91,18 @@ namespace Dev2.Runtime.ESB.Management.Services
                         default:
                             throw new Exception("Unexpected resource type '" + resourceType + "'.");
                     }
-                    Guid getID;
-                    if(resourceID != null && Guid.TryParse(resourceID, out getID))
+                    theWorkspace.Update(resourceID != null && Guid.TryParse(resourceID, out Guid getID) ? new WorkspaceItem(theWorkspace.ID, HostSecurityProvider.Instance.ServerID, Guid.Empty, getID)
                     {
-                        //
-                        // Copy the file from the server workspace into the current workspace
-                        //
-                        theWorkspace.Update(
-                            new WorkspaceItem(theWorkspace.ID, HostSecurityProvider.Instance.ServerID, Guid.Empty, getID)
-                            {
-                                Action = WorkspaceItemAction.Edit,
-                                IsWorkflowSaved = true,
-                                ServiceType = serviceType.ToString()
-                            });
-
-                    }
-                    else
+                        Action = WorkspaceItemAction.Edit,
+                        IsWorkflowSaved = true,
+                        ServiceType = serviceType.ToString()
+                    } : new WorkspaceItem(theWorkspace.ID, HostSecurityProvider.Instance.ServerID, Guid.Empty, Guid.Empty)
                     {
-                        theWorkspace.Update(
-                            new WorkspaceItem(theWorkspace.ID, HostSecurityProvider.Instance.ServerID, Guid.Empty, Guid.Empty)
-                            {
-                                Action = WorkspaceItemAction.Edit,
-                                ServiceName = resourceID,
-                                IsWorkflowSaved = true,
-                                ServiceType = serviceType.ToString()
-                            });
-                    }
+                        Action = WorkspaceItemAction.Edit,
+                        ServiceName = resourceID,
+                        IsWorkflowSaved = true,
+                        ServiceType = serviceType.ToString()
+                    });
                     //
                     // Reload resources
                     //

@@ -111,9 +111,11 @@ namespace Dev2.Runtime.WebServer.Handlers
             dataObject.SetEmitionType(webRequest, serviceName, headers);
             dataObject.SetupForTestExecution(serviceName, headers);
             if (dataObject.ServiceName == null)
+            {
                 dataObject.ServiceName = serviceName;
-            IResource resource;
-            dataObject.SetResourceNameAndId(_resourceCatalog, serviceName, out resource);
+            }
+
+            dataObject.SetResourceNameAndId(_resourceCatalog, serviceName, out IResource resource);
             dataObject.SetTestResourceIds(_resourceCatalog, webRequest, serviceName);
             dataObject.WebUrl = webRequest.WebServerUrl;
             var serializer = new Dev2JsonSerializer();
@@ -335,14 +337,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                 foreach (var arg in args.AllKeys)
                 {
                     var txt = args[arg];
-                    if (txt.IsXml())
-                    {
-                        results.Add(arg + "=" + string.Format(GlobalConstants.XMLPrefix + "{0}", Convert.ToBase64String(Encoding.UTF8.GetBytes(txt))));
-                    }
-                    else
-                    {
-                        results.Add($"{arg}={txt}");
-                    }
+                    results.Add(txt.IsXml() ? arg + "=" + string.Format(GlobalConstants.XMLPrefix + "{0}", Convert.ToBase64String(Encoding.UTF8.GetBytes(txt))) : $"{arg}={txt}");
                 }
 
                 return url + string.Join("&", results);

@@ -52,9 +52,6 @@ namespace Dev2.Studio.InterfaceImplementors
             {
                 return false;
             }
-            set
-            {
-            }
         }
 
         public bool HandlesResultInsertion
@@ -62,9 +59,6 @@ namespace Dev2.Studio.InterfaceImplementors
             get
             {
                 return false;
-            }
-            set
-            {
             }
         }
         #endregion
@@ -91,8 +85,16 @@ namespace Dev2.Studio.InterfaceImplementors
             {
                 string description = currentFunction.Description;
                 string dropDownDescription = description;
-                if(description != null && description.Length > 80) dropDownDescription = description.Substring(0, 77) + "...";
-                if(creatingFunctions) _functionNames.Add(currentFunction.FunctionName);
+                if(description != null && description.Length > 80)
+                {
+                    dropDownDescription = description.Substring(0, 77) + "...";
+                }
+
+                if (creatingFunctions)
+                {
+                    _functionNames.Add(currentFunction.FunctionName);
+                }
+
                 IntellisenseProviderResult result = new IntellisenseProviderResult(this, currentFunction.FunctionName, dropDownDescription, description, currentFunction.arguments?.ToArray() ?? new string[0], currentFunction.ArgumentDescriptions?.ToArray() ?? new string[0]);
                 return result;
             }).OrderBy(p => p.Name).ToList();
@@ -134,9 +136,8 @@ namespace Dev2.Studio.InterfaceImplementors
                     return IntellisenseResult;
                 }
 
-                Token[] tokens;
                 var searchText = context.FindTextToSearch();
-                _syntaxTreeBuilderHelper.Build(searchText, true, out tokens);
+                _syntaxTreeBuilderHelper.Build(searchText, true, out Token[] tokens);
                 string sub = string.IsNullOrEmpty(searchText) ? inputText : searchText;
 
                 List<IntellisenseProviderResult> subResults = IntellisenseResult.Where(t => t.Name.StartsWith(sub)).ToList();

@@ -33,8 +33,13 @@ namespace Dev2.Runtime.ESB.Execution
     public class InternalServiceContainer : EsbExecutionContainer
     {
         private readonly IEsbManagementServiceLocator _managementServiceLocator;
-        
-        public InternalServiceContainer(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel, EsbExecuteRequest request, IEsbManagementServiceLocator managementServiceLocator = null)
+
+        public InternalServiceContainer(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel, EsbExecuteRequest request)
+            : this(sa, dataObj, theWorkspace, esbChannel, request, null)
+        {
+        }
+
+        public InternalServiceContainer(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel, EsbExecuteRequest request, IEsbManagementServiceLocator managementServiceLocator)
             : base(sa, dataObj, theWorkspace, esbChannel, request)
         {
             
@@ -51,8 +56,7 @@ namespace Dev2.Runtime.ESB.Execution
                     var warewolfEvalResult = dataObj.Environment.Eval(DataListUtil.AddBracketsToValueIfNotExist(input),0);
                     if(warewolfEvalResult.IsWarewolfAtomResult)
                     {
-                        var scalarResult = warewolfEvalResult as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
-                        if(scalarResult != null && !scalarResult.Item.IsNothing)
+                        if (warewolfEvalResult is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult scalarResult && !scalarResult.Item.IsNothing)
                         {
                             request.Args.Add(input, new StringBuilder(scalarResult.Item.ToString()));
                         }
@@ -96,7 +100,7 @@ namespace Dev2.Runtime.ESB.Execution
                     {
                         var serializer = new Dev2JsonSerializer();
                         ExecuteMessage msg = new ExecuteMessage { HasError = true };
-                        switch(eme.GetAuthorizationContextForService())
+                        switch (eme.GetAuthorizationContextForService())
                         {
                             case AuthorizationContext.View:
                                 msg.SetMessage(ErrorResource.NotAuthorizedToViewException);
@@ -115,7 +119,13 @@ namespace Dev2.Runtime.ESB.Execution
                                 break;
                             case AuthorizationContext.Administrator:
                                 msg.SetMessage(ErrorResource.NotAuthorizedToAdministratorException);
-                                break;                            
+                                break;
+                            case AuthorizationContext.None:
+                                break;
+                            case AuthorizationContext.Any:
+                                break;
+                            default:
+                                break;
                         }
                         Request.ExecuteResult = serializer.SerializeToBuilder(msg);
                         errors.AddError(ErrorResource.NotAuthorizedToExecuteException);
@@ -128,7 +138,7 @@ namespace Dev2.Runtime.ESB.Execution
                     errors.AddError(string.Format(ErrorResource.CouldNotLocateManagementService, ServiceAction.ServiceName));
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 errors.AddError(ex.Message);
             }

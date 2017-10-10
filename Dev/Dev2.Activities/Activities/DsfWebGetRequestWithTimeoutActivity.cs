@@ -141,8 +141,7 @@ namespace Dev2.Activities
                     bool timeoutSecondsError = false;
                     if (!string.IsNullOrEmpty(TimeOutText))
                     {
-                        int timeoutval;
-                        if (int.TryParse(CommonFunctions.evalResultToString(dataObject.Environment.Eval(TimeOutText,update)), out timeoutval))
+                        if (int.TryParse(CommonFunctions.evalResultToString(dataObject.Environment.Eval(TimeOutText, update)), out int timeoutval))
                         {
                             if (timeoutval < 0)
                             {
@@ -150,7 +149,9 @@ namespace Dev2.Activities
                                 timeoutSecondsError = true;
                             }
                             else
+                            {
                                 TimeoutSeconds = timeoutval;
+                            }
                         }
                         else
                         {
@@ -178,8 +179,9 @@ namespace Dev2.Activities
                         counter++;
                     }                    
                     else
+                    {
                         throw new ApplicationException("Execution aborted - see error messages.");
-
+                    }
                 }
             }
             catch (Exception e)

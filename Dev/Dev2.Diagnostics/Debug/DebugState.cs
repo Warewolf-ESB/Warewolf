@@ -35,6 +35,7 @@ namespace Dev2.Diagnostics.Debug
     public class DebugState : IDebugState, INotifyPropertyChanged
     {
         private DateTime _startTime;
+        private String _durationString;
         private DateTime _endTime;
         string _errorMessage;
         bool _isDurationVisible;
@@ -191,11 +192,7 @@ namespace Dev2.Diagnostics.Debug
             {
                 return XmlConvert.ToString(Duration);
             }
-            
-            set
-            
-            {
-            }
+            set => _durationString = value;
         }
 
         /// <summary>
@@ -316,6 +313,8 @@ namespace Dev2.Diagnostics.Debug
                         return ExecutionOrigin.GetDescription();
                     case ExecutionOrigin.Workflow:
                         return $"{ExecutionOrigin.GetDescription()} - {ExecutionOriginDescription}";
+                    default:
+                        break;
                 }
 
                 return string.Empty;
@@ -565,7 +564,9 @@ namespace Dev2.Diagnostics.Debug
             if (propertyName?.Equals("ParentID") ?? false)
             {
                 if (ParentID == Guid.Empty)
+                {
                     ParentID = null;
+                }
             }
         }
     }

@@ -142,7 +142,9 @@ namespace Dev2.Studio.ViewModels.Workflow
         public void ViewClosed()
         {
             if (!CloseRequested)
+            {
                 SendFinishedMessage();
+            }
         }
 
         /// <summary>
@@ -286,7 +288,11 @@ namespace Dev2.Studio.ViewModels.Workflow
             context?.BindToModel();
 
             var clientContext = _resourceModel.Environment.Connection;
-            if (clientContext == null) return;
+            if (clientContext == null)
+            {
+                return;
+            }
+
             var dataList = XElement.Parse(DebugTo.XmlData);
             dataList.Add(new XElement(@"BDSDebugMode", DebugTo.IsDebugMode));
             dataList.Add(new XElement(@"DebugSessionID", DebugTo.SessionID));
@@ -361,7 +367,10 @@ namespace Dev2.Studio.ViewModels.Workflow
             SetXmlData();
             DebugTo.XmlData = XmlData;
             DebugTo.RememberInputs = RememberInputs;
-            if (DebugTo.DataList != null) Broker.PersistDebugSession(DebugTo);
+            if (DebugTo.DataList != null)
+            {
+                Broker.PersistDebugSession(DebugTo);
+            }
 
             SendFinishedMessage();
             RequestClose(ViewModelDialogResults.Cancel);
@@ -494,7 +503,8 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// <summary>
         /// Used to transform the WorkflowInputs into XML
         /// </summary>
-        public void SetXmlData(bool includeBlank = false)
+        public void SetXmlData() => SetXmlData(false);
+        public void SetXmlData(bool includeBlank)
         {
             var dataListObject = new JObject();
             var objects = WorkflowInputs.Where(item => item.IsObject);

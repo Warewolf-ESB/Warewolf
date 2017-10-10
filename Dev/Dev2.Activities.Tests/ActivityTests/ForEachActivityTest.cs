@@ -47,8 +47,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                           , ActivityStrings.ForEachDataListShape
                           , enForEachType.NumOfExecution
                           );
-            IDSFDataObject result;
-            Mock<IEsbChannel> coms = ExecuteForEachProcess(out result);
+            Mock<IEsbChannel> coms = ExecuteForEachProcess(out IDSFDataObject result);
             ErrorResultTO errors;
             // remove test datalist ;)
             coms.Verify(c => c.ExecuteSubRequest(It.IsAny<IDSFDataObject>(), It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>(), out errors, It.IsAny<int>(), false), Times.Exactly(0));
@@ -71,8 +70,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                           , null
                           , "2"
                           );
-            IDSFDataObject result;
-            Mock<IEsbChannel> coms = ExecuteForEachProcess(out result);
+            Mock<IEsbChannel> coms = ExecuteForEachProcess(out IDSFDataObject result);
             ErrorResultTO errors;
             // remove test datalist ;)
             coms.Verify(c => c.ExecuteSubRequest(It.IsAny<IDSFDataObject>(), It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>(), out errors, It.IsAny<int>(), false), Times.Exactly(2));
@@ -92,8 +90,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                           , null
                           , "-2"
                           );
-            IDSFDataObject result;
-            Mock<IEsbChannel> coms = ExecuteForEachProcess(out result);
+            Mock<IEsbChannel> coms = ExecuteForEachProcess(out IDSFDataObject result);
             ErrorResultTO errors;
             // remove test datalist ;)
             coms.Verify(c => c.ExecuteSubRequest(It.IsAny<IDSFDataObject>(), It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>(), out errors, It.IsAny<int>(), false), Times.Exactly(0));
@@ -112,8 +109,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                           , "9"
                           );
 
-            IDSFDataObject result;
-            Mock<IEsbChannel> coms = ExecuteForEachProcess(out result);
+            Mock<IEsbChannel> coms = ExecuteForEachProcess(out IDSFDataObject result);
             ErrorResultTO errors;
             // remove test datalist ;)
             coms.Verify(c => c.ExecuteSubRequest(It.IsAny<IDSFDataObject>(), It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>(), out errors, It.IsAny<int>(), false), Times.Exactly(5));
@@ -132,8 +128,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                           , "5"
                           );
 
-            IDSFDataObject result;
-            Mock<IEsbChannel> coms = ExecuteForEachProcess(out result);
+            Mock<IEsbChannel> coms = ExecuteForEachProcess(out IDSFDataObject result);
             ErrorResultTO errors;
             // remove test datalist ;)
             coms.Verify(c => c.ExecuteSubRequest(It.IsAny<IDSFDataObject>(), It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>(), out errors, It.IsAny<int>(), false), Times.Exactly(5));
@@ -151,8 +146,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                           , "-5"
                           , "9"
                            );
-            IDSFDataObject result;
-            Mock<IEsbChannel> coms = ExecuteForEachProcess(out result);
+            Mock<IEsbChannel> coms = ExecuteForEachProcess(out IDSFDataObject result);
             ErrorResultTO errors;
             // remove test datalist ;)
 
@@ -172,8 +166,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                           , "5"
                           , "-9"
                            );
-            IDSFDataObject result;
-            Mock<IEsbChannel> coms = ExecuteForEachProcess(out result);
+            Mock<IEsbChannel> coms = ExecuteForEachProcess(out IDSFDataObject result);
             ErrorResultTO errors;
             coms.Verify(c => c.ExecuteSubRequest(It.IsAny<IDSFDataObject>(), It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>(), out errors, It.IsAny<int>(), false), Times.Exactly(0));
         }
@@ -191,8 +184,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                           , null
                           , "6,9,"
                           );
-            IDSFDataObject result;
-            Mock<IEsbChannel> coms = ExecuteForEachProcess(out result);
+            Mock<IEsbChannel> coms = ExecuteForEachProcess(out IDSFDataObject result);
             ErrorResultTO errors;
             // remove test datalist ;)
             coms.Verify(c => c.ExecuteSubRequest(It.IsAny<IDSFDataObject>(), It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>(), out errors, It.IsAny<int>(), false), Times.Exactly(2));
@@ -211,8 +203,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                           , null
                           , "6,9,9,6"
                           );
-            IDSFDataObject result;
-            Mock<IEsbChannel> coms = ExecuteForEachProcess(out result);
+            Mock<IEsbChannel> coms = ExecuteForEachProcess(out IDSFDataObject result);
             ErrorResultTO errors;
             // remove test datalist ;)
             coms.Verify(c => c.ExecuteSubRequest(It.IsAny<IDSFDataObject>(), It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>(), out errors, It.IsAny<int>(), false), Times.Exactly(4));
@@ -232,8 +223,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                           , null
                           , "9,5,1,"
                           );
-            IDSFDataObject result;
-            Mock<IEsbChannel> coms = ExecuteForEachProcess(out result);
+            Mock<IEsbChannel> coms = ExecuteForEachProcess(out IDSFDataObject result);
             ErrorResultTO errors;
             // remove test datalist ;)
             coms.Verify(c => c.ExecuteSubRequest(It.IsAny<IDSFDataObject>(), It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>(), out errors, It.IsAny<int>(), false), Times.Exactly(3));
@@ -313,8 +303,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                            , "9,5,1,"
                            );
             var x = id.UniqueID;
-            IDSFDataObject result;
-            ExecuteForEachProcess(out result, true, -1);
+            ExecuteForEachProcess(out IDSFDataObject result, true, -1);
             Assert.AreEqual(x, id.UniqueID);
             // remove test datalist ;)
         }

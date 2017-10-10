@@ -528,8 +528,9 @@ namespace Dev2.Studio.Core.Models
 
         public string ConnectionString { get; set; }
 
+        public StringBuilder ToServiceDefinition() => ToServiceDefinition(false);
 
-        public StringBuilder ToServiceDefinition(bool prepairForDeployment = false)
+        public StringBuilder ToServiceDefinition(bool prepairForDeployment)
         {
             StringBuilder result = new StringBuilder();
 
@@ -615,36 +616,13 @@ namespace Dev2.Studio.Core.Models
             return service;
         }
 
-        XElement CreateServiceXElement(StringBuilder xaml)
-        {
-            XElement dataList = string.IsNullOrEmpty(DataList) ? new XElement("DataList") : XElement.Parse(DataList);
-            var content = xaml.Unescape();
-            content = content.Replace("&", "&amp;");
-            var contentElement = content.ToXElement();
-            XElement service = new XElement("Service",
-                new XAttribute("ID", ID),
-                new XAttribute("Version", Version?.ToString() ?? "1.0"),
-                new XAttribute("ServerID", ServerID.ToString()),
-                new XAttribute("Name", ResourceName ?? string.Empty),
-                new XAttribute("ResourceType", ServerResourceType ?? ResourceType.ToString()),
-                new XAttribute("IsValid", IsValid),
-                new XElement("DisplayName", ResourceName ?? string.Empty),
-                new XElement("Category", Category ?? string.Empty),
-                new XElement("AuthorRoles", string.Empty),
-                new XElement("Comment", Comment ?? string.Empty),
-                new XElement("Tags", Tags ?? string.Empty),
-                new XElement("HelpLink", HelpLink ?? string.Empty),
-                new XElement("UnitTestTargetWorkflowService", UnitTestTargetWorkflowService ?? string.Empty),
-                dataList,
-                new XElement("Actions", contentElement),
-                new XElement("ErrorMessages", WriteErrors())
-                );
-            return service;
-        }
-
         List<XElement> WriteErrors()
         {
-            if (Errors == null || Errors.Count == 0) return null;
+            if (Errors == null || Errors.Count == 0)
+            {
+                return null;
+            }
+
             var errorElements = new List<XElement>();
             foreach (var errorInfo in Errors)
             {
@@ -705,8 +683,7 @@ namespace Dev2.Studio.Core.Models
 
                 if (columnName == "HelpLink")
                 {
-                    Uri testUri;
-                    if (!Uri.TryCreate(HelpLink, UriKind.Absolute, out testUri))
+                    if (!Uri.TryCreate(HelpLink, UriKind.Absolute, out Uri testUri))
                     {
                         errMsg = "The help link is not in a valid format";
                         AddError(columnName, errMsg);

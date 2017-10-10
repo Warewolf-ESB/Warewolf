@@ -18,9 +18,7 @@ using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.Deploy;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.Threading;
-
-
-
+using System.Threading.Tasks;
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -52,7 +50,12 @@ namespace Warewolf.Studio.ViewModels
 
         #region Implementation of IDeployViewModel       
 
-        public SingleExplorerDeployViewModel(IDeployDestinationExplorerViewModel destination, IDeploySourceExplorerViewModel source, IEnumerable<IExplorerTreeItem> selectedItems, IDeployStatsViewerViewModel stats, IShellViewModel shell, IPopupController popupController, IAsyncWorker asyncWorker = null)
+        public SingleExplorerDeployViewModel(IDeployDestinationExplorerViewModel destination, IDeploySourceExplorerViewModel source, IEnumerable<IExplorerTreeItem> selectedItems, IDeployStatsViewerViewModel stats, IShellViewModel shell, IPopupController popupController)
+            : this(destination, source, selectedItems, stats, shell, popupController, null)
+        {
+        }
+
+        public SingleExplorerDeployViewModel(IDeployDestinationExplorerViewModel destination, IDeploySourceExplorerViewModel source, IEnumerable<IExplorerTreeItem> selectedItems, IDeployStatsViewerViewModel stats, IShellViewModel shell, IPopupController popupController, IAsyncWorker asyncWorker)
         {
             VerifyArgument.AreNotNull(new Dictionary<string, object> { { "destination", destination }, { "source", source }, { "selectedItems", selectedItems }, { "stats", stats }, { "popupController", popupController } });
             _destination = destination;
@@ -290,44 +293,35 @@ namespace Warewolf.Studio.ViewModels
                     var notfolders = explorerTreeItems.Select(a => a.ResourceId).ToList();
                     var destEnv = Destination.ConnectControlViewModel.SelectedConnection;
 
-                    await _asyncWorker.Start(async () =>
+                    if (destEnv?.ProxyLayer?.UpdateManagerProxy != null && ConflictItems != null)
                     {
-                        if (ConflictItems != null)
+                        foreach (var conflictItem in ConflictItems)
                         {
-                            foreach (var conflictItem in ConflictItems)
-                            {
-                                if (destEnv?.ProxyLayer?.UpdateManagerProxy != null)
-                                {
-                                    var task = _asyncWorker.Start(async () => await destEnv.ProxyLayer.UpdateManagerProxy.MoveItem(
-                                        conflictItem.DestinationId, conflictItem.DestinationName,
-                                        conflictItem.SourceName)).ConfigureAwait(false);
-                                }
-                            }
+                            await destEnv.ProxyLayer.UpdateManagerProxy.MoveItem(
+                                conflictItem.DestinationId, conflictItem.DestinationName,
+                                conflictItem.SourceName);
                         }
-                        var deployResponse = new List<IDeployResult>();
-                        if (supportsDirectServerDeploy)
+                    }
+
+                    var deployResponse = new List<IDeployResult>();
+                    if (supportsDirectServerDeploy && destEnv != null)
+                    {
+                        var destConnection = new Connection
                         {
-                            if (destEnv != null)
-                            {
-                                var destConnection = new Connection
-                                {
-                                    Address = destEnv.Connection.AppServerUri.ToString(),
-                                    AuthenticationType = destEnv.Connection.AuthenticationType,
-                                    UserName = destEnv.Connection.UserName,
-                                    Password = destEnv.Connection.Password
-                                };
-                                deployResponse = sourceEnvServer.UpdateRepository.Deploy(notfolders, Destination.DeployTests, destConnection);
-                            }
-                        }
-
-                        if (!supportsDirectServerDeploy || deployResponse.Where(r => r.HasError).Any())
-                        {
-                            _shell.DeployResources(sourceEnvServer.EnvironmentID, destinationEnvironmentId, notfolders, Destination.DeployTests);
-                        }
-
-                        await Destination.RefreshSelectedEnvironment();
-                    });
-
+                            Address = destEnv.Connection.AppServerUri.ToString(),
+                            AuthenticationType = destEnv.Connection.AuthenticationType,
+                            UserName = destEnv.Connection.UserName,
+                            Password = destEnv.Connection.Password
+                        };
+                        deployResponse = sourceEnvServer.UpdateRepository.Deploy(notfolders, Destination.DeployTests, destConnection);
+                    }
+                    if (!supportsDirectServerDeploy || deployResponse.Any(r => r.HasError))
+                    {
+                        _shell.DeployResources(sourceEnvServer.EnvironmentID, destinationEnvironmentId, notfolders, Destination.DeployTests);
+                    }
+                    Source.SelectedEnvironment.AsList().Apply(o => o.IsResourceChecked = false);
+                    Source.SelectedEnvironment.IsResourceChecked = false;
+                    await Destination.RefreshSelectedEnvironment();
                     DeploySuccessfull = true;
                     DeploySuccessMessage = $"{notfolders.Count} Resource{(notfolders.Count == 1 ? "" : "s")} Deployed Successfully.";
                     var showDeploySuccessful = PopupController.ShowDeploySuccessful(DeploySuccessMessage);
@@ -338,8 +332,6 @@ namespace Warewolf.Studio.ViewModels
 
                     UpdateServerCompareChanged(this, Guid.Empty);
                     _stats.ReCalculate();
-                    Source.SelectedEnvironment.AsList().Apply(o => o.IsResourceChecked = false);
-                    Source.SelectedEnvironment.IsResourceChecked = false;
                 }
             }
             catch (Exception e)

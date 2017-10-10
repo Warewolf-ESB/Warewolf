@@ -799,8 +799,7 @@ namespace Warewolf.UIBindingTests.WorkflowDesigner
             {
                 if (prevNode != null)
                 {
-                    var flowStep = prevNode as FlowStep;
-                    if (flowStep != null)
+                    if (prevNode is FlowStep flowStep)
                     {
                         flowStep.Next = node;
                     }
@@ -893,6 +892,8 @@ namespace Warewolf.UIBindingTests.WorkflowDesigner
                     Assert.AreEqual(2, viewModel.BringIntoViewHitCount); // 2 because we had to add something first!
                     Assert.AreEqual(1, viewModel.SelectedDebugModelItems.Count);
                     break;
+                default:
+                    break;
             }
 
             foreach (var modelItem in selection.SelectedObjects)
@@ -947,8 +948,8 @@ namespace Warewolf.UIBindingTests.WorkflowDesigner
 
             var dataListViewModel = WorkflowDesignerUnitTest.CreateDataListViewModel(mockResourceModel, eventAggregator);
             var dataListItems = new OptomizedObservableCollection<IScalarItemModel>();
-            var dataListItem = new ScalarItemModel("scalar1", enDev2ColumnArgumentDirection.Input, string.Empty);
-            var secondDataListItem = new ScalarItemModel("scalar2", enDev2ColumnArgumentDirection.Input, string.Empty);
+            var dataListItem = new ScalarItemModel("scalar1", enDev2ColumnArgumentDirection.Input);
+            var secondDataListItem = new ScalarItemModel("scalar2", enDev2ColumnArgumentDirection.Input);
 
             dataListItems.Add(dataListItem);
             dataListItems.Add(secondDataListItem);

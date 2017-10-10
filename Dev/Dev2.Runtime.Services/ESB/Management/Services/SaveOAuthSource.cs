@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
@@ -57,12 +56,10 @@ namespace Dev2.Runtime.ESB.Management.Services
             try
             {
                 Dev2Logger.Info("Save OAuth Source", GlobalConstants.WarewolfInfo);
-                StringBuilder resourceDefinition;
 
-                values.TryGetValue("OAuthSource", out resourceDefinition);
+                values.TryGetValue("OAuthSource", out StringBuilder resourceDefinition);
 
-                StringBuilder savePath;
-                values.TryGetValue("savePath", out savePath);
+                values.TryGetValue("savePath", out StringBuilder savePath);
 
                 var src = serializer.Deserialize<IOAuthSource>(resourceDefinition);
 
@@ -78,6 +75,8 @@ namespace Dev2.Runtime.ESB.Management.Services
                             AccessToken = src.AccessToken,
                             ResourceName = src.ResourceName
                         };
+                        break;
+                    default:
                         break;
                 }
 

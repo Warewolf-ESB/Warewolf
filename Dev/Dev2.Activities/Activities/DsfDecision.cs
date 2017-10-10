@@ -16,9 +16,7 @@ using Newtonsoft.Json;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
-
-
-
+using Dev2.Common;
 
 namespace Dev2.Activities
 {
@@ -132,7 +130,7 @@ namespace Dev2.Activities
             {
                 if (And)
                 {
-                    if(results.Any(b => b == false))
+                    if(results.Any(b => !b))
                     {
                         resultval = false;
                     }
@@ -219,8 +217,7 @@ namespace Dev2.Activities
             try
             {
                 Dev2DecisionStack dds = Conditions;
-                ErrorResultTO error;
-                string userModel = dds.GenerateUserFriendlyModel(env, dds.Mode, out error);
+                string userModel = dds.GenerateUserFriendlyModel(env, dds.Mode, out ErrorResultTO error);
                 allErrors.MergeErrors(error);
 
                 foreach (Dev2Decision dev2Decision in dds.TheStack)
@@ -248,9 +245,9 @@ namespace Dev2.Activities
                 AddDebugItem(new DebugItemStaticDataParams(dds.Mode == Dev2DecisionMode.AND ? "YES" : "NO", "Require all decisions to be true"), itemToAdd);
                 result.Add(itemToAdd);
             }
-            catch (JsonSerializationException)
+            catch (JsonSerializationException e)
             {
-
+                Dev2Logger.Warn(e.Message, "Warewolf Warn");
             }
             catch (Exception e)
             {
@@ -311,13 +308,16 @@ namespace Dev2.Activities
         private static string GetResultString(string theResult,  Dev2DecisionStack dds)
         {
             var resultString = theResult;
-            if(theResult == "True")
+            if (theResult == "True")
             {
                 resultString = dds.TrueArmText;
             }
-            else if(theResult == "False")
+            else
             {
-                resultString = dds.FalseArmText;
+                if (theResult == "False")
+                {
+                    resultString = dds.FalseArmText;
+                }
             }
             return resultString;
         }
@@ -343,7 +343,6 @@ namespace Dev2.Activities
                     {
                         expressiomToStringValue = "";
                     }
-                    // EvaluateExpressiomToStringValue(expression, decisionMode, dataList);
                     userModel = userModel.Replace(expression, expressiomToStringValue);
                     debugResult = new DebugItemWarewolfAtomResult(expressiomToStringValue, expression, "");
                 }

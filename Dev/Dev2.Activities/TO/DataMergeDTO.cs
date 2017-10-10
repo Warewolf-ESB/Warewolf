@@ -17,19 +17,13 @@ using Dev2.TO;
 using Dev2.Util;
 using Dev2.Validation;
 
-
-
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
-
-{
-    
-    public class DataMergeDTO : ValidatedObject, IDev2TOFn
-    
+{    
+    public class DataMergeDTO : ValidatedObject, IDev2TOFn    
     {
         public const string MergeTypeIndex = "Index";
         public const string MergeTypeChars = "Chars";
         public const string MergeTypeNone = "None";
-
         public const string AlignmentLeft = "Left";
 
         #region Fields
@@ -49,10 +43,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Ctor
 
-        public DataMergeDTO(string inputVariable, string mergeType, string at, int indexNum, string padding, string alignment, bool inserted = false)
+        public DataMergeDTO(string inputVariable, string mergeType, string at, int indexNum, string padding, string alignment)
+            : this(inputVariable, mergeType, at, indexNum, padding, alignment, false)
+        {
+        }
+
+        public DataMergeDTO(string inputVariable, string mergeType, string at, int indexNum, string padding, string alignment, bool inserted)
         {
             Inserted = inserted;
-
             InputVariable = string.IsNullOrEmpty(inputVariable) ? string.Empty : inputVariable;
             MergeType = string.IsNullOrEmpty(mergeType) ? MergeTypeIndex : mergeType;
             At = string.IsNullOrEmpty(at) ? string.Empty : at;
@@ -60,7 +58,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             _enableAt = true;
             Padding = string.IsNullOrEmpty(padding) ? string.Empty : padding;
             Alignment = string.IsNullOrEmpty(alignment) ? AlignmentLeft : alignment;
-
         }
 
         public DataMergeDTO()
@@ -220,7 +217,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         ruleSet.Add(inputExprRule);
                     }
                     else
+                    {
                         ruleSet.Add(new IsStringEmptyRule(() => InputVariable));
+                    }
+
                     break;
                 case "At":
                     if (MergeType == MergeTypeIndex)
@@ -241,6 +241,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         ruleSet.Add(new IsSingleCharRule(() => paddingExprRule.ExpressionValue));
                     }
                     break;
+                default:
+                    return ruleSet;
             }
             return ruleSet;
         }

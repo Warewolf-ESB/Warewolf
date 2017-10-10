@@ -38,7 +38,11 @@ namespace Dev2.Studio.Core.Activities.Interegators
 
             }
 
-            if(resource.Environment != null) activity.FriendlySourceName = resource.Environment.Name;
+            if(resource.Environment != null)
+            {
+                activity.FriendlySourceName = resource.Environment.Name;
+            }
+
             activity.IsWorkflow = true;
             activity.DisplayName = resource.Category;
             activity.ServiceName = resource.DisplayName;

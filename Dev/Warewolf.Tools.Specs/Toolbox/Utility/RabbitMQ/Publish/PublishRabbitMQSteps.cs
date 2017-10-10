@@ -21,7 +21,11 @@ namespace Warewolf.ToolsSpecs.Toolbox.RabbitMQ.Publish
 
         public PublishRabbitMqSteps(ScenarioContext scenarioContext)
         {
-            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            if (scenarioContext == null)
+            {
+                throw new ArgumentNullException("scenarioContext");
+            }
+
             this.scenarioContext = scenarioContext;
         }
 

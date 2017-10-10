@@ -26,9 +26,6 @@ namespace Dev2.Studio.Core.Services
             try
             {
                 ServiceController controller = new ServiceController(AppSettings.ServiceName);
-                if(controller.Status == ServiceControllerStatus.Running)
-                {
-                }
             }
             catch(InvalidOperationException)
             {
