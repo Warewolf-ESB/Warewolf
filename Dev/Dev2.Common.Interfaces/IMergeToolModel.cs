@@ -22,6 +22,7 @@ namespace Dev2.Common.Interfaces
         FlowNode ActivityType { get; set; }
         ModelItem FlowNode { get; set; }
         Point NodeLocation { get; set; }
+        bool IsMergeVisible { get; set; }
     }
     public delegate void ModelToolChanged(object sender, IMergeToolModel args);
 }

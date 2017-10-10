@@ -93,6 +93,7 @@ namespace Dev2.ViewModels.Merge
         }
 
         public string WorkflowName { get; set; }
+        public string ServerName { get; set; }
         public bool IsVariablesChecked
         {
             get => _isVariablesChecked;
@@ -172,7 +173,7 @@ namespace Dev2.ViewModels.Merge
                     MergeIcon = _modelItem.GetImageSourceForTool(),
                     MergeDescription = dsfActivity?.ToString(),
                     UniqueId = currentValue.UniqueID.ToGuid(),
-
+                    IsMergeVisible = true
                 };
 
                 //TODO implement builder pattern

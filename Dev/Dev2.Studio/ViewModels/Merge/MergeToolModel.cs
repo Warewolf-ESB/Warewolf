@@ -19,6 +19,7 @@ namespace Dev2.ViewModels.Merge
         private string _mergeDescription;
         private bool _isMergeChecked;
         private bool _isMergeEnabled;
+        private bool _isMergeVisible;
         private ObservableCollection<IMergeToolModel> _children;
         private string _parentDescription;
         private bool _hasParent;
@@ -74,6 +75,16 @@ namespace Dev2.ViewModels.Merge
             {
                 _isMergeEnabled = value;
                 OnPropertyChanged(() => IsMergeEnabled);
+            }
+        }
+
+        public bool IsMergeVisible
+        {
+            get => _isMergeVisible;
+            set
+            {
+                _isMergeVisible = value;
+                OnPropertyChanged(() => IsMergeVisible);
             }
         }
 

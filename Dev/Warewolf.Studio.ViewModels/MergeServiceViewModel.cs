@@ -78,13 +78,13 @@ namespace Warewolf.Studio.ViewModels
                 var versionInfo = _selectedResource.VersionInfo;
                 versionInfos = versionInfos.Where(info => versionInfo != null && info.VersionId == versionInfo.VersionId && info.VersionNumber != versionInfo.VersionNumber).ToList();
 
+                var explorerItemViewModel = _selectedResource.Parent as IExplorerItemViewModel;
+                MergeResourceVersions.Add(explorerItemViewModel);
+
                 if (versionInfos.Count <= 0)
                 {
                     return;
                 }
-
-                var explorerItemViewModel = _selectedResource.Parent as IExplorerItemViewModel;
-                MergeResourceVersions.Add(explorerItemViewModel);
             }
             
             var children =
