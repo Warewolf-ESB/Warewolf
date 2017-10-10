@@ -532,7 +532,7 @@ namespace Warewolf.Studio.ViewModels
         {
             IsNewFolderVisible = _isFolder;
             IsCreateTestVisible = _isService;
-            IsRunAllTestsVisible = _isService;
+            IsRunAllTestsVisible = _isService || _isFolder;
             IsViewSwaggerVisible = _isService;
             IsViewJsonApisVisible = _isService || _isFolder;
 
