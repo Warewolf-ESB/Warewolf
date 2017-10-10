@@ -13,6 +13,7 @@ using System.Security.Principal;
 using Dev2.Web;
 using Warewolf.Storage;
 using System.Threading.Tasks;
+using Dev2.Communication;
 
 namespace Dev2.Runtime.WebServer
 {
@@ -23,7 +24,6 @@ namespace Dev2.Runtime.WebServer
             int loc;
             if (!string.IsNullOrEmpty(serviceName) && (loc = serviceName.LastIndexOf(".", StringComparison.Ordinal)) > 0)
             {
-                // default it to xml
                 dataObject.ReturnType = EmitionTypes.XML;
 
                 if (loc > 0)
