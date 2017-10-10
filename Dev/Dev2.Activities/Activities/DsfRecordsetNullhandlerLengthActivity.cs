@@ -134,7 +134,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                 var count = dataObject.Environment.GetLength(rs);
                                 var value = count.ToString();
                                 dataObject.Environment.Assign(RecordsLength, value, update);
-                                if (!dataObject.Environment.Errors.Any())
+                                if (dataObject.Environment.Errors != null && dataObject.Environment.Errors.Any())
                                 {
                                     AddDebugOutputItem(new DebugItemWarewolfAtomResult(value, RecordsLength, ""));
                                 }
