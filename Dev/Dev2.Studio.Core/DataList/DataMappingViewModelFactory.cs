@@ -15,10 +15,10 @@ namespace Dev2.Studio.ViewModels.DataList
 {
     public class DataMappingViewModelFactory:IDataMappingViewModelFactory
     {
-        public IDataMappingViewModel CreateModel(IWebActivity activity,
-                                                 NotifyCollectionChangedEventHandler mappingCollectionChangedEventHandler = null)
+        public IDataMappingViewModel CreateModel(IWebActivity activity)=>CreateModel(activity, null);
+        public IDataMappingViewModel CreateModel(IWebActivity activity, NotifyCollectionChangedEventHandler mappingCollectionChangedEventHandler)
         {
-            return  new DataMappingViewModel(activity,mappingCollectionChangedEventHandler);
+            return  new DataMappingViewModel(activity, mappingCollectionChangedEventHandler);
         }
     }
 }

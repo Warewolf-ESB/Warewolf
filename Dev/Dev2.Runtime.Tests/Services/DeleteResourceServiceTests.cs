@@ -85,7 +85,7 @@ namespace Dev2.Tests.Runtime.Services
             var resourceCatalog = new Mock<IResourceCatalog>();
             var workScpace = new Mock<IWorkspace>();
             workScpace.Setup(workspace => workspace.ID).Returns(GlobalConstants.ServerWorkspaceID);
-            resourceCatalog.Setup(catalog => catalog.DeleteResource(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<bool>())).Returns(new ResourceCatalogResult()
+            resourceCatalog.Setup(catalog => catalog.DeleteResource(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<string>())).Returns(new ResourceCatalogResult()
             {
                 Message = "Hi", Status = ExecStatus.Success
             });
@@ -117,7 +117,7 @@ namespace Dev2.Tests.Runtime.Services
             var resourceCatalog = new Mock<IResourceCatalog>();
             var workScpace = new Mock<IWorkspace>();
             workScpace.Setup(workspace => workspace.ID).Returns(Guid.NewGuid);
-            resourceCatalog.Setup(catalog => catalog.DeleteResource(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<bool>())).Returns(new ResourceCatalogResult()
+            resourceCatalog.Setup(catalog => catalog.DeleteResource(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<string>())).Returns(new ResourceCatalogResult()
             {
                 Message = "Hi",
                 Status = ExecStatus.Success

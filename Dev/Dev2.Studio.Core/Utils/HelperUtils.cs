@@ -42,7 +42,9 @@ namespace Dev2.Utils
             }
         }
 
-        public static string SanitizePath(string path, string resourceName = "")
+        public static string SanitizePath(string path) => SanitizePath(path, "");
+
+        public static string SanitizePath(string path, string resourceName)
         {
             if (String.IsNullOrEmpty(path))
             {

@@ -12,6 +12,7 @@ using System.Windows.Input;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.Studio.Interfaces;
 using Warewolf.Studio.Core;
+using Dev2.Common;
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -144,8 +145,9 @@ namespace Warewolf.Studio.ViewModels
                     {
                         result = DropboxOAuth2Helper.ParseTokenFragment(uri);
                     }
-                    catch (ArgumentException)
+                    catch (ArgumentException e)
                     {
+                        Dev2Logger.Warn(e.Message, "Warewolf Warn");
                     }
 
                     if (result != null)

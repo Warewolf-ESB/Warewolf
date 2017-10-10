@@ -41,7 +41,9 @@ namespace Dev2.Runtime.ResourceCatalogImpl
 
         #region Implementation of IResourceSaveProvider
 
-        public ResourceCatalogResult SaveResource(Guid workspaceID, StringBuilder resourceXml, string savedPath, string reason = "", string user = "")
+        public ResourceCatalogResult SaveResource(Guid workspaceID, StringBuilder resourceXml, string savedPath) => SaveResource(workspaceID, resourceXml, savedPath, "", "");
+
+        public ResourceCatalogResult SaveResource(Guid workspaceID, StringBuilder resourceXml, string savedPath, string reason, string user)
         {
             try
             {
@@ -74,7 +76,9 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             }
         }
 
-        public ResourceCatalogResult SaveResource(Guid workspaceID, IResource resource, string savedPath, string reason = "", string user = "")
+        public ResourceCatalogResult SaveResource(Guid workspaceID, IResource resource, string savedPath) => SaveResource(workspaceID, resource, savedPath, "", "");
+
+        public ResourceCatalogResult SaveResource(Guid workspaceID, IResource resource, string savedPath, string reason, string user)
         {
             _serverVersionRepository.StoreVersion(resource, user, reason, workspaceID, savedPath);
 
@@ -100,7 +104,9 @@ namespace Dev2.Runtime.ResourceCatalogImpl
         public Action<IResource> ResourceSaved { get; set; }
         public Action<Guid, IList<ICompileMessageTO>> SendResourceMessages { get; set; }
 
-        public ResourceCatalogResult SaveResource(Guid workspaceID, IResource resource, StringBuilder contents, string savedPath, string reason = "", string user = "")
+        public ResourceCatalogResult SaveResource(Guid workspaceID, IResource resource, StringBuilder contents, string savedPath) => SaveResource(workspaceID, resource, contents, savedPath, "", "");
+
+        public ResourceCatalogResult SaveResource(Guid workspaceID, IResource resource, StringBuilder contents, string savedPath, string reason, string user)
         {
             _serverVersionRepository.StoreVersion(resource, user, reason, workspaceID, savedPath);
             ResourceCatalogResult saveResult = null;
@@ -219,6 +225,28 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             {
                 case enActionType.Workflow:
                     messages.AddRange(smc.Compile(resource.ResourceID, ServerCompileMessageType.WorkflowMappingChangeRule, beforeAction.ResourceDefinition, contents));
+                    break;
+                case enActionType.BizRule:
+                    break;
+                case enActionType.InvokeStoredProc:
+                    break;
+                case enActionType.InvokeWebService:
+                    break;
+                case enActionType.InvokeDynamicService:
+                    break;
+                case enActionType.InvokeManagementDynamicService:
+                    break;
+                case enActionType.InvokeServiceMethod:
+                    break;
+                case enActionType.Plugin:
+                    break;
+                case enActionType.ComPlugin:
+                    break;
+                case enActionType.Switch:
+                    break;
+                case enActionType.Unknown:
+                    break;
+                case enActionType.RemoteService:
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

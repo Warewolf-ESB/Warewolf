@@ -21,8 +21,6 @@ namespace Dev2.Activities.Designers2.Core.Source
         private IComPluginSource _selectedSource;
         private ICollection<IComPluginSource> _sources;
         private readonly ModelItem _modelItem;
-        
-        readonly Dictionary<Guid, IList<IToolRegion>> _previousRegions = new Dictionary<Guid, IList<IToolRegion>>();
         private Guid _sourceId;
         private Action _sourceChangedAction;
         private double _labelWidth;

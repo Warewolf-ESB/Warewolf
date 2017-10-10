@@ -9,16 +9,13 @@
 */
 
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using Dev2.Common.Interfaces;
 using Dev2.MathOperations;
 
-namespace Dev2.Data.MathOperations {
-    public static class MathOpsFactory {
-
-        private static string _mathFnDataList = string.Empty;
-        private static readonly IList<string> RawMathFnList = new List<string>();
-
+namespace Dev2.Data.MathOperations
+{
+    public static class MathOpsFactory
+    {
         public static IFunctionEvaluator CreateFunctionEvaluator() {
             return new FunctionEvaluator();
         }

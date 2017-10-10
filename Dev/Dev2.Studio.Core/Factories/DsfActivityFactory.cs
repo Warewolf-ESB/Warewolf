@@ -82,14 +82,22 @@ namespace Dev2.Studio.Core.Factories
 
         static DsfActivity SetActivityProperties(IContextualResourceModel resource, DsfActivity activity)
         {
-            
-            switch(resource.ResourceType)
+
+            switch (resource.ResourceType)
             {
                 case ResourceType.WorkflowService:
                     WorkflowPropertyInterigator.SetActivityProperties(resource, ref activity);
                     break;
                 case ResourceType.Service:
-                    WorkerServicePropertyInterigator.SetActivityProperties(resource, ref activity,resource.Environment.ResourceRepository);
+                    WorkerServicePropertyInterigator.SetActivityProperties(resource, ref activity, resource.Environment.ResourceRepository);
+                    break;
+                case ResourceType.Source:
+                    break;
+                case ResourceType.Unknown:
+                    break;
+                case ResourceType.Server:
+                    break;
+                default:
                     break;
             }
             return activity;

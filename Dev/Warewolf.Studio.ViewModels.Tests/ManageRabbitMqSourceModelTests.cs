@@ -70,7 +70,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             manageRabbitMQSourceModel.EditSource(src.Object);
             //------------Assert Results-------------------------
 
-            shellViewModel.Verify(a => a.EditResource(src.Object,null), Times.Once);
+            shellViewModel.Verify(a => a.EditResource(src.Object), Times.Once);
         }
 
 

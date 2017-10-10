@@ -35,10 +35,6 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 
-
-
-
-
 namespace Dev2.Runtime.ESB.Execution
 {
     public class ServiceTestExecutionContainer : EsbExecutionContainer
@@ -62,12 +58,7 @@ namespace Dev2.Runtime.ESB.Execution
 
         protected ITestCatalog TstCatalog { get; set; }
         protected IResourceCatalog ResourceCat { get; set; }
-        /// <summary>
-        /// Executes the specified errors.
-        /// </summary>
-        /// <param name="errors">The errors.</param>
-        /// <param name="update"></param>
-        /// <returns></returns>
+        
         public override Guid Execute(out ErrorResultTO errors, int update)
         {
 
@@ -78,33 +69,25 @@ namespace Dev2.Runtime.ESB.Execution
 
 
             Dev2Logger.Debug("Entered Wf Container", DataObject.ExecutionID.ToString());
-
-            // Set Service Name
+            
             DataObject.ServiceName = ServiceAction.ServiceName;
-
-            // Set server ID, only if not set yet - original server;
+            
             if (DataObject.ServerID == Guid.Empty)
             {
                 DataObject.ServerID = HostSecurityProvider.Instance.ServerID;
             }
-
-            // Set resource ID, only if not set yet - original resource;
+            
             if (DataObject.ResourceID == Guid.Empty && ServiceAction?.Service != null)
             {
                 DataObject.ResourceID = ServiceAction.Service.ID;
             }
-
-
-            // Travis : Now set Data List
             DataObject.DataList = ServiceAction.DataListSpecification;
-            // Set original instance ID, only if not set yet - original resource;
             if (DataObject.OriginalInstanceID == Guid.Empty)
             {
                 DataObject.OriginalInstanceID = DataObject.DataListID;
             }
 
             Dev2Logger.Info($"Started Execution for Service Name:{DataObject.ServiceName} Resource Id:{DataObject.ResourceID} Mode:{(DataObject.IsDebug ? "Debug" : "Execute")}", DataObject.ExecutionID.ToString());
-            //Set execution origin
             if (!string.IsNullOrWhiteSpace(DataObject.ParentServiceName))
             {
                 DataObject.ExecutionOrigin = ExecutionOrigin.Workflow;

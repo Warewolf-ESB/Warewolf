@@ -41,16 +41,9 @@ namespace Dev2.Studio.Core.Factories
                 IContextualResourceModel resource = CreateResourceModel(environment);
                 resource.ResourceName = string.Empty;
                 resource.ID = Guid.NewGuid();
-                if(environment.AuthorizationService != null)
-                {
-                    resource.UserPermissions = environment.AuthorizationService.GetResourcePermissions(resource.ID);
-                }
-                else
-                {
-                    resource.UserPermissions = Permissions.Contribute;
-                }
+                resource.UserPermissions = environment.AuthorizationService != null ? environment.AuthorizationService.GetResourcePermissions(resource.ID) : Permissions.Contribute;
 
-                switch(resourceType)
+                switch (resourceType)
                 {
                     case "Service":
                         resource.ResourceType = ResourceType.Service;
@@ -160,10 +153,12 @@ namespace Dev2.Studio.Core.Factories
                         resource.ResourceName = resourceName;
                         resource.ID = Guid.Empty;
                         break;
+                    default:
+                        break;
                 }
                 return resource;
             }
-            catch(SystemException exception)
+            catch (SystemException exception)
             {
                 HelperUtils.ShowTrustRelationshipError(exception);
             }

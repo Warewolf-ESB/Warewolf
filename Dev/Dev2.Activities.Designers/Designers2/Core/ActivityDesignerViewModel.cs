@@ -277,6 +277,8 @@ namespace Dev2.Activities.Designers2.Core
                     case "IsPrimarySelection":
 
                         break;
+                    default:
+                        break;
                 }
             }
         }
@@ -306,10 +308,6 @@ namespace Dev2.Activities.Designers2.Core
                 if(isChecked)
                 {
                     ActivityDesignerToggle activityDesignerToggle = TitleBarToggles.FirstOrDefault(c => c.AutomationID == "HelpToggle");
-                    if(activityDesignerToggle == null)
-                    {
-                        //AddTitleBarHelpToggle();
-                    }
                 }
                 else
                 {
@@ -346,7 +344,7 @@ namespace Dev2.Activities.Designers2.Core
             }
         }
 
-        protected string DisplayName { get { return GetProperty<string>(); } set { SetProperty(value); } }
+        protected string DisplayName { get => GetProperty<string>(); set => SetProperty(value); }
 
         #region Get/SetProperty
 

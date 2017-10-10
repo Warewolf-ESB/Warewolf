@@ -1,4 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
 using Dev2.Data;
 using Dev2.Data.Interfaces.Enums;
 using Dev2.Studio.Core.Models.DataList;
@@ -8,10 +7,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Core.Tests.ModelTests
 {
     [TestClass]
-
     public class RecordSetItemModelTests
     {
-
         #region Test Fields
 
         private IRecordSetItemModel _recordSetItemModel;
@@ -112,6 +109,5 @@ namespace Dev2.Core.Tests.ModelTests
         }
 
         #endregion Name Validation
-
     }
 }

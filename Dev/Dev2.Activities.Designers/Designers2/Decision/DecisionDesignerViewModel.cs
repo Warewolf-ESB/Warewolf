@@ -339,13 +339,15 @@ namespace Dev2.Activities.Designers2.Decision
                 case "FalseArmText":
                     ruleSet.Add(new IsStringEmptyOrWhiteSpaceRule(() => FalseArmText));
                     break;
+                default:
+                    break;
             }
             return ruleSet;
         }
 
         #region Implementation of IHandle<ConfigureDecisionExpressionMessage>
 
-        
+
         public void Handle(ConfigureDecisionExpressionMessage message)
         {
             ShowLarge = true;

@@ -17,7 +17,6 @@ using System.Globalization;
 using System.IO;
 using System.Security.Principal;
 using Warewolf.Resource.Errors;
-using System.Text.RegularExpressions;
 
 namespace Dev2.Common
 {
@@ -416,33 +415,23 @@ where pn.nspname = 'public';
         public const string VersionDownloadPath = "Installers\\";
         public const string VersionFolder = "VersionControl";
         public static readonly Guid NullDataListID = Guid.Empty;
-
-        // Server WorkspaceID
+        
         public static readonly Guid ServerWorkspaceID = Guid.Empty;
 
         public static readonly string NullPluginValue = "NULL";
-
-        // Resource Catalog Constants
+        
         public static int ResourceCatalogCapacity = 150;
 
         public static int ResourceCatalogPruneAmt = 15;
 
-        // Security
-        //public const string BuiltInAdministrator = "BuiltIn\\Administrators";
-
-
         public static String PublicUsername = @"\";
-
-        // GAC
+        
         public static readonly string GACPrefix = "GAC:";
-
-        // Used both Resource's LoadDependencies method
+        
         public static readonly string EmptyDependcyListElement = "<XamlDefinition />";
-
-        // Remote workflow custom header attribute ;)
+        
         public static readonly string RemoteServerInvoke = "RemoteWarewolfServer";
-
-        // Remote workflow custom header attribute ;)
+        
         public static readonly string RemoteDebugServerInvoke = "RemoteWarewolfServerDebug";
 
         // Date Time
@@ -460,24 +449,21 @@ where pn.nspname = 'public';
 
         public static string AnythingToXmlPathSeperator = ",";
         public static string AnytingToXmlCommaToken = "__COMMA__";
-
-        // Wf Execution Container
+        
         public static string ExecuteWebRequestString = "About to execute web request [ '{0}' ] for User [ '{1}' : '{2}' : '{3}' ] with DataObject Payload [ '{4}' ]";
         public static string ExecutionForServiceString = "Execution for Service Name: '{0}' Resource Id: '{1}' Mode: '{2}'";
 
         public static string WarewolfInfo = "Warewolf Info";
         public static string WarewolfError = "Warewolf Error";
         public static string WarewolfDebug = "Warewolf Debug";
-
-        // Resource Picker
+        
         public static string ResourcePickerWorkflowString = "DsfWorkflowActivity";
 
         public static string SerializableResourceQuote = "__QUOTE__";
         public static string SerializableResourceSingleQuote = "__SQUOTE__";
 
         public static int MemoryItemCountCompactLevel = 500;
-
-        //Calculate expressions
+        
         public static string CalcExpressionNow = "!~calculation~!now()!~~calculation~!";
 
         public static string NotEqualsUnicodeChar = "?";
@@ -532,8 +518,7 @@ where pn.nspname = 'public';
 
         public static string WebServiceTimeoutMessage =
             "Output mapping took too long. More then 10 seconds. Please use the JSONPath feature ( green icon above ) to reduce your dataset complexity. You can find out more on JSONPath at http://goessner.net/articles/JsonPath/";
-
-        // Limit WF execution
+        
         public static int MaxWorkflowsToExecute = 1010;
 
         public static int MaxNumberOfWorkflowWaits = 10000;
@@ -599,10 +584,6 @@ where pn.nspname = 'public';
         {
             get
             {
-                //#if DEBUG
-                //                return Assembly.GetExecutingAssembly().GetName().Version.Minor-1;
-                //#endif
-
 #pragma warning disable 162
                 return 7;
 #pragma warning restore 162
@@ -613,10 +594,6 @@ where pn.nspname = 'public';
         {
             get
             {
-                //#if DEBUG
-                //                return Assembly.GetExecutingAssembly().GetName().Version.Major-1;
-                //#endif
-
 #pragma warning disable 162
                 return 0;
 #pragma warning restore 162
@@ -660,13 +637,5 @@ where pn.nspname = 'public';
                 }
             }
         }
-
-
-
-
-
-
-
-
     }
 }

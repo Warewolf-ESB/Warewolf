@@ -12,7 +12,6 @@ using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Dev2.Network;
-using Dev2.Studio.Core;
 using Dev2.Studio.Core.InterfaceImplementors;
 using Dev2.Studio.Core.Models;
 using Dev2.Studio.Interfaces;

@@ -39,10 +39,20 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             : this("Match On", "Equal", 0)
         {
         }
-
-        // TODO: Remove WhereOptionList property - DO NOT USE FOR BINDING, USE VIEWMODEL PROPERTY INSTEAD!
+        
         public IList<string> WhereOptionList { get; set; }
-        public FindRecordsTO(string searchCriteria, string searchType, int indexNum, bool inserted = false, string from = "", string to = "")
+
+        public FindRecordsTO(string searchCriteria, string searchType, int indexNum)
+            : this(searchCriteria, searchType, indexNum, false, "", "")
+        {
+        }
+
+        public FindRecordsTO(string searchCriteria, string searchType, int indexNum, bool inserted)
+            : this(searchCriteria, searchType, indexNum, inserted, "", "")
+        {
+        }
+
+        public FindRecordsTO(string searchCriteria, string searchType, int indexNum, bool inserted, string from, string to)
         {
             Inserted = inserted;
             SearchCriteria = searchCriteria;

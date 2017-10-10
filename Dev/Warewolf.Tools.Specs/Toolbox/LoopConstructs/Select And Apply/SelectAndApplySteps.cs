@@ -94,7 +94,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.LoopConstructs.Select_And_Apply
             {
                 case "SelectAndApplyTestTool":
                     innerActivity = new SelectAndApplyTestTool();
-                    
+
                     break;
                 case "Activity":
                     innerActivity = new DsfActivity
@@ -103,6 +103,8 @@ namespace Warewolf.ToolsSpecs.Toolbox.LoopConstructs.Select_And_Apply
                         OutputMapping = BuildOutputMappings(),
                         ServiceName = "SpecflowForeachActivityTest"
                     };
+                    break;
+                default:
                     break;
             }
             scenarioContext.Add("innerActivity", innerActivity);
@@ -167,6 +169,14 @@ namespace Warewolf.ToolsSpecs.Toolbox.LoopConstructs.Select_And_Apply
             {
                 case enForEachType.InRecordset:
                     scenarioContext.Add("recordset", recordSet);
+                    break;
+                case enForEachType.InRange:
+                    break;
+                case enForEachType.InCSV:
+                    break;
+                case enForEachType.NumOfExecution:
+                    break;
+                default:
                     break;
             }
         }

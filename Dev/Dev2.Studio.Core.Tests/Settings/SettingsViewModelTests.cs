@@ -1085,6 +1085,8 @@ You need Administrator permission.", viewModel.Errors);
                 case SettingsProperty.IsSaved:
                     viewModel.IsSaved = true;
                     break;
+                default:
+                    break;
             }
 
             //------------Assert Results-------------------------

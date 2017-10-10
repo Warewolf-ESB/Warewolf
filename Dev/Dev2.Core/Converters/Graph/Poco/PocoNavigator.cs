@@ -242,12 +242,6 @@ namespace Unlimited.Framework.Converters.Graph.Poco
                             returnData.AddRange(SelectEnumberable(pathSegments.Skip(i + 1).ToList(), enumerator.Current));
                         }
                     }
-                    else
-                    {
-                        
-                        currentData = null;
-                        
-                    }
 
                     return returnData;
                 }

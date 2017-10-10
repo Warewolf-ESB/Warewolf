@@ -110,7 +110,7 @@ namespace WarewolfCOMIPC
                         var objectInstance = Activator.CreateInstance(type);
                         Type dispatchedtype = DispatchUtility.GetType(objectInstance, false);
                         Console.WriteLine("Got Type:" + dispatchedtype.FullName);
-                        
+
                         Console.WriteLine("Serializing and sending:" + dispatchedtype.FullName);
                         formatter.Serialize(sw, dispatchedtype);
                         sw.Flush();
@@ -148,49 +148,49 @@ namespace WarewolfCOMIPC
                     }
                     break;
                 case Execute.ExecuteSpecifiedMethod:
-                {
-                    Console.WriteLine("Executing GeMethods for:" + data.CLSID);
-                    var type = Type.GetTypeFromCLSID(data.CLSID, true);
-                    var objectInstance = Activator.CreateInstance(type);
-                    var paramsObjects = BuildValuedTypeParams(data.Parameters);
-                    try
                     {
+                        Console.WriteLine("Executing GeMethods for:" + data.CLSID);
+                        var type = Type.GetTypeFromCLSID(data.CLSID, true);
+                        var objectInstance = Activator.CreateInstance(type);
+                        var paramsObjects = BuildValuedTypeParams(data.Parameters);
+                        try
+                        {
                             var result = DispatchUtility.Invoke(objectInstance, data.MethodToCall, paramsObjects);
                             if (result != null && result.ToString() == "System.__ComObject")
                             {
                                 var retType = DispatchUtility.GetType(result, false);
                                 var props = retType.GetProperties(BindingFlags.Instance | BindingFlags.Public);
                                 var retObj = new JObject();
-                                foreach(var propertyInfo in props)
+                                foreach (var propertyInfo in props)
                                 {
                                     var propValue = retType.InvokeMember(propertyInfo.Name, BindingFlags.Instance | BindingFlags.GetProperty, null, result, null);
-                                    retObj.Add(propertyInfo.Name,new JValue(propValue.ToString()));
+                                    retObj.Add(propertyInfo.Name, new JValue(propValue.ToString()));
                                 }
                                 formatter.Serialize(sw, retObj);
                                 sw.Flush();
                             }
                             else
                             {
-                                if (result!=null && result.ToString() == "0")
+                                if (result != null && result.ToString() == "0")
                                 {
                                     result = "0";
                                 }
                                 formatter.Serialize(sw, result ?? "Success");
                                 sw.Flush();
                             }
-                        Console.WriteLine("Execution completed " + data.MethodToCall);
-                    }
-                    catch(Exception ex)
-                    {
-                        if(ex.InnerException != null)
+                            Console.WriteLine("Execution completed " + data.MethodToCall);
+                        }
+                        catch (Exception ex)
                         {
-                            throw new COMException(ex.InnerException?.Message);
+                            if (ex.InnerException != null)
+                            {
+                                throw new COMException(ex.InnerException?.Message);
+                            }
                         }
                     }
-                }
                     break;
                 case Execute.GetNamespaces:
-                {
+                    {
                         var type = Type.GetTypeFromCLSID(data.CLSID, true);
                         var loadedAssembly = type.Assembly;
                         // ensure we flush out the rubbish that GAC brings ;)
@@ -206,6 +206,8 @@ namespace WarewolfCOMIPC
                         sw.Flush();
                         Console.WriteLine("Sent methods for:" + type.FullName);
                     }
+                    break;
+                default:
                     break;
             }
         }

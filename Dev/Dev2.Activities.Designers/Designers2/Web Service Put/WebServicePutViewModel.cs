@@ -169,11 +169,6 @@ namespace Dev2.Activities.Designers2.Web_Service_Put
 
         IErrorInfo WorstDesignError
         {
-
-            get
-            {
-                return _worstDesignError;
-            }
             set
             {
                 if (_worstDesignError != value)
@@ -193,8 +188,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Put
 
             LabelWidth = 46;
             ButtonDisplayValue = DoneText;
-
-            //ShowLarge = true;
+            
             ThumbVisibility = Visibility.Visible;
             ShowExampleWorkflowLink = Visibility.Collapsed;
 

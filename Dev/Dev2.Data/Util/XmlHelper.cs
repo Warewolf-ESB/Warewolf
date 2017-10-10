@@ -158,16 +158,7 @@ namespace Dev2.Data.Util
                             {
                                 string canidate = result.Substring(start, end - start + myTag.Length);
                                 string tmpResult = canidate.Replace(myTag, "").Replace(toRemove[loc], "");
-                                if (tmpResult.IndexOf("</", StringComparison.Ordinal) >= 0 || tmpResult.IndexOf("/>", StringComparison.Ordinal) >= 0)
-                                {
-                                    // replace just the tags
-                                    result = result.Replace(myTag, "").Replace(toRemove[loc], "");
-                                }
-                                else
-                                {
-                                    // replace any tag and it's contents as long as it is not XML in side
-                                    result = result.Replace(canidate, "");
-                                }
+                                result = tmpResult.IndexOf("</", StringComparison.Ordinal) >= 0 || tmpResult.IndexOf("/>", StringComparison.Ordinal) >= 0 ? result.Replace(myTag, "").Replace(toRemove[loc], "") : result.Replace(canidate, "");
                             }
                         }
                     }

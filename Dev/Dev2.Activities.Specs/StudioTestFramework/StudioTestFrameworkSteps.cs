@@ -3,7 +3,6 @@ using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Configuration;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using System.Windows;
@@ -256,7 +255,6 @@ namespace Dev2.Activities.Specs.TestFramework
 
         private static void AddVariables(string variableName, DataListViewModel datalistViewModel, enDev2ColumnArgumentDirection ioDirection)
         {
-
             if (DataListUtil.IsValueScalar(variableName))
             {
                 var scalarName = DataListUtil.RemoveLanguageBrackets(variableName);
@@ -288,6 +286,7 @@ namespace Dev2.Activities.Specs.TestFramework
                 }
             }
         }
+
         [Given(@"""(.*)"" Tests as")]
         public void GivenTestsAs(string workFlowName, Table table)
         {
@@ -725,6 +724,8 @@ namespace Dev2.Activities.Specs.TestFramework
                     break;
                 case "Workflow changed":
                     popupController.Verify(controller => controller.Show(Warewolf.Studio.Resources.Languages.Core.ServiceTestResourceCategoryChangedMessage, Warewolf.Studio.Resources.Languages.Core.ServiceTestResourceCategoryChangedHeader, It.IsAny<MessageBoxButton>(), It.IsAny<MessageBoxImage>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>()));
+                    break;
+                default:
                     break;
             }
         }
