@@ -720,9 +720,7 @@ namespace Dev2.Studio.ViewModels
             var result = mergeServiceViewModel.ShowMergeDialog();
             if (result == MessageBoxResult.OK)
             {
-                var differentResource = mergeServiceViewModel.SelectedMergeItem as VersionViewModel;
-
-                if (differentResource != null)
+                if (mergeServiceViewModel.SelectedMergeItem is VersionViewModel differentResource)
                 {
                     var workflowXaml = ActiveServer?.ProxyLayer?.GetVersion(differentResource.VersionInfo, differentResource.ResourceId);
                     if (workflowXaml != null)
@@ -759,10 +757,8 @@ namespace Dev2.Studio.ViewModels
                 }
                 else
                 {
-                    OpenMergeConflictsView(currentResource, differentResource.ResourceId, differentResource.Server);
+                    OpenMergeConflictsView(currentResource, mergeServiceViewModel.SelectedMergeItem.ResourceId, mergeServiceViewModel.SelectedMergeItem.Server);
                 }
-
-
             }
         }
 

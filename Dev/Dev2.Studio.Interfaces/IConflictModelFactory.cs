@@ -7,6 +7,7 @@ namespace Dev2.Studio.Interfaces
     public interface IConflictModelFactory
     {
         string WorkflowName { get; set; }
+        string ServerName { get; set; }
         bool IsVariablesChecked { get; set; }
         bool IsWorkflowNameChecked { get; set; }
         ObservableCollection<IMergeToolModel> Children { get; set; }

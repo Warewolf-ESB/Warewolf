@@ -71,7 +71,7 @@
                                     AutomationProperties.AutomationId="UI_CurrentWorkflowHeaderSP_AutoID">
                             <TextBlock x:Name="CurrentWorkflowHeaderText" 
                                        Margin="5" 
-                                       Text="{Binding WorkflowName}" 
+                                       Text="{Binding ServerName}" 
                                        Style="{StaticResource SourceHeader}" 
                                        AutomationProperties.AutomationId="UI_CurrentWorkflowHeaderText_AutoID"/>
                         </StackPanel>
@@ -89,7 +89,7 @@
                                     AutomationProperties.AutomationId="UI_DifferenceWorkflowHeaderSP_AutoID">
                             <TextBlock x:Name="DifferenceWorkflowHeaderText" 
                                        Margin="5" 
-                                       Text="{Binding WorkflowName}" 
+                                       Text="{Binding ServerName}" 
                                        Style="{StaticResource SourceHeader}" 
                                        AutomationProperties.AutomationId="UI_DifferenceWorkflowHeaderText_AutoID"/>
                         </StackPanel>
@@ -522,6 +522,7 @@
                                                                               Content="{Binding CurrentViewModel}"
                                                                               IsEnabled="{Binding IsMergeEnabled}"
 												                              ContentTemplateSelector="{StaticResource ActivitySelector}"
+                                                                              Visibility="{Binding IsMergeVisible, Converter={StaticResource BoolToVisibilityConverter}}"
                                                                               ScrollViewer.CanContentScroll="True"
 												                              ScrollViewer.VerticalScrollBarVisibility="Auto"
 												                              ScrollViewer.HorizontalScrollBarVisibility="Auto"
@@ -549,6 +550,7 @@
                                                                               Content="{Binding DiffViewModel}"
                                                                               IsEnabled="{Binding IsMergeEnabled}"
 												                              ContentTemplateSelector="{StaticResource ActivitySelector}"
+                                                                              Visibility="{Binding IsMergeVisible, Converter={StaticResource BoolToVisibilityConverter}}"
                                                                               ScrollViewer.CanContentScroll="True"
 												                              ScrollViewer.VerticalScrollBarVisibility="Auto"
 												                              ScrollViewer.HorizontalScrollBarVisibility="Auto"

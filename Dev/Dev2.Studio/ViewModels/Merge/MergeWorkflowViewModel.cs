@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Dev2.Common;
 using System.Activities.Presentation.Model;
+using System.Windows;
 using Caliburn.Micro;
 using Dev2.Common.Common;
 
@@ -42,7 +43,6 @@ namespace Dev2.ViewModels.Merge
 
         private void SetupBindings(IContextualResourceModel currentResourceModel, IContextualResourceModel differenceResourceModel, ICompleteConflict firstConflict)
         {
-            var currResourceName = currentResourceModel.Environment.DisplayName;
             if (CurrentConflictModel == null)
             {
                 CurrentConflictModel = new ConflictModelFactory();
@@ -50,12 +50,16 @@ namespace Dev2.ViewModels.Merge
                 {
                     CurrentConflictModel.Model = firstConflict.CurrentViewModel;
                 }
-                CurrentConflictModel.WorkflowName = currResourceName;
+                else
+                {
+                    CurrentConflictModel.Model = new MergeToolModel {IsMergeEnabled = false};
+                }
+                CurrentConflictModel.WorkflowName = currentResourceModel.DisplayName;
+                CurrentConflictModel.ServerName = currentResourceModel.Environment.DisplayName;
                 CurrentConflictModel.GetDataList();
                 CurrentConflictModel.SomethingConflictModelChanged += SourceOnConflictModelChanged;
             }
 
-            var diffResourceName = differenceResourceModel.Environment.DisplayName;
             if (DifferenceConflictModel == null)
             {
                 DifferenceConflictModel = new ConflictModelFactory();
@@ -64,7 +68,8 @@ namespace Dev2.ViewModels.Merge
                 {
                     DifferenceConflictModel.Model = firstConflict.DiffViewModel;
                 }
-                DifferenceConflictModel.WorkflowName = diffResourceName;
+                DifferenceConflictModel.WorkflowName = differenceResourceModel.DisplayName;
+                DifferenceConflictModel.ServerName = differenceResourceModel.Environment.DisplayName;
                 DifferenceConflictModel.GetDataList();
                 DifferenceConflictModel.SomethingConflictModelChanged += SourceOnConflictModelChanged;
             }
@@ -102,6 +107,11 @@ namespace Dev2.ViewModels.Merge
                         child.SomethingModelToolChanged += SourceOnModelToolChanged;
                     }
                 }
+                else
+                {
+                    conflict.CurrentViewModel = EmptyConflictViewModel(currentChange);
+                    conflict.CurrentViewModel.SomethingModelToolChanged += SourceOnModelToolChanged;
+                }
 
                 if (currentChange.differenceNode != null)
                 {
@@ -115,6 +125,11 @@ namespace Dev2.ViewModels.Merge
                         child.SomethingModelToolChanged += SourceOnModelToolChanged;
                     }
                 }
+                else
+                {
+                    conflict.DiffViewModel = EmptyConflictViewModel(currentChange);
+                    conflict.DiffViewModel.SomethingModelToolChanged += SourceOnModelToolChanged;
+                }
 
                 conflict.HasConflict = currentChange.hasConflict;
                 conflict.HasConflict = true;//Tests failing will b resolved once this is removed
@@ -123,6 +138,18 @@ namespace Dev2.ViewModels.Merge
                 AddChildren(conflict, conflict.CurrentViewModel, conflict.DiffViewModel);
                 Conflicts.Add(conflict);
             }
+        }
+
+        private static MergeToolModel EmptyConflictViewModel((Guid uniqueId, IConflictNode currentNode, IConflictNode differenceNode, bool hasConflict) currentChange)
+        {
+            return new MergeToolModel
+            {
+                FlowNode = null,
+                NodeLocation = new Point(),
+                IsMergeEnabled = false,
+                IsMergeVisible = false,
+                UniqueId = currentChange.uniqueId
+            };
         }
 
         public MergeWorkflowViewModel(IServiceDifferenceParser serviceDifferenceParser)
@@ -386,7 +413,10 @@ namespace Dev2.ViewModels.Merge
                     var resourceName = CurrentConflictModel.IsWorkflowNameChecked ? CurrentConflictModel.WorkflowName : DifferenceConflictModel.WorkflowName;
                     _resourceModel.Environment.ExplorerRepository.UpdateManagerProxy.Rename(_resourceModel.ID, resourceName);
                 }
-                _resourceModel.DataList = CurrentConflictModel.IsVariablesChecked ? CurrentConflictModel.DataListViewModel.WriteToResourceModel() : DifferenceConflictModel.DataListViewModel.WriteToResourceModel();
+                if (HasVariablesConflict)
+                {
+                    _resourceModel.DataList = CurrentConflictModel.IsVariablesChecked ? CurrentConflictModel.DataListViewModel.WriteToResourceModel() : DifferenceConflictModel.DataListViewModel.WriteToResourceModel();
+                }
                 _resourceModel.WorkflowXaml = WorkflowDesignerViewModel.ServiceDefinition;
                 _resourceModel.Environment.ResourceRepository.Save(_resourceModel);
             }
@@ -435,7 +465,20 @@ namespace Dev2.ViewModels.Merge
             set
             {
                 _hasMergeStarted = value;
-                CanSave = _hasMergeStarted;
+                var conflict = Conflicts?.LastOrDefault();
+                if (conflict != null)
+                {
+                    var currMerge = conflict.CurrentViewModel.Children ?.Flatten(a => a.Children ?? new ObservableCollection<IMergeToolModel>()).Where(a => a.IsMergeChecked = true);
+                    var diffMerge = conflict.DiffViewModel.Children?.Flatten(a => a.Children ?? new ObservableCollection<IMergeToolModel>()).Where(a => a.IsMergeChecked = true);
+                    if (currMerge != null)
+                    {
+                        CanSave = true;
+                    }
+                    if (diffMerge != null)
+                    {
+                        CanSave = true;
+                    }
+                }
                 if (_hasMergeStarted)
                 {
                     SetDisplayName(_hasMergeStarted);
