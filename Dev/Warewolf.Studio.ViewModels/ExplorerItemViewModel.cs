@@ -30,13 +30,6 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Studio.Core;
 using Warewolf.Studio.Core.Popup;
 
-
-
-
-
-
-
-
 namespace Warewolf.Studio.ViewModels
 {
     public class ExplorerItemViewModel : BindableBase, IExplorerItemViewModel, IEquatable<ExplorerItemViewModel>
@@ -1336,7 +1329,7 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                return _canViewRunAllTests && IsService && !IsSaveDialog;
+                return _canViewRunAllTests && !IsSaveDialog;
             }
             set
             {

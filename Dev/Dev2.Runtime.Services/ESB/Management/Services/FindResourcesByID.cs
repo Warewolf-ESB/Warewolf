@@ -24,11 +24,6 @@ using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    /// <summary>
-    /// Find a resource by its id
-    /// </summary>
-
-
     public class FindResourcesByID : IEsbManagementEndpoint
     {
         public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
@@ -45,8 +40,6 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             try
             {
-
-
                 string guidCsv = string.Empty;
                 string type = null;
 
