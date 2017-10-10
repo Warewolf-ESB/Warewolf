@@ -25,7 +25,7 @@ using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage.Interfaces;
-
+using System.Linq;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
@@ -134,7 +134,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                 var count = dataObject.Environment.GetLength(rs);
                                 var value = count.ToString();
                                 dataObject.Environment.Assign(RecordsLength, value, update);
-                                AddDebugOutputItem(new DebugItemWarewolfAtomResult(value, RecordsLength, ""));
+                                if (!dataObject.Environment.Errors.Any())
+                                {
+                                    AddDebugOutputItem(new DebugItemWarewolfAtomResult(value, RecordsLength, ""));
+                                }
+
                             }
                             else
                             {
