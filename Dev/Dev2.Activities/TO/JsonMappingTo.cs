@@ -41,17 +41,10 @@ namespace Dev2.TO
 			if (DataListUtil.IsFullyEvaluated(sourceName))
 			{
 
-				if (DataListUtil.IsValueRecordset(sourceName) || DataListUtil.IsValueRecordsetWithFields(sourceName))
-				{
-					destName = DataListUtil.ExtractRecordsetNameFromValue(sourceName);
-				}
-				else
-				{
-					destName = DataListUtil.StripBracketsFromValue(sourceName);
-				}
-			}
-			return destName;
-		}
+                destName = DataListUtil.IsValueRecordset(sourceName) || DataListUtil.IsValueRecordsetWithFields(sourceName) ? DataListUtil.ExtractRecordsetNameFromValue(sourceName) : DataListUtil.StripBracketsFromValue(sourceName);
+            }
+            return destName;
+        }
 
 		public string DestinationName
 		{

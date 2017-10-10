@@ -13,7 +13,6 @@ using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Controller;
 using Dev2.Dialogs;
 using Dev2.Runtime.Configuration.ViewModels.Base;
-using Dev2.Studio.Core;
 using Dev2.Studio.Enums;
 using Dev2.Studio.Interfaces;
 using Newtonsoft.Json;
@@ -35,7 +34,7 @@ namespace Dev2.Settings.Perfcounters
         private ObservableCollection<IPerformanceCountersByResource> _resourceCounters;
 
         internal PerfcounterViewModel(IPerformanceCounterTo counters, IServer environment)
-            : this(counters, environment,null)
+            : this(counters, environment, null)
         {
         }
 
@@ -68,7 +67,7 @@ namespace Dev2.Settings.Perfcounters
             return env;
         }
 
-        public PerfcounterViewModel(IPerformanceCounterTo counters, IServer environment, Func<IResourcePickerDialog> createfunc = null)
+        public PerfcounterViewModel(IPerformanceCounterTo counters, IServer environment, Func<IResourcePickerDialog> createfunc)
         {
             VerifyArgument.IsNotNull("counters", counters);
             VerifyArgument.IsNotNull("environment", environment);
@@ -80,7 +79,6 @@ namespace Dev2.Settings.Perfcounters
             ServerCounters = new ObservableCollection<IPerformanceCountersByMachine>();
             ResourceCounters = new ObservableCollection<IPerformanceCountersByResource>();
             InitializeTos(counters);
-
         }
 
         [JsonIgnore]

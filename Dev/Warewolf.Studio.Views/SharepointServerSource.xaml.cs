@@ -52,6 +52,8 @@ namespace Warewolf.Studio.Views
                     return viewModel != null && viewModel.SaveCommand.CanExecute(null);
                 case "Test Connection":
                     return TestConnection.Command.CanExecute(null);
+                default:
+                    break;
             }
             return false;
         }

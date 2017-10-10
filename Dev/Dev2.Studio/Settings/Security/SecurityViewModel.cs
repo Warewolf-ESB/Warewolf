@@ -43,7 +43,7 @@ namespace Dev2.Settings.Security
         readonly IWin32Window _parentWindow;
         readonly IServer _environment;
         bool _isUpdatingHelpText;
-        private static IDomain _domain;
+        private static IDomain _domain = new DomainWrapper();
 
         
         public SecurityViewModel()
@@ -71,9 +71,13 @@ namespace Dev2.Settings.Security
             return env;
         }
 
-        public SecurityViewModel(SecuritySettingsTO securitySettings, DirectoryObjectPickerDialog directoryObjectPicker, IWin32Window parentWindow, IServer environment, Func<IResourcePickerDialog> createfunc = null)
+        public SecurityViewModel(SecuritySettingsTO securitySettings, DirectoryObjectPickerDialog directoryObjectPicker, IWin32Window parentWindow, IServer environment)
+            : this(securitySettings, directoryObjectPicker, parentWindow, environment, null)
         {
+        }
 
+        public SecurityViewModel(SecuritySettingsTO securitySettings, DirectoryObjectPickerDialog directoryObjectPicker, IWin32Window parentWindow, IServer environment, Func<IResourcePickerDialog> createfunc)
+        {
             VerifyArgument.IsNotNull(@"directoryObjectPicker", directoryObjectPicker);
             VerifyArgument.IsNotNull(@"parentWindow", parentWindow);
             VerifyArgument.IsNotNull(@"environment", environment);
@@ -96,7 +100,6 @@ namespace Dev2.Settings.Security
             InitializeHelp();
 
             InitializePermissions(securitySettings?.WindowsGroupPermissions);
-            _domain = new DomainWrapper();
         }
 
         public ObservableCollection<WindowsGroupPermission> ServerPermissions
@@ -469,6 +472,8 @@ namespace Dev2.Settings.Security
                     case HelpType.Resource:
                         IsServerHelpVisible = false;
                         HelpText = Warewolf.Studio.Resources.Languages.HelpText.SettingsSecurityResourceHelpResource;
+                        break;
+                    default:
                         break;
                 }
             }

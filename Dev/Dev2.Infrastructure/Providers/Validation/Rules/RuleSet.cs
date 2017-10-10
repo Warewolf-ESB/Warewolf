@@ -18,7 +18,12 @@ namespace Dev2.Providers.Validation.Rules
 {
     public class RuleSet : IRuleSet
     {
-        public RuleSet(IEnumerable<RuleBase> rules = null)
+        public RuleSet()
+            : this(null)
+        {
+        }
+
+        public RuleSet(IEnumerable<RuleBase> rules)
         {
             Rules = new List<IRuleBase>();
             if(rules != null)

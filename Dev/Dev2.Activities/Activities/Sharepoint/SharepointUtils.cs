@@ -23,7 +23,9 @@ namespace Dev2.Activities.Sharepoint
             return sharepointReadListTos.Where(to => !string.IsNullOrEmpty(to.VariableName));
         }
 
-        public CamlQuery BuildCamlQuery(IExecutionEnvironment env, List<SharepointSearchTo> sharepointSearchTos, List<ISharepointFieldTo> fields, int update, bool requireAllCriteriaToMatch = true)
+        public CamlQuery BuildCamlQuery(IExecutionEnvironment env, List<SharepointSearchTo> sharepointSearchTos, List<ISharepointFieldTo> fields, int update) => BuildCamlQuery(env, sharepointSearchTos, fields, update, true);
+
+        public CamlQuery BuildCamlQuery(IExecutionEnvironment env, List<SharepointSearchTo> sharepointSearchTos, List<ISharepointFieldTo> fields, int update, bool requireAllCriteriaToMatch)
         {
             var camlQuery = CamlQuery.CreateAllItemsQuery();
             var validFilters = new List<SharepointSearchTo>();

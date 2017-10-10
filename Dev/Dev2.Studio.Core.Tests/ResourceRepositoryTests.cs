@@ -80,7 +80,7 @@ namespace BusinessDesignStudio.Unit.Tests
         #endregion Variables
 
         #region Additional result attributes
-        //Use TestInitialize to run code before running each result 
+
         [TestInitialize]
         public void MyTestInitialize()
         {
@@ -97,7 +97,7 @@ namespace BusinessDesignStudio.Unit.Tests
             _resourceModel.Setup(model => model.Category).Returns("MyFolder\\Resource");
             _resourceModel.Setup(res => res.ID).Returns(_resourceGuid);
             _resourceModel.Setup(res => res.WorkflowXaml).Returns(new StringBuilder("OriginalXaml"));
-            _resourceModel.Setup(model => model.ToServiceDefinition(It.IsAny<bool>())).Returns(new StringBuilder("SomeXaml"));
+            _resourceModel.Setup(model => model.ToServiceDefinition()).Returns(new StringBuilder("SomeXaml"));
             _environmentConnection.Setup(channel => channel.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder("<x><text>Im Happy</text></x>")).Verifiable();
             _environmentConnection.Setup(channel => channel.ServerID).Returns(_serverID);
             _environmentConnection.Setup(channel => channel.WorkspaceID).Returns(_workspaceID);
@@ -110,7 +110,7 @@ namespace BusinessDesignStudio.Unit.Tests
             _environmentModel.Setup(e => e.Connection).Returns(_environmentConnection.Object);
             _environmentModel.Setup(e => e.AuthorizationService).Returns(_authService.Object);
 
-            _repo = new ResourceRepository(_environmentModel.Object) { IsLoaded = true }; // Prevent clearing of internal list and call to connection!
+            _repo = new ResourceRepository(_environmentModel.Object) { IsLoaded = true };
         }
 
         #endregion
@@ -188,15 +188,10 @@ namespace BusinessDesignStudio.Unit.Tests
         #endregion
 
         #region Load Tests
-
-        /// <summary>
-        /// Test case for creating a resource and saving the resource model in resource factory
-        /// </summary>
+        
         [TestMethod]
         public void Load_CreateAndLoadResource_SingleResource_Expected_ResourceReturned()
         {
-            //Arrange
-            Setup();
             var conn = SetupConnection();
 
             var resourceData = BuildResourceObjectFromGuids(new[] { _resourceGuid }, "Server");
@@ -232,23 +227,17 @@ namespace BusinessDesignStudio.Unit.Tests
             var resourceModel = new Mock<IResourceModel>();
             resourceModel.SetupGet(p => p.ResourceName).Returns("My WF");
             resourceModel.SetupGet(p => p.Category).Returns("Root");
-            resourceModel.Setup(model => model.ToServiceDefinition(It.IsAny<bool>())).Returns(new StringBuilder("SomeXaml"));
+            resourceModel.Setup(model => model.ToServiceDefinition()).Returns(new StringBuilder("SomeXaml"));
             _repo.Save(resourceModel.Object);
             _repo.Load();
             int resources = _repo.All().Count;
             //Assert
             Assert.IsTrue(resources.Equals(1));
         }
-
-        /// <summary>
-        /// Test case for creating a resource and saving the resource model in resource factory
-        /// </summary>
+        
         [TestMethod]
         public void ForceLoadSuccessfullLoadExpectIsLoadedTrue()
         {
-            //Arrange
-            Setup();
-
             AppSettings.LocalHost = "https://localhost:3242/";
             var msg = new ExecuteMessage();
             var payload = JsonConvert.SerializeObject(msg);
@@ -284,21 +273,16 @@ namespace BusinessDesignStudio.Unit.Tests
             var resourceModel = new Mock<IResourceModel>();
             resourceModel.SetupGet(p => p.ResourceName).Returns("My WF");
             resourceModel.SetupGet(p => p.Category).Returns("Root");
-            resourceModel.Setup(model => model.ToServiceDefinition(It.IsAny<bool>())).Returns(new StringBuilder("SomeXaml"));
+            resourceModel.Setup(model => model.ToServiceDefinition()).Returns(new StringBuilder("SomeXaml"));
             _repo.Save(resourceModel.Object);
             _repo.ForceLoad();
 
             Assert.IsTrue(_repo.IsLoaded);
         }
-
-        /// <summary>
-        /// Test case for creating a resource and saving the resource model in resource factory
-        /// </summary>
+        
         [TestMethod]
         public void ForceLoadWithExceptionOnLoadExpectsIsLoadedFalse()
         {
-            //Arrange
-            Setup();
             var conn = SetupConnection();
 
             var msg = new ExecuteMessage();
@@ -321,22 +305,17 @@ namespace BusinessDesignStudio.Unit.Tests
             var resourceModel = new Mock<IResourceModel>();
             resourceModel.SetupGet(p => p.ResourceName).Returns("My WF");
             resourceModel.SetupGet(p => p.Category).Returns("Root");
-            resourceModel.Setup(model => model.ToServiceDefinition(It.IsAny<bool>())).Returns(new StringBuilder("SomeXaml"));
+            resourceModel.Setup(model => model.ToServiceDefinition()).Returns(new StringBuilder("SomeXaml"));
             _repo.Save(resourceModel.Object);
             _repo.ForceLoad();
 
             //Assert
             Assert.IsFalse(_repo.IsLoaded);
         }
-
-        /// <summary>
-        /// Test case for creating a resource and saving the resource model in resource factory
-        /// </summary>
+        
         [TestMethod]
         public void ForceLoadWith2WorkflowsExpectResourcesLoaded()
         {
-            //Arrange
-            Setup();
             var conn = SetupConnection();
 
             var guid1 = Guid.NewGuid();
@@ -375,7 +354,7 @@ namespace BusinessDesignStudio.Unit.Tests
             var resourceModel = new Mock<IResourceModel>();
             resourceModel.SetupGet(p => p.ResourceName).Returns("My WF");
             resourceModel.SetupGet(p => p.Category).Returns("Root");
-            resourceModel.Setup(model => model.ToServiceDefinition(It.IsAny<bool>())).Returns(new StringBuilder("SomeXaml"));
+            resourceModel.Setup(model => model.ToServiceDefinition()).Returns(new StringBuilder("SomeXaml"));
             _repo.Save(resourceModel.Object);
             _repo.ForceLoad();
             int resources = _repo.All().Count;
@@ -406,12 +385,8 @@ namespace BusinessDesignStudio.Unit.Tests
         [TestMethod]
         public void Load_MultipleResourceLoad_SourceServiceType_Expected_AllResourcesReturned()
         {
-            //Arrange
-            Setup();
             var model = new Mock<IResourceModel>();
             model.Setup(c => c.ResourceType).Returns(ResourceType.Source);
-            //model.SetupGet(p => p.ResourceName).Returns("My WF");
-            //model.SetupGet(p => p.Category).Returns("Root");
             var conn = SetupConnection();
 
             var resourceData = BuildResourceObjectFromGuids(new[] { _resourceGuid }, "Server");
@@ -447,8 +422,8 @@ namespace BusinessDesignStudio.Unit.Tests
             var resourceModel = new Mock<IResourceModel>();
             resourceModel.SetupGet(p => p.ResourceName).Returns("My WF");
             resourceModel.SetupGet(p => p.Category).Returns("Root");
-            resourceModel.Setup(p => p.ToServiceDefinition(It.IsAny<bool>())).Returns(new StringBuilder("SomeXaml"));
-            model.Setup(p => p.ToServiceDefinition(It.IsAny<bool>())).Returns(new StringBuilder("SomeXaml"));
+            resourceModel.Setup(p => p.ToServiceDefinition()).Returns(new StringBuilder("SomeXaml"));
+            model.Setup(p => p.ToServiceDefinition()).Returns(new StringBuilder("SomeXaml"));
             _repo.Save(resourceModel.Object);
             _repo.Save(model.Object);
             _repo.Load();
@@ -483,8 +458,6 @@ namespace BusinessDesignStudio.Unit.Tests
         [TestMethod]
         public void UpdateResource()
         {
-            //Arrange
-            Setup();
             var model = new Mock<IResourceModel>();
             model.Setup(c => c.ResourceName).Returns("TestName");
 
@@ -496,7 +469,7 @@ namespace BusinessDesignStudio.Unit.Tests
                 .Returns(() => Task.FromResult(new StringBuilder(payload)));
             _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
 
-            model.Setup(p => p.ToServiceDefinition(It.IsAny<bool>())).Returns(new StringBuilder("SomeXaml"));
+            model.Setup(p => p.ToServiceDefinition()).Returns(new StringBuilder("SomeXaml"));
             _repo.Save(model.Object);
             _repo.Load();
             model.Setup(c => c.ResourceName).Returns("NewName");
@@ -532,7 +505,7 @@ namespace BusinessDesignStudio.Unit.Tests
             var resourceModel = new Mock<IResourceModel>();
             resourceModel.SetupGet(p => p.ResourceName).Returns("My WF");
             resourceModel.SetupGet(p => p.Category).Returns("Root");
-            resourceModel.Setup(model => model.ToServiceDefinition(It.IsAny<bool>())).Returns(new StringBuilder("SomeXaml"));
+            resourceModel.Setup(model => model.ToServiceDefinition()).Returns(new StringBuilder("SomeXaml"));
             //------------Execute Test---------------------------
             repo.Save(resourceModel.Object);
             //------------Assert Results-------------------------
@@ -560,7 +533,7 @@ namespace BusinessDesignStudio.Unit.Tests
             var resourceModel = new Mock<IResourceModel>();
             resourceModel.SetupGet(p => p.ResourceName).Returns("My WF");
             resourceModel.SetupGet(p => p.Category).Returns("Root");
-            resourceModel.Setup(model => model.ToServiceDefinition(It.IsAny<bool>())).Returns(new StringBuilder("SomeXaml"));
+            resourceModel.Setup(model => model.ToServiceDefinition()).Returns(new StringBuilder("SomeXaml"));
             //------------Execute Test---------------------------
             repo.Save(resourceModel.Object);
             //------------Assert Results-------------------------
@@ -588,7 +561,7 @@ namespace BusinessDesignStudio.Unit.Tests
             var resourceModel = new Mock<IResourceModel>();
             resourceModel.SetupGet(p => p.ResourceName).Returns("Unsaved");
             resourceModel.SetupGet(p => p.Category).Returns("Unassigned");
-            resourceModel.Setup(model => model.ToServiceDefinition(It.IsAny<bool>())).Returns(new StringBuilder("SomeXaml"));
+            resourceModel.Setup(model => model.ToServiceDefinition()).Returns(new StringBuilder("SomeXaml"));
             //------------Execute Test---------------------------
             repo.Save(resourceModel.Object);
             //------------Assert Results-------------------------
@@ -1072,9 +1045,6 @@ namespace BusinessDesignStudio.Unit.Tests
         [TestMethod]
         public void CreateResourceNoAddressEnvironmentConnection()
         {
-            //Arrange
-            Setup();
-
             ExecuteMessage msg = new ExecuteMessage();
             var exePayload = JsonConvert.SerializeObject(msg);
 
@@ -1837,7 +1807,6 @@ namespace BusinessDesignStudio.Unit.Tests
         public void HydrateResourceHydratesResourceType()
         {
             //------------Setup for test--------------------------
-            Setup();
             var conn = SetupConnection();
             var newGuid = Guid.NewGuid();
 
@@ -1875,7 +1844,7 @@ namespace BusinessDesignStudio.Unit.Tests
             var resourceModel = new Mock<IResourceModel>();
             resourceModel.SetupGet(p => p.ResourceName).Returns("My WF");
             resourceModel.SetupGet(p => p.Category).Returns("Root");
-            resourceModel.Setup(model => model.ToServiceDefinition(It.IsAny<bool>())).Returns(new StringBuilder("SomeXaml"));
+            resourceModel.Setup(model => model.ToServiceDefinition()).Returns(new StringBuilder("SomeXaml"));
             _repo.Save(resourceModel.Object);
             _repo.ForceLoad();
             var resources = _repo.All().Cast<IContextualResourceModel>();
@@ -1893,7 +1862,6 @@ namespace BusinessDesignStudio.Unit.Tests
         public void ResourceRepository_HydrateResourceModel_ResourceRepositoryUnitTest_ResourceErrors_Hydrated()
         {
             //------------Setup for test--------------------------
-            Setup();
             var conn = SetupConnection();
 
             var id = Guid.NewGuid();
@@ -1944,7 +1912,7 @@ namespace BusinessDesignStudio.Unit.Tests
             var resourceModel = new Mock<IResourceModel>();
             resourceModel.SetupGet(p => p.ResourceName).Returns("My WF");
             resourceModel.SetupGet(p => p.Category).Returns("Root");
-            resourceModel.Setup(model => model.ToServiceDefinition(It.IsAny<bool>())).Returns(new StringBuilder("SomeXaml"));
+            resourceModel.Setup(model => model.ToServiceDefinition()).Returns(new StringBuilder("SomeXaml"));
             _repo.Save(resourceModel.Object);
             _repo.ForceLoad();
             var resources = _repo.All();

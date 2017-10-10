@@ -150,6 +150,10 @@ namespace Dev2.ViewModels
                                 ViewModel.Save();
                             }
                             break;
+                        case MessageBoxResult.OK:
+                            break;
+                        default:
+                            break;
                     }
                 }
             }

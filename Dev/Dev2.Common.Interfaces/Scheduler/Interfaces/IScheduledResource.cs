@@ -85,7 +85,7 @@ namespace Dev2.Common.Interfaces.Scheduler.Interfaces
 
         bool IsNew { get; set; }
 
-        bool IsNewItem { get; set; }
+        bool IsNewItem { get; }
         string NameForDisplay { get; }
 
    }

@@ -417,7 +417,7 @@ namespace Dev2.Core.Tests.IntellisenseProvider
         public void QueryList(string searchPath)
         {
             QueryCollection = new List<string>();
-            switch(searchPath)
+            switch (searchPath)
             {
                 case @"\\RSAKLFSVRTFSBLD\DevelopmentDropOff\Runt":
                     AddToList(1);
@@ -451,6 +451,8 @@ namespace Dev2.Core.Tests.IntellisenseProvider
                     break;
                 case "":
                     AddToList(8);
+                    break;
+                default:
                     break;
             }
         }

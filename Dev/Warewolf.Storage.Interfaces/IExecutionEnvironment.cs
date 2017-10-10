@@ -7,7 +7,11 @@ namespace Warewolf.Storage.Interfaces
 {
     public interface IExecutionEnvironment
     {
-        CommonFunctions.WarewolfEvalResult Eval(string exp, int update, bool throwsifnotexists = false,bool shouldEscape= false);
+        CommonFunctions.WarewolfEvalResult Eval(string exp, int update);
+
+        CommonFunctions.WarewolfEvalResult Eval(string exp, int update, bool throwsifnotexists);
+
+        CommonFunctions.WarewolfEvalResult Eval(string exp, int update, bool throwsifnotexists, bool shouldEscape);
 
         CommonFunctions.WarewolfEvalResult EvalStrict(string exp, int update);
 
@@ -41,7 +45,9 @@ namespace Warewolf.Storage.Interfaces
 
         string ToStar(string expression);
 
-        IEnumerable<DataStorage.WarewolfAtom> EvalAsList(string expression, int update, bool throwsifnotexists = false);
+        IEnumerable<DataStorage.WarewolfAtom> EvalAsList(string expression, int update);
+
+        IEnumerable<DataStorage.WarewolfAtom> EvalAsList(string expression, int update, bool throwsifnotexists);
 
         IEnumerable<int> EvalWhere(string expression, Func<DataStorage.WarewolfAtom, bool> clause, int update);
 
@@ -64,7 +70,9 @@ namespace Warewolf.Storage.Interfaces
 
         void AssignUnique(IEnumerable<string> distinctList, IEnumerable<string> valueList, IEnumerable<string> resList, int update);
 
-        CommonFunctions.WarewolfEvalResult EvalForJson(string exp, bool shouldEscape = false);
+        CommonFunctions.WarewolfEvalResult EvalForJson(string exp);
+
+        CommonFunctions.WarewolfEvalResult EvalForJson(string exp, bool shouldEscape);
 
         void AddToJsonObjects(string exp, JContainer jContainer);
 

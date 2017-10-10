@@ -37,8 +37,13 @@ namespace Dev2
         {
         }
 
+        public BaseConvertTO(string fromExpression, string fromType, string toType, string toExpression, int indexNumber)
+            : this(fromExpression, fromType, toType, toExpression, indexNumber, false)
+        {
+        }
+
         public BaseConvertTO(string fromExpression, string fromType, string toType, string toExpression, int indexNumber,
-            bool inserted = false)
+            bool inserted)
         {
             Inserted = inserted;
             ToType = string.IsNullOrEmpty(toType) ? "Base 64" : toType;

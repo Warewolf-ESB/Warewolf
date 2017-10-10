@@ -6,7 +6,8 @@ namespace Dev2.Studio.Interfaces
 {
     public interface IAuthorizeCommand : ICommand
     {
-        void UpdateContext(IServer environment, IContextualResourceModel resourceModel = null);
+        void UpdateContext(IServer environment);
+        void UpdateContext(IServer environment, IContextualResourceModel resourceModel);
         AuthorizationContext AuthorizationContext { get; set; }
         IAuthorizationService AuthorizationService { get;}
     }

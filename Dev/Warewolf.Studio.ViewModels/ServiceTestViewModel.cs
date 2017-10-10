@@ -62,16 +62,15 @@ namespace Warewolf.Studio.ViewModels
         private IWorkflowDesignerViewModel _workflowDesignerViewModel;
 
         private static readonly IEnumerable<Type> Types = AppDomain.CurrentDomain.GetAssemblies().SelectMany(x => x.GetTypes());
-
-
-        public ServiceTestViewModel(IContextualResourceModel resourceModel, IAsyncWorker asyncWorker, IEventAggregator eventPublisher, IExternalProcessExecutor processExecutor, IWorkflowDesignerViewModel workflowDesignerViewModel, IMessage msg = null)
+        
+        public ServiceTestViewModel(IContextualResourceModel resourceModel, IAsyncWorker asyncWorker, IEventAggregator eventPublisher, IExternalProcessExecutor processExecutor, IWorkflowDesignerViewModel workflowDesignerViewModel) 
+            : this(resourceModel, asyncWorker, eventPublisher, processExecutor, workflowDesignerViewModel, null)
         {
 
-            if (resourceModel == null)
-            {
-                throw new ArgumentNullException(nameof(resourceModel));
-            }
+        }
 
+        public ServiceTestViewModel(IContextualResourceModel resourceModel, IAsyncWorker asyncWorker, IEventAggregator eventPublisher, IExternalProcessExecutor processExecutor, IWorkflowDesignerViewModel workflowDesignerViewModel, IMessage msg)
+        {
             _processExecutor = processExecutor;
             AsyncWorker = asyncWorker;
             EventPublisher = eventPublisher;
@@ -1803,14 +1802,7 @@ namespace Warewolf.Studio.ViewModels
         {
             if (SelectedServiceTest != null)
             {
-                if (SelectedServiceTest.NewTest)
-                {
-                    SelectedServiceTest.DuplicateTestTooltip = Resources.Languages.Tooltips.ServiceTestNewTestDisabledDuplicateSelectedTestTooltip;
-                }
-                else
-                {
-                    SelectedServiceTest.DuplicateTestTooltip = CanDuplicateTest ? Resources.Languages.Tooltips.ServiceTestDuplicateSelectedTestTooltip : Resources.Languages.Tooltips.ServiceTestDisabledDuplicateSelectedTestTooltip;
-                }
+                SelectedServiceTest.DuplicateTestTooltip = SelectedServiceTest.NewTest ? Resources.Languages.Tooltips.ServiceTestNewTestDisabledDuplicateSelectedTestTooltip : CanDuplicateTest ? Resources.Languages.Tooltips.ServiceTestDuplicateSelectedTestTooltip : Resources.Languages.Tooltips.ServiceTestDisabledDuplicateSelectedTestTooltip;
             }
         }
 
@@ -1967,7 +1959,6 @@ namespace Warewolf.Studio.ViewModels
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
-                // MarkTestsAsDirty(true);
             }
             finally
             {

@@ -1,4 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
 using Microsoft.Practices.Prism.Mvvm;
 
 namespace Dev2.Common.Interfaces

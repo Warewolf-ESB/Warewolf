@@ -368,7 +368,8 @@ namespace Warewolf.Studio.ViewModels
                         IsBetweenCriteriaVisible = true;
                         IsSinglematchCriteriaVisible = false;
                         break;
-
+                    default:
+                        break;
                 }
             }
         }
@@ -398,6 +399,6 @@ namespace Warewolf.Studio.ViewModels
         [JsonIgnore]
         public Action<string> AddStepOutputRow { get; set; }
 
-       
+
     }
 }

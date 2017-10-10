@@ -70,6 +70,8 @@ namespace Gma.DataStructures.StringSearch
                 case MatchKind.Partial:
                     SplitTwo(zipResult, value);
                     break;
+                default:
+                    break;
             }
         }
 

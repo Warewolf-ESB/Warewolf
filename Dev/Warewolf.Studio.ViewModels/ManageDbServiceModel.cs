@@ -66,6 +66,36 @@ namespace Warewolf.Studio.ViewModels
                 case enSourceType.ODBC:
                     _shell.NewOdbcSource(string.Empty);
                     break;
+                case enSourceType.WebService:
+                    break;
+                case enSourceType.DynamicService:
+                    break;
+                case enSourceType.ManagementDynamicService:
+                    break;
+                case enSourceType.PluginSource:
+                    break;
+                case enSourceType.Unknown:
+                    break;
+                case enSourceType.Dev2Server:
+                    break;
+                case enSourceType.EmailSource:
+                    break;
+                case enSourceType.WebSource:
+                    break;
+                case enSourceType.OauthSource:
+                    break;
+                case enSourceType.SharepointServerSource:
+                    break;
+                case enSourceType.RabbitMQSource:
+                    break;
+                case enSourceType.ExchangeSource:
+                    break;
+                case enSourceType.WcfSource:
+                    break;
+                case enSourceType.ComPluginSource:
+                    break;
+                default:
+                    break;
             }
         }
 
@@ -73,20 +103,50 @@ namespace Warewolf.Studio.ViewModels
         {
             switch (type)
             {
-                    case enSourceType.SqlDatabase:
+                case enSourceType.SqlDatabase:
                     _shell.EditSqlServerResource(selectedSource);
                     break;
-                    case enSourceType.MySqlDatabase:
+                case enSourceType.MySqlDatabase:
                     _shell.EditMySqlResource(selectedSource);
                     break;
-                    case enSourceType.PostgreSQL:
+                case enSourceType.PostgreSQL:
                     _shell.EditPostgreSqlResource(selectedSource);
                     break;
-                    case enSourceType.Oracle:
+                case enSourceType.Oracle:
                     _shell.EditOracleResource(selectedSource);
                     break;
-                    case enSourceType.ODBC:
+                case enSourceType.ODBC:
                     _shell.EditOdbcResource(selectedSource);
+                    break;
+                case enSourceType.WebService:
+                    break;
+                case enSourceType.DynamicService:
+                    break;
+                case enSourceType.ManagementDynamicService:
+                    break;
+                case enSourceType.PluginSource:
+                    break;
+                case enSourceType.Unknown:
+                    break;
+                case enSourceType.Dev2Server:
+                    break;
+                case enSourceType.EmailSource:
+                    break;
+                case enSourceType.WebSource:
+                    break;
+                case enSourceType.OauthSource:
+                    break;
+                case enSourceType.SharepointServerSource:
+                    break;
+                case enSourceType.RabbitMQSource:
+                    break;
+                case enSourceType.ExchangeSource:
+                    break;
+                case enSourceType.WcfSource:
+                    break;
+                case enSourceType.ComPluginSource:
+                    break;
+                default:
                     break;
             }
         }

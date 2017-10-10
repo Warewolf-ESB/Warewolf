@@ -70,6 +70,8 @@ namespace Dev2.Activities.Designers2.Core
                 case 1:
                     AddDto(2);
                     break;
+                default:
+                    break;
             }
 
             AddBlankRow();

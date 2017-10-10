@@ -14,7 +14,12 @@ namespace Dev2.Activities.Debug
         readonly string _variable;
         private readonly bool _mockSelected;
 
-        public DebugItemWarewolfRecordset(DataStorage.WarewolfRecordset warewolfRecordset, string variable, string labelText, string operand, bool mockSelected = false)
+        public DebugItemWarewolfRecordset(DataStorage.WarewolfRecordset warewolfRecordset, string variable, string labelText, string operand)
+            : this(warewolfRecordset, variable, labelText, operand, false)
+        {
+        }
+
+        public DebugItemWarewolfRecordset(DataStorage.WarewolfRecordset warewolfRecordset, string variable, string labelText, string operand, bool mockSelected)
         {
             _warewolfRecordset = warewolfRecordset;
             _labelText = labelText;

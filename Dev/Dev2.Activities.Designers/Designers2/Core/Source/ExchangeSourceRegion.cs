@@ -89,10 +89,6 @@ namespace Dev2.Activities.Designers2.Core.Source
 
         Guid SourceId
         {
-            get
-            {
-                return _sourceId;
-            }
             set
             {
                 _sourceId = value;

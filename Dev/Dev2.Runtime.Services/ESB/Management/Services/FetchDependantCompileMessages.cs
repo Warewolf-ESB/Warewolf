@@ -10,7 +10,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
@@ -55,9 +54,6 @@ namespace Dev2.Runtime.ESB.Management.Services
                 workspaceId = tmp.ToString();
             }
             values.TryGetValue("FilterList", out tmp);
-            if(tmp != null)
-            {
-            }
 
             if(string.IsNullOrEmpty(serviceId) || string.IsNullOrEmpty(workspaceId))
             {

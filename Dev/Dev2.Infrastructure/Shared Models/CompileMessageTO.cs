@@ -68,7 +68,7 @@ namespace Dev2.Data.ServiceModel.Messages
 
         public FixType ToFixType()
         {
-            switch(MessageType)
+            switch (MessageType)
             {
                 case CompileMessageType.MappingChange:
                     return FixType.ReloadMapping;
@@ -80,6 +80,8 @@ namespace Dev2.Data.ServiceModel.Messages
                     break;
 
                 case CompileMessageType.ResourceSaved:
+                    break;
+                default:
                     break;
             }
             return FixType.None;

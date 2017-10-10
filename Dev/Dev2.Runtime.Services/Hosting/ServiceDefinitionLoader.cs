@@ -25,12 +25,6 @@ namespace Dev2.Runtime.Hosting
 
     public class ServiceMetaData
     {
-        /// <summary>
-        /// Extracts the meta data.
-        /// </summary>
-        /// <param name="xe">The executable.</param>
-        /// <param name="obj">The object.</param>
-        /// <returns></returns>
         public static ServiceMetaData ExtractMetaData(XElement xe, ref DynamicServiceObjectBase obj)
         {
             ServiceMetaData result = new ServiceMetaData();
@@ -58,14 +52,9 @@ namespace Dev2.Runtime.Hosting
             return result;
         }
 
-        /// <summary>
-        /// Extracts the value.
-        /// </summary>
-        /// <param name="xe">The executable.</param>
-        /// <param name="elementName">Name of the element.</param>
-        /// <param name="useElementSafe">if set to <c>true</c> [use element safe].</param>
-        /// <returns></returns>
-        public static string ExtractValue(XElement xe, string elementName,bool useElementSafe = false)
+        public static string ExtractValue(XElement xe, string elementName) => ExtractValue(xe, elementName, false);
+        
+        public static string ExtractValue(XElement xe, string elementName,bool useElementSafe)
         {
             var tmp = xe.Element(elementName);
 

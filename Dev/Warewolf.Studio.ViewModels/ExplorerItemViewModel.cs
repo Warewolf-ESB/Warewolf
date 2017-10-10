@@ -676,8 +676,9 @@ namespace Warewolf.Studio.ViewModels
             _explorerItemViewModelCommandController.DeleteCommand(Parent, _explorerRepository, this, _popupController, Server);
         }
 
+        public void SetPermissions(Permissions explorerItemPermissions) => SetPermissions(explorerItemPermissions, false);
 
-        public void SetPermissions(Permissions explorerItemPermissions, bool isDeploy = false)
+        public void SetPermissions(Permissions explorerItemPermissions, bool isDeploy)
         {
 
             SetPermission(explorerItemPermissions, isDeploy);
@@ -698,7 +699,8 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public void SetPermission(Permissions permission, bool isDeploy = false)
+        public void SetPermission(Permissions permission) => SetPermission(permission, false);
+        public void SetPermission(Permissions permission, bool isDeploy)
         {
             SetNonePermissions();
 
@@ -1126,14 +1128,7 @@ namespace Warewolf.Studio.ViewModels
                     IsResourceCheckedEnabled = CanDeploy;
                     _isResource = isResourceChecked.HasValue && !IsFolder && isResourceChecked.Value;
                 }
-                if (isResourceChecked != null && (bool)isResourceChecked)
-                {
-                    IsSelected = true;
-                }
-                else
-                {
-                    IsSelected = false;
-                }
+                IsSelected = isResourceChecked != null && (bool)isResourceChecked ? true : false;
                 SelectAction?.Invoke(this);
                 OnPropertyChanged(() => IsResourceChecked);
             }
@@ -1295,14 +1290,7 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _canRename = value;
-                if (_isFolder)
-                {
-                    RenameTooltip = _canRename ? Resources.Languages.Tooltips.RenameFolderTooltip : Resources.Languages.Tooltips.NoPermissionsToolTip;
-                }
-                else
-                {
-                    RenameTooltip = _canRename ? Resources.Languages.Tooltips.RenameItemTooltip : Resources.Languages.Tooltips.NoPermissionsToolTip;
-                }
+                RenameTooltip = _isFolder ? _canRename ? Resources.Languages.Tooltips.RenameFolderTooltip : Resources.Languages.Tooltips.NoPermissionsToolTip : _canRename ? Resources.Languages.Tooltips.RenameItemTooltip : Resources.Languages.Tooltips.NoPermissionsToolTip;
                 OnPropertyChanged(() => CanRename);
             }
         }
@@ -1350,14 +1338,7 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _canDelete = value;
-                if (_isFolder)
-                {
-                    DeleteTooltip = _canDelete ? Resources.Languages.Tooltips.DeleteFolderTooltip : Resources.Languages.Tooltips.NoPermissionsToolTip;
-                }
-                else
-                {
-                    DeleteTooltip = _canDelete ? Resources.Languages.Tooltips.DeleteItemTooltip : Resources.Languages.Tooltips.NoPermissionsToolTip;
-                }
+                DeleteTooltip = _isFolder ? _canDelete ? Resources.Languages.Tooltips.DeleteFolderTooltip : Resources.Languages.Tooltips.NoPermissionsToolTip : _canDelete ? Resources.Languages.Tooltips.DeleteItemTooltip : Resources.Languages.Tooltips.NoPermissionsToolTip;
 
                 OnPropertyChanged(() => CanDelete);
             }

@@ -11,7 +11,6 @@
 using System;
 using System.Collections.Specialized;
 using System.Configuration;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Security.Cryptography;
 using System.Xml.Linq;
@@ -45,7 +44,12 @@ namespace Dev2.Runtime.Security
             }
         }
 
-        public HostSecureConfig(NameValueCollection settings, bool shouldProtectConfig = true)
+        public HostSecureConfig(NameValueCollection settings)
+            : this(settings, true)
+        {
+        }
+
+        public HostSecureConfig(NameValueCollection settings, bool shouldProtectConfig)
         {
             Initialize(settings, shouldProtectConfig);
         }

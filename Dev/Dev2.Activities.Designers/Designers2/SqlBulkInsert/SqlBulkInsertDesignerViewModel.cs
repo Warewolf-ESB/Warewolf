@@ -43,7 +43,7 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
 {
     public class SqlBulkInsertDesignerViewModel : ActivityCollectionDesignerViewModel<DataColumnMapping>
     {
-        public Func<string> GetDatalistString = () => DataListSingleton.ActiveDataList.Resource.DataList;
+        internal Func<string> GetDatalistString = () => DataListSingleton.ActiveDataList.Resource.DataList;
 
         readonly IEventAggregator _eventPublisher;
         readonly IServer _server;
@@ -394,17 +394,10 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
             var selectedDatabase = SelectedDatabase;
             _asyncWorker.Start(() => GetDatabaseTables(selectedDatabase), tableList =>
             {
-                if (tableList.HasErrors)
-                {
-                    Errors = new List<IActionableErrorInfo>
+                Errors = tableList.HasErrors ? new List<IActionableErrorInfo>
                     {
                         new ActionableErrorInfo(() => IsSelectedTableFocused = true) { ErrorType = ErrorType.Critical, Message = tableList.Errors }
-                    };
-                }
-                else
-                {
-                    Errors = null;
-                }
+                    } : null;
                 foreach (var table in tableList.Items.OrderBy(t => t.TableName))
                 {
                     Tables.Add(table);
@@ -433,17 +426,10 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
             _asyncWorker.Start(() => GetDatabaseTableColumns(selectedDatabase, selectedTable), columnList =>
             
             {
-                if (columnList.HasErrors)
-                {
-                    Errors = new List<IActionableErrorInfo>
+                Errors = columnList.HasErrors ? new List<IActionableErrorInfo>
                     {
                         new ActionableErrorInfo(() => IsSelectedTableFocused = true) { ErrorType = ErrorType.Critical, Message = columnList.Errors }
-                    };
-                }
-                else
-                {
-                    Errors = null;
-                }
+                    } : null;
                 foreach (var mapping in columnList.Items.Select(column => new DataColumnMapping { OutputColumn = column }))
                 {
                     var mapping1 = mapping;
@@ -684,6 +670,8 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
             {
                 case "InputColumn":
                     ruleSet.Add(new IsValidExpressionRule(() => datalist, GetDatalistString(), "1"));
+                    break;
+                default:
                     break;
             }
             return ruleSet;

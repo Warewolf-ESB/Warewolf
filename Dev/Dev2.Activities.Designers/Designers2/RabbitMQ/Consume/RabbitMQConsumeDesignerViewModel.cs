@@ -264,6 +264,8 @@ namespace Dev2.Activities.Designers2.RabbitMQ.Consume
                 case "Prefetch":
                     ruleSet.Add(new IsStringEmptyOrWhiteSpaceRule(() => Prefetch));
                     break;
+                default:
+                    break;
             }
             return ruleSet;
         }

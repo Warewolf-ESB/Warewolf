@@ -65,18 +65,11 @@ namespace Dev2.Studio.Core.Activities.Services
 
         public DesignerManagementService(IContextualResourceModel rootModel, IResourceRepository resourceRepository)
         {
-            if(rootModel == null)
-            {
-                throw new ArgumentNullException(nameof(rootModel));
-            }
-            if(resourceRepository == null)
+            if (resourceRepository == null)
             {
                 throw new ArgumentNullException(nameof(resourceRepository));
             }
-            //VerifyArgument.IsNotNull("rootModel", rootModel);
-            //VerifyArgument.IsNotNull("resourceRepository", resourceRepository);
-
-            _rootModel = rootModel;
+            _rootModel = rootModel ?? throw new ArgumentNullException(nameof(rootModel));
 
             EventPublishers.Aggregator.Subscribe(this);
         }

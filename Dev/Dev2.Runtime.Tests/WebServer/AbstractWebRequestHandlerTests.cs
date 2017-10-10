@@ -457,7 +457,7 @@ namespace Dev2.Tests.Runtime.WebServer
 
             resource.Setup(resource1 => resource1.ResourceID).Returns(resourceId);
             resource.Setup(resource1 => resource1.ResourceName).Returns("a");
-            resourceCatalog.Setup(catalog => catalog.GetResource(It.IsAny<Guid>(), "a", It.IsAny<string>(), It.IsAny<string>())).Returns(resource.Object);
+            resourceCatalog.Setup(catalog => catalog.GetResource(It.IsAny<Guid>(), "a")).Returns(resource.Object);
             var wRepo = new Mock<IWorkspaceRepository>(); wRepo.SetupGet(repository => repository.ServerWorkspace).Returns(new Workspace(Guid.Empty)); var handlerMock = new AbstractWebRequestHandlerMock(dataObject.Object, authorizationService.Object, resourceCatalog.Object, testCatalog.Object, wRepo.Object);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------

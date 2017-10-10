@@ -337,14 +337,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                 foreach (var arg in args.AllKeys)
                 {
                     var txt = args[arg];
-                    if (txt.IsXml())
-                    {
-                        results.Add(arg + "=" + string.Format(GlobalConstants.XMLPrefix + "{0}", Convert.ToBase64String(Encoding.UTF8.GetBytes(txt))));
-                    }
-                    else
-                    {
-                        results.Add($"{arg}={txt}");
-                    }
+                    results.Add(txt.IsXml() ? arg + "=" + string.Format(GlobalConstants.XMLPrefix + "{0}", Convert.ToBase64String(Encoding.UTF8.GetBytes(txt))) : $"{arg}={txt}");
                 }
 
                 return url + string.Join("&", results);

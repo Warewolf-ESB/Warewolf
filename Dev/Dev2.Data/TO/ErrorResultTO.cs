@@ -117,7 +117,8 @@ namespace Dev2.Data.TO
         /// Makes the error collection data list insert ready.
         /// </summary>
         /// <returns></returns>
-        public string MakeDataListReady(bool asXml = true)
+        public string MakeDataListReady() => MakeDataListReady(true);
+        public string MakeDataListReady(bool asXml)
         {
             StringBuilder result = new StringBuilder();
 
