@@ -169,8 +169,8 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="TrieNet, Version=1.0.2.16285, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\TrieNet.1.0.2.16285\lib\net461\TrieNet.dll</HintPath>
+    <Reference Include="TrieNet, Version=1.0.3.26316, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\TrieNet.1.0.3.26316\lib\net461\TrieNet.dll</HintPath>
     </Reference>
     <Reference Include="Vestris.ResourceLib">
       <HintPath>..\Binaries\Vestris.ResourceLib.dll</HintPath>
