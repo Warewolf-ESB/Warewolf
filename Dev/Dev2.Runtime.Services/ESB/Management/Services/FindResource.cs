@@ -10,7 +10,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using Dev2.Common;
@@ -49,8 +48,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 string resourceName = null;
                 string type = null;
                 string resourceId = null;
-                StringBuilder tmp;
-                values.TryGetValue("ResourceName", out tmp);
+                values.TryGetValue("ResourceName", out StringBuilder tmp);
                 if (tmp != null)
                 {
                     resourceName = tmp.ToString();
@@ -67,15 +65,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 }
            
                 List<Resource> resources;
-                if (resourceId == null || resourceId == "*")
-                {
-                    
-                    resources = ResourceCatalog.Instance.GetResourceList(theWorkspace.ID, new Dictionary<string, string> { { "resourceName", resourceName }, { "type", type } }).ToList();
-                }
-                else
-                {
-                    resources = ResourceCatalog.Instance.GetResourceList(theWorkspace.ID, new Dictionary<string, string> { { "guidCsv", resourceId }, { "type", type } }).ToList();
-                }
+                resources = resourceId == null || resourceId == "*" ? ResourceCatalog.Instance.GetResourceList(theWorkspace.ID, new Dictionary<string, string> { { "resourceName", resourceName }, { "type", type } }).ToList() : ResourceCatalog.Instance.GetResourceList(theWorkspace.ID, new Dictionary<string, string> { { "guidCsv", resourceId }, { "type", type } }).ToList();
                 Dev2Logger.Info("Find Resource. ResourceName: " + resourceName, GlobalConstants.WarewolfInfo);
 
 

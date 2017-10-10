@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Interfaces;
@@ -36,8 +35,7 @@ namespace Dev2.Tests.Runtime.WebServer
             //---------------Assert Precondition----------------
 
             //---------------Execute Test ----------------------
-            IResource outResource;
-            dataObject.Object.SetResourceNameAndId(resourceCatalog.Object,ResourceName, out outResource);
+            dataObject.Object.SetResourceNameAndId(resourceCatalog.Object, ResourceName, out IResource outResource);
             //---------------Test Result -----------------------
             resourceCatalog.Verify(catalog => catalog.GetResource(It.IsAny<Guid>(), objSourceResourceID));
             dataObject.VerifySet(o => o.ResourceID = resourceId, Times.Exactly(1));

@@ -10,7 +10,7 @@ namespace Dev2.Data.Util
 {
     internal class CommonRecordSetUtil : ICommonRecordSetUtil
     {
-        private Dev2DataLanguageParser _dev2DataLanguageParser;
+        private readonly Dev2DataLanguageParser _dev2DataLanguageParser;
         const string EmptyBrackets = "()";
         public CommonRecordSetUtil()
         {
@@ -86,8 +86,7 @@ namespace Dev2.Data.Util
             }
             else
             {
-                int convertIntTest;
-                if (Int32.TryParse(idx, out convertIntTest))
+                if (Int32.TryParse(idx, out int convertIntTest))
                 {
                     result = enRecordsetIndexType.Numeric;
                 }
@@ -236,11 +235,16 @@ namespace Dev2.Data.Util
             var firstOpenBracket = expression.IndexOf(DataListUtil.RecordsetIndexOpeningBracket, StringComparison.Ordinal);
             var firstCloseBracket = expression.IndexOf(DataListUtil.RecordsetIndexClosingBracket, StringComparison.Ordinal);            
             if (firstOpenBracket > firstCloseBracket)
+            {
                 return EmptyBrackets;
+            }
+
             var index = ExtractIndexRegionFromRecordset(expression);
 
             if (string.IsNullOrEmpty(index))
+            {
                 return expression;
+            }
 
             string extractIndexRegionFromRecordset = $"({index})";
             return string.IsNullOrEmpty(extractIndexRegionFromRecordset) ? expression :
@@ -295,14 +299,7 @@ namespace Dev2.Data.Util
             else
             {
                 IDataListVerifyPart part;
-                if (t1.Name.Contains('(') && t1.Name.Contains(')'))
-                {
-                    part = IntellisenseFactory.CreateDataListValidationRecordsetPart(string.Empty, t1.Name, true);
-                }
-                else
-                {
-                    part = IntellisenseFactory.CreateDataListValidationScalarPart(t1.Name, t1.Description);
-                }
+                part = t1.Name.Contains('(') && t1.Name.Contains(')') ? IntellisenseFactory.CreateDataListValidationRecordsetPart(string.Empty, t1.Name, true) : IntellisenseFactory.CreateDataListValidationScalarPart(t1.Name, t1.Description);
 
                 result.Add(IntellisenseFactory.CreateSelectableResult(payload.StartIndex, payload.EndIndex, part, part.Description));
             }
@@ -313,15 +310,7 @@ namespace Dev2.Data.Util
             // only process if it is an open region
             // we need to add all children
             string idx;
-            if (!payload.IsLeaf && !payload.Child.HangingOpen)
-            {
-                idx = DataListUtil.OpeningSquareBrackets + payload.Child.Payload + DataListUtil.ClosingSquareBrackets;
-            }
-            else
-            {
-                // we need to extract the index
-                idx = DataListUtil.ExtractIndexRegionFromRecordset(rawSearch);
-            }
+            idx = !payload.IsLeaf && !payload.Child.HangingOpen ? DataListUtil.OpeningSquareBrackets + payload.Child.Payload + DataListUtil.ClosingSquareBrackets : DataListUtil.ExtractIndexRegionFromRecordset(rawSearch);
             // add general closed recordset
             string rsName = search;
             if (idx == string.Empty)

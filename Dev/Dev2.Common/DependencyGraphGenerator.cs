@@ -11,7 +11,6 @@
 using Dev2.Common.Common;
 using Dev2.Common.DependencyVisualization;
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Windows;
@@ -21,7 +20,7 @@ using Warewolf.Resource.Errors;
 
 namespace Dev2.Common
 {
-  
+
     /// <summary>
     /// Used to generate dependency graphs.
     /// Extracted From View Model ;)
@@ -140,13 +139,10 @@ namespace Dev2.Common
             const int Distance = 300;
             var centerPoint = new Point(centerX, centerY);
 
-            double x;
-            double y;
-
             var tmpX = nodeElm.AttributeSafe("x");
             var tmpY = nodeElm.AttributeSafe("y");
-            double.TryParse(tmpX, out x);
-            double.TryParse(tmpY, out y);
+            double.TryParse(tmpX, out double x);
+            double.TryParse(tmpY, out double y);
 
             
             var id = nodeElm.Attribute("id").Value;

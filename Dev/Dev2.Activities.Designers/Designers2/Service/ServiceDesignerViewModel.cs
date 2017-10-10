@@ -163,7 +163,9 @@ namespace Dev2.Activities.Designers2.Service
                 var servUri = new Uri(environmentModel.Connection.WebServerUri.ToString());
                 var host = servUri.Host;
                 if (!host.Equals(FriendlySourceName, StringComparison.InvariantCultureIgnoreCase))
+                {
                     FriendlySourceName = host;
+                }
             }
 
             InitializeProperties();
@@ -335,7 +337,11 @@ namespace Dev2.Activities.Designers2.Service
         public bool IsDeleted
         {
             get { return (bool)GetValue(IsDeletedProperty); }
-            set { if (!(bool)GetValue(IsDeletedProperty)) SetValue(IsDeletedProperty, value); }
+            set { if (!(bool)GetValue(IsDeletedProperty))
+                {
+                    SetValue(IsDeletedProperty, value);
+                }
+            }
         }
 
         public static readonly DependencyProperty IsDeletedProperty =
@@ -572,8 +578,7 @@ namespace Dev2.Activities.Designers2.Service
                     srcId = workflowXml.ExtractXmlAttributeFromUnsafeXml("SourceID=\"");
                 }
 
-                Guid sourceId;
-                if (Guid.TryParse(srcId, out sourceId))
+                if (Guid.TryParse(srcId, out Guid sourceId))
                 {
                     SourceId = sourceId;
                     var sourceResource = _environment.ResourceRepository.LoadContextualResourceModel(sourceId);
@@ -637,7 +642,28 @@ namespace Dev2.Activities.Designers2.Service
                 case Common.Interfaces.Core.DynamicServices.enActionType.RemoteService:
                     ResourceType = "Server";
                     return "RemoteWarewolf-32";
-
+                case Common.Interfaces.Core.DynamicServices.enActionType.BizRule:
+                    break;
+                case Common.Interfaces.Core.DynamicServices.enActionType.InvokeStoredProc:
+                    break;
+                case Common.Interfaces.Core.DynamicServices.enActionType.InvokeWebService:
+                    break;
+                case Common.Interfaces.Core.DynamicServices.enActionType.InvokeDynamicService:
+                    break;
+                case Common.Interfaces.Core.DynamicServices.enActionType.InvokeManagementDynamicService:
+                    break;
+                case Common.Interfaces.Core.DynamicServices.enActionType.InvokeServiceMethod:
+                    break;
+                case Common.Interfaces.Core.DynamicServices.enActionType.Plugin:
+                    break;
+                case Common.Interfaces.Core.DynamicServices.enActionType.ComPlugin:
+                    break;
+                case Common.Interfaces.Core.DynamicServices.enActionType.Switch:
+                    break;
+                case Common.Interfaces.Core.DynamicServices.enActionType.Unknown:
+                    break;
+                default:
+                    break;
             }
             return "ToolService-32";
         }

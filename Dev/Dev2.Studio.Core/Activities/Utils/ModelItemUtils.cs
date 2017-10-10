@@ -12,7 +12,6 @@ using System;
 using System.Activities;
 using System.Activities.Presentation;
 using System.Activities.Presentation.Model;
-using System.Diagnostics.CodeAnalysis;
 
 
 namespace Dev2.Studio.Core.Activities.Utils
@@ -80,8 +79,7 @@ namespace Dev2.Studio.Core.Activities.Utils
             {
                 if(modelProperty.PropertyType == typeof(InArgument<T>))
                 {
-                    var arg = modelProperty.ComputedValue as InArgument<T>;
-                    if(arg != null)
+                    if (modelProperty.ComputedValue is InArgument<T> arg)
                     {
                         value = arg.Expression.ToString();
                     }
@@ -95,8 +93,7 @@ namespace Dev2.Studio.Core.Activities.Utils
                 {
                     if(typeof(T) == typeof(Guid))
                     {
-                        Guid guid;
-                        Guid.TryParse(value.ToString(), out guid);
+                        Guid.TryParse(value.ToString(), out Guid guid);
                         value = guid;
                     }
                 }
@@ -118,8 +115,7 @@ namespace Dev2.Studio.Core.Activities.Utils
         public static Guid GetUniqueID(ModelItem modelItem)
         {
             var instanceIDStr = GetProperty("UniqueID", modelItem) as string;
-            Guid instanceID;
-            Guid.TryParse(instanceIDStr, out instanceID);
+            Guid.TryParse(instanceIDStr, out Guid instanceID);
             return instanceID;
         }
 

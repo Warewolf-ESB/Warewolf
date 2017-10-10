@@ -212,15 +212,14 @@ namespace Unlimited.Framework.Converters.Graph.Ouput
                 if (!string.IsNullOrWhiteSpace(path.OutputExpression))
                 {
                     string key = GetOutputDescriptionKey(path.OutputExpression);
-                    IList<IPath> dataSourceShapePaths;
 
-                    if (groupedPaths.TryGetValue(key, out dataSourceShapePaths))
+                    if (groupedPaths.TryGetValue(key, out IList<IPath> dataSourceShapePaths))
                     {
                         dataSourceShapePaths.Add(path);
                     }
                     else
                     {
-                        dataSourceShapePaths = new List<IPath> {path};
+                        dataSourceShapePaths = new List<IPath> { path };
                         groupedPaths.Add(key, dataSourceShapePaths);
                     }
                 }
@@ -245,14 +244,7 @@ namespace Unlimited.Framework.Converters.Graph.Ouput
 
             string key;
 
-            if (parts[0].Option.IsScalar)
-            {
-                key = parts[0].Option.Field;
-            }
-            else
-            {
-                key = parts[0].Option.Recordset + "()";
-            }
+            key = parts[0].Option.IsScalar ? parts[0].Option.Field : parts[0].Option.Recordset + "()";
 
             return key;
         }

@@ -38,7 +38,11 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset.SqlBulkInsert
 
         public SqlBulkInsertSteps(ScenarioContext scenarioContext)
         {
-            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            if (scenarioContext == null)
+            {
+                throw new ArgumentNullException("scenarioContext");
+            }
+
             this.scenarioContext = scenarioContext;
         }
 
@@ -129,11 +133,14 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset.SqlBulkInsert
             }
         }
 
-        [AfterScenario("Import data into Table Batch size is 1")]
+        [AfterScenario("Database")]
         public void DeleteTestItem()
         {
-            var tableNameUniqueNameGuid = ScenarioContext.Current.Get<string>("tableNameUniqueNameGuid");
-            DeleteIsolatedSQLTable(tableNameUniqueNameGuid);
+            if (scenarioContext.ScenarioInfo.Title.Replace(' ', '_') == "Import_data_into_Table_Batch_size_is_1")
+            {
+                var tableNameUniqueNameGuid = ScenarioContext.Current.Get<string>("tableNameUniqueNameGuid");
+                DeleteIsolatedSQLTable(tableNameUniqueNameGuid);
+            }
         }
 
         private void DeleteIsolatedSQLTable(string tableNameUniqueNameGuid)
@@ -142,12 +149,12 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset.SqlBulkInsert
             using (var connection = new SqlConnection(dbSource.ConnectionString))
             {
                 connection.Open();
-                var q = "drop table SqlBulkInsertSpecFlowTestTableForeign_for_" + scenarioContext.ScenarioInfo.Title.Replace(' ', '_') + "_" + tableNameUniqueNameGuid;           
+                var q = "drop table SqlBulkInsertSpecFlowTestTable_for_" + scenarioContext.ScenarioInfo.Title.Replace(' ', '_') + "_" + tableNameUniqueNameGuid;
                 using (var cmd = new SqlCommand(q, connection))
                 {
                     cmd.ExecuteNonQuery();
                 }
-                q = "drop table SqlBulkInsertSpecFlowTestTable_for_" + scenarioContext.ScenarioInfo.Title.Replace(' ', '_') + "_" + tableNameUniqueNameGuid;
+                q = "drop table SqlBulkInsertSpecFlowTestTableForeign_for_" + scenarioContext.ScenarioInfo.Title.Replace(' ', '_') + "_" + tableNameUniqueNameGuid;           
                 using (var cmd = new SqlCommand(q, connection))
                 {
                     cmd.ExecuteNonQuery();
@@ -220,18 +227,12 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset.SqlBulkInsert
         [When(@"the tool is executed")]
         public void WhenTheToolIsExecuted()
         {
-            bool checkConstraints;
-            scenarioContext.TryGetValue("checkConstraints", out checkConstraints);
-            bool keepIdentity;
-            scenarioContext.TryGetValue("keepIdentity", out keepIdentity);
-            bool ignoreBlankRows;
-            scenarioContext.TryGetValue("ignoreBlankRows", out ignoreBlankRows);
-            bool fireTriggers;
-            scenarioContext.TryGetValue("fireTriggers", out fireTriggers);
-            string batchSize;
-            scenarioContext.TryGetValue("batchSize", out batchSize);
-            string timeout;
-            scenarioContext.TryGetValue("timeout", out timeout);
+            scenarioContext.TryGetValue("checkConstraints", out bool checkConstraints);
+            scenarioContext.TryGetValue("keepIdentity", out bool keepIdentity);
+            scenarioContext.TryGetValue("ignoreBlankRows", out bool ignoreBlankRows);
+            scenarioContext.TryGetValue("fireTriggers", out bool fireTriggers);
+            scenarioContext.TryGetValue("batchSize", out string batchSize);
+            scenarioContext.TryGetValue("timeout", out string timeout);
 
             var sqlBulkInsert = scenarioContext.Get<DsfSqlBulkInsertActivity>("activity");
 

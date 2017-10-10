@@ -32,7 +32,10 @@ namespace Dev2.Runtime.ResourceCatalogImpl
         }
 
         #region Implementation of IResourceDeleteProvider
-        public ResourceCatalogResult DeleteResource(Guid workspaceID, string resourceName, string type, bool deleteVersions = true)
+
+        public ResourceCatalogResult DeleteResource(Guid workspaceID, string resourceName, string type) => DeleteResource(workspaceID, resourceName, type, true);
+
+        public ResourceCatalogResult DeleteResource(Guid workspaceID, string resourceName, string type, bool deleteVersions)
         {
             var @lock = Common.GetWorkspaceLock(workspaceID);
             lock (@lock)
@@ -70,7 +73,9 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             }
         }
 
-        public ResourceCatalogResult DeleteResource(Guid workspaceID, Guid resourceID, string type, bool deleteVersions = true)
+        public ResourceCatalogResult DeleteResource(Guid workspaceID, Guid resourceID, string type) => DeleteResource(workspaceID, resourceID, type, true);
+
+        public ResourceCatalogResult DeleteResource(Guid workspaceID, Guid resourceID, string type, bool deleteVersions)
         {
             try
             {
@@ -128,11 +133,13 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             IResource resource = resources.FirstOrDefault();
 
             if (workspaceID == Guid.Empty && deleteVersions)
+            {
                 if (resource != null)
                 {
                     var explorerItems = _serverVersionRepository.GetVersions(resource.ResourceID);
                     explorerItems?.ForEach(a => _serverVersionRepository.DeleteVersion(resource.ResourceID, a.VersionInfo.VersionNumber, resource.GetResourcePath(workspaceID)));
                 }
+            }
 
             workspaceResources.Remove(resource);
             if (resource != null && _dev2FileWrapper.Exists(resource.FilePath))

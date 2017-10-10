@@ -15,7 +15,12 @@ namespace Dev2.Providers.Validation.Rules
 {
     public class IsValidEmailAddressRule : IsValidCollectionRule
     {
-        public IsValidEmailAddressRule(Func<string> getValue, char splitToken = ';')
+        public IsValidEmailAddressRule(Func<string> getValue)
+            : this(getValue, ';')
+        {
+        }
+
+        public IsValidEmailAddressRule(Func<string> getValue, char splitToken)
             : base(getValue, "email address", splitToken)
         {
         }

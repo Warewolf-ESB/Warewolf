@@ -98,8 +98,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 var warewolfListIterator = new WarewolfListIterator();
                 var calc = String.Format(GlobalConstants.CalculateTextConvertFormat, input);
                 var warewolfEvalResult = dataObject.Environment.Eval(calc, update);
-                var scalarResult = warewolfEvalResult as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
-                if(scalarResult != null && scalarResult.Item.IsNothing)
+                if (warewolfEvalResult is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult scalarResult && scalarResult.Item.IsNothing)
                 {
                     throw new NullValueInVariableException(ErrorResource.VariableInputError, input);
                 }
@@ -152,7 +151,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         private void AddDebugInputItem(IExecutionEnvironment environment,int update)
         {
-            AddDebugInputItem(new DebugEvalResult(Expression, "fx =", environment, update,false,true));
+            AddDebugInputItem(new DebugEvalResult(Expression, "fx =", environment, update, false, true));
         }
 
         private void AddDebugOutputItem(string expression, IExecutionEnvironment environment, int update)

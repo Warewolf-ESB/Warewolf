@@ -12,7 +12,6 @@ using System;
 using System.Activities;
 using System.Activities.XamlIntegration;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -219,7 +218,10 @@ namespace Dev2.DynamicServices.Objects
                         result = new PooledServiceActivity(_generation, activity);
                     }
                 }
-                else result = _workflowPool.Dequeue();
+                else
+                {
+                    result = _workflowPool.Dequeue();
+                }
             }
 
             return result;
@@ -251,7 +253,26 @@ namespace Dev2.DynamicServices.Objects
 
                 case enActionType.Workflow:
                     break;
-
+                case enActionType.BizRule:
+                    break;
+                case enActionType.InvokeStoredProc:
+                    break;
+                case enActionType.InvokeWebService:
+                    break;
+                case enActionType.InvokeManagementDynamicService:
+                    break;
+                case enActionType.InvokeServiceMethod:
+                    break;
+                case enActionType.Plugin:
+                    break;
+                case enActionType.ComPlugin:
+                    break;
+                case enActionType.Switch:
+                    break;
+                case enActionType.Unknown:
+                    break;
+                case enActionType.RemoteService:
+                    break;
                 default:
                     //A Source Name is required except in the case of Management Dynamic Services
                     if (string.IsNullOrEmpty(SourceName) && ActionType != enActionType.InvokeManagementDynamicService)
@@ -273,7 +294,7 @@ namespace Dev2.DynamicServices.Objects
             return IsCompiled;
         }
 
-    
+
         public void SetActivity(Activity activity)
         {
             _workflowActivity = activity;

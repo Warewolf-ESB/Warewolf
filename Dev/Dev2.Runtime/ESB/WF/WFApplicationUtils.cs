@@ -32,12 +32,13 @@ namespace Dev2.Runtime.ESB.WF
         readonly Action<DebugOutputBase, DebugItem> _add;
 
         public WfApplicationUtils()
-
         {
             _add = AddDebugItem;
         }
 
-        public void DispatchDebugState(IDSFDataObject dataObject, StateType stateType, bool hasErrors, string existingErrors, out ErrorResultTO errors, DateTime? workflowStartTime = null, bool interrogateInputs = false, bool interrogateOutputs = false, bool durationVisible = true)
+        public void DispatchDebugState(IDSFDataObject dataObject, StateType stateType, bool hasErrors, string existingErrors, out ErrorResultTO errors) => DispatchDebugState(dataObject, stateType, hasErrors, existingErrors, out errors, null, false, false, true);
+        public void DispatchDebugState(IDSFDataObject dataObject, StateType stateType, bool hasErrors, string existingErrors, out ErrorResultTO errors, DateTime? workflowStartTime, bool interrogateInputs, bool interrogateOutputs) => DispatchDebugState(dataObject, stateType, hasErrors, existingErrors, out errors, workflowStartTime, interrogateInputs, interrogateOutputs, true);
+        public void DispatchDebugState(IDSFDataObject dataObject, StateType stateType, bool hasErrors, string existingErrors, out ErrorResultTO errors, DateTime? workflowStartTime, bool interrogateInputs, bool interrogateOutputs, bool durationVisible)
         {
             errors = new ErrorResultTO();
             if (dataObject != null)
@@ -49,8 +50,7 @@ namespace Dev2.Runtime.ESB.WF
 
         public DebugState GetDebugState(IDSFDataObject dataObject, StateType stateType, bool hasErrors, string existingErrors, ErrorResultTO errors, DateTime? workflowStartTime, bool interrogateInputs, bool interrogateOutputs, bool durationVisible)
         {
-            Guid parentInstanceId;
-            Guid.TryParse(dataObject.ParentInstanceID, out parentInstanceId);
+            Guid.TryParse(dataObject.ParentInstanceID, out Guid parentInstanceId);
             var hasError = dataObject.Environment.HasErrors();
             var errorMessage = string.Empty;
             if (hasError)
@@ -66,13 +66,14 @@ namespace Dev2.Runtime.ESB.WF
                 existingErrors += Environment.NewLine + errorMessage;
             }
             var name = "localhost";
-            Guid remoteID;
-            var hasRemote = Guid.TryParse(dataObject.RemoteInvokerID, out remoteID);
+            var hasRemote = Guid.TryParse(dataObject.RemoteInvokerID, out Guid remoteID);
             if (hasRemote)
             {
                 var res = _lazyCat.GetResource(GlobalConstants.ServerWorkspaceID, remoteID);
                 if (res != null)
+                {
                     name = remoteID != Guid.Empty ? _lazyCat.GetResource(GlobalConstants.ServerWorkspaceID, remoteID).ResourceName : "localhost";
+                }
             }
             var debugState = BuildDebugState(dataObject, stateType, hasErrors, existingErrors, workflowStartTime, durationVisible, parentInstanceId, name, hasError);
 
@@ -84,18 +85,16 @@ namespace Dev2.Runtime.ESB.WF
             }
             if (interrogateInputs)
             {
-                ErrorResultTO invokeErrors;
                 var defs = DataListUtil.GenerateDefsFromDataListForDebug(FindServiceShape(dataObject.WorkspaceID, dataObject.ResourceID), enDev2ColumnArgumentDirection.Input);
-                var inputs = GetDebugValues(defs, dataObject, out invokeErrors);
+                var inputs = GetDebugValues(defs, dataObject, out ErrorResultTO invokeErrors);
                 errors.MergeErrors(invokeErrors);
                 debugState.Inputs.AddRange(inputs);
             }
             if (interrogateOutputs)
             {
-                ErrorResultTO invokeErrors;
 
                 var defs = DataListUtil.GenerateDefsFromDataListForDebug(FindServiceShape(dataObject.WorkspaceID, dataObject.ResourceID), enDev2ColumnArgumentDirection.Output);
-                var outputs = GetDebugValues(defs, dataObject, out invokeErrors);
+                var outputs = GetDebugValues(defs, dataObject, out ErrorResultTO invokeErrors);
                 errors.MergeErrors(invokeErrors);
                 debugState.Outputs.AddRange(outputs);
             }
@@ -189,7 +188,9 @@ namespace Dev2.Runtime.ESB.WF
             {
                 var defn = GetVariableName(dev2Definition);
                 if (added.Any(a => a == defn))
+                {
                     continue;
+                }
 
                 added.Add(defn);
                 var itemToAdd = new DebugItem();

@@ -59,10 +59,9 @@ namespace Dev2.Tests.Runtime.ESB
             //------------Setup for test--------------------------
             var container = CreateWebServiceContainer(WebServiceWithInputsXml, WebSourceWithInputsXml, WebServiceWithInputsResponseXml.ToString(), true);
 
-            ErrorResultTO errors;
 
             //------------Execute Test---------------------------
-            container.Execute(out errors, 0);
+            container.Execute(out ErrorResultTO errors, 0);
 
             //------------Assert Results-------------------------
             Assert.AreEqual(5, errors.FetchErrors().Count);

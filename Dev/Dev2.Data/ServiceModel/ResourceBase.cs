@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -48,8 +47,7 @@ namespace Dev2.Runtime.ServiceModel.Data
                 throw new ArgumentNullException(nameof(xml));
             }
 
-            Guid resourceId;
-            if (!Guid.TryParse(xml.AttributeSafe("ID"), out resourceId))
+            if (!Guid.TryParse(xml.AttributeSafe("ID"), out Guid resourceId))
             {
                 // This is here for legacy XML!
                 resourceId = Guid.NewGuid();
@@ -91,8 +89,7 @@ namespace Dev2.Runtime.ServiceModel.Data
                 #endregion
             }
             var isValidStr = xml.AttributeSafe("IsValid");
-            bool isValid;
-            if (bool.TryParse(isValidStr, out isValid))
+            if (bool.TryParse(isValidStr, out bool isValid))
             {
                 IsValid = isValid;
             }
@@ -184,7 +181,9 @@ namespace Dev2.Runtime.ServiceModel.Data
             set
             {
                 if (value != null)
+                {
                     _versionInfo = value;
+                }
             }
         }
 
@@ -199,8 +198,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             if (xElement != null)
             {
                 var tmp = xElement.Value;
-                bool isNew;
-                Boolean.TryParse(tmp, out isNew);
+                Boolean.TryParse(tmp, out bool isNew);
                 IsNewResource = isNew;
             }
         }
@@ -229,16 +227,12 @@ namespace Dev2.Runtime.ServiceModel.Data
                 var errorMessageElements = errorMessagesElement.Elements("ErrorMessage");
                 foreach (var errorMessageElement in errorMessageElements)
                 {
-                    FixType fixType;
                     var fixTypeString = errorMessageElement.AttributeSafe("FixType");
-                    Enum.TryParse(fixTypeString, true, out fixType);
-                    ErrorType errorType;
+                    Enum.TryParse(fixTypeString, true, out FixType fixType);
                     var errorTypeString = errorMessageElement.AttributeSafe("ErrorType");
-                    Enum.TryParse(errorTypeString, true, out errorType);
-                    Guid instanceId;
-                    Guid.TryParse(errorMessageElement.AttributeSafe("InstanceID"), out instanceId);
-                    CompileMessageType messageType;
-                    Enum.TryParse(errorMessageElement.AttributeSafe("MessageType"), true, out messageType);
+                    Enum.TryParse(errorTypeString, true, out ErrorType errorType);
+                    Guid.TryParse(errorMessageElement.AttributeSafe("InstanceID"), out Guid instanceId);
+                    Enum.TryParse(errorMessageElement.AttributeSafe("MessageType"), true, out CompileMessageType messageType);
                     Errors.Add(new ErrorInfo
                     {
                         InstanceID = instanceId,
@@ -254,8 +248,7 @@ namespace Dev2.Runtime.ServiceModel.Data
 
         private string GetResourceTypeFromString(string actionTypeStr)
         {
-            enActionType actionType;
-            if (Enum.TryParse(actionTypeStr, out actionType))
+            if (Enum.TryParse(actionTypeStr, out enActionType actionType))
             {
                 switch (actionType)
                 {
@@ -267,6 +260,24 @@ namespace Dev2.Runtime.ServiceModel.Data
                         return "PluginService";
                     case enActionType.Workflow:
                         return "WorkflowService";
+                    case enActionType.BizRule:
+                        break;
+                    case enActionType.InvokeDynamicService:
+                        break;
+                    case enActionType.InvokeManagementDynamicService:
+                        break;
+                    case enActionType.InvokeServiceMethod:
+                        break;
+                    case enActionType.ComPlugin:
+                        break;
+                    case enActionType.Switch:
+                        break;
+                    case enActionType.Unknown:
+                        break;
+                    case enActionType.RemoteService:
+                        break;
+                    default:
+                        break;
                 }
             }
             return "Unknown";
@@ -317,7 +328,11 @@ namespace Dev2.Runtime.ServiceModel.Data
 
         private XElement WriteErrors()
         {
-            if (Errors == null || Errors.Count == 0) return null;
+            if (Errors == null || Errors.Count == 0)
+            {
+                return null;
+            }
+
             XElement xElement = null;
             foreach (var errorInfo in Errors)
             {
@@ -336,14 +351,7 @@ namespace Dev2.Runtime.ServiceModel.Data
         {
             return JsonConvert.SerializeObject(this);
         }
-
-        /// <summary>
-        /// Indicates whether the current object is equal to another object of the same type.
-        /// </summary>
-        /// <returns>
-        /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
-        /// </returns>
-        /// <param name="other">An object to compare with this object.</param>
+        
         public bool Equals(IResource other)
         {
             if (ReferenceEquals(null, other))
@@ -354,16 +362,9 @@ namespace Dev2.Runtime.ServiceModel.Data
             {
                 return true;
             }
-            return ResourceID.Equals(other.ResourceID); //&& Version.Equals(other.Version);
+            return ResourceID.Equals(other.ResourceID);
         }
-
-        /// <summary>
-        /// Determines whether the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>.
-        /// </summary>
-        /// <returns>
-        /// true if the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>; otherwise, false.
-        /// </returns>
-        /// <param name="obj">The <see cref="T:System.Object"/> to compare with the current <see cref="T:System.Object"/>. </param>
+        
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj))
@@ -380,13 +381,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             }
             return Equals((IResource)obj);
         }
-
-        /// <summary>
-        /// Serves as a hash function for a particular type. 
-        /// </summary>
-        /// <returns>
-        /// A hash code for the current <see cref="T:System.Object"/>.
-        /// </returns>
+        
         public override int GetHashCode()
         {
             unchecked
@@ -404,13 +399,7 @@ namespace Dev2.Runtime.ServiceModel.Data
         {
             return !Equals(left, right);
         }
-
-        /// <summary>
-        /// If this instance <see cref="IsUpgraded"/> then sets the ID, Version, Name and ResourceType attributes on the given XML.
-        /// </summary>
-        /// <param name="xml">The XML to be upgraded.</param>
-        /// <param name="resource"></param>
-        /// <returns>The XML with the additional attributes set.</returns>
+        
         public XElement UpgradeXml(XElement xml, IResource resource)
         {
             if (IsUpgraded)
@@ -498,10 +487,8 @@ namespace Dev2.Runtime.ServiceModel.Data
                             }
                             var resourceIdAsString = element.AttributeSafe(resourceType == "WorkflowService" ? "ResourceID" : "SourceId");
                             var resourceName = element.AttributeSafe("ServiceName");
-                            Guid uniqueId;
-                            Guid.TryParse(uniqueIdAsString, out uniqueId);
-                            Guid resId;
-                            Guid.TryParse(resourceIdAsString, out resId);
+                            Guid.TryParse(uniqueIdAsString, out Guid uniqueId);
+                            Guid.TryParse(resourceIdAsString, out Guid resId);
                             Dependencies.Add(CreateResourceForTree(resId, uniqueId, resourceName, resourceType));
                             AddRemoteServerDependencies(element);
                         });
@@ -533,8 +520,9 @@ namespace Dev2.Runtime.ServiceModel.Data
                     return "PluginService";
                 case "DsfWebGetActivity":
                     return "WebService";
+                default:
+                    return "Unknown";
             }
-            return "Unknown";
         }
 
         private void AddDatabaseSourcesForSqlBulkInsertTool(XElement elementToUse)
@@ -557,13 +545,13 @@ namespace Dev2.Runtime.ServiceModel.Data
                 var resourceName = element.AttributeSafe("ResourceName");
                 var actionTypeStr = element.AttributeSafe("Type");
                 var resourceType = GetResourceTypeFromString(actionTypeStr);
-                Guid resId;
-                Guid.TryParse(resourceIdAsString, out resId);
+                Guid.TryParse(resourceIdAsString, out Guid resId);
                 var resourceForTree = Dependencies.FirstOrDefault(tree => tree.ResourceID == resId);
                 if (resourceForTree == null)
+                {
                     Dependencies.Add(CreateResourceForTree(resId, Guid.Empty, resourceName, resourceType));
-            }
-           
+                }
+            }           
         }
 
         private void AddEmailSources(XElement elementToUse)
@@ -586,11 +574,12 @@ namespace Dev2.Runtime.ServiceModel.Data
                 var resourceName = element.AttributeSafe("ResourceName");
                 var actionTypeStr = element.AttributeSafe("Type");
                 var resourceType = GetResourceTypeFromString(actionTypeStr);
-                Guid resId;
-                Guid.TryParse(resourceIdAsString, out resId);
+                Guid.TryParse(resourceIdAsString, out Guid resId);
                 var resourceForTree = Dependencies.FirstOrDefault(tree => tree.ResourceID == resId);
                 if (resourceForTree == null)
+                {
                     Dependencies.Add(CreateResourceForTree(resId, Guid.Empty, resourceName, resourceType));
+                }
             }
         }
 
@@ -615,11 +604,12 @@ namespace Dev2.Runtime.ServiceModel.Data
                 var resourceName = element.AttributeSafe("ResourceName");
                 var actionTypeStr = element.AttributeSafe("Type");
                 var resourceType = GetResourceTypeFromString(actionTypeStr);
-                Guid resId;
-                Guid.TryParse(resourceIdAsString, out resId);
+                Guid.TryParse(resourceIdAsString, out Guid resId);
                 var resourceForTree = Dependencies.FirstOrDefault(tree => tree.ResourceID == resId);
                 if (resourceForTree == null)
+                {
                     Dependencies.Add(CreateResourceForTree(resId, Guid.Empty, resourceName, resourceType));
+                }
             }
         }
 
@@ -641,13 +631,13 @@ namespace Dev2.Runtime.ServiceModel.Data
             {
                 var resourceIdAsString = element.AttributeSafe("RabbitMQSourceResourceId");
                 var uniqueIdAsString = element.AttributeSafe("UniqueID");
-                Guid uniqueId;
-                Guid.TryParse(uniqueIdAsString, out uniqueId);
-                Guid resId;
-                Guid.TryParse(resourceIdAsString, out resId);
+                Guid.TryParse(uniqueIdAsString, out Guid uniqueId);
+                Guid.TryParse(resourceIdAsString, out Guid resId);
                 var resourceForTree = Dependencies.FirstOrDefault(tree => tree.ResourceID == resId);
                 if (resourceForTree == null)
+                {
                     Dependencies.Add(CreateResourceForTree(resId, uniqueId, "", "RabbitMQSource"));
+                }
             }
         }
 
@@ -675,13 +665,13 @@ namespace Dev2.Runtime.ServiceModel.Data
                 var resourceIdAsString = element.AttributeSafe("SourceId");
                 var uniqueIdAsString = element.AttributeSafe("UniqueID");
                 var resourceName = element.AttributeSafe("ResourceName");
-                Guid uniqueId;
-                Guid.TryParse(uniqueIdAsString, out uniqueId);
-                Guid resId;
-                Guid.TryParse(resourceIdAsString, out resId);
+                Guid.TryParse(uniqueIdAsString, out Guid uniqueId);
+                Guid.TryParse(resourceIdAsString, out Guid resId);
                 var resourceForTree = Dependencies.FirstOrDefault(tree => tree.ResourceID == resId);
                 if (resourceForTree == null)
+                {
                     Dependencies.Add(CreateResourceForTree(resId, uniqueId, resourceName, "WebSource"));
+                }
             }
         }
 
@@ -715,23 +705,26 @@ namespace Dev2.Runtime.ServiceModel.Data
                 var resourceIdAsString = element.AttributeSafe("SharepointServerResourceId");
                 var uniqueIdAsString = element.AttributeSafe("UniqueID");
                 var resourceName = element.AttributeSafe("ResourceName");
-                Guid uniqueId;
-                Guid.TryParse(uniqueIdAsString, out uniqueId);
-                Guid resId;
-                Guid.TryParse(resourceIdAsString, out resId);
+                Guid.TryParse(uniqueIdAsString, out Guid uniqueId);
+                Guid.TryParse(resourceIdAsString, out Guid resId);
                 var resourceForTree = Dependencies.FirstOrDefault(tree => tree.ResourceID == resId);
                 if (resourceForTree == null)
+                {
                     Dependencies.Add(CreateResourceForTree(resId, uniqueId, resourceName, "SharepointSource"));
+                }
             }
         }
 
         private void AddRemoteServerDependencies(XElement element)
         {
             var environmentIdString = element.AttributeSafe("EnvironmentID");
-            Guid environmentId;
-            if (Guid.TryParse(environmentIdString, out environmentId) && environmentId != Guid.Empty)
+            if (Guid.TryParse(environmentIdString, out Guid environmentId) && environmentId != Guid.Empty)
             {
-                if (environmentId == Guid.Empty) return;
+                if (environmentId == Guid.Empty)
+                {
+                    return;
+                }
+
                 var resourceName = element.AttributeSafe("FriendlySourceName");
                 Dependencies.Add(CreateResourceForTree(environmentId, Guid.Empty, resourceName, "Server"));
             }

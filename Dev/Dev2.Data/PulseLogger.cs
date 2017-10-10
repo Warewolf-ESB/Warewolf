@@ -17,7 +17,7 @@ using Dev2.Instrumentation;
 
 namespace Dev2.Data
 {
-    public class PulseLogger : IPulseLogger
+    public class PulseLogger : IPulseLogger, IDisposable
     {
         readonly Timer _timer;
 
@@ -25,8 +25,7 @@ namespace Dev2.Data
         {
             Interval = intervalMs;
             _timer = new Timer(Interval);
-            _timer.Elapsed += _timer_Elapsed;
-       
+            _timer.Elapsed += _timer_Elapsed;       
         }
 
         void _timer_Elapsed(object sender, ElapsedEventArgs e)
@@ -68,6 +67,11 @@ namespace Dev2.Data
             
         }
 
+        public void Dispose()
+        {
+            _timer.Dispose();
+        }
+
         public double Interval { get; private set; }
 
         #endregion
@@ -95,11 +99,9 @@ namespace Dev2.Data
                     WorkflowExecutionWatcher.HasAWorkflowBeenExecuted = false;
                 }
             }
-                
-            catch
-                
+            catch (Exception err)
             {
-                // cant have any errors here
+                Dev2Logger.Warn(err.Message, "Warewolf Warn");
             }
         }
 

@@ -21,7 +21,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
     public class DTOFactory
     {
-        public static IDev2TOFn CreateNewDTO(IDev2TOFn dto, int index = 0, bool inserted = false, string initializeWith = "")
+        public static IDev2TOFn CreateNewDTO(IDev2TOFn dto) => CreateNewDTO(dto, 0, false, "");
+        public static IDev2TOFn CreateNewDTO(IDev2TOFn dto, int index, bool inserted, string initializeWith)
         {
             IDev2TOFn toReturn = null;
 
@@ -71,8 +72,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 TypeSwitch.Case<JsonMappingTo>(() => toReturn = new JsonMappingTo(initializeWith, index, inserted)),
                 TypeSwitch.Case<SharepointSearchTo>(() => toReturn = new SharepointSearchTo(initializeWith, "=", "", index, inserted)),
                 TypeSwitch.Case<SharepointReadListTo>(() => toReturn = new SharepointReadListTo("", initializeWith, "", "")),
-                //REPLACE WITH SHAREPOINT DELETE ACTIVITY
-                //TypeSwitch.Case<SharepointReadListTo>(() => toReturn = new SharepointReadListTo("", initializeWith, "")),
                 TypeSwitch.Case<AssignObjectDTO>(x => toReturn = new AssignObjectDTO(initializeWith, "", index, inserted)),
             TypeSwitch.Default(() => toReturn = null));
 

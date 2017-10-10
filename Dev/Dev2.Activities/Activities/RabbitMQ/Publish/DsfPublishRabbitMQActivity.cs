@@ -93,9 +93,8 @@ namespace Dev2.Activities.RabbitMQ.Publish
                     return new List<string> { ErrorResource.RabbitSourceHasBeenDeleted };
                 }
 
-                string queueName, message;
-                if (!evaluatedValues.TryGetValue("QueueName", out queueName) ||
-                    !evaluatedValues.TryGetValue("Message", out message))
+                if (!evaluatedValues.TryGetValue("QueueName", out string queueName) ||
+                    !evaluatedValues.TryGetValue("Message", out string message))
                 {
                     return new List<string> { ErrorResource.RabbitQueueNameAndMessageRequired };
                 }

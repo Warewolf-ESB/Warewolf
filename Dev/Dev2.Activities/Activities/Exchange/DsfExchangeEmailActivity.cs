@@ -161,8 +161,7 @@ namespace Dev2.Activities.Exchange
                 {
                     while (colItr.HasMoreData())
                     {
-                        ErrorResultTO errors;
-                        var result = _emailSender.SendEmail(runtimeSource, colItr, toItr, ccItr, bccItr, subjectItr, bodyItr, attachmentsItr, out errors);
+                        var result = _emailSender.SendEmail(runtimeSource, colItr, toItr, ccItr, bccItr, subjectItr, bodyItr, attachmentsItr, out ErrorResultTO errors);
                         allErrors.MergeErrors(errors);
                         if (!allErrors.HasErrors())
                         {
@@ -231,15 +230,7 @@ namespace Dev2.Activities.Exchange
         private int UpsertResult(int indexToUpsertTo, IExecutionEnvironment environment, string result, int update)
         {
             string expression;
-            if (DataListUtil.IsValueRecordset(Result) && DataListUtil.GetRecordsetIndexType(Result) == enRecordsetIndexType.Star)
-            {
-                expression = Result.Replace(GlobalConstants.StarExpression, indexToUpsertTo.ToString(CultureInfo.InvariantCulture));
-            }
-            else
-            {
-                expression = Result;
-            }
-            //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
+            expression = DataListUtil.IsValueRecordset(Result) && DataListUtil.GetRecordsetIndexType(Result) == enRecordsetIndexType.Star ? Result.Replace(GlobalConstants.StarExpression, indexToUpsertTo.ToString(CultureInfo.InvariantCulture)) : Result;
             foreach (var region in DataListCleaningUtils.SplitIntoRegions(expression))
             {
                 environment.Assign(region, result, update);

@@ -220,7 +220,8 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public static Task<IRequestServiceNameViewModel> CreateAsync(IEnvironmentViewModel environmentViewModel, string selectedPath, string header, IExplorerItemViewModel explorerItemViewModel = null)
+        public static Task<IRequestServiceNameViewModel> CreateAsync(IEnvironmentViewModel environmentViewModel, string selectedPath, string header) => CreateAsync(environmentViewModel, selectedPath, header, null);
+        public static Task<IRequestServiceNameViewModel> CreateAsync(IEnvironmentViewModel environmentViewModel, string selectedPath, string header, IExplorerItemViewModel explorerItemViewModel)
         {
             if (environmentViewModel == null)
             {
@@ -295,12 +296,6 @@ namespace Warewolf.Studio.ViewModels
                 _treeItem = SingleEnvironmentExplorerViewModel.SelectedItem;
                 return _treeItem;
             }
-
-
-            set
-            {
-                _treeItem = value;
-            }
         }
 
         private void RaiseCanExecuteChanged()
@@ -351,21 +346,28 @@ namespace Warewolf.Studio.ViewModels
 
             var windowsGroupPermission = _environmentViewModel.Server?.Permissions?[0];
             if (windowsGroupPermission != null)
+            {
                 _environmentViewModel.SetPropertiesForDialogFromPermissions(windowsGroupPermission);
+            }
 
             var permissions = _environmentViewModel.Server?.GetPermissions(_environmentViewModel.ResourceId);
             if (permissions != null)
             {
                 if (_environmentViewModel.Children != null)
+                {
                     foreach (var explorerItemViewModel in _environmentViewModel.Children.Flatten(model => model.Children))
                     {
                         explorerItemViewModel.SetPermissions((Permissions)permissions);
                     }
+                }
             }
 
             var mainViewModel = CustomContainer.Get<IShellViewModel>();
             if (mainViewModel?.ExplorerViewModel != null)
+            {
                 mainViewModel.ExplorerViewModel.SearchText = string.Empty;
+            }
+
             return ViewResult;
         }
 

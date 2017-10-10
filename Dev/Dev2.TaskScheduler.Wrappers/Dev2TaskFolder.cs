@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Dev2.Common.Interfaces.WindowsTaskScheduler.Wrappers;
 using Microsoft.Win32.TaskScheduler;
+using System;
 
 namespace Dev2.TaskScheduler.Wrappers
 {
@@ -29,6 +30,13 @@ namespace Dev2.TaskScheduler.Wrappers
         public void Dispose()
         {
             Instance.Dispose();
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            // Cleanup
         }
 
         public string Name => Instance.Name;
@@ -37,15 +45,16 @@ namespace Dev2.TaskScheduler.Wrappers
 
         public ITaskCollection Tasks => _taskServiceConvertorFactory.CreateTaskCollection(Instance.Tasks);
 
+        public ITaskFolder CreateFolder(string subFolderName) => CreateFolder(subFolderName, null);
 
-        public ITaskFolder CreateFolder(string subFolderName, string sddlForm = null)
+        public ITaskFolder CreateFolder(string subFolderName, string sddlForm)
         {
             return _taskServiceConvertorFactory.CreateRootFolder(Instance.CreateFolder(subFolderName, sddlForm));
         }
 
+        public void DeleteTask(string Name) => DeleteTask(Name, true);
 
-
-        public void DeleteTask(string Name, bool exceptionOnNotExists = true)
+        public void DeleteTask(string Name, bool exceptionOnNotExists)
 
 
         {
@@ -62,26 +71,21 @@ namespace Dev2.TaskScheduler.Wrappers
             return _instance.Tasks.Any(a => a.Name == name);
         }
 
-
-
         public IDev2Task RegisterTaskDefinition(string Path, IDev2TaskDefinition definition)
-
-
         {
             return _taskServiceConvertorFactory.CreateTask(Instance.RegisterTaskDefinition(Path, definition.Instance));
         }
 
-
+        public IDev2Task RegisterTaskDefinition(string Path, IDev2TaskDefinition definition, TaskCreation createType,
+            string UserId) => RegisterTaskDefinition(Path, definition, createType, UserId, null, TaskLogonType.S4U, null);
 
         public IDev2Task RegisterTaskDefinition(string Path, IDev2TaskDefinition definition, TaskCreation createType,
-
-
-
             string UserId,
+            string password, TaskLogonType LogonType) => RegisterTaskDefinition(Path, definition, createType, UserId, password, LogonType, null);
 
-
-            string password = null, TaskLogonType LogonType = TaskLogonType.S4U,
-
+        public IDev2Task RegisterTaskDefinition(string Path, IDev2TaskDefinition definition, TaskCreation createType,
+            string UserId,
+            string password, TaskLogonType LogonType,
             string sddl = null)
         {
             return

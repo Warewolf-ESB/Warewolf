@@ -51,7 +51,17 @@ namespace Dev2.TO
         {
         }
 
-        public DecisionTO(string matchValue, string searchCriteria, string searchType, int indexNum, bool inserted = false, string from = "", string to = "", Action<DecisionTO> updateDisplayAction = null, Action<DecisionTO> delectAction = null)
+        public DecisionTO(string matchValue, string searchCriteria, string searchType, int indexNum)
+            : this(matchValue, searchCriteria, searchType, indexNum, false, "", "", null, null)
+        {
+        }
+
+        public DecisionTO(string matchValue, string searchCriteria, string searchType, int indexNum, bool inserted)
+            : this(matchValue, searchCriteria, searchType, indexNum, inserted, "", "", null, null)
+        {
+        }
+
+        public DecisionTO(string matchValue, string searchCriteria, string searchType, int indexNum, bool inserted, string from, string to, Action<DecisionTO> updateDisplayAction, Action<DecisionTO> delectAction)
         {
             UpdateDisplayAction = updateDisplayAction??(a=>{});
             Inserted = inserted;
@@ -77,7 +87,12 @@ namespace Dev2.TO
 
         public Action<DecisionTO> DeleteAction { get; set; }
 
-        public DecisionTO(Dev2Decision a, int ind, Action<DecisionTO> updateDisplayAction = null,Action<DecisionTO> deleteAction = null)
+        public DecisionTO(Dev2Decision a, int ind)
+            : this(a, ind, null, null)
+        {
+        }
+
+        public DecisionTO(Dev2Decision a, int ind, Action<DecisionTO> updateDisplayAction, Action<DecisionTO> deleteAction)
         {
             UpdateDisplayAction = updateDisplayAction ?? (x => { });
             _isInitializing = true;
@@ -348,9 +363,14 @@ namespace Dev2.TO
                     break;
                 case "SearchCriteria":
                     if (string.IsNullOrEmpty(SearchCriteria))
+                    {
                         ruleSet.Add(new IsStringEmptyRule(() => SearchCriteria));
+                    }
+
                     ruleSet.Add(new IsValidExpressionRule(() => SearchCriteria, datalist, "1"));
                     break;
+                default:
+                    throw new ArgumentException("Unrecognized Property Name: " + propertyName);
             }
 
             return ruleSet;
@@ -384,7 +404,6 @@ namespace Dev2.TO
 
         public static void UpdateMatchVisibility(DecisionTO to, string value, IList<IFindRecsetOptions> whereOptions)
         {
-
             var opt = whereOptions.FirstOrDefault(a => value.ToLower().StartsWith(a.HandlesType().ToLower()));
             if (opt != null)
             {
@@ -405,7 +424,8 @@ namespace Dev2.TO
                         to.IsBetweenCriteriaVisible = true;
                         to.IsSinglematchCriteriaVisible = false;
                         break;
-
+                    default:
+                        throw new ArgumentException("Unrecognized Argument Count: " + opt.ArgumentCount);
                 }
             }
         }

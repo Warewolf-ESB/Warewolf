@@ -60,7 +60,6 @@ using Warewolf.Studio.Views;
 using Dev2.Studio.Diagnostics;
 using Dev2.Studio.ViewModels;
 using Dev2.Util;
-using System.Globalization;
 
 
 namespace Dev2.Studio
@@ -69,7 +68,7 @@ namespace Dev2.Studio
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>
-    public partial class App : IApp
+    public partial class App : IApp, IDisposable
     {
         ShellViewModel _shellViewModel;
         //This is ignored because when starting the studio twice the second one crashes without this line
@@ -105,7 +104,6 @@ namespace Dev2.Studio
         protected override void OnStartup(StartupEventArgs e)
         {
             Tracker.StartStudio();
-            bool createdNew;
 
             Task.Factory.StartNew(() =>
                 {
@@ -114,9 +112,9 @@ namespace Dev2.Studio
                     DirectoryHelper.CleanUp(Path.Combine(GlobalConstants.TempLocation, "Warewolf", "Debug"));
                 });
 
-            
+
             var localprocessGuard = e.Args.Length > 0
-                                        ? new Mutex(true, e.Args[0], out createdNew)
+                                        ? new Mutex(true, e.Args[0], out bool createdNew)
                                         : new Mutex(true, "Warewolf Studio", out createdNew);
 
             if (createdNew)
@@ -179,8 +177,7 @@ namespace Dev2.Studio
         }
 
         private static void CreateDummyWorkflowDesignerForCaching()
-        {
-            
+        {            
             var workflowDesigner = new WorkflowDesigner();
             workflowDesigner.PropertyInspectorFontAndColorData = XamlServices.Save(ActivityDesignerHelper.GetDesignerHashTable());
             var designerConfigService = workflowDesigner.Context.Services.GetService<DesignerConfigurationService>();
@@ -217,7 +214,6 @@ namespace Dev2.Studio
             });
             var activityBuilder = new WorkflowHelper().CreateWorkflow("DummyWF");
             workflowDesigner.Load(activityBuilder);
-            workflowDesigner = null;
         }
 
         private async void CheckForDuplicateResources()
@@ -233,8 +229,7 @@ namespace Dev2.Studio
         }
 
         private void ShowSplash()
-        {            
-            // Create the window 
+        {
             var repository = ServerRepository.Instance;
             var server = repository.Source;
             server.Connect();
@@ -257,7 +252,6 @@ namespace Dev2.Studio
             CustomContainer.RegisterInstancePerRequestType<IJsonObjectsView>(() => new JsonObjectsView());
             CustomContainer.RegisterInstancePerRequestType<IChooseDLLView>(() => new ChooseDLLView());
             CustomContainer.RegisterInstancePerRequestType<IFileChooserView>(() => new FileChooserView());
-            //CustomContainer.RegisterInstancePerRequestType<ICreateDuplicateResourceView>(() => new CreateDuplicateResourceDialog());
             
             
           
@@ -265,10 +259,8 @@ namespace Dev2.Studio
 
             var splashPage = new SplashPage { DataContext = splashViewModel };
             SplashView = splashPage;
-            // Show it 
             SplashView.Show(false);
             
-            // Now that the window is created, allow the rest of the startup to run 
             _resetSplashCreated?.Set();
             splashViewModel.ShowServerVersion();
             Dispatcher.Run();           
@@ -354,6 +346,11 @@ namespace Dev2.Studio
             {
                 MessageBox.Show("Fatal Error : " + e.Exception);
             }
+        }
+
+        public void Dispose()
+        {
+            _resetSplashCreated.Dispose();
         }
     }
 }

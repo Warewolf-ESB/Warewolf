@@ -100,24 +100,45 @@ namespace Dev2.Studio.ViewModels.Help
             else
             {
                 IsViewAvailable = true;
-                HelpViewWrapper.WebBrowser.NavigationService.NavigationFailed += (sender, args) =>
-                {
-                    ResourcePath = FileHelper.GetFullPath(StringResources.Uri_Studio_PageNotAvailable);
-                    Execute.OnUIThread(() =>
-                    {
-                        HelpViewWrapper.Navigate(ResourcePath);
-                        HelpViewWrapper.CircularProgressBarVisibility = Visibility.Collapsed;
-                        HelpViewWrapper.WebBrowserVisibility = Visibility.Visible;
-                    });
-                };
-                HelpViewWrapper.WebBrowser.LoadCompleted += (sender, args) => Execute.OnUIThread(() =>
-                {
-                    HelpViewWrapper.CircularProgressBarVisibility = Visibility.Collapsed;
-                    HelpViewWrapper.WebBrowserVisibility = Visibility.Visible;
-                });
+                SetupFailedNavigationEvent();
+                SetupLoadCompletedEvent();
+                SetupNavigationCompletdEvent();
                 Execute.OnUIThread(() => { HelpViewWrapper.Navigate(Uri); });
             }
             return Task.FromResult(true);
+        }
+
+        void SetupLoadCompletedEvent()
+        {
+            HelpViewWrapper.WebBrowser.LoadCompleted += (sender, args) => Execute.OnUIThread(() =>
+            {
+                HelpViewWrapper.CircularProgressBarVisibility = Visibility.Collapsed;
+                HelpViewWrapper.WebBrowserVisibility = Visibility.Visible;
+            });
+        }
+
+        void SetupNavigationCompletdEvent()
+        {
+            HelpViewWrapper.WebBrowser.Navigated += (sender, args) =>
+            {
+                var navService = HelpViewWrapper.WebBrowser.NavigationService;
+                dynamic browser = navService.GetType().GetField("_webBrowser", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).GetValue(navService);
+                dynamic iWebBrowser2 = browser.GetType().GetField("_axIWebBrowser2", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).GetValue(browser);
+                iWebBrowser2.Silent = true;               
+            };
+        }
+        void SetupFailedNavigationEvent()
+        {
+            HelpViewWrapper.WebBrowser.NavigationService.NavigationFailed += (sender, args) =>
+            {
+                ResourcePath = FileHelper.GetFullPath(StringResources.Uri_Studio_PageNotAvailable);
+                Execute.OnUIThread(() =>
+                {
+                    HelpViewWrapper.Navigate(ResourcePath);
+                    HelpViewWrapper.CircularProgressBarVisibility = Visibility.Collapsed;
+                    HelpViewWrapper.WebBrowserVisibility = Visibility.Visible;
+                });
+            };
         }
 
         #region Overrides of Screen

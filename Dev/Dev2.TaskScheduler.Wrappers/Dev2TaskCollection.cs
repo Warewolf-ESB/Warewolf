@@ -12,6 +12,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Dev2.Common.Interfaces.WindowsTaskScheduler.Wrappers;
 using Microsoft.Win32.TaskScheduler;
+using System;
 
 namespace Dev2.TaskScheduler.Wrappers
 {
@@ -28,8 +29,14 @@ namespace Dev2.TaskScheduler.Wrappers
 
         public void Dispose()
         {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
+        protected virtual void Dispose(bool disposing)
+        {
+            // Cleanup
+        }
 
         public TaskCollection Instance => _instance;
 

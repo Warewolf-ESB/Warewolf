@@ -18,8 +18,7 @@ namespace Dev2.Runtime.WebServer
 
                 if (!string.IsNullOrEmpty(request.InstanceID))
                 {
-                    Guid tmpId;
-                    if (Guid.TryParse(request.InstanceID, out tmpId))
+                    if (Guid.TryParse(request.InstanceID, out Guid tmpId))
                     {
                         dataObject.WorkflowInstanceId = tmpId;
                     }

@@ -68,12 +68,7 @@ namespace Dev2.Runtime.ESB.Execution
 
         protected ITestCatalog TstCatalog { get; set; }
         protected IResourceCatalog ResourceCat { get; set; }
-        /// <summary>
-        /// Executes the specified errors.
-        /// </summary>
-        /// <param name="errors">The errors.</param>
-        /// <param name="update"></param>
-        /// <returns></returns>
+        
         public override Guid Execute(out ErrorResultTO errors, int update)
         {
             errors = new ErrorResultTO();
@@ -83,25 +78,26 @@ namespace Dev2.Runtime.ESB.Execution
 
 
             Dev2Logger.Debug("Entered Wf Container", DataObject.ExecutionID.ToString());
-
-            // Set Service Name
+            
             DataObject.ServiceName = ServiceAction.ServiceName;
-
-            // Set server ID, only if not set yet - original server;
+            
             if (DataObject.ServerID == Guid.Empty)
+            {
                 DataObject.ServerID = HostSecurityProvider.Instance.ServerID;
-
-            // Set resource ID, only if not set yet - original resource;
+            }
+            
             if (DataObject.ResourceID == Guid.Empty && ServiceAction?.Service != null)
+            {
                 DataObject.ResourceID = ServiceAction.Service.ID;
 
-            // Travis : Now set Data List
+                
             DataObject.DataList = ServiceAction.DataListSpecification;
-            // Set original instance ID, only if not set yet - original resource;
             if (DataObject.OriginalInstanceID == Guid.Empty)
+            {
                 DataObject.OriginalInstanceID = DataObject.DataListID;
+            }
+
             Dev2Logger.Info($"Started Execution for Service Name:{DataObject.ServiceName} Resource Id:{DataObject.ResourceID} Mode:{(DataObject.IsDebug ? "Debug" : "Execute")}", DataObject.ExecutionID.ToString());
-            //Set execution origin
             if (!string.IsNullOrWhiteSpace(DataObject.ParentServiceName))
             {
                 DataObject.ExecutionOrigin = ExecutionOrigin.Workflow;
@@ -180,15 +176,20 @@ namespace Dev2.Runtime.ESB.Execution
                 result = ExecuteWf(to, serviceTestModelTo);
             });
             if (DataObject.Environment.Errors != null)
+            {
                 foreach (var err in DataObject.Environment.Errors)
                 {
                     errors.AddError(err, true);
                 }
+            }
+
             if (DataObject.Environment.AllErrors != null)
+            {
                 foreach (var err in DataObject.Environment.AllErrors)
                 {
                     errors.AddError(err, true);
                 }
+            }
 
             Dev2Logger.Info($"Completed Execution for Service Name:{DataObject.ServiceName} Resource Id: {DataObject.ResourceID} Mode:{(DataObject.IsDebug ? "Debug" : "Execute")}", DataObject.ExecutionID.ToString());
 
@@ -256,8 +257,7 @@ namespace Dev2.Runtime.ESB.Execution
                     }
                     else if (!DataListUtil.IsValueRecordset(input.Variable))
                     {
-                        string errorMessage;
-                        if (ExecutionEnvironment.IsValidVariableExpression(input.Value, out errorMessage, 0))
+                        if (ExecutionEnvironment.IsValidVariableExpression(input.Value, out string errorMessage, 0))
                         {
                             DataObject.Environment.AllErrors.Add("Cannot use variables as input value.");
                         }
@@ -336,7 +336,10 @@ namespace Dev2.Runtime.ESB.Execution
                     if (testRunResult != null)
                     {
                         if (test?.Result != null)
+                        {
                             test.Result.DebugForTest = TestDebugMessageRepo.Instance.FetchDebugItems(resourceId, test.TestName);
+                        }
+
                         _request.ExecuteResult = serializer.SerializeToBuilder(testRunResult);
                     }
                 }
@@ -391,7 +394,9 @@ namespace Dev2.Runtime.ESB.Execution
                 }
                 testRunResult.DebugForTest = TestDebugMessageRepo.Instance.FetchDebugItems(resourceId, test.TestName);
                 if (_request != null)
+                {
                     _request.ExecuteResult = serializer.SerializeToBuilder(testRunResult);
+                }
             }
             catch (Exception ex)
             {
@@ -578,20 +583,10 @@ namespace Dev2.Runtime.ESB.Execution
         {
             var testPassed = test.TestPassed;
 
-            IEnumerable<IServiceTestStep> pendingSteps;
-            IEnumerable<IServiceTestStep> invalidSteps;
-            IEnumerable<IServiceTestStep> failingSteps;
-            IEnumerable<IServiceTestOutput> pendingOutputs;
-            IEnumerable<IServiceTestOutput> invalidOutputs;
-            IList<IServiceTestStep> pendingTestSteps;
-            IList<IServiceTestStep> failingTestSteps;
-            IList<IServiceTestOutput> invalidTestOutputs;
-            IList<IServiceTestOutput> failingTestOutputs;
-
-            var serviceTestSteps = GetStepValues(test, out pendingSteps, out invalidSteps, out failingSteps);
-            var failingOutputs = GetOutputValues(test, out pendingOutputs, out invalidOutputs);
-            var invalidTestSteps = GetSteps(invalidSteps, pendingSteps, failingSteps, out pendingTestSteps, out failingTestSteps);
-            var pendingTestOutputs = GetOutputs(pendingOutputs, invalidOutputs, failingOutputs, out invalidTestOutputs, out failingTestOutputs);
+            var serviceTestSteps = GetStepValues(test, out IEnumerable<IServiceTestStep> pendingSteps, out IEnumerable<IServiceTestStep> invalidSteps, out IEnumerable<IServiceTestStep> failingSteps);
+            var failingOutputs = GetOutputValues(test, out IEnumerable<IServiceTestOutput> pendingOutputs, out IEnumerable<IServiceTestOutput> invalidOutputs);
+            var invalidTestSteps = GetSteps(invalidSteps, pendingSteps, failingSteps, out IList<IServiceTestStep> pendingTestSteps, out IList<IServiceTestStep> failingTestSteps);
+            var pendingTestOutputs = GetOutputs(pendingOutputs, invalidOutputs, failingOutputs, out IList<IServiceTestOutput> invalidTestOutputs, out IList<IServiceTestOutput> failingTestOutputs);
 
             var hasInvalidSteps = invalidTestSteps?.Any() ?? false;
             var hasPendingSteps = pendingTestSteps?.Any() ?? false;
@@ -911,8 +906,7 @@ namespace Dev2.Runtime.ESB.Execution
                 }
                 else if (foundTestStep.ActivityType == typeof(DsfSequenceActivity).Name)
                 {
-                    var sequenceActivity = resource as DsfSequenceActivity;
-                    if (sequenceActivity != null)
+                    if (resource is DsfSequenceActivity sequenceActivity)
                     {
                         var acts = sequenceActivity.Activities;
                         for (int index = 0; index < acts.Count; index++)
@@ -928,8 +922,7 @@ namespace Dev2.Runtime.ESB.Execution
                 }
                 else if (foundTestStep.ActivityType == typeof(DsfForEachActivity).Name)
                 {
-                    var forEach = resource as DsfForEachActivity;
-                    if (forEach != null)
+                    if (resource is DsfForEachActivity forEach)
                     {
                         if (foundTestStep.Children != null)
                         {
@@ -940,8 +933,7 @@ namespace Dev2.Runtime.ESB.Execution
                 }
                 else if (foundTestStep.ActivityType == typeof(DsfSelectAndApplyActivity).Name)
                 {
-                    var forEach = resource as DsfSelectAndApplyActivity;
-                    if (forEach != null)
+                    if (resource is DsfSelectAndApplyActivity forEach)
                     {
                         if (foundTestStep.Children != null)
                         {

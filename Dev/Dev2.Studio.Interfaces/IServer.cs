@@ -45,7 +45,8 @@ namespace Dev2.Studio.Interfaces
         bool IsLocalHostCheck();
         string DisplayName { get;  }
         event EventHandler AuthorizationServiceSet;
-        Task<IExplorerItem> LoadExplorer(bool reloadCatalogue = false);
+        Task<IExplorerItem> LoadExplorer();
+        Task<IExplorerItem> LoadExplorer(bool reloadCatalogue);
         IList<IToolDescriptor> LoadTools();
         [JsonIgnore]
         IExplorerRepository ExplorerRepository { get; }

@@ -470,14 +470,7 @@ namespace Warewolf.Studio.ViewModels
 
         private void SetDisplayName(bool isDirty)
         {
-            if(isDirty)
-            {
-                NameForDisplay = TestName + " *";
-            }
-            else
-            {
-                NameForDisplay = TestName;
-            }
+            NameForDisplay = isDirty ? TestName + " *" : TestName;
         }
 
         public bool UserAuthenticationSelected => AuthenticationType == AuthenticationType.User;
@@ -528,14 +521,24 @@ namespace Warewolf.Studio.ViewModels
             Item = model as ServiceTestModel;
         }
 
-        public IServiceTestStep AddTestStep(string activityUniqueId, string activityDisplayName, string activityTypeName, ObservableCollection<IServiceTestOutput> serviceTestOutputs, StepType stepType = StepType.Assert)
+        public IServiceTestStep AddTestStep(string activityUniqueId, string activityDisplayName, string activityTypeName, ObservableCollection<IServiceTestOutput> serviceTestOutputs)=>AddTestStep(activityUniqueId, activityDisplayName, activityTypeName, serviceTestOutputs, StepType.Assert);
+        public IServiceTestStep AddTestStep(string activityUniqueId, string activityDisplayName, string activityTypeName, ObservableCollection<IServiceTestOutput> serviceTestOutputs, StepType stepType)
         {
             if (string.IsNullOrEmpty(activityUniqueId))
+            {
                 throw new ArgumentNullException(nameof(activityUniqueId));
+            }
+
             if (string.IsNullOrEmpty(activityTypeName))
+            {
                 throw new ArgumentNullException(nameof(activityTypeName));
+            }
+
             if (serviceTestOutputs == null)
+            {
                 throw new ArgumentNullException(nameof(serviceTestOutputs));
+            }
+
             var testStep = new ServiceTestStep(Guid.Parse(activityUniqueId), activityTypeName, serviceTestOutputs, stepType) { StepDescription = activityDisplayName };
             TestSteps.Add(testStep);
             return testStep;
@@ -693,17 +696,28 @@ namespace Warewolf.Studio.ViewModels
                 {
                     stepCompare = false;
                 }
-                if (!stepCompare) continue;
+                if (!stepCompare)
+                {
+                    continue;
+                }
+
                 if (TestSteps[i].StepOutputs.Count != other.TestSteps[i].StepOutputs.Count)
                 {
                     stepCompare = false;
                 }
-                if (!stepCompare) continue;
+                if (!stepCompare)
+                {
+                    continue;
+                }
+
                 if (TestSteps[i].Children.Count != other.TestSteps[i].Children.Count)
                 {
                     stepCompare = false;
                 }
-                if (!stepCompare) continue;
+                if (!stepCompare)
+                {
+                    continue;
+                }
 
                 if (TestSteps[i].Children.Count > 0)
                 {
@@ -712,7 +726,11 @@ namespace Warewolf.Studio.ViewModels
 
                     stepCompare = StepChildrenCompare(stepChildren, otherStepChildren);
                 }
-                if (!stepCompare) continue;
+                if (!stepCompare)
+                {
+                    continue;
+                }
+
                 var stepOutputs = TestSteps[i].StepOutputs;
                 var otherStepOutputs = other.TestSteps[i].StepOutputs;
                 stepCompare = StepOutputsCompare(stepOutputs, otherStepOutputs);
@@ -729,7 +747,10 @@ namespace Warewolf.Studio.ViewModels
                 {
                     stepCompare = false;
                 }
-                if (!stepCompare) continue;
+                if (!stepCompare)
+                {
+                    continue;
+                }
 
                 var childStepOutputs = stepChildren[c].StepOutputs;
                 var otherChildStepOutputs = otherStepChildren[c].StepOutputs;
@@ -755,22 +776,38 @@ namespace Warewolf.Studio.ViewModels
                 {
                     stepCompare = false;
                 }
-                if (!stepCompare) continue;
+                if (!stepCompare)
+                {
+                    continue;
+                }
+
                 if (stepOutputs[c].Value != otherStepOutputs[c].Value)
                 {
                     stepCompare = false;
                 }
-                if (!stepCompare) continue;
+                if (!stepCompare)
+                {
+                    continue;
+                }
+
                 if (stepOutputs[c].From != otherStepOutputs[c].From)
                 {
                     stepCompare = false;
                 }
-                if (!stepCompare) continue;
+                if (!stepCompare)
+                {
+                    continue;
+                }
+
                 if (stepOutputs[c].To != otherStepOutputs[c].To)
                 {
                     stepCompare = false;
                 }
-                if (!stepCompare) continue;
+                if (!stepCompare)
+                {
+                    continue;
+                }
+
                 if (stepOutputs[c].Variable != otherStepOutputs[c].Variable)
                 {
                     stepCompare = false;
@@ -795,12 +832,20 @@ namespace Warewolf.Studio.ViewModels
                 {
                     inputCompare = false;
                 }
-                if (!inputCompare) continue;
+                if (!inputCompare)
+                {
+                    continue;
+                }
+
                 if (Inputs[i].Variable != other.Inputs[i].Variable)
                 {
                     inputCompare = false;
                 }
-                if (!inputCompare) continue;
+                if (!inputCompare)
+                {
+                    continue;
+                }
+
                 if (Inputs[i].EmptyIsNull != other.Inputs[i].EmptyIsNull)
                 {
                     inputCompare = false;
@@ -825,22 +870,38 @@ namespace Warewolf.Studio.ViewModels
                 {
                     outputCompare = false;
                 }
-                if (!outputCompare) continue;
+                if (!outputCompare)
+                {
+                    continue;
+                }
+
                 if (_outputs[i].Variable != other._outputs[i].Variable)
                 {
                     outputCompare = false;
                 }
-                if (!outputCompare) continue;
+                if (!outputCompare)
+                {
+                    continue;
+                }
+
                 if (_outputs[i].AssertOp != other._outputs[i].AssertOp)
                 {
                     outputCompare = false;
                 }
-                if (!outputCompare) continue;
+                if (!outputCompare)
+                {
+                    continue;
+                }
+
                 if (_outputs[i].From != other._outputs[i].From)
                 {
                     outputCompare = false;
                 }
-                if (!outputCompare) continue;
+                if (!outputCompare)
+                {
+                    continue;
+                }
+
                 if (_outputs[i].To != other._outputs[i].To)
                 {
                     outputCompare = false;

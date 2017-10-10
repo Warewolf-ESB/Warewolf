@@ -4,11 +4,8 @@ using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.Web_Service_Get;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.DB;
-using Dev2.Common.Interfaces.WebService;
-using Dev2.Common.Interfaces.WebServices;
 using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 using Warewolf.Core;
 
 

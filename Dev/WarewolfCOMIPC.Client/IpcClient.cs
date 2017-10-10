@@ -46,11 +46,9 @@ namespace WarewolfCOMIPC.Client
             _pipeWrapper = clientStreamWrapper;
         }
 
+        public static IpcClient GetIPCExecutor() => GetIPCExecutor(null);
 
-        /// <summary>
-        /// Gets the instance.
-        /// </summary>
-        public static IpcClient GetIPCExecutor(INamedPipeClientStreamWrapper clientStreamWrapper = null)
+        public static IpcClient GetIPCExecutor(INamedPipeClientStreamWrapper clientStreamWrapper)
         {
             if (clientStreamWrapper != null)
             {
@@ -75,7 +73,10 @@ namespace WarewolfCOMIPC.Client
         public object Invoke(Guid clsid, string function, Execute execute, ParameterInfoTO[] args)
         {
             if (_disposed)
+            {
                 throw new ObjectDisposedException(nameof(IpcClient));
+            }
+
             var info = new CallData
             {
                 CLSID = clsid,
@@ -102,8 +103,7 @@ namespace WarewolfCOMIPC.Client
                     {
 
                         result = serializer.Deserialize(jsonTextReader, typeof(string));
-                        var exception = result as Exception;
-                        if (exception != null)
+                        if (result is Exception exception)
                         {
                             throw exception;
                         }
@@ -126,8 +126,7 @@ namespace WarewolfCOMIPC.Client
                 case Execute.GetMethods:
                     {
                         result = serializer.Deserialize(jsonTextReader, typeof(string));
-                        var exception = result as Exception;
-                        if (exception != null)
+                        if (result is Exception exception)
                         {
                             throw exception;
                         }
@@ -138,8 +137,7 @@ namespace WarewolfCOMIPC.Client
                 case Execute.GetNamespaces:
                     {
                         result = serializer.Deserialize(jsonTextReader, typeof(List<string>));
-                        var exception = result as Exception;
-                        if (exception != null)
+                        if (result is Exception exception)
                         {
                             throw exception;
                         }
@@ -197,7 +195,9 @@ namespace WarewolfCOMIPC.Client
         protected void Dispose(bool disposing)
         {
             if (_disposed)
+            {
                 return;
+            }
 
             if (disposing)
             {

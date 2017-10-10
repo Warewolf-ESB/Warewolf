@@ -15,18 +15,9 @@ using System.Collections.Specialized;
 
 namespace Dev2.Data
 {
-
-    /// <summary>
-    ///  Abstraction of the ObservableCollection object, which does not handle large Add operations
-    ///  due to the NotifyCollectionChange event that fires for every object added to it's collection
-    ///  this class just suprresses the onCollectionChangedEvent to only fire after a list of objects 
-    ///  has been addded to the collection
-    /// </summary>
-    /// <typeparam name="T">Any object really, if you want to create an observable collection of it</typeparam>
     public class OptomizedObservableCollection<T> : ObservableCollection<T>
     {
-
-        public bool SuppressOnCollectionChanged;
+        private bool SuppressOnCollectionChanged;
 
         public OptomizedObservableCollection()
         {

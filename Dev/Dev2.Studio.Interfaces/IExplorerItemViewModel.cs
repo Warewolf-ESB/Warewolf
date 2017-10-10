@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Dev2.Common.Interfaces.Security;
@@ -62,6 +61,8 @@ namespace Dev2.Studio.Interfaces
 
         void ShowDependencies();
 
-        void SetPermissions(Permissions explorerItemPermissions, bool isDeploy = false);
+        void SetPermissions(Permissions explorerItemPermissions);
+
+        void SetPermissions(Permissions explorerItemPermissions, bool isDeploy);
     }
 }

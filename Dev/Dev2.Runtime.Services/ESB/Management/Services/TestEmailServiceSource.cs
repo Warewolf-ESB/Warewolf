@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Net.Mail;
 using System.Text;
 using Dev2.Common;
@@ -39,9 +38,8 @@ namespace Dev2.Runtime.ESB.Management.Services
             try
             {
                 Dev2Logger.Info("Save Resource Service", GlobalConstants.WarewolfInfo);
-                StringBuilder resourceDefinition;
 
-                values.TryGetValue("EmailServiceSource", out resourceDefinition);
+                values.TryGetValue("EmailServiceSource", out StringBuilder resourceDefinition);
 
                 IEmailServiceSource src = serializer.Deserialize<EmailServiceSourceDefinition>(resourceDefinition);
                 EmailSource con = new EmailSource
@@ -62,8 +60,6 @@ namespace Dev2.Runtime.ESB.Management.Services
                     msg.HasError = false;
                     msg.Message = new StringBuilder( e.Message);
                     return serializer.SerializeToBuilder(msg);
-                    //msg.HasError = true;
-                    //msg.Message = new StringBuilder(e.Message);
                 }
             }
             catch (Exception err)

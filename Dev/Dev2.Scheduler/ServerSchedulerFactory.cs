@@ -10,7 +10,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Scheduler.Interfaces;
 using Dev2.Common.Interfaces.WindowsTaskScheduler.Wrappers;
@@ -28,7 +27,7 @@ namespace Dev2.Scheduler
         private readonly string _debugOutputPath = string.Format("{0}\\{1}", Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), GlobalConstants.SchedulerDebugPath);
   
         private readonly IDirectoryHelper _dir;
-        private Func<IScheduledResource, string> _pathResolve;
+        private readonly Func<IScheduledResource, string> _pathResolve;
 
         public ServerSchedulerFactory(IDev2TaskService service, ITaskServiceConvertorFactory factory, IDirectoryHelper directory, Func<IScheduledResource, string> pathResolve)
         {
@@ -73,7 +72,7 @@ namespace Dev2.Scheduler
 
         public IScheduleTrigger CreateTrigger(Trigger trigger)
         {
-            switch(trigger.TriggerType)
+            switch (trigger.TriggerType)
             {
                 case TaskTriggerType.Boot:
                     return new ScheduleTrigger(TaskState.Ready, new Dev2BootTrigger(ConvertorFactory, trigger as BootTrigger), TaskService, ConvertorFactory);
@@ -97,13 +96,15 @@ namespace Dev2.Scheduler
                     return new ScheduleTrigger(TaskState.Ready, new Dev2TimeTrigger(ConvertorFactory, trigger as TimeTrigger), TaskService, ConvertorFactory);
                 case TaskTriggerType.Weekly:
                     return new ScheduleTrigger(TaskState.Ready, new Dev2WeeklyTrigger(ConvertorFactory, trigger), TaskService, ConvertorFactory);
+                case TaskTriggerType.Custom:
+                    return null;
                 default:
                     return new ScheduleTrigger(TaskState.Ready, new Dev2Trigger(ConvertorFactory, trigger), TaskService, ConvertorFactory);
 
             }
         }
 
-    
+
         public IScheduledResource CreateResource(string name, SchedulerStatus status, Trigger trigger,
                                                  string workflowName,string resourceId)
         {

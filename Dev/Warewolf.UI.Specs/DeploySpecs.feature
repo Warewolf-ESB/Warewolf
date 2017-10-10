@@ -1,59 +1,6 @@
 ﻿@Deploy 
 Feature: DeploySpecs
 
-Scenario: Deploying From Explorer Opens The Deploy With Resource Already Checked
-    Given The Warewolf Studio is running
-	And I Filter the Explorer with "Hello World"
-	And I RightClick Explorer Localhost First Item
-	And I Select Deploy From Explorer Context Menu
-	And I Select "Hello World" from the source tab 
-	Then Filtered Resourse Is Checked For Deploy
-	
-Scenario: Deploy ViewOnlyWorkflow to remoteConnection
-	Given The Warewolf Studio is running
-	When I Set Resource Permissions For "DeployViewOnly" to Group "Public" and Permissions for View to "true" and Contribute to "false" and Execute to "false"
-	And I Click Deploy Ribbon Button
-	And I Select RemoteConnectionIntegration From Deploy Tab Destination Server Combobox
-	And I Select "DeployViewOnly" from the source tab 
-	Then Filtered Resourse Is Checked For Deploy
-	When I Click Deploy button
-    
-Scenario: Deploy button is enabling when selecting resource in source side
-	 Given The Warewolf Studio is running
-	 When I Click Deploy Ribbon Button
-	 And I Select RemoteConnectionIntegration From Deploy Tab Destination Server Combobox
-	 Then Deploy Button is enabled  "false"
-	 And I Select "Hello world" from the source tab 
-	 Then Deploy Button is enabled  "true"	
-	 
-Scenario: Filtering and clearing filter on source side
-	Given The Warewolf Studio is running
-	When I Click Deploy Ribbon Button
-	And I Select RemoteConnectionIntegration From Deploy Tab Destination Server Combobox
-	And I filter for "Hello World" on the source filter
-	And I filter for "" on the source filter	
-	And Deploy Button is enabled  "false"
-
-Scenario: Deploying with filter enabled
-     Given The Warewolf Studio is running
-	 When I Click Deploy Ribbon Button
-	 And I Select RemoteConnectionIntegration From Deploy Tab Destination Server Combobox
-	 And I filter for "Hello World" on the source filter
-	 And Resources is visible on the tree
-	 And I Select "Hello World" from the source tab 
-	 And I Click Deploy button
-
-Scenario: Deploy is enabled when I change server after validation thrown
-	Given The Warewolf Studio is running
-	When I Click Deploy Ribbon Button
-	And I Select LocalhostConnected From Deploy Tab Destination Server Combobox
-	And I filter for "Hello world" on the source filter
-	And Deploy Button is enabled  "false"
-	And The deploy validation message is "Source and Destination cannot be the same."
-	And I Select RemoteConnectionIntegration From Deploy Tab Destination Server Combobox
-	And I Select "Hello world" from the source tab 
-	And Deploy Button is enabled  "true"
-
 Scenario: Select All resources to deploy
 	Given The Warewolf Studio is running
 	When I Click Deploy Ribbon Button
@@ -61,16 +8,18 @@ Scenario: Select All resources to deploy
 	And I Select RemoteConnectionIntegration From Deploy Tab Destination Server Combobox
 	And I filter for "DateTime" on the source filter
 	And I Select localhost from the source tab 
-	And Deploy Button is enabled  "true"
+	Then Deploy Button is enabled  "true"
 
-Scenario: Deploying From Explorer Opens The Deploy With All Resources in Folder Already Checked
+Scenario: Deploy is enabled when I change server after validation thrown
 	Given The Warewolf Studio is running
-	When I Filter the Explorer with "Unit Tests"
-	And I RightClick Explorer Localhost First Item
-	And I Select Deploy From Explorer Context Menu
-	And I Enter "Unit Tests" Into Deploy Source Filter	
-	Then Filtered Resourse Is Checked For Deploy
-	And I Click Close Deploy Tab Button
+	When I Click Deploy Ribbon Button
+	And I Select LocalhostConnected From Deploy Tab Destination Server Combobox
+	And I filter for "Hello world" on the source filter
+	Then Deploy Button is enabled  "false"
+	When The deploy validation message is "Source and Destination cannot be the same."
+	And I Select RemoteConnectionIntegration From Deploy Tab Destination Server Combobox
+	And I Select "Hello world" from the source tab 
+	Then Deploy Button is enabled  "true"
 
 Scenario: Cancel Deploy Returns to Deploy Tab
 	Given The Warewolf Studio is running
@@ -80,7 +29,8 @@ Scenario: Cancel Deploy Returns to Deploy Tab
 	And I Click Deploy Tab Destination Server Combobox
 	And I Click Deploy Tab Destination Server Remote Connection Intergration Item
 	Then Deploy Button Is Enabled
-	When I Click Deploy Tab Deploy Button
+	When I Click Deploy Tab Deploy Button And Cancel
+	Then The Deploy Tab is visible
 
 Scenario: Deploy Conflicting Resource With Resource In A Different Path
 	Given The Warewolf Studio is running
@@ -100,10 +50,3 @@ Scenario: Changing Selected Server On Deploy Source While Connected To Remote Se
 	And I Select Remote Connection Integration From Explorer
 	And I Select localhost From Deploy Tab Source Server Combobox
 
-Scenario: Deploy From RemoteConnection
-	Given The Warewolf Studio is running
-	When I Click Deploy Ribbon Button
-    And I Select RemoteConnectionIntegration From Deploy Tab Source Server Combobox
-    And Resources is visible on the tree
-	And I Select "Hello World" from the source tab 
-	And I Click Deploy button

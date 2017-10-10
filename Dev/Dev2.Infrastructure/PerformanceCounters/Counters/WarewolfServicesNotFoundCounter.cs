@@ -2,10 +2,11 @@
 using System.Diagnostics;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Monitoring;
+using System;
 
 namespace Dev2.PerformanceCounters.Counters
 {
-    public class WarewolfServicesNotFoundCounter : IPerformanceCounter
+    public class WarewolfServicesNotFoundCounter : IPerformanceCounter, IDisposable
     {
 
         private PerformanceCounter _counter;
@@ -42,8 +43,9 @@ namespace Dev2.PerformanceCounters.Counters
  
     
                 if (IsActive)
-                    _counter.Increment();
-
+            {
+                _counter.Increment();
+            }
         }
 
         public void IncrementBy(long ticks)
@@ -88,6 +90,11 @@ namespace Dev2.PerformanceCounters.Counters
             {
                 _counter.RawValue = 0;
             }
+        }
+
+        public void Dispose()
+        {
+            _counter.Dispose();
         }
         #endregion
     }

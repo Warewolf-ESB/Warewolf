@@ -9,25 +9,16 @@
 */
 
 
-// -----------------------------------------------------------------------
-// <copyright file="IIntellisenseProvider.cs" company="Microsoft">
-// TODO: Update copyright text.
-// </copyright>
-// -----------------------------------------------------------------------
-
 using System;
 using System.Collections.Generic;
 using Dev2.Common.Interfaces;
 
 namespace Dev2.Studio.Interfaces
 {
-    /// <summary>
-    /// The intellisense provider gives is used to handle intellisense result requests.
-    /// </summary>
     public interface IIntellisenseProvider : IDisposable
     {
-        bool HandlesResultInsertion { get; set; }
-        bool Optional { get; set; }
+        bool HandlesResultInsertion { get; }
+        bool Optional { get; }
         IntellisenseProviderType IntellisenseProviderType { get; }
         string PerformResultInsertion(string input, IntellisenseProviderContext context);
         IList<IntellisenseProviderResult> GetIntellisenseResults(IntellisenseProviderContext context);
@@ -37,7 +28,6 @@ namespace Dev2.Studio.Interfaces
     {
         NonDefault,
         Default
-
     }
 
     public sealed class IntellisenseProviderResult
@@ -77,8 +67,12 @@ namespace Dev2.Studio.Interfaces
             {
                 List<string> args = new List<string>(_arguments);
                 for (int i = args.Count - 1; i >= 0; i--)
+                {
                     if (String.IsNullOrEmpty(args[i]))
+                    {
                         args.RemoveAt(i);
+                    }
+                }
 
                 _arguments = args.ToArray();
             }

@@ -10,7 +10,6 @@ using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Workspaces;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Runtime.Interfaces;
@@ -44,9 +43,8 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
 
                 Dev2Logger.Info("Save Exchange Service Source", GlobalConstants.WarewolfInfo);
-                StringBuilder resourceDefinition;
 
-                values.TryGetValue("ExchangeSource", out resourceDefinition);
+                values.TryGetValue("ExchangeSource", out StringBuilder resourceDefinition);
 
                 var src = serializer.Deserialize<ExchangeSourceDefinition>(resourceDefinition);
                 var con = new ExchangeSource

@@ -43,7 +43,10 @@ namespace Warewolf.Studio.ViewModels
         public ServiceTestOutput(string variable, string value, string from, string to)
         {
             if (variable == null)
+            {
                 throw new ArgumentNullException(nameof(variable));
+            }
+
             Variable = variable;
             Value = value;
             From = from;
@@ -365,7 +368,8 @@ namespace Warewolf.Studio.ViewModels
                         IsBetweenCriteriaVisible = true;
                         IsSinglematchCriteriaVisible = false;
                         break;
-
+                    default:
+                        break;
                 }
             }
         }
@@ -395,6 +399,6 @@ namespace Warewolf.Studio.ViewModels
         [JsonIgnore]
         public Action<string> AddStepOutputRow { get; set; }
 
-       
+
     }
 }

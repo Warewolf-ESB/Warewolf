@@ -31,24 +31,15 @@ using Warewolf.Resource.Errors;
 using Warewolf.Storage.Interfaces;
 
 
-
-
-
-
-
-
-
-
-
 namespace Dev2.Activities.RabbitMQ.Consume
 {
     [ToolDescriptorInfo("RabbitMq", "RabbitMQ Consume", ToolType.Native, "406ea660-64cf-4c82-b6f0-42d48172a799", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Utility", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Utility_Rabbit_MQ_Consume")]
     public class DsfConsumeRabbitMQActivity : DsfBaseActivity
     {
-        public List<string> _messages;
-        public string _result = "Success";
-        public ushort _prefetch;
-        public int _timeOut;
+        internal List<string> _messages;
+        private string _result = "Success";
+        private ushort _prefetch;
+        private int _timeOut;
         public bool IsObject { get; set; }
         [FindMissing]
         public string ObjectName { get; set; }
@@ -154,14 +145,12 @@ namespace Dev2.Activities.RabbitMQ.Consume
                     return _messages;
                 }
 
-                string queueName;
-                if (!evaluatedValues.TryGetValue("QueueName", out queueName))
+                if (!evaluatedValues.TryGetValue("QueueName", out string queueName))
                 {
                     _messages.Add(ErrorResource.RabbitQueueNameRequired);
                     return _messages;
                 }
-                string prefetch;
-                if (!evaluatedValues.TryGetValue("Prefetch", out prefetch))
+                if (!evaluatedValues.TryGetValue("Prefetch", out string prefetch))
                 {
                     prefetch = string.Empty;
                 }
@@ -176,7 +165,10 @@ namespace Dev2.Activities.RabbitMQ.Consume
                     using (Channel = Connection.CreateModel())
                     {
                         if (!string.IsNullOrEmpty(TimeOut))
+                        {
                             _timeOut = int.Parse(TimeOut);
+                        }
+
                         _prefetch = string.IsNullOrEmpty(prefetch) ? (ushort)0 : ushort.Parse(prefetch);
                         if (_prefetch == 0)
                         {
@@ -225,9 +217,8 @@ namespace Dev2.Activities.RabbitMQ.Consume
                                 {
                                     throw new Exception(string.Format(ErrorResource.RabbitQueueNotFound, queueName));
                                 }
-                                BasicDeliverEventArgs basicDeliverEventArgs;
                                 ulong? tag = null;
-                                while (Consumer.Queue.Dequeue((int)TimeSpan.FromSeconds(_timeOut).TotalMilliseconds, out basicDeliverEventArgs) && _prefetch > msgCount)
+                                while (Consumer.Queue.Dequeue((int)TimeSpan.FromSeconds(_timeOut).TotalMilliseconds, out BasicDeliverEventArgs basicDeliverEventArgs) && _prefetch > msgCount)
                                 {
                                     if (basicDeliverEventArgs == null)
                                     {
@@ -377,15 +368,19 @@ namespace Dev2.Activities.RabbitMQ.Consume
                 if (DataListUtil.IsValueScalar(Response))
                 {
                     if (_messages != null)
+                    {
                         dataObject.Environment.Assign(Response, _messages.Last(), update);
+                    }
                 }
                 else
                 {
                     if (_messages != null)
+                    {
                         foreach (var message in _messages)
                         {
                             dataObject.Environment.Assign(Response, message, update);
                         }
+                    }
                 }
             }
         }

@@ -23,8 +23,7 @@ namespace Warewolf.Studio.Views
 
         private void UIElement_OnMouseMove(object sender, MouseEventArgs e)
         {
-            var grid = sender as Grid;
-            if (grid != null && e.LeftButton == MouseButtonState.Pressed)
+            if (sender is Grid grid && e.LeftButton == MouseButtonState.Pressed)
             {
                 var dataContext = grid.DataContext as ToolDescriptorViewModel;
                 if (dataContext?.ActivityType != null)
@@ -46,8 +45,7 @@ namespace Warewolf.Studio.Views
             var rectSource = e.OriginalSource as Rectangle;
             if (imageSource == null && rectSource == null)
             {
-                TextBox tb = sender as TextBox;
-                if (tb != null)
+                if (sender is TextBox tb)
                 {
                     if (!tb.IsKeyboardFocusWithin)
                     {
@@ -60,8 +58,7 @@ namespace Warewolf.Studio.Views
 
         private void ToolGrid_OnMouseEnter(object sender, MouseEventArgs e)
         {
-            var grid = sender as Grid;
-            if (grid != null)
+            if (sender is Grid grid)
             {
                 var viewModel = grid.DataContext as ToolDescriptorViewModel;
                 grid.ToolTip = viewModel?.Tool.ResourceToolTip;
@@ -89,18 +86,18 @@ namespace Warewolf.Studio.Views
 
         private void ToolGrid_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            var grid = sender as Grid;
-            if (grid != null)
+            if (sender is Grid grid)
             {
                 var viewModel = grid.DataContext as ToolDescriptorViewModel;
                 if (e.ClickCount == 1)
                 {
                     var toolboxViewModel = DataContext as ToolboxViewModel;
                     toolboxViewModel?.UpdateHelpDescriptor(viewModel?.Tool.ResourceHelpText);
-                } else
+                }
+                else
                 {
                     var popupController = CustomContainer.Get<IPopupController>();
-                    popupController?.Show(Studio.Resources.Languages.Core.ToolboxPopupDescription, Studio.Resources.Languages.Core.ToolboxPopupHeader, MessageBoxButton.OK, MessageBoxImage.Information,"",false,false,true, false, false, false);
+                    popupController?.Show(Studio.Resources.Languages.Core.ToolboxPopupDescription, Studio.Resources.Languages.Core.ToolboxPopupHeader, MessageBoxButton.OK, MessageBoxImage.Information, "", false, false, true, false, false, false);
                 }
             }
 

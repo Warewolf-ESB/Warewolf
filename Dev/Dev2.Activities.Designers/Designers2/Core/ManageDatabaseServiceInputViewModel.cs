@@ -187,7 +187,10 @@ namespace Dev2.Activities.Designers2.Core
                     TestPassed = true;
                     ShowTestMessage = TestResults.Columns.Count < 1;
                     if (ShowTestMessage)
+                    {
                         TestMessage = Warewolf.Studio.Resources.Languages.Core.NoReturnedDataExecuteSuccess;
+                    }
+
                     TestFailed = false;
                 }
             }
@@ -399,10 +402,6 @@ namespace Dev2.Activities.Designers2.Core
             {
                 return _generateOutputArea;
             }
-            set
-            {
-
-            }
         }
         public IOutputDescription Description { get; set; }
         public IGenerateInputArea InputArea
@@ -410,10 +409,6 @@ namespace Dev2.Activities.Designers2.Core
             get
             {
                 return _generateInputArea;
-            }
-            set
-            {
-
             }
         }
 

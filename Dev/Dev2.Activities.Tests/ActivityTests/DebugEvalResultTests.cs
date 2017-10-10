@@ -16,7 +16,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var env = new Mock<IExecutionEnvironment>();
             env.Setup(environment => environment.EvalToExpression(It.IsAny<string>(), It.IsAny<int>())).Returns("[[scalar]]");
             var warewolfAtomResult = CommonFunctions.WarewolfEvalResult.NewWarewolfAtomResult(DataStorage.WarewolfAtom.NewDataString("{\"PolicyNo\":\"A0003\",\"DateId\":32,\"SomeVal\":\"Bob\"}"));
-            env.Setup(environment => environment.Eval(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<bool>(), It.IsAny<bool>())).Returns(warewolfAtomResult);
+            env.Setup(environment => environment.Eval(It.IsAny<string>(), It.IsAny<int>())).Returns(warewolfAtomResult);
             var debugEvalResult = new DebugEvalResult("[[scalar]]", "", env.Object, 0);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(debugEvalResult);
@@ -36,7 +36,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var env = new Mock<IExecutionEnvironment>();
             env.Setup(environment => environment.EvalToExpression(It.IsAny<string>(), It.IsAny<int>())).Returns("[[@scalar()]]");
             var warewolfAtomResult = CommonFunctions.WarewolfEvalResult.NewWarewolfAtomResult(DataStorage.WarewolfAtom.NewDataString("{\"PolicyNo\":\"A0003\",\"DateId\":32,\"SomeVal\":\"Bob\"}"));
-            env.Setup(environment => environment.Eval(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<bool>(), It.IsAny<bool>())).Returns(warewolfAtomResult);
+            env.Setup(environment => environment.Eval(It.IsAny<string>(), It.IsAny<int>())).Returns(warewolfAtomResult);
             var debugEvalResult = new DebugEvalResult("[[@scalar()]]", "", env.Object, 0);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(debugEvalResult);
@@ -56,7 +56,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var env = new Mock<IExecutionEnvironment>();
             env.Setup(environment => environment.EvalToExpression(It.IsAny<string>(), It.IsAny<int>())).Returns("[[@scalar]]");
             var warewolfAtomResult = CommonFunctions.WarewolfEvalResult.NewWarewolfAtomResult(DataStorage.WarewolfAtom.NewDataString("{\"PolicyNo\":\"A0003\",\"DateId\":32,\"SomeVal\":\"Bob\"}"));
-            env.Setup(environment => environment.Eval(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<bool>(), It.IsAny<bool>())).Returns(warewolfAtomResult);
+            env.Setup(environment => environment.Eval(It.IsAny<string>(), It.IsAny<int>())).Returns(warewolfAtomResult);
             var debugEvalResult = new DebugEvalResult("[[@scalar]]", "", env.Object, 0);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(debugEvalResult);

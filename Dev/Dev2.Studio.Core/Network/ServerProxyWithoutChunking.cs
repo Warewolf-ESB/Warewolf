@@ -219,6 +219,8 @@ namespace Dev2.Network
                     OnNetworkStateChanged(new NetworkStateEventArgs(NetworkState.Online, NetworkState.Offline));
                     HasDisconnected();
                     break;
+                default:
+                    break;
             }
         }
 
@@ -258,8 +260,7 @@ namespace Dev2.Network
                 aex.Handle(ex =>
                 {
                     Dev2Logger.Error(this, aex, "Warewolf Error");
-                    var hex = ex as HttpClientException;
-                    if (hex != null)
+                    if (ex is HttpClientException hex)
                     {
                         switch (hex.Response.StatusCode)
                         {
@@ -267,6 +268,88 @@ namespace Dev2.Network
                             case HttpStatusCode.Forbidden:
                                 UpdateIsAuthorized(false);
                                 throw new UnauthorizedAccessException();
+                            case HttpStatusCode.Continue:
+                                break;
+                            case HttpStatusCode.SwitchingProtocols:
+                                break;
+                            case HttpStatusCode.OK:
+                                break;
+                            case HttpStatusCode.Created:
+                                break;
+                            case HttpStatusCode.Accepted:
+                                break;
+                            case HttpStatusCode.NonAuthoritativeInformation:
+                                break;
+                            case HttpStatusCode.NoContent:
+                                break;
+                            case HttpStatusCode.ResetContent:
+                                break;
+                            case HttpStatusCode.PartialContent:
+                                break;
+                            case HttpStatusCode.MultipleChoices:
+                                break;
+                            case HttpStatusCode.MovedPermanently:
+                                break;
+                            case HttpStatusCode.Found:
+                                break;
+                            case HttpStatusCode.SeeOther:
+                                break;
+                            case HttpStatusCode.NotModified:
+                                break;
+                            case HttpStatusCode.UseProxy:
+                                break;
+                            case HttpStatusCode.Unused:
+                                break;
+                            case HttpStatusCode.TemporaryRedirect:
+                                break;
+                            case HttpStatusCode.BadRequest:
+                                break;
+                            case HttpStatusCode.PaymentRequired:
+                                break;
+                            case HttpStatusCode.NotFound:
+                                break;
+                            case HttpStatusCode.MethodNotAllowed:
+                                break;
+                            case HttpStatusCode.NotAcceptable:
+                                break;
+                            case HttpStatusCode.ProxyAuthenticationRequired:
+                                break;
+                            case HttpStatusCode.RequestTimeout:
+                                break;
+                            case HttpStatusCode.Conflict:
+                                break;
+                            case HttpStatusCode.Gone:
+                                break;
+                            case HttpStatusCode.LengthRequired:
+                                break;
+                            case HttpStatusCode.PreconditionFailed:
+                                break;
+                            case HttpStatusCode.RequestEntityTooLarge:
+                                break;
+                            case HttpStatusCode.RequestUriTooLong:
+                                break;
+                            case HttpStatusCode.UnsupportedMediaType:
+                                break;
+                            case HttpStatusCode.RequestedRangeNotSatisfiable:
+                                break;
+                            case HttpStatusCode.ExpectationFailed:
+                                break;
+                            case HttpStatusCode.UpgradeRequired:
+                                break;
+                            case HttpStatusCode.InternalServerError:
+                                break;
+                            case HttpStatusCode.NotImplemented:
+                                break;
+                            case HttpStatusCode.BadGateway:
+                                break;
+                            case HttpStatusCode.ServiceUnavailable:
+                                break;
+                            case HttpStatusCode.GatewayTimeout:
+                                break;
+                            case HttpStatusCode.HttpVersionNotSupported:
+                                break;
+                            default:
+                                break;
                         }
                     }
                     throw ex;
@@ -326,10 +409,12 @@ namespace Dev2.Network
                 aex.Handle(ex =>
                 {
                     if (ex.Message.Contains("1.4"))
+                    {
                         throw new FallbackException();
+                    }
+
                     Dev2Logger.Error(this, aex, "Warewolf Error");
-                    var hex = ex as HttpClientException;
-                    if (hex != null)
+                    if (ex is HttpClientException hex)
                     {
                         switch (hex.Response.StatusCode)
                         {
@@ -337,6 +422,88 @@ namespace Dev2.Network
                             case HttpStatusCode.Forbidden:
                                 UpdateIsAuthorized(false);
                                 throw new UnauthorizedAccessException();
+                            case HttpStatusCode.Continue:
+                                break;
+                            case HttpStatusCode.SwitchingProtocols:
+                                break;
+                            case HttpStatusCode.OK:
+                                break;
+                            case HttpStatusCode.Created:
+                                break;
+                            case HttpStatusCode.Accepted:
+                                break;
+                            case HttpStatusCode.NonAuthoritativeInformation:
+                                break;
+                            case HttpStatusCode.NoContent:
+                                break;
+                            case HttpStatusCode.ResetContent:
+                                break;
+                            case HttpStatusCode.PartialContent:
+                                break;
+                            case HttpStatusCode.MultipleChoices:
+                                break;
+                            case HttpStatusCode.MovedPermanently:
+                                break;
+                            case HttpStatusCode.Found:
+                                break;
+                            case HttpStatusCode.SeeOther:
+                                break;
+                            case HttpStatusCode.NotModified:
+                                break;
+                            case HttpStatusCode.UseProxy:
+                                break;
+                            case HttpStatusCode.Unused:
+                                break;
+                            case HttpStatusCode.TemporaryRedirect:
+                                break;
+                            case HttpStatusCode.BadRequest:
+                                break;
+                            case HttpStatusCode.PaymentRequired:
+                                break;
+                            case HttpStatusCode.NotFound:
+                                break;
+                            case HttpStatusCode.MethodNotAllowed:
+                                break;
+                            case HttpStatusCode.NotAcceptable:
+                                break;
+                            case HttpStatusCode.ProxyAuthenticationRequired:
+                                break;
+                            case HttpStatusCode.RequestTimeout:
+                                break;
+                            case HttpStatusCode.Conflict:
+                                break;
+                            case HttpStatusCode.Gone:
+                                break;
+                            case HttpStatusCode.LengthRequired:
+                                break;
+                            case HttpStatusCode.PreconditionFailed:
+                                break;
+                            case HttpStatusCode.RequestEntityTooLarge:
+                                break;
+                            case HttpStatusCode.RequestUriTooLong:
+                                break;
+                            case HttpStatusCode.UnsupportedMediaType:
+                                break;
+                            case HttpStatusCode.RequestedRangeNotSatisfiable:
+                                break;
+                            case HttpStatusCode.ExpectationFailed:
+                                break;
+                            case HttpStatusCode.UpgradeRequired:
+                                break;
+                            case HttpStatusCode.InternalServerError:
+                                break;
+                            case HttpStatusCode.NotImplemented:
+                                break;
+                            case HttpStatusCode.BadGateway:
+                                break;
+                            case HttpStatusCode.ServiceUnavailable:
+                                break;
+                            case HttpStatusCode.GatewayTimeout:
+                                break;
+                            case HttpStatusCode.HttpVersionNotSupported:
+                                break;
+                            default:
+                                break;
                         }
                     }
                     throw new NotConnectedException();
@@ -448,8 +615,7 @@ namespace Dev2.Network
                 aex.Handle(ex =>
                 {
                     Dev2Logger.Error(this, aex, "Warewolf Error");
-                    var hex = ex as HttpClientException;
-                    if (hex != null)
+                    if (ex is HttpClientException hex)
                     {
                         switch (hex.Response.StatusCode)
                         {
@@ -457,9 +623,51 @@ namespace Dev2.Network
                             case HttpStatusCode.Forbidden:
                                 UpdateIsAuthorized(false);
                                 throw new NotConnectedException();
+                            case HttpStatusCode.Continue:
+                            case HttpStatusCode.SwitchingProtocols:
+                            case HttpStatusCode.OK:
+                            case HttpStatusCode.Created:
+                            case HttpStatusCode.Accepted:
+                            case HttpStatusCode.NonAuthoritativeInformation:
+                            case HttpStatusCode.NoContent:
+                            case HttpStatusCode.ResetContent:
+                            case HttpStatusCode.PartialContent:
+                            case HttpStatusCode.MultipleChoices:
+                            case HttpStatusCode.MovedPermanently:
+                            case HttpStatusCode.Found:
+                            case HttpStatusCode.SeeOther:
+                            case HttpStatusCode.NotModified:
+                            case HttpStatusCode.UseProxy:
+                            case HttpStatusCode.Unused:
+                            case HttpStatusCode.TemporaryRedirect:
+                            case HttpStatusCode.BadRequest:
+                            case HttpStatusCode.PaymentRequired:
+                            case HttpStatusCode.NotFound:
+                            case HttpStatusCode.MethodNotAllowed:
+                            case HttpStatusCode.NotAcceptable:
+                            case HttpStatusCode.ProxyAuthenticationRequired:
+                            case HttpStatusCode.RequestTimeout:
+                            case HttpStatusCode.Conflict:
+                            case HttpStatusCode.Gone:
+                            case HttpStatusCode.LengthRequired:
+                            case HttpStatusCode.PreconditionFailed:
+                            case HttpStatusCode.RequestEntityTooLarge:
+                            case HttpStatusCode.RequestUriTooLong:
+                            case HttpStatusCode.UnsupportedMediaType:
+                            case HttpStatusCode.RequestedRangeNotSatisfiable:
+                            case HttpStatusCode.ExpectationFailed:
+                            case HttpStatusCode.UpgradeRequired:
+                            case HttpStatusCode.InternalServerError:
+                            case HttpStatusCode.NotImplemented:
+                            case HttpStatusCode.BadGateway:
+                            case HttpStatusCode.ServiceUnavailable:
+                            case HttpStatusCode.GatewayTimeout:
+                            case HttpStatusCode.HttpVersionNotSupported:
+                            default:
+                                throw new NotConnectedException();
                         }
                     }
-                    throw new NotConnectedException();
+                    return false;
                 });
             }
             catch (Exception e)
@@ -468,7 +676,9 @@ namespace Dev2.Network
             }
         }
 
-        public void Verify(Action<ConnectResult> callback, bool wait = true)
+        public void Verify(Action<ConnectResult> callback) => Verify(callback, true);
+
+        public void Verify(Action<ConnectResult> callback, bool wait)
         {
             if (IsConnected)
             {
@@ -514,22 +724,15 @@ namespace Dev2.Network
 
         void OnMemoReceived(string objString)
         {
-            // DO NOT use publish as memo is of type object 
-            // and hence won't find the correct subscriptions
-
             var obj = _serializer.Deserialize<DesignValidationMemo>(objString);
             ServerEvents.PublishObject(obj);
         }
 
         void OnPermissionsMemoReceived(string objString)
         {
-            // DO NOT use publish as memo is of type object 
-            // and hence won't find the correct subscriptions
             var obj = _serializer.Deserialize<PermissionsModifiedMemo>(objString);
             try
             {
-                // When we connect against group A with Administrator perms, and we remove all permissions, a 403 will be thrown. 
-                // Handle it more gracefully ;)
                 RaisePermissionsModified(obj.ModifiedPermissions);
             }
             catch (Exception e)
@@ -544,10 +747,6 @@ namespace Dev2.Network
         void OnItemAddedMessageReceived(string obj)
         {
             var serverExplorerItem = _serializer.Deserialize<ServerExplorerItem>(obj);
-            if (serverExplorerItem.ServerId == ServerID)
-            {
-                //  return;
-            }
             serverExplorerItem.ServerId = ID;
             ItemAddedMessageAction?.Invoke(serverExplorerItem);
         }

@@ -12,7 +12,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -68,7 +67,9 @@ namespace Dev2.ScheduleExecutor
                 try
                 {
                     if (paramters.ContainsKey("ResourceId"))
+                    {
                         PostDataToWebserverAsRemoteAgent(paramters["Workflow"], paramters["TaskName"], Guid.NewGuid(), paramters["ResourceId"]);
+                    }
                     else
                     {
                         PostDataToWebserverAsRemoteAgent(paramters["Workflow"], paramters["TaskName"], Guid.NewGuid());
@@ -239,7 +240,10 @@ namespace Dev2.ScheduleExecutor
             Thread.Sleep(5000);
             string correlation = GetCorrelationId(WarewolfTaskSchedulerPath + taskName);
             if (!Directory.Exists(OutputPath))
+            {
                 Directory.CreateDirectory(OutputPath);
+            }
+
             File.WriteAllText(
                 $"{OutputPath}DebugItems_{workflowName.Replace("\\", "_")}_{DateTime.Now.ToString("yyyy-MM-dd")}_{correlation}_{user}.txt",
                 js.SerializeToBuilder(new List<DebugState> { state }).ToString());
@@ -294,8 +298,7 @@ namespace Dev2.ScheduleExecutor
             if (!string.IsNullOrEmpty(result))
             {
                 var data = DataListUtil.AdjustForEncodingIssues(result);
-                bool isFragment;
-                var isXml = DataListUtil.IsXml(data, out isFragment);
+                var isXml = DataListUtil.IsXml(data, out bool isFragment);
                 if (isXml)
                 {
                     var xmlData = XElement.Parse(data);
@@ -333,7 +336,10 @@ namespace Dev2.ScheduleExecutor
             Thread.Sleep(5000);
             string correlation = GetCorrelationId(WarewolfTaskSchedulerPath + taskName);
             if (!Directory.Exists(OutputPath))
+            {
                 Directory.CreateDirectory(OutputPath);
+            }
+
             File.WriteAllText(
                 $"{OutputPath}DebugItems_{workflowName.Replace("\\", "_")}_{DateTime.Now.ToString("yyyy-MM-dd")}_{correlation}_{user}.txt",
                 js.SerializeToBuilder(new List<DebugState> { state }).ToString());

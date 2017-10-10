@@ -10,7 +10,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
@@ -56,13 +55,11 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                     throw new ArgumentNullException(nameof(theWorkspace));
                 }
-                StringBuilder path;
-                if(!values.TryGetValue("path", out path))
+                if (!values.TryGetValue("path", out StringBuilder path))
                 {
                     throw new ArgumentException(string.Format(ErrorResource.ValueNotSupplied, "path"));
                 }
-                StringBuilder newPath;
-                if(!values.TryGetValue("newPath", out newPath))
+                if (!values.TryGetValue("newPath", out StringBuilder newPath))
                 {
                     throw new ArgumentException(string.Format(ErrorResource.ValueNotSupplied, "newPath"));
                 }

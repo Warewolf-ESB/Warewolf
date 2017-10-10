@@ -220,8 +220,6 @@ namespace Dev2.Activities.Designers2.MySqlDatabase
 
         IErrorInfo WorstDesignError
         {
-
-            get { return _worstDesignError; }
             set
             {
                 if (_worstDesignError != value)
@@ -431,7 +429,9 @@ namespace Dev2.Activities.Designers2.MySqlDatabase
         {
             Errors = new List<IActionableErrorInfo>();
             if (hasError)
+            {
                 Errors = new List<IActionableErrorInfo> { new ActionableErrorInfo(new ErrorInfo() { ErrorType = ErrorType.Critical, FixData = "", FixType = FixType.None, Message = exception.Message, StackTrace = exception.StackTrace }, () => { }) };
+            }
         }
 
         public void SetDisplayName(string outputFieldName)

@@ -60,12 +60,7 @@ namespace Dev2.Tests.Runtime.WebServer
         [TestCategory("WebServerRequest_Constructor")]
         public void WebServerRequest_Constructor_PropertiesInitialized()
         {
-            //------------Setup for test--------------------------            
-            string content;
-            NameValueCollection boundVars;
-            NameValueCollection queryStr;
-            NameValueCollection headers;
-            var request = CreateHttpRequest(out content, out boundVars, out queryStr, out headers);
+            var request = CreateHttpRequest(out string content, out NameValueCollection boundVars, out NameValueCollection queryStr, out NameValueCollection headers);
 
             //------------Execute Test---------------------------
             var webServerRequest = new WebServerRequest(request, boundVars);

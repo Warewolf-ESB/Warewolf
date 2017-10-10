@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 
@@ -22,7 +21,9 @@ namespace Dev2.Common
             {
                 var dict = groups.Where(g => g.Key.HasValue).ToDictionary(g => g.Key.Value, g => g.ToList());
                 for (var i = 0; i < roots.Count(); i++)
+                {
                     AddChildren(roots[i], dict);
+                }
             }
             var debugStates = roots?.DistinctBy(state => new { state.ID, state.StateType, state.Children }).ToList();
 
@@ -56,7 +57,9 @@ namespace Dev2.Common
                 node.Children = debugStates ?? new List<IDebugState>();
                 node.IsAdded = true;
                 foreach (var state in node.Children)
+                {
                     AddChildren(state, source);
+                }
             }
             else
             {

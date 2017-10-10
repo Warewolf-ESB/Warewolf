@@ -126,7 +126,10 @@ namespace Dev2.Infrastructure.Tests.Providers.Validation.Rules
         public override IActionableErrorInfo Check()
         {
             if(GetValue()!= "1")
+            {
                 return new ActionableErrorInfo();
+            }
+
             return null;
         }
 
@@ -145,7 +148,10 @@ namespace Dev2.Infrastructure.Tests.Providers.Validation.Rules
         public override IActionableErrorInfo Check()
         {
             if (GetValue() != "2")
+            {
                 return new ActionableErrorInfo();
+            }
+
             return null;
         }
 

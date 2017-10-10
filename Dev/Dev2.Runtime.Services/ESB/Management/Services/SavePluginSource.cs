@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Core;
@@ -39,28 +38,23 @@ namespace Dev2.Runtime.ESB.Management.Services
             try
             {
                 Dev2Logger.Info("Save Plugin Source", GlobalConstants.WarewolfInfo);
-                StringBuilder resourceDefinition;
 
-                values.TryGetValue("PluginSource", out resourceDefinition);
+                values.TryGetValue("PluginSource", out StringBuilder resourceDefinition);
 
                 var src = serializer.Deserialize<PluginSourceDefinition>(resourceDefinition);
                 if (src.Path.EndsWith("\\"))
+                {
                     src.Path = src.Path.Substring(0, src.Path.LastIndexOf("\\", StringComparison.Ordinal));
+                }
+
                 PluginSource res;
                 var existingSource = ResourceCatalog.Instance.GetResource(GlobalConstants.ServerWorkspaceID, src.Name);
-                if (existingSource != null)
+                res = existingSource != null ? existingSource as PluginSource : new PluginSource
                 {
-                    res = existingSource as PluginSource;
-                }
-                else
-                {
-                    res = new PluginSource
-                    {
-                        ResourceID = src.Id,
-                        ConfigFilePath = src.ConfigFilePath,
-                        ResourceName = src.Name
-                    };
-                }
+                    ResourceID = src.Id,
+                    ConfigFilePath = src.ConfigFilePath,
+                    ResourceName = src.Name
+                };
                 Debug.Assert(res != null, "res != null");
                 if (!string.IsNullOrEmpty(src.FileSystemAssemblyName))
                 {                    

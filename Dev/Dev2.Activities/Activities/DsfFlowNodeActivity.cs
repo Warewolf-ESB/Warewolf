@@ -174,8 +174,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             try
             {
                 Dev2DecisionStack dds = DataListUtil.ConvertFromJsonToModel<Dev2DecisionStack>(val);
-                ErrorResultTO error;
-                string userModel = dds.GenerateUserFriendlyModel(env, dds.Mode, out error);
+                string userModel = dds.GenerateUserFriendlyModel(env, dds.Mode, out ErrorResultTO error);
                 allErrors.MergeErrors(error);
 
                 foreach (Dev2Decision dev2Decision in dds.TheStack)
@@ -242,7 +241,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
                 else
                 {
-                    var expressiomToStringValue = ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(expression, 0));// EvaluateExpressiomToStringValue(expression, decisionMode, dataList);
+                    var expressiomToStringValue = ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(expression, 0));
                     userModel = userModel.Replace(expression, expressiomToStringValue);
                     debugResult = new DebugItemWarewolfAtomResult(expressiomToStringValue, expression, "");
                 }
@@ -290,13 +289,16 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 Dev2DecisionStack dds = DataListUtil.ConvertFromJsonToModel<Dev2DecisionStack>(val);
 
-                if(_theResult.ToString() == "True")
+                if (_theResult.ToString() == "True")
                 {
                     resultString = dds.TrueArmText;
                 }
-                else if(_theResult.ToString() == "False")
+                else
                 {
-                    resultString = dds.FalseArmText;
+                    if (_theResult.ToString() == "False")
+                    {
+                        resultString = dds.FalseArmText;
+                    }
                 }
 
                 itemToAdd.AddRange(new DebugItemStaticDataParams(resultString, "").GetDebugItemResult());
@@ -350,8 +352,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             if (obj is IFlowNodeActivity)
             {
                 var flowNodeAct = this as IFlowNodeActivity;
-                var other = act as IFlowNodeActivity;
-                if (other != null)
+                if (act is IFlowNodeActivity other)
                 {
                     return UniqueID == act.UniqueID && flowNodeAct.ExpressionText.Equals(other.ExpressionText);
                 }

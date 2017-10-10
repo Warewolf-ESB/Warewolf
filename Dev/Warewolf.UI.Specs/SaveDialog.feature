@@ -7,7 +7,7 @@ Feature: SaveDialog
 Scenario: Create WorkFlow In Folder Opens Save Dialog With Folder Already Selected 
 	Given The Warewolf Studio is running
 	And I Create New Workflow using shortcut
-	And I RightClick Explorer Localhost First Item
+	When I RightClick Explorer Localhost First Item
 	Then I Select NewWorkflow From Explorer Context Menu
 	And I Make Workflow Savable
 	And I Click Save Ribbon Button to Open Save Dialog

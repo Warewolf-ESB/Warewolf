@@ -12,6 +12,7 @@ using System.Windows.Input;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.Studio.Interfaces;
 using Warewolf.Studio.Core;
+using Dev2.Common;
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -144,8 +145,9 @@ namespace Warewolf.Studio.ViewModels
                     {
                         result = DropboxOAuth2Helper.ParseTokenFragment(uri);
                     }
-                    catch (ArgumentException)
+                    catch (ArgumentException e)
                     {
+                        Dev2Logger.Warn(e.Message, "Warewolf Warn");
                     }
 
                     if (result != null)
@@ -420,7 +422,10 @@ namespace Warewolf.Studio.ViewModels
                         src.ResourcePath = requestServiceNameViewModel.ResourceName.Path ?? requestServiceNameViewModel.ResourceName.Name;
                         Save(src);
                         if (requestServiceNameViewModel.SingleEnvironmentExplorerViewModel != null)
+                        {
                             AfterSave(requestServiceNameViewModel.SingleEnvironmentExplorerViewModel.Environments[0].ResourceId, src.ResourceID);
+                        }
+
                         _oAuthSource = src;
                         Path = _oAuthSource.ResourcePath;
                         SetupHeaderTextFromExisting();
@@ -468,6 +473,7 @@ namespace Warewolf.Studio.ViewModels
         private IOAuthSource ToSource()
         {
             if (_oAuthSource == null)
+            {
                 return new DropBoxSource
                 {
                     AppKey = AppKey,
@@ -475,7 +481,7 @@ namespace Warewolf.Studio.ViewModels
                     ResourceID = _oAuthSource?.ResourceID ?? Guid.NewGuid()
                 }
             ;
-            
+            }
             else
             {
                 _oAuthSource.AppKey = AppKey;

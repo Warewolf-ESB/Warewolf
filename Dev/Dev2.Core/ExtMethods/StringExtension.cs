@@ -10,7 +10,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Xml;
 using Dev2.Common;
@@ -62,11 +61,9 @@ namespace Dev2
             };
             var d = new DateTimeParser();
             int count = 0;
-            while (result == false && count < acceptedDateFormats.Count)
+            while (!result && count < acceptedDateFormats.Count)
             {
-                string errorMsg;
-                IDateTimeResultTO to;
-                result = d.TryParseDateTime(payload, acceptedDateFormats[count], out to, out errorMsg);
+                result = d.TryParseDateTime(payload, acceptedDateFormats[count], out IDateTimeResultTO to, out string errorMsg);
                 count++;
             }
             return result;
@@ -76,10 +73,9 @@ namespace Dev2
         public static bool IsXml(this string payload)
         {
             bool result = false;
-            bool isFragment;
 
 
-            if (IsXml(payload, out isFragment))
+            if (IsXml(payload, out bool isFragment))
             {
                 result = true;
             }
@@ -120,8 +116,7 @@ namespace Dev2
         /// </summary>
         public static bool IsXml(string data, out bool isFragment)
         {
-            bool isHtml;
-            return IsXml(data, out isFragment, out isHtml) && !isFragment && !isHtml;
+            return IsXml(data, out isFragment, out bool isHtml) && !isFragment && !isHtml;
         }
 
         /// <summary>

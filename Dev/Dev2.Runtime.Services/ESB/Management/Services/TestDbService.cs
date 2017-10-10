@@ -11,7 +11,6 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using Dev2.Common;
@@ -51,9 +50,8 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
 
                 Dev2Logger.Info("Test DB Connection Service", GlobalConstants.WarewolfInfo);
-                StringBuilder resourceDefinition;
 
-                values.TryGetValue("DbService", out resourceDefinition);
+                values.TryGetValue("DbService", out StringBuilder resourceDefinition);
 
                 IDatabaseService src = serializer.Deserialize<IDatabaseService>(resourceDefinition);
                 

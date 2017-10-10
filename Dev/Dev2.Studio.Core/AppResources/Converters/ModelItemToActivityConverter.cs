@@ -45,23 +45,19 @@ namespace Dev2.Studio.Core.AppResources.Converters
         /// <param name="value">The value that is produced by the binding target.</param><param name="targetType">The type to convert to.</param><param name="parameter">The converter parameter to use.</param><param name="culture">The culture to use in the converter.</param>
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            ModelItem modelItem = value as ModelItem;
 
-            if(modelItem != null)
+            if (value is ModelItem modelItem)
             {
                 var currentValue = modelItem.GetCurrentValue();
-                var databaseActivity = currentValue as DsfDatabaseActivity;
-                if(databaseActivity != null)
+                if (currentValue is DsfDatabaseActivity databaseActivity)
                 {
                     return databaseActivity;
                 }
-                var pluginActivity = currentValue as DsfPluginActivity;
-                if(pluginActivity != null)
+                if (currentValue is DsfPluginActivity pluginActivity)
                 {
                     return pluginActivity;
                 }
-                var webServiceActivity = currentValue as DsfWebserviceActivity;
-                if(webServiceActivity != null)
+                if (currentValue is DsfWebserviceActivity webServiceActivity)
                 {
                     return webServiceActivity;
                 }

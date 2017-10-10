@@ -24,7 +24,6 @@ using Dev2.Studio;
 using Dev2.Studio.Controller;
 using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.Core.Services;
-using Dev2.Studio.Core.Services.System;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.ViewModels;
 using Dev2.Threading;
@@ -76,7 +75,6 @@ namespace Dev2
         protected override void Configure()
         {
             CustomContainer.Register<IWindowManager>(new WindowManager());
-            CustomContainer.Register<ISystemInfoService>(new SystemInfoService());
             CustomContainer.Register<IPopupController>(new PopupController());
             var mainViewModel = new ShellViewModel();
             CustomContainer.Register<IShellViewModel>(mainViewModel);
@@ -96,8 +94,7 @@ namespace Dev2
         {
             if(_serverServiceStartedFromStudio)
             {
-                var app = Application.Current as IApp;
-                if(app != null)
+                if (Application.Current is IApp app)
                 {
                     app.ShouldRestart = true;
                 }
@@ -148,13 +145,7 @@ namespace Dev2
 
         #region Private Methods
 
-        /*
-         * DELETE THIS METHOD AND LOOSE A VERY IMPORTANT PART OF YOU ;)
-         * 
-         * IT IS REQUIRED FOR UPDATES IN RELEASE MODE ;)
-         * REMOVING IT MEANS IT IS NOT POSSIBLE TO BUILD AN INSTALLER ;)
-         */
-        
+#if !DEBUG
         private bool CheckWindowsService()
         {
             IWindowsServiceManager windowsServiceManager = CustomContainer.Get<IWindowsServiceManager>();
@@ -180,20 +171,23 @@ namespace Dev2
 
             return false;
         }
+#endif
 
         private void CheckPath()
         {
             var sysUri = new Uri(AppDomain.CurrentDomain.BaseDirectory);
 
-            if(IsLocal(sysUri)) return;
+            if(IsLocal(sysUri))
+            {
+                return;
+            }
 
             var popup = new PopupController
                 {
                     Header = "Load Error",
                     Description = 
                         $@"The Design Studio could not be launched from a network location.
-                                                    {Environment
-                            .NewLine}Please install the application on your local machine",
+                        {Environment.NewLine}Please install the application on your local machine",
                     Buttons = MessageBoxButton.OK
                 };
 
@@ -232,6 +226,6 @@ namespace Dev2
             return sysUri.IsUnc;
         }
 
-        #endregion Private Methods
+#endregion Private Methods
     }
 }

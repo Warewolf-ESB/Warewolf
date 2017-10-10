@@ -15,8 +15,7 @@ using Dev2.Providers.Validation.Rules;
 using Dev2.TO;
 using Dev2.Util;
 using Dev2.Validation;
-
-
+using System;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
@@ -30,10 +29,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public XPathDTO()
         {
-
         }
 
-        public XPathDTO(string outputVariable, string xPath, int indexNum, bool inserted = false)
+        public XPathDTO(string outputVariable, string xPath, int indexNum)
+            : this(outputVariable, xPath, indexNum, false)
+        {
+        }
+
+        public XPathDTO(string outputVariable, string xPath, int indexNum, bool inserted)
         {
             Inserted = inserted;
             OutputVariable = outputVariable;
@@ -163,6 +166,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         }
                     }
                     break;
+                default:
+                    throw new ArgumentException("Unrecognized property name: " + propertyName);
             }
             return ruleSet;
         }

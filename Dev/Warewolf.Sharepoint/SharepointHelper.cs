@@ -17,9 +17,11 @@ namespace Warewolf.Sharepoint
         private string UserName { get; set; }
         private string Password { get; set; }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="T:System.Object"/> class.
-        /// </summary>
+        public SharepointHelper(string server)
+            : this(server, "", "", false)
+        {
+        }
+        
         public SharepointHelper(string server, string userName, string password, bool isSharepointOnline)
         {
             Server = server;
@@ -226,7 +228,8 @@ namespace Warewolf.Sharepoint
             return "Success";
         }
 
-        public string DownLoadFile(string serverPath, string localPath, bool overwrite = false)
+        public string DownLoadFile(string serverPath, string localPath) => DownLoadFile(serverPath, localPath, false);
+        public string DownLoadFile(string serverPath, string localPath, bool overwrite)
         {
             var fileName = Path.GetFileName(localPath);
 
@@ -241,7 +244,10 @@ namespace Warewolf.Sharepoint
 
             if (!overwrite && !string.IsNullOrEmpty(localPath) && !string.IsNullOrEmpty(fileName))
             {
-                if (CheckIfFileExist(Path.Combine(localPath, fileName))) return "Success";
+                if (CheckIfFileExist(Path.Combine(localPath, fileName)))
+                {
+                    return "Success";
+                }
             }
 
             CreateFolderIfNotExist(localPath);
@@ -258,7 +264,10 @@ namespace Warewolf.Sharepoint
                 var fileRef = file.ServerRelativeUrl;
                 var fileInfo = File.OpenBinaryDirect(ctx, fileRef);
 
-                if (fileName == null || localPath == null) return "Failed";
+                if (fileName == null || localPath == null)
+                {
+                    return "Failed";
+                }
 
                 var newPath = Path.Combine(localPath, fileName);
 
@@ -362,7 +371,54 @@ namespace Warewolf.Sharepoint
                         sharepointFieldTo.MinValue = numberField.MinimumValue;
                     }
                     break;
-
+                case FieldType.Lookup:
+                    break;
+                case FieldType.URL:
+                    break;
+                case FieldType.Computed:
+                    break;
+                case FieldType.Threading:
+                    break;
+                case FieldType.Guid:
+                    break;
+                case FieldType.MultiChoice:
+                    break;
+                case FieldType.GridChoice:
+                    break;
+                case FieldType.Calculated:
+                    break;
+                case FieldType.File:
+                    break;
+                case FieldType.Attachments:
+                    break;
+                case FieldType.User:
+                    break;
+                case FieldType.Recurrence:
+                    break;
+                case FieldType.CrossProjectLink:
+                    break;
+                case FieldType.ModStat:
+                    break;
+                case FieldType.Error:
+                    break;
+                case FieldType.ContentTypeId:
+                    break;
+                case FieldType.PageSeparator:
+                    break;
+                case FieldType.ThreadIndex:
+                    break;
+                case FieldType.WorkflowStatus:
+                    break;
+                case FieldType.AllDayEvent:
+                    break;
+                case FieldType.WorkflowEventType:
+                    break;
+                case FieldType.Geolocation:
+                    break;
+                case FieldType.OutcomeChoice:
+                    break;
+                case FieldType.MaxItems:
+                    break;
                 default:
                     sharepointFieldTo.Type = SharepointFieldType.Text;
                     break;
@@ -408,11 +464,11 @@ namespace Warewolf.Sharepoint
             List list = ctx.Web.Lists.GetByTitle(listName);
             if (editableFieldsOnly)
             {
-                ctx.Load(list.Fields, collection => collection.Where(field => field.Hidden == false && field.ReadOnlyField == false));
+                ctx.Load(list.Fields, collection => collection.Where(field => !field.Hidden && !field.ReadOnlyField));
             }
             else
             {
-                ctx.Load(list.Fields, collection => collection.Where(field => field.Hidden == false));
+                ctx.Load(list.Fields, collection => collection.Where(field => !field.Hidden));
             }
             return list;
         }

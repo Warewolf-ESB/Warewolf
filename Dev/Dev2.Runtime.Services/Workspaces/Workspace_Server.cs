@@ -30,16 +30,15 @@ namespace Dev2.Workspaces
             {
                 throw new ArgumentNullException("workspaceItem");
             }
-            
-            switch(workspaceItem.Action)
+
+            switch (workspaceItem.Action)
             {
                 case WorkspaceItemAction.None:
                     break;
 
                 case WorkspaceItemAction.Discard:   // overwrite workspace item with copy of server item
                 case WorkspaceItemAction.Edit:      // create copy of the server item in this workspace
-                    //06.03.2013: Ashley Lewis - PBI 8720
-                    if(workspaceItem.ServiceType != enDynamicServiceObjectType.Source.ToString())
+                    if (workspaceItem.ServiceType != enDynamicServiceObjectType.Source.ToString())
                     {
                         Copy(WorkspaceRepository.Instance.ServerWorkspace, this, workspaceItem);
                     }
@@ -51,6 +50,8 @@ namespace Dev2.Workspaces
 
                 case WorkspaceItemAction.Commit:    // overwrite server item with workspace item
 
+                    break;
+                default:
                     break;
             }
         }
@@ -66,15 +67,14 @@ namespace Dev2.Workspaces
                 return;
             }
 
-            enDynamicServiceObjectType serviceType;
-            if(!Enum.TryParse(workspaceItem.ServiceType, out serviceType))
+            if (!Enum.TryParse(workspaceItem.ServiceType, out enDynamicServiceObjectType serviceType))
             {
                 serviceType = enDynamicServiceObjectType.DynamicService;
             }
 
             #region TODO: Fix Map ResourceType from workspaceItem.ServiceType
 
-            switch(serviceType)
+            switch (serviceType)
             {
                 case enDynamicServiceObjectType.BizRule:
                     break;

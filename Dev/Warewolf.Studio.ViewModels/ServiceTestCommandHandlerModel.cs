@@ -28,7 +28,9 @@ namespace Warewolf.Studio.ViewModels
 
         private DataListModel DataList { get; set; }
 
-        public IServiceTestModel CreateTest(IResourceModel resourceModel, int testNumber, bool isFromDebug = false)
+        public IServiceTestModel CreateTest(IResourceModel resourceModel, int testNumber) => CreateTest(resourceModel, testNumber, false);
+
+        public IServiceTestModel CreateTest(IResourceModel resourceModel, int testNumber, bool isFromDebug)
         {
             var testModel = new ServiceTestModel(resourceModel.ID)
             {
@@ -149,7 +151,10 @@ namespace Warewolf.Studio.ViewModels
                                 foreach (var serviceTestStep in serviceTestSteps)
                                 {
                                     var resServiceTestStep = serviceTestStep as ServiceTestStep;
-                                    if (resServiceTestStep == null) continue;
+                                    if (resServiceTestStep == null)
+                                    {
+                                        continue;
+                                    }
 
                                     UpdateTestStepResult(resServiceTestStep, resTestStep);
 

@@ -1,6 +1,5 @@
 ﻿using Dev2.Activities.Designers2.Core;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 
 namespace Dev2.Activities.Designers.Tests.Core
 {

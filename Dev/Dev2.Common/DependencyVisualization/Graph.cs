@@ -9,7 +9,6 @@
 */
 
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using Dev2.Common.Interfaces;
@@ -74,7 +73,9 @@ namespace Dev2.Common.DependencyVisualization
             {
                 var circularDependencies = node.FindCircularDependencies();
                 if (circularDependencies != null)
+                {
                     ProcessCircularDependencies(circularDependencies);
+                }
             }
 
             CircularDependencies.Sort();
@@ -85,10 +86,14 @@ namespace Dev2.Common.DependencyVisualization
             foreach (var circularDependency in circularDependencies)
             {
                 if (circularDependency.Nodes.Count == 0)
+                {
                     continue;
+                }
 
                 if (CircularDependencies.Contains(circularDependency))
+                {
                     continue;
+                }
 
                 // Arrange the nodes into the order in which they were discovered.
                 circularDependency.Nodes.Reverse();
@@ -97,7 +102,9 @@ namespace Dev2.Common.DependencyVisualization
 
                 // Inform each node that it is a member of the circular dependency.
                 foreach (var dependency in circularDependency.Nodes)
+                {
                     dependency.CircularDependencies.Add(circularDependency);
+                }
             }
         }
 

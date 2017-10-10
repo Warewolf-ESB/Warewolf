@@ -194,8 +194,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             }
                         }
 
-                        ErrorResultTO errors;
-                        IDev2Tokenizer tokenizer = CreateSplitPattern(ref val, ResultsCollection, env, out errors, update);
+                        IDev2Tokenizer tokenizer = CreateSplitPattern(ref val, ResultsCollection, env, out ErrorResultTO errors, update);
                         allErrors.MergeErrors(errors);
 
                         if(!allErrors.HasErrors())
@@ -273,10 +272,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                             debugDictionary.Add(outputVarTo);
                                         }
                                     }
-                                    if(pos == end)
-                                    {
-                                    }
-                                    else
+                                    if(pos != end)
                                     {
                                         pos++;
                                     }
@@ -355,14 +351,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     List<DataSplitDTO> listOfValidRows = ResultsCollection.Where(c => !c.CanRemove()).ToList();
                     if(listOfValidRows.Count > 0)
                     {
-                        DataSplitDTO dataSplitDto = ResultsCollection.Last(c => !c.CanRemove());
-                        int startIndex = ResultsCollection.IndexOf(dataSplitDto) + 1;
-                        foreach(string s in listToAdd)
-                        {
-                            mic.Insert(startIndex, new DataSplitDTO(s, ResultsCollection[startIndex - 1].SplitType, ResultsCollection[startIndex - 1].At, startIndex + 1));
-                            startIndex++;
-                        }
-                        CleanUpCollection(mic, modelItem, startIndex);
+                        ConcatenateCollections(listToAdd, modelItem, mic);
                     }
                     else
                     {
@@ -370,6 +359,18 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                 }
             }
+        }
+
+        private void ConcatenateCollections(IEnumerable<string> listToAdd, ModelItem modelItem, ModelItemCollection mic)
+        {
+            DataSplitDTO dataSplitDto = ResultsCollection.Last(c => !c.CanRemove());
+            int startIndex = ResultsCollection.IndexOf(dataSplitDto) + 1;
+            foreach (string s in listToAdd)
+            {
+                mic.Insert(startIndex, new DataSplitDTO(s, ResultsCollection[startIndex - 1].SplitType, ResultsCollection[startIndex - 1].At, startIndex + 1));
+                startIndex++;
+            }
+            CleanUpCollection(mic, modelItem, startIndex);
         }
 
         private void AddToCollection(IEnumerable<string> listToAdd, ModelItem modelItem)
@@ -414,8 +415,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             var modelProperty = modelItem.Properties["DisplayName"];
             if(modelProperty != null)
             {
-                string currentName = modelProperty.ComputedValue as string;
-                if(currentName != null && currentName.Contains("(") && currentName.Contains(")"))
+                var currentName = modelProperty.ComputedValue as string;
+                if (currentName != null && currentName.Contains("(") && currentName.Contains(")"))
                 {
                     currentName = currentName.Remove(currentName.Contains(" (") ? currentName.IndexOf(" (", StringComparison.Ordinal) : currentName.IndexOf("(", StringComparison.Ordinal));
                 }
@@ -433,117 +434,168 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             foreach(DataSplitDTO t in args)
             {
-                t.At = t.At ?? "";
-                string entry;
-                
-                switch(t.SplitType)
-                {
-                    case "Index":
-                        try
-                        {
-                            entry = compiler.EvalAsListOfStrings(t.At, update).FirstOrDefault();
-                            if(entry== null) throw new Exception("null iterator expression");
-                            string index = entry;
-                            int indexNum = Convert.ToInt32(index);
-                            if(indexNum > 0)
-                            {
-                                dtb.AddIndexOp(indexNum);
-                            }
-                        }
-                        catch(Exception ex)
-                        {
-                            errors.AddError(ex.Message);
-                        }
-                        break;
-                    case "End":
-                        dtb.AddEoFOp();
-                        break;
-                    case "Space":
-                        dtb.AddTokenOp(" ", t.Include);
-                        break;
-                    case "Tab":
-                        dtb.AddTokenOp("\t", t.Include);
-                        break;
-                    case "New Line":
-                        if(stringToSplit.Contains("\r\n"))
-                        {
-                            dtb.AddTokenOp("\r\n", t.Include);
-                        }
-                        else if(stringToSplit.Contains("\n"))
-                        {
-                            dtb.AddTokenOp("\n", t.Include);
-                        }
-                        else if(stringToSplit.Contains("\r"))
-                        {
-                            dtb.AddTokenOp("\r", t.Include);
-                        }
-                        break;
-                    case "Chars":
-                        if(!string.IsNullOrEmpty(t.At))
-                        {
-                            entry = compiler.EvalAsListOfStrings(t.At, update).FirstOrDefault();
-                            if (entry != null && (entry.Contains(@"\r\n") || entry.Contains(@"\n")))
-                            {
-                                var match = Regex.Match(stringToSplit, @"[\r\n]+");
-                                if (match.Success && !SkipBlankRows)
-                                {
-                                    stringToSplit = Regex.Escape(stringToSplit);
-                                    dtb.ToTokenize = stringToSplit;
-                                }
-                            }
-                            string escape = t.EscapeChar;
-                            if(!String.IsNullOrEmpty(escape))
-                            {
-                                escape = compiler.EvalAsListOfStrings(t.EscapeChar, update).FirstOrDefault();                              
-                            }
-                            dtb.AddTokenOp(entry, t.Include, escape);
-                        }
-                        break;
-                }
+                stringToSplit = AddTokenOp(stringToSplit, compiler, errors, update, dtb, t);
                 _indexCounter++;
             }
             return string.IsNullOrEmpty(dtb.ToTokenize) || errors.HasErrors() ? null : dtb.Generate();
+        }
+
+        private string AddTokenOp(string stringToSplit, IExecutionEnvironment compiler, ErrorResultTO errors, int update, Dev2TokenizerBuilder dtb, DataSplitDTO t)
+        {
+            var parsedAt = t.At ?? string.Empty;
+            string entry = "";
+
+            switch (t.SplitType)
+            {
+                case "Index":
+                    AddIndexOperation(dtb, compiler, errors, update, parsedAt);
+                    break;
+                case "End":
+                    dtb.AddEoFOp();
+                    break;
+                case "Space":
+                    dtb.AddTokenOp(" ", t.Include);
+                    break;
+                case "Tab":
+                    dtb.AddTokenOp("\t", t.Include);
+                    break;
+                case "New Line":
+                    AddLineBreakTokenOp(stringToSplit, dtb, t);
+                    break;
+                case "Chars":
+                    AddCharacterTokenOp(ref stringToSplit, compiler, update, dtb, t, parsedAt, ref entry);
+                    break;
+                default:
+                    throw new ArgumentException("Unrecognized split type: " + t.SplitType);
+            }
+
+            return stringToSplit;
+        }
+
+        private void AddCharacterTokenOp(ref string stringToSplit, IExecutionEnvironment compiler, int update, Dev2TokenizerBuilder dtb, DataSplitDTO t, string parsedAt, ref string entry)
+        {
+            if (!string.IsNullOrEmpty(parsedAt))
+            {
+                entry = EvalLineBreakCharacter(ref stringToSplit, compiler, update, dtb, parsedAt);
+                string escape = EvalEscapeCharacter(compiler, update, t);
+                dtb.AddTokenOp(entry, t.Include, escape);
+            }
+        }
+
+        private static void AddLineBreakTokenOp(string stringToSplit, Dev2TokenizerBuilder dtb, DataSplitDTO t)
+        {
+            if (stringToSplit.Contains("\r\n"))
+            {
+                dtb.AddTokenOp("\r\n", t.Include);
+            }
+            else if (stringToSplit.Contains("\n"))
+            {
+                dtb.AddTokenOp("\n", t.Include);
+            }
+            else
+            {
+                if (stringToSplit.Contains("\r"))
+                {
+                    dtb.AddTokenOp("\r", t.Include);
+                }
+            }
+        }
+
+        private string EvalLineBreakCharacter(ref string stringToSplit, IExecutionEnvironment compiler, int update, Dev2TokenizerBuilder dtb, string parsedAt)
+        {
+            string entry = compiler.EvalAsListOfStrings(parsedAt, update).FirstOrDefault();
+            if (entry != null && (entry.Contains(@"\r\n") || entry.Contains(@"\n")))
+            {
+                var match = Regex.Match(stringToSplit, @"[\r\n]+");
+                if (match.Success && !SkipBlankRows)
+                {
+                    stringToSplit = Regex.Escape(stringToSplit);
+                    dtb.ToTokenize = stringToSplit;
+                }
+            }
+
+            return entry;
+        }
+
+        private static string EvalEscapeCharacter(IExecutionEnvironment compiler, int update, DataSplitDTO t)
+        {
+            string escape = t.EscapeChar;
+            if (!String.IsNullOrEmpty(escape))
+            {
+                escape = compiler.EvalAsListOfStrings(t.EscapeChar, update).FirstOrDefault();
+            }
+
+            return escape;
+        }
+
+        private static void AddIndexOperation(Dev2TokenizerBuilder dtb, IExecutionEnvironment compiler, ErrorResultTO errors, int update, string parsedAt)
+        {
+            try
+            {
+                var entry = compiler.EvalAsListOfStrings(parsedAt, update).FirstOrDefault();
+                if (entry == null)
+                {
+                    throw new Exception("null iterator expression");
+                }
+
+                string index = entry;
+                int indexNum = Convert.ToInt32(index);
+                if (indexNum > 0)
+                {
+                    dtb.AddIndexOp(indexNum);
+                }
+            }
+            catch (Exception ex)
+            {
+                errors.AddError(ex.Message);
+            }
         }
 
         private void AddDebug(IEnumerable<DataSplitDTO> resultCollection, IExecutionEnvironment env, int update)
         {
             foreach(DataSplitDTO t in resultCollection)
             {
-                DebugItem debugItem = new DebugItem();
-                AddDebugItem(new DebugItemStaticDataParams("",_indexCounter.ToString(CultureInfo.InvariantCulture)), debugItem);
-                if (!string.IsNullOrEmpty(t.OutputVariable))
-                {
-                    AddDebugItem(new DebugEvalResult(t.OutputVariable, "", env, update), debugItem);
-                }
-                AddDebugItem(new DebugItemStaticDataParams(t.SplitType, "With"), debugItem);
-
-                switch(t.SplitType)
-                {
-                    case "Index":
-                        AddDebugItem(new DebugEvalResult(t.At, "Using", env, update), debugItem);
-                        AddDebugItem(new DebugItemStaticDataParams(t.Include ? "Yes" : "No", "Include"), debugItem);
-                        break;
-                    case "End":
-                        AddDebugItem(new DebugItemStaticDataParams(t.Include ? "Yes" : "No", "Include"), debugItem);
-                        break;
-                    case "Space":
-                        AddDebugItem(new DebugItemStaticDataParams(t.Include ? "Yes" : "No", "Include"), debugItem);
-                        break;
-                    case "Tab":
-                        AddDebugItem(new DebugItemStaticDataParams(t.Include ? "Yes" : "No", "Include"), debugItem);
-                        break;
-                    case "New Line":
-                        AddDebugItem(new DebugItemStaticDataParams(t.Include ? "Yes" : "No", "Include"), debugItem);
-                        break;
-                    case "Chars":
-                        AddDebugItem(new DebugEvalResult(t.At, "Using", env, update), debugItem);
-                        AddDebugItem(new DebugItemStaticDataParams(t.Include ? "Yes" : "No", "Include"), debugItem);
-                        AddDebugItem(new DebugItemStaticDataParams(t.EscapeChar, "Escape"), debugItem);
-                        break;
-                }
+                DebugItem debugItem = AddParamsToDebug(env, update, t);
+                AddResultsToDebug(env, update, t, debugItem);
                 _indexCounter++;
                 _debugInputs.Add(debugItem);
             }
+        }
+
+        private void AddResultsToDebug(IExecutionEnvironment env, int update, DataSplitDTO t, DebugItem debugItem)
+        {
+            switch (t.SplitType)
+            {
+                case "Index":
+                    AddDebugItem(new DebugEvalResult(t.At, "Using", env, update), debugItem);
+                    AddDebugItem(new DebugItemStaticDataParams(t.Include ? "Yes" : "No", "Include"), debugItem);
+                    break;
+                case "End":
+                case "Space":
+                case "Tab":
+                case "New Line":
+                    AddDebugItem(new DebugItemStaticDataParams(t.Include ? "Yes" : "No", "Include"), debugItem);
+                    break;
+                case "Chars":
+                    AddDebugItem(new DebugEvalResult(t.At, "Using", env, update), debugItem);
+                    AddDebugItem(new DebugItemStaticDataParams(t.Include ? "Yes" : "No", "Include"), debugItem);
+                    AddDebugItem(new DebugItemStaticDataParams(t.EscapeChar, "Escape"), debugItem);
+                    break;
+                default:
+                    throw new ArgumentException("Unrecognized split type: " + t.SplitType);
+            }
+        }
+
+        private DebugItem AddParamsToDebug(IExecutionEnvironment env, int update, DataSplitDTO t)
+        {
+            DebugItem debugItem = new DebugItem();
+            AddDebugItem(new DebugItemStaticDataParams("", _indexCounter.ToString(CultureInfo.InvariantCulture)), debugItem);
+            if (!string.IsNullOrEmpty(t.OutputVariable))
+            {
+                AddDebugItem(new DebugEvalResult(t.OutputVariable, "", env, update), debugItem);
+            }
+            AddDebugItem(new DebugItemStaticDataParams(t.SplitType, "With"), debugItem);
+            return debugItem;
         }
 
         private void CleanArguments(IList<DataSplitDTO> args)

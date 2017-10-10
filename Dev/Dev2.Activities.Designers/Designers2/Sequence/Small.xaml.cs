@@ -24,19 +24,6 @@ namespace Dev2.Activities.Designers2.Sequence
             _dropEnabledActivityDesignerUtils = new DropEnabledActivityDesignerUtils();
         }
 
-        void AllowDrag(DragEventArgs e)
-        {
-            if(_dropEnabledActivityDesignerUtils != null)
-            {
-                var dropEnabled = _dropEnabledActivityDesignerUtils.LimitDragDropOptions(e.Data);
-                if(!dropEnabled)
-                {
-                    e.Effects = DragDropEffects.None;
-                    e.Handled = true;
-                }
-            }
-        }
-
         protected override IInputElement GetInitialFocusElement()
         {
             return InitialFocusElement;
@@ -44,8 +31,7 @@ namespace Dev2.Activities.Designers2.Sequence
 
         void DropPoint_OnPreviewDrop(object sender, DragEventArgs e)
         {
-            var viewModel = DataContext as SequenceDesignerViewModel;
-            if(viewModel != null)
+            if (DataContext is SequenceDesignerViewModel viewModel)
             {
                 if (_dropEnabledActivityDesignerUtils != null)
                 {

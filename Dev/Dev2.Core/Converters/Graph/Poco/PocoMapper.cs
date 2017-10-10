@@ -48,15 +48,7 @@ namespace Unlimited.Framework.Converters.Graph.Poco
 
             if (propertyStack.Count == 0 && data.GetType().IsEnumerable())
             {
-                //
-                // Handle if the poco mapper is used to map to an raw enumerable
-                //
-//                paths.Add(new PocoPath("UnnamedArray"+PocoPath.EnumerableSymbol + PocoPath.SeperatorSymbol,
-//                    "UnnamedArray" + PocoPath.EnumerableSymbol + PocoPath.SeperatorSymbol));
-
-                var enumerableData = data as IEnumerable;
-
-                if (enumerableData != null)
+                if (data is IEnumerable enumerableData)
                 {
                     IEnumerator enumerator = enumerableData.GetEnumerator();
                     enumerator.Reset();
@@ -66,16 +58,13 @@ namespace Unlimited.Framework.Converters.Graph.Poco
                         MapData(enumerator.Current, propertyStack, root, paths);
                         propertyStack.Pop();
 
-                        
+
                     }
                 }
             }
 
             if (propertyStack.Count == 0 && data.GetType().IsPrimitive())
             {
-                //
-                // Handle if the poco mapper is used to map to a raw primitive
-                //
                 paths.Add(new PocoPath(PocoPath.SeperatorSymbol, PocoPath.SeperatorSymbol, PocoPath.SeperatorSymbol,
                     data.ToString()));
             }
@@ -108,7 +97,7 @@ namespace Unlimited.Framework.Converters.Graph.Poco
 
                 if(propertyData != null)
                 {
-                    paths.Add(BuildPath(propertyStack, propertyInfo.Name,propertyInfo.PropertyType.IsEnumerable(), root));
+                    paths.Add(BuildPath(propertyStack, propertyInfo.Name, propertyInfo.PropertyType.IsEnumerable()));
                 }
             }
 
@@ -124,24 +113,21 @@ namespace Unlimited.Framework.Converters.Graph.Poco
                 {
                     Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
                     propertyData = null;
-                    //TODO When an exception is encountered stop discovery for this path and write to log
                 }
 
                 if(propertyData != null)
                 {
                     if(propertyInfo.PropertyType.IsEnumerable())
                     {
-                        var enumerableData = propertyData as IEnumerable;
-
-                        if(enumerableData != null)
+                        if (propertyData is IEnumerable enumerableData)
                         {
-                            propertyStack.Push(new Tuple<string,bool, bool, object>(propertyInfo.Name,propertyInfo.PropertyType.IsEnumerable(), false, data));
+                            propertyStack.Push(new Tuple<string, bool, bool, object>(propertyInfo.Name, propertyInfo.PropertyType.IsEnumerable(), false, data));
                             paths.AddRange(BuildPaths(propertyData, propertyStack, root));
                             propertyStack.Pop();
 
                             IEnumerator enumerator = enumerableData.GetEnumerator();
                             enumerator.Reset();
-                            if(enumerator.MoveNext())
+                            if (enumerator.MoveNext())
                             {
                                 propertyData = enumerator.Current;
 
@@ -161,8 +147,7 @@ namespace Unlimited.Framework.Converters.Graph.Poco
             }
         }
 
-        private IPath BuildPath(Stack<Tuple<string,bool, bool, object>> propertyStack, string name,bool isEnumerable,
-            object root)
+        private IPath BuildPath(Stack<Tuple<string,bool, bool, object>> propertyStack, string name, bool isEnumerable)
         {
             var path = new PocoPath();
 
@@ -183,7 +168,10 @@ namespace Unlimited.Framework.Converters.Graph.Poco
                     pathSegment.Item1.IsEnumarable = false;
                 }
 
-                if (pathSegment.Item1.IsEnumarable && pathSegment.Item2) recordsetEncountered = true;
+                if (pathSegment.Item1.IsEnumarable && pathSegment.Item2)
+                {
+                    recordsetEncountered = true;
+                }
             }
 
             path.DisplayPath = string.Join(PocoPath.SeperatorSymbol,
@@ -199,8 +187,8 @@ namespace Unlimited.Framework.Converters.Graph.Poco
                 path.DisplayPath += PocoPath.SeperatorSymbol;
             }
 
-            path.ActualPath += path.CreatePathSegment(name,isEnumerable).ToString();
-            path.DisplayPath += path.CreatePathSegment(name, isEnumerable).ToString();
+            path.ActualPath += path.CreatePathSegment(name,isEnumerable);
+            path.DisplayPath += path.CreatePathSegment(name, isEnumerable);
 
             return path;
         }

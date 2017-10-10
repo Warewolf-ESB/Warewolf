@@ -94,7 +94,10 @@ namespace Dev2.Activities.Designers.Tests.Oracle
         public DataTable TestService(IDatabaseService inputValues)
         {
             if (ThrowsTestError)
+            {
                 throw new Exception("bob");
+            }
+
             if (HasRecError)
             {
                 return null;

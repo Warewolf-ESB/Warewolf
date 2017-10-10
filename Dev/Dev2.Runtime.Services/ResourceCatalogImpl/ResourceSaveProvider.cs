@@ -41,7 +41,9 @@ namespace Dev2.Runtime.ResourceCatalogImpl
 
         #region Implementation of IResourceSaveProvider
 
-        public ResourceCatalogResult SaveResource(Guid workspaceID, StringBuilder resourceXml, string savedPath, string reason = "", string user = "")
+        public ResourceCatalogResult SaveResource(Guid workspaceID, StringBuilder resourceXml, string savedPath) => SaveResource(workspaceID, resourceXml, savedPath, "", "");
+
+        public ResourceCatalogResult SaveResource(Guid workspaceID, StringBuilder resourceXml, string savedPath, string reason, string user)
         {
             try
             {
@@ -64,7 +66,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
 
                     StringBuilder result = xml.ToStringBuilder();
 
-                    return CompileAndSave(workspaceID, resource, result, savedPath);
+                    return CompileAndSave(workspaceID, resource, result, savedPath, reason);
                 }
             }
             catch (Exception err)
@@ -74,7 +76,9 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             }
         }
 
-        public ResourceCatalogResult SaveResource(Guid workspaceID, IResource resource, string savedPath, string reason = "", string user = "")
+        public ResourceCatalogResult SaveResource(Guid workspaceID, IResource resource, string savedPath) => SaveResource(workspaceID, resource, savedPath, "", "");
+
+        public ResourceCatalogResult SaveResource(Guid workspaceID, IResource resource, string savedPath, string reason, string user)
         {
             _serverVersionRepository.StoreVersion(resource, user, reason, workspaceID, savedPath);
 
@@ -93,14 +97,16 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                 GlobalConstants.InvalidateCache(resource.ResourceID);
                 savedPath = Common.SanitizePath(savedPath);
                 var result = resource.ToStringBuilder();
-                return CompileAndSave(workspaceID, resource, result, savedPath);
+                return CompileAndSave(workspaceID, resource, result, savedPath, reason);
             }
         }
 
         public Action<IResource> ResourceSaved { get; set; }
         public Action<Guid, IList<ICompileMessageTO>> SendResourceMessages { get; set; }
 
-        public ResourceCatalogResult SaveResource(Guid workspaceID, IResource resource, StringBuilder contents, string savedPath, string reason = "", string user = "")
+        public ResourceCatalogResult SaveResource(Guid workspaceID, IResource resource, StringBuilder contents, string savedPath) => SaveResource(workspaceID, resource, contents, savedPath, "", "");
+
+        public ResourceCatalogResult SaveResource(Guid workspaceID, IResource resource, StringBuilder contents, string savedPath, string reason, string user)
         {
             _serverVersionRepository.StoreVersion(resource, user, reason, workspaceID, savedPath);
             ResourceCatalogResult saveResult = null;
@@ -108,17 +114,17 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             return saveResult;
         }
 
-        internal ResourceCatalogResult SaveImpl(Guid workspaceID, IResource resource, StringBuilder contents, bool overwriteExisting, string savedPath = "")
+        internal ResourceCatalogResult SaveImpl(Guid workspaceID, IResource resource, StringBuilder contents, bool overwriteExisting, string savedPath = "", string reason = "")
         {
             ResourceCatalogResult saveResult = null;
-            Dev2.Common.Utilities.PerformActionInsideImpersonatedContext(Dev2.Common.Utilities.ServerUser, () => { PerformSaveResult(out saveResult, workspaceID, resource, contents, overwriteExisting, savedPath); });
+            Dev2.Common.Utilities.PerformActionInsideImpersonatedContext(Dev2.Common.Utilities.ServerUser, () => { PerformSaveResult(out saveResult, workspaceID, resource, contents, overwriteExisting, savedPath, reason); });
             return saveResult;
         }
 
         #endregion
 
         #region Private Methods
-        private ResourceCatalogResult CompileAndSave(Guid workspaceID, IResource resource, StringBuilder contents, string savedPath = "")
+        private ResourceCatalogResult CompileAndSave(Guid workspaceID, IResource resource, StringBuilder contents, string savedPath = "", string reason = "")
         {
             // Find the service before edits ;)
             DynamicService beforeService = _resourceCatalog.GetDynamicObjects<DynamicService>(workspaceID, resource.ResourceID).FirstOrDefault();
@@ -127,9 +133,14 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             if (beforeService != null)
             {
                 beforeAction = beforeService.Actions.FirstOrDefault();
+                if (reason?.Equals(GlobalConstants.SaveReasonForDeploy) ?? false)
+                {
+                    beforeService.DisplayName = resource.ResourceName;
+                    beforeService.Name = resource.ResourceName;
+                }
             }
 
-            var result = ((ResourceCatalog)_resourceCatalog).SaveImpl(workspaceID, resource, contents, true, savedPath);
+            var result = ((ResourceCatalog)_resourceCatalog).SaveImpl(workspaceID, resource, contents, true, savedPath, reason);
 
             if (result.Status == ExecStatus.Success)
             {
@@ -215,6 +226,28 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                 case enActionType.Workflow:
                     messages.AddRange(smc.Compile(resource.ResourceID, ServerCompileMessageType.WorkflowMappingChangeRule, beforeAction.ResourceDefinition, contents));
                     break;
+                case enActionType.BizRule:
+                    break;
+                case enActionType.InvokeStoredProc:
+                    break;
+                case enActionType.InvokeWebService:
+                    break;
+                case enActionType.InvokeDynamicService:
+                    break;
+                case enActionType.InvokeManagementDynamicService:
+                    break;
+                case enActionType.InvokeServiceMethod:
+                    break;
+                case enActionType.Plugin:
+                    break;
+                case enActionType.ComPlugin:
+                    break;
+                case enActionType.Switch:
+                    break;
+                case enActionType.Unknown:
+                    break;
+                case enActionType.RemoteService:
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -291,7 +324,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             return updated;
         }
 
-        private void PerformSaveResult(out ResourceCatalogResult saveResult, Guid workspaceID, IResource resource, StringBuilder contents, bool overwriteExisting, string savedPath)
+        private void PerformSaveResult(out ResourceCatalogResult saveResult, Guid workspaceID, IResource resource, StringBuilder contents, bool overwriteExisting, string savedPath, string reason = "")
         {
             var fileManager = new TxFileManager();
             using (TransactionScope tx = new TransactionScope())
@@ -311,20 +344,22 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                         if (res.ResourceName != resource.ResourceName) // Renamed while open
                         {
                             var resourceXml = contents.ToXElement();
-                            resourceXml.SetAttributeValue("Name", res.ResourceName);
-                            resourceXml.SetElementValue("DisplayName", res.ResourceName);
-                            var actionElement = resourceXml.Element("Action");
-                            var xamlElement = actionElement?.Element("XamlDefinition");
-                            if (xamlElement != null)
+                            if (!reason?.Equals(GlobalConstants.SaveReasonForDeploy) ?? true)
                             {
-                                var xamlContent = xamlElement.Value;
-                                xamlElement.Value = xamlContent.
-                                    Replace("x:Class=\"" + resource.ResourceName + "\"", "x:Class=\"" + res.ResourceName + "\"")
-                                    .Replace("Flowchart DisplayName=\""+ resource.ResourceName + "\"", "Flowchart DisplayName=\"" + res.ResourceName + "\"");
+                                resourceXml.SetAttributeValue("Name", res.ResourceName);
+                                resourceXml.SetElementValue("DisplayName", res.ResourceName);
+                                var actionElement = resourceXml.Element("Action");
+                                var xamlElement = actionElement?.Element("XamlDefinition");
+                                if (xamlElement != null)
+                                {
+                                    var xamlContent = xamlElement.Value;
+                                    xamlElement.Value = xamlContent.
+                                        Replace("x:Class=\"" + resource.ResourceName + "\"", "x:Class=\"" + res.ResourceName + "\"")
+                                        .Replace("Flowchart DisplayName=\"" + resource.ResourceName + "\"", "Flowchart DisplayName=\"" + res.ResourceName + "\"");
+                                }
+                                resource.ResourceName = res.ResourceName;
+                                contents = resourceXml.ToStringBuilder();
                             }
-                            resource.ResourceName = res.ResourceName;
-                            contents = resourceXml.ToStringBuilder();
-                            
                         }
                     }
                     var directoryName = SetResourceFilePath(workspaceID, resource, ref savedPath);
@@ -361,11 +396,11 @@ namespace Dev2.Runtime.ResourceCatalogImpl
 
         public string SetResourceFilePath(Guid workspaceID, IResource resource, ref string savedPath)
         {
-            if(savedPath.EndsWith("\\"))
+            if (savedPath.EndsWith("\\"))
             {
                 savedPath = savedPath.TrimEnd('\\');
             }
-            if(savedPath.StartsWith("\\"))
+            if (savedPath.StartsWith("\\"))
             {
                 savedPath = savedPath.TrimStart('\\');
             }

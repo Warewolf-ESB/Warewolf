@@ -328,7 +328,7 @@ namespace Dev2.Settings
             }
 
             _selectionChanging = true;
-            switch(propertyName)
+            switch (propertyName)
             {
                 case "ShowLogging":
                     ShowLogging = Settings?.Logging != null;
@@ -338,6 +338,8 @@ namespace Dev2.Settings
                 case "ShowSecurity":
                     ShowSecurity = true;
                     ShowLogging = !ShowSecurity;
+                    break;
+                default:
                     break;
             }
             _selectionChanging = false;
@@ -517,7 +519,10 @@ namespace Dev2.Settings
                 }
             }
             else
+            {
                 return SaveSettings();
+            }
+
             return true;
         }
 

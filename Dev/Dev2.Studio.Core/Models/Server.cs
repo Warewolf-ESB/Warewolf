@@ -10,7 +10,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Network;
 using System.Threading.Tasks;
@@ -284,12 +283,6 @@ namespace Dev2.Studio.Core.Models
             OnPropertyChanged("IsConnected");
         }
 
-        
-        void RaiseLoadedResources()
-        {
-            ResourcesLoaded?.Invoke(this, new ResourcesLoadedEventArgs { Model = this });
-        }
-
         void OnNetworkStateChanged(object sender, NetworkStateEventArgs e)
         {
             RaiseNetworkStateChanged(e.ToState == NetworkState.Online || e.ToState == NetworkState.Connecting);
@@ -365,7 +358,9 @@ namespace Dev2.Studio.Core.Models
 
         }
 
-        public async Task<IExplorerItem> LoadExplorer(bool reloadCatalogue = false)
+        public async Task<IExplorerItem> LoadExplorer() => await LoadExplorer(false).ConfigureAwait(true);
+
+        public async Task<IExplorerItem> LoadExplorer(bool reloadCatalogue)
         {
             var result = await ProxyLayer.LoadExplorer(reloadCatalogue);
             HasLoaded = true;

@@ -11,7 +11,6 @@
 using System;
 using System.Collections.Specialized;
 using System.Configuration;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Security.Cryptography;
 using System.Xml.Linq;
@@ -45,7 +44,12 @@ namespace Dev2.Runtime.Security
             }
         }
 
-        public HostSecureConfig(NameValueCollection settings, bool shouldProtectConfig = true)
+        public HostSecureConfig(NameValueCollection settings)
+            : this(settings, true)
+        {
+        }
+
+        public HostSecureConfig(NameValueCollection settings, bool shouldProtectConfig)
         {
             Initialize(settings, shouldProtectConfig);
         }
@@ -81,8 +85,7 @@ namespace Dev2.Runtime.Security
             }
 
             SystemKey = CreateKey(settings["SystemKey"]);
-            Guid serverID;
-            if(Guid.TryParse(settings["ServerID"], out serverID) && serverID != Guid.Empty)
+            if (Guid.TryParse(settings["ServerID"], out Guid serverID) && serverID != Guid.Empty)
             {
                 ServerID = serverID;
                 ServerKey = CreateKey(settings["ServerKey"]);
@@ -105,7 +108,7 @@ namespace Dev2.Runtime.Security
 
                 SaveConfig(newSettings);
 
-                if(shouldProtectConfig)
+                if (shouldProtectConfig)
                 {
                     ProtectConfig();
                 }

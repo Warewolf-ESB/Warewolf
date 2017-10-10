@@ -52,9 +52,6 @@ namespace Dev2.Activities.Designers2.Core
 
         public ActivityDesigner()
         {
-            //This line is bad it causes the overall designer to not get focus when clicking on it
-            //Please be very careful about putting this line in.
-            //FocusManager.SetIsFocusScope(this , true);
             _errorsAdorner = new ErrorsAdorner(this);
             Loaded += OnRoutedEventHandler;
             Unloaded += ActivityDesignerUnloaded;
@@ -115,7 +112,10 @@ namespace Dev2.Activities.Designers2.Core
             get
             {
                 if (UpdateContentEnabled())
+                {
                     return false;
+                }
+
                 return true;
             }
         }
@@ -145,8 +145,7 @@ namespace Dev2.Activities.Designers2.Core
             }
             return false;
         }
-
-        //don't TAKE OUT... This has been done so that the drill down doesnt happen when you double click.
+        
         protected override void OnPreviewMouseDoubleClick(MouseButtonEventArgs e)
         {
             ToggleView(e);
@@ -166,7 +165,9 @@ namespace Dev2.Activities.Designers2.Core
         protected override void OnKeyDown(KeyEventArgs e)
         {
             if (e.Key == Key.Return)
+            {
                 e.Handled = true;
+            }
         }
 
         protected override void OnPreviewMouseLeftButtonDown(MouseButtonEventArgs e)
@@ -182,8 +183,7 @@ namespace Dev2.Activities.Designers2.Core
         void ToggleView(MouseButtonEventArgs eventArgs)
         {
             var originalSource = eventArgs.OriginalSource;
-            var fe = originalSource as FrameworkElement;
-            if (fe != null && (fe.TemplatedParent is ToggleButton || fe.TemplatedParent is ActivityDesignerButton))
+            if (originalSource is FrameworkElement fe && (fe.TemplatedParent is ToggleButton || fe.TemplatedParent is ActivityDesignerButton))
             {
                 return;
             }
@@ -223,8 +223,7 @@ namespace Dev2.Activities.Designers2.Core
         {
             if (!_isSetFocusActionSet)
             {
-                var vm = DataContext as ActivityDesignerViewModel;
-                if (vm != null)
+                if (DataContext is ActivityDesignerViewModel vm)
                 {
                     vm.SetIntialFocusAction(SetInitialiFocus);
                     _isSetFocusActionSet = true;
@@ -336,40 +335,16 @@ namespace Dev2.Activities.Designers2.Core
         {
 
         }
-
-        // Do not make this method virtual.
-        // A derived class should not be able to override this method.
+        
         public void Dispose()
         {
             Dispose(true);
         }
 
-        // Dispose(bool disposing) executes in two distinct scenarios.
-        // If disposing equals true, the method has been called directly
-        // or indirectly by a user's code. Managed and unmanaged resources
-        // can be disposed.
-        // If disposing equals false, the method has been called by the
-        // runtime from inside the finalizer and you should not reference
-        // other objects. Only unmanaged resources can be disposed.
         void Dispose(bool disposing)
         {
-            // Check to see if Dispose has already been called.
             if (!_isDisposed)
             {
-                // If disposing equals true, dispose all managed
-                // and unmanaged resources.
-                if (disposing)
-                {
-                    // Dispose managed resources.
-                    //OnDispose();
-                    //                    if(_dataContext != null)
-                    //                    {
-                    //                        _dataContext.Dispose();
-                    //                    }
-                }
-
-                // Call the appropriate methods to clean up
-                // unmanaged resources here.
                 _isDisposed = true;
             }
         }

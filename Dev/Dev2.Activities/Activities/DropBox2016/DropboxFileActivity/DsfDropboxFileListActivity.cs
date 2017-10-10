@@ -107,15 +107,13 @@ namespace Dev2.Activities.DropBox2016.DropboxFileActivity
 
         protected override List<string> PerformExecution(Dictionary<string, string> evaluatedValues)
         {
-            string toPath;
-            evaluatedValues.TryGetValue("ToPath", out toPath);
+            evaluatedValues.TryGetValue("ToPath", out string toPath);
 
             IDropboxSingleExecutor<IDropboxResult> dropboxFileRead = new DropboxFileRead(IsRecursive, toPath, IncludeMediaInfo, IncludeDeleted);
             var dropboxSingleExecutor = GetDropboxSingleExecutor(dropboxFileRead);
             _dropboxClientWrapper = _dropboxClientWrapper ?? new DropboxClientWrapper(GetDropboxClient());
             var dropboxExecutionResult = dropboxSingleExecutor.ExecuteTask(_dropboxClientWrapper);
-            var dropboxSuccessResult = dropboxExecutionResult as DropboxListFolderSuccesResult;
-            if (dropboxSuccessResult != null)
+            if (dropboxExecutionResult is DropboxListFolderSuccesResult dropboxSuccessResult)
             {
                 var listFolderResult = dropboxSuccessResult.GetListFolderResulResult();
                 var metadatas = listFolderResult.Entries;
@@ -124,9 +122,15 @@ namespace Dev2.Activities.DropBox2016.DropboxFileActivity
                     Files.AddRange(listFolderResult.Entries.Where(metadata => metadata.IsDeleted).Select(metadata => metadata.PathLower).ToList());
                 }
                 if (IsFoldersSelected)
+                {
                     Files.AddRange(metadatas.Where(metadata => metadata.IsFolder).Select(metadata => metadata.PathLower).ToList());
+                }
+
                 if (IsFilesSelected)
+                {
                     Files.AddRange(metadatas.Where(metadata => metadata.IsFile).Select(metadata => metadata.PathLower).ToList());
+                }
+
                 if (IsFilesAndFoldersSelected)
                 {
                     Files.AddRange(metadatas.Where(metadata => metadata.IsFolder).Select(metadata => metadata.PathLower).ToList());
@@ -135,8 +139,7 @@ namespace Dev2.Activities.DropBox2016.DropboxFileActivity
 
                 return new List<string> { GlobalConstants.DropBoxSuccess };
             }
-            var dropboxFailureResult = dropboxExecutionResult as DropboxFailureResult;
-            if (dropboxFailureResult != null)
+            if (dropboxExecutionResult is DropboxFailureResult dropboxFailureResult)
             {
                 Exception = dropboxFailureResult.GetException();
             }

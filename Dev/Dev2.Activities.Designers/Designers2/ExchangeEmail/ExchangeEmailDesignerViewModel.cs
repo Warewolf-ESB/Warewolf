@@ -209,8 +209,11 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
         public void TestEmailAccount()
         {
 
-            if (Errors != null && Errors.Count > 0)return;
-           
+            if (Errors != null && Errors.Count > 0)
+            {
+                return;
+            }
+
             Testing = true;
             StatusMessage = string.Empty;
 
@@ -326,7 +329,7 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
             Errors = result.Count == 0 ? null : result;
         }
 
-        public Func<string> GetDatalistString = () => DataListSingleton.ActiveDataList.Resource.DataList;
+        internal Func<string> GetDatalistString = () => DataListSingleton.ActiveDataList.Resource.DataList;
 
         IEnumerable<IActionableErrorInfo> ValidateThis()
         {
@@ -394,6 +397,8 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
                     break;
                 case "SubjectAndBody":
                     ruleSet.Add(new HasAtLeastOneRule(() => Subject, () => Body));
+                    break;
+                default:
                     break;
             }
             return ruleSet;

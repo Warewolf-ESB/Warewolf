@@ -135,8 +135,7 @@ namespace Dev2.Activities.Designers2.Decision
 
         public override void UpdateDto(IDev2TOFn dto)
         {
-            var decto = dto as DecisionTO;
-            if (decto != null)
+            if (dto is DecisionTO decto)
             {
                 decto.UpdateDisplayAction = UpdateDecisionDisplayName;
             }
@@ -340,13 +339,15 @@ namespace Dev2.Activities.Designers2.Decision
                 case "FalseArmText":
                     ruleSet.Add(new IsStringEmptyOrWhiteSpaceRule(() => FalseArmText));
                     break;
+                default:
+                    break;
             }
             return ruleSet;
         }
 
         #region Implementation of IHandle<ConfigureDecisionExpressionMessage>
 
-        
+
         public void Handle(ConfigureDecisionExpressionMessage message)
         {
             ShowLarge = true;

@@ -56,7 +56,10 @@ namespace Dev2.Studio.Core.ViewModels
             {
                 _contexttualResourceModel.WorkflowXaml = value;
                 NotifyOfPropertyChange(() => ServiceDefinition);
-                if(ResourceModel != null) ResourceModel.WorkflowXaml = ServiceDefinition;
+                if(ResourceModel != null)
+                {
+                    ResourceModel.WorkflowXaml = ServiceDefinition;
+                }
             }
 
         }
@@ -77,7 +80,7 @@ namespace Dev2.Studio.Core.ViewModels
 
             var sb = new StringBuilder();
 
-            switch(_contexttualResourceModel.ResourceType)
+            switch (_contexttualResourceModel.ResourceType)
             {
                 case ResourceType.Service:
                     sb.Append(string.Format("<Service Name=\"{0}\">",
@@ -104,7 +107,12 @@ namespace Dev2.Studio.Core.ViewModels
                 case ResourceType.Source:
                     sb.Append(string.Format("<Source Name=\"{0}\" Type=\"\" ConnectionString=\"\" AssemblyName=\"\" AssemblyLocation=\"\" Uri=\"\" /> ", _contexttualResourceModel.ResourceName));
                     break;
-
+                case ResourceType.WorkflowService:
+                    break;
+                case ResourceType.Unknown:
+                    break;
+                case ResourceType.Server:
+                    break;
                 default:
                     throw new ArgumentException(ErrorResource.UnexpectedResourceType);
 

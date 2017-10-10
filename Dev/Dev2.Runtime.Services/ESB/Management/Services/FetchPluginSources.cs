@@ -41,8 +41,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             
             List<PluginSourceDefinition> list = Resources.GetResourceList<PluginSource>(GlobalConstants.ServerWorkspaceID).Select(a =>
             {
-                var res = a as PluginSource;
-                if (res != null)
+                if (a is PluginSource res)
                 {
                     var pluginSourceDefinition = new PluginSourceDefinition
                     {

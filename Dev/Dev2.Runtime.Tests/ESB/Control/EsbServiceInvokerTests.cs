@@ -473,7 +473,6 @@ namespace Dev2.Tests.Runtime.ESB.Control
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        [DeploymentItem("Dev2.Core.resources.dll")]
         public void Invoke_GivenNullServiceNameAndEmptyId_ShouldAddErrors()
         {
             //---------------Set up test pack-------------------
@@ -497,8 +496,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             //---------------Assert Precondition----------------
             Assert.IsNotNull(invoker);
             //---------------Execute Test ----------------------
-            ErrorResultTO errorResultTO;
-            invoker.Invoke(obj.Object, out errorResultTO);
+            invoker.Invoke(obj.Object, out ErrorResultTO errorResultTO);
             //---------------Test Result -----------------------
             Assert.IsNotNull(errorResultTO);
             Assert.AreEqual(1, errorResultTO.FetchErrors().Count);
@@ -532,8 +530,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             //---------------Assert Precondition----------------
             Assert.IsNotNull(invoker);
             //---------------Execute Test ----------------------
-            ErrorResultTO errorResultTO;
-            invoker.Invoke(obj.Object, out errorResultTO);
+            invoker.Invoke(obj.Object, out ErrorResultTO errorResultTO);
             //---------------Test Result -----------------------
             Assert.IsNotNull(errorResultTO);
             Assert.AreEqual(0, errorResultTO.FetchErrors().Count);
@@ -570,8 +567,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             //---------------Assert Precondition----------------
             Assert.IsNotNull(invoker);
             //---------------Execute Test ----------------------
-            ErrorResultTO errorResultTO;
-            invoker.Invoke(obj.Object, out errorResultTO);
+            invoker.Invoke(obj.Object, out ErrorResultTO errorResultTO);
             //---------------Test Result -----------------------
             Assert.IsNotNull(errorResultTO);
             Assert.AreEqual(1, errorResultTO.FetchErrors().Count);
@@ -635,8 +631,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             //---------------Assert Precondition----------------
             Assert.IsNotNull(invoker);
             //---------------Execute Test ----------------------
-            ErrorResultTO errorResultTO;
-            invoker.Invoke(obj.Object, out errorResultTO);
+            invoker.Invoke(obj.Object, out ErrorResultTO errorResultTO);
             //---------------Test Result -----------------------
             Assert.AreEqual(enActionType.Workflow, serviceAction.ActionType);
         }
@@ -681,9 +676,8 @@ namespace Dev2.Tests.Runtime.ESB.Control
             //---------------Assert Precondition----------------
             Assert.IsNotNull(invoker);
             //---------------Execute Test ----------------------
-            ErrorResultTO errorResultTO;
 
-            invoker.Invoke(obj.Object, out errorResultTO);
+            invoker.Invoke(obj.Object, out ErrorResultTO errorResultTO);
 
             //---------------Test Result -----------------------
             Assert.AreEqual(1, errorResultTO.FetchErrors().Count);
@@ -730,9 +724,8 @@ namespace Dev2.Tests.Runtime.ESB.Control
             //---------------Assert Precondition----------------
             Assert.IsNotNull(invoker);
             //---------------Execute Test ----------------------
-            ErrorResultTO errorResultTO;
 
-            invoker.Invoke(obj.Object, out errorResultTO);
+            invoker.Invoke(obj.Object, out ErrorResultTO errorResultTO);
 
             //---------------Test Result -----------------------
             Assert.AreEqual(1, errorResultTO.FetchErrors().Count);
@@ -1011,8 +1004,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
                 obj.Setup(o => o.Environment.HasErrors()).Returns(true).Verifiable(); ;
                 obj.Setup(o => o.RemoteInvoke).Verifiable();
                 obj.Setup(o => o.Environment.FetchErrors()).Returns("Error").Verifiable();
-                ErrorResultTO errors;
-                invoker.Invoke(obj.Object, out errors);
+                invoker.Invoke(obj.Object, out ErrorResultTO errors);
                 //weird expetion on execution when getting errors
                 Assert.AreEqual("Object reference not set to an instance of an object.", errors.FetchErrors().Single());
                 //---------------Test Result -----------------------

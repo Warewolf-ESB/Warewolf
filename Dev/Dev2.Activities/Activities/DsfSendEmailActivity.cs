@@ -255,8 +255,7 @@ namespace Dev2.Activities
                 {
                     while(colItr.HasMoreData())
                     {
-                        ErrorResultTO errors;
-                        var result = SendEmail(runtimeSource, colItr, fromAccountItr, passwordItr, toItr, ccItr, bccItr, subjectItr, bodyItr, attachmentsItr, out errors);
+                        var result = SendEmail(runtimeSource, colItr, fromAccountItr, passwordItr, toItr, ccItr, bccItr, subjectItr, bodyItr, attachmentsItr, out ErrorResultTO errors);
                         allErrors.MergeErrors(errors);
                         if(!allErrors.HasErrors())
                         {
@@ -326,16 +325,8 @@ namespace Dev2.Activities
         private int UpsertResult(int indexToUpsertTo, IExecutionEnvironment environment, string result, int update)
         {
             string expression;
-            if(DataListUtil.IsValueRecordset(Result) && DataListUtil.GetRecordsetIndexType(Result) == enRecordsetIndexType.Star)
-            {
-                expression = Result.Replace(GlobalConstants.StarExpression, indexToUpsertTo.ToString(CultureInfo.InvariantCulture));
-            }
-            else
-            {
-                expression = Result;
-            }
-            //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
-            foreach(var region in DataListCleaningUtils.SplitIntoRegions(expression))
+            expression = DataListUtil.IsValueRecordset(Result) && DataListUtil.GetRecordsetIndexType(Result) == enRecordsetIndexType.Star ? Result.Replace(GlobalConstants.StarExpression, indexToUpsertTo.ToString(CultureInfo.InvariantCulture)) : Result;
+            foreach (var region in DataListCleaningUtils.SplitIntoRegions(expression))
             {
                 environment.Assign(region, result, update);
                 indexToUpsertTo++;
@@ -357,8 +348,7 @@ namespace Dev2.Activities
             var bodyValue = colItr.FetchNextValue(bodyItr);
             var attachmentsValue = colItr.FetchNextValue(attachmentsItr);
             MailMessage mailMessage = new MailMessage { IsBodyHtml = IsHtml };
-            MailPriority priority;
-            if(Enum.TryParse(Priority.ToString(), true, out priority))
+            if (Enum.TryParse(Priority.ToString(), true, out MailPriority priority))
             {
                 mailMessage.Priority = priority;
             }

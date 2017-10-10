@@ -10,7 +10,6 @@
 
 using System;
 using System.IO;
-using System.Runtime.Serialization.Formatters;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Common;

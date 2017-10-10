@@ -1,15 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Net;
-using System.Security.Principal;
 using Dev2.Common;
-using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Enums;
-using Dev2.Communication;
-using Dev2.DataList.Contract;
 using Dev2.Interfaces;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.WebServer.TransferObjects;
@@ -33,8 +28,7 @@ namespace Dev2.Runtime.WebServer
                 if (loc > 0)
                 {
                     var typeOf = serviceName.Substring(loc + 1);
-                    EmitionTypes myType;
-                    if (Enum.TryParse(typeOf.ToUpper(), out myType))
+                    if (Enum.TryParse(typeOf.ToUpper(), out EmitionTypes myType))
                     {
                         dataObject.ReturnType = myType;
                     }
@@ -191,9 +185,8 @@ namespace Dev2.Runtime.WebServer
         public static void SetResourceNameAndId(this IDSFDataObject dataObject, IResourceCatalog catalog, string serviceName, out IResource resource)
         {
             IResource localResource = null;
-            Guid resourceID;
 
-            if (Guid.TryParse(serviceName, out resourceID))
+            if (Guid.TryParse(serviceName, out Guid resourceID))
             {
                 localResource = catalog.GetResource(dataObject.WorkspaceID, resourceID);
                 if (localResource != null)

@@ -89,10 +89,6 @@ namespace Dev2.Activities.Designers2.Core.Source
 
         Guid SourceId
         {
-            get
-            {
-                return _sourceId;
-            }
             set
             {
                 _sourceId = value;
@@ -117,8 +113,7 @@ namespace Dev2.Activities.Designers2.Core.Source
 
         public void RestoreRegion(IToolRegion toRestore)
         {
-            var region = toRestore as ExchangeSourceRegion;
-            if (region != null)
+            if (toRestore is ExchangeSourceRegion region)
             {
                 SelectedSource = region.SelectedSource;
             }

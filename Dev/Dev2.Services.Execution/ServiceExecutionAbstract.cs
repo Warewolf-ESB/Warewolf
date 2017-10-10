@@ -81,7 +81,11 @@ namespace Dev2.Services.Execution
 
         private void CreateService(ResourceCatalog catalog)
         {
-            if (!GetService(catalog)) return;
+            if (!GetService(catalog))
+            {
+                return;
+            }
+
             GetSource(catalog);
         }
 
@@ -110,6 +114,13 @@ namespace Dev2.Services.Execution
             }
           
         }
+
+        public void SetSourceId(Guid sourceId)
+        {
+            SourceId = sourceId;
+        }
+
+        public Guid SourceId { get; set; }
 
         private bool GetService(ResourceCatalog catalog)
         {
@@ -305,8 +316,7 @@ namespace Dev2.Services.Execution
 
             try
             {
-                ErrorResultTO invokeErrors;
-                ExecuteService(out invokeErrors, update, formater);
+                ExecuteService(out ErrorResultTO invokeErrors, update, formater);
                 errors.MergeErrors(invokeErrors);
             }
             catch (Exception ex)
@@ -347,12 +357,13 @@ namespace Dev2.Services.Execution
                 string result;
                 if (parameters.Any())
                 {
+                 
+
                     result = ExecuteService(update, out errors, formater).ToString();
                 }
                 else
                 {
-                    ErrorResultTO invokeErrors;
-                    result = ExecuteService(update, out invokeErrors, formater).ToString();
+                    result = ExecuteService(update, out ErrorResultTO invokeErrors, formater).ToString();
                     errors.MergeErrors(invokeErrors);
                 }
                 if (!HandlesOutputFormatting)
@@ -401,10 +412,6 @@ namespace Dev2.Services.Execution
                 catch (Exception e)
                 {
                     Dev2Logger.Error(e.Message, e, GlobalConstants.WarewolfError);
-                    // if use passed in empty input they only wanted the shape ;)
-                    if (input.Length > 0)
-                    {
-                    }
                 }
             }
         }
@@ -424,8 +431,7 @@ namespace Dev2.Services.Execution
                         if (dev2Definitions.Length != 0)
                         {
                             // fetch recordset index
-                            int fetchIdx;
-                            var idx = indexCache.TryGetValue(c.Name, out fetchIdx) ? fetchIdx : 1;
+                            var idx = indexCache.TryGetValue(c.Name, out int fetchIdx) ? fetchIdx : 1;
                             // process recordset
                             var nl = c.ChildNodes;
                             foreach (XmlNode subc in nl)

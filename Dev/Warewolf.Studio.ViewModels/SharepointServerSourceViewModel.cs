@@ -155,7 +155,10 @@ namespace Warewolf.Studio.ViewModels
         public bool CanTest()
         {
             if (Testing)
+            {
                 return false;
+            }
+
             if (string.IsNullOrEmpty(ServerName))
             {
                 return false;
@@ -223,7 +226,10 @@ namespace Warewolf.Studio.ViewModels
                     src.Path = RequestServiceNameViewModel.ResourceName.Path ?? RequestServiceNameViewModel.ResourceName.Name;
                     Save(src);
                     if (RequestServiceNameViewModel.SingleEnvironmentExplorerViewModel != null)
+                    {
                         AfterSave(RequestServiceNameViewModel.SingleEnvironmentExplorerViewModel.Environments[0].ResourceId, src.Id);
+                    }
+
                     Item = src;
                     _sharePointServiceSource = src;
                     SetupHeaderTextFromExisting();
@@ -296,6 +302,7 @@ namespace Warewolf.Studio.ViewModels
         ISharepointServerSource ToSource()
         {
             if (_sharePointServiceSource == null)
+            {
                 return new SharePointServiceSourceDefinition
                 {
                     AuthenticationType = AuthenticationType,
@@ -306,7 +313,7 @@ namespace Warewolf.Studio.ViewModels
                     IsSharepointOnline = IsSharepointOnline,
                     Id = _sharePointServiceSource?.Id ?? Guid.NewGuid()
                 };
-            
+            }
             else
             {
                 _sharePointServiceSource.AuthenticationType = AuthenticationType;

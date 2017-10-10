@@ -286,7 +286,10 @@ namespace Dev2.Runtime.Configuration.ViewModels
         private void InitPostWorkflow()
         {
             _runPostWorkflow = LoggingSettings.RunPostWorkflow;
-            if(!RunPostWorkflow) return;
+            if(!RunPostWorkflow)
+            {
+                return;
+            }
 
             var postWorkflow = LoggingSettings.PostWorkflow;
             UpdatePostWorkflow(postWorkflow);
@@ -361,17 +364,16 @@ namespace Dev2.Runtime.Configuration.ViewModels
                 return;
             }
 
-            var loggingSettings = Object as LoggingSettings;
-            if(loggingSettings != null)
+            if (Object is LoggingSettings loggingSettings)
             {
                 _webServerUri = loggingSettings.WebServerUri + "/wwwroot/services/Service/Resources/";
                 loggingSettings.PropertyChanged += LoggingSettingsPropertyChanged;
             }
             else
             {
-                throw new InvalidCastException(string.Format(ErrorResource.ErrorCastingBaseObject,"LoggingSettings."));
+                throw new InvalidCastException(string.Format(ErrorResource.ErrorCastingBaseObject, "LoggingSettings."));
             }
-            
+
 
             Initialize();
 
@@ -380,14 +382,18 @@ namespace Dev2.Runtime.Configuration.ViewModels
 
         private void LoggingSettingsPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            switch(e.PropertyName)
+            switch (e.PropertyName)
             {
-                case "Workflows": UpdateSearchFilter(SearchText);
+                case "Workflows":
+                    UpdateSearchFilter(SearchText);
                     break;
                 case "IsInitializing":
                     IsRefreshing = LoggingSettings.IsInitializing;
                     break;
-                case "LogAll": UpdateSearchFilter(SearchText);
+                case "LogAll":
+                    UpdateSearchFilter(SearchText);
+                    break;
+                default:
                     break;
             }
         }

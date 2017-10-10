@@ -19,7 +19,6 @@ using Dev2.Common;
 
 namespace Dev2.Studio.AppResources.Converters
 {
-
     public class MessageBoxImageToSystemIconConverter : IValueConverter
     {
         private static readonly IntPtr Hicon;
@@ -28,6 +27,7 @@ namespace Dev2.Studio.AppResources.Converters
         {
             var emptyBitmap = new Bitmap(1, 1);
             Hicon = emptyBitmap.GetHicon();
+            emptyBitmap.Dispose();
         }
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
@@ -39,10 +39,9 @@ namespace Dev2.Studio.AppResources.Converters
                 return BitmapSourceFromIcon(icon);
             }
 
-            MessageBoxImage messageBoxImage;
-            if(Enum.TryParse(value.ToString(), true, out messageBoxImage))
+            if (Enum.TryParse(value.ToString(), true, out MessageBoxImage messageBoxImage))
             {
-                switch(messageBoxImage)
+                switch (messageBoxImage)
                 {
                     case MessageBoxImage.Error:
                         return CustomIcons.Error;
@@ -54,6 +53,8 @@ namespace Dev2.Studio.AppResources.Converters
                         return CustomIcons.Question;
                     case MessageBoxImage.Warning:
                         return CustomIcons.Warning;
+                    default:
+                        break;
                 }
             }
             return BitmapSourceFromIcon(icon);

@@ -122,8 +122,7 @@ namespace Dev2.Tests.Runtime.Services
 
             var first = result.First().Trigger;
             Assert.IsNotNull(first.Trigger);
-            var dailyTrigger = first.Trigger.Instance as DailyTrigger;
-            if(dailyTrigger != null)
+            if (first.Trigger.Instance is DailyTrigger dailyTrigger)
             {
                 Assert.AreEqual(21, dailyTrigger.DaysInterval);
             }

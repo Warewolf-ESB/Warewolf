@@ -103,8 +103,7 @@ namespace Dev2.Studio.Views.Workflow
             }
             else if (e.OriginalSource.GetType() == typeof(Grid))
             {
-                var grid = e.OriginalSource as Grid;
-                if (grid != null && grid.DataContext.GetType() == typeof (WorkflowDesignerViewModel))
+                if (e.OriginalSource is Grid grid && grid.DataContext.GetType() == typeof(WorkflowDesignerViewModel))
                 {
                     e.Effects = DragDropEffects.None;
                     e.Handled = true;

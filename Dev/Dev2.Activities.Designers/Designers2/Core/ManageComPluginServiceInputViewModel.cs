@@ -35,12 +35,12 @@ namespace Dev2.Activities.Designers2.Core
 {
     public class ManageComPluginServiceInputViewModel : IManageComPluginServiceInputViewModel
     {
-        IGenerateOutputArea _generateOutputArea;
-        IGenerateInputArea _generateInputArea;
+        readonly IGenerateOutputArea _generateOutputArea;
+        readonly IGenerateInputArea _generateInputArea;
         bool _isEnabled;
         bool _pasteResponseAvailable;
-        IComViewModel _viewmodel;
-        IComPluginServiceModel _serverModel;
+        readonly IComViewModel _viewmodel;
+        readonly IComPluginServiceModel _serverModel;
         bool _isGenerateInputsEmptyRows;
         private bool _okSelected;
         private string _testResults;
@@ -387,10 +387,6 @@ namespace Dev2.Activities.Designers2.Core
             {
                 return _generateOutputArea;
             }
-            set
-            {
-                
-            }
         }
         public IOutputDescription Description { get; set; }
         public IGenerateInputArea InputArea
@@ -398,10 +394,6 @@ namespace Dev2.Activities.Designers2.Core
             get
             {
                 return _generateInputArea;
-            }
-            set
-            {
-                
             }
         }
         public bool PasteResponseVisible

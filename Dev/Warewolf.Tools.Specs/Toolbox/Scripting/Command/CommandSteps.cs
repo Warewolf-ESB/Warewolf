@@ -29,32 +29,33 @@ namespace Dev2.Activities.Specs.Toolbox.Scripting.Command
         public CommandSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
         {
-            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            if (scenarioContext == null)
+            {
+                throw new ArgumentNullException("scenarioContext");
+            }
+
             this.scenarioContext = scenarioContext;
         }
 
         protected override void BuildDataList()
         {
-            List<Tuple<string, string>> variableList;
-            scenarioContext.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
 
-            if(variableList == null)
+            if (variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 scenarioContext.Add("variableList", variableList);
             }
 
             var resultVariable = ResultVariable;
-            string resVar;
-            if (scenarioContext.TryGetValue("resVar", out resVar))
+            if (scenarioContext.TryGetValue("resVar", out string resVar))
             {
                 resultVariable = resVar;
             }
             variableList.Add(new Tuple<string, string>(resultVariable, ""));
             BuildShapeAndTestData();
 
-            string commandToExecute;
-            scenarioContext.TryGetValue("commandToExecute", out commandToExecute);
+            scenarioContext.TryGetValue("commandToExecute", out string commandToExecute);
 
             var commandLine = new DsfExecuteCommandLineActivity
                 {
@@ -101,12 +102,10 @@ namespace Dev2.Activities.Specs.Toolbox.Scripting.Command
         [Then(@"the result of the command tool will be '(.*)'")]
         public void ThenTheResultOfTheCommandToolWillBe(string expectedResult)
         {
-            string error;
-            string actualValue;
             expectedResult = expectedResult.Replace('"', ' ').Trim();
             var result = scenarioContext.Get<IDSFDataObject>("result");
             GetScalarValueFromEnvironment(result.Environment, DataListUtil.RemoveLanguageBrackets(ResultVariable),
-                                       out actualValue, out error);
+                                       out string actualValue, out string error);
             if(string.IsNullOrEmpty(expectedResult))
             {
                 Assert.IsTrue(string.IsNullOrEmpty(actualValue));
@@ -121,10 +120,9 @@ namespace Dev2.Activities.Specs.Toolbox.Scripting.Command
         [Given(@"I have a command variable '(.*)' equal to '(.*)'")]
         public void GivenIHaveACommandVariableEqualTo(string variable, string value)
         {
-            List<Tuple<string, string>> variableList;
-            scenarioContext.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
 
-            if(variableList == null)
+            if (variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 scenarioContext.Add("variableList", variableList);

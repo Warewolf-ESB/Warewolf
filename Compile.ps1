@@ -25,6 +25,11 @@ if ($Target -ne "") {
 	$Target = "/t:" + $Target
 }
 
+#find script
+if ("$PSScriptRoot" -eq "" -or $PSScriptRoot -eq $null) {
+    $PSScriptRoot = Split-Path $MyInvocation.MyCommand.Path -Parent
+}
+
 #Find Compiler
 if (!(Test-Path "$MSBuildPath" -ErrorAction SilentlyContinue)) {
     $GetMSBuildCommand = Get-Command MSBuild -ErrorAction SilentlyContinue
@@ -37,7 +42,11 @@ if (!(Test-Path "$MSBuildPath" -ErrorAction SilentlyContinue)) {
     if ($GetvswhereCommand) {
         $VswherePath = $GetvswhereCommand.Path
     } else {
-        Write-Host vswhere.exe not found. Download from: https://github.com/Microsoft/vswhere/releases
+        if (Test-Path "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe") {
+            $VswherePath = "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe"
+        } else {
+            Write-Host vswhere.exe not found. Download from: https://github.com/Microsoft/vswhere/releases
+        }
     }
 	$MSBuildPath = &$VswherePath -latest -requires Microsoft.Component.MSBuild -version 15.0
     $StartKey = "installationPath: "
@@ -60,14 +69,14 @@ if (!(Test-Path "$MSBuildPath" -ErrorAction SilentlyContinue)) {
 }
 
 #Find NuGet
-if ("$NuGetPath" -eq "" -or !(Test-Path "$NuGetPath" -ErrorAction SilentlyContinue)) {
+if ("$NuGet" -eq "" -or !(Test-Path "$NuGet" -ErrorAction SilentlyContinue)) {
     $NuGetCommand = Get-Command NuGet -ErrorAction SilentlyContinue
     if ($NuGetCommand) {
-        $NuGetPath = $NuGetCommand.Path
+        $NuGet = $NuGetCommand.Path
     }
 }
-if ("$NuGetPath" -eq "" -or !(Test-Path "$NuGetPath" -ErrorAction SilentlyContinue)) {
-	Write-Host NuGet not found. Download from: https://dist.nuget.org/win-x86-commandline/latest/nuget.exe
+if ("$NuGet" -eq "" -or !(Test-Path "$NuGet" -ErrorAction SilentlyContinue)) {
+	Write-Host NuGet not found. Download from: https://dist.nuget.org/win-x86-commandline/latest/nuget.exe to: c:\windows\nuget.exe. If you do not have permission to create c:\windows\nuget.exe use the -NuGet switch.
     sleep 10
     exit 1
 }
@@ -158,53 +167,56 @@ if ($AutoVersion.IsPresent -or $CustomVersion -ne "") {
     # Write version files
     $CSharpVersionFile = "$PSScriptRoot\Dev\AssemblyCommonInfo.cs"
     Write-Host Writing C Sharp version file to `"$CSharpVersionFile`" as...
-    $Line1 = "using System.Reflection;"
-    $Line2 = "[assembly: AssemblyCompany(""Warewolf"")]"
-    $Line3 = "[assembly: AssemblyProduct(""Warewolf"")]"
-    $Line4 = "[assembly: AssemblyCopyright(""Copyright Warewolf " + (Get-Date).year + """)]"
-    $Line5 = "[assembly: AssemblyVersion(""" + $FullVersionString + """)]"
-    $Line6 = "[assembly: AssemblyInformationalVersion(""" + $GitCommitTime + " " + $GitCommitID + " " + $GitBranchName + """)]"
-    $Line7 = "[assembly: InternalsVisibleTo(""Dev2.Activities.Designers.Tests"")]"
-    $Line8 = "[assembly: InternalsVisibleTo(""Warewolf.Studio.ViewModels.Tests"")]"
-    Write-Host $Line1
-    $Line1 | Out-File -LiteralPath $CSharpVersionFile -Encoding utf8 -Force
-    Write-Host $Line2
-    $Line2 | Out-File -LiteralPath $CSharpVersionFile -Encoding utf8 -Append
-    Write-Host $Line3
-    $Line3 | Out-File -LiteralPath $CSharpVersionFile -Encoding utf8 -Append
-    Write-Host $Line4
-    $Line4 | Out-File -LiteralPath $CSharpVersionFile -Encoding utf8 -Append
-    Write-Host $Line5
-    $Line5 | Out-File -LiteralPath $CSharpVersionFile -Encoding utf8 -Append
-    Write-Host $Line6
-    $Line6 | Out-File -LiteralPath $CSharpVersionFile -Encoding utf8 -Append
+    $CSharpVersionFileContents = @"
+using System.Reflection;
+using System.Runtime.CompilerServices;
+[assembly: AssemblyCompany("Warewolf")]
+[assembly: AssemblyProduct("Warewolf")]
+[assembly: AssemblyCopyright("Copyright Warewolf 
+"@ + (Get-Date).year + @"
+")]
+[assembly: AssemblyVersion("
+"@ + $FullVersionString + @"
+")]
+[assembly: AssemblyInformationalVersion("
+"@ + $GitCommitTime + " " + $GitCommitID + " " + $GitBranchName + @"
+")]
+[assembly: InternalsVisibleTo("Dev2.Activities.Tests")]
+[assembly: InternalsVisibleTo("Dev2.Activities.Designers.Tests")]
+[assembly: InternalsVisibleTo("Warewolf.Studio.ViewModels.Tests")]
+[assembly: InternalsVisibleTo("Dev2.Activities.Specs")]
+[assembly: InternalsVisibleTo("Dev2.Runtime.Tests")]
+[assembly: InternalsVisibleTo("Dev2.Studio.Core.Tests")]
+[assembly: InternalsVisibleTo("Dev2.Core.Tests")]
+[assembly: InternalsVisibleTo("Dev2.Integration.Tests")]
+[assembly: InternalsVisibleTo("Dev2.TaskScheduler.Wrappers")]
+[assembly: InternalsVisibleTo("Dev2.Infrastructure.Tests")]
+[assembly: InternalsVisibleTo("Warewolf.UIBindingTests.ComDll")]
+[assembly: InternalsVisibleTo("Warewolf.Studio.ViewModels.Tests")]
+[assembly: InternalsVisibleTo("Dev2.Data.Tests")]
+"@
+    Write-Host $CSharpVersionFileContents
+    $CSharpVersionFileContents | Out-File -LiteralPath $CSharpVersionFile -Encoding utf8 -Force
     Write-Host C Sharp version file written to `"$CSharpVersionFile`".
 
     $FSharpVersionFile = "$PSScriptRoot\Dev\AssemblyCommonInfo.fs"
     Write-Host Writing F Sharp version file to `"$FSharpVersionFile`" as...
-    $Line1 = "namespace Warewolf.FSharp"
-    $Line2 = "open System.Reflection;"
-    $Line3 = "[<assembly: AssemblyCompany(""Warewolf"")>]"
-    $Line4 = "[<assembly: AssemblyProduct(""Warewolf"")>]"
-    $Line5 = "[<assembly: AssemblyCopyright(""Copyright Warewolf " + (Get-Date).year + """)>]"
-    $Line6 = "[<assembly: AssemblyVersion(""" + $FullVersionString + """)>]"
-    # Ashley: F# Compiler thinks this is invalid for some reason
-    #$Line7 = "[<assembly: AssemblyInformationalVersion(""" + $GitCommitTime + " " + $GitCommitID + """)>]"
-    $Line7 = "do()"
-    Write-Host $Line1
-    $Line1 | Out-File -LiteralPath $FSharpVersionFile -Encoding utf8 -Force
-    Write-Host $Line2
-    $Line2 | Out-File -LiteralPath $FSharpVersionFile -Encoding utf8 -Append
-    Write-Host $Line3
-    $Line3 | Out-File -LiteralPath $FSharpVersionFile -Encoding utf8 -Append
-    Write-Host $Line4
-    $Line4 | Out-File -LiteralPath $FSharpVersionFile -Encoding utf8 -Append
-    Write-Host $Line5
-    $Line5 | Out-File -LiteralPath $FSharpVersionFile -Encoding utf8 -Append
-    Write-Host $Line6
-    $Line6 | Out-File -LiteralPath $FSharpVersionFile -Encoding utf8 -Append
-    Write-Host $Line7
-    $Line7 | Out-File -LiteralPath $FSharpVersionFile -Encoding utf8 -Append
+    $FSharpVersionFileContents = @"
+namespace Warewolf.FSharp
+namespace Warewolf.FSharp
+open System.Reflection;
+[<assembly: AssemblyCompany("Warewolf")>]
+[<assembly: AssemblyProduct("Warewolf")>]
+[<assembly: AssemblyCopyright("Copyright Warewolf 
+"@ + (Get-Date).year + @"
+")>]
+[<assembly: AssemblyVersion(" 
+"@ + $FullVersionString + @"
+")>]
+do()
+"@
+    Write-Host $FSharpVersionFileContents
+    $FSharpVersionFileContents | Out-File -LiteralPath $FSharpVersionFile -Encoding utf8 -Force
     Write-Host F Sharp version file written to `"$FSharpVersionFile`".
     Write-Host Warewolf version written successfully! For more info about Warewolf versioning see: http://warewolf.io/ESB-blog/artefact-sharing-efficient-ci/
 }
@@ -242,7 +254,7 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
             } else {
                 $OutputProperty = ""
             }
-            &"$NuGetPath" "restore" "$SolutionFile"
+            &"$NuGet" "restore" "$SolutionFile"
             &"$MSBuildPath" "$SolutionFile" "/p:Platform=`"Any CPU`";Configuration=`"$Config`"" "/maxcpucount" $OutputProperty $Target
             if ($LASTEXITCODE -ne 0) {
 				Write-Host Build failed. Check your pending changes. If you do not have any pending changes then you can try running 'dev\scorched get.bat' before retrying. Compiling Warewolf requires at at least MSBuild 15.0, download from: https://aka.ms/vs/15/release/vs_buildtools.exe and FSharp 4.0, download from http://download.microsoft.com/download/9/1/2/9122D406-F1E3-4880-A66D-D6C65E8B1545/FSharp_Bundle.exe

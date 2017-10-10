@@ -10,32 +10,28 @@ using System.Linq;
 using System.Text;
 using Warewolf.Resource.Errors;
 
-
 namespace Dev2.Services.Sql
 {
     public class PostgreServer : IDbServer
     {
-        
-
         private readonly IDbFactory _factory;
         private IDbCommand _command;
         private IDbConnection _connection;
         private IDbTransaction _transaction;
 
         public bool IsConnected
-        {
-            
+        {   
             get { return _connection != null && _connection.State == ConnectionState.Open; }
         }
 
         public string ConnectionString
-        {
-            
-            
+        {   
             get { return _connection == null ? null : _connection.ConnectionString; }
         }
 
-        public void FetchStoredProcedures(Func<IDbCommand, List<IDbDataParameter>, List<IDbDataParameter>, string, string, bool> procedureProcessor, Func<IDbCommand, List<IDbDataParameter>, List<IDbDataParameter>, string, string, bool> functionProcessor, bool continueOnProcessorException = false, string dbName = "")
+        public void FetchStoredProcedures(Func<IDbCommand, List<IDbDataParameter>, List<IDbDataParameter>, string, string, bool> procedureProcessor, Func<IDbCommand, List<IDbDataParameter>, List<IDbDataParameter>, string, string, bool> functionProcessor) => FetchStoredProcedures(procedureProcessor, functionProcessor, false, "");
+
+        public void FetchStoredProcedures(Func<IDbCommand, List<IDbDataParameter>, List<IDbDataParameter>, string, string, bool> procedureProcessor, Func<IDbCommand, List<IDbDataParameter>, List<IDbDataParameter>, string, string, bool> functionProcessor, bool continueOnProcessorException, string dbName)
         {
             VerifyArgument.IsNotNull("procedureProcessor", procedureProcessor);
             VerifyArgument.IsNotNull("functionProcessor", functionProcessor);
@@ -61,9 +57,8 @@ namespace Dev2.Services.Sql
                     {
                         try
                         {
-                            List<IDbDataParameter> outParameters;
 
-                            var parameters = GetProcedureParameters(command, fullProcedureName, out outParameters);
+                            var parameters = GetProcedureParameters(command, fullProcedureName, out List<IDbDataParameter> outParameters);
                             var helpText = FetchHelpTextContinueOnException(fullProcedureName, _connection);
 
                             procedureProcessor(command, parameters, outParameters, helpText, fullProcedureName);
@@ -127,7 +122,10 @@ namespace Dev2.Services.Sql
             finally
             {
                 
-                if (reader != null) reader.Close();
+                if (reader != null)
+                {
+                    reader.Close();
+                }
             }
 
             return result;
@@ -141,8 +139,7 @@ namespace Dev2.Services.Sql
         {
             VerifyArgument.IsNotNull("command", command);
 
-            return ExecuteReader(command, CommandBehavior.SchemaOnly & CommandBehavior.KeyInfo,
-                reader => _factory.CreateTable(reader, LoadOption.OverwriteChanges));
+            return ExecuteReader(command, reader => _factory.CreateTable(reader, LoadOption.OverwriteChanges));
         }
 
         public DataTable FetchDataTable(IDbDataParameter[] parameters, IEnumerable<IDbDataParameter> outparameters)
@@ -162,8 +159,12 @@ namespace Dev2.Services.Sql
 
         public void FetchStoredProcedures(
             Func<IDbCommand, List<IDbDataParameter>, string, string, bool> procedureProcessor,
+            Func<IDbCommand, List<IDbDataParameter>, string, string, bool> functionProcessor) => FetchStoredProcedures(procedureProcessor, functionProcessor, false, "");
+
+        public void FetchStoredProcedures(
+            Func<IDbCommand, List<IDbDataParameter>, string, string, bool> procedureProcessor,
             Func<IDbCommand, List<IDbDataParameter>, string, string, bool> functionProcessor,
-            bool continueOnProcessorException = false, string dbName = "")
+            bool continueOnProcessorException, string dbName)
         {
             VerifyArgument.IsNotNull("procedureProcessor", procedureProcessor);
             VerifyArgument.IsNotNull("functionProcessor", functionProcessor);
@@ -183,8 +184,7 @@ namespace Dev2.Services.Sql
                     {
                         try
                         {
-                            List<IDbDataParameter> isOut;
-                            var parameters = GetProcedureParameters(command, fullProcedureName, out isOut);
+                            var parameters = GetProcedureParameters(command, fullProcedureName, out List<IDbDataParameter> isOut);
                             var helpText = FetchHelpTextContinueOnException(fullProcedureName, _connection);
 
                             procedureProcessor(command, parameters, helpText, fullProcedureName);
@@ -258,8 +258,7 @@ namespace Dev2.Services.Sql
 
         #endregion Connect
 
-        private static T ExecuteReader<T>(IDbCommand command, CommandBehavior commandBehavior,
-            Func<IDataAdapter, T> handler)
+        private static T ExecuteReader<T>(IDbCommand command, Func<IDataAdapter, T> handler)
         {
             try
             {
@@ -282,7 +281,7 @@ namespace Dev2.Services.Sql
             }
         }
 
-        private static void AddParameters(IDbCommand command, ICollection<IDbDataParameter> parameters)
+        public static void AddParameters(IDbCommand command, ICollection<IDbDataParameter> parameters)
         {
             command.Parameters.Clear();
             if (parameters != null && parameters.Count > 0)
@@ -310,8 +309,7 @@ namespace Dev2.Services.Sql
                     
                     string.Format("SHOW CREATE PROCEDURE {0} ", objectName)))
             {
-                return ExecuteReader(command, CommandBehavior.SchemaOnly & CommandBehavior.KeyInfo,
-                    delegate (IDataAdapter reader)
+                return ExecuteReader(command, delegate (IDataAdapter reader)
                     {
                         var sb = new StringBuilder();
                         DataSet ds = new DataSet(); //conn is opened by dataadapter
@@ -335,8 +333,7 @@ namespace Dev2.Services.Sql
         {
             using (var command = _factory.CreateCommand(_connection, CommandType.StoredProcedure, fullProcedureName))
             {
-                List<IDbDataParameter> isOut;
-                GetProcedureParameters(command, fullProcedureName, out isOut);
+                GetProcedureParameters(command, fullProcedureName, out List<IDbDataParameter> isOut);
                 return isOut.Select(a => a as NpgsqlParameter).ToList();
             }
         }
@@ -365,15 +362,16 @@ namespace Dev2.Services.Sql
                     var datatype = row[1].ToString();
                     var direction = row[2].ToString();
 
-                    NpgsqlDbType sqlType;
 
-                    Enum.TryParse(datatype, true, out sqlType);
+                    Enum.TryParse(datatype, true, out NpgsqlDbType sqlType);
 
                     var sqlParameter = new NpgsqlParameter(value, sqlType);
 
                     var isout = direction.ToUpper().Trim().Contains("OUT".Trim());
                     if (direction.ToUpper().Trim().Contains("IN".Trim()))
+                    {
                         isout = false;
+                    }
 
                     if (!isout)
                     {

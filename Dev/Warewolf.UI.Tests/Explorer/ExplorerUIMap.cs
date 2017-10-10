@@ -290,10 +290,8 @@ namespace Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem, MouseButtons.Right, ModifierKeys.None, new Point(107, 9));
         }
-
-        [Given(@"I RightClick Explorer Localhost First Item")]
+        
         [When(@"I RightClick Explorer Localhost First Item")]
-        [Then(@"I RightClick Explorer Localhost First Item")]
         public void RightClick_Explorer_Localhost_FirstItem()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, MouseButtons.Right, ModifierKeys.None, new Point(77, 9));
@@ -548,45 +546,29 @@ namespace Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost);
         }
-
-        [Given(@"I Filter the Explorer with ""(.*)""")]
+        
         [When(@"I Filter the Explorer with ""(.*)""")]
-        [Then(@"I Filter the Explorer with ""(.*)""")]
         public void Filter_Explorer(string FilterText)
         {
-            MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text = FilterText;
+            if (MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text != FilterText)
+                MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text = FilterText;
         }
 
         [When(@"I validate and delete the existing resource with ""(.*)""")]
-        public void WhenIValidateAndDeleteTheExistingResourceWith(string filterText)
+        public void WhenIValidateAndDeleteTheExistingResourceWith(string resourceName)
         {
-            MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text = filterText;
+            string resourcePath =  @"\\TST-CI-REMOTE\C$\ProgramData\Warewolf\Resources\" + resourceName;
 
-            if (UIMap.ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem))
+            if (File.Exists(resourcePath))
             {
-                Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem, MouseButtons.Right, ModifierKeys.None, new Point(107, 9));
-
-                Mouse.Click(UIMap.MainStudioWindow.ExplorerContextMenu.Delete, new Point(87, 12));
-                Assert.IsTrue(DialogsUIMap.MessageBoxWindow.Exists, "Message box does not exist");
-                Assert.IsTrue(DialogsUIMap.MessageBoxWindow.YesButton.Exists, "Message box Yes button does not exist");
-
-                Mouse.Click(DialogsUIMap.MessageBoxWindow.YesButton, new Point(32, 5));
+                File.Delete(resourcePath);
             }
-            MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text = string.Empty;
         }
 
         [When(@"I Wait For Explorer Localhost Spinner")]
         public void WaitForExplorerLocalhostSpinner()
         {
             UIMap.WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
-        }
-
-        [Given(@"I Wait For Explorer First Remote Server Spinner")]
-        [When(@"I Wait For Explorer First Remote Server Spinner")]
-        [Then(@"I Wait For Explorer First Remote Server Spinner")]
-        public void WaitForExplorerFirstRemoteServerSpinner()
-        {
-            UIMap.WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.Checkbox.Spinner);
         }
 
         [Given(@"I Try Remove ""(.*)"" From Explorer")]
@@ -712,6 +694,9 @@ namespace Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton, new Point(136, 7));
             Assert.IsTrue(UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.Exists, "Remote Connection Integration option does not exist in Source server combobox.");
             Mouse.Click(UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.Text, new Point(226, 13));
+            UIMap.WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.Checkbox.Spinner, 180000);
+            Point point;
+            Assert.IsFalse(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.Checkbox.Spinner.TryGetClickablePoint(out point), "Timed out waiting for remote server resources to load after 3 minutes.");
         }
 
         [When(@"I Connect To Restricted Remote Server")]
@@ -983,10 +968,8 @@ namespace Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses
             Assert.IsTrue(DialogsUIMap.MessageBoxWindow.Exists, "Message box does not exist");
             Assert.IsTrue(DialogsUIMap.MessageBoxWindow.YesButton.Exists, "Message box Yes button does not exist");
         }
-
-        [Given(@"I Select Deploy From Explorer Context Menu")]
+        
         [When(@"I Select Deploy From Explorer Context Menu")]
-        [Then(@"I Select Deploy From Explorer Context Menu")]
         public void Select_Deploy_From_ExplorerContextMenu()
         {
             Mouse.Click(UIMap.MainStudioWindow.ExplorerContextMenu.DeployItem, new Point(57, 11));

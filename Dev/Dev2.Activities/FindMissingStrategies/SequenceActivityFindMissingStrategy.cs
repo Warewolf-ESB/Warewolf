@@ -10,7 +10,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using Dev2.Activities;
 using Dev2.Factories;
@@ -20,7 +19,7 @@ using Dev2.Utilities;
 
 namespace Dev2.FindMissingStrategies
 {
- //This is loaded based on SpookyAction implementing IFindMissingStrategy
+    //This is loaded based on SpookyAction implementing IFindMissingStrategy
     public class SequenceActivityFindMissingStrategy : IFindMissingStrategy
     {
         #region Implementation of ISpookyLoadable<Enum>
@@ -39,13 +38,11 @@ namespace Dev2.FindMissingStrategies
         {
             List<string> results = new List<string>();
             Dev2FindMissingStrategyFactory stratFac = new Dev2FindMissingStrategyFactory();
-            DsfSequenceActivity sequenceActivity = activity as DsfSequenceActivity;
-            if(sequenceActivity != null)
+            if (activity is DsfSequenceActivity sequenceActivity)
             {
-                foreach(var innerActivity in sequenceActivity.Activities)
+                foreach (var innerActivity in sequenceActivity.Activities)
                 {
-                    IDev2Activity dsfActivityAbstractString = innerActivity as IDev2Activity;
-                    if(dsfActivityAbstractString != null)
+                    if (innerActivity is IDev2Activity dsfActivityAbstractString)
                     {
                         GetResults(dsfActivityAbstractString, stratFac, results);
                     }

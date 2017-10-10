@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Core;
@@ -48,33 +47,30 @@ namespace Dev2.Runtime.ESB.Management.Services
             try
             {
                 Dev2Logger.Info("Save Com Plugin Source", GlobalConstants.WarewolfInfo);
-                StringBuilder resourceDefinition;
 
-                values.TryGetValue("ComPluginSource", out resourceDefinition);
+                values.TryGetValue("ComPluginSource", out StringBuilder resourceDefinition);
 
                 var src = serializer.Deserialize<ComPluginSourceDefinition>(resourceDefinition);
                 if (src.ResourcePath == null)
+                {
                     src.ResourcePath = string.Empty;
+                }
+
                 if (src.ResourcePath.EndsWith("\\"))
+                {
                     src.ResourcePath = src.ResourcePath.Substring(0, src.ResourcePath.LastIndexOf("\\", StringComparison.Ordinal));
+                }
 
                 ComPluginSource res1;
                 var existingSource = ResourceCat.GetResource(GlobalConstants.ServerWorkspaceID, src.Name);
-                if (existingSource != null)
+                res1 = existingSource != null ? existingSource as ComPluginSource : new ComPluginSource
                 {
-                    res1 = existingSource as ComPluginSource;
-                }
-                else
-                {
-                    res1 = new ComPluginSource
-                    {
-                        ResourceID = src.Id,
-                        ClsId = src.ClsId,
-                        Is32Bit = src.Is32Bit,
-                        ComName = src.SelectedDll.Name,
-                        ResourceName = src.ResourceName
-                    };
-                }
+                    ResourceID = src.Id,
+                    ClsId = src.ClsId,
+                    Is32Bit = src.Is32Bit,
+                    ComName = src.SelectedDll.Name,
+                    ResourceName = src.ResourceName
+                };
 
 
 

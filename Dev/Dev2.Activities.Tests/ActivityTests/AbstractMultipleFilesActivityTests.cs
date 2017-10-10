@@ -18,18 +18,10 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Tests.Activities.ActivityTests
 {
-    [TestClass]
-    
+    [TestClass]    
     public class AbstractMultipleFilesActivityTests : BaseActivityUnitTest
     {
-
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
         public TestContext TestContext { get; set; }
-
-
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
@@ -41,10 +33,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var guid = Guid.NewGuid();
             fileNames.Add(Path.Combine(TestContext.TestRunDirectory, guid + "Dev2.txt"));
 
-            List<DebugItem> inRes;
-            List<DebugItem> outRes;
-
-            foreach(string fileName in fileNames)
+            foreach (string fileName in fileNames)
             {
                 File.Delete(fileName);
             }
@@ -64,7 +53,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             };
             //-------------------------Execute-----------------------------------------------
             CheckPathOperationActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
-                ActivityStrings.DebugDataListWithData, out inRes, out outRes);
+                ActivityStrings.DebugDataListWithData, out List<DebugItem> inRes, out List<DebugItem> outRes);
             //-------------------------Assertions---------------------------------------------
             Assert.AreEqual(1, outRes.Count);
             var outputResultList = outRes[0].FetchResultsList();
@@ -82,10 +71,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var guid = Guid.NewGuid();
             fileNames.Add(Path.Combine(TestContext.TestRunDirectory, guid + "Dev2.txt"));
 
-            List<DebugItem> inRes;
-            List<DebugItem> outRes;
-
-            foreach(string fileName in fileNames)
+            foreach (string fileName in fileNames)
             {
                 File.Delete(fileName);
             }
@@ -105,7 +91,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             };
             //-------------------------Execute-----------------------------------------------
             CheckPathOperationActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
-                ActivityStrings.DebugDataListWithData, out inRes, out outRes);
+                ActivityStrings.DebugDataListWithData, out List<DebugItem> inRes, out List<DebugItem> outRes);
             //-------------------------Assertions---------------------------------------------
             Assert.AreEqual(1, outRes.Count);
             var outputResultList = outRes[0].FetchResultsList();

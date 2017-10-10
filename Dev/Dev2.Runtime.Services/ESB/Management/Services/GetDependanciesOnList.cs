@@ -10,7 +10,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using Dev2.Common;
@@ -58,9 +57,8 @@ namespace Dev2.Runtime.ESB.Management.Services
             bool dependsOnMe = false;
             string resourceIdsString = string.Empty;
             string dependsOnMeString = string.Empty;
-            StringBuilder tmp;
-            values.TryGetValue("ResourceIds", out tmp);
-            if(tmp != null)
+                values.TryGetValue("ResourceIds", out StringBuilder tmp);
+                if (tmp != null)
             {
                 resourceIdsString = tmp.ToString();
             }

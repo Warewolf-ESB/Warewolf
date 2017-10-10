@@ -10,7 +10,13 @@ namespace Dev2.Runtime.ResourceCatalogImpl
     {
         #region Implementation of IResourceSyncProvider
 
-        public void SyncTo(string sourceWorkspacePath, string targetWorkspacePath, bool overwrite = true, bool delete = true, IList<string> filesToIgnore = null)
+        public void SyncTo(string sourceWorkspacePath, string targetWorkspacePath) => SyncTo(sourceWorkspacePath, targetWorkspacePath, true, true, null);
+
+        public void SyncTo(string sourceWorkspacePath, string targetWorkspacePath, bool overwrite) => SyncTo(sourceWorkspacePath, targetWorkspacePath, overwrite, true, null);
+
+        public void SyncTo(string sourceWorkspacePath, string targetWorkspacePath, bool overwrite, bool delete) => SyncTo(sourceWorkspacePath, targetWorkspacePath, overwrite, delete, null);
+
+        public void SyncTo(string sourceWorkspacePath, string targetWorkspacePath, bool overwrite, bool delete, IList<string> filesToIgnore)
         {
             if (filesToIgnore == null)
             {

@@ -89,7 +89,7 @@ namespace Dev2.Data.Operations
             switch(mergeType)
             {
                 case "Index":
-                    switch(align)
+                    switch (align)
                     {
                         case "Left":
                             mergeAlignment = enMergeAlignment.Left;
@@ -97,6 +97,8 @@ namespace Dev2.Data.Operations
 
                         case "Right":
                             mergeAlignment = enMergeAlignment.Right;
+                            break;
+                        default:
                             break;
                     }
                     mergingType = enMergeType.Index;
@@ -139,17 +141,16 @@ namespace Dev2.Data.Operations
         /// <param name="mergeAlignment">The alignment used for the padding</param>
         private void IndexMergeOp(string value, string at, string padding, enMergeAlignment mergeAlignment)
         {
-            int indexToUse;
-            if(Int32.TryParse(at, out indexToUse))
+            if (Int32.TryParse(at, out int indexToUse))
             {
                 string paddedString = string.Empty;
                 int difference = indexToUse - value.Length;
-                if(difference >= 0)
+                if (difference >= 0)
                 {
                     var padChar = string.IsNullOrEmpty(padding) || padding.Length < 1 ? ' ' : padding[0];
                     paddedString = paddedString.PadRight(difference, padChar);
 
-                    if(mergeAlignment == enMergeAlignment.Left)
+                    if (mergeAlignment == enMergeAlignment.Left)
                     {
                         paddedString = paddedString.Insert(0, value);
                     }
@@ -158,7 +159,7 @@ namespace Dev2.Data.Operations
                         paddedString += value;
                     }
                 }
-                else if(difference < 0)
+                else if (difference < 0)
                 {
                     paddedString = value.Substring(0, indexToUse);
                 }

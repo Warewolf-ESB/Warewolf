@@ -80,9 +80,8 @@ namespace Dev2.Runtime.ESB.Management.Services
                
                 var version = serializer.Deserialize<IVersionInfo>(values["versionInfo"]);
                 Dev2Logger.Info("Get Version. " + version, GlobalConstants.WarewolfInfo);
-                StringBuilder tmp;
                 Guid resourceId = Guid.Empty;
-                values.TryGetValue("resourceId", out tmp);
+                values.TryGetValue("resourceId", out StringBuilder tmp);
                 if (tmp != null)
                 {
                     resourceId = Guid.Parse(tmp.ToString());

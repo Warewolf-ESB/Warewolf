@@ -27,12 +27,16 @@ namespace Dev2.Activities.Designers2.Core
 
             //we've reached the end of the tree
             if(parentObject == null)
+            {
                 return null;
+            }
 
             //check if the parent matches the type we're looking for
-            T parent = parentObject as T;
-            if(parent != null)
+            if (parentObject is T parent)
+            {
                 return parent;
+            }
+
             return FindParent<T>(parentObject);
         }
     }

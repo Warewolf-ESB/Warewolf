@@ -160,6 +160,7 @@ namespace Warewolf.Studio.ViewModels
             t.ContinueWith(a => Dispatcher.CurrentDispatcher.Invoke(() =>
             {
                 if (!_token.IsCancellationRequested)
+                {
                     switch (t.Status)
                     {
                         case TaskStatus.Faulted:
@@ -179,7 +180,23 @@ namespace Warewolf.Studio.ViewModels
                                 Testing = false;
                                 break;
                             }
+
+                        case TaskStatus.Created:
+                            break;
+                        case TaskStatus.WaitingForActivation:
+                            break;
+                        case TaskStatus.WaitingToRun:
+                            break;
+                        case TaskStatus.Running:
+                            break;
+                        case TaskStatus.WaitingForChildrenToComplete:
+                            break;
+                        case TaskStatus.Canceled:
+                            break;
+                        default:
+                            break;
                     }
+                }
             }));
             t.Start();
         }
@@ -187,7 +204,10 @@ namespace Warewolf.Studio.ViewModels
         public bool CanTest()
         {
             if (Testing)
+            {
                 return false;
+            }
+
             if (string.IsNullOrEmpty(EndpointUrl))
             {
                 return false;
@@ -313,7 +333,10 @@ namespace Warewolf.Studio.ViewModels
                     src.Path = RequestServiceNameViewModel.ResourceName.Path ?? RequestServiceNameViewModel.ResourceName.Name;
                     Save(src);
                     if (RequestServiceNameViewModel.SingleEnvironmentExplorerViewModel != null)
+                    {
                         AfterSave(RequestServiceNameViewModel.SingleEnvironmentExplorerViewModel.Environments[0].ResourceId, src.Id);
+                    }
+
                     Item = src;
                     _wcfServerSource = src;
                     ResourceName = _wcfServerSource.Name;
@@ -342,6 +365,7 @@ namespace Warewolf.Studio.ViewModels
         public IWcfServerSource ToSource()
         {
             if (_wcfServerSource == null)
+            {
                 return new WcfServiceSourceDefinition()
                 {
                     EndpointUrl = EndpointUrl,
@@ -351,7 +375,7 @@ namespace Warewolf.Studio.ViewModels
                     ResourceID = _wcfServerSource?.Id ?? Guid.NewGuid(),
                     Id = _wcfServerSource?.Id ?? Guid.NewGuid()
                 };
-            
+            }
             else
             {
                 _wcfServerSource.EndpointUrl = EndpointUrl;

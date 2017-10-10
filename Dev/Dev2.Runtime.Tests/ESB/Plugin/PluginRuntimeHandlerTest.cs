@@ -11,7 +11,6 @@
 using System;
 using System.Collections.Generic;
 using System.Data.OracleClient;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -511,8 +510,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
                 });
 
                 var deserializeToObject = instance.ObjectString.DeserializeToObject(type, new KnownTypesBinder() { KnownTypes = new List<Type>(type.Assembly.ExportedTypes) });
-                var firstOrDefault = deserializeToObject as Human;
-                if (firstOrDefault != null)
+                if (deserializeToObject is Human firstOrDefault)
                 {
 
                     Assert.AreEqual("Jimmy", firstOrDefault.Name);
@@ -560,8 +558,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
                 Assert.IsNotNull(deserializeToObject);
                 instance.Args = pluginInvokeArgs;
                 var dev2MethodInfo = instance.Args.MethodsToRun.First();
-                string stringOBj;
-                var run = isolated.Value.Run(dev2MethodInfo, instance, out stringOBj);
+                var run = isolated.Value.Run(dev2MethodInfo, instance, out string stringOBj);
                 Assert.IsNotNull(run);
                 StringAssert.Contains(stringOBj, "Default");
             }
@@ -610,8 +607,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
                 .Throws(exception);
 
             var dev2MethodInfo = pluginInvokeArgs.MethodsToRun.First();
-            string stringOBj;
-            var run = handler.Run(dev2MethodInfo, pluginExecutionDto, out stringOBj);
+            var run = handler.Run(dev2MethodInfo, pluginExecutionDto, out string stringOBj);
             Assert.IsNotNull(run);
             Assert.IsTrue(run.HasError);
             Assert.IsFalse(string.IsNullOrEmpty(run.ErrorMessage));
@@ -656,8 +652,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
             var exception = new Exception("err", new Exception());
             mock.Setup(loader => loader.TryLoadAssembly(It.IsAny<string>(), It.IsAny<string>(), out loadedAssembly))
                 .Throws(exception);
-            string stringOBj;
-            var run = handler.Test(pluginInvokeArgs, out stringOBj);
+            var run = handler.Test(pluginInvokeArgs, out string stringOBj);
             Assert.IsNull(run);
             Assert.IsTrue(string.IsNullOrEmpty(stringOBj));
 
@@ -708,8 +703,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
                 .Throws(exception);
 
             var dev2MethodInfo = pluginInvokeArgs.MethodsToRun.First();
-            string stringOBj;
-            var run = handler.Run(dev2MethodInfo, pluginExecutionDto, out stringOBj);
+            var run = handler.Run(dev2MethodInfo, pluginExecutionDto, out string stringOBj);
 
 
         }
@@ -772,8 +766,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
                 };
                 var instance = isolated.Value.CreateInstance(pluginInvokeArgs);
                 instance.Args = pluginInvokeArgs;
-                string str;
-                isolated.Value.Run(svc.MethodsToRun.First(), instance, out str);
+                isolated.Value.Run(svc.MethodsToRun.First(), instance, out string str);
                 Assert.IsTrue(string.IsNullOrEmpty(str));
                 Assert.IsTrue(instance.IsStatic);
             }
@@ -881,8 +874,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
                 Method = "EmptyIsNullTest"
 
             };
-            string jresult;
-            var instance = isolated.Test(pluginInvokeArgs, out jresult);
+            var instance = isolated.Test(pluginInvokeArgs, out string jresult);
             Assert.IsTrue(!string.IsNullOrEmpty(jresult));
             var count = instance.DataSourceShapes.Count;
             Assert.AreEqual(1, count);

@@ -9,7 +9,6 @@
 */
 
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Windows.Input;
 using Dev2.Common.Interfaces;
 
@@ -84,7 +83,9 @@ namespace Dev2.Runtime.Configuration.ViewModels.Base
         public RelayCommand(Action<T> execute, Predicate<T> canExecute)
         {
             if(execute == null)
+            {
                 throw new ArgumentNullException("execute");
+            }
 
             _execute = execute;
             _canExecute = canExecute;

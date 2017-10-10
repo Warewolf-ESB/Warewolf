@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
@@ -41,14 +40,12 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 Dev2Logger.Info("Fetch Tests for deploy Service", GlobalConstants.WarewolfInfo);
 
-                StringBuilder resourceIdString;
-                values.TryGetValue("resourceID", out resourceIdString);
+                values.TryGetValue("resourceID", out StringBuilder resourceIdString);
                 if (resourceIdString == null)
                 {
                     throw new InvalidDataContractException("resourceID is missing");
                 }
-                Guid resourceId;
-                if (!Guid.TryParse(resourceIdString.ToString(), out resourceId))
+                if (!Guid.TryParse(resourceIdString.ToString(), out Guid resourceId))
                 {
                     throw new InvalidDataContractException("resourceID is not a valid GUID.");
                 }

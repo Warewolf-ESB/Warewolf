@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 
 
@@ -70,8 +69,7 @@ namespace Warewolf.Studio.CustomControls
 
         static void PwdUnloaded(object sender, RoutedEventArgs e)
         {
-            var pwd = sender as PasswordBox;
-            if(pwd != null)
+            if (sender is PasswordBox pwd)
             {
                 pwd.PasswordChanged -= PwdPasswordChanged;
             }

@@ -51,13 +51,19 @@ namespace Dev2.Studio.Core
                 {
                     var currentError = new StringBuilder(Content.ErrorMessage);
                     if (!string.IsNullOrEmpty(errorMessage))
+                    {
                         if (!currentError.Contains(errorMessage))
                         {
                             currentError.Append(errorMessage);
                             Content.ErrorMessage = currentError.ToString();
                         }
+                    }
                 }
-                else Content.ErrorMessage = errorMessage;
+                else
+                {
+                    Content.ErrorMessage = errorMessage;
+                }
+
                 Content.HasError = true;
                 OnPropertyChanged("Content.ErrorMessage");
                 OnPropertyChanged("Content.HasError");
@@ -69,21 +75,14 @@ namespace Dev2.Studio.Core
         
         protected override void Initialize(IDebugState content)
         {
-            //            _inputs.Clear();
-            //            _outputs.Clear();
-            //            _assertResultList.Clear();
-
             if (content == null)
             {
                 return;
             }
-
-            // Multiple when creating - so that we show the path of the execution when debugging
             SelectionType = ActivitySelectionType.Add;
             IsSelected = content.ActivityType != ActivityType.Workflow;
 
-            Guid serverId;
-            var isRemote = Guid.TryParse(content.Server, out serverId);
+            var isRemote = Guid.TryParse(content.Server, out Guid serverId);
             if (isRemote || string.IsNullOrEmpty(content.Server))
             {
                 var envId = content.EnvironmentID;
@@ -92,18 +91,10 @@ namespace Dev2.Studio.Core
                 if (env == null)
                 {
                     var environmentModels = _serverRepository.LookupEnvironments(_serverRepository.ActiveServer);
-                    if (environmentModels != null)
-                    {
-                        env = environmentModels.FirstOrDefault(e => e.EnvironmentID == envId) ?? _serverRepository.ActiveServer;
-                    }
-                    else
-                    {
-                        env = _serverRepository.Source;
-                    }
+                    env = environmentModels != null ? environmentModels.FirstOrDefault(e => e.EnvironmentID == envId) ?? _serverRepository.ActiveServer : _serverRepository.Source;
                 }
                 if (Equals(env, _serverRepository.Source))
                 {
-                    // We have an unknown remote server ;)
                     content.Server = "Unknown Remote Server";
                 }
                 else
@@ -157,6 +148,8 @@ namespace Dev2.Studio.Core
             {
                 case "IsSelected":
                     NotifySelectionChanged();
+                    break;
+                default:
                     break;
             }
         }
@@ -224,8 +217,7 @@ namespace Dev2.Studio.Core
                     }
                     else
                     {
-                        DebugLineGroup group;
-                        if (!groups.TryGetValue(result.GroupName, out group))
+                        if (!groups.TryGetValue(result.GroupName, out DebugLineGroup group))
                         {
                             group = new DebugLineGroup(result.GroupName, result.Label)
                             {
@@ -236,8 +228,7 @@ namespace Dev2.Studio.Core
                             list.LineItems.Add(group);
                         }
 
-                        DebugLineGroupRow row;
-                        if (!group.Rows.TryGetValue(result.GroupIndex, out row))
+                        if (!group.Rows.TryGetValue(result.GroupIndex, out DebugLineGroupRow row))
                         {
                             row = new DebugLineGroupRow();
                             group.Rows.Add(result.GroupIndex, row);

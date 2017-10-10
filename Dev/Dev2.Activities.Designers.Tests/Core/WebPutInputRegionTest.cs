@@ -80,12 +80,11 @@ namespace Dev2.Activities.Designers.Tests.Core
             region.PutData = "bob";
             Assert.AreEqual(region.IsEnabled, false);
             Assert.AreEqual(region.Errors.Count, 0);
-            var clone = region.CloneRegion() as WebPutInputRegion;
-            if(clone != null)
+            if (region.CloneRegion() is WebPutInputRegion clone)
             {
                 Assert.AreEqual(clone.IsEnabled, false);
                 Assert.AreEqual(clone.Errors.Count, 0);
-                Assert.AreEqual(clone.PutData,"bob");
+                Assert.AreEqual(clone.PutData, "bob");
             }
         }
 

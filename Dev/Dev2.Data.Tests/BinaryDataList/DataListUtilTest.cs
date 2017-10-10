@@ -70,8 +70,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             //---------------Execute Test ----------------------
             try
             {
-                ErrorResultTO errorResultTO;
-                var operations = DataListUtil.GetAllPossibleExpressionsForFunctionOperations("[[a]]", env.Object, out errorResultTO, 1);
+                var operations = DataListUtil.GetAllPossibleExpressionsForFunctionOperations("[[a]]", env.Object, out ErrorResultTO errorResultTO, 1);
                 Assert.AreEqual(0, operations.Count);
                 env.Setup(environment => environment.EvalAsListOfStrings(It.IsAny<string>(), It.IsAny<int>())).Throws(new Exception("error"));
                 DataListUtil.GetAllPossibleExpressionsForFunctionOperations("[[a]]", env.Object, out errorResultTO, 1);
@@ -459,7 +458,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             var target = new Collection<ObservablePair<string, string>>();
 
             //------------Execute Test---------------------------
-            DataListUtil.UpsertTokens(target, tokenizer.Object, "prefix");
+            DataListUtil.UpsertTokens(target, tokenizer.Object, "prefix", null, true);
 
             //------------Assert Results-------------------------
             Assert.AreEqual(TokenCount, target.Count);
@@ -489,7 +488,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             var target = new Collection<ObservablePair<string, string>>();
 
             //------------Execute Test---------------------------
-            DataListUtil.UpsertTokens(target, tokenizer.Object, "prefix", "suffix");
+            DataListUtil.UpsertTokens(target, tokenizer.Object, "prefix", "suffix", true);
 
             //------------Assert Results-------------------------
             Assert.AreEqual(TokenCount, target.Count);
@@ -562,7 +561,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             var target = new Collection<ObservablePair<string, string>>();
 
             //------------Execute Test---------------------------
-            DataListUtil.UpsertTokens(target, tokenizer.Object, "rs(*).", "a");
+            DataListUtil.UpsertTokens(target, tokenizer.Object, "rs(*).", "a", true);
 
             //------------Assert Results-------------------------
             const int ExpectedCount = TokenCount - 2;
@@ -665,8 +664,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             const string exp = "rec(*).name";
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            string newExp;
-            var isCalcEvaluation = DataListUtil.IsCalcEvaluation(exp, out newExp);
+            var isCalcEvaluation = DataListUtil.IsCalcEvaluation(exp, out string newExp);
             //---------------Test Result -----------------------
             Assert.IsFalse(isCalcEvaluation);
             Assert.AreEqual(string.Empty, newExp);
@@ -680,8 +678,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             const string exp = GlobalConstants.CalculateTextConvertPrefix + "rec(*).name" + GlobalConstants.CalculateTextConvertSuffix;
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            string newExp;
-            var isCalcEvaluation = DataListUtil.IsCalcEvaluation(exp, out newExp);
+            var isCalcEvaluation = DataListUtil.IsCalcEvaluation(exp, out string newExp);
             //---------------Test Result -----------------------
             Assert.IsTrue(isCalcEvaluation);
             Assert.AreEqual("rec(*).name", newExp);
@@ -695,8 +692,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             const string exp = GlobalConstants.AggregateCalculateTextConvertPrefix + "rec(*).name" + GlobalConstants.AggregateCalculateTextConvertSuffix;
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            string newExp;
-            var isCalcEvaluation = DataListUtil.IsCalcEvaluation(exp, out newExp);
+            var isCalcEvaluation = DataListUtil.IsCalcEvaluation(exp, out string newExp);
             //---------------Test Result -----------------------
             Assert.IsTrue(isCalcEvaluation);
             Assert.AreEqual("rec(*).name", newExp);
@@ -709,8 +705,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             const string exp = GlobalConstants.AggregateCalculateTextConvertPrefix + "rec(*).name";
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            string newExp;
-            var isCalcEvaluation = DataListUtil.IsCalcEvaluation(exp, out newExp);
+            var isCalcEvaluation = DataListUtil.IsCalcEvaluation(exp, out string newExp);
             //---------------Test Result -----------------------
             Assert.IsFalse(isCalcEvaluation);
             Assert.AreEqual(string.Empty, newExp);
@@ -723,8 +718,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             const string exp = "rec(*).name" + GlobalConstants.AggregateCalculateTextConvertSuffix;
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            string newExp;
-            var isCalcEvaluation = DataListUtil.IsCalcEvaluation(exp, out newExp);
+            var isCalcEvaluation = DataListUtil.IsCalcEvaluation(exp, out string newExp);
             //---------------Test Result -----------------------
             Assert.IsFalse(isCalcEvaluation);
             Assert.AreEqual(string.Empty, newExp);
@@ -1316,8 +1310,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             var noXml = "kkk";
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            bool isFragment;
-            var isXml = DataListUtil.IsXml(noXml, out isFragment);
+            var isXml = DataListUtil.IsXml(noXml, out bool isFragment);
             //---------------Test Result -----------------------
             Assert.IsFalse(isXml);
         }
@@ -1343,8 +1336,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             const string noXml = "<Person></Person>";
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            bool isFragment;
-            var isXml = DataListUtil.IsXml(noXml, out isFragment);
+            var isXml = DataListUtil.IsXml(noXml, out bool isFragment);
             //---------------Test Result -----------------------
             Assert.IsTrue(isXml);
         }

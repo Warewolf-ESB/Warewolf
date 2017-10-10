@@ -46,7 +46,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
         }
 
-        public ActivityDTO(string fieldName, string fieldValue, int indexNumber, bool inserted = false)
+        public ActivityDTO(string fieldName, string fieldValue, int indexNumber)
+            : this(fieldName, fieldValue, indexNumber, false)
+        {
+        }
+
+        public ActivityDTO(string fieldName, string fieldValue, int indexNumber, bool inserted)
         {
             Inserted = inserted;
             FieldName = fieldName;
@@ -250,6 +255,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 case "FieldValueAndCalculate":
                     ruleSet.Add(new ComposableRule<string>(new IsValidExpressionRule(() => FieldValue, datalist, "1")).Or(new IsValidCalculateRule(() => FieldValue)));
                     break;
+                default:
+                    throw new ArgumentException("Unrecognized Property Name: " + propertyName);
             }
             return ruleSet;
         }

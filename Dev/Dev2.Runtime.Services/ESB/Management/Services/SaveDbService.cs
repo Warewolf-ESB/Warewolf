@@ -10,7 +10,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using Dev2.Common;
@@ -31,7 +30,7 @@ using Warewolf.Core;
 namespace Dev2.Runtime.ESB.Management.Services
 {
 
-    
+
     public class SaveDbService : IEsbManagementEndpoint
     {
 
@@ -56,10 +55,9 @@ namespace Dev2.Runtime.ESB.Management.Services
             try
             {
                 Dev2Logger.Info("Save Resource Service", GlobalConstants.WarewolfInfo);
-                StringBuilder resourceDefinition;
 
 
-                values.TryGetValue("DbService", out resourceDefinition);
+                values.TryGetValue("DbService", out StringBuilder resourceDefinition);
 
                 IDatabaseService service = serializer.Deserialize<DatabaseService>(resourceDefinition);
                 

@@ -52,17 +52,18 @@ namespace Dev2.Runtime.ESB
 
         private readonly ConcurrentDictionary<Guid, ServiceAction> _cache = new ConcurrentDictionary<Guid, ServiceAction>();
 
-        // 2012.10.17 - 5782: TWR - Changed to work off the workspace host and made read only
-
         #region Constructors
 
-        public EsbServiceInvoker(IEsbChannel esbChannel, IWorkspace workspace, EsbExecuteRequest request = null)
+        public EsbServiceInvoker(IEsbChannel esbChannel, IWorkspace workspace)
+            : this(esbChannel, workspace, null)
+        {
+        }
+
+        public EsbServiceInvoker(IEsbChannel esbChannel, IWorkspace workspace, EsbExecuteRequest request)
             : this(new ServiceLocator())
         {
             _esbChannel = esbChannel;
-
-
-            // 2012.10.17 - 5782: TWR - Added workspace parameter
+            
             _workspace = workspace;
 
             _request = request;
@@ -337,6 +338,24 @@ namespace Dev2.Runtime.ESB
                     case enActionType.RemoteService:
                         result = new RemoteWorkflowExecutionContainer(serviceAction, dataObj, null, _esbChannel);
                         break;
+                    case enActionType.BizRule:
+                        break;
+                    case enActionType.InvokeStoredProc:
+                        break;
+                    case enActionType.InvokeDynamicService:
+                        break;
+                    case enActionType.InvokeServiceMethod:
+                        break;
+                    case enActionType.Plugin:
+                        break;
+                    case enActionType.ComPlugin:
+                        break;
+                    case enActionType.Switch:
+                        break;
+                    case enActionType.Unknown:
+                        break;
+                    default:
+                        break;
                 }
             }
             return result;
@@ -345,7 +364,9 @@ namespace Dev2.Runtime.ESB
         private void MapServiceActionDependencies(ServiceAction serviceAction)
         {
             if(!string.IsNullOrWhiteSpace(serviceAction?.SourceName))
+            {
                 serviceAction.Source = _serviceLocator.FindSourceByName(serviceAction.SourceName, _workspace.ID);
+            }
         }
 
         #endregion
@@ -364,8 +385,7 @@ namespace Dev2.Runtime.ESB
         {
             if (errors.HasErrors() && dataObject.IsDebugMode())
             {
-                Guid parentInstanceId;
-                Guid.TryParse(dataObject.ParentInstanceID, out parentInstanceId);
+                Guid.TryParse(dataObject.ParentInstanceID, out Guid parentInstanceId);
 
                 var debugState = new DebugState
                 {
@@ -392,7 +412,7 @@ namespace Dev2.Runtime.ESB
                     ErrorMessage = errors.MakeDisplayReady()
                 };
 
-                DebugDispatcher.Instance.Write(debugState, dataObject.IsServiceTestExecution,dataObject.IsDebugFromWeb, dataObject.TestName, dataObject.RemoteInvoke, dataObject.RemoteInvokerID);
+                DebugDispatcher.Instance.Write(debugState, dataObject.IsServiceTestExecution, dataObject.IsDebugFromWeb, dataObject.TestName, dataObject.RemoteInvoke, dataObject.RemoteInvokerID);
             }
         }
 

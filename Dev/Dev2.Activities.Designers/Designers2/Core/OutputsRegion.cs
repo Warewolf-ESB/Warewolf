@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using Dev2.Common;
@@ -21,17 +20,20 @@ using Microsoft.Practices.Prism;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 
-
-
 namespace Dev2.Activities.Designers2.Core
 {
-    
     public class OutputsRegion : IOutputsToolRegion
     {
         private readonly ModelItem _modelItem;
         private bool _isEnabled;
         private ICollection<IServiceOutputMapping> _outputs;
-        public OutputsRegion(ModelItem modelItem, bool isObjectOutputUsed = false)
+
+        public OutputsRegion(ModelItem modelItem)
+            : this(modelItem, false)
+        {
+        }
+
+        public OutputsRegion(ModelItem modelItem, bool isObjectOutputUsed)
         {
             ToolRegionName = "OutputsRegion";
             Dependants = new List<IToolRegion>();
@@ -63,14 +65,7 @@ namespace Dev2.Activities.Designers2.Core
             ObjectResult = _modelItem.GetProperty<string>("ObjectResult");
             ObjectName = _modelItem.GetProperty<string>("ObjectName");
             IsObjectOutputUsed = isObjectOutputUsed;
-            if (!IsObject)
-            {
-                IsOutputsEmptyRows = Outputs.Count == 0;
-            }
-            else
-            {
-                IsOutputsEmptyRows = !string.IsNullOrWhiteSpace(ObjectResult);
-            }
+            IsOutputsEmptyRows = !IsObject ? Outputs.Count == 0 : !string.IsNullOrWhiteSpace(ObjectResult);
             _shellViewModel = CustomContainer.Get<IShellViewModel>();
           
         }
@@ -95,7 +90,11 @@ namespace Dev2.Activities.Designers2.Core
 
         private void AddItemPropertyChangeEvent(NotifyCollectionChangedEventArgs args)
         {
-            if (args.NewItems == null) return;
+            if (args.NewItems == null)
+            {
+                return;
+            }
+
             foreach (INotifyPropertyChanged item in args.NewItems)
             {
                 if (item != null)
@@ -112,7 +111,11 @@ namespace Dev2.Activities.Designers2.Core
 
         private void RemoveItemPropertyChangeEvent(NotifyCollectionChangedEventArgs args)
         {
-            if (args.OldItems == null) return;
+            if (args.OldItems == null)
+            {
+                return;
+            }
+
             foreach (INotifyPropertyChanged item in args.OldItems)
             {
                 if (item != null)
@@ -173,8 +176,7 @@ namespace Dev2.Activities.Designers2.Core
 
         public void RestoreRegion(IToolRegion toRestore)
         {
-            var region = toRestore as OutputsRegion;
-            if (region != null)
+            if (toRestore is OutputsRegion region)
             {
                 Outputs = region.Outputs;
                 RecordsetName = region.RecordsetName;
@@ -182,7 +184,7 @@ namespace Dev2.Activities.Designers2.Core
                 ObjectResult = region.ObjectResult;
                 ObjectName = region.ObjectName;
                 IsObject = region.IsObject;
-                
+
                 OnPropertyChanged("IsOutputsEmptyRows");
             }
         }
@@ -209,14 +211,7 @@ namespace Dev2.Activities.Designers2.Core
                 {
                     _outputs = value;
                     _modelItem.SetProperty("Outputs", value.ToList());
-                    if (!IsObject)
-                    {
-                        IsOutputsEmptyRows = Outputs.Count == 0;
-                    }
-                    else
-                    {
-                        IsOutputsEmptyRows = !string.IsNullOrWhiteSpace(ObjectResult);
-                    }
+                    IsOutputsEmptyRows = !IsObject ? Outputs.Count == 0 : !string.IsNullOrWhiteSpace(ObjectResult);
                     OnPropertyChanged();
                 }
                 else

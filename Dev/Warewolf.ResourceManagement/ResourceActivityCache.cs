@@ -15,9 +15,11 @@ namespace Warewolf.ResourceManagement
         {
             _activityParser = activityParser;
             _cache = cache;
-        }        
+        }
 
-        public IDev2Activity Parse(DynamicActivity activity,Guid resourceIdGuid,bool failOnException=false)
+        public IDev2Activity Parse(DynamicActivity activity, Guid resourceIdGuid) => Parse(activity, resourceIdGuid, false);
+
+        public IDev2Activity Parse(DynamicActivity activity, Guid resourceIdGuid, bool failOnException)
         {
             if(HasActivityInCache(resourceIdGuid))
             {
@@ -50,7 +52,9 @@ namespace Warewolf.ResourceManagement
                 {
                     Dev2Logger.Error(err, "Warewolf Error");
                     if(failOnException)
-                    throw;
+                    {
+                        throw;
+                    }
                 }
    
             }
@@ -69,8 +73,7 @@ namespace Warewolf.ResourceManagement
 
         public void RemoveFromCache(Guid resourceID)
         {
-            IDev2Activity act;
-            _cache.TryRemove(resourceID, out act);
+            _cache.TryRemove(resourceID, out IDev2Activity act);
         }
 
         public void AddToCache(Guid resourceID, DynamicActivity activity)

@@ -37,7 +37,13 @@ namespace Dev2
         }
 
         public GatherSystemInformationTO(enTypeOfSystemInformationToGather enTypeOfSystemInformation, string result,
-            int indexNumber, bool inserted = false)
+            int indexNumber)
+            : this(enTypeOfSystemInformation, result, indexNumber, false)
+        {
+        }
+
+        public GatherSystemInformationTO(enTypeOfSystemInformationToGather enTypeOfSystemInformation, string result,
+            int indexNumber, bool inserted)
         {
             Inserted = inserted;
             EnTypeOfSystemInformation = enTypeOfSystemInformation;
@@ -158,8 +164,7 @@ namespace Dev2
                 Errors[propertyName] = actionableErrorInfos;
             }
             OnPropertyChanged("Errors");
-            List<IActionableErrorInfo> errorList;
-            if (Errors.TryGetValue(propertyName, out errorList))
+            if (Errors.TryGetValue(propertyName, out List<IActionableErrorInfo> errorList))
             {
                 return errorList.Count == 0;
             }
@@ -175,6 +180,8 @@ namespace Dev2
                     ruleSet = GetFieldNameRuleSet();
                     break;
                 case "FieldValue":
+                    break;
+                default:
                     break;
             }
             return Validate(propertyName, ruleSet);
@@ -209,7 +216,7 @@ namespace Dev2
         
         public string Error { get; private set; }
 
-        
+
 
         #endregion
     }

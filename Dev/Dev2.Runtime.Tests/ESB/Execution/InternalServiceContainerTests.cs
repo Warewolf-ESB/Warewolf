@@ -25,13 +25,11 @@ namespace Dev2.Tests.Runtime.ESB.Execution
         public void OnConstruction_GivenValidArgs_ShouldBuildCorrectly()
         {
             //---------------Set up test pack-------------------
-            //InternalServiceContainer(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel, EsbExecuteRequest request)
-
             const string datalist = "<DataList><scalar1 ColumnIODirection=\"Input\"/><persistantscalar ColumnIODirection=\"Input\"/><rs><f1 ColumnIODirection=\"Input\"/><f2 ColumnIODirection=\"Input\"/></rs><recset><field1/><field2/></recset></DataList>";
             var serviceAction = new ServiceAction() { DataListSpecification = new StringBuilder(datalist) };
             var dsfObj = new Mock<IDSFDataObject>();
             dsfObj.Setup(o => o.Environment).Returns(new ExecutionEnvironment());
-            dsfObj.Setup(o => o.Environment.Eval(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<bool>(), false))
+            dsfObj.Setup(o => o.Environment.Eval(It.IsAny<string>(), It.IsAny<int>()))
                   .Returns(CommonFunctions.WarewolfEvalResult.NewWarewolfAtomResult(DataStorage.WarewolfAtom.NewDataString("Args")));
             var workSpace = new Mock<IWorkspace>();
             var channel = new Mock<IEsbChannel>();
@@ -54,7 +52,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             var serviceAction = new ServiceAction() { DataListSpecification = new StringBuilder(datalist) };
             var dsfObj = new Mock<IDSFDataObject>();
             dsfObj.Setup(o => o.Environment).Returns(new ExecutionEnvironment());
-            dsfObj.Setup(o => o.Environment.Eval(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<bool>(), false))
+            dsfObj.Setup(o => o.Environment.Eval(It.IsAny<string>(), It.IsAny<int>()))
                   .Returns(CommonFunctions.WarewolfEvalResult.NewWarewolfAtomResult(DataStorage.WarewolfAtom.NewDataString("Args")));
             var workSpace = new Mock<IWorkspace>();
             var channel = new Mock<IEsbChannel>();
@@ -69,7 +67,6 @@ namespace Dev2.Tests.Runtime.ESB.Execution
 
             //---------------Test Result -----------------------
             Assert.AreEqual(0, esbExecuteRequest.Args.Count);
-
         }
 
         [TestMethod]
@@ -81,7 +78,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             var serviceAction = new ServiceAction() { DataListSpecification = new StringBuilder(datalist) , ServiceName = "name", Name = "Name"};
             var dsfObj = new Mock<IDSFDataObject>();
             dsfObj.Setup(o => o.Environment).Returns(new ExecutionEnvironment());
-            dsfObj.Setup(o => o.Environment.Eval(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<bool>(), false))
+            dsfObj.Setup(o => o.Environment.Eval(It.IsAny<string>(), It.IsAny<int>()))
                   .Returns(CommonFunctions.WarewolfEvalResult.NewWarewolfAtomResult(DataStorage.WarewolfAtom.NewDataString("Args")));
             var workSpace = new Mock<IWorkspace>();
             var channel = new Mock<IEsbChannel>();
@@ -90,12 +87,12 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             //---------------Assert Precondition----------------
             Assert.AreEqual(4, esbExecuteRequest.Args.Count);
             //---------------Execute Test ----------------------
-            ErrorResultTO errorResultTO;
-            internalServiceContainer.Execute(out errorResultTO, 1);
+            internalServiceContainer.Execute(out ErrorResultTO errorResultTO, 1);
             //---------------Test Result -----------------------
             Assert.AreEqual(1, errorResultTO.FetchErrors().Count);
             Assert.AreEqual(string.Format(ErrorResource.CouldNotLocateManagementService, "name"), errorResultTO.FetchErrors().Single());
         }
+
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void Execute_GivenService_ShouldAddBuildRequestArgs()
@@ -105,7 +102,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             var serviceAction = new ServiceAction() { DataListSpecification = new StringBuilder(datalist) , ServiceName = "name", Name = "Name"};
             var dsfObj = new Mock<IDSFDataObject>();
             dsfObj.Setup(o => o.Environment).Returns(new ExecutionEnvironment());
-            dsfObj.Setup(o => o.Environment.Eval(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<bool>(), false))
+            dsfObj.Setup(o => o.Environment.Eval(It.IsAny<string>(), It.IsAny<int>()))
                   .Returns(CommonFunctions.WarewolfEvalResult.NewWarewolfAtomResult(DataStorage.WarewolfAtom.NewDataString("Args")));
             var workSpace = new Mock<IWorkspace>();
             var channel = new Mock<IEsbChannel>();
@@ -116,11 +113,9 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             //---------------Assert Precondition----------------
             Assert.AreEqual(4, esbExecuteRequest.Args.Count);
             //---------------Execute Test ----------------------
-            ErrorResultTO errorResultTO;
-            var execute = internalServiceContainer.Execute(out errorResultTO, 1);
+            var execute = internalServiceContainer.Execute(out ErrorResultTO errorResultTO, 1);
             //---------------Test Result -----------------------
-            locater.VerifyAll();
-            
+            locater.VerifyAll();            
         }
     }
 }
