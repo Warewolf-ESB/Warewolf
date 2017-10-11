@@ -75,16 +75,6 @@ namespace Warewolf.Studio.CustomControls
             HasText = Text.Length != 0;
         }
 
-        protected override void OnTextChanged(TextChangedEventArgs e) {
-            base.OnTextChanged(e);
-            
-            HasText = Text.Length != 0;
-            if (!HasText)
-            {
-               // Focus();
-            }
-        }
-
         public string LabelText {
             get { return (string)GetValue(LabelTextProperty); }
             set { SetValue(LabelTextProperty, value); }

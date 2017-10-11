@@ -43,15 +43,15 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             DateTime res = DateTime.Parse(entry);
 
-            if(res.Millisecond == 0)
+            if(res.Second == 0)
             {
                 Thread.Sleep(10);
                 result = ExecuteProcess();
                 GetScalarValueFromEnvironment(result.Environment, "result", out entry, out error);
                 res = DateTime.Parse(entry);
-                Assert.IsTrue(res.Millisecond != 0);
+                Assert.IsTrue(res.Second != 0);
             }
-            Assert.IsTrue(res.Millisecond != 0);
+            Assert.IsTrue(res.Second != 0);
         }
 
         [TestMethod]

@@ -102,7 +102,6 @@ namespace Warewolf.Studio.ViewModels
                     }
                     SetControlFlowValues(value);
                 }
-                //AddNewEmptyRow();
                 OnPropertyChanged(() => StepOutputs);
                 IsTestStepExpanded = StepOutputs?.Count > 0;
                 IsTestStepExpanderEnabled = StepOutputs?.Count > 0;

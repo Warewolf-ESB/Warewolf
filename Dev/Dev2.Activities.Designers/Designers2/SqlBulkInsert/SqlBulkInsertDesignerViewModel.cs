@@ -43,7 +43,7 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
 {
     public class SqlBulkInsertDesignerViewModel : ActivityCollectionDesignerViewModel<DataColumnMapping>
     {
-        public Func<string> GetDatalistString = () => DataListSingleton.ActiveDataList.Resource.DataList;
+        internal Func<string> GetDatalistString = () => DataListSingleton.ActiveDataList.Resource.DataList;
 
         readonly IEventAggregator _eventPublisher;
         readonly IServer _server;

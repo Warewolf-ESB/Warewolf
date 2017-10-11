@@ -27,7 +27,7 @@ namespace Dev2.Studio.ViewModels.Administration
 
         #region Members
 
-        public ClosedOperationEventHandler OnOkClick;
+        readonly ClosedOperationEventHandler OnOkClick;
         private ICommand _okClicked;
         private ICommand _hyperLink;
         private ImageSource _imageSource;
@@ -157,15 +157,6 @@ namespace Dev2.Studio.ViewModels.Administration
         }
 
         #endregion Private Methods
-
-        #region Events
-
-        //event ClosedOperationEventHandler IDialogueViewModel.OnOkClick {
-        //    add { this.OnOkClick += value; }
-        //    remove { this.OnOkClick -= value; }
-        //}
-
-        #endregion Events
 
         #region IDisposable Implementaton
 

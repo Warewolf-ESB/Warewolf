@@ -22,15 +22,13 @@ using Warewolf.Resource.Errors;
 
 namespace Dev2.Services.Security
 {
-
-
     public abstract class AuthorizationServiceBase : DisposableObject, IAuthorizationService
     {
 
         protected readonly ISecurityService _securityService;
         readonly bool _isLocalConnection;
 
-        public Func<bool> AreAdministratorsMembersOfWarewolfAdministrators;
+        internal Func<bool> AreAdministratorsMembersOfWarewolfAdministrators;
 
         protected AuthorizationServiceBase(ISecurityService securityService, bool isLocalConnection)
         {
@@ -139,6 +137,8 @@ namespace Dev2.Services.Security
 
         public ISecurityService SecurityService => _securityService;
 
+        public Func<bool> AreAdministratorsMembersOfWarewolfAdministrators1 => AreAdministratorsMembersOfWarewolfAdministrators;
+
         public abstract bool IsAuthorized(AuthorizationContext context, string resource);
         public abstract bool IsAuthorized(IAuthorizationRequest request);
 
@@ -207,7 +207,6 @@ namespace Dev2.Services.Security
             
 
             groupPermissions.AddRange(resourcePermissions);
-            //FilterAdminGroupForRemote(groupPermissions);
             return groupPermissions;
         }
 
@@ -220,27 +219,17 @@ namespace Dev2.Services.Security
             }
             try
             {
-                // If its our admin group ( Warewolf ), we need to check membership differently 
-                // Prefixing with computer name does not work with Warewolf and IsInRole
-                // Plain does not work with IsInRole
-                // Hence this conditional check and divert
                 var windowsGroup = p.WindowsGroup;
                 if(windowsGroup == WindowsGroupPermission.BuiltInAdministratorsText)
                 {
-                    // We need to get the group as it is local then look for principle's membership
                     var principleName = principal.Identity.Name;
                     if(!string.IsNullOrEmpty(principleName))
-                    {
-                        // Examine if BuiltIn\Administrators is still present as a Member
-                        // Then inspect BuiltIn\Administrators
-
-                        // Examine group for this member ;)  
+                    { 
                         isInRole = principal.IsInRole(windowsGroup);
                         if (!isInRole)
                         {
                             isInRole = DoFallBackCheck(principal);
                         }
-                        // if that fails, check Administrators group membership in the Warewolf Administrators group
                         if(!isInRole)
                         {
                             var sid = new SecurityIdentifier(WellKnownSidType.BuiltinAdministratorsSid, null);
@@ -270,7 +259,6 @@ namespace Dev2.Services.Security
                                             catch(Exception)
                                             {
                                                 return false;
-                                                //Complete failure
                                             }
                                             return false;
                                         });
@@ -280,13 +268,10 @@ namespace Dev2.Services.Security
                             else
                             {
 
-                                if(AreAdministratorsMembersOfWarewolfAdministrators.Invoke())
+                                if(AreAdministratorsMembersOfWarewolfAdministrators1.Invoke())
                                 {
-                                    // Check user's administrator membership
                                     isInRole = principal.IsInRole(sid.Value);
                                 }
-
-                                //Check regardless. Not installing the software can create a situation where the "Administrators" group is not part of Warewolf
                                 isInRole = principal.IsInRole(sid.Value);
                             }
                         }
@@ -299,12 +284,13 @@ namespace Dev2.Services.Security
                 }
                 else
                 {
-                    // THIS TRY-CATCH IS HERE TO AVOID THE EXPLORER NOT LOADING ANYTHING WHEN THE DOMAIN CANNOT BE CONTACTED!
                     isInRole = principal.IsInRole(windowsGroup);
                 }
+            }            
+            catch (Exception e)
+            {
+                Dev2Logger.Warn(e.Message, "Warewolf Warn");
             }
-            
-            catch { }
             
             
             return isInRole || p.IsBuiltInGuestsForExecution;
@@ -327,10 +313,8 @@ namespace Dev2.Services.Security
                     ad.Children.SchemaFilter.Add("group");
                     foreach (DirectoryEntry dChildEntry in ad.Children)
                     {
-
                         if (dChildEntry.Name == WindowsGroupPermission.BuiltInAdministratorsText || dChildEntry.Name == windowsBuiltInRole || dChildEntry.Name=="Administrators" || dChildEntry.Name=="BUILTIN\\Administrators")
                         {
-                            // Now check group membership ;)
                             var members = dChildEntry.Invoke("Members");
 
                             if (members != null)

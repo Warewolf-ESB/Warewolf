@@ -125,29 +125,18 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         _debugInputs.Add(debugItem);
                     }
                 }
-                // TODO: More validation through IRule, IRuleSet to throw out anything not in spec
                 if (!dataObject.Environment.Errors.Any())
                 {
-                    // JsonMappings.Count() is larger than zero
-                    var json = new JObject(); // outermost JSON would always be a single JObject, i.e. {'name': value}
+                    var json = new JObject(); 
 
                     List<JsonMappingTo> jsonMappingList = JsonMappings.ToList();
-
-
-                    // build the list of JsonMappingCompoundTo - a compound is either a single expression or a comma seperated list of expressions
-
                     List<JsonMappingCompoundTo> results = jsonMappingList.Where(to => !String.IsNullOrEmpty(to.SourceName)).Select(jsonMapping =>
                         new JsonMappingCompoundTo(dataObject.Environment, jsonMapping
                             )).ToList();
-
-                    // main loop for producing largest list of zipped values
-
                     results.ForEach(x =>
                     {
-                        // if it is not a compound,
                         if (!x.IsCompound)
                         {
-                            // add JProperty, with name x.DestinationName, and value eval(x.SourceName)
                             json.Add(new JProperty(
                                 x.DestinationName,
                                 x.EvaluatedResultIndexed(0))
@@ -155,7 +144,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         }
                         else
                         {
-                            // if it is a compound, 
                             if (!x.EvalResult.IsWarewolfRecordSetResult)
                             {
                                 json.Add(new JProperty(

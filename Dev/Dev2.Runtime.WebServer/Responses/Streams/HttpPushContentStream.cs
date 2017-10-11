@@ -8,6 +8,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using Dev2.Common;
 using System;
 using System.IO;
 using System.Net;
@@ -59,8 +60,9 @@ namespace Dev2.Runtime.WebServer.Responses.Streams
                     }
                 }
             }
-            catch (HttpException)
+            catch (HttpException e)
             {
+                Dev2Logger.Warn(e.Message, "Warewolf Warn");
             }
             finally
             {

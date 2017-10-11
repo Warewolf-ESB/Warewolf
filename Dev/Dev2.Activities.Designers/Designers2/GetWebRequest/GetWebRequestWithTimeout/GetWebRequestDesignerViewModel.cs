@@ -112,13 +112,7 @@ namespace Dev2.Activities.Designers2.GetWebRequest.GetWebRequestWithTimeout
             }
         }
 
-        private string TimeOutText
-        {
-            get { return GetProperty<string>(); }
-            
-            set { SetProperty(value); }
-            
-        }
+        private string TimeOutText => GetProperty<string>();
 
         #region Overrides of ActivityDesignerViewModel
 
@@ -281,7 +275,7 @@ namespace Dev2.Activities.Designers2.GetWebRequest.GetWebRequestWithTimeout
             }
         }
 
-        public Func<string, string, List<Tuple<string, string>>, string> WebInvoke = (method, url, headers) =>
+        internal Func<string, string, List<Tuple<string, string>>, string> WebInvoke = (method, url, headers) =>
             {
                 var webInvoker = new WebRequestInvoker();
                 return webInvoker.ExecuteRequest(method, url, headers);

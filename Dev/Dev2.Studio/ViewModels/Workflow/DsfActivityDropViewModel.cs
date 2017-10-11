@@ -152,11 +152,8 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         #region Methods
 
-        public Func<IServerRepository> GetEnvironmentRepository = () => ServerRepository.Instance;
-
-        /// <summary>
-        /// Used for saving the data input by the user to the file system and pushing the data back at the workflow
-        /// </summary>
+        readonly Func<IServerRepository> GetEnvironmentRepository = () => ServerRepository.Instance;
+        
         public void Okay()
         {
             var selectedItem = SingleEnvironmentExplorerViewModel.SelectedItem;
@@ -174,8 +171,6 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 return;
             }
-
-           // SelectedResourceModel = environment.ResourceRepository.FindSingleWithPayLoad(r => r.ID == selectedItem.ResourceId) as IContextualResourceModel;
             SelectedExplorerItemModel = selectedItem;
             if (SelectedExplorerItemModel != null)
             {
@@ -184,10 +179,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         }
 
         internal IExplorerTreeItem SelectedExplorerItemModel { get; private set; }
-
-        /// <summary>
-        /// Used for canceling the drop of t    he design surface
-        /// </summary>
+        
         void Cancel()
         {
             RequestClose(ViewModelDialogResults.Cancel);

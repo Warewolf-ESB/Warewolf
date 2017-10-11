@@ -21,8 +21,6 @@ using Warewolf.Core;
 using Warewolf.Testing;
 
 
-
-
 namespace Dev2.Activities.Designers.Tests.ComDll
 {
     [TestClass]
@@ -168,7 +166,6 @@ namespace Dev2.Activities.Designers.Tests.ComDll
             Assert.AreEqual(vm.DesignValidationErrors[0].Message, String.Empty);
         }
 
-
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("ComDllViewModel_SetDisplayName")]
@@ -266,7 +263,7 @@ namespace Dev2.Activities.Designers.Tests.ComDll
             vm.DesignValidationErrors.Add(new ErrorInfo() { Message = "bob error", ErrorType = ErrorType.Critical });
             PrivateObject p = new PrivateObject(vm);
             p.Invoke("UpdateWorstError");
-            var inf = p.GetProperty("WorstDesignError") as ErrorInfo;
+            var inf = vm.WorstDesignError as ErrorInfo;
             //------------Assert Results-------------------------
 
             Assert.IsNotNull(inf);

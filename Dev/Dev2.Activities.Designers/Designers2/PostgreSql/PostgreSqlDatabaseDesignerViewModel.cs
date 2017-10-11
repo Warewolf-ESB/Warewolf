@@ -217,8 +217,6 @@ namespace Dev2.Activities.Designers2.PostgreSql
 
         IErrorInfo WorstDesignError
         {
-            
-            get { return _worstDesignError; }
             set
             {
                 if (_worstDesignError != value)

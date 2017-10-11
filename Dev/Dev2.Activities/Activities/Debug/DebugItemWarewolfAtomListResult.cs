@@ -8,9 +8,6 @@ using Dev2.Data.Util;
 using Dev2.Diagnostics;
 using Warewolf.Storage;
 
-
-
-
 namespace Dev2.Activities.Debug
 {
     public class DebugItemWarewolfAtomListResult : DebugOutputBase
@@ -376,7 +373,8 @@ namespace Dev2.Activities.Debug
 
         private string GetGroupName(string displayExpression, string rawExpression, ref int grpIdx, ref string item, ref string groupName)
         {
-            if(displayExpression.Contains("().") || displayExpression.Contains("(*)."))
+            string expr = displayExpression;
+            if (displayExpression.Contains("().") || displayExpression.Contains("(*)."))
             {
                 grpIdx++;
                 string index = grpIdx.ToString(CultureInfo.InvariantCulture);
@@ -386,25 +384,22 @@ namespace Dev2.Activities.Debug
                     item = "";
                 }
                 groupName = rawExpression.Replace(".WarewolfPositionColumn", "");
-                
-                displayExpression = DataListUtil.AddBracketsToValueIfNotExist(DataListUtil.CreateRecordsetDisplayValue(DataListUtil.ExtractRecordsetNameFromValue(_variable), DataListUtil.ExtractFieldNameFromValue(_variable), index)).Replace(".WarewolfPositionColumn", "");
-                ;
-                
+                expr = DataListUtil.AddBracketsToValueIfNotExist(DataListUtil.CreateRecordsetDisplayValue(DataListUtil.ExtractRecordsetNameFromValue(_variable), DataListUtil.ExtractFieldNameFromValue(_variable), index)).Replace(".WarewolfPositionColumn", "");
             }
             else
             {
-                string indexRegionFromRecordset = DataListUtil.ExtractIndexRegionFromRecordset(displayExpression);
+                string indexRegionFromRecordset = DataListUtil.ExtractIndexRegionFromRecordset(expr);
                 int.TryParse(indexRegionFromRecordset, out int indexForRecset);
 
                 if (indexForRecset > 0)
                 {
-                    int indexOfOpenningBracket = displayExpression.IndexOf("(", StringComparison.Ordinal) + 1;
-                    string group = displayExpression.Substring(0, indexOfOpenningBracket) + "*" + displayExpression.Substring(indexOfOpenningBracket + indexRegionFromRecordset.Length);
+                    int indexOfOpenningBracket = expr.IndexOf("(", StringComparison.Ordinal) + 1;
+                    string group = expr.Substring(0, indexOfOpenningBracket) + "*" + expr.Substring(indexOfOpenningBracket + indexRegionFromRecordset.Length);
                     grpIdx++;
                     groupName = @group;
                 }
             }
-            return displayExpression;
+            return expr;
         }
     }
 }

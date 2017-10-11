@@ -27,7 +27,7 @@ namespace Dev2.Activities.Designers2.XPath
 {
     public class XPathDesignerViewModel : ActivityCollectionDesignerViewModel<XPathDTO>
     {
-        public Func<string> GetDatalistString = () => DataListSingleton.ActiveDataList.Resource.DataList;
+        internal Func<string> GetDatalistString = () => DataListSingleton.ActiveDataList.Resource.DataList;
         public XPathDesignerViewModel(ModelItem modelItem)
             : base(modelItem)
         {

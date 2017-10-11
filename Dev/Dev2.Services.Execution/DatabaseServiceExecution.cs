@@ -131,9 +131,8 @@ namespace Dev2.Services.Execution
                 DestroySqlServer();
             }
         }
-
-
-        protected override object ExecuteService(int update, out ErrorResultTO errors, IOutputFormatter formater = null)
+        
+        protected override object ExecuteService(int update, out ErrorResultTO errors, IOutputFormatter formater)
         {
             errors = new ErrorResultTO();
             var invokeErrors = new ErrorResultTO();
@@ -147,7 +146,7 @@ namespace Dev2.Services.Execution
                     {
                         try
                         {
-                            SqlExecution(invokeErrors, update, Source.ConnectionString);
+                            SqlExecution(invokeErrors, update);
                             ErrorResult.MergeErrors(invokeErrors);
                             return Guid.NewGuid();
                         }
@@ -296,7 +295,7 @@ namespace Dev2.Services.Execution
                 }
             }
         }
-        private void SqlExecution(ErrorResultTO errors, int update, string sourceConnectionString)
+        private void SqlExecution(ErrorResultTO errors, int update)
         {
             try
             {

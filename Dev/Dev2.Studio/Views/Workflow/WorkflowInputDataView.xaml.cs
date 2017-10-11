@@ -428,17 +428,13 @@ namespace Dev2.Studio.Views.Workflow
                 Dispatcher.BeginInvoke(new Action(FocusOnAddition), DispatcherPriority.ApplicationIdle);
             }
         }
+
         void DeleteLastRow()
         {
             if (DataContext is WorkflowInputDataViewModel vm && vm.RemoveRow(DataListInputs.ActiveItem as IDataListItem, out int indexToSelect))
             {
                 DataListInputs.ActiveItem = indexToSelect;
             }
-        }
-
-        void WorkflowInputDataView_OnLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
-        {
-            //FocusOnAddition();
         }
 
         void DataListInputs_OnLoaded(object sender, RoutedEventArgs e)

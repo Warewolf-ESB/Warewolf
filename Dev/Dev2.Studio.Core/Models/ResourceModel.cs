@@ -616,33 +616,6 @@ namespace Dev2.Studio.Core.Models
             return service;
         }
 
-        XElement CreateServiceXElement(StringBuilder xaml)
-        {
-            XElement dataList = string.IsNullOrEmpty(DataList) ? new XElement("DataList") : XElement.Parse(DataList);
-            var content = xaml.Unescape();
-            content = content.Replace("&", "&amp;");
-            var contentElement = content.ToXElement();
-            XElement service = new XElement("Service",
-                new XAttribute("ID", ID),
-                new XAttribute("Version", Version?.ToString() ?? "1.0"),
-                new XAttribute("ServerID", ServerID.ToString()),
-                new XAttribute("Name", ResourceName ?? string.Empty),
-                new XAttribute("ResourceType", ServerResourceType ?? ResourceType.ToString()),
-                new XAttribute("IsValid", IsValid),
-                new XElement("DisplayName", ResourceName ?? string.Empty),
-                new XElement("Category", Category ?? string.Empty),
-                new XElement("AuthorRoles", string.Empty),
-                new XElement("Comment", Comment ?? string.Empty),
-                new XElement("Tags", Tags ?? string.Empty),
-                new XElement("HelpLink", HelpLink ?? string.Empty),
-                new XElement("UnitTestTargetWorkflowService", UnitTestTargetWorkflowService ?? string.Empty),
-                dataList,
-                new XElement("Actions", contentElement),
-                new XElement("ErrorMessages", WriteErrors())
-                );
-            return service;
-        }
-
         List<XElement> WriteErrors()
         {
             if (Errors == null || Errors.Count == 0)

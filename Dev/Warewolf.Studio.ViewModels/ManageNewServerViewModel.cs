@@ -107,9 +107,6 @@ namespace Warewolf.Studio.ViewModels
 
         void SetupHeaderTextFromExisting()
         {
-            if (_warewolfserverName != null)
-            {
-            }
             HeaderText = (_serverSource == null ? ResourceName : _serverSource.Name).Trim();
             Header = _serverSource == null ? ResourceName : _serverSource.Name;
         }

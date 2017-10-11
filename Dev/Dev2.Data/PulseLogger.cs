@@ -97,11 +97,9 @@ namespace Dev2.Data
                     WorkflowExecutionWatcher.HasAWorkflowBeenExecuted = false;
                 }
             }
-                
-            catch
-                
+            catch (Exception err)
             {
-                // cant have any errors here
+                Dev2Logger.Warn(err.Message, "Warewolf Warn");
             }
         }
 

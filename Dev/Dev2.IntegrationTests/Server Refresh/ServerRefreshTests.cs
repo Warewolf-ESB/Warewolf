@@ -17,47 +17,40 @@ namespace Dev2.Integration.Tests.Server_Refresh
     {
         private const string PassResult = @"C:\ProgramData\Warewolf\Resources\PassResult.xml";
         [TestMethod]
-        [Ignore("Need to figure out why this test times out on the build machines")]
         public void Run_a_workflow_to_test_server_refresh()
         {
             SetupPermissions();
-            Parallel.For(1, 5, (i) => ExecuteRefreshTest());            
-        }
-
-        void ExecuteRefreshTest()
-        {
-            
             var url1 = $"http://localhost:3142/secure/RefreshWorkflow1.json";
-            var passRequest1 = ExecuteRequest(new Uri(url1));
+            var passRequest1 = ExececuteRequest(new Uri(url1));
             //Delete this workflow and continue making requests
-            //FileIsDeleted(PassResult);
-            var passRequest2 = ExecuteRequest(new Uri(url1));
-            var passRequest3 = ExecuteRequest(new Uri(url1));
-            var passRequest4 = ExecuteRequest(new Uri(url1));
+            FileIsDeleted(PassResult);
+            var passRequest2 = ExececuteRequest(new Uri(url1));
+            var passRequest3 = ExececuteRequest(new Uri(url1));
+            var passRequest4 = ExececuteRequest(new Uri(url1));
             //wait for all requests to finish running they should all pass 
             Task.WaitAll(passRequest1, passRequest2, passRequest3, passRequest4);
-            //refresh the server and wait for it to finish
-            var explorerRefresh = ExecuteRequest(new Uri("http://localhost:3142/services/FetchExplorerItemsService.json?ReloadResourceCatalogue=true"));
+            //refresh the server and wait fot it to finish
+            var explorerRefresh = ExececuteRequest(new Uri("http://localhost:3142/services/FetchExplorerItemsService.json?ReloadResourceCatalogue=true"));
             explorerRefresh.Wait();
             //execute this workflow after the refresh, we should get failures based on the fact that the refresh has finish executing
-            var failRequest1 = ExecuteRequest(new Uri(url1));
-            var failRequest2 = ExecuteRequest(new Uri(url1));
-            var failRequest3 = ExecuteRequest(new Uri(url1));
+            var failRequest1 = ExececuteRequest(new Uri(url1));
+            var failRequest2 = ExececuteRequest(new Uri(url1));
+            var failRequest3 = ExececuteRequest(new Uri(url1));
             Task.WaitAll(failRequest1, failRequest2, failRequest3);
-            //var failRequest1Result = failRequest1.Result;
-            //var failRequest2Result = failRequest2.Result;
-            //var failRequest3Result = failRequest3.Result;
-            //var passRequest1Result = passRequest1.Result;
-            //var passRequest2Result = passRequest2.Result;
-            //var passRequest3Result = passRequest3.Result;
-            //var passRequest4Result = passRequest4.Result;
-            //StringAssert.Contains(failRequest1Result, "Resource RefreshTest not found");
-            //StringAssert.Contains(failRequest2Result, "Resource RefreshTest not found");
-            //StringAssert.Contains(failRequest3Result, "Resource RefreshTest not found");
-            //StringAssert.Contains(passRequest1Result, "Pass");
-            //StringAssert.Contains(passRequest2Result, "Pass");
-            //StringAssert.Contains(passRequest3Result, "Pass");
-            //StringAssert.Contains(passRequest4Result, "Pass");
+            var failRequest1Result = failRequest1.Result;
+            var failRequest2Result = failRequest2.Result;
+            var failRequest3Result = failRequest3.Result;
+            var passRequest1Result = passRequest1.Result;
+            var passRequest2Result = passRequest2.Result;
+            var passRequest3Result = passRequest3.Result;
+            var passRequest4Result = passRequest4.Result;
+            StringAssert.Contains(failRequest1Result, "Resource RefreshTest not found");
+            StringAssert.Contains(failRequest2Result, "Resource RefreshTest not found");
+            StringAssert.Contains(failRequest3Result, "Resource RefreshTest not found");
+            StringAssert.Contains(passRequest1Result, "Pass");
+            StringAssert.Contains(passRequest2Result, "Pass");
+            StringAssert.Contains(passRequest3Result, "Pass");
+            StringAssert.Contains(passRequest4Result, "Pass");
         }
 
         private class PatientWebClient : WebClient
@@ -83,7 +76,7 @@ namespace Dev2.Integration.Tests.Server_Refresh
             }
         }
 
-        private Task<string> ExecuteRequest(Uri url)
+        private Task<string> ExececuteRequest(Uri url)
         {
             try
             {
@@ -114,7 +107,8 @@ namespace Dev2.Integration.Tests.Server_Refresh
             var permissionsStrings = groupRights.Split(new[] { ", " }, StringSplitOptions.RemoveEmptyEntries);
             foreach (var permissionsString in permissionsStrings)
             {
-                if (Enum.TryParse(permissionsString.Replace(" ", ""), true, out Permissions permission))
+                Permissions permission;
+                if (Enum.TryParse(permissionsString.Replace(" ", ""), true, out permission))
                 {
                     groupPermssions.Permissions |= permission;
                 }
