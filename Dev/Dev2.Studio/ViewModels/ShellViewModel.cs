@@ -473,7 +473,7 @@ namespace Dev2.Studio.ViewModels
         {
 
 
-            // applicationAnalytics = ApplicationAnalyticFactory.GetApplicationAnalyticsProvider("revulytics");
+           
             _applicationTracker = ApplicationTrackerFactory.GetApplicationTrackerProvider();
             Version = versionChecker ?? throw new ArgumentNullException(nameof(versionChecker));
            
@@ -500,11 +500,7 @@ namespace Dev2.Studio.ViewModels
             AddWorkspaceItems();
             ShowStartPage();
             DisplayName = @"Warewolf" + $" ({ClaimsPrincipal.Current.Identity.Name})".ToUpperInvariant();
-            //if (Version != null && versionChecker.Current != null)
-            //{
-            //    applicationAnalytics.SetProductVersion(Version.Current.ToString());
-            //}
-           // applicationAnalytics.CustomEventTracking("WareWolf.Dev2.Studio","ShellLoad", DisplayName);
+      
 
 
 
@@ -671,7 +667,7 @@ namespace Dev2.Studio.ViewModels
 
             if (contextualResourceModel != null)
             {
-             //   applicationAnalytics.CustomEventTracking("WareWolf.Dev2.Studio", "DebugStudio", "server id:" + environmentId);
+           
                 _worksurfaceContextManager.DisplayResourceWizard(contextualResourceModel);
                 QuickDebugCommand.Execute(contextualResourceModel);
                 
@@ -684,8 +680,7 @@ namespace Dev2.Studio.ViewModels
         }
 
         public void BrowserDebug(Guid resourceId, IServer server)
-        {
-           // applicationAnalytics.CustomEventTracking("WareWolf.Dev2.Studio", "BrowserDebug", "server id:"+ server.EnvironmentID);
+        {           
             OpenBrowser(resourceId, server.EnvironmentID);
         }
         public void OpenBrowser(Guid resourceId, Guid environmentId)
@@ -1417,7 +1412,6 @@ namespace Dev2.Studio.ViewModels
 
         public void AddDeploySurface(IEnumerable<IExplorerTreeItem> items)
         {
-
             _applicationTracker.TrackApplicationEvent(ApplicationTrackerConstants.TrackerEventName.DeployClicked);
             _worksurfaceContextManager.AddDeploySurface(items);
         }

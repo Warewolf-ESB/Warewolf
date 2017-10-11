@@ -18,7 +18,7 @@ namespace Warewolf.Studio.Views
         public ToolboxView()
         {
             InitializeComponent();
-           // applicationAnalytics = ApplicationAnalyticFactory.GetApplicationAnalyticsProvider("revulytics");
+          
             PreviewDragOver += DropPointOnDragEnter;
         }
 

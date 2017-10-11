@@ -70,5 +70,13 @@ namespace Dev2.Util
             }
         }
 
+        public static string TrackerProvider
+        {
+            get
+            {
+                return ConfigurationManager.AppSettings["TrackerProvider"];
+            }
+        }
+
     }
 }

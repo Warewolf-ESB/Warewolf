@@ -83,7 +83,7 @@ namespace Dev2.Studio
         
         private AppExceptionHandler _appExceptionHandler;
         private bool _hasShutdownStarted;
-        // public ApplicationAnalyticFactory applicationAnalyticFactory;
+        
         public IApplicationTracker _applicationTracker;
         public App()
         {
@@ -109,11 +109,7 @@ namespace Dev2.Studio
         [PrincipalPermission(SecurityAction.Demand)]  // Principal must be authenticated
         protected override void OnStartup(StartupEventArgs e)
         {
-
-            //  Tracker.StartStudio();
-            //applicationAnalytics.CreateConfigAndStartAnalytics();
-
-            
+            //Create configuration for action tracker and start
             _applicationTracker.EnableAppplicationTracker(VersionInfo.FetchVersionInfo(), @"Warewolf" + $" ({ClaimsPrincipal.Current.Identity.Name})".ToUpperInvariant());
             bool createdNew;
 
@@ -288,9 +284,11 @@ namespace Dev2.Studio
         protected override void OnExit(ExitEventArgs e)
         {
             // Tracker.Stop();
+
+            //Stop the action tracking
             _applicationTracker.DisableAppplicationTracker();
 
-            // applicationAnalytics.StopTracking();
+        
             // this is already handled ;)
             _shellViewModel?.PersistTabs(true);
             ProgressFileDownloader.PerformCleanup(new DirectoryWrapper(), GlobalConstants.VersionDownloadPath, new FileWrapper());

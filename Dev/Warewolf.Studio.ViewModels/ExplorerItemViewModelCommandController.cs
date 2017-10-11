@@ -38,12 +38,11 @@ namespace Warewolf.Studio.ViewModels
         {
             Dev2Logger.Info("Open resource: " + item.ResourceName + " - ResourceId: " + item.ResourceId, "Warewolf Info");
 
-            if (item.ResourceName== "Shared Resources Server")
+            if (item.ResourceName == "Shared Resources Server")
             {
                 _applicationTracker.TrackCustomEvent(ApplicationTrackerConstants.TrackerEventGroup.MainMenuClicked, ApplicationTrackerConstants.TrackerEventName.SharedResourcesServerClicked, item.ResourceName);
 
-
-            }
+            }          
 
             if (item.IsFolder)
             {
