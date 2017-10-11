@@ -764,7 +764,7 @@
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter Property="Visibility" TargetName="iconExpand" Value="Collapsed"/>
                             <Setter Property="Visibility" TargetName="iconCollapse" Value="Collapsed"/>
-                            <Setter Property="Margin" TargetName="headerContent" Value="4,0,0,0"/>
+                            <Setter Property="Margin" TargetName="headerContent" Value="3,0,0,0"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
