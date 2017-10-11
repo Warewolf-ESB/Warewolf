@@ -313,9 +313,12 @@ namespace Warewolf.UI.Tests.Deploy.DeployUIMapClasses
 
         bool TryWaitForADeployMessageDialog()
         {
-            DialogsUIMap.MessageBoxWindow.OKButton.WaitForControlCondition((control)=> { return control.TryGetClickablePoint(out Point point); },60000);
+            bool OKButtonReady = DialogsUIMap.MessageBoxWindow.OKButton.WaitForControlCondition((control) => { return control.TryGetClickablePoint(out Point point); }, 60000);
             var successful = DialogsUIMap.MessageBoxWindow.ResourcesDeployedSucText.Exists;
-            Mouse.Click(DialogsUIMap.MessageBoxWindow.OKButton);
+            if (OKButtonReady || successful)
+            {
+                Mouse.Click(DialogsUIMap.MessageBoxWindow.OKButton);
+            }
             return successful;
         }
 
