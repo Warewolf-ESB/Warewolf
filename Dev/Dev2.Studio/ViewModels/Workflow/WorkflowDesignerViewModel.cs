@@ -2995,120 +2995,116 @@ namespace Dev2.Studio.ViewModels.Workflow
             var root = _wd.Context.Services.GetService<ModelService>().Root;
             var chart = _wd.Context.Services.GetService<ModelService>().Find(root, typeof(Flowchart)).FirstOrDefault();
 
-            if (chart != null)
+            var nodes = chart?.Properties["Nodes"]?.Collection;
+            if (nodes == null)
             {
-                var nodes = chart.Properties["Nodes"]?.Collection;
-                if (nodes == null)
-                {
-                    return;
-                }
-                var modelActivityType = model.ActivityType;
-                switch (modelActivityType)
-                {
-                    case FlowDecision flowDecision:
+                return;
+            }
 
-                        var decTrue = flowDecision.True;
-                        var decFalse = flowDecision.False;
+            var parser = CustomContainer.Get<IServiceDifferenceParser>();
+            _allNodes = parser?.GetAllNodes();
+            var nodeToRemove = GetNodeToAmmend(model);
 
-                        RemoveFlowNode(nodes, decTrue);
-                        RemoveFlowNode(nodes, decFalse);
-                        RemoveFlowNode(nodes, flowDecision);
+            var step = nodeToRemove?.GetCurrentValue();
+            switch (step)
+            {
+                case FlowStep normalStep:
+                    if (nodes.Contains(normalStep))
+                    {
+                        normalStep.Next = null;
+                        nodes.Remove(normalStep);
+                    }
 
-                        break;
-                    case FlowSwitch<string> flowSwitch:
+                    break;
+                case FlowDecision normalDecision:
+                    if (nodes.Contains(normalDecision))
+                    {
+                        nodes.Remove(normalDecision);
+                    }
 
-                        RemoveFlowNode(nodes, flowSwitch.Default);
-                        foreach (var flowSwitchCase in flowSwitch.Cases)
-                        {
-                            RemoveFlowNode(nodes, flowSwitchCase.Value);
-                        }
-
-                        break;
-                    default:
-
-                        RemoveFlowNode(nodes, modelActivityType);
-
-                        break;
-                }
+                    break;
+                case FlowSwitch<string> normalSwitch:
+                    nodes.Remove(normalSwitch);
+                    break;
             }
         }
 
-        private void RemoveFlowNode(ModelItemCollection nodes, FlowNode flowNode)
+        private ModelItem GetNodeToAmmend(IMergeToolModel model)
         {
-            if (flowNode != null)
+            var nodeToAmmend = default(ModelItem);
+            if (_allNodes == null)
             {
-                if (nodes.Contains(flowNode))
-                {
-                    nodes.Remove(flowNode);
-                }
+                return null;
             }
+
+            var hasNodes = _allNodes.TryGetValue(model.UniqueId.ToString(), out (ModelItem leftItem, ModelItem rightItem) toolPar);
+
+            if (!hasNodes)
+            {
+                return null;
+            }
+
+            if (toolPar.leftItem?.GetCurrentValue() == model.FlowNode.GetCurrentValue())
+            {
+                nodeToAmmend = toolPar.leftItem;
+            }
+            else if (toolPar.rightItem?.GetCurrentValue() == model.FlowNode.GetCurrentValue())
+            {
+                nodeToAmmend = toolPar.leftItem;
+            }
+            return nodeToAmmend;
         }
+
         private ConcurrentDictionary<string, (ModelItem leftItem, ModelItem rightItem)> _allNodes;
 
         public void AddItem(IMergeToolModel parent, IMergeToolModel model)
         {
             var root = _wd.Context.Services.GetService<ModelService>().Root;
             var chart = _wd.Context.Services.GetService<ModelService>().Find(root, typeof(Flowchart)).FirstOrDefault();
-            if (chart == null)
-            {
-                return;
-            }
-            var parswer = CustomContainer.Get<IServiceDifferenceParser>();
-            _allNodes = parswer.GetAllNodes();
-            var nodes = chart.Properties["Nodes"]?.Collection;
 
+            var nodes = chart?.Properties["Nodes"]?.Collection;
             if (nodes == null)
             {
                 return;
             }
-            var hasNodes = _allNodes.TryGetValue(model.UniqueId.ToString(), out (ModelItem leftItem, ModelItem rightItem) toolPar);
-            var nodeToAdd = default(ModelItem);
-            if (hasNodes)
-            {
-                if (toolPar.leftItem.GetCurrentValue() == model.FlowNode.GetCurrentValue())
-                {
-                    nodeToAdd = toolPar.leftItem;
-                }
-                else if (toolPar.rightItem.GetCurrentValue() == model.FlowNode.GetCurrentValue())
-                {
-                    nodeToAdd = toolPar.leftItem;
-                }
-            }
+
+            var parser = CustomContainer.Get<IServiceDifferenceParser>();
+            _allNodes = parser?.GetAllNodes();
+            var nodeToAdd = GetNodeToAmmend(model);
 
             AddNodesForChildren(model, nodes);
-
-            if (chart != null)
+            var step = nodeToAdd?.GetCurrentValue();
+            switch (step)
             {
-                var step = nodeToAdd?.GetCurrentValue();
-                switch (step)
-                {
-                    case FlowStep normalStep:
-                        normalStep.Next = null;
-                        if (!nodes.Contains(normalStep))
-                            nodes.Add(normalStep);
-                        break;
-                    case FlowDecision normalDecision:
-                        if (!nodes.Contains(normalDecision))
-                            nodes.Add(normalDecision);
-                        break;
-                    case FlowSwitch<string> normalSwitch:
-                        nodes.Add(normalSwitch);
-                        break;
-                    default:
-                        break;
-                }
+                case FlowStep normalStep:
+                    normalStep.Next = null;
+                    if (!nodes.Contains(normalStep))
+                    {
+                        nodes.Add(normalStep);
+                    }
 
-                var startNode = chart.Properties["StartNode"];
-                if (startNode == null || startNode.ComputedValue == null)
-                {
-                    AddStartNode(nodeToAdd.GetCurrentValue<FlowNode>(), nodes, startNode);
+                    break;
+                case FlowDecision normalDecision:
+                    if (!nodes.Contains(normalDecision))
+                    {
+                        nodes.Add(normalDecision);
+                    }
 
-                }
-                else
-                {
-                    AddNextNode(parent, model, nodes, nodeToAdd.GetCurrentValue<FlowNode>());
-                }
-            }//At the end of the merge we need to clean up all the unused nodes
+                    break;
+                case FlowSwitch<string> normalSwitch:
+                    nodes.Add(normalSwitch);
+                    break;
+            }
+
+            var startNode = chart.Properties["StartNode"];
+            if (startNode == null || startNode.ComputedValue == null)
+            {
+                AddStartNode(nodeToAdd.GetCurrentValue<FlowNode>(), nodes, startNode);
+            }
+            else
+            {
+                AddNextNode(parent, model, nodes, nodeToAdd.GetCurrentValue<FlowNode>());
+            }
         }
 
         private void AddNodesForChildren(IMergeToolModel model, ModelItemCollection nodes)
