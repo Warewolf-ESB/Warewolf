@@ -22,9 +22,8 @@ using Dev2.Studio.ViewModels.Diagnostics;
 
 
 namespace Dev2.Studio.ViewModels.WorkSurface
-
 {
-    public interface IWorkSurfaceContextViewModel
+    public interface IWorkSurfaceContextViewModel : IDisposable
     {
         WorkSurfaceKey WorkSurfaceKey { get; }
         IServer Environment { get; }
@@ -41,9 +40,6 @@ namespace Dev2.Studio.ViewModels.WorkSurface
         AuthorizeCommand QuickDebugCommand { get; }
         IEventAggregator EventPublisher { get; }
         ValidationController ValidationController { get; set; }
-        /// <summary>
-        /// Indicates if a close has been requested
-        /// </summary>
         bool CloseRequested { get; }
         ViewModelDialogResults DialogResult { get; set; }
         object Parent { get; set; }
@@ -82,8 +78,6 @@ namespace Dev2.Studio.ViewModels.WorkSurface
         void FindMissing();
 
         void Debug();
-
-        void Dispose();
 
         /// <summary>
         /// Requests tha the view bound to this view model closes
