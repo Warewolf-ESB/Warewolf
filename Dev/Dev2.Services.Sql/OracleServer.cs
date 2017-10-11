@@ -152,8 +152,7 @@ namespace Dev2.Services.Sql
         {
             VerifyArgument.IsNotNull("command", command);
 
-            return ExecuteReader(command, CommandBehavior.SchemaOnly & CommandBehavior.KeyInfo,
-                reader => _factory.CreateTable(reader, LoadOption.OverwriteChanges));
+            return ExecuteReader(command, reader => _factory.CreateTable(reader, LoadOption.OverwriteChanges));
         }
 
         public DataTable FetchDataTable(IDbDataParameter[] parameters, IEnumerable<IDbDataParameter> outparameters)
@@ -295,7 +294,7 @@ namespace Dev2.Services.Sql
             }
         }
         
-        private static T ExecuteReader<T>(IDbCommand command, CommandBehavior commandBehavior, Func<IDataAdapter, T> handler)
+        private static T ExecuteReader<T>(IDbCommand command, Func<IDataAdapter, T> handler)
         {
             try
             {
@@ -403,7 +402,7 @@ namespace Dev2.Services.Sql
             using (IDbCommand command = _factory.CreateCommand(connection, CommandType.Text,
                 $"SELECT text FROM all_source WHERE name='{objectName}' ORDER BY line"))
             {                
-                return ExecuteReader(command, CommandBehavior.SchemaOnly & CommandBehavior.KeyInfo, GetStringBuilder);
+                return ExecuteReader(command, GetStringBuilder);
             }
         }
 
@@ -605,22 +604,6 @@ namespace Dev2.Services.Sql
             }
             return OracleType;
         }
-        /*    private static OracleDbType GetOracleDbType(object o)
-            {
-                if (o is string) return OracleDbType.Varchar2;
-                if (o is DateTime) return OracleDbType.Date;
-                if (o is long) return OracleDbType.Int64;
-                if (o is int) return OracleDbType.Int32;
-                if (o is short) return OracleDbType.Int16;
-                if (o is sbyte) return OracleDbType.Byte;
-                if (o is byte) return OracleDbType.Int16;
-                if (o is decimal) return OracleDbType.Decimal;
-                if (o is float) return OracleDbType.Single;
-                if (o is double) return OracleDbType.Double;
-                if (o is byte[]) return OracleDbType.Blob;
-
-                return OracleDbType.Varchar2;
-            }*/
 
         private bool GetIsout(string InOut)
         {

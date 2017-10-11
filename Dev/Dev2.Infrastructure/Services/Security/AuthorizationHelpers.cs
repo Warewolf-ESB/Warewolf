@@ -95,8 +95,7 @@ namespace Dev2.Services.Security
             {
                 return permission.ResourceID == resourceId;
             }
-
-            // ResourceName is in the format: {categoryName}\{resourceName}
+            
             resource = resource?.Replace('/', '\\');
             if(string.IsNullOrEmpty(resource))
             {

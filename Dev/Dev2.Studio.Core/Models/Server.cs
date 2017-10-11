@@ -283,12 +283,6 @@ namespace Dev2.Studio.Core.Models
             OnPropertyChanged("IsConnected");
         }
 
-        
-        void RaiseLoadedResources()
-        {
-            ResourcesLoaded?.Invoke(this, new ResourcesLoadedEventArgs { Model = this });
-        }
-
         void OnNetworkStateChanged(object sender, NetworkStateEventArgs e)
         {
             RaiseNetworkStateChanged(e.ToState == NetworkState.Online || e.ToState == NetworkState.Connecting);

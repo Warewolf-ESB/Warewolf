@@ -93,10 +93,7 @@ namespace Dev2.Data.Util
         {
             if (int.TryParse(part, out int partAsInt))
             {
-                if (partAsInt >= 1)
-                {
-                }
-                else
+                if (partAsInt < 1)
                 {
                     throw new Dev2DataLanguageParseError("Recordset index [ " + part + " ] is not greater than zero", to.StartIndex + start, to.EndIndex + end, enIntellisenseErrorCode.NonPositiveRecordsetIndex);
                 }
@@ -114,17 +111,11 @@ namespace Dev2.Data.Util
             start += 1;
             string part = raw.Substring(start, raw.Length - (start + 1));
 
-            if (part.Contains(DataListUtil.OpeningSquareBrackets) || part == "*")
-            {
-            }
-            else
+            if (!part.Contains(DataListUtil.OpeningSquareBrackets) && part != "*")
             {
                 if (int.TryParse(part, out int partAsInt))
                 {
-                    if (partAsInt >= 1)
-                    {
-                    }
-                    else
+                    if (partAsInt < 1)
                     {
                         throw new Dev2DataLanguageParseError(string.Format(ErrorResource.RecordsetIndexNotGreaterThanZero, part), to.StartIndex + start, to.EndIndex + end, enIntellisenseErrorCode.NonPositiveRecordsetIndex);
                     }
@@ -277,21 +268,19 @@ namespace Dev2.Data.Util
             string raw = to.Payload;
             int start = raw.IndexOf(DataListUtil.RecordsetIndexOpeningBracket, StringComparison.Ordinal);
             int end = raw.LastIndexOf(DataListUtil.RecordsetIndexClosingBracket, StringComparison.Ordinal);
-
-            // no index
+            
             if (end - start == 1)
             {
                 result = true;
             }
             else if (start > 0 && end < 0 && (raw.Length - 1 == start))
-            { // another no index case
+            {
                 result = true;
             }
             else
             {
                 if (start > 0 && end < 0)
                 {
-                    // we have index, just no )
                     string part = raw.Substring(start + 1, raw.Length - (start + 1));
 
                     result = part.Contains(DataListUtil.OpeningSquareBrackets) || CheckValidIndex(to, part, start, end);
@@ -303,7 +292,6 @@ namespace Dev2.Data.Util
                 }
                 else if (start > 0 && end > start)
                 {
-                    // we have index with ( and )
                     result = CheckCurrentIndex(to, start, raw, end);
                 }
             }

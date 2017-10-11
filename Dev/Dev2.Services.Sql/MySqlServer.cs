@@ -124,8 +124,7 @@ namespace Dev2.Services.Sql
         {
             VerifyArgument.IsNotNull("command", command);
 
-            return ExecuteReader(command, CommandBehavior.SchemaOnly & CommandBehavior.KeyInfo,
-                reader => _factory.CreateTable(reader, LoadOption.OverwriteChanges));
+            return ExecuteReader(command, reader => _factory.CreateTable(reader, LoadOption.OverwriteChanges));
         }
 
         public DataTable FetchDataTable( IDbDataParameter[] parameters,IEnumerable<IDbDataParameter> outparameters)
@@ -247,8 +246,7 @@ namespace Dev2.Services.Sql
 
         #endregion
 
-        private static T ExecuteReader<T>(IDbCommand command, CommandBehavior commandBehavior,
-            Func<IDataAdapter, T> handler)
+        private static T ExecuteReader<T>(IDbCommand command, Func<IDataAdapter, T> handler)
         {
             try
             {
@@ -299,8 +297,7 @@ namespace Dev2.Services.Sql
                 IDbCommand command = _factory.CreateCommand(connection, CommandType.Text,
                     string.Format("SHOW CREATE PROCEDURE {0} ", objectName)))
             {
-                return ExecuteReader(command, CommandBehavior.SchemaOnly & CommandBehavior.KeyInfo,
-                    delegate(IDataAdapter reader)
+                return ExecuteReader(command, delegate(IDataAdapter reader)
                     {
                         var sb = new StringBuilder();
                         DataSet ds = new DataSet(); //conn is opened by dataadapter
@@ -383,9 +380,6 @@ namespace Dev2.Services.Sql
                                 outParams.Add(sqlParameter);
                                 sqlParameter.Value = "@a";
                                 command.Parameters.Add(sqlParameter);
-                            }
-                            if (parameterName.ToLower() == "@return_value")
-                            {
                             }
                         }
                     }

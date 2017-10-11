@@ -94,11 +94,6 @@ namespace Warewolf.Studio.ViewModels
 
             }, exception =>
             {
-                //if (exception.InnerException != null)
-                //{
-                //    exception = exception.InnerException;
-                //}
-                //TestMessage = exception.Message;
             });
         }
 
@@ -136,7 +131,7 @@ namespace Warewolf.Studio.ViewModels
 
         void PerformSearch(string searchTerm)
         {
-            
+
             if (DllListings != null)
             {
                 if (string.IsNullOrEmpty(searchTerm))
@@ -166,8 +161,7 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => DllListings);
             }
         }
-
-        /// <exception cref="Exception">A delegate callback throws an exception.</exception>
+        
         public ManageComPluginSourceViewModel(IManageComPluginSourceModel updateManager, Task<IRequestServiceNameViewModel> requestServiceNameViewModel, Microsoft.Practices.Prism.PubSubEvents.IEventAggregator aggregator, IAsyncWorker asyncWorker)
             : this(updateManager, aggregator, asyncWorker)
         {
@@ -186,8 +180,7 @@ namespace Warewolf.Studio.ViewModels
             _requestServiceNameViewModel = requestServiceNameViewModel;
             Item = ToModel();
         }
-
-        /// <exception cref="Exception">A delegate callback throws an exception.</exception>
+        
         public ManageComPluginSourceViewModel(IManageComPluginSourceModel updateManager, Microsoft.Practices.Prism.PubSubEvents.IEventAggregator aggregator, IComPluginSource pluginSource, IAsyncWorker asyncWorker)
             : this(updateManager, aggregator, asyncWorker)
         {
@@ -237,7 +230,7 @@ namespace Warewolf.Studio.ViewModels
             if (selectedDll != null)
             {
                 var dllListingModel = DllListings?.FirstOrDefault(model => model.Name == selectedDll.Name);
-                if(dllListingModel != null)
+                if (dllListingModel != null)
                 {
                     dllListingModel.IsExpanded = true;
                     SelectedDll = dllListingModel;
@@ -249,7 +242,7 @@ namespace Warewolf.Studio.ViewModels
             Path = pluginSource.ResourcePath;
             Is32Bit = pluginSource.Is32Bit;
             ClsId = pluginSource.ClsId;
-            
+
         }
 
         public override string Name
@@ -360,7 +353,7 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _is32Bit = value;
-                OnPropertyChanged(()=>Is32Bit);
+                OnPropertyChanged(() => Is32Bit);
             }
         }
 
@@ -373,7 +366,7 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _clsId = value;
-                OnPropertyChanged(()=>ClsId);
+                OnPropertyChanged(() => ClsId);
             }
         }
 
@@ -385,7 +378,7 @@ namespace Warewolf.Studio.ViewModels
 
                 if (res == MessageBoxResult.OK)
                 {
-                    ResourceName = RequestServiceNameViewModel.ResourceName.Name;                   
+                    ResourceName = RequestServiceNameViewModel.ResourceName.Name;
                     var src = ToModel();
                     src.Id = SelectedGuid;
                     src.ResourcePath = RequestServiceNameViewModel.ResourceName.Path ?? RequestServiceNameViewModel.ResourceName.Name;
@@ -400,7 +393,7 @@ namespace Warewolf.Studio.ViewModels
                     Path = src.ResourcePath;
                     src.Is32Bit = SelectedDll.Is32Bit;
                     _pluginSource = src;
-                    Item= ToModel();
+                    Item = ToModel();
                     SetupHeaderTextFromExisting();
                 }
             }
@@ -417,7 +410,7 @@ namespace Warewolf.Studio.ViewModels
         }
 
         public string Path { get; set; }
-        
+
 
 
         void Save(IComPluginSource source)
@@ -428,7 +421,7 @@ namespace Warewolf.Studio.ViewModels
 
         public sealed override IComPluginSource ToModel()
         {
-            if(Item == null)
+            if (Item == null)
             {
                 Item = ToSource();
                 return Item;
@@ -445,7 +438,7 @@ namespace Warewolf.Studio.ViewModels
 
         IComPluginSource ToSource()
         {
-            if(_pluginSource == null)
+            if (_pluginSource == null)
             {
                 return new ComPluginSourceDefinition
                 {
@@ -460,7 +453,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 _pluginSource.SelectedDll = _selectedDll;
                 _pluginSource.ClsId = ClsId;
-                _pluginSource.Is32Bit = Is32Bit;                
+                _pluginSource.Is32Bit = Is32Bit;
             }
             return _pluginSource;
         }
@@ -476,7 +469,7 @@ namespace Warewolf.Studio.ViewModels
                     {
                         return _requestServiceNameViewModel.Result;
                     }
-                    
+
                     else
                     {
                         throw _requestServiceNameViewModel.Exception;
@@ -508,16 +501,8 @@ namespace Warewolf.Studio.ViewModels
         
         void DisposeManageComPluginSourceViewModel(bool disposing)
         {
-            // Check to see if Dispose has already been called.
-            if (!_isDisposed)
+            if (!_isDisposed && !disposing)
             {
-                // If disposing equals true, dispose all managed
-                // and unmanaged resources.
-                if (disposing)
-                {
-                }
-
-                // Dispose unmanaged resources.
                 _isDisposed = true;
             }
         }

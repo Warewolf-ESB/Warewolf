@@ -389,7 +389,11 @@ namespace Warewolf.Studio.ViewModels
                 }
                 return null;
             }
-            set { _requestServiceNameViewModel = new Task<IRequestServiceNameViewModel>(() => value); _requestServiceNameViewModel.Start(); }
+            set
+            {
+                _requestServiceNameViewModel = new Task<IRequestServiceNameViewModel>(() => value);
+                _requestServiceNameViewModel.Start();
+            }
         }
 
         public ICommand OkCommand { get; set; }
@@ -414,16 +418,8 @@ namespace Warewolf.Studio.ViewModels
         
         void DisposeManagePluginSourceViewModel(bool disposing)
         {
-            // Check to see if Dispose has already been called.
-            if (!_isDisposed)
+            if (!_isDisposed && !disposing)
             {
-                // If disposing equals true, dispose all managed
-                // and unmanaged resources.
-                if (disposing)
-                {
-                }
-
-                // Dispose unmanaged resources.
                 _isDisposed = true;
             }
         }

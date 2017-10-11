@@ -223,8 +223,6 @@ namespace Dev2.Activities.Designers2.ODBC
 
         IErrorInfo WorstDesignError
         {
-            
-            get { return _worstDesignError; }
             set
             {
                 if (_worstDesignError != value)

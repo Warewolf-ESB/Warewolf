@@ -296,12 +296,6 @@ namespace Warewolf.Studio.ViewModels
                 _treeItem = SingleEnvironmentExplorerViewModel.SelectedItem;
                 return _treeItem;
             }
-
-
-            set
-            {
-                _treeItem = value;
-            }
         }
 
         private void RaiseCanExecuteChanged()

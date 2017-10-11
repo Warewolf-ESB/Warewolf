@@ -223,7 +223,15 @@ namespace Dev2.Runtime.Hosting
             if (_parsers != null && !_parsers.TryGetValue(GlobalConstants.ServerWorkspaceID, out parser))
             {
                 parser = new ResourceActivityCache(CustomContainer.Get<IActivityParser>(), new ConcurrentDictionary<Guid, IDev2Activity>());
-                _parsers.Add(GlobalConstants.ServerWorkspaceID, parser);
+                _parsers.AddOrUpdate(GlobalConstants.ServerWorkspaceID, parser, (key, cache) =>
+                {
+                    IResourceActivityCache existingCache;
+                    if (_parsers.TryGetValue(key, out existingCache))
+                    {
+                        return existingCache;
+                    }
+                    return cache;
+                });
             }
             if (parser != null && !parser.HasActivityInCache(resource.ResourceID))
             {
@@ -438,10 +446,10 @@ namespace Dev2.Runtime.Hosting
             {
                 WorkspaceResources.Clear();
             }
-            _parsers = new Dictionary<Guid, IResourceActivityCache>();
+            _parsers = new ConcurrentDictionary<Guid, IResourceActivityCache>();
         }
 
-        private static Dictionary<Guid, IResourceActivityCache> _parsers = new Dictionary<Guid, IResourceActivityCache>();
+        private static ConcurrentDictionary<Guid, IResourceActivityCache> _parsers = new ConcurrentDictionary<Guid, IResourceActivityCache>();
         bool _loading;
 
         public IDev2Activity Parse(Guid workspaceID, Guid resourceID)
@@ -457,7 +465,15 @@ namespace Dev2.Runtime.Hosting
             if (_parsers != null && !_parsers.TryGetValue(workspaceID, out parser))
             {
                 parser = new ResourceActivityCache(CustomContainer.Get<IActivityParser>(), new ConcurrentDictionary<Guid, IDev2Activity>());
-                _parsers.Add(workspaceID, parser);
+                _parsers.AddOrUpdate(workspaceID, parser,(key,cache)=> 
+                {
+                    IResourceActivityCache existingCache;
+                    if (_parsers.TryGetValue(key,out existingCache))
+                    {
+                        return existingCache;                        
+                    }
+                    return cache;
+                });
             }
             if (parser != null && parser.HasActivityInCache(resourceID))
             {
@@ -490,7 +506,8 @@ namespace Dev2.Runtime.Hosting
         public void Reload()
         {
             LoadWorkspace(GlobalConstants.ServerWorkspaceID);
-            _parsers.Remove(GlobalConstants.ServerWorkspaceID);
+            IResourceActivityCache removedCache;
+            _parsers.TryRemove(GlobalConstants.ServerWorkspaceID,out removedCache);
             LoadServerActivityCache();
         }
 

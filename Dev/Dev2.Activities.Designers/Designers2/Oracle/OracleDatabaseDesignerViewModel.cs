@@ -223,8 +223,6 @@ namespace Dev2.Activities.Designers2.Oracle
 
         IErrorInfo WorstDesignError
         {
-            
-            get { return _worstDesignError; }
             set
             {
                 if (_worstDesignError != value)

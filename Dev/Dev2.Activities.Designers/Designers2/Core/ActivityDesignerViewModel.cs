@@ -308,10 +308,6 @@ namespace Dev2.Activities.Designers2.Core
                 if(isChecked)
                 {
                     ActivityDesignerToggle activityDesignerToggle = TitleBarToggles.FirstOrDefault(c => c.AutomationID == "HelpToggle");
-                    if(activityDesignerToggle == null)
-                    {
-                        //AddTitleBarHelpToggle();
-                    }
                 }
                 else
                 {

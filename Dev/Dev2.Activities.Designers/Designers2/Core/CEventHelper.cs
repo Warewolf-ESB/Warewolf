@@ -8,6 +8,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using Dev2.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -87,8 +88,9 @@ namespace Dev2.Activities.Designers2.Core
                     }
                 }
             }                
-            catch
+            catch (Exception e)
             {
+                Dev2Logger.Warn(e.Message, "Warewolf Warn");
             }
         }
 

@@ -12,7 +12,6 @@ using System.Windows;
 
 namespace Dev2.Activities.Designers2.Web_Service_Put
 {
-    // Interaction logic for Large.xaml
     public partial class Large
     {
         public Large()
@@ -29,20 +28,6 @@ namespace Dev2.Activities.Designers2.Web_Service_Put
         }
 
         #endregion
-        void RequestBody_OnSizeChanged(object sender, SizeChangedEventArgs e)
-        {
-
-            if (DataContext is WebServicePutViewModel viewModel)
-            {
-                var dataContext = viewModel.InputArea;
-                if (dataContext.IsEnabled)
-                {
-                    //MinHeight = dataContext.MinHeight + 25;
-                    //MaxHeight += e.NewSize.Height;
-                    //Height = MinHeight;
-                }
-            }
-        }
 
         private void AutoCompleteBox_OnTextChanged(object sender, RoutedEventArgs e)
         {

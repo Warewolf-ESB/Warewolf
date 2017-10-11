@@ -105,11 +105,6 @@ namespace Dev2.Studio.Core.Models
                     error = string.Format(ErrorResource.IsRequired, propertyName);
 
                 }
-
-                if(error == null)
-                {
-
-                }
             }
 
             return error;

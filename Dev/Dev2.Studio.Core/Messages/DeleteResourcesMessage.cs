@@ -32,13 +32,15 @@ namespace Dev2.Studio.Core.Messages
             FolderName = folderName;
             ActionToDoOnDelete = actionToDoOnDelete;
             ShowDialog = showDialog;
-            ResourceModels = resourceModels;
+            _resourceModels = resourceModels;
         }
 
-        public ICollection<IContextualResourceModel> ResourceModels;
+        private readonly ICollection<IContextualResourceModel> _resourceModels;
 
         public string FolderName { get; set; }
         public Action ActionToDoOnDelete { get; set; }
         public bool ShowDialog { get; set; }
+
+        public ICollection<IContextualResourceModel> ResourceModels => _resourceModels;
     }
 }

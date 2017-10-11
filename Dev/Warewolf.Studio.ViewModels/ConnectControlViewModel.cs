@@ -122,11 +122,6 @@ namespace Warewolf.Studio.ViewModels
             updatedServer.NetworkStateChanged += OnServerOnNetworkStateChanged;
             Servers.Insert(idx, updatedServer);
             SelectedConnection = shellViewModel?.LocalhostServer;
-
-            //if (!updatedServer.IsConnected && !updatedServer.IsLocalHost)
-            //{
-            //    updatedServer.DisplayName?.Replace("(Connected)", "");
-            //}
         }
 
         public void LoadServers()

@@ -28,7 +28,7 @@ namespace Dev2.Studio.ViewModels.DataList
 
         private IWebActivity _activity;
 
-        public bool _isInitialLoad;
+        private bool _isInitialLoad;
 
         private string _activityName;
         private string _xmlOutput;
@@ -66,10 +66,9 @@ namespace Dev2.Studio.ViewModels.DataList
         #endregion Ctor
 
         #region Initialize
+
         internal void Initialize(IWebActivity activity)
         {
-            // -- NEW ;)
-
             Activity = activity;
             ActivityName = activity.ServiceName;
 
@@ -87,21 +86,15 @@ namespace Dev2.Studio.ViewModels.DataList
 
             ioBuilder.SetupActivityData(activity);
 
-            var mappingData = ioBuilder.Generate();
-
-            // save model data
-            //Outputs = mappingData.Outputs.ToObservableCollection();
+            var mappingData = ioBuilder.Generate();            
             foreach(var ioViewModel in mappingData.Outputs)
             {
                 Outputs.Add(ioViewModel);
             }
-            //Inputs = mappingData.Inputs.ToObservableCollection();
             foreach(var ioViewModel in mappingData.Inputs)
             {
                 Inputs.Add(ioViewModel);
             }
-
-            // update special fields on the model?!
             var toSaveOutputMapping = ioBuilder.SavedOutputMapping;
             var toSaveInputMapping = ioBuilder.SavedInputMapping;
 
