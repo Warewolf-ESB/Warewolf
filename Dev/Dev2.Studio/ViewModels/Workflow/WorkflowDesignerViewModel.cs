@@ -3003,7 +3003,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
             var parser = CustomContainer.Get<IServiceDifferenceParser>();
             _allNodes = parser?.GetAllNodes();
-            var nodeToRemove = GetNodeToAmmend(model);
+            var nodeToRemove = GetNodeToAmmend(model, true);
 
             var step = nodeToRemove?.GetCurrentValue();
             switch (step)
@@ -3029,7 +3029,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-        private ModelItem GetNodeToAmmend(IMergeToolModel model)
+        private ModelItem GetNodeToAmmend(IMergeToolModel model, bool removeItem = false)
         {
             var nodeToAmmend = default(ModelItem);
             if (_allNodes == null)
@@ -3044,13 +3044,13 @@ namespace Dev2.Studio.ViewModels.Workflow
                 return null;
             }
 
-            if (toolPar.leftItem?.GetCurrentValue() == model.FlowNode.GetCurrentValue())
+            if (toolPar.leftItem?.GetCurrentValue() == model.FlowNode?.GetCurrentValue())
             {
-                nodeToAmmend = toolPar.leftItem;
+                nodeToAmmend = removeItem ? toolPar.rightItem : toolPar.leftItem;
             }
-            else if (toolPar.rightItem?.GetCurrentValue() == model.FlowNode.GetCurrentValue())
+            else if (toolPar.rightItem?.GetCurrentValue() == model.FlowNode?.GetCurrentValue())
             {
-                nodeToAmmend = toolPar.leftItem;
+                nodeToAmmend = removeItem ? toolPar.leftItem : toolPar.rightItem;
             }
             return nodeToAmmend;
         }
