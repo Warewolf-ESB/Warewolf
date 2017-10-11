@@ -25,9 +25,6 @@ using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.PubSubEvents;
 
 
-
-
-
 namespace Warewolf.Studio.ViewModels
 {
     public class ManageWebserviceSourceViewModel : SourceBaseImpl<IWebServiceSource>, IManageWebserviceSourceViewModel
@@ -213,7 +210,7 @@ namespace Warewolf.Studio.ViewModels
             }
             set
             {
-                ResourceName = ResourceName;
+                ResourceName = value;
             }
         }
 
@@ -582,29 +579,17 @@ namespace Warewolf.Studio.ViewModels
         protected override void OnDispose()
         {
             RequestServiceNameViewModel?.Dispose();
-            Dispose(true);
+            DisposeManageWebserviceSourceViewModel(true);
         }
-        // Dispose(bool disposing) executes in two distinct scenarios.
-        // If disposing equals true, the method has been called directly
-        // or indirectly by a user's code. Managed and unmanaged resources
-        // can be disposed.
-        // If disposing equals false, the method has been called by the
-        // runtime from inside the finalizer and you should not reference
-        // other objects. Only unmanaged resources can be disposed.
-        void Dispose(bool disposing)
+
+        void DisposeManageWebserviceSourceViewModel(bool disposing)
         {
-            // Check to see if Dispose has already been called.
             if (!_isDisposed)
             {
-                // If disposing equals true, dispose all managed
-                // and unmanaged resources.
                 if (disposing)
                 {
-                    // Dispose managed resources.
                     _token?.Dispose();
                 }
-
-                // Dispose unmanaged resources.
                 _isDisposed = true;
             }
         }

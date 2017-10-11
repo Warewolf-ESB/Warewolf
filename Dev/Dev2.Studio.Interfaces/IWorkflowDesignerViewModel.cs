@@ -16,7 +16,7 @@ using System.Windows;
 
 namespace Dev2.Studio.Interfaces
 {
-    public interface IWorkflowDesignerViewModel : IDesignerViewModel
+    public interface IWorkflowDesignerViewModel : IDesignerViewModel, IDisposable
     {
         object SelectedModelItem { get; }
         string WorkflowName { get; }
@@ -30,7 +30,6 @@ namespace Dev2.Studio.Interfaces
         Action WorkflowChanged { get; set; }
 
         void UpdateWorkflowLink(string newLink);
-        void Dispose();
         bool NotifyItemSelected(object primarySelection);
         void BindToModel();
         void AddMissingWithNoPopUpAndFindUnusedDataListItems();

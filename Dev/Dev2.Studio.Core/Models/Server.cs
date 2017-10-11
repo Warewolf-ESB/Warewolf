@@ -187,12 +187,12 @@ namespace Dev2.Studio.Core.Models
                 }
 
                 return Connection?.DisplayName ?? "Default Name";
-            }
-            
+            }            
             set
             {
                 Connection.DisplayName = DisplayName;
                 OnPropertyChanged();
+                Dev2Logger.Info("Server Display Name set to " + value, GlobalConstants.WarewolfInfo);
             }
         }
 

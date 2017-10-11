@@ -41,12 +41,10 @@ namespace Dev2.Data
                     ServerStats.TotalRequests,
                     ServerStats.TotalTime,
                     DateTime.Now - Process.GetCurrentProcess().StartTime), "Warewolf System Data");
-            }
-                
-            catch
-                
+            }                
+            catch (Exception err)
             {
-                // cant have any errors here
+                Dev2Logger.Warn(err.Message, "Warewolf Warn");
             }
         }
 
@@ -77,7 +75,7 @@ namespace Dev2.Data
         #endregion
     }
 
-    public class PulseTracker : IPulseLogger
+    public class PulseTracker : IPulseLogger, IDisposable
     {
         readonly Timer _timer;
 
@@ -118,10 +116,13 @@ namespace Dev2.Data
             }
             catch(Exception)
             {
-
                 return false;
             }
-            
+        }
+
+        public void Dispose()
+        {
+            _timer.Dispose();
         }
 
         public double Interval { get; private set; }

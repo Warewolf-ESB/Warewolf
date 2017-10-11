@@ -13,8 +13,6 @@ using Microsoft.Practices.Prism.PubSubEvents;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Studio.Interfaces;
 
-
-
 namespace Warewolf.Studio.ViewModels
 {
     public class ManageExchangeSourceViewModel : SourceBaseImpl<IExchangeSource>, IManageExchangeSourceViewModel
@@ -541,31 +539,17 @@ namespace Warewolf.Studio.ViewModels
                 RequestServiceNameViewModel.Result?.Dispose();
                 RequestServiceNameViewModel.Dispose();
             }
-            Dispose(true);
+            DisposeManageExchangeSourceViewModel(true);
         }
-
-
-        // Dispose(bool disposing) executes in two distinct scenarios.
-        // If disposing equals true, the method has been called directly
-        // or indirectly by a user's code. Managed and unmanaged resources
-        // can be disposed.
-        // If disposing equals false, the method has been called by the
-        // runtime from inside the finalizer and you should not reference
-        // other objects. Only unmanaged resources can be disposed.
-        void Dispose(bool disposing)
+        
+        void DisposeManageExchangeSourceViewModel(bool disposing)
         {
-            // Check to see if Dispose has already been called.
             if (!_isDisposed)
             {
-                // If disposing equals true, dispose all managed
-                // and unmanaged resources.
                 if (disposing)
                 {
-                    // Dispose managed resources.
                     _token?.Dispose();
                 }
-
-                // Dispose unmanaged resources.
                 _isDisposed = true;
             }
         }
