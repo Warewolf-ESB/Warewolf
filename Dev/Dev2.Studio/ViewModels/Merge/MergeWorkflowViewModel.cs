@@ -78,7 +78,7 @@ namespace Dev2.ViewModels.Merge
 
             //HasVariablesConflict = !CommonEqualityOps.AreObjectsEqual(((ConflictModelFactory)CurrentConflictModel).DataListViewModel, ((ConflictModelFactory)DifferenceConflictModel).DataListViewModel); //MATCH DATALISTS
             HasVariablesConflict = true;
-            //HasWorkflowNameConflict = currResourceName != diffResourceName;
+            //HasWorkflowNameConflict = currentResourceModel.DisplayName != differenceResourceModel.DisplayName;
             HasWorkflowNameConflict = true;
             IsVariablesEnabled = !HasWorkflowNameConflict;
             IsMergeExpanderEnabled = !IsVariablesEnabled;
@@ -88,6 +88,15 @@ namespace Dev2.ViewModels.Merge
 
             WorkflowDesignerViewModel.CanViewWorkflowLink = false;
             WorkflowDesignerViewModel.IsTestView = true;
+
+            if (!HasWorkflowNameConflict && !HasVariablesConflict)
+            {
+                var conflict = Conflicts?.FirstOrDefault();
+                if (conflict != null && !conflict.HasConflict)
+                {
+                    AddActivity(conflict.DiffViewModel);
+                }
+            }
         }
 
         private void BuildConflicts(IContextualResourceModel currentResourceModel, IContextualResourceModel differenceResourceModel, List<(Guid uniqueId, IConflictNode currentNode, IConflictNode differenceNode, bool hasConflict)> currentChanges)
@@ -172,7 +181,7 @@ namespace Dev2.ViewModels.Merge
         {
             try
             {
-                var argsIsVariablesChecked = args.IsVariablesChecked;
+                var argsIsVariablesChecked = args.IsVariablesChecked || !HasVariablesConflict;
 
                 if (!HasMergeStarted)
                 {
@@ -203,12 +212,16 @@ namespace Dev2.ViewModels.Merge
                     return;
                 }
 
-                UpdateNextEnabledState(args);
+                var nextConflict = UpdateNextEnabledState(args);
                 if (!HasMergeStarted)
                 {
                     HasMergeStarted = true;
                 }
                 AddActivity(args);
+                if (nextConflict != null && !nextConflict.HasConflict)
+                {
+                    AddActivity(nextConflict.CurrentViewModel);
+                }
             }
             catch (Exception ex)
             {
@@ -216,18 +229,18 @@ namespace Dev2.ViewModels.Merge
             }
         }
 
-        private void UpdateNextEnabledState(IMergeToolModel args)
+        private ICompleteConflict UpdateNextEnabledState(IMergeToolModel args)
         {
             if (Conflicts == null)
             {
-                return;
+                return null;
             }
 
             var argsUniqueId = args.UniqueId;
             var completeConflict = Conflicts.FirstOrDefault(conflict => conflict.CurrentViewModel.UniqueId == argsUniqueId || conflict.DiffViewModel.UniqueId == argsUniqueId);
             if (completeConflict == null)
             {
-                return;
+                return null;
             }
 
             completeConflict.Children?.Flatten(a => a.Children ?? new ObservableCollection<ICompleteConflict>())
@@ -264,7 +277,7 @@ namespace Dev2.ViewModels.Merge
 
             if (nextCurrConflict == null)
             {
-                return;
+                return null;
             }
 
             if (nextCurrConflict.CurrentViewModel != null)
@@ -277,6 +290,8 @@ namespace Dev2.ViewModels.Merge
                 nextCurrConflict.DiffViewModel.IsMergeEnabled = true;
                 nextCurrConflict.DiffViewModel.Children?.Flatten(a => a.Children ?? new ObservableCollection<IMergeToolModel>()).Apply(a => a.IsMergeEnabled = true);
             }
+
+            return nextCurrConflict;
         }
 
         void AddChildren(ICompleteConflict parent, IMergeToolModel currentChild, IMergeToolModel childDiff)

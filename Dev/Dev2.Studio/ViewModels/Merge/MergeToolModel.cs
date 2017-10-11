@@ -8,8 +8,6 @@ using Newtonsoft.Json;
 using System.Activities.Statements;
 using System.Activities.Presentation.Model;
 using System.Windows;
-using Caliburn.Micro;
-using Dev2.Common;
 
 namespace Dev2.ViewModels.Merge
 {
@@ -61,10 +59,6 @@ namespace Dev2.ViewModels.Merge
                 _isMergeChecked = value;
                 OnPropertyChanged(() => IsMergeChecked);
                 SomethingModelToolChanged?.Invoke(this, this);
-                if (Parent == null)
-                {
-                 //   Children?.Flatten(a => a.Children).Apply(a => a.IsMergeChecked = true);
-                }
             }
         }
 
@@ -104,7 +98,7 @@ namespace Dev2.ViewModels.Merge
             set
             {
                 _children = value;
-                OnPropertyChanged("Children");
+                OnPropertyChanged(() => Children);
             }
         }
 
@@ -134,7 +128,7 @@ namespace Dev2.ViewModels.Merge
             set
             {
                 _parentDescription = value;
-                OnPropertyChanged("ParentDescription");
+                OnPropertyChanged(() => ParentDescription);
             }
         }
         public bool HasParent
@@ -143,7 +137,7 @@ namespace Dev2.ViewModels.Merge
             set
             {
                 _hasParent = value;
-                OnPropertyChanged("HasParent");
+                OnPropertyChanged(() => HasParent);
             }
         }
 
