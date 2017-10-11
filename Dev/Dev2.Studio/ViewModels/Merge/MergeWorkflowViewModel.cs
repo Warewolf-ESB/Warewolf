@@ -166,6 +166,7 @@ namespace Dev2.ViewModels.Merge
         }
 
         private IMergeToolModel _previousParent;
+        private bool _canSave;
 
         private void SourceOnConflictModelChanged(object sender, IConflictModelFactory args)
         {
@@ -445,7 +446,38 @@ namespace Dev2.ViewModels.Merge
             }
         }
 
-        public bool CanSave { get; set; }
+        public bool CanSave
+        {
+            get => ValidateCanSave();
+            set
+            {
+                _canSave = value;
+                OnPropertyChanged(() => CanSave);
+            }
+        }
+
+        private bool ValidateCanSave()
+        {
+            var conflict = Conflicts?.LastOrDefault();
+            if (conflict != null)
+            {
+                var currMergeToolModels = conflict.CurrentViewModel.Children?.Flatten(a => a.Children ?? new ObservableCollection<IMergeToolModel>());
+                var currToolModels = currMergeToolModels as IList<IMergeToolModel> ?? currMergeToolModels?.ToList();
+                if (currToolModels != null)
+                {
+                    var currDefault = currToolModels.LastOrDefault();
+                    _canSave = currDefault != null && currDefault.IsMergeChecked;
+                }
+                var diffMergeToolModels = conflict.DiffViewModel.Children?.Flatten(a => a.Children ?? new ObservableCollection<IMergeToolModel>());
+                var diffToolModels = diffMergeToolModels as IList<IMergeToolModel> ?? diffMergeToolModels?.ToList();
+                if (diffToolModels != null)
+                {
+                    var diffToolModel = diffToolModels.LastOrDefault();
+                    _canSave = diffToolModel != null && diffToolModel.IsMergeChecked;
+                }
+            }
+            return _canSave;
+        }
 
         public bool IsDirty => HasMergeStarted;
 
@@ -465,20 +497,6 @@ namespace Dev2.ViewModels.Merge
             set
             {
                 _hasMergeStarted = value;
-                var conflict = Conflicts?.LastOrDefault();
-                if (conflict != null)
-                {
-                    var currMerge = conflict.CurrentViewModel.Children ?.Flatten(a => a.Children ?? new ObservableCollection<IMergeToolModel>()).Where(a => a.IsMergeChecked = true);
-                    var diffMerge = conflict.DiffViewModel.Children?.Flatten(a => a.Children ?? new ObservableCollection<IMergeToolModel>()).Where(a => a.IsMergeChecked = true);
-                    if (currMerge != null)
-                    {
-                        CanSave = true;
-                    }
-                    if (diffMerge != null)
-                    {
-                        CanSave = true;
-                    }
-                }
                 if (_hasMergeStarted)
                 {
                     SetDisplayName(_hasMergeStarted);
