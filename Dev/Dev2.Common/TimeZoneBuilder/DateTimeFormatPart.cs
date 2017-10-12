@@ -14,7 +14,7 @@ namespace Dev2.Common.TimeZoneBuilder
 
         public Dictionary<string, IDateTimeFormatPartTO> DateTimeFormatsParts { get; set; }
         public Dictionary<string, List<IDateTimeFormatPartOptionTO>> DateTimeFormatPartOptions { get; set; }
-        private static AssignManager _assignManager;
+        private readonly AssignManager _assignManager;
         private static readonly IDatetimeParserHelper DatetimeParserHelper = new DateTimeParserHelper();
         public DateTimeFormatPart(Dictionary<string, ITimeZoneTO> timeZones)
         {

@@ -12,8 +12,8 @@ namespace Dev2.Runtime.WebServer.Handlers
 {
     public class GetApisJsonServiceHandler : AbstractWebRequestHandler
     {
-        private static IAuthorizationService _authorizationService;
-        private static IResourceCatalog _resourceCatalog;
+        private readonly IAuthorizationService _authorizationService;
+        private readonly IResourceCatalog _resourceCatalog;
 
         public GetApisJsonServiceHandler()
             : this(ResourceCatalog.Instance, ServerAuthorizationService.Instance)
@@ -43,8 +43,9 @@ namespace Dev2.Runtime.WebServer.Handlers
         }
 
         static IResponseWriter GetApisJson(string basePath,bool isPublic)
-        {            
-            var apiBuilder = new ApisJsonBuilder(_authorizationService, _resourceCatalog);
+        {
+            var handler = new GetApisJsonServiceHandler();
+            var apiBuilder = new ApisJsonBuilder(handler._authorizationService, handler._resourceCatalog);
             var apis = apiBuilder.BuildForPath(basePath, isPublic);
             var converter = new JsonSerializer();
             StringBuilder result = new StringBuilder();

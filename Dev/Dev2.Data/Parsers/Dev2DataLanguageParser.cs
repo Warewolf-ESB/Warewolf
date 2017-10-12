@@ -34,16 +34,10 @@ namespace Dev2.Data.Parsers
         private static volatile ConcurrentDictionary<Tuple<string, string>, IList<IIntellisenseResult>> _payloadCache = new ConcurrentDictionary<Tuple<string, string>, IList<IIntellisenseResult>>();
         private static volatile ConcurrentDictionary<string, IList<IIntellisenseResult>> _expressionCache = new ConcurrentDictionary<string, IList<IIntellisenseResult>>();
 
-        private static IParserHelper _parserHelper;
-        private static ICommonRecordSetUtil _recordSetUtil;
+        private static IParserHelper _parserHelper = new ParserHelperUtil();
+        private static ICommonRecordSetUtil _recordSetUtil = new CommonRecordSetUtil();
 
         #region Public Methods
-
-        public Dev2DataLanguageParser()
-        {
-            _parserHelper = new ParserHelperUtil();
-            _recordSetUtil = new CommonRecordSetUtil(this);
-        }
 
         public IList<IIntellisenseResult> ParseExpressionIntoParts(string expression, IList<IDev2DataLanguageIntellisensePart> dataListParts)
         {
