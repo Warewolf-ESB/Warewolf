@@ -88,8 +88,7 @@ namespace Dev2.Runtime.Hosting
 
             try
             {
-
-                foreach (var path in folders.Where(f => !string.IsNullOrEmpty(f) && !f.EndsWith("VersionControl")).Select(f => Path.Combine(workspacePath, f)))
+                foreach (var path in folders.Where(f => !string.IsNullOrEmpty(f)).Select(f => Path.Combine(workspacePath, f)))
                 {
                     if (!Directory.Exists(path))
                     {
@@ -329,26 +328,29 @@ namespace Dev2.Runtime.Hosting
         /// <param name="filePath">The file path.</param>
         private void AddResource(IResource res, string filePath)
         {
-            if (!_addedResources.Contains(res.ResourceID))
+            if (!filePath.Contains("VersionControl"))
             {
-                _resources.Add(res);
-                _addedResources.Add(res.ResourceID);
-            }
-            else
-            {
-                var dupRes = _resources.Find(c => c.ResourceID == res.ResourceID);
-                if (dupRes != null)
+                if (!_addedResources.Contains(res.ResourceID))
                 {
-                    CreateDupResource(dupRes, filePath);
-                    Dev2Logger.Debug(
-                        string.Format(ErrorResource.ResourceAlreadyLoaded,
-                            res.ResourceName, filePath, dupRes.FilePath), GlobalConstants.WarewolfDebug);
+                    _resources.Add(res);
+                    _addedResources.Add(res.ResourceID);
                 }
                 else
                 {
-                    Dev2Logger.Debug(string.Format(
-                            "Resource '{0}' from file '{1}' wasn't loaded because a resource with the same name has already been loaded but cannot find its location.",
-                            res.ResourceName, filePath), GlobalConstants.WarewolfDebug);
+                    var dupRes = _resources.Find(c => c.ResourceID == res.ResourceID);
+                    if (dupRes != null)
+                    {
+                        CreateDupResource(dupRes, filePath);
+                        Dev2Logger.Debug(
+                            string.Format(ErrorResource.ResourceAlreadyLoaded,
+                                res.ResourceName, filePath, dupRes.FilePath), GlobalConstants.WarewolfDebug);
+                    }
+                    else
+                    {
+                        Dev2Logger.Debug(string.Format(
+                                "Resource '{0}' from file '{1}' wasn't loaded because a resource with the same name has already been loaded but cannot find its location.",
+                                res.ResourceName, filePath), GlobalConstants.WarewolfDebug);
+                    }
                 }
             }
         }

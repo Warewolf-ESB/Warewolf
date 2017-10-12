@@ -605,12 +605,26 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
                 return this.mMergeButton;
             }
         }
+        
+        public MergeResourceVersionList MergeResourceVersionList
+        {
+            get
+            {
+                if ((this.mMergeResourceVersionList == null))
+                {
+                    this.mMergeResourceVersionList = new MergeResourceVersionList(this);
+                }
+                return this.mMergeResourceVersionList;
+            }
+        }
         #endregion
         
         #region Fields
         private ServerSource mServerSource;
         
         private WpfButton mMergeButton;
+        
+        private MergeResourceVersionList mMergeResourceVersionList;
         #endregion
     }
     
@@ -681,6 +695,138 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
         
         #region Fields
         private WpfButton mServerDropDown;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class MergeResourceVersionList : WpfList
+    {
+        
+        public MergeResourceVersionList(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfList.PropertyNames.AutomationId] = "MergeResourceVersionList";
+            this.WindowTitles.Add("MergeDialogView");
+            #endregion
+        }
+        
+        #region Properties
+        public WarewolfStudioViewMoListItem WarewolfStudioViewMoListItem
+        {
+            get
+            {
+                if ((this.mWarewolfStudioViewMoListItem == null))
+                {
+                    this.mWarewolfStudioViewMoListItem = new WarewolfStudioViewMoListItem(this);
+                }
+                return this.mWarewolfStudioViewMoListItem;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WarewolfStudioViewMoListItem mWarewolfStudioViewMoListItem;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class WarewolfStudioViewMoListItem : WpfListItem
+    {
+        
+        public WarewolfStudioViewMoListItem(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.VersionViewModel";
+            this.WindowTitles.Add("MergeDialogView");
+            #endregion
+        }
+        
+        #region Properties
+        public ItemRadioButton ItemRadioButton
+        {
+            get
+            {
+                if ((this.mItemRadioButton == null))
+                {
+                    this.mItemRadioButton = new ItemRadioButton(this);
+                }
+                return this.mItemRadioButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private ItemRadioButton mItemRadioButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class ItemRadioButton : WpfRadioButton
+    {
+        
+        public ItemRadioButton(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.WindowTitles.Add("MergeDialogView");
+            #endregion
+        }
+        
+        #region Properties
+        public UIV110122017100449SaveText UIV110122017100449SaveText
+        {
+            get
+            {
+                if ((this.mUIV110122017100449SaveText == null))
+                {
+                    this.mUIV110122017100449SaveText = new UIV110122017100449SaveText(this);
+                }
+                return this.mUIV110122017100449SaveText;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIV110122017100449SaveText mUIV110122017100449SaveText;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class UIV110122017100449SaveText : WpfText
+    {
+        
+        public UIV110122017100449SaveText(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfText.PropertyNames.Name] = "v.1 10122017 100449 Save";
+            this.WindowTitles.Add("MergeDialogView");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfText UIV110122017100449SaveText1
+        {
+            get
+            {
+                if ((this.mUIV110122017100449SaveText1 == null))
+                {
+                    this.mUIV110122017100449SaveText1 = new WpfText(this);
+                    #region Search Criteria
+                    this.mUIV110122017100449SaveText1.SearchProperties[WpfText.PropertyNames.Name] = "v.1 10122017 100449 Save";
+                    this.mUIV110122017100449SaveText1.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
+                    this.mUIV110122017100449SaveText1.WindowTitles.Add("MergeDialogView");
+                    #endregion
+                }
+                return this.mUIV110122017100449SaveText1;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfText mUIV110122017100449SaveText1;
         #endregion
     }
 }
