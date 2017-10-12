@@ -119,7 +119,7 @@
                           Grid.ColumnSpan="2" 
                           Margin="{StaticResource ElementBorderTop}"
                           AutomationProperties.AutomationId="UI_WorkflowConflictGrid_AutoID"
-                          IsEnabled="{Binding HasWorkflowNameConflict, Converter={StaticResource BoolToVisibilityConverterPositive}}">
+                          IsEnabled="{Binding HasWorkflowNameConflict}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition SharedSizeGroup="MergeCurrentColumnWidth"/>
                             <ColumnDefinition SharedSizeGroup="MergeCurrentColumnWidth"/>

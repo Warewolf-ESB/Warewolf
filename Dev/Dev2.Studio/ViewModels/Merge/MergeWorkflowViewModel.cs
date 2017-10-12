@@ -41,7 +41,8 @@ namespace Dev2.ViewModels.Merge
             SetupBindings(currentResourceModel, differenceResourceModel, firstConflict);
         }
 
-        private void SetupBindings(IContextualResourceModel currentResourceModel, IContextualResourceModel differenceResourceModel, ICompleteConflict firstConflict)
+        private void SetupBindings(IContextualResourceModel currentResourceModel,
+            IContextualResourceModel differenceResourceModel, ICompleteConflict firstConflict)
         {
             if (CurrentConflictModel == null)
             {
@@ -52,7 +53,7 @@ namespace Dev2.ViewModels.Merge
                 }
                 else
                 {
-                    CurrentConflictModel.Model = new MergeToolModel { IsMergeEnabled = false };
+                    CurrentConflictModel.Model = new MergeToolModel {IsMergeEnabled = false};
                 }
                 CurrentConflictModel.WorkflowName = currentResourceModel.ResourceName;
                 CurrentConflictModel.ServerName = currentResourceModel.Environment.DisplayName;
@@ -76,9 +77,9 @@ namespace Dev2.ViewModels.Merge
 
             HasMergeStarted = false;
 
-            HasVariablesConflict = !CommonEqualityOps.AreObjectsEqual(((ConflictModelFactory)CurrentConflictModel).DataListViewModel, ((ConflictModelFactory)DifferenceConflictModel).DataListViewModel); //MATCH DATALISTS
+            HasVariablesConflict = !CommonEqualityOps.AreObjectsEqual(((ConflictModelFactory) CurrentConflictModel).DataListViewModel, ((ConflictModelFactory) DifferenceConflictModel).DataListViewModel); //MATCH DATALISTS
             HasWorkflowNameConflict = currentResourceModel.ResourceName != differenceResourceModel.ResourceName;
-            IsVariablesEnabled = !HasWorkflowNameConflict;
+            IsVariablesEnabled = !HasWorkflowNameConflict && HasVariablesConflict;
             IsMergeExpanderEnabled = !IsVariablesEnabled;
 
             DisplayName = "Merge";
@@ -86,6 +87,15 @@ namespace Dev2.ViewModels.Merge
 
             WorkflowDesignerViewModel.CanViewWorkflowLink = false;
             WorkflowDesignerViewModel.IsTestView = true;
+
+            if (!HasWorkflowNameConflict)
+            {
+                CurrentConflictModel.IsWorkflowNameChecked = true;
+            }
+            if (!HasVariablesConflict)
+            {
+                CurrentConflictModel.IsVariablesChecked = true;
+            }
 
             if (!HasWorkflowNameConflict && !HasVariablesConflict)
             {
@@ -247,7 +257,7 @@ namespace Dev2.ViewModels.Merge
                 {
                     if (a?.CurrentViewModel != null)
                     {
-                        a.CurrentViewModel.IsMergeEnabled = true;
+                        a.CurrentViewModel.IsMergeEnabled = a.HasConflict;
                     }
                 });
             completeConflict.Children?.Flatten(a => a.Children ?? new ObservableCollection<ICompleteConflict>())
@@ -255,7 +265,7 @@ namespace Dev2.ViewModels.Merge
                 {
                     if (a?.DiffViewModel != null)
                     {
-                        a.DiffViewModel.IsMergeEnabled = true;
+                        a.DiffViewModel.IsMergeEnabled = a.HasConflict;
                     }
                 });
 
@@ -281,12 +291,12 @@ namespace Dev2.ViewModels.Merge
 
             if (nextCurrConflict.CurrentViewModel != null)
             {
-                nextCurrConflict.CurrentViewModel.IsMergeEnabled = true;
+                nextCurrConflict.CurrentViewModel.IsMergeEnabled = nextCurrConflict.HasConflict;
                 nextCurrConflict.CurrentViewModel.Children?.Flatten(a => a.Children ?? new ObservableCollection<IMergeToolModel>()).Apply(a => a.IsMergeEnabled = true);
             }
             if (nextCurrConflict.DiffViewModel != null)
             {
-                nextCurrConflict.DiffViewModel.IsMergeEnabled = true;
+                nextCurrConflict.DiffViewModel.IsMergeEnabled = nextCurrConflict.HasConflict;
                 nextCurrConflict.DiffViewModel.Children?.Flatten(a => a.Children ?? new ObservableCollection<IMergeToolModel>()).Apply(a => a.IsMergeEnabled = true);
             }
 
