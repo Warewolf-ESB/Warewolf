@@ -119,7 +119,7 @@
                           Grid.ColumnSpan="2" 
                           Margin="{StaticResource ElementBorderTop}"
                           AutomationProperties.AutomationId="UI_WorkflowConflictGrid_AutoID"
-                          Visibility="{Binding HasWorkflowNameConflict, Converter={StaticResource BoolToVisibilityConverterPositive}}">
+                          IsEnabled="{Binding HasWorkflowNameConflict, Converter={StaticResource BoolToVisibilityConverterPositive}}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition SharedSizeGroup="MergeCurrentColumnWidth"/>
                             <ColumnDefinition SharedSizeGroup="MergeCurrentColumnWidth"/>
@@ -185,8 +185,7 @@
                           Grid.ColumnSpan="2" 
                           Margin="{StaticResource ElementBorderTop}" 
                           AutomationProperties.AutomationId="UI_VariablesGrid_AutoID"
-                          IsEnabled="{Binding IsVariablesEnabled}"
-                          Visibility="{Binding HasVariablesConflict, Converter={StaticResource BoolToVisibilityConverterPositive}}">
+                          IsEnabled="{Binding IsVariablesEnabled}">
                         <Expander x:Name="VariablesExpander"
                                   Style="{StaticResource MergeExpander}"
                                   Header="{Binding .}"
@@ -397,7 +396,6 @@
                                                   Grid.Row="1"
                                                   Grid.Column="0"
                                                   Grid.ColumnSpan="2"
-							                      Visibility="{Binding HasConflict, Converter={StaticResource BoolToVisibilityConverterPositive}}"
 							                      Header="{Binding .}"
 							                      IsExpanded="{Binding IsMergeExpanded}"
 							                      Style="{StaticResource MergeExpander}"

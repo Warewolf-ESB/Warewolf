@@ -52,9 +52,9 @@ namespace Dev2.ViewModels.Merge
                 }
                 else
                 {
-                    CurrentConflictModel.Model = new MergeToolModel {IsMergeEnabled = false};
+                    CurrentConflictModel.Model = new MergeToolModel { IsMergeEnabled = false };
                 }
-                CurrentConflictModel.WorkflowName = currentResourceModel.DisplayName;
+                CurrentConflictModel.WorkflowName = currentResourceModel.ResourceName;
                 CurrentConflictModel.ServerName = currentResourceModel.Environment.DisplayName;
                 CurrentConflictModel.GetDataList();
                 CurrentConflictModel.SomethingConflictModelChanged += SourceOnConflictModelChanged;
@@ -68,7 +68,7 @@ namespace Dev2.ViewModels.Merge
                 {
                     DifferenceConflictModel.Model = firstConflict.DiffViewModel;
                 }
-                DifferenceConflictModel.WorkflowName = differenceResourceModel.DisplayName;
+                DifferenceConflictModel.WorkflowName = differenceResourceModel.ResourceName;
                 DifferenceConflictModel.ServerName = differenceResourceModel.Environment.DisplayName;
                 DifferenceConflictModel.GetDataList();
                 DifferenceConflictModel.SomethingConflictModelChanged += SourceOnConflictModelChanged;
@@ -76,10 +76,8 @@ namespace Dev2.ViewModels.Merge
 
             HasMergeStarted = false;
 
-            //HasVariablesConflict = !CommonEqualityOps.AreObjectsEqual(((ConflictModelFactory)CurrentConflictModel).DataListViewModel, ((ConflictModelFactory)DifferenceConflictModel).DataListViewModel); //MATCH DATALISTS
-            HasVariablesConflict = true;
-            //HasWorkflowNameConflict = currentResourceModel.DisplayName != differenceResourceModel.DisplayName;
-            HasWorkflowNameConflict = true;
+            HasVariablesConflict = !CommonEqualityOps.AreObjectsEqual(((ConflictModelFactory)CurrentConflictModel).DataListViewModel, ((ConflictModelFactory)DifferenceConflictModel).DataListViewModel); //MATCH DATALISTS
+            HasWorkflowNameConflict = currentResourceModel.ResourceName != differenceResourceModel.ResourceName;
             IsVariablesEnabled = !HasWorkflowNameConflict;
             IsMergeExpanderEnabled = !IsVariablesEnabled;
 
@@ -94,7 +92,7 @@ namespace Dev2.ViewModels.Merge
                 var conflict = Conflicts?.FirstOrDefault();
                 if (conflict != null && !conflict.HasConflict)
                 {
-                    AddActivity(conflict.DiffViewModel);
+                    conflict.CurrentViewModel.IsMergeChecked = true;
                 }
             }
         }
@@ -141,7 +139,6 @@ namespace Dev2.ViewModels.Merge
                 }
 
                 conflict.HasConflict = currentChange.hasConflict;
-                conflict.HasConflict = true;//Tests failing will b resolved once this is removed
                 conflict.IsMergeExpanded = false;
                 conflict.IsMergeExpanderEnabled = false;
                 AddChildren(conflict, conflict.CurrentViewModel, conflict.DiffViewModel);
@@ -220,7 +217,9 @@ namespace Dev2.ViewModels.Merge
                 AddActivity(args);
                 if (nextConflict != null && !nextConflict.HasConflict)
                 {
-                    AddActivity(nextConflict.CurrentViewModel);
+                    nextConflict.CurrentViewModel.IsMergeChecked = true;
+                    nextConflict.CurrentViewModel.IsMergeEnabled = false;
+                    nextConflict.DiffViewModel.IsMergeEnabled = false;
                 }
             }
             catch (Exception ex)
@@ -272,10 +271,10 @@ namespace Dev2.ViewModels.Merge
             }
             catch (ArgumentOutOfRangeException)
             {
+
                 nextCurrConflict = Conflicts.LastOrDefault();
             }
-
-            if (nextCurrConflict == null)
+            if (nextCurrConflict == null || nextCurrConflict.CurrentViewModel == args)
             {
                 return null;
             }

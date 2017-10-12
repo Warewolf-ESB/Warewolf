@@ -64,11 +64,6 @@ using Dev2.Data.ServiceModel;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.Enums;
 using System.IO;
-using System.Xml.Linq;
-using System.Text;
-using Dev2.Common.Interfaces.Security;
-using Dev2.Common.Common;
-using Dev2.Runtime.ServiceModel.Data;
 
 namespace Dev2.Studio.ViewModels
 {
@@ -728,6 +723,7 @@ namespace Dev2.Studio.ViewModels
                     var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.MergeConflicts);
                     if (resourceModel != null && resourceVersion != null)
                     {
+                        resourceVersion.ResourceName = resourceModel.ResourceName;
                         workSurfaceKey.EnvironmentID = resourceModel.Environment.EnvironmentID;
                         workSurfaceKey.ResourceID = resourceModel.ID;
                         workSurfaceKey.ServerID = resourceModel.ServerID;
