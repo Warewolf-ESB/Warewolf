@@ -207,6 +207,32 @@ namespace Dev2.ViewModels.Merge
                 else
                 {
                     WorkflowDesignerViewModel.ValidateStartNode(nextmodel.FlowNode);
+                    var mergeConflict = Conflicts.FirstOrDefault(completeConflict => completeConflict.UniqueId == model.UniqueId);
+                    if (mergeConflict != null)
+                    {
+                        var currIndex = Conflicts.IndexOf(mergeConflict) - 1;
+                        ICompleteConflict nextCurrConflict;
+                        try
+                        {
+                            nextCurrConflict = Conflicts[currIndex];
+                        }
+                        catch (ArgumentOutOfRangeException)
+                        {
+                            nextCurrConflict = Conflicts.LastOrDefault();
+                        }
+
+                        if (nextCurrConflict != null)
+                        {
+                            if (nextCurrConflict.CurrentViewModel.IsMergeChecked)
+                            {
+                                _previousParent = nextCurrConflict.CurrentViewModel;
+                            }
+                            else if (nextCurrConflict.DiffViewModel.IsMergeChecked)
+                            {
+                                _previousParent = nextCurrConflict.DiffViewModel;
+                            }
+                        }
+                    }
                 }
             }
             WorkflowDesignerViewModel.SelectedItem = model.FlowNode;
