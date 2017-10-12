@@ -9,6 +9,7 @@ using TechTalk.SpecFlow;
 using Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses;
 using Warewolf.UI.Tests.WorkflowServiceTesting.WorkflowServiceTestingUIMapClasses;
 using Warewolf.UI.Tests.DialogsUIMapClasses;
+using Microsoft.VisualStudio.TestTools.UITest.Extension;
 
 namespace Warewolf.UI.Tests.Deploy.DeployUIMapClasses
 {
@@ -293,28 +294,32 @@ namespace Warewolf.UI.Tests.Deploy.DeployUIMapClasses
         public void Click_Deploy_Tab_Deploy_Button()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DeployButton);
-            DialogsUIMap.MessageBoxWindow.WaitForControlExist(60000);
             WaitForDeploySuccess();
         }
 
         void WaitForDeploySuccess()
         {
-            var timeout = 60;
-            var successful = false;
-            while (timeout-- > 0 && !successful)
+            var successful = TryWaitForADeployMessageDialog();
+            if (!successful)
             {
-                if (DialogsUIMap.MessageBoxWindow.Exists)
+                successful = TryWaitForADeployMessageDialog();
+                if (!successful)
                 {
-                    DialogsUIMap.MessageBoxWindow.OKButton.WaitForControlReady(60000);
-                    successful = UIMap.ControlExistsNow(DialogsUIMap.MessageBoxWindow.ResourcesDeployedSucText);
-                    Mouse.Click(DialogsUIMap.MessageBoxWindow.OKButton);
-                }
-                else
-                {
-                    Playback.Wait(1000);
+                    successful = TryWaitForADeployMessageDialog();
                 }
             }
             Assert.IsTrue(successful, "Deploy failed.");
+        }
+
+        bool TryWaitForADeployMessageDialog()
+        {
+            bool OKButtonReady = DialogsUIMap.MessageBoxWindow.OKButton.WaitForControlCondition((control) => { return control.TryGetClickablePoint(out Point point); }, 60000);
+            var successful = DialogsUIMap.MessageBoxWindow.ResourcesDeployedSucText.Exists;
+            if (OKButtonReady || successful)
+            {
+                Mouse.Click(DialogsUIMap.MessageBoxWindow.OKButton);
+            }
+            return successful;
         }
 
         [When(@"I Click Deploy Tab Deploy Button And Cancel")]
