@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Dev2.Common;
 using System.Activities.Presentation.Model;
+using System.Activities.Statements;
 using System.Windows;
 using Caliburn.Micro;
 using Dev2.Common.Common;
@@ -175,11 +176,40 @@ namespace Dev2.ViewModels.Merge
 
         private void AddActivity(IMergeToolModel model)
         {
+            var conflict = Conflicts.FirstOrDefault();
+            if (conflict != null && conflict.UniqueId == model.UniqueId)
+            {
+                WorkflowDesignerViewModel.RemoveStartNodeConnection();
+            }
             WorkflowDesignerViewModel.RemoveItem(model);
-            WorkflowDesignerViewModel.AddItem(_previousParent, model);
+            
             if (model.FlowNode != null)
             {
+                WorkflowDesignerViewModel.AddItem(_previousParent, model);
                 _previousParent = model;
+            }
+            else
+            {
+                var nextConflict = UpdateNextEnabledState(model);
+                IMergeToolModel nextmodel = null;
+                if (nextConflict.CurrentViewModel.IsMergeChecked)
+                {
+                    nextmodel = nextConflict.CurrentViewModel;
+                }
+                else if (nextConflict.DiffViewModel.IsMergeChecked)
+                {
+                    nextmodel = nextConflict.DiffViewModel;
+                }
+                if (nextmodel == null)
+                {
+                    nextmodel = nextConflict.CurrentViewModel;
+                    WorkflowDesignerViewModel.AddItem(_previousParent, nextmodel);
+                    _previousParent = nextmodel;
+                }
+                else
+                {
+                    WorkflowDesignerViewModel.ValidateStartNode(nextmodel.FlowNode);
+                }
             }
             WorkflowDesignerViewModel.SelectedItem = model.FlowNode;
         }
@@ -506,14 +536,17 @@ namespace Dev2.ViewModels.Merge
                     if (currToolModels != null)
                     {
                         var currDefault = currToolModels.LastOrDefault();
-                        _canSave = currDefault != null && currDefault.IsMergeChecked;
+                        _canSave = currDefault != null && currDefault.IsMergeChecked || !conflict.HasConflict;
                     }
-                    var diffMergeToolModels = conflict.DiffViewModel.Children?.Flatten(a => a.Children ?? new ObservableCollection<IMergeToolModel>());
-                    var diffToolModels = diffMergeToolModels as IList<IMergeToolModel> ?? diffMergeToolModels?.ToList();
-                    if (diffToolModels != null)
+                    if (!_canSave)
                     {
-                        var diffToolModel = diffToolModels.LastOrDefault();
-                        _canSave = diffToolModel != null && diffToolModel.IsMergeChecked;
+                        var diffMergeToolModels = conflict.DiffViewModel.Children?.Flatten(a => a.Children ?? new ObservableCollection<IMergeToolModel>());
+                        var diffToolModels = diffMergeToolModels as IList<IMergeToolModel> ?? diffMergeToolModels?.ToList();
+                        if (diffToolModels != null)
+                        {
+                            var diffToolModel = diffToolModels.LastOrDefault();
+                            _canSave = diffToolModel != null && diffToolModel.IsMergeChecked || !conflict.HasConflict;
+                        }
                     }
                 }
             }

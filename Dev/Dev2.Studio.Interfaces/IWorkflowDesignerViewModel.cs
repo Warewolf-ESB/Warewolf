@@ -11,6 +11,7 @@
 using System;
 using System.Activities.Presentation;
 using System.Activities.Presentation.Model;
+using System.Activities.Statements;
 using System.Text;
 using System.Windows;
 using Dev2.Common.Interfaces;
@@ -42,5 +43,7 @@ namespace Dev2.Studio.Interfaces
         void CreateBlankWorkflow();
         void RemoveItem(IMergeToolModel model);
         void AddItem(IMergeToolModel parent, IMergeToolModel model);
+        void ValidateStartNode(ModelItem flowNode);
+        void RemoveStartNodeConnection();
     }
 }
