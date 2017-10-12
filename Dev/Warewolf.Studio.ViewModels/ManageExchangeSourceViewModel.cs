@@ -418,7 +418,7 @@ namespace Warewolf.Studio.ViewModels
         {
             if (_emailServiceSource == null)
             {
-                var resourceID = _emailServiceSource == null ? Guid.NewGuid() : _emailServiceSource.ResourceID;
+                var resourceID = Guid.NewGuid();
                 return new ExchangeSourceDefinition
                     {
                         AutoDiscoverUrl = AutoDiscoverUrl,

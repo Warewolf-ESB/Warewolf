@@ -57,12 +57,10 @@ namespace Dev2.Activities.Designers2.Service
                 }
             }
         }
-        public bool VersionsDifferent
+
+        public void SetVersionsDifferent(bool value)
         {
-            set
-            {
-                _versionsDifferent = value;
-            }
+            _versionsDifferent = value;
         }
         public IDesignValidationService ValidationService => _validationService;
 
