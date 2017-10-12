@@ -11,9 +11,6 @@ using Unlimited.Framework.Converters.Graph;
 
 namespace Dev2.Runtime.ServiceModel.Esb.Brokers
 {
-    /// <summary>
-    /// A Microsoft SQL specific database broker implementation
-    /// </summary>
     public class MySqlDatabaseBroker : AbstractDatabaseBroker<MySqlServer>
     {
         protected override string NormalizeXmlPayload(string payload)
@@ -66,7 +63,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
         public override ServiceMethodList GetServiceMethods(DbSource dbSource)
         {
             VerifyArgument.IsNotNull("dbSource", dbSource);
-)
+
             ServiceMethodList cacheResult;
             if (!dbSource.ReloadActions)
             {
