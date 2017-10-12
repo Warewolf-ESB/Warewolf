@@ -1,0 +1,21 @@
+<Source ID="a2f89cf9-1e25-4853-baa6-ca21b30dfdd3" Name="QLINKHUB" ResourceType="SqlDatabase" IsValid="false" ServerType="SqlDatabase" Type="DbSource" ConnectionString="AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAyRMo3pKhWkubTByirb2JZwQAAAACAAAAAAADZgAAwAAAABAAAADWZnALr1QRHClFaaBfvHs9AAAAAASAAACgAAAAEAAAAHoNPwnvUupipJmR7ao2kdSwAAAA+iUSvfb/yNzXLLUAPAII162d3NY1xGYKsAI5VQHRtB9FtaQyCfEf4wjbao2Waq0zMjIxRWltOVUfPbnuHIBFbf8ccotDoIv2OJMpvo/CFgGEh76G3kGGhA8CR3DF59LEPO9nBNG7CnszemfwUz82nFxTCQVbfU1EpEwl4NfO2jYqv0UZKBuKB7Dw/KQ7AYo0lmlugXEDxde4StnZdoRnJ1WPuWHy2H0zDZra6SNfaI8UAAAAcmzgGGddm3YpB96o3XsHGFa9BvY=" ServerVersion="0.0.6494.25087" ServerID="f84b6b5c-f0fd-4715-99f8-b69e690f5e1f">
+  <DisplayName>QLINKHUB</DisplayName>
+  <AuthorRoles>
+  </AuthorRoles>
+  <ErrorMessages />
+  <AuthorRoles>
+  </AuthorRoles>
+  <Comment>
+  </Comment>
+  <HelpLink>
+  </HelpLink>
+  <Tags>
+  </Tags>
+  <UnitTestTargetWorkflowService>
+  </UnitTestTargetWorkflowService>
+  <BizRule>
+  </BizRule>
+  <WorkflowActivityDef>
+  </WorkflowActivityDef>
+  <VersionInfo DateTimeStamp="2017-06-13T11:57:42.3289418+02:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="a2f89cf9-1e25-4853-baa6-ca21b30dfdd3" VersionId="c46ced01-d4ba-46af-9347-8275cff7a6da" />
+</Source>
