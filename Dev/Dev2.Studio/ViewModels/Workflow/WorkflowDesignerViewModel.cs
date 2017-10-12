@@ -3005,6 +3005,12 @@ namespace Dev2.Studio.ViewModels.Workflow
             _allNodes = parser?.GetAllNodes();
             var nodeToRemove = GetNodeToAmmend(model, true);
 
+            var startNode = chart.Properties["StartNode"];
+            if (startNode?.ComputedValue != null && startNode.ComputedValue == nodeToRemove)
+            {
+                startNode.SetValue(null);
+            }
+
             var step = nodeToRemove?.GetCurrentValue();
             switch (step)
             {

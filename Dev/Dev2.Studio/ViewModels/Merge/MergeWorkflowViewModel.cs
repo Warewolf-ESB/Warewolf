@@ -177,7 +177,10 @@ namespace Dev2.ViewModels.Merge
         {
             WorkflowDesignerViewModel.RemoveItem(model);
             WorkflowDesignerViewModel.AddItem(_previousParent, model);
-            _previousParent = model;
+            if (model.FlowNode != null)
+            {
+                _previousParent = model;
+            }
             WorkflowDesignerViewModel.SelectedItem = model.FlowNode;
         }
 
@@ -485,19 +488,33 @@ namespace Dev2.ViewModels.Merge
             var conflict = Conflicts?.LastOrDefault();
             if (conflict != null)
             {
-                var currMergeToolModels = conflict.CurrentViewModel.Children?.Flatten(a => a.Children ?? new ObservableCollection<IMergeToolModel>());
-                var currToolModels = currMergeToolModels as IList<IMergeToolModel> ?? currMergeToolModels?.ToList();
-                if (currToolModels != null)
+                if (conflict.Children.Count == 0)
                 {
-                    var currDefault = currToolModels.LastOrDefault();
-                    _canSave = currDefault != null && currDefault.IsMergeChecked;
+                    if (conflict.CurrentViewModel != null && conflict.CurrentViewModel.IsMergeChecked)
+                    {
+                        _canSave = true;
+                    }
+                    if (conflict.DiffViewModel != null && conflict.DiffViewModel.IsMergeChecked)
+                    {
+                        _canSave = true;
+                    }
                 }
-                var diffMergeToolModels = conflict.DiffViewModel.Children?.Flatten(a => a.Children ?? new ObservableCollection<IMergeToolModel>());
-                var diffToolModels = diffMergeToolModels as IList<IMergeToolModel> ?? diffMergeToolModels?.ToList();
-                if (diffToolModels != null)
+                else
                 {
-                    var diffToolModel = diffToolModels.LastOrDefault();
-                    _canSave = diffToolModel != null && diffToolModel.IsMergeChecked;
+                    var currMergeToolModels = conflict.CurrentViewModel.Children?.Flatten(a => a.Children ?? new ObservableCollection<IMergeToolModel>());
+                    var currToolModels = currMergeToolModels as IList<IMergeToolModel> ?? currMergeToolModels?.ToList();
+                    if (currToolModels != null)
+                    {
+                        var currDefault = currToolModels.LastOrDefault();
+                        _canSave = currDefault != null && currDefault.IsMergeChecked;
+                    }
+                    var diffMergeToolModels = conflict.DiffViewModel.Children?.Flatten(a => a.Children ?? new ObservableCollection<IMergeToolModel>());
+                    var diffToolModels = diffMergeToolModels as IList<IMergeToolModel> ?? diffMergeToolModels?.ToList();
+                    if (diffToolModels != null)
+                    {
+                        var diffToolModel = diffToolModels.LastOrDefault();
+                        _canSave = diffToolModel != null && diffToolModel.IsMergeChecked;
+                    }
                 }
             }
             return _canSave;
