@@ -202,14 +202,14 @@ namespace Dev2.Tests.Activities.ActivityTests
             var dateTimeInformation = activity.GetCorrectSystemInformation(enTypeOfSystemInformationToGather.FullDateTime);
             //------------Assert Results-------------------------
             DateTime result = DateTime.Parse(dateTimeInformation);
-            if(result.Millisecond == 0)
+            if(result.Second == 0)
             {
                 Thread.Sleep(10);
                 dateTimeInformation = activity.GetCorrectSystemInformation(enTypeOfSystemInformationToGather.FullDateTime);
                 result = DateTime.Parse(dateTimeInformation);
                 Assert.IsTrue(result.Millisecond > 0);
             }
-            Assert.IsTrue(result.Millisecond > 0);
+            Assert.IsTrue(result.Second > 0);
         }
 
         [TestMethod]
