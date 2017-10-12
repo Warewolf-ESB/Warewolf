@@ -88,9 +88,12 @@ namespace Dev2
                     {
                         dataObject.Environment.AssignJson(new AssignValue(variable, value), update);
                     }
-                    else if (!DataListUtil.IsValueRecordset(output.Variable))
+                    else
                     {
-                        dataObject.Environment.Assign(variable, value, 0);
+                        if (!DataListUtil.IsValueRecordset(output.Variable))
+                        {
+                            dataObject.Environment.Assign(variable, value, 0);
+                        }
                     }
                     if (dataObject.IsServiceTestExecution)
                     {

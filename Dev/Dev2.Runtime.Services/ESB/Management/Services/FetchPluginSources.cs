@@ -61,10 +61,13 @@ namespace Dev2.Runtime.ESB.Management.Services
                         pluginSourceDefinition.FileSystemAssemblyName = res.AssemblyLocation;
                         pluginSourceDefinition.GACAssemblyName = string.Empty;
                     }
-                    else if (!string.IsNullOrEmpty(res.AssemblyLocation) && res.AssemblyLocation.StartsWith("GAC:"))
+                    else
                     {
-                        pluginSourceDefinition.GACAssemblyName = res.AssemblyLocation;
-                        pluginSourceDefinition.FileSystemAssemblyName = string.Empty;
+                        if (!string.IsNullOrEmpty(res.AssemblyLocation) && res.AssemblyLocation.StartsWith("GAC:"))
+                        {
+                            pluginSourceDefinition.GACAssemblyName = res.AssemblyLocation;
+                            pluginSourceDefinition.FileSystemAssemblyName = string.Empty;
+                        }
                     }
                     return pluginSourceDefinition;
                 }

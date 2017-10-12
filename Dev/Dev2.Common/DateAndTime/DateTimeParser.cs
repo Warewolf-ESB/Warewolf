@@ -186,9 +186,12 @@ namespace Dev2.Common.DateAndTime
                 {
                     forwardLookupLength = DateTimeLiteralProcessor.ProcessInsideLiteral(formatParts, ref error, currentChar, formatArray, count, forwardLookupLength, ref currentValue, ref literalRegionState);
                 }
-                else if (literalRegionState == LiteralRegionStates.InsideLiteralRegionWithEscape)
+                else
                 {
-                    literalRegionState = DateTimeLiteralProcessor.ProcessInsideEscapedLiteral(ref error, currentChar, literalRegionState, ref currentValue, ref nothingDied);
+                    if (literalRegionState == LiteralRegionStates.InsideLiteralRegionWithEscape)
+                    {
+                        literalRegionState = DateTimeLiteralProcessor.ProcessInsideEscapedLiteral(ref error, currentChar, literalRegionState, ref currentValue, ref nothingDied);
+                    }
                 }
 
                 count++;
@@ -203,10 +206,13 @@ namespace Dev2.Common.DateAndTime
             {
                 formatParts.Add(new DateTimeFormatPartTO(currentValue, true, ""));
             }
-            else if (currentValue.Length > 0)
+            else
             {
-                nothingDied = false;
-                error = "A \' character defines a start or end of a non date time region, there apears to be a extra \' character.";
+                if (currentValue.Length > 0)
+                {
+                    nothingDied = false;
+                    error = "A \' character defines a start or end of a non date time region, there apears to be a extra \' character.";
+                }
             }
 
             return nothingDied;

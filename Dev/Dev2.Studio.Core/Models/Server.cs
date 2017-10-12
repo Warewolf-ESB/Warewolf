@@ -179,9 +179,12 @@ namespace Dev2.Studio.Core.Models
                     {
                         displayName += Warewolf.Studio.Resources.Languages.Core.ConnectedLabel;
                     }
-                    else if (!IsConnected && (HasLoaded || !Connection.IsLocalHost))
+                    else
                     {
-                        displayName = Connection.DisplayName.Replace("(Connected)", "");
+                        if (!IsConnected && (HasLoaded || !Connection.IsLocalHost))
+                        {
+                            displayName = Connection.DisplayName.Replace("(Connected)", "");
+                        }
                     }
                     return displayName;
                 }

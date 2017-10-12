@@ -144,9 +144,12 @@ namespace Dev2.Data.Util
             {
                 return result.Replace(DataListUtil.RecordsetIndexClosingBracket, inject);
             }
-            else if (!result.EndsWith(EmptyBrackets))
+            else
             {
-                result = string.Concat(result, inject);
+                if (!result.EndsWith(EmptyBrackets))
+                {
+                    result = string.Concat(result, inject);
+                }
             }
             return result;
         }

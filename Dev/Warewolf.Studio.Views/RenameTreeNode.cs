@@ -83,11 +83,13 @@ namespace Warewolf.Studio.Views
                     {
                         _tree.EnterEditMode(_node);
                     }
-                    else if (_tree.ActiveNode != null)
+                    else
                     {
-                        _tree.EnterEditMode(_tree.ActiveNode);
-                    }
-                    
+                        if (_tree.ActiveNode != null)
+                        {
+                            _tree.EnterEditMode(_tree.ActiveNode);
+                        }
+                    }                    
                 }
             }
         }

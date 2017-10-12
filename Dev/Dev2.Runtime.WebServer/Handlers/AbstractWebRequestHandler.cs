@@ -148,9 +148,12 @@ namespace Dev2.Runtime.WebServer.Handlers
                 Common.Utilities.PerformActionInsideImpersonatedContext(userPrinciple, () => { executionDlid = esbEndpoint.ExecuteRequest(dataObject, esbExecuteRequest, workspaceGuid, out errors); });
                 allErrors.MergeErrors(errors);
             }
-            else if (!canExecute)
+            else
             {
-                allErrors.AddError("Executing a service externally requires View and Execute permissions");
+                if (!canExecute)
+                {
+                    allErrors.AddError("Executing a service externally requires View and Execute permissions");
+                }
             }
 
             formatter = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json");
@@ -283,9 +286,9 @@ namespace Dev2.Runtime.WebServer.Handlers
                 {
                     pairs.Add(keyValue[0], keyValue[1]);
                 }
-                else if (keyValue.Length == 1)
+                else
                 {
-                    if (keyValue[0].IsXml() || keyValue[0].IsJSON())
+                    if (keyValue.Length == 1 && (keyValue[0].IsXml() || keyValue[0].IsJSON()))
                     {
                         pairs.Add(keyValue[0], keyValue[0]);
                     }
