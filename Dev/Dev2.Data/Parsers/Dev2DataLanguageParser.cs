@@ -625,9 +625,9 @@ namespace Dev2.Data.Parsers
                 IDataListVerifyPart part = IntellisenseFactory.CreateDataListValidationRecordsetPart(partName, parts[1], "");
                 result.Add(IntellisenseFactory.CreateErrorResult(payload.StartIndex, parts[0].Length - 1, part, DataListUtil.OpeningSquareBrackets + display + "]] does not exist in your variable list", enIntellisenseErrorCode.NeitherRecordsetNorFieldFound, !payload.HangingOpen));
             }
-            else if (recordsetPart.Children != null && recordsetPart.Children.Count > 0)
+            else
             {
-                if (ProcessFieldsForRecordSet(payload, addCompleteParts, result, parts, out search, out emptyOk, display, recordsetPart, partName))
+                if (recordsetPart.Children != null && recordsetPart.Children.Count > 0 && ProcessFieldsForRecordSet(payload, addCompleteParts, result, parts, out search, out emptyOk, display, recordsetPart, partName))
                 {
                     return search;
                 }
@@ -784,15 +784,18 @@ namespace Dev2.Data.Parsers
             {
                 emptyOk = rawSearch.Contains(DataListUtil.RecordsetIndexOpeningBracket) && rawSearch.Contains(DataListUtil.RecordsetIndexClosingBracket) ? RecordsetMatch(payload, addCompleteParts, result, rawSearch, search, emptyOk, parts, t1) : ProcessForChild(payload, refParts, result, search, t1);
             }
-            else if (match == search && !isRs)
+            else
             {
-                if (t1.Children != null && t1.Children.Count > 0)
+                if (match == search && !isRs)
                 {
-                    ReturnFieldMatchForRecordSet(payload, result, t1);
-                }
-                else
-                {
-                    emptyOk = HandleScalarMatches(payload, addCompleteParts, result, search, t1, match);
+                    if (t1.Children != null && t1.Children.Count > 0)
+                    {
+                        ReturnFieldMatchForRecordSet(payload, result, t1);
+                    }
+                    else
+                    {
+                        emptyOk = HandleScalarMatches(payload, addCompleteParts, result, search, t1, match);
+                    }
                 }
             }
             return emptyOk;

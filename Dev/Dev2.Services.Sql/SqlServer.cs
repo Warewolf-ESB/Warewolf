@@ -194,10 +194,13 @@ namespace Dev2.Services.Sql
                         {
                             functionProcessor(sqlCommand, parameters, helpText, fullProcedureName);
                         }
-                        else if (IsTableValueFunction(row, procedureTypeColumn))
+                        else
                         {
-                            functionProcessor(sqlCommand, parameters, helpText,
-                                CreateTVFCommand(fullProcedureName, parameters));
+                            if (IsTableValueFunction(row, procedureTypeColumn))
+                            {
+                                functionProcessor(sqlCommand, parameters, helpText,
+                                    CreateTVFCommand(fullProcedureName, parameters));
+                            }
                         }
                     }
                     catch (Exception e)

@@ -37,20 +37,20 @@ namespace Dev2.Studio.AppResources.Behaviors
             UIElement keyboardFocus = Keyboard.FocusedElement as UIElement;
             if (e.Key == Key.Up)
             {
-                if(keyboardFocus != null)
+                if (keyboardFocus != null)
                 {
                     try
                     {
                         keyboardFocus.MoveFocus(new TraversalRequest(FocusNavigationDirection.Up));
 
                         UIElement newKeyboardFocusTreeItem = Keyboard.FocusedElement as TreeViewItem ?? (UIElement)(Keyboard.FocusedElement as CheckBox);
-                        while(newKeyboardFocusTreeItem != null)
+                        while (newKeyboardFocusTreeItem != null)
                         {
                             newKeyboardFocusTreeItem.MoveFocus(new TraversalRequest(FocusNavigationDirection.Up));
                             newKeyboardFocusTreeItem = Keyboard.FocusedElement as TreeViewItem ?? (UIElement)(Keyboard.FocusedElement as CheckBox);
                         }
                     }
-                    catch(StackOverflowException)
+                    catch (StackOverflowException)
                     {
                         //
                     }
@@ -69,13 +69,13 @@ namespace Dev2.Studio.AppResources.Behaviors
                         keyboardFocus.MoveFocus(new TraversalRequest(FocusNavigationDirection.Down));
 
                         UIElement newKeyboardFocusTreeItem = Keyboard.FocusedElement as TreeViewItem ?? (UIElement)(Keyboard.FocusedElement as CheckBox);
-                        while(newKeyboardFocusTreeItem != null)
+                        while (newKeyboardFocusTreeItem != null)
                         {
                             newKeyboardFocusTreeItem.MoveFocus(new TraversalRequest(FocusNavigationDirection.Down));
                             newKeyboardFocusTreeItem = Keyboard.FocusedElement as TreeViewItem ?? (UIElement)(Keyboard.FocusedElement as CheckBox);
                         }
                     }
-                    catch(StackOverflowException)
+                    catch (StackOverflowException)
                     {
                         //
                     }
@@ -105,7 +105,7 @@ namespace Dev2.Studio.AppResources.Behaviors
                 {
                     keyboardFocus.MoveFocus(new TraversalRequest(FocusNavigationDirection.Previous));
                     UIElement newKeyboardFocus = Keyboard.FocusedElement as TreeViewItem;
-                    while(newKeyboardFocus != null)
+                    while (newKeyboardFocus != null)
                     {
                         newKeyboardFocus.MoveFocus(new TraversalRequest(FocusNavigationDirection.Previous));
                         newKeyboardFocus = Keyboard.FocusedElement as TreeViewItem;
@@ -113,18 +113,21 @@ namespace Dev2.Studio.AppResources.Behaviors
                     e.Handled = true;
                 }
             }
-            else if(e.KeyboardDevice.IsKeyDown(Key.Tab))
+            else
             {
-                if (keyboardFocus != null)
+                if (e.KeyboardDevice.IsKeyDown(Key.Tab))
                 {
-                    keyboardFocus.MoveFocus(new TraversalRequest(FocusNavigationDirection.Next));
-                    UIElement newKeyboardFocus = Keyboard.FocusedElement as TreeViewItem;
-                    while(newKeyboardFocus != null)
+                    if (keyboardFocus != null)
                     {
-                        newKeyboardFocus.MoveFocus(new TraversalRequest(FocusNavigationDirection.Next));
-                        newKeyboardFocus = Keyboard.FocusedElement as TreeViewItem;
+                        keyboardFocus.MoveFocus(new TraversalRequest(FocusNavigationDirection.Next));
+                        UIElement newKeyboardFocus = Keyboard.FocusedElement as TreeViewItem;
+                        while (newKeyboardFocus != null)
+                        {
+                            newKeyboardFocus.MoveFocus(new TraversalRequest(FocusNavigationDirection.Next));
+                            newKeyboardFocus = Keyboard.FocusedElement as TreeViewItem;
+                        }
+                        e.Handled = true;
                     }
-                    e.Handled = true;
                 }
             }
         }

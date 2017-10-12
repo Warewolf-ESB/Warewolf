@@ -1750,9 +1750,12 @@ namespace Warewolf.Studio.ViewModels
                     }
                 }
             }
-            else if (destination.ResourceType == "ServerSource")
+            else
             {
-                ResourcePath = destination.ResourcePath + (destination.ResourcePath == string.Empty ? "" : "\\") + ResourceName;
+                if (destination.ResourceType == "ServerSource")
+                {
+                    ResourcePath = destination.ResourcePath + (destination.ResourcePath == string.Empty ? "" : "\\") + ResourceName;
+                }
             }
         }
 

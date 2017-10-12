@@ -472,18 +472,21 @@ namespace Dev2.Studio.ViewModels.Workflow
                         }
                     }
                 }
-                else if (numberOfRows > 2)
+                else
                 {
-                    IEnumerable<IDataListItem> listToChange = WorkflowInputs.Where(c => c.Index == (numberOfRows - 1).ToString(CultureInfo.InvariantCulture) && c.Recordset == itemToRemove.Recordset);
-                    foreach (IDataListItem item in listToChange)
+                    if (numberOfRows > 2)
                     {
-                        item.Value = string.Empty;
-                    }
-                    foreach (IDataListItem item in listToRemove)
-                    {
-                        WorkflowInputs.Remove(item);
-                        indexToSelect = UpdateIndexToSelect(itemToRemove, item);
-                        itemsRemoved = true;
+                        IEnumerable<IDataListItem> listToChange = WorkflowInputs.Where(c => c.Index == (numberOfRows - 1).ToString(CultureInfo.InvariantCulture) && c.Recordset == itemToRemove.Recordset);
+                        foreach (IDataListItem item in listToChange)
+                        {
+                            item.Value = string.Empty;
+                        }
+                        foreach (IDataListItem item in listToRemove)
+                        {
+                            WorkflowInputs.Remove(item);
+                            indexToSelect = UpdateIndexToSelect(itemToRemove, item);
+                            itemsRemoved = true;
+                        }
                     }
                 }
             }

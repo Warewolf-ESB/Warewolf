@@ -510,20 +510,23 @@ namespace Dev2.Studio.Views
         {
             var dockManager = sender as XamDockManager;
             string displayName = string.Empty;
-            if (dockManager?.DataContext.GetType() == typeof (WorkflowDesignerViewModel))
+            if (dockManager?.DataContext.GetType() == typeof(WorkflowDesignerViewModel))
             {
                 var workflowDesignerViewModel = dockManager.DataContext as WorkflowDesignerViewModel;
                 displayName = workflowDesignerViewModel?.DisplayName;
             }
-            else if (dockManager?.DataContext.GetType() == typeof (StudioTestViewModel))
+            else if (dockManager?.DataContext.GetType() == typeof(StudioTestViewModel))
             {
                 var studioTestViewModel = dockManager.DataContext as StudioTestViewModel;
                 displayName = studioTestViewModel?.DisplayName;
             }
-            else if (dockManager?.DataContext.GetType() == typeof (SchedulerViewModel))
+            else
             {
-                var schedulerViewModel = dockManager.DataContext as SchedulerViewModel;
-                displayName = schedulerViewModel?.DisplayName;
+                if (dockManager?.DataContext.GetType() == typeof(SchedulerViewModel))
+                {
+                    var schedulerViewModel = dockManager.DataContext as SchedulerViewModel;
+                    displayName = schedulerViewModel?.DisplayName;
+                }
             }
             SetPaneToolWindowTitle(displayName);
         }
