@@ -66,8 +66,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
         public override ServiceMethodList GetServiceMethods(DbSource dbSource)
         {
             VerifyArgument.IsNotNull("dbSource", dbSource);
-
-            // Check the cache for a value ;)
+)
             ServiceMethodList cacheResult;
             if (!dbSource.ReloadActions)
             {
@@ -76,40 +75,29 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
                     return cacheResult;
                 }
             }
-            // else reload actions ;)
 
             var serviceMethods = new ServiceMethodList();
-
-            //
-            // Function to handle procedures returned by the data broker
-            //
+            
             Func<IDbCommand, IList<IDbDataParameter>, IList<IDbDataParameter>, string, string, bool> procedureFunc = (command, parameters, outparameters, helpText, executeAction) =>
             {
                 var serviceMethod = CreateServiceMethod(command, parameters, outparameters, helpText, executeAction);
                 serviceMethods.Add(serviceMethod);
                 return true;
             };
-
-            //
-            // Function to handle functions returned by the data broker
-            //
+            
             Func<IDbCommand, IList<IDbDataParameter>, IList<IDbDataParameter>, string, string, bool> functionFunc = (command, parameters, outparameters, helpText, executeAction) =>
             {
                 var serviceMethod = CreateServiceMethod(command, parameters, outparameters, helpText, executeAction);
                 serviceMethods.Add(serviceMethod);
                 return true;
             };
-
-            //
-            // Get stored procedures and functions for this database source
-            //
+            
             using (var server = CreateDbServer(dbSource))
             {
                 server.Connect(dbSource.ConnectionString);
                 server.FetchStoredProcedures(procedureFunc, functionFunc, false, dbSource.DatabaseName);
             }
-
-            // Add to cache ;)
+            
             TheCache.AddOrUpdate(dbSource.ConnectionString, serviceMethods, (s, list) => serviceMethods);
 
             return GetCachedResult(dbSource, out cacheResult) ? cacheResult : serviceMethods;
