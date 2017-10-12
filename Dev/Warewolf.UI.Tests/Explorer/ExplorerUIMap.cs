@@ -23,6 +23,7 @@ using Warewolf.UI.Tests.EmailSource.EmailSourceUIMapClasses;
 using Warewolf.UI.Tests.ExchangeSource.ExchangeSourceUIMapClasses;
 using Warewolf.UI.Tests.Deploy.DeployUIMapClasses;
 using Warewolf.UI.Tests.DependencyGraph.DependencyGraphUIMapClasses;
+using Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses;
 
 namespace Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses
 {
@@ -1149,7 +1150,30 @@ namespace Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses
             MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Expanded = true;
         }
 
+        [Given(@"I Click Merge From Context Menu")]
+        [When(@"I Click Merge From Context Menu")]
+        [Then(@"I Click Merge From Context Menu")]
+        public void Click_Merge_From_Context_Menu()
+        {
+            Mouse.Click(UIMap.MainStudioWindow.ExplorerContextMenu.Merge);
+            Assert.IsTrue(MergeConflictsUIMap.MergeDialogViewWindow.Exists, "Merge Popup window did not Open after clicking merge.");
+        }
+
         #region UIMaps
+        public MergeConflictsUIMap MergeConflictsUIMap
+        {
+            get
+            {
+                if (_MergeConflictsUIMap == null)
+                {
+                    _MergeConflictsUIMap = new MergeConflictsUIMap();
+                }
+
+                return _MergeConflictsUIMap;
+            }
+        }
+
+        private MergeConflictsUIMap _MergeConflictsUIMap;
         WorkflowTabUIMap WorkflowTabUIMap
         {
             get
