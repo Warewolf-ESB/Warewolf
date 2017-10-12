@@ -33,6 +33,35 @@ namespace Warewolf.UI.Tests.Merge
 
             Mouse.Click(MergeConflictsUIMap.MergeDialogViewWindow.MergeButton);
             Assert.IsTrue(MergeConflictsUIMap.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.Exists);
+            Assert.IsTrue(MergeConflictsUIMap.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.UIUserControl_1Custom.UIScrollViewerPane.UIActivityBuilderCustom.UIWorkflowItemPresenteCustom.UIFlowchartCustom.Exists, "Workflow surface did not open.");
+        }
+
+
+        [TestMethod]
+        [TestCategory("Merge")]
+        public void Click_On_Assign_From_The_Difference_List_Adds_Assign_To_The_Workflow()
+        {
+            OpenMerge_For_MergWfWithVersion();
+            MergeConflictsUIMap.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.ScrollViewerPane.ConflictsTree.MergeTreeItem.MergeItemExpander.MergeButton.FirstAssign_Difference.Selected = true;
+            Assert.IsTrue(MergeConflictsUIMap.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.UIUserControl_1Custom.UIScrollViewerPane.UIActivityBuilderCustom.UIWorkflowItemPresenteCustom.UIFlowchartCustom.FirstAssign_Diff_On_Surface.Exists, "Assig tool from difference was not added to the design surface.");
+        }
+
+        [TestMethod]
+        [TestCategory("Merge")]
+        public void Click_On_Assign_From_The_Current_List_Removes_Assign_On_The_Workflow()
+        {
+            OpenMerge_For_MergWfWithVersion();
+            MergeConflictsUIMap.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.ScrollViewerPane.ConflictsTree.MergeTreeItem.MergeItemExpander.MergeButton.FirstAssign_Difference.Selected = true;
+            Assert.IsTrue(MergeConflictsUIMap.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.UIUserControl_1Custom.UIScrollViewerPane.UIActivityBuilderCustom.UIWorkflowItemPresenteCustom.UIFlowchartCustom.FirstAssign_Diff_On_Surface.Exists, "Assig tool from difference was not added to the design surface.");
+            MergeConflictsUIMap.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.ScrollViewerPane.ConflictsTree.MergeTreeItem.MergeItemExpander.MergeButton.FirstAssign_Current.Selected = true;
+            Assert.IsFalse(MergeConflictsUIMap.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.ScrollViewerPane.ConflictsTree.MergeTreeItem.MergeItemExpander.MergeButton.FirstAssign_Difference.Selected);
+        }
+        private void OpenMerge_For_MergWfWithVersion()
+        {
+            RightClick_On_MergeWfWithVersion(MergeWfWithVersion);
+            ExplorerUIMap.Click_Merge_From_Context_Menu();
+            MergeConflictsUIMap.MergeDialogViewWindow.MergeResourceVersionList.WarewolfStudioViewMoListItem.ItemRadioButton.Selected = true;
+            Mouse.Click(MergeConflictsUIMap.MergeDialogViewWindow.MergeButton);
         }
 
         public void RightClick_On_MergeWfWithVersion(string workflow)
@@ -40,6 +69,7 @@ namespace Warewolf.UI.Tests.Merge
             ExplorerUIMap.Filter_Explorer(workflow);
             ExplorerUIMap.RightClick_Explorer_Localhost_FirstItem();
         }
+
         #region Additional test attributes
 
         [TestInitialize]
