@@ -55,7 +55,7 @@ namespace Dev2.MathOperations
 
                 try
                 {
-                    CalculationValue value = _manager.CalculateFormula(expression);
+                    var value = _manager.CalculateFormula(expression);
                     if(value.IsError)
                     {
                         error = value.ToErrorValue().Message;
@@ -64,10 +64,8 @@ namespace Dev2.MathOperations
                     {
                         if(value.IsDateTime)
                         {
-                            DateTime dateTime = value.ToDateTime();
-                            string shortPattern = CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern;
-                            string longPattern = CultureInfo.CurrentCulture.DateTimeFormat.LongTimePattern;
-                            string finalPattern = shortPattern + " " + longPattern;
+                            var dateTime = value.ToDateTime();                            
+                            var finalPattern = GlobalConstants.Dev2DotNetDefaultDateTimeFormat;
                             if(finalPattern.Contains("ss"))
                             {
                                 finalPattern = finalPattern.Insert(finalPattern.IndexOf("ss", StringComparison.Ordinal) + 2, ".fff");

@@ -105,7 +105,7 @@ namespace Dev2.Activities
 
         public string GetFullDateTimeInformation()
         {
-            return DateTime.Now.ToString(GlobalConstants.GlobalDefaultNowFormat);
+            return DateTime.Now.ToString(GlobalConstants.Dev2DotNetDefaultDateTimeFormat);
         }
 
         public string GetDateTimeFormatInformation()

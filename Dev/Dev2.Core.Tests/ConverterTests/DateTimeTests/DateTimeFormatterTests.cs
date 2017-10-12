@@ -238,7 +238,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             dateTimeTO.InputFormat = null;
             dateTimeTO.OutputFormat = @"yyyy'/'mm'/'dd' '12h':'min':'ss' 'am/pm";
             formatter.TryFormat(dateTimeTO, out string result, out string errorMsg);
-            const string expected = "2013/05/06 10:29:50 AM";
+            const string expected = "2013/06/05 10:29:50 AM";
 
             Assert.AreEqual(expected, result, "Date time did not default input format to en-US");
         }
@@ -253,7 +253,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             dateTimeTO.InputFormat = null;
             dateTimeTO.OutputFormat = @"yyyy'/'mm'/'dd' '12h':'min':'ss' 'am/pm";
             formatter.TryFormat(dateTimeTO, out string result, out string errorMsg);
-            const string expected = "2013/05/06 10:29:50 AM";
+            const string expected = "2013/06/05 10:29:50 AM";
 
             Assert.AreEqual(expected, result, "Date time did not default input format to invariant culture");
         }
