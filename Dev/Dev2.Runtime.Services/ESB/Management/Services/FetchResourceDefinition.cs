@@ -9,28 +9,18 @@
 */
 
 using System;
-using System.Linq;
 using System.Collections.Generic;
-using System.Security.Cryptography;
 using System.Text;
 using Dev2.Common;
-using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
-using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
-using Dev2.Runtime.ServiceModel.Data;
-using Dev2.Util;
 using Dev2.Workspaces;
-using Dev2.Common.Utils;
-using System.Text.RegularExpressions;
 using Dev2.Common.Interfaces.Enums;
-using Warewolf.Resource.Errors;
-using Warewolf.Security.Encryption;
-
-
-
+using Dev2.Common.Interfaces;
+using Dev2.Runtime.Interfaces;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -39,6 +29,9 @@ namespace Dev2.Runtime.ESB.Management.Services
     /// </summary>
     public class FetchResourceDefinition : IEsbManagementEndpoint
     {
+        private readonly IResourceDefinationCleaner resourceDefinationCleaner;
+        private readonly IResourceCatalog resourceCatalog;
+
         public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
         {
             requestArgs.TryGetValue("ResourceID", out StringBuilder tmp);
@@ -58,6 +51,16 @@ namespace Dev2.Runtime.ESB.Management.Services
             return AuthorizationContext.View;
         }
 
+        [ExcludeFromCodeCoverage]
+        public FetchResourceDefinition() : this(new ResourceDefinationCleaner(), ResourceCatalog.Instance)
+        {
+
+        }
+        public FetchResourceDefinition(IResourceDefinationCleaner resourceDefinationCleaner, IResourceCatalog resourceCatalog)
+        {
+            this.resourceDefinationCleaner = resourceDefinationCleaner;
+            this.resourceCatalog = resourceCatalog;
+        }
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             try
@@ -81,8 +84,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 Guid.TryParse(serviceId, out Guid resourceId);
 
                 Dev2Logger.Info($"Fetch Resource definition. ResourceId: {resourceId}", GlobalConstants.WarewolfInfo);
-                ResourceDefinationCleaner resourceDefinationCleaner = new ResourceDefinationCleaner();
-                var result = ResourceCatalog.Instance.GetResourceContents(theWorkspace.ID, resourceId);
+                var result = resourceCatalog.GetResourceContents(theWorkspace.ID, resourceId);
                 var resourceDefinition = resourceDefinationCleaner.GetResourceDefinition(prepairForDeployment, resourceId, result);
 
                 return resourceDefinition;
@@ -92,53 +94,13 @@ namespace Dev2.Runtime.ESB.Management.Services
                 Dev2Logger.Error(err, GlobalConstants.WarewolfError);
                 throw;
             }
-        } 
+        }
 
-     
+
 
         public StringBuilder DecryptAllPasswords(StringBuilder stringBuilder)
         {
-            Dictionary<string, StringTransform> replacements = new Dictionary<string, StringTransform>
-                                                               {
-                                                                   {
-                                                                       "Source", new StringTransform
-                                                                                 {
-                                                                                     SearchRegex = new Regex(@"<Source ID=""[a-fA-F0-9\-]+"" .*ConnectionString=""([^""]+)"" .*>"),
-                                                                                     GroupNumbers = new[] { 1 },
-                                                                                     TransformFunction = DpapiWrapper.DecryptIfEncrypted
-                                                                                 }
-                                                                   },
-                                                                   {
-                                                                       "DsfAbstractFileActivity", new StringTransform
-                                                                                                  {
-                                                                                                      SearchRegex = new Regex(@"&lt;([a-zA-Z0-9]+:)?(DsfFileWrite|DsfFileRead|DsfFolderRead|DsfPathCopy|DsfPathCreate|DsfPathDelete|DsfPathMove|DsfPathRename|DsfZip|DsfUnzip) .*?Password=""([^""]+)"" .*?&gt;"),
-                                                                                                      GroupNumbers = new[] { 3 },
-                                                                                                      TransformFunction = DpapiWrapper.DecryptIfEncrypted
-                                                                                                  }
-                                                                   },
-                                                                   {
-                                                                       "DsfAbstractMultipleFilesActivity", new StringTransform
-                                                                                                           {
-                                                                                                               SearchRegex = new Regex(@"&lt;([a-zA-Z0-9]+:)?(DsfPathCopy|DsfPathMove|DsfPathRename|DsfZip|DsfUnzip) .*?DestinationPassword=""([^""]+)"" .*?&gt;"),
-                                                                                                               GroupNumbers = new[] { 3 },
-                                                                                                               TransformFunction = DpapiWrapper.DecryptIfEncrypted
-                                                                                                           }
-                                                                   },
-                                                                   {
-                                                                       "Zip", new StringTransform
-                                                                              {
-                                                                                  SearchRegex = new Regex(@"&lt;([a-zA-Z0-9]+:)?(DsfZip|DsfUnzip) .*?ArchivePassword=""([^""]+)"" .*?&gt;"),
-                                                                                  GroupNumbers = new[] { 3 },
-                                                                                  TransformFunction = DpapiWrapper.DecryptIfEncrypted
-                                                                              }
-                                                                   }
-                                                               };
-            string xml = stringBuilder.ToString();
-            StringBuilder output = new StringBuilder();
-
-            xml = StringTransform.TransformAllMatches(xml, replacements.Values.ToList());
-            output.Append(xml);
-            return output;
+            return resourceDefinationCleaner.DecryptAllPasswords(stringBuilder);
         }
 
         public DynamicService CreateServiceEntry()
