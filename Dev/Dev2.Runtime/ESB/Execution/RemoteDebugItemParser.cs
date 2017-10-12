@@ -18,15 +18,14 @@ namespace Dev2.Runtime.ESB.Execution
 {
     public class RemoteDebugItemParser
     {
-        /// <summary>
-        /// Parses the items.
-        /// </summary>
-        /// <param name="data">The data.</param>
+        protected RemoteDebugItemParser()
+        {
+        }
+
         public static IList<IDebugState> ParseItems(string data)
         {
             try
             {
-                // Amend for namespace change ;)
                 var parseData = data.Replace("Dev2.Diagnostics.DebugState", "Dev2.Diagnostics.Debug.DebugState");
                 Dev2JsonSerializer serializer = new Dev2JsonSerializer();
                 IList<IDebugState> debugItems = serializer.Deserialize<List<IDebugState>>(parseData);
