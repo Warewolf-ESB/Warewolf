@@ -140,7 +140,7 @@ namespace Dev2.Studio
 #endif
         }
 
-        public static ISplashView SplashView;
+        private static ISplashView splashView;
 
         private ManualResetEvent _resetSplashCreated;
         private Thread _splashThread;
@@ -334,6 +334,8 @@ namespace Dev2.Studio
                 _hasShutdownStarted = value;
             }
         }
+
+        public static ISplashView SplashView { get => splashView; set => splashView = value; }
 
         private void OnApplicationDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {

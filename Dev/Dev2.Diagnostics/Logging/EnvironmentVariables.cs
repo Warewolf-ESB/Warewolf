@@ -15,22 +15,13 @@ using System.Text;
 
 
 namespace Dev2.Common
-
 {
-    /// <summary>
-    /// Environment Variables to be used in the Server
-    /// </summary>
     public static class EnvironmentVariables
     {
 
         private static string _appPath;
         private static readonly string DataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData, Environment.SpecialFolderOption.Create), "Warewolf");
-        /// <summary>
-        /// Gets the application path.
-        /// </summary>
-        /// <value>
-        /// The application path.
-        /// </value>
+        
         public static string ApplicationPath
         {
             get
@@ -135,13 +126,7 @@ namespace Dev2.Common
         }
 
         public static string ServerLogFile => Path.Combine(AppDataPath, "Server Log", "warewolf-Server.log");
-
-        /// <summary>
-        /// Gets the workspace path.
-        /// </summary>
-        /// <value>
-        /// The workspace path.
-        /// </value>
+        
         public static string WorkspacePath
         {
             get
@@ -154,12 +139,7 @@ namespace Dev2.Common
                 return workspacePath;
             }
         }
-
-        /// <summary>
-        /// Gets the workspace path.
-        /// </summary>
-        /// <param name="workspaceID">The workspace ID.</param>
-        /// <returns></returns>
+        
         public static string GetWorkspacePath(Guid workspaceID)
         {
             return workspaceID == Guid.Empty
@@ -170,25 +150,14 @@ namespace Dev2.Common
         public static bool IsServerOnline { get; set; }
 
         private static string _rootPath;
-        /// <summary>
-        /// Gets the root persistence path.
-        /// </summary>
-        /// <value>
-        /// The root persistence path.
-        /// </value>
+        
         public static string RootPersistencePath => _rootPath ?? (_rootPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), @"Warewolf"));
-
-
-        /// <summary>
-        /// Gets the encoding for character maps.
-        /// </summary>
-        /// <param></param>
-        /// <returns name="Encoding"></returns>
+        
         public struct CharacterMap
         {
-            public static Encoding DefaultEncoding = Encoding.ASCII;
-            public static int LettersStartNumber = 97;
-            public static int LettersLength = 26;
+            public static readonly Encoding DefaultEncoding = Encoding.ASCII;
+            public static readonly int LettersStartNumber = 97;
+            public static readonly int LettersLength = 26;
         }
 
         private static readonly Guid RemoteID = Guid.NewGuid();
