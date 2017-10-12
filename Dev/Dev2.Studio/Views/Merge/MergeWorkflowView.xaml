@@ -5,12 +5,12 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:customcontrols="clr-namespace:Dev2.CustomControls"
              xmlns:customcontrols1="clr-namespace:Warewolf.Studio.CustomControls;assembly=Warewolf.Studio.CustomControls"
-             xmlns:interfaces="clr-namespace:Dev2.Common.Interfaces;assembly=Dev2.Common.Interfaces"
              xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
              xmlns:datalist="clr-namespace:Dev2.Studio.Views.DataList"
              xmlns:merge="clr-namespace:Dev2.ViewModels.Merge"
              xmlns:ig="http://schemas.infragistics.com/xaml"
              xmlns:interfaces1="clr-namespace:Dev2.Studio.Interfaces;assembly=Dev2.Studio.Interfaces"
+             xmlns:fa="http://schemas.fontawesome.io/icons/"
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance interfaces1:IMergeWorkflowViewModel}"
              d:DesignHeight="300" d:DesignWidth="300">
@@ -22,7 +22,6 @@
             <customcontrols:ActivityTemplateSelector x:Key="ActivitySelector" />
             <customcontrols1:MergeWidthConverter x:Key="MergeWidthConverter" />
             <customcontrols1:MergeHeaderTemplateWidthConverter x:Key="MergeHeaderTemplateWidthConverter" />
-            <customcontrols1:ExpanderToBooleanConverter x:Key="ExpanderToBooleanConverter" />
         </ResourceDictionary>
     </UserControl.Resources>
 
@@ -82,7 +81,7 @@
                             BorderThickness="1,0,0,0" 
                             Background="#C1C3C5"
                             AutomationProperties.AutomationId="UI_DifferenceWorkflowHeaderBorder_AutoID">
-                        <StackPanel x:Name="DifferenceWorkflowHeaderSP" 
+                        <StackPanel x:Name="DifferenceWorkflowHeaderSp" 
                                     Background="{StaticResource WareWolfMenuBrush}" 
                                     HorizontalAlignment="Stretch" 
                                     DataContext="{Binding DifferenceConflictModel}"
@@ -119,7 +118,7 @@
                           Grid.ColumnSpan="2" 
                           Margin="{StaticResource ElementBorderTop}"
                           AutomationProperties.AutomationId="UI_WorkflowConflictGrid_AutoID"
-                          Visibility="{Binding HasWorkflowNameConflict, Converter={StaticResource BoolToVisibilityConverterPositive}}">
+                          IsEnabled="{Binding HasWorkflowNameConflict}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition SharedSizeGroup="MergeCurrentColumnWidth"/>
                             <ColumnDefinition SharedSizeGroup="MergeCurrentColumnWidth"/>
@@ -149,19 +148,39 @@
                                              HorizontalAlignment="Right"
                                              Margin="0,0,5,0"
                                              GroupName="MergeWorkflowName"
-                                             Style="{StaticResource MergeRadioButtonStyle}"
-                                             AutomationProperties.AutomationId="UI_CurrentWorkflowRB_AutoID"/>
+                                             AutomationProperties.AutomationId="UI_CurrentWorkflowRB_AutoID">
+                                    <RadioButton.Style>
+                                        <Style BasedOn="{StaticResource MergeRadioButtonStyle}" TargetType="{x:Type RadioButton}">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding ElementName=WorkflowNameNoConflictIcon, Path=Visibility}" Value="Visible">
+                                                    <Setter Property="RadioButton.Visibility" Value="Collapsed"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </RadioButton.Style>
+                                </RadioButton>
                             </StackPanel>
                         </DockPanel>
+
+                        <fa:FontAwesome Grid.Column="1" 
+                                        Icon="Check" 
+                                        x:Name="WorkflowNameNoConflictIcon"
+                                        Foreground="Green" 
+                                        HorizontalAlignment="Left"
+                                        Margin="-8,0,0,0"
+                                        ToolTip="{x:Static languages:Tooltips.MergeNoConflictTooltip}" 
+                                        FontSize="20" 
+                                        Visibility="{Binding HasWorkflowNameConflict, Converter={StaticResource BoolToVisibilityConverterNegative}}" />
 
                         <DockPanel x:Name="DifferenceWorkflowDockPanel" 
                                    Grid.Column="1" 
                                    LastChildFill="False" 
-                                   DataContext="{Binding DifferenceConflictModel}"
+                                   Visibility="{Binding HasWorkflowNameConflict, Converter={StaticResource BoolToVisibilityConverter}}"
                                    AutomationProperties.AutomationId="UI_DifferenceWorkflowDockPanel_AutoID">
                             <StackPanel x:Name="DifferenceWorkflowTextSp" 
                                         DockPanel.Dock="Left" 
                                         Orientation="Horizontal"
+                                        DataContext="{Binding DifferenceConflictModel}"
                                         AutomationProperties.AutomationId="UI_DifferenceWorkflowTextSP_AutoID">
                                 <RadioButton x:Name="DifferenceWorkflowRb" 
                                              IsChecked="{Binding IsWorkflowNameChecked}" 
@@ -185,8 +204,7 @@
                           Grid.ColumnSpan="2" 
                           Margin="{StaticResource ElementBorderTop}" 
                           AutomationProperties.AutomationId="UI_VariablesGrid_AutoID"
-                          IsEnabled="{Binding IsVariablesEnabled}"
-                          Visibility="{Binding HasVariablesConflict, Converter={StaticResource BoolToVisibilityConverterPositive}}">
+                          IsEnabled="{Binding IsVariablesEnabled}">
                         <Expander x:Name="VariablesExpander"
                                   Style="{StaticResource MergeExpander}"
                                   Header="{Binding .}"
@@ -202,18 +220,19 @@
                                         </Grid.Width>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="50*" />
+                                            <ColumnDefinition Width="Auto" />
                                             <ColumnDefinition Width="50*" />
                                         </Grid.ColumnDefinitions>
 
                                         <Border x:Name="CurrentVariablesHeaderBorder" 
                                                 Grid.Column="0" 
                                                 BorderBrush="#CFD6E1" 
-                                                BorderThickness="0,0,2,0" 
+                                                BorderThickness="0" 
                                                 Margin="0,0,7,0"
-                                                DataContext="{Binding CurrentConflictModel}"
                                                 AutomationProperties.AutomationId="UI_CurrentVariablesHeaderBorder_AutoID">
                                             <DockPanel x:Name="CurrentVariablesDockPanel" 
                                                        LastChildFill="False"
+                                                       DataContext="{Binding CurrentConflictModel}"
                                                        AutomationProperties.AutomationId="UI_CurrentVariablesDockPanel_AutoID">
                                                 <StackPanel x:Name="CurrentVariablesTextSP" 
                                                             DockPanel.Dock="Left" 
@@ -234,22 +253,42 @@
                                                                  HorizontalAlignment="Right"
                                                                  Margin="0,0,5,0"
                                                                  GroupName="MergeVariables"
-                                                                 Style="{StaticResource MergeRadioButtonStyle}"
-                                                                 AutomationProperties.AutomationId="UI_CurrentVariablesRB_AutoID"/>
+                                                                 AutomationProperties.AutomationId="UI_CurrentVariablesRB_AutoID">
+                                                        <RadioButton.Style>
+                                                            <Style BasedOn="{StaticResource MergeRadioButtonStyle}" TargetType="{x:Type RadioButton}">
+                                                                <Style.Triggers>
+                                                                    <DataTrigger Binding="{Binding ElementName=VariablesNoConflictIcon, Path=Visibility}" Value="Visible">
+                                                                        <Setter Property="RadioButton.Visibility" Value="Collapsed"/>
+                                                                    </DataTrigger>
+                                                                </Style.Triggers>
+                                                            </Style>
+                                                        </RadioButton.Style>
+                                                    </RadioButton>
 
                                                 </StackPanel>
                                             </DockPanel>
                                         </Border>
 
+                                        <fa:FontAwesome Grid.Column="1" 
+                                                        Icon="Check" 
+                                                        x:Name="VariablesNoConflictIcon"
+                                                        Foreground="Green" 
+                                                        HorizontalAlignment="Left"
+                                                        Margin="-12,0,0,0"
+                                                        ToolTip="{x:Static languages:Tooltips.MergeNoConflictTooltip}" 
+                                                        FontSize="20" 
+                                                        Visibility="{Binding HasVariablesConflict, Converter={StaticResource BoolToVisibilityConverterNegative}}" />
+
                                         <Border x:Name="DifferenceVariablesBorder" 
-                                                Grid.Column="1" 
+                                                Grid.Column="2" 
                                                 BorderBrush="#CFD6E1" 
-                                                BorderThickness="0" 
+                                                BorderThickness="2,0,0,0" 
                                                 Margin="-7,0,0,0"
-                                                DataContext="{Binding DifferenceConflictModel}"
+                                                Visibility="{Binding HasVariablesConflict, Converter={StaticResource BoolToVisibilityConverter}}"
                                                 AutomationProperties.AutomationId="UI_DifferenceVariablesBorder_AutoID">
                                             <DockPanel x:Name="DifferenceVariablesDockPanel" 
                                                        LastChildFill="False"
+                                                       DataContext="{Binding DifferenceConflictModel}"
                                                        AutomationProperties.AutomationId="UI_DifferenceVariablesDockPanel_AutoID">
                                                 <StackPanel x:Name="DifferenceVariablesSP" 
                                                             DockPanel.Dock="Left" 
@@ -344,6 +383,7 @@
                                         </Grid.RowDefinitions>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="50*" />
+                                            <ColumnDefinition Width="Auto" />
                                             <ColumnDefinition Width="50*" />
                                         </Grid.ColumnDefinitions>
 
@@ -352,7 +392,7 @@
                                                 Grid.Column="0" 
                                                 Background="{StaticResource WarewolfPanelGreyBrush}" 
                                                 BorderBrush="#CFD6E1" 
-                                                BorderThickness="0,0,2,0" 
+                                                BorderThickness="0" 
                                                 Margin="0,0,-2,0" 
                                                 DataContext="{Binding CurrentViewModel}"
                                                 Visibility="{Binding HasParent, Converter={StaticResource BoolToVisibilityConverterPositive}}"
@@ -372,10 +412,10 @@
 
                                         <Border Name="DifferenceParentDescBorder" 
                                                 Grid.Row="0" 
-                                                Grid.Column="1" 
+                                                Grid.Column="2" 
                                                 Background="{StaticResource WarewolfPanelGreyBrush}" 
                                                 BorderBrush="#CFD6E1" 
-                                                BorderThickness="0" 
+                                                BorderThickness="2,0,0,0" 
                                                 Margin="2,0,0,0" 
                                                 DataContext="{Binding DiffViewModel}"
                                                 Visibility="{Binding HasParent, Converter={StaticResource BoolToVisibilityConverterPositive}}"
@@ -396,8 +436,7 @@
                                         <Expander Name="TreeViewExpander"
                                                   Grid.Row="1"
                                                   Grid.Column="0"
-                                                  Grid.ColumnSpan="2"
-							                      Visibility="{Binding HasConflict, Converter={StaticResource BoolToVisibilityConverterPositive}}"
+                                                  Grid.ColumnSpan="3"
 							                      Header="{Binding .}"
 							                      IsExpanded="{Binding IsMergeExpanded}"
 							                      Style="{StaticResource MergeExpander}"
@@ -407,13 +446,14 @@
                                                     <Grid>
                                                         <Grid.ColumnDefinitions>
                                                             <ColumnDefinition Width="50*" />
+                                                            <ColumnDefinition Width="Auto" />
                                                             <ColumnDefinition Width="50*" />
                                                         </Grid.ColumnDefinitions>
 
                                                         <Border Name="TreeViewExpanderCurrentHeaderBorder" 
                                                                 Grid.Column="0" 
                                                                 BorderBrush="#CFD6E1" 
-                                                                BorderThickness="0,0,2,0" 
+                                                                BorderThickness="0" 
                                                                 Margin="0,0,7,0"
                                                                 DataContext="{Binding CurrentViewModel}"
                                                                 IsEnabled="{Binding IsMergeEnabled}"
@@ -445,26 +485,44 @@
                                                                             AutomationProperties.AutomationId="UI_TreeViewExpanderCurrentHeaderRBSP_AutoID">
                                                                     <RadioButton Name="TreeViewExpanderCurrentHeaderRB" 
                                                                                  IsChecked="{Binding IsMergeChecked}" 
-                                                                                 Command="{Binding AddAnItem}"
                                                                                  HorizontalAlignment="Right"
                                                                                  Margin="0,0,5,0"
                                                                                  GroupName="{Binding StringFormat=Merge{0}, Path=UniqueId}"
-                                                                                 Style="{StaticResource MergeRadioButtonStyle}"
-                                                                                 AutomationProperties.AutomationId="UI_TreeViewExpanderCurrentHeaderRB_AutoID"/>
+                                                                                 AutomationProperties.AutomationId="UI_TreeViewExpanderCurrentHeaderRB_AutoID">
+                                                                        <RadioButton.Style>
+                                                                            <Style BasedOn="{StaticResource MergeRadioButtonStyle}" TargetType="{x:Type RadioButton}">
+                                                                                <Style.Triggers>
+                                                                                    <DataTrigger Binding="{Binding ElementName=MergeToolNoConflictIcon, Path=Visibility}" Value="Visible">
+                                                                                        <Setter Property="RadioButton.Visibility" Value="Collapsed"/>
+                                                                                    </DataTrigger>
+                                                                                </Style.Triggers>
+                                                                            </Style>
+                                                                        </RadioButton.Style>
+                                                                    </RadioButton>
 
                                                                 </StackPanel>
                                                             </DockPanel>
                                                         </Border>
+                                                        <fa:FontAwesome Grid.Column="1" 
+                                                                        Icon="Check" 
+                                                                        x:Name="MergeToolNoConflictIcon"
+                                                                        Foreground="Green" 
+                                                                        HorizontalAlignment="Left"
+                                                                        Margin="-12,0,0,0"
+                                                                        ToolTip="{x:Static languages:Tooltips.MergeNoConflictTooltip}" 
+                                                                        FontSize="20" 
+                                                                        Visibility="{Binding HasConflict, Converter={StaticResource BoolToVisibilityConverterNegative}}" />
                                                         <Border Name="TreeViewExpanderDifferenceHeaderBorder" 
-                                                                Grid.Column="1" 
+                                                                Grid.Column="2" 
                                                                 BorderBrush="#CFD6E1" 
-                                                                BorderThickness="0" 
+                                                                BorderThickness="2,0,0,0" 
                                                                 Margin="-7,0,0,0"
-                                                                DataContext="{Binding DiffViewModel}"
-                                                                IsEnabled="{Binding IsMergeEnabled}"
+                                                                Visibility="{Binding HasConflict, Converter={StaticResource BoolToVisibilityConverter}}"
                                                                 AutomationProperties.AutomationId="UI_TreeViewExpanderDifferenceHeaderBorder_AutoID">
                                                             <DockPanel Name="TreeViewExpanderDifferenceHeaderDockPanel" 
                                                                        LastChildFill="False" 
+                                                                       DataContext="{Binding DiffViewModel}"
+                                                                       IsEnabled="{Binding IsMergeEnabled}"
                                                                        AutomationProperties.AutomationId="UI_TreeViewExpanderDifferenceHeaderDockPanel_AutoID">
                                                                 <StackPanel Name="TreeViewExpanderDifferenceHeaderSP" 
                                                                             DockPanel.Dock="Left" 
@@ -472,7 +530,6 @@
                                                                             AutomationProperties.AutomationId="UI_TreeViewExpanderDifferenceHeaderSP_AutoID">
                                                                     <RadioButton Name="TreeViewExpanderDifferenceHeaderRB" 
                                                                                  IsChecked="{Binding IsMergeChecked}" 
-                                                                                 Command="{Binding AddAnItem}"
                                                                                  HorizontalAlignment="Left"
                                                                                  Margin="5,0,5,0"
                                                                                  GroupName="{Binding StringFormat=Merge{0}, Path=UniqueId}"
@@ -507,11 +564,25 @@
                                                 <Grid>
                                                     <Grid.ColumnDefinitions>
                                                         <ColumnDefinition Width="50*" />
-                                                        <ColumnDefinition Width="50*" />
+                                                        <ColumnDefinition>
+                                                            <ColumnDefinition.Style>
+                                                                <Style>
+                                                                    <Style.Triggers>
+                                                                        <DataTrigger Binding="{Binding HasConflict}" Value="True">
+                                                                            <Setter Property="ColumnDefinition.Width" Value="50*"/>
+                                                                        </DataTrigger>
+                                                                        <DataTrigger Binding="{Binding HasConflict}" Value="False">
+                                                                            <Setter Property="ColumnDefinition.Width" Value="Auto"/>
+                                                                        </DataTrigger>
+                                                                    </Style.Triggers>
+                                                                </Style>
+                                                            </ColumnDefinition.Style>
+                                                        </ColumnDefinition>
                                                     </Grid.ColumnDefinitions>
                                                     <Border Name="TreeViewExpanderTemplateCurrentBorder" 
                                                             BorderBrush="#CFD6E1" 
                                                             BorderThickness="1,0,1,1" 
+                                                            Margin="0,0,-3,0"
                                                             AutomationProperties.AutomationId="UI_TreeViewExpanderTemplateCurrentBorder_AutoID">
                                                         <Grid Name="TreeViewExpanderTemplateCurrentContentPresenterGrid"
                                                               AutomationProperties.AutomationId="UI_TreeViewExpanderTemplateCurrentContentPresenterGrid_AutoID">
@@ -540,6 +611,8 @@
                                                             Grid.Column="1" 
                                                             BorderBrush="#CFD6E1" 
                                                             BorderThickness="1,0,1,1" 
+                                                            Margin="2,0,0,0"
+                                                            Visibility="{Binding HasConflict, Converter={StaticResource BoolToVisibilityConverter}}"
                                                             AutomationProperties.AutomationId="UI_TreeViewExpanderTemplateDifferenceBorder_AutoID">
                                                         <Grid Name="TreeViewExpanderTemplateDifferenceContentPresenterGrid" 
                                                               AutomationProperties.AutomationId="UI_TreeViewExpanderTemplateDifferenceContentPresenterGrid_AutoID">

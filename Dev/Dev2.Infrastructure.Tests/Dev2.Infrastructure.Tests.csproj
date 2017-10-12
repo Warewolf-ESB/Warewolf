@@ -95,12 +95,15 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\System.Reactive.Windows.Threading.dll</HintPath>
     </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
+    <Compile Include="XML\XmlResource.cs" />
     <None Include="..\Run Tests.ps1">
       <Visible>False</Visible>
       <Link>Run Tests.ps1</Link>
@@ -129,6 +132,7 @@
     <Compile Include="Providers\Validation\Rules\IsValidXmlRuleTests.cs" />
     <Compile Include="Providers\Validation\Rules\IsValidXpathRuleTests.cs" />
     <Compile Include="Providers\Validation\Rules\ComposableRuleTest.cs" />
+    <Compile Include="Services\ResourceDefinationCleanerTests.cs" />
     <Compile Include="Services\Security\AuthorizationServiceBaseTests.cs" />
     <Compile Include="Services\Security\AuthorizationHelpersTests.cs" />
     <Compile Include="Services\Security\SecurityServiceBaseTests.cs" />
@@ -174,6 +178,9 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="XML\Utility - Assign.xml" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

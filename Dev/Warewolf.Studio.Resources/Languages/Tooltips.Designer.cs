@@ -2735,6 +2735,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No conflicts found.
+        /// </summary>
+        public static string MergeNoConflictTooltip {
+            get {
+                return ResourceManager.GetString("MergeNoConflictTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Any variable and/or data goes in here.
         ///Put the full path of the destination you are moving to here.
         ///You can use File System, URI, SFTP, FTP or FTPS format..
