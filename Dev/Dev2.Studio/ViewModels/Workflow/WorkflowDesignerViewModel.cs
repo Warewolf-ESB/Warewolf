@@ -3004,13 +3004,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             var parser = CustomContainer.Get<IServiceDifferenceParser>();
             _allNodes = parser?.GetAllNodes();
             var nodeToRemove = GetNodeToAmmend(model, true);
-
-            var startNode = chart.Properties["StartNode"];
-            if (startNode?.ComputedValue != null && startNode.ComputedValue == nodeToRemove)
-            {
-                startNode.SetValue(null);
-            }
-
+            
             var step = nodeToRemove?.GetCurrentValue();
             switch (step)
             {
@@ -3103,13 +3097,47 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
 
             var startNode = chart.Properties["StartNode"];
-            if (startNode == null || startNode.ComputedValue == null)
+            if (startNode?.ComputedValue == null)
             {
-                AddStartNode(nodeToAdd.GetCurrentValue<FlowNode>(), nodes, startNode);
+                AddStartNode(nodeToAdd.GetCurrentValue<FlowNode>(), startNode);
             }
             else
             {
                 AddNextNode(parent, model, nodes, nodeToAdd.GetCurrentValue<FlowNode>());
+            }
+        }
+
+        public void ValidateStartNode(ModelItem nodeToAdd)
+        {
+            var root = _wd.Context.Services.GetService<ModelService>().Root;
+            var chart = _wd.Context.Services.GetService<ModelService>().Find(root, typeof(Flowchart)).FirstOrDefault();
+
+            var nodes = chart?.Properties["Nodes"]?.Collection;
+            if (nodes == null)
+            {
+                return;
+            }
+            var startNode = chart.Properties["StartNode"];
+            if (startNode?.ComputedValue == null)
+            {
+                AddStartNode(nodeToAdd.GetCurrentValue<FlowNode>(), startNode);
+            }
+        }
+
+        public void RemoveStartNodeConnection()
+        {
+            var root = _wd.Context.Services.GetService<ModelService>().Root;
+            var chart = _wd.Context.Services.GetService<ModelService>().Find(root, typeof(Flowchart)).FirstOrDefault();
+
+            var nodes = chart?.Properties["Nodes"]?.Collection;
+            if (nodes == null)
+            {
+                return;
+            }
+            var startNode = chart.Properties["StartNode"];
+            if (startNode?.ComputedValue != null)
+            {
+                startNode.SetValue(null);
             }
         }
 
@@ -3177,9 +3205,8 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-        private void AddStartNode(FlowNode flowNode, ModelItemCollection nodes, ModelProperty startNode)
+        private void AddStartNode(FlowNode flowNode, ModelProperty startNode)
         {
-
             if (flowNode == null)
             {
                 return;
