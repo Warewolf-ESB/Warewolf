@@ -36,7 +36,6 @@ using Warewolf.Resource.Errors;
 using Warewolf.Storage.Interfaces;
 
 
-
 namespace Dev2.Activities
 {
     [ToolDescriptorInfo("Scripting-CMDScript", "CMD Script", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Scripting", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Scripting_CMD_Script")]
@@ -52,10 +51,7 @@ namespace Dev2.Activities
         ProcessPriorityClass _commandPriority = ProcessPriorityClass.Normal;
 
         #endregion
-
-        /// <summary>
-        /// Gets or sets the name of the recordset.
-        /// </summary>  
+        
         [Inputs("CommandFileName")]
         [FindMissing]
         
@@ -73,7 +69,11 @@ namespace Dev2.Activities
         }
 
         [Inputs("CommandPriority")]
-        public ProcessPriorityClass CommandPriority { get { return _commandPriority; } set { _commandPriority = value; } }
+        public ProcessPriorityClass CommandPriority
+        {
+            get => _commandPriority;
+            set => _commandPriority = value;
+        }
 
         [Outputs("CommandResult")]
         [FindMissing]

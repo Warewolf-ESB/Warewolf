@@ -417,7 +417,7 @@ namespace Dev2.Collections
 
         bool IDictionary.IsReadOnly => false;
 
-        object IDictionary.this[object key] { get { return KeyedEntryCollection[(TKey)key].Value; } set { DoSetEntry((TKey)key, (TValue)value); } }
+        object IDictionary.this[object key] { get => KeyedEntryCollection[(TKey)key].Value; set => DoSetEntry((TKey)key, (TValue)value); }
 
         ICollection IDictionary.Keys => Keys;
 
