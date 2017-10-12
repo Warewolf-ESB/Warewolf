@@ -567,6 +567,9 @@ Using recordset () will add a new record and (*) will assign every record.</valu
   <data name="ServiceTestPassedTooltip" xml:space="preserve">
     <value>Passed</value>
   </data>
+  <data name="MergeNoConflictTooltip" xml:space="preserve">
+    <value>No conflicts found</value>
+  </data>
   <data name="ServiceTestOutputVariableTooltip" xml:space="preserve">
     <value>The output you want to make the assert on</value>
   </data>
