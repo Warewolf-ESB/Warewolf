@@ -4,7 +4,6 @@ using System.Windows.Controls;
 
 namespace Warewolf.Studio.CustomControls
 {
-
     public class PasswordBoxHelper
     {
         static bool _isInistialised = false;
@@ -37,7 +36,9 @@ namespace Warewolf.Studio.CustomControls
         public static readonly DependencyProperty ShowWatermarkProperty =
             DependencyProperty.RegisterAttached("ShowWatermark", typeof(bool), typeof(PasswordBoxHelper), new UIPropertyMetadata(false));
 
-
+        protected PasswordBoxHelper()
+        {
+        }
 
         static void WatermarkChanged(DependencyObject obj, DependencyPropertyChangedEventArgs e)
         {

@@ -16,6 +16,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
     public class Util
     {
+        protected Util()
+        {
+        }
+
         public static bool ValueIsNumber(string value)
         {
             return double.TryParse(value, out double val);
