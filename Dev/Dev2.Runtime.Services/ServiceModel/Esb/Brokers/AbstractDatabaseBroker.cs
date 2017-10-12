@@ -20,26 +20,15 @@ using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Sql;
 using Unlimited.Framework.Converters.Graph;
 
-
-
 namespace Dev2.Runtime.ServiceModel.Esb.Brokers
 {
     public abstract class AbstractDatabaseBroker<TDbServer>
         where TDbServer : class, IDbServer, new()
     {
         #region TheCache
-
-
-        //
-        // This means that the values of 
-        //      AbstractDatabaseBroker<DbServer1>.TheCache 
-        //      AbstractDatabaseBroker<DbServer2>.TheCache 
-        // will have completely different, independent values.
-        //
+        
         public static ConcurrentDictionary<string, ServiceMethodList> TheCache = new ConcurrentDictionary<string, ServiceMethodList>();
-        //
-
-
+        
         #endregion
 
         public virtual List<string> GetDatabases(DbSource dbSource)
@@ -55,8 +44,6 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
         public virtual ServiceMethodList GetServiceMethods(DbSource dbSource)
         {
             VerifyArgument.IsNotNull("dbSource", dbSource);
-
-            // Check the cache for a value ;)
             ServiceMethodList cacheResult;
             if (!dbSource.ReloadActions)
             {
@@ -65,42 +52,29 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
                     return cacheResult;
                 }
             }
-            // else reload actions ;)
 
             var serviceMethods = new ServiceMethodList();
-
-            //
-            // Function to handle procedures returned by the data broker
-            //
+            
             Func<IDbCommand, IList<IDbDataParameter>, string, string, bool> procedureFunc = (command, parameters, helpText, executeAction) =>
             {
                 var serviceMethod = CreateServiceMethod(command, parameters, helpText, executeAction);
                 serviceMethods.Add(serviceMethod);
                 return true;
             };
-
-            //
-            // Function to handle functions returned by the data broker
-            //
+            
             Func<IDbCommand, IList<IDbDataParameter>, string, string, bool> functionFunc = (command, parameters, helpText, executeAction) =>
             {
                 var serviceMethod = CreateServiceMethod(command, parameters, helpText, executeAction);
                 serviceMethods.Add(serviceMethod);
                 return true;
             };
-
-            //
-            // Get stored procedures and functions for this database source
-            //
+            
             using (var server = CreateDbServer(dbSource))
             {
                 server.Connect(dbSource.ConnectionString);
                 server.FetchStoredProcedures(procedureFunc, functionFunc);
             }
-
-            // Add to cache ;)
             TheCache.AddOrUpdate(dbSource.ConnectionString, serviceMethods, (s, list) => serviceMethods);
-
             return GetCachedResult(dbSource, out cacheResult) ? cacheResult : serviceMethods;
         }
 
@@ -127,15 +101,9 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
                 server.BeginTransaction();
                 try
                 {
-                    //
-                    // Execute command and normalize XML
-                    //
                     var command = CommandFromServiceMethod(server, dbService.Method);
                     var dataTable = server.FetchDataTable(command);
-
-                    //
-                    // Map shape of XML
-                    //
+                    
                     result = OutputDescriptionFactory.CreateOutputDescription(OutputFormats.ShapedXML);
                     var dataSourceShape = DataSourceShapeFactory.CreateDataSourceShape();
                     result.DataSourceShapes.Add(dataSourceShape);
@@ -163,9 +131,6 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
 
         protected virtual string NormalizeXmlPayload(string payload)
         {
-            //
-            // Unescape '<>' characters delimiting
-            //
             return payload.Replace("&lt;", "<").Replace("&gt;", ">");
         }
 
@@ -207,12 +172,9 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
         static IDbDataParameter DataParameterFromMethodParameter(IDbCommand command, MethodParameter methodParameter)
         {
             var parameter = command.CreateParameter();
-
             parameter.ParameterName = $"@{methodParameter.Name.Replace("`", "")}";
             parameter.Value = methodParameter.Value;
-
             return parameter;
         }
-
     }
 }
