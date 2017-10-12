@@ -56,14 +56,14 @@ namespace Dev2.Activities.Designers2.DateTime
 
             if(string.IsNullOrWhiteSpace(value))
             {
-                viewModel.TimeModifierAmountDisplay = value;
+                viewModel.SetTimeModifierAmountDisplay(value);
             }
             viewModel.TimeModifierType = value;
         }
-
-        // DO NOT bind to these properties - these are here for convenience only!!!
+        
         string TimeModifierType { set => SetProperty(value); get {return  GetProperty<string>();} }
-        string TimeModifierAmountDisplay { set { SetProperty(value); } }
+
+        private void SetTimeModifierAmountDisplay(string value) { SetProperty(value); }
         string InputFormat { set => SetProperty(value);  get { return GetProperty<string>(); } }
         string OutputFormat { set => SetProperty(value);  get { return GetProperty<string>(); } }
 

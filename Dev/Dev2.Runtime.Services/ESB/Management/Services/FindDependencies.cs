@@ -117,10 +117,6 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         StringBuilder FindWhatDependsOnMe(Guid workspaceId, Guid resourceID, List<Guid> seenResource)
         {
-            if (resourceID == null)
-            {
-                throw new ArgumentNullException("resourceID", ErrorResource.ResourceNotFound);
-            }
             var dependants = ResourceCatalog.GetDependants(Guid.Empty, resourceID) ?? new List<Guid>();
             dependants.AddRange(ResourceCatalog.GetDependants(workspaceId, resourceID) ?? new List<Guid>());
             dependants = dependants.Distinct().ToList();
