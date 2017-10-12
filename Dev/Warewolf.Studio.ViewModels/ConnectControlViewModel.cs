@@ -227,7 +227,7 @@ namespace Warewolf.Studio.ViewModels
                 IsConnecting = true;
                 IsConnected = false;
                 IsLoading = true;
-                isConnected = await Connect(_selectedConnection);
+                isConnected = await Connect(_selectedConnection).ConfigureAwait(false);
                 IsConnected = _selectedConnection.IsConnected;
                 IsConnecting = false;
                 IsLoading = false;
@@ -242,7 +242,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 IsLoading = true;
                 IsConnecting = true;
-                var isConnected = await ConnectOrDisconnect();
+                var isConnected = await ConnectOrDisconnect().ConfigureAwait(false);
                 if (_selectedConnection.IsConnected && isConnected)
                 {
                     Version.TryParse(_selectedConnection.GetServerVersion(), out Version sourceVersionNumber);
@@ -371,7 +371,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 try
                 {
-                    var connected = await connection.ConnectAsync();
+                    var connected = await connection.ConnectAsync().ConfigureAwait(false);
                     if (connected && connection.IsConnected)
                     {
                         if (ShouldUpdateActiveEnvironment)
@@ -384,7 +384,7 @@ namespace Warewolf.Studio.ViewModels
                         var result = PopupController?.ShowConnectionTimeoutConfirmation(connection.DisplayName);
                         if (result == MessageBoxResult.Yes)
                         {
-                            await Connect(connection);
+                            await Connect(connection).ConfigureAwait(false);
                         }                                                 
                         else
                         {

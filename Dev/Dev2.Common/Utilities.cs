@@ -25,10 +25,10 @@ namespace Dev2.Common
             {
                 var token = tokenSource.Token;
 
-                if (executingTask == await Task.WhenAny(executingTask, Task.Delay(timeout, token)))
+                if (executingTask == await Task.WhenAny(executingTask, Task.Delay(timeout, token)).ConfigureAwait(false))
                 {
                     tokenSource.Cancel();
-                    return await executingTask;
+                    return await executingTask.ConfigureAwait(false);
                 }
                 throw new TimeoutException($"Operation did not finish in {timeout} ms");
             }
@@ -40,10 +40,10 @@ namespace Dev2.Common
             {
                 var token = tokenSource.Token;
 
-                if (executingTask == await Task.WhenAny(executingTask, Task.Delay(timeout, token)))
+                if (executingTask == await Task.WhenAny(executingTask, Task.Delay(timeout, token)).ConfigureAwait(false))
                 {
                     tokenSource.Cancel();
-                    return await executingTask;
+                    return await executingTask.ConfigureAwait(false);
                 }
                 throw new TimeoutException($"Operation did not finish in {timeout} ms");
             }

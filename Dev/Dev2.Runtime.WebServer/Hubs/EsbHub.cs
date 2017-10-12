@@ -181,7 +181,7 @@ namespace Dev2.Runtime.WebServer.Hubs
                     var task = new Task<string>(() => value);
                     ResourceAffectedMessagesCache.Remove(resourceId);
                     task.Start();
-                    return await task;
+                    return await task.ConfigureAwait(false);
                 }
             }
             catch (Exception e)
@@ -251,18 +251,11 @@ namespace Dev2.Runtime.WebServer.Hubs
         {
             var task = new Task(() => DebugDispatcher.Instance.Add(workspaceId, this));
             task.Start();
-            await task;
+            await task.ConfigureAwait(false);
         }
-
-        /// <summary>
-        ///     Fetches the execute payload fragment.
-        /// </summary>
-        /// <param name="receipt">The receipt.</param>
-        /// <returns></returns>
+        
         public async Task<string> FetchExecutePayloadFragment(FutureReceipt receipt)
         {
-            // Set Requesting User as per what is authorized ;)
-            // Sneaky people may try to forge packets to get payload ;)
             if (Context.User.Identity.Name != null)
             {
                 receipt.User = Context.User.Identity.Name;
@@ -274,7 +267,7 @@ namespace Dev2.Runtime.WebServer.Hubs
                 var task = new Task<string>(() => value);
 
                 task.Start();
-                return await task;
+                return await task.ConfigureAwait(false);
             }
             catch (Exception e)
             {
@@ -350,7 +343,7 @@ namespace Dev2.Runtime.WebServer.Hubs
                     return null;
                 });
                 task.Start();
-                return await task;
+                return await task.ConfigureAwait(false);
             }
             catch (Exception e)
             {

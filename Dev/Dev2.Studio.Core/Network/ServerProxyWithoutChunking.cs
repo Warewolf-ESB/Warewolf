@@ -141,7 +141,7 @@ namespace Dev2.Network
         {
             if (ReceivedResourceAffectedMessage != null)
             {
-                var result = Task.Run(async () => await EsbProxy.Invoke<string>("FetchResourcesAffectedMemo", resourceId)).ConfigureAwait(false).GetAwaiter().GetResult();
+                var result = Task.Run(async () => await EsbProxy.Invoke<string>("FetchResourcesAffectedMemo", resourceId).ConfigureAwait(false)).GetAwaiter().GetResult();
                 if (!string.IsNullOrWhiteSpace(result))
                 {
                     var obj = _serializer.Deserialize<CompileMessageList>(result);
@@ -377,7 +377,7 @@ namespace Dev2.Network
                 if (HubConnection.State == (ConnectionStateWrapped)ConnectionState.Disconnected)
                 {
                     ServicePointManager.ServerCertificateValidationCallback = ValidateServerCertificate;
-                    await HubConnection.Start();
+                    await HubConnection.Start().ConfigureAwait(false);
                     if (HubConnection.State == ConnectionStateWrapped.Disconnected)
                     {
                         if (!IsLocalHost)
@@ -390,7 +390,7 @@ namespace Dev2.Network
                 {
 
                     ServicePointManager.ServerCertificateValidationCallback = ValidateServerCertificate;
-                    await HubConnection.Start();
+                    await HubConnection.Start().ConfigureAwait(false);
                     if (HubConnection.State == ConnectionStateWrapped.Disconnected)
                     {
                         if (!IsLocalHost)
@@ -817,7 +817,7 @@ namespace Dev2.Network
                 throw new ArgumentNullException(nameof(payload));
             }
 
-            var result = Task.Run(async () => await ExecuteCommandAsync(payload, workspaceId)).Result;
+            var result = Task.Run(async () => await ExecuteCommandAsync(payload, workspaceId).ConfigureAwait(false)).Result;
             return result;
 
         }
@@ -841,7 +841,7 @@ namespace Dev2.Network
             var result = new StringBuilder();
             try
             {
-                await EsbProxy.Invoke<Receipt>("ExecuteCommand", envelope, true, workspaceId, Guid.Empty, messageId);
+                await EsbProxy.Invoke<Receipt>("ExecuteCommand", envelope, true, workspaceId, Guid.Empty, messageId).ConfigureAwait(false);
                 var fragmentInvoke = await EsbProxy.Invoke<string>("FetchExecutePayloadFragment", new FutureReceipt { PartID = 0, RequestID = messageId }).ConfigureAwait(false);
                 result.Append(fragmentInvoke);
 
