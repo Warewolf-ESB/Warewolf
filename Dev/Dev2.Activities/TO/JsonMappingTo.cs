@@ -63,7 +63,7 @@ namespace Dev2.TO
         int _indexNumber;
         bool _isSourceNameFocused;
         bool _isDestinationNameFocused;
-        public int IndexNumber { get { return _indexNumber; } set { OnPropertyChanged(ref _indexNumber, value); } }
+        public int IndexNumber { get => _indexNumber; set => OnPropertyChanged(ref _indexNumber, value); }
 
         public JsonMappingTo()
         {
@@ -78,10 +78,9 @@ namespace Dev2.TO
         }
 
         
-        public bool IsSourceNameFocused { get { return _isSourceNameFocused; } set { OnPropertyChanged(ref _isSourceNameFocused, value); } }
+        public bool IsSourceNameFocused { get => _isSourceNameFocused; set => OnPropertyChanged(ref _isSourceNameFocused, value); }
 
-
-        public bool IsDestinationNameFocused { get { return _isDestinationNameFocused; } set { OnPropertyChanged(ref _isDestinationNameFocused, value); } }
+        public bool IsDestinationNameFocused { get => _isDestinationNameFocused; set => OnPropertyChanged(ref _isDestinationNameFocused, value); }
         
         public bool CanRemove()
         {

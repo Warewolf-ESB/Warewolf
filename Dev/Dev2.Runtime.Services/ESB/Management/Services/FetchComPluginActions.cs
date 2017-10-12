@@ -40,7 +40,8 @@ namespace Dev2.Runtime.ESB.Management.Services
                 ComPluginService svc = new ComPluginService();
                 if (ns != null)
                 {
-                    svc.Namespace = ns.FullName; svc.Source = src;
+                    svc.Namespace = ns.FullName;
+                    svc.Source = src;
                 }
                 else
                 {

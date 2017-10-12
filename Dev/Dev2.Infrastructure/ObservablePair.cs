@@ -28,9 +28,9 @@ namespace Dev2
             _value = value;
         }
 
-        public TKey Key { get { return _key; } set { OnPropertyChanged(ref _key, value); } }
+        public TKey Key { get => _key; set => OnPropertyChanged(ref _key, value); }
 
-        public TValue Value { get { return _value; } set { OnPropertyChanged(ref _value, value); } }
+        public TValue Value { get => _value; set => OnPropertyChanged(ref _value, value); }
 
         public bool Equals(ObservablePair<TKey, TValue> other)
         {
