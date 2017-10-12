@@ -12,11 +12,11 @@ namespace Dev2.Runtime.ESB.Management.Services
             using (var timeoutCancellationTokenSource = new CancellationTokenSource())
             {
 
-                var completedTask = await Task.WhenAny(task, Task.Delay(timeout, timeoutCancellationTokenSource.Token));
+                var completedTask = await Task.WhenAny(task, Task.Delay(timeout, timeoutCancellationTokenSource.Token)).ConfigureAwait(false);
                 if (completedTask == task)
                 {
                     timeoutCancellationTokenSource.Cancel();
-                    return await task;
+                    return await task.ConfigureAwait(false);
                 }
                 throw new TimeoutException("The operation has timed out.");
             }

@@ -49,7 +49,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 if (environmentViewModel.IsConnected)
                 {
-                    await environmentViewModel.LoadDialog(_selectedId);
+                    await environmentViewModel.LoadDialog(_selectedId).ConfigureAwait(false);
                 }
             }
             Filter();

@@ -120,7 +120,7 @@ namespace Dev2.Network
 
         public async Task<StringBuilder> ExecuteCommandAsync(StringBuilder xmlRequest, Guid workspaceId)
         {
-            return await _wrappedConnection.ExecuteCommandAsync(xmlRequest, workspaceId);
+            return await _wrappedConnection.ExecuteCommandAsync(xmlRequest, workspaceId).ConfigureAwait(false);
         }
         public IHubProxyWrapper EsbProxy => _wrappedConnection.EsbProxy;
 
@@ -168,7 +168,7 @@ namespace Dev2.Network
         {
             try
             {
-                return await _wrappedConnection.ConnectAsync(_wrappedConnection.ID);
+                return await _wrappedConnection.ConnectAsync(_wrappedConnection.ID).ConfigureAwait(false);
             }
              catch( FallbackException)
             {
