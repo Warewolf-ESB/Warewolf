@@ -47,14 +47,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
             }
 
-            if(ValueIsNumber(value))
+            if(ValueIsNumber(value) && ValueIsNumber(comparisonValue.ToString()))
             {
-                if(ValueIsNumber(comparisonValue.ToString()))
-                {
-                    
-                    return double.Parse(value) == double.Parse(comparisonValue.ToString());
-                    
-                }
+                return double.Parse(value).Equals(double.Parse(comparisonValue.ToString()));
             }
 
             
@@ -82,14 +77,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
             }
 
-            if(ValueIsNumber(value))
+            if(ValueIsNumber(value) && ValueIsNumber(comparisonValue.ToString()))
             {
-                if(ValueIsNumber(comparisonValue.ToString()))
-                {
-                    
-                    return double.Parse(value) != double.Parse(comparisonValue.ToString());
-                    
-                }
+                return double.Parse(value).Equals(double.Parse(comparisonValue.ToString()));
             }
 
             return value != comparisonValue.ToString();
