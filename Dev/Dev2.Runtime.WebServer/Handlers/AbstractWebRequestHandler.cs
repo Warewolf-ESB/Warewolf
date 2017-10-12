@@ -64,6 +64,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                                             , IWorkspaceRepository repository)
                                             : this(catalog, testCatalog)
         {
+#pragma warning disable S3010 // For testing
             _dataObject = dataObject;
             _authorizationService = authorizationService;
             _repository = repository;
@@ -73,6 +74,7 @@ namespace Dev2.Runtime.WebServer.Handlers
         {
             _resourceCatalog = catalog;
             _testCatalog = testCatalog;
+#pragma warning restore S3010
         }
 
         protected static IResponseWriter CreateForm(WebRequestTO webRequest, string serviceName, string workspaceId, NameValueCollection headers, IPrincipal user = null)
