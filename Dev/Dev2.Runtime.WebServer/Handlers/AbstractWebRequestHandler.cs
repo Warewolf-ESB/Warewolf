@@ -39,11 +39,6 @@ using Dev2.Services.Security;
 using Dev2.Web;
 using Dev2.Workspaces;
 
-
-
-
-
-
 namespace Dev2.Runtime.WebServer.Handlers
 {
     public abstract class AbstractWebRequestHandler : IRequestHandler
@@ -62,11 +57,6 @@ namespace Dev2.Runtime.WebServer.Handlers
         {
         }
 
-        protected AbstractWebRequestHandler(IResourceCatalog catalog, ITestCatalog testCatalog,IAuthorizationService authorizationService)
-            :this(catalog,testCatalog)
-        {
-            _authorizationService = authorizationService;
-        }
         protected AbstractWebRequestHandler(IResourceCatalog catalog
                                             , ITestCatalog testCatalog
                                             , IDSFDataObject dataObject

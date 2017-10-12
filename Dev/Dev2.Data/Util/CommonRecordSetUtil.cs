@@ -3,23 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using Dev2.Data.Interfaces;
 using Dev2.Data.Interfaces.Enums;
-using Dev2.Data.Parsers;
 using Dev2.DataList.Contract;
 
 namespace Dev2.Data.Util
 {
     internal class CommonRecordSetUtil : ICommonRecordSetUtil
     {
-        private readonly Dev2DataLanguageParser _dev2DataLanguageParser;
         const string EmptyBrackets = "()";
-        public CommonRecordSetUtil()
-        {
-
-        }
-        public CommonRecordSetUtil(Dev2DataLanguageParser dev2DataLanguageParser)
-        {
-            _dev2DataLanguageParser = dev2DataLanguageParser;
-        }
         #region Implementation of ICommonRecordSetUtil
 
         public string ReplaceRecordBlankWithStar(string fullRecSetName)

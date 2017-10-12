@@ -36,21 +36,18 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 
-
 namespace Dev2.Studio.ViewModels.Workflow
-
 {
     public class WorkflowInputDataViewModel : SimpleBaseViewModel
     {
         #region Fields
-        //2012.10.11: massimo.guerrera - Added for PBI 5781
         private OptomizedObservableCollection<IDataListItem> _workflowInputs;
         private RelayCommand _executeCommmand;
         private string _xmlData;
-        private static IContextualResourceModel _resourceModel;
+        readonly IContextualResourceModel _resourceModel;
         private bool _rememberInputs;
         RelayCommand _viewInBrowserCommmand;
-        static DataListConversionUtils _dataListConversionUtils;
+        static DataListConversionUtils _dataListConversionUtils = new DataListConversionUtils();
         bool _canViewInBrowser;
         bool _canDebug;
         readonly IPopupController _popupController;
@@ -104,28 +101,15 @@ namespace Dev2.Studio.ViewModels.Workflow
             
             DisplayName = @"Debug input data";
             
-            _dataListConversionUtils = new DataListConversionUtils();
             _popupController = CustomContainer.Get<IPopupController>();
         }
-
-        /// <summary>
-        /// Broker that contain all session data and methods
-        /// </summary>
+        
         private IDev2StudioSessionBroker Broker { get; set; }
-
-        /// <summary>
-        /// Binary backing object for the data list
-        /// </summary>
+        
         IDataListModel DataList { get; set; }
-
-        /// <summary>
-        /// The transfer object that holds all the information needed for a debug session
-        /// </summary>
+        
         public DebugTO DebugTo { get; private set; }
-
-        /// <summary>
-        /// Collection of IDataListItems that contain all the inputs
-        /// </summary>
+        
         public OptomizedObservableCollection<IDataListItem> WorkflowInputs
         {
             get
@@ -146,15 +130,9 @@ namespace Dev2.Studio.ViewModels.Workflow
                 SendFinishedMessage();
             }
         }
-
-        /// <summary>
-        /// Int that contains the count of variables marked as inputs
-        /// </summary>
+        
         public int WorkflowInputCount => _workflowInputs.Count;
-
-        /// <summary>
-        /// Boolean that contains the option for remembering the inputs for that workflow
-        /// </summary>
+        
         public bool RememberInputs
         {
             get
@@ -167,10 +145,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 OnPropertyChanged(@"RememberInputs");
             }
         }
-
-        /// <summary>
-        /// String that hold the XML representation of the inputs
-        /// </summary>
+        
         public string XmlData
         {
             get
@@ -245,15 +220,10 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-
         public bool IsInError { private get; set; }
-
-        /// <summary>
-        /// Used for saving the data input by the user to the file system and pushing the data back at the workflow
-        /// </summary>
+        
         public void Save()
         {
-            //2012.10.11: massimo.guerrera - Added for PBI 5781
             if (!IsInError)
             {
                 DoSaveActions();
@@ -358,10 +328,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             OnDebugExecutionFinished();
         }
-
-        /// <summary>
-        /// Used for saving the data input by the user to the file system when the cacel button is clicked
-        /// </summary>
+        
         public void Cancel()
         {
             SetXmlData();
@@ -375,10 +342,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             SendFinishedMessage();
             RequestClose(ViewModelDialogResults.Cancel);
         }
-
-        /// <summary>
-        /// Used for loading all the inputs from the saved data or the data list
-        /// </summary>
+        
         public void LoadWorkflowInputs()
         {
             WorkflowInputs.Clear();
@@ -395,10 +359,6 @@ namespace Dev2.Studio.ViewModels.Workflow
             WorkflowInputs.AddRange(myList);
         }
 
-        /// <summary>
-        /// Used for intelligently determining if a extra row should be added for the selected recordset
-        /// </summary>
-        /// <param name="itemToAdd">The item that is currently selected</param>
         public void AddRow(IDataListItem itemToAdd)
         {
             if (itemToAdd != null && itemToAdd.CanHaveMutipleRows)
@@ -435,13 +395,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 }
             }
         }
-
-
-        /// <summary>
-        /// Used for removing a row for the collection
-        /// </summary>
-        /// <param name="itemToRemove">The item that will be removed from the collection</param>
-        /// <param name="indexToSelect"></param>
+        
         public bool RemoveRow(IDataListItem itemToRemove, out int indexToSelect)
         {
             indexToSelect = 1;
@@ -502,10 +456,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
             return WorkflowInputs.IndexOf(itemToRemove);
         }
-
-        /// <summary>
-        /// Used to transform the WorkflowInputs into XML
-        /// </summary>
+        
         public void SetXmlData() => SetXmlData(false);
         public void SetXmlData(bool includeBlank)
         {
@@ -613,22 +564,14 @@ namespace Dev2.Studio.ViewModels.Workflow
                 dataListObject.Add(dataListItem.DisplayValue, new JValue(dataListItem.Value ?? string.Empty));
             }
         }
-
-        /// <summary>
-        /// Used to transform the XML into WorkflowInputs
-        /// </summary>
+        
         public void SetWorkflowInputData()
         {
             WorkflowInputs.Clear();
             DataList.PopulateWithData(XmlData);
             _dataListConversionUtils.CreateListToBindTo(DataList).ToList().ForEach(i => WorkflowInputs.Add(i));
         }
-
-        /// <summary>
-        /// Used for just adding a blank row to a recordset
-        /// </summary>
-        /// <param name="selectedItem">The item that is currently selected</param>
-        /// <param name="indexToSelect"></param>
+        
         public bool AddBlankRow(IDataListItem selectedItem, out int indexToSelect)
         {
             indexToSelect = 1;
@@ -690,13 +633,10 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
             return null;
         }
-
-
+        
         protected override void OnDispose()
         {
         }
-
-
         
         private bool AddBlankRowToRecordset(IDataListItem dlItem, IList<IScalar> columns, int indexToInsertAt, int indexNum)
         {
