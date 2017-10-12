@@ -262,6 +262,7 @@
     <Compile Include="ServiceModel\OauthSourceTest.cs" />
     <Compile Include="ServiceModel\TestDbSourceServiceTests.cs" />
     <Compile Include="Services\CreateFolderTest.cs" />
+    <Compile Include="Services\FetchResourceDefinitionTests.cs" />
     <Compile Include="Services\FindResourceTestsS.cs" />
     <Compile Include="Services\FetchServerPermissionsTests.cs" />
     <Compile Include="Services\DeleteAllTestsTests.cs" />
@@ -725,6 +726,7 @@
     <EmbeddedResource Include="XML\DebugPayload.xml" />
     <EmbeddedResource Include="XML\testingExtension.xml" />
     <EmbeddedResource Include="XML\WarewolfResourceFile.xml" />
+    <EmbeddedResource Include="XML\QLINKHUB.xml" />
     <Content Include="XML\GenDev.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
