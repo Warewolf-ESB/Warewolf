@@ -310,7 +310,7 @@ namespace Dev2.Studio
             }            
             catch (Exception e) 
             {
-                Dev2Logger.Warn(e.message, "Warewolf Warn");
+                Dev2Logger.Warn(e.Message, "Warewolf Warn");
             }
             ForceShutdown();
         }
