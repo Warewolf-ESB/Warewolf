@@ -230,7 +230,7 @@ namespace Dev2.Services.Sql
 
         private DataTable GetSchema()
         {
-            const string commandText = GlobalConstants.SchemaQuery;
+            string commandText = GlobalConstants.SchemaQuery;
             _connection.TryOpen();
             using (_connection)
             {
@@ -241,7 +241,6 @@ namespace Dev2.Services.Sql
                     sqlCommand.CommandType = CommandType.Text;
                     return FetchDataTable(sqlCommand);
                 }
-
             }
         }
         private static DataColumn GetDataColumn(DataTable dataTable, string columnName)
