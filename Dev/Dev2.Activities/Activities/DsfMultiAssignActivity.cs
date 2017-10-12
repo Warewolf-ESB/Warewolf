@@ -33,21 +33,16 @@ using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 using WarewolfParserInterop;
 
-
-
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
-
 {
     [ToolDescriptorInfo("Data-Assign", "Assign", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Data", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Data_Assign")]
     public class DsfMultiAssignActivity : DsfActivityAbstract<string>
-    {
+    {        
+        public static readonly string CalculateTextConvertPrefix = GlobalConstants.CalculateTextConvertPrefix;
+        public static readonly string CalculateTextConvertSuffix = GlobalConstants.CalculateTextConvertSuffix;
+        public static readonly string CalculateTextConvertFormat = GlobalConstants.CalculateTextConvertFormat;
         
-        public const string CalculateTextConvertPrefix = GlobalConstants.CalculateTextConvertPrefix;
-        public const string CalculateTextConvertSuffix = GlobalConstants.CalculateTextConvertSuffix;
-        public const string CalculateTextConvertFormat = GlobalConstants.CalculateTextConvertFormat;
-        
-        private IList<ActivityDTO> _fieldsCollection;        
-
+        private IList<ActivityDTO> _fieldsCollection;
         
         public IList<ActivityDTO> FieldsCollection
         

@@ -34,20 +34,16 @@ using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 using WarewolfParserInterop;
 
-
-
-
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
-
 {
     [ToolDescriptorInfo("AssignObject", "Assign Object", ToolType.Native, "A86C4D10-B4D0-4775-AF4D-C66D5A6CE76F", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Data", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Data_Assign_Object")]
     public class DsfMultiAssignObjectActivity : DsfActivityAbstract<string>
     {
         #region Constants
 
-        public const string CalculateTextConvertPrefix = GlobalConstants.CalculateTextConvertPrefix;
-        public const string CalculateTextConvertSuffix = GlobalConstants.CalculateTextConvertSuffix;
-        public const string CalculateTextConvertFormat = GlobalConstants.CalculateTextConvertFormat;
+        public static readonly string CalculateTextConvertPrefix = GlobalConstants.CalculateTextConvertPrefix;
+        public static readonly string CalculateTextConvertSuffix = GlobalConstants.CalculateTextConvertSuffix;
+        public static readonly string CalculateTextConvertFormat = GlobalConstants.CalculateTextConvertFormat;
 
         #endregion Constants
 
