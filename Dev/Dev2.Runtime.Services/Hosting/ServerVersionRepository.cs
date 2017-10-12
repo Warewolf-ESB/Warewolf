@@ -63,7 +63,6 @@ namespace Dev2.Runtime.Hosting
 
         public IList<IExplorerItem> GetVersions(Guid resourceId)
         {
-            
             var resource = _catalogue.GetResource(Guid.Empty, resourceId);
 
             if (resource?.VersionInfo == null)
@@ -72,7 +71,6 @@ namespace Dev2.Runtime.Hosting
             }
             var versionPath = resource.GetResourcePath(GlobalConstants.ServerWorkspaceID);
             var path = GetVersionFolderFromResource(versionPath);
-
             
             var files = _directory.GetFiles(path).Where(a => a.Contains(resource.VersionInfo.VersionId.ToString()));
             

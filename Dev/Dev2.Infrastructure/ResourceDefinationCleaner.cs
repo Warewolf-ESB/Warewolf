@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Security.Cryptography;
@@ -77,22 +76,23 @@ namespace Dev2
 
         private static void DoWorkflowServiceMessage(StringBuilder result, IExecuteMessage res)
         {
-            var startIdx = result.IndexOf(GlobalConstants.PayloadStart, 0, false);
-
+            var workflowResult = result;
+            var startIdx = workflowResult.IndexOf(GlobalConstants.PayloadStart, 0, false);
+            
             if (startIdx >= 0)
             {
                 // remove beginning junk
                 startIdx += GlobalConstants.PayloadStart.Length;
-                result = result.Remove(0, startIdx);
+                workflowResult = workflowResult.Remove(0, startIdx);
 
                 startIdx = result.IndexOf(GlobalConstants.PayloadEnd, 0, false);
 
                 if (startIdx > 0)
                 {
                     var len = result.Length - startIdx;
-                    result = result.Remove(startIdx, len);
+                    workflowResult = workflowResult.Remove(startIdx, len);
 
-                    res.Message.Append(result.Unescape());
+                    res.Message.Append(workflowResult.Unescape());
                 }
             }
             else
@@ -103,22 +103,22 @@ namespace Dev2
                 {
                     // remove begging junk
                     startIdx += GlobalConstants.AltPayloadStart.Length;
-                    result = result.Remove(0, startIdx);
+                    workflowResult = workflowResult.Remove(0, startIdx);
 
                     startIdx = result.IndexOf(GlobalConstants.AltPayloadEnd, 0, false);
 
                     if (startIdx > 0)
                     {
                         var len = result.Length - startIdx;
-                        result = result.Remove(startIdx, len);
+                        workflowResult = workflowResult.Remove(startIdx, len);
 
-                        res.Message.Append(result.Unescape());
+                        res.Message.Append(workflowResult.Unescape());
                     }
                 }
                 else
                 {
                     // send the entire thing ;)
-                    res.Message.Append(result);
+                    res.Message.Append(workflowResult);
                 }
             }
         }

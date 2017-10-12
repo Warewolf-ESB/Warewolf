@@ -58,6 +58,7 @@ using Microsoft.Practices.Prism.Mvvm;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Dev2.ViewModels;
+using Warewolf.Studio.ViewModels;
 
 //using System.Windows.Media.Imaging;
 
@@ -135,7 +136,7 @@ namespace Dev2.Core.Tests
             CreateFullExportsAndVm();
             ActiveEnvironment.Setup(e => e.IsConnected).Returns(isConnected);
             ActiveEnvironment.Setup(e => e.CanStudioExecute).Returns(canStudioExecute);
-            
+
             AuthorizationService.Setup(a => a.IsAuthorized(AuthorizationContext.Administrator, It.IsAny<string>())).Returns(isAuthorized);
 
 
@@ -889,13 +890,13 @@ namespace Dev2.Core.Tests
             //Setup
             CustomContainer.Register(new Mock<Common.Interfaces.Studio.Controller.IPopupController>().Object);
             CreateFullExportsAndVmWithEmptyRepo();
-            
+
             Mock<IServer> environmentRepo = CreateMockEnvironment();
-            
+
             Mock<IAuthorizationService> mockAuthService = new Mock<IAuthorizationService>();
             mockAuthService.Setup(c => c.GetResourcePermissions(It.IsAny<Guid>())).Returns(Permissions.Administrator);
             environmentRepo.Setup(c => c.AuthorizationService).Returns(mockAuthService.Object);
-            
+
             Mock<IResourceRepository> resourceRepo = new Mock<IResourceRepository>();
             resourceRepo.Setup(c => c.FetchResourceDefinition(It.IsAny<IServer>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
             resourceRepo.Setup(r => r.Save(It.IsAny<IResourceModel>())).Verifiable();
@@ -1077,7 +1078,7 @@ namespace Dev2.Core.Tests
         [TestCategory("MainViewmodel_Delete")]
         [Description("Unassigned resources can be deleted")]
         [Owner("Ashley Lewis")]
-        
+
         public void MainViewmodel_UnitTest_DeleteUnassignedResource_ResourceRepositoryDeleteResourceCalled()
 
         {
@@ -1672,7 +1673,7 @@ namespace Dev2.Core.Tests
             CustomContainer.Register(new Mock<IWindowManager>().Object);
             envRepo.Setup(e => e.All()).Returns(new List<IServer>());
             envRepo.Setup(e => e.Source).Returns(new Mock<IServer>().Object);
-            
+
             var vieFactory = new Mock<IViewFactory>();
             var viewMock = new Mock<IView>();
             vieFactory.Setup(factory => factory.GetViewGivenServerResourceType(It.IsAny<string>())).Returns(viewMock.Object);
@@ -1902,6 +1903,50 @@ namespace Dev2.Core.Tests
             viewModel.SetupGet(model => model.ActiveServer.EnvironmentID).Returns(Guid.NewGuid);
 
             ShellViewModel.OpenResource(source.Object.ResourceId, viewModel.Object.ActiveServer.EnvironmentID, viewModel.Object.ActiveServer);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("MainViewModel_OpenMergeConflictsView")]
+        public void MainViewModel_OpenMergeConflictsView_HandleVersion_Result()
+        {
+            //------------Setup for test--------------------------
+            CreateFullExportsAndVm();
+
+            var env = SetupEnvironment();
+
+            //------------Execute Test---------------------------
+            ShellViewModel.ActiveServer = env.Object;
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(ShellViewModel.ActiveServer);
+            Assert.IsTrue(ShellViewModel.ActiveServer.IsConnected);
+            Assert.IsTrue(ShellViewModel.ActiveServer.CanStudioExecute);
+            var treeItem = new Mock<IExplorerTreeItem>();
+            var popUpController = new Mock<Common.Interfaces.Studio.Controller.IPopupController>();
+            Action<IExplorerItemViewModel> action = new Action<IExplorerItemViewModel>(p => { });
+            var currentItem = new Mock<IContextualResourceModel>();
+            currentItem.Setup(p => p.Environment).Returns(new Mock<IServer>().Object);
+            var difItem = new Mock<IContextualResourceModel>();
+            var resourceRepo = new Mock<IResourceRepository>();
+            resourceRepo.Setup(p => p.LoadContextualResourceModel(It.IsAny<Guid>())).Returns(currentItem.Object);
+            var viewModel = new Mock<IShellViewModel>();
+            var server = new Mock<IServer>();
+            var serverDef = new Mock<IServer>();
+            serverDef.Setup(p => p.ResourceRepository.LoadContextualResourceModel(It.IsAny<Guid>())).Returns(difItem.Object);
+            server.Setup(p => p.ResourceRepository).Returns(resourceRepo.Object);
+            server.SetupGet(server1 => server1.IsConnected).Returns(true);
+            viewModel.SetupGet(model => model.ActiveServer).Returns(server.Object);
+            viewModel.SetupGet(model => model.LocalhostServer).Returns(server.Object);
+            viewModel.SetupGet(model => model.ActiveServer.EnvironmentID).Returns(Guid.NewGuid);
+            var source = new ExplorerItemViewModel(server.Object, treeItem.Object, action, ShellViewModel, popUpController.Object);
+            var contextManager = new Mock<IWorksurfaceContextManager>();
+            contextManager.Setup(p => p.ViewMergeConflictsService(currentItem.Object, difItem.Object, It.IsAny<bool>(), It.IsAny<IWorkSurfaceKey>()));
+            PrivateObject privateObject = new PrivateObject(ShellViewModel);
+            var currentSurfaceManager = (IWorksurfaceContextManager)privateObject.GetField("_worksurfaceContextManager");
+            privateObject.SetField("_worksurfaceContextManager", contextManager.Object);
+            ShellViewModel.OpenMergeConflictsView(source, viewModel.Object.ActiveServer.EnvironmentID, serverDef.Object);
+            contextManager.Verify(p => p.ViewMergeConflictsService(currentItem.Object, difItem.Object, It.IsAny<bool>(), It.IsAny<IWorkSurfaceKey>()));
+            privateObject.SetField("_worksurfaceContextManager", currentSurfaceManager);
         }
 
         [TestMethod]
@@ -2818,7 +2863,7 @@ namespace Dev2.Core.Tests
             var vieFactory = new Mock<IViewFactory>();
             var viewMock = new Mock<IView>();
             vieFactory.Setup(factory => factory.GetViewGivenServerResourceType(It.IsAny<string>())).Returns(viewMock.Object);
-            
+
             var popup = new Mock<Common.Interfaces.Studio.Controller.IPopupController>();
             popup.Setup(a => a.Show(StringResources.Unsaved_Changes, StringResources.CloseHeader,
                                MessageBoxButton.YesNoCancel, MessageBoxImage.Information, @"", false, false, true, false, false, false)).Returns(MessageBoxResult.Cancel).Verifiable();
@@ -2883,7 +2928,7 @@ namespace Dev2.Core.Tests
             mvm.Items.Add(vm);
             Assert.IsTrue(mvm.OnStudioClosing());   // assert that the studio closes
         }
-        
+
         [TestMethod]
         [TestCategory("MainViewModel_OnStudioClosing")]
         [Owner("Leon Rajindrapersadh")]
@@ -2931,7 +2976,7 @@ namespace Dev2.Core.Tests
             popup.Setup(a => a.Show(StringResources.Unsaved_Changes, StringResources.CloseHeader,
                                MessageBoxButton.YesNoCancel, MessageBoxImage.Information, @"", false, false, true, false, false, false)).Returns(MessageBoxResult.Yes).Verifiable();
             var mvm = new ShellViewModel(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, versionChecker.Object, vieFactory.Object, false, null, popup.Object);
-            
+
 
             ServerRepository.Instance.ActiveServer = environmentModel.Object;
 
@@ -3179,7 +3224,7 @@ namespace Dev2.Core.Tests
             //---------------Execute Test ----------------------
             worksurfaceContextManager.DisplayResourceWizard(resourceModelMock.Object);
 
-           
+
             var activetx = ShellViewModel.Items.ToList().First(i => i.WorkSurfaceViewModel.GetType().Name == "SourceViewModel`1");
 
             var vm = new WorkSurfaceContextViewModel(new EventAggregator(), new WorkSurfaceKey(), activetx.WorkSurfaceViewModel, new Mock<Common.Interfaces.Studio.Controller.IPopupController>().Object, (a, b, c) => { });
@@ -3188,7 +3233,7 @@ namespace Dev2.Core.Tests
             mvm.Items.Add(vm);
             Assert.IsFalse(mvm.OnStudioClosing());
         }
-        
+
 
         [TestMethod]
         [TestCategory("MainViewModel_OnStudioClosing")]
@@ -3237,7 +3282,7 @@ namespace Dev2.Core.Tests
 
             var mock = new Mock<IServerRepository>();
             mock.Setup(repository => repository.ActiveServer).Returns(environmentModel.Object);
-            mock.Setup(repository => repository.All()).Returns(new List<IServer>() {environmentModel.Object});
+            mock.Setup(repository => repository.All()).Returns(new List<IServer>() { environmentModel.Object });
             CustomContainer.Register(mock.Object);
             var worksurfaceContextManager = new WorksurfaceContextManager(false, ShellViewModel, mock.Object, new Mock<IViewFactory>().Object);
 
@@ -3335,7 +3380,7 @@ namespace Dev2.Core.Tests
             ActiveEnvironment.Setup(model => model.Name).Returns("localhost");
             //---------------Execute Test ----------------------
             worksurfaceContextManager.DisplayResourceWizard(resourceModelMock.Object);
-          
+
             var activetx = ShellViewModel.Items.ToList().First(i => i.WorkSurfaceViewModel.GetType().Name == "SourceViewModel`1");
 
             var vm = new WorkSurfaceContextViewModel(new EventAggregator(), new WorkSurfaceKey(), activetx.WorkSurfaceViewModel, new Mock<Common.Interfaces.Studio.Controller.IPopupController>().Object, (a, b, c) => { });
@@ -3400,7 +3445,7 @@ namespace Dev2.Core.Tests
             //---------------Execute Test ----------------------
             worksurfaceContextManager.DisplayResourceWizard(resourceModelMock.Object);
 
-            
+
             var activetx = ShellViewModel.Items.ToList().First(i => i.WorkSurfaceViewModel.GetType().Name == "SourceViewModel`1");
 
             var vm = new WorkSurfaceContextViewModel(new EventAggregator(), new WorkSurfaceKey(), activetx.WorkSurfaceViewModel, new Mock<Common.Interfaces.Studio.Controller.IPopupController>().Object, (a, b, c) => { });
@@ -3725,7 +3770,7 @@ namespace Dev2.Core.Tests
         public void SetRefreshExplorerState_GivenTrue_ShouldSetExplorerStateCorrectly()
         {
             //---------------Set up test pack-------------------
-            var explorer=new Mock<IExplorerViewModel>();
+            var explorer = new Mock<IExplorerViewModel>();
             explorer.SetupProperty(model => model.IsRefreshing);
             CreateFullExportsAndVm(explorer.Object);
             //---------------Assert Precondition----------------
@@ -4042,9 +4087,9 @@ namespace Dev2.Core.Tests
         {
 
         }
-        
+
         public SchedulerViewModelForTesting(IEventAggregator eventPublisher, DirectoryObjectPickerDialog directoryObjectPicker, Common.Interfaces.Studio.Controller.IPopupController popupController, IAsyncWorker asyncWorker)
-            
+
             : base(eventPublisher, directoryObjectPicker, popupController, asyncWorker, new Mock<IServer>().Object, a => new Mock<IServer>().Object)
         {
 
@@ -4066,9 +4111,9 @@ namespace Dev2.Core.Tests
 
         }
 
-        
+
         public SettingsViewModelForTest(IEventAggregator eventPublisher, Common.Interfaces.Studio.Controller.IPopupController popupController,
-                                       
+
                                        IAsyncWorker asyncWorker, IWin32Window parentWindow)
             : base(eventPublisher, popupController, asyncWorker, parentWindow, new Mock<IServer>().Object, a => new Mock<IServer>().Object)
         {
@@ -4082,5 +4127,5 @@ namespace Dev2.Core.Tests
 
         public bool RetValue { get; set; }
     }
-    
+
 }
