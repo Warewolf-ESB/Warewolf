@@ -127,9 +127,7 @@ namespace Dev2.Common.DateAndTime
             var result = "";
             if (string.IsNullOrWhiteSpace(outputFormat))
             {
-                var shortPattern = CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern;
-                var longPattern = CultureInfo.CurrentCulture.DateTimeFormat.LongTimePattern;
-                var finalPattern = shortPattern + " " + longPattern;
+                var finalPattern = GlobalConstants.Dev2DotNetDefaultDateTimeFormat;
                 if (finalPattern.Contains("ss"))
                 {
                     outputFormat = finalPattern.Insert(finalPattern.IndexOf("ss", StringComparison.Ordinal) + 2, ".fff");

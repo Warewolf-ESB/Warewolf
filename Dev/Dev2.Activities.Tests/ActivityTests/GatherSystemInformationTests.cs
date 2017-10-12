@@ -204,10 +204,10 @@ namespace Dev2.Tests.Activities.ActivityTests
             DateTime result = DateTime.Parse(dateTimeInformation);
             if(result.Second == 0)
             {
-                Thread.Sleep(10);
+                Thread.Sleep(100);
                 dateTimeInformation = activity.GetCorrectSystemInformation(enTypeOfSystemInformationToGather.FullDateTime);
                 result = DateTime.Parse(dateTimeInformation);
-                Assert.IsTrue(result.Millisecond > 0);
+                Assert.IsTrue(result.Second > 0);
             }
             Assert.IsTrue(result.Second > 0);
         }
