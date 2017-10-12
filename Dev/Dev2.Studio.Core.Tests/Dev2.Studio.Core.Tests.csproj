@@ -257,6 +257,7 @@
     <Compile Include="IntellisenseProvider\DefaultIntellisenseProviderTest.cs" />
     <Compile Include="IntellisenseProvider\EventLogParser.cs" />
     <Compile Include="MainViewModelBase.cs" />
+    <Compile Include="Merge\CompleteConflictTests.cs" />
     <Compile Include="ShellViewModelMock.cs" />
     <Compile Include="Custom Dev2 Controls\Intellisense\IntellisenseTextBoxTests.cs" />
     <Compile Include="ModelTests\RecordSetItemModelTests.cs" />
