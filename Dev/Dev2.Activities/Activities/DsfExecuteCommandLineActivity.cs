@@ -222,17 +222,8 @@ namespace Dev2.Activities
             using (_process)
             {
                 var processStartInfo = CreateProcessStartInfo(val);
-
-                if (processStartInfo == null)
-                {
-                    
-                    throw new ArgumentNullException("processStartInfo");
-                    
-                }
-
-                _process.StartInfo = processStartInfo;
+                _process.StartInfo = processStartInfo ?? throw new ArgumentNullException("processStartInfo");
                 var processStarted = _process.Start();
-
 
                 StringBuilder reader = outputReader;
                 errorReader = _process.StandardError;
