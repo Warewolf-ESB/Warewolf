@@ -76,10 +76,7 @@ using Dev2.DynamicServices.Objects;
 using Dev2.Interfaces;
 using Dev2.PerformanceCounters.Counters;
 using Dev2.PerformanceCounters.Management;
-using Dev2.Runtime.ESB.Execution;
-using Dev2.Runtime.Execution;
 using Dev2.Studio.Core.Factories;
-using Dev2.Workspaces;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.Enums;
 using Warewolf.Core;
@@ -99,99 +96,11 @@ namespace Dev2.Activities.Specs.Composition
         public WorkflowExecutionSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
         {
-            if (scenarioContext == null)
-            {
-                throw new ArgumentNullException(nameof(scenarioContext));
-            }
-
-            _scenarioContext = scenarioContext;
+            _scenarioContext = scenarioContext ?? throw new ArgumentNullException(nameof(scenarioContext));
             _commonSteps = new CommonSteps(_scenarioContext);
             AppSettings.LocalHost = "http://localhost:3142";
         }
 
-        new IDSFDataObject ExecuteProcess(IDSFDataObject dataObject = null, bool isDebug = false, IEsbChannel channel = null, bool isRemoteInvoke = false, bool throwException = true, bool isDebugMode = false, Guid currentEnvironmentId = default(Guid), bool overrideRemote = false)
-        {
-            var svc = new ServiceAction { Name = "TestAction", ServiceName = "UnitTestService" };
-            svc.SetActivity(FlowchartProcess);
-            Mock<IEsbChannel> mockChannel = new Mock<IEsbChannel>();
-
-            if (CurrentDl == null)
-            {
-                CurrentDl = TestData;
-            }
-
-            var errors = new ErrorResultTO();
-            if (ExecutionId == Guid.Empty)
-            {
-
-                if (dataObject != null)
-                {
-                    dataObject.ExecutingUser = User;
-                    dataObject.DataList = new StringBuilder(CurrentDl);
-                }
-
-            }
-
-            if (errors.HasErrors())
-            {
-                string errorString = errors.FetchErrors().Aggregate(string.Empty, (current, item) => current + item);
-
-                if (throwException)
-                {
-                    throw new Exception(errorString);
-                }
-            }
-
-            if (dataObject == null)
-            {
-
-                dataObject = new DsfDataObject(CurrentDl, ExecutionId)
-                {
-                    // NOTE: WorkflowApplicationFactory.InvokeWorkflowImpl() will use HostSecurityProvider.Instance.ServerID 
-                    //       if this is NOT provided which will cause the tests to fail!
-                    ServerID = Guid.NewGuid(),
-                    ExecutingUser = User,
-                    IsDebug = isDebugMode,
-                    EnvironmentID = currentEnvironmentId,
-                    IsRemoteInvokeOverridden = overrideRemote,
-                    DataList = new StringBuilder(CurrentDl)
-                };
-
-            }
-            if (!string.IsNullOrEmpty(TestData))
-            {
-                ExecutionEnvironmentUtils.UpdateEnvironmentFromXmlPayload(DataObject, new StringBuilder(TestData), CurrentDl, 0);
-            }
-            dataObject.IsDebug = isDebug;
-
-            // we now need to set a thread ID ;)
-            dataObject.ParentThreadID = 1;
-
-            if (isRemoteInvoke)
-            {
-                dataObject.RemoteInvoke = true;
-                dataObject.RemoteInvokerID = Guid.NewGuid().ToString();
-            }
-
-            var esbChannel = mockChannel.Object;
-            if (channel != null)
-            {
-                esbChannel = channel;
-            }
-            dataObject.ExecutionToken = new ExecutionToken();
-            WfExecutionContainer wfec = new WfExecutionContainer(svc, dataObject, WorkspaceRepository.Instance.ServerWorkspace, esbChannel);
-
-            errors.ClearErrors();
-            CustomContainer.Register<IActivityParser>(new ActivityParser());
-            if (dataObject.ResourceID == Guid.Empty)
-            {
-                dataObject.ResourceID = Guid.NewGuid();
-            }
-            dataObject.Environment = DataObject.Environment;
-            wfec.Eval(FlowchartProcess, dataObject, 0);
-            DataObject = dataObject;
-            return dataObject;
-        }
         const int EnvironmentConnectionTimeout = 3000;
 
         private SubscriptionService<DebugWriterWriteMessage> _debugWriterSubscriptionService;
@@ -220,6 +129,17 @@ namespace Dev2.Activities.Specs.Composition
             CustomContainer.Register(mockServer.Object);
             CustomContainer.Register(mockshell.Object);
             _externalProcessExecutor = new SpecExternalProcessExecutor();
+        }
+
+        [AfterScenario]
+        public void CleanUp()
+        {
+            if (_debugWriterSubscriptionService != null)
+            {
+                _debugWriterSubscriptionService.Unsubscribe();
+                _debugWriterSubscriptionService.Dispose();
+            }
+            _resetEvt?.Close();
         }
 
         [Given(@"Debug states are cleared")]
@@ -3155,17 +3075,6 @@ namespace Dev2.Activities.Specs.Composition
             debugStates.Clear();
 
             ExecuteWorkflow(resourceModel);
-        }
-
-        [AfterScenario]
-        public void CleanUp()
-        {
-            if (_debugWriterSubscriptionService != null)
-            {
-                _debugWriterSubscriptionService.Unsubscribe();
-                _debugWriterSubscriptionService.Dispose();
-            }
-            _resetEvt?.Close();
         }
 
        [Then(@"I set logging to ""(.*)""")]
