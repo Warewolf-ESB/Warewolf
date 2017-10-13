@@ -153,7 +153,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
             GetScalarValueFromEnvironment(result.Environment, "MyTestResult", out string actual, out string error);
-            DateTime actualdt = DateTime.Parse(actual);
+            DateTime actualdt = DateTime.Parse(actual,CultureInfo.InvariantCulture);
             var timeSpan = actualdt - now;
 
             Assert.IsTrue(timeSpan.TotalMilliseconds >= 9000, timeSpan.TotalMilliseconds + " is not >= 9000");

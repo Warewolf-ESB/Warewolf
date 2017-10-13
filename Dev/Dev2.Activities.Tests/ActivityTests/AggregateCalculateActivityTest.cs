@@ -7,7 +7,7 @@ using ActivityUnitTests;
 using Dev2.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
-
+using System.Globalization;
 
 namespace Dev2.Tests.Activities.ActivityTests
 {
@@ -41,7 +41,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             // remove test datalist ;)
 
-            DateTime res = DateTime.Parse(entry);
+            DateTime res = DateTime.Parse(entry,CultureInfo.InvariantCulture);
 
             if(res.Second == 0)
             {
