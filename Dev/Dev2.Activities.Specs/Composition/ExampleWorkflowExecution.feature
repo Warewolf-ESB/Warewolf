@@ -85,8 +85,8 @@ Scenario: Example Executing Utility - Date and Time example workflow
 	  |                               |
 	  | [[TheDefaultDate]] = DateTime |  
 	  And the "Date and Time(5)" in WorkFlow "Utility - Date and Time" debug inputs as
-	  | Input            | =        | Input Format            | =                      | Add Time |  | Output Format                                 |
-	  | System Date Time | DateTime | System Date Time Format | yyyy/MM/dd hh:mm:ss tt | ""       |  | "'Date format yyyy MM dd yields : ' yyyy MM dd |
+	  | Input            | =        | Input Format            | =                   | Add Time |  | Output Format                                  |
+	  | System Date Time | DateTime | System Date Time Format | MM/dd/yyyy HH:mm:ss | ""       |  | "'Date format yyyy MM dd yields : ' yyyy MM dd |
 
 Scenario: Example Executing Utility - Gather System Information example workflow
 	  Given I have a workflow "Utility - System Information Test"
