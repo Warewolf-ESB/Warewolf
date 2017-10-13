@@ -3057,7 +3057,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         private ConcurrentDictionary<string, (ModelItem leftItem, ModelItem rightItem)> _allNodes;
 
-        public void AddItem(IMergeToolModel parent, IMergeToolModel model)
+        public void AddItem(IMergeToolModel previous, IMergeToolModel model, IMergeToolModel next)
         {
             var root = _wd.Context.Services.GetService<ModelService>().Root;
             var chart = _wd.Context.Services.GetService<ModelService>().Find(root, typeof(Flowchart)).FirstOrDefault();
@@ -3099,12 +3099,15 @@ namespace Dev2.Studio.ViewModels.Workflow
             var startNode = chart.Properties["StartNode"];
             if (startNode?.ComputedValue == null)
             {
+                if (nodeToAdd == null)
+                {
+                    nodeToAdd = nodes[0];
+                }
                 AddStartNode(nodeToAdd.GetCurrentValue<FlowNode>(), startNode);
+
             }
-            else
-            {
-                AddNextNode(parent, model, nodes, nodeToAdd.GetCurrentValue<FlowNode>());
-            }
+            AddNextNode(previous, model, nodes, nodeToAdd.GetCurrentValue<FlowNode>(),next);
+            
         }
 
         public void ValidateStartNode(ModelItem nodeToAdd)
@@ -3120,7 +3123,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             var startNode = chart.Properties["StartNode"];
             if (startNode?.ComputedValue == null)
             {
-                AddStartNode(nodeToAdd.GetCurrentValue<FlowNode>(), startNode);
+                AddStartNode(nodeToAdd?.GetCurrentValue<FlowNode>(), startNode);
             }
         }
 
@@ -3145,17 +3148,17 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             if (model.Children.Any())
             {
-                model.Children.Reverse();
+                var items = model.Children.Reverse();
 
-                foreach (var item in model.Children)
+                foreach (var item in items)
                 {
                     var hasDecionsNodes = _allNodes.TryGetValue(item.UniqueId.ToString(), out (ModelItem leftItem, ModelItem rightItem) childtoolPar);
                     if (hasDecionsNodes)
                     {
                         if (childtoolPar.leftItem?.GetCurrentValue() == item.FlowNode.GetCurrentValue())
                         {
-                            var a = childtoolPar.leftItem.GetCurrentValue();
-                            if (!nodes.Contains(a))
+                            var a = childtoolPar.leftItem?.GetCurrentValue();
+                            if (a!=null && !nodes.Contains(a))
                             {
                                 AddNodesForChildren(item, nodes);
                                 nodes.Add(a);
@@ -3163,8 +3166,8 @@ namespace Dev2.Studio.ViewModels.Workflow
                         }
                         else if (childtoolPar.rightItem?.GetCurrentValue() == item.FlowNode.GetCurrentValue())
                         {
-                            var b = childtoolPar.leftItem.GetCurrentValue();
-                            if (!nodes.Contains(b))
+                            var b = childtoolPar.leftItem?.GetCurrentValue();
+                            if (b!=null && !nodes.Contains(b))
                             {
                                 AddNodesForChildren(item, nodes);
                                 nodes.Add(b);
@@ -3172,40 +3175,77 @@ namespace Dev2.Studio.ViewModels.Workflow
                         }
                     }
                 }
-                model.Children.Reverse();
             }
         }
 
-        private void AddNextNode(IMergeToolModel parent, IMergeToolModel model, ModelItemCollection nodes, FlowNode flowNode)
+        private void AddNextNode(IMergeToolModel previous, IMergeToolModel model, ModelItemCollection nodes, FlowNode flowNode, IMergeToolModel next)
         {
-            var parentNode = nodes.FirstOrDefault(t =>
+            if (previous != null)
             {
-                var step = t.GetCurrentValue() as FlowStep;
-                var act = step?.Action as IDev2Activity;
-                var parentFlowStep = parent.ActivityType as FlowStep;
-                return parentFlowStep?.Action is IDev2Activity parentId1 && act?.UniqueID == parentId1.UniqueID; 
-            });
+                var parentNode = nodes.FirstOrDefault(t =>
+                {
+                    var step = t.GetCurrentValue() as FlowStep;
+                    var act = step?.Action as IDev2Activity;
+                    var parentFlowStep = previous.ActivityType as FlowStep;
+                    return parentFlowStep?.Action is IDev2Activity parentId1 && act?.UniqueID == parentId1.UniqueID;
+                });
 
-            if (parentNode == null)
-            {
-                return;
+                if (parentNode == null)
+                {
+                    return;
+                }
+
+                var parentNodeProperty = parentNode.Properties["Next"];
+                if (parentNodeProperty == null)
+                {
+                    return;
+                }
+                if (flowNode == null)
+                {
+                    parentNodeProperty.SetValue(model.FlowNode.GetCurrentValue());
+                    Selection.Select(_wd.Context, model.FlowNode);
+                }
+                else
+                {
+                    parentNodeProperty.SetValue(flowNode);
+                    Selection.Select(_wd.Context, ModelItemUtils.CreateModelItem(flowNode));
+
+                }
             }
 
-            var parentNodeProperty = parentNode.Properties["Next"];
-            if (parentNodeProperty == null)
+            if (next != null)
             {
-                return;
-            }
-            if (flowNode == null)
-            {
-                parentNodeProperty.SetValue(model.FlowNode.GetCurrentValue());
-                Selection.Select(_wd.Context, model.FlowNode);
-            }
-            else
-            {
-                parentNodeProperty.SetValue(flowNode);
-                Selection.Select(_wd.Context, ModelItemUtils.CreateModelItem(flowNode));
+                var nextNode = nodes.FirstOrDefault(t =>
+                {
+                    var step = t.GetCurrentValue() as FlowStep;
+                    var act = step?.Action as IDev2Activity;
+                    var parentFlowStep = next.ActivityType as FlowStep;
+                    return parentFlowStep?.Action is IDev2Activity parentId1 && act?.UniqueID == parentId1.UniqueID;
+                });
 
+                var currentNode = nodes.FirstOrDefault(t =>
+                {
+                    var step = t.GetCurrentValue() as FlowStep;
+                    var act = step?.Action as IDev2Activity;
+                    var parentFlowStep = model.ActivityType as FlowStep;
+                    return parentFlowStep?.Action is IDev2Activity parentId1 && act?.UniqueID == parentId1.UniqueID;
+                });
+
+                if (currentNode == null)
+                {
+                    return;
+                }
+
+                var parentNodeProperty = currentNode.Properties["Next"];
+                if (parentNodeProperty == null)
+                {
+                    return;
+                }
+                if (nextNode != null)
+                {
+                    parentNodeProperty.SetValue(next.FlowNode.GetCurrentValue());
+                    Selection.Select(_wd.Context, model.FlowNode);
+                }
             }
         }
 

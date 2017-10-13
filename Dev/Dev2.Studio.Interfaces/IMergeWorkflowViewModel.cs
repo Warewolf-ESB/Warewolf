@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.ObjectModel;
+using System.Collections.Generic;
 using System.ComponentModel;
 using Dev2.Common.Interfaces;
 
@@ -18,7 +18,7 @@ namespace Dev2.Studio.Interfaces
         bool HasVariablesConflict { get; set; }
         IConflictModelFactory CurrentConflictModel { get; set; }
         IConflictModelFactory DifferenceConflictModel { get; set; }
-        ObservableCollection<ICompleteConflict> Conflicts { get; set; }
+        LinkedList<ICompleteConflict> Conflicts { get; set; }
         bool IsVariablesEnabled { get; set; }
         bool IsMergeExpanderEnabled { get; set; }
     }
