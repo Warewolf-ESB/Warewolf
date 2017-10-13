@@ -1150,20 +1150,18 @@ namespace Dev2.Studio.ViewModels
             if (environmentModel != null)
             {
                 var contextualResourceModel = environmentModel.ResourceRepository.LoadContextualResourceModel(resourceId);
-
                 var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.ServiceTestsViewer);
                 if (contextualResourceModel != null)
                 {
                     workSurfaceKey.EnvironmentID = contextualResourceModel.Environment.EnvironmentID;
                     workSurfaceKey.ResourceID = contextualResourceModel.ID;
                     workSurfaceKey.ServerID = contextualResourceModel.ServerID;
-
                     _worksurfaceContextManager.ViewTestsForService(contextualResourceModel, workSurfaceKey);
                 }
             }
         }
 
-        public void RunAllTests(Guid resourceId)
+        public void RunAllTests(string ResourcePath, Guid resourceId)
         {
             var environmentModel = ServerRepository.Get(ActiveServer.EnvironmentID);
             var contextualResourceModel = environmentModel?.ResourceRepository.LoadContextualResourceModel(resourceId);
@@ -1174,7 +1172,7 @@ namespace Dev2.Studio.ViewModels
             }
             else
             {
-                throw new NotImplementedException("Cannot run all tests in folder: '" + resourceId + "'");
+                _worksurfaceContextManager.RunAllTestsForFolder(ResourcePath);
             }
         }
 
@@ -1186,7 +1184,6 @@ namespace Dev2.Studio.ViewModels
             {
                 DeactivateItem(testViewModelForResource, true);
             }
-
         }
 
         private WorkSurfaceContextViewModel FindWorkSurfaceContextViewModel(WorkSurfaceKey key)

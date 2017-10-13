@@ -85,7 +85,7 @@ namespace Dev2.Studio.Interfaces
         void ViewSwagger(Guid resourceId, IServer server);
         void ViewApisJson(string resourcePath, Uri webServerUri);
         void CreateTest(Guid resourceId);
-        void RunAllTests(Guid resourceId);
+        void RunAllTests(string ResourcePath, Guid resourceId);
         void CloseResourceTestView(Guid resourceId, Guid serverId, Guid environmentId);
         void BrowserDebug(Guid resourceId, IServer server);
         void StudioDebug(Guid resourceId, IServer server);
