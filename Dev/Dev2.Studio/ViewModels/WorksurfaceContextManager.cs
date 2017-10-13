@@ -141,6 +141,7 @@ namespace Dev2.Studio.ViewModels
         void ViewTestsForService(IContextualResourceModel resourceModel);
         void ViewTestsForService(IContextualResourceModel resourceModel, IWorkSurfaceKey workSurfaceKey);
         void RunAllTestsForService(IContextualResourceModel resourceModel);
+        void RunAllTestsForFolder(string ResourcePath);
         WorkSurfaceContextViewModel EditResource<T>(IWorkSurfaceKey workSurfaceKey, SourceViewModel<T> viewModel) where T : IEquatable<T>;
 
         IWorkSurfaceKey TryGetOrCreateWorkSurfaceKey(IWorkSurfaceKey workSurfaceKey, WorkSurfaceContext workSurfaceContext, Guid resourceID);
@@ -353,6 +354,13 @@ namespace Dev2.Studio.ViewModels
             {
                 testViewModel.RunAllTestsInBrowserCommand.Execute(null);
             }
+        }
+
+        public void RunAllTestsForFolder(string ResourcePath)
+        {
+            var ServiceTestCommandHandler = new ServiceTestCommandHandlerModel();
+            var ProcessExecutor = new ExternalProcessExecutor();
+            ServiceTestCommandHandler.RunAllTestsInBrowser(false, ResourcePath, ProcessExecutor);
         }
 
         public void EditResource(IPluginSource selectedSource, IView view) => EditResource(selectedSource, view, null);

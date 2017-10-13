@@ -381,7 +381,7 @@ namespace Warewolf.Studio.ViewModels
             });
             RunAllTestsCommand = new DelegateCommand(type =>
             {
-                _explorerItemViewModelCommandController.RunAllTestsCommand(ResourceId);
+                _explorerItemViewModelCommandController.RunAllTestsCommand(ResourcePath, ResourceId);
             });
             CopyUrlCommand = new DelegateCommand(type =>
             {
