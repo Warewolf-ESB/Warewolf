@@ -13,6 +13,7 @@ namespace Dev2.Common.Interfaces
         bool HasConflict { get; set; }
         bool IsMergeExpanderEnabled { get; set; }
         bool IsMergeExpanded { get; set; }
+        bool IsChecked { get; set; }
         ICompleteConflict GetNextConflict();
     }
 }
