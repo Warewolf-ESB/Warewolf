@@ -96,7 +96,7 @@
     <Compile Include="Enums\ResourceType.cs" />
     <Compile Include="Enums\WorkSurfaceContext.cs" />
     <Compile Include="IAuthorizeCommand.cs" />
-    <Compile Include="ICompleteConflict.cs" />
+    <Compile Include="ConflictModelChanged.cs" />
     <Compile Include="IComplexObjectHandler.cs" />
     <Compile Include="IConflictModelFactory.cs" />
     <Compile Include="IConflictNode.cs" />
