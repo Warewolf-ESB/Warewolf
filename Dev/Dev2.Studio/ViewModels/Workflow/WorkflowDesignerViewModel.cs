@@ -945,7 +945,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                         var mvm = Application.Current.MainWindow.DataContext as ShellViewModel;
                         if (mvm?.ActiveItem != null)
                         {
-                            mvm.RunAllTests(mvm.ActiveItem.ContextualResourceModel.ID);
+                            mvm.RunAllTests(string.Empty, mvm.ActiveItem.ContextualResourceModel.ID);
                         }
                     }
                 }));
