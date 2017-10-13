@@ -24,6 +24,7 @@ namespace Dev2.Common.Interfaces
         Point NodeLocation { get; set; }
         bool IsMergeVisible { get; set; }
         ICompleteConflict Container { get; set; }
+        bool IsTrueArm { get; set; }
     }
     public delegate void ModelToolChanged(object sender, IMergeToolModel args);
 }
