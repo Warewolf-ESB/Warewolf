@@ -101,10 +101,13 @@ namespace Dev2.ViewModels.Merge
             if (!HasWorkflowNameConflict && !HasVariablesConflict)
             {
                 var conflict = Conflicts?.FirstOrDefault();
+                _conflictEnumerator.MoveNext();
                 if (conflict != null && !conflict.HasConflict)
                 {
                     conflict.CurrentViewModel.IsMergeChecked = true;
                 }
+                
+
             }
         }
 
@@ -198,26 +201,26 @@ namespace Dev2.ViewModels.Merge
             }
             else
             {
-                var nextConflict = UpdateNextEnabledState();
-                IMergeToolModel nextmodel = null;
-                if (nextConflict.CurrentViewModel.IsMergeChecked)
-                {
-                    nextmodel = nextConflict.CurrentViewModel;
-                }
-                else if (nextConflict.DiffViewModel.IsMergeChecked)
-                {
-                    nextmodel = nextConflict.DiffViewModel;
-                }
-                if (nextmodel == null)
-                {
-                    nextmodel = nextConflict.CurrentViewModel;
-                    WorkflowDesignerViewModel.AddItem(_previousParent, nextmodel);
-                    _previousParent = nextmodel;
-                }
-                else
-                {
-                    WorkflowDesignerViewModel.ValidateStartNode(nextmodel.FlowNode);
-                }
+                //var nextConflict = UpdateNextEnabledState();
+                //IMergeToolModel nextmodel = null;
+                //if (nextConflict.CurrentViewModel.IsMergeChecked)
+                //{
+                //    nextmodel = nextConflict.CurrentViewModel;
+                //}
+                //else if (nextConflict.DiffViewModel.IsMergeChecked)
+                //{
+                //    nextmodel = nextConflict.DiffViewModel;
+                //}
+                //if (nextmodel == null)
+                //{
+                //    nextmodel = nextConflict.CurrentViewModel;
+                //    WorkflowDesignerViewModel.AddItem(_previousParent, nextmodel);
+                //    _previousParent = nextmodel;
+                //}
+                //else
+                //{
+                //    WorkflowDesignerViewModel.ValidateStartNode(nextmodel.FlowNode);
+                //}
             }
             WorkflowDesignerViewModel.SelectedItem = model.FlowNode;
         }
@@ -257,19 +260,28 @@ namespace Dev2.ViewModels.Merge
                     return;
                 }
 
-                var nextConflict = UpdateNextEnabledState();
+                
                 if (!HasMergeStarted)
                 {
                     HasMergeStarted = true;
                 }
-                AddActivity(args);
 
-                if (nextConflict != null && !nextConflict.HasConflict)
+                if (sender is IMergeToolModel previousToolValue)
                 {
-                    nextConflict.CurrentViewModel.IsMergeChecked = true;
-                    nextConflict.CurrentViewModel.IsMergeEnabled = false;
-                    nextConflict.DiffViewModel.IsMergeEnabled = false;
+                    args.Container.IsChecked = args.Container.IsChecked || previousToolValue.IsMergeChecked;
                 }
+                if (!args.Container.IsChecked)
+                {
+                    var nextConflict = UpdateNextEnabledState();
+                    if (nextConflict != null && !nextConflict.HasConflict)
+                    {
+                        nextConflict.CurrentViewModel.IsMergeChecked = true;
+                        nextConflict.CurrentViewModel.IsMergeEnabled = false;
+                        nextConflict.DiffViewModel.IsMergeEnabled = false;
+                    }
+                }
+                args.Container.IsChecked = args.IsMergeChecked;
+                AddActivity(args);
             }
             catch (Exception ex)
             {
@@ -280,9 +292,9 @@ namespace Dev2.ViewModels.Merge
 
         public ICompleteConflict GetNextConflict()
         {
-            if (_conflictEnumerator.Current != null)
+            var current = _conflictEnumerator.Current;
+            if (current != null)
             {
-                var current = _conflictEnumerator.Current;
                 if (current.Children.Count > 0)
                 {
                     var nextConflict = current.GetNextConflict();
@@ -290,14 +302,15 @@ namespace Dev2.ViewModels.Merge
                     {
                         return nextConflict;
                     }
+                }                
+                if (_conflictEnumerator.MoveNext())
+                {                    
+                    current = _conflictEnumerator.Current;
+                    return current;
                 }
             }
-            if (_conflictEnumerator.MoveNext())
-            {
-                var current = _conflictEnumerator.Current;
-                return current;
-            }
-            return null;
+            _conflictEnumerator.MoveNext();
+            return _conflictEnumerator.Current;
         }
 
         private ICompleteConflict UpdateNextEnabledState()
@@ -306,11 +319,13 @@ namespace Dev2.ViewModels.Merge
             {
                 return null;
             }
-
+           
             var nextCurrConflict = GetNextConflict();
-            nextCurrConflict.CurrentViewModel.IsMergeEnabled = nextCurrConflict.HasConflict;
-            nextCurrConflict.DiffViewModel.IsMergeEnabled = nextCurrConflict.HasConflict;
-
+            if (nextCurrConflict != null)
+            {
+                nextCurrConflict.CurrentViewModel.IsMergeEnabled = nextCurrConflict.HasConflict;
+                nextCurrConflict.DiffViewModel.IsMergeEnabled = nextCurrConflict.HasConflict;
+            }
             return nextCurrConflict;
         }
 

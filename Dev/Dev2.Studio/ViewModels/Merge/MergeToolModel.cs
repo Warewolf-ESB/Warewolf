@@ -57,9 +57,10 @@ namespace Dev2.ViewModels.Merge
             get => _isMergeChecked;
             set
             {
+                var current = MemberwiseClone();
                 _isMergeChecked = value;
                 OnPropertyChanged(() => IsMergeChecked);
-                SomethingModelToolChanged?.Invoke(this, this);
+                SomethingModelToolChanged?.Invoke(current, this);
             }
         }
 
