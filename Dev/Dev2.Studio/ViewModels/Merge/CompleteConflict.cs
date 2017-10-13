@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Dev2.Common.Interfaces;
-using System.Collections.ObjectModel;
-using Dev2.Studio.Interfaces;
 using Microsoft.Practices.Prism.Mvvm;
 
 namespace Dev2.ViewModels.Merge
@@ -13,25 +12,19 @@ namespace Dev2.ViewModels.Merge
         private bool _isMergeExpanderEnabled;
         private bool _hasConflict;
         private IEnumerator<ICompleteConflict> _conflictEnumerator;
-        private bool _isChecked;
 
         public CompleteConflict()
         {
-            Children = new ObservableCollection<ICompleteConflict>();
+            Children = new LinkedList<ICompleteConflict>();
         }
 
         public IMergeToolModel CurrentViewModel { get; set; }
         public IMergeToolModel DiffViewModel { get; set; }
-        public ObservableCollection<ICompleteConflict> Children { get; set; }
+        public LinkedList<ICompleteConflict> Children { get; set; }
         public ICompleteConflict Parent { get; set; }
         public Guid UniqueId { get; set; }
 
-
-        public bool IsChecked
-        {
-            get { return _isChecked; }
-            set { _isChecked = value; }
-        }
+        public bool IsChecked { get; set; }
 
         public bool HasConflict
         {
@@ -87,6 +80,35 @@ namespace Dev2.ViewModels.Merge
                 return current;
             }
             return null;
+        }
+
+        public LinkedListNode<ICompleteConflict> Find(ICompleteConflict itemToFind)
+        {
+            var linkedConflict = Children.Find(itemToFind);
+            if (linkedConflict != null)
+            {
+                return linkedConflict;
+            }
+            foreach (var completeConflict in Children)
+            {
+                var childItem = completeConflict.Find(itemToFind);
+                if (childItem != null)
+                {
+                    return childItem;
+                }
+            }
+            return null;
+        }
+
+        public bool All(Func<ICompleteConflict, bool> check)
+        {
+            var current = Children.All(check);
+            var childrenMatch = true;
+            foreach (var completeConflict in Children)
+            {
+                childrenMatch &= completeConflict.All(check);
+            }
+            return current && childrenMatch;
         }
     }
 }

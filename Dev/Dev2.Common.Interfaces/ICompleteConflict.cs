@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.ObjectModel;
+using System.Collections.Generic;
 
 namespace Dev2.Common.Interfaces
 {
@@ -7,7 +7,7 @@ namespace Dev2.Common.Interfaces
     {
         IMergeToolModel CurrentViewModel { get; set; }
         IMergeToolModel DiffViewModel { get; set; }
-        ObservableCollection<ICompleteConflict> Children { get; set; }
+        LinkedList<ICompleteConflict> Children { get; set; }
         ICompleteConflict Parent { get; set; }
         Guid UniqueId { get; set; }
         bool HasConflict { get; set; }
@@ -15,5 +15,7 @@ namespace Dev2.Common.Interfaces
         bool IsMergeExpanded { get; set; }
         bool IsChecked { get; set; }
         ICompleteConflict GetNextConflict();
+        LinkedListNode<ICompleteConflict> Find(ICompleteConflict itemToFind);
+        bool All(Func<ICompleteConflict, bool> check);
     }
 }
