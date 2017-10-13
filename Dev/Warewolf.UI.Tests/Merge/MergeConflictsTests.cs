@@ -12,12 +12,22 @@ namespace Warewolf.UI.Tests.Merge
     public class MergeConflictsTests
     {
         public const string MergeWfWithVersion = "MergeWfWithVersion";
+        public const string MergeHelloWorldWithVersion = "MergeHelloWorldWithVersion";
 
         [TestMethod]
         [TestCategory("Merge")]
         public void RightClick_On_MergeWfWithVersion_Has_Merge_Option()
         {
             RightClick_On_MergeWfWithVersion(MergeWfWithVersion);
+            Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.Merge.Exists, "Merge option does not show after Right cliking " + MergeWfWithVersion);
+
+        }
+
+        [TestMethod]
+        [TestCategory("Merge")]
+        public void RightClick_On_MergeHelloWorldWithVersion_Has_Merge_Option()
+        {
+            RightClick_On_MergeWfWithVersion(MergeHelloWorldWithVersion);
             Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.Merge.Exists, "Merge option does not show after Right cliking " + MergeWfWithVersion);
         }
 
