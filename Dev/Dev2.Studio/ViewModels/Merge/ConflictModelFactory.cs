@@ -310,7 +310,7 @@ namespace Dev2.ViewModels.Merge
 
         private void BuildSwitch(DsfSwitch switchTool, IMergeToolModel mergeToolModel)
         {
-            var flowSwitch = new FlowSwitch<string>();
+            var flowSwitch = new FlowSwitch<string>();            
             mergeToolModel.ActivityType = flowSwitch;
             if (switchTool.Switches != null)
             {
@@ -363,6 +363,7 @@ namespace Dev2.ViewModels.Merge
                     addModelItem.HasParent = true;
                     addModelItem.Parent = mergeToolModel;
                     addModelItem.ParentDescription = de.Conditions.TrueArmText;
+                    addModelItem.IsTrueArm = true;
                     mergeToolModel.Children.Add(addModelItem);
                 }
             }
@@ -377,6 +378,7 @@ namespace Dev2.ViewModels.Merge
                     _modelItem = ModelItemUtils.CreateModelItem(dev2Activity);
                     var addModelItem = GetModel();
                     addModelItem.HasParent = true;
+                    addModelItem.IsTrueArm = false;
                     addModelItem.ParentDescription = de.Conditions.FalseArmText;
                     mergeToolModel.Children.Add(addModelItem);
                 }

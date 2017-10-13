@@ -3004,7 +3004,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             var parser = CustomContainer.Get<IServiceDifferenceParser>();
             _allNodes = parser?.GetAllNodes();
             var nodeToRemove = GetNodeToAmmend(model, true);
-            
+
             var step = nodeToRemove?.GetCurrentValue();
             switch (step)
             {
@@ -3019,6 +3019,8 @@ namespace Dev2.Studio.ViewModels.Workflow
                 case FlowDecision normalDecision:
                     if (nodes.Contains(normalDecision))
                     {
+                        normalDecision.False = null;
+                        normalDecision.True = null;
                         nodes.Remove(normalDecision);
                     }
 
@@ -3056,8 +3058,8 @@ namespace Dev2.Studio.ViewModels.Workflow
         }
 
         private ConcurrentDictionary<string, (ModelItem leftItem, ModelItem rightItem)> _allNodes;
-
-        public void AddItem(IMergeToolModel parent, IMergeToolModel model)
+        IServiceDifferenceParser _parser = CustomContainer.Get<IServiceDifferenceParser>();
+        public void AddItem(IMergeToolModel parent, IMergeToolModel currentModel)
         {
             var root = _wd.Context.Services.GetService<ModelService>().Root;
             var chart = _wd.Context.Services.GetService<ModelService>().Find(root, typeof(Flowchart)).FirstOrDefault();
@@ -3068,11 +3070,11 @@ namespace Dev2.Studio.ViewModels.Workflow
                 return;
             }
 
-            var parser = CustomContainer.Get<IServiceDifferenceParser>();
-            _allNodes = parser?.GetAllNodes();
-            var nodeToAdd = GetNodeToAmmend(model);
 
-            AddNodesForChildren(model, nodes);
+            _allNodes = _parser?.GetAllNodes();
+            var nodeToAdd = GetNodeToAmmend(currentModel);
+
+            //AddNodesForChildren(model, nodes);
             var step = nodeToAdd?.GetCurrentValue();
             switch (step)
             {
@@ -3087,23 +3089,55 @@ namespace Dev2.Studio.ViewModels.Workflow
                 case FlowDecision normalDecision:
                     if (!nodes.Contains(normalDecision))
                     {
+                        normalDecision.False = null;
+                        normalDecision.True = null;
                         nodes.Add(normalDecision);
                     }
-
                     break;
                 case FlowSwitch<string> normalSwitch:
-                    nodes.Add(normalSwitch);
+                    var emptySwitch = currentModel.ActivityType as FlowSwitch<string>;
+                    emptySwitch.DisplayName = normalSwitch.DisplayName;
+                    emptySwitch.Expression = normalSwitch.Expression;
+                    nodeToAdd = ModelItemUtils.CreateModelItem(emptySwitch);
+                    nodes.Add(emptySwitch);
                     break;
             }
 
-            var startNode = chart.Properties["StartNode"];
-            if (startNode?.ComputedValue == null)
+            FlowNode flowNode = nodeToAdd.GetCurrentValue<FlowNode>();
+            if (currentModel.HasParent)
             {
-                AddStartNode(nodeToAdd.GetCurrentValue<FlowNode>(), startNode);
+                IMergeToolModel decisionParent = ((MergeToolModel)((CompleteConflict)((CompleteConflict)((MergeToolModel)currentModel)?.Container)?.Parent)?.CurrentViewModel);
+
+                var parentModel = decisionParent?.FlowNode;
+                if (parentModel?.ItemType == typeof(FlowDecision))
+                {
+                    if (currentModel.IsTrueArm)
+                    {
+                        AddNextDecisionArm(decisionParent, parent, currentModel, nodes, flowNode, "True");
+                    }
+                    else
+                    {
+                        AddNextDecisionArm(decisionParent, parent, currentModel, nodes, flowNode, "False");
+                    }
+
+                }
+                if (parentModel?.ItemType == typeof(FlowSwitch<string>))
+                {
+                    var switchCases = decisionParent.Children.Select(p => p.ParentDescription).ToList();
+                    AddNextSwitchArm(decisionParent, parent, currentModel, nodes, flowNode);
+                }
             }
             else
             {
-                AddNextNode(parent, model, nodes, nodeToAdd.GetCurrentValue<FlowNode>());
+                var startNode = chart.Properties["StartNode"];
+                if (startNode?.ComputedValue == null)
+                {
+                    AddStartNode(flowNode, startNode);
+                }
+                else
+                {
+                    AddNextNode(parent, currentModel, nodes, flowNode);
+                }
             }
         }
 
@@ -3141,38 +3175,85 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-        private void AddNodesForChildren(IMergeToolModel model, ModelItemCollection nodes)
-        {
-            if (model.Children.Any())
-            {
-                model.Children.Reverse();
 
-                foreach (var item in model.Children)
+        private void AddNextDecisionArm(IMergeToolModel decisionParent, IMergeToolModel previousNode, IMergeToolModel model, ModelItemCollection nodes, FlowNode flowNode, string arm)
+        {
+            var lastDecision = nodes.SingleOrDefault(q =>
+                 {
+                     var decision = q.GetCurrentValue<FlowDecision>();
+                     if (decision == null)
+                     {
+                         return false;
+                     }
+                     var hasParent = decision.Equals(decisionParent.FlowNode.GetCurrentValue());
+                     return hasParent;
+                 });
+            ModelProperty parentNodeProperty;
+            if (lastDecision != null)
+            {
+                parentNodeProperty = lastDecision.Properties[arm];
+
+                IMergeToolModel parentToolModel = ((MergeToolModel)((CompleteConflict)((CompleteConflict)((MergeToolModel)model)?.Container)?.Parent)?.CurrentViewModel);
+                if (parentNodeProperty.ComputedValue == null)
                 {
-                    var hasDecionsNodes = _allNodes.TryGetValue(item.UniqueId.ToString(), out (ModelItem leftItem, ModelItem rightItem) childtoolPar);
-                    if (hasDecionsNodes)
+                    if (flowNode == null)
                     {
-                        if (childtoolPar.leftItem?.GetCurrentValue() == item.FlowNode.GetCurrentValue())
-                        {
-                            var a = childtoolPar.leftItem.GetCurrentValue();
-                            if (!nodes.Contains(a))
-                            {
-                                AddNodesForChildren(item, nodes);
-                                nodes.Add(a);
-                            }
-                        }
-                        else if (childtoolPar.rightItem?.GetCurrentValue() == item.FlowNode.GetCurrentValue())
-                        {
-                            var b = childtoolPar.leftItem.GetCurrentValue();
-                            if (!nodes.Contains(b))
-                            {
-                                AddNodesForChildren(item, nodes);
-                                nodes.Add(b);
-                            }
-                        }
+                        parentNodeProperty.SetValue(model.FlowNode.GetCurrentValue());
+                        Selection.Select(_wd.Context, model.FlowNode);
+                    }
+                    else
+                    {
+                        parentNodeProperty.SetValue(flowNode);
+                        Selection.Select(_wd.Context, ModelItemUtils.CreateModelItem(flowNode));
+
                     }
                 }
-                model.Children.Reverse();
+                else
+                {
+                    AddNextNode(previousNode, model, nodes, flowNode);
+                }
+            }
+        }
+
+        private void AddNextSwitchArm(IMergeToolModel decisionParent, IMergeToolModel previousNode, IMergeToolModel model, ModelItemCollection nodes, FlowNode flowNode)
+        {
+            var lastDecision = nodes.SingleOrDefault(q =>
+            {
+                var decision = q.GetCurrentValue<FlowSwitch<string>>();
+                if (decision == null)
+                {
+                    return false;
+                }
+
+                var hasParent = decision.Equals(decisionParent.FlowNode.GetCurrentValue());
+                return hasParent;
+            });
+            ModelProperty parentNodeProperty;
+            if (lastDecision != null)
+            {
+                parentNodeProperty = lastDecision.Properties["Cases"];
+
+                var cases = parentNodeProperty.ComputedValue as IDictionary<string, FlowNode>;
+
+                IMergeToolModel parentToolModel = ((MergeToolModel)((CompleteConflict)((CompleteConflict)((MergeToolModel)model)?.Container)?.Parent)?.CurrentViewModel);
+                if (parentNodeProperty.ComputedValue == null)
+                {
+                    if (flowNode == null)
+                    {
+                        parentNodeProperty.SetValue(model.FlowNode.GetCurrentValue());
+                        Selection.Select(_wd.Context, model.FlowNode);
+                    }
+                    else
+                    {
+                        parentNodeProperty.SetValue(flowNode);
+                        Selection.Select(_wd.Context, ModelItemUtils.CreateModelItem(flowNode));
+
+                    }
+                }
+                else
+                {
+                    AddNextNode(previousNode, model, nodes, flowNode);
+                }
             }
         }
 
@@ -3182,8 +3263,8 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 var step = t.GetCurrentValue() as FlowStep;
                 var act = step?.Action as IDev2Activity;
-                var parentFlowStep = parent.ActivityType as FlowStep;
-                return parentFlowStep?.Action is IDev2Activity parentId1 && act?.UniqueID == parentId1.UniqueID; 
+                var parentFlowStep = parent.FlowNode.GetCurrentValue() as FlowStep;
+                return parentFlowStep?.Action is IDev2Activity parentId1 && act?.UniqueID == parentId1.UniqueID;
             });
 
             if (parentNode == null)
