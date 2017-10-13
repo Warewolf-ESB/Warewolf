@@ -305,6 +305,124 @@
                                                   </AndCondition>
                                                   <SupportLevel>0</SupportLevel>
                                                   <Descendants>
+                                                    <UIObject ControlType="TreeItem" Id="DecisionMergeTreeItem" FriendlyName="Dev2.ViewModels.Merge.CompleteConflict" SpecialControlType="None">
+                                                      <TechnologyName>UIA</TechnologyName>
+                                                      <WindowTitles>
+                                                        <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                      </WindowTitles>
+                                                      <SearchConfigurations>
+                                                        <SearchConfiguration>Expand</SearchConfiguration>
+                                                      </SearchConfigurations>
+                                                      <AndCondition>
+                                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                        <PropertyCondition Name="ControlType">TreeItem</PropertyCondition>
+                                                        <PropertyCondition Name="Name">Dev2.ViewModels.Merge.CompleteConflict</PropertyCondition>
+                                                      </AndCondition>
+                                                      <SupportLevel>0</SupportLevel>
+                                                      <Descendants>
+                                                        <UIObject ControlType="Expander" Id="DecisionSubTreeItem" FriendlyName="Dev2.ViewModels.Merge.CompleteConflict" SpecialControlType="None">
+                                                          <TechnologyName>UIA</TechnologyName>
+                                                          <WindowTitles>
+                                                            <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                          </WindowTitles>
+                                                          <SearchConfigurations>
+                                                            <SearchConfiguration>Expand</SearchConfiguration>
+                                                          </SearchConfigurations>
+                                                          <AndCondition>
+                                                            <PropertyCondition Name="ControlType">Expander</PropertyCondition>
+                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                            <PropertyCondition Name="AutomationId">TreeViewExpander</PropertyCondition>
+                                                          </AndCondition>
+                                                          <SupportLevel>0</SupportLevel>
+                                                          <Descendants>
+                                                            <UIObject ControlType="Tree" Id="ChildrenConflictsTree" FriendlyName="ChildrenConflictsTree" SpecialControlType="None">
+                                                              <TechnologyName>UIA</TechnologyName>
+                                                              <WindowTitles>
+                                                                <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                              </WindowTitles>
+                                                              <AndCondition>
+                                                                <PropertyCondition Name="ControlType">Tree</PropertyCondition>
+                                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                <PropertyCondition Name="AutomationId">UI_TreeViewExpanderTemplateChildTreeView_AutoID</PropertyCondition>
+                                                              </AndCondition>
+                                                              <SupportLevel>0</SupportLevel>
+                                                              <Descendants>
+                                                                <UIObject ControlType="TreeItem" Id="FisrtAssign" FriendlyName="" SpecialControlType="None">
+                                                                  <TechnologyName>UIA</TechnologyName>
+                                                                  <WindowTitles>
+                                                                    <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                                  </WindowTitles>
+                                                                  <SearchConfigurations>
+                                                                    <SearchConfiguration>Expand</SearchConfiguration>
+                                                                  </SearchConfigurations>
+                                                                  <AndCondition>
+                                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                    <PropertyCondition Name="ControlType">TreeItem</PropertyCondition>
+                                                                  </AndCondition>
+                                                                  <SupportLevel>0</SupportLevel>
+                                                                  <Descendants>
+                                                                    <UIObject ControlType="Expander" Id="MergeExpander" FriendlyName="Dev2.ViewModels.Merge.CompleteConflict" SpecialControlType="None">
+                                                                      <TechnologyName>UIA</TechnologyName>
+                                                                      <WindowTitles>
+                                                                        <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                                      </WindowTitles>
+                                                                      <AndCondition>
+                                                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                        <PropertyCondition Name="ControlType">Expander</PropertyCondition>
+                                                                        <PropertyCondition Name="AutomationId">TreeViewExpander</PropertyCondition>
+                                                                      </AndCondition>
+                                                                      <SupportLevel>0</SupportLevel>
+                                                                      <Descendants>
+                                                                        <UIObject ControlType="Button" Id="MergeButton" FriendlyName="Dev2.ViewModels.Merge.CompleteConflict" SpecialControlType="None">
+                                                                          <TechnologyName>UIA</TechnologyName>
+                                                                          <WindowTitles>
+                                                                            <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                                          </WindowTitles>
+                                                                          <AndCondition>
+                                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                            <PropertyCondition Name="ControlType">Button</PropertyCondition>
+                                                                            <PropertyCondition Name="AutomationId">HeaderSite</PropertyCondition>
+                                                                          </AndCondition>
+                                                                          <SupportLevel>0</SupportLevel>
+                                                                          <Descendants>
+                                                                            <UIObject ControlType="RadioButton" Id="FisrAssign_Curr_RadioButton" FriendlyName="UI_TreeViewExpanderCurrentHeaderRB_AutoID" SpecialControlType="None">
+                                                                              <TechnologyName>UIA</TechnologyName>
+                                                                              <WindowTitles>
+                                                                                <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                                              </WindowTitles>
+                                                                              <AndCondition>
+                                                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                                <PropertyCondition Name="ControlType">RadioButton</PropertyCondition>
+                                                                                <PropertyCondition Name="AutomationId">UI_TreeViewExpanderCurrentHeaderRB_AutoID</PropertyCondition>
+                                                                              </AndCondition>
+                                                                              <SupportLevel>0</SupportLevel>
+                                                                              <Descendants />
+                                                                            </UIObject>
+                                                                            <UIObject ControlType="RadioButton" Id="FirstAssign_Diff_RadioButton" FriendlyName="UI_TreeViewExpanderDifferenceHeaderRB_AutoID" SpecialControlType="None">
+                                                                              <TechnologyName>UIA</TechnologyName>
+                                                                              <WindowTitles>
+                                                                                <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                                              </WindowTitles>
+                                                                              <AndCondition>
+                                                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                                <PropertyCondition Name="ControlType">RadioButton</PropertyCondition>
+                                                                                <PropertyCondition Name="AutomationId">UI_TreeViewExpanderDifferenceHeaderRB_AutoID</PropertyCondition>
+                                                                              </AndCondition>
+                                                                              <SupportLevel>0</SupportLevel>
+                                                                              <Descendants />
+                                                                            </UIObject>
+                                                                          </Descendants>
+                                                                        </UIObject>
+                                                                      </Descendants>
+                                                                    </UIObject>
+                                                                  </Descendants>
+                                                                </UIObject>
+                                                              </Descendants>
+                                                            </UIObject>
+                                                          </Descendants>
+                                                        </UIObject>
+                                                      </Descendants>
+                                                    </UIObject>
                                                     <UIObject ControlType="TreeItem" Id="MergeTreeItem" FriendlyName="Dev2.ViewModels.Merge.CompleteConflict" SpecialControlType="None">
                                                       <TechnologyName>UIA</TechnologyName>
                                                       <WindowTitles>
@@ -716,6 +834,137 @@
                               </AndCondition>
                               <SupportLevel>0</SupportLevel>
                               <Descendants />
+                            </UIObject>
+                          </Descendants>
+                        </UIObject>
+                      </Descendants>
+                    </UIObject>
+                  </Descendants>
+                </UIObject>
+              </Descendants>
+            </UIObject>
+          </Descendants>
+        </TopLevelWindow>
+        <TopLevelWindow ControlType="Window" Id="UIWarewolfDEV2SANELEMTWindow" FriendlyName="Warewolf (DEV2\SANELE.MTHEMBU)" SpecialControlType="None" SessionId="9308326">
+          <TechnologyName>UIA</TechnologyName>
+          <WindowTitles>
+            <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+          </WindowTitles>
+          <AndCondition>
+            <PropertyCondition Name="ControlType">Window</PropertyCondition>
+            <PropertyCondition Name="Name">Warewolf (DEV2\SANELE.MTHEMBU)</PropertyCondition>
+            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+            <PropertyCondition Name="ClassName" Operator="Contains">HwndWrapper</PropertyCondition>
+          </AndCondition>
+          <SupportLevel>0</SupportLevel>
+          <Descendants>
+            <UIObject ControlType="Custom" Id="UIItemCustom" FriendlyName="" SpecialControlType="None">
+              <TechnologyName>UIA</TechnologyName>
+              <WindowTitles>
+                <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+              </WindowTitles>
+              <AndCondition>
+                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                <PropertyCondition Name="ClassName">Uia.MergeWorkflowView</PropertyCondition>
+              </AndCondition>
+              <SupportLevel>0</SupportLevel>
+              <Descendants>
+                <UIObject ControlType="Tree" Id="UIUI_ConflictsTreeViewTree" FriendlyName="UI_ConflictsTreeView_AutoID" SpecialControlType="None">
+                  <TechnologyName>UIA</TechnologyName>
+                  <WindowTitles>
+                    <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                  </WindowTitles>
+                  <AndCondition>
+                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                    <PropertyCondition Name="ControlType">Tree</PropertyCondition>
+                    <PropertyCondition Name="AutomationId">UI_ConflictsTreeView_AutoID</PropertyCondition>
+                  </AndCondition>
+                  <SupportLevel>0</SupportLevel>
+                  <Descendants>
+                    <UIObject ControlType="TreeItem" Id="UIDev2ViewModelsMergeCTreeItem" FriendlyName="Dev2.ViewModels.Merge.CompleteConflict" SpecialControlType="None">
+                      <TechnologyName>UIA</TechnologyName>
+                      <WindowTitles>
+                        <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                      </WindowTitles>
+                      <SearchConfigurations>
+                        <SearchConfiguration>Expand</SearchConfiguration>
+                      </SearchConfigurations>
+                      <AndCondition>
+                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                        <PropertyCondition Name="ControlType">TreeItem</PropertyCondition>
+                        <PropertyCondition Name="Name">Dev2.ViewModels.Merge.CompleteConflict</PropertyCondition>
+                      </AndCondition>
+                      <SupportLevel>0</SupportLevel>
+                      <Descendants>
+                        <UIObject ControlType="Expander" Id="UIDev2ViewModelsMergeCExpander" FriendlyName="Dev2.ViewModels.Merge.CompleteConflict" SpecialControlType="None">
+                          <TechnologyName>UIA</TechnologyName>
+                          <WindowTitles>
+                            <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                          </WindowTitles>
+                          <AndCondition>
+                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                            <PropertyCondition Name="ControlType">Expander</PropertyCondition>
+                            <PropertyCondition Name="AutomationId">TreeViewExpander</PropertyCondition>
+                          </AndCondition>
+                          <SupportLevel>0</SupportLevel>
+                          <Descendants>
+                            <UIObject ControlType="Tree" Id="UIUI_TreeViewExpanderTTree" FriendlyName="UI_TreeViewExpanderTemplateChildTreeView_AutoID" SpecialControlType="None">
+                              <TechnologyName>UIA</TechnologyName>
+                              <WindowTitles>
+                                <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                              </WindowTitles>
+                              <AndCondition>
+                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                <PropertyCondition Name="ControlType">Tree</PropertyCondition>
+                                <PropertyCondition Name="AutomationId">UI_TreeViewExpanderTemplateChildTreeView_AutoID</PropertyCondition>
+                              </AndCondition>
+                              <SupportLevel>0</SupportLevel>
+                              <Descendants>
+                                <UIObject ControlType="TreeItem" Id="UIItemTreeItem" FriendlyName="" SpecialControlType="None">
+                                  <TechnologyName>UIA</TechnologyName>
+                                  <WindowTitles>
+                                    <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                  </WindowTitles>
+                                  <SearchConfigurations>
+                                    <SearchConfiguration>Expand</SearchConfiguration>
+                                  </SearchConfigurations>
+                                  <AndCondition>
+                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                    <PropertyCondition Name="ControlType">TreeItem</PropertyCondition>
+                                  </AndCondition>
+                                  <SupportLevel>0</SupportLevel>
+                                  <Descendants>
+                                    <UIObject ControlType="Expander" Id="UIDev2ViewModelsMergeCExpander" FriendlyName="Dev2.ViewModels.Merge.CompleteConflict" SpecialControlType="None">
+                                      <TechnologyName>UIA</TechnologyName>
+                                      <WindowTitles>
+                                        <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                      </WindowTitles>
+                                      <AndCondition>
+                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                        <PropertyCondition Name="ControlType">Expander</PropertyCondition>
+                                        <PropertyCondition Name="AutomationId">TreeViewExpander</PropertyCondition>
+                                      </AndCondition>
+                                      <SupportLevel>0</SupportLevel>
+                                      <Descendants>
+                                        <UIObject ControlType="Button" Id="UIDev2ViewModelsMergeCButton" FriendlyName="Dev2.ViewModels.Merge.CompleteConflict" SpecialControlType="None">
+                                          <TechnologyName>UIA</TechnologyName>
+                                          <WindowTitles>
+                                            <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                          </WindowTitles>
+                                          <AndCondition>
+                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                            <PropertyCondition Name="ControlType">Button</PropertyCondition>
+                                            <PropertyCondition Name="AutomationId">HeaderSite</PropertyCondition>
+                                          </AndCondition>
+                                          <SupportLevel>0</SupportLevel>
+                                          <Descendants />
+                                        </UIObject>
+                                      </Descendants>
+                                    </UIObject>
+                                  </Descendants>
+                                </UIObject>
+                              </Descendants>
                             </UIObject>
                           </Descendants>
                         </UIObject>
