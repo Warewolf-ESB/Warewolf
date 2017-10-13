@@ -29,8 +29,8 @@ namespace Dev2.Runtime.ESB.Management.Services
     /// </summary>
     public class FetchResourceDefinition : IEsbManagementEndpoint
     {
-        private readonly IResourceDefinationCleaner resourceDefinationCleaner;
-        private readonly IResourceCatalog resourceCatalog;
+        private IResourceDefinationCleaner resourceDefinationCleaner;
+        private IResourceCatalog resourceCatalog;
 
         public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
         {
@@ -52,15 +52,10 @@ namespace Dev2.Runtime.ESB.Management.Services
         }
 
         [ExcludeFromCodeCoverage]
-        public FetchResourceDefinition() : this(new ResourceDefinationCleaner(), ResourceCatalog.Instance)
+        public FetchResourceDefinition()
         {
-
         }
-        public FetchResourceDefinition(IResourceDefinationCleaner resourceDefinationCleaner, IResourceCatalog resourceCatalog)
-        {
-            this.resourceDefinationCleaner = resourceDefinationCleaner;
-            this.resourceCatalog = resourceCatalog;
-        }
+        
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             try
@@ -84,6 +79,14 @@ namespace Dev2.Runtime.ESB.Management.Services
                 Guid.TryParse(serviceId, out Guid resourceId);
 
                 Dev2Logger.Info($"Fetch Resource definition. ResourceId: {resourceId}", GlobalConstants.WarewolfInfo);
+                if (resourceCatalog == null)
+                {
+                    resourceCatalog = ResourceCatalog.Instance;
+                }
+                if (resourceDefinationCleaner == null)
+                {
+                    resourceDefinationCleaner = new ResourceDefinationCleaner();
+                }
                 var result = resourceCatalog.GetResourceContents(theWorkspace.ID, resourceId);
                 var resourceDefinition = resourceDefinationCleaner.GetResourceDefinition(prepairForDeployment, resourceId, result);
 

@@ -34,7 +34,7 @@ namespace Dev2.Tests.Runtime.Services
             var resource = XML.XmlResource.Fetch("Calculate_RecordSet_Subtract");
             mockCat.Setup(p => p.GetResourceContents(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new StringBuilder(resource.ToString()));
             mock.Setup(p => p.GetResourceDefinition(true, It.IsAny<Guid>(), It.IsAny<StringBuilder>())).Returns(new StringBuilder(resource.ToString()));
-            var fetchResourceDefinition = new FetchResourceDefinition(mock.Object, mockCat.Object);
+            var fetchResourceDefinition = new FetchResourceDefinition();
 
             //------------Execute Test---------------------------
             var resourceId = Guid.NewGuid().ToString();
@@ -58,7 +58,7 @@ namespace Dev2.Tests.Runtime.Services
             var resource = XML.XmlResource.Fetch("Calculate_RecordSet_Subtract");
             mockCat.Setup(p => p.GetResourceContents(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new StringBuilder(resource.ToString()));
             mock.Setup(p => p.GetResourceDefinition(true, It.IsAny<Guid>(), It.IsAny<StringBuilder>())).Returns(new StringBuilder(resource.ToString()));
-            var fetchResourceDefinition = new FetchResourceDefinition(mock.Object, mockCat.Object);
+            var fetchResourceDefinition = new FetchResourceDefinition();
 
             //------------Execute Test---------------------------
             var resourceId = Guid.NewGuid().ToString();
@@ -82,7 +82,7 @@ namespace Dev2.Tests.Runtime.Services
             mock.Setup(authorizer => authorizer.DecryptAllPasswords(It.IsAny<StringBuilder>()));
             mockCat.Setup(p => p.GetResourceContents(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new StringBuilder(resource.ToString()));
             mock.Setup(p => p.GetResourceDefinition(true, It.IsAny<Guid>(), It.IsAny<StringBuilder>())).Returns(new StringBuilder(resource.ToString()));
-            var fetchResourceDefinition = new FetchResourceDefinition(mock.Object, mockCat.Object);
+            var fetchResourceDefinition = new FetchResourceDefinition();
 
             //------------Execute Test---------------------------
             fetchResourceDefinition.DecryptAllPasswords(new StringBuilder());
@@ -102,7 +102,7 @@ namespace Dev2.Tests.Runtime.Services
             var resource = XML.XmlResource.Fetch("Calculate_RecordSet_Subtract");
             mockCat.Setup(p => p.GetResourceContents(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new StringBuilder(resource.ToString()));
             mock.Setup(p => p.GetResourceDefinition(true, It.IsAny<Guid>(), It.IsAny<StringBuilder>())).Returns(new StringBuilder(resource.ToString()));
-            var fetchResourceDefinition = new FetchResourceDefinition(mock.Object, mockCat.Object);
+            var fetchResourceDefinition = new FetchResourceDefinition();
             //------------Execute Test---------------------------
             var resId = fetchResourceDefinition.GetAuthorizationContextForService();
             //------------Assert Results-------------------------
@@ -121,7 +121,7 @@ namespace Dev2.Tests.Runtime.Services
             var resource = XML.XmlResource.Fetch("Calculate_RecordSet_Subtract");
             mockCat.Setup(p => p.GetResourceContents(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new StringBuilder(resource.ToString()));
             mock.Setup(p => p.GetResourceDefinition(true, It.IsAny<Guid>(), It.IsAny<StringBuilder>())).Returns(new StringBuilder(resource.ToString()));
-            var fetchResourceDefinition = new FetchResourceDefinition(mock.Object, mockCat.Object);
+            var fetchResourceDefinition = new FetchResourceDefinition();
             //------------Execute Test---------------------------
 
             //------------Assert Results-------------------------
@@ -140,7 +140,7 @@ namespace Dev2.Tests.Runtime.Services
             var resource = XML.XmlResource.Fetch("Calculate_RecordSet_Subtract");
             mockCat.Setup(p => p.GetResourceContents(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new StringBuilder(resource.ToString()));
             mock.Setup(p => p.GetResourceDefinition(true, It.IsAny<Guid>(), It.IsAny<StringBuilder>())).Returns(new StringBuilder(resource.ToString()));
-            var fetchResourceDefinition = new FetchResourceDefinition(mock.Object, mockCat.Object);
+            var fetchResourceDefinition = new FetchResourceDefinition();
             //------------Execute Test---------------------------
             var serviceEntry = fetchResourceDefinition.CreateServiceEntry();
             //------------Assert Results-------------------------
@@ -163,7 +163,7 @@ namespace Dev2.Tests.Runtime.Services
             var resource = XML.XmlResource.Fetch("Calculate_RecordSet_Subtract");
             mockCat.Setup(p => p.GetResourceContents(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new StringBuilder(resource.ToString()));
             mock.Setup(p => p.GetResourceDefinition(true, It.IsAny<Guid>(), It.IsAny<StringBuilder>())).Returns(new StringBuilder(resource.ToString()));
-            var fetchResourceDefinition = new FetchResourceDefinition(mock.Object, mockCat.Object);
+            var fetchResourceDefinition = new FetchResourceDefinition();
             var values = new Dictionary<string, StringBuilder>
             {
                 { "ResourceID",new StringBuilder(resourceID.ToString()) },
@@ -193,7 +193,7 @@ namespace Dev2.Tests.Runtime.Services
             mockCat.Setup(p => p.GetResourceContents(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new StringBuilder(resource.ToString()));
             mock.Setup(p => p.GetResourceDefinition(true, It.IsAny<Guid>(), It.IsAny<StringBuilder>())).Returns(new StringBuilder(resource.ToString()));
             mock.Setup(authorizer => authorizer.DecryptAllPasswords(It.IsAny<StringBuilder>()));
-            var fetchResourceDefinition = new FetchResourceDefinition(new ResourceDefinationCleaner(), mockCat.Object);
+            var fetchResourceDefinition = new FetchResourceDefinition();
             var values = new Dictionary<string, StringBuilder>
             {
                 { "ResourceID",new StringBuilder(resourceID.ToString()) },

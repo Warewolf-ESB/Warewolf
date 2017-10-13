@@ -1219,6 +1219,16 @@ namespace Dev2.Core.Tests
             throw new NotImplementedException();
         }
 
+        public void ValidateStartNode(ModelItem flowNode)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void RemoveStartNodeConnection()
+        {
+            throw new NotImplementedException();
+        }
+
         public IServer Server
         {
             get { throw new NotImplementedException(); }
