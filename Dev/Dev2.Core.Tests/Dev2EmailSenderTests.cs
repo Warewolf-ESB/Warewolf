@@ -17,28 +17,6 @@ namespace Dev2.Tests
     {
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void OnCreation_GivenInstance_ShouldNotThrowException()
-        {
-            //---------------Set up test pack-------------------
-
-            //---------------Assert Precondition----------------
-
-            //---------------Execute Test ----------------------
-            try
-            {
-                var sender = new Dev2EmailSender();
-
-            }
-            catch (Exception ex)
-            {
-                Assert.Fail(ex.StackTrace);
-
-            }
-            //---------------Test Result -----------------------
-        }
-
-        [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
         public void SendEmail_GivenSetUpInfo_ShouldReturnSucces()
         {
             //---------------Set up test pack-------------------
