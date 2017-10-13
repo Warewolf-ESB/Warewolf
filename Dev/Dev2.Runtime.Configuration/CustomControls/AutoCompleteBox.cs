@@ -9,11 +9,6 @@
 */
 
 
-// (c) Copyright Microsoft Corporation.
-// This source is subject to the Microsoft Public License (Ms-PL).
-// Please see http://go.microsoft.com/fwlink/?LinkID=131993] for details.
-// All other rights reserved.
-
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -28,14 +23,6 @@ using System.Windows.Input;
 using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Threading;
-
-
-
-
-
-
-
-
 
 namespace System.Windows.Controls
 
@@ -266,96 +253,16 @@ namespace System.Windows.Controls
             get { return (int)GetValue(MinimumPopulateDelayProperty); }
             set { SetValue(MinimumPopulateDelayProperty, value); }
         }
-
-        /// <summary>
-        /// Identifies the
-        /// <see cref="P:System.Windows.Controls.AutoCompleteBox.MinimumPopulateDelay" />
-        /// dependency property.
-        /// </summary>
-        /// <value>The identifier for the
-        /// <see cref="P:System.Windows.Controls.AutoCompleteBox.MinimumPopulateDelay" />
-        /// dependency property.</value>
-        
+                
         public static readonly DependencyProperty MinimumPopulateDelayProperty =
             DependencyProperty.Register(
                 "MinimumPopulateDelay",
                 typeof(int),
-                typeof(AutoCompleteBox),
-                new PropertyMetadata(OnMinimumPopulateDelayPropertyChanged));
-
-        /// <summary>
-        /// MinimumPopulateDelayProperty property changed handler. Any current 
-        /// dispatcher timer will be stopped. The timer will not be restarted 
-        /// until the next TextUpdate call by the user.
-        /// </summary>
-        /// <param name="d">AutoCompleteTextBox that changed its 
-        /// MinimumPopulateDelay.</param>
-        /// <param name="e">Event arguments.</param>
-        [SuppressMessage("Microsoft.Usage", "CA2208:InstantiateArgumentExceptionsCorrectly", Justification = "The exception is most likely to be called through the CLR property setter.")]
-        [ExcludeFromCodeCoverage]
-        private static void OnMinimumPopulateDelayPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            AutoCompleteBox source = d as AutoCompleteBox;
-
-            if(source != null && source._ignorePropertyChange)
-            {
-                source._ignorePropertyChange = false;
-                return;
-            }
-
-            int newValue = (int)e.NewValue;
-            if(newValue < 0)
-            {
-                if(source != null)
-                {
-                    source._ignorePropertyChange = true;
-                }
-                d.SetValue(e.Property, e.OldValue);
-
-                throw new ArgumentException(string.Format(CultureInfo.InvariantCulture,
-                    
-                    Dev2.Runtime.Configuration.Properties.Resources.AutoComplete_OnMinimumPopulateDelayPropertyChanged_InvalidValue, newValue), "value");
-            }
-
-            // Stop any existing timer
-            if(source?._delayTimer != null)
-            {
-                source._delayTimer.Stop();
-
-                if(newValue == 0)
-                {
-                    source._delayTimer = null;
-                }
-            }
-
-            // Create or clear a dispatcher timer instance
-            if(source != null && newValue > 0 && source._delayTimer == null)
-            {
-                source._delayTimer = new DispatcherTimer();
-                source._delayTimer.Tick += source.PopulateDropDown;
-            }
-
-            // Set the new tick interval
-            if(source != null && newValue > 0 && source._delayTimer != null)
-            {
-                source._delayTimer.Interval = TimeSpan.FromMilliseconds(newValue);
-            }
-        }
+                typeof(AutoCompleteBox), null);
+        
         #endregion public int MinimumPopulateDelay
 
         public static readonly DependencyProperty DefaultTextTemplateProperty = DependencyProperty.Register("DefaultTextTemplate", typeof(DataTemplate), typeof(AutoCompleteBox), new UIPropertyMetadata(null));
-        [ExcludeFromCodeCoverage]
-        public DataTemplate DefaultTextTemplate
-        {
-            get
-            {
-                return (DataTemplate)GetValue(DefaultTextTemplateProperty);
-            }
-            set
-            {
-                SetValue(DefaultTextTemplateProperty, value);
-            }
-        }
 
         public static readonly DependencyProperty DefaultTextProperty = DependencyProperty.Register("DefaultText", typeof(object), typeof(AutoCompleteBox), new UIPropertyMetadata(null));
 
@@ -386,30 +293,13 @@ namespace System.Windows.Controls
         }
 
         #region public bool IsTextCompletionEnabled
-        /// <summary>
-        /// Gets or sets a value indicating whether the first possible match
-        /// found during the filtering process will be displayed automatically
-        /// in the text box.
-        /// </summary>
-        /// <value>
-        /// True if the first possible match found will be displayed
-        /// automatically in the text box; otherwise, false. The default is
-        /// false.
-        /// </value>
+        
         public bool IsTextCompletionEnabled
         {
             get { return (bool)GetValue(IsTextCompletionEnabledProperty); }
             set { SetValue(IsTextCompletionEnabledProperty, value); }
         }
-
-        /// <summary>
-        /// Identifies the
-        /// <see cref="P:System.Windows.Controls.AutoCompleteBox.IsTextCompletionEnabled" />
-        /// dependency property.
-        /// </summary>
-        /// <value>The identifier for the
-        /// <see cref="P:System.Windows.Controls.AutoCompleteBox.IsTextCompletionEnabled" />
-        /// dependency property.</value>
+        
         public static readonly DependencyProperty IsTextCompletionEnabledProperty =
             DependencyProperty.Register(
                 "IsTextCompletionEnabled",
@@ -420,35 +310,7 @@ namespace System.Windows.Controls
         #endregion public bool IsTextCompletionEnabled
 
         #region public DataTemplate ItemTemplate
-        /// <summary>
-        /// Gets or sets the <see cref="T:System.Windows.DataTemplate" /> used
-        /// to display each item in the drop-down portion of the control.
-        /// </summary>
-        /// <value>The <see cref="T:System.Windows.DataTemplate" /> used to
-        /// display each item in the drop-down. The default is null.</value>
-        /// <remarks>
-        /// You use the ItemTemplate property to specify the visualization 
-        /// of the data objects in the drop-down portion of the AutoCompleteBox 
-        /// control. If your AutoCompleteBox is bound to a collection and you 
-        /// do not provide specific display instructions by using a 
-        /// DataTemplate, the resulting UI of each item is a string 
-        /// representation of each object in the underlying collection. 
-        /// </remarks>
-        [ExcludeFromCodeCoverage]
-        public DataTemplate ItemTemplate
-        {
-            get { return GetValue(ItemTemplateProperty) as DataTemplate; }
-            set { SetValue(ItemTemplateProperty, value); }
-        }
-
-        /// <summary>
-        /// Identifies the
-        /// <see cref="P:System.Windows.Controls.AutoCompleteBox.ItemTemplate" />
-        /// dependency property.
-        /// </summary>
-        /// <value>The identifier for the
-        /// <see cref="P:System.Windows.Controls.AutoCompleteBox.ItemTemplate" />
-        /// dependency property.</value>
+  
         public static readonly DependencyProperty ItemTemplateProperty =
             DependencyProperty.Register(
                 "ItemTemplate",
@@ -459,35 +321,7 @@ namespace System.Windows.Controls
         #endregion public DataTemplate ItemTemplate
 
         #region public Style ItemContainerStyle
-        /// <summary>
-        /// Gets or sets the <see cref="T:System.Windows.Style" /> that is
-        /// applied to the selection adapter contained in the drop-down portion
-        /// of the <see cref="T:System.Windows.Controls.AutoCompleteBox" />
-        /// control.
-        /// </summary>
-        /// <value>The <see cref="T:System.Windows.Style" /> applied to the
-        /// selection adapter contained in the drop-down portion of the
-        /// <see cref="T:System.Windows.Controls.AutoCompleteBox" /> control.
-        /// The default is null.</value>
-        /// <remarks>
-        /// The default selection adapter contained in the drop-down is a 
-        /// ListBox control. 
-        /// </remarks>
-        [ExcludeFromCodeCoverage]
-        public Style ItemContainerStyle
-        {
-            get { return GetValue(ItemContainerStyleProperty) as Style; }
-            set { SetValue(ItemContainerStyleProperty, value); }
-        }
-
-        /// <summary>
-        /// Identifies the
-        /// <see cref="P:System.Windows.Controls.AutoCompleteBox.ItemContainerStyle" />
-        /// dependency property.
-        /// </summary>
-        /// <value>The identifier for the
-        /// <see cref="P:System.Windows.Controls.AutoCompleteBox.ItemContainerStyle" />
-        /// dependency property.</value>
+        
         public static readonly DependencyProperty ItemContainerStyleProperty =
             DependencyProperty.Register(
                 ElementItemContainerStyle,
@@ -498,30 +332,7 @@ namespace System.Windows.Controls
         #endregion public Style ItemContainerStyle
 
         #region public Style TextBoxStyle
-        /// <summary>
-        /// Gets or sets the <see cref="T:System.Windows.Style" /> applied to
-        /// the text box portion of the
-        /// <see cref="T:System.Windows.Controls.AutoCompleteBox" /> control.
-        /// </summary>
-        /// <value>The <see cref="T:System.Windows.Style" /> applied to the text
-        /// box portion of the
-        /// <see cref="T:System.Windows.Controls.AutoCompleteBox" /> control.
-        /// The default is null.</value>
-        [ExcludeFromCodeCoverage]
-        public Style TextBoxStyle
-        {
-            get { return GetValue(TextBoxStyleProperty) as Style; }
-            set { SetValue(TextBoxStyleProperty, value); }
-        }
-
-        /// <summary>
-        /// Identifies the
-        /// <see cref="P:System.Windows.Controls.AutoCompleteBox.TextBoxStyle" />
-        /// dependency property.
-        /// </summary>
-        /// <value>The identifier for the
-        /// <see cref="P:System.Windows.Controls.AutoCompleteBox.TextBoxStyle" />
-        /// dependency property.</value>
+        
         public static readonly DependencyProperty TextBoxStyleProperty =
             DependencyProperty.Register(
                 ElementTextBoxStyle,
@@ -1212,211 +1023,103 @@ namespace System.Windows.Controls
                 SetValue(HasErrorProperty, value);
             }
         }
-
-        /// <summary>
-        /// Occurs when the text in the text box portion of the
-        /// <see cref="T:System.Windows.Controls.AutoCompleteBox" /> changes.
-        /// </summary>
+        
 #if SILVERLIGHT
         public event RoutedEventHandler TextChanged;
 #else
         public static readonly RoutedEvent TextChangedEvent = EventManager.RegisterRoutedEvent("TextChanged", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(AutoCompleteBox));
-
-        /// <summary>
-        /// Occurs when the text in the text box portion of the
-        /// <see cref="T:System.Windows.Controls.AutoCompleteBox" /> changes.
-        /// </summary>
+        
         public event RoutedEventHandler TextChanged
         {
             add { AddHandler(TextChangedEvent, value); }
             remove { RemoveHandler(TextChangedEvent, value); }
         }
 #endif
-
-        /// <summary>
-        /// Occurs when the
-        /// <see cref="T:System.Windows.Controls.AutoCompleteBox" /> is
-        /// populating the drop-down with possible matches based on the
-        /// <see cref="P:System.Windows.Controls.AutoCompleteBox.Text" />
-        /// property.
-        /// </summary>
-        /// <remarks>
-        /// If the event is canceled, by setting the PopulatingEventArgs.Cancel 
-        /// property to true, the AutoCompleteBox will not automatically 
-        /// populate the selection adapter contained in the drop-down. 
-        /// In this case, if you want possible matches to appear, you must 
-        /// provide the logic for populating the selection adapter.
-        /// </remarks>
+        
 #if SILVERLIGHT
         public event PopulatingEventHandler Populating;
 #else
         public static readonly RoutedEvent PopulatingEvent = EventManager.RegisterRoutedEvent("Populating", RoutingStrategy.Bubble, typeof(PopulatingEventHandler), typeof(AutoCompleteBox));
-
-        /// <summary>
-        /// Occurs when the
-        /// <see cref="T:System.Windows.Controls.AutoCompleteBox" /> is
-        /// populating the drop-down with possible matches based on the
-        /// <see cref="P:System.Windows.Controls.AutoCompleteBox.Text" />
-        /// property.
-        /// </summary>
-        /// <remarks>
-        /// If the event is canceled, by setting the PopulatingEventArgs.Cancel 
-        /// property to true, the AutoCompleteBox will not automatically 
-        /// populate the selection adapter contained in the drop-down. 
-        /// In this case, if you want possible matches to appear, you must 
-        /// provide the logic for populating the selection adapter.
-        /// </remarks>
+        
         public event PopulatingEventHandler Populating
         {
             add { AddHandler(PopulatingEvent, value); }
             remove { RemoveHandler(PopulatingEvent, value); }
         }
 #endif
-
-        /// <summary>
-        /// Occurs when the
-        /// <see cref="T:System.Windows.Controls.AutoCompleteBox" /> has
-        /// populated the drop-down with possible matches based on the
-        /// <see cref="P:System.Windows.Controls.AutoCompleteBox.Text" />
-        /// property.
-        /// </summary>
+        
 #if SILVERLIGHT
         public event PopulatedEventHandler Populated;
 #else
         public static readonly RoutedEvent PopulatedEvent = EventManager.RegisterRoutedEvent("Populated", RoutingStrategy.Bubble, typeof(PopulatedEventHandler), typeof(AutoCompleteBox));
-
-        /// <summary>
-        /// Occurs when the
-        /// <see cref="T:System.Windows.Controls.AutoCompleteBox" /> has
-        /// populated the drop-down with possible matches based on the
-        /// <see cref="P:System.Windows.Controls.AutoCompleteBox.Text" />
-        /// property.
-        /// </summary>
+        
         public event PopulatedEventHandler Populated
         {
             add { AddHandler(PopulatedEvent, value); }
             remove { RemoveHandler(PopulatedEvent, value); }
         }
 #endif
-
-        /// <summary>
-        /// Occurs when the value of the
-        /// <see cref="P:System.Windows.Controls.AutoCompleteBox.IsDropDownOpen" />
-        /// property is changing from false to true.
-        /// </summary>
+        
 #if SILVERLIGHT
         public event RoutedPropertyChangingEventHandler<bool> DropDownOpening;
 #else
         public static readonly RoutedEvent DropDownOpeningEvent = EventManager.RegisterRoutedEvent("DropDownOpening", RoutingStrategy.Bubble, typeof(RoutedPropertyChangingEventHandler<bool>), typeof(AutoCompleteBox));
-
-        /// <summary>
-        /// Occurs when the value of the
-        /// <see cref="P:System.Windows.Controls.AutoCompleteBox.IsDropDownOpen" />
-        /// property is changing from false to true.
-        /// </summary>
+        
         public event RoutedPropertyChangingEventHandler<bool> DropDownOpening
         {
             add { AddHandler(PopulatedEvent, value); }
             remove { RemoveHandler(PopulatedEvent, value); }
         }
 #endif
-
-        /// <summary>
-        /// Occurs when the value of the
-        /// <see cref="P:System.Windows.Controls.AutoCompleteBox.IsDropDownOpen" />
-        /// property has changed from false to true and the drop-down is open.
-        /// </summary>
+        
 #if SILVERLIGHT
         public event RoutedPropertyChangedEventHandler<bool> DropDownOpened;
 #else
         public static readonly RoutedEvent DropDownOpenedEvent = EventManager.RegisterRoutedEvent("DropDownOpened", RoutingStrategy.Bubble, typeof(RoutedPropertyChangedEventHandler<bool>), typeof(AutoCompleteBox));
-
-        /// <summary>
-        /// Occurs when the value of the
-        /// <see cref="P:System.Windows.Controls.AutoCompleteBox.IsDropDownOpen" />
-        /// property has changed from false to true and the drop-down is open.
-        /// </summary>
+        
         public event RoutedPropertyChangedEventHandler<bool> DropDownOpened
         {
             add { AddHandler(DropDownOpenedEvent, value); }
             remove { RemoveHandler(DropDownOpenedEvent, value); }
         }
 #endif
-
-        /// <summary>
-        /// Occurs when the
-        /// <see cref="P:System.Windows.Controls.AutoCompleteBox.IsDropDownOpen" />
-        /// property is changing from true to false.
-        /// </summary>
+        
 #if SILVERLIGHT
         public event RoutedPropertyChangingEventHandler<bool> DropDownClosing;
 #else
         public static readonly RoutedEvent DropDownClosingEvent = EventManager.RegisterRoutedEvent("DropDownClosing", RoutingStrategy.Bubble, typeof(RoutedPropertyChangingEventHandler<bool>), typeof(AutoCompleteBox));
-
-        /// <summary>
-        /// Occurs when the
-        /// <see cref="P:System.Windows.Controls.AutoCompleteBox.IsDropDownOpen" />
-        /// property is changing from true to false.
-        /// </summary>
+        
         public event RoutedPropertyChangingEventHandler<bool> DropDownClosing
         {
             add { AddHandler(DropDownClosingEvent, value); }
             remove { RemoveHandler(DropDownClosingEvent, value); }
         }
 #endif
-
-        /// <summary>
-        /// Occurs when the
-        /// <see cref="P:System.Windows.Controls.AutoCompleteBox.IsDropDownOpen" />
-        /// property was changed from true to false and the drop-down is open.
-        /// </summary>
+        
 #if SILVERLIGHT
         public event RoutedPropertyChangedEventHandler<bool> DropDownClosed;
 #else
         public static readonly RoutedEvent DropDownClosedEvent = EventManager.RegisterRoutedEvent("DropDownClosed", RoutingStrategy.Bubble, typeof(RoutedPropertyChangedEventHandler<bool>), typeof(AutoCompleteBox));
-
-        /// <summary>
-        /// Occurs when the
-        /// <see cref="P:System.Windows.Controls.AutoCompleteBox.IsDropDownOpen" />
-        /// property was changed from true to false and the drop-down is open.
-        /// </summary>
+        
         public event RoutedPropertyChangedEventHandler<bool> DropDownClosed
         {
             add { AddHandler(DropDownClosedEvent, value); }
             remove { RemoveHandler(DropDownClosedEvent, value); }
         }
 #endif
-
-        /// <summary>
-        /// Occurs when the selected item in the drop-down portion of the
-        /// <see cref="T:System.Windows.Controls.AutoCompleteBox" /> has
-        /// changed.
-        /// </summary>
+        
 #if SILVERLIGHT
         public event SelectionChangedEventHandler SelectionChanged;
 #else
         public static readonly RoutedEvent SelectionChangedEvent = EventManager.RegisterRoutedEvent("SelectionChanged", RoutingStrategy.Bubble, typeof(SelectionChangedEventHandler), typeof(AutoCompleteBox));
-
-        /// <summary>
-        /// Occurs when the selected item in the drop-down portion of the
-        /// <see cref="T:System.Windows.Controls.AutoCompleteBox" /> has
-        /// changed.
-        /// </summary>
+        
         public event SelectionChangedEventHandler SelectionChanged
         {
             add { AddHandler(SelectionChangedEvent, value); }
             remove { RemoveHandler(SelectionChangedEvent, value); }
         }
 #endif
-
-        /// <summary>
-        /// Gets or sets the  <see cref="T:System.Windows.Data.Binding" /> that
-        /// is used to get the values for display in the text portion of
-        /// the <see cref="T:System.Windows.Controls.AutoCompleteBox" />
-        /// control.
-        /// </summary>
-        /// <value>The <see cref="T:System.Windows.Data.Binding" /> object used
-        /// when binding to a collection property.</value>
+        
         public Binding ValueMemberBinding
         {
             get
@@ -1428,15 +1131,7 @@ namespace System.Windows.Controls
                 _valueBindingEvaluator = new BindingEvaluator<string>(value);
             }
         }
-
-        /// <summary>
-        /// Gets or sets the property path that is used to get values for
-        /// display in the text portion of the
-        /// <see cref="T:System.Windows.Controls.AutoCompleteBox" /> control.
-        /// </summary>
-        /// <value>The property path that is used to get values for display in
-        /// the text portion of the
-        /// <see cref="T:System.Windows.Controls.AutoCompleteBox" /> control.</value>
+        
         public string ValueMemberPath
         {
             get
@@ -1448,28 +1143,16 @@ namespace System.Windows.Controls
                 ValueMemberBinding = value == null ? null : new Binding(value);
             }
         }
-        /// <summary>
-        /// Gets or sets the observable collection that contains references to 
-        /// all of the items in the generated view of data that is provided to 
-        /// the selection-style control adapter.
-        /// </summary>
         public ObservableCollection<object> View => _view;
 
 #if !SILVERLIGHT
-        /// <summary>
-        /// Initializes the static members of the
-        /// <see cref="T:System.Windows.Controls.AutoCompleteBox" /> class.
-        /// </summary>
+
         static AutoCompleteBox()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(AutoCompleteBox), new FrameworkPropertyMetadata(typeof(AutoCompleteBox)));
         }
 #endif
-
-        /// <summary>
-        /// Initializes a new instance of the
-        /// <see cref="T:System.Windows.Controls.AutoCompleteBox" /> class.
-        /// </summary>
+        
         public AutoCompleteBox()
         {
 #if SILVERLIGHT  
@@ -1488,27 +1171,14 @@ namespace System.Windows.Controls
                 Style = Application.Current.TryFindResource("AutoCompleteBoxStyle") as Style;
             }
         }
-
-        /// <summary>
-        /// Arranges and sizes the
-        /// <see cref="T:System.Windows.Controls.AutoCompleteBox" />
-        /// control and its contents.
-        /// </summary>
-        /// <param name="finalSize">The size allowed for the
-        /// <see cref="T:System.Windows.Controls.AutoCompleteBox" /> control.</param>
-        /// <returns>The <paramref name="finalSize" />, unchanged.</returns>
+        
         protected override Size ArrangeOverride(Size finalSize)
         {
             Size r = base.ArrangeOverride(finalSize);
             DropDownPopup?.Arrange();
             return r;
         }
-
-        /// <summary>
-        /// Builds the visual tree for the
-        /// <see cref="T:System.Windows.Controls.AutoCompleteBox" /> control
-        /// when a new template is applied.
-        /// </summary>
+        
         public override void OnApplyTemplate()
         {
 #if !SILVERLIGHT
@@ -1527,9 +1197,6 @@ namespace System.Windows.Controls
             }
 
             base.OnApplyTemplate();
-
-            // Set the template parts. Individual part setters remove and add 
-            // any event handlers.
             if (GetTemplateChild(ElementPopup) is Popup popup)
             {
                 DropDownPopup = new PopupHelper(this, popup) { MaxDropDownHeight = MaxDropDownHeight };
@@ -1547,39 +1214,22 @@ namespace System.Windows.Controls
             }
 #endif
             Interaction.OnApplyTemplateBase();
-
-            // If the drop down property indicates that the popup is open,
-            // flip its value to invoke the changed handler.
             if(IsDropDownOpen && DropDownPopup != null && !DropDownPopup.IsOpen)
             {
                 OpeningDropDown(false);
             }
         }
-
-        /// <summary>
-        /// Allows the popup wrapper to fire visual state change events.
-        /// </summary>
-        /// <param name="sender">The source object.</param>
-        /// <param name="e">The event data.</param>
+        
         private void OnDropDownPopupUpdateVisualStates(object sender, EventArgs e)
         {
             UpdateVisualState(true);
         }
-
-        /// <summary>
-        /// Allows the popup wrapper to fire the FocusChanged event.
-        /// </summary>
-        /// <param name="sender">The source object.</param>
-        /// <param name="e">The event data.</param>
+        
         private void OnDropDownFocusChanged(object sender, EventArgs e)
         {
             FocusChanged(HasFocus());
         }
-
-        /// <summary>
-        /// Begin closing the drop-down.
-        /// </summary>
-        /// <param name="oldValue">The original value.</param>
+        
         private void ClosingDropDown(bool oldValue)
         {
             bool delayedClosingVisual = false;
@@ -1608,10 +1258,6 @@ namespace System.Windows.Controls
             }
             else
             {
-                // Immediately close the drop down window:
-                // When a popup closed visual state is present, the code path is 
-                // slightly different and the actual call to CloseDropDown will 
-                // be called only after the visual state's transition is done
                 RaiseExpandCollapseAutomationEvent(oldValue, false);
                 if(!delayedClosingVisual)
                 {
@@ -1621,12 +1267,7 @@ namespace System.Windows.Controls
 
             UpdateVisualState(true);
         }
-
-        /// <summary>
-        /// Begin opening the drop down by firing cancelable events, opening the
-        /// drop-down or reverting, depending on the event argument values.
-        /// </summary>
-        /// <param name="oldValue">The original value, if needed for a revert.</param>
+        
         private void OpeningDropDown(bool oldValue)
         {
 #if SILVERLIGHT
@@ -1650,12 +1291,7 @@ namespace System.Windows.Controls
 
             UpdateVisualState(true);
         }
-
-        /// <summary>
-        /// Raise an expand/collapse event through the automation peer.
-        /// </summary>
-        /// <param name="oldValue">The old value.</param>
-        /// <param name="newValue">The new value.</param>
+        
         private void RaiseExpandCollapseAutomationEvent(bool oldValue, bool newValue)
         {
             AutoCompleteBoxAutomationPeer peer = UIElementAutomationPeer.FromElement(this) as AutoCompleteBoxAutomationPeer;
@@ -1663,23 +1299,13 @@ namespace System.Windows.Controls
         }
 
 #if !SILVERLIGHT
-        /// <summary>
-        /// Handles the PreviewKeyDown event on the TextBox for WPF. This method
-        /// is not implemented for Silverlight.
-        /// </summary>
-        /// <param name="sender">The source object.</param>
-        /// <param name="e">The event data.</param>
+
         private void OnTextBoxPreviewKeyDown(object sender, KeyEventArgs e)
         {
             OnKeyDown(e);
         }
 #endif
-
-        /// <summary>
-        /// Connects to the DropDownPopup Closed event.
-        /// </summary>
-        /// <param name="sender">The source object.</param>
-        /// <param name="e">The event data.</param>
+        
         private void DropDownPopupClosed(object sender, EventArgs e)
         {
             // Force the drop down dependency property to be false.
@@ -1698,15 +1324,7 @@ namespace System.Windows.Controls
 #endif
             }
         }
-
-        /// <summary>
-        /// Creates an
-        /// <see cref="T:System.Windows.Automation.Peers.AutoCompleteBoxAutomationPeer" />
-        /// </summary>
-        /// <returns>A
-        /// <see cref="T:System.Windows.Automation.Peers.AutoCompleteBoxAutomationPeer" />
-        /// for the <see cref="T:System.Windows.Controls.AutoCompleteBox" />
-        /// object.</returns>
+        
         protected override AutomationPeer OnCreateAutomationPeer()
         {
             return new AutoCompleteBoxAutomationPeer(this);
@@ -1817,34 +1435,16 @@ namespace System.Windows.Controls
         }
 
         #endregion
-
-        /// <summary>
-        /// Handle the change of the IsEnabled property.
-        /// </summary>
-        /// <param name="sender">The source object.</param>
-        /// <param name="e">The event data.</param>
+        
         private void ControlIsEnabledChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             bool isEnabled = (bool)e.NewValue;
             if(!isEnabled)
             {
                 IsDropDownOpen = false;
-                //if (TextBox != null)
-                //{
-                //    TextBox.Text = string.Empty;
-                //}
             }
         }
-
-        /// <summary>
-        /// Returns the
-        /// <see cref="T:System.Windows.Controls.ISelectionAdapter" /> part, if
-        /// possible.
-        /// </summary>
-        /// <returns>
-        /// A <see cref="T:System.Windows.Controls.ISelectionAdapter" /> object,
-        /// if possible. Otherwise, null.
-        /// </returns>
+        
         [SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate", Justification = "Following the GetTemplateChild pattern for the method.")]
         
         [ExcludeFromCodeCoverage]
@@ -1853,8 +1453,6 @@ namespace System.Windows.Controls
             ISelectionAdapter adapter = null;
             if (GetTemplateChild(ElementSelector) is Selector selector)
             {
-                // Check if it is already an IItemsSelector
-
                 adapter = selector as ISelectionAdapter ?? new SelectorSelectionAdapter(selector);
             }
 
