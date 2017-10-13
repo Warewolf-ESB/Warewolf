@@ -13,6 +13,7 @@ namespace Dev2.ViewModels.Merge
         private bool _isMergeExpanderEnabled;
         private bool _hasConflict;
         private IEnumerator<ICompleteConflict> _conflictEnumerator;
+        private bool _isChecked;
 
         public CompleteConflict()
         {
@@ -24,6 +25,13 @@ namespace Dev2.ViewModels.Merge
         public ObservableCollection<ICompleteConflict> Children { get; set; }
         public ICompleteConflict Parent { get; set; }
         public Guid UniqueId { get; set; }
+
+
+        public bool IsChecked
+        {
+            get { return _isChecked; }
+            set { _isChecked = value; }
+        }
 
         public bool HasConflict
         {
