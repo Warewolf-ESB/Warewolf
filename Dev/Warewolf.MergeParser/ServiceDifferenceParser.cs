@@ -116,8 +116,8 @@ namespace Warewolf.MergeParser
             var nodesDifferentInHead = _flatDifferentActivities.Except(_flatCurrentActivities, new Dev2ActivityComparer()).ToList();
             var allDifferences = nodesDifferentInMergeHead.Union(nodesDifferentInHead, new Dev2ActivityComparer());
             var dev2Activities = allDifferences.DistinctBy(activity => activity.UniqueID).ToList();
-            var sameConflict = equalItems.Select(p => new KeyValuePair<string, bool>(p.UniqueID, true));
-            var diffConflict = dev2Activities.Select(p => new KeyValuePair<string, bool>(p.UniqueID, false));
+            var sameConflict = equalItems.Select(p => new KeyValuePair<string, bool>(p.UniqueID, false));
+            var diffConflict = dev2Activities.Select(p => new KeyValuePair<string, bool>(p.UniqueID, true));
             conflicts.AddRange(sameConflict);
             conflicts.AddRange(diffConflict);
 
