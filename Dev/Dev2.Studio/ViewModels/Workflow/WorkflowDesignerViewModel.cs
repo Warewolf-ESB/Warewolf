@@ -3059,6 +3059,39 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         private ConcurrentDictionary<string, (ModelItem leftItem, ModelItem rightItem)> _allNodes;
         IServiceDifferenceParser _parser = CustomContainer.Get<IServiceDifferenceParser>();
+        private void AddNodesForChildren(IMergeToolModel model, ModelItemCollection nodes)
+        {
+            if (model.Children.Any())
+            {
+                model.Children.Reverse();
+                foreach (var item in model.Children)
+                {
+                    var hasDecionsNodes = _allNodes.TryGetValue(item.UniqueId.ToString(), out (ModelItem leftItem, ModelItem rightItem) childtoolPar);
+                    if (hasDecionsNodes)
+                    {
+                        if (childtoolPar.leftItem?.GetCurrentValue() == item.FlowNode.GetCurrentValue())
+                        {
+                            var a = childtoolPar.leftItem.GetCurrentValue();
+                            if (!nodes.Contains(a))
+                            {
+                                AddNodesForChildren(item, nodes);
+                                nodes.Add(a);
+                            }
+                        }
+                        else if (childtoolPar.rightItem?.GetCurrentValue() == item.FlowNode.GetCurrentValue())
+                        {
+                            var b = childtoolPar.leftItem.GetCurrentValue();
+                            if (!nodes.Contains(b))
+                            {
+                                AddNodesForChildren(item, nodes);
+                                nodes.Add(b);
+                            }
+                        }
+                    }
+                }
+                model.Children.Reverse();
+            }
+        }
         public void AddItem(IMergeToolModel parent, IMergeToolModel currentModel)
         {
             var root = _wd.Context.Services.GetService<ModelService>().Root;
@@ -3072,9 +3105,12 @@ namespace Dev2.Studio.ViewModels.Workflow
 
 
             _allNodes = _parser?.GetAllNodes();
+            var hasConflict = _parser.NodeHasConflict(currentModel.UniqueId.ToString());
             var nodeToAdd = GetNodeToAmmend(currentModel);
-
-            //AddNodesForChildren(model, nodes);
+            if (!hasConflict)
+            {
+                AddNodesForChildren(currentModel, nodes);
+            }
             var step = nodeToAdd?.GetCurrentValue();
             switch (step)
             {
@@ -3087,19 +3123,30 @@ namespace Dev2.Studio.ViewModels.Workflow
 
                     break;
                 case FlowDecision normalDecision:
-                    if (!nodes.Contains(normalDecision))
+                    if (!nodes.Contains(normalDecision) && hasConflict)
                     {
                         normalDecision.False = null;
                         normalDecision.True = null;
                         nodes.Add(normalDecision);
                     }
+                    else
+                    {
+                        nodes.Add(normalDecision);
+                    }                 
                     break;
                 case FlowSwitch<string> normalSwitch:
-                    var emptySwitch = currentModel.ActivityType as FlowSwitch<string>;
-                    emptySwitch.DisplayName = normalSwitch.DisplayName;
-                    emptySwitch.Expression = normalSwitch.Expression;
-                    nodeToAdd = ModelItemUtils.CreateModelItem(emptySwitch);
-                    nodes.Add(emptySwitch);
+                    if (hasConflict)
+                    {
+                        var emptySwitch = currentModel.ActivityType as FlowSwitch<string>;
+                        emptySwitch.DisplayName = normalSwitch.DisplayName;
+                        emptySwitch.Expression = normalSwitch.Expression;
+                        nodeToAdd = ModelItemUtils.CreateModelItem(emptySwitch);
+                        nodes.Add(emptySwitch);
+                    }
+                    else
+                    {
+                        nodes.Add(normalSwitch);
+                    }
                     break;
             }
 
