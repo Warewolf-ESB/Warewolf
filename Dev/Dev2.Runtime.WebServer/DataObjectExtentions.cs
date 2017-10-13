@@ -260,6 +260,10 @@ namespace Dev2.Runtime.WebServer
             {
                 executePayload = (executePayload == string.Empty ? "[" : executePayload.TrimEnd("\r\n]".ToCharArray()) + ",") + serializer.Serialize(objArray).TrimStart('[');
             }
+            else
+            {
+                executePayload = "[]";
+            }
             return formatter;
         }
 
