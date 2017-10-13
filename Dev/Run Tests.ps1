@@ -348,6 +348,7 @@ function Merge-DotCover-Snapshots($DotCoverSnapshots, [string]$DestinationFilePa
             $LoneSnapshot = $DotCoverSnapshots[0].FullName
             if ($DotCoverSnapshots.Count -eq 1 -and (Test-Path "$LoneSnapshot")) {
                 &"$DotCoverPath" "report" "/Source=`"$LoneSnapshot`"" "/Output=`"$DestinationFilePath\DotCover Report.html`"" "/ReportType=HTML" "/LogFile=`"$LogFilePath.report.log`""
+                Write-Host DotCover report written to $DestinationFilePath\DotCover Report.html
             }
         }
     }
