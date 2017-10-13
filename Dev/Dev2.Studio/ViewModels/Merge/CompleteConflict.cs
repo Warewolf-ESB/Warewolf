@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Dev2.Common.Interfaces;
 using System.Collections.ObjectModel;
 using Dev2.Studio.Interfaces;
@@ -11,6 +12,7 @@ namespace Dev2.ViewModels.Merge
         private bool _isMergeExpanded;
         private bool _isMergeExpanderEnabled;
         private bool _hasConflict;
+        private IEnumerator<ICompleteConflict> _conflictEnumerator;
 
         public CompleteConflict()
         {
@@ -20,6 +22,7 @@ namespace Dev2.ViewModels.Merge
         public IMergeToolModel CurrentViewModel { get; set; }
         public IMergeToolModel DiffViewModel { get; set; }
         public ObservableCollection<ICompleteConflict> Children { get; set; }
+        public ICompleteConflict Parent { get; set; }
         public Guid UniqueId { get; set; }
 
         public bool HasConflict
@@ -50,6 +53,28 @@ namespace Dev2.ViewModels.Merge
                 _isMergeExpanded = value;
                 OnPropertyChanged(() => IsMergeExpanded);
             }
+        }
+
+        public ICompleteConflict GetNextConflict()
+        {
+            if (_conflictEnumerator == null)
+            {
+                _conflictEnumerator = Children.GetEnumerator();
+            }
+            if (_conflictEnumerator.Current != null)
+            {
+                var current = _conflictEnumerator.Current;
+                if (current.Children.Count > 0)
+                {
+                    return current.GetNextConflict();
+                }
+            }
+            if (_conflictEnumerator.MoveNext())
+            {
+                var current = _conflictEnumerator.Current;
+                return current;
+            }
+            return null;
         }
     }
 }

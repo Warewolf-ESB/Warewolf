@@ -3183,25 +3183,29 @@ namespace Dev2.Studio.ViewModels.Workflow
                 var step = t.GetCurrentValue() as FlowStep;
                 var act = step?.Action as IDev2Activity;
                 var parentFlowStep = parent.ActivityType as FlowStep;
-                var parentId1 = parentFlowStep?.Action as IDev2Activity;
-                return act?.UniqueID == parentId1.UniqueID; 
-
+                return parentFlowStep?.Action is IDev2Activity parentId1 && act?.UniqueID == parentId1.UniqueID; 
             });
-         
 
-            if (parentNode != null)
+            if (parentNode == null)
             {
-                if (flowNode == null)
-                {
-                    parentNode.Properties["Next"].SetValue(model.FlowNode.GetCurrentValue());
-                    Selection.Select(_wd.Context, model.FlowNode);
-                }
-                else
-                {
-                    parentNode.Properties["Next"].SetValue(flowNode);
-                    Selection.Select(_wd.Context, ModelItemUtils.CreateModelItem(flowNode));
+                return;
+            }
 
-                }
+            var parentNodeProperty = parentNode.Properties["Next"];
+            if (parentNodeProperty == null)
+            {
+                return;
+            }
+            if (flowNode == null)
+            {
+                parentNodeProperty.SetValue(model.FlowNode.GetCurrentValue());
+                Selection.Select(_wd.Context, model.FlowNode);
+            }
+            else
+            {
+                parentNodeProperty.SetValue(flowNode);
+                Selection.Select(_wd.Context, ModelItemUtils.CreateModelItem(flowNode));
+
             }
         }
 
