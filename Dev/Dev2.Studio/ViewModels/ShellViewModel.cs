@@ -1172,7 +1172,11 @@ namespace Dev2.Studio.ViewModels
             }
             else
             {
-                _worksurfaceContextManager.RunAllTestsForFolder("http://localhost:3142/secure/" + ResourcePath);
+                string resourcePath = environmentModel?.Connection.WebServerUri + "secure/" + ResourcePath;
+                if (resourcePath != null)
+                {
+                    _worksurfaceContextManager.RunAllTestsForFolder(resourcePath);
+                }
             }
         }
 
