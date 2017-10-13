@@ -16,7 +16,7 @@ using Dev2.Interfaces;
 using Dev2.Tests.Activities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
-
+using Dev2.Common;
 
 namespace ActivityUnitTests.ActivityTests
 
@@ -85,8 +85,8 @@ namespace ActivityUnitTests.ActivityTests
             SetupArguments(
                               "<root>" + ActivityStrings.DateTimeDiff_DataListShape + "</root>"
                             , ActivityStrings.DateTimeDiff_DataListShape
-                            , DateTime.Now.ToString(CultureInfo.InvariantCulture)
-                            , DateTime.Now.AddDays(209).ToString(CultureInfo.InvariantCulture)
+                            , DateTime.Now.ToString(GlobalConstants.Dev2DotNetDefaultDateTimeFormat)
+                            , DateTime.Now.AddDays(209).ToString(GlobalConstants.Dev2DotNetDefaultDateTimeFormat)
                             , ""
                             , "Days"
                             , "[[Result]]"
@@ -98,30 +98,7 @@ namespace ActivityUnitTests.ActivityTests
             // remove test datalist ;)
 
             Assert.AreEqual(expected, actual);
-        }
-
-        [TestMethod]
-        [TestCategory("DateTimeDifferenceUnitTest")]
-        [Owner("Massimo Guerrera")]
-        
-        public void DateTimeDifference_DateTimeDifferenceUnitTest_ExecuteWithBlankInput_DateTimeNowIsUsed()
-
-        {
-            const string currDL = @"<root><MyTestResult></MyTestResult></root>";
-            SetupArguments(currDL
-                         , currDL
-                         , ""
-                         , ""
-                         , ""
-                         , "Seconds"
-                         , "[[MyTestResult]]");
-
-            IDSFDataObject result = ExecuteProcess();
-            GetScalarValueFromEnvironment(result.Environment, "MyTestResult", out string actual, out string error);
-
-            Assert.AreEqual("0", actual);
-        }
-
+        }              
         #endregion Positive Test Cases
 
         #region Error Test Cases

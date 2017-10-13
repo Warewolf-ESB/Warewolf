@@ -215,167 +215,66 @@ namespace Dev2.Common.DateAndTime
         private bool TryParse(string data, string inputFormat, bool parseAsTime, out IDateTimeResultTO result,
             out string error)
         {
-            bool nothingDied = true;
-
+            var nothingDied = true;
+            var originalInputFormat = inputFormat;
             result = new DateTimeResultTO();
             error = "";
-
-            int culturesTried = 0;
-            const int MaxAttempts = 8;
             if (string.IsNullOrWhiteSpace(data))
             {
-                data = DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToLongTimeString();
+                data = DateTime.Now.ToString(GlobalConstants.Dev2DotNetDefaultDateTimeFormat);
             }
 
             if (string.IsNullOrWhiteSpace(inputFormat))
             {
-                inputFormat =
+                originalInputFormat =
                     TranslateDotNetToDev2Format(
                         GlobalConstants.Dev2DotNetDefaultDateTimeFormat.Replace("ss", "ss.fff"), out error);
-            }
-            else
+            }            
+
+            char[] dateTimeArray = data.ToArray();
+            int position = 0;
+
+
+            nothingDied = TryGetDateTimeFormatParts(originalInputFormat, _dateTimeFormatForwardLookups, _dateTimeFormatPartOptions, out List<IDateTimeFormatPartTO> formatParts, out error);
+            if (!string.IsNullOrEmpty(error))
             {
-                culturesTried = MaxAttempts;
+                return false;
             }
-            while (culturesTried <= MaxAttempts)
+            if (nothingDied)
             {
-                char[] dateTimeArray = data.ToArray();
-                int position = 0;
-
-
-                nothingDied = TryGetDateTimeFormatParts(inputFormat, _dateTimeFormatForwardLookups, _dateTimeFormatPartOptions, out List<IDateTimeFormatPartTO> formatParts, out error);
-                if (!string.IsNullOrEmpty(error))
+                int count = 0;
+                while (count < formatParts.Count && nothingDied && position < dateTimeArray.Length)
                 {
-                    return false;
-                }
-                if (nothingDied)
-                {
+                    var formatPart = formatParts[count];
 
-                    int count = 0;
-                    while (count < formatParts.Count && nothingDied && position < dateTimeArray.Length)
+                    if (TryGetDataFromDateTime(dateTimeArray, position, formatPart, result, parseAsTime,
+                        out int resultLength, out error))
                     {
-                        IDateTimeFormatPartTO formatPart = formatParts[count];
-
-                        if (TryGetDataFromDateTime(dateTimeArray, position, formatPart, result, parseAsTime,
-                            out int resultLength, out error))
-                        {
-                            position += resultLength;
-                        }
-                        else
-                        {
-                            //clear invalid result!
-                            result = new DateTimeResultTO();
-                            nothingDied = false;
-                        }
-
-                        count++;
-                    }
-                    if (!nothingDied)
-                    {
-                        inputFormat = MatchInputFormatToCulture(ref error, culturesTried);
-
-                        if (culturesTried >= MaxAttempts)
-                        {
-                            if (!IsBlankResult(result))
-                            {
-                                //Return the result if it isn't blank
-                                nothingDied = true;
-                            }
-                            else
-                            {
-                                //no result, throw error
-                                error = string.Format(ErrorResource.CannorParseInputDateTimeWithGivenFormat, error);
-                            }
-                        }
-                        else
-                        {
-                            nothingDied = true;
-                        }
-
-                        culturesTried++;
+                        position += resultLength;
                     }
                     else
                     {
-                        //Stop trying different formats
-                        culturesTried = MaxAttempts + 1;
+                        result = new DateTimeResultTO();
+                        nothingDied = false;
+                    }
+
+                    count++;
+                }
+                if (!nothingDied)
+                {
+                    if (!IsBlankResult(result))
+                    {
+                        nothingDied = true;
+                    }
+                    else
+                    {
+                        error = string.Format(ErrorResource.CannorParseInputDateTimeWithGivenFormat, error);
                     }
                 }
-                else
-                {
-                    culturesTried++;
-                }
             }
-
             return nothingDied;
         }
-
-        private string MatchInputFormatToCulture(ref string error, int culturesTried)
-        {
-            string inputFormat = "";
-            switch (culturesTried)
-            {
-                case 0:
-                    inputFormat =
-                        TranslateDotNetToDev2Format(
-                            CultureInfo.CurrentUICulture.DateTimeFormat.FullDateTimePattern, out error);
-                    break;
-
-                case 1:
-                    inputFormat =
-                        TranslateDotNetToDev2Format(
-                            CultureInfo.InvariantCulture.DateTimeFormat.FullDateTimePattern, out error);
-                    break;
-
-                case 2:
-                    inputFormat =
-                        TranslateDotNetToDev2Format(
-                            CultureInfo.InvariantCulture.DateTimeFormat.ShortDatePattern + " " +
-                            CultureInfo.InvariantCulture.DateTimeFormat.LongTimePattern, out error);
-                    break;
-
-                case 3:
-                    inputFormat =
-                        TranslateDotNetToDev2Format(
-                            new CultureInfo("en-ZA").DateTimeFormat.FullDateTimePattern, out error);
-                    break;
-
-                case 4:
-                    inputFormat =
-                        TranslateDotNetToDev2Format(
-                            new CultureInfo("en-ZA").DateTimeFormat.ShortDatePattern + " " +
-                            new CultureInfo("en-ZA").DateTimeFormat.LongTimePattern, out error);
-                    break;
-
-                case 5:
-                    inputFormat =
-                        TranslateDotNetToDev2Format(
-                            new CultureInfo("en-US").DateTimeFormat.FullDateTimePattern, out error);
-                    break;
-
-                case 6:
-                    inputFormat =
-                        TranslateDotNetToDev2Format(
-                            new CultureInfo("en-US").DateTimeFormat.ShortDatePattern + " " +
-                            new CultureInfo("en-US").DateTimeFormat.LongTimePattern, out error);
-                    break;
-
-                case 7:
-                    string shortPattern = CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern;
-                    string longPattern = CultureInfo.CurrentCulture.DateTimeFormat.LongTimePattern;
-                    string finalPattern = shortPattern + " " + longPattern;
-                    if (finalPattern.Contains("ss"))
-                    {
-                        finalPattern =
-                            finalPattern.Insert(finalPattern.IndexOf("ss", StringComparison.Ordinal) + 2,
-                                ".fff");
-                    }
-                    inputFormat = TranslateDotNetToDev2Format(finalPattern, out error);
-                    break;
-                default:
-                    break;
-            }
-            return inputFormat;
-        }
+          
 
         private static bool IsBlankResult(IDateTimeResultTO result)
         {
@@ -385,7 +284,7 @@ namespace Dev2.Common.DateAndTime
                    result.DaysOfYear == 0 &&
                    result.Era == null &&
                    result.Hours == 0 &&
-!result.Is24H &&
+                   !result.Is24H &&
                    result.Milliseconds == 0 &&
                    result.Minutes == 0 &&
                    result.Months == 0 &&
@@ -394,10 +293,7 @@ namespace Dev2.Common.DateAndTime
                    result.Years == 0;
         }
 
-        /// <summary>
-        ///     Extracts data from a date time text given a potision and a date time format part. This data is then assigned to the
-        ///     given result.
-        /// </summary>
+
         private static bool TryGetDataFromDateTime(char[] dateTimeArray, int startPosition, IDateTimeFormatPartTO part, IDateTimeResultTO result, bool passAsTime, out int resultLength, out string error)
         {
             bool nothingDied = true;
