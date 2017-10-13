@@ -97,18 +97,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected override void OnExecute(NativeActivityContext context)
         {
-            _dataObject = context.GetExtension<IDSFDataObject>();
-            _dataListId = _dataObject.DataListID;
-            InitializeDebug(_dataObject);
-
-            if(_dataObject.IsDebugMode())
-            {
-                DispatchDebugState(_dataObject, StateType.Before, 0);
-            }
-
-       
-            Dev2DataListDecisionHandler.Instance.AddEnvironment(_dataListId, _dataObject.Environment);
-            context.ScheduleActivity(_expression, OnCompleted, OnFaulted);
+            throw new NotImplementedException();
         }
 
         #endregion
@@ -117,27 +106,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         void OnCompleted(NativeActivityContext context, ActivityInstance completedInstance, TResult result)
         {
-            try
-            {
-
-
-
-                IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
-                Result.Set(context, result);
-                _theResult = result;
-
-                if (dataObject != null && dataObject.IsDebugMode())
-                {
-                    DispatchDebugState(dataObject, StateType.After, 0);
-                }
-
-                OnExecutedCompleted(context);
-            }
-            finally
-            {
-
-                Dev2DataListDecisionHandler.Instance.RemoveEnvironment(_dataListId);
-            }
+            throw new NotImplementedException();
         }
 
         #endregion
@@ -146,180 +115,27 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         void OnFaulted(NativeActivityFaultContext faultContext, Exception propagatedException, ActivityInstance propagatedFrom)
         {
-            IDSFDataObject dataObject = faultContext.GetExtension<IDSFDataObject>();
-            dataObject.Environment.AddError(propagatedException.Message);
-            if(dataObject.IsDebugMode())
-            {
-                DispatchDebugState(dataObject, StateType.After, 0);
-            }
-            OnExecutedCompleted(faultContext);
+            throw new NotImplementedException();
         }
 
         #endregion
 
         #region Get Debug Inputs/Outputs
-
-        // Travis.Frisinger - 28.01.2013 : Amended for Debug
+        
         public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
         {
-            if (_debugInputs != null && _debugInputs.Count > 0)
-            {
-                return _debugInputs;
-            }
-            List<IDebugItem> result = new List<IDebugItem>();
-            var allErrors = new ErrorResultTO();
-
-            var val = new StringBuilder(Dev2DecisionStack.ExtractModelFromWorkflowPersistedData(ExpressionText));
-
-            try
-            {
-                Dev2DecisionStack dds = DataListUtil.ConvertFromJsonToModel<Dev2DecisionStack>(val);
-                string userModel = dds.GenerateUserFriendlyModel(env, dds.Mode, out ErrorResultTO error);
-                allErrors.MergeErrors(error);
-
-                foreach (Dev2Decision dev2Decision in dds.TheStack)
-                {
-                    AddInputDebugItemResultsAfterEvaluate(result, ref userModel, env, dev2Decision.Col1, out  error);
-                    allErrors.MergeErrors(error);
-                    AddInputDebugItemResultsAfterEvaluate(result, ref userModel, env, dev2Decision.Col2, out error);
-                    allErrors.MergeErrors(error);
-                    AddInputDebugItemResultsAfterEvaluate(result, ref userModel, env, dev2Decision.Col3, out error);
-                    allErrors.MergeErrors(error);
-                }
-
-                var itemToAdd = new DebugItem();
-
-                userModel = userModel.Replace("OR", " OR\r\n")
-                    .Replace("AND", " AND\r\n")
-                    .Replace("\r\n ", "\r\n")
-                    .Replace("\r\n\r\n", "\r\n")
-                    .Replace("  ", " ");
-
-                AddDebugItem(new DebugItemStaticDataParams(userModel, "Statement"), itemToAdd);
-                result.Add(itemToAdd);
-
-                itemToAdd = new DebugItem();
-                AddDebugItem(new DebugItemStaticDataParams(dds.Mode == Dev2DecisionMode.AND ? "YES" : "NO", "Require all decisions to be true"), itemToAdd);
-                result.Add(itemToAdd);
-
-            }
-            catch (JsonSerializationException)
-            {
-                Dev2Switch ds = new Dev2Switch { SwitchVariable = val.ToString() };
-                DebugItem itemToAdd = new DebugItem();
-
-                var a = env.Eval(ds.SwitchVariable, 0);
-                var debugResult = new DebugItemWarewolfAtomResult(ExecutionEnvironment.WarewolfEvalResultToString(a), "", ds.SwitchVariable, "", "Switch on", "", "=");
-                itemToAdd.AddRange(debugResult.GetDebugItemResult());
-                result.Add(itemToAdd);
-            }
-            catch (Exception e)
-            {
-                allErrors.AddError(e.Message);
-            }
-            finally
-            {
-                if (allErrors.HasErrors())
-                {
-                    var serviceName = GetType().Name;
-                    DisplayAndWriteError(serviceName, allErrors);
-                }
-            }
-
-            return result.Select(a => a as DebugItem).ToList();
+            throw new NotImplementedException();
         }
 
         void AddInputDebugItemResultsAfterEvaluate(List<IDebugItem> result, ref string userModel, IExecutionEnvironment env, string expression, out ErrorResultTO error, DebugItem parent = null)
         {
-            error = new ErrorResultTO();
-            if(expression != null && DataListUtil.IsEvaluated(expression))
-            {
-                DebugOutputBase debugResult;
-                if(error.HasErrors())
-                {
-                    debugResult = new DebugItemStaticDataParams("", expression, "");
-                }
-                else
-                {
-                    var expressiomToStringValue = ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(expression, 0));// EvaluateExpressiomToStringValue(expression, decisionMode, dataList);
-                    userModel = userModel.Replace(expression, expressiomToStringValue);
-                    debugResult = new DebugItemWarewolfAtomResult(expressiomToStringValue, expression, "");
-                }
-
-                var itemResults = debugResult.GetDebugItemResult();
-
-                var allReadyAdded = new List<IDebugItemResult>();
-
-                itemResults.ForEach(a =>
-                    {
-                        var found = result.SelectMany(r => r.FetchResultsList())
-                                          .SingleOrDefault(r => r.Variable.Equals(a.Variable));
-                        if(found != null)
-                        {
-                            allReadyAdded.Add(a);
-                        }
-                    });
-
-                allReadyAdded.ForEach(i => itemResults.Remove(i));
-
-                if(parent == null)
-                {
-                    result.Add(new DebugItem(itemResults));
-                }
-                else
-                {
-                    parent.AddRange(itemResults);
-                }
-            }
+            throw new NotImplementedException();
         }
-
-        // Travis.Frisinger - 28.01.2013 : Amended for Debug
+        
         public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList, int update)
         {
-            if (_debugOutputs != null && _debugOutputs.Count > 0)
-            {
-                return _debugOutputs;
-            }
-            var result = new List<DebugItem>();
-            string resultString = _theResult.ToString();
-            DebugItem itemToAdd = new DebugItem();
-            var val = new StringBuilder(Dev2DecisionStack.ExtractModelFromWorkflowPersistedData(ExpressionText));
-
-            try
-            {
-                Dev2DecisionStack dds = DataListUtil.ConvertFromJsonToModel<Dev2DecisionStack>(val);
-
-                if (_theResult.ToString() == "True")
-                {
-                    resultString = dds.TrueArmText;
-                }
-                else
-                {
-                    if (_theResult.ToString() == "False")
-                    {
-                        resultString = dds.FalseArmText;
-                    }
-                }
-
-                itemToAdd.AddRange(new DebugItemStaticDataParams(resultString, "").GetDebugItemResult());
-                result.Add(itemToAdd);
-            }
-                
-            catch(Exception)
-                
-            {
-
-                    itemToAdd.AddRange(new DebugItemStaticDataParams(resultString, "").GetDebugItemResult());
-                    result.Add(itemToAdd);
-                
-            }
-
-            return result;
+            throw new NotImplementedException();
         }
-
-        #endregion
-
-        #region Private Debug Methods
 
         #endregion
 
@@ -338,14 +154,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         #endregion
 
         #region Overrides of DsfNativeActivity<TResult>
-
-        /// <summary>
-        /// Determines whether the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>.
-        /// </summary>
-        /// <returns>
-        /// true if the specified object  is equal to the current object; otherwise, false.
-        /// </returns>
-        /// <param name="obj">The object to compare with the current object. </param>
+        
         public override bool Equals(object obj)
         {
             var act = obj as IDev2Activity;
@@ -361,22 +170,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
         #region Overrides of Object
-
-        /// <summary>
-        /// Serves as a hash function for a particular type. 
-        /// </summary>
-        /// <returns>
-        /// A hash code for the current <see cref="T:System.Object"/>.
-        /// </returns>
+        
         public override int GetHashCode()
         {
-   
-
-
-                return UniqueID.GetHashCode();
-
-
-
+            return UniqueID.GetHashCode();
         }
 
         #endregion
