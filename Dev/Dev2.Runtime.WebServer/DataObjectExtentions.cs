@@ -334,6 +334,7 @@ namespace Dev2.Runtime.WebServer
                     dataObjectClone.TestName = test.TestName;
                     var res = catalog.GetResource(GlobalConstants.ServerWorkspaceID, testsResourceId);
                     dataObjectClone.ServiceName = res.ResourceName;
+                    dataObjectClone.ResourceID = res.ResourceID;
                     var resourcePath = res.GetResourcePath(GlobalConstants.ServerWorkspaceID).Replace("\\", "/");
                     var lastTask = ServiceTestExecutor.GetTaskForTestExecution(resourcePath, userPrinciple, workspaceGuid,
                         serializer, testResults, dataObjectClone);
