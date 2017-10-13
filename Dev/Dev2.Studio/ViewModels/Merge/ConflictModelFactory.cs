@@ -353,7 +353,7 @@ namespace Dev2.ViewModels.Merge
             if (de.TrueArm != null)
             {
                 var firstOrDefault = de.TrueArm?.FirstOrDefault();
-                var truArmToFlatList = _activityParser.FlattenNextNodesInclusive(firstOrDefault);
+                var truArmToFlatList = _activityParser.FlattenNextNodesInclusive(firstOrDefault).Reverse();
                 decisionNode.True = new FlowStep { Action = firstOrDefault as System.Activities.Activity };
 
                 foreach (var dev2Activity in truArmToFlatList)
@@ -371,7 +371,7 @@ namespace Dev2.ViewModels.Merge
             {
                 var firstOrDefault = de.FalseArm?.FirstOrDefault();
                 decisionNode.False = new FlowStep { Action = firstOrDefault as System.Activities.Activity };
-                var falseArmToFlatList = _activityParser.FlattenNextNodesInclusive(firstOrDefault);
+                var falseArmToFlatList = _activityParser.FlattenNextNodesInclusive(firstOrDefault).Reverse();
                 foreach (var dev2Activity in falseArmToFlatList)
                 {
                     _modelItem = ModelItemUtils.CreateModelItem(dev2Activity);
