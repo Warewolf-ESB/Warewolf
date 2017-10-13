@@ -636,7 +636,7 @@ namespace Dev2.Core.Tests
             var res = new Mock<IResourceRepository>();
             mockEnv.Setup(a => a.ResourceRepository).Returns(res.Object);
             res.Setup(a => a.LoadContextualResourceModel(resourceId)).Returns(FirstResource.Object);
-            ShellViewModel.RunAllTests(resourceId);
+            ShellViewModel.RunAllTests(String.Empty, resourceId);
         }
 
         [TestMethod]
