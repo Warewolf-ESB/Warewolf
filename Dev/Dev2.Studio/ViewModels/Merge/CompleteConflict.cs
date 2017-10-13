@@ -66,7 +66,11 @@ namespace Dev2.ViewModels.Merge
                 var current = _conflictEnumerator.Current;
                 if (current.Children.Count > 0)
                 {
-                    return current.GetNextConflict();
+                    var nextConflict = current.GetNextConflict();
+                    if (nextConflict != null)
+                    {
+                        return nextConflict;
+                    }
                 }
             }
             if (_conflictEnumerator.MoveNext())
