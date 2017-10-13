@@ -353,6 +353,7 @@ function Merge-DotCover-Snapshots($DotCoverSnapshots, [string]$DestinationFilePa
     }
     if (Test-Path "$DestinationFilePath.dcvr") {
         &"$DotCoverPath" "report" "/Source=`"$DestinationFilePath.dcvr`"" "/Output=`"$DestinationFilePath\DotCover Report.html`"" "/ReportType=HTML" "/LogFile=`"$LogFilePath.report.log`""
+        Write-Host DotCover report written to $DestinationFilePath\DotCover Report.html
     }
 }
 
