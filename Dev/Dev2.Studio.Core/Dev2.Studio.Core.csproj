@@ -222,7 +222,6 @@
     <Compile Include="AppResources\Converters\ForEachTypeToVisibilityConverter.cs" />
     <Compile Include="AppResources\Converters\DebugItemResultTypeToColorConverter.cs" />
     <Compile Include="AppResources\Converters\EnumDiscriptionToStringConverter.cs" />
-    <Compile Include="AppResources\Converters\EnumDisplayNameToItemSourceConverter.cs" />
     <Compile Include="AppResources\Converters\ModelItemToActivityConverter.cs" />
     <Compile Include="AppResources\Converters\MultipleBoolToVisibilityValueConverter.cs" />
     <Compile Include="AppResources\Converters\MultipleStringToVisibilityConverter.cs" />
