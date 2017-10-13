@@ -360,7 +360,8 @@ namespace Dev2.Studio.ViewModels
         {
             var ServiceTestCommandHandler = new ServiceTestCommandHandlerModel();
             var ProcessExecutor = new ExternalProcessExecutor();
-            ServiceTestCommandHandler.RunAllTestsInBrowser(false, ResourcePath, ProcessExecutor);
+            var resourceTestsPath = ResourcePath + "/.tests";
+            ServiceTestCommandHandler.RunAllTestsInBrowser(false, resourceTestsPath, ProcessExecutor);
         }
 
         public void EditResource(IPluginSource selectedSource, IView view) => EditResource(selectedSource, view, null);
