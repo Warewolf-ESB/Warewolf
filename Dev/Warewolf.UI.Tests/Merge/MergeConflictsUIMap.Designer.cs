@@ -775,29 +775,29 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
         }
         
         #region Properties
-        public MergeExpander MergeExpander
+        public MergeItemExpander1 MergeItemExpander
         {
             get
             {
-                if ((this.mMergeExpander == null))
+                if ((this.mMergeItemExpander == null))
                 {
-                    this.mMergeExpander = new MergeExpander(this);
+                    this.mMergeItemExpander = new MergeItemExpander1(this);
                 }
-                return this.mMergeExpander;
+                return this.mMergeItemExpander;
             }
         }
         #endregion
         
         #region Fields
-        private MergeExpander mMergeExpander;
+        private MergeItemExpander1 mMergeItemExpander;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class MergeExpander : WpfExpander
+    public class MergeItemExpander1 : WpfExpander
     {
         
-        public MergeExpander(UITestControl searchLimitContainer) : 
+        public MergeItemExpander1(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -1047,18 +1047,13 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
             }
         }
         
-        public WpfCustom SecondAssign_Curr_On_Surface
+        public SecondAssign_Curr_On_Surface SecondAssign_Curr_On_Surface
         {
             get
             {
                 if ((this.mSecondAssign_Curr_On_Surface == null))
                 {
-                    this.mSecondAssign_Curr_On_Surface = new WpfCustom(this);
-                    #region Search Criteria
-                    this.mSecondAssign_Curr_On_Surface.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.MultiAssignDesigner";
-                    this.mSecondAssign_Curr_On_Surface.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Assign (1)(MultiAssignDesigner)";
-                    this.mSecondAssign_Curr_On_Surface.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-                    #endregion
+                    this.mSecondAssign_Curr_On_Surface = new SecondAssign_Curr_On_Surface(this);
                 }
                 return this.mSecondAssign_Curr_On_Surface;
             }
@@ -1068,7 +1063,44 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
         #region Fields
         private WpfCustom mFirstAssign_Diff_On_Surface;
         
-        private WpfCustom mSecondAssign_Curr_On_Surface;
+        private SecondAssign_Curr_On_Surface mSecondAssign_Curr_On_Surface;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class SecondAssign_Curr_On_Surface : WpfCustom
+    {
+        
+        public SecondAssign_Curr_On_Surface(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.MultiAssignDesigner";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Assign (1)(MultiAssignDesigner)";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit UIDisplayNameEdit
+        {
+            get
+            {
+                if ((this.mUIDisplayNameEdit == null))
+                {
+                    this.mUIDisplayNameEdit = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mUIDisplayNameEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "DisplayNameBox";
+                    this.mUIDisplayNameEdit.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mUIDisplayNameEdit;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mUIDisplayNameEdit;
         #endregion
     }
     
