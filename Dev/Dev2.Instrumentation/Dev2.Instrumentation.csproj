@@ -44,6 +44,9 @@
     <CodeAnalysisRuleSet>Dev2.Instrumentation.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Dev2.Diagnostics">
+      <HintPath>..\Dev2.Diagnostics\bin\Debug\Dev2.Diagnostics.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -71,6 +74,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <Compile Include="Constants.cs" />
+    <Compile Include="Factory\ApplicationTrackerFactory.cs" />
     <Compile Include="IApplicationTracker.cs" />
     <Compile Include="RevulyticsTracker.cs" />
     <Compile Include="Tracker.cs" />
