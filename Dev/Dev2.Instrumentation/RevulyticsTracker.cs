@@ -2,12 +2,8 @@
 using Dev2.Util;
 using RUISDK_5_1_0;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 
 namespace Dev2.Instrumentation
@@ -216,9 +212,9 @@ namespace Dev2.Instrumentation
         {
             if (result != RUIResult.ok)
             {
-                var errormMessage = string.Format("{0} :: Tracker Error -> {1}", DateTime.Now.ToString("g"), result);             
-                
-               // Dev2Logger.Error(errormMessage, "Revulytics sdk error");
+                var errormMessage = string.Format("{0} :: Tracker Error -> {1}", DateTime.Now.ToString("g"), result);
+               
+                Dev2Logger.Error(errormMessage, "Revulytics sdk error");
             }
         }
 

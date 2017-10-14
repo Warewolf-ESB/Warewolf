@@ -125,6 +125,36 @@
     <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
+    <Compile Include="Languages\TrackEventDebugOutput.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TrackEventDebugOutput.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Languages\TrackEventExplorer.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TrackEventExplorer.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Languages\TrackEventMenu.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TrackEventMenu.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Languages\TrackEventToolbox.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TrackEventToolbox.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Languages\TrackEventVariables.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TrackEventVariables.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Languages\TrackEventWorkflowTabs.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TrackEventWorkflowTabs.resx</DependentUpon>
+    </Compile>
     <None Include="..\Run Tests.ps1">
       <Link>Run Tests.ps1</Link>
       <Visible>False</Visible>
@@ -172,6 +202,30 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Tooltips.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Languages\TrackEventDebugOutput.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>TrackEventDebugOutput.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Languages\TrackEventExplorer.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>TrackEventExplorer.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Languages\TrackEventMenu.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>TrackEventMenu.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Languages\TrackEventToolbox.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>TrackEventToolbox.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Languages\TrackEventVariables.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>TrackEventVariables.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Languages\TrackEventWorkflowTabs.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>TrackEventWorkflowTabs.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -60,7 +60,9 @@ using Warewolf.Studio.Views;
 using Dev2.Studio.Diagnostics;
 using Dev2.Studio.ViewModels;
 using Dev2.Util;
-
+using Dev2.Instrumentation.Factory;
+using Dev2.Studio.Utils;
+using System.Security.Claims;
 
 namespace Dev2.Studio
 
@@ -103,7 +105,13 @@ namespace Dev2.Studio
         [PrincipalPermission(SecurityAction.Demand)]  // Principal must be authenticated
         protected override void OnStartup(StartupEventArgs e)
         {
-            Tracker.StartStudio();
+            // Tracker.StartStudio();
+
+            CustomContainer.Register<IApplicationTracker>(ApplicationTrackerFactory.GetApplicationTrackerProvider());
+            //Create configuration for action tracker and start
+            var applicationTracker = CustomContainer.Get<IApplicationTracker>();
+            applicationTracker.EnableAppplicationTracker(VersionInfo.FetchVersionInfo(), @"Warewolf" + $" ({ClaimsPrincipal.Current.Identity.Name})".ToUpperInvariant());
+
 
             Task.Factory.StartNew(() =>
                 {
@@ -268,8 +276,10 @@ namespace Dev2.Studio
 
         protected override void OnExit(ExitEventArgs e)
         {
-            Tracker.Stop();
-
+            //  Tracker.Stop();
+            var applicationTracker = CustomContainer.Get<IApplicationTracker>();
+            //Stop the action tracking
+            applicationTracker.DisableAppplicationTracker();
             // this is already handled ;)
             _shellViewModel?.PersistTabs(true);
             ProgressFileDownloader.PerformCleanup(new DirectoryWrapper(), GlobalConstants.VersionDownloadPath, new FileWrapper());
@@ -337,7 +347,7 @@ namespace Dev2.Studio
 
         private void OnApplicationDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
-            Tracker.TrackException(GetType().Name, "OnApplicationDispatcherUnhandledException", e.Exception);
+            //Tracker.TrackException(GetType().Name, "OnApplicationDispatcherUnhandledException", e.Exception);
             if (_appExceptionHandler != null)
             {
                 e.Handled = HasShutdownStarted || _appExceptionHandler.Handle(e.Exception);
