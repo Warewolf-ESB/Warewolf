@@ -1061,6 +1061,9 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
+
+        public bool IsStartNodeErrorMessageSet { get; set; }
+
         #endregion
 
         #region Private Methods
@@ -1070,8 +1073,8 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// <param name="addedItem"></param>
         /// <returns></returns>
 
-        
-        
+
+
         protected ModelItem PerformAddItems(ModelItem addedItem)
         
         
@@ -2068,6 +2071,15 @@ namespace Dev2.Studio.ViewModels.Workflow
             if (validationIcon != null && validationIcon.Name.Equals("validationVisuals", StringComparison.CurrentCultureIgnoreCase))
             {
                 validationIcon.ToolTip = Warewolf.Studio.Resources.Languages.Tooltips.StartNodeNotConnectedToolTip;
+
+                //It should be called once when there is first tool dragged or start node link get deleted
+                if (!IsStartNodeErrorMessageSet)
+                {
+                    IsStartNodeErrorMessageSet = true;
+                    var applicationTracker = CustomContainer.Get<IApplicationTracker>();
+                    applicationTracker.TrackEvent(Warewolf.Studio.Resources.Languages.TrackEventWorkflowTabs.EventCategory,
+                                                        Warewolf.Studio.Resources.Languages.TrackEventWorkflowTabs.StartNodeNotConnected);
+                }
             }
         }
 
@@ -2526,6 +2538,11 @@ namespace Dev2.Studio.ViewModels.Workflow
                 }
                 if (e.ModelChangeInfo.PropertyName == "StartNode")
                 {
+                    if (e.ModelChangeInfo.OldValue != null)
+                    {
+                        // incase of delete it will have old value then log
+                        IsStartNodeErrorMessageSet = false;
+                    }
                     return;
                 }
 
