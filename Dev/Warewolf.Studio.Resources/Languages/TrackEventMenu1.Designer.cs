@@ -22,7 +22,7 @@ namespace Warewolf.Studio.Resources.Languages {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class TrackEventMenu {
+    public class TrackEventMenu {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace Warewolf.Studio.Resources.Languages {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Warewolf.Studio.Resources.Languages.TrackEventMenu", typeof(TrackEventMenu).Assembly);
@@ -51,7 +51,7 @@ namespace Warewolf.Studio.Resources.Languages {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -63,7 +63,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// <summary>
         ///   Looks up a localized string similar to Create a new Test.
         /// </summary>
-        internal static string CreateNewTest {
+        public static string CreateNewTest {
             get {
                 return ResourceManager.GetString("CreateNewTest", resourceCulture);
             }
@@ -72,7 +72,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// <summary>
         ///   Looks up a localized string similar to Deploy .
         /// </summary>
-        internal static string Deploy {
+        public static string Deploy {
             get {
                 return ResourceManager.GetString("Deploy", resourceCulture);
             }
@@ -81,7 +81,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// <summary>
         ///   Looks up a localized string similar to Main Menu Events.
         /// </summary>
-        internal static string EventCategory {
+        public static string EventCategory {
             get {
                 return ResourceManager.GetString("EventCategory", resourceCulture);
             }
@@ -90,7 +90,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// <summary>
         ///   Looks up a localized string similar to Link(URL) .
         /// </summary>
-        internal static string LinkUrl {
+        public static string LinkUrl {
             get {
                 return ResourceManager.GetString("LinkUrl", resourceCulture);
             }
@@ -99,7 +99,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// <summary>
         ///   Looks up a localized string similar to New Remote Server.
         /// </summary>
-        internal static string NewRemoteServer {
+        public static string NewRemoteServer {
             get {
                 return ResourceManager.GetString("NewRemoteServer", resourceCulture);
             }
@@ -108,7 +108,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// <summary>
         ///   Looks up a localized string similar to New Service.
         /// </summary>
-        internal static string NewService {
+        public static string NewService {
             get {
                 return ResourceManager.GetString("NewService", resourceCulture);
             }
@@ -117,7 +117,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// <summary>
         ///   Looks up a localized string similar to Settings Clicked.
         /// </summary>
-        internal static string Settings {
+        public static string Settings {
             get {
                 return ResourceManager.GetString("Settings", resourceCulture);
             }
@@ -126,7 +126,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// <summary>
         ///   Looks up a localized string similar to Start Page.
         /// </summary>
-        internal static string StartPage {
+        public static string StartPage {
             get {
                 return ResourceManager.GetString("StartPage", resourceCulture);
             }
@@ -135,7 +135,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// <summary>
         ///   Looks up a localized string similar to Task .
         /// </summary>
-        internal static string Task {
+        public static string Task {
             get {
                 return ResourceManager.GetString("Task", resourceCulture);
             }
@@ -144,7 +144,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// <summary>
         ///   Looks up a localized string similar to UpgradeVersion .
         /// </summary>
-        internal static string UpgradeVersion {
+        public static string UpgradeVersion {
             get {
                 return ResourceManager.GetString("UpgradeVersion", resourceCulture);
             }

@@ -22,7 +22,7 @@ namespace Warewolf.Studio.Resources.Languages {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class TrackEventVariables {
+    public class TrackEventVariables {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace Warewolf.Studio.Resources.Languages {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Warewolf.Studio.Resources.Languages.TrackEventVariables", typeof(TrackEventVariables).Assembly);
@@ -51,7 +51,7 @@ namespace Warewolf.Studio.Resources.Languages {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -63,7 +63,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// <summary>
         ///   Looks up a localized string similar to Variable Events.
         /// </summary>
-        internal static string EventCategory {
+        public static string EventCategory {
             get {
                 return ResourceManager.GetString("EventCategory", resourceCulture);
             }
@@ -72,7 +72,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// <summary>
         ///   Looks up a localized string similar to Red Brackets Syntax.
         /// </summary>
-        internal static string RedBracketsSyntax {
+        public static string RedBracketsSyntax {
             get {
                 return ResourceManager.GetString("RedBracketsSyntax", resourceCulture);
             }
@@ -81,7 +81,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// <summary>
         ///   Looks up a localized string similar to Un used Variables.
         /// </summary>
-        internal static string UnusedVariables {
+        public static string UnusedVariables {
             get {
                 return ResourceManager.GetString("UnusedVariables", resourceCulture);
             }
@@ -90,7 +90,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// <summary>
         ///   Looks up a localized string similar to Used Variables.
         /// </summary>
-        internal static string UsedVariables {
+        public static string UsedVariables {
             get {
                 return ResourceManager.GetString("UsedVariables", resourceCulture);
             }
@@ -99,7 +99,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// <summary>
         ///   Looks up a localized string similar to Variables - Input Clicked.
         /// </summary>
-        internal static string VariablesInputClicked {
+        public static string VariablesInputClicked {
             get {
                 return ResourceManager.GetString("VariablesInputClicked", resourceCulture);
             }
@@ -108,7 +108,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// <summary>
         ///   Looks up a localized string similar to Variables - Output Clicked.
         /// </summary>
-        internal static string VariablesOutputClicked {
+        public static string VariablesOutputClicked {
             get {
                 return ResourceManager.GetString("VariablesOutputClicked", resourceCulture);
             }
@@ -117,7 +117,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// <summary>
         ///   Looks up a localized string similar to Variables Search.
         /// </summary>
-        internal static string VariablesSearch {
+        public static string VariablesSearch {
             get {
                 return ResourceManager.GetString("VariablesSearch", resourceCulture);
             }

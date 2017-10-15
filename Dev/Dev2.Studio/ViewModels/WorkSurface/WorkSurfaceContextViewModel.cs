@@ -38,11 +38,7 @@ using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.DataList;
 using Dev2.Studio.Interfaces.Enums;
 using Warewolf.Studio.ViewModels;
-
-
-
-
-
+using Dev2.Instrumentation;
 
 namespace Dev2.Studio.ViewModels.WorkSurface
 {
@@ -403,6 +399,10 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
         public void Debug(IContextualResourceModel resourceModel, bool isDebug)
         {
+
+            var applicationTracker = CustomContainer.Get<IApplicationTracker>();
+            applicationTracker.TrackEvent(Warewolf.Studio.Resources.Languages.TrackEventDebugOutput.EventCategory,
+                                                Warewolf.Studio.Resources.Languages.TrackEventDebugOutput.Debug);
             if (resourceModel?.Environment == null || !resourceModel.Environment.IsConnected)
             {
                 return;
@@ -474,6 +474,11 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
         public void QuickViewInBrowser()
         {
+           
+            var applicationTracker = CustomContainer.Get<IApplicationTracker>();
+            applicationTracker.TrackEvent(Warewolf.Studio.Resources.Languages.TrackEventDebugOutput.EventCategory,
+                                                Warewolf.Studio.Resources.Languages.TrackEventDebugOutput.F7Browser);
+
             if (!ContextualResourceModel.IsWorkflowSaved)
             {
                 var successfuleSave = Save(ContextualResourceModel, true);
@@ -482,18 +487,30 @@ namespace Dev2.Studio.ViewModels.WorkSurface
                     return;
                 }
             }
-            ViewInBrowserInternal(ContextualResourceModel);
+            ViewInBrowserInternal(ContextualResourceModel, true);
         }
 
-        private void ViewInBrowserInternal(IContextualResourceModel model)
+        private void ViewInBrowserInternal(IContextualResourceModel model, bool quickDebugClicked)
         {
             var workflowInputDataViewModel = GetWorkflowInputDataViewModel(model, false);
             workflowInputDataViewModel.LoadWorkflowInputs();
-            workflowInputDataViewModel.ViewInBrowser();
+            //check if quick debug called then dont log view in browser event 
+            if (quickDebugClicked)
+            {
+                workflowInputDataViewModel.WithoutActionTrackingViewInBrowser();
+            }
+            else
+            {
+                workflowInputDataViewModel.ViewInBrowser();
+            } 
+           
         }
 
         public void QuickDebug()
         {
+            var applicationTracker = CustomContainer.Get<IApplicationTracker>();
+            applicationTracker.TrackEvent(Warewolf.Studio.Resources.Languages.TrackEventDebugOutput.EventCategory,
+                                                Warewolf.Studio.Resources.Languages.TrackEventDebugOutput.F6Debug);
             if (DebugOutputViewModel.IsProcessing)
             {
                 StopExecution();
