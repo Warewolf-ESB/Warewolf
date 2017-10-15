@@ -40,7 +40,7 @@ using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.DataList;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage;
-
+using Dev2.Instrumentation;
 
 namespace Dev2.Studio.ViewModels.DataList
 {
@@ -91,6 +91,10 @@ namespace Dev2.Studio.ViewModels.DataList
 
         private void FilterCollection(string searchText)
         {
+            var applicationTracker = CustomContainer.Get<IApplicationTracker>();
+            applicationTracker.TrackCustomEvent(Warewolf.Studio.Resources.Languages.TrackEventVariables.EventCategory,
+                                                Warewolf.Studio.Resources.Languages.TrackEventVariables.VariablesSearch, searchText);
+
             if (_scalarCollection != null && _scalarCollection.Count > 1)
             {
                 for (int index = _scalarCollection.Count - 1; index >= 0; index--)
@@ -948,6 +952,7 @@ namespace Dev2.Studio.ViewModels.DataList
 
         private void ShowUnusedDataListVariables(IResourceModel resourceModel, IList<IDataListVerifyPart> listOfUnused, IList<IDataListVerifyPart> listOfUsed)
         {
+            var applicationTracker = CustomContainer.Get<IApplicationTracker>();
             if (resourceModel != Resource)
             {
                 return;
@@ -956,6 +961,12 @@ namespace Dev2.Studio.ViewModels.DataList
             if (listOfUnused != null && listOfUnused.Count != 0)
             {
                 SetIsUsedDataListItems(listOfUnused, false);
+                string[] unusedVariables = listOfUnused.Select(u => "Field : " + u.Field + " Display Name : " + u.DisplayValue).ToList().ToArray();
+
+                applicationTracker.TrackCustomEvent(Warewolf.Studio.Resources.Languages.TrackEventVariables.EventCategory, 
+                                                    Warewolf.Studio.Resources.Languages.TrackEventVariables.UnusedVariables,
+                                                    string.Join(",", unusedVariables));
+
             }
             else
             {
@@ -965,6 +976,12 @@ namespace Dev2.Studio.ViewModels.DataList
             if (listOfUsed != null && listOfUsed.Count > 0)
             {
                 SetIsUsedDataListItems(listOfUsed, true);
+                string[] usedVariables = listOfUsed.Select(u => "Field : " + u.Field + " Display Name : " + u.DisplayValue).ToList().ToArray();
+
+                applicationTracker.TrackCustomEvent(Warewolf.Studio.Resources.Languages.TrackEventVariables.EventCategory,
+                                                    Warewolf.Studio.Resources.Languages.TrackEventVariables.UsedVariables,
+                                                    string.Join(",", usedVariables));
+
             }
         }
 
