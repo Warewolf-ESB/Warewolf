@@ -149,5 +149,14 @@ namespace Warewolf.Studio.Resources.Languages {
                 return ResourceManager.GetString("UpgradeVersion", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Warewolf Store.
+        /// </summary>
+        public static string WarewolfStore {
+            get {
+                return ResourceManager.GetString("WarewolfStore", resourceCulture);
+            }
+        }
     }
 }

@@ -147,4 +147,7 @@
   <data name="UpgradeVersion" xml:space="preserve">
     <value>UpgradeVersion </value>
   </data>
+  <data name="WarewolfStore" xml:space="preserve">
+    <value>Warewolf Store</value>
+  </data>
 </root>
