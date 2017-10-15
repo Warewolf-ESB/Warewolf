@@ -66,7 +66,7 @@ namespace Dev2.ViewModels.Merge
 
             HasMergeStarted = false;
 
-            HasVariablesConflict = !CommonEqualityOps.AreObjectsEqual(((ConflictModelFactory) CurrentConflictModel).DataListViewModel, ((ConflictModelFactory) DifferenceConflictModel).DataListViewModel); //MATCH DATALISTS
+            HasVariablesConflict = !CommonEqualityOps.AreObjectsEqual(((ConflictModelFactory)CurrentConflictModel).DataListViewModel, ((ConflictModelFactory)DifferenceConflictModel).DataListViewModel); //MATCH DATALISTS
             HasWorkflowNameConflict = currentResourceModel.ResourceName != differenceResourceModel.ResourceName;
             IsVariablesEnabled = !HasWorkflowNameConflict && HasVariablesConflict;
             IsMergeExpanderEnabled = !IsVariablesEnabled;
@@ -438,14 +438,8 @@ namespace Dev2.ViewModels.Merge
                             continue;
                         }
                         completeConflict.HasConflict = true;
-                        if (parent.Children.Count == 0)
-                        {
-                            parent.Children.AddFirst(completeConflict);
-                        }
-                        else
-                        {
-                            parent.Children.AddLast(completeConflict);
-                        }
+                        completeConflict.HasConflict = _serviceDifferenceParser.NodeHasConflict(currentChildChild.UniqueId.ToString());
+                        parent.Children.AddLast(completeConflict);
                         AddChildren(completeConflict, childCurrent, childDifferent);
                     }
                     catch (ArgumentOutOfRangeException)
@@ -468,6 +462,7 @@ namespace Dev2.ViewModels.Merge
                                     continue;
                                 }
                                 completeConflict.HasConflict = true;
+                                completeConflict.HasConflict = _serviceDifferenceParser.NodeHasConflict(mergeToolModel.UniqueId.ToString());
                                 if (parent.Children.Count == 0)
                                 {
                                     parent.Children.AddFirst(completeConflict);
@@ -496,6 +491,7 @@ namespace Dev2.ViewModels.Merge
                     if (childNodes.TryGetValue(model.UniqueId.ToString(), out (ModelItem leftItem, ModelItem rightItem) item))
                     {
                         completeConflict.DiffViewModel.FlowNode = item.rightItem;
+                        completeConflict.HasConflict = _serviceDifferenceParser.NodeHasConflict(diffChild.UniqueId.ToString());
                     }
                 }
             }
@@ -512,6 +508,7 @@ namespace Dev2.ViewModels.Merge
                     if (childNodes.TryGetValue(model.UniqueId.ToString(), out (ModelItem leftItem, ModelItem rightItem) item))
                     {
                         completeConflict.CurrentViewModel.FlowNode = item.leftItem;
+                        completeConflict.HasConflict = _serviceDifferenceParser.NodeHasConflict(diffChild.UniqueId.ToString());
                     }
                 }
             }
