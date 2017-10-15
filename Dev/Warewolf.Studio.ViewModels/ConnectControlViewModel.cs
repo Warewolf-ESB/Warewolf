@@ -320,6 +320,9 @@ namespace Warewolf.Studio.ViewModels
 
         private void NewServer()
         {
+            var applicationTracker = CustomContainer.Get<IApplicationTracker>();
+            applicationTracker.TrackEvent(Resources.Languages.TrackEventMenu.EventCategory, Resources.Languages.TrackEventMenu.NewRemoteServer);
+
             var mainViewModel = CustomContainer.Get<IShellViewModel>();
             if (mainViewModel != null && ShouldUpdateActiveEnvironment)
             {
