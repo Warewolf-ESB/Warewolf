@@ -3109,24 +3109,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             AddNextNode(previous, model, nodes, nodeToAdd.GetCurrentValue<FlowNode>(),next);
             
         }
-
-        public void ValidateStartNode(ModelItem nodeToAdd)
-        {
-            var root = _wd.Context.Services.GetService<ModelService>().Root;
-            var chart = _wd.Context.Services.GetService<ModelService>().Find(root, typeof(Flowchart)).FirstOrDefault();
-
-            var nodes = chart?.Properties["Nodes"]?.Collection;
-            if (nodes == null)
-            {
-                return;
-            }
-            var startNode = chart.Properties["StartNode"];
-            if (startNode?.ComputedValue == null)
-            {
-                AddStartNode(nodeToAdd?.GetCurrentValue<FlowNode>(), startNode);
-            }
-        }
-
+        
         public void RemoveStartNodeConnection()
         {
             var root = _wd.Context.Services.GetService<ModelService>().Root;
@@ -3262,16 +3245,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 Selection.Select(_wd.Context, ModelItemUtils.CreateModelItem(flowNode));
             }
         }
-
-        private void SetShapeLocation(FlowNode flowNode, Point location)
-        {
-            ViewStateService service = _wd.Context.Services.GetService<ViewStateService>();
-            var modelItem = ModelItemUtils.CreateModelItem(flowNode);
-
-            service.RemoveViewState(modelItem, "ShapeLocation");
-            service.StoreViewState(modelItem, "ShapeLocation", location);
-        }
-
+        
         #region Implementation of IWorkflowDesignerViewModel
 
         public System.Action WorkflowChanged { get; set; }

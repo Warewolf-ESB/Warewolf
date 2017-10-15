@@ -1218,17 +1218,7 @@ namespace Dev2.Core.Tests
         {
             throw new NotImplementedException();
         }
-
-        public void AddItem(IMergeToolModel parent, IMergeToolModel model)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void ValidateStartNode(ModelItem flowNode)
-        {
-            throw new NotImplementedException();
-        }
-
+        
         public void RemoveStartNodeConnection()
         {
             throw new NotImplementedException();
