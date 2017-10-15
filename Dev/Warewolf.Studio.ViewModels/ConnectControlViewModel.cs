@@ -23,9 +23,7 @@ using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
 using Microsoft.Practices.Prism.PubSubEvents;
 using Warewolf.Resource.Errors;
-
-
-
+using Dev2.Instrumentation;
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -291,6 +289,12 @@ namespace Warewolf.Studio.ViewModels
                     {
 
                         var isConnected = CheckVersionConflict();
+                    }
+                    // revulytics log if ware wolf store selected
+                    if (!value.IsLocalHost)
+                    {
+                        var applicationTracker = CustomContainer.Get<IApplicationTracker>();
+                        applicationTracker.TrackEvent(Resources.Languages.TrackEventMenu.EventCategory, Resources.Languages.TrackEventMenu.WarewolfStore);
                     }
                     SetActiveEnvironment();
                     OnPropertyChanged(() => SelectedConnection);
