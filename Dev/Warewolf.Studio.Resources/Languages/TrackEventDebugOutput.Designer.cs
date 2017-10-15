@@ -22,7 +22,7 @@ namespace Warewolf.Studio.Resources.Languages {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class TrackEventDebugOutput {
+    public class TrackEventDebugOutput {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace Warewolf.Studio.Resources.Languages {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Warewolf.Studio.Resources.Languages.TrackEventDebugOutput", typeof(TrackEventDebugOutput).Assembly);
@@ -51,7 +51,7 @@ namespace Warewolf.Studio.Resources.Languages {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -63,7 +63,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// <summary>
         ///   Looks up a localized string similar to Debug.
         /// </summary>
-        internal static string Debug {
+        public static string Debug {
             get {
                 return ResourceManager.GetString("Debug", resourceCulture);
             }
@@ -72,7 +72,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// <summary>
         ///   Looks up a localized string similar to Debug Events.
         /// </summary>
-        internal static string EventCategory {
+        public static string EventCategory {
             get {
                 return ResourceManager.GetString("EventCategory", resourceCulture);
             }
@@ -81,7 +81,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// <summary>
         ///   Looks up a localized string similar to Debug(F6).
         /// </summary>
-        internal static string F6Debug {
+        public static string F6Debug {
             get {
                 return ResourceManager.GetString("F6Debug", resourceCulture);
             }
@@ -90,7 +90,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// <summary>
         ///   Looks up a localized string similar to View in Browser(F7).
         /// </summary>
-        internal static string F7Browser {
+        public static string F7Browser {
             get {
                 return ResourceManager.GetString("F7Browser", resourceCulture);
             }
@@ -99,7 +99,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// <summary>
         ///   Looks up a localized string similar to View In Browser.
         /// </summary>
-        internal static string ViewInBrowser {
+        public static string ViewInBrowser {
             get {
                 return ResourceManager.GetString("ViewInBrowser", resourceCulture);
             }

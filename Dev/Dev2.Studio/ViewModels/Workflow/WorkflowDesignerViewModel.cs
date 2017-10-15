@@ -86,12 +86,7 @@ using Dev2.Workspaces;
 using Newtonsoft.Json;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Studio.ViewModels;
-
-
-
-
-
-
+using Dev2.Instrumentation;
 
 namespace Dev2.Studio.ViewModels.Workflow
 
@@ -806,6 +801,9 @@ namespace Dev2.Studio.ViewModels.Workflow
                 {
                     if (!string.IsNullOrEmpty(_workflowLink))
                     {
+                        var applicationTracker = CustomContainer.Get<IApplicationTracker>();
+                        applicationTracker.TrackEvent(Warewolf.Studio.Resources.Languages.TrackEventMenu.EventCategory,
+                                                            Warewolf.Studio.Resources.Languages.TrackEventMenu.LinkUrl);
                         SaveToWorkspace();
                         if (_workflowInputDataViewModel.WorkflowInputCount == 0)
                         {
@@ -1080,6 +1078,16 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             var mi = addedItem;
             var computedValue = mi.Content?.ComputedValue;
+
+            //Track added items when dragged on design surface
+            if (computedValue != null && computedValue.GetType() != typeof(DsfActivity))
+            {
+              
+                var applicationTracker = CustomContainer.Get<IApplicationTracker>();
+                applicationTracker.TrackCustomEvent(Warewolf.Studio.Resources.Languages.TrackEventWorkflowTabs.EventCategory,
+                                                    Warewolf.Studio.Resources.Languages.TrackEventWorkflowTabs.ItemDragged, computedValue.ToString());
+            }
+
             if (computedValue == null && (mi.ItemType == typeof (DsfFlowDecisionActivity) ||
                                           mi.ItemType == typeof (DsfFlowSwitchActivity)))
             {
@@ -1191,6 +1199,26 @@ namespace Dev2.Studio.ViewModels.Workflow
                     {
                         DsfActivity d = DsfActivityFactory.CreateDsfActivity(theResource, droppedActivity, true, serverRepository, _resourceModel.Environment.IsLocalHostCheck());
 
+                        var applicationTracker = CustomContainer.Get<IApplicationTracker>();
+                        if (theResource.DisplayName == "Hello World")
+                        {
+                            //track hello world dragged
+                            applicationTracker.TrackCustomEvent(Warewolf.Studio.Resources.Languages.TrackEventWorkflowTabs.EventCategory,
+                                               Warewolf.Studio.Resources.Languages.TrackEventWorkflowTabs.HelloWorld, theResource.DisplayName);
+                        }
+                        else if (theResource.Category != null && theResource.Category.StartsWith("Examples"))
+                        {
+                            //track examples actitvity dragged
+                            applicationTracker.TrackCustomEvent(Warewolf.Studio.Resources.Languages.TrackEventWorkflowTabs.EventCategory,
+                                                Warewolf.Studio.Resources.Languages.TrackEventWorkflowTabs.Examples, theResource.DisplayName);
+                        }
+                        else
+                        {
+                            // other than above 
+                            applicationTracker.TrackCustomEvent(Warewolf.Studio.Resources.Languages.TrackEventWorkflowTabs.EventCategory,
+                                                Warewolf.Studio.Resources.Languages.TrackEventWorkflowTabs.ItemDragged, theResource.DisplayName);
+                        }
+
                         UpdateForRemote(d, theResource);
                     }
                 }
@@ -1219,6 +1247,9 @@ namespace Dev2.Studio.ViewModels.Workflow
             droppedActivity = DsfActivityFactory.CreateDsfActivity(resource, droppedActivity, false, serverRepository, _resourceModel.Environment.IsLocalHostCheck());
             WorkflowDesignerUtils.CheckIfRemoteWorkflowAndSetProperties(droppedActivity, resource, serverRepository.ActiveServer);
             modelProperty1.SetValue(droppedActivity);
+            var applicationTracker = CustomContainer.Get<IApplicationTracker>();
+            applicationTracker.TrackCustomEvent(Warewolf.Studio.Resources.Languages.TrackEventWorkflowTabs.EventCategory, Warewolf.Studio.Resources.Languages.TrackEventWorkflowTabs.ItemDragged, resource.DisplayName);
+
         }
 
         private void InitializeFlowSwitch(ModelItem mi)

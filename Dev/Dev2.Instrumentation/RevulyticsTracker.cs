@@ -5,7 +5,6 @@ using System;
 using System.IO;
 using System.Reflection;
 
-
 namespace Dev2.Instrumentation
 {
     /// <summary>
@@ -138,9 +137,8 @@ namespace Dev2.Instrumentation
             WriteError(stopSessionResult);
         }
 
-
         /// <summary>
-        /// This function will log the Main menu event category in the revulytics log.
+        /// This function will log the event with event category in the revulytics log.
         /// If CollectUsageStats set to true then only it will log to revulytics
         ///Below is standard comment for TrackEventText method provided by revulytics.
         ///* Conditioning: All leading white space is removed.
@@ -149,16 +147,18 @@ namespace Dev2.Instrumentation
         ///* Conditioning: Trimmed to a maximum of 128 UTF8 characters.
         ///* Validation: eventCategory can be empty; eventName cannot be empty.
         /// </summary>
+        /// <param name="category">Event Category</param>
         /// <param name="eventName">Action name</param>
-        public void TrackApplicationEvent(string eventName)
+        public void TrackEvent(string category, string eventName)
         {
             if (AppSettings.CollectUsageStats)
             {
-                RUIResult result = _ruiSdk.TrackEventText(ApplicationTrackerConstants.TrackerEventGroup.MainMenuClicked, eventName, eventName, this.Username);
+                RUIResult result = _ruiSdk.TrackEvent(category, eventName,this.Username);
 
                 WriteError(result);
             }
         }
+
 
         /// <summary>
         /// This function will log the event based on event category,event name in the revulytics log.

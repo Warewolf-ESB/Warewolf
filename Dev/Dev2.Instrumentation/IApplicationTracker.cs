@@ -14,11 +14,11 @@ namespace Dev2.Instrumentation
         // Enable application Tracking in the application
         void EnableAppplicationTracker(string productVersion, string username);
 
-        //Track the custom event in the application
-        void TrackApplicationEvent(string actions);
+        //Track the event in the application
+        void TrackEvent(string category, string eventName);
 
         //Track the custom events in the application
-        void TrackCustomEvent(string category, string eventName, string actions);
+        void TrackCustomEvent(string category, string eventName, string customValues);
         
         //Disable  appplication tracking in the studio 
         void DisableAppplicationTracker();

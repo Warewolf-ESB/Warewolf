@@ -120,6 +120,12 @@
   <data name="EventCategory" xml:space="preserve">
     <value>Workflow Events</value>
   </data>
+  <data name="Examples" xml:space="preserve">
+    <value>Examples</value>
+  </data>
+  <data name="HelloWorld" xml:space="preserve">
+    <value>Hello World</value>
+  </data>
   <data name="ItemDragged" xml:space="preserve">
     <value>Item Dragged</value>
   </data>

@@ -69,7 +69,11 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         void OnDebugExecutionStart()
         {
-            Tracker.TrackEvent(TrackerEventGroup.Workflows, TrackerEventName.DebugClicked);
+            // Tracker.TrackEvent(TrackerEventGroup.Workflows, TrackerEventName.DebugClicked);
+
+            var applicationTracker = CustomContainer.Get<IApplicationTracker>();
+            applicationTracker.TrackEvent(Warewolf.Studio.Resources.Languages.TrackEventDebugOutput.EventCategory,
+                                                Warewolf.Studio.Resources.Languages.TrackEventDebugOutput.F6Debug);
             var handler = DebugExecutionStart;
             handler?.Invoke();
         }
@@ -319,7 +323,27 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             if (!IsInError)
             {
-                Tracker.TrackEvent(TrackerEventGroup.Workflows, TrackerEventName.ViewInBrowserClicked);
+                var applicationTracker = CustomContainer.Get<IApplicationTracker>();
+                applicationTracker.TrackEvent(Warewolf.Studio.Resources.Languages.TrackEventDebugOutput.EventCategory,
+                                                    Warewolf.Studio.Resources.Languages.TrackEventDebugOutput.ViewInBrowser);
+                //Tracker.TrackEvent(TrackerEventGroup.Workflows, TrackerEventName.ViewInBrowserClicked);
+                DoSaveActions();
+                string payload = BuildWebPayLoad();
+                SendViewInBrowserRequest(payload);
+                SendFinishedMessage();
+                RequestClose();
+            }
+            else
+            {
+                ShowInvalidDataPopupMessage();
+            }
+        }
+
+
+        public void WithoutActionTrackingViewInBrowser()
+        {
+            if (!IsInError)
+            {              
                 DoSaveActions();
                 string payload = BuildWebPayLoad();
                 SendViewInBrowserRequest(payload);

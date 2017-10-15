@@ -22,7 +22,7 @@ namespace Warewolf.Studio.Resources.Languages {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class TrackEventExplorer {
+    public class TrackEventExplorer {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace Warewolf.Studio.Resources.Languages {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Warewolf.Studio.Resources.Languages.TrackEventExplorer", typeof(TrackEventExplorer).Assembly);
@@ -51,7 +51,7 @@ namespace Warewolf.Studio.Resources.Languages {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -63,7 +63,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// <summary>
         ///   Looks up a localized string similar to Explorer Events.
         /// </summary>
-        internal static string EventCategory {
+        public static string EventCategory {
             get {
                 return ResourceManager.GetString("EventCategory", resourceCulture);
             }
@@ -72,7 +72,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// <summary>
         ///   Looks up a localized string similar to Explorer Search.
         /// </summary>
-        internal static string ExplorerSearch {
+        public static string ExplorerSearch {
             get {
                 return ResourceManager.GetString("ExplorerSearch", resourceCulture);
             }
@@ -81,7 +81,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// <summary>
         ///   Looks up a localized string similar to Shared Resources Server.
         /// </summary>
-        internal static string SharedResourcesServer {
+        public static string SharedResourcesServer {
             get {
                 return ResourceManager.GetString("SharedResourcesServer", resourceCulture);
             }

@@ -1183,11 +1183,17 @@ namespace Dev2.Studio.ViewModels
 
         public void AddSettingsWorkSurface()
         {
+            var applicationTracker = CustomContainer.Get<IApplicationTracker>();
+            applicationTracker.TrackEvent(Warewolf.Studio.Resources.Languages.TrackEventMenu.EventCategory,
+                                                Warewolf.Studio.Resources.Languages.TrackEventMenu.Settings);
             ActivateOrCreateUniqueWorkSurface<SettingsViewModel>(WorkSurfaceContext.Settings);
         }
 
         public void AddSchedulerWorkSurface()
         {
+            var applicationTracker = CustomContainer.Get<IApplicationTracker>();
+            applicationTracker.TrackEvent(Warewolf.Studio.Resources.Languages.TrackEventMenu.EventCategory,
+                                                Warewolf.Studio.Resources.Languages.TrackEventMenu.Task);
             ActivateOrCreateUniqueWorkSurface<SchedulerViewModel>(WorkSurfaceContext.Scheduler);
         }
 

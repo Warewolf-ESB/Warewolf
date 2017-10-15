@@ -15,7 +15,7 @@ using Dev2.Common.Interfaces;
 using Dev2.Studio.Interfaces.DataList;
 using Dev2.Studio.ViewModels.WorkSurface;
 using Microsoft.Practices.Prism.Mvvm;
-
+using Dev2.Instrumentation;
 
 namespace Dev2.Studio.Views.DataList
 {
@@ -80,6 +80,15 @@ namespace Dev2.Studio.Views.DataList
                     IDataListItemModel itemThatChanged = txtbox.DataContext as IDataListItemModel;
                     vm.RemoveBlankRows(itemThatChanged);
                     vm.ValidateNames(itemThatChanged);
+
+                    // code to log errors to revulytics
+                    if (vm.HasErrors && vm.DataListErrorMessage.Length != 0)
+                    {
+                        var applicationTracker = CustomContainer.Get<IApplicationTracker>();
+                        applicationTracker.TrackCustomEvent(Warewolf.Studio.Resources.Languages.TrackEventVariables.EventCategory, Warewolf.Studio.Resources.Languages.TrackEventVariables.RedBracketsSyntax, vm.DataListErrorMessage);
+
+                    }
+
                 }
             }
         }

@@ -63,11 +63,7 @@ using Dev2.Common.Interfaces.Enums;
 using Dev2.Data.ServiceModel;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.Enums;
-
-
-
-
-
+using Dev2.Instrumentation;
 
 namespace Dev2.Studio.ViewModels
 {
@@ -94,7 +90,7 @@ namespace Dev2.Studio.ViewModels
         private AuthorizeCommand<string> _newPostgreSqlSourceCommand;
         private AuthorizeCommand<string> _newOracleSourceCommand;
         private AuthorizeCommand<string> _newOdbcSourceCommand;
-        private AuthorizeCommand<string> _newWebSourceCommand;
+        private AuthorizeCommand<string> _newWebSourceCommand; 
         private AuthorizeCommand<string> _newServerSourceCommand;
         private AuthorizeCommand<string> _newEmailSourceCommand;
         private AuthorizeCommand<string> _newExchangeSourceCommand;
@@ -1323,8 +1319,11 @@ namespace Dev2.Studio.ViewModels
         }
 
         public void NewService(string resourcePath)
-        {
+        {           
             _worksurfaceContextManager.NewService(resourcePath);
+            var applicationTracker = CustomContainer.Get<IApplicationTracker>();
+            applicationTracker.TrackEvent(Warewolf.Studio.Resources.Languages.TrackEventMenu.EventCategory,
+                                                Warewolf.Studio.Resources.Languages.TrackEventMenu.NewService);
         }
 
         public void NewServerSource(string resourcePath)
@@ -1422,6 +1421,9 @@ namespace Dev2.Studio.ViewModels
 
         public void AddDeploySurface(IEnumerable<IExplorerTreeItem> items)
         {
+            var applicationTracker = CustomContainer.Get<IApplicationTracker>();
+            applicationTracker.TrackEvent(Warewolf.Studio.Resources.Languages.TrackEventMenu.EventCategory,
+                                          Warewolf.Studio.Resources.Languages.TrackEventMenu.Deploy);
             _worksurfaceContextManager.AddDeploySurface(items);
         }
 
