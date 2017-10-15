@@ -43,7 +43,6 @@ namespace Dev2.Studio.Interfaces
         void CreateBlankWorkflow();
         void RemoveItem(IMergeToolModel model);
         void AddItem(IMergeToolModel previous, IMergeToolModel model,IMergeToolModel next);
-        void ValidateStartNode(ModelItem flowNode);
         void RemoveStartNodeConnection();
     }
 }

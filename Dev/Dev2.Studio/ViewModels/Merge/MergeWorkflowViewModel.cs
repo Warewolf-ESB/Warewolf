@@ -211,50 +211,62 @@ namespace Dev2.ViewModels.Merge
             {
                 WorkflowDesignerViewModel.RemoveStartNodeConnection();
             }
-            WorkflowDesignerViewModel.RemoveItem(model);
             var linkedConflict = Find(model.Container);
             IMergeToolModel previous = null;
             IMergeToolModel next = null;
 
             if (linkedConflict != null)
             {
-                var previousValue = linkedConflict.Previous?.Value;
-                var previousCurrentViewModel = previousValue?.CurrentViewModel;
-                if (previousCurrentViewModel != null)
-                {
-                    if (previousCurrentViewModel.IsMergeChecked)
-                    {
-                        previous = previousCurrentViewModel;
-                    }
-                    else
-                    {
-                        if (previousValue.DiffViewModel != null && previousValue.DiffViewModel.IsMergeChecked)
-                        {
-                            previous = previousValue.DiffViewModel;
-                        }
-                    }
-                }
+                previous = SetPreviousModelTool(linkedConflict);
+                next = SetNextModelTool(linkedConflict);
+            }
+            //WorkflowDesignerViewModel.RemoveItem(model);
+            WorkflowDesignerViewModel.AddItem(previous, model, next);
+            WorkflowDesignerViewModel.SelectedItem = model.FlowNode;
+        }
 
-                var nextValue = linkedConflict.Next?.Value;
-                var nextValueCurrentViewModel = nextValue?.CurrentViewModel;
-                if (nextValueCurrentViewModel != null)
+        private static IMergeToolModel SetNextModelTool(LinkedListNode<ICompleteConflict> linkedConflict)
+        {
+            IMergeToolModel next = null;
+            var nextValue = linkedConflict.Next?.Value;
+            var nextValueCurrentViewModel = nextValue?.CurrentViewModel;
+            if (nextValueCurrentViewModel != null)
+            {
+                if (nextValueCurrentViewModel.IsMergeChecked)
                 {
-                    if (nextValueCurrentViewModel.IsMergeChecked)
+                    next = nextValueCurrentViewModel;
+                }
+                else
+                {
+                    if (nextValue.DiffViewModel != null && nextValue.DiffViewModel.IsMergeChecked)
                     {
-                        next = nextValueCurrentViewModel;
-                    }
-                    else
-                    {
-                        if (nextValue.DiffViewModel != null && nextValue.DiffViewModel.IsMergeChecked)
-                        {
-                            next = nextValue.DiffViewModel;
-                        }
+                        next = nextValue.DiffViewModel;
                     }
                 }
             }
-            WorkflowDesignerViewModel.AddItem(previous, model, next);
-            WorkflowDesignerViewModel.ValidateStartNode(next?.FlowNode);
-            WorkflowDesignerViewModel.SelectedItem = model.FlowNode;
+            return next;
+        }
+
+        private static IMergeToolModel SetPreviousModelTool(LinkedListNode<ICompleteConflict> linkedConflict)
+        {
+            IMergeToolModel previous = null;
+            var previousValue = linkedConflict.Previous?.Value;
+            var previousCurrentViewModel = previousValue?.CurrentViewModel;
+            if (previousCurrentViewModel != null)
+            {
+                if (previousCurrentViewModel.IsMergeChecked)
+                {
+                    previous = previousCurrentViewModel;
+                }
+                else
+                {
+                    if (previousValue.DiffViewModel != null && previousValue.DiffViewModel.IsMergeChecked)
+                    {
+                        previous = previousValue.DiffViewModel;
+                    }
+                }
+            }
+            return previous;
         }
 
         private bool _canSave;
@@ -299,7 +311,19 @@ namespace Dev2.ViewModels.Merge
                 if (sender is IMergeToolModel previousToolValue)
                 {
                     args.Container.IsChecked = args.Container.IsChecked || previousToolValue.IsMergeChecked;
+                    if (!previousToolValue.IsMergeChecked && args.IsMergeChecked)
+                    {
+                        if (args.Container.CurrentViewModel == args)
+                        {
+                            WorkflowDesignerViewModel.RemoveItem(args.Container.DiffViewModel);
+                        }
+                        if (args.Container.DiffViewModel == args)
+                        {
+                            WorkflowDesignerViewModel.RemoveItem(args.Container.CurrentViewModel);
+                        }
+                    }
                 }
+                
                 AddActivity(args);
                 if (!args.Container.IsChecked)
                 {
