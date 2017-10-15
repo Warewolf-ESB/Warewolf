@@ -415,7 +415,7 @@ namespace Dev2.ViewModels.Merge
                         }
                         completeConflict.HasConflict = true;
                         completeConflict.HasConflict = _serviceDifferenceParser.NodeHasConflict(currentChildChild.UniqueId.ToString());
-                        parent.Children.Add(completeConflict);
+                        parent.Children.AddLast(completeConflict);
                         AddChildren(completeConflict, childCurrent, childDifferent);
                     }
                     catch (ArgumentOutOfRangeException)
@@ -438,7 +438,7 @@ namespace Dev2.ViewModels.Merge
                                     continue;
                                 }
                                 completeConflict.HasConflict = true;
-                                completeConflict.HasConflict = _serviceDifferenceParser.NodeHasConflict(currentChildChild.UniqueId.ToString());
+                                completeConflict.HasConflict = _serviceDifferenceParser.NodeHasConflict(mergeToolModel.UniqueId.ToString());
                                 if (parent.Children.Count == 0)
                                 {
                                     parent.Children.AddFirst(completeConflict);
