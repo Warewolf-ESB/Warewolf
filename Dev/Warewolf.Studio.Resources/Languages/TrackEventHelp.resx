@@ -118,21 +118,9 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="EventCategory" xml:space="preserve">
-    <value>Workflow Events</value>
+    <value>Help Events</value>
   </data>
-  <data name="Examples" xml:space="preserve">
-    <value>Examples</value>
-  </data>
-  <data name="HelloWorld" xml:space="preserve">
-    <value>Hello World</value>
-  </data>
-  <data name="ItemDragged" xml:space="preserve">
-    <value>Item Dragged</value>
-  </data>
-  <data name="StartNodeNotConnected" xml:space="preserve">
-    <value>Start node not connnected in workflow</value>
-  </data>
-  <data name="TabsOpened" xml:space="preserve">
-    <value>Tab Opened</value>
+  <data name="Help" xml:space="preserve">
+    <value>Help</value>
   </data>
 </root>

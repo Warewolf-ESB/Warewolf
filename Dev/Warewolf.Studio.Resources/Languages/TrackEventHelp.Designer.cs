@@ -22,14 +22,14 @@ namespace Warewolf.Studio.Resources.Languages {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class TrackEventWorkflowTabs {
+    public class TrackEventHelp {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal TrackEventWorkflowTabs() {
+        internal TrackEventHelp() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace Warewolf.Studio.Resources.Languages {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Warewolf.Studio.Resources.Languages.TrackEventWorkflowTabs", typeof(TrackEventWorkflowTabs).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Warewolf.Studio.Resources.Languages.TrackEventHelp", typeof(TrackEventHelp).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,7 +61,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Workflow Events.
+        ///   Looks up a localized string similar to Help Events.
         /// </summary>
         public static string EventCategory {
             get {
@@ -70,47 +70,11 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Examples.
+        ///   Looks up a localized string similar to Help.
         /// </summary>
-        public static string Examples {
+        public static string Help {
             get {
-                return ResourceManager.GetString("Examples", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Hello World.
-        /// </summary>
-        public static string HelloWorld {
-            get {
-                return ResourceManager.GetString("HelloWorld", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Item Dragged.
-        /// </summary>
-        public static string ItemDragged {
-            get {
-                return ResourceManager.GetString("ItemDragged", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Start node not connnected in workflow.
-        /// </summary>
-        public static string StartNodeNotConnected {
-            get {
-                return ResourceManager.GetString("StartNodeNotConnected", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Tab Opened.
-        /// </summary>
-        public static string TabsOpened {
-            get {
-                return ResourceManager.GetString("TabsOpened", resourceCulture);
+                return ResourceManager.GetString("Help", resourceCulture);
             }
         }
     }

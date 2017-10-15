@@ -22,10 +22,7 @@ using Dev2.Services.Security;
 using Dev2.Studio.Interfaces;
 using Microsoft.Practices.Prism.Mvvm;
 using Dev2.Common;
-
-
-
-
+using Dev2.Instrumentation;
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -234,6 +231,10 @@ namespace Warewolf.Studio.ViewModels
         {
             if (Environments != null)
             {
+                var applicationTracker = CustomContainer.Get<IApplicationTracker>();
+                applicationTracker.TrackCustomEvent(Resources.Languages.TrackEventExplorer.EventCategory,
+                                                    Resources.Languages.TrackEventExplorer.ExplorerSearch,filter);
+                
                 foreach (var environmentViewModel in Environments)
                 {
                     environmentViewModel.Filter(filter);

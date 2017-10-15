@@ -10,6 +10,7 @@ using Dev2.Studio.Interfaces;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
 using Warewolf.Studio.Core;
+using Dev2.Instrumentation;
 
 namespace Warewolf.Studio.ViewModels.ToolBox
 {
@@ -144,6 +145,11 @@ namespace Warewolf.Studio.ViewModels.ToolBox
         {
             var searchWords = filterText.ToLower().Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
+
+            var applicationTracker = CustomContainer.Get<IApplicationTracker>();
+            applicationTracker.TrackCustomEvent(Resources.Languages.TrackEventToolbox.EventCategory,
+                                                Resources.Languages.TrackEventToolbox.ToolBoxSearch, filterText);
+
             var results = _backedUpTools.Where(i =>
                      searchWords.All(s => i.Tool.Name.ToLower().Contains(s))
                      || searchWords.All(s => i.Tool.Category.ToLower().Contains(s))
@@ -187,6 +193,9 @@ namespace Warewolf.Studio.ViewModels.ToolBox
         {
             var mainViewModel = CustomContainer.Get<IShellViewModel>();
             mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
+            var applicationTracker = CustomContainer.Get<IApplicationTracker>();
+            applicationTracker.TrackCustomEvent(Resources.Languages.TrackEventHelp.EventCategory,
+                                                Resources.Languages.TrackEventHelp.Help, helpText);
         }
     }
 }
