@@ -370,7 +370,7 @@ namespace Dev2.TO
                     ruleSet.Add(new IsValidExpressionRule(() => SearchCriteria, datalist, "1"));
                     break;
                 default:
-                    throw new ArgumentException("Unrecognized Property Name: " + propertyName);
+                    return ruleSet;
             }
 
             return ruleSet;
