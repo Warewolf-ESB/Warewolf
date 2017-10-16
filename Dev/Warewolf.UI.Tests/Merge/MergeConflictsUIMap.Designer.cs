@@ -1591,18 +1591,6 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
         }
         
         #region Properties
-        public ServerSource ServerSource
-        {
-            get
-            {
-                if ((this.mServerSource == null))
-                {
-                    this.mServerSource = new ServerSource(this);
-                }
-                return this.mServerSource;
-            }
-        }
-        
         public WpfButton MergeButton
         {
             get
@@ -1630,84 +1618,26 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
                 return this.mMergeResourceVersionList;
             }
         }
+        
+        public ServerSource ServerSource
+        {
+            get
+            {
+                if ((this.mServerSource == null))
+                {
+                    this.mServerSource = new ServerSource(this);
+                }
+                return this.mServerSource;
+            }
+        }
         #endregion
         
         #region Fields
-        private ServerSource mServerSource;
-        
         private WpfButton mMergeButton;
         
         private MergeResourceVersionList mMergeResourceVersionList;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class ServerSource : WpfCustom
-    {
         
-        public ServerSource(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ConnectControl";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "SourceConnectControl";
-            this.WindowTitles.Add("MergeDialogView");
-            #endregion
-        }
-        
-        #region Properties
-        public ServerComboBox ServerComboBox
-        {
-            get
-            {
-                if ((this.mServerComboBox == null))
-                {
-                    this.mServerComboBox = new ServerComboBox(this);
-                }
-                return this.mServerComboBox;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private ServerComboBox mServerComboBox;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class ServerComboBox : WpfCustom
-    {
-        
-        public ServerComboBox(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.XamComboEditor";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "TheServerComboBox";
-            this.WindowTitles.Add("MergeDialogView");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfButton ServerDropDown
-        {
-            get
-            {
-                if ((this.mServerDropDown == null))
-                {
-                    this.mServerDropDown = new WpfButton(this);
-                    #region Search Criteria
-                    this.mServerDropDown.SearchProperties[WpfButton.PropertyNames.AutomationId] = "ToggleButton";
-                    this.mServerDropDown.WindowTitles.Add("MergeDialogView");
-                    #endregion
-                }
-                return this.mServerDropDown;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfButton mServerDropDown;
+        private ServerSource mServerSource;
         #endregion
     }
     
@@ -1811,12 +1741,54 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
                 return this.mMergeHelloWorldVersionV2;
             }
         }
+        
+        public MergeSequence MergeSequence
+        {
+            get
+            {
+                if ((this.mMergeSequence == null))
+                {
+                    this.mMergeSequence = new MergeSequence(this);
+                }
+                return this.mMergeSequence;
+            }
+        }
+        
+        public MergeSwitch MergeSwitch
+        {
+            get
+            {
+                if ((this.mMergeSwitch == null))
+                {
+                    this.mMergeSwitch = new MergeSwitch(this);
+                }
+                return this.mMergeSwitch;
+            }
+        }
+        
+        public MergeForeach MergeForeach
+        {
+            get
+            {
+                if ((this.mMergeForeach == null))
+                {
+                    this.mMergeForeach = new MergeForeach(this);
+                }
+                return this.mMergeForeach;
+            }
+        }
         #endregion
         
         #region Fields
         private MergeWfWithVersion mMergeWfWithVersion;
         
         private MergeHelloWorldVersionV2 mMergeHelloWorldVersionV2;
+        
+        private MergeSequence mMergeSequence;
+        
+        private MergeSwitch mMergeSwitch;
+        
+        private MergeForeach mMergeForeach;
         #endregion
     }
     
@@ -1889,6 +1861,187 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
         
         #region Fields
         private WpfText mUIV210132017131521SaveText1;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class MergeSequence : WpfText
+    {
+        
+        public MergeSequence(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfText.PropertyNames.Name] = "v.1 10162017 114409 Save";
+            this.WindowTitles.Add("MergeDialogView");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfText UIV110162017114409SaveText1
+        {
+            get
+            {
+                if ((this.mUIV110162017114409SaveText1 == null))
+                {
+                    this.mUIV110162017114409SaveText1 = new WpfText(this);
+                    #region Search Criteria
+                    this.mUIV110162017114409SaveText1.SearchProperties[WpfText.PropertyNames.Name] = "v.1 10162017 114409 Save";
+                    this.mUIV110162017114409SaveText1.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
+                    this.mUIV110162017114409SaveText1.WindowTitles.Add("MergeDialogView");
+                    #endregion
+                }
+                return this.mUIV110162017114409SaveText1;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfText mUIV110162017114409SaveText1;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class MergeSwitch : WpfText
+    {
+        
+        public MergeSwitch(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfText.PropertyNames.Name] = "v.1 10162017 114512 Save";
+            this.WindowTitles.Add("MergeDialogView");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfText UIV110162017114512SaveText1
+        {
+            get
+            {
+                if ((this.mUIV110162017114512SaveText1 == null))
+                {
+                    this.mUIV110162017114512SaveText1 = new WpfText(this);
+                    #region Search Criteria
+                    this.mUIV110162017114512SaveText1.SearchProperties[WpfText.PropertyNames.Name] = "v.1 10162017 114512 Save";
+                    this.mUIV110162017114512SaveText1.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
+                    this.mUIV110162017114512SaveText1.WindowTitles.Add("MergeDialogView");
+                    #endregion
+                }
+                return this.mUIV110162017114512SaveText1;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfText mUIV110162017114512SaveText1;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class MergeForeach : WpfText
+    {
+        
+        public MergeForeach(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfText.PropertyNames.Name] = "v.1 10162017 103850 Save";
+            this.WindowTitles.Add("MergeDialogView");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfText UIV110162017103850SaveText1
+        {
+            get
+            {
+                if ((this.mUIV110162017103850SaveText1 == null))
+                {
+                    this.mUIV110162017103850SaveText1 = new WpfText(this);
+                    #region Search Criteria
+                    this.mUIV110162017103850SaveText1.SearchProperties[WpfText.PropertyNames.Name] = "v.1 10162017 103850 Save";
+                    this.mUIV110162017103850SaveText1.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
+                    this.mUIV110162017103850SaveText1.WindowTitles.Add("MergeDialogView");
+                    #endregion
+                }
+                return this.mUIV110162017103850SaveText1;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfText mUIV110162017103850SaveText1;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class ServerSource : WpfCustom
+    {
+        
+        public ServerSource(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ConnectControl";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "SourceConnectControl";
+            this.WindowTitles.Add("MergeDialogView");
+            #endregion
+        }
+        
+        #region Properties
+        public ServerComboBox ServerComboBox
+        {
+            get
+            {
+                if ((this.mServerComboBox == null))
+                {
+                    this.mServerComboBox = new ServerComboBox(this);
+                }
+                return this.mServerComboBox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private ServerComboBox mServerComboBox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class ServerComboBox : WpfCustom
+    {
+        
+        public ServerComboBox(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.XamComboEditor";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "TheServerComboBox";
+            this.WindowTitles.Add("MergeDialogView");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfButton ServerDropDown
+        {
+            get
+            {
+                if ((this.mServerDropDown == null))
+                {
+                    this.mServerDropDown = new WpfButton(this);
+                    #region Search Criteria
+                    this.mServerDropDown.SearchProperties[WpfButton.PropertyNames.AutomationId] = "ToggleButton";
+                    this.mServerDropDown.WindowTitles.Add("MergeDialogView");
+                    #endregion
+                }
+                return this.mServerDropDown;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfButton mServerDropDown;
         #endregion
     }
 }

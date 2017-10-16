@@ -246,7 +246,7 @@ namespace Warewolf.MergeParser
         private (List<ModelItem> allNodes, List<ModelItem> orderedNodeList, Flowchart flowchartDiff, WorkflowDesigner wd) GetNodes(IContextualResourceModel resourceModel, bool loadFromServer)
         {
             var wd = new WorkflowDesigner();
-            var xaml = resourceModel.IsVersionResource ? resourceModel.Environment?.ProxyLayer?.GetVersion(resourceModel.VersionInfo, resourceModel.ID) : resourceModel.WorkflowXaml;
+            var xaml = resourceModel.WorkflowXaml;
 
             var workspace = GlobalConstants.ServerWorkspaceID;
             if (loadFromServer)
