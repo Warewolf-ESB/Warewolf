@@ -385,18 +385,13 @@ namespace Dev2.Activities
             {
                 return true;
             }
-           
-            var trueArmTools = _activityParser.FlattenNextNodesInclusive(TrueArm.FirstOrDefault());
-            var otherTrueArmTools = _activityParser.FlattenNextNodesInclusive(other.TrueArm.FirstOrDefault());
 
-            var isTrueArmTheSame = CommonEqualityOps.CollectionEquals(trueArmTools, otherTrueArmTools, new Dev2ActivityComparer());
+            bool isTrueArmTheSame = IsTrueArmEqual(other);
             if (!isTrueArmTheSame)
             {
                 return false;
             }
-            var falseArmTools = _activityParser.FlattenNextNodesInclusive(FalseArm.FirstOrDefault());
-            var otherFalseArmTools = _activityParser.FlattenNextNodesInclusive(other.FalseArm.FirstOrDefault());
-            var isFalseArmArmTheSame = CommonEqualityOps.CollectionEquals(falseArmTools, otherFalseArmTools, new Dev2ActivityComparer());
+            bool isFalseArmArmTheSame = IsFalseArmEqual(other);
             if (!isFalseArmArmTheSame)
             {
                 return false;
@@ -410,6 +405,23 @@ namespace Dev2.Activities
                 && string.Equals(Result, other.Result)
                 && And == other.And
                 && Equals(UniqueID, other.UniqueID);
+        }
+
+        private bool IsFalseArmEqual(DsfDecision other)
+        {
+            var falseArmTools = _activityParser.FlattenNextNodesInclusive(FalseArm?.FirstOrDefault());
+            var otherFalseArmTools = _activityParser.FlattenNextNodesInclusive(other.FalseArm?.FirstOrDefault());
+            var isFalseArmArmTheSame = CommonEqualityOps.CollectionEquals(falseArmTools, otherFalseArmTools, new Dev2ActivityComparer());
+            return isFalseArmArmTheSame;
+        }
+
+        private bool IsTrueArmEqual(DsfDecision other)
+        {
+            var trueArmTools = _activityParser.FlattenNextNodesInclusive(TrueArm?.FirstOrDefault());
+            var otherTrueArmTools = _activityParser.FlattenNextNodesInclusive(other.TrueArm?.FirstOrDefault());
+
+            var isTrueArmTheSame = CommonEqualityOps.CollectionEquals(trueArmTools, otherTrueArmTools, new Dev2ActivityComparer());
+            return isTrueArmTheSame;
         }
 
         public override bool Equals(object obj)

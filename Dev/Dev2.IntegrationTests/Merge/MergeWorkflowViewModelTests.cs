@@ -324,7 +324,7 @@ namespace Dev2.Integration.Tests.Merge
             var all = mergeWorkflowViewModel.Conflicts.All(conflict => !conflict.HasConflict);
             Assert.IsTrue(all);
             var conflictsCount = mergeWorkflowViewModel.Conflicts.Count;
-            Assert.AreEqual(10, conflictsCount);
+            Assert.AreEqual(7, conflictsCount);
 
             var completeConflict1 = mergeWorkflowViewModel.Conflicts.First;
             Assert.IsNotNull(completeConflict1);
@@ -406,70 +406,32 @@ namespace Dev2.Integration.Tests.Merge
             //---------------Test Result -----------------------
             Assert.IsNotNull(mergeWorkflowViewModel);
 
-            var all = mergeWorkflowViewModel.Conflicts.Count(conflict => !conflict.HasConflict);
+            var all = mergeWorkflowViewModel.Conflicts.Count(conflict => conflict.HasConflict);
             Assert.AreEqual(1, all);
             var conflictsCount = mergeWorkflowViewModel.Conflicts.Count;
-            Assert.AreEqual(10, conflictsCount);
+            Assert.AreEqual(1, conflictsCount);
 
             var completeConflict1 = mergeWorkflowViewModel.Conflicts.First;
             Assert.IsNotNull(completeConflict1);
-            Assert.IsTrue(!completeConflict1.Value.CurrentViewModel.Children.Any());
-            Assert.AreEqual("Use the For Each tool to:", completeConflict1.Value.CurrentViewModel.MergeDescription);
+            Assert.IsTrue(completeConflict1.Value.CurrentViewModel.Children.Any());
+            Assert.AreEqual("Decision", completeConflict1.Value.CurrentViewModel.MergeDescription);
 
-            var completeConflict2 = completeConflict1.Next;
-            Assert.IsNotNull(completeConflict2);
-            Assert.IsTrue(!completeConflict2.Value.CurrentViewModel.Children.Any());
-            Assert.AreEqual("EXAMPLE 1 - No. of Executions", completeConflict2.Value.CurrentViewModel.MergeDescription);
+            var firstChild = completeConflict1.Value.Children.First;
+            Assert.IsNotNull(firstChild);
+            Assert.IsTrue(!firstChild.Value.CurrentViewModel.Children.Any());
+            Assert.AreEqual("1 (0)", firstChild.Value.CurrentViewModel.MergeDescription);
 
-            var completeConflict3 = completeConflict2.Next;
-            Assert.IsNotNull(completeConflict3);
-            Assert.IsFalse(completeConflict3.Value.CurrentViewModel.Children.Any());
-            Assert.AreEqual("Comment", completeConflict3.Value.CurrentViewModel.MergeDescription);
+            var secondChild = firstChild.Next;
+            Assert.IsNotNull(secondChild);
+            Assert.IsFalse(secondChild.Value.CurrentViewModel.Children.Any());
+            Assert.AreEqual("3 (0)", secondChild.Value.CurrentViewModel.MergeDescription);
 
 
-            var completeConflict4 = completeConflict3.Next;
-            Assert.IsNotNull(completeConflict4);
-            Assert.IsTrue(!completeConflict4.Value.CurrentViewModel.Children.Any());
-            Assert.AreEqual("EXAMPLE 2 - * in Range", completeConflict4.Value.CurrentViewModel.MergeDescription);
-
-            var completeConflict5 = completeConflict4.Next;
-            Assert.IsNotNull(completeConflict5);
-            Assert.IsTrue(completeConflict5.Value.CurrentViewModel.Children.Any());
-            Assert.AreEqual("For Each", completeConflict5.Value.CurrentViewModel.MergeDescription);
-            var childrenCount = completeConflict5.Value.CurrentViewModel.Children.Count;
-            Assert.AreEqual(1, childrenCount);
-            AsserthildrenHasChild(completeConflict5.Value.CurrentViewModel.Children, "Random");
-
-            var completeConflict6 = completeConflict5.Next;
-            Assert.IsNotNull(completeConflict6);
-            Assert.IsFalse(completeConflict6.Value.CurrentViewModel.Children.Any());
-            Assert.AreEqual("Comment", completeConflict6.Value.CurrentViewModel.MergeDescription);
-
-            var completeConflict7 = completeConflict6.Next;
-            Assert.IsNotNull(completeConflict7);
-            Assert.IsFalse(completeConflict7.Value.CurrentViewModel.Children.Any());
-            Assert.AreEqual("Comment", completeConflict7.Value.CurrentViewModel.MergeDescription);
-
-            var completeConflict8 = completeConflict7.Next;
-            Assert.IsNotNull(completeConflict8);
-            Assert.IsFalse(completeConflict8.Value.CurrentViewModel.Children.Any());
-            Assert.AreEqual("EXAMPLE 3 - * in CSV", completeConflict8.Value.CurrentViewModel.MergeDescription);
-
-            var completeConflict9 = completeConflict8.Next;
-            Assert.IsNotNull(completeConflict9);
-            Assert.IsTrue(completeConflict9.Value.CurrentViewModel.Children.Any());
-            Assert.AreEqual("For Each", completeConflict9.Value.CurrentViewModel.MergeDescription);
-            var childrenCount1 = completeConflict9.Value.CurrentViewModel.Children.Count;
-            Assert.AreEqual(1, childrenCount1);
-            AsserthildrenHasChild(completeConflict9.Value.CurrentViewModel.Children, "Random");
-
-            var completeConflict10 = completeConflict6.Next;
-            Assert.IsNotNull(completeConflict10);
-            Assert.IsTrue(completeConflict10.Value.CurrentViewModel.Children.Any());
-            Assert.AreEqual("For Each", completeConflict10.Value.CurrentViewModel.MergeDescription);
-            var childrenCount2 = completeConflict10.Value.CurrentViewModel.Children.Count;
-            Assert.AreEqual(1, childrenCount2);
-            AsserthildrenHasChild(completeConflict10.Value.CurrentViewModel.Children, "Random");
+            var thirdChild = secondChild.Next;
+            Assert.IsNotNull(thirdChild);
+            Assert.IsTrue(!thirdChild.Value.CurrentViewModel.Children.Any());
+            Assert.AreEqual("3 (0)", thirdChild.Value.CurrentViewModel.MergeDescription);
+          
         }
 
 

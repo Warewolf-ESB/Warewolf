@@ -455,7 +455,6 @@ namespace Dev2.ViewModels.Merge
                                 if (childNodes.TryGetValue(mergeToolModel.UniqueId.ToString(), out (ModelItem leftItem, ModelItem rightItem) item))
                                 {
                                     completeConflict.DiffViewModel.FlowNode = item.rightItem;
-                                    completeConflict.CurrentViewModel.FlowNode = item.leftItem;
                                 }
                                 if (parent.Children.Any(conflict => conflict.UniqueId.Equals(currentChild.UniqueId)))
                                 {
