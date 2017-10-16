@@ -110,6 +110,7 @@ $JobSpecs["Deploy UI Specs"]					= "Warewolf.UI.Specs", "Deploy"
 $JobSpecs["Deploy Security UI Specs"]			= "Warewolf.UI.Specs", "DeploySecurity"
 $JobSpecs["Deploy UI Tests"]					= "Warewolf.UI.Tests", "Deploy"
 $JobSpecs["Deploy from Explorer UI Tests"]		= "Warewolf.UI.Tests", "Deploy from Explorer"
+$JobSpecs["Deploy from Remote UI Tests"]		= "Warewolf.UI.Tests", "Deploy from Remote"
 $JobSpecs["Deploy Filtering UI Tests"]			= "Warewolf.UI.Tests", "Deploy Filtering"
 $JobSpecs["Deploy Hello World UI Tests"]		= "Warewolf.UI.Tests", "Deploy Hello World"
 $JobSpecs["Deploy Select Dependencies UI Tests"]= "Warewolf.UI.Tests", "Deploy Select Dependencies"
@@ -347,11 +348,13 @@ function Merge-DotCover-Snapshots($DotCoverSnapshots, [string]$DestinationFilePa
             $LoneSnapshot = $DotCoverSnapshots[0].FullName
             if ($DotCoverSnapshots.Count -eq 1 -and (Test-Path "$LoneSnapshot")) {
                 &"$DotCoverPath" "report" "/Source=`"$LoneSnapshot`"" "/Output=`"$DestinationFilePath\DotCover Report.html`"" "/ReportType=HTML" "/LogFile=`"$LogFilePath.report.log`""
+                Write-Host DotCover report written to $DestinationFilePath\DotCover Report.html
             }
         }
     }
     if (Test-Path "$DestinationFilePath.dcvr") {
         &"$DotCoverPath" "report" "/Source=`"$DestinationFilePath.dcvr`"" "/Output=`"$DestinationFilePath\DotCover Report.html`"" "/ReportType=HTML" "/LogFile=`"$LogFilePath.report.log`""
+        Write-Host DotCover report written to $DestinationFilePath\DotCover Report.html
     }
 }
 

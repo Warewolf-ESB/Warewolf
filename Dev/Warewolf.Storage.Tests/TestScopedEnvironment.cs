@@ -582,7 +582,7 @@ namespace Warewolf.Storage.Tests
             var personName = "[[@Person(*).Name]]";
             var scopedEnvironment = new ScopedEnvironment(_mockEnv.Object, personName, "[[a]]");
             var clause = new Func<DataStorage.WarewolfAtom, DataStorage.WarewolfAtom>(atom => atom);
-            _mockEnv.Setup(environment => environment.Eval(personName, 0, false, false))
+            _mockEnv.Setup(environment => environment.Eval(personName, 0))
                 .Returns(() => CommonFunctions.WarewolfEvalResult.NewWarewolfAtomResult(DataStorage.WarewolfAtom.Nothing));            
             scopedEnvironment.ApplyUpdate(personName, clause, 0);
         }

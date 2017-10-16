@@ -145,10 +145,7 @@ namespace Dev2
 
         #region Private Methods
 
-        /*
-         * You must be in Release config to see the only reference to this function. - Ashley
-         */
-        
+#if !DEBUG
         private bool CheckWindowsService()
         {
             IWindowsServiceManager windowsServiceManager = CustomContainer.Get<IWindowsServiceManager>();
@@ -174,6 +171,7 @@ namespace Dev2
 
             return false;
         }
+#endif
 
         private void CheckPath()
         {
@@ -189,8 +187,7 @@ namespace Dev2
                     Header = "Load Error",
                     Description = 
                         $@"The Design Studio could not be launched from a network location.
-                                                    {Environment
-                            .NewLine}Please install the application on your local machine",
+                        {Environment.NewLine}Please install the application on your local machine",
                     Buttons = MessageBoxButton.OK
                 };
 
@@ -229,6 +226,6 @@ namespace Dev2
             return sysUri.IsUnc;
         }
 
-        #endregion Private Methods
+#endregion Private Methods
     }
 }

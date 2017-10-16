@@ -25,7 +25,7 @@ namespace Dev2.Studio.Core.AppResources.Converters
         {
             var errorType = value as ErrorType?;
 
-            switch(errorType)
+            switch (errorType)
             {
                 case ErrorType.Critical:
                     ImagePath = @"\Images\ServiceStatusError-32.png";
@@ -35,6 +35,8 @@ namespace Dev2.Studio.Core.AppResources.Converters
                     break;
                 case ErrorType.None:
                     ImagePath = @"\Images\ServiceStatusOK-32.png";
+                    break;
+                default:
                     break;
             }
             return ImagePath;

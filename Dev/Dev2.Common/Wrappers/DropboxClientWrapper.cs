@@ -17,7 +17,9 @@ namespace Dev2.Common.Wrappers
             _client = client;
         }
 
-        public Task<FileMetadata> UploadAsync(string path, WriteMode mode = null, bool autorename = false, DateTime? clientModified = null, bool mute = false, Stream body = null)
+        public Task<FileMetadata> UploadAsync(string path) => UploadAsync(path, null, false, null, false, null);
+
+        public Task<FileMetadata> UploadAsync(string path, WriteMode mode, bool autorename, DateTime? clientModified, bool mute, Stream body)
         {
             return _client.Files.UploadAsync(path, mode, autorename, clientModified, mute, body);
         }

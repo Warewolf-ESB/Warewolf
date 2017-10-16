@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Dev2.Common.Common;
 using Warewolf.Resource.Errors;
 
 namespace WarewolfParserInterop
 {
-  public class WarewolfAtomList<T>:IEnumerable<T>
+    public class WarewolfAtomList<T>:IEnumerable<T>
     {
         private T[] _values;
         private int _count;

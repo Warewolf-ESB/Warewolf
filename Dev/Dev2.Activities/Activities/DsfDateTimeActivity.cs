@@ -144,24 +144,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     {
                         var defaultDateTimeDebugItem = new DebugItem();
                         AddDebugItem(new DebugItemStaticDataParams("System Date Time", "Input"), defaultDateTimeDebugItem);
-                        AddDebugItem(new DebugItemStaticDataParams(System.DateTime.Now.ToString(CultureInfo.CurrentCulture), "="), defaultDateTimeDebugItem);
+                        AddDebugItem(new DebugItemStaticDataParams(System.DateTime.Now.ToString(GlobalConstants.Dev2DotNetDefaultDateTimeFormat), "="), defaultDateTimeDebugItem);
                         _debugInputs.Add(defaultDateTimeDebugItem);
                     }
                     else
                     {
                         AddDebugInputItem(new DebugEvalResult(DateTime, "Input", dataObject.Environment, update));
                     }
-                    var cultureType = typeof(CultureInfo);
-                    var fieldInfo = cultureType.GetField("s_userDefaultCulture",BindingFlags.NonPublic | BindingFlags.Static);
-                    if (fieldInfo != null)
-                    {
-                        var val = fieldInfo.GetValue(CultureInfo.CurrentCulture);
-                        if (val is CultureInfo newCul)
-                        {
-                            Thread.CurrentThread.CurrentCulture = newCul;
-                        }
-                    }
-                    var dateTimePattern = string.Format("{0} {1}", Thread.CurrentThread.CurrentCulture.DateTimeFormat.ShortDatePattern, Thread.CurrentThread.CurrentCulture.DateTimeFormat.LongTimePattern);
+                    
+                    var dateTimePattern = string.Format("{0}", GlobalConstants.Dev2DotNetDefaultDateTimeFormat);
 
                     if(string.IsNullOrEmpty(InputFormat))
                     {

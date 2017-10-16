@@ -153,7 +153,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
             GetScalarValueFromEnvironment(result.Environment, "MyTestResult", out string actual, out string error);
-            DateTime actualdt = DateTime.Parse(actual);
+            DateTime actualdt = DateTime.Parse(actual,CultureInfo.InvariantCulture);
             var timeSpan = actualdt - now;
 
             Assert.IsTrue(timeSpan.TotalMilliseconds >= 9000, timeSpan.TotalMilliseconds + " is not >= 9000");
@@ -211,56 +211,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(1, outputs.Count);
             Assert.AreEqual("[[dt]]", outputs[0]);
         }
-
-        [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("DsfDateTimeActivity_GetOutputs")]
-        public void DsfDateTimeActivity_AddDays_ShouldNotChangeAMtoPMValues()
-        {
-            //------------Setup for test--------------------------
-            const string Expected = "2017/10/20 12:00:00.0 AM";
-            const string currDL = @"<root><MyTestResult></MyTestResult></root>";
-            SetupArguments(currDL
-                         , currDL
-                         , "10/25/2017 12:00:00 AM"
-                         , ""
-                         , ""
-                         , "Days"
-                         , -5
-                         , "[[MyTestResult]]");
-            //------------Execute Test---------------------------
-            var result = ExecuteProcess();
-            string actual;
-            string error;
-            GetScalarValueFromEnvironment(result.Environment, "[[MyTestResult]]", out actual, out error);
-            //------------Assert Results-------------------------
-            Assert.AreEqual(Expected, actual);
-        }
-        [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("DsfDateTimeActivity_GetOutputs")]
-        public void DsfDateTimeActivity_AddDays_ShouldNotChangePMtoAMValues()
-        {
-            //------------Setup for test--------------------------
-            const string Expected = "2017/10/20 12:00:00.0 PM";
-            const string currDL = @"<root><MyTestResult></MyTestResult></root>";
-            SetupArguments(currDL
-                         , currDL
-                         , "10/25/2017 12:00:00 PM"
-                         , ""
-                         , ""
-                         , "Days"
-                         , -5
-                         , "[[MyTestResult]]");
-            //------------Execute Test---------------------------
-            var result = ExecuteProcess();
-            string actual;
-            string error;
-            GetScalarValueFromEnvironment(result.Environment, "[[MyTestResult]]", out actual, out error);
-            //------------Assert Results-------------------------
-            Assert.AreEqual(Expected, actual);
-        }
-
+        
         #region Private Test Methods
 
         private void SetupArguments(string currentDL, string testData, string dateTime, string inputFormat, string outputFormat, string timeModifierType, int timeModifierAmount, string resultValue)

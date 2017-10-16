@@ -1364,6 +1364,8 @@ namespace Dev2.Studio.ViewModels.Workflow
                     case "FlowSwitch`1":
                         propertyName = "Expression";
                         break;
+                    default:
+                        break;
                 }
                 var property = flowNode.Properties[propertyName];
                 if (property != null)
@@ -1781,6 +1783,10 @@ namespace Dev2.Studio.ViewModels.Workflow
                                 break;
                             case ActivitySelectionType.Remove:
                                 RemoveModelItemFromSelection(selectedModelItem);
+                                break;
+                            case ActivitySelectionType.None:
+                                break;
+                            default:
                                 break;
                         }
                     }

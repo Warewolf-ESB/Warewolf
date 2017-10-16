@@ -22,7 +22,6 @@ namespace Dev2.Activities.Designers2.Core
     public abstract class FileActivityDesignerViewModel : CredentialsActivityDesignerViewModel
     {
         public static readonly List<string> ValidUriSchemes = new List<string> { "file", "ftp", "ftps", "sftp" };
-        public Func<string> GetDatalistString = () => DataListSingleton.ActiveDataList.Resource.DataList;
 
         protected FileActivityDesignerViewModel(ModelItem modelItem, string inputPathLabel, string outputPathLabel)
             : base(modelItem)

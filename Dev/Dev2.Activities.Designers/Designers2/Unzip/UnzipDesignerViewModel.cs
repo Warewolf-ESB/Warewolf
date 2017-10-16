@@ -34,7 +34,7 @@ namespace Dev2.Activities.Designers2.Unzip
         }
 
 
-        string ArchivePassword { set { SetProperty(value); } get { return GetProperty<string>(); } }
+        string ArchivePassword => GetProperty<string>();
 
         public override void UpdateHelpDescriptor(string helpText)
         {

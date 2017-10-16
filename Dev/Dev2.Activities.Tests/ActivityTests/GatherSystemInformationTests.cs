@@ -20,6 +20,7 @@ using Dev2.Data.Interfaces.Enums;
 using Dev2.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System.Globalization;
 
 namespace Dev2.Tests.Activities.ActivityTests
 {
@@ -201,15 +202,15 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Execute Test---------------------------
             var dateTimeInformation = activity.GetCorrectSystemInformation(enTypeOfSystemInformationToGather.FullDateTime);
             //------------Assert Results-------------------------
-            DateTime result = DateTime.Parse(dateTimeInformation);
-            if(result.Millisecond == 0)
+            DateTime result = DateTime.Parse(dateTimeInformation,CultureInfo.InvariantCulture);
+            if(result.Second == 0)
             {
-                Thread.Sleep(10);
+                Thread.Sleep(100);
                 dateTimeInformation = activity.GetCorrectSystemInformation(enTypeOfSystemInformationToGather.FullDateTime);
                 result = DateTime.Parse(dateTimeInformation);
-                Assert.IsTrue(result.Millisecond > 0);
+                Assert.IsTrue(result.Second > 0);
             }
-            Assert.IsTrue(result.Millisecond > 0);
+            Assert.IsTrue(result.Second > 0);
         }
 
         [TestMethod]

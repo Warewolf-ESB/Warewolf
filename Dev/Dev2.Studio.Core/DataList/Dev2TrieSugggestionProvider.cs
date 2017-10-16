@@ -264,6 +264,10 @@ namespace Dev2.Studio.Core.DataList
                     }
 
                     break;
+                case enIntellisensePartType.All:
+                    break;
+                default:
+                    break;
             }
             if (filter.EndsWith("[["))
             {

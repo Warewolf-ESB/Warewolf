@@ -170,8 +170,6 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
 
         IErrorInfo WorstDesignError
         {
-            
-            get { return _worstDesignError; }
             set
             {
                 if (_worstDesignError != value)

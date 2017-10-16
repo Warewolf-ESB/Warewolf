@@ -102,7 +102,6 @@ public class SecurityWrapper : ISecurityWrapper
     private const uint STATUS_ACCESS_DENIED = 0xc0000022;
     private const uint STATUS_INSUFFICIENT_RESOURCES = 0xc000009a;
     private const uint STATUS_NO_MEMORY = 0xc0000017;
-    private const uint STATUS_NO_MORE_ENTRIES = 0xc000001A;
     private const uint ERROR_NO_MORE_ITEMS = 2147483674;
     private const uint ERROR_PRIVILEGE_DOES_NOT_EXIST = 3221225568;
     private LSA_HANDLE lsaHandle;

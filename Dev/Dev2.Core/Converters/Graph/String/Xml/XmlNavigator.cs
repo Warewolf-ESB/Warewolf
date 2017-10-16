@@ -247,14 +247,7 @@ namespace Unlimited.Framework.Converters.Graph.String.Xml
                     var pathSegment = indexedPathSegments[path][pathSegmentCount] as XmlPathSegment;
                     XmlPathSegment parentPathSegment;
 
-                    if (pathSegmentCount > 0)
-                    {
-                        parentPathSegment = indexedPathSegments[path][pathSegmentCount - 1] as XmlPathSegment;
-                    }
-                    else
-                    {
-                        parentPathSegment = null;
-                    }
+                    parentPathSegment = pathSegmentCount > 0 ? indexedPathSegments[path][pathSegmentCount - 1] as XmlPathSegment : null;
 
                     if (indexedPathSegmentTreeNode != null && pathSegment != null && !indexedPathSegmentTreeNode.TryGetValue(pathSegment.ActualSegment,
                         out tmpIndexedPathSegmentTreeNode))
@@ -401,14 +394,7 @@ namespace Unlimited.Framework.Converters.Graph.String.Xml
                     var pathSegment = pathSegments[i] as XmlPathSegment;
                     XmlPathSegment previousPathSegment;
 
-                    if (i > 0)
-                    {
-                        previousPathSegment = pathSegments[i - 1] as XmlPathSegment;
-                    }
-                    else
-                    {
-                        previousPathSegment = parentPathSegment as XmlPathSegment;
-                    }
+                    previousPathSegment = i > 0 ? pathSegments[i - 1] as XmlPathSegment : parentPathSegment as XmlPathSegment;
 
                     bool lastSegment = i == pathSegments.Count - 1;
 

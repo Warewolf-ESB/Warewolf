@@ -12,16 +12,14 @@ using Dev2.Data.Interfaces;
 
 namespace Dev2.PathOperations
 {
-
-    /// <summary>
-    /// PBI : 1172
-    /// Status : New
-    /// Purpose : To provide overwrite value to CRUD path operations
-    /// </summary>
     public class Dev2CRUDOperationTO : IDev2CRUDOperationTO
     {
+        public Dev2CRUDOperationTO(bool overwrite)
+            : this(overwrite, true)
+        {
+        }
 
-        public Dev2CRUDOperationTO(bool overwrite,bool doRecursiveCopy = true)
+        public Dev2CRUDOperationTO(bool overwrite, bool doRecursiveCopy)
         {
             Overwrite = overwrite;
             DoRecursiveCopy = doRecursiveCopy;

@@ -75,8 +75,11 @@ namespace Dev2.TaskScheduler.Wrappers
                 new TaskService(targetServer, userName, accountDomain, password, forceV1));
         }
 
+        public IExecAction CreateExecAction(string path) => CreateExecAction(path, null, null);
 
-        public IExecAction CreateExecAction(string path, string arguments = null, string workingDirectory = null)
+        public IExecAction CreateExecAction(string path, string arguments) => CreateExecAction(path, arguments, null);
+
+        public IExecAction CreateExecAction(string path, string arguments, string workingDirectory)
         {
             return new Dev2ExecAction(this, new ExecAction(path, arguments, workingDirectory));
         }

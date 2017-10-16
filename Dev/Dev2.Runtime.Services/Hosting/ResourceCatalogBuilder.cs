@@ -189,14 +189,7 @@ namespace Dev2.Runtime.Hosting
                             type = allTypes.FirstOrDefault(type1 => type1.Name == typeName);
                         }
                         Resource resource;
-                        if (type != null)
-                        {
-                            resource = (Resource)Activator.CreateInstance(type, xml);
-                        }
-                        else
-                        {
-                            resource = new Resource(xml);
-                        }
+                        resource = type != null ? (Resource)Activator.CreateInstance(type, xml) : new Resource(xml);
                         resource.FilePath = currentItem.FilePath;
                         xml = _resourceUpgrader.UpgradeResource(xml, Assembly.GetExecutingAssembly().GetName().Version, a =>
                         {

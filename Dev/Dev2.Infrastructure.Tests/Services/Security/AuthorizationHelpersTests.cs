@@ -46,7 +46,7 @@ namespace Dev2.Infrastructure.Tests.Services.Security
                 var reason = context.ToReason();
 
                 //------------Assert Results-------------------------
-                switch(context)
+                switch (context)
                 {
                     case AuthorizationContext.None:
                         Assert.AreEqual("You are not authorized.", reason);
@@ -65,6 +65,12 @@ namespace Dev2.Infrastructure.Tests.Services.Security
                         break;
                     case AuthorizationContext.DeployFrom:
                         Assert.AreEqual("You are not authorized to deploy from this server.", reason);
+                        break;
+                    case AuthorizationContext.Administrator:
+                        break;
+                    case AuthorizationContext.Any:
+                        break;
+                    default:
                         break;
                 }
             }

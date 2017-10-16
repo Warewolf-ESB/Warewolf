@@ -30,10 +30,16 @@ using System.Runtime.CompilerServices;
 // You can specify all the values or you can default the Build and Revision Numbers
 // by using the '*' as shown below:
 [assembly: AssemblyVersion("0.0.*")]
+[assembly: InternalsVisibleTo("Dev2.Activities.Tests")]
 [assembly: InternalsVisibleTo("Dev2.Activities.Designers.Tests")]
 [assembly: InternalsVisibleTo("Warewolf.Studio.ViewModels.Tests")]
+[assembly: InternalsVisibleTo("Dev2.Activities.Specs")]
 [assembly: InternalsVisibleTo("Dev2.Runtime.Tests")]
 [assembly: InternalsVisibleTo("Dev2.Studio.Core.Tests")]
 [assembly: InternalsVisibleTo("Dev2.Core.Tests")]
 [assembly: InternalsVisibleTo("Dev2.Integration.Tests")]
 [assembly: InternalsVisibleTo("Dev2.TaskScheduler.Wrappers")]
+[assembly: InternalsVisibleTo("Dev2.Infrastructure.Tests")]
+[assembly: InternalsVisibleTo("Warewolf.UIBindingTests.ComDll")]
+[assembly: InternalsVisibleTo("Warewolf.Studio.ViewModels.Tests")]
+[assembly: InternalsVisibleTo("Dev2.Data.Tests")]

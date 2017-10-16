@@ -291,7 +291,12 @@ namespace Dev2.Studio.ViewModels.DataList
 
         #endregion
 
-        public InputOutputViewModel(string name, string value, string mapsTo, string defaultValue, bool required, string recordSetName, bool emptyToNull = false)
+        public InputOutputViewModel(string name, string value, string mapsTo, string defaultValue, bool required, string recordSetName)
+            : this(name, value, mapsTo, defaultValue, required, recordSetName, false)
+        {
+        }
+
+        public InputOutputViewModel(string name, string value, string mapsTo, string defaultValue, bool required, string recordSetName, bool emptyToNull)
         {
             Name = name;
             RecordSetName = recordSetName;
@@ -301,14 +306,7 @@ namespace Dev2.Studio.ViewModels.DataList
             DefaultValue = defaultValue;
             EmptyToNull = emptyToNull;
 
-            if(RecordSetName == string.Empty)
-            {
-                DisplayName = Name;
-            }
-            else
-            {
-                DisplayName = RecordSetName + "(*)." + Name;
-            }
+            DisplayName = RecordSetName == string.Empty ? Name : RecordSetName + "(*)." + Name;
             ViewComplexObjectsCommand = new RelayCommand(item =>
             {
                 ViewJsonObjects();

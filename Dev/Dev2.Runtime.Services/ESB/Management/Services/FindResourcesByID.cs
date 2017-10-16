@@ -10,7 +10,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using Dev2.Common;
@@ -28,7 +27,7 @@ namespace Dev2.Runtime.ESB.Management.Services
     /// <summary>
     /// Find a resource by its id
     /// </summary>
-    
+
 
     public class FindResourcesByID : IEsbManagementEndpoint
     {

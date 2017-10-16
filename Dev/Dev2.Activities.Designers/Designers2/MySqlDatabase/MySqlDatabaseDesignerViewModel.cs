@@ -220,8 +220,6 @@ namespace Dev2.Activities.Designers2.MySqlDatabase
 
         IErrorInfo WorstDesignError
         {
-
-            get { return _worstDesignError; }
             set
             {
                 if (_worstDesignError != value)
