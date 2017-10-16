@@ -177,7 +177,7 @@ namespace Dev2.Activities
         private static List<IDev2Activity> ActivityToFlatList(IDev2Activity decision)
         {
             var truArmToFlatList =
-                decision.NextNodes?.Flatten(activity => activity.NextNodes ?? new List<IDev2Activity>()).ToList() ??
+                decision?.NextNodes?.Flatten(activity => activity.NextNodes ?? new List<IDev2Activity>()).ToList() ??
                 new List<IDev2Activity>();
             var contains = truArmToFlatList.Contains(decision);
             if (!contains)

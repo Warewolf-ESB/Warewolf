@@ -15,8 +15,6 @@ using Moq;
 using System.Activities.Presentation;
 using System.Activities.Presentation.Services;
 using System.Activities.Presentation.Model;
-using Dev2.Common.Interfaces;
-using System.Text;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 
 namespace Warewolf.MergeParser.Tests
