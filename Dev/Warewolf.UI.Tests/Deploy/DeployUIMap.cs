@@ -299,27 +299,41 @@ namespace Warewolf.UI.Tests.Deploy.DeployUIMapClasses
 
         void WaitForDeploySuccess()
         {
-            bool seenConflict = false;
             bool seenVersionConflict = false;
-            bool successful = TryWaitForADeployMessageDialog(ref seenConflict, ref seenVersionConflict);
+            bool seenSecondVersionConflict = false;
+            bool seenConflict = false;
+            bool successful = TryWaitForADeployMessageDialog(ref seenVersionConflict, ref seenSecondVersionConflict, ref seenConflict);
             if (!successful)
             {
-                successful = TryWaitForADeployMessageDialog(ref seenConflict, ref seenVersionConflict);
+                successful = TryWaitForADeployMessageDialog(ref seenVersionConflict, ref seenSecondVersionConflict, ref seenConflict);
                 if (!successful)
                 {
-                    successful = TryWaitForADeployMessageDialog(ref seenConflict, ref seenVersionConflict);
+                    successful = TryWaitForADeployMessageDialog(ref seenVersionConflict, ref seenSecondVersionConflict, ref seenConflict);
+                    if (!successful)
+                    {
+                        successful = TryWaitForADeployMessageDialog(ref seenVersionConflict, ref seenSecondVersionConflict, ref seenConflict);
+                    }
                 }
             }
             Assert.IsTrue(successful, "Deploy failed.");
         }
 
-        bool TryWaitForADeployMessageDialog(ref bool seenConflict, ref bool seenVersionConflict)
+        bool TryWaitForADeployMessageDialog(ref bool seenConflict, ref bool seenVersionConflict, ref bool seenSecondVersionConflict)
         {
             bool OKButtonReady = DialogsUIMap.MessageBoxWindow.OKButton.WaitForControlCondition((control) => { return control.TryGetClickablePoint(out Point point); }, 60000);
-            if (!seenVersionConflict && !seenConflict)
+            if (!seenVersionConflict && !seenSecondVersionConflict && !seenConflict)
             {
                 seenVersionConflict = DialogsUIMap.MessageBoxWindow.DeployVersionConflicText.Exists;
                 if (seenVersionConflict && OKButtonReady)
+                {
+                    Mouse.Click(DialogsUIMap.MessageBoxWindow.OKButton);
+                    return false;
+                }
+            }
+            if (!seenSecondVersionConflict && !seenConflict)
+            {
+                seenSecondVersionConflict = DialogsUIMap.MessageBoxWindow.DeployVersionConflicText.Exists;
+                if (seenSecondVersionConflict && OKButtonReady)
                 {
                     Mouse.Click(DialogsUIMap.MessageBoxWindow.OKButton);
                     return false;
