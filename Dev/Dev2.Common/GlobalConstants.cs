@@ -32,13 +32,11 @@ namespace Dev2.Common
             SystemEvents.TimeChanged += (sender, args) =>
             {
                 CultureInfo.CurrentCulture.ClearCachedData();
-                CultureInfo.CurrentUICulture.ClearCachedData();
             };
             
             SystemEvents.UserPreferenceChanged += (sender, args) =>
             {
                 CultureInfo.CurrentCulture.ClearCachedData();
-                CultureInfo.CurrentUICulture.ClearCachedData();
             };
         }
 
@@ -369,10 +367,13 @@ where pn.nspname = 'public';
         public static readonly string RemoteDebugServerInvoke = "RemoteWarewolfServerDebug";
         
         public static readonly string LongTimePattern = CultureInfo.InvariantCulture.DateTimeFormat.LongTimePattern;
+        public static readonly string ShortTimePattern = CultureInfo.InvariantCulture.DateTimeFormat.ShortDatePattern;
 
         public static readonly string ShortDateTimePattern = CultureInfo.InvariantCulture.DateTimeFormat.ShortDatePattern;
         public static readonly string Dev2DotNetDefaultDateTimeFormat = ShortDateTimePattern + " " + LongTimePattern;
         public static readonly string GlobalDefaultNowFormat = CultureInfo.InvariantCulture.DateTimeFormat.SortableDateTimePattern;
+        
+        public static readonly string Dev2DotNetDefaultDateTimeFormat = ShortTimePattern + " " + LongTimePattern;
         
         public static readonly int NetworkComputerNameQueryFreq = 900000;
 

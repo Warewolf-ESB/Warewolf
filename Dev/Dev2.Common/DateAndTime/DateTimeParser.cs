@@ -230,7 +230,7 @@ namespace Dev2.Common.DateAndTime
                 data = DateTime.Now.ToString(GlobalConstants.Dev2DotNetDefaultDateTimeFormat);
             }
 
-            if (string.IsNullOrWhiteSpace(inputFormat))
+            if (string.IsNullOrWhiteSpace(inputFormat) || inputFormat == GlobalConstants.Dev2DotNetDefaultDateTimeFormat)
             {
                 originalInputFormat =
                     TranslateDotNetToDev2Format(

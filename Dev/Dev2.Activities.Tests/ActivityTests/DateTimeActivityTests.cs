@@ -17,7 +17,7 @@ using ActivityUnitTests;
 using Dev2.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
-using Dev2.Common;
+
 
 namespace Dev2.Tests.Activities.ActivityTests
 {
@@ -153,13 +153,43 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
             GetScalarValueFromEnvironment(result.Environment, "MyTestResult", out string actual, out string error);
-            DateTime actualdt = DateTime.Parse(actual);
+            DateTime actualdt = DateTime.Parse(actual,CultureInfo.InvariantCulture);
             var timeSpan = actualdt - now;
 
             Assert.IsTrue(timeSpan.TotalMilliseconds >= 9000, timeSpan.TotalMilliseconds + " is not >= 9000");
         }
 
+        [TestMethod]
+        [TestCategory("DateTimeUnitTest")]
+        [Owner("Massimo Guerrera")]
         
+        public void DateTime_DateTimeUnitTest_ExecuteWithBlankInputAndSplitSecondsOutput_OutputNotZero()
+
+        {
+            const string currDL = @"<root><MyTestResult></MyTestResult></root>";
+            SetupArguments(currDL
+                         , currDL
+                         , ""
+                         , ""
+                         , "sp"
+                         , "Seconds"
+                         , 10
+                         , "[[MyTestResult]]");
+
+            IDSFDataObject result = ExecuteProcess();
+            GetScalarValueFromEnvironment(result.Environment, "MyTestResult", out string actual, out string error);
+            if (actual == "0")
+            {
+                Thread.Sleep(11);
+
+                result = ExecuteProcess();
+
+                GetScalarValueFromEnvironment(result.Environment, "MyTestResult", out actual, out error);
+
+                Assert.IsTrue(actual != "0");
+            }
+            Assert.IsTrue(actual != "0");
+        }
         #endregion DateTime Tests
 
 
@@ -181,35 +211,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(1, outputs.Count);
             Assert.AreEqual("[[dt]]", outputs[0]);
         }
-
-        [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("DsfDateTimeActivity_GetOutputs")]
-        public void DsfDateTimeActivity_AddDays_ShouldNotChangeAMtoPMValues()
-        {
-            //------------Setup for test--------------------------
-            var dateTimeVal = new DateTime(2017, 10, 20, 0, 0, 0).ToString(GlobalConstants.Dev2DotNetDefaultDateTimeFormat);
-            var currentDateTimeVal = new DateTime(2017, 10, 25, 0, 0, 0).ToString(GlobalConstants.Dev2DotNetDefaultDateTimeFormat);
-            var expected = dateTimeVal;
-            const string currDL = @"<root><MyTestResult></MyTestResult></root>";
-            SetupArguments(currDL
-                         , currDL
-                         , currentDateTimeVal
-                         , ""
-                         , ""
-                         , "Days"
-                         , -5
-                         , "[[MyTestResult]]");
-            //------------Execute Test---------------------------
-            var result = ExecuteProcess();
-            string actual;
-            string error;
-            GetScalarValueFromEnvironment(result.Environment, "[[MyTestResult]]", out actual, out error);
-            //------------Assert Results-------------------------
-            Assert.AreEqual(expected, actual.Replace(".0",""));
-        }
         
-
         #region Private Test Methods
 
         private void SetupArguments(string currentDL, string testData, string dateTime, string inputFormat, string outputFormat, string timeModifierType, int timeModifierAmount, string resultValue)
