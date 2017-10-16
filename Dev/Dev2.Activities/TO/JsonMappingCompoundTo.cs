@@ -125,23 +125,13 @@ namespace Dev2.TO
             }
             else
             {
-                if (FsInteropFunctions.ParseLanguageExpression(Compound.SourceName,0).IsRecordSetNameExpression)
-                {
-                    Evaluations = new List<JsonMappingEvaluated> { new JsonMappingEvaluated(env1, Compound.SourceName) };
-                }
-                else
-                {
-                    // we know this is a comma seperated list of expressions
-                    Evaluations =
-                        
-                        ((LanguageAST.LanguageExpression.ComplexExpression)FsInteropFunctions.ParseLanguageExpression(Compound.SourceName,0))
+                Evaluations = FsInteropFunctions.ParseLanguageExpression(Compound.SourceName, 0).IsRecordSetNameExpression ? new List<JsonMappingEvaluated> { new JsonMappingEvaluated(env1, Compound.SourceName) } : ((LanguageAST.LanguageExpression.ComplexExpression)FsInteropFunctions.ParseLanguageExpression(Compound.SourceName, 0))
                             .Item
                             .Where(x => !x.IsWarewolfAtomExpression)
                             .Select(FsInteropFunctions.LanguageExpressionToString)
                             .Select(x =>
                                 new JsonMappingEvaluated(env1, x))
                             .ToList();
-                }         
             }
         }
 

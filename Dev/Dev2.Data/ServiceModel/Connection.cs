@@ -62,7 +62,7 @@ namespace Dev2.Data.ServiceModel
             var props = connectionString.Split(';');
             foreach(var p in props.Select(prop => prop.Split('=')).Where(p => p.Length >= 1))
             {
-                switch(p[0].ToLowerInvariant())
+                switch (p[0].ToLowerInvariant())
                 {
                     case "appserveruri":
                         Address = p[1];
@@ -81,6 +81,8 @@ namespace Dev2.Data.ServiceModel
                     case "password":
                         Password = p[1];
                         break;
+                    default:
+                        break;
                 }
             }
         }
@@ -96,14 +98,7 @@ namespace Dev2.Data.ServiceModel
 
             if(result?.IndexOf("dsf", StringComparison.Ordinal) < 0)
             {
-                if(result.EndsWith("/"))
-                {
-                    result += "dsf";
-                }
-                else
-                {
-                    result += "/dsf";
-                }
+                result += result.EndsWith("/") ? "dsf" : "/dsf";
 
             }
 

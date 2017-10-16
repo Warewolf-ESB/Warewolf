@@ -9,9 +9,6 @@ using Warewolf.Studio.ViewModels;
 
 namespace Warewolf.Studio.Views
 {
-    /// <summary>
-    /// Interaction logic for ManagePluginSourceControl.xaml
-    /// </summary>
     public partial class ManagePluginSourceControl : IView, ICheckControlEnabledView
     {
         public ManagePluginSourceControl()
@@ -26,21 +23,7 @@ namespace Warewolf.Studio.Views
             return HeaderTextBlock.Text;
         }
 
-
-        public IDllListingModel SelectItem(string itemName)
-        {
-
-            var xamDataTreeNode = GetItem(itemName);
-            return xamDataTreeNode?.Data as IDllListingModel;
-        }
-
-        public bool IsItemVisible(string itemName)
-        {
-            var xamDataTreeNode = GetItem(itemName);
-            return xamDataTreeNode != null;
-        }
-
-        XamDataTreeNode GetItem(string itemName)
+        XamDataTreeNode GetItem()
         {
             return null;
         }
@@ -65,16 +48,6 @@ namespace Warewolf.Studio.Views
             be?.UpdateSource();
         }
 
-        public IDllListingModel OpenItem(string itemNameToOpen)
-        {
-            var xamDataTreeNode = GetItem(itemNameToOpen);
-            if (xamDataTreeNode != null)
-            {
-                xamDataTreeNode.IsExpanded = true;
-            }
-            return xamDataTreeNode?.Data as IDllListingModel;
-        }
-
         public void SetTextBoxValue(string controlName, string input)
         {
             switch (controlName)
@@ -93,6 +66,8 @@ namespace Warewolf.Studio.Views
                     GacAssemblyNameTextBox.Text = input;
                     BindingExpression gac = GacAssemblyNameTextBox.GetBindingExpression(TextBlock.TextProperty);
                     gac?.UpdateSource();
+                    break;
+                default:
                     break;
             }
         }
@@ -116,6 +91,8 @@ namespace Warewolf.Studio.Views
                     return ConfigFileButton.IsEnabled;
                 case "GacAssemblyNameButton":
                     return GacAssemblyNameButton.IsEnabled;
+                default:
+                    break;
             }
             return false;
         }

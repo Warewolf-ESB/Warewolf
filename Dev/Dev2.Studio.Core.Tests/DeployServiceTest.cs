@@ -19,12 +19,8 @@ using Dev2.Studio.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-
 namespace Dev2.Core.Tests
 {
-    /// <summary>
-    /// Summary description for DeployServiceTest
-    /// </summary>
     [TestClass]
     public class DeployServiceTest
     {
@@ -183,6 +179,5 @@ namespace Dev2.Core.Tests
         }
 
         #endregion
-
     }
 }

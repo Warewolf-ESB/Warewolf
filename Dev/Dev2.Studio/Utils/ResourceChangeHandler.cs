@@ -20,7 +20,8 @@ namespace Dev2.Utils
 {
     public interface IResourceChangeHandler
     {
-        void ShowResourceChanged(IContextualResourceModel resource, IList<string> numberOfDependants, IResourceChangedDialog resourceChangedDialog = null);
+        void ShowResourceChanged(IContextualResourceModel resource, IList<string> numberOfDependants);
+        void ShowResourceChanged(IContextualResourceModel resource, IList<string> numberOfDependants, IResourceChangedDialog resourceChangedDialog);
     }
 
     public interface IResourceChangeHandlerFactory
@@ -48,7 +49,8 @@ namespace Dev2.Utils
             _eventPublisher = eventPublisher ?? throw new ArgumentNullException("eventPublisher");
         }
 
-        public void ShowResourceChanged(IContextualResourceModel resource, IList<string> numberOfDependants, IResourceChangedDialog resourceChangedDialog = null)
+        public void ShowResourceChanged(IContextualResourceModel resource, IList<string> numberOfDependants) => ShowResourceChanged(resource, numberOfDependants, null);
+        public void ShowResourceChanged(IContextualResourceModel resource, IList<string> numberOfDependants, IResourceChangedDialog resourceChangedDialog)
         {
             if(resource == null)
             {

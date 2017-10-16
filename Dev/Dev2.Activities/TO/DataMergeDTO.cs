@@ -43,10 +43,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Ctor
 
-        public DataMergeDTO(string inputVariable, string mergeType, string at, int indexNum, string padding, string alignment, bool inserted = false)
+        public DataMergeDTO(string inputVariable, string mergeType, string at, int indexNum, string padding, string alignment)
+            : this(inputVariable, mergeType, at, indexNum, padding, alignment, false)
+        {
+        }
+
+        public DataMergeDTO(string inputVariable, string mergeType, string at, int indexNum, string padding, string alignment, bool inserted)
         {
             Inserted = inserted;
-
             InputVariable = string.IsNullOrEmpty(inputVariable) ? string.Empty : inputVariable;
             MergeType = string.IsNullOrEmpty(mergeType) ? MergeTypeIndex : mergeType;
             At = string.IsNullOrEmpty(at) ? string.Empty : at;
@@ -54,7 +58,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             _enableAt = true;
             Padding = string.IsNullOrEmpty(padding) ? string.Empty : padding;
             Alignment = string.IsNullOrEmpty(alignment) ? AlignmentLeft : alignment;
-
         }
 
         public DataMergeDTO()

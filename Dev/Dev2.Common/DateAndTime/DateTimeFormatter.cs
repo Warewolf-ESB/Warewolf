@@ -62,30 +62,6 @@ namespace Dev2.Common.DateAndTime
             IDateTimeResultTO dateTimeResultTO;
 
             dateTimeTO.InputFormat = dateTimeTO.InputFormat?.Trim();
-            if (string.IsNullOrEmpty(dateTimeTO.InputFormat))
-            {
-                DateTime systemParsedResult;
-                var systemParsedValue = DateTime.TryParse(dateTimeTO.DateTime, out systemParsedResult);
-                if (systemParsedValue)
-                {
-                    var modifiedDateTime = PerformDateTimeModification(dateTimeTO, systemParsedResult);
-                    dateTimeResultTO = new DateTimeResultTO
-                    {
-                        Era = CultureInfo.InvariantCulture.Calendar.GetEra(modifiedDateTime).ToString(),
-                        Hours = modifiedDateTime.Hour,
-                        Days = modifiedDateTime.Day,
-                        DaysOfWeek = (int)modifiedDateTime.DayOfWeek,
-                        DaysOfYear = modifiedDateTime.DayOfYear,
-                        Years = modifiedDateTime.Year,
-                        Months = modifiedDateTime.Month,
-                        Minutes = modifiedDateTime.Minute,
-                        Milliseconds = modifiedDateTime.Millisecond,
-                        AmPm = (modifiedDateTime.ToString("tt", CultureInfo.InvariantCulture).ToLowerInvariant() == "am" ? DateTimeAmPm.am : DateTimeAmPm.pm)
-                    };
-                    result = PerformOutputFormatting(dateTimeTO, out error, dateTimeParser, out nothingDied, dateTimeResultTO, modifiedDateTime);
-                    return nothingDied;
-                }
-            }
             var internallyParsedValue = dateTimeParser.TryParseDateTime(dateTimeTO.DateTime.Trim(), dateTimeTO.InputFormat, out dateTimeResultTO, out error);
             if (internallyParsedValue)
             {
@@ -127,9 +103,7 @@ namespace Dev2.Common.DateAndTime
             var result = "";
             if (string.IsNullOrWhiteSpace(outputFormat))
             {
-                var shortPattern = CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern;
-                var longPattern = CultureInfo.CurrentCulture.DateTimeFormat.LongTimePattern;
-                var finalPattern = shortPattern + " " + longPattern;
+                var finalPattern = GlobalConstants.Dev2DotNetDefaultDateTimeFormat;
                 if (finalPattern.Contains("ss"))
                 {
                     outputFormat = finalPattern.Insert(finalPattern.IndexOf("ss", StringComparison.Ordinal) + 2, ".fff");

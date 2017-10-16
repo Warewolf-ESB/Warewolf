@@ -19,8 +19,11 @@ namespace Dev2.Studio.Core.Messages
         public IContextualResourceModel Resource { get; set; }
         public bool IsLocalSave { get; set; }
         public bool AddToTabManager { get; set; }
-
-        public SaveResourceMessage(IContextualResourceModel resource, bool isLocalSave, bool addToTabManager = true)
+        public SaveResourceMessage(IContextualResourceModel resource, bool isLocalSave)
+            : this(resource, isLocalSave, true)
+        {
+        }
+        public SaveResourceMessage(IContextualResourceModel resource, bool isLocalSave, bool addToTabManager)
         {
             Resource = resource;
             IsLocalSave = isLocalSave;

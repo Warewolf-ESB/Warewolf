@@ -15,7 +15,12 @@ namespace Dev2.Studio.Core.Messages
 {
     public class DeleteFolderMessage : IMessage
     {
-        public DeleteFolderMessage(string folderName, Action actionToDoOnDelete = null)
+        public DeleteFolderMessage(string folderName)
+            :this(folderName, null)
+        {
+        }
+
+        public DeleteFolderMessage(string folderName, Action actionToDoOnDelete)
         {
             FolderName = folderName;
             ActionToDoOnDelete = actionToDoOnDelete;

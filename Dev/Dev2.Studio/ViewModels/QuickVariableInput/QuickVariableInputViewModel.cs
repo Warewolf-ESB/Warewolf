@@ -421,6 +421,8 @@ namespace Dev2.ViewModels.QuickVariableInput
                         dtb.AddTokenOp(at, false);
                     }
                     break;
+                default:
+                    break;
             }
 
 

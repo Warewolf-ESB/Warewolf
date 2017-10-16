@@ -50,10 +50,3 @@ Scenario: Changing Selected Server On Deploy Source While Connected To Remote Se
 	And I Select Remote Connection Integration From Explorer
 	And I Select localhost From Deploy Tab Source Server Combobox
 
-Scenario: Deploy From RemoteConnection
-	Given The Warewolf Studio is running
-	When I Click Deploy Ribbon Button
-    And I Select RemoteConnectionIntegration From Deploy Tab Source Server Combobox
-    And Resources is visible on the tree
-	And I Select "Hello World" from the source tab 
-	And I Click Deploy button

@@ -72,22 +72,17 @@ namespace Dev2.Data
             }
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="IndexIterator"/> class.
-        /// </summary>
-        /// <param name="gaps">The gaps.</param>
-        /// <param name="maxValue">The maximum value.</param>
-        /// <param name="minValue">The minimum value.</param>
-        public IndexIterator(HashSet<int> gaps, int maxValue, int minValue = 1)
+        public IndexIterator(HashSet<int> gaps, int maxValue)
+            : this(gaps, maxValue, 1)
+        {
+        }
+
+        public IndexIterator(HashSet<int> gaps, int maxValue, int minValue)
         {
             IndexList = new IndexList(gaps, maxValue, minValue);
             _curValue = minValue;
         }
-
-        /// <summary>
-        /// Determines whether this instance has more.
-        /// </summary>
-        /// <returns></returns>
+        
         public bool HasMore()
         {
             int canidate = _curValue;
@@ -98,16 +93,10 @@ namespace Dev2.Data
 
             return canidate <= IndexList.MaxValue;
         }
-
-        /// <summary>
-        /// Fetches the index of the next.
-        /// </summary>
-        /// <returns></returns>
+        
         public int FetchNextIndex()
         {
-
             int canidate = _curValue;
-            // assign a new curValue
 
             while(IndexList.Gaps.Contains(canidate))
             {
@@ -116,15 +105,11 @@ namespace Dev2.Data
 
             int result = canidate;
 
-            _curValue = canidate + 1; // save next value ;)
+            _curValue = canidate + 1;
 
             return result;
         }
-
-        /// <summary>
-        /// Maximums the index.
-        /// </summary>
-        /// <returns></returns>
+        
         public int MaxIndex()
         {
             return IndexList.GetMaxIndex();

@@ -22,7 +22,7 @@ namespace Dev2.Activities.Designers2.MultiAssign
 {
     public class MultiAssignDesignerViewModel : ActivityCollectionDesignerViewModel<ActivityDTO>
     {
-        public Func<string> GetDatalistString = () => DataListSingleton.ActiveDataList.Resource.DataList;
+        readonly Func<string> GetDatalistString = () => DataListSingleton.ActiveDataList.Resource.DataList;
         public MultiAssignDesignerViewModel(ModelItem modelItem)
             : base(modelItem)
         {

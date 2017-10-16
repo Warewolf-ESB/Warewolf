@@ -53,7 +53,7 @@ namespace Dev2.Activities.Designers2.Email
         readonly IAsyncWorker _asyncWorker;
 
         bool _isInitializing;
-        public Func<string> GetDatalistString = () => DataListSingleton.ActiveDataList.Resource.DataList;
+        internal Func<string> GetDatalistString = () => DataListSingleton.ActiveDataList.Resource.DataList;
 
         public EmailDesignerViewModel(ModelItem modelItem)
             : this(modelItem, new AsyncWorker(), ServerRepository.Instance.ActiveServer, EventPublishers.Aggregator)
@@ -258,14 +258,7 @@ namespace Dev2.Activities.Designers2.Email
             if(DataListUtil.IsFullyEvaluated(FromAccount))
             {
                 var errorMessage = "Variable " + FromAccount + " cannot be used while testing.";
-                if(string.IsNullOrEmpty(postResult))
-                {
-                    postResult += errorMessage;
-                }
-                else
-                {
-                    postResult += Environment.NewLine + errorMessage;
-                }
+                postResult += string.IsNullOrEmpty(postResult) ? errorMessage : Environment.NewLine + errorMessage;
                 hasVariable = true;
             }
             if(hasVariable)
@@ -447,7 +440,7 @@ namespace Dev2.Activities.Designers2.Email
         {
             var ruleSet = new RuleSet();
 
-            switch(propertyName)
+            switch (propertyName)
             {
                 case "EmailSource":
                     ruleSet.Add(new IsNullRule(() => EmailSource));
@@ -485,6 +478,8 @@ namespace Dev2.Activities.Designers2.Email
                     break;
                 case "SubjectAndBody":
                     ruleSet.Add(new HasAtLeastOneRule(() => Subject, () => Body));
+                    break;
+                default:
                     break;
             }
             return ruleSet;

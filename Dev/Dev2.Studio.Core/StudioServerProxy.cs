@@ -40,7 +40,9 @@ namespace Dev2.Studio.Core
             AdminManagerProxy = new AdminManagerProxy(controllerFactory, environmentConnection);
         }
 
-        public async Task<IExplorerItem> LoadExplorer(bool reloadCatalogue = false)
+        public async Task<IExplorerItem> LoadExplorer() => await LoadExplorer(false).ConfigureAwait(false);
+
+        public async Task<IExplorerItem> LoadExplorer(bool reloadCatalogue)
         {
             var explorerItems = await QueryManagerProxy.Load(reloadCatalogue);
             return explorerItems;

@@ -382,14 +382,18 @@ namespace Dev2.Runtime.Configuration.ViewModels
 
         private void LoggingSettingsPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            switch(e.PropertyName)
+            switch (e.PropertyName)
             {
-                case "Workflows": UpdateSearchFilter(SearchText);
+                case "Workflows":
+                    UpdateSearchFilter(SearchText);
                     break;
                 case "IsInitializing":
                     IsRefreshing = LoggingSettings.IsInitializing;
                     break;
-                case "LogAll": UpdateSearchFilter(SearchText);
+                case "LogAll":
+                    UpdateSearchFilter(SearchText);
+                    break;
+                default:
                     break;
             }
         }

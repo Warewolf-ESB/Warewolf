@@ -34,8 +34,8 @@ Scenario: Opening Workflow local and remote using right click
 
  Scenario: Deleting a Resource localhost
    Given The Warewolf Studio is running
-   And I Filter the Explorer with "LocalWorkflowWithRemoteSubworkflowToDelete"
-   When I RightClick Explorer Localhost First Item
+   When I Filter the Explorer with "LocalWorkflowWithRemoteSubworkflowToDelete"
+   And I RightClick Explorer Localhost First Item
    And I Select Delete From Explorer Context Menu
    When I Click MessageBox Yes
  

@@ -642,7 +642,28 @@ namespace Dev2.Activities.Designers2.Service
                 case Common.Interfaces.Core.DynamicServices.enActionType.RemoteService:
                     ResourceType = "Server";
                     return "RemoteWarewolf-32";
-
+                case Common.Interfaces.Core.DynamicServices.enActionType.BizRule:
+                    break;
+                case Common.Interfaces.Core.DynamicServices.enActionType.InvokeStoredProc:
+                    break;
+                case Common.Interfaces.Core.DynamicServices.enActionType.InvokeWebService:
+                    break;
+                case Common.Interfaces.Core.DynamicServices.enActionType.InvokeDynamicService:
+                    break;
+                case Common.Interfaces.Core.DynamicServices.enActionType.InvokeManagementDynamicService:
+                    break;
+                case Common.Interfaces.Core.DynamicServices.enActionType.InvokeServiceMethod:
+                    break;
+                case Common.Interfaces.Core.DynamicServices.enActionType.Plugin:
+                    break;
+                case Common.Interfaces.Core.DynamicServices.enActionType.ComPlugin:
+                    break;
+                case Common.Interfaces.Core.DynamicServices.enActionType.Switch:
+                    break;
+                case Common.Interfaces.Core.DynamicServices.enActionType.Unknown:
+                    break;
+                default:
+                    break;
             }
             return "ToolService-32";
         }

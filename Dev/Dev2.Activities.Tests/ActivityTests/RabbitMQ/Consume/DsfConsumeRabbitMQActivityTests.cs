@@ -180,7 +180,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
             mock.SetupProperty(manager => manager.ObjectName);
 
             var dstaObj = new Mock<IDSFDataObject>();
-            mock.Setup(manager => manager.PushResponseIntoEnvironment(It.IsAny<string>(), 1, dstaObj.Object, It.IsAny<bool>())).Verifiable();
+            mock.Setup(manager => manager.PushResponseIntoEnvironment(It.IsAny<string>(), 1, dstaObj.Object)).Verifiable();
             var dsfConsumeRabbitMQActivity = new DsfConsumeRabbitMQActivity(mock.Object)
             {
                 RabbitMQSourceResourceId = Guid.Empty,
@@ -196,7 +196,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
             //---------------Execute Test ----------------------
             privateObject.Invoke("AssignResult", dstaObj.Object, 1);
             //---------------Test Result -----------------------
-            mock.Verify(manager => manager.PushResponseIntoEnvironment(It.IsAny<string>(), 1, dstaObj.Object, It.IsAny<bool>()), Times.Once);
+            mock.Verify(manager => manager.PushResponseIntoEnvironment(It.IsAny<string>(), 1, dstaObj.Object), Times.Once);
         }
 
         [TestMethod]
@@ -208,7 +208,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
             mock.SetupProperty(manager => manager.ObjectName);
 
             var dstaObj = new Mock<IDSFDataObject>();
-            mock.Setup(manager => manager.PushResponseIntoEnvironment(It.IsAny<string>(), 1, dstaObj.Object, It.IsAny<bool>())).Verifiable();
+            mock.Setup(manager => manager.PushResponseIntoEnvironment(It.IsAny<string>(), 1, dstaObj.Object)).Verifiable();
             var dsfConsumeRabbitMQActivity = new DsfConsumeRabbitMQActivity(mock.Object)
             {
                 RabbitMQSourceResourceId = Guid.Empty,
@@ -224,7 +224,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
             //---------------Execute Test ----------------------
             privateObject.Invoke("AssignResult", dstaObj.Object, 1);
             //---------------Test Result -----------------------
-            mock.Verify(manager => manager.PushResponseIntoEnvironment(It.IsAny<string>(), 1, dstaObj.Object, It.IsAny<bool>()), Times.Exactly(2));
+            mock.Verify(manager => manager.PushResponseIntoEnvironment(It.IsAny<string>(), 1, dstaObj.Object), Times.Exactly(2));
         }
 
 

@@ -59,8 +59,6 @@ Dev/SonarQube/SolutionBinding.sqconfig
 /TestResults/**
 /Dev/*.bat
 *.tmp_proj
-/Dev/RunWarewolfServiceTests/**
-/Dev/RunWarewolfServiceTests.sln
 
 ####################################################################################
 # Coverage

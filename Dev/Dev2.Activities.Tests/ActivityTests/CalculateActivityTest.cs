@@ -17,7 +17,7 @@ using ActivityUnitTests;
 using Dev2.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
-
+using System.Globalization;
 
 namespace Dev2.Tests.Activities.ActivityTests
 {
@@ -51,17 +51,17 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             // remove test datalist ;)
 
-            DateTime res = DateTime.Parse(entry);
+            DateTime res = DateTime.Parse(entry,CultureInfo.InvariantCulture);
 
-            if(res.Millisecond == 0)
+            if(res.Second == 0)
             {
                 Thread.Sleep(10);
                 result = ExecuteProcess();
                 GetScalarValueFromEnvironment(result.Environment, "result", out entry, out error);
                 res = DateTime.Parse(entry);
-                Assert.IsTrue(res.Millisecond != 0);
+                Assert.IsTrue(res.Second != 0);
             }
-            Assert.IsTrue(res.Millisecond != 0);
+            Assert.IsTrue(res.Second != 0);
         }
 
         [TestMethod]

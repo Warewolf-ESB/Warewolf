@@ -20,59 +20,27 @@ using Newtonsoft.Json;
 namespace Dev2.Common.Interfaces.Data
 {
     public interface IResource : IEquatable<IResource>
-    {
-        /// <summary>
-        ///     The resource ID that uniquely identifies the resource.
-        /// </summary>
-        
+    {        
         Guid ResourceID { get; set; }
-
-
-
-        /// <summary>
-        ///     The version that uniquely identifies the resource.
-        /// </summary>
-        // Version Version { get; set; }
+        
         IVersionInfo VersionInfo { get; set; }
-
-        /// <summary>
-        ///     The display name of the resource.
-        /// </summary>
+        
         string ResourceName { get; set; }
-
-        /// <summary>
-        ///     Gets or sets the type of the resource.
-        /// </summary>
+        
         string ResourceType { get; set; }
-
-        /// <summary>
-        ///     Gets or sets the file path of the resource.
-        ///     <remarks>
-        ///         Must only be used by the catalog!
-        ///     </remarks>
-        /// </summary>
+        
         string FilePath { get; set; }
-
-        /// <summary>
-        ///     Gets or sets the author roles.
-        /// </summary>
+        
         string AuthorRoles { get; set; }
-
-        /// <summary>
-        ///     Gets or sets a value indicating whether this instance is upgraded.
-        /// </summary>
+        
         bool IsUpgraded { get; set; }
-
-        /// <summary>
-        ///     Gets or sets a value indicating whether [is new resource].
-        /// </summary>
-        /// <value>
-        ///     <c>true</c> if [is new resource]; otherwise, <c>false</c>.
-        /// </value>
+        
         bool IsNewResource { get; set; }
 
         IList<IResourceForTree> Dependencies { get; set; }
+
         bool IsValid { get; set; }
+
         List<IErrorInfo> Errors { get; set; }
 
         StringBuilder DataList { get; set; }
@@ -84,34 +52,20 @@ namespace Dev2.Common.Interfaces.Data
         string Outputs { get; set; }
         Permissions UserPermissions { get; set; }
 
-        /// <summary>
-        ///     Gets the XML representation of this resource.
-        /// </summary>
-        /// <returns>The XML representation of this resource.</returns>
         XElement ToXml();
-
-        /// <summary>
-        ///     Gets the string builder for this resource.
-        /// </summary>
-        /// <returns></returns>
+        
         StringBuilder ToStringBuilder();
-
-        /// <summary>
-        ///     If this instance <see cref="IsUpgraded" /> then sets the ID, Version, Name and ResourceType attributes on the given
-        ///     XML.
-        /// </summary>
-        /// <param name="xml">The XML to be upgraded.</param>
-        /// <param name="resource"></param>
-        /// <returns>The XML with the additional attributes set.</returns>
+        
         XElement UpgradeXml(XElement xml, IResource resource);
 
         void ReadDataList(XElement xml);
+
         void GetInputsOutputs(XElement xml);
+
         void SetIsNew(XElement xml);
         
         void UpdateErrorsBasedOnXML(XElement xml);
-
-
+        
        bool IsSource { get; }
        bool IsService { get; }
        bool IsFolder { get; }

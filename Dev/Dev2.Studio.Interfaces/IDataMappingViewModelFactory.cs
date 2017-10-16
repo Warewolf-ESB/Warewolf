@@ -11,12 +11,10 @@
 using System.Collections.Specialized;
 
 namespace Dev2.Studio.Interfaces
-
 {
     public interface IDataMappingViewModelFactory
     {
-        IDataMappingViewModel CreateModel(IWebActivity activity,
-                                          NotifyCollectionChangedEventHandler mappingCollectionChangedEventHandler =
-                                              null);
+        IDataMappingViewModel CreateModel(IWebActivity activity);
+        IDataMappingViewModel CreateModel(IWebActivity activity, NotifyCollectionChangedEventHandler mappingCollectionChangedEventHandler);
     }
 }

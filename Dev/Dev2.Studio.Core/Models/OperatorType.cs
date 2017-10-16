@@ -23,7 +23,7 @@ namespace Dev2.Studio.Core.Models
 
         }
 
-        public OperatorType(string operatorName, string friendlyName, string operatorSymbol, dynamic parent, bool showEndValue = true)
+        public OperatorType(string operatorName, string friendlyName, string operatorSymbol, dynamic parent, bool showEndValue)
         {
             OperatorName = operatorName;
             FriendlyName = friendlyName;
@@ -103,11 +103,6 @@ namespace Dev2.Studio.Core.Models
                 if(string.IsNullOrEmpty(value))
                 {
                     error = string.Format(ErrorResource.IsRequired, propertyName);
-
-                }
-
-                if(error == null)
-                {
 
                 }
             }

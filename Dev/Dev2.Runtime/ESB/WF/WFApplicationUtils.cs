@@ -32,12 +32,13 @@ namespace Dev2.Runtime.ESB.WF
         readonly Action<DebugOutputBase, DebugItem> _add;
 
         public WfApplicationUtils()
-
         {
             _add = AddDebugItem;
         }
 
-        public void DispatchDebugState(IDSFDataObject dataObject, StateType stateType, bool hasErrors, string existingErrors, out ErrorResultTO errors, DateTime? workflowStartTime = null, bool interrogateInputs = false, bool interrogateOutputs = false, bool durationVisible = true)
+        public void DispatchDebugState(IDSFDataObject dataObject, StateType stateType, bool hasErrors, string existingErrors, out ErrorResultTO errors) => DispatchDebugState(dataObject, stateType, hasErrors, existingErrors, out errors, null, false, false, true);
+        public void DispatchDebugState(IDSFDataObject dataObject, StateType stateType, bool hasErrors, string existingErrors, out ErrorResultTO errors, DateTime? workflowStartTime, bool interrogateInputs, bool interrogateOutputs) => DispatchDebugState(dataObject, stateType, hasErrors, existingErrors, out errors, workflowStartTime, interrogateInputs, interrogateOutputs, true);
+        public void DispatchDebugState(IDSFDataObject dataObject, StateType stateType, bool hasErrors, string existingErrors, out ErrorResultTO errors, DateTime? workflowStartTime, bool interrogateInputs, bool interrogateOutputs, bool durationVisible)
         {
             errors = new ErrorResultTO();
             if (dataObject != null)
