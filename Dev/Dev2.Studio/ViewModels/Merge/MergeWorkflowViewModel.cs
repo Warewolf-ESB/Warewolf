@@ -428,9 +428,17 @@ namespace Dev2.ViewModels.Merge
                         remoteCopy.Remove(childDifferent);
                         completeConflict.UniqueId = currentChildChild.UniqueId;
                         completeConflict.CurrentViewModel = childCurrent;
+                        
+                        if (completeConflict.CurrentViewModel != null)
+                        {
+                            completeConflict.CurrentViewModel.Container = completeConflict;
+                        }
                         completeConflict.DiffViewModel = childDifferent;
-                        completeConflict.CurrentViewModel.Container = completeConflict;
-                        completeConflict.DiffViewModel.Container = completeConflict;
+                        if (completeConflict.DiffViewModel != null)
+                        {
+                            completeConflict.DiffViewModel.Container = completeConflict;
+                        }
+                        
                         completeConflict.Parent = parent;
 
                         if (parent.Children.Any(conflict => conflict.UniqueId.Equals(currentChild.UniqueId)))
