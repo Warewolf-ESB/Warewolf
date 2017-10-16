@@ -53,10 +53,6 @@ internal struct LSA_ENUMERATION_INFORMATION
     internal LSA_HANDLE PSid;
 }
 
-
-/// <summary>
-///     Provides direct Win32 calls to the security related functions
-/// </summary>
 internal sealed class Win32Sec
 {
     [DllImport("advapi32", CharSet = CharSet.Unicode, SetLastError = true), SuppressUnmanagedCodeSecurity]
@@ -82,10 +78,6 @@ internal sealed class Win32Sec
     internal static extern int LsaClose(LSA_HANDLE PolicyHandle);
 }
 
-
-/// <summary>
-///     Provides a wrapper to the LSA classes
-/// </summary>
 public class SecurityWrapper : ISecurityWrapper
 {
     private readonly IAuthorizationService _authorizationService;
@@ -105,22 +97,13 @@ public class SecurityWrapper : ISecurityWrapper
     private const uint ERROR_NO_MORE_ITEMS = 2147483674;
     private const uint ERROR_PRIVILEGE_DOES_NOT_EXIST = 3221225568;
     private LSA_HANDLE lsaHandle;
-
-
-    /// <summary>
-    ///     Creates a new LSA wrapper for the local machine
-    /// </summary>
+    
     public SecurityWrapper(IAuthorizationService authorizationService)
         : this(Environment.MachineName)
     {
         _authorizationService = authorizationService;
     }
 
-
-    /// <summary>
-    ///     Creates a new LSA wrapper for the specified MachineName
-    /// </summary>
-    /// <param name="MachineName">The name of the machine that should be connected to</param>
     public SecurityWrapper(string MachineName)
     {
         LSA_OBJECT_ATTRIBUTES lsaAttr;
@@ -141,12 +124,6 @@ public class SecurityWrapper : ISecurityWrapper
         TestReturnValue(ret);
     }
 
-
-    /// <summary>
-    ///     Reads the user accounts which have the specific privilege
-    /// </summary>
-    /// <param name="privilege">The name of the privilege for which the accounts with this right should be enumerated</param>
-    /// <param name="userName"></param>
     public bool IsWindowsAuthorised(string privilege, string userName)
     {
         bool windowsAuthorised = false;
@@ -229,7 +206,6 @@ public class SecurityWrapper : ISecurityWrapper
     private IEnumerable<string> GetLocalUserGroupsForTaskSchedule(string userName)
     {
         var groups = new List<string>();
-        // Domain failed. Try local pc.
         using (var pcLocal = new PrincipalContext(ContextType.Machine))
         {
             
@@ -276,12 +252,6 @@ public class SecurityWrapper : ISecurityWrapper
         return userName;
     }
 
-
-    /// <summary>
-    ///     Resolves the SID into it's account name. If the SID cannot be resolved the SDDL for the SID (for example "S-1-5-21-3708151440-578689555-182056876-1009") is returned.
-    /// </summary>
-    /// <param name="SID">The Security Identifier to resolve to an account name</param>
-    /// <returns>An account name for example "NT AUTHORITY\LOCAL SERVICE" or SID in SDDL form</returns>
     private String ResolveAccountName(SecurityIdentifier SID)
     {
         try
@@ -293,12 +263,7 @@ public class SecurityWrapper : ISecurityWrapper
             return SID.ToString();
         }
     }
-
-
-    /// <summary>
-    ///     Tests the return value from Win32 method calls
-    /// </summary>
-    /// <param name="ReturnValue">The return value from the a Win32 method call</param>
+    
     private void TestReturnValue(uint ReturnValue)
     {
         if (ReturnValue == 0)
@@ -324,11 +289,7 @@ public class SecurityWrapper : ISecurityWrapper
         }
         throw new Win32Exception(Win32Sec.LsaNtStatusToWinError((int)ReturnValue));
     }
-
-
-    /// <summary>
-    ///     Disposes of this LSA wrapper
-    /// </summary>
+    
     public void Dispose()
     {
         if (lsaHandle != IntPtr.Zero)
@@ -338,21 +299,12 @@ public class SecurityWrapper : ISecurityWrapper
         }
         GC.SuppressFinalize(this);
     }
-
-
-    /// <summary>
-    ///     Occurs on destruction of the LSA Wrapper
-    /// </summary>
+    
     ~SecurityWrapper()
     {
         Dispose();
     }
-
-
-    /// <summary>
-    ///     Converts the specified string to an LSA string value
-    /// </summary>
-    /// <param name="Value"></param>
+    
     private static LSA_UNICODE_STRING InitLsaString(string Value)
     {
         if (Value.Length > 0x7ffe)
