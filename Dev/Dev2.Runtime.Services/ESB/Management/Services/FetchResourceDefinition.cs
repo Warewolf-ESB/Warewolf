@@ -30,7 +30,30 @@ namespace Dev2.Runtime.ESB.Management.Services
     public class FetchResourceDefinition : IEsbManagementEndpoint
     {
         private IResourceDefinationCleaner resourceDefinationCleaner;
-        private IResourceCatalog resourceCatalog;
+        private IResourceCatalog _resourceCatalog;
+        public IResourceCatalog ResourceCat
+        {
+            private get
+            {
+                return _resourceCatalog ?? ResourceCatalog.Instance;
+            }
+            set
+            {
+                _resourceCatalog = value;
+            }
+        }
+
+        public IResourceDefinationCleaner Cleaner
+        {
+            private get
+            {
+                return resourceDefinationCleaner ?? new ResourceDefinationCleaner();
+            }
+            set
+            {
+                resourceDefinationCleaner = value;
+            }
+        }
 
         public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
         {
@@ -55,7 +78,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         public FetchResourceDefinition()
         {
         }
-        
+
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             try
@@ -78,17 +101,9 @@ namespace Dev2.Runtime.ESB.Management.Services
 
                 Guid.TryParse(serviceId, out Guid resourceId);
 
-                Dev2Logger.Info($"Fetch Resource definition. ResourceId: {resourceId}", GlobalConstants.WarewolfInfo);
-                if (resourceCatalog == null)
-                {
-                    resourceCatalog = ResourceCatalog.Instance;
-                }
-                if (resourceDefinationCleaner == null)
-                {
-                    resourceDefinationCleaner = new ResourceDefinationCleaner();
-                }
-                var result = resourceCatalog.GetResourceContents(theWorkspace.ID, resourceId);
-                var resourceDefinition = resourceDefinationCleaner.GetResourceDefinition(prepairForDeployment, resourceId, result);
+                Dev2Logger.Info($"Fetch Resource definition. ResourceId: {resourceId}", GlobalConstants.WarewolfInfo);               
+                var result = ResourceCat.GetResourceContents(theWorkspace.ID, resourceId);
+                var resourceDefinition = Cleaner.GetResourceDefinition(prepairForDeployment, resourceId, result);
 
                 return resourceDefinition;
             }
