@@ -299,23 +299,43 @@ namespace Warewolf.UI.Tests.Deploy.DeployUIMapClasses
 
         void WaitForDeploySuccess()
         {
-            var successful = TryWaitForADeployMessageDialog();
+            bool seenConflict = false;
+            bool seenVersionConflict = false;
+            bool successful = TryWaitForADeployMessageDialog(ref seenConflict, ref seenVersionConflict);
             if (!successful)
             {
-                successful = TryWaitForADeployMessageDialog();
+                successful = TryWaitForADeployMessageDialog(ref seenConflict, ref seenVersionConflict);
                 if (!successful)
                 {
-                    successful = TryWaitForADeployMessageDialog();
+                    successful = TryWaitForADeployMessageDialog(ref seenConflict, ref seenVersionConflict);
                 }
             }
             Assert.IsTrue(successful, "Deploy failed.");
         }
 
-        bool TryWaitForADeployMessageDialog()
+        bool TryWaitForADeployMessageDialog(ref bool seenConflict, ref bool seenVersionConflict)
         {
             bool OKButtonReady = DialogsUIMap.MessageBoxWindow.OKButton.WaitForControlCondition((control) => { return control.TryGetClickablePoint(out Point point); }, 60000);
+            if (!seenVersionConflict && !seenConflict)
+            {
+                seenVersionConflict = DialogsUIMap.MessageBoxWindow.DeployVersionConflicText.Exists;
+                if (seenVersionConflict && OKButtonReady)
+                {
+                    Mouse.Click(DialogsUIMap.MessageBoxWindow.OKButton);
+                    return false;
+                }
+            }
+            if (!seenConflict)
+            {
+                seenConflict = DialogsUIMap.MessageBoxWindow.DeployConflictsText.Exists;
+                if (seenConflict && OKButtonReady)
+                {
+                    Mouse.Click(DialogsUIMap.MessageBoxWindow.OKButton);
+                    return false;
+                }
+            }
             var successful = DialogsUIMap.MessageBoxWindow.ResourcesDeployedSucText.Exists;
-            if (OKButtonReady || successful)
+            if (successful && OKButtonReady)
             {
                 Mouse.Click(DialogsUIMap.MessageBoxWindow.OKButton);
             }
