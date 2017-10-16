@@ -71,7 +71,6 @@
     <converters:NullableBoolToBoolConverter x:Key="NullableBoolToBoolConverter"/>
     <converters:NullToBoolConvert x:Key="NullToBoolConvert"/>
     <converters2:MultipleBoolToEnabledConverter x:Key="MultipleBoolToEnabledConverter"/>
-    <converters:EnumDisplayNameToItemSourceConverter x:Key="EnumDisplayNameToItemSourceConverter" />
     <converters:IntInRangeToVisibilityConverter x:Key="IntInRangeToVisibilityConverter" />
     <converters:IntEnsureMinConverter x:Key="IntEnsureMinConverter" />
     <converters1:DataGridRowNumberConverter x:Key="DataGridRowNumberConverter"/>
