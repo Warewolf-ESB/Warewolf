@@ -124,17 +124,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         
         public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
         {
-            throw new NotImplementedException();
-        }
-
-        void AddInputDebugItemResultsAfterEvaluate(List<IDebugItem> result, ref string userModel, IExecutionEnvironment env, string expression, out ErrorResultTO error, DebugItem parent = null)
-        {
-            throw new NotImplementedException();
+            return _debugInputs;
         }
         
         public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList, int update)
         {
-            throw new NotImplementedException();
+            return _debugOutputs;
         }
 
         #endregion
