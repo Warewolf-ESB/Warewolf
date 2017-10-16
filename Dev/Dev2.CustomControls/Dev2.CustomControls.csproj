@@ -101,6 +101,7 @@
     </None>
     <Compile Include="Behavior\DataGridWatermarkModifier.cs" />
     <Compile Include="Behavior\ThumbResizeBehavior.cs" />
+    <Compile Include="Controls\SimpleGridSplitter.cs" />
     <Compile Include="Converters\BoolToStringConvert.cs" />
     <Compile Include="Converters\EmptyStringToBoolConverter.cs" />
     <Compile Include="Converters\EmptyStringToVisibilityConverter.cs" />
@@ -152,9 +153,6 @@
     <Analyzer Include="..\packages\SonarAnalyzer.CSharp.5.11.0.1761\analyzers\Google.Protobuf.dll" />
     <Analyzer Include="..\packages\SonarAnalyzer.CSharp.5.11.0.1761\analyzers\SonarAnalyzer.CSharp.dll" />
     <Analyzer Include="..\packages\SonarAnalyzer.CSharp.5.11.0.1761\analyzers\SonarAnalyzer.dll" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Controls\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
