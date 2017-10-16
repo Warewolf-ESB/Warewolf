@@ -202,33 +202,5 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Decision
             IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
             scenarioContext.Add("result", result);
         }
-
-        [Then(@"the decision result should be ""(.*)""")]
-        public void ThenTheDecisionResultShouldBe(string expectedRes)
-        {
-            var modelData = scenarioContext.Get<string>("modelData");
-            var result = scenarioContext.Get<IDSFDataObject>("result");
-            if (result.DataListID== Guid.Empty)
-            {
-                result.DataListID = Guid.NewGuid();
-            }
-            try
-            {
-                Dev2DataListDecisionHandler.Instance.RemoveEnvironment(result.DataListID);
-                Dev2DataListDecisionHandler.Instance.AddEnvironment(result.DataListID, result.Environment);
-            }
-            catch{
-                //Possible exception as the scenerio could already have hit this
-            }
-            
-            bool actual = new Dev2DataListDecisionHandler().ExecuteDecisionStack(modelData,
-                                                                                 new List<string>
-                                                                                     {
-                                                                                         result.DataListID.ToString()
-                                                                                     },0);
-            bool expected = Boolean.Parse(expectedRes);
-            Assert.AreEqual(expected, actual);
-   
-        }
     }
 }
