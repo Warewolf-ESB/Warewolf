@@ -113,9 +113,14 @@ namespace Dev2.Integration.Tests.Merge
             var parser = new ServiceDifferenceParser();
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            var valueTuples = parser.GetDifferences(loadContextualResourceModel, resourceModel);
+            var valueTuples = parser.GetDifferences(loadContextualResourceModel, resourceModel, false);
             //---------------Test Result -----------------------
             Assert.IsTrue(valueTuples.All(tuple => !tuple.hasConflict));
+            foreach (var item in valueTuples)
+            {
+                Assert.IsFalse(parser.NodeHasConflict(item.uniqueId.ToString()));
+            }
+
         }
 
         [TestMethod]
@@ -137,6 +142,10 @@ namespace Dev2.Integration.Tests.Merge
             var valueTuples = parser.GetDifferences(loadContextualResourceModel, resourceModel);
             //---------------Test Result -----------------------
             Assert.IsTrue(valueTuples.All(tuple => !tuple.hasConflict));
+            foreach (var item in valueTuples)
+            {
+                Assert.IsFalse(parser.NodeHasConflict(item.uniqueId.ToString()));
+            }
         }
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
@@ -158,6 +167,10 @@ namespace Dev2.Integration.Tests.Merge
             var valueTuples = parser.GetDifferences(loadContextualResourceModel, resourceModel);
             //---------------Test Result -----------------------
             Assert.IsTrue(valueTuples.All(tuple => !tuple.hasConflict));
+            foreach (var item in valueTuples)
+            {
+                Assert.IsFalse(parser.NodeHasConflict(item.uniqueId.ToString()));
+            }
         }
 
         [TestMethod]
@@ -179,6 +192,10 @@ namespace Dev2.Integration.Tests.Merge
             var valueTuples = parser.GetDifferences(loadContextualResourceModel, resourceModel);
             //---------------Test Result -----------------------
             Assert.IsTrue(valueTuples.All(tuple => !tuple.hasConflict));
+            foreach (var item in valueTuples)
+            {
+                Assert.IsFalse(parser.NodeHasConflict(item.uniqueId.ToString()));
+            }
         }
 
         [TestMethod]
@@ -191,17 +208,17 @@ namespace Dev2.Integration.Tests.Merge
             shellView.Setup(model => model.ActiveServer).Returns(serverMock.Object);
             CustomContainer.Register(shellView.Object);
             CustomContainer.Register<IActivityParser>(activityParser);
-          
+
             var resourceId = "e748cfa6-65e1-4882-86e4-5cc42c3356eb".ToGuid();
             var loadContextualResourceModel = _server.Source.ResourceRepository.LoadContextualResourceModel(resourceId);
             var diff = TestHelper.CreateContextualResourceModel("Decision.SimpleNestedDecision");
 
             var psd = new ServiceDifferenceParser();
-            var diffs = psd.GetDifferences(loadContextualResourceModel, diff);
+            var diffs = psd.GetDifferences(loadContextualResourceModel, diff, false);
 
             Assert.AreEqual(1, diffs.Count);
             Assert.IsTrue(diffs.Any(d => d.hasConflict));
-           
+
             ////First Node chart
             var valueTuple = diffs[0];
             var dev2Activity = valueTuple.currentNode.CurrentActivity.GetCurrentValue<IDev2Activity>();
@@ -211,6 +228,19 @@ namespace Dev2.Integration.Tests.Merge
             Assert.AreEqual(dev2Activity.UniqueID, dev2Activity1.UniqueID);
             Assert.AreEqual(typeof(DsfDecision), valueTuple.currentNode.CurrentActivity.ItemType);
             Assert.AreEqual(typeof(DsfDecision), valueTuple.differenceNode.CurrentActivity.ItemType);
+            foreach (var item in psd.GetAllNodes())
+            {
+                var uniqueId = item.Key;
+                var hasConflict = psd.NodeHasConflict(uniqueId);
+                if (uniqueId == "0827abf6-795c-456d-9fe7-ca084fe243db" || uniqueId == "d2c2eb0b-3aa7-4ccf-9b74-4212ebcb20ef")//Main decision and one different assign tool on the true arm
+                {
+                    Assert.IsTrue(hasConflict, uniqueId + " has conflict");
+                }
+                else
+                {
+                    Assert.IsFalse(hasConflict, uniqueId + " has conflict");
+                }
+            }
         }
     }
 }
