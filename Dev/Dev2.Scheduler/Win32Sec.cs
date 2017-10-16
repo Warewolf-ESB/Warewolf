@@ -54,7 +54,7 @@ internal struct LSA_ENUMERATION_INFORMATION
 }
 
 
-internal static sealed class Win32Sec
+internal static class Win32Sec
 {
     [DllImport("advapi32", CharSet = CharSet.Unicode, SetLastError = true), SuppressUnmanagedCodeSecurity]
     internal static extern uint LsaOpenPolicy(
