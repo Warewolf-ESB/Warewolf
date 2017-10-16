@@ -27,9 +27,6 @@
             <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
         </ResourceDictionary>
     </UserControl.Resources>
-    <i:Interaction.Behaviors>
-        <behaviors:UserControlFocusNextAndPreviousBehaviour />
-    </i:Interaction.Behaviors>
     <Grid x:Name="MainGrid"
           LostKeyboardFocus="UIElement_OnLostKeyboardFocus" 
           Margin="{StaticResource ElementBorder}">
