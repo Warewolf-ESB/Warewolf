@@ -116,12 +116,19 @@
       <Project>{01b6f143-3f8c-4545-b06f-57d2c5ae7c9c}</Project>
       <Name>Warewolf.MergeParser</Name>
     </ProjectReference>
+    <ProjectReference Include="..\WarewolfLanguageParser\WarewolfLanguageParser.fsproj">
+      <Project>{e0f7c709-a61b-4829-a659-d7780052326a}</Project>
+      <Name>WarewolfLanguageParser</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="XML Parser\AssignOutPut.xml" />
+    <EmbeddedResource Include="XML Parser\AssignOutPut.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="XML Parser\SameResourceSelectAndApply.xml" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

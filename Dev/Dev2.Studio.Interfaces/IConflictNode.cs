@@ -1,6 +1,4 @@
-﻿using System;
-using System.Activities.Presentation.Model;
-using System.Collections.Generic;
+﻿using System.Activities.Presentation.Model;
 using System.Windows;
 
 namespace Dev2.Studio.Interfaces
@@ -9,7 +7,6 @@ namespace Dev2.Studio.Interfaces
     {
         ModelItem CurrentActivity { get; set; }
         ModelItem CurrentFlowStep { get; set; }
-        bool HasConflict { get; set; }
         Point NodeLocation { get; set; }
         int TreeIndex { get; set; }
     }
