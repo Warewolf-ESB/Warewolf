@@ -3002,7 +3002,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
 
             _allNodes = _parser?.GetAllNodes();
-            var nodeToRemove = GetNodeToAmmend(model, true);
+            var nodeToRemove = GetNodeToAmmend(model);
 
             var step = nodeToRemove?.GetCurrentValue();
             switch (step)
@@ -3028,7 +3028,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-        private ModelItem GetNodeToAmmend(IMergeToolModel model, bool removeItem = false)
+        private ModelItem GetNodeToAmmend(IMergeToolModel model)
         {
             var nodeToAmmend = default(ModelItem);
             if (_allNodes == null)
@@ -3045,11 +3045,11 @@ namespace Dev2.Studio.ViewModels.Workflow
 
             if (toolPar.leftItem?.GetCurrentValue() == model.FlowNode?.GetCurrentValue())
             {
-                nodeToAmmend = removeItem ? toolPar.rightItem : toolPar.leftItem;
+                nodeToAmmend = toolPar.leftItem;
             }
             else if (toolPar.rightItem?.GetCurrentValue() == model.FlowNode?.GetCurrentValue())
             {
-                nodeToAmmend = removeItem ? toolPar.leftItem : toolPar.rightItem;
+                nodeToAmmend = toolPar.rightItem;
             }
             return nodeToAmmend;
         }
@@ -3112,6 +3112,10 @@ namespace Dev2.Studio.ViewModels.Workflow
                         nodes.Add(normalSwitch);
                     }
                     break;
+            }
+            if (nodeToAdd == null)
+            {
+                nodeToAdd = next.FlowNode;
             }
             FlowNode flowNode = nodeToAdd.GetCurrentValue<FlowNode>();
 
