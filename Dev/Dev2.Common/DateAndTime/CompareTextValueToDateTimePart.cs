@@ -39,8 +39,8 @@ namespace Dev2.Common.DateAndTime
         public static bool IsTextJanuary(string data, bool treatAsTime)
         {
             string lowerData = data.ToLower();
-            return lowerData == CultureInfo.CurrentCulture.DateTimeFormat.AbbreviatedMonthNames[0].ToLower() ||
-                   lowerData == CultureInfo.CurrentCulture.DateTimeFormat.MonthNames[0].ToLower();
+            return lowerData == CultureInfo.InvariantCulture.DateTimeFormat.AbbreviatedMonthNames[0].ToLower() ||
+                   lowerData == CultureInfo.InvariantCulture.DateTimeFormat.MonthNames[0].ToLower();
         }
 
         /// <summary>
@@ -49,8 +49,8 @@ namespace Dev2.Common.DateAndTime
         public static bool IsTextFebuary(string data, bool treatAsTime)
         {
             string lowerData = data.ToLower();
-            return lowerData == CultureInfo.CurrentCulture.DateTimeFormat.AbbreviatedMonthNames[1].ToLower() ||
-                   lowerData == CultureInfo.CurrentCulture.DateTimeFormat.MonthNames[1].ToLower();
+            return lowerData == CultureInfo.InvariantCulture.DateTimeFormat.AbbreviatedMonthNames[1].ToLower() ||
+                   lowerData == CultureInfo.InvariantCulture.DateTimeFormat.MonthNames[1].ToLower();
         }
 
         /// <summary>
@@ -59,8 +59,8 @@ namespace Dev2.Common.DateAndTime
         public static bool IsTextMarch(string data, bool treatAsTime)
         {
             string lowerData = data.ToLower();
-            return lowerData == CultureInfo.CurrentCulture.DateTimeFormat.AbbreviatedMonthNames[2].ToLower() ||
-                   lowerData == CultureInfo.CurrentCulture.DateTimeFormat.MonthNames[2].ToLower();
+            return lowerData == CultureInfo.InvariantCulture.DateTimeFormat.AbbreviatedMonthNames[2].ToLower() ||
+                   lowerData == CultureInfo.InvariantCulture.DateTimeFormat.MonthNames[2].ToLower();
         }
 
         /// <summary>
@@ -69,8 +69,8 @@ namespace Dev2.Common.DateAndTime
         public static bool IsTextApril(string data, bool treatAsTime)
         {
             string lowerData = data.ToLower();
-            return lowerData == CultureInfo.CurrentCulture.DateTimeFormat.AbbreviatedMonthNames[3].ToLower() ||
-                   lowerData == CultureInfo.CurrentCulture.DateTimeFormat.MonthNames[3].ToLower();
+            return lowerData == CultureInfo.InvariantCulture.DateTimeFormat.AbbreviatedMonthNames[3].ToLower() ||
+                   lowerData == CultureInfo.InvariantCulture.DateTimeFormat.MonthNames[3].ToLower();
         }
 
         /// <summary>
@@ -79,8 +79,8 @@ namespace Dev2.Common.DateAndTime
         public static bool IsTextMay(string data, bool treatAsTime)
         {
             string lowerData = data.ToLower();
-            return lowerData == CultureInfo.CurrentCulture.DateTimeFormat.AbbreviatedMonthNames[4].ToLower() ||
-                   lowerData == CultureInfo.CurrentCulture.DateTimeFormat.MonthNames[4].ToLower();
+            return lowerData == CultureInfo.InvariantCulture.DateTimeFormat.AbbreviatedMonthNames[4].ToLower() ||
+                   lowerData == CultureInfo.InvariantCulture.DateTimeFormat.MonthNames[4].ToLower();
         }
 
         /// <summary>
@@ -89,8 +89,8 @@ namespace Dev2.Common.DateAndTime
         public static bool IsTextJune(string data, bool treatAsTime)
         {
             string lowerData = data.ToLower();
-            return lowerData == CultureInfo.CurrentCulture.DateTimeFormat.AbbreviatedMonthNames[5].ToLower() ||
-                   lowerData == CultureInfo.CurrentCulture.DateTimeFormat.MonthNames[5].ToLower();
+            return lowerData == CultureInfo.InvariantCulture.DateTimeFormat.AbbreviatedMonthNames[5].ToLower() ||
+                   lowerData == CultureInfo.InvariantCulture.DateTimeFormat.MonthNames[5].ToLower();
         }
 
         /// <summary>
@@ -99,8 +99,8 @@ namespace Dev2.Common.DateAndTime
         public static bool IsTextJuly(string data, bool treatAsTime)
         {
             string lowerData = data.ToLower();
-            return lowerData == CultureInfo.CurrentCulture.DateTimeFormat.AbbreviatedMonthNames[6].ToLower() ||
-                   lowerData == CultureInfo.CurrentCulture.DateTimeFormat.MonthNames[6].ToLower();
+            return lowerData == CultureInfo.InvariantCulture.DateTimeFormat.AbbreviatedMonthNames[6].ToLower() ||
+                   lowerData == CultureInfo.InvariantCulture.DateTimeFormat.MonthNames[6].ToLower();
         }
 
         /// <summary>
@@ -109,8 +109,8 @@ namespace Dev2.Common.DateAndTime
         public static bool IsTextAugust(string data, bool treatAsTime)
         {
             string lowerData = data.ToLower();
-            return lowerData == CultureInfo.CurrentCulture.DateTimeFormat.AbbreviatedMonthNames[7].ToLower() ||
-                   lowerData == CultureInfo.CurrentCulture.DateTimeFormat.MonthNames[7].ToLower();
+            return lowerData == CultureInfo.InvariantCulture.DateTimeFormat.AbbreviatedMonthNames[7].ToLower() ||
+                   lowerData == CultureInfo.InvariantCulture.DateTimeFormat.MonthNames[7].ToLower();
         }
 
         /// <summary>
@@ -119,8 +119,8 @@ namespace Dev2.Common.DateAndTime
         public static bool IsTextSeptember(string data, bool treatAsTime)
         {
             string lowerData = data.ToLower();
-            return lowerData == CultureInfo.CurrentCulture.DateTimeFormat.AbbreviatedMonthNames[8].ToLower() ||
-                   lowerData == CultureInfo.CurrentCulture.DateTimeFormat.MonthNames[8].ToLower();
+            return lowerData == CultureInfo.InvariantCulture.DateTimeFormat.AbbreviatedMonthNames[8].ToLower() ||
+                   lowerData == CultureInfo.InvariantCulture.DateTimeFormat.MonthNames[8].ToLower();
         }
 
         /// <summary>
@@ -129,8 +129,8 @@ namespace Dev2.Common.DateAndTime
         public static bool IsTextOctober(string data, bool treatAsTime)
         {
             string lowerData = data.ToLower();
-            return lowerData == CultureInfo.CurrentCulture.DateTimeFormat.AbbreviatedMonthNames[9].ToLower() ||
-                   lowerData == CultureInfo.CurrentCulture.DateTimeFormat.MonthNames[9].ToLower();
+            return lowerData == CultureInfo.InvariantCulture.DateTimeFormat.AbbreviatedMonthNames[9].ToLower() ||
+                   lowerData == CultureInfo.InvariantCulture.DateTimeFormat.MonthNames[9].ToLower();
         }
 
         /// <summary>
@@ -139,8 +139,8 @@ namespace Dev2.Common.DateAndTime
         public static bool IsTextNovember(string data, bool treatAsTime)
         {
             string lowerData = data.ToLower();
-            return lowerData == CultureInfo.CurrentCulture.DateTimeFormat.AbbreviatedMonthNames[10].ToLower() ||
-                   lowerData == CultureInfo.CurrentCulture.DateTimeFormat.MonthNames[10].ToLower();
+            return lowerData == CultureInfo.InvariantCulture.DateTimeFormat.AbbreviatedMonthNames[10].ToLower() ||
+                   lowerData == CultureInfo.InvariantCulture.DateTimeFormat.MonthNames[10].ToLower();
         }
 
         /// <summary>
@@ -149,8 +149,8 @@ namespace Dev2.Common.DateAndTime
         public static bool IsTextDecember(string data, bool treatAsTime)
         {
             string lowerData = data.ToLower();
-            return lowerData == CultureInfo.CurrentCulture.DateTimeFormat.AbbreviatedMonthNames[11].ToLower() ||
-                   lowerData == CultureInfo.CurrentCulture.DateTimeFormat.MonthNames[11].ToLower();
+            return lowerData == CultureInfo.InvariantCulture.DateTimeFormat.AbbreviatedMonthNames[11].ToLower() ||
+                   lowerData == CultureInfo.InvariantCulture.DateTimeFormat.MonthNames[11].ToLower();
         }
 
         /// <summary>
@@ -159,8 +159,8 @@ namespace Dev2.Common.DateAndTime
         public static bool IsTextMonday(string data, bool treatAsTime)
         {
             string lowerData = data.ToLower();
-            return lowerData == CultureInfo.CurrentCulture.DateTimeFormat.AbbreviatedDayNames[1].ToLower() ||
-                   lowerData == CultureInfo.CurrentCulture.DateTimeFormat.DayNames[1].ToLower();
+            return lowerData == CultureInfo.InvariantCulture.DateTimeFormat.AbbreviatedDayNames[1].ToLower() ||
+                   lowerData == CultureInfo.InvariantCulture.DateTimeFormat.DayNames[1].ToLower();
         }
 
         /// <summary>
@@ -169,8 +169,8 @@ namespace Dev2.Common.DateAndTime
         public static bool IsTextTuesday(string data, bool treatAsTime)
         {
             string lowerData = data.ToLower();
-            return lowerData == CultureInfo.CurrentCulture.DateTimeFormat.AbbreviatedDayNames[2].ToLower() ||
-                   lowerData == CultureInfo.CurrentCulture.DateTimeFormat.DayNames[2].ToLower();
+            return lowerData == CultureInfo.InvariantCulture.DateTimeFormat.AbbreviatedDayNames[2].ToLower() ||
+                   lowerData == CultureInfo.InvariantCulture.DateTimeFormat.DayNames[2].ToLower();
         }
 
         /// <summary>
@@ -179,8 +179,8 @@ namespace Dev2.Common.DateAndTime
         public static bool IsTextWednesday(string data, bool treatAsTime)
         {
             string lowerData = data.ToLower();
-            return lowerData == CultureInfo.CurrentCulture.DateTimeFormat.AbbreviatedDayNames[3].ToLower() ||
-                   lowerData == CultureInfo.CurrentCulture.DateTimeFormat.DayNames[3].ToLower();
+            return lowerData == CultureInfo.InvariantCulture.DateTimeFormat.AbbreviatedDayNames[3].ToLower() ||
+                   lowerData == CultureInfo.InvariantCulture.DateTimeFormat.DayNames[3].ToLower();
         }
 
         /// <summary>
@@ -189,8 +189,8 @@ namespace Dev2.Common.DateAndTime
         public static bool IsTextThursday(string data, bool treatAsTime)
         {
             string lowerData = data.ToLower();
-            return lowerData == CultureInfo.CurrentCulture.DateTimeFormat.AbbreviatedDayNames[4].ToLower() ||
-                   lowerData == CultureInfo.CurrentCulture.DateTimeFormat.DayNames[4].ToLower();
+            return lowerData == CultureInfo.InvariantCulture.DateTimeFormat.AbbreviatedDayNames[4].ToLower() ||
+                   lowerData == CultureInfo.InvariantCulture.DateTimeFormat.DayNames[4].ToLower();
         }
 
         /// <summary>
@@ -199,8 +199,8 @@ namespace Dev2.Common.DateAndTime
         public static bool IsTextFriday(string data, bool treatAsTime)
         {
             string lowerData = data.ToLower();
-            return lowerData == CultureInfo.CurrentCulture.DateTimeFormat.AbbreviatedDayNames[5].ToLower() ||
-                   lowerData == CultureInfo.CurrentCulture.DateTimeFormat.DayNames[5].ToLower();
+            return lowerData == CultureInfo.InvariantCulture.DateTimeFormat.AbbreviatedDayNames[5].ToLower() ||
+                   lowerData == CultureInfo.InvariantCulture.DateTimeFormat.DayNames[5].ToLower();
         }
 
         /// <summary>
@@ -209,8 +209,8 @@ namespace Dev2.Common.DateAndTime
         public static bool IsTextSaturday(string data, bool treatAsTime)
         {
             string lowerData = data.ToLower();
-            return lowerData == CultureInfo.CurrentCulture.DateTimeFormat.AbbreviatedDayNames[6].ToLower() ||
-                   lowerData == CultureInfo.CurrentCulture.DateTimeFormat.DayNames[6].ToLower();
+            return lowerData == CultureInfo.InvariantCulture.DateTimeFormat.AbbreviatedDayNames[6].ToLower() ||
+                   lowerData == CultureInfo.InvariantCulture.DateTimeFormat.DayNames[6].ToLower();
         }
 
         /// <summary>
@@ -219,8 +219,8 @@ namespace Dev2.Common.DateAndTime
         public static bool IsTextSunday(string data, bool treatAsTime)
         {
             string lowerData = data.ToLower();
-            return lowerData == CultureInfo.CurrentCulture.DateTimeFormat.AbbreviatedDayNames[0].ToLower() ||
-                   lowerData == CultureInfo.CurrentCulture.DateTimeFormat.DayNames[0].ToLower();
+            return lowerData == CultureInfo.InvariantCulture.DateTimeFormat.AbbreviatedDayNames[0].ToLower() ||
+                   lowerData == CultureInfo.InvariantCulture.DateTimeFormat.DayNames[0].ToLower();
         }
     }
 }

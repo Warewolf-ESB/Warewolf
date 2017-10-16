@@ -8,6 +8,7 @@ using Dev2.Data;
 using Dev2.TO;
 using Microsoft.SharePoint.Client;
 using Warewolf.Storage.Interfaces;
+using Dev2.Common;
 
 namespace Dev2.Activities.Sharepoint
 {
@@ -133,10 +134,10 @@ namespace Dev2.Activities.Sharepoint
                     break;
                 case SharepointFieldType.Number:
                 case SharepointFieldType.Currency:
-                    returnValue = Convert.ToDecimal(value, CultureInfo.CurrentCulture.NumberFormat);
+                    returnValue = Convert.ToDecimal(value, CultureInfo.InvariantCulture.NumberFormat);
                     break;
                 case SharepointFieldType.DateTime:
-                    returnValue = Convert.ToDateTime(value, CultureInfo.CurrentCulture.DateTimeFormat);
+                    returnValue = Convert.ToDateTime(value, CultureInfo.InvariantCulture);
                     break;
                 case SharepointFieldType.Integer:                
                     returnValue = Convert.ToInt32(value);
