@@ -285,8 +285,8 @@ namespace Dev2.ViewModels.Merge
                 IsVariablesEnabled = HasVariablesConflict;
 
                 IsMergeExpanderEnabled = argsIsVariablesChecked;
-                Conflicts.First.Value.DiffViewModel.IsMergeEnabled = argsIsVariablesChecked;
-                Conflicts.First.Value.CurrentViewModel.IsMergeEnabled = argsIsVariablesChecked;
+                Conflicts.First.Value.DiffViewModel.IsMergeEnabled = Conflicts.First.Value.HasConflict && argsIsVariablesChecked;
+                Conflicts.First.Value.CurrentViewModel.IsMergeEnabled = Conflicts.First.Value.HasConflict && argsIsVariablesChecked;
             }
             catch (Exception ex)
             {
