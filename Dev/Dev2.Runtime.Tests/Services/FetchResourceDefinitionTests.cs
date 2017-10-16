@@ -83,7 +83,8 @@ namespace Dev2.Tests.Runtime.Services
             mockCat.Setup(p => p.GetResourceContents(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new StringBuilder(resource.ToString()));
             mock.Setup(p => p.GetResourceDefinition(true, It.IsAny<Guid>(), It.IsAny<StringBuilder>())).Returns(new StringBuilder(resource.ToString()));
             var fetchResourceDefinition = new FetchResourceDefinition();
-
+            fetchResourceDefinition.ResourceCat = mockCat.Object;
+            fetchResourceDefinition.Cleaner = mock.Object;
             //------------Execute Test---------------------------
             fetchResourceDefinition.DecryptAllPasswords(new StringBuilder());
             //------------Assert Results-------------------------
@@ -169,7 +170,8 @@ namespace Dev2.Tests.Runtime.Services
                 { "ResourceID",new StringBuilder(resourceID.ToString()) },
                 { "PrepairForDeployment",new StringBuilder("true") }
             };
-
+            fetchResourceDefinition.ResourceCat = mockCat.Object;
+            fetchResourceDefinition.Cleaner = mock.Object;
             //------------Execute Test---------------------------
             var result = fetchResourceDefinition.Execute(values, mockWorkspace.Object);
             //------------Assert Results-------------------------
@@ -201,6 +203,7 @@ namespace Dev2.Tests.Runtime.Services
             };
 
             //------------Execute Test---------------------------
+            fetchResourceDefinition.ResourceCat = mockCat.Object;
             var result = fetchResourceDefinition.Execute(values, mockWorkspace.Object);
             //------------Assert Results-------------------------
             Dev2JsonSerializer dev2JsonSerializer = new Dev2JsonSerializer();
