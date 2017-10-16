@@ -263,18 +263,6 @@ namespace System.Windows.Controls
         #endregion public int MinimumPopulateDelay
 
         public static readonly DependencyProperty DefaultTextTemplateProperty = DependencyProperty.Register("DefaultTextTemplate", typeof(DataTemplate), typeof(AutoCompleteBox), new UIPropertyMetadata(null));
-        [ExcludeFromCodeCoverage]
-        public DataTemplate DefaultTextTemplate
-        {
-            get
-            {
-                return (DataTemplate)GetValue(DefaultTextTemplateProperty);
-            }
-            set
-            {
-                SetValue(DefaultTextTemplateProperty, value);
-            }
-        }
 
         public static readonly DependencyProperty DefaultTextProperty = DependencyProperty.Register("DefaultText", typeof(object), typeof(AutoCompleteBox), new UIPropertyMetadata(null));
 
