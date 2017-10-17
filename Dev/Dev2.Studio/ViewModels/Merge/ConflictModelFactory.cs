@@ -23,20 +23,18 @@ namespace Dev2.ViewModels.Merge
 {
     public class ConflictModelFactory : BindableBase, IConflictModelFactory
     {
-        private readonly IActivityParser _activityParser;
-        private ModelItem _modelItem;
-        private readonly IContextualResourceModel _resourceModel;
-        private IContextualResourceModel _childResourceModel;
-        private bool _isWorkflowNameChecked;
-        private bool _isVariablesChecked;
+        readonly IActivityParser _activityParser;
+        readonly IContextualResourceModel _resourceModel;
+        bool _isWorkflowNameChecked;
+        bool _isVariablesChecked;
 
         public IMergeToolModel Model { get; set; }
-        public ConflictModelFactory(ModelItem modelItem, IContextualResourceModel resourceModel)
+        public ConflictModelFactory(IConflictNode conflictNode, IContextualResourceModel resourceModel)
             : this(CustomContainer.Get<IActivityParser>())
         {
-            Children = new ObservableCollection<IMergeToolModel>();
-            _modelItem = modelItem;
+            Children = new ObservableCollection<IMergeToolModel>();            
             _resourceModel = resourceModel;
+            Model = GetModel(conflictNode.CurrentActivity, conflictNode.Activity,null,"");
         }
 
 
@@ -118,14 +116,14 @@ namespace Dev2.ViewModels.Merge
         public ObservableCollection<IMergeToolModel> Children { get; set; }
 
 
-        public IMergeToolModel GetModel(string item = "")
+        public IMergeToolModel GetModel(ModelItem modelItem, IDev2Activity activity,IMergeToolModel parentItem,string parentLableDescription)
         {
-            if (_modelItem == default(ModelItem))
+            if (modelItem == null)
             {
                 return null;
             }
 
-            var currentValue = _modelItem.GetCurrentValue<IDev2Activity>();
+            var currentValue = modelItem.GetCurrentValue<IDev2Activity>();
             var activityType = currentValue?.GetType();
             if (activityType == null)
             {
@@ -143,19 +141,19 @@ namespace Dev2.ViewModels.Merge
                 if (actual == typeof(SwitchDesignerViewModel))
                 {
                     var dsfSwitch = currentValue as DsfSwitch;
-                    instance = Activator.CreateInstance(actual, _modelItem, dsfSwitch?.Switch ?? "") as ActivityDesignerViewModel;
+                    instance = Activator.CreateInstance(actual, modelItem, dsfSwitch?.Switch ?? "") as ActivityDesignerViewModel;
                 }
                 else if (actual == typeof(ServiceDesignerViewModel))
                 {
-                    var resourceId = ModelItemUtils.TryGetResourceID(_modelItem);
-                    _childResourceModel = _resourceModel.Environment.ResourceRepository.LoadContextualResourceModel(resourceId);
-                    instance = Activator.CreateInstance(actual, _modelItem, _childResourceModel) as ActivityDesignerViewModel;
+                    var resourceId = ModelItemUtils.TryGetResourceID(modelItem);
+                    var childResourceModel = _resourceModel.Environment.ResourceRepository.LoadContextualResourceModel(resourceId);
+                    instance = Activator.CreateInstance(actual, modelItem, childResourceModel) as ActivityDesignerViewModel;
                 }
                 else
                 {
-                    var resourceId = ModelItemUtils.TryGetResourceID(_modelItem);
-                    _childResourceModel = _resourceModel.Environment.ResourceRepository.LoadContextualResourceModel(resourceId);
-                    instance = Activator.CreateInstance(actual, _modelItem) as ActivityDesignerViewModel;
+                    var resourceId = ModelItemUtils.TryGetResourceID(modelItem);
+                    var childResourceModel = _resourceModel.Environment.ResourceRepository.LoadContextualResourceModel(resourceId);
+                    instance = Activator.CreateInstance(actual, modelItem) as ActivityDesignerViewModel;
                 }
 
                 var dsfActivity = activityType.GetProperty("DisplayName")?.GetValue(currentValue);
@@ -170,221 +168,33 @@ namespace Dev2.ViewModels.Merge
                 var mergeToolModel = new MergeToolModel
                 {
                     ActivityDesignerViewModel = instance,
-                    MergeIcon = _modelItem.GetImageSourceForTool(),
+                    MergeIcon = modelItem.GetImageSourceForTool(),
                     MergeDescription = dsfActivity?.ToString(),
                     UniqueId = currentValue.UniqueID.ToGuid(),
-                    IsMergeVisible = true
+                    IsMergeVisible = true,
+                    ActivityType = activity.GetFlowNode(),
+                    Parent = parentItem,
+                    HasParent = parentItem != null,
+                    ParentDescription = parentLableDescription,
+                    IsTrueArm = parentLableDescription?.ToLowerInvariant() == "true"                    
                 };
 
-                //TODO implement builder pattern
-                switch (currentValue)
+                foreach (var act in activity.GetChildrenNodes())
                 {
-                    case DsfDecision decisionTool:
-                        BuildDecision(decisionTool, mergeToolModel);
-                        break;
-                    case DsfSwitch switchTool:
-                        BuildSwitch(switchTool, mergeToolModel);
-                        break;
-                    case DsfSequenceActivity sequence:
-                        BuildSequence(sequence, mergeToolModel);
-                        break;
-                    case DsfForEachActivity forEach:
-                        BuildForEach(forEach, mergeToolModel);
-                        break;
-                    case DsfSelectAndApplyActivity selectAndApply:
-                        BuildSelectAndApply(selectAndApply, mergeToolModel);
-                        break;
-                    default:
-                        var flowStep = new FlowStep { Action = currentValue as System.Activities.Activity };
-                        mergeToolModel.ActivityType = flowStep;
-                        break;
-                }
-
+                    if (act.Value == null)
+                    {
+                        continue;
+                    }
+                    foreach (var innerAct in act.Value)
+                    {
+                        var parent = mergeToolModel;
+                        var item = GetModel(ModelItemUtils.CreateModelItem(innerAct), innerAct, parent, act.Key);                    
+                        parent.Children.Add(item);
+                    }
+                }                
                 return mergeToolModel;
             }
             return null;
-        }
-
-        private void BuildSelectAndApply(DsfSelectAndApplyActivity c, IMergeToolModel mergeToolModel)
-        {
-            var dev2Activity = c.ApplyActivityFunc.Handler as IDev2Activity;
-            var singleOrDefault = dev2Activity;
-            if (singleOrDefault != null)
-            {
-                var forEachModel = ModelItemUtils.CreateModelItem(singleOrDefault);
-                _modelItem = forEachModel;
-                var addModelItem = GetModel();
-                addModelItem.HasParent = true;
-                addModelItem.Parent = mergeToolModel;
-                addModelItem.ParentDescription = c.DisplayName;
-                mergeToolModel.Children.Add(addModelItem);
-            }
-            var nextNode = c.NextNodes?.SingleOrDefault();
-            if (nextNode != null)
-            {
-                var nextModelItem = ModelItemUtils.CreateModelItem(nextNode);
-                if (nextNode is DsfSwitch a)
-                {
-                    _modelItem = nextModelItem;
-                    var addModelItem = GetModel(a.Switch);
-                    Children.Add(addModelItem);
-                }
-                else
-                {
-                    _modelItem = nextModelItem;
-                    var addModelItem = GetModel();
-                    Children.Add(addModelItem);
-                }
-            }
-        }
-
-        private void BuildForEach(DsfForEachActivity b, IMergeToolModel mergeToolModel)
-        {
-            var dev2Activity = b.DataFunc.Handler as IDev2Activity;
-            var singleOrDefault = dev2Activity;
-            if (singleOrDefault != null)
-            {
-                var forEachModel = ModelItemUtils.CreateModelItem(singleOrDefault);
-                _modelItem = forEachModel;
-                var addModelItem = GetModel();
-                addModelItem.HasParent = true;
-                addModelItem.Parent = mergeToolModel;
-                addModelItem.ParentDescription = b.DisplayName;
-                mergeToolModel.Children.Add(addModelItem);
-            }
-            var nextNode = b.NextNodes?.SingleOrDefault();
-            if (nextNode != null)
-            {
-                var nextModelItem = ModelItemUtils.CreateModelItem(nextNode);
-                if (nextNode is DsfSwitch a)
-                {
-                    _modelItem = nextModelItem;
-                    var addModelItem = GetModel(a.Switch);
-                    Children.Add(addModelItem);
-                }
-                else
-                {
-                    _modelItem = nextModelItem;
-                    var addModelItem = GetModel();
-                    Children.Add(addModelItem);
-                }
-            }
-        }
-
-        private void BuildSequence(DsfSequenceActivity sequence, IMergeToolModel mergeToolModel)
-        {
-            var flowSequence = new FlowStep { Action = sequence };
-            mergeToolModel.ActivityType = flowSequence;
-            if (sequence.Activities != null)
-            {
-                foreach (var dev2Activity in sequence.Activities)
-                {
-                    _modelItem = ModelItemUtils.CreateModelItem(dev2Activity);
-                    var addModelItem = GetModel();
-                    addModelItem.HasParent = true;
-                    addModelItem.Parent = mergeToolModel;
-                    addModelItem.ParentDescription = sequence.DisplayName;
-                    mergeToolModel.Children.Add(addModelItem);
-                }
-            }
-
-            var nextNode = sequence.NextNodes?.SingleOrDefault();
-            if (nextNode != null)
-            {
-                var nextModelItem = ModelItemUtils.CreateModelItem(nextNode);
-                if (nextNode is DsfSwitch a)
-                {
-                    _modelItem = nextModelItem;
-                    var addModelItem = GetModel(a.Switch);
-                    Children.Add(addModelItem);
-                }
-
-                else
-                {
-                    _modelItem = nextModelItem;
-                    var addModelItem = GetModel();
-                    Children.Add(addModelItem);
-                }
-            }
-        }
-
-        private void BuildSwitch(DsfSwitch switchTool, IMergeToolModel mergeToolModel)
-        {
-            var flowSwitch = new FlowSwitch<string>();            
-            mergeToolModel.ActivityType = flowSwitch;
-            if (switchTool.Switches != null)
-            {
-                foreach (var group in switchTool.Switches)
-                {
-                    var currentArmTree = _activityParser.FlattenNextNodesInclusive(group.Value);
-                    foreach (var dev2Activity in currentArmTree)
-                    {
-                        _modelItem = ModelItemUtils.CreateModelItem(dev2Activity);
-                        var addModelItem = GetModel(group.Key);
-                        addModelItem.HasParent = true;
-                        addModelItem.Parent = mergeToolModel;
-                        addModelItem.ParentDescription = "Case: " + group.Key;
-                        mergeToolModel.Children.Add(addModelItem);
-                    }
-                }
-            }
-            if (switchTool.Default != null)
-            {
-                foreach (var dev2Activity in switchTool.Default)
-                {
-                    var currentArmTree = _activityParser.FlattenNextNodesInclusive(dev2Activity);
-                    foreach (var activity in currentArmTree)
-                    {
-                        _modelItem = ModelItemUtils.CreateModelItem(activity);
-                        var addModelItem = GetModel();
-                        addModelItem.HasParent = true;
-                        addModelItem.Parent = mergeToolModel;
-                        addModelItem.ParentDescription = "Default";
-                        mergeToolModel.Children.Add(addModelItem);
-                    }
-                }
-            }
-        }
-
-        private void BuildDecision(DsfDecision de, IMergeToolModel mergeToolModel)
-        {
-            var decisionNode = new FlowDecision(de.GetFlowNode());
-
-            if (de.TrueArm != null)
-            {
-                var firstOrDefault = de.TrueArm?.FirstOrDefault();
-                var truArmToFlatList = _activityParser.FlattenNextNodesInclusive(firstOrDefault).Reverse();
-                decisionNode.True = new FlowStep { Action = firstOrDefault as System.Activities.Activity };
-
-                foreach (var dev2Activity in truArmToFlatList)
-                {
-                    _modelItem = ModelItemUtils.CreateModelItem(dev2Activity);
-                    var addModelItem = GetModel();
-                    addModelItem.HasParent = true;
-                    addModelItem.Parent = mergeToolModel;
-                    addModelItem.ParentDescription = de.Conditions.TrueArmText;
-                    addModelItem.IsTrueArm = true;
-                    mergeToolModel.Children.Add(addModelItem);
-                }
-            }
-
-            if (de.FalseArm != null)
-            {
-                var firstOrDefault = de.FalseArm?.FirstOrDefault();
-                decisionNode.False = new FlowStep { Action = firstOrDefault as System.Activities.Activity };
-                var falseArmToFlatList = _activityParser.FlattenNextNodesInclusive(firstOrDefault).Reverse();
-                foreach (var dev2Activity in falseArmToFlatList)
-                {
-                    _modelItem = ModelItemUtils.CreateModelItem(dev2Activity);
-                    var addModelItem = GetModel();
-                    addModelItem.HasParent = true;
-                    addModelItem.IsTrueArm = false;
-                    addModelItem.ParentDescription = de.Conditions.FalseArmText;
-                    mergeToolModel.Children.Add(addModelItem);
-                }
-            }
-
-            mergeToolModel.ActivityType = decisionNode;
         }
 
         public event ConflictModelChanged SomethingConflictModelChanged;

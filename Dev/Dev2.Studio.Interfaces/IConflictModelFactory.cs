@@ -11,7 +11,6 @@ namespace Dev2.Studio.Interfaces
         bool IsVariablesChecked { get; set; }
         bool IsWorkflowNameChecked { get; set; }
         ObservableCollection<IMergeToolModel> Children { get; set; }
-        IMergeToolModel GetModel(string switchName = "");
         IMergeToolModel Model { get; set; }
         IDataListViewModel DataListViewModel { get; set; }
         void GetDataList();

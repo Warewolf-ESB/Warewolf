@@ -12,5 +12,9 @@ namespace Dev2.Studio.Interfaces
         bool HasConflict { get; set; }
         Point NodeLocation { get; set; }
         int TreeIndex { get; set; }
+
+        IDev2Activity Activity { get; }
+        IEnumerable<IDev2Activity> GetNextNodes();
+        Dictionary<string, IEnumerable<IDev2Activity>> GetChildrenNodes();
     }
 }
