@@ -243,6 +243,16 @@ namespace Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses
             Mouse.Click(UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.Text, new Point(138, 6));
         }
 
+        [When(@"I Select Local Server Source From Explorer")]
+        public void Select_LocalServerSource_From_Explorer()
+        {
+            var toggleButton = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton;
+            Mouse.Click(toggleButton, new Point(136, 7));
+            UIMap.MainStudioWindow.ComboboxListItemAsLocalServerSource.Text.WaitForControlExist(60000);
+            Assert.IsTrue(UIMap.MainStudioWindow.ComboboxListItemAsLocalServerSource.Text.Exists, "Local Server Source does not appear in the explorer connect control.");
+            Mouse.Click(UIMap.MainStudioWindow.ComboboxListItemAsLocalServerSource.Text, new Point(138, 6));
+        }
+
         [Then(@"Remote ""(.*)"" is open")]
         public void RemoteResourceIsOpen(string tabName)
         {
@@ -281,6 +291,14 @@ namespace Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox, new Point(165, 9));
             MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text = "Hello World";
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, MouseButtons.Right, ModifierKeys.None, new Point(101, 9));
+        }
+
+        [Given(@"I open ""(.*)""")]
+        [When(@"I open ""(.*)""")]
+        public void IOpen(string resourceName)
+        {
+            MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text = resourceName;
+            Open_Explorer_First_Item_With_Double_Click();
         }
 
         [Given(@"I RightClick Explorer First Remote Server First Item")]
