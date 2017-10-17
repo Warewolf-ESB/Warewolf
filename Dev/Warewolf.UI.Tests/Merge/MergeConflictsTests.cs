@@ -13,14 +13,60 @@ namespace Warewolf.UI.Tests.Merge
     {
         public const string MergeWfWithVersion = "MergeWfWithVersion";
         public const string MergeHelloWorldWithVersion = "MergeHelloWorldWithVersion";
+        public const string MergeSequence = "MergeSequence";
 
+        [TestMethod]
+        [TestCategory("Merge")]
+        public void RightClick_On_MergeSequence_Has_Merge_Option()
+        {
+            RightClick_On_MergeWfWithVersion(MergeSequence);
+            Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.Merge.Exists, "Merge option does not show after Right cliking " + MergeSequence);
+        }
+
+        [TestMethod]
+        [TestCategory("Merge")]
+        public void Open_Merge_For_MergeSequence_Has_Assign_OnDesign_Surface_Since_The_Are_No_Differences()
+        {
+            RightClick_On_MergeWfWithVersion(MergeSequence);
+            Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.Merge.Exists, "Merge option does not show after Right cliking " + MergeSequence);
+            ExplorerUIMap.Click_Merge_From_Context_Menu();
+            MergeConflictsUIMap.MergeDialogViewWindow.MergeResourceVersionList.WarewolfStudioViewMoListItem.ItemRadioButton.Selected = true;
+            Mouse.Click(MergeConflictsUIMap.MergeDialogViewWindow.MergeButton);
+            Assert.IsTrue(MergeConflictsUIMap.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.UIUserControl_1Custom.UIScrollViewerPane.UIActivityBuilderCustom.UIWorkflowItemPresenteCustom.UIFlowchartCustom.MergeSequenceAssign.Exists);
+        }
+
+        [TestMethod]
+        [TestCategory("Merge")]
+        public void Open_Merge_For_MergeSequence_Select_Current_On_OrganizeCustomerTool_Enables_SortNames_Radio_Button()
+        {
+            RightClick_On_MergeWfWithVersion(MergeSequence);
+            ExplorerUIMap.Click_Merge_From_Context_Menu();
+            MergeConflictsUIMap.MergeDialogViewWindow.MergeResourceVersionList.WarewolfStudioViewMoListItem.ItemRadioButton.Selected = true;
+            Mouse.Click(MergeConflictsUIMap.MergeDialogViewWindow.MergeButton);
+            MergeConflictsUIMap.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.ScrollViewerPane.ConflictsTree.MergeTreeItem2.MergeItemExpander.MergeButton.OrganizeCustomers_Current.Selected = true;
+            Assert.IsTrue(MergeConflictsUIMap.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.ScrollViewerPane.ConflictsTree.MergeTreeItem3.MergeItemExpander.MergeButton.ThirdAssign_Difference.Enabled);
+            Assert.IsTrue(MergeConflictsUIMap.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.ScrollViewerPane.ConflictsTree.MergeTreeItem3.MergeItemExpander.MergeButton.ThirdAssign_Current.Enabled);
+        }
+        [TestMethod]
+        [TestCategory("Merge")]
+        public void Open_Merge_For_MergeSequence_Expand_OrganizeCustomerTool_Has_Split_Names_On_Current()
+        {
+            RightClick_On_MergeWfWithVersion(MergeSequence);            
+            ExplorerUIMap.Click_Merge_From_Context_Menu();
+            Assert.IsTrue(MergeConflictsUIMap.MergeDialogViewWindow.MergeResourceVersionList.WarewolfStudioViewMoListItem.ItemRadioButton.MergeSequence.Exists);
+            MergeConflictsUIMap.MergeDialogViewWindow.MergeResourceVersionList.WarewolfStudioViewMoListItem.ItemRadioButton.Selected = true;            
+            Mouse.Click(MergeConflictsUIMap.MergeDialogViewWindow.MergeButton);
+            Mouse.Click(MergeConflictsUIMap.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.ScrollViewerPane.ConflictsTree.MergeTreeItem2.MergeItemExpander.MergeButton.OrganizeCustomers_Current);
+            Assert.IsTrue(MergeConflictsUIMap.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.ScrollViewerPane.ConflictsTree.MergeTreeItem2.MergeItemExpander.ChildrenConflictsTree.SplitNames.MergeExpander.MergeButton.NoConflicts.Exists);
+        }
+
+        
         [TestMethod]
         [TestCategory("Merge")]
         public void RightClick_On_MergeWfWithVersion_Has_Merge_Option()
         {
             RightClick_On_MergeWfWithVersion(MergeWfWithVersion);
             Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.Merge.Exists, "Merge option does not show after Right cliking " + MergeWfWithVersion);
-
         }
 
         [TestMethod]
