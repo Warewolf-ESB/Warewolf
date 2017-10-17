@@ -49,6 +49,20 @@ namespace Dev2.Activities
         }
 
 
+        public override Dictionary<string, IEnumerable<IDev2Activity>> GetChildrenNodes()
+        {
+            var nextNodes = new Dictionary<string, IEnumerable<IDev2Activity>>();
+            foreach (var activity in Activities)
+            {
+                var act = activity as IDev2Activity;
+                if (act != null)
+                {
+                    nextNodes.Add(act.GetDisplayName(), new List<IDev2Activity> { act });
+                }
+            }
+            return nextNodes;
+        }
+
         public Collection<Activity> Activities
         {
             get;
