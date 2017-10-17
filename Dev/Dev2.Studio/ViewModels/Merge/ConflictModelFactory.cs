@@ -20,25 +20,21 @@ namespace Dev2.ViewModels.Merge
 {
     public class ConflictModelFactory : BindableBase, IConflictModelFactory
     {
-        readonly IActivityParser _activityParser;
         readonly IContextualResourceModel _resourceModel;
         bool _isWorkflowNameChecked;
         bool _isVariablesChecked;
 
         public IMergeToolModel Model { get; set; }
+        public delegate void ModelItemChanged(ModelItem modelItem);
+        public event ModelItemChanged OnModelItemChanged;
+
         public ConflictModelFactory(IConflictNode conflictNode, IContextualResourceModel resourceModel)
-            : this(CustomContainer.Get<IActivityParser>())
         {
             Children = new ObservableCollection<IMergeToolModel>();            
             _resourceModel = resourceModel;
             Model = GetModel(conflictNode.CurrentActivity, conflictNode.Activity,null,"");
         }
-
-
-        public ConflictModelFactory(IActivityParser activityParser)
-        {
-            _activityParser = activityParser;
-        }
+        
         public ConflictModelFactory()
         {
             Children = new ObservableCollection<IMergeToolModel>();
@@ -119,7 +115,10 @@ namespace Dev2.ViewModels.Merge
             {
                 return null;
             }
-
+            modelItem.PropertyChanged += (sender, e) =>
+            {
+                OnModelItemChanged?.Invoke(modelItem);
+            };
             var currentValue = modelItem.GetCurrentValue<IDev2Activity>();
             var activityType = currentValue?.GetType();
             if (activityType == null)
