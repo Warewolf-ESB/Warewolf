@@ -11,6 +11,8 @@ using System.Activities.Presentation.Model;
 using System.Windows;
 using Caliburn.Micro;
 using Dev2.Common.Common;
+using Dev2.Studio.Core;
+using Dev2.Studio.Interfaces.DataList;
 
 namespace Dev2.ViewModels.Merge
 {
@@ -50,7 +52,7 @@ namespace Dev2.ViewModels.Merge
                 CurrentConflictModel.Model = firstConflict?.CurrentViewModel ?? new MergeToolModel {IsMergeEnabled = false};
                 CurrentConflictModel.WorkflowName = currentResourceModel.ResourceName;
                 CurrentConflictModel.ServerName = currentResourceModel.Environment.DisplayName;
-                CurrentConflictModel.GetDataList();
+                CurrentConflictModel.GetDataList(currentResourceModel);
                 CurrentConflictModel.SomethingConflictModelChanged += SourceOnConflictModelChanged;
             }
 
@@ -60,13 +62,13 @@ namespace Dev2.ViewModels.Merge
                 DifferenceConflictModel.Model = firstConflict?.DiffViewModel ?? new MergeToolModel { IsMergeEnabled = false };
                 DifferenceConflictModel.WorkflowName = differenceResourceModel.ResourceName;
                 DifferenceConflictModel.ServerName = differenceResourceModel.Environment.DisplayName;
-                DifferenceConflictModel.GetDataList();
+                DifferenceConflictModel.GetDataList(differenceResourceModel);
                 DifferenceConflictModel.SomethingConflictModelChanged += SourceOnConflictModelChanged;
             }
 
             HasMergeStarted = false;
 
-            HasVariablesConflict = !CommonEqualityOps.AreObjectsEqual(((ConflictModelFactory)CurrentConflictModel).DataListViewModel, ((ConflictModelFactory)DifferenceConflictModel).DataListViewModel); //MATCH DATALISTS
+            HasVariablesConflict = currentResourceModel.DataList != differenceResourceModel.DataList;
             HasWorkflowNameConflict = currentResourceModel.ResourceName != differenceResourceModel.ResourceName;
             IsVariablesEnabled = !HasWorkflowNameConflict && HasVariablesConflict;
             IsMergeExpanderEnabled = !IsVariablesEnabled;
@@ -271,6 +273,7 @@ namespace Dev2.ViewModels.Merge
 
         private bool _canSave;
         private readonly IEnumerator<ICompleteConflict> _conflictEnumerator;
+        private IDataListViewModel _dataListViewModel;
 
         private void SourceOnConflictModelChanged(object sender, IConflictModelFactory args)
         {
@@ -282,8 +285,12 @@ namespace Dev2.ViewModels.Merge
                 {
                     HasMergeStarted = args.IsWorkflowNameChecked || argsIsVariablesChecked;
                 }
-                IsVariablesEnabled = HasVariablesConflict;
 
+                IsVariablesEnabled = HasVariablesConflict;
+                if (args.IsVariablesChecked)
+                {
+                    DataListViewModel = args.DataListViewModel;
+                }
                 IsMergeExpanderEnabled = argsIsVariablesChecked;
                 Conflicts.First.Value.DiffViewModel.IsMergeEnabled = Conflicts.First.Value.HasConflict && argsIsVariablesChecked;
                 Conflicts.First.Value.CurrentViewModel.IsMergeEnabled = Conflicts.First.Value.HasConflict && argsIsVariablesChecked;
@@ -291,6 +298,16 @@ namespace Dev2.ViewModels.Merge
             catch (Exception ex)
             {
                 Dev2Logger.Error(ex, ex.Message);
+            }
+        }
+
+        public IDataListViewModel DataListViewModel { 
+                get {
+                return _dataListViewModel;
+            }
+            set{
+                _dataListViewModel = value;
+                OnPropertyChanged("DataListViewModel");
             }
         }
 
