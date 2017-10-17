@@ -141,6 +141,11 @@ $JobSpecs["Web Connector UI Specs"]			    = "Warewolf.UI.Specs", "WebConnector"
 $JobSpecs["Web Sources UI Tests"]				= "Warewolf.UI.Tests", "Web Sources"
 $JobSpecs["Workflow Mocking Tests UI Tests"]	= "Warewolf.UI.Tests", "Workflow Mocking Tests"
 $JobSpecs["Workflow Testing UI Tests"]			= "Warewolf.UI.Tests", "Workflow Testing"
+#UI Load Specs
+$JobSpecs["Other UI Load Tests"]			= "Warewolf.UI.Load.Specs"
+$JobSpecs["Studio Start UI Load Tests"]		= "Warewolf.UI.Load.Specs", "StudioStart"
+$JobSpecs["Studio Shutdown UI Load Tests"]	= "Warewolf.UI.Load.Specs", "StudioShutdown"
+
 
 $UnitTestJobNames = "Other Unit Tests,COMIPC Unit Tests,Studio View Models Unit Tests,Activity Designers Unit Tests,Activities Unit Tests,UI Binding Tests,Runtime Unit Tests,Studio Core Unit Tests"
 $ServerTestJobNames = "Other Specs,Subworkflow Execution Specs,Workflow Execution Specs,Integration Tests,Other Activities Specs,Execution Logging Web UI Tests,No Warewolf Server Web UI Tests,Scripting Tools Specs,Storage Tools Specs,Utility Tools Specs,ControlFlow Tools Specs,Data Tools Specs,Database Tools Specs,Email Tools Specs,File And Folder Copy Tool Specs,File And Folder Create Tool Specs,File And Folder Delete Tool Specs,File And Folder Move Tool Specs,Folder Read Tool Specs,File Read Tool Specs,File And Folder Rename Tool Specs,Unzip Tool Specs,Write File Tool Specs,Zip Tool Specs,FileAndFolder Tools Specs,LoopConstructs Tools Specs,Recordset Tools Specs,Resources Tools Specs"
