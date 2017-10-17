@@ -12,12 +12,17 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Storage.Interfaces;
 using Dev2.Comparer;
 using Dev2.Common;
+using System.Activities.Statements;
 
 namespace Dev2.Activities
 {
     public class DsfSwitch : DsfActivityAbstract<string>,IEquatable<DsfSwitch>
     {
+#pragma warning disable IDE1006 // Naming Styles
+#pragma warning disable S2357 // Fields should be private
         public DsfFlowSwitchActivity Inner;
+#pragma warning restore S2357 // Fields should be private
+#pragma warning restore IDE1006 // Naming Styles
 
         public DsfSwitch(DsfFlowSwitchActivity inner)
       : base("Switch")
@@ -26,16 +31,35 @@ namespace Dev2.Activities
             UniqueID = inner.UniqueID;
         }
 
-        public DsfSwitch() { }
+        public DsfSwitch() { }       
 
         public override List<string> GetOutputs()
         {
             return new List<string>();
         }
 
+        public override FlowNode GetFlowNode()
+        {
+            var swt = new FlowSwitch<string>();
+            return swt; 
+        }
+
         public Dictionary<string, IDev2Activity> Switches { get; set; }
         public IEnumerable<IDev2Activity> Default { get; set; }
 
+        public override Dictionary<string,IEnumerable<IDev2Activity>> GetChildrenNodes()
+        {
+            var nextNodes = new Dictionary<string, IEnumerable<IDev2Activity>>();
+            if (Default != null)
+            {
+                nextNodes.Add(@"Default",Default.Flatten(x => x.NextNodes));
+            }
+            foreach(var swt in Switches)
+            {
+                nextNodes.Add(swt.Key, swt.Value.NextNodes.Flatten(x=>x.NextNodes));
+            }
+            return nextNodes;
+        }
         public string Switch { get; set; }
 
         /// <summary>

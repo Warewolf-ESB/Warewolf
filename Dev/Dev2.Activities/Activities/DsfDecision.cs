@@ -17,6 +17,7 @@ using Newtonsoft.Json;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
+using System.Activities.Statements;
 
 namespace Dev2.Activities
 {
@@ -35,6 +36,24 @@ namespace Dev2.Activities
             UniqueID = _inner.UniqueID;
         }
 
+        public override Dictionary<string, IEnumerable<IDev2Activity>> GetChildrenNodes()
+        {
+            var nextNodes = new Dictionary<string, IEnumerable<IDev2Activity>>();
+            if (TrueArm != null)
+            {
+                var trueNodes = new List<IDev2Activity>();
+                trueNodes.AddRange(TrueArm.Flatten(x=>x.NextNodes));                
+                nextNodes.Add("True", trueNodes);
+            }
+            if (FalseArm != null)
+            {
+                var falseNodes = new List<IDev2Activity>();
+                falseNodes.AddRange(FalseArm.Flatten(x=>x.NextNodes));                
+                nextNodes.Add("False", falseNodes);
+
+            }
+            return nextNodes;
+        }
         public DsfDecision()
         : base("Decision") { }
         /// <summary>
@@ -164,9 +183,9 @@ namespace Dev2.Activities
             return null;
         }
 
-        public Activity<bool> GetFlowNode()
+        public override FlowNode GetFlowNode()
         {
-            return _inner;
+            return new FlowDecision(_inner);
         }
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
@@ -385,18 +404,13 @@ namespace Dev2.Activities
             {
                 return true;
             }
-           
-            var trueArmTools = _activityParser.FlattenNextNodesInclusive(TrueArm.FirstOrDefault());
-            var otherTrueArmTools = _activityParser.FlattenNextNodesInclusive(other.TrueArm.FirstOrDefault());
 
-            var isTrueArmTheSame = CommonEqualityOps.CollectionEquals(trueArmTools, otherTrueArmTools, new Dev2ActivityComparer());
+            bool isTrueArmTheSame = IsTrueArmEqual(other);
             if (!isTrueArmTheSame)
             {
                 return false;
             }
-            var falseArmTools = _activityParser.FlattenNextNodesInclusive(FalseArm.FirstOrDefault());
-            var otherFalseArmTools = _activityParser.FlattenNextNodesInclusive(other.FalseArm.FirstOrDefault());
-            var isFalseArmArmTheSame = CommonEqualityOps.CollectionEquals(falseArmTools, otherFalseArmTools, new Dev2ActivityComparer());
+            bool isFalseArmArmTheSame = IsFalseArmEqual(other);
             if (!isFalseArmArmTheSame)
             {
                 return false;
@@ -410,6 +424,23 @@ namespace Dev2.Activities
                 && string.Equals(Result, other.Result)
                 && And == other.And
                 && Equals(UniqueID, other.UniqueID);
+        }
+
+        private bool IsFalseArmEqual(DsfDecision other)
+        {
+            var falseArmTools = _activityParser.FlattenNextNodesInclusive(FalseArm?.FirstOrDefault());
+            var otherFalseArmTools = _activityParser.FlattenNextNodesInclusive(other.FalseArm?.FirstOrDefault());
+            var isFalseArmArmTheSame = CommonEqualityOps.CollectionEquals(falseArmTools, otherFalseArmTools, new Dev2ActivityComparer());
+            return isFalseArmArmTheSame;
+        }
+
+        private bool IsTrueArmEqual(DsfDecision other)
+        {
+            var trueArmTools = _activityParser.FlattenNextNodesInclusive(TrueArm?.FirstOrDefault());
+            var otherTrueArmTools = _activityParser.FlattenNextNodesInclusive(other.TrueArm?.FirstOrDefault());
+
+            var isTrueArmTheSame = CommonEqualityOps.CollectionEquals(trueArmTools, otherTrueArmTools, new Dev2ActivityComparer());
+            return isTrueArmTheSame;
         }
 
         public override bool Equals(object obj)

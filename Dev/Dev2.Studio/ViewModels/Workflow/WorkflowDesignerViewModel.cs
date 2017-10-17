@@ -3121,6 +3121,9 @@ namespace Dev2.Studio.ViewModels.Workflow
 
             if (model.HasParent)
             {
+
+
+
                 IMergeToolModel decisionParent = ((MergeToolModel)((CompleteConflict)((CompleteConflict)((MergeToolModel)model)?.Container)?.Parent)?.CurrentViewModel);
 
                 var parentModel = decisionParent?.FlowNode;
