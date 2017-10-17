@@ -22,7 +22,11 @@ namespace Dev2.Activities
         {
             var modelItem = step as ModelItem;
             var currentValue = modelItem?.GetCurrentValue();
-            if (currentValue is null) return default;
+            if (currentValue is null)
+            {
+                return default;
+            }
+
             if (currentValue is FlowStep start)
             {
                 var tool = ParseTools(start, seenActivities);
@@ -56,12 +60,23 @@ namespace Dev2.Activities
 
                 var bbb = vb.Flatten(activity =>
                 {
-                    if (activity.NextNodes != null) return activity.NextNodes;
+                    if (activity.NextNodes != null)
+                    {
+                        return activity.NextNodes;
+                    }
 
                     if (activity is DsfDecision a)
                     {
-                        if (a.TrueArm == null) return a.FalseArm;
-                        if (a.FalseArm == null) return a.TrueArm;
+                        if (a.TrueArm == null)
+                        {
+                            return a.FalseArm;
+                        }
+
+                        if (a.FalseArm == null)
+                        {
+                            return a.TrueArm;
+                        }
+
                         var activities = a.FalseArm.Union(a.TrueArm);
                         return activities;
                     }
@@ -93,12 +108,22 @@ namespace Dev2.Activities
             var dev2Activities = topLevelActivity.NextNodes?.Flatten(activity =>
             {
                 if (activity.NextNodes != null)
+                {
                     return activity.NextNodes;
+                }
 
                 if (activity is DsfDecision a)
                 {
-                    if (a.TrueArm == null) return a.FalseArm;
-                    if (a.FalseArm == null) return a.TrueArm;
+                    if (a.TrueArm == null)
+                    {
+                        return a.FalseArm;
+                    }
+
+                    if (a.FalseArm == null)
+                    {
+                        return a.TrueArm;
+                    }
+
                     var activities = a.FalseArm.Union(a.TrueArm);
                     return activities;
                 }
@@ -152,7 +177,7 @@ namespace Dev2.Activities
         private static List<IDev2Activity> ActivityToFlatList(IDev2Activity decision)
         {
             var truArmToFlatList =
-                decision.NextNodes?.Flatten(activity => activity.NextNodes ?? new List<IDev2Activity>()).ToList() ??
+                decision?.NextNodes?.Flatten(activity => activity.NextNodes ?? new List<IDev2Activity>()).ToList() ??
                 new List<IDev2Activity>();
             var contains = truArmToFlatList.Contains(decision);
             if (!contains)
@@ -199,13 +224,25 @@ namespace Dev2.Activities
         {
 
             if (startNode == null)
+            {
                 return null;
+            }
+
             if (startNode is FlowStep step)
+            {
                 return ParseFlowStep(step, seenActivities);
+            }
+
             if (startNode is FlowDecision node)
+            {
                 return ParseDecision(node, seenActivities);
+            }
+
             if (startNode is FlowSwitch<string> @switch)
+            {
                 return ParseSwitch(@switch, seenActivities);
+            }
+
             return null;
 
         }
@@ -276,9 +313,15 @@ namespace Dev2.Activities
         IEnumerable<IDev2Activity> ParseFlowStep(FlowStep startNode, List<IDev2Activity> seenActivities)
         {
             if (!(startNode.Action is IDev2Activity action))
+            {
                 return null;
+            }
+
             if (seenActivities.Contains(action))
+            {
                 return new List<IDev2Activity> { action };
+            }
+
             if (!seenActivities.Contains(action))
             {
                 seenActivities.Add(action);

@@ -440,15 +440,17 @@ namespace Dev2.ViewModels.Merge
                         remoteCopy.Remove(childDifferent);
                         completeConflict.UniqueId = currentChildChild.UniqueId;
                         completeConflict.CurrentViewModel = childCurrent;
-                        completeConflict.DiffViewModel = childDifferent;
+                        
                         if (completeConflict.CurrentViewModel != null)
                         {
                             completeConflict.CurrentViewModel.Container = completeConflict;
                         }
+                        completeConflict.DiffViewModel = childDifferent;
                         if (completeConflict.DiffViewModel != null)
                         {
                             completeConflict.DiffViewModel.Container = completeConflict;
                         }
+                        
                         completeConflict.Parent = parent;
 
                         if (parent.Children.Any(conflict => conflict.UniqueId.Equals(currentChild.UniqueId)))
@@ -473,7 +475,6 @@ namespace Dev2.ViewModels.Merge
                                 if (childNodes.TryGetValue(mergeToolModel.UniqueId.ToString(), out (ModelItem leftItem, ModelItem rightItem) item))
                                 {
                                     completeConflict.DiffViewModel.FlowNode = item.rightItem;
-                                    completeConflict.CurrentViewModel.FlowNode = item.leftItem;
                                 }
                                 if (parent.Children.Any(conflict => conflict.UniqueId.Equals(currentChild.UniqueId)))
                                 {

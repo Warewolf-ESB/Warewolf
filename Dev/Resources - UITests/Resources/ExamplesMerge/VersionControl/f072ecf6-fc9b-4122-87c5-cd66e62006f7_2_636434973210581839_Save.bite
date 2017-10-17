@@ -1,5 +1,5 @@
 
-<Service ID="af98d638-de68-436d-afec-74bd47efa839" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="MergeHelloWorldWithVersion" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.0.6495.15688">
+<Service ID="af98d638-de68-436d-afec-74bd47efa839" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="MergeHelloWorldWithVersion" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.0.6498.12428">
   <DisplayName>MergeHelloWorldWithVersion</DisplayName>
   <Category>MergeHelloWorldWithVersion</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
