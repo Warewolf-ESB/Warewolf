@@ -20,6 +20,7 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 using Dev2.Common;
+using System.Activities.Statements;
 
 namespace Dev2.Activities
 {
@@ -37,6 +38,24 @@ namespace Dev2.Activities
             UniqueID = _inner.UniqueID;
         }
 
+        public override Dictionary<string, IEnumerable<IDev2Activity>> GetChildrenNodes()
+        {
+            var nextNodes = new Dictionary<string, IEnumerable<IDev2Activity>>();
+            if (TrueArm != null)
+            {
+                var trueNodes = new List<IDev2Activity>();
+                trueNodes.AddRange(TrueArm.Flatten(x=>x.NextNodes));                
+                nextNodes.Add("True", trueNodes);
+            }
+            if (FalseArm != null)
+            {
+                var falseNodes = new List<IDev2Activity>();
+                falseNodes.AddRange(FalseArm.Flatten(x=>x.NextNodes));                
+                nextNodes.Add("False", falseNodes);
+
+            }
+            return nextNodes;
+        }
         public DsfDecision()
         : base("Decision") { }
         /// <summary>
@@ -166,9 +185,9 @@ namespace Dev2.Activities
             return null;
         }
 
-        public Activity<bool> GetFlowNode()
+        public override FlowNode GetFlowNode()
         {
-            return _inner;
+            return new FlowDecision(_inner);
         }
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
