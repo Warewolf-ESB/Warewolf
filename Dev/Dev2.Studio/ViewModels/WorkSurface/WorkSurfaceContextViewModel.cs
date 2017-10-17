@@ -38,11 +38,7 @@ using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.DataList;
 using Dev2.Studio.Interfaces.Enums;
 using Warewolf.Studio.ViewModels;
-
-
-
-
-
+using Dev2.ViewModels;
 
 namespace Dev2.Studio.ViewModels.WorkSurface
 {
@@ -115,6 +111,10 @@ namespace Dev2.Studio.ViewModels.WorkSurface
                 if (WorkSurfaceViewModel is WorkflowDesignerViewModel workflowDesignerViewModel)
                 {
                     return workflowDesignerViewModel.DataListViewModel;
+                }
+                if(WorkSurfaceViewModel is MergeViewModel mergeViewModel)
+                {
+                    return mergeViewModel.DataListViewModel;
                 }
                 return _dataListViewModel;
             }
