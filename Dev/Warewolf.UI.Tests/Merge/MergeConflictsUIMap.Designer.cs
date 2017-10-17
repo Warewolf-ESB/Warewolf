@@ -29,32 +29,7 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
     public partial class MergeConflictsUIMap
     {
         
-        /// <summary>
-        /// AssertMethod1 - Use 'AssertMethod1ExpectedValues' to pass parameters into this method.
-        /// </summary>
-        public void AssertMethod1()
-        {
-            #region Variable Declarations
-            WpfButton splitNamesExpander = this.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.ScrollViewerPane.ConflictsTree.MergeTreeItem2.MergeItemExpander.MergeButton.SplitNamesExpander;
-            #endregion
-
-            // Verify that the 'ControlType' property of 'Dev2.ViewModels.Merge.CompleteConflict' button equals 'Button'
-            Assert.AreEqual(this.AssertMethod1ExpectedValues.SplitNamesExpanderControlType, splitNamesExpander.ControlType.ToString());
-        }
-        
         #region Properties
-        public virtual AssertMethod1ExpectedValues AssertMethod1ExpectedValues
-        {
-            get
-            {
-                if ((this.mAssertMethod1ExpectedValues == null))
-                {
-                    this.mAssertMethod1ExpectedValues = new AssertMethod1ExpectedValues();
-                }
-                return this.mAssertMethod1ExpectedValues;
-            }
-        }
-        
         public MainWindow MainWindow
         {
             get
@@ -93,28 +68,11 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
         #endregion
         
         #region Fields
-        private AssertMethod1ExpectedValues mAssertMethod1ExpectedValues;
-        
         private MainWindow mMainWindow;
         
         private MergeDialogViewWindow mMergeDialogViewWindow;
         
         private UIWarewolfDEV2SANELEMTWindow mUIWarewolfDEV2SANELEMTWindow;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'AssertMethod1'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class AssertMethod1ExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'ControlType' property of 'Dev2.ViewModels.Merge.CompleteConflict' button equals 'Button'
-        /// </summary>
-        public string SplitNamesExpanderControlType = "Button";
         #endregion
     }
     
@@ -1093,6 +1051,23 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
         }
         
         #region Properties
+        public WpfText NoConflicts
+        {
+            get
+            {
+                if ((this.mNoConflicts == null))
+                {
+                    this.mNoConflicts = new WpfText(this);
+                    #region Search Criteria
+                    this.mNoConflicts.SearchProperties[WpfText.PropertyNames.AutomationId] = "MergeToolNoConflictIcon";
+                    this.mNoConflicts.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mNoConflicts.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mNoConflicts;
+            }
+        }
+        
         public WpfRadioButton FirstAssign_Difference
         {
             get
@@ -1129,6 +1104,8 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
         #endregion
         
         #region Fields
+        private WpfText mNoConflicts;
+        
         private WpfRadioButton mFirstAssign_Difference;
         
         private WpfRadioButton mFirstAssign_Current;
@@ -1950,6 +1927,18 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
                 return this.mServerSource;
             }
         }
+        
+        public MergeVariable MergeVariable
+        {
+            get
+            {
+                if ((this.mMergeVariable == null))
+                {
+                    this.mMergeVariable = new MergeVariable(this);
+                }
+                return this.mMergeVariable;
+            }
+        }
         #endregion
         
         #region Fields
@@ -1958,6 +1947,8 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
         private MergeResourceVersionList mMergeResourceVersionList;
         
         private ServerSource mServerSource;
+        
+        private MergeVariable mMergeVariable;
         #endregion
     }
     
@@ -2362,6 +2353,43 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
         
         #region Fields
         private WpfButton mServerDropDown;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class MergeVariable : WpfText
+    {
+        
+        public MergeVariable(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfText.PropertyNames.Name] = "v.1 10172017 075748 Save";
+            this.WindowTitles.Add("MergeDialogView");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfText UIV110172017075748SaveText1
+        {
+            get
+            {
+                if ((this.mUIV110172017075748SaveText1 == null))
+                {
+                    this.mUIV110172017075748SaveText1 = new WpfText(this);
+                    #region Search Criteria
+                    this.mUIV110172017075748SaveText1.SearchProperties[WpfText.PropertyNames.Name] = "v.1 10172017 075748 Save";
+                    this.mUIV110172017075748SaveText1.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
+                    this.mUIV110172017075748SaveText1.WindowTitles.Add("MergeDialogView");
+                    #endregion
+                }
+                return this.mUIV110172017075748SaveText1;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfText mUIV110172017075748SaveText1;
         #endregion
     }
     
