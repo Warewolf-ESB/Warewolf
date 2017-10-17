@@ -5,16 +5,13 @@ using Dev2.Common.Interfaces;
 using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.Practices.Prism.Mvvm;
 using System.Collections.ObjectModel;
-using System.Linq;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.Factory;
 using Dev2.Activities;
 using Dev2.Activities.Designers2.Service;
 using Dev2.Activities.Designers2.Switch;
-using Dev2.Activities.SelectAndApply;
 using Dev2.Common.ExtMethods;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
-using System.Activities.Statements;
 using Caliburn.Micro;
 using Dev2.Common;
 using Dev2.Studio.Interfaces.DataList;
@@ -173,6 +170,7 @@ namespace Dev2.ViewModels.Merge
                     ActivityType = activity.GetFlowNode(),
                     Parent = parentItem,
                     HasParent = parentItem != null,
+                    IsContained = IsContainerTool(parentItem),
                     ParentDescription = parentLableDescription,
                     IsTrueArm = parentLableDescription?.ToLowerInvariant() == "true"                    
                 };
@@ -192,6 +190,19 @@ namespace Dev2.ViewModels.Merge
                 return mergeToolModel;
             }
             return null;
+        }
+
+        private static bool IsContainerTool(IMergeToolModel parentItem)
+        {
+            switch (parentItem?.FlowNode?.ItemType.ToString())
+            {
+                case "DsfForEachActivity":
+                case "DsfSelectAndApply":
+                case "DsfSequenceActivity":
+                    return true;
+                    default:
+                        return false;
+            }
         }
 
         public event ConflictModelChanged SomethingConflictModelChanged;
