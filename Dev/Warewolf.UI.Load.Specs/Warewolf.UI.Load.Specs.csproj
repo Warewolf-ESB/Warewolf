@@ -64,15 +64,10 @@
     <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
-    <Compile Include="StudioShutdown.feature.cs">
+    <Compile Include="StudioStartupShutdown.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>StudioShutdown.feature</DependentUpon>
-    </Compile>
-    <Compile Include="StudioStartup.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>StudioStartup.feature</DependentUpon>
+      <DependentUpon>StudioStartupShutdown.feature</DependentUpon>
     </Compile>
     <Compile Include="UILoad.feature.cs">
       <AutoGen>True</AutoGen>
@@ -89,13 +84,9 @@
     <None Include="App.config" />
     <None Include="GenerateCodedUITestAttributes.ps1" />
     <None Include="packages.config" />
-    <None Include="StudioShutdown.feature">
+    <None Include="StudioStartupShutdown.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>StudioShutdown.feature.cs</LastGenOutput>
-    </None>
-    <None Include="StudioStartup.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>StudioStartup.feature.cs</LastGenOutput>
+      <LastGenOutput>StudioStartupShutdown.cs</LastGenOutput>
     </None>
     <None Include="UILoad.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
