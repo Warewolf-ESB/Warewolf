@@ -14,7 +14,7 @@ namespace Dev2.Studio.Interfaces
         IMergeToolModel GetModel(string switchName = "");
         IMergeToolModel Model { get; set; }
         IDataListViewModel DataListViewModel { get; set; }
-        void GetDataList();
+        void GetDataList(IContextualResourceModel resourceModel);
         event ConflictModelChanged SomethingConflictModelChanged;
     }
 }

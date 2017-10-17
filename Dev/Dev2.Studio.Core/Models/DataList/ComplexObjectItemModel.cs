@@ -288,7 +288,7 @@ namespace Dev2.Studio.Core.Models.DataList
 
         public bool Equals(IComplexObjectItemModel other)
         {
-            var equals = Equals(IsArray, other.IsArray) && CommonEqualityOps.AreObjectsEqual(Parent, other.Parent);
+            var equals = Equals(IsArray, other.IsArray);
             var collectionEquals = CommonEqualityOps.CollectionEquals(Children, other.Children, new ComplexObjectItemModelComparer());
             return base.Equals(other) && equals && collectionEquals;
         }
