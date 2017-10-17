@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Dev2.Interfaces;
+using System.Activities.Statements;
 
 namespace Dev2
 {
@@ -16,5 +17,7 @@ namespace Dev2
         IEnumerable<IDev2Activity> NextNodes { get; set; }
         Guid ActivityId { get; set; }
         List<string> GetOutputs();
+        Dictionary<string, IEnumerable<IDev2Activity>> GetChildrenNodes();
+        FlowNode GetFlowNode();
     }
 }

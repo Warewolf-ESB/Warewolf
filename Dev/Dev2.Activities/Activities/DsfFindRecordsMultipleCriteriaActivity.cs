@@ -143,7 +143,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         {
                             throw new Exception(ErrorResource.FROMAndTORequired);
                         }
-                        ValidateRequiredFields(to, out errorsTo);
+                        ValidateRequiredFields(to, out _errorsTo);
                         var right = env.EvalAsList(to.SearchCriteria, update);
                         IEnumerable<DataStorage.WarewolfAtom> from = new List<DataStorage.WarewolfAtom>();
                         IEnumerable<DataStorage.WarewolfAtom> tovalue = new List<DataStorage.WarewolfAtom>();
