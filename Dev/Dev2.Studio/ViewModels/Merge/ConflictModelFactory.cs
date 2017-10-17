@@ -151,8 +151,6 @@ namespace Dev2.ViewModels.Merge
                 }
                 else
                 {
-                    var resourceId = ModelItemUtils.TryGetResourceID(modelItem);
-                    var childResourceModel = _resourceModel.Environment.ResourceRepository.LoadContextualResourceModel(resourceId);
                     instance = Activator.CreateInstance(actual, modelItem) as ActivityDesignerViewModel;
                 }
 
@@ -187,9 +185,8 @@ namespace Dev2.ViewModels.Merge
                     }
                     foreach (var innerAct in act.Value)
                     {
-                        var parent = mergeToolModel;
-                        var item = GetModel(ModelItemUtils.CreateModelItem(innerAct), innerAct, parent, act.Key);                    
-                        parent.Children.Add(item);
+                        var item = GetModel(ModelItemUtils.CreateModelItem(innerAct), innerAct, mergeToolModel, act.Key);
+                        mergeToolModel.Children.Add(item);
                     }
                 }                
                 return mergeToolModel;

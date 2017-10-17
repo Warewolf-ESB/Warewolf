@@ -49,14 +49,17 @@ namespace Dev2.Activities
 
         public override Dictionary<string,IEnumerable<IDev2Activity>> GetChildrenNodes()
         {
-            var nextNodes = new Dictionary<string, IEnumerable<IDev2Activity>>();
-            if (Default != null)
-            {
-                nextNodes.Add(@"Default",Default.Flatten(x => x.NextNodes));
-            }
+            var nextNodes = new Dictionary<string, IEnumerable<IDev2Activity>>();            
             foreach(var swt in Switches)
             {
-                nextNodes.Add(swt.Key, swt.Value.NextNodes.Flatten(x=>x.NextNodes));
+                var currentAct = swt.Value;
+                var swtChildren = new List<IDev2Activity> { currentAct };
+                swtChildren.AddRange(currentAct.NextNodes.Flatten(x => x.NextNodes));
+                nextNodes.Add(swt.Key, swtChildren);
+            }
+            if (Default != null)
+            {
+                nextNodes.Add(@"Default", Default.Flatten(x => x.NextNodes));
             }
             return nextNodes;
         }
