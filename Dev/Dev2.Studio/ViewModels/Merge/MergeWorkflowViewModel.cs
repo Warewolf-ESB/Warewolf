@@ -258,7 +258,7 @@ namespace Dev2.ViewModels.Merge
         static IMergeToolModel SetPreviousModelTool(LinkedListNode<ICompleteConflict> linkedConflict)
         {
             IMergeToolModel previous = null;
-            var previousValue = linkedConflict.Previous?.Value;            
+            var previousValue = linkedConflict.Previous?.Value ?? linkedConflict.Value.Parent;            
             var previousCurrentViewModel = previousValue?.CurrentViewModel;
             if (previousValue?.Parent != null && previousCurrentViewModel==null)
             {
