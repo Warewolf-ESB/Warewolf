@@ -105,7 +105,7 @@ namespace Warewolf.MergeParser
             _flatCurrentActivities = new List<IDev2Activity>();
             _flatDifferentActivities = new List<IDev2Activity>();
             _conflicts = new List<KeyValuePair<string, bool>>();
-            var conflictList = new List<(Guid uniqueId, IConflictNode currentNode, IConflictNode differenceNode, bool hasConflict)>();
+
             var currentDifferences = GetNodes(current, true);
             var remotedifferences = GetNodes(difference, loadworkflowFromServer);
 
@@ -156,7 +156,15 @@ namespace Warewolf.MergeParser
             var nodesDifferentInMergeHead = currentActivities.Except(differenceActivities, new Dev2ActivityComparer()).ToList();
             var nodesDifferentInHead = differenceActivities.Except(currentActivities, new Dev2ActivityComparer()).ToList();
             var allDifferences = nodesDifferentInMergeHead.Union(nodesDifferentInHead, new Dev2ActivityComparer());
+            IOrderedEnumerable<(Guid uniqueId, IConflictNode currentNode, IConflictNode differenceNode, bool hasConflict)> orderedNodes
+                = BuildOrderedDifferences(allCurentItems, allRemoteItems, equalItems, allDifferences);
+            return orderedNodes.ToList();
+        }
 
+        private IOrderedEnumerable<(Guid uniqueId, IConflictNode currentNode, IConflictNode differenceNode, bool hasConflict)> BuildOrderedDifferences(List<(IDev2Activity, IConflictNode)> allCurentItems,
+            List<(IDev2Activity, IConflictNode)> allRemoteItems, List<IDev2Activity> equalItems, IEnumerable<IDev2Activity> allDifferences)
+        {
+            var conflictList = new List<(Guid uniqueId, IConflictNode currentNode, IConflictNode differenceNode, bool hasConflict)>();
             foreach (var item in equalItems)
             {
                 if (item is null)
@@ -179,7 +187,7 @@ namespace Warewolf.MergeParser
             }
 
             var orderedNodes = conflictList.OrderBy(t => t.currentNode?.TreeIndex ?? t.differenceNode?.TreeIndex);
-            return orderedNodes.ToList();
+            return orderedNodes;
         }
 
         private List<ModelItem> BuildNodeList(ModelItem startNode)
@@ -203,7 +211,7 @@ namespace Warewolf.MergeParser
         private (List<ModelItem> allNodes, List<ModelItem> orderedNodeList, Flowchart flowchartDiff, WorkflowDesigner wd) GetNodes(IContextualResourceModel resourceModel, bool loadFromServer)
         {
             var wd = new WorkflowDesigner();
-            var xaml = resourceModel.IsVersionResource ? resourceModel.Environment?.ProxyLayer?.GetVersion(resourceModel.VersionInfo, resourceModel.ID) : resourceModel.WorkflowXaml;
+            var xaml = resourceModel.WorkflowXaml;
 
             var workspace = GlobalConstants.ServerWorkspaceID;
             if (loadFromServer)

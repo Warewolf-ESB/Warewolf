@@ -3,12 +3,10 @@ using System.Activities;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Linq.Expressions;
 using Dev2.Activities.Debug;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
-using Dev2.Comparer;
 using Dev2.Data.Decisions.Operations;
 using Dev2.Data.SystemTemplates.Models;
 using Dev2.Data.TO;
@@ -19,7 +17,6 @@ using Newtonsoft.Json;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
-using Dev2.Common;
 using System.Activities.Statements;
 
 namespace Dev2.Activities
@@ -31,6 +28,7 @@ namespace Dev2.Activities
         public IEnumerable<IDev2Activity> FalseArm { get; set; }
         public Dev2DecisionStack Conditions { get; set; }
 
+        readonly IActivityParser _activityParser = new ActivityParser();
         readonly DsfFlowDecisionActivity _inner;
         public DsfDecision(DsfFlowDecisionActivity inner) : this()
         {
@@ -149,7 +147,7 @@ namespace Dev2.Activities
             {
                 if (And)
                 {
-                    if(results.Any(b => !b))
+                    if (results.Any(b => !b))
                     {
                         resultval = false;
                     }
@@ -397,14 +395,22 @@ namespace Dev2.Activities
 
         public bool Equals(DsfDecision other)
         {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
-            var isTrueArmTheSame = CommonEqualityOps.CollectionEquals(TrueArm, other.TrueArm, new Dev2ActivityComparer());
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
+            bool isTrueArmTheSame = IsTrueArmEqual(other);
             if (!isTrueArmTheSame)
             {
                 return false;
             }
-            var isFalseArmArmTheSame = CommonEqualityOps.CollectionEquals(FalseArm, other.FalseArm, new Dev2ActivityComparer());
+            bool isFalseArmArmTheSame = IsFalseArmEqual(other);
             if (!isFalseArmArmTheSame)
             {
                 return false;
@@ -418,6 +424,23 @@ namespace Dev2.Activities
                 && string.Equals(Result, other.Result)
                 && And == other.And
                 && Equals(UniqueID, other.UniqueID);
+        }
+
+        private bool IsFalseArmEqual(DsfDecision other)
+        {
+            var falseArmTools = _activityParser.FlattenNextNodesInclusive(FalseArm?.FirstOrDefault());
+            var otherFalseArmTools = _activityParser.FlattenNextNodesInclusive(other.FalseArm?.FirstOrDefault());
+            var isFalseArmArmTheSame = CommonEqualityOps.CollectionEquals(falseArmTools, otherFalseArmTools, new Dev2ActivityComparer());
+            return isFalseArmArmTheSame;
+        }
+
+        private bool IsTrueArmEqual(DsfDecision other)
+        {
+            var trueArmTools = _activityParser.FlattenNextNodesInclusive(TrueArm?.FirstOrDefault());
+            var otherTrueArmTools = _activityParser.FlattenNextNodesInclusive(other.TrueArm?.FirstOrDefault());
+
+            var isTrueArmTheSame = CommonEqualityOps.CollectionEquals(trueArmTools, otherTrueArmTools, new Dev2ActivityComparer());
+            return isTrueArmTheSame;
         }
 
         public override bool Equals(object obj)
