@@ -12,7 +12,49 @@ namespace Warewolf.UI.Tests.Merge
     public class MergeSwitchConflictsTest
     {
         public const string MergeSwitch = "MergeSwitch";
+        [TestMethod]
+        [TestCategory("Merge")]
+        public void RightClick_On_MergeSwitch_Has_Merge_Option()
+        {
+            MergeConflictsUIMap.OpenMerge_For_Workflow(MergeSwitch);
+            Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.Merge.Exists, "Merge option does not show after Right cliking " + MergeSwitch);
+        }
 
+        [TestMethod]
+        [TestCategory("Merge")]
+        public void Click_On_MergeSwitch_Has_Decision_And_Children()
+        {
+            MergeConflictsUIMap.OpenMerge_For_Workflow(MergeSwitch);
+            Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.Merge.Exists, "Merge option does not show after Right cliking " + MergeSwitch);
+            ExplorerUIMap.Click_Merge_From_Context_Menu();
+            Assert.IsTrue(MergeConflictsUIMap.MergeDialogViewWindow.ServerSource.Exists);
+            MergeConflictsUIMap.MergeDialogViewWindow.MergeResourceVersionList.WarewolfStudioViewMoListItem.ItemRadioButton.Selected = true;
+            Mouse.Click(MergeConflictsUIMap.MergeDialogViewWindow.MergeButton);
+            Assert.IsTrue(MergeConflictsUIMap.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.ScrollViewerPane.ConflictsTree.DecisionMergeTreeItem.Exists);
+        }
+
+        [TestMethod]
+        [TestCategory("Merge")]
+        public void Click_On_MergeSwitch__Difference_Decision_Add_Decision_On_Design_Surface()
+        {
+            MergeConflictsUIMap.OpenMerge_For_Workflow(MergeSwitch);
+            ExplorerUIMap.Click_Merge_From_Context_Menu();
+            Mouse.Click(MergeConflictsUIMap.MergeDialogViewWindow.MergeButton);
+            MergeConflictsUIMap.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.ScrollViewerPane.ConflictsTree.DecisionMergeTreeItem.DecisionSubTreeItem.MergeButton.Decision_Diff_RadioButton.Selected = true;
+            Assert.IsTrue(MergeConflictsUIMap.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.UIUserControl_1Custom.UIScrollViewerPane.UIActivityBuilderCustom.UIWorkflowItemPresenteCustom.UIFlowchartCustom.Difference_Decision.Exists, "Dicision from difference was not added to the design surface After checking Radio Button");
+        }
+
+        [TestMethod]
+        [TestCategory("Merge")]
+        public void Expand_MergeSwitch_Difference_Has_2_Assigns()
+        {
+            MergeConflictsUIMap.OpenMerge_For_Workflow(MergeSwitch);
+            ExplorerUIMap.Click_Merge_From_Context_Menu();
+            Mouse.Click(MergeConflictsUIMap.MergeDialogViewWindow.MergeButton);
+            Mouse.Click(MergeConflictsUIMap.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.ScrollViewerPane.ConflictsTree.MergeTreeItem.MergeItemExpander.MergeButton.UIIfNameIsText);
+            Assert.IsTrue(MergeConflictsUIMap.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.ScrollViewerPane.ConflictsTree.MergeTreeItem.MergeItemExpander.ChildrenConflictsTree.FisrtAssign.Exists);
+        }
+        
         #region Additional test attributes
 
         [TestInitialize]
