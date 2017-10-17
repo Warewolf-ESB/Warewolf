@@ -114,7 +114,7 @@ namespace Dev2.Activities
             InitializeDebug(dataObject);
             try
             {
-                allErrors.MergeErrors(errorsTo);
+                allErrors.MergeErrors(_errorsTo);
                 if (dataObject.IsDebugMode())
                 {
                     DebugItem debugItem = new DebugItem();
@@ -174,7 +174,7 @@ namespace Dev2.Activities
                             headersEntries, TimeoutSeconds == 0 ? Timeout.Infinite : TimeoutSeconds * 1000  // important to list the parameter name here to see the conversion from seconds to milliseconds
                             );
 
-                        allErrors.MergeErrors(errorsTo);
+                        allErrors.MergeErrors(_errorsTo);
                         PushResultsToDataList(Result, result, dataObject, update == 0 ? counter : update);
                         counter++;
                     }                    

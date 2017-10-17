@@ -50,7 +50,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
     public abstract class DsfNativeActivity<T> : NativeActivity<T>, IDev2ActivityIOMapping, IEquatable<DsfNativeActivity<T>>
     {
-        protected ErrorResultTO errorsTo;
+        protected ErrorResultTO _errorsTo;
         [GeneralSettings("IsSimulationEnabled")]
         public bool IsSimulationEnabled { get; set; }
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -75,7 +75,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         [FindMissing]
         public string OnErrorWorkflow { get; set; }
         public bool IsEndedOnError { get; set; }
+#pragma warning disable IDE1006 // Naming Styles
         protected Variable<Guid> DataListExecutionID = new Variable<Guid>();
+#pragma warning restore IDE1006 // Naming Styles
         protected List<DebugItem> _debugInputs = new List<DebugItem>(10000);
         protected List<DebugItem> _debugOutputs = new List<DebugItem>(10000);
 
