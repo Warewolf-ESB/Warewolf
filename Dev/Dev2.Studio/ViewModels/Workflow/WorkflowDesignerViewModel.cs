@@ -3293,12 +3293,34 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
             var flowNode = nodes.FirstOrDefault(t =>
             {
-                return t.Properties["UniqueId"] == modelItem.Properties["UniqueId"];
+                var prop = t.Properties["Action"];
+                if (prop != null)
+                {
+                    var act = t.Properties["Action"]?.ComputedValue as IDev2Activity;
+                    return act.UniqueID == modelItem.Properties["UniqueID"].ComputedValue.ToString();
+                }
+            
+                var propertyName = string.Empty;
+                switch (t.ItemType.Name)
+                {
+                    case "FlowDecision":
+                        propertyName = "Condition";
+                        break;
+                    case "FlowSwitch`1":
+                        propertyName = "Expression";
+                        break;                    
+                }
+                if (!string.IsNullOrEmpty(propertyName))
+                {
+                    var act = t.Properties[propertyName]?.ComputedValue as IDev2Activity;
+                    return act.UniqueID == modelItem.Properties["UniqueID"].ToString();
+                }
+                return false;
             });
             var modelProperty = flowNode.Properties["Action"];
             if (modelProperty != null)
             {
-                flowNode.Properties["Action"]?.SetValue(modelItem.Properties["Action"]);
+                flowNode.Properties["Action"]?.SetValue(modelItem);
             }
             else
             {
@@ -3316,7 +3338,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 }
                 if (!string.IsNullOrEmpty(propertyName))
                 {
-                    flowNode.Properties[propertyName]?.SetValue(modelItem.Properties[propertyName]);
+                    flowNode.Properties[propertyName]?.SetValue(modelItem.Properties[propertyName]?.ComputedValue);
                 }
             }
 
