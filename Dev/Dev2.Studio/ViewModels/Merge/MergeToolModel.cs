@@ -24,6 +24,7 @@ namespace Dev2.ViewModels.Merge
         private Guid _uniqueId;
         private FlowNode _activityType;
         private IMergeToolModel _parent;
+        private bool _isContained;
 
         public MergeToolModel()
         {
@@ -81,6 +82,16 @@ namespace Dev2.ViewModels.Merge
             {
                 _isMergeVisible = value;
                 OnPropertyChanged(() => IsMergeVisible);
+            }
+        }
+
+        public bool IsContained
+        {
+            get => _isContained;
+            set
+            {
+                _isContained = value;
+                OnPropertyChanged(() => IsContained);
             }
         }
 
