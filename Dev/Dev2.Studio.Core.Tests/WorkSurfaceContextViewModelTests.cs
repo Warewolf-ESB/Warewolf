@@ -1135,6 +1135,10 @@ namespace Dev2.Core.Tests
 
         #endregion
 
+        public void UpdateModelItem(ModelItem modelItem)
+        {
+
+        }
         public object SelectedModelItem
         {
             get { throw new NotImplementedException(); }

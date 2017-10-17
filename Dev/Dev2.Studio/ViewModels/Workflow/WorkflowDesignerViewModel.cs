@@ -3281,7 +3281,47 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-        private void AddNextNode(IMergeToolModel previous, IMergeToolModel model, ModelItemCollection nodes, FlowNode flowNode, IMergeToolModel next)
+        public void UpdateModelItem(ModelItem modelItem)
+        {
+
+            var root = _wd.Context.Services.GetService<ModelService>().Root;
+            var chart = _wd.Context.Services.GetService<ModelService>().Find(root, typeof(Flowchart)).FirstOrDefault();
+            var nodes = chart?.Properties["Nodes"]?.Collection;
+            if (nodes == null)
+            {
+                return;
+            }
+            var flowNode = nodes.FirstOrDefault(t =>
+            {
+                return t.Properties["UniqueId"] == modelItem.Properties["UniqueId"];
+            });
+            var modelProperty = flowNode.Properties["Action"];
+            if (modelProperty != null)
+            {
+                flowNode.Properties["Action"]?.SetValue(modelItem.Properties["Action"]);
+            }
+            else
+            {
+                var propertyName = string.Empty;
+                switch (flowNode.ItemType.Name)
+                {
+                    case "FlowDecision":
+                        propertyName = "Condition";
+                        break;
+                    case "FlowSwitch`1":
+                        propertyName = "Expression";
+                        break;
+                    default:
+                        break;
+                }
+                if (!string.IsNullOrEmpty(propertyName))
+                {
+                    flowNode.Properties[propertyName]?.SetValue(modelItem.Properties[propertyName]);
+                }
+            }
+
+        }
+        void AddNextNode(IMergeToolModel previous, IMergeToolModel model, ModelItemCollection nodes, FlowNode flowNode, IMergeToolModel next)
         {
             if (previous != null)
             {
@@ -3352,7 +3392,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-        private void AddStartNode(FlowNode flowNode, ModelProperty startNode)
+        void AddStartNode(FlowNode flowNode, ModelProperty startNode)
         {
             if (flowNode == null)
             {
