@@ -901,6 +901,17 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
+        public override Dictionary<string, IEnumerable<IDev2Activity>> GetChildrenNodes()
+        {
+            var act = DataFunc.Handler as IDev2ActivityIOMapping;
+            if (act == null)
+            {
+                return new Dictionary<string, IEnumerable<IDev2Activity>>();
+            }
+            var nextNodes = new Dictionary<string, IEnumerable<IDev2Activity>> { { act?.GetDisplayName() ?? "", new List<IDev2Activity> { act } } };           
+            return nextNodes;
+        }
+
         private static void GetFinalTestRunResult(IServiceTestStep serviceTestStep, TestRunResult testRunResult)
         {
             var nonPassingSteps = serviceTestStep.Children?.Where(step => step.Type != StepType.Mock && step.Result?.RunTestResult != RunResult.TestPassed).ToList();

@@ -19,5 +19,6 @@ namespace Dev2
         List<string> GetOutputs();
         Dictionary<string, IEnumerable<IDev2Activity>> GetChildrenNodes();
         FlowNode GetFlowNode();
+        string GetDisplayName();
     }
 }
