@@ -5,7 +5,7 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
 {
     public partial class MergeConflictsUIMap
     {
-        public void OpenMerge_For_MergWfWithVersion(string workflow)
+        public void OpenMerge_For_Workflow(string workflow)
         {
             RightClick_On_MergeWfWithVersion(workflow);
             ExplorerUIMap.Click_Merge_From_Context_Menu();

@@ -1004,6 +1004,118 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
         }
         
         #region Properties
+        public ChildrenConflictsTree1 ChildrenConflictsTree
+        {
+            get
+            {
+                if ((this.mChildrenConflictsTree == null))
+                {
+                    this.mChildrenConflictsTree = new ChildrenConflictsTree1(this);
+                }
+                return this.mChildrenConflictsTree;
+            }
+        }
+        
+        public MergeButton3 MergeButton
+        {
+            get
+            {
+                if ((this.mMergeButton == null))
+                {
+                    this.mMergeButton = new MergeButton3(this);
+                }
+                return this.mMergeButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private ChildrenConflictsTree1 mChildrenConflictsTree;
+        
+        private MergeButton3 mMergeButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class ChildrenConflictsTree1 : WpfTree
+    {
+        
+        public ChildrenConflictsTree1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTree.PropertyNames.AutomationId] = "UI_TreeViewExpanderTemplateChildTreeView_AutoID";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public FisrtAssign1 FisrtAssign
+        {
+            get
+            {
+                if ((this.mFisrtAssign == null))
+                {
+                    this.mFisrtAssign = new FisrtAssign1(this);
+                }
+                return this.mFisrtAssign;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private FisrtAssign1 mFisrtAssign;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class FisrtAssign1 : WpfTreeItem
+    {
+        
+        public FisrtAssign1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public MergeExpander1 MergeExpander
+        {
+            get
+            {
+                if ((this.mMergeExpander == null))
+                {
+                    this.mMergeExpander = new MergeExpander1(this);
+                }
+                return this.mMergeExpander;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private MergeExpander1 mMergeExpander;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class MergeExpander1 : WpfExpander
+    {
+        
+        public MergeExpander1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfExpander.PropertyNames.AutomationId] = "TreeViewExpander";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
         public MergeButton2 MergeButton
         {
             get
@@ -1027,6 +1139,63 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
     {
         
         public MergeButton2(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfButton.PropertyNames.AutomationId] = "HeaderSite";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfRadioButton FisrAssign_Curr_RadioButton
+        {
+            get
+            {
+                if ((this.mFisrAssign_Curr_RadioButton == null))
+                {
+                    this.mFisrAssign_Curr_RadioButton = new WpfRadioButton(this);
+                    #region Search Criteria
+                    this.mFisrAssign_Curr_RadioButton.SearchProperties[WpfRadioButton.PropertyNames.AutomationId] = "UI_TreeViewExpanderCurrentHeaderRB_AutoID";
+                    this.mFisrAssign_Curr_RadioButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mFisrAssign_Curr_RadioButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mFisrAssign_Curr_RadioButton;
+            }
+        }
+        
+        public WpfRadioButton FirstAssign_Diff_RadioButton
+        {
+            get
+            {
+                if ((this.mFirstAssign_Diff_RadioButton == null))
+                {
+                    this.mFirstAssign_Diff_RadioButton = new WpfRadioButton(this);
+                    #region Search Criteria
+                    this.mFirstAssign_Diff_RadioButton.SearchProperties[WpfRadioButton.PropertyNames.AutomationId] = "UI_TreeViewExpanderDifferenceHeaderRB_AutoID";
+                    this.mFirstAssign_Diff_RadioButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mFirstAssign_Diff_RadioButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mFirstAssign_Diff_RadioButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfRadioButton mFisrAssign_Curr_RadioButton;
+        
+        private WpfRadioButton mFirstAssign_Diff_RadioButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class MergeButton3 : WpfButton
+    {
+        
+        public MergeButton3(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -1087,6 +1256,23 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
                 return this.mFirstAssign_Current;
             }
         }
+        
+        public WpfText UIIfNameIsText
+        {
+            get
+            {
+                if ((this.mUIIfNameIsText == null))
+                {
+                    this.mUIIfNameIsText = new WpfText(this);
+                    #region Search Criteria
+                    this.mUIIfNameIsText.SearchProperties[WpfText.PropertyNames.AutomationId] = "UI_TreeViewExpanderCurrentHeaderDescText_AutoID";
+                    this.mUIIfNameIsText.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mUIIfNameIsText.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mUIIfNameIsText;
+            }
+        }
         #endregion
         
         #region Fields
@@ -1095,6 +1281,8 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
         private WpfRadioButton mFirstAssign_Difference;
         
         private WpfRadioButton mFirstAssign_Current;
+        
+        private WpfText mUIIfNameIsText;
         #endregion
     }
     
@@ -1146,25 +1334,25 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
         }
         
         #region Properties
-        public MergeButton3 MergeButton
+        public MergeButton4 MergeButton
         {
             get
             {
                 if ((this.mMergeButton == null))
                 {
-                    this.mMergeButton = new MergeButton3(this);
+                    this.mMergeButton = new MergeButton4(this);
                 }
                 return this.mMergeButton;
             }
         }
         
-        public ChildrenConflictsTree1 ChildrenConflictsTree
+        public ChildrenConflictsTree2 ChildrenConflictsTree
         {
             get
             {
                 if ((this.mChildrenConflictsTree == null))
                 {
-                    this.mChildrenConflictsTree = new ChildrenConflictsTree1(this);
+                    this.mChildrenConflictsTree = new ChildrenConflictsTree2(this);
                 }
                 return this.mChildrenConflictsTree;
             }
@@ -1172,17 +1360,17 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
         #endregion
         
         #region Fields
-        private MergeButton3 mMergeButton;
+        private MergeButton4 mMergeButton;
         
-        private ChildrenConflictsTree1 mChildrenConflictsTree;
+        private ChildrenConflictsTree2 mChildrenConflictsTree;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class MergeButton3 : WpfButton
+    public class MergeButton4 : WpfButton
     {
         
-        public MergeButton3(UITestControl searchLimitContainer) : 
+        public MergeButton4(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -1274,10 +1462,10 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
     }
     
     [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class ChildrenConflictsTree1 : WpfTree
+    public class ChildrenConflictsTree2 : WpfTree
     {
         
-        public ChildrenConflictsTree1(UITestControl searchLimitContainer) : 
+        public ChildrenConflictsTree2(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -1320,13 +1508,13 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
         }
         
         #region Properties
-        public MergeExpander1 MergeExpander
+        public MergeExpander2 MergeExpander
         {
             get
             {
                 if ((this.mMergeExpander == null))
                 {
-                    this.mMergeExpander = new MergeExpander1(this);
+                    this.mMergeExpander = new MergeExpander2(this);
                 }
                 return this.mMergeExpander;
             }
@@ -1334,15 +1522,15 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
         #endregion
         
         #region Fields
-        private MergeExpander1 mMergeExpander;
+        private MergeExpander2 mMergeExpander;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class MergeExpander1 : WpfExpander
+    public class MergeExpander2 : WpfExpander
     {
         
-        public MergeExpander1(UITestControl searchLimitContainer) : 
+        public MergeExpander2(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -1353,13 +1541,13 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
         }
         
         #region Properties
-        public MergeButton4 MergeButton
+        public MergeButton5 MergeButton
         {
             get
             {
                 if ((this.mMergeButton == null))
                 {
-                    this.mMergeButton = new MergeButton4(this);
+                    this.mMergeButton = new MergeButton5(this);
                 }
                 return this.mMergeButton;
             }
@@ -1367,15 +1555,15 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
         #endregion
         
         #region Fields
-        private MergeButton4 mMergeButton;
+        private MergeButton5 mMergeButton;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class MergeButton4 : WpfButton
+    public class MergeButton5 : WpfButton
     {
         
-        public MergeButton4(UITestControl searchLimitContainer) : 
+        public MergeButton5(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -1495,13 +1683,13 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
         }
         
         #region Properties
-        public MergeButton5 MergeButton
+        public MergeButton6 MergeButton
         {
             get
             {
                 if ((this.mMergeButton == null))
                 {
-                    this.mMergeButton = new MergeButton5(this);
+                    this.mMergeButton = new MergeButton6(this);
                 }
                 return this.mMergeButton;
             }
@@ -1509,15 +1697,15 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
         #endregion
         
         #region Fields
-        private MergeButton5 mMergeButton;
+        private MergeButton6 mMergeButton;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class MergeButton5 : WpfButton
+    public class MergeButton6 : WpfButton
     {
         
-        public MergeButton5(UITestControl searchLimitContainer) : 
+        public MergeButton6(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -1913,30 +2101,6 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
                 return this.mServerSource;
             }
         }
-        
-        public MergeVariable MergeVariable
-        {
-            get
-            {
-                if ((this.mMergeVariable == null))
-                {
-                    this.mMergeVariable = new MergeVariable(this);
-                }
-                return this.mMergeVariable;
-            }
-        }
-        
-        public DecisionUIV310162017073805 DecisionUIV310162017073805
-        {
-            get
-            {
-                if ((this.mDecisionUIV310162017073805 == null))
-                {
-                    this.mDecisionUIV310162017073805 = new DecisionUIV310162017073805(this);
-                }
-                return this.mDecisionUIV310162017073805;
-            }
-        }
         #endregion
         
         #region Fields
@@ -1945,10 +2109,6 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
         private MergeResourceVersionList mMergeResourceVersionList;
         
         private ServerSource mServerSource;
-        
-        private MergeVariable mMergeVariable;
-        
-        private DecisionUIV310162017073805 mDecisionUIV310162017073805;
         #endregion
     }
     
@@ -2637,80 +2797,6 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
         
         #region Fields
         private WpfButton mServerDropDown;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class MergeVariable : WpfText
-    {
-        
-        public MergeVariable(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfText.PropertyNames.Name] = "v.1 10172017 075748 Save";
-            this.WindowTitles.Add("MergeDialogView");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfText UIV110172017075748SaveText1
-        {
-            get
-            {
-                if ((this.mUIV110172017075748SaveText1 == null))
-                {
-                    this.mUIV110172017075748SaveText1 = new WpfText(this);
-                    #region Search Criteria
-                    this.mUIV110172017075748SaveText1.SearchProperties[WpfText.PropertyNames.Name] = "v.1 10172017 075748 Save";
-                    this.mUIV110172017075748SaveText1.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
-                    this.mUIV110172017075748SaveText1.WindowTitles.Add("MergeDialogView");
-                    #endregion
-                }
-                return this.mUIV110172017075748SaveText1;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfText mUIV110172017075748SaveText1;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class DecisionUIV310162017073805 : WpfText
-    {
-        
-        public DecisionUIV310162017073805(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfText.PropertyNames.Name] = "v.3 10162017 073805 Save";
-            this.WindowTitles.Add("MergeDialogView");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfText UIV310162017073805SaveText1
-        {
-            get
-            {
-                if ((this.mUIV310162017073805SaveText1 == null))
-                {
-                    this.mUIV310162017073805SaveText1 = new WpfText(this);
-                    #region Search Criteria
-                    this.mUIV310162017073805SaveText1.SearchProperties[WpfText.PropertyNames.Name] = "v.3 10162017 073805 Save";
-                    this.mUIV310162017073805SaveText1.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
-                    this.mUIV310162017073805SaveText1.WindowTitles.Add("MergeDialogView");
-                    #endregion
-                }
-                return this.mUIV310162017073805SaveText1;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfText mUIV310162017073805SaveText1;
         #endregion
     }
 }

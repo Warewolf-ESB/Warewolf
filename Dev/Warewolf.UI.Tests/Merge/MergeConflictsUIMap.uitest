@@ -490,6 +490,90 @@
                                                           </AndCondition>
                                                           <SupportLevel>0</SupportLevel>
                                                           <Descendants>
+                                                            <UIObject ControlType="Tree" Id="ChildrenConflictsTree" FriendlyName="ChildrenConflictsTree" SpecialControlType="None">
+                                                              <TechnologyName>UIA</TechnologyName>
+                                                              <WindowTitles>
+                                                                <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                              </WindowTitles>
+                                                              <AndCondition>
+                                                                <PropertyCondition Name="ControlType">Tree</PropertyCondition>
+                                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                <PropertyCondition Name="AutomationId">UI_TreeViewExpanderTemplateChildTreeView_AutoID</PropertyCondition>
+                                                              </AndCondition>
+                                                              <SupportLevel>0</SupportLevel>
+                                                              <Descendants>
+                                                                <UIObject ControlType="TreeItem" Id="FisrtAssign" FriendlyName="" SpecialControlType="None">
+                                                                  <TechnologyName>UIA</TechnologyName>
+                                                                  <WindowTitles>
+                                                                    <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                                  </WindowTitles>
+                                                                  <SearchConfigurations>
+                                                                    <SearchConfiguration>Expand</SearchConfiguration>
+                                                                  </SearchConfigurations>
+                                                                  <AndCondition>
+                                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                    <PropertyCondition Name="ControlType">TreeItem</PropertyCondition>
+                                                                  </AndCondition>
+                                                                  <SupportLevel>0</SupportLevel>
+                                                                  <Descendants>
+                                                                    <UIObject ControlType="Expander" Id="MergeExpander" FriendlyName="Dev2.ViewModels.Merge.CompleteConflict" SpecialControlType="None">
+                                                                      <TechnologyName>UIA</TechnologyName>
+                                                                      <WindowTitles>
+                                                                        <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                                      </WindowTitles>
+                                                                      <AndCondition>
+                                                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                        <PropertyCondition Name="ControlType">Expander</PropertyCondition>
+                                                                        <PropertyCondition Name="AutomationId">TreeViewExpander</PropertyCondition>
+                                                                      </AndCondition>
+                                                                      <SupportLevel>0</SupportLevel>
+                                                                      <Descendants>
+                                                                        <UIObject ControlType="Button" Id="MergeButton" FriendlyName="Dev2.ViewModels.Merge.CompleteConflict" SpecialControlType="None">
+                                                                          <TechnologyName>UIA</TechnologyName>
+                                                                          <WindowTitles>
+                                                                            <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                                          </WindowTitles>
+                                                                          <AndCondition>
+                                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                            <PropertyCondition Name="ControlType">Button</PropertyCondition>
+                                                                            <PropertyCondition Name="AutomationId">HeaderSite</PropertyCondition>
+                                                                          </AndCondition>
+                                                                          <SupportLevel>0</SupportLevel>
+                                                                          <Descendants>
+                                                                            <UIObject ControlType="RadioButton" Id="FisrAssign_Curr_RadioButton" FriendlyName="UI_TreeViewExpanderCurrentHeaderRB_AutoID" SpecialControlType="None">
+                                                                              <TechnologyName>UIA</TechnologyName>
+                                                                              <WindowTitles>
+                                                                                <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                                              </WindowTitles>
+                                                                              <AndCondition>
+                                                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                                <PropertyCondition Name="ControlType">RadioButton</PropertyCondition>
+                                                                                <PropertyCondition Name="AutomationId">UI_TreeViewExpanderCurrentHeaderRB_AutoID</PropertyCondition>
+                                                                              </AndCondition>
+                                                                              <SupportLevel>0</SupportLevel>
+                                                                              <Descendants />
+                                                                            </UIObject>
+                                                                            <UIObject ControlType="RadioButton" Id="FirstAssign_Diff_RadioButton" FriendlyName="UI_TreeViewExpanderDifferenceHeaderRB_AutoID" SpecialControlType="None">
+                                                                              <TechnologyName>UIA</TechnologyName>
+                                                                              <WindowTitles>
+                                                                                <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                                              </WindowTitles>
+                                                                              <AndCondition>
+                                                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                                <PropertyCondition Name="ControlType">RadioButton</PropertyCondition>
+                                                                                <PropertyCondition Name="AutomationId">UI_TreeViewExpanderDifferenceHeaderRB_AutoID</PropertyCondition>
+                                                                              </AndCondition>
+                                                                              <SupportLevel>0</SupportLevel>
+                                                                              <Descendants />
+                                                                            </UIObject>
+                                                                          </Descendants>
+                                                                        </UIObject>
+                                                                      </Descendants>
+                                                                    </UIObject>
+                                                                  </Descendants>
+                                                                </UIObject>
+                                                              </Descendants>
+                                                            </UIObject>
                                                             <UIObject ControlType="Button" Id="MergeButton" FriendlyName="Dev2.ViewModels.Merge.CompleteConflict" SpecialControlType="None">
                                                               <TechnologyName>UIA</TechnologyName>
                                                               <WindowTitles>
@@ -537,6 +621,19 @@
                                                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                                     <PropertyCondition Name="ControlType">RadioButton</PropertyCondition>
                                                                     <PropertyCondition Name="AutomationId">UI_TreeViewExpanderCurrentHeaderRB_AutoID</PropertyCondition>
+                                                                  </AndCondition>
+                                                                  <SupportLevel>0</SupportLevel>
+                                                                  <Descendants />
+                                                                </UIObject>
+                                                                <UIObject ControlType="Text" Id="UIIfNameIsText" FriendlyName="If [[Name]] Is = " SpecialControlType="None">
+                                                                  <TechnologyName>UIA</TechnologyName>
+                                                                  <WindowTitles>
+                                                                    <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                                  </WindowTitles>
+                                                                  <AndCondition>
+                                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                    <PropertyCondition Name="ControlType">Text</PropertyCondition>
+                                                                    <PropertyCondition Name="AutomationId">UI_TreeViewExpanderCurrentHeaderDescText_AutoID</PropertyCondition>
                                                                   </AndCondition>
                                                                   <SupportLevel>0</SupportLevel>
                                                                   <Descendants />
@@ -1410,66 +1507,6 @@
                       <Descendants />
                     </UIObject>
                   </Descendants>
-                </UIObject>
-              </Descendants>
-            </UIObject>
-            <UIObject ControlType="Text" Id="MergeVariable" FriendlyName="v.1 10172017 075748 Save" SpecialControlType="None">
-              <TechnologyName>UIA</TechnologyName>
-              <WindowTitles>
-                <WindowTitle>MergeDialogView</WindowTitle>
-              </WindowTitles>
-              <AndCondition>
-                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                <PropertyCondition Name="ControlType">Text</PropertyCondition>
-                <PropertyCondition Name="Name">v.1 10172017 075748 Save</PropertyCondition>
-              </AndCondition>
-              <SupportLevel>0</SupportLevel>
-              <Descendants>
-                <UIObject ControlType="Text" Id="UIV110172017075748SaveText1" FriendlyName="v.1 10172017 075748 Save" SpecialControlType="None">
-                  <TechnologyName>UIA</TechnologyName>
-                  <WindowTitles>
-                    <WindowTitle>MergeDialogView</WindowTitle>
-                  </WindowTitles>
-                  <SearchConfigurations>
-                    <SearchConfiguration>Distinct</SearchConfiguration>
-                  </SearchConfigurations>
-                  <AndCondition>
-                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                    <PropertyCondition Name="ControlType">Text</PropertyCondition>
-                    <PropertyCondition Name="Name">v.1 10172017 075748 Save</PropertyCondition>
-                  </AndCondition>
-                  <SupportLevel>0</SupportLevel>
-                  <Descendants />
-                </UIObject>
-              </Descendants>
-            </UIObject>
-            <UIObject ControlType="Text" Id="DecisionUIV310162017073805" FriendlyName="v.3 10162017 073805 Save" SpecialControlType="None">
-              <TechnologyName>UIA</TechnologyName>
-              <WindowTitles>
-                <WindowTitle>MergeDialogView</WindowTitle>
-              </WindowTitles>
-              <AndCondition>
-                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                <PropertyCondition Name="ControlType">Text</PropertyCondition>
-                <PropertyCondition Name="Name">v.3 10162017 073805 Save</PropertyCondition>
-              </AndCondition>
-              <SupportLevel>0</SupportLevel>
-              <Descendants>
-                <UIObject ControlType="Text" Id="UIV310162017073805SaveText1" FriendlyName="v.3 10162017 073805 Save" SpecialControlType="None">
-                  <TechnologyName>UIA</TechnologyName>
-                  <WindowTitles>
-                    <WindowTitle>MergeDialogView</WindowTitle>
-                  </WindowTitles>
-                  <SearchConfigurations>
-                    <SearchConfiguration>Distinct</SearchConfiguration>
-                  </SearchConfigurations>
-                  <AndCondition>
-                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                    <PropertyCondition Name="ControlType">Text</PropertyCondition>
-                    <PropertyCondition Name="Name">v.3 10162017 073805 Save</PropertyCondition>
-                  </AndCondition>
-                  <SupportLevel>0</SupportLevel>
-                  <Descendants />
                 </UIObject>
               </Descendants>
             </UIObject>
