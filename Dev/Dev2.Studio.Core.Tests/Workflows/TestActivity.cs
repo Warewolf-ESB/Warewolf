@@ -37,6 +37,10 @@ namespace Dev2.Core.Tests.Workflows
             return new List<string>();
         }
 
+        public string GetDisplayName()
+        {
+            return "";
+        }
         public Dictionary<string, IEnumerable<IDev2Activity>> GetChildrenNodes() => throw new NotImplementedException();
         public FlowNode GetFlowNode() => throw new NotImplementedException();
     }
@@ -54,7 +58,10 @@ namespace Dev2.Core.Tests.Workflows
         {
             return null;
         }
-
+        public string GetDisplayName()
+        {
+            return "";
+        }
         public IEnumerable<IDev2Activity> NextNodes { get; set; }
         public Guid ActivityId { get; set; }
         public List<string> GetOutputs()

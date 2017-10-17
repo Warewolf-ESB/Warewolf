@@ -44,5 +44,6 @@ namespace Dev2.Studio.Interfaces
         void RemoveItem(IMergeToolModel model);
         void AddItem(IMergeToolModel previous, IMergeToolModel model,IMergeToolModel next);
         void RemoveStartNodeConnection();
+        void UpdateModelItem(ModelItem modelItem);
     }
 }
