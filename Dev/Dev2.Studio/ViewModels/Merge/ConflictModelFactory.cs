@@ -153,21 +153,12 @@ namespace Dev2.ViewModels.Merge
                 {
                     instance = Activator.CreateInstance(actual, modelItem) as ActivityDesignerViewModel;
                 }
-
-                var dsfActivity = activityType.GetProperty("DisplayName")?.GetValue(currentValue);
-                if (currentValue is DsfDecision decision)
-                {
-                    dsfActivity = decision.Conditions.DisplayText;
-                }
-                if (currentValue is DsfSwitch switchActivity)
-                {
-                    dsfActivity = switchActivity.Switch;
-                }
+                
                 var mergeToolModel = new MergeToolModel
                 {
                     ActivityDesignerViewModel = instance,
                     MergeIcon = modelItem.GetImageSourceForTool(),
-                    MergeDescription = dsfActivity?.ToString(),
+                    MergeDescription = activity.GetDisplayName(),
                     UniqueId = currentValue.UniqueID.ToGuid(),
                     IsMergeVisible = true,
                     ActivityType = activity.GetFlowNode(),
@@ -184,7 +175,7 @@ namespace Dev2.ViewModels.Merge
                         continue;
                     }
                     foreach (var innerAct in act.Value)
-                    {
+                    {                        
                         var item = GetModel(ModelItemUtils.CreateModelItem(innerAct), innerAct, mergeToolModel, act.Key);
                         mergeToolModel.Children.Add(item);
                     }

@@ -39,6 +39,17 @@ namespace Dev2.Activities.SelectAndApply
             };
         }
 
+        public override Dictionary<string, IEnumerable<IDev2Activity>> GetChildrenNodes()
+        {
+            var act = ApplyActivityFunc.Handler as IDev2ActivityIOMapping;
+            if(act==null)
+            {
+                return new Dictionary<string, IEnumerable<IDev2Activity>>();
+            }
+            var nextNodes = new Dictionary<string, IEnumerable<IDev2Activity>> { { act?.GetDisplayName() ?? "", new List<IDev2Activity> { act } } };
+            return nextNodes;
+        }
+
         public override List<string> GetOutputs()
         {
             return new List<string>();
