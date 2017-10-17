@@ -113,6 +113,10 @@ namespace Dev2.ViewModels.Merge
                 {
                     var factoryA = new ConflictModelFactory(currentChange.currentNode, currentResourceModel);
                     conflict.CurrentViewModel = factoryA.Model;
+                    factoryA.OnModelItemChanged += (modelItem) =>
+                    {
+                        WorkflowDesignerViewModel.UpdateModelItem(modelItem);
+                    };
                     conflict.CurrentViewModel.Container = conflict;
                     conflict.CurrentViewModel.FlowNode = currentChange.currentNode.CurrentFlowStep;
                     conflict.CurrentViewModel.NodeLocation = currentChange.currentNode.NodeLocation;

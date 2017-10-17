@@ -3281,7 +3281,69 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-        private void AddNextNode(IMergeToolModel previous, IMergeToolModel model, ModelItemCollection nodes, FlowNode flowNode, IMergeToolModel next)
+        public void UpdateModelItem(ModelItem modelItem)
+        {
+
+            var root = _wd.Context.Services.GetService<ModelService>().Root;
+            var chart = _wd.Context.Services.GetService<ModelService>().Find(root, typeof(Flowchart)).FirstOrDefault();
+            var nodes = chart?.Properties["Nodes"]?.Collection;
+            if (nodes == null)
+            {
+                return;
+            }
+            var flowNode = nodes.FirstOrDefault(t =>
+            {
+                var prop = t.Properties["Action"];
+                if (prop != null)
+                {
+                    var act = t.Properties["Action"]?.ComputedValue as IDev2Activity;
+                    return act.UniqueID == modelItem.Properties["UniqueID"].ComputedValue.ToString();
+                }
+            
+                var propertyName = string.Empty;
+                switch (t.ItemType.Name)
+                {
+                    case "FlowDecision":
+                        propertyName = "Condition";
+                        break;
+                    case "FlowSwitch`1":
+                        propertyName = "Expression";
+                        break;                    
+                }
+                if (!string.IsNullOrEmpty(propertyName))
+                {
+                    var act = t.Properties[propertyName]?.ComputedValue as IDev2Activity;
+                    return act.UniqueID == modelItem.Properties["UniqueID"].ToString();
+                }
+                return false;
+            });
+            var modelProperty = flowNode.Properties["Action"];
+            if (modelProperty != null)
+            {
+                flowNode.Properties["Action"]?.SetValue(modelItem);
+            }
+            else
+            {
+                var propertyName = string.Empty;
+                switch (flowNode.ItemType.Name)
+                {
+                    case "FlowDecision":
+                        propertyName = "Condition";
+                        break;
+                    case "FlowSwitch`1":
+                        propertyName = "Expression";
+                        break;
+                    default:
+                        break;
+                }
+                if (!string.IsNullOrEmpty(propertyName))
+                {
+                    flowNode.Properties[propertyName]?.SetValue(modelItem.Properties[propertyName]?.ComputedValue);
+                }
+            }
+
+        }
+        void AddNextNode(IMergeToolModel previous, IMergeToolModel model, ModelItemCollection nodes, FlowNode flowNode, IMergeToolModel next)
         {
             if (previous != null)
             {
@@ -3352,7 +3414,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-        private void AddStartNode(FlowNode flowNode, ModelProperty startNode)
+        void AddStartNode(FlowNode flowNode, ModelProperty startNode)
         {
             if (flowNode == null)
             {
