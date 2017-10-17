@@ -103,7 +103,7 @@ namespace Dev2.Activities
             InitializeDebug(dataObject);
             try
             {
-                allErrors.MergeErrors(errorsTo);
+                allErrors.MergeErrors(_errorsTo);
                 if(dataObject.IsDebugMode())
                 {
                     DebugItem debugItem = new DebugItem();
@@ -140,7 +140,7 @@ namespace Dev2.Activities
                     }
 
                     var result = WebRequestInvoker.ExecuteRequest(Method, c, headersEntries);
-                    allErrors.MergeErrors(errorsTo);
+                    allErrors.MergeErrors(_errorsTo);
                     var expression = GetExpression(IndexToUpsertTo);
                     PushResultsToDataList(expression, result, dataObject, update);
                 }
