@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using Dev2.Common.Interfaces;
+using Dev2.Studio.Interfaces.DataList;
 
 namespace Dev2.Studio.Interfaces
 {
@@ -12,7 +13,7 @@ namespace Dev2.Studio.Interfaces
         string DisplayName { get; set; }
         void Save();
         IWorkflowDesignerViewModel WorkflowDesignerViewModel { get; set; }
-
+        IDataListViewModel DataListViewModel { get; set; }
         bool HasMergeStarted { get; set; }
         bool HasWorkflowNameConflict { get; set; }
         bool HasVariablesConflict { get; set; }
