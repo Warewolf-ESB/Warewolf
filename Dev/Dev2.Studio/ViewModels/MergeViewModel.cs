@@ -3,6 +3,7 @@ using Dev2.Activities.Designers2.Core.Help;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Studio.Core;
 using Dev2.Studio.Interfaces;
+using Dev2.Studio.Interfaces.DataList;
 using Dev2.Studio.ViewModels.WorkSurface;
 using Microsoft.Practices.Prism.Mvvm;
 using System.Diagnostics.CodeAnalysis;
@@ -31,6 +32,11 @@ namespace Dev2.ViewModels
                 if (args.PropertyName == "DisplayName")
                 {
                     NotifyOfPropertyChange(() => DisplayName);
+                }
+
+                if (args.PropertyName == "DataListViewModel")
+                {
+                    NotifyOfPropertyChange(() => DataListViewModel);
                 }
             };
         }
@@ -65,7 +71,7 @@ namespace Dev2.ViewModels
                 base.OnViewLoaded(loadedView);
             }
         }
-
+        public IDataListViewModel DataListViewModel => ViewModel.DataListViewModel;
 
         public string ResourceType => "MergeConflicts";
 

@@ -47,9 +47,9 @@ namespace Dev2.ViewModels.Merge
             Children = new ObservableCollection<IMergeToolModel>();
         }
 
-        public void GetDataList()
+        public void GetDataList(IContextualResourceModel resourceModel)
         {
-            DataListViewModel = DataListViewModelFactory.CreateDataListViewModel(_resourceModel);
+            DataListViewModel = DataListViewModelFactory.CreateDataListViewModel(resourceModel);
             if (DataListViewModel != null)
             {
                 DataListViewModel.ViewSortDelete = false;

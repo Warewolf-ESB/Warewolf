@@ -13,7 +13,7 @@ namespace Dev2.Studio.Interfaces
         ObservableCollection<IMergeToolModel> Children { get; set; }
         IMergeToolModel Model { get; set; }
         IDataListViewModel DataListViewModel { get; set; }
-        void GetDataList();
+        void GetDataList(IContextualResourceModel resourceModel);
         event ConflictModelChanged SomethingConflictModelChanged;
     }
 }
