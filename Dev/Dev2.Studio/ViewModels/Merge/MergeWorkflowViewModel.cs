@@ -54,7 +54,7 @@ namespace Dev2.ViewModels.Merge
                     WorkflowName = currentResourceModel.ResourceName,
                     ServerName = currentResourceModel.Environment.DisplayName
                 };
-                CurrentConflictModel.GetDataList();
+                CurrentConflictModel.GetDataList(currentResourceModel);
                 CurrentConflictModel.SomethingConflictModelChanged += SourceOnConflictModelChanged;
             }
 
@@ -66,7 +66,7 @@ namespace Dev2.ViewModels.Merge
                     WorkflowName = differenceResourceModel.ResourceName,
                     ServerName = differenceResourceModel.Environment.DisplayName
                 };
-                DifferenceConflictModel.GetDataList();
+                DifferenceConflictModel.GetDataList(differenceResourceModel);
                 DifferenceConflictModel.SomethingConflictModelChanged += SourceOnConflictModelChanged;
             }
 
@@ -603,7 +603,6 @@ namespace Dev2.ViewModels.Merge
                 DisplayName = _displayName.Replace("*", "").TrimEnd(' ');
             }
         }
-        bool _canSave;
         public bool CanSave
         {
             get => All(conflict => conflict.IsChecked);
