@@ -495,6 +495,9 @@
                                                                                     <DataTrigger Binding="{Binding ElementName=MergeToolNoConflictIcon, Path=Visibility}" Value="Visible">
                                                                                         <Setter Property="RadioButton.Visibility" Value="Collapsed"/>
                                                                                     </DataTrigger>
+                                                                                    <DataTrigger Binding="{Binding IsContained}" Value="True">
+                                                                                        <Setter Property="RadioButton.Visibility" Value="Collapsed"/>
+                                                                                    </DataTrigger>
                                                                                 </Style.Triggers>
                                                                             </Style>
                                                                         </RadioButton.Style>
@@ -534,6 +537,7 @@
                                                                                  Margin="5,0,5,0"
                                                                                  GroupName="{Binding StringFormat=Merge{0}, Path=UniqueId}"
                                                                                  Style="{StaticResource MergeRadioButtonStyle}"
+                                                                                 Visibility="{Binding IsContained, Converter={StaticResource BoolToVisibilityConverterNegative}}"
                                                                                  AutomationProperties.AutomationId="UI_TreeViewExpanderDifferenceHeaderRB_AutoID"/>
 
                                                                     <Image Name="TreeViewExpanderDifferenceHeaderIcon" 
