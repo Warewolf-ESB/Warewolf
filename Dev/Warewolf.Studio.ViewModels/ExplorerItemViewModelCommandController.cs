@@ -36,15 +36,17 @@ namespace Warewolf.Studio.ViewModels
         internal void OpenCommand(ExplorerItemViewModel item, IServer server)
         {
             Dev2Logger.Info("Open resource: " + item.ResourceName + " - ResourceId: " + item.ResourceId, "Warewolf Info");
-
+            var applicationTracker = CustomContainer.Get<IApplicationTracker>();
             if (item.ResourceName == "Shared Resources Server")
-            {
-                var applicationTracker = CustomContainer.Get<IApplicationTracker>();
-                applicationTracker.TrackEvent(Warewolf.Studio.Resources.Languages.TrackEventExplorer.EventCategory,
-                                                    Warewolf.Studio.Resources.Languages.TrackEventExplorer.SharedResourcesServer);
-               
+            {               
+                applicationTracker.TrackEvent(Resources.Languages.TrackEventExplorer.EventCategory,
+                                              Resources.Languages.TrackEventExplorer.SharedResourcesServer);              
             }
-
+            if (item.ResourceName == "Hello World")
+            {               
+                applicationTracker.TrackEvent(Resources.Languages.TrackEventWorkflowTabs.EventCategory,
+                                                   Resources.Languages.TrackEventWorkflowTabs.HelloWorld);
+            }
 
             if (item.IsFolder)
             {

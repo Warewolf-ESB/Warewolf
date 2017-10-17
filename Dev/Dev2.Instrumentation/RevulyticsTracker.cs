@@ -25,18 +25,16 @@ namespace Dev2.Instrumentation
         string _appName;
 
         string _productUrl;
-
-        int _protocol = 1;
+        readonly int _protocol = 1;
 
         string _aesHexKey;
-
-        bool _multiSessionEnabled = true;
-
-        bool _reachOutOnAutoSync = true;
+        readonly bool _multiSessionEnabled = true;
+        readonly bool _reachOutOnAutoSync = true;
 
         string Username { get; set; }
 
         string ProductVersion { get; set; }
+      
 
         //to check if object is not in use
         private static object _syncLock = new object();
@@ -90,14 +88,48 @@ namespace Dev2.Instrumentation
             this.Username = username;
 
             RUIResult result = CreateRevulyticsConfig();
-            WriteError(result);
+            if (result == RUIResult.ok)
+            {
+                SetProductVersion();
+                StartSession();
+            }
+            else
+            {
+                WriteError(result);
+            }
 
-            SetProductVersion();
-            StartSession();
 
         }
 
-      
+
+        /// <summary>
+        /// This Function will create the config for revulytics action tracking
+        /// </summary>
+        /// <returns>RUIResult object</returns>
+        private RUIResult CreateRevulyticsConfig()
+        {
+            var result = RUIResult.configNotCreated;
+            try
+            {
+                _ruiSdk = new RUISDK(true, this._sdkFilePath);
+            }
+            catch (RUISDKCreationException ex)
+            {
+                Dev2Logger.Error("Error in intialzing rui sdk",ex,"Revulytics sdk error");
+            }
+            if (_ruiSdk != null)
+            {
+                 result = _ruiSdk.CreateConfig(_configFilePath, _productId, _appName, _productUrl, _protocol, _aesHexKey, _multiSessionEnabled, _reachOutOnAutoSync);
+
+                if (result == RUIResult.ok)
+                {
+                    result = _ruiSdk.StartSDK();
+                }               
+            }
+            return result;
+        }
+
+
         /// <summary>
         /// This function set the product version in revulytics.
         /// </summary>
@@ -184,30 +216,13 @@ namespace Dev2.Instrumentation
             }
         }
 
-        /// <summary>
-        /// This Function will create the config for revulytics action tracking
-        /// </summary>
-        /// <returns>RUIResult object</returns>
-        private RUIResult CreateRevulyticsConfig()
-        {
-            _ruiSdk = new RUISDK(true, this._sdkFilePath);
-            var result = _ruiSdk.CreateConfig(_configFilePath, _productId, _appName, _productUrl, _protocol, _aesHexKey, _multiSessionEnabled, _reachOutOnAutoSync);
-
-            if (result == RUIResult.ok)
-            {
-                result = _ruiSdk.StartSDK();
-            }
-
-            return result;
-
-        }
 
         /// <summary>
         /// This function will write into log if result is other than ok
         /// while calling the revulytics method
         /// </summary>
         /// <param name="result">RUIResult object</param>
-
+        
         void WriteError(RUIResult result)
         {
             if (result != RUIResult.ok)
