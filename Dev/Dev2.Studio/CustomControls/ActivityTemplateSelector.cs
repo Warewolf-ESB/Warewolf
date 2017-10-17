@@ -37,20 +37,22 @@ namespace Dev2.CustomControls
                     }
                     else if (designerType == typeof(SelectAndApplyDesigner))
                     {
-                        var type = typeof(Dev2.Activities.Designers2.SelectAndApply.Large);
+                        var type = typeof(Activities.Designers2.SelectAndApply.Large);
                         var insta = Activator.CreateInstance(type, new object[] { true }) as ActivityDesignerTemplate;
                         if (insta != null)
                         {
+                            vm.ModelItem.Properties["ApplyActivityFunc"]?.SetValue(null);
                             insta.DataContext = vm;
                             return TemplateGenerator.CreateDataTemplate(() => insta);
                         }
                     }
                     else if (designerType == typeof(ForeachDesigner))
                     {
-                        var type = typeof(Dev2.Activities.Designers2.Foreach.Large);
+                        var type = typeof(Activities.Designers2.Foreach.Large);
                         var insta = Activator.CreateInstance(type, new object[] { true }) as ActivityDesignerTemplate;
                         if (insta != null)
                         {
+                            vm.ModelItem.Properties["DataFunc"]?.SetValue(null);
                             insta.DataContext = vm;
                             return TemplateGenerator.CreateDataTemplate(() => insta);
                         }
