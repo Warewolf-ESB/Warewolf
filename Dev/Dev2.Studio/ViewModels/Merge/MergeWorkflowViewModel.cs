@@ -298,15 +298,28 @@ namespace Dev2.ViewModels.Merge
                 {
                     HasMergeStarted = args.IsWorkflowNameChecked || argsIsVariablesChecked;
                 }
+                if (!argsIsVariablesChecked)
+                {
+                    return;
+                }
 
                 IsVariablesEnabled = HasVariablesConflict;
                 if (args.IsVariablesChecked)
                 {
                     DataListViewModel = args.DataListViewModel;
+                    _conflictEnumerator.MoveNext();
                 }
-                IsMergeExpanderEnabled = argsIsVariablesChecked;
-                Conflicts.First.Value.DiffViewModel.IsMergeEnabled = Conflicts.First.Value.HasConflict && argsIsVariablesChecked;
-                Conflicts.First.Value.CurrentViewModel.IsMergeEnabled = Conflicts.First.Value.HasConflict && argsIsVariablesChecked;
+                IsMergeExpanderEnabled = true;
+                var completeConflict = Conflicts.First.Value;
+                if (completeConflict.HasConflict)
+                {
+                    completeConflict.DiffViewModel.IsMergeEnabled = completeConflict.HasConflict;
+                    completeConflict.CurrentViewModel.IsMergeEnabled = completeConflict.HasConflict;
+                }
+                else
+                {
+                    completeConflict.CurrentViewModel.IsMergeChecked = true;
+                }
             }
             catch (Exception ex)
             {
