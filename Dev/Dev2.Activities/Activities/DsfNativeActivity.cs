@@ -44,11 +44,11 @@ using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Resource.Messages;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
-
+using System.Activities.Statements;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
-    public abstract class DsfNativeActivity<T> : NativeActivity<T>, IDev2ActivityIOMapping, IDev2Activity, IEquatable<DsfNativeActivity<T>>
+    public abstract class DsfNativeActivity<T> : NativeActivity<T>, IDev2ActivityIOMapping, IEquatable<DsfNativeActivity<T>>
     {
         protected ErrorResultTO errorsTo;
         [GeneralSettings("IsSimulationEnabled")]
@@ -1055,6 +1055,19 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public IEnumerable<IDev2Activity> NextNodes { get; set; }
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public Guid ActivityId { get; set; }
+
+
+        public virtual FlowNode GetFlowNode()
+        {
+            var flowStep = new FlowStep { Action = this as Activity };
+            return flowStep;
+        }      
+
+        public virtual Dictionary<string, IEnumerable<IDev2Activity>> GetChildrenNodes()
+        {
+            var nextNodes = new Dictionary<string, IEnumerable<IDev2Activity>>();           
+            return nextNodes;
+        }
 
         protected void AddDebugInputItem(DebugOutputBase parameters)
         {

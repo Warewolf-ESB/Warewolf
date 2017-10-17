@@ -124,19 +124,27 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DsfDecision
         public void TrueArm_Different_Object_Is_Not_Equal()
         {
             //---------------Set up test pack-------------------
-            var dsfCaseConvertActivity = new DsfCaseConvertActivity();
-            var dsfCalculateActivity = new DsfCalculateActivity();
             var dsfBaseConvertActivity = new DsfBaseConvertActivity();
+            var dsfCalculateActivity = new DsfCalculateActivity()
+            {
+                NextNodes = new List<IDev2Activity>()
+                {
+                    dsfBaseConvertActivity
+                }
+            };
+            ;
+            var dsfCaseConvertActivity = new DsfCaseConvertActivity()
+            {
+                NextNodes = new List<IDev2Activity>() { dsfCalculateActivity }
+            };
+
             var trueArms = new List<IDev2Activity>
             {
-                dsfBaseConvertActivity,
-                dsfCalculateActivity,
                 dsfCaseConvertActivity
             };
 
             var trueArms1 = new List<IDev2Activity>
             {
-                dsfBaseConvertActivity,
                 dsfCalculateActivity,
             };
             var uniqueId = Guid.NewGuid().ToString();
@@ -171,20 +179,25 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DsfDecision
         {
             //---------------Set up test pack-------------------
             var dsfCaseConvertActivity = new DsfCaseConvertActivity();
-            var dsfCalculateActivity = new DsfCalculateActivity();
-            var dsfBaseConvertActivity = new DsfBaseConvertActivity();
+            var dsfCalculateActivity = new DsfCalculateActivity()
+            {
+                NextNodes = new List<IDev2Activity>() { dsfCaseConvertActivity }
+            };
+            var dsfBaseConvertActivity = new DsfBaseConvertActivity()
+            {
+                NextNodes = new List<IDev2Activity>()
+                {
+                    dsfCalculateActivity
+                }
+            };
             var trueArms = new List<IDev2Activity>
             {
-                dsfBaseConvertActivity,
-                dsfCalculateActivity,
-                dsfCaseConvertActivity
+                dsfBaseConvertActivity
             };
 
             var trueArms1 = new List<IDev2Activity>
             {
-                dsfBaseConvertActivity,
-                dsfCalculateActivity,
-                dsfCaseConvertActivity
+                dsfBaseConvertActivity
             };
             var uniqueId = Guid.NewGuid().ToString();
             var decision = new Dev2.Activities.DsfDecision()
@@ -453,7 +466,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DsfDecision
             //---------------Test Result -----------------------
             Assert.IsFalse(equals);
         }
-        
+
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void FalseArmText_Different_Object_Is_Not_Equal()
@@ -523,7 +536,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DsfDecision
             Assert.IsFalse(equals);
         }
 
-        
+
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void FalseArmText_Same_Object_Is_Equal()
@@ -592,7 +605,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DsfDecision
             //---------------Test Result -----------------------
             Assert.IsTrue(equals);
         }
-        
+
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void Mode_Same_Object_Is_Equal()
@@ -600,12 +613,12 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DsfDecision
             //---------------Set up test pack-------------------
             var dev2DecisionStack = new Dev2DecisionStack()
             {
-               Mode = Dev2DecisionMode.AND
+                Mode = Dev2DecisionMode.AND
 
             };
             var dev2DecisionStack1 = new Dev2DecisionStack()
             {
-               Mode = Dev2DecisionMode.AND
+                Mode = Dev2DecisionMode.AND
 
             };
             var dsfCaseConvertActivity = new DsfCaseConvertActivity();
@@ -650,7 +663,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DsfDecision
             Assert.IsTrue(equals);
         }
 
-        
+
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void Mode_Different_Object_Is_Not_Equal()
@@ -658,12 +671,12 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DsfDecision
             //---------------Set up test pack-------------------
             var dev2DecisionStack = new Dev2DecisionStack()
             {
-               Mode = Dev2DecisionMode.AND
+                Mode = Dev2DecisionMode.AND
 
             };
             var dev2DecisionStack1 = new Dev2DecisionStack()
             {
-               Mode = Dev2DecisionMode.OR
+                Mode = Dev2DecisionMode.OR
 
             };
             var dsfCaseConvertActivity = new DsfCaseConvertActivity();
@@ -866,19 +879,27 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DsfDecision
         public void FalseArm_Different_Object_Is_Not_Equal()
         {
             //---------------Set up test pack-------------------
-            var dsfCaseConvertActivity = new DsfCaseConvertActivity();
-            var dsfCalculateActivity = new DsfCalculateActivity();
             var dsfBaseConvertActivity = new DsfBaseConvertActivity();
+            var dsfCalculateActivity = new DsfCalculateActivity()
+            {
+                NextNodes = new List<IDev2Activity>()
+                {
+                    dsfBaseConvertActivity
+                }
+            };
+            ;
+            var dsfCaseConvertActivity = new DsfCaseConvertActivity()
+            {
+                NextNodes = new List<IDev2Activity>() { dsfCalculateActivity }
+            };
+
             var trueArms = new List<IDev2Activity>
             {
-                dsfBaseConvertActivity,
-                dsfCalculateActivity,
                 dsfCaseConvertActivity
             };
 
             var trueArms1 = new List<IDev2Activity>
             {
-                dsfBaseConvertActivity,
                 dsfCalculateActivity,
             };
             var uniqueId = Guid.NewGuid().ToString();

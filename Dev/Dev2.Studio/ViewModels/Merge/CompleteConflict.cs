@@ -8,10 +8,10 @@ namespace Dev2.ViewModels.Merge
 {
     public class CompleteConflict : BindableBase, ICompleteConflict
     {
-        private bool _isMergeExpanded;
-        private bool _isMergeExpanderEnabled;
-        private bool _hasConflict;
-        private IEnumerator<ICompleteConflict> _conflictEnumerator;
+        bool _isMergeExpanded;
+        bool _isMergeExpanderEnabled;
+        bool _hasConflict;
+        IEnumerator<ICompleteConflict> _conflictEnumerator;
 
         public CompleteConflict()
         {
