@@ -3,7 +3,8 @@ using System;
 using Microsoft.Win32.TaskScheduler;
 using TechTalk.SpecFlow;
 using Warewolf.UI.Tests;
-
+using Microsoft.VisualStudio.TestTools.UITesting;
+using System.Diagnostics;
 
 namespace Warewolf.UI.Load.Specs
 {
@@ -69,6 +70,25 @@ namespace Warewolf.UI.Load.Specs
             }
             ScenarioContext.Current.Add("localTaskService", localTaskService);
             ScenarioContext.Current.Add("numberOfTasks", numberOfTasks);
+        }
+
+        [When("I close the Studio")]
+        public void CloseStudio()
+        {
+            Mouse.Click(UIMap.MainStudioWindow.CloseStudioButton);
+            var studioProcess = Process.GetProcessesByName("Warewolf Studio");
+            if (studioProcess != null && studioProcess.Length > 0)
+            {
+                ScenarioContext.Current.Add("studioProcess", studioProcess[0]);
+                studioProcess[0].WaitForExit();
+            }
+        }
+
+        [When("I start the Studio")]
+        public void StartStudio()
+        {
+            var studioProcess = ScenarioContext.Current.Get<Process>("studioProcess");
+            studioProcess.Start();
         }
 
         #region Additional test attributes
