@@ -539,6 +539,13 @@ namespace Warewolf.UI.Tests
             Mouse.Click(MainStudioWindow.SideMenuBar.SaveButton);
         }
 
+        [When(@"I Click Save Ribbon Button And Wait For Save")]
+        public void Click_Save_RibbonButton_And_Wait()
+        {
+            Mouse.Click(MainStudioWindow.SideMenuBar.SaveButton);
+            MainStudioWindow.SideMenuBar.SaveButton.WaitForControlCondition((control) => { return !control.Enabled; }, 60000);
+        }
+
         [Given(@"I Click Deploy Ribbon Button")]
         [When(@"I Click Deploy Ribbon Button")]
         [Then(@"I Click Deploy Ribbon Button")]

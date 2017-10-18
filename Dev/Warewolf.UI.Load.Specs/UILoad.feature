@@ -51,7 +51,7 @@ Scenario: Open New Tab
 	Given The Warewolf Studio is running
 	And I have "30" new workflow tabs open
 	And I start the timer
-	When I open a new worklow tab
+	When I Click New Workflow Ribbon Button
 	Then the timer duration is less than "5" seconds
 
 Scenario: Close New Tab
@@ -69,6 +69,7 @@ Scenario: Open Dependencies Graph
 	When I Select Show Dependencies In Explorer Context Menu for service "Dependencies Graph UI Load Testing"
 	Then the timer duration is less than "5" seconds
 
+@SchedulerView
 Scenario: Open Scheduler View And Add Remove Scheduled Tasks
 	Given The Warewolf Studio is running
 	And there are "100" scheduled tasks
@@ -76,21 +77,22 @@ Scenario: Open Scheduler View And Add Remove Scheduled Tasks
 	When I open scheduler
 	Then the timer duration is less than "5" seconds
 	Given I start the timer
-	When I add a scheduled task
+	When I create a new scheduled task using shortcut
 	Then the timer duration is less than "5" seconds
 	Given I start the timer
-	When I remove a scheduled task
+	When I Click Erase Schedule Button
 	Then the timer duration is less than "5" seconds
 
 Scenario: Open Test View And Add Remove Tests
 	Given The Warewolf Studio is running
 	And I start the timer
-	When I open "Tests UI Load Testing" workflow tabs
+	When I open "Tests UI Load Testing"
 	Then the timer duration is less than "5" seconds
 	Given I start the timer
-	When I add a test
+	When I Click The Create a New Test Button
+	And I Click Save Ribbon Button And Wait For Save
 	Then the timer duration is less than "5" seconds
 	Given I start the timer
-	When I remove a test
+	When I Delete Test "1"
 	Then the timer duration is less than "5" seconds
 	

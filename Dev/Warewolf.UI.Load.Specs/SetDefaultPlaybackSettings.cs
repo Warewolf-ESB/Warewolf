@@ -8,7 +8,7 @@ namespace Warewolf.UISpecs
     [DeploymentItem("Warewolf.UI.Tests.dll")]
     class SetDefaultPlaybackSettings
     {
-        [BeforeScenario()]
+        [BeforeScenario]
         public void UseDefaultPlaybackSettings()
         {
             UIMap.SetPlaybackSettings();
