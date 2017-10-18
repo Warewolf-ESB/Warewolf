@@ -40,7 +40,9 @@ namespace Warewolf.UI.Load.Specs
         public void StopTimer(string duration)
         {
             var startTime = ScenarioContext.Current.Get<System.DateTime>("StartTime");
-            Assert.IsTrue((startTime - System.DateTime.Now).TotalSeconds < int.Parse(duration), "Load test failed. Duration is greater than " + duration + " seconds");
+            double totalSeconds = (startTime - System.DateTime.Now).TotalSeconds;
+            Assert.IsTrue(totalSeconds < int.Parse(duration), "Load test failed. Duration is greater than " + duration + " seconds");
+            Console.WriteLine(totalSeconds + " seconds duration.");
         }
 
         [Given(@"I have ""(.*)"" new workflow tabs open")]
