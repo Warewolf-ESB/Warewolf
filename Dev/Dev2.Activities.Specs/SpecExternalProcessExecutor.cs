@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Net;
 using Dev2.Common;
 
@@ -31,6 +32,11 @@ namespace Dev2.Activities.Specs
                 Dev2Logger.Error(e, "Warewolf Error");
             }
 
+        }
+
+        public Process Start(ProcessStartInfo startInfo)
+        {
+            throw new NotImplementedException();
         }
 
         #endregion

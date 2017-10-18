@@ -224,6 +224,7 @@
     <Compile Include="DeployDtoTests.cs" />
     <Compile Include="Dialogs\ProgressDialogViewModelTests.cs" />
     <Compile Include="ExceptionViewModelTest.cs" />
+    <Compile Include="Factories\CustomGitOpsTests.cs" />
     <Compile Include="Helpers\TestProgressFileDownloaderTests.cs">
       <SubType>Code</SubType>
     </Compile>
