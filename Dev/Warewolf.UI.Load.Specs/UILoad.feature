@@ -25,7 +25,7 @@ Scenario: Refresh Deploy Source Server
 Scenario: Deploy Resources
 	Given The Warewolf Studio is running
 	And I Click Deploy Ribbon Button
-	And I select
+	And I Select LocalServerSource From Deploy Tab Destination Server Combobox
 	And I Select localhost from the source tab
 	And I start the timer
 	When I Click Deploy Tab Deploy Button
