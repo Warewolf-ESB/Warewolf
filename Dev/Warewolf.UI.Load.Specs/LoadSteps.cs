@@ -1,8 +1,8 @@
-﻿using Microsoft.VisualStudio.TestTools.UITest.Common.UIMap;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using Microsoft.Win32.TaskScheduler;
 using TechTalk.SpecFlow;
+using Warewolf.UI.Tests;
 
 
 namespace Warewolf.UI.Load.Specs
@@ -26,14 +26,14 @@ namespace Warewolf.UI.Load.Specs
         [When(@"I start the timer")]
         public void StartTimer()
         {
-            ScenarioContext.Current.Add("StartTime", DateTime.Now);
+            ScenarioContext.Current.Add("StartTime", System.DateTime.Now);
         }
 
         [Then(@"the timer duration is less than ""(.*)"" seconds")]
         public void StopTimer(string duration)
         {
-            var startTime = ScenarioContext.Current.Get<DateTime>("StopTime");
-            Assert.IsTrue((startTime - DateTime.Now).TotalSeconds < int.Parse(duration), "Load test failed. Duration is greater than " + duration + " seconds");
+            var startTime = ScenarioContext.Current.Get<System.DateTime>("StopTime");
+            Assert.IsTrue((startTime - System.DateTime.Now).TotalSeconds < int.Parse(duration), "Load test failed. Duration is greater than " + duration + " seconds");
         }
 
         [Given(@"I have ""(.*)"" new workflow tabs open")]
@@ -64,7 +64,7 @@ namespace Warewolf.UI.Load.Specs
 
         #region Additional test attributes
 
-        Warewolf.UI.Tests.UIMap UIMap
+        UIMap UIMap
         {
             get
             {
