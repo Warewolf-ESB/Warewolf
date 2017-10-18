@@ -63,6 +63,7 @@
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
     <Compile Include="Load Tests.cs" />
+    <Compile Include="Merge\CustomGitOpsTests.cs" />
     <Compile Include="Merge\MergeFactoryTests.cs" />
     <Compile Include="Merge\ParseServiceForDifferencesTests.cs" />
     <Compile Include="Merge\TestHelper.cs" />
