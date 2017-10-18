@@ -95,9 +95,9 @@ namespace Warewolf.UI.Tests.Deploy.DeployUIMapClasses
         }
 
         [When(@"I Select LocalServerSource From Deploy Tab Destination Server Combobox")]
-        [Then(@"I Select LocalServerDestination From Deploy Tab Destination Server Combobox")]
-        [Given(@"I Select LocalServerDestination From Deploy Tab Destination Server Combobox")]
-        public void Select_LocalServerDestination_From_Deploy_Tab_Destination_Server_Combobox()
+        [Then(@"I Select LocalServerSource From Deploy Tab Destination Server Combobox")]
+        [Given(@"I Select LocalServerSource From Deploy Tab Destination Server Combobox")]
+        public void Select_LocalServerSource_From_Deploy_Tab_Destination_Server_Combobox()
         {
             UIMap.WaitForControlVisible(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DestinationServerConectControl.Combobox.ToggleButton);
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DestinationServerConectControl.Combobox.ToggleButton);
