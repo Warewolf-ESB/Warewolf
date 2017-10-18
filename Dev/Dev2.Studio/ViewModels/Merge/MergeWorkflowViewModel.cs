@@ -11,7 +11,6 @@ using System.Activities.Presentation.Model;
 using System.Windows;
 using Caliburn.Micro;
 using Dev2.Common.Common;
-using Dev2.Studio.Core;
 using Dev2.Studio.Interfaces.DataList;
 
 namespace Dev2.ViewModels.Merge
@@ -91,16 +90,6 @@ namespace Dev2.ViewModels.Merge
             {
                 CurrentConflictModel.IsVariablesChecked = true;
             }
-
-            if (!HasWorkflowNameConflict && !HasVariablesConflict)
-            {
-                var conflict = Conflicts?.FirstOrDefault();
-                _conflictEnumerator.MoveNext();
-                if (conflict != null && !conflict.HasConflict)
-                {
-                    conflict.CurrentViewModel.IsMergeChecked = true;
-                }
-            }
         }
 
         List<ICompleteConflict> BuildConflicts(IContextualResourceModel currentResourceModel, IContextualResourceModel differenceResourceModel, List<(Guid uniqueId, IConflictNode currentNode, IConflictNode differenceNode, bool hasConflict)> currentChanges)
@@ -113,7 +102,7 @@ namespace Dev2.ViewModels.Merge
                 {
                     var factoryA = new ConflictModelFactory(currentChange.currentNode, currentResourceModel);
                     conflict.CurrentViewModel = factoryA.Model;
-                    factoryA.OnModelItemChanged += (modelItem) =>
+                    factoryA.OnModelItemChanged += modelItem =>
                     {
                         WorkflowDesignerViewModel.UpdateModelItem(modelItem);
                     };
@@ -139,6 +128,10 @@ namespace Dev2.ViewModels.Merge
                 if (currentChange.differenceNode != null)
                 {
                     var factoryB = new ConflictModelFactory(currentChange.differenceNode, differenceResourceModel);
+                    factoryB.OnModelItemChanged += modelItem =>
+                    {
+                        WorkflowDesignerViewModel.UpdateModelItem(modelItem);
+                    };
                     conflict.DiffViewModel = factoryB.Model;
                     conflict.DiffViewModel.Container = conflict;
                     conflict.DiffViewModel.FlowNode = currentChange.differenceNode.CurrentFlowStep;
@@ -296,13 +289,11 @@ namespace Dev2.ViewModels.Merge
         {
             try
             {
-                var argsIsVariablesChecked = args.IsVariablesChecked || !HasVariablesConflict;
-
                 if (!HasMergeStarted)
                 {
-                    HasMergeStarted = args.IsWorkflowNameChecked || argsIsVariablesChecked;
+                    HasMergeStarted = args.IsWorkflowNameChecked || args.IsVariablesChecked;
                 }
-                if (!argsIsVariablesChecked)
+                if (!args.IsVariablesChecked)
                 {
                     return;
                 }

@@ -63,12 +63,6 @@ using Dev2.Studio.Core;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.Core.Interfaces;
 using Warewolf.MergeParser;
-using Dev2.Studio.Core.Models;
-using Dev2.Data.ServiceModel;
-using System.Xml.Linq;
-using Dev2.Runtime.ServiceModel.Data;
-using System.Xml.Serialization;
-using Dev2.Runtime.ESB.Management.Services;
 using Dev2.Factory;
 
 namespace Dev2.Studio
@@ -116,7 +110,7 @@ namespace Dev2.Studio
         protected override void OnStartup(System.Windows.StartupEventArgs e)
         {
             Tracker.StartStudio();
-
+            CustomGitOps.SetCustomGitTool(new ExternalProcessExecutor());
             Task.Factory.StartNew(() =>
             {
                 var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Warewolf", "Feedback");
