@@ -12,12 +12,12 @@ Scenario: Connect remote server
 Scenario: Refresh Explorer
 	Given The Warewolf Studio is running
 	And I start the timer
-	When I refresh localhost
+	When I Refresh Explorer
 	Then the timer duration is less than "5" seconds
 
 Scenario: Refresh Deploy Source Server
 	Given The Warewolf Studio is running
-	And I open deploy
+	And I Click Deploy Ribbon Button
 	And I start the timer
 	When I Click Deploy Tab Source Refresh Button
 	Then the timer duration is less than "5" seconds

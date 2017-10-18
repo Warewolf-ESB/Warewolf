@@ -41,7 +41,7 @@ namespace Warewolf.UI.Load.Specs
         {
             var startTime = ScenarioContext.Current.Get<System.DateTime>("StartTime");
             double totalSeconds = (System.DateTime.Now - startTime).TotalSeconds;
-            Assert.IsTrue(totalSeconds < int.Parse(duration), "Load test failed. Duration is greater than " + duration + " seconds");
+            Assert.IsTrue(totalSeconds < int.Parse(duration), "Load test failed. Duration of " + totalSeconds.ToString() + " seconds is greater than " + duration + " seconds");
             Console.WriteLine("timer stopped after " + totalSeconds + " seconds.");
         }
 
