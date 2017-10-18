@@ -28,7 +28,7 @@ namespace Dev2.Factory
 
             };
 
-            var gitExePath = GetGitBashPath();
+            var gitExePath = GetGitExePath();
 
             if (!string.IsNullOrEmpty(gitExePath))
             {
@@ -58,7 +58,7 @@ namespace Dev2.Factory
                 }
             }
         }
-        static string GetGitBashPath()
+        static string GetGitExePath()
         {
             var location = ConfigurationManager.AppSettings["GitRegistryKey"];
             using (var a = Registry.LocalMachine.OpenSubKey(location))
