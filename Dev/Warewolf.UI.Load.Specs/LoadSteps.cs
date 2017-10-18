@@ -17,7 +17,7 @@ namespace Warewolf.UI.Load.Specs
             var numberOfTasks = ScenarioContext.Current.Get<String>("numberOfTasks");
             for (var i = int.Parse(numberOfTasks); i > 0; i--)
             {
-                localTaskService.RootFolder.DeleteTask("Test" + i.ToString());
+                localTaskService.GetFolder("Warewolf").DeleteTask("UILoadTest" + i.ToString());
             }
             localTaskService.Dispose();
         }
@@ -40,14 +40,14 @@ namespace Warewolf.UI.Load.Specs
         public void StopTimer(string duration)
         {
             var startTime = ScenarioContext.Current.Get<System.DateTime>("StartTime");
-            double totalSeconds = (startTime - System.DateTime.Now).TotalSeconds;
+            double totalSeconds = (System.DateTime.Now - startTime).TotalSeconds;
             Assert.IsTrue(totalSeconds < int.Parse(duration), "Load test failed. Duration is greater than " + duration + " seconds");
             Console.WriteLine("timer stopped after " + totalSeconds + " seconds.");
         }
 
         [Given(@"I have ""(.*)"" new workflow tabs open")]
         [When(@"I open ""(.*)"" new workflow tabs")]
-        public void OpenManyTabs(string numberOfTabs)
+        public void OpenManyNewWorkflowTabs(string numberOfTabs)
         {
             for(var i = int.Parse(numberOfTabs); i > 0; i--)
             {
@@ -58,17 +58,17 @@ namespace Warewolf.UI.Load.Specs
         [Given(@"I have ""(.*)"" scheduled tasks")]
         public void ManyTasks(string numberOfTasks)
         {
+            TaskService localTaskService = new TaskService();
             for (var i = int.Parse(numberOfTasks); i > 0; i--)
             {
-                TaskService localTaskService = new TaskService();
                 TaskDefinition td = localTaskService.NewTask();
                 td.RegistrationInfo.Description = "Does something";
                 td.Triggers.Add(new DailyTrigger { DaysInterval = 2 });
-                td.Actions.Add(new ExecAction("cmd.exe", "/c echo UI Load Testing", null));
-                localTaskService.RootFolder.RegisterTaskDefinition(@"Test" + i.ToString(), td);
-                ScenarioContext.Current.Add("localTaskService", localTaskService);
-                ScenarioContext.Current.Add("numberOfTasks", numberOfTasks);
+                td.Actions.Add(new ExecAction("cmd.exe", "/c echo WarewolfAgent.exe", null));
+                localTaskService.GetFolder("Warewolf").RegisterTaskDefinition(@"UILoadTest" + i.ToString(), td);
             }
+            ScenarioContext.Current.Add("localTaskService", localTaskService);
+            ScenarioContext.Current.Add("numberOfTasks", numberOfTasks);
         }
 
         #region Additional test attributes
