@@ -3084,7 +3084,6 @@ namespace Dev2.Studio.ViewModels.Workflow
                     {
                         nodes.Add(normalStep);
                     }
-
                     break;
                 case FlowDecision normalDecision:
                     if (!nodes.Contains(normalDecision) && hasConflict)
@@ -3101,11 +3100,13 @@ namespace Dev2.Studio.ViewModels.Workflow
                 case FlowSwitch<string> normalSwitch:
                     if (hasConflict)
                     {
-                        var emptySwitch = model.ActivityType as FlowSwitch<string>;
-                        emptySwitch.DisplayName = normalSwitch.DisplayName;
-                        emptySwitch.Expression = normalSwitch.Expression;
-                        nodeToAdd = ModelItemUtils.CreateModelItem(emptySwitch);
-                        nodes.Add(emptySwitch);
+                        if (model.ActivityType is FlowSwitch<string> emptySwitch)
+                        {
+                            emptySwitch.DisplayName = normalSwitch.DisplayName;
+                            emptySwitch.Expression = normalSwitch.Expression;
+                            nodeToAdd = ModelItemUtils.CreateModelItem(emptySwitch);
+                            nodes.Add(emptySwitch);
+                        }
                     }
                     else
                     {
@@ -3125,15 +3126,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 var parentModel = decisionParent?.FlowNode;
                 if (parentModel?.ItemType == typeof(FlowDecision))
                 {
-                    if (model.IsTrueArm)
-                    {
-                        AddNextDecisionArm(decisionParent, previous, model, nodes, flowNode, "True");
-                    }
-                    else
-                    {
-                        AddNextDecisionArm(decisionParent, previous, model, nodes, flowNode, "False");
-                    }
-
+                    AddNextDecisionArm(decisionParent, previous, model, nodes, flowNode, model.IsTrueArm ? "True" : "False");
                 }
                 if (parentModel?.ItemType == typeof(FlowSwitch<string>))
                 {
@@ -3145,12 +3138,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 var startNode = chart.Properties["StartNode"];
                 if (startNode?.ComputedValue == null)
                 {
-                    if (nodeToAdd == null)
-                    {
-                        nodeToAdd = nodes[0];
-                    }
                     AddStartNode(flowNode, startNode);
-
                 }
                 AddNextNode(previous, model, nodes, flowNode, next);
             }
@@ -3281,9 +3269,8 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-        public void UpdateModelItem(ModelItem modelItem)
+        public void UpdateModelItem(ModelItem modelItem, IMergeToolModel mergeToolModel)
         {
-
             var root = _wd.Context.Services.GetService<ModelService>().Root;
             var chart = _wd.Context.Services.GetService<ModelService>().Find(root, typeof(Flowchart)).FirstOrDefault();
             var nodes = chart?.Properties["Nodes"]?.Collection;
@@ -3297,7 +3284,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 if (prop != null)
                 {
                     var act = t.Properties["Action"]?.ComputedValue as IDev2Activity;
-                    return act.UniqueID == modelItem.Properties["UniqueID"].ComputedValue.ToString();
+                    return act?.UniqueID == modelItem.Properties["UniqueID"]?.ComputedValue.ToString();
                 }
             
                 var propertyName = string.Empty;
@@ -3313,19 +3300,21 @@ namespace Dev2.Studio.ViewModels.Workflow
                 if (!string.IsNullOrEmpty(propertyName))
                 {
                     var act = t.Properties[propertyName]?.ComputedValue as IDev2Activity;
-                    return act.UniqueID == modelItem.Properties["UniqueID"].ToString();
+                    return act?.UniqueID == modelItem.Properties["UniqueID"]?.ToString();
                 }
                 return false;
             });
-            var modelProperty = flowNode.Properties["Action"];
+            var modelProperty = flowNode?.Properties["Action"];
             if (modelProperty != null)
             {
-                flowNode.Properties["Action"]?.SetValue(modelItem);
+                var nodeToAdd = ModelItemUtils.CreateModelItem(mergeToolModel.ActivityType);
+                var computedValue = nodeToAdd.Properties["Action"]?.ComputedValue;
+                modelProperty.SetValue(computedValue);
             }
             else
             {
                 var propertyName = string.Empty;
-                switch (flowNode.ItemType.Name)
+                switch (flowNode?.ItemType.Name)
                 {
                     case "FlowDecision":
                         propertyName = "Condition";
@@ -3333,15 +3322,12 @@ namespace Dev2.Studio.ViewModels.Workflow
                     case "FlowSwitch`1":
                         propertyName = "Expression";
                         break;
-                    default:
-                        break;
                 }
                 if (!string.IsNullOrEmpty(propertyName))
                 {
-                    flowNode.Properties[propertyName]?.SetValue(modelItem.Properties[propertyName]?.ComputedValue);
+                    flowNode?.Properties[propertyName]?.SetValue(modelItem.Properties[propertyName]?.ComputedValue);
                 }
             }
-
         }
         void AddNextNode(IMergeToolModel previous, IMergeToolModel model, ModelItemCollection nodes, FlowNode flowNode, IMergeToolModel next)
         {
