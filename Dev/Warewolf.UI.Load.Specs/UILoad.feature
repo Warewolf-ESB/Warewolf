@@ -73,15 +73,19 @@ Scenario: Open Dependencies Graph
 @SchedulerView
 Scenario: Open Scheduler View And Add Remove Scheduled Tasks
 	Given The Warewolf Studio is running
-	And there are "100" scheduled tasks
+	And I have "100" scheduled tasks
 	And I start the timer
-	When I open scheduler
+	When I Click Scheduler Ribbon Button
 	Then the timer duration is less than "5" seconds
-	Given I start the timer
 	When I create a new scheduled task using shortcut
+	And I Click Scheduler ResourcePicker Button
+	And I Select Service "Tests UI Load Testing" In Service Picker
+	And I Enter LocalSchedulerAdmin Credentials Into Scheduler Tab
+	Given I start the timer
+	When I Click Save Ribbon Button And Wait For Save
 	Then the timer duration is less than "5" seconds
 	Given I start the timer
-	When I Click Erase Schedule Button
+	When I delete the first scheduled task
 	Then the timer duration is less than "5" seconds
 
 Scenario: Open Test View And Add Remove Tests

@@ -119,6 +119,13 @@ namespace Warewolf.UI.Tests.Scheduler.SchedulerUIMapClasses
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.GenericResourceListItem.EraseScheduleButton, new Point(6, 16));
         }
 
+        [When("I delete the first scheduled task")]
+        public void Delete_First_Scheduled_Task()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.GenericResourceListItem.EnableOrDisableCheckBox, new Point(6, 16));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.GenericResourceListItem.EraseScheduleButton, new Point(6, 16));
+        }
+
         [When(@"I Click Scheduler Enable Disable Checkbox Button")]
         public void Click_HelloWorldSchedule_EnableOrDisableCheckbox()
         {
