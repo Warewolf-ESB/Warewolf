@@ -25,6 +25,7 @@ Scenario: Refresh Deploy Source Server
 Scenario: Deploy Resources
 	Given The Warewolf Studio is running
 	And I Click Deploy Ribbon Button
+	And I select
 	And I Select localhost from the source tab
 	And I start the timer
 	When I Click Deploy Tab Deploy Button
@@ -59,7 +60,7 @@ Scenario: Close New Tab
 	And I start the timer
 	When I open "Large Workflow UI Load Testing"
 	Then the timer duration is less than "5" seconds
-	And I start the timer
+	Given I start the timer
 	When I Click Close Workflow Tab Button
 	Then the timer duration is less than "5" seconds
 

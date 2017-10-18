@@ -94,6 +94,17 @@ namespace Warewolf.UI.Tests.Deploy.DeployUIMapClasses
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerConectControl.Combobox.RemoteConnectionIntegrationText.Exists, "Selected source server in deploy is not Remote Connection Integration (Connected).");
         }
 
+        [When(@"I Select LocalServerSource From Deploy Tab Destination Server Combobox")]
+        [Then(@"I Select LocalServerDestination From Deploy Tab Destination Server Combobox")]
+        [Given(@"I Select LocalServerDestination From Deploy Tab Destination Server Combobox")]
+        public void Select_LocalServerDestination_From_Deploy_Tab_Destination_Server_Combobox()
+        {
+            UIMap.WaitForControlVisible(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DestinationServerConectControl.Combobox.ToggleButton);
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DestinationServerConectControl.Combobox.ToggleButton);
+            Mouse.Click(UIMap.MainStudioWindow.ComboboxListItemAsLocalServerSource);
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DestinationServerConectControl.Combobox.LocalServerSourceText.Exists, "Selected source server in deploy is not Remote Connection Integration (Connected).");
+        }
+
         [When(@"I Select LocalhostConnected From Deploy Tab Source Server Combobox")]
         [Then(@"I Select LocalhostConnected From Deploy Tab Source Server Combobox")]
         [Given(@"I Select LocalhostConnected From Deploy Tab Source Server Combobox")]
