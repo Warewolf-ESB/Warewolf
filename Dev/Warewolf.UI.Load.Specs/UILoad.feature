@@ -60,7 +60,7 @@ Scenario: Close New Tab
 	When I open "Large Workflow UI Load Testing"
 	Then the timer duration is less than "5" seconds
 	And I start the timer
-	When I close worklow tab
+	When I Click Close Workflow Tab Button
 	Then the timer duration is less than "5" seconds
 
 Scenario: Open Dependencies Graph
