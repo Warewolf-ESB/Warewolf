@@ -26,7 +26,14 @@ namespace Warewolf.UI.Load.Specs
         [When(@"I start the timer")]
         public void StartTimer()
         {
-            ScenarioContext.Current.Add("StartTime", System.DateTime.Now);
+            if (!ScenarioContext.Current.ContainsKey("StartTime"))
+            {
+                ScenarioContext.Current.Add("StartTime", System.DateTime.Now);
+            }
+            else
+            {
+                ScenarioContext.Current.Set(System.DateTime.Now, "StartTime");
+            }
         }
 
         [Then(@"the timer duration is less than ""(.*)"" seconds")]
