@@ -12,6 +12,9 @@ using System.Activities;
 using Dev2.Studio.Core.Activities.Utils;
 using System.Activities.Presentation.Model;
 using Dev2.ViewModels.Merge;
+using Warewolf.MergeParser;
+using Dev2.Activities;
+using Dev2.Communication;
 
 namespace Dev2.Core.Tests
 {
@@ -43,7 +46,9 @@ namespace Dev2.Core.Tests
             CustomContainer.Register(mockServer.Object);
             CustomContainer.Register(mockShellViewModel.Object);
             CustomContainer.Register(mockServerRepository.Object);
-            CustomContainer.Register(mockParseServiceForDifferences.Object);
+            CustomContainer.Register<IActivityParser>(new ActivityParser());
+            CustomContainer.Register<IServiceDifferenceParser>(new ServiceDifferenceParser());
+
         }
 
         [TestMethod]
@@ -123,7 +128,7 @@ namespace Dev2.Core.Tests
             differenceResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(WorkflowXamlForDifference());
             differenceResourceModel.Setup(resModel => resModel.DisplayName).Returns("Hello World");
 
-            var mergeWorkflowViewModel = new MergeWorkflowViewModel(currentResourceModel.Object, differenceResourceModel.Object,true);
+            var mergeWorkflowViewModel = new MergeWorkflowViewModel(currentResourceModel.Object, differenceResourceModel.Object, true);
             //---------------Assert Precondition----------------
             Assert.AreNotSame(currentResourceModel, differenceResourceModel);
             //---------------Execute Test ----------------------
@@ -150,16 +155,21 @@ namespace Dev2.Core.Tests
             mockServer.Setup(a => a.GetServerVersion()).Returns("1.0.0.0");
             CustomContainer.Register(mockServer.Object);
             CustomContainer.Register(mockshell.Object);
-
+            ResourceDefinationCleaner resourceDefinationCleaner = new ResourceDefinationCleaner();
+            var resource = resourceDefinationCleaner.GetResourceDefinition(true, Guid.Empty, WorkflowXamlForDifference());
+            Dev2JsonSerializer dev2JsonSerializer = new Dev2JsonSerializer();
+            var msg=dev2JsonSerializer.Deserialize<ExecuteMessage>(resource);
             Mock<IContextualResourceModel> currentResourceModel = Dev2MockFactory.SetupResourceModelMock();
             currentResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(WorkflowXamlForCurrent());
             currentResourceModel.Setup(resModel => resModel.DisplayName).Returns("Hello World");
-
+            //currentResourceModel.Setup(p => p.Environment.ResourceRepository.FetchResourceDefinition(It.IsAny<IServer>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>()))
+            //    .Returns(msg);
             Mock<IContextualResourceModel> differenceResourceModel = Dev2MockFactory.SetupResourceModelMock();
-            differenceResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(WorkflowXamlForDifference());
+         
+            differenceResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(msg.Message);
             differenceResourceModel.Setup(resModel => resModel.DisplayName).Returns("Hello World");
 
-            var mergeWorkflowViewModel = new MergeWorkflowViewModel(currentResourceModel.Object, differenceResourceModel.Object, true);
+            var mergeWorkflowViewModel = new MergeWorkflowViewModel(currentResourceModel.Object, differenceResourceModel.Object, false);
             //---------------Assert Precondition----------------
             Assert.AreNotSame(currentResourceModel, differenceResourceModel);
             //---------------Execute Test ----------------------
