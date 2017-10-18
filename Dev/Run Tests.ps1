@@ -493,7 +493,7 @@ function Install-Server([string]$ServerPath,[string]$ResourcesType) {
     if ($ServerPath -eq "" -or !(Test-Path $ServerPath)) {
         $ServerPath = Find-Warewolf-Server-Exe
     }
-    Write-Warning "Will now stop any currently running Warewolf servers and studios. Resources will backed up to $TestsResultsPath."
+    Write-Warning "Will now stop any currently running Warewolf servers and studios. Resources will be backed up to $TestsResultsPath."
     if ($ResourcesType -eq "") {
 	    $title = "Server Resources"
 	    $message = "What type of resources would you like to install the server with?"
