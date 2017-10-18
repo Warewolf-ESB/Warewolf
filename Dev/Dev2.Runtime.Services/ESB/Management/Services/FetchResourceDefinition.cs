@@ -118,7 +118,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public StringBuilder DecryptAllPasswords(StringBuilder stringBuilder)
         {
-            return resourceDefinationCleaner.DecryptAllPasswords(stringBuilder);
+            return Cleaner.DecryptAllPasswords(stringBuilder);
         }
 
         public DynamicService CreateServiceEntry()
