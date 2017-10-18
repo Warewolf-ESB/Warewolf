@@ -28,15 +28,22 @@ namespace Dev2.CustomControls
                 }
                 else
                 {
-                    if (vm.ModelItem?.ItemType == typeof(DsfDecision))
-                    {
-                        assemblyName = System.Reflection.Assembly.GetAssembly(typeof(Activities.Designers2.Decision.Large)).FullName;
-                        typeName = "Dev2.Activities.Designers2.Decision.Large";
-                    }
-                    else if (vm.ModelItem?.ItemType == typeof(DsfSwitch))
+                    if (vm.ModelItem?.ItemType == typeof(DsfSwitch))
                     {
                         assemblyName = System.Reflection.Assembly.GetAssembly(typeof(Activities.Designers2.Switch.ConfigureSwitch)).FullName;
                         typeName = "Dev2.Activities.Designers2.Switch.ConfigureSwitch";
+                        var inst = Activator.CreateInstance(assemblyName, typeName);
+
+                        if (inst.Unwrap() is UserControl userControl)
+                        {
+                            userControl.DataContext = vm;
+                            return TemplateGenerator.CreateDataTemplate(() => userControl);
+                        }
+                    }
+                    else if (vm.ModelItem?.ItemType == typeof(DsfDecision))
+                    {
+                        assemblyName = System.Reflection.Assembly.GetAssembly(typeof(Activities.Designers2.Decision.Large)).FullName;
+                        typeName = "Dev2.Activities.Designers2.Decision.Large";
                     }
                     else
                     {
