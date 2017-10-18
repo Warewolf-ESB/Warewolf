@@ -68,7 +68,8 @@ namespace Dev2.Core.Tests.Workflows
         public void RemoveAllUnusedDataListObjectsWithItemsNotUsedExpectedItemsRemoved()
         {
             var eventAggregator = new EventAggregator();
-
+            var serverRepo = new Mock<IServerRepository>();
+            CustomContainer.Register(serverRepo.Object);
             Mock<IContextualResourceModel> mockResourceModel = Dev2MockFactory.SetupResourceModelMock();
             mockResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(WorkflowXAMLForTest());
 
@@ -96,7 +97,8 @@ namespace Dev2.Core.Tests.Workflows
         public void SetModelToDirtyAndExpectThatItemsWillBeAdded()
         {
             var eventAggregator = new EventAggregator();
-
+            var serverRepo = new Mock<IServerRepository>();
+            CustomContainer.Register(serverRepo.Object);
             Mock<IContextualResourceModel> mockResourceModel = Dev2MockFactory.SetupResourceModelMock();
             mockResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(WorkflowXAMLForTest());
 
@@ -126,7 +128,8 @@ namespace Dev2.Core.Tests.Workflows
         public void SetModelToCleanAndExpectThatNoItemsWillBeAdded()
         {
             var eventAggregator = new EventAggregator();
-
+            var serverRepo = new Mock<IServerRepository>();
+            CustomContainer.Register(serverRepo.Object);
             Mock<IContextualResourceModel> mockResourceModel = Dev2MockFactory.SetupResourceModelMock();
             mockResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(WorkflowXAMLForTest());
 
@@ -159,7 +162,8 @@ namespace Dev2.Core.Tests.Workflows
             // Set up event agg
 
             var evtAg = new Mock<IEventAggregator>();
-
+            var serverRepo = new Mock<IServerRepository>();
+            CustomContainer.Register(serverRepo.Object);
             Mock<IContextualResourceModel> mockResourceModel = Dev2MockFactory.SetupResourceModelMock();
             mockResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(GetAddMissingWorkflowXml());
 
@@ -186,7 +190,8 @@ namespace Dev2.Core.Tests.Workflows
         {
             //Execute
             var model = CreateWorkflowDesignerViewModel(Dev2MockFactory.ResourceModel.Object, null, false);
-
+            var serverRepo = new Mock<IServerRepository>();
+            CustomContainer.Register(serverRepo.Object);
             var mockResourceModel = new Mock<IContextualResourceModel>();
             var dataListViewModel = CreateDataListViewModel(mockResourceModel);
             var actual = model.GetDecisionElements("Dev2.Data.Decision.Dev2DataListDecisionHandler.Instance.ExecuteDecisionStack(\"{!TheStack!:[{!Col1!:!]]!,!Col2!:![[scalar]]!,!Col3!:!!,!PopulatedColumnCount!:2,!EvaluationFn!:!IsEqual!}],!TotalDecisions!:1,!ModelName!:!Dev2DecisionStack!,!Mode!:!AND!,!TrueArmText!:!True!,!FalseArmText!:!False!,!DisplayText!:!If ]] Is Equal [[scalar]]!}\",AmbientDataList)", dataListViewModel);
@@ -205,6 +210,8 @@ namespace Dev2.Core.Tests.Workflows
             var eventAggregator = new EventAggregator();
 
 
+            var serverRepo = new Mock<IServerRepository>();
+            CustomContainer.Register(serverRepo.Object);
             var model = CreateWorkflowDesignerViewModel(eventAggregator, resourceModel.Object, null, false);
             var dataListViewModel = new DataListViewModel();
 
@@ -228,7 +235,8 @@ namespace Dev2.Core.Tests.Workflows
             Mock<IContextualResourceModel> resourceModel = Dev2MockFactory.ResourceModel;
             var eventAggregator = new EventAggregator();
 
-
+            var serverRepo = new Mock<IServerRepository>();
+            CustomContainer.Register(serverRepo.Object);
             var model = CreateWorkflowDesignerViewModel(eventAggregator, resourceModel.Object, null, false);
             var dataListViewModel = new DataListViewModel();
 
@@ -261,7 +269,8 @@ namespace Dev2.Core.Tests.Workflows
             Mock<IContextualResourceModel> resourceModel = Dev2MockFactory.ResourceModel;
             var eventAggregator = new EventAggregator();
 
-
+            var serverRepo = new Mock<IServerRepository>();
+            CustomContainer.Register(serverRepo.Object);
             var model = CreateWorkflowDesignerViewModel(eventAggregator, resourceModel.Object, null, false);
             var dataListViewModel = new DataListViewModel();
 
@@ -292,7 +301,8 @@ namespace Dev2.Core.Tests.Workflows
 
             Mock<IContextualResourceModel> mockResourceModel = Dev2MockFactory.SetupResourceModelMock();
             mockResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(WorkflowXAMLForTest());
-
+            var serverRepo=new Mock<IServerRepository>();
+            CustomContainer.Register(serverRepo.Object);
             var dataListViewModel = CreateDataListViewModel(mockResourceModel, eventAggregator);
             var dataListItems = new OptomizedObservableCollection<IScalarItemModel>();
             var dataListItem = new ScalarItemModel("scalar1", enDev2ColumnArgumentDirection.Input);
@@ -1052,7 +1062,8 @@ namespace Dev2.Core.Tests.Workflows
         {
             //------------Setup for test--------------------------
             var eventAggregator = new EventAggregator();
-
+            var serverRepo = new Mock<IServerRepository>();
+            CustomContainer.Register(serverRepo.Object);
             Mock<IContextualResourceModel> mockResourceModel = Dev2MockFactory.SetupResourceModelMock();
             mockResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(WorkflowXAMLForTest());
             var workflowDesigner = CreateWorkflowDesignerViewModel(eventAggregator, mockResourceModel.Object, null, false);
@@ -1075,7 +1086,8 @@ namespace Dev2.Core.Tests.Workflows
         {
             //------------Setup for test--------------------------
             var eventAggregator = new EventAggregator();
-
+            var serverRepo = new Mock<IServerRepository>();
+            CustomContainer.Register(serverRepo.Object);
             Mock<IContextualResourceModel> mockResourceModel = Dev2MockFactory.SetupResourceModelMock();
             mockResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(WorkflowXAMLForTest());
             var workflowDesigner = CreateWorkflowDesignerViewModel(eventAggregator, mockResourceModel.Object, null, false);
@@ -1116,6 +1128,8 @@ namespace Dev2.Core.Tests.Workflows
         {
 
             //------------Setup for test--------------------------
+            var serverRepo = new Mock<IServerRepository>();
+            CustomContainer.Register(serverRepo.Object);
             var repo = new Mock<IResourceRepository>();
             repo.Setup(c => c.FetchResourceDefinition(It.IsAny<IServer>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage { Message = null });
             var env = EnviromentRepositoryTest.CreateMockEnvironment();
@@ -1156,6 +1170,8 @@ namespace Dev2.Core.Tests.Workflows
             {
                 try
                 {
+                    var serverRepo = new Mock<IServerRepository>();
+                    CustomContainer.Register(serverRepo.Object);
 
                     #region Setup viewModel
 
@@ -1248,6 +1264,8 @@ namespace Dev2.Core.Tests.Workflows
         public void WorkflowDesignerViewModelInitializeDesignerExpectedInitializesFramework45Properties()
         {
             var repo = new Mock<IResourceRepository>();
+            var serverRepo = new Mock<IServerRepository>();
+            CustomContainer.Register(serverRepo.Object);
             repo.Setup(r => r.FetchResourceDefinition(It.IsAny<IServer>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
             var env = EnviromentRepositoryTest.CreateMockEnvironment();
             env.Setup(e => e.ResourceRepository).Returns(repo.Object);
@@ -1290,6 +1308,8 @@ namespace Dev2.Core.Tests.Workflows
         public void WorkflowDesignerViewModelInitializeDesignerExpectedInvokesWorkflowHelper()
         {
             var repo = new Mock<IResourceRepository>();
+            var serverRepo = new Mock<IServerRepository>();
+            CustomContainer.Register(serverRepo.Object);
             repo.Setup(r => r.FetchResourceDefinition(It.IsAny<IServer>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
             var env = EnviromentRepositoryTest.CreateMockEnvironment();
             env.Setup(e => e.ResourceRepository).Returns(repo.Object);
@@ -1338,6 +1358,8 @@ namespace Dev2.Core.Tests.Workflows
         [TestMethod]
         public void WorkflowDesignerViewModelServiceDefinitionExpectedInvokesWorkflowHelperSerializeWorkflow()
         {
+            var serverRepo = new Mock<IServerRepository>();
+            CustomContainer.Register(serverRepo.Object);
             var repo = new Mock<IResourceRepository>();
             repo.Setup(r => r.FetchResourceDefinition(It.IsAny<IServer>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
             var env = EnviromentRepositoryTest.CreateMockEnvironment();
@@ -1677,6 +1699,8 @@ namespace Dev2.Core.Tests.Workflows
         public void WorkflowDesignerViewModel_HandleSaveUnsavedWorkflow_MessageWithArgs_Saves()
         {
             //------------Setup for test--------------------------
+            var serverRepo = new Mock<IServerRepository>();
+            CustomContainer.Register(serverRepo.Object);
             #region Setup view model constructor parameters
 
             var repo = new Mock<IResourceRepository>();
@@ -1766,7 +1790,8 @@ namespace Dev2.Core.Tests.Workflows
         {
             //------------Setup for test--------------------------
             #region Setup view model constructor parameters
-
+            var serverRepo = new Mock<IServerRepository>();
+            CustomContainer.Register(serverRepo.Object);
             var repo = new Mock<IResourceRepository>();
             repo.Setup(repository => repository.SaveToServer(It.IsAny<IResourceModel>())).Verifiable();
             repo.Setup(repository => repository.Save(It.IsAny<IResourceModel>())).Verifiable();
@@ -2223,6 +2248,8 @@ namespace Dev2.Core.Tests.Workflows
             SetupEnvironmentRepo(Guid.Empty); // Set the active environment
             var testAct = new DsfActivity();
             testAct.DisplayName = "Test";
+            var serverRepo = new Mock<IServerRepository>();
+            CustomContainer.Register(serverRepo.Object);
 
             var propertyCollection = new Mock<ModelPropertyCollection>();
             var prop = new Mock<ModelProperty>();

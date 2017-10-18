@@ -48,7 +48,7 @@ namespace Dev2.Core.Tests.Workflows
                 resource, workflowHelper,
                 new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), new Mock<IExternalProcessExecutor>().Object, createDesigner, false)
         {
-            _moq.SetupAllProperties();
+            //_moq.SetupAllProperties();
             _wd = _moq.Object;
         }
         public WorkflowDesignerViewModelMock(IContextualResourceModel resource, IWorkflowHelper workflowHelper, IEventAggregator eventAggregator, ModelService modelService, bool createDesigner = false)
@@ -57,7 +57,7 @@ namespace Dev2.Core.Tests.Workflows
                 resource, workflowHelper,
                 new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), new Mock<IExternalProcessExecutor>().Object, createDesigner, false)
         {
-            _moq.SetupAllProperties();
+            //_moq.SetupAllProperties();
             _wd = _moq.Object;
             _modelService = modelService;
         }
