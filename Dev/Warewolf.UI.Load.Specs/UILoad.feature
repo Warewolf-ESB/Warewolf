@@ -37,23 +37,19 @@ Scenario: Get Debug Output
 	When I Press F6
 	Then the timer duration is less than "5" seconds
 
-Scenario: Add A Variable
+Scenario: Add Remove A Variable
 	Given The Warewolf Studio is running
 	And I open "Variable List UI Load Testing"
 	And I start the timer
 	When I Enter variable text as "[[new_variable]]" and value text as "new value" into assign row 1
 	Then the timer duration is less than "5" seconds
-
-Scenario: Remove A Variable
-	Given The Warewolf Studio is running
-	And I open "Variable List UI Load Testing"
-	And I start the timer
+	Given I start the timer
 	When I Remove Assign Row 1 With Context Menu
 	Then the timer duration is less than "5" seconds
-
+	
 Scenario: Open New Tab
 	Given The Warewolf Studio is running
-	And I open "30" new workflow tabs
+	And I have "30" new workflow tabs open
 	And I start the timer
 	When I open a new worklow tab
 	Then the timer duration is less than "5" seconds
@@ -70,7 +66,7 @@ Scenario: Close New Tab
 Scenario: Open Dependencies Graph
 	Given The Warewolf Studio is running
 	And I start the timer
-	When I open "Dependencies Graph UI Load Testing"
+	When I Select Show Dependencies In Explorer Context Menu for service "Dependencies Graph UI Load Testing"
 	Then the timer duration is less than "5" seconds
 
 Scenario: Open Scheduler View And Add Remove Scheduled Tasks
