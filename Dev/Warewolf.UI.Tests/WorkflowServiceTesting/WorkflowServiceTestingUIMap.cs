@@ -662,8 +662,10 @@ namespace Warewolf.UI.Tests.WorkflowServiceTesting.WorkflowServiceTestingUIMapCl
         [When(@"I Delete The First Test")]
         public void Delete_The_First_Test()
         {
+            Toggle_Workflow_Testing_Tab_First_Test_Enabled();
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test1.DeleteButton);
             Assert.IsTrue(DialogsUIMap.MessageBoxWindow.Exists, "Delete Confirmation MessageBox did not Open");
+            Mouse.Click(DialogsUIMap.MessageBoxWindow.YesButton, new Point(32, 5));
         }
 
         [Given(@"I Click Close Tests Tab")]
