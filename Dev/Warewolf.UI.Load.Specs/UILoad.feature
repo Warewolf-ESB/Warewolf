@@ -86,7 +86,7 @@ Scenario: Open Scheduler View And Add Remove Scheduled Tasks
 
 Scenario: Open Test View And Add Remove Tests
 	Given The Warewolf Studio is running
-	And I Filter the Explorer with "Tests UI Load Testing"
+	When I Filter the Explorer with "Tests UI Load Testing"
 	And I start the timer
 	And I Click Show Explorer First Item Tests From Explorer Context Menu
 	Then the timer duration is less than "5" seconds
