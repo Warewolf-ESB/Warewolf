@@ -88,6 +88,7 @@ namespace Warewolf.UI.Tests.Scheduler.SchedulerUIMapClasses
 
         private UIMap _UIMap;
 
+        [When("I create a new scheduled task using shortcut")]
         public void Create_Scheduler_Using_Shortcut()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList, new Point(151, 13));
@@ -112,8 +113,8 @@ namespace Warewolf.UI.Tests.Scheduler.SchedulerUIMapClasses
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.CloseButton);
         }
 
-        [When(@"I Click Hello World Erase Schedule Button")]
-        public void Click_HelloWorldSchedule_EraseSchedulerButton()
+        [When(@"I Click Erase Schedule Button")]
+        public void Click_Schedule_EraseSchedulerButton()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.GenericResourceListItem.EraseScheduleButton, new Point(6, 16));
         }
