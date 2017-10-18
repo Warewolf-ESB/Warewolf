@@ -85,7 +85,7 @@ Scenario: Open Scheduler View And Add Remove Scheduled Tasks
 	When I Click Save Ribbon Button And Wait For Save
 	Then the timer duration is less than "5" seconds
 	Given I start the timer
-	When I delete the first scheduled task
+	When I delete the UI Load Test scheduled task
 	Then the timer duration is less than "5" seconds
 
 Scenario: Open Test View And Add Remove Tests
