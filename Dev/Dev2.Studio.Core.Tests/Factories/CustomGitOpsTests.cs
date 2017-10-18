@@ -15,7 +15,7 @@ namespace Dev2.Core.Tests.Factories
             //------------Setup for test--------------------------
             var executor = new Mock<IExternalProcessExecutor>();
             CustomGitOps.SetCustomGitTool(executor.Object);
-            executor.Verify(p => p.Start(It.IsAny<ProcessStartInfo>()), Times.Exactly(6));
+            executor.Verify(p => p.Start(It.IsAny<ProcessStartInfo>()), Times.Exactly(7));
         }
 
         [TestMethod]
@@ -25,18 +25,9 @@ namespace Dev2.Core.Tests.Factories
             var executor = new Mock<IExternalProcessExecutor>();
             executor.Setup(p => p.Start(It.IsAny<ProcessStartInfo>())).Throws(new System.Exception());
             CustomGitOps.SetCustomGitTool(executor.Object);
-            executor.Verify(p => p.Start(It.IsAny<ProcessStartInfo>()), Times.Exactly(6));
+            executor.Verify(p => p.Start(It.IsAny<ProcessStartInfo>()), Times.Exactly(7));
         }
 
-        [TestMethod]
-        public void GitPath_ExecutesThreeCommands()
-        {
-            //------------Setup for test--------------------------
-            var executor = new Mock<IExternalProcessExecutor>();
-            PrivateType privateType = new PrivateType(typeof(CustomGitOps));
-            var gitPath = privateType.InvokeStatic("GetGitExePath");
-            StringAssert.EndsWith(gitPath.ToString(), "git.exe");
-
-        }
+       
     }
 }
