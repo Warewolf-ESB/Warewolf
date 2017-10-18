@@ -42,7 +42,7 @@ namespace Warewolf.UI.Load.Specs
             var startTime = ScenarioContext.Current.Get<System.DateTime>("StartTime");
             double totalSeconds = (startTime - System.DateTime.Now).TotalSeconds;
             Assert.IsTrue(totalSeconds < int.Parse(duration), "Load test failed. Duration is greater than " + duration + " seconds");
-            Console.WriteLine(totalSeconds + " seconds duration.");
+            Console.WriteLine("timer stopped after " + totalSeconds + " seconds.");
         }
 
         [Given(@"I have ""(.*)"" new workflow tabs open")]
