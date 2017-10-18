@@ -5,16 +5,13 @@ using Dev2.Common.Interfaces;
 using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.Practices.Prism.Mvvm;
 using System.Collections.ObjectModel;
-using System.Linq;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.Factory;
 using Dev2.Activities;
 using Dev2.Activities.Designers2.Service;
 using Dev2.Activities.Designers2.Switch;
-using Dev2.Activities.SelectAndApply;
 using Dev2.Common.ExtMethods;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
-using System.Activities.Statements;
 using Caliburn.Micro;
 using Dev2.Common;
 using Dev2.Studio.Interfaces.DataList;
@@ -23,33 +20,29 @@ namespace Dev2.ViewModels.Merge
 {
     public class ConflictModelFactory : BindableBase, IConflictModelFactory
     {
-        readonly IActivityParser _activityParser;
         readonly IContextualResourceModel _resourceModel;
         bool _isWorkflowNameChecked;
         bool _isVariablesChecked;
 
         public IMergeToolModel Model { get; set; }
+        public delegate void ModelItemChanged(ModelItem modelItem);
+        public event ModelItemChanged OnModelItemChanged;
+
         public ConflictModelFactory(IConflictNode conflictNode, IContextualResourceModel resourceModel)
-            : this(CustomContainer.Get<IActivityParser>())
         {
             Children = new ObservableCollection<IMergeToolModel>();            
             _resourceModel = resourceModel;
             Model = GetModel(conflictNode.CurrentActivity, conflictNode.Activity,null,"");
         }
-
-
-        public ConflictModelFactory(IActivityParser activityParser)
-        {
-            _activityParser = activityParser;
-        }
+        
         public ConflictModelFactory()
         {
             Children = new ObservableCollection<IMergeToolModel>();
         }
 
-        public void GetDataList()
+        public void GetDataList(IContextualResourceModel resourceModel)
         {
-            DataListViewModel = DataListViewModelFactory.CreateDataListViewModel(_resourceModel);
+            DataListViewModel = DataListViewModelFactory.CreateDataListViewModel(resourceModel);
             if (DataListViewModel != null)
             {
                 DataListViewModel.ViewSortDelete = false;
@@ -122,7 +115,10 @@ namespace Dev2.ViewModels.Merge
             {
                 return null;
             }
-
+            modelItem.PropertyChanged += (sender, e) =>
+            {
+                OnModelItemChanged?.Invoke(modelItem);
+            };
             var currentValue = modelItem.GetCurrentValue<IDev2Activity>();
             var activityType = currentValue?.GetType();
             if (activityType == null)
@@ -151,30 +147,20 @@ namespace Dev2.ViewModels.Merge
                 }
                 else
                 {
-                    var resourceId = ModelItemUtils.TryGetResourceID(modelItem);
-                    var childResourceModel = _resourceModel.Environment.ResourceRepository.LoadContextualResourceModel(resourceId);
                     instance = Activator.CreateInstance(actual, modelItem) as ActivityDesignerViewModel;
                 }
-
-                var dsfActivity = activityType.GetProperty("DisplayName")?.GetValue(currentValue);
-                if (currentValue is DsfDecision decision)
-                {
-                    dsfActivity = decision.Conditions.DisplayText;
-                }
-                if (currentValue is DsfSwitch switchActivity)
-                {
-                    dsfActivity = switchActivity.Switch;
-                }
+                
                 var mergeToolModel = new MergeToolModel
                 {
                     ActivityDesignerViewModel = instance,
                     MergeIcon = modelItem.GetImageSourceForTool(),
-                    MergeDescription = dsfActivity?.ToString(),
+                    MergeDescription = activity.GetDisplayName(),
                     UniqueId = currentValue.UniqueID.ToGuid(),
                     IsMergeVisible = true,
                     ActivityType = activity.GetFlowNode(),
                     Parent = parentItem,
                     HasParent = parentItem != null,
+                    IsContained = IsContainerTool(parentItem),
                     ParentDescription = parentLableDescription,
                     IsTrueArm = parentLableDescription?.ToLowerInvariant() == "true"                    
                 };
@@ -186,15 +172,27 @@ namespace Dev2.ViewModels.Merge
                         continue;
                     }
                     foreach (var innerAct in act.Value)
-                    {
-                        var parent = mergeToolModel;
-                        var item = GetModel(ModelItemUtils.CreateModelItem(innerAct), innerAct, parent, act.Key);                    
-                        parent.Children.Add(item);
+                    {                        
+                        var item = GetModel(ModelItemUtils.CreateModelItem(innerAct), innerAct, mergeToolModel, act.Key);
+                        mergeToolModel.Children.Add(item);
                     }
                 }                
                 return mergeToolModel;
             }
             return null;
+        }
+
+        private static bool IsContainerTool(IMergeToolModel parentItem)
+        {
+            switch (parentItem?.FlowNode?.ItemType.ToString())
+            {
+                case "DsfForEachActivity":
+                case "DsfSelectAndApply":
+                case "DsfSequenceActivity":
+                    return true;
+                    default:
+                        return false;
+            }
         }
 
         public event ConflictModelChanged SomethingConflictModelChanged;

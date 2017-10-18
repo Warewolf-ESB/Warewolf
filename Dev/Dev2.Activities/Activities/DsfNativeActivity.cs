@@ -230,6 +230,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
+        public string GetDisplayName()
+        {
+            return DisplayName;
+        }
         void PerformStopWorkflow(IDSFDataObject dataObject)
         {
             dataObject.StopExecution = true;
