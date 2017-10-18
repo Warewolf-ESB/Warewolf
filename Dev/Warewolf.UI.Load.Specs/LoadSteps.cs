@@ -32,7 +32,7 @@ namespace Warewolf.UI.Load.Specs
         [Then(@"the timer duration is less than ""(.*)"" seconds")]
         public void StopTimer(string duration)
         {
-            var startTime = ScenarioContext.Current.Get<System.DateTime>("StopTime");
+            var startTime = ScenarioContext.Current.Get<System.DateTime>("StartTime");
             Assert.IsTrue((startTime - System.DateTime.Now).TotalSeconds < int.Parse(duration), "Load test failed. Duration is greater than " + duration + " seconds");
         }
 
