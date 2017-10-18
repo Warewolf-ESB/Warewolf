@@ -17,14 +17,14 @@ namespace Warewolf.UI.Tests.Merge
         [TestCategory("Merge")]
         public void RightClick_On_MergeSequence_Has_Merge_Option()
         {
-            MergeConflictsUIMap.RightClick_On_MergeWfWithVersion(MergeSequence);
+            MergeConflictsUIMap.RightClick_On_MergeWorkflow(MergeSequence);
             Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.Merge.Exists, "Merge option does not show after Right cliking " + MergeSequence);
         }
         [TestMethod]
         [TestCategory("Merge")]
         public void Open_Merge_For_MergeSequence_Has_Assign_OnDesign_Surface_Since_The_Are_No_Differences()
         {
-            MergeConflictsUIMap.RightClick_On_MergeWfWithVersion(MergeSequence);
+            MergeConflictsUIMap.RightClick_On_MergeWorkflow(MergeSequence);
             Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.Merge.Exists, "Merge option does not show after Right cliking " + MergeSequence);
             ExplorerUIMap.Click_Merge_From_Context_Menu();
             MergeConflictsUIMap.MergeDialogViewWindow.MergeResourceVersionList.WarewolfStudioViewMoListItem.ItemRadioButton.Selected = true;
@@ -36,7 +36,7 @@ namespace Warewolf.UI.Tests.Merge
         [TestCategory("Merge")]
         public void Open_Merge_For_MergeSequence_Select_Current_On_OrganizeCustomerTool_Enables_SortNames_Radio_Button()
         {
-            MergeConflictsUIMap.RightClick_On_MergeWfWithVersion(MergeSequence);
+            MergeConflictsUIMap.RightClick_On_MergeWorkflow(MergeSequence);
             ExplorerUIMap.Click_Merge_From_Context_Menu();
             MergeConflictsUIMap.MergeDialogViewWindow.MergeResourceVersionList.WarewolfStudioViewMoListItem.ItemRadioButton.Selected = true;
             Mouse.Click(MergeConflictsUIMap.MergeDialogViewWindow.MergeButton);
@@ -48,7 +48,27 @@ namespace Warewolf.UI.Tests.Merge
         [TestCategory("Merge")]
         public void Open_Merge_For_MergeSequence_Expand_OrganizeCustomerTool_Has_Split_Names_On_Current()
         {
-            MergeConflictsUIMap.RightClick_On_MergeWfWithVersion(MergeSequence);
+            MergeConflictsUIMap.RightClick_On_MergeWorkflow(MergeSequence);
+            ExplorerUIMap.Click_Merge_From_Context_Menu();
+            Assert.IsTrue(MergeConflictsUIMap.MergeDialogViewWindow.MergeResourceVersionList.WarewolfStudioViewMoListItem.ItemRadioButton.MergeSequence.Exists);
+            MergeConflictsUIMap.MergeDialogViewWindow.MergeResourceVersionList.WarewolfStudioViewMoListItem.ItemRadioButton.Selected = true;
+            Mouse.Click(MergeConflictsUIMap.MergeDialogViewWindow.MergeButton);
+            MergeConflictsUIMap.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.ScrollViewerPane.VariablesExpander.VariablesHeader.DifferenceVariableRadioButton.Selected = true;
+            Assert.IsTrue(MergeConflictsUIMap.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.UIUserControl_1Custom.UIScrollViewerPane.UIActivityBuilderCustom.UIWorkflowItemPresenteCustom.UIFlowchartCustom.FirstAssign_Diff_On_Surface.Exists, "Create Example Data Assign tool was not added to the design surface since it is not conflicting");
+            Assert.IsTrue(MergeConflictsUIMap.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.ScrollViewerPane.ConflictsTree.MergeTreeItem.MergeItemExpander.MergeButton.NoConflicts.Exists);
+            Assert.IsTrue(MergeConflictsUIMap.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.ScrollViewerPane.ConflictsTree.MergeTreeItem2.MergeItemExpander.MergeButton.OrganizeCustomers_Difference.Enabled);
+            MergeConflictsUIMap.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.ScrollViewerPane.ConflictsTree.MergeTreeItem2.MergeItemExpander.MergeButton.OrganizeCustomers_Difference.Selected = true;
+            Assert.IsTrue(MergeConflictsUIMap.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.UIUserControl_1Custom.UIScrollViewerPane.UIActivityBuilderCustom.UIWorkflowItemPresenteCustom.UIFlowchartCustom.SequenceActivityCustom.Exists, "Organize Customers Sequence tool was not added to the design surface after clicking Radio button.");
+            Assert.IsTrue(MergeConflictsUIMap.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.ScrollViewerPane.ConflictsTree.MergeTreeItem3.MergeItemExpander.MergeButton.ThirdAssign_Difference.Enabled);
+            MergeConflictsUIMap.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.ScrollViewerPane.ConflictsTree.MergeTreeItem3.MergeItemExpander.MergeButton.ThirdAssign_Difference.Selected = true;
+        }
+
+
+        [TestMethod]
+        [TestCategory("Merge")]
+        public void Open_Merge_For_MergeSequence_Select_All_Radio_Butons_On_Difference_Adds_Tool_Onto_Design_Surface()
+        {
+            MergeConflictsUIMap.RightClick_On_MergeWorkflow(MergeSequence);
             ExplorerUIMap.Click_Merge_From_Context_Menu();
             Assert.IsTrue(MergeConflictsUIMap.MergeDialogViewWindow.MergeResourceVersionList.WarewolfStudioViewMoListItem.ItemRadioButton.MergeSequence.Exists);
             MergeConflictsUIMap.MergeDialogViewWindow.MergeResourceVersionList.WarewolfStudioViewMoListItem.ItemRadioButton.Selected = true;
@@ -56,6 +76,7 @@ namespace Warewolf.UI.Tests.Merge
             Mouse.Click(MergeConflictsUIMap.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.ScrollViewerPane.ConflictsTree.MergeTreeItem2.MergeItemExpander.MergeButton.OrganizeCustomers_Current);
             Assert.IsTrue(MergeConflictsUIMap.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.ScrollViewerPane.ConflictsTree.MergeTreeItem2.MergeItemExpander.ChildrenConflictsTree.SplitNames.MergeExpander.MergeButton.NoConflicts.Exists);
         }
+
 
 
         #region
