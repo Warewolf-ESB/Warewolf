@@ -880,26 +880,6 @@ namespace Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses
             Mouse.Click(UIMap.MainStudioWindow.ExplorerContextMenu.Open);
         }
 
-        [Given(@"I Click AssignStep In Debug Output")]
-        [When(@"I Click AssignStep In Debug Output")]
-        [Then(@"I Click AssignStep In Debug Output")]
-        public void Click_AssignStep_InDebugOutput()
-        {
-            Mouse.Click(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.DebugOutputTree.AssignOnDebugOutput);
-        }
-        public void Click_SelectAndApplyStep_InDebugOutput()
-        {
-            Mouse.Click(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.DebugOutputTree.SelectandapplyTreeItem);
-        }
-
-        [Given(@"I Click DecisionStep In Debug Output")]
-        [When(@"I Click DecisionStep In Debug Output")]
-        [Then(@"I Click DecisionStep In Debug Output")]
-        public void Click_DesicionStep_InDebugOutput()
-        {
-            Mouse.Click(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.DebugOutputTree.DecisionOnDebugOutput);
-        }
-
         [Given(@"I Open Explorer First Item Tests With Context Menu")]
         [When(@"I Open Explorer First Item Tests With Context Menu")]
         [Then(@"I Open Explorer First Item Tests With Context Menu")]

@@ -297,6 +297,15 @@ namespace Warewolf.UI.Tests
             WaitForSpinner(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.StatusBar.Spinner);
         }
 
+        [When(@"I Debug with input of ""(.*)""")]
+        public void Debug_Workflow_With_Input(string input)
+        {
+            Click_Debug_RibbonButton();
+            Enter_Text_Into_Debug_Input_Row1_Value_Textbox(input);
+            Click_DebugInput_Debug_Button();
+            WaitForSpinner(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.StatusBar.Spinner);
+        }
+
         public void Debug_Unpinned_Workflow_With_F6()
         {
             Press_F6();
