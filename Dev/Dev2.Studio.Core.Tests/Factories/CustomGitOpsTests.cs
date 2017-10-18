@@ -34,7 +34,7 @@ namespace Dev2.Core.Tests.Factories
             //------------Setup for test--------------------------
             var executor = new Mock<IExternalProcessExecutor>();
             PrivateType privateType = new PrivateType(typeof(CustomGitOps));
-            var gitPath = privateType.InvokeStatic("GetGitBashPath");
+            var gitPath = privateType.InvokeStatic("GetGitExePath");
             StringAssert.EndsWith(gitPath.ToString(), "git.exe");
 
         }
