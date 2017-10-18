@@ -35,7 +35,7 @@ Scenario: Get Debug Output
 	Given The Warewolf Studio is running
 	And I open "Debug Output UI Load Testing"
 	And I start the timer
-	When I Press F6
+	When I Debug with input of "100"
 	Then the timer duration is less than "5" seconds
 
 Scenario: Add Remove A Variable
