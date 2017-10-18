@@ -43,10 +43,6 @@ namespace Dev2.Core.Tests.Workflows
         }
         public Dictionary<string, IEnumerable<IDev2Activity>> GetChildrenNodes() => throw new NotImplementedException();
         public FlowNode GetFlowNode() => throw new NotImplementedException();
-        public string GetDisplayName()
-        {
-            throw new NotImplementedException();
-        }
     }
 
     public class TestDecisionActivity : Activity<bool>, IDev2Activity
@@ -75,9 +71,5 @@ namespace Dev2.Core.Tests.Workflows
 
         public Dictionary<string, IEnumerable<IDev2Activity>> GetChildrenNodes() => throw new NotImplementedException();
         public FlowNode GetFlowNode() => throw new NotImplementedException();
-        public string GetDisplayName()
-        {
-            throw new NotImplementedException();
-        }
     }
 }
