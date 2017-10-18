@@ -27,6 +27,8 @@ namespace Dev2.Integration.Tests.Merge
                 StringAssert.Contains(gitText, "tool = DiffMerge");
                 StringAssert.Contains(gitText, "cmd = C:/Program Files (x86)/Warewolf/Studio/customMerge.sh -merge $REMOTE");
                 StringAssert.Contains(gitText, "trustExitCode = false");
+                StringAssert.Contains(gitText, "[difftool \"DiffMerge\"]");
+                StringAssert.Contains(gitText, "[mergetool \"DiffMerge\"]");
             }
         }
 

@@ -18,9 +18,10 @@ namespace Dev2.Factory
             var secondCommand1 = "config --global difftool.DiffMerge.cmd \"C:/Program Files (x86)/Warewolf/Studio/customMerge.sh \"-merge\" $REMOTE";
             var orderedList1 = new[]
             {
-                "config --global diff.tool DiffMerge"
+                "config --global merge.tool DiffMerge"
                 ,secondCommand
                 ,"config --global mergetool.DiffMerge.trustExitCode false"
+
                 ,"config --global diff.tool DiffMerge"
                 ,secondCommand1
                 ,"config --global difftool.DiffMerge.trustExitCode false"
@@ -35,16 +36,13 @@ namespace Dev2.Factory
                 {
                     try
                     {
-                        ProcessStartInfo ProcessInfo;
-                        Process Process;
-
-                        string arguments = "/C " + "\"" + gitExePath + "\"" + " " + item;
-                        ProcessInfo = new ProcessStartInfo("cmd.exe", arguments)
+                        var quotedExePath = "\"" + gitExePath + "\"";
+                        ProcessStartInfo ProcessInfo = new ProcessStartInfo(quotedExePath, item)
                         {
                             CreateNoWindow = true,  
                             UseShellExecute = false
                         };
-                        Process = processExecutor.Start(ProcessInfo);
+                        Process Process = processExecutor.Start(ProcessInfo);
                         if (Process != null)
                         {
                             Process.WaitForExit(10);
