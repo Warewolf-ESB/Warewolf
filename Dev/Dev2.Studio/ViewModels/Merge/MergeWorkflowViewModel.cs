@@ -102,7 +102,7 @@ namespace Dev2.ViewModels.Merge
                 {
                     var factoryA = new ConflictModelFactory(currentChange.currentNode, currentResourceModel);
                     conflict.CurrentViewModel = factoryA.Model;
-                    factoryA.OnModelItemChanged += (modelItem) =>
+                    factoryA.OnModelItemChanged += modelItem =>
                     {
                         WorkflowDesignerViewModel.UpdateModelItem(modelItem);
                     };
@@ -128,6 +128,10 @@ namespace Dev2.ViewModels.Merge
                 if (currentChange.differenceNode != null)
                 {
                     var factoryB = new ConflictModelFactory(currentChange.differenceNode, differenceResourceModel);
+                    factoryB.OnModelItemChanged += modelItem =>
+                    {
+                        WorkflowDesignerViewModel.UpdateModelItem(modelItem);
+                    };
                     conflict.DiffViewModel = factoryB.Model;
                     conflict.DiffViewModel.Container = conflict;
                     conflict.DiffViewModel.FlowNode = currentChange.differenceNode.CurrentFlowStep;
