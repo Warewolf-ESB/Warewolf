@@ -11,7 +11,6 @@ using System.Activities.Presentation.Model;
 using System.Windows;
 using Caliburn.Micro;
 using Dev2.Common.Common;
-using Dev2.Studio.Core;
 using Dev2.Studio.Interfaces.DataList;
 
 namespace Dev2.ViewModels.Merge
@@ -90,16 +89,6 @@ namespace Dev2.ViewModels.Merge
             if (!HasVariablesConflict)
             {
                 CurrentConflictModel.IsVariablesChecked = true;
-            }
-
-            if (!HasWorkflowNameConflict && !HasVariablesConflict)
-            {
-                var conflict = Conflicts?.FirstOrDefault();
-                _conflictEnumerator.MoveNext();
-                if (conflict != null && !conflict.HasConflict)
-                {
-                    conflict.CurrentViewModel.IsMergeChecked = true;
-                }
             }
         }
 
@@ -296,13 +285,11 @@ namespace Dev2.ViewModels.Merge
         {
             try
             {
-                var argsIsVariablesChecked = args.IsVariablesChecked || !HasVariablesConflict;
-
                 if (!HasMergeStarted)
                 {
-                    HasMergeStarted = args.IsWorkflowNameChecked || argsIsVariablesChecked;
+                    HasMergeStarted = args.IsWorkflowNameChecked || args.IsVariablesChecked;
                 }
-                if (!argsIsVariablesChecked)
+                if (!args.IsVariablesChecked)
                 {
                     return;
                 }
