@@ -12,11 +12,9 @@ using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using Dev2.Common;
-using Dev2.Data.Decision;
 using Dev2.Data.Decisions.Operations;
 using Dev2.Data.SystemTemplates.Models;
 using Dev2.Interfaces;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Tools.Specs.BaseTypes;
@@ -201,27 +199,6 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Decision
             BuildDataList();
             IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
             scenarioContext.Add("result", result);
-        }
-
-        [Then(@"the decision result should be ""(.*)""")]
-        public void ThenTheDecisionResultShouldBe(string expectedRes)
-        {
-            var modelData = scenarioContext.Get<string>("modelData");
-            var result = scenarioContext.Get<IDSFDataObject>("result");
-            if (result.DataListID == Guid.Empty)
-            {
-                result.DataListID = Guid.NewGuid();
-            }
-            Dev2DataListDecisionHandler.Instance.AddEnvironment(result.DataListID, result.Environment);
-
-            bool actual = new Dev2DataListDecisionHandler().ExecuteDecisionStack(modelData,
-                                                                                 new List<string>
-                                                                                     {
-                                                                                         result.DataListID.ToString()
-                                                                                     }, 0);
-            bool expected = Boolean.Parse(expectedRes);
-            Assert.AreEqual(expected, actual);
-
         }
     }
 }
