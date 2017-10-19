@@ -9,6 +9,7 @@ using TechTalk.SpecFlow;
 using Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses;
 using Warewolf.UI.Tests.WorkflowServiceTesting.WorkflowServiceTestingUIMapClasses;
 using Warewolf.UI.Tests.DialogsUIMapClasses;
+using Microsoft.VisualStudio.TestTools.UITest.Extension;
 
 namespace Warewolf.UI.Tests.Deploy.DeployUIMapClasses
 {
@@ -293,28 +294,66 @@ namespace Warewolf.UI.Tests.Deploy.DeployUIMapClasses
         public void Click_Deploy_Tab_Deploy_Button()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DeployButton);
-            DialogsUIMap.MessageBoxWindow.WaitForControlExist(60000);
             WaitForDeploySuccess();
         }
 
         void WaitForDeploySuccess()
         {
-            var timeout = 60;
-            var successful = false;
-            while (timeout-- > 0 && !successful)
+            bool seenVersionConflict = false;
+            bool seenSecondVersionConflict = false;
+            bool seenConflict = false;
+            bool successful = TryWaitForADeployMessageDialog(ref seenVersionConflict, ref seenSecondVersionConflict, ref seenConflict);
+            if (!successful)
             {
-                if (DialogsUIMap.MessageBoxWindow.Exists)
+                successful = TryWaitForADeployMessageDialog(ref seenVersionConflict, ref seenSecondVersionConflict, ref seenConflict);
+                if (!successful)
                 {
-                    DialogsUIMap.MessageBoxWindow.OKButton.WaitForControlReady(60000);
-                    successful = UIMap.ControlExistsNow(DialogsUIMap.MessageBoxWindow.ResourcesDeployedSucText);
-                    Mouse.Click(DialogsUIMap.MessageBoxWindow.OKButton);
-                }
-                else
-                {
-                    Playback.Wait(1000);
+                    successful = TryWaitForADeployMessageDialog(ref seenVersionConflict, ref seenSecondVersionConflict, ref seenConflict);
+                    if (!successful)
+                    {
+                        successful = TryWaitForADeployMessageDialog(ref seenVersionConflict, ref seenSecondVersionConflict, ref seenConflict);
+                    }
                 }
             }
             Assert.IsTrue(successful, "Deploy failed.");
+        }
+
+        bool TryWaitForADeployMessageDialog(ref bool seenConflict, ref bool seenVersionConflict, ref bool seenSecondVersionConflict)
+        {
+            bool OKButtonReady = DialogsUIMap.MessageBoxWindow.OKButton.WaitForControlCondition((control) => { return control.TryGetClickablePoint(out Point point); }, 60000);
+            if (!seenVersionConflict && !seenSecondVersionConflict && !seenConflict)
+            {
+                seenVersionConflict = DialogsUIMap.MessageBoxWindow.DeployVersionConflicText.Exists;
+                if (seenVersionConflict && OKButtonReady)
+                {
+                    Mouse.Click(DialogsUIMap.MessageBoxWindow.OKButton);
+                    return false;
+                }
+            }
+            if (!seenSecondVersionConflict && !seenConflict)
+            {
+                seenSecondVersionConflict = DialogsUIMap.MessageBoxWindow.DeployVersionConflicText.Exists;
+                if (seenSecondVersionConflict && OKButtonReady)
+                {
+                    Mouse.Click(DialogsUIMap.MessageBoxWindow.OKButton);
+                    return false;
+                }
+            }
+            if (!seenConflict)
+            {
+                seenConflict = DialogsUIMap.MessageBoxWindow.DeployConflictsText.Exists;
+                if (seenConflict && OKButtonReady)
+                {
+                    Mouse.Click(DialogsUIMap.MessageBoxWindow.OKButton);
+                    return false;
+                }
+            }
+            var successful = DialogsUIMap.MessageBoxWindow.ResourcesDeployedSucText.Exists;
+            if (successful && OKButtonReady)
+            {
+                Mouse.Click(DialogsUIMap.MessageBoxWindow.OKButton);
+            }
+            return successful;
         }
 
         [When(@"I Click Deploy Tab Deploy Button And Cancel")]

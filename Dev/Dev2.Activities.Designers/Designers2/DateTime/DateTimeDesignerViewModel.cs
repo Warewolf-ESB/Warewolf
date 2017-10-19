@@ -30,7 +30,7 @@ namespace Dev2.Activities.Designers2.DateTime
             if (string.IsNullOrEmpty(InputFormat))
             {
                 InputFormat = GlobalConstants.Dev2DotNetDefaultDateTimeFormat;
-                
+
             }
             if (string.IsNullOrEmpty(OutputFormat))
             {
@@ -39,6 +39,7 @@ namespace Dev2.Activities.Designers2.DateTime
         }
 
         public List<string> TimeModifierTypes { get; private set; }
+
 
         public string SelectedTimeModifierType
         {
@@ -62,11 +63,10 @@ namespace Dev2.Activities.Designers2.DateTime
         }
 
         // DO NOT bind to these properties - these are here for convenience only!!!
-        string TimeModifierType { set => SetProperty(value); get {return  GetProperty<string>();} }
+        string TimeModifierType { set { SetProperty(value);} get {return  GetProperty<string>();} }
         string TimeModifierAmountDisplay { set { SetProperty(value); } }
-        string InputFormat { set => SetProperty(value);  get { return GetProperty<string>(); } }
-        string OutputFormat { set => SetProperty(value);  get { return GetProperty<string>(); } }
-
+        string InputFormat { set => SetProperty(value); get { return GetProperty<string>(); } }
+        string OutputFormat { set => SetProperty(value); get { return GetProperty<string>(); } }
         public override void Validate()
         {
         }

@@ -150,6 +150,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.MergeParser", "War
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.MergeParser.Tests", "Warewolf.MergeParser.Tests\Warewolf.MergeParser.Tests.csproj", "{240C477A-DD4C-4604-A6E9-43024257104E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Data.Interfaces", "Dev2.Data.Interfaces\Dev2.Data.Interfaces.csproj", "{D7189600-3C18-4D35-97A4-8095DE1A4504}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -394,6 +396,10 @@ Global
 		{240C477A-DD4C-4604-A6E9-43024257104E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{240C477A-DD4C-4604-A6E9-43024257104E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{240C477A-DD4C-4604-A6E9-43024257104E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D7189600-3C18-4D35-97A4-8095DE1A4504}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D7189600-3C18-4D35-97A4-8095DE1A4504}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D7189600-3C18-4D35-97A4-8095DE1A4504}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D7189600-3C18-4D35-97A4-8095DE1A4504}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
