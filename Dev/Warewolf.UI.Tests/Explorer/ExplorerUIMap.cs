@@ -24,6 +24,7 @@ using Warewolf.UI.Tests.ExchangeSource.ExchangeSourceUIMapClasses;
 using Warewolf.UI.Tests.Deploy.DeployUIMapClasses;
 using Warewolf.UI.Tests.DependencyGraph.DependencyGraphUIMapClasses;
 using Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses;
+using Warewolf.UI.Tests.MergeDialog.MergeDialogUIMapClasses;
 
 namespace Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses
 {
@@ -1155,7 +1156,7 @@ namespace Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses
         public void Click_Merge_From_Context_Menu()
         {
             Mouse.Click(UIMap.MainStudioWindow.ExplorerContextMenu.Merge);
-            Assert.IsTrue(MergeConflictsUIMap.MergeDialogViewWindow.Exists, "Merge Popup window did not Open after clicking merge.");
+            Assert.IsTrue(MergeDialogUIMap.MergeDialogWindow.Exists, "Merge Popup window did not Open after clicking merge.");
         }
 
         [When(@"I Open Context Menu For ""(.*)"" Service")]
@@ -1344,6 +1345,21 @@ namespace Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses
         }
 
         private DependencyGraphUIMap _DependencyGraphUIMap;
+
+        public MergeDialogUIMap MergeDialogUIMap
+        {
+            get
+            {
+                if (_MergeDialogUIMap == null)
+                {
+                    _MergeDialogUIMap = new MergeDialogUIMap();
+                }
+
+                return _MergeDialogUIMap;
+            }
+        }
+
+        private MergeDialogUIMap _MergeDialogUIMap;
 
         #endregion
     }

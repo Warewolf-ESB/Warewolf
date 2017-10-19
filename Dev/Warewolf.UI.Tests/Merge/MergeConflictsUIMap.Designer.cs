@@ -41,24 +41,10 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
                 return this.mMainWindow;
             }
         }
-        
-        public MergeDialogViewWindow MergeDialogViewWindow
-        {
-            get
-            {
-                if ((this.mMergeDialogViewWindow == null))
-                {
-                    this.mMergeDialogViewWindow = new MergeDialogViewWindow();
-                }
-                return this.mMergeDialogViewWindow;
-            }
-        }
         #endregion
         
         #region Fields
         private MainWindow mMainWindow;
-        
-        private MergeDialogViewWindow mMergeDialogViewWindow;
         #endregion
     }
     
@@ -3338,108 +3324,6 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
         
         #region Fields
         private WpfEdit mDisplayNameTextBox;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class MergeDialogViewWindow : WpfWindow
-    {
-        
-        public MergeDialogViewWindow()
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfWindow.PropertyNames.Name] = "MergeDialogView";
-            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
-            this.WindowTitles.Add("MergeDialogView");
-            #endregion
-        }
-        
-        #region Properties
-        public ServerSource ServerSource
-        {
-            get
-            {
-                if ((this.mServerSource == null))
-                {
-                    this.mServerSource = new ServerSource(this);
-                }
-                return this.mServerSource;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private ServerSource mServerSource;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class ServerSource : WpfCustom
-    {
-        
-        public ServerSource(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ConnectControl";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "SourceConnectControl";
-            this.WindowTitles.Add("MergeDialogView");
-            #endregion
-        }
-        
-        #region Properties
-        public ServerComboBox ServerComboBox
-        {
-            get
-            {
-                if ((this.mServerComboBox == null))
-                {
-                    this.mServerComboBox = new ServerComboBox(this);
-                }
-                return this.mServerComboBox;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private ServerComboBox mServerComboBox;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class ServerComboBox : WpfCustom
-    {
-        
-        public ServerComboBox(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.XamComboEditor";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "TheServerComboBox";
-            this.WindowTitles.Add("MergeDialogView");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfButton ServerDropDown
-        {
-            get
-            {
-                if ((this.mServerDropDown == null))
-                {
-                    this.mServerDropDown = new WpfButton(this);
-                    #region Search Criteria
-                    this.mServerDropDown.SearchProperties[WpfButton.PropertyNames.AutomationId] = "ToggleButton";
-                    this.mServerDropDown.WindowTitles.Add("MergeDialogView");
-                    #endregion
-                }
-                return this.mServerDropDown;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfButton mServerDropDown;
         #endregion
     }
 }
