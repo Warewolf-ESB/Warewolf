@@ -13,14 +13,14 @@ namespace Warewolf.UI.Tests.Merge
 
         [TestMethod]
         [TestCategory("Merge")]
-        public void RightClick_On_MergeForeach_Has_Merge_Option()
+        public void RightClick_On_Merge_With_Foreach_Has_Merge_Option()
         {
             Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.Merge.Exists, "Merge option does not show after Right cliking " + MergeForeach);
         }
 
         [TestMethod]
         [TestCategory("Merge")]
-        public void Click_On_MergeForeach_Has_Conflicts()
+        public void Click_On_Merge_With_Foreach_Has_Conflicts()
         {
             ExplorerUIMap.Click_Merge_From_Context_Menu();
             Assert.IsTrue(MergeConflictsUIMap.MergeDialogViewWindow.ServerSource.Exists);
@@ -45,7 +45,7 @@ namespace Warewolf.UI.Tests.Merge
 
         [TestMethod]
         [TestCategory("Merge")]
-        public void Click_On_MergeForeach_Difference_Foreach_Add_Foreach_On_Design_Surface()
+        public void Click_On_Merge_With_Foreach_Difference_Foreach_Add_Foreach_On_Design_Surface()
         {
             ExplorerUIMap.Click_Merge_From_Context_Menu();
             MergeConflictsUIMap.MergeDialogViewWindow.MergeResourceVersionList.WarewolfStudioViewMoListItem.ItemRadioButton.Selected = true;
