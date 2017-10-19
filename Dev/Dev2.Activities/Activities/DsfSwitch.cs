@@ -47,6 +47,10 @@ namespace Dev2.Activities
         public Dictionary<string, IDev2Activity> Switches { get; set; }
         public IEnumerable<IDev2Activity> Default { get; set; }
 
+        public override string GetDisplayName()
+        {
+            return Switch;
+        }
         public override Dictionary<string,IEnumerable<IDev2Activity>> GetChildrenNodes()
         {
             var nextNodes = new Dictionary<string, IEnumerable<IDev2Activity>>();            
