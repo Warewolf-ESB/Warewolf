@@ -3355,22 +3355,6 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
         }
         
         #region Properties
-        public WpfButton MergeButton
-        {
-            get
-            {
-                if ((this.mMergeButton == null))
-                {
-                    this.mMergeButton = new WpfButton(this);
-                    #region Search Criteria
-                    this.mMergeButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "MergeButton";
-                    this.mMergeButton.WindowTitles.Add("MergeDialogView");
-                    #endregion
-                }
-                return this.mMergeButton;
-            }
-        }
-        
         public MergeResourceVersionList MergeResourceVersionList
         {
             get
@@ -3397,8 +3381,6 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
         #endregion
         
         #region Fields
-        private WpfButton mMergeButton;
-        
         private MergeResourceVersionList mMergeResourceVersionList;
         
         private ServerSource mServerSource;

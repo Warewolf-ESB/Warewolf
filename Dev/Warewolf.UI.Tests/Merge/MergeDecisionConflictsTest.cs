@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Drawing;
 using Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses;
 using Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses;
+using Warewolf.UI.Tests.MergeDialog.MergeDialogUIMapClasses;
 
 namespace Warewolf.UI.Tests.Merge
 {
@@ -25,7 +26,7 @@ namespace Warewolf.UI.Tests.Merge
             ExplorerUIMap.Click_Merge_From_Context_Menu();
             Assert.IsTrue(MergeConflictsUIMap.MergeDialogViewWindow.ServerSource.Exists);
             MergeConflictsUIMap.MergeDialogViewWindow.MergeResourceVersionList.WarewolfStudioViewMoListItem.ItemRadioButton.Selected = true;
-            Mouse.Click(MergeConflictsUIMap.MergeDialogViewWindow.MergeButton);
+            Mouse.Click(MergeDialogUIMap.MergeDialogWindow.MergeButton);
             Assert.IsTrue(MergeConflictsUIMap.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.ScrollViewerPane.ConflictsTree.DecisionMergeTreeItem.Exists);
         }
 
@@ -35,7 +36,7 @@ namespace Warewolf.UI.Tests.Merge
         {
             ExplorerUIMap.Click_Merge_From_Context_Menu();
             MergeConflictsUIMap.MergeDialogViewWindow.MergeResourceVersionList.WarewolfStudioViewMoListItem.ItemRadioButton.Selected = true;
-            Mouse.Click(MergeConflictsUIMap.MergeDialogViewWindow.MergeButton);
+            Mouse.Click(MergeDialogUIMap.MergeDialogWindow.MergeButton);
             MergeConflictsUIMap.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.ScrollViewerPane.ConflictsTree.DecisionMergeTreeItem.DecisionSubTreeItem.MergeButton.Decision_Diff_RadioButton.Selected = true;
             Assert.IsTrue(MergeConflictsUIMap.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.DesignerView.ScrollViewerPane.ActivityBuilderCustom.WorkflowItemPresenteCustom.FlowchartCustom.Difference_Decision.Exists, "Assign from difference was not added to the design surface After checking Radio Button");
             Assert.IsTrue(MergeConflictsUIMap.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.DesignerView.ScrollViewerPane.ActivityBuilderCustom.WorkflowItemPresenteCustom.FlowchartCustom.FirstAssign_Diff_On_Surface.Exists, "Decision from difference was not added to the design surface After checking Radio Button");
@@ -47,7 +48,7 @@ namespace Warewolf.UI.Tests.Merge
         {
             ExplorerUIMap.Click_Merge_From_Context_Menu();
             MergeConflictsUIMap.MergeDialogViewWindow.MergeResourceVersionList.WarewolfStudioViewMoListItem.ItemRadioButton.Selected = true;
-            Mouse.Click(MergeConflictsUIMap.MergeDialogViewWindow.MergeButton);
+            Mouse.Click(MergeDialogUIMap.MergeDialogWindow.MergeButton);
             Mouse.Click(MergeConflictsUIMap.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.ScrollViewerPane.ConflictsTree.MergeTreeItem.MergeItemExpander.MergeButton, new Point(10, 10));
             Assert.IsTrue(MergeConflictsUIMap.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.ScrollViewerPane.ConflictsTree.DecisionMergeTreeItem.DecisionSubTreeItem.Exists);
             Assert.IsTrue(MergeConflictsUIMap.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.ScrollViewerPane.ConflictsTree.MergeTreeItem.MergeItemExpander.ChildrenConflictsTree.FisrtAssign.Exists);
@@ -108,6 +109,21 @@ namespace Warewolf.UI.Tests.Merge
         }
 
         private ExplorerUIMap _ExplorerUIMap;
+
+        public MergeDialogUIMap MergeDialogUIMap
+        {
+            get
+            {
+                if (_MergeDialogUIMap == null)
+                {
+                    _MergeDialogUIMap = new MergeDialogUIMap();
+                }
+
+                return _MergeDialogUIMap;
+            }
+        }
+
+        private MergeDialogUIMap _MergeDialogUIMap;
 
         #endregion
     }
