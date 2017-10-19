@@ -3761,6 +3761,7 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
                 base(searchLimitContainer)
         {
             #region Search Criteria
+            this.SearchProperties[WpfRadioButton.PropertyNames.Instance] = "2";
             this.WindowTitles.Add("MergeDialogView");
             #endregion
         }
