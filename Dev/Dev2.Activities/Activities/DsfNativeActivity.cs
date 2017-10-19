@@ -230,7 +230,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        public string GetDisplayName()
+        public virtual string GetDisplayName()
         {
             return DisplayName;
         }
