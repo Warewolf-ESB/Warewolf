@@ -5,9 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Dev2.Instrumentation;
 
-namespace Warewolf.ApplicationTracker.Tests
+namespace Dev2.Instrumentation.Factory.Tests
 {
     [TestClass()]
     public class ApplicationTrackerFactoryTests
@@ -15,8 +14,12 @@ namespace Warewolf.ApplicationTracker.Tests
         [TestMethod()]
         public void GetApplicationTrackerProviderTest()
         {
-          IApplicationTracker  applicationTracker = RevulyticsTracker.GetTrackerInstance();
-          Assert.IsNotNull(applicationTracker, "Unable to get RevulyticsTracker");
+            IApplicationTracker applicationTracker = ApplicationTrackerFactory.GetApplicationTrackerProvider();
+            Assert.IsNotNull(applicationTracker, "Unable to get RevulyticsTracker");
         }
+
+    
+
+
     }
 }
