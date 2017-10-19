@@ -27,16 +27,15 @@ namespace Dev2.Activities.Designers2.DateTimeDifference
             SelectedOutputType = string.IsNullOrEmpty(OutputType) ? OutputTypes[0] : OutputType;
             AddTitleBarLargeToggle();
             HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Utility_Date_Time_Diff;
-
             if (string.IsNullOrEmpty(InputFormat))
             {
                 InputFormat = GlobalConstants.Dev2DotNetDefaultDateTimeFormat;
 
-            }            
+            }
         }
 
         public List<string> OutputTypes { get; private set; }
-
+        string InputFormat { set => SetProperty(value); get { return GetProperty<string>(); } }
         public string SelectedOutputType
         {
             get { return (string)GetValue(SelectedOutputTypeProperty); }
@@ -54,8 +53,8 @@ namespace Dev2.Activities.Designers2.DateTimeDifference
         }
 
         // DO NOT bind to these properties - these are here for convenience only!!!
-        string OutputType { set => SetProperty(value);  get { return GetProperty<string>(); } }
-        string InputFormat { set => SetProperty(value); get { return GetProperty<string>(); } }
+        string OutputType { set { SetProperty(value); } get { return GetProperty<string>(); } }
+
         public override void Validate()
         {
         }

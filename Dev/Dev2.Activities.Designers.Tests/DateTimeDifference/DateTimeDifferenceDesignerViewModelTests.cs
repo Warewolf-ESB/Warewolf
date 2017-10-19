@@ -17,7 +17,6 @@ using Dev2.Studio.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
-using System.Globalization;
 using Dev2.Common;
 
 namespace Dev2.Activities.Designers.Tests.DateTimeDifference
@@ -75,7 +74,7 @@ namespace Dev2.Activities.Designers.Tests.DateTimeDifference
         {
             var modelItem = CreateModelItem("yyyy-mm-dd");
             var viewModel = new TestDateTimeDifferenceDesignerViewModel(modelItem);
-            var expectedDefaultFormat = CultureInfo.CurrentUICulture.DateTimeFormat.ShortDatePattern + " " + CultureInfo.CurrentUICulture.DateTimeFormat.LongTimePattern;
+            var expectedDefaultFormat = GlobalConstants.Dev2DotNetDefaultDateTimeFormat;
             Assert.AreNotEqual(expectedDefaultFormat, viewModel.InputFormat);
             Assert.AreEqual("yyyy-mm-dd", viewModel.InputFormat);
         }
@@ -102,7 +101,6 @@ namespace Dev2.Activities.Designers.Tests.DateTimeDifference
         {
             return ModelItemUtils.CreateModelItem(new DsfDateTimeDifferenceActivity());
         }
-
         static ModelItem CreateModelItem(string dateTimeFormat)
         {
             return ModelItemUtils.CreateModelItem(new DsfDateTimeDifferenceActivity

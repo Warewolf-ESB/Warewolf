@@ -22,6 +22,7 @@ using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Util;
 using Dev2.Utilities;
 using Dev2.Validation;
+using Dev2.Common;
 
 namespace Dev2.TO
 {
@@ -370,7 +371,8 @@ namespace Dev2.TO
                     ruleSet.Add(new IsValidExpressionRule(() => SearchCriteria, datalist, "1"));
                     break;
                 default:
-                    return ruleSet;
+                    Dev2Logger.Info("No Rule Set for the Property Name: " + propertyName, GlobalConstants.WarewolfInfo);
+                    break;
             }
 
             return ruleSet;

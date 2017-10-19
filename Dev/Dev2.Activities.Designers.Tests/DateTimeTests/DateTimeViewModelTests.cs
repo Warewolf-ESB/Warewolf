@@ -100,7 +100,7 @@ namespace Dev2.Activities.Designers.Tests.DateTimeTests
         {
             var modelItem = CreateModelItemWithInputFormat("yyyy-mm-dd");
             var viewModel = new DateTimeDesignerViewModel(modelItem);
-            var expectedDefaultFormat = CultureInfo.CurrentUICulture.DateTimeFormat.ShortDatePattern + " " + CultureInfo.CurrentUICulture.DateTimeFormat.LongTimePattern;
+            var expectedDefaultFormat = GlobalConstants.Dev2DotNetDefaultDateTimeFormat;
             var po = new PrivateObject(viewModel);
             Assert.AreNotEqual(expectedDefaultFormat, po.GetProperty("InputFormat"));
             Assert.AreEqual("yyyy-mm-dd", po.GetProperty("InputFormat"));
@@ -121,7 +121,7 @@ namespace Dev2.Activities.Designers.Tests.DateTimeTests
         {
             var modelItem = CreateModelItemWithOutputFormat("yyyy-mm-dd");
             var viewModel = new DateTimeDesignerViewModel(modelItem);
-            var expectedDefaultFormat = CultureInfo.CurrentUICulture.DateTimeFormat.ShortDatePattern + " " + CultureInfo.CurrentUICulture.DateTimeFormat.LongTimePattern;
+            var expectedDefaultFormat = GlobalConstants.Dev2DotNetDefaultDateTimeFormat;
             var po = new PrivateObject(viewModel);
             Assert.AreNotEqual(expectedDefaultFormat, po.GetProperty("OutputFormat"));
             Assert.AreEqual("yyyy-mm-dd", po.GetProperty("OutputFormat"));
@@ -130,9 +130,9 @@ namespace Dev2.Activities.Designers.Tests.DateTimeTests
         [TestMethod]
         public void DateTimeDesignerViewModel_ShouldNotSetInputOrOutputFormat_WhenInputAndOutputFormat()
         {
-            var modelItem = CreateModelItemWithInputOutputFormat("yyyy-mm-dd","MM/dd/yyyy");
+            var modelItem = CreateModelItemWithInputOutputFormat("yyyy-mm-dd", "MM/dd/yyyy");
             var viewModel = new DateTimeDesignerViewModel(modelItem);
-            var expectedDefaultFormat = CultureInfo.CurrentUICulture.DateTimeFormat.ShortDatePattern + " " + CultureInfo.CurrentUICulture.DateTimeFormat.LongTimePattern;
+            var expectedDefaultFormat = GlobalConstants.Dev2DotNetDefaultDateTimeFormat;
             var po = new PrivateObject(viewModel);
             Assert.AreNotEqual(expectedDefaultFormat, po.GetProperty("InputFormat"));
             Assert.AreEqual("yyyy-mm-dd", po.GetProperty("InputFormat"));
@@ -193,7 +193,7 @@ namespace Dev2.Activities.Designers.Tests.DateTimeTests
             });
         }
 
-        static ModelItem CreateModelItemWithInputOutputFormat(string inputDateTimeFormat,string outputDateTimeFormat)
+        static ModelItem CreateModelItemWithInputOutputFormat(string inputDateTimeFormat, string outputDateTimeFormat)
         {
             return ModelItemUtils.CreateModelItem(new DsfDateTimeActivity
             {

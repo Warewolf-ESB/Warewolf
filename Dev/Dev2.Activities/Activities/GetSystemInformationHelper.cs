@@ -105,13 +105,13 @@ namespace Dev2.Activities
 
         public string GetFullDateTimeInformation()
         {
-            return DateTime.Now.ToString(GlobalConstants.GlobalDefaultNowFormat);
+            return DateTime.Now.ToString(GlobalConstants.Dev2DotNetDefaultDateTimeFormat);
         }
 
         public string GetDateTimeFormatInformation()
         {
             var dateTimeParser = new DateTimeParser();
-            var translatedDateTimeFormat = dateTimeParser.TranslateDotNetToDev2Format(CultureInfo.CurrentUICulture.DateTimeFormat.FullDateTimePattern, out string error);
+            var translatedDateTimeFormat = dateTimeParser.TranslateDotNetToDev2Format(GlobalConstants.Dev2DotNetDefaultDateTimeFormat, out string error);
             return translatedDateTimeFormat;
         }
 
