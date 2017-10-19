@@ -21,16 +21,16 @@ namespace Dev2.ViewModels.Merge
     public class ConflictModelFactory : BindableBase, IConflictModelFactory
     {
         readonly IContextualResourceModel _resourceModel;
-        bool _isWorkflowNameChecked;
-        bool _isVariablesChecked;
+        private bool _isWorkflowNameChecked;
+        private bool _isVariablesChecked;
 
         public IMergeToolModel Model { get; set; }
-        public delegate void ModelItemChanged(ModelItem modelItem);
+        public delegate void ModelItemChanged(ModelItem modelItem, MergeToolModel mergeToolModel);
         public event ModelItemChanged OnModelItemChanged;
 
         public ConflictModelFactory(IConflictNode conflictNode, IContextualResourceModel resourceModel)
         {
-            Children = new ObservableCollection<IMergeToolModel>();            
+            Children = new ObservableCollection<IMergeToolModel>();
             _resourceModel = resourceModel;
             Model = GetModel(conflictNode.CurrentActivity, conflictNode.Activity,null,"");
         }
@@ -43,43 +43,44 @@ namespace Dev2.ViewModels.Merge
         public void GetDataList(IContextualResourceModel resourceModel)
         {
             DataListViewModel = DataListViewModelFactory.CreateDataListViewModel(resourceModel);
-            if (DataListViewModel != null)
+            if (DataListViewModel == null)
             {
-                DataListViewModel.ViewSortDelete = false;
+                return;
+            }
 
-                if (DataListViewModel.ScalarCollection.Count <= 1)
+            DataListViewModel.ViewSortDelete = false;
+
+            if (DataListViewModel.ScalarCollection?.Count <= 1)
+            {
+                DataListViewModel.ScalarCollection?.Apply(model =>
                 {
-                    foreach (var scalar in DataListViewModel.ScalarCollection)
-                    {
-                        scalar.IsVisible = false;
-                        scalar.IsExpanded = false;
-                        scalar.IsEditable = false;
-                    }
-                }
-                if (DataListViewModel.RecsetCollection.Count <= 1)
+                    model.IsVisible = false;
+                    model.IsExpanded = false;
+                    model.IsEditable = false;
+                });
+            }
+            if (DataListViewModel.RecsetCollection?.Count <= 1)
+            {
+                DataListViewModel.RecsetCollection?.Apply(model =>
                 {
-                    foreach (var recordset in DataListViewModel.RecsetCollection)
+                    model.IsVisible = false;
+                    model.IsExpanded = false;
+                    model.IsEditable = false;
+                    model.Children?.Apply(child =>
                     {
-                        recordset.IsVisible = false;
-                        recordset.IsExpanded = false;
-                        recordset.IsEditable = false;
-                        foreach (var child in recordset.Children)
-                        {
-                            child.IsVisible = false;
-                            child.IsExpanded = false;
-                            child.IsEditable = false;
-                        }
-                    }
-                    DataListViewModel.RecsetCollection.Clear();
-                }
-                if (DataListViewModel.ComplexObjectCollection.Count <= 1)
+                        child.IsVisible = false;
+                        child.IsExpanded = false;
+                        child.IsEditable = false;
+                    });
+                });
+            }
+            if (DataListViewModel.ComplexObjectCollection?.Count <= 1)
+            {
+                DataListViewModel.ComplexObjectCollection?.Apply(model =>
                 {
-                    foreach (var complexobject in DataListViewModel.ComplexObjectCollection)
-                    {
-                        complexobject.IsVisible = false;
-                        complexobject.Children.Flatten(a => a.Children).Apply(a => a.IsVisible = false);
-                    }
-                }
+                    model.IsVisible = false;
+                    model.Children?.Flatten(a => a.Children).Apply(a => a.IsVisible = false);
+                });
             }
         }
 
@@ -108,17 +109,13 @@ namespace Dev2.ViewModels.Merge
         public IDataListViewModel DataListViewModel { get; set; }
         public ObservableCollection<IMergeToolModel> Children { get; set; }
 
-
         public IMergeToolModel GetModel(ModelItem modelItem, IDev2Activity activity,IMergeToolModel parentItem,string parentLableDescription)
         {
             if (modelItem == null)
             {
                 return null;
             }
-            modelItem.PropertyChanged += (sender, e) =>
-            {
-                OnModelItemChanged?.Invoke(modelItem);
-            };
+            
             var currentValue = modelItem.GetCurrentValue<IDev2Activity>();
             var activityType = currentValue?.GetType();
             if (activityType == null)
@@ -163,6 +160,10 @@ namespace Dev2.ViewModels.Merge
                     IsContained = IsContainerTool(parentItem),
                     ParentDescription = parentLableDescription,
                     IsTrueArm = parentLableDescription?.ToLowerInvariant() == "true"                    
+                };
+                modelItem.PropertyChanged += (sender, e) =>
+                {
+                    OnModelItemChanged?.Invoke(modelItem, mergeToolModel);
                 };
 
                 foreach (var act in activity.GetChildrenNodes())
