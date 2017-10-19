@@ -539,6 +539,11 @@ function Install-Server([string]$ServerPath,[string]$ResourcesType) {
 	    <ScopeEntry>$ServerBinDir\*.dll</ScopeEntry>
 	    <ScopeEntry>$ServerBinDir\*.exe</ScopeEntry>
     </Scope>
+    <AttributeFilters>
+        <AttributeFilterEntry>
+            <ClassMask>System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute</ClassMask>
+        </AttributeFilterEntry>
+    </AttributeFilters>
 </AnalyseParams>
 "@
 
@@ -670,6 +675,11 @@ function Start-Studio {
     	<ScopeEntry>$StudioBinDir\*.dll</ScopeEntry>
     	<ScopeEntry>$StudioBinDir\*.exe</ScopeEntry>
     </Scope>
+    <AttributeFilters>
+        <AttributeFilterEntry>
+            <ClassMask>System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute</ClassMask>
+        </AttributeFilterEntry>
+    </AttributeFilters>
 </AnalyseParams>
 "@
         $DotCoverRunnerXMLPath = "$TestsResultsPath\Studio DotCover Runner.xml"
@@ -1038,6 +1048,11 @@ if ($TotalNumberOfJobsToRun -gt 0) {
                 $DotCoverArgs += @"
 
     </Scope>
+    <AttributeFilters>
+        <AttributeFilterEntry>
+            <ClassMask>System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute</ClassMask>
+        </AttributeFilterEntry>
+    </AttributeFilters>
 </AnalyseParams>
 "@
                 $DotCoverRunnerXMLPath = "$TestsResultsPath\$JobName DotCover Runner.xml"
