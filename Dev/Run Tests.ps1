@@ -484,7 +484,7 @@ function Find-Warewolf-Server-Exe {
 		$ServerPath = "$TestsResultsPath\Server\" + $ServerExeName
 	}
     if ($ServerPath -eq "" -or !(Test-Path $ServerPath)) {
-        Write-Error -Message "Cannot find Warewolf Server.exe. Please provide a path to that file as a commandline parameter like this: -ServerPath"
+        Write-Error -Message "Cannot find Warewolf Server.exe. Either compile Dev2.Server.csproj or use -ServerPath"
         sleep 30
         exit 1
     } else {
