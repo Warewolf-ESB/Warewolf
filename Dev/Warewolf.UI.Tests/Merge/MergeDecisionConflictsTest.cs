@@ -20,7 +20,7 @@ namespace Warewolf.UI.Tests.Merge
 
         [TestMethod]
         [TestCategory("Merge")]
-        public void Click_On_MergeDecision_Has_Conflicts()
+        public void Click_On_Merge_With_Decision_Has_Conflicts()
         {
             ExplorerUIMap.Click_Merge_From_Context_Menu();
             Assert.IsTrue(MergeConflictsUIMap.MergeDialogViewWindow.ServerSource.Exists);
@@ -31,7 +31,7 @@ namespace Warewolf.UI.Tests.Merge
 
         [TestMethod]
         [TestCategory("Merge")]
-        public void Click_On_MergeDecision__Difference_Decision_Add_Decision_And_Assigns_On_Design_Surface()
+        public void Click_On_Merge_With_Decision_And_Difference_Between_Decision_Add_Decision_And_Assigns_On_Design_Surface()
         {
             ExplorerUIMap.Click_Merge_From_Context_Menu();
             MergeConflictsUIMap.MergeDialogViewWindow.MergeResourceVersionList.WarewolfStudioViewMoListItem.ItemRadioButton.Selected = true;
@@ -43,7 +43,7 @@ namespace Warewolf.UI.Tests.Merge
 
         [TestMethod]
         [TestCategory("Merge")]
-        public void Expand_MergeDecision_Difference_Has_2_Assigns()
+        public void Expand_Merge_With_Decision_Difference_Has_2_Assigns()
         {
             ExplorerUIMap.Click_Merge_From_Context_Menu();
             MergeConflictsUIMap.MergeDialogViewWindow.MergeResourceVersionList.WarewolfStudioViewMoListItem.ItemRadioButton.Selected = true;
