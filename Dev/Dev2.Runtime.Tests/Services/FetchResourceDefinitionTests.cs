@@ -14,6 +14,7 @@ using Dev2.Runtime.Interfaces;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces.Enums;
 using System.Linq;
+using Dev2.Runtime.Hosting;
 // ReSharper disable InconsistentNaming
 
 namespace Dev2.Tests.Runtime.Services
@@ -189,12 +190,7 @@ namespace Dev2.Tests.Runtime.Services
             mockWorkspace.Setup(workspace => workspace.ID).Returns(Guid.Empty);
             var resourceID = Guid.NewGuid();
             var dbSource = CreateDev2TestingDbSource(resourceID);
-            var mock = new Mock<IResourceDefinationCleaner>();
-            var mockCat = new Mock<IResourceCatalog>();
-            var resource = XML.XmlResource.Fetch("QLINKHUB");
-            mockCat.Setup(p => p.GetResourceContents(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new StringBuilder(resource.ToString()));
-            mock.Setup(p => p.GetResourceDefinition(true, It.IsAny<Guid>(), It.IsAny<StringBuilder>())).Returns(new StringBuilder(resource.ToString()));
-            mock.Setup(authorizer => authorizer.DecryptAllPasswords(It.IsAny<StringBuilder>()));
+            ResourceCatalog.Instance.SaveResource(Guid.Empty, dbSource, "");
             var fetchResourceDefinition = new FetchResourceDefinition();
             var values = new Dictionary<string, StringBuilder>
             {
@@ -203,17 +199,12 @@ namespace Dev2.Tests.Runtime.Services
             };
 
             //------------Execute Test---------------------------
-            fetchResourceDefinition.ResourceCat = mockCat.Object;
             var result = fetchResourceDefinition.Execute(values, mockWorkspace.Object);
             //------------Assert Results-------------------------
-            Dev2JsonSerializer dev2JsonSerializer = new Dev2JsonSerializer();
-            var message = dev2JsonSerializer.Deserialize<ExecuteMessage>(result);
             Assert.IsNotNull(result);
-            Assert.IsFalse(message.HasError);
-            StringAssert.Contains(message.Message.ToString(), "Data Source=rsaklfsvrdev;");
-            StringAssert.Contains(message.Message.ToString(), "Initial Catalog=QLINKHUB;");
-            StringAssert.Contains(message.Message.ToString(), "User ID=testuser;");
-            StringAssert.Contains(message.Message.ToString(), "Password=test123;");
+            Assert.IsTrue(result.Contains("RSAKLFSVRGENDEV"));
+            Assert.IsTrue(result.Contains("testUser"));
+            Assert.IsTrue(result.Contains("test123"));
         }
 
         DbSource CreateDev2TestingDbSource(Guid resourceID)
