@@ -35,7 +35,10 @@ namespace Dev2.Activities
             _inner = inner;
             UniqueID = _inner.UniqueID;
         }
-
+        public override string GetDisplayName()
+        {
+            return Conditions.DisplayText;
+        }
         public override Dictionary<string, IEnumerable<IDev2Activity>> GetChildrenNodes()
         {
             var nextNodes = new Dictionary<string, IEnumerable<IDev2Activity>>();
