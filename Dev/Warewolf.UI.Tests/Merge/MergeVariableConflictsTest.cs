@@ -22,6 +22,7 @@ namespace Warewolf.UI.Tests.Merge
         [TestCategory("Merge")]
         public void Open_MergeVariables_Has_Variable_Conflicts()
         {
+            ExplorerUIMap.Click_Merge_From_Context_Menu();
             Assert.IsTrue(MergeConflictsUIMap.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.ScrollViewerPane.ConflictsTree.MergeTreeItem.Exists);
             Assert.IsFalse(MergeConflictsUIMap.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.ScrollViewerPane.ConflictsTree.MergeTreeItem.MergeItemExpander.MergeButton.NoConflicts.Exists);
         }
