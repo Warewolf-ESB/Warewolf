@@ -16,7 +16,7 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
         public void RightClick_On_MergeWorkflow(string workflow)
         {
             ExplorerUIMap.Filter_Explorer(workflow);
-            ExplorerUIMap.RightClick_Explorer_Localhost_FirstItem();
+            ExplorerUIMap.RightClick_Explorer_Localhost_First_Item_First_SubItem();
         }               
 
         UIMap UIMap
