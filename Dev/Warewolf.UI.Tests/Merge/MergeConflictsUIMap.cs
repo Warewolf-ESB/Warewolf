@@ -7,17 +7,11 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
     {
         public void OpenMerge_For_Workflow(string workflow)
         {
-            RightClick_On_MergeWorkflow(workflow);
+            ExplorerUIMap.Open_Context_Menu_For_Service(workflow);
             ExplorerUIMap.Click_Merge_From_Context_Menu();
             MergeDialogViewWindow.MergeResourceVersionList.WarewolfStudioViewMoListItem.ItemRadioButton.Selected = true;
             Mouse.Click(MergeDialogViewWindow.MergeButton);
-        }
-
-        public void RightClick_On_MergeWorkflow(string workflow)
-        {
-            ExplorerUIMap.Filter_Explorer(workflow);
-            ExplorerUIMap.RightClick_Explorer_Localhost_First_Item_First_SubItem();
-        }               
+        }       
 
         UIMap UIMap
         {

@@ -46,7 +46,7 @@ namespace Warewolf.UI.Tests.Merge
         {
             UIMap.SetPlaybackSettings();
             UIMap.AssertStudioIsRunning();
-            MergeConflictsUIMap.RightClick_On_MergeWorkflow(MergeVariables);
+            ExplorerUIMap.Open_Context_Menu_For_Service(MergeVariables);
         }
 
         public MergeConflictsUIMap MergeConflictsUIMap

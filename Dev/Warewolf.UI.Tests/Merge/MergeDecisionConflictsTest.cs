@@ -9,7 +9,7 @@ namespace Warewolf.UI.Tests.Merge
     [CodedUITest]
     public class MergeDecisionConflictsTest
     {
-        public const string MergeDecision = "MergeDecision";
+        public const string MergeDecision = "MergeWithDecision";
 
         [TestMethod]
         [TestCategory("Merge")]
@@ -61,7 +61,7 @@ namespace Warewolf.UI.Tests.Merge
         {
             UIMap.SetPlaybackSettings();
             UIMap.AssertStudioIsRunning();
-            MergeConflictsUIMap.RightClick_On_MergeWorkflow(MergeDecision);
+            ExplorerUIMap.Open_Context_Menu_For_Service(MergeDecision);
         }
 
         public MergeConflictsUIMap MergeConflictsUIMap

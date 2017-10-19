@@ -1158,6 +1158,13 @@ namespace Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses
             Assert.IsTrue(MergeConflictsUIMap.MergeDialogViewWindow.Exists, "Merge Popup window did not Open after clicking merge.");
         }
 
+        [When(@"I Open Context Menu For ""(.*)"" Service")]
+        public void Open_Context_Menu_For_Service(string serviceName)
+        {
+            Filter_Explorer(serviceName);
+            RightClick_Explorer_Localhost_First_Item_First_SubItem();
+        }
+
         #region UIMaps
         public MergeConflictsUIMap MergeConflictsUIMap
         {
