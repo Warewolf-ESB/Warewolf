@@ -43,7 +43,7 @@ namespace Dev2.Core.Tests.ConverterTests
             //------------Execute Test---------------------------
             var convertedValue = dateTimeToStringConverter.Convert(dateTimeToConvert, null, null, null);
             //------------Assert Results-------------------------
-            Assert.AreEqual("2014/01/02 10:15:52.0520 AM", convertedValue);
+            Assert.AreEqual("01/02/2014 10:15:52.0520", convertedValue);
         }
 
         [TestMethod]
