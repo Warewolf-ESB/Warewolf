@@ -182,8 +182,8 @@ namespace Dev2.Integration.Tests.Merge
             var single = toolModel.Children.Single(model => model.MergeDescription == "If [[rec(*).set]] Is Numeric");
             var childCount = single.Children.Count;
             Assert.AreEqual(2, childCount);
-            var trueArmTools = single.Children.Count(model => model.ParentDescription == "All are numeric");
-            var falseArmTools = single.Children.Count(model => model.ParentDescription == "Not all numeric");
+            var trueArmTools = single.Children.Count(model => model.ParentDescription == "True");
+            var falseArmTools = single.Children.Count(model => model.ParentDescription == "False");
             Assert.AreEqual(1, trueArmTools);
             Assert.AreEqual(1, falseArmTools);
             AsserthildrenHasChild(single.Children, "Incorrect");

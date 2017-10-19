@@ -900,7 +900,6 @@ namespace Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses
         public void Open_ExplorerFirstItemMerge_With_ExplorerContextMenu()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, MouseButtons.Right, ModifierKeys.None, new Point(107, 9));
-            Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.Merge.Exists, "View tests does not exist in explorer context menu.");
             Mouse.Click(UIMap.MainStudioWindow.ExplorerContextMenu.Merge);
         }
 
