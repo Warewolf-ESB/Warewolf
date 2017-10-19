@@ -15,7 +15,6 @@ namespace Warewolf.UI.Tests.Merge
         [TestCategory("Merge")]
         public void RightClick_On_MergeWfWithVersion_Has_Merge_Option()
         {
-            MergeConflictsUIMap.RightClick_On_MergeWorkflow(MergeDecision);
             Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.Merge.Exists, "Merge option does not show after Right cliking " + MergeDecision);
         }
 
@@ -23,7 +22,6 @@ namespace Warewolf.UI.Tests.Merge
         [TestCategory("Merge")]
         public void Click_On_MergeDecision_Has_Conflicts()
         {
-            MergeConflictsUIMap.RightClick_On_MergeWorkflow(MergeDecision);
             Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.Merge.Exists, "Merge option does not show after Right cliking " + MergeDecision);
             ExplorerUIMap.Click_Merge_From_Context_Menu();
             Assert.IsTrue(MergeConflictsUIMap.MergeDialogViewWindow.ServerSource.Exists);
@@ -37,7 +35,6 @@ namespace Warewolf.UI.Tests.Merge
         [TestCategory("Merge")]
         public void Click_On_MergeDecision__Difference_Decision_Add_Decision_And_Assigns_On_Design_Surface()
         {
-            MergeConflictsUIMap.RightClick_On_MergeWorkflow(MergeDecision);
             ExplorerUIMap.Click_Merge_From_Context_Menu();
             MergeConflictsUIMap.MergeDialogViewWindow.MergeResourceVersionList.WarewolfStudioViewMoListItem.ItemRadioButton.Selected = true;
             Mouse.Click(MergeConflictsUIMap.MergeDialogViewWindow.MergeButton);
@@ -50,7 +47,6 @@ namespace Warewolf.UI.Tests.Merge
         [TestCategory("Merge")]
         public void Expand_MergeDecision_Difference_Has_2_Assigns()
         {
-            MergeConflictsUIMap.RightClick_On_MergeWorkflow(MergeDecision);
             ExplorerUIMap.Click_Merge_From_Context_Menu();
             MergeConflictsUIMap.MergeDialogViewWindow.MergeResourceVersionList.WarewolfStudioViewMoListItem.ItemRadioButton.Selected = true;
             Mouse.Click(MergeConflictsUIMap.MergeDialogViewWindow.MergeButton);
@@ -67,6 +63,7 @@ namespace Warewolf.UI.Tests.Merge
         {
             UIMap.SetPlaybackSettings();
             UIMap.AssertStudioIsRunning();
+            MergeConflictsUIMap.RightClick_On_MergeWorkflow(MergeDecision);
         }
 
         public MergeConflictsUIMap MergeConflictsUIMap

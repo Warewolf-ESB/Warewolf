@@ -14,7 +14,6 @@ namespace Warewolf.UI.Tests.Merge
         [TestCategory("Merge")]
         public void RightClick_On_MergeSequence_Has_Merge_Option()
         {
-            MergeConflictsUIMap.RightClick_On_MergeWorkflow(MergeSequence);
             Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.Merge.Exists, "Merge option does not show after Right cliking " + MergeSequence);
         }
 
@@ -22,7 +21,6 @@ namespace Warewolf.UI.Tests.Merge
         [TestCategory("Merge")]
         public void Open_Merge_For_MergeSequence_Has_Assign_OnDesign_Surface_Since_The_Are_No_Differences()
         {
-            MergeConflictsUIMap.RightClick_On_MergeWorkflow(MergeSequence);
             Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.Merge.Exists, "Merge option does not show after Right cliking " + MergeSequence);
             ExplorerUIMap.Click_Merge_From_Context_Menu();
             MergeConflictsUIMap.MergeDialogViewWindow.MergeResourceVersionList.WarewolfStudioViewMoListItem.ItemRadioButton.Selected = true;
@@ -34,7 +32,6 @@ namespace Warewolf.UI.Tests.Merge
         [TestCategory("Merge")]
         public void Open_Merge_For_MergeSequence_Select_Current_On_OrganizeCustomerTool_Enables_SortNames_Radio_Button()
         {
-            MergeConflictsUIMap.RightClick_On_MergeWorkflow(MergeSequence);
             ExplorerUIMap.Click_Merge_From_Context_Menu();
             MergeConflictsUIMap.MergeDialogViewWindow.MergeResourceVersionList.WarewolfStudioViewMoListItem.ItemRadioButton.Selected = true;
             Mouse.Click(MergeConflictsUIMap.MergeDialogViewWindow.MergeButton);
@@ -47,7 +44,6 @@ namespace Warewolf.UI.Tests.Merge
         [TestCategory("Merge")]
         public void Open_Merge_For_MergeSequence_Expand_OrganizeCustomerTool_Has_Split_Names_On_Current()
         {
-            MergeConflictsUIMap.RightClick_On_MergeWorkflow(MergeSequence);
             ExplorerUIMap.Click_Merge_From_Context_Menu();
             Assert.IsTrue(MergeConflictsUIMap.MergeDialogViewWindow.MergeResourceVersionList.WarewolfStudioViewMoListItem.ItemRadioButton.MergeSequence.Exists);
             MergeConflictsUIMap.MergeDialogViewWindow.MergeResourceVersionList.WarewolfStudioViewMoListItem.ItemRadioButton.Selected = true;
@@ -67,7 +63,6 @@ namespace Warewolf.UI.Tests.Merge
         [TestCategory("Merge")]
         public void Open_Merge_For_MergeSequence_Select_All_Radio_Butons_On_Difference_Adds_Tool_Onto_Design_Surface()
         {
-            MergeConflictsUIMap.RightClick_On_MergeWorkflow(MergeSequence);
             ExplorerUIMap.Click_Merge_From_Context_Menu();
             Assert.IsTrue(MergeConflictsUIMap.MergeDialogViewWindow.MergeResourceVersionList.WarewolfStudioViewMoListItem.ItemRadioButton.MergeSequence.Exists);
             MergeConflictsUIMap.MergeDialogViewWindow.MergeResourceVersionList.WarewolfStudioViewMoListItem.ItemRadioButton.Selected = true;
@@ -83,6 +78,7 @@ namespace Warewolf.UI.Tests.Merge
         {
             UIMap.SetPlaybackSettings();
             UIMap.AssertStudioIsRunning();
+            MergeConflictsUIMap.RightClick_On_MergeWorkflow(MergeSequence);
         }
 
         public MergeConflictsUIMap MergeConflictsUIMap
