@@ -9,6 +9,8 @@
 */
 
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Text;
@@ -60,8 +62,21 @@ namespace Dev2.Common
         {
             get
             {
-                var resourcePath = Path.Combine(AppDataPath, "Resources");                
-                return resourcePath;
+                return Path.Combine(AppDataPath, "Resources");
+            }
+        }
+
+        public static List<string> ServerBinResourcePaths
+        {
+            get
+            {
+                List<string> resourcePaths = new List<string>();
+                resourcePaths.Add(Path.Combine(AppDataPath, "Resources"));
+                resourcePaths.Add(Path.Combine(AppDataPath, "Resources - Release"));
+                resourcePaths.Add(Path.Combine(AppDataPath, "Resources - ServerTests"));
+                resourcePaths.Add(Path.Combine(AppDataPath, "Resources - UITests"));
+                resourcePaths.Add(Path.Combine(AppDataPath, "Resources - Load"));
+                return resourcePaths;
             }
         }
 

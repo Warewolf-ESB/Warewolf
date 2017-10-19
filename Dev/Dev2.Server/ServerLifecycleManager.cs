@@ -561,10 +561,13 @@ namespace Dev2
         static void MigrateOldResources()
         {
             var serverBinResources = Path.Combine(EnvironmentVariables.ApplicationPath, "Resources");
-            if (!Directory.Exists(EnvironmentVariables.ResourcePath) && Directory.Exists(serverBinResources))
+            foreach (var ResourcePath in EnvironmentVariables.ServerBinResourcePaths)
             {
-                DirectoryHelper.Copy(serverBinResources, EnvironmentVariables.ResourcePath, true);
-                DirectoryHelper.CleanUp(serverBinResources);
+                if (!Directory.Exists(ResourcePath) && Directory.Exists(serverBinResources))
+                {
+                    DirectoryHelper.Copy(serverBinResources, ResourcePath, true);
+                    DirectoryHelper.CleanUp(serverBinResources);
+                }
             }
         }
 
