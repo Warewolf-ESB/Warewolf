@@ -73,7 +73,8 @@ namespace Dev2.Factory
                 var cmd = "/c where.exe git.exe";
                 var exe = "cmd ";
                 var gitLocation = ExecuteCommand(processExecutor, exe, cmd);
-                var correctPath = gitLocation.Split(Environment.NewLine.ToCharArray()).FirstOrDefault(p => p.EndsWith(@"bin\git.exe", StringComparison.InvariantCultureIgnoreCase));
+                var correctPath = gitLocation.Split(Environment.NewLine.ToCharArray())
+                    .FirstOrDefault(p => p.EndsWith(@"bin\git.exe", StringComparison.InvariantCultureIgnoreCase) || p.EndsWith(@"git.exe", StringComparison.InvariantCultureIgnoreCase));
                 return correctPath;
             }
             catch (Exception ex)
