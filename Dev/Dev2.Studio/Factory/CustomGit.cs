@@ -28,27 +28,18 @@ namespace Dev2.Factory
 
             };
 
-            var gitExePath = GetGitExePath();
-
-            if (!string.IsNullOrEmpty(gitExePath))
+            var gitExePath = GetGitExePath(processExecutor);
+            if (string.IsNullOrEmpty(gitExePath))
             {
+                gitExePath = "git.exe";
+            }
                 foreach (var item in orderedList1)
                 {
                     try
                     {
                         var quotedExePath = "\"" + gitExePath + "\"";
-                        ProcessStartInfo ProcessInfo = new ProcessStartInfo(quotedExePath, item)
-                        {
-                            CreateNoWindow = true,  
-                            UseShellExecute = false
-                        };
-                        Process Process = processExecutor.Start(ProcessInfo);
-                        if (Process != null)
-                        {
-                            Process.WaitForExit(10);
-                            Process.Close();
-                            Process.Dispose();
-                        }
+
+                        ExecuteCommand(processExecutor, quotedExePath, item);
 
                     }
                     catch (Exception ex)
@@ -56,26 +47,38 @@ namespace Dev2.Factory
                         Dev2Logger.Error(ex.Message, "Git Setup error");
                     }
                 }
+        }
+
+        private static string ExecuteCommand(IExternalProcessExecutor processExecutor, string exe, string command)
+        {
+            try
+            {
+                ProcessStartInfo procStartInfo = new ProcessStartInfo(exe, command);
+                procStartInfo.RedirectStandardOutput = true;
+                procStartInfo.UseShellExecute = false;
+                procStartInfo.CreateNoWindow = true;
+                Process proc = processExecutor.Start(procStartInfo);
+                string result = proc.StandardOutput.ReadToEnd();
+                return result;
+            }
+            catch (Exception)
+            {
+                return "";
             }
         }
-        static string GetGitExePath()
+        static string GetGitExePath(IExternalProcessExecutor processExecutor)
         {
-            var location = ConfigurationManager.AppSettings["GitRegistryKey"];
-            using (var a = Registry.LocalMachine.OpenSubKey(location))
+            try
             {
-                if (a != null)
-                {
-                    var path = a.GetValue("");
-                    var myPath = string.Copy(path.ToString());
-                    var space = myPath.LastIndexOf(".exe", StringComparison.InvariantCultureIgnoreCase);
-                    var cleanPath = myPath.Substring(1, space + 3);
-
-                    var gitParrentFolder = Path.GetDirectoryName(cleanPath);
-                    var binFolder = Directory.GetDirectories(gitParrentFolder).ToList().SingleOrDefault(p => p.EndsWith("bin", StringComparison.InvariantCultureIgnoreCase));
-                    var gitExe = Directory.GetFiles(binFolder).ToList().SingleOrDefault(p => p.EndsWith("git.exe", StringComparison.InvariantCultureIgnoreCase));
-                    return gitExe;
-                }
-
+                var cmd = "/c where.exe git.exe";
+                var exe = "cmd ";
+                var gitLocation = ExecuteCommand(processExecutor, exe, cmd);
+                var correctPath = gitLocation.Split(Environment.NewLine.ToCharArray()).FirstOrDefault(p => p.EndsWith(@"bin\git.exe", StringComparison.InvariantCultureIgnoreCase));
+                return correctPath;
+            }
+            catch (Exception ex)
+            {
+                Dev2Logger.Error(ex.Message, "Git Setup error");
                 return "";
             }
         }

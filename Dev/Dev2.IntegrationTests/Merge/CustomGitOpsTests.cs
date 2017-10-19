@@ -1,4 +1,5 @@
 ﻿using Dev2.Common;
+using Dev2.Common.Interfaces;
 using Dev2.Factory;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
@@ -30,6 +31,17 @@ namespace Dev2.Integration.Tests.Merge
                 StringAssert.Contains(gitText, "[difftool \"DiffMerge\"]");
                 StringAssert.Contains(gitText, "[mergetool \"DiffMerge\"]");
             }
+        }
+
+        [TestMethod]
+        public void GetGitExePath_GetsTheGitexe()
+        {
+            //------------Setup for test--------------------------
+            IExternalProcessExecutor executor = new ExternalProcessExecutor();
+            PrivateType privateType = new PrivateType(typeof(CustomGitOps));
+            var gitPath = privateType.InvokeStatic("GetGitExePath", executor);
+            StringAssert.EndsWith(gitPath.ToString(), "git.exe");
+
         }
 
 
