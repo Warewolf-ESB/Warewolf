@@ -9,7 +9,6 @@ namespace Warewolf.UI.Tests.MergeDialog
     [CodedUITest]
     public class MergeDialogTests
     {
-
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory("Merge")]
