@@ -6,9 +6,6 @@ using Warewolf.UI.Tests.MergeDialog.MergeDialogUIMapClasses;
 
 namespace Warewolf.UI.Tests.MergeDialog
 {
-    /// <summary>
-    /// Summary description for CodedUITest1
-    /// </summary>
     [CodedUITest]
     public class MergeDialogTests
     {
@@ -18,7 +15,6 @@ namespace Warewolf.UI.Tests.MergeDialog
         [TestCategory("Merge")]
         public void MergeDialog_OpenWindow_ControlStatus_ExpectedResults()
         {
-            //------------Setup for test--------------------------
             Assert.IsTrue(MergeDialogUiMap.MergeDialogWindow.LocalMergeText.Exists);
             Assert.IsTrue(MergeDialogUiMap.MergeDialogWindow.MergewithText.Exists);
             Assert.IsFalse(MergeDialogUiMap.MergeDialogWindow.ResourceToMergeText.Exists);
@@ -31,10 +27,6 @@ namespace Warewolf.UI.Tests.MergeDialog
             Mouse.Click(MergeDialogUiMap.MergeDialogWindow.MergeExplorerView.MergeExplorerTree.ExplorerTreeItem.ExplorerItemTreeItemOne);
 
             Assert.IsTrue(MergeDialogUiMap.MergeDialogWindow.MergeButton.Enabled);
-
-            //------------Execute Test---------------------------
-
-            //------------Assert Results-------------------------
         }
 
         [TestInitialize]
