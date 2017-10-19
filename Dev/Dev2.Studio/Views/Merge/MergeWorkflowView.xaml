@@ -594,7 +594,7 @@
                                                                 <RowDefinition Height="*"/>
                                                             </Grid.RowDefinitions>
                                                             <ContentPresenter Name="TreeViewExpanderTemplateCurrentContentPresenter" 
-                                                                              Content="{Binding CurrentViewModel}"
+                                                                              Content="{Binding CurrentViewModel, Mode=TwoWay}"
                                                                               IsEnabled="{Binding IsMergeEnabled}"
 												                              ContentTemplateSelector="{StaticResource ActivitySelector}"
                                                                               Visibility="{Binding IsMergeVisible, Converter={StaticResource BoolToVisibilityConverter}}"
@@ -624,7 +624,7 @@
                                                                 <RowDefinition Height="*"/>
                                                             </Grid.RowDefinitions>
                                                             <ContentPresenter Name="TreeViewExpanderTemplateDifferenceContentPresenter" 
-                                                                              Content="{Binding DiffViewModel}"
+                                                                              Content="{Binding DiffViewModel, Mode=TwoWay}"
                                                                               IsEnabled="{Binding IsMergeEnabled}"
 												                              ContentTemplateSelector="{StaticResource ActivitySelector}"
                                                                               Visibility="{Binding IsMergeVisible, Converter={StaticResource BoolToVisibilityConverter}}"
