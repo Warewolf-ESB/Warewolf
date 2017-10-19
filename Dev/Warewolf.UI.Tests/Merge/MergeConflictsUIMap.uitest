@@ -1979,6 +1979,7 @@
                       <AndCondition>
                         <PropertyCondition Name="ControlType">RadioButton</PropertyCondition>
                         <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                        <PropertyCondition Name="Instance">2</PropertyCondition>
                       </AndCondition>
                       <SupportLevel>0</SupportLevel>
                       <Descendants>
