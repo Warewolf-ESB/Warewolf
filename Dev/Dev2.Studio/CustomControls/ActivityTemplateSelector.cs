@@ -14,54 +14,58 @@ namespace Dev2.CustomControls
         {
             var mergeVm = item as MergeToolModel;
             var vm = mergeVm?.ActivityDesignerViewModel;
-            if (vm != null)
+            if (vm == null)
             {
-                string assemblyName;
-                string typeName;
-                ActivityDesignerTemplate template = null;
-                ActivityDesignerHelper.DesignerAttributes.TryGetValue(vm.ModelItem.ItemType, out var designerType);
-                if (designerType != null)
+                return null;
+            }
+
+            string assemblyName;
+            string typeName;
+            ActivityDesignerTemplate template;
+            ActivityDesignerHelper.DesignerAttributes.TryGetValue(vm.ModelItem.ItemType, out var designerType);
+            if (designerType != null)
+            {
+                template = GetContainerActivityTemplate(designerType, vm);
+                if (template != null)
                 {
-                    assemblyName = designerType.Assembly.FullName;
-                    typeName = designerType.Namespace + ".Large";
-                    template = GetContainerActivityTemplate(designerType, vm);
+                    return ReturnDataTemplate(template, vm);
+                }
+                assemblyName = designerType.Assembly.FullName;
+                typeName = designerType.Namespace + ".Large";
+            }
+            else
+            {
+                if (vm.ModelItem?.ItemType == typeof(DsfSwitch))
+                {
+                    assemblyName = System.Reflection.Assembly.GetAssembly(typeof(Activities.Designers2.Switch.ConfigureSwitch)).FullName;
+                    typeName = "Dev2.Activities.Designers2.Switch.ConfigureSwitch";
+                    var instance = Activator.CreateInstance(assemblyName, typeName);
+
+                    if (instance.Unwrap() is UserControl userControl)
+                    {
+                        userControl.DataContext = vm;
+                        return TemplateGenerator.CreateDataTemplate(() => userControl);
+                    }
+                }
+                else if (vm.ModelItem?.ItemType == typeof(DsfDecision))
+                {
+                    assemblyName = System.Reflection.Assembly.GetAssembly(typeof(Activities.Designers2.Decision.Large)).FullName;
+                    typeName = "Dev2.Activities.Designers2.Decision.Large";
                 }
                 else
                 {
-                    if (vm.ModelItem?.ItemType == typeof(DsfSwitch))
-                    {
-                        assemblyName = System.Reflection.Assembly.GetAssembly(typeof(Activities.Designers2.Switch.ConfigureSwitch)).FullName;
-                        typeName = "Dev2.Activities.Designers2.Switch.ConfigureSwitch";
-                        var inst = Activator.CreateInstance(assemblyName, typeName);
-
-                        if (inst.Unwrap() is UserControl userControl)
-                        {
-                            userControl.DataContext = vm;
-                            return TemplateGenerator.CreateDataTemplate(() => userControl);
-                        }
-                    }
-                    else if (vm.ModelItem?.ItemType == typeof(DsfDecision))
-                    {
-                        assemblyName = System.Reflection.Assembly.GetAssembly(typeof(Activities.Designers2.Decision.Large)).FullName;
-                        typeName = "Dev2.Activities.Designers2.Decision.Large";
-                    }
-                    else
-                    {
-                        return null;
-                    }
-                }
-                if (template == null)
-                {
-                    var inst = Activator.CreateInstance(assemblyName, typeName);
-                    template = inst.Unwrap() as ActivityDesignerTemplate;
-                }
-                if (template != null)
-                {
-                    template.DataContext = vm;
-                    return TemplateGenerator.CreateDataTemplate(() => template);
+                    return null;
                 }
             }
-            return null;
+            var inst = Activator.CreateInstance(assemblyName, typeName);
+            template = inst.Unwrap() as ActivityDesignerTemplate;
+            return template != null ? ReturnDataTemplate(template, vm) : null;
+        }
+
+        private static DataTemplate ReturnDataTemplate(ActivityDesignerTemplate template, ActivityDesignerViewModel vm)
+        {
+            template.DataContext = vm;
+            return TemplateGenerator.CreateDataTemplate(() => template);
         }
 
         private static ActivityDesignerTemplate GetContainerActivityTemplate(Type designerType, ActivityDesignerViewModel vm)
