@@ -386,15 +386,15 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
             }
         }
         
-        public UIUserControl_1Custom UIUserControl_1Custom
+        public DesignerView DesignerView
         {
             get
             {
-                if ((this.mUIUserControl_1Custom == null))
+                if ((this.mDesignerView == null))
                 {
-                    this.mUIUserControl_1Custom = new UIUserControl_1Custom(this);
+                    this.mDesignerView = new DesignerView(this);
                 }
-                return this.mUIUserControl_1Custom;
+                return this.mDesignerView;
             }
         }
         #endregion
@@ -402,7 +402,7 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
         #region Fields
         private ScrollViewerPane mScrollViewerPane;
         
-        private UIUserControl_1Custom mUIUserControl_1Custom;
+        private DesignerView mDesignerView;
         #endregion
     }
     
@@ -3033,10 +3033,10 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
     }
     
     [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class UIUserControl_1Custom : WpfCustom
+    public class DesignerView : WpfCustom
     {
         
-        public UIUserControl_1Custom(UITestControl searchLimitContainer) : 
+        public DesignerView(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -3047,29 +3047,29 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
         }
         
         #region Properties
-        public UIScrollViewerPane UIScrollViewerPane
+        public ScrollViewerPane1 ScrollViewerPane
         {
             get
             {
-                if ((this.mUIScrollViewerPane == null))
+                if ((this.mScrollViewerPane == null))
                 {
-                    this.mUIScrollViewerPane = new UIScrollViewerPane(this);
+                    this.mScrollViewerPane = new ScrollViewerPane1(this);
                 }
-                return this.mUIScrollViewerPane;
+                return this.mScrollViewerPane;
             }
         }
         #endregion
         
         #region Fields
-        private UIScrollViewerPane mUIScrollViewerPane;
+        private ScrollViewerPane1 mScrollViewerPane;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class UIScrollViewerPane : WpfPane
+    public class ScrollViewerPane1 : WpfPane
     {
         
-        public UIScrollViewerPane(UITestControl searchLimitContainer) : 
+        public ScrollViewerPane1(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -3080,29 +3080,29 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
         }
         
         #region Properties
-        public UIActivityBuilderCustom UIActivityBuilderCustom
+        public ActivityBuilderCustom ActivityBuilderCustom
         {
             get
             {
-                if ((this.mUIActivityBuilderCustom == null))
+                if ((this.mActivityBuilderCustom == null))
                 {
-                    this.mUIActivityBuilderCustom = new UIActivityBuilderCustom(this);
+                    this.mActivityBuilderCustom = new ActivityBuilderCustom(this);
                 }
-                return this.mUIActivityBuilderCustom;
+                return this.mActivityBuilderCustom;
             }
         }
         #endregion
         
         #region Fields
-        private UIActivityBuilderCustom mUIActivityBuilderCustom;
+        private ActivityBuilderCustom mActivityBuilderCustom;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class UIActivityBuilderCustom : WpfCustom
+    public class ActivityBuilderCustom : WpfCustom
     {
         
-        public UIActivityBuilderCustom(UITestControl searchLimitContainer) : 
+        public ActivityBuilderCustom(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -3113,29 +3113,29 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
         }
         
         #region Properties
-        public UIWorkflowItemPresenteCustom UIWorkflowItemPresenteCustom
+        public WorkflowItemPresenteCustom WorkflowItemPresenteCustom
         {
             get
             {
-                if ((this.mUIWorkflowItemPresenteCustom == null))
+                if ((this.mWorkflowItemPresenteCustom == null))
                 {
-                    this.mUIWorkflowItemPresenteCustom = new UIWorkflowItemPresenteCustom(this);
+                    this.mWorkflowItemPresenteCustom = new WorkflowItemPresenteCustom(this);
                 }
-                return this.mUIWorkflowItemPresenteCustom;
+                return this.mWorkflowItemPresenteCustom;
             }
         }
         #endregion
         
         #region Fields
-        private UIWorkflowItemPresenteCustom mUIWorkflowItemPresenteCustom;
+        private WorkflowItemPresenteCustom mWorkflowItemPresenteCustom;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class UIWorkflowItemPresenteCustom : WpfCustom
+    public class WorkflowItemPresenteCustom : WpfCustom
     {
         
-        public UIWorkflowItemPresenteCustom(UITestControl searchLimitContainer) : 
+        public WorkflowItemPresenteCustom(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -3146,29 +3146,29 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
         }
         
         #region Properties
-        public UIFlowchartCustom UIFlowchartCustom
+        public FlowchartCustom FlowchartCustom
         {
             get
             {
-                if ((this.mUIFlowchartCustom == null))
+                if ((this.mFlowchartCustom == null))
                 {
-                    this.mUIFlowchartCustom = new UIFlowchartCustom(this);
+                    this.mFlowchartCustom = new FlowchartCustom(this);
                 }
-                return this.mUIFlowchartCustom;
+                return this.mFlowchartCustom;
             }
         }
         #endregion
         
         #region Fields
-        private UIFlowchartCustom mUIFlowchartCustom;
+        private FlowchartCustom mFlowchartCustom;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class UIFlowchartCustom : WpfCustom
+    public class FlowchartCustom : WpfCustom
     {
         
-        public UIFlowchartCustom(UITestControl searchLimitContainer) : 
+        public FlowchartCustom(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
