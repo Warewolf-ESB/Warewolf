@@ -5,13 +5,11 @@ using Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses;
 
 namespace Warewolf.UI.Tests.Merge
 {
-    /// <summary>
-    /// Summary description for CodedUITest1
-    /// </summary>
     [CodedUITest]
     public class MergeSwitchConflictsTest
     {
         public const string MergeSwitch = "MergeSwitch";
+
         [TestMethod]
         [TestCategory("Merge")]
         public void RightClick_On_MergeSwitch_Has_Merge_Option()
@@ -63,6 +61,7 @@ namespace Warewolf.UI.Tests.Merge
             UIMap.SetPlaybackSettings();
             UIMap.AssertStudioIsRunning();
         }
+
         public MergeConflictsUIMap MergeConflictsUIMap
         {
             get

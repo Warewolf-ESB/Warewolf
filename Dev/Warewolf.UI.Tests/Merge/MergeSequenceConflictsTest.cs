@@ -5,9 +5,6 @@ using Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses;
 
 namespace Warewolf.UI.Tests.Merge
 {
-    /// <summary>
-    /// Summary description for CodedUITest1
-    /// </summary>
     [CodedUITest]
     public class MergeSequenceConflictsTest
     {
@@ -20,6 +17,7 @@ namespace Warewolf.UI.Tests.Merge
             MergeConflictsUIMap.RightClick_On_MergeWfWithVersion(MergeSequence);
             Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.Merge.Exists, "Merge option does not show after Right cliking " + MergeSequence);
         }
+
         [TestMethod]
         [TestCategory("Merge")]
         public void Open_Merge_For_MergeSequence_Has_Assign_OnDesign_Surface_Since_The_Are_No_Differences()
@@ -44,6 +42,7 @@ namespace Warewolf.UI.Tests.Merge
             Assert.IsTrue(MergeConflictsUIMap.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.ScrollViewerPane.ConflictsTree.MergeTreeItem3.MergeItemExpander.MergeButton.ThirdAssign_Difference.Enabled);
             Assert.IsTrue(MergeConflictsUIMap.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.ScrollViewerPane.ConflictsTree.MergeTreeItem3.MergeItemExpander.MergeButton.ThirdAssign_Current.Enabled);
         }
+
         [TestMethod]
         [TestCategory("Merge")]
         public void Open_Merge_For_MergeSequence_Expand_OrganizeCustomerTool_Has_Split_Names_On_Current()
@@ -57,8 +56,15 @@ namespace Warewolf.UI.Tests.Merge
             Assert.IsTrue(MergeConflictsUIMap.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.ScrollViewerPane.ConflictsTree.MergeTreeItem2.MergeItemExpander.ChildrenConflictsTree.SplitNames.MergeExpander.MergeButton.NoConflicts.Exists);
         }
 
+        #region Additional test attributes
 
-        #region
+        [TestInitialize]
+        public void MyTestInitialize()
+        {
+            UIMap.SetPlaybackSettings();
+            UIMap.AssertStudioIsRunning();
+        }
+
         public MergeConflictsUIMap MergeConflictsUIMap
         {
             get
@@ -73,6 +79,7 @@ namespace Warewolf.UI.Tests.Merge
         }
 
         private MergeConflictsUIMap _MergeConflictsUIMap;
+
         UIMap UIMap
         {
             get
@@ -102,6 +109,7 @@ namespace Warewolf.UI.Tests.Merge
         }
 
         private ExplorerUIMap _ExplorerUIMap;
+
         #endregion
     }
 }
