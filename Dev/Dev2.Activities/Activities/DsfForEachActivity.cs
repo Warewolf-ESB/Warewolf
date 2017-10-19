@@ -903,8 +903,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override Dictionary<string, IEnumerable<IDev2Activity>> GetChildrenNodes()
         {
-            var act = DataFunc.Handler as IDev2ActivityIOMapping;
-            if (act == null)
+            if (!(DataFunc.Handler is IDev2ActivityIOMapping act))
             {
                 return new Dictionary<string, IEnumerable<IDev2Activity>>();
             }
@@ -929,9 +928,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
                 testRunResult.RunTestResult = RunResult.TestFailed;
             }
-
-
-
         }
 
         private void UpdateDebugStateWithAssertions(IDSFDataObject dataObject, List<IServiceTestStep> serviceTestTestSteps)

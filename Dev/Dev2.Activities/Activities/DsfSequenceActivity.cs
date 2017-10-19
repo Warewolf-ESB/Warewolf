@@ -54,8 +54,7 @@ namespace Dev2.Activities
             var nextNodes = new Dictionary<string, IEnumerable<IDev2Activity>>();
             foreach (var activity in Activities)
             {
-                var act = activity as IDev2Activity;
-                if (act != null)
+                if (activity is IDev2Activity act)
                 {
                     nextNodes.Add(act.GetDisplayName(), new List<IDev2Activity> { act });
                 }
