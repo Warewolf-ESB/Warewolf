@@ -38,10 +38,8 @@ using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Studio.ViewModels;
 using Dev2.Studio.Interfaces.Enums;
-
-
-
-
+using Dev2.Activities.Specs.BaseTypes;
+using System.IO;
 
 namespace Dev2.Activities.Specs.TestFramework
 {
@@ -49,18 +47,48 @@ namespace Dev2.Activities.Specs.TestFramework
 
     public class StudioTestFrameworkSteps
     {
-
         public StudioTestFrameworkSteps(ScenarioContext scenarioContext)
         {
-            if (scenarioContext == null)
-            {
-                throw new ArgumentNullException(nameof(scenarioContext));
-            }
-
-            MyContext = scenarioContext;
+            MyContext = scenarioContext ?? throw new ArgumentNullException(nameof(scenarioContext));
         }
 
         ScenarioContext MyContext { get; }
+
+        [AfterFeature("StudioTestFramework")]
+        public static void ScenarioCleaning()
+        {
+            var environmentModel = ServerRepository.Instance.Source;
+            environmentModel.Connect();
+            ((ResourceRepository)environmentModel.ResourceRepository).DeleteAlltests(new List<string>() { "0bdc3207-ff6b-4c01-a5eb-c7060222f75d" });
+        }
+
+        [AfterScenario("StudioTestFrameworkWithDropboxTools")]
+        public static void DropboxScenarioCleaning()
+        {
+            if (ScenarioContext.Current.ContainsKey("localFileUniqueNameGuid"))
+            {
+                var localFileUniqueNameGuid = ScenarioContext.Current.Get<string>("localFileUniqueNameGuid");
+                var localFile = "C:\\Home.Delete";
+                if (File.Exists(localFile))
+                {
+                    File.Delete(localFile);
+                }
+                localFile = CommonSteps.AddGuidToPath(localFile, localFileUniqueNameGuid);
+                if (File.Exists(localFile))
+                {
+                    File.Delete(localFile);
+                }
+            }
+        }
+
+        [AfterScenario]
+        public void CleanupTestFramework()
+        {
+            if (MyContext.TryGetValue("testFramework", out ServiceTestViewModel serviceTest))
+            {
+                serviceTest?.Dispose();
+            }
+        }
 
         [Given(@"test folder is cleaned")]
         [When(@"test folder is cleaned")]
@@ -86,16 +114,6 @@ namespace Dev2.Activities.Specs.TestFramework
         [Then(@"test folder is cleaned")]
         public void ThenTestFolderIsCleaned()
         {
-            //DirectoryHelper.CleanUp(EnvironmentVariables.TestPath);
-            var environmentModel = ServerRepository.Instance.Source;
-            environmentModel.Connect();
-            ((ResourceRepository)environmentModel.ResourceRepository).DeleteAlltests(new List<string>() { "0bdc3207-ff6b-4c01-a5eb-c7060222f75d" });
-        }
-
-        [AfterFeature("@StudioTestFramework")]
-        public static void ScenarioCleaning()
-        {
-
             var environmentModel = ServerRepository.Instance.Source;
             environmentModel.Connect();
             ((ResourceRepository)environmentModel.ResourceRepository).DeleteAlltests(new List<string>() { "0bdc3207-ff6b-4c01-a5eb-c7060222f75d" });
@@ -2302,15 +2320,5 @@ namespace Dev2.Activities.Specs.TestFramework
             Assert.Fail("Test Framework ViewModel not found");
             return null;
         }
-
-        [AfterScenario("TestFramework")]
-        public void CleanupTestFramework()
-        {
-            if (MyContext.TryGetValue("testFramework", out ServiceTestViewModel serviceTest))
-            {
-                serviceTest?.Dispose();
-            }
-        }
-
     }
 }
