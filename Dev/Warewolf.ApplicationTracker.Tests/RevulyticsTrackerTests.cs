@@ -5,7 +5,26 @@ using System.IO;
 using System.Reflection;
 using System.Configuration;
 using System;
+using Dev2.Instrumentation.Factory;
 
+namespace Dev2.Instrumentation.Tests
+{
+    [TestClass()]
+    public class RevulyticsTrackerTests
+    {
+        [TestMethod()]
+        public void CreateRevulyticsConfigTest()
+        {
+            Assert.Fail();
+        }
+
+        [TestMethod()]
+        public void StartSdkTest()
+        {
+            Assert.Fail();
+        }
+    }
+}
 
 namespace Warewolf.ApplicationTracker.Tests
 {
@@ -54,17 +73,20 @@ namespace Warewolf.ApplicationTracker.Tests
 
 
         [TestMethod()]
-        //[ExpectedException(typeof(RUISDKCreationException), "Error in intialzing rui sdk")]
+        //[ExpectedException(typeof(RUISDKCreationException), "Error in initializing rui sdk")]
         public void EnableAppplicationTrackerTest()
         {
             this.ProductVersion = "0.0.0.0";
             this.Username = "windows\\raju";
-            RUIResult result = CreateRevulyticsConfig();
+            //RUIResult result = CreateRevulyticsConfig();
 
-            Assert.AreEqual(result, RUIResult.ok, "Error in creating revulytics configuration");
+            //Assert.AreEqual(result, RUIResult.ok, "Error in creating revulytics configuration");
 
-            SetProductVersion();
-            StartSession();
+            //SetProductVersion();
+            //StartSession();
+            IApplicationTracker tracker = ApplicationTrackerFactory.GetApplicationTrackerProvider();
+            tracker.EnableAppplicationTracker(ProductVersion, Username);
+          //  Assert.AreEqual(, RUIResult.ok, "Error in creating revulytics configuration");
 
         }
 
@@ -75,6 +97,8 @@ namespace Warewolf.ApplicationTracker.Tests
         /// 
         private RUIResult CreateRevulyticsConfig()
         {
+
+
             var result = RUIResult.configNotCreated;
             _ruiSdk = new RUISDK(true, this._sdkFilePath);
             result = _ruiSdk.CreateConfig(_configFilePath, _productId, _appName, _productUrl, _protocol, _aesHexKey, _multiSessionEnabled, _reachOutOnAutoSync);
@@ -155,6 +179,7 @@ namespace Warewolf.ApplicationTracker.Tests
         [TestMethod()]
         public void GetTrackerInstanceTest()
         {
+           
             Assert.Fail();
         }
 
