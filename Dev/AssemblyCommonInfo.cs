@@ -43,4 +43,4 @@ using System.Runtime.CompilerServices;
 [assembly: InternalsVisibleTo("Warewolf.UIBindingTests.ComDll")]
 [assembly: InternalsVisibleTo("Warewolf.Studio.ViewModels.Tests")]
 [assembly: InternalsVisibleTo("Dev2.Data.Tests")]
-[assembly: InternalsVisibleTo("Dev2.Tools.Specs")]
+[assembly: InternalsVisibleTo("Warewolf.Tools.Specs")]

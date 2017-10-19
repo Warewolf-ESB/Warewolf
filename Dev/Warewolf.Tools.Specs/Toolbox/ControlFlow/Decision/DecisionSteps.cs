@@ -315,7 +315,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Decision
         private Dev2DecisionStack EvaluateRegion(string payload, Guid dlId, int update)
         {
 
-            var env = Dev2DataListDecisionHandler.environments[dlId];
+            var env = Dev2DataListDecisionHandler._environments[dlId];
 
             if (payload.StartsWith("{\"TheStack\":[{") || payload.StartsWith("{'TheStack':[{"))
             {
