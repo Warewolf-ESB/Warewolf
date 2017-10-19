@@ -1,7 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.12MinimumVisualStudioVersion = 10.0.40219.1
+VisualStudioVersion = 15.0.27004.2002
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Server", "Dev2.Server\Dev2.Server.csproj", "{87AEFD04-29F3-45B6-A7C6-4161F9190876}"
 	ProjectSection(ProjectDependencies) = postProject
 		{D58AB24F-C45B-4DF1-9CDE-54AFF7995513} = {D58AB24F-C45B-4DF1-9CDE-54AFF7995513}
@@ -1011,7 +1012,6 @@ Global
 		{2A765154-2288-4FD3-A008-F0B7173F4074}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{2A765154-2288-4FD3-A008-F0B7173F4074}.Debug|x86.Build.0 = Debug|Any CPU
 		{2A765154-2288-4FD3-A008-F0B7173F4074}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2A765154-2288-4FD3-A008-F0B7173F4074}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2A765154-2288-4FD3-A008-F0B7173F4074}.Release|x86.ActiveCfg = Release|Any CPU
 		{2A765154-2288-4FD3-A008-F0B7173F4074}.Release|x86.Build.0 = Release|Any CPU
 		{9BED6B93-8BFF-4331-9DD7-98ED81ABFABA}.Debug|Any CPU.ActiveCfg = Debug|x86
@@ -1076,7 +1076,6 @@ Global
 		{240C477A-DD4C-4604-A6E9-43024257104E}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{240C477A-DD4C-4604-A6E9-43024257104E}.Debug|x86.Build.0 = Debug|Any CPU
 		{240C477A-DD4C-4604-A6E9-43024257104E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{240C477A-DD4C-4604-A6E9-43024257104E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{240C477A-DD4C-4604-A6E9-43024257104E}.Release|x86.ActiveCfg = Release|Any CPU
 		{240C477A-DD4C-4604-A6E9-43024257104E}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
