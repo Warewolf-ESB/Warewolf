@@ -123,6 +123,7 @@ $JobSpecs["Explorer UI Tests"]					= "Warewolf.UI.Tests", "Explorer"
 $JobSpecs["File Tools UI Tests"]				= "Warewolf.UI.Tests", "File Tools"
 $JobSpecs["Hello World Mocking UI Tests"]		= "Warewolf.UI.Tests", "Hello World Mocking Tests"
 $JobSpecs["HTTP Tools UI Tests"]				= "Warewolf.UI.Tests", "HTTP Tools"
+$JobSpecs["Merge UI Tests"]						= "Warewolf.UI.Tests", "Merge"
 $JobSpecs["Plugin Sources UI Tests"]			= "Warewolf.UI.Tests", "Plugin Sources"
 $JobSpecs["Recordset Tools UI Tests"]			= "Warewolf.UI.Tests", "Recordset Tools"
 $JobSpecs["Resource Tools UI Tests"]			= "Warewolf.UI.Tests", "Resource Tools"
@@ -348,11 +349,13 @@ function Merge-DotCover-Snapshots($DotCoverSnapshots, [string]$DestinationFilePa
             $LoneSnapshot = $DotCoverSnapshots[0].FullName
             if ($DotCoverSnapshots.Count -eq 1 -and (Test-Path "$LoneSnapshot")) {
                 &"$DotCoverPath" "report" "/Source=`"$LoneSnapshot`"" "/Output=`"$DestinationFilePath\DotCover Report.html`"" "/ReportType=HTML" "/LogFile=`"$LogFilePath.report.log`""
+                Write-Host DotCover report written to $DestinationFilePath\DotCover Report.html
             }
         }
     }
     if (Test-Path "$DestinationFilePath.dcvr") {
         &"$DotCoverPath" "report" "/Source=`"$DestinationFilePath.dcvr`"" "/Output=`"$DestinationFilePath\DotCover Report.html`"" "/ReportType=HTML" "/LogFile=`"$LogFilePath.report.log`""
+        Write-Host DotCover report written to $DestinationFilePath\DotCover Report.html
     }
 }
 
@@ -493,7 +496,7 @@ function Install-Server([string]$ServerPath,[string]$ResourcesType) {
     if ($ServerPath -eq "" -or !(Test-Path $ServerPath)) {
         $ServerPath = Find-Warewolf-Server-Exe
     }
-    Write-Warning "Will now stop any currently running Warewolf servers and studios. Resources will be backed up to $TestsResultsPath."
+    Write-Warning "Will now stop any currently running Warewolf servers and studios. Resources will backed up to $TestsResultsPath."
     if ($ResourcesType -eq "") {
 	    $title = "Server Resources"
 	    $message = "What type of resources would you like to install the server with?"
@@ -537,6 +540,11 @@ function Install-Server([string]$ServerPath,[string]$ResourcesType) {
 	    <ScopeEntry>$ServerBinDir\*.dll</ScopeEntry>
 	    <ScopeEntry>$ServerBinDir\*.exe</ScopeEntry>
     </Scope>
+    <AttributeFilters>
+        <AttributeFilterEntry>
+            <ClassMask>System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute</ClassMask>
+        </AttributeFilterEntry>
+    </AttributeFilters>
 </AnalyseParams>
 "@
 
@@ -668,6 +676,11 @@ function Start-Studio {
     	<ScopeEntry>$StudioBinDir\*.dll</ScopeEntry>
     	<ScopeEntry>$StudioBinDir\*.exe</ScopeEntry>
     </Scope>
+    <AttributeFilters>
+        <AttributeFilterEntry>
+            <ClassMask>System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute</ClassMask>
+        </AttributeFilterEntry>
+    </AttributeFilters>
 </AnalyseParams>
 "@
         $DotCoverRunnerXMLPath = "$TestsResultsPath\Studio DotCover Runner.xml"
@@ -1036,6 +1049,11 @@ if ($TotalNumberOfJobsToRun -gt 0) {
                 $DotCoverArgs += @"
 
     </Scope>
+    <AttributeFilters>
+        <AttributeFilterEntry>
+            <ClassMask>System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute</ClassMask>
+        </AttributeFilterEntry>
+    </AttributeFilters>
 </AnalyseParams>
 "@
                 $DotCoverRunnerXMLPath = "$TestsResultsPath\$JobName DotCover Runner.xml"

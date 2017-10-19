@@ -5,9 +5,6 @@ using Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses;
 
 namespace Warewolf.UI.Tests.Merge
 {
-    /// <summary>
-    /// Summary description for CodedUITest1
-    /// </summary>
     [CodedUITest]
     public class MergeVariableConflictsTest
     {

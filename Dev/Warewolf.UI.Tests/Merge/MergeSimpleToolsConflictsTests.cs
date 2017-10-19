@@ -5,9 +5,6 @@ using Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses;
 
 namespace Warewolf.UI.Tests.Merge
 {
-    /// <summary>
-    /// Summary description for CodedUITest1
-    /// </summary>
     [CodedUITest]
     public partial class MergeSimpleToolsConflictsTests
     {
@@ -69,6 +66,7 @@ namespace Warewolf.UI.Tests.Merge
             UIMap.SetPlaybackSettings();
             UIMap.AssertStudioIsRunning();
         }
+
         public MergeConflictsUIMap MergeConflictsUIMap
         {
             get
