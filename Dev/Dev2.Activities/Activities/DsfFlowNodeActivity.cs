@@ -11,38 +11,21 @@
 using System;
 using System.Activities;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Dev2;
 using Dev2.Activities;
-using Dev2.Activities.Debug;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
-using Dev2.Data.Decision;
-using Dev2.Data.SystemTemplates.Models;
-using Dev2.Data.TO;
-using Dev2.Data.Util;
 using Dev2.Diagnostics;
 using Dev2.Diagnostics.Debug;
-using Dev2.Interfaces;
 using Microsoft.CSharp.Activities;
-using Newtonsoft.Json;
-using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 
 
-
-
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
-
 {
     public abstract class DsfFlowNodeActivity<TResult> : DsfActivityAbstract<TResult>, IFlowNodeActivity
     {
-        // Changing the ExpressionText property of a VisualBasicValue during runtime has no effect. 
-        // The expression text is only evaluated and converted to an expression tree when CacheMetadata() is called.
-        readonly CSharpValue<TResult> _expression; // BUG 9304 - 2013.05.08 - TWR - Changed type to CSharpValue
+        readonly CSharpValue<TResult> _expression;
         TResult _theResult;
-        Guid _dataListId;
-        IDSFDataObject _dataObject;
 
         #region Ctor
 
@@ -96,15 +79,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         #region OnExecute
 
         protected override void OnExecute(NativeActivityContext context)
-        {
-            throw new NotImplementedException();
-        }
-
-        #endregion
-
-        #region OnCompleted
-
-        void OnCompleted(NativeActivityContext context, ActivityInstance completedInstance, TResult result)
         {
             throw new NotImplementedException();
         }
