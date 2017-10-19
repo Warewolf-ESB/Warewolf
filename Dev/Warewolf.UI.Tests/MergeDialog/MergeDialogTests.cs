@@ -15,7 +15,7 @@ namespace Warewolf.UI.Tests.MergeDialog
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
-        [TestCategory("MergeDialog_OpenWindow")]
+        [TestCategory("Merge")]
         public void MergeDialog_OpenWindow_ControlStatus_ExpectedResults()
         {
             //------------Setup for test--------------------------
