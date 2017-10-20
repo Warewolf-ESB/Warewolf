@@ -554,8 +554,7 @@ namespace Dev2
             Write("Loading resource activity cache...  ");
             catalog.LoadServerActivityCache();
             CustomContainer.Register<IExecutionManager>(new ExecutionManager());
-            WriteLine("done.");            
-            SetStarted();
+            WriteLine("done.");
         }
 
         static void MigrateOldResources()
@@ -665,6 +664,7 @@ namespace Dev2
                     Console.ReadLine();
                 }
             }
+            SetAsStarted();
         }
 
         
@@ -696,7 +696,7 @@ namespace Dev2
             }
         }
 
-        static void SetStarted()
+        static void SetAsStarted()
         {
             try
             {
@@ -711,6 +711,7 @@ namespace Dev2
                 Dev2Logger.Error(err, GlobalConstants.WarewolfError);
             }
         }
+
         static void LogException(Exception ex)
         {
             Dev2Logger.Error("Dev2.ServerLifecycleManager", ex, GlobalConstants.WarewolfError);
