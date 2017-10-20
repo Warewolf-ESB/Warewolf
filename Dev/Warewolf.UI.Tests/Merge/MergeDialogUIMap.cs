@@ -1,4 +1,4 @@
-﻿namespace Warewolf.UI.Tests.MergeDialog.MergeDialogUIMapClasses
+﻿namespace Warewolf.UI.Tests.Merge.MergeDialogUIMapClasses
 {
     using System;
     using System.Collections.Generic;
