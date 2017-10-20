@@ -24,7 +24,7 @@ using Warewolf.UI.Tests.ExchangeSource.ExchangeSourceUIMapClasses;
 using Warewolf.UI.Tests.Deploy.DeployUIMapClasses;
 using Warewolf.UI.Tests.DependencyGraph.DependencyGraphUIMapClasses;
 using Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses;
-using Warewolf.UI.Tests.MergeDialog.MergeDialogUIMapClasses;
+using Warewolf.UI.Tests.Merge.MergeDialogUIMapClasses;
 
 namespace Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses
 {

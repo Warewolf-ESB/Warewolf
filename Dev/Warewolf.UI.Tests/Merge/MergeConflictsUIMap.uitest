@@ -762,6 +762,33 @@
                                                         </UIObject>
                                                       </Descendants>
                                                     </UIObject>
+                                                    <UIObject ControlType="Button" Id="MergeButton" FriendlyName="Dev2.ViewModels.Merge.MergeWorkflowViewModel" SpecialControlType="None">
+                                                      <TechnologyName>UIA</TechnologyName>
+                                                      <WindowTitles>
+                                                        <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                                                      </WindowTitles>
+                                                      <AndCondition>
+                                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                        <PropertyCondition Name="ControlType">Button</PropertyCondition>
+                                                        <PropertyCondition Name="AutomationId">HeaderSite</PropertyCondition>
+                                                      </AndCondition>
+                                                      <SupportLevel>0</SupportLevel>
+                                                      <Descendants>
+                                                        <UIObject ControlType="RadioButton" Id="KeepCurrentCheckbox" FriendlyName="UI_CurrentVariablesRB_AutoID" SpecialControlType="None">
+                                                          <TechnologyName>UIA</TechnologyName>
+                                                          <WindowTitles>
+                                                            <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                                                          </WindowTitles>
+                                                          <AndCondition>
+                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                            <PropertyCondition Name="ControlType">RadioButton</PropertyCondition>
+                                                            <PropertyCondition Name="AutomationId">UI_CurrentVariablesRB_AutoID</PropertyCondition>
+                                                          </AndCondition>
+                                                          <SupportLevel>0</SupportLevel>
+                                                          <Descendants />
+                                                        </UIObject>
+                                                      </Descendants>
+                                                    </UIObject>
                                                   </Descendants>
                                                 </UIObject>
                                                 <UIObject ControlType="RadioButton" Id="RightSelectAndApplyWFRadioButton" FriendlyName="UI_DifferenceWorkflowRB_AutoID" SpecialControlType="None">
