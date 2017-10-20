@@ -13,17 +13,15 @@ using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin;
+using System.Collections.Generic;
 
 namespace Dev2.Runtime.ServiceModel.Esb.Brokers
 {
-    /// <summary>
-    /// Handle interaction with plugins ;)
-    /// </summary>
     public class PluginBroker : IPluginBroker<PluginSource, PluginService>
     {
         #region Implementation of IPluginBroker<in PluginSource>
 
-        public NamespaceList GetNamespaces(PluginSource pluginSource)
+        public List<NamespaceItem> GetNamespaces(PluginSource pluginSource)
         {
             try
             {
@@ -36,7 +34,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
             }
         }
 
-        public NamespaceList GetNamespacesWithJsonObjects(PluginSource pluginSource)
+        public List<NamespaceItem> GetNamespacesWithJsonObjects(PluginSource pluginSource)
         {
             try
             {

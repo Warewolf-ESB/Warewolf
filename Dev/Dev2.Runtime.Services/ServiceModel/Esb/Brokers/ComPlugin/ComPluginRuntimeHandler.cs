@@ -215,8 +215,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
                 {
 
                     var execute = IpcClient.GetIPCExecutor(_clientStreamWrapper).Invoke(classId.ToGuid(), "", Execute.GetNamespaces, new ParameterInfoTO[] { });
-                    var namespaceList = execute as List<string>;
-                    return namespaceList;
+                    return execute as List<string>;
 
                 }
                 var type = GetType(classId, false);
@@ -331,13 +330,13 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
         /// </summary>
         /// <param name="pluginSource">The plugin source.</param>
         /// <returns></returns>
-        public NamespaceList FetchNamespaceListObject(ComPluginSource pluginSource)
+        public List<NamespaceItem> FetchNamespaceListObject(ComPluginSource pluginSource)
         {
             var interrogatePlugin = ReadNamespaces(pluginSource.ClsId, pluginSource.Is32Bit);
-            var namespacelist = new NamespaceList();
-            namespacelist.AddRange(interrogatePlugin);
-            namespacelist.Add(new NamespaceItem());
-            return namespacelist;
+            var namespaceList = new List<NamespaceItem>();
+            namespaceList.AddRange(interrogatePlugin);
+            namespaceList.Add(new NamespaceItem());
+            return namespaceList;
         }
 
 
