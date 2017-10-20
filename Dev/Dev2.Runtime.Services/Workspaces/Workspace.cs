@@ -14,13 +14,9 @@ using System.Runtime.Serialization;
 
 namespace Dev2.Workspaces
 {
-    /// <summary>
-    /// A workspace.
-    /// </summary>
     [Serializable]
-    public partial class Workspace : IWorkspace
+    public class Workspace : IWorkspace
     {
-
         #region Initialization
 
         /// <summary>
