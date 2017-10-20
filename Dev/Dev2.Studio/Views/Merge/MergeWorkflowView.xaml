@@ -440,6 +440,7 @@
 							                      Header="{Binding .}"
 							                      IsExpanded="{Binding IsMergeExpanded}"
 							                      Style="{StaticResource MergeExpander}"
+                                                  Visibility="{Binding IsContainerTool, Converter={StaticResource BoolToVisibilityConverterNegative}}"
 							                      AutomationProperties.AutomationId="{Binding StringFormat=UI_TreeViewExpander_{0}_AutoID, Path=MergeDescription}">
                                             <Expander.HeaderTemplate>
                                                 <DataTemplate>

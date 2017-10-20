@@ -25,7 +25,6 @@ namespace Dev2.Common.Interfaces
         bool IsMergeVisible { get; set; }
         ICompleteConflict Container { get; set; }
         bool IsTrueArm { get; set; }
-        bool IsContained { get; set; }
     }
     public delegate void ModelToolChanged(object sender, IMergeToolModel args);
 }

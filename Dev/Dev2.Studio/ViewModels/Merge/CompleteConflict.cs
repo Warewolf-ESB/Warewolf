@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Linq;
+using Dev2.Activities.Designers2.Sequence;
 using Dev2.Common.Interfaces;
 using Microsoft.Practices.Prism.Mvvm;
 
@@ -12,6 +14,7 @@ namespace Dev2.ViewModels.Merge
         bool _isMergeExpanderEnabled;
         bool _hasConflict;
         IEnumerator<ICompleteConflict> _conflictEnumerator;
+        private bool _isContainerTool;
 
         public CompleteConflict()
         {
@@ -53,6 +56,16 @@ namespace Dev2.ViewModels.Merge
             {
                 _isMergeExpanded = value;
                 OnPropertyChanged(() => IsMergeExpanded);
+            }
+        }
+
+        public bool IsContainerTool
+        {
+            get => _isContainerTool;
+            set
+            {
+                _isContainerTool = value;
+                OnPropertyChanged(() => IsContainerTool);
             }
         }
 
@@ -109,6 +122,19 @@ namespace Dev2.ViewModels.Merge
                 childrenMatch &= completeConflict.All(check);
             }
             return current && childrenMatch;
+        }
+
+        public bool ValidateContainerTool(MergeToolModel parentItem)
+        {
+            switch (parentItem.ActivityDesignerViewModel.GetType().Name)
+            {
+                case "SequenceDesignerViewModel":
+                case "SelectAndApplyDesignerViewModel":
+                case "ForeachDesignerViewModel":
+                    return true;
+                default:
+                    return false;
+            }
         }
     }
 }

@@ -14,6 +14,7 @@ namespace Dev2.Common.Interfaces
         bool IsMergeExpanderEnabled { get; set; }
         bool IsMergeExpanded { get; set; }
         bool IsChecked { get; set; }
+        bool IsContainerTool { get; set; }
         ICompleteConflict GetNextConflict();
         LinkedListNode<ICompleteConflict> Find(ICompleteConflict itemToFind);
         bool All(Func<ICompleteConflict, bool> check);
