@@ -443,6 +443,10 @@ namespace Dev2.ViewModels.Merge
             {
                 var currentChildChildren = currentChild.Children;
                 var difChildChildren = childDiff.Children;
+                if (currentChildChildren.Count < 1 && difChildChildren.Count < 1)
+                {
+                    return;
+                }
                 var count = Math.Max(currentChildChildren.Count, difChildChildren.Count);
                 var remoteCopy = new ObservableCollection<IMergeToolModel>();
                 var copy = difChildChildren.ToArray().Clone();
@@ -458,8 +462,13 @@ namespace Dev2.ViewModels.Merge
                         {
                             continue;
                         }
-                        var childCurrent = GetMergeToolItem(currentChildChildren, currentChildChild.UniqueId);
-                        var childDifferent = GetMergeToolItem(difChildChildren, currentChildChild.UniqueId);
+                        if (parent.Children.Any(conflict => conflict.UniqueId.Equals(currentChildChild.UniqueId) && conflict.CurrentViewModel.ParentDescription.Equals(currentChildChild.ParentDescription)))
+                        {
+                            continue;
+                        }
+
+                        var childCurrent = GetMergeToolItem(currentChildChildren, currentChildChild.UniqueId, currentChildChild.ParentDescription);
+                        var childDifferent = GetMergeToolItem(difChildChildren, currentChildChild.UniqueId, currentChildChild.ParentDescription);
                         if (childNodes.TryGetValue(currentChildChild.UniqueId.ToString(), out (ModelItem leftItem, ModelItem rightItem) item))
                         {
                             var local1 = currentChildChildren.Where(p => p.UniqueId == currentChildChild.UniqueId);
@@ -486,16 +495,15 @@ namespace Dev2.ViewModels.Merge
                         {
                             completeConflict.DiffViewModel.Container = completeConflict;
                         }
+                        else
+                        {
+                            completeConflict.DiffViewModel = EmptyConflictViewModel(currentChildChild.UniqueId);
+                        }
                         
                         completeConflict.Parent = parent;
-
                         
-                        if (parent.Children.Any(conflict => conflict.UniqueId.Equals(currentChild.UniqueId)))
-                        {
-                            continue;
-                        }
                         completeConflict.HasConflict = true;
-                        completeConflict.HasConflict = _serviceDifferenceParser.NodeHasConflict(currentChildChild.UniqueId.ToString());
+                        completeConflict.HasConflict = completeConflict.DiffViewModel.FlowNode == null || _serviceDifferenceParser.NodeHasConflict(currentChildChild.UniqueId.ToString());
                         if (parent.Children.Count == 0)
                         {
                             parent.Children.AddFirst(completeConflict);
@@ -512,6 +520,10 @@ namespace Dev2.ViewModels.Merge
                         {
                             foreach (var mergeToolModel in remoteCopy.ToList())
                             {
+                                if (parent.Children.Any(conflict => conflict.UniqueId.Equals(mergeToolModel.UniqueId) && conflict.DiffViewModel.ParentDescription.Equals(mergeToolModel.ParentDescription)))
+                                {
+                                    continue;
+                                }
                                 var conflictChild = new CompleteConflict
                                 {
                                     UniqueId = mergeToolModel.UniqueId,
@@ -523,10 +535,7 @@ namespace Dev2.ViewModels.Merge
                                 {
                                     conflictChild.DiffViewModel.FlowNode = item.rightItem;
                                 }
-                                if (parent.Children.Any(conflict => conflict.UniqueId.Equals(childDiff.UniqueId)))
-                                {
-                                    continue;
-                                }
+                                
                                 conflictChild.HasConflict = true;
                                 if (parent.Children.Count == 0)
                                 {
@@ -549,7 +558,7 @@ namespace Dev2.ViewModels.Merge
                 var difChildChildren = childDiff.Children;
                 foreach (var diffChild in difChildChildren)
                 {
-                    var model = GetMergeToolItem(difChildChildren, diffChild.UniqueId);
+                    var model = GetMergeToolItem(difChildChildren, diffChild.UniqueId, diffChild.ParentDescription);
                     var completeConflict = new CompleteConflict();
                     completeConflict.CurrentViewModel = EmptyConflictViewModel(diffChild.UniqueId);
                     completeConflict.UniqueId = diffChild.UniqueId;
@@ -575,7 +584,7 @@ namespace Dev2.ViewModels.Merge
                 var difChildChildren = currentChild.Children;
                 foreach (var diffChild in difChildChildren)
                 {
-                    var model = GetMergeToolItem(difChildChildren, diffChild.UniqueId);
+                    var model = GetMergeToolItem(difChildChildren, diffChild.UniqueId, diffChild.ParentDescription);
                     var completeConflict = new CompleteConflict();
                     completeConflict.DiffViewModel = EmptyConflictViewModel(diffChild.UniqueId);
                     completeConflict.UniqueId = diffChild.UniqueId;
@@ -596,9 +605,9 @@ namespace Dev2.ViewModels.Merge
                     }
                 }
             }
-            IMergeToolModel GetMergeToolItem(IEnumerable<IMergeToolModel> collection, Guid uniqueId)
+            IMergeToolModel GetMergeToolItem(IEnumerable<IMergeToolModel> collection, Guid uniqueId, string parentDescription)
             {
-                var mergeToolModel = collection.FirstOrDefault(model => model.UniqueId.Equals(uniqueId));
+                var mergeToolModel = collection.FirstOrDefault(model => model.UniqueId.Equals(uniqueId) && model.ParentDescription.Equals(parentDescription));
                 return mergeToolModel;
             }
         }
