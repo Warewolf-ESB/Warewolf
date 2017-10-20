@@ -222,7 +222,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Switch
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        public void Equals_Given_DifferentInner_SwitchActivity_AreNotEqual()
+        public void Equals_Given_DifferentInner_SwitchActivity_IsEqual()
         {
             //---------------Set up test pack-------------------
             var uniqId = Guid.NewGuid().ToString();
@@ -250,12 +250,12 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Switch
             //---------------Execute Test ----------------------
             var @equals = activity.Equals(activity1);
             //---------------Test Result -----------------------
-            Assert.IsFalse(@equals);
+            Assert.IsTrue(@equals);
         }
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        public void Equals_Given_DifferentDefault_SwitchActivity_AreNotEqual()
+        public void Equals_Given_DifferentDefault_SwitchActivity_IsEqual()
         {
             //---------------Set up test pack-------------------
             var uniqId = Guid.NewGuid().ToString();
@@ -268,12 +268,12 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Switch
             //---------------Execute Test ----------------------
             var @equals = activity.Equals(activity1);
             //---------------Test Result -----------------------
-            Assert.IsFalse(@equals);
+            Assert.IsTrue(@equals);
         }
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        public void Equals_Given_SameDefault_DifferentIndexes_SwitchActivity_AreNotEqual()
+        public void Equals_Given_SameDefault_DifferentIndexes_SwitchActivity_AreEqual()
         {
             //---------------Set up test pack-------------------
             var uniqId = Guid.NewGuid().ToString();
@@ -287,7 +287,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Switch
             //---------------Execute Test ----------------------
             var @equals = activity.Equals(activity1);
             //---------------Test Result -----------------------
-            Assert.IsFalse(@equals);
+            Assert.IsTrue(@equals);
         }
         [TestMethod]
         [Owner("Sanele Mthembu")]

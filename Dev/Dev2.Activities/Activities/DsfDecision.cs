@@ -28,7 +28,6 @@ namespace Dev2.Activities
         public IEnumerable<IDev2Activity> FalseArm { get; set; }
         public Dev2DecisionStack Conditions { get; set; }
 
-        readonly IActivityParser _activityParser = new ActivityParser();
         readonly DsfFlowDecisionActivity _inner;
         public DsfDecision(DsfFlowDecisionActivity inner) : this()
         {
@@ -406,18 +405,7 @@ namespace Dev2.Activities
             if (ReferenceEquals(this, other))
             {
                 return true;
-            }
-
-            bool isTrueArmTheSame = IsTrueArmEqual(other);
-            if (!isTrueArmTheSame)
-            {
-                return false;
-            }
-            bool isFalseArmArmTheSame = IsFalseArmEqual(other);
-            if (!isFalseArmArmTheSame)
-            {
-                return false;
-            }
+            }            
             var areConditionsEqual = CommonEqualityOps.AreObjectsEqual(Conditions, other.Conditions);
             if (!areConditionsEqual)
             {
@@ -427,30 +415,25 @@ namespace Dev2.Activities
                 && string.Equals(Result, other.Result)
                 && And == other.And
                 && Equals(UniqueID, other.UniqueID);
-        }
-
-        private bool IsFalseArmEqual(DsfDecision other)
-        {
-            var falseArmTools = _activityParser.FlattenNextNodesInclusive(FalseArm?.FirstOrDefault());
-            var otherFalseArmTools = _activityParser.FlattenNextNodesInclusive(other.FalseArm?.FirstOrDefault());
-            var isFalseArmArmTheSame = CommonEqualityOps.CollectionEquals(falseArmTools, otherFalseArmTools, new Dev2ActivityComparer());
-            return isFalseArmArmTheSame;
-        }
-
-        private bool IsTrueArmEqual(DsfDecision other)
-        {
-            var trueArmTools = _activityParser.FlattenNextNodesInclusive(TrueArm?.FirstOrDefault());
-            var otherTrueArmTools = _activityParser.FlattenNextNodesInclusive(other.TrueArm?.FirstOrDefault());
-
-            var isTrueArmTheSame = CommonEqualityOps.CollectionEquals(trueArmTools, otherTrueArmTools, new Dev2ActivityComparer());
-            return isTrueArmTheSame;
-        }
+        }      
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (obj.GetType() != this.GetType())
+            {
+                return false;
+            }
+
             return Equals((DsfDecision)obj);
         }
 
