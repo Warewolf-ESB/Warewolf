@@ -1,11 +1,14 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
+using TechTalk.SpecFlow;
 using Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses;
-using Warewolf.UI.Tests.MergeDialog.MergeDialogUIMapClasses;
+using Warewolf.UI.Tests.Merge.MergeDialogUIMapClasses;
 
 namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
 {
     public partial class MergeConflictsUIMap
     {
+        [Given(@"I have merge conflicts tab open for service ""(.*)""")]
+        [When(@"I open merge conflicts tab open for service ""(.*)""")]
         public void OpenMerge_For_Workflow(string workflow)
         {
             ExplorerUIMap.Open_Context_Menu_For_Service(workflow);
