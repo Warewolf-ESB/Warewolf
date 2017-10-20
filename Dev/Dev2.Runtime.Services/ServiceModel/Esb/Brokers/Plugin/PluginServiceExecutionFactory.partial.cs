@@ -1,5 +1,6 @@
 ﻿using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Runtime.ServiceModel.Data;
+using System.Collections.Generic;
 
 namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
 {
@@ -40,14 +41,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             }
 
         }
-
-        /// <summary>
-        /// Gets the methods.
-        /// </summary>
-        /// <param name="assemblyLocation">The assembly location.</param>
-        /// <param name="assemblyName">Name of the assembly.</param>
-        /// <param name="fullName">The full name.</param>
-        /// <returns></returns>
+        
         public static ServiceMethodList GetMethods(string assemblyLocation, string assemblyName, string fullName)
         {
             using (var runtime = CreateInvokeAppDomain())
@@ -56,7 +50,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             }
         }
 
-        public static NamespaceList GetNamespaces(PluginSource pluginSource)
+        public static List<NamespaceItem> GetNamespaces(PluginSource pluginSource)
         {
             using (var runtime = CreateInvokeAppDomain())
             {
@@ -65,6 +59,5 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
         }
 
         #endregion
-
     }
 }

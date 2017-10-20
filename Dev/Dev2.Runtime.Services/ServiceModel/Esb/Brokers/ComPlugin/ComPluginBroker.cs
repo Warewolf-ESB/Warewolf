@@ -2,6 +2,7 @@ using System;
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
+using System.Collections.Generic;
 
 namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
 {
@@ -12,7 +13,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
     {
         #region Implementation of IPluginBroker<in ComPluginSource,in ComPluginService>
 
-        public NamespaceList GetNamespaces(ComPluginSource pluginSource)
+        public List<NamespaceItem> GetNamespaces(ComPluginSource pluginSource)
         {
             try
             {

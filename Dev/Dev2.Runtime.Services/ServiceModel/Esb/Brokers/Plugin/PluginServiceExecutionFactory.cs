@@ -10,13 +10,10 @@
 
 using Dev2.Common.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
+using System.Collections.Generic;
 
 namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
 {
-    /// <summary>
-    /// Used to execute plugins properly ;)
-    /// INFO : http://stackoverflow.com/questions/2008691/pass-and-execute-delegate-in-separate-appdomain
-    /// </summary>
     public static partial class PluginServiceExecutionFactory
     {
         #region Private Methods
@@ -61,14 +58,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
         }
 
         #endregion
-
-        /// <summary>
-        /// Gets the methods.
-        /// </summary>
-        /// <param name="assemblyLocation">The assembly location.</param>
-        /// <param name="assemblyName">Name of the assembly.</param>
-        /// <param name="fullName">The full name.</param>
-        /// <returns></returns>
+        
         public static ServiceMethodList GetMethodsWithReturns(string assemblyLocation, string assemblyName, string fullName)
         {
             using (var runtime = CreateInvokeAppDomain())
@@ -77,7 +67,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             }
         }
 
-        public static NamespaceList GetNamespacesWithJsonObjects(PluginSource pluginSource)
+        public static List<NamespaceItem> GetNamespacesWithJsonObjects(PluginSource pluginSource)
         {
             using (var runtime = CreateInvokeAppDomain())
             {
