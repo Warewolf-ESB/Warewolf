@@ -3116,29 +3116,29 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
         }
         
         #region Properties
-        public ActivityBuilderCustom ActivityBuilderCustom
+        public ActivityBuilder ActivityBuilder
         {
             get
             {
-                if ((this.mActivityBuilderCustom == null))
+                if ((this.mActivityBuilder == null))
                 {
-                    this.mActivityBuilderCustom = new ActivityBuilderCustom(this);
+                    this.mActivityBuilder = new ActivityBuilder(this);
                 }
-                return this.mActivityBuilderCustom;
+                return this.mActivityBuilder;
             }
         }
         #endregion
         
         #region Fields
-        private ActivityBuilderCustom mActivityBuilderCustom;
+        private ActivityBuilder mActivityBuilder;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class ActivityBuilderCustom : WpfCustom
+    public class ActivityBuilder : WpfCustom
     {
         
-        public ActivityBuilderCustom(UITestControl searchLimitContainer) : 
+        public ActivityBuilder(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -3149,29 +3149,29 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
         }
         
         #region Properties
-        public WorkflowItemPresenteCustom WorkflowItemPresenteCustom
+        public WorkflowItemPresenter WorkflowItemPresenter
         {
             get
             {
-                if ((this.mWorkflowItemPresenteCustom == null))
+                if ((this.mWorkflowItemPresenter == null))
                 {
-                    this.mWorkflowItemPresenteCustom = new WorkflowItemPresenteCustom(this);
+                    this.mWorkflowItemPresenter = new WorkflowItemPresenter(this);
                 }
-                return this.mWorkflowItemPresenteCustom;
+                return this.mWorkflowItemPresenter;
             }
         }
         #endregion
         
         #region Fields
-        private WorkflowItemPresenteCustom mWorkflowItemPresenteCustom;
+        private WorkflowItemPresenter mWorkflowItemPresenter;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class WorkflowItemPresenteCustom : WpfCustom
+    public class WorkflowItemPresenter : WpfCustom
     {
         
-        public WorkflowItemPresenteCustom(UITestControl searchLimitContainer) : 
+        public WorkflowItemPresenter(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -3182,29 +3182,29 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
         }
         
         #region Properties
-        public FlowchartCustom FlowchartCustom
+        public Flowchart Flowchart
         {
             get
             {
-                if ((this.mFlowchartCustom == null))
+                if ((this.mFlowchart == null))
                 {
-                    this.mFlowchartCustom = new FlowchartCustom(this);
+                    this.mFlowchart = new Flowchart(this);
                 }
-                return this.mFlowchartCustom;
+                return this.mFlowchart;
             }
         }
         #endregion
         
         #region Fields
-        private FlowchartCustom mFlowchartCustom;
+        private Flowchart mFlowchart;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class FlowchartCustom : WpfCustom
+    public class Flowchart : WpfCustom
     {
         
-        public FlowchartCustom(UITestControl searchLimitContainer) : 
+        public Flowchart(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -3223,7 +3223,7 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
                     this.mFirstAssign_Diff_On_Surface = new WpfCustom(this);
                     #region Search Criteria
                     this.mFirstAssign_Diff_On_Surface.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.MultiAssignDesigner";
-                    this.mFirstAssign_Diff_On_Surface.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Assign (0)(MultiAssignDesigner)";
+                    this.mFirstAssign_Diff_On_Surface.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Assign (1)(MultiAssignDesigner)";
                     this.mFirstAssign_Diff_On_Surface.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
                     #endregion
                 }
