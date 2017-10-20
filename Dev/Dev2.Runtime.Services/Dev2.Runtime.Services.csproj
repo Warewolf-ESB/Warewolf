@@ -355,7 +355,6 @@
     <Compile Include="ESB\Management\Services\Ping.cs" />
     <Compile Include="ESB\Management\Services\ReloadResource.cs" />
     <Compile Include="ESB\Management\Services\TerminateExecution.cs" />
-    <Compile Include="ESB\Management\Services\UpdateWorkspaceItem.cs" />
     <Compile Include="Execution\ExecutableServiceRepository.cs" />
     <Compile Include="Execution\IExecutableService.cs" />
     <Compile Include="Hosting\ServiceDefinitionLoader.cs" />
@@ -450,9 +449,7 @@
     <Compile Include="Workspaces\IWorkspace.cs" />
     <Compile Include="Workspaces\IWorkspaceItem.cs" />
     <Compile Include="Workspaces\IWorkspaceRepository.cs" />
-    <Compile Include="Workspaces\IWorkspace_Server.cs" />
     <Compile Include="Workspaces\WorkspaceRepository.cs" />
-    <Compile Include="Workspaces\Workspace_Server.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">

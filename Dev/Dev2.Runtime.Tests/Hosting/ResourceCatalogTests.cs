@@ -2707,7 +2707,6 @@ namespace Dev2.Tests.Runtime.Hosting
             var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
             catalogPluginContainer.Build(rc);
             //---------------Test Result -----------------------
-            Assert.IsNotNull(catalogPluginContainer.CopyProvider);
             Assert.IsNotNull(catalogPluginContainer.SaveProvider);
             Assert.IsNotNull(catalogPluginContainer.SyncProvider);
             Assert.IsNotNull(catalogPluginContainer.RenameProvider);
@@ -2727,7 +2726,6 @@ namespace Dev2.Tests.Runtime.Hosting
             var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
             catalogPluginContainer.Build(rc);
             //---------------Test Result -----------------------
-            Assert.IsNotNull(catalogPluginContainer.CopyProvider);
             Assert.IsNotNull(catalogPluginContainer.SaveProvider);
             Assert.IsNotNull(catalogPluginContainer.SyncProvider);
             Assert.IsNotNull(catalogPluginContainer.RenameProvider);
