@@ -11,15 +11,29 @@ namespace Dev2.Common
         public static bool AreObjectsEqual<T>(T x, T y)
             where T : IEquatable<T>
         {
-            if (x == null && y == null) return true;
-            if (x == null || y == null) return false;
+            if (Equals(x, default(T)) && Equals(y, default(T)))
+            {
+                return true;
+            }
+
+            if (Equals(x, default(T)) || Equals(y, default(T)))
+            {
+                return false;
+            }
 
             return x.Equals(y);
         }
         public static bool AreObjectsEqualUnSafe<T>(T x, T y)
         {
-            if (x == null && y == null) return true;
-            if (x == null || y == null) return false;
+            if (Equals(x, default(T)) && Equals(y, default(T)))
+            {
+                return true;
+            }
+
+            if (Equals(x, default(T)) || Equals(y, default(T)))
+            {
+                return false;
+            }
 
             return x.Equals(y);
         }
@@ -53,8 +67,16 @@ namespace Dev2.Common
 
         public static bool CollectionEquals<T>(IEnumerable<T> source, IEnumerable<T> source1, IEqualityComparer<T> equalityComparer)
         {
-            if (source == null && source1 == null) return true;
-            if (source == null || source1 == null) return false;
+            if (source == null && source1 == null)
+            {
+                return true;
+            }
+
+            if (source == null || source1 == null)
+            {
+                return false;
+            }
+
             var sequenceEqual = source.SequenceEqual(source1, equalityComparer);
             return sequenceEqual;
         }

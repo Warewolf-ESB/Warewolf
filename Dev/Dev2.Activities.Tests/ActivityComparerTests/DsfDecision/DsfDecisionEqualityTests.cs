@@ -121,7 +121,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DsfDecision
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void TrueArm_Different_Object_Is_Not_Equal()
+        public void TrueArm_Different_Object_Is_Equal()
         {
             //---------------Set up test pack-------------------
             var dsfBaseConvertActivity = new DsfBaseConvertActivity();
@@ -170,7 +170,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DsfDecision
             //---------------Execute Test ----------------------
             var equals = decision.Equals(decision1);
             //---------------Test Result -----------------------
-            Assert.IsFalse(equals);
+            Assert.IsTrue(equals);
         }
 
         [TestMethod]
@@ -876,7 +876,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DsfDecision
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void FalseArm_Different_Object_Is_Not_Equal()
+        public void FalseArm_Different_Object_Is_Equal()
         {
             //---------------Set up test pack-------------------
             var dsfBaseConvertActivity = new DsfBaseConvertActivity();
@@ -925,7 +925,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DsfDecision
             //---------------Execute Test ----------------------
             var equals = decision.Equals(decision1);
             //---------------Test Result -----------------------
-            Assert.IsFalse(equals);
+            Assert.IsTrue(equals);
         }
 
         [TestMethod]
