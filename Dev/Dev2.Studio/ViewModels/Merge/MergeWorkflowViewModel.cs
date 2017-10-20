@@ -166,7 +166,19 @@ namespace Dev2.ViewModels.Merge
                 conflict.HasConflict = currentChange.hasConflict;
                 conflict.IsMergeExpanded = false;
                 conflict.IsMergeExpanderEnabled = false;
-                AddChildren(conflict, conflict.CurrentViewModel, conflict.DiffViewModel);
+
+                if (conflict.CurrentViewModel.FlowNode == null && conflict.DiffViewModel?.Children?.Count > 0)
+                {
+                    
+                }
+                else if (conflict.DiffViewModel?.FlowNode == null && conflict.CurrentViewModel?.Children?.Count > 0)
+                {
+                    
+                }
+                else
+                {
+                    AddChildren(conflict, conflict.CurrentViewModel, conflict.DiffViewModel);
+                }
                 conflicts.Add(conflict);
             }
             return conflicts;
@@ -334,9 +346,7 @@ namespace Dev2.ViewModels.Merge
         }
 
         public IDataListViewModel DataListViewModel { 
-                get {
-                return _dataListViewModel;
-            }
+                get => _dataListViewModel;
             set{
                 _dataListViewModel = value;
                 OnPropertyChanged("DataListViewModel");
