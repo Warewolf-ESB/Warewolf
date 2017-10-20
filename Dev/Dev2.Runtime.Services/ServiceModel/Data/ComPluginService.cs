@@ -12,10 +12,8 @@ namespace Dev2.Runtime.ServiceModel.Data
 {
     public class ComPluginService : Service
     {
-        // BUG 9500 - 2013.05.31 - TWR : removed Recordset property
         public RecordsetList Recordsets { get; set; }
-
-        // BUG 9500 - 2013.05.31 - TWR : added
+        
         public string Namespace { get; set; }
         public string SerializedResult { get; set; }
 
