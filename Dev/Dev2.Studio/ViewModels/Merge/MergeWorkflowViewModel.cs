@@ -104,6 +104,7 @@ namespace Dev2.ViewModels.Merge
                         }
                     };
                     conflict.CurrentViewModel.Container = conflict;
+                    conflict.CurrentViewModel.IsMergeVisible = currentChange.hasConflict;
                     conflict.CurrentViewModel.FlowNode = currentChange.currentNode.CurrentFlowStep;
                     conflict.CurrentViewModel.NodeLocation = currentChange.currentNode.NodeLocation;
                     conflict.CurrentViewModel.SomethingModelToolChanged += SourceOnModelToolChanged;
@@ -145,6 +146,7 @@ namespace Dev2.ViewModels.Merge
                     };
                     conflict.DiffViewModel = factoryB.Model;
                     conflict.DiffViewModel.Container = conflict;
+                    conflict.DiffViewModel.IsMergeVisible = currentChange.hasConflict;
                     conflict.DiffViewModel.FlowNode = currentChange.differenceNode.CurrentFlowStep;
                     conflict.DiffViewModel.NodeLocation = currentChange.differenceNode.NodeLocation;
                     conflict.DiffViewModel.SomethingModelToolChanged += SourceOnModelToolChanged;
@@ -166,7 +168,19 @@ namespace Dev2.ViewModels.Merge
                 conflict.HasConflict = currentChange.hasConflict;
                 conflict.IsMergeExpanded = false;
                 conflict.IsMergeExpanderEnabled = false;
-                AddChildren(conflict, conflict.CurrentViewModel, conflict.DiffViewModel);
+
+                if (conflict.CurrentViewModel.FlowNode == null && conflict.DiffViewModel?.Children?.Count > 0)
+                {
+                    
+                }
+                else if (conflict.DiffViewModel?.FlowNode == null && conflict.CurrentViewModel?.Children?.Count > 0)
+                {
+                    
+                }
+                else
+                {
+                    AddChildren(conflict, conflict.CurrentViewModel, conflict.DiffViewModel);
+                }
                 conflicts.Add(conflict);
             }
             return conflicts;
@@ -334,9 +348,7 @@ namespace Dev2.ViewModels.Merge
         }
 
         public IDataListViewModel DataListViewModel { 
-                get {
-                return _dataListViewModel;
-            }
+                get => _dataListViewModel;
             set{
                 _dataListViewModel = value;
                 OnPropertyChanged("DataListViewModel");
@@ -494,6 +506,7 @@ namespace Dev2.ViewModels.Merge
                         if (completeConflict.DiffViewModel != null)
                         {
                             completeConflict.DiffViewModel.Container = completeConflict;
+                           
                         }
                         else
                         {
@@ -502,8 +515,9 @@ namespace Dev2.ViewModels.Merge
                         
                         completeConflict.Parent = parent;
                         
-                        completeConflict.HasConflict = true;
                         completeConflict.HasConflict = completeConflict.DiffViewModel.FlowNode == null || _serviceDifferenceParser.NodeHasConflict(currentChildChild.UniqueId.ToString());
+                        completeConflict.DiffViewModel.IsMergeVisible = completeConflict.HasConflict;
+                        completeConflict.CurrentViewModel.IsMergeVisible = completeConflict.HasConflict;
                         if (parent.Children.Count == 0)
                         {
                             parent.Children.AddFirst(completeConflict);
@@ -545,6 +559,8 @@ namespace Dev2.ViewModels.Merge
                                 {
                                     parent.Children.AddLast(conflictChild);
                                 }
+                                conflictChild.DiffViewModel.IsMergeVisible = completeConflict.HasConflict;
+                                conflictChild.CurrentViewModel.IsMergeVisible = completeConflict.HasConflict;
                                 remoteCopy.Remove(mergeToolModel);
                                 AddChildren(conflictChild, null, mergeToolModel);
                             }
