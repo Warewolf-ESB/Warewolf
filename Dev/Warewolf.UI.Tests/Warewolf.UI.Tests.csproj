@@ -149,11 +149,10 @@
     <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
-    <Compile Include="MergeDialog\MergeDialogTests.cs" />
-    <Compile Include="MergeDialog\MergeDialogUIMap.cs">
+    <Compile Include="Merge\MergeDialogUIMap.cs">
       <DependentUpon>MergeDialogUIMap.uitest</DependentUpon>
     </Compile>
-    <Compile Include="MergeDialog\MergeDialogUIMap.Designer.cs">
+    <Compile Include="Merge\MergeDialogUIMap.Designer.cs">
       <DependentUpon>MergeDialogUIMap.uitest</DependentUpon>
     </Compile>
     <Compile Include="Merge\MergeVariableConflictsTest.cs" />
@@ -420,7 +419,7 @@
     <None Include="EmailSource\EmailSourceUIMap.uitest" />
     <None Include="ExchangeSource\ExchangeSourceUIMap.uitest" />
     <None Include="Explorer\ExplorerUIMap.uitest" />
-    <None Include="MergeDialog\MergeDialogUIMap.uitest" />
+    <None Include="Merge\MergeDialogUIMap.uitest" />
     <None Include="Merge\MergeConflictsUIMap.uitest" />
     <None Include="packages.config" />
     <None Include="RabbitMQSource\RabbitMQSourceUIMap.uitest" />
