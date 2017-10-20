@@ -418,7 +418,6 @@
     <Compile Include="Security\HostSecurityProvider.cs" />
     <Compile Include="Security\IHostSecurityProvider.cs" />
     <Compile Include="Security\ISecureConfig.cs" />
-    <Compile Include="ServiceInvoker.cs" />
     <Compile Include="ServiceModel\Data\NamespaceList.cs" />
     <Compile Include="ServiceModel\Data\PluginService.cs" />
     <Compile Include="ServiceModel\Data\Workflow.cs" />
