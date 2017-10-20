@@ -1157,55 +1157,6 @@ namespace Dev2.Tests.Runtime.Hosting
 
         #endregion
 
-        #region CopyResource
-
-        [TestMethod]
-        public void CopyResourceWithNullResourceExpectedDoesNotCopyResourceToTarget()
-        {
-            var targetWorkspaceID = Guid.NewGuid();
-            var catalog = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
-            var result = catalog.CopyResource(null, targetWorkspaceID);
-            Assert.IsFalse(result);
-        }
-
-        [TestMethod]
-        public void CopyResourceWithNonExistingResourceNameExpectedDoesNotCopyResourceToTarget()
-        {
-            var sourceWorkspaceID = Guid.NewGuid();
-            SaveResources(sourceWorkspaceID, out List<IResource> sourceResources);
-
-            var targetWorkspaceID = Guid.NewGuid();
-            SaveResources(targetWorkspaceID, out List<IResource> targetResources);
-
-            var result = new ResourceCatalog().CopyResource(Guid.Empty, sourceWorkspaceID, targetWorkspaceID);
-            Assert.IsFalse(result);
-        }
-
-        [TestMethod]
-        public void CopyResourceWithNonExistingResourceFilePathExpectedDoesNotCopyResourceToTarget()
-        {
-            var sourceWorkspaceID = Guid.NewGuid();
-            SaveResources(sourceWorkspaceID, out List<IResource> sourceResources);
-
-            var targetWorkspaceID = Guid.NewGuid();
-            SaveResources(targetWorkspaceID, out List<IResource> targetResources);
-
-            var sourceResource = sourceResources[0];
-            var targetResource = targetResources.First(r => r.ResourceID == sourceResource.ResourceID);
-            var sourceFile = new FileInfo(sourceResource.FilePath);
-            var targetFile = new FileInfo(targetResource.FilePath);
-
-            sourceFile.Delete();
-            targetFile.Delete();
-
-            var result = new ResourceCatalog().CopyResource(sourceResource.ResourceID, sourceWorkspaceID, targetWorkspaceID);
-            Assert.IsFalse(result);
-            targetFile.Refresh();
-            Assert.IsFalse(targetFile.Exists);
-        }
-
-        #endregion
-
         #region ResourceCatalogResultBuilder
 
         [TestMethod]

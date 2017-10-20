@@ -188,10 +188,11 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             foreach (var dependant in dependants)
             {
                 var dependantResource = _resourceCatalog.GetResource(workspaceID, dependant.ResourceID);
+
                 //rename where used
                 var resourceContents = _resourceCatalog.GetResourceContents(workspaceID, dependantResource.ResourceID);
-
                 var resourceElement = resourceContents.ToXElement();
+
                 //in the xaml only
                 var actionElement = resourceElement.Element("Action");
                 if (actionElement != null)
