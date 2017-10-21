@@ -40,7 +40,7 @@ namespace Dev2.Instrumentation
         public string Username { get; set; }
 
         public string ProductVersion { get; set; }
-        public RUIResult EnableApplicationResult { get; set; }
+        public RUIResult EnableApplicationResultStatus { get; set; }
 
         /// <summary>
         ///     set the variables by reading config file
@@ -69,10 +69,10 @@ namespace Dev2.Instrumentation
             Username = username;
             try
             {
-                EnableApplicationResult = CreateRevulyticsConfig();
-                if (EnableApplicationResult != RUIResult.ok)
+                EnableApplicationResultStatus = CreateRevulyticsConfig();
+                if (EnableApplicationResultStatus != RUIResult.ok)
                 {
-                    LogResult(EnableApplicationResult);
+                    LogResult(EnableApplicationResultStatus);
                 }
                 else
                 {
