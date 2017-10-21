@@ -150,7 +150,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Data.Interfaces", "Dev
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.ApplicationTracker.Tests", "Warewolf.ApplicationTracker.Tests\Warewolf.ApplicationTracker.Tests.csproj", "{DECD7F2B-BC08-4684-9C62-CEE318AA13C2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.InstrumentationTests", "Dev2.InstrumentationTests\Dev2.InstrumentationTests.csproj", "{BA95754E-19B2-42BC-9589-2ECC34338F2D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Instrumentation.Tests", "Dev2.InstrumentationTests\Dev2.Instrumentation.Tests.csproj", "{BA95754E-19B2-42BC-9589-2ECC34338F2D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Instrumentation.SpecflowTests", "Dev2.Instrumentation.SpecflowTests\Dev2.Instrumentation.SpecflowTests.csproj", "{6EBD904D-C168-40CE-828D-9B987F3CF591}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -401,6 +403,10 @@ Global
 		{BA95754E-19B2-42BC-9589-2ECC34338F2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BA95754E-19B2-42BC-9589-2ECC34338F2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BA95754E-19B2-42BC-9589-2ECC34338F2D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6EBD904D-C168-40CE-828D-9B987F3CF591}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6EBD904D-C168-40CE-828D-9B987F3CF591}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6EBD904D-C168-40CE-828D-9B987F3CF591}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6EBD904D-C168-40CE-828D-9B987F3CF591}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
