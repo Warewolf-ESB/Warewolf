@@ -1272,10 +1272,10 @@ namespace Dev2.Studio.ViewModels
 
             if (exists == null)
             {
-                if (typeof(T) == typeof(SettingsViewModel))
-                {
-                    Tracker.TrackEvent(TrackerEventGroup.Settings, TrackerEventName.Opened);
-                }
+                //if (typeof(T) == typeof(SettingsViewModel))
+                //{
+                //    //Tracker.TrackEvent(TrackerEventGroup.Settings, TrackerEventName.Opened);
+                //}
 
                 return CreateAndActivateUniqueWorkSurface<T>(context);
             }
