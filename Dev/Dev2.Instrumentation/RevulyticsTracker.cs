@@ -108,8 +108,16 @@ namespace Dev2.Instrumentation
         /// </summary>
         public void DisableAppplicationTracker()
         {
-            LogErrorResult(StopSession());
-            LogErrorResult(StopSdk());
+            try
+            {
+                LogErrorResult(StopSession());
+                LogErrorResult(StopSdk());
+            }
+
+            catch (Exception e)
+            {
+                Dev2Logger.Error("Error in DisableAppplicationTracker method", e, "Revulytics sdk error");
+            }
         }
 
         /// <summary>
@@ -189,7 +197,7 @@ namespace Dev2.Instrumentation
             var result = RUIResult.configNotCreated;
             if (string.IsNullOrEmpty(SdkFilePath))
             {
-                throw new ArgumentNullException("SdkFilePath");
+                throw new ArgumentNullException($"Sdk File Path is missing");
             }
             RuiSdk = new RUISDK(true, SdkFilePath);
             if (RuiSdk != null)

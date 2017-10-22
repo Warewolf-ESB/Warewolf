@@ -1,5 +1,5 @@
 ﻿Feature: TestEnableRevulyticsTracking
-	This test will chceck the status of revulytics tracker to running
+	This test will chceck the status of revulytics tracker to be running
 
 @TestEnableTracking
 Scenario: Test Enable Revulytics tracking
