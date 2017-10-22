@@ -7,16 +7,21 @@ using TechTalk.SpecFlow;
 namespace Dev2.Instrumentation.SpecflowTests
 {
     [Binding]
-    public class TestRevultyicsWithCorrectConfigurationSteps
+    public class TestRevulyticsConfigSteps
     {
         private RevulyticsTracker _tracker;
         private RUIResult _configResult;
-        [Given(@"I have app config file I will read the revulytics app config keys")]
-        public void GivenIHaveAppConfigFileIWillReadTheRevulyticsAppConfigKeys()
+
+        /// <summary>
+        /// This method will read the keys from config file
+        /// IProductID is left blank
+        /// </summary>
+        [Given(@"I have revulytics config and i will read the keys")]
+        public void GivenIHaveRevulyticsConfigAndIWillReadTheKeys()
         {
             _tracker = new RevulyticsTracker
             {
-                SdkFilePath = "D:\\",
+                SdkFilePath = "C:\\ru\\",
                 ConfigFilePath = ConfigurationManager.AppSettings["IConfigFilePath"],
                 ProductId = ConfigurationManager.AppSettings["IProductID"],
                 AppName = ConfigurationManager.AppSettings["IAppName"],
@@ -27,17 +32,17 @@ namespace Dev2.Instrumentation.SpecflowTests
 
         }
         
-        [Given(@"I will create revultyics configuration")]
+        [Given(@"I will create revulytics configuration")]
         [ExpectedException(typeof(ArgumentNullException), "Error in config keys rui sdk")]
-        public void GivenIWillCreateRevultyicsConfiguration()
+        public void GivenIWillCreateRevulyticsConfiguration()
         {
-         _configResult=   _tracker.CreateRevulyticsConfig();
+            _configResult = _tracker.CreateRevulyticsConfig();
         }
         
-        [Then(@"I will check the status of revulytics configuration")]
-        public void ThenIWillCheckTheStatusOfRevulyticsConfiguration()
+        [Then(@"I will check whether result is equal to ok")]
+        public void ThenIWillCheckWhetherResultIsEqualToOk()
         {
-            Assert.AreEqual(_configResult,RUIResult.ok,"Config created");
+            Assert.AreEqual(_configResult, RUIResult.invalidProductID);
         }
     }
 }

@@ -180,19 +180,7 @@ namespace Dev2.Instrumentation.Tests
             Assert.AreEqual(result, RUIResult.ok, "Error in setting product version");
         }
 
-        /// <summary>
-        /// This test 
-        /// </summary>
-        [TestMethod()]
-        [ExpectedException(typeof(Exception), "Exceptions handled")]
-        public void EnableAppplicationTrackerException()
-        {
-            var tracker = GetRevulyticsTrackerWithIncorrectConfig();
-            string productVersion = "1.0.0.0";
-            string username ="windows\\raju";
-            tracker.EnableAppplicationTracker(productVersion, username);
-        }
-
+    
 
         /// <summary>
         /// This exception occcur when require revulytics dll is not present or version is different
