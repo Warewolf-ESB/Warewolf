@@ -95,7 +95,7 @@ namespace Dev2.Data
             {
                 if (WorkflowExecutionWatcher.HasAWorkflowBeenExecuted)
                 {
-                    Tracker.OverriddenTrackEvent(TrackerEventGroup.ActivityExecution, TrackerEventName.Executed, "Server is executing");
+                    //Tracker.OverriddenTrackEvent(TrackerEventGroup.ActivityExecution, TrackerEventName.Executed, "Server is executing");
                     WorkflowExecutionWatcher.HasAWorkflowBeenExecuted = false;
                 }
             }

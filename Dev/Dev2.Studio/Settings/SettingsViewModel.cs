@@ -549,7 +549,7 @@ namespace Dev2.Settings
             {
                 if(CurrentEnvironment.AuthorizationService.IsAuthorized(AuthorizationContext.Administrator, null))
                 {
-                    Tracker.TrackEvent(TrackerEventGroup.Settings, TrackerEventName.SaveClicked);
+                    //Tracker.TrackEvent(TrackerEventGroup.Settings, TrackerEventName.SaveClicked);
                     // Need to reset sub view models so that selecting something in them fires our OnIsDirtyPropertyChanged()
 
                     ClearErrors();
