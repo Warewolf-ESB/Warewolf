@@ -13,7 +13,7 @@ Scenario: Refresh Explorer
 	Given The Warewolf Studio is running
 	And I start the timer
 	When I Refresh Explorer
-	Then the timer duration is less than "25" seconds
+	Then the timer duration is less than "30" seconds
 
 Scenario: Refresh Deploy Source Server
 	Given The Warewolf Studio is running
@@ -59,7 +59,7 @@ Scenario: Close New Tab
 	Given The Warewolf Studio is running
 	And I start the timer
 	When I open "Large Workflow UI Load Testing"
-	Then the timer duration is less than "30" seconds
+	Then the timer duration is less than "45" seconds
 	Given I start the timer
 	When I Click Close Workflow Tab Button
 	Then the timer duration is less than "30" seconds
@@ -93,7 +93,7 @@ Scenario: Open Test View And Add Remove Tests
 	When I Filter the Explorer with "Tests UI Load Testing"
 	And I start the timer
 	And I Click Show Explorer First Item Tests From Explorer Context Menu
-	Then the timer duration is less than "40" seconds
+	Then the timer duration is less than "60" seconds
 	Given I start the timer
 	When I Click The Create a New Test Button
 	And I Click Save Ribbon Button And Wait For Save
