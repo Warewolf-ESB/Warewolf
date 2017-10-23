@@ -385,6 +385,7 @@ namespace Dev2.ViewModels.Merge
                     var nextConflict = UpdateNextEnabledState();
                     if (nextConflict != null && !nextConflict.HasConflict)
                     {
+                        ExpandPreviousItems(nextConflict);
                         nextConflict.CurrentViewModel.IsMergeChecked = true;
                         nextConflict.CurrentViewModel.IsMergeEnabled = false;
                         nextConflict.DiffViewModel.IsMergeEnabled = false;
@@ -395,6 +396,15 @@ namespace Dev2.ViewModels.Merge
             catch (Exception ex)
             {
                 Dev2Logger.Error(ex, ex.Message);
+            }
+        }
+
+        private static void ExpandPreviousItems(ICompleteConflict nextConflict)
+        {
+            if (nextConflict.Parent != null)
+            {
+                nextConflict.Parent.IsMergeExpanded = true;
+                ExpandPreviousItems(nextConflict.Parent);
             }
         }
 
