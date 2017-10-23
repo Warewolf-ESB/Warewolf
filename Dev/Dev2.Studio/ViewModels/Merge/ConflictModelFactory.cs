@@ -11,11 +11,9 @@ using Dev2.Activities;
 using Dev2.Activities.Designers2.Service;
 using Dev2.Activities.Designers2.Switch;
 using Dev2.Common.ExtMethods;
-using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Caliburn.Micro;
 using Dev2.Common;
 using Dev2.Studio.Interfaces.DataList;
-using Dev2.Studio.Controller;
 
 namespace Dev2.ViewModels.Merge
 {
@@ -122,11 +120,7 @@ namespace Dev2.ViewModels.Merge
             if (activityType == null)
             {
                 return null;
-            }
-            if (activityType == typeof(DsfDecision))
-            {
-                activityType = typeof(DsfFlowDecisionActivity);
-            }
+            }           
 
             DesignerAttributeMap.DesignerAttributes.TryGetValue(activityType, out var actual);
             if (actual != null)

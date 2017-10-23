@@ -179,7 +179,7 @@ namespace Dev2
                 { typeof(DsfPublishRabbitMQActivity), typeof(RabbitMQPublishDesignerViewModel) },
                 { typeof(DsfSelectAndApplyActivity), typeof(SelectAndApplyDesignerViewModel) },
                 { typeof(DsfConsumeRabbitMQActivity), typeof(RabbitMQConsumeDesignerViewModel) },
-                { typeof(DsfFlowDecisionActivity), typeof(DecisionDesignerViewModel) },
+                { typeof(DsfDecision), typeof(DecisionDesignerViewModel) },
                 { typeof(DsfSwitch), typeof(SwitchDesignerViewModel) },
             };
     }

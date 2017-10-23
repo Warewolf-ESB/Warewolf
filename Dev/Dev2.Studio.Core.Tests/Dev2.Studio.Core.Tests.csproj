@@ -259,6 +259,7 @@
     <Compile Include="IntellisenseProvider\EventLogParser.cs" />
     <Compile Include="MainViewModelBase.cs" />
     <Compile Include="Merge\CompleteConflictTests.cs" />
+    <Compile Include="Merge\ConflictModelFactoryTests.cs" />
     <Compile Include="Merge\MergeToolModelTests.cs" />
     <Compile Include="ShellViewModelMock.cs" />
     <Compile Include="Custom Dev2 Controls\Intellisense\IntellisenseTextBoxTests.cs" />
@@ -516,6 +517,9 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="XML\Loop Constructs - For Each.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="XML\AssignOutput.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
