@@ -1045,12 +1045,8 @@ namespace Dev2.Studio.ViewModels.Workflow
                         var mvm = Application.Current.MainWindow.DataContext as ShellViewModel;
                         if (mvm?.ActiveItem != null)
                         {
-                            IExplorerItemViewModel explorerItem = null;
-                            var environmentViewModels = mvm.ExplorerViewModel.Environments.Where(a => a.ResourceId == mvm.ActiveServer.EnvironmentID);
-                            foreach (var environmentViewModel in environmentViewModels)
-                            {
-                                explorerItem = environmentViewModel.Children.Flatten(model => model.Children).FirstOrDefault(c => c.ResourceId == mvm.ActiveItem.ContextualResourceModel.ID);
-                            }
+                            var environmentViewModel = mvm.ExplorerViewModel.Environments.FirstOrDefault(a => a.ResourceId == mvm.ActiveServer.EnvironmentID);
+                            var explorerItem = environmentViewModel?.Children?.Flatten(model => model.Children).Where(model => model.IsVersion == false).FirstOrDefault(c => c.ResourceId == mvm.ActiveItem.ContextualResourceModel.ID);
 
                             if (explorerItem != null)
                             {

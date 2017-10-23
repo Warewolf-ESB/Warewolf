@@ -44,13 +44,13 @@ namespace Dev2.Activities
             if (TrueArm != null)
             {
                 var trueNodes = new List<IDev2Activity>();
-                trueNodes.AddRange(TrueArm.Flatten(x=>x.NextNodes));
+                trueNodes.AddRange(TrueArm.Flatten(x=>x.NextNodes).Reverse());
                 nextNodes.Add("True", trueNodes);
             }
             if (FalseArm != null)
             {
                 var falseNodes = new List<IDev2Activity>();
-                falseNodes.AddRange(FalseArm.Flatten(x=>x.NextNodes));
+                falseNodes.AddRange(FalseArm.Flatten(x=>x.NextNodes).Reverse());
                 nextNodes.Add("False", falseNodes);
 
             }
