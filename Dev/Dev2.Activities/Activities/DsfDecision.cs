@@ -21,7 +21,7 @@ using System.Activities.Statements;
 
 namespace Dev2.Activities
 {
-    public class DsfDecision : DsfActivityAbstract<string>, IEquatable<DsfDecision>
+    public class DsfDecision : DsfActivityAbstract<string>, IEquatable<DsfDecision>, IAdapterActivity
     {
         public IEnumerable<IDev2Activity> TrueArm { get; set; }
 
@@ -45,13 +45,13 @@ namespace Dev2.Activities
             if (TrueArm != null)
             {
                 var trueNodes = new List<IDev2Activity>();
-                trueNodes.AddRange(TrueArm.Flatten(x=>x.NextNodes));
+                trueNodes.AddRange(TrueArm.Flatten(x=>x.NextNodes).Reverse());
                 nextNodes.Add("True", trueNodes);
             }
             if (FalseArm != null)
             {
                 var falseNodes = new List<IDev2Activity>();
-                falseNodes.AddRange(FalseArm.Flatten(x=>x.NextNodes));
+                falseNodes.AddRange(FalseArm.Flatten(x=>x.NextNodes).Reverse());
                 nextNodes.Add("False", falseNodes);
 
             }
@@ -191,7 +191,7 @@ namespace Dev2.Activities
             return new FlowDecision(_inner);
         }
 
-        public DsfFlowDecisionActivity GetInnerNode()
+        public IFlowNodeActivity GetInnerNode()
         {
             return _inner;
         }
