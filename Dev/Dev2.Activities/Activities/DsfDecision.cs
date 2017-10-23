@@ -21,7 +21,7 @@ using System.Activities.Statements;
 
 namespace Dev2.Activities
 {
-    public class DsfDecision : DsfActivityAbstract<string>, IEquatable<DsfDecision>
+    public class DsfDecision : DsfActivityAbstract<string>, IEquatable<DsfDecision>, IAdapterActivity
     {
         public IEnumerable<IDev2Activity> TrueArm { get; set; }
 
@@ -29,6 +29,7 @@ namespace Dev2.Activities
         public Dev2DecisionStack Conditions { get; set; }
 
         readonly DsfFlowDecisionActivity _inner;
+
         public DsfDecision(DsfFlowDecisionActivity inner) : this()
         {
             _inner = inner;
@@ -188,6 +189,11 @@ namespace Dev2.Activities
         public override FlowNode GetFlowNode()
         {
             return new FlowDecision(_inner);
+        }
+
+        public IFlowNodeActivity GetInnerNode()
+        {
+            return _inner;
         }
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)

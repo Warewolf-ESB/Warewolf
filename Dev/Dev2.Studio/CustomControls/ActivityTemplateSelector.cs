@@ -5,6 +5,7 @@ using Dev2.ViewModels.Merge;
 using System;
 using System.Windows;
 using System.Windows.Controls;
+using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.CustomControls
 {
@@ -47,7 +48,7 @@ namespace Dev2.CustomControls
                         return TemplateGenerator.CreateDataTemplate(() => userControl);
                     }
                 }
-                else if (vm.ModelItem?.ItemType == typeof(DsfDecision))
+                else if (vm.ModelItem?.ItemType == typeof(DsfDecision) || vm.ModelItem?.ItemType ==typeof( DsfFlowDecisionActivity))
                 {
                     assemblyName = System.Reflection.Assembly.GetAssembly(typeof(Activities.Designers2.Decision.Large)).FullName;
                     typeName = "Dev2.Activities.Designers2.Decision.Large";

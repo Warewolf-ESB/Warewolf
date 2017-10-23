@@ -390,6 +390,9 @@
     <EmbeddedResource Include="XML\MergeRemote\Hello World.xml" />
     <EmbeddedResource Include="XML\MergeRemote\Switch\SimpleNestedSwitch.xml" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="XML\MergeRemote\OriginalWorkFlowName.xml" />
+  </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

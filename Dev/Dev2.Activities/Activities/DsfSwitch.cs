@@ -16,7 +16,7 @@ using System.Activities.Statements;
 
 namespace Dev2.Activities
 {
-    public class DsfSwitch : DsfActivityAbstract<string>,IEquatable<DsfSwitch>
+    public class DsfSwitch : DsfActivityAbstract<string>,IEquatable<DsfSwitch>, IAdapterActivity
     {
 #pragma warning disable IDE1006 // Naming Styles
 #pragma warning disable S2357 // Fields should be private
@@ -42,6 +42,11 @@ namespace Dev2.Activities
         {
             var swt = new FlowSwitch<string>();
             return swt; 
+        }
+
+        public IFlowNodeActivity GetInnerNode()
+        {
+            return Inner;
         }
 
         public Dictionary<string, IDev2Activity> Switches { get; set; }
