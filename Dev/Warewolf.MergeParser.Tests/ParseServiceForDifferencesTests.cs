@@ -595,7 +595,7 @@ namespace Warewolf.MergeParser.Tests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void FlowDecision_GetDifferences_WhenToolModifiedOnBithSides_DecisionHasConflict()
+        public void FlowDecision_GetDifferences_WhenFlowArmsModifiedOnBithSides_DecisionToolHasNoConflict()
         {
             var activityParser = new ActivityParser();
             var shellView = new Mock<IShellViewModel>();
@@ -710,7 +710,167 @@ namespace Warewolf.MergeParser.Tests
             var diffs = psd.GetDifferences(current, diff);
 
             Assert.AreEqual(2, diffs.Count);
-            Assert.IsTrue(diffs.All(d => d.hasConflict));
+            bool condition = diffs.First().hasConflict == true;
+            Assert.IsTrue(condition);
+            bool condition1 = diffs.Last().hasConflict == false;
+            Assert.IsTrue(condition1);
+            Assert.AreEqual(assignId, diffs[0].uniqueId.ToString());
+
+
+            ////First Node chart
+            var valueTuple = diffs[0];
+            var dev2Activity = valueTuple.Item2.CurrentActivity.GetCurrentValue<IDev2Activity>();
+            var dev2Activity1 = valueTuple.Item3.CurrentActivity.GetCurrentValue<IDev2Activity>();
+            Assert.IsNotNull(dev2Activity);
+            Assert.IsNotNull(dev2Activity1);
+            Assert.AreEqual(assignId, dev2Activity1.UniqueID);
+            Assert.AreEqual(assignId, dev2Activity.UniqueID);
+
+            ////Decision Node chart
+            var valueTuple1 = diffs[1];
+            var dev2dec = valueTuple1.Item2.CurrentActivity.GetCurrentValue<DsfDecision>();
+            var dev2dec1 = valueTuple1.Item3.CurrentActivity.GetCurrentValue<DsfDecision>();
+            Assert.IsNotNull(dev2dec);
+            Assert.IsNotNull(dev2dec1);
+            Assert.IsTrue(dev2dec.Equals(dev2dec1));
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void FlowDecision_GetDifferences_WhenMainDecisionModified_DecisionToolHasConflict()
+        {
+            var activityParser = new ActivityParser();
+            var shellView = new Mock<IShellViewModel>();
+            var serverMock = new Mock<IServer>();
+            shellView.Setup(model => model.ActiveServer).Returns(serverMock.Object);
+            CustomContainer.Register(shellView.Object);
+            CustomContainer.Register<IActivityParser>(activityParser);
+            var deicisionId = Guid.NewGuid().ToString();
+            var bb = new DsfFlowDecisionActivity()
+            {
+                UniqueID = deicisionId
+            };
+            Dev2JsonSerializer jsonSerializer = new Dev2JsonSerializer();
+            var dev2DecisionStack = new Dev2DecisionStack()
+            {
+                TheStack = new List<Dev2Decision>()
+                {
+                    new Dev2Decision()
+                    {
+                        Cols1 = new List<DataStorage.WarewolfAtom>()
+                        {
+                            DataStorage.WarewolfAtom.NewDataString("a")
+                        }
+                    },
+                    new Dev2Decision()
+                    {
+                        Cols1 = new List<DataStorage.WarewolfAtom>()
+                        {
+                            DataStorage.WarewolfAtom.NewDataString("a")
+                        }
+                    }
+
+                },
+                DisplayText = "a"
+                ,
+                FalseArmText = "ErrorArm"
+                ,
+                TrueArmText = "true Arm",
+                Version = "2",
+                Mode = Dev2DecisionMode.AND
+
+            };
+            bb.ExpressionText = jsonSerializer.Serialize(dev2DecisionStack);
+
+            var bb2 = new DsfFlowDecisionActivity()
+            {
+                UniqueID = deicisionId
+            };
+            var dev2DecisionStack2 = new Dev2DecisionStack()
+            {
+                TheStack = new List<Dev2Decision>()
+                {
+                    new Dev2Decision()
+                    {
+                        Cols1 = new List<DataStorage.WarewolfAtom>()
+                        {
+                            DataStorage.WarewolfAtom.NewDataString("a")
+                        }
+                    },
+                    new Dev2Decision()
+                    {
+                        Cols1 = new List<DataStorage.WarewolfAtom>()
+                        {
+                            DataStorage.WarewolfAtom.NewDataString("a")
+                        }
+                    }
+
+                },
+                DisplayText = "changed"
+                ,
+                FalseArmText = "false"
+                ,
+                TrueArmText = "true",
+                Version = "2",
+                Mode = Dev2DecisionMode.AND
+
+            };
+            bb2.ExpressionText = jsonSerializer.Serialize(dev2DecisionStack2);
+
+            var assignId = Guid.NewGuid().ToString();
+            var calcActivity = new DsfCalculateActivity()
+            {
+                UniqueID = assignId
+            };
+            var chart = new Flowchart
+            {
+                StartNode = new FlowStep
+                {
+                    Action = calcActivity,
+                    Next = new FlowDecision()
+                    {
+                        DisplayName = "DisplayName",
+                        True = new FlowStep()
+                        {
+                            Action = calcActivity
+
+                        },
+                        Condition = bb,
+
+
+                    }
+                }
+            };
+
+            var otherChart = new Flowchart
+            {
+                StartNode = new FlowStep
+                {
+                    Action = calcActivity,
+                    Next = new FlowDecision()
+                    {
+                        DisplayName = "DisplayName",
+                        True = new FlowStep()
+                        {
+                            Action = calcActivity,
+
+                        },
+                        Condition = bb2
+                    }
+                }
+            };
+
+            var current = CreateContextualResourceModel(otherChart);
+            var diff = CreateContextualResourceModel(chart);
+
+            var psd = new ServiceDifferenceParser();
+            var diffs = psd.GetDifferences(current, diff);
+
+            Assert.AreEqual(2, diffs.Count);
+            bool condition = diffs.First().hasConflict == true;
+            Assert.IsFalse(condition);
+            bool condition1 = diffs.Last().hasConflict == true;
+            Assert.IsTrue(condition1);
             Assert.AreEqual(assignId, diffs[0].uniqueId.ToString());
 
 
@@ -731,6 +891,8 @@ namespace Warewolf.MergeParser.Tests
             Assert.IsNotNull(dev2dec1);
             Assert.IsFalse(dev2dec.Equals(dev2dec1));
         }
+
+
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
@@ -893,7 +1055,7 @@ namespace Warewolf.MergeParser.Tests
             CustomContainer.Register<IActivityParser>(activityParser);
             DsfFlowSwitchActivity switchActivity = new DsfFlowSwitchActivity("MyName", new Mock<IDebugDispatcher>().Object, It.IsAny<bool>())
             {
-                UniqueID = Guid.NewGuid().ToString(), 
+                UniqueID = Guid.NewGuid().ToString(),
             };
             var dev2DecisionStack = new Dev2DecisionStack()
             {
@@ -922,7 +1084,7 @@ namespace Warewolf.MergeParser.Tests
                 TrueArmText = "true Arm",
                 Version = "2",
                 Mode = Dev2DecisionMode.AND,
-                
+
 
             };
             Dev2JsonSerializer jsonSerializer = new Dev2JsonSerializer();
@@ -946,11 +1108,12 @@ namespace Warewolf.MergeParser.Tests
                     },
                     Next = new FlowSwitch<string>()
                     {
-                        DisplayName = "DisplayName",                     
+                        DisplayName = "DisplayName",
                         Default = new FlowStep()
                         {
                             Action = ActivityBuilderFactory.BuildActivity(typeof(DsfCalculateActivity))
-                        }, Expression = switchActivity
+                        },
+                        Expression = switchActivity
                     }
                 }
             };
@@ -977,7 +1140,7 @@ namespace Warewolf.MergeParser.Tests
                         Default = new FlowStep()
                         {
                             Action = ActivityBuilderFactory.BuildActivity(typeof(DsfCalculateActivity))
-                        }, 
+                        },
                         Expression = switchActivity
                     }
                 }
@@ -990,7 +1153,10 @@ namespace Warewolf.MergeParser.Tests
             var diffs = psd.GetDifferences(current, diff);
 
             Assert.AreEqual(2, diffs.Count);
-            Assert.IsTrue(diffs.All(d => d.hasConflict));
+            var firstNodeHasConflict = diffs.First().hasConflict == true;
+            Assert.IsTrue(firstNodeHasConflict);
+            var secondNodeHasConflict = diffs.Last().hasConflict == false;
+            Assert.IsTrue(secondNodeHasConflict);
             Assert.AreEqual(assignId, diffs[0].uniqueId.ToString());
 
         }
@@ -1189,7 +1355,7 @@ namespace Warewolf.MergeParser.Tests
             PrivateObject privateObject = new PrivateObject(psd);
             var bb = ((List<ModelItem>, List<ModelItem>, Flowchart, WorkflowDesigner))privateObject.Invoke("GetNodes", resourceModel.Object, false);
 
-            Assert.IsNotNull(bb);           
+            Assert.IsNotNull(bb);
 
         }
 
