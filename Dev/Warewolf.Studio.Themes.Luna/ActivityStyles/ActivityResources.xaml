@@ -23,7 +23,6 @@
     <converters1:CollectionToVisibilityConverter x:Key="CollectionToVisibilityConverterPositive" TrueValue="Visible" FalseValue="Collapsed" />
     <converters1:CollectionToVisibilityConverter x:Key="CollectionToVisibilityConverterNegative" TrueValue="Collapsed" FalseValue="Visible" />
     <converters2:ForEachTypeToVisibilityConverter x:Key="ForEachTypeToVisibilityConverter" />
-    <converters2:EnumDiscriptionToStringConverter x:Key="EnumDiscriptionToStringConverter" />
     <converters2:FindRecordsTypeToBoolConverter x:Key="FindRecordsTypeToBoolConverter" />
     <converters2:SplitTypeToEnabledConverter x:Key="SplitTypeToEnabledConverter" />
     <converters2:InverseBooleanConverter x:Key="InverseBooleanConverter" />

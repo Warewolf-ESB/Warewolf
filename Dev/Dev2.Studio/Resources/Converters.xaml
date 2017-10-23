@@ -30,7 +30,6 @@
     <converters3:MessageBoxButtonToVisibilityConverter x:Key="MessageBoxButtonToVisibilityConverter" />
     <converters3:EmailSourceToDisplayTextConverter x:Key="EmailSourceToDisplayTextConverter" />
     <converters3:MessageBoxImageToSystemIconConverter x:Key="MessageBoxImageToSystemIconConverter" />
-    <converters:DebugItemResultTypeToColorConverter x:Key="DebugItemResultTypeToColorConverter" />
     <converters5:SchedulerStatusToCheckedConverter x:Key="SchedulerStatusToCheckedConverter" />
     <converters7:InverseScheduleStatusConverter x:Key="InverseScheduleStatusConverter" />
     <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
@@ -40,10 +39,8 @@
     <converters3:NavigationViewModelPermissionVisibilityConverter x:Key="NavigationViewModelPermissionVisibilityConverter" />
     <converters3:NavigationViewModelPermissionToBooleanConverter x:Key="NavigationViewModelPermissionToBooleanConverter" />
     <converters:EnumToStringConverter x:Key="EnumToStringConverter" />
-    <converters:EnumDiscriptionToStringConverter x:Key="EnumDiscriptionToStringConverter" />
     <converters:TimeSpanToStringConverter x:Key="TimeSpanToStringConverter" Format="hh\:mm\:ss\.fffffff" />
     <converters:DateTimeToStringConverter x:Key="DateTimeToStringConverter" />
-    <converters1:DateTimeFormatConverter x:Key="DateTimeFormatConverter" />
     <converters:CountToVisibilityConverter x:Key="CountToVisibilityConverter" />
     <converters:IntToVisibilityConverter x:Key="IntToVisibilityConverter" />
     <converters3:NullToDebugImageConverter x:Key="NullToDebugImageConverter" />
@@ -68,8 +65,6 @@
     <converters2:MultipleBoolToEnabledConverter x:Key="MultipleBoolToEnabledConverter"/>
     <converters:IntInRangeToVisibilityConverter x:Key="IntInRangeToVisibilityConverter" />
     <converters:IntEnsureMinConverter x:Key="IntEnsureMinConverter" />
-    <converters1:DataGridRowNumberConverter x:Key="DataGridRowNumberConverter"/>
-    <converters1:GridRowNumberConverter x:Key="GridRowNumberConverter"/>
     <converters2:StringToTimespanConverter x:Key="StringToTimespanConverter"/>
     
     <converters:EnumToBoolConverter x:Key="EnumToBoolConverterenRoundingType">

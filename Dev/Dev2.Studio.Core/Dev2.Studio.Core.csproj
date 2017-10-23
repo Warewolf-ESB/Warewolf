@@ -202,10 +202,8 @@
     <Compile Include="AppResources\Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="AppResources\Converters\CollectionToVisibilityConverterPositive.cs" />
     <Compile Include="AppResources\Converters\DataListItemModelToAutomationIdConverter.cs" />
-    <Compile Include="AppResources\Converters\DateTimeFormatConverter.cs" />
     <Compile Include="AppResources\Converters\GridRowNumberConverter.cs" />
     <Compile Include="AppResources\Converters\PaddingThicknessConverter.cs" />
-    <Compile Include="AppResources\Converters\DataGridRowNumberConverter.cs" />
     <Compile Include="AppResources\Converters\DeployViewConnectedToVisiblityConverter.cs" />
     <Compile Include="AppResources\Converters\SchedulerMultiBoolToVisibilityConverter.cs" />
     <Compile Include="AppResources\Converters\SimpleEnumToBoolConverter.cs" />
@@ -215,8 +213,6 @@
     <Compile Include="AppResources\Converters\IntToVisibilityConverter.cs" />
     <Compile Include="AppResources\Converters\FindRecordsTypeToBoolConverter.cs" />
     <Compile Include="AppResources\Converters\ForEachTypeToVisibilityConverter.cs" />
-    <Compile Include="AppResources\Converters\DebugItemResultTypeToColorConverter.cs" />
-    <Compile Include="AppResources\Converters\EnumDiscriptionToStringConverter.cs" />
     <Compile Include="AppResources\Converters\ModelItemToActivityConverter.cs" />
     <Compile Include="AppResources\Converters\MultipleBoolToVisibilityValueConverter.cs" />
     <Compile Include="AppResources\Converters\MultipleStringToVisibilityConverter.cs" />
