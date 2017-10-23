@@ -29,7 +29,7 @@ namespace Dev2.Runtime.ESB.Management.Services
     /// <summary>
     /// Find dependencies for a service
     /// </summary>
-    public class FindDependencies : IEsbManagementEndpoint
+    public class FindDependencies : DefaultEsbManagementEndpoint
     {
         public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
         {
@@ -43,7 +43,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         private IResourceCatalog _resourceCatalog;
 
-        public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
+        public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             try
             {
@@ -148,12 +148,12 @@ namespace Dev2.Runtime.ESB.Management.Services
             return sb;
         }
 
-        public string HandlesType()
+        public override string HandlesType()
         {
             return "FindDependencyService";
         }
 
-        public DynamicService CreateServiceEntry()
+        public override DynamicService CreateServiceEntry()
         {
             var ds = new DynamicService
             {

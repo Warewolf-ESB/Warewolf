@@ -23,30 +23,20 @@ using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Interfaces;
-using Dev2.Util;
 using Dev2.Workspaces;
 using Warewolf.Resource.Errors;
 
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    public class GetVersion : IEsbManagementEndpoint
+    public class GetVersion : DefaultEsbManagementEndpoint
     {
-        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
-        {
-            return Guid.Empty;
-        }
-
-        public AuthorizationContext GetAuthorizationContextForService()
-        {
-            return AuthorizationContext.Any;
-        }
-
         #region Implementation of ISpookyLoadable<string>
-        private IServerVersionRepository _serverExplorerRepository;
-        IResourceCatalog _resourceCatalog   ;
 
-        public string HandlesType()
+        private IServerVersionRepository _serverExplorerRepository;
+        IResourceCatalog _resourceCatalog;
+
+        public override string HandlesType()
         {
             return "GetVersion";
         }
@@ -54,14 +44,8 @@ namespace Dev2.Runtime.ESB.Management.Services
         #endregion
 
         #region Implementation of IEsbManagementEndpoint
-
-        /// <summary>
-        /// Executes the service
-        /// </summary>
-        /// <param name="values">The values.</param>
-        /// <param name="theWorkspace">The workspace.</param>
-        /// <returns></returns>
-        public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
+        
+        public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             var serializer = new Dev2JsonSerializer();
             try
@@ -91,10 +75,8 @@ namespace Dev2.Runtime.ESB.Management.Services
                 res.Message.Append(result);
                 Dev2XamlCleaner dev2XamlCleaner = new Dev2XamlCleaner();
                 res.Message = dev2XamlCleaner.StripNaughtyNamespaces(res.Message);
-
-
+                
                 return serializer.SerializeToBuilder(res);
-
             }
             catch (Exception e)
             {
@@ -103,22 +85,17 @@ namespace Dev2.Runtime.ESB.Management.Services
                 return serializer.SerializeToBuilder(error);
             }
         }
-
-        /// <summary>
-        /// Creates the service entry.
-        /// </summary>
-        /// <returns></returns>
-        public DynamicService CreateServiceEntry()
+        
+        public override DynamicService CreateServiceEntry()
         {
             var serviceAction = new ServiceAction { Name = HandlesType(), SourceMethod = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService };
-
             var serviceEntry = new DynamicService { Name = HandlesType(), DataListSpecification = new StringBuilder("<DataList><ResourceID ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>") };
             serviceEntry.Actions.Add(serviceAction);
-
             return serviceEntry;
         }
 
         #endregion
+
         public IServerVersionRepository ServerVersionRepo
         {
             get { return _serverExplorerRepository ?? new ServerVersionRepository(new VersionStrategy(), Hosting.ResourceCatalog.Instance, new DirectoryWrapper(), EnvironmentVariables.GetWorkspacePath(GlobalConstants.ServerWorkspaceID), new FileWrapper()); }
@@ -130,7 +107,5 @@ namespace Dev2.Runtime.ESB.Management.Services
             get { return _resourceCatalog ?? Hosting.ResourceCatalog.Instance; }
             set { _resourceCatalog = value; }
         }
-
-
     }
 }
