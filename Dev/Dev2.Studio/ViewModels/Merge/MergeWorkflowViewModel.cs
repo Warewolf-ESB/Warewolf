@@ -49,7 +49,7 @@ namespace Dev2.ViewModels.Merge
             {
                 CurrentConflictModel = new ConflictModelFactory
                 {
-                    Model = firstConflict?.CurrentViewModel ?? new MergeToolModel {IsMergeEnabled = false},
+                    Model = firstConflict?.CurrentViewModel ?? new MergeToolModel { IsMergeEnabled = false },
                     WorkflowName = currentResourceModel.ResourceName,
                     ServerName = currentResourceModel.Environment.DisplayName
                 };
@@ -61,7 +61,7 @@ namespace Dev2.ViewModels.Merge
             {
                 DifferenceConflictModel = new ConflictModelFactory
                 {
-                    Model = firstConflict?.DiffViewModel ?? new MergeToolModel {IsMergeEnabled = false},
+                    Model = firstConflict?.DiffViewModel ?? new MergeToolModel { IsMergeEnabled = false },
                     WorkflowName = differenceResourceModel.ResourceName,
                     ServerName = differenceResourceModel.Environment.DisplayName
                 };
@@ -221,9 +221,9 @@ namespace Dev2.ViewModels.Merge
             return null;
         }
 
-        private bool All(Func<ICompleteConflict,bool> check)
+        private bool All(Func<ICompleteConflict, bool> check)
         {
-            var conflictsMatch =  Conflicts.All(check);
+            var conflictsMatch = Conflicts.All(check);
             var childrenMatch = true;
             foreach (var completeConflict in Conflicts)
             {
@@ -282,9 +282,9 @@ namespace Dev2.ViewModels.Merge
         static IMergeToolModel SetPreviousModelTool(LinkedListNode<ICompleteConflict> linkedConflict)
         {
             IMergeToolModel previous = null;
-            var previousValue = linkedConflict.Previous?.Value ?? linkedConflict.Value.Parent;            
+            var previousValue = linkedConflict.Previous?.Value ?? linkedConflict.Value.Parent;
             var previousCurrentViewModel = previousValue?.CurrentViewModel;
-            if (previousValue?.Parent != null && previousCurrentViewModel==null)
+            if (previousValue?.Parent != null && previousCurrentViewModel == null)
             {
                 previousValue = previousValue.Parent;
                 previousCurrentViewModel = previousValue?.CurrentViewModel;
@@ -349,7 +349,10 @@ namespace Dev2.ViewModels.Merge
 
         public IDataListViewModel DataListViewModel
         {
-            get => _dataListViewModel;
+            get
+            {
+                return _dataListViewModel;
+            }
             set
             {
                 _dataListViewModel = value;
@@ -386,7 +389,7 @@ namespace Dev2.ViewModels.Merge
                         }
                     }
                 }
-                
+
                 AddActivity(args);
                 if (!args.Container.IsChecked)
                 {
@@ -418,9 +421,9 @@ namespace Dev2.ViewModels.Merge
                     {
                         return nextConflict;
                     }
-                }                
+                }
                 if (_conflictEnumerator.MoveNext())
-                {                    
+                {
                     current = _conflictEnumerator.Current;
                     return current;
                 }
@@ -435,7 +438,7 @@ namespace Dev2.ViewModels.Merge
             {
                 return null;
             }
-           
+
             var nextCurrConflict = GetNextConflict();
             if (nextCurrConflict != null)
             {
@@ -496,10 +499,10 @@ namespace Dev2.ViewModels.Merge
                                 c.FlowNode = item.leftItem;
                             }
                         }
-                        
+
                         completeConflict.UniqueId = currentChildChild.UniqueId;
                         completeConflict.CurrentViewModel = childCurrent;
-                        
+
                         if (completeConflict.CurrentViewModel != null)
                         {
                             completeConflict.CurrentViewModel.Container = completeConflict;
@@ -508,12 +511,13 @@ namespace Dev2.ViewModels.Merge
                         if (completeConflict.DiffViewModel != null)
                         {
                             completeConflict.DiffViewModel.Container = completeConflict;
+
                         }
                         else
                         {
                             completeConflict.DiffViewModel = EmptyConflictViewModel(currentChildChild.UniqueId);
                         }
-                        
+
                         completeConflict.Parent = parent;
                         completeConflict.IsContainerTool = completeConflict.ValidateContainerTool(parent.CurrentViewModel as MergeToolModel);
 
