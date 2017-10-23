@@ -201,7 +201,6 @@
     <Compile Include="AppResources\Converters\BoolToValueConverter.cs" />
     <Compile Include="AppResources\Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="AppResources\Converters\CollectionToVisibilityConverterPositive.cs" />
-    <Compile Include="AppResources\Converters\ConnectControlDisableConverter.cs" />
     <Compile Include="AppResources\Converters\ConnectControlMultiValueBoolConverter.cs" />
     <Compile Include="AppResources\Converters\DataListItemModelToAutomationIdConverter.cs" />
     <Compile Include="AppResources\Converters\DateTimeFormatConverter.cs" />

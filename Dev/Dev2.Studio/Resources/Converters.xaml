@@ -45,7 +45,6 @@
     <converters:DateTimeToStringConverter x:Key="DateTimeToStringConverter" />
     <converters1:DateTimeFormatConverter x:Key="DateTimeFormatConverter" />
     <converters:CountToVisibilityConverter x:Key="CountToVisibilityConverter" />
-    <converters:BoolToDisabledFontColorConverter x:Key="BoolToDisabledFontColorConverter" />
     <converters:IntToVisibilityConverter x:Key="IntToVisibilityConverter" />
     <converters3:NullToDebugImageConverter x:Key="NullToDebugImageConverter" />
     <converters3:NullToDebugRibbonButtonTextConverter x:Key="NullToDebugRibbonButtonTextConverter" />
@@ -56,7 +55,6 @@
     <converters:MultipleStringToVisilityValueConverter x:Key="MultipleStringToVisilityValueConverter" />
     <converters:MultipleBoolToVisibilityValueConverter x:Key="MultipleBoolToVisibilityValueConverter" />
     <converters1:SchedulerMultiBoolToVisibilityConverter x:Key="SchedulerMultiBoolToVisibilityConverter" />
-    <converters:ConnectControlDisableConverter x:Key="ConnectControlDisableConverter" />
     <converters:StringToVisibilityConverterMulti x:Key="StringToVisibilityConverterMulti" />
     <converters:BoolToValueConverter x:Key="BoolToPlusMinusConverter" TrueValue="+" FalseValue="-" />
     <converters:BoolToValueConverter x:Key="BoolToEnabledConverterNegative" TrueValue="False" FalseValue="True" />
@@ -65,8 +63,6 @@
     <converters5:ExplorerItemModelToIconConverter x:Key="ExplorerItemModelToIconConverter" />
     <core:ResourceTypeToIconConverter x:Key="ResourceTypeToIconConverter"/>
     <converters1:ConnectControlMultiValueBoolConverter x:Key="ConnectControlMultiValueBoolConverter" />
-    <converters:AllBoolToVisibilityValueConverter x:Key="AllBoolToVisibilityValueConverter" TrueValue="Visible" FalseValue="Collapsed" />
-    <converters:AllBoolToVisibilityValueConverter x:Key="AllBoolToVisibilityValueConverterNegative" TrueValue="Collapsed" FalseValue="Visible" />
     <converters:ErrorTypeToImageConverter x:Key="ErrorTypeToImageConverter"/>
     <converters:NullableBoolToBoolConverter x:Key="NullableBoolToBoolConverter"/>
     <converters:NullToBoolConvert x:Key="NullToBoolConvert"/>
