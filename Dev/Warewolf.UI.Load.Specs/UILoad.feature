@@ -43,7 +43,7 @@ Scenario: Add Remove A Variable
 	And I open "Variable List UI Load Testing"
 	And I start the timer
 	When I Enter variable text as "[[new_variable]]" and value text as "new value" into assign row 1
-	Then the timer duration is less than "5" seconds
+	Then the timer duration is less than "180" seconds
 	Given I start the timer
 	When I Remove Assign Row 1 With Context Menu
 	Then the timer duration is less than "180" seconds
@@ -53,7 +53,7 @@ Scenario: Open New Tab
 	And I have "20" new workflow tabs open
 	And I start the timer
 	When I Click New Workflow Ribbon Button
-	Then the timer duration is less than "5" seconds
+	Then the timer duration is less than "20" seconds
 
 Scenario: Close New Tab
 	Given The Warewolf Studio is running
@@ -62,7 +62,7 @@ Scenario: Close New Tab
 	Then the timer duration is less than "30" seconds
 	Given I start the timer
 	When I Click Close Workflow Tab Button
-	Then the timer duration is less than "5" seconds
+	Then the timer duration is less than "30" seconds
 
 Scenario: Open Dependencies Graph
 	Given The Warewolf Studio is running

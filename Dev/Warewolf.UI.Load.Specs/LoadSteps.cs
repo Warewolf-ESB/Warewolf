@@ -68,7 +68,15 @@ namespace Warewolf.UI.Load.Specs
                     td.RegistrationInfo.Description = "Does something";
                     td.Triggers.Add(new DailyTrigger { DaysInterval = 2 });
                     td.Actions.Add(new ExecAction("cmd.exe", "/c echo WarewolfAgent.exe", null));
-                    localTaskService.GetFolder("Warewolf").RegisterTaskDefinition(@"UILoadTest" + i.ToString(), td);
+                    TaskFolder localWarewolfFolder = localTaskService.GetFolder("Warewolf");
+                    if (localWarewolfFolder != null)
+                    {
+                        localWarewolfFolder.RegisterTaskDefinition(@"UILoadTest" + i.ToString(), td);
+                    }
+                    else
+                    {
+                        Assert.Fail("Task scheduler has no Warewolf folder.");
+                    }
                 }
             }
             finally
