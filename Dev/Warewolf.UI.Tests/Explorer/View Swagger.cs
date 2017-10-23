@@ -10,7 +10,7 @@ using System.Drawing;
 namespace Warewolf.UI.Tests
 {
     [CodedUITest]
-    public class VersionHistory
+    public class ViewSwagger
     {
         [TestMethod]
         [TestCategory("Explorer")]
