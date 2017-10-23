@@ -3239,8 +3239,6 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             if (model.Children.Any())
             {
-                //var items = model.Children.Reverse();
-
                 foreach (var item in model.Children)
                 {
                     var hasDecionsNodes = _allNodes.TryGetValue(item.UniqueId.ToString(), out (ModelItem leftItem, ModelItem rightItem) childtoolPar);

@@ -29,6 +29,7 @@ namespace Dev2.Activities
         public Dev2DecisionStack Conditions { get; set; }
 
         readonly DsfFlowDecisionActivity _inner;
+
         public DsfDecision(DsfFlowDecisionActivity inner) : this()
         {
             _inner = inner;
@@ -188,6 +189,11 @@ namespace Dev2.Activities
         public override FlowNode GetFlowNode()
         {
             return new FlowDecision(_inner);
+        }
+
+        public DsfFlowDecisionActivity GetInnerNode()
+        {
+            return _inner;
         }
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)

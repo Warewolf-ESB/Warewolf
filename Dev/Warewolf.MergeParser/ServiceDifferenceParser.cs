@@ -68,7 +68,6 @@ namespace Warewolf.MergeParser
             var shapeLocation = GetShapeLocation(workflowDesigner, nodeModelItem);
             var conflictNode = new ConflictNode(dev2Activity)
             {
-                CurrentActivity = ModelItemUtils.CreateModelItem(dev2Activity),
                 CurrentFlowStep = nodeModelItem,
                 NodeLocation = shapeLocation,
             };
