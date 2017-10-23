@@ -299,23 +299,57 @@ namespace Warewolf.UI.Tests.Deploy.DeployUIMapClasses
 
         void WaitForDeploySuccess()
         {
-            var successful = TryWaitForADeployMessageDialog();
+            bool seenVersionConflict = false;
+            bool seenSecondVersionConflict = false;
+            bool seenConflict = false;
+            bool successful = TryWaitForADeployMessageDialog(ref seenVersionConflict, ref seenSecondVersionConflict, ref seenConflict);
             if (!successful)
             {
-                successful = TryWaitForADeployMessageDialog();
+                successful = TryWaitForADeployMessageDialog(ref seenVersionConflict, ref seenSecondVersionConflict, ref seenConflict);
                 if (!successful)
                 {
-                    successful = TryWaitForADeployMessageDialog();
+                    successful = TryWaitForADeployMessageDialog(ref seenVersionConflict, ref seenSecondVersionConflict, ref seenConflict);
+                    if (!successful)
+                    {
+                        successful = TryWaitForADeployMessageDialog(ref seenVersionConflict, ref seenSecondVersionConflict, ref seenConflict);
+                    }
                 }
             }
             Assert.IsTrue(successful, "Deploy failed.");
         }
 
-        bool TryWaitForADeployMessageDialog()
+        bool TryWaitForADeployMessageDialog(ref bool seenConflict, ref bool seenVersionConflict, ref bool seenSecondVersionConflict)
         {
             bool OKButtonReady = DialogsUIMap.MessageBoxWindow.OKButton.WaitForControlCondition((control) => { return control.TryGetClickablePoint(out Point point); }, 60000);
+            if (!seenVersionConflict && !seenSecondVersionConflict && !seenConflict)
+            {
+                seenVersionConflict = DialogsUIMap.MessageBoxWindow.DeployVersionConflicText.Exists;
+                if (seenVersionConflict && OKButtonReady)
+                {
+                    Mouse.Click(DialogsUIMap.MessageBoxWindow.OKButton);
+                    return false;
+                }
+            }
+            if (!seenSecondVersionConflict && !seenConflict)
+            {
+                seenSecondVersionConflict = DialogsUIMap.MessageBoxWindow.DeployVersionConflicText.Exists;
+                if (seenSecondVersionConflict && OKButtonReady)
+                {
+                    Mouse.Click(DialogsUIMap.MessageBoxWindow.OKButton);
+                    return false;
+                }
+            }
+            if (!seenConflict)
+            {
+                seenConflict = DialogsUIMap.MessageBoxWindow.DeployConflictsText.Exists;
+                if (seenConflict && OKButtonReady)
+                {
+                    Mouse.Click(DialogsUIMap.MessageBoxWindow.OKButton);
+                    return false;
+                }
+            }
             var successful = DialogsUIMap.MessageBoxWindow.ResourcesDeployedSucText.Exists;
-            if (OKButtonReady || successful)
+            if (successful && OKButtonReady)
             {
                 Mouse.Click(DialogsUIMap.MessageBoxWindow.OKButton);
             }
