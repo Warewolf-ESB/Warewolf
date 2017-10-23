@@ -186,20 +186,7 @@ namespace Dev2.ViewModels.Merge
                 return mergeToolModel;
             }
             return null;
-        }
-
-        private static bool IsContainerTool(IMergeToolModel parentItem)
-        {
-            switch (parentItem?.FlowNode?.ItemType.ToString())
-            {
-                case "DsfForEachActivity":
-                case "DsfSelectAndApply":
-                case "DsfSequenceActivity":
-                    return true;
-                default:
-                    return false;
-            }
-        }
+        }     
 
         public event ConflictModelChanged SomethingConflictModelChanged;
     }
