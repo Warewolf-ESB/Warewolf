@@ -62,7 +62,6 @@
     <converters6:BoolToVisibilityConverter x:Key="BoolToVisibilityConverterNegative" TrueValue="Collapsed" FalseValue="Visible" />
     <converters5:ExplorerItemModelToIconConverter x:Key="ExplorerItemModelToIconConverter" />
     <core:ResourceTypeToIconConverter x:Key="ResourceTypeToIconConverter"/>
-    <converters1:ConnectControlMultiValueBoolConverter x:Key="ConnectControlMultiValueBoolConverter" />
     <converters:ErrorTypeToImageConverter x:Key="ErrorTypeToImageConverter"/>
     <converters:NullableBoolToBoolConverter x:Key="NullableBoolToBoolConverter"/>
     <converters:NullToBoolConvert x:Key="NullToBoolConvert"/>
