@@ -39,30 +39,7 @@ namespace Dev2.Studio.Core.AppResources.Converters
 
         #endregion VisibleEnumValues
 
-        #region Properties
-
-        public bool NullValue { get; set; }
-
-        #endregion Properties
-
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            if(value == null)
-            {
-                return NullValue;
-            }
-
-            if(!value.GetType().IsEnum)
-            {
-                return Binding.DoNothing;
-            }
-
-            return TrueEnumValues.Any(e => Equals(e, value));
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            return Binding.DoNothing;
-        }
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture) => TrueEnumValues.Any(e => Equals(e, value));
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => Binding.DoNothing;
     }
 }
