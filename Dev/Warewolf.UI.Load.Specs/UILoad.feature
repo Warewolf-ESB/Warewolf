@@ -7,20 +7,20 @@ Scenario: Connect remote server
 	Given The Warewolf Studio is running
 	And I start the timer
 	When I Select Local Server Source From Explorer
-	Then the timer duration is less than "5" seconds
+	Then the timer duration is less than "7" seconds
 
 Scenario: Refresh Explorer
 	Given The Warewolf Studio is running
 	And I start the timer
 	When I Refresh Explorer
-	Then the timer duration is less than "5" seconds
+	Then the timer duration is less than "25" seconds
 
 Scenario: Refresh Deploy Source Server
 	Given The Warewolf Studio is running
 	And I Click Deploy Ribbon Button
 	And I start the timer
 	When I Click Deploy Tab Source Refresh Button
-	Then the timer duration is less than "5" seconds
+	Then the timer duration is less than "20" seconds
 
 Scenario: Deploy Resources
 	Given The Warewolf Studio is running
@@ -29,14 +29,14 @@ Scenario: Deploy Resources
 	And I Select localhost from the source tab
 	And I start the timer
 	When I Click Deploy Tab Deploy Button
-	Then the timer duration is less than "5" seconds
+	Then the timer duration is less than "80" seconds
 
 Scenario: Get Debug Output
 	Given The Warewolf Studio is running
 	And I open "Debug Output UI Load Testing"
 	And I start the timer
 	When I Debug with input of "100"
-	Then the timer duration is less than "5" seconds
+	Then the timer duration is less than "60" seconds
 
 Scenario: Add Remove A Variable
 	Given The Warewolf Studio is running
@@ -46,11 +46,11 @@ Scenario: Add Remove A Variable
 	Then the timer duration is less than "5" seconds
 	Given I start the timer
 	When I Remove Assign Row 1 With Context Menu
-	Then the timer duration is less than "5" seconds
+	Then the timer duration is less than "180" seconds
 	
 Scenario: Open New Tab
 	Given The Warewolf Studio is running
-	And I have "30" new workflow tabs open
+	And I have "20" new workflow tabs open
 	And I start the timer
 	When I Click New Workflow Ribbon Button
 	Then the timer duration is less than "5" seconds
@@ -59,7 +59,7 @@ Scenario: Close New Tab
 	Given The Warewolf Studio is running
 	And I start the timer
 	When I open "Large Workflow UI Load Testing"
-	Then the timer duration is less than "5" seconds
+	Then the timer duration is less than "30" seconds
 	Given I start the timer
 	When I Click Close Workflow Tab Button
 	Then the timer duration is less than "5" seconds
@@ -68,7 +68,7 @@ Scenario: Open Dependencies Graph
 	Given The Warewolf Studio is running
 	And I start the timer
 	When I Select Show Dependencies In Explorer Context Menu for service "Dependencies Graph UI Load Testing"
-	Then the timer duration is less than "5" seconds
+	Then the timer duration is less than "60" seconds
 
 @SchedulerView
 Scenario: Open Scheduler View And Add Remove Scheduled Tasks
@@ -93,7 +93,7 @@ Scenario: Open Test View And Add Remove Tests
 	When I Filter the Explorer with "Tests UI Load Testing"
 	And I start the timer
 	And I Click Show Explorer First Item Tests From Explorer Context Menu
-	Then the timer duration is less than "5" seconds
+	Then the timer duration is less than "40" seconds
 	Given I start the timer
 	When I Click The Create a New Test Button
 	And I Click Save Ribbon Button And Wait For Save
