@@ -137,7 +137,7 @@ namespace Dev2.Integration.Tests.Merge
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             var contextualResourceModel =
-                resourceRepository.LoadContextualResourceModel("c4971c6e-0f16-48a1-9043-c77f7cb694db".ToGuid());
+                resourceRepository.LoadContextualResourceModel("41617daa-509e-40eb-aa76-b0827028721d".ToGuid());
             var mergeWorkflowViewModel = new MergeWorkflowViewModel(contextualResourceModel, contextualResourceModel, true);
             //---------------Test Result -----------------------
             Assert.IsNotNull(mergeWorkflowViewModel);
@@ -193,7 +193,7 @@ namespace Dev2.Integration.Tests.Merge
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void Example_ControlFlowSwitch_No_Differences_TreeHierachyIsCorrect()
+        public void MergeCurrent_HelloWorld_No_Differences_TreeHierachyIsCorrect()
         {
             //---------------Set up test pack-------------------
             var environmentModel = _server.Source;
@@ -204,7 +204,7 @@ namespace Dev2.Integration.Tests.Merge
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             var contextualResourceModel =
-                resourceRepository.LoadContextualResourceModel("6dcdd72f-c4ba-484d-9806-8134d8eb2447".ToGuid());
+                resourceRepository.LoadContextualResourceModel("9e9660d8-1a3c-45ab-a330-673c2343e517".ToGuid());
             var mergeWorkflowViewModel = new MergeWorkflowViewModel(contextualResourceModel, contextualResourceModel, true);
             //---------------Test Result -----------------------
             Assert.IsNotNull(mergeWorkflowViewModel);
