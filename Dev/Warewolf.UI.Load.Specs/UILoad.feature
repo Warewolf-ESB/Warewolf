@@ -97,8 +97,8 @@ Scenario: Open Test View And Add Remove Tests
 	Given I start the timer
 	When I Click The Create a New Test Button
 	And I Click Save Ribbon Button And Wait For Save
-	Then the timer duration is less than "5" seconds
+	Then the timer duration is less than "15" seconds
 	Given I start the timer
 	When I Delete The First Test
-	Then the timer duration is less than "5" seconds
+	Then the timer duration is less than "15" seconds
 	

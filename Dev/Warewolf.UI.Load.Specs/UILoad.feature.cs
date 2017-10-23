@@ -356,13 +356,13 @@ this.ScenarioSetup(scenarioInfo);
 #line 99
  testRunner.And("I Click Save Ribbon Button And Wait For Save", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 100
- testRunner.Then("the timer duration is less than \"5\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the timer duration is less than \"15\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 101
  testRunner.Given("I start the timer", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 102
  testRunner.When("I Delete The First Test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 103
- testRunner.Then("the timer duration is less than \"5\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the timer duration is less than \"15\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
