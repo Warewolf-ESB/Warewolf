@@ -211,7 +211,6 @@
     <Compile Include="AppResources\Converters\IntEnsureMinConverter.cs" />
     <Compile Include="AppResources\Converters\IntInRangeToVisibilityConverter.cs" />
     <Compile Include="AppResources\Converters\IntToVisibilityConverter.cs" />
-    <Compile Include="AppResources\Converters\FindRecordsTypeToBoolConverter.cs" />
     <Compile Include="AppResources\Converters\ForEachTypeToVisibilityConverter.cs" />
     <Compile Include="AppResources\Converters\ModelItemToActivityConverter.cs" />
     <Compile Include="AppResources\Converters\MultipleBoolToVisibilityValueConverter.cs" />
