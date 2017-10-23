@@ -13,8 +13,7 @@ using Dev2.Common.DateAndTime;
 using Dev2.Common.DateAndTime.TO;
 using Dev2.Common.Interfaces.Core.Convertors.DateAndTime;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-
+using Dev2.Common;
 
 namespace Dev2.Tests.ConverterTests.DateTimeTests
 {
@@ -234,7 +233,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         public void FormatInputFormatNULLorEmptyExpectedDefaultFormatUsed()
         {
             IDateTimeOperationTO dateTimeTO = new DateTimeOperationTO();
-            dateTimeTO.DateTime = "05/06/2013 10:29:50 AM";
+            dateTimeTO.DateTime = new DateTime(2013,05,06,10,29,50).ToString(GlobalConstants.Dev2DotNetDefaultDateTimeFormat);
             dateTimeTO.InputFormat = null;
             dateTimeTO.OutputFormat = @"yyyy'/'mm'/'dd' '12h':'min':'ss' 'am/pm";
             formatter.TryFormat(dateTimeTO, out string result, out string errorMsg);
@@ -242,37 +241,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
 
             Assert.AreEqual(expected, result, "Date time did not default input format to en-US");
         }
-        /// <summary>
-        /// Tests that if the input format is null, the formatter assumes invariant culture default date time formatting and tries invariant culture
-        /// </summary>
-        [TestMethod]
-        public void FormatInputFormatNULLorEmptyExpectedInvariantFormatUsed()
-        {
-            IDateTimeOperationTO dateTimeTO = new DateTimeOperationTO();
-            dateTimeTO.DateTime = "05/06/2013 10:29:50";
-            dateTimeTO.InputFormat = null;
-            dateTimeTO.OutputFormat = @"yyyy'/'mm'/'dd' '12h':'min':'ss' 'am/pm";
-            formatter.TryFormat(dateTimeTO, out string result, out string errorMsg);
-            const string expected = "2013/05/06 10:29:50 AM";
-
-            Assert.AreEqual(expected, result, "Date time did not default input format to invariant culture");
-        }
-        /// <summary>
-        /// Tests that if the input format is null, the formatter assumes FullDateTimeFormat formatting and tries invariant culture
-        /// </summary>
-        [TestMethod]
-        public void FormatInputFormatNULLorEmptyExpectedFullDateTimeFormatUsed()
-        {
-            IDateTimeOperationTO dateTimeTO = new DateTimeOperationTO();
-            dateTimeTO.DateTime = "Monday, May 06, 2013 10:29:50 AM";
-            dateTimeTO.InputFormat = null;
-            dateTimeTO.OutputFormat = @"yyyy'/'mm'/'dd' '12h':'min':'ss' 'am/pm";
-            formatter.TryFormat(dateTimeTO, out string result, out string errorMsg);
-            const string expected = "2013/05/06 10:29:50 AM";
-
-            Assert.AreEqual(expected, result, "Date time did not default input format to full date time");
-        }
-
+         
 
         /// <summary>
         /// Tests that if the output format is empty, the formatter returns an error regarding this

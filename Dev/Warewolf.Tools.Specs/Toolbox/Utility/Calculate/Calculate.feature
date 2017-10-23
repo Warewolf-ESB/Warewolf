@@ -246,7 +246,7 @@ Scenario Outline: Calculate Assign by evaluating variables with functions
 	| 25                  | COS([[[[a]]]])                                             | -0.989992496600445       |
 	| 26                  | COSH([[z]])                                                | 11013.232920103300       |
 	| 27                  | COUNT([[x]],[[y]],[[[[a]]]])                               | 3                        |
-	| 29                  | DATE(2000,[[y]],12)                                        | 02/12/2000 00:00:00|
+	| 29                  | DATE(2000,[[y]],12)                                        | 02/12/2000 00:00:00.000 |
 	| 30                  | DAY([[x]])                                                 | 1                        |
 	| 31                  | DAYS360([[x]],[[y]])                                       | 1                        |
 	| 32                  | DB([[e]],[[z]],12,12,12)                                   | 4.66024676978963         |
@@ -259,8 +259,8 @@ Scenario Outline: Calculate Assign by evaluating variables with functions
 	| 39                  | DELTA([[t]],[[x]])                                         | 0                        |
 	| 40                  | DOLLARDE([[z]],[[y]])                                      | 10                       |
 	| 41                  | DOLLARFR([[x]],[[z]])                                      | 1                        |
-	| 42                  | EDATE([[z]],[[[[a]]]])                                     | 04/10/1900 00:00:00|
-	| 43                  | EOMONTH([[z]],[[[[a]]]])                                   | 04/30/1900 00:00:00|
+	| 42                  | EDATE([[z]],[[[[a]]]])                                     | 04/10/1900 00:00:00.000 |
+	| 43                  | EOMONTH([[z]],[[[[a]]]])                                   | 04/30/1900 00:00:00.000 |
 #	| 44                  | ERROR.TYPE(#NUM!)                                          | 6.00                     |
 	| 45                  | EVEN([[y]])                                                | 2                        |
 	| 46                  | EXP([[x]])                                                 | 2.71828182845905         |
@@ -382,7 +382,7 @@ Scenario Outline: Calculate Assign by evaluating variables with functions
 	| 163                 | VAR([[rc(1).set]],[[z]])                                   | 12.5                     |
 	| 164                 | WEEKDAY(11011,[[x]])                                       | 7                        |
 	| 165                 | WEEKNUM(11011,[[y]])                                       | 8                        |
-	| 166                 | WORKDAY([[rc(1).set]],[[rc(1).set]],[[z]])                 | 01/15/1900 00:00:00|
+	| 166                 | WORKDAY([[rc(1).set]],[[rc(1).set]],[[z]])                 | 01/15/1900 00:00:00.000 |
 	| 167                 | YEAR(11011)                                                | 1930                     |
 #	| 168                 | FALSE                                                      | FALSE                    |
 #	| 169                 | TRUE                                                       | TRUE                     |
