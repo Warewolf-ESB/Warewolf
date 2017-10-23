@@ -7,7 +7,7 @@ Scenario: Connect remote server
 	Given The Warewolf Studio is running
 	And I start the timer
 	When I Select Local Server Source From Explorer
-	Then the timer duration is less than "7" seconds
+	Then the timer duration is less than "30" seconds
 
 Scenario: Refresh Explorer
 	Given The Warewolf Studio is running
@@ -29,7 +29,7 @@ Scenario: Deploy Resources
 	And I Select localhost from the source tab
 	And I start the timer
 	When I Click Deploy Tab Deploy Button
-	Then the timer duration is less than "80" seconds
+	Then the timer duration is less than "160" seconds
 
 Scenario: Get Debug Output
 	Given The Warewolf Studio is running
