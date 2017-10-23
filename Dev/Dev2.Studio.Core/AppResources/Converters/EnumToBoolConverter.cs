@@ -52,15 +52,6 @@ namespace Dev2.Studio.Core.AppResources.Converters
                 return NullValue;
             }
 
-            if(value is string)
-            {
-                return TrueEnumValues.Any(e =>
-                    {
-                        object tempEnumValue = Dev2EnumConverter.GetEnumFromStringDiscription(value.ToString(), e.GetType());
-                        return Equals(e, tempEnumValue);
-                    });
-            }
-
             if(!value.GetType().IsEnum)
             {
                 return Binding.DoNothing;
