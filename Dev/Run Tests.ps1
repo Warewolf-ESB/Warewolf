@@ -143,7 +143,7 @@ $JobSpecs["Workflow Mocking Tests UI Tests"]	= "Warewolf.UI.Tests", "Workflow Mo
 $JobSpecs["Workflow Testing UI Tests"]			= "Warewolf.UI.Tests", "Workflow Testing"
 #UI Load Specs
 $JobSpecs["Other UI Load Tests"]			= "Warewolf.UI.Load.Specs"
-$JobSpecs["Studio Restart UI Load Tests"]	= "Warewolf.UI.Load.Specs", "StudioStartShutdown"
+$JobSpecs["Studio Restart UI Load Tests"]	= "Warewolf.UI.Load.Specs", "StudioStartupShutdown"
 
 
 $UnitTestJobNames = "Other Unit Tests,COMIPC Unit Tests,Studio View Models Unit Tests,Activity Designers Unit Tests,Activities Unit Tests,UI Binding Tests,Runtime Unit Tests,Studio Core Unit Tests"

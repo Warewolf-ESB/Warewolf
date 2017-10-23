@@ -60,16 +60,22 @@ namespace Warewolf.UI.Load.Specs
         public void ManyTasks(string numberOfTasks)
         {
             TaskService localTaskService = new TaskService();
-            for (var i = int.Parse(numberOfTasks); i > 0; i--)
+            try
             {
-                TaskDefinition td = localTaskService.NewTask();
-                td.RegistrationInfo.Description = "Does something";
-                td.Triggers.Add(new DailyTrigger { DaysInterval = 2 });
-                td.Actions.Add(new ExecAction("cmd.exe", "/c echo WarewolfAgent.exe", null));
-                localTaskService.GetFolder("Warewolf").RegisterTaskDefinition(@"UILoadTest" + i.ToString(), td);
+                for (var i = int.Parse(numberOfTasks); i > 0; i--)
+                {
+                    TaskDefinition td = localTaskService.NewTask();
+                    td.RegistrationInfo.Description = "Does something";
+                    td.Triggers.Add(new DailyTrigger { DaysInterval = 2 });
+                    td.Actions.Add(new ExecAction("cmd.exe", "/c echo WarewolfAgent.exe", null));
+                    localTaskService.GetFolder("Warewolf").RegisterTaskDefinition(@"UILoadTest" + i.ToString(), td);
+                }
             }
-            ScenarioContext.Current.Add("localTaskService", localTaskService);
-            ScenarioContext.Current.Add("numberOfTasks", numberOfTasks);
+            finally
+            {
+                ScenarioContext.Current.Add("localTaskService", localTaskService);
+                ScenarioContext.Current.Add("numberOfTasks", numberOfTasks);
+            }
         }
 
         [When("I close the Studio")]
