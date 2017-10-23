@@ -15,6 +15,7 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Caliburn.Micro;
 using Dev2.Common;
 using Dev2.Studio.Interfaces.DataList;
+using Dev2.Studio.Controller;
 
 namespace Dev2.ViewModels.Merge
 {
@@ -32,9 +33,9 @@ namespace Dev2.ViewModels.Merge
         {
             Children = new ObservableCollection<IMergeToolModel>();
             _resourceModel = resourceModel;
-            Model = GetModel(conflictNode.CurrentActivity, conflictNode.Activity,null,"");
+            Model = GetModel(conflictNode.CurrentActivity, conflictNode.Activity, null, "");
         }
-        
+
         public ConflictModelFactory()
         {
             Children = new ObservableCollection<IMergeToolModel>();
@@ -109,13 +110,13 @@ namespace Dev2.ViewModels.Merge
         public IDataListViewModel DataListViewModel { get; set; }
         public ObservableCollection<IMergeToolModel> Children { get; set; }
 
-        public IMergeToolModel GetModel(ModelItem modelItem, IDev2Activity activity,IMergeToolModel parentItem,string parentLableDescription)
+        public IMergeToolModel GetModel(ModelItem modelItem, IDev2Activity activity, IMergeToolModel parentItem, string parentLableDescription)
         {
             if (modelItem == null)
             {
                 return null;
             }
-            
+
             var currentValue = modelItem.GetCurrentValue<IDev2Activity>();
             var activityType = currentValue?.GetType();
             if (activityType == null)
@@ -142,11 +143,16 @@ namespace Dev2.ViewModels.Merge
                     var childResourceModel = _resourceModel.Environment.ResourceRepository.LoadContextualResourceModel(resourceId);
                     instance = Activator.CreateInstance(actual, modelItem, childResourceModel) as ActivityDesignerViewModel;
                 }
+                else if (currentValue is IAdapterActivity a)
+                {
+                    var node = ModelItemUtils.CreateModelItem(a.GetInnerNode());
+                    instance = Activator.CreateInstance(actual, node) as ActivityDesignerViewModel;
+                }
                 else
                 {
                     instance = Activator.CreateInstance(actual, modelItem) as ActivityDesignerViewModel;
                 }
-                
+
                 var mergeToolModel = new MergeToolModel
                 {
                     ActivityDesignerViewModel = instance,
@@ -158,7 +164,7 @@ namespace Dev2.ViewModels.Merge
                     Parent = parentItem,
                     HasParent = parentItem != null,
                     ParentDescription = parentLableDescription,
-                    IsTrueArm = parentLableDescription?.ToLowerInvariant() == "true"                    
+                    IsTrueArm = parentLableDescription?.ToLowerInvariant() == "true"
                 };
                 modelItem.PropertyChanged += (sender, e) =>
                 {
@@ -172,15 +178,15 @@ namespace Dev2.ViewModels.Merge
                         continue;
                     }
                     foreach (var innerAct in act.Value)
-                    {                        
+                    {
                         var item = GetModel(ModelItemUtils.CreateModelItem(innerAct), innerAct, mergeToolModel, act.Key);
                         mergeToolModel.Children.Add(item);
                     }
-                }                
+                }
                 return mergeToolModel;
             }
             return null;
-        }
+        }     
 
         public event ConflictModelChanged SomethingConflictModelChanged;
     }

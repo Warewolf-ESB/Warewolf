@@ -514,6 +514,9 @@
   <ItemGroup>
     <EmbeddedResource Include="XML\ResourceWithErrors.xml" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="XML\Loop Constructs - For Each.xml" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

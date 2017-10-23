@@ -13,6 +13,7 @@ using Dev2.Studio.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Warewolf.MergeParser;
+using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Integration.Tests.Merge
 {
@@ -200,7 +201,7 @@ namespace Dev2.Integration.Tests.Merge
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void GetDifferences_WhenFlatToolAddedOnLocal_ShouldNullOnRemoteChart()
+        public void GetDifferences_WhenFlatToolAddedOnRemotelty_ShouldNullOnLocalChart()
         {
             var activityParser = new ActivityParser();
             var shellView = new Mock<IShellViewModel>();
@@ -209,30 +210,37 @@ namespace Dev2.Integration.Tests.Merge
             CustomContainer.Register(shellView.Object);
             CustomContainer.Register<IActivityParser>(activityParser);
 
-            var resourceId = "e748cfa6-65e1-4882-86e4-5cc42c3356eb".ToGuid();
-            var loadContextualResourceModel = _server.Source.ResourceRepository.LoadContextualResourceModel(resourceId);
-            var diff = TestHelper.CreateContextualResourceModel("Decision.SimpleNestedDecision");
+            var resourceId = "fbc83b75-194a-4b10-b50c-b548dd20b408".ToGuid();
+            var local = _server.Source.ResourceRepository.LoadContextualResourceModel(resourceId);
+            var diff = TestHelper.CreateContextualResourceModel("OriginalWorkFlowName");
 
             var psd = new ServiceDifferenceParser();
-            var diffs = psd.GetDifferences(loadContextualResourceModel, diff, false);
+            var diffs = psd.GetDifferences(local, diff, false);
 
-            Assert.AreEqual(1, diffs.Count);
+            Assert.AreEqual(2, diffs.Count);
             Assert.IsTrue(diffs.Any(d => d.hasConflict));
 
             ////First Node chart
             var valueTuple = diffs[0];
-            var dev2Activity = valueTuple.currentNode.CurrentActivity.GetCurrentValue<IDev2Activity>();
             var dev2Activity1 = valueTuple.differenceNode.CurrentActivity.GetCurrentValue<IDev2Activity>();
-            Assert.IsNotNull(dev2Activity);
+            Assert.IsNull(valueTuple.currentNode);
             Assert.IsNotNull(dev2Activity1);
-            Assert.AreEqual(dev2Activity.UniqueID, dev2Activity1.UniqueID);
-            Assert.AreEqual(typeof(DsfDecision), valueTuple.currentNode.CurrentActivity.ItemType);
-            Assert.AreEqual(typeof(DsfDecision), valueTuple.differenceNode.CurrentActivity.ItemType);
+            Assert.AreEqual(typeof(DsfMultiAssignActivity), valueTuple.differenceNode.CurrentActivity.ItemType);
+
+            ////Second Node chart
+            var valueTuple1 = diffs[1];
+            var a = valueTuple1.differenceNode.CurrentActivity.GetCurrentValue<IDev2Activity>();
+            var b = valueTuple1.currentNode.CurrentActivity.GetCurrentValue<IDev2Activity>();
+            Assert.IsNotNull(b);
+            Assert.IsNotNull(a);
+            Assert.AreEqual(typeof(DsfMultiAssignActivity), valueTuple1.differenceNode.CurrentActivity.ItemType);
+            Assert.AreEqual(typeof(DsfMultiAssignActivity), valueTuple1.currentNode.CurrentActivity.ItemType);
+
             foreach (var item in psd.GetAllNodes())
             {
                 var uniqueId = item.Key;
                 var hasConflict = psd.NodeHasConflict(uniqueId);
-                if (uniqueId == "0827abf6-795c-456d-9fe7-ca084fe243db" || uniqueId == "d2c2eb0b-3aa7-4ccf-9b74-4212ebcb20ef")//Main decision and one different assign tool on the true arm
+                if (uniqueId == dev2Activity1.UniqueID)//Main decision and one different assign tool on the true arm
                 {
                     Assert.IsTrue(hasConflict, uniqueId + " has conflict");
                 }

@@ -1,4 +1,5 @@
 ﻿using Dev2;
+using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Interfaces;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
@@ -26,9 +27,16 @@ namespace Warewolf.MergeParser
         {
             return _activity.GetChildrenNodes();
         }
-        public ModelItem CurrentActivity { get; set; }
         public ModelItem CurrentFlowStep { get; set; }
         public Point NodeLocation { get; set; }
         public int TreeIndex { get; set; }
+
+        public ModelItem CurrentActivity
+        {
+            get
+            {
+                return ModelItemUtils.CreateModelItem(_activity);
+            }
+        }
     }
 }

@@ -126,7 +126,7 @@ namespace Dev2.Integration.Tests.Merge
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void Example_ControlFlowDecision_Have_No_Differences_TreeHierachyIsCorrect()
+        public void Example_ControlFlowDecision_No_Differences_TreeHierachyIsCorrect()
         {
             //---------------Set up test pack-------------------
             var environmentModel = _server.Source;
@@ -193,7 +193,7 @@ namespace Dev2.Integration.Tests.Merge
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void Example_ControlFlowSwitch_Have_No_Differences_TreeHierachyIsCorrect()
+        public void Example_ControlFlowSwitch_No_Differences_TreeHierachyIsCorrect()
         {
             //---------------Set up test pack-------------------
             var environmentModel = _server.Source;
@@ -243,7 +243,7 @@ namespace Dev2.Integration.Tests.Merge
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void Example_ControlFlowSequence_Have_No_Differences_TreeHierachyIsCorrect()
+        public void Example_ControlFlowSequence_No_Differences_TreeHierachyIsCorrect()
         {
             //---------------Set up test pack-------------------
             var environmentModel = _server.Source;
@@ -311,7 +311,7 @@ namespace Dev2.Integration.Tests.Merge
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void Example_LoopConstructsForEach_Have_No_Differences_TreeHierachyIsCorrect()
+        public void Example_LoopConstructsForEach_No_Differences_TreeHierachyIsCorrect()
         {
             //---------------Set up test pack-------------------
             var environmentModel = _server.Source;
@@ -379,50 +379,8 @@ namespace Dev2.Integration.Tests.Merge
             var childrenCount2 = completeConflict7.Value.CurrentViewModel.Children.Count;
             Assert.AreEqual(1, childrenCount2);
             AsserthildrenHasChild(completeConflict7.Value.CurrentViewModel.Children, "Random");
-        }
-
-        [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        public void SimpleNestedDecision_Differences_TreeHierachyIsCorrect()
-        {
-            //---------------Set up test pack-------------------
-            var environmentModel = _server.Source;
-            environmentModel.Connect();
-            var resourceRepository = _server.Source.ResourceRepository;
-            resourceRepository.Load();
-
-            //---------------Assert Precondition----------------
-            //---------------Execute Test ----------------------
-            var contextualResourceModel = resourceRepository.LoadContextualResourceModel("e748cfa6-65e1-4882-86e4-5cc42c3356eb".ToGuid());
-            var resourceModel = TestHelper.CreateContextualResourceModel("Decision.SimpleNestedDecision");
-
-            var mergeWorkflowViewModel = new MergeWorkflowViewModel(contextualResourceModel, resourceModel, false);
-            //---------------Test Result -----------------------
-            Assert.IsNotNull(mergeWorkflowViewModel);
-
-            var all = mergeWorkflowViewModel.Conflicts.Count(conflict => conflict.HasConflict);
-            Assert.AreEqual(1, all);
-            var conflictsCount = mergeWorkflowViewModel.Conflicts.Count;
-            Assert.AreEqual(1, conflictsCount);
-
-            var completeConflict1 = mergeWorkflowViewModel.Conflicts.First;
-            Assert.IsNotNull(completeConflict1);
-            Assert.IsTrue(completeConflict1.Value.CurrentViewModel.Children.Any());
-            Assert.AreEqual("Decision", completeConflict1.Value.CurrentViewModel.MergeDescription);
-
-            var firstChild = completeConflict1.Value.Children.First;
-            Assert.IsNotNull(firstChild);
-            Assert.IsTrue(!firstChild.Value.CurrentViewModel.Children.Any());   
-            Assert.AreEqual("1 (0)", firstChild.Value.CurrentViewModel.MergeDescription);
-
-            var secondChild = firstChild.Next;
-            Assert.IsNotNull(secondChild);
-            Assert.IsFalse(secondChild.Value.CurrentViewModel.Children.Any());
-            Assert.AreEqual("3 (0)", secondChild.Value.CurrentViewModel.MergeDescription);                      
-          
-        }
-
-
+        }   
+        
 
         private void AsserthildrenHasChild(ObservableCollection<IMergeToolModel> children, string description)
         {
