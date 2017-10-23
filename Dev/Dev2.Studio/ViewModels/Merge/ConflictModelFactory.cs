@@ -143,24 +143,14 @@ namespace Dev2.ViewModels.Merge
                     var childResourceModel = _resourceModel.Environment.ResourceRepository.LoadContextualResourceModel(resourceId);
                     instance = Activator.CreateInstance(actual, modelItem, childResourceModel) as ActivityDesignerViewModel;
                 }
+                else if (currentValue is IAdapterActivity a)
+                {
+                    var node = ModelItemUtils.CreateModelItem(a.GetInnerNode());
+                    instance = Activator.CreateInstance(actual, node) as ActivityDesignerViewModel;
+                }
                 else
                 {
-
-                    if (currentValue is DsfDecision a)
-                    {
-                        var node = ModelItemUtils.CreateModelItem(a.GetInnerNode());
-
-                        //var condition = ConfigureActivity<DsfFlowDecisionActivity>(args.ModelItem, GlobalConstants.ConditionPropertyText, args.IsNew);
-                        //var configureDecision = typeof(FlowController).GetMethod("ConfigureActivity", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
-                        //var generic = configureDecision.MakeGenericMethod(typeof(DsfFlowDecisionActivity));
-                        //var realModelItem = generic.Invoke(null, new Object[] { node, "Conditions", true });
-                        instance = Activator.CreateInstance(actual, node) as ActivityDesignerViewModel;
-                    }
-                    else
-                    {
-                        instance = Activator.CreateInstance(actual, modelItem) as ActivityDesignerViewModel;
-                    }
-
+                    instance = Activator.CreateInstance(actual, modelItem) as ActivityDesignerViewModel;
                 }
 
                 var mergeToolModel = new MergeToolModel
