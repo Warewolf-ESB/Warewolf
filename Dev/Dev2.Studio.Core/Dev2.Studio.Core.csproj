@@ -204,7 +204,6 @@
     <Compile Include="AppResources\Converters\CollectionToVisibilityConverterPositive.cs" />
     <Compile Include="AppResources\Converters\ConnectControlDisableConverter.cs" />
     <Compile Include="AppResources\Converters\ConnectControlMultiValueBoolConverter.cs" />
-    <Compile Include="AppResources\Converters\BoolToDisabledFontColorConverter.cs" />
     <Compile Include="AppResources\Converters\DataListItemModelToAutomationIdConverter.cs" />
     <Compile Include="AppResources\Converters\DateTimeFormatConverter.cs" />
     <Compile Include="AppResources\Converters\GridRowNumberConverter.cs" />
@@ -501,8 +500,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppResources\Enums\" />
-    <Folder Include="Interfaces\" />
-    <Folder Include="Validation\" />
   </ItemGroup>
   <ItemGroup>
     <Analyzer Include="..\packages\SonarAnalyzer.CSharp.5.11.0.1761\analyzers\Google.Protobuf.dll" />
