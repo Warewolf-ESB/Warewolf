@@ -14,7 +14,7 @@ using System.Runtime.Serialization;
 
 namespace Dev2.Workspaces
 {
-    public partial interface IWorkspace : ISerializable, IEquatable<IWorkspace>
+    public interface IWorkspace : ISerializable
     {
         Guid ID
         {
