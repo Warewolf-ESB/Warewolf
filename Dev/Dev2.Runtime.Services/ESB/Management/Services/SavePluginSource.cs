@@ -17,7 +17,6 @@ using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-
     public class SavePluginSource : IEsbManagementEndpoint
     {
         IExplorerServerResourceRepository _serverExplorerRepository;
@@ -31,6 +30,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             return AuthorizationContext.Contribute;
         }
+
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             ExecuteMessage msg = new ExecuteMessage();
