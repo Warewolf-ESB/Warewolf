@@ -124,9 +124,11 @@ namespace Dev2.ViewModels.Merge
             return current && childrenMatch;
         }
 
-        public bool ValidateContainerTool(MergeToolModel parentItem)
+        public bool ValidateContainerTool(IMergeToolModel parentItem)
         {
-            switch (parentItem.ActivityDesignerViewModel.GetType().Name)
+            var mergeToolModel = parentItem as MergeToolModel;
+
+            switch (mergeToolModel?.ActivityDesignerViewModel.GetType().Name)
             {
                 case "SequenceDesignerViewModel":
                 case "SelectAndApplyDesignerViewModel":

@@ -61,37 +61,78 @@
                     <Border x:Name="CurrentWorkflowHeaderBorder" 
                             Grid.Row="0" 
                             BorderThickness="0,0,1,0" 
-                            Background="#C1C3C5" 
+                            Background="{StaticResource WareWolfMenuBrush}" 
                             AutomationProperties.AutomationId="UI_CurrentWorkflowHeaderBorder_AutoID">
-                        <StackPanel x:Name="CurrentWorkflowHeaderSp" 
-                                    Background="{StaticResource WareWolfMenuBrush}" 
-                                    HorizontalAlignment="Stretch" 
-                                    DataContext="{Binding CurrentConflictModel}"
-                                    AutomationProperties.AutomationId="UI_CurrentWorkflowHeaderSP_AutoID">
-                            <TextBlock x:Name="CurrentWorkflowHeaderText" 
-                                       Margin="5" 
-                                       Text="{Binding ServerName}" 
-                                       Style="{StaticResource SourceHeader}" 
-                                       AutomationProperties.AutomationId="UI_CurrentWorkflowHeaderText_AutoID"/>
-                        </StackPanel>
+                        <DockPanel x:Name="CurrentDockPanel" 
+                                   LastChildFill="False" 
+                                   AutomationProperties.AutomationId="UI_CurrentWorkflowDockPanel_AutoID"
+                                   DataContext="{Binding CurrentConflictModel}">
+                            <StackPanel x:Name="CurrentWorkflowHeaderSp" 
+                                        Background="{StaticResource WareWolfMenuBrush}" 
+                                        HorizontalAlignment="Stretch" 
+                                        Orientation="Horizontal"
+                                        DockPanel.Dock="Left" 
+                                        AutomationProperties.AutomationId="UI_CurrentWorkflowHeaderSP_AutoID">
+                                <TextBlock x:Name="CurrentWorkflowHeaderText" 
+                                           Margin="5" 
+                                           Text="{Binding ServerName}" 
+                                           Style="{StaticResource SourceHeader}" 
+                                           AutomationProperties.AutomationId="UI_CurrentWorkflowHeaderText_AutoID"/>
+                            </StackPanel>
+                            <StackPanel x:Name="CurrentHeaderSp" 
+                                        Background="{StaticResource WareWolfMenuBrush}" 
+                                        HorizontalAlignment="Stretch" 
+                                        Orientation="Horizontal"
+                                        DockPanel.Dock="Right" 
+                                        AutomationProperties.AutomationId="UI_CurrentWorkflowHeaderSP_AutoID">
+                                <TextBlock x:Name="CurrentHeaderText" 
+                                           Margin="5"
+                                           HorizontalAlignment="Right"
+                                           Text="[ Current ]" 
+                                           Style="{StaticResource SourceHeader}" 
+                                           AutomationProperties.AutomationId="UI_CurrentWorkflowHeaderText_AutoID"/>
+                            </StackPanel>
+                        </DockPanel>
+                        
                     </Border>
                     <Border x:Name="DifferenceWorkflowHeaderBorder" 
                             Grid.Row="0" 
                             Grid.Column="1" 
                             BorderThickness="1,0,0,0" 
-                            Background="#C1C3C5"
+                            HorizontalAlignment="Stretch"
+                            Background="{StaticResource WareWolfMenuBrush}" 
                             AutomationProperties.AutomationId="UI_DifferenceWorkflowHeaderBorder_AutoID">
-                        <StackPanel x:Name="DifferenceWorkflowHeaderSp" 
-                                    Background="{StaticResource WareWolfMenuBrush}" 
-                                    HorizontalAlignment="Stretch" 
-                                    DataContext="{Binding DifferenceConflictModel}"
-                                    AutomationProperties.AutomationId="UI_DifferenceWorkflowHeaderSP_AutoID">
-                            <TextBlock x:Name="DifferenceWorkflowHeaderText" 
-                                       Margin="5" 
-                                       Text="{Binding ServerName}" 
-                                       Style="{StaticResource SourceHeader}" 
-                                       AutomationProperties.AutomationId="UI_DifferenceWorkflowHeaderText_AutoID"/>
-                        </StackPanel>
+                        <DockPanel x:Name="DifferenceDockPanel" 
+                                   LastChildFill="False" 
+                                   AutomationProperties.AutomationId="UI_CurrentWorkflowDockPanel_AutoID"
+                                   DataContext="{Binding DifferenceConflictModel}">
+                            <StackPanel x:Name="DifferenceWorkflowHeaderSp" 
+                                        Background="{StaticResource WareWolfMenuBrush}" 
+                                        DockPanel.Dock="Left" 
+                                        HorizontalAlignment="Stretch" 
+                                        Orientation="Horizontal"
+                                        AutomationProperties.AutomationId="UI_DifferenceWorkflowHeaderSP_AutoID">
+                                <TextBlock x:Name="DifferenceWorkflowHeaderText" 
+                                           Margin="5" 
+                                           Text="{Binding ServerName}" 
+                                           Style="{StaticResource SourceHeader}" 
+                                           AutomationProperties.AutomationId="UI_DifferenceWorkflowHeaderText_AutoID"/>
+                            </StackPanel>
+                            <StackPanel x:Name="DifferenceHeaderSp" 
+                                        Background="{StaticResource WareWolfMenuBrush}" 
+                                        HorizontalAlignment="Stretch" 
+                                        DockPanel.Dock="Right" 
+                                        Orientation="Horizontal"
+                                        AutomationProperties.AutomationId="UI_DifferenceWorkflowHeaderSP_AutoID">
+                                <TextBlock x:Name="DifferenceHeaderText" 
+                                           Margin="5"
+                                           HorizontalAlignment="Right"
+                                           Text="[ Difference ]" 
+                                           Style="{StaticResource SourceHeader}" 
+                                           AutomationProperties.AutomationId="UI_CurrentWorkflowHeaderText_AutoID"/>
+                            </StackPanel>
+                        </DockPanel>
+                        
                     </Border>
 
                     <StackPanel x:Name="StartProcessSp" 

@@ -51,7 +51,7 @@ namespace Dev2.ViewModels.Merge
                 {
                     Model = firstConflict?.CurrentViewModel ?? new MergeToolModel { IsMergeEnabled = false },
                     WorkflowName = currentResourceModel.ResourceName,
-                    ServerName = currentResourceModel.Environment.DisplayName
+                    ServerName = currentResourceModel.Environment.Name
                 };
                 CurrentConflictModel.GetDataList(currentResourceModel);
                 CurrentConflictModel.SomethingConflictModelChanged += SourceOnConflictModelChanged;
@@ -63,7 +63,7 @@ namespace Dev2.ViewModels.Merge
                 {
                     Model = firstConflict?.DiffViewModel ?? new MergeToolModel { IsMergeEnabled = false },
                     WorkflowName = differenceResourceModel.ResourceName,
-                    ServerName = differenceResourceModel.Environment.DisplayName
+                    ServerName = differenceResourceModel.Environment.Name
                 };
                 DifferenceConflictModel.GetDataList(differenceResourceModel);
                 DifferenceConflictModel.SomethingConflictModelChanged += SourceOnConflictModelChanged;
@@ -155,18 +155,7 @@ namespace Dev2.ViewModels.Merge
                 conflict.IsMergeExpanded = false;
                 conflict.IsMergeExpanderEnabled = false;
 
-                //if (conflict.CurrentViewModel.FlowNode == null && conflict.DiffViewModel?.Children?.Count > 0)
-                //{
-                    
-                //}
-                //else if (conflict.DiffViewModel?.FlowNode == null && conflict.CurrentViewModel?.Children?.Count > 0)
-                //{
-                    
-                //}
-                //else
-                //{
-                    AddChildren(conflict, conflict.CurrentViewModel, conflict.DiffViewModel);
-                //}
+                AddChildren(conflict, conflict.CurrentViewModel, conflict.DiffViewModel);
                 conflicts.Add(conflict);
             }
             return conflicts;
@@ -228,10 +217,35 @@ namespace Dev2.ViewModels.Merge
             var linkedConflict = Find(model.Container);
             IMergeToolModel previous = null;
             IMergeToolModel next = null;
-
+            ICompleteConflict previousCurrentViewModel = null;
             if (linkedConflict != null)
             {
-                previous = SetPreviousModelTool(linkedConflict)?.FirstOrDefault();
+                var parents = SetPreviousModelTool(linkedConflict);
+                if (model.Parent != null)
+                {
+                    previousCurrentViewModel = parents?.FirstOrDefault(x => x.UniqueId == model.Parent.UniqueId);
+            
+                }
+                else
+                {
+                    previousCurrentViewModel = parents?.FirstOrDefault(x => x.UniqueId != linkedConflict.Previous.Value.UniqueId);
+                }
+
+                if (previousCurrentViewModel != null)
+                {
+                    if (previousCurrentViewModel.CurrentViewModel != null && previousCurrentViewModel.CurrentViewModel.IsMergeChecked)
+                    {
+                        previous = previousCurrentViewModel.CurrentViewModel;
+                    }
+                    else
+                    {
+                        if (previousCurrentViewModel.DiffViewModel != null && previousCurrentViewModel.DiffViewModel.IsMergeChecked)
+                        {
+                            previous = previousCurrentViewModel.DiffViewModel;
+                        }
+                    }
+                }
+                //previous = SetPreviousModelTool(linkedConflict)?.FirstOrDefault();
                 next = SetNextModelTool(linkedConflict);
             }
             WorkflowDesignerViewModel.AddItem(previous, model, next);
@@ -266,32 +280,36 @@ namespace Dev2.ViewModels.Merge
         }
 
         [CanBeNull]
-        static List<IMergeToolModel> SetPreviousModelTool(LinkedListNode<ICompleteConflict> linkedConflict)
+        static List<ICompleteConflict> SetPreviousModelTool(LinkedListNode<ICompleteConflict> linkedConflict)
         {
-            IMergeToolModel previous = null;
-            var parents = new List<IMergeToolModel>();
+            //IMergeToolModel previous = null;
+            var parents = new List<ICompleteConflict>();
             var previousValue = linkedConflict.Previous?.Value ?? linkedConflict.Value.Parent;            
             var previousCurrentViewModel = previousValue?.CurrentViewModel;
+            if (previousCurrentViewModel != null)
+            {                
+                parents.Add(previousValue);
+            }
             if (previousValue?.Parent != null)
             {
-                previousValue = previousValue.Parent;
-                previousCurrentViewModel = previousValue?.CurrentViewModel;
+                parents.Add(previousValue?.Parent);
             }
-            if (previousCurrentViewModel != null)
-            {
-                if (previousCurrentViewModel.IsMergeChecked)
-                {
-                    previous = previousCurrentViewModel;
-                }
-                else
-                {
-                    if (previousValue.DiffViewModel != null && previousValue.DiffViewModel.IsMergeChecked)
-                    {
-                        previous = previousValue.DiffViewModel;
-                    }
-                }
-            }
-            parents.Add(previous);
+            
+            //if (previousCurrentViewModel != null)
+            //{
+            //    if (previousCurrentViewModel.IsMergeChecked)
+            //    {
+            //        previous = previousCurrentViewModel;
+            //    }
+            //    else
+            //    {
+            //        if (previousValue.DiffViewModel != null && previousValue.DiffViewModel.IsMergeChecked)
+            //        {
+            //            previous = previousValue.DiffViewModel;
+            //        }
+            //    }
+            //}
+            //parents.Add(previous);
             return parents;
         }
 
@@ -510,7 +528,6 @@ namespace Dev2.ViewModels.Merge
                         if (completeConflict.DiffViewModel != null)
                         {
                             completeConflict.DiffViewModel.Container = completeConflict;
-
                         }
                         else
                         {
@@ -519,7 +536,8 @@ namespace Dev2.ViewModels.Merge
                         }
 
                         completeConflict.Parent = parent;
-                        completeConflict.IsContainerTool = completeConflict.ValidateContainerTool(parent.CurrentViewModel as MergeToolModel);
+
+                        completeConflict.IsContainerTool = completeConflict.ValidateContainerTool(parent.CurrentViewModel);
 
                         completeConflict.HasConflict = completeConflict.DiffViewModel.FlowNode == null || _serviceDifferenceParser.NodeHasConflict(currentChildChild.UniqueId.ToString()) && !completeConflict.IsContainerTool;
                         completeConflict.DiffViewModel.IsMergeVisible = completeConflict.HasConflict;
@@ -532,14 +550,8 @@ namespace Dev2.ViewModels.Merge
                         {
                             parent.Children.AddLast(completeConflict);
                         }
-                        if (completeConflict.CurrentViewModel != null)
-                        {
-                            completeConflict.CurrentViewModel.SomethingModelToolChanged += SourceOnModelToolChanged;
-                        }
-                        if (completeConflict.DiffViewModel != null)
-                        {
-                            completeConflict.DiffViewModel.SomethingModelToolChanged += SourceOnModelToolChanged;
-                        }
+                        completeConflict.CurrentViewModel.SomethingModelToolChanged += SourceOnModelToolChanged;
+                        completeConflict.DiffViewModel.SomethingModelToolChanged += SourceOnModelToolChanged;
                         AddChildren(completeConflict, childCurrent, childDifferent);
                     }
                     catch (ArgumentOutOfRangeException)
@@ -565,10 +577,11 @@ namespace Dev2.ViewModels.Merge
                                     conflictChild.DiffViewModel.FlowNode = item.rightItem;
                                 }
 
-                                conflictChild.IsContainerTool = conflictChild.ValidateContainerTool(parent.DiffViewModel as MergeToolModel);
+                                conflictChild.IsContainerTool = conflictChild.ValidateContainerTool(parent.DiffViewModel);
                                 conflictChild.HasConflict = !conflictChild.IsContainerTool;
                                 conflictChild.DiffViewModel.IsMergeVisible = completeConflict.HasConflict;
                                 conflictChild.CurrentViewModel.IsMergeVisible = completeConflict.HasConflict;
+                                conflictChild.Parent = parent;
                                 if (parent.Children.Count == 0)
                                 {
                                     parent.Children.AddFirst(conflictChild);
@@ -578,14 +591,8 @@ namespace Dev2.ViewModels.Merge
                                     parent.Children.AddLast(conflictChild);
                                 }
                                 remoteCopy.Remove(mergeToolModel);
-                                if (conflictChild.CurrentViewModel != null)
-                                {
-                                    conflictChild.CurrentViewModel.SomethingModelToolChanged += SourceOnModelToolChanged;
-                                }
-                                if (conflictChild.DiffViewModel != null)
-                                {
-                                    conflictChild.DiffViewModel.SomethingModelToolChanged += SourceOnModelToolChanged;
-                                }
+                                conflictChild.CurrentViewModel.SomethingModelToolChanged += SourceOnModelToolChanged;
+                                conflictChild.DiffViewModel.SomethingModelToolChanged += SourceOnModelToolChanged;
                                 AddChildren(conflictChild, null, mergeToolModel);
                             }
                         }

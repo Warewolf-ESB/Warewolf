@@ -3065,9 +3065,11 @@ namespace Dev2.Studio.ViewModels.Workflow
 
             _allNodes = _parser?.GetAllNodes();
             var hasConflict = _parser.NodeHasConflict(model.UniqueId.ToString());
+            var childrenHasConflict =
+                model.Children.Flatten(x => x.Children).Any(c => _parser.NodeHasConflict(c.UniqueId.ToString()));
             var nodeToAdd = GetNodeToAmmend(model);
 
-            if (!hasConflict)
+            if (!hasConflict && !childrenHasConflict)
             {
                 AddNodesForChildren(model, nodes);
             }
@@ -3082,7 +3084,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                     }
                     break;
                 case FlowDecision normalDecision:
-                    if (!nodes.Contains(normalDecision) && hasConflict)
+                    if (!nodes.Contains(normalDecision) && (hasConflict || childrenHasConflict))
                     {
                         normalDecision.False = null;
                         normalDecision.True = null;
@@ -3112,6 +3114,10 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
             if (nodeToAdd == null)
             {
+                if (next == null)
+                {
+                    return;
+                }
                 nodeToAdd = next.FlowNode;
             }
             var flowNode = nodeToAdd.GetCurrentValue<FlowNode>();

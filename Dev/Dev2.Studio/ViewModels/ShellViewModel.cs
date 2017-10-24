@@ -715,9 +715,11 @@ namespace Dev2.Studio.ViewModels
             var result = mergeServiceViewModel.ShowMergeDialog();
             if (result == MessageBoxResult.OK)
             {
-                if (mergeServiceViewModel.SelectedMergeItem is VersionViewModel differentResource)
+                var selectedMergeItem = mergeServiceViewModel.SelectedMergeItem;
+                var server = selectedMergeItem?.Server;
+                if (selectedMergeItem is VersionViewModel differentResource)
                 {
-                    var resourceVersion = differentResource.ToContextualResourceModel(ActiveServer, differentResource.ResourceId);
+                    var resourceVersion = differentResource.ToContextualResourceModel(server, differentResource.ResourceId);
                     var resourceModel = ActiveServer?.ResourceRepository.LoadContextualResourceModel(differentResource.ResourceId);
 
                     var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.MergeConflicts);
@@ -732,7 +734,10 @@ namespace Dev2.Studio.ViewModels
                 }
                 else
                 {
-                    OpenMergeConflictsView(currentResource, mergeServiceViewModel.SelectedMergeItem.ResourceId, mergeServiceViewModel.SelectedMergeItem.Server);
+                    if (selectedMergeItem != null)
+                    {
+                        OpenMergeConflictsView(currentResource, selectedMergeItem.ResourceId, server);
+                    }
                 }
             }
         }
@@ -740,8 +745,7 @@ namespace Dev2.Studio.ViewModels
 
         public void OpenMergeConflictsView(IExplorerItemViewModel currentResource, Guid differenceResourceId, IServer server)
         {
-            var normalExplorer = currentResource as ExplorerItemViewModel;
-            if (normalExplorer != null)
+            if (currentResource is ExplorerItemViewModel normalExplorer)
             {
                 switch (normalExplorer)
                 {
