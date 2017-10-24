@@ -3214,6 +3214,23 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
         }
         
         #region Properties
+        public WpfCustom EmptyAssign_On_Surface
+        {
+            get
+            {
+                if ((this.mEmptyAssign_On_Surface == null))
+                {
+                    this.mEmptyAssign_On_Surface = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mEmptyAssign_On_Surface.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.MultiAssignDesigner";
+                    this.mEmptyAssign_On_Surface.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Assign (0)(MultiAssignDesigner)";
+                    this.mEmptyAssign_On_Surface.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mEmptyAssign_On_Surface;
+            }
+        }
+        
         public WpfCustom FirstAssign_Diff_On_Surface
         {
             get
@@ -3288,9 +3305,45 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
                 return this.mSequenceActivityCustom;
             }
         }
+        
+        public WpfCustom Difference_Switch
+        {
+            get
+            {
+                if ((this.mDifference_Switch == null))
+                {
+                    this.mDifference_Switch = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mDifference_Switch.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.FlowSwitchDesigner";
+                    this.mDifference_Switch.SearchProperties[WpfControl.PropertyNames.AutomationId] = "FlowSwitchDesigner";
+                    this.mDifference_Switch.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mDifference_Switch;
+            }
+        }
+        
+        public WpfCustom CreaqteExampleDataAssign
+        {
+            get
+            {
+                if ((this.mCreaqteExampleDataAssign == null))
+                {
+                    this.mCreaqteExampleDataAssign = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mCreaqteExampleDataAssign.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.MultiAssignDesigner";
+                    this.mCreaqteExampleDataAssign.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Create Example Data (1)(MultiAssignDesigner)";
+                    this.mCreaqteExampleDataAssign.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mCreaqteExampleDataAssign;
+            }
+        }
         #endregion
         
         #region Fields
+        private WpfCustom mEmptyAssign_On_Surface;
+        
         private WpfCustom mFirstAssign_Diff_On_Surface;
         
         private SecondAssign_Curr_On_Surface mSecondAssign_Curr_On_Surface;
@@ -3300,6 +3353,10 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
         private WpfCustom mMergeSequenceAssign;
         
         private WpfCustom mSequenceActivityCustom;
+        
+        private WpfCustom mDifference_Switch;
+        
+        private WpfCustom mCreaqteExampleDataAssign;
         #endregion
     }
     

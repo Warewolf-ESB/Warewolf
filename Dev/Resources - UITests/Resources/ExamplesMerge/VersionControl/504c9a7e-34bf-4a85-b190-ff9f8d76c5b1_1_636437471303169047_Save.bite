@@ -1,5 +1,5 @@
 
-<Service ID="53e99e66-1a33-4fec-8d47-a2431170db0f" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="MergeForeach" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.0.6498.12428">
+<Service ID="53e99e66-1a33-4fec-8d47-a2431170db0f" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="MergeForeach" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.0.6506.13655">
   <DisplayName>MergeForeach</DisplayName>
   <Category>ExamplesMerge\MergeForeach</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
