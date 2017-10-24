@@ -401,7 +401,7 @@ namespace Dev2.ViewModels.Merge
                 if (!args.Container.IsChecked)
                 {
                     var nextConflict = UpdateNextEnabledState();
-                    if (nextConflict != null && !nextConflict.HasConflict)
+                    if (nextConflict != null && (!nextConflict.HasConflict || nextConflict.IsContainerTool))
                     {
                         ExpandPreviousItems(nextConflict);
                         nextConflict.CurrentViewModel.IsMergeChecked = true;
