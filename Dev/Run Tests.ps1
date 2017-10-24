@@ -328,10 +328,26 @@ function Wait-For-FileUnlock([string]$FilePath) {
             [IO.File]::OpenWrite($FilePath).close()
             $locked = $false
         } catch {
+            Write-Host Still waiting for $FilePath file to unlock.
             Sleep 10
         }
     }
     return $locked
+}
+
+function Wait-For-FileExist([string]$FilePath) {
+    $exists = $false
+    $RetryCount = 0
+    while($notExists -and $RetryCount -lt 12) {
+        $RetryCount++
+        if (Test-Path $FilePath) {
+            $exists = $true
+        } else {
+            Write-Host Still waiting for $FilePath file to exist.
+            Sleep 10
+        }
+    }
+    return $exists
 }
 
 function Merge-DotCover-Snapshots($DotCoverSnapshots, [string]$DestinationFilePath, [string]$LogFilePath) {
@@ -407,10 +423,8 @@ function Move-Artifacts-To-TestResults([bool]$DotCover, [bool]$Server, [bool]$St
     if ($Studio -and $DotCover) {
         $StudioSnapshot = "$env:LocalAppData\Warewolf\Studio Logs\dotCover.dcvr"
         Write-Host Trying to move Studio coverage snapshot file from $StudioSnapshot to $TestsResultsPath\$JobName Studio DotCover.dcvr
-        while (!(Test-Path $StudioSnapshot) -and $Timeout++ -lt 10) {
-            sleep 10
-        }
-        if (Test-Path $StudioSnapshot) {
+        $exists = Wait-For-FileExist $StudioSnapshot
+        if ($exists) {
             $locked = Wait-For-FileUnlock $StudioSnapshot
             if (!($locked)) {
                 Write-Host Moving Studio coverage snapshot file from $StudioSnapshot to $TestsResultsPath\$JobName Studio DotCover.dcvr
@@ -433,15 +447,15 @@ function Move-Artifacts-To-TestResults([bool]$DotCover, [bool]$Server, [bool]$St
     if ($Server -and $DotCover) {
         $ServerSnapshot = "$env:ProgramData\Warewolf\Server Log\dotCover.dcvr"
         Write-Host Trying to move Server coverage snapshot file from $ServerSnapshot to $TestsResultsPath\$JobName Server DotCover.dcvr
-        while (!(Test-Path $ServerSnapshot) -and $Timeout++ -lt 10) {
-            sleep 10
-        }
-        $locked = Wait-For-FileUnlock $ServerSnapshot
-        if (!($locked)) {
-            Write-Host Moving Server coverage snapshot file from $ServerSnapshot to $TestsResultsPath\$JobName Server DotCover.dcvr
-            Move-File-To-TestResults $ServerSnapshot "$JobName Server DotCover.dcvr"
-        } else {
-            Write-Host Server Coverage Snapshot File still locked after retrying for 2 minutes.
+        $exists = Wait-For-FileExist $StudioSnapshot
+        if ($exists) {
+            $locked = Wait-For-FileUnlock $ServerSnapshot
+            if (!($locked)) {
+                Write-Host Moving Server coverage snapshot file from $ServerSnapshot to $TestsResultsPath\$JobName Server DotCover.dcvr
+                Move-File-To-TestResults $ServerSnapshot "$JobName Server DotCover.dcvr"
+            } else {
+                Write-Host Server Coverage Snapshot File still locked after retrying for 2 minutes.
+            }
         }
         if (Test-Path "$env:ProgramData\Warewolf\Server Log\dotCover.log") {
             Move-File-To-TestResults "$env:ProgramData\Warewolf\Server Log\dotCover.log" "$JobName Server DotCover.log"
