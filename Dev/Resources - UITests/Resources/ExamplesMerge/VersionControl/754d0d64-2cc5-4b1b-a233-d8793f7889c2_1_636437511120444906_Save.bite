@@ -1,5 +1,5 @@
 
-<Service ID="d6956d92-4920-411c-8a2b-f3ff14dc9cec" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="MergeSwitch" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.0.6498.12428">
+<Service ID="d6956d92-4920-411c-8a2b-f3ff14dc9cec" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="MergeSwitch" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.0.6506.13655">
   <DisplayName>MergeSwitch</DisplayName>
   <Category>ExamplesMerge\MergeSwitch</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
