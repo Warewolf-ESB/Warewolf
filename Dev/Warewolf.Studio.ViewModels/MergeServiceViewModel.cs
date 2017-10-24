@@ -22,6 +22,7 @@ namespace Warewolf.Studio.ViewModels
         private string _resourceToMerge;
         private IExplorerItemViewModel _selectMergeItem;
         private IConnectControlViewModel _mergeConnectControlViewModel;
+        private ObservableCollection<IExplorerItemViewModel> _mergeResourceVersions;
 
         public MergeServiceViewModel(IShellViewModel shellViewModel, Microsoft.Practices.Prism.PubSubEvents.IEventAggregator aggregator, IExplorerItemViewModel selectedResource, IMergeView mergeView, IServer selectedServer)
         {
@@ -49,7 +50,7 @@ namespace Warewolf.Studio.ViewModels
             ShowConnectControl = true;
             MergeConnectControlViewModel.CanEditServer = false;
             MergeConnectControlViewModel.CanCreateServer = false;
-            MergeConnectControlViewModel.ServerConnected += async (sender, server) => { await ServerConnected(server).ConfigureAwait(false); };
+            MergeConnectControlViewModel.ServerConnected += async (sender, server) => { await ServerConnected(server); };
             MergeConnectControlViewModel.ServerDisconnected += ServerDisconnected;
 
             ShowConnectControl = false;
@@ -60,7 +61,7 @@ namespace Warewolf.Studio.ViewModels
 
             MergeConnectControlViewModel.SelectedEnvironmentChanged += async (sender, id) =>
             {
-                await MergeExplorerViewModelSelectedEnvironmentChanged(sender).ConfigureAwait(false);
+                await MergeExplorerViewModelSelectedEnvironmentChanged(sender);
             };
         }
 
@@ -106,7 +107,15 @@ namespace Warewolf.Studio.ViewModels
             MergeResourceVersions.AddRange(children);
         }
 
-        public ObservableCollection<IExplorerItemViewModel> MergeResourceVersions { get; set; }
+        public ObservableCollection<IExplorerItemViewModel> MergeResourceVersions
+        {
+            get => _mergeResourceVersions;
+            set
+            {
+                _mergeResourceVersions = value; 
+                OnPropertyChanged(() => MergeResourceVersions);
+            }
+        }
 
         private bool CanMerge() => SelectedMergeItem != null && SelectedMergeItem.ResourceId == SelectedResource.ResourceId;
 
@@ -156,44 +165,14 @@ namespace Warewolf.Studio.ViewModels
             var selectedConnection = connectControlViewModel?.SelectedConnection;
             if (selectedConnection != null && selectedConnection.IsConnected && _environments.Any(p => p.ResourceId != selectedConnection.EnvironmentID))
             {
-                await CreateNewEnvironment(selectedConnection).ConfigureAwait(false);
+                await CreateNewEnvironment(selectedConnection);
                 LoadVersions(selectedConnection);
             }
         }
 
-        //private void UpdateItemForMerge(Guid environmentId)
-        //{
-        //    var environmentViewModel = _environments.FirstOrDefault(a => a.Server.EnvironmentID == environmentId);
-        //    if (environmentViewModel != null)
-        //    {
-        //        environmentViewModel.IsVisible = true;
-        //        SelectedEnvironment = environmentViewModel;
-        //        environmentViewModel.ShowContextMenu = false;
-        //        environmentViewModel.AsList().Apply(a =>
-        //        {
-        //            a.ShowContextMenu = false;
-        //            a.CanView = false;
-        //        });
-        //    }
-        //    if (SelectedEnvironment != null)
-        //    {
-        //        SelectedEnvironment.AllowResourceCheck = false;
-        //    }
-        //    foreach (var env in _environments.Where(a => a.Server.EnvironmentID != environmentId))
-        //    {
-        //        env.IsVisible = false;
-        //    }
-        //    if (SearchText != null)
-        //    {
-        //        environmentViewModel?.Filter(SearchText);
-        //    }
-
-        //    OnPropertyChanged(() => Environments);
-        //}
-
         async Task<bool> ServerConnected(IServer server)
         {
-            var isCreated = await CreateNewEnvironment(server).ConfigureAwait(false);
+            var isCreated = await CreateNewEnvironment(server);
             LoadVersions(server);
             return isCreated;
         }
@@ -210,7 +189,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 var environmentModel = CreateEnvironmentFromServer(server, _shellViewModel);
                 _environments.Add(environmentModel);
-                isLoaded = await environmentModel.Load().ConfigureAwait(false);
+                isLoaded = await environmentModel.Load();
                 OnPropertyChanged(() => Environments);
             }
             return isLoaded;

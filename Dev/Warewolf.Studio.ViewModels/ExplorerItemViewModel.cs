@@ -1238,7 +1238,7 @@ namespace Warewolf.Studio.ViewModels
 
         public bool CanMerge
         {
-            get => _canMerge && !IsSaveDialog;
+            get => _canMerge && !IsSaveDialog && Server.IsLocalHost;
             set
             {
                 _canMerge = value;
