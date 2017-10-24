@@ -64,6 +64,7 @@
     <converters:NullToBoolConvert x:Key="NullToBoolConvert"/>
     <converters2:MultipleBoolToEnabledConverter x:Key="MultipleBoolToEnabledConverter"/>
     <converters:IntInRangeToVisibilityConverter x:Key="IntInRangeToVisibilityConverter" />
+    <converters:IntEnsureMinConverter x:Key="IntEnsureMinConverter" />
     <converters2:StringToTimespanConverter x:Key="StringToTimespanConverter"/>
     
     <converters:EnumToBoolConverter x:Key="EnumToBoolConverterenRoundingType">
