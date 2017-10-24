@@ -208,7 +208,6 @@
     <Compile Include="AppResources\Converters\SchedulerMultiBoolToVisibilityConverter.cs" />
     <Compile Include="AppResources\Converters\SimpleEnumToBoolConverter.cs" />
     <Compile Include="AppResources\Converters\StringToResourceConverter.cs" />
-    <Compile Include="AppResources\Converters\IntEnsureMinConverter.cs" />
     <Compile Include="AppResources\Converters\IntInRangeToVisibilityConverter.cs" />
     <Compile Include="AppResources\Converters\IntToVisibilityConverter.cs" />
     <Compile Include="AppResources\Converters\ForEachTypeToVisibilityConverter.cs" />
