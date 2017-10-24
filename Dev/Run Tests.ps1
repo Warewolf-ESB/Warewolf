@@ -9,10 +9,9 @@ Param(
   [string]$ResourcesType,
   [switch]$VSTest,
   [switch]$MSTest,
-  [switch]$DotCover,
   [string]$VSTestPath="C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\Common7\IDE\CommonExtensions\Microsoft\TestWindow\vstest.console.exe",
   [string]$MSTestPath="C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\Common7\IDE\MSTest.exe",
-  [string]$DotCoverPath="$env:LocalAppData\JetBrains\Installations\dotCover08\dotCover.exe",
+  [string]$DotCoverPath,
   [string]$ServerUsername,
   [string]$ServerPassword,
   [string]$JobName="",
@@ -186,7 +185,7 @@ if ($JobName.Contains(" DotCover")) {
     $ApplyDotCover = $true
     $JobName = $JobName.Replace(" DotCover", "")
 } else {
-    $ApplyDotCover = ($DotCover.IsPresent -or $DotCoverPath -ne "")
+    $ApplyDotCover = $DotCoverPath -ne ""
 }
 
 
