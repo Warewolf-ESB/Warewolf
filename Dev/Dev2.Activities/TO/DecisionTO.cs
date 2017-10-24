@@ -406,6 +406,7 @@ namespace Dev2.TO
 
         public static void UpdateMatchVisibility(DecisionTO to, string value, IList<IFindRecsetOptions> whereOptions)
         {
+
             var opt = whereOptions.FirstOrDefault(a => value.ToLower().StartsWith(a.HandlesType().ToLower()));
             if (opt != null)
             {
@@ -426,8 +427,7 @@ namespace Dev2.TO
                         to.IsBetweenCriteriaVisible = true;
                         to.IsSinglematchCriteriaVisible = false;
                         break;
-                    default:
-                        throw new ArgumentException("Unrecognized Argument Count: " + opt.ArgumentCount);
+
                 }
             }
         }
