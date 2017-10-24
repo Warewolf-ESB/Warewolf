@@ -1,5 +1,5 @@
 
-<Service ID="c287cfc2-d001-41a6-8d18-860882d4228c" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="MergeSequence" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.0.6498.12428">
+<Service ID="c287cfc2-d001-41a6-8d18-860882d4228c" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="MergeSequence" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.0.6506.13655">
   <DisplayName>MergeSequence</DisplayName>
   <Category>ExamplesMerge\MergeSequence</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
