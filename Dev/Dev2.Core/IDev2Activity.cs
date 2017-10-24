@@ -17,7 +17,8 @@ namespace Dev2
         IEnumerable<IDev2Activity> NextNodes { get; set; }
         Guid ActivityId { get; set; }
         List<string> GetOutputs();
-        Dictionary<string, IEnumerable<IDev2Activity>> GetChildrenNodes();
+        Dictionary<string, IDev2Activity> GetChildrenNodes();
+
         FlowNode GetFlowNode();
         string GetDisplayName();
     }

@@ -49,14 +49,14 @@ namespace Dev2.Activities
         }
 
 
-        public override Dictionary<string, IEnumerable<IDev2Activity>> GetChildrenNodes()
+        public override Dictionary<string, IDev2Activity> GetChildrenNodes()
         {
-            var nextNodes = new Dictionary<string, IEnumerable<IDev2Activity>>();
+            var nextNodes = new Dictionary<string, IDev2Activity>();
             foreach (var activity in Activities)
             {
                 if (activity is IDev2Activity act)
                 {
-                    nextNodes.Add(act.GetDisplayName(), new List<IDev2Activity> { act });
+                    nextNodes.Add(act.GetDisplayName(),  act );
                 }
             }
             return nextNodes;

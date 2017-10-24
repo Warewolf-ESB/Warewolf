@@ -1069,9 +1069,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return flowStep;
         }      
 
-        public virtual Dictionary<string, IEnumerable<IDev2Activity>> GetChildrenNodes()
+        public virtual Dictionary<string, IDev2Activity> GetChildrenNodes()
         {
-            var nextNodes = new Dictionary<string, IEnumerable<IDev2Activity>>();           
+            var nextNodes = new Dictionary<string, IDev2Activity>();
+            if (NextNodes != null)
+            {
+                var nextNode = NextNodes.FirstOrDefault();
+                nextNodes.Add(nextNode.GetDisplayName(), nextNode);
+            }
             return nextNodes;
         }
 

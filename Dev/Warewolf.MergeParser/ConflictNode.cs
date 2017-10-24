@@ -23,7 +23,7 @@ namespace Warewolf.MergeParser
             return _activity.NextNodes;
         }
 
-        public Dictionary<string, IEnumerable<IDev2Activity>> GetChildrenNodes()
+        public Dictionary<string, IDev2Activity> GetChildrenNodes()
         {
             return _activity.GetChildrenNodes();
         }
