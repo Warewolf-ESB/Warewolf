@@ -211,7 +211,7 @@ function FindFile-InParent([string[]]$FileSpecs,[int]$NumberOfParentsToSearch=7)
                 }
             }
 		    if (Test-Path "$CurrentDirectory\$FileSpec") {
-                $FilePath = "$CurrentDirectory\$FileSpec"                    
+                $FilePath = Join-Path $CurrentDirectory $FileSpec                   
 		    }
         }
         if ($CurrentDirectory -ne $null -and $CurrentDirectory -ne "" -and (Split-Path -Path $CurrentDirectory -NoQualifier) -ne "\") {
