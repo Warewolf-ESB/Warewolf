@@ -10,7 +10,7 @@ namespace Warewolf.UI.Tests.Merge
     [CodedUITest]
     public class MergeDecisionConflictsTest
     {
-        public const string MergeDecision = "MergeWithDecision";
+        public const string MergeDecision = "MergeDecision";
 
         [TestMethod]
         [TestCategory("Merge")]
@@ -51,7 +51,7 @@ namespace Warewolf.UI.Tests.Merge
             Mouse.Click(MergeConflictsUIMap.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.ScrollViewerPane.ConflictsTree.MergeTreeItem.MergeItemExpander.MergeButton, new Point(10, 10));
             Assert.IsTrue(MergeConflictsUIMap.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.ScrollViewerPane.ConflictsTree.DecisionMergeTreeItem.DecisionSubTreeItem.Exists);
             Assert.IsTrue(MergeConflictsUIMap.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.ScrollViewerPane.ConflictsTree.MergeTreeItem.MergeItemExpander.ChildrenConflictsTree.FisrtAssign.Exists);
-            
+            Assert.Fail("Make sure there are only 2 assign tools on the conflicts list.");
         }
 
         #region Additional test attributes
