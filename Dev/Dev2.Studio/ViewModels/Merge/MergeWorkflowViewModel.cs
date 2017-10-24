@@ -36,8 +36,8 @@ namespace Dev2.ViewModels.Merge
 
             var currentChanges = _serviceDifferenceParser.GetDifferences(currentResourceModel, differenceResourceModel, loadworkflowFromServer);
 
-            var conflicts = BuildConflicts(currentResourceModel, differenceResourceModel, currentChanges);
-            Conflicts = new LinkedList<ICompleteConflict>(conflicts);
+            //var conflicts = BuildConflicts(currentResourceModel, differenceResourceModel, currentChanges);
+            Conflicts = new LinkedList<ICompleteConflict>(null);
             _conflictEnumerator = Conflicts.GetEnumerator();
             var firstConflict = Conflicts.FirstOrDefault();
             SetupBindings(currentResourceModel, differenceResourceModel, firstConflict);

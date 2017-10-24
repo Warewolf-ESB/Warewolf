@@ -19,17 +19,17 @@ using System.Collections.Concurrent;
 namespace Warewolf.MergeParser
 {
 
-    public class ConflictTree:IEquatable<ConflictTree>
+    public class ConflictTree : IConflictTree
     {
 
-        public ConflictTree(ConflictTreeNode startNode)
+        public ConflictTree(IConflictTreeNode startNode)
         {
             Start = startNode;
         }
 
-        public ConflictTreeNode Start { get; }
+        public IConflictTreeNode Start { get; }
 
-        public bool Equals(ConflictTree other)
+        public bool Equals(IConflictTree other)
         {
             switch (other)
             {
@@ -62,7 +62,7 @@ namespace Warewolf.MergeParser
             {
                 return false;
             }
-            return Equals((ConflictTree)obj);
+            return Equals((IConflictTree)obj);
         }
 
         public override int GetHashCode()
@@ -71,7 +71,7 @@ namespace Warewolf.MergeParser
         }
     }
 
-    public class ConflictTreeNode : IEquatable<ConflictTreeNode>
+    public class ConflictTreeNode : IConflictTreeNode
     {
         public ConflictTreeNode(IDev2Activity act, Point location)
         {
@@ -80,26 +80,26 @@ namespace Warewolf.MergeParser
             Location = location;
         }
 
-        public void AddChild(ConflictTreeNode node)
+        public void AddChild(IConflictTreeNode node)
         {
             if (Children == null)
             {
-                Children = new List<(string uniqueId, ConflictTreeNode node)>();
+                Children = new List<(string uniqueId, IConflictTreeNode node)>();
             }
             Children.Add((node.UniqueId, node));
         }
 
-        public void AddParent(ConflictTreeNode node,string name)
+        public void AddParent(IConflictTreeNode node,string name)
         {
             if (Parents == null)
             {
-                Parents = new List<(string name,string uniqueId, ConflictTreeNode node)>();
+                Parents = new List<(string name,string uniqueId, IConflictTreeNode node)>();
             }
             Parents.Add((name,node.UniqueId, node));
         }
 
 #pragma warning disable S1541 // Methods and properties should not be too complex
-        public bool Equals(ConflictTreeNode other)
+        public bool Equals(IConflictTreeNode other)
 #pragma warning restore S1541 // Methods and properties should not be too complex
         {
             IsInConflict = true;
@@ -171,8 +171,8 @@ namespace Warewolf.MergeParser
             return hashCode;
         }
 
-        public List<(string name, string uniqueId,ConflictTreeNode node)> Parents { get; private set; }
-        public List<(string uniqueId, ConflictTreeNode node)> Children { get; private set; }
+        public List<(string name, string uniqueId, IConflictTreeNode node)> Parents { get; private set; }
+        public List<(string uniqueId, IConflictTreeNode node)> Children { get; private set; }
         public string UniqueId { get; set; }
         public IDev2Activity Activity { get; }
         public Point Location { get; }
@@ -217,14 +217,14 @@ namespace Warewolf.MergeParser
 
         }   
         
-        public (ConflictTree currentTree, ConflictTree diffTree, bool hasConflict) GetConflictTrees(IContextualResourceModel current, IContextualResourceModel difference, bool loadworkflowFromServer = true)
+        public (IConflictTree currentTree, IConflictTree diffTree) GetConflictTrees(IContextualResourceModel current, IContextualResourceModel difference, bool loadworkflowFromServer = true)
         {
             var currentTree = BuildTree(current, true);
             var diffTree = BuildTree(difference, loadworkflowFromServer);
-            return (currentTree, diffTree,!currentTree.Equals(diffTree));
+            return (currentTree, diffTree);
         }
 
-        ConflictTree BuildTree(IContextualResourceModel resourceModel, bool loadFromServer)
+        IConflictTree BuildTree(IContextualResourceModel resourceModel, bool loadFromServer)
         {
             var wd = new WorkflowDesigner();
             var xaml = resourceModel.WorkflowXaml;
@@ -269,7 +269,7 @@ namespace Warewolf.MergeParser
             return conflictTreeNode;
         }
 
-        static void BuildNodeRelationship(WorkflowDesigner wd, IDev2Activity act, ConflictTreeNode parentNode,List<ModelItem> allNodes, ConflictTree tree)
+        static void BuildNodeRelationship(WorkflowDesigner wd, IDev2Activity act, IConflictTreeNode parentNode,List<ModelItem> allNodes, IConflictTree tree)
         {
             var actChildNodes = act.GetChildrenNodes();
             foreach (var childAct in actChildNodes)
@@ -326,69 +326,69 @@ namespace Warewolf.MergeParser
         private List<IDev2Activity> _flatCurrentActivities;
         private List<IDev2Activity> _flatDifferentActivities;
 
-        public List<(Guid uniqueId, IConflictNode currentNode, IConflictNode differenceNode, bool hasConflict)> GetDifferences(IContextualResourceModel current, IContextualResourceModel difference, bool loadworkflowFromServer = true)
+        public (IConflictTree currentTree, IConflictTree diffTree) GetDifferences(IContextualResourceModel current, IContextualResourceModel difference, bool loadworkflowFromServer = true)
         {
 
             var trees = GetConflictTrees(current, difference, loadworkflowFromServer);
+            return trees;
+            //_flowNodes = new ConcurrentDictionary<string, (ModelItem leftItem, ModelItem rightItem)>();
+            //_flatCurrentActivities = new List<IDev2Activity>();
+            //_flatDifferentActivities = new List<IDev2Activity>();
+            //_conflicts = new List<KeyValuePair<string, bool>>();
 
-            _flowNodes = new ConcurrentDictionary<string, (ModelItem leftItem, ModelItem rightItem)>();
-            _flatCurrentActivities = new List<IDev2Activity>();
-            _flatDifferentActivities = new List<IDev2Activity>();
-            _conflicts = new List<KeyValuePair<string, bool>>();
+            //var currentDifferences = GetNodes(current, true);
+            //var remotedifferences = GetNodes(difference, loadworkflowFromServer);
 
-            var currentDifferences = GetNodes(current, true);
-            var remotedifferences = GetNodes(difference, loadworkflowFromServer);
+            //var allCurentItems = new List<(IDev2Activity, IConflictNode)>();
+            //var allRemoteItems = new List<(IDev2Activity, IConflictNode)>();
 
-            var allCurentItems = new List<(IDev2Activity, IConflictNode)>();
-            var allRemoteItems = new List<(IDev2Activity, IConflictNode)>();
+            //var treeIndex = 1;
+            //foreach (var node in currentDifferences.orderedNodeList)
+            //{
+            //    var nodeConflictPair = BuildNode(node, currentDifferences.wd);
+            //    treeIndex++;
+            //    nodeConflictPair.Item2.TreeIndex = treeIndex;
+            //    allCurentItems.Add(nodeConflictPair);
+            //}
 
-            var treeIndex = 1;
-            foreach (var node in currentDifferences.orderedNodeList)
-            {
-                var nodeConflictPair = BuildNode(node, currentDifferences.wd);
-                treeIndex++;
-                nodeConflictPair.Item2.TreeIndex = treeIndex;
-                allCurentItems.Add(nodeConflictPair);
-            }
+            //foreach (var node in currentDifferences.allNodes)
+            //{
+            //    var dev2Activity1 = _activityParser.Parse(new List<IDev2Activity>(), node);
+            //    _flatCurrentActivities.Add(dev2Activity1);
+            //    _flowNodes.TryAdd(dev2Activity1.UniqueID, (node, default(ModelItem)));
+            //}
 
-            foreach (var node in currentDifferences.allNodes)
-            {
-                var dev2Activity1 = _activityParser.Parse(new List<IDev2Activity>(), node);
-                _flatCurrentActivities.Add(dev2Activity1);
-                _flowNodes.TryAdd(dev2Activity1.UniqueID, (node, default(ModelItem)));
-            }
+            //foreach (var node in remotedifferences.allNodes)
+            //{
+            //    var dev2Activity1 = _activityParser.Parse(new List<IDev2Activity>(), node);
+            //    _flatDifferentActivities.Add(dev2Activity1);
+            //    if (_flowNodes.ContainsKey(dev2Activity1.UniqueID))
+            //    {
+            //        var rightItem = _flowNodes[dev2Activity1.UniqueID];
+            //        rightItem.rightItem = node;
+            //        _flowNodes[dev2Activity1.UniqueID] = rightItem;
+            //    }
+            //    else
+            //    {
+            //        _flowNodes.TryAdd(dev2Activity1.UniqueID, (default(ModelItem), node));
+            //    }
+            //}
 
-            foreach (var node in remotedifferences.allNodes)
-            {
-                var dev2Activity1 = _activityParser.Parse(new List<IDev2Activity>(), node);
-                _flatDifferentActivities.Add(dev2Activity1);
-                if (_flowNodes.ContainsKey(dev2Activity1.UniqueID))
-                {
-                    var rightItem = _flowNodes[dev2Activity1.UniqueID];
-                    rightItem.rightItem = node;
-                    _flowNodes[dev2Activity1.UniqueID] = rightItem;
-                }
-                else
-                {
-                    _flowNodes.TryAdd(dev2Activity1.UniqueID, (default(ModelItem), node));
-                }
-            }
-
-            var currentActivities = allCurentItems.Select(p => p.Item1).ToList();
-            foreach (var node in remotedifferences.orderedNodeList)
-            {
-                var nodeConflictPair = BuildNode(node, remotedifferences.wd);
-                allRemoteItems.Add(nodeConflictPair);
-            }
-            var differenceActivities = allRemoteItems.Select(p => p.Item1).ToList();
-            BuildDifferenceStore();
-            var equalItems = currentActivities.Intersect(differenceActivities, new Dev2ActivityComparer()).ToList();
-            var nodesDifferentInMergeHead = currentActivities.Except(differenceActivities, new Dev2ActivityComparer()).ToList();
-            var nodesDifferentInHead = differenceActivities.Except(currentActivities, new Dev2ActivityComparer()).ToList();
-            var allDifferences = nodesDifferentInMergeHead.Union(nodesDifferentInHead, new Dev2ActivityComparer());
-            IOrderedEnumerable<(Guid uniqueId, IConflictNode currentNode, IConflictNode differenceNode, bool hasConflict)> orderedNodes
-                = BuildOrderedDifferences(allCurentItems, allRemoteItems, equalItems, allDifferences);
-            return orderedNodes.ToList();
+            //var currentActivities = allCurentItems.Select(p => p.Item1).ToList();
+            //foreach (var node in remotedifferences.orderedNodeList)
+            //{
+            //    var nodeConflictPair = BuildNode(node, remotedifferences.wd);
+            //    allRemoteItems.Add(nodeConflictPair);
+            //}
+            //var differenceActivities = allRemoteItems.Select(p => p.Item1).ToList();
+            //BuildDifferenceStore();
+            //var equalItems = currentActivities.Intersect(differenceActivities, new Dev2ActivityComparer()).ToList();
+            //var nodesDifferentInMergeHead = currentActivities.Except(differenceActivities, new Dev2ActivityComparer()).ToList();
+            //var nodesDifferentInHead = differenceActivities.Except(currentActivities, new Dev2ActivityComparer()).ToList();
+            //var allDifferences = nodesDifferentInMergeHead.Union(nodesDifferentInHead, new Dev2ActivityComparer());
+            //IOrderedEnumerable<(Guid uniqueId, IConflictNode currentNode, IConflictNode differenceNode, bool hasConflict)> orderedNodes
+            //    = BuildOrderedDifferences(allCurentItems, allRemoteItems, equalItems, allDifferences);
+            //return orderedNodes.ToList();
         }
 
         private IOrderedEnumerable<(Guid uniqueId, IConflictNode currentNode, IConflictNode differenceNode, bool hasConflict)> BuildOrderedDifferences(List<(IDev2Activity, IConflictNode)> allCurentItems,
