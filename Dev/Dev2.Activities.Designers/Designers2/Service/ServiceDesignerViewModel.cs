@@ -59,7 +59,7 @@ namespace Dev2.Activities.Designers2.Service
 
         [ExcludeFromCodeCoverage]
         public ServiceDesignerViewModel(ModelItem modelItem, IContextualResourceModel rootModel)
-            : this(modelItem, rootModel, ServerRepository.Instance, EventPublishers.Aggregator, new AsyncWorker())
+            : this(modelItem, rootModel, CustomContainer.Get<IServerRepository>(), EventPublishers.Aggregator, new AsyncWorker())
         {
         }
 
