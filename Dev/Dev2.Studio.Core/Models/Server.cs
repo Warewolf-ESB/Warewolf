@@ -179,20 +179,23 @@ namespace Dev2.Studio.Core.Models
                     {
                         displayName += Warewolf.Studio.Resources.Languages.Core.ConnectedLabel;
                     }
-                    else if (!IsConnected && (HasLoaded || !Connection.IsLocalHost))
+                    else
                     {
-                        displayName = Connection.DisplayName.Replace("(Connected)", "");
+                        if (!IsConnected && (HasLoaded || !Connection.IsLocalHost))
+                        {
+                            displayName = Connection.DisplayName.Replace("(Connected)", "");
+                        }
                     }
                     return displayName;
                 }
 
                 return Connection?.DisplayName ?? "Default Name";
-            }
-            
+            }            
             set
             {
                 Connection.DisplayName = DisplayName;
                 OnPropertyChanged();
+                Dev2Logger.Info("Server Display Name set to " + value, GlobalConstants.WarewolfInfo);
             }
         }
 
@@ -362,7 +365,7 @@ namespace Dev2.Studio.Core.Models
 
         public async Task<IExplorerItem> LoadExplorer(bool reloadCatalogue)
         {
-            var result = await ProxyLayer.LoadExplorer(reloadCatalogue);
+            var result = await ProxyLayer.LoadExplorer(reloadCatalogue).ConfigureAwait(false);
             HasLoaded = true;
             return result;
         }

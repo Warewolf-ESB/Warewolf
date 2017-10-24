@@ -32,15 +32,18 @@ namespace Dev2.Activities.Designers2.FormatNumber
 
         public List<string> RoundingTypes { get; set; }
 
-        public string SelectedRoundingType { get { return (string)GetValue(SelectedRoundingTypeProperty); } set { SetValue(SelectedRoundingTypeProperty, value); } }
+        public string SelectedRoundingType { get => (string)GetValue(SelectedRoundingTypeProperty); set => SetValue(SelectedRoundingTypeProperty, value); }
         public static readonly DependencyProperty SelectedRoundingTypeProperty =
         DependencyProperty.Register("SelectedRoundingType", typeof(string), typeof(FormatNumberDesignerViewModel), new PropertyMetadata(null, OnSelectedRoundingTypeChanged));
+        
+        string RoundingType { set => SetProperty(value); get => GetProperty<string>(); }
 
-        // DO NOT bind to these properties - these are here for convenience only!!!
-        string RoundingType { set { SetProperty(value); } get { return GetProperty<string>(); } }
-        string RoundingDecimalPlaces { set { SetProperty(value); } }
+        private void SetRoundingDecimalPlaces(string value)
+        {
+            SetProperty(value);
+        }
 
-        public bool IsRoundingEnabled { get { return (bool)GetValue(IsRoundingEnabledProperty); } set { SetValue(IsRoundingEnabledProperty, value); } }
+        public bool IsRoundingEnabled { get => (bool)GetValue(IsRoundingEnabledProperty); set => SetValue(IsRoundingEnabledProperty, value); }
 
         public static readonly DependencyProperty IsRoundingEnabledProperty =
            DependencyProperty.Register("IsRoundingEnabled", typeof(bool), typeof(FormatNumberDesignerViewModel), new PropertyMetadata(false));
@@ -54,7 +57,7 @@ namespace Dev2.Activities.Designers2.FormatNumber
             {
                 if (roundingType == enRoundingType.None)
                 {
-                    viewModel.RoundingDecimalPlaces = string.Empty;
+                    viewModel.SetRoundingDecimalPlaces(string.Empty);
                     viewModel.IsRoundingEnabled = false;
                 }
                 else

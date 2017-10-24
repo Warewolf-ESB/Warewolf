@@ -43,7 +43,7 @@ namespace Warewolf.Core
             {
                 if (!String.IsNullOrEmpty(address))
                 {
-                    var result = await client.DownloadStringTaskAsync(address);
+                    var result = await client.DownloadStringTaskAsync(address).ConfigureAwait(false);
                     return result;
                 }
             }

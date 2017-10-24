@@ -49,7 +49,7 @@ namespace Dev2.Security
         public override async void Read()
         {
             Dev2Logger.Debug("Reading Permissions from Server", "Warewolf Debug");
-            await ReadAsync();
+            await ReadAsync().ConfigureAwait(false);
         }
 
         public virtual async Task ReadAsync()
@@ -62,7 +62,7 @@ namespace Dev2.Security
                 };
                 Dev2Logger.Debug("Getting Permissions from Server", "Warewolf Debug");
 
-                SecuritySettingsTO securitySettingsTo = await communicationController.ExecuteCommandAsync<SecuritySettingsTO>(EnvironmentConnection,EnvironmentConnection.WorkspaceID);
+                SecuritySettingsTO securitySettingsTo = await communicationController.ExecuteCommandAsync<SecuritySettingsTO>(EnvironmentConnection,EnvironmentConnection.WorkspaceID).ConfigureAwait(false);
                 List<WindowsGroupPermission> newPermissions = null;
                 if (securitySettingsTo != null)
                 {

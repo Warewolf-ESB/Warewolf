@@ -67,7 +67,9 @@ namespace Dev2.Workspaces
 
         public WorkspaceItemRepository(IWorkspaceItemRepository workspaceItemRepository)
         {
+#pragma warning disable S3010 // For testing
             _instance = workspaceItemRepository;
+#pragma warning restore S3010
         }
 
         #endregion

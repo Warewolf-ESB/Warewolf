@@ -128,11 +128,11 @@ namespace System.Windows.Controls
             if(SelectorControl != null)
             {
                 int index = SelectorControl.SelectedIndex;
-                if(index >= 0)
+                if (index >= 0)
                 {
                     SelectorControl.SelectedIndex--;
                 }
-                else if(index == -1)
+                else
                 {
                     SelectorControl.SelectedIndex = SelectorControl.Items.Count - 1;
                 }
