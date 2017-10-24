@@ -57,12 +57,15 @@ namespace Dev2.Runtime.ESB.Management.Services
                 };
                 Debug.Assert(res != null, "res != null");
                 if (!string.IsNullOrEmpty(src.FileSystemAssemblyName))
-                {                    
+                {
                     res.AssemblyLocation = src.FileSystemAssemblyName;
                 }
-                else if (!string.IsNullOrEmpty(src.GACAssemblyName))
+                else
                 {
-                    res.AssemblyLocation = src.GACAssemblyName;
+                    if (!string.IsNullOrEmpty(src.GACAssemblyName))
+                    {
+                        res.AssemblyLocation = src.GACAssemblyName;
+                    }
                 }
                 ResourceCatalog.Instance.SaveResource(GlobalConstants.ServerWorkspaceID, res, src.Path);
                 ServerExplorerRepo.UpdateItem(res);

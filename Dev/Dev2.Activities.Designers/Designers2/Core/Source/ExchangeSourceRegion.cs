@@ -74,7 +74,7 @@ namespace Dev2.Activities.Designers2.Core.Source
             Sources = sources.Where(source => source != null && source.ResourceType == type).ToObservableCollection();
             IsEnabled = true;
             _modelItem = modelItem;
-            SourceId = modelItem.GetProperty<Guid>("SourceId");
+            SetSourceId(modelItem.GetProperty<Guid>("SourceId"));
 
             if (SavedSource != null)
             {
@@ -87,13 +87,10 @@ namespace Dev2.Activities.Designers2.Core.Source
             return SelectedSource != null;
         }
 
-        Guid SourceId
+        private void SetSourceId(Guid value)
         {
-            set
-            {
-                _sourceId = value;
-                _modelItem?.SetProperty("SourceId", value);
-            }
+            _sourceId = value;
+            _modelItem?.SetProperty("SourceId", value);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -159,7 +156,7 @@ namespace Dev2.Activities.Designers2.Core.Source
             {
                 _selectedSource = value;
                 SavedSource = value;
-                SourceId = value.ResourceID;
+                SetSourceId(value.ResourceID);
             }
             
             OnPropertyChanged("SelectedSource");

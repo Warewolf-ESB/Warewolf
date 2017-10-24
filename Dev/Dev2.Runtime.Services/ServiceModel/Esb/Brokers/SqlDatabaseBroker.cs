@@ -40,13 +40,16 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
 
             var res = result.ToString();
 
-            if(foundXMLFrags >= 1)
+            if (foundXMLFrags >= 1)
             {
                 res = "<FromXMLPayloads>" + res + "</FromXMLPayloads>";
             }
-            else if(foundXMLFrags == 0)
+            else
             {
-                res = payload;
+                if (foundXMLFrags == 0)
+                {
+                    res = payload;
+                }
             }
 
             return base.NormalizeXmlPayload(res);

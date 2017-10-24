@@ -302,7 +302,10 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
                     return orderMethodsList;
                 }
             }
-            if (string.IsNullOrEmpty(classId)) { return new ServiceMethodList();}
+            if (string.IsNullOrEmpty(classId))
+            {
+                return new ServiceMethodList();
+            }
             var type = Type.GetTypeFromCLSID(classId.ToGuid(), true);
             var methodInfos = type.GetMethods();
 

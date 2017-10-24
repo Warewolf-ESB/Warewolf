@@ -66,9 +66,12 @@ namespace Dev2.Data.Util
                 region = new StringBuilder(currentNode.Payload);
                 openRegion = true;
             }
-            else if (currentNode.IsRoot && !currentNode.IsLeaf && currentNode.Child.HangingOpen)
+            else
             {
-                throw new Dev2DataLanguageParseError(ErrorResource.InvalidSyntaxCreatingVariable, 0, payload.Length, enIntellisenseErrorCode.SyntaxError);
+                if (currentNode.IsRoot && !currentNode.IsLeaf && currentNode.Child.HangingOpen)
+                {
+                    throw new Dev2DataLanguageParseError(ErrorResource.InvalidSyntaxCreatingVariable, 0, payload.Length, enIntellisenseErrorCode.SyntaxError);
+                }
             }
             return currentNode;
         }
@@ -204,9 +207,12 @@ namespace Dev2.Data.Util
                         IDataListVerifyPart part = IntellisenseFactory.CreateDataListValidationRecordsetPart(partName, t.Name, t.Description, index);
                         result.Add(IntellisenseFactory.CreateSelectableResult(parts[0].Length, payload.EndIndex, part, part.Description));
                     }
-                    else if (match == search)
+                    else
                     {
-                        emptyOk = true;
+                        if (match == search)
+                        {
+                            emptyOk = true;
+                        }
                     }
                 }
             }
@@ -269,11 +275,7 @@ namespace Dev2.Data.Util
             int start = raw.IndexOf(DataListUtil.RecordsetIndexOpeningBracket, StringComparison.Ordinal);
             int end = raw.LastIndexOf(DataListUtil.RecordsetIndexClosingBracket, StringComparison.Ordinal);
             
-            if (end - start == 1)
-            {
-                result = true;
-            }
-            else if (start > 0 && end < 0 && (raw.Length - 1 == start))
+            if (end - start == 1 || (start > 0 && end < 0 && (raw.Length - 1 == start)))
             {
                 result = true;
             }
@@ -290,9 +292,12 @@ namespace Dev2.Data.Util
                         throw new Dev2DataLanguageParseError(message, to.StartIndex + start, to.EndIndex + end, enIntellisenseErrorCode.InvalidRecordsetNotation);
                     }
                 }
-                else if (start > 0 && end > start)
+                else
                 {
-                    result = CheckCurrentIndex(to, start, raw, end);
+                    if (start > 0 && end > start)
+                    {
+                        result = CheckCurrentIndex(to, start, raw, end);
+                    }
                 }
             }
 

@@ -18,7 +18,7 @@ using Unlimited.Framework.Converters.Graph.String;
 
 namespace Unlimited.Framework.Converters.Graph
 {
-    public class InterrogatorFactory
+    public static class InterrogatorFactory
     {
         #region Class Members
 

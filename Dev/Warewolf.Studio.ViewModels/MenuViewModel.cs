@@ -209,11 +209,14 @@ namespace Warewolf.Studio.ViewModels
                 ButtonWidth = 35;
                 IsPanelOpen = !IsPanelOpen;
             }
-            else if (IsPanelLockedOpen && IsPanelOpen)
+            else
             {
-                mainViewModel.MenuExpanded = !IsPanelOpen;
-                ButtonWidth = 125;
-                IsPanelOpen = !IsPanelOpen;
+                if (IsPanelLockedOpen && IsPanelOpen)
+                {
+                    mainViewModel.MenuExpanded = !IsPanelOpen;
+                    ButtonWidth = 125;
+                    IsPanelOpen = !IsPanelOpen;
+                }
             }
 
             UpdateProperties();
@@ -223,7 +226,7 @@ namespace Warewolf.Studio.ViewModels
         {
             if(mainViewModel != null)
             {
-                HasNewVersion = await mainViewModel.CheckForNewVersion();
+                HasNewVersion = await mainViewModel.CheckForNewVersion().ConfigureAwait(false);
             }
         }
 

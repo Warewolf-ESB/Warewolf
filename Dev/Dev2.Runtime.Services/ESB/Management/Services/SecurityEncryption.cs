@@ -40,7 +40,11 @@ namespace Dev2.Runtime.ESB.Management.Services
         const string HashAlgorithm = "SHA1";
         const int PasswordIterations = 2;
         const int KeySize = 256;
-        
+
+        protected SecurityEncryption()
+        {
+        }
+
         public static string Encrypt(string plainText)
         {
             var initVectorBytes = Encoding.ASCII.GetBytes(InitVector);
