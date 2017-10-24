@@ -186,7 +186,7 @@ if ($JobName.Contains(" DotCover")) {
     $ApplyDotCover = $true
     $JobName = $JobName.Replace(" DotCover", "")
 } else {
-    $ApplyDotCover = $DotCover.IsPresent
+    $ApplyDotCover = ($DotCover.IsPresent -or $DotCoverPath -ne "")
 }
 
 
@@ -401,12 +401,34 @@ function Move-Artifacts-To-TestResults([bool]$DotCover, [bool]$Server, [bool]$St
         Write-Host Playlist file written to `"$OutPlaylistPath`".
     }
 
+    if ($Studio) {
+        Move-File-To-TestResults "$env:LocalAppData\Warewolf\Studio Logs\Warewolf Studio.log" "$JobName Studio.log"
+    }
+    if ($Studio -and $DotCover) {
+        $StudioSnapshot = "$env:LocalAppData\Warewolf\Studio Logs\dotCover.dcvr"
+        Write-Host Trying to move Studio coverage snapshot file from $StudioSnapshot to $TestsResultsPath\$JobName Studio DotCover.dcvr
+        while (!(Test-Path $StudioSnapshot) -and $Timeout++ -lt 10) {
+            sleep 10
+        }
+        if (Test-Path $StudioSnapshot) {
+            $locked = Wait-For-FileUnlock $StudioSnapshot
+            if (!($locked)) {
+                Write-Host Moving Studio coverage snapshot file from $StudioSnapshot to $TestsResultsPath\$JobName Studio DotCover.dcvr
+                Move-Item $StudioSnapshot "$TestsResultsPath\$JobName Studio DotCover.dcvr" -force
+            } else {
+                Write-Host Studio Coverage Snapshot File is locked.
+            }
+        } else {
+		    Write-Error -Message "Studio coverage snapshot not found at $StudioSnapshot"
+        }
+        if (Test-Path "$env:LocalAppData\Warewolf\Studio Logs\dotCover.log") {
+            Move-File-To-TestResults "$env:LocalAppData\Warewolf\Studio Logs\dotCover.log" "$JobName Studio DotCover.log"
+        }
+    }
     if ($Server) {
         Move-File-To-TestResults "$env:ProgramData\Warewolf\Server Log\wareWolf-Server.log" "$JobName Server.log"
         Move-File-To-TestResults "$env:ProgramData\Warewolf\Server Log\my.warewolf.io.log" "$JobName my.warewolf.io Server.log"
-    }
-    if ($Studio) {
-        Move-File-To-TestResults "$env:LocalAppData\Warewolf\Studio Logs\Warewolf Studio.log" "$JobName Studio.log"
+        Move-File-To-TestResults "$env:ProgramData\Warewolf\Server Log\my.warewolf.io.errors.log" "$JobName my.warewolf.io Server Errors.log"
     }
     if ($Server -and $DotCover) {
         $ServerSnapshot = "$env:ProgramData\Warewolf\Server Log\dotCover.dcvr"
@@ -429,27 +451,6 @@ function Move-Artifacts-To-TestResults([bool]$DotCover, [bool]$Server, [bool]$St
         }
         if (Test-Path "$env:ProgramData\Warewolf\Server Log\my.warewolf.io.errors.log") {
             Move-File-To-TestResults "$env:ProgramData\Warewolf\Server Log\my.warewolf.io.errors.log" "$JobName my.warewolf.io Errors.log"
-        }
-    }
-    if ($Studio -and $DotCover) {
-        $StudioSnapshot = "$env:LocalAppData\Warewolf\Studio Logs\dotCover.dcvr"
-        Write-Host Trying to move Studio coverage snapshot file from $StudioSnapshot to $TestsResultsPath\$JobName Studio DotCover.dcvr
-        while (!(Test-Path $StudioSnapshot) -and $Timeout++ -lt 10) {
-            sleep 10
-        }
-        if (Test-Path $StudioSnapshot) {
-            $locked = Wait-For-FileUnlock $StudioSnapshot
-            if (!($locked)) {
-                Write-Host Moving Studio coverage snapshot file from $StudioSnapshot to $TestsResultsPath\$JobName Studio DotCover.dcvr
-                Move-Item $StudioSnapshot "$TestsResultsPath\$JobName Studio DotCover.dcvr" -force
-            } else {
-                Write-Host Studio Coverage Snapshot File is locked.
-            }
-        } else {
-            Write-Host Studio coverage snapshot not found at $StudioSnapshot
-        }
-        if (Test-Path "$env:LocalAppData\Warewolf\Studio Logs\dotCover.log") {
-            Move-File-To-TestResults "$env:LocalAppData\Warewolf\Studio Logs\dotCover.log" "$JobName Studio DotCover.log"
         }
     }
     if ($Server -and $Studio -and $DotCover) {
