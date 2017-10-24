@@ -56,19 +56,17 @@ namespace Dev2.Activities
         {
             return Switch;
         }
-        public override Dictionary<string,IEnumerable<IDev2Activity>> GetChildrenNodes()
+        public override Dictionary<string,IDev2Activity> GetChildrenNodes()
         {
-            var nextNodes = new Dictionary<string, IEnumerable<IDev2Activity>>();            
+            var nextNodes = new Dictionary<string, IDev2Activity>();            
             foreach(var swt in Switches)
             {
                 var currentAct = swt.Value;
-                var swtChildren = new List<IDev2Activity> { currentAct };
-                swtChildren.AddRange(currentAct.NextNodes.Flatten(x => x.NextNodes));
-                nextNodes.Add(swt.Key, swtChildren);
+                nextNodes.Add(swt.Key, currentAct);
             }
             if (Default != null)
             {
-                nextNodes.Add(@"Default", Default.Flatten(x => x.NextNodes));
+                nextNodes.Add(@"Default", Default.FirstOrDefault());
             }
             return nextNodes;
         }

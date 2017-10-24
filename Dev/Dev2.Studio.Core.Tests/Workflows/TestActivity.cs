@@ -41,7 +41,7 @@ namespace Dev2.Core.Tests.Workflows
         {
             return "";
         }
-        public Dictionary<string, IEnumerable<IDev2Activity>> GetChildrenNodes() => throw new NotImplementedException();
+        public Dictionary<string, IDev2Activity> GetChildrenNodes() => throw new NotImplementedException();
         public FlowNode GetFlowNode() => throw new NotImplementedException();
     }
 
@@ -69,7 +69,7 @@ namespace Dev2.Core.Tests.Workflows
             return new List<string>();
         }
 
-        public Dictionary<string, IEnumerable<IDev2Activity>> GetChildrenNodes() => throw new NotImplementedException();
+        public Dictionary<string, IDev2Activity> GetChildrenNodes() => throw new NotImplementedException();
         public FlowNode GetFlowNode() => throw new NotImplementedException();
     }
 }

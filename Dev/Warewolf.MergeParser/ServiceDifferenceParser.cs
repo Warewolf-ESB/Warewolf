@@ -7,7 +7,6 @@ using System.Linq;
 using Dev2.Studio.Core.Activities.Utils;
 using System.Activities.Presentation;
 using Dev2;
-using Dev2.Activities;
 using Dev2.Studio.Interfaces;
 using Dev2.Common;
 using Dev2.Utilities;
@@ -19,6 +18,167 @@ using System.Collections.Concurrent;
 
 namespace Warewolf.MergeParser
 {
+
+    public class ConflictTree:IEquatable<ConflictTree>
+    {
+
+        public ConflictTree(ConflictTreeNode startNode)
+        {
+            Start = startNode;
+        }
+
+        public ConflictTreeNode Start { get; }
+
+        public bool Equals(ConflictTree other)
+        {
+            switch (other)
+            {
+                case null when Start == null:
+                    {
+                        return true;
+                    }
+                case null when Start != null:
+                    {
+                        return false;
+                    }
+                default:
+                    {
+                        return Start.Equals(other);
+                    }
+            }
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+            if (obj.GetType() != GetType())
+            {
+                return false;
+            }
+            return Equals((ConflictTree)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return (Start != null ? Start.GetHashCode() : 0);
+        }
+    }
+
+    public class ConflictTreeNode : IEquatable<ConflictTreeNode>
+    {
+        public ConflictTreeNode(IDev2Activity act, Point location)
+        {
+            Activity = act;
+            UniqueId = act.UniqueID;
+            Location = location;
+        }
+
+        public void AddChild(ConflictTreeNode node)
+        {
+            if (Children == null)
+            {
+                Children = new List<(string uniqueId, ConflictTreeNode node)>();
+            }
+            Children.Add((node.UniqueId, node));
+        }
+
+        public void AddParent(ConflictTreeNode node,string name)
+        {
+            if (Parents == null)
+            {
+                Parents = new List<(string name,string uniqueId, ConflictTreeNode node)>();
+            }
+            Parents.Add((name,node.UniqueId, node));
+        }
+
+#pragma warning disable S1541 // Methods and properties should not be too complex
+        public bool Equals(ConflictTreeNode other)
+#pragma warning restore S1541 // Methods and properties should not be too complex
+        {
+            IsInConflict = true;
+            if (other == null)
+            {
+                return false;
+            }
+            other.IsInConflict = true;
+            if (other.UniqueId != UniqueId)
+            {
+                return false;
+            }
+            if (!other.Activity.Equals(Activity))
+            {
+                return false;
+            }
+            if(other.Parents==null && Parents != null)
+            {
+                return false;
+            }
+            if (other.Parents != null && Parents == null)
+            {
+                return false;
+            }
+            if (!Parents.SequenceEqual(other.Parents))
+            {
+                return false;
+            }
+            if (other.Children == null && Children != null)
+            {
+                return false;
+            }
+            if (other.Children != null && Children == null)
+            {
+                return false;
+            }
+            if (!Children.SequenceEqual(other.Children))
+            {
+                return false;
+            }
+            IsInConflict = false;
+            other.IsInConflict = false;
+            return true;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+            if (obj.GetType() != GetType())
+            {
+                return false;
+            }
+            return Equals((ConflictTreeNode)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            var hashCode = (397) ^ UniqueId.GetHashCode();
+            hashCode = (hashCode * 397) ^ (Parents != null ? Parents.GetHashCode() : 0);
+            hashCode = (hashCode * 397) ^ (Children != null ? Children.GetHashCode() : 0);
+            hashCode = (hashCode * 397) ^ (Activity != null ? Activity.GetHashCode() : 0);
+            return hashCode;
+        }
+
+        public List<(string name, string uniqueId,ConflictTreeNode node)> Parents { get; private set; }
+        public List<(string uniqueId, ConflictTreeNode node)> Children { get; private set; }
+        public string UniqueId { get; set; }
+        public IDev2Activity Activity { get; }
+        public Point Location { get; }
+        public bool IsInConflict { get; set; }
+
+    }
     public class ServiceDifferenceParser : IServiceDifferenceParser
     {
         private readonly IActivityParser _activityParser;
@@ -55,7 +215,75 @@ namespace Warewolf.MergeParser
             _activityParser = activityParser;
             _definationCleaner = definationCleaner;
 
-        }              
+        }   
+        
+        public (ConflictTree currentTree, ConflictTree diffTree, bool hasConflict) GetConflictTrees(IContextualResourceModel current, IContextualResourceModel difference, bool loadworkflowFromServer = true)
+        {
+            var currentTree = BuildTree(current, true);
+            var diffTree = BuildTree(difference, loadworkflowFromServer);
+            return (currentTree, diffTree,!currentTree.Equals(diffTree));
+        }
+
+        ConflictTree BuildTree(IContextualResourceModel resourceModel, bool loadFromServer)
+        {
+            var wd = new WorkflowDesigner();
+            var xaml = resourceModel.WorkflowXaml;
+
+            var workspace = GlobalConstants.ServerWorkspaceID;
+            if (loadFromServer)
+            {
+                var msg = resourceModel.Environment?.ResourceRepository.FetchResourceDefinition(resourceModel.Environment, workspace, resourceModel.ID, true);
+                if (msg != null)
+                {
+                    xaml = msg.Message;
+                }
+            }
+            else
+            {
+                var se = new Dev2JsonSerializer();
+                var a = _definationCleaner.GetResourceDefinition(true, resourceModel.ID, resourceModel.WorkflowXaml);
+                var executeMessage = se.Deserialize<ExecuteMessage>(a);
+                xaml = executeMessage.Message;
+            }
+
+            if (xaml == null || xaml.Length == 0)
+            {
+                throw new Exception($"Could not find resource definition for {resourceModel.ResourceName}");
+            }
+            wd.Text = xaml.ToString();
+            wd.Load();
+            var modelService = wd.Context.Services.GetService<ModelService>();
+            var workflowHelper = new WorkflowHelper();
+            var flowchartDiff = workflowHelper.EnsureImplementation(modelService).Implementation as Flowchart;
+            var allNodes = modelService.Find(modelService.Root, typeof(IDev2Activity)).ToList();
+            var startNode = ModelItemUtils.CreateModelItem(flowchartDiff.StartNode);
+            ConflictTree conflictTreeNode = null;
+            if (startNode != null)
+            {
+                var start = _activityParser.Parse(new List<IDev2Activity>(), startNode);
+                var shapeLocation = GetShapeLocation(wd, startNode);
+                var startConflictNode = new ConflictTreeNode(start, shapeLocation);
+                conflictTreeNode = new ConflictTree(startConflictNode);
+                BuildNodeRelationship(wd, start, startConflictNode,allNodes, conflictTreeNode);
+            }
+            return conflictTreeNode;
+        }
+
+        static void BuildNodeRelationship(WorkflowDesigner wd, IDev2Activity act, ConflictTreeNode parentNode,List<ModelItem> allNodes, ConflictTree tree)
+        {
+            var actChildNodes = act.GetChildrenNodes();
+            foreach (var childAct in actChildNodes)
+            {
+                var loc = GetShapeLocation(wd, ModelItemUtils.CreateModelItem(childAct.Value));
+                var allChildren = tree.Start.Children.Flatten(x => x.node.Children);
+                var foundChild = allChildren.FirstOrDefault(a => a.uniqueId == childAct.Value.UniqueID).node;
+                var childNode = foundChild ?? new ConflictTreeNode(childAct.Value, loc);
+                childNode.AddParent(parentNode,childAct.Key);
+                parentNode.AddChild(childNode);
+                BuildNodeRelationship(wd, childAct.Value, childNode, allNodes, tree);
+            }
+        }
+
         public ConcurrentDictionary<string, (ModelItem leftItem, ModelItem rightItem)> GetAllNodes()
         {
             return _flowNodes;
@@ -100,6 +328,9 @@ namespace Warewolf.MergeParser
 
         public List<(Guid uniqueId, IConflictNode currentNode, IConflictNode differenceNode, bool hasConflict)> GetDifferences(IContextualResourceModel current, IContextualResourceModel difference, bool loadworkflowFromServer = true)
         {
+
+            var trees = GetConflictTrees(current, difference, loadworkflowFromServer);
+
             _flowNodes = new ConcurrentDictionary<string, (ModelItem leftItem, ModelItem rightItem)>();
             _flatCurrentActivities = new List<IDev2Activity>();
             _flatDifferentActivities = new List<IDev2Activity>();
@@ -253,10 +484,11 @@ namespace Warewolf.MergeParser
             var shapeLocation = new Point();
             var viewStateService = wd.Context.Services.GetService<ViewStateService>();
             var viewState = viewStateService?.RetrieveAllViewState(modelItem);
-            if (viewState != null)
+            if (viewState != null && viewState.ContainsKey("ShapeLocation"))
             {
                 shapeLocation = (Point)viewState["ShapeLocation"];
             }
+
             return shapeLocation;
         }
 

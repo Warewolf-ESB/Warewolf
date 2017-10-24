@@ -171,11 +171,8 @@ namespace Dev2.ViewModels.Merge
                     {
                         continue;
                     }
-                    foreach (var innerAct in act.Value)
-                    {
-                        var item = GetModel(ModelItemUtils.CreateModelItem(innerAct), innerAct, mergeToolModel, act.Key);
-                        mergeToolModel.Children.Add(item);
-                    }
+                    var item = GetModel(ModelItemUtils.CreateModelItem(act.Value), act.Value, mergeToolModel, act.Key);
+                    mergeToolModel.Children.Add(item);
                 }
                 return mergeToolModel;
             }

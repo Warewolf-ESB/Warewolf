@@ -14,6 +14,6 @@ namespace Dev2.Studio.Interfaces
         ModelItem CurrentActivity { get; }
 
         IEnumerable<IDev2Activity> GetNextNodes();
-        Dictionary<string, IEnumerable<IDev2Activity>> GetChildrenNodes();
+        Dictionary<string, IDev2Activity> GetChildrenNodes();
     }
 }
