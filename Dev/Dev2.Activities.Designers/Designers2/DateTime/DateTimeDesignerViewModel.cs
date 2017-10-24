@@ -65,17 +65,18 @@ namespace Dev2.Activities.Designers2.DateTime
         string TimeModifierType { set => SetProperty(value); get {return  GetProperty<string>();} }
 
         private void SetTimeModifierAmountDisplay(string value) { SetProperty(value); }
-        string InputFormat { set => SetProperty(value);  get { return GetProperty<string>(); } }
-        string OutputFormat { set => SetProperty(value);  get { return GetProperty<string>(); } }
-
-        public override void Validate()
-        {
-        }
+        string InputFormat { set => SetProperty(value); get => GetProperty<string>(); }
+        string OutputFormat { set => SetProperty(value); get => GetProperty<string>(); }
 
         public override void UpdateHelpDescriptor(string helpText)
         {
             var mainViewModel = CustomContainer.Get<IShellViewModel>();
             mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
+        }
+
+        public override void Validate()
+        {
+            throw new System.NotImplementedException();
         }
     }
 }
