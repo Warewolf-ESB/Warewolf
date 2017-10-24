@@ -337,7 +337,7 @@ function Wait-For-FileUnlock([string]$FilePath) {
 function Wait-For-FileExist([string]$FilePath) {
     $exists = $false
     $RetryCount = 0
-    while($notExists -and $RetryCount -lt 12) {
+    while(!($exists) -and $RetryCount -lt 12) {
         $RetryCount++
         if (Test-Path $FilePath) {
             $exists = $true
@@ -446,7 +446,7 @@ function Move-Artifacts-To-TestResults([bool]$DotCover, [bool]$Server, [bool]$St
     if ($Server -and $DotCover) {
         $ServerSnapshot = "$env:ProgramData\Warewolf\Server Log\dotCover.dcvr"
         Write-Host Trying to move Server coverage snapshot file from $ServerSnapshot to $TestsResultsPath\$JobName Server DotCover.dcvr
-        $exists = Wait-For-FileExist $StudioSnapshot
+        $exists = Wait-For-FileExist $ServerSnapshot
         if ($exists) {
             $locked = Wait-For-FileUnlock $ServerSnapshot
             if (!($locked)) {
