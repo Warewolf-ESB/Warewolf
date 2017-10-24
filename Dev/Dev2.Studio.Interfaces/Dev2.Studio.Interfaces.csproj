@@ -100,6 +100,8 @@
     <Compile Include="IComplexObjectHandler.cs" />
     <Compile Include="IConflictModelFactory.cs" />
     <Compile Include="IConflictNode.cs" />
+    <Compile Include="IConflictTree.cs" />
+    <Compile Include="IConflictTreeNode.cs" />
     <Compile Include="IConnectControlViewModel.cs" />
     <Compile Include="IContextualResourceModel.cs" />
     <Compile Include="IDataListViewModelHelper.cs" />
