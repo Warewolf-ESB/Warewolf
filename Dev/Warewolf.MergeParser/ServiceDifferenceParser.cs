@@ -43,7 +43,7 @@ namespace Warewolf.MergeParser
                     }
                 default:
                     {
-                        return Start.Equals(other);
+                        return Start.Equals(other.Start);
                     }
             }
         }
@@ -101,48 +101,21 @@ namespace Warewolf.MergeParser
 #pragma warning disable S1541 // Methods and properties should not be too complex
         public bool Equals(IConflictTreeNode other)
 #pragma warning restore S1541 // Methods and properties should not be too complex
-        {
-            IsInConflict = true;
+        {            
             if (other == null)
             {
+                IsInConflict = true;
                 return false;
             }
-            other.IsInConflict = true;
-            if (other.UniqueId != UniqueId)
-            {
-                return false;
-            }
-            if (!other.Activity.Equals(Activity))
-            {
-                return false;
-            }
-            if(other.Parents==null && Parents != null)
-            {
-                return false;
-            }
-            if (other.Parents != null && Parents == null)
-            {
-                return false;
-            }
-            if (!Parents.SequenceEqual(other.Parents))
-            {
-                return false;
-            }
-            if (other.Children == null && Children != null)
-            {
-                return false;
-            }
-            if (other.Children != null && Children == null)
-            {
-                return false;
-            }
-            if (!Children.SequenceEqual(other.Children))
-            {
-                return false;
-            }
-            IsInConflict = false;
-            other.IsInConflict = false;
-            return true;
+            var equals = true;
+            equals &= other.UniqueId == UniqueId;
+            equals &= other.Activity.Equals(Activity);         
+            equals &= (other.Children != null || Children == null);
+            equals &= (other.Children == null || Children != null);
+            equals &= (Children == null || Children.SequenceEqual(other.Children ?? new List<(string uniqueId, IConflictTreeNode node)>()));
+            IsInConflict = !equals;
+            other.IsInConflict = !equals;
+            return equals;
         }
 
         public override bool Equals(object obj)
@@ -220,6 +193,7 @@ namespace Warewolf.MergeParser
         {
             var currentTree = BuildTree(current, true);
             var diffTree = BuildTree(difference, loadworkflowFromServer);
+            var hasConflict = currentTree.Equals(diffTree);
             return (currentTree, diffTree);
         }
 
@@ -254,7 +228,15 @@ namespace Warewolf.MergeParser
             var modelService = wd.Context.Services.GetService<ModelService>();
             var workflowHelper = new WorkflowHelper();
             var flowchartDiff = workflowHelper.EnsureImplementation(modelService).Implementation as Flowchart;
-            var allNodes = modelService.Find(modelService.Root, typeof(IDev2Activity)).ToList();
+            var allNodes = modelService.Find(modelService.Root, typeof(FlowNode)).ToList();
+            var idsLocations = new List<(string uniqueId, Point location)>();            
+            foreach(var n in allNodes)
+            {
+                var loc = GetShapeLocation(wd, n);
+                var id = _activityParser.Parse(new List<IDev2Activity>(), n)?.UniqueID;
+                idsLocations.Add((id, loc));
+
+            }
             var startNode = ModelItemUtils.CreateModelItem(flowchartDiff.StartNode);
             ConflictTree conflictTreeNode = null;
             if (startNode != null)
@@ -263,25 +245,23 @@ namespace Warewolf.MergeParser
                 var shapeLocation = GetShapeLocation(wd, startNode);
                 var startConflictNode = new ConflictTreeNode(start, shapeLocation);
                 conflictTreeNode = new ConflictTree(startConflictNode);
-                BuildNodeRelationship(wd, start, startConflictNode,allNodes, conflictTreeNode);
+                BuildNodeRelationship(wd, start, startConflictNode, idsLocations, conflictTreeNode);
             }
             return conflictTreeNode;
         }
 
-        static void BuildNodeRelationship(WorkflowDesigner wd, IDev2Activity act, IConflictTreeNode parentNode,List<ModelItem> allNodes, IConflictTree tree)
+        static void BuildNodeRelationship(WorkflowDesigner wd, IDev2Activity act, IConflictTreeNode parentNode, List<(string uniqueId, Point location)> idsLocations, IConflictTree tree)
         {
             var actChildNodes = act.GetChildrenNodes();
             foreach (var childAct in actChildNodes)
             {
-                var flowNode = childAct.Value.GetFlowNode();
-                var modelItem = ModelItemUtils.CreateModelItem(flowNode);
-                var loc = GetShapeLocation(wd, modelItem);
+                var loc = idsLocations.FirstOrDefault(t => t.uniqueId == childAct.Value.UniqueID).location;
                 var allChildren = tree.Start.Children.Flatten(x => x.node.Children);
                 var foundChild = allChildren.FirstOrDefault(a => a.uniqueId == childAct.Value.UniqueID).node;
                 var childNode = foundChild ?? new ConflictTreeNode(childAct.Value, loc);
                 childNode.AddParent(parentNode,childAct.Key);
                 parentNode.AddChild(childNode);
-                BuildNodeRelationship(wd, childAct.Value, childNode, allNodes, tree);
+                BuildNodeRelationship(wd, childAct.Value, childNode, idsLocations, tree);
             }
         }
 
