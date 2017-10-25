@@ -32,11 +32,7 @@ namespace Dev2.ViewModels.Merge
             Children = new ObservableCollection<IMergeToolModel>();
             _resourceModel = resourceModel;
             var modelItem = ModelItemUtils.CreateModelItem(conflict.Activity);
-            Model = GetModel(modelItem, conflict);
-            Model.IsMergeVisible = conflict.IsInConflict;
-            Model.FlowNode = modelItem;
-            Model.NodeLocation = conflict.Location;
-            //Model = GetModel(conflictNode.CurrentActivity, conflictNode.Activity, null, "");
+            Model = GetModel(modelItem, conflict,null);           
         }
 
         public ConflictModelFactory()
@@ -185,7 +181,7 @@ namespace Dev2.ViewModels.Merge
         }
 
 
-        public IMergeToolModel GetModel(ModelItem modelItem, IConflictTreeNode node)
+        public IMergeToolModel GetModel(ModelItem modelItem, IConflictTreeNode node, IMergeToolModel parentItem,string parentLabelDescription = "")
         {
             if (modelItem == null || node == null || node.Activity==null)
             {
@@ -225,13 +221,15 @@ namespace Dev2.ViewModels.Merge
                     MergeIcon = modelItem.GetImageSourceForTool(),
                     MergeDescription = node.Activity.GetDisplayName(),
                     UniqueId = node.Activity.UniqueID.ToGuid(),
-                    IsMergeVisible = true,
                     ActivityType = node.Activity.GetFlowNode(),
-                    //Parent = parentItem,
-                    //HasParent = parentItem != null,
-                    //ParentDescription = parentLableDescription,
-                    //IsTrueArm = parentLableDescription?.ToLowerInvariant() == "true"
-                };
+                    IsMergeVisible = node.IsInConflict,
+                    FlowNode = modelItem,
+                    NodeLocation = node.Location,
+                    Parent = parentItem,
+                    HasParent = parentItem != null,
+                    ParentDescription = parentLabelDescription,
+                    IsTrueArm = parentLabelDescription?.ToLowerInvariant() == "true"
+            };
                 if (node.Children != null)
                 {
                     foreach (var act in node.Children)
@@ -240,7 +238,7 @@ namespace Dev2.ViewModels.Merge
                         {
                             continue;
                         }
-                        var item = GetModel(ModelItemUtils.CreateModelItem(act.node.Activity), act.node);
+                        var item = GetModel(ModelItemUtils.CreateModelItem(act.node.Activity), act.node, mergeToolModel);
                         mergeToolModel.Children.Add(item);
                     }
                 }

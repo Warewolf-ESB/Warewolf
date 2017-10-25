@@ -129,8 +129,8 @@ namespace Dev2.ViewModels.Merge
                 conflict.HasConflict = conflict.HasConflict || node.IsInConflict;
             }
             
-            conflicts.AddRange(BuildChildrenConflictsCurrent(conflicts,currentTree.Start.Children, currentResourceModel));
-            conflicts.AddRange(BuildChildrenConflictsDiff(conflicts, diffTree.Start.Children, differenceResourceModel));
+            //conflicts.AddRange(BuildChildrenConflictsCurrent(conflicts,currentTree.Start.Children, currentResourceModel));
+            //conflicts.AddRange(BuildChildrenConflictsDiff(conflicts, diffTree.Start.Children, differenceResourceModel));
             #region OLD
             //foreach (var currentChange in currentChanges)
             //{
