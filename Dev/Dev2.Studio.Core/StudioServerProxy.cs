@@ -44,7 +44,7 @@ namespace Dev2.Studio.Core
 
         public async Task<IExplorerItem> LoadExplorer(bool reloadCatalogue)
         {
-            var explorerItems = await QueryManagerProxy.Load(reloadCatalogue).ConfigureAwait(false);
+            var explorerItems = await QueryManagerProxy.Load(reloadCatalogue).ConfigureAwait(true);
             return explorerItems;
         }
         public Task<List<string>> LoadExplorerDuplicates()
@@ -79,7 +79,7 @@ namespace Dev2.Studio.Core
 
         public async Task<bool> Move(IExplorerItemViewModel explorerItemViewModel, IExplorerTreeItem destination)
         {
-            var res = await UpdateManagerProxy.MoveItem(explorerItemViewModel.ResourceId, destination.ResourcePath, explorerItemViewModel.ResourcePath).ConfigureAwait(false);
+            var res = await UpdateManagerProxy.MoveItem(explorerItemViewModel.ResourceId, destination.ResourcePath, explorerItemViewModel.ResourcePath).ConfigureAwait(true);
             if (res.Status == ExecStatus.Success)
             {
                 return true;

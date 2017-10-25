@@ -287,7 +287,7 @@ namespace Dev2.Controller
 
                     ServicePayload.ServiceName = ServiceName;
                     StringBuilder toSend = serializer.SerializeToBuilder(ServicePayload);
-                    var payload = await connection.ExecuteCommandAsync(toSend, workspaceId).ConfigureAwait(false);
+                    var payload = await connection.ExecuteCommandAsync(toSend, workspaceId).ConfigureAwait(true);
                     var executeCommand = serializer.Deserialize<T>(payload);
                     if (executeCommand == null)
                     {
@@ -355,7 +355,7 @@ namespace Dev2.Controller
 
                 ServicePayload.ServiceName = ServiceName;
                 StringBuilder toSend = serializer.SerializeToBuilder(ServicePayload);
-                var payload = await connection.ExecuteCommandAsync(toSend, workspaceId).ConfigureAwait(false);
+                var payload = await connection.ExecuteCommandAsync(toSend, workspaceId).ConfigureAwait(true);
 
                 try
                 {
