@@ -13,8 +13,9 @@ namespace Dev2.Core.Tests
         {
             //---------------Set up test pack-------------------
             var conflictNode = new Mock<IConflictNode>();
+            var node = new Mock<IConflictTreeNode>();
             var contextualResourceModel = new Mock<IContextualResourceModel>();
-            var factory = new ConflictModelFactory(conflictNode.Object, contextualResourceModel.Object);
+            var factory = new ConflictModelFactory(contextualResourceModel.Object, node.Object);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             //---------------Test Result -----------------------
