@@ -371,7 +371,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 try
                 {
-                    var connected = await connection.ConnectAsync().ConfigureAwait(false);
+                    var connected = await connection.ConnectAsync().ConfigureAwait(true);
                     if (connected && connection.IsConnected)
                     {
                         if (ShouldUpdateActiveEnvironment)
