@@ -223,7 +223,7 @@ namespace Warewolf.Studio.ViewModels
         {
             if(mainViewModel != null)
             {
-                HasNewVersion = await mainViewModel.CheckForNewVersion();
+                HasNewVersion = await mainViewModel.CheckForNewVersion().ConfigureAwait(true);
             }
         }
 

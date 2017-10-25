@@ -41,8 +41,8 @@ namespace Warewolf.Studio.ViewModels
         {
             if (_destination?.SelectedEnvironment != null && _destination.SelectedEnvironment.AsList().Count <= 0)
             {
-                await _destination.SelectedEnvironment.Load(true, true);
-                CheckDestinationPersmisions();
+                await _destination.SelectedEnvironment.Load(true, true).ConfigureAwait(true);
+                CheckDestinationPermissions();
             }
         }
 
