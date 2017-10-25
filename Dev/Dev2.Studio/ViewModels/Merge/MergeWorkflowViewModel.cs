@@ -186,7 +186,7 @@ namespace Dev2.ViewModels.Merge
             return conflicts;
         }
 
-        private IEnumerable<ICompleteConflict> BuildChildrenConflicts(IConflictTreeNode current, IConflictTreeNode diff, IContextualResourceModel currentResourceModel, IContextualResourceModel differenceResourceModel)
+        IEnumerable<ICompleteConflict> BuildChildrenConflicts(IConflictTreeNode current, IConflictTreeNode diff, IContextualResourceModel currentResourceModel, IContextualResourceModel differenceResourceModel)
         {
             var conflicts = new List<ICompleteConflict>();
             ICompleteConflict conflict = null;
