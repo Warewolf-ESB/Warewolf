@@ -110,7 +110,7 @@ namespace Dev2.Studio.Core
 
             if (Connection.IsLocalHost)
             {
-                var result = await comsController.ExecuteCompressedCommandAsync<IExplorerItem>(Connection, GlobalConstants.ServerWorkspaceID).ConfigureAwait(false);
+                var result = await comsController.ExecuteCompressedCommandAsync<IExplorerItem>(Connection, GlobalConstants.ServerWorkspaceID).ConfigureAwait(true);
                 return result;
             }
             else
@@ -126,7 +126,7 @@ namespace Dev2.Studio.Core
                                               MessageBoxImage.Warning, "", false, false, true, false, false, false);
                     }
                 },TaskScheduler.FromCurrentSynchronizationContext());
-                var result = await fetchExplorerTask.ConfigureAwait(false);
+                var result = await fetchExplorerTask.ConfigureAwait(true);
                 return result;
             }                        
         }
@@ -202,7 +202,7 @@ namespace Dev2.Studio.Core
             var comsController = CommunicationControllerFactory.CreateController("FileResourceBuilder");
 
             var workspaceId = Connection.WorkspaceID;
-            var result = await comsController.ExecuteCommandAsync<ExecuteMessage>(Connection, workspaceId).ConfigureAwait(false);
+            var result = await comsController.ExecuteCommandAsync<ExecuteMessage>(Connection, workspaceId).ConfigureAwait(true);
             if (result == null || result.HasError)
             {
                 if (!Connection.IsConnected)

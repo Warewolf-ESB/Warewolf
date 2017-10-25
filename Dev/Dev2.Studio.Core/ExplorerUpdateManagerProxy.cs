@@ -112,20 +112,14 @@ namespace Dev2.Studio.Core
                 throw new WarewolfSaveException(result.Message, null);
             }
         }
-
-        /// <summary>
-        /// Move a resource to another folder
-        /// </summary>
-        /// <param name="sourceId"></param>
-        /// <param name="destinationPath"></param>
-        /// <param name="resourcePath"></param>
+        
         public async Task<IExplorerRepositoryResult> MoveItem(Guid sourceId, string destinationPath, string resourcePath)
         {
             var controller = CommunicationControllerFactory.CreateController("MoveItemService");
             controller.AddPayloadArgument("itemToMove", sourceId.ToString());
             controller.AddPayloadArgument("newPath", destinationPath);
             controller.AddPayloadArgument("itemToBeRenamedPath", resourcePath);
-            return await controller.ExecuteCommandAsync<IExplorerRepositoryResult>(Connection, GlobalConstants.ServerWorkspaceID).ConfigureAwait(false);
+            return await controller.ExecuteCommandAsync<IExplorerRepositoryResult>(Connection, GlobalConstants.ServerWorkspaceID).ConfigureAwait(true);
         }
 
         #endregion
