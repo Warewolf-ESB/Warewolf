@@ -141,7 +141,11 @@
       <Visible>False</Visible>
     </None>
     <Compile Include="Calculate\SyntaxTreeBuilderHelper.cs" />
+    <Compile Include="Common\ConflictTree.cs" />
+    <Compile Include="Common\ConflictTreeNode.cs" />
     <Compile Include="Common\Dev2EmailSender.cs" />
+    <Compile Include="Common\IConflictTree.cs" />
+    <Compile Include="Common\IConflictTreeNode.cs" />
     <Compile Include="Comparers\DataSourceShapeComparer.cs" />
     <Compile Include="DeletedFileMetadata.cs" />
     <Compile Include="Common\Dev2Random.cs" />

@@ -39,6 +39,22 @@ namespace Dev2.Activities
         {
             return Conditions.DisplayText;
         }
+
+        public override IConflictTreeNode BuildNode()
+        {
+            var node = new ConflictTreeNode(this, new System.Windows.Point());
+            if (TrueArm != null)
+            {
+                node.AddChild(TrueArm?.FirstOrDefault().BuildNode());
+            }
+            if (FalseArm != null)
+            {
+                node.AddChild(FalseArm?.FirstOrDefault().BuildNode());
+
+            }            
+            return node;
+        }
+
         public override Dictionary<string, IDev2Activity> GetChildrenNodes()
         {
             var nextNodes = new Dictionary<string, IDev2Activity>();

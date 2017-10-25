@@ -32,7 +32,7 @@ namespace Dev2.ViewModels.Merge
             Children = new ObservableCollection<IMergeToolModel>();
             _resourceModel = resourceModel;
             var modelItem = ModelItemUtils.CreateModelItem(conflict.Activity);
-            Model = GetModel(modelItem, conflict.Activity);
+            Model = GetModel(modelItem, conflict);
             Model.IsMergeVisible = conflict.IsInConflict;
             Model.FlowNode = modelItem;
             Model.NodeLocation = conflict.Location;
@@ -185,14 +185,14 @@ namespace Dev2.ViewModels.Merge
         }
 
 
-        public IMergeToolModel GetModel(ModelItem modelItem, IDev2Activity activity)
+        public IMergeToolModel GetModel(ModelItem modelItem, IConflictTreeNode node)
         {
-            if (modelItem == null || activity == null)
+            if (modelItem == null || node == null || node.Activity==null)
             {
                 return null;
             }
 
-            var activityType = activity.GetType();            
+            var activityType = node.Activity.GetType();            
 
             DesignerAttributeMap.DesignerAttributes.TryGetValue(activityType, out var actual);
             if (actual != null)
@@ -200,7 +200,7 @@ namespace Dev2.ViewModels.Merge
                 ActivityDesignerViewModel instance;
                 if (actual == typeof(SwitchDesignerViewModel))
                 {
-                    var dsfSwitch = activity as DsfSwitch;
+                    var dsfSwitch = node as DsfSwitch;
                     instance = Activator.CreateInstance(actual, modelItem, dsfSwitch?.Switch ?? "") as ActivityDesignerViewModel;
                 }
                 else if (actual == typeof(ServiceDesignerViewModel))
@@ -209,10 +209,10 @@ namespace Dev2.ViewModels.Merge
                     var childResourceModel = _resourceModel.Environment.ResourceRepository.LoadContextualResourceModel(resourceId);
                     instance = Activator.CreateInstance(actual, modelItem, childResourceModel) as ActivityDesignerViewModel;
                 }
-                else if (activity is IAdapterActivity a)
+                else if (node.Activity is IAdapterActivity a)
                 {
-                    var node = ModelItemUtils.CreateModelItem(a.GetInnerNode());
-                    instance = Activator.CreateInstance(actual, node) as ActivityDesignerViewModel;
+                    var inode = ModelItemUtils.CreateModelItem(a.GetInnerNode());
+                    instance = Activator.CreateInstance(actual, inode) as ActivityDesignerViewModel;
                 }
                 else
                 {
@@ -223,15 +223,27 @@ namespace Dev2.ViewModels.Merge
                 {
                     ActivityDesignerViewModel = instance,
                     MergeIcon = modelItem.GetImageSourceForTool(),
-                    MergeDescription = activity.GetDisplayName(),
-                    UniqueId = activity.UniqueID.ToGuid(),
+                    MergeDescription = node.Activity.GetDisplayName(),
+                    UniqueId = node.Activity.UniqueID.ToGuid(),
                     IsMergeVisible = true,
-                    ActivityType = activity.GetFlowNode(),
+                    ActivityType = node.Activity.GetFlowNode(),
                     //Parent = parentItem,
                     //HasParent = parentItem != null,
                     //ParentDescription = parentLableDescription,
                     //IsTrueArm = parentLableDescription?.ToLowerInvariant() == "true"
                 };
+                if (node.Children != null)
+                {
+                    foreach (var act in node.Children)
+                    {
+                        if (act.node == null || act.node.Activity == null)
+                        {
+                            continue;
+                        }
+                        var item = GetModel(ModelItemUtils.CreateModelItem(act.node.Activity), act.node);
+                        mergeToolModel.Children.Add(item);
+                    }
+                }
                 modelItem.PropertyChanged += (sender, e) =>
                 {
                     OnModelItemChanged?.Invoke(modelItem, mergeToolModel);

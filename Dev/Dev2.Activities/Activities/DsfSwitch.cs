@@ -56,6 +56,23 @@ namespace Dev2.Activities
         {
             return Switch;
         }
+
+        public override IConflictTreeNode BuildNode()
+        {
+            var node = new ConflictTreeNode(this, new System.Windows.Point());
+            foreach (var activity in Switches)
+            {
+                if (activity.Value is IDev2Activity act)
+                {
+                    node.AddChild(act.BuildNode());
+                }
+            }
+            if (Default != null)
+            {
+                node.AddChild(Default.FirstOrDefault().BuildNode());
+            }
+            return node;
+        }
         public override Dictionary<string,IDev2Activity> GetChildrenNodes()
         {
             var nextNodes = new Dictionary<string, IDev2Activity>();            

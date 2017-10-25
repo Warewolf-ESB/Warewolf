@@ -1,4 +1,5 @@
-﻿using Dev2.Studio.Interfaces;
+﻿using Dev2.Common;
+using Dev2.Studio.Interfaces;
 using Dev2.ViewModels.Merge;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
