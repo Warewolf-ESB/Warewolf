@@ -104,7 +104,7 @@ namespace Dev2.Core.Tests.Merge
             conflictNode.Setup(p => p.CurrentActivity).Returns(ModelItemUtils.CreateModelItem(value));
             conflictNode.Setup(p => p.CurrentFlowStep).Returns(ModelItemUtils.CreateModelItem(assignStep));
             //------------Execute Test---------------------------
-            var completeConflict = new ConflictModelFactory(conflictNode.Object, contextualResource.Object);
+            var completeConflict = new ConflictModelFactory(/*conflictNode.Object, */contextualResource.Object);
             //------------Assert Results-------------------------
             Assert.IsNotNull(completeConflict);
             Assert.IsNotNull(completeConflict.Children);
@@ -139,7 +139,7 @@ namespace Dev2.Core.Tests.Merge
             currentResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(assignExampleBuilder);
             currentResourceModel.Setup(resModel => resModel.DisplayName).Returns("Hello World");
             //------------Execute Test---------------------------
-            var completeConflict = new ConflictModelFactory(conflictNode.Object, contextualResource.Object);
+            var completeConflict = new ConflictModelFactory(/*conflictNode.Object, */contextualResource.Object);
             //------------Assert Results-------------------------
             Assert.IsNotNull(completeConflict);
             completeConflict.GetDataList(currentResourceModel.Object);
@@ -173,7 +173,7 @@ namespace Dev2.Core.Tests.Merge
             currentResourceModel.Setup(resModel => resModel.DisplayName).Returns("Hello World");
             currentResourceModel.Setup(resModel => resModel.DataList).Returns("");
             //------------Execute Test---------------------------
-            var completeConflict = new ConflictModelFactory(conflictNode.Object, contextualResource.Object);
+            var completeConflict = new ConflictModelFactory(/*conflictNode.Object, */contextualResource.Object);
             //------------Assert Results-------------------------
             Assert.IsNotNull(completeConflict);
             completeConflict.GetDataList(currentResourceModel.Object);
@@ -217,7 +217,7 @@ namespace Dev2.Core.Tests.Merge
             conflictNode.Setup(p => p.CurrentActivity).Returns(ModelItemUtils.CreateModelItem(value));
             conflictNode.Setup(p => p.CurrentFlowStep).Returns(ModelItemUtils.CreateModelItem(assignStep));
             //------------Execute Test---------------------------
-            var completeConflict = new ConflictModelFactory(conflictNode.Object, contextualResource.Object);
+            var completeConflict = new ConflictModelFactory(/*conflictNode.Object, */contextualResource.Object);
             //------------Assert Results-------------------------
             Assert.IsNotNull(completeConflict);
             Assert.IsNotNull(completeConflict.Children);
@@ -258,7 +258,7 @@ namespace Dev2.Core.Tests.Merge
             contextualResource.Setup(p => p.Environment.ResourceRepository.LoadContextualResourceModel(It.IsAny<Guid>())).Returns(currentResourceModel.Object);
             //------------Execute Test---------------------------
 
-            var completeConflict = new ConflictModelFactory(conflictNode.Object, contextualResource.Object);
+            var completeConflict = new ConflictModelFactory(/*conflictNode.Object, */contextualResource.Object);
             //------------Assert Results-------------------------
             Assert.IsNotNull(completeConflict);
             Assert.IsNotNull(completeConflict.Children);
@@ -312,7 +312,7 @@ namespace Dev2.Core.Tests.Merge
             conflictNode.Setup(p => p.CurrentActivity).Returns(ModelItemUtils.CreateModelItem(value));
             conflictNode.Setup(p => p.CurrentFlowStep).Returns(ModelItemUtils.CreateModelItem(assignStep));
             //------------Execute Test---------------------------
-            var completeConflict = new ConflictModelFactory(conflictNode.Object, contextualResource.Object);
+            var completeConflict = new ConflictModelFactory(/*conflictNode.Object, */contextualResource.Object);
             //------------Assert Results-------------------------
             Assert.IsNotNull(completeConflict);
             Assert.IsNotNull(completeConflict.Children);
@@ -340,7 +340,7 @@ namespace Dev2.Core.Tests.Merge
             conflictNode.Setup(p => p.CurrentActivity).Returns(default(ModelItem));
             conflictNode.Setup(p => p.CurrentFlowStep).Returns(default(ModelItem));
             //------------Execute Test---------------------------
-            var completeConflict = new ConflictModelFactory(conflictNode.Object, contextualResource.Object);
+            var completeConflict = new ConflictModelFactory(/*conflictNode.Object, */contextualResource.Object);
             //------------Assert Results-------------------------
             Assert.IsNull(completeConflict.Model);
 
