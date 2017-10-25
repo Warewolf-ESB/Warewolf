@@ -92,24 +92,45 @@ namespace Dev2.ViewModels.Merge
             var currentTree = currentChanges.current;
             var diffTree = currentChanges.diff;
 
-            var conflict = new CompleteConflict();
+            
             if (currentTree.Start != null)
-            {            
+            {
+                var conflict = new CompleteConflict();
                 var modelFactory = new ConflictModelFactory(currentResourceModel, currentTree.Start);
+                var id = Guid.Parse(currentTree.Start.UniqueId);
+                conflict.UniqueId = id;
+                conflict.DiffViewModel = EmptyConflictViewModel(id);
                 conflict.CurrentViewModel = modelFactory.Model;
                 conflict.CurrentViewModel.SomethingModelToolChanged += SourceOnModelToolChanged;
                 conflict.CurrentViewModel.Container = conflict;
+                conflicts.Add(conflict);
             }
 
             if (diffTree.Start != null)
             {
-                var modelFactory = new ConflictModelFactory(differenceResourceModel, diffTree.Start);
-                conflict.DiffViewModel = modelFactory.Model;
+                ICompleteConflict conflict = null;
+                var node = diffTree.Start;
+                var foundConflict = conflicts.FirstOrDefault(t => t.UniqueId.ToString() == node.UniqueId);
+                var id = Guid.Parse(node.UniqueId);
+                if (foundConflict == null)
+                {
+                    conflict = new CompleteConflict { UniqueId = id, CurrentViewModel = EmptyConflictViewModel(id) };
+                    conflicts.Add(conflict);
+                }
+                else
+                {
+                    conflict = foundConflict;
+                }
+                var conflictTreeNode = node;
+                var currentFactory = new ConflictModelFactory(differenceResourceModel, conflictTreeNode);
+                conflict.DiffViewModel = currentFactory.Model;
                 conflict.DiffViewModel.SomethingModelToolChanged += SourceOnModelToolChanged;
                 conflict.DiffViewModel.Container = conflict;
+                conflict.HasConflict = conflict.HasConflict || node.IsInConflict;
             }
-            conflicts.Add(conflict);
-            conflicts.AddRange(BuildChildrenConflicts(currentTree.Start, diffTree.Start,currentResourceModel,differenceResourceModel));
+            
+            conflicts.AddRange(BuildChildrenConflictsCurrent(conflicts,currentTree.Start.Children, currentResourceModel));
+            conflicts.AddRange(BuildChildrenConflictsDiff(conflicts, diffTree.Start.Children, differenceResourceModel));
             #region OLD
             //foreach (var currentChange in currentChanges)
             //{
@@ -186,52 +207,154 @@ namespace Dev2.ViewModels.Merge
             return conflicts;
         }
 
-        IEnumerable<ICompleteConflict> BuildChildrenConflicts(IConflictTreeNode current, IConflictTreeNode diff, IContextualResourceModel currentResourceModel, IContextualResourceModel differenceResourceModel)
+
+        IEnumerable<ICompleteConflict> BuildChildrenConflictsCurrent(List<ICompleteConflict> currentConflicts, List<(string uniqueId, IConflictTreeNode node)> currentChildren, IContextualResourceModel currentResourceModel)
         {
             var conflicts = new List<ICompleteConflict>();
-            ICompleteConflict conflict = null;
-            foreach (var node in current.Children)
+            if(currentChildren==null || currentChildren.Count == 0)
             {
-                if (conflict == null)
-                {
-                    //conflict = new CompleteConflict();
-                }
-                conflict = new CompleteConflict();
-                var conflictTreeNode = node.node;
-                var currentFactory = new ConflictModelFactory(currentResourceModel, conflictTreeNode);
-                conflict.CurrentViewModel = currentFactory.Model;
-                conflict.CurrentViewModel.SomethingModelToolChanged += SourceOnModelToolChanged;
-                conflict.CurrentViewModel.Container = conflict;
-                if (conflictTreeNode.IsInConflict)
-                {
-                    var valueTuple = diff.Children.FirstOrDefault(tuple => tuple.uniqueId == conflictTreeNode.UniqueId);
-                    var diffFactory = new ConflictModelFactory(differenceResourceModel, valueTuple.node);
-                    conflict.DiffViewModel = diffFactory.Model;
-                    conflict.DiffViewModel.SomethingModelToolChanged += SourceOnModelToolChanged;
-                    conflict.DiffViewModel.Container = conflict;
-                }
-                else
-                {
-                    conflict.DiffViewModel = EmptyConflictViewModel(Guid.Parse(conflictTreeNode.UniqueId));
-                    conflict.DiffViewModel.Container = conflict;
-                    conflict.DiffViewModel.SomethingModelToolChanged += SourceOnModelToolChanged;
-                }
-                conflicts.Add(conflict);
+                return conflicts;
             }
+            if (currentChildren.Count > 1)
+            {                
+                foreach (var node in currentChildren)
+                {
+                    var parents = node.node.Parents;
+                    ICompleteConflict foundParent = null;
+                    if (parents != null)
+                    {
+                        foreach (var parent in parents)
+                        {
+                            foundParent = currentConflicts.FirstOrDefault(t => t.UniqueId.ToString() == parent.uniqueId);
+                            if (foundParent != null)
+                            {
+                                break;
+                            }
+                        }
+                    }
+                    var id = Guid.Parse(node.uniqueId);
+                    var conflict = new CompleteConflict { UniqueId = id, DiffViewModel = EmptyConflictViewModel(id) };
+                    var conflictTreeNode = node.node;
+                    var currentFactory = new ConflictModelFactory(currentResourceModel, conflictTreeNode);
+                    conflict.CurrentViewModel = currentFactory.Model;
+                    conflict.CurrentViewModel.SomethingModelToolChanged += SourceOnModelToolChanged;
+                    conflict.CurrentViewModel.Container = conflict;
+                    conflict.HasConflict = conflict.HasConflict || node.node.IsInConflict;
+                    if (foundParent != null)
+                    {
+                        if (foundParent.Children == null)
+                        {
+                            foundParent.Children = new LinkedList<ICompleteConflict>();
+                        }
+                        foundParent.Children.AddLast(conflict);
+                    }
+                    else
+                    {
+                        conflicts.Add(conflict);
+                    }
 
-            //foreach (var node in diff.Children)
-            //{
-            //    if (conflict == null)
-            //    {
-            //        conflict = new CompleteConflict();
-            //    }
-            //    var factoryA = new ConflictModelFactory(differenceResourceModel, node.node);
-            //    conflict.DiffViewModel = factoryA.Model;
-            //    conflict.DiffViewModel.SomethingModelToolChanged += SourceOnModelToolChanged;
-            //    conflict.DiffViewModel.Container = conflict;
-            //    conflicts.Add(conflict);
-            //}
-            
+                    conflicts.AddRange(BuildChildrenConflictsCurrent(conflicts, conflictTreeNode.Children, currentResourceModel));
+                }
+                   
+            }
+            else
+            {
+                foreach (var node in currentChildren)
+                {
+                    var id = Guid.Parse(node.uniqueId);
+                    var conflict = new CompleteConflict { UniqueId = id, DiffViewModel = EmptyConflictViewModel(id) };
+                    var conflictTreeNode = node.node;
+                    var currentFactory = new ConflictModelFactory(currentResourceModel, conflictTreeNode);
+                    conflict.CurrentViewModel = currentFactory.Model;
+                    conflict.CurrentViewModel.SomethingModelToolChanged += SourceOnModelToolChanged;
+                    conflict.CurrentViewModel.Container = conflict;
+                    conflict.HasConflict = conflict.HasConflict || node.node.IsInConflict;
+                    conflicts.Add(conflict);
+                    conflicts.AddRange(BuildChildrenConflictsCurrent(conflicts, conflictTreeNode.Children, currentResourceModel));
+                }
+                      
+            }                       
+            return conflicts;
+        }
+
+        IEnumerable<ICompleteConflict> BuildChildrenConflictsDiff(List<ICompleteConflict> currentConflicts, List<(string uniqueId, IConflictTreeNode node)> currentChildren, IContextualResourceModel currentResourceModel)
+        {
+            var conflicts = new List<ICompleteConflict>();
+            if (currentChildren == null || currentChildren.Count == 0)
+            {
+                return conflicts;
+            }
+            if (currentChildren.Count > 1)
+            {                
+                foreach (var node in currentChildren)
+                {
+
+                    var parents = node.node.Parents;
+                    ICompleteConflict foundParent = null;
+                    if (parents != null)
+                    {
+                        foreach (var parent in parents)
+                        {
+                            foundParent = currentConflicts.FirstOrDefault(t => t.UniqueId.ToString() == parent.uniqueId);
+                            if (foundParent != null)
+                            {
+                                break;
+                            }
+                        }
+                    }
+                    var foundConflict = conflicts.FirstOrDefault(t => t.UniqueId.ToString() == node.uniqueId);
+                    ICompleteConflict conflict = null;
+                    var id = Guid.Parse(node.uniqueId);
+                    if (foundConflict == null)
+                    {
+                        conflict = new CompleteConflict { UniqueId = id, CurrentViewModel = EmptyConflictViewModel(id) };
+
+                    }
+                    else
+                    {
+                        conflict = foundConflict;
+                    }
+                    var conflictTreeNode = node.node;
+                    var currentFactory = new ConflictModelFactory(currentResourceModel, conflictTreeNode);
+                    conflict.DiffViewModel = currentFactory.Model;
+                    conflict.DiffViewModel.SomethingModelToolChanged += SourceOnModelToolChanged;
+                    conflict.DiffViewModel.Container = conflict;
+                    conflict.HasConflict = conflict.HasConflict || node.node.IsInConflict;
+                    if (foundParent != null)
+                    {
+                        foundParent.Children.AddLast(conflict);
+                    }
+                    else
+                    {
+                        conflicts.Add(conflict);
+                    }
+                }
+            }
+            else
+            {    
+                foreach (var node in currentChildren)
+                {
+                    var foundConflict = conflicts.FirstOrDefault(t => t.UniqueId.ToString() == node.uniqueId);
+                    ICompleteConflict conflict = null;
+                    var id = Guid.Parse(node.uniqueId);
+                    if (foundConflict == null)
+                    {
+                        conflict = new CompleteConflict { UniqueId = id, CurrentViewModel = EmptyConflictViewModel(id) };
+                        conflicts.Add(conflict);
+
+                    }
+                    else
+                    {
+                        conflict = foundConflict;
+                    }
+                    var conflictTreeNode = node.node;
+                    var currentFactory = new ConflictModelFactory(currentResourceModel, conflictTreeNode);
+                    conflict.DiffViewModel = currentFactory.Model;
+                    conflict.DiffViewModel.SomethingModelToolChanged += SourceOnModelToolChanged;
+                    conflict.DiffViewModel.Container = conflict;
+                    conflict.HasConflict = conflict.HasConflict || node.node.IsInConflict;
+                }
+            }
             return conflicts;
         }
 
