@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Dev2.Studio.Interfaces
+namespace Dev2.Common
 {
     public interface IConflictTree : IEquatable<IConflictTree>
     {

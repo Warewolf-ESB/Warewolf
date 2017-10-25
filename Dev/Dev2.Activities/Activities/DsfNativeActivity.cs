@@ -1067,7 +1067,24 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             var flowStep = new FlowStep { Action = this as Activity };
             return flowStep;
-        }      
+        }
+
+        public virtual IConflictTreeNode BuildNode()
+        {
+            var node = new ConflictTreeNode(this, new System.Windows.Point());
+            if (NextNodes == null)
+            {
+                return node;
+            }
+            foreach (var activity in NextNodes)
+            {
+                if (activity is IDev2Activity act)
+                {
+                    node.AddNext(act.BuildNode());
+                }
+            }
+            return node;
+        }
 
         public virtual Dictionary<string, IDev2Activity> GetChildrenNodes()
         {

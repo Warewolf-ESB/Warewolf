@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Dev2.Interfaces;
 using System.Activities.Statements;
+using Dev2.Common;
 
 namespace Dev2
 {
@@ -18,7 +19,7 @@ namespace Dev2
         Guid ActivityId { get; set; }
         List<string> GetOutputs();
         Dictionary<string, IDev2Activity> GetChildrenNodes();
-
+        IConflictTreeNode BuildNode();
         FlowNode GetFlowNode();
         string GetDisplayName();
     }

@@ -12,6 +12,7 @@ using System;
 using System.Activities;
 using System.Activities.Statements;
 using System.Collections.Generic;
+using Dev2.Common;
 using Dev2.Interfaces;
 
 namespace Dev2.Core.Tests.Workflows
@@ -43,6 +44,7 @@ namespace Dev2.Core.Tests.Workflows
         }
         public Dictionary<string, IDev2Activity> GetChildrenNodes() => throw new NotImplementedException();
         public FlowNode GetFlowNode() => throw new NotImplementedException();
+        public IConflictTreeNode BuildNode() => throw new NotImplementedException();
     }
 
     public class TestDecisionActivity : Activity<bool>, IDev2Activity
@@ -71,5 +73,6 @@ namespace Dev2.Core.Tests.Workflows
 
         public Dictionary<string, IDev2Activity> GetChildrenNodes() => throw new NotImplementedException();
         public FlowNode GetFlowNode() => throw new NotImplementedException();
+        public IConflictTreeNode BuildNode() => throw new NotImplementedException();
     }
 }

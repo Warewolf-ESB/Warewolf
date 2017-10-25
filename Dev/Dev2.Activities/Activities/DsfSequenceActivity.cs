@@ -48,7 +48,18 @@ namespace Dev2.Activities
             metadata.AddChild(_innerSequence);
         }
 
-
+        public override IConflictTreeNode BuildNode()
+        {
+            var node = new ConflictTreeNode(this, new System.Windows.Point());
+            foreach (var activity in Activities)
+            {
+                if (activity is IDev2Activity act)
+                {
+                    node.AddChild(act.BuildNode());
+                }
+            }
+            return node;
+        }
         public override Dictionary<string, IDev2Activity> GetChildrenNodes()
         {
             var nextNodes = new Dictionary<string, IDev2Activity>();
