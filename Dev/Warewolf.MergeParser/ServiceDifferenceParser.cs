@@ -214,7 +214,6 @@ namespace Warewolf.MergeParser
             VerifyArgument.IsNotNull(nameof(definationCleaner), definationCleaner);
             _activityParser = activityParser;
             _definationCleaner = definationCleaner;
-
         }   
         
         public (IConflictTree currentTree, IConflictTree diffTree) GetConflictTrees(IContextualResourceModel current, IContextualResourceModel difference, bool loadworkflowFromServer = true)
@@ -274,7 +273,9 @@ namespace Warewolf.MergeParser
             var actChildNodes = act.GetChildrenNodes();
             foreach (var childAct in actChildNodes)
             {
-                var loc = GetShapeLocation(wd, ModelItemUtils.CreateModelItem(childAct.Value));
+                var flowNode = childAct.Value.GetFlowNode();
+                var modelItem = ModelItemUtils.CreateModelItem(flowNode);
+                var loc = GetShapeLocation(wd, modelItem);
                 var allChildren = tree.Start.Children.Flatten(x => x.node.Children);
                 var foundChild = allChildren.FirstOrDefault(a => a.uniqueId == childAct.Value.UniqueID).node;
                 var childNode = foundChild ?? new ConflictTreeNode(childAct.Value, loc);
@@ -429,7 +430,7 @@ namespace Warewolf.MergeParser
             var orderedNodes = new List<ModelItem>();
             var step = startNode.GetCurrentValue<FlowStep>();
             orderedNodes.Add(startNode);
-            while (step != null && step.Next != null)
+            while (step?.Next != null)
             {
                 var next = ModelItemUtils.CreateModelItem(step.Next);
                 orderedNodes.Add(next);
@@ -491,7 +492,5 @@ namespace Warewolf.MergeParser
 
             return shapeLocation;
         }
-
-
     }
 }

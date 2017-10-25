@@ -94,34 +94,23 @@ namespace Dev2.ViewModels.Merge
 
             var conflict = new CompleteConflict();
             if (currentTree.Start != null)
-            {
-                var start = currentTree.Start;                
-                var factoryA = new ConflictModelFactory(currentResourceModel);
-                var modelItem = ModelItemUtils.CreateModelItem(start.Activity);
-                conflict.CurrentViewModel = factoryA.GetModel(modelItem, start.Activity);
-                conflict.CurrentViewModel.Container = conflict;
-                conflict.CurrentViewModel.IsMergeVisible = start.IsInConflict;
-                conflict.CurrentViewModel.FlowNode = modelItem;
-                conflict.CurrentViewModel.NodeLocation = start.Location;
+            {            
+                var modelFactory = new ConflictModelFactory(currentResourceModel, currentTree.Start);
+                conflict.CurrentViewModel = modelFactory.Model;
                 conflict.CurrentViewModel.SomethingModelToolChanged += SourceOnModelToolChanged;
-                
+                conflict.CurrentViewModel.Container = conflict;
             }
 
             if (diffTree.Start != null)
             {
-                var start = diffTree.Start;
-                var factoryA = new ConflictModelFactory(differenceResourceModel);
-                var modelItem = ModelItemUtils.CreateModelItem(start.Activity);
-                conflict.DiffViewModel = factoryA.GetModel(modelItem, start.Activity);
-                conflict.DiffViewModel.Container = conflict;
-                conflict.DiffViewModel.IsMergeVisible = start.IsInConflict;
-                conflict.DiffViewModel.FlowNode = modelItem;
-                conflict.DiffViewModel.NodeLocation = start.Location;
+                var modelFactory = new ConflictModelFactory(differenceResourceModel, diffTree.Start);
+                conflict.DiffViewModel = modelFactory.Model;
                 conflict.DiffViewModel.SomethingModelToolChanged += SourceOnModelToolChanged;
-
+                conflict.DiffViewModel.Container = conflict;
             }
             conflicts.Add(conflict);
             conflicts.AddRange(BuildChildrenConflicts(currentTree.Start, diffTree.Start,currentResourceModel,differenceResourceModel));
+            #region OLD
             //foreach (var currentChange in currentChanges)
             //{
             //    var conflict = new CompleteConflict { UniqueId = currentChange.uniqueId };
@@ -192,6 +181,8 @@ namespace Dev2.ViewModels.Merge
             //    AddChildren(conflict, conflict.CurrentViewModel, conflict.DiffViewModel);
             //    conflicts.Add(conflict);
             //}
+            #endregion
+
             return conflicts;
         }
 
@@ -201,40 +192,45 @@ namespace Dev2.ViewModels.Merge
             ICompleteConflict conflict = null;
             foreach (var node in current.Children)
             {
-                if(conflict == null)
-                {
-                    conflict = new CompleteConflict();
-                }
-                var start = node.node;
-                var factoryA = new ConflictModelFactory(currentResourceModel);
-                var modelItem = ModelItemUtils.CreateModelItem(start.Activity);
-                conflict.CurrentViewModel = factoryA.GetModel(modelItem, start.Activity);
-                conflict.CurrentViewModel.Container = conflict;
-                conflict.CurrentViewModel.IsMergeVisible = start.IsInConflict;
-                conflict.CurrentViewModel.FlowNode = modelItem;
-                conflict.CurrentViewModel.NodeLocation = start.Location;
-                conflict.CurrentViewModel.SomethingModelToolChanged += SourceOnModelToolChanged;
-                conflicts.Add(conflict);
-            }
-
-            foreach (var node in diff.Children)
-            {
                 if (conflict == null)
                 {
-                    conflict = new CompleteConflict();
+                    //conflict = new CompleteConflict();
                 }
-                var start = node.node;
-                var factoryA = new ConflictModelFactory(differenceResourceModel);
-                var modelItem = ModelItemUtils.CreateModelItem(start.Activity);
-                conflict.DiffViewModel = factoryA.GetModel(modelItem, start.Activity);
-                conflict.DiffViewModel.Container = conflict;
-                conflict.DiffViewModel.IsMergeVisible = start.IsInConflict;
-                conflict.DiffViewModel.FlowNode = modelItem;
-                conflict.DiffViewModel.NodeLocation = start.Location;
-                conflict.DiffViewModel.SomethingModelToolChanged += SourceOnModelToolChanged;
+                conflict = new CompleteConflict();
+                var conflictTreeNode = node.node;
+                var currentFactory = new ConflictModelFactory(currentResourceModel, conflictTreeNode);
+                conflict.CurrentViewModel = currentFactory.Model;
+                conflict.CurrentViewModel.SomethingModelToolChanged += SourceOnModelToolChanged;
+                conflict.CurrentViewModel.Container = conflict;
+                if (conflictTreeNode.IsInConflict)
+                {
+                    var valueTuple = diff.Children.FirstOrDefault(tuple => tuple.uniqueId == conflictTreeNode.UniqueId);
+                    var diffFactory = new ConflictModelFactory(differenceResourceModel, valueTuple.node);
+                    conflict.DiffViewModel = diffFactory.Model;
+                    conflict.DiffViewModel.SomethingModelToolChanged += SourceOnModelToolChanged;
+                    conflict.DiffViewModel.Container = conflict;
+                }
+                else
+                {
+                    conflict.DiffViewModel = EmptyConflictViewModel(Guid.Parse(conflictTreeNode.UniqueId));
+                    conflict.DiffViewModel.Container = conflict;
+                    conflict.DiffViewModel.SomethingModelToolChanged += SourceOnModelToolChanged;
+                }
                 conflicts.Add(conflict);
             }
 
+            //foreach (var node in diff.Children)
+            //{
+            //    if (conflict == null)
+            //    {
+            //        conflict = new CompleteConflict();
+            //    }
+            //    var factoryA = new ConflictModelFactory(differenceResourceModel, node.node);
+            //    conflict.DiffViewModel = factoryA.Model;
+            //    conflict.DiffViewModel.SomethingModelToolChanged += SourceOnModelToolChanged;
+            //    conflict.DiffViewModel.Container = conflict;
+            //    conflicts.Add(conflict);
+            //}
             
             return conflicts;
         }

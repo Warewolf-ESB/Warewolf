@@ -27,10 +27,15 @@ namespace Dev2.ViewModels.Merge
         public delegate void ModelItemChanged(ModelItem modelItem, MergeToolModel mergeToolModel);
         public event ModelItemChanged OnModelItemChanged;
 
-        public ConflictModelFactory(IContextualResourceModel resourceModel)
+        public ConflictModelFactory(IContextualResourceModel resourceModel, IConflictTreeNode conflict)
         {
             Children = new ObservableCollection<IMergeToolModel>();
             _resourceModel = resourceModel;
+            var modelItem = ModelItemUtils.CreateModelItem(conflict.Activity);
+            Model = GetModel(modelItem, conflict.Activity);
+            Model.IsMergeVisible = conflict.IsInConflict;
+            Model.FlowNode = modelItem;
+            Model.NodeLocation = conflict.Location;
             //Model = GetModel(conflictNode.CurrentActivity, conflictNode.Activity, null, "");
         }
 
