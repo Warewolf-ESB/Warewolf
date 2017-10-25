@@ -39,6 +39,7 @@
     <converters3:NavigationViewModelPermissionVisibilityConverter x:Key="NavigationViewModelPermissionVisibilityConverter" />
     <converters3:NavigationViewModelPermissionToBooleanConverter x:Key="NavigationViewModelPermissionToBooleanConverter" />
     <converters:EnumToStringConverter x:Key="EnumToStringConverter" />
+    <converters:EnumDiscriptionToStringConverter x:Key="EnumDiscriptionToStringConverter" />
     <converters:TimeSpanToStringConverter x:Key="TimeSpanToStringConverter" Format="hh\:mm\:ss\.fffffff" />
     <converters:DateTimeToStringConverter x:Key="DateTimeToStringConverter" />
     <converters:CountToVisibilityConverter x:Key="CountToVisibilityConverter" />
@@ -65,6 +66,7 @@
     <converters2:MultipleBoolToEnabledConverter x:Key="MultipleBoolToEnabledConverter"/>
     <converters:IntInRangeToVisibilityConverter x:Key="IntInRangeToVisibilityConverter" />
     <converters:IntEnsureMinConverter x:Key="IntEnsureMinConverter" />
+    <converters1:GridRowNumberConverter x:Key="GridRowNumberConverter"/>
     <converters2:StringToTimespanConverter x:Key="StringToTimespanConverter"/>
     
     <converters:EnumToBoolConverter x:Key="EnumToBoolConverterenRoundingType">
