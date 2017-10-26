@@ -81,22 +81,6 @@ namespace Dev2.Studio.Core.Factories
                         resource.ServerResourceType = "ServerSource";
                         resource.ResourceName = resourceName;
                         break;
-                    case "Human Interface Workflow":
-                    case "HumanInterfaceProcess":
-                        resource.Category = resourceType;
-                        resource.AllowCategoryEditing = false;
-                        resource.ResourceType = ResourceType.WorkflowService;
-                        resource.ServerResourceType = "WorkflowService";
-                        resource.DisplayName = "Human Interface Workflow";
-                        resource.ResourceName = resourceName;
-                        break;
-                    case "Website":
-                        resource.Category = resourceType;
-                        resource.AllowCategoryEditing = false;
-                        resource.ResourceType = ResourceType.WorkflowService;
-                        resource.DisplayName = displayName;
-                        resource.ResourceName = resourceName;
-                        break;
                     case "Unknown":
                         resource.ResourceType = ResourceType.Unknown;
                         resource.DisplayName = displayName;
