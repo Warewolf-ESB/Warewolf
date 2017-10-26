@@ -142,16 +142,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                 foreach (var serializableResource in toReloadResources)
                 {
                     var resource = HydrateResourceModel(serializableResource, _server.Connection.ServerID, true);
-                    var resourceToUpdate = _resourceModels.FirstOrDefault(r => ResourceModelEqualityComparer.Current.Equals(r, resource));
-
-                    if (resourceToUpdate != null)
-                    {
-                        resourceToUpdate.Update(resource);
-                    }
-                    else
-                    {
-                        _resourceModels.Add(resource);
-                    }
+                    _resourceModels.Add(resource);
                     return resource;
                 }
             }
