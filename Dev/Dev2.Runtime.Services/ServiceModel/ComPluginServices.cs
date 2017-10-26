@@ -6,7 +6,6 @@ using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin;
 using Dev2.Services.Security;
 using Newtonsoft.Json;
-using System.Collections.Generic;
 
 namespace Dev2.Runtime.ServiceModel
 {
@@ -14,7 +13,7 @@ namespace Dev2.Runtime.ServiceModel
     {
         RecordsetList Test(string args, out string serializedResult);
 
-        List<NamespaceItem> Namespaces(ComPluginSource args, Guid workspaceId, Guid dataListId);
+        NamespaceList Namespaces(ComPluginSource args, Guid workspaceId, Guid dataListId);
 
         ServiceMethodList Methods(ComPluginService args, Guid workspaceId, Guid dataListId);
     }
@@ -79,9 +78,9 @@ namespace Dev2.Runtime.ServiceModel
         #region Namespaces
 
         // POST: Service/PluginServices/Namespaces
-        public virtual List<NamespaceItem> Namespaces(ComPluginSource pluginSource, Guid workspaceId, Guid dataListId)
+        public virtual NamespaceList Namespaces(ComPluginSource pluginSource, Guid workspaceId, Guid dataListId)
         {
-            var result = new List<NamespaceItem>();
+            var result = new NamespaceList();
             try
             {
 

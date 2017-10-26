@@ -10,10 +10,13 @@
 
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Runtime.ServiceModel.Data;
-using System.Collections.Generic;
 
 namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
 {
+    /// <summary>
+    /// Used to execute plugins properly ;)
+    /// INFO : http://stackoverflow.com/questions/2008691/pass-and-execute-delegate-in-separate-appdomain
+    /// </summary>
     public static class ComPluginServiceExecutionFactory
     {
         #region Private Methods
@@ -46,7 +49,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
             return runtime.ListMethods(classId, is32Bit);
         }
 
-        public static List<NamespaceItem> GetNamespaces(ComPluginSource pluginSource)
+        public static NamespaceList GetNamespaces(ComPluginSource pluginSource)
         {
             var runtime = CreateInvokeAppDomain();
             return runtime.FetchNamespaceListObject(pluginSource);
