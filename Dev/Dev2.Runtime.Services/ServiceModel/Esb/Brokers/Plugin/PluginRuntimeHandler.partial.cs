@@ -299,10 +299,10 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
         /// </summary>
         /// <param name="pluginSource">The plugin source.</param>
         /// <returns></returns>
-        public List<NamespaceItem> FetchNamespaceListObject(PluginSource pluginSource)
+        public NamespaceList FetchNamespaceListObject(PluginSource pluginSource)
         {
             var interrogatePlugin = ReadNamespaces(pluginSource.AssemblyLocation, pluginSource.AssemblyName);
-            var namespacelist = new List<NamespaceItem>();
+            var namespacelist = new NamespaceList();
             namespacelist.AddRange(interrogatePlugin);
             return namespacelist;
         }

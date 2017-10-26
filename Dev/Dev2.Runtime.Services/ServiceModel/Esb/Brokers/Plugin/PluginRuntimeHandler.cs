@@ -22,10 +22,16 @@ using Newtonsoft.Json.Linq;
 using ServiceStack.Common.Extensions;
 
 
+
 namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
 {
+
+    /// <summary>
+    /// Handler that invokes a plugin in its own app domain
+    /// </summary>
     public partial class PluginRuntimeHandler : MarshalByRefObject, IRuntime
     {
+
         public PluginExecutionDto CreateInstance(PluginInvokeArgs setupInfo)
         {
             VerifyArgument.IsNotNull("setupInfo", setupInfo);
@@ -94,6 +100,8 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             }
             return instance;
         }
+
+
 
         public IDev2MethodInfo Run(IDev2MethodInfo dev2MethodInfo, PluginExecutionDto dto, out string objectString)
         {
@@ -271,7 +279,14 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             }
             return typeFromLoadedAssembly;
         }
-        
+
+        /// <summary>
+        /// Lists the methods.
+        /// </summary>
+        /// <param name="assemblyLocation">The assembly location.</param>
+        /// <param name="assemblyName">Name of the assembly.</param>
+        /// <param name="fullName">The full name.</param>
+        /// <returns></returns>
         public ServiceConstructorList ListConstructors(string assemblyLocation, string assemblyName, string fullName)
         {
             var serviceMethodList = new ServiceConstructorList();
@@ -305,7 +320,14 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
 
             return serviceMethodList;
         }
-        
+
+        /// <summary>
+        /// Lists the methods.
+        /// </summary>
+        /// <param name="assemblyLocation">The assembly location.</param>
+        /// <param name="assemblyName">Name of the assembly.</param>
+        /// <param name="fullName">The full name.</param>
+        /// <returns></returns>
         public ServiceMethodList ListMethodsWithReturns(string assemblyLocation, string assemblyName, string fullName)
         {
             var serviceMethodList = new ServiceMethodList();
@@ -479,11 +501,16 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             }
             return null;
         }
-        
-        public List<NamespaceItem> FetchNamespaceListObjectWithJsonObjects(PluginSource pluginSource)
+
+        /// <summary>
+        /// Fetches the name space list object.
+        /// </summary>
+        /// <param name="pluginSource">The plugin source.</param>
+        /// <returns></returns>
+        public NamespaceList FetchNamespaceListObjectWithJsonObjects(PluginSource pluginSource)
         {
             var interrogatePlugin = ReadNamespacesWithJsonObjects(pluginSource.AssemblyLocation, pluginSource.AssemblyName);
-            var namespacelist = new List<NamespaceItem>();
+            var namespacelist = new NamespaceList();
             namespacelist.AddRange(interrogatePlugin);
             return namespacelist;
         }

@@ -9,13 +9,33 @@
 */
 
 using System;
+using System.Collections.Generic;
 using Dev2.Common.Interfaces;
+using Newtonsoft.Json;
 
 namespace Dev2.Runtime.ServiceModel.Data
 {
     [Serializable]
-    public class NamespaceItem : INamespaceItem
+    public class NamespaceList : List<NamespaceItem>
     {
+        public override string ToString()
+        {
+            return JsonConvert.SerializeObject(this);
+        }
+    }
+
+    [Serializable]
+    public class NamespaceItem:INamespaceItem
+    {
+        #region ToString
+
+        public override string ToString()
+        {
+            return JsonConvert.SerializeObject(this);
+        }
+
+        #endregion
+
         public string AssemblyLocation { get; set; }
         public string AssemblyName { get; set; }
         public string FullName { get; set; }
