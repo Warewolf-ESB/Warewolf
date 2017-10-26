@@ -237,9 +237,6 @@
     <Compile Include="AppResources\DependencyInjection\EqualityComparers\ResourceModelEqualityComparer.cs" />
     <Compile Include="AppResources\ExtensionMethods\DependencyObjectExtensions.cs" />
     <Compile Include="AppResources\Globals.cs" />
-    <Compile Include="AppResources\TriggerActions\SetCaretIndexAction.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="AppResources\WindowManagers\IDockAwareWindowManager.cs" />
     <Compile Include="ConnectionHelpers\ConnectControlEnvironment.cs" />
     <Compile Include="ConnectionHelpers\ConnectedServerChangedEvent.cs" />
