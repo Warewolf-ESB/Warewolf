@@ -12,19 +12,21 @@ namespace Dev2.Runtime.WebServer.Handlers
 {
     public class GetApisJsonServiceHandler : AbstractWebRequestHandler
     {
-        private readonly IAuthorizationService _authorizationService;
-        private readonly IResourceCatalog _resourceCatalog;
+        static IAuthorizationService _authorizationService;
+        static IResourceCatalog _resourceCatalog;
 
         public GetApisJsonServiceHandler()
             : this(ResourceCatalog.Instance, ServerAuthorizationService.Instance)
         {
         }
 
+#pragma warning disable S3010 // Used by tests for constructor injection
         public GetApisJsonServiceHandler(IResourceCatalog catalog, IAuthorizationService auth)
         {
             _resourceCatalog = catalog;
             _authorizationService = auth;
         }
+#pragma warning restore S3010
       
         public override void ProcessRequest(ICommunicationContext ctx)
         {
@@ -44,8 +46,7 @@ namespace Dev2.Runtime.WebServer.Handlers
 
         static IResponseWriter GetApisJson(string basePath,bool isPublic)
         {
-            var handler = new GetApisJsonServiceHandler();
-            var apiBuilder = new ApisJsonBuilder(handler._authorizationService, handler._resourceCatalog);
+            var apiBuilder = new ApisJsonBuilder(_authorizationService, _resourceCatalog);
             var apis = apiBuilder.BuildForPath(basePath, isPublic);
             var converter = new JsonSerializer();
             StringBuilder result = new StringBuilder();
