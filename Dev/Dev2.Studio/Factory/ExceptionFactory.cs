@@ -19,7 +19,7 @@ using Dev2.Studio.Interfaces;
 using Dev2.Studio.Model;
 using Dev2.Studio.ViewModels.Diagnostics;
 using Dev2.Threading;
-using System.IO;
+
 
 namespace Dev2.Studio.Factory
 {
@@ -103,7 +103,10 @@ namespace Dev2.Studio.Factory
             return builder;
         }
 
-        public static async Task<IExceptionViewModel> CreateViewModel(Exception e, IServer server) => await CreateViewModel(e, server, ErrorSeverity.Default).ConfigureAwait(true);
+        public static Func<string, string> GetUniqueOutputPath { get => getUniqueOutputPath; set => getUniqueOutputPath = value; }
+        private static Func<string, string> getUniqueOutputPath = extension => FileHelper.GetUniqueOutputPath(extension);
+
+        public static async Task<IExceptionViewModel> CreateViewModel(Exception e, IServer server) => await CreateViewModel(e, server, ErrorSeverity.Default);
         public static async Task<IExceptionViewModel> CreateViewModel(Exception e, IServer server, ErrorSeverity isCritical)
         {
             var vm = new ExceptionViewModel(new AsyncWorker())
@@ -119,17 +122,6 @@ namespace Dev2.Studio.Factory
             vm.Exception.Clear();
             vm.Exception.Add(Create(e, isCritical == ErrorSeverity.Critical));
             return vm;
-        }
-
-        static string GetUniqueOutputPath(string extension)
-        {
-            var path = Path.Combine(new[]
-            {
-                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                StringResources.App_Data_Directory,
-                Guid.NewGuid() + extension
-            });
-            return path;
         }
     }
 }
