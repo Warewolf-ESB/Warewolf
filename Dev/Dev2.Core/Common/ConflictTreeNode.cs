@@ -14,13 +14,13 @@ namespace Dev2.Common
             Location = location;
         }
 
-        public void AddChild(IConflictTreeNode node)
+        public void AddChild(IConflictTreeNode node,string name)
         {
             if (Children == null)
             {
                 Children = new List<(string uniqueId, IConflictTreeNode node)>();
             }
-            Children.Add((node.UniqueId, node));
+            Children.Add((name, node));
         }
 
         public void AddParent(IConflictTreeNode node,string name)

@@ -55,7 +55,14 @@ namespace Dev2.Activities
             {
                 if (activity is IDev2Activity act)
                 {
-                    node.AddChild(act.BuildNode());
+                    node.AddChild(act.BuildNode(),act.GetDisplayName());
+                }
+            }
+            foreach(var activity in NextNodes)
+            {
+                if (activity is IDev2Activity act)
+                {
+                    node.AddNext(act.BuildNode());
                 }
             }
             return node;

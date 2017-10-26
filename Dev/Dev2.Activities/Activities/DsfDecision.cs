@@ -45,11 +45,11 @@ namespace Dev2.Activities
             var node = new ConflictTreeNode(this, new System.Windows.Point());
             if (TrueArm != null)
             {
-                node.AddChild(TrueArm?.FirstOrDefault().BuildNode());
+                node.AddChild(TrueArm?.FirstOrDefault().BuildNode(),"TRUE");
             }
             if (FalseArm != null)
             {
-                node.AddChild(FalseArm?.FirstOrDefault().BuildNode());
+                node.AddChild(FalseArm?.FirstOrDefault().BuildNode(),"FALSE");
 
             }            
             return node;
