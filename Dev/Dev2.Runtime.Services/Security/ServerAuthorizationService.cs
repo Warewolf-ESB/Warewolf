@@ -70,7 +70,14 @@ namespace Dev2.Runtime.Security
             var user = Common.Utilities.OrginalExecutingUser ?? ClaimsPrincipal.Current;
 
             Tuple<string, string, AuthorizationContext> requestKey = new Tuple<string, string,AuthorizationContext>(user.Identity.Name, resource,context);
-            authorized = _cachedRequests.TryGetValue(requestKey, out Tuple<bool, DateTime> authorizedRequest) && DateTime.Now.Subtract(authorizedRequest.Item2) < _timeOutPeriod ? authorizedRequest.Item1 : IsAuthorized(user, context, resource);
+            if (_cachedRequests.TryGetValue(requestKey, out Tuple<bool, DateTime> authorizedRequest) && DateTime.Now.Subtract(authorizedRequest.Item2) < _timeOutPeriod)
+            {
+                authorized = authorizedRequest.Item1;
+            }
+            else
+            {
+                authorized = IsAuthorized(user, context, resource);
+            }
 
             if (!authorized)
             {
