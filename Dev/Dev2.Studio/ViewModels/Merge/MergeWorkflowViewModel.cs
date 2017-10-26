@@ -104,8 +104,8 @@ namespace Dev2.ViewModels.Merge
                 conflict.CurrentViewModel.SomethingModelToolChanged += SourceOnModelToolChanged;
                 conflict.CurrentViewModel.Container = conflict;
 
-                AddNextNodesCurrent(conflict, modelFactory.Model, currentTree.Start.NextNodes, modelFactory, conflicts);
-                AddChildrenCurrent(conflict, modelFactory.Model,currentTree.Start.Children, modelFactory, conflicts);                
+                AddChildrenCurrent(conflict, modelFactory.Model, currentTree.Start.Children, modelFactory, conflicts);
+                AddNextNodesCurrent(conflict, currentTree.Start.NextNodes, modelFactory, conflicts);                
                 conflicts.Add(conflict);
             }
 
@@ -131,9 +131,8 @@ namespace Dev2.ViewModels.Merge
                 conflict.DiffViewModel.Container = conflict;
                 conflict.HasConflict = conflict.HasConflict || node.IsInConflict;
 
-                AddNextNodesDiff(conflict, currentFactory.Model, diffTree.Start.NextNodes, currentFactory, conflicts);
                 AddChildrenDiff(conflict, currentFactory.Model, diffTree.Start.Children, currentFactory, conflicts);
-                
+                AddNextNodesDiff(conflict, diffTree.Start.NextNodes, currentFactory, conflicts);                                
             }
             
             //conflicts.AddRange(BuildChildrenConflictsCurrent(conflicts,currentTree.Start.Children, currentResourceModel));
@@ -237,9 +236,8 @@ namespace Dev2.ViewModels.Merge
                     childConflict.DiffViewModel.SomethingModelToolChanged += SourceOnModelToolChanged;
                     childConflict.DiffViewModel.Container = conflict;
                     childConflict.HasConflict = childConflict.HasConflict || node.IsInConflict;
-                    AddNextNodesDiff(childConflict, childConflict.DiffViewModel, child.node.NextNodes, currentFactory, conflicts);
                     AddChildrenDiff(childConflict, childConflict.DiffViewModel, child.node.Children, currentFactory, conflicts);
-                    
+                    AddNextNodesDiff(childConflict, child.node.NextNodes, currentFactory, conflicts);
                 }
             }
         }
@@ -258,13 +256,13 @@ namespace Dev2.ViewModels.Merge
                     childConflict.CurrentViewModel.SomethingModelToolChanged += SourceOnModelToolChanged;
                     childConflict.CurrentViewModel.Container = conflict;
                     conflict.Children.AddLast(childConflict);
-                    AddNextNodesCurrent(childConflict, factory.Model, child.node.NextNodes, factory, conflicts);
-                    AddChildrenCurrent(childConflict, childConflict.CurrentViewModel, child.node.Children,factory, conflicts);                    
+                    AddChildrenCurrent(childConflict, childConflict.CurrentViewModel, child.node.Children, factory, conflicts);
+                    AddNextNodesCurrent(childConflict, child.node.NextNodes, factory, conflicts);                    
                 }
             }
         }
 
-        private void AddNextNodesDiff(ICompleteConflict conflict, IMergeToolModel model, List<IConflictTreeNode> children, ConflictModelFactory currentFactory, List<ICompleteConflict> conflicts)
+        private void AddNextNodesDiff(ICompleteConflict conflict , List<IConflictTreeNode> children, ConflictModelFactory currentFactory, List<ICompleteConflict> conflicts)
         {
             if (children != null)
             {
@@ -282,16 +280,16 @@ namespace Dev2.ViewModels.Merge
                     {
                         childConflict = foundConflict;
                     }
-                    childConflict.DiffViewModel = currentFactory.GetModel(ModelItemUtils.CreateModelItem(child.Activity), child, model, child.Activity.GetDisplayName());
+                    childConflict.DiffViewModel = currentFactory.GetModel(ModelItemUtils.CreateModelItem(child.Activity), child, null, child.Activity.GetDisplayName());
                     childConflict.DiffViewModel.SomethingModelToolChanged += SourceOnModelToolChanged;
                     childConflict.DiffViewModel.Container = conflict;
                     childConflict.HasConflict = childConflict.HasConflict || child.IsInConflict;
-                    AddNextNodesDiff(childConflict, childConflict.DiffViewModel, child.NextNodes, currentFactory, conflicts);
+                    AddNextNodesDiff(conflict, child.NextNodes, currentFactory, conflicts);
                 }
             }
         }
 
-        void AddNextNodesCurrent(CompleteConflict conflict, IMergeToolModel model, List<IConflictTreeNode> children, ConflictModelFactory factory, List<ICompleteConflict> conflicts)
+        void AddNextNodesCurrent(CompleteConflict conflict, List<IConflictTreeNode> children, ConflictModelFactory factory, List<ICompleteConflict> conflicts)
         {
             if (children != null)
             {
@@ -301,11 +299,11 @@ namespace Dev2.ViewModels.Merge
                     var id = Guid.Parse(child.Activity.UniqueID);
                     childConflict.UniqueId = id;
                     childConflict.DiffViewModel = EmptyConflictViewModel(id);
-                    childConflict.CurrentViewModel = factory.GetModel(ModelItemUtils.CreateModelItem(child.Activity), child, model, child.Activity.GetDisplayName());
+                    childConflict.CurrentViewModel = factory.GetModel(ModelItemUtils.CreateModelItem(child.Activity), child, null, child.Activity.GetDisplayName());
                     childConflict.CurrentViewModel.SomethingModelToolChanged += SourceOnModelToolChanged;
                     childConflict.CurrentViewModel.Container = conflict;
                     conflicts.Add(childConflict);
-                    AddNextNodesCurrent(childConflict, childConflict.CurrentViewModel, child.NextNodes, factory, conflicts);
+                    AddNextNodesCurrent(conflict,  child.NextNodes, factory, conflicts);
                 }
             }
         }
