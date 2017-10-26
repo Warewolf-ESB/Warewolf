@@ -15,7 +15,7 @@ namespace Dev2.Common
         List<(string name, string uniqueId, IConflictTreeNode node)> Parents { get; }
         string UniqueId { get; set; }
 
-        void AddChild(IConflictTreeNode node);
+        void AddChild(IConflictTreeNode node,string name);
         void AddParent(IConflictTreeNode node, string name);
         void AddNext(IConflictTreeNode conflictTreeNode);
     }

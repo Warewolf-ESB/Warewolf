@@ -64,12 +64,12 @@ namespace Dev2.Activities
             {
                 if (activity.Value is IDev2Activity act)
                 {
-                    node.AddChild(act.BuildNode());
+                    node.AddChild(act.BuildNode(),activity.Key);
                 }
             }
             if (Default != null)
             {
-                node.AddChild(Default.FirstOrDefault().BuildNode());
+                node.AddChild(Default.FirstOrDefault().BuildNode(),"Default");
             }
             return node;
         }

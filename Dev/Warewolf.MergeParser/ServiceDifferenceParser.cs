@@ -125,8 +125,8 @@ namespace Warewolf.MergeParser
                 var allChildren = tree.Start.Children.Flatten(x => x.node.Children);
                 var foundChild = allChildren.FirstOrDefault(a => a.uniqueId == childAct.Value.UniqueID).node;
                 var childNode = foundChild ?? new ConflictTreeNode(childAct.Value, loc);
-                childNode.AddParent(parentNode,childAct.Key);
-                parentNode.AddChild(childNode);
+                childNode.AddParent(parentNode,parentNode.Activity.GetDisplayName());
+                parentNode.AddChild(childNode,childAct.Key);
                 BuildNodeRelationship(wd, childAct.Value, childNode, idsLocations, tree);
             }
         }
