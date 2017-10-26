@@ -67,6 +67,7 @@
     <converters:IntInRangeToVisibilityConverter x:Key="IntInRangeToVisibilityConverter" />
     <converters:IntEnsureMinConverter x:Key="IntEnsureMinConverter" />
     <converters1:GridRowNumberConverter x:Key="GridRowNumberConverter"/>
+    <converters1:DataGridRowNumberConverter x:Key="DataGridRowNumberConverter"/>
     <converters2:StringToTimespanConverter x:Key="StringToTimespanConverter"/>
     
     <converters:EnumToBoolConverter x:Key="EnumToBoolConverterenRoundingType">
