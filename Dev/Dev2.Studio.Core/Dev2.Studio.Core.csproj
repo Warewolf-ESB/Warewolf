@@ -287,7 +287,6 @@
     <Compile Include="Factories\DataListViewModelFactory.cs" />
     <Compile Include="Factories\DataMappingListFactory.cs" />
     <Compile Include="Factories\DsfActivityFactory.cs" />
-    <Compile Include="Helpers\FileHelper.cs" />
     <Compile Include="Factories\DataListItemModelFactory.cs" />
     <Compile Include="DataList\DataListSingleton.cs" />
     <Compile Include="InterfaceImplementors\DeployDTO.cs" />
