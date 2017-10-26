@@ -1091,6 +1091,15 @@ namespace Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses
             Assert.IsTrue(WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.Exists, "Workflow test tab does not exist after openning it by clicking the explorer context menu item.");
         }
 
+        [Given(@"I Have ""(.*)"" Open")]
+        [When(@"I Open ""(.*)"" With Double Click")]
+        [Then(@"""(.*)"" is Open")]
+        public void Open_Item_With_Double_Click(string ItemName)
+        {
+            Filter_Explorer(ItemName);
+            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, MouseButtons.Left, ModifierKeys.None, new Point(40, 9));
+        }
+
         [Given(@"I Open Explorer First Item With Double Click")]
         [When(@"I Open Explorer First Item With Double Click")]
         [Then(@"I Open Explorer First Item With Double Click")]
