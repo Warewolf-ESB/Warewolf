@@ -13,16 +13,15 @@ using System.Data.SqlClient;
 
 namespace Dev2.Services.Sql
 {
-    public static class UniqueDbConnectionGenerator
+    internal static class UniqueDbConnectionGenerator
     {
         public static SqlConnection GetConnection(string connectionString)
         {
             var conStrBuilder = new SqlConnectionStringBuilder(connectionString)
             {
                 ConnectTimeout = 20,
-                Pooling = true,
                 MaxPoolSize = 100,
-                MultipleActiveResultSets = true,                
+                MultipleActiveResultSets =true
             };
             conStrBuilder.ApplicationName = "Warewolf Service " + Guid.NewGuid().ToString();            
             var cString = conStrBuilder.ConnectionString;

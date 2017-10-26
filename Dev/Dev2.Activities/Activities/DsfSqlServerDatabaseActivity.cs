@@ -88,13 +88,11 @@ namespace Dev2.Activities
             }
             
             ServiceExecution.GetSource(SourceId);
-            ServiceExecution.BeforeExecution(tmpErrors);
         }
 
         protected override void AfterExecutionCompleted(ErrorResultTO tmpErrors)
         {
             base.AfterExecutionCompleted(tmpErrors);
-            ServiceExecution.AfterExecution(tmpErrors);
         }
 
 
