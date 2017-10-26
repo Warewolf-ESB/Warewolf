@@ -234,7 +234,6 @@
     <Compile Include="AppResources\Converters\TimeSpanToStringConverter.cs" />
     <Compile Include="AppResources\DependencyInjection\EqualityComparers\ContextualResourceModelEqualityComparer.cs" />
     <Compile Include="AppResources\DependencyInjection\EqualityComparers\EnvironmentModelEqualityComparer.cs" />
-    <Compile Include="AppResources\DependencyInjection\EqualityComparers\ResourceModelEqualityComparer.cs" />
     <Compile Include="AppResources\ExtensionMethods\DependencyObjectExtensions.cs" />
     <Compile Include="AppResources\Globals.cs" />
     <Compile Include="AppResources\WindowManagers\IDockAwareWindowManager.cs" />
