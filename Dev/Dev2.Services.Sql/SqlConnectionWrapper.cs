@@ -8,7 +8,7 @@ namespace Dev2.Services.Sql
         private readonly SqlConnection _connection;
         public SqlConnectionWrapper(string connString)
         {
-            _connection = new SqlConnection { ConnectionString = connString };
+            _connection = UniqueDbConnectionGenerator.GetConnection(connString);
         }
 
         public bool FireInfoMessageEventOnUserErrors

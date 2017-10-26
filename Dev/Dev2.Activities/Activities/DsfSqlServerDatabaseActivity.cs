@@ -88,7 +88,6 @@ namespace Dev2.Activities
             }
             
             ServiceExecution.GetSource(SourceId);
-            ServiceExecution.SetSourceId(SourceId);
             ServiceExecution.BeforeExecution(tmpErrors);
         }
 

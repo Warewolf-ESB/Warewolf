@@ -32,6 +32,7 @@ using Dev2.Interfaces;
 using Npgsql;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage.Interfaces;
+using System.Transactions;
 
 namespace Dev2.Services.Execution
 {
@@ -40,43 +41,11 @@ namespace Dev2.Services.Execution
         public DatabaseServiceExecution(IDSFDataObject dataObj)
             : base(dataObj, true)
         {
-            _sqlServer = new SqlServer();
         }
 
-        private IDbServer _sqlServer;
         public string ProcedureName { private get; set; }
 
-        private void SetupSqlServer(IErrorResultTO errors)
-        {
-            try
-            {
-                var connected = _sqlServer.Connect(Source.ConnectionString, CommandType.StoredProcedure, ProcedureName);
-                if (!connected)
-                {
-                    Dev2Logger.Error(string.Format(ErrorResource.FailedToConnectWithConnectionString,
-                        Source.ConnectionString), GlobalConstants.WarewolfError);
-                }
-            }
-            catch (SqlException sex)
-            {
-                var errorMessages = new StringBuilder();
-                for (var i = 0; i < sex.Errors.Count; i++)
-                {
-                    errorMessages.Append("Index #" + i + Environment.NewLine +
-                                         "Message: " + sex.Errors[i].Message + Environment.NewLine +
-                                         "LineNumber: " + sex.Errors[i].LineNumber + Environment.NewLine +
-                                         "Source: " + sex.Errors[i].Source + Environment.NewLine +
-                                         "Procedure: " + sex.Errors[i].Procedure + Environment.NewLine);
-                }
-                errors.AddError(errorMessages.ToString());
-                Dev2Logger.Error(errorMessages.ToString(), GlobalConstants.WarewolfError);
-            }
-            catch (Exception ex)
-            {
-                errors.AddError($"{ex.Message}{Environment.NewLine}{ex.StackTrace}");
-                Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
-            }
-        }
+
 
         private MySqlServer SetupMySqlServer(ErrorResultTO errors)
         {
@@ -106,40 +75,21 @@ namespace Dev2.Services.Execution
             return server;
         }
 
-        private void DestroySqlServer()
-        {
-            if (_sqlServer == null)
-            {
-                return;
-            }
-            _sqlServer.Dispose();
-            _sqlServer = null;
-        }
 
         public override void BeforeExecution(ErrorResultTO errors)
         {
-            if (Source != null && Source.ServerType == enSourceType.SqlDatabase)
-            {
-                SetupSqlServer(errors);
-            }
+
         }
 
         public override void AfterExecution(ErrorResultTO errors)
         {
-            if (Source != null && Source.ServerType == enSourceType.SqlDatabase)
-            {
-                DestroySqlServer();
-            }
+
         }
-        
+
         protected override object ExecuteService(int update, out ErrorResultTO errors, IOutputFormatter formater)
         {
             errors = new ErrorResultTO();
             var invokeErrors = new ErrorResultTO();
-            if (Source == null)
-            {
-                GetSource(SourceId);
-            }
             switch (Source.ServerType)
             {
                 case enSourceType.SqlDatabase:
@@ -297,27 +247,29 @@ namespace Dev2.Services.Execution
         }
         private void SqlExecution(ErrorResultTO errors, int update)
         {
+            var connection = UniqueDbConnectionGenerator.GetConnection(Source.ConnectionString);
             try
             {
-                if (_sqlServer != null)
+                using (TransactionScope scope = new TransactionScope())
                 {
-
-                    var parameters = GetSqlParameters();
-                    if (parameters != null)
+                    using (connection)
                     {
-                        var dataSet = (SqlServer)_sqlServer;
-                        using (dataSet)
+                        var parameters = GetSqlParameters();
+                        using (var cmd = connection.CreateCommand())
                         {
-
-                            var dbDataParameters = parameters.Cast<IDbDataParameter>().ToArray();
-
-                            var dataTable = dataSet.FetchDataTable(dbDataParameters);
-
-                            TranslateDataTableToEnvironment(dataTable, DataObj.Environment, update);
+                            cmd.Parameters.AddRange(parameters.ToArray());
+                            cmd.CommandType = CommandType.StoredProcedure;
+                            cmd.CommandText = ProcedureName;
+                            connection.Open();
+                            var reader = cmd.ExecuteReader();                           
+                            var table = new DataTable();
+                            table.Load(reader);
+                            // The Complete method commits the transaction. If an exception has been thrown,
+                            // Complete is not  called and the transaction is rolled back.
+                            scope.Complete();
+                            TranslateDataTableToEnvironment(table, DataObj.Environment, update);
                         }
-
-
-                    }
+                    }                    
                 }
             }
             catch (Exception ex)
@@ -327,7 +279,7 @@ namespace Dev2.Services.Execution
             }
             finally
             {
-                _sqlServer?.Dispose();
+                connection.Dispose();
             }
         }
 
@@ -622,7 +574,6 @@ namespace Dev2.Services.Execution
 
         public void Dispose()
         {
-            _sqlServer.Dispose();
         }
     }
 }
