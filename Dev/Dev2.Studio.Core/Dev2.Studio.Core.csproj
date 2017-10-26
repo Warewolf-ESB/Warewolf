@@ -278,6 +278,7 @@
     <Compile Include="Models\DataList\ScalarItemModel.cs" />
     <Compile Include="NetworkStateChangedEventArgs.cs" />
     <Compile Include="Network\ServerProxyWithoutChunking.cs" />
+    <Compile Include="CustomControls\CachingContentHost.cs" />
     <Compile Include="DataList\ActivityDataMappingBuilder.cs" />
     <Compile Include="DataList\DataListViewModel.cs" />
     <Compile Include="DataList\DataMappingViewModelFactory.cs" />
