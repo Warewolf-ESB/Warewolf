@@ -112,7 +112,7 @@ namespace Dev2.Services.Execution
                 if (Source == null)
                 {
                     ErrorResult.AddError(string.Format(ErrorResource.ErrorRetrievingDBSourceForResource,
-                        Service.Source.ResourceID, Service.Source.ResourceName));
+                        Service?.Source?.ResourceID, Service?.Source?.ResourceName));
                 }
             }
         }

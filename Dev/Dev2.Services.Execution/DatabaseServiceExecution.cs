@@ -23,9 +23,6 @@ using Dev2.Services.Sql;
 using MySql.Data.MySqlClient;
 using Oracle.ManagedDataAccess.Client;
 using System.Data.Odbc;
-using System.Linq;
-using Dev2.Common.Interfaces.Data.TO;
-using Dev2.Common.Interfaces.Services.Sql;
 using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.TO;
 using Dev2.Interfaces;
@@ -33,6 +30,7 @@ using Npgsql;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage.Interfaces;
 using System.Transactions;
+using System.Diagnostics;
 
 namespace Dev2.Services.Execution
 {
@@ -102,7 +100,7 @@ namespace Dev2.Services.Execution
                         }
                         catch (Exception e)
                         {
-                            Dev2Logger.Error(e, DataObj.ExecutionID.ToString());
+                            Dev2Logger.Error(e.StackTrace, DataObj.ExecutionID.ToString());
                             return Guid.NewGuid();
                         }
 
@@ -179,6 +177,7 @@ namespace Dev2.Services.Execution
                     try
                     {
                         var rowIdx = 1;
+
                         foreach (DataRow row in executeService.Rows)
                         {
                             foreach (var serviceOutputMapping in Outputs)
@@ -247,7 +246,8 @@ namespace Dev2.Services.Execution
         }
         private void SqlExecution(ErrorResultTO errors, int update)
         {
-            var connection = UniqueDbConnectionGenerator.GetConnection(Source.ConnectionString);
+            var startTime = Stopwatch.StartNew();
+            ISqlConnection connection = new SqlConnectionWrapper(Source.ConnectionString);
             try
             {
                 using (TransactionScope scope = new TransactionScope())
@@ -257,19 +257,26 @@ namespace Dev2.Services.Execution
                         var parameters = GetSqlParameters();
                         using (var cmd = connection.CreateCommand())
                         {
-                            cmd.Parameters.AddRange(parameters.ToArray());
+                            foreach (var item in parameters)
+                            {
+                                cmd.Parameters.Add(item);
+                            }
                             cmd.CommandType = CommandType.StoredProcedure;
                             cmd.CommandText = ProcedureName;
                             connection.Open();
-                            var reader = cmd.ExecuteReader();                           
+                            var reader = cmd.ExecuteReader();
                             var table = new DataTable();
                             table.Load(reader);
+                            
                             // The Complete method commits the transaction. If an exception has been thrown,
                             // Complete is not  called and the transaction is rolled back.
+                            Dev2Logger.Info("time take to read from DB " + ProcedureName + ":" + startTime.Elapsed.Seconds, DataObj.ExecutionID.ToString());
                             scope.Complete();
+                            var startTime1 = Stopwatch.StartNew();
                             TranslateDataTableToEnvironment(table, DataObj.Environment, update);
+                            Dev2Logger.Info("time take to TranslateDataTableToEnvironment " + ProcedureName + ":" + startTime1.Elapsed.Seconds, DataObj.ExecutionID.ToString());
                         }
-                    }                    
+                    }
                 }
             }
             catch (Exception ex)
