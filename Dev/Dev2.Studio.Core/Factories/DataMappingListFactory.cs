@@ -18,16 +18,7 @@ namespace Dev2.Studio.Core.Factories
 {
     public static class DataMappingListFactory
     {
-        public static IList<IDev2Definition> CreateListInputMapping(string xmlServiceDefintion)
-        {
-            IList<IDev2Definition> inputDef = DataListFactory.CreateInputParser().ParseAndAllowBlanks(xmlServiceDefintion);
-            return inputDef;
-        }
-
-        public static string GenerateMapping(IList<IDev2Definition> defs, enDev2ArgumentType typeOf)
-        {
-            return DataListFactory.GenerateMapping(defs, typeOf);
-        }
-
+        public static IList<IDev2Definition> CreateListInputMapping(string xmlServiceDefintion) => DataListFactory.CreateInputParser().ParseAndAllowBlanks(xmlServiceDefintion);
+        public static string GenerateMapping(IList<IDev2Definition> defs, enDev2ArgumentType typeOf) => DataListFactory.GenerateMapping(defs, typeOf);
     }
 }
