@@ -3,7 +3,7 @@
 # [mergetool "customMerge"]
 #	cmd = customMerge \"$LOCAL\" \"$REMOTE\" 
 # Locate this script in your $HOME
-
+z
 echo "Custom Merge $1 $2";
 LOCAL=$1
 REMOTE=$2
