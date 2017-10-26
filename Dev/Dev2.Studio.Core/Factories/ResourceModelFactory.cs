@@ -17,7 +17,6 @@ using Dev2.Utils;
 
 
 namespace Dev2.Studio.Core.Factories
-
 {
     public static class ResourceModelFactory
     {
@@ -105,16 +104,16 @@ namespace Dev2.Studio.Core.Factories
                         break;
 
 
-                    case "EmailResource":   // PBI 953 - 2013.05.16 - TWR - Added
-                    case "WebSource":       // PBI 5656 - 2013.05.20 - TWR - Added
+                    case "EmailResource":
+                    case "WebSource":
                         resource.ResourceType = ResourceType.Source;
-                        resource.DisplayName = displayName; // this MUST be ResourceType; see RootWebSite.ShowDialog()
+                        resource.DisplayName = displayName;
                         resource.ServerResourceType = "WebSource";
                         resource.ResourceName = resourceName;
                         break;
-                    case "EmailSource":       // PBI 5656 - 2013.05.20 - TWR - Added
+                    case "EmailSource":
                         resource.ResourceType = ResourceType.Source;
-                        resource.DisplayName = displayName; // this MUST be ResourceType; see RootWebSite.ShowDialog()
+                        resource.DisplayName = displayName;
                         resource.ServerResourceType = "EmailSource";
                         resource.ResourceName = resourceName;
                         break;
@@ -125,9 +124,9 @@ namespace Dev2.Studio.Core.Factories
                         resource.ServerResourceType = "DbSource";
                         resource.ResourceName = resourceName;
                         break;
-                    case "WebService":      // PBI 1220 - 2013.05.20 - TWR - Added
+                    case "WebService":
                         resource.ResourceType = ResourceType.Service;
-                        resource.DisplayName = displayName; // this MUST be ResourceType; see RootWebSite.ShowDialog()
+                        resource.DisplayName = displayName;
                         resource.ServerResourceType = "WebService";
                         resource.ResourceName = resourceName;
                         break;
@@ -154,7 +153,7 @@ namespace Dev2.Studio.Core.Factories
                         resource.ID = Guid.Empty;
                         break;
                     default:
-                        break;
+                        throw new ArgumentException("Unrecognized Resource Type.");
                 }
                 return resource;
             }
