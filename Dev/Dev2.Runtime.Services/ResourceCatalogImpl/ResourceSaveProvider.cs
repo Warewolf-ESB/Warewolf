@@ -140,7 +140,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                 }
             }
 
-            var result = ((ResourceCatalog)_resourceCatalog).SaveImpl(workspaceID, resource, contents, true, savedPath, reason);
+            var result = ((ResourceCatalog)_resourceCatalog).SaveImpl(workspaceID, resource, contents, savedPath, reason);
 
             if (result.Status == ExecStatus.Success)
             {
