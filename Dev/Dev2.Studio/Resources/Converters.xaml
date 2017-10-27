@@ -61,7 +61,6 @@
     <core:ResourceTypeToIconConverter x:Key="ResourceTypeToIconConverter"/>
     <converters:ErrorTypeToImageConverter x:Key="ErrorTypeToImageConverter"/>
     <converters:NullableBoolToBoolConverter x:Key="NullableBoolToBoolConverter"/>
-    <converters:NullToBoolConvert x:Key="NullToBoolConvert"/>
     <converters2:MultipleBoolToEnabledConverter x:Key="MultipleBoolToEnabledConverter"/>
     <converters:IntInRangeToVisibilityConverter x:Key="IntInRangeToVisibilityConverter" />
     <converters:IntEnsureMinConverter x:Key="IntEnsureMinConverter" />
