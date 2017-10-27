@@ -97,7 +97,6 @@
     <Compile Include="ComponentModel\SettingsObjectAttribute.cs" />
     <Compile Include="ComponentModel\WorkflowDescriptor.cs" />
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
-    <Compile Include="Converters\NullToBoolConvert.cs" />
     <Compile Include="CustomControls\AutoCompleteBox.cs" />
     <Compile Include="CustomControls\AutoCompleteBoxAutomationPeer.cs" />
     <Compile Include="CustomControls\AutoCompleteFilter.cs" />
