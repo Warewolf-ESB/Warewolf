@@ -95,14 +95,7 @@ namespace Dev2.Common
                     {
                         impersonationContext = identity.Impersonate();
                     }
-                    try
-                    {
-                        actionToBePerformed();
-                    }
-                    catch (Exception)
-                    {
-                        //Ignore
-                    }
+                    actionToBePerformed();
                 }
                 finally
                 {
