@@ -41,6 +41,7 @@ using Dev2.Studio.Interfaces.DataList;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 using Dev2.Instrumentation;
+using Warewolf.Studio.Resources.Languages;
 
 namespace Dev2.Studio.ViewModels.DataList
 {
@@ -65,6 +66,9 @@ namespace Dev2.Studio.ViewModels.DataList
 
         public bool CanSortItems => HasItems();
 
+        private RelayCommand _inputVariableCheckboxCommand;
+
+        private RelayCommand _outputVariableCheckboxCommand;
         public ObservableCollection<DataListHeaderItemModel> BaseCollection
         {
             get => _baseCollection;
@@ -92,8 +96,8 @@ namespace Dev2.Studio.ViewModels.DataList
         private void FilterCollection(string searchText)
         {
             var applicationTracker = CustomContainer.Get<IApplicationTracker>();
-            applicationTracker.TrackCustomEvent(Warewolf.Studio.Resources.Languages.TrackEventVariables.EventCategory,
-                                                Warewolf.Studio.Resources.Languages.TrackEventVariables.VariablesSearch, searchText);
+            applicationTracker.TrackCustomEvent(TrackEventVariables.EventCategory,
+                                                TrackEventVariables.VariablesSearch, searchText);
 
             if (_scalarCollection != null && _scalarCollection.Count > 1)
             {
@@ -282,6 +286,7 @@ namespace Dev2.Studio.ViewModels.DataList
         {
             ClearSearchTextCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() => SearchText = "");
             ViewSortDelete = true;
+          
             Provider = new Dev2TrieSugggestionProvider();
             _missingDataList = new MissingDataList(RecsetCollection, ScalarCollection);
             _partIsUsed = new PartIsUsed(RecsetCollection, ScalarCollection, ComplexObjectCollection);
@@ -311,12 +316,26 @@ namespace Dev2.Studio.ViewModels.DataList
             return item != null && !item.IsComplexObject;
         }
 
+        private bool CanLogVariable(Object itemx)
+        {
+            if (itemx == null) 
+            {
+             return true;   
+            }
+            var item = itemx is bool && (bool) itemx;
+            return item ;
+
+        }
+
+
         private bool CanDelete(Object itemx)
         {
             var item = itemx as IDataListItemModel;
             return item != null && !item.IsUsed;
         }
-        
+
+
+
         public ICommand ClearSearchTextCommand { get; private set; }
 
         public RelayCommand SortCommand
@@ -363,6 +382,35 @@ namespace Dev2.Studio.ViewModels.DataList
             }
         }
 
+        public RelayCommand InputVariableCheckboxCommand
+        {
+            get
+            {
+                return _inputVariableCheckboxCommand ?? (_inputVariableCheckboxCommand = new RelayCommand(item =>
+                {
+                    LogToRevulytics(TrackEventVariables.EventCategory, TrackEventVariables.VariablesInputClicked);
+                }, CanLogVariable));
+            }
+        }
+
+        public RelayCommand OutputVariableCheckboxCommand
+        {
+            get
+            {
+                return _outputVariableCheckboxCommand ?? (_outputVariableCheckboxCommand = new RelayCommand(item =>
+                {
+                    LogToRevulytics(TrackEventVariables.EventCategory, TrackEventVariables.VariablesOutputClicked);
+                }, CanLogVariable));
+            }
+        }
+
+
+        public void LogToRevulytics(string eventCategory,string eventName)
+        {
+            var applicationTracker = CustomContainer.Get<IApplicationTracker>();
+            applicationTracker.TrackEvent(eventCategory, eventName);
+
+        }
 
 
         public void SetIsUsedDataListItems(IList<IDataListVerifyPart> parts, bool isUsed)

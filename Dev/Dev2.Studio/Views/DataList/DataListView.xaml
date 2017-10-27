@@ -163,7 +163,10 @@
                                       Checked="Inputcbx_OnChecked"
                                       Unchecked="Inputcbx_OnChecked"
                                       ToolTip="{x:Static languages:Tooltips.DataListInputCheckBoxTooltip}"
-                                      AutomationProperties.AutomationId="UI_IsInputCheckbox_AutoID" >
+                                      AutomationProperties.AutomationId="UI_IsInputCheckbox_AutoID"
+                                      Command="{Binding DataContext.InputVariableCheckboxCommand,ElementName=DataListViewControl}"
+                                      CommandParameter="{Binding Input}"
+                                      >
                                 <i:Interaction.Behaviors>
                                     <core:HelpSetter Text="{x:Static languages:HelpText.DataListInputCheckBoxHelp}"
                                                      DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=dataList:DataListView}}" />
@@ -180,7 +183,11 @@
                                       Checked="Outputcbx_OnChecked"
                                       Unchecked="Outputcbx_OnChecked"
                                       ToolTip="{x:Static languages:Tooltips.DataListOutputCheckBoxTooltip}"
-                                      AutomationProperties.AutomationId="UI_IsOutputCheckbox_AutoID" >
+                                      AutomationProperties.AutomationId="UI_IsOutputCheckbox_AutoID"
+                                      Command="{Binding DataContext.OutputVariableCheckboxCommand,ElementName=DataListViewControl}"
+                                      CommandParameter="{Binding Output}"
+                                      
+                                      >
                                 <i:Interaction.Behaviors>
                                     <core:HelpSetter Text="{x:Static languages:HelpText.DataListOutputCheckBoxHelp}"
                                                      DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=dataList:DataListView}}" />
