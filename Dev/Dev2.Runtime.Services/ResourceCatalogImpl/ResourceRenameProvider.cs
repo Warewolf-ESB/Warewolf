@@ -182,7 +182,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             }
             resource.ResourceName = newName;
             StringBuilder contents = resourceElement.ToStringBuilder();
-            return ((ResourceCatalog)_resourceCatalog).SaveImpl(workspaceID, resource, contents, true, savePath);
+            return ((ResourceCatalog)_resourceCatalog).SaveImpl(workspaceID, resource, contents, savePath);
 
         }
 

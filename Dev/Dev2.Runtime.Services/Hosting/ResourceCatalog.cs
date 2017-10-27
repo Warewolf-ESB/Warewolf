@@ -356,6 +356,7 @@ namespace Dev2.Runtime.Hosting
                 _catalogPluginContainer.SaveProvider.ResourceSaved = value;
             }
         }
+
         public Action<Guid, IList<ICompileMessageTO>> SendResourceMessages
         {
             get
@@ -368,7 +369,9 @@ namespace Dev2.Runtime.Hosting
             }
         }
 
-        internal ResourceCatalogResult SaveImpl(Guid workspaceID, IResource resource, StringBuilder contents, bool overwriteExisting = true, string savedPath = "", string reason = "") => ((ResourceSaveProvider)_catalogPluginContainer.SaveProvider).SaveImpl(workspaceID, resource, contents, overwriteExisting, savedPath, reason);
+        internal ResourceCatalogResult SaveImpl(Guid workspaceID, IResource resource, StringBuilder contents) => ((ResourceSaveProvider)_catalogPluginContainer.SaveProvider).SaveImpl(workspaceID, resource, contents, true, "", "");
+        internal ResourceCatalogResult SaveImpl(Guid workspaceID, IResource resource, StringBuilder contents, string savedPath) => ((ResourceSaveProvider)_catalogPluginContainer.SaveProvider).SaveImpl(workspaceID, resource, contents, true, savedPath, "");
+        internal ResourceCatalogResult SaveImpl(Guid workspaceID, IResource resource, StringBuilder contents, string savedPath, string reason) => ((ResourceSaveProvider)_catalogPluginContainer.SaveProvider).SaveImpl(workspaceID, resource, contents, true, savedPath, reason);
 
         #endregion
 
@@ -402,8 +405,7 @@ namespace Dev2.Runtime.Hosting
         public ResourceCatalogResult RenameCategory(Guid workspaceID, string oldCategory, string newCategory, List<IResource> resourcesToUpdate) => _catalogPluginContainer.RenameProvider.RenameCategory(workspaceID, oldCategory, newCategory, resourcesToUpdate);
 
         #endregion
-
-
+        
         public StringBuilder ToPayload(IResource resource)
         {
             var result = new StringBuilder();
