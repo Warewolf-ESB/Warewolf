@@ -201,7 +201,6 @@
     <Compile Include="AppResources\Converters\BoolToValueConverter.cs" />
     <Compile Include="AppResources\Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="AppResources\Converters\CollectionToVisibilityConverterPositive.cs" />
-    <Compile Include="AppResources\Converters\DataListItemModelToAutomationIdConverter.cs" />
     <Compile Include="AppResources\Converters\GridRowNumberConverter.cs" />
     <Compile Include="AppResources\Converters\PaddingThicknessConverter.cs" />
     <Compile Include="AppResources\Converters\DataGridRowNumberConverter.cs" />
