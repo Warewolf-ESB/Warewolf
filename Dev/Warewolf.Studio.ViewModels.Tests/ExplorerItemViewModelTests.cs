@@ -444,7 +444,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(_target.RunAllTestsCommand.CanExecute(null));
 
             //assert
-            _shellViewModelMock.Verify(it => it.RunAllTests(String.Empty, _target.ResourceId));
+            _shellViewModelMock.Verify(it => it.RunAllTests(null, _target.ResourceId));
         }
 
         [TestMethod]

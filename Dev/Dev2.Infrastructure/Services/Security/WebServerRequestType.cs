@@ -35,6 +35,7 @@ namespace Dev2.Services.Security
         WebExecuteGetRootLevelApisJson,
         WebExecuteGetApisJsonForFolder,
         WebBookmarkWorkflow,
+        WebExecuteFolderTests,
 
         // See Hubs
         HubConnect,
