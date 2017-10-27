@@ -225,7 +225,6 @@
     <Compile Include="AppResources\Converters\NegateVisibilityConverter.cs" />
     <Compile Include="AppResources\Converters\NullableBoolToBoolConverter.cs" />
     <Compile Include="AppResources\Converters\NullToVisibilityConverter.cs" />
-    <Compile Include="AppResources\Converters\SplitTypeToEnabledConverter.cs" />
     <Compile Include="AppResources\Converters\StringToAutomationIdConverter.cs" />
     <Compile Include="AppResources\Converters\StringToVisibilityConverter.cs" />
     <Compile Include="AppResources\Converters\StringToVisibilityConverterMulti.cs" />

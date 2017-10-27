@@ -29,10 +29,7 @@ namespace Dev2.Data
         public List<IRecordSet> ShapeRecordSets { get; set; }
         public List<IComplexObject> ShapeComplexObjects { get; set; }
         public List<IComplexObject> ComplexObjects { get; set; }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="T:System.Object"/> class.
-        /// </summary>
+        
         public DataListModel()
         {
             Scalars = new List<IScalar>();
@@ -292,7 +289,6 @@ namespace Dev2.Data
         }
 
         private enDev2ColumnArgumentDirection ParseColumnIODirection(XmlAttribute attr)
-
         {
             enDev2ColumnArgumentDirection result = enDev2ColumnArgumentDirection.None;
 
