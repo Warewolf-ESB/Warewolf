@@ -15,7 +15,6 @@ namespace Dev2.Factory
 
         public void OpenMergeWindow(IShellViewModel shellViewModel, string item, WarwolfStartupEventArgs args)
         {
-            var strBuilder = new StringBuilder();
             VerifyArgument.IsNotNull(nameof(shellViewModel), shellViewModel);
             var cleanPath = args.Args[1].Replace('^', ' ');
             var mergeHeadPath = cleanPath;
