@@ -31,12 +31,7 @@ namespace Dev2.Studio.Core
         }
 
         #region Implementation of IQueryManager
-
-        /// <summary>
-        /// Gets the dependencies of a resource. a dependency referes to a nested resource
-        /// </summary>
-        /// <param name="resourceId">the resource</param>
-        /// <returns>a list of tree dependencies</returns>
+        
         public IExecuteMessage FetchDependencies(Guid resourceId)
         {
             if (!Connection.IsConnected)
@@ -58,12 +53,7 @@ namespace Dev2.Studio.Core
 
             return payload;
         }
-
-        /// <summary>
-        /// Get the list of items that use this resource a nested resource
-        /// </summary>
-        /// <param name="resourceId"></param>
-        /// <returns></returns>
+        
         public IExecuteMessage FetchDependants(Guid resourceId)
         {
             if (!Connection.IsConnected)
@@ -74,12 +64,7 @@ namespace Dev2.Studio.Core
 
             return FetchDependantsFromServerService(resourceId, true);
         }
-
-        /// <summary>
-        /// Fetch a heavy weight reource
-        /// </summary>
-        /// <param name="resourceId"></param>
-        /// <returns></returns>
+        
         public StringBuilder FetchResourceXaml(Guid resourceId)
         {
             if (!Connection.IsConnected)
@@ -195,29 +180,6 @@ namespace Dev2.Studio.Core
             }
             var serializer = new Dev2JsonSerializer();
             return serializer.Deserialize<IList<IDbSource>>(result.Message.ToString());
-        }
-
-        public async Task<List<IFileResource>> FetchResourceFileTree()
-        {
-            var comsController = CommunicationControllerFactory.CreateController("FileResourceBuilder");
-
-            var workspaceId = Connection.WorkspaceID;
-            var result = await comsController.ExecuteCommandAsync<ExecuteMessage>(Connection, workspaceId).ConfigureAwait(true);
-            if (result == null || result.HasError)
-            {
-                if (!Connection.IsConnected)
-                {
-                    ShowServerDisconnectedPopup();
-                    return new List<IFileResource>();
-                }
-                if (result != null)
-                {
-                    throw new WarewolfSupportServiceException(result.Message.ToString(), null);
-                }
-                throw new WarewolfSupportServiceException(ErrorResource.ServiceDoesNotExist, null);
-            }
-            var serializer = new Dev2JsonSerializer();
-            return serializer.Deserialize<List<IFileResource>>(result.Message.ToString());
         }
 
         public IList<IExchangeSource> FetchExchangeSources()
@@ -447,12 +409,7 @@ namespace Dev2.Studio.Core
             var fileListings = serializer.Deserialize<List<IFileListing>>(result.Message.ToString());
             return fileListings;
         }
-
-        /// <summary>
-        /// Get the list of dependencies for the deploy screen
-        /// </summary>
-        /// <param name="values"></param>
-        /// <returns></returns>
+        
         public IList<Guid> FetchDependenciesOnList(IEnumerable<Guid> values)
         {
             if (!Connection.IsConnected)
@@ -466,8 +423,7 @@ namespace Dev2.Studio.Core
             {
                 return new List<Guid>();
             }
-
-
+            
             var serializer = new Dev2JsonSerializer();
             var comsController = CommunicationControllerFactory.CreateController("GetDependanciesOnListService");
             comsController.AddPayloadArgument("ResourceIds", serializer.SerializeToBuilder(enumerable.Select(a => a.ToString()).ToList()));
@@ -485,19 +441,6 @@ namespace Dev2.Studio.Core
             }
 
             return result;
-        }
-
-        public List<IWindowsGroupPermission> FetchPermissions()
-        {
-            if (!Connection.IsConnected)
-            {
-                ShowServerDisconnectedPopup();
-                return new List<IWindowsGroupPermission>();
-            }
-
-            var comsController = CommunicationControllerFactory.CreateController("FetchServerPermissions");
-            var result = comsController.ExecuteCommand<PermissionsModifiedMemo>(Connection, GlobalConstants.ServerWorkspaceID);
-            return result.ModifiedPermissions.Cast<IWindowsGroupPermission>().ToList();
         }
 
         public IList<IPluginSource> FetchPluginSources()

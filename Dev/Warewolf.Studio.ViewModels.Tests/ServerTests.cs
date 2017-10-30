@@ -148,32 +148,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Assert Results-------------------------
             Assert.IsNotNull(server.GetPermissions(It.IsAny<Guid>()));
             Assert.AreEqual(Permissions.Administrator, server.GetPermissions(It.IsAny<Guid>()));
-        }
-
-        [TestMethod]
-        [Owner("Sanele Mthembu")]
-        public void Permissions_GivenServerIsConnected_ShouldReturn1()
-        {
-            //------------Setup for test--------------------------
-            _envConnection.Setup(connection => connection.IsConnected).Returns(true);
-            var query = new Mock<IQueryManager>();
-            var windowsGroupPermissions = new List<IWindowsGroupPermission>
-            {
-                new Mock<IWindowsGroupPermission>().Object
-            };
-            query.Setup(manager => manager.FetchPermissions()).Returns(windowsGroupPermissions);
-            _proxyLayer.Setup(repository => repository.QueryManagerProxy).Returns(query.Object);
-            var server = new Server(Guid.Empty, _envConnection.Object);
-            server.ProxyLayer = _proxyLayer.Object;
-            server.Permissions = windowsGroupPermissions;
-            //------------Assert Precondition-------------------------
-            Assert.IsNotNull(server.Permissions);
-            Assert.AreEqual(1, server.Permissions.Count);
-            //------------Execute Test---------------------------
-            server.Permissions = new List<IWindowsGroupPermission>();
-            //------------Assert Results-------------------------
-            Assert.AreEqual(0, server.Permissions.Count);
-        }        
+        }   
         
         [TestMethod]
         [Owner("Sanele Mthembu")]
