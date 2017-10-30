@@ -11,10 +11,11 @@
 using System;
 using System.ServiceProcess;
 using Dev2.Util;
-
+using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Studio.Core.Services
 {
+    [ExcludeFromCodeCoverage]//In-use by studio auto update
     public class WindowsServiceManager : IWindowsServiceManager
     {
         #region Methods
