@@ -262,7 +262,6 @@
     <Compile Include="Diagnostics\IDebugLineItem.cs" />
     <Compile Include="ExplorerDeleteProvider.cs" />
     <Compile Include="ExplorerUpdateManagerProxy.cs" />
-    <Compile Include="Messages\DeleteFolderMessage.cs" />
     <Compile Include="Messages\NewTestFromDebugMessage.cs" />
     <Compile Include="Models\DataList\ComplexObjectItemModel.cs" />
     <Compile Include="Models\DataList\DataListHeaderItemModel.cs" />
