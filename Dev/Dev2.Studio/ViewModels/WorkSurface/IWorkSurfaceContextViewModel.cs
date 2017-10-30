@@ -46,15 +46,12 @@ namespace Dev2.Studio.ViewModels.WorkSurface
         string DisplayName { get; set; }
         bool IsNotifying { get; set; }
 
-        void Handle(DebugResourceMessage message);
-
         void Handle(ExecuteResourceMessage message);
 
         void Handle(SaveResourceMessage message);
 
         void Handle(UpdateWorksurfaceDisplayName message);
-
-
+        
         void SetDebugStatus(DebugStatus debugStatus);
 
         void Debug(IContextualResourceModel resourceModel, bool isDebug);

@@ -304,7 +304,6 @@
     <Compile Include="Messages\FileChooserMessage.cs" />
     <Compile Include="Messages\SaveUnsavedWorkflowMessage.cs" />
     <Compile Include="Messages\UpdateWorksurfaceDisplayName.cs" />
-    <Compile Include="Messages\DebugResourceMessage.cs" />
     <Compile Include="Messages\DebugWriterWriteMessage.cs" />
     <Compile Include="Messages\DeleteResourcesMessage.cs" />
     <Compile Include="Messages\EditActivityMessage.cs" />
