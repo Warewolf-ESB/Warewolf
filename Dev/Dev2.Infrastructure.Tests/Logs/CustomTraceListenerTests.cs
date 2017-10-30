@@ -16,11 +16,11 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Infrastructure.Tests.Logs
 {
     [TestClass]
-    public class CustomTraceListnerTests
+    public class CustomTraceListenerTests
     {
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("CustomTraceListner_WithEmptyFileName")]
+        [TestCategory("CustomTraceListener")]
         public void CustomTraceListener_Constructor_WithNullFileName_ShouldUseDefaultFileName()
         {
             //------------Setup for test--------------------------
@@ -28,13 +28,12 @@ namespace Dev2.Infrastructure.Tests.Logs
             //------------Execute Test---------------------------
             string loggingFileName = CustomTextWriter.LoggingFileName;
             //------------Assert Results-------------------------
-            StringAssert.Contains(loggingFileName, "Warewolf Studio.log");
-   
+            StringAssert.Contains(loggingFileName, "Warewolf Studio.log");   
         }
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("CustomTraceListner_WithEmptyFileName")]
+        [TestCategory("CustomTraceListener")]
         public void CustomTraceListener_Constructor_WithEmptyFileName_ShouldUseDefaultFileName()
         {
             //------------Setup for test--------------------------
@@ -48,7 +47,7 @@ namespace Dev2.Infrastructure.Tests.Logs
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("CustomTraceListner_WithEmptyFileName")]
+        [TestCategory("CustomTraceListener")]
         public void CustomTraceListener_StaticLoggingFileNameAccessed_WithEmptyFileName_ShouldUseDefaultFileName()
         {
             //------------Setup for test--------------------------
@@ -58,12 +57,10 @@ namespace Dev2.Infrastructure.Tests.Logs
             StringAssert.Contains(loggingFileName, "Warewolf Studio.log");
         }
 
-
-
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("CustomTraceListner_WarewolfAppPath")]
-        public void CustomTraceListner_WarewolfAppPath_ShouldContainLocalAppDataPathAndWarewolf()
+        [TestCategory("CustomTraceListener")]
+        public void CustomTraceListener_WarewolfAppPath_ShouldContainLocalAppDataPathAndWarewolf()
         {
             //------------Setup for test--------------------------
             var localAppDataPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
@@ -76,8 +73,8 @@ namespace Dev2.Infrastructure.Tests.Logs
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("CustomTraceListner_WarewolfAppPath")]
-        public void CustomTraceListner_StudioLogPath_ShouldContainLocalAppDataPathAndWarewolfAndStudioLogs()
+        [TestCategory("CustomTraceListener")]
+        public void CustomTraceListener_StudioLogPath_ShouldContainLocalAppDataPathAndWarewolfAndStudioLogs()
         {
             //------------Setup for test--------------------------
             var localAppDataPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
@@ -91,8 +88,8 @@ namespace Dev2.Infrastructure.Tests.Logs
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("CustomTraceListner_WithEmptyFileName")]
-        public void CustomTraceListner_StaticLoggingFileNameAccessed_ShouldHaveFullPathAndDefaultFileName()
+        [TestCategory("CustomTraceListener")]
+        public void CustomTraceListener_StaticLoggingFileNameAccessed_ShouldHaveFullPathAndDefaultFileName()
         {
             //------------Setup for test--------------------------
             var localAppDataPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
@@ -107,8 +104,8 @@ namespace Dev2.Infrastructure.Tests.Logs
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("CustomTraceListner_WithEmptyFileName")]
-        public void CustomTraceListner_StaticLoggingFileNameAccessed_WithFileName_ShouldHaveFullPathAndGivenFileName()
+        [TestCategory("CustomTraceListener")]
+        public void CustomTraceListener_StaticLoggingFileNameAccessed_WithFileName_ShouldHaveFullPathAndGivenFileName()
         {
             //------------Setup for test--------------------------
             const string fileName = "Warewolf Studio.log";
@@ -120,9 +117,7 @@ namespace Dev2.Infrastructure.Tests.Logs
             StringAssert.Contains(loggingFileName, localAppDataPath);
             StringAssert.Contains(loggingFileName, "Warewolf");
             StringAssert.Contains(loggingFileName, "Studio Logs");
-            StringAssert.Contains(loggingFileName, fileName);
- 
+            StringAssert.Contains(loggingFileName, fileName); 
         }
-
     }
 }
