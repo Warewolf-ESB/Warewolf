@@ -27,11 +27,12 @@ namespace Dev2.ViewModels.Merge
         public delegate void ModelItemChanged(ModelItem modelItem, MergeToolModel mergeToolModel);
         public event ModelItemChanged OnModelItemChanged;
 
-        public ConflictModelFactory(IConflictNode conflictNode, IContextualResourceModel resourceModel)
+        public ConflictModelFactory(IContextualResourceModel resourceModel, IConflictTreeNode conflict)
         {
             Children = new ObservableCollection<IMergeToolModel>();
             _resourceModel = resourceModel;
-            Model = GetModel(conflictNode.CurrentActivity, conflictNode.Activity, null, "");
+            var modelItem = ModelItemUtils.CreateModelItem(conflict.Activity);
+            Model = GetModel(modelItem, conflict,null);           
         }
 
         public ConflictModelFactory()
@@ -107,20 +108,16 @@ namespace Dev2.ViewModels.Merge
         }
         public IDataListViewModel DataListViewModel { get; set; }
         public ObservableCollection<IMergeToolModel> Children { get; set; }
+                   
 
-        public IMergeToolModel GetModel(ModelItem modelItem, IDev2Activity activity, IMergeToolModel parentItem, string parentLableDescription)
+        public IMergeToolModel GetModel(ModelItem modelItem, IConflictTreeNode node, IMergeToolModel parentItem,string parentLabelDescription = "")
         {
-            if (modelItem == null)
+            if (modelItem == null || node == null || node.Activity==null)
             {
                 return null;
             }
 
-            var currentValue = modelItem.GetCurrentValue<IDev2Activity>();
-            var activityType = currentValue?.GetType();
-            if (activityType == null)
-            {
-                return null;
-            }           
+            var activityType = node.Activity.GetType();            
 
             DesignerAttributeMap.DesignerAttributes.TryGetValue(activityType, out var actual);
             if (actual != null)
@@ -128,7 +125,7 @@ namespace Dev2.ViewModels.Merge
                 ActivityDesignerViewModel instance;
                 if (actual == typeof(SwitchDesignerViewModel))
                 {
-                    var dsfSwitch = currentValue as DsfSwitch;
+                    var dsfSwitch = node as DsfSwitch;
                     instance = Activator.CreateInstance(actual, modelItem, dsfSwitch?.Switch ?? "") as ActivityDesignerViewModel;
                 }
                 else if (actual == typeof(ServiceDesignerViewModel))
@@ -137,10 +134,10 @@ namespace Dev2.ViewModels.Merge
                     var childResourceModel = _resourceModel.Environment.ResourceRepository.LoadContextualResourceModel(resourceId);
                     instance = Activator.CreateInstance(actual, modelItem, childResourceModel) as ActivityDesignerViewModel;
                 }
-                else if (currentValue is IAdapterActivity a)
+                else if (node.Activity is IAdapterActivity a)
                 {
-                    var node = ModelItemUtils.CreateModelItem(a.GetInnerNode());
-                    instance = Activator.CreateInstance(actual, node) as ActivityDesignerViewModel;
+                    var inode = ModelItemUtils.CreateModelItem(a.GetInnerNode());
+                    instance = Activator.CreateInstance(actual, inode) as ActivityDesignerViewModel;
                 }
                 else
                 {
@@ -151,36 +148,27 @@ namespace Dev2.ViewModels.Merge
                 {
                     ActivityDesignerViewModel = instance,
                     MergeIcon = modelItem.GetImageSourceForTool(),
-                    MergeDescription = activity.GetDisplayName(),
-                    UniqueId = currentValue.UniqueID.ToGuid(),
-                    IsMergeVisible = true,
-                    ActivityType = activity.GetFlowNode(),
+                    MergeDescription = node.Activity.GetDisplayName(),
+                    UniqueId = node.Activity.UniqueID.ToGuid(),
+                    ActivityType = node.Activity.GetFlowNode(),
+                    IsMergeVisible = node.IsInConflict,
+                    FlowNode = modelItem,
+                    NodeLocation = node.Location,
                     Parent = parentItem,
                     HasParent = parentItem != null,
-                    ParentDescription = parentLableDescription,
-                    IsTrueArm = parentLableDescription?.ToLowerInvariant() == "true"
-                };
+                    ParentDescription = parentLabelDescription,
+                    IsTrueArm = parentLabelDescription?.ToLowerInvariant() == "true"
+            };
+                
                 modelItem.PropertyChanged += (sender, e) =>
                 {
                     OnModelItemChanged?.Invoke(modelItem, mergeToolModel);
                 };
-
-                foreach (var act in activity.GetChildrenNodes())
-                {
-                    if (act.Value == null)
-                    {
-                        continue;
-                    }
-                    foreach (var innerAct in act.Value)
-                    {
-                        var item = GetModel(ModelItemUtils.CreateModelItem(innerAct), innerAct, mergeToolModel, act.Key);
-                        mergeToolModel.Children.Add(item);
-                    }
-                }
+                
                 return mergeToolModel;
             }
             return null;
-        }     
+        }
 
         public event ConflictModelChanged SomethingConflictModelChanged;
     }

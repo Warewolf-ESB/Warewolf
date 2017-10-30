@@ -39,20 +39,32 @@ namespace Dev2.Activities
         {
             return Conditions.DisplayText;
         }
-        public override Dictionary<string, IEnumerable<IDev2Activity>> GetChildrenNodes()
+
+        public override IConflictTreeNode BuildNode()
         {
-            var nextNodes = new Dictionary<string, IEnumerable<IDev2Activity>>();
+            var node = new ConflictTreeNode(this, new System.Windows.Point());
             if (TrueArm != null)
             {
-                var trueNodes = new List<IDev2Activity>();
-                trueNodes.AddRange(TrueArm.Flatten(x=>x.NextNodes).Reverse());
-                nextNodes.Add("True", trueNodes);
+                node.AddChild(TrueArm?.FirstOrDefault().BuildNode(),"TRUE");
             }
             if (FalseArm != null)
             {
-                var falseNodes = new List<IDev2Activity>();
-                falseNodes.AddRange(FalseArm.Flatten(x=>x.NextNodes).Reverse());
-                nextNodes.Add("False", falseNodes);
+                node.AddChild(FalseArm?.FirstOrDefault().BuildNode(),"FALSE");
+
+            }            
+            return node;
+        }
+
+        public override Dictionary<string, IDev2Activity> GetChildrenNodes()
+        {
+            var nextNodes = new Dictionary<string, IDev2Activity>();
+            if (TrueArm != null)
+            {                
+                nextNodes.Add("True", TrueArm?.FirstOrDefault());
+            }
+            if (FalseArm != null)
+            {                
+                nextNodes.Add("False", FalseArm?.FirstOrDefault());
 
             }
             return nextNodes;

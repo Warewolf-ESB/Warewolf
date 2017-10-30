@@ -901,13 +901,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        public override Dictionary<string, IEnumerable<IDev2Activity>> GetChildrenNodes()
+        public override Dictionary<string, IDev2Activity> GetChildrenNodes()
         {
             if (!(DataFunc.Handler is IDev2ActivityIOMapping act))
             {
-                return new Dictionary<string, IEnumerable<IDev2Activity>>();
+                return new Dictionary<string, IDev2Activity>();
             }
-            var nextNodes = new Dictionary<string, IEnumerable<IDev2Activity>> { { act?.GetDisplayName() ?? "", new List<IDev2Activity> { act } } };           
+            var nextNodes = new Dictionary<string, IDev2Activity> { { act?.GetDisplayName() ?? "",  act } };           
             return nextNodes;
         }
 
