@@ -39,20 +39,10 @@ using Dev2.Studio.Interfaces.DataList;
 using Dev2.Studio.Interfaces.Enums;
 using Warewolf.Studio.ViewModels;
 
-
-
-
-
-
 namespace Dev2.Studio.ViewModels.WorkSurface
 {
-    /// <summary>
-    ///     Class used as unified context across the studio - coordination across different regions
-    /// </summary>
-    /// <author>Jurie.smit</author>
-    /// <date>2/27/2013</date>
     public class WorkSurfaceContextViewModel : BaseViewModel,
-                                 IHandle<SaveResourceMessage>, IHandle<DebugResourceMessage>,
+                                 IHandle<SaveResourceMessage>,
                                  IHandle<ExecuteResourceMessage>,
                                  IHandle<UpdateWorksurfaceDisplayName>, IWorkSurfaceContextViewModel
     {
@@ -229,16 +219,6 @@ namespace Dev2.Studio.ViewModels.WorkSurface
         #endregion ctors
 
         #region IHandle
-
-        public void Handle(DebugResourceMessage message)
-        {
-            Dev2Logger.Debug(message.GetType().Name, "Warewolf Debug");
-            IContextualResourceModel contextualResourceModel = message.Resource;
-            if (contextualResourceModel != null && ContextualResourceModel != null && contextualResourceModel.ID == ContextualResourceModel.ID)
-            {
-                Debug(contextualResourceModel, true);
-            }
-        }
 
         public void Handle(ExecuteResourceMessage message)
         {
