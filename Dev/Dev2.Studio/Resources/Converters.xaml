@@ -51,7 +51,6 @@
     <converters:MultipleStringToVisilityValueConverter x:Key="MultipleStringToVisilityValueConverter" />
     <converters:MultipleBoolToVisibilityValueConverter x:Key="MultipleBoolToVisibilityValueConverter" />
     <converters1:SchedulerMultiBoolToVisibilityConverter x:Key="SchedulerMultiBoolToVisibilityConverter" />
-    <converters:StringToVisibilityConverterMulti x:Key="StringToVisibilityConverterMulti" />
     <converters:BoolToValueConverter x:Key="BoolToPlusMinusConverter" TrueValue="+" FalseValue="-" />
     <converters:BoolToValueConverter x:Key="BoolToEnabledConverterNegative" TrueValue="False" FalseValue="True" />
     <converters6:BoolToVisibilityConverter x:Key="BoolToVisibilityConverterPositive" TrueValue="Visible" FalseValue="Collapsed" />
