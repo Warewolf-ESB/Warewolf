@@ -152,8 +152,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             try
             {
-                var className = GetType().Name;
-                ///Tracker.TrackEvent(TrackerEventGroup.ActivityExecution, className)
+               // var className = GetType().Name;
+                //Tracker.TrackEvent(TrackerEventGroup.ActivityExecution, className)
                 OnExecute(context);
                 
             }
