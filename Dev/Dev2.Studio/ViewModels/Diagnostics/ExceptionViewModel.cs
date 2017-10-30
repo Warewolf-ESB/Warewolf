@@ -30,15 +30,11 @@ using System.Windows.Threading;
 using Dev2.Common;
 using Dev2.Studio.Controller;
 using Dev2.Studio.Interfaces;
-
+using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Studio.ViewModels.Diagnostics
 {
-    /// <summary>
-    /// Used to display a user-friendly exceptionmessage, and allow the user to send a report via email
-    /// </summary>
-    /// <author>jurie.smit</author>
-    /// <date>2013/01/15</date>
+    [ExcludeFromCodeCoverage]
     public sealed class ExceptionViewModel : SimpleBaseViewModel, IExceptionViewModel
     {
         #region private fields
