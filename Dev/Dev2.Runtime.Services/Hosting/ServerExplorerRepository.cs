@@ -27,11 +27,6 @@ using Dev2.Runtime.Security;
 using ServiceStack.Common.Extensions;
 using Warewolf.Resource.Errors;
 
-
-
-
-
-
 namespace Dev2.Runtime.Hosting
 {
     public class ServerExplorerRepository : IExplorerServerResourceRepository
