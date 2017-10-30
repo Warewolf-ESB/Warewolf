@@ -58,8 +58,7 @@ namespace Dev2
             var assemblies = base.SelectAssemblies().ToList();
             assemblies.AddRange(new[]
                 {
-                    Assembly.GetAssembly(typeof (Bootstrapper)),
-                    Assembly.GetAssembly(typeof (DebugWriter))
+                    Assembly.GetAssembly(typeof (Bootstrapper))
                 });
             return assemblies.Distinct();
         }
