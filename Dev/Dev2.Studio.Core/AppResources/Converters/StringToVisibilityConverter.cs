@@ -16,26 +16,14 @@ using System.Windows.Data;
 
 namespace Dev2.Studio.Core.AppResources.Converters
 {
-    // Simplified
     public class StringToVisibilityConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var theValue = value as string;
-            var invertStr = parameter as string;
-            bool.TryParse(invertStr, out bool invert);
-
-            var result = string.IsNullOrEmpty(theValue) ? Visibility.Collapsed : Visibility.Visible;
-            if(invert)
-            {
-                return result == Visibility.Collapsed ? Visibility.Visible : Visibility.Collapsed;
-            }
-            return result;
+            var inputValue = value as string;
+            return string.IsNullOrEmpty(inputValue) ? Visibility.Collapsed : Visibility.Visible;
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            return Binding.DoNothing;
-        }
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => Binding.DoNothing;
     }
 }
