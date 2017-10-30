@@ -543,9 +543,7 @@ namespace Dev2.Studio.ViewModels
                 message.ActionToDoOnDelete?.Invoke();
             }
         }
-
-
-
+        
         public void Handle(ShowDependenciesMessage message)
         {
             Dev2Logger.Info(message.GetType().Name, "Warewolf Info");
