@@ -67,13 +67,10 @@ using Dev2.Studio.Interfaces.Enums;
 
 
 
-
-
 namespace Dev2.Studio.ViewModels
 {
     public class ShellViewModel : BaseConductor<WorkSurfaceContextViewModel>,
                                         IHandle<DeleteResourcesMessage>,
-                                        IHandle<ShowDependenciesMessage>,
                                         IHandle<AddWorkSurfaceMessage>,
                                         IHandle<RemoveResourceAndCloseTabMessage>,
                                         IHandle<SaveAllOpenTabsMessage>,
@@ -534,14 +531,6 @@ namespace Dev2.Studio.ViewModels
             DeleteResources(message.ResourceModels, message.FolderName, message.ShowDialog, message.ActionToDoOnDelete);
         }
         
-        public void Handle(ShowDependenciesMessage message)
-        {
-            Dev2Logger.Info(message.GetType().Name, "Warewolf Info");
-            var model = message.ResourceModel;
-            var dependsOnMe = message.ShowDependentOnMe;
-            _worksurfaceContextManager.ShowDependencies(dependsOnMe, model, ActiveServer);
-        }
-
         public void ShowDependencies(Guid resourceId, IServer server, bool isSource)
         {
             var environmentModel = ServerRepository.Get(server.EnvironmentID);
