@@ -12,6 +12,8 @@ using System.Windows;
 using Dev2.Annotations;
 using Dev2.Common.Common;
 using Dev2.Studio.Interfaces.DataList;
+using System.IO;
+using System.Text;
 
 namespace Dev2.ViewModels.Merge
 {
@@ -39,20 +41,26 @@ namespace Dev2.ViewModels.Merge
             var conflicts = BuildConflicts(currentResourceModel, differenceResourceModel, currentChanges);
             Conflicts = new LinkedList<ICompleteConflict>(conflicts);
             _conflictEnumerator = Conflicts.GetEnumerator();
-            var firstConflict = Conflicts.FirstOrDefault();
+            var firstConflict = Conflicts.FirstOrDefault();            
             SetupBindings(currentResourceModel, differenceResourceModel, firstConflict);
         }
 
         private void SetupBindings(IContextualResourceModel currentResourceModel, IContextualResourceModel differenceResourceModel, ICompleteConflict firstConflict)
         {
+            var strBuilder = new StringBuilder();
             if (CurrentConflictModel == null)
             {
+                strBuilder.AppendLine(firstConflict?.CurrentViewModel.ToString());
+                strBuilder.AppendLine(currentResourceModel.ResourceName);
+                strBuilder.AppendLine(currentResourceModel.Environment.Name);
+                File.WriteAllText("C:\\Users\\Sanele.Mthembu\\Desktop\\txt.txt", strBuilder.ToString());
                 CurrentConflictModel = new ConflictModelFactory
                 {
                     Model = firstConflict?.CurrentViewModel ?? new MergeToolModel { IsMergeEnabled = false },
                     WorkflowName = currentResourceModel.ResourceName,
                     ServerName = currentResourceModel.Environment.Name
                 };
+                
                 CurrentConflictModel.GetDataList(currentResourceModel);
                 CurrentConflictModel.SomethingConflictModelChanged += SourceOnConflictModelChanged;
             }
@@ -63,7 +71,7 @@ namespace Dev2.ViewModels.Merge
                 {
                     Model = firstConflict?.DiffViewModel ?? new MergeToolModel { IsMergeEnabled = false },
                     WorkflowName = differenceResourceModel.ResourceName,
-                    ServerName = differenceResourceModel.Environment.Name
+                    //ServerName = differenceResourceModel.Environment.Name
                 };
                 DifferenceConflictModel.GetDataList(differenceResourceModel);
                 DifferenceConflictModel.SomethingConflictModelChanged += SourceOnConflictModelChanged;

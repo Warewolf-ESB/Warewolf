@@ -23,13 +23,12 @@ namespace Dev2.Integration.Tests.Merge
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void OpenMergeWindow_NullShellViewModel()
         {
             //---------------Set up test pack-------------------
             MergeFactory factory = new MergeFactory();
             //---------------Execute Test ----------------------
-            factory.OpenMergeWindow(null, "");
+            factory.OpenMergeWindow(null, "", null);
         }
 
         [TestMethod]
@@ -43,7 +42,7 @@ namespace Dev2.Integration.Tests.Merge
             mockVm.Setup(p => p.OpenMergeConflictsView(It.IsAny<IContextualResourceModel>(), It.IsAny<IContextualResourceModel>(), It.IsAny<bool>()));
             //var path = "Dev2.Integration.Tests.XML.SameResourceSequence.xml";
             var path = "XML\\SameResourceSequence.xml";
-            factory.OpenMergeWindow(mockVm.Object, "-merge " + path);
+            factory.OpenMergeWindow(mockVm.Object, "-merge " + path, null);
             mockVm.Verify(p => p.OpenMergeConflictsView(It.IsAny<IContextualResourceModel>(), It.IsAny<IContextualResourceModel>(), It.IsAny<bool>()));
         }
     }

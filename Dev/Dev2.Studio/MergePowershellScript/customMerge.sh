@@ -3,15 +3,14 @@
 # [mergetool "customMerge"]
 #	cmd = customMerge \"$LOCAL\" \"$REMOTE\" 
 # Locate this script in your $HOME
-z
-echo "Custom Merge $1 $2";
-LOCAL=$1
-REMOTE=$2
 
-WDIFF="\.cs"
+echo "Custom Merge $1";
+REMOTE=$1
+LOCAL="-merge"
 
-if echo "$LOCAL" | grep -q "$WDIFF"; then
-	echo "Using Warewolf to merge";		
-	powershell -command "Start-Process \"C:\PROGRAM FILES (x86)\Warewolf\Studio\Warewolf Studio.exe\" -ArgumentList \"$1 $2\" -Verb runas"
+WDIFF=".bite"
+if echo "$REMOTE" | grep -q "$WDIFF"; then
+	echo "Using Warewolf to merge";
+	powershell -command "Start-Process \"C:\PROGRAM FILES (x86)\Warewolf\Studio\Warewolf Studio.exe\" -ArgumentList \"$LOCAL ${REMOTE// /^}\" -Verb runas"
 	
 fi
