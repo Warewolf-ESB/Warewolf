@@ -56,19 +56,34 @@ namespace Dev2.Activities
         {
             return Switch;
         }
-        public override Dictionary<string,IEnumerable<IDev2Activity>> GetChildrenNodes()
+
+        public override IConflictTreeNode BuildNode()
         {
-            var nextNodes = new Dictionary<string, IEnumerable<IDev2Activity>>();            
-            foreach(var swt in Switches)
+            var node = new ConflictTreeNode(this, new System.Windows.Point());
+            foreach (var activity in Switches)
             {
-                var currentAct = swt.Value;
-                var swtChildren = new List<IDev2Activity> { currentAct };
-                swtChildren.AddRange(currentAct.NextNodes.Flatten(x => x.NextNodes));
-                nextNodes.Add(swt.Key, swtChildren);
+                if (activity.Value is IDev2Activity act)
+                {
+                    node.AddChild(act.BuildNode(),activity.Key);
+                }
             }
             if (Default != null)
             {
-                nextNodes.Add(@"Default", Default.Flatten(x => x.NextNodes));
+                node.AddChild(Default.FirstOrDefault().BuildNode(),"Default");
+            }
+            return node;
+        }
+        public override Dictionary<string,IDev2Activity> GetChildrenNodes()
+        {
+            var nextNodes = new Dictionary<string, IDev2Activity>();            
+            foreach(var swt in Switches)
+            {
+                var currentAct = swt.Value;
+                nextNodes.Add(swt.Key, currentAct);
+            }
+            if (Default != null)
+            {
+                nextNodes.Add(@"Default", Default.FirstOrDefault());
             }
             return nextNodes;
         }
