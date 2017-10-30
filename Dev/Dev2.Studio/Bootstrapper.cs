@@ -53,16 +53,6 @@ namespace Dev2
             CustomContainer.AddToLoadedTypes(typeof(ManageRabbitMQSourceModel));
         }
 
-        protected override IEnumerable<Assembly> SelectAssemblies()
-        {
-            var assemblies = base.SelectAssemblies().ToList();
-            assemblies.AddRange(new[]
-                {
-                    Assembly.GetAssembly(typeof (Bootstrapper))
-                });
-            return assemblies.Distinct();
-        }
-
         #region Fields
 
         bool _serverServiceStartedFromStudio;
