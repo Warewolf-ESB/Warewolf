@@ -26,7 +26,6 @@
     <converters2:EnumDiscriptionToStringConverter x:Key="EnumDiscriptionToStringConverter" />
     <converters2:EnumDisplayNameToItemSourceConverter x:Key="EnumDisplayNameToItemSourceConverter" />
     <converters2:FindRecordsTypeToBoolConverter x:Key="FindRecordsTypeToBoolConverter" />
-    <converters2:SplitTypeToEnabledConverter x:Key="SplitTypeToEnabledConverter" />
     <converters2:InverseBooleanConverter x:Key="InverseBooleanConverter" />
     <converters2:IntToVisibilityConverter x:Key="IntToVisibilityConverter"/>
 
