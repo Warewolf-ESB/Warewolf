@@ -20,17 +20,11 @@ namespace Dev2.Studio.Core.AppResources.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if(value == null)
-            {
-                return null;
-            }
-            var resourceKey = value.ToString();
+            object inputValue = value ?? throw new ArgumentNullException("value");
+            var resourceKey = inputValue.ToString();
             return Application.Current.Resources[resourceKey];
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            throw new NotImplementedException();
-        }
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => throw new NotImplementedException();
     }
 }
