@@ -338,6 +338,14 @@
     <Compile Include="Services\IWindowsServiceManager.cs" />
     <Compile Include="Services\ServerServiceConfiguration.cs" />
     <Compile Include="Services\WindowsServiceManager.cs" />
+    <Compile Include="StringResources.Designer.cs">
+      <DependentUpon>StringResources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="StringResources1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>StringResources.resx</DependentUpon>
+    </Compile>
     <Compile Include="AppResources\Converters\InverseBooleanConverter.cs" />
     <Compile Include="Activities\Interfaces\IServiceXmlTranslator.cs" />
     <Compile Include="StudioResourceUpdateManager.cs" />
@@ -365,6 +373,13 @@
     <Content Include="AppResources\XMLFile1.xml" />
     <None Include="Dev2.Studio.Core.ruleset" />
     <None Include="SignalR.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="StringResources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>StringResources1.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config">
