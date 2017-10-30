@@ -233,29 +233,6 @@
         </VisualBrush.Visual>
     </VisualBrush>
 
-    <DataTemplate DataType="{x:Type bdsm:OperatorType}">
-        <StackPanel Orientation="Horizontal" Margin="10">
-            <RadioButton GroupName="Test" IsChecked="{Binding Selected}" Margin="10" />
-            <Label Content="Value Of" />
-            <TextBox Text="{Binding TagName, UpdateSourceTrigger=LostFocus, ValidatesOnDataErrors=True}" MinWidth="100" />
-            <Label Content="{Binding FriendlyName}" />
-            <TextBox Text="{Binding Value, UpdateSourceTrigger=LostFocus, ValidatesOnDataErrors=True}" MinWidth="100">
-                <TextBox.Style>
-                    <Style TargetType="{x:Type TextBox}">
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding ShowEndValue}" Value="True">
-                                <Setter Property="Visibility" Value="Visible" />
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding ShowEndValue}" Value="False">
-                                <Setter Property="Visibility" Value="Hidden" />
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </TextBox.Style>
-            </TextBox>
-        </StackPanel>
-    </DataTemplate>
-
     <!-- Expander Style -->
     <Style x:Key="ExpanderHeaderFocusVisual">
         <Setter Property="Control.Template">
