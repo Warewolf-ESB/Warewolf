@@ -558,6 +558,19 @@ function Install-Server([string]$ServerPath,[string]$ResourcesType) {
 	    <ScopeEntry>$ServerBinDir\*.dll</ScopeEntry>
 	    <ScopeEntry>$ServerBinDir\*.exe</ScopeEntry>
     </Scope>
+    <Filters>
+        <ExcludeFilters>
+            <FilterEntry>
+                <ModuleMask>*.tests</ModuleMask>
+                <ModuleMask>*.specs</ModuleMask>
+            </FilterEntry>
+        </ExcludeFilters>
+        <AttributeFilters>
+            <AttributeFilterEntry>
+                <ClassMask>System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute</ClassMask>
+            </AttributeFilterEntry>
+        </AttributeFilters>
+    </Filters>
 </AnalyseParams>
 "@
 
@@ -689,6 +702,19 @@ function Start-Studio {
     	<ScopeEntry>$StudioBinDir\*.dll</ScopeEntry>
     	<ScopeEntry>$StudioBinDir\*.exe</ScopeEntry>
     </Scope>
+    <Filters>
+        <ExcludeFilters>
+            <FilterEntry>
+                <ModuleMask>*.tests</ModuleMask>
+                <ModuleMask>*.specs</ModuleMask>
+            </FilterEntry>
+        </ExcludeFilters>
+        <AttributeFilters>
+            <AttributeFilterEntry>
+                <ClassMask>System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute</ClassMask>
+            </AttributeFilterEntry>
+        </AttributeFilters>
+    </Filters>
 </AnalyseParams>
 "@
         $DotCoverRunnerXMLPath = "$TestsResultsPath\Studio DotCover Runner.xml"
@@ -1057,6 +1083,19 @@ if ($TotalNumberOfJobsToRun -gt 0) {
                 $DotCoverArgs += @"
 
     </Scope>
+    <Filters>
+        <ExcludeFilters>
+            <FilterEntry>
+                <ModuleMask>*.tests</ModuleMask>
+                <ModuleMask>*.specs</ModuleMask>
+            </FilterEntry>
+        </ExcludeFilters>
+        <AttributeFilters>
+            <AttributeFilterEntry>
+                <ClassMask>System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute</ClassMask>
+            </AttributeFilterEntry>
+        </AttributeFilters>
+    </Filters>
 </AnalyseParams>
 "@
                 $DotCoverRunnerXMLPath = "$TestsResultsPath\$JobName DotCover Runner.xml"

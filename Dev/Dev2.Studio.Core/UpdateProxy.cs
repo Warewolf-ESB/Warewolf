@@ -28,13 +28,7 @@ namespace Dev2.Studio.Core
             : base(communicationControllerFactory, connection)
         {
         }
-
-        /// <summary>
-        /// Save a resource to the server
-        /// </summary>
-        /// <param name="resource">resource to save</param>
-        /// <param name="workspaceId">the workspace to save to</param>
-        /// <exception cref="WarewolfSaveException">Unable to contact server</exception>
+        
         public void SaveServerSource(IServerSource resource, Guid workspaceId)
         {
             var con = Connection;
@@ -52,12 +46,7 @@ namespace Dev2.Studio.Core
                 throw new WarewolfSaveException(output.Message.ToString(), null);
             }
         }
-
-        /// <summary>
-        /// Tests if a valid connection to a server can be made
-        /// </summary>
-        /// <param name="resource"></param>
-        /// <returns></returns>
+        
         public void TestConnection(IServerSource resource)
         {
             var con = Connection;
@@ -75,13 +64,7 @@ namespace Dev2.Studio.Core
                 throw new WarewolfTestException(output.Message.ToString(), null);
             }
         }
-
-        /// <summary>
-        /// Tests if a valid connection to a server can be made returns 'Success' on a successful connection
-        /// </summary>
-        /// <param name="resource"></param>
-        /// <returns></returns>
-        /// <exception cref="WarewolfTestException">Unable to contact Server</exception>
+        
         public IList<string> TestDbConnection(IDbSource resource)
         {
             var con = Connection;
@@ -101,8 +84,7 @@ namespace Dev2.Studio.Core
 
             return serialiser.Deserialize<List<string>>(output.Message);
         }
-
-        /// <exception cref="WarewolfSaveException">When saving the Database Source errors.</exception>
+        
         public void SaveDbSource(IDbSource toDbSource, Guid serverWorkspaceID)
         {
             var con = Connection;
@@ -115,8 +97,7 @@ namespace Dev2.Studio.Core
                 throw new WarewolfSaveException(output.Message.ToString(), null);
             }
         }
-
-        /// <exception cref="WarewolfSaveException">Thrown when saving the Database service fails.</exception>
+        
         public void SaveDbService(IDatabaseService dbService)
         {
             var con = Connection;
@@ -129,8 +110,7 @@ namespace Dev2.Studio.Core
                 throw new WarewolfSaveException(output.Message.ToString(), null);
             }
         }
-
-        /// <exception cref="WarewolfTestException">Unable to contact Server</exception>
+        
         public DataTable TestDbService(IDatabaseService service)
         {
             var con = Connection;
@@ -150,8 +130,7 @@ namespace Dev2.Studio.Core
 
             return serialiser.Deserialize<DataTable>(output.Message);
         }
-
-        /// <exception cref="WarewolfSaveException">Thrown when an error occurs saving the Webservice Source.</exception>
+        
         public void SaveWebserviceSource(IWebServiceSource resource, Guid serverWorkspaceId)
         {
             var con = Connection;
@@ -164,8 +143,7 @@ namespace Dev2.Studio.Core
                 throw new WarewolfSaveException(output.Message.ToString(), null);
             }
         }
-
-        /// <exception cref="WarewolfTestException">Unable to contact Server</exception>
+        
         public void TestConnection(IWebServiceSource resource)
         {
             var con = Connection;
