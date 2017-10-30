@@ -73,7 +73,6 @@ namespace Dev2.Studio.ViewModels
 {
     public class ShellViewModel : BaseConductor<WorkSurfaceContextViewModel>,
                                         IHandle<DeleteResourcesMessage>,
-                                        IHandle<DeleteFolderMessage>,
                                         IHandle<ShowDependenciesMessage>,
                                         IHandle<AddWorkSurfaceMessage>,
                                         IHandle<RemoveResourceAndCloseTabMessage>,
@@ -533,15 +532,6 @@ namespace Dev2.Studio.ViewModels
         {
             Dev2Logger.Info(message.GetType().Name, "Warewolf Info");
             DeleteResources(message.ResourceModels, message.FolderName, message.ShowDialog, message.ActionToDoOnDelete);
-        }
-
-        public void Handle(DeleteFolderMessage message)
-        {
-            Dev2Logger.Info(message.GetType().Name, "Warewolf Info");
-            if (ShowDeleteDialogForFolder(message.FolderName))
-            {
-                message.ActionToDoOnDelete?.Invoke();
-            }
         }
         
         public void Handle(ShowDependenciesMessage message)
