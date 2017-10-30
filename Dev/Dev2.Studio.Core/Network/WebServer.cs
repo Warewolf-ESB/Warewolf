@@ -55,8 +55,7 @@ namespace Dev2.Studio.Core.Network
                 controller.ExecuteCommand<string>(resourceModel.Environment.Connection, resourceModel.Environment.Connection.WorkspaceID);
             }, () => { });
         }
-
-        [ExcludeFromCodeCoverage]
+        
         public static void OpenInBrowser(IContextualResourceModel resourceModel, string xmlData)
         {
             Uri url = GetWorkflowUri(resourceModel, xmlData, UrlType.Xml);

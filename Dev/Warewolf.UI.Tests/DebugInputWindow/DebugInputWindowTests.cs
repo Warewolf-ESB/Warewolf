@@ -20,8 +20,7 @@ namespace Warewolf.UI.Tests.DebugInputWindow
             Assert.IsTrue(UIMap.MainStudioWindow.DebugInputDialog.TabItemsTabList.InputDataTab.InputsTable.Exists, "Input Data Window does not exist in Debug Input window.");
             Assert.IsTrue(UIMap.MainStudioWindow.DebugInputDialog.TabItemsTabList.XMLTab.Exists, "Xml tab does not Exist in the Debug Input window.");
             Assert.IsTrue(UIMap.MainStudioWindow.DebugInputDialog.TabItemsTabList.JSONTab.Exists, "Assert Json tab does not exist in the debug input window.");
-            UIMap.Click_Cancel_DebugInput_Window();
-            UIMap.Click_Close_Workflow_Tab_Button();
+            UIMap.Click_DebugInput_ViewInBrowser_Button();
         }
 
         #region Additional test attributes
