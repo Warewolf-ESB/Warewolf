@@ -30,8 +30,7 @@ namespace Dev2.Models
             CommunicationControllerFactory = communicationControllerFactory;
             _connection = connection;
         }
-
-
+        
         public IExplorerItem Load(Guid workSpaceId) => Load(workSpaceId, true);
         public IExplorerItem Load(Guid workSpaceId, bool reload)
         {

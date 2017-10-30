@@ -20,9 +20,7 @@ using System.IO;
 using System.Net;
 using System.Text;
 using Dev2.Studio.Interfaces;
-
-
-
+using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Studio.Core.Network
 {
@@ -42,12 +40,7 @@ namespace Dev2.Studio.Core.Network
             {
                 return;
             }
-
-            var clientContext = resourceModel.Environment.Connection;
-            if (clientContext == null)
-            {
-                return;
-            }
+            
             asyncWorker.Start(() =>
             {
                 var controller = new CommunicationController
@@ -59,10 +52,11 @@ namespace Dev2.Studio.Core.Network
                     },
                 };
                 controller.AddPayloadArgument("DebugPayload", payload);
-                controller.ExecuteCommand<string>(clientContext, clientContext.WorkspaceID);
+                controller.ExecuteCommand<string>(resourceModel.Environment.Connection, resourceModel.Environment.Connection.WorkspaceID);
             }, () => { });
-        }        
+        }
 
+        [ExcludeFromCodeCoverage]
         public static void OpenInBrowser(IContextualResourceModel resourceModel, string xmlData)
         {
             Uri url = GetWorkflowUri(resourceModel, xmlData, UrlType.Xml);
@@ -73,6 +67,7 @@ namespace Dev2.Studio.Core.Network
             }
         }
 
+        [ExcludeFromCodeCoverage]
         public static void SendErrorOpenInBrowser(IEnumerable<string> exceptionList, string description, string url)
         {
             ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => true;
