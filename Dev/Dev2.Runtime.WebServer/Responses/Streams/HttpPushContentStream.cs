@@ -55,7 +55,7 @@ namespace Dev2.Runtime.WebServer.Responses.Streams
                     while (length > 0 && bytesRead > 0)
                     {
                         bytesRead = inputStream.Read(buffer, 0, Math.Min(length, buffer.Length));
-                        await outputStream.WriteAsync(buffer, 0, bytesRead);
+                        await outputStream.WriteAsync(buffer, 0, bytesRead).ConfigureAwait(true);
                         length -= bytesRead;
                     }
                 }
