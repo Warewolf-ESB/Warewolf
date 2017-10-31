@@ -195,23 +195,21 @@ namespace Dev2.Studio
 
         public void OpenBasedOnArguments(WarwolfStartupEventArgs e)
         {
-            foreach (var item in e.Args)
+            if (e.Args.Any(p => p.Contains("-merge")))
             {
-                if (item.Contains("-merge"))
-                {
-                    mergeFactory.OpenMergeWindow(_shellViewModel, item);
-
-                }
-                else
+                mergeFactory.OpenMergeWindow(_shellViewModel, "", e);
+            }
+            else
+            {
+                foreach (var item in e.Args)
                 {
                     _shellViewModel.LoadWorkflow(item.Replace("\"", ""));
                 }
-
             }
         }
 
         private static void CreateDummyWorkflowDesignerForCaching()
-        {            
+        {
             var workflowDesigner = new WorkflowDesigner();
             workflowDesigner.PropertyInspectorFontAndColorData = XamlServices.Save(ActivityDesignerHelper.GetDesignerHashTable());
             var designerConfigService = workflowDesigner.Context.Services.GetService<DesignerConfigurationService>();
@@ -300,7 +298,7 @@ namespace Dev2.Studio
             var splashPage = new SplashPage { DataContext = splashViewModel };
             SplashView = splashPage;
             SplashView.Show(false);
-            
+
             _resetSplashCreated?.Set();
             splashViewModel.ShowServerVersion();
             Dispatcher.Run();

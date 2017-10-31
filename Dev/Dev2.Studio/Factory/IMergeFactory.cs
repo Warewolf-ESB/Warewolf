@@ -1,9 +1,10 @@
-﻿using Dev2.Studio.Interfaces;
+﻿using Dev2.Studio;
+using Dev2.Studio.Interfaces;
 
 namespace Dev2.Factory
 {
     public interface IMergeFactory
     {
-        void OpenMergeWindow(IShellViewModel shellViewModel, string item);
+        void OpenMergeWindow(IShellViewModel shellViewModel, string item, WarwolfStartupEventArgs args);
     }
 }

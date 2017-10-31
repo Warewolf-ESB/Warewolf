@@ -751,6 +751,9 @@
     </None>
     <None Include="app.manifest" />
     <None Include="Dev2.Studio.ruleset" />
+    <None Include="MergePowershellScript\customMerge.sh">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
