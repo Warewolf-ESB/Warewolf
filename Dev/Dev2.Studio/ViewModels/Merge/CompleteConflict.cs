@@ -13,6 +13,7 @@ namespace Dev2.ViewModels.Merge
         bool _isMergeExpanded;
         bool _isMergeExpanderEnabled;
         bool _hasConflict;
+        bool _hasNodeArmConflict;
         IEnumerator<ICompleteConflict> _conflictEnumerator;
         private bool _isContainerTool;
 
@@ -36,6 +37,16 @@ namespace Dev2.ViewModels.Merge
             {
                 _hasConflict = value;
                 OnPropertyChanged(() => HasConflict);
+            }
+        }
+
+        public bool HasNodeArmConflict
+        {
+            get => _hasNodeArmConflict;
+            set
+            {
+                _hasNodeArmConflict = value;
+                OnPropertyChanged(() => HasNodeArmConflict);
             }
         }
 
