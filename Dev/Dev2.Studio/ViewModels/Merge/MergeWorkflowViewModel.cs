@@ -47,13 +47,8 @@ namespace Dev2.ViewModels.Merge
 
         private void SetupBindings(IContextualResourceModel currentResourceModel, IContextualResourceModel differenceResourceModel, ICompleteConflict firstConflict)
         {
-            var strBuilder = new StringBuilder();
             if (CurrentConflictModel == null)
-            {
-                strBuilder.AppendLine(firstConflict?.CurrentViewModel.ToString());
-                strBuilder.AppendLine(currentResourceModel.ResourceName);
-                strBuilder.AppendLine(currentResourceModel.Environment.Name);
-                File.WriteAllText("C:\\Users\\Sanele.Mthembu\\Desktop\\txt.txt", strBuilder.ToString());
+            {                
                 CurrentConflictModel = new ConflictModelFactory
                 {
                     Model = firstConflict?.CurrentViewModel ?? new MergeToolModel { IsMergeEnabled = false },
