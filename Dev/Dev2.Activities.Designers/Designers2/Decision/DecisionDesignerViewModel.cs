@@ -234,15 +234,15 @@ namespace Dev2.Activities.Designers2.Decision
             return val;
         }
 
-        public bool IsDisplayTextFocused { get { return (bool)GetValue(IsDisplayTextFocusedProperty); } set { SetValue(IsDisplayTextFocusedProperty, value); } }
+        public bool IsDisplayTextFocused { get => (bool)GetValue(IsDisplayTextFocusedProperty); set => SetValue(IsDisplayTextFocusedProperty, value); }
         public static readonly DependencyProperty IsDisplayTextFocusedProperty = DependencyProperty.Register("IsDisplayTextFocused", typeof(bool), typeof(DecisionDesignerViewModel), new PropertyMetadata(default(bool)));
 
         public static readonly DependencyProperty DisplayTextProperty = DependencyProperty.Register("DisplayText", typeof(string), typeof(DecisionDesignerViewModel), new PropertyMetadata(default(string)));
 
-        public bool IsTrueArmFocused { get { return (bool)GetValue(IsTrueArmFocusedProperty); } set { SetValue(IsTrueArmFocusedProperty, value); } }
+        public bool IsTrueArmFocused { get => (bool)GetValue(IsTrueArmFocusedProperty); set => SetValue(IsTrueArmFocusedProperty, value); }
         public static readonly DependencyProperty IsTrueArmFocusedProperty = DependencyProperty.Register("IsTrueArmFocused", typeof(bool), typeof(DecisionDesignerViewModel), new PropertyMetadata(default(bool)));
 
-        public bool IsFalseArmFocused { get { return (bool)GetValue(IsFalseArmFocusedProperty); } set { SetValue(IsFalseArmFocusedProperty, value); } }
+        public bool IsFalseArmFocused { get => (bool)GetValue(IsFalseArmFocusedProperty); set => SetValue(IsFalseArmFocusedProperty, value); }
         public static readonly DependencyProperty IsFalseArmFocusedProperty = DependencyProperty.Register("IsFalseArmFocused", typeof(bool), typeof(DecisionDesignerViewModel), new PropertyMetadata(default(bool)));
         private readonly bool _isInitializing;
 

@@ -226,9 +226,12 @@ namespace Warewolf.Studio.Views
                 {
                     explorerItemViewModel.IsSelected = false;
                 }
-                else if (environmentViewModel != null && environmentViewModel.IsSelected)
+                else
                 {
-                    environmentViewModel.IsSelected = false;
+                    if (environmentViewModel != null && environmentViewModel.IsSelected)
+                    {
+                        environmentViewModel.IsSelected = false;
+                    }
                 }
             }
         }
@@ -509,9 +512,12 @@ namespace Warewolf.Studio.Views
                     {
                         explorerItemViewModel.OpenCommand.Execute(this);
                     }
-                    else if (name == "ExplorerItemViewModel" && !explorerItemViewModel.IsResourceVersion)
+                    else
                     {
-                        explorerItemViewModel.OpenCommand.Execute(this);
+                        if (name == "ExplorerItemViewModel" && !explorerItemViewModel.IsResourceVersion)
+                        {
+                            explorerItemViewModel.OpenCommand.Execute(this);
+                        }
                     }
                     e.Handled = true;
                     Mouse.OverrideCursor = null;

@@ -14,7 +14,6 @@ using System.IO;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
-using Dev2.Common.Interfaces.Enums;
 using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
@@ -23,9 +22,9 @@ using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    public class ClearLog : IEsbManagementEndpoint
+    public class ClearLog : DefaultEsbManagementEndpoint
     {
-        public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
+        public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             ExecuteMessage result = new ExecuteMessage { HasError = false };
             StringBuilder msg = new StringBuilder();
@@ -80,7 +79,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             result.Append($"Error: {msg}");
         }
 
-        public DynamicService CreateServiceEntry()
+        public override DynamicService CreateServiceEntry()
         {
             DynamicService findDirectoryService = new DynamicService { Name = HandlesType(), DataListSpecification = new StringBuilder("<DataList><Directory ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>") };
 
@@ -91,19 +90,9 @@ namespace Dev2.Runtime.ESB.Management.Services
             return findDirectoryService;
         }
 
-        public string HandlesType()
+        public override string HandlesType()
         {
             return "ClearLogService";
-        }
-
-        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
-        {
-            return Guid.Empty;
-        }
-
-        public AuthorizationContext GetAuthorizationContextForService()
-        {
-            return AuthorizationContext.Any;
         }
     }
 }

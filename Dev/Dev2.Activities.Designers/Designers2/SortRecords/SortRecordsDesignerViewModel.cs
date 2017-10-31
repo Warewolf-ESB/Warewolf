@@ -31,12 +31,11 @@ namespace Dev2.Activities.Designers2.SortRecords
 
         public List<string> SortOrderTypes { get; private set; }
 
-        public string SelectedSelectedSort { get { return (string)GetValue(SelectedSelectedSortProperty); } set { SetValue(SelectedSelectedSortProperty, value); } }
+        public string SelectedSelectedSort { get => (string)GetValue(SelectedSelectedSortProperty); set => SetValue(SelectedSelectedSortProperty, value); }
 
         public static readonly DependencyProperty SelectedSelectedSortProperty =
             DependencyProperty.Register("SelectedSelectedSort", typeof(string), typeof(SortRecordsDesignerViewModel), new PropertyMetadata(null, OnSelectedSelectedSortChanged));
-
-        // DO NOT bind to these properties - these are here for convenience only!!!
+        
        private  string SelectedSort { set { SetProperty(value);  }
             get { return  GetProperty<string>(); }
         }

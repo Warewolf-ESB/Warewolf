@@ -19,9 +19,6 @@ using Warewolf.Resource.Errors;
 
 namespace Unlimited.Framework.Converters.Graph.Ouput
 {
-    /// <summary>
-    ///     Fromats data from a source to shaped XML as defined by an output description
-    /// </summary>
     [Serializable]
     public class ShapedXmlOutputFormatter : IOutputFormatter
     {
@@ -57,31 +54,16 @@ namespace Unlimited.Framework.Converters.Graph.Ouput
         #endregion Private Properties
 
         #region Methods
-
-        /// <summary>
-        ///     Formats the specified data.
-        /// </summary>
-        /// <param name="data">The data.</param>
-        /// <returns></returns>
+        
         public object Format(object data)
         {
-            //
-            // Group paths by their output expressions, each of these groups will be selected as a batch
-            //
             Dictionary<string, IList<IPath>> groupedPaths = GroupPaths(OutputDescription.DataSourceShapes[0]);
-
-            //
-            // Go through each group, selecting values from the data and building XML from it
-            //
+            
             var rootNode = new XElement(RootNodeName);
             foreach (var paths in groupedPaths.Values)
             {
-                //
-                // Determine the type of select to perform
-                //
                 if (paths.Count == 1)
                 {
-                    //TODO Check if there is existing, more reliable, logic to detemine if an output expression is a recordset/scalar.
                     if (paths[0].OutputExpression.Contains("()"))
                     {
                         rootNode.Add(SelectEnumerable(paths[0], data));
@@ -91,9 +73,12 @@ namespace Unlimited.Framework.Converters.Graph.Ouput
                         rootNode.Add(SelectScalar(paths[0], data));
                     }
                 }
-                else if (paths.Count > 1)
+                else
                 {
-                    rootNode.Add(SelectEnumerableAsRelated(paths, data));
+                    if (paths.Count > 1)
+                    {
+                        rootNode.Add(SelectEnumerableAsRelated(paths, data));
+                    }
                 }
             }
 

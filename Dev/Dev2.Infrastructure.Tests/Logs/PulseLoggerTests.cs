@@ -18,12 +18,11 @@ namespace Dev2.Infrastructure.Tests.Logs
     public class PulseLoggerTests
     {
         bool _elapsed;
+
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("PulseLogger_Ctor")]
-
         public void PulseLogger_Ctor_CheckValues_ExpectInitialised()
-
         {
             //------------Setup for test--------------------------
             var pulseLogger = new PulseLogger(25);
@@ -31,16 +30,11 @@ namespace Dev2.Infrastructure.Tests.Logs
             PrivateObject pvt = new PrivateObject(pulseLogger);
             System.Timers.Timer timer = (System.Timers.Timer)pvt.GetField("_timer");
             Assert.AreEqual(false,timer.Enabled);
-            
-            //------------Execute Test---------------------------
-
-            //------------Assert Results-------------------------
         }
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("PulseLogger_Ctor")]
-
         public void PulseLogger_Ctor_Start_ExpectInitialised()
 
         {
@@ -62,6 +56,5 @@ namespace Dev2.Infrastructure.Tests.Logs
             //------------Assert Results-------------------------
             Assert.IsTrue(_elapsed);
         }
-
     }
 }

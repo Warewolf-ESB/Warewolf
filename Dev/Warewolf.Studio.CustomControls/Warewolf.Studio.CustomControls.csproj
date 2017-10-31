@@ -121,7 +121,6 @@
     <Compile Include="ActivityDesignerToggleButton.cs" />
     <Compile Include="CheckBoxColumn.cs" />
     <Compile Include="CheckBoxColumnContentProvider.cs" />
-    <Compile Include="CustomViewModel.cs" />
     <Compile Include="DataPresenterHelpers.cs" />
     <Compile Include="DragDropExtension.cs" />
     <Compile Include="DoubleClickBehavior.cs" />
@@ -132,7 +131,6 @@
     <Compile Include="TextColumnContentProvider.cs" />
     <Compile Include="VariableTextBox.cs" />
     <Compile Include="WatermarkAdorner.cs" />
-    <Compile Include="WatermarkPasswordBox.cs" />
     <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>

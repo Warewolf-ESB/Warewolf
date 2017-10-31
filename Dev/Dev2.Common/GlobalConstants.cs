@@ -36,40 +36,27 @@ namespace Dev2.Common
         {
             SystemEvents.TimeChanged += (sender, args) =>
             {
-
                 CultureInfo.CurrentCulture.ClearCachedData();
             };
-
-            /**********************************************************
-             * Hear ye Hear ye
-             * The event below allows warewolf to react to changes in regional settings by clearing the Culture cache.
-             * The method below is not tested using integration tests because it is difficult to change regional settings without restarting explorer.exe
-             * If a good way is found to do this, then please add integration tests.
-             * don't delete this method
-             */
+            
             SystemEvents.UserPreferenceChanged += (sender, args) =>
             {
-
                 CultureInfo.CurrentCulture.ClearCachedData();
             };
         }
 
-        public static string ExecutionLoggingResultStartTag = "Execution Result [ ";
-        public static string ExecutionLoggingResultEndTag = " ]";
+        public static readonly string ExecutionLoggingResultStartTag = "Execution Result [ ";
+        public static readonly string ExecutionLoggingResultEndTag = " ]";
 
-        public static string ArmResultText = "Flow Arm";
-
-        //Default TimeoutValue
-
+        public static readonly string ArmResultText = "Flow Arm";
+        
         public static readonly TimeSpan DefaultTimeoutValue = new TimeSpan(0, 0, 20, 0);
-        public static string LogFileDateFormat = "yyyy-MM-dd HH:mm:ss,fff";
+        public static readonly string LogFileDateFormat = "yyyy-MM-dd HH:mm:ss,fff";
 
 
+        public static readonly string LogFileRegex = @"(\d+[-.\/]\d+[-.\/]\d+ \d+[:]\d+[:]\d+,\d+)\s+(\w+)\s+[-]\s+[[](\w+[-]\w+[-]\w+[-]\w+[-]\w+)[]]\s+[-]\s+";
 
-        public static string LogFileRegex = @"(\d+[-.\/]\d+[-.\/]\d+ \d+[:]\d+[:]\d+,\d+)\s+(\w+)\s+[-]\s+[[](\w+[-]\w+[-]\w+[-]\w+[-]\w+)[]]\s+[-]\s+"
-            ;
-
-        public static string DefaultServerLogFileConfig = "<log4net>" +
+        public static readonly string DefaultServerLogFileConfig = "<log4net>" +
                                              "<appender name=\"LogFileAppender\" type=\"Log4Net.Async.AsyncRollingFileAppender,Log4Net.Async\">" +
                                             "<file type=\"log4net.Util.PatternString\" value=\"%envFolderPath{CommonApplicationData}\\Warewolf\\Server Log\\wareWolf-Server.log\" />" +
     "<!-- Example using environment variables in params -->" +
@@ -85,7 +72,7 @@ namespace Dev2.Common
                                              "<footer value=\"[Footer]&#xD;&#xA;\" />" +
                                              "<conversionPattern value=\"%date %-5level - %message%newline\" />" +
                                              "</layout>" +
-                                             "<!-- Alternate layout using XML			" +
+                                             "<!-- Alternate layout using XML            " +
                                              "<layout type=\"log4net.Layout.XMLLayout\" /> -->" +
                                              "</appender>" +
                                              "<appender name=\"EventLogLogger\" type=\"log4net.Appender.EventLogAppender\">" +
@@ -120,7 +107,7 @@ namespace Dev2.Common
                                              "</root>" +
                                              "</log4net>";
 
-        public static string DefaultStudioLogFileConfig = "<log4net>" +
+        public static readonly string DefaultStudioLogFileConfig = "<log4net>" +
                                              "<appender name=\"LogFileAppender\" type=\"Log4Net.Async.AsyncRollingFileAppender,Log4Net.Async\">" +
                                             "<file type=\"log4net.Util.PatternString\" value=\"${LOCALAPPDATA}\\Warewolf\\Studio Logs\\Warewolf Studio.log\" />" +
     "<!-- Example using environment variables in params -->" +
@@ -136,7 +123,7 @@ namespace Dev2.Common
                                              "<footer value=\"[Footer]&#xD;&#xA;\" />" +
                                              "<conversionPattern value=\"%date %-5level - %message%newline\" />" +
                                              "</layout>" +
-                                             "<!-- Alternate layout using XML			" +
+                                             "<!-- Alternate layout using XML            " +
                                              "<layout type=\"log4net.Layout.XMLLayout\" /> -->" +
                                              "</appender>" +
                                              "<appender name=\"EventLogLogger\" type=\"log4net.Appender.EventLogAppender\">" +
@@ -170,235 +157,182 @@ namespace Dev2.Common
                                              "<appender-ref ref=\"EventLogLogger\"/>" +
                                              "</root>" +
                                              "</log4net>";
+        
+        public static readonly double MAX_SIZE_FOR_STRING = 1 << 12;
+        
+        public static readonly int MAX_BUFFER_SIZE = 35000;
+        
+        public static readonly double DesignHeightTolerance = 0.00000001;
+        
+        public static readonly int ViewInBrowserForceDownloadSize = 51200;
+        
+        public static readonly string Dev2RuntimeConfigurationAssemblyName = "Dev2.Runtime.Configuration.dll";
+        
+        public static readonly string Dev2MessageBoxDesignSurfaceTabPasteDialog = "1";
 
-        // Max String Size
+        public static readonly string Dev2MessageBoxNoInputsWhenHyperlinkClickedDialog = "2";
+        
+        public static readonly int _xamlPoolSize = 5;
+        
+        public static readonly int _uniqueBatchSize = 1000;
+        
+        public static readonly int NetworkTimeOut = 30000;
 
-        public const double MAX_SIZE_FOR_STRING = 1 << 12; // = 4K
+        public static readonly string NetworkCommunicationErrorTextFormat = "An error occurred while executing the '{0}' command";
+        
+        public static readonly string ResourceFileExtension = ".xml";
 
+        public static readonly string XMLPrefix = "~XML~";
+        
+        public static readonly string CalculateTextConvertPrefix = "!~calculation~!";
 
+        public static readonly string CalculateTextConvertSuffix = "!~~calculation~!";
+        public static readonly string CalculateTextConvertFormat = CalculateTextConvertPrefix + "{0}" + CalculateTextConvertSuffix;
 
-        // Max storage buffer size to avoid LOH ;)
+        public static readonly string AggregateCalculateTextConvertPrefix = "!~aggcalculation~!";
+        public static readonly string AggregateCalculateTextConvertSuffix = "!~~aggcalculation~!";
+        public static readonly string AggregateCalculateTextConvertFormat = AggregateCalculateTextConvertPrefix + "{0}" + AggregateCalculateTextConvertSuffix;
+        
+        public static readonly string WebserverReplaceTag = "[[Dev2WebServer]]";
+        
+        public static readonly string OpenJSON = "<JSON>";
+        
+        public static readonly string CloseJSON = "</JSON>";
+        
+        public static readonly string OutputDefOpenTag = "<Outputs>";
 
-        public const int MAX_BUFFER_SIZE = 35000;
+        public static readonly string OutputDefCloseTag = "</Outputs>";
+        
+        public static readonly string SystemTagNamespace = "Dev2System";
 
+        public static readonly string SystemTagNamespaceSearch = "Dev2System.";
+        public static readonly string EvalautionScalar = "Dev2System.Expression";
+        public static readonly string EvaluationRsField = "Expression";
+        public static readonly string NullEntryNamespace = "NullEntryNamespace";
+        public static readonly string ManagementServicePayload = "Dev2System.ManagmentServicePayload";
+        public static readonly string ErrorPayload = "Dev2System.Dev2Error";
+        
+        public static readonly string ActivityRSResult = "Dev2ActivityResults";
+        
+        public static readonly string ActivityRSField = "Dev2Result";
+        
+        public static readonly string StarExpression = "*";
 
+        public static readonly string EqualsExpression = "=";
+        public static readonly int AllIndexes = -1;
+        public static readonly string OkExeResult = "<Dev2Status>Ok</Dev2Status>";
+        public static readonly string PostDataStart = "<Dev2PostData>";
+        public static readonly string PostDataEnd = "</Dev2PostData>";
+        public static readonly string InnerErrorTag = "<InnerError>";
+        public static readonly string InnerErrorTagEnd = "</InnerError>";
+        public static readonly string EmptyNativeTypeTag = "<NativeType />";
+        public static readonly string EmptyValidatorTag = "<Validator />";
+        public static readonly string DataListRootTag = "DataList";
+        public static readonly string OutputRootTag = "Outputs";
+        public static readonly string InputRootTag = "Inputs";
+        public static readonly string ActionRootTag = "Action";
+        public static readonly string ActionsRootTag = "Actions";
+        public static readonly string AllColumns;
+        public static readonly string NaughtyTextNode = "#text";
+        public static readonly char EvaluationToken = '[';
+        public static readonly string RowAnnotation = "index";
+        
+        public static readonly string PrimitiveReturnValueTag = "PrimitiveReturnValue";
+        
+        public static readonly int DefaultColumnSizeLvl1 = 10;
+        public static readonly int LogFileNumberOfLines = 15;
 
-        public const double DesignHeightTolerance = 0.00000001;
+        public static readonly int DefaultStorageSegments = 1;
+        public static readonly int DefaultStorageSegmentSize = 8 * 1024 * 1024; // 8 MB default buffer size ;)
+        public static readonly int DefaultAliasCacheSize = 32 * 1024; // 32KB of alias cache ;)
+        public static readonly string DefaultStorageZipEntry = "Dev2Storage";
 
-        // Force Webserver Constants
-
-        public const int ViewInBrowserForceDownloadSize = 51200; // 500 KB and a file must be downloaded
-
-        //Runtime Configuration
-        public const string Dev2RuntimeConfigurationAssemblyName = "Dev2.Runtime.Configuration.dll";
-
-        //Dev2MessageBox DontShowAgainKeys
-        public const string Dev2MessageBoxDesignSurfaceTabPasteDialog = "1";
-
-        public const string Dev2MessageBoxNoInputsWhenHyperlinkClickedDialog = "2";
-
-        // WF Constants
-
-        public const int _xamlPoolSize = 5;
-
-
-
-        // Constant for unique batch size processing
-
-        public const int _uniqueBatchSize = 1000;
-
-
-
-        //Network
-        public const int NetworkTimeOut = 30000; //Bug 8796
-
-        public const string NetworkCommunicationErrorTextFormat = "An error occurred while executing the '{0}' command";
-
-        //Resource Constants
-        public const string ResourceFileExtension = ".bite";
-
-        public const string XMLPrefix = "~XML~";
-
-        // Cal constants
-        public const string CalculateTextConvertPrefix = "!~calculation~!";
-
-        public const string CalculateTextConvertSuffix = "!~~calculation~!";
-        public const string CalculateTextConvertFormat = CalculateTextConvertPrefix + "{0}" + CalculateTextConvertSuffix;
-
-        public const string AggregateCalculateTextConvertPrefix = "!~aggcalculation~!";
-        public const string AggregateCalculateTextConvertSuffix = "!~~aggcalculation~!";
-        public const string AggregateCalculateTextConvertFormat = AggregateCalculateTextConvertPrefix + "{0}" + AggregateCalculateTextConvertSuffix;
-
-        // Website constants
-        public const string WebserverReplaceTag = "[[Dev2WebServer]]";
-
-        // JSON constants
-
-        public const string OpenJSON = "<JSON>";
-
-
-
-        public const string CloseJSON = "</JSON>";
-
-
-
-        // Service Action Constants
-        public const string OutputDefOpenTag = "<Outputs>";
-
-        public const string OutputDefCloseTag = "</Outputs>";
-
-        // DataList constants
-        public const string SystemTagNamespace = "Dev2System";
-
-        public const string SystemTagNamespaceSearch = "Dev2System.";
-        public const string EvalautionScalar = "Dev2System.Expression";
-        public const string EvaluationRsField = "Expression";
-        public const string NullEntryNamespace = "NullEntryNamespace";
-        public const string ManagementServicePayload = "Dev2System.ManagmentServicePayload";
-        public const string ErrorPayload = "Dev2System.Dev2Error";
-
-
-        public const string ActivityRSResult = "Dev2ActivityResults";
-
-
-
-        public const string ActivityRSField = "Dev2Result";
-
-
-        public const string StarExpression = "*";
-
-        public const string EqualsExpression = "=";
-        public const int AllIndexes = -1;
-        public const string OkExeResult = "<Dev2Status>Ok</Dev2Status>";
-        public const string PostDataStart = "<Dev2PostData>";
-        public const string PostDataEnd = "</Dev2PostData>";
-        public const string InnerErrorTag = "<InnerError>";
-        public const string InnerErrorTagEnd = "</InnerError>";
-        public const string EmptyNativeTypeTag = "<NativeType />";
-        public const string EmptyValidatorTag = "<Validator />";
-        public const string DataListRootTag = "DataList";
-        public const string OutputRootTag = "Outputs";
-        public const string InputRootTag = "Inputs";
-        public const string ActionRootTag = "Action";
-        public const string ActionsRootTag = "Actions";
-        public const string AllColumns = null;
-        public const string NaughtyTextNode = "#text";
-        public const char EvaluationToken = '[';
-        public const string RowAnnotation = "index";
-
-        // Plugin Constants For Shape
-        public const string PrimitiveReturnValueTag = "PrimitiveReturnValue";
-
-        // Storage Cache Constants
-        public const int DefaultColumnSizeLvl1 = 10;
-        public const int LogFileNumberOfLines = 15;
-
-        public const int DefaultStorageSegments = 1;
-        public const int DefaultStorageSegmentSize = 8 * 1024 * 1024; // 8 MB default buffer size ;)
-        public const int DefaultAliasCacheSize = 32 * 1024; // 32KB of alias cache ;)
-        public const string DefaultStorageZipEntry = "Dev2Storage";
-
-        public const string DataListIoColDirection = "ColumnIODirection";
-
-        // Decision Wizard Constants
-        public const string InjectedDecisionHandler =
+        public static readonly string DataListIoColDirection = "ColumnIODirection";
+        
+        public static readonly string InjectedDecisionHandler =
             "Dev2.Data.Decision.Dev2DataListDecisionHandler.Instance.ExecuteDecisionStack";
 
-        public const string InjectedDecisionHandlerOld = "Dev2DecisionHandler.Instance.ExecuteDecisionStack";
-        public const string InjectedDecisionDataListVariable = "AmbientDataList";
-        public const string ExpressionPropertyText = "ExpressionText";
-        public const string ConditionPropertyText = "Condition";
-        public const string TrueArmPropertyText = "TrueLabel";
-        public const string FalseArmPropertyText = "FalseLabel";
-        public const string DefaultDataListInitalizationString = "DUMMY_DATA";
-        public const string DecisionWizardLocation = "wwwroot/decisions/wizard";
-        public const string DefaultTrueArmText = "True";
-        public const string DefaultFalseArmText = "False";
+        public static readonly string InjectedDecisionHandlerOld = "Dev2DecisionHandler.Instance.ExecuteDecisionStack";
+        public static readonly string InjectedDecisionDataListVariable = "AmbientDataList";
+        public static readonly string ExpressionPropertyText = "ExpressionText";
+        public static readonly string ConditionPropertyText = "Condition";
+        public static readonly string TrueArmPropertyText = "TrueLabel";
+        public static readonly string FalseArmPropertyText = "FalseLabel";
+        public static readonly string DefaultDataListInitalizationString = "DUMMY_DATA";
+        public static readonly string DecisionWizardLocation = "wwwroot/decisions/wizard";
+        public static readonly string DefaultTrueArmText = "True";
+        public static readonly string DefaultFalseArmText = "False";
 
 
-        public const string VBSerializerToken = "__!__";
+        public static readonly string VBSerializerToken = "__!__";
+        
+        public static readonly string DisplayNamePropertyText = "DisplayName"; // PBI 9220 - 2013.04.29 - TWR
+        
+        public static readonly string SwitchDropWizardLocation = "wwwroot/switch/drop";
 
+        public static readonly string SwitchDragWizardLocation = "wwwroot/switch/drag";
+        public static readonly string SwitchExpressionPropertyText = "Expression";
+        public static readonly string SwitchExpressionTextPropertyText = "ExpressionText";
+        public static readonly string InjectedSwitchDataFetchOld = "Dev2DecisionHandler.Instance.FetchSwitchData";
 
-
-        public const string DisplayNamePropertyText = "DisplayName"; // PBI 9220 - 2013.04.29 - TWR
-
-        // Switch Wizard Constants
-        public const string SwitchDropWizardLocation = "wwwroot/switch/drop";
-
-        public const string SwitchDragWizardLocation = "wwwroot/switch/drag";
-        public const string SwitchExpressionPropertyText = "Expression";
-        public const string SwitchExpressionTextPropertyText = "ExpressionText";
-        public const string InjectedSwitchDataFetchOld = "Dev2DecisionHandler.Instance.FetchSwitchData";
-
-        public const string InjectedSwitchDataFetch =
+        public static readonly string InjectedSwitchDataFetch =
             "Dev2.Data.Decision.Dev2DataListDecisionHandler.Instance.FetchSwitchData";
 
-        public const string SwitchWizardErrorString = "Couldn't find the resource needed to configure the Switch.";
-        public const string SwitchWizardErrorHeading = "Missing System Model Dev2Switch";
+        public static readonly string SwitchWizardErrorString = "Couldn't find the resource needed to configure the Switch.";
+        public static readonly string SwitchWizardErrorHeading = "Missing System Model Dev2Switch";
 
-        public const string WizardExt = "wiz";
+        public static readonly string WizardExt = "wiz";
+        
+        public static readonly string PostData = "postData";
+        
+        public static readonly string DLID = "dlid";
+        
+        public static readonly string DecisionWizardErrorString = "Couldn't find the resource needed to configure the Decision.";
+        public static readonly string DecisionWizardErrorHeading = "Missing System Model Dev2DecisionStack";
+        
+        public static readonly string RecordsetJoinChar = "_";
+        
+        public static readonly string _JSON = "JSON";
 
-        // Brendon Hack Constants
-        public const string PostData = "postData";
+        public static readonly string _XML = "XML";
+        public static readonly string _XML_DEBUG = "XML_DEBUG";
+        public static readonly string _XML_Without_SystemTags = "XMLWithoutSysTags";
+        public static readonly string _Studio_XML = "StudioXML";
+        public static readonly string _Studio_Debug_XML = "StudioDebugXML";
+        public static readonly string _BINARY = "Binary";
+        public static readonly string _FIXED_WIZARD = "FixedWizard";
+        public static readonly string _DECISION_STACK = "Dev2DecisionStack";
+        public static readonly string _DATATABLE = "DataTable";
+        public static readonly string _XML_Inputs_Only = "XML only Inputs";
+        
+        public static readonly string ServicesDirectory = "Services";
 
-
-        public const string DLID = "dlid";
-
-
-
-        public const string DecisionWizardErrorString = "Couldn't find the resource needed to configure the Decision.";
-        public const string DecisionWizardErrorHeading = "Missing System Model Dev2DecisionStack";
-
-        //Input/Ouput variable suffix
-        public const string RecordsetJoinChar = "_";
-
-        // Internal Fixed DataList types
-        public const string _JSON = "JSON";
-
-        public const string _XML = "XML";
-        public const string _XML_DEBUG = "XML_DEBUG";
-        public const string _XML_Without_SystemTags = "XMLWithoutSysTags";
-        public const string _Studio_XML = "StudioXML";
-        public const string _Studio_Debug_XML = "StudioDebugXML";
-        public const string _BINARY = "Binary";
-        public const string _FIXED_WIZARD = "FixedWizard";
-        public const string _DECISION_STACK = "Dev2DecisionStack";
-        public const string _DATATABLE = "DataTable";
-        public const string _XML_Inputs_Only = "XML only Inputs";
-
-        //Resource directories
-        public const string ServicesDirectory = "Services";
-
-        public const string SourcesDirectory = "Sources";
-
-        // No start node error message
-        public const string NoStartNodeError =
+        public static readonly string SourcesDirectory = "Sources";
+        
+        public static readonly string NoStartNodeError =
             "The workflow must have at least one service or activity connected to the Start Node.";
+        
+        public static readonly string OutputTONonRSField = "Field";
+        
+        public static readonly string NoLongerSupportedMsg = "This activity is no longer supported";
+        
+        public static readonly bool runtimeNamespaceClean = true;
 
-        // Output TO for Activity Upsert
-        public const string OutputTONonRSField = "Field";
+        public static readonly string WarewolfGroup = "Warewolf Administrators";
+        public static readonly string SchedulerFolderId = "Warewolf";
+        public static readonly string SchedulerAgentPath = @"WarewolfAgent.exe";
+        public static readonly string SchedulerDebugPath = @"Warewolf\DebugOutPut\";
 
-        // Old Activities
-        public const string NoLongerSupportedMsg = "This activity is no longer supported";
-
-        // Namespace cleanup - Set to false to avoid namespace clean-up ;)
-        public const bool runtimeNamespaceClean = true;
-
-        public const string WarewolfGroup = "Warewolf Administrators";
-        public const string SchedulerFolderId = "Warewolf";
-        public const string SchedulerAgentPath = @"WarewolfAgent.exe";
-        public const string SchedulerDebugPath = @"Warewolf\DebugOutPut\";
-
-        public const string SchemaQuery = @"SELECT name AS ROUTINE_NAME
+        public static readonly string SchemaQuery = @"SELECT name AS ROUTINE_NAME
 ,SCHEMA_NAME(schema_id) AS SPECIFIC_SCHEMA
 ,type_desc as ROUTINE_TYPE
 FROM sys.objects
 WHERE type_desc LIKE '%FUNCTION%'
 or type_desc LIKE '%Procedure%'";
 
-        public const string SchemaQueryMySql = @"SHOW PROCEDURE STATUS;";
+        public static readonly string SchemaQueryMySql = @"SHOW PROCEDURE STATUS;";
 
-        public const string SchemaQueryPostgreSql = @"
+        public static readonly string SchemaQueryPostgreSql = @"
 select 
     pp.proname as Name,
     current_database() as Db,    
@@ -412,22 +346,22 @@ inner join pg_type t on (pp.prorettype = t.oid)
 where pn.nspname = 'public';
 ";
 
-        public const string SchemaQueryOracle = @"SELECT OBJECT_NAME AS Name,OWNER AS Db,OBJECT_TYPE as ROUTINE_TYPE FROM ALL_OBJECTS WHERE OWNER = '{0}' AND OBJECT_TYPE IN('FUNCTION','PROCEDURE')";
-        public const string ExplorerItemModelFormat = "Dev2.Models.ExplorerItemModel";
-        public const string UpgradedExplorerItemModelFormat = "Warewolf.Studio.ViewModels.ExplorerItemViewModel";
-        public const string VersionDownloadPath = "Installers\\";
-        public const string VersionFolder = "VersionControl";
+        public static readonly string SchemaQueryOracle = @"SELECT OBJECT_NAME AS Name,OWNER AS Db,OBJECT_TYPE as ROUTINE_TYPE FROM ALL_OBJECTS WHERE OWNER = '{0}' AND OBJECT_TYPE IN('FUNCTION','PROCEDURE')";
+        public static readonly string ExplorerItemModelFormat = "Dev2.Models.ExplorerItemModel";
+        public static readonly string UpgradedExplorerItemModelFormat = "Warewolf.Studio.ViewModels.ExplorerItemViewModel";
+        public static readonly string VersionDownloadPath = "Installers\\";
+        public static readonly string VersionFolder = "VersionControl";
         public static readonly Guid NullDataListID = Guid.Empty;
         
         public static readonly Guid ServerWorkspaceID = Guid.Empty;
 
         public static readonly string NullPluginValue = "NULL";
         
-        public static int ResourceCatalogCapacity = 150;
+        public static readonly int ResourceCatalogCapacity = 150;
 
-        public static int ResourceCatalogPruneAmt = 15;
+        public static readonly int ResourceCatalogPruneAmt = 15;
 
-        public static String PublicUsername = @"\";
+        public static readonly String PublicUsername = @"\";
         
         public static readonly string GACPrefix = "GAC:";
         
@@ -436,40 +370,42 @@ where pn.nspname = 'public';
         public static readonly string RemoteServerInvoke = "RemoteWarewolfServer";
         
         public static readonly string RemoteDebugServerInvoke = "RemoteWarewolfServerDebug";
-
+        
         public static readonly string LongTimePattern = CultureInfo.InvariantCulture.DateTimeFormat.LongTimePattern;
         public static readonly string ShortTimePattern = CultureInfo.InvariantCulture.DateTimeFormat.ShortDatePattern;
 
-        public static readonly string Dev2DotNetDefaultDateTimeFormat = ShortTimePattern + " " + LongTimePattern;
+        public static readonly string ShortDateTimePattern = CultureInfo.InvariantCulture.DateTimeFormat.ShortDatePattern;
+        public static readonly string Dev2DotNetDefaultDateTimeFormat = ShortDateTimePattern + " " + LongTimePattern;
+        public static readonly string GlobalDefaultNowFormat = CultureInfo.InvariantCulture.DateTimeFormat.SortableDateTimePattern;
         
         public static readonly int NetworkComputerNameQueryFreq = 900000;
 
-        public static TimeSpan TransactionTimeout = new TimeSpan(1, 0, 0, 0);
+        private static TimeSpan transactionTimeout = new TimeSpan(1, 0, 0, 0);
 
-        public static string AnythingToXmlPathSeperator = ",";
-        public static string AnytingToXmlCommaToken = "__COMMA__";
+        public static readonly string AnythingToXmlPathSeperator = ",";
+        public static readonly string AnytingToXmlCommaToken = "__COMMA__";
         
-        public static string ExecuteWebRequestString = "About to execute web request [ '{0}' ] for User [ '{1}' : '{2}' : '{3}' ] with DataObject Payload [ '{4}' ]";
-        public static string ExecutionForServiceString = "Execution for Service Name: '{0}' Resource Id: '{1}' Mode: '{2}'";
+        public static readonly string ExecuteWebRequestString = "About to execute web request [ '{0}' ] for User [ '{1}' : '{2}' : '{3}' ] with DataObject Payload [ '{4}' ]";
+        public static readonly string ExecutionForServiceString = "Execution for Service Name: '{0}' Resource Id: '{1}' Mode: '{2}'";
 
-        public static string WarewolfInfo = "Warewolf Info";
-        public static string WarewolfError = "Warewolf Error";
-        public static string WarewolfDebug = "Warewolf Debug";
+        public static readonly string WarewolfInfo = "Warewolf Info";
+        public static readonly string WarewolfError = "Warewolf Error";
+        public static readonly string WarewolfDebug = "Warewolf Debug";
         
-        public static string ResourcePickerWorkflowString = "DsfWorkflowActivity";
+        public static readonly string ResourcePickerWorkflowString = "DsfWorkflowActivity";
 
-        public static string SerializableResourceQuote = "__QUOTE__";
-        public static string SerializableResourceSingleQuote = "__SQUOTE__";
+        public static readonly string SerializableResourceQuote = "__QUOTE__";
+        public static readonly string SerializableResourceSingleQuote = "__SQUOTE__";
 
-        public static int MemoryItemCountCompactLevel = 500;
+        public static readonly int MemoryItemCountCompactLevel = 500;
         
-        public static string CalcExpressionNow = "!~calculation~!now()!~~calculation~!";
+        public static readonly string CalcExpressionNow = "!~calculation~!now()!~~calculation~!";
 
-        public static string NotEqualsUnicodeChar = "?";
-        public static string GreaterThenOrEqualToUnicodeChar = "=";
-        public static string LessThenOrEqualToUnicodeChar = "=";
+        public static readonly string NotEqualsUnicodeChar = "?";
+        public static readonly string GreaterThenOrEqualToUnicodeChar = "=";
+        public static readonly string LessThenOrEqualToUnicodeChar = "=";
 
-        public static List<string> FindRecordsOperations = new List<string>
+        public static readonly List<string> FindRecordsOperations = new List<string>
         {
             "=",
             ">",
@@ -512,20 +448,20 @@ where pn.nspname = 'public';
         };
 
 
-        public static int VersionCount = 20;
+        public static readonly int VersionCount = 20;
 
 
-        public static string WebServiceTimeoutMessage =
+        public static readonly string WebServiceTimeoutMessage =
             "Output mapping took too long. More then 10 seconds. Please use the JSONPath feature ( green icon above ) to reduce your dataset complexity. You can find out more on JSONPath at http://goessner.net/articles/JsonPath/";
         
-        public static int MaxWorkflowsToExecute = 1010;
+        public static readonly int MaxWorkflowsToExecute = 1010;
 
-        public static int MaxNumberOfWorkflowWaits = 10000;
-        public static int WorkflowWaitTime = 60;
-        public static string DropboxPathMalformdedException = "Dropbox path contains an invalid character";
+        public static readonly int MaxNumberOfWorkflowWaits = 10000;
+        public static readonly int WorkflowWaitTime = 60;
+        public static readonly string DropboxPathMalformdedException = "Dropbox path contains an invalid character";
         public static string WebServerPort { get; set; }
         public static string WebServerSslPort { get; set; }
-        public static ConcurrentDictionary<Guid, TextExpressionCompilerResults> Resultscache = new ConcurrentDictionary<Guid, TextExpressionCompilerResults>();
+        public static readonly ConcurrentDictionary<Guid, TextExpressionCompilerResults> Resultscache = new ConcurrentDictionary<Guid, TextExpressionCompilerResults>();
 
         public static void InvalidateCache(Guid resourceId)
         {
@@ -539,10 +475,10 @@ where pn.nspname = 'public';
             }
         }
 
-        public static int AddPopupTimeDelay = 2000;
+        public static readonly int AddPopupTimeDelay = 2000;
         private static GenericPrincipal _user;
-        public static double RowHeight = 30;
-        public static double RowHeaderHeight = 30;
+        public static readonly double RowHeight = 30;
+        public static readonly double RowHeaderHeight = 30;
 
         public static IPrincipal GenericPrincipal
         {
@@ -604,15 +540,16 @@ where pn.nspname = 'public';
         public static string ApplicationTextHeader { get; } = "text/plain";
         public static string ContentType { get;}= "Content-Type";
         public static string SaveReasonForDeploy { get; } = "Deploy";
+        public static TimeSpan TransactionTimeout { get => transactionTimeout; set => transactionTimeout = value; }
 
-        public static string DropboxPathNotFoundException = "Dropbox location cannot be found";
-        public static string DropboxPathNotFileException = "Please specify the path of a file in Dropbox";
-        public static string DropBoxSuccess = "Success";
-        public static string DropBoxFailure = "Failed";
-        public static string GlobalCounterName = "All";
-        public static string Warewolf = "Warewolf";
-        public static string WarewolfServices = "Warewolf Services";
-        public static string UserEchoURL = "http://community.warewolf.io/topics/249-https-connection-from-localhost-to-a-remote-server/";
+        public static readonly string DropboxPathNotFoundException = "Dropbox location cannot be found";
+        public static readonly string DropboxPathNotFileException = "Please specify the path of a file in Dropbox";
+        public static readonly string DropBoxSuccess = "Success";
+        public static readonly string DropBoxFailure = "Failed";
+        public static readonly string GlobalCounterName = "All";
+        public static readonly string Warewolf = "Warewolf";
+        public static readonly string WarewolfServices = "Warewolf Services";
+        public static readonly string UserEchoURL = "http://community.warewolf.io/topics/249-https-connection-from-localhost-to-a-remote-server/";
 
         public static void HandleEmptyParameters(object paramaTer, string name)
         {
