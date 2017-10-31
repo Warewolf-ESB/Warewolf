@@ -475,13 +475,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        public override Dictionary<string, IDev2Activity> GetChildrenNodes()
+        public override IEnumerable<IDev2Activity> GetChildrenNodes()
         {
             if (!(DataFunc.Handler is IDev2ActivityIOMapping act))
             {
-                return new Dictionary<string, IDev2Activity>();
+                return new List<IDev2Activity>();
             }
-            var nextNodes = new Dictionary<string, IDev2Activity> { { act?.GetDisplayName() ?? "",  act } };           
+            var nextNodes = new List<IDev2Activity> { act  };           
             return nextNodes;
         }
 
