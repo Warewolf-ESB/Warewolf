@@ -62,6 +62,9 @@
     <DefineConstants>DEBUG</DefineConstants>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>Dev2.Startup</StartupObject>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="AdornedControl">
       <HintPath>..\Binaries\AdornedControl.dll</HintPath>
