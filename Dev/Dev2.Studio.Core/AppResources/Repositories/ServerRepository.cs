@@ -28,11 +28,9 @@ using Dev2.Util;
 
 namespace Dev2.Studio.Core
 {
-
     public class ServerRepository : IServerRepository
     {
         static readonly List<IServer> EmptyList = new List<IServer>();
-
         static readonly object FileLock = new Object();
         static readonly object RestoreLock = new Object();
         protected List<IServer> Environments;
@@ -99,7 +97,6 @@ namespace Dev2.Studio.Core
 
         public IServer Source { get; private set; }
         public IServer ActiveServer { get; set; }
-
         public bool IsLoaded { get; set; }
 
         #region Clear
