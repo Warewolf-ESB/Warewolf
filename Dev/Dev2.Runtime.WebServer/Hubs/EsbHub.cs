@@ -181,7 +181,7 @@ namespace Dev2.Runtime.WebServer.Hubs
                     var task = new Task<string>(() => value);
                     ResourceAffectedMessagesCache.Remove(resourceId);
                     task.Start();
-                    return await task;
+                    return await task.ConfigureAwait(true);
                 }
             }
             catch (Exception e)
@@ -251,7 +251,7 @@ namespace Dev2.Runtime.WebServer.Hubs
         {
             var task = new Task(() => DebugDispatcher.Instance.Add(workspaceId, this));
             task.Start();
-            await task;
+            await task.ConfigureAwait(true);
         }
 
         /// <summary>
@@ -274,7 +274,7 @@ namespace Dev2.Runtime.WebServer.Hubs
                 var task = new Task<string>(() => value);
 
                 task.Start();
-                return await task;
+                return await task.ConfigureAwait(true);
             }
             catch (Exception e)
             {
@@ -284,15 +284,6 @@ namespace Dev2.Runtime.WebServer.Hubs
             return null;
         }
 
-        /// <summary>
-        ///     Executes the command.
-        /// </summary>
-        /// <param name="envelope">The envelope.</param>
-        /// <param name="endOfStream">if set to <c>true</c> [end of stream].</param>
-        /// <param name="workspaceId">The workspace unique identifier.</param>
-        /// <param name="dataListId">The data list unique identifier.</param>
-        /// <param name="messageId">The message unique identifier.</param>
-        /// <returns></returns>
         public async Task<Receipt> ExecuteCommand(Envelope envelope, bool endOfStream, Guid workspaceId, Guid dataListId, Guid messageId)
         {
             var internalServiceRequestHandler = new InternalServiceRequestHandler { ExecutingUser = Context.User };
@@ -350,7 +341,7 @@ namespace Dev2.Runtime.WebServer.Hubs
                     return null;
                 });
                 task.Start();
-                return await task;
+                return await task.ConfigureAwait(true);
             }
             catch (Exception e)
             {
@@ -361,13 +352,7 @@ namespace Dev2.Runtime.WebServer.Hubs
         }
 
         #region Overrides of Hub
-
-        /// <summary>
-        ///     Called when the connection connects to this hub instance.
-        /// </summary>
-        /// <returns>
-        ///     A <see cref="T:System.Threading.Tasks.Task" />
-        /// </returns>
+        
         public override Task OnConnected()
         {
             
