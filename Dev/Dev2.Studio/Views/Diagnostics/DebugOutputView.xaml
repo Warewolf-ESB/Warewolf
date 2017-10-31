@@ -428,7 +428,6 @@
                     <fa:FontAwesome Icon="Gear" FontSize="16"></fa:FontAwesome>
                 </Button.Content>
                 <i:Interaction.Behaviors>
-                    <b:ButtonPopupWorkaroundBehavior IsInWorkaroundState="{Binding SkipOptionsCommandExecute, Mode=TwoWay}" />
                     <core:HelpSetter Text="{x:Static languages:HelpText.DebugOutputViewOptionsHelp}" DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
             </Button>
