@@ -24,6 +24,7 @@ namespace Dev2.ViewModels.Merge
         private Guid _uniqueId;
         private FlowNode _activityType;
         private IMergeToolModel _parent;
+        private string _nodeArmDescription;
 
         public MergeToolModel()
         {
@@ -150,6 +151,15 @@ namespace Dev2.ViewModels.Merge
         public Point NodeLocation { get; set; }
 
         public bool IsTrueArm { get; set; }
+        public string NodeArmDescription
+        {
+            get => _nodeArmDescription;
+            set
+            {
+                _nodeArmDescription = value;
+                OnPropertyChanged(() => NodeArmDescription);
+            }
+        }
 
         public event ModelToolChanged SomethingModelToolChanged;
     }

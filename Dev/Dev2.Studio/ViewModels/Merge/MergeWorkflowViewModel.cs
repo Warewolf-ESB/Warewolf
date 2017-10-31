@@ -254,6 +254,7 @@ namespace Dev2.ViewModels.Merge
                     childConflict.DiffViewModel = EmptyConflictViewModel(id);
                     childConflict.CurrentViewModel = factory.GetModel(ModelItemUtils.CreateModelItem(child.node.Activity),child.node,model,child.uniqueId);
                     childConflict.CurrentViewModel.SomethingModelToolChanged += SourceOnModelToolChanged;
+                    childConflict.HasNodeArmConflict = true;
                     childConflict.CurrentViewModel.Container = conflict;
                     conflict.Children.AddLast(childConflict);
                     AddChildrenCurrent(childConflict, childConflict.CurrentViewModel, child.node.Children, factory, conflicts);

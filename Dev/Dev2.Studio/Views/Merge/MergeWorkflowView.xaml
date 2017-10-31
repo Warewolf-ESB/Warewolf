@@ -93,7 +93,7 @@
                                            AutomationProperties.AutomationId="UI_CurrentWorkflowHeaderText_AutoID"/>
                             </StackPanel>
                         </DockPanel>
-                        
+
                     </Border>
                     <Border x:Name="DifferenceWorkflowHeaderBorder" 
                             Grid.Row="0" 
@@ -132,7 +132,7 @@
                                            AutomationProperties.AutomationId="UI_CurrentWorkflowHeaderText_AutoID"/>
                             </StackPanel>
                         </DockPanel>
-                        
+
                     </Border>
 
                     <StackPanel x:Name="StartProcessSp" 
@@ -419,65 +419,17 @@
                                           Width="{Binding ElementName=ConflictsTreeView, Path=ActualWidth}"
                                           AutomationProperties.AutomationId="UI_ConflictsTreeViewTemplateGrid_AutoID">
                                         <Grid.RowDefinitions>
-                                            <RowDefinition Height="Auto"/>
                                             <RowDefinition Height="*"/>
+                                            <RowDefinition Height="Auto"/>
                                         </Grid.RowDefinitions>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="50*" />
-                                            <ColumnDefinition Width="Auto" />
                                             <ColumnDefinition Width="50*" />
                                         </Grid.ColumnDefinitions>
 
-                                        <Border Name="CurrentParentDescBorder" 
-                                                Grid.Row="0" 
-                                                Grid.Column="0" 
-                                                Background="{StaticResource WarewolfPanelGreyBrush}" 
-                                                BorderBrush="#CFD6E1" 
-                                                BorderThickness="0" 
-                                                Margin="0,0,-2,0" 
-                                                DataContext="{Binding CurrentViewModel}"
-                                                Visibility="{Binding HasParent, Converter={StaticResource BoolToVisibilityConverterPositive}}"
-                                                AutomationProperties.AutomationId="UI_CurrentParentDescBorder_AutoID">
-                                            <StackPanel Name="CurrentParentDescSP" 
-                                                        DockPanel.Dock="Left" 
-                                                        Orientation="Horizontal" 
-                                                        AutomationProperties.AutomationId="UI_CurrentParentDescSP_AutoID">
-                                                <TextBlock Name="CurrentParentDescText" 
-                                                           Margin="20,0,0,0" 
-                                                           Text="{Binding ParentDescription}" 
-                                                           FontWeight="Bold" 
-                                                           AutomationProperties.AutomationId="UI_CurrentParentDescText_AutoID"
-                                                           HorizontalAlignment="Stretch"/>
-                                            </StackPanel>
-                                        </Border>
-
-                                        <Border Name="DifferenceParentDescBorder" 
-                                                Grid.Row="0" 
-                                                Grid.Column="2" 
-                                                Background="{StaticResource WarewolfPanelGreyBrush}" 
-                                                BorderBrush="#CFD6E1" 
-                                                BorderThickness="2,0,0,0" 
-                                                Margin="2,0,0,0" 
-                                                DataContext="{Binding DiffViewModel}"
-                                                Visibility="{Binding HasParent, Converter={StaticResource BoolToVisibilityConverterPositive}}"
-                                                AutomationProperties.AutomationId="UI_DifferenceParentDescBorder_AutoID">
-                                            <StackPanel Name="DifferenceParentDescSP" 
-                                                        DockPanel.Dock="Left" 
-                                                        Orientation="Horizontal" 
-                                                        AutomationProperties.AutomationId="UI_DifferenceParentDescSP_AutoID">
-                                                <TextBlock Name="DifferenceParentDescText" 
-                                                           Margin="30,0,0,0" 
-                                                           Text="{Binding ParentDescription}" 
-                                                           FontWeight="Bold" 
-                                                           AutomationProperties.AutomationId="UI_DifferenceParentDescText_AutoID"
-                                                           HorizontalAlignment="Stretch"/>
-                                            </StackPanel>
-                                        </Border>
-
                                         <Expander Name="TreeViewExpander"
-                                                  Grid.Row="1"
                                                   Grid.Column="0"
-                                                  Grid.ColumnSpan="3"
+                                                  Grid.ColumnSpan="2"
 							                      Header="{Binding .}"
 							                      IsExpanded="{Binding IsMergeExpanded}"
 							                      Style="{StaticResource MergeExpander}"
@@ -707,6 +659,104 @@
                                             </Grid>
 
                                         </Expander>
+
+                                        <Grid Grid.Row="1"
+                                              Grid.Column="0"
+                                              Grid.ColumnSpan="2"
+                                              Visibility="{Binding HasNodeArmConflict, Converter={StaticResource BoolToVisibilityConverterPositive}}">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="50*" />
+                                                <ColumnDefinition Width="50*" />
+                                            </Grid.ColumnDefinitions>
+
+                                            <Border Name="CurrentNodeArmBorder" 
+                                                    Grid.Column="0" 
+                                                    Background="{StaticResource WarewolfPanelGreyBrush}" 
+                                                    BorderBrush="#CFD6E1" 
+                                                    BorderThickness="0" 
+                                                    Margin="0,0,-2,0" 
+                                                    DataContext="{Binding CurrentViewModel}"
+                                                    AutomationProperties.AutomationId="UI_CurrentNodeArmBorder_AutoID">
+                                                <DockPanel x:Name="CurrentNodeArmDockPanel" 
+                                                       LastChildFill="False"
+                                                       AutomationProperties.AutomationId="UI_CurrentNodeArmDockPanel_AutoID">
+                                                    <StackPanel Name="CurrentNodeArmSP" 
+                                                            DockPanel.Dock="Left" 
+                                                            Orientation="Horizontal" 
+                                                            AutomationProperties.AutomationId="UI_CurrentNodeArmSP_AutoID">
+                                                        <TextBlock Name="CurrentNodeArmText" 
+                                                               Margin="20,0,0,0" 
+                                                               Text="{Binding NodeArmDescription}" 
+                                                               FontWeight="Bold" 
+                                                               AutomationProperties.AutomationId="UI_CurrentNodeArmText_AutoID"
+                                                               HorizontalAlignment="Stretch"/>
+                                                    </StackPanel>
+                                                    <StackPanel x:Name="CurrentNodeArmRBSP" 
+                                                            DockPanel.Dock="Right" 
+                                                            Orientation="Horizontal"
+                                                            AutomationProperties.AutomationId="UI_CurrentNodeArmRBSP_AutoID">
+                                                        <RadioButton x:Name="CurrentNodeArmRB" 
+                                                                 IsChecked="{Binding IsMergeChecked}" 
+                                                                 HorizontalAlignment="Right"
+                                                                 Margin="0,0,5,0"
+                                                                 GroupName="MergeVariables"
+                                                                 AutomationProperties.AutomationId="UI_CurrentNodeArmRB_AutoID">
+                                                            <RadioButton.Style>
+                                                                <Style BasedOn="{StaticResource MergeRadioButtonStyle}" TargetType="{x:Type RadioButton}">
+                                                                    <Style.Triggers>
+                                                                        <DataTrigger Binding="{Binding ElementName=NodeArmNoConflictIcon, Path=Visibility}" Value="Visible">
+                                                                            <Setter Property="RadioButton.Visibility" Value="Collapsed"/>
+                                                                        </DataTrigger>
+                                                                    </Style.Triggers>
+                                                                </Style>
+                                                            </RadioButton.Style>
+                                                        </RadioButton>
+                                                    </StackPanel>
+                                                </DockPanel>
+                                            </Border>
+
+                                            <fa:FontAwesome Grid.Column="1" 
+                                                            Icon="Check" 
+                                                            x:Name="NodeArmNoConflictIcon"
+                                                            Foreground="Green" 
+                                                            HorizontalAlignment="Left"
+                                                            Margin="-12,0,0,0"
+                                                            ToolTip="{x:Static languages:Tooltips.MergeNoConflictTooltip}" 
+                                                            FontSize="20" 
+                                                            Visibility="{Binding HasVariablesConflict, Converter={StaticResource BoolToVisibilityConverterNegative}}" />
+
+                                            <Border Name="DifferenceNodeArmBorder" 
+                                                    Grid.Column="1" 
+                                                    Background="{StaticResource WarewolfPanelGreyBrush}" 
+                                                    BorderBrush="#CFD6E1" 
+                                                    BorderThickness="2,0,0,0" 
+                                                    Margin="2,0,0,0" 
+                                                    DataContext="{Binding DiffViewModel}"
+                                                    AutomationProperties.AutomationId="UI_DifferenceNodeArmBorder_AutoID">
+                                                <DockPanel x:Name="DifferenceNodeArmDockPanel" 
+                                                           LastChildFill="False"
+                                                           AutomationProperties.AutomationId="UI_DifferenceNodeArmDockPanel_AutoID">
+                                                    <StackPanel Name="DifferenceNodeArmSP" 
+                                                                DockPanel.Dock="Left" 
+                                                                Orientation="Horizontal" 
+                                                                AutomationProperties.AutomationId="UI_DifferenceNodeArmSP_AutoID">
+                                                        <RadioButton x:Name="DifferenceNodeArmRB" 
+                                                                     IsChecked="{Binding IsMergeChecked}" 
+                                                                     HorizontalAlignment="Left"
+                                                                     GroupName="MergeVariables"
+                                                                     Margin="5,0,5,0"
+                                                                     Style="{StaticResource MergeRadioButtonStyle}"
+                                                                     AutomationProperties.AutomationId="UI_DifferenceNodeArmRB_AutoID"/>
+                                                        <TextBlock Name="DifferenceNodeArmText" 
+                                                                   Margin="30,0,0,0" 
+                                                                   Text="{Binding NodeArmDescription}" 
+                                                                   FontWeight="Bold" 
+                                                                   AutomationProperties.AutomationId="UI_DifferenceNodeArmText_AutoID"
+                                                                   HorizontalAlignment="Stretch"/>
+                                                    </StackPanel>
+                                                </DockPanel>
+                                            </Border>
+                                        </Grid>
                                     </Grid>
                                 </HierarchicalDataTemplate>
                             </TreeView.Resources>
