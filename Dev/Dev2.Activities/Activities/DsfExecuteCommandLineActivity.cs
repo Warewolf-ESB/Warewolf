@@ -53,10 +53,8 @@ namespace Dev2.Activities
         #endregion
         
         [Inputs("CommandFileName")]
-        [FindMissing]
-        
-        public string CommandFileName
-        
+        [FindMissing]        
+        public string CommandFileName        
         {
             get
             {
@@ -241,12 +239,14 @@ namespace Dev2.Activities
                 while (!_process.HasExited && !executionToken.IsUserCanceled)
                 {
                     reader.Append(_process.StandardOutput.ReadToEnd());
-                    if (_process.Threads.Cast<ProcessThread>().Any(a => a.ThreadState == System.Diagnostics.ThreadState.Wait && a.WaitReason == ThreadWaitReason.UserRequest))
+                    if (!_process.HasExited && _process.Threads.Cast<ProcessThread>().Any(a => a.ThreadState == System.Diagnostics.ThreadState.Wait && a.WaitReason == ThreadWaitReason.UserRequest))
                     {
-                        _process.Kill();
+                        if (!_process.HasExited)
+                        {
+                            _process.Kill();
+                        }
                     }
-                    var isWaitingForUserInput = ModalChecker.IsWaitingForUserInput(_process);
-                    if (isWaitingForUserInput)
+                    if (ModalChecker.IsWaitingForUserInput(_process))
                     {
                         _process.Kill();
                         throw new ApplicationException(ErrorResource.UserInputRequired);
