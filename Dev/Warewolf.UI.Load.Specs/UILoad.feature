@@ -25,12 +25,12 @@ Scenario: Studio UI Load Test
 	When I Click Deploy Tab Deploy Button
 	Then the timer duration is less than "160" seconds
 	Given The Warewolf Studio is running
-	And I open "Debug Output UI Load Testing"
+	And I open "Debug Output UI Load Testing" workflow
 	And I start the timer
 	When I Debug with input of "100"
 	Then the timer duration is less than "60" seconds
 	Given The Warewolf Studio is running
-	And I open "Variable List UI Load Testing"
+	And I open "Variable List UI Load Testing" workflow
 	And I start the timer
 	When I Enter variable text as "[[new_variable]]" and value text as "new value" into assign row 1
 	Then the timer duration is less than "180" seconds
@@ -44,7 +44,7 @@ Scenario: Studio UI Load Test
 	Then the timer duration is less than "20" seconds
 	Given The Warewolf Studio is running
 	And I start the timer
-	When I open "Large Workflow UI Load Testing"
+	When I open "Large Workflow UI Load Testing" workflow
 	Then the timer duration is less than "45" seconds
 	Given I start the timer
 	When I Click Close Workflow Tab Button
@@ -80,10 +80,10 @@ Scenario: Studio UI Load Test
 	Given I start the timer
 	When I Delete The First Test
 	Then the timer duration is less than "30" seconds
-	And I start the timer
+	Given I start the timer
 	When I close the Studio
-	Then the timer duration is less than "5" second
-	And I start the timer
+	Then the timer duration is less than "5" seconds
+	Given I start the timer
 	When I start the Studio
 	Then the timer duration is less than "5" seconds
 	

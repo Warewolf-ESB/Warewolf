@@ -293,12 +293,13 @@ namespace Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, MouseButtons.Right, ModifierKeys.None, new Point(101, 9));
         }
 
-        [Given(@"I open ""(.*)""")]
-        [When(@"I open ""(.*)""")]
-        public void IOpen(string resourceName)
+        [Given(@"I open ""(.*)"" workflow")]
+        [When(@"I open ""(.*)"" workflow")]
+        public void IOpenWorkflow(string resourceName)
         {
             MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text = resourceName;
             Open_Explorer_First_Item_With_Double_Click();
+            WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WaitForControlExist();
         }
 
         [Given(@"I RightClick Explorer First Remote Server First Item")]
