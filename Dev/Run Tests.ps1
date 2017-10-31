@@ -945,7 +945,6 @@ if ($TotalNumberOfJobsToRun -gt 0) {
   <Description>Run $JobName With Screen Recording.</Description>
   <NamingScheme baseName="ScreenRecordings" appendTimeStamp="false" useDefault="false" />
   <Execution>
-    <Timeouts/>
     <AgentRule name="LocalMachineDefaultRole">
       <DataCollectors>
         <DataCollector uri="datacollector://microsoft/VideoRecorder/1.0" assemblyQualifiedName="Microsoft.VisualStudio.TestTools.DataCollection.VideoRecorder.VideoRecorderDataCollector, Microsoft.VisualStudio.TestTools.DataCollection.VideoRecorder, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" friendlyName="Screen and Voice Recorder">
