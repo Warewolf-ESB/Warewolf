@@ -11,6 +11,7 @@ namespace Dev2.Common.Interfaces
         ICompleteConflict Parent { get; set; }
         Guid UniqueId { get; set; }
         bool HasConflict { get; set; }
+        bool HasNodeArmConflict { get; set; }
         bool IsMergeExpanderEnabled { get; set; }
         bool IsMergeExpanded { get; set; }
         bool IsChecked { get; set; }
