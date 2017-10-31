@@ -68,11 +68,6 @@
     <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
-    <Compile Include="StudioStartupShutdown.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>StudioStartupShutdown.feature</DependentUpon>
-    </Compile>
     <Compile Include="UILoad.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -88,10 +83,6 @@
     <None Include="App.config" />
     <None Include="GenerateCodedUITestAttributes.ps1" />
     <None Include="packages.config" />
-    <None Include="StudioStartupShutdown.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>StudioStartupShutdown.cs</LastGenOutput>
-    </None>
     <None Include="UILoad.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>UILoad.feature.cs</LastGenOutput>

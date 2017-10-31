@@ -86,7 +86,7 @@ namespace Warewolf.UI.Load.Specs
             }
         }
 
-        [When("I close the Studio")]
+        [When(@"I close the studio")]
         public void CloseStudio()
         {
             Mouse.Click(UIMap.MainStudioWindow.CloseStudioButton);
