@@ -28,7 +28,7 @@ namespace Dev2.Factory
 
             };
 
-            var gitExePath = GetGitExePath(processExecutor);
+            var gitExePath = GetGitExePath();
             if (string.IsNullOrEmpty(gitExePath))
             {
                 gitExePath = "git.exe";
@@ -66,13 +66,26 @@ namespace Dev2.Factory
                 return "";
             }
         }
-        static string GetGitExePath(IExternalProcessExecutor processExecutor)
+        static string GetGitExePath()
         {
             try
             {
-                var cmd = "/c where.exe git.exe";
-                var exe = "cmd ";
-                var gitLocation = ExecuteCommand(processExecutor, exe, cmd);
+                var args = "/c where.exe git.exe";
+                var exe = "cmd.exe ";
+                var procf = new Process
+                {
+                    StartInfo = new ProcessStartInfo
+                    {
+                        FileName = exe,
+                        Arguments = args,
+                        UseShellExecute = false,
+                        RedirectStandardOutput = true,
+                        CreateNoWindow = true
+                    }
+                };
+
+                procf.Start();
+                string gitLocation = procf.StandardOutput.ReadLine();
                 var correctPath = gitLocation.Split(Environment.NewLine.ToCharArray())
                     .FirstOrDefault(p => p.EndsWith(@"bin\git.exe", StringComparison.InvariantCultureIgnoreCase) || p.EndsWith(@"git.exe", StringComparison.InvariantCultureIgnoreCase));
                 return correctPath;

@@ -1,27 +1,24 @@
-﻿using Dev2.Common;
-using Dev2.Common.Common;
+﻿using Dev2.Common.Common;
 using Dev2.Runtime.ServiceModel.Data;
+using Dev2.Studio;
 using Dev2.Studio.Core.Models;
 using Dev2.Studio.Interfaces;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Linq;
-using System.Xml.Serialization;
 
 namespace Dev2.Factory
 {
     public class MergeFactory : IMergeFactory
     {
 
-        public void OpenMergeWindow(IShellViewModel shellViewModel, string item)
+        public void OpenMergeWindow(IShellViewModel shellViewModel, string item, WarwolfStartupEventArgs args)
         {
+            var strBuilder = new StringBuilder();
             VerifyArgument.IsNotNull(nameof(shellViewModel), shellViewModel);
-            var mergeArgs = item.Split(' ');
-            var mergeHeadPath = mergeArgs[1];
+            var cleanPath = args.Args[1].Replace('^', ' ');
+            var mergeHeadPath = cleanPath;
             using (var stream = File.OpenRead(mergeHeadPath))
             {
                 using (var streamReader = new StreamReader(stream))
