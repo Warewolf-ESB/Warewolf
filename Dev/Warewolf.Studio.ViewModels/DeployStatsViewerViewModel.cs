@@ -151,7 +151,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public void CheckDestinationPersmisions()
+        public void CheckDestinationPermissions()
         {
             _destinationItems = _destination.SelectedEnvironment?.AsList();
             if (_destinationItems == null || _destinationItems.Count == 0 || _destination.SelectedEnvironment == null || !_destination.SelectedEnvironment.IsConnected)
@@ -271,7 +271,7 @@ namespace Warewolf.Studio.ViewModels
             OnPropertyChanged(() => Conflicts);
             OnPropertyChanged(() => New);
             CalculateAction?.Invoke();
-            CheckDestinationPersmisions();
+            CheckDestinationPermissions();
         }
 
         public IList<Conflict> Conflicts => _conflicts.ToList();
