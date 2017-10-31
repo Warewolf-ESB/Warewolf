@@ -27,7 +27,5 @@ namespace Dev2.Core.Tests.Factories
             CustomGitOps.SetCustomGitTool(executor.Object);
             executor.Verify(p => p.Start(It.IsAny<ProcessStartInfo>()), Times.Exactly(7));
         }
-
-       
     }
 }
