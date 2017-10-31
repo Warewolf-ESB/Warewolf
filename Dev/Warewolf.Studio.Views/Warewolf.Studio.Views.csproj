@@ -172,7 +172,6 @@
     <Compile Include="ConnectControl.xaml.cs">
       <DependentUpon>ConnectControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Converters\ComboBoxToMaxItemWidthConverter.cs" />
     <Compile Include="DeployView.xaml.cs">
       <DependentUpon>DeployView.xaml</DependentUpon>
     </Compile>
@@ -234,7 +233,6 @@
       <Link>Run Tests.ps1</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <Compile Include="RenameTreeNode.cs" />
     <Compile Include="RequestServiceNameView.xaml.cs">
       <DependentUpon>RequestServiceNameView.xaml</DependentUpon>
     </Compile>

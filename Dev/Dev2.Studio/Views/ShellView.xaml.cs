@@ -52,7 +52,6 @@ namespace Dev2.Studio.Views
         public ShellView()
         {
             InitializeComponent();
-            _isSuperMaximising = false;
             _isLocked = true;
             HideFullScreenPanel.IsHitTestVisible = false;
             ShowFullScreenPanel.IsHitTestVisible = false;
@@ -84,7 +83,9 @@ namespace Dev2.Studio.Views
                 }
             }
 
+#pragma warning disable S3010 // For testing (Studio reset shortcut)
             _this = this;
+#pragma warning restore S3010
         }
 
         private string FilePath => Path.Combine(new[]
@@ -524,10 +525,13 @@ namespace Dev2.Studio.Views
                 var studioTestViewModel = dockManager.DataContext as StudioTestViewModel;
                 displayName = studioTestViewModel?.DisplayName;
             }
-            else if (dockManager?.DataContext.GetType() == typeof(SchedulerViewModel))
+            else
             {
-                var schedulerViewModel = dockManager.DataContext as SchedulerViewModel;
-                displayName = schedulerViewModel?.DisplayName;
+                if (dockManager?.DataContext.GetType() == typeof(SchedulerViewModel))
+                {
+                    var schedulerViewModel = dockManager.DataContext as SchedulerViewModel;
+                    displayName = schedulerViewModel?.DisplayName;
+                }
             }
             SetPaneToolWindowTitle(displayName);
         }

@@ -15,11 +15,9 @@ using Dev2.Studio.Core.Helpers;
 using Dev2.TO;
 
 
-
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
-
 {
-    public class DTOFactory
+    public static class DTOFactory
     {
         public static IDev2TOFn CreateNewDTO(IDev2TOFn dto) => CreateNewDTO(dto, 0, false, "");
         public static IDev2TOFn CreateNewDTO(IDev2TOFn dto, int index, bool inserted, string initializeWith)

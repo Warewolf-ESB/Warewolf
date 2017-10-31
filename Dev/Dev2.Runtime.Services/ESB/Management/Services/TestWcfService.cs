@@ -17,13 +17,10 @@ using Unlimited.Framework.Converters.Graph.Ouput;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-
     public class TestWcfService : IEsbManagementEndpoint
     {
         private IResourceCatalog _rescat;
-
-
-
+        
         public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
         {
             return Guid.Empty;

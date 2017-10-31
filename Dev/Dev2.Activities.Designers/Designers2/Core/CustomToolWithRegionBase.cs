@@ -23,16 +23,16 @@ namespace Dev2.Activities.Designers2.Core
         }
         #endregion
 
-        
-        public CustomToolWithRegionBase(ModelItem modelItem)
+
+        protected CustomToolWithRegionBase(ModelItem modelItem)
             : base(modelItem)
         {
         }
 
         public abstract IList<IToolRegion> BuildRegions();
 
-        
-        public CustomToolWithRegionBase(ModelItem modelItem, IList<IToolRegion> regions)
+
+        protected CustomToolWithRegionBase(ModelItem modelItem, IList<IToolRegion> regions)
             : base(modelItem)
         {
             _regions = regions;

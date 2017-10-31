@@ -18,14 +18,7 @@ namespace Dev2.Studio.Core.AppResources.Converters
 {
     public class EnumToStringConverter : IValueConverter
     {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            return Dev2EnumConverter.ConvertEnumValueToString(value as Enum);
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            return Dev2EnumConverter.GetEnumFromStringDiscription(value?.ToString(), targetType);
-        }
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture) => Dev2EnumConverter.ConvertEnumValueToString(value as Enum);
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => Dev2EnumConverter.GetEnumFromStringDiscription(value?.ToString(), targetType);
     }
 }

@@ -69,7 +69,7 @@ namespace Dev2.TO
             }
         }
 
-        public bool IsFromFocused { get { return _isFromFocused; } set { OnPropertyChanged(ref _isFromFocused, value); } }
+        public bool IsFromFocused { get => _isFromFocused; set => OnPropertyChanged(ref _isFromFocused, value); }
 
         [FindMissing]
         public string To
@@ -86,9 +86,7 @@ namespace Dev2.TO
             }
         }
 
-
-
-        public bool IsToFocused { get { return _isToFocused; } set { OnPropertyChanged(ref _isToFocused, value); } }
+        public bool IsToFocused { get => _isToFocused; set => OnPropertyChanged(ref _isToFocused, value); }
 
         [FindMissing]
         public string ValueToMatch
@@ -105,7 +103,7 @@ namespace Dev2.TO
             }
         }
 
-        public bool IsSearchCriteriaFocused { get { return _isSearchCriteriaFocused; } set { OnPropertyChanged(ref _isSearchCriteriaFocused, value); } }
+        public bool IsSearchCriteriaFocused { get => _isSearchCriteriaFocused; set => OnPropertyChanged(ref _isSearchCriteriaFocused, value); }
 
         public string SearchType
         {
@@ -124,14 +122,12 @@ namespace Dev2.TO
             }
         }
 
-        public bool IsSearchTypeFocused { get { return _isSearchTypeFocused; } set { OnPropertyChanged(ref _isSearchTypeFocused, value); } }
+        public bool IsSearchTypeFocused { get => _isSearchTypeFocused; set => OnPropertyChanged(ref _isSearchTypeFocused, value); }
 
         void RaiseCanAddRemoveChanged()
-        {
-
+        {            
             OnPropertyChanged("CanRemove");
-            OnPropertyChanged("CanAdd");
-
+            OnPropertyChanged("CanAdd");            
         }
 
         public bool IsSearchCriteriaEnabled

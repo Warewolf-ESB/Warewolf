@@ -169,9 +169,12 @@ namespace Warewolf.Studio.ViewModels
                         {
                             AddStepFromDebug(debugState, debugItemContent);
                         }
-                        else if (debugItemContent.ActivityType != ActivityType.Workflow && debugItemContent.ActualType != typeof(DsfCommentActivity).Name)
+                        else
                         {
-                            ProcessRegularDebugItem(debugItemContent, debugState);
+                            if (debugItemContent.ActivityType != ActivityType.Workflow && debugItemContent.ActualType != typeof(DsfCommentActivity).Name)
+                            {
+                                ProcessRegularDebugItem(debugItemContent, debugState);
+                            }
                         }
                     }
                 }
@@ -287,9 +290,12 @@ namespace Warewolf.Studio.ViewModels
             {
                 SetInputs(debugItemContent);
             }
-            else if (debugItemContent.StateType == StateType.End)
+            else
             {
-                SetOutputs(debugItemContent);
+                if (debugItemContent.StateType == StateType.End)
+                {
+                    SetOutputs(debugItemContent);
+                }
             }
         }
 
@@ -841,9 +847,12 @@ namespace Warewolf.Studio.ViewModels
                     {
                         AddSelectAndApply(activity as DsfSelectAndApplyActivity, testStep, testStep.Children);
                     }
-                    else if (activity.GetType() == type)
+                    else
                     {
-                        AddForEach(activity as DsfForEachActivity, testStep, testStep.Children);
+                        if (activity.GetType() == type)
+                        {
+                            AddForEach(activity as DsfForEachActivity, testStep, testStep.Children);
+                        }
                     }
 
                 }
@@ -898,9 +907,12 @@ namespace Warewolf.Studio.ViewModels
                     {
                         AddForEach(activity as DsfForEachActivity, testStep, testStep.Children);
                     }
-                    else if (activity != null && activity.GetType() == typeof(DsfSelectAndApplyActivity))
+                    else
                     {
-                        AddSelectAndApply(activity as DsfSelectAndApplyActivity, testStep, testStep.Children);
+                        if (activity != null && activity.GetType() == typeof(DsfSelectAndApplyActivity))
+                        {
+                            AddSelectAndApply(activity as DsfSelectAndApplyActivity, testStep, testStep.Children);
+                        }
                     }
                 }
                 if (workFlowService != null)
@@ -954,9 +966,12 @@ namespace Warewolf.Studio.ViewModels
                         {
                             AddForEach(activity as DsfForEachActivity, testStep, testStep.Children);
                         }
-                        else if (activity.GetType() == typeof(DsfSelectAndApplyActivity))
+                        else
                         {
-                            AddSelectAndApply(activity as DsfSelectAndApplyActivity, testStep, testStep.Children);
+                            if (activity.GetType() == typeof(DsfSelectAndApplyActivity))
+                            {
+                                AddSelectAndApply(activity as DsfSelectAndApplyActivity, testStep, testStep.Children);
+                            }
                         }
                     }
                 }
@@ -1038,16 +1053,19 @@ namespace Warewolf.Studio.ViewModels
                             }
 
                         }
-                        else if (serviceTestStep.Children.Count != testStep.Children.Count)
+                        else
                         {
-                            foreach (var child in testStep.Children)
+                            if (serviceTestStep.Children.Count != testStep.Children.Count)
                             {
-                                var testSteps = serviceTestStep.Children.Where(a => a.UniqueId == child.UniqueId);
-                                if (!testSteps.Any())
+                                foreach (var child in testStep.Children)
                                 {
-                                    var indexOf = testStep.Children.IndexOf(child);
-                                    child.Parent = serviceTestStep;
-                                    serviceTestStep.Children.Insert(indexOf, child);
+                                    var testSteps = serviceTestStep.Children.Where(a => a.UniqueId == child.UniqueId);
+                                    if (!testSteps.Any())
+                                    {
+                                        var indexOf = testStep.Children.IndexOf(child);
+                                        child.Parent = serviceTestStep;
+                                        serviceTestStep.Children.Insert(indexOf, child);
+                                    }
                                 }
                             }
                         }
@@ -1434,13 +1452,16 @@ namespace Warewolf.Studio.ViewModels
                     displayName = act.DisplayName;
                 }
             }
-            else if (item.ItemType == typeof(DsfSelectAndApplyActivity))
+            else
             {
-                if (item.GetCurrentValue() is DsfSelectAndApplyActivity act)
+                if (item.ItemType == typeof(DsfSelectAndApplyActivity))
                 {
-                    uniqueId = act.UniqueID;
-                    activityType = typeof(DsfSelectAndApplyActivity);
-                    displayName = act.DisplayName;
+                    if (item.GetCurrentValue() is DsfSelectAndApplyActivity act)
+                    {
+                        uniqueId = act.UniqueID;
+                        activityType = typeof(DsfSelectAndApplyActivity);
+                        displayName = act.DisplayName;
+                    }
                 }
             }
             if (!string.IsNullOrWhiteSpace(uniqueId))
@@ -1646,9 +1667,12 @@ namespace Warewolf.Studio.ViewModels
             {
                 _serverName = string.Empty;
             }
-            else if (!resourceModel.Environment.IsLocalHost)
+            else
             {
-                _serverName = " - " + resourceModel.Environment.Name;
+                if (!resourceModel.Environment.IsLocalHost)
+                {
+                    _serverName = " - " + resourceModel.Environment.Name;
+                }
             }
         }
 
@@ -1849,9 +1873,12 @@ namespace Warewolf.Studio.ViewModels
                 {
                     ErrorMessage = string.Format(ErrorResource.ContainsInvalidCharecters, "'name'");
                 }
-                else if (name.Trim() != name)
+                else
                 {
-                    ErrorMessage = string.Format(ErrorResource.ContainsLeadingOrTrailingWhitespace, "'name'");
+                    if (name.Trim() != name)
+                    {
+                        ErrorMessage = string.Format(ErrorResource.ContainsLeadingOrTrailingWhitespace, "'name'");
+                    }
                 }
 
                 return string.IsNullOrEmpty(ErrorMessage);

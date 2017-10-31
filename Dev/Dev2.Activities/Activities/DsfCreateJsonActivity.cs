@@ -150,10 +150,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                             x.ComplexEvaluatedResultIndexed(0))
                                             );
                             }
-                            else if (x.EvalResult.IsWarewolfRecordSetResult)
+                            else
                             {
-                                json.Add(
-                               x.ComplexEvaluatedResultIndexed(0));
+                                if (x.EvalResult.IsWarewolfRecordSetResult)
+                                {
+                                    json.Add(
+                                   x.ComplexEvaluatedResultIndexed(0));
+                                }
                             }
                         }
                     }

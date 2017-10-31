@@ -290,7 +290,8 @@ namespace Dev2.Scheduler
                     }
                     else
                     {
-                        start = a.StartDate.Value; end = a.EndDate.Value;
+                        start = a.StartDate.Value;
+                        end = a.EndDate.Value;
                         duration = a.StartDate.HasValue && a.EndDate.HasValue ? a.EndDate.Value.Subtract(a.StartDate.Value) : TimeSpan.MaxValue;
                     }
                     return new ResourceHistory("", debugOutput,

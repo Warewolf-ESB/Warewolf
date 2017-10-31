@@ -715,7 +715,8 @@ namespace Warewolf.Studio.Resources.Languages {
         /// <summary>
         ///   Looks up a localized string similar to Any variable and/or data goes in here.
         ///To find the difference in time between two date times, put the first date time in here. The format needs to be the same for the two.
-        ///Leaving this field blank will give you the system date time..
+        ///The default date time format is shown, if this is not the required format, then it can be changed to the format needed.
+        ///Leaving this field blank will give you the default date time..
         /// </summary>
         public static string DateTimeDifferenceToolTipDatetime1 {
             get {
@@ -726,7 +727,8 @@ namespace Warewolf.Studio.Resources.Languages {
         /// <summary>
         ///   Looks up a localized string similar to Any variable and/or data goes in here.
         ///To find the difference in time between two date times, put the second date time in here. The format needs to be the same for the two.
-        ///Leaving this field blank will give you the system date time..
+        ///The default date time format is shown, if this is not the required format, then it can be changed to the format needed.
+        ///Leaving this field blank will give you the default date time..
         /// </summary>
         public static string DateTimeDifferenceToolTipDatetime2 {
             get {
@@ -777,7 +779,8 @@ namespace Warewolf.Studio.Resources.Languages {
         /// <summary>
         ///   Looks up a localized string similar to Any variable and/or data goes in here.
         ///To format a date time, or to add/subtract from a date time, put it in here.
-        ///Leaving this field blank will give you the system date time..
+        ///The default date time format is shown, if this is not the required format, then it can be changed to the format needed.
+        ///Leaving this field blank will give you the default date time..
         /// </summary>
         public static string DateTimeToolTipDatetime {
             get {
@@ -787,7 +790,8 @@ namespace Warewolf.Studio.Resources.Languages {
         
         /// <summary>
         ///   Looks up a localized string similar to Describe the format of the date time you are entering. e.g. 23-July 1978 would be described as dd-MM yyyy.
-        ///Leaving this field blank will assume the system date time format.
+        ///The default date time format is shown, if this is not the required format, then it can be changed to the format needed.
+        ///Leaving this field blank will assume the default date time format.
         ///To escape text or non-date information use &apos;around the text you want to escape&apos;. 
         ///e.g. Time is now 15 hours and 33 minutes. Would have an input format of &apos;Time is now&apos; 24hr &apos;hours and&apos; min &apos;minutes.&apos;.
         /// </summary>
@@ -799,7 +803,7 @@ namespace Warewolf.Studio.Resources.Languages {
         
         /// <summary>
         ///   Looks up a localized string similar to Describe the format you would like the date time to be returned in.
-        ///Leaving this field blank will assume the same as the Input Format.
+        ///The default date time format is shown, if this is not the required format, then it can be changed to the format needed.
         ///To include text or non-date information use &apos;around the text you want to escape&apos;. 
         ///e.g. Time is now 15 hours and 33 minutes. Would have an output format of &apos;Time is now&apos; 24hr &apos;hours and&apos; min &apos;minutes.&apos;.
         /// </summary>
