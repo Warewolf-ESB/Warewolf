@@ -45,7 +45,7 @@ namespace Dev2.Runtime.WebServer
                 dataObjectToUse.Environment = null;
                 testResults.Add(result);
             });
-            await lastTask;
+            await lastTask.ConfigureAwait(true);
         }
 
         public static string SetupForTestExecution(Dev2JsonSerializer serializer, EsbExecuteRequest esbExecuteRequest,IDSFDataObject dataObject)

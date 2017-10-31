@@ -64,7 +64,7 @@ namespace Warewolf.Studio.ViewModels
             RefreshCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() => RefreshEnvironment(SelectedEnvironment.ResourceId));
             ConnectControlViewModel.SelectedEnvironmentChanged += async (sender, id) =>
             {
-                await DeploySourceExplorerViewModelSelectedEnvironmentChanged(sender, id);
+                await DeploySourceExplorerViewModelSelectedEnvironmentChanged(sender, id).ConfigureAwait(true);
             };
             IsDeploy = true;
         }
@@ -74,7 +74,7 @@ namespace Warewolf.Studio.ViewModels
             var connectControlViewModel = sender as ConnectControlViewModel;
             if(connectControlViewModel?.SelectedConnection.IsConnected != null && connectControlViewModel.SelectedConnection.IsConnected && _environments.Any(p => p.ResourceId != connectControlViewModel.SelectedConnection.EnvironmentID))
             {
-                var task = Task.Run(async () => { await CreateNewEnvironment(connectControlViewModel.SelectedConnection); });
+                var task = Task.Run(async () => { await CreateNewEnvironment(connectControlViewModel.SelectedConnection).ConfigureAwait(true); });
                 task.Wait();
             }
             if (_environments.Count == _shellViewModel?.ExplorerViewModel?.Environments?.Count)
@@ -86,7 +86,7 @@ namespace Warewolf.Studio.ViewModels
                 var environmentViewModel = _shellViewModel?.ExplorerViewModel?.Environments?.FirstOrDefault(
                     model => model.ResourceId == environmentId) ?? _environments.FirstOrDefault(p => p.ResourceId == environmentId);
 
-                await CreateNewEnvironment(environmentViewModel?.Server);
+                await CreateNewEnvironment(environmentViewModel?.Server).ConfigureAwait(true);
             }
         }
 

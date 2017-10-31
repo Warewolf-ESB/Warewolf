@@ -141,7 +141,7 @@ namespace Dev2.Network
         {
             if (ReceivedResourceAffectedMessage != null)
             {
-                var result = Task.Run(async () => await EsbProxy.Invoke<string>("FetchResourcesAffectedMemo", resourceId)).ConfigureAwait(false).GetAwaiter().GetResult();
+                var result = Task.Run(async () => await EsbProxy.Invoke<string>("FetchResourcesAffectedMemo", resourceId).ConfigureAwait(true)).GetAwaiter().GetResult();
                 if (!string.IsNullOrWhiteSpace(result))
                 {
                     var obj = _serializer.Deserialize<CompileMessageList>(result);

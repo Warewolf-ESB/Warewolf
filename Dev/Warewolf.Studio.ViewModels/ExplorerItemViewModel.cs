@@ -1698,7 +1698,7 @@ namespace Warewolf.Studio.ViewModels
                 }
                 destination.AddChild(this);
                 Parent?.RemoveChild(this);
-                var moveResult = await _explorerRepository.Move(this, destination);
+                var moveResult = await _explorerRepository.Move(this, destination).ConfigureAwait(true);
                 if (!moveResult)
                 {
                     ShowErrorMessage(Resources.Languages.Core.ExplorerMoveFailedMessage, Resources.Languages.Core.ExplorerMoveFailedHeader);
