@@ -245,38 +245,34 @@ namespace Dev2.Services.Execution
             }
         }
         private void SqlExecution(ErrorResultTO errors, int update)
-        {
-            var startTime = Stopwatch.StartNew();
+        {          
             ISqlConnection connection = new SqlConnectionWrapper(Source.ConnectionString);
+            var startTime = Stopwatch.StartNew();
+            var cmd = connection.CreateCommand();
             try
             {
                 using (TransactionScope scope = new TransactionScope())
                 {
-                    using (connection)
+                    var parameters = GetSqlParameters();
+                    foreach (var item in parameters)
                     {
-                        var parameters = GetSqlParameters();
-                        using (var cmd = connection.CreateCommand())
-                        {
-                            foreach (var item in parameters)
-                            {
-                                cmd.Parameters.Add(item);
-                            }
-                            cmd.CommandType = CommandType.StoredProcedure;
-                            cmd.CommandText = ProcedureName;
-                            connection.Open();
-                            var reader = cmd.ExecuteReader();
-                            var table = new DataTable();
-                            table.Load(reader);
-                            
-                            // The Complete method commits the transaction. If an exception has been thrown,
-                            // Complete is not  called and the transaction is rolled back.
-                            Dev2Logger.Info("time take to read from DB " + ProcedureName + ":" + startTime.Elapsed.Seconds, DataObj.ExecutionID.ToString());
-                            scope.Complete();
-                            var startTime1 = Stopwatch.StartNew();
-                            TranslateDataTableToEnvironment(table, DataObj.Environment, update);
-                            Dev2Logger.Info("time take to TranslateDataTableToEnvironment " + ProcedureName + ":" + startTime1.Elapsed.Seconds, DataObj.ExecutionID.ToString());
-                        }
+                        cmd.Parameters.Add(item);
                     }
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.CommandText = ProcedureName;
+                    connection.Open();
+                    var reader = cmd.ExecuteReader();
+                    var table = new DataTable();
+                    table.Load(reader);
+                    
+
+                    // The Complete method commits the transaction. If an exception has been thrown,
+                    // Complete is not  called and the transaction is rolled back.
+                    Dev2Logger.Info("Time taken to process proc " + ProcedureName + ":" + startTime.Elapsed.Milliseconds + " Milliseconds", DataObj.ExecutionID.ToString());
+                    scope.Complete();
+                    var startTime1 = Stopwatch.StartNew();
+                    TranslateDataTableToEnvironment(table, DataObj.Environment, update);
+                    Dev2Logger.Info("Time taken to TranslateDataTableToEnvironment " + ProcedureName + ":" + startTime1.Elapsed.Milliseconds + " Milliseconds", DataObj.ExecutionID.ToString());
                 }
             }
             catch (Exception ex)
@@ -286,6 +282,7 @@ namespace Dev2.Services.Execution
             }
             finally
             {
+                cmd.Dispose();
                 connection.Dispose();
             }
         }
