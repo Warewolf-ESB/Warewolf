@@ -241,26 +241,18 @@ namespace Dev2.Activities
                 while (!_process.HasExited && !executionToken.IsUserCanceled)
                 {
                     reader.Append(_process.StandardOutput.ReadToEnd());
-                    if (!_process.HasExited && _process.Threads.Cast<ProcessThread>().Any(a => a.ThreadState == System.Diagnostics.ThreadState.Wait && a.WaitReason == ThreadWaitReason.UserRequest))
+                    if (_process.Threads.Cast<ProcessThread>().Any(a => a.ThreadState == System.Diagnostics.ThreadState.Wait && a.WaitReason == ThreadWaitReason.UserRequest))
                     {
                         _process.Kill();
                     }
-
-                    else
+                    var isWaitingForUserInput = ModalChecker.IsWaitingForUserInput(_process);
+                    if (isWaitingForUserInput)
                     {
-                        if (!_process.HasExited)
-                        {
-                            var isWaitingForUserInput = ModalChecker.IsWaitingForUserInput(_process);
-
-                            if (!isWaitingForUserInput)
-                            {
-                                continue;
-                            }
-                            _process.Kill();
-                            throw new ApplicationException(ErrorResource.UserInputRequired);
-                        }
+                        _process.Kill();
+                        throw new ApplicationException(ErrorResource.UserInputRequired);
                     }
                     Thread.Sleep(10);
+                    continue;
                 }
                 
                 if (executionToken.IsUserCanceled)
