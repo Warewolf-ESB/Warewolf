@@ -71,7 +71,6 @@
     <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
-    <Compile Include="UniqueDbConnectionGenerator.cs" />
     <None Include="..\Run Tests.ps1">
       <Link>Run Tests.ps1</Link>
       <Visible>False</Visible>

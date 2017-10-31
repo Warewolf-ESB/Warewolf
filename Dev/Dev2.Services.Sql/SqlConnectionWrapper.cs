@@ -8,7 +8,18 @@ namespace Dev2.Services.Sql
         private readonly SqlConnection _connection;
         public SqlConnectionWrapper(string connString)
         {
-            _connection = UniqueDbConnectionGenerator.GetConnection(connString);
+            var conStrBuilder = new SqlConnectionStringBuilder(connString)
+            {
+                ConnectTimeout = 20,
+                MaxPoolSize = 100,
+                MultipleActiveResultSets = true,
+                Pooling = true,
+                ApplicationName = "Warewolf Service"
+            };
+
+            var cString = conStrBuilder.ConnectionString;
+
+            _connection = new SqlConnection(cString);
         }
 
         public bool FireInfoMessageEventOnUserErrors
