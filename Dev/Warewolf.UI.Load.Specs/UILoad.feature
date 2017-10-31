@@ -83,7 +83,7 @@ Scenario: Open Scheduler View And Add Remove Scheduled Tasks
 	And I Enter LocalSchedulerAdmin Credentials Into Scheduler Tab
 	Given I start the timer
 	When I Click Save Ribbon Button And Wait For Save
-	Then the timer duration is less than "5" seconds
+	Then the timer duration is less than "15" seconds
 	Given I start the timer
 	When I delete the UI Load Test scheduled task
 	Then the timer duration is less than "5" seconds
