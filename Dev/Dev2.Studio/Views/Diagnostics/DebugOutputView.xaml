@@ -481,9 +481,6 @@
                         <TreeView.InputBindings>
                             <KeyBinding Gesture="CTRL+A" Command="{Binding SelectAllCommand}" />
                         </TreeView.InputBindings>
-                        <i:Interaction.Behaviors>
-                            <b:TreeviewScrollToEndOnNewContent />
-                        </i:Interaction.Behaviors>
                         <TreeView.Resources>
                             <Style TargetType="{x:Type TreeView}">
                                 <Setter Property="Template">
