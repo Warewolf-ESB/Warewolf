@@ -42,9 +42,10 @@ namespace Dev2.Core.Tests.Workflows
         {
             return "";
         }
-        public Dictionary<string, IDev2Activity> GetChildrenNodes() => throw new NotImplementedException();
         public FlowNode GetFlowNode() => throw new NotImplementedException();
-        public IConflictTreeNode BuildNode() => throw new NotImplementedException();
+        IEnumerable<IDev2Activity> IDev2Activity.GetChildrenNodes() => throw new NotImplementedException();
+        public IEnumerable<IDev2Activity> GetNextNodes() => throw new NotImplementedException();
+        public List<(string Description, string Key, string SourceUniqueId, string DestinationUniqueId)> ArmConnectors() => throw new NotImplementedException();
     }
 
     public class TestDecisionActivity : Activity<bool>, IDev2Activity
@@ -71,8 +72,9 @@ namespace Dev2.Core.Tests.Workflows
             return new List<string>();
         }
 
-        public Dictionary<string, IDev2Activity> GetChildrenNodes() => throw new NotImplementedException();
         public FlowNode GetFlowNode() => throw new NotImplementedException();
-        public IConflictTreeNode BuildNode() => throw new NotImplementedException();
+        IEnumerable<IDev2Activity> IDev2Activity.GetChildrenNodes() => throw new NotImplementedException();
+        public IEnumerable<IDev2Activity> GetNextNodes() => throw new NotImplementedException();
+        public List<(string Description, string Key, string SourceUniqueId, string DestinationUniqueId)> ArmConnectors() => throw new NotImplementedException();
     }
 }

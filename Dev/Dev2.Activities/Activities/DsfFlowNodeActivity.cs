@@ -141,8 +141,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 var hashCode = base.GetHashCode();
                 hashCode = (hashCode * 397) ^ (_expression != null ? _expression.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ EqualityComparer<TResult>.Default.GetHashCode(_theResult);
-                hashCode = (hashCode * 397) ^ _dataListId.GetHashCode();
-                hashCode = (hashCode * 397) ^ (_dataObject != null ? _dataObject.GetHashCode() : 0);
                 return hashCode;
             }
         }
@@ -153,13 +151,19 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public bool Equals(DsfFlowNodeActivity<TResult> other)
         {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
-            return base.Equals(other) 
-                && Equals(ExpressionText, other.ExpressionText) 
-                && EqualityComparer<TResult>.Default.Equals(_theResult, other._theResult) 
-                && _dataListId.Equals(other._dataListId) 
-                && Equals(_dataObject, other._dataObject);
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
+            return base.Equals(other)
+                && Equals(ExpressionText, other.ExpressionText)
+                && EqualityComparer<TResult>.Default.Equals(_theResult, other._theResult); 
         }
     }
 }

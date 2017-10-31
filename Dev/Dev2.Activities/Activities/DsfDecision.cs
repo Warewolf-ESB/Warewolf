@@ -39,36 +39,37 @@ namespace Dev2.Activities
         {
             return Conditions.DisplayText;
         }
+        
 
-        public override IConflictTreeNode BuildNode()
+        public override IEnumerable<IDev2Activity> GetNextNodes()
         {
-            var node = new ConflictTreeNode(this, new System.Windows.Point());
-            if (TrueArm != null)
-            {
-                node.AddChild(TrueArm?.FirstOrDefault().BuildNode(),"TRUE");
-            }
-            if (FalseArm != null)
-            {
-                node.AddChild(FalseArm?.FirstOrDefault().BuildNode(),"FALSE");
-
-            }            
-            return node;
-        }
-
-        public override Dictionary<string, IDev2Activity> GetChildrenNodes()
-        {
-            var nextNodes = new Dictionary<string, IDev2Activity>();
+            var nextNodes = new List<IDev2Activity>();
             if (TrueArm != null)
             {                
-                nextNodes.Add("True", TrueArm?.FirstOrDefault());
+                nextNodes.Add(TrueArm?.FirstOrDefault());
             }
             if (FalseArm != null)
             {                
-                nextNodes.Add("False", FalseArm?.FirstOrDefault());
+                nextNodes.Add(FalseArm?.FirstOrDefault());
 
             }
             return nextNodes;
         }
+
+        public override List<(string Description, string Key, string SourceUniqueId, string DestinationUniqueId)> ArmConnectors()
+        {
+            var armConnectors = new List<(string Description, string Key, string SourceUniqueId, string DestinationUniqueId)>();
+            foreach (var next in TrueArm)
+            {
+                armConnectors.Add((GetDisplayName(), "TRUE", UniqueID, next.UniqueID));
+            }
+            foreach (var next in FalseArm)
+            {
+                armConnectors.Add((GetDisplayName(), "False", UniqueID, next.UniqueID));
+            }
+            return armConnectors;
+        }
+
         public DsfDecision()
         : base("Decision") { }
         /// <summary>

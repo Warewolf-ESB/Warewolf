@@ -108,28 +108,15 @@ namespace Warewolf.MergeParser
             if (startNode != null)
             {
                 var start = _activityParser.Parse(new List<IDev2Activity>(), startNode);
+                var nextNodes = start.GetNextNodes();
                 //var shapeLocation = GetShapeLocation(wd, startNode);
                 //var startConflictNode = new ConflictTreeNode(start, shapeLocation);
-                conflictTreeNode = new ConflictTree(start.BuildNode());
+                //conflictTreeNode = new ConflictTree(start.BuildNode());
                 //BuildNodeRelationship(wd, start, startConflictNode, idsLocations, conflictTreeNode);
             }
             return conflictTreeNode;
         }
-
-        static void BuildNodeRelationship(WorkflowDesigner wd, IDev2Activity act, IConflictTreeNode parentNode, List<(string uniqueId, Point location)> idsLocations, IConflictTree tree)
-        {
-            var actChildNodes = act.GetChildrenNodes();
-            foreach (var childAct in actChildNodes)
-            {
-                var loc = idsLocations.FirstOrDefault(t => t.uniqueId == childAct.Value.UniqueID).location;
-                var allChildren = tree.Start.Children.Flatten(x => x.node.Children);
-                var foundChild = allChildren.FirstOrDefault(a => a.uniqueId == childAct.Value.UniqueID).node;
-                var childNode = foundChild ?? new ConflictTreeNode(childAct.Value, loc);
-                childNode.AddParent(parentNode,parentNode.Activity.GetDisplayName());
-                parentNode.AddChild(childNode,childAct.Key);
-                BuildNodeRelationship(wd, childAct.Value, childNode, idsLocations, tree);
-            }
-        }
+        
 
         public ConcurrentDictionary<string, (ModelItem leftItem, ModelItem rightItem)> GetAllNodes()
         {
