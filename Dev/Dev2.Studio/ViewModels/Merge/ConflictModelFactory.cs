@@ -32,7 +32,7 @@ namespace Dev2.ViewModels.Merge
             Children = new ObservableCollection<IMergeToolModel>();
             _resourceModel = resourceModel;
             var modelItem = ModelItemUtils.CreateModelItem(conflict.Activity);
-            Model = GetModel(modelItem, conflict,null);           
+            Model = GetModel(modelItem, conflict, null);
         }
 
         public ConflictModelFactory()
@@ -108,16 +108,15 @@ namespace Dev2.ViewModels.Merge
         }
         public IDataListViewModel DataListViewModel { get; set; }
         public ObservableCollection<IMergeToolModel> Children { get; set; }
-                   
 
-        public IMergeToolModel GetModel(ModelItem modelItem, IConflictTreeNode node, IMergeToolModel parentItem,string parentLabelDescription = "")
+        public IMergeToolModel GetModel(ModelItem modelItem, IConflictTreeNode node, IMergeToolModel parentItem, string parentLabelDescription = "")
         {
-            if (modelItem == null || node == null || node.Activity==null)
+            if (modelItem == null || node == null || node.Activity == null)
             {
                 return null;
             }
 
-            var activityType = node.Activity.GetType();            
+            var activityType = node.Activity.GetType();
 
             DesignerAttributeMap.DesignerAttributes.TryGetValue(activityType, out var actual);
             if (actual != null)
@@ -157,14 +156,15 @@ namespace Dev2.ViewModels.Merge
                     Parent = parentItem,
                     HasParent = parentItem != null,
                     ParentDescription = parentLabelDescription,
-                    IsTrueArm = parentLabelDescription?.ToLowerInvariant() == "true"
-            };
-                
+                    IsTrueArm = parentLabelDescription?.ToLowerInvariant() == "true",
+                    NodeArmDescription = node.Activity.GetDisplayName() + " -> " + " Assign"
+                };
+
                 modelItem.PropertyChanged += (sender, e) =>
                 {
                     OnModelItemChanged?.Invoke(modelItem, mergeToolModel);
                 };
-                
+
                 return mergeToolModel;
             }
             return null;
