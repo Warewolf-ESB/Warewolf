@@ -73,6 +73,10 @@ namespace Dev2.Services.Execution
             return server;
         }
 
+        public bool SourceIsNull()
+        {
+            return Source == null;
+        }
 
         public override void BeforeExecution(ErrorResultTO errors)
         {
@@ -88,6 +92,7 @@ namespace Dev2.Services.Execution
         {
             errors = new ErrorResultTO();
             var invokeErrors = new ErrorResultTO();
+            
             switch (Source.ServerType)
             {
                 case enSourceType.SqlDatabase:
@@ -245,8 +250,8 @@ namespace Dev2.Services.Execution
             }
         }
         private void SqlExecution(ErrorResultTO errors, int update)
-        {          
-            ISqlConnection connection = new SqlConnectionWrapper(Source.ConnectionString);
+        {
+            SqlConnection connection = new SqlConnection(Source.ConnectionString);
             var startTime = Stopwatch.StartNew();
             var cmd = connection.CreateCommand();
             try
@@ -291,16 +296,12 @@ namespace Dev2.Services.Execution
         {
             try
             {
-
                 var parameters = GetMySqlParameters(Inputs);
                 using (var server = SetupMySqlServer(errors))
                 {
-
                     if (parameters != null)
                     {
-
                         using (var dataSet = server.FetchDataTable(parameters.ToArray(), server.GetProcedureOutParams(ProcedureName, Source.DatabaseName)))
-
                         {
                             TranslateDataTableToEnvironment(dataSet, DataObj.Environment, update);
                             return true;
