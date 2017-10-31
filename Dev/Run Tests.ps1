@@ -34,7 +34,12 @@ Param(
 $JobSpecs = @{}
 #Unit Tests
 $JobSpecs["Other Unit Tests"] 				 	= "Dev2.*.Tests,Warewolf.*.Tests"
+$JobSpecs["Infrastructure Unit Tests"] 			= "Dev2.Infrastructure.Tests"
 $JobSpecs["Runtime Unit Tests"] 				= "Dev2.Runtime.Tests"
+$JobSpecs["Core Unit Tests"] 					= "Dev2.Core.Tests"
+$JobSpecs["Data Unit Tests"] 					= "Dev2.Data.Tests"
+$JobSpecs["Parsing Unit Tests"] 				= "Warewolf.Parsing.Tests"
+$JobSpecs["Storage Unit Tests"] 				= "Warewolf.Storage.Tests"
 $JobSpecs["Studio Core Unit Tests"] 			= "Dev2.Studio.Core.Tests"
 $JobSpecs["COMIPC Unit Tests"]				 	= "Warewolf.COMIPC.Tests"
 $JobSpecs["Studio View Models Unit Tests"]	 	= "Warewolf.Studio.ViewModels.Tests"
