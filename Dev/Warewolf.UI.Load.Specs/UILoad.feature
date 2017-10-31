@@ -100,5 +100,5 @@ Scenario: Open Test View And Add Remove Tests
 	Then the timer duration is less than "15" seconds
 	Given I start the timer
 	When I Delete The First Test
-	Then the timer duration is less than "15" seconds
+	Then the timer duration is less than "30" seconds
 	
