@@ -31,9 +31,9 @@ Scenario: Studio UI Load Test
 	Then the timer duration is less than "60" seconds
 	Given The Warewolf Studio is running
 	And I open "Variable List UI Load Testing" workflow
-	And I start the timer
-	When I Enter variable text as "[[new_variable]]" and value text as "new value" into assign row 1
-	Then the timer duration is less than "180" seconds
+	#And I start the timer
+	#When I Enter variable text as "[[new_variable]]" and value text as "new value" into assign row 1
+	#Then the timer duration is less than "180" seconds
 	Given I start the timer
 	When I Remove Assign Row 1 With Context Menu
 	Then the timer duration is less than "180" seconds
