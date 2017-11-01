@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Windows.Forms;
 using Warewolf.UI.Tests.DialogsUIMapClasses;
 using Warewolf.UI.Tests.WorkflowTab.Tools.Data.DataToolsUIMapClasses;
 using Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses;
@@ -115,6 +116,16 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Data
             DataToolsUIMap.Enter_Variable_And_Value_Into_Assign("[[" + Variable2Name + "]]", Variable2Value, 2);
             Assert.AreEqual(Variable2Name, WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem2.ScrollViewerPane.NameTextbox.Text, "Scalar variable not found in variable list after adding to assign tool row 2.");
             DataToolsUIMap.Insert_Assign_Row_2_With_Context_Menu();
+        }
+
+        [TestMethod]
+        [TestCategory("Assign Tool")]
+        public void AssignTool_PasteTabValue_ShowTabInsertDialog_UITest()
+        {
+            Clipboard.SetData(DataFormats.Text, "	");
+            DataToolsUIMap.Click_Assign_tool_ValueTextbox();
+            Keyboard.SendKeys("^V");
+            Assert.IsTrue(DialogsUIMap.MessageBoxWindow.Exists, "Tab insert dialog not displayed after pasting a tab.");
         }
 
         #region Additional test attributes
