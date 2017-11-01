@@ -20,9 +20,11 @@ using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Wrappers;
 using Dev2.Helpers;
 using Dev2.Studio.Core.Helpers;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.CustomControls.Progress
 {
+    [ExcludeFromCodeCoverage]
     public class ProgressFileDownloader : IProgressFileDownloader
     {
         readonly IDev2WebClient _webClient;
@@ -83,19 +85,15 @@ namespace Dev2.CustomControls.Progress
                 {
                     file.Delete(v);
                 }
-            }
-            
-            catch
-            
+            }            
+            catch            
             {
                 //best effort.
             }
-
         }
 
         #endregion
-
-
+        
         #region Cancel
 
         public void Cancel()
@@ -112,6 +110,7 @@ namespace Dev2.CustomControls.Progress
         #endregion
 
         #region OnDownloadProgressChanged // cant test this because the DownloadProgressChangedEventArgs has no public ctor
+
         void OnDownloadProgressChanged(object sender, DownloadProgressChangedEventArgs args)
         {
 
@@ -137,6 +136,5 @@ namespace Dev2.CustomControls.Progress
         }
 
         #endregion
-
    }
 }
