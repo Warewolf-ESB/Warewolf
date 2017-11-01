@@ -12,7 +12,7 @@ namespace Dev2.Core.Tests.Merge
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            var completeConflict = new CompleteConflict();
+            var completeConflict = new ToolConflict();
             //------------Assert Results-------------------------
             Assert.IsNotNull(completeConflict);
             Assert.IsNotNull(completeConflict.Children);
@@ -25,7 +25,7 @@ namespace Dev2.Core.Tests.Merge
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            var completeConflict = new CompleteConflict();
+            var completeConflict = new ToolConflict();
             //------------Assert Results-------------------------
             Assert.IsNotNull(completeConflict);
             Assert.IsNotNull(completeConflict.Children);
@@ -38,7 +38,7 @@ namespace Dev2.Core.Tests.Merge
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            var completeConflict = new CompleteConflict();            
+            var completeConflict = new ToolConflict();            
             //------------Assert Results-------------------------
             Assert.IsNotNull(completeConflict);
             Assert.IsNotNull(completeConflict.Children);
@@ -52,7 +52,7 @@ namespace Dev2.Core.Tests.Merge
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            var completeConflict = new CompleteConflict();
+            var completeConflict = new ToolConflict();
             bool wasCalled = false;
             completeConflict.PropertyChanged += (a, b) =>
             {
@@ -75,7 +75,7 @@ namespace Dev2.Core.Tests.Merge
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            var completeConflict = new CompleteConflict();
+            var completeConflict = new ToolConflict();
             bool wasCalled = false;
             completeConflict.PropertyChanged += (a, b) =>
             {
@@ -98,7 +98,7 @@ namespace Dev2.Core.Tests.Merge
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            var completeConflict = new CompleteConflict();
+            var completeConflict = new ToolConflict();
             bool wasCalled = false;
             completeConflict.PropertyChanged += (a,b)=> 
             {
@@ -121,7 +121,7 @@ namespace Dev2.Core.Tests.Merge
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            var completeConflict = new CompleteConflict();
+            var completeConflict = new ToolConflict();
             bool wasCalled = false;
             completeConflict.PropertyChanged += (a, b) =>
             {

@@ -3124,7 +3124,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
             if (model.HasParent)
             {
-                IMergeToolModel decisionParent = ((MergeToolModel)((CompleteConflict)((CompleteConflict)((MergeToolModel)model)?.Container)?.Parent)?.CurrentViewModel);
+                IMergeToolModel decisionParent = ((MergeToolModel)((ToolConflict)((ToolConflict)((MergeToolModel)model)?.Container)?.Parent)?.CurrentViewModel);
                 var parentModel = decisionParent?.FlowNode;
                 if (parentModel?.ItemType == typeof(FlowDecision))
                 {
@@ -3162,7 +3162,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 parentNodeProperty = lastDecision.Properties[arm];
 
-                IMergeToolModel parentToolModel = ((MergeToolModel)((CompleteConflict)((CompleteConflict)((MergeToolModel)model)?.Container)?.Parent)?.CurrentViewModel);
+                IMergeToolModel parentToolModel = ((MergeToolModel)((ToolConflict)((ToolConflict)((MergeToolModel)model)?.Container)?.Parent)?.CurrentViewModel);
                 if (parentNodeProperty.ComputedValue == null)
                 {
                     if (flowNode == null)

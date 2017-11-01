@@ -86,7 +86,7 @@ namespace Dev2.ViewModels.Merge
             }
         }
 
-        public ICompleteConflict Container { get; set; }
+        public IToolConflict Container { get; set; }
 
         public IMergeToolModel Parent
         {
