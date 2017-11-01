@@ -4,6 +4,8 @@ using System.Net;
 using System.Threading.Tasks;
 using Dev2.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.IO;
+using Newtonsoft.Json.Linq;
 
 namespace Dev2.Integration.Tests.Server_Refresh
 {
@@ -20,14 +22,64 @@ namespace Dev2.Integration.Tests.Server_Refresh
             {
                 var passRequest = ExececuteRequest(new Uri(url1));
                 list.Add(passRequest);
-                passRequest.ContinueWith((b) => 
+                passRequest.ContinueWith((b) =>
                 {
                     StringAssert.Contains(b.Result, "\"Result\": \"Passed\"");
                 });
-               
+
             });
             Task.WaitAll(list.ToArray());
-           
+
+        }
+
+        [TestMethod]
+        public void TestUsingQlinkTrailerCreationWorkflow()
+        {
+            var url1 = "http://localhost:3142/secure/QLINK/WriteProcess/QlinkTrailerCreation.tests";
+            List<Task> list = new List<Task>();
+
+
+            /*  string substring = "";
+              using (var stream = File.OpenRead("TestData\\testresult.json"))
+              {
+                  using (StreamReader streamReader = new StreamReader(stream))
+                  {
+                      substring = streamReader.ReadToEnd();
+                  }
+              }
+              JArray obj = new JArray(substring);*/
+
+            var passRequest = ExececuteRequest(new Uri(url1));
+            list.Add(passRequest);
+            passRequest.ContinueWith((b) =>
+            {
+                try
+                {
+                    var item1 = "{\"TestName\":\"Test2\",\"Result\":\"Passed\"}";
+                    var item2 = "{\"TestName\":\"Test1\",\"Result\":\"Passed\"}";
+                    var item3 = "{\"TestName\":\"Test3\",\"Result\":\"Passed\"}";
+                    var item4 = "{\"TestName\":\"Test4\",\"Result\":\"Passed\"}";
+                    var item5 = "{\"TestName\":\"Test5\",\"Result\":\"Passed\"}";
+                    var stringResult = b.Result.Replace(Environment.NewLine, "").Replace(" ", "");
+
+                    var hasTestResult = stringResult.Contains(item1.ToString());
+                    Assert.IsTrue(hasTestResult);
+                    var hasTestResult1 = stringResult.Contains(item2.ToString());
+                    Assert.IsTrue(hasTestResult);
+                    var hasTestResult2 = stringResult.Contains(item3.ToString());
+                    Assert.IsTrue(hasTestResult);
+                    var hasTestResult3 = stringResult.Contains(item4.ToString());
+                    Assert.IsTrue(hasTestResult);
+                    var hasTestResult4 = stringResult.Contains(item5.ToString());
+                    Assert.IsTrue(hasTestResult);
+                }
+                catch (Exception ex)
+                {
+                    Assert.Fail(ex.StackTrace);
+                }
+
+            });
+            Task.WaitAll(list.ToArray());
         }
 
         private class PatientWebClient : WebClient
@@ -39,7 +91,7 @@ namespace Dev2.Integration.Tests.Server_Refresh
                 w.Timeout = 20 * 60 * 1000;
                 return w;
             }
-        }       
+        }
 
         private Task<string> ExececuteRequest(Uri url)
         {
@@ -58,6 +110,6 @@ namespace Dev2.Integration.Tests.Server_Refresh
                 Dev2Logger.Error(e, "Warewolf Error");
                 return new Task<string>((() => e.Message));
             }
-        }        
+        }
     }
 }
