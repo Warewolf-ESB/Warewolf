@@ -103,8 +103,7 @@ namespace Dev2.ViewModels.Merge
                     conflicts.Add(conflict);
                     var armConnectors = treeItem.Activity.ArmConnectors();
                     foreach(var connector in armConnectors)
-                    {
-                        
+                    {                        
                         var mergeArmConnectorConflict = new MergeArmConnectorConflict(connector.Description, connector.SourceUniqueId, connector.DestinationUniqueId, connector.Key);
                         var armConnector = new ArmConnectorConflict
                         {
