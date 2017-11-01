@@ -20,3 +20,4 @@ namespace Dev2.Studio.Core.CustomControls
                 DependencyProperty.Register("CurrentItem", typeof(object), typeof(CachingContentHost), new PropertyMetadata(null));
     }
 }
+
