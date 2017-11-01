@@ -2,32 +2,26 @@
 using Microsoft.Practices.Prism.Mvvm;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.ViewModels.Workflow;
-using System.Collections.ObjectModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using Dev2.Common;
-using System.Activities.Presentation.Model;
 using System.Windows;
 using Dev2.Annotations;
-using Dev2.Common.Common;
 using Dev2.Studio.Interfaces.DataList;
-using System.IO;
-using System.Text;
-using Dev2.Studio.Core.Activities.Utils;
 
 namespace Dev2.ViewModels.Merge
 {
     public class MergeWorkflowViewModel : BindableBase, IMergeWorkflowViewModel
     {
-        private readonly IServiceDifferenceParser _serviceDifferenceParser;
-        private string _displayName;
-        private bool _hasMergeStarted;
-        private bool _hasWorkflowNameConflict;
-        private bool _hasVariablesConflict;
-        private bool _isVariablesEnabled;
-        private bool _isMergeExpanderEnabled;
-        private readonly IContextualResourceModel _resourceModel;
+        readonly IServiceDifferenceParser _serviceDifferenceParser;
+        string _displayName;
+        bool _hasMergeStarted;
+        bool _hasWorkflowNameConflict;
+        bool _hasVariablesConflict;
+        bool _isVariablesEnabled;
+        bool _isMergeExpanderEnabled;
+        readonly IContextualResourceModel _resourceModel;
 
         public MergeWorkflowViewModel(IContextualResourceModel currentResourceModel, IContextualResourceModel differenceResourceModel, bool loadworkflowFromServer)
         : this(CustomContainer.Get<IServiceDifferenceParser>())
@@ -45,7 +39,7 @@ namespace Dev2.ViewModels.Merge
             SetupBindings(currentResourceModel, differenceResourceModel, firstConflict);
         }
 
-        private void SetupBindings(IContextualResourceModel currentResourceModel, IContextualResourceModel differenceResourceModel, ICompleteConflict firstConflict)
+        void SetupBindings(IContextualResourceModel currentResourceModel, IContextualResourceModel differenceResourceModel, ICompleteConflict firstConflict)
         {
             if (CurrentConflictModel == null)
             {                
@@ -79,7 +73,7 @@ namespace Dev2.ViewModels.Merge
             IsVariablesEnabled = !HasWorkflowNameConflict && HasVariablesConflict;
             IsMergeExpanderEnabled = !IsVariablesEnabled;
 
-            DisplayName = "Merge";
+            DisplayName = nameof(Merge);
             CanSave = false;
 
             WorkflowDesignerViewModel.CanViewWorkflowLink = false;
@@ -88,7 +82,7 @@ namespace Dev2.ViewModels.Merge
             CurrentConflictModel.IsVariablesChecked = !HasVariablesConflict;
         }
 
-        private List<ICompleteConflict> BuildConflicts(IContextualResourceModel currentResourceModel, IContextualResourceModel differenceResourceModel, (List<ConflictTreeNode> current, List<ConflictTreeNode> diff) currentChanges)
+        List<ICompleteConflict> BuildConflicts(IContextualResourceModel currentResourceModel, IContextualResourceModel differenceResourceModel, (List<ConflictTreeNode> current, List<ConflictTreeNode> diff) currentChanges)
         {
             var conflicts = new List<ICompleteConflict>();
 
@@ -107,10 +101,7 @@ namespace Dev2.ViewModels.Merge
                     conflict.DiffViewModel = EmptyConflictViewModel(id);
                     conflict.CurrentViewModel = modelFactory.Model;
                     conflict.CurrentViewModel.SomethingModelToolChanged += SourceOnModelToolChanged;
-                    conflict.CurrentViewModel.Container = conflict;
-
-                    //AddChildrenCurrent(conflict, modelFactory.Model, currentTree.Start.Children, modelFactory, conflicts);
-                    //AddNextNodesCurrent(conflict, currentTree.Start.NextNodes, modelFactory, conflicts);                
+                    conflict.CurrentViewModel.Container = conflict;               
                     conflicts.Add(conflict);
                 }
             }
@@ -137,188 +128,13 @@ namespace Dev2.ViewModels.Merge
                     conflict.DiffViewModel = currentFactory.Model;
                     conflict.DiffViewModel.SomethingModelToolChanged += SourceOnModelToolChanged;
                     conflict.DiffViewModel.Container = conflict;
-                    conflict.HasConflict = conflict.HasConflict || node.IsInConflict;
-
-                    //AddChildrenDiff(conflict, currentFactory.Model, diffTree.Start.Children, currentFactory, conflicts);
-                    //AddNextNodesDiff(conflict, diffTree.Start.NextNodes, currentFactory, conflicts);                                
+                    conflict.HasConflict = conflict.HasConflict || node.IsInConflict;                               
                 }
             }
-            
-            //conflicts.AddRange(BuildChildrenConflictsCurrent(conflicts,currentTree.Start.Children, currentResourceModel));
-            //conflicts.AddRange(BuildChildrenConflictsDiff(conflicts, diffTree.Start.Children, differenceResourceModel));
-            #region OLD
-            //foreach (var currentChange in currentChanges)
-            //{
-            //    var conflict = new CompleteConflict { UniqueId = currentChange.uniqueId };
-            //    if (currentChange.currentNode != null)
-            //    {
-            //        var factoryA = new ConflictModelFactory(currentChange.currentNode, currentResourceModel);
-            //        conflict.CurrentViewModel = factoryA.Model;
-            //        factoryA.OnModelItemChanged += (modelItem, modelTool) =>
-            //        {
-            //            if (modelTool.IsMergeChecked)
-            //            {
-            //                WorkflowDesignerViewModel.UpdateModelItem(modelItem, modelTool);
-            //                AddActivity(modelTool);
-            //            }
-            //        };
-            //        conflict.CurrentViewModel.Container = conflict;
-            //        conflict.CurrentViewModel.IsMergeVisible = currentChange.hasConflict;
-            //        conflict.CurrentViewModel.FlowNode = currentChange.currentNode.CurrentFlowStep;
-            //        conflict.CurrentViewModel.NodeLocation = currentChange.currentNode.NodeLocation;
-            //        conflict.CurrentViewModel.SomethingModelToolChanged += SourceOnModelToolChanged;
-            //    }
-            //    else
-            //    {
-            //        conflict.CurrentViewModel = EmptyConflictViewModel(currentChange.uniqueId);
-            //        conflict.CurrentViewModel.Container = conflict;
-            //        conflict.CurrentViewModel.SomethingModelToolChanged += SourceOnModelToolChanged;
-            //    }
-
-            //    if (currentChange.differenceNode != null)
-            //    {
-            //        var factoryB = new ConflictModelFactory(currentChange.differenceNode, differenceResourceModel);
-            //        factoryB.OnModelItemChanged += (modelItem, modelTool) =>
-            //        {
-            //            if (modelTool.IsMergeChecked)
-            //            {
-            //                var item = WorkflowDesignerViewModel.UpdateModelItem(modelItem, modelTool);
-
-            //                var container = modelTool.Container;
-            //                if (container.CurrentViewModel.IsMergeChecked)
-            //                {
-            //                    WorkflowDesignerViewModel.RemoveItem(container.CurrentViewModel);
-            //                }
-            //                if (container.DiffViewModel.IsMergeChecked)
-            //                {
-            //                    WorkflowDesignerViewModel.RemoveItem(container.DiffViewModel);
-            //                }
-            //                AddActivity(modelTool);
-            //            }
-            //        };
-            //        conflict.DiffViewModel = factoryB.Model;
-            //        conflict.DiffViewModel.Container = conflict;
-            //        conflict.DiffViewModel.IsMergeVisible = currentChange.hasConflict;
-            //        conflict.DiffViewModel.FlowNode = currentChange.differenceNode.CurrentFlowStep;
-            //        conflict.DiffViewModel.NodeLocation = currentChange.differenceNode.NodeLocation;
-            //        conflict.DiffViewModel.SomethingModelToolChanged += SourceOnModelToolChanged;
-            //    }
-            //    else
-            //    {
-            //        conflict.DiffViewModel = EmptyConflictViewModel(currentChange.uniqueId);
-            //        conflict.DiffViewModel.Container = conflict;
-            //        conflict.DiffViewModel.SomethingModelToolChanged += SourceOnModelToolChanged;
-            //    }
-
-            //    conflict.HasConflict = currentChange.hasConflict;
-            //    conflict.IsMergeExpanded = false;
-            //    conflict.IsMergeExpanderEnabled = false;
-
-            //    AddChildren(conflict, conflict.CurrentViewModel, conflict.DiffViewModel);
-            //    conflicts.Add(conflict);
-            //}
-            #endregion
-
             return conflicts;
-        }
-
-        private void AddChildrenDiff(ICompleteConflict conflict, IMergeToolModel model, List<(string uniqueId, IConflictTreeNode node)> children, ConflictModelFactory currentFactory, List<ICompleteConflict> conflicts)
-        {
-            if (children != null)
-            {
-                foreach (var child in children)
-                {
-                    ICompleteConflict childConflict = null;
-                    var node = child.node;
-                    var foundConflict = conflicts.Flatten(c=>c.Children).FirstOrDefault(t => t.UniqueId.ToString() == node.UniqueId);
-                    var id = Guid.Parse(node.UniqueId);
-                    if (foundConflict == null)
-                    {
-                        childConflict = new CompleteConflict { UniqueId = id, CurrentViewModel = EmptyConflictViewModel(id) };
-                        conflict.Children.AddLast(childConflict);
-                    }
-                    else
-                    {
-                        childConflict = foundConflict;
-                    }
-                    childConflict.DiffViewModel = currentFactory.GetModel(ModelItemUtils.CreateModelItem(child.node.Activity), child.node, model, child.uniqueId);
-                    childConflict.DiffViewModel.SomethingModelToolChanged += SourceOnModelToolChanged;
-                    childConflict.DiffViewModel.Container = conflict;
-                    childConflict.HasConflict = childConflict.HasConflict || node.IsInConflict;
-                    AddChildrenDiff(childConflict, childConflict.DiffViewModel, child.node.Children, currentFactory, conflicts);
-                    //AddNextNodesDiff(childConflict, child.node.NextNodes, currentFactory, conflicts);
-                }
-            }
-        }
-
-        void AddChildrenCurrent(CompleteConflict conflict, IMergeToolModel model, List<(string uniqueId, IConflictTreeNode node)> children, ConflictModelFactory factory, List<ICompleteConflict> conflicts)
-        {
-            if (children != null)
-            {
-                foreach(var child in children)
-                {
-                    var childConflict = new CompleteConflict();
-                    var id = Guid.Parse(child.node.Activity.UniqueID);
-                    childConflict.UniqueId = id;
-                    childConflict.DiffViewModel = EmptyConflictViewModel(id);
-                    childConflict.CurrentViewModel = factory.GetModel(ModelItemUtils.CreateModelItem(child.node.Activity),child.node,model,child.uniqueId);
-                    childConflict.CurrentViewModel.SomethingModelToolChanged += SourceOnModelToolChanged;
-                    childConflict.HasNodeArmConflict = true;
-                    childConflict.CurrentViewModel.Container = conflict;
-                    conflict.Children.AddLast(childConflict);
-                    AddChildrenCurrent(childConflict, childConflict.CurrentViewModel, child.node.Children, factory, conflicts);
-                    //AddNextNodesCurrent(childConflict, child.node.NextNodes, factory, conflicts);                    
-                }
-            }
-        }
-
-        private void AddNextNodesDiff(ICompleteConflict conflict , List<IConflictTreeNode> children, ConflictModelFactory currentFactory, List<ICompleteConflict> conflicts)
-        {
-            if (children != null)
-            {
-                foreach (var child in children)
-                {
-                    ICompleteConflict childConflict = null;
-                    var foundConflict = conflicts.Flatten(c => c.Children).FirstOrDefault(t => t.UniqueId.ToString() == child.UniqueId);
-                    var id = Guid.Parse(child.UniqueId);
-                    if (foundConflict == null)
-                    {
-                        childConflict = new CompleteConflict { UniqueId = id, CurrentViewModel = EmptyConflictViewModel(id) };
-                        conflicts.Add(childConflict);
-                    }
-                    else
-                    {
-                        childConflict = foundConflict;
-                    }
-                    childConflict.DiffViewModel = currentFactory.GetModel(ModelItemUtils.CreateModelItem(child.Activity), child, null, child.Activity.GetDisplayName());
-                    childConflict.DiffViewModel.SomethingModelToolChanged += SourceOnModelToolChanged;
-                    childConflict.DiffViewModel.Container = conflict;
-                    childConflict.HasConflict = childConflict.HasConflict || child.IsInConflict;
-                    //AddNextNodesDiff(conflict, child.NextNodes, currentFactory, conflicts);
-                }
-            }
-        }
-
-        void AddNextNodesCurrent(CompleteConflict conflict, List<IConflictTreeNode> children, ConflictModelFactory factory, List<ICompleteConflict> conflicts)
-        {
-            if (children != null)
-            {
-                foreach (var child in children)
-                {
-                    var childConflict = new CompleteConflict();
-                    var id = Guid.Parse(child.Activity.UniqueID);
-                    childConflict.UniqueId = id;
-                    childConflict.DiffViewModel = EmptyConflictViewModel(id);
-                    childConflict.CurrentViewModel = factory.GetModel(ModelItemUtils.CreateModelItem(child.Activity), child, null, child.Activity.GetDisplayName());
-                    childConflict.CurrentViewModel.SomethingModelToolChanged += SourceOnModelToolChanged;
-                    childConflict.CurrentViewModel.Container = conflict;
-                    conflicts.Add(childConflict);
-                    //AddNextNodesCurrent(conflict,  child.NextNodes, factory, conflicts);
-                }
-            }
-        }
-
-        private static MergeToolModel EmptyConflictViewModel(Guid uniqueId)
+        }                
+          
+        static MergeToolModel EmptyConflictViewModel(Guid uniqueId)
         {
             return new MergeToolModel
             {
@@ -335,7 +151,7 @@ namespace Dev2.ViewModels.Merge
             _serviceDifferenceParser = serviceDifferenceParser;
         }
 
-        private LinkedListNode<ICompleteConflict> Find(ICompleteConflict itemToFind)
+        LinkedListNode<ICompleteConflict> Find(ICompleteConflict itemToFind)
         {
             var linkedConflict = Conflicts.Find(itemToFind);
             if (linkedConflict != null)
@@ -353,7 +169,7 @@ namespace Dev2.ViewModels.Merge
             return null;
         }
 
-        private bool All(Func<ICompleteConflict, bool> check)
+        bool All(Func<ICompleteConflict, bool> check)
         {
             var conflictsMatch = Conflicts.All(check);
             var childrenMatch = true;
@@ -364,7 +180,7 @@ namespace Dev2.ViewModels.Merge
             return conflictsMatch && childrenMatch;
         }
 
-        private void AddActivity(IMergeToolModel model)
+        void AddActivity(IMergeToolModel model)
         {
             var conflict = Conflicts.FirstOrDefault();
             if (conflict != null && conflict.UniqueId == model.UniqueId)
@@ -402,7 +218,6 @@ namespace Dev2.ViewModels.Merge
                         }
                     }
                 }
-                //previous = SetPreviousModelTool(linkedConflict)?.FirstOrDefault();
                 next = SetNextModelTool(linkedConflict);
             }
             WorkflowDesignerViewModel.AddItem(previous, model, next);
@@ -439,7 +254,6 @@ namespace Dev2.ViewModels.Merge
         [CanBeNull]
         static List<ICompleteConflict> SetPreviousModelTool(LinkedListNode<ICompleteConflict> linkedConflict)
         {
-            //IMergeToolModel previous = null;
             var parents = new List<ICompleteConflict>();
             var previousValue = linkedConflict.Previous?.Value ?? linkedConflict.Value.Parent;            
             var previousCurrentViewModel = previousValue?.CurrentViewModel;
@@ -450,31 +264,17 @@ namespace Dev2.ViewModels.Merge
             if (previousValue?.Parent != null)
             {
                 parents.Add(previousValue?.Parent);
-            }
-            
-            //if (previousCurrentViewModel != null)
-            //{
-            //    if (previousCurrentViewModel.IsMergeChecked)
-            //    {
-            //        previous = previousCurrentViewModel;
-            //    }
-            //    else
-            //    {
-            //        if (previousValue.DiffViewModel != null && previousValue.DiffViewModel.IsMergeChecked)
-            //        {
-            //            previous = previousValue.DiffViewModel;
-            //        }
-            //    }
-            //}
-            //parents.Add(previous);
+            }           
             return parents;
         }
 
-        private bool _canSave;
-        private readonly IEnumerator<ICompleteConflict> _conflictEnumerator;
-        private IDataListViewModel _dataListViewModel;
+#pragma warning disable S1450 // Private fields only used as local variables in methods should become local variables
+        bool _canSave;
+#pragma warning restore S1450 // Private fields only used as local variables in methods should become local variables
+        readonly IEnumerator<ICompleteConflict> _conflictEnumerator;
+        IDataListViewModel _dataListViewModel;
 
-        private void SourceOnConflictModelChanged(object sender, IConflictModelFactory args)
+        void SourceOnConflictModelChanged(object sender, IConflictModelFactory args)
         {
             try
             {
@@ -520,11 +320,11 @@ namespace Dev2.ViewModels.Merge
             set
             {
                 _dataListViewModel = value;
-                OnPropertyChanged("DataListViewModel");
+                OnPropertyChanged(nameof(DataListViewModel));
             }
         }
 
-        private void SourceOnModelToolChanged(object sender, IMergeToolModel args)
+        void SourceOnModelToolChanged(object sender, IMergeToolModel args)
         {
             try
             {
@@ -532,7 +332,6 @@ namespace Dev2.ViewModels.Merge
                 {
                     return;
                 }
-
 
                 if (!HasMergeStarted)
                 {
@@ -574,7 +373,7 @@ namespace Dev2.ViewModels.Merge
             }
         }
 
-        private static void ExpandPreviousItems(ICompleteConflict nextConflict)
+        static void ExpandPreviousItems(ICompleteConflict nextConflict)
         {
             if (nextConflict.Parent != null)
             {
@@ -583,7 +382,7 @@ namespace Dev2.ViewModels.Merge
             }
         }
 
-        private ICompleteConflict GetNextConflict()
+        ICompleteConflict GetNextConflict()
         {
             var current = _conflictEnumerator.Current;
             if (current != null)
@@ -606,7 +405,7 @@ namespace Dev2.ViewModels.Merge
             return _conflictEnumerator.Current;
         }
 
-        private ICompleteConflict UpdateNextEnabledState()
+        ICompleteConflict UpdateNextEnabledState()
         {
             if (Conflicts == null)
             {
@@ -621,207 +420,7 @@ namespace Dev2.ViewModels.Merge
             }
             return nextCurrConflict;
         }
-
-        //void AddChildren(ICompleteConflict parent, IMergeToolModel currentChild, IMergeToolModel childDiff)
-        //{
-        //    var childNodes = _serviceDifferenceParser.GetAllNodes();
-        //    if (currentChild == null && childDiff == null)
-        //    {
-        //        return;
-        //    }
-
-        //    if (currentChild != null && childDiff != null)
-        //    {
-        //        var currentChildChildren = currentChild.Children;
-        //        var difChildChildren = childDiff.Children;
-        //        if (currentChildChildren.Count < 1 && difChildChildren.Count < 1)
-        //        {
-        //            return;
-        //        }
-        //        var count = Math.Max(currentChildChildren.Count, difChildChildren.Count);
-        //        var remoteCopy = new ObservableCollection<IMergeToolModel>();
-        //        var copy = difChildChildren.ToArray().Clone();
-        //        var arracyCopy = copy as IMergeToolModel[];
-        //        remoteCopy = arracyCopy?.ToList().ToObservableCollection();
-        //        for (var index = 0; index <= count; index++)
-        //        {
-        //            var completeConflict = new CompleteConflict();
-        //            try
-        //            {
-        //                var currentChildChild = currentChildChildren[index];
-        //                if (currentChildChild == null)
-        //                {
-        //                    continue;
-        //                }
-        //                if (parent.Children.Any(conflict => conflict.UniqueId.Equals(currentChildChild.UniqueId) && conflict.CurrentViewModel.ParentDescription.Equals(currentChildChild.ParentDescription)))
-        //                {
-        //                    continue;
-        //                }
-
-        //                var childCurrent = GetMergeToolItem(currentChildChildren, currentChildChild.UniqueId, currentChildChild.ParentDescription);
-        //                var childDifferent = GetMergeToolItem(difChildChildren, currentChildChild.UniqueId, currentChildChild.ParentDescription);
-        //                if (childNodes.TryGetValue(currentChildChild.UniqueId.ToString(), out (ModelItem leftItem, ModelItem rightItem) item))
-        //                {
-        //                    var local1 = currentChildChildren.Where(p => p.UniqueId == currentChildChild.UniqueId);
-        //                    foreach (var c in local1)
-        //                    {
-        //                        c.FlowNode = item.leftItem;
-        //                    }
-        //                    var local2 = difChildChildren.Where(p => p.UniqueId == currentChildChild.UniqueId);
-        //                    foreach (var c in local2)
-        //                    {
-        //                        c.FlowNode = item.leftItem;
-        //                    }
-        //                }
-
-        //                completeConflict.UniqueId = currentChildChild.UniqueId;
-        //                completeConflict.CurrentViewModel = childCurrent;
-
-        //                if (completeConflict.CurrentViewModel != null)
-        //                {
-        //                    completeConflict.CurrentViewModel.Container = completeConflict;
-        //                }
-        //                completeConflict.DiffViewModel = childDifferent;
-        //                if (completeConflict.DiffViewModel != null)
-        //                {
-        //                    completeConflict.DiffViewModel.Container = completeConflict;
-        //                }
-        //                else
-        //                {
-        //                    completeConflict.DiffViewModel = EmptyConflictViewModel(currentChildChild.UniqueId);
-        //                    completeConflict.DiffViewModel.Container = completeConflict;
-        //                }
-
-        //                completeConflict.Parent = parent;
-
-        //                completeConflict.IsContainerTool = completeConflict.ValidateContainerTool(parent.CurrentViewModel);
-
-        //                completeConflict.HasConflict = completeConflict.DiffViewModel.FlowNode == null || _serviceDifferenceParser.NodeHasConflict(currentChildChild.UniqueId.ToString()) && !completeConflict.IsContainerTool;
-        //                completeConflict.DiffViewModel.IsMergeVisible = completeConflict.HasConflict;
-        //                completeConflict.CurrentViewModel.IsMergeVisible = completeConflict.HasConflict;
-        //                if (parent.Children.Count == 0)
-        //                {
-        //                    parent.Children.AddFirst(completeConflict);
-        //                }
-        //                else
-        //                {
-        //                    parent.Children.AddLast(completeConflict);
-        //                }
-        //                completeConflict.CurrentViewModel.SomethingModelToolChanged += SourceOnModelToolChanged;
-        //                completeConflict.DiffViewModel.SomethingModelToolChanged += SourceOnModelToolChanged;
-        //                AddChildren(completeConflict, childCurrent, childDifferent);
-        //            }
-        //            catch (ArgumentOutOfRangeException)
-        //            {
-        //                if (difChildChildren.Any())
-        //                {
-        //                    foreach (var mergeToolModel in remoteCopy.ToList())
-        //                    {
-        //                        if (parent.Children.Any(conflict => conflict.UniqueId.Equals(mergeToolModel.UniqueId) && conflict.DiffViewModel.ParentDescription.Equals(mergeToolModel.ParentDescription)))
-        //                        {
-        //                            continue;
-        //                        }
-        //                        var conflictChild = new CompleteConflict
-        //                        {
-        //                            UniqueId = mergeToolModel.UniqueId,
-        //                            CurrentViewModel = EmptyConflictViewModel(mergeToolModel.UniqueId),
-        //                            DiffViewModel = mergeToolModel
-        //                        };
-        //                        conflictChild.DiffViewModel.Container = conflictChild;
-        //                        conflictChild.CurrentViewModel.Container = conflictChild;
-        //                        if (childNodes.TryGetValue(mergeToolModel.UniqueId.ToString(), out (ModelItem leftItem, ModelItem rightItem) item))
-        //                        {
-        //                            conflictChild.DiffViewModel.FlowNode = item.rightItem;
-        //                        }
-
-        //                        conflictChild.IsContainerTool = conflictChild.ValidateContainerTool(parent.DiffViewModel);
-        //                        conflictChild.HasConflict = !conflictChild.IsContainerTool;
-        //                        conflictChild.DiffViewModel.IsMergeVisible = completeConflict.HasConflict;
-        //                        conflictChild.CurrentViewModel.IsMergeVisible = completeConflict.HasConflict;
-        //                        conflictChild.Parent = parent;
-        //                        if (parent.Children.Count == 0)
-        //                        {
-        //                            parent.Children.AddFirst(conflictChild);
-        //                        }
-        //                        else
-        //                        {
-        //                            parent.Children.AddLast(conflictChild);
-        //                        }
-        //                        remoteCopy.Remove(mergeToolModel);
-        //                        conflictChild.CurrentViewModel.SomethingModelToolChanged += SourceOnModelToolChanged;
-        //                        conflictChild.DiffViewModel.SomethingModelToolChanged += SourceOnModelToolChanged;
-        //                        AddChildren(conflictChild, null, mergeToolModel);
-        //                    }
-        //                }
-        //            }
-        //        }
-        //    }
-
-        //    if (currentChild == null)
-        //    {
-        //        var difChildChildren = childDiff.Children;
-        //        foreach (var diffChild in difChildChildren)
-        //        {
-        //            var model = GetMergeToolItem(difChildChildren, diffChild.UniqueId, diffChild.ParentDescription);
-        //            var completeConflict = new CompleteConflict
-        //            {
-        //                UniqueId = diffChild.UniqueId,
-        //                HasConflict = true,
-        //                DiffViewModel = model
-        //            };
-        //            completeConflict.DiffViewModel.Container = completeConflict;
-        //            completeConflict.CurrentViewModel = EmptyConflictViewModel(diffChild.UniqueId);
-
-        //            if (childNodes.TryGetValue(model.UniqueId.ToString(), out (ModelItem leftItem, ModelItem rightItem) item))
-        //            {
-        //                completeConflict.DiffViewModel.FlowNode = item.rightItem;
-        //            }
-        //            if (parent.Children.Count == 0)
-        //            {
-        //                parent.Children.AddFirst(completeConflict);
-        //            }
-        //            else
-        //            {
-        //                parent.Children.AddLast(completeConflict);
-        //            }
-        //        }
-        //    }
-        //    if (childDiff == null)
-        //    {
-        //        var difChildChildren = currentChild.Children;
-        //        foreach (var diffChild in difChildChildren)
-        //        {
-        //            var model = GetMergeToolItem(difChildChildren, diffChild.UniqueId, diffChild.ParentDescription);
-        //            var completeConflict = new CompleteConflict
-        //            {
-        //                UniqueId = diffChild.UniqueId,
-        //                HasConflict = true,
-        //                CurrentViewModel = model
-        //            };
-        //            completeConflict.CurrentViewModel.Container = completeConflict;
-        //            completeConflict.DiffViewModel = EmptyConflictViewModel(diffChild.UniqueId);
-
-        //            if (childNodes.TryGetValue(model.UniqueId.ToString(), out (ModelItem leftItem, ModelItem rightItem) item))
-        //            {
-        //                completeConflict.CurrentViewModel.FlowNode = item.leftItem;
-        //            }
-        //            if (parent.Children.Count == 0)
-        //            {
-        //                parent.Children.AddFirst(completeConflict);
-        //            }
-        //            else
-        //            {
-        //                parent.Children.AddLast(completeConflict);
-        //            }
-        //        }
-        //    }
-        //    IMergeToolModel GetMergeToolItem(IEnumerable<IMergeToolModel> collection, Guid uniqueId, string parentDescription)
-        //    {
-        //        var mergeToolModel = collection.FirstOrDefault(model => model.UniqueId.Equals(uniqueId) && model.ParentDescription.Equals(parentDescription));
-        //        return mergeToolModel;
-        //    }
-        //}
-
+                  
         public LinkedList<ICompleteConflict> Conflicts { get; set; }
 
         public IWorkflowDesignerViewModel WorkflowDesignerViewModel { get; set; }
@@ -855,11 +454,11 @@ namespace Dev2.ViewModels.Merge
             }
         }
 
-        private void SetDisplayName(bool isDirty)
+        void SetDisplayName(bool isDirty)
         {
             if (isDirty)
             {
-                if (!DisplayName.EndsWith(" *"))
+                if (!DisplayName.EndsWith(" *",StringComparison.InvariantCultureIgnoreCase))
                 {
                     DisplayName += " *";
                 }
