@@ -1,11 +1,11 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.IO.Pipes;
 
 namespace WarewolfCOMIPC.Client
 {
-    public interface INamedPipeClientStreamWrapper
+    public interface INamedPipeClientStreamWrapper : IDisposable
     {
-        void Dispose();
         PipeTransmissionMode ReadMode { get; set; }
         void Connect();
         void Close();

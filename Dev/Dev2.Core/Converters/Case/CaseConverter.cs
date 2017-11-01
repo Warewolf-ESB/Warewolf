@@ -15,7 +15,7 @@ using System.Text.RegularExpressions;
 
 namespace Dev2
 {
-    public class CaseConverter
+    public static class CaseConverter
     {
         #region Class Members
 

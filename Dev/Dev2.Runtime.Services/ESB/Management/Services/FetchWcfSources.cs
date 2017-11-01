@@ -16,7 +16,7 @@ using Dev2.Common.Interfaces.Enums;
 namespace Dev2.Runtime.ESB.Management.Services
 {
 
-    public class FetchWcfSources : IEsbManagementEndpoint
+    public class FetchWcfSources : DefaultEsbManagementEndpoint
     {
         public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
         {
@@ -28,12 +28,12 @@ namespace Dev2.Runtime.ESB.Management.Services
             return AuthorizationContext.Any;
         }
 
-        public string HandlesType()
+        public override string HandlesType()
         {
             return "FetchWcfSources";
         }
 
-        public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
+        public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             var serializer = new Dev2JsonSerializer();
 
@@ -62,7 +62,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             
         }
 
-        public DynamicService CreateServiceEntry()
+        public override DynamicService CreateServiceEntry()
         {
             var findServices = new DynamicService { Name = HandlesType(), DataListSpecification = new StringBuilder("<DataList><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>") };
 

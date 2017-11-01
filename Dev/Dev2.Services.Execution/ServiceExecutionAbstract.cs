@@ -243,9 +243,12 @@ namespace Dev2.Services.Execution
                         {
                             toInject = sai.Value;
                         }
-                        else if (!sai.EmptyIsNull)
+                        else
                         {
-                            toInject = "";
+                            if (!sai.EmptyIsNull)
+                            {
+                                toInject = "";
+                            }
                         }
                         var paramIterator = new WarewolfIterator(DataObj.Environment.Eval(toInject, update));
                         itrCollection.AddVariableToIterateOn(paramIterator);
@@ -270,9 +273,12 @@ namespace Dev2.Services.Execution
                         toInject = DataListUtil.IsEvaluated(definitions[0].RawValue) ? DataListUtil.AddBracketsToValueIfNotExist(definitions[0].RawValue) : definitions[0].RawValue;
                     }
                 }
-                else if (!sai.EmptyToNull)
+                else
                 {
-                    toInject = sai.DefaultValue;
+                    if (!sai.EmptyToNull)
+                    {
+                        toInject = sai.DefaultValue;
+                    }
                 }
                 var paramIterator = new WarewolfIterator(DataObj.Environment.Eval(toInject, update));
                 itrCollection.AddVariableToIterateOn(paramIterator);

@@ -16,18 +16,18 @@ using Microsoft.Win32;
 namespace Dev2.Runtime.ESB.Management.Services
 {
 
-    public class GetComDllListings : IEsbManagementEndpoint
+    public class GetComDllListings : DefaultEsbManagementEndpoint
     {
         #region Implementation of ISpookyLoadable<out string>
 
-        public string HandlesType()
+        public override string HandlesType()
         {
             return "GetComDllListingsService";
         }
 
         #endregion
 
-        #region Implementation of IEsbManagementEndpoint
+        #region Implementation of DefaultEsbManagementEndpoint
 
         /// <summary>
         /// Executes the service
@@ -35,7 +35,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         /// <param name="values">The values.</param>
         /// <param name="theWorkspace">The workspace.</param>
         /// <returns></returns>
-        public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
+        public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             var msg = new ExecuteMessage();
             var serializer = new Dev2JsonSerializer();
@@ -72,7 +72,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         /// Creates the service entry.
         /// </summary>
         /// <returns></returns>
-        public DynamicService CreateServiceEntry()
+        public override DynamicService CreateServiceEntry()
         {
             var findDirectoryService = new DynamicService
             {

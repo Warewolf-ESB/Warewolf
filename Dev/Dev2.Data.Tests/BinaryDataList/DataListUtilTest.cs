@@ -221,7 +221,7 @@ namespace Dev2.Data.Tests.BinaryDataList
         public void DataListUtil_IsSystemTag_WhenDev2SystemPrefix_ExpectSystemTagDetected()
         {
             //------------Setup for test--------------------------
-            const string tag = GlobalConstants.SystemTagNamespaceSearch + "ManagmentServicePayload";
+            string tag = GlobalConstants.SystemTagNamespaceSearch + "ManagmentServicePayload";
 
             //------------Execute Test---------------------------
             var result = DataListUtil.IsSystemTag(tag);
@@ -229,11 +229,6 @@ namespace Dev2.Data.Tests.BinaryDataList
             //------------Assert Results-------------------------
             Assert.IsTrue(result);
         }
-
-
-
-
-
 
         [TestMethod]
         [Owner("Travis")]
@@ -675,7 +670,7 @@ namespace Dev2.Data.Tests.BinaryDataList
         public void IsCalcEvaluation_GivenCalcTxtExp_ShouldReturnTrue()
         {
             //---------------Set up test pack-------------------
-            const string exp = GlobalConstants.CalculateTextConvertPrefix + "rec(*).name" + GlobalConstants.CalculateTextConvertSuffix;
+            string exp = GlobalConstants.CalculateTextConvertPrefix + "rec(*).name" + GlobalConstants.CalculateTextConvertSuffix;
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             var isCalcEvaluation = DataListUtil.IsCalcEvaluation(exp, out string newExp);
@@ -689,7 +684,7 @@ namespace Dev2.Data.Tests.BinaryDataList
         public void IsCalcEvaluation_GivenCalcAggExp_ShouldReturnTrue()
         {
             //---------------Set up test pack-------------------
-            const string exp = GlobalConstants.AggregateCalculateTextConvertPrefix + "rec(*).name" + GlobalConstants.AggregateCalculateTextConvertSuffix;
+            string exp = GlobalConstants.AggregateCalculateTextConvertPrefix + "rec(*).name" + GlobalConstants.AggregateCalculateTextConvertSuffix;
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             var isCalcEvaluation = DataListUtil.IsCalcEvaluation(exp, out string newExp);
@@ -697,12 +692,13 @@ namespace Dev2.Data.Tests.BinaryDataList
             Assert.IsTrue(isCalcEvaluation);
             Assert.AreEqual("rec(*).name", newExp);
         }
+
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void IsCalcEvaluation_GivenStartWithAggCalcAggExp_ShouldReturnFalse()
         {
             //---------------Set up test pack-------------------
-            const string exp = GlobalConstants.AggregateCalculateTextConvertPrefix + "rec(*).name";
+            string exp = GlobalConstants.AggregateCalculateTextConvertPrefix + "rec(*).name";
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             var isCalcEvaluation = DataListUtil.IsCalcEvaluation(exp, out string newExp);
@@ -710,12 +706,13 @@ namespace Dev2.Data.Tests.BinaryDataList
             Assert.IsFalse(isCalcEvaluation);
             Assert.AreEqual(string.Empty, newExp);
         }
+
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void IsCalcEvaluation_GivenEndsWithAggCalcAggExp_ShouldReturnFalse()
         {
             //---------------Set up test pack-------------------
-            const string exp = "rec(*).name" + GlobalConstants.AggregateCalculateTextConvertSuffix;
+            string exp = "rec(*).name" + GlobalConstants.AggregateCalculateTextConvertSuffix;
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             var isCalcEvaluation = DataListUtil.IsCalcEvaluation(exp, out string newExp);

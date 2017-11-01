@@ -84,9 +84,12 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
             {
                 MinHeight = 330;
             }
-            else if (dotNetDllEnhancedViewModel?.MethodsToRunList.Count > 1 && ConstructorExpander.IsExpanded)
+            else
             {
-                MinHeight = 380;
+                if (dotNetDllEnhancedViewModel?.MethodsToRunList.Count > 1 && ConstructorExpander.IsExpanded)
+                {
+                    MinHeight = 380;
+                }
             }
         }
 

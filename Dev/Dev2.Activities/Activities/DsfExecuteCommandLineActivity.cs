@@ -36,7 +36,6 @@ using Warewolf.Resource.Errors;
 using Warewolf.Storage.Interfaces;
 
 
-
 namespace Dev2.Activities
 {
     [ToolDescriptorInfo("Scripting-CMDScript", "CMD Script", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Scripting", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Scripting_CMD_Script")]
@@ -52,10 +51,7 @@ namespace Dev2.Activities
         ProcessPriorityClass _commandPriority = ProcessPriorityClass.Normal;
 
         #endregion
-
-        /// <summary>
-        /// Gets or sets the name of the recordset.
-        /// </summary>  
+        
         [Inputs("CommandFileName")]
         [FindMissing]
         
@@ -73,7 +69,11 @@ namespace Dev2.Activities
         }
 
         [Inputs("CommandPriority")]
-        public ProcessPriorityClass CommandPriority { get { return _commandPriority; } set { _commandPriority = value; } }
+        public ProcessPriorityClass CommandPriority
+        {
+            get => _commandPriority;
+            set => _commandPriority = value;
+        }
 
         [Outputs("CommandResult")]
         [FindMissing]
@@ -222,17 +222,8 @@ namespace Dev2.Activities
             using (_process)
             {
                 var processStartInfo = CreateProcessStartInfo(val);
-
-                if (processStartInfo == null)
-                {
-                    
-                    throw new ArgumentNullException("processStartInfo");
-                    
-                }
-
-                _process.StartInfo = processStartInfo;
+                _process.StartInfo = processStartInfo ?? throw new ArgumentNullException("processStartInfo");
                 var processStarted = _process.Start();
-
 
                 StringBuilder reader = outputReader;
                 errorReader = _process.StandardError;
@@ -246,35 +237,34 @@ namespace Dev2.Activities
                     _process.PriorityClass = CommandPriority;
                 }
                 _process.StandardInput.Close();
-
-                // bubble user termination down the chain ;)
+                
                 while (!_process.HasExited && !executionToken.IsUserCanceled)
                 {
                     reader.Append(_process.StandardOutput.ReadToEnd());
-                    if(!_process.HasExited && _process.Threads.Cast<ProcessThread>().Any(a=>a.ThreadState == System.Diagnostics.ThreadState.Wait && a.WaitReason == ThreadWaitReason.UserRequest))
+                    if (!_process.HasExited && _process.Threads.Cast<ProcessThread>().Any(a => a.ThreadState == System.Diagnostics.ThreadState.Wait && a.WaitReason == ThreadWaitReason.UserRequest))
                     {
                         _process.Kill();
                     }
 
-                    else if (!_process.HasExited)
+                    else
                     {
-                        var isWaitingForUserInput = ModalChecker.IsWaitingForUserInput(_process);
-
-                        if (!isWaitingForUserInput)
+                        if (!_process.HasExited)
                         {
-                            continue;
+                            var isWaitingForUserInput = ModalChecker.IsWaitingForUserInput(_process);
+
+                            if (!isWaitingForUserInput)
+                            {
+                                continue;
+                            }
+                            _process.Kill();
+                            throw new ApplicationException(ErrorResource.UserInputRequired);
                         }
-                        _process.Kill();
-                        throw new ApplicationException(ErrorResource.UserInputRequired);
                     }
                     Thread.Sleep(10);
                 }
-
-                // user termination exit ;)
+                
                 if (executionToken.IsUserCanceled)
                 {
-                    // darn .Kill() does not kill the process tree ;(
-                    // Nor does .CloseMainWindow() as people have claimed, hence the hand rolled process tree killer - WTF M$ ;(
                     KillProcessAndChildren(_process.Id);
                 }
                 reader.Append(_process.StandardOutput.ReadToEnd());
@@ -282,9 +272,6 @@ namespace Dev2.Activities
             }
             return true;
         }
-        #region Overrides of NativeActivity<string>
-
-        #endregion
 
         private void KillProcessAndChildren(int pid)
         {
@@ -299,9 +286,9 @@ namespace Dev2.Activities
                 Process proc = Process.GetProcessById(pid);
                 proc.Kill();
             }
-            catch(ArgumentException)
+            catch(ArgumentException e)
             {
-                // Process already exited.
+                Dev2Logger.Warn(e.Message, "Warewolf Warn");
             }
         }
 
@@ -443,13 +430,16 @@ namespace Dev2.Activities
             foreach(var t in updates)
             {
 
-                if(t.Item1 == CommandFileName)
+                if (t.Item1 == CommandFileName)
                 {
                     CommandFileName = t.Item2;
                 }
-                else if(t.Item1 == CommandPriority.ToString())
+                else
                 {
-                    CommandPriority = (ProcessPriorityClass)Enum.Parse(typeof(ProcessPriorityClass), t.Item2, true);
+                    if (t.Item1 == CommandPriority.ToString())
+                    {
+                        CommandPriority = (ProcessPriorityClass)Enum.Parse(typeof(ProcessPriorityClass), t.Item2, true);
+                    }
                 }
             }
         }

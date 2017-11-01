@@ -179,15 +179,12 @@ namespace Dev2.Runtime.WebServer.Handlers
             dataObject.ExecutingUser = ExecutingUser;
             if (!dataObject.Environment.HasErrors())
             {
-
                 if (ExecutingUser == null)
                 {
                     throw new Exception(ErrorResource.NullExecutingUser);
                 }
-
                 try
                 {
-                    // Execute in its own thread to give proper context ;)
                     var t = new Thread(() =>
                     {
                         Thread.CurrentPrincipal = ExecutingUser;
@@ -197,10 +194,9 @@ namespace Dev2.Runtime.WebServer.Handlers
                             ExecutingUser = Common.Utilities.ServerUser;
                             dataObject.ExecutingUser = Common.Utilities.ServerUser;
                         }
-                        else if (dataObject.IsServiceTestExecution)
+                        else
                         {
-
-                            if (_authorizationService != null)
+                            if (dataObject.IsServiceTestExecution && _authorizationService != null)
                             {
                                 var authorizationService = _authorizationService;
                                 var hasContribute =

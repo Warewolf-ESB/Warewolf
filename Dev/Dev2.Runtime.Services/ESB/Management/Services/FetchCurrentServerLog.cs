@@ -14,7 +14,6 @@ using System.IO;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
-using Dev2.Common.Interfaces.Enums;
 using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
@@ -22,7 +21,7 @@ using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    public class FetchCurrentServerLog : IEsbManagementEndpoint
+    public class FetchCurrentServerLog : DefaultEsbManagementEndpoint
     {
         readonly string _serverLogPath;
 
@@ -38,7 +37,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public string ServerLogPath => _serverLogPath;
 
-        public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
+        public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             try
             {
@@ -66,7 +65,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
         }
 
-        public DynamicService CreateServiceEntry()
+        public override DynamicService CreateServiceEntry()
         {
             var findDirectoryService = new DynamicService
             {
@@ -86,19 +85,9 @@ namespace Dev2.Runtime.ESB.Management.Services
             return findDirectoryService;
         }
 
-        public string HandlesType()
+        public override string HandlesType()
         {
             return "FetchCurrentServerLogService";
-        }
-
-        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
-        {
-            return Guid.Empty;
-        }
-
-        public AuthorizationContext GetAuthorizationContextForService()
-        {
-            return AuthorizationContext.Any;
         }
     }
 }

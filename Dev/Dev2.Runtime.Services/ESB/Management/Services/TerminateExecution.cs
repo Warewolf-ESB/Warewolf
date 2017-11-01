@@ -20,14 +20,13 @@ using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Execution;
 using Dev2.Workspaces;
 using Warewolf.Resource.Errors;
-
+using Dev2.Runtime.ESB.Management.Services;
 
 namespace Dev2.Runtime.ESB.Management
-    
 {
-    public class TerminateExecution : IEsbManagementEndpoint
+    public class TerminateExecution : DefaultEsbManagementEndpoint
     {
-        public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
+        public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             string resourceIdString = null;
 
@@ -68,7 +67,7 @@ namespace Dev2.Runtime.ESB.Management
             return serializer.SerializeToBuilder(res);
         }
 
-        public DynamicService CreateServiceEntry()
+        public override DynamicService CreateServiceEntry()
         {
             DynamicService newDs = new DynamicService { Name = HandlesType(), DataListSpecification = new StringBuilder("<DataList><Roles ColumnIODirection=\"Input\"/><ResourceID ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>") };
             ServiceAction sa = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType() };
@@ -77,19 +76,9 @@ namespace Dev2.Runtime.ESB.Management
             return newDs;
         }
 
-        public string HandlesType()
+        public override string HandlesType()
         {
             return "TerminateExecutionService";
-        }
-
-        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
-        {
-            return Guid.Empty;
-        }
-
-        public AuthorizationContext GetAuthorizationContextForService()
-        {
-            return AuthorizationContext.Any;
         }
     }
 }
