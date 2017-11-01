@@ -57,26 +57,53 @@ namespace Dev2.Common.DateAndTime
         {
             result = "";
             error = "";
-            var dateTimeParser = DateTimeConverterFactory.CreateParser();
             var nothingDied = true;
-            IDateTimeResultTO dateTimeResultTO;
+
+
 
             dateTimeTO.InputFormat = dateTimeTO.InputFormat?.Trim();
-            var internallyParsedValue = dateTimeParser.TryParseDateTime(dateTimeTO.DateTime.Trim(), dateTimeTO.InputFormat, out dateTimeResultTO, out error);
+
+            //var outputFormat = string.IsNullOrWhiteSpace(dateTimeTO.OutputFormat)
+            //                       ? dateTimeTO.InputFormat
+            //                       : dateTimeTO.OutputFormat;
+            var internallyParsedValue = DateTime.TryParse(dateTimeTO.DateTime.Trim(), out DateTime datetime);
             if (internallyParsedValue)
             {
-                var tmpDateTime = dateTimeResultTO.ToDateTime();
-                tmpDateTime = PerformDateTimeModification(dateTimeTO, tmpDateTime);
-
-                if (nothingDied)
-                {
-                    result = PerformOutputFormatting(dateTimeTO, out error, dateTimeParser, out nothingDied, dateTimeResultTO, tmpDateTime);
-                }
+                var tmpDateTime = PerformDateTimeModification(dateTimeTO, datetime);
+                result = tmpDateTime.ToString(dateTimeTO.OutputFormat, CultureInfo.InvariantCulture);
             }
             else
             {
-                nothingDied = false;
+                internallyParsedValue = DateTime.TryParseExact(dateTimeTO.DateTime.Trim(), dateTimeTO.OutputFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime dateResult);
+                if (internallyParsedValue)
+                {
+                    var tmpDateTime = PerformDateTimeModification(dateTimeTO, dateResult);
+                    result = tmpDateTime.ToString(dateTimeTO.OutputFormat, CultureInfo.InvariantCulture);
+                }
+                else
+                {
+                    nothingDied = false;
+                }
+              
             }
+            //var dateTimeParser = DateTimeConverterFactory.CreateParser();
+            //IDateTimeResultTO dateTimeResultTO;
+            //var internallyParsedValue = dateTimeParser.TryParseDateTime(dateTimeTO.DateTime.Trim(), dateTimeTO.InputFormat, out dateTimeResultTO, out error);
+            //if (internallyParsedValue)
+            //{
+            //    var tmpDateTime = dateTimeResultTO.ToDateTime();
+            //    tmpDateTime = PerformDateTimeModification(dateTimeTO, tmpDateTime);
+
+            //    if (nothingDied)
+            //    {
+            //        result = PerformOutputFormatting(dateTimeTO, out error, dateTimeParser, out nothingDied, dateTimeResultTO, tmpDateTime);
+            //    }
+            //}
+            //else
+            //{
+            //    nothingDied = false;
+            //}
+
             return nothingDied;
         }
 
