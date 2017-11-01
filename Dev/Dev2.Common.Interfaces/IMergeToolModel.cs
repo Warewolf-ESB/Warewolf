@@ -19,8 +19,8 @@ namespace Dev2.Common.Interfaces
         string ParentDescription { get; set; }
         bool HasParent { get; set; }
         event ModelToolChanged SomethingModelToolChanged;
-        FlowNode ActivityType { get; set; }
-        ModelItem FlowNode { get; set; }
+        FlowNode FlowNode { get; set; }
+        ModelItem ModelItem { get; set; }
         Point NodeLocation { get; set; }
         bool IsMergeVisible { get; set; }
         IToolConflict Container { get; set; }
