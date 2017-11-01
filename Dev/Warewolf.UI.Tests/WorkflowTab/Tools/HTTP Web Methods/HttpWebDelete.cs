@@ -50,6 +50,7 @@ namespace Warewolf.UI.Tests.Tools
             HTTPToolsUIMap.Select_Source_From_DELETEWebTool();
             Assert.IsTrue(HTTPToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebDelete.LargeView.EditSourceButton.Enabled, "Edit Source Button is not enabled after selecting source.");
             HTTPToolsUIMap.Click_EditSourceButton_On_DELETEWebTool();
+            WebSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.WaitForControlExist(60000);
             Assert.IsTrue(WebSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.WorkSurfaceContext.AddressTextbox.Enabled, "Web server address textbox not enabled.");
             WebSourceUIMap.Click_AnonymousButton_On_WebServiceSourceTab();
             UIMap.Click_Save_Ribbon_Button_With_No_Save_Dialog();

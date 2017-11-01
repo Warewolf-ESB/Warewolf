@@ -194,36 +194,39 @@ namespace Dev2.Activities.Sharepoint
                                 }
                             }
                         }
-                        else if (DataListUtil.GetRecordsetIndexType(Result) == enRecordsetIndexType.Blank)
+                        else
                         {
-                            if (IsFoldersSelected)
+                            if (DataListUtil.GetRecordsetIndexType(Result) == enRecordsetIndexType.Blank)
                             {
-                                var folders = GetSharePointFolders(sharepointSource, path);
-
-                                foreach (var folder in folders)
+                                if (IsFoldersSelected)
                                 {
-                                    outputs.Add(DataListFactory.CreateOutputTO(Result, folder));
+                                    var folders = GetSharePointFolders(sharepointSource, path);
+
+                                    foreach (var folder in folders)
+                                    {
+                                        outputs.Add(DataListFactory.CreateOutputTO(Result, folder));
+                                    }
                                 }
-                            }
-                            if (IsFilesSelected)
-                            {
-                                var files = GetSharePointFiles(sharepointSource, path);
-
-                                foreach (var file in files)
+                                if (IsFilesSelected)
                                 {
-                                    outputs.Add(DataListFactory.CreateOutputTO(Result, file));
+                                    var files = GetSharePointFiles(sharepointSource, path);
+
+                                    foreach (var file in files)
+                                    {
+                                        outputs.Add(DataListFactory.CreateOutputTO(Result, file));
+                                    }
                                 }
-                            }
 
-                            if (IsFilesAndFoldersSelected)
-                            {
-                                var folderAndPathList = new List<string>();
-                                folderAndPathList.AddRange(GetSharePointFiles(sharepointSource, path));
-                                folderAndPathList.AddRange(GetSharePointFolders(sharepointSource, path));
-
-                                foreach (var fileAndfolder in folderAndPathList)
+                                if (IsFilesAndFoldersSelected)
                                 {
-                                    outputs.Add(DataListFactory.CreateOutputTO(Result, fileAndfolder));
+                                    var folderAndPathList = new List<string>();
+                                    folderAndPathList.AddRange(GetSharePointFiles(sharepointSource, path));
+                                    folderAndPathList.AddRange(GetSharePointFolders(sharepointSource, path));
+
+                                    foreach (var fileAndfolder in folderAndPathList)
+                                    {
+                                        outputs.Add(DataListFactory.CreateOutputTO(Result, fileAndfolder));
+                                    }
                                 }
                             }
                         }

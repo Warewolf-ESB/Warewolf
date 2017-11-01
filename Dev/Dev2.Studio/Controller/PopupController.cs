@@ -56,7 +56,17 @@ namespace Dev2.Studio.Controller
             return dev2MessageBoxViewModel.Result;
         }
 
-        public MessageBoxResult Show(string description, string header = "", MessageBoxButton buttons = MessageBoxButton.OK, MessageBoxImage image = MessageBoxImage.Asterisk, string dontShowAgainKey = null, bool isDependenciesButtonVisible = false, bool isError = false, bool isInfo = false, bool isQuestion = false, bool isDeleteAnywayButtonVisible = false, bool applyToAll = false)
+        public MessageBoxResult Show(string description) => Show(description, "", MessageBoxButton.OK, MessageBoxImage.Asterisk, null, false, false, false, false, false, false);
+        public MessageBoxResult Show(string description, string header) => Show(description, header, MessageBoxButton.OK, MessageBoxImage.Asterisk, null, false, false, false, false, false, false);
+        public MessageBoxResult Show(string description, string header, MessageBoxButton buttons) => Show(description, header, buttons, MessageBoxImage.Asterisk, null, false, false, false, false, false, false);
+        public MessageBoxResult Show(string description, string header, MessageBoxButton buttons, MessageBoxImage image) => Show(description, header, buttons, image, null, false, false, false, false, false, false);
+        public MessageBoxResult Show(string description, string header, MessageBoxButton buttons, MessageBoxImage image, string dontShowAgainKey) => Show(description, header, buttons, image, dontShowAgainKey, false, false, false, false, false, false);
+        public MessageBoxResult Show(string description, string header, MessageBoxButton buttons, MessageBoxImage image, string dontShowAgainKey, bool isDependenciesButtonVisible) => Show(description, header, buttons, image, dontShowAgainKey, isDependenciesButtonVisible, false, false, false, false, false);
+        public MessageBoxResult Show(string description, string header, MessageBoxButton buttons, MessageBoxImage image, string dontShowAgainKey, bool isDependenciesButtonVisible, bool isError) => Show(description, header, buttons, image, dontShowAgainKey, isDependenciesButtonVisible, isError, false, false, false, false);
+        public MessageBoxResult Show(string description, string header, MessageBoxButton buttons, MessageBoxImage image, string dontShowAgainKey, bool isDependenciesButtonVisible, bool isError, bool isInfo) => Show(description, header, buttons, image, dontShowAgainKey, isDependenciesButtonVisible, isError, isInfo, false, false, false);
+        public MessageBoxResult Show(string description, string header, MessageBoxButton buttons, MessageBoxImage image, string dontShowAgainKey, bool isDependenciesButtonVisible, bool isError, bool isInfo, bool isQuestion) => Show(description, header, buttons, image, dontShowAgainKey, isDependenciesButtonVisible, isError, isInfo, isQuestion, false, false);
+        public MessageBoxResult Show(string description, string header, MessageBoxButton buttons, MessageBoxImage image, string dontShowAgainKey, bool isDependenciesButtonVisible, bool isError, bool isInfo, bool isQuestion, bool isDeleteAnywayButtonVisible) => Show(description, header, buttons, image, dontShowAgainKey, isDependenciesButtonVisible, isError, isInfo, isQuestion, isDeleteAnywayButtonVisible, false);
+        public MessageBoxResult Show(string description, string header, MessageBoxButton buttons, MessageBoxImage image, string dontShowAgainKey, bool isDependenciesButtonVisible, bool isError, bool isInfo, bool isQuestion, bool isDeleteAnywayButtonVisible, bool applyToAll)
         {
             Buttons = buttons;
             Description = description;

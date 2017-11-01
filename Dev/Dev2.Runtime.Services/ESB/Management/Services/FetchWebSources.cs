@@ -27,7 +27,7 @@ using Dev2.Workspaces;
 namespace Dev2.Runtime.ESB.Management.Services
 {
 
-    public class FetchWebSources : IEsbManagementEndpoint
+    public class FetchWebSources : DefaultEsbManagementEndpoint
     {
         public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
         {
@@ -39,12 +39,12 @@ namespace Dev2.Runtime.ESB.Management.Services
             return AuthorizationContext.Any;
         }
 
-        public string HandlesType()
+        public override string HandlesType()
         {
             return "FetchWebServiceSources";
         }
 
-        public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
+        public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             var serializer = new Dev2JsonSerializer();
 
@@ -71,7 +71,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             
         }
 
-        public DynamicService CreateServiceEntry()
+        public override DynamicService CreateServiceEntry()
         {
             var findServices = new DynamicService { Name = HandlesType(), DataListSpecification = new StringBuilder("<DataList><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>") };
 

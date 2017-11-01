@@ -1068,32 +1068,25 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             var flowStep = new FlowStep { Action = this as Activity };
             return flowStep;
         }
-
-        public virtual IConflictTreeNode BuildNode()
+                                     
+        public virtual IEnumerable<IDev2Activity> GetNextNodes()
         {
-            var node = new ConflictTreeNode(this, new System.Windows.Point());
-            if (NextNodes == null)
-            {
-                return node;
-            }
-            foreach (var activity in NextNodes)
-            {
-                if (activity is IDev2Activity act)
-                {
-                    node.AddNext(act.BuildNode());
-                }
-            }
-            return node;
+            return NextNodes ?? new List<IDev2Activity>();
         }
 
-        public virtual Dictionary<string, IDev2Activity> GetChildrenNodes()
+        public virtual List<(string Description, string Key, string SourceUniqueId, string DestinationUniqueId)> ArmConnectors()
         {
-            var nextNodes = new Dictionary<string, IDev2Activity>();
-            if (NextNodes != null)
+            var armConnectors = new List<(string Description, string Key, string SourceUniqueId, string DestinationUniqueId)>();
+            foreach(var next in GetNextNodes())
             {
-                var nextNode = NextNodes.FirstOrDefault();
-                nextNodes.Add(nextNode.GetDisplayName(), nextNode);
+                armConnectors.Add((GetDisplayName(), null, UniqueID, next.UniqueID));
             }
+            return armConnectors;
+        }
+
+        public virtual IEnumerable<IDev2Activity> GetChildrenNodes()
+        {
+            var nextNodes = new List<IDev2Activity>();            
             return nextNodes;
         }
 

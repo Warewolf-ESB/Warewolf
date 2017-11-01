@@ -532,9 +532,12 @@ namespace Dev2.Studio.ViewModels.DataList
                 {
                     _scalarHandler.AddRowToScalars();
                 }
-                else if (item is IRecordSetItemModel)
+                else
                 {
-                    _recordsetHandler.AddRowToRecordsets();
+                    if (item is IRecordSetItemModel)
+                    {
+                        _recordsetHandler.AddRowToRecordsets();
+                    }
                 }
             }
             else

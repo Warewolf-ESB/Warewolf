@@ -98,15 +98,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     IList<IActivityIOPath> listOfDir = broker.ListDirectory(endPoint, GetReadType());
                     if(DataListUtil.IsValueRecordset(Result) && DataListUtil.GetRecordsetIndexType(Result) != enRecordsetIndexType.Numeric)
                     {
-                        if(DataListUtil.GetRecordsetIndexType(Result) == enRecordsetIndexType.Star)
+                        if (DataListUtil.GetRecordsetIndexType(Result) == enRecordsetIndexType.Star)
                         {
                             string recsetName = DataListUtil.ExtractRecordsetNameFromValue(Result);
                             string fieldName = DataListUtil.ExtractFieldNameFromValue(Result);
 
                             int indexToUpsertTo = 1;
-                            if(listOfDir != null)
+                            if (listOfDir != null)
                             {
-                                foreach(IActivityIOPath pa in listOfDir)
+                                foreach (IActivityIOPath pa in listOfDir)
                                 {
                                     string fullRecsetName = DataListUtil.CreateRecordsetDisplayValue(recsetName, fieldName,
                                         indexToUpsertTo.ToString(CultureInfo.InvariantCulture));
@@ -115,13 +115,16 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                 }
                             }
                         }
-                        else if(DataListUtil.GetRecordsetIndexType(Result) == enRecordsetIndexType.Blank)
+                        else
                         {
-                            if(listOfDir != null)
+                            if (DataListUtil.GetRecordsetIndexType(Result) == enRecordsetIndexType.Blank)
                             {
-                                foreach(IActivityIOPath pa in listOfDir)
+                                if (listOfDir != null)
                                 {
-                                    outputs.Add(DataListFactory.CreateOutputTO(Result, pa.Path));
+                                    foreach (IActivityIOPath pa in listOfDir)
+                                    {
+                                        outputs.Add(DataListFactory.CreateOutputTO(Result, pa.Path));
+                                    }
                                 }
                             }
                         }

@@ -57,12 +57,12 @@ using Warewolf.Studio.Views;
 using Dev2.Studio.Diagnostics;
 using Dev2.Studio.ViewModels;
 using Dev2.Util;
+using Warewolf.MergeParser;
+using Dev2.Studio.Interfaces;
 using Dev2.Activities;
 using Microsoft.VisualBasic.ApplicationServices;
-using Dev2.Studio.Core;
-using Dev2.Studio.Interfaces;
 using Dev2.Studio.Core.Interfaces;
-using Warewolf.MergeParser;
+using Dev2.Studio.Core;
 using Dev2.Factory;
 
 namespace Dev2.Studio
@@ -71,7 +71,7 @@ namespace Dev2.Studio
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>
-    public partial class App : System.Windows.Application, IApp, IDisposable
+    public partial class App : System.Windows.Application, IApp
     {
         ShellViewModel _shellViewModel;
         //This is ignored because when starting the studio twice the second one crashes without this line
@@ -87,7 +87,7 @@ namespace Dev2.Studio
         {
             this.mergeFactory = mergeFactory;
         }
-        public App() : this(new MergeFactory())
+        public App() : this(new MergeFactory())        
         {
             // PrincipalPolicy must be set to WindowsPrincipal to check roles.
             AppDomain.CurrentDomain.SetPrincipalPolicy(PrincipalPolicy.WindowsPrincipal);
@@ -110,7 +110,7 @@ namespace Dev2.Studio
         protected override void OnStartup(System.Windows.StartupEventArgs e)
         {
             Tracker.StartStudio();
-            CustomGitOps.SetCustomGitTool(new ExternalProcessExecutor());
+            CustomGitOps.SetCustomGitTool(new ExternalProcessExecutor());            
             Task.Factory.StartNew(() =>
             {
                 var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Warewolf", "Feedback");
@@ -145,12 +145,11 @@ namespace Dev2.Studio
 #endif
         }
 
-        public static ISplashView SplashView;
+        private static ISplashView splashView;
 
         private ManualResetEvent _resetSplashCreated;
         private Thread _splashThread;
         private readonly IMergeFactory mergeFactory;
-
         protected void InitializeShell(System.Windows.StartupEventArgs e)
         {
             _resetSplashCreated = new ManualResetEvent(false);
@@ -209,7 +208,7 @@ namespace Dev2.Studio
         }
 
         private static void CreateDummyWorkflowDesignerForCaching()
-        {
+        {        
             var workflowDesigner = new WorkflowDesigner();
             workflowDesigner.PropertyInspectorFontAndColorData = XamlServices.Save(ActivityDesignerHelper.GetDesignerHashTable());
             var designerConfigService = workflowDesigner.Context.Services.GetService<DesignerConfigurationService>();
@@ -246,6 +245,7 @@ namespace Dev2.Studio
             });
             var activityBuilder = new WorkflowHelper().CreateWorkflow("DummyWF");
             workflowDesigner.Load(activityBuilder);
+            workflowDesigner = null;
         }
 
         private async void CheckForDuplicateResources()
@@ -262,6 +262,7 @@ namespace Dev2.Studio
 
         private void ShowSplash()
         {
+            // Create the window 
             var repository = ServerRepository.Instance;
             var server = repository.Source;
             server.Connect();
@@ -292,13 +293,16 @@ namespace Dev2.Studio
 
 
             CustomContainer.Register<IActivityParser>(new ActivityParser());
+            CustomContainer.Register<IServiceDifferenceParser>(new ServiceDifferenceParser());
 
             var splashViewModel = new SplashViewModel(server, new ExternalProcessExecutor());
 
             var splashPage = new SplashPage { DataContext = splashViewModel };
             SplashView = splashPage;
+            // Show it 
             SplashView.Show(false);
 
+            // Now that the window is created, allow the rest of the startup to run 
             _resetSplashCreated?.Set();
             splashViewModel.ShowServerVersion();
             Dispatcher.Run();
@@ -345,12 +349,10 @@ namespace Dev2.Studio
             try
             {
                 base.Shutdown();
-            }
-
-            catch
-
+            }            
+            catch (Exception e) 
             {
-                // Best effort ;)
+                Dev2Logger.Warn(e.Message, "Warewolf Warn");
             }
             ForceShutdown();
         }
@@ -373,6 +375,8 @@ namespace Dev2.Studio
             }
         }
 
+        public static ISplashView SplashView { get => splashView; set => splashView = value; }
+
         private void OnApplicationDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
             Tracker.TrackException(GetType().Name, "OnApplicationDispatcherUnhandledException", e.Exception);
@@ -389,6 +393,7 @@ namespace Dev2.Studio
         public void Dispose()
         {
             _resetSplashCreated.Dispose();
+
         }
     }
 
@@ -399,6 +404,12 @@ namespace Dev2.Studio
         {
             Args = e.Args;
         }
+
+        public WarwolfStartupEventArgs(string e)
+        {
+            Args = e.Split(' ');
+        }
+
         public WarwolfStartupEventArgs(StartupNextInstanceEventArgs e)
         {
             Args = e.CommandLine.ToArray();

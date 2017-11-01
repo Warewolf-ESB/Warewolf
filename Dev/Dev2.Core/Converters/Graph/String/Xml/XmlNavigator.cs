@@ -73,7 +73,7 @@ namespace Unlimited.Framework.Converters.Graph.String.Xml
 
                 while (currentElement != null && segmentIndex < pathSegments.Count)
                 {
-                    if (segmentIndex == 0 && currentElement.Name != pathSegments[segmentIndex].ActualSegment && currentElement.Name.LocalName!=pathSegments[segmentIndex].ActualSegment)
+                    if (segmentIndex == 0 && currentElement.Name != pathSegments[segmentIndex].ActualSegment && currentElement.Name.LocalName != pathSegments[segmentIndex].ActualSegment)
                     {
                         currentElement = null;
                         returnData = null;
@@ -83,32 +83,24 @@ namespace Unlimited.Framework.Converters.Graph.String.Xml
                     {
                         returnData = currentElement.Value;
                     }
-                    else if (segmentIndex > 0)
+                    else
                     {
-                        if (pathSegments[segmentIndex].IsAttribute)
+                        if (segmentIndex > 0)
                         {
-                            XAttribute attribute = currentElement.Attribute(pathSegments[segmentIndex].ActualSegment);
+                            if (pathSegments[segmentIndex].IsAttribute)
+                            {
+                                XAttribute attribute = currentElement.Attribute(pathSegments[segmentIndex].ActualSegment);
 
-                            if (attribute != null)
-                            {
-                                currentElement = null;
-                                returnData = attribute.Value;
-                            }
-                        }
-                        else
-                        {
-                            var actualSegment = pathSegments[segmentIndex].ActualSegment;
-                            var newCurrentElement =
-                                currentElement.Elements(actualSegment).LastOrDefault();
-                            // Travis.Frisinger : 09/10/2012 - Fix for null element, naughty Brendan ;)
-                            if (newCurrentElement != null)
-                            {
-                                returnData = newCurrentElement.Value;
-                                currentElement = newCurrentElement;
+                                if (attribute != null)
+                                {
+                                    currentElement = null;
+                                    returnData = attribute.Value;
+                                }
                             }
                             else
                             {
-                                newCurrentElement = currentElement.Elements().LastOrDefault(element => element.Name.LocalName.Equals(actualSegment, StringComparison.InvariantCultureIgnoreCase));
+                                var actualSegment = pathSegments[segmentIndex].ActualSegment;
+                                var newCurrentElement = currentElement.Elements(actualSegment).LastOrDefault();
                                 if (newCurrentElement != null)
                                 {
                                     returnData = newCurrentElement.Value;
@@ -116,7 +108,16 @@ namespace Unlimited.Framework.Converters.Graph.String.Xml
                                 }
                                 else
                                 {
-                                    returnData = string.Empty;
+                                    newCurrentElement = currentElement.Elements().LastOrDefault(element => element.Name.LocalName.Equals(actualSegment, StringComparison.InvariantCultureIgnoreCase));
+                                    if (newCurrentElement != null)
+                                    {
+                                        returnData = newCurrentElement.Value;
+                                        currentElement = newCurrentElement;
+                                    }
+                                    else
+                                    {
+                                        returnData = string.Empty;
+                                    }
                                 }
                             }
                         }
@@ -478,9 +479,12 @@ namespace Unlimited.Framework.Converters.Graph.String.Xml
                     }
                 }
             }
-            else if (currentElement.Name == parentPathSegment.ActualSegment)
+            else
             {
-                returnData.Add(currentElement.Value);
+                if (currentElement.Name == parentPathSegment.ActualSegment)
+                {
+                    returnData.Add(currentElement.Value);
+                }
             }
 
             return returnData;

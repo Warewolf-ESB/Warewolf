@@ -596,9 +596,6 @@
                                                         </Style.Triggers>
                                                     </Style>
                                                 </MenuItem.Style>
-                                                <i:Interaction.Behaviors>
-                                                    <views:RenameTreeNode DataContext="{Binding Data}" Node="{Binding Node}" Tree="{Binding Path=Node.Manager.NodeLayout.Tree}" />
-                                                </i:Interaction.Behaviors>
                                             </MenuItem>
                                             <MenuItem Name="Delete"
 								                      Command="{Binding DeleteCommand}"

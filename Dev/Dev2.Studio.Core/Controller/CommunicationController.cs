@@ -287,7 +287,7 @@ namespace Dev2.Controller
 
                     ServicePayload.ServiceName = ServiceName;
                     StringBuilder toSend = serializer.SerializeToBuilder(ServicePayload);
-                    var payload = await connection.ExecuteCommandAsync(toSend, workspaceId);
+                    var payload = await connection.ExecuteCommandAsync(toSend, workspaceId).ConfigureAwait(true);
                     var executeCommand = serializer.Deserialize<T>(payload);
                     if (executeCommand == null)
                     {
@@ -348,8 +348,6 @@ namespace Dev2.Controller
             }
             else
             {
-
-                // now bundle it up into a nice string builder ;)
                 if (ServicePayload == null)
                 {
                     ServicePayload = new EsbExecuteRequest();
@@ -357,7 +355,7 @@ namespace Dev2.Controller
 
                 ServicePayload.ServiceName = ServiceName;
                 StringBuilder toSend = serializer.SerializeToBuilder(ServicePayload);
-                var payload = await connection.ExecuteCommandAsync(toSend, workspaceId);
+                var payload = await connection.ExecuteCommandAsync(toSend, workspaceId).ConfigureAwait(true);
 
                 try
                 {
@@ -378,7 +376,6 @@ namespace Dev2.Controller
 
         public T ExecuteCompressedCommand<T>(IEnvironmentConnection connection, Guid workspaceId) where T : class
         {
-            // build the service request payload ;)
             var serializer = new Dev2JsonSerializer();
 
             if (connection == null)

@@ -64,13 +64,16 @@ namespace Dev2.Studio.Views.Workflow
 
                             }
                         }
-                        else if (rect != null)
+                        else
                         {
-                            rect.ContextMenu = WorkflowDesigner.Resources["StartNodeContextMenu"] as ContextMenu;
-                            if (rect.ContextMenu != null)
+                            if (rect != null)
                             {
-                                rect.ContextMenu.IsOpen = true;
-                                rect.ContextMenu.DataContext = DataContext;
+                                rect.ContextMenu = WorkflowDesigner.Resources["StartNodeContextMenu"] as ContextMenu;
+                                if (rect.ContextMenu != null)
+                                {
+                                    rect.ContextMenu.IsOpen = true;
+                                    rect.ContextMenu.DataContext = DataContext;
+                                }
                             }
                         }
                         break;
@@ -114,10 +117,13 @@ namespace Dev2.Studio.Views.Workflow
                 e.Effects = DragDropEffects.None;
                 e.Handled = true;
             }
-            else if (_dragDropHelpers.PreventDrop(dataObject))
+            else
             {
-                e.Effects = DragDropEffects.None;
-                e.Handled = true;
+                if (_dragDropHelpers.PreventDrop(dataObject))
+                {
+                    e.Effects = DragDropEffects.None;
+                    e.Handled = true;
+                }
             }
         }
     }

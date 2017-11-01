@@ -70,22 +70,25 @@ namespace Dev2.Studio.Views.DependencyVisualization
             {
                 _isMoveInEffect = false;
             }
-            else if (_isMoveInEffect)
+            else
             {
-                if (e.GetPosition(Nodes).X > Nodes.ActualWidth || e.GetPosition(Nodes).Y > Nodes.ActualHeight || e.GetPosition(Nodes).Y < 0.0)
+                if (_isMoveInEffect)
                 {
-                    element.ReleaseMouseCapture();
-                    _isMoveInEffect = false;
-                }
-                else
-                {
-                    var currentPosition = e.GetPosition(element.Parent as UIElement);
+                    if (e.GetPosition(Nodes).X > Nodes.ActualWidth || e.GetPosition(Nodes).Y > Nodes.ActualHeight || e.GetPosition(Nodes).Y < 0.0)
+                    {
+                        element.ReleaseMouseCapture();
+                        _isMoveInEffect = false;
+                    }
+                    else
+                    {
+                        var currentPosition = e.GetPosition(element.Parent as UIElement);
 
-                    element.Node.Location = new Point(
-                        element.Node.Location.X + (currentPosition.X - _currentPosition.X) / Nodes.ZoomLevel,
-                        element.Node.Location.Y + (currentPosition.Y - _currentPosition.Y) / Nodes.ZoomLevel);
+                        element.Node.Location = new Point(
+                            element.Node.Location.X + (currentPosition.X - _currentPosition.X) / Nodes.ZoomLevel,
+                            element.Node.Location.Y + (currentPosition.Y - _currentPosition.Y) / Nodes.ZoomLevel);
 
-                    _currentPosition = currentPosition;
+                        _currentPosition = currentPosition;
+                    }
                 }
             }
         }

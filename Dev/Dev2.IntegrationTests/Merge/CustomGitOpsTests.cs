@@ -1,9 +1,7 @@
 ﻿using Dev2.Common;
-using Dev2.Common.Interfaces;
 using Dev2.Factory;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using System.Collections.Generic;
 using System.IO;
 
 namespace Dev2.Integration.Tests.Merge
@@ -26,7 +24,7 @@ namespace Dev2.Integration.Tests.Merge
                 var gitText = b.ReadToEnd();
                 
                 StringAssert.Contains(gitText, "tool = DiffMerge");
-                StringAssert.Contains(gitText, "cmd = C:/Program Files (x86)/Warewolf/Studio/customMerge.sh -merge $REMOTE");
+                StringAssert.Contains(gitText, "cmd = 'C:/Program Files (x86)/Warewolf/Studio/MergePowershellScript/customMerge.sh' $REMOTE");
                 StringAssert.Contains(gitText, "trustExitCode = false");
                 StringAssert.Contains(gitText, "[difftool \"DiffMerge\"]");
                 StringAssert.Contains(gitText, "[mergetool \"DiffMerge\"]");
@@ -37,13 +35,9 @@ namespace Dev2.Integration.Tests.Merge
         public void GetGitExePath_GetsTheGitexe()
         {
             //------------Setup for test--------------------------
-            IExternalProcessExecutor executor = new ExternalProcessExecutor();
             PrivateType privateType = new PrivateType(typeof(CustomGitOps));
-            var gitPath = privateType.InvokeStatic("GetGitExePath", executor);
+            var gitPath = privateType.InvokeStatic("GetGitExePath");
             StringAssert.EndsWith(gitPath.ToString(), "git.exe");
-
         }
-
-
     }
 }

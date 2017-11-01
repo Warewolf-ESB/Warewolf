@@ -14,8 +14,8 @@ namespace Dev2.Factory
 
         public static void SetCustomGitTool(IExternalProcessExecutor processExecutor)
         {
-            var secondCommand = "config --global mergetool.DiffMerge.cmd \"C:/Program Files (x86)/Warewolf/Studio/customMerge.sh \"-merge\" $REMOTE";
-            var secondCommand1 = "config --global difftool.DiffMerge.cmd \"C:/Program Files (x86)/Warewolf/Studio/customMerge.sh \"-merge\" $REMOTE";
+            var secondCommand = "config --global mergetool.DiffMerge.cmd \"'C:/Program Files (x86)/Warewolf/Studio/MergePowershellScript/customMerge.sh' $REMOTE";
+            var secondCommand1 = "config --global difftool.DiffMerge.cmd \"'C:/Program Files (x86)/Warewolf/Studio/MergePowershellScript/customMerge.sh' $REMOTE";
             var orderedList1 = new[]
             {
                 "config --global merge.tool DiffMerge"

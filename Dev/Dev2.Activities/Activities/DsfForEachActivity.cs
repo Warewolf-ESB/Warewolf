@@ -203,304 +203,19 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected override void OnBeforeExecute(NativeActivityContext context)
         {
-            var dataObject = context.GetExtension<IDSFDataObject>();
-            _previousParentId = dataObject.ParentInstanceID;
+            throw new NotImplementedException();
         }
 
         protected override void OnExecute(NativeActivityContext context)
         {
-            lock (_forEachExecutionObject)
-            {
-                IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
-
-                _debugInputs = new List<DebugItem>();
-                _debugOutputs = new List<DebugItem>();
-
-
-
-                dataObject.ForEachNestingLevel++;
-                ErrorResultTO allErrors = new ErrorResultTO();
-
-                InitializeDebug(dataObject);
-                try
-                {
-                    ForEachBootstrapTO exePayload = FetchExecutionType(dataObject, dataObject.Environment, out ErrorResultTO errors, 0);
-
-                    if (errors.HasErrors())
-                    {
-                        allErrors.MergeErrors(errors);
-                        return;
-                    }
-
-                    if (dataObject.IsDebugMode())
-                    {
-                        DispatchDebugState(dataObject, StateType.Before, 0);
-                    }
-
-                    dataObject.ParentInstanceID = UniqueID;
-
-                    allErrors.MergeErrors(errors);
-                    ForEachInnerActivityTO innerA = GetInnerActivity(out string error);
-                    allErrors.AddError(error);
-
-                    exePayload.InnerActivity = innerA;
-
-                    operationalData = exePayload;
-                    // flag it as scoped so we can use a single DataList
-                    dataObject.IsDataListScoped = true;
-                    dataObject.IsDebugNested = true;
-
-                    if (exePayload.InnerActivity != null && exePayload.IndexIterator.HasMore())
-                    {
-                        int idx = exePayload.IndexIterator.FetchNextIndex();
-                        if (exePayload.ForEachType != enForEachType.NumOfExecution)
-                        {
-                            IterateIOMapping(idx);
-                        }
-                        else
-                        {
-                            dataObject.IsDataListScoped = false;
-                        }
-
-                        // schedule the func to execute ;)
-                        dataObject.ParentInstanceID = UniqueID;
-
-                        context.ScheduleFunc(DataFunc, string.Empty, ActivityCompleted);
-                    }
-
-                }
-                catch (Exception e)
-                {
-                    Dev2Logger.Error("DSFForEach", e, GlobalConstants.WarewolfError);
-                    allErrors.AddError(e.Message);
-                }
-                finally
-                {
-                    // Handle Errors
-                    if (allErrors.HasErrors())
-                    {
-                        DisplayAndWriteError("DsfForEachActivity", allErrors);
-                        foreach (var fetchError in allErrors.FetchErrors())
-                        {
-                            dataObject.Environment.AddError(fetchError);
-                        }
-
-                        dataObject.ParentInstanceID = _previousParentId;
-                    }
-                    if (dataObject.IsDebugMode())
-                    {
-                        DispatchDebugState(dataObject, StateType.After, 0);
-                    }
-                }
-            }
+            throw new NotImplementedException();
         }
-
-
-        /// <summary>
-        /// Iterates the IO mapping.
-        /// </summary>
+        
         private void IterateIOMapping(int idx)
         {
-            string newInputs = string.Empty;
-
-            string newOutputs = string.Empty;
-            bool updateInputToken = false;
-            bool updateOutputToken = false;
-
-            // Now mutate the mappings ;)
-            //Bug 8725 do not mutate mappings
-            if (!string.IsNullOrEmpty(operationalData.InnerActivity.OrigInnerInputMapping))
-            {
-                // (*) == ({idx}) ;)
-                newInputs = operationalData.InnerActivity.OrigInnerInputMapping;
-                newInputs = _inputItr.IterateMapping(newInputs, idx);
-                newInputs = newInputs.Replace("(*)", "(" + idx + ")");
-            }
-            else
-            {
-                // coded activity
-
-                #region Coded Activity IO ManIP
-
-                var tmp = operationalData.InnerActivity.InnerActivity as DsfActivityAbstract<string>;
-
-                if (_previousInputsIndex != -1)
-                {
-                    if (_inputsToken != "*")
-                    {
-                        _inputsToken = _previousInputsIndex.ToString(CultureInfo.InvariantCulture);
-                    }
-                }
-
-                if (_previousOutputsIndex != -1)
-                {
-                    if (_outputsToken != "*")
-                    {
-                        _outputsToken = _previousOutputsIndex.ToString(CultureInfo.InvariantCulture);
-                    }
-                }
-
-                if (tmp != null)
-                {
-                    IList<DsfForEachItem> data = tmp.GetForEachInputs();
-                    IList<Tuple<string, string>> updates = new List<Tuple<string, string>>();
-
-                    if (AmendInputs(idx, data, _inputsToken, updates))
-                    {
-                        updateInputToken = true;
-                    }
-
-                    // push updates for Inputs
-                    tmp.UpdateForEachInputs(updates);
-                    if (idx == 1)
-                    {
-                        operationalData.InnerActivity.OrigCodedInputs = updates;
-                    }
-
-                    operationalData.InnerActivity.CurCodedInputs = updates;
-
-                    // Process outputs
-                    data = tmp.GetForEachOutputs();
-                    updates = new List<Tuple<string, string>>();
-
-                    if (AmendOutputs(idx, data, _outputsToken, updates))
-                    {
-                        updateOutputToken = true;
-                    }
-
-                    // push updates 
-                    tmp.UpdateForEachOutputs(updates);
-                    if (idx == 1)
-                    {
-                        operationalData.InnerActivity.OrigCodedOutputs = updates;
-                    }
-
-                    operationalData.InnerActivity.CurCodedOutputs = updates;
-                }
-                else
-                {
-
-                    if (operationalData.InnerActivity.InnerActivity is DsfActivityAbstract<bool> tmp2 && !(tmp2 is DsfForEachActivity))
-                    {
-                        IList<DsfForEachItem> data = tmp2.GetForEachInputs();
-                        IList<Tuple<string, string>> updates = new List<Tuple<string, string>>();
-
-                        if (AmendInputs(idx, data, _inputsToken, updates))
-                        {
-                            updateInputToken = true;
-                        }
-
-                        // push updates 
-                        tmp2.UpdateForEachInputs(updates);
-                        if (idx == 1)
-                        {
-                            operationalData.InnerActivity.OrigCodedInputs = updates;
-                        }
-                        operationalData.InnerActivity.CurCodedInputs = updates;
-
-                        // Process outputs
-                        data = tmp2.GetForEachOutputs();
-                        updates = new List<Tuple<string, string>>();
-
-                        if (AmendOutputs(idx, data, _outputsToken, updates))
-                        {
-                            updateOutputToken = true;
-                        }
-
-                        // push updates 
-                        tmp2.UpdateForEachOutputs(updates);
-                        if (idx == 1)
-                        {
-                            operationalData.InnerActivity.OrigCodedOutputs = updates;
-                        }
-
-                        operationalData.InnerActivity.CurCodedOutputs = updates;
-                    }
-                }
-
-                #endregion
-            }
-
-            //Bug 8725 do not mutate mappings
-            if (operationalData.InnerActivity.OrigInnerOutputMapping != null)
-            {
-                // (*) == ({idx}) ;)
-                newOutputs = operationalData.InnerActivity.OrigInnerOutputMapping;
-                newOutputs = _inputItr.IterateMapping(newOutputs, idx);
-            }
-
-            if (DataFunc.Handler is IDev2ActivityIOMapping dev2ActivityIoMapping)
-            {
-                dev2ActivityIoMapping.InputMapping = newInputs;
-            }
-
-            if (DataFunc.Handler is IDev2ActivityIOMapping activityIoMapping)
-            {
-                activityIoMapping.OutputMapping = newOutputs;
-            }
-            if (updateInputToken)
-            {
-                _inputsToken = idx.ToString(CultureInfo.InvariantCulture);
-            }
-            if (updateOutputToken)
-            {
-                _outputsToken = idx.ToString(CultureInfo.InvariantCulture);
-            }
+            throw new NotImplementedException();
         }
-
-        static bool AmendInputs(int idx, IEnumerable<DsfForEachItem> data, string token, IList<Tuple<string, string>> updates)
-        {
-            bool result = false;
-            // amend inputs ;)
-            foreach (DsfForEachItem d in data)
-            {
-                string input = d.Value;
-                if (input.Contains("(" + token + ")"))
-                {
-                    input = input.Replace("(" + token + ")", "(" + idx + ")");
-                    result = true;
-                }
-
-                if (!string.IsNullOrEmpty(d.Value))
-                {
-                    updates.Add(new Tuple<string, string>(d.Value, input));
-                }
-            }
-            return result;
-        }
-
-        static bool AmendOutputs(int idx, IEnumerable<DsfForEachItem> data, string token, IList<Tuple<string, string>> updates)
-        {
-            bool result = false;
-            // amend inputs ;)
-            foreach (DsfForEachItem d in data)
-            {
-                string input = d.Value;
-                if (!string.IsNullOrEmpty(input))
-                {
-                    if (input.Contains("(" + token + ")"))
-                    {
-                        input = input.Replace("(" + token + ")", "(" + idx + ")");
-                        result = true;
-                    }
-
-                    if (!string.IsNullOrEmpty(d.Value))
-                    {
-                        updates.Add(new Tuple<string, string>(d.Value, input));
-                    }
-                }
-            }
-            return result;
-        }
-
-        /// <summary>
-        /// Fetches the type of the execution.
-        /// </summary>        
-        /// <param name="dataObject">The data object.</param>
-        /// <param name="environment"></param>
-        /// <param name="errors">The errors.</param>
-        /// <param name="update"></param>
-        /// <returns></returns>                
+      
         private ForEachBootstrapTO FetchExecutionType(IDSFDataObject dataObject, IExecutionEnvironment environment, out ErrorResultTO errors, int update)
         {
             if (dataObject.IsDebugMode())
@@ -543,117 +258,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return result;
 
         }
-
-        /// <summary>
-        /// Restores the handler fn.
-        /// </summary>
+        
         private void RestoreHandlerFn()
         {
-
-
             if (DataFunc.Handler is IDev2ActivityIOMapping activity)
             {
-
-                if (operationalData.InnerActivity.OrigCodedInputs != null)
-                {
-
-                    //MO - CHANGE:This is to be reinstated for restoring actives back to state with star
-                    #region Coded Activity
-                    var tmp = operationalData.InnerActivity.InnerActivity as DsfActivityAbstract<string>;
-
-
-                    // this is wrong, we need the last index ;)
-
-                    int idx = operationalData.IterationCount;
-
-                    //Handle csv and range differently ;)
-                    if (ForEachType == enForEachType.InCSV || ForEachType == enForEachType.InRange)
-                    {
-                        Int32.TryParse(_inputsToken, out idx);
-                    }
-
-                    if (tmp != null)
-                    {
-                        // Restore Inputs ;)
-                        IList<DsfForEachItem> data = tmp.GetForEachInputs();
-                        IList<Tuple<string, string>> updates = new List<Tuple<string, string>>();
-
-                        // amend inputs ;)
-                        foreach (DsfForEachItem d in data)
-                        {
-                            string input = d.Value;
-                            input = input.Replace("(" + idx + ")", "(*)");
-
-                            updates.Add(new Tuple<string, string>(d.Value, input));
-                        }
-
-                        // push updates for Inputs
-                        tmp.UpdateForEachInputs(updates);
-
-
-                        // Restore Outputs ;)
-                        data = tmp.GetForEachOutputs();
-                        updates = new List<Tuple<string, string>>();
-
-                        // amend inputs ;)
-                        foreach (DsfForEachItem d in data)
-                        {
-                            string input = d.Value;
-                            input = input.Replace("(" + idx + ")", "(*)");
-
-                            updates.Add(new Tuple<string, string>(d.Value, input));
-                        }
-
-                        // push updates for Inputs
-                        tmp.UpdateForEachOutputs(updates);
-
-                    }
-                    else
-                    {
-
-                        // Restore Inputs ;)
-                        if (operationalData.InnerActivity.InnerActivity is DsfActivityAbstract<bool> tmp2)
-                        {
-                            IList<DsfForEachItem> data = tmp2.GetForEachInputs();
-                            IList<Tuple<string, string>> updates = new List<Tuple<string, string>>();
-
-                            // amend inputs ;)
-                            foreach (DsfForEachItem d in data)
-                            {
-                                string input = d.Value;
-                                input = input.Replace("(" + idx + ")", "(*)");
-
-                                updates.Add(new Tuple<string, string>(d.Value, input));
-                            }
-
-                            // push updates for Inputs
-                            tmp2.UpdateForEachInputs(updates);
-
-
-                            // Restore Outputs ;)
-                            data = tmp2.GetForEachInputs();
-                            updates = new List<Tuple<string, string>>();
-
-                            // amend inputs ;)
-                            foreach (DsfForEachItem d in data)
-                            {
-                                string input = d.Value;
-                                input = input.Replace("(" + idx + ")", "(*)");
-
-                                updates.Add(new Tuple<string, string>(d.Value, input));
-                            }
-
-                            // push updates for Inputs
-                            tmp2.UpdateForEachOutputs(updates);
-                        }
-                    }
-                    #endregion
-                }
-                else
-                {
-                    activity.InputMapping = operationalData.InnerActivity.OrigInnerInputMapping;
-                    activity.OutputMapping = operationalData.InnerActivity.OrigInnerOutputMapping;
-                }
+                activity.InputMapping = operationalData.InnerActivity.OrigInnerInputMapping;
+                activity.OutputMapping = operationalData.InnerActivity.OrigInnerOutputMapping;
             }
             else
             {
@@ -690,43 +301,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
 
             return result;
-        }
-
-        private void ActivityCompleted(NativeActivityContext context, ActivityInstance instance, bool result)
-        {
-            var dataObject = context.GetExtension<IDSFDataObject>();
-            if (dataObject != null && operationalData != null)
-            {
-
-
-
-                if (operationalData.IndexIterator.HasMore())
-                {
-                    var idx = operationalData.IndexIterator.FetchNextIndex();
-                    // Re-jigger the mapping ;)
-                    if (operationalData.ForEachType != enForEachType.NumOfExecution)
-                    {
-                        IterateIOMapping(idx);
-                    }
-                    dataObject.ParentInstanceID = UniqueID;
-                    
-                    context.ScheduleFunc(DataFunc, UniqueID, ActivityCompleted);
-                    
-                    return;
-                }
-
-                // that is all she wrote ;)
-                dataObject.IsDataListScoped = false;
-                // return it all to normal
-                if (ForEachType != enForEachType.NumOfExecution)
-                {
-                    RestoreHandlerFn();
-                }
-
-                dataObject.ParentInstanceID = _previousParentId;
-                dataObject.ForEachNestingLevel--;
-                dataObject.IsDebugNested = false;
-            }
         }
 
         #endregion Execute
@@ -901,13 +475,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        public override Dictionary<string, IDev2Activity> GetChildrenNodes()
+        public override IEnumerable<IDev2Activity> GetChildrenNodes()
         {
             if (!(DataFunc.Handler is IDev2ActivityIOMapping act))
             {
-                return new Dictionary<string, IDev2Activity>();
+                return new List<IDev2Activity>();
             }
-            var nextNodes = new Dictionary<string, IDev2Activity> { { act?.GetDisplayName() ?? "",  act } };           
+            var nextNodes = new List<IDev2Activity> { act  };           
             return nextNodes;
         }
 

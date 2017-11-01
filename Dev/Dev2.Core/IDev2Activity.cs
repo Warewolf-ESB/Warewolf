@@ -18,9 +18,10 @@ namespace Dev2
         IEnumerable<IDev2Activity> NextNodes { get; set; }
         Guid ActivityId { get; set; }
         List<string> GetOutputs();
-        Dictionary<string, IDev2Activity> GetChildrenNodes();
-        IConflictTreeNode BuildNode();
+        IEnumerable<IDev2Activity> GetChildrenNodes();
         FlowNode GetFlowNode();
         string GetDisplayName();
+        IEnumerable<IDev2Activity> GetNextNodes();
+        List<(string Description, string Key, string SourceUniqueId, string DestinationUniqueId)> ArmConnectors();
     }
 }

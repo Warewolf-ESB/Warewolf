@@ -57,33 +57,31 @@ namespace Dev2.Activities
             return Switch;
         }
 
-        public override IConflictTreeNode BuildNode()
+        public override List<(string Description, string Key, string SourceUniqueId, string DestinationUniqueId)> ArmConnectors()
         {
-            var node = new ConflictTreeNode(this, new System.Windows.Point());
-            foreach (var activity in Switches)
+            var armConnectors = new List<(string Description, string Key, string SourceUniqueId, string DestinationUniqueId)>();
+            foreach (var swt in Switches)
             {
-                if (activity.Value is IDev2Activity act)
-                {
-                    node.AddChild(act.BuildNode(),activity.Key);
-                }
+                armConnectors.Add((GetDisplayName(), swt.Key, UniqueID, swt.Value.UniqueID));
             }
-            if (Default != null)
+            foreach (var dft in Default)
             {
-                node.AddChild(Default.FirstOrDefault().BuildNode(),"Default");
+                armConnectors.Add((GetDisplayName(), @"Default", UniqueID, dft.UniqueID));
             }
-            return node;
+            return armConnectors;
         }
-        public override Dictionary<string,IDev2Activity> GetChildrenNodes()
+
+        public override IEnumerable<IDev2Activity> GetChildrenNodes()
         {
-            var nextNodes = new Dictionary<string, IDev2Activity>();            
+            var nextNodes = new List<IDev2Activity>();            
             foreach(var swt in Switches)
             {
                 var currentAct = swt.Value;
-                nextNodes.Add(swt.Key, currentAct);
+                nextNodes.Add(currentAct);
             }
             if (Default != null)
             {
-                nextNodes.Add(@"Default", Default.FirstOrDefault());
+                nextNodes.Add(Default.FirstOrDefault());
             }
             return nextNodes;
         }
