@@ -164,19 +164,16 @@ namespace Dev2.Activities.Designers2.Web_Service_Put
                     break;
                 }
             }
-            WorstDesignError = worstError[0];
+            SetWorstDesignError(worstError[0]);
         }
 
-        IErrorInfo WorstDesignError
+        private void SetWorstDesignError(IErrorInfo value)
         {
-            set
+            if (_worstDesignError != value)
             {
-                if (_worstDesignError != value)
-                {
-                    _worstDesignError = value;
-                    IsWorstErrorReadOnly = value == null || value.ErrorType == ErrorType.None || value.FixType == FixType.None || value.FixType == FixType.Delete;
-                    WorstError = value?.ErrorType ?? ErrorType.None;
-                }
+                _worstDesignError = value;
+                IsWorstErrorReadOnly = value == null || value.ErrorType == ErrorType.None || value.FixType == FixType.None || value.FixType == FixType.Delete;
+                WorstError = value?.ErrorType ?? ErrorType.None;
             }
         }
 

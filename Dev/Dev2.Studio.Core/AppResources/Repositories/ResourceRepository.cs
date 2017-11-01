@@ -709,7 +709,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                 throw new ArgumentNullException(nameof(testName));
             }
 
-            if (resourceId == Guid.Empty || resourceId == null)
+            if (resourceId == Guid.Empty)
             {
                 throw new ArgumentNullException(nameof(resourceId));
             }

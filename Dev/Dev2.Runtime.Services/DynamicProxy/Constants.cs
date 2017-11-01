@@ -1,8 +1,8 @@
 namespace Dev2.Runtime.DynamicProxy
 {
-    internal class Constants
+    internal static class Constants
     {
-        internal class ErrorMessages
+        internal static class ErrorMessages
         {
             internal const string ImportError = 
                 "There was an error in importing the metadata.";

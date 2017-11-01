@@ -1790,7 +1790,6 @@ namespace Dev2.Tests.Runtime.WebServer
         public AbstractWebRequestHandlerMock(IDSFDataObject dataObject, IAuthorizationService service, IResourceCatalog catalog, ITestCatalog testCatalog, IWorkspaceRepository repository)
             : base(catalog, testCatalog, dataObject, service, repository)
         {
-
         }
 
         public AbstractWebRequestHandlerMock()

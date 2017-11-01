@@ -14,11 +14,8 @@ using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-
     public class TestSharepointServerService : IEsbManagementEndpoint
     {
-
-
         public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
         {
             return Guid.Empty;

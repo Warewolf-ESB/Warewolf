@@ -505,37 +505,40 @@ namespace Dev2.FindMissingStrategies
                     }
                 }
             }
-            else if (activityType == typeof(DsfWcfEndPointActivity))
+            else
             {
-                if (activity is DsfWcfEndPointActivity maAct)
+                if (activityType == typeof(DsfWcfEndPointActivity))
                 {
-                    if (maAct.Inputs != null)
+                    if (activity is DsfWcfEndPointActivity maAct)
                     {
-                        results.AddRange(InternalFindMissing(maAct.Inputs));
-                    }
-
-                    if (!string.IsNullOrEmpty(maAct.OnErrorVariable))
-                    {
-                        results.Add(maAct.OnErrorVariable);
-                    }
-                    if (maAct.IsObject)
-                    {
-                        if (!string.IsNullOrEmpty(maAct.ObjectName))
+                        if (maAct.Inputs != null)
                         {
-                            results.Add(maAct.ObjectName);
+                            results.AddRange(InternalFindMissing(maAct.Inputs));
                         }
-                    }
-                    else
-                    {
 
-                        if (maAct.Outputs != null)
+                        if (!string.IsNullOrEmpty(maAct.OnErrorVariable))
                         {
-                            results.AddRange(InternalFindMissing(maAct.Outputs));
+                            results.Add(maAct.OnErrorVariable);
                         }
-                    }
-                    if (!string.IsNullOrEmpty(maAct.OnErrorWorkflow))
-                    {
-                        results.Add(maAct.OnErrorWorkflow);
+                        if (maAct.IsObject)
+                        {
+                            if (!string.IsNullOrEmpty(maAct.ObjectName))
+                            {
+                                results.Add(maAct.ObjectName);
+                            }
+                        }
+                        else
+                        {
+
+                            if (maAct.Outputs != null)
+                            {
+                                results.AddRange(InternalFindMissing(maAct.Outputs));
+                            }
+                        }
+                        if (!string.IsNullOrEmpty(maAct.OnErrorWorkflow))
+                        {
+                            results.Add(maAct.OnErrorWorkflow);
+                        }
                     }
                 }
             }

@@ -27,7 +27,7 @@ using Newtonsoft.Json;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    public class GetScheduledResources : IEsbManagementEndpoint
+    public class GetScheduledResources : DefaultEsbManagementEndpoint
     {
         public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
         {
@@ -43,12 +43,12 @@ namespace Dev2.Runtime.ESB.Management.Services
         ISecurityWrapper _securityWrapper;
         private IResourceCatalog _catalog;
 
-        public string HandlesType()
+        public override string HandlesType()
         {
             return "GetScheduledResources";
         }
 
-        public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
+        public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             try
             {
@@ -85,7 +85,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             set { _catalog = value; }
         }
 
-        public DynamicService CreateServiceEntry()
+        public override DynamicService CreateServiceEntry()
         {
             DynamicService getScheduledResourcesService = new DynamicService { Name = HandlesType(), DataListSpecification = new StringBuilder("<DataList></DataList>") };
 

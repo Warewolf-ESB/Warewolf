@@ -452,9 +452,7 @@ namespace Dev2.Data.Util
                     }
                     else if (tmpNode.HasChildNodes && !isObject)
                     {
-                        // it is a record set, make it as such
                         string recordsetName = tmpNode.Name;
-                        // now extract child node defs
                         XmlNodeList childNl = tmpNode.ChildNodes;
                         for (int q = 0; q < childNl.Count; q++)
                         {
@@ -467,11 +465,13 @@ namespace Dev2.Data.Util
                             }
                         }
                     }
-                    else if (DataListUtil.CheckIODirection(dev2ColumnArgumentDirection, ioDirection))
+                    else
                     {
-                        // scalar value, make it as such
-                        var dev2Definition = isObject ? DataListFactory.CreateDefinition("@" + tmpNode.Name, "", "", false, "", false, "", false, isArray) : DataListFactory.CreateDefinition(tmpNode.Name, "", "", false, "", false, "");
-                        result.Add(dev2Definition);
+                        if (DataListUtil.CheckIODirection(dev2ColumnArgumentDirection, ioDirection))
+                        {
+                            var dev2Definition = isObject ? DataListFactory.CreateDefinition("@" + tmpNode.Name, "", "", false, "", false, "", false, isArray) : DataListFactory.CreateDefinition(tmpNode.Name, "", "", false, "", false, "");
+                            result.Add(dev2Definition);
+                        }
                     }
 
                 }
