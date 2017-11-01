@@ -71,7 +71,6 @@ namespace Dev2.ViewModels.Merge
             HasVariablesConflict = currentResourceModel.DataList != differenceResourceModel.DataList;
             HasWorkflowNameConflict = currentResourceModel.ResourceName != differenceResourceModel.ResourceName;
             IsVariablesEnabled = !HasWorkflowNameConflict && HasVariablesConflict;
-            IsMergeExpanderEnabled = !IsVariablesEnabled;
 
             DisplayName = nameof(Merge);
             CanSave = false;
@@ -293,8 +292,8 @@ namespace Dev2.ViewModels.Merge
                     DataListViewModel = args.DataListViewModel;
                     _conflictEnumerator.MoveNext();
                 }
-                IsMergeExpanderEnabled = true;
                 var completeConflict = Conflicts.First.Value;
+                completeConflict.IsMergeExpanderEnabled = completeConflict.HasConflict;
                 if (completeConflict.HasConflict)
                 {
                     completeConflict.DiffViewModel.IsMergeEnabled = completeConflict.HasConflict;
@@ -352,7 +351,7 @@ namespace Dev2.ViewModels.Merge
                         }
                     }
                 }
-
+                args.Container.IsMergeExpanderEnabled = args.Container.HasConflict;
                 AddActivity(args);
                 if (!args.Container.IsChecked)
                 {
@@ -531,16 +530,6 @@ namespace Dev2.ViewModels.Merge
             {
                 _isVariablesEnabled = value;
                 OnPropertyChanged(() => IsVariablesEnabled);
-            }
-        }
-
-        public bool IsMergeExpanderEnabled
-        {
-            get => _isMergeExpanderEnabled;
-            set
-            {
-                _isMergeExpanderEnabled = value;
-                OnPropertyChanged(() => IsMergeExpanderEnabled);
             }
         }
 

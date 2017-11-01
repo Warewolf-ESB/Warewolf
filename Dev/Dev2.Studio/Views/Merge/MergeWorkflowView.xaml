@@ -431,6 +431,7 @@
                                                   Grid.Column="0"
                                                   Grid.ColumnSpan="2"
 							                      Header="{Binding .}"
+                                                  IsEnabled="{Binding IsMergeExpanderEnabled}"
 							                      IsExpanded="{Binding IsMergeExpanded}"
 							                      Style="{StaticResource MergeExpander}"
                                                   Visibility="{Binding IsContainerTool, Converter={StaticResource BoolToVisibilityConverterNegative}}"
@@ -669,7 +670,7 @@
                                                 <ColumnDefinition Width="50*" />
                                             </Grid.ColumnDefinitions>
 
-                                            <Border Name="CurrentNodeArmBorder" 
+                                            <Border x:Name="CurrentNodeArmBorder" 
                                                     Grid.Column="0" 
                                                     Background="{StaticResource WarewolfPanelGreyBrush}" 
                                                     BorderBrush="#CFD6E1" 
@@ -678,29 +679,29 @@
                                                     DataContext="{Binding CurrentViewModel}"
                                                     AutomationProperties.AutomationId="UI_CurrentNodeArmBorder_AutoID">
                                                 <DockPanel x:Name="CurrentNodeArmDockPanel" 
-                                                       LastChildFill="False"
-                                                       AutomationProperties.AutomationId="UI_CurrentNodeArmDockPanel_AutoID">
-                                                    <StackPanel Name="CurrentNodeArmSP" 
-                                                            DockPanel.Dock="Left" 
-                                                            Orientation="Horizontal" 
-                                                            AutomationProperties.AutomationId="UI_CurrentNodeArmSP_AutoID">
-                                                        <TextBlock Name="CurrentNodeArmText" 
-                                                               Margin="20,0,0,0" 
-                                                               Text="{Binding NodeArmDescription}" 
-                                                               FontWeight="Bold" 
-                                                               AutomationProperties.AutomationId="UI_CurrentNodeArmText_AutoID"
-                                                               HorizontalAlignment="Stretch"/>
+                                                           LastChildFill="False"
+                                                           AutomationProperties.AutomationId="UI_CurrentNodeArmDockPanel_AutoID">
+                                                    <StackPanel x:Name="CurrentNodeArmSP" 
+                                                                DockPanel.Dock="Left" 
+                                                                Orientation="Horizontal" 
+                                                                AutomationProperties.AutomationId="UI_CurrentNodeArmSP_AutoID">
+                                                        <TextBlock x:Name="CurrentNodeArmText" 
+                                                                   Margin="20,0,0,0" 
+                                                                   Text="{Binding NodeArmDescription}" 
+                                                                   FontWeight="Bold" 
+                                                                   AutomationProperties.AutomationId="UI_CurrentNodeArmText_AutoID"
+                                                                   HorizontalAlignment="Stretch"/>
                                                     </StackPanel>
                                                     <StackPanel x:Name="CurrentNodeArmRBSP" 
-                                                            DockPanel.Dock="Right" 
-                                                            Orientation="Horizontal"
-                                                            AutomationProperties.AutomationId="UI_CurrentNodeArmRBSP_AutoID">
+                                                                DockPanel.Dock="Right" 
+                                                                Orientation="Horizontal"
+                                                                AutomationProperties.AutomationId="UI_CurrentNodeArmRBSP_AutoID">
                                                         <RadioButton x:Name="CurrentNodeArmRB" 
-                                                                 IsChecked="{Binding IsMergeChecked}" 
-                                                                 HorizontalAlignment="Right"
-                                                                 Margin="0,0,5,0"
-                                                                 GroupName="MergeVariables"
-                                                                 AutomationProperties.AutomationId="UI_CurrentNodeArmRB_AutoID">
+                                                                     IsChecked="{Binding IsMergeChecked}" 
+                                                                     HorizontalAlignment="Right"
+                                                                     Margin="0,0,5,0"
+                                                                     GroupName="MergeVariables"
+                                                                     AutomationProperties.AutomationId="UI_CurrentNodeArmRB_AutoID">
                                                             <RadioButton.Style>
                                                                 <Style BasedOn="{StaticResource MergeRadioButtonStyle}" TargetType="{x:Type RadioButton}">
                                                                     <Style.Triggers>
@@ -725,7 +726,7 @@
                                                             FontSize="20" 
                                                             Visibility="{Binding HasVariablesConflict, Converter={StaticResource BoolToVisibilityConverterNegative}}" />
 
-                                            <Border Name="DifferenceNodeArmBorder" 
+                                            <Border x:Name="DifferenceNodeArmBorder" 
                                                     Grid.Column="1" 
                                                     Background="{StaticResource WarewolfPanelGreyBrush}" 
                                                     BorderBrush="#CFD6E1" 
@@ -747,7 +748,7 @@
                                                                      Margin="5,0,5,0"
                                                                      Style="{StaticResource MergeRadioButtonStyle}"
                                                                      AutomationProperties.AutomationId="UI_DifferenceNodeArmRB_AutoID"/>
-                                                        <TextBlock Name="DifferenceNodeArmText" 
+                                                        <TextBlock x:Name="DifferenceNodeArmText" 
                                                                    Margin="30,0,0,0" 
                                                                    Text="{Binding NodeArmDescription}" 
                                                                    FontWeight="Bold" 
