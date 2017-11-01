@@ -78,8 +78,6 @@ namespace Dev2.Studio.Dock
             
             if(pane != null)
             {
-                pane.PreviewLostKeyboardFocus += pane_PreviewLostKeyboardFocus;
-                pane.PreviewGotKeyboardFocus += pane_PreviewLostKeyboardFocus;
                 pane.PreviewMouseDown+=PaneOnPreviewMouseDown;
                 pane.Closed += OnPaneClosed;
                 pane.Closing += OnPaneClosing;
@@ -115,35 +113,6 @@ namespace Dev2.Studio.Dock
                 if (mvm.ActiveItem != workSurfaceContextViewModel)
                 {
                     mvm.ActiveItem = workSurfaceContextViewModel;
-                }
-            }
-        }
-
-        void pane_PreviewLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
-        {
-
-            if (sender is ContentPane contentPane)
-            {
-                var tabGroupPane = contentPane.Parent as TabGroupPane;
-                var splitPane = tabGroupPane?.Parent as SplitPane;
-                if (splitPane?.Parent is PaneToolWindow paneToolWindow)
-                {
-                    if (string.IsNullOrWhiteSpace(paneToolWindow.Title))
-                    {
-                        if (Application.Current != null)
-                        {
-                            if (Application.Current.MainWindow != null)
-                            {
-                                if (Application.Current.MainWindow.DataContext != null)
-                                {
-                                    if (Application.Current.MainWindow.DataContext is ShellViewModel mainViewModel)
-                                    {
-                                        paneToolWindow.Title = mainViewModel.DisplayName;
-                                    }
-                                }
-                            }
-                        }
-                    }
                 }
             }
         }
@@ -187,14 +156,6 @@ namespace Dev2.Studio.Dock
             }
         }
         
-        protected sealed override void ValidateContainerType(Type elementType)
-        {
-            if(!typeof(ContentPane).IsAssignableFrom(elementType))
-            {
-                throw new ArgumentException("ContainerType must be a ContentPane or a derived class.");
-            }
-            base.ValidateContainerType(elementType);
-        }
         public static readonly DependencyProperty ContentPathProperty = DependencyProperty.Register("ContentPath",
             typeof(string), typeof(ContentPaneFactory), new FrameworkPropertyMetadata(null));
         
