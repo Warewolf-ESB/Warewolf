@@ -39,6 +39,10 @@ namespace Dev2.ViewModels.Merge
             }
         }
 
+        public MergeArmConnectorConflict()
+        {
+
+        }
         public MergeArmConnectorConflict(string armDescription, string sourceUniqueId, string destinationUniqueId, string key)
         {
             ArmDescription = armDescription;

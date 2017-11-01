@@ -109,7 +109,8 @@ namespace Dev2.ViewModels.Merge
                         var armConnector = new ArmConnectorConflict
                         {
                             UniqueId = id,
-                            CurrentArmConnector = mergeArmConnectorConflict
+                            CurrentArmConnector = mergeArmConnectorConflict,
+                            DifferentArmConnector = EmptyMergeArmConnectorConflict(id)
                         };
                         armConnectorConflicts.Add(armConnector);
                     }
@@ -156,7 +157,8 @@ namespace Dev2.ViewModels.Merge
                             var armConnector = new ArmConnectorConflict
                             {
                                 UniqueId = id,
-                                DifferentArmConnector = mergeArmConnectorConflict
+                                DifferentArmConnector = mergeArmConnectorConflict,
+                                CurrentArmConnector = EmptyMergeArmConnectorConflict(id)
                             };
                             armConnectorConflicts.Add(armConnector);
                         }
@@ -167,6 +169,14 @@ namespace Dev2.ViewModels.Merge
             return conflicts;
         }                
           
+        static MergeArmConnectorConflict EmptyMergeArmConnectorConflict(Guid uniqueId)
+        {
+            return new MergeArmConnectorConflict
+            {
+                SourceUniqueId = uniqueId.ToString()
+            };
+        }
+
         static MergeToolModel EmptyConflictViewModel(Guid uniqueId)
         {
             return new MergeToolModel
