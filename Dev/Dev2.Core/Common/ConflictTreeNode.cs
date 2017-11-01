@@ -18,19 +18,11 @@ namespace Dev2.Common
         {
             if (Children == null)
             {
-                Children = new List<(string uniqueId, IConflictTreeNode node)>();
+                Children = new List<(string name, IConflictTreeNode node)>();
             }
             Children.Add((name, node));
         }
-
-        public void AddParent(IConflictTreeNode node,string name)
-        {
-            if (Parents == null)
-            {
-                Parents = new List<(string name,string uniqueId, IConflictTreeNode node)>();
-            }
-            Parents.Add((name,node.UniqueId, node));
-        }
+        
 
 #pragma warning disable S1541 // Methods and properties should not be too complex
         public bool Equals(IConflictTreeNode other)
@@ -72,27 +64,16 @@ namespace Dev2.Common
         public override int GetHashCode()
         {
             var hashCode = (397) ^ UniqueId.GetHashCode();
-            hashCode = (hashCode * 397) ^ (Parents != null ? Parents.GetHashCode() : 0);
             hashCode = (hashCode * 397) ^ (Children != null ? Children.GetHashCode() : 0);
             hashCode = (hashCode * 397) ^ (Activity != null ? Activity.GetHashCode() : 0);
             return hashCode;
         }
 
-        public List<(string name, string uniqueId, IConflictTreeNode node)> Parents { get; private set; }
         public List<(string uniqueId, IConflictTreeNode node)> Children { get; private set; }
-        public List<IConflictTreeNode> NextNodes { get; private set; }
         public string UniqueId { get; set; }
         public IDev2Activity Activity { get; }
         public Point Location { get; }
         public bool IsInConflict { get; set; }
-
-        public void AddNext(IConflictTreeNode conflictTreeNode)
-        {
-            if (NextNodes == null)
-            {
-                NextNodes = new List<IConflictTreeNode>();
-            }
-            NextNodes.Add(conflictTreeNode);
-        }
+               
     }
 }

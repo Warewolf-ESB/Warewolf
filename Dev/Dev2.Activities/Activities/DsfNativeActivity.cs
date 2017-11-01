@@ -1071,13 +1071,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                      
         public virtual IEnumerable<IDev2Activity> GetNextNodes()
         {
-            return NextNodes;
+            return NextNodes ?? new List<IDev2Activity>();
         }
 
         public virtual List<(string Description, string Key, string SourceUniqueId, string DestinationUniqueId)> ArmConnectors()
         {
             var armConnectors = new List<(string Description, string Key, string SourceUniqueId, string DestinationUniqueId)>();
-            foreach(var next in NextNodes)
+            foreach(var next in GetNextNodes())
             {
                 armConnectors.Add((GetDisplayName(), null, UniqueID, next.UniqueID));
             }

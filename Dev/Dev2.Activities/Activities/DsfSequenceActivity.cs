@@ -55,7 +55,7 @@ namespace Dev2.Activities
             {
                 if (activity is IDev2Activity act)
                 {
-                    nextNodes.Add(act );
+                    nextNodes.Add(act);
                 }
             }
             return nextNodes;
