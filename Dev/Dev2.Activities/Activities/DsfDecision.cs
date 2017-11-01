@@ -59,13 +59,19 @@ namespace Dev2.Activities
         public override List<(string Description, string Key, string SourceUniqueId, string DestinationUniqueId)> ArmConnectors()
         {
             var armConnectors = new List<(string Description, string Key, string SourceUniqueId, string DestinationUniqueId)>();
-            foreach (var next in TrueArm)
+            if (TrueArm != null)
             {
-                armConnectors.Add((GetDisplayName(), "TRUE", UniqueID, next.UniqueID));
+                foreach (var next in TrueArm)
+                {
+                    armConnectors.Add((GetDisplayName(), "TRUE", UniqueID, next.UniqueID));
+                }
             }
-            foreach (var next in FalseArm)
+            if (FalseArm != null)
             {
-                armConnectors.Add((GetDisplayName(), "False", UniqueID, next.UniqueID));
+                foreach (var next in FalseArm)
+                {
+                    armConnectors.Add((GetDisplayName(), "False", UniqueID, next.UniqueID));
+                }
             }
             return armConnectors;
         }
