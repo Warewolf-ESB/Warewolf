@@ -60,13 +60,19 @@ namespace Dev2.Activities
         public override List<(string Description, string Key, string SourceUniqueId, string DestinationUniqueId)> ArmConnectors()
         {
             var armConnectors = new List<(string Description, string Key, string SourceUniqueId, string DestinationUniqueId)>();
-            foreach (var swt in Switches)
+            if (Switches != null)
             {
-                armConnectors.Add((GetDisplayName(), swt.Key, UniqueID, swt.Value.UniqueID));
+                foreach (var swt in Switches)
+                {
+                    armConnectors.Add((GetDisplayName(), swt.Key, UniqueID, swt.Value.UniqueID));
+                }
             }
-            foreach (var dft in Default)
+            if (Default != null)
             {
-                armConnectors.Add((GetDisplayName(), @"Default", UniqueID, dft.UniqueID));
+                foreach (var dft in Default)
+                {
+                    armConnectors.Add((GetDisplayName(), nameof(Default), UniqueID, dft.UniqueID));
+                }
             }
             return armConnectors;
         }
