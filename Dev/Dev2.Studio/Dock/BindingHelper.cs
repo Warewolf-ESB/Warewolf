@@ -8,10 +8,8 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Data;
-using System.Xml;
 
 
 namespace Dev2.Studio.Dock

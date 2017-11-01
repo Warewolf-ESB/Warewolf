@@ -23,9 +23,6 @@ using Infragistics;
 
 namespace Dev2.Studio.Dock
 {
-    /// <summary>
-    /// Abstract base class used to generate instances of elements based on a given source collection of items (<see cref="ItemsSource"/>).
-    /// </summary>
     [ContentProperty("ItemBindings")]
     public abstract class ContainerFactoryBase : Freezable
         , ISupportInitialize
@@ -40,9 +37,7 @@ namespace Dev2.Studio.Dock
         #endregion //Member Variables
 
         #region Constructor
-        /// <summary>
-        /// Initializes a new <see cref="ContainerFactoryBase"/>
-        /// </summary>
+
         protected ContainerFactoryBase()
         {
             _generatedElements = new Dictionary<object, DependencyObject>();
@@ -55,10 +50,7 @@ namespace Dev2.Studio.Dock
         #region Base class overrides
 
         #region CreateInstanceCore
-        /// <summary>
-        /// Creates an instance of the class
-        /// </summary>
-        /// <returns></returns>
+
         protected override Freezable CreateInstanceCore()
         {
             return (ContainerFactoryBase)Activator.CreateInstance(GetType());
@@ -66,11 +58,7 @@ namespace Dev2.Studio.Dock
         #endregion //CreateInstanceCore
 
         #region FreezeCore
-        /// <summary>
-        /// Invoked when the object is to be frozen.
-        /// </summary>
-        /// <param name="isChecking">True if the ability to freeze is being checked or false when the object is being attempted to be made frozen</param>
-        /// <returns>Returns false since this object cannot be frozen.</returns>
+
         protected override bool FreezeCore(bool isChecking)
         {
             return false;
@@ -84,9 +72,7 @@ namespace Dev2.Studio.Dock
         #region Public
 
         #region ItemBindings
-        /// <summary>
-        /// Returns the collection of bindings that will be used to associated properties of the items from the <see cref="ItemsSource"/> with properties on the generated containers.
-        /// </summary>
+
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
         [Bindable(true)]
         public ItemBindingCollection ItemBindings => _itemBindings;
@@ -94,10 +80,7 @@ namespace Dev2.Studio.Dock
         #endregion //ItemBindings
 
         #region ItemsSource
-
-        /// <summary>
-        /// Identifies the <see cref="ItemsSource"/> dependency property
-        /// </summary>
+        
         public static readonly DependencyProperty ItemsSourceProperty = DependencyProperty.Register("ItemsSource",
             typeof(IEnumerable), typeof(ContainerFactoryBase), new FrameworkPropertyMetadata(null, OnItemsSourceChanged));
 
@@ -124,11 +107,7 @@ namespace Dev2.Studio.Dock
                 ReinitializeElements();
             }
         }
-
-        /// <summary>
-        /// Returns or sets the collection of items used to generate elements.
-        /// </summary>
-        /// <seealso cref="ItemsSourceProperty"/>
+        
         public IEnumerable ItemsSource
         {
             get
@@ -148,9 +127,7 @@ namespace Dev2.Studio.Dock
         #region Protected
 
         #region IsInitializing
-        /// <summary>
-        /// Returns a boolean indicating if the object is being initialized.
-        /// </summary>
+
         protected bool IsInitializing => _isInitializing;
 
         #endregion //IsInitializing
@@ -164,10 +141,7 @@ namespace Dev2.Studio.Dock
         private static readonly DependencyPropertyKey ItemForContainerPropertyKey =
             DependencyProperty.RegisterAttachedReadOnly("ItemForContainer", typeof(object), typeof(ContainerFactoryBase),
                 new FrameworkPropertyMetadata(null));
-
-        /// <summary>
-        /// ItemForContainer Attached Dependency Property
-        /// </summary>
+        
         private static readonly DependencyProperty ItemForContainerProperty = ItemForContainerPropertyKey.DependencyProperty;
 
         #endregion //ItemForContainer
@@ -181,11 +155,7 @@ namespace Dev2.Studio.Dock
         #region Public Methods
 
         #region GetItemForContainer
-        /// <summary>
-        /// Returns the data item for which a given container is associated.
-        /// </summary>
-        /// <param name="container">The container to evaluate</param>
-        /// <returns>The item associated with the specified container.</returns>
+
         public static object GetItemForContainer(DependencyObject container)
         {
             return container.GetValue(ItemForContainerProperty);
@@ -197,11 +167,7 @@ namespace Dev2.Studio.Dock
         #region Protected methods
 
         #region ApplyItemContainerStyle
-        /// <summary>
-        /// Used to apply a style to the container for an item
-        /// </summary>
-        /// <param name="container">The container associated with the item</param>
-        /// <param name="item">The item from the source collection</param>
+
         protected virtual void ApplyItemContainerStyle(DependencyObject container, object item)
         {
 
@@ -209,29 +175,19 @@ namespace Dev2.Studio.Dock
         #endregion //ApplyItemContainerStyle
 
         #region ClearContainerForItem
-        /// <summary>
-        /// Used to clear any settings applied to a container in the <see cref="PrepareContainerForItem"/>
-        /// </summary>
-        /// <param name="container">The container element </param>
-        /// <param name="item">The item from the source collection</param>
+
         protected virtual void ClearContainerForItem(DependencyObject container, object item)
         {
         }
         #endregion //ClearContainerForItem
 
         #region GetContainerForItem
-        /// <summary>
-        /// Invoked when an element needs to be generated for a given item.
-        /// </summary>
-        /// <returns>The element to represent the item</returns>
+
         protected abstract ContentControl GetContainerForItem(object item);
         #endregion //GetContainerForItem
 
         #region GetElements
-        /// <summary>
-        /// Returns an enumerable list of elements that have been generated
-        /// </summary>
-        /// <returns></returns>
+
         protected IEnumerable<DependencyObject> GetElements()
         {
             if(_currentView != null)
@@ -249,11 +205,7 @@ namespace Dev2.Studio.Dock
         #endregion //GetElements
 
         #region GetItemFromContainer
-        /// <summary>
-        /// Returns the item associated with a given container.
-        /// </summary>
-        /// <param name="container">The container whose underlying item is being requested</param>
-        /// <returns>The underlying item</returns>
+
         protected object GetItemFromContainer(DependencyObject container)
         {
             return container.GetValue(ItemForContainerProperty);
@@ -261,11 +213,7 @@ namespace Dev2.Studio.Dock
         #endregion //GetItemFromContainer
 
         #region IsContainerInUse
-        /// <summary>
-        /// Returns a boolean indicating if the specified container is currently in use. 
-        /// </summary>
-        /// <param name="container">The container to evaluate</param>
-        /// <returns>This will return false if the container has not yet been added, has been removed or is in the process of being removed.</returns>
+
         protected bool IsContainerInUse(DependencyObject container)
         {
             object item = container.ReadLocalValue(ItemForContainerProperty);
@@ -290,11 +238,7 @@ namespace Dev2.Studio.Dock
         #endregion //IsContainerInUse
 
         #region IsItemItsOwnContainer
-        /// <summary>
-        /// Used to determine if the item from the source collection needs to have an container element generated for it.
-        /// </summary>
-        /// <param name="item">The item to evaluate</param>
-        /// <returns>Returns true to indicate that a container is needed</returns>
+
         protected virtual bool IsItemItsOwnContainer(object item)
         {
             return true;
@@ -302,44 +246,25 @@ namespace Dev2.Studio.Dock
         #endregion //IsItemItsOwnContainer
 
         #region OnItemInserted
-        /// <summary>
-        /// Invoked when an element for an item has been generated.
-        /// </summary>
-        /// <param name="item">The underlying item for which the element has been generated</param>
-        /// <param name="container">The element that was generated</param>
-        /// <param name="index">The index at which the item existed</param>
+
         protected abstract void OnItemInserted(DependencyObject container, object item, int index);
 
         #endregion //OnItemInserted
 
         #region OnItemMoved
-        /// <summary>
-        /// Invoked when an item has been moved in the source collection.
-        /// </summary>
-        /// <param name="item">The item that was moved</param>
-        /// <param name="container">The associated element</param>
-        /// <param name="oldIndex">The old index</param>
-        /// <param name="newIndex">The new index</param>
+
         protected abstract void OnItemMoved(DependencyObject container, object item, int oldIndex, int newIndex);
 
         #endregion //OnItemMoved
 
         #region OnItemRemoved
-        /// <summary>
-        /// Invoked when an element created for an item has been removed
-        /// </summary>
-        /// <param name="oldItem">The item associated with the element that was removed</param>
-        /// <param name="container">The element that has been removed</param>
+
         protected abstract void OnItemRemoved(DependencyObject container, object oldItem);
 
         #endregion //OnItemRemoved
 
         #region PrepareContainerForItem
-        /// <summary>
-        /// Used to initialize a container for a given item.
-        /// </summary>
-        /// <param name="container">The container element </param>
-        /// <param name="item">The item from the source collection</param>
+
         protected virtual void PrepareContainerForItem(DependencyObject container, object item)
         {
             for(int i = 0, count = _itemBindings.Count; i < count; i++)
@@ -355,9 +280,7 @@ namespace Dev2.Studio.Dock
         #endregion //PrepareContainerForItem
 
         #region Reset
-        /// <summary>
-        /// Removes all generated elements and rebuilds the elements.
-        /// </summary>
+
         protected void Reset()
         {
             ClearItems();
@@ -367,12 +290,7 @@ namespace Dev2.Studio.Dock
         #endregion //Reset
 
         #region VerifyItemIndex
-        /// <summary>
-        /// Invoked during a verification of the source collection versus the elements generated to ensure the item is in the same location as that source item.
-        /// </summary>
-        /// <param name="item">The item being verified</param>
-        /// <param name="container">The element associated with the item</param>
-        /// <param name="index">The index in the source collection where the item exists</param>
+
         protected virtual void VerifyItemIndex(DependencyObject container, object item, int index)
         {
         }
@@ -604,10 +522,7 @@ namespace Dev2.Studio.Dock
         #endregion //Methods
 
         #region ISupportInitialize Members
-
-        /// <summary>
-        /// Invoked when the object is about to be initialized
-        /// </summary>
+        
         public void BeginInit()
         {
             Debug.Assert(!_isInitializing);
@@ -616,9 +531,6 @@ namespace Dev2.Studio.Dock
             _isInitializing = true;
         }
 
-        /// <summary>
-        /// Invoked when the object initialization is complete
-        /// </summary>
         public void EndInit()
         {
             WritePreamble();
@@ -630,9 +542,6 @@ namespace Dev2.Studio.Dock
         #endregion
     }
 
-    /// <summary>
-    /// Base class used to generate instances of objects of a specified type (<see cref="ContainerType"/>) based on a given source collection of items (<see cref="ContainerFactoryBase.ItemsSource"/>).
-    /// </summary>
     public abstract class ContainerFactory : ContainerFactoryBase
     {
         #region Member Variables
@@ -674,10 +583,7 @@ namespace Dev2.Studio.Dock
         #endregion //ApplyItemContainerStyle
 
         #region GetContainerForItem
-        /// <summary>
-        /// Invoked when an element needs to be generated for a given item.
-        /// </summary>
-        /// <returns>The element to represent the item</returns>
+
         protected override ContentControl GetContainerForItem(object item)
         {
             return (ContentControl)Activator.CreateInstance(ContainerType);
@@ -691,10 +597,7 @@ namespace Dev2.Studio.Dock
         #region Public properties
 
         #region ContainerStyle
-
-        /// <summary>
-        /// Identifies the <see cref="ContainerStyle"/> dependency property
-        /// </summary>
+        
         public static readonly DependencyProperty ContainerStyleProperty = DependencyProperty.Register("ContainerStyle",
             typeof(Style), typeof(ContainerFactory), new FrameworkPropertyMetadata(null, OnContainerStyleChanged));
 
@@ -703,11 +606,7 @@ namespace Dev2.Studio.Dock
             ContainerFactory ef = (ContainerFactory)d;
             ef.RefreshContainerStyles();
         }
-
-        /// <summary>
-        /// Returns the style to apply to the element created.
-        /// </summary>
-        /// <seealso cref="ContainerStyleProperty"/>
+        
         [Description("Returns the style to apply to the element created.")]
         [Category("Behavior")]
         [Bindable(true)]
@@ -726,17 +625,10 @@ namespace Dev2.Studio.Dock
         #endregion //ContainerStyle
 
         #region ContainerStyleSelector
-
-        /// <summary>
-        /// Identifies the <see cref="ContainerStyleSelector"/> dependency property
-        /// </summary>
+        
         public static readonly DependencyProperty ContainerStyleSelectorProperty = DependencyProperty.Register("ContainerStyleSelector",
             typeof(StyleSelector), typeof(ContainerFactory), new FrameworkPropertyMetadata(null, OnContainerStyleChanged));
-
-        /// <summary>
-        /// Returns or sets a StyleSelector that can be used to provide a Style for the items.
-        /// </summary>
-        /// <seealso cref="ContainerStyleSelectorProperty"/>
+        
         [Description("Returns or sets a StyleSelector that can be used to provide a Style for the items.")]
         [Category("Behavior")]
         [Bindable(true)]
@@ -755,10 +647,7 @@ namespace Dev2.Studio.Dock
         #endregion //ContainerStyleSelector
 
         #region ContainerType
-
-        /// <summary>
-        /// Identifies the <see cref="ContainerType"/> dependency property
-        /// </summary>
+        
         public static readonly DependencyProperty ContainerTypeProperty = DependencyProperty.Register("ContainerType",
             typeof(Type), typeof(ContainerFactory), new FrameworkPropertyMetadata(null, OnContainerTypeChanged, CoerceContainerType), ValidateContainerType);
 
@@ -802,11 +691,7 @@ namespace Dev2.Studio.Dock
 
             return true;
         }
-
-        /// <summary>
-        /// Returns or sets the type of element to create
-        /// </summary>
-        /// <seealso cref="ContainerTypeProperty"/>
+        
         [Description("Returns or sets the type of element to create")]
         [Category("Behavior")]
         [Bindable(true)]
@@ -829,10 +714,7 @@ namespace Dev2.Studio.Dock
         #region Private
 
         #region AppliedStyle
-
-        /// <summary>
-        /// ItemForContainer Attached Dependency Property
-        /// </summary>
+        
         private static readonly DependencyProperty AppliedStyleProperty =
             DependencyProperty.RegisterAttached("AppliedStyle", typeof(bool), typeof(ContainerFactory),
                 new FrameworkPropertyMetadata(KnownBoxes.FalseBox));
@@ -856,10 +738,7 @@ namespace Dev2.Studio.Dock
         #endregion //RefreshContainerStyles
 
         #region ValidateContainerType
-        /// <summary>
-        /// Invoked when the <see cref="ContainerType"/> is about to be changed to determine if the specified type is allowed.
-        /// </summary>
-        /// <param name="elementType">The new element type</param>
+
         protected virtual void ValidateContainerType(Type elementType)
         {
         }
