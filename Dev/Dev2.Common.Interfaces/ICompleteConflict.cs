@@ -3,21 +3,33 @@ using System.Collections.Generic;
 
 namespace Dev2.Common.Interfaces
 {
-    public interface ICompleteConflict
+
+    public interface IConflict
+    {
+        bool HasConflict { get; set; }
+        bool IsChecked { get; set; }
+    }
+
+    public interface IArmConnectorConflict : IConflict
+    {
+        string ArmDescription { get; set; }
+        string SourceUniqueId { get; set; }
+        string DestinationUniqueId { get; set; }
+        string Key { get; set; }
+    }
+
+    public interface IToolConflict:IConflict
     {
         IMergeToolModel CurrentViewModel { get; set; }
         IMergeToolModel DiffViewModel { get; set; }
-        LinkedList<ICompleteConflict> Children { get; set; }
-        ICompleteConflict Parent { get; set; }
-        Guid UniqueId { get; set; }
-        bool HasConflict { get; set; }
-        bool HasNodeArmConflict { get; set; }
+        LinkedList<IToolConflict> Children { get; set; }
+        IToolConflict Parent { get; set; }
+        Guid UniqueId { get; set; }        
         bool IsMergeExpanderEnabled { get; set; }
-        bool IsMergeExpanded { get; set; }
-        bool IsChecked { get; set; }
+        bool IsMergeExpanded { get; set; }        
         bool IsContainerTool { get; set; }
-        ICompleteConflict GetNextConflict();
-        LinkedListNode<ICompleteConflict> Find(ICompleteConflict itemToFind);
-        bool All(Func<ICompleteConflict, bool> check);
+        IToolConflict GetNextConflict();
+        LinkedListNode<IToolConflict> Find(IToolConflict itemToFind);
+        bool All(Func<IToolConflict, bool> check);
     }
 }

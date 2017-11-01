@@ -23,7 +23,7 @@ namespace Dev2.Common.Interfaces
         ModelItem FlowNode { get; set; }
         Point NodeLocation { get; set; }
         bool IsMergeVisible { get; set; }
-        ICompleteConflict Container { get; set; }
+        IToolConflict Container { get; set; }
         bool IsTrueArm { get; set; }
         string NodeArmDescription { get; set; }
     }

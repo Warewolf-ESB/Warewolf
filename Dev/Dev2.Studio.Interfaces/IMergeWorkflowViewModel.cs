@@ -19,7 +19,7 @@ namespace Dev2.Studio.Interfaces
         bool HasVariablesConflict { get; set; }
         IConflictModelFactory CurrentConflictModel { get; set; }
         IConflictModelFactory DifferenceConflictModel { get; set; }
-        LinkedList<ICompleteConflict> Conflicts { get; set; }
+        LinkedList<IConflict> Conflicts { get; set; }
         bool IsVariablesEnabled { get; set; }
     }
 }

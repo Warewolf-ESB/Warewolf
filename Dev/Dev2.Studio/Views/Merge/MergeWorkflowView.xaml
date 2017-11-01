@@ -414,7 +414,7 @@
 			                      VirtualizingStackPanel.IsVirtualizingWhenGrouping="True"
 			                      VirtualizingStackPanel.IsContainerVirtualizable="True">
                             <TreeView.Resources>
-                                <HierarchicalDataTemplate DataType="{x:Type merge:CompleteConflict}">
+                                <HierarchicalDataTemplate DataType="{x:Type merge:ToolConflict}">
                                     <Grid Name="ConflictsTreeViewTemplateGrid" 
                                           Width="{Binding ElementName=ConflictsTreeView, Path=ActualWidth}"
                                           AutomationProperties.AutomationId="UI_ConflictsTreeViewTemplateGrid_AutoID">

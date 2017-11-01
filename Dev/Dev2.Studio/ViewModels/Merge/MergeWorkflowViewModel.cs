@@ -33,13 +33,13 @@ namespace Dev2.ViewModels.Merge
 
             var currentChanges = _serviceDifferenceParser.GetDifferences(currentResourceModel, differenceResourceModel, loadworkflowFromServer);
             var conflicts = BuildConflicts(currentResourceModel, differenceResourceModel, currentChanges);
-            Conflicts = new LinkedList<ICompleteConflict>(conflicts);
+            Conflicts = new LinkedList<IConflict>(conflicts);
             _conflictEnumerator = Conflicts.GetEnumerator();
             var firstConflict = Conflicts.FirstOrDefault();            
-            SetupBindings(currentResourceModel, differenceResourceModel, firstConflict);
+            SetupBindings(currentResourceModel, differenceResourceModel, firstConflict as IToolConflict);
         }
 
-        void SetupBindings(IContextualResourceModel currentResourceModel, IContextualResourceModel differenceResourceModel, ICompleteConflict firstConflict)
+        void SetupBindings(IContextualResourceModel currentResourceModel, IContextualResourceModel differenceResourceModel, IToolConflict firstConflict)
         {
             if (CurrentConflictModel == null)
             {                
@@ -81,9 +81,9 @@ namespace Dev2.ViewModels.Merge
             CurrentConflictModel.IsVariablesChecked = !HasVariablesConflict;
         }
 
-        List<ICompleteConflict> BuildConflicts(IContextualResourceModel currentResourceModel, IContextualResourceModel differenceResourceModel, (List<ConflictTreeNode> current, List<ConflictTreeNode> diff) currentChanges)
+        List<IConflict> BuildConflicts(IContextualResourceModel currentResourceModel, IContextualResourceModel differenceResourceModel, (List<ConflictTreeNode> current, List<ConflictTreeNode> diff) currentChanges)
         {
-            var conflicts = new List<ICompleteConflict>();
+            var conflicts = new List<IConflict>();
 
             var currentTree = currentChanges.current;
             var diffTree = currentChanges.diff;
@@ -93,7 +93,7 @@ namespace Dev2.ViewModels.Merge
             {
                 foreach (var treeItem in currentTree)
                 {
-                    var conflict = new CompleteConflict();
+                    var conflict = new ToolConflict();
                     var modelFactory = new ConflictModelFactory(currentResourceModel, treeItem);
                     var id = Guid.Parse(treeItem.UniqueId);
                     conflict.UniqueId = id;
@@ -109,13 +109,13 @@ namespace Dev2.ViewModels.Merge
             {
                 foreach (var treeItem in diffTree)
                 {
-                    ICompleteConflict conflict = null;
+                    IToolConflict conflict = null;
                     var node = treeItem;
-                    var foundConflict = conflicts.FirstOrDefault(t => t.UniqueId.ToString() == node.UniqueId);
+                    var foundConflict = conflicts.Cast<IToolConflict>().FirstOrDefault(t => t.UniqueId.ToString() == node.UniqueId);
                     var id = Guid.Parse(node.UniqueId);
                     if (foundConflict == null)
                     {
-                        conflict = new CompleteConflict { UniqueId = id, CurrentViewModel = EmptyConflictViewModel(id) };
+                        conflict = new ToolConflict { UniqueId = id, CurrentViewModel = EmptyConflictViewModel(id) };
                         conflicts.Add(conflict);
                     }
                     else
@@ -149,81 +149,67 @@ namespace Dev2.ViewModels.Merge
         {
             _serviceDifferenceParser = serviceDifferenceParser;
         }
+              
 
-        LinkedListNode<ICompleteConflict> Find(ICompleteConflict itemToFind)
-        {
-            var linkedConflict = Conflicts.Find(itemToFind);
-            if (linkedConflict != null)
-            {
-                return linkedConflict;
-            }
-            foreach (var completeConflict in Conflicts)
-            {
-                var childItem = completeConflict.Find(itemToFind);
-                if (childItem != null)
-                {
-                    return childItem;
-                }
-            }
-            return null;
-        }
-
-        bool All(Func<ICompleteConflict, bool> check)
+        bool All(Func<IConflict, bool> check)
         {
             var conflictsMatch = Conflicts.All(check);
             var childrenMatch = true;
             foreach (var completeConflict in Conflicts)
             {
-                childrenMatch &= completeConflict.All(check);
+                if (completeConflict is IToolConflict toolConflict)
+                {
+                    childrenMatch &= toolConflict.All(check);
+                }
             }
             return conflictsMatch && childrenMatch;
         }
 
         void AddActivity(IMergeToolModel model)
         {
-            var conflict = Conflicts.FirstOrDefault();
+            var conflict = Conflicts.Cast<IToolConflict>().FirstOrDefault();
             if (conflict != null && conflict.UniqueId == model.UniqueId)
             {
                 WorkflowDesignerViewModel.RemoveStartNodeConnection();
             }
-            var linkedConflict = Find(model.Container);
-            IMergeToolModel previous = null;
-            IMergeToolModel next = null;
-            ICompleteConflict previousCurrentViewModel = null;
-            if (linkedConflict != null)
-            {
-                var parents = SetPreviousModelTool(linkedConflict);
-                if (model.Parent != null)
-                {
-                    previousCurrentViewModel = parents?.FirstOrDefault(x => x.UniqueId == model.Parent.UniqueId);
+            //var linkedConflict = Find(model.Container);
+            //IMergeToolModel previous = null;
+            //IMergeToolModel next = null;
+            //IToolConflict previousCurrentViewModel = null;
+            //if (linkedConflict != null)
+            //{
+            //    var parents = SetPreviousModelTool(linkedConflict);
+            //    if (model.Parent != null)
+            //    {
+            //        previousCurrentViewModel = parents?.FirstOrDefault(x => x.UniqueId == model.Parent.UniqueId);
             
-                }
-                else
-                {
-                    previousCurrentViewModel = parents?.FirstOrDefault(x => x.UniqueId != linkedConflict.Previous.Value.UniqueId);
-                }
+            //    }
+            //    else
+            //    {
+            //        previousCurrentViewModel = parents?.FirstOrDefault(x => x.UniqueId != linkedConflict.Previous.Value.UniqueId);
+            //    }
 
-                if (previousCurrentViewModel != null)
-                {
-                    if (previousCurrentViewModel.CurrentViewModel != null && previousCurrentViewModel.CurrentViewModel.IsMergeChecked)
-                    {
-                        previous = previousCurrentViewModel.CurrentViewModel;
-                    }
-                    else
-                    {
-                        if (previousCurrentViewModel.DiffViewModel != null && previousCurrentViewModel.DiffViewModel.IsMergeChecked)
-                        {
-                            previous = previousCurrentViewModel.DiffViewModel;
-                        }
-                    }
-                }
-                next = SetNextModelTool(linkedConflict);
-            }
-            WorkflowDesignerViewModel.AddItem(previous, model, next);
-            WorkflowDesignerViewModel.SelectedItem = model.FlowNode;
+            //    if (previousCurrentViewModel != null)
+            //    {
+            //        if (previousCurrentViewModel.CurrentViewModel != null && previousCurrentViewModel.CurrentViewModel.IsMergeChecked)
+            //        {
+            //            previous = previousCurrentViewModel.CurrentViewModel;
+            //        }
+            //        else
+            //        {
+            //            if (previousCurrentViewModel.DiffViewModel != null && previousCurrentViewModel.DiffViewModel.IsMergeChecked)
+            //            {
+            //                previous = previousCurrentViewModel.DiffViewModel;
+            //            }
+            //        }
+            //    }
+            //    next = SetNextModelTool(linkedConflict);
+            //}
+            //WorkflowDesignerViewModel.AddItem(previous, model, next);
+            //WorkflowDesignerViewModel.SelectedItem = model.FlowNode;
         }
 
-        static IMergeToolModel SetNextModelTool(LinkedListNode<ICompleteConflict> linkedConflict)
+        static IMergeToolModel SetNextModelTool(LinkedListNode<IToolConflict> linkedConflict)
         {
             IMergeToolModel next = null;
             var nextValue = linkedConflict.Next?.Value;
@@ -251,9 +237,9 @@ namespace Dev2.ViewModels.Merge
         }
 
         [CanBeNull]
-        static List<ICompleteConflict> SetPreviousModelTool(LinkedListNode<ICompleteConflict> linkedConflict)
+        static List<IToolConflict> SetPreviousModelTool(LinkedListNode<IToolConflict> linkedConflict)
         {
-            var parents = new List<ICompleteConflict>();
+            var parents = new List<IToolConflict>();
             var previousValue = linkedConflict.Previous?.Value ?? linkedConflict.Value.Parent;            
             var previousCurrentViewModel = previousValue?.CurrentViewModel;
             if (previousCurrentViewModel != null)
@@ -270,7 +256,7 @@ namespace Dev2.ViewModels.Merge
 #pragma warning disable S1450 // Private fields only used as local variables in methods should become local variables
         bool _canSave;
 #pragma warning restore S1450 // Private fields only used as local variables in methods should become local variables
-        readonly IEnumerator<ICompleteConflict> _conflictEnumerator;
+        readonly IEnumerator<IConflict> _conflictEnumerator;
         IDataListViewModel _dataListViewModel;
 
         void SourceOnConflictModelChanged(object sender, IConflictModelFactory args)
@@ -292,7 +278,7 @@ namespace Dev2.ViewModels.Merge
                     DataListViewModel = args.DataListViewModel;
                     _conflictEnumerator.MoveNext();
                 }
-                var completeConflict = Conflicts.First.Value;
+                var completeConflict = Conflicts.First.Value as IToolConflict;
                 completeConflict.IsMergeExpanderEnabled = completeConflict.HasConflict;
                 if (completeConflict.HasConflict)
                 {
@@ -372,7 +358,7 @@ namespace Dev2.ViewModels.Merge
             }
         }
 
-        static void ExpandPreviousItems(ICompleteConflict nextConflict)
+        static void ExpandPreviousItems(IToolConflict nextConflict)
         {
             if (nextConflict.Parent != null)
             {
@@ -381,19 +367,11 @@ namespace Dev2.ViewModels.Merge
             }
         }
 
-        ICompleteConflict GetNextConflict()
+        IConflict GetNextConflict()
         {
             var current = _conflictEnumerator.Current;
             if (current != null)
-            {
-                if (current.Children.Count > 0)
-                {
-                    var nextConflict = current.GetNextConflict();
-                    if (nextConflict != null)
-                    {
-                        return nextConflict;
-                    }
-                }
+            {                
                 if (_conflictEnumerator.MoveNext())
                 {
                     current = _conflictEnumerator.Current;
@@ -404,14 +382,14 @@ namespace Dev2.ViewModels.Merge
             return _conflictEnumerator.Current;
         }
 
-        ICompleteConflict UpdateNextEnabledState()
+        IToolConflict UpdateNextEnabledState()
         {
             if (Conflicts == null)
             {
                 return null;
             }
 
-            var nextCurrConflict = GetNextConflict();
+            var nextCurrConflict = GetNextConflict() as IToolConflict;
             if (nextCurrConflict != null)
             {
                 nextCurrConflict.CurrentViewModel.IsMergeEnabled = nextCurrConflict.HasConflict;
@@ -420,7 +398,7 @@ namespace Dev2.ViewModels.Merge
             return nextCurrConflict;
         }
                   
-        public LinkedList<ICompleteConflict> Conflicts { get; set; }
+        public LinkedList<IConflict> Conflicts { get; set; }
 
         public IWorkflowDesignerViewModel WorkflowDesignerViewModel { get; set; }
 

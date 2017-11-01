@@ -1,31 +1,30 @@
 ﻿using System;
-using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Linq;
-using Dev2.Activities.Designers2.Sequence;
 using Dev2.Common.Interfaces;
 using Microsoft.Practices.Prism.Mvvm;
 
 namespace Dev2.ViewModels.Merge
 {
-    public class CompleteConflict : BindableBase, ICompleteConflict
+
+    public class ToolConflict : BindableBase, IToolConflict
     {
         bool _isMergeExpanded;
         bool _isMergeExpanderEnabled;
         bool _hasConflict;
         bool _hasNodeArmConflict;
-        IEnumerator<ICompleteConflict> _conflictEnumerator;
-        private bool _isContainerTool;
+        IEnumerator<IToolConflict> _conflictEnumerator;
+        bool _isContainerTool;
 
-        public CompleteConflict()
+        public ToolConflict()
         {
-            Children = new LinkedList<ICompleteConflict>();
+            Children = new LinkedList<IToolConflict>();
         }
 
         public IMergeToolModel CurrentViewModel { get; set; }
         public IMergeToolModel DiffViewModel { get; set; }
-        public LinkedList<ICompleteConflict> Children { get; set; }
-        public ICompleteConflict Parent { get; set; }
+        public LinkedList<IToolConflict> Children { get; set; }
+        public IToolConflict Parent { get; set; }
         public Guid UniqueId { get; set; }
 
         public bool IsChecked { get; set; }
@@ -80,7 +79,7 @@ namespace Dev2.ViewModels.Merge
             }
         }
 
-        public ICompleteConflict GetNextConflict()
+        public IToolConflict GetNextConflict()
         {
             if (_conflictEnumerator == null)
             {
@@ -106,7 +105,7 @@ namespace Dev2.ViewModels.Merge
             return null;
         }
 
-        public LinkedListNode<ICompleteConflict> Find(ICompleteConflict itemToFind)
+        public LinkedListNode<IToolConflict> Find(IToolConflict itemToFind)
         {
             var linkedConflict = Children.Find(itemToFind);
             if (linkedConflict != null)
@@ -124,7 +123,7 @@ namespace Dev2.ViewModels.Merge
             return null;
         }
 
-        public bool All(Func<ICompleteConflict, bool> check)
+        public bool All(Func<IToolConflict, bool> check)
         {
             var current = Children.All(check);
             var childrenMatch = true;
