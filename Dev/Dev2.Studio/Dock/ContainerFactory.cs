@@ -484,9 +484,5 @@ namespace Dev2.Studio.Dock
                 ApplyItemContainerStyle(container, GetItemFromContainer(container));
             }
         }
-
-        protected virtual void ValidateContainerType(Type elementType)
-        {
-        }
     }
 }
