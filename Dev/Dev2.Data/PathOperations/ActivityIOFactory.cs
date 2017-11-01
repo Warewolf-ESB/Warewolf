@@ -73,7 +73,6 @@ namespace Dev2.PathOperations
         {
             lock(EndPointsLock)
             {
-                // load end-points if need be... aka first load
                 if(_endPoints == null)
                 {
                     _endPoints = new List<Type>();
@@ -95,16 +94,14 @@ namespace Dev2.PathOperations
                     }
                 }
             }
-
-            // now find the right match ;)
+            
             int pos = 0;
-
             while(pos < _referenceCheckers.Count && !_referenceCheckers[pos].HandlesType(target.PathType))
             {
                 pos++;
             }
             IActivityIOOperationsEndPoint result;
-            if (_endPoints != null && _endPoints.Count > 0)
+            if (_endPoints.Count > 0)
             {
                  result =
                     (IActivityIOOperationsEndPoint)Activator.CreateInstance(_endPoints[pos]);

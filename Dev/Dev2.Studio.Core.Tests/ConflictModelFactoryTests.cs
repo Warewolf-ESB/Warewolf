@@ -13,8 +13,10 @@ namespace Dev2.Core.Tests
         public void Construct_GivenPassThrough()
         {
             //---------------Set up test pack-------------------
+            var activity = new Mock<IDev2Activity>();
             var conflictNode = new Mock<IConflictNode>();
             var node = new Mock<IConflictTreeNode>();
+            node.Setup(p => p.Activity).Returns(activity.Object);
             var contextualResourceModel = new Mock<IContextualResourceModel>();
             var factory = new ConflictModelFactory(contextualResourceModel.Object, node.Object);
             //---------------Assert Precondition----------------

@@ -1655,20 +1655,22 @@ Using recordset () will add a new record and (*) will assign every record.</valu
   </data>
   <data name="DateTimeToolTipOutputformat" xml:space="preserve">
     <value>Describe the format you would like the date time to be returned in.
-Leaving this field blank will assume the same as the Input Format.
+The default date time format is shown, if this is not the required format, then it can be changed to the format needed.
 To include text or non-date information use 'around the text you want to escape'. 
 e.g. Time is now 15 hours and 33 minutes. Would have an output format of 'Time is now' 24hr 'hours and' min 'minutes.'</value>
   </data>
   <data name="DateTimeToolTipInputformat" xml:space="preserve">
     <value>Describe the format of the date time you are entering. e.g. 23-July 1978 would be described as dd-MM yyyy.
-Leaving this field blank will assume the system date time format.
+The default date time format is shown, if this is not the required format, then it can be changed to the format needed.
+Leaving this field blank will assume the default date time format.
 To escape text or non-date information use 'around the text you want to escape'. 
 e.g. Time is now 15 hours and 33 minutes. Would have an input format of 'Time is now' 24hr 'hours and' min 'minutes.'</value>
   </data>
   <data name="DateTimeToolTipDatetime" xml:space="preserve">
     <value>Any variable and/or data goes in here.
 To format a date time, or to add/subtract from a date time, put it in here.
-Leaving this field blank will give you the system date time.</value>
+The default date time format is shown, if this is not the required format, then it can be changed to the format needed.
+Leaving this field blank will give you the default date time.</value>
   </data>
   <data name="DateTimeToolTipAddtime" xml:space="preserve">
     <value>Put a positive or negative number here to add or subtract from the input date time.
@@ -1689,12 +1691,14 @@ Using recordset () will add a new record and (*) will assign every record.</valu
   <data name="DateTimeDifferenceToolTipDatetime2" xml:space="preserve">
     <value>Any variable and/or data goes in here.
 To find the difference in time between two date times, put the second date time in here. The format needs to be the same for the two.
-Leaving this field blank will give you the system date time.</value>
+The default date time format is shown, if this is not the required format, then it can be changed to the format needed.
+Leaving this field blank will give you the default date time.</value>
   </data>
   <data name="DateTimeDifferenceToolTipDatetime1" xml:space="preserve">
     <value>Any variable and/or data goes in here.
 To find the difference in time between two date times, put the first date time in here. The format needs to be the same for the two.
-Leaving this field blank will give you the system date time.</value>
+The default date time format is shown, if this is not the required format, then it can be changed to the format needed.
+Leaving this field blank will give you the default date time.</value>
   </data>
   <data name="DataSplitToolTipWithtype" xml:space="preserve">
     <value>Select where you would like to split the data.</value>

@@ -62,6 +62,9 @@
     <DefineConstants>DEBUG</DefineConstants>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>Dev2.Startup</StartupObject>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="AdornedControl">
       <HintPath>..\Binaries\AdornedControl.dll</HintPath>
@@ -317,7 +320,6 @@
     <Compile Include="AppResources\Behaviors\TabGroupPaneBindingBehavior.cs" />
     <Compile Include="AppResources\Behaviors\TextboxSelectAllOnFocusBehavior.cs" />
     <Compile Include="AppResources\Behaviors\TreeviewScrollToEndOnNewContent.cs" />
-    <Compile Include="AppResources\Behaviors\UserControlFocusNextAndPreviousBehaviour.cs" />
     <Compile Include="AppResources\Behaviors\WindowCloseBehviour.cs" />
     <Compile Include="AppResources\Behaviors\WorkflowDesignerLinkBehaviours.cs" />
     <Compile Include="AppResources\Comparers\WorkSurfaceKeyEqualityComparerWithContextKey.cs" />
@@ -439,10 +441,6 @@
     <Compile Include="ViewModels\Dialogs\Dev2MessageBoxViewModel.cs" />
     <Compile Include="ViewModels\QuickVariableInput\QuickVariableInputViewModel.cs" />
     <Compile Include="ViewModels\WorkSurface\IWorkSurfaceViewModel.cs" />
-    <Compile Include="Views\Diagnostics\ReportsViewerView.xaml.cs">
-      <DependentUpon>ReportsViewerView.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Views\Help\HelpView.xaml.cs">
       <DependentUpon>HelpView.xaml</DependentUpon>
     </Compile>
@@ -626,10 +624,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\DependencyVisualization\DependencyVisualiserView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Diagnostics\ReportsViewerView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

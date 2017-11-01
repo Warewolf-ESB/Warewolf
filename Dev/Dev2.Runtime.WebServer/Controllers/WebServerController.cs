@@ -137,22 +137,6 @@ namespace Dev2.Runtime.WebServer.Controllers
             return ProcessRequest<WebsiteResourceHandler>(requestVariables);
         }
 
-        [HttpPost]
-        [Route("{__website__}/{__path__}/Service/{__name__}/{__method__}")]
-        public HttpResponseMessage InvokeService(string __website__, string __path__, string __name__, string __method__)
-        {
-            // DO NOT replace {method} with {action} in route mapping --> {action} is a reserved placeholder!
-            var requestVariables = new NameValueCollection
-            {
-                { "website", __website__ },
-                { "path", __path__ },
-                { "name", __name__ },
-                { "action", __method__ },
-            };
-
-            return ProcessRequest<WebsiteServiceHandler>(requestVariables);
-        }
-
         [HttpGet]
         [HttpPost]
         [Route("Services/{*__name__}")]

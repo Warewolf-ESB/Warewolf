@@ -141,7 +141,6 @@
     <Compile Include="Handlers\InternalServiceRequestHandler.cs" />
     <Compile Include="Handlers\WebGetRequestHandler.cs" />
     <Compile Include="Handlers\WebsiteResourceHandler.cs" />
-    <Compile Include="Handlers\WebsiteServiceHandler.cs" />
     <Compile Include="Handlers\IRequestHandler.cs" />
     <Compile Include="Handlers\WebPostRequestHandler.cs" />
     <Compile Include="Responses\ContentTypes.cs" />

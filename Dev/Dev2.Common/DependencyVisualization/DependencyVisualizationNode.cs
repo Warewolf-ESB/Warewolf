@@ -63,15 +63,8 @@ namespace Dev2.Common.DependencyVisualization
         {
             get { return _locationX; }
             set
-            {
-                
-                if (value == _locationX)
-                {
-                    return;
-                }
-
+            {                
                 _locationX = value;
-
                 OnPropertyChanged("LocationX");
             }
         }
@@ -80,15 +73,8 @@ namespace Dev2.Common.DependencyVisualization
         {
             get { return _locationY; }
             set
-            {
-                
-                if (value == _locationY)
-                {
-                    return;
-                }
-
+            {                
                 _locationY = value;
-
                 OnPropertyChanged("LocationY");
             }
         }

@@ -9,10 +9,9 @@ Param(
   [string]$ResourcesType,
   [switch]$VSTest,
   [switch]$MSTest,
-  [switch]$DotCover,
   [string]$VSTestPath="C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\Common7\IDE\CommonExtensions\Microsoft\TestWindow\vstest.console.exe",
   [string]$MSTestPath="C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\Common7\IDE\MSTest.exe",
-  [string]$DotCoverPath="$env:LocalAppData\JetBrains\Installations\dotCover08\dotCover.exe",
+  [string]$DotCoverPath,
   [string]$ServerUsername,
   [string]$ServerPassword,
   [string]$JobName="",
@@ -35,7 +34,12 @@ Param(
 $JobSpecs = @{}
 #Unit Tests
 $JobSpecs["Other Unit Tests"] 				 	= "Dev2.*.Tests,Warewolf.*.Tests"
+$JobSpecs["Infrastructure Unit Tests"] 			= "Dev2.Infrastructure.Tests"
 $JobSpecs["Runtime Unit Tests"] 				= "Dev2.Runtime.Tests"
+$JobSpecs["Core Unit Tests"] 					= "Dev2.Core.Tests"
+$JobSpecs["Data Unit Tests"] 					= "Dev2.Data.Tests"
+$JobSpecs["Parsing Unit Tests"] 				= "Warewolf.Parsing.Tests"
+$JobSpecs["Storage Unit Tests"] 				= "Warewolf.Storage.Tests"
 $JobSpecs["Studio Core Unit Tests"] 			= "Dev2.Studio.Core.Tests"
 $JobSpecs["COMIPC Unit Tests"]				 	= "Warewolf.COMIPC.Tests"
 $JobSpecs["Studio View Models Unit Tests"]	 	= "Warewolf.Studio.ViewModels.Tests"
@@ -187,7 +191,7 @@ if ($JobName.Contains(" DotCover")) {
     $ApplyDotCover = $true
     $JobName = $JobName.Replace(" DotCover", "")
 } else {
-    $ApplyDotCover = $DotCover.IsPresent
+    $ApplyDotCover = $DotCoverPath -ne ""
 }
 
 
@@ -213,7 +217,7 @@ function FindFile-InParent([string[]]$FileSpecs,[int]$NumberOfParentsToSearch=7)
                 }
             }
 		    if (Test-Path "$CurrentDirectory\$FileSpec") {
-                $FilePath = "$CurrentDirectory\$FileSpec"                    
+                $FilePath = Join-Path $CurrentDirectory $FileSpec                   
 		    }
         }
         if ($CurrentDirectory -ne $null -and $CurrentDirectory -ne "" -and (Split-Path -Path $CurrentDirectory -NoQualifier) -ne "\") {
@@ -329,10 +333,26 @@ function Wait-For-FileUnlock([string]$FilePath) {
             [IO.File]::OpenWrite($FilePath).close()
             $locked = $false
         } catch {
+            Write-Host Still waiting for $FilePath file to unlock.
             Sleep 10
         }
     }
     return $locked
+}
+
+function Wait-For-FileExist([string]$FilePath) {
+    $exists = $false
+    $RetryCount = 0
+    while(!($exists) -and $RetryCount -lt 12) {
+        $RetryCount++
+        if (Test-Path $FilePath) {
+            $exists = $true
+        } else {
+            Write-Host Still waiting for $FilePath file to exist.
+            Sleep 10
+        }
+    }
+    return $exists
 }
 
 function Merge-DotCover-Snapshots($DotCoverSnapshots, [string]$DestinationFilePath, [string]$LogFilePath) {
@@ -402,25 +422,45 @@ function Move-Artifacts-To-TestResults([bool]$DotCover, [bool]$Server, [bool]$St
         Write-Host Playlist file written to `"$OutPlaylistPath`".
     }
 
+    if ($Studio) {
+        Move-File-To-TestResults "$env:LocalAppData\Warewolf\Studio Logs\Warewolf Studio.log" "$JobName Studio.log"
+    }
+    if ($Studio -and $DotCover) {
+        $StudioSnapshot = "$env:LocalAppData\Warewolf\Studio Logs\dotCover.dcvr"
+        Write-Host Trying to move Studio coverage snapshot file from $StudioSnapshot to $TestsResultsPath\$JobName Studio DotCover.dcvr
+        $exists = Wait-For-FileExist $StudioSnapshot
+        if ($exists) {
+            $locked = Wait-For-FileUnlock $StudioSnapshot
+            if (!($locked)) {
+                Write-Host Moving Studio coverage snapshot file from $StudioSnapshot to $TestsResultsPath\$JobName Studio DotCover.dcvr
+                Move-Item $StudioSnapshot "$TestsResultsPath\$JobName Studio DotCover.dcvr" -force
+            } else {
+                Write-Host Studio Coverage Snapshot File is locked.
+            }
+        } else {
+		    Write-Error -Message "Studio coverage snapshot not found at $StudioSnapshot"
+        }
+        if (Test-Path "$env:LocalAppData\Warewolf\Studio Logs\dotCover.log") {
+            Move-File-To-TestResults "$env:LocalAppData\Warewolf\Studio Logs\dotCover.log" "$JobName Studio DotCover.log"
+        }
+    }
     if ($Server) {
         Move-File-To-TestResults "$env:ProgramData\Warewolf\Server Log\wareWolf-Server.log" "$JobName Server.log"
         Move-File-To-TestResults "$env:ProgramData\Warewolf\Server Log\my.warewolf.io.log" "$JobName my.warewolf.io Server.log"
-    }
-    if ($Studio) {
-        Move-File-To-TestResults "$env:LocalAppData\Warewolf\Studio Logs\Warewolf Studio.log" "$JobName Studio.log"
+        Move-File-To-TestResults "$env:ProgramData\Warewolf\Server Log\my.warewolf.io.errors.log" "$JobName my.warewolf.io Server Errors.log"
     }
     if ($Server -and $DotCover) {
         $ServerSnapshot = "$env:ProgramData\Warewolf\Server Log\dotCover.dcvr"
         Write-Host Trying to move Server coverage snapshot file from $ServerSnapshot to $TestsResultsPath\$JobName Server DotCover.dcvr
-        while (!(Test-Path $ServerSnapshot) -and $Timeout++ -lt 10) {
-            sleep 10
-        }
-        $locked = Wait-For-FileUnlock $ServerSnapshot
-        if (!($locked)) {
-            Write-Host Moving Server coverage snapshot file from $ServerSnapshot to $TestsResultsPath\$JobName Server DotCover.dcvr
-            Move-File-To-TestResults $ServerSnapshot "$JobName Server DotCover.dcvr"
-        } else {
-            Write-Host Server Coverage Snapshot File still locked after retrying for 2 minutes.
+        $exists = Wait-For-FileExist $ServerSnapshot
+        if ($exists) {
+            $locked = Wait-For-FileUnlock $ServerSnapshot
+            if (!($locked)) {
+                Write-Host Moving Server coverage snapshot file from $ServerSnapshot to $TestsResultsPath\$JobName Server DotCover.dcvr
+                Move-File-To-TestResults $ServerSnapshot "$JobName Server DotCover.dcvr"
+            } else {
+                Write-Host Server Coverage Snapshot File still locked after retrying for 2 minutes.
+            }
         }
         if (Test-Path "$env:ProgramData\Warewolf\Server Log\dotCover.log") {
             Move-File-To-TestResults "$env:ProgramData\Warewolf\Server Log\dotCover.log" "$JobName Server DotCover.log"
@@ -430,27 +470,6 @@ function Move-Artifacts-To-TestResults([bool]$DotCover, [bool]$Server, [bool]$St
         }
         if (Test-Path "$env:ProgramData\Warewolf\Server Log\my.warewolf.io.errors.log") {
             Move-File-To-TestResults "$env:ProgramData\Warewolf\Server Log\my.warewolf.io.errors.log" "$JobName my.warewolf.io Errors.log"
-        }
-    }
-    if ($Studio -and $DotCover) {
-        $StudioSnapshot = "$env:LocalAppData\Warewolf\Studio Logs\dotCover.dcvr"
-        Write-Host Trying to move Studio coverage snapshot file from $StudioSnapshot to $TestsResultsPath\$JobName Studio DotCover.dcvr
-        while (!(Test-Path $StudioSnapshot) -and $Timeout++ -lt 10) {
-            sleep 10
-        }
-        if (Test-Path $StudioSnapshot) {
-            $locked = Wait-For-FileUnlock $StudioSnapshot
-            if (!($locked)) {
-                Write-Host Moving Studio coverage snapshot file from $StudioSnapshot to $TestsResultsPath\$JobName Studio DotCover.dcvr
-                Move-Item $StudioSnapshot "$TestsResultsPath\$JobName Studio DotCover.dcvr" -force
-            } else {
-                Write-Host Studio Coverage Snapshot File is locked.
-            }
-        } else {
-            Write-Host Studio coverage snapshot not found at $StudioSnapshot
-        }
-        if (Test-Path "$env:LocalAppData\Warewolf\Studio Logs\dotCover.log") {
-            Move-File-To-TestResults "$env:LocalAppData\Warewolf\Studio Logs\dotCover.log" "$JobName Studio DotCover.log"
         }
     }
     if ($Server -and $Studio -and $DotCover) {
@@ -1078,7 +1097,7 @@ if ($TotalNumberOfJobsToRun -gt 0) {
             } else {
                 &"$TestRunnerPath"
                 if ($StartServer.IsPresent -or $StartStudio.IsPresent -or ${Startmy.warewolf.io}.IsPresent) {
-                    Cleanup-ServerStudio
+                    Cleanup-ServerStudio $ApplyDotCover
                 }
             }
             Move-Artifacts-To-TestResults $ApplyDotCover ($StartServer.IsPresent -or $StartStudio.IsPresent) $StartStudio.IsPresent

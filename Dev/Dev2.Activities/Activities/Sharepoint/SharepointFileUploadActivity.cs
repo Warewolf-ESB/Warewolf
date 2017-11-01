@@ -143,13 +143,16 @@ namespace Dev2.Activities.Sharepoint
                                 indexToUpsertTo++;
                             }
                         }
-                        else if (DataListUtil.GetRecordsetIndexType(Result) == enRecordsetIndexType.Blank)
+                        else
                         {
-                            var newPath = UpdloadFile(sharepointSource, serverPath, localPath);
-
-                            foreach (var folder in newPath)
+                            if (DataListUtil.GetRecordsetIndexType(Result) == enRecordsetIndexType.Blank)
                             {
-                                outputs.Add(DataListFactory.CreateOutputTO(Result, folder));
+                                var newPath = UpdloadFile(sharepointSource, serverPath, localPath);
+
+                                foreach (var folder in newPath)
+                                {
+                                    outputs.Add(DataListFactory.CreateOutputTO(Result, folder));
+                                }
                             }
                         }
                     }

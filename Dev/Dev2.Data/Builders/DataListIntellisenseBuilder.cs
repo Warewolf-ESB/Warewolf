@@ -18,11 +18,7 @@ using Dev2.Data.TO;
 
 
 namespace Dev2.DataList.Contract
-
 {
-    /// <summary>
-    /// Used studio side for funky stuff?!
-    /// </summary>
     internal class DataListIntellisenseBuilder
     {
         const string DescAttribute = "Description";
@@ -30,11 +26,7 @@ namespace Dev2.DataList.Contract
         public string DataList { set; private get; }
 
         public IIntellisenseFilterOpsTO FilterTO { get; set; }
-
-        /// <summary>
-        /// Generates this instance.
-        /// </summary>
-        /// <returns></returns>
+        
         public IList<IDev2DataLanguageIntellisensePart> Generate()
         {
             IList<IDev2DataLanguageIntellisensePart> result = new List<IDev2DataLanguageIntellisensePart>();
@@ -70,7 +62,6 @@ namespace Dev2.DataList.Contract
             if (!string.IsNullOrEmpty(DataList))
             {
                 XmlNodeList tmpRootNl = null;
-
                 try
                 {
                     xDoc.LoadXml(DataList);
@@ -90,10 +81,8 @@ namespace Dev2.DataList.Contract
 
                         if (IsValidChildNode(tmpNode))
                         {
-                            // it is a record set, make it as such
                             string recordsetName = tmpNode.Name;
                             IList<IDev2DataLanguageIntellisensePart> children = new List<IDev2DataLanguageIntellisensePart>();
-                            // now extract child node defs
                             XmlNodeList childNl = tmpNode.ChildNodes;
                             for (int q = 0; q < childNl.Count; q++)
                             {
@@ -114,7 +103,6 @@ namespace Dev2.DataList.Contract
                         }
                         else
                         {
-                            // scalar value, make it as such
                             if (FilterTO.FilterType == enIntellisensePartType.All || FilterTO.FilterType == enIntellisensePartType.ScalarsOnly)
                             {
                                 result.Add(DataListFactory.CreateIntellisensePart(tmpNode.Name, ExtractDescription(tmpNode)));
@@ -128,20 +116,12 @@ namespace Dev2.DataList.Contract
             return result;
         }
 
-        /// <summary>
-        /// Determines whether [is valid child node] [the specified TMP node].
-        /// </summary>
-        /// <param name="tmpNode">The TMP node.</param>
-        /// <returns>
-        ///   <c>true</c> if [is valid child node] [the specified TMP node]; otherwise, <c>false</c>.
-        /// </returns>
         private bool IsValidChildNode(XmlNode tmpNode)
         {
             bool result = false;
 
             if (tmpNode.HasChildNodes)
             {
-                // has 1 child node that DOES NOT have child nodes
                 if (tmpNode.ChildNodes.Count == 1 && !tmpNode.ChildNodes[0].HasChildNodes)
                 {
                     if (tmpNode.ChildNodes[0].Name != "#text")
@@ -149,20 +129,18 @@ namespace Dev2.DataList.Contract
                         result = true;
                     }
                 }
-                else if (tmpNode.ChildNodes.Count > 1)
+                else
                 {
-                    result = true;
+                    if (tmpNode.ChildNodes.Count > 1)
+                    {
+                        result = true;
+                    }
                 }
             }
 
             return result;
         }
-
-        /// <summary>
-        /// Extracts the description.
-        /// </summary>
-        /// <param name="node">The node.</param>
-        /// <returns></returns>
+        
         private string ExtractDescription(XmlNode node)
         {
             string result = string.Empty;

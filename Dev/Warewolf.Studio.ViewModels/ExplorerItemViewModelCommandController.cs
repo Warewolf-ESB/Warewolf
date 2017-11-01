@@ -6,21 +6,19 @@ using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Common.Interfaces.Versioning;
 using Dev2.Studio.Interfaces;
 
-
-
-
 namespace Warewolf.Studio.ViewModels
 {
     public class ExplorerItemViewModelCommandController
     {
-        private static IShellViewModel _shellViewModel;
-        static IPopupController _popupController;
+        IShellViewModel _shellViewModel;
+        IPopupController _popupController;
 
         public ExplorerItemViewModelCommandController(IShellViewModel shellViewModel, IPopupController popupController)
         {
             _shellViewModel = shellViewModel;
             _popupController = popupController;
         }
+
         public void RollbackCommand(IExplorerRepository explorerRepository, IExplorerTreeItem parent, Guid resourceId, string versionNumber)
         {
             var output = explorerRepository.Rollback(resourceId, versionNumber);
@@ -238,8 +236,7 @@ namespace Warewolf.Studio.ViewModels
         }
 
         public ExplorerItemViewModel CreateChild(string name, Guid id, IServer server, ExplorerItemViewModel explorerItem, Action<IExplorerItemViewModel> selectAction)
-        {
-            
+        {            
             var child = new ExplorerItemViewModel(server, explorerItem, selectAction, _shellViewModel, _popupController)
             {
                 ResourcePath = explorerItem.ResourcePath + "\\" + name,

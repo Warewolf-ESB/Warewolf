@@ -12,7 +12,7 @@ using Dev2.Common.ExtMethods;
 
 namespace Dev2.Data.Decisions.Operations
 {
-    public class DecisionUtils
+    public static class DecisionUtils
     {
         public static bool IsNumericComparison(string[] cols, out decimal[] tryGetNumber)
         {

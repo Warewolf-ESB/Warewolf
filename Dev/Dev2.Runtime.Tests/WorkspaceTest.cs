@@ -62,46 +62,6 @@ namespace Dev2.DynamicServices.Test
 
         #region Update
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void UpdateWithNull()
-        {
-            var workspaceID = Guid.NewGuid();
-            var workspace = new Workspace(workspaceID);
-            workspace.Update(null);
-        }
-
-
-
-
-        [TestMethod]
-        public void CanUpdateWorkItemWithCommitActionLocalSaveOnly()
-        {
-            //Lock because of access to resourcatalog
-            lock (SyncRoot)
-            {
-                XElement testWorkspaceItemXml = XmlResource.Fetch("WorkspaceItem");
-
-                var repositoryInstance = SetupRepo(out Guid workspaceID);
-
-                var workspace = repositoryInstance.Get(workspaceID);
-
-                IEsbManagementEndpoint endpoint = new UpdateWorkspaceItem();
-                Dictionary<string, StringBuilder> data = new Dictionary<string, StringBuilder>();
-                data["ItemXml"] = new StringBuilder(testWorkspaceItemXml.ToString().Replace("WorkspaceID=\"B1890C86-95D8-4612-A7C3-953250ED237A\"", "WorkspaceID=\"" + workspaceID + "\""));
-                data["IsLocalSave"] = new StringBuilder("true");
-
-                // Now remove the 
-                ResourceCatalog.Instance.DeleteResource(GlobalConstants.ServerWorkspaceID, _serviceID, "WorkflowService");
-
-                endpoint.Execute(data, workspace);
-
-                var res = ResourceCatalog.Instance.GetResource(GlobalConstants.ServerWorkspaceID, _serviceID);
-
-                Assert.IsNull(res);
-            }
-        }
-
 
         [TestMethod]
         public void CanUpdateWorkspaceItemAndRespectIsLocalOption()

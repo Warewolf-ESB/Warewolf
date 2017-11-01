@@ -187,6 +187,7 @@
     <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
+    <Compile Include="ESB\Management\DefaultEsbManagementEndpoint.cs" />
     <Compile Include="ESB\Management\Services\TaskExtentions.cs" />
     <Compile Include="IDbSources.cs" />
     <Compile Include="Interfaces\IConnections.cs" />
@@ -358,7 +359,6 @@
     <Compile Include="ESB\Management\Services\Ping.cs" />
     <Compile Include="ESB\Management\Services\ReloadResource.cs" />
     <Compile Include="ESB\Management\Services\TerminateExecution.cs" />
-    <Compile Include="ESB\Management\Services\UpdateWorkspaceItem.cs" />
     <Compile Include="Execution\ExecutableServiceRepository.cs" />
     <Compile Include="Execution\IExecutableService.cs" />
     <Compile Include="Hosting\ServiceDefinitionLoader.cs" />
@@ -368,7 +368,6 @@
     <Compile Include="Network\IStudioNetworkSession.cs" />
     <Compile Include="Compiler\ServiceModelCompiler.cs" />
     <Compile Include="ResourceCatalogImpl\Common.cs" />
-    <Compile Include="ResourceCatalogImpl\ResourceCopyProvider.cs" />
     <Compile Include="ResourceCatalogImpl\ResourceDeleteProvider.cs" />
     <Compile Include="ResourceCatalogImpl\ResourceDuplicateProvider.cs" />
     <Compile Include="ResourceCatalogImpl\ResourceLoadProvider.cs" />
@@ -421,7 +420,6 @@
     <Compile Include="Security\HostSecurityProvider.cs" />
     <Compile Include="Security\IHostSecurityProvider.cs" />
     <Compile Include="Security\ISecureConfig.cs" />
-    <Compile Include="ServiceInvoker.cs" />
     <Compile Include="ServiceModel\Data\NamespaceList.cs" />
     <Compile Include="ServiceModel\Data\PluginService.cs" />
     <Compile Include="ServiceModel\Data\Workflow.cs" />
@@ -455,9 +453,7 @@
     <Compile Include="Workspaces\IWorkspace.cs" />
     <Compile Include="Workspaces\IWorkspaceItem.cs" />
     <Compile Include="Workspaces\IWorkspaceRepository.cs" />
-    <Compile Include="Workspaces\IWorkspace_Server.cs" />
     <Compile Include="Workspaces\WorkspaceRepository.cs" />
-    <Compile Include="Workspaces\Workspace_Server.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">

@@ -40,7 +40,7 @@ namespace Dev2.Activities.Designers2.XPath
         public override string CollectionName => "ResultsCollection";
 
 
-        public bool IsSourceStringFocused { get { return (bool)GetValue(IsSourceStringFocusedProperty); } set { SetValue(IsSourceStringFocusedProperty, value); } }
+        public bool IsSourceStringFocused { get => (bool)GetValue(IsSourceStringFocusedProperty); set => SetValue(IsSourceStringFocusedProperty, value); }
         public static readonly DependencyProperty IsSourceStringFocusedProperty = DependencyProperty.Register("IsSourceStringFocused", typeof(bool), typeof(XPathDesignerViewModel), new PropertyMetadata(default(bool)));
 
         string SourceString => GetProperty<string>();

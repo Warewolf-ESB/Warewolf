@@ -280,7 +280,7 @@ namespace Warewolf.Studio.ViewModels
                         {
                             await destEnv.ProxyLayer.UpdateManagerProxy.MoveItem(
                                 conflictItem.DestinationId, conflictItem.DestinationName,
-                                conflictItem.SourceName);
+                                conflictItem.SourceName).ConfigureAwait(true);
                         }
                     }
 
@@ -302,7 +302,7 @@ namespace Warewolf.Studio.ViewModels
                     }
                     Source.SelectedEnvironment.AsList().Apply(o => o.IsResourceChecked = false);
                     Source.SelectedEnvironment.IsResourceChecked = false;
-                    await Destination.RefreshSelectedEnvironment();
+                    await Destination.RefreshSelectedEnvironment().ConfigureAwait(true);
                     DeploySuccessfull = true;
                     DeploySuccessMessage = $"{notfolders.Count} Resource{(notfolders.Count == 1 ? "" : "s")} Deployed Successfully.";
                     var showDeploySuccessful = PopupController.ShowDeploySuccessful(DeploySuccessMessage);

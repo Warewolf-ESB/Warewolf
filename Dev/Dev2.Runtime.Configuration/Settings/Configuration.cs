@@ -17,15 +17,9 @@ using Caliburn.Micro;
 
 namespace Dev2.Runtime.Configuration.Settings
 {
-    // ------------------------------------------------------------------------------
-    // - Add new SettingsBase derived class in this name space
-    // - Then add new property for class here and initialize it in constructors
-    // - Then add property to ToXml() 
-    // ------------------------------------------------------------------------------
     public sealed class Configuration : PropertyChangedBase
     {
-        public static ConcurrentDictionary<Guid, TextExpressionCompilerResults> Resultscache = new ConcurrentDictionary<Guid, TextExpressionCompilerResults>(); 
-
+        private static ConcurrentDictionary<Guid, TextExpressionCompilerResults> resultscache = new ConcurrentDictionary<Guid, TextExpressionCompilerResults>();
 
         #region Fields
 
@@ -99,6 +93,8 @@ namespace Dev2.Runtime.Configuration.Settings
                 NotifyOfPropertyChange(() => Backup);
             }
         }
+
+        public static ConcurrentDictionary<Guid, TextExpressionCompilerResults> Resultscache { get => resultscache; set => resultscache = value; }
 
         #endregion
 

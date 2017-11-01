@@ -18,16 +18,11 @@ using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
-using Dev2.Runtime.Security;
 using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    /// <summary>
-    /// Reload a resource from disk ;)
-    /// </summary>
-
-    public class ReloadResource : IEsbManagementEndpoint
+    public class ReloadResource : DefaultEsbManagementEndpoint
     {
         public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
         {
@@ -39,7 +34,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             return AuthorizationContext.Any;
         }
 
-        public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
+        public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
 
             ExecuteMessage result = new ExecuteMessage { HasError = false };
@@ -61,16 +56,12 @@ namespace Dev2.Runtime.ESB.Management.Services
             Dev2Logger.Info($"Reload Resource. Id:{resourceID} Type:{resourceType}", GlobalConstants.WarewolfInfo);
             try
             {
-                // 2012.10.01: TWR - 5392 - Server does not dynamically reload resources 
                 if(resourceID == "*")
                 {
                     ResourceCatalog.Instance.LoadWorkspace(theWorkspace.ID);
                 }
                 else
                 {
-                    //
-                    // Ugly conversion between studio resource type and server resource type
-                    //
                     enDynamicServiceObjectType serviceType;
                     switch(resourceType)
                     {
@@ -83,29 +74,12 @@ namespace Dev2.Runtime.ESB.Management.Services
                             serviceType = enDynamicServiceObjectType.DynamicService;
                             break;
                         case "Source":
-                            serviceType = enDynamicServiceObjectType.Source;
-                            break;
                         case "Server":
                             serviceType = enDynamicServiceObjectType.Source;
                             break;
                         default:
                             throw new Exception("Unexpected resource type '" + resourceType + "'.");
                     }
-                    theWorkspace.Update(resourceID != null && Guid.TryParse(resourceID, out Guid getID) ? new WorkspaceItem(theWorkspace.ID, HostSecurityProvider.Instance.ServerID, Guid.Empty, getID)
-                    {
-                        Action = WorkspaceItemAction.Edit,
-                        IsWorkflowSaved = true,
-                        ServiceType = serviceType.ToString()
-                    } : new WorkspaceItem(theWorkspace.ID, HostSecurityProvider.Instance.ServerID, Guid.Empty, Guid.Empty)
-                    {
-                        Action = WorkspaceItemAction.Edit,
-                        ServiceName = resourceID,
-                        IsWorkflowSaved = true,
-                        ServiceType = serviceType.ToString()
-                    });
-                    //
-                    // Reload resources
-                    //
                     ResourceCatalog.Instance.LoadWorkspace(theWorkspace.ID);
                     result.SetMessage(string.Concat("'", resourceID, "' Reloaded..."));
                 }
@@ -120,12 +94,12 @@ namespace Dev2.Runtime.ESB.Management.Services
             return serializer.SerializeToBuilder(result);
         }
 
-        public string HandlesType()
+        public override string HandlesType()
         {
             return "ReloadResourceService";
         }
 
-        public DynamicService CreateServiceEntry()
+        public override DynamicService CreateServiceEntry()
         {
             DynamicService reloadResourceServicesBinder = new DynamicService { Name = HandlesType(), DataListSpecification = new StringBuilder("<DataList><ResourceID ColumnIODirection=\"Input\"/><ResourceType ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>") };
 
