@@ -8,9 +8,10 @@ namespace Dev2.Common.Interfaces
     {
         bool HasConflict { get; set; }
         bool IsChecked { get; set; }
+        Guid UniqueId { get; set; }
     }
 
-    public interface IArmConnectorConflict : IConflict
+    public interface IMergeArmConnectorConflict : IEquatable<IMergeArmConnectorConflict>
     {
         string ArmDescription { get; set; }
         string SourceUniqueId { get; set; }
@@ -18,13 +19,18 @@ namespace Dev2.Common.Interfaces
         string Key { get; set; }
     }
 
+    public interface IArmConnectorConflict : IConflict
+    {
+        IMergeArmConnectorConflict CurrentArmConnector { get; set; }
+        IMergeArmConnectorConflict DifferentArmConnector { get; set; }
+    }
+
     public interface IToolConflict:IConflict
     {
         IMergeToolModel CurrentViewModel { get; set; }
         IMergeToolModel DiffViewModel { get; set; }
         LinkedList<IToolConflict> Children { get; set; }
-        IToolConflict Parent { get; set; }
-        Guid UniqueId { get; set; }        
+        IToolConflict Parent { get; set; }        
         bool IsMergeExpanderEnabled { get; set; }
         bool IsMergeExpanded { get; set; }        
         bool IsContainerTool { get; set; }

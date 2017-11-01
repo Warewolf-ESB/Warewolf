@@ -7,6 +7,88 @@ using Microsoft.Practices.Prism.Mvvm;
 namespace Dev2.ViewModels.Merge
 {
 
+    public class ArmConnectorConflict : IArmConnectorConflict
+    {
+        public IMergeArmConnectorConflict CurrentArmConnector { get; set; }
+        public IMergeArmConnectorConflict DifferentArmConnector { get; set; }
+        public bool HasConflict { get; set; }
+        public bool IsChecked { get; set; }
+        public Guid UniqueId { get; set; }
+    }
+
+    public class MergeArmConnectorConflict : BindableBase, IMergeArmConnectorConflict
+    {
+        public string ArmDescription { get; set; }
+        public string SourceUniqueId { get; set; }
+        public string DestinationUniqueId { get; set; }
+        public string Key { get; set; }
+        public bool HasConflict { get; set; }
+        bool _isChecked;
+
+        public bool IsChecked
+        {
+            get
+            {
+                return _isChecked;
+            }
+
+            set
+            {
+                _isChecked = value;
+                OnPropertyChanged(() => IsChecked);
+            }
+        }
+
+        public MergeArmConnectorConflict(string armDescription, string sourceUniqueId, string destinationUniqueId, string key)
+        {
+            ArmDescription = armDescription;
+            SourceUniqueId = sourceUniqueId;
+            DestinationUniqueId = destinationUniqueId;
+            Key = key;
+            HasConflict = false;
+        }
+
+#pragma warning disable S1541 // Methods and properties should not be too complex
+        public bool Equals(IMergeArmConnectorConflict other)
+#pragma warning restore S1541 // Methods and properties should not be too complex
+        {
+            if (other == null)
+            {
+                return false;
+            }
+            var equals = true;
+            equals &= other.SourceUniqueId == SourceUniqueId;
+            equals &= other.DestinationUniqueId == DestinationUniqueId;
+            equals &= other.Key == Key;
+            return equals;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+            if (obj.GetType() != GetType())
+            {
+                return false;
+            }
+            return Equals((IMergeArmConnectorConflict)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            var hashCode = (397) ^ SourceUniqueId.GetHashCode();
+            hashCode = (hashCode * 397) ^ (DestinationUniqueId != null ? DestinationUniqueId.GetHashCode() : 0);
+            hashCode = (hashCode * 397) ^ (Key != null ? Key.GetHashCode() : 0);
+            return hashCode;
+        }
+    }
+
     public class ToolConflict : BindableBase, IToolConflict
     {
         bool _isMergeExpanded;

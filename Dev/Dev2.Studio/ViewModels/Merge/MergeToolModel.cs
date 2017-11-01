@@ -118,13 +118,13 @@ namespace Dev2.ViewModels.Merge
             }
         }
 
-        public FlowNode ActivityType
+        public FlowNode FlowNode
         {
             get => _activityType;
             set
             {
                 _activityType = value;
-                OnPropertyChanged(() => ActivityType);
+                OnPropertyChanged(() => FlowNode);
             }
         }
 
@@ -147,7 +147,7 @@ namespace Dev2.ViewModels.Merge
             }
         }
 
-        public ModelItem FlowNode { get; set; }
+        public ModelItem ModelItem { get; set; }
         public Point NodeLocation { get; set; }
 
         public bool IsTrueArm { get; set; }

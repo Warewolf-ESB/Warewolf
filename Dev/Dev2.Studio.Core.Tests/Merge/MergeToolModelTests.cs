@@ -264,7 +264,7 @@ namespace Dev2.Core.Tests.Merge
             Assert.IsNotNull(model);
             Assert.IsNotNull(model.Children);
             Assert.IsFalse(model.IsMergeVisible);
-            model.ActivityType = new FlowStep();
+            model.FlowNode = new FlowStep();
             Assert.IsTrue(wasCalled);
         }
 
@@ -292,7 +292,7 @@ namespace Dev2.Core.Tests.Merge
             System.Windows.Point point = new System.Windows.Point();
             model.NodeLocation = point;
             Assert.IsFalse(wasCalled);
-            Assert.IsNull(model.FlowNode);
+            Assert.IsNull(model.ModelItem);
         }
 
         [TestMethod]
@@ -315,9 +315,9 @@ namespace Dev2.Core.Tests.Merge
             Assert.IsNotNull(model);
             Assert.IsNotNull(model.Children);
             Assert.IsFalse(model.IsMergeVisible);
-            model.FlowNode = ModelItemUtils.CreateModelItem(new object());
+            model.ModelItem = ModelItemUtils.CreateModelItem(new object());
             Assert.IsFalse(wasCalled);
-            Assert.IsNotNull(model.FlowNode);
+            Assert.IsNotNull(model.ModelItem);
         }
 
 

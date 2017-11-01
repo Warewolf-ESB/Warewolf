@@ -87,8 +87,7 @@ namespace Dev2.ViewModels.Merge
 
             var currentTree = currentChanges.current;
             var diffTree = currentChanges.diff;
-
-            
+            var armConnectorConflicts = new List<IArmConnectorConflict>();
             if (currentTree != null)
             {
                 foreach (var treeItem in currentTree)
@@ -102,6 +101,19 @@ namespace Dev2.ViewModels.Merge
                     conflict.CurrentViewModel.SomethingModelToolChanged += SourceOnModelToolChanged;
                     conflict.CurrentViewModel.Container = conflict;               
                     conflicts.Add(conflict);
+                    var armConnectors = treeItem.Activity.ArmConnectors();
+                    foreach(var connector in armConnectors)
+                    {
+                        
+                        var mergeArmConnectorConflict = new MergeArmConnectorConflict(connector.Description, connector.SourceUniqueId, connector.DestinationUniqueId, connector.Key);
+                        var armConnector = new ArmConnectorConflict
+                        {
+                            UniqueId = id,
+                            CurrentArmConnector = mergeArmConnectorConflict
+                        };
+                        armConnectorConflicts.Add(armConnector);
+                    }
+
                 }
             }
 
@@ -127,9 +139,31 @@ namespace Dev2.ViewModels.Merge
                     conflict.DiffViewModel = currentFactory.Model;
                     conflict.DiffViewModel.SomethingModelToolChanged += SourceOnModelToolChanged;
                     conflict.DiffViewModel.Container = conflict;
-                    conflict.HasConflict = conflict.HasConflict || node.IsInConflict;                               
+                    conflict.HasConflict = conflict.HasConflict || node.IsInConflict;
+
+                    var armConnectors = treeItem.Activity.ArmConnectors();
+                    foreach (var connector in armConnectors)
+                    {
+                        var mergeArmConnectorConflict = new MergeArmConnectorConflict(connector.Description, connector.SourceUniqueId, connector.DestinationUniqueId, connector.Key);
+                        var foundConnector = armConnectorConflicts.FirstOrDefault(t => t.UniqueId == id);
+                        if (foundConnector != null)
+                        {
+                            foundConnector.DifferentArmConnector = mergeArmConnectorConflict;
+                            foundConnector.HasConflict = !foundConnector.Equals(mergeArmConnectorConflict);
+                        }
+                        else
+                        {
+                            var armConnector = new ArmConnectorConflict
+                            {
+                                UniqueId = id,
+                                DifferentArmConnector = mergeArmConnectorConflict
+                            };
+                            armConnectorConflicts.Add(armConnector);
+                        }
+
+                    }
                 }
-            }
+            }            
             return conflicts;
         }                
           
@@ -137,7 +171,7 @@ namespace Dev2.ViewModels.Merge
         {
             return new MergeToolModel
             {
-                FlowNode = null,
+                ModelItem = null,
                 NodeLocation = new Point(),
                 IsMergeEnabled = false,
                 IsMergeVisible = false,
@@ -208,33 +242,7 @@ namespace Dev2.ViewModels.Merge
             //WorkflowDesignerViewModel.AddItem(previous, model, next);
             //WorkflowDesignerViewModel.SelectedItem = model.FlowNode;
         }
-
-        static IMergeToolModel SetNextModelTool(LinkedListNode<IToolConflict> linkedConflict)
-        {
-            IMergeToolModel next = null;
-            var nextValue = linkedConflict.Next?.Value;
-            var nextValueCurrentViewModel = nextValue?.CurrentViewModel;
-            if (nextValue?.Parent != null && nextValueCurrentViewModel == null)
-            {
-                nextValue = nextValue.Parent;
-                nextValueCurrentViewModel = nextValue?.CurrentViewModel;
-            }
-            if (nextValueCurrentViewModel != null)
-            {
-                if (nextValueCurrentViewModel.IsMergeChecked)
-                {
-                    next = nextValueCurrentViewModel;
-                }
-                else
-                {
-                    if (nextValue.DiffViewModel != null && nextValue.DiffViewModel.IsMergeChecked)
-                    {
-                        next = nextValue.DiffViewModel;
-                    }
-                }
-            }
-            return next;
-        }
+        
 
         [CanBeNull]
         static List<IToolConflict> SetPreviousModelTool(LinkedListNode<IToolConflict> linkedConflict)
