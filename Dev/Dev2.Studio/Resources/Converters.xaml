@@ -36,7 +36,6 @@
     <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverterNullIsVisible" NotNullVisibilityValue="Collapsed" NullVisibilityValue="Visible" />
     <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverterNullIsCollapsed" NotNullVisibilityValue="Visible" NullVisibilityValue="Collapsed" />
     <converters3:NavigationViewModelPermissionVisibilityConverter x:Key="NavigationViewModelPermissionVisibilityConverter" />
-    <converters3:NavigationViewModelPermissionToBooleanConverter x:Key="NavigationViewModelPermissionToBooleanConverter" />
     <converters:EnumToStringConverter x:Key="EnumToStringConverter" />
     <converters:EnumDiscriptionToStringConverter x:Key="EnumDiscriptionToStringConverter" />
     <converters:TimeSpanToStringConverter x:Key="TimeSpanToStringConverter" Format="hh\:mm\:ss\.fffffff" />
