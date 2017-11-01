@@ -21,6 +21,5 @@ namespace Dev2.Studio.Interfaces
         IConflictModelFactory DifferenceConflictModel { get; set; }
         LinkedList<ICompleteConflict> Conflicts { get; set; }
         bool IsVariablesEnabled { get; set; }
-        bool IsMergeExpanderEnabled { get; set; }
     }
 }
