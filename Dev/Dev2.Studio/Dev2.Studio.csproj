@@ -317,7 +317,6 @@
     <Compile Include="AppResources\Comparers\WorkSurfaceKey.cs" />
     <Compile Include="AppResources\Comparers\WorkSurfaceKeyEqualityComparer.cs" />
     <Compile Include="AppResources\Converters\NavigationViewModelPersmissionVisibilityConverter.cs" />
-    <Compile Include="AppResources\Converters\NullToDebugRibbonButtonTextConverter.cs" />
     <Compile Include="AppResources\Converters\SchedulerStatusToCheckedConverter.cs" />
     <Compile Include="AppResources\ExtensionMethods\StringExtensions.cs" />
     <Compile Include="ClassRoutedEventHandlers.cs" />
