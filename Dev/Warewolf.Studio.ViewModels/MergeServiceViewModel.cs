@@ -105,6 +105,10 @@ namespace Warewolf.Studio.ViewModels
                         }));
 
             MergeResourceVersions.AddRange(children);
+            if (MergeResourceVersions.Count == 1)
+            {
+                SelectedMergeItem = MergeResourceVersions[0];
+            }
         }
 
         public ObservableCollection<IExplorerItemViewModel> MergeResourceVersions
