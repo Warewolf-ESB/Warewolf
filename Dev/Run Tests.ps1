@@ -187,10 +187,10 @@ $StudioPathSpecs += "Dev2.Studio\bin\Release\" + $StudioExeName
 $StudioPathSpecs += "*Studio.zip"
 
 if ($JobName.Contains(" DotCover")) {
-    $ApplyDotCover = $true
+    [bool]$ApplyDotCover = $True
     $JobName = $JobName.Replace(" DotCover", "")
 } else {
-    $ApplyDotCover = $DotCoverPath -ne ""
+    [bool]$ApplyDotCover = $DotCoverPath -ne ""
 }
 
 
@@ -1120,7 +1120,7 @@ if ($TotalNumberOfJobsToRun -gt 0) {
             } else {
                 &"$TestRunnerPath"
                 if ($StartServer.IsPresent -or $StartStudio.IsPresent -or ${Startmy.warewolf.io}.IsPresent) {
-                    Cleanup-ServerStudio $ApplyDotCover
+                    Cleanup-ServerStudio (!$ApplyDotCover)
                 }
             }
             Move-Artifacts-To-TestResults $ApplyDotCover ($StartServer.IsPresent -or $StartStudio.IsPresent) $StartStudio.IsPresent
