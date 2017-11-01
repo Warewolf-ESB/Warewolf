@@ -42,7 +42,6 @@
     <converters:DateTimeToStringConverter x:Key="DateTimeToStringConverter" />
     <converters:CountToVisibilityConverter x:Key="CountToVisibilityConverter" />
     <converters:IntToVisibilityConverter x:Key="IntToVisibilityConverter" />
-    <converters3:NullToDebugRibbonButtonTextConverter x:Key="NullToDebugRibbonButtonTextConverter" />
     <converters:StringToVisibilityConverter x:Key="StringToVisibilityConverter" />
     <converters1:PaddingThicknessConverter x:Key="PaddingThicknessConverter" />
     <converters:MultipleStringToVisilityValueConverter x:Key="MultipleStringToVisilityValueConverter" />
