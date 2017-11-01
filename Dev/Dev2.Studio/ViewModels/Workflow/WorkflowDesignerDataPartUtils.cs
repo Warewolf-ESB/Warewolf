@@ -58,7 +58,7 @@ namespace Dev2.ViewModels.Workflow
                 {
                     // If it's a RecordSet Containing a field
                     bool recAdded = false;
-        
+
                     foreach (var item in fieldList)
                     {
                         if (item.EndsWith(")") && item == fieldList[0])
@@ -75,7 +75,7 @@ namespace Dev2.ViewModels.Workflow
                                              String.Empty);
                                     AddDataVerifyPart(verifyPart, verifyPart.DisplayValue, unique);
                                 }
-        
+
                             }
                         }
                         else if (item == fieldList[1] && !(item.EndsWith(")") && item.Contains(")")))
@@ -95,29 +95,32 @@ namespace Dev2.ViewModels.Workflow
                         }
                     }
                 }
-                else if (fieldList.Length == 1 && !String.IsNullOrEmpty(fieldList[0]))
+                else
                 {
-                    // If the workflow field is simply a scalar or a record set without a child
-                    if (dataPartFieldData.EndsWith(")") && dataPartFieldData == fieldList[0])
+                    if (fieldList.Length == 1 && !String.IsNullOrEmpty(fieldList[0]))
                     {
-                        if (dataPartFieldData.Contains("("))
+                        // If the workflow field is simply a scalar or a record set without a child
+                        if (dataPartFieldData.EndsWith(")") && dataPartFieldData == fieldList[0])
                         {
-                            fullyFormattedStringValue = RemoveRecordSetBrace(fieldList[0]);
-                            var intellisenseResult = dataLanguageParser.ValidateName(fullyFormattedStringValue, "");
-                            if (intellisenseResult == null)
+                            if (dataPartFieldData.Contains("("))
                             {
-                                verifyPart = IntellisenseFactory.CreateDataListValidationRecordsetPart(fullyFormattedStringValue, String.Empty);
-                                AddDataVerifyPart(verifyPart, verifyPart.DisplayValue, unique);
+                                fullyFormattedStringValue = RemoveRecordSetBrace(fieldList[0]);
+                                var intellisenseResult = dataLanguageParser.ValidateName(fullyFormattedStringValue, "");
+                                if (intellisenseResult == null)
+                                {
+                                    verifyPart = IntellisenseFactory.CreateDataListValidationRecordsetPart(fullyFormattedStringValue, String.Empty);
+                                    AddDataVerifyPart(verifyPart, verifyPart.DisplayValue, unique);
+                                }
                             }
                         }
-                    }
-                    else
-                    {
-                        var intellisenseResult = dataLanguageParser.ValidateName(dataPartFieldData, "");
-                        if (intellisenseResult == null)
+                        else
                         {
-                            verifyPart = IntellisenseFactory.CreateDataListValidationScalarPart(RemoveRecordSetBrace(dataPartFieldData));
-                            AddDataVerifyPart(verifyPart, verifyPart.DisplayValue, unique);
+                            var intellisenseResult = dataLanguageParser.ValidateName(dataPartFieldData, "");
+                            if (intellisenseResult == null)
+                            {
+                                verifyPart = IntellisenseFactory.CreateDataListValidationScalarPart(RemoveRecordSetBrace(dataPartFieldData));
+                                AddDataVerifyPart(verifyPart, verifyPart.DisplayValue, unique);
+                            }
                         }
                     }
                 }

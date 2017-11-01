@@ -14,7 +14,6 @@ using System.Runtime.Serialization;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
-using Dev2.Common.Interfaces.Enums;
 using Dev2.Communication;
 using Dev2.Diagnostics.Debug;
 using Dev2.DynamicServices;
@@ -24,53 +23,38 @@ using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    /// <summary>
-    /// Internal service to fetch compile time messages
-    /// </summary>
-    public class FetchRemoteDebugMessages : IEsbManagementEndpoint
+    public class FetchRemoteDebugMessages : DefaultEsbManagementEndpoint
     {
-        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
-        {
-            return Guid.Empty;
-        }
-
-        public AuthorizationContext GetAuthorizationContextForService()
-        {
-            return AuthorizationContext.Any;
-        }
-
-        public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
+        public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             try
-            {
+            {         
+                Dev2Logger.Info("Fetch Remote Debug Messages", GlobalConstants.WarewolfInfo);
+                string invokerId = null;
+                Dev2JsonSerializer serializer = new Dev2JsonSerializer();
 
-         
-            Dev2Logger.Info("Fetch Remote Debug Messages", GlobalConstants.WarewolfInfo);
-            string invokerId = null;
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+                    values.TryGetValue("InvokerID", out StringBuilder tmp);
+                    if (tmp != null)
+                {
+                    invokerId = tmp.ToString();
+                }
 
-                values.TryGetValue("InvokerID", out StringBuilder tmp);
-                if (tmp != null)
-            {
-                invokerId = tmp.ToString();
-            }
+                if(string.IsNullOrEmpty(invokerId))
+                {
+                    throw new InvalidDataContractException(ErrorResource.NullServiceIDOrWorkspaceID);
+                }
 
-            if(string.IsNullOrEmpty(invokerId))
-            {
-                throw new InvalidDataContractException(ErrorResource.NullServiceIDOrWorkspaceID);
-            }
+                    // RemoteDebugMessageRepo
+                    Guid.TryParse(invokerId, out Guid iGuid);
 
-                // RemoteDebugMessageRepo
-                Guid.TryParse(invokerId, out Guid iGuid);
+                    if (iGuid != Guid.Empty)
+                {
+                    var items = RemoteDebugMessageRepo.Instance.FetchDebugItems(iGuid);
 
-                if (iGuid != Guid.Empty)
-            {
-                var items = RemoteDebugMessageRepo.Instance.FetchDebugItems(iGuid);
+                    return serializer.SerializeToBuilder(items);
+                }
 
-                return serializer.SerializeToBuilder(items);
-            }
-
-            return new StringBuilder();
+                return new StringBuilder();
             }
             catch (Exception err)
             {
@@ -79,7 +63,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
         }
 
-        public DynamicService CreateServiceEntry()
+        public override DynamicService CreateServiceEntry()
         {
             DynamicService newDs = new DynamicService { Name = HandlesType(), DataListSpecification = new StringBuilder( "<DataList><InvokerID ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>") };
             ServiceAction sa = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType() };
@@ -88,7 +72,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             return newDs;
         }
 
-        public string HandlesType()
+        public override string HandlesType()
         {
             return "FetchRemoteDebugMessagesService";
         }

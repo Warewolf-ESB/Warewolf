@@ -12,7 +12,7 @@ using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    public class GetServerVersion : IEsbManagementEndpoint
+    public class GetServerVersion : DefaultEsbManagementEndpoint
     {
         public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
         {
@@ -25,13 +25,13 @@ namespace Dev2.Runtime.ESB.Management.Services
         }
 
 
-        public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
+        public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             Dev2JsonSerializer serialiser = new Dev2JsonSerializer();
             return serialiser.SerializeToBuilder(GetVersion());
         }
 
-        public DynamicService CreateServiceEntry()
+        public override DynamicService CreateServiceEntry()
         {
             var getServerVersion = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType() };
 
@@ -41,7 +41,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             return getServerVersionService;
         }
 
-        public string HandlesType()
+        public override string HandlesType()
         {
             return "GetServerVersion";
         }

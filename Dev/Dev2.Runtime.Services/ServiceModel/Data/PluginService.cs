@@ -48,7 +48,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             : base(xml)
         {
             ResourceType = "PluginService";
-            var action = xml.Descendants("Action").FirstOrDefault(); ;
+            var action = xml.Descendants("Action").FirstOrDefault();
             if(action == null)
             {
                 

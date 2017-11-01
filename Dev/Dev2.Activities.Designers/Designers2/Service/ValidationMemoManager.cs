@@ -57,12 +57,10 @@ namespace Dev2.Activities.Designers2.Service
                 }
             }
         }
-        public bool VersionsDifferent
+
+        public void SetVersionsDifferent(bool value)
         {
-            set
-            {
-                _versionsDifferent = value;
-            }
+            _versionsDifferent = value;
         }
         public IDesignValidationService ValidationService => _validationService;
 
@@ -206,13 +204,16 @@ namespace Dev2.Activities.Designers2.Service
                         RemoveError(WorstDesignError);
                         UpdateWorstError();
                     }
-                    else if (_versionsDifferent)
+                    else
                     {
-                        _serviceDesignerViewModel.ResourceModel = _serviceDesignerViewModel.NewModel;
-                        _serviceDesignerViewModel.MappingManager.InitializeMappings();
-                        RemoveErrors(
-                            LastValidationMemo.Errors.Where(a => a.Message.Contains(@"Incorrect Version")).ToList());
-                        UpdateWorstError();
+                        if (_versionsDifferent)
+                        {
+                            _serviceDesignerViewModel.ResourceModel = _serviceDesignerViewModel.NewModel;
+                            _serviceDesignerViewModel.MappingManager.InitializeMappings();
+                            RemoveErrors(
+                                LastValidationMemo.Errors.Where(a => a.Message.Contains(@"Incorrect Version")).ToList());
+                            UpdateWorstError();
+                        }
                     }
                     break;
 

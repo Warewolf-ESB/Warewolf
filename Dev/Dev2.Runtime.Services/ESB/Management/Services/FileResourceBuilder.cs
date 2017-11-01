@@ -15,7 +15,7 @@ using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    public class FileResourceBuilder : IEsbManagementEndpoint
+    public class FileResourceBuilder : DefaultEsbManagementEndpoint
     {
         public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
         {
@@ -134,12 +134,12 @@ namespace Dev2.Runtime.ESB.Management.Services
             return newFileResource;
         }
 
-        public string HandlesType()
+        public override string HandlesType()
         {
             return "FileResourceBuilder";
         }
 
-        public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
+        public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             var list = Build().ToList();
             var serializer = new Dev2JsonSerializer();
@@ -147,7 +147,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             return serializer.SerializeToBuilder(new ExecuteMessage() { HasError = false, Message = serializer.SerializeToBuilder(list) });
         }
 
-        public DynamicService CreateServiceEntry()
+        public override DynamicService CreateServiceEntry()
         {
             var findServices = new DynamicService { Name = HandlesType(), DataListSpecification = new StringBuilder("<DataList><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>") };
 

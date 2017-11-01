@@ -1081,7 +1081,7 @@ if ($TotalNumberOfJobsToRun -gt 0) {
             } else {
                 &"$TestRunnerPath"
                 if ($StartServer.IsPresent -or $StartStudio.IsPresent -or ${Startmy.warewolf.io}.IsPresent) {
-                    Cleanup-ServerStudio $false
+                    Cleanup-ServerStudio $ApplyDotCover
                 }
             }
             Move-Artifacts-To-TestResults $ApplyDotCover ($StartServer.IsPresent -or $StartStudio.IsPresent) $StartStudio.IsPresent
