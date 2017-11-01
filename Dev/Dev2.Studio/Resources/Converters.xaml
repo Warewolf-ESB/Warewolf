@@ -28,7 +28,6 @@
     <converters2:DoubleToMarginLeftConverter x:Key="DoubleToMarginLeftConverter" />
     <converters:ModelItemToActivityConverter x:Key="ModelItemToActivityConverter" />
     <converters3:MessageBoxButtonToVisibilityConverter x:Key="MessageBoxButtonToVisibilityConverter" />
-    <converters3:EmailSourceToDisplayTextConverter x:Key="EmailSourceToDisplayTextConverter" />
     <converters3:MessageBoxImageToSystemIconConverter x:Key="MessageBoxImageToSystemIconConverter" />
     <converters5:SchedulerStatusToCheckedConverter x:Key="SchedulerStatusToCheckedConverter" />
     <converters7:InverseScheduleStatusConverter x:Key="InverseScheduleStatusConverter" />
