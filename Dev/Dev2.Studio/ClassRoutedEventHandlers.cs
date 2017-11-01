@@ -17,9 +17,6 @@ using Dev2.UI;
 
 namespace Dev2.Studio
 {
-    /// <summary>
-    /// Holds all static routed event handlers
-    /// </summary>
     public static class ClassRoutedEventHandlers
     {
         #region Fields
