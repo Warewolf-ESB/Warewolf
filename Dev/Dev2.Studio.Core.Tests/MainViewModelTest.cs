@@ -1536,7 +1536,6 @@ namespace Dev2.Core.Tests
         {
             var wsiRepo = new Mock<IWorkspaceItemRepository>();
             wsiRepo.Setup(r => r.WorkspaceItems).Returns(() => new List<IWorkspaceItem>());
-            wsiRepo.Setup(r => r.UpdateWorkspaceItem(It.IsAny<IContextualResourceModel>(), It.Is<bool>(b => b))).Returns(new ExecuteMessage()).Verifiable();
             SetupImportServiceForPersistenceTests(wsiRepo);
 
             var resourceID = Guid.NewGuid();
@@ -1585,7 +1584,6 @@ namespace Dev2.Core.Tests
         {
             var wsiRepo = new Mock<IWorkspaceItemRepository>();
             wsiRepo.Setup(r => r.WorkspaceItems).Returns(() => new List<IWorkspaceItem>());
-            wsiRepo.Setup(r => r.UpdateWorkspaceItem(It.IsAny<IContextualResourceModel>(), It.Is<bool>(b => b))).Verifiable();
 
             SetupImportServiceForPersistenceTests(wsiRepo);
 
@@ -1624,8 +1622,7 @@ namespace Dev2.Core.Tests
             viewModel.Items.Add(contextViewModel);
 
             viewModel.TestClose();
-
-            wsiRepo.Verify(r => r.UpdateWorkspaceItem(It.IsAny<IContextualResourceModel>(), It.Is<bool>(b => b)), Times.Never());
+            
             resourceRepo.Verify(r => r.Save(It.IsAny<IResourceModel>()), Times.Never());
         }
 

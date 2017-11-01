@@ -16,6 +16,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
     public class Util
     {
+        protected Util()
+        {
+        }
+
         public static bool ValueIsNumber(string value)
         {
             return double.TryParse(value, out double val);
@@ -47,14 +51,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
             }
 
-            if(ValueIsNumber(value))
+            if(ValueIsNumber(value) && ValueIsNumber(comparisonValue.ToString()))
             {
-                if(ValueIsNumber(comparisonValue.ToString()))
-                {
-                    
-                    return double.Parse(value) == double.Parse(comparisonValue.ToString());
-                    
-                }
+                return double.Parse(value).Equals(double.Parse(comparisonValue.ToString()));
             }
 
             
@@ -82,14 +81,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
             }
 
-            if(ValueIsNumber(value))
+            if(ValueIsNumber(value) && ValueIsNumber(comparisonValue.ToString()))
             {
-                if(ValueIsNumber(comparisonValue.ToString()))
-                {
-                    
-                    return double.Parse(value) != double.Parse(comparisonValue.ToString());
-                    
-                }
+                return double.Parse(value).Equals(double.Parse(comparisonValue.ToString()));
             }
 
             return value != comparisonValue.ToString();

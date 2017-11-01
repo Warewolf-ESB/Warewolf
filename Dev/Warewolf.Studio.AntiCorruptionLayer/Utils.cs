@@ -5,6 +5,10 @@ namespace Warewolf.Studio.AntiCorruptionLayer
 {
     public class Utils
     {
+        protected Utils()
+        {
+        }
+
         public static string FetchVersionInfo()
         {
             var versionResource = GetFileVersionInfo();

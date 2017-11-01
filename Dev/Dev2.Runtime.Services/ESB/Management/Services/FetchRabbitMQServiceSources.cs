@@ -8,7 +8,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
@@ -22,30 +21,18 @@ using Dev2.Workspaces;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Dev2.Common.Interfaces.Enums;
 
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-
-    public class FetchRabbitMQServiceSources : IEsbManagementEndpoint
+    public class FetchRabbitMQServiceSources : DefaultEsbManagementEndpoint
     {
-        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
-        {
-            return Guid.Empty;
-        }
-
-        public AuthorizationContext GetAuthorizationContextForService()
-        {
-            return AuthorizationContext.Any;
-        }
-
-        public string HandlesType()
+        public override string HandlesType()
         {
             return "FetchRabbitMQServiceSources";
         }
 
-        public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
+        public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             var serializer = new Dev2JsonSerializer();
 
@@ -72,7 +59,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             
         }
 
-        public DynamicService CreateServiceEntry()
+        public override DynamicService CreateServiceEntry()
         {
             var findServices = new DynamicService { Name = HandlesType(), DataListSpecification = new StringBuilder("<DataList><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>") };
 

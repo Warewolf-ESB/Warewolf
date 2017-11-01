@@ -12,7 +12,7 @@ using Dev2.Common.Interfaces.Core.Graph;
 
 namespace Unlimited.Framework.Converters.Graph
 {
-    public class DataBrowserFactory
+    public static class DataBrowserFactory
     {
         #region Methods
 

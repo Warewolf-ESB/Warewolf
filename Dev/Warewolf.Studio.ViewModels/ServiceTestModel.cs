@@ -457,9 +457,12 @@ namespace Warewolf.Studio.ViewModels
                 {
                     _isDirty = true;
                 }
-                else if (notEquals)
+                else
                 {
-                    _isDirty = true;
+                    if (notEquals)
+                    {
+                        _isDirty = true;
+                    }
                 }
 
                 SetDisplayName(_isDirty);

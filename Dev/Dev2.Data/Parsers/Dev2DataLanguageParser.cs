@@ -34,16 +34,10 @@ namespace Dev2.Data.Parsers
         private static volatile ConcurrentDictionary<Tuple<string, string>, IList<IIntellisenseResult>> _payloadCache = new ConcurrentDictionary<Tuple<string, string>, IList<IIntellisenseResult>>();
         private static volatile ConcurrentDictionary<string, IList<IIntellisenseResult>> _expressionCache = new ConcurrentDictionary<string, IList<IIntellisenseResult>>();
 
-        private static IParserHelper _parserHelper;
-        private static ICommonRecordSetUtil _recordSetUtil;
+        private static IParserHelper _parserHelper = new ParserHelperUtil();
+        private static ICommonRecordSetUtil _recordSetUtil = new CommonRecordSetUtil();
 
         #region Public Methods
-
-        public Dev2DataLanguageParser()
-        {
-            _parserHelper = new ParserHelperUtil();
-            _recordSetUtil = new CommonRecordSetUtil(this);
-        }
 
         public IList<IIntellisenseResult> ParseExpressionIntoParts(string expression, IList<IDev2DataLanguageIntellisensePart> dataListParts)
         {
@@ -625,9 +619,9 @@ namespace Dev2.Data.Parsers
                 IDataListVerifyPart part = IntellisenseFactory.CreateDataListValidationRecordsetPart(partName, parts[1], "");
                 result.Add(IntellisenseFactory.CreateErrorResult(payload.StartIndex, parts[0].Length - 1, part, DataListUtil.OpeningSquareBrackets + display + "]] does not exist in your variable list", enIntellisenseErrorCode.NeitherRecordsetNorFieldFound, !payload.HangingOpen));
             }
-            else if (recordsetPart.Children != null && recordsetPart.Children.Count > 0)
+            else
             {
-                if (ProcessFieldsForRecordSet(payload, addCompleteParts, result, parts, out search, out emptyOk, display, recordsetPart, partName))
+                if (recordsetPart.Children != null && recordsetPart.Children.Count > 0 && ProcessFieldsForRecordSet(payload, addCompleteParts, result, parts, out search, out emptyOk, display, recordsetPart, partName))
                 {
                     return search;
                 }
@@ -784,15 +778,18 @@ namespace Dev2.Data.Parsers
             {
                 emptyOk = rawSearch.Contains(DataListUtil.RecordsetIndexOpeningBracket) && rawSearch.Contains(DataListUtil.RecordsetIndexClosingBracket) ? RecordsetMatch(payload, addCompleteParts, result, rawSearch, search, emptyOk, parts, t1) : ProcessForChild(payload, refParts, result, search, t1);
             }
-            else if (match == search && !isRs)
+            else
             {
-                if (t1.Children != null && t1.Children.Count > 0)
+                if (match == search && !isRs)
                 {
-                    ReturnFieldMatchForRecordSet(payload, result, t1);
-                }
-                else
-                {
-                    emptyOk = HandleScalarMatches(payload, addCompleteParts, result, search, t1, match);
+                    if (t1.Children != null && t1.Children.Count > 0)
+                    {
+                        ReturnFieldMatchForRecordSet(payload, result, t1);
+                    }
+                    else
+                    {
+                        emptyOk = HandleScalarMatches(payload, addCompleteParts, result, search, t1, match);
+                    }
                 }
             }
             return emptyOk;

@@ -65,11 +65,14 @@ namespace Dev2.Runtime.WebServer
                                 executePayload = ExecutionEnvironmentUtils.GetXmlOutputFromEnvironment(dataObject,
                                     resource.DataList.ToString(), 0);
                             }
-                            else if (dataObject.ReturnType == EmitionTypes.SWAGGER)
+                            else
                             {
-                                formatter = DataListFormat.CreateFormat("SWAGGER", EmitionTypes.SWAGGER, "application/json");
-                                executePayload = ExecutionEnvironmentUtils.GetSwaggerOutputForService(resource,
-                                    resource.DataList.ToString(), webRequest.WebServerUrl);
+                                if (dataObject.ReturnType == EmitionTypes.SWAGGER)
+                                {
+                                    formatter = DataListFormat.CreateFormat("SWAGGER", EmitionTypes.SWAGGER, "application/json");
+                                    executePayload = ExecutionEnvironmentUtils.GetSwaggerOutputForService(resource,
+                                        resource.DataList.ToString(), webRequest.WebServerUrl);
+                                }
                             }
                         }
                     }
@@ -116,9 +119,12 @@ namespace Dev2.Runtime.WebServer
                 {
                     formatter = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json");
                 }
-                else if (executePayload.IsXml())
+                else
                 {
-                    formatter = DataListFormat.CreateFormat("XML", EmitionTypes.XML, "text/xml");
+                    if (executePayload.IsXml())
+                    {
+                        formatter = DataListFormat.CreateFormat("XML", EmitionTypes.XML, "text/xml");
+                    }
                 }
             }
             Dev2DataListDecisionHandler.Instance.RemoveEnvironment(dataObject.DataListID);

@@ -184,7 +184,6 @@ namespace Warewolf.Core
 
     public static class EnumerableEquality
     {
-
         public static bool EnumerableEquals<T>(this IList<T> otherHeaders, IList<T> headers)
         {
             bool eq = true;
@@ -210,10 +209,12 @@ namespace Warewolf.Core
                     eq = false;
                 }
             }
-            
-            else if (otherHeaders == null && headers != null)
+            else
             {
-                return false;
+                if (otherHeaders == null && headers != null)
+                {
+                    return false;
+                }
             }
             return eq;
         }
