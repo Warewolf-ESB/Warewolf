@@ -114,6 +114,7 @@ namespace Dev2.ViewModels.Merge
                         };
                         armConnectorConflicts.Add(armConnector);
                     }
+                    conflicts.AddRange(armConnectorConflicts);
 
                 }
             }
@@ -124,7 +125,7 @@ namespace Dev2.ViewModels.Merge
                 {
                     IToolConflict conflict = null;
                     var node = treeItem;
-                    var foundConflict = conflicts.Cast<IToolConflict>().FirstOrDefault(t => t.UniqueId.ToString() == node.UniqueId);
+                    var foundConflict = conflicts.Where(s=>s is IToolConflict).Cast<IToolConflict>().FirstOrDefault(t => t.UniqueId.ToString() == node.UniqueId);
                     var id = Guid.Parse(node.UniqueId);
                     if (foundConflict == null)
                     {
@@ -160,7 +161,7 @@ namespace Dev2.ViewModels.Merge
                                 DifferentArmConnector = mergeArmConnectorConflict,
                                 CurrentArmConnector = EmptyMergeArmConnectorConflict(id)
                             };
-                            armConnectorConflicts.Add(armConnector);
+                            conflicts.Add(armConnector);
                         }
 
                     }
@@ -211,7 +212,7 @@ namespace Dev2.ViewModels.Merge
 
         void AddActivity(IMergeToolModel model)
         {
-            var conflict = Conflicts.Cast<IToolConflict>().FirstOrDefault();
+            var conflict = Conflicts.Where(s => s is IToolConflict).Cast<IToolConflict>().FirstOrDefault();
             if (conflict != null && conflict.UniqueId == model.UniqueId)
             {
                 WorkflowDesignerViewModel.RemoveStartNodeConnection();
