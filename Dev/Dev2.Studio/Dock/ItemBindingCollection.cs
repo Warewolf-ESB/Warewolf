@@ -8,24 +8,15 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System.Windows;
+using System.Collections.ObjectModel;
 
-namespace Dev2.CustomControls.Progress
+
+namespace Dev2.Studio.Dock
 {
     /// <summary>
-    /// Interaction logic for ProgressDialog.xaml
+    /// Collection of <see cref="ItemBinding"/> instances
     /// </summary>
-    public partial class ProgressDialog
+    public class ItemBindingCollection : ObservableCollection<ItemBinding>
     {
-        public ProgressDialog(Window owner)
-        {
-            Owner = owner;
-            InitializeComponent();
-        }
-        
-        public ProgressDialog()
-        {
-            InitializeComponent();
-        }
     }
 }
