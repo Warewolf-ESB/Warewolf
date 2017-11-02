@@ -292,7 +292,7 @@ namespace Dev2.ViewModels.Merge
             //    }
             //    next = SetNextModelTool(linkedConflict);
             //}
-            //WorkflowDesignerViewModel.AddItem(previous, model, next);
+            WorkflowDesignerViewModel.AddItem(null, model, null);
             //WorkflowDesignerViewModel.SelectedItem = model.FlowNode;
         }
         
