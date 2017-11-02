@@ -162,14 +162,7 @@ namespace Warewolf.Storage
 
         public int GetLength(string recordSetName)
         {
-            try
-            {
-                return _env.RecordSets[recordSetName.Trim()].LastIndex;
-            }
-            catch (KeyNotFoundException)
-            {
-                return 0;
-            }
+            return _env.RecordSets[recordSetName.Trim()].LastIndex;
         }
 
         public int GetObjectLength(string recordSetName)
