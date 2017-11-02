@@ -67,6 +67,12 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="MergeExecutionSteps.cs" />
+    <Compile Include="Merge\MergeExecution.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MergeExecution.feature</DependentUpon>
+    </Compile>
     <Compile Include="Composition\SubworkflowExecution.feature.cs">
       <DependentUpon>SubworkflowExecution.feature</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -343,6 +349,10 @@
     <None Include="Composition\ExampleWorkflowExecution.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>ExampleWorkflowExecution.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Merge\MergeExecution.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>MergeExecution.feature.cs</LastGenOutput>
     </None>
     <None Include="Composition\SubworkflowExecution.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
