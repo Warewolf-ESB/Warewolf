@@ -3063,17 +3063,8 @@ namespace Dev2.Studio.ViewModels.Workflow
                 return;
             }
 
-            _allNodes = _parser?.GetAllNodes();
-            var hasConflict = _parser.NodeHasConflict(model.UniqueId.ToString());
-            var childrenHasConflict =
-                model.Children.Flatten(x => x.Children).Any(c => _parser.NodeHasConflict(c.UniqueId.ToString()));
-            var nodeToAdd = GetNodeToAmmend(model);
-
-            if (!hasConflict && !childrenHasConflict)
-            {
-                AddNodesForChildren(model, nodes);
-            }
-            var step = nodeToAdd?.GetCurrentValue();
+            var nodeToAdd = model.ModelItem;
+            var step = model.FlowNode;
             switch (step)
             {
                 case FlowStep normalStep:
@@ -3084,31 +3075,18 @@ namespace Dev2.Studio.ViewModels.Workflow
                     }
                     break;
                 case FlowDecision normalDecision:
-                    if (!nodes.Contains(normalDecision) && (hasConflict || childrenHasConflict))
-                    {
                         normalDecision.False = null;
                         normalDecision.True = null;
-                        nodes.Add(normalDecision);
-                    }
-                    else
-                    {
-                        nodes.Add(normalDecision);
-                    }
+                        nodes.Add(normalDecision);                    
                     break;
                 case FlowSwitch<string> normalSwitch:
-                    if (hasConflict)
+
+                    if (model.FlowNode is FlowSwitch<string> emptySwitch)
                     {
-                        if (model.FlowNode is FlowSwitch<string> emptySwitch)
-                        {
-                            emptySwitch.DisplayName = normalSwitch.DisplayName;
-                            emptySwitch.Expression = normalSwitch.Expression;
-                            nodeToAdd = ModelItemUtils.CreateModelItem(emptySwitch);
-                            nodes.Add(emptySwitch);
-                        }
-                    }
-                    else
-                    {
-                        nodes.Add(normalSwitch);
+                        emptySwitch.DisplayName = normalSwitch.DisplayName;
+                        emptySwitch.Expression = normalSwitch.Expression;
+                        nodeToAdd = ModelItemUtils.CreateModelItem(emptySwitch);
+                        nodes.Add(emptySwitch);
                     }
                     break;
             }
@@ -3140,7 +3118,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 var startNode = chart.Properties["StartNode"];
                 if (startNode?.ComputedValue == null)
                 {
-                    AddStartNode(flowNode, startNode);
+                    AddStartNode(model.FlowNode, startNode);
                 }
                 AddNextNode(previous, model, nodes, flowNode, next);
             }
