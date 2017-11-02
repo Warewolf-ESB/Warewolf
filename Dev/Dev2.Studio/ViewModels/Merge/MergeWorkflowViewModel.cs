@@ -112,12 +112,27 @@ namespace Dev2.ViewModels.Merge
                             Key = connector.Key,
                             HasConflict = true
                         };
-                        mergeArmConnectorConflict.IsArmSelectionAllowed = armConnector.HasConflict;
-                        armConnector.CurrentArmConnector = mergeArmConnectorConflict;
-                        //armConnectorConflicts.Add(armConnector);
-                        if (conflicts.Where(t=>t is IArmConnectorConflict)?.FirstOrDefault(s => s.UniqueId == id && ((IArmConnectorConflict)s).Key == connector.Key) == null)
+                        
+                        if(armConnectorConflicts.FirstOrDefault(s => s.UniqueId == id && s.Key == connector.Key) == null)
                         {
-                            conflicts.Add(armConnector);
+                            armConnectorConflicts.Add(armConnector);
+                        }
+                    }
+
+                    var allToolsAdded = armConnectorConflicts.All(t =>
+                    {
+                        var found = conflicts.FirstOrDefault(s => s.UniqueId.ToString() == t.CurrentArmConnector?.DestinationUniqueId);
+                        return found != null;
+
+                    });
+                    if (allToolsAdded)
+                    {
+                        foreach(var armConflict in armConnectorConflicts)
+                        {
+                            if (conflicts.Where(t => t is IArmConnectorConflict)?.FirstOrDefault(s => s.UniqueId == armConflict.UniqueId && ((IArmConnectorConflict)s).Key == armConflict.Key) == null)
+                            {
+                                conflicts.Add(armConflict);
+                            }
                         }
                     }
                 }
@@ -151,12 +166,13 @@ namespace Dev2.ViewModels.Merge
                     foreach (var connector in armConnectors)
                     {
                         var mergeArmConnectorConflict = new MergeArmConnectorConflict(connector.Description, connector.SourceUniqueId, connector.DestinationUniqueId);                        
-                        var foundConnector = conflicts.Where(t => t is IArmConnectorConflict)?.FirstOrDefault(s => s.UniqueId == id && ((IArmConnectorConflict)s).Key == connector.Key) as IArmConnectorConflict;
+                        var foundConnector = armConnectorConflicts.FirstOrDefault(s => s.UniqueId == id && s.Key == connector.Key);
                         if (foundConnector != null)
                         {
                             foundConnector.HasConflict = !foundConnector.CurrentArmConnector.Equals(foundConnector.DifferentArmConnector);
                             mergeArmConnectorConflict.IsArmSelectionAllowed = foundConflict.HasConflict;
                             foundConnector.DifferentArmConnector = mergeArmConnectorConflict;
+                            foundConnector.HasConflict = !foundConnector.CurrentArmConnector.Equals(foundConnector.DifferentArmConnector);                           
                         }
                         else
                         {
@@ -166,13 +182,26 @@ namespace Dev2.ViewModels.Merge
                                 CurrentArmConnector = EmptyMergeArmConnectorConflict(id),
                                 Key = connector.Key,
                                 HasConflict = true
+                                
                             };
-                            mergeArmConnectorConflict.IsArmSelectionAllowed = armConnector.HasConflict;
-                            armConnector.DifferentArmConnector = mergeArmConnectorConflict;
-
-                            conflicts.Add(armConnector);
+                            armConnectorConflicts.Add(armConnector);
                         }
+                    }
+                    var allToolsAdded = armConnectorConflicts.All(t =>
+                    {
+                        var found = conflicts.FirstOrDefault(s => s.UniqueId.ToString() == t.DifferentArmConnector.DestinationUniqueId);
+                        return found != null;
 
+                    });
+                    if (allToolsAdded)
+                    {
+                        foreach (var armConflict in armConnectorConflicts)
+                        {
+                            if (conflicts.Where(t => t is IArmConnectorConflict)?.FirstOrDefault(s => s.UniqueId == armConflict.UniqueId && ((IArmConnectorConflict)s).Key == armConflict.Key) == null)
+                            {
+                                conflicts.Add(armConflict);
+                            }
+                        }
                     }
                 }
             }            
@@ -183,7 +212,8 @@ namespace Dev2.ViewModels.Merge
         {
             return new MergeArmConnectorConflict
             {
-                SourceUniqueId = uniqueId.ToString()
+                SourceUniqueId = uniqueId.ToString(),
+                DestinationUniqueId = uniqueId.ToString()
             };
         }
 
