@@ -99,7 +99,8 @@ namespace Dev2.ViewModels.Merge
                     conflict.DiffViewModel = EmptyConflictViewModel(id);
                     conflict.CurrentViewModel = modelFactory.Model;
                     conflict.CurrentViewModel.SomethingModelToolChanged += SourceOnModelToolChanged;
-                    conflict.CurrentViewModel.Container = conflict;               
+                    conflict.CurrentViewModel.Container = conflict;
+                    conflict.HasConflict = treeItem.IsInConflict;
                     conflicts.Add(conflict);
                     var armConnectors = treeItem.Activity.ArmConnectors();
                     foreach(var connector in armConnectors)

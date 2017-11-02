@@ -41,7 +41,9 @@ namespace Warewolf.MergeParser
         {
             var currentTree = BuildTree(current, true);
             var diffTree = BuildTree(difference, loadworkflowFromServer);
-            var hasConflict = !currentTree.SequenceEqual(diffTree);
+#pragma warning disable S1481 // Unused local variables should be removed
+            var hasConflict = currentTree.Zip(diffTree, (curr, diff) => curr.Equals(diff)).ToList();
+#pragma warning restore S1481 // Unused local variables should be removed
             return (currentTree, diffTree);
         }
 
