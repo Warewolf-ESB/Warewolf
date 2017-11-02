@@ -37,10 +37,7 @@ namespace Dev2.Scheduler
         }
 
         #region Implementation of IScheduledResource
-
-        /// <summary>
-        ///     Property to check if the scheduled resouce is saved
-        /// </summary>
+        
         public bool IsDirty
         {
             get
@@ -52,9 +49,7 @@ namespace Dev2.Scheduler
                 _isDirty = value;
             }
         }
-        /// <summary>
-        ///     Schedule Name
-        /// </summary>
+
         public string Name
         {
             get
@@ -66,9 +61,7 @@ namespace Dev2.Scheduler
                 _name = value;
             }
         }
-        /// <summary>
-        ///     Represents the old name of the task
-        /// </summary>
+
         public string OldName
         {
             get
@@ -80,9 +73,7 @@ namespace Dev2.Scheduler
                 _oldName = value;
             }
         }
-        /// <summary>
-        ///     Schedule Status
-        /// </summary>
+
         public SchedulerStatus Status
         {
             get
@@ -94,9 +85,7 @@ namespace Dev2.Scheduler
                 _status = value;
             }
         }
-        /// <summary>
-        ///     The next time that this schedule will run
-        /// </summary>
+
         public DateTime NextRunDate
         {
             get
@@ -108,9 +97,7 @@ namespace Dev2.Scheduler
                 _nextRunDate = value;
             }
         }
-        /// <summary>
-        ///     Trigger
-        /// </summary>
+
         public IScheduleTrigger Trigger
         {
             get
@@ -122,9 +109,7 @@ namespace Dev2.Scheduler
                 _trigger = value;
             }
         }
-        /// <summary>
-        ///     NumberOfHistoryToKeep
-        /// </summary>
+
         public int NumberOfHistoryToKeep
         {
             get
@@ -136,9 +121,7 @@ namespace Dev2.Scheduler
                 _numberOfHistoryToKeep = value;
             }
         }
-        /// <summary>
-        ///     The workflow that we will run
-        /// </summary>
+
         public string WorkflowName
         {
             get
@@ -150,9 +133,7 @@ namespace Dev2.Scheduler
                 _workflowName = value;
             }
         }
-        /// <summary>
-        ///     The workflow that we will run
-        /// </summary>
+
         public Guid ResourceId
         {
             get
@@ -164,9 +145,7 @@ namespace Dev2.Scheduler
                 _resourceId = value;
             }
         }
-        /// <summary>
-        ///     If a schedule is missed execute as soon as possible
-        /// </summary>
+
         public bool RunAsapIfScheduleMissed
         {
             get
@@ -189,9 +168,7 @@ namespace Dev2.Scheduler
                 _allowMultipleIstances = value;
             }
         }
-        /// <summary>
-        ///     The task UserName
-        /// </summary>
+
         public string UserName
         {
             get
@@ -214,9 +191,7 @@ namespace Dev2.Scheduler
                 _password = value;
             }
         }
-        /// <summary>
-        ///     validation errors
-        /// </summary>
+
         public IErrorResultTO Errors
         {
             get
@@ -228,6 +203,7 @@ namespace Dev2.Scheduler
                 _errors = value;
             }
         }
+
         public bool IsNew
         {
             get
@@ -239,6 +215,7 @@ namespace Dev2.Scheduler
                 _isNew = value;
             }
         }
+
         public bool IsNewItem
         {
             get
@@ -246,6 +223,7 @@ namespace Dev2.Scheduler
                 return true;
             }
         }
+
         public string NameForDisplay { get; private set; }
 
         public void SetItem(IScheduledResource item)
