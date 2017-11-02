@@ -64,13 +64,11 @@ namespace Dev2.Studio.Dock
             RemovePane((ContentPane)container);
         }
         
-        protected override void PrepareContainerForItem(DependencyObject container, object item)
+        protected void PrepareContainerForItem(DependencyObject container, object item)
         {
-             BindingHelper.BindPath(container, item, HeaderPath, HeaderedContentControl.HeaderProperty);
+            BindingHelper.BindPath(container, item, HeaderPath, HeaderedContentControl.HeaderProperty);
             BindingHelper.BindPath(container, item, ContentPath, ContentControl.ContentProperty);
             BindingHelper.BindPath(container, item, TabHeaderPath, ContentPane.TabHeaderProperty);
-
-            base.PrepareContainerForItem(container, item);
 
             ContentPane pane = container as ContentPane;
 
@@ -482,7 +480,12 @@ namespace Dev2.Studio.Dock
             }
             cp.PreviewMouseDown -= PaneOnPreviewMouseDown;
         }
-        
+
+        protected override Freezable CreateInstanceCore()
+        {
+            throw new NotImplementedException();
+        }
+
         public static readonly RoutedEvent InitializeContentPaneEvent = EventManager.RegisterRoutedEvent("InitializeContentPane",
             RoutingStrategy.Direct, typeof(EventHandler<InitializeContentPaneEventArgs>), typeof(ContentPaneFactory));
 

@@ -30,13 +30,10 @@ namespace Dev2.Studio.Dock
         private ICollectionView _currentView;
         private readonly Dictionary<object, DependencyObject> _generatedElements;
         private bool _isInitializing;
-        private readonly ItemBindingCollection _itemBindings;
 
         protected ContainerFactoryBase()
         {
             _generatedElements = new Dictionary<object, DependencyObject>();
-            _itemBindings = new ItemBindingCollection();
-            _itemBindings.CollectionChanged += OnItemBindingsChanged;
         }
         
         public static readonly DependencyProperty ItemsSourceProperty = DependencyProperty.Register("ItemsSource",
@@ -147,20 +144,7 @@ namespace Dev2.Studio.Dock
         protected abstract void OnItemMoved(DependencyObject container, object item, int oldIndex, int newIndex);
 
         protected abstract void OnItemRemoved(DependencyObject container, object oldItem);
-
-        protected virtual void PrepareContainerForItem(DependencyObject container, object item)
-        {
-            for(int i = 0, count = _itemBindings.Count; i < count; i++)
-            {
-                ItemBinding itemBinding = _itemBindings[i];
-
-                if(itemBinding.CanApply(container, item))
-                {
-                    BindingOperations.SetBinding(container, itemBinding.TargetProperty, itemBinding.Binding);
-                }
-            }
-        }
-
+        
         protected void Reset()
         {
             ClearItems();
