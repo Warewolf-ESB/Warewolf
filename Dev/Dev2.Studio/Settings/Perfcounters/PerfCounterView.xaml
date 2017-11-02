@@ -238,7 +238,6 @@
             <ig:XamGrid Grid.Row="1"
                         x:Name="ResourcePermissionsDataGrid"
                         AutoGenerateColumns="False"
-                        ColumnSorting="ResourceColumnSorting"
                         ItemsSource="{Binding ResourceCounters}">
                 <ig:XamGrid.ColumnResizingSettings>
                     <ig:ColumnResizingSettings AllowColumnResizing="Disabled"></ig:ColumnResizingSettings>
