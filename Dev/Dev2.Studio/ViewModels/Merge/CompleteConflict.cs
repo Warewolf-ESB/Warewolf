@@ -6,16 +6,23 @@ using Microsoft.Practices.Prism.Mvvm;
 
 namespace Dev2.ViewModels.Merge
 {
-
-    public class ArmConnectorConflict : IArmConnectorConflict
+    public class ArmConnectorConflict : BindableBase, IArmConnectorConflict
     {
+        bool _hasConflict;
         public IMergeArmConnectorConflict CurrentArmConnector { get; set; }
         public IMergeArmConnectorConflict DifferentArmConnector { get; set; }
-        public bool HasConflict { get; set; }
+        public bool HasConflict
+        {
+            get => _hasConflict;
+            set
+            {
+                _hasConflict = value;
+                OnPropertyChanged(() => HasConflict);
+            }
+        }
         public bool IsChecked { get; set; }
         public Guid UniqueId { get; set; }
         public string Key { get; set; }
-
 
         public bool Equals(IArmConnectorConflict other)
         {
@@ -59,20 +66,26 @@ namespace Dev2.ViewModels.Merge
         public string ArmDescription { get; set; }
         public string SourceUniqueId { get; set; }
         public string DestinationUniqueId { get; set; }
-        public bool HasConflict { get; set; }
         bool _isChecked;
+        private bool _isArmSelectionAllowed;
 
         public bool IsChecked
         {
-            get
-            {
-                return _isChecked;
-            }
-
+            get => _isChecked;
             set
             {
                 _isChecked = value;
                 OnPropertyChanged(() => IsChecked);
+            }
+        }
+
+        public bool IsArmSelectionAllowed
+        {
+            get => _isArmSelectionAllowed;
+            set
+            {
+                _isArmSelectionAllowed = value;
+                OnPropertyChanged(() => IsArmSelectionAllowed);
             }
         }
 
@@ -84,8 +97,7 @@ namespace Dev2.ViewModels.Merge
         {
             ArmDescription = armDescription;
             SourceUniqueId = sourceUniqueId;
-            DestinationUniqueId = destinationUniqueId;            
-            HasConflict = false;
+            DestinationUniqueId = destinationUniqueId;
         }
 
         public bool Equals(IMergeArmConnectorConflict other)
