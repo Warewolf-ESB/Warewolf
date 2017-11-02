@@ -108,11 +108,12 @@ namespace Dev2.ViewModels.Merge
                         var armConnector = new ArmConnectorConflict
                         {
                             UniqueId = id,
+                            CurrentArmConnector = mergeArmConnectorConflict,
                             DifferentArmConnector = EmptyMergeArmConnectorConflict(id),
                             Key = connector.Key,
                             HasConflict = true
                         };
-                        
+                        armConnector.CurrentArmConnector.IsArmSelectionAllowed = true;
                         if(armConnectorConflicts.FirstOrDefault(s => s.UniqueId == id && s.Key == connector.Key) == null)
                         {
                             armConnectorConflicts.Add(armConnector);
@@ -169,10 +170,11 @@ namespace Dev2.ViewModels.Merge
                         var foundConnector = armConnectorConflicts.FirstOrDefault(s => s.UniqueId == id && s.Key == connector.Key);
                         if (foundConnector != null)
                         {
-                            foundConnector.HasConflict = !foundConnector.CurrentArmConnector.Equals(foundConnector.DifferentArmConnector);
-                            mergeArmConnectorConflict.IsArmSelectionAllowed = foundConflict.HasConflict;
                             foundConnector.DifferentArmConnector = mergeArmConnectorConflict;
-                            foundConnector.HasConflict = !foundConnector.CurrentArmConnector.Equals(foundConnector.DifferentArmConnector);                           
+                            bool hasConflict = !foundConnector.CurrentArmConnector.Equals(foundConnector.DifferentArmConnector);
+                            foundConnector.HasConflict = hasConflict;
+                            foundConnector.DifferentArmConnector.IsArmSelectionAllowed = hasConflict;
+                            foundConnector.CurrentArmConnector.IsArmSelectionAllowed = hasConflict;
                         }
                         else
                         {
