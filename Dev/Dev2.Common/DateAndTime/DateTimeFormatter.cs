@@ -8,11 +8,12 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using Dev2.Common.DateAndTime.TO;
 using Dev2.Common.Interfaces.Core.Convertors.DateAndTime;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+
+
 
 namespace Dev2.Common.DateAndTime
 {
@@ -53,56 +54,136 @@ namespace Dev2.Common.DateAndTime
 
         #region Methods
 
+        /// <summary>
+        ///     Converts a date from one format to another. If a valid time modifier is specified then the date is adjusted
+        ///     accordingly before being returned.
+        /// </summary>
         public bool TryFormat(IDateTimeOperationTO dateTimeTO, out string result, out string error)
         {
-            result = "";
-            error = "";
-            var nothingDied = true;
 
-
-
-            dateTimeTO.InputFormat = dateTimeTO.InputFormat?.Trim();
-
-            //var outputFormat = string.IsNullOrWhiteSpace(dateTimeTO.OutputFormat)
-            //                       ? dateTimeTO.InputFormat
-            //                       : dateTimeTO.OutputFormat;
-            var internallyParsedValue = DateTime.TryParse(dateTimeTO.DateTime.Trim(), out DateTime datetime);
-            if (internallyParsedValue)
+            var outPutHasDev2Formating = DateTimeParserHelper.DateIsDev2DateFormat(dateTimeTO.OutputFormat);
+            var inPutHasDev2Formating = DateTimeParserHelper.DateIsDev2DateFormat(dateTimeTO.InputFormat);
+            bool nothingDied = true;
+            if (inPutHasDev2Formating || outPutHasDev2Formating)
             {
-                var tmpDateTime = PerformDateTimeModification(dateTimeTO, datetime);
-                result = tmpDateTime.ToString(dateTimeTO.OutputFormat, CultureInfo.InvariantCulture);
-            }
-            else
-            {
-                internallyParsedValue = DateTime.TryParseExact(dateTimeTO.DateTime.Trim(), dateTimeTO.OutputFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime dateResult);
-                if (internallyParsedValue)
+                result = "";
+                IDateTimeParser dateTimeParser = DateTimeConverterFactory.CreateParser();
+
+
+                IDateTimeResultTO dateTimeResultTO;
+
+                //2013.05.06: Ashley Lewis - Bug 9300 - trim should allow null input format
+                dateTimeTO.InputFormat = dateTimeTO.InputFormat?.Trim();
+
+                //2013.02.12: Ashley Lewis - Bug 8725, Task 8840 - Added trim to data
+                if (dateTimeParser.TryParseDateTime(dateTimeTO.DateTime.Trim(), dateTimeTO.InputFormat, out dateTimeResultTO, out error))
                 {
-                    var tmpDateTime = PerformDateTimeModification(dateTimeTO, dateResult);
-                    result = tmpDateTime.ToString(dateTimeTO.OutputFormat, CultureInfo.InvariantCulture);
+                    //
+                    // Parse time, if present
+                    //
+                    DateTime tmpDateTime = dateTimeResultTO.ToDateTime();
+                    if (!string.IsNullOrWhiteSpace(dateTimeTO.TimeModifierType))
+                    {
+                        //2012.09.27: massimo.guerrera - Added for the new functionality for the time modification
+                        Func<DateTime, int, DateTime> funcToExecute;
+                        if (TimeModifiers.TryGetValue(dateTimeTO.TimeModifierType, out funcToExecute) &&
+                            funcToExecute != null)
+                        {
+                            tmpDateTime = funcToExecute(tmpDateTime, dateTimeTO.TimeModifierAmount);
+                        }
+                    }
+
+                    //
+                    // If nothing has gone wrong yet
+                    //
+
+                    if (nothingDied)
+
+                    {
+                        //
+                        // If there is no output format use the input format
+                        //
+                        string outputFormat = string.IsNullOrWhiteSpace(dateTimeTO.OutputFormat)
+                            ? dateTimeTO.InputFormat
+                            : dateTimeTO.OutputFormat;
+                        if (string.IsNullOrWhiteSpace(outputFormat))
+                        {
+                            //07.03.2013: Ashley Lewis - Bug 9167 null to default
+
+                            string shortPattern = CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern;
+                            string longPattern = CultureInfo.CurrentCulture.DateTimeFormat.LongTimePattern;
+                            string finalPattern = shortPattern + " " + longPattern;
+                            if (finalPattern.Contains("ss"))
+                            {
+                                outputFormat = finalPattern.Insert(finalPattern.IndexOf("ss", StringComparison.Ordinal) + 2, ".fff");
+                                outputFormat = dateTimeParser.TranslateDotNetToDev2Format(outputFormat, out error);
+                            }
+                        }
+
+                        //
+                        // Format to output format
+                        //
+                        List<IDateTimeFormatPartTO> formatParts;
+
+                        //
+                        // Get output format parts
+                        //
+                        nothingDied = DateTimeParser.TryGetDateTimeFormatParts(outputFormat, out formatParts, out error);
+
+                        if (nothingDied)
+                        {
+                            int count = 0;
+                            while (count < formatParts.Count && nothingDied)
+                            {
+                                IDateTimeFormatPartTO formatPart = formatParts[count];
+
+                                if (formatPart.Isliteral)
+                                {
+                                    result += formatPart.Value;
+                                }
+                                else
+                                {
+                                    Func<IDateTimeResultTO, DateTime, string> func;
+                                    if (DateTimeFormatParts.TryGetValue(formatPart.Value, out func))
+                                    {
+                                        result += func(dateTimeResultTO, tmpDateTime);
+                                    }
+                                    else
+                                    {
+                                        nothingDied = false;
+                                        error = string.Concat("Unrecognized format part '", formatPart.Value, "'.");
+                                    }
+                                }
+
+                                count++;
+                            }
+                        }
+                    }
                 }
                 else
                 {
                     nothingDied = false;
                 }
-              
-            }
-            //var dateTimeParser = DateTimeConverterFactory.CreateParser();
-            //IDateTimeResultTO dateTimeResultTO;
-            //var internallyParsedValue = dateTimeParser.TryParseDateTime(dateTimeTO.DateTime.Trim(), dateTimeTO.InputFormat, out dateTimeResultTO, out error);
-            //if (internallyParsedValue)
-            //{
-            //    var tmpDateTime = dateTimeResultTO.ToDateTime();
-            //    tmpDateTime = PerformDateTimeModification(dateTimeTO, tmpDateTime);
 
-            //    if (nothingDied)
-            //    {
-            //        result = PerformOutputFormatting(dateTimeTO, out error, dateTimeParser, out nothingDied, dateTimeResultTO, tmpDateTime);
-            //    }
-            //}
-            //else
-            //{
-            //    nothingDied = false;
-            //}
+                return nothingDied;
+            }
+            else
+            {
+                try
+                {
+                    var internallyParsedValue = DateTime.ParseExact(dateTimeTO.DateTime.Trim(), dateTimeTO.OutputFormat, CultureInfo.InvariantCulture, DateTimeStyles.None);
+                    var tmpDateTime = PerformDateTimeModification(dateTimeTO, internallyParsedValue);
+                    result = tmpDateTime.ToString(dateTimeTO.OutputFormat, CultureInfo.InvariantCulture);
+                    error = "";
+                    return true;
+
+                }
+                catch (Exception ex)
+                {
+                    result = "";
+                    error = ex.Message;
+                }
+            }
 
             return nothingDied;
         }
@@ -120,60 +201,6 @@ namespace Dev2.Common.DateAndTime
             }
 
             return tmpDateTime;
-        }
-
-        private static string PerformOutputFormatting(IDateTimeOperationTO dateTimeTO, out string error, IDateTimeParser dateTimeParser, out bool nothingDied, IDateTimeResultTO dateTimeResultTO, DateTime tmpDateTime)
-        {
-            var outputFormat = string.IsNullOrWhiteSpace(dateTimeTO.OutputFormat)
-                                    ? dateTimeTO.InputFormat
-                                    : dateTimeTO.OutputFormat;
-            var result = "";
-            if (string.IsNullOrWhiteSpace(outputFormat))
-            {
-                var finalPattern = GlobalConstants.Dev2DotNetDefaultDateTimeFormat;
-                if (finalPattern.Contains("ss"))
-                {
-                    outputFormat = finalPattern.Insert(finalPattern.IndexOf("ss", StringComparison.Ordinal) + 2, ".fff");
-                    outputFormat = dateTimeParser.TranslateDotNetToDev2Format(outputFormat, out error);
-                }
-            }
-
-            List<IDateTimeFormatPartTO> formatParts;
-            nothingDied = DateTimeParser.TryGetDateTimeFormatParts(outputFormat, out formatParts, out error);
-
-            if (nothingDied)
-            {
-                var count = 0;
-                var builder = new System.Text.StringBuilder();
-                builder.Append(result);
-                while (count < formatParts.Count && nothingDied)
-                {
-                    var formatPart = formatParts[count];
-
-                    if (formatPart.Isliteral)
-                    {
-                        builder.Append(formatPart.Value);
-                    }
-                    else
-                    {
-                        Func<IDateTimeResultTO, DateTime, string> func;
-                        if (DateTimeFormatParts.TryGetValue(formatPart.Value, out func))
-                        {
-                            builder.Append(func(dateTimeResultTO, tmpDateTime));
-                        }
-                        else
-                        {
-                            nothingDied = false;
-                            error = string.Concat("Unrecognized format part '", formatPart.Value, "'.");
-                        }
-                    }
-
-                    count++;
-                }
-                result = builder.ToString();
-            }
-
-            return result;
         }
 
         #endregion Methods
