@@ -89,11 +89,11 @@ namespace Warewolf.UI.Load.Specs
         [When(@"I close the Studio")]
         public void CloseStudio()
         {
-            Mouse.Click(UIMap.MainStudioWindow.CloseStudioButton);
             var studioProcess = Process.GetProcessesByName("Warewolf Studio");
             if (studioProcess != null && studioProcess.Length > 0)
             {
-                ScenarioContext.Current.Add("studioProcess", studioProcess[0]);
+                ScenarioContext.Current.Add("studioProcess", studioProcess[0].MainModule.FileName);
+                Mouse.Click(UIMap.MainStudioWindow.CloseStudioButton);
                 studioProcess[0].WaitForExit();
             }
         }
@@ -101,8 +101,14 @@ namespace Warewolf.UI.Load.Specs
         [When("I start the Studio")]
         public void StartStudio()
         {
-            var studioProcess = ScenarioContext.Current.Get<Process>("studioProcess");
-            studioProcess.Start();
+            var studioProcess = ScenarioContext.Current.Get<String>("studioProcess");
+            var startInfo = new ProcessStartInfo() {
+                FileName = studioProcess,
+                CreateNoWindow = false,
+                UseShellExecute = true,
+                WindowStyle = ProcessWindowStyle.Normal
+            };
+            Process.Start(startInfo);
         }
 
         #region Additional test attributes
