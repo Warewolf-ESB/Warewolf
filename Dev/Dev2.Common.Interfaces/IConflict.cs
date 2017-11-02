@@ -16,13 +16,14 @@ namespace Dev2.Common.Interfaces
         string ArmDescription { get; set; }
         string SourceUniqueId { get; set; }
         string DestinationUniqueId { get; set; }
-        string Key { get; set; }
+        
     }
 
-    public interface IArmConnectorConflict : IConflict
+    public interface IArmConnectorConflict : IConflict, IEquatable<IArmConnectorConflict>
     {
         IMergeArmConnectorConflict CurrentArmConnector { get; set; }
         IMergeArmConnectorConflict DifferentArmConnector { get; set; }
+        string Key { get; set; }
     }
 
     public interface IToolConflict:IConflict
