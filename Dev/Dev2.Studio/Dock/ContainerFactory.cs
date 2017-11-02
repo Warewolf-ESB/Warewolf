@@ -197,8 +197,6 @@ namespace Dev2.Studio.Dock
 
             ApplyItemContainerStyle(container, newItem);
 
-            PrepareContainerForItem(container, newItem);
-
             OnItemInserted(container, newItem, index);
 
         }
@@ -372,7 +370,6 @@ namespace Dev2.Studio.Dock
             if (ContainerStyle != null)
             {
                 container.SetValue(AppliedStyleProperty, KnownBoxes.FalseBox);
-                container.SetValue(FrameworkElement.StyleProperty, style);
             }
             else
             {
