@@ -1079,7 +1079,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             var armConnectors = new List<(string Description, string Key, string SourceUniqueId, string DestinationUniqueId)>();
             foreach(var next in GetNextNodes())
             {
-                armConnectors.Add((GetDisplayName(), null, UniqueID, next.UniqueID));
+                armConnectors.Add(($"{GetDisplayName()} -> {next.GetDisplayName()}", null, UniqueID, next.UniqueID));
             }
             return armConnectors;
         }

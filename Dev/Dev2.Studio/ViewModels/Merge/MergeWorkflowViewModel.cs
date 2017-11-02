@@ -104,16 +104,21 @@ namespace Dev2.ViewModels.Merge
                     var armConnectors = treeItem.Activity.ArmConnectors();
                     foreach(var connector in armConnectors)
                     {                        
-                        var mergeArmConnectorConflict = new MergeArmConnectorConflict(connector.Description, connector.SourceUniqueId, connector.DestinationUniqueId, connector.Key);
+                        var mergeArmConnectorConflict = new MergeArmConnectorConflict(connector.Description, connector.SourceUniqueId, connector.DestinationUniqueId);
                         var armConnector = new ArmConnectorConflict
                         {
                             UniqueId = id,
                             CurrentArmConnector = mergeArmConnectorConflict,
-                            DifferentArmConnector = EmptyMergeArmConnectorConflict(id)
+                            DifferentArmConnector = EmptyMergeArmConnectorConflict(id),
+                            Key = connector.Key
                         };
-                        armConnectorConflicts.Add(armConnector);
+                        //armConnectorConflicts.Add(armConnector);
+                        if(conflicts.Where(t=>t is IArmConnectorConflict)?.FirstOrDefault(s => s.UniqueId == id && ((IArmConnectorConflict)s).Key == connector.Key) == null)
+                        {
+                            conflicts.Add(armConnector);
+                        }
                     }
-                    conflicts.AddRange(armConnectorConflicts);
+                    
 
                 }
             }
@@ -145,12 +150,12 @@ namespace Dev2.ViewModels.Merge
                     var armConnectors = treeItem.Activity.ArmConnectors();
                     foreach (var connector in armConnectors)
                     {
-                        var mergeArmConnectorConflict = new MergeArmConnectorConflict(connector.Description, connector.SourceUniqueId, connector.DestinationUniqueId, connector.Key);
-                        var foundConnector = armConnectorConflicts.FirstOrDefault(t => t.UniqueId == id);
+                        var mergeArmConnectorConflict = new MergeArmConnectorConflict(connector.Description, connector.SourceUniqueId, connector.DestinationUniqueId);                        
+                        var foundConnector = conflicts.Where(t => t is IArmConnectorConflict)?.FirstOrDefault(s => s.UniqueId == id && ((IArmConnectorConflict)s).Key == connector.Key) as IArmConnectorConflict;
                         if (foundConnector != null)
                         {
                             foundConnector.DifferentArmConnector = mergeArmConnectorConflict;
-                            foundConnector.HasConflict = !foundConnector.Equals(mergeArmConnectorConflict);
+                            foundConnector.HasConflict = !foundConnector.CurrentArmConnector.Equals(foundConnector.DifferentArmConnector);
                         }
                         else
                         {
@@ -158,7 +163,10 @@ namespace Dev2.ViewModels.Merge
                             {
                                 UniqueId = id,
                                 DifferentArmConnector = mergeArmConnectorConflict,
-                                CurrentArmConnector = EmptyMergeArmConnectorConflict(id)
+                                CurrentArmConnector = EmptyMergeArmConnectorConflict(id),
+                                Key = connector.Key,
+                                HasConflict = true
+                                
                             };
                             conflicts.Add(armConnector);
                         }
