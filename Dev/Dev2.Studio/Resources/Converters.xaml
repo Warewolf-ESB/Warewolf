@@ -40,6 +40,7 @@
     <converters:EnumDiscriptionToStringConverter x:Key="EnumDiscriptionToStringConverter" />
     <converters:TimeSpanToStringConverter x:Key="TimeSpanToStringConverter" Format="hh\:mm\:ss\.fffffff" />
     <converters:DateTimeToStringConverter x:Key="DateTimeToStringConverter" />
+    <converters1:DateTimeFormatConverter x:Key="DateTimeFormatConverter" />
     <converters:CountToVisibilityConverter x:Key="CountToVisibilityConverter" />
     <converters:IntToVisibilityConverter x:Key="IntToVisibilityConverter" />
     <converters:StringToVisibilityConverter x:Key="StringToVisibilityConverter" />
