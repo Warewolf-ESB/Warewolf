@@ -111,9 +111,10 @@ namespace Dev2.ViewModels.Merge
                             UniqueId = id,
                             CurrentArmConnector = mergeArmConnectorConflict,
                             DifferentArmConnector = EmptyMergeArmConnectorConflict(id),
-                            Key = connector.Key
+                            Key = connector.Key,
+                            HasConflict = true
                         };
-                        
+                        armConnector.CurrentArmConnector.IsArmSelectionAllowed = true;
                         if(armConnectorConflicts.FirstOrDefault(s => s.UniqueId == id && s.Key == connector.Key) == null)
                         {
                             armConnectorConflicts.Add(armConnector);
@@ -171,14 +172,16 @@ namespace Dev2.ViewModels.Merge
                         if (foundConnector != null)
                         {
                             foundConnector.DifferentArmConnector = mergeArmConnectorConflict;
-                            foundConnector.HasConflict = !foundConnector.CurrentArmConnector.Equals(foundConnector.DifferentArmConnector);                           
+                            bool hasConflict = !foundConnector.CurrentArmConnector.Equals(foundConnector.DifferentArmConnector);
+                            foundConnector.HasConflict = hasConflict;
+                            foundConnector.DifferentArmConnector.IsArmSelectionAllowed = hasConflict;
+                            foundConnector.CurrentArmConnector.IsArmSelectionAllowed = hasConflict;
                         }
                         else
                         {
                             var armConnector = new ArmConnectorConflict
                             {
                                 UniqueId = id,
-                                DifferentArmConnector = mergeArmConnectorConflict,
                                 CurrentArmConnector = EmptyMergeArmConnectorConflict(id),
                                 Key = connector.Key,
                                 HasConflict = true
