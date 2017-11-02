@@ -188,7 +188,6 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         /// Tests that null datetime values are correctly handled by the Formatter
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(NullReferenceException))]
         public void FormatDateTimeNULLorEmpty_Expected_ErrorMessageReturnedByFormatter()
         {
             IDateTimeOperationTO dateTimeTO = new DateTimeOperationTO();
@@ -204,7 +203,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             }
             else
             {
-                Assert.IsTrue(!string.IsNullOrEmpty(errorMsg));
+                Assert.AreEqual("String reference not set to an instance of a String.\r\nParameter name: s", errorMsg);
             }
         }
 

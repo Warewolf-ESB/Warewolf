@@ -64,6 +64,8 @@ namespace Dev2.Common.DateAndTime
             var outPutHasDev2Formating = DateTimeParserHelper.DateIsDev2DateFormat(dateTimeTO.OutputFormat);
             var inPutHasDev2Formating = DateTimeParserHelper.DateIsDev2DateFormat(dateTimeTO.InputFormat);
             bool nothingDied = true;
+            dateTimeTO.InputFormat = dateTimeTO.InputFormat ?? GlobalConstants.Dev2DotNetDefaultDateTimeFormat;
+            dateTimeTO.OutputFormat = dateTimeTO.OutputFormat ?? dateTimeTO.InputFormat;
             if (inPutHasDev2Formating || outPutHasDev2Formating)
             {
                 result = "";
@@ -171,10 +173,22 @@ namespace Dev2.Common.DateAndTime
             {
                 try
                 {
-                    var internallyParsedValue = DateTime.ParseExact(dateTimeTO.DateTime.Trim(), dateTimeTO.OutputFormat, CultureInfo.InvariantCulture, DateTimeStyles.None);
-                    var tmpDateTime = PerformDateTimeModification(dateTimeTO, internallyParsedValue);
-                    result = tmpDateTime.ToString(dateTimeTO.OutputFormat, CultureInfo.InvariantCulture);
-                    error = "";
+                   
+                    var internallyParsedValue = DateTime.TryParseExact(dateTimeTO.DateTime?.Trim(), dateTimeTO.InputFormat, CultureInfo.InvariantCulture, DateTimeStyles.AllowWhiteSpaces, out var dateResult);
+                    if (internallyParsedValue )
+                    {
+                        var tmpDateTime = PerformDateTimeModification(dateTimeTO, dateResult);
+                        result = tmpDateTime.ToString(dateTimeTO.OutputFormat, CultureInfo.InvariantCulture);
+                        error = "";
+                    }
+                    else
+                    {
+                        var secondResult = DateTime.Parse(dateTimeTO.DateTime?.Trim(), CultureInfo.InvariantCulture);
+                        var tmpDateTime = PerformDateTimeModification(dateTimeTO, secondResult);
+                        result = tmpDateTime.ToString(dateTimeTO.OutputFormat, CultureInfo.InvariantCulture);
+                        error = "";
+
+                    }
                     return true;
 
                 }
@@ -182,6 +196,7 @@ namespace Dev2.Common.DateAndTime
                 {
                     result = "";
                     error = ex.Message;
+                    nothingDied = false;
                 }
             }
 

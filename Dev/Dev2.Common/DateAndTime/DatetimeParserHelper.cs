@@ -204,18 +204,18 @@ namespace Dev2.Common.DateAndTime
             return nothingDied;
         }
 
-        static readonly List<string> dev2Stuff = new List<string>
-        {
-            "12h","24h","am//pm","dw","dW","DW","dy","Era","min","sp","ww","w"
-        };
+
 
         #endregion
-
+        static readonly List<string> dev2Stuff = new List<string>
+        {
+            "12h","24h","am//pm","dw","dW","DW","dy","Era","min","sp","ww","w","ZZZ"
+        };
         public static bool DateIsDev2DateFormat(string dateFormat)
         {
             foreach (var item in dev2Stuff)
             {
-                var hasDev2Formats = dateFormat.IndexOf(item, StringComparison.OrdinalIgnoreCase) >= 0;
+                var hasDev2Formats = dateFormat?.IndexOf(item, StringComparison.OrdinalIgnoreCase) >= 0;
                 if (hasDev2Formats)
                 {
                     return true;
