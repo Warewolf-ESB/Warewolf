@@ -9,11 +9,10 @@
 */
 
 using Caliburn.Micro;
-using System.Diagnostics.CodeAnalysis;
+
 
 namespace Dev2.Studio.Model
 {
-    [ExcludeFromCodeCoverage]
     public class ExceptionUiModel : PropertyChangedBase
     {
         private BindableCollection<ExceptionUiModel> _exception;

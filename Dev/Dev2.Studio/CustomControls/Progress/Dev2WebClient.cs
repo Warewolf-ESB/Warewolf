@@ -11,11 +11,9 @@
 using System.ComponentModel;
 using System.Net;
 using Dev2.Studio.Core.Helpers;
-using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Helpers
 {
-    [ExcludeFromCodeCoverage]
     class Dev2WebClient : IDev2WebClient
     {
         readonly WebClient _webClient;
@@ -36,7 +34,6 @@ namespace Dev2.Helpers
                 _webClient.DownloadProgressChanged -= value;
             }
         }
-
         public event AsyncCompletedEventHandler DownloadFileCompleted
         {
             add
@@ -51,6 +48,7 @@ namespace Dev2.Helpers
         
         public bool IsBusy { get; private set; }
         
+
         public void CancelAsync()
         {
             _webClient.CancelAsync();
