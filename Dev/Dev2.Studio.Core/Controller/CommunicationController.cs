@@ -221,8 +221,11 @@ namespace Dev2.Controller
             {
                 if (connection.HubConnection != null && popupController != null && connection.HubConnection.State == ConnectionStateWrapped.Disconnected)
                 {
-                    popupController.Show(ErrorResource.ServerconnectionDropped + Environment.NewLine + ErrorResource.EnsureConnectionToServerWorking
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        popupController.Show(ErrorResource.ServerconnectionDropped + Environment.NewLine + ErrorResource.EnsureConnectionToServerWorking
                         , ErrorResource.ServerDroppedErrorHeading, MessageBoxButton.OK, MessageBoxImage.Information, "", false, false, true, false, false, false);
+                    });                
                 }
             }
         }
