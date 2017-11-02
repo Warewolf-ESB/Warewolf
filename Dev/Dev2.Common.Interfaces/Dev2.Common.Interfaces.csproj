@@ -227,7 +227,7 @@
     <Compile Include="ICheckControlEnabledView.cs" />
     <Compile Include="IChooseDLLView.cs" />
     <Compile Include="ICircularDependency.cs" />
-    <Compile Include="ICompleteConflict.cs" />
+    <Compile Include="IConflict.cs" />
     <Compile Include="IComPlugin.cs" />
     <Compile Include="IComPluginService.cs" />
     <Compile Include="IComPluginServiceModel.cs" />

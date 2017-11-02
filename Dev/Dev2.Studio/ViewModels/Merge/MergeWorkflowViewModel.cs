@@ -60,7 +60,7 @@ namespace Dev2.ViewModels.Merge
                 {
                     Model = firstConflict?.DiffViewModel ?? new MergeToolModel { IsMergeEnabled = false },
                     WorkflowName = differenceResourceModel.ResourceName,
-                    //ServerName = differenceResourceModel.Environment.Name
+                    ServerName = differenceResourceModel.Environment.Name
                 };
                 DifferenceConflictModel.GetDataList(differenceResourceModel);
                 DifferenceConflictModel.SomethingConflictModelChanged += SourceOnConflictModelChanged;
