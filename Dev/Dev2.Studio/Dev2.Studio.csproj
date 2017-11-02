@@ -343,8 +343,6 @@
     <Compile Include="Dock\BindingHelper.cs" />
     <Compile Include="Dock\ContainerFactory.cs" />
     <Compile Include="Dock\ContentPaneFactory.cs" />
-    <Compile Include="Dock\ItemBinding.cs" />
-    <Compile Include="Dock\ItemBindingCollection.cs" />
     <Compile Include="Dock\UIElementHelper.cs" />
     <Compile Include="Enums\enDsfActivityType.cs" />
     <Compile Include="Factory\DebugStateFactory.cs" />
