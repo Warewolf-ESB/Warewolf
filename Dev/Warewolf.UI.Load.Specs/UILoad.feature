@@ -82,8 +82,8 @@ Scenario: Studio UI Load Test
 	Then the timer duration is less than "30" seconds
 	Given I start the timer
 	When I close the Studio
-	Then the timer duration is less than "5" seconds
+	Then the timer duration is less than "10" seconds
 	Given I start the timer
 	When I start the Studio
-	Then the timer duration is less than "5" seconds
+	Then the timer duration is less than "15" seconds
 	
