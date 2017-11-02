@@ -108,18 +108,18 @@ namespace Dev2.ViewModels.Merge
                         var armConnector = new ArmConnectorConflict
                         {
                             UniqueId = id,
-                            CurrentArmConnector = mergeArmConnectorConflict,
                             DifferentArmConnector = EmptyMergeArmConnectorConflict(id),
-                            Key = connector.Key
+                            Key = connector.Key,
+                            HasConflict = true
                         };
+                        mergeArmConnectorConflict.IsArmSelectionAllowed = armConnector.HasConflict;
+                        armConnector.CurrentArmConnector = mergeArmConnectorConflict;
                         //armConnectorConflicts.Add(armConnector);
-                        if(conflicts.Where(t=>t is IArmConnectorConflict)?.FirstOrDefault(s => s.UniqueId == id && ((IArmConnectorConflict)s).Key == connector.Key) == null)
+                        if (conflicts.Where(t=>t is IArmConnectorConflict)?.FirstOrDefault(s => s.UniqueId == id && ((IArmConnectorConflict)s).Key == connector.Key) == null)
                         {
                             conflicts.Add(armConnector);
                         }
                     }
-                    
-
                 }
             }
 
@@ -154,20 +154,22 @@ namespace Dev2.ViewModels.Merge
                         var foundConnector = conflicts.Where(t => t is IArmConnectorConflict)?.FirstOrDefault(s => s.UniqueId == id && ((IArmConnectorConflict)s).Key == connector.Key) as IArmConnectorConflict;
                         if (foundConnector != null)
                         {
-                            foundConnector.DifferentArmConnector = mergeArmConnectorConflict;
                             foundConnector.HasConflict = !foundConnector.CurrentArmConnector.Equals(foundConnector.DifferentArmConnector);
+                            mergeArmConnectorConflict.IsArmSelectionAllowed = foundConflict.HasConflict;
+                            foundConnector.DifferentArmConnector = mergeArmConnectorConflict;
                         }
                         else
                         {
                             var armConnector = new ArmConnectorConflict
                             {
                                 UniqueId = id,
-                                DifferentArmConnector = mergeArmConnectorConflict,
                                 CurrentArmConnector = EmptyMergeArmConnectorConflict(id),
                                 Key = connector.Key,
                                 HasConflict = true
-                                
                             };
+                            mergeArmConnectorConflict.IsArmSelectionAllowed = armConnector.HasConflict;
+                            armConnector.DifferentArmConnector = mergeArmConnectorConflict;
+
                             conflicts.Add(armConnector);
                         }
 
