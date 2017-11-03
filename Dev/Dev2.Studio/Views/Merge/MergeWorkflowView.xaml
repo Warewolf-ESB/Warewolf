@@ -577,9 +577,9 @@
                                                             </Grid.RowDefinitions>
                                                             <ContentPresenter Name="TreeViewExpanderTemplateCurrentContentPresenter" 
                                                                               Content="{Binding CurrentViewModel, Mode=TwoWay}"
-                                                                              IsEnabled="{Binding IsMergeEnabled}"
 												                              ContentTemplateSelector="{StaticResource ActivitySelector}"
                                                                               Visibility="{Binding IsMergeVisible, Converter={StaticResource BoolToVisibilityConverter}}"
+                                                                              IsEnabled="False"
                                                                               ScrollViewer.CanContentScroll="True"
 												                              ScrollViewer.VerticalScrollBarVisibility="Auto"
 												                              ScrollViewer.HorizontalScrollBarVisibility="Auto"
@@ -607,7 +607,7 @@
                                                             </Grid.RowDefinitions>
                                                             <ContentPresenter Name="TreeViewExpanderTemplateDifferenceContentPresenter" 
                                                                               Content="{Binding DiffViewModel, Mode=TwoWay}"
-                                                                              IsEnabled="{Binding IsMergeEnabled}"
+                                                                              IsEnabled="False"
 												                              ContentTemplateSelector="{StaticResource ActivitySelector}"
                                                                               Visibility="{Binding IsMergeVisible, Converter={StaticResource BoolToVisibilityConverter}}"
                                                                               ScrollViewer.CanContentScroll="True"
