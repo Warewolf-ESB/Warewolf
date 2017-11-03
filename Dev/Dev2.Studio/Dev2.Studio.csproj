@@ -442,7 +442,6 @@
       <DependentUpon>WorkflowInputDataView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Webs\Callbacks\IShowDependencyProvider.cs" />
-    <Compile Include="Webs\Callbacks\NetworkHelper.cs" />
     <Compile Include="Webs\Callbacks\SaveNewWorkflowCallbackHandler.cs" />
     <Compile Include="Webs\Callbacks\WebsiteCallbackHandler.cs" />
     <Compile Include="Webs\SaveDialogHelper.cs" />
@@ -465,9 +464,6 @@
     <Compile Include="Views\Diagnostics\ExceptionView.xaml.cs">
       <DependentUpon>ExceptionView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Help\FeedbackView.xaml.cs">
-      <DependentUpon>FeedbackView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\Diagnostics\DebugOutputView.xaml.cs">
       <DependentUpon>DebugOutputView.xaml</DependentUpon>
     </Compile>
@@ -477,12 +473,6 @@
     </Compile>
     <Compile Include="Views\ResourceManagement\DeleteResourceDialog.xaml.cs">
       <DependentUpon>DeleteResourceDialog.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Wizards\DataListChangeNotificationView.xaml.cs">
-      <DependentUpon>DataListChangeNotificationView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Workflow\ConfigureDecisionWindow.xaml.cs">
-      <DependentUpon>ConfigureDecisionWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Workflow\WorkflowDesignerView.xaml.cs">
       <DependentUpon>WorkflowDesignerView.xaml</DependentUpon>
@@ -603,10 +593,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Help\FeedbackView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\Diagnostics\DebugOutputView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -626,14 +612,6 @@
     <Page Include="Views\ResourceManagement\DeleteResourceDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Wizards\DataListChangeNotificationView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Workflow\ConfigureDecisionWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\Workflow\DsfActivityDropWindow.xaml">
       <SubType>Designer</SubType>
@@ -873,6 +851,9 @@
     <Content Include="Help\PageNotAvailable.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Views\Wizards\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup Condition="'$(BuildingInsideVisualStudio)'=='true'">
