@@ -420,9 +420,6 @@
     <Compile Include="Views\Help\HelpView.xaml.cs">
       <DependentUpon>HelpView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ImageWindow.xaml.cs">
-      <DependentUpon>ImageWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\ResourceManagement\RenameResourceDialog.xaml.cs">
       <DependentUpon>RenameResourceDialog.xaml</DependentUpon>
     </Compile>
@@ -579,10 +576,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\DependencyVisualization\DependencyVisualiserView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\ImageWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
