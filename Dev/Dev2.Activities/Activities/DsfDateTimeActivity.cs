@@ -11,10 +11,7 @@
 using System;
 using System.Activities;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
-using System.Reflection;
-using System.Threading;
 using Dev2.Activities;
 using Dev2.Activities.Debug;
 using Dev2.Common;
@@ -138,51 +135,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 IsSingleValueRule.ApplyIsSingleValueRule(Result, allErrors);
 
-                if (dataObject.IsDebugMode())
-                {
-                    if (string.IsNullOrEmpty(DateTime))
-                    {
-                        var defaultDateTimeDebugItem = new DebugItem();
-                        AddDebugItem(new DebugItemStaticDataParams("System Date Time", "Input"), defaultDateTimeDebugItem);
-                        AddDebugItem(new DebugItemStaticDataParams(System.DateTime.Now.ToString(GlobalConstants.Dev2DotNetDefaultDateTimeFormat), "="), defaultDateTimeDebugItem);
-                        _debugInputs.Add(defaultDateTimeDebugItem);
-                    }
-                    else
-                    {
-                        AddDebugInputItem(new DebugEvalResult(DateTime, "Input", dataObject.Environment, update));
-                    }
-
-                    var dateTimePattern = string.Format("{0}", GlobalConstants.Dev2DotNetDefaultDateTimeFormat);
-
-                    if (string.IsNullOrEmpty(InputFormat))
-                    {
-                        var defaultDateTimeDebugItem = new DebugItem();
-                        AddDebugItem(new DebugItemStaticDataParams("System Date Time Format", "Input Format"), defaultDateTimeDebugItem);
-                        AddDebugItem(new DebugItemStaticDataParams(dateTimePattern, "="), defaultDateTimeDebugItem);
-                        _debugInputs.Add(defaultDateTimeDebugItem);
-                    }
-                    else
-                    {
-                        AddDebugInputItem(new DebugEvalResult(InputFormat, "Input Format", dataObject.Environment, update));
-                    }
-
-                    var debugItem = new DebugItem();
-                    AddDebugItem(new DebugItemStaticDataParams(TimeModifierType, "Add Time"), debugItem);
-                    AddDebugItem(new DebugEvalResult(TimeModifierAmountDisplay, "", dataObject.Environment, update), debugItem);
-                    _debugInputs.Add(debugItem);
-
-                    if (string.IsNullOrEmpty(OutputFormat))
-                    {
-                        var defaultDateTimeDebugItem = new DebugItem();
-                        AddDebugItem(new DebugItemStaticDataParams("System Date Time Format", "Output Format"), defaultDateTimeDebugItem);
-                        AddDebugItem(new DebugItemStaticDataParams(dateTimePattern, "="), defaultDateTimeDebugItem);
-                        _debugInputs.Add(defaultDateTimeDebugItem);
-                    }
-                    else
-                    {
-                        AddDebugInputItem(new DebugEvalResult(OutputFormat, "Output Format", dataObject.Environment, update));
-                    }
-                }
+                AddDebugInfo(dataObject, update);
 
                 if (DataListUtil.HasNegativeIndex(InputFormat))
                 {
@@ -197,10 +150,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     allErrors.AddError(string.Format("Negative Recordset Index for Add Time: {0}", TimeModifierAmountDisplay));
                 }
+
                 if (!allErrors.HasErrors())
                 {
                     var colItr = new WarewolfListIterator();
-                    var now = System.DateTime.Now.ToString(GlobalConstants.Dev2DotNetDefaultDateTimeFormat);
+                    var now = System.DateTime.Now.ToString(GlobalConstants.Dev2DotNetDefaultDateTimeFormat, System.Globalization.CultureInfo.InvariantCulture);
+
                     var dtItr = CreateDataListEvaluateIterator(string.IsNullOrEmpty(DateTime) ? now : DateTime, dataObject.Environment, update);
                     colItr.AddVariableToIterateOn(dtItr);
                     var ifItr = CreateDataListEvaluateIterator(string.IsNullOrEmpty(InputFormat) ? GlobalConstants.Dev2DotNetDefaultDateTimeFormat : InputFormat, dataObject.Environment, update);
@@ -209,34 +164,26 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     colItr.AddVariableToIterateOn(ofItr);
                     var tmaItr = CreateDataListEvaluateIterator(TimeModifierAmountDisplay, dataObject.Environment, update);
                     colItr.AddVariableToIterateOn(tmaItr);
-
-                    if (!allErrors.HasErrors())
+                    var outPutHasDev2Formating = DateTimeParserHelper.DateIsDev2DateFormat(OutputFormat);
+                    var inPutHasDev2Formating = DateTimeParserHelper.DateIsDev2DateFormat(InputFormat);
+                    if (string.IsNullOrEmpty(DateTime) && !string.IsNullOrEmpty(InputFormat) && !outPutHasDev2Formating && !inPutHasDev2Formating)
                     {
-                        while (colItr.HasMoreData())
+                        try
                         {
-                            IDateTimeOperationTO transObj = ConvertToDateTimeTo(colItr.FetchNextValue(dtItr),
-                                colItr.FetchNextValue(ifItr),
-                                colItr.FetchNextValue(ofItr),
-                                TimeModifierType,
-                                colItr.FetchNextValue(tmaItr)
-                                );
-
-                            IDateTimeFormatter format = DateTimeConverterFactory.CreateFormatter();
-                            if (format.TryFormat(transObj, out string result, out string error))
-                            {
-                                string expression = Result;
-                                dataObject.Environment.Assign(expression, result, update);
-                            }
-                            else
-                            {
-                                allErrors.AddError(error);
-                            }
+                            System.DateTime.ParseExact(now, InputFormat.TrimStart().TrimEnd(), System.Globalization.CultureInfo.InvariantCulture);
+                            PerformDateUpdate(dataObject, update, allErrors, colItr, dtItr, ifItr, ofItr, tmaItr);
                         }
-                        if (dataObject.IsDebugMode() && !allErrors.HasErrors())
+                        catch (Exception ex)
                         {
-                            AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment, update));
+                            allErrors.AddError("System datetime cannot be converted into format: " + InputFormat);
+                            Dev2Logger.Error(ex.StackTrace, dataObject.ExecutionID.ToString());
                         }
                     }
+                    else
+                    {
+                        PerformDateUpdate(dataObject, update, allErrors, colItr, dtItr, ifItr, ofItr, tmaItr);
+                    }
+
                 }
             }
             catch (Exception e)
@@ -262,6 +209,86 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                     DispatchDebugState(dataObject, StateType.Before, update);
                     DispatchDebugState(dataObject, StateType.After, update);
+                }
+            }
+        }
+
+        private void AddDebugInfo(IDSFDataObject dataObject, int update)
+        {
+            if (dataObject.IsDebugMode())
+            {
+                if (string.IsNullOrEmpty(DateTime))
+                {
+                    var defaultDateTimeDebugItem = new DebugItem();
+                    AddDebugItem(new DebugItemStaticDataParams("System Date Time", "Input"), defaultDateTimeDebugItem);
+                    AddDebugItem(new DebugItemStaticDataParams(System.DateTime.Now.ToString(GlobalConstants.Dev2DotNetDefaultDateTimeFormat), "="), defaultDateTimeDebugItem);
+                    _debugInputs.Add(defaultDateTimeDebugItem);
+                }
+                else
+                {
+                    AddDebugInputItem(new DebugEvalResult(DateTime, "Input", dataObject.Environment, update));
+                }
+
+                var dateTimePattern = string.Format("{0}", GlobalConstants.Dev2DotNetDefaultDateTimeFormat);
+
+                if (string.IsNullOrEmpty(InputFormat))
+                {
+                    var defaultDateTimeDebugItem = new DebugItem();
+                    AddDebugItem(new DebugItemStaticDataParams("System Date Time Format", "Input Format"), defaultDateTimeDebugItem);
+                    AddDebugItem(new DebugItemStaticDataParams(dateTimePattern, "="), defaultDateTimeDebugItem);
+                    _debugInputs.Add(defaultDateTimeDebugItem);
+                }
+                else
+                {
+                    AddDebugInputItem(new DebugEvalResult(InputFormat, "Input Format", dataObject.Environment, update));
+                }
+
+                var debugItem = new DebugItem();
+                AddDebugItem(new DebugItemStaticDataParams(TimeModifierType, "Add Time"), debugItem);
+                AddDebugItem(new DebugEvalResult(TimeModifierAmountDisplay, "", dataObject.Environment, update), debugItem);
+                _debugInputs.Add(debugItem);
+
+                if (string.IsNullOrEmpty(OutputFormat))
+                {
+                    var defaultDateTimeDebugItem = new DebugItem();
+                    AddDebugItem(new DebugItemStaticDataParams("System Date Time Format", "Output Format"), defaultDateTimeDebugItem);
+                    AddDebugItem(new DebugItemStaticDataParams(dateTimePattern, "="), defaultDateTimeDebugItem);
+                    _debugInputs.Add(defaultDateTimeDebugItem);
+                }
+                else
+                {
+                    AddDebugInputItem(new DebugEvalResult(OutputFormat, "Output Format", dataObject.Environment, update));
+                }
+            }
+        }
+
+        private void PerformDateUpdate(IDSFDataObject dataObject, int update, ErrorResultTO allErrors, WarewolfListIterator colItr, Dev2.Common.Interfaces.IWarewolfIterator dtItr, Dev2.Common.Interfaces.IWarewolfIterator ifItr, Dev2.Common.Interfaces.IWarewolfIterator ofItr, Dev2.Common.Interfaces.IWarewolfIterator tmaItr)
+        {
+            if (!allErrors.HasErrors())
+            {
+                while (colItr.HasMoreData())
+                {
+                    IDateTimeOperationTO transObj = ConvertToDateTimeTo(colItr.FetchNextValue(dtItr),
+                        colItr.FetchNextValue(ifItr),
+                        colItr.FetchNextValue(ofItr),
+                        TimeModifierType,
+                        colItr.FetchNextValue(tmaItr)
+                        );
+
+                    IDateTimeFormatter format = DateTimeConverterFactory.CreateFormatter();
+                    if (format.TryFormat(transObj, out string result, out string error))
+                    {
+                        string expression = Result;
+                        dataObject.Environment.Assign(expression, result, update);
+                    }
+                    else
+                    {
+                        allErrors.AddError(error);
+                    }
+                }
+                if (dataObject.IsDebugMode() && !allErrors.HasErrors())
+                {
+                    AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment, update));
                 }
             }
         }
