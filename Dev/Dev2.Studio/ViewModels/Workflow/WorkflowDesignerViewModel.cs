@@ -1185,7 +1185,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                     ModelProperty modelProperty = mi.Properties["Key"];
                     if (modelProperty?.Value != null && (FlowController.OldSwitchValue == null || string.IsNullOrWhiteSpace(FlowController.OldSwitchValue)))
                     {
-                        FlowController.ConfigureSwitchCaseExpression(new ConfigureCaseExpressionMessage { ModelItem = mi, ExpressionText = switchExpressionValue, Server = _resourceModel.Environment });
+                        FlowController.ConfigureSwitchCaseExpression(new ConfigureCaseExpressionMessage { ModelItem = mi, ExpressionText = switchExpressionValue, Server = _resourceModel.Environment,IsPaste = _isPaste });
                     }
                 }
             }
@@ -3125,7 +3125,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             return false;
         }
 
-        private ModelItem GetDecisionFromNodeCollection(string sourceUniqueId) => NodesCollection.FirstOrDefault(q =>
+        ModelItem GetDecisionFromNodeCollection(string sourceUniqueId) => NodesCollection.FirstOrDefault(q =>
         {
             var decision = q.GetProperty("Condition") as IDev2Activity;
             if (decision == null)
@@ -3206,6 +3206,14 @@ namespace Dev2.Studio.ViewModels.Workflow
                     nodes.Add(normalDecision);
                     break;
                 case FlowSwitch<string> normalSwitch:
+                    var swt = new FlowSwitch<string>();
+                    var switchAct = new DsfFlowSwitchActivity();
+                    switchAct.ExpressionText = String.Join("", GlobalConstants.InjectedSwitchDataFetch,
+                                                    "(\"", nodeToAdd.GetProperty<string>("Switch"), "\",",
+                                                    GlobalConstants.InjectedDecisionDataListVariable,
+                                                    ")");
+                    swt.Expression = switchAct;
+                    normalSwitch.Expression = swt.Expression;
                     normalSwitch.Cases.Clear();
                     normalSwitch.Default = null;
                     nodes.Add(normalSwitch);
