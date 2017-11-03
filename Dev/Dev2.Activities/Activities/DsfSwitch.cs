@@ -54,7 +54,7 @@ namespace Dev2.Activities
 
         public override string GetDisplayName()
         {
-            return Switch;
+            return !string.IsNullOrWhiteSpace(Switch) ? Switch : DisplayName;
         }
 
         public override List<(string Description, string Key, string SourceUniqueId, string DestinationUniqueId)> ArmConnectors()
