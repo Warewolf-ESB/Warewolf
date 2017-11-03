@@ -125,9 +125,6 @@ namespace Dev2.Settings.Scheduler
             SetDisplayName(false);
         }
 
-        public override bool HasVariables => false;
-        public override bool HasDebugOutput => true;
-
         public override string DisplayName
         {
             get
