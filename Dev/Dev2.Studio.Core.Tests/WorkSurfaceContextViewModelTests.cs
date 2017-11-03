@@ -1218,7 +1218,7 @@ namespace Dev2.Core.Tests
             throw new NotImplementedException();
         }
 
-        public void AddItem(IMergeToolModel previous, IMergeToolModel model, IMergeToolModel next)
+        public void AddItem(IMergeToolModel model)
         {
             throw new NotImplementedException();
         }
