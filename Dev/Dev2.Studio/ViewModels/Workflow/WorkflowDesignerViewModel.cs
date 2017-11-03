@@ -3031,8 +3031,9 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 return;
             }
-         
-            var step = model.ModelItem?.GetCurrentValue();
+
+            //var step = model.ModelItem?.GetCurrentValue();
+            var step = model.FlowNode;
             switch (step)
             {
                 case FlowStep normalStep:
