@@ -1222,7 +1222,12 @@ namespace Dev2.Core.Tests
         {
             throw new NotImplementedException();
         }
-        
+
+        public void LinkTools(string sourceUniqueId, string destionationUniqueId, string key)
+        {
+
+        }
+
         public void RemoveStartNodeConnection()
         {
             throw new NotImplementedException();
