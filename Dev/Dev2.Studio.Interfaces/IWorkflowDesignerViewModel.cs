@@ -42,7 +42,6 @@ namespace Dev2.Studio.Interfaces
         void RemoveItem(IMergeToolModel model);
         void AddItem(IMergeToolModel model);
         void RemoveStartNodeConnection();
-        ModelItem UpdateModelItem(ModelItem modelItem, IMergeToolModel modelTool);
         void LinkTools(string sourceUniqueId, string destionationUniqueId, string key);
     }
 }

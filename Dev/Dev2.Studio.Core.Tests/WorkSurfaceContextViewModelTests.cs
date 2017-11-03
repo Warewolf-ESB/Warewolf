@@ -1236,12 +1236,7 @@ namespace Dev2.Core.Tests
         public void UpdateModelItem(ModelItem modelItem, IMergeToolModel modelTool)
         {
             throw new NotImplementedException();
-        }
-
-        ModelItem IWorkflowDesignerViewModel.UpdateModelItem(ModelItem modelItem, IMergeToolModel modelTool)
-        {
-            throw new NotImplementedException();
-        }
+        }         
 
         public IServer Server
         {

@@ -402,7 +402,7 @@ namespace Dev2.Studio.Controller
 
         #region ConfigureActivity
 
-        private static ModelItem ConfigureActivity<T>(ModelItem modelItem, string propertyName, bool isNew,bool isPaste) where T : class, IFlowNodeActivity, new()
+        static ModelItem ConfigureActivity<T>(ModelItem modelItem, string propertyName, bool isNew,bool isPaste) where T : class, IFlowNodeActivity, new()
         {
             var property = modelItem.Properties[propertyName];
             if (property == null)
