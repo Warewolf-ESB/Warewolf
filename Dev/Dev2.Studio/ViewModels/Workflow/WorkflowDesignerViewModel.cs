@@ -1141,9 +1141,12 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 computedValue = mi.Source?.Value?.Source?.ComputedValue;
             }
-            if (computedValue is IDev2Activity)
+            if (computedValue is IDev2Activity act)
             {
-                (computedValue as IDev2Activity).UniqueID = Guid.NewGuid().ToString();
+                if (string.IsNullOrEmpty(act.UniqueID))
+                {
+                    act.UniqueID = Guid.NewGuid().ToString();
+                }
                 _modelItems = _modelService.Find(_modelService.Root, typeof(IDev2Activity));
             }
             if (computedValue is Activity)
@@ -3080,6 +3083,61 @@ namespace Dev2.Studio.ViewModels.Workflow
             return nodeToAmmend;
         }
 
+        public void LinkTools(string sourceUniqueId, string destinationUniqueId, string key)
+        {
+            var lastDecision = NodesCollection.FirstOrDefault(q =>
+            {
+                var decision = q.GetProperty("Condition") as IDev2Activity;
+                if (decision == null)
+                {
+                    return false;
+                }
+                var hasParent = decision.UniqueID == sourceUniqueId && q.GetCurrentValue<FlowNode>() is FlowDecision;
+                return hasParent;
+            });
+            if (lastDecision != null)
+            {
+
+            }
+
+            var step = NodesCollection.FirstOrDefault(q =>
+            {
+                var s = q.GetCurrentValue() as FlowStep;
+                var act = s?.Action as IDev2Activity;
+                return act?.UniqueID == sourceUniqueId;
+            });
+            if (step != null)
+            {
+                var source = step.GetCurrentValue<FlowStep>();
+                var next = NodesCollection.FirstOrDefault(q =>
+                {
+                    var s = q.GetCurrentValue() as FlowStep;
+                    var act = s?.Action as IDev2Activity;
+                    return act?.UniqueID == destinationUniqueId;
+                });
+                if (next != null)
+                {
+                    var nextStep = next.GetCurrentValue<FlowNode>();
+                    if (nextStep != null)
+                    {
+                        source.Next = nextStep;
+                    }
+                }
+            }
+        }
+
+        public ModelItemCollection NodesCollection
+       {
+            get
+            {
+                var root = _wd.Context.Services.GetService<ModelService>().Root;
+                var chart = _wd.Context.Services.GetService<ModelService>().Find(root, typeof(Flowchart)).FirstOrDefault();
+
+                var nodes = chart?.Properties["Nodes"]?.Collection;
+                return nodes;
+            }
+       }
+
         private ConcurrentDictionary<string, (ModelItem leftItem, ModelItem rightItem)> _allNodes;
         IServiceDifferenceParser _parser = CustomContainer.Get<IServiceDifferenceParser>();
         public void AddItem(IMergeToolModel model)
@@ -3270,68 +3328,68 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public ModelItem UpdateModelItem(ModelItem modelItem, IMergeToolModel mergeToolModel)
         {
-            var root = _wd.Context.Services.GetService<ModelService>().Root;
-            var chart = _wd.Context.Services.GetService<ModelService>().Find(root, typeof(Flowchart)).FirstOrDefault();
-            var nodes = chart?.Properties["Nodes"]?.Collection;
-            if (nodes == null)
-            {
-                return null;
-            }
-            var flowNode = nodes.FirstOrDefault(t =>
-            {
-                var prop = t.Properties["Action"];
-                if (prop != null)
-                {
-                    var act = t.Properties["Action"]?.ComputedValue as IDev2Activity;
-                    return act?.UniqueID == modelItem.Properties["UniqueID"]?.ComputedValue.ToString();
-                }
+            //var root = _wd.Context.Services.GetService<ModelService>().Root;
+            //var chart = _wd.Context.Services.GetService<ModelService>().Find(root, typeof(Flowchart)).FirstOrDefault();
+            //var nodes = chart?.Properties["Nodes"]?.Collection;
+            //if (nodes == null)
+            //{
+            //    return null;
+            //}
+            //var flowNode = nodes.FirstOrDefault(t =>
+            //{
+            //    var prop = t.Properties["Action"];
+            //    if (prop != null)
+            //    {
+            //        var act = t.Properties["Action"]?.ComputedValue as IDev2Activity;
+            //        return act?.UniqueID == modelItem.Properties["UniqueID"]?.ComputedValue.ToString();
+            //    }
 
-                var propertyName = string.Empty;
-                switch (t.ItemType.Name)
-                {
-                    case "FlowDecision":
-                        propertyName = "Condition";
-                        break;
-                    case "FlowSwitch`1":
-                        propertyName = "Expression";
-                        break;
-                }
-                if (!string.IsNullOrEmpty(propertyName))
-                {
-                    var act = t.Properties[propertyName]?.ComputedValue as IDev2Activity;
-                    return act?.UniqueID == modelItem.Properties["UniqueID"]?.ToString();
-                }
-                return false;
-            });
-            var modelProperty = flowNode?.Properties["Action"];
-            if (modelProperty != null)
-            {
-                var indexOf = nodes.IndexOf(flowNode);
-                nodes.RemoveAt(indexOf);
+            //    var propertyName = string.Empty;
+            //    switch (t.ItemType.Name)
+            //    {
+            //        case "FlowDecision":
+            //            propertyName = "Condition";
+            //            break;
+            //        case "FlowSwitch`1":
+            //            propertyName = "Expression";
+            //            break;
+            //    }
+            //    if (!string.IsNullOrEmpty(propertyName))
+            //    {
+            //        var act = t.Properties[propertyName]?.ComputedValue as IDev2Activity;
+            //        return act?.UniqueID == modelItem.Properties["UniqueID"]?.ToString();
+            //    }
+            //    return false;
+            //});
+            //var modelProperty = flowNode?.Properties["Action"];
+            //if (modelProperty != null)
+            //{
+            //    var indexOf = nodes.IndexOf(flowNode);
+            //    nodes.RemoveAt(indexOf);
 
-                var nodeToAdd = ModelItemUtils.CreateModelItem(mergeToolModel.FlowNode);
-                var computedValue = nodeToAdd.Properties["Action"]?.ComputedValue;
-                modelProperty.SetValue(computedValue);
+            //    var nodeToAdd = ModelItemUtils.CreateModelItem(mergeToolModel.FlowNode);
+            //    var computedValue = nodeToAdd.Properties["Action"]?.ComputedValue;
+            //    modelProperty.SetValue(computedValue);
 
-                nodes.Insert(indexOf, nodeToAdd);
+            //    nodes.Insert(indexOf, nodeToAdd);
 
-                return flowNode;
-            }
-            var condition = string.Empty;
-            switch (flowNode?.ItemType.Name)
-            {
-                case "FlowDecision":
-                    condition = "Condition";
-                    break;
-                case "FlowSwitch`1":
-                    condition = "Expression";
-                    break;
-            }
-            if (!string.IsNullOrEmpty(condition))
-            {
-                flowNode?.Properties[condition]?.SetValue(modelItem.Properties[condition]?.ComputedValue);
-            }
-            return null;
+            //    return flowNode;
+            //}
+            //var condition = string.Empty;
+            //switch (flowNode?.ItemType.Name)
+            //{
+            //    case "FlowDecision":
+            //        condition = "Condition";
+            //        break;
+            //    case "FlowSwitch`1":
+            //        condition = "Expression";
+            //        break;
+            //}
+            //if (!string.IsNullOrEmpty(condition))
+            //{
+            //    flowNode?.Properties[condition]?.SetValue(modelItem.Properties[condition]?.ComputedValue);
+            //}
+            return modelItem;
         }
 
         void AddNextNode(IMergeToolModel previous, IMergeToolModel model, ModelItemCollection nodes, FlowNode flowNode, IMergeToolModel next)
