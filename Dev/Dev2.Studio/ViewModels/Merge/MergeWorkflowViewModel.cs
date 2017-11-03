@@ -105,7 +105,8 @@ namespace Dev2.ViewModels.Merge
                     var armConnectors = treeItem.Activity.ArmConnectors();
                     foreach(var connector in armConnectors)
                     {                        
-                        var mergeArmConnectorConflict = new MergeArmConnectorConflict(connector.Description, connector.SourceUniqueId, connector.DestinationUniqueId);
+                        var mergeArmConnectorConflict = new MergeArmConnectorConflict(connector.Description, connector.SourceUniqueId, connector.DestinationUniqueId,connector.Key);
+                        mergeArmConnectorConflict.OnChecked += ArmCheck;
                         var armConnector = new ArmConnectorConflict
                         {
                             UniqueId = id,
@@ -167,7 +168,7 @@ namespace Dev2.ViewModels.Merge
                     var armConnectors = treeItem.Activity.ArmConnectors();
                     foreach (var connector in armConnectors)
                     {
-                        var mergeArmConnectorConflict = new MergeArmConnectorConflict(connector.Description, connector.SourceUniqueId, connector.DestinationUniqueId);                        
+                        var mergeArmConnectorConflict = new MergeArmConnectorConflict(connector.Description, connector.SourceUniqueId, connector.DestinationUniqueId,connector.Key);                        
                         var foundConnector = armConnectorConflicts.FirstOrDefault(s => s.UniqueId == id && s.Key == connector.Key);
                         if (foundConnector != null)
                         {
@@ -210,8 +211,10 @@ namespace Dev2.ViewModels.Merge
                 }
             }            
             return conflicts;
-        }                
-          
+        }
+
+        private void ArmCheck(bool arg1, string arg2, string arg3, string arg4) => throw new NotImplementedException();
+
         static MergeArmConnectorConflict EmptyMergeArmConnectorConflict(Guid uniqueId)
         {
             return new MergeArmConnectorConflict

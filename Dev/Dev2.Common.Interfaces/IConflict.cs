@@ -17,6 +17,7 @@ namespace Dev2.Common.Interfaces
         string SourceUniqueId { get; set; }
         string DestinationUniqueId { get; set; }
         bool IsArmSelectionAllowed { get; set; }
+        string Key { get; set; }
     }
 
     public interface IArmConnectorConflict : IConflict, IEquatable<IArmConnectorConflict>
