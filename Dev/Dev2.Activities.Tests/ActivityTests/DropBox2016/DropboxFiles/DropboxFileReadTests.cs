@@ -5,6 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System.Reflection;
 using Dev2.Common.Interfaces.Wrappers;
+using System;
 
 namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
 {
@@ -86,7 +87,21 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
             //---------------Test Result -----------------------
             Assert.IsNotNull(staticField);
             Assert.AreEqual("", "");
+        }
 
+        [TestMethod]
+        [Owner("Ashley Lewis")]
+        public void ExecuteDropboxFileRead_Throws_ShouldReturnFailedResult()
+        {
+            //---------------Set up test pack-------------------
+            var dropBoxFileRead = new DropboxFileRead(true, null, false, false);
+            var mockDropboxClient = new Mock<IDropboxClientWrapper>();
+            mockDropboxClient.Setup(client => client.ListFolderAsync(It.IsAny<ListFolderArg>())).Throws(new Exception());
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            var result = dropBoxFileRead.ExecuteTask(mockDropboxClient.Object);
+            //---------------Test Result -----------------------
+            Assert.IsInstanceOfType(result, typeof(DropboxFailureResult), "Dropbox failure result not returned after exception");
         }
     }
 }
