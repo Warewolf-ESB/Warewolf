@@ -31,10 +31,7 @@ namespace Dev2.Activities.DropBox2016.DownloadActivity
             _path = path;
         }
 
-        private DropBoxDownLoad(IFilenameValidator validator)
-        {
-            _validator = validator;
-        }
+        private DropBoxDownLoad(IFilenameValidator validator) => _validator = validator;
 
         #region Implementation of IDropboxSingleExecutor<IDropboxResult>
 
