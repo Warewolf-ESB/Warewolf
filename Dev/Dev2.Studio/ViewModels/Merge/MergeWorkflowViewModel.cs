@@ -213,7 +213,10 @@ namespace Dev2.ViewModels.Merge
             return conflicts;
         }
 
-        private void ArmCheck(bool arg1, string arg2, string arg3, string arg4) => throw new NotImplementedException();
+        private void ArmCheck(bool arg1, string arg2, string arg3, string arg4)
+        {
+
+        }
 
         static MergeArmConnectorConflict EmptyMergeArmConnectorConflict(Guid uniqueId)
         {
