@@ -3052,7 +3052,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         private ConcurrentDictionary<string, (ModelItem leftItem, ModelItem rightItem)> _allNodes;
         IServiceDifferenceParser _parser = CustomContainer.Get<IServiceDifferenceParser>();
-        public void AddItem(IMergeToolModel previous, IMergeToolModel model, IMergeToolModel next)
+        public void AddItem(IMergeToolModel model)
         {
             var root = _wd.Context.Services.GetService<ModelService>().Root;
             var chart = _wd.Context.Services.GetService<ModelService>().Find(root, typeof(Flowchart)).FirstOrDefault();
@@ -3080,7 +3080,6 @@ namespace Dev2.Studio.ViewModels.Workflow
                         nodes.Add(normalDecision);                    
                     break;
                 case FlowSwitch<string> normalSwitch:
-
                     if (model.FlowNode is FlowSwitch<string> emptySwitch)
                     {
                         emptySwitch.DisplayName = normalSwitch.DisplayName;
@@ -3089,39 +3088,31 @@ namespace Dev2.Studio.ViewModels.Workflow
                         nodes.Add(emptySwitch);
                     }
                     break;
-            }
-            if (nodeToAdd == null)
-            {
-                if (next == null)
-                {
-                    return;
-                }
-                nodeToAdd = next.ModelItem;
-            }
+            }            
             var flowNode = nodeToAdd.GetCurrentValue<FlowNode>();
 
-            if (model.HasParent)
-            {
-                IMergeToolModel decisionParent = ((MergeToolModel)((ToolConflict)((ToolConflict)((MergeToolModel)model)?.Container)?.Parent)?.CurrentViewModel);
-                var parentModel = decisionParent?.ModelItem;
-                if (parentModel?.ItemType == typeof(FlowDecision))
-                {
-                    AddNextDecisionArm(decisionParent, previous, model, nodes, flowNode, model.IsTrueArm ? "True" : "False");
-                }
-                if (parentModel?.ItemType == typeof(FlowSwitch<string>))
-                {
-                    AddNextSwitchArm(decisionParent, model, nodes);
-                }
-            }
-            else
-            {
+            //if (model.HasParent)
+            //{
+            //    IMergeToolModel decisionParent = ((MergeToolModel)((ToolConflict)((ToolConflict)((MergeToolModel)model)?.Container)?.Parent)?.CurrentViewModel);
+            //    var parentModel = decisionParent?.ModelItem;
+            //    if (parentModel?.ItemType == typeof(FlowDecision))
+            //    {
+            //        AddNextDecisionArm(decisionParent, previous, model, nodes, flowNode, model.IsTrueArm ? "True" : "False");
+            //    }
+            //    if (parentModel?.ItemType == typeof(FlowSwitch<string>))
+            //    {
+            //        AddNextSwitchArm(decisionParent, model, nodes);
+            //    }
+            //}
+            //else
+            //{
                 var startNode = chart.Properties["StartNode"];
                 if (startNode?.ComputedValue == null)
                 {
                     AddStartNode(model.FlowNode, startNode);
                 }
-                AddNextNode(previous, model, nodes, flowNode, next);
-            }
+                //AddNextNode(previous, model, nodes, flowNode, next);
+            //}
         }
         private void AddNextDecisionArm(IMergeToolModel decisionParent, IMergeToolModel previousNode, IMergeToolModel model, ModelItemCollection nodes, FlowNode flowNode, string arm)
         {
