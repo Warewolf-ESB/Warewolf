@@ -40,7 +40,7 @@ namespace Dev2.Activities
 
         public override FlowNode GetFlowNode()
         {
-            var swt = new FlowSwitch<string>();
+            var swt = new FlowSwitch<string>();                        
             return swt; 
         }
 
