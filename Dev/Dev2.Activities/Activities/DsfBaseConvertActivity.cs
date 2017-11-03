@@ -419,22 +419,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Implementation of ICollectionActivity
 
-        public int GetCollectionCount()
-        {
-            return ConvertCollection.Count(caseConvertTo => !caseConvertTo.CanRemove());
-        }
-
-        public void AddListToCollection(IList<string> listToAdd, bool overwrite, ModelItem modelItem)
-        {
-            if(!overwrite)
-            {
-                InsertToCollection(listToAdd, modelItem);
-            }
-            else
-            {
-                AddToCollection(listToAdd, modelItem);
-            }
-        }
+        public int GetCollectionCount() => throw new NotImplementedException();
+        public void AddListToCollection(IList<string> listToAdd, bool overwrite, ModelItem modelItem) => throw new NotImplementedException();
 
         #endregion
     }
