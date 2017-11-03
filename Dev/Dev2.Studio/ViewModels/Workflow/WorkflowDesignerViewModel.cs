@@ -3090,7 +3090,13 @@ namespace Dev2.Studio.ViewModels.Workflow
                     var nextStep = next.GetCurrentValue<FlowNode>();
                     if (nextStep != null)
                     {
-                        source.Next = nextStep;
+                        var parentNodeProperty = step.Properties["Next"];
+                        if (parentNodeProperty == null)
+                        {
+                            return;
+                        }
+                        parentNodeProperty.SetValue(nextStep);
+                        Selection.Select(_wd.Context, ModelItemUtils.CreateModelItem(next));
                     }
                 }
             }
