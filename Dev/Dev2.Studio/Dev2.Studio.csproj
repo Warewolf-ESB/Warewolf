@@ -471,9 +471,6 @@
     <Compile Include="Views\Help\FeedbackView.xaml.cs">
       <DependentUpon>FeedbackView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Administration\DsfAdminWindow.xaml.cs">
-      <DependentUpon>DsfAdminWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\Administration\StartPageWindow.xaml.cs">
       <DependentUpon>StartPageWindow.xaml</DependentUpon>
     </Compile>
@@ -628,10 +625,6 @@
     <Page Include="Views\Help\FeedbackView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Administration\DsfAdminWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\Administration\StartPageWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
