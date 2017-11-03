@@ -403,17 +403,30 @@ namespace Dev2.ViewModels.Merge
                 AddActivity(args);
                 if (!args.Container.IsChecked)
                 {
-                    var nextConflict = UpdateNextEnabledState();
-                    if (nextConflict != null && (!nextConflict.HasConflict || nextConflict.IsContainerTool))
+                    IConflict conflict = UpdateNextEnabledState();
+                    if (conflict is IToolConflict nextConflict)
                     {
-                        ExpandPreviousItems(nextConflict);
-                        nextConflict.CurrentViewModel.IsMergeChecked = true;
-                        nextConflict.CurrentViewModel.IsMergeEnabled = false;
-                        nextConflict.DiffViewModel.IsMergeEnabled = false;
+                        nextConflict.IsMergeExpanderEnabled = nextConflict.HasConflict;
+                        if (!nextConflict.HasConflict || nextConflict.IsContainerTool)
+                        {
+                            ExpandPreviousItems(nextConflict);
+                            nextConflict.CurrentViewModel.IsMergeChecked = true;
+                            nextConflict.CurrentViewModel.IsMergeEnabled = false;
+                            nextConflict.DiffViewModel.IsMergeEnabled = false;
+                        }
                     }
                     else
                     {
-                        nextConflict.IsMergeExpanderEnabled = nextConflict.HasConflict;
+                        if (conflict is IArmConnectorConflict nextArmConflict)
+                        {
+                            nextArmConflict.IsMergeExpanderEnabled = nextArmConflict.HasConflict;
+                            if (!nextArmConflict.HasConflict)
+                            {
+                                nextArmConflict.CurrentArmConnector.IsChecked = true;
+                                nextArmConflict.CurrentArmConnector.IsArmSelectionAllowed = false;
+                                nextArmConflict.DifferentArmConnector.IsArmSelectionAllowed = false;
+                            }
+                        }
                     }
                 }
                 args.Container.IsChecked = args.IsMergeChecked;
@@ -448,20 +461,31 @@ namespace Dev2.ViewModels.Merge
             return _conflictEnumerator.Current;
         }
 
-        IToolConflict UpdateNextEnabledState()
+        IConflict UpdateNextEnabledState()
         {
             if (Conflicts == null)
             {
                 return null;
             }
 
-            var nextCurrConflict = GetNextConflict() as IToolConflict;
-            if (nextCurrConflict != null)
+            var conflict = GetNextConflict();
+            var nextConflict = conflict as IToolConflict;
+            if (nextConflict != null)
             {
-                nextCurrConflict.CurrentViewModel.IsMergeEnabled = nextCurrConflict.HasConflict;
-                nextCurrConflict.DiffViewModel.IsMergeEnabled = nextCurrConflict.HasConflict;
+                nextConflict.CurrentViewModel.IsMergeEnabled = nextConflict.HasConflict;
+                nextConflict.DiffViewModel.IsMergeEnabled = nextConflict.HasConflict;
             }
-            return nextCurrConflict;
+            else
+            {
+                var nextArmConflict = conflict as IArmConnectorConflict;
+                if (nextArmConflict != null)
+                {
+                    nextArmConflict.CurrentArmConnector.IsArmSelectionAllowed = nextArmConflict.HasConflict;
+                    nextArmConflict.DifferentArmConnector.IsArmSelectionAllowed = nextArmConflict.HasConflict;
+                }
+                return nextArmConflict;
+            }
+            return nextConflict;
         }
                   
         public LinkedList<IConflict> Conflicts { get; set; }
