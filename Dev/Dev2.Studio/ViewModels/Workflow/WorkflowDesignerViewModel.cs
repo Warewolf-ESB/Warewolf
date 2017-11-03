@@ -3050,6 +3050,69 @@ namespace Dev2.Studio.ViewModels.Workflow
             return nodeToAmmend;
         }
 
+        public void LinkTools(string sourceUniqueId, string destionationUniqueId, string key)
+        {
+            var lastDecision = NodesCollection.FirstOrDefault(q =>
+            {
+                var decision = q.GetCurrentValue<IDev2Activity>();
+                if (decision == null)
+                {
+                    return false;
+                }
+                var hasParent = decision.UniqueID == sourceUniqueId && q.GetCurrentValue<FlowNode>() is FlowDecision;
+                return hasParent;
+            });
+            if (lastDecision != null)
+            {
+
+            }
+
+            var step = NodesCollection.FirstOrDefault(q =>
+            {
+                var decision = q.GetCurrentValue<IDev2Activity>();
+                if (decision == null)
+                {
+                    return false;
+                }
+                var hasParent = decision.UniqueID == sourceUniqueId && q.GetCurrentValue<FlowNode>() is FlowStep;
+                return hasParent;
+            });
+            if (step != null)
+            {
+                var source = step.GetCurrentValue<FlowStep>();
+                var next = NodesCollection.FirstOrDefault(q =>
+                {
+                    var decision = q.GetCurrentValue<IDev2Activity>();
+                    if (decision == null)
+                    {
+                        return false;
+                    }
+                    var hasParent = decision.UniqueID == destionationUniqueId;
+                    return hasParent;
+                });
+                if (next != null)
+                {
+                    var nextStep = next.GetCurrentValue<FlowNode>();
+                    if (nextStep != null)
+                    {
+                        source.Next = nextStep;
+                    }
+                }
+            }
+        }
+
+        public ModelItemCollection NodesCollection
+       {
+            get
+            {
+                var root = _wd.Context.Services.GetService<ModelService>().Root;
+                var chart = _wd.Context.Services.GetService<ModelService>().Find(root, typeof(Flowchart)).FirstOrDefault();
+
+                var nodes = chart?.Properties["Nodes"]?.Collection;
+                return nodes;
+            }
+       }
+
         private ConcurrentDictionary<string, (ModelItem leftItem, ModelItem rightItem)> _allNodes;
         IServiceDifferenceParser _parser = CustomContainer.Get<IServiceDifferenceParser>();
         public void AddItem(IMergeToolModel model)
