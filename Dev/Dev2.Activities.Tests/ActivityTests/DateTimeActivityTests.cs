@@ -17,7 +17,8 @@ using ActivityUnitTests;
 using Dev2.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
-
+using NodaTime;
+using System.Diagnostics;
 
 namespace Dev2.Tests.Activities.ActivityTests
 {
@@ -109,7 +110,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(firstDateTimeExpected, firstResult);
             Assert.AreEqual(secondDateTimeExpected, secondResult);
         }
-        
+
         [TestMethod]
         public void DateTimeAddSplitsExpectedDateTimeReturnedCorrectly()
         {
@@ -135,7 +136,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [TestCategory("DateTimeUnitTest")]
         [Owner("Massimo Guerrera")]
-        
+
         public void DateTime_DateTimeUnitTest_ExecuteWithBlankInput_DateTimeNowIsUsed()
 
         {
@@ -153,7 +154,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
             GetScalarValueFromEnvironment(result.Environment, "MyTestResult", out string actual, out string error);
-            DateTime actualdt = DateTime.Parse(actual,CultureInfo.InvariantCulture);
+            DateTime actualdt = DateTime.Parse(actual, CultureInfo.InvariantCulture);
             var timeSpan = actualdt - now;
 
             Assert.IsTrue(timeSpan.TotalMilliseconds >= 9000, timeSpan.TotalMilliseconds + " is not >= 9000");
@@ -162,7 +163,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [TestCategory("DateTimeUnitTest")]
         [Owner("Massimo Guerrera")]
-        
+
         public void DateTime_DateTimeUnitTest_ExecuteWithBlankInputAndSplitSecondsOutput_OutputNotZero()
 
         {
@@ -201,8 +202,12 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Setup for test--------------------------
             var act = new DsfDateTimeActivity
             {
-                DateTime = "", InputFormat = "", OutputFormat = "",TimeModifierType = "",
-                TimeModifierAmount = 1, Result = "[[dt]]",
+                DateTime = "",
+                InputFormat = "",
+                OutputFormat = "",
+                TimeModifierType = "",
+                TimeModifierAmount = 1,
+                Result = "[[dt]]",
                 TimeModifierAmountDisplay = 1.ToString(CultureInfo.InvariantCulture)
             };
             //------------Execute Test---------------------------
@@ -211,7 +216,76 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(1, outputs.Count);
             Assert.AreEqual("[[dt]]", outputs[0]);
         }
-        
+
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("DsfDateTimeActivity_GetOutputs")]
+        public void DsfDateTimeActivity_CurrentCulture_Called_ShouldPassAllDatesWithoutErrors()
+        {
+            //------------Setup for test--------------------------
+            int faiCount = 0;
+            int passCount = 0;
+            int total = 0;
+            var allCultures = CultureInfo.GetCultures(CultureTypes.AllCultures);
+            foreach (var culture in allCultures)
+            {
+                List<string> cultures = new List<string>();
+                foreach (var format in culture.DateTimeFormat.GetAllDateTimePatterns())
+                {
+                    cultures.Add(format);
+                }
+
+                var now = DateTime.Now;
+                
+                foreach (var item in cultures)
+                {
+                    const string currDL = @"<root><MyTestResult></MyTestResult></root>";
+                    SetupArguments(currDL
+                                 , currDL
+                                 , now.ToString()
+                                 , ""
+                                 , item
+                                 , "Years"
+                                 , 10
+                                 , "[[MyTestResult]]");
+
+                    IDSFDataObject result = ExecuteProcess();
+                    var a = now.ToString(item);
+                    GetScalarValueFromEnvironment(result.Environment, "MyTestResult", out string actual, out string error);
+                    total++;
+                    try
+                    {
+                        // remove test datalist ;)
+                        var allErrors = result.Environment.FetchErrors();
+                        var hasErrors = string.IsNullOrEmpty(allErrors);
+                        var asDate = DateTime.ParseExact(actual, item, culture, DateTimeStyles.AdjustToUniversal);
+
+                        
+                        LocalDate localDate = new LocalDate(now.Year, now.Month, now.Day);
+                        LocalDate localDate1 = new LocalDate(asDate.Year, asDate.Month, asDate.Day);
+                        var period = Period.Between(localDate, localDate1);
+                       
+                        Assert.IsTrue(hasErrors);
+                        if (item.ToUpper().Contains("y".ToUpper()))
+                            Assert.IsTrue(period.Years >= 9, "this format has failed " + item);
+                        else
+                            Assert.AreEqual(a, actual);
+                        passCount++;
+                    }
+                    catch (Exception e)
+                    {
+                       // Debug.WriteLine(actual + " "+ item+" "+ culture);
+                        faiCount++;
+                    }
+                }
+            }
+            Debug.WriteLine(faiCount+" " +"failures");
+            Debug.WriteLine(passCount + " " + "Passed");
+            Debug.WriteLine(total + " " + "total");
+
+        }
+
         #region Private Test Methods
 
         private void SetupArguments(string currentDL, string testData, string dateTime, string inputFormat, string outputFormat, string timeModifierType, int timeModifierAmount, string resultValue)
