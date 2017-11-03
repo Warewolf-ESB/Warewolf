@@ -20,7 +20,6 @@ namespace Dev2.ViewModels.Merge
         bool _hasWorkflowNameConflict;
         bool _hasVariablesConflict;
         bool _isVariablesEnabled;
-        bool _isMergeExpanderEnabled;
         readonly IContextualResourceModel _resourceModel;
 
         public MergeWorkflowViewModel(IContextualResourceModel currentResourceModel, IContextualResourceModel differenceResourceModel, bool loadworkflowFromServer)
@@ -213,14 +212,6 @@ namespace Dev2.ViewModels.Merge
             return conflicts;
         }
 
-        void ArmCheck(bool isChecked, string sourceUniqueId, string destionationUniqueId, string key)
-        {
-            if (isChecked)
-            {
-                WorkflowDesignerViewModel.LinkTools(sourceUniqueId,destionationUniqueId,key);
-            }
-        }
-
         static MergeArmConnectorConflict EmptyMergeArmConnectorConflict(Guid uniqueId)
         {
             return new MergeArmConnectorConflict
@@ -246,7 +237,6 @@ namespace Dev2.ViewModels.Merge
         {
             _serviceDifferenceParser = serviceDifferenceParser;
         }
-              
 
         bool All(Func<IConflict, bool> check)
         {
@@ -272,7 +262,6 @@ namespace Dev2.ViewModels.Merge
             WorkflowDesignerViewModel.AddItem(model);
             WorkflowDesignerViewModel.SelectedItem = model.ModelItem;
         }
-        
 
         [CanBeNull]
         static List<IToolConflict> SetPreviousModelTool(LinkedListNode<IToolConflict> linkedConflict)
@@ -382,27 +371,11 @@ namespace Dev2.ViewModels.Merge
                     IConflict conflict = UpdateNextEnabledState();
                     if (conflict is IToolConflict nextConflict)
                     {
-                        nextConflict.IsMergeExpanderEnabled = nextConflict.HasConflict;
-                        if (!nextConflict.HasConflict || nextConflict.IsContainerTool)
-                        {
-                            ExpandPreviousItems(nextConflict);
-                            nextConflict.CurrentViewModel.IsMergeChecked = true;
-                            nextConflict.CurrentViewModel.IsMergeEnabled = false;
-                            nextConflict.DiffViewModel.IsMergeEnabled = false;
-                        }
+                        UpdateNextToolState(nextConflict);
                     }
-                    else
+                    if (conflict is IArmConnectorConflict nextArmConflict)
                     {
-                        if (conflict is IArmConnectorConflict nextArmConflict)
-                        {
-                            nextArmConflict.IsMergeExpanderEnabled = nextArmConflict.HasConflict;
-                            if (!nextArmConflict.HasConflict)
-                            {
-                                nextArmConflict.CurrentArmConnector.IsChecked = true;
-                                nextArmConflict.CurrentArmConnector.IsArmSelectionAllowed = false;
-                                nextArmConflict.DifferentArmConnector.IsArmSelectionAllowed = false;
-                            }
-                        }
+                        UpdateNextArmState(nextArmConflict);
                     }
                 }
                 args.Container.IsChecked = args.IsMergeChecked;
@@ -410,6 +383,43 @@ namespace Dev2.ViewModels.Merge
             catch (Exception ex)
             {
                 Dev2Logger.Error(ex, ex.Message);
+            }
+        }
+
+        private static void UpdateNextToolState(IToolConflict nextConflict)
+        {
+            nextConflict.IsMergeExpanderEnabled = nextConflict.HasConflict;
+            if (!nextConflict.HasConflict || nextConflict.IsContainerTool)
+            {
+                ExpandPreviousItems(nextConflict);
+                nextConflict.CurrentViewModel.IsMergeChecked = true;
+                nextConflict.CurrentViewModel.IsMergeEnabled = false;
+                nextConflict.DiffViewModel.IsMergeEnabled = false;
+            }
+        }
+
+        void ArmCheck(bool isChecked, string sourceUniqueId, string destionationUniqueId, string key)
+        {
+            if (isChecked)
+            {
+                WorkflowDesignerViewModel.LinkTools(sourceUniqueId, destionationUniqueId, key);
+
+                IConflict conflict = UpdateNextEnabledState();
+                if (conflict is IArmConnectorConflict nextArmConflict)
+                {
+                    UpdateNextArmState(nextArmConflict);
+                }
+            }
+        }
+
+        private static void UpdateNextArmState(IArmConnectorConflict nextArmConflict)
+        {
+            nextArmConflict.IsMergeExpanderEnabled = nextArmConflict.HasConflict;
+            if (!nextArmConflict.HasConflict)
+            {
+                nextArmConflict.CurrentArmConnector.IsChecked = true;
+                nextArmConflict.CurrentArmConnector.IsArmSelectionAllowed = false;
+                nextArmConflict.DifferentArmConnector.IsArmSelectionAllowed = false;
             }
         }
 
