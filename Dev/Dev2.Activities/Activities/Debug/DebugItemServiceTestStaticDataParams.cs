@@ -10,12 +10,7 @@ namespace Dev2.Activities.Debug
     public class DebugItemServiceTestStaticDataParams : DebugOutputBase
     {
         readonly string _operand;
-
-        public DebugItemServiceTestStaticDataParams(string value)
-            : this(value, false, false)
-        {
-        }
-
+        
         public DebugItemServiceTestStaticDataParams(string value, bool hasError)
             : this(value, hasError, false)
         {
@@ -29,34 +24,7 @@ namespace Dev2.Activities.Debug
             TestStepHasError = hasError;
             MockSelected = mockSelected;
         }
-
-        public DebugItemServiceTestStaticDataParams(string value, string variable)
-            : this(value, variable, false)
-        {
-        }
-
-        public DebugItemServiceTestStaticDataParams(string value, string variable, bool mockSelected)
-        {
-            Value = value;
-            Variable = variable;
-            Type = DebugItemResultType.Variable;
-            MockSelected = mockSelected;
-        }
-
-        public DebugItemServiceTestStaticDataParams(string value, string variable, string operand)
-            : this(value, variable, operand, false)
-        {
-        }
-
-        public DebugItemServiceTestStaticDataParams(string value, string variable, string operand, bool mockSelected)
-        {
-            Value = value;
-            _operand = operand;
-            Variable = variable;
-            Type = DebugItemResultType.Variable;
-            MockSelected = mockSelected;
-        }
-
+        
         public string Value { get; }
 
         public override string LabelText { get; }
