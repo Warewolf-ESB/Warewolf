@@ -126,7 +126,7 @@ namespace Dev2.Activities.Designers2.Core
             var dataContext = parentContentPane?.DataContext;
             if (dataContext != null)
             {
-                if (dataContext.GetType().Name == "ServiceTestViewModel" || dataContext.GetType().Name == "MergeWorkflowViewModel")
+                if (dataContext.GetType().Name == "ServiceTestViewModel")
                 {
                     if (ContentDesignerTemplate != null)
                     {
@@ -378,7 +378,7 @@ namespace Dev2.Activities.Designers2.Core
             var dataContext = parentContentPane?.DataContext;
             if (dataContext != null)
             {
-                if (dataContext.GetType().Name == "ServiceTestViewModel" || dataContext.GetType().Name == "MergeWorkflowViewModel")
+                if (dataContext.GetType().Name == "ServiceTestViewModel")
                 {
                     e.Handled = true;
                 }
