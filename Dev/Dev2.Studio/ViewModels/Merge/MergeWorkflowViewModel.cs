@@ -176,6 +176,7 @@ namespace Dev2.ViewModels.Merge
                             foundConnector.HasConflict = hasConflict;
                             foundConnector.DifferentArmConnector.IsArmSelectionAllowed = hasConflict;
                             foundConnector.CurrentArmConnector.IsArmSelectionAllowed = hasConflict;
+                            foundConnector.IsMergeExpanderEnabled = hasConflict;
                         }
                         else
                         {
@@ -409,6 +410,10 @@ namespace Dev2.ViewModels.Merge
                         nextConflict.CurrentViewModel.IsMergeChecked = true;
                         nextConflict.CurrentViewModel.IsMergeEnabled = false;
                         nextConflict.DiffViewModel.IsMergeEnabled = false;
+                    }
+                    else
+                    {
+                        nextConflict.IsMergeExpanderEnabled = nextConflict.HasConflict;
                     }
                 }
                 args.Container.IsChecked = args.IsMergeChecked;

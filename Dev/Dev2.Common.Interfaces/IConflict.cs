@@ -24,6 +24,7 @@ namespace Dev2.Common.Interfaces
         IMergeArmConnectorConflict CurrentArmConnector { get; set; }
         IMergeArmConnectorConflict DifferentArmConnector { get; set; }
         string Key { get; set; }
+        bool IsMergeExpanderEnabled { get; set; }
     }
 
     public interface IToolConflict:IConflict
