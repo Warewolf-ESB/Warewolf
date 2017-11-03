@@ -653,6 +653,7 @@
                                     <Grid Name="ConflictsTreeViewTemplateGrid" 
                                           Background="{StaticResource WarewolfPanelGreyBrush}" 
                                           Width="{Binding ElementName=ConflictsTreeView, Path=ActualWidth}"
+                                          IsEnabled="{Binding IsMergeExpanderEnabled}"
                                           AutomationProperties.AutomationId="UI_ConflictsTreeViewTemplateGrid_AutoID">
 
                                         <Grid.ColumnDefinitions>
