@@ -18,7 +18,6 @@ using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Studio.Views.Help;
 using Dev2.ViewModels.Help;
-using Dev2.Webs.Callbacks;
 using Dev2.Studio.Core;
 using Dev2.Studio.Interfaces.Enums;
 
@@ -30,8 +29,6 @@ namespace Dev2.Studio.ViewModels.Help
 {
     public class HelpViewModel : BaseWorkSurfaceViewModel
     {
-        readonly INetworkHelper _network;
-
         public IHelpViewWrapper HelpViewWrapper { get; private set; }
         public string Uri { get; private set; }
         public string ResourcePath { get; private set; }
@@ -39,10 +36,9 @@ namespace Dev2.Studio.ViewModels.Help
         public bool IsViewAvailable { get; private set; }
 
 
-        public HelpViewModel(INetworkHelper network, IHelpViewWrapper helpViewWrapper, bool isViewAvailable)
+        public HelpViewModel(IHelpViewWrapper helpViewWrapper, bool isViewAvailable)
             : base(EventPublishers.Aggregator)
         {
-            _network = network;
             HelpViewWrapper = helpViewWrapper;
             IsViewAvailable = isViewAvailable;
         }
@@ -55,7 +51,6 @@ namespace Dev2.Studio.ViewModels.Help
         public HelpViewModel(IEventAggregator eventPublisher)
             : base(eventPublisher)
         {
-            _network = new NetworkHelper();
             IsViewAvailable = true;
         }
 
