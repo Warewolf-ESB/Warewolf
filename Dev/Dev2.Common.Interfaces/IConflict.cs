@@ -17,6 +17,7 @@ namespace Dev2.Common.Interfaces
         string SourceUniqueId { get; set; }
         string DestinationUniqueId { get; set; }
         bool IsArmSelectionAllowed { get; set; }
+        bool IsChecked { get; set; }
         string Key { get; set; }
     }
 
