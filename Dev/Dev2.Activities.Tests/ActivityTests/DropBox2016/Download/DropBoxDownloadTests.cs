@@ -67,11 +67,26 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Download
         public void CreateNewDropboxDownload_GivenMissingToPath_ShouldBeValid()
         {
             //---------------Set up test pack-------------------
-            var dropBoxDownLoad = new DropBoxDownLoad( "a.file");
+            var dropBoxDownLoad = new DropBoxDownLoad("a.file");
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             //---------------Test Result -----------------------
             Assert.IsNotNull(dropBoxDownLoad);
-        } 
+        }
+
+        [TestMethod]
+        [Owner("Ashley Lewis")]
+        public void ExecuteDropboxDownload_Throws_ShouldReturnFailedResult()
+        {
+            //---------------Set up test pack-------------------
+            var dropBoxDownLoad = new DropBoxDownLoad("a.file");
+            var mockDropboxClient = new Mock<IDropboxClientWrapper>();
+            mockDropboxClient.Setup(client => client.DownloadAsync(It.IsAny<DownloadArg>())).Throws(new Exception());
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            var result = dropBoxDownLoad.ExecuteTask(mockDropboxClient.Object);
+            //---------------Test Result -----------------------
+            Assert.IsInstanceOfType(result, typeof(DropboxFailureResult), "Dropbox failure result not returned after exception");
+        }
     }
 }
