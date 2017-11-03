@@ -1814,9 +1814,39 @@ namespace Dev2.Studio.ViewModels.Workflow
                         e.Handled = true;
                     }
                 }
-                if (e.Key == Key.Delete && (grid?.DataContext.GetType() == typeof(ServiceTestViewModel) || grid?.DataContext.GetType() == typeof(MergeWorkflowViewModel)))
+                var type = grid?.DataContext.GetType();
+                if (type == typeof(ServiceTestViewModel))
                 {
-                    e.Handled = true;
+                    if (e.Key == Key.Delete)
+                    {
+                        e.Handled = true;
+                    }
+                }
+                if (type == typeof(MergeWorkflowViewModel))
+                {
+                    if (origSource == typeof(TextBox))
+                    {
+                        return;
+                    }
+                    if (e.Key == Key.Delete)
+                    {
+                        e.Handled = true;
+                        return;
+                    }
+                    
+                    if ((Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
+                    {
+                        switch (e.Key)
+                        {
+                            case Key.X:
+                            case Key.C:
+                            case Key.V:
+                            case Key.Z:
+                            case Key.Y:
+                                e.Handled = true;
+                                break;
+                        }
+                    }
                 }
             }
         }
