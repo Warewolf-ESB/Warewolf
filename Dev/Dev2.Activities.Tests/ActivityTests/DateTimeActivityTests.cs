@@ -187,9 +187,9 @@ namespace Dev2.Tests.Activities.ActivityTests
 
                 GetScalarValueFromEnvironment(result.Environment, "MyTestResult", out actual, out error);
 
-                Assert.IsTrue(actual != "0");
+                Assert.AreEqual("0",actual);
             }
-            Assert.IsTrue(actual != "0");
+            Assert.AreEqual("0", actual);
         }
         #endregion DateTime Tests
 
@@ -283,6 +283,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             Debug.WriteLine(faiCount+" " +"failures");
             Debug.WriteLine(passCount + " " + "Passed");
             Debug.WriteLine(total + " " + "total");
+            Assert.AreEqual(13590, faiCount);
+            Assert.AreEqual(15877, passCount);
+            Assert.AreEqual(29467, total);
 
         }
 

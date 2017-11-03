@@ -65,7 +65,7 @@ namespace Dev2.Common.DateAndTime
             var inPutHasDev2Formating = DateTimeParserHelper.DateIsDev2DateFormat(dateTimeTO.InputFormat);
             bool nothingDied = true;
             dateTimeTO.InputFormat = dateTimeTO.InputFormat ?? GlobalConstants.Dev2DotNetDefaultDateTimeFormat;
-            dateTimeTO.OutputFormat = dateTimeTO.OutputFormat ?? dateTimeTO.InputFormat;
+            dateTimeTO.OutputFormat = string.IsNullOrWhiteSpace(dateTimeTO.OutputFormat) ? dateTimeTO.InputFormat : dateTimeTO.OutputFormat;
             if (inPutHasDev2Formating || outPutHasDev2Formating)
             {
                 result = "";
@@ -173,9 +173,9 @@ namespace Dev2.Common.DateAndTime
             {
                 try
                 {
-                   
+
                     var internallyParsedValue = DateTime.TryParseExact(dateTimeTO.DateTime?.Trim(), dateTimeTO.InputFormat, CultureInfo.InvariantCulture, DateTimeStyles.AllowWhiteSpaces, out var dateResult);
-                    if (internallyParsedValue )
+                    if (internallyParsedValue)
                     {
                         var tmpDateTime = PerformDateTimeModification(dateTimeTO, dateResult);
                         result = tmpDateTime.ToString(dateTimeTO.OutputFormat, CultureInfo.InvariantCulture);
