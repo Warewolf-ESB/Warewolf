@@ -172,7 +172,7 @@ namespace Dev2.ViewModels.Merge
                         if (foundConnector != null)
                         {
                             foundConnector.DifferentArmConnector = mergeArmConnectorConflict;
-                            bool hasConflict = !foundConnector.CurrentArmConnector.Equals(foundConnector.DifferentArmConnector);
+                            var hasConflict = !foundConnector.CurrentArmConnector.Equals(foundConnector.DifferentArmConnector);
                             foundConnector.HasConflict = hasConflict;
                             foundConnector.DifferentArmConnector.IsArmSelectionAllowed = hasConflict;
                             foundConnector.CurrentArmConnector.IsArmSelectionAllowed = hasConflict;
@@ -258,42 +258,9 @@ namespace Dev2.ViewModels.Merge
             if (conflict != null && conflict.UniqueId == model.UniqueId)
             {
                 WorkflowDesignerViewModel.RemoveStartNodeConnection();
-            }
-            //var linkedConflict = Find(model.Container);
-            //IMergeToolModel previous = null;
-            //IMergeToolModel next = null;
-            //IToolConflict previousCurrentViewModel = null;
-            //if (linkedConflict != null)
-            //{
-            //    var parents = SetPreviousModelTool(linkedConflict);
-            //    if (model.Parent != null)
-            //    {
-            //        previousCurrentViewModel = parents?.FirstOrDefault(x => x.UniqueId == model.Parent.UniqueId);
-            
-            //    }
-            //    else
-            //    {
-            //        previousCurrentViewModel = parents?.FirstOrDefault(x => x.UniqueId != linkedConflict.Previous.Value.UniqueId);
-            //    }
-
-            //    if (previousCurrentViewModel != null)
-            //    {
-            //        if (previousCurrentViewModel.CurrentViewModel != null && previousCurrentViewModel.CurrentViewModel.IsMergeChecked)
-            //        {
-            //            previous = previousCurrentViewModel.CurrentViewModel;
-            //        }
-            //        else
-            //        {
-            //            if (previousCurrentViewModel.DiffViewModel != null && previousCurrentViewModel.DiffViewModel.IsMergeChecked)
-            //            {
-            //                previous = previousCurrentViewModel.DiffViewModel;
-            //            }
-            //        }
-            //    }
-            //    next = SetNextModelTool(linkedConflict);
-            //}
-            WorkflowDesignerViewModel.AddItem(null, model, null);
-            //WorkflowDesignerViewModel.SelectedItem = model.FlowNode;
+            }            
+            WorkflowDesignerViewModel.AddItem(model);
+            WorkflowDesignerViewModel.SelectedItem = model.ModelItem;
         }
         
 

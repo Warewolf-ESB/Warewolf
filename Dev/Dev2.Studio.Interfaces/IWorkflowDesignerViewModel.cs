@@ -40,7 +40,7 @@ namespace Dev2.Studio.Interfaces
         string GetWorkflowInputs(string field);
         void CreateBlankWorkflow();
         void RemoveItem(IMergeToolModel model);
-        void AddItem(IMergeToolModel previous, IMergeToolModel model,IMergeToolModel next);
+        void AddItem(IMergeToolModel model);
         void RemoveStartNodeConnection();
         ModelItem UpdateModelItem(ModelItem modelItem, IMergeToolModel modelTool);
     }
