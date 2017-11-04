@@ -31,14 +31,6 @@ namespace Dev2.Studio.Core.AppResources.Converters
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => throw new NotImplementedException();
+
     }
 }
-
-
-
-
-
-
-
-
-
