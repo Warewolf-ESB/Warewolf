@@ -74,7 +74,7 @@ namespace Dev2.Studio.Controller
         /// </summary>
         public static string ConfigureDecisionExpression(ConfigureDecisionExpressionMessage args)
         {
-            var condition = ConfigureActivity<DsfFlowDecisionActivity>(args.ModelItem, GlobalConstants.ConditionPropertyText, args.IsNew);
+            var condition = ConfigureActivity<DsfFlowDecisionActivity>(args.ModelItem, GlobalConstants.ConditionPropertyText, args.IsNew, args.IsPaste);
             if (condition == null)
             {
                 return null;
@@ -113,7 +113,7 @@ namespace Dev2.Studio.Controller
         public static string ConfigureSwitchExpression(ConfigureSwitchExpressionMessage args)
         {
             OldSwitchValue = string.Empty;
-            var expression = ConfigureActivity<DsfFlowSwitchActivity>(args.ModelItem, GlobalConstants.SwitchExpressionPropertyText, args.IsNew);
+            var expression = ConfigureActivity<DsfFlowSwitchActivity>(args.ModelItem, GlobalConstants.SwitchExpressionPropertyText, args.IsNew, args.IsPaste);
             if (expression == null)
             {
                 return null;
@@ -169,7 +169,7 @@ namespace Dev2.Studio.Controller
             var dataContext1 = parentContentPane?.DataContext;
             if (dataContext1 != null)
             {
-                if (dataContext1.GetType().Name == "ServiceTestViewModel" || dataContext1.GetType().Name == "MergeWorkflowViewModel")
+                if (dataContext1.GetType().Name == "ServiceTestViewModel")
                 {
                     window.SetEnableDoneButtonState(false);
                 }
@@ -356,7 +356,7 @@ namespace Dev2.Studio.Controller
             var dataContext1 = parentContentPane?.DataContext;
             if (dataContext1 != null)
             {
-                if (dataContext1.GetType().Name == "ServiceTestViewModel" || dataContext.GetType().Name == "MergeWorkflowViewModel")
+                if (dataContext1.GetType().Name == "ServiceTestViewModel")
                 {
                     window.SetEnableDoneButtonState(false);
                 }
@@ -402,7 +402,7 @@ namespace Dev2.Studio.Controller
 
         #region ConfigureActivity
 
-        private static ModelItem ConfigureActivity<T>(ModelItem modelItem, string propertyName, bool isNew) where T : class, IFlowNodeActivity, new()
+        static ModelItem ConfigureActivity<T>(ModelItem modelItem, string propertyName, bool isNew,bool isPaste) where T : class, IFlowNodeActivity, new()
         {
             var property = modelItem.Properties[propertyName];
             if (property == null)
@@ -423,8 +423,8 @@ namespace Dev2.Studio.Controller
                 
                 var isCopyPaste = isNew && !string.IsNullOrEmpty(activity.ExpressionText);
                 if (result == null || isCopyPaste)
-                {
-                    if (activity is IDev2Activity act)
+                {                    
+                    if (activity is IDev2Activity act && isPaste)
                     {
                         act.UniqueID = Guid.NewGuid().ToString();
                     }

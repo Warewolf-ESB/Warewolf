@@ -1141,9 +1141,12 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 computedValue = mi.Source?.Value?.Source?.ComputedValue;
             }
-            if (computedValue is IDev2Activity)
+            if (computedValue is IDev2Activity act)
             {
-                (computedValue as IDev2Activity).UniqueID = Guid.NewGuid().ToString();
+                if (string.IsNullOrEmpty(act.UniqueID) && !_isPaste)
+                {
+                    act.UniqueID = Guid.NewGuid().ToString();
+                }
                 _modelItems = _modelService.Find(_modelService.Root, typeof(IDev2Activity));
             }
             if (computedValue is Activity)
@@ -1167,6 +1170,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 AddSwitch(mi);
             }
+            _isPaste = false;
             return addedItem;
         }
 
@@ -1181,7 +1185,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                     ModelProperty modelProperty = mi.Properties["Key"];
                     if (modelProperty?.Value != null && (FlowController.OldSwitchValue == null || string.IsNullOrWhiteSpace(FlowController.OldSwitchValue)))
                     {
-                        FlowController.ConfigureSwitchCaseExpression(new ConfigureCaseExpressionMessage { ModelItem = mi, ExpressionText = switchExpressionValue, Server = _resourceModel.Environment });
+                        FlowController.ConfigureSwitchCaseExpression(new ConfigureCaseExpressionMessage { ModelItem = mi, ExpressionText = switchExpressionValue, Server = _resourceModel.Environment,IsPaste = _isPaste });
                     }
                 }
             }
@@ -1281,7 +1285,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             // Travis.Frisinger : 28.01.2013 - Switch Amendments
             Dev2Logger.Info("Publish message of type - " + typeof(ConfigureSwitchExpressionMessage), "Warewolf Info");
-            _expressionString = FlowController.ConfigureSwitchExpression(new ConfigureSwitchExpressionMessage { ModelItem = mi, Server = _resourceModel.Environment, IsNew = true });
+            _expressionString = FlowController.ConfigureSwitchExpression(new ConfigureSwitchExpressionMessage { ModelItem = mi, Server = _resourceModel.Environment, IsNew = true, IsPaste = _isPaste });
             AddMissingWithNoPopUpAndFindUnusedDataListItemsImpl(false);
         }
 
@@ -1291,7 +1295,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             ModelProperty modelProperty = mi.Properties["Action"];
 
             InitialiseWithAction(modelProperty);
-            _expressionString = FlowController.ConfigureDecisionExpression(new ConfigureDecisionExpressionMessage { ModelItem = mi, Server = _resourceModel.Environment, IsNew = true });
+            _expressionString = FlowController.ConfigureDecisionExpression(new ConfigureDecisionExpressionMessage { ModelItem = mi, Server = _resourceModel.Environment, IsNew = true, IsPaste=_isPaste });
             AddMissingWithNoPopUpAndFindUnusedDataListItemsImpl(false);
         }
 
@@ -1811,9 +1815,39 @@ namespace Dev2.Studio.ViewModels.Workflow
                         e.Handled = true;
                     }
                 }
-                if (e.Key == Key.Delete && (grid?.DataContext.GetType() == typeof(ServiceTestViewModel) || grid?.DataContext.GetType() == typeof(MergeWorkflowViewModel)))
+                var type = grid?.DataContext.GetType();
+                if (type == typeof(ServiceTestViewModel))
                 {
-                    e.Handled = true;
+                    if (e.Key == Key.Delete)
+                    {
+                        e.Handled = true;
+                    }
+                }
+                if (type == typeof(MergeWorkflowViewModel))
+                {
+                    if (origSource == typeof(TextBox))
+                    {
+                        return;
+                    }
+                    if (e.Key == Key.Delete)
+                    {
+                        e.Handled = true;
+                        return;
+                    }
+                    
+                    if ((Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
+                    {
+                        switch (e.Key)
+                        {
+                            case Key.X:
+                            case Key.C:
+                            case Key.V:
+                            case Key.Z:
+                            case Key.Y:
+                                e.Handled = true;
+                                break;
+                        }
+                    }
                 }
             }
         }
@@ -2743,7 +2777,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
             if (e.Command == System.Activities.Presentation.View.DesignerView.PasteCommand)
             {
-
+                _isPaste = true;
                 var dataObject = Clipboard.GetDataObject();
                 if (dataObject != null)
                 {
@@ -2966,7 +3000,8 @@ namespace Dev2.Studio.ViewModels.Workflow
                 }
             }
         }
-        private void UpdateResourceModel(SaveUnsavedWorkflowMessage message, IContextualResourceModel resourceModel, string unsavedName)
+
+        void UpdateResourceModel(SaveUnsavedWorkflowMessage message, IContextualResourceModel resourceModel, string unsavedName)
         {
             resourceModel.ResourceName = message.ResourceName;
             resourceModel.DisplayName = message.ResourceName;
@@ -2997,10 +3032,8 @@ namespace Dev2.Studio.ViewModels.Workflow
                 return;
             }
 
-            _allNodes = _parser?.GetAllNodes();
-            var nodeToRemove = GetNodeToAmmend(model);
-
-            var step = nodeToRemove?.GetCurrentValue();
+            //var step = model.ModelItem?.GetCurrentValue();
+            var step = model.FlowNode;
             switch (step)
             {
                 case FlowStep normalStep:
@@ -3023,36 +3056,144 @@ namespace Dev2.Studio.ViewModels.Workflow
                     break;
             }
         }
-
-        private ModelItem GetNodeToAmmend(IMergeToolModel model)
+        
+        public void LinkTools(string sourceUniqueId, string destinationUniqueId, string key)
         {
-            var nodeToAmmend = default(ModelItem);
-            if (_allNodes == null)
+            if (SetNextForDecision(sourceUniqueId, destinationUniqueId, key))
             {
-                return null;
+                return;
             }
-
-            var hasNodes = _allNodes.TryGetValue(model.UniqueId.ToString(), out (ModelItem leftItem, ModelItem rightItem) toolPar);
-
-            if (!hasNodes)
+            if (SetNextForSwitch(sourceUniqueId, destinationUniqueId, key))
             {
-                return null;
+                return;
             }
-
-            if (toolPar.leftItem?.GetCurrentValue() == model.ModelItem?.GetCurrentValue())
+            var step = GetRegularActivityFromNodeCollection(sourceUniqueId);
+            if (step != null)
             {
-                nodeToAmmend = toolPar.leftItem;
+                var next = GetItemFromNodeCollection(destinationUniqueId);
+                SetNext(next, step);
+                
             }
-            else if (toolPar.rightItem?.GetCurrentValue() == model.ModelItem?.GetCurrentValue())
-            {
-                nodeToAmmend = toolPar.rightItem;
-            }
-            return nodeToAmmend;
         }
+
+        bool SetNextForDecision(string sourceUniqueId, string destinationUniqueId, string key)
+        {
+            var decisionItem = GetDecisionFromNodeCollection(sourceUniqueId);
+            if (decisionItem != null)
+            {
+                var next = GetItemFromNodeCollection(destinationUniqueId);               
+                var parentNodeProperty = decisionItem.Properties[key];
+                if (parentNodeProperty != null)
+                {
+                    parentNodeProperty.SetValue(next);
+                    Selection.Select(_wd.Context, ModelItemUtils.CreateModelItem(next));
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        ModelItem GetItemFromNodeCollection(string uniqueId) => GetDecisionFromNodeCollection(uniqueId) ?? GetSwitchFromNodeCollection(uniqueId) ?? GetRegularActivityFromNodeCollection(uniqueId);
+
+
+        bool SetNextForSwitch(string sourceUniqueId, string destinationUniqueId, string key)
+        {
+            var switchItem = GetSwitchFromNodeCollection(sourceUniqueId);
+            if (switchItem != null)
+            {
+                var next = GetItemFromNodeCollection(destinationUniqueId);
+                if (next != null)
+                {
+                    if (key != "Default")
+                    {
+                        var parentNodeProperty = switchItem.Properties["Cases"];
+                        var cases = parentNodeProperty?.Dictionary;
+                        var nodeItem = next.GetCurrentValue() as FlowNode;
+                        if (nodeItem != null)
+                        {
+                            cases.Add(key, nodeItem);
+                            parentNodeProperty.SetValue(cases);
+                        }
+                    }
+                    else
+                    {
+                        var defaultProperty = switchItem.Properties["Default"];
+                        if (defaultProperty != null)
+                        {
+                            defaultProperty.SetValue(switchItem.GetCurrentValue());
+                        }
+                    }
+                    Selection.Select(_wd.Context, ModelItemUtils.CreateModelItem(next));
+                    return true;
+                }                
+            }
+            return false;
+        }
+
+        ModelItem GetDecisionFromNodeCollection(string uniqueId) => NodesCollection.FirstOrDefault(q =>
+        {
+            var decision = q.GetProperty("Condition") as IDev2Activity;
+            if (decision == null)
+            {
+                return false;
+            }
+            var hasParent = decision.UniqueID == uniqueId && q.GetCurrentValue<FlowNode>() is FlowDecision;
+            return hasParent;
+        });
+
+        ModelItem GetSwitchFromNodeCollection(string uniqueId) => NodesCollection.FirstOrDefault(q =>
+        {
+            var decision = q.GetProperty("Expression") as IDev2Activity;
+            if (decision == null)
+            {
+                return false;
+            }
+            var hasParent = decision.UniqueID == uniqueId;
+            return hasParent;
+        });
+
+        void SetNext(ModelItem next,ModelItem source)
+        {
+            if (next != null)
+            {
+                var nextStep = next.GetCurrentValue<FlowNode>();
+                if (nextStep != null)
+                {
+                    var parentNodeProperty = source.Properties["Next"];
+                    if (parentNodeProperty == null)
+                    {
+                        return;
+                    }
+                    parentNodeProperty.SetValue(nextStep);
+                    Selection.Select(_wd.Context, ModelItemUtils.CreateModelItem(next));
+                }
+            }
+        }
+
+        ModelItem GetRegularActivityFromNodeCollection(string uniqueId) => NodesCollection.FirstOrDefault(q =>
+        {
+            var s = q.GetCurrentValue() as FlowStep;
+            var act = s?.Action as IDev2Activity;
+            return act?.UniqueID == uniqueId;
+        });
+
+        public ModelItemCollection NodesCollection
+       {
+            get
+            {
+                var root = _wd.Context.Services.GetService<ModelService>().Root;
+                var chart = _wd.Context.Services.GetService<ModelService>().Find(root, typeof(Flowchart)).FirstOrDefault();
+
+                var nodes = chart?.Properties["Nodes"]?.Collection;
+                return nodes;
+            }
+       }
 
         private ConcurrentDictionary<string, (ModelItem leftItem, ModelItem rightItem)> _allNodes;
         IServiceDifferenceParser _parser = CustomContainer.Get<IServiceDifferenceParser>();
-        public void AddItem(IMergeToolModel previous, IMergeToolModel model, IMergeToolModel next)
+        private bool _isPaste;
+
+        public void AddItem(IMergeToolModel model)
         {
             var root = _wd.Context.Services.GetService<ModelService>().Root;
             var chart = _wd.Context.Services.GetService<ModelService>().Find(root, typeof(Flowchart)).FirstOrDefault();
@@ -3065,6 +3206,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
             var nodeToAdd = model.ModelItem;
             var step = model.FlowNode;
+            
             switch (step)
             {
                 case FlowStep normalStep:
@@ -3075,129 +3217,42 @@ namespace Dev2.Studio.ViewModels.Workflow
                     }
                     break;
                 case FlowDecision normalDecision:
-                        normalDecision.False = null;
-                        normalDecision.True = null;
-                        nodes.Add(normalDecision);                    
+                    normalDecision.DisplayName = model.MergeDescription;
+                    normalDecision.False = null;
+                    normalDecision.True = null;
+                    nodes.Add(normalDecision);
                     break;
                 case FlowSwitch<string> normalSwitch:
-
-                    if (model.FlowNode is FlowSwitch<string> emptySwitch)
-                    {
-                        emptySwitch.DisplayName = normalSwitch.DisplayName;
-                        emptySwitch.Expression = normalSwitch.Expression;
-                        nodeToAdd = ModelItemUtils.CreateModelItem(emptySwitch);
-                        nodes.Add(emptySwitch);
-                    }
+                    var switchAct = new DsfFlowSwitchActivity();
+                    switchAct.ExpressionText = String.Join("", GlobalConstants.InjectedSwitchDataFetch,
+                                                    "(\"", nodeToAdd.GetProperty<string>("Switch"), "\",",
+                                                    GlobalConstants.InjectedDecisionDataListVariable,
+                                                    ")");
+                    switchAct.UniqueID = nodeToAdd.GetProperty<string>("UniqueID");
+                    normalSwitch.Expression = switchAct;
+                    normalSwitch.Cases.Clear();
+                    normalSwitch.Default = null;
+                    nodes.Add(normalSwitch);
                     break;
             }
-            if (nodeToAdd == null)
+            var modelItem = GetItemFromNodeCollection(model.UniqueId.ToString());
+            SetShapeLocation(modelItem, model.NodeLocation);
+            var startNode = chart.Properties["StartNode"];
+            if (startNode?.ComputedValue == null)
             {
-                if (next == null)
-                {
-                    return;
-                }
-                nodeToAdd = next.ModelItem;
-            }
-            var flowNode = nodeToAdd.GetCurrentValue<FlowNode>();
-
-            if (model.HasParent)
-            {
-                IMergeToolModel decisionParent = ((MergeToolModel)((ToolConflict)((ToolConflict)((MergeToolModel)model)?.Container)?.Parent)?.CurrentViewModel);
-                var parentModel = decisionParent?.ModelItem;
-                if (parentModel?.ItemType == typeof(FlowDecision))
-                {
-                    AddNextDecisionArm(decisionParent, previous, model, nodes, flowNode, model.IsTrueArm ? "True" : "False");
-                }
-                if (parentModel?.ItemType == typeof(FlowSwitch<string>))
-                {
-                    AddNextSwitchArm(decisionParent, model, nodes);
-                }
-            }
-            else
-            {
-                var startNode = chart.Properties["StartNode"];
-                if (startNode?.ComputedValue == null)
-                {
-                    AddStartNode(model.FlowNode, startNode);
-                }
-                AddNextNode(previous, model, nodes, flowNode, next);
+                AddStartNode(model.FlowNode, startNode);
             }
         }
-        private void AddNextDecisionArm(IMergeToolModel decisionParent, IMergeToolModel previousNode, IMergeToolModel model, ModelItemCollection nodes, FlowNode flowNode, string arm)
+
+        private void SetShapeLocation(ModelItem modelItem, Point location)
         {
-            var lastDecision = nodes.FirstOrDefault(q =>
-            {
-                var decision = q.GetCurrentValue<FlowDecision>();
-                if (decision == null)
-                {
-                    return false;
-                }
-                var hasParent = decision.Equals(decisionParent.ModelItem.GetCurrentValue());
-                return hasParent;
-            });
-            ModelProperty parentNodeProperty;
-            if (lastDecision != null)
-            {
-                parentNodeProperty = lastDecision.Properties[arm];
+            ViewStateService service = _wd.Context.Services.GetService<ViewStateService>();
+            //var modelItem = ModelItemUtils.CreateModelItem(flowNode);
 
-                IMergeToolModel parentToolModel = ((MergeToolModel)((ToolConflict)((ToolConflict)((MergeToolModel)model)?.Container)?.Parent)?.CurrentViewModel);
-                if (parentNodeProperty.ComputedValue == null)
-                {
-                    if (flowNode == null)
-                    {
-                        parentNodeProperty.SetValue(model.ModelItem.GetCurrentValue());
-                        Selection.Select(_wd.Context, model.ModelItem);
-                    }
-                    else
-                    {
-                        parentNodeProperty.SetValue(flowNode);
-                        Selection.Select(_wd.Context, ModelItemUtils.CreateModelItem(flowNode));
-
-                    }
-                }
-                else
-                {
-                    AddNextNode(previousNode, model, nodes, flowNode, null);
-                }
-            }
+            service.RemoveViewState(modelItem, "ShapeLocation");
+            service.StoreViewState(modelItem, "ShapeLocation", location);
         }
 
-        private void AddNextSwitchArm(IMergeToolModel parent, IMergeToolModel model, ModelItemCollection nodes)
-        {
-
-            var parentNode = nodes.FirstOrDefault(t =>
-            {
-                var step = t.GetCurrentValue() as FlowNode;
-                var found = step.Equals(parent.FlowNode);
-                return found;               
-            });
-          
-            if (parentNode != null)
-            {
-                
-                if (model.ParentDescription != "Default")
-                {
-                    ModelProperty parentNodeProperty = parentNode.Properties["Cases"];
-                    var cases = parentNodeProperty?.Dictionary;
-                    var nodeItem = model.ModelItem.GetCurrentValue() as FlowNode;                    
-                    if (nodeItem != null)
-                    {
-                        cases.Add(model.ParentDescription,nodeItem);
-                        parentNodeProperty.SetValue(cases);
-                    }
-                }
-                else
-                {
-                    var defaultProperty = parentNode.Properties["Default"];
-                    if (defaultProperty != null)
-                    {
-                        defaultProperty.SetValue(model.ModelItem.GetCurrentValue());
-                    }
-                }                
-                Selection.Select(_wd.Context, model.ModelItem);
-            }
-        }
-        
         public void RemoveStartNodeConnection()
         {
             var root = _wd.Context.Services.GetService<ModelService>().Root;
@@ -3215,175 +3270,6 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-        private void AddNodesForChildren(IMergeToolModel model, ModelItemCollection nodes)
-        {
-            if (model.Children.Any())
-            {
-                foreach (var item in model.Children)
-                {
-                    var hasDecionsNodes = _allNodes.TryGetValue(item.UniqueId.ToString(), out (ModelItem leftItem, ModelItem rightItem) childtoolPar);
-                    if (hasDecionsNodes)
-                    {
-                        if (childtoolPar.leftItem?.GetCurrentValue() == item.ModelItem.GetCurrentValue())
-                        {
-                            var a = childtoolPar.leftItem?.GetCurrentValue();
-                            if (a != null && !nodes.Contains(a))
-                            {
-                                AddNodesForChildren(item, nodes);
-                                nodes.Add(a);
-                            }
-                        }
-                        else if (childtoolPar.rightItem?.GetCurrentValue() == item.ModelItem.GetCurrentValue())
-                        {
-                            var b = childtoolPar.leftItem?.GetCurrentValue();
-                            if (b != null && !nodes.Contains(b))
-                            {
-                                AddNodesForChildren(item, nodes);
-                                nodes.Add(b);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        public ModelItem UpdateModelItem(ModelItem modelItem, IMergeToolModel mergeToolModel)
-        {
-            var root = _wd.Context.Services.GetService<ModelService>().Root;
-            var chart = _wd.Context.Services.GetService<ModelService>().Find(root, typeof(Flowchart)).FirstOrDefault();
-            var nodes = chart?.Properties["Nodes"]?.Collection;
-            if (nodes == null)
-            {
-                return null;
-            }
-            var flowNode = nodes.FirstOrDefault(t =>
-            {
-                var prop = t.Properties["Action"];
-                if (prop != null)
-                {
-                    var act = t.Properties["Action"]?.ComputedValue as IDev2Activity;
-                    return act?.UniqueID == modelItem.Properties["UniqueID"]?.ComputedValue.ToString();
-                }
-
-                var propertyName = string.Empty;
-                switch (t.ItemType.Name)
-                {
-                    case "FlowDecision":
-                        propertyName = "Condition";
-                        break;
-                    case "FlowSwitch`1":
-                        propertyName = "Expression";
-                        break;
-                }
-                if (!string.IsNullOrEmpty(propertyName))
-                {
-                    var act = t.Properties[propertyName]?.ComputedValue as IDev2Activity;
-                    return act?.UniqueID == modelItem.Properties["UniqueID"]?.ToString();
-                }
-                return false;
-            });
-            var modelProperty = flowNode?.Properties["Action"];
-            if (modelProperty != null)
-            {
-                var indexOf = nodes.IndexOf(flowNode);
-                nodes.RemoveAt(indexOf);
-
-                var nodeToAdd = ModelItemUtils.CreateModelItem(mergeToolModel.FlowNode);
-                var computedValue = nodeToAdd.Properties["Action"]?.ComputedValue;
-                modelProperty.SetValue(computedValue);
-
-                nodes.Insert(indexOf, nodeToAdd);
-
-                return flowNode;
-            }
-            var condition = string.Empty;
-            switch (flowNode?.ItemType.Name)
-            {
-                case "FlowDecision":
-                    condition = "Condition";
-                    break;
-                case "FlowSwitch`1":
-                    condition = "Expression";
-                    break;
-            }
-            if (!string.IsNullOrEmpty(condition))
-            {
-                flowNode?.Properties[condition]?.SetValue(modelItem.Properties[condition]?.ComputedValue);
-            }
-            return null;
-        }
-
-        void AddNextNode(IMergeToolModel previous, IMergeToolModel model, ModelItemCollection nodes, FlowNode flowNode, IMergeToolModel next)
-        {
-            if (previous != null)
-            {
-                var parentNode = nodes.FirstOrDefault(t =>
-                {
-                    var step = t.GetCurrentValue() as FlowStep;
-                    var act = step?.Action as IDev2Activity;
-                    var parentFlowStep = previous.FlowNode as FlowStep;
-                    return parentFlowStep?.Action is IDev2Activity parentId1 && act?.UniqueID == parentId1.UniqueID;
-                });
-
-                if (parentNode == null)
-                {
-                    return;
-                }
-
-                var parentNodeProperty = parentNode.Properties["Next"];
-                if (parentNodeProperty == null)
-                {
-                    return;
-                }
-                if (flowNode == null)
-                {
-                    parentNodeProperty.SetValue(model.ModelItem.GetCurrentValue());
-                    Selection.Select(_wd.Context, model.ModelItem);
-                }
-                else
-                {
-                    parentNodeProperty.SetValue(flowNode);
-                    Selection.Select(_wd.Context, ModelItemUtils.CreateModelItem(flowNode));
-
-                }
-            }
-
-            if (next != null)
-            {
-                var nextNode = nodes.FirstOrDefault(t =>
-                {
-                    var step = t.GetCurrentValue() as FlowStep;
-                    var act = step?.Action as IDev2Activity;
-                    var parentFlowStep = next.FlowNode as FlowStep;
-                    return parentFlowStep?.Action is IDev2Activity parentId1 && act?.UniqueID == parentId1.UniqueID;
-                });
-
-                var currentNode = nodes.FirstOrDefault(t =>
-                {
-                    var step = t.GetCurrentValue() as FlowStep;
-                    var act = step?.Action as IDev2Activity;
-                    var parentFlowStep = model.FlowNode as FlowStep;
-                    return parentFlowStep?.Action is IDev2Activity parentId1 && act?.UniqueID == parentId1.UniqueID;
-                });
-
-                if (currentNode == null)
-                {
-                    return;
-                }
-
-                var parentNodeProperty = currentNode.Properties["Next"];
-                if (parentNodeProperty == null)
-                {
-                    return;
-                }
-                if (nextNode != null)
-                {
-                    parentNodeProperty.SetValue(next.ModelItem.GetCurrentValue());
-                    Selection.Select(_wd.Context, model.ModelItem);
-                }
-            }
-        }
-
         void AddStartNode(FlowNode flowNode, ModelProperty startNode)
         {
             if (flowNode == null)
@@ -3398,11 +3284,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
         
-        #region Implementation of IWorkflowDesignerViewModel
-
         public System.Action WorkflowChanged { get; set; }
-
-        #endregion
 
         #endregion
     }

@@ -1218,11 +1218,16 @@ namespace Dev2.Core.Tests
             throw new NotImplementedException();
         }
 
-        public void AddItem(IMergeToolModel previous, IMergeToolModel model, IMergeToolModel next)
+        public void AddItem(IMergeToolModel model)
         {
             throw new NotImplementedException();
         }
-        
+
+        public void LinkTools(string sourceUniqueId, string destionationUniqueId, string key)
+        {
+
+        }
+
         public void RemoveStartNodeConnection()
         {
             throw new NotImplementedException();
@@ -1231,12 +1236,7 @@ namespace Dev2.Core.Tests
         public void UpdateModelItem(ModelItem modelItem, IMergeToolModel modelTool)
         {
             throw new NotImplementedException();
-        }
-
-        ModelItem IWorkflowDesignerViewModel.UpdateModelItem(ModelItem modelItem, IMergeToolModel modelTool)
-        {
-            throw new NotImplementedException();
-        }
+        }         
 
         public IServer Server
         {
