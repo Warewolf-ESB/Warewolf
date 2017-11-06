@@ -18,8 +18,3 @@ namespace Dev2.Webs.Callbacks
         public string ModelData { get; set; }
     }
 }
-
-
-
-
-
