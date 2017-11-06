@@ -3213,6 +3213,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
             var nodeToAdd = model.ModelItem;
             var step = model.FlowNode;
+            
             switch (step)
             {
                 case FlowStep normalStep:
@@ -3241,14 +3242,23 @@ namespace Dev2.Studio.ViewModels.Workflow
                     nodes.Add(normalSwitch);
                     break;
             }
-
+            SetShapeLocation(model.ModelItem, model.NodeLocation);
             var startNode = chart.Properties["StartNode"];
             if (startNode?.ComputedValue == null)
             {
                 AddStartNode(model.FlowNode, startNode);
             }
         }
-                 
+
+        private void SetShapeLocation(ModelItem modelItem, Point location)
+        {
+            ViewStateService service = _wd.Context.Services.GetService<ViewStateService>();
+            //var modelItem = ModelItemUtils.CreateModelItem(flowNode);
+
+            service.RemoveViewState(modelItem, "ShapeLocation");
+            service.StoreViewState(modelItem, "ShapeLocation", location);
+        }
+
         public void RemoveStartNodeConnection()
         {
             var root = _wd.Context.Services.GetService<ModelService>().Root;
@@ -3280,11 +3290,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
         
-        #region Implementation of IWorkflowDesignerViewModel
-
         public System.Action WorkflowChanged { get; set; }
-
-        #endregion
 
         #endregion
     }
