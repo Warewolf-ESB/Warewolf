@@ -26,7 +26,6 @@ using Dev2.DynamicServices;
 using Dev2.Interfaces;
 using Dev2.Runtime.Execution;
 using Dev2.Runtime.Interfaces;
-using Dev2.Simulation;
 using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -102,25 +101,6 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
-        public void ExecuteWithNoDataObject_Expected_InvokesOnExecute()
-        {
-            VerifyActivityExecuteCount(null, SimulationMode.Never, 1);
-        }
-
-        [TestMethod]
-        public void ExecuteWithIsDebugTrue_Expected_InvokesOnExecute()
-        {
-            VerifyActivityExecuteCount(CreateDataObject(true, false), SimulationMode.Never, 1);
-        }
-
-       
-        [TestMethod]
-        public void ExecuteWithIsDebugFalse_Expected_InvokesOnExecute()
-        {
-            VerifyActivityExecuteCount(CreateDataObject(false, false), SimulationMode.Never, 1);
-        }
-
-        [TestMethod]
         public void ExecuteWithNoDataObject_Expected_DoesNotInvokeDebugDispatcher()
         {
             VerifyDispatcherWriteCount(null, 0);
@@ -138,7 +118,6 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             VerifyDispatcherWriteCount(CreateDataObject(false, false), 0);
         }
-
         
         static void VerifyDispatcherWriteCount(DsfDataObject dataObject, int expectedCount)
         {
@@ -151,16 +130,6 @@ namespace Dev2.Tests.Activities.ActivityTests
                 () => dispatcher.Verify(d => d.Write(It.IsAny<IDebugState>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IList<IDebugState>>()), Times.Exactly(expectedCount)));
         }
         
-        static void VerifyActivityExecuteCount(DsfDataObject dataObject, SimulationMode simulationMode, int expectedCount)
-        {
-            var activity = new Mock<TestActivityAbstract>();
-            activity.Object.SimulationMode = simulationMode;
-            activity.Protected().Setup("OnExecute", ItExpr.IsAny<NativeActivityContext>()).Verifiable();
-
-            Run(activity.Object, dataObject,
-                () => activity.Protected().Verify("OnExecute", Times.Exactly(expectedCount), ItExpr.IsAny<NativeActivityContext>()));
-        }
-
         protected static void Run(Activity activity, DsfDataObject dataObject, Action completed)
         {
             Run(activity, dataObject, null, (ex, outputs) => completed());
@@ -219,7 +188,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             var activity = new TestActivity(new Mock<IDebugDispatcher>().Object)
             {
                 IsSimulationEnabled = false,
-                SimulationMode = SimulationMode.Never,
                 ScenarioID = Guid.NewGuid().ToString(),
                 IsWorkflow = true,
             };
@@ -270,7 +238,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             var activity = new TestActivity
             {
                 IsSimulationEnabled = false,
-                SimulationMode = SimulationMode.Never,
                 ScenarioID = Guid.NewGuid().ToString(),
                 IsWorkflow = true,
             };
@@ -314,7 +281,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             var activity = new TestActivity(mockDebugDispatcher.Object)
             {
                 IsSimulationEnabled = false,
-                SimulationMode = SimulationMode.Never,
                 ScenarioID = Guid.NewGuid().ToString(),
                 IsWorkflow = true,
             };
@@ -530,7 +496,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             var activity = new TestActivity(mockDebugDispatcher.Object)
             {
                 IsSimulationEnabled = false,
-                SimulationMode = SimulationMode.Never,
                 ScenarioID = Guid.NewGuid().ToString(),
                 IsWorkflow = true,
             };
@@ -589,11 +554,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             return new List<string>();
         }
-
-        /// <summary>
-        /// When overridden runs the activity's execution logic 
-        /// </summary>
-        /// <param name="context">The context to be used.</param>
+        
         protected override void OnExecute(NativeActivityContext context)
         {
         }
