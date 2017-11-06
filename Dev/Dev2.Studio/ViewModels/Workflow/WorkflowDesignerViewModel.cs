@@ -3067,10 +3067,10 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 return;
             }
-            var step = GetItemFromNodeCollection(sourceUniqueId);
+            var step = GetRegularActivityFromNodeCollection(sourceUniqueId);
             if (step != null)
             {
-                var next = GetDestinationItem(destinationUniqueId);
+                var next = GetItemFromNodeCollection(destinationUniqueId);
                 SetNext(next, step);
                 
             }
@@ -3081,15 +3081,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             var decisionItem = GetDecisionFromNodeCollection(sourceUniqueId);
             if (decisionItem != null)
             {
-                var next = GetDestinationItem(destinationUniqueId);
-                if (key == "TRUE")
-                {
-                    key = "True";
-                }
-                if (key == "FALSE")
-                {
-                    key = "False";
-                }
+                var next = GetItemFromNodeCollection(destinationUniqueId);               
                 var parentNodeProperty = decisionItem.Properties[key];
                 if (parentNodeProperty != null)
                 {
@@ -3101,19 +3093,20 @@ namespace Dev2.Studio.ViewModels.Workflow
             return false;
         }
 
-        private ModelItem GetDestinationItem(string destinationUniqueId) => GetDecisionFromNodeCollection(destinationUniqueId) ?? GetSwitchFromNodeCollection(destinationUniqueId) ?? GetItemFromNodeCollection(destinationUniqueId);
+        ModelItem GetItemFromNodeCollection(string uniqueId) => GetDecisionFromNodeCollection(uniqueId) ?? GetSwitchFromNodeCollection(uniqueId) ?? GetRegularActivityFromNodeCollection(uniqueId);
+
 
         bool SetNextForSwitch(string sourceUniqueId, string destinationUniqueId, string key)
         {
             var switchItem = GetSwitchFromNodeCollection(sourceUniqueId);
             if (switchItem != null)
             {
-                var next = GetDestinationItem(destinationUniqueId);
+                var next = GetItemFromNodeCollection(destinationUniqueId);
                 if (next != null)
                 {
                     if (key != "Default")
                     {
-                        ModelProperty parentNodeProperty = switchItem.Properties["Cases"];
+                        var parentNodeProperty = switchItem.Properties["Cases"];
                         var cases = parentNodeProperty?.Dictionary;
                         var nodeItem = next.GetCurrentValue() as FlowNode;
                         if (nodeItem != null)
@@ -3137,25 +3130,25 @@ namespace Dev2.Studio.ViewModels.Workflow
             return false;
         }
 
-        ModelItem GetDecisionFromNodeCollection(string sourceUniqueId) => NodesCollection.FirstOrDefault(q =>
+        ModelItem GetDecisionFromNodeCollection(string uniqueId) => NodesCollection.FirstOrDefault(q =>
         {
             var decision = q.GetProperty("Condition") as IDev2Activity;
             if (decision == null)
             {
                 return false;
             }
-            var hasParent = decision.UniqueID == sourceUniqueId && q.GetCurrentValue<FlowNode>() is FlowDecision;
+            var hasParent = decision.UniqueID == uniqueId && q.GetCurrentValue<FlowNode>() is FlowDecision;
             return hasParent;
         });
 
-        ModelItem GetSwitchFromNodeCollection(string sourceUniqueId) => NodesCollection.FirstOrDefault(q =>
+        ModelItem GetSwitchFromNodeCollection(string uniqueId) => NodesCollection.FirstOrDefault(q =>
         {
             var decision = q.GetProperty("Expression") as IDev2Activity;
             if (decision == null)
             {
                 return false;
             }
-            var hasParent = decision.UniqueID == sourceUniqueId;
+            var hasParent = decision.UniqueID == uniqueId;
             return hasParent;
         });
 
@@ -3177,11 +3170,11 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-        ModelItem GetItemFromNodeCollection(string sourceUniqueId) => NodesCollection.FirstOrDefault(q =>
+        ModelItem GetRegularActivityFromNodeCollection(string uniqueId) => NodesCollection.FirstOrDefault(q =>
         {
             var s = q.GetCurrentValue() as FlowStep;
             var act = s?.Action as IDev2Activity;
-            return act?.UniqueID == sourceUniqueId;
+            return act?.UniqueID == uniqueId;
         });
 
         public ModelItemCollection NodesCollection
@@ -3242,6 +3235,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                     nodes.Add(normalSwitch);
                     break;
             }
+            var modelItem = GetItemFromNodeCollection(model.UniqueId.ToString());
             SetShapeLocation(model.ModelItem, model.NodeLocation);
             var startNode = chart.Properties["StartNode"];
             if (startNode?.ComputedValue == null)
