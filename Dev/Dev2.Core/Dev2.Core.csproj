@@ -192,7 +192,6 @@
     <Compile Include="Converters\Graph\String\Xml\XmlPath.cs" />
     <Compile Include="Converters\Graph\String\Xml\XmlPathSegment.cs" />
     <Compile Include="Common\TypeExtensionMethods.cs" />
-    <Compile Include="Converters\TypeToIconConverter.cs" />
     <Compile Include="CustomContainer.cs" />
     <Compile Include="DynamicServices\Objects\Dev2XamlLoader.cs" />
     <Compile Include="enFindMissingType.cs" />
