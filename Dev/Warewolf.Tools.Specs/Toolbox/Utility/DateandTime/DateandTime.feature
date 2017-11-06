@@ -65,21 +65,6 @@ Scenario: Date and Time with no seconds and add 1 second
 	|                     |
 	| [[result]] = 12:31 |
 
-Scenario: Date and Time with no seconds and add 1 second
-	Given I have a date "12:30"
-	And the input format as "24h:min"
-	And I selected Add time as "Seconds" with a value of 61
-	And the output format as "24h:min"
-	When the datetime tool is executed
-	Then the datetime result should be "12:31"
-	And the execution has "NO" error
-	And the debug inputs as  
-	| Input | Input Format | Add Time |    | Output Format           | =                      |
-	| 12:30 | 24h:min      | Seconds  | 61 | System Date Time Format | yyyy/MM/dd hh:mm:ss tt |	
-	And the debug output as 
-	|                     |
-	| [[result]] = 12:31 |
-
 Scenario: Date and Time with badly formed inputs
 	Given I have a date "asdf"
 	And the input format as "asdf"
