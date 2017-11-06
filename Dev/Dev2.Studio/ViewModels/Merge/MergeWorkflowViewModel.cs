@@ -20,6 +20,7 @@ namespace Dev2.ViewModels.Merge
         bool _hasVariablesConflict;
         bool _isVariablesEnabled;
         readonly IContextualResourceModel _resourceModel;
+        List<IConflict> _conflicts;
 
         public MergeWorkflowViewModel(IContextualResourceModel currentResourceModel, IContextualResourceModel differenceResourceModel, bool loadworkflowFromServer)
         : this(CustomContainer.Get<IServiceDifferenceParser>())
@@ -30,8 +31,8 @@ namespace Dev2.ViewModels.Merge
             _resourceModel = currentResourceModel;
 
             var currentChanges = _serviceDifferenceParser.GetDifferences(currentResourceModel, differenceResourceModel, loadworkflowFromServer);
-            var conflicts = BuildConflicts(currentResourceModel, differenceResourceModel, currentChanges);
-            Conflicts = new LinkedList<IConflict>(conflicts);
+            _conflicts = BuildConflicts(currentResourceModel, differenceResourceModel, currentChanges);
+            Conflicts = new LinkedList<IConflict>(_conflicts);
             _conflictEnumerator = Conflicts.GetEnumerator();
             var firstConflict = Conflicts.FirstOrDefault();
             SetupBindings(currentResourceModel, differenceResourceModel, firstConflict as IToolConflict);
@@ -357,10 +358,62 @@ namespace Dev2.ViewModels.Merge
                     {
                         if (args.Container.CurrentViewModel == args)
                         {
+                            var index = _conflicts.IndexOf(args.Container);
+                            if(index!= -1 && index+1 < _conflicts.Count -1)
+                            {
+                                var restOfItems = _conflicts.Skip(index+1).ToList();
+                                foreach(var conf in restOfItems)
+                                {
+                                    if(conf is IToolConflict tool)
+                                    {
+                                        if (tool.HasConflict)
+                                        {
+                                            if (tool.DiffViewModel != null)
+                                            {
+                                                tool.DiffViewModel.DisableEvents();
+                                                tool.DiffViewModel.IsMergeChecked = false;
+                                                tool.DiffViewModel.EnableEvents();
+                                            }
+                                            if (tool.CurrentViewModel != null)
+                                            {
+                                                tool.CurrentViewModel.DisableEvents();
+                                                tool.CurrentViewModel.IsMergeChecked = false;
+                                                tool.CurrentViewModel.EnableEvents();
+                                            }
+                                        }
+                                    }
+                                }
+                            }
                             WorkflowDesignerViewModel.RemoveItem(args.Container.DiffViewModel);
                         }
                         if (args.Container.DiffViewModel == args)
                         {
+                            var index = _conflicts.IndexOf(args.Container);
+                            if (index != -1 && index + 1 < _conflicts.Count - 1)
+                            {
+                                var restOfItems = _conflicts.Skip(index+1).ToList();
+                                foreach(var conf in restOfItems)
+                                {
+                                    if(conf is IToolConflict tool)
+                                    {
+                                        if (tool.HasConflict)
+                                        {
+                                            if (tool.DiffViewModel != null)
+                                            {
+                                                tool.DiffViewModel.DisableEvents();
+                                                tool.DiffViewModel.IsMergeChecked = false;
+                                                tool.DiffViewModel.EnableEvents();
+                                            }
+                                            if (tool.CurrentViewModel != null)
+                                            {
+                                                tool.CurrentViewModel.DisableEvents();
+                                                tool.CurrentViewModel.IsMergeChecked = false;
+                                                tool.CurrentViewModel.EnableEvents();
+                                            }
+                                        }
+                                    }
+                                }
+                            }
                             WorkflowDesignerViewModel.RemoveItem(args.Container.CurrentViewModel);
                         }
                     }
@@ -474,6 +527,8 @@ namespace Dev2.ViewModels.Merge
             }
             return nextConflict;
         }
+
+        
 
         public LinkedList<IConflict> Conflicts { get; set; }
 

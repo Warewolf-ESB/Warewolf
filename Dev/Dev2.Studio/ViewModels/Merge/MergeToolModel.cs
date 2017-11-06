@@ -25,10 +25,12 @@ namespace Dev2.ViewModels.Merge
         private FlowNode _activityType;
         private IMergeToolModel _parent;
         private string _nodeArmDescription;
+        private bool _processEvents;
 
         public MergeToolModel()
         {
             Children = new ObservableCollection<IMergeToolModel>();
+            _processEvents = true;
         }
 
         public ActivityDesignerViewModel ActivityDesignerViewModel { get; set; }
@@ -60,7 +62,10 @@ namespace Dev2.ViewModels.Merge
             {
                 var current = MemberwiseClone();
                 _isMergeChecked = value;
-                SomethingModelToolChanged?.Invoke(current, this);
+                if (_processEvents)
+                {
+                    SomethingModelToolChanged?.Invoke(current, this);
+                }
                 OnPropertyChanged(() => IsMergeChecked);
                 
             }
@@ -162,5 +167,8 @@ namespace Dev2.ViewModels.Merge
         }
 
         public event ModelToolChanged SomethingModelToolChanged;
+
+        public void DisableEvents() => _processEvents = false;
+        public void EnableEvents() => _processEvents = true;
     }
 }
