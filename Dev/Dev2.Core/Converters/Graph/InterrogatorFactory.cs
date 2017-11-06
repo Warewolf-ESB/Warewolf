@@ -10,9 +10,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.Data;
 using Dev2.Common.Interfaces.Core.Graph;
-using Dev2.Converters.Graph.DataTable;
 using Unlimited.Framework.Converters.Graph.Poco;
 using Unlimited.Framework.Converters.Graph.String;
 
@@ -30,8 +28,7 @@ namespace Unlimited.Framework.Converters.Graph
         {
             Interrogators = new Dictionary<Type, IInterrogator>
             {
-                {typeof (string), new StringInterrogator()},
-                {typeof (DataTable), new DataTableInterrogator()}
+                {typeof (string), new StringInterrogator()}
             };
 
             DefaultInterrogator = new PocoInterrogator();
