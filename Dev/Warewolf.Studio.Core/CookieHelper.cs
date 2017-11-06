@@ -5,6 +5,10 @@ namespace Warewolf.Studio.Core
 {
     public class CookieHelper
     {
+        protected CookieHelper()
+        {
+        }
+
         public static void Clear()
         {
             InternetSetOption(IntPtr.Zero, InternetOptionEndBrowserSession, IntPtr.Zero, 0);

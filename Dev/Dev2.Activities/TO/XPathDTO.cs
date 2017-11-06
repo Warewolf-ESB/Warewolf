@@ -125,8 +125,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public bool Inserted { get; set; }
 
-        public bool IsOutputVariableFocused { get { return _isOutputVariableFocused; } set { OnPropertyChanged(ref _isOutputVariableFocused, value); } }
-        public bool IsXpathVariableFocused { get { return _isXpathVariableFocused; } set { OnPropertyChanged(ref _isXpathVariableFocused, value); } }
+        public bool IsOutputVariableFocused { get => _isOutputVariableFocused; set => OnPropertyChanged(ref _isOutputVariableFocused, value); }
+        public bool IsXpathVariableFocused { get => _isXpathVariableFocused; set => OnPropertyChanged(ref _isXpathVariableFocused, value); }
 
         public bool IsEmpty()
         {

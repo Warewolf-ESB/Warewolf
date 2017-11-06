@@ -28,7 +28,6 @@ namespace Dev2.Runtime.ServiceModel
     public class Services : ExceptionManager
     {
         protected readonly IResourceCatalog _resourceCatalog;
-        readonly IAuthorizationService _authorizationService;
 
         #region CTOR
 
@@ -42,15 +41,12 @@ namespace Dev2.Runtime.ServiceModel
             VerifyArgument.IsNotNull("resourceCatalog", resourceCatalog);
             VerifyArgument.IsNotNull("authorizationService", authorizationService);
             _resourceCatalog = resourceCatalog;
-            _authorizationService = authorizationService;
         }
 
         #endregion
 
         #region DbTest
-
-        // POST: Service/Services/DbTest
-        // POST: Service/Services/DbTest
+        
         public Recordset DbTest(DbService args, Guid workspaceId, Guid dataListId)
         {
             try
@@ -101,14 +97,6 @@ namespace Dev2.Runtime.ServiceModel
                             {
                                 throw new Exception(ErrorResource.ErrorRetrievingShapeFromServiceOutput);
                             }
-
-                            // Clear out the Recordset.Fields list because the sequence and
-                            // number of fields may have changed since the last invocation.
-                            //
-                            // Create a copy of the Recordset.Fields list before clearing it
-                            // so that we don't lose the user-defined aliases.
-                            //
-
                             if (dbService.Recordset != null)
                             {
                                 dbService.Recordset.Name = dbService.Method.ExecuteAction;
@@ -203,15 +191,6 @@ namespace Dev2.Runtime.ServiceModel
                 }
             }
             return null;
-
-
-            // Clear out the Recordset.Fields list because the sequence and
-            // number of fields may have changed since the last invocation.
-            //
-            // Create a copy of the Recordset.Fields list before clearing it
-            // so that we don't lose the user-defined aliases.
-            //
-
         }
 
         public virtual RecordsetList FetchRecordset(PluginService pluginService, bool addFields)
@@ -371,8 +350,6 @@ namespace Dev2.Runtime.ServiceModel
 
         #endregion
 
-        #region FetchMethods
-
         public virtual ServiceMethodList FetchMethods(DbSource dbSource)
         {
             switch (dbSource.ServerType)
@@ -398,24 +375,12 @@ namespace Dev2.Runtime.ServiceModel
                         return broker.GetServiceMethods(dbSource);
                     }
             }
-
         }
-
-        #endregion
-
-
-
+        
         protected virtual SqlDatabaseBroker CreateDatabaseBroker()
         {
-
             return new SqlDatabaseBroker();
         }
-
-        #region DeserializeService
-
-        #endregion
-
-        #region WcfTest
 
         public RecordsetList WcfTest(WcfService args, Guid workspaceId, Guid dataListId)
         {
@@ -431,7 +396,5 @@ namespace Dev2.Runtime.ServiceModel
                 return new RecordsetList { new Recordset { HasErrors = true, ErrorMessage = ex.Message } };
             }
         }
-
-        #endregion WcfTest
     }
 }

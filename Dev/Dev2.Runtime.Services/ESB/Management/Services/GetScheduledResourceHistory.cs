@@ -26,7 +26,7 @@ using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    public class GetScheduledResourceHistory : IEsbManagementEndpoint
+    public class GetScheduledResourceHistory : DefaultEsbManagementEndpoint
     {
         public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
         {
@@ -42,7 +42,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         ISecurityWrapper _securityWrapper;
         private IResourceCatalog _catalog;
 
-        public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
+        public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             try
             {
@@ -72,7 +72,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
         }
 
-        public DynamicService CreateServiceEntry()
+        public override DynamicService CreateServiceEntry()
         {
             var getResourceHistory = new DynamicService
             {
@@ -93,7 +93,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             return getResourceHistory;
         }
 
-        public string HandlesType()
+        public override string HandlesType()
         {
             return "GetScheduledResourceHistoryService";
         }

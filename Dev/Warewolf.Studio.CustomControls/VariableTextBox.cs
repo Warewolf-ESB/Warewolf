@@ -7,31 +7,31 @@ namespace Warewolf.Studio.CustomControls
 {
     public class VariableTextBox : TextBox
     {
-        public static DependencyProperty LabelTextProperty =
+        private static DependencyProperty labelTextProperty =
             DependencyProperty.Register(
                 "LabelText",
                 typeof(string),
                 typeof(VariableTextBox));
 
-        public static DependencyProperty LabelTextColorProperty =
+        private static DependencyProperty labelTextColorProperty =
             DependencyProperty.Register(
                 "LabelTextColor",
                 typeof(Brush),
                 typeof(VariableTextBox));
 
-        public static DependencyProperty AddNoteCommandProperty =
+        private static DependencyProperty addNoteCommandProperty =
             DependencyProperty.Register(
                 "AddNoteCommand",
                 typeof(ICommand),
                 typeof(VariableTextBox));
 
-        public static DependencyProperty DeleteCommandProperty =
+        private static DependencyProperty deleteCommandProperty =
             DependencyProperty.Register(
                 "DeleteCommand",
                 typeof(ICommand),
                 typeof(VariableTextBox));
 
-        public static DependencyProperty ViewComplexObjectsCommandProperty =
+        private static DependencyProperty viewComplexObjectsCommandProperty =
             DependencyProperty.Register(
                 "ViewComplexObjectsCommand",
                 typeof(ICommand),
@@ -43,21 +43,21 @@ namespace Warewolf.Studio.CustomControls
                 typeof(bool),
                 typeof(VariableTextBox),
                 new PropertyMetadata());
-        public static DependencyProperty HasTextProperty = HasTextPropertyKey.DependencyProperty;
+        private static DependencyProperty hasTextProperty = HasTextPropertyKey.DependencyProperty;
 
-        public static DependencyProperty AllowNotesProperty =
+        private static DependencyProperty allowNotesProperty =
             DependencyProperty.Register(
                 "AllowNotes",
                 typeof(bool),
                 typeof(VariableTextBox));
-        
-        public static DependencyProperty IsUsedProperty =
+
+        private static DependencyProperty isUsedProperty =
             DependencyProperty.Register(
                 "IsUsed",
                 typeof(bool),
                 typeof(VariableTextBox));
 
-        public static DependencyProperty IsComplexObjectProperty =
+        private static DependencyProperty isComplexObjectProperty =
             DependencyProperty.Register(
                 "IsComplexObject",
                 typeof(bool),
@@ -149,5 +149,15 @@ namespace Warewolf.Studio.CustomControls
             get { return (bool)GetValue(IsComplexObjectProperty); }
             set { SetValue(IsComplexObjectProperty, value); }
         }
+
+        public static DependencyProperty IsComplexObjectProperty { get => isComplexObjectProperty; set => isComplexObjectProperty = value; }
+        public static DependencyProperty IsUsedProperty { get => isUsedProperty; set => isUsedProperty = value; }
+        public static DependencyProperty AllowNotesProperty { get => allowNotesProperty; set => allowNotesProperty = value; }
+        public static DependencyProperty HasTextProperty { get => hasTextProperty; set => hasTextProperty = value; }
+        public static DependencyProperty ViewComplexObjectsCommandProperty { get => viewComplexObjectsCommandProperty; set => viewComplexObjectsCommandProperty = value; }
+        public static DependencyProperty DeleteCommandProperty { get => deleteCommandProperty; set => deleteCommandProperty = value; }
+        public static DependencyProperty AddNoteCommandProperty { get => addNoteCommandProperty; set => addNoteCommandProperty = value; }
+        public static DependencyProperty LabelTextColorProperty { get => labelTextColorProperty; set => labelTextColorProperty = value; }
+        public static DependencyProperty LabelTextProperty { get => labelTextProperty; set => labelTextProperty = value; }
     }
 }

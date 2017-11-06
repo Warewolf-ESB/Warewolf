@@ -217,7 +217,7 @@ namespace Dev2.Activities.Debug
 
         private void ProcessOldValue(List<IDebugItemResult> results)
         {
-            if(_oldValue.IsWarewolfAtomResult)
+            if (_oldValue.IsWarewolfAtomResult)
             {
                 if (_oldValue is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult scalarResult)
                 {
@@ -234,9 +234,12 @@ namespace Dev2.Activities.Debug
                     });
                 }
             }
-            else if(_oldValue.IsWarewolfAtomListresult)
+            else
             {
-                OldValueAtomListResult(results);
+                if (_oldValue.IsWarewolfAtomListresult)
+                {
+                    OldValueAtomListResult(results);
+                }
             }
         }
 

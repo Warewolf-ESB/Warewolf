@@ -18,12 +18,10 @@ using Dev2.Runtime.Interfaces;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-
     public class SaveWcfServiceSource : IEsbManagementEndpoint
     {
         private IExplorerServerResourceRepository _serverExplorerRepository;
         private IResourceCatalog _resourceCatalogue;
-
 
         public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
         {
@@ -34,6 +32,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             return AuthorizationContext.Contribute;
         }
+
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             ExecuteMessage msg = new ExecuteMessage();

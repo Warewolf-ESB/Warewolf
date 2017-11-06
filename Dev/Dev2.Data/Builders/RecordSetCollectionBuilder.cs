@@ -54,35 +54,35 @@ namespace Dev2.Data.Builders
                     scanRsName = DataListUtil.ExtractRecordsetNameFromValue(tmp.Value);
                 }
 
-                if(tmp.IsRecordSet)
+                if (tmp.IsRecordSet)
                 {
-                    // is already present in the record set?
-                    if(tmpCollections.ContainsKey(scanRsName))
+                    if (tmpCollections.ContainsKey(scanRsName))
                     {
                         tmpCollections[scanRsName].Add(tmp);
                     }
                     else
-                    { // first time adding for this record set
+                    {
                         IList<IDev2Definition> newList = new List<IDev2Definition>();
                         newList.Add(tmp);
                         tmpCollections.Add(scanRsName, newList);
                         tmpNames.Add(scanRsName);
                     }
                 }
-                // Handle scalars that are really recordsets ;)
-                else if(!string.IsNullOrEmpty(scanRsName))
+                else
                 {
-                    // is already present in the record set?
-                    if(tmpCollections.ContainsKey(scanRsName))
+                    if (!string.IsNullOrEmpty(scanRsName))
                     {
-                        tmpCollections[scanRsName].Add(tmp); // ???
-                    }
-                    else
-                    { // first time adding for this record set
-                        IList<IDev2Definition> newList = new List<IDev2Definition>();
-                        newList.Add(tmp);
-                        tmpCollections.Add(scanRsName, newList);
-                        tmpNames.Add(scanRsName);
+                        if (tmpCollections.ContainsKey(scanRsName))
+                        {
+                            tmpCollections[scanRsName].Add(tmp);
+                        }
+                        else
+                        {
+                            IList<IDev2Definition> newList = new List<IDev2Definition>();
+                            newList.Add(tmp);
+                            tmpCollections.Add(scanRsName, newList);
+                            tmpNames.Add(scanRsName);
+                        }
                     }
                 }
             }

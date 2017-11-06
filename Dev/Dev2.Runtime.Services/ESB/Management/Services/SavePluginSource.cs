@@ -17,7 +17,6 @@ using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-
     public class SavePluginSource : IEsbManagementEndpoint
     {
         IExplorerServerResourceRepository _serverExplorerRepository;
@@ -31,6 +30,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             return AuthorizationContext.Contribute;
         }
+
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             ExecuteMessage msg = new ExecuteMessage();
@@ -57,12 +57,15 @@ namespace Dev2.Runtime.ESB.Management.Services
                 };
                 Debug.Assert(res != null, "res != null");
                 if (!string.IsNullOrEmpty(src.FileSystemAssemblyName))
-                {                    
+                {
                     res.AssemblyLocation = src.FileSystemAssemblyName;
                 }
-                else if (!string.IsNullOrEmpty(src.GACAssemblyName))
+                else
                 {
-                    res.AssemblyLocation = src.GACAssemblyName;
+                    if (!string.IsNullOrEmpty(src.GACAssemblyName))
+                    {
+                        res.AssemblyLocation = src.GACAssemblyName;
+                    }
                 }
                 ResourceCatalog.Instance.SaveResource(GlobalConstants.ServerWorkspaceID, res, src.Path);
                 ServerExplorerRepo.UpdateItem(res);

@@ -195,9 +195,12 @@ namespace Warewolf.Studio.ViewModels
                 {
                     HasLoaded = true;
                 }
-                else if (SingleEnvironmentExplorerViewModel?.SelectedItem != null && SingleEnvironmentExplorerViewModel.SelectedItem.IsFolder)
+                else
                 {
-                    HasLoaded = true;
+                    if (SingleEnvironmentExplorerViewModel?.SelectedItem != null && SingleEnvironmentExplorerViewModel.SelectedItem.IsFolder)
+                    {
+                        HasLoaded = true;
+                    }
                 }
                 if (SingleEnvironmentExplorerViewModel?.SelectedItem != null && !SingleEnvironmentExplorerViewModel.SelectedItem.IsFolder)
                 {

@@ -21,18 +21,9 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Tests.Activities.ActivityTests
 {
-    /// <summary>
-    /// Summary description for AssignActivity
-    /// </summary>
-    [TestClass]
-    
+    [TestClass]    
     public class MultiAssignActivityTest : BaseActivityUnitTest
     {
-
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
         public TestContext TestContext { get; set; }
 
         #region Additional test attributes
@@ -836,7 +827,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                           , fieldCollection);
 
             IDSFDataObject result = ExecuteProcess();
-            const string expected = DsfMultiAssignActivity.CalculateTextConvertPrefix + "sum(5,10)";
+            string expected = DsfMultiAssignActivity.CalculateTextConvertPrefix + "sum(5,10)";
 
             GetScalarValueFromEnvironment(result.Environment, "Variable", out string actual, out string error);
 
@@ -857,7 +848,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                           , fieldCollection);
 
             IDSFDataObject result = ExecuteProcess();
-            const string expected = "sum(5)" + DsfMultiAssignActivity.CalculateTextConvertSuffix;
+            string expected = "sum(5)" + DsfMultiAssignActivity.CalculateTextConvertSuffix;
 
             GetScalarValueFromEnvironment(result.Environment, "Variable", out string actual, out string error);
 
