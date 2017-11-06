@@ -85,6 +85,10 @@ using Warewolf.Tools.Specs.BaseTypes;
 using Dev2.Data.Interfaces.Enums;
 using TestingDotnetDllCascading;
 using Warewolf.Sharepoint;
+using Dev2.Studio.ViewModels;
+using Caliburn.Micro;
+using Dev2.Studio.Core.Helpers;
+using Dev2.ViewModels.Merge;
 
 namespace Dev2.Activities.Specs.Composition
 {
@@ -4272,6 +4276,26 @@ namespace Dev2.Activities.Specs.Composition
                 Add("resourceRepo", environmentModel.ResourceRepository);
                 Add("debugStates", new List<IDebugState>());
             }
+        }
+        [When(@"workflow ""(.*)"" merge is opened")]
+        public void WhenWorkflowMergeIsOpened(string mergeWfName)
+        {            
+            var environmentModel = ServerRepository.Instance.Source;
+            var serverRepository = new Mock<IServerRepository>();
+            serverRepository.Setup(p => p.ActiveServer).Returns(new Mock<IServer>().Object);
+            serverRepository.Setup(p => p.Source).Returns(new Mock<IServer>().Object);
+            var evntArg  = new Mock<IEventAggregator>().Object;
+            var versionChecker = new Mock<IVersionChecker>().Object;
+            var explorer = new Mock<IExplorerViewModel>().Object;
+            var viewFact = new Mock<IViewFactory>().Object;            
+            var versions = _scenarioContext["Versions"] as IList<IExplorerItem>;
+            var repo = _scenarioContext.Get<IResourceRepository>("resourceRepo") as ResourceRepository;
+            var localResource = repo.LoadContextualResourceModel(versions.First().ResourceId);
+            var remoteResource = repo.LoadContextualResourceModel(versions.Last().ResourceId);
+            var vm = new Mock<IMergeWorkflowViewModel>();
+            var wdvm = new Mock<IWorkflowDesignerViewModel>();
+            vm.Setup(p => p.WorkflowDesignerViewModel).Returns(wdvm.Object);
+            
         }
     }
 }

@@ -40,7 +40,7 @@ namespace Dev2.Factory
                     else
                     {
                         var resource = new Resource(resourceContent.ToStringBuilder().ToXElement());
-                        ResourceModel remoteResource = new ResourceModel();
+                        ResourceModel remoteResource = new ResourceModel(serverRepo.ActiveServer);
                         remoteResource.DisplayName = resource.ResourceName;
                         remoteResource.DataList = resource.DataList.ToString();
                         remoteResource.ID = new Guid(resourceId);
