@@ -544,7 +544,7 @@
     <value>Any variable and/or data goes in here.	To find the difference in time between two date times, put the second date time in here. The format needs to be the same for the two.	Leaving this field blank will give you the system date time.	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;</value>
   </data>
   <data name="DateTimeDifferenceHelpInputFormat" xml:space="preserve">
-    <value>Describe the format of the date times you are entering. e.g. 23-July 1978 would be described as dd-MM yyyy. The default date time format is shown, if this is not the required format, then it can be changed to the format needed.	Leaving this field blank will assume the system date time format.	To escape text or non-date information use 'around the text you want to escape'. e.g. Time is now 15 hours and 33 minutes. Would have an input format of 'Time is now' 24hr 'hours and' min 'minutes.' 	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;
+    <value>Describe the format of the date times you are entering. e.g. 23-July 1978 would be described as dd-MM yyyy. The default date time format is shown, if this is not the required format, then it can be changed to the format needed.	Leaving this field blank will assume the system date time format.	To escape text or non-date information use 'around the text you want to escape'. e.g. Time is now 15 hours and 33 minutes. Would have an input format of 'Time is now' HH 'hours and' m 'minutes.' 	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;
 &lt;table&gt;
 &lt;tr&gt;&lt;td&gt;&lt;b&gt;h&lt;/b&gt;&lt;/td&gt;&lt;td&gt;12 hour in single digit: 3&lt;/td&gt;&lt;/tr&gt;
 &lt;tr&gt;&lt;td&gt;&lt;b&gt;hh&lt;/b&gt;&lt;/td&gt;&lt;td&gt;12 hour in double digit: 03&lt;/td&gt;&lt;/tr&gt;
@@ -605,36 +605,56 @@
     <value>Any variable and/or data goes in here.	To format a date time, or to add/subtract from a date time, put it in here.	Leaving this field blank will give you the system date time.	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;</value>
   </data>
   <data name="DateTimeHelpInputformat" xml:space="preserve">
-    <value>Describe the format of the date time you are entering. e.g. 23-July 1978 would be described as dd-MM yyyy. The default date time format is shown, if this is not the required format, then it can be changed to the format needed.	Leaving this field blank will assume the system date time format.	To escape text or non-date information use 'around the text you want to escape'. e.g. Time is now 15 hours and 33 minutes. Would have an input format of 'Time is now' 24hr 'hours and' min 'minutes.' 	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;
+    <value>Describe the format of the date times you are entering. e.g. 23-July 1978 would be described as dd-MM yyyy. The default date time format is shown, if this is not the required format, then it can be changed to the format needed.	Leaving this field blank will assume the system date time format.	To escape text or non-date information use 'around the text you want to escape'. e.g. Time is now 15 hours and 33 minutes. Would have an input format of 'Time is now' HH 'hours and' m 'minutes.' 	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;
 &lt;table&gt;
-&lt;tr&gt;&lt;td&gt;&lt;b&gt;12h&lt;/b&gt;&lt;/td&gt;&lt;td&gt;12 hour format: 3&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td&gt;&lt;b&gt;24h&lt;/b&gt;&lt;/td&gt;&lt;td&gt;24 hour format: 15&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td&gt;&lt;b&gt;am/pm&lt;/b&gt;&lt;/td&gt;&lt;td&gt;am or pm&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td&gt;&lt;b&gt;d&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Day of month in single digit: 6&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td&gt;&lt;b&gt;dd&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Day of month in double digit: 06&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td&gt;&lt;b&gt;dw&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Day of week number: 4&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td&gt;&lt;b&gt;dW&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Day of week text abbreviated: Thur&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td&gt;&lt;b&gt;DW&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Day of week in full: Thursday&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td&gt;&lt;b&gt;dy&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Day of year: 361&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td&gt;&lt;b&gt;Era&lt;/b&gt;&lt;/td&gt;&lt;td&gt;A.D.&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td&gt;&lt;b&gt;m&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Month in single digit: 8&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td&gt;&lt;b&gt;M&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Month text abbreviated: Aug&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td&gt;&lt;b&gt;min&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Minutes:  32&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td&gt;&lt;b&gt;mm&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Month in double digits: 08&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td&gt;&lt;b&gt;MM&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Month in full: August&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td&gt;&lt;b&gt;sp&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Split seconds: 999&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td&gt;&lt;b&gt;ss&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Seconds: 59&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td&gt;&lt;b&gt;w&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Week of year single digit: 9&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td&gt;&lt;b&gt;ww&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Week of year double digit: 52&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td&gt;&lt;b&gt;yy&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Year in 2 digits: 78&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td&gt;&lt;b&gt;yyyy&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Year in 4 digits: 2013&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td&gt;&lt;b&gt;Z&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Time zone in short format: GMT (if available)&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td&gt;&lt;b&gt;ZZ&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Time zone: Greenwich mean time&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td&gt;&lt;b&gt;ZZZ&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Time zone offset: GMT +2:00&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;h&lt;/b&gt;&lt;/td&gt;&lt;td&gt;12 hour in single digit: 3&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;hh&lt;/b&gt;&lt;/td&gt;&lt;td&gt;12 hour in double digit: 03&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;H&lt;/b&gt;&lt;/td&gt;&lt;td&gt;24 hour in single digit: 0&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;HH&lt;/b&gt;&lt;/td&gt;&lt;td&gt;24 hour in double digit: 00&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;m&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Minutes:  3&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;mm&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Minutes:  03&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;s&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Seconds:  5&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;ss&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Seconds:  05&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;F&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Tenths of a second&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;FF&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Hundredths of a second&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;FFF&lt;/b&gt;&lt;/td&gt;&lt;td&gt;The milliseconds&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;FFFF&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Ten thousandths&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;FFFFF&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Hundred thousandths of a second&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;FFFFFF&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Millionths of a second&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;FFFFFFF&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Ten millionths of a second &lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;t&lt;/b&gt;&lt;/td&gt;&lt;td&gt;First character of the AM/PM &lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;tt&lt;/b&gt;&lt;/td&gt;&lt;td&gt;AM/PM designator&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;K&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Time zone information.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;gg&lt;/b&gt;&lt;/td&gt;&lt;td&gt;A.D.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;d&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Day in single digit: 2&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;dd&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Day in double digits: 02&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;ddd&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Day text abbreviated: Mon&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;dddd&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Day in full: Monday&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;M&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Month in single digit: 8&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;MM&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Month in double digits: 08&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;MMM&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Month text abbreviated: Aug&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;MMMM&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Month in full: August&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;y&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Year in 1 digit: 8&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;yy&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Year in 2 digits: 08&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;yyy&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Year in 3 digits: 008&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;yyyy&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Year in 4 digits: 2008&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;t&lt;/b&gt;&lt;/td&gt;&lt;td&gt;4:05 PM&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;d&lt;/b&gt;&lt;/td&gt;&lt;td&gt;3/9/2008&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;T&lt;/b&gt;&lt;/td&gt;&lt;td&gt;4:05:07 PM&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;D&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Sunday, March 09, 2008&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;f&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Sunday, March 09, 2008 4:05 PM&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;F&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Sunday, March 09, 2008 4:05:07 PM&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;g&lt;/b&gt;&lt;/td&gt;&lt;td&gt;3/9/2008 4:05 PM&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;G&lt;/b&gt;&lt;/td&gt;&lt;td&gt;3/9/2008 4:05:07 PM&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;m&lt;/b&gt;&lt;/td&gt;&lt;td&gt;March 09&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;y&lt;/b&gt;&lt;/td&gt;&lt;td&gt;March, 2008&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;r&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Sun, 09 Mar 2008 16:05:07 GMT&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;s&lt;/b&gt;&lt;/td&gt;&lt;td&gt;2008-03-09T16:05:07&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;u&lt;/b&gt;&lt;/td&gt;&lt;td&gt;2008-03-09 16:05:07Z&lt;/td&gt;&lt;/tr&gt;
 &lt;/table&gt;</value>
   </data>
   <data name="DateTimeHelpOutputformat" xml:space="preserve">
-    <value>Describe the format you would like the date time to be returned in. The default date time format is shown, if this is not the required format, then it can be changed to the format needed.	Leaving this field blank will assume the same as the Input Format.	To include text or non-date information use 'around the text you want to escape'. e.g. Time is now 15 hours and 33 minutes. Would have an output format of 'Time is now' 24hr 'hours and' min 'minutes.' 	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;</value>
+    <value>Describe the format you would like the date time to be returned in. The default date time format is shown, if this is not the required format, then it can be changed to the format needed.	Leaving this field blank will assume the same as the Input Format.	To include text or non-date information use 'around the text you want to escape'. e.g. Time is now 15 hours and 33 minutes. Would have an output format of 'Time is now' H 'hours and' m 'minutes.' 	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;</value>
   </data>
   <data name="DateTimeHelpResult" xml:space="preserve">
     <value>Only variables go in here.	Returns the formatted and/or added/subtracted date time.	You can use [[Scalar]] as well as [[Recordset().Fields]].	Using recordset () will add a new record and (*) will assign every record.	&lt;br /&gt;	Allowed:&lt;br /&gt;	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;</value>
