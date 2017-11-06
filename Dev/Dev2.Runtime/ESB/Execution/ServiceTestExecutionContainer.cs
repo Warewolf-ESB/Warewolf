@@ -149,11 +149,14 @@ namespace Dev2.Runtime.ESB.Execution
                     domain = userName.Substring(0, slashIndex);
                     userName = userName.Substring(slashIndex + 1);
                 }
-                else if (userName.Contains("@"))
+                else
                 {
-                    var atIndex = userName.IndexOf("@", StringComparison.InvariantCultureIgnoreCase);
-                    userName = userName.Substring(0, atIndex);
-                    domain = userName.Substring(atIndex + 1);
+                    if (userName.Contains("@"))
+                    {
+                        var atIndex = userName.IndexOf("@", StringComparison.InvariantCultureIgnoreCase);
+                        userName = userName.Substring(0, atIndex);
+                        domain = userName.Substring(atIndex + 1);
+                    }
                 }
                 var hasImpersonated = _impersonator.ImpersonateForceDecrypt(userName, domain, serviceTestModelTo.Password);
                 if (!hasImpersonated)
@@ -164,9 +167,12 @@ namespace Dev2.Runtime.ESB.Execution
                     DataObject.StopExecution = true;
                 }
             }
-            else if (serviceTestModelTo.AuthenticationType == AuthenticationType.Public)
+            else
             {
-                Thread.CurrentPrincipal = GlobalConstants.GenericPrincipal;
+                if (serviceTestModelTo.AuthenticationType == AuthenticationType.Public)
+                {
+                    Thread.CurrentPrincipal = GlobalConstants.GenericPrincipal;
+                }
             }
             var userPrinciple = Thread.CurrentPrincipal;
             Common.Utilities.PerformActionInsideImpersonatedContext(userPrinciple, () =>
@@ -253,17 +259,20 @@ namespace Dev2.Runtime.ESB.Execution
                         var jContainer = JsonConvert.DeserializeObject(value) as JObject;
                         DataObject.Environment.AddToJsonObjects(variable, jContainer);
                     }
-                    else if (!DataListUtil.IsValueRecordset(input.Variable))
+                    else
                     {
-                        if (ExecutionEnvironment.IsValidVariableExpression(input.Value, out string errorMessage, 0))
+                        if (!DataListUtil.IsValueRecordset(input.Variable))
                         {
-                            DataObject.Environment.AllErrors.Add("Cannot use variables as input value.");
-                        }
-                        else
-                        {
-                            if (!input.EmptyIsNull || !string.IsNullOrEmpty(value))
+                            if (ExecutionEnvironment.IsValidVariableExpression(input.Value, out string errorMessage, 0))
                             {
-                                DataObject.Environment.Assign(variable, value, 0);
+                                DataObject.Environment.AllErrors.Add("Cannot use variables as input value.");
+                            }
+                            else
+                            {
+                                if (!input.EmptyIsNull || !string.IsNullOrEmpty(value))
+                                {
+                                    DataObject.Environment.Assign(variable, value, 0);
+                                }
                             }
                         }
                     }
@@ -749,19 +758,20 @@ namespace Dev2.Runtime.ESB.Execution
                     failureMessage.Append(string.Format(Warewolf.Resource.Messages.Messages.Test_FailureMessage_Error, testErrorContainsText, fetchErrors));
                 }
             }
-            else if (test.NoErrorExpected)
+            else
             {
-                testPassed = !hasErrors && testPassed;
-                if (hasErrors)
+                if (test.NoErrorExpected)
                 {
-                    failureMessage.AppendLine(fetchErrors);
+                    testPassed = !hasErrors && testPassed;
+                    if (hasErrors)
+                    {
+                        failureMessage.AppendLine(fetchErrors);
+                    }
                 }
             }
             test.TestPassed = testPassed;
             test.TestFailing = !testPassed;
         }
-
-
 
         private IEnumerable<TestRunResult> GetTestRunResults(IDSFDataObject dataObject, IServiceTestOutput output, Dev2DecisionFactory factory)
         {
@@ -940,9 +950,12 @@ namespace Dev2.Runtime.ESB.Execution
                         }
                     }
                 }
-                else if (foundTestStep.Type == StepType.Mock)
+                else
                 {
-                    resource = new TestMockStep(resource, foundTestStep.StepOutputs.ToList());
+                    if (foundTestStep.Type == StepType.Mock)
+                    {
+                        resource = new TestMockStep(resource, foundTestStep.StepOutputs.ToList());
+                    }
                 }
             }
             return resource;

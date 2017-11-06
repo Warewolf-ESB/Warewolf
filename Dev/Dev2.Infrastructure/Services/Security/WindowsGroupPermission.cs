@@ -58,10 +58,10 @@ namespace Dev2.Services.Security
         }
 
         
-        public Guid ResourceID { get { return _resourceId; } set { OnPropertyChanged(ref _resourceId, value); } }
+        public Guid ResourceID { get => _resourceId; set => OnPropertyChanged(ref _resourceId, value); }
 
 
-        public string ResourceName { get { return _resourceName; } set { OnPropertyChanged(ref _resourceName, value); } }
+        public string ResourceName { get => _resourceName; set => OnPropertyChanged(ref _resourceName, value); }
 
         public string WindowsGroup
         {
@@ -142,19 +142,19 @@ namespace Dev2.Services.Security
         public bool CanRemove => !string.IsNullOrEmpty(WindowsGroup) && !IsBuiltInGuests && !IsBuiltInAdministrators;
 
 
-        public bool View { get { return _view; } set { OnPropertyChanged(ref _view, value); } }
+        public bool View { get => _view; set => OnPropertyChanged(ref _view, value); }
 
-        public bool Execute { get { return _execute; } set { OnPropertyChanged(ref _execute, value); } }
+        public bool Execute { get => _execute; set => OnPropertyChanged(ref _execute, value); }
 
-        public bool Contribute { get { return _contribute; } set { OnPropertyChanged(ref _contribute, value); } }
+        public bool Contribute { get => _contribute; set => OnPropertyChanged(ref _contribute, value); }
 
-        public bool DeployTo { get { return _deployTo; } set { OnPropertyChanged(ref _deployTo, value); } }
+        public bool DeployTo { get => _deployTo; set => OnPropertyChanged(ref _deployTo, value); }
 
-        public bool DeployFrom { get { return _deployFrom; } set { OnPropertyChanged(ref _deployFrom, value); } }
+        public bool DeployFrom { get => _deployFrom; set => OnPropertyChanged(ref _deployFrom, value); }
 
-        public bool Administrator { get { return _administrator; } set { OnPropertyChanged(ref _administrator, value); } }
+        public bool Administrator { get => _administrator; set => OnPropertyChanged(ref _administrator, value); }
 
-        public bool IsNew { get { return _isNew; } set { OnPropertyChanged(ref _isNew, value); } }
+        public bool IsNew { get => _isNew; set => OnPropertyChanged(ref _isNew, value); }
 
         [JsonIgnore]
         public Permissions Permissions
@@ -162,12 +162,30 @@ namespace Dev2.Services.Security
             get
             {
                 var result = Permissions.None;
-                if(View) { result |= Permissions.View; }
-                if(Execute) { result |= Permissions.Execute; }
-                if(Contribute) { result |= Permissions.Contribute; }
-                if(DeployTo) { result |= Permissions.DeployTo; }
-                if(DeployFrom) { result |= Permissions.DeployFrom; }
-                if(Administrator) { result |= Permissions.Administrator; }
+                if (View)
+                {
+                    result |= Permissions.View;
+                }
+                if (Execute)
+                {
+                    result |= Permissions.Execute;
+                }
+                if(Contribute)
+                {
+                    result |= Permissions.Contribute;
+                }
+                if(DeployTo)
+                {
+                    result |= Permissions.DeployTo;
+                }
+                if(DeployFrom)
+                {
+                    result |= Permissions.DeployFrom;
+                }
+                if(Administrator)
+                {
+                    result |= Permissions.Administrator;
+                }
 
                 return result;
             }

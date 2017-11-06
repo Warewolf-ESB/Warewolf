@@ -73,7 +73,7 @@ namespace Dev2.PerformanceCounters.Counters
             return _counter.CreationData();
         }
 
-        public bool IsActive { get { return _counter.IsActive; } set { _counter.IsActive = value; } }
+        public bool IsActive { get => _counter.IsActive; set => _counter.IsActive = value; }
         public IPerformanceCounter InnerCounter => _counter;
 
         public void Setup()

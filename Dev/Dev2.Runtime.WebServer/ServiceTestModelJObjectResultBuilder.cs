@@ -44,11 +44,13 @@ namespace Dev2.Runtime.WebServer
                 resObj.Add("Result", Warewolf.Resource.Messages.Messages.Test_ResourcpathUpdatedResult);
                 resObj.Add("Message", result.Result.Message.Replace(Environment.NewLine, ""));
             }
-
-            else if (result.Result.RunTestResult == RunResult.TestPending)
+            else
             {
-                resObj.Add("Result", Warewolf.Resource.Messages.Messages.Test_PendingResult);
-                resObj.Add("Message", result.Result.Message);
+                if (result.Result.RunTestResult == RunResult.TestPending)
+                {
+                    resObj.Add("Result", Warewolf.Resource.Messages.Messages.Test_PendingResult);
+                    resObj.Add("Message", result.Result.Message);
+                }
             }
             return resObj;
         }

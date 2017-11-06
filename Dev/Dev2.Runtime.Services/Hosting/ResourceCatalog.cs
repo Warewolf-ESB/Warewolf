@@ -34,7 +34,6 @@ using Dev2.Runtime.ServiceModel.Data;
 using Warewolf.ResourceManagement;
 
 
-
 namespace Dev2.Runtime.Hosting
 {
 
@@ -51,42 +50,31 @@ namespace Dev2.Runtime.Hosting
             CompileMessageRepo.Instance.Ping();
             return c;
         }, LazyThreadSafetyMode.PublicationOnly);
-
-        /// <summary>
-        /// Gets the instance.
-        /// </summary>
+        
         public static ResourceCatalog Instance => LazyCat.Value;
 
         #endregion
 
         #region CTOR
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ResourceCatalog" /> class.
-        /// <remarks>
-        /// DO NOT instantiate directly - use static Instance property instead; this is for testing only!
-        /// </remarks>
-        /// </summary>
-        /// <param name="managementServices">The management services to be loaded.</param>
+        [ExcludeFromCodeCoverage]//used by tests for constructor injection
         public ResourceCatalog(IEnumerable<DynamicService> managementServices = null)
         {
             InitializeWorkspaceResources();
-            // MUST load management services BEFORE server workspace!!
             IServerVersionRepository versioningRepository = new ServerVersionRepository(new VersionStrategy(), this, new DirectoryWrapper(), EnvironmentVariables.GetWorkspacePath(GlobalConstants.ServerWorkspaceID), new FileWrapper());
             _catalogPluginContainer = new ResourceCatalogPluginContainer(versioningRepository, WorkspaceResources, managementServices);
             _catalogPluginContainer.Build(this);
-
-
         }
-        [ExcludeFromCodeCoverage]//Used by tests only
+
+        [ExcludeFromCodeCoverage]//used by tests for constructor injection
         public ResourceCatalog(IEnumerable<DynamicService> managementServices, IServerVersionRepository serverVersionRepository)
         {
             InitializeWorkspaceResources();
-            // MUST load management services BEFORE server workspace!!
             var versioningRepository = serverVersionRepository;
             _catalogPluginContainer = new ResourceCatalogPluginContainer(versioningRepository, WorkspaceResources, managementServices);
             _catalogPluginContainer.Build(this);
         }
+
         #endregion
 
         private void InitializeWorkspaceResources()
@@ -110,6 +98,7 @@ namespace Dev2.Runtime.Hosting
             }
         }
         public ConcurrentDictionary<Guid, List<IResource>> WorkspaceResources { get; private set; }
+
         #endregion
 
         #region ResourceLoadProvider
@@ -322,15 +311,6 @@ namespace Dev2.Runtime.Hosting
             return DuplicateResources;
         }
 
-
-        #endregion
-
-        #region CopyResource
-
-        public bool CopyResource(Guid resourceID, Guid sourceWorkspaceID, Guid targetWorkspaceID) => _catalogPluginContainer.CopyProvider.CopyResource(resourceID, sourceWorkspaceID, targetWorkspaceID, null);
-        public bool CopyResource(Guid resourceID, Guid sourceWorkspaceID, Guid targetWorkspaceID, string userRoles) => _catalogPluginContainer.CopyProvider.CopyResource(resourceID, sourceWorkspaceID, targetWorkspaceID, userRoles);
-        public bool CopyResource(IResource resource, Guid targetWorkspaceID) => _catalogPluginContainer.CopyProvider.CopyResource(resource, targetWorkspaceID, null);
-        public bool CopyResource(IResource resource, Guid targetWorkspaceID, string userRoles) => _catalogPluginContainer.CopyProvider.CopyResource(resource, targetWorkspaceID, userRoles);
 
         #endregion
 

@@ -84,22 +84,21 @@ namespace Dev2.Runtime.ESB.Management.Services
                 IExplorerItem itemToDelete;
                 if (itemBeingDeleted != null)
                 {
-
                     itemToDelete = ServerExplorerRepo.Find(a => a.ResourceId.ToString() == itemBeingDeleted.ToString());
                     Dev2Logger.Info("Delete Item Service." + itemToDelete, GlobalConstants.WarewolfInfo);
                     item = ServerExplorerRepo.DeleteItem(itemToDelete, GlobalConstants.ServerWorkspaceID);
-
                 }
-                else if (pathBeingDeleted != null)
+                else
                 {
-                    itemToDelete = new ServerExplorerItem
+                    if (pathBeingDeleted != null)
                     {
-                        ResourceType = "Folder",
-                        ResourcePath = pathBeingDeleted.ToString()
-
-                    };
-
-                    item = ServerExplorerRepo.DeleteItem(itemToDelete, GlobalConstants.ServerWorkspaceID);
+                        itemToDelete = new ServerExplorerItem
+                        {
+                            ResourceType = "Folder",
+                            ResourcePath = pathBeingDeleted.ToString()
+                        };
+                        item = ServerExplorerRepo.DeleteItem(itemToDelete, GlobalConstants.ServerWorkspaceID);
+                    }
                 }
             }
             catch (Exception e)

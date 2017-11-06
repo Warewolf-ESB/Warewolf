@@ -14,9 +14,6 @@ using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
 using Warewolf.Resource.Errors;
 
-
-
-
 namespace Dev2.Runtime.ResourceCatalogImpl
 {
     internal class ResourceRenameProvider : IResourceRenameProvider
@@ -43,10 +40,9 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                 if (!resourcesToUpdate.Any())
                 {
                     return ResourceCatalogResultBuilder.CreateFailResult($"{ErrorResource.FailedToFindResource} '{resourceID}' to '{newName}'");
-                }
-
-                
+                }                
                 _versionRepository.StoreVersion(_resourceCatalog.GetResource(Guid.Empty, resourceID.Value), "unknown", "Rename", workspaceID, resourcePath);
+
                 //rename and save to workspace
                 var renameResult = UpdateResourceName(workspaceID, resourcesToUpdate[0], newName, resourcePath);
                 if (renameResult.Status != ExecStatus.Success)
@@ -128,6 +124,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             ((ResourceCatalog)_resourceCatalog).SetResourceFilePath(workspaceID, resource, ref newPath);
             return new ResourceCatalogResult {Status = ExecStatus.Success};
         }
+
         ResourceCatalogResult UpdateResourceName(Guid workspaceID, IResource resource, string newName, string resourcePath)
         {
             //rename where used
@@ -191,10 +188,11 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             foreach (var dependant in dependants)
             {
                 var dependantResource = _resourceCatalog.GetResource(workspaceID, dependant.ResourceID);
+
                 //rename where used
                 var resourceContents = _resourceCatalog.GetResourceContents(workspaceID, dependantResource.ResourceID);
-
                 var resourceElement = resourceContents.ToXElement();
+
                 //in the xaml only
                 var actionElement = resourceElement.Element("Action");
                 if (actionElement != null)
@@ -236,6 +234,5 @@ namespace Dev2.Runtime.ResourceCatalogImpl
         }
 
         #endregion
-
     }
 }

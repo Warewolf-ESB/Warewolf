@@ -47,21 +47,21 @@ namespace Dev2.Studio.Core.AppResources.Converters
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if(value == null)
+            if (value == null)
             {
                 return NullValue;
             }
 
-            if(value is string)
+            if (value is string)
             {
                 return TrueEnumValues.Any(e =>
-                    {
-                        object tempEnumValue = Dev2EnumConverter.GetEnumFromStringDiscription(value.ToString(), e.GetType());
-                        return Equals(e, tempEnumValue);
-                    });
+                {
+                    object tempEnumValue = Dev2EnumConverter.GetEnumFromStringDiscription(value.ToString(), e.GetType());
+                    return Equals(e, tempEnumValue);
+                });
             }
 
-            if(!value.GetType().IsEnum)
+            if (!value.GetType().IsEnum)
             {
                 return Binding.DoNothing;
             }

@@ -253,16 +253,9 @@ namespace Dev2.Runtime.WebServer.Hubs
             task.Start();
             await task.ConfigureAwait(true);
         }
-
-        /// <summary>
-        ///     Fetches the execute payload fragment.
-        /// </summary>
-        /// <param name="receipt">The receipt.</param>
-        /// <returns></returns>
+        
         public async Task<string> FetchExecutePayloadFragment(FutureReceipt receipt)
         {
-            // Set Requesting User as per what is authorized ;)
-            // Sneaky people may try to forge packets to get payload ;)
             if (Context.User.Identity.Name != null)
             {
                 receipt.User = Context.User.Identity.Name;

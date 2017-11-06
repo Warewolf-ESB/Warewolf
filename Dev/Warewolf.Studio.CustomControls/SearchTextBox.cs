@@ -13,26 +13,25 @@ namespace Warewolf.Studio.CustomControls {
     }
 
     public class SearchTextBox : TextBox {
-
-        public static DependencyProperty LabelTextProperty =
+        private static DependencyProperty labelTextProperty =
             DependencyProperty.Register(
                 "LabelText",
                 typeof(string),
                 typeof(SearchTextBox));
 
-        public static DependencyProperty LabelTextColorProperty =
+        private static DependencyProperty labelTextColorProperty =
             DependencyProperty.Register(
                 "LabelTextColor",
                 typeof(Brush),
-                typeof(SearchTextBox)); 
-        
-        public static DependencyProperty ClearSearchCommandProperty =
+                typeof(SearchTextBox));
+
+        private static DependencyProperty clearSearchCommandProperty =
             DependencyProperty.Register(
                 "ClearSearchCommand",
                 typeof(ICommand),
                 typeof(SearchTextBox));
 
-        public static DependencyProperty SearchModeProperty =
+        private static DependencyProperty searchModeProperty =
             DependencyProperty.Register(
                 "SearchMode",
                 typeof(SearchMode),
@@ -45,10 +44,10 @@ namespace Warewolf.Studio.CustomControls {
                 typeof(bool),
                 typeof(SearchTextBox),
                 new PropertyMetadata());
-        public static DependencyProperty HasTextProperty = HasTextPropertyKey.DependencyProperty;
+        private static DependencyProperty hasTextProperty = HasTextPropertyKey.DependencyProperty;
 
-       
-        public static DependencyProperty SearchEventTimeDelayProperty =
+
+        private static DependencyProperty searchEventTimeDelayProperty =
             DependencyProperty.Register(
                 "SearchEventTimeDelay",
                 typeof(Duration),
@@ -173,6 +172,13 @@ namespace Warewolf.Studio.CustomControls {
                 SetValue(ClearSearchToolTipProperty, value);
             }
         }
+
+        public static DependencyProperty SearchEventTimeDelayProperty { get => searchEventTimeDelayProperty; set => searchEventTimeDelayProperty = value; }
+        public static DependencyProperty HasTextProperty { get => hasTextProperty; set => hasTextProperty = value; }
+        public static DependencyProperty SearchModeProperty { get => searchModeProperty; set => searchModeProperty = value; }
+        public static DependencyProperty ClearSearchCommandProperty { get => clearSearchCommandProperty; set => clearSearchCommandProperty = value; }
+        public static DependencyProperty LabelTextColorProperty { get => labelTextColorProperty; set => labelTextColorProperty = value; }
+        public static DependencyProperty LabelTextProperty { get => labelTextProperty; set => labelTextProperty = value; }
 
         public event RoutedEventHandler Search {
             add { AddHandler(SearchEvent, value); }

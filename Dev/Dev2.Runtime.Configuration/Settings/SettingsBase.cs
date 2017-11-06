@@ -91,7 +91,7 @@ namespace Dev2.Runtime.Configuration.Settings
 
         public string WebServerUri { get; private set; }
 
-        public override void NotifyOfPropertyChange(string propertyName)
+        public override void NotifyOfPropertyChange(string propertyName="")
         {
             if (IsInitializing)
             {

@@ -120,12 +120,12 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
 
         public bool IsTableSelected => SelectedTable != SelectDbTable;
 
-        public bool IsRefreshing { get { return (bool)GetValue(IsRefreshingProperty); } set { SetValue(IsRefreshingProperty, value); } }
+        public bool IsRefreshing { get => (bool)GetValue(IsRefreshingProperty); set => SetValue(IsRefreshingProperty, value); }
 
         public static readonly DependencyProperty IsRefreshingProperty =
             DependencyProperty.Register("IsRefreshing", typeof(bool), typeof(SqlBulkInsertDesignerViewModel), new PropertyMetadata(false));
 
-        public bool IsSqlDatabase { get { return (bool)GetValue(IsSqlDatabaseProperty); } set { SetValue(IsSqlDatabaseProperty, value); } }
+        public bool IsSqlDatabase { get => (bool)GetValue(IsSqlDatabaseProperty); set => SetValue(IsSqlDatabaseProperty, value); }
 
         public static readonly DependencyProperty IsSqlDatabaseProperty =
             DependencyProperty.Register("IsSqlDatabase", typeof(bool), typeof(SqlBulkInsertDesignerViewModel), new PropertyMetadata(false));
@@ -190,39 +190,30 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
             viewModel.RefreshTablesCommand.RaiseCanExecuteChanged();
         }
 
-
         bool _isFieldFocused;
-        public bool IsFieldFocused { get { return _isFieldFocused; } set { _isFieldFocused = value; } }
+        public bool IsFieldFocused { get => _isFieldFocused; set => _isFieldFocused = value; }
 
-
-
-        public bool IsSelectedDatabaseFocused { get { return (bool)GetValue(IsSelectedDatabaseFocusedProperty); } set { SetValue(IsSelectedDatabaseFocusedProperty, value); } }
+        public bool IsSelectedDatabaseFocused { get => (bool)GetValue(IsSelectedDatabaseFocusedProperty); set => SetValue(IsSelectedDatabaseFocusedProperty, value); }
 
         public static readonly DependencyProperty IsSelectedDatabaseFocusedProperty =
             DependencyProperty.Register("IsSelectedDatabaseFocused", typeof(bool), typeof(SqlBulkInsertDesignerViewModel), new PropertyMetadata(false));
 
-        public bool IsSelectedTableFocused { get { return (bool)GetValue(IsSelectedTableFocusedProperty); } set { SetValue(IsSelectedTableFocusedProperty, value); } }
+        public bool IsSelectedTableFocused { get => (bool)GetValue(IsSelectedTableFocusedProperty); set => SetValue(IsSelectedTableFocusedProperty, value); }
 
         public static readonly DependencyProperty IsSelectedTableFocusedProperty =
             DependencyProperty.Register("IsSelectedTableFocused", typeof(bool), typeof(SqlBulkInsertDesignerViewModel), new PropertyMetadata(false));
-
-       
         
-
-        public bool IsMappingFieldFocused { get { return (bool)GetValue(IsSelectedTableFocusedProperty); } set { SetValue(IsMappingFieldFocusedProperty, value); } }
+        public bool IsMappingFieldFocused { get => (bool)GetValue(IsSelectedTableFocusedProperty); set => SetValue(IsMappingFieldFocusedProperty, value); }
 
         public static readonly DependencyProperty IsMappingFieldFocusedProperty =
             DependencyProperty.Register("IsMappingFieldFocused", typeof(bool), typeof(SqlBulkInsertDesignerViewModel), new PropertyMetadata(false));
-
-
-
-
-        public bool IsBatchSizeFocused { get { return (bool)GetValue(IsBatchSizeFocusedProperty); } set { SetValue(IsBatchSizeFocusedProperty, value); } }
+        
+        public bool IsBatchSizeFocused { get => (bool)GetValue(IsBatchSizeFocusedProperty); set => SetValue(IsBatchSizeFocusedProperty, value); }
 
         public static readonly DependencyProperty IsBatchSizeFocusedProperty =
             DependencyProperty.Register("IsBatchSizeFocused", typeof(bool), typeof(SqlBulkInsertDesignerViewModel), new PropertyMetadata(false));
 
-        public bool IsTimeoutFocused { get { return (bool)GetValue(IsTimeoutFocusedProperty); } set { SetValue(IsTimeoutFocusedProperty, value); } }
+        public bool IsTimeoutFocused { get => (bool)GetValue(IsTimeoutFocusedProperty); set => SetValue(IsTimeoutFocusedProperty, value); }
 
         public static readonly DependencyProperty IsTimeoutFocusedProperty =
             DependencyProperty.Register("IsTimeoutFocused", typeof(bool), typeof(SqlBulkInsertDesignerViewModel), new PropertyMetadata(false));
@@ -244,11 +235,7 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
 
         public static readonly DependencyProperty IsResultFocusedProperty =
             DependencyProperty.Register("IsResultFocused", typeof(bool), typeof(SqlBulkInsertDesignerViewModel), new PropertyMetadata(false));
-
-
-
-
-
+        
         #endregion
 
         #region DO NOT bind to these properties - these are here for internal view model use only!!!
@@ -298,7 +285,6 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
 
             IsRefreshing = true;
             IsSqlDatabase = SelectedDatabase.ServerType == enSourceType.SqlDatabase;
-            // Save selection
             var selectedTableName = GetTableName(SelectedTable);
 
             Databases.Remove(SelectDbSource);
@@ -307,7 +293,6 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
             Tables.Clear();
             LoadDatabaseTables(() =>
             {
-                // Restore Selection
                 SetSelectedTable(selectedTableName);
                 LoadTableColumns(() => { IsRefreshing = false; });
             });
@@ -389,8 +374,7 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
                 continueWith?.Invoke();
                 return;
             }
-
-            // Get Selected values on UI thread BEFORE starting asyncWorker
+            
             var selectedDatabase = SelectedDatabase;
             _asyncWorker.Start(() => GetDatabaseTables(selectedDatabase), tableList =>
             {
