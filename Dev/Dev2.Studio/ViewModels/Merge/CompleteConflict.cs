@@ -9,6 +9,7 @@ namespace Dev2.ViewModels.Merge
     public class ArmConnectorConflict : BindableBase, IArmConnectorConflict
     {
         bool _hasConflict;
+        bool _isMergeExpanderEnabled;
         public IMergeArmConnectorConflict CurrentArmConnector { get; set; }
         public IMergeArmConnectorConflict DifferentArmConnector { get; set; }
         public bool HasConflict
@@ -23,6 +24,15 @@ namespace Dev2.ViewModels.Merge
         public bool IsChecked { get; set; }
         public Guid UniqueId { get; set; }
         public string Key { get; set; }
+        public bool IsMergeExpanderEnabled
+        {
+            get => _isMergeExpanderEnabled;
+            set
+            {
+                _isMergeExpanderEnabled = value;
+                OnPropertyChanged(() => IsMergeExpanderEnabled);
+            }
+        }
 
         public bool Equals(IArmConnectorConflict other)
         {
@@ -66,9 +76,12 @@ namespace Dev2.ViewModels.Merge
         public string ArmDescription { get; set; }
         public string SourceUniqueId { get; set; }
         public string DestinationUniqueId { get; set; }
+        public string Key { get; set; }
         bool _isChecked;
         private bool _isArmSelectionAllowed;
 
+        public event Action<bool,string,string,string> OnChecked;
+        
         public bool IsChecked
         {
             get => _isChecked;
@@ -76,6 +89,7 @@ namespace Dev2.ViewModels.Merge
             {
                 _isChecked = value;
                 OnPropertyChanged(() => IsChecked);
+                OnChecked?.Invoke(_isChecked,SourceUniqueId,DestinationUniqueId,Key);
             }
         }
 
@@ -93,11 +107,12 @@ namespace Dev2.ViewModels.Merge
         {
 
         }
-        public MergeArmConnectorConflict(string armDescription, string sourceUniqueId, string destinationUniqueId)
+        public MergeArmConnectorConflict(string armDescription, string sourceUniqueId, string destinationUniqueId,string key)
         {
             ArmDescription = armDescription;
             SourceUniqueId = sourceUniqueId;
             DestinationUniqueId = destinationUniqueId;
+            Key = key;
         }
 
         public bool Equals(IMergeArmConnectorConflict other)

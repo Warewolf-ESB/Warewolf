@@ -2058,6 +2058,15 @@ namespace Warewolf.Studio.ViewModels.Tests
             _target.CanView = true;
             _target.IsService = true;
             _target.IsSource = false;
+            _target.IsSaveDialog = false;
+
+            var connection = new Mock<IEnvironmentConnection>();
+            connection.SetupGet(it => it.ID).Returns(Guid.NewGuid());
+            var mock = new Mock<IServer>();
+            mock.SetupGet(it => it.Connection).Returns(connection.Object);
+            mock.SetupGet(it => it.Connection.WebServerUri).Returns(new Uri("http://localhost:3142"));
+            mock.SetupGet(it => it.IsLocalHost).Returns(true);
+            _target.Server = mock.Object;
 
             //act
 

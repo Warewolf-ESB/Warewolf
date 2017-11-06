@@ -18,5 +18,6 @@ namespace Dev2.Studio.Core.Messages
     {
         public IServer Server { get; set; }
         public ModelItem ModelItem { get; set; }
+        public bool IsPaste { get; set; }
     }
 }
