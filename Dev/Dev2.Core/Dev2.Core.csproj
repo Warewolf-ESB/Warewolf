@@ -207,7 +207,6 @@
     <Compile Include="Interfaces\IDSFDataObject.cs" />
     <Compile Include="Interfaces\IEsbChannel.cs" />
     <Compile Include="Interfaces\IEsbWorkspaceChannel.cs" />
-    <Compile Include="PathOperations\FileRepository.cs" />
     <Compile Include="Reflection\NullableHelper.cs" />
     <Compile Include="Session\Debug\DebugTO.cs" />
     <Compile Include="Session\Debug\IDebugSession.cs" />
