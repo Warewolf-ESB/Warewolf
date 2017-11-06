@@ -7,7 +7,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Dev2.Common;
 using System.Windows;
-using Dev2.Annotations;
 using Dev2.Studio.Interfaces.DataList;
 
 namespace Dev2.ViewModels.Merge
@@ -34,21 +33,21 @@ namespace Dev2.ViewModels.Merge
             var conflicts = BuildConflicts(currentResourceModel, differenceResourceModel, currentChanges);
             Conflicts = new LinkedList<IConflict>(conflicts);
             _conflictEnumerator = Conflicts.GetEnumerator();
-            var firstConflict = Conflicts.FirstOrDefault();            
+            var firstConflict = Conflicts.FirstOrDefault();
             SetupBindings(currentResourceModel, differenceResourceModel, firstConflict as IToolConflict);
         }
 
         void SetupBindings(IContextualResourceModel currentResourceModel, IContextualResourceModel differenceResourceModel, IToolConflict firstConflict)
         {
             if (CurrentConflictModel == null)
-            {                
+            {
                 CurrentConflictModel = new ConflictModelFactory
                 {
                     Model = firstConflict?.CurrentViewModel ?? new MergeToolModel { IsMergeEnabled = false },
                     WorkflowName = currentResourceModel.ResourceName,
                     ServerName = currentResourceModel.Environment.Name
                 };
-                
+
                 CurrentConflictModel.GetDataList(currentResourceModel);
                 CurrentConflictModel.SomethingConflictModelChanged += SourceOnConflictModelChanged;
             }
@@ -87,66 +86,20 @@ namespace Dev2.ViewModels.Merge
             var currentTree = currentChanges.current;
             var diffTree = currentChanges.diff;
             var armConnectorConflicts = new List<IArmConnectorConflict>();
-            if (currentTree != null)
-            {
-                foreach (var treeItem in currentTree)
-                {
-                    var conflict = new ToolConflict();
-                    var modelFactory = new ConflictModelFactory(currentResourceModel, treeItem);
-                    var id = Guid.Parse(treeItem.UniqueId);
-                    conflict.UniqueId = id;
-                    conflict.DiffViewModel = EmptyConflictViewModel(id);
-                    conflict.CurrentViewModel = modelFactory.Model;
-                    conflict.CurrentViewModel.SomethingModelToolChanged += SourceOnModelToolChanged;
-                    conflict.CurrentViewModel.Container = conflict;
-                    conflict.HasConflict = treeItem.IsInConflict;
-                    conflicts.Add(conflict);
-                    var armConnectors = treeItem.Activity.ArmConnectors();
-                    foreach(var connector in armConnectors)
-                    {                        
-                        var mergeArmConnectorConflict = new MergeArmConnectorConflict(connector.Description, connector.SourceUniqueId, connector.DestinationUniqueId,connector.Key);
-                        mergeArmConnectorConflict.OnChecked += ArmCheck;
-                        var armConnector = new ArmConnectorConflict
-                        {
-                            UniqueId = id,
-                            CurrentArmConnector = mergeArmConnectorConflict,
-                            DifferentArmConnector = EmptyMergeArmConnectorConflict(id),
-                            Key = connector.Key,
-                            HasConflict = true
-                        };
-                        armConnector.CurrentArmConnector.IsArmSelectionAllowed = true;
-                        if(armConnectorConflicts.FirstOrDefault(s => s.UniqueId == id && s.Key == connector.Key) == null)
-                        {
-                            armConnectorConflicts.Add(armConnector);
-                        }
-                    }
+            ProcessCurrent(currentResourceModel, conflicts, currentTree, armConnectorConflicts);
+            ProcessDiff(differenceResourceModel, conflicts, diffTree, armConnectorConflicts);
+            return conflicts;
+        }
 
-                    var allToolsAdded = armConnectorConflicts.All(t =>
-                    {
-                        var found = conflicts.FirstOrDefault(s => s.UniqueId.ToString() == t.CurrentArmConnector?.DestinationUniqueId);
-                        return found != null;
-
-                    });
-                    if (allToolsAdded)
-                    {
-                        foreach(var armConflict in armConnectorConflicts)
-                        {
-                            if (conflicts.Where(t => t is IArmConnectorConflict)?.FirstOrDefault(s => s.UniqueId == armConflict.UniqueId && ((IArmConnectorConflict)s).Key == armConflict.Key) == null)
-                            {
-                                conflicts.Add(armConflict);
-                            }
-                        }
-                    }
-                }
-            }
-
+        void ProcessDiff(IContextualResourceModel differenceResourceModel, List<IConflict> conflicts, List<ConflictTreeNode> diffTree, List<IArmConnectorConflict> armConnectorConflicts)
+        {
             if (diffTree != null)
             {
                 foreach (var treeItem in diffTree)
                 {
                     IToolConflict conflict = null;
                     var node = treeItem;
-                    var foundConflict = conflicts.Where(s=>s is IToolConflict).Cast<IToolConflict>().FirstOrDefault(t => t.UniqueId.ToString() == node.UniqueId);
+                    var foundConflict = conflicts.Where(s => s is IToolConflict).Cast<IToolConflict>().FirstOrDefault(t => t.UniqueId.ToString() == node.UniqueId);
                     var id = Guid.Parse(node.UniqueId);
                     if (foundConflict == null)
                     {
@@ -164,52 +117,118 @@ namespace Dev2.ViewModels.Merge
                     conflict.DiffViewModel.Container = conflict;
                     conflict.HasConflict = conflict.HasConflict || node.IsInConflict;
 
-                    var armConnectors = treeItem.Activity.ArmConnectors();
-                    foreach (var connector in armConnectors)
-                    {
-                        var mergeArmConnectorConflict = new MergeArmConnectorConflict(connector.Description, connector.SourceUniqueId, connector.DestinationUniqueId,connector.Key);                        
-                        var foundConnector = armConnectorConflicts.FirstOrDefault(s => s.UniqueId == id && s.Key == connector.Key);
-                        if (foundConnector != null)
-                        {
-                            foundConnector.DifferentArmConnector = mergeArmConnectorConflict;
-                            var hasConflict = !foundConnector.CurrentArmConnector.Equals(foundConnector.DifferentArmConnector);
-                            foundConnector.HasConflict = hasConflict;
-                            foundConnector.DifferentArmConnector.IsArmSelectionAllowed = hasConflict;
-                            foundConnector.CurrentArmConnector.IsArmSelectionAllowed = hasConflict;
-                            foundConnector.IsMergeExpanderEnabled = hasConflict;
-                        }
-                        else
-                        {
-                            var armConnector = new ArmConnectorConflict
-                            {
-                                UniqueId = id,
-                                CurrentArmConnector = EmptyMergeArmConnectorConflict(id),
-                                Key = connector.Key,
-                                HasConflict = true
-                                
-                            };
-                            armConnectorConflicts.Add(armConnector);
-                        }
-                    }
-                    var allToolsAdded = armConnectorConflicts.All(t =>
-                    {
-                        var found = conflicts.FirstOrDefault(s => s.UniqueId.ToString() == t.DifferentArmConnector.DestinationUniqueId);
-                        return found != null;
-
-                    });
-                    if (allToolsAdded)
-                    {
-                        foreach (var armConflict in armConnectorConflicts)
-                        {
-                            if (conflicts.Where(t => t is IArmConnectorConflict)?.FirstOrDefault(s => s.UniqueId == armConflict.UniqueId && ((IArmConnectorConflict)s).Key == armConflict.Key) == null)
-                            {
-                                conflicts.Add(armConflict);
-                            }
-                        }
-                    }
+                    AddDiffArmConnectors(armConnectorConflicts, treeItem, id);
+                    ShowArmConnectorsForDiff(conflicts, armConnectorConflicts);
                 }
-            }            
-            return conflicts;
+            }
+        }
+
+        void ProcessCurrent(IContextualResourceModel currentResourceModel, List<IConflict> conflicts, List<ConflictTreeNode> currentTree, List<IArmConnectorConflict> armConnectorConflicts)
+        {
+            if (currentTree != null)
+            {
+                foreach (var treeItem in currentTree)
+                {
+                    var conflict = new ToolConflict();
+                    var modelFactory = new ConflictModelFactory(currentResourceModel, treeItem);
+                    var id = Guid.Parse(treeItem.UniqueId);
+                    conflict.UniqueId = id;
+                    conflict.DiffViewModel = EmptyConflictViewModel(id);
+                    conflict.CurrentViewModel = modelFactory.Model;
+                    conflict.CurrentViewModel.SomethingModelToolChanged += SourceOnModelToolChanged;
+                    conflict.CurrentViewModel.Container = conflict;
+                    conflict.HasConflict = treeItem.IsInConflict;
+                    conflicts.Add(conflict);
+                    AddArmConnectors(armConnectorConflicts, treeItem, id);
+                    ShowArmConnectorsForCurrent(conflicts, armConnectorConflicts);
+                }
+            }
+        }
+
+        static void ShowArmConnectorsForDiff(List<IConflict> conflicts, List<IArmConnectorConflict> armConnectorConflicts)
+        {
+            var itemsToAdd = new List<IConflict>();
+            foreach (var addConflict in conflicts)
+            {
+                var found = armConnectorConflicts.FirstOrDefault(s => s.DifferentArmConnector.DestinationUniqueId == addConflict.UniqueId.ToString());
+                AddToTempConflictList(conflicts, itemsToAdd, found);
+
+            }
+            conflicts.AddRange(itemsToAdd);
+        }
+
+        static void ShowArmConnectorsForCurrent(List<IConflict> conflicts, List<IArmConnectorConflict> armConnectorConflicts)
+        {
+            var itemsToAdd = new List<IConflict>();
+            foreach (var addConflict in conflicts)
+            {
+                var found = armConnectorConflicts.FirstOrDefault(s => s.CurrentArmConnector.DestinationUniqueId == addConflict.UniqueId.ToString());
+                AddToTempConflictList(conflicts, itemsToAdd, found);
+
+            }
+            conflicts.AddRange(itemsToAdd);
+        }
+
+        static void AddToTempConflictList(List<IConflict> conflicts, List<IConflict> itemsToAdd, IArmConnectorConflict found)
+        {
+            if (found != null && conflicts.Where(t => t is IArmConnectorConflict)?.FirstOrDefault(s => s.UniqueId == found.UniqueId && ((IArmConnectorConflict)s).Key == found.Key) == null)
+            {
+                itemsToAdd.Add(found);
+            }
+        }
+
+        static void AddDiffArmConnectors(List<IArmConnectorConflict> armConnectorConflicts, ConflictTreeNode treeItem, Guid id)
+        {
+            var armConnectors = treeItem.Activity.ArmConnectors();
+            foreach (var connector in armConnectors)
+            {
+                var mergeArmConnectorConflict = new MergeArmConnectorConflict(connector.Description, connector.SourceUniqueId, connector.DestinationUniqueId, connector.Key);
+                var foundConnector = armConnectorConflicts.FirstOrDefault(s => s.UniqueId == id && s.Key == connector.Key);
+                if (foundConnector != null)
+                {
+                    foundConnector.DifferentArmConnector = mergeArmConnectorConflict;
+                    var hasConflict = !foundConnector.CurrentArmConnector.Equals(foundConnector.DifferentArmConnector);
+                    foundConnector.HasConflict = hasConflict;
+                    foundConnector.DifferentArmConnector.IsArmSelectionAllowed = hasConflict;
+                    foundConnector.CurrentArmConnector.IsArmSelectionAllowed = hasConflict;
+                    foundConnector.IsMergeExpanderEnabled = hasConflict;
+                }
+                else
+                {
+                    var armConnector = new ArmConnectorConflict
+                    {
+                        UniqueId = id,
+                        CurrentArmConnector = EmptyMergeArmConnectorConflict(id),
+                        Key = connector.Key,
+                        HasConflict = true
+
+                    };
+                    armConnectorConflicts.Add(armConnector);
+                }
+            }
+        }
+
+        void AddArmConnectors(List<IArmConnectorConflict> armConnectorConflicts, ConflictTreeNode treeItem, Guid id)
+        {
+            var armConnectors = treeItem.Activity.ArmConnectors();
+            foreach (var connector in armConnectors)
+            {
+                var mergeArmConnectorConflict = new MergeArmConnectorConflict(connector.Description, connector.SourceUniqueId, connector.DestinationUniqueId, connector.Key);
+                mergeArmConnectorConflict.OnChecked += ArmCheck;
+                var armConnector = new ArmConnectorConflict
+                {
+                    UniqueId = id,
+                    CurrentArmConnector = mergeArmConnectorConflict,
+                    DifferentArmConnector = EmptyMergeArmConnectorConflict(id),
+                    Key = connector.Key,
+                    HasConflict = true
+                };
+                armConnector.CurrentArmConnector.IsArmSelectionAllowed = true;
+                if (armConnectorConflicts.FirstOrDefault(s => s.UniqueId == id && s.Key == connector.Key) == null)
+                {
+                    armConnectorConflicts.Add(armConnector);
+                }
+            }
         }
 
         static MergeArmConnectorConflict EmptyMergeArmConnectorConflict(Guid uniqueId)
@@ -258,28 +277,10 @@ namespace Dev2.ViewModels.Merge
             if (conflict != null && conflict.UniqueId == model.UniqueId)
             {
                 WorkflowDesignerViewModel.RemoveStartNodeConnection();
-            }            
+            }
             WorkflowDesignerViewModel.AddItem(model);
             WorkflowDesignerViewModel.SelectedItem = model.ModelItem;
         }
-
-        [CanBeNull]
-        static List<IToolConflict> SetPreviousModelTool(LinkedListNode<IToolConflict> linkedConflict)
-        {
-            var parents = new List<IToolConflict>();
-            var previousValue = linkedConflict.Previous?.Value ?? linkedConflict.Value.Parent;            
-            var previousCurrentViewModel = previousValue?.CurrentViewModel;
-            if (previousCurrentViewModel != null)
-            {                
-                parents.Add(previousValue);
-            }
-            if (previousValue?.Parent != null)
-            {
-                parents.Add(previousValue?.Parent);
-            }           
-            return parents;
-        }
-
 #pragma warning disable S1450 // Private fields only used as local variables in methods should become local variables
         bool _canSave;
 #pragma warning restore S1450 // Private fields only used as local variables in methods should become local variables
@@ -368,7 +369,7 @@ namespace Dev2.ViewModels.Merge
                 AddActivity(args);
                 if (!args.Container.IsChecked)
                 {
-                    IConflict conflict = UpdateNextEnabledState();
+                    var conflict = UpdateNextEnabledState();
                     if (conflict is IToolConflict nextConflict)
                     {
                         UpdateNextToolState(nextConflict);
@@ -386,7 +387,7 @@ namespace Dev2.ViewModels.Merge
             }
         }
 
-        private static void UpdateNextToolState(IToolConflict nextConflict)
+        static void UpdateNextToolState(IToolConflict nextConflict)
         {
             nextConflict.IsMergeExpanderEnabled = nextConflict.HasConflict;
             if (!nextConflict.HasConflict || nextConflict.IsContainerTool)
@@ -404,7 +405,7 @@ namespace Dev2.ViewModels.Merge
             {
                 WorkflowDesignerViewModel.LinkTools(sourceUniqueId, destionationUniqueId, key);
 
-                IConflict conflict = UpdateNextEnabledState();
+                var conflict = UpdateNextEnabledState();
                 if (conflict is IArmConnectorConflict nextArmConflict)
                 {
                     UpdateNextArmState(nextArmConflict);
@@ -412,7 +413,7 @@ namespace Dev2.ViewModels.Merge
             }
         }
 
-        private static void UpdateNextArmState(IArmConnectorConflict nextArmConflict)
+        static void UpdateNextArmState(IArmConnectorConflict nextArmConflict)
         {
             nextArmConflict.IsMergeExpanderEnabled = nextArmConflict.HasConflict;
             if (!nextArmConflict.HasConflict)
@@ -473,7 +474,7 @@ namespace Dev2.ViewModels.Merge
             }
             return nextConflict;
         }
-                  
+
         public LinkedList<IConflict> Conflicts { get; set; }
 
         public IWorkflowDesignerViewModel WorkflowDesignerViewModel { get; set; }
