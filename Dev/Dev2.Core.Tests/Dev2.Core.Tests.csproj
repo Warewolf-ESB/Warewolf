@@ -136,7 +136,6 @@
     <Compile Include="ConverterTests\GraphTests\DataBrowserTests.cs" />
     <Compile Include="ConverterTests\GraphTests\DataTable Test\DataTableInterrogatorTest.cs" />
     <Compile Include="ConverterTests\GraphTests\DataTable Test\DataTableMapperTest.cs" />
-    <Compile Include="ConverterTests\GraphTests\InterrogatorFactoryTest.cs" />
     <Compile Include="ConverterTests\GraphTests\OutputTests\OutputDescriptionSerializationServiceTests.cs" />
     <Compile Include="ConverterTests\GraphTests\OutputTests\ShapedXmlOutputFormatterTests.cs" />
     <Compile Include="ConverterTests\GraphTests\PocoTestData.cs" />

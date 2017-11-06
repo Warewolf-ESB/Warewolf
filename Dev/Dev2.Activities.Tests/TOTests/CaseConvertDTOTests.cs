@@ -13,9 +13,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Tests.Activities.TOTests
 {
-    /// <summary>
-    /// Summary description for CaseConvertDTOTests
-    /// </summary>
     [TestClass]
     public class CaseConvertDTOTests
     {
