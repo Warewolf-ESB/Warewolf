@@ -63,14 +63,14 @@ namespace Dev2.Activities
             {
                 foreach (var next in TrueArm)
                 {
-                    armConnectors.Add(($"{GetDisplayName()}: TRUE -> {next.GetDisplayName()}", "TRUE", UniqueID, next.UniqueID));
+                    armConnectors.Add(($"{GetDisplayName()}: TRUE -> {next.GetDisplayName()}", "True", UniqueID, next.UniqueID));
                 }
             }
             if (FalseArm != null)
             {
                 foreach (var next in FalseArm)
                 {
-                    armConnectors.Add(($"{GetDisplayName()}: FALSE -> {next.GetDisplayName()}", "FALSE", UniqueID, next.UniqueID));
+                    armConnectors.Add(($"{GetDisplayName()}: FALSE -> {next.GetDisplayName()}", "False", UniqueID, next.UniqueID));
                 }
             }
             return armConnectors;
