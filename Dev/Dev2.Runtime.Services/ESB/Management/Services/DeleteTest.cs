@@ -14,10 +14,6 @@ using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    /// <summary>
-    /// Adds a resource
-    /// </summary>
-
     public class DeleteTest : IEsbManagementEndpoint
     {
         private ITestCatalog _testCatalog;

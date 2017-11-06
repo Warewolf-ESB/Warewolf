@@ -38,74 +38,80 @@ namespace Dev2.Studio.Core
                     {
                         _repository.VersionManager.DeleteVersion(explorerItemViewModel.ResourceId, explorerItemViewModel.VersionNumber, explorerItemViewModel.Parent.ResourcePath);
                     }
-                    else if (explorerItemViewModel.ResourceType == "Folder")
+                    else
                     {
-                        var explorerItemViewModels = explorerItemViewModel.AsList();
-                        
-                        var deleteFileMetaData = new DeletedFileMetadata
+                        if (explorerItemViewModel.ResourceType == "Folder")
                         {
-                            IsDeleted = true,
-                            ShowDependencies = false
-                        };
-                        bool showDependenciesApplyToAll = false;
-                        foreach (IExplorerItemViewModel itemViewModel in explorerItemViewModels)
-                        {
-                            if (itemViewModel.ResourceType != "Folder")
+                            var explorerItemViewModels = explorerItemViewModel.AsList();
+
+                            var deleteFileMetaData = new DeletedFileMetadata
                             {
-                                var dependants = _repository.QueryManagerProxy.FetchDependants(itemViewModel.ResourceId);
-                                if (dependants != null)
+                                IsDeleted = true,
+                                ShowDependencies = false
+                            };
+                            bool showDependenciesApplyToAll = false;
+                            foreach (IExplorerItemViewModel itemViewModel in explorerItemViewModels)
+                            {
+                                if (itemViewModel.ResourceType != "Folder")
                                 {
-                                    if (showDependenciesApplyToAll)
+                                    var dependants = _repository.QueryManagerProxy.FetchDependants(itemViewModel.ResourceId);
+                                    if (dependants != null)
                                     {
-                                        var graph = graphGenerator.BuildGraph(dependants.Message, "", 1000, 1000, 1);
-                                        if (graph.Nodes.Count > 1)
+                                        if (showDependenciesApplyToAll)
                                         {
-                                            itemViewModel.ShowDependencies();
-                                        }
-                                    }
-                                    else
-                                    {
-                                        var deletedFileMetadata = _repository.HasDependencies(itemViewModel, graphGenerator, dependants);
-
-                                        if (deletedFileMetadata.DeleteAnyway && deletedFileMetadata.ApplyToAll)
-                                        {
-                                            deleteFileMetaData.IsDeleted = true;
-                                            deleteFileMetaData.ResourceId = itemViewModel.ResourceId;
-                                            break;
-                                        }
-                                        if (deletedFileMetadata.DeleteAnyway && !deletedFileMetadata.ApplyToAll)
-                                        {
-                                            explorerItemViewModel.RemoveChild(itemViewModel);
-                                            _repository.UpdateManagerProxy.DeleteResource(itemViewModel.ResourceId);
-                                        }
-
-                                        if (!deletedFileMetadata.IsDeleted)
-                                        {
-                                            deleteFileMetaData.IsDeleted = false;
-                                            deleteFileMetaData.ShowDependencies = true;
-                                            deleteFileMetaData.ResourceId = itemViewModel.ResourceId;
-
-                                            if (deletedFileMetadata.ApplyToAll && deletedFileMetadata.ShowDependencies)
+                                            var graph = graphGenerator.BuildGraph(dependants.Message, "", 1000, 1000, 1);
+                                            if (graph.Nodes.Count > 1)
                                             {
-                                                showDependenciesApplyToAll = deletedFileMetadata.ShowDependencies;
+                                                itemViewModel.ShowDependencies();
                                             }
-                                            else if (deletedFileMetadata.ApplyToAll)
+                                        }
+                                        else
+                                        {
+                                            var deletedFileMetadata = _repository.HasDependencies(itemViewModel, graphGenerator, dependants);
+
+                                            if (deletedFileMetadata.DeleteAnyway && deletedFileMetadata.ApplyToAll)
                                             {
+                                                deleteFileMetaData.IsDeleted = true;
+                                                deleteFileMetaData.ResourceId = itemViewModel.ResourceId;
                                                 break;
+                                            }
+                                            if (deletedFileMetadata.DeleteAnyway && !deletedFileMetadata.ApplyToAll)
+                                            {
+                                                explorerItemViewModel.RemoveChild(itemViewModel);
+                                                _repository.UpdateManagerProxy.DeleteResource(itemViewModel.ResourceId);
+                                            }
+
+                                            if (!deletedFileMetadata.IsDeleted)
+                                            {
+                                                deleteFileMetaData.IsDeleted = false;
+                                                deleteFileMetaData.ShowDependencies = true;
+                                                deleteFileMetaData.ResourceId = itemViewModel.ResourceId;
+
+                                                if (deletedFileMetadata.ApplyToAll && deletedFileMetadata.ShowDependencies)
+                                                {
+                                                    showDependenciesApplyToAll = deletedFileMetadata.ShowDependencies;
+                                                }
+                                                else
+                                                {
+                                                    if (deletedFileMetadata.ApplyToAll)
+                                                    {
+                                                        break;
+                                                    }
+                                                }
                                             }
                                         }
                                     }
                                 }
                             }
-                        }
-                        if (deleteFileMetaData.IsDeleted)
-                        {
-                            if (!string.IsNullOrWhiteSpace(explorerItemViewModel.ResourcePath))
+                            if (deleteFileMetaData.IsDeleted)
                             {
-                                _repository.UpdateManagerProxy.DeleteFolder(explorerItemViewModel.ResourcePath);
+                                if (!string.IsNullOrWhiteSpace(explorerItemViewModel.ResourcePath))
+                                {
+                                    _repository.UpdateManagerProxy.DeleteFolder(explorerItemViewModel.ResourcePath);
+                                }
                             }
+                            return deleteFileMetaData;
                         }
-                        return deleteFileMetaData;
                     }
                 }
                 return new DeletedFileMetadata

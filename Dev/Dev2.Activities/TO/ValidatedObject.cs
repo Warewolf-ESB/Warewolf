@@ -22,7 +22,7 @@ namespace Dev2.TO
 
         public string this[string columnName] => null;
 
-        public Dictionary<string, List<IActionableErrorInfo>> Errors { get { return _errors ?? (_errors = new Dictionary<string, List<IActionableErrorInfo>>()); } set { OnPropertyChanged(ref _errors, value); } }
+        public Dictionary<string, List<IActionableErrorInfo>> Errors { get => _errors ?? (_errors = new Dictionary<string, List<IActionableErrorInfo>>()); set => OnPropertyChanged(ref _errors, value); }
 
         public bool Validate(string propertyName, IRuleSet ruleSet)
         {

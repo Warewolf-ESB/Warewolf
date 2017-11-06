@@ -5,7 +5,7 @@ using Dev2.Common.Interfaces.Diagnostics.Debug;
 
 namespace Dev2.Common
 {
-    public class DebugStateTreeBuilder
+    public static class DebugStateTreeBuilder
     {
 
         public static IEnumerable<IDebugState> BuildTree(IEnumerable<IDebugState> source)

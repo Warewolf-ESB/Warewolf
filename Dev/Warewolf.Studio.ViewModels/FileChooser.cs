@@ -17,6 +17,7 @@ using Dev2.Common.Interfaces;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Microsoft.Practices.Prism.Mvvm;
 using Warewolf.Studio.Core;
+using Dev2.Common;
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -114,11 +115,11 @@ namespace Warewolf.Studio.ViewModels
                 }
                 var driveName = string.Join(";", Drives.SelectMany(a => a.FilterSelected(new List<string>())).ToList());
                 return driveName;
-            }
-            
+            }            
             set
             {
                 OnPropertyChanged(() => DriveName);
+                Dev2Logger.Info("File Chooser Drive Name set to " + value, GlobalConstants.WarewolfInfo);
             }
         }
         public string FilesTooltip

@@ -1183,8 +1183,7 @@ namespace Warewolf.Studio.ViewModels
             get
             {
                 return _isResource;
-            }
-            
+            }            
             set
             {
                 if (IsFolder)
@@ -1210,6 +1209,7 @@ namespace Warewolf.Studio.ViewModels
                     }
                 }
                 OnPropertyChanged(() => IsResourceChecked);
+                Dev2Logger.Info("Explorer Item View Model Is Folder Checked set to " + value, GlobalConstants.WarewolfInfo);
             }
         }
 
@@ -1750,9 +1750,12 @@ namespace Warewolf.Studio.ViewModels
                     }
                 }
             }
-            else if (destination.ResourceType == "ServerSource")
+            else
             {
-                ResourcePath = destination.ResourcePath + (destination.ResourcePath == string.Empty ? "" : "\\") + ResourceName;
+                if (destination.ResourceType == "ServerSource")
+                {
+                    ResourcePath = destination.ResourcePath + (destination.ResourcePath == string.Empty ? "" : "\\") + ResourceName;
+                }
             }
         }
 
