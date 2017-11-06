@@ -7,34 +7,24 @@ namespace Warewolf.Studio.CustomControls
 {
     public class DataPresenterHelpers
     {
-        #region FilterText
+        protected DataPresenterHelpers()
+        {
+        }
 
-        /// <summary>
-        /// FilterText Attached Dependency Property
-        /// </summary>
         public static readonly DependencyProperty FilterTextProperty =
             DependencyProperty.RegisterAttached("FilterText", typeof(string), typeof(DataPresenterHelpers),
                 new FrameworkPropertyMetadata(null, OnFilterTextChanged));
-
-        /// <summary>
-        /// Gets the text to be used to filter the DataPresenter on which the property was set.
-        /// </summary>
+        
         public static string GetFilterText(DependencyObject d)
         {
             return (string)d.GetValue(FilterTextProperty);
         }
-
-        /// <summary>
-        /// Sets the filter text on the DataPresenter that should be used to manipulate the RecordFilters of the specified DataPresenter
-        /// </summary>
+        
         public static void SetFilterText(DependencyObject d, string value)
         {
             d.SetValue(FilterTextProperty, value);
         }
-
-        /// <summary>
-        /// Handles changes to the FilterText property.
-        /// </summary>
+        
         private static void OnFilterTextChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var dp = d as DataPresenterBase;
@@ -52,7 +42,5 @@ namespace Warewolf.Studio.CustomControls
                 }
             }
         }
-
-        #endregion //FilterText
     }
 }

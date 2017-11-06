@@ -74,7 +74,7 @@ namespace Dev2.Services.Security
             }
             if (context.HasFlag(AuthorizationContext.View))
             {
-                permission |= Permissions.View | Permissions.Contribute;;
+                permission |= Permissions.View | Permissions.Contribute;
             }
             if (context.HasFlag(AuthorizationContext.Any))
             {

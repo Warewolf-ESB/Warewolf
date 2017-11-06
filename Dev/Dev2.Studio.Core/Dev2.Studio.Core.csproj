@@ -198,16 +198,10 @@
     <Compile Include="AppResources\Browsers\BrowserPopupControllerAbstract.cs" />
     <Compile Include="AppResources\Browsers\ExternalBrowserPopupController.cs" />
     <Compile Include="AppResources\Browsers\IBrowserPopupController.cs" />
-    <Compile Include="AppResources\Converters\AllBoolToVisibilityValueConverter.cs" />
-    <Compile Include="AppResources\Converters\BooleanInvertConverter.cs" />
     <Compile Include="AppResources\Converters\BoolToValueConverter.cs" />
     <Compile Include="AppResources\Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="AppResources\Converters\CollectionToVisibilityConverterPositive.cs" />
-    <Compile Include="AppResources\Converters\ConnectControlDisableConverter.cs" />
-    <Compile Include="AppResources\Converters\ConnectControlMultiValueBoolConverter.cs" />
-    <Compile Include="AppResources\Converters\BoolToDisabledFontColorConverter.cs" />
     <Compile Include="AppResources\Converters\DataListItemModelToAutomationIdConverter.cs" />
-    <Compile Include="AppResources\Converters\DateTimeFormatConverter.cs" />
     <Compile Include="AppResources\Converters\GridRowNumberConverter.cs" />
     <Compile Include="AppResources\Converters\PaddingThicknessConverter.cs" />
     <Compile Include="AppResources\Converters\DataGridRowNumberConverter.cs" />
@@ -218,11 +212,8 @@
     <Compile Include="AppResources\Converters\IntEnsureMinConverter.cs" />
     <Compile Include="AppResources\Converters\IntInRangeToVisibilityConverter.cs" />
     <Compile Include="AppResources\Converters\IntToVisibilityConverter.cs" />
-    <Compile Include="AppResources\Converters\FindRecordsTypeToBoolConverter.cs" />
     <Compile Include="AppResources\Converters\ForEachTypeToVisibilityConverter.cs" />
-    <Compile Include="AppResources\Converters\DebugItemResultTypeToColorConverter.cs" />
     <Compile Include="AppResources\Converters\EnumDiscriptionToStringConverter.cs" />
-    <Compile Include="AppResources\Converters\EnumDisplayNameToItemSourceConverter.cs" />
     <Compile Include="AppResources\Converters\ModelItemToActivityConverter.cs" />
     <Compile Include="AppResources\Converters\MultipleBoolToVisibilityValueConverter.cs" />
     <Compile Include="AppResources\Converters\MultipleStringToVisibilityConverter.cs" />
@@ -503,8 +494,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppResources\Enums\" />
-    <Folder Include="Interfaces\" />
-    <Folder Include="Validation\" />
   </ItemGroup>
   <ItemGroup>
     <Analyzer Include="..\packages\SonarAnalyzer.CSharp.5.11.0.1761\analyzers\Google.Protobuf.dll" />

@@ -51,10 +51,7 @@ namespace Dev2.Studio.Core
         static volatile IServerRepository _instance;
 
         static readonly object SyncInstance = new Object();
-
-        /// <summary>
-        /// Gets the repository instance.
-        /// </summary>
+        
         public static IServerRepository Instance
         {
             get
@@ -76,28 +73,23 @@ namespace Dev2.Studio.Core
         #endregion
 
         #region CTOR
-
-        // Singleton instance only
+        
         public ServerRepository()
             : this(CreateEnvironmentModel(Guid.Empty, new Uri(string.IsNullOrEmpty(AppSettings.LocalHost) ? $"http://{Environment.MachineName.ToLowerInvariant()}:3142" : AppSettings.LocalHost), StringResources.DefaultEnvironmentName))
         {
         }
-
-        // Testing only!!!
+        
         protected ServerRepository(IServer source)
         {
-            if (source == null)
-            {
-                throw new ArgumentNullException(nameof(source));
-            }
-            Source = source;
+            Source = source ?? throw new ArgumentNullException(nameof(source));
             Environments = new List<IServer> { Source };
         }
-
-        //For Testing Only!!!!!!!
+        
         public ServerRepository(IServerRepository serverRepository)
         {
+#pragma warning disable S3010 // For testing
             _instance = serverRepository;
+#pragma warning restore S3010
         }
 
         #endregion

@@ -159,9 +159,12 @@ namespace Dev2.Data.Operations
                         paddedString += value;
                     }
                 }
-                else if (difference < 0)
+                else
                 {
-                    paddedString = value.Substring(0, indexToUse);
+                    if (difference < 0)
+                    {
+                        paddedString = value.Substring(0, indexToUse);
+                    }
                 }
 
                 MergeData.Append(paddedString);

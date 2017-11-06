@@ -6,6 +6,7 @@ using Dev2.Integration.Tests.Properties;
 using System.Threading;
 using Dev2.Common;
 using Dev2.Common.Interfaces.StringTokenizer.Interfaces;
+using Dev2.Data;
 
 namespace Dev2.Integration.Tests
 {
@@ -57,9 +58,7 @@ namespace Dev2.Integration.Tests
             sw.Stop();
 
             long exeTime = sw.ElapsedMilliseconds;
-
-            // can we do 100k ops in less then 1,3s? 
-            // I sure hope so ;)
+            
             Console.WriteLine(@"Total Time : " + exeTime);
             Assert.IsTrue(opCnt == 100000 && exeTime < 1300, "Expecting it to take 1300 ms but it took " + exeTime + " ms.");
         }
@@ -86,11 +85,28 @@ namespace Dev2.Integration.Tests
             sw.Stop();
 
             long exeTime = sw.ElapsedMilliseconds;
-
-            // can we do it in less then 2.5s? 
-            // I sure hope so ;)
+            
             Console.WriteLine("Total Time : " + exeTime);
             Assert.IsTrue(opCnt == 35000 && exeTime < 2500, "It took [ " + exeTime + " ]");
+        }
+
+        [TestMethod]
+        public void PulseTracker_Should()
+        {
+            bool elapsed = false;
+            var pulseTracker = new PulseTracker(2000);
+
+            Assert.AreEqual(2000, pulseTracker.Interval);
+            PrivateObject pvt = new PrivateObject(pulseTracker);
+            System.Timers.Timer timer = (System.Timers.Timer)pvt.GetField("_timer");
+            timer.Elapsed += (sender, e) =>
+            {
+                elapsed = true;
+            };
+            Assert.AreEqual(false, timer.Enabled);
+            pulseTracker.Start();
+            Thread.Sleep(6000);
+            Assert.IsTrue(elapsed);
         }
     }
 }

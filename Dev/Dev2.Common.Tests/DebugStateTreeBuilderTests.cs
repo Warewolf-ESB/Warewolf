@@ -11,18 +11,6 @@ namespace Dev2.Common.Tests
     {
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void Constructor_GivenIsNew()
-        {
-            //---------------Set up test pack-------------------
-            var builder = new DebugStateTreeBuilder();
-            //---------------Assert Precondition----------------
-            //---------------Execute Test ----------------------
-            //---------------Test Result -----------------------
-            Assert.IsNotNull(builder);
-        }
-
-        [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
         public void BuildTree_GivenStates_ShouldReturnStates()
         {
             //---------------Set up test pack-------------------
