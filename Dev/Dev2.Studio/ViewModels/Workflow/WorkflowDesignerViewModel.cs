@@ -3236,7 +3236,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                     break;
             }
             var modelItem = GetItemFromNodeCollection(model.UniqueId.ToString());
-            SetShapeLocation(model.ModelItem, model.NodeLocation);
+            SetShapeLocation(modelItem, model.NodeLocation);
             var startNode = chart.Properties["StartNode"];
             if (startNode?.ComputedValue == null)
             {
