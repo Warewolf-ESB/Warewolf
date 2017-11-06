@@ -25,6 +25,5 @@ namespace Dev2.Common.Interfaces.Core.DynamicServices
         StringBuilder ResourceDefinition { get; set; }
         int VersionNo { get; set; }
         bool Compile();
-        void WriteCompileError(string traceMsg);
     }
 }

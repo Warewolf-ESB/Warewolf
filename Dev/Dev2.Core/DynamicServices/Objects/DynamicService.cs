@@ -57,27 +57,16 @@ namespace Dev2.DynamicServices
             //Initialize the Actions Property
             Actions = new List<ServiceAction>();
         }
-
-
-        /// <summary>
-        ///     Compiles this object
-        /// </summary>
-        /// <returns></returns>
+        
         public override bool Compile()
         {
             base.Compile();
-
-            if (Actions.Count == 0)
-            {
-                WriteCompileError(Resources.CompilerError_ServiceHasNoActions);
-            }
 
             Actions.ForEach(c =>
             {
                 c.Compile();
                 c.CompilerErrors.ToList().ForEach(d => CompilerErrors.Add(d));
             });
-
 
             return IsCompiled;
         }

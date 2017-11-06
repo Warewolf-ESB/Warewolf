@@ -199,7 +199,6 @@
     <Compile Include="ExtMethods\StringExtension.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ExtMethods\TaskExtensions.cs" />
     <Compile Include="Factories\DropboxFactory.cs" />
     <Compile Include="IActivityParser.cs" />
     <Compile Include="IDev2Activity.cs" />
